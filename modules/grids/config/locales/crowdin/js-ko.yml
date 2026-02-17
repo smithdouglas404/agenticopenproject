@@ -27,8 +27,6 @@ ko:
           not_set: '설정되지 않음'
           finished: '마침'
           discontinued: '중단됨'
-        project_status_beta:
-          title: '상태(BETA)'
         subprojects:
           title: '하위 항목'
         project_favorites:

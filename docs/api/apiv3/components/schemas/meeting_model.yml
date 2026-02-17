@@ -2,7 +2,14 @@
 ---
 type: object
 required:
+  - id
+  - lockVersion
   - title
+  - startTime
+  - endTime
+  - duration
+  - createdAt
+  - updatedAt
 properties:
   _type:
     type: string
@@ -24,22 +31,22 @@ properties:
   startTime:
     type: string
     format: date-time
-    description: The start time of the meeting
+    description: The scheduled meeting start time.
   endTime:
     type: string
     format: date-time
-    description: The end time of the meeting
+    description: The scheduled meeting start time.
   duration:
     type: number
-    description: The duration of the meeting in hours. The difference between `startTime` and `endTime`
+    description: The meeting duration in minutes.
   createdAt:
     type: string
     format: date-time
-    description: Timestamp of the creation datetime of the meeting
+    description: Time of creation. Can be writable by admins with the `apiv3_write_readonly_attributes` setting enabled.
   updatedAt:
     type: string
     format: date-time
-    description: Timestamp of the last modification datetime of the meeting
+    description: Time of the most recent change to the meeting.
   _links:
     type: object
     properties:
@@ -48,35 +55,35 @@ properties:
           - "$ref": "./link.yml"
           - description: |-
               This meeting
-              
+
               **Resource**: Meeting
       author:
         allOf:
           - "$ref": "./link.yml"
           - description: |-
               The user having created the meeting
-              
+
               **Resource**: User
       project:
         allOf:
           - "$ref": "./link.yml"
           - description: |-
               The project the meeting is in
-              
+
               **Resource**: Project
       attachments:
         allOf:
           - $ref: './link.yml'
           - description: |-
               The attachment collection of this grid.
-              
-              **Resource**: AttachmentCollection           
+
+              **Resource**: AttachmentCollection
       addAttachment:
         allOf:
           - "$ref": "./link.yml"
           - description: |-
               Attach a file to the meeting
-              
+
               # Conditions
-              
+
               **Permission**: edit meeting

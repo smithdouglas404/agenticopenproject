@@ -27,8 +27,6 @@ id:
           not_set: 'Belum diatur'
           finished: 'Selesai'
           discontinued: 'Dihentikan'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitem'
         project_favorites:

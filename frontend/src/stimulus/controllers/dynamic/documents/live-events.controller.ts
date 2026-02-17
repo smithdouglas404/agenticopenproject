@@ -119,7 +119,6 @@ export default class extends ApplicationController {
       method: 'GET',
       headers: {
         Accept: 'text/vnd.turbo-stream.html',
-        'X-Authentication-Scheme': 'Session',
       },
     })
       .then((response:Response) => {

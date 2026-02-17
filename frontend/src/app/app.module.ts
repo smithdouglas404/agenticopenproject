@@ -206,6 +206,7 @@ import { WorkPackageFullCreateEntryComponent } from 'core-app/features/work-pack
 import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packages/routing/wp-full-view/wp-full-view-entry.component';
 import { MyPageComponent } from './features/my-page/my-page.component';
 import { DashboardComponent } from './features/overview/dashboard.component';
+import { BurndownChartComponent } from './features/backlogs/burndown-chart.component';
 
 export function initializeServices(injector:Injector) {
   return () => {
@@ -419,5 +420,6 @@ export class OpenProjectModule implements DoBootstrap {
 
     registerCustomElement('opce-my-page', MyPageComponent, { injector });
     registerCustomElement('opce-dashboard', DashboardComponent, { injector });
+    registerCustomElement('opce-burndown-chart', BurndownChartComponent, { injector });
   }
 }

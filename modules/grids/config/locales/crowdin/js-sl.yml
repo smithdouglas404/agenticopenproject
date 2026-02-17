@@ -27,8 +27,6 @@ sl:
           not_set: 'Ni nastavljeno'
           finished: 'Končano'
           discontinued: 'Opuščeno'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

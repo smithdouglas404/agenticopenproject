@@ -27,8 +27,6 @@ lt:
           not_set: 'Nenustatyta'
           finished: 'Baigta'
           discontinued: 'Nutrauktas'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

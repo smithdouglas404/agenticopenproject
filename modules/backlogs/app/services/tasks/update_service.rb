@@ -34,14 +34,14 @@ class Tasks::UpdateService
     self.task = task
   end
 
-  def call(attributes: {}, prev: "")
+  def call(attributes: {}, prev_id: "")
     create_call = WorkPackages::UpdateService
                   .new(user:,
                        model: task)
                   .call(**attributes)
 
     if create_call.success?
-      create_call.result.move_after prev
+      create_call.result.move_after prev_id:
     end
 
     create_call

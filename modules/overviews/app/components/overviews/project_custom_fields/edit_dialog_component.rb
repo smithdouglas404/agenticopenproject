@@ -43,6 +43,10 @@ module Overviews
 
       private
 
+      def dialog_title
+        @project_custom_field.project_custom_field_section.name
+      end
+
       def dialog_id
         "edit-project-custom-field-dialog-#{@project_custom_field.id}"
       end

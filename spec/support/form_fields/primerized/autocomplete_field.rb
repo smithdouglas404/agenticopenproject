@@ -68,6 +68,18 @@ module FormFields
         end
       end
 
+      def expect_disabled(*values)
+        values.each do |val|
+          expect(page).to have_css(".ng-option.ng-option-disabled", text: val)
+        end
+      end
+
+      def expect_not_disabled(*values)
+        values.each do |val|
+          expect(page).to have_no_css(".ng-option.ng-option-disabled", text: val, wait: 1)
+        end
+      end
+
       def expect_blank
         expect(field_container).to have_css(".ng-value", count: 0)
       end

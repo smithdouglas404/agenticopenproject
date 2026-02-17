@@ -9,4 +9,4 @@ plugins:
     - '.redocly/plugins/custom-rules.js'
 
 rules:
-  custom-rules/skip-abbreviated-examples: warn
+  custom-rules/skip-abbreviated-examples: error

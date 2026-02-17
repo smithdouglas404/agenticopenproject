@@ -22,8 +22,7 @@ x-op-build: &build
     DEV_UID: $DEV_UID
     DEV_GID: $DEV_GID
 x-op-image: &image
-  image:
-    openproject/dev:latest
+  image: openproject/dev:latest
 x-op-frontend-build: &frontend-build
   context: .
   dockerfile: ./docker/dev/frontend/Dockerfile
@@ -31,6 +30,8 @@ x-op-frontend-build: &frontend-build
     DEV_UID: $DEV_UID
     DEV_GID: $DEV_GID
 x-op-backend: &backend
+  tty: true
+  stdin_open: true
   build:
     <<: *build
     target: develop
@@ -60,8 +61,6 @@ x-op-backend: &backend
 services:
   backend:
     <<: *backend
-    tty: true
-    stdin_open: true
     command: run-app
     depends_on:
       - db
@@ -87,7 +86,7 @@ services:
     networks:
       - network
     environment:
-      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "openproject-assets.${OPENPROJECT_DOCKER_DEV_TLD}"
+      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "openproject-assets.${OPENPROJECT_DOCKER_DEV_TLD:-local}"
     ports:
       - "${FE_PORT:-4200}:4200"
 
@@ -110,7 +109,7 @@ services:
     networks:
       - network
 
-######### Testing stuff below ############
+  ######### Testing stuff below ############
 
   db-test:
     image: postgres:17

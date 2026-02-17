@@ -68,9 +68,9 @@ ru:
     errors:
       models:
         meeting_participant:
-          user_invalid: "is not a valid participant."
+          user_invalid: "не является действительным участником."
         meeting_agenda_item:
-          user_invalid: "is not a valid participant."
+          user_invalid: "не является действительным участником."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "В серии есть одно открытое совещание, которое не включено в новый график. Измените график, чтобы включить все существующие совещания."

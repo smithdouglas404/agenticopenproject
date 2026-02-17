@@ -120,9 +120,9 @@ RSpec.describe "Show/Edit Document View",
 
     current_user { user }
 
-    it "renders a not authorized message" do
+    it "renders a not found message" do
       visit document_path(document)
-      expect(page).to have_text("[Error 403] You are not authorized to access this page.")
+      expect(page).to have_text("[Error 404] The page you were trying to access doesn't exist or has been removed.")
     end
   end
 end

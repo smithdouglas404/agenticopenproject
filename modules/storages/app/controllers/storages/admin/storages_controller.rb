@@ -41,13 +41,10 @@ module Storages
       # See https://guides.rubyonrails.org/layouts_and_rendering.html for reference on layout
       layout "admin"
 
-      # specify which model #find_model_object should look up
-      model_object Storage
-
       # Before executing any action below: Make sure the current user is an admin
       # and set the @<controller_name> variable to the object referenced in the URL.
       before_action :require_admin
-      before_action :find_model_object,
+      before_action :find_storage,
                     only: %i[show_oauth_application destroy edit edit_host edit_storage_audience confirm_destroy update
                              change_health_notifications_enabled replace_oauth_application]
       before_action :ensure_valid_wizard_parameters, only: [:new]
@@ -215,6 +212,10 @@ module Storages
       end
 
       private
+
+      def find_storage
+        @storage = ::Storages::Storage.visible.find(params[:id])
+      end
 
       def prepare_storage_for_access_management_form
         return unless @storage.automatic_management_unspecified?

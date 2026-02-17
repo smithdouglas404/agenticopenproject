@@ -111,7 +111,7 @@ class PlaceholderUsersController < ApplicationController
       respond_to do |format|
         format.html do
           flash[:notice] = I18n.t(:notice_successful_update)
-          redirect_back(fallback_location: edit_placeholder_user_path(@placeholder_user))
+          redirect_back_or_to(edit_placeholder_user_path(@placeholder_user))
         end
       end
     else
@@ -146,7 +146,7 @@ class PlaceholderUsersController < ApplicationController
   private
 
   def find_placeholder_user
-    @placeholder_user = PlaceholderUser.find(params[:id])
+    @placeholder_user = PlaceholderUser.visible.find(params[:id])
   end
 
   protected

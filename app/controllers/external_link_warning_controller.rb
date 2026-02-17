@@ -34,17 +34,29 @@ class ExternalLinkWarningController < ApplicationController
   skip_before_action :check_if_login_required
   no_authorization_required! :show
 
-  before_action :parse_external_url, only: [:show]
-  before_action :verify_capture_enabled, only: [:show]
+  before_action :parse_external_url
+  before_action :verify_capture_enabled
+  before_action :optional_require_login
 
   def show; end
 
   private
 
+  def login_back_url_params
+    params.permit(:url)
+  end
+
   def verify_capture_enabled
     unless capture_enabled?
       redirect_to @external_url, allow_other_host: true, status: :see_other
     end
+  end
+
+  def optional_require_login
+    return unless Setting.capture_external_links?
+    return unless Setting.capture_external_links_require_login?
+
+    require_login
   end
 
   def capture_enabled?
@@ -63,11 +75,11 @@ class ExternalLinkWarningController < ApplicationController
   def parse_url(url)
     return nil if url.blank?
 
-    uri = URI.parse(url)
-    return url if uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+    uri = Addressable::URI.parse(url)
+    return url if %w[http https].include?(uri.scheme&.downcase)
 
     nil
-  rescue URI::InvalidURIError
+  rescue Addressable::URI::InvalidURIError
     nil
   end
 end
