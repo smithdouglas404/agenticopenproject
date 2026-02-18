@@ -34,63 +34,59 @@ module Admin
       include ::Settings::FormHelper
 
       form do |f|
-        f.select_panel(
+        f.autocompleter(
           name: :story_types,
           label: I18n.t(:backlogs_story_type),
-          title: I18n.t(:label_select_types),
           caption: setting_caption(:plugin_openproject_backlogs, :story_types),
-          select_variant: :multiple,
-          fetch_strategy: :local,
-          dynamic_label: true,
-          dynamic_label_prefix: I18n.t(:label_selected_types),
-          data: {
-            admin__backlogs_settings_target: "storyTypes"
+          autocomplete_options: {
+            multiple: true,
+            closeOnSelect: false,
+            clearable: false,
+            decorated: true,
+            data: {
+              admin__backlogs_settings_target: "storyTypes",
+              test_selector: "story_type_autocomplete"
+            }
           }
-        ) do |select_menu|
+        ) do |list|
           available_types.each do |label, value|
             active = value.in?(Story.types)
             in_use = Task.type == value
 
-            select_menu.with_item(
+            list.option(
               label:,
-              content_arguments: { data: { value: } },
-              active:,
-              disabled: in_use,
-              item_id: "type-#{value}",
-              label_arguments: { classes: "__hl_inline_type_#{value}" }
+              value:,
+              selected: active,
+              disabled: in_use
             )
-          end
-
-          select_menu.with_footer(show_divider: true) do
-            render(Primer::Beta::Button.new(scheme: :primary, data: { action: "click:select-panel#hide" })) do
-              I18n.t(:button_apply)
-            end
           end
         end
 
-        f.select_panel(
+        f.autocompleter(
           name: :task_type,
           label: I18n.t(:backlogs_task_type),
-          title: I18n.t(:label_select_type),
           caption: setting_caption(:plugin_openproject_backlogs, :task_type),
-          fetch_strategy: :local,
-          dynamic_label: true,
-          dynamic_label_prefix: I18n.t(:label_selected_type),
-          data: {
-            admin__backlogs_settings_target: "taskType"
+          input_width: :small,
+          autocomplete_options: {
+            multiple: false,
+            closeOnSelect: true,
+            clearable: false,
+            decorated: true,
+            data: {
+              admin__backlogs_settings_target: "taskType",
+              test_selector: "task_type_autocomplete"
+            }
           }
-        ) do |select_menu|
+        ) do |list|
           available_types.each do |label, value|
             active = Task.type == value
             in_use = value.in?(Story.types)
 
-            select_menu.with_item(
+            list.option(
               label:,
-              content_arguments: { data: { value: } },
-              active:,
-              disabled: in_use,
-              item_id: "type-#{value}",
-              label_arguments: { classes: "__hl_inline_type_#{value}" }
+              value:,
+              selected: active,
+              disabled: in_use
             )
           end
         end

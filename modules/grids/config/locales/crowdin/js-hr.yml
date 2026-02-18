@@ -27,8 +27,6 @@ hr:
           not_set: 'Not set'
           finished: 'Završeno'
           discontinued: 'Discontinued'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

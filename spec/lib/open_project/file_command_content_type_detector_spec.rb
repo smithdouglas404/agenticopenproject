@@ -64,19 +64,45 @@ RSpec.describe OpenProject::FileCommandContentTypeDetector do
     tempfile.write("This is a file.")
     tempfile.rewind
 
-    expect(OpenProject::FileCommandContentTypeDetector.new(tempfile.path).detect).to eq("text/plain")
+    expect(described_class.new(tempfile.path).detect).to eq("text/plain")
 
     tempfile.close
   end
 
   it "returns a sensible default when the file command is missing" do
     allow(Open3).to receive(:capture2).and_raise "o noes!"
-    @filename = "/path/to/something"
-    expect(OpenProject::FileCommandContentTypeDetector.new(@filename).detect).to eq("application/binary")
+    filename = "/path/to/something"
+    expect(described_class.new(filename).detect).to eq("application/binary")
   end
 
   it "returns a sensible default on the odd chance that run returns nil" do
     allow(Open3).to receive(:capture2).and_return [nil, 0]
-    expect(OpenProject::FileCommandContentTypeDetector.new("windows").detect).to eq("application/binary")
+    expect(described_class.new("windows").detect).to eq("application/binary")
+  end
+
+  it "returns a sensible default when the file command returns an error code" do
+    allow(Open3).to receive(:capture2).and_return ["text/plain", 1]
+    expect(described_class.new("windows").detect).to eq("application/binary")
+  end
+
+  it "returns a sensible default when the file command returns a type with parentheses" do
+    allow(Open3).to receive(:capture2).and_return ["text/plain (with something)", 0]
+    expect(described_class.new("windows").detect).to eq("application/binary")
+  end
+
+  it "uses end-of-input delimiter to prevent command injection" do
+    allow(Open3).to receive(:capture2)
+
+    described_class.new("--help").detect
+
+    expect(Open3).to have_received(:capture2).with("file", "-b", "--mime", "--", "--help")
+  end
+
+  it "sanitizes the filename to prevent command injection" do
+    allow(Open3).to receive(:capture2)
+
+    described_class.new("'; rm -rf /\"").detect
+
+    expect(Open3).to have_received(:capture2).with("file", "-b", "--mime", "--", "\\'\\;\\ rm\\ -rf\\ /\\\"")
   end
 end

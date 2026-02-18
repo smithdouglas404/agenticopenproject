@@ -1160,6 +1160,9 @@ es:
         dependencies: "Dependencias"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Mostrar hasta"
       attachment:
@@ -1534,6 +1537,7 @@ es:
         not_available: "no está disponible debido a una configuración del sistema."
         not_deletable: "no se puede eliminar."
         not_current_user: "no es el usuario actual."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "no encontrado."
         not_a_date: "no es una fecha válida."
         not_a_datetime: "no es una fecha/hora válida."
@@ -1640,6 +1644,8 @@ es:
               not_unique: "ya está en uso. Por favor, seleccione otro nombre."
         meeting:
           error_conflict: "No se ha podido guardar porque otra persona ha actualizado la reunión mientras tanto. Vuelva a cargar la página."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Debe especificarse al menos un canal para enviar notificaciones."
           attributes:
@@ -2095,6 +2101,7 @@ es:
     role: "Perfil"
     roles: "Roles"
     search: "Buscar"
+    sprint: "Sprint"
     start_date: "Fecha de inicio"
     status: "Estado"
     state: "Estado"
@@ -4363,6 +4370,9 @@ es:
   setting_smtp_password: "Contraseña SMTP"
   setting_smtp_domain: "Dominio SMTP HELO"
   setting_activity_days_default: "Días mostrados en actividad de proyecto"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subtítulo de aplicación"
   setting_app_title: "Título de aplicación"
   setting_attachment_max_size: "Tamaño máximo de adjunto"
@@ -4472,7 +4482,6 @@ es:
   setting_repository_checkout_text: "Texto del checkout de la instrucción"
   setting_repository_log_display_limit: "Numero máximo de revisiones mostradas en el archivo de registro"
   setting_repository_truncate_at: "El número máximo de archivos mostrados en el navegador del repositorio"
-  setting_rest_api_enabled: "Activar servicio web REST"
   setting_self_registration: "Auto-registro"
   setting_self_registration_caption: >
     Elija el mecanismo de autorregistro para los usuarios. Tenga cuidado con el ajuste que elija, ya que algunas opciones permiten a los usuarios activar sus propias cuentas a esta instancia.
@@ -4908,6 +4917,7 @@ es:
     text_change_disabled_for_ldap_login: "El nombre y el correo electrónico se establecen mediante LDAP y, por tanto, no pueden modificarse."
     unlock: "Desbloquear"
     unlock_and_reset_failed_logins: "Desbloquear y resetear los inicios de sesión fallidos"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "cerrado"
   version_status_locked: "bloqueado"
   version_status_open: "abierto"

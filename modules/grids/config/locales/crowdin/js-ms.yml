@@ -27,8 +27,6 @@ ms:
           not_set: 'Belum ditetapkan'
           finished: 'Telah selesai'
           discontinued: 'Dihentikan'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

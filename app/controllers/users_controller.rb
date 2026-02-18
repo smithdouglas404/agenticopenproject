@@ -226,9 +226,13 @@ class UsersController < ApplicationController
     # true if the user deletes him/herself
     self_delete = (@user == User.current)
 
-    Users::DeleteService.new(model: @user, user: User.current).call
+    result = Users::DeleteService.new(model: @user, user: User.current).call
 
-    flash[:notice] = I18n.t("account.deletion_pending")
+    if result.success?
+      flash[:notice] = I18n.t("account.deletion_pending")
+    else
+      flash[:error] = result.errors.full_messages.join(", ")
+    end
 
     respond_to do |format|
       format.html do
@@ -283,7 +287,12 @@ class UsersController < ApplicationController
   end
 
   def check_if_deletion_allowed
-    render_404 unless Users::DeleteContract.deletion_allowed? @user, User.current
+    return if Users::DeleteContract.deletion_allowed?(@user, User.current)
+
+    render_error_flash_message_via_turbo_stream(message: I18n.t("user.error_cannot_delete_user"))
+    respond_with_turbo_streams(status: :not_found) do |format|
+      format.html { render_404 }
+    end
   end
 
   def my_or_admin_layout

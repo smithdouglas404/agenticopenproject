@@ -1159,6 +1159,9 @@ el:
         dependencies: "Εξαρτήσεις"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Εμφάνιση μέχρι"
       attachment:
@@ -1533,6 +1536,7 @@ el:
         not_available: "is not available due to a system configuration."
         not_deletable: "δεν μπορεί να διαγραφεί."
         not_current_user: "δεν είναι ο τρέχων χρήστης."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "δεν είναι έγκυρη ημερομηνία."
         not_a_datetime: "δεν είναι έγκυρη ημερομηνία και ώρα."
@@ -1639,6 +1643,8 @@ el:
               not_unique: "is already in use. Please select another name."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "At least one channel for sending notifications needs to be specified."
           attributes:
@@ -2094,6 +2100,7 @@ el:
     role: "Ρόλος"
     roles: "Ρόλοι"
     search: "Αναζήτηση"
+    sprint: "Sprint"
     start_date: "Ημερομηνία έναρξης"
     status: "Κατάσταση"
     state: "State"
@@ -4362,6 +4369,9 @@ el:
   setting_smtp_password: "Κωδικός SMTP"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "Ημέρες που εμφανίζονται στη δραστηριότητα έργου"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Υπότιτλος εφαρμογής"
   setting_app_title: "Τίτλος εφαρμογής"
   setting_attachment_max_size: "Μέγιστο μέγεθος συνημμένων"
@@ -4471,7 +4481,6 @@ el:
   setting_repository_checkout_text: "Κείμενο οδηγιών ολοκλήρωσης της παραγγελίας"
   setting_repository_log_display_limit: "Μέγιστος αριθμός αναθεωρήσεων που εμφανίζονται στη καταγραφή αρχείων"
   setting_repository_truncate_at: "Μέγιστος αριθμός αρχείων που εμφανίζονται στον περιηγητή αποθετηρίων"
-  setting_rest_api_enabled: "Ενεργοποίηση του REST web service"
   setting_self_registration: "Αυτο-εγγραφή"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4907,6 +4916,7 @@ el:
     text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
     unlock: "Ξεκλείδωμα"
     unlock_and_reset_failed_logins: "Ξεκλειδώστε και επαναφέρετε τις αποτυχημένες συνδέσεις"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "κλειστό"
   version_status_locked: "κλειδωμένο"
   version_status_open: "ανοιχτό"

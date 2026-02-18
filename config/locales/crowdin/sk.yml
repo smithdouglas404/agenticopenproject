@@ -1181,6 +1181,9 @@ sk:
         dependencies: "Závislosti"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Zobrazovať, až kým"
       attachment:
@@ -1555,6 +1558,7 @@ sk:
         not_available: "is not available due to a system configuration."
         not_deletable: "cannot be deleted."
         not_current_user: "is not the current user."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "nie je platný dátum."
         not_a_datetime: "nie je platný dátum a čas."
@@ -1663,6 +1667,8 @@ sk:
               not_unique: "is already in use. Please select another name."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "At least one channel for sending notifications needs to be specified."
           attributes:
@@ -2154,6 +2160,7 @@ sk:
     role: "Rola"
     roles: "Roly"
     search: "Vyhľadávanie"
+    sprint: "Sprint"
     start_date: "Dátum začiatku"
     status: "Stav"
     state: "State"
@@ -4468,6 +4475,9 @@ sk:
   setting_smtp_password: "SMTP heslo"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "Počet zobrazovaných dní v rámci projektovej aktivity"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Podtitulok aplikácie"
   setting_app_title: "Názov aplikácie"
   setting_attachment_max_size: "Maximálna veľkosť prílohy"
@@ -4577,7 +4587,6 @@ sk:
   setting_repository_checkout_text: "Text overovacej inštrukcie"
   setting_repository_log_display_limit: "Maximálny počet revízií zobrazených v log súbore"
   setting_repository_truncate_at: "Maximálny počet súborov, ktoré sú zobrazené v prehliadači"
-  setting_rest_api_enabled: "Zapnúť webovú službu REST"
   setting_self_registration: "Povoliť automatickú registráciu"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -5015,6 +5024,7 @@ sk:
     text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
     unlock: "Odomknúť"
     unlock_and_reset_failed_logins: "Odomknúť a resetovať chybné prihlásenia"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "uzatvorené"
   version_status_locked: "zamknuté"
   version_status_open: "otvorené"

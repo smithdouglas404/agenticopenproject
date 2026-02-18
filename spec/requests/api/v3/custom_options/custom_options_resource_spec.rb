@@ -116,7 +116,7 @@ RSpec.describe "API v3 Custom Options resource", :aggregate_failures do
     end
 
     describe "ProjectCustomField" do
-      shared_let(:custom_field) { create(:list_project_custom_field) }
+      shared_let(:custom_field) { create(:list_project_custom_field, projects: [project]) }
       shared_let(:custom_option) { create(:custom_option, custom_field:) }
 
       context "when being allowed" do
@@ -137,6 +137,20 @@ RSpec.describe "API v3 Custom Options resource", :aggregate_failures do
           expect(response.body)
             .to be_json_eql(custom_option.value.to_json)
                   .at_path("value")
+        end
+      end
+
+      context "when custom field is not activated in a visible project" do
+        shared_let(:other_project) { create(:project) }
+        shared_let(:other_custom_field) { create(:list_project_custom_field, projects: [other_project]) }
+        shared_let(:other_custom_option) { create(:custom_option, custom_field: other_custom_field) }
+
+        let(:permissions) { [:view_project] }
+        let(:path) { api_v3_paths.custom_option other_custom_option.id }
+
+        it "is 404" do
+          expect(subject.status)
+            .to be(404)
         end
       end
 

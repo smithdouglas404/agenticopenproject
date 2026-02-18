@@ -27,8 +27,6 @@ nl:
           not_set: 'Niet ingesteld'
           finished: 'Afgewerkt'
           discontinued: 'Stopgezet'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

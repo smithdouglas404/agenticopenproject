@@ -27,8 +27,6 @@ ja:
           not_set: '未設定'
           finished: '完了'
           discontinued: '中止'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

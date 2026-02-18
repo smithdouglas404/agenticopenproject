@@ -27,8 +27,6 @@ tr:
           not_set: 'Ayarlanmadı'
           finished: 'Tamamlandı'
           discontinued: 'Durduruldu'
-        project_status_beta:
-          title: 'Durum (BETA)'
         subprojects:
           title: 'Alt öğeler'
         project_favorites:

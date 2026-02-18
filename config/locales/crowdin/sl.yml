@@ -1180,6 +1180,9 @@ sl:
         dependencies: "Odvisnosti"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Prikaži do"
       attachment:
@@ -1554,6 +1557,7 @@ sl:
         not_available: "is not available due to a system configuration."
         not_deletable: "se ne da izbrisati."
         not_current_user: "ni trenutni uporabnik."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "ni veljaven datum"
         not_a_datetime: "ni veljaven datum."
@@ -1662,6 +1666,8 @@ sl:
               not_unique: "is already in use. Please select another name."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "At least one channel for sending notifications needs to be specified."
           attributes:
@@ -2153,6 +2159,7 @@ sl:
     role: "Vloga"
     roles: "Vloge"
     search: "Išči"
+    sprint: "Sprint"
     start_date: "Datum začetka"
     status: "Stanje"
     state: "State"
@@ -4467,6 +4474,9 @@ sl:
   setting_smtp_password: "SMTP geslo"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "Dnevi prikazani na aktivnosti projekta"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Podnaslov aplikacije"
   setting_app_title: "Naslov aplikacije"
   setting_attachment_max_size: "Največja velikost priponke"
@@ -4576,7 +4586,6 @@ sl:
   setting_repository_checkout_text: "Navodila za prevzem"
   setting_repository_log_display_limit: "Največje število prikazanih revizij v log datoteki"
   setting_repository_truncate_at: "Največje število datotek prikazanih v brskalniku za odlagališče"
-  setting_rest_api_enabled: "Omogoči REST spletno storitev"
   setting_self_registration: "Samostojna registracija"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -5014,6 +5023,7 @@ sl:
     text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
     unlock: "Odkleni"
     unlock_and_reset_failed_logins: "Odklepanje in ponastavitev neuspelih prijav"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "zaprto"
   version_status_locked: "zaklenjeno"
   version_status_open: "odpri"

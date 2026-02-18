@@ -1172,6 +1172,9 @@ ro:
         dependencies: "Dependenţe"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Afişare până la"
       attachment:
@@ -1546,6 +1549,7 @@ ro:
         not_available: "nu este disponibil din cauza unei configurații a sistemului."
         not_deletable: "%s nu poate fi șters."
         not_current_user: "nu este utilizatorul curent."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "nu a fost găsit."
         not_a_date: "Acest câmp trebuie să conțină o dată validă."
         not_a_datetime: "nu este o dată-ora validă."
@@ -1653,6 +1657,8 @@ ro:
               not_unique: "is already in use. Please select another name."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Trebuie specificat cel puţin un canal pentru trimiterea notificărilor."
           attributes:
@@ -2126,6 +2132,7 @@ ro:
     role: "Rol"
     roles: "Roluri"
     search: "Caută"
+    sprint: "Sprint"
     start_date: "Dată început"
     status: "Stare"
     state: "State"
@@ -2478,7 +2485,7 @@ ro:
   description_choose_project: "Proiecte"
   description_compare_from: "Comparați de la"
   description_compare_to: "compară cu"
-  description_current_position: "Sunteți aici: "
+  description_current_position: "Ești aici: "
   description_date_from: "Introdu dată început"
   description_date_to: "Introduceţi data de sfârşit"
   description_enter_number: "Introduceţi numărul"
@@ -4417,6 +4424,9 @@ ro:
   setting_smtp_password: "Parola SMTP"
   setting_smtp_domain: "Domeniul SMTP HELO"
   setting_activity_days_default: "Zile afișate în lista de activități a proiectului"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subtitlu aplicație"
   setting_app_title: "Titlu aplicație"
   setting_attachment_max_size: "Dimensiune maximă atașament"
@@ -4526,7 +4536,6 @@ ro:
   setting_repository_checkout_text: "Text instrucțiuni de descărcare"
   setting_repository_log_display_limit: "Numărul maxim de revizii afisate în istoricul de fișiere"
   setting_repository_truncate_at: "Număr maxim de fișiere este afișat în exploratorul de repozitoriu"
-  setting_rest_api_enabled: "Activare serviciu web REST"
   setting_self_registration: "Înregistrare individuală"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4963,6 +4972,7 @@ ro:
     text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
     unlock: "Deblochează"
     unlock_and_reset_failed_logins: "Deblocare şi resetare autentificări eşuate"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "închis"
   version_status_locked: "blocat"
   version_status_open: "deschis"

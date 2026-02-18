@@ -73,7 +73,12 @@
         class="attributes-group -project-context hide-when-print"
         >
         <div>
-          <span [innerHTML]="switchToProjectText"></span>
+          <a
+            class="project-context--switch-link"
+            target="_self"
+            [href]="switchToProjectPath"
+            [textContent]="text.linkProject(workPackage.project.name)"
+         ></a>
         </div>
       </div>
     }

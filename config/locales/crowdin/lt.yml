@@ -1178,6 +1178,9 @@ lt:
         dependencies: "Priklausomybės"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Rodyti iki"
       attachment:
@@ -1552,6 +1555,7 @@ lt:
         not_available: "yra nepasiekiamas dėl sistemos konfigūracijos"
         not_deletable: "negali būti pašalintas."
         not_current_user: "nėra dabartinis naudotojas"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "nėra tinkama data."
         not_a_datetime: "nėra tinkama data ir laikas."
@@ -1660,6 +1664,8 @@ lt:
               not_unique: "jau naudojamas. Prašome pasirinkti kitą pavadinimą."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Turi būti nurodytas bent vienas kanalas pranešimų siuntimui."
           attributes:
@@ -2151,6 +2157,7 @@ lt:
     role: "Vaidmuo"
     roles: "Vaidmenys"
     search: "Paieška"
+    sprint: "Sprint"
     start_date: "Pradžios data"
     status: "Būsena"
     state: "State"
@@ -4463,6 +4470,9 @@ lt:
   setting_smtp_password: "SMTP slaptažodis"
   setting_smtp_domain: "SMTP HELO domenas"
   setting_activity_days_default: "Projekto veiklos atvaizduojamų dienų skaičius"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Programos paantraštė"
   setting_app_title: "Programos pavadinimas"
   setting_attachment_max_size: "Didžiausias prisegamo failo dydis"
@@ -4572,7 +4582,6 @@ lt:
   setting_repository_checkout_text: "Kopijos nuskaitymo instrukcijų tekstas"
   setting_repository_log_display_limit: "Maksimalus revizijų skaičius rodomas failo žurnale"
   setting_repository_truncate_at: "Maksimalus failų skaičius, kuris rodomas repozitorijos naršyklėje"
-  setting_rest_api_enabled: "Įjungti REST tinklo tarnybą"
   setting_self_registration: "Registracija savarankiškai"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -5010,6 +5019,7 @@ lt:
     text_change_disabled_for_ldap_login: "Vardą ir e-paštą nustato LDAP ir todėl to negalima keisti."
     unlock: "Atrakinti"
     unlock_and_reset_failed_logins: "Atrakintiir iš naujo nustatyti nepavykusius prisijungimus"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "uždarytas"
   version_status_locked: "užrakinti"
   version_status_open: "atidarytas"

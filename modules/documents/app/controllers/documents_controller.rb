@@ -35,11 +35,9 @@ class DocumentsController < ApplicationController
   include OpTurbo::ComponentStream
 
   default_search_scope :documents
-  model_object Document
 
   before_action :find_project_by_project_id, only: %i[index search new create]
-  before_action :find_model_object, except: %i[index search new create]
-  before_action :find_project_from_association, except: %i[index search new create]
+  before_action :find_document, except: %i[index search new create]
   before_action :authorize
 
   def index
@@ -68,7 +66,7 @@ class DocumentsController < ApplicationController
 
   def render_avatars
     user_ids = params[:user_ids]
-    @users = User.where(id: user_ids)
+    @users = User.visible.where(id: user_ids)
     update_via_turbo_stream(component: Documents::ShowEditView::PageHeader::LiveUsersComponent.new(users: @users))
 
     respond_with_turbo_streams
@@ -187,6 +185,11 @@ class DocumentsController < ApplicationController
   end
 
   private
+
+  def find_document
+    @document = Document.visible.find(params[:id])
+    @project = @document.project
+  end
 
   def document_params
     params.fetch(:document, {}).permit("type_id", "title", "description", "content_binary", "kind")

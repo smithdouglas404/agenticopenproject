@@ -80,7 +80,6 @@ export async function fetchConnectionTemplate(
       method: 'GET',
       headers: {
         Accept: 'text/vnd.turbo-stream.html',
-        'X-Authentication-Scheme': 'Session',
       },
     });
 

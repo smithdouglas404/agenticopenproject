@@ -1154,6 +1154,9 @@ ko:
         dependencies: "종속성"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "표시 기한"
       attachment:
@@ -1528,6 +1531,7 @@ ko:
         not_available: "- 시스템 구성으로 인해 사용 가능하지 않습니다."
         not_deletable: "- 삭제할 수 없습니다."
         not_current_user: "은(는) 현재 유효한 사용자가 아닙니다."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "- 찾을 수 없습니다."
         not_a_date: "은(는) 유효한 날짜가 아닙니다."
         not_a_datetime: "은(는) 유효한 날짜가 아닙니다."
@@ -1633,6 +1637,8 @@ ko:
               not_unique: "- 사용 중입니다. 다른 이름을 선택하세요."
         meeting:
           error_conflict: "그 사이에 다른 사람이 미팅을 업데이트했기 때문에 저장할 수 없습니다. 페이지를 다시 로드하세요."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "알림을 보낼 채널을 하나 이상 지정해야 합니다."
           attributes:
@@ -2070,6 +2076,7 @@ ko:
     role: "역할"
     roles: "역할"
     search: "검색"
+    sprint: "Sprint"
     start_date: "시작 날짜"
     status: "상태"
     state: "상태"
@@ -4313,6 +4320,9 @@ ko:
   setting_smtp_password: "SMTP 비밀번호"
   setting_smtp_domain: "SMTP HELO 도메인"
   setting_activity_days_default: "프로젝트 작업에 표시되는 기간(일)"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "응용 프로그램 부제목"
   setting_app_title: "응용 프로그램 제목"
   setting_attachment_max_size: "첨부 파일 최대 크기"
@@ -4422,7 +4432,6 @@ ko:
   setting_repository_checkout_text: "체크아웃 지침 텍스트"
   setting_repository_log_display_limit: "파일 로그 표시되는 최대 수정 수"
   setting_repository_truncate_at: "리포지토리 브라우저에 표시되는 최대 파일 수"
-  setting_rest_api_enabled: "REST 웹 서비스 사용"
   setting_self_registration: "자체 등록"
   setting_self_registration_caption: >
     사용자에 대한 자체 등록 메커니즘을 선택하세요. 일부 옵션은 사용자가 이 인스턴스에 대해 자신의 계정을 활성화하도록 허용하므로, 선택하는 설정에 주의해 주세요.
@@ -4857,6 +4866,7 @@ ko:
     text_change_disabled_for_ldap_login: "이름과 이메일은 LDAP에 의해 설정되므로 변경할 수 없습니다."
     unlock: "잠금 해제"
     unlock_and_reset_failed_logins: "실패한 로그인 잠금 해제 및 재설정"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "닫음"
   version_status_locked: "잠김"
   version_status_open: "열기"

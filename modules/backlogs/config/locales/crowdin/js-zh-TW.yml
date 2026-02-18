@@ -25,5 +25,5 @@ zh-TW:
       properties:
         storyPoints: "故事點數"
     burndown:
-      day: "Day"
-      points: "Points"
+      day: "日"
+      points: "燃盡點"

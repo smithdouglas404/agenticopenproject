@@ -1150,6 +1150,9 @@ id:
         dependencies: "Dependensi"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Display until"
       attachment:
@@ -1524,6 +1527,7 @@ id:
         not_available: "tidak tersedia karena konfigurasi sistem."
         not_deletable: "tidak dapat dihapus."
         not_current_user: "bukan pengguna saat ini."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "bukan tanggal yang valid."
         not_a_datetime: "bukan tanggal waktu yang valid."
@@ -1629,6 +1633,8 @@ id:
               not_unique: "sudah digunakan. Silakan pilih nama lain."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Setidaknya satu saluran untuk mengirim notifikasi harus ditentukan."
           attributes:
@@ -2066,6 +2072,7 @@ id:
     role: "Role"
     roles: "Roles"
     search: "Cari"
+    sprint: "Sprint"
     start_date: "Tanggal start"
     status: "Status"
     state: "State"
@@ -4309,6 +4316,9 @@ id:
   setting_smtp_password: "SMTP password"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "Hari ditampilkan pada Project aktiviti"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subjudul aplikasi"
   setting_app_title: "Judul aplikasi"
   setting_attachment_max_size: "Ukuran lampiran maks."
@@ -4418,7 +4428,6 @@ id:
   setting_repository_checkout_text: "Checkout instruction text"
   setting_repository_log_display_limit: "Jumlah maks. revisi yang ditampilkan di file log"
   setting_repository_truncate_at: "Jumlah maksimum file yang ditampilkan dalam browser tempat penyimpanan"
-  setting_rest_api_enabled: "Aktifkan REST web service"
   setting_self_registration: "Registrasi mandiri"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4853,6 +4862,7 @@ id:
     text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
     unlock: "Unlock"
     unlock_and_reset_failed_logins: "Unlock dan reset gagal login"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "berakhir"
   version_status_locked: "terkunci"
   version_status_open: "buka"

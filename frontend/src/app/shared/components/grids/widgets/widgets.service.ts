@@ -24,9 +24,6 @@ import { WidgetCustomTextComponent } from 'core-app/shared/components/grids/widg
 import {
   WidgetProjectStatusComponent,
 } from 'core-app/shared/components/grids/widgets/project-status/project-status.component';
-import {
-  WidgetProjectStatusBetaComponent,
-} from 'core-app/shared/components/grids/widgets/project-status-beta/project-status-beta.component';
 import { WidgetSubprojectsComponent } from 'core-app/shared/components/grids/widgets/subprojects/subprojects.component';
 import {
   WidgetProjectFavoritesComponent,
@@ -229,14 +226,6 @@ export class GridWidgetsService {
         properties: {
           name: this.I18n.t('js.grid.widgets.project_status.title'),
         },
-      },
-      {
-         identifier: 'project_status_beta',
-         component: WidgetProjectStatusBetaComponent,
-         title: this.I18n.t('js.grid.widgets.project_status_beta.title'),
-         properties: {
-           name: this.I18n.t('js.grid.widgets.project_status_beta.title'),
-         },
       },
       {
         identifier: 'subprojects',

@@ -367,7 +367,7 @@ fr:
             Les mises à jour du calendrier par e-mail sont désactivées pour la série de réunions. Les participants ne recevront pas d'e-mail les informant des modifications que vous avez apportées à ce modèle ou aux événements individuels.
     presentation_mode:
       title: "Mode de Présentation"
-      button_present: "Présent"
+      button_present: "Présenter"
       exit: "Quitter la présentation"
       current_item: "Élément actuel"
       total_items: "%{current} sur %{total}"

@@ -1160,6 +1160,9 @@ ca:
         dependencies: "Dependències"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Mostrar fins"
       attachment:
@@ -1534,6 +1537,7 @@ ca:
         not_available: "no és disponible degut a la configuració del sistema."
         not_deletable: "no es pot eliminar."
         not_current_user: "no és l'usuari actual."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "no és una data vàlida."
         not_a_datetime: "no és una data-i-hora vàlida."
@@ -1640,6 +1644,8 @@ ca:
               not_unique: "ja està en ús. Si us plau, selecciona un altre nom."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "És necessari d'especificar almenys un canal per enviar notificacions."
           attributes:
@@ -2095,6 +2101,7 @@ ca:
     role: "Rol"
     roles: "Rols"
     search: "Cercar"
+    sprint: "Sprint"
     start_date: "Data d'inici"
     status: "Estat"
     state: "State"
@@ -4358,6 +4365,9 @@ ca:
   setting_smtp_password: "Contrasenya SMTP"
   setting_smtp_domain: "Domini SMTP HELLO"
   setting_activity_days_default: "Dies a mostrar a l'activitat del projecte"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subtítol de l'aplicació"
   setting_app_title: "Títol de l'aplicació"
   setting_attachment_max_size: "Mida màxima dels fitxers adjunts"
@@ -4467,7 +4477,6 @@ ca:
   setting_repository_checkout_text: "Text d'instrucció de checkout"
   setting_repository_log_display_limit: "Número màxim de revisions que es mostren al registre de fitxers"
   setting_repository_truncate_at: "Nombre màxim de filtres mostrats en el repositori del navegador"
-  setting_rest_api_enabled: "Habilita el servei web REST"
   setting_self_registration: "Registre automàtic"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4903,6 +4912,7 @@ ca:
     text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
     unlock: "Desbloquejar"
     unlock_and_reset_failed_logins: "Desbloquejar i reiniciar inicis de sessió fallits"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "tancat"
   version_status_locked: "bloquejat"
   version_status_open: "obrir"

@@ -26,7 +26,7 @@ ru:
   activerecord:
     attributes:
       sprint:
-        duration: "Sprint duration"
+        duration: "Продолжительность спринта"
       work_package:
         position: "Позиция"
         story_points: "Стори поинты"
@@ -46,7 +46,7 @@ ru:
     task_type: "Тип задачи"
   backlogs:
     any: "любой"
-    column_width: "Column width"
+    column_width: "Ширина столбца"
     definition_of_done: "Определение термина \"Завершено\""
     impediment: "Препятствие"
     label_versions_default_fold_state: "Показать свернутые версии"
@@ -57,7 +57,7 @@ ru:
       one: "point"
       few: "points"
       many: "points"
-      other: "points"
+      other: "точки"
     positions_could_not_be_rebuilt: "Не удалось восстановить позиции."
     positions_rebuilt_successfully: "Позиции успешно восстановлены."
     rebuild: "Восстановить"
@@ -68,8 +68,8 @@ ru:
     story_points:
       one: "%{count} story point"
       few: "%{count} story points"
-      many: "%{count} story points"
-      other: "%{count} story points"
+      many: "%{count} сюжетные точки"
+      other: "%{count} сюжетные точки"
     task: "Задача"
     task_color: "Цвет задачи"
     unassigned: "Нераспределенные"
@@ -77,28 +77,28 @@ ru:
       header_backlogs: "Модуль бэклогов"
       button_update_backlogs: "Обновить модуль бэклогов"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} пустой"
+      blankslate_description: "Пока ничего не запланировано. Перетащите элементы сюда, чтобы добавить их."
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "Свернуть/Развернуть %{name}"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "Нет историй в бэклоге"
+        one: "%{count} история в бэклоге"
+        other: "%{count} историй в бэклоге"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "Действия в рамках бэклога"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        edit_sprint: "Редактировать спринт"
+        new_story: "Новая история"
+        stories_tasks: "Истории/Задачи"
+        task_board: "Панель задач"
+        burndown_chart: "Сводная таблица"
         wiki: "Wiki"
-        properties: "Properties"
+        properties: "Свойства"
     story_component:
-      label_drag_story: "Move %{name}"
+      label_drag_story: "Переместить %{name}"
     story_menu_component:
-      label_actions: "Story actions"
+      label_actions: "Действия истории"
   backlogs_points_burn_direction: "Точки выгорания вверх/вниз"
   backlogs_product_backlog: "Требования к продукту, с приоритетами"
   backlogs_story: "История"
@@ -106,14 +106,14 @@ ru:
   backlogs_task: "Задача"
   backlogs_task_type: "Тип задачи"
   backlogs_wiki_template: "Шаблон для wiki-страницы по спринту"
-  backlogs_empty_title: "No versions are defined yet"
-  backlogs_empty_action_text: "To start using backlogs, please create a version first"
-  backlogs_not_configured_title: "Backlogs not configured"
-  backlogs_not_configured_description: "Story and task types need to be set before using this module."
-  backlogs_not_configured_action_text: "Configure Backlogs"
+  backlogs_empty_title: "Версии пока не определены"
+  backlogs_empty_action_text: "Чтобы начать использовать бэклоги, сначала создайте версию"
+  backlogs_not_configured_title: "Бэклоги не настроены"
+  backlogs_not_configured_description: "Перед использованием этого модуля необходимо задать типы историй и задач."
+  backlogs_not_configured_action_text: "Настройка бэклогов"
   burndown:
-    story_points: "Story points"
-    story_points_ideal: "Story points (ideal)"
+    story_points: "Точки истории"
+    story_points_ideal: "Точки истории (идеально)"
   errors:
     attributes:
       task_type:
@@ -124,10 +124,6 @@ ru:
   label_column_in_backlog: "Колонка в бэклоге"
   label_points_burn_down: "Вниз"
   label_points_burn_up: "Вверх"
-  label_select_type: "Выберите тип"
-  label_select_types: "Выберите типы"
-  label_selected_type: "Выбранный тип"
-  label_selected_types: "Выбранные типы"
   label_sprint_impediments: "Препятствия спринта"
   label_task_board: "Панель задач"
   permission_view_master_backlog: "Просмотреть главную невыполненную работу"
@@ -137,8 +133,8 @@ ru:
   project_module_backlogs: "Бэклоги"
   rb_burndown_charts:
     show:
-      blankslate_title: "No burndown data available"
-      blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
+      blankslate_title: "Нет сводных данных"
+      blankslate_description: "Установите дату начала и окончания спринта, чтобы сгенерировать сводную таблицу."
   remaining_hours: "оставшиеся часы"
   version_settings_display_label: "Колонка в бэклоге"
   version_settings_display_option_left: "влево"

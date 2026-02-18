@@ -1153,6 +1153,9 @@ ja:
         dependencies: "依存関係"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "までを表示"
       attachment:
@@ -1527,6 +1530,7 @@ ja:
         not_available: "はシステム構成のため使用できません。"
         not_deletable: "削除できません。"
         not_current_user: "現在のユーザーではありません。"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "見つかりません。"
         not_a_date: "は有効な日付ではありません。"
         not_a_datetime: "は有効な日時ではありません。"
@@ -1632,6 +1636,8 @@ ja:
               not_unique: "は既に使用されています。別の名前を選択してください。"
         meeting:
           error_conflict: "会議が他の誰かによって更新されたため、保存できませんでした。ページを再読み込みしてください。"
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "通知を送信するために少なくとも一つのチャンネルを指定する必要があります。"
           attributes:
@@ -2069,6 +2075,7 @@ ja:
     role: "ロール"
     roles: "ロール"
     search: "検索"
+    sprint: "Sprint"
     start_date: "開始日"
     status: "ステータス"
     state: "状態"
@@ -4315,6 +4322,9 @@ ja:
   setting_smtp_password: "SMTPパスワード"
   setting_smtp_domain: "SMTP HELO ドメイン"
   setting_activity_days_default: "プロジェクトの活動ページに表示される日数"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "アプリケーションのサブタイトル"
   setting_app_title: "アプリケーションのタイトル"
   setting_attachment_max_size: "添付ファイルの最大サイズ"
@@ -4424,7 +4434,6 @@ ja:
   setting_repository_checkout_text: "チェックアウトの手順テキスト"
   setting_repository_log_display_limit: "ログファイルに出力されるリビジョンの最大数"
   setting_repository_truncate_at: "リポジトリブラウザーで表示するファイルの最大数"
-  setting_rest_api_enabled: "RESTによるWebサービスを有効にする"
   setting_self_registration: "ユーザーよるアカウント登録"
   setting_self_registration_caption: >
     ユーザーの自己登録メカニズムを選択する。オプションによっては、ユーザが自分のアカウントをこのサイトにアクティベートできるものもあるので、選択する設定には注意してください。
@@ -4859,6 +4868,7 @@ ja:
     text_change_disabled_for_ldap_login: "名前と電子メールはLDAPによって設定されるため、変更することはできない。"
     unlock: "ロックを解除"
     unlock_and_reset_failed_logins: "ロックを解除して、失敗したログイン数をリセットする"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "完了"
   version_status_locked: "ロック済み"
   version_status_open: "未完了"

@@ -133,7 +133,7 @@ class HourlyRatesController < ApplicationController
 
   def delete_rates(user, project)
     if project.present?
-      user.rates.delete_all
+      user.rates.where(project:).delete_all
     else
       user.default_rates.delete_all
     end

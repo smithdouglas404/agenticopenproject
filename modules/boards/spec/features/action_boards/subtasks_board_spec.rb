@@ -53,7 +53,7 @@ RSpec.describe "Subtasks action board", :js, :selenium, with_ee: %i[board_view] 
 
   context "without the manage_subtasks permission" do
     let(:permissions) do
-      %i[show_board_views manage_board_views add_work_packages
+      %i[show_board_views manage_board_views add_work_packages save_queries
          edit_work_packages view_work_packages manage_public_queries]
     end
 
@@ -77,7 +77,7 @@ RSpec.describe "Subtasks action board", :js, :selenium, with_ee: %i[board_view] 
     let!(:other_wp) { create(:work_package, project:, subject: "Other WP", status: open_status) }
 
     let(:permissions) do
-      %i[show_board_views manage_board_views add_work_packages
+      %i[show_board_views manage_board_views add_work_packages save_queries
          edit_work_packages view_work_packages manage_public_queries manage_subtasks]
     end
 

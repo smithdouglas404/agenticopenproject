@@ -448,7 +448,7 @@ class User < Principal
   end
 
   def self.find_by_api_key(key)
-    return nil unless Setting.rest_api_enabled?
+    return nil unless Setting.api_tokens_enabled?
 
     token = Token::API.find_by_plaintext_value(key)
 

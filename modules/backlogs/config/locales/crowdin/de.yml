@@ -26,7 +26,7 @@ de:
   activerecord:
     attributes:
       sprint:
-        duration: "Sprint duration"
+        duration: "Sprintdauer"
       work_package:
         position: "Position"
         story_points: "Story-Punkte"
@@ -46,7 +46,7 @@ de:
     task_type: "Aufgaben-Typ"
   backlogs:
     any: "beliebig"
-    column_width: "Column width"
+    column_width: "Spaltenbreite"
     definition_of_done: "Definition of Done"
     impediment: "Hindernis"
     label_versions_default_fold_state: "Versionen eingeklappt anzeigen"
@@ -54,7 +54,7 @@ de:
     work_package_is_closed: "Arbeitspaket ist abgeschlossen, wenn"
     label_is_done_status: "Status %{status_name} bedeutet abgeschlossen"
     points_label:
-      one: "point"
+      one: "Punkt"
       other: "points"
     positions_could_not_be_rebuilt: "Positionen konnten nicht neu berechnet werden."
     positions_rebuilt_successfully: "Positionen wurden neu berechnet."
@@ -73,10 +73,10 @@ de:
       header_backlogs: "Backlog-Modul"
       button_update_backlogs: "Backlog-Modul aktualisieren"
     backlog_component:
-      blankslate_title: "%{name} is empty"
+      blankslate_title: "%{name} ist leer"
       blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "%{name} ein-/ausklappen"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
@@ -84,15 +84,15 @@ de:
     backlog_menu_component:
       label_actions: "Backlog actions"
       action_menu:
-        edit_sprint: "Edit sprint"
+        edit_sprint: "Sprint bearbeiten"
         new_story: "New story"
         stories_tasks: "Stories/Tasks"
         task_board: "Task board"
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
-        properties: "Properties"
+        properties: "Eigenschaften"
     story_component:
-      label_drag_story: "Move %{name}"
+      label_drag_story: "%{name} verschieben"
     story_menu_component:
       label_actions: "Story actions"
   backlogs_points_burn_direction: "Burnup/-down Punkte"
@@ -102,7 +102,7 @@ de:
   backlogs_task: "Aufgabe"
   backlogs_task_type: "Aufgaben-Typ"
   backlogs_wiki_template: "Vorlage für das Sprint-Wiki"
-  backlogs_empty_title: "No versions are defined yet"
+  backlogs_empty_title: "Es sind noch keine Versionen definiert"
   backlogs_empty_action_text: "To start using backlogs, please create a version first"
   backlogs_not_configured_title: "Backlogs not configured"
   backlogs_not_configured_description: "Story and task types need to be set before using this module."
@@ -120,10 +120,6 @@ de:
   label_column_in_backlog: "Spalte im Backlog"
   label_points_burn_down: "Runter"
   label_points_burn_up: "Hoch"
-  label_select_type: "Typ auswählen"
-  label_select_types: "Typen auswählen"
-  label_selected_type: "Ausgewählter Typ"
-  label_selected_types: "Ausgewähle Typen"
   label_sprint_impediments: "Sprint Hindernisse"
   label_task_board: "Taskboard"
   permission_view_master_backlog: "Master Backlog ansehen"

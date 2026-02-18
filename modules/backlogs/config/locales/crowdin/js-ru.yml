@@ -25,5 +25,5 @@ ru:
       properties:
         storyPoints: "Исторические точки"
     burndown:
-      day: "Day"
-      points: "Points"
+      day: "День"
+      points: "Точки"

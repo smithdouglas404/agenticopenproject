@@ -1150,6 +1150,9 @@ zh-CN:
         dependencies: "依赖项"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "显示截止日期"
       attachment:
@@ -1524,6 +1527,7 @@ zh-CN:
         not_available: "因系统配置而不可用。"
         not_deletable: "无法删除。"
         not_current_user: "不是当前用户。"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "未找到"
         not_a_date: "不是有效的日期。"
         not_a_datetime: "不是有效的日期时间。"
@@ -1629,6 +1633,8 @@ zh-CN:
               not_unique: "已被使用。请另选一个名称。"
         meeting:
           error_conflict: "无法保存，因为会议已被其他人同时更新。请重新加载页面。"
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "至少需要指定一个发送通知的通道。"
           attributes:
@@ -2066,6 +2072,7 @@ zh-CN:
     role: "角色"
     roles: "角色"
     search: "搜索"
+    sprint: "Sprint"
     start_date: "开始日期"
     status: "状态"
     state: "地区"
@@ -4307,6 +4314,9 @@ zh-CN:
   setting_smtp_password: "SMTP 密码"
   setting_smtp_domain: "SMTP HELO 域"
   setting_activity_days_default: "项目活动显示的天数"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "应用副标题"
   setting_app_title: "应用程序标题"
   setting_attachment_max_size: "最大的附件大小"
@@ -4416,7 +4426,6 @@ zh-CN:
   setting_repository_checkout_text: "检出说明文本"
   setting_repository_log_display_limit: "在文件日志中显示的修订版本最大数目"
   setting_repository_truncate_at: "存储库浏览器中显示的最多的文件个数"
-  setting_rest_api_enabled: "启用 REST Web 服务"
   setting_self_registration: "自助注册"
   setting_self_registration_caption: >
     选择用户的自行注册机制。 请注意您的设置，因为有些选项允许用户在此实例中激活自己的帐户。
@@ -4851,6 +4860,7 @@ zh-CN:
     text_change_disabled_for_ldap_login: "姓名和电子邮件由 LDAP 设置，因此无法更改。"
     unlock: "解锁​​​​"
     unlock_and_reset_failed_logins: "解锁和重置失败的帐户"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "关闭"
   version_status_locked: "锁定"
   version_status_open: "打开"
