@@ -62,6 +62,7 @@ jobs:
 
           if [ -n "${{ inputs.tag }}" ]; then
             SPECIFIC_TAG=$(echo '${{ inputs.tag }}' | tr -d v)
+            LATEST_TAG=latest
           fi
 
           echo 'tags<<EOF' >> $GITHUB_OUTPUT
