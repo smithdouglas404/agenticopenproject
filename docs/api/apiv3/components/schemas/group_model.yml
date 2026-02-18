@@ -18,10 +18,17 @@ allOf:
             type: array
             description: Embedded list of members.
             items:
-              - $ref: './user_model.yml'
+              $ref: './user_model.yml'
       _links:
         type: object
         properties:
+          self:
+            allOf:
+              - $ref: './link.yml'
+              - description: |-
+                  This group resource
+
+                  **Resource**: Group
           members:
             type: array
             items:

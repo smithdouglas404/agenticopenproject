@@ -1661,6 +1661,8 @@ lt:
               not_unique: "jau naudojamas. Prašome pasirinkti kitą pavadinimą."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Turi būti nurodytas bent vienas kanalas pranešimų siuntimui."
           attributes:
@@ -5007,6 +5009,7 @@ lt:
     text_change_disabled_for_ldap_login: "Vardą ir e-paštą nustato LDAP ir todėl to negalima keisti."
     unlock: "Atrakinti"
     unlock_and_reset_failed_logins: "Atrakintiir iš naujo nustatyti nepavykusius prisijungimus"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "uždarytas"
   version_status_locked: "užrakinti"
   version_status_open: "atidarytas"

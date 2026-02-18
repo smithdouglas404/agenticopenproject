@@ -222,6 +222,31 @@ RSpec.describe DocumentsController do
     end
   end
 
+  describe "#render_avatars" do
+    let(:user) { create(:user, member_with_permissions: { project => [:view_documents] }) }
+    let!(:non_member) { create(:user) }
+
+    current_user { user }
+
+    it "only renders avatars of users that are visible" do
+      get :render_avatars, params: { project_id: project.id, id: document.id, user_ids: [user.id, non_member.id] },
+                           format: :turbo_stream
+
+      expect(assigns(:users)).to contain_exactly(user)
+    end
+
+    context "with an admin user, that can see all users" do
+      current_user { create(:admin) }
+
+      it "renders avatars of all users" do
+        get :render_avatars, params: { project_id: project.id, id: document.id, user_ids: [user.id, non_member.id] },
+                             format: :turbo_stream
+
+        expect(assigns(:users)).to include(user, non_member)
+      end
+    end
+  end
+
   def file_attachment
     test_document = "#{OpenProject::Documents::Engine.root}/spec/assets/attachments/testfile.txt"
     Rack::Test::UploadedFile.new(test_document, "text/plain")

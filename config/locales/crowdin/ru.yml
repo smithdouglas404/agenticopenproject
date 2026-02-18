@@ -111,21 +111,21 @@ ru:
         link: "вебхук"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
-        resources_heading: "Resources"
-        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
-        resources_submit: "Update resources"
-        tools_heading: "Tools"
-        tools_description: "OpenProject implements the following tools. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP tools](docs_url)."
-        tools_submit: "Update tools"
+        description: "Протокол модели контекста позволяет агентам ИИ предоставлять своим пользователям инструменты и ресурсы, открытые данным экземпляром OpenProject."
+        resources_heading: "Ресурсы"
+        resources_description: "OpenProject реализует следующие ресурсы. Каждый из них может быть включен, переименован и описан по Вашему желанию. Для получения дополнительной информации обратитесь к [документации по ресурсам MCP](docs_url)."
+        resources_submit: "Обновить ресурсы"
+        tools_heading: "Инструменты"
+        tools_description: "OpenProject реализует следующие инструменты. Каждый из них может быть включен, переименован и описан по Вашему желанию. Для получения дополнительной информации обратитесь к [документации по инструментам MCP] (docs_url)."
+        tools_submit: "Обновить инструменты"
       multi_update:
-        success: "MCP configurations were updated successfully."
+        success: "Конфигурации MCP были успешно обновлены."
       server_form:
-        description_caption: "How the MCP server will be described to other applications who connect to it."
-        title_caption: "A short title shown to applications that connect to the MCP server."
+        description_caption: "Как сервер MCP будет описан для других приложений, которые подключатся к нему."
+        title_caption: "Краткое название, показываемое приложениям, которые подключаются к серверу MCP."
       update:
-        failure: "MCP configuration could not be updated."
-        success: "MCP configuration was updated successfully."
+        failure: "Конфигурация MCP не может быть обновлена."
+        success: "Конфигурация MCP была успешно обновлена."
     scim_clients:
       authentication_methods:
         sso: "JWT от поставщика идентификации"
@@ -609,7 +609,7 @@ ru:
         is_for_all_blank_slate:
           heading: Для всех проектов
           description: Этот атрибут проекта включен во всех проектах, поскольку опция "Для всех проектов" отмечена. Его нельзя отключить для отдельных проектов.
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: Этот атрибут проекта не может быть отключен, поскольку он установлен как <a href=%{pir_submission_url} target="_blank">назначаемый</a> для запросов инициализации проекта.
       types:
         no_results_title_text: На данный момент доступных типов нет.
         form:
@@ -1662,6 +1662,8 @@ ru:
               not_unique: "уже используется. Пожалуйста, выберите другое имя."
         meeting:
           error_conflict: "Невозможно сохранить, потому что совещание было обновлено кем-то другим за это время. Пожалуйста, перезагрузите страницу."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Нужно указать хотя бы один канал для отправки уведомлений."
           attributes:
@@ -2958,7 +2960,7 @@ ru:
           new_features_title: >
             Релиз содержит различные новые функции и улучшения, такие как:
           new_features_list:
-            line_0: Automated project initiation (Enterprise add-on).
+            line_0: Автоматическая инициация проекта.
             line_1: "Совещания: добавление новых или существующих пакетов работ в качестве итогов совещания."
             line_2: "Meetings: show iCal responses in OpenProject."
             line_3: "Повторяющиеся совещания: продублируйте пункты повестки дня на следующее совещание."
@@ -4730,7 +4732,7 @@ ru:
           project_mandate: "Мандат проекта"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artifact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
+          **Этот рабочий пакет был автоматически создан по завершении рабочего процесса %{wizard_name} .** Артефакт в формате PDF, содержащий всю предоставленную информацию, был создан и прикреплен к этому рабочему пакету для справки и аудита. Если Вам необходимо обновить или повторно выполнить шаги инициации, Вы можете в любой момент снова открыть мастер, воспользовавшись приведенной ниже ссылкой:
         description: "Когда пользователь подает запрос на инициирование проекта, будет создан новый пакет работ с запросом, прикрепленным в виде PDF-файла. Настройки, приведенные ниже, определяют тип, статус и назначение этого нового рабочего пакета."
         work_package_type: "Тип пакета работ"
         work_package_type_caption: "Тип пакета работ, который должен использоваться для хранения завершенного артефакта."
@@ -5008,6 +5010,7 @@ ru:
     text_change_disabled_for_ldap_login: "Имя и адрес электронной почты заданы LDAP и не могут быть изменены."
     unlock: "Разблокировать"
     unlock_and_reset_failed_logins: "Разблокировать и сбросить неудачные попытки входа"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "закрыт"
   version_status_locked: "заблокировано"
   version_status_open: "открыт"

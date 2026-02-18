@@ -1632,6 +1632,8 @@ ms:
               not_unique: "sudah digunakan. Sila pilih nama lain."
         meeting:
           error_conflict: "Tidak dapat menyimpan kerana mesyuarat telah dikemas kini oleh orang lain sementara itu. Sila muat semula halaman."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Sekurang-kurangnya satu saluran untuk menghantar pemberitahuan perlu ditentukan."
           attributes:
@@ -4854,6 +4856,7 @@ ms:
     text_change_disabled_for_ldap_login: "Nama dan e-mel ditetapkan oleh LDAP dan oleh itu tidak boleh diubah."
     unlock: "Buka kunci"
     unlock_and_reset_failed_logins: "Buka kunci dan tetapkan semula log masuk yang gagal"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "ditutup"
   version_status_locked: "terkunci"
   version_status_open: "buka"

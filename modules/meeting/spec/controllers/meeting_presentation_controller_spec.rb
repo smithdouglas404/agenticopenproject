@@ -29,7 +29,7 @@
 # ++
 require "spec_helper"
 
-RSpec.describe MeetingPresentationController, with_flag: { meetings_presentation_mode: true } do
+RSpec.describe MeetingPresentationController do
   let(:user) { create(:user, member_with_permissions: { project => permissions }) }
   let(:project) { create(:project, enabled_module_names: ["meetings"]) }
   let(:permissions) { [:view_meetings] }

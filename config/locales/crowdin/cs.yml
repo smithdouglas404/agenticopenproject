@@ -1664,6 +1664,8 @@ cs:
               not_unique: " už bylo použito. Prosím vyberte jiný název."
         meeting:
           error_conflict: "Nelze uložit, protože schůzku mezitím aktualizoval někdo jiný. Znovu načtěte stránku."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Pro odesílání notifikací musí být specifikován alespoň jeden kanál"
           attributes:
@@ -5012,6 +5014,7 @@ cs:
     text_change_disabled_for_ldap_login: "Jméno a e-mail jsou nastaveny pomocí LDAP, a nelze je tedy měnit."
     unlock: "Odemknout"
     unlock_and_reset_failed_logins: "Odemknout a resetovat nezdařené přihlášení"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "uzavřeno"
   version_status_locked: "uzamčeno"
   version_status_open: "otevřít"

@@ -66,6 +66,14 @@ module Projects::CreationWizard
       super.presence || project_creation_wizard_default_status_when_submitted&.id
     end
 
+    def project_creation_wizard_work_package_comment
+      super.presence ||
+        I18n.t(
+          "settings.project_initiation_request.submission.work_package_comment_default",
+          project_name: name
+        )
+    end
+
     def project_creation_wizard_default_work_package_type
       types.first
     end

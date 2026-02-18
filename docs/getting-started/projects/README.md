@@ -110,7 +110,7 @@ Click **Complete** to finish the setup.
 
 ### Project initiation request (Enterprise add-on)
 
-If a project imitation request was configured for the template you are using, after project creation you will be guided through additional pre-defined steps. 
+If a project initiation request was configured for the template you are using, after project creation you will be guided through additional pre-defined steps. 
 
 Read more about [project initiation request (Enterprise add-on)](../../user-guide/projects/project-initiation-request).
 

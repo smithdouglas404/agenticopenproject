@@ -69,7 +69,7 @@ RSpec.describe McpResources::Version, with_flag: { mcp_server: true } do
       subject
       text_content = parsed_results.fetch("contents").first
       version = text_content.fetch("text")
-      expect(version).to match_json_schema.from_docs("version_model")
+      expect(version).to match_json_schema.from_docs("version_read_model")
     end
 
     context "when the resource is disabled via configuration" do

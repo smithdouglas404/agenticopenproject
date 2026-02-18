@@ -1,5 +1,5 @@
 ---
-openapi: 3.1.0
+openapi: 3.1.2
 
 info:
   description: |-
@@ -657,6 +657,12 @@ components:
       $ref: "./components/examples/values_property_due_date.yml"
     ValuesPropertyDate:
       $ref: "./components/examples/values_property_date.yml"
+    VersionSimpleResponse:
+      $ref: "./components/examples/version_simple_response.yml"
+    VersionCreateRequest:
+      $ref: "./components/examples/version_create_request.yml"
+    VersionUpdateNameRequest:
+      $ref: "./components/examples/version_update_name_request.yml"
     Views:
       $ref: "./components/examples/views.yml"
     ViewWorkPackagesTable:
@@ -723,6 +729,10 @@ components:
       "$ref": "./components/schemas/project_configuration_model.yml"
     CustomActionModel:
       "$ref": "./components/schemas/custom_action_model.yml"
+    CustomFieldLinkedProperties:
+      "$ref": "./components/schemas/custom_field_linked_properties.yml"
+    CustomFieldProperties:
+      "$ref": "./components/schemas/custom_field_properties.yml"
     CustomOptionModel:
       "$ref": "./components/schemas/custom_option_model.yml"
     DayCollectionModel:
@@ -969,12 +979,14 @@ components:
       "$ref": "./components/schemas/user_preferences_model.yml"
     ValuesPropertyModel:
       "$ref": "./components/schemas/values_property_model.yml"
-    VersionModel:
-      "$ref": "./components/schemas/version_model.yml"
+    VersionCollectionModel:
+      "$ref": "./components/schemas/version_collection_model.yml"
+    VersionReadModel:
+      "$ref": "./components/schemas/version_read_model.yml"
+    VersionWriteModel:
+      "$ref": "./components/schemas/version_write_model.yml"
     Version_schemaModel:
       "$ref": "./components/schemas/version_schema_model.yml"
-    VersionsModel:
-      "$ref": "./components/schemas/versions_model.yml"
     Versions_by_WorkspaceModel:
       "$ref": "./components/schemas/versions_by_workspace_model.yml"
     View_actionModel:

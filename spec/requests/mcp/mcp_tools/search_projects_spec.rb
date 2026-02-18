@@ -56,6 +56,7 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
 
   let!(:project_a) { create(:project, identifier: "abc", name: "The ABC Project", status_code: :on_track) }
   let!(:project_b) { create(:project, identifier: "def", name: "The DEF Project", status_code: :off_track) }
+  let!(:portfolio) { create(:portfolio, identifier: "ghi", name: "The unrelated Portfolio", status_code: :on_track) }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
   let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }

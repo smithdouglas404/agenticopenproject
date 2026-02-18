@@ -1634,6 +1634,8 @@ ko:
               not_unique: "- 사용 중입니다. 다른 이름을 선택하세요."
         meeting:
           error_conflict: "그 사이에 다른 사람이 미팅을 업데이트했기 때문에 저장할 수 없습니다. 페이지를 다시 로드하세요."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "알림을 보낼 채널을 하나 이상 지정해야 합니다."
           attributes:
@@ -4854,6 +4856,7 @@ ko:
     text_change_disabled_for_ldap_login: "이름과 이메일은 LDAP에 의해 설정되므로 변경할 수 없습니다."
     unlock: "잠금 해제"
     unlock_and_reset_failed_logins: "실패한 로그인 잠금 해제 및 재설정"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "닫음"
   version_status_locked: "잠김"
   version_status_open: "열기"

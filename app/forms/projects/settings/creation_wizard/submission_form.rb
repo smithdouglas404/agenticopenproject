@@ -100,9 +100,6 @@ module Projects
             label: I18n.t("settings.project_initiation_request.submission.work_package_comment"),
             caption: I18n.t("settings.project_initiation_request.submission.work_package_comment_caption"),
             required: false,
-            value: model.project_creation_wizard_work_package_comment.presence || I18n.t(
-              "settings.project_initiation_request.submission.work_package_comment_default", project_name: model.name
-            ),
             rich_text_options: {
               showAttachments: false,
               editorType: "constrained"

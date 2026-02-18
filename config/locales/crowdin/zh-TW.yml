@@ -113,7 +113,7 @@ zh-TW:
       index:
         description: "模型上下文協定允許 AI 代理向其使用者提供此 OpenProject 實體所揭露的工具與資源。"
         resources_heading: "資源"
-        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject 實作下列資源。每個資源都可以依您的需求啟用、重新命名及描述。如需詳細資訊，請參閱 [關於 MCP 資源的文件](docs_url)。"
         resources_submit: "更新資源"
         tools_heading: "工具"
         tools_description: "OpenProject 實作下列工具。每個工具都可以依您的需求啟用、重新命名和描述。如需詳細資訊，請參閱 [MCP 工具說明文件](docs_url)。"
@@ -122,7 +122,7 @@ zh-TW:
         success: "MCP 組態已成功更新。"
       server_form:
         description_caption: "MCP 伺服器將如何描述給連線到它的其他應用程式。"
-        title_caption: "A short title shown to applications that connect to the MCP server."
+        title_caption: "顯示給與 MCP 伺服器連線的應用程式的簡短標題。"
       update:
         failure: "無法更新 MCP 設定。"
         success: "MCP 組態已成功更新。"
@@ -622,8 +622,8 @@ zh-TW:
         new_label: "新優先權"
       creation_wizard:
         errors:
-          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
-          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
+          no_work_package_type: "啟用專案啟動請求失敗，因為它需要至少一個作用中的工作套件類型，而此專案沒有。請為此專案新增至少一個工作套件類型。"
+          no_status_when_submitted: "啟用專案啟動請求失敗，因為工作包類型 %{type} 至少需要一個狀態與之相關。請為此工作包類型啟用至少一個狀態工作流程。"
         export:
           description_attachment_export: "產生的產物將會以 PDF 附件的形式，儲存到該產物的工作套件中。"
           description_file_link_export: "該成品工作套件將會包含一個檔案連結，指向儲存在外部檔案儲存空間中的 PDF 檔案。這要求有一個具備檔案儲存功能的空間，並且其中有為此專案自動化管理的專案資料夾。目前僅支援 Nextcloud 檔案儲存空間。"
@@ -1630,6 +1630,8 @@ zh-TW:
               not_unique: "已被使用。請選擇其他名稱。"
         meeting:
           error_conflict: "無法儲存，因為會議現主時已由其他人更新。請重新載入頁面。"
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "至少需要指定一個發送通知的方式"
           attributes:
@@ -4851,6 +4853,7 @@ zh-TW:
     text_change_disabled_for_ldap_login: "姓名和電子郵件由 LDAP 設定，因此無法變更。"
     unlock: "按此啟用"
     unlock_and_reset_failed_logins: "啟用並清除登入紀錄"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "已關閉"
   version_status_locked: "已停用"
   version_status_open: "開啟"

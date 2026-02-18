@@ -1658,6 +1658,8 @@ uk:
               not_unique: "уже використовується. Виберіть інше ім’я."
         meeting:
           error_conflict: "Не вдалося зберегти, тому що зустріч була оновлена кимось іншим в цей час. Будь ласка, перезавантажте сторінку."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Необхідно вказати принаймні один канал для надсилання сповіщень."
           attributes:
@@ -5005,6 +5007,7 @@ uk:
     text_change_disabled_for_ldap_login: "Назву й електронну адресу отримано за протоколом LDAP, тому їх не можна змінити. "
     unlock: "Розблокувати"
     unlock_and_reset_failed_logins: "Розблокувати та скинути помилки входу до системи"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "закрито"
   version_status_locked: "Заблоковано"
   version_status_open: "відкрити"
