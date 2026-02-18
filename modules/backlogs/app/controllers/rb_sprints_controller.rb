@@ -31,7 +31,7 @@
 class RbSprintsController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  skip_before_action :load_sprint_and_project, only: %i[new_dialog create]
+  skip_before_action :load_sprint_and_project, only: %i[new_dialog create refresh_form]
 
   def new_dialog
     @project = Project.visible.find(params[:project_id])
@@ -42,6 +42,23 @@ class RbSprintsController < RbApplicationController
     end
 
     respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint)
+  end
+
+  def refresh_form
+    @project = Project.visible.find(params[:project_id])
+    @sprint = Agile::Sprint.new(project: @project)
+
+    call = Sprints::SetAttributesService.new(
+      user: current_user,
+      model: @sprint,
+      contract_class: EmptyContract
+    ).call(attributes: agile_sprint_params.merge(project_id: params[:project_id]))
+
+    sprint = call.result
+
+    update_via_turbo_stream(component: Backlogs::NewSprintFormComponent.new(sprint:))
+
+    respond_with_turbo_streams
   end
 
   def create

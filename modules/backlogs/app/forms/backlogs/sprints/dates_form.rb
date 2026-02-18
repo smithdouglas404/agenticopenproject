@@ -39,7 +39,10 @@ module Backlogs
             label: attribute_name(:start_date),
             placeholder: attribute_name(:start_date),
             required: true,
-            input_width: :small
+            input_width: :small,
+            data: {
+              action: "change->refresh-on-form-changes#triggerTurboStream"
+            }
           )
           dates.text_field(
             name: :finish_date,
@@ -47,7 +50,10 @@ module Backlogs
             label: attribute_name(:finish_date),
             placeholder: attribute_name(:finish_date),
             required: true,
-            input_width: :small
+            input_width: :small,
+            data: {
+              action: "change->refresh-on-form-changes#triggerTurboStream"
+            }
           )
           dates.text_field(
             name: :duration,

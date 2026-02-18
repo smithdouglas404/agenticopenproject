@@ -88,6 +88,16 @@ module Agile
       end
     end
 
+    def date_range_set?
+      start_date? && finish_date?
+    end
+
+    def duration
+      return nil unless date_range_set?
+
+      Day.working.from_range(from: start_date, to: finish_date).count
+    end
+
     private
 
     # TODO: consider moving this validation to the database level to ensure data integrity.

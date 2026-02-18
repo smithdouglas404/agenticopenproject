@@ -106,7 +106,7 @@ module OpenProject::Backlogs
 
         permission :create_sprints,
                    {
-                     rb_sprints: %i[new_dialog create]
+                     rb_sprints: %i[new_dialog create refresh_form]
                    },
                    permissible_on: :project,
                    require: :member
