@@ -222,6 +222,79 @@ RSpec.describe JournalsController do
       end
     end
 
+    context "for project custom comment" do
+      let(:params) { { id: project.last_journal.id.to_s, field: "custom_comment_#{custom_field.id}", format: "js" } }
+      let(:custom_field) { create(:string_project_custom_field, :has_comment, admin_only:, projects: [project]) }
+
+      before do
+        project.update custom_field.comment_attribute_name => "baz"
+      end
+
+      context "when visible to everyone" do
+        let(:admin_only) { false }
+
+        describe "with a user being project member" do
+          include_examples "the diff is shown", "baz"
+
+          context "when field gets deleted" do
+            before { custom_field.destroy }
+
+            it { expect(response).to have_http_status(:forbidden) }
+          end
+        end
+
+        describe "with a user not being project member" do
+          let(:user) { build_stubbed(:user) }
+
+          it { expect(response).to have_http_status(:forbidden) }
+
+          context "when field gets deleted" do
+            before { custom_field.destroy }
+
+            it { expect(response).to have_http_status(:forbidden) }
+          end
+        end
+
+        describe "with an admin user" do
+          let(:user) { build_stubbed(:admin) }
+
+          include_examples "the diff is shown", "baz"
+
+          context "when field gets deleted" do
+            before { custom_field.destroy }
+
+            include_examples "the diff is shown", "baz"
+          end
+        end
+      end
+
+      context "when admin only" do
+        let(:admin_only) { true }
+
+        describe "with a user being a project member" do
+          it { expect(response).to have_http_status(:forbidden) }
+
+          context "when field gets deleted (and we loose admin_only mark)" do
+            before { custom_field.destroy }
+
+            it { expect(response).to have_http_status(:forbidden) }
+          end
+        end
+
+        describe "with an admin user" do
+          let(:user) { build_stubbed(:admin) }
+
+          include_examples "the diff is shown", "baz"
+
+          context "when field gets deleted (and we loose format information)" do
+            before { custom_field.destroy }
+
+            include_examples "the diff is shown", "baz"
+          end
+        end
+      end
+    end
+
     context "for project description" do
       let(:params) { { id: project.last_journal.id.to_s, field: :description, format: "js" } }
 
