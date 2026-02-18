@@ -98,7 +98,7 @@ module Admin::Import::Jira
     def handle_error(error)
       respond_to do |format|
         format.turbo_stream do
-          render_error_flash_message_via_turbo_stream(message: "#{error.message}\n#{error.backtrace}")
+          render_error_flash_message_via_turbo_stream(message: error.message.to_s)
           respond_with_turbo_streams
         end
         format.html do
