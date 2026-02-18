@@ -5,7 +5,7 @@ on:
     branches:
       - dev
       - release/*
-      - code-maintenance/71761-include-op-blocknote-hocuspocus-in-openproject-core-repository
+      - code-maintenance/71761-include-op-blocknote-hocuspocus-in-openproject-core-repository # remove me
     paths:
       - 'extensions/op-blocknote-hocuspocus/**'
       - '.github/workflows/hocuspocus-docker.yml'
@@ -51,8 +51,14 @@ jobs:
             REGISTRY=openproject/hocuspocus-test
           fi
 
-          SPECIFIC_TAG=${{ inputs.branch || github.ref_name }}-${{ steps.short-sha.outputs.short_sha }}
-          LATEST_TAG=${{ inputs.branch }}-latest
+          # remove me
+          if [ "${{ github.ref_name}}" = "code-maintenance/71761-include-op-blocknote-hocuspocus-in-openproject-core-repository" ]; then
+            REGISTRY=openproject/hocuspocus-test
+          fi
+
+          BRANCH=$(echo '${{ inputs.branch || github.ref_name }}' | tr / -)
+          SPECIFIC_TAG=$BRANCH-${{ steps.short-sha.outputs.short_sha }}
+          LATEST_TAG=$BRANCH-latest
 
           if [ "${{ inputs.tag }}" ]; then
             SPECIFIC_TAG=$(echo '${{ inputs.tag }}' | tr -d v)
@@ -133,6 +139,7 @@ jobs:
           inputs: ${{ steps.build-inputs.outputs.inputs_json }}
           token: "${{ steps.generate-gha-token.outputs.token }}"
       
+      # remove me
       - name: Deploy nothing
         if: github.ref == 'refs/heads/code-maintenance/71761-include-op-blocknote-hocuspocus-in-openproject-core-repository' && github.repository == 'opf/openproject'
         uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
