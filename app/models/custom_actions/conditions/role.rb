@@ -29,6 +29,8 @@
 #++
 
 class CustomActions::Conditions::Role < CustomActions::Conditions::Base
+  prepend CustomActions::ValuesToInteger
+
   def fulfilled_by?(work_package, user)
     values.empty? ||
       (self.class.roles_in_project(work_package, user).map(&:id) & values).any?
@@ -81,6 +83,6 @@ class CustomActions::Conditions::Role < CustomActions::Conditions::Base
     ::Role
       .givable
       .select(:id, :name)
-      .map { |u| [u.id, u.name] }
+      .map { [it.id, it.name] }
   end
 end

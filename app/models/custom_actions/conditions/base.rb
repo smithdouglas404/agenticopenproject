@@ -31,7 +31,6 @@
 class CustomActions::Conditions::Base
   attr_reader :values
 
-  prepend CustomActions::ValuesToInteger
   include CustomActions::ValidateAllowedValue
 
   def initialize(values = nil)
@@ -48,8 +47,8 @@ class CustomActions::Conditions::Base
   end
 
   def value_objects
-    values.map do |value|
-      allowed_values.find { |v| v[:value] == value }
+    values.compact.map do |value|
+      allowed_values.find { it[:value] == value }
     end
   end
 
@@ -62,8 +61,14 @@ class CustomActions::Conditions::Base
     (work_package.respond_to?(:"#{key}_id") && values.include?(work_package.send(:"#{key}_id")))
   end
 
-  def key
-    self.class.key
+  delegate :key, to: :class
+
+  def associated
+    raise NotImplementedError
+  end
+
+  def self.all
+    [self]
   end
 
   def self.key

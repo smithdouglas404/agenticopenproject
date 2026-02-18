@@ -29,6 +29,8 @@
 #++
 
 class CustomActions::Conditions::Status < CustomActions::Conditions::Base
+  prepend CustomActions::ValuesToInteger
+
   def self.key
     :status
   end
@@ -39,6 +41,6 @@ class CustomActions::Conditions::Status < CustomActions::Conditions::Base
     ::Status
       .select(:id, :name)
       .order(:name)
-      .map { |u| [u.id, u.name] }
+      .map { [it.id, it.name] }
   end
 end

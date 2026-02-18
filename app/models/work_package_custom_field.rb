@@ -60,6 +60,11 @@ class WorkPackageCustomField < CustomField
         .select(:id))
   }
 
+  scope :usable_as_custom_action_condition, -> {
+    where(field_format: %w[bool list user])
+         .order(:name)
+  }
+
   scope :usable_as_custom_action, -> {
     where.not(field_format: %w[hierarchy weighted_item_list])
          .order(:name)

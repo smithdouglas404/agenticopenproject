@@ -29,6 +29,8 @@
 #++
 
 class CustomActions::Conditions::Type < CustomActions::Conditions::Base
+  prepend CustomActions::ValuesToInteger
+
   def self.key
     :type
   end
@@ -38,6 +40,6 @@ class CustomActions::Conditions::Type < CustomActions::Conditions::Base
   def associated
     ::Type
       .select(:id, :name)
-      .map { |u| [u.id, u.name] }
+      .map { [it.id, it.name] }
   end
 end
