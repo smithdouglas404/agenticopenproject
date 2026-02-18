@@ -31,7 +31,8 @@ require_relative "../spec_helper"
 RSpec.describe HourlyRatesController do
   shared_let(:admin) { create(:admin) }
 
-  let(:user) { create(:user) }
+  let(:user) { create(:user, member_with_permissions: { project => permissions }) }
+  let(:permissions) { [:view_hourly_rates] }
   let(:project) { create(:project) }
   let(:default_rate) { create(:default_hourly_rate, user:) }
 
@@ -48,6 +49,8 @@ RSpec.describe HourlyRatesController do
     end
 
     context "when accessing the hourly rates of a user without being a member of the project" do
+      let(:user) { create(:user) }
+
       it "responds with 404" do
         get :show, params: { project_id: project.id, id: user.id }
         expect(response).to have_http_status(:not_found)
@@ -55,7 +58,7 @@ RSpec.describe HourlyRatesController do
     end
 
     context "when accessing the hourly rates of a user being a member of the project without permission to view hourly rates" do
-      let(:user) { create(:user, member_with_permissions: { project => [] }) }
+      let(:permissions) { [] }
 
       it "responds with 403" do
         get :show, params: { project_id: project.id, id: user.id }
@@ -64,8 +67,6 @@ RSpec.describe HourlyRatesController do
     end
 
     context "when accessing the hourly rates of a user with permission to view hourly rates in the project" do
-      let(:user) { create(:user, member_with_permissions: { project => [:view_hourly_rates] }) }
-
       it "responds with 200" do
         get :show, params: { project_id: project.id, id: user.id }
         expect(response).to have_http_status(:ok)
@@ -161,6 +162,89 @@ RSpec.describe HourlyRatesController do
 
       it "responds with 404 Not Found" do
         expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context "when updating and adding a new rate" do
+      let!(:default_rate) { create(:default_hourly_rate, user:, valid_from: 1.month.ago) }
+      let!(:hourly_rate) { create(:hourly_rate, user:, project:, valid_from: 1.day.ago) }
+
+      let(:params) do
+        {
+          id: user.id,
+          project_id: project.id,
+          user: {
+            "existing_rate_attributes" => {
+              hourly_rate.id.to_s => {
+                "valid_from" => 2.days.ago.to_s,
+                "rate" => "25"
+              }
+            },
+            "new_rate_attributes" => {
+              "0" => {
+                "valid_from" => 1.day.from_now.to_s,
+                "rate" => "30"
+              }
+            }
+          }
+        }
+      end
+
+      it "updates the existing rate and creates a new one" do
+        # testing before state
+
+        expect(HourlyRate.at_date_for_user_in_project(3.days.ago, user, project)).to eq(default_rate)
+        expect(HourlyRate.at_date_for_user_in_project(2.days.ago, user, project)).to eq(default_rate)
+        expect(HourlyRate.at_date_for_user_in_project(1.day.ago, user, project)).to eq(hourly_rate)
+        expect(HourlyRate.at_date_for_user_in_project(1.day.from_now, user, project)).to eq(hourly_rate)
+
+        login_as (admin)
+
+        expect do
+          post :update, params: params
+        end.to change { user.rates.reload.size }.from(1).to(2)
+
+        newest_rate = user.rates.last
+
+        expect(HourlyRate.at_date_for_user_in_project(3.days.ago, user, project)).to eq(default_rate)
+        expect(HourlyRate.at_date_for_user_in_project(2.days.ago, user, project)).to eq(hourly_rate)
+        expect(HourlyRate.at_date_for_user_in_project(1.day.ago, user, project)).to eq(hourly_rate)
+        expect(HourlyRate.at_date_for_user_in_project(1.day.from_now, user, project)).to eq(newest_rate)
+      end
+    end
+
+    context "when deleting all rates of a user" do
+      let!(:hourly_rate) { create(:hourly_rate, user:, project:) }
+
+      let(:params) do
+        {
+          id: user.id,
+          project_id: project.id
+        }
+      end
+
+      it "deletes all rates of the user for the project" do
+        login_as (admin)
+
+        expect do
+          post :update, params: params
+        end.to change { user.rates.reload.size }.from(1).to(0)
+
+        expect(user.rates.where(project:)).to be_empty
+      end
+
+      context "with rates in other projects" do
+        let(:other_project) { create(:project) }
+        let!(:other_rate) { create(:hourly_rate, user:, project: other_project) }
+
+        it "only deletes the rates for the specified project" do
+          login_as (admin)
+
+          post :update, params: params
+
+          expect(user.rates.where(project:)).to be_empty
+          expect(user.rates.where(project: other_project)).not_to be_empty
+        end
       end
     end
   end

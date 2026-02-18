@@ -52,11 +52,11 @@ RSpec.describe "Version action board",
 
   let(:board_index) { Pages::BoardIndex.new(project) }
   let(:permissions) do
-    %i[show_board_views manage_board_views add_work_packages manage_versions
+    %i[show_board_views manage_board_views add_work_packages manage_versions save_queries
        edit_work_packages view_work_packages manage_public_queries assign_versions]
   end
   let(:permissions_board_manager) do
-    %i[show_board_views manage_board_views view_work_packages manage_public_queries]
+    %i[show_board_views manage_board_views view_work_packages manage_public_queries save_queries]
   end
 
   let!(:open_version) { create(:version, project:, name: "Open version") }

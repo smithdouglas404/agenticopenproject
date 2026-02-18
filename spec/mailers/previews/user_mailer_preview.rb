@@ -28,23 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# TODO: This is but a stub
-module Messages
-  class UpdateContract < BaseContract
-    validate :moving_message_to_another_forum
-
-    private
-
-    def moving_message_to_another_forum
-      return if !model.forum_id_changed?
-      return if model.forum_id_was.nil?
-
-      old_forum = Forum.find_by(id: model.forum_id_was)
-      return if old_forum.nil?
-
-      return if old_forum.project_id == model.forum.project_id
-
-      errors.add(:forum_id, :cannot_move_message_to_forum_of_different_project)
-    end
+class UserMailerPreview < ActionMailer::Preview
+  def activation_limit_reached
+    actor = FactoryBot.build_stubbed(:user, lastname: "Actor")
+    UserMailer.activation_limit_reached("foo@example.com", actor)
   end
 end

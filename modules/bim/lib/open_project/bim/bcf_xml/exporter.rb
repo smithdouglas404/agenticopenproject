@@ -111,9 +111,14 @@ module OpenProject::Bim::BcfXml
 
     ##
     # Write viewpoints
-    def viewpoints_for(issue_dir, issue)
+    def viewpoints_for(issue_dir, issue) # rubocop:disable Metrics/AbcSize
       [].tap do |files|
         issue.viewpoints.find_each do |vp|
+          # Sanity check for the viewpoints GUID, to protect against
+          # path traversal when generating the viewpoint file name
+          uuid_regex = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i
+          next unless vp.uuid.match?(uuid_regex)
+
           vp_file = File.join(issue_dir, "#{vp.uuid}.bcfv")
           snapshot_file = File.join(issue_dir, "#{vp.uuid}#{vp.snapshot.extension}")
 

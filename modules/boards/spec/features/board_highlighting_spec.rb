@@ -36,7 +36,9 @@ RSpec.describe "Work Package boards spec", :js, :selenium, with_ee: %i[board_vie
            member_with_roles: { project => role })
   end
   let(:project) { create(:project, enabled_module_names: %i[work_package_tracking board_view]) }
-  let(:permissions) { %i[show_board_views manage_board_views add_work_packages view_work_packages manage_public_queries] }
+  let(:permissions) do
+    %i[show_board_views manage_board_views add_work_packages view_work_packages manage_public_queries save_queries]
+  end
   let(:role) { create(:project_role, permissions:) }
 
   let!(:wp) do

@@ -28,23 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# TODO: This is but a stub
-module Messages
-  class UpdateContract < BaseContract
-    validate :moving_message_to_another_forum
+module Capabilities::Scopes
+  module Visible
+    extend ActiveSupport::Concern
 
-    private
+    class_methods do
+      def visible(user = User.current)
+        scope = if user.admin?
+                  all
+                else
+                  where(context_id: nil)
+                    .or(where(context_id: Project.visible(user).select(:id)))
+                end
 
-    def moving_message_to_another_forum
-      return if !model.forum_id_changed?
-      return if model.forum_id_was.nil?
-
-      old_forum = Forum.find_by(id: model.forum_id_was)
-      return if old_forum.nil?
-
-      return if old_forum.project_id == model.forum.project_id
-
-      errors.add(:forum_id, :cannot_move_message_to_forum_of_different_project)
+        scope.where(principal_id: Principal.visible(user).not_builtin.not_locked)
+      end
     end
   end
 end

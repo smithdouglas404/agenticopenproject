@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,25 +26,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-# TODO: This is but a stub
-module Messages
-  class UpdateContract < BaseContract
-    validate :moving_message_to_another_forum
+RSpec.shared_examples_for "consists of contract actions" do |with: "the expected actions"|
+  it "includes #{with} for the scoped to user" do
+    expect(scope.pluck(:action, :principal_id, :context_id))
+      .to match_array(expected)
+  end
+end
 
-    private
-
-    def moving_message_to_another_forum
-      return if !model.forum_id_changed?
-      return if model.forum_id_was.nil?
-
-      old_forum = Forum.find_by(id: model.forum_id_was)
-      return if old_forum.nil?
-
-      return if old_forum.project_id == model.forum.project_id
-
-      errors.add(:forum_id, :cannot_move_message_to_forum_of_different_project)
-    end
+RSpec.shared_examples_for "is empty" do
+  it "is empty for the scoped to user" do
+    expect(scope)
+      .to be_empty
   end
 end

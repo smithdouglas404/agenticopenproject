@@ -36,7 +36,7 @@ module OpenProject::Boards
         permission :manage_board_views,
                    { "boards/boards": %i[index show new create destroy] },
                    permissible_on: :project,
-                   dependencies: :manage_public_queries,
+                   dependencies: %i[manage_public_queries save_queries],
                    contract_actions: { boards: %i[create update destroy] }
       end
 
