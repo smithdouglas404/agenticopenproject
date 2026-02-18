@@ -58,13 +58,18 @@ module Backlogs
           dates.text_field(
             name: :duration,
             label: attribute_name(:duration),
-            type: :number,
             input_width: :xsmall,
-            disabled: true,
-            trailing_visual: {
-              text: { text: I18n.t("datetime.units.day", count: model.duration) }
-            }
+            readonly: true,
+            value: display_duration
           )
+        end
+      end
+
+      def display_duration
+        if model.duration.present?
+          "#{model.duration} #{I18n.t('datetime.units.day', count: model.duration)}"
+        else
+          ""
         end
       end
     end
