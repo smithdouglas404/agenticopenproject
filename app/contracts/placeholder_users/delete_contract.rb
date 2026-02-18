@@ -30,9 +30,7 @@
 
 module PlaceholderUsers
   class DeleteContract < ::DeleteContract
-    delete_permission -> {
-      self.class.deletion_allowed?(model, user)
-    }
+    delete_permission ->(user:, model:) { deletion_allowed?(model, user) }
 
     ##
     # Checks if a given placeholder user may be deleted by a user.

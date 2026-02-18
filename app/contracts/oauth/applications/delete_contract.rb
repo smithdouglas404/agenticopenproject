@@ -31,7 +31,7 @@
 module OAuth
   module Applications
     class DeleteContract < ::DeleteContract
-      delete_permission -> { !model.builtin? && user.admin? }
+      delete_permission ->(user:, model:) { !model.builtin? && user.admin? }
     end
   end
 end

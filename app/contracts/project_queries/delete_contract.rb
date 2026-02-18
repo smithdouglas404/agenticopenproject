@@ -30,6 +30,6 @@
 
 module ProjectQueries
   class DeleteContract < ::DeleteContract
-    delete_permission -> { user == model.user }
+    delete_permission ->(user:, model:) { user == model.user }
   end
 end
