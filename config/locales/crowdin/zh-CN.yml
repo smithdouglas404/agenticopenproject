@@ -1633,6 +1633,8 @@ zh-CN:
               not_unique: "已被使用。请另选一个名称。"
         meeting:
           error_conflict: "无法保存，因为会议已被其他人同时更新。请重新加载页面。"
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "至少需要指定一个发送通知的通道。"
           attributes:
@@ -4858,6 +4860,7 @@ zh-CN:
     text_change_disabled_for_ldap_login: "姓名和电子邮件由 LDAP 设置，因此无法更改。"
     unlock: "解锁​​​​"
     unlock_and_reset_failed_logins: "解锁和重置失败的帐户"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "关闭"
   version_status_locked: "锁定"
   version_status_open: "打开"

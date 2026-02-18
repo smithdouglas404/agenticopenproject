@@ -1639,6 +1639,8 @@ de:
               not_unique: "ist bereits in Gebrauch. Bitte wählen Sie einen anderen Namen aus."
         meeting:
           error_conflict: "Das Speichern ist nicht möglich, da die Besprechung in der Zwischenzeit von einem anderen Benutzer aktualisiert wurde. Bitte laden Sie die Seite neu."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Mindestens ein Kanal zum Senden von Benachrichtigungen muss angegeben werden."
           attributes:
@@ -4913,6 +4915,7 @@ de:
     text_change_disabled_for_ldap_login: "Der Name und die E-Mail-Adresse werden über LDAP festgelegt und können daher nicht geändert werden."
     unlock: "Entsperren"
     unlock_and_reset_failed_logins: "Entsperren und fehlgeschlagene Logins zurücksetzen"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "geschlossen"
   version_status_locked: "gesperrt"
   version_status_open: "offen"

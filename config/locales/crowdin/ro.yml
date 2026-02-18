@@ -1657,6 +1657,8 @@ ro:
               not_unique: "is already in use. Please select another name."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Trebuie specificat cel puţin un canal pentru trimiterea notificărilor."
           attributes:
@@ -2483,7 +2485,7 @@ ro:
   description_choose_project: "Proiecte"
   description_compare_from: "Comparați de la"
   description_compare_to: "compară cu"
-  description_current_position: "Sunteți aici: "
+  description_current_position: "Ești aici: "
   description_date_from: "Introdu dată început"
   description_date_to: "Introduceţi data de sfârşit"
   description_enter_number: "Introduceţi numărul"
@@ -4970,6 +4972,7 @@ ro:
     text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
     unlock: "Deblochează"
     unlock_and_reset_failed_logins: "Deblocare şi resetare autentificări eşuate"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "închis"
   version_status_locked: "blocat"
   version_status_open: "deschis"

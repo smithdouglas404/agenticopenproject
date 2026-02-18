@@ -1644,6 +1644,8 @@ it:
               not_unique: "è già in uso. Sei pregato di selezionare un altro nome."
         meeting:
           error_conflict: "Impossibile salvare perché la riunione è stata aggiornata da qualcun altro nel frattempo. Ricarica la pagina."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Deve essere specificato almeno un canale per l'invio delle notifiche."
           attributes:
@@ -4916,6 +4918,7 @@ it:
     text_change_disabled_for_ldap_login: "Il nome e l'e-mail sono impostati da LDAP e quindi non possono essere modificati."
     unlock: "Sblocca"
     unlock_and_reset_failed_logins: "Sblocca e azzera gli accessi non riusciti"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "chiuso"
   version_status_locked: "bloccato"
   version_status_open: "aperte"

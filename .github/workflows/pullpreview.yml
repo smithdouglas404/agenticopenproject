@@ -47,7 +47,7 @@ jobs:
         admins: crohr,HDinger,machisuji,oliverguenther,ulferts,wielinde,cbliard
         compose_files: docker-compose.pullpreview.yml
         provider: hetzner
-        region: nbg1
+        region: fsn1
         instance_type: cx53
         ports: 80,443
         default_port: 443

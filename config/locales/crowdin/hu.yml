@@ -1646,6 +1646,8 @@ hu:
               not_unique: "is already in use. Please select another name."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Legalább egy csatornát meg kell adni az értesítések küldésére.\n"
           attributes:
@@ -4917,6 +4919,7 @@ hu:
     text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
     unlock: "A zárolás feloldása"
     unlock_and_reset_failed_logins: "Zárolás felodása és alaphelyzetbe állitása sikertelen bejelentkezéskor"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "lezárt"
   version_status_locked: "zárolt"
   version_status_open: "nyitott"

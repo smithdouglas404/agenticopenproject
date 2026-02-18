@@ -47,7 +47,7 @@ RSpec.describe "Custom field filter in boards",
   let(:board_index) { Pages::BoardIndex.new(project) }
 
   let(:permissions) do
-    %i[show_board_views manage_board_views add_work_packages
+    %i[show_board_views manage_board_views add_work_packages save_queries
        edit_work_packages view_work_packages manage_public_queries]
   end
 

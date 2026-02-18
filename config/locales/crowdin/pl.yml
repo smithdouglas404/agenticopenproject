@@ -1663,6 +1663,8 @@ pl:
               not_unique: "jest już w użyciu. Wybierz inną nazwę."
         meeting:
           error_conflict: "Nie można zapisać, ponieważ w tym czasie spotkanie zostało zaktualizowane przez inną osobę. Odśwież stronę."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Należy określić co najmniej jeden kanał dla wysyłania powiadomień."
           attributes:
@@ -5016,6 +5018,7 @@ pl:
     text_change_disabled_for_ldap_login: "Nazwa i adres e-mail są ustawione przez protokół LDAP i dlatego nie można ich zmienić."
     unlock: "Odblokuj"
     unlock_and_reset_failed_logins: "Odblokuj i resetuj nieudane logowania"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "Zamknięte"
   version_status_locked: "zablokowane"
   version_status_open: "Otwarte"

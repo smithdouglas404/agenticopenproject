@@ -35,7 +35,7 @@ class Storages::ProjectStoragesController < ApplicationController
 
   before_action :require_login
   before_action :find_project_by_project_id
-  before_action :find_project_stroage
+  before_action :find_project_storage
   before_action :render_403, unless: -> { User.current.allowed_in_project?(:view_file_links, @project) }
   no_authorization_required! :open
 
@@ -52,8 +52,8 @@ class Storages::ProjectStoragesController < ApplicationController
 
   private
 
-  def find_project_stroage
-    @project_storage = Storages::ProjectStorage.find(params[:id])
+  def find_project_storage
+    @project_storage = @project.project_storages.find(params[:id])
   end
 
   def ensure_remote_identity
@@ -121,7 +121,7 @@ class Storages::ProjectStoragesController < ApplicationController
   end
 
   def project_storage_scope
-    Storages::ProjectStorage.where(project_id: @project.id, id: @project_storage.id)
+    @project.project_storages.where(id: @project_storage.id)
   end
 
   def test_folder_access

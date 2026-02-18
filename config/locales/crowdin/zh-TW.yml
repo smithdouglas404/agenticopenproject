@@ -1633,6 +1633,8 @@ zh-TW:
               not_unique: "已被使用。請選擇其他名稱。"
         meeting:
           error_conflict: "無法儲存，因為會議現主時已由其他人更新。請重新載入頁面。"
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "至少需要指定一個發送通知的方式"
           attributes:
@@ -4861,6 +4863,7 @@ zh-TW:
     text_change_disabled_for_ldap_login: "姓名和電子郵件由 LDAP 設定，因此無法變更。"
     unlock: "按此啟用"
     unlock_and_reset_failed_logins: "啟用並清除登入紀錄"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "已關閉"
   version_status_locked: "已停用"
   version_status_open: "開啟"

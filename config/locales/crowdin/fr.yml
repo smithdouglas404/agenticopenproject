@@ -1645,6 +1645,8 @@ fr:
               not_unique: "est déjà utilisé. Veuillez choisir un autre nom."
         meeting:
           error_conflict: "Impossible d'enregistrer, car la réunion a été mise à jour par quelqu'un d'autre entre-temps. Veuillez recharger la page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Au moins un canal pour envoyer des notifications doit être spécifié."
           attributes:
@@ -4917,6 +4919,7 @@ fr:
     text_change_disabled_for_ldap_login: "Le nom et l'e-mail sont définis par LDAP et ne peuvent donc pas être modifiés."
     unlock: "Déverrouiller"
     unlock_and_reset_failed_logins: "Déverrouiller et réinitialiser les échecs de connexion"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "clôturé"
   version_status_locked: "verrouillé"
   version_status_open: "ouvert"

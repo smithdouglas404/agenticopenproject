@@ -46,7 +46,7 @@ gem "responders", "~> 3.2"
 
 gem "ffi", "~> 1.15"
 
-gem "connection_pool", "~> 2.5.5"
+gem "connection_pool", "~> 3.0.2"
 
 gem "rdoc", ">= 2.4.2"
 
@@ -69,8 +69,8 @@ gem "scimitar", "~> 2.13"
 gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.9.0"
-gem "closure_tree", "~> 9.3.0"
-gem "rubytree", "~> 2.1.0"
+gem "closure_tree", "~> 9.5.0"
+gem "rubytree", "~> 2.2.0"
 
 gem "addressable", "~> 2.8.0"
 
@@ -177,8 +177,8 @@ gem "ice_cube", "~> 0.17.0"
 
 group :production do
   # we use dalli as standard memcache client
-  # requires memcached 1.4+
-  gem "dalli", "~> 3.2.0"
+  # requires memcached 1.6+
+  gem "dalli", "~> 5.0.0"
   gem "redis", "~> 5.4.0"
 end
 
@@ -231,10 +231,10 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.89.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.90.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.2.0"
+gem "view_component", "~> 4.4.0"
 # Lookbook
 gem "lookbook", "2.3.14"
 
@@ -262,7 +262,7 @@ group :test do
 
   # Test prof provides factories from code
   # and other niceties
-  gem "test-prof", "~> 1.4.0"
+  gem "test-prof", "~> 1.5.0"
   gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
 
   gem "rack_session_access"
@@ -321,7 +321,7 @@ group :ldap do
 end
 
 group :development do
-  gem "listen", "~> 3.9.0" # Use for event-based reloaders
+  gem "listen", "~> 3.10.0" # Use for event-based reloaders
 
   gem "letter_opener_web"
 
@@ -352,7 +352,7 @@ group :development, :test do
   # https://github.com/puma/puma/issues/2835#issuecomment-2302133927
   gem "byebug"
 
-  gem "pry-byebug", "~> 3.11.0", platforms: [:mri]
+  gem "pry-byebug", "~> 3.12.0", platforms: [:mri]
   gem "pry-rails", "~> 0.3.6"
   gem "pry-rescue", "~> 1.6.0"
 
@@ -371,7 +371,7 @@ group :development, :test do
   gem "erblint-github", require: false
 
   # Brakeman scanner
-  gem "brakeman", "~> 7.1.1"
+  gem "brakeman", "~> 8.0.1"
 
   # i18n-tasks helps find and manage missing and unused translations.
   gem "i18n-tasks", "~> 1.1.0", require: false
@@ -380,7 +380,7 @@ group :development, :test do
   gem "active_record_doctor", "~> 2.0.1"
 end
 
-gem "bootsnap", "~> 1.20.0", require: false
+gem "bootsnap", "~> 1.23.0", require: false
 
 # API gems
 gem "grape", "~> 2.4.0"
@@ -412,7 +412,7 @@ gem "activerecord-nulldb-adapter", "~> 1.2.2"
 
 # Have application level locks on the database to have a mutex shared between workers/hosts.
 # We e.g. employ this to safeguard the creation of journals.
-gem "with_advisory_lock", "~> 7.0.2"
+gem "with_advisory_lock", "~> 7.5.0"
 
 # Load Gemfile.modules explicitly to allow dependabot to work
 eval_gemfile "./Gemfile.modules"

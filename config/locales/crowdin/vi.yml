@@ -1635,6 +1635,8 @@ vi:
               not_unique: "đã được sử dụng. Vui lòng chọn tên khác."
         meeting:
           error_conflict: "Không thể lưu vì cuộc họp đã được người khác cập nhật trong thời gian chờ đợi. Vui lòng tải lại trang."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Cần phải chỉ định ít nhất một kênh để gửi thông báo."
           attributes:
@@ -4865,6 +4867,7 @@ vi:
     text_change_disabled_for_ldap_login: "Tên và email do LDAP đặt và do đó không thể thay đổi."
     unlock: "Mở khoá"
     unlock_and_reset_failed_logins: "Mở khóa và đặt lại thông tin đăng nhập thất bại"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "đóng cửa"
   version_status_locked: "bị khóa"
   version_status_open: "mở"
