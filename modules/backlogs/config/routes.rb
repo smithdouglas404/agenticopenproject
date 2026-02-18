@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     resources :sprints, controller: :rb_sprints, only: %i[] do
       collection do
         get :new_dialog
+        get :refresh_form
         post :create
       end
     end

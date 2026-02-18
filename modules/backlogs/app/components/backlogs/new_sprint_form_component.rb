@@ -47,12 +47,9 @@ module Backlogs
 
     def data_attributes
       {
-        # controller: "refresh-on-form-changes",
-        # "refresh-on-form-changes-target": "form",
-        # "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_work_package_meeting_agenda_items_path(
-        #   @work_package.project,
-        #   @work_package
-        # )
+        controller: "refresh-on-form-changes",
+        "refresh-on-form-changes-target": "form",
+        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_sprints_path(@sprint.project_id)
       }
     end
   end
