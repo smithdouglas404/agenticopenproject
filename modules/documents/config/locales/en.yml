@@ -149,10 +149,10 @@ en:
         banner:
           none_writable: These values are configured via environment variables and cannot be edited here.
           some_unwritable: Some values are configured via environment variables and cannot be edited here.
-          invalid_env_url: The Hocuspocus server URL is configured via an environment variable but uses an unsupported protocol. Only ws:// and wss:// are allowed.
         hocuspocus_server_url:
           label: "Hocuspocus server URL"
           caption: "The address of a working Hocuspocus server."
+          invalid_scheme: "Must use a WebSocket protocol (ws:// or wss://)."
         hocuspocus_server_secret:
           label: "Client secret"
           caption: "Paste the secret provided by the Hocuspocus server."

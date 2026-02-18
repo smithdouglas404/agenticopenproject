@@ -135,11 +135,11 @@ RSpec.describe "Document collaboration settings admin",
       visit admin_settings_document_collaboration_settings_path
     end
 
-    it "shows a warning banner about the invalid URL scheme" do
-      expect(page).to have_css(".Banner--warning", text: "unsupported protocol")
+    it "shows an inline validation error on the URL field" do
       expect(page).to have_field("Hocuspocus server URL",
                                  with: "https://env-hocuspocus.example.com",
                                  disabled: true)
+      expect(page).to have_content("Must use a WebSocket protocol")
     end
   end
 

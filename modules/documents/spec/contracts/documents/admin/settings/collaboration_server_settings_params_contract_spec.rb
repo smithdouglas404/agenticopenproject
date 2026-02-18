@@ -45,16 +45,6 @@ RSpec.describe Documents::Admin::Settings::CollaborationServerSettingsParamsCont
 
   it_behaves_like "contract is valid for active admins and invalid for regular users"
 
-  describe ".valid_hocuspocus_url?" do
-    it { expect(described_class.valid_hocuspocus_url?("wss://example.com")).to be true }
-    it { expect(described_class.valid_hocuspocus_url?("ws://example.com")).to be true }
-    it { expect(described_class.valid_hocuspocus_url?("https://example.com")).to be false }
-    it { expect(described_class.valid_hocuspocus_url?("http://example.com")).to be false }
-    it { expect(described_class.valid_hocuspocus_url?("not a url %%%")).to be false }
-    it { expect(described_class.valid_hocuspocus_url?("")).to be true }
-    it { expect(described_class.valid_hocuspocus_url?(nil)).to be true }
-  end
-
   describe "URL scheme validation" do
     context "with a valid wss:// URL" do
       let(:url) { "wss://hocuspocus.example.com" }

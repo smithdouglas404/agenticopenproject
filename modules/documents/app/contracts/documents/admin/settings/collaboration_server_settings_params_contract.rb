@@ -36,15 +36,6 @@ module Documents
 
         validate :validate_collaborative_editing_hocuspocus_url
 
-        def self.valid_hocuspocus_url?(url)
-          return false if url.blank?
-
-          uri = URI.parse(url)
-          uri.is_a?(URI::WS) || uri.is_a?(URI::WSS)
-        rescue URI::InvalidURIError
-          false
-        end
-
         # Expose the param value as a method so that ActiveModel::Errors#full_messages
         # can resolve the attribute without hitting Disposable::Twin's method_missing.
         def collaborative_editing_hocuspocus_url
@@ -56,17 +47,14 @@ module Documents
         def validate_collaborative_editing_hocuspocus_url
           url = params[:collaborative_editing_hocuspocus_url]
           return if url.blank?
-          return if self.class.valid_hocuspocus_url?(url)
 
-          error_type = begin
-            URI.parse(url)
-            :invalid_url_scheme
-          rescue URI::InvalidURIError
-            :invalid_url
+          uri = URI.parse(url)
+          unless uri.is_a?(URI::WS) || uri.is_a?(URI::WSS)
+            errors.add :collaborative_editing_hocuspocus_url, :invalid_url_scheme,
+                       allowed_schemes: allowed_protocols.join(", ")
           end
-
-          options = error_type == :invalid_url_scheme ? { allowed_schemes: allowed_protocols.join(", ") } : {}
-          errors.add :collaborative_editing_hocuspocus_url, error_type, **options
+        rescue URI::InvalidURIError
+          errors.add :collaborative_editing_hocuspocus_url, :invalid_url
         end
 
         def allowed_protocols = %w[ws wss]

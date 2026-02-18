@@ -45,15 +45,28 @@ module Documents
           settings.any? { !writable_setting?(it) }
         end
 
-        def invalid_hocuspocus_url?
-          return false if Setting.collaborative_editing_hocuspocus_url.blank?
-
-          !Documents::Admin::Settings::CollaborationServerSettingsParamsContract.valid_hocuspocus_url?(
-            Setting.collaborative_editing_hocuspocus_url
-          )
+        def hocuspocus_url_validation_attributes
+          {}.tap do |options|
+            if invalid_hocuspocus_url?
+              options[:validation_message] = I18n.t("documents.admin.collaboration_settings.hocuspocus_server_url.invalid_scheme")
+            end
+          end
         end
 
         private
+
+        def invalid_hocuspocus_url?
+          return false if Setting.collaborative_editing_hocuspocus_url.blank?
+
+          !valid_hocuspocus_url?(Setting.collaborative_editing_hocuspocus_url)
+        end
+
+        def valid_hocuspocus_url?(url)
+          uri = URI.parse(url)
+          uri.is_a?(URI::WS) || uri.is_a?(URI::WSS)
+        rescue URI::InvalidURIError
+          false
+        end
 
         def settings
           %i[collaborative_editing_hocuspocus_url
