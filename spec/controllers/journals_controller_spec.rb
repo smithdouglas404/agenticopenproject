@@ -100,7 +100,7 @@ RSpec.describe JournalsController do
       let(:params) { { id: work_package.last_journal.id.to_s, field: "custom_fields_#{custom_field.id}", format: "js" } }
 
       before do
-        work_package.update custom_field_values: { custom_field.id => "foo" }
+        work_package.update custom_field.attribute_name => "foo"
       end
 
       context "with format text" do
@@ -138,7 +138,7 @@ RSpec.describe JournalsController do
       let(:params) { { id: project.last_journal.id.to_s, field: "custom_fields_#{custom_field.id}", format: "js" } }
 
       before do
-        project.update custom_field_values: { custom_field.id => "foo" }
+        project.update custom_field.attribute_name => "foo"
       end
 
       context "with format text" do
