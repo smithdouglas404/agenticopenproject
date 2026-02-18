@@ -290,7 +290,7 @@ module Redmine
         href:,
         target:,
         underline:,
-        data: { allow_external_link: true },
+        data: { allow_external_link: true }
       )
       component.with_trailing_visual_icon(icon: :"link-external") if external
       component.with_content(text)
