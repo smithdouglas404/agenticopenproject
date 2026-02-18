@@ -60,10 +60,9 @@ module Backlogs
             label: attribute_name(:duration),
             type: :number,
             input_width: :xsmall,
-            inset: true,
             disabled: true,
             trailing_visual: {
-              text: { text: I18n.t(:label_day_plural) }
+              text: { text: I18n.t("datetime.units.day", count: model.duration) }
             }
           )
         end
