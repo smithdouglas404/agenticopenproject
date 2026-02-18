@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,14 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-en:
-  js:
-    budgets:
-      widgets:
-        budget_by_cost_type:
-          blankslate:
-            title: "No budget data"
-            description: "Add planned unit and labor costs to this project to start tracking the budget"
-    work_packages:
-      properties:
-        costObject: "Budget"
+module Budgets
+  class WidgetComponent < Grids::WidgetComponent
+    param :project
+
+    def render?
+      project.module_enabled?(:budgets) && has_required_permissions?
+    end
+
+    private
+
+    def has_required_permissions?
+      true
+    end
+  end
+end

@@ -103,6 +103,10 @@ class TimeEntry < ApplicationRecord
   register_journal_formatted_fields "entity_gid", formatter_key: :polymorphic_association
   register_journal_formatted_fields "comments", "spent_on", "start_time", formatter_key: :plaintext
 
+  def self.effective_costs_sum
+    sum(arel_table.coalesce(arel_table[:overridden_costs], arel_table[:costs]))
+  end
+
   def self.update_all(updates, conditions = nil, options = {})
     # instead of a update_all, perform an individual update during work_package#move
     # to trigger the update of the costs based on new rates

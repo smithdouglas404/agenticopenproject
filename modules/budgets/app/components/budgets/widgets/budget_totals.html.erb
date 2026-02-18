@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,19 +25,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++# %>
 
 <%=
-  render(Grids::WidgetGridComponent.new) do |grid|
-    grid.with_widget(Grids::Widgets::Description, @project)
-    grid.with_widget(Grids::Widgets::ProjectStatus, @project)
-    grid.with_widget(Grids::Widgets::Subitems, @project)
-    grid.with_widget(Grids::Widgets::Members, @project)
-    grid.with_widget(Grids::Widgets::News, @project)
-    grid.with_widget(Budgets::Widgets::BudgetTotals, @project)
-    grid.with_widget(Budgets::Widgets::BudgetByCostType, @project)
-    grid.with_widget(Costs::Widgets::ActualCosts, @project)
+  widget_wrapper do
+    render(Grids::WidgetGridComponent.new(aria: { label: t(".title") })) do |grid|
+      grid.with_widget(InlineWidget, key: :total_actual_costs, title: t(".total_actual_costs")) do
+        render_currency(spent_total)
+      end
 
-    grid.with_widget(Grids::ProjectAttributeWidgets, @project)
+      grid.with_widget(InlineWidget, key: :total_planned_budget, title: t(".total_planned_budget")) do
+        render_currency(budgeted_total)
+      end
+
+      grid.with_widget(InlineWidget, key: :spent_budget, title: t(".spent_budget")) do
+        render_percentage(spent_ratio * 100)
+      end
+
+      grid.with_widget(InlineWidget, key: :remaining_budget, title: t(".remaining_budget")) do
+        render_currency(remaining)
+      end
+    end
   end
 %>

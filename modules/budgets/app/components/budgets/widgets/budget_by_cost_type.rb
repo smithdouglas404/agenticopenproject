@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,14 +28,47 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-en:
-  js:
-    budgets:
-      widgets:
-        budget_by_cost_type:
-          blankslate:
-            title: "No budget data"
-            description: "Add planned unit and labor costs to this project to start tracking the budget"
-    work_packages:
-      properties:
-        costObject: "Budget"
+module Budgets
+  module Widgets
+    class BudgetByCostType < Budgets::WidgetComponent
+      REQUIRED_PERMISSIONS = %i[view_budgets view_cost_rates].freeze
+
+      delegate :budget_count, :has_budgets?, :budgeted_labor, :budgeted_material_by_type,
+               :workspace_counts,
+               to: :@aggregated_budgets
+
+      def initialize(...)
+        super
+
+        @aggregated_budgets = Budgets::AggregatedBudgets.new(project:, current_user:)
+      end
+
+      def title
+        t(".title")
+      end
+
+      def chart_labels
+        chart_entries.keys
+      end
+
+      def chart_data
+        chart_entries.values
+      end
+
+      private
+
+      def has_required_permissions?
+        REQUIRED_PERMISSIONS.all? { |perm| current_user.allowed_in_project?(perm, project) }
+      end
+
+      def chart_entries
+        @chart_entries ||= {}.tap do |entries|
+          entries[t(:caption_labor)] = budgeted_labor.to_f if budgeted_labor.positive?
+          budgeted_material_by_type.each do |name, value|
+            entries[name] = value.to_f if value.positive?
+          end
+        end
+      end
+    end
+  end
+end

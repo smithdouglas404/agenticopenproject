@@ -207,6 +207,8 @@ import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packag
 import { MyPageComponent } from './features/my-page/my-page.component';
 import { DashboardComponent } from './features/overview/dashboard.component';
 import { BurndownChartComponent } from './features/backlogs/burndown-chart.component';
+import { BudgetByCostTypeComponent } from './shared/components/budget-graphs/overview/budget-by-cost-type.component';
+import { ActualCostsComponent } from './shared/components/budget-graphs/overview/actual-costs.component';
 
 export function initializeServices(injector:Injector) {
   return () => {
@@ -421,5 +423,7 @@ export class OpenProjectModule implements DoBootstrap {
     registerCustomElement('opce-my-page', MyPageComponent, { injector });
     registerCustomElement('opce-dashboard', DashboardComponent, { injector });
     registerCustomElement('opce-burndown-chart', BurndownChartComponent, { injector });
+    registerCustomElement('opce-budget-by-cost-type', BudgetByCostTypeComponent, { injector });
+    registerCustomElement('opce-actual-costs', ActualCostsComponent, { injector });
   }
 }

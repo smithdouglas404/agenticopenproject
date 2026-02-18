@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,14 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-en:
-  js:
-    budgets:
-      widgets:
-        budget_by_cost_type:
-          blankslate:
-            title: "No budget data"
-            description: "Add planned unit and labor costs to this project to start tracking the budget"
-    work_packages:
-      properties:
-        costObject: "Budget"
+module Budgets::ProjectAggregation
+  extend ActiveSupport::Concern
+
+  included do
+    attr_reader :project, :current_user
+  end
+
+  def workspace_counts
+    project.descendants.reorder(nil)
+      .group(:workspace_type)
+      .count
+      .with_indifferent_access
+  end
+
+  private
+
+  def applicable_projects
+    return Project.where(id: project.id) unless project.portfolio?
+
+    project.self_and_descendants.reorder(nil)
+  end
+end

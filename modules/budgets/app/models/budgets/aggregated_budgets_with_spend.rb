@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,14 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-en:
-  js:
-    budgets:
-      widgets:
-        budget_by_cost_type:
-          blankslate:
-            title: "No budget data"
-            description: "Add planned unit and labor costs to this project to start tracking the budget"
-    work_packages:
-      properties:
-        costObject: "Budget"
+module Budgets
+  class AggregatedBudgetsWithSpend
+    attr_reader :project, :current_user
+
+    def initialize(project:, current_user: User.current)
+      @project = project
+      @current_user = current_user
+    end
+
+    # Delegate to aggregated_budgets
+    delegate :budget_count, :has_budgets?,
+             :budgeted_base, :budgeted_material, :budgeted_labor, :budgeted_total,
+             to: :aggregated_budgets
+
+    # Delegate to aggregated_costs
+    delegate :spent_material, :spent_labor, :spent_total,
+             to: :aggregated_costs
+
+    def spent_ratio
+      @spent_ratio ||= budgeted_total.zero? ? BigDecimal("0") : spent_total / budgeted_total
+    end
+
+    def remaining
+      @remaining ||= budgeted_total - spent_total
+    end
+
+    private
+
+    def aggregated_budgets
+      @aggregated_budgets ||= Budgets::AggregatedBudgets.new(project:, current_user:)
+    end
+
+    def aggregated_costs
+      @aggregated_costs ||= Costs::AggregatedCosts.new(project:, current_user:)
+    end
+  end
+end
