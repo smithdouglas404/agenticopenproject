@@ -286,6 +286,14 @@ Rails.application.reloader.to_prepare do
                      {},
                      permissible_on: :project_query,
                      require: :loggedin
+
+      map.permission :manage_own_working_times,
+                     {},
+                     permissible_on: :global
+
+      map.permission :manage_working_times,
+                     {},
+                     permissible_on: :global
     end
 
     map.project_module :work_package_tracking, order: 90 do |wpt|
