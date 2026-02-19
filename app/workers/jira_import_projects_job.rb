@@ -178,7 +178,7 @@ class JiraImportProjectsJob < ApplicationJob
               .call(
                 project: project,
                 subject: jira_issue.payload["fields"]["summary"],
-                description: jira_issue.payload["fields"]["description"],
+                description: convert_rich_text(jira_issue.payload["fields"]["description"]),
                 type:,
                 priority:,
                 status:,
@@ -219,6 +219,12 @@ class JiraImportProjectsJob < ApplicationJob
 
   private
 
+  def convert_rich_text(description)
+    return "" if description.blank?
+
+    Import::JiraWikiMarkupConverter.new(description).convert
+  end
+
   def add_history_comment(work_package:, history:, user:)
     notes = history.map do |entry|
       items = entry["items"]
@@ -242,7 +248,7 @@ class JiraImportProjectsJob < ApplicationJob
 
   def add_comment(work_package:, comment:)
     author = User.find_by!(login: comment["author"]["name"])
-    body = comment["body"]
+    body = convert_rich_text(comment["body"])
     notes = "## #{author["displayName"]}\n\n ### Comment\n\n#{body}"
     service_call = AddWorkPackageNoteService
                      .new(user: author, work_package: )
