@@ -192,7 +192,6 @@ module OpenProject::Meeting
       ::Exports::Register.register do
         single(::Meeting, Meetings::Exporter)
       end
-
     end
 
     add_api_path :meetings do
