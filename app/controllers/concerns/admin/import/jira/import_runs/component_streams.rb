@@ -34,7 +34,7 @@ module Admin::Import::Jira::ImportRuns
 
     private
 
-    def stream_wizard(&block)
+    def stream_wizard
       respond_to do |format|
         format.turbo_stream do
           yield if block_given?
