@@ -72,6 +72,13 @@ class Type < ApplicationRecord
 
   scope :without_standard, -> { where(is_standard: false).order(:position) }
   scope :default, -> { where(is_default: true) }
+  scope :visible, ->(user = User.current) {
+    if user.allowed_in_any_project?(:view_work_packages) || user.allowed_in_any_project?(:manage_types)
+      all
+    else
+      none
+    end
+  }
 
   delegate :to_s, to: :name
 

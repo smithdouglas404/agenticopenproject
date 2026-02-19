@@ -48,7 +48,39 @@ RSpec.describe Type do
     end
   end
 
-  describe ".statuses" do
+  describe ".visible" do
+    subject { described_class.visible(user) }
+
+    let!(:type) { create(:status) }
+    let(:user) { create(:user) }
+    let(:permissions) { %i[view_work_packages] }
+
+    before do
+      create(:member, user:, roles: [create(:project_role, permissions: permissions)])
+    end
+
+    it "returns the same types as all" do
+      expect(subject.to_a).to match_array(described_class.all.to_a)
+    end
+
+    context "when the user has the manage_types permission in a project" do
+      let(:permissions) { %i[manage_types] }
+
+      it "returns the same types as all" do
+        expect(subject.to_a).to match_array(described_class.all.to_a)
+      end
+    end
+
+    context "when the user has the wrong permission" do
+      let(:permissions) { %i[view_wikis] }
+
+      it "returns no types" do
+        expect(subject.to_a).to be_empty
+      end
+    end
+  end
+
+  describe "#statuses" do
     subject { type.statuses }
 
     context "when new" do
