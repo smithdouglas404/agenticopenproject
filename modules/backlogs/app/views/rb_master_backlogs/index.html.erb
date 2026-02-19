@@ -63,7 +63,10 @@ See COPYRIGHT and LICENSE files for more details.
           label: I18n.t(:label_sprint_new),
           tag: :a,
           href: new_dialog_project_sprints_path(@project),
-          data: { controller: "async-dialog" }
+          data: {
+            controller: "async-dialog",
+            test_selector: "op-sprints--new-sprint-button"
+          }
         ) do
           t("activerecord.models.sprint")
         end

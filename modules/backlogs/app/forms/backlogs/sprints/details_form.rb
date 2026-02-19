@@ -37,14 +37,14 @@ module Backlogs
           name: :name,
           required: true,
           autofocus: true,
-          input_width: :large
+          w: :full
         )
 
         # f.text_area(
         #   label: attribute_name(:goal),
         #   name: :goal,
         #   required: false,
-        #   input_width: :large,
+        #   w: :full,
         #   rows: 3
         # )
       end

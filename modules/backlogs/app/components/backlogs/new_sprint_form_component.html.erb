@@ -34,10 +34,11 @@ See COPYRIGHT and LICENSE files for more details.
       model: @sprint,
       scope: :sprint,
       method: :post,
+      class: "op-sprints--form",
       url: project_sprints_path(@sprint.project_id),
       data: data_attributes
     ) do |f|
-      flex_layout(mb: 3) do |flex|
+      flex_layout(mb: 2) do |flex|
         flex.with_row do
           if @base_errors&.any?
             render(Primer::Alpha::Banner.new(mb: 3, icon: :stop, scheme: :danger)) { @base_errors.join("\n") }
@@ -46,7 +47,7 @@ See COPYRIGHT and LICENSE files for more details.
         flex.with_row(mb: 3) do
           render Backlogs::Sprints::DetailsForm.new(f)
         end
-        flex.with_row(mb: 3) do
+        flex.with_row(classes: "op-sprints--form-dates") do
           render Backlogs::Sprints::DatesForm.new(f)
         end
       end

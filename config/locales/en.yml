@@ -1273,8 +1273,7 @@ en:
     attributes:
       agile/sprint:
         duration: "Duration"
-
-        finish_date: "End date"
+        finish_date: "Finish date"
         goal: "Sprint goal"
         name: "Sprint name"
         sharing: "Sharing"
