@@ -38,17 +38,27 @@ module Agile
     belongs_to :project
     has_many :work_packages, dependent: :nullify
 
-    enum :status, {
-      in_planning: "in_planning",
-      active: "active",
-      completed: "completed"
-    }, default: "in_planning", validate: true
+    enum :status,
+         {
+           in_planning: "in_planning",
+           active: "active",
+           completed: "completed"
+         },
+         default: "in_planning",
+         validate: true
 
-    SPRINT_SHARINGS = %w(none descendants system).freeze
+    enum :sharing,
+         {
+           none: "none",
+           descendants: "descendants",
+           system: "system"
+         },
+         default: "none",
+         prefix: :sharing_with,
+         validate: true
 
     validates :name, presence: true
     validates :project, presence: true
-    validates :sharing, presence: true, inclusion: { in: SPRINT_SHARINGS }
     validates :start_date, presence: true
     validates :finish_date,
               presence: true,
