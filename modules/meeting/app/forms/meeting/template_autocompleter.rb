@@ -38,7 +38,10 @@ class Meeting::TemplateAutocompleter < ApplicationForm
         decorated: true,
         defaultData: false,
         multiple: false,
-        appendTo: "#new-meeting-dialog"
+        appendTo: "#new-meeting-dialog",
+        data: {
+          "test-selector": "template_id"
+        }
       }
     ) do |select|
       templates.each do |template|

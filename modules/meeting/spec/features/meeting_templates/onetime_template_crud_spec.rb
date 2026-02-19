@@ -30,9 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Onetime templates CRUD",
-               :js,
-               :with_cuprite do
+RSpec.describe "Onetime templates CRUD", :js do
   shared_let(:admin) { create(:admin) }
   shared_let(:project) { create(:project, enabled_module_names: %i[meetings]) }
   shared_let(:other_project) { create(:project, enabled_module_names: %i[meetings]) }
