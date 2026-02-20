@@ -32,8 +32,12 @@ require "spec_helper"
 require_relative "../../support/pages/backlogs"
 
 RSpec.describe "Create", :js do
-  let(:user) { create(:admin) }
   let(:project) { create(:project) }
+  let(:all_permissions) { %i[view_master_backlog view_work_packages create_sprints] }
+  let(:permissions) { all_permissions }
+  let(:user) do
+    create(:user, member_with_permissions: { project => permissions })
+  end
   let(:backlogs_page) { Pages::Backlogs.new(project) }
 
   let(:story_type) do
@@ -72,95 +76,105 @@ RSpec.describe "Create", :js do
   end
 
   context "with the feature flag active", with_flag: { scrum_projects: true } do
-    before do
-      new_sprint_button = page.find_test_selector("op-sprints--new-sprint-button")
-      new_sprint_button.click
-    end
-
-    let(:start_date) { Date.new(2025, 10, 5) }
-    let(:start_date_fmt) { start_date.strftime("%Y-%m-%d") }
-    let(:finish_date) { Date.new(2025, 10, 20) }
-    let(:finish_date_fmt) { finish_date.strftime("%Y-%m-%d") }
-
-    it "allows creating a new sprint" do
-      within_dialog "New sprint" do
-        page.fill_in "Sprint name", with: "My first sprint"
-        page.fill_in "Start date", with: start_date_fmt
-        page.fill_in "Finish date", with: finish_date_fmt
-
-        click_on "Save"
+    context "with the 'create_sprints' permissions" do
+      before do
+        new_sprint_button = page.find_test_selector("op-sprints--new-sprint-button")
+        new_sprint_button&.click
       end
 
-      sprint = project.reload.sprints.last
-      expect(sprint).to be_present
-      expect(sprint.name).to eq "My first sprint"
-      expect(sprint.start_date).to eq start_date
-      expect(sprint.finish_date).to eq finish_date
-    end
+      let(:start_date) { Date.new(2025, 10, 5) }
+      let(:start_date_fmt) { start_date.strftime("%Y-%m-%d") }
+      let(:finish_date) { Date.new(2025, 10, 20) }
+      let(:finish_date_fmt) { finish_date.strftime("%Y-%m-%d") }
 
-    it "previews the sprint duration when changing the dates" do
-      within_dialog "New sprint" do
-        expect(page).to have_field "Duration", with: "", readonly: true
-
-        page.fill_in "Start date", with: start_date_fmt
-        page.fill_in "Finish date", with: finish_date_fmt
-
-        expect(page).to have_field "Duration", with: "16 days", readonly: true
-      end
-    end
-
-    describe "validations" do
-      let(:too_early_finish_date) { start_date - 1.day }
-
-      it "validates required fields are present" do
+      it "allows creating a new sprint" do
         within_dialog "New sprint" do
-          page.fill_in "Sprint name", with: ""
-
-          click_on "Save"
-
-          expect(page).to have_field "Sprint name", validation_error: "can't be blank"
-          expect(page).to have_field "Start date", validation_error: "can't be blank"
-          expect(page).to have_field "Finish date", validation_error: "can't be blank"
-        end
-      end
-
-      it "validates finish date is not before start date" do
-        within_dialog "New sprint" do
+          page.fill_in "Sprint name", with: "My first sprint"
           page.fill_in "Start date", with: start_date_fmt
-          page.fill_in "Finish date", with: too_early_finish_date.strftime("%Y-%m-%d")
-
-          # Shows duration as zero if finish date is before start date:
-          expect(page).to have_field "Duration", with: "0 days", readonly: true
+          page.fill_in "Finish date", with: finish_date_fmt
 
           click_on "Save"
-
-          expect(page).to have_field("Finish date",
-                                     validation_error: "must be greater than or equal to #{start_date_fmt}")
         end
-      end
-    end
 
-    describe "proposed sprint names" do
-      it "prefilled with 'Sprint 1' if there are no previous sprints" do
+        sprint = project.reload.sprints.last
+        expect(sprint).to be_present
+        expect(sprint.name).to eq "My first sprint"
+        expect(sprint.start_date).to eq start_date
+        expect(sprint.finish_date).to eq finish_date
+      end
+
+      it "previews the sprint duration when changing the dates" do
         within_dialog "New sprint" do
-          expect(page).to have_field "Sprint name *", with: "Sprint 1", required: true, focused: true
+          expect(page).to have_field "Duration", with: "", readonly: true
+
+          page.fill_in "Start date", with: start_date_fmt
+          page.fill_in "Finish date", with: finish_date_fmt
+
+          expect(page).to have_field "Duration", with: "16 days", readonly: true
         end
       end
 
-      context "with a previous sprint" do
-        before do
-          create(:agile_sprint, name: "Be ambitious 42", project:)
+      describe "validations" do
+        let(:too_early_finish_date) { start_date - 1.day }
 
-          backlogs_page.visit!
-          new_sprint_button = page.find_test_selector("op-sprints--new-sprint-button")
-          new_sprint_button.click
-        end
-
-        it "offers the next sprint name with a number increment" do
+        it "validates required fields are present" do
           within_dialog "New sprint" do
-            expect(page).to have_field "Sprint name *", with: "Be ambitious 43"
+            page.fill_in "Sprint name", with: ""
+
+            click_on "Save"
+
+            expect(page).to have_field "Sprint name", validation_error: "can't be blank"
+            expect(page).to have_field "Start date", validation_error: "can't be blank"
+            expect(page).to have_field "Finish date", validation_error: "can't be blank"
           end
         end
+
+        it "validates finish date is not before start date" do
+          within_dialog "New sprint" do
+            page.fill_in "Start date", with: start_date_fmt
+            page.fill_in "Finish date", with: too_early_finish_date.strftime("%Y-%m-%d")
+
+            # Shows duration as zero if finish date is before start date:
+            expect(page).to have_field "Duration", with: "0 days", readonly: true
+
+            click_on "Save"
+
+            expect(page).to have_field("Finish date",
+                                       validation_error: "must be greater than or equal to #{start_date_fmt}")
+          end
+        end
+      end
+
+      describe "proposed sprint names" do
+        it "prefilled with 'Sprint 1' if there are no previous sprints" do
+          within_dialog "New sprint" do
+            expect(page).to have_field "Sprint name *", with: "Sprint 1", required: true, focused: true
+          end
+        end
+
+        context "with a previous sprint" do
+          before do
+            create(:agile_sprint, name: "Be ambitious 42", project:)
+
+            backlogs_page.visit!
+            new_sprint_button = page.find_test_selector("op-sprints--new-sprint-button")
+            new_sprint_button.click
+          end
+
+          it "offers the next sprint name with a number increment" do
+            within_dialog "New sprint" do
+              expect(page).to have_field "Sprint name *", with: "Be ambitious 43"
+            end
+          end
+        end
+      end
+    end
+
+    context "without the necessary permissions" do
+      let(:permissions) { all_permissions - [:create_sprints] }
+
+      it "is missing the 'new sprint' button" do
+        expect(page).not_to have_test_selector("op-sprints--new-sprint-button")
       end
     end
   end

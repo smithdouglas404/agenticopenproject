@@ -56,7 +56,7 @@ See COPYRIGHT and LICENSE files for more details.
         t("activerecord.models.version")
       end
 
-      if OpenProject::FeatureDecisions.scrum_projects_active?
+      if allow_sprint_creation?
         subheader.with_action_button(
           scheme: :primary,
           leading_icon: :plus,
