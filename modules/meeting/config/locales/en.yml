@@ -76,6 +76,8 @@ en:
         participation_status: "Participation status"
     errors:
       models:
+        meeting_agenda_item:
+          section_not_belong_to_meeting: "Section does not belong to the same meeting."
         meeting_participant:
           invalid_user: "%{name} is not a valid participant."
         recurring_meeting:
