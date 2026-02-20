@@ -62,10 +62,10 @@ module AllMeetings
 
     def handle_ical_event(event) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
       uid = event.uid&.value_ical
-      recurrence_id = event.recurrence_id&.value_ical
+      recurrence_id = event.recurrence_id&.to_time
 
       # First check if the UID belongs to a single meeeting
-      meeting = Meeting.visible(user).find_by(uid: uid)
+      meeting = Meeting.visible(user).find_by(uid:)
 
       if meeting
         update_participation_status(meeting, event)
@@ -73,7 +73,7 @@ module AllMeetings
       end
 
       # No single meeting found, check for a recurring meeting
-      recurring_meeting = RecurringMeeting.visible(user).find_by(uid: uid)
+      recurring_meeting = RecurringMeeting.visible(user).find_by(uid:)
 
       if recurring_meeting.blank?
         # No recurring meeting, we can leave

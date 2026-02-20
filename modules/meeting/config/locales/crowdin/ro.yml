@@ -60,6 +60,8 @@ ro:
         end_after: "Seria de întâlniri se încheie"
         end_date: "Dată sfârșit"
         iterations: "Apariţii"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "Invitat"
         attended: "Participat"
@@ -70,6 +72,8 @@ ro:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
           user_invalid: "is not a valid participant."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Există o întâlnire deschisă în seria care nu este acoperită de noul program. Reglează programul pentru a include toate întâlnirile existente."

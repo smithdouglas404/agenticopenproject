@@ -58,6 +58,8 @@ ko:
         end_after: "미팅 시리즈 종료"
         end_date: "종료 날짜"
         iterations: "항목"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "초대됨"
         attended: "참석함"
@@ -68,6 +70,8 @@ ko:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
           user_invalid: "is not a valid participant."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "이 시리즈에는 새로운 스케줄에 포함되지 않은 오픈 미팅이 하나 있습니다. 모든 기존 미팅을 포함하도록 스케줄을 조정하세요."

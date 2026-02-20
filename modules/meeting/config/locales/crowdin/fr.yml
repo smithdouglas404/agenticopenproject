@@ -59,6 +59,8 @@ fr:
         end_after: "La série de réunions se termine"
         end_date: "Échéance"
         iterations: "Occurrences"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "Invité"
         attended: "Participations"
@@ -69,6 +71,8 @@ fr:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
           user_invalid: "is not a valid participant."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Il y a une réunion ouverte dans la série qui n'est pas couverte par le nouvel horaire. Modifiez l'horaire pour inclure toutes les réunions existantes."

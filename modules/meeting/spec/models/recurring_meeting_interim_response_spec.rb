@@ -28,24 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class RecurringMeetingInterimResponse < ApplicationRecord
-  belongs_to :recurring_meeting
-  belongs_to :user
+require "spec_helper"
 
-  enum :participation_status, {
-    needs_action: "needs-action",
-    accepted: "accepted",
-    declined: "declined",
-    tentative: "tentative",
-    # delegated: "delegated", # We currently do not support delegation
-    unknown: "unknown" # this status is used for existing participants when introducing the field
-  }, prefix: :participation
+RSpec.describe RecurringMeetingInterimResponse do
+  let(:project) { create(:project, enabled_module_names: %w[meetings]) }
+  let(:recurring_meeting) { create(:recurring_meeting, project:) }
+  let(:user) { create(:user) }
 
-  validate :start_time_must_be_valid_occurrence, if: -> { start_time.present? && recurring_meeting.present? }
+  describe "validations" do
+    describe "#start_time_must_be_valid_occurrence" do
+      context "when start_time matches an occurrence of the recurring meeting" do
+        let(:start_time) { recurring_meeting.start_time + 7.days }
 
-  private
+        it "is valid" do
+          response = described_class.new(recurring_meeting:, user:, start_time:,
+                                         participation_status: :accepted)
+          expect(response).to be_valid
+        end
+      end
 
-  def start_time_must_be_valid_occurrence
-    errors.add(:start_time, :not_an_occurrence) unless recurring_meeting.occurs_at?(start_time)
+      context "when start_time does not match any occurrence" do
+        let(:start_time) { recurring_meeting.start_time + 1.hour }
+
+        it "is invalid" do
+          response = described_class.new(recurring_meeting:, user:, start_time:,
+                                         participation_status: :accepted)
+          expect(response).not_to be_valid
+          expect(response.errors[:start_time])
+            .to include("is not a valid occurrence time for this recurring meeting")
+        end
+      end
+    end
   end
 end

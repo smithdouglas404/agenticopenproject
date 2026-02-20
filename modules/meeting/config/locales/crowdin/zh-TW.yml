@@ -58,6 +58,8 @@ zh-TW:
         end_after: "系列會議結束"
         end_date: "結束日期"
         iterations: "出現次數"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "已邀請"
         attended: "已出席"
@@ -68,6 +70,8 @@ zh-TW:
           user_invalid: "不是有效的參與者。"
         meeting_agenda_item:
           user_invalid: "不是有效的參與者。"
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "該系列中有一個公開會議未包含在新的時間表中。調整時間表以包含所有現有會議。"

@@ -59,6 +59,8 @@ hu:
         end_after: "Az ismétlődő megbeszélés véget ér"
         end_date: "Záró dátuma"
         iterations: "Előfordulások"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "Meghívott"
         attended: "Részt vett"
@@ -69,6 +71,8 @@ hu:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
           user_invalid: "is not a valid participant."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Az ismétlődő megbeszélésben van egy nyitott megbeszélés, amelyre nem vonatkozik az új ütemezés. Az ütemezésnek az összes létező meeting-et tartalmaznia kell."

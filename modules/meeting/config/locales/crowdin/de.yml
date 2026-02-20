@@ -59,6 +59,8 @@ de:
         end_after: "Ende der Terminserie"
         end_date: "Enddatum"
         iterations: "Ereignisse"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "Eingeladen"
         attended: "Teilgenommen"
@@ -69,6 +71,8 @@ de:
           user_invalid: "ist kein gültiger Teilnehmer."
         meeting_agenda_item:
           user_invalid: "ist kein gültiger Teilnehmer."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Es gibt eine offene Besprechung in der Terminserie, die nicht durch den neuen Zeitplan abgedeckt ist. Passen Sie den Zeitplan an, um alle bestehenden Meetings einzuschließen."

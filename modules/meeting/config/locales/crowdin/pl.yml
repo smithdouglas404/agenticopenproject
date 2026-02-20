@@ -61,6 +61,8 @@ pl:
         end_after: "Seria spotkań kończy się"
         end_date: "Data zakończenia"
         iterations: "Wystąpienia"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "Zaproszeni"
         attended: "Uczestniczył"
@@ -71,6 +73,8 @@ pl:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
           user_invalid: "is not a valid participant."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "W serii znajduje się jedno otwarte spotkanie, które nie jest uwzględnione w nowym harmonogramie. Dostosuj harmonogram tak, aby obejmował wszystkie istniejące spotkania."
