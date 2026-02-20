@@ -32,6 +32,7 @@ class RbSprintsController < RbApplicationController
   include OpTurbo::ComponentStream
 
   skip_before_action :load_sprint_and_project, only: %i[new_dialog create refresh_form]
+  before_action :not_authorized_on_feature_flag_inactive, only: %i[new_dialog create refresh_form]
 
   def new_dialog
     @project = Project.visible.find(params[:project_id])
@@ -147,5 +148,9 @@ class RbSprintsController < RbApplicationController
 
   def agile_sprint_params
     params.expect(sprint: %i[name start_date finish_date])
+  end
+
+  def not_authorized_on_feature_flag_inactive
+    render_403 unless OpenProject::FeatureDecisions.scrum_projects_active?
   end
 end
