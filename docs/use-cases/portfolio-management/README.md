@@ -1,83 +1,94 @@
 ---
 sidebar_navigation:
-  title: Portfolio management and custom reporting
-  priority: 990
+ title: Portfolio management and custom reporting
+ priority: 990
 description: Step-by-step instructions about portfolio management and custom reporting
 keywords: use-case, portfolio management
 ---
 
-# Use Case: Portfolio management and custom reporting options
+# Portfolio management with OpenProject
 
-If you have a lot of projects running at the same time it can be helpful and even necessary to have a meta-level overview of your projects, keep track of the project status and due dates. With OpenProject you can do just that.
+This use case explains how you can use **portfolio management in OpenProject** to get a **strategic overview across initiatives**, replace ad-hoc spreadsheets with structured reporting, and prepare meaningful insights for leadership. Portfolio management helps you monitor multiple **programs and projects** at a high level, identify risks early, and ensure alignment with organizational goals.
 
+This guide supports you in using:
 
-![Overview of all projects in OpenProject](openproject_use_case_portfolio_projects_overview.png)
+- the [**Portfolios module** (Enterprise add-on)](../../user-guide/portfolios/) for strategic grouping of workspaces, and
+- complementary reporting options such as **project lists**, filters, and exports.
 
-## Create projects overview
+If you have many projects running at the same time, it can be helpful and even necessary to maintain a meta-level overview, track overall status, and monitor due dates. With OpenProject, you can establish that strategic visibility in a structured and consistent way.
 
-### Access project list
+> [!NOTE]
+> This guide assumes that you are using **OpenProject with the Portfolios Enterprise add-on** enabled (Enterprise Cloud or Enterprise on-premises), and that you have permission to view and manage portfolios.
 
-To view all projects, first select the **Select a project** dropdown menu, then click on the **Project lists** button. 
-You can also get to projects overview by selecting **Projects** from the [global modules](../../user-guide/home/global-modules) menu in the top right corner.
+## Overview
 
-![Select a project dropdown menu and a button to open project list in OpenProject](openproject_use_case_portfolio_projects_list_button.png)
+When running many projects simultaneously, it becomes difficult to see the full picture:
 
-### Filter and sort projects
+- You may not have a **single source of truth** for status and progress.
+- Executive reporting can be **manual, inconsistent, and outdated**.
+- You need to focus on **strategic signals** such as risks, timelines, and overall progress rather than operational details.
 
-You will see a list of all projects within your organization. You can filter this list by various attributes, such as **Project owner** or **Created on**. Additionally, project custom fields can be used as filters (Enterprise add-on). If you haven't added custom fields yet, follow the instructions [here](../../system-admin-guide/custom-fields/).
+Portfolio management in OpenProject addresses these challenges by grouping related **programs and projects** into a top-level workspace that provides a **high-level overview**.
 
-![Project list filters in OpenProject](openproject_use_case_portfolio_projects_overview_filters.png)
+Portfolios in OpenProject are special workspaces that allow you to:
 
-You can further adjust this view by adding or re-arranging columns and changing the sorting order. To sort the project list, click on a column heading, such as **Status**. Read more about [configuring project lists](../../user-guide/projects/project-lists/#configure-project-lists-view). 
+- Combine multiple **programs and projects** into a strategic hierarchy
+- Track **aggregated status and progress** across workspaces
+- Use filters and customizable views for reporting
+- Supplement this with project-level lists and exports when needed
 
-After you have adjusted the projects overview to your liking, you can save it, 
-[export it](../../user-guide/projects/project-lists/#export-project-lists) or 
-[share it with key stakeholders](../../user-guide/projects/project-lists/#share-project-lists).
+## Step-by-step guide
 
-### Projects in Gantt view
+### 1. Navigate to the portfolios overview
 
-You can add a visual component to the overview by clicking on the **Open as Gantt view** button.
+Select **Portfolios** from the global modules menu.
 
-![Button to open OpenProject projects overview in Gantt view](openproject_use_case_portfolio_projects_overview_gantt_button.png)
+The overview page lists all portfolios you can access. Use filters, portfolio status, and aggregated status indicators across subitems to quickly assess portfolio health and identify initiatives that require attention.
 
-The **Gantt charts** module will open and the selected projects will be displayed in Gantt view.
+### 2. Structure your portfolio
 
-![Multiple projects displayed in a Gantt charts view in OpenProject](openproject_use_case_portfolio_gantt_charts_view.png)
+Within a portfolio, add:
 
-You can configure this view using the button with the three dots in the upper right corner and select **Configure view**. Find out more about [Gantt charts configuration](../../user-guide/gantt-chart/#gantt-chart-configuration).
+- **Programs** to group related strategic initiatives
+- **Projects** for direct portfolio-level tracking
 
-![Configure projects overview in Gantt charts module in OpenProject](openproject_use_case_portfolio_projects_overview_gantt_view_configure.png)
+A portfolio can contain programs, projects, or a mix of both. Define a structure that reflects your strategic priorities.
 
-## Create custom reports
+### 3. Manage portfolio subitems
 
-### Export project reports
+Use the **Subitems widget** on the portfolio home page to maintain included programs and projects.
 
-For creating custom project reports you can use the export function in the work packages table view or in the Gantt charts view.
+Review and adjust the structure regularly to keep your strategic overview aligned with organizational changes.
 
-![Icon to export work packages in OpenProject](openproject_use_case_portfolio_work_packages_export_icon.png)
+### 4. Use filters and saved views
 
-You can export the work packages in one of the following formats: PDF, XLS and CSV. Read more about [exporting work packages in OpenProject](../../user-guide/work-packages/exporting/#export-multiple-work-packages).
+Configure views and apply filters to focus on relevant information, such as:
 
-![Work package export options in OpenProject](openproject_use_case_portfolio_projects_export_options.png)
+- Status
+- Responsible owner
+- Timeline indicators
+- Custom attributes
 
-To export or print a Gantt chart, use the print function (**CTRL+P**) and then save it as a PDF. Only information displayed in the main screen area is included. Design elements, side menus, and top menus are excluded. Please see here [how to print a Gantt chart in OpenProject](../../user-guide/gantt-chart/#how-to-print-a-gantt-chart).
+Save recurring views for quarterly or monthly reviews to standardize and streamline reporting.
 
-### Project status reporting
+## Complementary portfolio management features
 
-You can [display and configure the individual project status](../../user-guide/projects/project-status/) on the project overview page.
+In addition to the Portfolios module, OpenProject provides several features that can enhance your portfolio management and reporting setup.
 
-For more advanced project reporting requirements, using the [Wiki module](../../user-guide/wiki/) is another powerful tool. The Wiki allows you to build complete custom reports using embedded work package tables, macros and even embedded calculations.
+- [**Project lists**](../../user-guide/projects/project-lists/): Create a filterable overview of all projects across your organization. Adjust columns, sort by status or owner, save views, and share or export them for stakeholder reporting.
 
-Here is an example of how a project report wiki could look:
+- [**Gantt charts**](../../user-guide/gantt-chart/): Open multiple projects in a shared timeline to visualize milestones, overlaps, and dependencies. This supports cross-project timeline discussions.
 
-![Custom status report in Wiki module in OpenProject](openproject_use_case_portfolio_wiki_status_report.png)
+- **Export options**: Export work package tables or Gantt charts as PDF, XLS, or CSV for formal reporting. Learn more about [exporting work packages](../../user-guide/work-packages/exporting/) and [printing Gantt charts](../../user-guide/gantt-chart/#how-to-print-a-gantt-chart).
 
-And how the dynamic data, such as calculations, filters, macros and reference language work behind the scenes:
+- [**Wiki module**](../../user-guide/wiki/): Build structured portfolio reports with embedded work package tables, macros, and dynamic calculations. You can create reporting hubs or dashboards for different initiatives.
 
-![Editing a wiki page with dynamic data on project details in OpenProject](openproject_use_case_portfolio_wiki_status_report_edit_mode.png)
+- [**Global work packages view**](../../user-guide/home/global-modules/): Analyze work packages across projects to identify overdue milestones, high-priority items, or cross-project risks affecting your portfolio.
 
-For more information about the syntax and how the attributes work, please look [here](../../user-guide/wysiwyg/).
+## Outcome
 
-If you want to work with multiple Wiki-based reports, you can create a parent Wiki page as a table of contents, for example, on which all the other reports are listed.
+By combining the Portfolios module with structured reporting features, you establish a clear governance layer above your operational projects.
 
-See more info on Wiki and the use of Macros [here](../../user-guide/wiki/).
+Instead of consolidating information manually, you rely on live portfolio data, consistent status structures, and reusable reporting views. Strategic discussions become focused on priorities and risks rather than data collection.
+
+This allows you to manage growth, align initiatives with organizational goals, and maintain transparency across your entire project landscape.
