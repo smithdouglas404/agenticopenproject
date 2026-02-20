@@ -129,6 +129,9 @@ RSpec.describe "Create", :js do
           page.fill_in "Start date", with: start_date_fmt
           page.fill_in "Finish date", with: too_early_finish_date.strftime("%Y-%m-%d")
 
+          # Shows duration as zero if finish date is before start date:
+          expect(page).to have_field "Duration", with: "0 days", readonly: true
+
           click_on "Save"
 
           expect(page).to have_field("Finish date",

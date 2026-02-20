@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Sprints::CreateService < ::BaseServices::Create
+class Sprints::CreateService < BaseServices::Create
   def instance_class
     Agile::Sprint
   end

@@ -30,13 +30,13 @@
 
 module Backlogs
   class NewSprintDialogComponent < ApplicationComponent
-    DIALOG_ID = "new-sprint-dialog"
-    FORM_ID = "new-sprint-dialog-form"
-    FOOTER_ID = "new-sprint-dialog-footer"
-
     include ApplicationHelper
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
+
+    DIALOG_ID = "new-sprint-dialog"
+    FORM_ID = "new-sprint-dialog-form"
+    FOOTER_ID = "new-sprint-dialog-footer"
 
     def initialize(sprint:)
       super

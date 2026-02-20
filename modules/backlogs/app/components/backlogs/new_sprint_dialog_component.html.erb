@@ -30,9 +30,11 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render(
     Primer::Alpha::Dialog.new(
-      title: "New sprint",
+      title: t(:label_sprint_new),
       size: :large,
-      id: Backlogs::NewSprintDialogComponent::DIALOG_ID)) do |d|
+      id: Backlogs::NewSprintDialogComponent::DIALOG_ID
+    )
+  ) do |d|
     d.with_header(variant: :large)
 
     d.with_body do
@@ -69,4 +71,3 @@ See COPYRIGHT and LICENSE files for more details.
     end
   end
 %>
-

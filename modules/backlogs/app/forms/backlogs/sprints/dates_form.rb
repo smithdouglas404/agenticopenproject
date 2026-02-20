@@ -67,7 +67,7 @@ module Backlogs
 
       def display_duration
         if model.duration.present?
-          "#{model.duration} #{I18n.t('datetime.units.day', count: model.duration)}"
+          [model.duration, I18n.t("datetime.units.day", count: model.duration)].join(" ")
         else
           ""
         end
