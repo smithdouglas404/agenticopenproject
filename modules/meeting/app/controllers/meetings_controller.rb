@@ -39,7 +39,7 @@ class MeetingsController < ApplicationController
   before_action :set_activity, only: %i[history]
   before_action :find_copy_from_meeting, only: %i[create]
   before_action :convert_params, only: %i[create update]
-  before_action :prevent_template_destruction, only: :destroy
+  before_action :prevent_series_template_destruction, only: :destroy
 
   helper :watchers
   include MeetingsHelper
@@ -74,7 +74,7 @@ class MeetingsController < ApplicationController
         if @meeting.state == "cancelled"
           render_404
         else
-          render(Meetings::ShowComponent.new(meeting: @meeting), layout: true)
+          render(Meetings::ShowComponent.new(meeting: @meeting, state: show_edit_state), layout: true)
         end
       end
     end
@@ -336,10 +336,10 @@ class MeetingsController < ApplicationController
     @meeting.toggle!(:notify)
 
     # Reload to get the updated value
-    @meeting.recurring_meeting.template.reload if @meeting.template?
+    @meeting.recurring_meeting.template.reload if @meeting.series_template?
 
     if @meeting.notify?
-      if @meeting.template?
+      if @meeting.series_template?
         handle_series_notification
       else
         handle_notification(type: :toggle_notifications)
@@ -548,8 +548,8 @@ class MeetingsController < ApplicationController
     }
   end
 
-  def prevent_template_destruction
-    render_400 if @meeting.templated?
+  def prevent_series_template_destruction
+    render_400 if @meeting.series_template?
   end
 
   def redirect_to_project
@@ -612,5 +612,9 @@ class MeetingsController < ApplicationController
     end
 
     render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_notification))
+  end
+
+  def show_edit_state
+    params[:state] == "edit" ? :edit : :show
   end
 end

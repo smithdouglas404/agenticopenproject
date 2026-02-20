@@ -33,17 +33,20 @@ module Meetings
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(meeting:, project:, copy_from: nil)
+    def initialize(meeting:, project:, copy_from: nil, template: false)
       super
 
       @meeting = meeting
       @project = project
       @copy_from = copy_from
+      @template = template
     end
 
     private
 
     def form_controller
+      return "meeting_templates" if @template
+
       if @meeting.is_a?(RecurringMeeting)
         "/recurring_meetings"
       else

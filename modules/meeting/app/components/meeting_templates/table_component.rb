@@ -28,45 +28,45 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :meeting, class: "Meeting" do |m|
-    author factory: :user
-    project
-    start_time { Date.tomorrow + 10.hours }
-    recurring_meeting { nil }
-    duration { 1.0 }
-    location { "https://some-url.com" }
-    m.sequence(:title) { |n| "Meeting #{n}" }
+module MeetingTemplates
+  class TableComponent < ::OpPrimer::BorderBoxTableComponent
+    options :current_project
 
-    trait :author_participates do
-      after(:build) do |meeting|
-        meeting.participants << build(:meeting_participant, meeting: meeting, user: meeting.author, invited: true)
-      end
+    columns :title, :project_name
+
+    mobile_columns :title, :project_name
+
+    main_column :title
+
+    def sortable?
+      false
     end
 
-    after(:create) do |meeting, evaluator|
-      meeting.project = evaluator.project if evaluator.project
-
-      # create backlog
-      create(:meeting_section, meeting:, backlog: true, title: I18n.t(:label_agenda_backlog))
+    def paginated?
+      false
     end
 
-    factory :meeting_template do |meeting|
-      meeting.sequence(:title) { |n| "Meeting template #{n}" }
-      template { true }
-      recurring_meeting
-
-      after(:build) do |template, evaluator|
-        %w[author project start_time].each do |attr|
-          template.send(:"#{attr}=", evaluator.recurring_meeting.send(attr))
-        end
-      end
+    def has_footer?
+      false
     end
 
-    factory :onetime_template do |meeting|
-      meeting.sequence(:title) { |n| "Onetime template #{n}" }
-      template { true }
-      recurring_meeting { nil }
+    def has_actions?
+      true
+    end
+
+    def mobile_title
+      I18n.t(:label_meeting_templates)
+    end
+
+    def headers
+      @headers ||= [
+        [:title, { caption: Meeting.human_attribute_name(:title) }],
+        current_project.blank? ? [:project_name, { caption: Meeting.human_attribute_name(:project) }] : nil
+      ].compact
+    end
+
+    def columns
+      @columns ||= headers.map(&:first)
     end
   end
 end

@@ -26,12 +26,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
+<% html_title t(:label_meeting_templates) %>
 
-<%=
-  render(Primer::Beta::Blankslate.new(border: true, test_selector: "meetings-blank-slate")) do |component|
-    component.with_visual_icon(icon: :book, size: :medium)
-    component.with_heading(tag: :h2).with_content(heading_text)
+<%= render(MeetingTemplates::IndexPageHeaderComponent.new(project: @project)) %>
+<%= render(MeetingTemplates::IndexSubHeaderComponent.new(project: @project)) %>
 
-    component.with_description_content(description_text)
-  end
-%>
+<% if @templates.any? %>
+  <%= render(MeetingTemplates::TableComponent.new(rows: @templates, current_project: @project)) %>
+<% else %>
+  <%= render(Meetings::BlankSlateComponent.new(project: @project, template: true)) %>
+<% end %>

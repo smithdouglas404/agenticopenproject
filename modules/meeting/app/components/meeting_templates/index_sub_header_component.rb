@@ -28,65 +28,49 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Meetings
-  class DeleteDialogComponent < ApplicationComponent
+module MeetingTemplates
+  class IndexSubHeaderComponent < ApplicationComponent
     include ApplicationHelper
-    include OpTurbo::Streamable
 
-    def initialize(meeting:, back_url: nil)
+    def initialize(project: nil)
       super
-
-      @meeting = meeting
-      @project = meeting.project
-      @back_url = back_url
+      @project = project
     end
 
-    delegate :recurring_meeting, to: :@meeting
-
-    private
-
-    def id = "delete-meeting-dialog"
-
-    def title
-      if recurring_meeting.present?
-        I18n.t("meeting.delete_dialog.occurrence.title")
+    def render_create_button?
+      if @project
+        User.current.allowed_in_project?(:create_meetings, @project)
       else
-        template = @meeting.onetime_template? ? ".template" : ""
-        I18n.t("meeting.delete_dialog.one_time#{template}.title")
+        User.current.allowed_in_any_project?(:create_meetings)
       end
     end
 
-    def heading
-      if recurring_meeting.present?
-        I18n.t("meeting.delete_dialog.occurrence.heading")
+    def create_path
+      if @project
+        create_template_project_meetings_path(@project)
       else
-        template = @meeting.onetime_template? ? ".template" : ""
-        I18n.t("meeting.delete_dialog.one_time#{template}.heading")
+        new_dialog_template_meetings_path
       end
     end
 
-    def confirmation_message
-      if recurring_meeting.present?
-        t("meeting.delete_dialog.occurrence.confirmation_message_html")
-      else
-        t("meeting.delete_dialog.one_time.confirmation_message_html")
-      end
+    def use_dialog?
+      @project.nil?
     end
 
-    def confirm_button_text
-      if recurring_meeting.present?
-        I18n.t("meeting.delete_dialog.occurrence.confirm_button")
-      else
-        I18n.t("button_delete")
-      end
+    def button_data
+      use_dialog? ? { controller: "async-dialog" } : { turbo_method: :post }
     end
 
-    def cancel_button_text
-      if recurring_meeting.present?
-        I18n.t("button_close")
-      else
-        I18n.t("button_cancel")
-      end
+    def id
+      "add-template-button"
+    end
+
+    def accessibility_label_text
+      I18n.t(:label_meeting_template_new)
+    end
+
+    def label_text
+      I18n.t(:label_template)
     end
   end
 end

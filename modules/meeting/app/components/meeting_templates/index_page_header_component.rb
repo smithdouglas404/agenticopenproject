@@ -28,45 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :meeting, class: "Meeting" do |m|
-    author factory: :user
-    project
-    start_time { Date.tomorrow + 10.hours }
-    recurring_meeting { nil }
-    duration { 1.0 }
-    location { "https://some-url.com" }
-    m.sequence(:title) { |n| "Meeting #{n}" }
+module MeetingTemplates
+  class IndexPageHeaderComponent < ApplicationComponent
+    include ApplicationHelper
 
-    trait :author_participates do
-      after(:build) do |meeting|
-        meeting.participants << build(:meeting_participant, meeting: meeting, user: meeting.author, invited: true)
-      end
+    def initialize(project: nil)
+      super
+      @project = project
     end
 
-    after(:create) do |meeting, evaluator|
-      meeting.project = evaluator.project if evaluator.project
-
-      # create backlog
-      create(:meeting_section, meeting:, backlog: true, title: I18n.t(:label_agenda_backlog))
-    end
-
-    factory :meeting_template do |meeting|
-      meeting.sequence(:title) { |n| "Meeting template #{n}" }
-      template { true }
-      recurring_meeting
-
-      after(:build) do |template, evaluator|
-        %w[author project start_time].each do |attr|
-          template.send(:"#{attr}=", evaluator.recurring_meeting.send(attr))
-        end
-      end
-    end
-
-    factory :onetime_template do |meeting|
-      meeting.sequence(:title) { |n| "Onetime template #{n}" }
-      template { true }
-      recurring_meeting { nil }
+    def breadcrumb_items
+      [
+        ({ href: project_overview_path(@project.id), text: @project.name } if @project.present?),
+        { href: url_for({ controller: "meetings", action: :index, project_id: @project }),
+          text: I18n.t(:label_meeting_plural) },
+        I18n.t(:label_meeting_templates)
+      ].compact
     end
   end
 end

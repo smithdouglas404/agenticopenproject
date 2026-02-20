@@ -28,10 +28,20 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Primer::Beta::Blankslate.new(border: true, test_selector: "meetings-blank-slate")) do |component|
-    component.with_visual_icon(icon: :book, size: :medium)
-    component.with_heading(tag: :h2).with_content(heading_text)
-
-    component.with_description_content(description_text)
+  render(Primer::OpenProject::SubHeader.new) do |subheader|
+    if render_create_button?
+      subheader.with_action_button(
+        leading_icon: :plus,
+        label: accessibility_label_text,
+        scheme: :primary,
+        tag: :a,
+        href: create_path,
+        id: id,
+        test_selector: "add-template-button",
+        data: button_data
+      ) do
+        label_text
+      end
+    end
   end
 %>

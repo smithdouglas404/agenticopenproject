@@ -35,19 +35,23 @@
           end
         end
 
-        modal_body.with_row do
-          render(Meeting::Title.new(f))
+        unless @template
+          modal_body.with_row do
+            render(Meeting::Title.new(f))
+          end
         end
 
-        modal_body.with_row(mt: 3) do
-          render(Meeting::Location.new(f, meeting: @meeting))
+        unless @template
+          modal_body.with_row(mt: 3) do
+            render(Meeting::Location.new(f, meeting: @meeting))
+          end
+
+          modal_body.with_row(mt: 3) do
+            render(Meeting::TimeGroup.new(f, meeting: @meeting))
+          end
         end
 
-        modal_body.with_row(mt: 3) do
-          render(Meeting::TimeGroup.new(f, meeting: @meeting))
-        end
-
-        if @meeting.is_a?(RecurringMeeting)
+        if !@template && @meeting.is_a?(RecurringMeeting)
           modal_body.with_row(mt: 3) do
             flex_layout(classes: "FormControl-horizontalGroup") do |frequency_row|
               frequency_row.with_column(flex: 1) do
@@ -134,7 +138,7 @@
           end
         end
 
-        if @meeting.is_a?(RecurringMeeting) && @meeting.persisted?
+        if !@template && @meeting.is_a?(RecurringMeeting) && @meeting.persisted?
           modal_body.with_row(mt: 3) do
             render(Meetings::EmailUpdatesBannerComponent.new(@meeting))
           end
