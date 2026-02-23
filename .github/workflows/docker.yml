@@ -12,6 +12,11 @@ on:
         description: "The main docker tag to use (e.g., 'dev' or '16.3.0')"
         required: true
         type: string
+      use_test_registry:
+        description: "Use openproject/openproject-test registry instead (for testing)"
+        required: false
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
       branch:
