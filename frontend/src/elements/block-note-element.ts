@@ -46,6 +46,7 @@ class BlockNoteElement extends HTMLElement {
   private errorContainer:HTMLDivElement;
   private reactRoot:Root|null = null;
   private stimulusApp:Application|null = null;
+  private renderCallback:((provider?:HocuspocusProvider) => void) | null = null;
 
   constructor() {
     super();
@@ -106,20 +107,26 @@ class BlockNoteElement extends HTMLElement {
 
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
 
-    const render = (provider?:HocuspocusProvider) => {
+    this.renderCallback = (provider?:HocuspocusProvider) => {
       this.reactRoot?.render(
         React.createElement(React.StrictMode, null, this.BlockNoteReactContainer(provider))
       );
     };
 
     if (collaborationEnabled) {
-      LiveCollaborationManager.onReady(render);
+      LiveCollaborationManager.onReady(this.renderCallback);
     } else {
-      render();
+      this.renderCallback();
     }
   }
 
   disconnectedCallback() {
+    // Deregister before unmount to prevent stale callbacks firing into a detached element
+    if (this.renderCallback) {
+      LiveCollaborationManager.offReady(this.renderCallback);
+      this.renderCallback = null;
+    }
+
     if (this.reactRoot) {
       this.reactRoot.unmount();
       this.reactRoot = null;
