@@ -37,6 +37,8 @@ module Admin::Import::Jira::ImportRuns
       @jira_import = jira_import
     end
 
+    def id = "finalize-jira-import-run-dialog"
+
     def form_arguments
       {
         action: url,

@@ -30,6 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render(
     Primer::OpenProject::DangerDialog.new(
+      id:,
       title: I18n.t("admin.jira.run.wizard.finalize_dialog.title"),
       form_arguments:,
       confirm_button_text: I18n.t("admin.jira.run.wizard.finalize_dialog.confirm_button"),
