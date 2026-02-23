@@ -156,21 +156,7 @@ class JiraImportProjectsJob < ApplicationJob
             members.uniq!
             members.compact!
             members.each do |member|
-              service_call = Members::CreateService
-                               .new(user:)
-                               .call(
-                                 project:,
-                                 roles: [project_role],
-                                 user_id: member.id,
-                                 principal: member
-                               )
-              if service_call.success?
-
-              else
-                if service_call.errors.find { |error| error.type == :taken }.blank?
-                  raise service_call.message
-                end
-              end
+              add_member(project:, project_role:, member:, user:)
             end
 
             service_call = WorkPackages::CreateService
@@ -199,12 +185,16 @@ class JiraImportProjectsJob < ApplicationJob
 
               comments = jira_issue.payload["fields"]["comment"]["comments"]
               comments.each do |comment|
-                add_comment(work_package:, comment:)
+                author = User.find_by!(login: comment["author"]["name"])
+                add_member(project:, project_role:, member: author, user:)
+                add_comment(work_package:, comment:, author:)
               end
 
               attachments = jira_issue.payload["fields"]["attachment"]
               attachments.each do |attachment|
-                add_attachment(jira_client:, work_package:, attachment:)
+                author = User.find_by!(login: attachment["author"]["name"])
+                add_member(project:, project_role:, member: author, user:)
+                add_attachment(jira_client:, work_package:, attachment:, author:)
               end
             else
               raise service_call.message
@@ -287,8 +277,7 @@ class JiraImportProjectsJob < ApplicationJob
     %(<mention class="mention" data-id="#{user.id}" data-type="user" data-text="@#{user.name}">@#{user.name}</mention>)
   end
 
-  def add_comment(work_package:, comment:)
-    author = User.find_by!(login: comment["author"]["name"])
+  def add_comment(work_package:, comment:, author:)
     notes = convert_rich_text(comment["body"])
     service_call = AddWorkPackageNoteService
                      .new(user: author, work_package:)
@@ -301,10 +290,9 @@ class JiraImportProjectsJob < ApplicationJob
     end
   end
 
-  def add_attachment(jira_client:, work_package:, attachment:)
+  def add_attachment(jira_client:, work_package:, attachment:, author:)
     filename = attachment["filename"]
     content_url = attachment["content"]
-    author = User.find_by!(login: attachment["author"]["name"])
     created_at = attachment["created"]
     mime_type = attachment["mimeType"]
     size = attachment["size"]
@@ -324,6 +312,24 @@ class JiraImportProjectsJob < ApplicationJob
       end
 
       call.on_failure do
+        raise service_call.message
+      end
+    end
+  end
+
+  def add_member(project:, project_role:, member:, user:)
+    service_call = Members::CreateService
+                     .new(user:)
+                     .call(
+                       project:,
+                       roles: [project_role],
+                       user_id: member.id,
+                       principal: member
+                     )
+    if service_call.success?
+
+    else
+      if service_call.errors.find { |error| error.type == :taken }.blank?
         raise service_call.message
       end
     end

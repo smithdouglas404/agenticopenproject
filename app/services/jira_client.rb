@@ -184,8 +184,12 @@ class JiraClient
     get("/rest/api/2/user", params: { key:, expand: "groups" })
   end
 
-  def groups(query: ".", start_at: 0, max_results: 50)
-    get("/rest/api/2/groups/picker", params: { query:, startAt: start_at, maxResults: max_results })
+  def groups(query: "", max_results: 1000)
+    get("/rest/api/2/groups/picker", params: { query:, maxResults: max_results })
+  end
+
+  def group_members(group_name: "jira-software-users", start_at: 0, max_results: 500)
+    get("/rest/api/2/group/member", params: { groupname: group_name, startAt: start_at, maxResults: max_results })
   end
 
   def project_statuses(project_id_or_key)

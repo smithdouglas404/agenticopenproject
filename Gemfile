@@ -170,6 +170,8 @@ gem "paper_trail", "~> 17.0.0"
 # State machine with audit trail
 gem "statesman", "~> 13.1.0"
 
+gem "job-iteration"
+
 gem "op-clamav-client", "~> 3.4", require: "clamav"
 
 # Global ID for polymorphic associations

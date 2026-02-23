@@ -31,6 +31,13 @@
 class Jira < ApplicationRecord
   validate :url_must_be_http_or_https
 
+  def client
+    JiraClient.new(
+      url:,
+      personal_access_token:,
+    )
+  end
+
   private
 
   def url_must_be_http_or_https

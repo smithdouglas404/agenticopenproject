@@ -18,7 +18,6 @@ class JiraImportUsersJob < ApplicationJob
         call = Users::CreateService
                  .new(user: User.system)
                  .call(jira_user.to_op_attributes)
-        ref = nil
         call.on_success do |result|
           user_id = call.result.id
           create_reference!(
@@ -61,9 +60,7 @@ class JiraImportUsersJob < ApplicationJob
           end
         end
         call.on_failure do |result|
-          if call.errors.find { |error| error.type == :taken }.blank?
-            raise call.message
-          end
+          raise call.message
         end
       end
     end

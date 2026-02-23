@@ -58,6 +58,8 @@ class JiraImport < ApplicationRecord
            :deletable?,
            to: :state_machine
 
+  delegate :client, to: :jira
+
   def project_ids
     (projects || []).pluck("id")
   end

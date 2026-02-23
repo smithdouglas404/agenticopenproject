@@ -214,6 +214,8 @@ en:
           groups:
             fetch:
               title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
             configuration:
               title: "Configure import"
             confirming:
@@ -227,6 +229,8 @@ en:
               description: "Click the button below to query the host to see what data is available to import."
               button_fetch: "Check available data from host"
               label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
             import_scope:
               title: "Import scope"
               caption: "Choose what you want to import into OpenProject"

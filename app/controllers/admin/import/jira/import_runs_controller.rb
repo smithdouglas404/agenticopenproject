@@ -35,15 +35,18 @@ module Admin::Import::Jira
 
     layout "admin"
 
-    VALID_STEPS = {
-      "init" => :init,
-      "fetch" => :fetch_instance_meta,
-      "stats" => :fetch_projects_meta,
-      "import" => :import,
-      "configure" => :configure,
-      "revert" => :revert,
-      "finalize" => :finalize
-    }.freeze
+    VALID_STEPS = %i[
+      init
+      fetch_instance_meta
+      fetch_groups_and_users
+      import_groups_and_users
+      fetch_projects_meta
+      import_scope
+      configure
+      import
+      revert
+      finalize
+    ].freeze
 
     menu_item :jira_import
 
@@ -89,7 +92,7 @@ module Admin::Import::Jira
     def change_step(step)
       return if step.blank?
 
-      method_name = VALID_STEPS[step]
+      method_name = VALID_STEPS.detect { |i| i == step.to_sym }
       raise ArgumentError, "Invalid step: #{step}" unless method_name
 
       send(method_name)
@@ -113,7 +116,7 @@ module Admin::Import::Jira
     end
 
     def fetch_instance_meta
-      @jira_import.transition_to!(:instance_meta_fetching, job_id: "JOOOOOOOO")
+      @jira_import.transition_to!(:instance_meta_fetching)
     end
 
     def fetch_projects_meta
@@ -121,7 +124,7 @@ module Admin::Import::Jira
     end
 
     def import
-      raise StandardError.new(I18n.t(:"admin.jira.run.import_blocked_error")) if blocking_run
+      # raise StandardError.new(I18n.t(:"admin.jira.run.import_blocked_error")) if blocking_run
 
       @jira_import.transition_to!(:importing)
     end
@@ -142,8 +145,20 @@ module Admin::Import::Jira
         .first
     end
 
+    def import_scope
+      @jira_import.transition_to!(:import_scope)
+    end
+
     def configure
       @jira_import.transition_to!(:configuring)
+    end
+
+    def fetch_groups_and_users
+      @jira_import.transition_to!(:groups_and_users_fetching)
+    end
+
+    def import_groups_and_users
+      @jira_import.transition_to!(:groups_and_users_importing)
     end
 
     def revert

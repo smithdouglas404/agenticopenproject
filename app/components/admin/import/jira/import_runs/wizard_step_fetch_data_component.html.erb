@@ -47,7 +47,7 @@ See COPYRIGHT and LICENSE files for more details.
               icon: :"op-reload",
               tag: :a,
               scheme: :invisible,
-              href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'fetch'),
+              href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'fetch_instance_meta'),
               aria: { label: "Back to fetch data" },
               data: { turbo_stream: true }
             )
@@ -67,7 +67,7 @@ See COPYRIGHT and LICENSE files for more details.
         scheme: :primary,
         tag: :a,
         size: :medium,
-        href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'fetch'),
+        href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'fetch_instance_meta'),
         data: { turbo_stream: true }
       )) do
         I18n.t(:"admin.jira.run.wizard.sections.fetch_data.button_fetch")
@@ -75,7 +75,7 @@ See COPYRIGHT and LICENSE files for more details.
     end
   elsif model.in_state?(:instance_meta_error)
     box.with_row(mt: 3) do
-      render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(model, 'fetch'))
+      render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(model, 'fetch_instance_meta'))
     end
   elsif model.in_state?(:instance_meta_fetching)
     box.with_row(mt: 3) do

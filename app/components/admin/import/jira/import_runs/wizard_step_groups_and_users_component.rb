@@ -28,31 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class JiraUser < ApplicationRecord
-  belongs_to :jira
-  belongs_to :jira_import
-
-  def self.groups
-    all.map { |x| x.payload["groups"]["items"] }.flatten.uniq {|x| x["name"]}
-  end
-
-  def to_op_attributes
-    firstname = payload["displayName"].split(" ")[0..-2].join(" ")
-    lastname = payload["displayName"].split(" ")[-1]
-    {
-      login: payload["name"],
-      password: SecureRandom.uuid,
-      firstname:,
-      lastname:,
-      mail: payload["emailAddress"],
-      status: payload["active"] ? :active : :locked
-    }
-  end
-
-  def try_to_find_existing_op_users
-    op_attributes = to_op_attributes
-    User.where(login: op_attributes[:login]).or(
-      User.where(mail: op_attributes[:mail])
-    )
+module Admin::Import::Jira::ImportRuns
+  class WizardStepGroupsAndUsersComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
   end
 end
