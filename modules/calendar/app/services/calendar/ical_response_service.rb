@@ -40,7 +40,9 @@ module Calendar
       query_id = params.fetch(:query_id)
       ical_token_instance = resolve_ical_token(ical_token_string)
 
-      user = ical_token_instance.user
+      user = ical_token_instance&.user
+      return ServiceResult.failure(message: "User not found") if user.nil?
+
       query = Query.find(query_id)
 
       ical_string = nil

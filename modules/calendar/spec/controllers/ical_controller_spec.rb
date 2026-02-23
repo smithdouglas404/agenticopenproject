@@ -329,6 +329,21 @@ RSpec.describe Calendar::ICalController do
       it_behaves_like "failure"
     end
 
+    context "with a valid token whose user has been deleted" do
+      before do
+        token = valid_ical_token_value # evaluate before destroying the user
+        user.destroy
+        get :show, params: {
+          project_id: project.id,
+          id: query.id,
+          ical_token: token
+        }
+      end
+
+      it { expect(response).to have_http_status(:not_found) }
+      it_behaves_like "failure"
+    end
+
     context "with invalid query" do
       before do
         get :show, params: {
