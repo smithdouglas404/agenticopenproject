@@ -42,27 +42,27 @@ import { IndexeddbPersistence } from 'y-indexeddb';
 
 export default class extends Controller {
   static values = {
-    hocuspocusUrl: String,
-    tokenPayload: String,
-    documentName: String,
-    tokenExpiresInSeconds: Number,
-    refreshUrl: String,
+    hocuspocusUrl:String,
+    tokenPayload:String,
+    documentName:String,
+    tokenExpiresInSeconds:Number,
+    refreshUrl:String,
   };
 
-  declare readonly hocuspocusUrlValue: string;
-  declare readonly tokenPayloadValue: string;
-  declare readonly documentNameValue: string;
-  declare readonly tokenExpiresInSecondsValue: number;
-  declare readonly refreshUrlValue: string;
+  declare readonly hocuspocusUrlValue:string;
+  declare readonly tokenPayloadValue:string;
+  declare readonly documentNameValue:string;
+  declare readonly tokenExpiresInSecondsValue:number;
+  declare readonly refreshUrlValue:string;
 
-  private tokenRefreshService: TokenRefreshService | null = null;
-  private indexeddbPersistence: IndexeddbPersistence | null = null;
+  private tokenRefreshService:TokenRefreshService | null = null;
+  private indexeddbPersistence:IndexeddbPersistence | null = null;
   private currentToken = '';
   private canUseCachedToken = true;
 
   // On initial load, the DOM token is fresh. On reconnection (e.g., after server restart),
   // we must fetch a fresh token since the cached one may be expired.
-  private getToken = async (): Promise<string> => {
+  private getToken = async ():Promise<string> => {
     if (this.canUseCachedToken) {
       this.canUseCachedToken = false;
       return this.currentToken;
