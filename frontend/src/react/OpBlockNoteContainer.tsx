@@ -28,25 +28,25 @@
  * ++
  */
 
-import { User } from "@blocknote/core/comments";
-import { HocuspocusProvider } from "@hocuspocus/provider";
-import { useEffect, useRef } from "react";
-import * as Y from "yjs";
-import { DocumentLoadingSkeleton } from "./components/DocumentLoadingSkeleton";
-import { OpBlockNoteEditor } from "./components/OpBlockNoteEditor";
-import { fetchConnectionTemplate } from "./helpers/connection-template-fetcher";
-import { useCollaboration } from "./hooks/useCollaboration";
+import { User } from '@blocknote/core/comments';
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import { useEffect, useRef } from 'react';
+import * as Y from 'yjs';
+import { DocumentLoadingSkeleton } from './components/DocumentLoadingSkeleton';
+import { OpBlockNoteEditor } from './components/OpBlockNoteEditor';
+import { fetchConnectionTemplate } from './helpers/connection-template-fetcher';
+import { useCollaboration } from './hooks/useCollaboration';
 
 export interface OpBlockNoteContainerProps {
-  inputField: HTMLInputElement;
-  inputText?: string;
-  activeUser: User;
-  readOnly: boolean;
-  openProjectUrl: string;
-  attachmentsUploadUrl: string;
-  attachmentsCollectionKey: string;
-  hocuspocusProvider?: HocuspocusProvider;
-  errorContainer?: HTMLElement;
+  inputField:HTMLInputElement;
+  inputText?:string;
+  activeUser:User;
+  readOnly:boolean;
+  openProjectUrl:string;
+  attachmentsUploadUrl:string;
+  attachmentsCollectionKey:string;
+  hocuspocusProvider?:HocuspocusProvider;
+  errorContainer?:HTMLElement;
 }
 
 export default function OpBlockNoteContainer({
@@ -86,10 +86,10 @@ export default function OpBlockNoteContainer({
 
     if (offlineMode) {
       hadErrorRef.current = true;
-      void fetchConnectionTemplate("error", errorContainer);
+      void fetchConnectionTemplate('error', errorContainer);
     } else if (hadErrorRef.current) {
       // Only fetch recovery if we previously had an error (avoid fetching on initial render)
-      void fetchConnectionTemplate("recovery", errorContainer);
+      void fetchConnectionTemplate('recovery', errorContainer);
     }
   }, [offlineMode, errorContainer]);
 
