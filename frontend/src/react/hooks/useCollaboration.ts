@@ -28,14 +28,14 @@
  * ++
  */
 
-import { HocuspocusProvider } from "@hocuspocus/provider";
-import { debugLog } from "core-app/shared/helpers/debug_output";
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import { debugLog } from 'core-app/shared/helpers/debug_output';
 import {
   PROVIDER_AUTH_ERROR_EVENT,
   ProviderAuthErrorKind,
-} from "core-stimulus/services/documents/token-refresh.service";
-import { useCallback, useEffect, useRef, useState } from "react";
-import * as Y from "yjs";
+} from 'core-stimulus/services/documents/token-refresh.service';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import * as Y from 'yjs';
 
 function useConnectionTimeout(provider: HocuspocusProvider | undefined, timeoutMs = 5000) {
   const [hasTimedOut, setHasTimedOut] = useState(false);
@@ -76,12 +76,12 @@ function useCollaborationProvider(
       onSynced();
     }
 
-    provider.on("synced", onSynced);
-    provider.on("disconnect", onDisconnect);
+    provider.on('synced', onSynced);
+    provider.on('disconnect', onDisconnect);
 
     return () => {
-      provider.off("synced", onSynced);
-      provider.off("disconnect", onDisconnect);
+      provider.off('synced', onSynced);
+      provider.off('disconnect', onDisconnect);
     };
   }, [provider, onSynced, onDisconnect]);
 }
@@ -96,10 +96,10 @@ function useLocalDocumentSync(doc: Y.Doc, inputField: HTMLInputElement, enabled:
       inputField.value = b64;
     };
 
-    doc.on("update", updateInput);
+    doc.on('update', updateInput);
 
     return () => {
-      doc.off("update", updateInput);
+      doc.off('update', updateInput);
       doc.destroy();
     };
   }, [doc, inputField, enabled]);
@@ -135,7 +135,7 @@ export function useCollaboration(provider: HocuspocusProvider | undefined, doc: 
 
   useEffect(() => {
     if (hasTimedOut) {
-      debugLog("(BlockNote Editor) Timeout - offline mode");
+      debugLog('(BlockNote Editor) Timeout - offline mode');
       setIsLoading(false);
       setOfflineMode(true);
     }
