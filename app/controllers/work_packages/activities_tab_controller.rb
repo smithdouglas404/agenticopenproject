@@ -232,6 +232,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
       format.turbo_stream do
         @turbo_status = :not_found
         render_error_flash_message_via_turbo_stream(message: error_message)
+        render turbo_stream: turbo_streams, status: :not_found
       end
     end
   end
@@ -249,7 +250,9 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def find_journal
-    @journal = Journal
+    @journal = @work_package
+      .journals
+      .internal_visible
       .with_sequence_version
       .find(params[:id])
   rescue ActiveRecord::RecordNotFound
