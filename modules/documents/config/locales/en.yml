@@ -47,7 +47,6 @@ en:
         content_binary: "Content binary"
         title: "Title"
 
-
   activity:
     filter:
       document: "Documents"
@@ -91,8 +90,7 @@ en:
     show_edit_view:
       connection_error_notice:
         description: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
+          You are currently offline, but you can edit the document. When the network appears, the changes are synchronized.
         action: Try again
       connection_recovery_notice:
         description: "The connection to the real-time text collaboration server has been restored."
@@ -166,7 +164,6 @@ en:
           Hocuspocus server.
         primary_action: Enable real-time collaboration
         success: Real-time collaboration has been enabled.
-
 
       disable_text_collaboration_dialog:
         title: Disable real-time collaboration
