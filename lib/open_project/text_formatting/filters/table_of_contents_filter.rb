@@ -43,7 +43,12 @@ module OpenProject::TextFormatting
       end
 
       def add_header_link_class_and_id(node, id)
-        node.css("a").first["class"] = "op-uc-link_permalink icon-link"
+        anchor = node.css("a").first
+        if anchor
+          anchor["class"] = "op-uc-link_permalink icon-link"
+          anchor["href"] = "##{fragment_id_prefix}#{id}"
+          anchor.remove_attribute("id") # avoid duplicate id with heading; only heading keeps the id
+        end
         node["id"] = "#{fragment_id_prefix}#{id}"
       end
 
