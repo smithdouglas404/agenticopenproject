@@ -480,7 +480,7 @@ Redmine::MenuManager.map :admin_menu do |menu|
             { controller: "/admin/mcp_configurations", action: :index },
             if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
             caption: I18n.t("menus.admin.ai"),
-            icon: :"sparkle-fill"
+            icon: :sparkle
 
   menu.push :mcp_configurations,
             { controller: "/admin/mcp_configurations", action: :index },
