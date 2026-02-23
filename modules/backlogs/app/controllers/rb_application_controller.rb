@@ -44,11 +44,11 @@ class RbApplicationController < ApplicationController
     # because of strong params, we want to pluck this variable out right now,
     # otherwise it causes issues where we are doing `attributes=`.
     if (@sprint_id = params.delete(:sprint_id))
-      @sprint = Sprint.find(@sprint_id)
+      @sprint = Sprint.visible.find(@sprint_id)
       @project = @sprint.project
+    elsif params[:project_id]
+      @project = Project.visible.find(params[:project_id])
     end
-    # This overrides sprint's project if we set another project, say a subproject
-    @project = Project.find(params[:project_id]) if params[:project_id]
   end
 
   def check_if_plugin_is_configured
