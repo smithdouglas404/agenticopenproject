@@ -24,3 +24,6 @@ hr:
     work_packages:
       properties:
         storyPoints: "Točke priče"
+    burndown:
+      day: "Day"
+      points: "Points"

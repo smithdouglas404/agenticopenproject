@@ -67,7 +67,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
     it "does not show the edit buttons" do
       overview_page.within_project_attributes_sidebar do
-        expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-edit-button']")
+        expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-modal-button-']")
       end
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
     it "does not show the edit buttons" do
       overview_page.within_project_attributes_sidebar do
-        expect(page).to have_no_css("[data-test-selector*='project-custom-field-edit-button']")
+        expect(page).to have_no_css("[data-test-selector*='project-custom-field-modal-button-']")
       end
     end
   end
@@ -96,7 +96,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
     it "shows the edit buttons" do
       overview_page.within_project_attributes_sidebar do
-        expect(page).to have_css("[data-test-selector*='project-custom-field-edit-button']", count: 13)
+        expect(page).to have_css("[data-test-selector*='project-custom-field-modal-button-']", count: 13)
       end
     end
   end

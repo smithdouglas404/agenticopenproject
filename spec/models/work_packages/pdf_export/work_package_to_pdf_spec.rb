@@ -376,6 +376,28 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
         expect(exporter.send(:pdf_embeddable?, "image/png")).to be true
         expect(exporter.send(:pdf_embeddable?, "image/jpeg")).to be true
         expect(exporter.send(:pdf_embeddable?, "image/gif")).to be true
+        expect(exporter.send(:pdf_embeddable?, "image/webp")).to be true
+      end
+    end
+
+    describe "with WebP image attachment" do
+      let(:webp_path) { Rails.root.join("spec/fixtures/files/image.webp") }
+      let(:webp_attachment) { Attachment.new author: user, file: File.open(webp_path) }
+      let(:attachments) { [webp_attachment] }
+      let(:description) do
+        <<~DESCRIPTION
+          This work package contains a WebP image.
+          ![](/api/v3/attachments/#{webp_attachment.id}/content)
+        DESCRIPTION
+      end
+
+      before do
+        webp_attachment.save
+      end
+
+      it "converts WebP images and includes them in the PDF export" do
+        expect(webp_attachment.content_type).to eq "image/webp"
+        expect(pdf[:images].length).to eq(1)
       end
     end
 

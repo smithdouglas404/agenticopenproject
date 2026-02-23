@@ -123,6 +123,16 @@ ms:
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -1028,7 +1038,6 @@ ms:
         title: "Aliran kerja hilang untuk perkongsian pakej kerja"
         message: "Tiada aliran kerja yang dikonfigurasi untuk peranan 'Pengedit Pakej Kerja'. Tanpa aliran kerja, perkongsian dengan pengguna tidak boleh mengubah status pakej kerja tersebut. Aliran kerja boleh disalin. Pilih jenis sumber (cth. 'Tugasan') dan peranan sumber (cth. 'Ahli'). Kemudian pilih jenis sasaran. Sebagai permulaan, anda boleh pilih semua jenis sebagai sasaran. Akhirnya, pilih peranan 'Pengedit Pakej Kerja' sebagai sasaran dan tekan 'Salin'. Setelah mencipta default ini, selaraskan semula aliran kerja sebagaimana yang anda lakukan untuk setiap peranan yang lain."
         link_message: "Konfigurasi aliran kerja dalam pentadbiran."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1153,6 +1162,9 @@ ms:
         dependencies: "Dependencies"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Paparkan sehingga"
       attachment:
@@ -1527,6 +1539,7 @@ ms:
         not_available: "adalah tidak tersedia kerana konfigurasi sistem."
         not_deletable: "tidak dapat dipadamkan."
         not_current_user: "adalah bukan pengguna semasa."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "tidak dijumpai."
         not_a_date: "bukan tarikh yang sah."
         not_a_datetime: "bukan tarikh masa yang sah."
@@ -2071,6 +2084,7 @@ ms:
     role: "Peranan"
     roles: "Peranan\n"
     search: "Cari"
+    sprint: "Sprint"
     start_date: "Tarikh mula"
     status: "Status"
     state: "State"
@@ -3171,7 +3185,6 @@ ms:
   label_duplicate: "duplikasi"
   label_duplicates: "pendua"
   label_edit: "Edit"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Tukar pilihan berganda"
   label_enabled_project_custom_fields: "Ruang tersuai yang diaktifkan"
@@ -3925,6 +3938,7 @@ ms:
   notice_successful_delete: "Pemadaman yang berjaya."
   notice_successful_cancel: "Pembatalan yang berjaya."
   notice_successful_update: "Kemas kini berjaya."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creation failed."
   notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
   notice_unsuccessful_update: "Update failed."
@@ -4084,6 +4098,7 @@ ms:
   permission_edit_project_query: "Edit pertanyaan projek"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4268,6 +4283,9 @@ ms:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4312,6 +4330,9 @@ ms:
   setting_smtp_password: "Kata laluan SMTP"
   setting_smtp_domain: "Domain SMTP HELO"
   setting_activity_days_default: "Hari yang dipaparkan pada aktiviti projek"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subtajuk aplikasi"
   setting_app_title: "Tajuk aplikasi"
   setting_attachment_max_size: "Saiz maksimum lampiran"
@@ -4421,7 +4442,6 @@ ms:
   setting_repository_checkout_text: "Teks arahan pengeluaran"
   setting_repository_log_display_limit: "Bilangan maksimum semakan yang dipaparkan pada log fail"
   setting_repository_truncate_at: "Bilangan maksimum fail yang dipaparkan dalam pelayar repositori"
-  setting_rest_api_enabled: "Benarkan perkhidmatan web REST"
   setting_self_registration: "Pendaftaran sendiri"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4852,8 +4872,7 @@ ms:
     reset_failed_logins: "Tetapkan semula log masuk yang gagal"
     status_user_and_brute_force: "%{user} dan %{brute_force}"
     status_change: "Perubahan status"
-    text_change_disabled_for_provider_login: "Nama tersebut ditetapkan oleh penyedia log masuk anda dan oleh itu tidak boleh diubah."
-    text_change_disabled_for_ldap_login: "Nama dan e-mel ditetapkan oleh LDAP dan oleh itu tidak boleh diubah."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Buka kunci"
     unlock_and_reset_failed_logins: "Buka kunci dan tetapkan semula log masuk yang gagal"
     error_cannot_delete_user: "User cannot be deleted"

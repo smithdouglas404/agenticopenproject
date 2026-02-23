@@ -6,6 +6,7 @@ de:
       configure: 'Widget konfigurieren'
       widgets:
         missing_permission: "Sie verfügen nicht über die erforderlichen Berechtigungen, um dieses Steuerelement anzuzeigen."
+        not_available: "Dieses Widget ist derzeit nicht verfügbar."
         custom_text:
           title: 'Benutzerdefinierter Text'
         documents:
@@ -27,8 +28,6 @@ de:
           not_set: 'Nicht gesetzt'
           finished: 'Abgeschlossen'
           discontinued: 'Eingestellt'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Unterelemente'
         project_favorites:

@@ -123,6 +123,16 @@ ca:
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -1036,7 +1046,6 @@ ca:
         title: "Falta un flux de treball per compartir paquets de treball"
         message: "No s'ha configurat cap flux de treball per a la funció \"Editor de paquets de treball\". Sense un flux de treball, el que es comparteix amb l'usuari no pot alterar l'estat del paquet de treball. Els fluxos de treball es poden copiar. Seleccioneu un tipus d'origen (p. ex., \"Tasca\") i una funció d'origen (p. ex., \"Membre\"). A continuació, seleccioneu els tipus d'objectius. Per començar, podeu seleccionar tots els tipus com a objectius. Finalment, seleccioneu la funció \"Editor de paquets de treball\" com a objectiu i premeu \"Copia\". Després d'haver creat els valors predeterminats, ajusteu els fluxos de treball com ho feu per a qualsevol altra funció."
         link_message: "Configura els fluxos de treball a l'administració."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1161,6 +1170,9 @@ ca:
         dependencies: "Dependències"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Mostrar fins"
       attachment:
@@ -1535,6 +1547,7 @@ ca:
         not_available: "no és disponible degut a la configuració del sistema."
         not_deletable: "no es pot eliminar."
         not_current_user: "no és l'usuari actual."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "no és una data vàlida."
         not_a_datetime: "no és una data-i-hora vàlida."
@@ -2098,6 +2111,7 @@ ca:
     role: "Rol"
     roles: "Rols"
     search: "Cercar"
+    sprint: "Sprint"
     start_date: "Data d'inici"
     status: "Estat"
     state: "State"
@@ -3219,7 +3233,6 @@ ca:
   label_duplicate: "duplicats"
   label_duplicates: "duplicats"
   label_edit: "Editar"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edita: %{x}"
   label_enable_multi_select: "Activa/desactiva selecció múltiple"
   label_enabled_project_custom_fields: "Habilita camps personalitzats"
@@ -3971,6 +3984,7 @@ ca:
   notice_successful_delete: "Esborrat correctament."
   notice_successful_cancel: "Successful cancellation."
   notice_successful_update: "S'ha modificat correctament."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creation failed."
   notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
   notice_unsuccessful_update: "Update failed."
@@ -4131,6 +4145,7 @@ ca:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4313,6 +4328,9 @@ ca:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4357,6 +4375,9 @@ ca:
   setting_smtp_password: "Contrasenya SMTP"
   setting_smtp_domain: "Domini SMTP HELLO"
   setting_activity_days_default: "Dies a mostrar a l'activitat del projecte"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subtítol de l'aplicació"
   setting_app_title: "Títol de l'aplicació"
   setting_attachment_max_size: "Mida màxima dels fitxers adjunts"
@@ -4466,7 +4487,6 @@ ca:
   setting_repository_checkout_text: "Text d'instrucció de checkout"
   setting_repository_log_display_limit: "Número màxim de revisions que es mostren al registre de fitxers"
   setting_repository_truncate_at: "Nombre màxim de filtres mostrats en el repositori del navegador"
-  setting_rest_api_enabled: "Habilita el servei web REST"
   setting_self_registration: "Registre automàtic"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4898,8 +4918,7 @@ ca:
     reset_failed_logins: "Reiniciar inicis de sessió fallits"
     status_user_and_brute_force: "%{user} i %{brute_force}"
     status_change: "Canvi d'estat"
-    text_change_disabled_for_provider_login: "El nom està fixat pel teu proveïdor d'inici de sessió i per tant no es pot canviar."
-    text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Desbloquejar"
     unlock_and_reset_failed_logins: "Desbloquejar i reiniciar inicis de sessió fallits"
     error_cannot_delete_user: "User cannot be deleted"

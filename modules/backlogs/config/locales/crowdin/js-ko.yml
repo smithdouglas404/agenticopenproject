@@ -24,3 +24,6 @@ ko:
     work_packages:
       properties:
         storyPoints: "스토리 포인트"
+    burndown:
+      day: "Day"
+      points: "Points"

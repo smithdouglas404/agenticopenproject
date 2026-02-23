@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,6 +32,7 @@ require_relative "../spec_helper"
 
 RSpec.describe CostlogController do
   include Cost::PluginSpecHelper
+
   let (:project) { create(:project_with_types) }
   let (:work_package) do
     create(:work_package, project:,
@@ -68,7 +71,7 @@ RSpec.describe CostlogController do
   shared_examples_for "assigns" do
     it do
       expect(assigns(:cost_entry).project).to eq(expected_project)
-      expect(assigns(:cost_entry).entity).to eq(expected_work_package)
+      expect(assigns(:cost_entry).entity).to eq(expected_entity)
       expect(assigns(:cost_entry).user).to eq(expected_user)
       expect(assigns(:cost_entry).spent_on).to eq(expected_spent_on)
       expect(assigns(:cost_entry).cost_type).to eq(expected_cost_type)
@@ -94,7 +97,7 @@ RSpec.describe CostlogController do
     end
 
     let(:expected_project) { project }
-    let(:expected_work_package) { work_package }
+    let(:expected_entity) { work_package }
     let(:expected_user) { user }
     let(:expected_spent_on) { Date.current }
     let(:expected_cost_type) { nil }
@@ -112,17 +115,25 @@ RSpec.describe CostlogController do
       it { expect(response).to render_template("edit") }
     end
 
+    shared_examples_for "not_found new" do
+      before do
+        get :new, params:
+      end
+
+      it { expect(response).to have_http_status(:not_found) }
+    end
+
     shared_examples_for "forbidden new" do
       before do
         get :new, params:
       end
 
-      it { expect(response.response_code).to eq(403) }
+      it { expect(response).to have_http_status(:forbidden) }
     end
 
     describe "WHEN user allowed to create new cost_entry" do
       before do
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
       end
 
       it_behaves_like "successful new"
@@ -136,7 +147,7 @@ RSpec.describe CostlogController do
         cost_type.default = true
         cost_type.save!
 
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
       end
 
       it_behaves_like "successful new"
@@ -144,7 +155,7 @@ RSpec.describe CostlogController do
 
     describe "WHEN user is allowed to create new own cost_entry" do
       before do
-        grant_current_user_permissions user, [:log_own_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_own_costs]
       end
 
       it_behaves_like "successful new"
@@ -152,10 +163,14 @@ RSpec.describe CostlogController do
 
     describe "WHEN user is not allowed to create new cost_entries" do
       before do
-        grant_current_user_permissions user, []
+        grant_current_user_permissions user, %i[view_project view_work_packages]
       end
 
       it_behaves_like "forbidden new"
+    end
+
+    describe "WHEN user is not a project member" do
+      it_behaves_like "not_found new"
     end
   end
 
@@ -177,17 +192,25 @@ RSpec.describe CostlogController do
       it { expect(response).to render_template("edit") }
     end
 
+    shared_examples_for "not_found edit" do
+      before do
+        get :edit, params:
+      end
+
+      it { expect(response).to have_http_status(:not_found) }
+    end
+
     shared_examples_for "forbidden edit" do
       before do
         get :edit, params:
       end
 
-      it { expect(response.response_code).to eq(403) }
+      it { expect(response).to have_http_status(:forbidden) }
     end
 
     describe "WHEN the user is allowed to edit cost_entries" do
       before do
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
       end
 
       it_behaves_like "successful edit"
@@ -196,7 +219,7 @@ RSpec.describe CostlogController do
     describe "WHEN the user is allowed to edit cost_entries " \
              "WHEN trying to edit a not own cost_entry" do
       before do
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
 
         cost_entry.user = create(:user)
         cost_entry.save(validate: false)
@@ -207,7 +230,7 @@ RSpec.describe CostlogController do
 
     describe "WHEN the user is allowed to edit own cost_entries" do
       before do
-        grant_current_user_permissions user, [:edit_own_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_own_cost_entries]
       end
 
       it_behaves_like "successful edit"
@@ -216,7 +239,7 @@ RSpec.describe CostlogController do
     describe "WHEN the user is allowed to edit own cost_entries " \
              "WHEN trying to edit a not own cost_entry" do
       before do
-        grant_current_user_permissions user, [:edit_own_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_own_cost_entries]
 
         cost_entry.user = create(:user)
         cost_entry.save(validate: false)
@@ -227,7 +250,7 @@ RSpec.describe CostlogController do
 
     describe "WHEN the user is not allowed to edit cost_entries" do
       before do
-        grant_current_user_permissions user, []
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries]
       end
 
       it_behaves_like "forbidden edit"
@@ -236,7 +259,7 @@ RSpec.describe CostlogController do
     describe "WHEN the user is allowed to edit cost_entries " \
              "WHEN the cost_entry is associated to a different project" do
       before do
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
 
         cost_entry.project = create(:project_with_types)
         cost_entry.entity = create(:work_package, project: cost_entry.project,
@@ -245,13 +268,13 @@ RSpec.describe CostlogController do
         cost_entry.save!
       end
 
-      it_behaves_like "forbidden edit"
+      it_behaves_like "not_found edit"
     end
 
     describe "WHEN the user is allowed to edit cost_entries " \
              "WHEN the provided id is invalid" do
       before do
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages edit_cost_entries]
 
         params["id"] = "this-entry-does-not-exist"
 
@@ -275,7 +298,7 @@ RSpec.describe CostlogController do
                           "overridden_costs" => overridden_costs.to_s } }
     end
     let(:expected_project) { project }
-    let(:expected_work_package) { work_package }
+    let(:expected_entity) { work_package }
     let(:expected_user) { user }
     let(:expected_overridden_costs) { overridden_costs }
     let(:expected_spent_on) { date }
@@ -288,7 +311,7 @@ RSpec.describe CostlogController do
     let(:units) { 5.0 }
 
     before do
-      cost_type.save! if cost_type.present?
+      cost_type.presence&.save!
     end
 
     shared_examples_for "successful create" do
@@ -319,12 +342,20 @@ RSpec.describe CostlogController do
         post :create, params:
       end
 
-      it { expect(response.response_code).to eq(403) }
+      it { expect(response).to have_http_status(:forbidden) }
+    end
+
+    shared_examples_for "not_found create" do
+      before do
+        post :create, params:
+      end
+
+      it { expect(response).to have_http_status(:not_found) }
     end
 
     describe "WHEN the user is allowed to create cost_entries" do
       before do
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
       end
 
       it_behaves_like "successful create"
@@ -332,7 +363,7 @@ RSpec.describe CostlogController do
 
     describe "WHEN the user is allowed to create own cost_entries" do
       before do
-        grant_current_user_permissions user, [:log_own_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_own_costs]
       end
 
       it_behaves_like "successful create"
@@ -343,7 +374,7 @@ RSpec.describe CostlogController do
       let(:expected_spent_on) { Date.today }
 
       before do
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
 
         params["cost_entry"].delete("spent_on")
       end
@@ -357,7 +388,7 @@ RSpec.describe CostlogController do
       let(:expected_cost_type) { nil }
 
       before do
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
         params["cost_entry"]["cost_type_id"] = (cost_type.id + 1).to_s
       end
 
@@ -372,7 +403,7 @@ RSpec.describe CostlogController do
       before do
         create(:cost_type, default: true)
 
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
         params["cost_entry"]["cost_type_id"] = 1
       end
 
@@ -387,7 +418,7 @@ RSpec.describe CostlogController do
       before do
         create(:cost_type, default: true)
 
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
         params["cost_entry"].delete("cost_type_id")
       end
 
@@ -400,7 +431,7 @@ RSpec.describe CostlogController do
       let(:expected_cost_type) { nil }
 
       before do
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
         params["cost_entry"].delete("cost_type_id")
       end
 
@@ -410,7 +441,7 @@ RSpec.describe CostlogController do
     describe "WHEN the user is allowed to create cost_entries " \
              "WHEN the cost_type id provided belongs to an inactive cost_type" do
       before do
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
         cost_type.deleted_at = Date.today
         cost_type.save!
       end
@@ -422,8 +453,8 @@ RSpec.describe CostlogController do
              "WHEN the user is allowed to log cost for someone else and is doing so " \
              "WHEN the other user is a member of the project" do
       before do
-        grant_current_user_permissions user, []
-        grant_current_user_permissions user2, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages]
+        grant_current_user_permissions user2, %i[view_project view_work_packages log_costs]
 
         params["cost_entry"]["user_id"] = user.id.to_s
       end
@@ -435,10 +466,12 @@ RSpec.describe CostlogController do
              "WHEN the user is allowed to log cost for someone else and is doing so " \
              "WHEN the other user isn't a member of the project" do
       before do
-        grant_current_user_permissions user2, [:log_costs]
+        grant_current_user_permissions user2, %i[view_project view_work_packages log_costs]
 
         params["cost_entry"]["user_id"] = user.id.to_s
       end
+
+      let(:expected_user) { nil } # user isn't member so won't be found
 
       it_behaves_like "invalid create"
     end
@@ -451,10 +484,10 @@ RSpec.describe CostlogController do
                               type: project2.types.first,
                               author: user)
       end
-      let(:expected_work_package) { work_package2 }
+      let(:expected_entity) { nil } # user has no access to the WP so it won't be found
 
       before do
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
 
         params["cost_entry"]["entity_id"] = work_package2.id
       end
@@ -464,10 +497,10 @@ RSpec.describe CostlogController do
 
     describe "WHEN the user is allowed to create cost_entries " \
              "WHEN no work_package_id is provided" do
-      let(:expected_work_package) { nil }
+      let(:expected_entity) { nil }
 
       before do
-        grant_current_user_permissions user, [:log_costs]
+        grant_current_user_permissions user, %i[view_project view_work_packages log_costs]
 
         params["cost_entry"].delete("entity_id")
       end
@@ -478,7 +511,7 @@ RSpec.describe CostlogController do
     describe "WHEN the user is allowed to create own cost_entries " \
              "WHEN the user is trying to log costs for somebody else" do
       before do
-        grant_current_user_permissions user2, [:log_own_costs]
+        grant_current_user_permissions user2, %i[view_project view_work_packages log_own_costs]
 
         params["cost_entry"]["user_id"] = user.id
       end
@@ -488,7 +521,7 @@ RSpec.describe CostlogController do
 
     describe "WHEN the user is not allowed to create cost_entries" do
       before do
-        grant_current_user_permissions user, []
+        grant_current_user_permissions user, %i[view_project view_work_packages]
       end
 
       it_behaves_like "forbidden create"
@@ -500,13 +533,13 @@ RSpec.describe CostlogController do
       { "id" => cost_entry.id.to_s,
         "cost_entry" => { "comments" => "lorem",
                           "entity_type" => "WorkPackage",
-                          "entity_id" => cost_entry.work_package.id.to_s,
+                          "entity_id" => cost_entry.entity_id.to_s,
                           "units" => cost_entry.units.to_s,
                           "spent_on" => cost_entry.spent_on.to_s,
                           "user_id" => cost_entry.user.id.to_s,
                           "cost_type_id" => cost_entry.cost_type.id.to_s } }
     end
-    let(:expected_work_package) { cost_entry.work_package }
+    let(:expected_entity) { cost_entry.entity }
     let(:expected_user) { cost_entry.user }
     let(:expected_project) { cost_entry.project }
     let(:expected_cost_type) { cost_entry.cost_type }
@@ -539,6 +572,7 @@ RSpec.describe CostlogController do
       it_behaves_like "assigns"
       it { expect(response).to be_successful }
       it { expect(flash[:notice]).to be_nil }
+      it { expect(response).to render_template("edit") }
     end
 
     shared_examples_for "forbidden update" do
@@ -546,7 +580,15 @@ RSpec.describe CostlogController do
         put :update, params:
       end
 
-      it { expect(response.response_code).to eq(403) }
+      it { expect(response).to have_http_status(:forbidden) }
+    end
+
+    shared_examples_for "not_found update" do
+      before do
+        put :update, params:
+      end
+
+      it { expect(response).to have_http_status(:not_found) }
     end
 
     describe "WHEN the user is allowed to update cost_entries " \
@@ -558,7 +600,7 @@ RSpec.describe CostlogController do
                 cost_type
                 overridden_costs
                 spent_on" do
-      let(:expected_work_package) do
+      let(:expected_entity) do
         create(:work_package, project:,
                               type: project.types.first,
                               author: user)
@@ -571,10 +613,10 @@ RSpec.describe CostlogController do
 
       before do
         grant_current_user_permissions expected_user, []
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
 
         params["cost_entry"]["entity_type"] = "WorkPackage"
-        params["cost_entry"]["entity_id"] = expected_work_package.id.to_s
+        params["cost_entry"]["entity_id"] = expected_entity.id.to_s
         params["cost_entry"]["user_id"] = expected_user.id.to_s
         params["cost_entry"]["spent_on"] = expected_spent_on.to_s
         params["cost_entry"]["units"] = expected_units.to_s
@@ -588,7 +630,7 @@ RSpec.describe CostlogController do
     describe "WHEN the user is allowed to update cost_entries " \
              "WHEN updating nothing" do
       before do
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
       end
 
       it_behaves_like "successful update"
@@ -599,7 +641,7 @@ RSpec.describe CostlogController do
       let(:expected_units) { cost_entry.units + 20 }
 
       before do
-        grant_current_user_permissions user, [:edit_own_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_own_cost_entries]
 
         params["cost_entry"]["units"] = expected_units.to_s
       end
@@ -611,10 +653,10 @@ RSpec.describe CostlogController do
              "WHEN updating the user " \
              "WHEN the new user isn't a member of the project" do
       let(:user2) { create(:user) }
-      let(:expected_user) { user2 }
+      let(:expected_user) { nil } # user is not allowed to see the user so we cannot expect it to be assigned
 
       before do
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
 
         params["cost_entry"]["user_id"] = user2.id.to_s
       end
@@ -630,10 +672,10 @@ RSpec.describe CostlogController do
         create(:work_package, project: project2,
                               type: project2.types.first)
       end
-      let(:expected_work_package) { work_package2 }
+      let(:expected_entity) { nil } # user has no access to the WP so it won't be found
 
       before do
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
 
         params["cost_entry"]["entity_id"] = work_package2.id.to_s
       end
@@ -644,10 +686,10 @@ RSpec.describe CostlogController do
     describe "WHEN the user is allowed to update cost_entries " \
              "WHEN updating the entity " \
              "WHEN the new entity isn't existing" do
-      let(:expected_work_package) { nil }
+      let(:expected_entity) { nil }
 
       before do
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
 
         params["cost_entry"]["entity_id"] = "this-id-does-not-exist"
       end
@@ -661,7 +703,7 @@ RSpec.describe CostlogController do
       let(:expected_cost_type) { create(:cost_type, deleted_at: Date.today) }
 
       before do
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
 
         params["cost_entry"]["cost_type_id"] = expected_cost_type.id.to_s
       end
@@ -675,7 +717,7 @@ RSpec.describe CostlogController do
       let(:expected_cost_type) { nil }
 
       before do
-        grant_current_user_permissions user, [:edit_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
 
         params["cost_entry"]["cost_type_id"] = "1234123512"
       end
@@ -689,7 +731,7 @@ RSpec.describe CostlogController do
       let(:user3) { create(:user) }
 
       before do
-        grant_current_user_permissions user, [:edit_own_cost_entries]
+        grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_own_cost_entries]
 
         params["cost_entry"]["user_id"] = user3.id
       end
@@ -703,7 +745,7 @@ RSpec.describe CostlogController do
       let(:user3) { create(:user) }
 
       before do
-        grant_current_user_permissions user3, [:edit_own_cost_entries]
+        grant_current_user_permissions user3, %i[view_project view_work_packages view_cost_entries edit_own_cost_entries]
 
         params["cost_entry"]["units"] = (cost_entry.units + 20).to_s
       end

@@ -6,6 +6,7 @@ eo:
       configure: 'Agordi kromprogrameton'
       widgets:
         missing_permission: "You don't have the necessary permissions to view this widget."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Propra teksto'
         documents:
@@ -27,8 +28,6 @@ eo:
           not_set: 'Ne agordita'
           finished: 'Finita'
           discontinued: 'Discontinued'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

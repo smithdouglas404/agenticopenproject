@@ -24,3 +24,6 @@ fi:
     work_packages:
       properties:
         storyPoints: "Tarinapisteet"
+    burndown:
+      day: "Day"
+      points: "Points"

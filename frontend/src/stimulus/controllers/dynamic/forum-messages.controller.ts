@@ -53,7 +53,6 @@ export default class ForumMessagesController extends Controller {
     void fetch(href, {
       headers: {
         Accept: 'application/json',
-        'X-Authentication-Scheme': 'Session',
       },
     })
       .then((response) => response.json())

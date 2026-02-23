@@ -24,3 +24,6 @@ af:
     work_packages:
       properties:
         storyPoints: "Storie Punte"
+    burndown:
+      day: "Day"
+      points: "Points"

@@ -87,7 +87,7 @@ glossary:
 github:
   href: https://github.com/opf/openproject
 hocuspocus_server_docs:
-  href: https://github.com/opf/op-blocknote-hocuspocus
+  href: https://github.com/opf/openproject/tree/dev/extensions/op-blocknote-hocuspocus
 ical_docs:
   href: https://www.openproject.org/docs/user-guide/calendar/#subscribe-to-a-calendar
 installation_guides:

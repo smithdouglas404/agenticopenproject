@@ -50,14 +50,17 @@ RSpec.describe "Backlogs in backlog view", :js do
   end
   let(:role) do
     create(:project_role,
-           permissions: %i(view_master_backlog
-                           add_work_packages
-                           view_work_packages
-                           edit_work_packages
-                           manage_subtasks
-                           manage_versions
-                           update_sprints
-                           assign_versions))
+           permissions: %i(
+             view_project
+             view_master_backlog
+             add_work_packages
+             view_work_packages
+             edit_work_packages
+             manage_subtasks
+             manage_versions
+             update_sprints
+             assign_versions
+           ))
   end
   let!(:current_user) do
     create(:user,
@@ -66,8 +69,8 @@ RSpec.describe "Backlogs in backlog view", :js do
   let!(:sprint) do
     create(:version,
            project:,
-           start_date: Date.today - 10.days,
-           effective_date: Date.today + 10.days,
+           start_date: 10.days.ago,
+           effective_date: 10.days.from_now,
            version_settings_attributes: [{ project:, display: VersionSetting::DISPLAY_LEFT }])
   end
   let!(:backlog) do
@@ -76,14 +79,14 @@ RSpec.describe "Backlogs in backlog view", :js do
            version_settings_attributes: [{ project:, display: VersionSetting::DISPLAY_RIGHT }])
   end
   let!(:other_project) do
-    create(:project)
+    create(:project, member_with_roles: { current_user => role })
   end
   let!(:other_project_sprint) do
     create(:version,
            project: other_project,
            sharing: "system",
-           start_date: Date.today - 10.days,
-           effective_date: Date.today + 10.days)
+           start_date: 10.days.ago,
+           effective_date: 10.days.from_now)
   end
   let!(:sprint_story1) do
     create(:work_package,
@@ -160,8 +163,8 @@ RSpec.describe "Backlogs in backlog view", :js do
     backlogs_page
       .edit_backlog(sprint,
                     name: "New sprint name",
-                    start_date: Date.today + 5.days,
-                    effective_date: Date.today + 20.days)
+                    start_date: 5.days.from_now,
+                    effective_date: 20.days.from_now)
 
     sleep(0.5)
 

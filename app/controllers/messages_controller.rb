@@ -31,8 +31,8 @@
 class MessagesController < ApplicationController
   menu_item :forums
   default_search_scope :messages
-  model_object Message, scope: Forum
-  before_action :find_object_and_scope
+  before_action :find_project_and_forum
+  before_action :find_message, only: %i[show edit update destroy reply quote]
   before_action :authorize, except: %i[edit update destroy]
   # Checked inside the method.
   no_authorization_required! :edit, :update, :destroy
@@ -89,7 +89,7 @@ class MessagesController < ApplicationController
     if call.success?
       call_hook(:controller_messages_new_after_save, params:, message: @message)
 
-      redirect_to topic_path(@message)
+      redirect_to project_forum_topic_path(@project, @forum, @message)
     else
       render action: :new, status: :unprocessable_entity
     end
@@ -105,7 +105,7 @@ class MessagesController < ApplicationController
     if call.success?
       call_hook(:controller_messages_reply_after_save, params:, message: @reply)
     end
-    redirect_to topic_path(@topic, r: @reply)
+    redirect_to project_forum_topic_path(@project, @forum, @topic, r: @reply)
   end
 
   # Edit a message
@@ -118,7 +118,7 @@ class MessagesController < ApplicationController
     if call.success?
       flash[:notice] = t(:notice_successful_update)
       @message.reload
-      redirect_to topic_path(@message.root, r: @message.parent_id && @message.id)
+      redirect_to project_forum_topic_path(@project, @forum, @message.root, r: @message.parent_id && @message.id)
     else
       render action: :edit, status: :unprocessable_entity
     end
@@ -132,9 +132,9 @@ class MessagesController < ApplicationController
     @message.destroy
     flash[:notice] = t(:notice_successful_delete)
     redirect_target = if @message.parent.nil?
-                        { controller: "/forums", action: "show", project_id: @project, id: @forum }
+                        project_forum_path(@project, @forum)
                       else
-                        { action: "show", id: @message.parent, r: @message }
+                        project_forum_topic_path(@project, @forum, @message.parent, r: @message)
                       end
 
     redirect_to redirect_target, status: :see_other
@@ -156,6 +156,15 @@ class MessagesController < ApplicationController
   end
 
   private
+
+  def find_project_and_forum
+    @project = Project.visible.find(params[:project_id])
+    @forum = @project.forums.find(params[:forum_id])
+  end
+
+  def find_message
+    @message = @forum.messages.find(params[:id])
+  end
 
   def update_message(message)
     Messages::UpdateService

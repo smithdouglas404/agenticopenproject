@@ -135,7 +135,7 @@ RSpec.describe WikiMenuItemsController do
       before do
         post :replace_main_menu_item,
              params: {
-               project_id: project,
+               project_id: project.id,
                id: wiki_page.id,
                wiki_page: { id: selected_page.id }
              }
@@ -161,7 +161,7 @@ RSpec.describe WikiMenuItemsController do
       before do
         post :replace_main_menu_item,
              params: {
-               project_id: project,
+               project_id: project.id,
                id: wiki_page.id,
                wiki_page: { id: wiki_page.id }
              }

@@ -20,7 +20,7 @@ he:
       action: "לוח פעולות (%{attribute})"
     board_type_attributes:
       assignee: משויך אל
-      status: מצב
+      status: Kanban
       version: גירסה
       subproject: תת פרוייקט
       subtasks: אב- בן

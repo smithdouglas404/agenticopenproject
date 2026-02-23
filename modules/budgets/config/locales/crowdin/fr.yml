@@ -56,6 +56,39 @@ fr:
   caption_labor_costs: "Coûts de main d'œuvre réels"
   caption_material_costs: "Coûts unitaires réels"
   budgets_title: "Budgets"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Budget totals"
+        remaining_budget: "Remaining budget"
+        spent_budget: "Spent budget"
+        total_actual_costs: "Total actual costs"
+        total_planned_budget: "Total planned budget"
+      budget_by_cost_type:
+        title: "Budget by cost type"
+        blankslate:
+          heading: "Start project controlling"
+          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+        caption:
+          zero: "No budget data."
+          one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."
+          other: "Data aggregated from %{count} budgets included in %{portfolios}, %{subprograms} and %{subprojects}."
+        caption_simple:
+          one: "Data aggregated from %{count} budget."
+          other: "Data aggregated from %{count} budgets."
+        portfolio:
+          zero: "no portfolios"
+          one: "1 portfolio"
+          other: "%{count} portfolios"
+        subprogram:
+          zero: "no subprograms"
+          one: "1 subprogram"
+          other: "%{count} subprograms"
+        subproject:
+          zero: "no subprojects"
+          one: "1 subproject"
+          other: "%{count} subprojects"
+        view_details: "View budget details"
   events:
     budget: "Budget modifié"
   help_click_to_edit: "Cliquez ici pour modifier."

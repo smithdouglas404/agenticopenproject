@@ -33,7 +33,6 @@ module McpConfigurations
     include Redmine::I18n
 
     form do |f|
-      # TODO: Hide rest of form (and rest of page) when disabled, show when enabled (only after pressing "Update")
       f.check_box(
         name: :enabled,
         label: McpConfiguration.human_attribute_name(:enabled)
@@ -54,6 +53,32 @@ module McpConfigurations
           input_width: :large,
           rows: 4
         )
+
+        f.radio_button_group(
+          name: :tool_response_format,
+          label: I18n.t("admin.mcp_configurations.server_form.tool_response_format")
+        ) do |radios|
+          radios.radio_button(
+            value: :full,
+            checked: current_response_format?(:full),
+            label: I18n.t("admin.mcp_configurations.server_form.tool_response_format_full_label"),
+            caption: I18n.t("admin.mcp_configurations.server_form.tool_response_format_full_caption")
+          )
+
+          radios.radio_button(
+            value: :structured_only,
+            checked: current_response_format?(:structured_only),
+            label: I18n.t("admin.mcp_configurations.server_form.tool_response_format_structured_only_label"),
+            caption: I18n.t("admin.mcp_configurations.server_form.tool_response_format_structured_only_caption")
+          )
+
+          radios.radio_button(
+            value: :content_only,
+            checked: current_response_format?(:content_only),
+            label: I18n.t("admin.mcp_configurations.server_form.tool_response_format_content_only_label"),
+            caption: I18n.t("admin.mcp_configurations.server_form.tool_response_format_content_only_caption")
+          )
+        end
       end
 
       f.submit(
@@ -67,6 +92,14 @@ module McpConfigurations
 
     def server_enabled?
       model.enabled?
+    end
+
+    def tool_response_format
+      Setting.mcp_tool_response_format
+    end
+
+    def current_response_format?(format)
+      format == tool_response_format
     end
   end
 end

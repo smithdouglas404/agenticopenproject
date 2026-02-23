@@ -20,7 +20,7 @@ af:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: Gedelegeerde
-      status: Status
+      status: Kanban
       version: Weergawe
       subproject: Sub-projek
       subtasks: Parent-child

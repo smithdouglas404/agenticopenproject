@@ -49,7 +49,7 @@ module Documents
 
         ServiceResult.success(result: encrypted)
       rescue StandardError => e
-        ServiceResult.failure(errors: e.message)
+        ServiceResult.failure(errors: e)
       end
 
       private

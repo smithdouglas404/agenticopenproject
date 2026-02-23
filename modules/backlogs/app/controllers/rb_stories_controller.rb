@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,50 +29,75 @@
 #++
 
 class RbStoriesController < RbApplicationController
-  # This is a constant here because we will recruit it elsewhere to whitelist
-  # attributes. This is necessary for now as we still directly use `attributes=`
-  # in non-controller code.
-  PERMITTED_PARAMS = %i[id status_id version_id
-                        story_points type_id subject author_id
-                        sprint_id]
+  include OpTurbo::ComponentStream
 
-  def create
-    call = Stories::CreateService
-           .new(user: current_user)
-           .call(attributes: story_params,
-                 prev: params[:prev])
+  before_action :load_story
 
-    respond_with_story(call)
-  end
-
-  def update
-    story = Story.visible.find(params[:id])
+  def move # rubocop:disable Metrics/AbcSize
+    # The update service reloads the story internally (via #move_after),
+    # so we memoize the previous version_id before the call.
+    version_id_was = @story.version_id
 
     call = Stories::UpdateService
-           .new(user: current_user, story:)
-           .call(attributes: story_params,
-                 prev: params[:prev])
+      .new(user: current_user, story: @story)
+      .call(
+        attributes: { version_id: move_params[:target_id] },
+        position: move_params[:position].to_i
+      )
 
     unless call.success?
-      # reload the story to be able to display it correctly
-      call.result.reload
+      render_error_flash_message_via_turbo_stream(
+        message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+      )
     end
 
-    respond_with_story(call)
+    replace_backlog_component_via_turbo_stream(sprint: @sprint)
+
+    if @story.version_id != version_id_was
+      new_sprint = @story.version.becomes(Sprint)
+
+      render_success_flash_message_via_turbo_stream(
+        message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
+      )
+      replace_backlog_component_via_turbo_stream(sprint: new_sprint)
+    end
+
+    respond_with_turbo_streams
+  end
+
+  def reorder
+    call = Stories::UpdateService
+      .new(user: current_user, story: @story)
+      .call(attributes: { move_to: reorder_param })
+
+    unless call.success?
+      render_error_flash_message_via_turbo_stream(
+        message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+      )
+    end
+
+    replace_backlog_component_via_turbo_stream(sprint: @sprint)
+
+    respond_with_turbo_streams
   end
 
   private
 
-  def respond_with_story(call)
-    status = call.success? ? 200 : 400
-    story = call.result
-
-    respond_to do |format|
-      format.html { render partial: "story", object: story, status:, locals: { errors: call.errors } }
-    end
+  def replace_backlog_component_via_turbo_stream(sprint:)
+    @backlog = Backlog.for(sprint:, project: @project)
+    replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog: @backlog, project: @project))
   end
 
-  def story_params
-    params.permit(PERMITTED_PARAMS).merge(project: @project).to_h
+  def load_story
+    @story = Story.visible.find(params[:id])
+  end
+
+  def move_params
+    params.require(%i[position target_id])
+    params.permit(:position, :target_id)
+  end
+
+  def reorder_param
+    params.expect(:direction)
   end
 end

@@ -126,6 +126,13 @@ module Settings
         default: :quarantine,
         allowed: %i[quarantine delete]
       },
+      api_tokens_enabled: {
+        default: true,
+        description: "Decide whether users can create personal API tokens in their account settings",
+        # Keeping old name only for backwards-compatibility, can be removed in OpenProject 18.0
+        env_alias: "OPENPROJECT_REST__API__ENABLED",
+        format: :boolean
+      },
       auth_source_sso: {
         description: "Configuration for Header-based Single Sign-On",
         format: :hash,
@@ -657,7 +664,11 @@ module Settings
       },
       installation_uuid: {
         format: :string,
-        default: nil
+        default: -> { SecureRandom.uuid },
+        persist_on_first_read: true,
+        default_by_env: {
+          test: "test_uuid"
+        }
       },
       internal_password_confirmation: {
         description: "Require password confirmations for certain administrative actions",
@@ -745,6 +756,12 @@ module Settings
         writable: false,
         allowed: %w[danish dutch english finnish french german hungarian
                     italian norwegian portuguese romanian russian simple spanish swedish turkish]
+      },
+      mcp_tool_response_format: {
+        default: :full,
+        format: :symbol,
+        allowed: -> { McpTools::Base::RESPONSE_FORMATS },
+        description: "How to format responses for MCP tools. Using values other than full may improve language model performance."
       },
       migration_check_on_exceptions: {
         description: "Check for missing migrations in internal errors",
@@ -964,9 +981,6 @@ module Settings
       },
       repository_truncate_at: {
         default: 500
-      },
-      rest_api_enabled: {
-        default: true
       },
       scm: {
         format: :hash,
@@ -1291,6 +1305,11 @@ module Settings
       },
       capture_external_links: {
         description: "Redirect external links through a warning page before leaving the application",
+        default: false,
+        writable: -> { EnterpriseToken.allows_to?(:capture_external_links) }
+      },
+      capture_external_links_require_login: {
+        description: "Require users to be logged in before being able to navigate to external links",
         default: false,
         writable: -> { EnterpriseToken.allows_to?(:capture_external_links) }
       }

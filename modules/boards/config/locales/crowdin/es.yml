@@ -20,7 +20,7 @@ es:
       action: "Tablero de acciones (%{attribute})"
     board_type_attributes:
       assignee: Asignado a
-      status: Estado
+      status: Kanban
       version: Versión
       subproject: Subproyecto
       subtasks: Principal-secundario

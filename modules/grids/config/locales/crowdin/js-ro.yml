@@ -6,6 +6,7 @@ ro:
       configure: 'Configurați widget-ul'
       widgets:
         missing_permission: "Nu ai drepturile necesare pentru a vizualiza acest widget."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Text customizat'
         documents:
@@ -27,8 +28,6 @@ ro:
           not_set: 'Nesetat'
           finished: 'Finalizat'
           discontinued: 'Anulat'
-        project_status_beta:
-          title: 'Stare (BETA)'
         subprojects:
           title: 'Subelemente'
         project_favorites:
