@@ -28,14 +28,15 @@
 
 .op-sprints--form
   &-dates
-   // date section
-   .FormControl-horizontalGroup
-     column-gap: 1rem
+    // Date section
+    .FormControl-horizontalGroup
+      flex-wrap: wrap // Wrap around (on smaller screens)
+      column-gap: 1rem
 
-     // all date fields: start, finish and duration
-     & > .FormControl
-       flex: 2
+      // All date fields: start, finish and duration
+      & > .FormControl
+        flex: 2
 
-       // special styles for the duration
-       &:last-child
-         flex: 1
+        // Special styles for the duration: make it narrower
+        &:last-child
+          flex: 1
