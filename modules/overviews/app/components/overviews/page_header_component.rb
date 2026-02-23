@@ -42,18 +42,18 @@ module Overviews
     private
 
     def breadcrumb_items
-      return nil if project.ancestors.blank?
-
       items =
-        project.ancestors.map do |ancestor|
+        project.ancestors.visible.map do |ancestor|
           {
             href: project_path(ancestor),
             text: ancestor.name,
             skip_for_mobile: true
           }
         end
-      items << page_title
 
+      return nil if items.empty?
+
+      items << page_title
       items
     end
 
