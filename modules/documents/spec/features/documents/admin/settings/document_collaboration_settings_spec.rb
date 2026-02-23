@@ -100,7 +100,7 @@ RSpec.describe "Document collaboration settings admin",
       click_on("Save")
 
       # Inline validation shown on the field
-      expect(page).to have_content("is not a supported protocol")
+      expect(page).to have_content("Must use a WebSocket protocol (ws:// or wss://).")
 
       # Setting unchanged
       expect(Setting.collaborative_editing_hocuspocus_url).to eq("wss://hocuspocus.example.com")

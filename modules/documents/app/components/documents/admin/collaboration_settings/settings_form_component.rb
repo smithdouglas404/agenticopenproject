@@ -63,10 +63,10 @@ module Documents
         def invalid_hocuspocus_url?
           return false if Setting.collaborative_editing_hocuspocus_url.blank?
 
-          !valid_hocuspocus_url?(Setting.collaborative_editing_hocuspocus_url)
+          !websocket_url?(Setting.collaborative_editing_hocuspocus_url)
         end
 
-        def valid_hocuspocus_url?(url)
+        def websocket_url?(url)
           uri = URI.parse(url)
           uri.is_a?(URI::WS) || uri.is_a?(URI::WSS)
         rescue URI::InvalidURIError
