@@ -28,17 +28,17 @@
  * ++
  */
 
-import { HocuspocusProvider } from "@hocuspocus/provider";
-import { Controller } from "@hotwired/stimulus";
-import { LiveCollaborationManager } from "core-stimulus/helpers/live-collaboration-helpers";
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import { Controller } from '@hotwired/stimulus';
+import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import {
   PROVIDER_AUTH_ERROR_EVENT,
   ProviderAuthErrorKind,
   TokenRefreshService,
-} from "core-stimulus/services/documents/token-refresh.service";
-import type { Doc } from "yjs";
-import * as Y from "yjs";
-import { IndexeddbPersistence } from "y-indexeddb";
+} from 'core-stimulus/services/documents/token-refresh.service';
+import type { Doc } from 'yjs';
+import * as Y from 'yjs';
+import { IndexeddbPersistence } from 'y-indexeddb';
 
 export default class extends Controller {
   static values = {
@@ -57,7 +57,7 @@ export default class extends Controller {
 
   private tokenRefreshService: TokenRefreshService | null = null;
   private indexeddbPersistence: IndexeddbPersistence | null = null;
-  private currentToken = "";
+  private currentToken = '';
   private canUseCachedToken = true;
 
   // On initial load, the DOM token is fresh. On reconnection (e.g., after server restart),
@@ -80,8 +80,8 @@ export default class extends Controller {
     // IndexedDB persistence (offline support)
     this.indexeddbPersistence = new IndexeddbPersistence(`op-doc-${this.documentNameValue}`, ydoc);
 
-    this.indexeddbPersistence.on("synced", () => {
-      console.debug("[IndexedDB] Local document synced");
+    this.indexeddbPersistence.on('synced', () => {
+      console.debug('[IndexedDB] Local document synced');
     });
 
     const provider = new HocuspocusProvider({
@@ -92,7 +92,7 @@ export default class extends Controller {
       onAuthenticationFailed: () => {
         document.dispatchEvent(
           new CustomEvent(PROVIDER_AUTH_ERROR_EVENT, {
-            detail: { kind: "authentication" as ProviderAuthErrorKind, message: "Authentication failed" },
+            detail: { kind: 'authentication' as ProviderAuthErrorKind, message: 'Authentication failed' },
           }),
         );
       },
