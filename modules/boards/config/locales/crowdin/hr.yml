@@ -20,7 +20,7 @@ hr:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: Opunomoćeno
-      status: Status
+      status: Kanban
       version: Verzija
       subproject: Potprojekt
       subtasks: Parent-child

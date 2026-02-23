@@ -20,7 +20,7 @@ et:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: Määratud tegija
-      status: Olek
+      status: Kanban
       version: Versioon
       subproject: Alamprojekt
       subtasks: Parent-child

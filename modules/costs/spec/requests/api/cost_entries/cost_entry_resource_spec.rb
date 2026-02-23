@@ -36,10 +36,9 @@ RSpec.describe "API v3 Cost Entry resource" do
   include API::V3::Utilities::PathHelper
 
   let(:current_user) do
-    create(:user, member_with_roles: { project => role })
+    create(:user, member_with_permissions: { project => permissions })
   end
   let(:cost_entry) { create(:cost_entry, entity: work_package, user: entry_user) }
-  let(:role) { create(:project_role, permissions:) }
   let(:permissions) { [:view_cost_entries] }
   let(:project) { create(:project) }
   let(:work_package) { create(:work_package, project:) }
@@ -73,11 +72,8 @@ RSpec.describe "API v3 Cost Entry resource" do
     context "when user can only see own cost entries" do
       let(:permissions) { [:view_own_cost_entries] }
 
-      context "when ost entry is not his own" do
-        it_behaves_like "error response",
-                        403,
-                        "MissingPermission",
-                        I18n.t("api_v3.errors.code_403")
+      context "when cost entry is not his own" do
+        it_behaves_like "not found"
       end
 
       context "when cost entry is their own" do
@@ -95,10 +91,7 @@ RSpec.describe "API v3 Cost Entry resource" do
       describe "he can't even see own cost entries" do
         let(:entry_user) { current_user }
 
-        it_behaves_like "error response",
-                        403,
-                        "MissingPermission",
-                        I18n.t("api_v3.errors.code_403")
+        it_behaves_like "not found"
       end
     end
   end

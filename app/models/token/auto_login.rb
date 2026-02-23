@@ -32,6 +32,8 @@ module Token
   class AutoLogin < HashedToken
     include ExpirableToken
 
+    prefix :opal
+
     has_many :autologin_session_links,
              class_name: "Sessions::AutologinSessionLink",
              foreign_key: "token_id",

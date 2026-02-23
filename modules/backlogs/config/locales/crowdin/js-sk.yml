@@ -24,3 +24,6 @@ sk:
     work_packages:
       properties:
         storyPoints: "História bodov"
+    burndown:
+      day: "Day"
+      points: "Points"

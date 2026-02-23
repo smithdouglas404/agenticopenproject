@@ -29,9 +29,17 @@
 Rails.application.routes.draw do
   scope "", as: "backlogs" do
     scope "projects/:project_id", as: "project" do
-      resources :backlogs,         controller: :rb_master_backlogs,  only: :index
+      resources :backlogs, controller: :rb_master_backlogs, only: :index do
+        collection do
+          get "details/:work_package_id(/:tab)",
+              action: :details,
+              as: :details,
+              work_package_split_view: true,
+              defaults: { tab: :overview }
+        end
+      end
 
-      resources :sprints,          controller: :rb_sprints,          only: %i[show update] do
+      resources :sprints, controller: :rb_sprints, only: %i[update] do
         resource :query,            controller: :rb_queries,          only: :show
 
         resource :taskboard,        controller: :rb_taskboards,       only: :show
@@ -44,7 +52,17 @@ Rails.application.routes.draw do
 
         resources :tasks,            controller: :rb_tasks,            only: %i[create update]
 
-        resources :stories, controller: :rb_stories, only: %i[create update]
+        resources :stories, controller: :rb_stories, only: [] do
+          member do
+            put :move
+            post :reorder
+          end
+        end
+
+        member do
+          get :edit_name
+          get :show_name
+        end
       end
 
       resource :query, controller: :rb_queries, only: :show

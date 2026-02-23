@@ -20,7 +20,7 @@ tr:
       action: "Eylem panosu (%{attribute})"
     board_type_attributes:
       assignee: Atanan
-      status: Durum
+      status: Kanban
       version: Sürüm
       subproject: Alt proje
       subtasks: Üst-Alt

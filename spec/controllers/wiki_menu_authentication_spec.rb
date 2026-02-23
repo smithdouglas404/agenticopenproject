@@ -64,7 +64,7 @@ RSpec.describe WikiMenuItemsController do
 
       get "edit", params: @params
 
-      expect(response).to have_http_status(:forbidden)
+      expect(response).to have_http_status(:not_found)
     end
   end
 end

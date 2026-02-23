@@ -20,7 +20,7 @@ bg:
       action: "Табло за действие (%{attribute})"
     board_type_attributes:
       assignee: Изпълнител
-      status: Състояние
+      status: Kanban
       version: Версия
       subproject: Подпроект
       subtasks: Родител-дете

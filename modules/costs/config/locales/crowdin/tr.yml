@@ -226,6 +226,15 @@ tr:
     errors:
       validation:
         start_time_different_date: "StartTime (%{start_time}) öğesinin tarih kısmı, spentOn (%{spent_on}) tarihi ile aynı olmalıdır."
+  costs:
+    widgets:
+      actual_costs:
+        title: "Aylara göre gerçek maliyetler"
+        blankslate:
+          heading: "Zamanınızı ve maliyetlerinizi takip etmeye başlayın"
+          description: "Projenizin ilerleyişini izlemek için maliyetlerinize ve kaydedilen zamana genel bir bakış elde edin"
+          action: "Günlük zamanı"
+        view_details: "Gerçek maliyet ayrıntılarını görüntüleyin"
   ee:
     features:
       time_entry_time_restrictions: Tam zaman takibi gerektirir

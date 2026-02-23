@@ -42,7 +42,7 @@ module Exports::PDF::Common::Attachments
   end
 
   def pdf_embeddable?(content_type)
-    %w[image/jpeg image/png image/gif].include?(content_type)
+    %w[image/jpeg image/png image/gif image/webp].include?(content_type)
   end
 
   def delete_all_resized_images
@@ -67,6 +67,7 @@ module Exports::PDF::Common::Attachments
 
     filename = local_file.path
     filename = convert_gif_to_png(filename) if attachment.content_type == "image/gif"
+    filename = convert_webp_to_png(filename) if attachment.content_type == "image/webp"
 
     resize_image(filename)
   end
@@ -83,6 +84,15 @@ module Exports::PDF::Common::Attachments
 
     image = MiniMagick::Image.open(filename)
     image.frames.first.write(tmp_file)
+    tmp_file
+  end
+
+  def convert_webp_to_png(filename)
+    tmp_file = temp_image_file(".png")
+
+    image = MiniMagick::Image.open(filename)
+    image.format("png")
+    image.write(tmp_file)
     tmp_file
   end
 

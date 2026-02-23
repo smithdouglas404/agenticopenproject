@@ -27,70 +27,122 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-require "spec_helper"
+
+require "rails_helper"
 
 RSpec.describe RbSprintsController do
-  let(:sprint_project) do
-    create(:project, enabled_module_names: %w[work_package_tracking backlogs])
-  end
-  let(:sprint) { create(:sprint, project: sprint_project) }
+  shared_let(:type_feature) { create(:type_feature) }
+  shared_let(:type_task) { create(:type_task) }
+  shared_let(:user) { create(:admin) }
+  current_user { user }
 
-  let(:other_project) do
-    create(:project, enabled_module_names: %w[work_package_tracking backlogs]).tap do |p|
-      create(:member,
-             user: current_user,
-             roles: [create(:project_role, permissions: [:update_sprints])],
-             project: p)
-    end
-  end
-
-  let(:current_user) { create(:user) }
+  let(:visible_projects_scope) { instance_double(ActiveRecord::Relation) }
+  let(:visible_sprints_scope) { instance_double(ActiveRecord::Relation) }
 
   before do
-    allow(Setting).to receive(:plugin_openproject_backlogs)
-      .and_return({ "story_types" => ["1"], "task_type" => "2" })
-    login_as current_user
+    allow(Setting)
+      .to receive(:plugin_openproject_backlogs)
+      .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
+
+    allow(Project)
+      .to receive(:visible)
+      .and_return(visible_projects_scope)
+
+    allow(visible_projects_scope)
+      .to receive(:find)
+      .with(project.identifier)
+      .and_return(project)
+
+    allow(Sprint)
+      .to receive(:visible)
+      .and_return(visible_sprints_scope)
+
+    allow(visible_sprints_scope)
+      .to receive(:find)
+      .with(sprint.id.to_s)
+      .and_return(sprint)
   end
 
-  describe "#update" do
-    let(:original_name) { sprint.name }
-    let(:new_name) { "a better name!" }
+  describe "GET #edit_name" do
+    let(:project) { build_stubbed(:project) }
+    let(:sprint) { build_stubbed(:sprint) }
 
-    context "when the user has access to a different project but not the sprint's project" do
-      it "does not allow updating the sprint via a foreign project_id" do
-        original_name # memoize before request
+    it "responds with success", :aggregate_failures do
+      get :edit_name, params: { project_id: project.identifier, id: sprint.id }, format: :turbo_stream
 
-        put :update,
-            params: {
-              project_id: other_project.id,
-              id: sprint.id,
-              name: new_name
-            }
-        sprint.reload
+      expect(response).to be_successful
+      expect(response).to have_http_status :ok
+      expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+      expect(assigns(:project)).to eq(project)
+      expect(assigns(:sprint)).to eq(sprint)
+      expect(assigns(:backlog)).to be_a(Backlog)
+    end
+  end
 
-        expect(response).to have_http_status(:not_found)
-        expect(sprint.name).to eq(original_name)
+  describe "GET #show_name" do
+    let(:project) { build_stubbed(:project) }
+    let(:sprint) { build_stubbed(:sprint) }
+
+    it "responds with success", :aggregate_failures do
+      get :show_name, params: { project_id: project.identifier, id: sprint.id }, format: :turbo_stream
+
+      expect(response).to be_successful
+      expect(response).to have_http_status :ok
+      expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+      expect(assigns(:project)).to eq(project)
+      expect(assigns(:sprint)).to eq(sprint)
+      expect(assigns(:backlog)).to be_a(Backlog)
+    end
+  end
+
+  describe "PATCH #update" do
+    let(:project) { build_stubbed(:project) }
+    let(:sprint) { build_stubbed(:sprint) }
+
+    before do
+      update_service = instance_double(Versions::UpdateService, call: service_result)
+
+      allow(Versions::UpdateService)
+        .to receive(:new)
+              .with(user:, model: sprint)
+              .and_return(update_service)
+    end
+
+    context "when service call succeeds" do
+      let(:service_result) { ServiceResult.success(result: sprint) }
+
+      it "responds with success", :aggregate_failures do
+        patch :update, params: { project_id: project.identifier, id: sprint.id, sprint: { name: "Updated Sprint" } },
+                       format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:backlog)).to be_a(Backlog)
       end
     end
 
-    context "when the user has access to the sprint's own project" do
+    context "when service call fails" do
+      let(:service_result) { ServiceResult.failure(result: sprint) }
+
       before do
-        create(:member,
-               user: current_user,
-               roles: [create(:project_role, permissions: %i[view_work_packages view_versions update_sprints])],
-               project: sprint_project)
+        project.name = ""
       end
 
-      it "allows updating the sprint" do
-        put :update,
-            params: {
-              project_id: sprint_project.id,
-              id: sprint.id,
-              name: new_name
-            }
-        sprint.reload
+      it "responds with 422", :aggregate_failures do
+        patch :update, params: { project_id: project.identifier, id: sprint.id, sprint: { name: "" } },
+                       format: :turbo_stream
 
-        expect(sprint.name).to eq(new_name)
+        expect(response).not_to be_successful
+        expect(response).to have_http_status :unprocessable_entity
+        expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:backlog)).to be_a(Backlog)
       end
     end
   end

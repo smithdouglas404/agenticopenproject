@@ -21,6 +21,12 @@
 #++
 fi:
   js:
+    budgets:
+      widgets:
+        budget_by_cost_type:
+          blankslate:
+            title: "No budget data"
+            description: "Add planned unit and labor costs to this project to start tracking the budget"
     work_packages:
       properties:
         costObject: "Budjetti"

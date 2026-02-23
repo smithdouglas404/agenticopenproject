@@ -20,7 +20,7 @@ ca:
       action: "Panell d'acció (%{attribute})"
     board_type_attributes:
       assignee: Assignat a
-      status: Estat
+      status: Kanban
       version: Versió
       subproject: Subprojecte
       subtasks: Pare-fill

@@ -20,7 +20,7 @@ fi:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: Työn suorittaja
-      status: Tila
+      status: Kanban
       version: Versio
       subproject: Aliprojekti
       subtasks: Parent-child

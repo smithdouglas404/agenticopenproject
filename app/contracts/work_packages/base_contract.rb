@@ -131,6 +131,14 @@ module WorkPackages
 
     attribute :budget
 
+    validates :subject,
+              presence: true,
+              unless: -> { model.type&.replacement_pattern_defined_for?(:subject) }
+    validates :subject, length: { maximum: 255 }
+
+    # TODO: add validation, check permission (#71253)
+    attribute :sprint_id
+
     validates :due_date,
               date: { after_or_equal_to: :start_date,
                       message: :greater_than_or_equal_to_start_date,
@@ -238,6 +246,16 @@ module WorkPackages
     alias_method :assignable_responsibles, :assignable_assignees
 
     def valid?(context = :saving_custom_fields) = super
+
+    def writable_attributes
+      attributes = super
+
+      unless auto_generated_attributes_writable?
+        attributes -= auto_generated_attribute_names
+      end
+
+      attributes
+    end
 
     private
 
@@ -679,6 +697,12 @@ module WorkPackages
 
     def leaf_or_manually_scheduled?
       model.leaf? || model.schedule_manually?
+    end
+
+    def auto_generated_attributes_writable? = false
+
+    def auto_generated_attribute_names
+      (model.type && model.type.enabled_patterns&.keys&.map(&:to_s)) || []
     end
   end
 end

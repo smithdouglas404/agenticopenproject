@@ -33,13 +33,13 @@ class Stories::CreateService
     self.user = user
   end
 
-  def call(attributes: {}, prev: nil)
+  def call(attributes: {}, position: nil)
     create_call = WorkPackages::CreateService
                   .new(user:)
                   .call(**attributes.symbolize_keys)
 
     if create_call.success?
-      create_call.result.move_after prev
+      create_call.result.move_after position:
     end
 
     create_call

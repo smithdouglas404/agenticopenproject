@@ -81,14 +81,16 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new(language: Setting.default_language)
+    @contract = Users::CreateContract.new(@user, current_user)
   end
 
   def edit
     @membership ||= Member.new
     @individual_principal = @user
+    @contract = Users::UpdateContract.new(@user, current_user)
   end
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
     call = Users::CreateService
            .new(user: current_user)
            .call(create_params)
@@ -99,6 +101,7 @@ class UsersController < ApplicationController
       flash[:notice] = I18n.t(:notice_successful_create)
       redirect_to(params[:continue] ? new_user_path : helpers.allowed_management_user_profile_path(@user))
     else
+      @contract = Users::CreateContract.new(@user, current_user)
       render action: :new, status: :unprocessable_entity
     end
   end
@@ -142,6 +145,7 @@ class UsersController < ApplicationController
 
       respond_to do |format|
         format.html do
+          @contract = Users::UpdateContract.new(@user, current_user)
           render action: :edit, status: :unprocessable_entity
         end
       end

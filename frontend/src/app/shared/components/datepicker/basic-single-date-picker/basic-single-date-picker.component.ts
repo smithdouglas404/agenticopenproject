@@ -89,6 +89,8 @@ export class OpBasicSingleDatePickerComponent implements ControlValueAccessor, O
 
   @Input() disabled = false;
 
+  @Input() placeholder = '';
+
   @Input() minimalDate:Date|null = null;
 
   @Input() inputClassNames = '';

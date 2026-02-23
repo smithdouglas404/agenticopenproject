@@ -202,10 +202,11 @@ RSpec.describe "updating a budget", :js do
 
         # Expect budget == costs
         expect(material_budget_item.amount).to eq(123.0)
-        expect(material_budget_item.overridden_costs?).to be_truthy
+        expect(material_budget_item).to be_overridden_costs
         expect(material_budget_item.costs).to eq(123.0)
+
         expect(material_budget_item_2.amount).to eq(543.0)
-        expect(material_budget_item_2.overridden_costs?).to be_truthy
+        expect(material_budget_item_2).to be_overridden_costs
         expect(material_budget_item_2.costs).to eq(543.0)
       end
 
@@ -233,10 +234,11 @@ RSpec.describe "updating a budget", :js do
 
           # Expect budget == costs
           expect(material_budget_item.amount).to eq(123.0)
-          expect(material_budget_item.overridden_costs?).to be_truthy
+          expect(material_budget_item).to be_overridden_costs
           expect(material_budget_item.costs).to eq(123.0)
+
           expect(material_budget_item_2.amount).to eq(543.0)
-          expect(material_budget_item_2.overridden_costs?).to be_truthy
+          expect(material_budget_item_2).to be_overridden_costs
           expect(material_budget_item_2.costs).to eq(543.0)
         end
       end
@@ -273,10 +275,11 @@ RSpec.describe "updating a budget", :js do
 
         # Expect budget == costs
         expect(labor_budget_item.amount).to eq(456.0)
-        expect(labor_budget_item.overridden_costs?).to be_truthy
+        expect(labor_budget_item).to be_overridden_costs
         expect(labor_budget_item.costs).to eq(456.0)
+
         expect(labor_budget_item_2.amount).to eq(987.0)
-        expect(labor_budget_item_2.overridden_costs?).to be_truthy
+        expect(labor_budget_item_2).to be_overridden_costs
         expect(labor_budget_item_2.costs).to eq(987.0)
       end
 
@@ -304,10 +307,11 @@ RSpec.describe "updating a budget", :js do
 
           # Expect budget == costs
           expect(labor_budget_item.amount).to eq(456.0)
-          expect(labor_budget_item.overridden_costs?).to be_truthy
+          expect(labor_budget_item).to be_overridden_costs
           expect(labor_budget_item.costs).to eq(456.0)
+
           expect(labor_budget_item_2.amount).to eq(987.0)
-          expect(labor_budget_item_2.overridden_costs?).to be_truthy
+          expect(labor_budget_item_2).to be_overridden_costs
           expect(labor_budget_item_2.costs).to eq(987.0)
         end
       end

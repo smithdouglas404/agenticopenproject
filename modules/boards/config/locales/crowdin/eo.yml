@@ -20,7 +20,7 @@ eo:
       action: "Agpanelo (%{attribute})"
     board_type_attributes:
       assignee: Asignita al
-      status: Stato
+      status: Kanban
       version: Versio
       subproject: Subprojekto
       subtasks: Parent-child

@@ -284,6 +284,26 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         let(:min_length) { 1 }
         let(:max_length) { 255 }
       end
+
+      context "on a work package which's type has an auto-generated subject" do
+        before do
+          allow(wp_type)
+            .to receive(:enabled_patterns)
+                .and_return({ subject: double })
+        end
+
+        it_behaves_like "has basic schema properties" do
+          let(:type) { "String" }
+          let(:name) { I18n.t("attributes.subject") }
+          let(:required) { true }
+          let(:writable) { false }
+          let(:has_default) { true }
+        end
+
+        it_behaves_like "defines the placeholder to display" do
+          let(:placeholder) { I18n.t("placeholders.templated_hint", type: wp_type.name) }
+        end
+      end
     end
 
     describe "description" do
@@ -1217,8 +1237,8 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         call_count = 0
         allow(work_package.type)
           .to receive(:attribute_groups) do
-          call_count += 1
-          []
+            call_count += 1
+            []
         end
 
         # Rendering two times, the Type#attribute_groups

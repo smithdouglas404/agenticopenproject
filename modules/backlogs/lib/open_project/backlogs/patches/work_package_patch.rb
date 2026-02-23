@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -40,6 +42,8 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
                                              greater_than_or_equal_to: 0,
                                              less_than: 10_000,
                                              if: -> { backlogs_enabled? }
+
+    belongs_to :sprint, class_name: "Agile::Sprint", optional: true
 
     include OpenProject::Backlogs::List
   end

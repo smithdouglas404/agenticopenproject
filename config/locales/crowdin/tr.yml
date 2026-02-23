@@ -123,6 +123,16 @@ tr:
       server_form:
         description_caption: "MCP sunucusunun, ona bağlanan diğer uygulamalara nasıl tanımlanacağı."
         title_caption: "MCP sunucusuna bağlanan uygulamalara gösterilen kısa başlık."
+        tool_response_format: "Araç yanıt formatı"
+        tool_response_format_content_only_label: "Yalnızca içerik"
+        tool_response_format_content_only_caption: >
+          Bu örneğe bağlanan MCP istemcileri yapılandırılmış içeriği desteklemiyorsa bunu seçin. Araç yanıtları yalnızca düz metin içeriği içerecek ve yapılandırılmış sürümü dışarıda bırakacaktır.
+        tool_response_format_full_label: "Dolu"
+        tool_response_format_full_caption: >
+          En uyumlu seçenek. Araç yanıtları hem normal hem de yapılandırılmış içerik içerecek ve MCP istemcilerinin hangi biçimi okumak istediklerini seçmelerine olanak tanıyacaktır. Bu, dil modelinin işlemesi gereken belirteç sayısını artırabilir, potansiyel olarak maliyeti artırabilir ve performansı düşürebilir.
+        tool_response_format_structured_only_label: "Yalnızca yapılandırılmış içerik"
+        tool_response_format_structured_only_caption: >
+          Bu örneğe bağlanan MCP istemcilerinin yapılandırılmış içeriği desteklediğinden eminseniz bunu seçin. Araç yanıtları yalnızca yapılandırılmış içeriği içerecek ve metin temsilini dışarıda bırakacaktır.
       update:
         failure: "MCP yapılandırması güncellenemedi."
         success: "MCP yapılandırması başarıyla güncellendi."
@@ -1164,6 +1174,9 @@ tr:
         dependencies: "Bağımlılıklar"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Paylaşım"
+        finish_date: "Bitiş tarihi"
       announcements:
         show_until: "Son yayın tarihi"
       attachment:
@@ -1538,6 +1551,7 @@ tr:
         not_available: "Sistem yapılandırması nedeniyle kullanılamaz.\n"
         not_deletable: "kaldırılamadı."
         not_current_user: "mevcut kullanıcı değil."
+        only_one_active_sprint_allowed: "proje başına yalnızca bir aktif sprint'e izin verilir."
         not_found: "bulunamadı."
         not_a_date: "geçerli bir tarih değil."
         not_a_datetime: "geçerli bir zaman değil."
@@ -2101,6 +2115,7 @@ tr:
     role: "Rol"
     roles: "Yetkiler"
     search: "Ara"
+    sprint: "Sprint"
     start_date: "Başlangıç tarihi"
     status: "Durum"
     state: "Durum"
@@ -3976,6 +3991,7 @@ tr:
   notice_successful_delete: "Silme başarılı."
   notice_successful_cancel: "İptal işlemi başarılı."
   notice_successful_update: "Güncelleme başarılı."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Oluşturulamadı."
   notice_unsuccessful_create_with_reason: "Oluşturma başarısız oldu: %{reason}"
   notice_unsuccessful_update: "Güncellenemedi."
@@ -4136,6 +4152,7 @@ tr:
   permission_edit_project_query: "Proje sorgusunu düzenleme"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4320,6 +4337,9 @@ tr:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "İlk giriş yönlendirmesi"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4364,6 +4384,9 @@ tr:
   setting_smtp_password: "SMTP parolası"
   setting_smtp_domain: "SMTP HELO alan adı"
   setting_activity_days_default: "Proje faaliyetin de gösterilen gün sayısı istinaden"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Uygulama alt başlığı"
   setting_app_title: "Uygulama başlığı"
   setting_attachment_max_size: "En büyük ek boyutu"
@@ -4473,7 +4496,6 @@ tr:
   setting_repository_checkout_text: "Ödeme talimat metni"
   setting_repository_log_display_limit: "Dosya günlüğünde görüntülenen revizyonların maksimum sayısı"
   setting_repository_truncate_at: "Depo tarayıcıda görüntülenen dosya sayısı üst sınırı"
-  setting_rest_api_enabled: "REST web hizmetini etkinleştir"
   setting_self_registration: "Kendi kendine kayıt"
   setting_self_registration_caption: >
     Kullanıcılar için kendi kendine kayıt mekanizmasını seçin. Bazı seçenekler kullanıcıların bu sistemde kendi hesaplarını etkinleştirmelerine izin verdiğinden, seçtiğiniz ayara dikkat edin.
@@ -4905,8 +4927,7 @@ tr:
     reset_failed_logins: "Başarısız oturumları sıfırlayın"
     status_user_and_brute_force: "%{user} ve %{brute_force}"
     status_change: "Durum değişikliği"
-    text_change_disabled_for_provider_login: "Ad, giriş sağlayıcınız tarafından belirlenir ve bu nedenle değiştirilemez."
-    text_change_disabled_for_ldap_login: "İsim ve e-posta LDAP tarafından belirlenir ve bu nedenle değiştirilemez."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Kilidi kaldır"
     unlock_and_reset_failed_logins: "Başarısız oturum açma işlemlerinin kilidini aç ve sıfırla"
     error_cannot_delete_user: "Kullanıcı silinemez"

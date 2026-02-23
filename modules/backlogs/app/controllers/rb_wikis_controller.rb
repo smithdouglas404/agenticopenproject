@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -32,10 +34,10 @@ class RbWikisController < RbApplicationController
   #
   # NOTE: The methods #show and #edit create a template page when called.
   def show
-    redirect_to controller: "/wiki", action: "index", project_id: @project.id, id: @sprint.wiki_page
+    redirect_to controller: "/wiki", action: "index", project_id: @project, id: @sprint.wiki_page
   end
 
   def edit
-    redirect_to controller: "/wiki", action: "edit", project_id: @project.id, id: @sprint.wiki_page
+    redirect_to controller: "/wiki", action: "edit", project_id: @project, id: @sprint.wiki_page
   end
 end

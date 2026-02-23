@@ -9,4 +9,4 @@ services:
     working_dir: /app
     command: sh -c "npm run dev"
     volumes:
-      - ../../../../op-blocknote-hocuspocus:/app
+      - ../../../extensions/op-blocknote-hocuspocus:/app

@@ -21,6 +21,12 @@
 #++
 fil:
   js:
+    costs:
+      widgets:
+        actual_costs:
+          blankslate:
+            title: "No data for current year"
+            description: "Log spent time and costs for work packages to start tracking actual costs"
     text_are_you_sure: "Sigurado ka ba?"
     myTimeTracking:
       noSpecificTime: "No specific time"

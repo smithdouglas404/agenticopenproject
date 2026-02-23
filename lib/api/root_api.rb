@@ -279,8 +279,7 @@ module API
 
     def self.auth_headers
       lambda do
-        header = OpenProject::Authentication::WWWAuthenticate
-                   .response_header(scope: authentication_scope, request_headers: env)
+        header = OpenProject::Authentication::WWWAuthenticate.response_header(scope: authentication_scope)
 
         { "WWW-Authenticate" => header }
       end

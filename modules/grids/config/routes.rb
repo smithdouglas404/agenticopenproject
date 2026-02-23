@@ -37,6 +37,7 @@ Rails.application.routes.draw do
         resource :news, only: %i[show]
         resource :project_status, only: %i[show update]
         resource :subitems, only: %i[show]
+        resource :description, only: %i[show]
       end
     end
 

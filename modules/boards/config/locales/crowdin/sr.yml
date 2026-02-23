@@ -20,7 +20,7 @@ sr:
       action: "Tabla sa zadacima (%{attribute})"
     board_type_attributes:
       assignee: Zadužen
-      status: Status
+      status: Kanban
       version: Verzija
       subproject: Potprojekat
       subtasks: Parent-child

@@ -20,7 +20,7 @@ si:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: අස්ගිනී
-      status: තත්වය
+      status: Kanban
       version: අනුවාදය
       subproject: උප ව්යාපෘතිය
       subtasks: Parent-child

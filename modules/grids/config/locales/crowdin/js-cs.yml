@@ -6,6 +6,7 @@ cs:
       configure: 'Konfigurovat widget'
       widgets:
         missing_permission: "Nemáte potřebná oprávnění k zobrazení tohoto widgetu."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Vlastní text'
         documents:
@@ -27,8 +28,6 @@ cs:
           not_set: 'Nenastaveno'
           finished: 'Dokončeno'
           discontinued: 'Zrušeno'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:
