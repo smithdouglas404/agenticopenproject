@@ -37,7 +37,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Y from 'yjs';
 
-function useConnectionTimeout(provider: HocuspocusProvider | undefined, timeoutMs = 5000) {
+function useConnectionTimeout(provider:HocuspocusProvider | undefined, timeoutMs = 5000) {
   const [hasTimedOut, setHasTimedOut] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -65,9 +65,9 @@ function useConnectionTimeout(provider: HocuspocusProvider | undefined, timeoutM
 }
 
 function useCollaborationProvider(
-  provider: HocuspocusProvider | undefined,
-  onSynced: () => void,
-  onDisconnect: () => void,
+  provider:HocuspocusProvider | undefined,
+  onSynced:() => void,
+  onDisconnect:() => void,
 ) {
   useEffect(() => {
     if (!provider) return;
@@ -86,7 +86,7 @@ function useCollaborationProvider(
   }, [provider, onSynced, onDisconnect]);
 }
 
-function useLocalDocumentSync(doc: Y.Doc, inputField: HTMLInputElement, enabled: boolean) {
+function useLocalDocumentSync(doc:Y.Doc, inputField:HTMLInputElement, enabled:boolean) {
   useEffect(() => {
     if (!enabled) return;
 
@@ -110,13 +110,13 @@ export function useCollaboration(provider: HocuspocusProvider | undefined, doc: 
   const [offlineMode, setOfflineMode] = useState(false);
 
   const handleSynced = useCallback(() => {
-    debugLog("(BlockNote Editor) synced with collaboration server");
+    debugLog('(BlockNote Editor) synced with collaboration server');
     setIsLoading(false);
     setOfflineMode(false); // banner disappears
   }, []);
 
   const handleDisconnect = useCallback(() => {
-    debugLog("(BlockNote Editor) Disconnected - offline mode");
+    debugLog('(BlockNote Editor) Disconnected - offline mode');
     setIsLoading(false);
     setOfflineMode(true); // show the banner, editing is available
   }, []);
@@ -142,8 +142,8 @@ export function useCollaboration(provider: HocuspocusProvider | undefined, doc: 
   }, [hasTimedOut]);
 
   useEffect(() => {
-    const handleProviderAuthError = (event: Event) => {
-      const customEvent = event as CustomEvent<{ kind: ProviderAuthErrorKind; message: string }>;
+    const handleProviderAuthError = (event:Event) => {
+      const customEvent = event as CustomEvent<{ kind:ProviderAuthErrorKind; message:string }>;
       debugLog(`(BlockNote Editor) Provider auth error: ${customEvent.detail.kind} - ${customEvent.detail.message}`);
       setOfflineMode(true);
       setIsLoading(false);
