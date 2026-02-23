@@ -72,7 +72,7 @@ export default class extends Controller {
     return this.currentToken;
   };
 
-  connect(): void {
+  connect():void {
     this.currentToken = this.tokenPayloadValue;
 
     const ydoc: Doc = new Y.Doc();
@@ -111,7 +111,7 @@ export default class extends Controller {
     }
   }
 
-  disconnect(): void {
+  disconnect():void {
     this.tokenRefreshService?.destroy();
     this.tokenRefreshService = null;
 
