@@ -732,7 +732,7 @@ Rails.application.routes.draw do
       post "plugin/:id", action: :update_plugin
     end
 
-    namespace :import do
+    namespace :import, constraints: lambda { |_request| OpenProject::FeatureDecisions.jira_import_active? } do
       get "/", to: redirect("/admin/import/jira")
       resources :jira, controller: "/admin/import/jira/instances" do
         collection do
