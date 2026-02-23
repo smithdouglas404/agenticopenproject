@@ -102,4 +102,19 @@ RSpec.describe MeetingAgendaItems::CreateContract do
   include_examples "contract reuses the model errors" do
     let(:user) { build_stubbed(:user) }
   end
+
+  context "when creating an agenda item and using a section from another meeting" do
+    let(:other_meeting) { create(:meeting) }
+    let(:other_section) { create(:meeting_section, meeting: other_meeting) }
+    let(:user) do
+      create(:user, member_with_permissions: { project => %i[view_meetings manage_agendas] })
+    end
+
+    let(:item) { build(:meeting_agenda_item, meeting: meeting, meeting_section: other_section) }
+
+    it "is invalid" do
+      expect(contract).not_to be_valid
+      expect(contract.errors[:base]).to include("Section does not belong to the same meeting.")
+    end
+  end
 end

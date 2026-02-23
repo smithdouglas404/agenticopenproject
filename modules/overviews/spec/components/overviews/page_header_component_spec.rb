@@ -74,7 +74,6 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       it "renders title" do
         expect(rendered_component).to have_heading project.name, class: "PageHeader-title"
       end
-
     end
 
     context "with Portfolio" do
@@ -83,7 +82,6 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       it "renders title" do
         expect(rendered_component).to have_heading project.name, class: "PageHeader-title"
       end
-
     end
 
     context "with Program" do
@@ -231,7 +229,9 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
   describe "breadcrumbs" do
     context "when the project has no parent" do
       before do
-        allow(project).to receive(:ancestors).and_return([])
+        allow(project)
+          .to receive_message_chain(:ancestors, :visible) # rubocop:disable RSpec/MessageChain
+          .and_return([])
       end
 
       it "does not render breadcrumbs" do
@@ -244,7 +244,9 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       let(:parent) { build_stubbed(:project) }
 
       before do
-        allow(project).to receive(:ancestors).and_return([grandparent, parent])
+        allow(project)
+          .to receive_message_chain(:ancestors, :visible) # rubocop:disable RSpec/MessageChain
+          .and_return([grandparent, parent])
       end
 
       it "renders the full hierarchy breadcrumb path and ends with the current project name", :aggregate_failures do
