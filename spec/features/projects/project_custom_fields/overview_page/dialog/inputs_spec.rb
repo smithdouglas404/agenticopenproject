@@ -203,8 +203,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
         it "renders the custom field as a link" do
           page.within_test_selector "project-custom-field-#{link_project_custom_field.id}" do
-            href = external_redirect_path(url: "https://www.openproject.org/")
-            expect(page).to have_link("https://www.openproject.org", href:)
+            expect(page).to have_link("https://www.openproject.org", href: "https://www.openproject.org")
           end
         end
       end
