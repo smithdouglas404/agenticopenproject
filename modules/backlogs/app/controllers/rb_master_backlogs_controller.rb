@@ -35,6 +35,8 @@ class RbMasterBacklogsController < RbApplicationController
 
   before_action :load_backlogs, only: :index
 
+  helper_method :scrum_projects_enabled?
+
   def index
     if turbo_frame_request?
       render partial: "list", layout: false
@@ -58,6 +60,15 @@ class RbMasterBacklogsController < RbApplicationController
 
   def load_backlogs
     @owner_backlogs = Backlog.owner_backlogs(@project)
-    @sprint_backlogs = Backlog.sprint_backlogs(@project)
+
+    if scrum_projects_enabled?
+      @sprints = @project.sprints.open.order_by_date
+    else
+      @sprint_backlogs = Backlog.sprint_backlogs(@project)
+    end
+  end
+
+  def scrum_projects_enabled?
+    OpenProject::FeatureDecisions.scrum_projects_active?
   end
 end
