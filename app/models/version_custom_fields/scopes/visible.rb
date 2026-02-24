@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,12 +26,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class TimeEntryCustomField < CustomField
-  scopes :visible
+module VersionCustomFields::Scopes
+  module Visible
+    extend ActiveSupport::Concern
 
-  def type_name
-    :label_spent_time
+    class_methods do
+      def visible(_user = User.current)
+        all
+      end
+    end
   end
 end

@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,12 +26,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class TimeEntryCustomField < CustomField
-  scopes :visible
+require "spec_helper"
 
-  def type_name
-    :label_spent_time
+RSpec.describe VersionCustomFields::Scopes::Visible do
+  shared_let(:version_cf) { create(:version_custom_field) }
+
+  describe ".visible" do
+    current_user { create(:user) }
+
+    subject { VersionCustomField.visible(current_user) }
+
+    it "returns all custom fields" do
+      expect(subject).to contain_exactly(version_cf)
+    end
   end
 end
