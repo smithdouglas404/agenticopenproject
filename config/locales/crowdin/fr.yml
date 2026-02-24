@@ -123,6 +123,7 @@ fr:
       server_form:
         description_caption: "Comment le serveur MCP sera décrit aux autres applications qui s'y connectent."
         title_caption: "Titre court affiché aux applications qui se connectent au serveur MCP."
+
         tool_response_format: "Format de réponse de l'outil"
         tool_response_format_content_only_label: "Contenu uniquement"
         tool_response_format_content_only_caption: >
