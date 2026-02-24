@@ -43,7 +43,7 @@ Portfolios in OpenProject are special workspaces that allow you to:
 
 Select **Portfolios** from the left hand or global modules menu.
 
-![Select portfolios modules from the left hand menu in OpenProject](openproject_use_case_select_portfolios_module.png)
+![Select the portfolios module from the left hand menu in OpenProject](openproject_use_case_select_portfolios_module.png)
 
 The overview page lists all portfolios you can access. Use filters, portfolio status, and aggregated status indicators across subitems to quickly assess portfolio health and identify initiatives that require attention.
 
