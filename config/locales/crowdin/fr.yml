@@ -113,7 +113,7 @@ fr:
       index:
         description: "Le protocole de contexte de modèle permet aux agents d'intelligence artificielle de fournir à leurs utilisateurs les outils et les ressources exposés par cette instance d'OpenProject."
         resources_heading: "Ressources"
-        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject met en œuvre les ressources suivantes. Chacune d'entre elles peut être activée, renommée et décrite comme vous le souhaitez. Pour plus d'informations, veuillez vous référer à la [documentation sur les ressources MCP](docs_url)."
         resources_submit: "Mettre à jour les ressources"
         tools_heading: "Outils"
         tools_description: "OpenProject implémente les outils suivants. Chacun d'entre eux peut être activé, renommé et décrit comme vous le souhaitez. Pour en savoir plus, veuillez vous référer à la [documentation sur les outils MCP](docs_url)."
@@ -122,7 +122,7 @@ fr:
         success: "Les configurations MCP ont été mises à jour avec succès."
       server_form:
         description_caption: "Comment le serveur MCP sera décrit aux autres applications qui s'y connectent."
-        title_caption: "A short title shown to applications that connect to the MCP server."
+        title_caption: "Titre court affiché aux applications qui se connectent au serveur MCP."
       update:
         failure: "La configuration MCP n'a pas pu être mise à jour."
         success: "La configuration MCP a été mise à jour avec succès."
@@ -608,7 +608,7 @@ fr:
         is_for_all_blank_slate:
           heading: Pour tous les projets
           description: Cet attribut de projet est activé dans tous les projets, car l'option « Pour tous les projets » est cochée. Il ne peut pas être désactivé pour les projets individuels.
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: Cet attribut de projet ne peut pas être désactivé car il est défini comme <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> pour les demandes d'initiation de projet.
       types:
         no_results_title_text: Il n'y a actuellement aucun type disponible.
         form:
@@ -624,8 +624,8 @@ fr:
         new_label: "Nouvelle priorité"
       creation_wizard:
         errors:
-          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
-          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
+          no_work_package_type: "La demande d'initiation de projet n'a pas pu être activée car elle nécessite au moins un type de lot de travaux actif et ce projet n'en a pas. Veuillez ajouter au moins un type de lot de travail à ce projet."
+          no_status_when_submitted: "Échec de l'activation de la demande d'initiation de projet car le type de lot de travail %{type} doit être associé à au moins un statut. Veuillez activer au moins un workflow de statut pour ce type de work package."
         export:
           description_attachment_export: "L'artefact généré sera enregistré en tant que pièce jointe au format PDF dans le lot de travaux de l'artefact."
           description_file_link_export: "Le lot de travaux de l'artefact contient un lien vers un fichier PDF stocké dans un espace de stockage de fichiers externe. Nécessite un stockage de fichiers de travail avec des dossiers de projet gérés automatiquement pour ce projet. Pour le moment, seuls les espaces de stockage de fichiers Nextcloud sont pris en charge."
@@ -639,7 +639,7 @@ fr:
         label_request_submission: "Demande d'envoi"
         project_attributes_description: >
           Sélectionnez les attributs du projet à inclure dans la demande de lancement du projet. Cette liste ne comprend que les [attributs du projet](project_attributes_url) activés pour ce projet.
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: Cet attribut de projet ne peut pas être désactivé pour cette demande d'initiation de projet puisqu'il est défini comme obligatoire. Il peut être modifié dans les <a href=%{admin_settings_url} target="_blank">paramètres d'administration</a> par l'administrateur de l'instance.
     status:
       button_edit: Modifier le statut
     wizard:
@@ -1643,7 +1643,7 @@ fr:
         meeting:
           error_conflict: "Impossible d'enregistrer, car la réunion a été mise à jour par quelqu'un d'autre entre-temps. Veuillez recharger la page."
         message:
-          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
+          cannot_move_message_to_forum_of_different_project: "Un message ne peut pas être déplacé vers un forum d'un autre projet."
         notifications:
           at_least_one_channel: "Au moins un canal pour envoyer des notifications doit être spécifié."
           attributes:
@@ -2864,7 +2864,7 @@ fr:
           new_features_list:
             line_0: Lancement automatisé de projets (module complémentaire Enterprise).
             line_1: "Réunions : ajoutez des work packages nouveaux ou existants en tant que résultats."
-            line_2: "Meetings: show iCal responses in OpenProject."
+            line_2: "Réunions : afficher les réponses iCal dans OpenProject."
             line_3: "Réunions récurrentes : dupliquez les points de l'ordre du jour lors de la prochaine réunion."
             line_4: "Mise à disposition de la Communauté : Mise en évidence des attributs."
             line_5: Avertissement avant l'ouverture de liens externes dans le contenu fourni par l'utilisateur (module complémentaire Enterprise).
@@ -4909,7 +4909,7 @@ fr:
     text_change_disabled_for_ldap_login: "Le nom et l'e-mail sont définis par LDAP et ne peuvent donc pas être modifiés."
     unlock: "Déverrouiller"
     unlock_and_reset_failed_logins: "Déverrouiller et réinitialiser les échecs de connexion"
-    error_cannot_delete_user: "User cannot be deleted"
+    error_cannot_delete_user: "L'utilisateur ne peut pas être supprimé"
   version_status_closed: "clôturé"
   version_status_locked: "verrouillé"
   version_status_open: "ouvert"

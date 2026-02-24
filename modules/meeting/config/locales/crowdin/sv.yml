@@ -70,6 +70,7 @@ sv:
         meeting_participant:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
+          section_not_belong_to_meeting: "Section does not belong to the same meeting."
           user_invalid: "is not a valid participant."
         recurring_meeting_interim_response:
           not_an_occurrence: "is not a valid occurrence time for this recurring meeting"

@@ -69,6 +69,7 @@ zh-TW:
         meeting_participant:
           user_invalid: "不是有效的參與者。"
         meeting_agenda_item:
+          section_not_belong_to_meeting: "Section does not belong to the same meeting."
           user_invalid: "不是有效的參與者。"
         recurring_meeting_interim_response:
           not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
