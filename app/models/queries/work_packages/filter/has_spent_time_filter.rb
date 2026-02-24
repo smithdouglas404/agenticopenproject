@@ -28,7 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-
 class Queries::WorkPackages::Filter::HasSpentTimeFilter < Queries::WorkPackages::Filter::WorkPackageFilter
   include Queries::Operators::DateRangeClauses
 
@@ -87,7 +86,5 @@ class Queries::WorkPackages::Filter::HasSpentTimeFilter < Queries::WorkPackages:
     []
   end
 
-  def connection
-    ActiveRecord::Base.connection
-  end
+  delegate :connection, to: :"ActiveRecord::Base"
 end
