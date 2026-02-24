@@ -30,11 +30,15 @@ Rails.application.routes.draw do
   # Routes for the new Agile::Sprint
   # Scoped under projects for permissions:
   resources :projects, only: [] do
-    resources :sprints, controller: :rb_sprints, only: %i[] do
+    resources :sprints, controller: :rb_sprints, only: %i[create] do
       collection do
         get :new_dialog
         get :refresh_form
-        post :create
+      end
+
+      member do
+        get :edit_dialog
+        put :update_agile_sprint
       end
     end
   end

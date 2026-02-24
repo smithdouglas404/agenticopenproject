@@ -98,7 +98,7 @@ module OpenProject::Backlogs
         # :show_sprints and :list_sprints are implicit in :view_master_backlog permission
         permission :update_sprints,
                    {
-                     rb_sprints: %i[edit_name update],
+                     rb_sprints: %i[edit_dialog edit_name update],
                      rb_wikis: %i[edit update]
                    },
                    permissible_on: :project,

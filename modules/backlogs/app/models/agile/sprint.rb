@@ -38,6 +38,18 @@ module Agile
     belongs_to :project
     has_many :work_packages, dependent: :nullify
 
+    # Support for legacy sprints. Can be removed once no view uses this anymore.
+    alias_attribute :effective_date, :finish_date
+
+    scope :open, -> {
+      !completed
+    }
+
+    # null last ordering
+    scope :order_by_date, -> {
+      reorder(Arel.sql("start_date ASC NULLS LAST, finish_date ASC NULLS LAST"))
+    }
+
     enum :status, {
       in_planning: "in_planning",
       active: "active",
@@ -69,6 +81,8 @@ module Agile
 
       Day.working.from_range(from: start_date, to: finish_date).count
     end
+
+    def has_burndown? = false
 
     private
 

@@ -29,13 +29,13 @@
 class Backlog
   extend ActiveModel::Naming
 
-  attr_accessor :sprint, :stories
+  attr_accessor :sprint, :stories, :project
 
   delegate :id, to: :sprint, prefix: true
 
   def self.for(sprint:, project:)
     owner_backlog = sprint.settings(project)&.display == VersionSetting::DISPLAY_RIGHT
-    new(sprint:, stories: sprint.stories(project), owner_backlog:)
+    new(sprint:, stories: sprint.stories(project), owner_backlog:, project:)
   end
 
   def self.owner_backlogs(project)
@@ -43,7 +43,7 @@ class Backlog
 
     stories_by_sprints = Story.backlogs(project.id, backlogs.map(&:id))
 
-    backlogs.map { |sprint| new(stories: stories_by_sprints[sprint.id], owner_backlog: true, sprint:) }
+    backlogs.map { |sprint| new(stories: stories_by_sprints[sprint.id], owner_backlog: true, sprint:, project:) }
   end
 
   def self.sprint_backlogs(project)
@@ -51,12 +51,13 @@ class Backlog
 
     stories_by_sprints = Story.backlogs(project.id, sprints.map(&:id))
 
-    sprints.map { |sprint| new(stories: stories_by_sprints[sprint.id], sprint:) }
+    sprints.map { |sprint| new(stories: stories_by_sprints[sprint.id], sprint:, project:) }
   end
 
-  def initialize(sprint:, stories:, owner_backlog: false)
+  def initialize(sprint:, stories:, project:, owner_backlog: false)
     @sprint = sprint
     @stories = stories
+    @project = project
     @owner_backlog = owner_backlog
   end
 
@@ -74,5 +75,27 @@ class Backlog
 
   def to_key
     [sprint_id]
+  end
+
+  def edit_name_path
+    url_helpers.edit_name_backlogs_project_sprint_path(project, sprint)
+  end
+
+  def add_work_package_path(type_id)
+    url_helpers.new_project_work_packages_dialog_path(
+      project,
+      version_id: sprint.id,
+      type_id:
+    )
+  end
+
+  def view_stories_path
+    url_helpers.backlogs_project_sprint_query_path(project, sprint)
+  end
+
+  private
+
+  def url_helpers
+    Rails.application.routes.url_helpers
   end
 end

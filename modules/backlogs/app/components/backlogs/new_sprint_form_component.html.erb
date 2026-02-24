@@ -33,9 +33,9 @@ See COPYRIGHT and LICENSE files for more details.
       id: Backlogs::NewSprintFormComponent::FORM_ID,
       model: @sprint,
       scope: :sprint,
-      method: :post,
+      method: http_verb,
       class: "op-sprints--form",
-      url: project_sprints_path(@sprint.project_id),
+      url: form_url,
       data: data_attributes
     ) do |f|
       flex_layout(mb: 2) do |flex|

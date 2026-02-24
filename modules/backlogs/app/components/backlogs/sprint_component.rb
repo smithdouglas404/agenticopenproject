@@ -29,40 +29,63 @@
 #++
 
 module Backlogs
-  class NewSprintFormComponent < ApplicationComponent
-    include ApplicationHelper
+  class SprintComponent < ApplicationComponent
+    include Primer::AttributesHelper
     include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+    include RbCommonHelper
 
-    FORM_ID = NewSprintDialogComponent::FORM_ID
+    attr_reader :sprint, :current_user
 
-    def initialize(sprint:, base_errors: nil)
-      super
+    delegate :project, to: :sprint
+
+    def initialize(sprint:, current_user: User.current, **system_arguments)
+      super()
 
       @sprint = sprint
-      @base_errors = base_errors
+      @current_user = current_user
+
+      @system_arguments = system_arguments
+      @system_arguments[:id] = dom_id(sprint)
+      @system_arguments[:list_id] = "#{@system_arguments[:id]}-list"
+      @system_arguments[:padding] = :condensed
+      @system_arguments[:data] = merge_data(
+        @system_arguments,
+        { data: drop_target_config }
+      )
+    end
+
+    def stories
+      @sprint.work_packages
+    end
+
+    def wrapper_uniq_by
+      @sprint.id
     end
 
     private
 
-    def http_verb
-      @sprint.new_record? ? :post : :put
+    def folded?
+      current_user.backlogs_preference(:versions_default_fold_state) == "closed"
     end
 
-    def form_url
-      if @sprint.new_record?
-        project_sprints_path(@sprint.project_id)
-      else
-        # TODO: update path
-        ""
-      end
+    def max_position
+      stories.filter_map(&:position).max
     end
 
-    def data_attributes
+    def drop_target_config
       {
-        controller: "refresh-on-form-changes",
-        "refresh-on-form-changes-target": "form",
-        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_sprints_path(@sprint.project_id)
+        generic_drag_and_drop_target: "container",
+        target_container_accessor: ":scope > ul",
+        target_id: @sprint.id,
+        target_allowed_drag_type: "story"
+      }
+    end
+
+    def draggable_item_config(story)
+      {
+        draggable_id: story.id,
+        draggable_type: "story",
+        drop_url: move_backlogs_project_sprint_story_path(project, sprint, story)
       }
     end
   end

@@ -29,41 +29,31 @@
 #++
 
 module Backlogs
-  class NewSprintFormComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+  class SprintMenuComponent < ApplicationComponent
+    include RbCommonHelper
 
-    FORM_ID = NewSprintDialogComponent::FORM_ID
+    attr_reader :sprint, :project, :current_user
 
-    def initialize(sprint:, base_errors: nil)
-      super
+    def initialize(sprint:, project:, current_user: User.current)
+      super()
 
       @sprint = sprint
-      @base_errors = base_errors
+      @project = project
+      @current_user = current_user
+    end
+
+    def stories
+      @sprint.work_packages
     end
 
     private
 
-    def http_verb
-      @sprint.new_record? ? :post : :put
+    def user_allowed?(permission)
+      current_user.allowed_in_project?(permission, project)
     end
 
-    def form_url
-      if @sprint.new_record?
-        project_sprints_path(@sprint.project_id)
-      else
-        # TODO: update path
-        ""
-      end
-    end
-
-    def data_attributes
-      {
-        controller: "refresh-on-form-changes",
-        "refresh-on-form-changes-target": "form",
-        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_sprints_path(@sprint.project_id)
-      }
+    def available_story_types
+      @available_story_types ||= story_types & project.types
     end
   end
 end

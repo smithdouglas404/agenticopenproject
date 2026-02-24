@@ -1,5 +1,5 @@
 <turbo-frame id="backlogs_container" refresh="morph" class="op-backlogs-page">
-  <% if @owner_backlogs.empty? && @sprint_backlogs.empty? %>
+  <% if @owner_backlogs.empty? && @sprint_backlogs.empty? # TODO: add feature flag condition here? %>
     <%=
       render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
         blankslate.with_visual_icon(icon: :versions)
@@ -13,7 +13,11 @@
   <% else %>
     <div class="op-backlogs-container" data-controller="generic-drag-and-drop">
       <div id="sprint_backlogs_container" class="op-backlogs-lists">
-        <%= render(Backlogs::BacklogComponent.with_collection(@sprint_backlogs, project: @project)) %>
+        <% if scrum_projects_enabled? %>
+          <%= render(Backlogs::SprintComponent.with_collection(@sprints, project: @project)) %>
+        <% else %>
+          <%= render(Backlogs::BacklogComponent.with_collection(@sprint_backlogs, project: @project)) %>
+        <% end %>
       </div>
       <div id="owner_backlogs_container" class="op-backlogs-lists">
         <%= render(Backlogs::BacklogComponent.with_collection(@owner_backlogs, project: @project)) %>
