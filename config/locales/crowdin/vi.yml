@@ -123,6 +123,16 @@ vi:
       server_form:
         description_caption: "Cách máy chủ MCP sẽ được mô tả cho các ứng dụng khác kết nối với nó."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "Không thể cập nhật cấu hình MCP."
         success: "Cấu hình MCP đã được cập nhật thành công."
@@ -622,6 +632,9 @@ vi:
       work_package_priorities:
         new_label: "Ưu tiên mới"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "Tạo tác được tạo sẽ được lưu dưới dạng tệp đính kèm PDF vào gói tác phẩm tạo tác."
           description_file_link_export: "Gói công việc tạo tác sẽ có liên kết tệp tới tệp PDF được lưu trữ trong bộ lưu trữ tệp bên ngoài. Yêu cầu lưu trữ tệp đang hoạt động với các thư mục dự án được quản lý tự động cho dự án này. Hiện tại chỉ hỗ trợ lưu trữ tệp Nextcloud."
@@ -1025,7 +1038,6 @@ vi:
         title: "Thiếu luồng công việc để chia sẻ gói công việc"
         message: "Không có quy trình làm việc nào được định cấu hình cho vai trò 'Trình chỉnh sửa gói công việc'. Nếu không có quy trình làm việc, nội dung được chia sẻ với người dùng không thể thay đổi trạng thái của gói công việc. Quy trình làm việc có thể được sao chép. Chọn loại nguồn (ví dụ: 'Nhiệm vụ') và vai trò nguồn (ví dụ: 'Thành viên'). Sau đó chọn loại mục tiêu. Để bắt đầu, bạn có thể chọn tất cả các loại làm mục tiêu. Cuối cùng, chọn vai trò 'Trình chỉnh sửa gói công việc' làm mục tiêu và nhấn 'Sao chép'. Sau khi đã tạo các giá trị mặc định, hãy tinh chỉnh quy trình làm việc như bạn thực hiện với mọi vai trò khác."
         link_message: "Cấu hình các quy trình công việc trong quản trị."
-    templated_subject_hint: Được tạo tự động thông qua loại %{type}
     summary:
       reports:
         category:
@@ -1150,6 +1162,9 @@ vi:
         dependencies: "phụ thuộc"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Hiển thị cho đến khi"
       attachment:
@@ -1524,6 +1539,7 @@ vi:
         not_available: "không khả dụng do cấu hình hệ thống."
         not_deletable: "không thể xóa được."
         not_current_user: "không phải là người dùng hiện tại."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "không tìm thấy."
         not_a_date: "không phải là ngày hợp lệ"
         not_a_datetime: "không phải là thời gian hợp lệ"
@@ -1629,6 +1645,8 @@ vi:
               not_unique: "đã được sử dụng. Vui lòng chọn tên khác."
         meeting:
           error_conflict: "Không thể lưu vì cuộc họp đã được người khác cập nhật trong thời gian chờ đợi. Vui lòng tải lại trang."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Cần phải chỉ định ít nhất một kênh để gửi thông báo."
           attributes:
@@ -2066,6 +2084,7 @@ vi:
     role: "Vai trò"
     roles: "Vai trò"
     search: "tìm kiếm"
+    sprint: "Sprint"
     start_date: "Ngày bắt đầu"
     status: "Trạng thái"
     state: "tiểu bang"
@@ -3166,7 +3185,6 @@ vi:
   label_duplicate: "Nhân đôi"
   label_duplicates: "Nhân đôi"
   label_edit: "Chỉnh sửa"
-  label_edit_attribute: "Chỉnh sửa thuộc tính"
   label_edit_x: "Chỉnh sửa: %{x}"
   label_enable_multi_select: "Bật/tắt đa lựa chọn"
   label_enabled_project_custom_fields: "Các trường tùy chỉnh đã bật"
@@ -4081,6 +4099,7 @@ vi:
   permission_edit_project_query: "Chỉnh sửa truy vấn dự án"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 danh mục đầu tư"
@@ -4312,6 +4331,9 @@ vi:
   setting_smtp_password: "Mật khẩu SMTP"
   setting_smtp_domain: "Tên miền SMTP HELO"
   setting_activity_days_default: "Ngày hiển thị trên hoạt động dự án"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "phụ đề ứng dụng"
   setting_app_title: "Tiêu đề ứng dụng"
   setting_attachment_max_size: "Tệp đính kèm tối đa. kích cỡ"
@@ -4421,7 +4443,6 @@ vi:
   setting_repository_checkout_text: "Văn bản hướng dẫn thanh toán"
   setting_repository_log_display_limit: "Số lượng bản sửa đổi tối đa được hiển thị trên nhật ký tệp"
   setting_repository_truncate_at: "Số lượng tệp tối đa được hiển thị trong trình duyệt kho lưu trữ"
-  setting_rest_api_enabled: "Kích hoạt dịch vụ web REST"
   setting_self_registration: "Tự đăng ký"
   setting_self_registration_caption: >
     Lựa chọn cơ chế tự đăng ký cho người dùng. Hãy cẩn thận với cài đặt bạn chọn vì một số tùy chọn cho phép người dùng kích hoạt tài khoản của chính họ trong trường hợp này.
@@ -4852,10 +4873,10 @@ vi:
     reset_failed_logins: "Đặt lại thông tin đăng nhập thất bại"
     status_user_and_brute_force: "%{user} và %{brute_force}"
     status_change: "Thay đổi trạng thái"
-    text_change_disabled_for_provider_login: "Tên được thiết lập với người cung cấp đăng nhập của bạn và vì thế không thể thay đổi"
-    text_change_disabled_for_ldap_login: "Tên và email do LDAP đặt và do đó không thể thay đổi."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Mở khoá"
     unlock_and_reset_failed_logins: "Mở khóa và đặt lại thông tin đăng nhập thất bại"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "đóng cửa"
   version_status_locked: "bị khóa"
   version_status_open: "mở"

@@ -44,62 +44,6 @@ RSpec.describe MembersController do
 
   before { login_as(admin) }
 
-  describe "create" do
-    shared_let(:admin) { create(:admin) }
-    let(:project2) { create(:project) }
-
-    it "works for multiple users" do
-      post :create,
-           params: {
-             project_id: project2.identifier,
-             member: {
-               user_ids: [admin.id, user.id],
-               role_ids: [role.id]
-             }
-           }
-
-      expect(response.response_code).to be < 400
-
-      [admin, user].each do |u|
-        u.reload
-        expect(u.memberships.size).to be >= 1
-
-        expect(u.memberships.find do |m|
-          expect(m.roles).to include(role)
-        end).not_to be_nil
-      end
-    end
-  end
-
-  describe "update" do
-    shared_let(:admin) { create(:admin) }
-    let(:project2) { create(:project) }
-    let(:role1) { create(:project_role) }
-    let(:role2) { create(:project_role) }
-    let(:member2) do
-      create(
-        :member,
-        project: project2,
-        user: admin,
-        roles: [role1]
-      )
-    end
-
-    it "however allows roles to be updated through mass assignment" do
-      put "update",
-          params: {
-            project_id: project.identifier,
-            id: member2.id,
-            member: {
-              role_ids: [role1.id, role2.id]
-            }
-          }
-
-      expect(Member.find(member2.id).roles).to include(role1, role2)
-      expect(response.response_code).to be < 400
-    end
-  end
-
   describe "#autocomplete_for_member" do
     let(:params) { { "project_id" => project.identifier.to_s, "q" => query } }
     let(:query) { "" }
@@ -107,14 +51,15 @@ RSpec.describe MembersController do
     let(:global_permissions) { [] }
     let(:project_permissions) { [] }
 
-    subject { post(:autocomplete_for_member, xhr: true, params:) }
+    let(:user) do
+      create(:user,
+             member_with_permissions: { project => project_permissions },
+             global_permissions: global_permissions)
+    end
+
+    subject { post(:autocomplete_for_member, xhr: true, params:, format: :json) }
 
     before do
-      mock_permissions_for(user) do |mock|
-        mock.allow_globally(*global_permissions)
-        mock.allow_in_project(*project_permissions, project:)
-      end
-
       login_as(user)
     end
 
@@ -189,7 +134,9 @@ RSpec.describe MembersController do
       let!(:other_project) { create(:project) }
       let!(:other_user) { create(:user, member_with_permissions: { other_project => %i[view_project] }) }
       let!(:user) do
-        create(:user, member_with_permissions: { project => project_permissions, other_project => %i[view_project] })
+        create(:user,
+               global_permissions: global_permissions,
+               member_with_permissions: { project => project_permissions, other_project => %i[view_project] })
       end
 
       context "when the user is not authorized to see email addresses" do
@@ -259,7 +206,7 @@ RSpec.describe MembersController do
     describe "WHEN the user is not authorized" do
       it "is forbidden" do
         subject
-        expect(response.response_code).to eq(403)
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
@@ -476,6 +423,7 @@ RSpec.describe MembersController do
     let(:action) do
       post :update,
            params: {
+             project_id: project.id,
              id: member.id,
              member: { role_ids: [role2.id], user_id: user.id }
            }

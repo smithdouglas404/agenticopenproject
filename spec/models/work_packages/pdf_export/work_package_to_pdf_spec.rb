@@ -265,6 +265,14 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
     formatter.format(work_package)
   end
 
+  def remove_pdf_page_footers(strings, nr_of_pages)
+    result = strings
+    nr_of_pages.times do |page|
+      result = result.gsub([" #{page + 1}", export_date_formatted, project.name].join(" "), "")
+    end
+    result
+  end
+
   subject(:pdf) do
     content = export_pdf.content
     # If you want to actually see the PDF for debugging, uncomment the following line
@@ -292,17 +300,16 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
     describe "with rich text and images" do
       it "contains correct data" do
         # Joining with space for comparison since word wrapping leads to a different array for the same content
-        result = pdf[:strings].join(" ")
+        # removing the footer text from the result for comparison, as the number of pages and page breaks are not important
+        result = remove_pdf_page_footers(pdf[:strings].join(" "), 2)
         expected_result = [
           *expected_details,
           label_title(:description),
           "Lorem", " ", "ipsum", " ", "dolor", " ", "sit", " ",
           "amet", ", consetetur sadipscing elitr.", " ", "@OpenProject Admin",
           "Image Caption",
-          "1", export_date_formatted, project.name,
           "Image Redirect",
           "Foo",
-          "2", export_date_formatted, project.name
         ].flatten.join(" ")
         expect(result).to eq(expected_result)
         expect(result).not_to include("DisabledCustomField")
@@ -369,6 +376,28 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
         expect(exporter.send(:pdf_embeddable?, "image/png")).to be true
         expect(exporter.send(:pdf_embeddable?, "image/jpeg")).to be true
         expect(exporter.send(:pdf_embeddable?, "image/gif")).to be true
+        expect(exporter.send(:pdf_embeddable?, "image/webp")).to be true
+      end
+    end
+
+    describe "with WebP image attachment" do
+      let(:webp_path) { Rails.root.join("spec/fixtures/files/image.webp") }
+      let(:webp_attachment) { Attachment.new author: user, file: File.open(webp_path) }
+      let(:attachments) { [webp_attachment] }
+      let(:description) do
+        <<~DESCRIPTION
+          This work package contains a WebP image.
+          ![](/api/v3/attachments/#{webp_attachment.id}/content)
+        DESCRIPTION
+      end
+
+      before do
+        webp_attachment.save
+      end
+
+      it "converts WebP images and includes them in the PDF export" do
+        expect(webp_attachment.content_type).to eq "image/webp"
+        expect(pdf[:images].length).to eq(1)
       end
     end
 
@@ -459,11 +488,12 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
 
       it "contains resolved attributes and labels" do
         # Joining with space for comparison since word wrapping leads to a different array for the same content
-        result = pdf[:strings].join(" ")
+        # removing the footer text from the result for comparison, as the number of pages and page breaks are not important
+        result = remove_pdf_page_footers(pdf[:strings].join(" "), 3)
+
         expected_result = [
           *expected_details,
           label_title(:description),
-          "1", export_date_formatted, project.name,
           "Work package attributes and labels",
           supported_work_package_embeds.map do |embed|
             [WorkPackage.human_attribute_name(
@@ -471,9 +501,7 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
             ), embed[1]]
           end,
           *expected_description_first,
-          "2", export_date_formatted, project.name,
           *expected_description_second,
-          "3", export_date_formatted, project.name
         ].flatten.join(" ")
         expect(result).to eq(expected_result)
       end
@@ -545,8 +573,6 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
           end,
           "Custom field boolean", I18n.t(:general_text_Yes),
           "Custom field rich text", "foo",
-          "1", export_date_formatted, project.name,
-
           "Custom field hidden",
           "No replacement of:",
           "projectValue:1:status",
@@ -560,15 +586,14 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
           "Access denied:  ",
           "[#{I18n.t('export.macro.error', message:
             I18n.t('export.macro.resource_not_found', resource: "Project #{forbidden_project.id}"))}]  ",
-          "Access denied by identifier:", " ", "[Macro error, resource not found: Project", "forbidden-project]",
-
-          "2", export_date_formatted, project.name
+          "Access denied by identifier:", " ", "[Macro error, resource not found: Project", "forbidden-project]"
         ].flatten.join(" ")
       end
 
       it "contains resolved attributes and labels" do
         # Joining with space for comparison since word wrapping leads to a different array for the same content
-        result = pdf[:strings].join(" ")
+        # removing the footer text from the result for comparison, as the number of pages and page breaks are not important
+        result = remove_pdf_page_footers(pdf[:strings].join(" "), 3)
         expect(result).to eq(expected_result)
       end
     end

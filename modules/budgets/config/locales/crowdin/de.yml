@@ -56,6 +56,39 @@ de:
   caption_labor_costs: "Ist-Personaleinzelkosten"
   caption_material_costs: "Ist-Stückkosten"
   budgets_title: "Budgets"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Budget totals"
+        remaining_budget: "Remaining budget"
+        spent_budget: "Spent budget"
+        total_actual_costs: "Total actual costs"
+        total_planned_budget: "Total planned budget"
+      budget_by_cost_type:
+        title: "Budget by cost type"
+        blankslate:
+          heading: "Start project controlling"
+          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+        caption:
+          zero: "No budget data."
+          one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."
+          other: "Data aggregated from %{count} budgets included in %{portfolios}, %{subprograms} and %{subprojects}."
+        caption_simple:
+          one: "Data aggregated from %{count} budget."
+          other: "Data aggregated from %{count} budgets."
+        portfolio:
+          zero: "keine Portfolios"
+          one: "1 Portfolio"
+          other: "%{count} Portfolios"
+        subprogram:
+          zero: "keine Unterprogramme"
+          one: "1 Unterprogramm"
+          other: "%{count} Unterprogramme"
+        subproject:
+          zero: "keine Unterprojekte"
+          one: "1 Unterprojekt"
+          other: "%{count} Unterprojekte"
+        view_details: "View budget details"
   events:
     budget: "Budget bearbeitet"
   help_click_to_edit: "Hier Klicken zum bearbeiten."

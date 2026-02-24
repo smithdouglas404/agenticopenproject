@@ -56,6 +56,39 @@ tr:
   caption_labor_costs: "Gerçek iş gücü maliyetleri"
   caption_material_costs: "Gerçek birim maliyetler"
   budgets_title: "Bütçeler"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Bütçe toplamları"
+        remaining_budget: "Kalan bütçe"
+        spent_budget: "Harcanan bütçe"
+        total_actual_costs: "Toplam gerçek maliyetler"
+        total_planned_budget: "Planlanan toplam bütçe"
+      budget_by_cost_type:
+        title: "Maliyet türüne göre bütçe"
+        blankslate:
+          heading: "Proje kontrolüne başlayın"
+          description: "Projenizin sağlık durumunu verimli bir şekilde takip etmek için bütçelerinize ve maliyetlerinize genel bir bakış elde edin"
+        caption:
+          zero: "Bütçe verisi yok."
+          one: "Veriler %{portfolios}, %{subprograms} ve %{subprojects} adreslerinde yer alan %{count} bütçesinden derlenmiştir."
+          other: "Veriler %{portfolios}, %{subprograms} ve %{subprojects} adreslerinde yer alan %{count} bütçelerinden derlenmiştir."
+        caption_simple:
+          one: "Veriler %{count} bütçesinden derlenmiştir."
+          other: "Veriler %{count} bütçelerinden derlenmiştir."
+        portfolio:
+          zero: "portföy yok"
+          one: "1 portföy"
+          other: "%{count} portföy"
+        subprogram:
+          zero: "alt program yok"
+          one: "1 alt program"
+          other: "%{count} alt program"
+        subproject:
+          zero: "alt proje yok"
+          one: "1 alt proje"
+          other: "%{count} alt proje"
+        view_details: "Bütçe ayrıntılarını görüntüle"
   events:
     budget: "Bütçe düzenlendi"
   help_click_to_edit: "Düzenlemek için buraya tıklayın."

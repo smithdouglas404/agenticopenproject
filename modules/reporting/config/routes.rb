@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       member do
         post :update
         post :rename
+        delete :destroy
       end
     end
   end
@@ -56,6 +57,7 @@ Rails.application.routes.draw do
     member do
       post :update
       post :rename
+      delete :destroy
     end
   end
 end

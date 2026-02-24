@@ -34,6 +34,7 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
   menu_item :settings_creation_wizard
 
   before_action :check_enterprise_plan, only: :toggle
+  before_action :check_activation_conditions, only: :toggle
 
   def show; end
 
@@ -98,6 +99,23 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
     unless EnterpriseToken.allows_to?(:project_creation_wizard)
       flash[:error] = I18n.t(:notice_requires_enterprise_token)
       redirect_to project_settings_creation_wizard_path(@project, tab: "attributes"), status: :see_other
+    end
+  end
+
+  def check_activation_conditions
+    # Allow disabling even without activation conditions met
+    return if @project.project_creation_wizard_enabled
+
+    error = if @project.project_creation_wizard_default_work_package_type.nil?
+              I18n.t("projects.settings.creation_wizard.errors.no_work_package_type")
+            elsif @project.project_creation_wizard_default_status_when_submitted.nil?
+              type = @project.project_creation_wizard_default_work_package_type.name
+              I18n.t("projects.settings.creation_wizard.errors.no_status_when_submitted", type:)
+            end
+
+    if error
+      flash[:error] = error
+      redirect_to project_settings_creation_wizard_path(@project, tab: params[:tab]), status: :see_other
     end
   end
 

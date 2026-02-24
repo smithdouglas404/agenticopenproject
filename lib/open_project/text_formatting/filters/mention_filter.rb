@@ -107,7 +107,16 @@ module OpenProject::TextFormatting
                           raise ArgumentError
                         end
 
-        mention_class.find_by(id: mention_id(mention)) || mention.text
+        mention_class
+          .visible
+          .find_by(id: mention_id(mention)) || fallback_text(mention)
+      end
+
+      ##
+      # Pass the content of the mention back to Nokogiri
+      # without unescaping any sanitization taken place already.
+      def fallback_text(mention)
+        Nokogiri::XML::Text.new(mention.text, doc)
       end
 
       # For link_to

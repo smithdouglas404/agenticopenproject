@@ -147,6 +147,25 @@ RSpec.describe Projects::CreationWizard::CreateArtifactWorkPackageService do
       expect(artifact_work_package.last_journal.notes).to include(/data-type="user"/)
     end
 
+    context "when 'Assignee when submitted' is not configured" do
+      before do
+        project.update(project_creation_wizard_assignee_custom_field_id: nil)
+      end
+
+      it "creates the artifact work package without an assignee and without a mention in the comment" do
+        result = instance.call
+
+        expect(result.errors.full_messages).to be_empty
+        project = result.result
+
+        artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+        expect(artifact_work_package.assigned_to).to be_nil
+        expect(artifact_work_package.last_journal.notes).not_to include("<mention")
+        expected_path = Rails.application.routes.url_helpers.project_creation_wizard_path(project)
+        expect(artifact_work_package.last_journal.notes).to include(expected_path)
+      end
+    end
+
     context "when assignee is a group" do
       let(:group) { create(:group, firstname: "test group") }
 

@@ -123,6 +123,16 @@ el:
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -619,6 +629,9 @@ el:
       work_package_priorities:
         new_label: "New priority"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
           description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
@@ -1032,7 +1045,6 @@ el:
         title: "Workflow missing for work package sharing"
         message: "No workflow is configured for the 'Work package editor' role. Without a workflow, the shared with user cannot alter the status of the work package. Workflows can be copied. Select a source type (e.g. 'Task') and source role (e.g. 'Member'). Then select the target types. To start with, you could select all the types as targets. Finally, select the 'Work package editor' role as the target and press 'Copy'. After having thus created the defaults, fine tune the workflows as you do for every other role."
         link_message: "Configure the workflows in the administration."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1157,6 +1169,9 @@ el:
         dependencies: "Εξαρτήσεις"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Εμφάνιση μέχρι"
       attachment:
@@ -1531,6 +1546,7 @@ el:
         not_available: "is not available due to a system configuration."
         not_deletable: "δεν μπορεί να διαγραφεί."
         not_current_user: "δεν είναι ο τρέχων χρήστης."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "δεν είναι έγκυρη ημερομηνία."
         not_a_datetime: "δεν είναι έγκυρη ημερομηνία και ώρα."
@@ -1637,6 +1653,8 @@ el:
               not_unique: "is already in use. Please select another name."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "At least one channel for sending notifications needs to be specified."
           attributes:
@@ -2092,6 +2110,7 @@ el:
     role: "Ρόλος"
     roles: "Ρόλοι"
     search: "Αναζήτηση"
+    sprint: "Sprint"
     start_date: "Ημερομηνία έναρξης"
     status: "Κατάσταση"
     state: "State"
@@ -3213,7 +3232,6 @@ el:
   label_duplicate: "αντιγραφή"
   label_duplicates: "αντίγραφα"
   label_edit: "Επεξεργασία"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Επεξεργασία: %{x}"
   label_enable_multi_select: "Ενεργοποίηση πολλαπλής επιλογής"
   label_enabled_project_custom_fields: "Ενεργοποίηση προσαρμοσμένων πεδίων"
@@ -4129,6 +4147,7 @@ el:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4360,6 +4379,9 @@ el:
   setting_smtp_password: "Κωδικός SMTP"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "Ημέρες που εμφανίζονται στη δραστηριότητα έργου"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Υπότιτλος εφαρμογής"
   setting_app_title: "Τίτλος εφαρμογής"
   setting_attachment_max_size: "Μέγιστο μέγεθος συνημμένων"
@@ -4469,7 +4491,6 @@ el:
   setting_repository_checkout_text: "Κείμενο οδηγιών ολοκλήρωσης της παραγγελίας"
   setting_repository_log_display_limit: "Μέγιστος αριθμός αναθεωρήσεων που εμφανίζονται στη καταγραφή αρχείων"
   setting_repository_truncate_at: "Μέγιστος αριθμός αρχείων που εμφανίζονται στον περιηγητή αποθετηρίων"
-  setting_rest_api_enabled: "Ενεργοποίηση του REST web service"
   setting_self_registration: "Αυτο-εγγραφή"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4901,10 +4922,10 @@ el:
     reset_failed_logins: "Επαναφορά αποτυχημένων συνδέσεων"
     status_user_and_brute_force: "%{user} και %{brute_force}"
     status_change: "Αλλαγή κατάστασης"
-    text_change_disabled_for_provider_login: "Το όνομα έχει οριστεί από τον πάροχο σύνδεσης και γι'αυτό δεν μπορεί να αλλαχθεί."
-    text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Ξεκλείδωμα"
     unlock_and_reset_failed_logins: "Ξεκλειδώστε και επαναφέρετε τις αποτυχημένες συνδέσεις"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "κλειστό"
   version_status_locked: "κλειδωμένο"
   version_status_open: "ανοιχτό"

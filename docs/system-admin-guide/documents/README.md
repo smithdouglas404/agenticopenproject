@@ -13,14 +13,14 @@ This page describes the available settings for the **Documents** module in the O
 
 > [!NOTE]
 >
-> Prior to OpenProject 17.0 document types were called *categories* and were configured under *Administration → Files → Categories*. 
+> Prior to OpenProject 17.0 document types were called *categories* and were configured under *Administration → Files → Categories*.
 
 To create or edit document categories in OpenProject, navigate to *Administration → Documents*. Here, you will automatically see all existing document types:
 
 - The column **Type** lists all existing document type names
 - The column **Documents** shows the number of documents of this specific type
 
-You can adjust the items within the list by using the options behind the **More (three dots)** menu on the right side. You can also rearrange the order by using the drag-and-drop handle on the left. 
+You can adjust the items within the list by using the options behind the **More (three dots)** menu on the right side. You can also rearrange the order by using the drag-and-drop handle on the left.
 
 ![Document types overview in OpenProject administration](openproject_system_guide_documents_types_overview.png)
 
@@ -28,7 +28,7 @@ You can adjust the items within the list by using the options behind the **More 
 
 To create a new document type, select the **+ Add** button in the top right corner.
 
-You can then name the new type, and activate it. You can optionally set this type to be the **Default** value. 
+You can then name the new type, and activate it. You can optionally set this type to be the **Default** value.
 > [!NOTE]
 > Making this type default will override the previous default priority.
 
@@ -48,8 +48,8 @@ To remove a document type, open the **More (three dots)** menu on the right end 
 
 ![Delete a document type in OpenProject administration](openproject_system_guide_documents_types_delete_button.png)
 
-You will see a dialogue informing you of the consequences. 
-- If a document type is unused, this has no significant consequences. 
+You will see a dialogue informing you of the consequences.
+- If a document type is unused, this has no significant consequences.
 
   ![A warning message when deleting an unused document type in OpenProject](openproject_system_guide_documents_types_delete_message_type_unused.png)
 
@@ -65,7 +65,7 @@ You will see a dialogue informing you of the consequences.
 
 Real-time collaboration for OpenProject’s **Documents** module was introduced with the 17.0 release. When enabled, it allows multiple users to edit the same document at the same time. Changes are synchronized instantly, and users can see each other’s cursors and edits as they occur. This improves collaboration, especially for teams working on shared documentation or meeting notes.
 
-From a technical perspective, real-time collaboration relies on a running [Hocuspocus server](https://github.com/opf/op-blocknote-hocuspocus), which handles synchronization between users. OpenProject connects to this service to provide a seamless collaborative editing experience within documents.
+From a technical perspective, real-time collaboration relies on a running [Hocuspocus server](https://github.com/opf/openproject/tree/dev/extensions/op-blocknote-hocuspocus), which handles synchronization between users. OpenProject connects to this service to provide a seamless collaborative editing experience within documents.
 
 ![Administration settings for real-time documents collaboration in OpenProject](openproject_system_guide_documents_real_time_collaboration.png)
 
@@ -76,7 +76,7 @@ From a technical perspective, real-time collaboration relies on a running [Hocus
 > - Containerized installations
 > - Cloud-hosted installations
 >
-> Packaged installations (DEB/RPM) require additional manual setup. This includes installing and configuring a [Hocuspocus server](https://github.com/opf/op-blocknote-hocuspocus) to enable real-time collaboration.
+> Packaged installations (DEB/RPM) require additional manual setup. This includes installing and configuring a [Hocuspocus server](https://github.com/opf/openproject/tree/dev/extensions/op-blocknote-hocuspocus) to enable real-time collaboration.
 
 ### Enable real-time collaboration for packaged installations
 
@@ -113,8 +113,8 @@ docker compose up -d
 
 #### 2. Configure Apache
 
-> [!NOTE]  
-> This part of the docs assumes that you are using the generated Apache config by the OpenProject wizard 
+> [!NOTE]
+> This part of the docs assumes that you are using the generated Apache config by the OpenProject wizard
 
 Create `/etc/openproject/addons/apache2/custom/vhost/hocuspocus.conf` with the following content:
 
@@ -139,16 +139,16 @@ sudo service apache2 restart
 **For RHEL/CentOS-based systems, run the following command:**
 
 ```shell
-sudo  service httpd restart 
+sudo  service httpd restart
 ```
 
 #### 3. Enable real-time collaboration
 
-Manually configure the server URL & secret in the *Documents* administration settings in OpenProject.  
-Here you need to provide the URL in the following format: `wss://<your_op_hostname>/hocuspocus`.  
-If you are using HTTP in your instance, the protocol has to be `ws://` instead of `wss://`.  
+Manually configure the server URL & secret in the *Documents* administration settings in OpenProject.
+Here you need to provide the URL in the following format: `wss://<your_op_hostname>/hocuspocus`.
+If you are using HTTP in your instance, the protocol has to be `ws://` instead of `wss://`.
 
-> [!NOTE]  
+> [!NOTE]
 > The secret must be identical in both op-blocknote-hocuspocus and OpenProject.
 
 

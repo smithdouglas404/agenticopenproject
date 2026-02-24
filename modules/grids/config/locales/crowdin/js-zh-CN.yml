@@ -6,6 +6,7 @@ zh-CN:
       configure: '配置微件'
       widgets:
         missing_permission: "您没有查看此微件所需的权限。"
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: '自定义文本'
         documents:
@@ -27,8 +28,6 @@ zh-CN:
           not_set: '未设置'
           finished: '已完成'
           discontinued: '已中断'
-        project_status_beta:
-          title: '状态 (BETA)'
         subprojects:
           title: '子项目'
         project_favorites:

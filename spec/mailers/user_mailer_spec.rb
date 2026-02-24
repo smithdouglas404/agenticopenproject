@@ -183,7 +183,10 @@ RSpec.describe UserMailer do
         it "includes a link to the message" do
           expect(html_body)
             .to have_link(message.subject,
-                          href: topic_url(message, host: Setting.host_name, r: message.id, anchor: "message-#{message.id}"))
+                          href: project_forum_topic_url(message.forum.project, message.forum, message.root,
+                                                        host: Setting.host_name,
+                                                        r: message.id,
+                                                        anchor: "message-#{message.id}"))
         end
       end
     end

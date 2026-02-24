@@ -46,7 +46,14 @@ RSpec.shared_examples_for "list custom fields" do |type|
     cf_page.set_name "Operating System"
 
     expect(page).to have_text("Allow multi-select")
-    check("custom_field_multi_value")
+    check("multi_value")
+
+    click_on "Save"
+    cf_page.expect_and_dismiss_flash(message: "Successful creation.")
+    expect(page).to have_field("multi_value", checked: true)
+
+    click_link "Items"
+    wait_for_network_idle
 
     expect(page).to have_css(".custom-option-row", count: 1)
     within all(".custom-option-row").last do
@@ -73,14 +80,10 @@ RSpec.shared_examples_for "list custom fields" do |type|
     within all(".custom-option-row").last do
       find(".custom-option-value input").set "Solaris"
 
-      click_on "Move to top"
+      click_link accessible_name: "Move to top"
     end
 
     click_on "Save"
-
-    expect(page).to have_text("Successful creation")
-
-    expect(page).to have_field("custom_field_multi_value", checked: true)
 
     expect(page).to have_css(".custom-option-row", count: 3)
     expect(page).to have_field("custom_field_custom_options_attributes_0_value", with: "Solaris")
@@ -270,12 +273,6 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       expect(page).to have_field(label_allow_non_open_versions)
     else
       expect(page).to have_no_label(label_allow_non_open_versions)
-    end
-
-    if format == "List"
-      expect(page).to have_fieldset(label_possible_values)
-    else
-      expect(page).to have_no_fieldset(label_possible_values)
     end
   end
 end

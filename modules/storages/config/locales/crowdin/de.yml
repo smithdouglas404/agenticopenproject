@@ -104,20 +104,20 @@ de:
         create_folder: 'Verwaltete Projekt-Ordnererstellung:'
         ensure_root_folder_permissions: 'Basisordner-Berechtigungen festlegen:'
         hide_inactive_folders: 'Verstecke Inaktive Ordner:'
-        remote_folders: 'Read contents of the team folder:'
+        remote_folders: 'Inhalt des Teamordners lesen:'
         remove_user_from_group: 'Benutzer aus Gruppe entfernen:'
         rename_project_folder: 'Verwalteten Projektordner umbenennen:'
       one_drive_sync_service:
         create_folder: 'Verwaltete Projekt-Ordnererstellung:'
         ensure_root_folder_permissions: 'Basisordner-Berechtigungen festlegen:'
         hide_inactive_folders: 'Verstecke Inaktive Ordner:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Inhalt des Root-Ordners des Laufwerks lesen:'
         rename_project_folder: 'Verwalteten Projektordner umbenennen:'
       sharepoint_sync_service:
         create_folder: 'Verwaltete Projekt-Ordnererstellung:'
         ensure_root_folder_permissions: 'Basisordner-Berechtigungen festlegen:'
         hide_inactive_folders: 'Verstecke Inaktive Ordner:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Inhalt des Root-Ordners des Laufwerks lesen:'
         rename_project_folder: 'Verwalteten Projektordner umbenennen:'
     errors:
       messages:
@@ -140,7 +140,7 @@ de:
               conflict: Der Ordner %{folder_name} existiert bereits in %{parent_location}.
               not_found: "%{parent_location} wurde nicht gefunden."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
+              not_found: "%{group_folder} wurde nicht gefunden. Bitte überprüfen Sie Ihr Nextcloud Teamordner-Setup."
               permission_not_set: konnte keine Berechtigungen auf %{group_folder} setzen.
             hide_inactive_folders:
               permission_not_set: konnte keine Berechtigungen auf %{path} setzen.
@@ -230,7 +230,7 @@ de:
       storage_delete_result_3: Der automatisch verwaltete Projektordner und alle darin enthaltenen Dateien werden gelöscht
     dependencies:
       nextcloud:
-        group_folders_app: Team Folders
+        group_folders_app: Teamordner
         integration_app: OpenProject Integration
     enabled_in_projects:
       setup_incomplete_description: Dieser Speicher ist nicht vollständig eingerichtet. Bitte schließen Sie die Einrichtung ab, bevor Sie ihn in mehreren Projekten aktivieren.
@@ -277,11 +277,11 @@ de:
           client_folder_creation: Automatische Ordnererstellung
           client_folder_removal: Automatische Ordnerlöschung
           drive_contents: Speicherinhalt
-          files_request: Fetching team folder files
+          files_request: Teamordnerdateien werden abgerufen
           header: Automatisch verwaltete Projektordner
-          team_folder_app: 'Dependency: Team Folders'
-          team_folder_contents: Team folder content
-          team_folder_presence: Team folder exists
+          team_folder_app: 'Abhängigkeit: Teamordner'
+          team_folder_contents: Inhalt des Teamordners
+          team_folder_presence: Teamordner existiert
           userless_access: Serverseitige Anfrageauthentifizierung
         authentication:
           existing_token: Benutzer Token
@@ -322,8 +322,8 @@ de:
         nc_oauth_request_not_found: Der Endpunkt für den Abruf des aktuell verbundenen Benutzers wurde nicht gefunden. Bitte überprüfen Sie die Serverprotokolle für weitere Informationen.
         nc_oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, auf den Remote-Datei-Speicher zuzugreifen. Bitte überprüfen Sie die Server-Protokolle für weitere Informationen.
         nc_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit Nextcloud nicht testen, da der Benutzer sein Nextcloud Konto noch nicht verknüpft hat.
-        nc_team_folder_not_found: The team folder could not be found.
-        nc_unexpected_content: Unexpected content found in the managed team folder.
+        nc_team_folder_not_found: Der Teamordner konnte nicht gefunden werden.
+        nc_unexpected_content: Unerwarteter Inhalt im verwalteten Teamordner gefunden.
         nc_userless_access_denied: Das konfigurierte App-Passwort ist ungültig.
         not_configured: Die Verbindung konnte nicht validiert werden. Bitte schließen Sie zuerst die Konfiguration ab.
         od_client_cant_delete_folder: Der Client hat Probleme beim Löschen von Ordnern. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.

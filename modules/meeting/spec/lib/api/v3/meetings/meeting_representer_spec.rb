@@ -50,6 +50,10 @@ RSpec.describe API::V3::Meetings::MeetingRepresenter do
   describe "generation" do
     subject(:generated) { representer.to_json }
 
+    it "fulfills the documented schema" do
+      expect(generated).to match_json_schema.from_docs("meeting_model")
+    end
+
     describe "self link" do
       it_behaves_like "has a titled link" do
         let(:link) { "self" }

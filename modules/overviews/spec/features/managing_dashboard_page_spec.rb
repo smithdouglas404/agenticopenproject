@@ -30,7 +30,7 @@ require "spec_helper"
 
 require_relative "../support/pages/dashboard"
 
-RSpec.describe "Dashboard page managing", :js, with_flag: { new_project_overview: true } do
+RSpec.describe "Dashboard page managing", :js do
   let!(:type) { create(:type) }
   let!(:project) { create(:project, types: [type], description: "My **custom** description") }
   let!(:open_status) { create(:default_status) }

@@ -20,7 +20,7 @@ kk:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: Assignee
-      status: Status
+      status: Kanban
       version: Version
       subproject: Subproject
       subtasks: Бас-бағыныңқы

@@ -123,6 +123,16 @@ ja:
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -620,6 +630,9 @@ ja:
       work_package_priorities:
         new_label: "新しい優先度"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
           description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
@@ -1026,7 +1039,6 @@ ja:
         title: "ワークパッケージの共有のためのワークフローがありません"
         message: "「ワークパッケージエディタ」ロールに対してワークフローが設定されていません。ワークフローがなければ、ユーザーと共有されたワークパッケージのステータスは変更できません。 ワークフローをコピーすることができます。ソースタイプ(例:「タスク」)とソースロール(例:「メンバー」)を選択します。 次に、ターゲットタイプを選択します。最初に、すべてのタイプをターゲットとして選択できます。 最後に、「ワークパッケージの編集」ロールをターゲットとして選択し、「コピー」を押します。 このようにしてデフォルトを作成した後、他のすべてのロールに対して行うようにワークフローを微調整します。"
         link_message: "管理画面でワークフローを構成します。"
-    templated_subject_hint: '%{type}タイプで自動生成されます'
     summary:
       reports:
         category:
@@ -1151,6 +1163,9 @@ ja:
         dependencies: "依存関係"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "までを表示"
       attachment:
@@ -1525,6 +1540,7 @@ ja:
         not_available: "はシステム構成のため使用できません。"
         not_deletable: "削除できません。"
         not_current_user: "現在のユーザーではありません。"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "見つかりません。"
         not_a_date: "は有効な日付ではありません。"
         not_a_datetime: "は有効な日時ではありません。"
@@ -1630,6 +1646,8 @@ ja:
               not_unique: "は既に使用されています。別の名前を選択してください。"
         meeting:
           error_conflict: "会議が他の誰かによって更新されたため、保存できませんでした。ページを再読み込みしてください。"
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "通知を送信するために少なくとも一つのチャンネルを指定する必要があります。"
           attributes:
@@ -2067,6 +2085,7 @@ ja:
     role: "ロール"
     roles: "ロール"
     search: "検索"
+    sprint: "Sprint"
     start_date: "開始日"
     status: "ステータス"
     state: "状態"
@@ -3167,7 +3186,6 @@ ja:
   label_duplicate: "重複"
   label_duplicates: "次と重複"
   label_edit: "編集"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "編集: %{x}"
   label_enable_multi_select: "複数選択の切り替え"
   label_enabled_project_custom_fields: "有効なカスタム フィールド"
@@ -4082,6 +4100,7 @@ ja:
   permission_edit_project_query: "プロジェクトのクエリを編集"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4313,6 +4332,9 @@ ja:
   setting_smtp_password: "SMTPパスワード"
   setting_smtp_domain: "SMTP HELO ドメイン"
   setting_activity_days_default: "プロジェクトの活動ページに表示される日数"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "アプリケーションのサブタイトル"
   setting_app_title: "アプリケーションのタイトル"
   setting_attachment_max_size: "添付ファイルの最大サイズ"
@@ -4422,7 +4444,6 @@ ja:
   setting_repository_checkout_text: "チェックアウトの手順テキスト"
   setting_repository_log_display_limit: "ログファイルに出力されるリビジョンの最大数"
   setting_repository_truncate_at: "リポジトリブラウザーで表示するファイルの最大数"
-  setting_rest_api_enabled: "RESTによるWebサービスを有効にする"
   setting_self_registration: "ユーザーよるアカウント登録"
   setting_self_registration_caption: >
     ユーザーの自己登録メカニズムを選択する。オプションによっては、ユーザが自分のアカウントをこのサイトにアクティベートできるものもあるので、選択する設定には注意してください。
@@ -4853,10 +4874,10 @@ ja:
     reset_failed_logins: "失敗したログイン数をリセットする"
     status_user_and_brute_force: "%{user}かつ%{brute_force}"
     status_change: "ステータスの変更"
-    text_change_disabled_for_provider_login: "名前はログインプロバイダーによって設定されるため、変更できません。"
-    text_change_disabled_for_ldap_login: "名前と電子メールはLDAPによって設定されるため、変更することはできない。"
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "ロックを解除"
     unlock_and_reset_failed_logins: "ロックを解除して、失敗したログイン数をリセットする"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "完了"
   version_status_locked: "ロック済み"
   version_status_open: "未完了"

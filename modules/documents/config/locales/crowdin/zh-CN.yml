@@ -23,6 +23,8 @@ zh-CN:
   plugin_openproject_documents:
     name: "OpenProject 文档"
     description: "允许在项目中创建文档的 OpenProject 插件。"
+  attributes:
+    collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
   activerecord:
     errors:
       models:
@@ -119,7 +121,8 @@ zh-CN:
           some_unwritable: 一些值通过环境变量配置，无法在此处编辑。
         hocuspocus_server_url:
           label: "Hocuspocus 服务器 URL"
-          caption: "有效 Hocuspocus 服务器的地址。"
+          caption: "The WebSocket address of a working Hocuspocus server."
+          invalid_scheme: "Must use a WebSocket protocol (ws:// or wss://)."
         hocuspocus_server_secret:
           label: "客户端密钥"
           caption: "粘贴 Hocuspocus 服务器提供的密钥。"

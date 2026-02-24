@@ -123,6 +123,16 @@ zh-CN:
       server_form:
         description_caption: "如何向连接到 MCP 服务器的其他应用程序描述该 MCP 服务器。"
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP 配置无法更新。"
         success: "MCP 配置已成功更新。"
@@ -619,6 +629,9 @@ zh-CN:
       work_package_priorities:
         new_label: "新优先级"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "生成的工件将作为 PDF 附件保存到工件工作包中。"
           description_file_link_export: "工件工作包将有一个文件链接，指向存储在外部文件存储空间的 PDF 文件。此项目需要一个有效文件存储空间，其中包含自动管理的项目文件夹。目前仅支持 Nextcloud 文件存储空间。"
@@ -1023,7 +1036,6 @@ zh-CN:
         title: "工作包共享缺少工作流"
         message: "没有为\"工作包编辑者\"角色配置工作流。没有工作流，共享用户就无法更改工作包的状态。工作流可以复制。选择一个源类型（例如\"任务\"）和源角色（例如\"成员\"）。然后选择目标类型。一开始，您可以将所有类型都选择为目标类型。最后，选择\"工作包编辑者\"角色作为目标，然后点击\"复制\"。在创建默认设置之后，像对其他角色一样进行微调，对工作流进行详细调整。"
         link_message: "在管理中配置工作流。"
-    templated_subject_hint: 通过类型 %{type}自动生成
     summary:
       reports:
         category:
@@ -1148,6 +1160,9 @@ zh-CN:
         dependencies: "依赖项"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "显示截止日期"
       attachment:
@@ -1522,6 +1537,7 @@ zh-CN:
         not_available: "因系统配置而不可用。"
         not_deletable: "无法删除。"
         not_current_user: "不是当前用户。"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "未找到"
         not_a_date: "不是有效的日期。"
         not_a_datetime: "不是有效的日期时间。"
@@ -1627,6 +1643,8 @@ zh-CN:
               not_unique: "已被使用。请另选一个名称。"
         meeting:
           error_conflict: "无法保存，因为会议已被其他人同时更新。请重新加载页面。"
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "至少需要指定一个发送通知的通道。"
           attributes:
@@ -2064,6 +2082,7 @@ zh-CN:
     role: "角色"
     roles: "角色"
     search: "搜索"
+    sprint: "Sprint"
     start_date: "开始日期"
     status: "状态"
     state: "地区"
@@ -3164,7 +3183,6 @@ zh-CN:
   label_duplicate: "重复"
   label_duplicates: "复制"
   label_edit: "编辑"
-  label_edit_attribute: "编辑属性"
   label_edit_x: "编辑：%{x}"
   label_enable_multi_select: "切换多选"
   label_enabled_project_custom_fields: "启用自定义字段"
@@ -4076,6 +4094,7 @@ zh-CN:
   permission_edit_project_query: "编辑项目查询"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 个项目组合"
@@ -4305,6 +4324,9 @@ zh-CN:
   setting_smtp_password: "SMTP 密码"
   setting_smtp_domain: "SMTP HELO 域"
   setting_activity_days_default: "项目活动显示的天数"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "应用副标题"
   setting_app_title: "应用程序标题"
   setting_attachment_max_size: "最大的附件大小"
@@ -4414,7 +4436,6 @@ zh-CN:
   setting_repository_checkout_text: "检出说明文本"
   setting_repository_log_display_limit: "在文件日志中显示的修订版本最大数目"
   setting_repository_truncate_at: "存储库浏览器中显示的最多的文件个数"
-  setting_rest_api_enabled: "启用 REST Web 服务"
   setting_self_registration: "自助注册"
   setting_self_registration_caption: >
     选择用户的自行注册机制。 请注意您的设置，因为有些选项允许用户在此实例中激活自己的帐户。
@@ -4845,10 +4866,10 @@ zh-CN:
     reset_failed_logins: "重置失败的帐户"
     status_user_and_brute_force: "%{user} 和 %{brute_force}"
     status_change: "状态更改"
-    text_change_disabled_for_provider_login: "名称由您的登录提供商设置，因此无法更改。"
-    text_change_disabled_for_ldap_login: "姓名和电子邮件由 LDAP 设置，因此无法更改。"
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "解锁​​​​"
     unlock_and_reset_failed_logins: "解锁和重置失败的帐户"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "关闭"
   version_status_locked: "锁定"
   version_status_open: "打开"

@@ -6,6 +6,7 @@ ja:
       configure: 'ウィジェットの設定'
       widgets:
         missing_permission: "このウィジェットを表示する権限がありません。"
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'カスタムテキスト'
         documents:
@@ -27,8 +28,6 @@ ja:
           not_set: '未設定'
           finished: '完了'
           discontinued: '中止'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

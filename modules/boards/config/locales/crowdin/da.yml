@@ -20,7 +20,7 @@ da:
       action: "Handlingstavle (%{attribute})"
     board_type_attributes:
       assignee: Tildelt
-      status: Status
+      status: Kanban
       version: Version
       subproject: Underprojekt
       subtasks: overordnet-underordnet

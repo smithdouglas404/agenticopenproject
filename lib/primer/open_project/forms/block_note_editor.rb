@@ -35,6 +35,7 @@ module Primer
       class BlockNoteEditor < Primer::Forms::BaseComponent
         include ::OpenProject::StaticRouting::UrlHelpers
         include FrontendAssetHelper
+        include BrowserAware
 
         attr_reader :input,
                     :value,

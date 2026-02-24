@@ -53,7 +53,7 @@ RSpec.describe "Boards",
         expect(page).to have_enterprise_banner
         expect(page).to have_selector(:radio_button, "Basic")
 
-        %w[Status Assignee Version Subproject Parent-child].each do |restricted_board_type|
+        %w[Kanban Assignee Version Subproject Parent-child].each do |restricted_board_type|
           expect(page).to have_selector(:radio_button, restricted_board_type, disabled: true)
         end
       end
@@ -85,7 +85,7 @@ RSpec.describe "Boards",
 
         context 'when creating a "Status" board' do
           before do
-            new_board_page.set_board_type "Status"
+            new_board_page.set_board_type "Kanban"
             new_board_page.click_on_submit
 
             wait_for_reload

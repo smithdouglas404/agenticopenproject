@@ -26,7 +26,7 @@ zh-TW:
   activerecord:
     attributes:
       sprint:
-        duration: "Sprint duration"
+        duration: "衝刺時間"
       work_package:
         position: "位置"
         story_points: "需求重要性"
@@ -46,7 +46,7 @@ zh-TW:
     task_type: "任務類型"
   backlogs:
     any: "任何"
-    column_width: "Column width"
+    column_width: "欄寬"
     definition_of_done: "定義"
     impediment: "阻礙"
     label_versions_default_fold_state: "顯示精簡版本"
@@ -54,7 +54,7 @@ zh-TW:
     work_package_is_closed: "視為工作套件已完成"
     label_is_done_status: "狀態 %{status_name} 表示完成"
     points_label:
-      other: "points"
+      other: "點"
     positions_could_not_be_rebuilt: "無法重建位置"
     positions_rebuilt_successfully: "位置重建成功"
     rebuild: "重建"
@@ -63,7 +63,7 @@ zh-TW:
     show_burndown_chart: "未完成圖"
     story: "使用者需求"
     story_points:
-      other: "%{count} story points"
+      other: "%{count} 故事點"
     task: "任務"
     task_color: "任務顏色"
     unassigned: "尚未指派"
@@ -71,28 +71,28 @@ zh-TW:
       header_backlogs: "待辦清單模組"
       button_update_backlogs: "更新待辦清單模組"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} 為空"
+      blankslate_description: "尚未規劃任何項目。將項目拖曳至此即可新增。"
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "折疊/展開 %{name}"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "目前沒有待辦故事"
+        one: "待辦清單中有 %{count} 個故事"
+        other: "待辦清單中有 %{count} 個故事"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "待辦清單操作"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
-        wiki: "Wiki"
-        properties: "Properties"
+        edit_sprint: "編輯衝刺"
+        new_story: "新增故事"
+        stories_tasks: "故事/任務"
+        task_board: "任務板"
+        burndown_chart: "燃盡圖"
+        wiki: "維基"
+        properties: "屬性"
     story_component:
-      label_drag_story: "Move %{name}"
+      label_drag_story: "移動 %{name}"
     story_menu_component:
-      label_actions: "Story actions"
+      label_actions: "故事相關操作"
   backlogs_points_burn_direction: "重要性 增加/減少"
   backlogs_product_backlog: "產品待辦事項"
   backlogs_story: "使用者需求"
@@ -100,14 +100,14 @@ zh-TW:
   backlogs_task: "任務"
   backlogs_task_type: "任務類型"
   backlogs_wiki_template: "進度的 Wiki 頁面樣板"
-  backlogs_empty_title: "No versions are defined yet"
-  backlogs_empty_action_text: "To start using backlogs, please create a version first"
-  backlogs_not_configured_title: "Backlogs not configured"
-  backlogs_not_configured_description: "Story and task types need to be set before using this module."
-  backlogs_not_configured_action_text: "Configure Backlogs"
+  backlogs_empty_title: "尚未定義版本"
+  backlogs_empty_action_text: "若要啟用待辦清單功能，請先建立一個版本。"
+  backlogs_not_configured_title: "尚未設定待辦清單。"
+  backlogs_not_configured_description: "使用此模組前，需先設定故事和任務類型。"
+  backlogs_not_configured_action_text: "設定 Backlogs"
   burndown:
-    story_points: "Story points"
-    story_points_ideal: "Story points (ideal)"
+    story_points: "故事點"
+    story_points_ideal: "理想估算故事點數"
   errors:
     attributes:
       task_type:
@@ -118,10 +118,6 @@ zh-TW:
   label_column_in_backlog: "待辦事項的欄位"
   label_points_burn_down: "減少"
   label_points_burn_up: "增加"
-  label_select_type: "選擇類型"
-  label_select_types: "選擇類型"
-  label_selected_type: "所選類型"
-  label_selected_types: "所選類型"
   label_sprint_impediments: "進度阻礙"
   label_task_board: "任務看板"
   permission_view_master_backlog: "檢視主待辦事項"
@@ -131,8 +127,8 @@ zh-TW:
   project_module_backlogs: "待辦事項"
   rb_burndown_charts:
     show:
-      blankslate_title: "No burndown data available"
-      blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
+      blankslate_title: "沒有可用的燃盡圖資料"
+      blankslate_description: "設定衝刺的開始和結束日期，以產生燃盡圖表。"
   remaining_hours: "剩餘工時"
   version_settings_display_label: "待辦事項的欄位"
   version_settings_display_option_left: "左"

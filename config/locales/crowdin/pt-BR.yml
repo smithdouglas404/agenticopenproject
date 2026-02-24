@@ -123,6 +123,16 @@ pt-BR:
       server_form:
         description_caption: "Como o servidor MCP será descrito para outros aplicativos que se conectarem a ele."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "A configuração MCP não pôde ser atualizada."
         success: "Configuração MCP atualizada com sucesso."
@@ -622,6 +632,9 @@ pt-BR:
       work_package_priorities:
         new_label: "Nova prioridade"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "O artefato gerado será salvo como um anexo PDF no pacote de trabalho do artefato."
           description_file_link_export: "O pacote de trabalho do artefato incluirá um link para um PDF armazenado em um armazenamento de arquivos externo. É necessário que o armazenamento ofereça gerenciamento automático de pastas por projeto. Atualmente, apenas armazenamentos Nextcloud são compatíveis."
@@ -1033,7 +1046,6 @@ pt-BR:
         title: "Fluxo de trabalho ausente para compartilhamento de pacotes de trabalho"
         message: "Nenhum fluxo de trabalho está configurado para a função \"Editor de pacote de trabalho\". Sem um fluxo de trabalho, o usuário compartilhado não pode alterar o status do pacote de trabalho. Os fluxos de trabalho podem ser copiados. Selecione um tipo de origem (ex.: \"Tarefa\") e uma função de origem (ex.: \"Membro\"). Em seguida, selecione os tipos de destino. Para começar, você pode selecionar todos os tipos como alvos. Por fim, selecione a função \"Editor de pacote de trabalho\" como o destino e pressione \"Copiar\". Depois de criar os padrões, ajuste os fluxos de trabalho da mesma forma que faz para todas as outras funções."
         link_message: "Configure os fluxos de trabalho na administração."
-    templated_subject_hint: Gerado automaticamente através do tipo %{type}
     summary:
       reports:
         category:
@@ -1158,6 +1170,9 @@ pt-BR:
         dependencies: "Dependências"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Exibir até"
       attachment:
@@ -1532,6 +1547,7 @@ pt-BR:
         not_available: "não está disponível devido a uma configuração do sistema."
         not_deletable: "não pode ser excluído."
         not_current_user: "não é o usuário atual."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "não encontrado."
         not_a_date: "não é uma data válida."
         not_a_datetime: "não é uma data/hora válida."
@@ -1638,6 +1654,8 @@ pt-BR:
               not_unique: "já está em uso. Selecione outro nome."
         meeting:
           error_conflict: "Não foi possível salvar, pois a reunião foi atualizada por outra pessoa enquanto isso. Atualize a página, por favor."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "É necessário especificar pelo menos um canal para o envio de notificações."
           attributes:
@@ -2093,6 +2111,7 @@ pt-BR:
     role: "Função"
     roles: "Papéis"
     search: "Pesquisar"
+    sprint: "Sprint"
     start_date: "Data de início"
     status: "Status"
     state: "Estado"
@@ -3214,7 +3233,6 @@ pt-BR:
   label_duplicate: "duplicado"
   label_duplicates: "Duplicados"
   label_edit: "Editar"
-  label_edit_attribute: "Editar atributo"
   label_edit_x: "Editar: %{x}"
   label_enable_multi_select: "Alterna para seleção múltipla"
   label_enabled_project_custom_fields: "Campos personalizados habilitados"
@@ -4130,6 +4148,7 @@ pt-BR:
   permission_edit_project_query: "Editar consulta do projeto"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfólios"
@@ -4361,6 +4380,9 @@ pt-BR:
   setting_smtp_password: "Senha SMTP"
   setting_smtp_domain: "Domínio SMTP HELO"
   setting_activity_days_default: "Dias exibidos na atividade de projeto"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subtítulo do aplicativo"
   setting_app_title: "Título da aplicação"
   setting_attachment_max_size: "Tamanho máximo dos anexos"
@@ -4470,7 +4492,6 @@ pt-BR:
   setting_repository_checkout_text: "Texto de instrução de check-out"
   setting_repository_log_display_limit: "Número máximo de revisões exibido no arquivo de log"
   setting_repository_truncate_at: "Número máximo de arquivos exibidos no navegador de repositório"
-  setting_rest_api_enabled: "Habilitar serviço REST"
   setting_self_registration: "Auto-registro"
   setting_self_registration_caption: >
     Escolha o mecanismo de auto-registro para os usuários. Tenha atenção à configuração selecionada, pois algumas opções permitem que os usuários ativem suas próprias contas nesta instância.
@@ -4902,10 +4923,10 @@ pt-BR:
     reset_failed_logins: "Redefinição de logins que falharam"
     status_user_and_brute_force: "%{user} e %{brute_force}"
     status_change: "Mudança de situação"
-    text_change_disabled_for_provider_login: "O nome é definido por seu fornecedor de início de sessão e, desta forma, não pode ser alterado."
-    text_change_disabled_for_ldap_login: "O nome e o e-mail são definidos pelo LDAP e, por isso, não podem ser alterados."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Desbloquear"
     unlock_and_reset_failed_logins: "Desbloquear e redefinir logins com falha"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "fechado"
   version_status_locked: "bloqueado"
   version_status_open: "aberto"

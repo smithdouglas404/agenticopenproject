@@ -187,6 +187,9 @@ RSpec.describe "API V3 Authentication" do
       let(:token) { create(:oauth_access_token, resource_owner: nil, application:) }
       let(:application) { create(:oauth_application) }
       let(:oauth_access_token) { token.plaintext_token }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3"}
+      end
 
       # Note: This is just caused by DoorkeeperOauth rejecting to handle this case and auth falling through to basic auth
       # more specific examples can be found at spec/requests/oauth/client_credentials_flow_spec.rb
@@ -194,10 +197,7 @@ RSpec.describe "API V3 Authentication" do
 
       it "returns unauthorized" do
         expect(last_response).to have_http_status :unauthorized
-
-        # Note: This is just caused by DoorkeeperOauth rejecting to handle this case and auth falling through to basic auth
-        # more specific examples can be found at spec/requests/oauth/client_credentials_flow_spec.rb
-        expect(last_response.header["WWW-Authenticate"]).to eq('Basic realm="OpenProject API"')
+        expect(last_response.header["WWW-Authenticate"]).to eq(expected_www_auth_header)
         expect(JSON.parse(last_response.body)).to eq(error_response_body)
       end
 
@@ -332,7 +332,7 @@ RSpec.describe "API V3 Authentication" do
           end
 
           it "returns the WWW-Authenticate header" do
-            expect(last_response.header["WWW-Authenticate"]).to include 'Basic realm="OpenProject API"'
+            expect(last_response.header["WWW-Authenticate"]).to include 'Bearer realm="OpenProject API"'
           end
         end
 
@@ -383,34 +383,7 @@ RSpec.describe "API V3 Authentication" do
 
           it "returns the WWW-Authenticate header" do
             expect(last_response.header["WWW-Authenticate"])
-              .to include 'Basic realm="OpenProject API"'
-          end
-        end
-
-        context 'with invalid credentials an X-Authentication-Scheme "Session"' do
-          let(:expected_message) { "You did not provide the correct credentials." }
-
-          before do
-            set_basic_auth_header(username, password.reverse)
-            header "X-Authentication-Scheme", "Session"
-            get resource
-          end
-
-          it "returns 401 unauthorized" do
-            expect(last_response).to have_http_status :unauthorized
-          end
-
-          it "returns the correct JSON response" do
-            expect(JSON.parse(last_response.body)).to eq error_response_body
-          end
-
-          it "returns the correct content type header" do
-            expect(last_response.headers["Content-Type"]).to eq "application/hal+json; charset=utf-8"
-          end
-
-          it "returns the WWW-Authenticate header" do
-            expect(last_response.header["WWW-Authenticate"])
-              .to include 'Session realm="OpenProject API"'
+              .to include 'Bearer realm="OpenProject API"'
           end
         end
 

@@ -20,7 +20,7 @@ el:
       action: "Πίνακας ενεργειών (%{attribute})"
     board_type_attributes:
       assignee: Ανάθεση σε
-      status: Κατάσταση
+      status: Kanban
       version: Έκδοση
       subproject: Υποέργο
       subtasks: Parent-child

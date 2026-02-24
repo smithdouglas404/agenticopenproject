@@ -113,7 +113,7 @@ fr:
       index:
         description: "Le protocole de contexte de modèle permet aux agents d'intelligence artificielle de fournir à leurs utilisateurs les outils et les ressources exposés par cette instance d'OpenProject."
         resources_heading: "Ressources"
-        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject met en œuvre les ressources suivantes. Chacune d'entre elles peut être activée, renommée et décrite comme vous le souhaitez. Pour plus d'informations, veuillez vous référer à la [documentation sur les ressources MCP](docs_url)."
         resources_submit: "Mettre à jour les ressources"
         tools_heading: "Outils"
         tools_description: "OpenProject implémente les outils suivants. Chacun d'entre eux peut être activé, renommé et décrit comme vous le souhaitez. Pour en savoir plus, veuillez vous référer à la [documentation sur les outils MCP](docs_url)."
@@ -122,7 +122,18 @@ fr:
         success: "Les configurations MCP ont été mises à jour avec succès."
       server_form:
         description_caption: "Comment le serveur MCP sera décrit aux autres applications qui s'y connectent."
-        title_caption: "A short title shown to applications that connect to the MCP server."
+        title_caption: "Titre court affiché aux applications qui se connectent au serveur MCP."
+
+        tool_response_format: "Format de réponse de l'outil"
+        tool_response_format_content_only_label: "Contenu uniquement"
+        tool_response_format_content_only_caption: >
+          Choisissez cette option si les clients MCP qui se connectent à cette instance ne prennent pas en charge le contenu structuré. Les réponses de l'outil ne contiendront que du texte brut et ne tiendront pas compte de la version structurée.
+        tool_response_format_full_label: "Complet"
+        tool_response_format_full_caption: >
+          L'option la plus compatible. Les réponses de l'outil comprendront à la fois du contenu régulier et structuré, ce qui permettra aux clients MCP de choisir le format qu'ils souhaitent lire. Cela peut augmenter le nombre de jetons que le modèle linguistique doit traiter, ce qui peut entraîner une augmentation des coûts et une diminution des performances.
+        tool_response_format_structured_only_label: "Contenu structuré uniquement"
+        tool_response_format_structured_only_caption: >
+          Choisissez cette option si vous êtes certain que les clients MCP qui se connectent à cette instance prennent en charge le contenu structuré. Les réponses de l'outil n'incluront que le contenu structuré et ne tiendront pas compte de sa représentation textuelle.
       update:
         failure: "La configuration MCP n'a pas pu être mise à jour."
         success: "La configuration MCP a été mise à jour avec succès."
@@ -608,7 +619,7 @@ fr:
         is_for_all_blank_slate:
           heading: Pour tous les projets
           description: Cet attribut de projet est activé dans tous les projets, car l'option « Pour tous les projets » est cochée. Il ne peut pas être désactivé pour les projets individuels.
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: Cet attribut de projet ne peut pas être désactivé car il est défini comme <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> pour les demandes d'initiation de projet.
       types:
         no_results_title_text: Il n'y a actuellement aucun type disponible.
         form:
@@ -623,6 +634,9 @@ fr:
       work_package_priorities:
         new_label: "Nouvelle priorité"
       creation_wizard:
+        errors:
+          no_work_package_type: "La demande d'initiation de projet n'a pas pu être activée car elle nécessite au moins un type de lot de travaux actif et ce projet n'en a pas. Veuillez ajouter au moins un type de lot de travail à ce projet."
+          no_status_when_submitted: "Échec de l'activation de la demande d'initiation de projet car le type de lot de travail %{type} doit être associé à au moins un statut. Veuillez activer au moins un workflow de statut pour ce type de work package."
         export:
           description_attachment_export: "L'artefact généré sera enregistré en tant que pièce jointe au format PDF dans le lot de travaux de l'artefact."
           description_file_link_export: "Le lot de travaux de l'artefact contient un lien vers un fichier PDF stocké dans un espace de stockage de fichiers externe. Nécessite un stockage de fichiers de travail avec des dossiers de projet gérés automatiquement pour ce projet. Pour le moment, seuls les espaces de stockage de fichiers Nextcloud sont pris en charge."
@@ -636,7 +650,7 @@ fr:
         label_request_submission: "Demande d'envoi"
         project_attributes_description: >
           Sélectionnez les attributs du projet à inclure dans la demande de lancement du projet. Cette liste ne comprend que les [attributs du projet](project_attributes_url) activés pour ce projet.
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: Cet attribut de projet ne peut pas être désactivé pour cette demande d'initiation de projet puisqu'il est défini comme obligatoire. Il peut être modifié dans les <a href=%{admin_settings_url} target="_blank">paramètres d'administration</a> par l'administrateur de l'instance.
     status:
       button_edit: Modifier le statut
     wizard:
@@ -1034,7 +1048,6 @@ fr:
         title: "Flux de travail manquant pour le partage de lots de travaux"
         message: "Aucun flux de travail n'est configuré pour le rôle 'Éditeur de lots de travaux'. Sans flux de travail, le partage avec l'utilisateur ne permet pas de modifier l'état du lot de travaux. Les flux de travail peuvent être copiés. Sélectionnez un type de source (par exemple 'Tâche') et un rôle de source (par exemple 'Membre'). Sélectionnez ensuite les types cibles. Pour commencer, vous pouvez sélectionner tous les types comme cibles. Enfin, sélectionnez le rôle 'Éditeur de lot de travaux' comme cible et cliquez sur 'Copier'. Après avoir ainsi créé les valeurs par défaut, affinez les flux de travail comme vous le faites pour tous les autres rôles."
         link_message: "Configurez les flux de travail dans l'administration."
-    templated_subject_hint: Généré automatiquement par le type %{type}
     summary:
       reports:
         category:
@@ -1159,6 +1172,9 @@ fr:
         dependencies: "Dépendances"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Partage"
+        finish_date: "Échéance"
       announcements:
         show_until: "Afficher jusqu'à"
       attachment:
@@ -1533,6 +1549,7 @@ fr:
         not_available: "n'est pas disponible en raison d'une configuration système."
         not_deletable: "ne peut pas être supprimé"
         not_current_user: "n'est pas l'utilisateur actuel."
+        only_one_active_sprint_allowed: "un seul sprint actif est autorisé par projet."
         not_found: "introuvable."
         not_a_date: "n'est pas une date valide."
         not_a_datetime: "n'est pas une heure valide."
@@ -1639,6 +1656,8 @@ fr:
               not_unique: "est déjà utilisé. Veuillez choisir un autre nom."
         meeting:
           error_conflict: "Impossible d'enregistrer, car la réunion a été mise à jour par quelqu'un d'autre entre-temps. Veuillez recharger la page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "Un message ne peut pas être déplacé vers un forum d'un autre projet."
         notifications:
           at_least_one_channel: "Au moins un canal pour envoyer des notifications doit être spécifié."
           attributes:
@@ -2094,6 +2113,7 @@ fr:
     role: "Rôle"
     roles: "Rôles"
     search: "Recherche"
+    sprint: "Sprint"
     start_date: "Date de début"
     status: "Statut"
     state: "État"
@@ -2859,7 +2879,7 @@ fr:
           new_features_list:
             line_0: Lancement automatisé de projets (module complémentaire Enterprise).
             line_1: "Réunions : ajoutez des work packages nouveaux ou existants en tant que résultats."
-            line_2: "Meetings: show iCal responses in OpenProject."
+            line_2: "Réunions : afficher les réponses iCal dans OpenProject."
             line_3: "Réunions récurrentes : dupliquez les points de l'ordre du jour lors de la prochaine réunion."
             line_4: "Mise à disposition de la Communauté : Mise en évidence des attributs."
             line_5: Avertissement avant l'ouverture de liens externes dans le contenu fourni par l'utilisateur (module complémentaire Enterprise).
@@ -3207,7 +3227,7 @@ fr:
   label_disabled_uppercase: "Désactivé"
   label_display: "Affichage"
   label_display_per_page: "Par page: %{value}"
-  label_display_used_statuses_only: "Afficher uniquement les status utilisés par ce type"
+  label_display_used_statuses_only: "Afficher uniquement les statuts utilisés par ce type"
   label_download: "%{count} Téléchargement"
   label_download_plural: "%{count} Téléchargements"
   label_downloads_abbr: "Téléchargement"
@@ -3215,7 +3235,6 @@ fr:
   label_duplicate: "dupliquer"
   label_duplicates: "Doublons"
   label_edit: "Éditer"
-  label_edit_attribute: "Modifier l'attribut"
   label_edit_x: "Modifier : %{x}"
   label_enable_multi_select: "Basculer multisélection"
   label_enabled_project_custom_fields: "Champs personnalisés activés"
@@ -3970,7 +3989,7 @@ fr:
   notice_successful_delete: "Suppression réussie."
   notice_successful_cancel: "Annulation réussie."
   notice_successful_update: "Mise à jour réussie."
-  notice_successful_move: "Successful move from %{from} to %{to}."
+  notice_successful_move: "Passage réussi de %{from} à %{to}."
   notice_unsuccessful_create: "Échec de la création."
   notice_unsuccessful_create_with_reason: "Échec de la création : %{reason}"
   notice_unsuccessful_update: "Mise à jour échouée."
@@ -4132,6 +4151,7 @@ fr:
   permission_edit_project_query: "Modifier la requête du projet"
   placeholders:
     default: "-"
+    templated_hint: Généré automatiquement par le type %{type}
   portfolio:
     count:
       zero: "0 portefeuille"
@@ -4316,9 +4336,9 @@ fr:
   setting_capture_external_links: "Saisir les liens externes"
   setting_capture_external_links_text: >
     Lorsque cette option est activée, tous les liens externes en texte formaté sont redirigés vers une page d'avertissement avant de quitter l'application. Cela permet de protéger les utilisateurs contre les sites web externes potentiellement malveillants.
-  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login: "Exiger que les utilisateurs soient connectés"
   setting_capture_external_links_require_login_text: >
-    When enabled, users wanting to click on external links need to be logged in before being able to continue.
+    Lorsque cette option est activée, les utilisateurs qui souhaitent cliquer sur des liens externes doivent être connectés avant de pouvoir continuer.
   setting_after_first_login_redirect_url: "Redirection de première connexion"
   setting_after_first_login_redirect_url_text_html: >
     Définissez un chemin pour rediriger les utilisateurs après leur première connexion. S’il est vide, les utilisateurs seront redirigés vers la page d'accueil de la visite d'intégration. <br/> Exemple : <code>/my/page</code>
@@ -4363,6 +4383,9 @@ fr:
   setting_smtp_password: "Mot de passe SMTP"
   setting_smtp_domain: "Domaine SMTP HELO"
   setting_activity_days_default: "Nombre des jours affichés dans l'activité du projet"
+  setting_api_tokens_enabled: "Activer les jetons API"
+  setting_api_tokens_enabled_caption: >
+    Décidez si les utilisateurs peuvent créer des jetons API personnels dans les paramètres de leur compte. Ces jetons peuvent être utilisés pour accéder aux différentes API d'OpenProject, telles que APIv3 et MCP.
   setting_app_subtitle: "Sous-titre de l'Application"
   setting_app_title: "Titre de l'Application"
   setting_attachment_max_size: "Taille maximale de la pièce jointe"
@@ -4472,7 +4495,6 @@ fr:
   setting_repository_checkout_text: "Texte d'instruction de « checkout »"
   setting_repository_log_display_limit: "Nombre maximal des révisions affichées sur « file log »"
   setting_repository_truncate_at: "Le nombre maiximum de fichiers exposes au navigateur"
-  setting_rest_api_enabled: "Autoriser service web REST"
   setting_self_registration: "Auto-enregistrement"
   setting_self_registration_caption: >
     Choisissez le mécanisme d'auto-inscription pour les utilisateurs. Faites attention au paramètre que vous choisissez, car certaines options permettent aux utilisateurs d'activer leurs propres comptes pour cette instance.
@@ -4904,10 +4926,10 @@ fr:
     reset_failed_logins: "Réinitialiser les connexions echouées"
     status_user_and_brute_force: "%{user} et %{brute_force}"
     status_change: "Changement de statut"
-    text_change_disabled_for_provider_login: "Le nom est défini par votre fournisseur de connexion et ne peut donc pas être modifié."
-    text_change_disabled_for_ldap_login: "Le nom et l'e-mail sont définis par LDAP et ne peuvent donc pas être modifiés."
+    text_change_disabled_for_provider_login: "Le nom et l'adresse électronique sont définis par votre fournisseur d'accès et ne peuvent donc pas être modifiés."
     unlock: "Déverrouiller"
     unlock_and_reset_failed_logins: "Déverrouiller et réinitialiser les échecs de connexion"
+    error_cannot_delete_user: "L'utilisateur ne peut pas être supprimé"
   version_status_closed: "clôturé"
   version_status_locked: "verrouillé"
   version_status_open: "ouvert"

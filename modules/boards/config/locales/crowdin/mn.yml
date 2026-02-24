@@ -20,7 +20,7 @@ mn:
       action: "Үйлдлийн самбар (%{attribute})"
     board_type_attributes:
       assignee: Даалгагч
-      status: Төлөв
+      status: Kanban
       version: Хувилбар
       subproject: Дэд төсөл
       subtasks: Parent-child

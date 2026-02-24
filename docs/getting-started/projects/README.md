@@ -74,8 +74,9 @@ There are several ways to create a new project in OpenProject. Keep in mind that
 ### Choose how to create your project
 You can create either:
 
-- a **blank project** (a completely new and empty project), or 
-- a project **based on a template**.
+- a **blank project** (a completely new and empty project), 
+- a project **based on a template**,
+- a project **based on [project initiation request (Enterprise add-on)](../../user-guide/projects/project-initiation-request)** process
 
 The **Blank project** option is selected by default.
 
@@ -106,6 +107,12 @@ Click **Complete** to finish the setup.
 > If there are project attributes configured as **required**, an additional step will appear during project creation. You must fill in these attributes before you can complete the setup.
 
 ![Fill out a required project attribute during new project creation in OpenProject](openproject_getting_started_create_new_project_attributes.png)
+
+### Project initiation request (Enterprise add-on)
+
+If a project initiation request was configured for the template you are using, after project creation you will be guided through additional pre-defined steps. 
+
+Read more about [project initiation request (Enterprise add-on)](../../user-guide/projects/project-initiation-request).
 
 ### Project members
 

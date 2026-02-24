@@ -123,6 +123,16 @@
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -623,6 +633,9 @@
       work_package_priorities:
         new_label: "Ny prioritet"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
           description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
@@ -1035,7 +1048,6 @@
         title: "Arbeidsflyt mangler for deling av arbeidspakker"
         message: "Ingen arbeidsflyt er konfigurert for rollen 'Arbeidspakke redaktør'. Uten en arbeidsflyt kan ikke brukeren endre status på arbeidspakken. Arbeidsflyt kan kopieres. Velg en kildetype (f.eks. 'oppgave') og en kilderolle (f.eks. 'medlem'). Velg så måltyper. Til å begynne med, kan du velge alle typene som mål. Til slutt velger du \"Redigeringsprogrammet for arbeidspakke\" som mål og press \"Copy\". Etter å ha opprettet standardinnstillingene, kan du finjustere arbeidsflytene som du gjør for hver annen rolle."
         link_message: "Konfigurer arbeidsmetodene i administrasjonen."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1160,6 +1172,9 @@
         dependencies: "Avhengigheter"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Vise til"
       attachment:
@@ -1534,6 +1549,7 @@
         not_available: "er ikke tilgjengelig på grunn av en systemkonfigurasjon."
         not_deletable: "kan ikke slettes."
         not_current_user: "er ikke gjeldende bruker."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "er ikke en gyldig dato."
         not_a_datetime: "er ikke et gyldig tidspunkt for datoen."
@@ -1640,6 +1656,8 @@
               not_unique: "er allerede i bruk. Velg et annet navn."
         meeting:
           error_conflict: "Kunne ikke lagre fordi møtet ble oppdatert av noen andre i mellomtiden. Vennligst last siden på nytt."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Minst en kanal for sending av varsler må angis."
           attributes:
@@ -2095,6 +2113,7 @@
     role: "Rolle"
     roles: "Rolle"
     search: "Søk"
+    sprint: "Sprint"
     start_date: "Startdato"
     status: "Status"
     state: "State"
@@ -3216,7 +3235,6 @@
   label_duplicate: "duplikat"
   label_duplicates: "duplikater"
   label_edit: "Rediger"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Rediger: %{x}"
   label_enable_multi_select: "Veksle multivalg"
   label_enabled_project_custom_fields: "Aktiverte egendefinerte felt"
@@ -4133,6 +4151,7 @@
   permission_edit_project_query: "Rediger prosjektspørring"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4364,6 +4383,9 @@
   setting_smtp_password: "SMTP passord"
   setting_smtp_domain: "SMTP HELO domene"
   setting_activity_days_default: "Dager som vises i prosjektaktivitet"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Undertittel for applikasjon"
   setting_app_title: "Applikasjonsnavn"
   setting_attachment_max_size: "Maksstørrelse for vedlegg"
@@ -4473,7 +4495,6 @@
   setting_repository_checkout_text: "Instruksjoner for utsjekk"
   setting_repository_log_display_limit: "Maks antall revisjoner som vises i filloggen"
   setting_repository_truncate_at: "Maksimalt antall filer som vises i depot nettleser"
-  setting_rest_api_enabled: "Aktiver REST webservice"
   setting_self_registration: "Selv-registrering"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4905,10 +4926,10 @@
     reset_failed_logins: "Nullstill mislykkede innlogginger"
     status_user_and_brute_force: "%{user} og %{brute_force}"
     status_change: "Endre status"
-    text_change_disabled_for_provider_login: "Navnet er angitt av påloggingsleverandøren og kan dermed ikke endres."
-    text_change_disabled_for_ldap_login: "Navnet og e-postadressen er satt av LDAP og kan dermed ikke endres."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Lås opp"
     unlock_and_reset_failed_logins: "Lås opp og nullstill mislykkede innloggingsforsøk"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "lukket"
   version_status_locked: "låst"
   version_status_open: "åpne"

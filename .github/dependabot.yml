@@ -58,6 +58,22 @@ updates:
       - dependency-name: "openproject-octicons"
       - dependency-name: "openproject-octicons_helper"
       - dependency-name: "openproject-primer_view_components"
+  - package-ecosystem: "npm"
+    directory: "/extensions/op-blocknote-hocuspocus"
+    schedule:
+      interval: "weekly"
+    target-branch: "dev"
+    commit-message:
+      prefix: "deps(hocuspocus)"
+    labels:
+      - "dependencies"
+    groups:
+      npm-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

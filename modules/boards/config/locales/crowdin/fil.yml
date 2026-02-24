@@ -20,7 +20,7 @@ fil:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: Naitalaga
-      status: Estado
+      status: Kanban
       version: Bersyon
       subproject: Kahaliling proyekto
       subtasks: Parent-child

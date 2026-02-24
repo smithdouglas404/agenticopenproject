@@ -123,6 +123,16 @@ id:
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -618,6 +628,9 @@ id:
       work_package_priorities:
         new_label: "New priority"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
           description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders for this project. At the moment only Nextcloud file storages are supported."
@@ -1023,7 +1036,6 @@ id:
         title: "Alur kerja yang hilang untuk berbagi paket kerja"
         message: "Tidak ada alur kerja yang dikonfigurasikan untuk peran 'Editor paket kerja'. Tanpa alur kerja, pengguna yang dibagikan tidak dapat mengubah status paket kerja. Alur kerja dapat disalin. Pilih jenis sumber (misalnya 'Tugas') dan peran sumber (misalnya 'Anggota'). Kemudian pilih jenis target. Sebagai permulaan, Anda dapat memilih semua jenis sebagai target. Terakhir, pilih peran 'Editor paket kerja' sebagai target dan tekan 'Salin'. Setelah membuat default, sesuaikan alur kerja seperti yang Anda lakukan untuk setiap peran lainnya."
         link_message: "Mengonfigurasi alur kerja dalam administrasi."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1148,6 +1160,9 @@ id:
         dependencies: "Dependensi"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Display until"
       attachment:
@@ -1522,6 +1537,7 @@ id:
         not_available: "tidak tersedia karena konfigurasi sistem."
         not_deletable: "tidak dapat dihapus."
         not_current_user: "bukan pengguna saat ini."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "bukan tanggal yang valid."
         not_a_datetime: "bukan tanggal waktu yang valid."
@@ -1627,6 +1643,8 @@ id:
               not_unique: "sudah digunakan. Silakan pilih nama lain."
         meeting:
           error_conflict: "Unable to save because the meeting was updated by someone else in the meantime. Please reload the page."
+        message:
+          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
           at_least_one_channel: "Setidaknya satu saluran untuk mengirim notifikasi harus ditentukan."
           attributes:
@@ -2064,6 +2082,7 @@ id:
     role: "Role"
     roles: "Roles"
     search: "Cari"
+    sprint: "Sprint"
     start_date: "Tanggal start"
     status: "Status"
     state: "State"
@@ -3164,7 +3183,6 @@ id:
   label_duplicate: "duplicate"
   label_duplicates: "duplikat"
   label_edit: "Edit"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Beralih ke multiselect"
   label_enabled_project_custom_fields: "Enabled custom fields"
@@ -4078,6 +4096,7 @@ id:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "Hapus nilai"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4307,6 +4326,9 @@ id:
   setting_smtp_password: "SMTP password"
   setting_smtp_domain: "SMTP HELO domain"
   setting_activity_days_default: "Hari ditampilkan pada Project aktiviti"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Subjudul aplikasi"
   setting_app_title: "Judul aplikasi"
   setting_attachment_max_size: "Ukuran lampiran maks."
@@ -4416,7 +4438,6 @@ id:
   setting_repository_checkout_text: "Checkout instruction text"
   setting_repository_log_display_limit: "Jumlah maks. revisi yang ditampilkan di file log"
   setting_repository_truncate_at: "Jumlah maksimum file yang ditampilkan dalam browser tempat penyimpanan"
-  setting_rest_api_enabled: "Aktifkan REST web service"
   setting_self_registration: "Registrasi mandiri"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4847,10 +4868,10 @@ id:
     reset_failed_logins: "Reset gagal login"
     status_user_and_brute_force: "%{user} dan %{brute_force}"
     status_change: "Perubahan status"
-    text_change_disabled_for_provider_login: "Nama ditetapkan oleh penyedia login Anda dan karenanya tidak dapat diubah."
-    text_change_disabled_for_ldap_login: "The name and email is set by LDAP and can thus not be changed."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Unlock"
     unlock_and_reset_failed_logins: "Unlock dan reset gagal login"
+    error_cannot_delete_user: "User cannot be deleted"
   version_status_closed: "berakhir"
   version_status_locked: "terkunci"
   version_status_open: "buka"

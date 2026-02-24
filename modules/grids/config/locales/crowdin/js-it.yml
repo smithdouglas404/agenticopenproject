@@ -6,6 +6,7 @@ it:
       configure: 'Configura il widget'
       widgets:
         missing_permission: "Non hai i permessi necessari per visualizzare questo widget."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Testo personalizzato'
         documents:
@@ -27,8 +28,6 @@ it:
           not_set: 'Non impostato'
           finished: 'Terminato'
           discontinued: 'Interrotto'
-        project_status_beta:
-          title: 'Stato (BETA)'
         subprojects:
           title: 'Sottoelementi'
         project_favorites:

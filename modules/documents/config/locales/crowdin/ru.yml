@@ -23,6 +23,8 @@ ru:
   plugin_openproject_documents:
     name: "Документы OpenProject"
     description: "Плагин OpenProject позволяет создавать документы в проектах."
+  attributes:
+    collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
   activerecord:
     errors:
       models:
@@ -125,7 +127,8 @@ ru:
           some_unwritable: Некоторые значения настраиваются через переменные окружения и не могут быть отредактированы здесь.
         hocuspocus_server_url:
           label: "URL-адрес сервера Hocuspocus"
-          caption: "Адрес рабочего сервера Hocuspocus."
+          caption: "The WebSocket address of a working Hocuspocus server."
+          invalid_scheme: "Must use a WebSocket protocol (ws:// or wss://)."
         hocuspocus_server_secret:
           label: "Закрытый ключ клиента"
           caption: "Вставьте ключ, предоставленный сервером Hocuspocus."

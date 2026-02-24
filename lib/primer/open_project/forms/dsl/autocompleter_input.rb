@@ -8,18 +8,19 @@ module Primer
           attr_reader :name, :label, :autocomplete_options, :select_options, :wrapper_data_attributes
 
           class Option
-            attr_reader :label, :value, :selected, :classes, :group_by
+            attr_reader :label, :value, :selected, :classes, :group_by, :disabled
 
-            def initialize(label:, value:, classes: nil, selected: false, group_by: nil)
+            def initialize(label:, value:, classes: nil, selected: false, group_by: nil, disabled: false)
               @label = label
               @value = value
               @selected = selected
               @classes = classes
               @group_by = group_by
+              @disabled = disabled
             end
 
             def to_h
-              { id: value, name: label }.merge({ group_by:, classes: }.compact)
+              { id: value, name: label }.merge({ selected:, disabled:, group_by:, classes: }.compact)
             end
           end
 

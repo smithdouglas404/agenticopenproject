@@ -48,7 +48,7 @@ module McpTools
       type: :object,
       properties: {
         name: { type: "string", description: "Name of the project. Accepts partial project names, not case-sensitive." },
-        identifier: { type: "string", description: "Project indentifier. Case-sensitive, matching exactly." },
+        identifier: { type: "string", description: "Project identifier. Case-sensitive, matching exactly." },
         status_code: { type: "string", enum: Project.status_codes.keys, description: "The project status." }
       }
     )
@@ -65,7 +65,7 @@ module McpTools
     )
 
     def call(page: nil, **filters)
-      filtered = apply_filters(Project.visible, filters)
+      filtered = apply_filters(Project.project.visible, filters)
       projects = apply_pagination(filtered, page)
 
       {

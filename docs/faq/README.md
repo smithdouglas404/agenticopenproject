@@ -165,7 +165,9 @@ You can then select "Settings" from the side menu on the left side and [change t
 
 ### Is there an OpenProject app?
 
-There is no native iOS or Android app for OpenProject, but OpenProject is responsive - so it displays well on smaller screens.
+OpenProject is responsive - so it displays well on smaller screens.
+
+In addition, there is an iOS and an Android app for OpenProject. [Read more](../mobile-app-guide).
 
 ### Is it possible to connect MS Project and OpenProject or to migrate from MS Project to OpenProject?
 
@@ -244,6 +246,8 @@ Furthermore, we are planning a direct integration into Solibri. Then you don't n
 (Status: February 2021)
 
 ### Does clicking on a BCF-issue zoom you to the appropriate location in the model?
+
+
 
 Yes, the so-called camera position is stored in the BCF-issues, so that exactly the same camera position is assumed when you click on the BCF-issue. These are called viewpoints. If you have several models, e.g. architecture and technical building equipment, these must be activated (made visible) before you click on the BCF-issue. In the same way, BCF-elements of the model can be hidden or selected via the viewpoint.
 

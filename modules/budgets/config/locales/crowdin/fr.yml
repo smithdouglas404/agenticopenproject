@@ -56,6 +56,39 @@ fr:
   caption_labor_costs: "Coûts de main d'œuvre réels"
   caption_material_costs: "Coûts unitaires réels"
   budgets_title: "Budgets"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Totaux du budget"
+        remaining_budget: "Budget restant"
+        spent_budget: "Budget dépensé"
+        total_actual_costs: "Total des coûts réels"
+        total_planned_budget: "Budget total prévu"
+      budget_by_cost_type:
+        title: "Budget par type de coût"
+        blankslate:
+          heading: "Démarrer le contrôle du projet"
+          description: "Obtenez une vue d'ensemble de vos budgets et de vos coûts pour suivre efficacement l'état de santé de votre projet"
+        caption:
+          zero: "Pas de données budgétaires."
+          one: "Données agrégées à partir de %{count} budget inclus dans %{portfolios}, %{subprograms} et %{subprojects}."
+          other: "Les données agrégées à partir des budgets de %{count} sont incluses dans %{portfolios}, %{subprograms} et %{subprojects}."
+        caption_simple:
+          one: "Données agrégées à partir du budget %{count}."
+          other: "Données agrégées à partir des budgets %{count}."
+        portfolio:
+          zero: "pas de portefeuilles"
+          one: "1 portefeuille"
+          other: "%{count} portefeuilles"
+        subprogram:
+          zero: "pas de sous-programmes"
+          one: "1 sous-programme"
+          other: "%{count} sous-programmes"
+        subproject:
+          zero: "pas de sous-projets"
+          one: "1 sous-projet"
+          other: "%{count} sous-projets"
+        view_details: "Voir les détails du budget"
   events:
     budget: "Budget modifié"
   help_click_to_edit: "Cliquez ici pour modifier."
