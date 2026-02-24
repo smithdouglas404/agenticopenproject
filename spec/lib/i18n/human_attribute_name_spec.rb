@@ -79,11 +79,23 @@ RSpec.describe "I18n human_attribute_name", type: :helper do
       end
 
       it "returns the name of custom field attribute" do
-        expect(test_model.human_attribute_name(custom_field.attribute_name)).to eq "Foo bar baz"
+        expect(test_model.human_attribute_name(custom_field.attribute_name))
+          .to eq "Foo bar baz"
+      end
+
+      it "returns the name of custom field attribute for deleted custom field" do
+        expect(test_model.human_attribute_name(custom_field.attribute_name.succ))
+          .to eq "(deleted custom field)"
       end
 
       it "returns the name of custom comment attribute" do
-        expect(test_model.human_attribute_name(custom_field.comment_attribute_name)).to eq "Foo bar baz comment"
+        expect(test_model.human_attribute_name(custom_field.comment_attribute_name))
+          .to eq "Foo bar baz comment"
+      end
+
+      it "returns the name of custom comment attribute for deleted custom field" do
+        expect(test_model.human_attribute_name(custom_field.comment_attribute_name.succ))
+          .to eq "(deleted custom field) comment"
       end
 
       it "raises an error if the translation is missing" do

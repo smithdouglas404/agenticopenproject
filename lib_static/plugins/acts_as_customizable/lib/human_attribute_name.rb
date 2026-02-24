@@ -39,7 +39,8 @@ module Redmine
         def human_attribute_name(attribute, options = {})
           return super unless (match = /\Acustom_(?<type>field|comment)_(?<id>\d+)\z/.match(attribute))
 
-          name = CustomField.find_by(id: match[:id]).name
+          custom_field = CustomField.find_by(id: match[:id])
+          name = custom_field ? custom_field.name : ::I18n.t(:label_deleted_custom_field)
 
           case match[:type]
           when "field"
