@@ -67,7 +67,7 @@ module Agile
       if predecessor.nil?
         # There is no predecessor, so we return a default name for the first sprint.
         [I18n.t("activerecord.models.sprint"), 1].join(" ")
-      elsif (match = predecessor.name.match(/(.*)\s(\d+)\z/))
+      elsif (match = predecessor.name.match(/\A(.*)\s(\d+)\z/))
         # If the predecessor's name ends with a number, increment that number for the new sprint's name.
         # E.g., if the previous sprint was called "Be ambitious 42", the next one will be "Be ambitious 43".
         [match[1], match[2].to_i + 1].join(" ")
