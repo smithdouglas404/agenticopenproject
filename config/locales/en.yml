@@ -1271,12 +1271,6 @@ en:
 
   activerecord:
     attributes:
-      agile/sprint:
-        duration: "Duration"
-        finish_date: "Finish date"
-        goal: "Sprint goal"
-        name: "Sprint name"
-        sharing: "Sharing"
       announcements:
         show_until: "Display until"
       attachment:
