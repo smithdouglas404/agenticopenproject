@@ -41,9 +41,13 @@ Portfolios in OpenProject are special workspaces that allow you to:
 
 ### 1. Navigate to the portfolios overview
 
-Select **Portfolios** from the global modules menu.
+Select **Portfolios** from the left hand or global modules menu.
+
+![Select portfolios modules from the left hand menu in OpenProject](openproject_use_case_select_portfolios_module.png)
 
 The overview page lists all portfolios you can access. Use filters, portfolio status, and aggregated status indicators across subitems to quickly assess portfolio health and identify initiatives that require attention.
+
+![Overview of portfolios in OpenProject](openproject_use_case_portfolios_filters.png)
 
 ### 2. Structure your portfolio
 
@@ -52,11 +56,19 @@ Within a portfolio, add:
 - **Programs** to group related strategic initiatives
 - **Projects** for direct portfolio-level tracking
 
-A portfolio can contain programs, projects, or a mix of both. Define a structure that reflects your strategic priorities.
+A portfolio can contain programs, projects, or a mix of both. Define a structure that reflects your strategic priorities. Here is an example of a portfolio, which includes programs that in turn contain projects.
+
+![An example of a portfolio, which includes programs that in turn contain projects, shown in the "all projects" dropdown menu in OpenProject](openproject_use_case_portfolios_hierarchy_examples.png)
+
+
+
+Read more about [portfolio hierarchies](../../user-guide/portfolios/). 
 
 ### 3. Manage portfolio subitems
 
 Use the **Subitems widget** on the portfolio home page to maintain included programs and projects.
+
+![Subitems widget in a portfolio module in OpenProject](openproject_use_case_portfolios_subitems_widget.png)
 
 Review and adjust the structure regularly to keep your strategic overview aligned with organizational changes.
 
@@ -65,11 +77,11 @@ Review and adjust the structure regularly to keep your strategic overview aligne
 Configure views and apply filters to focus on relevant information, such as:
 
 - Status
-- Responsible owner
+- Stakeholders
 - Timeline indicators
 - Custom attributes
 
-Save recurring views for quarterly or monthly reviews to standardize and streamline reporting.
+![Detailed view of filters for the portfolios module in OpenProject](openproject_use_case_portfolios_filters_detailed.png)
 
 ## Complementary portfolio management features
 
