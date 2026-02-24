@@ -39,6 +39,10 @@ module Agile
     has_many :work_packages, dependent: :nullify
 
     scope :for_project, ->(project) { where(project:) }
+    scope :open, -> { !completed }
+    scope :order_by_date, -> do
+      reorder(Arel.sql("start_date ASC NULLS LAST, finish_date ASC NULLS LAST"))
+    end
 
     enum :status,
          {
@@ -81,6 +85,8 @@ module Agile
 
       Day.working.from_range(from: start_date, to: finish_date).count
     end
+
+    def has_burndown? = false
 
     private
 

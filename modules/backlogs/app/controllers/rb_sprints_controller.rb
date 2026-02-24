@@ -31,7 +31,7 @@
 class RbSprintsController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  NEW_SPRINT_ACTIONS = %i[new_dialog create refresh_form].freeze
+  NEW_SPRINT_ACTIONS = %i[new_dialog edit_dialog create refresh_form].freeze
 
   skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
 
@@ -47,6 +47,13 @@ class RbSprintsController < RbApplicationController
     ).call(attributes: converted_agile_sprint_params)
 
     respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: call.result)
+  end
+
+  def edit_dialog
+    # TODO: visible-scope?
+    @sprint = Agile::Sprint.find(params[:id])
+
+    respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint)
   end
 
   def refresh_form
@@ -73,6 +80,11 @@ class RbSprintsController < RbApplicationController
     end
 
     respond_with_turbo_streams
+  end
+
+  # Called like this due to `update` being taken by legacy sprints.
+  def update_agile_sprint
+    # TODO: implement
   end
 
   def edit_name

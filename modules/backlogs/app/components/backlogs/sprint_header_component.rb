@@ -29,41 +29,56 @@
 #++
 
 module Backlogs
-  class NewSprintFormComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpTurbo::Streamable
+  class SprintHeaderComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
+    include Primer::FetchOrFallbackHelper
+    include Redmine::I18n
+    include RbCommonHelper
 
-    FORM_ID = NewSprintDialogComponent::FORM_ID
+    STATE_DEFAULT = :show
+    STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
 
-    def initialize(sprint:, base_errors: nil)
-      super
+    attr_reader :sprint, :state, :collapsed, :current_user
+
+    delegate :project, to: :sprint
+    delegate :name, to: :sprint, prefix: :sprint
+    delegate :edit?, :show?, to: :state
+
+    def initialize(
+      sprint:,
+      state: STATE_DEFAULT,
+      folded: false,
+      current_user: User.current
+    )
+      super()
 
       @sprint = sprint
-      @base_errors = base_errors
+      @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
+      @collapsed = folded
+      @current_user = current_user
+    end
+
+    def wrapper_uniq_by
+      sprint.id
+    end
+
+    def stories
+      @sprint.work_packages
     end
 
     private
 
-    def http_verb
-      @sprint.new_record? ? :post : :put
+    def story_points
+      @story_points ||= stories.sum { |story| story.story_points || 0 }
     end
 
-    def form_url
-      if @sprint.new_record?
-        project_sprints_path(@sprint.project_id)
-      else
-        # TODO: update path
-        ""
-      end
+    def story_count
+      @story_count ||= stories.size
     end
 
-    def data_attributes
-      {
-        controller: "refresh-on-form-changes",
-        "refresh-on-form-changes-target": "form",
-        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_sprints_path(@sprint.project_id)
-      }
+    def date_range
+      [sprint.start_date, sprint.finish_date]
     end
   end
 end
