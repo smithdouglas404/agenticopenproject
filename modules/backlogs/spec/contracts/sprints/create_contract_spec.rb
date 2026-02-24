@@ -29,8 +29,11 @@
 #++
 
 require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
 
 RSpec.describe Sprints::CreateContract do
+  include_context "ModelContract shared context"
+
   let(:project) { build_stubbed(:project) }
   let(:user) { build_stubbed(:user) }
   let(:sprint) do
@@ -56,87 +59,59 @@ RSpec.describe Sprints::CreateContract do
     end
   end
 
-  def expect_valid(valid, symbols = {})
-    expect(contract.validate).to eq(valid)
-
-    symbols.each do |key, arr|
-      expect(contract.errors.symbols_for(key)).to match_array arr
-    end
-  end
-
-  shared_examples "is valid" do
-    it "is valid" do
-      expect_valid(true)
-    end
-  end
-
   describe "validation" do
     context "with valid attributes and permissions" do
-      it_behaves_like "is valid"
+      it_behaves_like "contract is valid"
     end
 
     context "when project is nil" do
       let(:project) { nil }
 
-      it "is invalid (model validation)" do
-        expect_valid(false, project: %i[blank])
-      end
+      it_behaves_like "contract is invalid", project: :blank
     end
 
     context "when user does not have create_sprints permission" do
       let(:permissions) { [:view_work_packages] }
 
-      it "is invalid" do
-        expect_valid(false, base: %i[error_unauthorized])
-      end
+      it_behaves_like "contract is invalid", base: :error_unauthorized
     end
 
     context "when user has no permissions in project" do
       let(:permissions) { [] }
 
-      it "is invalid" do
-        expect_valid(false, base: %i[error_unauthorized])
-      end
+      it_behaves_like "contract is invalid", base: :error_unauthorized
     end
 
     context "when name is blank" do
       let(:sprint_name) { "" }
 
-      it "is invalid (model validation)" do
-        expect_valid(false, name: %i[blank])
-      end
+      it_behaves_like "contract is invalid", name: :blank
     end
 
     context "when start_date is blank" do
       let(:sprint_start_date) { nil }
 
-      it "is invalid (model validation)" do
-        expect_valid(false, start_date: %i[blank])
-      end
+      it_behaves_like "contract is invalid", start_date: :blank
     end
 
     context "when finish_date is blank" do
       let(:sprint_finish_date) { nil }
 
-      it "is invalid (model validation)" do
-        expect_valid(false, finish_date: %i[blank blank])
-      end
+      it_behaves_like "contract is invalid", finish_date: %i[blank blank]
     end
 
     context "when finish_date is before start_date" do
       let(:sprint_start_date) { Time.zone.today }
       let(:sprint_finish_date) { Time.zone.today - 1.day }
 
-      it "is invalid (model validation)" do
-        expect_valid(false, finish_date: %i[greater_than_or_equal_to])
-      end
+      it_behaves_like "contract is invalid", finish_date: %i[greater_than_or_equal_to]
     end
 
     context "when user is admin without project permission" do
       let(:user) { build_stubbed(:admin) }
       let(:permissions) { [] }
 
-      it_behaves_like "is valid"
+      it_behaves_like "contract is valid"
     end
   end
 end
