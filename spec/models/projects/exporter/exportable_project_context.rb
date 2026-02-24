@@ -42,7 +42,13 @@ RSpec.shared_context "with a project with an arrangement of custom fields" do
 
   let!(:not_used_string_cf) { create(:string_project_custom_field, position: 11) }
 
-  shared_let(:system_version) { create(:version, sharing: "system") }
+  shared_let(:system_version) do
+    create(
+      :version,
+      sharing: "system",
+      project: build(:project, active: false) # marking inactive is the simplest way to remove it from query
+    )
+  end
 
   shared_let(:role) do
     create(:project_role)

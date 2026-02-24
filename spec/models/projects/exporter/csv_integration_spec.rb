@@ -133,7 +133,7 @@ RSpec.describe Projects::Exports::CSV, "integration" do
       let(:current_user) { create(:admin) }
 
       it "renders all globally available project custom fields including hidden ones in the header" do
-        expect(parsed.size).to eq 3
+        expect(parsed.size).to eq 2
 
         cf_names = global_project_custom_fields.map(&:name)
 
