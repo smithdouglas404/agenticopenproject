@@ -34,7 +34,6 @@ class RbMasterBacklogsController < RbApplicationController
   menu_item :backlogs
 
   before_action :load_backlogs, only: :index
-  helper_method :allow_sprint_creation?
 
   def index
     if turbo_frame_request?
@@ -60,9 +59,5 @@ class RbMasterBacklogsController < RbApplicationController
   def load_backlogs
     @owner_backlogs = Backlog.owner_backlogs(@project)
     @sprint_backlogs = Backlog.sprint_backlogs(@project)
-  end
-
-  def allow_sprint_creation?
-    OpenProject::FeatureDecisions.scrum_projects_active? && User.current.allowed_in_project?(:create_sprints, @project)
   end
 end
