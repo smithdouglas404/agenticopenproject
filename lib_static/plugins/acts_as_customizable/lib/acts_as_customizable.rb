@@ -436,7 +436,7 @@ module Redmine
         end
 
         def for_custom_field_accessor(method_symbol)
-          return unless /\Acustom_(?:field|comment)_(?<id>\d+)=?\z/ =~ method_symbol.to_s
+          return unless (id = method_symbol[/\Acustom_(?:field|comment)_(?<id>\d+)=?\z/, :id])
           return unless (custom_field = all_available_custom_fields.find { |cf| cf.id.to_s == id })
 
           yield custom_field
