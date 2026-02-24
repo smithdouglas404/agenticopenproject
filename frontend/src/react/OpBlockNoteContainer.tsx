@@ -59,8 +59,8 @@ export default function OpBlockNoteContainer({
   attachmentsCollectionKey,
   hocuspocusProvider,
   errorContainer,
-}: OpBlockNoteContainerProps) {
-  const doc: Y.Doc = hocuspocusProvider
+}:OpBlockNoteContainerProps) {
+  const doc:Y.Doc = hocuspocusProvider
     ? hocuspocusProvider.document
     : (() => {
         // NOTE: This should only be used in TEST environments where there is no provider.
@@ -70,7 +70,7 @@ export default function OpBlockNoteContainer({
             const update = Uint8Array.from(atob(inputText), (c) => c.charCodeAt(0));
             Y.applyUpdate(newDoc, update);
           } catch (e) {
-            console.error("Failed to load document binary", e);
+            console.error('Failed to load document binary', e);
             return new Y.Doc();
           }
         }
