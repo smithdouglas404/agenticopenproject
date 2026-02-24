@@ -105,7 +105,7 @@ function useLocalDocumentSync(doc:Y.Doc, inputField:HTMLInputElement, enabled:bo
   }, [doc, inputField, enabled]);
 }
 
-export function useCollaboration(provider: HocuspocusProvider | undefined, doc: Y.Doc, inputField: HTMLInputElement) {
+export function useCollaboration(provider:HocuspocusProvider | undefined, doc:Y.Doc, inputField:HTMLInputElement) {
   const [isLoading, setIsLoading] = useState(true);
   const [offlineMode, setOfflineMode] = useState(false);
 
