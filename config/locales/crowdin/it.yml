@@ -1477,6 +1477,7 @@ it:
         duration: "Durata"
         end_insertion: "Fine inserimento"
         end_deletion: "Fine cancellazione"
+        has_spent_time: "Has spent time"
         ignore_non_working_days: "Ignora giorni non lavorativi"
         include_non_working_days:
           title: "Giorni lavorativi"

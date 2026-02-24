@@ -1492,6 +1492,7 @@ uk:
         duration: "Тривалість"
         end_insertion: "Кінець вставки"
         end_deletion: "Кінець видалення"
+        has_spent_time: "Has spent time"
         ignore_non_working_days: "Ігнорувати неробочі дні"
         include_non_working_days:
           title: "Робочі дні"

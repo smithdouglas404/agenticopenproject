@@ -1516,6 +1516,7 @@ ar:
         duration: "المدّة"
         end_insertion: "نهاية الإدراج"
         end_deletion: "نهاية الحذف"
+        has_spent_time: "Has spent time"
         ignore_non_working_days: "Ignore non working days"
         include_non_working_days:
           title: "Working days"

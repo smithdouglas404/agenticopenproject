@@ -1477,6 +1477,7 @@ ca:
         duration: "Duració"
         end_insertion: "Final de la inserció"
         end_deletion: "Final de la supressió"
+        has_spent_time: "Has spent time"
         ignore_non_working_days: "Ignora dies no laborals"
         include_non_working_days:
           title: "Dies laborals"

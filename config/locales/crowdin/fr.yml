@@ -1478,6 +1478,7 @@ fr:
         duration: "Durée"
         end_insertion: "Fin de l’insertion"
         end_deletion: "Fin de la suppression"
+        has_spent_time: "A des journaux de travail"
         ignore_non_working_days: "Ignorer les jours non ouvrables"
         include_non_working_days:
           title: "Jours ouvrés"

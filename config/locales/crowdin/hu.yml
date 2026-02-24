@@ -1479,6 +1479,7 @@ hu:
         duration: "Időtartam"
         end_insertion: "Beillesztés vége"
         end_deletion: "Törlés vége"
+        has_spent_time: "Has spent time"
         ignore_non_working_days: "Munkaszüneti napokat kivéve"
         include_non_working_days:
           title: "Munkanapok"

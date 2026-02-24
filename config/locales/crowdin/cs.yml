@@ -1498,6 +1498,7 @@ cs:
         duration: "Doba trvání"
         end_insertion: "Konec vložení"
         end_deletion: "Konec odstranění"
+        has_spent_time: "Has spent time"
         ignore_non_working_days: "Ignorovat nepracovní dny"
         include_non_working_days:
           title: "Pracovní dny"

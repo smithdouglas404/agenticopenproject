@@ -1479,6 +1479,7 @@
         duration: "Varighet"
         end_insertion: "Slutt på innsettingen"
         end_deletion: "Slutt på slettingen"
+        has_spent_time: "Has spent time"
         ignore_non_working_days: "Ignorer arbeidsfrie dager"
         include_non_working_days:
           title: "Arbeidsdager"

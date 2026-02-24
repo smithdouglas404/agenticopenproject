@@ -1476,6 +1476,7 @@ nl:
         duration: "Duur"
         end_insertion: "Einde van het invoegen"
         end_deletion: "Einde van de verwijdering"
+        has_spent_time: "Has spent time"
         ignore_non_working_days: "Negeer niet-werkdagen"
         include_non_working_days:
           title: "Werkdagen"

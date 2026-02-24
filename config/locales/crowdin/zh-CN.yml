@@ -1467,6 +1467,7 @@ zh-CN:
         duration: "持续时间"
         end_insertion: "结束插入"
         end_deletion: "结束删除"
+        has_spent_time: "Has spent time"
         ignore_non_working_days: "忽略非工作日"
         include_non_working_days:
           title: "工作日"

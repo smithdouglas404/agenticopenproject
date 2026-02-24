@@ -1477,6 +1477,7 @@ es:
         duration: "Duración"
         end_insertion: "Final de la inserción"
         end_deletion: "Final de la eliminación"
+        has_spent_time: "Has spent time"
         ignore_non_working_days: "Ignorar días festivos"
         include_non_working_days:
           title: "Días laborables"
