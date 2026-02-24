@@ -42,11 +42,11 @@ import { IndexeddbPersistence } from 'y-indexeddb';
 
 export default class extends Controller {
   static values = {
-    hocuspocusUrl:String,
-    tokenPayload:String,
-    documentName:String,
-    tokenExpiresInSeconds:Number,
-    refreshUrl:String,
+    hocuspocusUrl: String,
+    tokenPayload: String,
+    documentName: String,
+    tokenExpiresInSeconds: Number,
+    refreshUrl: String,
   };
 
   declare readonly hocuspocusUrlValue:string;
@@ -75,7 +75,7 @@ export default class extends Controller {
   connect():void {
     this.currentToken = this.tokenPayloadValue;
 
-    const ydoc: Doc = new Y.Doc();
+    const ydoc:Doc = new Y.Doc();
 
     // IndexedDB persistence (offline support)
     this.indexeddbPersistence = new IndexeddbPersistence(`op-doc-${this.documentNameValue}`, ydoc);
