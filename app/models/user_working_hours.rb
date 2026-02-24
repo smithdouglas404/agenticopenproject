@@ -62,11 +62,19 @@ class UserWorkingHours < ApplicationRecord
 
   %i[monday tuesday wednesday thursday friday saturday sunday].each do |day|
     define_method("#{day}_hours") do
-      public_send(day) / 60.0
+      (public_send(day) / 60.0).round(2)
     end
 
     define_method("#{day}_hours=") do |hours|
       public_send("#{day}=", (hours.to_f * 60).round)
     end
+  end
+
+  def weekly_working_hours
+    %i[monday tuesday wednesday thursday friday saturday sunday].sum { |day| public_send("#{day}_hours") }
+  end
+
+  def effective_weekly_working_hours
+    ((weekly_working_hours * availability_factor) / 100.0).round(2)
   end
 end

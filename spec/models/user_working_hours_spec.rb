@@ -94,6 +94,35 @@ RSpec.describe UserWorkingHours do
     end
   end
 
+  describe "#weekly_working_hours" do
+    it "sums the daily working hours for the week" do
+      working_hours.monday = 480
+      working_hours.tuesday = 240
+      working_hours.wednesday = 0
+      working_hours.thursday = 120
+      working_hours.friday = 480
+      working_hours.saturday = 0
+      working_hours.sunday = 0
+
+      expect(working_hours.weekly_working_hours).to eq(8.0 + 4.0 + 0.0 + 2.0 + 8.0 + 0.0 + 0.0)
+    end
+  end
+
+  describe "#effective_weekly_working_hours" do
+    it "calculates the effective weekly working hours based on the availability factor" do
+      working_hours.monday = 480
+      working_hours.tuesday = 240
+      working_hours.wednesday = 0
+      working_hours.thursday = 120
+      working_hours.friday = 480
+      working_hours.saturday = 0
+      working_hours.sunday = 0
+
+      working_hours.availability_factor = 50
+      expect(working_hours.effective_weekly_working_hours).to eq(((8.0 + 4.0 + 0.0 + 2.0 + 8.0) / 2.0).round(2))
+    end
+  end
+
   describe ".valid_for_date" do
     let(:user) { create(:user) }
     let!(:old_hours) { create(:user_working_hours, user:, valid_from: 30.days.ago) }
