@@ -87,26 +87,7 @@ function useCollaborationProvider(
   }, [provider, onSynced, onDisconnect]);
 }
 
-function useLocalDocumentSync(doc:Y.Doc, inputField:HTMLInputElement, enabled:boolean) {
-  useEffect(() => {
-    if (!enabled) return;
-
-    const updateInput = () => {
-      const update = Y.encodeStateAsUpdate(doc);
-      const b64 = btoa(String.fromCharCode(...update));
-      inputField.value = b64;
-    };
-
-    doc.on('update', updateInput);
-
-    return () => {
-      doc.off('update', updateInput);
-      doc.destroy();
-    };
-  }, [doc, inputField, enabled]);
-}
-
-export function useCollaboration(provider:HocuspocusProvider | undefined, doc:Y.Doc, inputField:HTMLInputElement) {
+export function useCollaboration(provider:HocuspocusProvider | undefined, doc:Y.Doc) {
   const [isLoading, setIsLoading] = useState(true);
   const [offlineMode, setOfflineMode] = useState(false);
 
@@ -125,7 +106,6 @@ export function useCollaboration(provider:HocuspocusProvider | undefined, doc:Y.
   const hasTimedOut = useConnectionTimeout(provider);
 
   useCollaborationProvider(provider, handleSynced, handleDisconnect);
-  useLocalDocumentSync(doc, inputField, !provider);
 
   useEffect(() => {
     if (!provider) {

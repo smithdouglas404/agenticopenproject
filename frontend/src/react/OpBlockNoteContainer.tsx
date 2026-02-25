@@ -74,7 +74,6 @@ export default function OpBlockNoteContainer({
   const { isLoading, offlineMode } = useCollaboration(
     hocuspocusProvider,
     doc,
-    inputField
   );
 
   const hadErrorRef = useRef(false);
