@@ -79,7 +79,9 @@ class LiveCollaborationManagerClass {
    * Cleans up the collaboration provider and Y.Doc instance.
    * This method should be called when a collaboration session is ended
    */
-  private destroy():void {
+  
+  // Public destroy to safely clean up the provider, document, and subscribers
+  destroy():void {
     this.destroyYjsProvider();
     this.destroyYjsDoc();
 

@@ -28,30 +28,28 @@
  * ++
  */
 
-import { User } from "@blocknote/core/comments";
-import { HocuspocusProvider } from "@hocuspocus/provider";
-import { useEffect, useRef } from "react";
-import * as Y from "yjs";
-import { DocumentLoadingSkeleton } from "./components/DocumentLoadingSkeleton";
-import { OpBlockNoteEditor } from "./components/OpBlockNoteEditor";
-import { fetchConnectionTemplate } from "./helpers/connection-template-fetcher";
-import { useCollaboration } from "./hooks/useCollaboration";
+import { User } from '@blocknote/core/comments';
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import { useEffect, useRef } from 'react';
+import * as Y from 'yjs';
+import { DocumentLoadingSkeleton } from './components/DocumentLoadingSkeleton';
+import { OpBlockNoteEditor } from './components/OpBlockNoteEditor';
+import { fetchConnectionTemplate } from './helpers/connection-template-fetcher';
+import { useCollaboration } from './hooks/useCollaboration';
 
 export interface OpBlockNoteContainerProps {
-  inputField: HTMLInputElement;
-  inputText?: string;
-  activeUser: User;
-  readOnly: boolean;
-  openProjectUrl: string;
-  attachmentsUploadUrl: string;
-  attachmentsCollectionKey: string;
-  hocuspocusProvider?: HocuspocusProvider;
-  errorContainer?: HTMLElement;
+  inputField:HTMLInputElement;
+  activeUser:User;
+  readOnly:boolean;
+  openProjectUrl:string;
+  attachmentsUploadUrl:string;
+  attachmentsCollectionKey:string;
+  hocuspocusProvider?:HocuspocusProvider;
+  errorContainer?:HTMLElement;
 }
 
 export default function OpBlockNoteContainer({
   inputField,
-  inputText,
   activeUser,
   readOnly,
   openProjectUrl,
@@ -59,25 +57,26 @@ export default function OpBlockNoteContainer({
   attachmentsCollectionKey,
   hocuspocusProvider,
   errorContainer,
-}: OpBlockNoteContainerProps) {
-  const doc: Y.Doc = hocuspocusProvider
-    ? hocuspocusProvider.document
-    : (() => {
-        // NOTE: This should only be used in TEST environments where there is no provider.
-        const newDoc = new Y.Doc();
-        if (inputText) {
-          try {
-            const update = Uint8Array.from(atob(inputText), (c) => c.charCodeAt(0));
-            Y.applyUpdate(newDoc, update);
-          } catch (e) {
-            console.error("Failed to load document binary", e);
-            return new Y.Doc();
-          }
-        }
-        return newDoc;
-      })();
+}:OpBlockNoteContainerProps) {
 
-  const { isLoading, offlineMode } = useCollaboration(hocuspocusProvider, doc, inputField);
+  // HocuspocusProvider is required; offline storage relies on IndexedDB.
+  // Throw an error if it's missing to prevent running in an invalid state.
+  if (!hocuspocusProvider) {
+    throw new Error(
+      'HocuspocusProvider is required. IndexedDB should handle offline storage and sync.'
+    );
+  }
+
+  // Use document from the HocuspocusProvider
+  const doc:Y.Doc = hocuspocusProvider.document;
+
+  // useCollaboration hook handles syncing with provider and IndexedDB
+  const { isLoading, offlineMode } = useCollaboration(
+    hocuspocusProvider,
+    doc,
+    inputField
+  );
+
   const hadErrorRef = useRef(false);
 
   // Fetch error/recovery template based on connection state
@@ -86,10 +85,10 @@ export default function OpBlockNoteContainer({
 
     if (offlineMode) {
       hadErrorRef.current = true;
-      void fetchConnectionTemplate("error", errorContainer);
+      void fetchConnectionTemplate('error', errorContainer);
     } else if (hadErrorRef.current) {
       // Only fetch recovery if we previously had an error (avoid fetching on initial render)
-      void fetchConnectionTemplate("recovery", errorContainer);
+      void fetchConnectionTemplate('recovery', errorContainer);
     }
   }, [offlineMode, errorContainer]);
 
