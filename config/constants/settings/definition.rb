@@ -1281,7 +1281,7 @@ module Settings
                      "while 'alphanumeric' uses the project identifier and the work package ID separated by a dash " \
                      "(e.g. 'PROJA-123').",
         format: :string,
-        allowed: %w[numeric alphanumeric],
+        allowed: -> { Setting::WorkPackageIdentifier::ALLOWED_VALUES },
         default: "numeric"
       },
       work_package_list_default_highlighted_attributes: {
@@ -1596,7 +1596,7 @@ module Settings
         env_var_hash_part
           .scan(/(?:[a-zA-Z0-9]|__)+/)
           .map do |seg|
-          unescape_underscores(seg.downcase)
+            unescape_underscores(seg.downcase)
         end
       end
 

@@ -27,35 +27,17 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
-module WorkPackages
-  module Admin
-    module Settings
-      class IdentifierSettingsFormComponent < ApplicationComponent
-        include OpPrimer::FormHelpers
+require "spec_helper"
 
-        attr_reader :projects_data
+RSpec.describe Setting::WorkPackageIdentifier do
+  context "when the setting is 'alphanumeric'", with_settings: { work_packages_identifier: "alphanumeric" } do
+    it { expect(described_class.alphanumeric?).to be true }
+    it { expect(described_class.numeric?).to be false }
+  end
 
-        def initialize
-          super
-          @projects_data = if Setting::WorkPackageIdentifier.alphanumeric?
-                             WorkPackages::ProjectHandleSuggestionGenerator.call
-                           else
-                             []
-                           end
-        end
-
-        def has_problematic_projects?
-          projects_data.any?
-        end
-
-        private
-
-        def show_autofix_section?
-          projects_data.any?
-        end
-      end
-    end
+  context "when the setting is 'numeric'", with_settings: { work_packages_identifier: "numeric" } do
+    it { expect(described_class.alphanumeric?).to be false }
+    it { expect(described_class.numeric?).to be true }
   end
 end

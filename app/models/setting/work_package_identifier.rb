@@ -27,35 +27,14 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
-module WorkPackages
-  module Admin
-    module Settings
-      class IdentifierSettingsFormComponent < ApplicationComponent
-        include OpPrimer::FormHelpers
+class Setting
+  module WorkPackageIdentifier
+    NUMERIC      = "numeric"
+    ALPHANUMERIC = "alphanumeric"
+    ALLOWED_VALUES = [NUMERIC, ALPHANUMERIC].freeze
 
-        attr_reader :projects_data
-
-        def initialize
-          super
-          @projects_data = if Setting::WorkPackageIdentifier.alphanumeric?
-                             WorkPackages::ProjectHandleSuggestionGenerator.call
-                           else
-                             []
-                           end
-        end
-
-        def has_problematic_projects?
-          projects_data.any?
-        end
-
-        private
-
-        def show_autofix_section?
-          projects_data.any?
-        end
-      end
-    end
+    def self.alphanumeric? = Setting[:work_packages_identifier] == ALPHANUMERIC
+    def self.numeric?      = Setting[:work_packages_identifier] == NUMERIC
   end
 end
