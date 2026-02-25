@@ -680,6 +680,17 @@ class User < Principal
 
   include Scimitar::Resources::Mixin
 
+  def non_working_day_entities_for_year(year)
+    system_days = NonWorkingDay.for_year(year).to_a
+    user_days = non_working_days.for_year(year).to_a
+    system_day_dates = system_days.to_set(&:date)
+    system_days + user_days.reject { |d| system_day_dates.include?(d.date) }
+  end
+
+  def non_working_days_for_year(year)
+    non_working_day_entities_for_year(year).map(&:date)
+  end
+
   protected
 
   # Login must not be aliased value 'me'

@@ -1110,4 +1110,60 @@ RSpec.describe User do
       end
     end
   end
+
+  describe "#non_working_day_entities_for_year and #non_working_days_for_year" do
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+    let(:year) { 2025 }
+
+    let!(:system_nwd) { create(:non_working_day, date: Date.new(year, 12, 25)) }
+    let!(:user_nwd) { create(:user_non_working_day, user:, date: Date.new(year, 6, 16)) }
+    let!(:other_user_nwd) { create(:user_non_working_day, user: other_user, date: Date.new(year, 7, 4)) }
+    let!(:other_year_system_nwd) { create(:non_working_day, date: Date.new(year - 1, 12, 25)) }
+    let!(:other_year_user_nwd) { create(:user_non_working_day, user:, date: Date.new(year - 1, 6, 16)) }
+
+    describe "#non_working_days_for_year" do
+      subject { user.non_working_days_for_year(year) }
+
+      it "includes system-wide non-working days" do
+        expect(subject).to include(system_nwd.date)
+      end
+
+      it "includes the user's own non-working days" do
+        expect(subject).to include(user_nwd.date)
+      end
+
+      it "does not include other users' non-working days" do
+        expect(subject).not_to include(other_user_nwd.date)
+      end
+
+      it "does not include dates from other years" do
+        expect(subject).not_to include(other_year_system_nwd.date, other_year_user_nwd.date)
+      end
+
+      context "when a user non-working day coincides with a system non-working day" do
+        let!(:duplicate_user_nwd) { create(:user_non_working_day, user:, date: system_nwd.date) }
+
+        it "returns the date only once" do
+          expect(subject.count { |d| d == system_nwd.date }).to eq(1)
+        end
+      end
+    end
+
+    describe "#non_working_day_entities_for_year" do
+      subject { user.non_working_day_entities_for_year(year) }
+
+      it "returns NonWorkingDay and UserNonWorkingDay records" do
+        expect(subject).to include(system_nwd, user_nwd)
+      end
+
+      it "does not include other users' non-working days" do
+        expect(subject).not_to include(other_user_nwd)
+      end
+
+      it "does not include records from other years" do
+        expect(subject).not_to include(other_year_system_nwd, other_year_user_nwd)
+      end
+    end
+  end
 end
