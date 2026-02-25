@@ -16,7 +16,13 @@ module MyPage
             "news"
 
     wp_table_strategy_proc = Proc.new do
-      after_destroy -> { ::Query.find_by(id: options[:queryId])&.destroy }
+      after_destroy -> {
+        @query = ::Query.find_by(id: options["queryId"])
+
+        next unless @query && QueryPolicy.new(User.current).allowed?(@query, :destroy)
+
+        @query.destroy!
+      }
 
       allowed ->(user, _project) { user.allowed_in_any_project?(:save_queries) }
 
@@ -26,7 +32,13 @@ module MyPage
     # Allow users without save_queries permission to access the widgets
     # but they are not allowed to update the underlying query
     wp_static_table_strategy_proc = Proc.new do
-      after_destroy -> { ::Query.find_by(id: options[:queryId])&.destroy }
+      after_destroy -> {
+        @query = ::Query.find_by(id: options["queryId"])
+
+        next unless @query && QueryPolicy.new(User.current).allowed?(@query, :destroy)
+
+        @query.destroy!
+      }
 
       options_representer "::API::V3::Grids::Widgets::QueryOptionsRepresenter"
     end
