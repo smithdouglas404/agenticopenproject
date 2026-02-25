@@ -27,9 +27,7 @@ module OpenProject
       end
 
       def safe_ip_address?(ip_address)
-        return true if allowed_ip_address? ip_address
-
-        ip_address unless unsafe_ip_address?(ip_address)
+        ip_address if !unsafe_ip_address?(ip_address) || allowed_ip_address?(ip_address)
       end
 
       def allowed_ip_address?(ip_address)
