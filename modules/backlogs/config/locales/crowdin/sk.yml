@@ -26,7 +26,7 @@ sk:
   activerecord:
     attributes:
       sprint:
-        duration: "Sprint duration"
+        duration: "Trvanie šprintu"
       work_package:
         position: "Pozícia"
         story_points: "História bodov"
@@ -43,10 +43,10 @@ sk:
         sprint:
           cannot_end_before_it_starts: "Šprint nemôže byť ukončený ešte pred jeho spustením."
   attributes:
-    task_type: "Task type"
+    task_type: "Typ úlohy"
   backlogs:
     any: "akékoľvek"
-    column_width: "Column width"
+    column_width: "Šírka stĺpca"
     definition_of_done: "Definícia pojmu Hotovo"
     impediment: "Prekážka"
     label_versions_default_fold_state: "Zobrazenie zložených verzií"
@@ -54,10 +54,10 @@ sk:
     work_package_is_closed: "Pracovný balík je hotový, keď"
     label_is_done_status: "Status %{status_name} znamená dokončené"
     points_label:
-      one: "point"
-      few: "points"
-      many: "points"
-      other: "points"
+      one: "bod"
+      few: "bodov"
+      many: "bodov"
+      other: "body"
     positions_could_not_be_rebuilt: "Pozície nemohli byť prestavané."
     positions_rebuilt_successfully: "Pozície úspešne prestavané."
     rebuild: "Obnoviť"
@@ -77,10 +77,10 @@ sk:
       header_backlogs: "Modul nevyriešených úloh"
       button_update_backlogs: "Aktualizácia modulu nevybavených úloh"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} je prázdne"
+      blankslate_description: "Zatiaľ nie sú plánované žiadne položky. Ak chcete pridať položky, potiahnite ich sem."
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "Zbaliť/rozšíriť %{name}"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
@@ -91,7 +91,7 @@ sk:
         edit_sprint: "Edit sprint"
         new_story: "New story"
         stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
+        task_board: "Tabuľa úloh"
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
@@ -127,8 +127,8 @@ sk:
   label_sprint_impediments: "Sprint Impediments"
   label_task_board: "Task board"
   permission_view_master_backlog: "View master backlog"
-  permission_view_taskboards: "View taskboards"
-  permission_select_done_statuses: "Select done statuses"
+  permission_view_taskboards: "Zobrazenie tabúľ úloh"
+  permission_select_done_statuses: "Výber stavov hotovo"
   permission_update_sprints: "Aktualizácia šprinty"
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:

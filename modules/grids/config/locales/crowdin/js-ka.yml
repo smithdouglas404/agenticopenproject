@@ -2,6 +2,7 @@ ka:
   js:
     grid:
       add_widget: 'ვიჯეტის დამატება'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'ვიჯეტის წაშლა'
       configure: 'Configure widget'
       widgets:

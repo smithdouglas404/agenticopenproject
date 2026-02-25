@@ -2,6 +2,7 @@ pl:
   js:
     grid:
       add_widget: 'Dodaj widżet'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Usuń widżet'
       configure: 'Konfiguruj widżet'
       widgets:

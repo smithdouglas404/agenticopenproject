@@ -368,7 +368,7 @@ zh-CN:
     contained_in_type: "已包含在类型中"
     confirm_destroy_option: "删除某个选项将会删除其所有实例 (例如, 在工作包中)。确定要删除？"
     reorder_alphabetical: "按字母顺序重新排序"
-    reorder_confirmation: "警告：可用值的当前顺序将丢失。是否继续？"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "需要先选择工作包或项目"
     calculated_field_not_editable: "不可编辑属性。此值是自动计算的。"
     no_role_assigment: "无角色指定"
@@ -395,6 +395,12 @@ zh-CN:
           允许在工作包视图的筛选器中使用自定义字段。请注意，仅当选中“适用于所有项目”时，自定义字段才会显示在全局视图中。
       formula:
         project: "添加数值或输入 / 以搜索特性或数学运算符。"
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: 目前没有自定义字段。
       no_results_content_text: 创建新的自定义字段
@@ -4753,7 +4759,6 @@ zh-CN:
   text_length_between: "长度介于 %{min} 和 %{max} 个字符。"
   text_line_separated: "允许有多个值 （每行一个值）。"
   text_load_default_configuration: "加载默认配置"
-  text_min_max_length_info: "0 表示没有限制"
   text_no_roles_defined: 没有定义的角色。
   text_no_access_tokens_configurable: "没有可配置的访问令牌。"
   text_no_configuration_data: "角色、类型、工作包状态和工作流尚未配置。\n强烈建议加载默认配置。之后您可以再进行修改。"
@@ -4768,7 +4773,6 @@ zh-CN:
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "只有小写字母 (a-z)、 数字、 短划线和下划线被允许，必须以小写字母开头。"
   text_reassign: "重新分配工作包:"
-  text_regexp_info: "例如 ^ [A-Z0-9]+$"
   text_regexp_multiline: '以多行模式应用正则表达式，如 ^---\s+'
   text_repository_usernames_mapping: "选择或更新每个在存储库日志中发现的用户名所映射到的 OpenProject 用户。\n使用相同 OpenProject 和存储库用户名或电子邮件的用户已被自动映射。"
   text_status_changed_by_changeset: "被实施在更改集 %{value} 中。"

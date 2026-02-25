@@ -118,7 +118,15 @@ tr:
   error_notification_with_errors: "Bildirim hatalı. Aşağıdaki alıcılar bilgilendirilemedi: %{recipients}"
   label_meeting: "Toplantı"
   label_meeting_plural: "Toplantılar"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Yeni Toplantı"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Tek seferlik yeni toplantı"
   label_meeting_new_recurring: "Yeni yinelenen toplantı"
   label_meeting_create: "Toplantı oluştur"
@@ -279,6 +287,9 @@ tr:
         heading: "Bu toplantı silinsin mi?"
         confirmation_message_html: >
           Bu işlem geri döndürülemez. Lütfen dikkatli olun.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "Bu toplantıyı iptal et"
         heading: "Sadece bu toplantı mı iptal edilsin?"
@@ -478,6 +489,7 @@ tr:
     end_series_dialog:
       title: "Toplantı serisinin bitir"
   notice_successful_notification: "Tüm katılımcılara gönderilen e-posta takvimi güncellemesi"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: Saat dilimi ayarlanmadı ve %{zone} kabul edildi. Saat dilimini seçmek için lütfen buraya tıklayın.
   notice_meeting_updated: "Bu sayfa başka biri tarafından güncellendi. Değişiklikleri görmek için yeniden yükleyin."
   permission_create_meetings: "Toplantı oluşturma"
@@ -492,6 +504,8 @@ tr:
   text_duration_in_hours: "Saat süresi"
   text_in_hours: "saat olarak"
   text_meeting_agenda_for_meeting: 'toplantı gündemi "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Gelecekteki toplantılar silinsin mi?"
   text_meeting_series_end_early: "Seriyi sonlandırmak, gelecekteki tüm açık veya planlanmış toplantıları silecektir"
   text_meeting_closing_are_you_sure: "Toplantı gündemini kapatmak istediğinizden emin misiniz?"
@@ -597,6 +611,9 @@ tr:
   text_meeting_in_progress_dropdown_description: "Toplantı sırasında alınan kararları ya da bilgi gereksinimleri sonuçlarını belgeleyin."
   text_meeting_closed_dropdown_description: "Bu toplantı kapalı. Gündem maddelerini ya da sonuçları artık düzenleyemezsiniz."
   text_meeting_draft_banner: "Şu anda taslak modundasınız. Toplantı ayrıntılarını değiştirseniz veya katılımcı ekleyip çıkarsanız bile bu toplantı herhangi bir takvim güncellemesi veya davet göndermeyecektir."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "Bu toplantıyı açıp davetiye gönderelim mi?"
   text_exit_draft_mode_dialog_subtitle: "Bir toplantı planladıktan sonra taslak moduna geri dönemezsiniz."
   text_exit_draft_mode_dialog_template_title: "Bu toplantı serisinin ilkini açar mısınız?"

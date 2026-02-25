@@ -2,6 +2,7 @@ ko:
   js:
     grid:
       add_widget: '위젯 추가'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: '위젯 제거'
       configure: '위젯 구성'
       widgets:

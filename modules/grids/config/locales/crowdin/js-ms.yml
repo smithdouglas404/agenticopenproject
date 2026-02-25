@@ -2,6 +2,7 @@ ms:
   js:
     grid:
       add_widget: 'Tambah widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Buang widget'
       configure: 'Konfigurasi widget'
       widgets:

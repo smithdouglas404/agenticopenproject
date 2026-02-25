@@ -368,7 +368,7 @@ pl:
     contained_in_type: "Zawartość"
     confirm_destroy_option: "Usunięcie tej opcji spowoduje usunięcie wszystkich powiązanych wystąpień (np. w Work Package). Czy na pewno chcesz to usunąć?"
     reorder_alphabetical: "Ustaw kolejność wartości alfabetycznie"
-    reorder_confirmation: "Ostrzeżenie: Bieżąca kolejność dostępnych wartości zostanie utracona. Kontynuować?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "W pierwszej kolejności wymagany jest wybór pakietu roboczego lub projektu"
     calculated_field_not_editable: "Atrybut nieedytowalny. Ta wartość jest obliczana automatycznie."
     no_role_assigment: "Brak przypisanie roli"
@@ -395,6 +395,12 @@ pl:
           Zezwól na użycie pola niestandardowego w filtrze w widokach pakietów roboczych. Pamiętaj, że pole niestandardowe będzie wyświetlane w widokach globalnych dopiero po zaznaczeniu opcji „Dla wszystkich projektów”.
       formula:
         project: "Dodaj wartości liczbowe lub wpisz „/”, aby wyszukać atrybut lub operator matematyczny."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Nie ma jeszcze żadnych pól użytkownika.
       no_results_content_text: Utwórz pole użytkownika
@@ -4908,7 +4914,6 @@ pl:
   text_length_between: "Length between %{min} and %{max} characters."
   text_line_separated: "Wiele wartości dopuszczalne (jeden wiersz dla każdej wartości)."
   text_load_default_configuration: "Załaduj domyślną konfigurację"
-  text_min_max_length_info: "0 means no restriction"
   text_no_roles_defined: Nie ma żadnych zdefiniowanych uprawnień.
   text_no_access_tokens_configurable: "Brak tokenów dostępu, które mogą być skonfigurowane."
   text_no_configuration_data: "Role, typy, statusy pakietów roboczych i przepływ pracy nie zostały jeszcze skonfigurowane.\nZalecane jest załadowanie domyślnej konfiguracji. Będzie można ją zmodyfikować po załadowaniu."
@@ -4923,7 +4928,6 @@ pl:
   text_powered_by: "Napędzany przez %{link}"
   text_project_identifier_info: "Tylko małe litery (a-z), cyfry, myślniki i podkreślenia są dozwolone, oraz musi zaczynać się małą literą."
   text_reassign: "Ponowne przydzielenie do Zestawu zadań:"
-  text_regexp_info: "np. ^[A-Z0-9]+$"
   text_regexp_multiline: 'Wyrażenie regularne jest stosowane w trybie wielolinijkowym. np. ^---\s+'
   text_repository_usernames_mapping: "Wybierz lub zaktualizuj użytkownika OpenProject do każdego użytkownika w dzienniku repozytorium.\nUżytkownicy z tym samym loginem lub adresem e-mail w OpenProject i repozytorium są automatycznie mapowani."
   text_status_changed_by_changeset: "Zastosowane w zbiorze zmian %{value}."

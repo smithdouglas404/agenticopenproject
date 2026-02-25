@@ -2,6 +2,7 @@ id:
   js:
     grid:
       add_widget: 'Tambahkan widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Hapus widget'
       configure: 'Konfigurasi Widget'
       widgets:

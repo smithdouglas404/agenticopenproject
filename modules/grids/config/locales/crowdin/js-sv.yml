@@ -2,6 +2,7 @@ sv:
   js:
     grid:
       add_widget: 'Lägg till widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Ta bort widget'
       configure: 'Konfigurera widget'
       widgets:

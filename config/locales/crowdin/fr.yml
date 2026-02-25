@@ -123,7 +123,6 @@ fr:
       server_form:
         description_caption: "Comment le serveur MCP sera décrit aux autres applications qui s'y connectent."
         title_caption: "Titre court affiché aux applications qui se connectent au serveur MCP."
-
         tool_response_format: "Format de réponse de l'outil"
         tool_response_format_content_only_label: "Contenu uniquement"
         tool_response_format_content_only_caption: >
@@ -372,7 +371,7 @@ fr:
     contained_in_type: "Figurant dans le type"
     confirm_destroy_option: "Supprimer une option supprimera toutes ses occurrences (ex. dans les plans de travail). Êtes-vous sûr de vouloir le supprimer ?"
     reorder_alphabetical: "Réorganiser les valeurs par ordre alphabétique"
-    reorder_confirmation: "Attention : l'ordre actuel des valeurs disponibles sera perdu. Continuer ?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "La sélection d'un lot de travaux ou d'un projet est requise en premier lieu"
     calculated_field_not_editable: "Attribut non modifiable. Cette valeur est calculée automatiquement."
     no_role_assigment: "Pas d'attribution de rôle"
@@ -399,6 +398,12 @@ fr:
           Permet au champ personnalisé d'être utilisé dans un filtre dans les vues des lots de travaux. Notez que le champ personnalisé n'apparaîtra dans les vues globales que si l'option « Pour tous les projets » est sélectionnée.
       formula:
         project: "Ajoutez des valeurs numériques ou saisissez / pour rechercher un attribut ou un opérateur mathématique."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Il n'y a actuellement aucun champ personnalisé.
       no_results_content_text: Créer un nouveau champ personnalisé
@@ -4812,7 +4817,6 @@ fr:
   text_length_between: "Longueur entre %{min} et %{max} caractères."
   text_line_separated: "Valeurs multiples autorisées (une ligne par valeur)."
   text_load_default_configuration: "Charger la configuration par défaut"
-  text_min_max_length_info: "0 signifie aucune restriction"
   text_no_roles_defined: Il n'y a pas de rôles définis.
   text_no_access_tokens_configurable: "Il n'y a aucun jeton d'accès qui puisse être configuré."
   text_no_configuration_data: "Les rôles, les types, l'état des lots de travaux et les flux de travaux n'ont pas encore été configurés.\nIl est fortement recommandé de charger la configuration par défaut. Vous serrez capable de le modifier, une fois chargé."
@@ -4827,7 +4831,6 @@ fr:
   text_powered_by: "Propulsé par %{link}"
   text_project_identifier_info: "Seulement les lettres en minuscule (a-z), les nombres, les tirets et les underscores sont autorisés, il est obligatoire de commencer avec une lettre en minuscule."
   text_reassign: "Réaffecter au lot de travaux :"
-  text_regexp_info: "ex. ^[A-Z0-9]+$"
   text_regexp_multiline: 'L''expression régulière est appliquée en mode multi-ligne, e.g. ^---\\s+'
   text_repository_usernames_mapping: "Définir ou modifier les associations entre les utilisateurs d'OpenProject et les utilisateurs trouvés dans le dépôt.\nLes utilisateurs ayant des noms ou des adresses e-mail identiques sont automatiquement associés."
   text_status_changed_by_changeset: "Appliqué dans « changeset » %{value}."

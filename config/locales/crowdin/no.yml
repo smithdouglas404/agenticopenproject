@@ -371,7 +371,7 @@
     contained_in_type: "Type beholdt"
     confirm_destroy_option: "Sletting av et alternativ vil slette alle forekomster (f.eks i arbeidspakker). Er du sikker på at du vil slette den?"
     reorder_alphabetical: "Omorganiser verdier alfabetisk"
-    reorder_confirmation: "Advarsel: Gjeldende rekkefølge for tilgjengelige verdier vil gå tapt. Vil du fortsette?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -398,6 +398,12 @@
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Det er ingen egendefinerte felt for øyeblikket.
       no_results_content_text: Opprett nytt egendefinert felt
@@ -4812,7 +4818,6 @@
   text_length_between: "Lengde mellom %{min} og %{max} tegn."
   text_line_separated: "Flere verdier tillatt (en verdi pr. linje)."
   text_load_default_configuration: "Last inn standardoppsettet"
-  text_min_max_length_info: "0 betyr ingen restriksjoner"
   text_no_roles_defined: Det er ingen roller definert.
   text_no_access_tokens_configurable: "Det finnes ingen tilgangsnøkler som kan konfigureres."
   text_no_configuration_data: "Roller, typer, arbeidspakkestatuser og arbeidsflyt har ikke blitt satt opp ennå.\nDet er sterkt anbefalt å laste standardoppsettet. Du kan redigere disse når de er lastet inn."
@@ -4827,7 +4832,6 @@
   text_powered_by: "Driftes med %{link}"
   text_project_identifier_info: "Kun små bokstaver (a-z), tall, bindestrek og understrek er tillatt. Første tegn må være liten bokstav."
   text_reassign: "Tilordne til arbeidspakke:"
-  text_regexp_info: "f.eks. ^[A-Z0-9]+$"
   text_regexp_multiline: 'Denne regexen brukes i flerlinjemodus. f.eks ^---\s+'
   text_repository_usernames_mapping: "Velg eller oppdater OpenProject-brukeren knyttet til hvert enkelt brukernavn i pakkebrønn-loggen.\nBrukere med samme OpenProject- og pakkebrønn-brukernavn eller e-post tilknyttes automatisk."
   text_status_changed_by_changeset: "Benyttet i changeset %{value}."

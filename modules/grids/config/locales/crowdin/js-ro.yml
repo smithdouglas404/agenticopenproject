@@ -2,6 +2,7 @@ ro:
   js:
     grid:
       add_widget: 'Adaugă widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Eliminați widget-ul'
       configure: 'Configurați widget-ul'
       widgets:

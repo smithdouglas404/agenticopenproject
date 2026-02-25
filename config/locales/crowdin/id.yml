@@ -367,7 +367,7 @@ id:
     contained_in_type: "Terkandung dalam jenis"
     confirm_destroy_option: "Menghapus sebuah pilihan akan menghapus semua kemunculan yang terjadi (mis. dalam paket pekerjaan). Apakah Anda yakin ingin menghapusnya?"
     reorder_alphabetical: "Susun ulang nilai menurut abjad"
-    reorder_confirmation: "Peringatan: Urutan nilai yang tersedia saat ini akan hilang.  Melanjutkan?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -394,6 +394,12 @@ id:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Tidak ada bidang kustom saat ini.
       no_results_content_text: Buat bidang kustom baru
@@ -4755,7 +4761,6 @@ id:
   text_length_between: "Panjang antara %{min} dan %{max} karakter."
   text_line_separated: "Jika ada beberapa nilai, satu baris untuk tiap nilai."
   text_load_default_configuration: "Pakai konfigurasi default"
-  text_min_max_length_info: "0 berarti tidak ada pembatasan"
   text_no_roles_defined: There are no roles defined.
   text_no_access_tokens_configurable: "There are no access tokens which can be configured."
   text_no_configuration_data: "Role, Tipe, status Paket-Penugasan dan Alur-Tugas belum dikonfigurasi. Disarankan untuk menggunakan konfigurasi default. Anda bisa mengubahnya setelah konfigurasi dibuat."
@@ -4770,7 +4775,6 @@ id:
   text_powered_by: "Didukung oleh %{link}"
   text_project_identifier_info: "Hanya huruf kecil (a-z), angka, garis dan garis bawah yang diperbolehkan, harus diawali dengan huruf kecil."
   text_reassign: "Reassign to work package:"
-  text_regexp_info: "spt. ^[A-Z0-9]+$"
   text_regexp_multiline: 'The regex is applied in a multi-line mode. e.g., ^---\s+'
   text_repository_usernames_mapping: "Pilih atau update user untuk dipetakan ke setiap username yang ditemukan di log repositori. User dengan username dan repositori atau email yang sama otomatis akan dipetakan."
   text_status_changed_by_changeset: "Applied in changeset %{value}."

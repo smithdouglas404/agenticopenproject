@@ -370,7 +370,7 @@ hu:
     contained_in_type: "A típus tartalmazza"
     confirm_destroy_option: "Egy opció törlése az összes eddigi használatánál (úgy, mint munkacsomagok) is törlődnek. Biztosan törölni szeretné?"
     reorder_alphabetical: "Név szerinti sorrendbe rendezés"
-    reorder_confirmation: "Figyelmeztetés: A rendelkezésre álló értékek jelenlegi sorrendje elveszik. Folytatni akarod?\n"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -397,6 +397,12 @@ hu:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Jelenleg nincsenek egyéni mezők.
       no_results_content_text: Új egyéni mező létrehozása
@@ -4811,7 +4817,6 @@ hu:
   text_length_between: "%{min} és %{max} karakter közötti hosszúságú."
   text_line_separated: "A többszörös érték adás megengedett (minden érték külön sorban)."
   text_load_default_configuration: "Az alapértelmezett konfiguráció betöltése"
-  text_min_max_length_info: "0 azt jelenti, hogy nincs korlátozás"
   text_no_roles_defined: Nincsenek szerepkörök meghatározva.
   text_no_access_tokens_configurable: "Nincs hozzáférési token, amely konfigurálható."
   text_no_configuration_data: "Szerepkörök, típusok, a feladatcsoport állapotok és a munkafolyamatok nincsenek beállítva. Erősen ajánlott, az alapértelmezett konfiguráció betöltése. Akkor képes lesz arra, hogy módosítsa."
@@ -4826,7 +4831,6 @@ hu:
   text_powered_by: "Készítette %{link}"
   text_project_identifier_info: "Csak kisbetű (a-z), számok, kötőjelek és aláhúzásjelek van engedélyezve, és kisbetűvel kell kezdődnie."
   text_reassign: "A munkacsomag ismételt hozzárendelése:"
-  text_regexp_info: "pl. ^[A-Z0-9]+$"
   text_regexp_multiline: 'A reguláris kifejezés többsoros módban legyen alkalmazva. pld. ^---\s+'
   text_repository_usernames_mapping: "Jelölje be, vagy frissítse az alkalmazás felhasználóit, minden felhasználónév eltárolva, megtalálhatóak a csomagtároló naplóban. A felhasználók ugyanazzal az alkalmazási és csomagtárolói felhasználó névvel vagy email címmel automatikusan tárolódnak."
   text_status_changed_by_changeset: "A %{value} commit-ban hozzáadva."

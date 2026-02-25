@@ -372,7 +372,7 @@ tr:
     contained_in_type: "Kullanıldığı tipler"
     confirm_destroy_option: "Bir seçeneğin silinmesi, kullanıldığı her yerden (örneğin iş paketleri) silinmesine neden olur. Silmek istediğinizden emin misiniz?"
     reorder_alphabetical: "Değerleri alfabetik olarak yeniden sıralayın"
-    reorder_confirmation: "Uyarı: Mevcut değerlerin sırası kaybolacak. Devam et?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Öncelikle iş paketi veya proje seçimi gereklidir"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -399,6 +399,12 @@ tr:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Şu anda özel bir alan bulunmamakta.
       no_results_content_text: Yeni bir özel alan oluştur
@@ -4811,7 +4817,6 @@ tr:
   text_length_between: "%{min} ve %{max} karakter arası uzunluk."
   text_line_separated: "Birden fazla değer kullanılabilir (her değer için bir satır)."
   text_load_default_configuration: "Varsayılan yapılandırmayı yükle"
-  text_min_max_length_info: "0 sınırlama yok demektir"
   text_no_roles_defined: Hiçbir rol tanımlanmadı.
   text_no_access_tokens_configurable: "Yapılandırılacak erişim belirteçleri yok."
   text_no_configuration_data: "Roller, türleri, çalışma paketi durumu ve iş akışı henüz yapılandırılmadı. Varsayılan yapılandırmayı yüklemeniz kesinlikle önerilir. Yüklendikten sonra onu değiştirebileceksiniz."
@@ -4826,7 +4831,6 @@ tr:
   text_powered_by: "%{link} tarafından destekleniyor"
   text_project_identifier_info: "Yalnızca küçük harfler (a-z), sayılar, tire ve alt tire kullanılabilir ve mutlaka küçük harfle başlamalıdır."
   text_reassign: "İş paketine yeniden atama:"
-  text_regexp_info: "ör ^[A-Z0-9]+$"
   text_regexp_multiline: 'Regex (düzenli ifade) birden çok satırlı modda uygulanır. Örneğin, ^---\s+'
   text_repository_usernames_mapping: "Depo günlüklerinde bulunan her kullanıcı adına eşlenen OpenProject kullanıcısını seçin veya güncelleyin. Aynı OpenProject ve depo kullanıcı adına veya e-postasına sahip kullanıcılar otomatik olarak eşleştirilir."
   text_status_changed_by_changeset: "Uygulanan Değişiklik listesi %{value}."

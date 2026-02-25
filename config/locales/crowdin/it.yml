@@ -369,7 +369,7 @@ it:
     contained_in_type: "Contenuto nel tipo"
     confirm_destroy_option: "L'eliminazione di un'opzione eliminerà tutte le sue occorrenze (ad es. nelle macro-attività). Procedere all'eliminazione?"
     reorder_alphabetical: "Riordina i valori alfabeticamente"
-    reorder_confirmation: "Attenzione: l'ordine corrente dei valori disponibili sarà perso. Continuare?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Prima è necessario selezionare la macro-attività o il progetto"
     calculated_field_not_editable: "Attributo non modificabile. Questo valore viene calcolato automaticamente."
     no_role_assigment: "Nessuna assegnazione di ruolo"
@@ -396,6 +396,12 @@ it:
           Consenti l'utilizzo del campo personalizzato in un filtro nelle visualizzazioni delle macro-attività. Tieni presente che solo con l'opzione "Per tutti i progetti" selezionata, il campo personalizzato verrà visualizzato nelle visualizzazioni globali.
       formula:
         project: "Aggiungi valori numerici o digita / per cercare un attributo o un operatore matematico."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Al momento non esistono campi personalizzati.
       no_results_content_text: Crea un nuovo campo personalizzato
@@ -4810,7 +4816,6 @@ it:
   text_length_between: "Lunghezza compresa tra %{min} e %{max} caratteri."
   text_line_separated: "Valori multipli consentiti (una linea per ogni valore)."
   text_load_default_configuration: "Carica la configurazione predefinita"
-  text_min_max_length_info: "0 significa nessuna restrizione"
   text_no_roles_defined: Non ci sono ruoli definiti.
   text_no_access_tokens_configurable: "Non sono presenti token di accesso che possono essere configurati."
   text_no_configuration_data: "Ruoli, tipi, stati delle macro-attività e flusso di lavoro non sono stati ancora configurati. Si consiglia di caricare la configurazione predefinita. Sarà possibile modificarla in seguito."
@@ -4825,7 +4830,6 @@ it:
   text_powered_by: "Offerto da %{link}"
   text_project_identifier_info: "Solo le lettere minuscole (a-z), numeri, trattini e trattini bassi sono consentiti, devi iniziare con una lettera maiuscola."
   text_reassign: "Riassegna alla macro-attività:"
-  text_regexp_info: "es. ^[A-Z0-9]+$"
   text_regexp_multiline: 'L''espressione regolare viene applicata in modalità multi-linea. ad esempio, ^---\s+'
   text_repository_usernames_mapping: "Seleziona o aggiorna l'utente OpenProject mappato per ogni nome utente trovato nel registro dell'archivio. Gli utenti con lo stesso nome utente e repository OpenProject o e-mail vengono mappati automaticamente."
   text_status_changed_by_changeset: "Stato variato a partire dalla modifica %{value}."

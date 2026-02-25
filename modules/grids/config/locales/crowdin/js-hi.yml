@@ -2,6 +2,7 @@ hi:
   js:
     grid:
       add_widget: 'Add widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'विजेट हटाएँ'
       configure: 'Configure widget'
       widgets:

@@ -118,7 +118,15 @@ es:
   error_notification_with_errors: "Error al enviar la notificación. Los siguientes destinatarios no han sido notificados: %{recipients}"
   label_meeting: "Reunión"
   label_meeting_plural: "Reuniones"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Nueva reunión"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Nueva reunión única"
   label_meeting_new_recurring: "Nueva reunión periódica"
   label_meeting_create: "Crear reunión"
@@ -279,6 +287,9 @@ es:
         heading: "¿Eliminar esta reunión?"
         confirmation_message_html: >
           Esta acción no es reversible. Proceda con precaución.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "Cancelar repetición de reunión"
         heading: "¿Desea cancelar esta repetición de reunión?"
@@ -478,6 +489,7 @@ es:
     end_series_dialog:
       title: "Finalizar serie de reuniones"
   notice_successful_notification: "Actualización de calendario enviada por correo electrónico a todos los participantes"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: No se ha establecido zona horaria y se asume %{zone}. Para elegir su zona horaria, por favor, haga clic aquí.
   notice_meeting_updated: "Esta página ha sido actualizada por otra persona. Recárguela para ver los cambios."
   permission_create_meetings: "Crear reuniones"
@@ -492,6 +504,8 @@ es:
   text_duration_in_hours: "Duración en horas"
   text_in_hours: "en horas"
   text_meeting_agenda_for_meeting: 'agenda para la reunión "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "¿Eliminar futuras repeticiones?"
   text_meeting_series_end_early: "Al finalizar la serie, se eliminarán todas las repeticiones futuras abiertas o programadas"
   text_meeting_closing_are_you_sure: "¿Seguro que quiere cerrar el orden del día de la reunión?"
@@ -597,6 +611,9 @@ es:
   text_meeting_in_progress_dropdown_description: "Documente los resultados, como las necesidades de información o las decisiones tomadas durante la reunión."
   text_meeting_closed_dropdown_description: "Esta reunión está cerrada. Ya no puede modificar los puntos del orden del día ni los resultados."
   text_meeting_draft_banner: "Estás en modo Borrador. Esta reunión no enviará actualizaciones ni invitaciones de calendario, incluso si cambias los detalles de la reunión o añades/eliminas participantes."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "¿Abrir esta reunión y enviar invitaciones?"
   text_exit_draft_mode_dialog_subtitle: "Una vez programada una reunión, no puedes volver al modo Borrador."
   text_exit_draft_mode_dialog_template_title: "¿Abrir la primera repetición de esta serie de reuniones?"

@@ -370,7 +370,7 @@ zh-TW:
     contained_in_type: "已包含在類型中"
     confirm_destroy_option: "刪除此選項將會刪除其所有出現位置（例如：工作套件中的該選項）。您確定要刪除嗎？"
     reorder_alphabetical: "按字母順序重新排列"
-    reorder_confirmation: "警告：目前可用值的順序將會遺失。繼續嗎？"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "需要先選擇工作套件或專案"
     calculated_field_not_editable: "不可編輯屬性。此值會自動計算。"
     no_role_assigment: "無角色指派"
@@ -397,6 +397,12 @@ zh-TW:
           允許在工作套件檢視的篩選器中使用自訂欄位。請注意，只有選取「針對所有專案」時，自訂欄位才會顯示在全區域檢視中。
       formula:
         project: "加入數值或輸入 / 搜尋屬性或數學運算符號。"
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: 目前沒有自定義的欄位
       no_results_content_text: 建立一個新的自定義欄位
@@ -4756,7 +4762,6 @@ zh-TW:
   text_length_between: "長度須介於 %{min} 至 %{max} 個字元"
   text_line_separated: "可多行(每行一個值)。"
   text_load_default_configuration: "載入預設組態"
-  text_min_max_length_info: "0 代表沒有限制"
   text_no_roles_defined: 沒有定義的角色
   text_no_access_tokens_configurable: "沒有存取令牌(Token)可以被設定。"
   text_no_configuration_data: "角色，類型，工作套件狀態與工作流程都尚未設定。\n強烈建議先載入預設值，然後再修改它們。"
@@ -4771,7 +4776,6 @@ zh-TW:
   text_powered_by: "由 %{link} 提供"
   text_project_identifier_info: "僅允許小寫字母(a-z)、數字、破折號(-) 及底線(_)，且必須以小寫字母開頭。"
   text_reassign: "重新指派到工作套件："
-  text_regexp_info: "例如: ^[A-Z0-9]+$"
   text_regexp_multiline: '這個正規表達式套用在多行模式。 e.g., ^---\s+'
   text_repository_usernames_mapping: "選擇或更新與版本庫中的帳號所對應的OpenProject使用者。\n版本庫中與OpenProject的使用者具有相同名稱或email將被自動對應。"
   text_status_changed_by_changeset: "已套用至變更列表 %{value} 中。"

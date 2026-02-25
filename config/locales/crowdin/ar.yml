@@ -371,7 +371,7 @@ ar:
     contained_in_type: "Contained in type"
     confirm_destroy_option: "Deleting an option will delete all of its occurrences (e.g. in work packages). Are you sure you want to delete it?"
     reorder_alphabetical: "Reorder values alphabetically"
-    reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -398,6 +398,12 @@ ar:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: لا يوجد حالياً ملفات للزبائن.
       no_results_content_text: إنشاء ملف زبون جديد
@@ -5015,7 +5021,6 @@ ar:
   text_length_between: "الطول بين %{min} و %{max} محارف."
   text_line_separated: "القيم المتعددة المسموح بها (سطر واحد لكل قيمة)."
   text_load_default_configuration: "تحميل التكوين الافتراضي"
-  text_min_max_length_info: "0 يعني عدم تقييد"
   text_no_roles_defined: لا توجد مجموعات معرفة.
   text_no_access_tokens_configurable: "لا توجد أية رموز الوصول المميزة التي يمكن تكوينها."
   text_no_configuration_data: "لم يتم تكوين الأدوار, الأنواع, حالات مجموعات العمل وتدفقات العمل حتى الآن. فإنه ينصح بشدة تحميل التكوين الافتراضي. سوف تكون قادراً على تعديله حالما يتم التحميل."
@@ -5030,7 +5035,6 @@ ar:
   text_powered_by: "بواسطة %{link}"
   text_project_identifier_info: "يتم السماح فقط رسائل الحالة الأدنى (أ-ي) وأرقام، والشرطات وتسطير، يجب أن تبدأ بحرف حالة الأدنى."
   text_reassign: "تعيين أن تعمل الحزمة:"
-  text_regexp_info: "على سبيل المثال. ^[A-Z0-9] + $"
   text_regexp_multiline: 'يتم تطبيق التعبير الاعتيادي في وضع متعدد الأسطر. على سبيل المثال: ^---\s+'
   text_repository_usernames_mapping: "قم باختيار أو تحديث مستخدم \"OpenProject: المشروع المفتوح\" الذي تم تعيينه لكل اسم مستخدم وُجِد في سجل المستودع.\nالمستخدمون الذين لديهم نفس اسم المستخدم أو عنوان البريد الإلكتروني في المشروع المفتوح OpenProject والمستودع يتم تعيينهم تلقائيًّا."
   text_status_changed_by_changeset: "تطبيق التغييرات %{value}."

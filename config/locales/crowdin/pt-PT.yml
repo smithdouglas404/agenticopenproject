@@ -369,7 +369,7 @@ pt-PT:
     contained_in_type: "Incluído no tipo"
     confirm_destroy_option: "Apagar uma opção irá apagar todas as suas ocorrências (ex. em pacotes de trabalho). Tem certeza que quer apagá-la?"
     reorder_alphabetical: "Reordenar valores em ordem alfabética"
-    reorder_confirmation: "Aviso: A ordem atual de valores disponíveis será perdida. Continuar?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "A seleção do pacote de trabalho ou do projeto é necessária em primeiro lugar"
     calculated_field_not_editable: "Atributo não editável. Este valor é calculado automaticamente."
     no_role_assigment: "Sem atribuição de funções"
@@ -396,6 +396,12 @@ pt-PT:
           Permita que o campo personalizado seja utilizado num filtro nas vistas do pacote de trabalho. Note que apenas com a opção "Para todos os projetos" selecionada, o campo personalizado irá aparecer nas vistas globais.
       formula:
         project: "Adicione valores numéricos ou escreva / para procurar um atributo ou um operador matemático."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Atualmente, não existem campos personalizados.
       no_results_content_text: Criar um novo campo personalizado
@@ -4807,7 +4813,6 @@ pt-PT:
   text_length_between: "Comprimento entre %{min} e %{max} caráteres."
   text_line_separated: "Múltiplos valores permitidos (uma linha para cada valor)."
   text_load_default_configuration: "Carregar a configuração por defeito"
-  text_min_max_length_info: "0 significa sem restrições"
   text_no_roles_defined: Não existem papéis definidos.
   text_no_access_tokens_configurable: "Não há tokens de acesso que possam ser configurados."
   text_no_configuration_data: "Os papéis, tipos, estados de pacotes de trabalho e o fluxo de trabalho ainda não foram configurados.\nÉ recomendado carregar as configurações padrão. Poderá modificá-las depois de estarem carregadas."
@@ -4822,7 +4827,6 @@ pt-PT:
   text_powered_by: "Desenvolvido por %{link}"
   text_project_identifier_info: "Apenas letras minúsculas (a-z), números, traços e underscores são permitidos, deve começar com uma letra minúscula."
   text_reassign: "Reatribuir pacote de trabalho:"
-  text_regexp_info: "ex. ^[A-Z0-9]+$"
   text_regexp_multiline: 'Regex é aplicado num modo de várias linhas. por exemplo, ^---\s+'
   text_repository_usernames_mapping: "Selecionar ou atualizar o utilizador de OpenProjecto mapeado a cada nome de utilizador encontrado no repositório.\nUtilizadores com o mesmo nome de utilizador ou e-mail no OpenProject e no repositório são mapeados automaticamente."
   text_status_changed_by_changeset: "Aplicado no changeset %{value}."

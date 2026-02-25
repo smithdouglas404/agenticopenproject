@@ -371,7 +371,7 @@ fil:
     contained_in_type: "Naglaman ng uri"
     confirm_destroy_option: "Kapag nagbubura ng opsyon ay makakabura sa lahat ng mga pangyayari nito (e.g. sa mga package na trabaho). Sigurado ka bang gusto mong burahin ito?"
     reorder_alphabetical: "Reorder values alphabetically"
-    reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -398,6 +398,12 @@ fil:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Sa kasalukuyan ay walang mga custom field.
       no_results_content_text: Gumawa ng bagong patlang na custom
@@ -4811,7 +4817,6 @@ fil:
   text_length_between: "Taas pagitan ng %{min} at %{max} na mga karakter."
   text_line_separated: "Maramihang halaga ang pinahintulutan (isang linya para sa bawat halaga)."
   text_load_default_configuration: "I-load ang kumpigurasyong default"
-  text_min_max_length_info: "0 ay nangunguhugan walang paghihigpit"
   text_no_roles_defined: Walang mga role na niliwanag.
   text_no_access_tokens_configurable: "Walang mga access tokens na pweding ma configure."
   text_no_configuration_data: "Ang mga tungkulin, uri, estado ng work package at daloy na trabaho ay hindi pa na configure.\nIto ay lubos na inirerekomenda upang i-lpad anh default na kumpigurasyon. Magagawa mong baguhin ito pag naka-load."
@@ -4826,7 +4831,6 @@ fil:
   text_powered_by: "Pinalatakbo ng %{link}"
   text_project_identifier_info: "Maliit na titik lamang (a-z), mga numero, mga dash at underscore ang pinahintulutan, dapat magsimula sa maliit na titik."
   text_reassign: "I-reassign sa work package:"
-  text_regexp_info: "e. g ^[A-Z0-9]+$"
   text_regexp_multiline: 'Ang regex ay nakalagay sa multi-line mlde. hal., ^---\s+'
   text_repository_usernames_mapping: "Piliin o i-update ang OpenProject usrt naka-map sa bawat username nakita sa repositoryo log.\nAng mga gumagamit sa kaparehong OpenProject at repositoryong username o ang email ay automatikong naka-map."
   text_status_changed_by_changeset: "Ilapaylt sa changeset %{value}."
