@@ -29,58 +29,80 @@
   ++#
 %>
 
-<%=
-  settings_primer_form_with(
-    scope: :settings, action: :update, method: :patch,
-    data: {
-      controller: "admin--work-packages-identifier",
-      admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?,
-      admin__work_packages_identifier_autofix_label_value: t("admin.settings.work_packages_identifier.button_autofix"),
-      admin__work_packages_identifier_save_label_value: t("button_save")
-    }
-  ) do |f|
-    render_inline_settings_form(f) do |form|
-      form.radio_button_group(
-        name: :work_packages_identifier,
-        label: I18n.t("settings.work_packages.work_package_identifier"),
-        required: true,
-        button_options: {
-          data: { action: "change->admin--work-packages-identifier#handleChange" }
-        }
-      )
+<%#
+  Layout:
+    [outer div — Stimulus controller, full width]
+      [settings_primer_form_with — 680px wrapper, radio buttons only]
+        <form id="wp-identifier-settings-form">...</form>
+      [full-width autofix section — banner + table, Stimulus target]
+      [op-admin-settings-form-wrapper — 680px, submit button linked via HTML5 form attr]
 
-      form.html_content do
-        tag.div(
-          hidden: !show_autofix_section?,
-          data: { admin__work_packages_identifier_target: "autofixSection" }
-        ) do
-          concat(
-            render(
-              Primer::Alpha::Banner.new(
-                scheme: :warning,
-                mb: 3
-              )
-            ) do
-              t(
-                "admin.settings.work_packages_identifier.banner.existing_identifiers_notice",
-                project_count: projects_data.size
-              )
-            end
-          )
-          concat(
-            render(
-              WorkPackages::Admin::Settings::IdentifierAutofixPreviewComponent.new(
-                projects_data:
-              )
-            )
-          )
-        end
-      end
-
-      form.submit(
-        label: show_autofix_section? ? t("admin.settings.work_packages_identifier.button_autofix") : t("button_save"),
-        data: { admin__work_packages_identifier_target: "submitButton" }
-      )
-    end
-  end
+  The submit button sits outside the <form> element but is linked back to it via
+  the HTML5 `form="wp-identifier-settings-form"` attribute, so clicking it still
+  submits the form. This allows the banner + table to be full-width while keeping
+  the radio buttons and submit button constrained to the standard 680px admin width.
 %>
+
+<%= tag.div(
+      data: {
+        controller: "admin--work-packages-identifier",
+        admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?,
+        admin__work_packages_identifier_autofix_label_value: t("admin.settings.work_packages_identifier.button_autofix"),
+        admin__work_packages_identifier_save_label_value: t("button_save")
+      }
+    ) do %>
+  <%# Constrained-width form: radio buttons only (no submit inside the form element) %>
+  <%=
+    settings_primer_form_with(
+      scope: :settings, action: :update, method: :patch,
+      html: { id: "wp-identifier-settings-form" }
+    ) do |f|
+      render_inline_settings_form(f) do |form|
+        form.radio_button_group(
+          name: :work_packages_identifier,
+          label: I18n.t("settings.work_packages.work_package_identifier"),
+          required: true,
+          button_options: {
+            data: { action: "change->admin--work-packages-identifier#handleChange" }
+          }
+        )
+      end
+    end
+  %>
+
+  <%# Full-width autofix section — outside the 680px settings_primer_form_with wrapper %>
+  <%= tag.div(
+        hidden: !show_autofix_section?,
+        data: { admin__work_packages_identifier_target: "autofixSection" }
+      ) do %>
+    <%=
+      render(Primer::Alpha::Banner.new(scheme: :warning, mb: 3)) do
+        t(
+          "admin.settings.work_packages_identifier.banner.existing_identifiers_notice",
+          project_count: projects_data.size
+        )
+      end
+    %>
+    <%=
+      render(
+        WorkPackages::Admin::Settings::IdentifierAutofixPreviewComponent.new(projects_data:)
+      )
+    %>
+  <% end %>
+
+  <%# Submit button: constrained to 680px, linked to the form via HTML5 `form` attribute %>
+  <div class="op-admin-settings-form-wrapper">
+    <%=
+      render(
+        Primer::Beta::Button.new(
+          scheme: :primary,
+          type: :submit,
+          form: "wp-identifier-settings-form",
+          data: { admin__work_packages_identifier_target: "submitButton" }
+        )
+      ) do
+        show_autofix_section? ? t("admin.settings.work_packages_identifier.button_autofix") : t("button_save")
+      end
+    %>
+  </div>
+<% end %>

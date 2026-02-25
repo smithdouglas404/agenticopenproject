@@ -31,30 +31,26 @@
 require "rails_helper"
 
 RSpec.describe WorkPackages::ProjectHandleSuggestionGenerator do
-  subject(:generator) { described_class.new }
-
-  # Access private methods for unit testing the algorithm
-  let(:private_gen) { described_class.new }
+  # Stub the SQL query chain used by #call.
+  # The WHERE clause in production filters out valid identifiers; tests control
+  # what the query "returns" by mocking the end of the chain.
+  def stub_query(projects)
+    allow(Project).to receive_message_chain(:select, :where, :to_a).and_return(projects) # rubocop:disable RSpec/MessageChain
+  end
 
   describe ".call" do
-    context "when there are no problematic project identifiers" do
-      before do
-        allow(Project).to receive(:all).and_return([
-                                                     instance_double(Project, identifier: "valid", name: "Valid Project")
-                                                   ])
-      end
+    context "when the query returns no projects (all identifiers are valid)" do
+      before { stub_query([]) }
 
       it "returns an empty array" do
         expect(described_class.call).to be_empty
       end
     end
 
-    context "when projects have identifiers that are too long" do
+    context "when the query returns a project with a too-long identifier" do
       let(:project) { instance_double(Project, identifier: "verylongidentifier", name: "Very Long Identifier") }
 
-      before do
-        allow(Project).to receive(:all).and_return([project])
-      end
+      before { stub_query([project]) }
 
       it "returns a suggestion entry for the project" do
         result = described_class.call
@@ -67,12 +63,10 @@ RSpec.describe WorkPackages::ProjectHandleSuggestionGenerator do
       end
     end
 
-    context "when projects have identifiers with special characters" do
+    context "when the query returns a project with a special-character identifier" do
       let(:project) { instance_double(Project, identifier: "fly-sky", name: "Fly Sky") }
 
-      before do
-        allow(Project).to receive(:all).and_return([project])
-      end
+      before { stub_query([project]) }
 
       it "returns a suggestion entry with error_reason :special_characters" do
         result = described_class.call
@@ -85,9 +79,7 @@ RSpec.describe WorkPackages::ProjectHandleSuggestionGenerator do
       let(:project_sc1) { instance_double(Project, identifier: "sc-app", name: "Stream Communicator") }
       let(:project_sc2) { instance_double(Project, identifier: "stream-channel", name: "Stream Channel") }
 
-      before do
-        allow(Project).to receive(:all).and_return([project_sc1, project_sc2])
-      end
+      before { stub_query([project_sc1, project_sc2]) }
 
       it "generates unique handles for each project" do
         result = described_class.call
@@ -98,24 +90,9 @@ RSpec.describe WorkPackages::ProjectHandleSuggestionGenerator do
       it "appends a numeric suffix to resolve conflicts" do
         result = described_class.call
         handles = result.pluck(:suggested_handle)
-        # One will be "SC" and the other "SC2"
+        # "Stream Communicator" → "SC", "Stream Channel" → "SC2"
         expect(handles).to include("SC")
         expect(handles.any? { |h| h.match?(/\ASC\d+\z/) }).to be true
-      end
-    end
-
-    context "with a mix of valid and problematic identifiers" do
-      let(:valid_project) { instance_double(Project, identifier: "valid", name: "Valid") }
-      let(:bad_project)   { instance_double(Project, identifier: "too-long-id", name: "Too Long Id") }
-
-      before do
-        allow(Project).to receive(:all).and_return([valid_project, bad_project])
-      end
-
-      it "only includes problematic projects in the result" do
-        result = described_class.call
-        expect(result.size).to eq(1)
-        expect(result.first[:project]).to eq(bad_project)
       end
     end
   end
@@ -127,35 +104,50 @@ RSpec.describe WorkPackages::ProjectHandleSuggestionGenerator do
       "Social media marketing" => "SMM",
       "Arcanos Mobile Web App" => "AMWA",
       "Flight Planning Training" => "FPT",
-      "A B C D E F G H I J K" => "ABCDEFGHIJ"
+      "A B C D E F G H I J K" => "ABCDEFGHIJ" # truncated to 10 chars
     }.each do |project_name, expected_handle|
       it "generates '#{expected_handle}' from '#{project_name}'" do
         project = instance_double(Project, identifier: "bad-id", name: project_name)
-        allow(Project).to receive(:all).and_return([project])
-        result = described_class.call
-        expect(result.first[:suggested_handle]).to eq(expected_handle)
+        stub_query([project])
+        expect(described_class.call.first[:suggested_handle]).to eq(expected_handle)
       end
     end
   end
 
-  describe "problematic identifier detection" do
-    valid_identifiers = %w[valid VALID123 abc arcanosweb]
-    problematic_identifiers = ["verylongidentifier", "12345678901", "arcanos-web", "fly_sky", "fly&sky"]
-
-    valid_identifiers.each do |identifier|
-      it "does not flag '#{identifier}' as problematic" do
-        project = instance_double(Project, identifier:, name: "Test Project")
-        allow(Project).to receive(:all).and_return([project])
-        expect(described_class.call).to be_empty
-      end
+  describe "unique_handle conflict resolution" do
+    it "uses the base handle when it is not yet taken" do
+      project = instance_double(Project, identifier: "sc-app", name: "Stream Communicator")
+      stub_query([project])
+      expect(described_class.call.first[:suggested_handle]).to eq("SC")
     end
 
-    problematic_identifiers.each do |identifier|
-      it "flags '#{identifier}' as problematic" do
-        project = instance_double(Project, identifier:, name: "Test Project")
-        allow(Project).to receive(:all).and_return([project])
-        expect(described_class.call).not_to be_empty
-      end
+    it "appends '2' when the base is already taken" do
+      p1 = instance_double(Project, identifier: "sc-app",      name: "Stream Communicator")
+      p2 = instance_double(Project, identifier: "stream-ch",   name: "Stream Channel")
+      stub_query([p1, p2])
+      handles = described_class.call.pluck(:suggested_handle)
+      expect(handles).to contain_exactly("SC", "SC2")
+    end
+
+    it "increments the suffix until unique" do
+      p1 = instance_double(Project, identifier: "sc-a", name: "Stream Communicator")
+      p2 = instance_double(Project, identifier: "sc-b", name: "Stream Channel")
+      p3 = instance_double(Project, identifier: "sc-c", name: "Something Cool")
+      stub_query([p1, p2, p3])
+      handles = described_class.call.pluck(:suggested_handle)
+      expect(handles).to contain_exactly("SC", "SC2", "SC3")
+    end
+
+    it "trims the base to fit within HANDLE_MAX_LENGTH when adding a suffix" do
+      # 10-char acronym: "ABCDEFGHIJ"
+      project1 = instance_double(Project, identifier: "a-b-c-d-e-f-g-h-i-j-k",
+                                          name: "A B C D E F G H I J")
+      project2 = instance_double(Project, identifier: "a-b-c-d-x",
+                                          name: "A B C D E F G H I J") # same acronym
+      stub_query([project1, project2])
+      handles = described_class.call.pluck(:suggested_handle)
+      expect(handles.all? { |h| h.length <= 10 }).to be true
+      expect(handles.uniq.size).to eq(2)
     end
   end
 
@@ -163,15 +155,15 @@ RSpec.describe WorkPackages::ProjectHandleSuggestionGenerator do
     context "when identifier is too long" do
       it "assigns :too_long" do
         project = instance_double(Project, identifier: "verylongidentifier", name: "Test")
-        allow(Project).to receive(:all).and_return([project])
+        stub_query([project])
         expect(described_class.call.first[:error_reason]).to eq(:too_long)
       end
     end
 
-    context "when identifier contains special characters" do
+    context "when identifier contains special characters but is not too long" do
       it "assigns :special_characters" do
         project = instance_double(Project, identifier: "my-project", name: "Test")
-        allow(Project).to receive(:all).and_return([project])
+        stub_query([project])
         expect(described_class.call.first[:error_reason]).to eq(:special_characters)
       end
     end
@@ -179,7 +171,7 @@ RSpec.describe WorkPackages::ProjectHandleSuggestionGenerator do
     context "when identifier is both too long and has special chars" do
       it "assigns :too_long (length takes priority)" do
         project = instance_double(Project, identifier: "my-very-long-identifier", name: "Test")
-        allow(Project).to receive(:all).and_return([project])
+        stub_query([project])
         expect(described_class.call.first[:error_reason]).to eq(:too_long)
       end
     end

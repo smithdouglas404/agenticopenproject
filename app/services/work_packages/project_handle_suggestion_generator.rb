@@ -29,41 +29,54 @@
 #++
 
 module WorkPackages
-  # Scans all projects for identifiers that do not meet alphanumeric handle
-  # requirements and generates a short uppercase suggestion for each.
+  # Scans projects for identifiers that do not meet alphanumeric handle
+  # requirements (too long or containing non-alphanumeric characters) and
+  # generates a short uppercase acronym suggestion for each one.
   #
   # A "problematic" identifier is one that:
   #   - contains any character outside [a-zA-Z0-9], or
-  #   - is longer than 10 characters
+  #   - is longer than HANDLE_MAX_LENGTH (10) characters
   #
-  # This service is designed so the data source can be swapped out once the
-  # project_handles data model exists (replace Project.all scan with a join on
-  # ProjectHandle where current: true).
+  # The suggestion is derived from the project name: taking the first letter of
+  # each word and uppercasing ("Flight Planning Algorithm" → "FPA"). When two
+  # projects produce the same acronym, a numeric suffix resolves the collision
+  # ("SC", "SC2", "SC3", …).
+  #
+  # FIXME(project_handles): This class currently reads from the existing
+  # Project#identifier column. Once the project_handles data model is available,
+  # replace #call with:
+  #
+  #   ProjectHandle
+  #     .select("project_handles.handle AS identifier, projects.id, projects.name")
+  #     .joins(:project)
+  #     .where(current: true)
+  #     .where("length(handle) > ? OR handle ~ ?", HANDLE_MAX_LENGTH, "[^a-zA-Z0-9]")
+  #     .to_a
+  #     .then { |problematic| generate_suggestions(problematic) }
+  #
+  # The :current boolean on ProjectHandle marks the live handle; old handles are
+  # retained so that existing URLs continue to resolve.
   class ProjectHandleSuggestionGenerator
     HANDLE_MAX_LENGTH = 10
-    VALID_HANDLE_PATTERN = /\A[a-zA-Z0-9]{1,10}\z/
 
-    # Returns an array of hashes for projects with problematic identifiers:
-    #   [{ project:, current_identifier:, suggested_handle:, error_reason: }, ...]
-    #
-    # error_reason is one of: :too_long, :special_characters
+    # @return [Array<Hash>] one entry per project with a problematic identifier:
+    #   { project:, current_identifier:, suggested_handle:, error_reason: }
+    #   error_reason is :too_long or :special_characters
     def self.call
       new.call
     end
 
     def call
-      projects = Project.all.to_a
-      problematic = projects.select { |p| problematic?(p.identifier) }
-      generate_suggestions(problematic)
+      # FIXME(project_handles): Swap Project query for ProjectHandle query (see class doc above).
+      # Only select the three columns we need to avoid loading large text/JSON attributes.
+      Project
+        .select(:id, :name, :identifier)
+        .where("length(identifier) > ? OR identifier ~ ?", HANDLE_MAX_LENGTH, "[^a-zA-Z0-9]")
+        .to_a
+        .then { |problematic| generate_suggestions(problematic) }
     end
 
     private
-
-    def problematic?(identifier)
-      return false if identifier.blank?
-
-      identifier.length > HANDLE_MAX_LENGTH || identifier.match?(/[^a-zA-Z0-9]/)
-    end
 
     def error_reason(identifier)
       if identifier.length > HANDLE_MAX_LENGTH
@@ -73,11 +86,14 @@ module WorkPackages
       end
     end
 
+    # Builds the suggestion list for a set of problematic projects.
+    # Handles are generated in iteration order; duplicates are resolved in-place
+    # so the final list is guaranteed to contain no two identical handles.
     def generate_suggestions(projects)
       used_handles = Set.new
 
       projects.map do |project|
-        base = handle_from_name(project.name)
+        base   = handle_from_name(project.name)
         handle = unique_handle(base, used_handles)
         used_handles << handle
 
@@ -91,10 +107,11 @@ module WorkPackages
     end
 
     # Derives a short uppercase handle from the project name by taking the
-    # first letter of each word (acronym style).
-    # e.g. "Flight Planning Algorithm" => "FPA"
-    #      "Fly & Sky"                 => "FS"
-    #      "arcanos-web"               => "AW" (falls back when name is blank)
+    # first letter of each word (acronym style):
+    #   "Flight Planning Algorithm" → "FPA"
+    #   "Fly & Sky"                 → "FS"
+    # Falls back to "P" when the name yields no alphanumeric words.
+    # Result is truncated to HANDLE_MAX_LENGTH characters.
     def handle_from_name(name)
       words = name.to_s.scan(/[a-zA-Z0-9]+/)
       return "P" if words.empty?
@@ -103,20 +120,32 @@ module WorkPackages
       acronym.slice(0, HANDLE_MAX_LENGTH)
     end
 
+    # Ensures the returned handle is unique within the current batch by appending
+    # an incrementing numeric suffix when the base acronym is already taken.
+    #
+    # Examples (HANDLE_MAX_LENGTH = 10):
+    #   unique_handle("SC",         Set["SC"])         → "SC2"
+    #   unique_handle("SC",         Set["SC", "SC2"])  → "SC3"
+    #   unique_handle("ABCDEFGHIJ", Set["ABCDEFGHIJ"]) → "ABCDEFGHI2"
+    #     (base is trimmed so base + suffix ≤ HANDLE_MAX_LENGTH)
+    #
+    # @param base [String] the acronym to start from (already ≤ HANDLE_MAX_LENGTH)
+    # @param used_handles [Set<String>] handles already assigned in this batch
+    # @return [String] a unique handle ≤ HANDLE_MAX_LENGTH
     def unique_handle(base, used_handles)
-      candidate = base
-      return candidate unless used_handles.include?(candidate)
+      # Fast path: acronym is unique, no suffix needed.
+      return base unless used_handles.include?(base)
 
+      # Slow path: append "2", "3", … trimming the base as needed so the result
+      # never exceeds HANDLE_MAX_LENGTH characters.
       counter = 2
       loop do
-        suffix = counter.to_s
+        suffix    = counter.to_s
         candidate = "#{base.slice(0, HANDLE_MAX_LENGTH - suffix.length)}#{suffix}"
-        break unless used_handles.include?(candidate)
+        break candidate unless used_handles.include?(candidate)
 
         counter += 1
       end
-
-      candidate
     end
   end
 end
