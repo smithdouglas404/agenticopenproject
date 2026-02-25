@@ -30,11 +30,49 @@
 
 module Sprints
   class SetAttributesService < ::BaseServices::SetAttributes
+    def sprint_name_from_predecessor
+      return model.name unless model.new_record?
+
+      predecessor = model.project.sprints.last
+      next_name_in_succession(predecessor)
+    end
+
+    private
+
     def set_default_attributes(_params)
+      set_sprint_name
+      set_status_and_sharing
+    end
+
+    def set_sprint_name
+      model.change_by_system do
+        model.name ||= sprint_name_from_predecessor
+      end
+    end
+
+    def set_status_and_sharing
       model.change_by_system do
         model.status ||= "in_planning"
         model.sharing ||= "none"
       end
+    end
+
+    def next_name_in_succession(predecessor)
+      if predecessor.nil?
+        default_sprint_name
+      elsif (match = predecessor.name.match(/\A(.*)\s(\d+)\z/))
+        # If the predecessor's name ends with a number, increment that number for the new sprint's name.
+        # E.g., if the previous sprint was called "Be ambitious 42", the next one will be "Be ambitious 43".
+        [match[1], match[2].to_i + 1].join(" ")
+      else
+        # The predecessor's name doesn't end with a number. The user has chosen a custom name. Do not assume
+        # how the next sprint should be called. Return an empty string and let the user choose.
+        ""
+      end
+    end
+
+    def default_sprint_name
+      [I18n.t("activerecord.models.sprint"), 1].join(" ")
     end
   end
 end

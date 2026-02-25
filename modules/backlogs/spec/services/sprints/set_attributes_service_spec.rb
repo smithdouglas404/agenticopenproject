@@ -56,8 +56,9 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
                         contract_class:,
                         contract_options: {})
   end
-  let(:sprint) { build_stubbed(:agile_sprint) }
-  let(:params) { {} }
+  let(:project) { create(:project) }
+  let(:sprint) { Agile::Sprint.new }
+  let(:params) { { project: } }
 
   subject(:service_call) { instance.call(params) }
 
@@ -78,7 +79,13 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
       it "sets the attributes on the sprint" do
         service_call
 
-        expect(sprint.changed_attributes).to be_empty
+        # Default attributes set include:
+        # * the project, since passed as argument
+        # * a generated sprint sequence name if applicable, see `sprint_name_from_predecessor` specs.
+        expect(sprint.changed_attributes).to include("project_id", "name")
+
+        expect(sprint.project_id).to eq(project.id)
+        expect(sprint.name).to eq("Sprint 1")
       end
 
       it "does not persist the sprint" do
@@ -154,6 +161,111 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
           service_call
 
           expect(sprint.sharing).to eq("descendants")
+        end
+      end
+    end
+  end
+
+  describe "#sprint_name_from_predecessor" do
+    context "when sprint is not a new record" do
+      let(:existing_sprint) { create(:agile_sprint, project:, name: "Existing Sprint") }
+      let(:instance) do
+        described_class.new(user:,
+                            model: existing_sprint,
+                            contract_class:,
+                            contract_options: {})
+      end
+
+      it "returns the current name" do
+        expect(instance.sprint_name_from_predecessor).to eq("Existing Sprint")
+      end
+    end
+
+    context "when sprint is a new record" do
+      let(:sprint) { Agile::Sprint.new(project:) }
+
+      context "when there is no predecessor sprint" do
+        it "returns a default name for the first sprint" do
+          expected_name = "#{I18n.t('activerecord.models.sprint')} 1"
+          expect(instance.sprint_name_from_predecessor).to eq(expected_name)
+        end
+      end
+
+      context "when there is a predecessor sprint with a name ending in a number" do
+        it "increments the number for single-digit numbers" do
+          create(:agile_sprint, project:, name: "Sprint 1")
+          expect(instance.sprint_name_from_predecessor).to eq("Sprint 2")
+        end
+
+        it "increments the number for multi-digit numbers" do
+          create(:agile_sprint, project:, name: "Sprint 42")
+          expect(instance.sprint_name_from_predecessor).to eq("Sprint 43")
+        end
+
+        it "increments the number for custom names ending in numbers" do
+          create(:agile_sprint, project:, name: "Be ambitious 42")
+          expect(instance.sprint_name_from_predecessor).to eq("Be ambitious 43")
+        end
+
+        it "handles names with multiple spaces before the number" do
+          create(:agile_sprint, project:, name: "Release  99")
+          expect(instance.sprint_name_from_predecessor).to eq("Release  100")
+        end
+
+        it "increments from 9 to 10" do
+          create(:agile_sprint, project:, name: "Sprint 9")
+          expect(instance.sprint_name_from_predecessor).to eq("Sprint 10")
+        end
+
+        it "increments from 99 to 100" do
+          create(:agile_sprint, project:, name: "Sprint 99")
+          expect(instance.sprint_name_from_predecessor).to eq("Sprint 100")
+        end
+      end
+
+      context "when there is a predecessor sprint with a custom name not ending in a number" do
+        it "returns an empty string" do
+          create(:agile_sprint, project:, name: "Custom Sprint Name")
+          expect(instance.sprint_name_from_predecessor).to eq("")
+        end
+
+        it "returns an empty string for names with numbers in the middle" do
+          create(:agile_sprint, project:, name: "Sprint 2023 Planning")
+          expect(instance.sprint_name_from_predecessor).to eq("")
+        end
+
+        it "returns an empty string for names ending with non-numeric characters" do
+          create(:agile_sprint, project:, name: "Sprint Alpha")
+          expect(instance.sprint_name_from_predecessor).to eq("")
+        end
+      end
+
+      context "when there are multiple predecessor sprints" do
+        it "uses the most recent sprint" do
+          create(:agile_sprint, project:, name: "Sprint 1", created_at: 2.days.ago)
+          create(:agile_sprint, project:, name: "Sprint 2", created_at: 1.day.ago)
+          expect(instance.sprint_name_from_predecessor).to eq("Sprint 3")
+        end
+
+        it "handles mixed naming patterns by using the most recent" do
+          create(:agile_sprint, project:, name: "Sprint 1", created_at: 2.days.ago)
+          create(:agile_sprint, project:, name: "Custom Name", created_at: 1.day.ago)
+          expect(instance.sprint_name_from_predecessor).to eq("")
+        end
+      end
+
+      context "when there are sprints in other projects" do
+        let(:other_project) { create(:project) }
+
+        it "ignores sprints from other projects" do
+          create(:agile_sprint, project: other_project, name: "Other Sprint 5")
+          expect(instance.sprint_name_from_predecessor).to eq("#{I18n.t('activerecord.models.sprint')} 1")
+        end
+
+        it "only considers sprints from the same project" do
+          create(:agile_sprint, project: other_project, name: "Other Sprint 5")
+          create(:agile_sprint, project:, name: "Sprint 3")
+          expect(instance.sprint_name_from_predecessor).to eq("Sprint 4")
         end
       end
     end

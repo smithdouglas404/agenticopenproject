@@ -31,33 +31,32 @@
 class RbSprintsController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  skip_before_action :load_sprint_and_project, only: %i[new_dialog create refresh_form]
-  before_action :not_authorized_on_feature_flag_inactive, only: %i[new_dialog create refresh_form]
+  NEW_SPRINT_ACTIONS = %i[new_dialog create refresh_form].freeze
+
+  skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
+
+  before_action :not_authorized_on_feature_flag_inactive,
+                :load_project,
+                only: NEW_SPRINT_ACTIONS
 
   def new_dialog
-    @project = Project.visible.find(params[:project_id])
-    @sprint = Agile::Sprint.new(project: @project)
+    call = Sprints::SetAttributesService.new(
+      user: current_user,
+      model: Agile::Sprint.new,
+      contract_class: EmptyContract
+    ).call(attributes: converted_agile_sprint_params)
 
-    if (generated_name = @sprint.sprint_name_from_predecessor).present?
-      @sprint.name = generated_name
-    end
-
-    respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint)
+    respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: call.result)
   end
 
   def refresh_form
-    @project = Project.visible.find(params[:project_id])
-    @sprint = Agile::Sprint.new(project: @project)
-
     call = Sprints::SetAttributesService.new(
       user: current_user,
-      model: @sprint,
-      contract_class: EmptyContract
-    ).call(attributes: agile_sprint_params.merge(project_id: params[:project_id]))
+      model: Agile::Sprint.new,
+      contract_class: Sprints::CreateContract
+    ).call(attributes: converted_agile_sprint_params)
 
-    sprint = call.result
-
-    update_via_turbo_stream(component: Backlogs::NewSprintFormComponent.new(sprint:))
+    update_via_turbo_stream(component: Backlogs::NewSprintFormComponent.new(sprint: call.result))
 
     respond_with_turbo_streams
   end
@@ -65,14 +64,12 @@ class RbSprintsController < RbApplicationController
   def create
     call = Sprints::CreateService
              .new(user: current_user)
-             .call(attributes: agile_sprint_params.merge(project_id: params[:project_id]))
-
-    sprint = call.result
+             .call(attributes: converted_agile_sprint_params)
 
     if call.success?
-      render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_update))
+      render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_create))
     else
-      update_new_sprint_form_component_via_turbo_stream(sprint:, base_errors: call.errors[:base])
+      update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
     end
 
     respond_with_turbo_streams
@@ -137,8 +134,10 @@ class RbSprintsController < RbApplicationController
   # Overrides load_sprint_and_project to load the sprint from :id instead of :sprint_id
   def load_sprint_and_project
     @sprint = Sprint.visible.find(params[:id])
-    @project = @sprint.project
-    # This overrides sprint's project if we set another project, say a subproject
+    load_project
+  end
+
+  def load_project
     @project = Project.visible.find(params[:project_id])
   end
 
@@ -147,7 +146,15 @@ class RbSprintsController < RbApplicationController
   end
 
   def agile_sprint_params
-    params.expect(sprint: %i[name start_date finish_date])
+    params.permit(sprint: %i[name start_date finish_date])
+  end
+
+  def converted_agile_sprint_params
+    # Do some preprocessing to make the params easier to use
+    converted_sprint_params = agile_sprint_params[:sprint].to_h
+    converted_sprint_params[:project] = @project
+
+    converted_sprint_params
   end
 
   def not_authorized_on_feature_flag_inactive

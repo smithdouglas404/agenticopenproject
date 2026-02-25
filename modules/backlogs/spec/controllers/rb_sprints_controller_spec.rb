@@ -69,7 +69,6 @@ RSpec.describe RbSprintsController do
           expect(response).to have_http_status :ok
           expect(response).to have_turbo_stream action: "dialog", target: "backlogs-new-sprint-dialog-component"
           expect(assigns(:project)).to eq(project)
-          expect(assigns(:sprint)).to be_a(Agile::Sprint).and be_new_record
         end
 
         context "without the 'create_sprints' permission" do
