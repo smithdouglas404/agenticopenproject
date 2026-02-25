@@ -178,8 +178,6 @@ class OpenProject::JournalFormatter::Cause < JournalFormatter::Base
     ].compact.join(html? ? "<br/>" : "\n")
   end
 
-  # rubocop:disable Metrics/PerceivedComplexity
-  # rubocop:disable Metrics/AbcSize
   def import_message_item(item)
     field_label = item["field"]
     return import_message_diff_item(field_label, item) if field_label&.downcase == "description"
@@ -203,8 +201,6 @@ class OpenProject::JournalFormatter::Cause < JournalFormatter::Base
       I18n.t("journals.cause_descriptions.import.field_updated", field:)
     end
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/PerceivedComplexity
 
   def import_message_diff_item(field_label, item)
     from_string = item["fromString"]
