@@ -22,6 +22,7 @@ services:
           - hocuspocus.${OPENPROJECT_DOCKER_DEV_TLD:-local}
           - minio.${OPENPROJECT_DOCKER_DEV_TLD:-local}
           - minioadmin.${OPENPROJECT_DOCKER_DEV_TLD:-local}
+          - jira-software.${OPENPROJECT_DOCKER_DEV_TLD:-local}
     labels:
       - "traefik.http.routers.traefik.rule=Host(`traefik.${OPENPROJECT_DOCKER_DEV_TLD:-local}`)"
       - "traefik.http.routers.traefik.service=api@internal"

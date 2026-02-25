@@ -77,6 +77,7 @@ class Journal < ApplicationRecord
                  %i[
                    type
                    feature
+                   import_history
                    work_package_id
                    changed_days
                    status_name
@@ -86,6 +87,7 @@ class Journal < ApplicationRecord
                  prefix: true
   VALID_CAUSE_TYPES = %w[
     default_attribute_written
+    import
     progress_mode_changed_to_status_based
     status_changed
     system_update

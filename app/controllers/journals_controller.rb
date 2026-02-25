@@ -63,7 +63,8 @@ class JournalsController < ApplicationController
   end
 
   def diff
-    unless @journal.details[field_param] in [from, to]
+    from, to = diff_values
+    unless from || to
       return render_400 message: I18n.t(:error_journal_attribute_not_present, attribute: field_param)
     end
 
@@ -96,6 +97,25 @@ class JournalsController < ApplicationController
     do_authorize(permission)
   rescue Authorization::UnknownPermissionError
     deny_access
+  end
+
+  def diff_values
+    if @journal.details[field_param] in [from, to]
+      [from, to]
+    elsif @journal.cause_type == "import"
+      imported_cause_diff_values
+    end
+  end
+
+  def imported_cause_diff_values
+    entries = @journal.cause_import_history
+    return unless entries.is_a?(Array)
+
+    item = entries.flat_map { |e| e["items"] || [] }
+                  .find { |i| i["field"]&.parameterize&.underscore == field_param }
+    return unless item
+
+    [item["fromString"], item["toString"]]
   end
 
   def field_param

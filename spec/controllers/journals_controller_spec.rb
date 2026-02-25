@@ -270,5 +270,108 @@ RSpec.describe JournalsController do
         it { expect(response).to have_http_status(:forbidden) }
       end
     end
+
+    context "for an import journal with a description diff" do
+      shared_let(:work_package) do
+        create(:work_package, type: project.types.first, author: user, project:, description: "")
+      end
+
+      shared_let(:import_journal) do
+        cause = Journal::CausedByImport.new(
+          author_name: "Imported User",
+          history: [{ "field" => "description", "fromString" => "old text", "toString" => "new text" }]
+        )
+        work_package.add_journal(user: User.system, notes: "", cause:)
+        work_package.save_journals
+        work_package.last_journal
+      end
+
+      let(:params) { { id: import_journal.id.to_s, field: :description, format: "js" } }
+
+      describe "with a user having :view_work_packages permission" do
+        it { expect(response).to have_http_status(:ok) }
+
+        it "presents the diff of the imported description" do
+          # The diff is word-level, so "old" and "new" appear in separate <ins>/<del> spans
+          expect(response.body).to include("text-diff")
+          expect(response.body).to include("old")
+          expect(response.body).to include("new")
+        end
+      end
+
+      describe "with a user without permission" do
+        let(:user) { build_stubbed(:user) }
+
+        it { expect(response).to have_http_status(:forbidden) }
+      end
+    end
+
+    context "for an import journal where the description was set (no previous value)" do
+      shared_let(:work_package) do
+        create(:work_package, type: project.types.first, author: user, project:, description: "")
+      end
+
+      shared_let(:import_journal) do
+        cause = Journal::CausedByImport.new(
+          author_name: "Imported User",
+          history: [{ "field" => "description", "fromString" => nil, "toString" => "first description" }]
+        )
+        work_package.add_journal(user: User.system, notes: "", cause:)
+        work_package.save_journals
+        work_package.last_journal
+      end
+
+      let(:params) { { id: import_journal.id.to_s, field: :description, format: "js" } }
+
+      it { expect(response).to have_http_status(:ok) }
+
+      it "presents the diff with the new value" do
+        expect(response.body).to include("first description")
+      end
+    end
+
+    context "for an import journal with a non-description field change" do
+      shared_let(:work_package) do
+        create(:work_package, type: project.types.first, author: user, project:)
+      end
+
+      shared_let(:import_journal) do
+        cause = Journal::CausedByImport.new(
+          author_name: "Imported User",
+          history: [{ "field" => "status", "fromString" => "Open", "toString" => "Closed" }]
+        )
+        work_package.add_journal(user: User.system, notes: "", cause:)
+        work_package.save_journals
+        work_package.last_journal
+      end
+
+      let(:params) { { id: import_journal.id.to_s, field: :description, format: "js" } }
+
+      it "returns 400 because no diffable description value exists" do
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+
+    context "for an import journal when the field param does not match any import item" do
+      shared_let(:work_package) do
+        create(:work_package, type: project.types.first, author: user, project:)
+      end
+
+      shared_let(:import_journal) do
+        cause = Journal::CausedByImport.new(
+          author_name: "Imported User",
+          history: [{ "field" => "description", "fromString" => "a", "toString" => "b" }]
+        )
+        work_package.add_journal(user: User.system, notes: "", cause:)
+        work_package.save_journals
+        work_package.last_journal
+      end
+
+      let(:params) { { id: import_journal.id.to_s, field: :status_explanation, format: "js" } }
+
+      it "returns 400 when the field is valid for diffing but has no matching import item" do
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
   end
 end

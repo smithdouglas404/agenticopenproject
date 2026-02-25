@@ -1,0 +1,113 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+
+<%= flex_layout do |box|
+  if model.status_before?(:groups_and_users_init)
+    box.with_row do
+      concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
+                                                                                "BEFORE"
+      })
+    end
+  elsif model.in_state?(:groups_and_users_init)
+    box.with_row do
+      render(Primer::Beta::Button.new(
+        scheme: :primary,
+        size: :medium,
+        tag: :a,
+        href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'fetch_groups_and_users'),
+        data: { turbo_stream: true }
+      )) {
+          "FETCH GROUPS AND USERS"
+      }
+    end
+  elsif model.in_state?(:groups_and_users_fetching)
+    box.with_row(mt: 3) do
+      render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
+        "FETCHING_GROUPS_AND_USERS: #{model.cursor}"
+      ))
+    end
+  elsif model.in_state?(:groups_and_users_fetching_error)
+    box.with_row do
+      concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
+                                                                                "FETCHING_ERROR"
+      })
+    end
+  elsif model.in_state?(:groups_and_users_fetching_done)
+    box.with_row do
+      concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
+                                                                                "FETCHING_DONE"
+      })
+    end
+    box.with_row do
+      render(Primer::Beta::Button.new(
+        scheme: :primary,
+        size: :medium,
+        tag: :a,
+        href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'import_groups_and_users'),
+        data: { turbo_stream: true }
+      )) {
+          "IMPORT GROUPS AND USERS"
+      }
+    end
+  elsif model.in_state?(:groups_and_users_importing)
+    box.with_row(mt: 3) do
+      render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
+        "IMPORTING_GROUPS_AND_USERS: #{model.cursor}"
+      ))
+    end
+  elsif model.in_state?(:groups_and_users_importing_error)
+    box.with_row do
+      concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
+                                                                                "IMPORTING_ERROR"
+      })
+    end
+  elsif model.in_state?(:groups_and_users_importing_done)
+    box.with_row do
+      concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
+                                                                                "IMPORTING_DONE"
+      })
+      concat(render(Primer::Beta::Button.new(
+        scheme: :primary,
+        size: :medium,
+        tag: :a,
+        href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'import_scope'),
+        data: { turbo_stream: true }
+      )) {
+          "IMPORT SCOPE"
+      })
+    end
+  elsif model.status_after?(:groups_and_users_importing_done)
+    box.with_row do
+      concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
+                                                                                "AFTER"
+      })
+    end
+  end
+end
+%>

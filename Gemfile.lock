@@ -731,6 +731,8 @@ GEM
       reline (>= 0.4.2)
     iso8601 (0.13.0)
     jmespath (1.6.2)
+    job-iteration (1.12.0)
+      activejob (>= 6.1)
     json (2.18.1)
     json-jwt (1.17.0)
       activesupport (>= 4.2)
@@ -1415,6 +1417,7 @@ GEM
       sprockets (>= 3.0.0)
     ssrf_filter (1.0.8)
     stackprof (0.2.28)
+    statesman (13.1.0)
     store_attribute (2.1.1)
       activerecord (>= 7.2)
     stringex (2.8.6)
@@ -1619,6 +1622,7 @@ DEPENDENCIES
   ice_cube (~> 0.17.0)
   ice_nine
   inline_svg (~> 1.10.0)
+  job-iteration
   json_schemer (~> 2.5.0)
   json_spec (~> 1.1.4)
   ladle
@@ -1737,6 +1741,7 @@ DEPENDENCIES
   sprockets (~> 3.7.2)
   sprockets-rails (~> 3.5.1)
   stackprof
+  statesman (~> 13.1.0)
   store_attribute (~> 2.0)
   stringex (~> 2.8.5)
   structured_warnings (~> 0.5.0)
@@ -1960,6 +1965,7 @@ CHECKSUMS
   irb (1.17.0) sha256=168c4ddb93d8a361a045c41d92b2952c7a118fa73f23fe14e55609eb7a863aae
   iso8601 (0.13.0) sha256=298c2b15b7be5fa95a1372813d36a2257656cd8e906dfbc1f5cb409851425aa2
   jmespath (1.6.2) sha256=238d774a58723d6c090494c8879b5e9918c19485f7e840f2c1c7532cf84ebcb1
+  job-iteration (1.12.0) sha256=0164057417750f6e9c3ed548f029f1136b18eb53975fa438b09304a525d6c6c0
   json (2.18.1) sha256=fe112755501b8d0466b5ada6cf50c8c3f41e897fa128ac5d263ec09eedc9f986
   json-jwt (1.17.0) sha256=6ff99026b4c54281a9431179f76ceb81faa14772d710ef6169785199caadc4cc
   json-schema (4.3.1) sha256=d5e68dc32b94408d0b06ad04f9382ccbb6fe5a44910e066f8547f56c471a7825
@@ -2237,6 +2243,7 @@ CHECKSUMS
   sprockets-rails (3.5.2) sha256=a9e88e6ce9f8c912d349aa5401509165ec42326baf9e942a85de4b76dbc4119e
   ssrf_filter (1.0.8) sha256=03f49f54837e407d43ee93ec733a8a94dc1bcf8185647ac61606e63aaedaa0db
   stackprof (0.2.28) sha256=4ec2ace02f386012b40ca20ef80c030ad711831f59511da12e83b34efb0f9a04
+  statesman (13.1.0) sha256=3ecb78466dfd2682e433f335a7722aa0e5b8c6853d72d83e460151b8af17a84e
   store_attribute (2.1.1) sha256=de53611c01d3fb4c91e0d7af4208861bd18d017c4cee682ed0473d0e4496f5b8
   stringex (2.8.6) sha256=c7b382d2b2a47a1e1646f256df201c48d487d6296fbb289d76802f67f5e929c4
   stringio (3.2.0) sha256=c37cb2e58b4ffbd33fe5cd948c05934af997b36e0b6ca6fdf43afa234cf222e1
