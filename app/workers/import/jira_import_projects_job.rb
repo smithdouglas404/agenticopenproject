@@ -206,17 +206,24 @@ module Import
                   uses_existing: false
                 )
 
-                history = jira_issue.payload["changelog"]["histories"]
-                add_history_comment(work_package:, history:, user:) if history.present?
+                journal_service = Import::JiraImportJournals.new(work_package:)
 
-                comments = jira_issue.payload["fields"]["comment"]["comments"]
+                jira_created_at = jira_issue.payload.dig("fields", "created")
+                journal_service.update_creation_entry(date_time: jira_created_at) if jira_created_at.present?
+
+                history = jira_issue.payload.dig("changelog", "histories")
+                journal_service.add_history(history:) if history.present?
+
+                comments = jira_issue.payload.dig("fields", "comment", "comments") || []
                 comments.each do |comment|
                   author = User.find_by!(login: comment["author"]["name"])
                   add_member(project:, project_role:, member: author, user:)
                   add_comment(work_package:, comment:, author:)
                 end
 
-                attachments = jira_issue.payload["fields"]["attachment"]
+                journal_service.call
+
+                attachments = jira_issue.payload.dig("fields", "attachment") || []
                 attachments.each do |attachment|
                   author = User.find_by!(login: attachment["author"]["name"])
                   add_member(project:, project_role:, member: author, user:)
