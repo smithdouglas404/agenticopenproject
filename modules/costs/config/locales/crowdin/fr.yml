@@ -229,12 +229,12 @@ fr:
   costs:
     widgets:
       actual_costs:
-        title: "Actual costs by month"
+        title: "Coûts réels par mois"
         blankslate:
-          heading: "Start tracking your time and costs"
-          description: "Get an overview of your costs and logged time to monitor progress of your project"
-          action: "Log time"
-        view_details: "View actual costs details"
+          heading: "Commencez à suivre votre temps et vos coûts"
+          description: "Obtenez une vue d'ensemble de vos coûts et du temps enregistré pour suivre l'avancement de votre projet"
+          action: "Durée du journal"
+        view_details: "Voir les détails des coûts réels"
   ee:
     features:
       time_entry_time_restrictions: Exiger un suivi du temps exact

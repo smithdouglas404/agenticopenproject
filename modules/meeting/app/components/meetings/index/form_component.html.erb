@@ -35,19 +35,29 @@
           end
         end
 
-        modal_body.with_row do
-          render(Meeting::Title.new(f))
+        if creating_onetime_meeting? && no_preselection? && available_templates.any?
+          modal_body.with_row(mb: 3) do
+            render(Meeting::TemplateAutocompleter.new(f, project: @project))
+          end
         end
 
-        modal_body.with_row(mt: 3) do
-          render(Meeting::Location.new(f, meeting: @meeting))
+        unless @template
+          modal_body.with_row do
+            render(Meeting::Title.new(f))
+          end
         end
 
-        modal_body.with_row(mt: 3) do
-          render(Meeting::TimeGroup.new(f, meeting: @meeting))
+        unless @template
+          modal_body.with_row(mt: 3) do
+            render(Meeting::Location.new(f, meeting: @meeting))
+          end
+
+          modal_body.with_row(mt: 3) do
+            render(Meeting::TimeGroup.new(f, meeting: @meeting))
+          end
         end
 
-        if @meeting.is_a?(RecurringMeeting)
+        if !@template && @meeting.is_a?(RecurringMeeting)
           modal_body.with_row(mt: 3) do
             flex_layout(classes: "FormControl-horizontalGroup") do |frequency_row|
               frequency_row.with_column(flex: 1) do
@@ -121,20 +131,22 @@
             render(Meeting::CopiedFrom.new(f, id: @copy_from.id))
           end
 
-          modal_body.with_row(mt: 3) do
-            render(Meeting::CopyItems.new(f))
-          end
+          unless @copy_from.onetime_template?
+            modal_body.with_row(mt: 3) do
+              render(Meeting::CopyItems.new(f))
+            end
 
-          modal_body.with_row(mt: 3) do
-            render(Meeting::CopyParticipants.new(f))
-          end
+            modal_body.with_row(mt: 3) do
+              render(Meeting::CopyParticipants.new(f))
+            end
 
-          modal_body.with_row(mt: 3) do
-            render(Meeting::CopyAttachments.new(f))
+            modal_body.with_row(mt: 3) do
+              render(Meeting::CopyAttachments.new(f))
+            end
           end
         end
 
-        if @meeting.is_a?(RecurringMeeting) && @meeting.persisted?
+        if !@template && @meeting.is_a?(RecurringMeeting) && @meeting.persisted?
           modal_body.with_row(mt: 3) do
             render(Meetings::EmailUpdatesBannerComponent.new(@meeting))
           end

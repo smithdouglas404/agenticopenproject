@@ -72,6 +72,7 @@ uk:
         meeting_participant:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
+          section_not_belong_to_meeting: "Section does not belong to the same meeting."
           user_invalid: "is not a valid participant."
         recurring_meeting_interim_response:
           not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
@@ -121,7 +122,15 @@ uk:
   error_notification_with_errors: "Не вдалося надіслати сповіщення. Неможливо отримати сповіщення про таких одержувачів: %{recipients}"
   label_meeting: "Зустріч"
   label_meeting_plural: "Зустрічі"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Нова зустріч"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Нова одноразова нарада"
   label_meeting_new_recurring: "Нова повторювана нарада"
   label_meeting_create: "Створити нараду"
@@ -288,6 +297,9 @@ uk:
         heading: "Видалити цю нараду?"
         confirmation_message_html: >
           Зверніть увагу: цю дію не можна відмінити.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "Скасувати нараду серії"
         heading: "Скасувати цю нараду серії?"
@@ -491,6 +503,7 @@ uk:
     end_series_dialog:
       title: "Завершити серію нарад"
   notice_successful_notification: "Оновлення з календаря надіслано електронною поштою всім учасникам"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: Часовий пояс не встановлено і %{zone} передбачається. Щоб вибрати часовий пояс, натисніть тут.
   notice_meeting_updated: "Цю сторінку оновив інший користувач. Перезавантажте її, щоб побачити зміни."
   permission_create_meetings: "Створюйте зустрічі"
@@ -505,6 +518,8 @@ uk:
   text_duration_in_hours: "Тривалість у годинах"
   text_in_hours: "у годинах"
   text_meeting_agenda_for_meeting: 'порядку денного засідання %{meeting}'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Видалити майбутні наради серії?"
   text_meeting_series_end_early: "Завершення серії призведе до видалення всіх наступних відкритих або запланованих нарад"
   text_meeting_closing_are_you_sure: "Справді закрити порядок денний заходу?"
@@ -610,6 +625,9 @@ uk:
   text_meeting_in_progress_dropdown_description: "Результати документа, такі як потреби в інформації або рішення, прийняті під час наради."
   text_meeting_closed_dropdown_description: "Це закрита нарада. Ви більше не можете змінювати пункти порядку денного або результати."
   text_meeting_draft_banner: "Зараз ви працюєте в режимі чернетки: оновлення або запрошення з календаря не надсилатимуться щодо цієї наради, навіть якщо змінити її дані або додати/видалити учасників."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "Відкрити цю нараду й надіслати запрошення?"
   text_exit_draft_mode_dialog_subtitle: "Запланувавши нараду, не можна повернутися в режим чернетки."
   text_exit_draft_mode_dialog_template_title: "Відкрити першу нараду цієї серії?"

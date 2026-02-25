@@ -2,6 +2,7 @@ pt-PT:
   js:
     grid:
       add_widget: 'Adicionar widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Remover o widget'
       configure: 'Configurar widget'
       widgets:

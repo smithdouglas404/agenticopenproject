@@ -108,7 +108,7 @@ RSpec.describe "Create project custom fields in sections", :js do
       it "prevents creating a new project custom field with an empty name" do
         click_on("Save")
 
-        expect(page).to have_field "custom_field_name", validation_message: /Please fill (in|out) this field./
+        expect(page).to have_field("custom_field_name", with: "", validation_error: "Name can't be blank")
 
         # expect no redirect
         expect(page).to have_no_current_path(admin_settings_project_custom_fields_path(tab: "ProjectCustomField"))

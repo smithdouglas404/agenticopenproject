@@ -69,6 +69,7 @@ ko:
         meeting_participant:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
+          section_not_belong_to_meeting: "Section does not belong to the same meeting."
           user_invalid: "is not a valid participant."
         recurring_meeting_interim_response:
           not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
@@ -115,7 +116,15 @@ ko:
   error_notification_with_errors: "알림을 보내지 못했습니다. 다음 수신자에게 알리지 못했습니다. %{recipients}"
   label_meeting: "미팅"
   label_meeting_plural: "미팅"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "새 미팅"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "새로운 일회성 미팅"
   label_meeting_new_recurring: "새로운 반복 미팅"
   label_meeting_create: "미팅 생성"
@@ -273,6 +282,9 @@ ko:
         heading: "이 미팅을 삭제하시겠습니까?"
         confirmation_message_html: >
           이 작업은 되돌릴 수 없습니다. 주의하여 진행하세요.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "미팅 항목 취소"
         heading: "이 미팅 항목을 취소하시겠습니까?"
@@ -470,6 +482,7 @@ ko:
     end_series_dialog:
       title: "미팅 시리즈 종료"
   notice_successful_notification: "모든 참가자에게 보내는 이메일 캘린더 업데이트"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: 표준 시간대가 설정되지 않았으며 %{zone}(으)로 간주됩니다. 해당 표준 시간대를 선택하려면 여기를 클릭하세요.
   notice_meeting_updated: "이 페이지는 다른 사람이 업데이트했습니다. 변경 사항을 보려면 다시 로드하세요."
   permission_create_meetings: "미팅 생성"
@@ -484,6 +497,8 @@ ko:
   text_duration_in_hours: "기간(시간)"
   text_in_hours: " 시간"
   text_meeting_agenda_for_meeting: '미팅 "%{meeting}"에 대한 의제'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "향후 항목을 삭제하시겠습니까?"
   text_meeting_series_end_early: "이 시리즈를 종료하면 향후 오픈 또는 예정된 미팅 항목이 모두 삭제됩니다"
   text_meeting_closing_are_you_sure: "미팅 어젠더를 닫으시겠습니까?"
@@ -589,6 +604,9 @@ ko:
   text_meeting_in_progress_dropdown_description: "미팅 중에 이루어진 결정 사항 또는 필요한 정보 등의 결과를 문서화합니다."
   text_meeting_closed_dropdown_description: "이 미팅은 종료되었습니다. 더 이상 의제 항목 또는 결과를 수정할 수 없습니다."
   text_meeting_draft_banner: "초안 모드에 현재 있습니다. 이 미팅은 미팅 세부 정보를 변경하거나 참가자를 추가/제거하더라도 캘린더 업데이트나 초대장을 전송하지 않습니다."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "이 미팅을 열고 초대장을 보내시겠습니까?"
   text_exit_draft_mode_dialog_subtitle: "미팅을 예약한 후에는 초안 모드로 돌아갈 수 없습니다."
   text_exit_draft_mode_dialog_template_title: "이 미팅 시리즈의 첫 번째 항목을 열어보시겠습니까?"

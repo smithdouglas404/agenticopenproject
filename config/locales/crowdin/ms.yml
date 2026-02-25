@@ -370,7 +370,7 @@ ms:
     contained_in_type: "Terkandung dalam jenis"
     confirm_destroy_option: "Padamkan satu pilihan akan memadamkan semua kejadian yang berkaitan dengannya (cth. dalam pakej kerja). Adakah anda pasti anda ingin memadamkannya?"
     reorder_alphabetical: "Susun semula nilai mengikut abjad"
-    reorder_confirmation: "Amaran: Susunan semasa nilai yang sedia ada akan hilang. Teruskan?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -397,6 +397,12 @@ ms:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Tiada ruangan tersuai pada masa ini.
       no_results_content_text: Cipta ruangan tersuai baharu
@@ -4759,7 +4765,6 @@ ms:
   text_length_between: "Panjang aksara antara %{min} dan %{max}."
   text_line_separated: "Lebihan nilai dibenarkan (satu baris untuk setiap nilai)."
   text_load_default_configuration: "Muatkan konfigurasi default"
-  text_min_max_length_info: "0 bermakna tiada had"
   text_no_roles_defined: Tiada peranan ditentukan.
   text_no_access_tokens_configurable: "Tiada token akses yang boleh dikonfigurasikan."
   text_no_configuration_data: "Peranan, jenis, status pakej kerja dan aliran kerja belum dikonfigurasikan lagi. Sangat disarankan untuk memuatkan konfigurasi default. Anda akan dapat mengubahnya setelah ianya dimuatkan."
@@ -4774,7 +4779,6 @@ ms:
   text_powered_by: "Dikuasakan oleh %{link}"
   text_project_identifier_info: "Hanya huruf kecil (a-z), nombor, sengkang dan tanda garis bawah adalah dibenarkan, mesti mula dengan huruf kecil."
   text_reassign: "Tugaskan semula ke pakej kerja:"
-  text_regexp_info: "cth. ^[A-Z0-9]+$"
   text_regexp_multiline: 'Regex digunakan dalam mod berbilang baris. cth., ^---\s+'
   text_repository_usernames_mapping: "Pilih atau kemas kini pengguna OpenProject yang dipetakan ke setiap nama pengguna yang ditemui dalam log repositori.\nPengguna dengan OpenProject dan nama pengguna repositori atau e-mel yang sama dipetakan secara automatik. "
   text_status_changed_by_changeset: "Dilaksanakan dalam set perubahan %{value}."

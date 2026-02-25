@@ -23,6 +23,8 @@ vi:
   plugin_openproject_documents:
     name: "Tài liệu dự án mở"
     description: "Một plugin OpenProject để cho phép tạo tài liệu trong các dự án."
+  attributes:
+    collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
   activerecord:
     errors:
       models:
@@ -119,7 +121,8 @@ vi:
           some_unwritable: Một số giá trị được định cấu hình thông qua biến môi trường và không thể chỉnh sửa ở đây.
         hocuspocus_server_url:
           label: "URL máy chủ Hocuspocus"
-          caption: "Địa chỉ của máy chủ Hocuspocus đang hoạt động."
+          caption: "The WebSocket address of a working Hocuspocus server."
+          invalid_scheme: "Must use a WebSocket protocol (ws:// or wss://)."
         hocuspocus_server_secret:
           label: "Bí mật của khách hàng"
           caption: "Dán bí mật được cung cấp bởi máy chủ Hocuspocus."

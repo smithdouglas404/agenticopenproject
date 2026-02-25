@@ -73,7 +73,10 @@ class BlockNoteElement extends HTMLElement {
     this.errorContainer.dataset.flashAutohideValue = 'true';
 
     this.editorMount = document.createElement('div');
+
+    // Copy over definition for external-links handling
     this.editorMount.dataset.controller = 'external-links';
+    this.editorMount.dataset.externalLinksEnabledValue = document.body.dataset.externalLinksEnabledValue;
 
     this.stimulusRoot.appendChild(this.errorContainer);
     this.stimulusRoot.appendChild(this.editorMount);

@@ -368,7 +368,7 @@ uk:
     contained_in_type: "Міститься за типом"
     confirm_destroy_option: "Видалення опції призведе до видалення всіх його подій (наприклад, у робочих пакетах). Дійсно видалити його?"
     reorder_alphabetical: "Перевпорядкувати значення за алфавітом"
-    reorder_confirmation: "Увага! Поточний порядок доступних значень буде втрачено. Продовжити?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Спочатку потрібно вибрати пакет робіт або проєкт"
     calculated_field_not_editable: "Атрибут не підлягає редагуванню. Його значення обчислюється автоматично."
     no_role_assigment: "Роль не призначено"
@@ -395,6 +395,12 @@ uk:
           Дозвольте використовувати користувацьке поле у фільтрі в поданнях пакетів робіт. Зверніть увагу: користувацьке поле відображатиметься в глобальних поданнях, лише якщо встановлено прапорець «Для всіх проєктів».
       formula:
         project: "Додайте числові значення або введіть «/» для пошуку атрибута чи математичного оператора."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Наразі немає спеціальних полів.
       no_results_content_text: Створіть нове спеціальне поле
@@ -4907,7 +4913,6 @@ uk:
   text_length_between: "Довжина між %{min} і %{max} символів."
   text_line_separated: "Дозволено кілька значень (по одному значенню в рядок)."
   text_load_default_configuration: "Завантажити Конфігурацію по замовчуванню"
-  text_min_max_length_info: "0 означає відсутність заборон"
   text_no_roles_defined: Не визначено жодної ролі.
   text_no_access_tokens_configurable: "Немає маркерів доступу, які можна налаштувати."
   text_no_configuration_data: "Роль, типи, пакет робочі статуси і процес ще не налаштований.\nНастійно рекомендується завантажити налаштування за замовчуванням. Ви зможете змінити його тільки один раз."
@@ -4922,7 +4927,6 @@ uk:
   text_powered_by: "Працює на %{link}"
   text_project_identifier_info: "Допускаються тільки рядкові малі букви (a-z), цифри, тире та нижнє підкреслення. Початок має бути з малої літери."
   text_reassign: "Перепризначити робочому пакету:"
-  text_regexp_info: "наприклад ^[A-Z0-9]+$"
   text_regexp_multiline: 'Реестр застосовується в багаторядковому режимі. наприклад, --- ---'
   text_repository_usernames_mapping: "Виберіть або оновіть користувача OpenProject, зіставленого з кожним ім'ям користувача в журналі репозиторію.\nКористувачі з таким самим ім'ям користувача або електронною поштою OpenProject автоматично відображаються."
   text_status_changed_by_changeset: " Застосовується в наборі змін %{value}"

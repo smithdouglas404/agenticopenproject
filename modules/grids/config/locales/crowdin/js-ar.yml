@@ -2,6 +2,7 @@ ar:
   js:
     grid:
       add_widget: 'Add widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'إزالة الأداة'
       configure: 'Configure widget'
       widgets:

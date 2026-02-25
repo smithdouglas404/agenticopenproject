@@ -2,6 +2,7 @@ hu:
   js:
     grid:
       add_widget: 'Widget hozzáadása'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Widget eltávolítása'
       configure: 'Widget konfigurálása'
       widgets:

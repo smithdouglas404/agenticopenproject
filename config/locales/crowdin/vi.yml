@@ -371,7 +371,7 @@ vi:
     contained_in_type: "Chứa trong loại"
     confirm_destroy_option: "Xóa một tùy chọn sẽ xóa tất cả các sự kiện của nó (ví dụ như trong các gói công việc). Bạn có chắc bạn muốn xóa bỏ nó?"
     reorder_alphabetical: "Sắp xếp lại các giá trị theo thứ tự bảng chữ cái"
-    reorder_confirmation: "Cảnh báo: Thứ tự hiện tại của các giá trị sẵn có sẽ bị mất. Tiếp tục?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Lựa chọn gói công việc hoặc dự án là bắt buộc trước tiên"
     calculated_field_not_editable: "Thuộc tính không thể chỉnh sửa. Giá trị này được tính toán tự động."
     no_role_assigment: "Không phân công vai trò"
@@ -398,6 +398,12 @@ vi:
           Cho phép sử dụng trường tùy chỉnh trong bộ lọc trong chế độ xem gói công việc. Lưu ý rằng chỉ khi chọn 'Dành cho tất cả dự án', trường tùy chỉnh sẽ hiển thị ở chế độ xem chung.
       formula:
         project: "Thêm giá trị số hoặc nhập / để tìm kiếm thuộc tính hoặc toán tử toán học."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Không có hiện tại không có trường tùy chỉnh.
       no_results_content_text: Tạo trường tùy chỉnh mới
@@ -4760,7 +4766,6 @@ vi:
   text_length_between: "Độ dài từ %{min} đến %{max} ký tự."
   text_line_separated: "Cho phép nhiều giá trị (mỗi giá trị một dòng)."
   text_load_default_configuration: "Tải cấu hình mặc định"
-  text_min_max_length_info: "0 có nghĩa là không hạn chế"
   text_no_roles_defined: Không có vai trò nào được xác định.
   text_no_access_tokens_configurable: "Không có mã thông báo truy cập nào có thể được cấu hình."
   text_no_configuration_data: "Vai trò, loại, trạng thái gói công việc và quy trình làm việc chưa được định cấu hình.\nRất khuyến khích tải cấu hình mặc định. Bạn sẽ có thể sửa đổi nó sau khi tải."
@@ -4775,7 +4780,6 @@ vi:
   text_powered_by: "Được cung cấp bởi %{link}"
   text_project_identifier_info: "Chỉ cho phép chữ cái viết thường (a-z), số, dấu gạch ngang và dấu gạch dưới, phải bắt đầu bằng chữ cái viết thường."
   text_reassign: "Phân công lại cho gói công việc:"
-  text_regexp_info: "ví dụ. ^[A-Z0-9]+$"
   text_regexp_multiline: 'Biểu thức được áp dụng ở chế độ đa dòng. Ví dụ: ^---\s+'
   text_repository_usernames_mapping: "Chọn hoặc cập nhật người dùng OpenProject được ánh xạ tới từng tên người dùng được tìm thấy trong nhật ký kho lưu trữ.\nNgười dùng có cùng tên người dùng hoặc email của OpenProject và kho lưu trữ sẽ được tự động ánh xạ."
   text_status_changed_by_changeset: "Được áp dụng trong bộ thay đổi %{value}."

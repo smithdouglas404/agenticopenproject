@@ -2,6 +2,7 @@ he:
   js:
     grid:
       add_widget: 'הוסף ווידג''ט'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'הסר רכיב'
       configure: 'הגדר תוסף'
       widgets:

@@ -218,6 +218,8 @@ Rails.application.routes.draw do
 
       get :attribute_help_text
       put :update_attribute_help_text
+
+      get :list_items
     end
 
     scope module: :admin do
@@ -694,6 +696,8 @@ Rails.application.routes.draw do
 
           get :attribute_help_text
           put :update_attribute_help_text
+
+          get :list_items
         end
 
         resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do

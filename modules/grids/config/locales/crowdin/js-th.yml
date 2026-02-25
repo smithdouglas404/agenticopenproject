@@ -2,6 +2,7 @@ th:
   js:
     grid:
       add_widget: 'Add widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'เอาเครื่องมือออก'
       configure: 'Configure widget'
       widgets:

@@ -371,7 +371,7 @@ ro:
     contained_in_type: "Înclusă în tipul"
     confirm_destroy_option: "Ștergerea unei opțiuni va șterge toate aparițiile acesteia (de exemplu, în pachetele de lucru). Sunteți sigur că doriți să o ștergeți?"
     reorder_alphabetical: "Reordonează valorile alfabetic"
-    reorder_confirmation: "Avertisment: Ordinea curentă a valorilor disponibile se va pierde. Continuați?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -398,6 +398,12 @@ ro:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: În acest moment nu există câmpuri personalizate.
       no_results_content_text: Creează câmp personalizat nou
@@ -4863,7 +4869,6 @@ ro:
   text_length_between: "Lungime între %{min} şi %{max} de caractere."
   text_line_separated: "Sunt permise valori multiple (un rând pentru fiecare valoare)."
   text_load_default_configuration: "Încărcare configurația implicită"
-  text_min_max_length_info: "0 înseamnă eliminarea restricției"
   text_no_roles_defined: Nu există roluri definite.
   text_no_access_tokens_configurable: "Nu există tichete de acces care pot fi configurate."
   text_no_configuration_data: "Rolurile, tipurile, stările pachetelor de lucru și fluxul de lucru nu au fost configurate încă.\nEste recomandat să încărcați configurația implicită. Veți putea să o modificați după ce e încărcată."
@@ -4878,7 +4883,6 @@ ro:
   text_powered_by: "Propulsat de %{link}"
   text_project_identifier_info: "Doar litere mici (a-z), numere, cratime şi linii de subliniere sunt permise, trebuie să înceapă cu o literă mică."
   text_reassign: "Reatribuire la pachetul de lucru:"
-  text_regexp_info: "ex. ^[A-Z0-9]+$"
   text_regexp_multiline: 'Formula regex este aplicată într-un mod multilinie - de exemplu: ^---\s+'
   text_repository_usernames_mapping: "Selectați sau modificați contul OpenProject mapat la fiecare cont din istoricul repo-ului.\nUtilizatorii cu cont sau e-mail identic în OpenProject și repo sunt echivalați automat."
   text_status_changed_by_changeset: "Aplicat prin editarea %{value}."

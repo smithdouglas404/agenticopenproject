@@ -60,7 +60,7 @@ fr:
         end_date: "Échéance"
         iterations: "Occurrences"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "Heure de début"
       meeting_participant:
         invited: "Invité"
         attended: "Participations"
@@ -68,11 +68,12 @@ fr:
     errors:
       models:
         meeting_participant:
-          user_invalid: "is not a valid participant."
+          user_invalid: "n'est pas un participant valide."
         meeting_agenda_item:
-          user_invalid: "is not a valid participant."
+          section_not_belong_to_meeting: "Section does not belong to the same meeting."
+          user_invalid: "n'est pas un participant valide."
         recurring_meeting_interim_response:
-          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
+          not_an_occurrence: "n'est pas une heure d'occurrence valide pour cette réunion récurrente"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Il y a une réunion ouverte dans la série qui n'est pas couverte par le nouvel horaire. Modifiez l'horaire pour inclure toutes les réunions existantes."
@@ -117,7 +118,15 @@ fr:
   error_notification_with_errors: "L'envoi de notifications a échoué. Les destinataires suivant n'ont pas pu être notifiés : %{recipients}"
   label_meeting: "Réunion"
   label_meeting_plural: "Réunions"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Nouvelle réunion"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Nouvelle réunion ponctuelle"
   label_meeting_new_recurring: "Nouvelle réunion récurrente"
   label_meeting_create: "Créer une réunion"
@@ -237,9 +246,9 @@ fr:
         header: "Annulée : Réunion « %{title} »"
         header_occurrence: "Annulée : occurrence de la réunion « %{title} »"
         header_series: "Annulée : série de réunions « %{title} »"
-        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_occurrence: "Une occurrence de '%{title}' a été annulée par %{actor}, ou vous avez été supprimé en tant que participant"
+        summary_series: "La série de réunions '%{title}' a été annulée par %{actor}, ou vous avez été retiré en tant que participant"
+        summary: "'%{title}' a été annulé par %{actor}, ou vous avez été supprimé en tant que participant"
         date_time: "Date/heure prévue"
       participant_added:
         header: "Réunion « %{title} » - Participant ajouté"
@@ -253,7 +262,7 @@ fr:
         summary_series: "%{actor} a supprimé %{participant} de la série de réunions « %{title} »"
       ended:
         header_series: "Terminé : Série de rencontres '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
+        summary_series: "La série de réunions '%{title}' a été clôturée par %{actor}"
       updated:
         header: "La réunion « %{title} » a été mise à jour"
         summary: "La réunion « %{title} » a été mise à jour par %{actor}"
@@ -278,6 +287,9 @@ fr:
         heading: "Supprimer cette réunion ?"
         confirmation_message_html: >
           Cette action est irréversible. Veuillez procéder avec prudence.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "Annuler l'occurrence de la réunion"
         heading: "Annuler cette occurrence de réunion ?"
@@ -477,6 +489,7 @@ fr:
     end_series_dialog:
       title: "Terminer la série de réunions"
   notice_successful_notification: "Mise à jour du calendrier par e-mail envoyée à tous les participants"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: Aucun fuseau horaire n'est défini et %{zone} est supposé. Pour choisir votre fuseau horaire, veuillez cliquer ici.
   notice_meeting_updated: "Cette page a été mise à jour par quelqu'un d'autre. Rechargez pour voir les changements."
   permission_create_meetings: "Créer des réunions"
@@ -491,6 +504,8 @@ fr:
   text_duration_in_hours: "Durée en heures"
   text_in_hours: "en heures"
   text_meeting_agenda_for_meeting: 'ordre du jour de la réunion «%{meeting} »'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Supprimer les futures occurrences ?"
   text_meeting_series_end_early: "La fin de la série supprimera les futures occurrences de réunions ouvertes ou planifiées"
   text_meeting_closing_are_you_sure: "Voulez-vous vraiment clôturer l'ordre du jour de la réunion ?"
@@ -536,8 +551,8 @@ fr:
   label_agenda_item_move_up: "Monter"
   label_agenda_item_move_down: "Descendre"
   label_agenda_item_duplicate: "Duplicata"
-  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
+  label_agenda_item_duplicate_in_next: "Dupliquer lors de la prochaine réunion"
+  label_agenda_item_duplicate_in_next_title: "Duplication lors de la prochaine réunion ?"
   label_agenda_item_add_notes: "Ajouter des notes"
   label_agenda_item_add_outcome: "Ajouter un résultat"
   label_agenda_item_work_package_add: "Ajouter lot de travaux"
@@ -596,6 +611,9 @@ fr:
   text_meeting_in_progress_dropdown_description: "Documentez les résultats tels que les besoins d'information ou les décisions prises pendant la réunion."
   text_meeting_closed_dropdown_description: "Cette réunion est terminée. Vous ne pouvez plus modifier les points de l'ordre du jour ou les résultats."
   text_meeting_draft_banner: "Vous êtes actuellement en mode brouillon. Cette réunion n'enverra pas de mises à jour de calendrier ni d'invitations, même si vous modifiez les détails de la réunion ou si vous ajoutez/supprimez des participants."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "Ouvrez cette réunion et envoyez des invitations ?"
   text_exit_draft_mode_dialog_subtitle: "Vous ne pouvez pas revenir au mode brouillon une fois que vous avez planifié une réunion."
   text_exit_draft_mode_dialog_template_title: "Ouvrez la première occurrence de cette série de réunions ?"

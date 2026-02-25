@@ -372,7 +372,7 @@ tr:
     contained_in_type: "Kullanıldığı tipler"
     confirm_destroy_option: "Bir seçeneğin silinmesi, kullanıldığı her yerden (örneğin iş paketleri) silinmesine neden olur. Silmek istediğinizden emin misiniz?"
     reorder_alphabetical: "Değerleri alfabetik olarak yeniden sıralayın"
-    reorder_confirmation: "Uyarı: Mevcut değerlerin sırası kaybolacak. Devam et?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Öncelikle iş paketi veya proje seçimi gereklidir"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -399,6 +399,12 @@ tr:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Şu anda özel bir alan bulunmamakta.
       no_results_content_text: Yeni bir özel alan oluştur
@@ -1049,7 +1055,6 @@ tr:
         title: "İş paketi paylaşımı için iş akışı eksik"
         message: "'İş paketi düzenleyicisi' rolü için hiçbir iş akışı yapılandırılmamıştır. Bir iş akışı olmadan, paylaşılan kullanıcı iş paketinin durumunu değiştiremez. İş akışları kopyalanabilir. Bir kaynak türü (örn. 'Görev') ve kaynak rolü (örn. 'Üye') seçin. Ardından hedef türleri seçin. Başlangıç olarak, tüm türleri hedef olarak seçebilirsiniz. Son olarak, hedef olarak 'İş paketi düzenleyicisi' rolünü seçin ve 'Kopyala' düğmesine basın. Varsayılanları bu şekilde oluşturduktan sonra, diğer tüm roller için yaptığınız gibi iş akışlarında ince ayar yapın."
         link_message: "İş akışlarını yönetim alanından yapılandırın."
-    templated_subject_hint: '%{type} türü aracılığıyla otomatik olarak oluşturulur'
     summary:
       reports:
         category:
@@ -3237,7 +3242,6 @@ tr:
   label_duplicate: "kopya"
   label_duplicates: "kopyalayan"
   label_edit: "Düzenle"
-  label_edit_attribute: "Özellikleri düzenle"
   label_edit_x: "Düzenle: %{x}"
   label_enable_multi_select: "Çoklu seçimi etkinleştir"
   label_enabled_project_custom_fields: "Etkin özel alanlar"
@@ -4813,7 +4817,6 @@ tr:
   text_length_between: "%{min} ve %{max} karakter arası uzunluk."
   text_line_separated: "Birden fazla değer kullanılabilir (her değer için bir satır)."
   text_load_default_configuration: "Varsayılan yapılandırmayı yükle"
-  text_min_max_length_info: "0 sınırlama yok demektir"
   text_no_roles_defined: Hiçbir rol tanımlanmadı.
   text_no_access_tokens_configurable: "Yapılandırılacak erişim belirteçleri yok."
   text_no_configuration_data: "Roller, türleri, çalışma paketi durumu ve iş akışı henüz yapılandırılmadı. Varsayılan yapılandırmayı yüklemeniz kesinlikle önerilir. Yüklendikten sonra onu değiştirebileceksiniz."
@@ -4828,7 +4831,6 @@ tr:
   text_powered_by: "%{link} tarafından destekleniyor"
   text_project_identifier_info: "Yalnızca küçük harfler (a-z), sayılar, tire ve alt tire kullanılabilir ve mutlaka küçük harfle başlamalıdır."
   text_reassign: "İş paketine yeniden atama:"
-  text_regexp_info: "ör ^[A-Z0-9]+$"
   text_regexp_multiline: 'Regex (düzenli ifade) birden çok satırlı modda uygulanır. Örneğin, ^---\s+'
   text_repository_usernames_mapping: "Depo günlüklerinde bulunan her kullanıcı adına eşlenen OpenProject kullanıcısını seçin veya güncelleyin. Aynı OpenProject ve depo kullanıcı adına veya e-postasına sahip kullanıcılar otomatik olarak eşleştirilir."
   text_status_changed_by_changeset: "Uygulanan Değişiklik listesi %{value}."

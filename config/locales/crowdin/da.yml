@@ -369,7 +369,7 @@ da:
     contained_in_type: "Indeholdt i type"
     confirm_destroy_option: "Sletning af en indstilling vil slette alle dens forekomster (f.eks. i arbejdspakker). Er du sikker på, at du vil slette den?"
     reorder_alphabetical: "Reorder values alphabetically"
-    reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -396,6 +396,12 @@ da:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Der er i øjeblikket ingen brugerdefinerede felter.
       no_results_content_text: Oprette en ny brugerdefineret felt
@@ -4809,7 +4815,6 @@ da:
   text_length_between: "Længde mellem %{min} og %{max} tegn."
   text_line_separated: "Flere værdier tilladt (én linje for hver værdi)."
   text_load_default_configuration: "Hent forhåndsvalgt opsætning"
-  text_min_max_length_info: "0 betyder ingen begrænsning"
   text_no_roles_defined: Der er ikke defineret nogle roller.
   text_no_access_tokens_configurable: "Der er ingen adgangstegn, som kan konfigureres."
   text_no_configuration_data: "Roller, typer, statusser for arbejdspakker og arbejdsgange er endnu ikke sat op. Det anbefales stærkt at hente forhåndsopsætningen. Du vil kunne ændre den når den er indlæst."
@@ -4824,7 +4829,6 @@ da:
   text_powered_by: "Drevet af %{link}"
   text_project_identifier_info: "Kun små bogstaver (a-z), tal, - og _ er tilladt; først tegn skal være et bogstav."
   text_reassign: "Gentildel til arbejdspakke:"
-  text_regexp_info: "fx ^[A-Z0-9]+$"
   text_regexp_multiline: 'The regex is applied in a multi-line mode. e.g., ^---\s+'
   text_repository_usernames_mapping: "Vælg eller opdatér den OpenProject-bruger, der er tilknyttet hvert brugernavn i loggen for projektarkivet.\nBrugere med det samme brugernavn eller mailadresse i OpenProject og i projektarkivet vil automatisk blive tilknyttet."
   text_status_changed_by_changeset: "Indføjet i pakken af ændringer, %{value}."

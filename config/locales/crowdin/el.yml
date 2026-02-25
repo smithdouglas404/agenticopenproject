@@ -367,7 +367,7 @@ el:
     contained_in_type: "Περιέχονται στον τύπο"
     confirm_destroy_option: "Η διαγραφή μιας επιλογής θα διαγράψει όλα τα περιστατικά της (π.χ. σε πακέτα εργασίας). Είστε βέβαιοι ότι θέλετε να το διαγράψετε;"
     reorder_alphabetical: "Αναδιάταξη τιμών αλφαβητικά"
-    reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -394,6 +394,12 @@ el:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Προς το παρόν δεν υπάρχουν προσαρμοσμένα πεδία.
       no_results_content_text: Δημιουργία νέου προσαρμοσμένου πεδίου
@@ -4808,7 +4814,6 @@ el:
   text_length_between: "Μήκος μεταξύ %{min} και %{max} χαρακτήρων."
   text_line_separated: "Επιτρέπονται πολλαπλές τιμές (μία γραμμή για κάθε τιμή)."
   text_load_default_configuration: "Φόρτωση προεπιλεγμένων ρυθμίσεων διαμόρφωσης"
-  text_min_max_length_info: "Το 0 σημαίνει ότι δεν υπάρχουν περιορισμοί"
   text_no_roles_defined: Δεν έχουν οριστεί ρόλοι.
   text_no_access_tokens_configurable: "Δεν υπάρχουν tokens πρόσβασης που μπορούν να διαμορφωθούν."
   text_no_configuration_data: "Οι ρόλοι, οι τύποι, η καταστάσεις των πακέτων εργασίας και η ροή εργασίας δεν έχουν ρυθμιστεί ακόμα.\nΣυνιστάται ιδιαίτερα να φορτώσετε τις προεπιλεγμένες ρυθμίσεις. Θα είστε σε θέση να τις τροποποιήσετε μετά τη φόρτωση τους."
@@ -4823,7 +4828,6 @@ el:
   text_powered_by: "Υποστηρίζεται από %{link}"
   text_project_identifier_info: "Επιτρέπονται μόνο πεζά γράμματα (α-ω), αριθμοί, παύλες και κάτω παύλες, πρέπει να αρχίζουν με πεζό γράμμα."
   text_reassign: "Επανεκχώρηση στο πακέτα εργασίας:"
-  text_regexp_info: "π.χ. ^[A-Z0-9]+$"
   text_regexp_multiline: 'Το regex εφαρμόστηκε σε μια λειτουργία πολλαπλών γραμμών. π.χ., ^---\s+'
   text_repository_usernames_mapping: "Επιλέξτε ή ενημερώστε τον χρήστη OpenProject που αντιστοιχεί σε κάθε όνομα χρήστη στο ιστορικό του αποθετηρίου.\nΧρήστες με το ίδιο όνομα χρήστη στο OpenProject και το αποθετήριο ή email αντιστοιχίζονται αυτόματα."
   text_status_changed_by_changeset: "Εφαρμόστηκε στις αλλαγές %{value}."

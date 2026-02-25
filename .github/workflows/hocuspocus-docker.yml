@@ -112,7 +112,7 @@ jobs:
 
       - name: Generate GHA token
         id: generate-gha-token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ vars.DEPLOY_APP_ID }}
           private-key: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
@@ -136,7 +136,7 @@ jobs:
 
       - name: Deploy EDGE
         if: github.ref == 'refs/heads/dev' && github.repository == 'opf/openproject'
-        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        uses: benc-uk/workflow-dispatch@7a027648b88c2413826b6ddd6c76114894dc5ec4
         with:
           workflow: edge-deploy-shards.yml
           repo: opf/saas-deploy
@@ -147,7 +147,7 @@ jobs:
       - name: Deploy STAGE
         # make sure to always use the latest release branch here
         if: github.ref == 'refs/heads/release/17.1' && github.repository == 'opf/openproject'
-        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        uses: benc-uk/workflow-dispatch@7a027648b88c2413826b6ddd6c76114894dc5ec4
         with:
           workflow: stage-deploy-shards.yml
           repo: opf/saas-deploy

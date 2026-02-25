@@ -41,7 +41,7 @@ RSpec.describe "Show/Edit Document View",
   let(:document_types) do
     %w[Specification Report].map { create(:document_type, name: it) }
   end
-  let(:document) { create(:document, project:, title: "Collaborative document", type: document_types.first) }
+  let(:document) { create(:document, :collaborative, project:, title: "Collaborative document", type: document_types.first) }
 
   current_user { member }
 
