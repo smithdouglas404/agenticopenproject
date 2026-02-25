@@ -29,6 +29,5 @@
 #++
 
 FactoryBot.define do
-  factory :jira_issue, class: "Import::JiraIssue" do
-  end
+  factory :jira_issue, class: "Import::JiraIssue"
 end

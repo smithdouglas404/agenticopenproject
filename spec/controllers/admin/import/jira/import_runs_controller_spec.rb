@@ -38,7 +38,6 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
 
   # Walks a JiraImport through the state machine to reach the target state.
   # All after_transition job callbacks are stubbed.
-  # rubocop:disable Metrics/MethodLength
   def transition_to_state(jira_import, target_state)
     gu_prefix = %w[instance_meta_fetching instance_meta_done groups_and_users_init
                    groups_and_users_fetching groups_and_users_fetching_done
@@ -84,7 +83,6 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
     steps = paths.fetch(target_state.to_s)
     steps.each { |state| jira_import.transition_to!(state.to_sym) }
   end
-  # rubocop:enable Metrics/MethodLength
 
   before do
     login_as(admin)

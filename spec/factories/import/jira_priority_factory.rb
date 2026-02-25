@@ -29,6 +29,5 @@
 #++
 
 FactoryBot.define do
-  factory :jira_priority, class: "Import::JiraPriority" do
-  end
+  factory :jira_priority, class: "Import::JiraPriority"
 end

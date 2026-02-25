@@ -29,6 +29,5 @@
 #++
 
 FactoryBot.define do
-  factory :jira_user, class: "Import::JiraUser" do
-  end
+  factory :jira_user, class: "Import::JiraUser"
 end
