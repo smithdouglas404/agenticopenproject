@@ -136,7 +136,7 @@ module Redmine
         def custom_field_values=(values)
           return unless values.is_a?(Hash) && values.any?
 
-          values.transform_keys(&:to_s).each do |custom_field_id, new_values|
+          values.stringify_keys.each do |custom_field_id, new_values|
             existing_cv_by_value = custom_values_for_custom_field(custom_field_id, all: true)
                                      .group_by(&:value)
                                      .transform_values(&:first)
