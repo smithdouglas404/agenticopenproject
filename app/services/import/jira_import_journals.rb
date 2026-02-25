@@ -70,8 +70,8 @@ module Import
 
     private
 
-    def same_minute?(first, second)
-      Time.zone.parse(first.to_s).change(sec: 0) == Time.zone.parse(second.to_s).change(sec: 0)
+    def same_minute?(time1, time2)
+      Time.zone.parse(time1.to_s).change(sec: 0) == Time.zone.parse(time2.to_s).change(sec: 0)
     end
 
     def group_history_entries(history)

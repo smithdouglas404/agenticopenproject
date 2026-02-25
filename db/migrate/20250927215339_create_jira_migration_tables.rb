@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CreateJiraMigrationTables < ActiveRecord::Migration[8.0]
+  # rubocop:disable Metrics/AbcSize
   def change
     create_table :jiras do |t|
       t.string :url
@@ -118,7 +119,7 @@ class CreateJiraMigrationTables < ActiveRecord::Migration[8.0]
       t.string :op_entity_class
       t.string :jira_entity_id
       t.string :jira_entity_class
-      t.boolean :uses_existing
+      t.boolean :uses_existing, default: false, null: false
       t.references :jira, foreign_key: { on_delete: :cascade, on_update: :cascade }
       t.references :jira_import, foreign_key: { on_delete: :cascade, on_update: :cascade }
       t.index %i[op_entity_id op_entity_class], unique: true
@@ -132,7 +133,7 @@ class CreateJiraMigrationTables < ActiveRecord::Migration[8.0]
       t.jsonb :metadata, default: {}
       t.integer :sort_key, null: false
       t.integer :jira_import_id, null: false
-      t.boolean :most_recent, null: false
+      t.boolean :most_recent, default: false, null: false
 
       # If you decide not to include an updated timestamp column in your transition
       # table, you'll need to configure the `updated_timestamp_column` setting in your
@@ -153,4 +154,5 @@ class CreateJiraMigrationTables < ActiveRecord::Migration[8.0]
               where: "most_recent",
               name: "index_jira_import_transitions_parent_most_recent")
   end
+  # rubocop:enable Metrics/AbcSize
 end
