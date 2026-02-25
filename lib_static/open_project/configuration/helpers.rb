@@ -214,7 +214,7 @@ module OpenProject
 
       def ssrf_protection_ip_allowlist
         @ssrf_protection_ip_allowlist ||= self["ssrf_protection_ip_allowlist"]
-          .split(",")
+          .split(/[\s,]+/)
           .map(&:strip)
           .map { |addr| IPAddr.new addr }
       end
