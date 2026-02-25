@@ -44,20 +44,23 @@ module WorkPackages
   #
   # FIXME(project_handles): This class currently reads from the existing
   # Project#identifier column. Once the project_handles data model is available,
-  # replace #call with:
+  # replace #call with a query that finds projects with no current handle row:
   #
-  #   ProjectHandle
-  #     .select("project_handles.handle AS identifier, projects.id, projects.name")
-  #     .joins(:project)
-  #     .where(current: true)
-  #     .where("length(handle) > ? OR handle ~ ?", HANDLE_MAX_LENGTH, "[^a-zA-Z0-9]")
+  #   Project
+  #     .select(:id, :name, :identifier)
+  #     .where.not(id: ProjectHandle.where(current: true).select(:project_id))
   #     .to_a
-  #     .then { |problematic| generate_suggestions(problematic) }
+  #     .then { |projects_without_handle| generate_suggestions(projects_without_handle) }
   #
-  # The :current boolean on ProjectHandle marks the live handle; old handles are
-  # retained so that existing URLs continue to resolve.
+  # project_handles stores only valid (alphanumeric, ≤ HANDLE_MAX_LENGTH) handles.
+  # A project with no current handle is one whose Project#identifier has not yet been
+  # migrated; generate_suggestions still uses Project#identifier as current_identifier
+  # and error_reason still classifies why that identifier is problematic.
+  # The :current boolean marks the live handle; superseded handles are retained so
+  # that existing URLs continue to resolve via redirect.
   class ProjectHandleSuggestionGenerator
     HANDLE_MAX_LENGTH = 10
+    FALLBACK_HANDLE = "PROJ"
 
     # @return [Array<Hash>] one entry per project with a problematic identifier:
     #   { project:, current_identifier:, suggested_handle:, error_reason: }
@@ -67,8 +70,7 @@ module WorkPackages
     end
 
     def call
-      # FIXME(project_handles): Swap Project query for ProjectHandle query (see class doc above).
-      # Only select the three columns we need to avoid loading large text/JSON attributes.
+      # FIXME(project_handles): Replace with projects lacking a current handle — see class doc above.
       Project
         .select(:id, :name, :identifier)
         .where("length(identifier) > ? OR identifier ~ ?", HANDLE_MAX_LENGTH, "[^a-zA-Z0-9]")
@@ -110,13 +112,25 @@ module WorkPackages
     # first letter of each word (acronym style):
     #   "Flight Planning Algorithm" → "FPA"
     #   "Fly & Sky"                 → "FS"
-    # Falls back to "P" when the name yields no alphanumeric words.
+    #   "Cécile Martin"             → "CM"  (accented letters treated as one word)
+    # Falls back to "PROJ" when the name yields no usable initials.
     # Result is truncated to HANDLE_MAX_LENGTH characters.
     def handle_from_name(name)
-      words = name.to_s.scan(/[a-zA-Z0-9]+/)
-      return "P" if words.empty?
+      # Use POSIX [[:alpha:]] so accented letters (é, ñ, ü…) are kept inside
+      # their word rather than treated as separators by the ASCII-only [a-zA-Z].
+      words = name.to_s.scan(/[[:alpha:][:digit:]]+/)
+      return FALLBACK_HANDLE if words.empty?
 
-      acronym = words.map { |w| w[0] }.join.upcase # rubocop:disable Rails/Pluck
+      # Transliterate each word's first character to ASCII (é→e, ñ→n) then
+      # upcase. filter_map silently drops any initial that yields nothing useful
+      # after transliteration (e.g. a lone ideograph that maps to "?").
+      acronym = words.filter_map do |word|
+        ch = I18n.with_locale(:en) { I18n.transliterate(word[0]) }.upcase[0]
+        ch if ch&.match?(/\A[A-Z0-9]\z/)
+      end.join
+
+      return FALLBACK_HANDLE if acronym.empty?
+
       acronym.slice(0, HANDLE_MAX_LENGTH)
     end
 
