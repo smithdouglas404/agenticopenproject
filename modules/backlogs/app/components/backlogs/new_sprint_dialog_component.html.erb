@@ -32,17 +32,13 @@ See COPYRIGHT and LICENSE files for more details.
     Primer::Alpha::Dialog.new(
       title: t(:label_sprint_new),
       size: :large,
-      id: Backlogs::NewSprintDialogComponent::DIALOG_ID
+      id: DIALOG_ID
     )
   ) do |d|
     d.with_header(variant: :large)
 
     d.with_body do
-      render(
-        Backlogs::NewSprintFormComponent.new(
-          sprint: @sprint
-        )
-      )
+      render(Backlogs::NewSprintFormComponent.new(sprint: @sprint))
     end
 
     d.with_footer do
@@ -50,7 +46,7 @@ See COPYRIGHT and LICENSE files for more details.
         buttons.with_component(
           Primer::Beta::Button.new(
             data: {
-              "close-dialog-id": Backlogs::NewSprintDialogComponent::DIALOG_ID
+              "close-dialog-id": DIALOG_ID
             }
           )
         ) do
@@ -60,7 +56,7 @@ See COPYRIGHT and LICENSE files for more details.
         buttons.with_component(
           Primer::Beta::Button.new(
             scheme: :primary,
-            form: Backlogs::NewSprintDialogComponent::FORM_ID,
+            form: FORM_ID,
             data: { turbo: true },
             type: :submit
           )
