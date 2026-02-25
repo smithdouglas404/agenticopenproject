@@ -113,7 +113,13 @@ RSpec.describe Projects::UpdateContract do
     end
 
     describe "permissions" do
-      name_parent_identifier_readonly = %i[name parent_id identifier].index_with { %i[error_readonly] }
+      let(:readonly_attribute_errors) do
+        {
+          name: %i[error_readonly],
+          parent_id: %i[error_readonly],
+          identifier: %i[error_readonly]
+        }
+      end
 
       shared_examples "contract is valid for custom values and/or comments" do
         context "and custom values are changed" do
@@ -170,14 +176,14 @@ RSpec.describe Projects::UpdateContract do
           end
 
           include_examples "contract is invalid for custom values and/or comments" do
-            let(:errors) { name_parent_identifier_readonly }
+            let(:errors) { readonly_attribute_errors }
           end
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          include_examples "contract is invalid", name_parent_identifier_readonly
+          it("is invalid") { expect_contract_invalid(readonly_attribute_errors) }
         end
       end
 
@@ -217,7 +223,7 @@ RSpec.describe Projects::UpdateContract do
           let(:options) { { project_attributes_only: true } }
 
           context "and only project attributes are changed" do
-            include_examples "contract is invalid", name_parent_identifier_readonly
+            it("is invalid") { expect_contract_invalid(readonly_attribute_errors) }
           end
 
           context "and project attributes are not changed" do
@@ -228,7 +234,7 @@ RSpec.describe Projects::UpdateContract do
 
           context "and project attributes are changed" do
             include_examples "contract is invalid for custom values and/or comments" do
-              let(:errors) { name_parent_identifier_readonly }
+              let(:errors) { readonly_attribute_errors }
             end
           end
         end
