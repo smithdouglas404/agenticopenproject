@@ -32,6 +32,7 @@ module Import
   class JiraImportProjectsJob < ApplicationJob
     include Import::JiraOpenProjectReferenceCreation
 
+    # rubocop:disable Metrics/PerceivedComplexity
     def perform(jira_import_id)
       jira_import = Import::JiraImport.find(jira_import_id)
       project_ids = jira_import.project_ids
@@ -239,6 +240,7 @@ module Import
         end
       end
     end
+    # rubocop:enable Metrics/PerceivedComplexity
 
     private
 
@@ -319,6 +321,7 @@ module Import
       raise service_call.message if service_call.failure?
     end
 
+    # rubocop:disable Metrics/AbcSize
     def add_attachment(jira_client:, work_package:, attachment:, author:)
       filename = attachment["filename"]
       content_url = attachment["content"]
@@ -341,6 +344,7 @@ module Import
         end
       end
     end
+    # rubocop:enable Metrics/AbcSize
 
     def add_member(project:, project_role:, member:, user:)
       service_call = Members::CreateService

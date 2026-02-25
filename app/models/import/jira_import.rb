@@ -35,7 +35,10 @@ module Import
     belongs_to :jira, class_name: "Import::Jira"
     belongs_to :author, class_name: "User"
 
-    has_many :transitions, class_name: "Import::JiraImportTransition", autosave: false
+    has_many :transitions,
+             class_name: "Import::JiraImportTransition",
+             autosave: false,
+             dependent: :destroy
 
     def state_machine
       @state_machine ||= Import::JiraImportStateMachine.new(

@@ -30,6 +30,7 @@
 
 module Import
   class JiraFetchProjectsJob < ApplicationJob
+    # rubocop:disable Metrics/AbcSize
     def perform(jira_import_id)
       jira_import = Import::JiraImport.find(jira_import_id)
       project_ids = jira_import.project_ids
@@ -138,5 +139,6 @@ module Import
         end
       end
     end
+    # rubocop:enable Metrics/AbcSize
   end
 end

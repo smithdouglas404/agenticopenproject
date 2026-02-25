@@ -63,6 +63,7 @@ module Import
       )
     end
 
+    # rubocop:disable Metrics/PerceivedComplexity
     def each_iteration(jira_user, jira_import_id)
       jira_import = Import::JiraImport.find(jira_import_id)
       call = Users::CreateService
@@ -87,7 +88,8 @@ module Import
               uses_existing: true
             )
           else
-            raise "Existing User is expected to be found, because there was an email or login collision. See attributes: #{jira_user.to_op_attributes}"
+            raise "Existing User is expected to be found, because there was an email"\
+                  " or login collision. See attributes: #{jira_user.to_op_attributes}"
           end
         else
           raise call.message
@@ -137,5 +139,6 @@ module Import
           .call(ids: [member_id], send_notifications: false)
       end
     end
+    # rubocop:enable Metrics/PerceivedComplexity
   end
 end

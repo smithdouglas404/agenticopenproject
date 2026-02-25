@@ -96,6 +96,7 @@ module Import
                                  error: e.message)
     end
 
+    # rubocop:disable Metrics/AbcSize
     def build_enumerator(jira_import_id, cursor:)
       jira_import = Import::JiraImport.find(jira_import_id)
       group_names = jira_import.client.groups["groups"].pluck("name")
@@ -117,6 +118,7 @@ module Import
         cursor:
       )
     end
+    # rubocop:enable Metrics/AbcSize
 
     def each_iteration(users_batch, jira_import_id)
       jira_import = Import::JiraImport.find(jira_import_id)
