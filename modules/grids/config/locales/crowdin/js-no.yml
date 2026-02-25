@@ -2,6 +2,7 @@
   js:
     grid:
       add_widget: 'Legg til widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Fjern widget'
       configure: 'Konfigurer widget'
       widgets:

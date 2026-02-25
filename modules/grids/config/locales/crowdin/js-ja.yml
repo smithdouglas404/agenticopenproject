@@ -2,6 +2,7 @@ ja:
   js:
     grid:
       add_widget: 'ウィジェットを追加'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'ウィジェットを削除'
       configure: 'ウィジェットの設定'
       widgets:

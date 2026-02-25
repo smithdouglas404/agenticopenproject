@@ -25,8 +25,8 @@ fr:
       widgets:
         actual_costs:
           blankslate:
-            title: "No data for current year"
-            description: "Log spent time and costs for work packages to start tracking actual costs"
+            title: "Pas de données pour l'année en cours"
+            description: "Enregistrez le temps passé et les coûts pour les lots de travail afin de commencer à suivre les coûts réels"
     text_are_you_sure: "Êtes-vous sûr ?"
     myTimeTracking:
       noSpecificTime: "Aucune heure spécifique"

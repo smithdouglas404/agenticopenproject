@@ -2,6 +2,7 @@ tr:
   js:
     grid:
       add_widget: 'Bileşen ekle'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Bileşeni kaldır'
       configure: 'Bileşeni yapılandır'
       widgets:

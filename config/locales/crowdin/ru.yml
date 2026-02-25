@@ -370,7 +370,7 @@ ru:
     contained_in_type: "Содержится в типе"
     confirm_destroy_option: "Удаление опции приведет к удалению всех ее вхождений (например, в пакеты работ). Вы уверены, что вы хотите удалить ее?"
     reorder_alphabetical: "Переупорядочить значения по алфавиту"
-    reorder_confirmation: "Внимание: Текущий порядок доступных значений будет утерян. Продолжить?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Сначала необходимо выбрать пакет работ или проект"
     calculated_field_not_editable: "Не редактируемый атрибут. Это значение рассчитывается автоматически."
     no_role_assigment: "Роль не назначена"
@@ -397,6 +397,12 @@ ru:
           Разрешить использовать пользовательское поле в качестве фильтра в представлениях пакетов работ. Обратите внимание, что только при выборе опции 'Для всех проектов' пользовательское поле будет отображаться в глобальных представлениях.
       formula:
         project: "Добавьте числовые значения или введите / для поиска атрибута или математического оператора."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Нет настраиваемых полей.
       no_results_content_text: Создать новое настраиваемое поле
@@ -4910,7 +4916,6 @@ ru:
   text_length_between: "Количество символов между %{min} и %{max} ."
   text_line_separated: "Допускается  несколько значений (одна строка для каждого значения)."
   text_load_default_configuration: "Загрузить конфигурацию по умолчанию"
-  text_min_max_length_info: "0 означает отсутствие ограничений"
   text_no_roles_defined: Роли не определены.
   text_no_access_tokens_configurable: "Маркеры доступа, которые могут быть настроены, отсутствуют."
   text_no_configuration_data: "Роли, типы,  статусы пакетов работ и рабочие потоки еще не сконфигурированы. Настоятельно рекомендуем для правки загрузить конфигурацию по умолчанию."
@@ -4925,7 +4930,6 @@ ru:
   text_powered_by: "С использованием %{link}"
   text_project_identifier_info: "Разрешены только строчные буквы (a-z), цифры, тире и знаки подчеркивания, начинать с буквы нижнего регистра."
   text_reassign: "Переназначить для пакета работ:"
-  text_regexp_info: "например:  ^[A-Z0-9]+$"
   text_regexp_multiline: 'Регулярное выражение применяется в многострочном режиме. Например: ^---\s+'
   text_repository_usernames_mapping: "Выберете или обновите пользователя OpenProject сопоставленного с именами пользователей найдеными в журнале репозитория. Пользователи с одинаковыми именами в OpenProject и в репозитории или почте будут сопоставлены автоматически."
   text_status_changed_by_changeset: "Применены в наборе изменений %{value}."
@@ -5026,7 +5030,7 @@ ru:
     reset_failed_logins: "Сброс неудачных попыток входа"
     status_user_and_brute_force: "%{user} и %{brute_force}"
     status_change: "Смена статуса"
-    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
+    text_change_disabled_for_provider_login: "Это имя и адрес электронной почты заданы вашим поставщиком авторизации, поэтому их нельзя изменить."
     unlock: "Разблокировать"
     unlock_and_reset_failed_logins: "Разблокировать и сбросить неудачные попытки входа"
     error_cannot_delete_user: "User cannot be deleted"

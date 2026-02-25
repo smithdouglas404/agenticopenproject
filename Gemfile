@@ -161,7 +161,7 @@ gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
 
-gem "mcp", "~> 0.4.0"
+gem "mcp", "~> 0.7.0"
 
 gem "meta-tags", "~> 2.22.3"
 
@@ -192,7 +192,7 @@ gem "puma", "~> 7.1"
 gem "puma-plugin-statsd", "~> 2.7"
 gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
-gem "nokogiri", "~> 1.19.0"
+gem "nokogiri", "~> 1.19.1"
 
 gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
@@ -202,7 +202,7 @@ gem "aws-sdk-core", "~> 3.241"
 # File upload via fog + screenshots on travis
 gem "aws-sdk-s3", "~> 1.213"
 
-gem "openproject-token", "~> 8.6.0"
+gem "openproject-token", "~> 8.7.0"
 
 gem "plaintext", "~> 0.3.7"
 

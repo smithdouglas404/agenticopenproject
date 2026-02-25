@@ -2,6 +2,7 @@ fa:
   js:
     grid:
       add_widget: 'افزودن ویجت'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'حذف ویجت'
       configure: 'Configure widget'
       widgets:

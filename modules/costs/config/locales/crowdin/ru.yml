@@ -237,11 +237,11 @@ ru:
   costs:
     widgets:
       actual_costs:
-        title: "Actual costs by month"
+        title: "Фактические затраты по месяцам"
         blankslate:
           heading: "Start tracking your time and costs"
           description: "Get an overview of your costs and logged time to monitor progress of your project"
-          action: "Log time"
+          action: "Добавить трудозатраты"
         view_details: "View actual costs details"
   ee:
     features:

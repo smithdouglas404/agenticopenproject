@@ -69,6 +69,7 @@ ja:
         meeting_participant:
           user_invalid: "is not a valid participant."
         meeting_agenda_item:
+          section_not_belong_to_meeting: "Section does not belong to the same meeting."
           user_invalid: "is not a valid participant."
         recurring_meeting_interim_response:
           not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
@@ -115,7 +116,15 @@ ja:
   error_notification_with_errors: "通知を送信できませんでした。次の受信者には通知できませんでした: %{recipients}"
   label_meeting: "会議"
   label_meeting_plural: "会議"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "新しい会議"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "新しい一度限りの会議"
   label_meeting_new_recurring: "定期的な会議の作成"
   label_meeting_create: "会議を作成"
@@ -273,6 +282,9 @@ ja:
         heading: "この会議を削除しますか？"
         confirmation_message_html: >
           この操作は元に戻せません。続行しますか？
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "会議のキャンセル"
         heading: "この会議をキャンセルしますか？"
@@ -470,6 +482,7 @@ ja:
     end_series_dialog:
       title: "一連の会議を終了"
   notice_successful_notification: "すべての出席者にカレンダーの更新をメールしました"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: タイムゾーンが設定されていない場合、%{zone} が使用されます。タイムゾーンを選択するには、ここをクリックしてください。
   notice_meeting_updated: "このページは他の誰かによって更新されました。変更を表示するには再読み込みしてください。"
   permission_create_meetings: "会議を作成"
@@ -484,6 +497,8 @@ ja:
   text_duration_in_hours: "期間（時間）"
   text_in_hours: "数時間以内"
   text_meeting_agenda_for_meeting: '会議の議題 "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "今後の予定を削除しますか？"
   text_meeting_series_end_early: "シリーズを終了すると、今後開かれた会議や予定された会議の発生が削除されます"
   text_meeting_closing_are_you_sure: "会議アジェンダを終了してもよろしいですか？"
@@ -589,6 +604,9 @@ ja:
   text_meeting_in_progress_dropdown_description: "会議中に取られた情報のニーズや意思決定などの成果を記録します。"
   text_meeting_closed_dropdown_description: "この会議は終了しました。これ以上、議題や結果を変更することはできません。"
   text_meeting_draft_banner: "現在下書きモードです。 会議の詳細を変更したり出席者を追加/削除したりしても，この会議はカレンダーの更新や招待状を送信しません。"
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "この会議を開いて招待を送信しますか？"
   text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
   text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"

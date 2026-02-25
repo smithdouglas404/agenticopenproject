@@ -2,6 +2,7 @@ el:
   js:
     grid:
       add_widget: 'Προσθήκη widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Αφαίρεση widget'
       configure: 'Ρύθμιση widget'
       widgets:

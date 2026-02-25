@@ -370,7 +370,7 @@ sl:
     contained_in_type: "Vsebovano v vrstah"
     confirm_destroy_option: "Če izbrišete možnost, boste izbrisali vse njene primere (npr. v delovnih paketih). Ali ste prepričani, da ga želite izbrisati?"
     reorder_alphabetical: "Reorder values alphabetically"
-    reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -397,6 +397,12 @@ sl:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Trenutno ni poslovnih procesov
       no_results_content_text: Ustvarite novo uporabniško lastnost
@@ -4913,7 +4919,6 @@ sl:
   text_length_between: "Dolžina med %{min} in %{max} znakov."
   text_line_separated: "Dovoljenih več vrednosti (ena vrstica za vsako vrednost)."
   text_load_default_configuration: "Naloži privzeto konfiguracijo"
-  text_min_max_length_info: "0 pomeni brez omejitev"
   text_no_roles_defined: Nobene vloge ni definirane
   text_no_access_tokens_configurable: "Dostopnih žetonov ni mogoče konfigurirati."
   text_no_configuration_data: "Vloge, vrste, statusi delovnega paketa in potek dela še niso konfigurirani.\nZelo priporočljivo je, da naložite privzeto konfiguracijo. Ko ga boste naložili, ga boste lahko spremenili."
@@ -4928,7 +4933,6 @@ sl:
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Dovoljene so samo male črke (a-z), številke, črtice in podčrtaji, ki se začnejo z malo začetnico."
   text_reassign: "Ponovno dodelitev delovnemu paketu:"
-  text_regexp_info: "npr. ^[A-Z0-9]+$"
   text_regexp_multiline: 'Označba se uporablja v večvrstičnem načinu. npr. ^ --- \ s +'
   text_repository_usernames_mapping: "Izberite ali posodobite uporabnika OpenProject, vezanega na vsako uporabniško ime, ki ga najdete v dnevniku repozitorija.\nUporabniki z istim uporabniškim imenom ali e-poštnim imenom skladišča OpenProject se samodejno povežejo."
   text_status_changed_by_changeset: "Dodano v zapis sprememb %{value}."

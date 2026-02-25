@@ -1,0 +1,265 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+require "spec_helper"
+
+require_relative "../../support/pages/meetings/show"
+require_relative "../../support/pages/meetings/index"
+
+RSpec.describe "Create meeting from template", :js do
+  include Components::Autocompleter::NgSelectAutocompleteHelpers
+
+  shared_let(:admin) { create(:admin) }
+  shared_let(:project) { create(:project, enabled_module_names: %i[meetings]) }
+  shared_let(:other_project) { create(:project, enabled_module_names: %i[meetings]) }
+
+  let(:meetings_page) { Pages::Meetings::Index.new(project:) }
+  let(:show_page) { Pages::Meetings::Show.new(Meeting.last) }
+
+  before { login_as(admin) }
+
+  describe "creating meeting from template using template selector" do
+    context "with templates in project" do
+      let!(:template) do
+        create(:onetime_template, project:, title: "Standup Template").tap do |t|
+          create(:meeting_agenda_item, meeting: t, title: "Updates")
+          create(:meeting_agenda_item, meeting: t, title: "Blockers")
+          create(:meeting_agenda_item, meeting: t, title: "Next steps")
+        end
+      end
+
+      let!(:other_template) do
+        create(:onetime_template, project:, title: "Retro Template").tap do |t|
+          create(:meeting_agenda_item, meeting: t, title: "What went well")
+          create(:meeting_agenda_item, meeting: t, title: "What to improve")
+        end
+      end
+
+      before do
+        meetings_page.visit!
+      end
+
+      it "can create a meeting from a template with agenda items copied" do
+        meetings_page.click_on "add-meeting-button"
+        meetings_page.click_on "One-time"
+
+        expect(page).to have_dialog("New one-time meeting")
+
+        within_dialog "New one-time meeting" do
+          expect(page).to have_css('[data-test-selector="template_id"]')
+
+          select_autocomplete find('[data-test-selector="template_id"]'),
+                              query: "Standup",
+                              select_text: "Standup Template",
+                              results_selector: "body"
+
+          fill_in "Title", with: "Tomorrow's standup"
+
+          click_button "Create"
+        end
+
+        wait_for_network_idle
+
+        meeting = Meeting.last
+
+        expect(meeting.template).to be false
+        expect(meeting.title).to eq("Tomorrow's standup")
+
+        expect(meeting.agenda_items.count).to eq(3)
+
+        expect(page).to have_text("Updates")
+        expect(page).to have_text("Blockers")
+        expect(page).to have_text("Next steps")
+      end
+
+      it "can create a meeting without selecting a template" do
+        meetings_page.click_on "add-meeting-button"
+        meetings_page.click_on "One-time"
+
+        expect(page).to have_dialog("New one-time meeting")
+
+        within_dialog "New one-time meeting" do
+          expect(page).to have_css('[data-test-selector="template_id"]')
+
+          fill_in "Title", with: "Non template meeting"
+
+          click_button "Create"
+        end
+
+        wait_for_network_idle
+
+        meeting = Meeting.last
+        expect(meeting.template).to be false
+        expect(meeting.title).to eq("Non template meeting")
+        expect(meeting.agenda_items.count).to eq(0)
+      end
+
+      it "shows all project templates in autocompleter" do
+        meetings_page.click_on "add-meeting-button"
+        meetings_page.click_on "One-time"
+
+        within_dialog "New one-time meeting" do
+          find('[data-test-selector="template_id"]').click
+
+          expect(page).to have_text("Standup Template")
+          expect(page).to have_text("Retro Template")
+        end
+      end
+    end
+
+    context "with no templates in project" do
+      before do
+        Meeting.onetime_templates.where(project:).destroy_all
+        meetings_page.visit!
+      end
+
+      it "does not show template selector when no templates exist" do
+        meetings_page.click_on "add-meeting-button"
+        meetings_page.click_on "One-time"
+
+        expect(page).to have_dialog("New one-time meeting")
+
+        within_dialog "New one-time meeting" do
+          expect(page).to have_no_css('[data-test-selector="template_id"]')
+        end
+      end
+    end
+
+    context "with templates from other project" do
+      let!(:current_project_template) do
+        create(:onetime_template, project:, title: "Current project template")
+      end
+
+      let!(:other_project_template) do
+        create(:onetime_template, project: other_project, title: "Other project template")
+      end
+
+      before do
+        meetings_page.visit!
+      end
+
+      it "only shows templates from current project" do
+        meetings_page.click_on "add-meeting-button"
+        meetings_page.click_on "One-time"
+
+        within_dialog "New one-time meeting" do
+          find('[data-test-selector="template_id"]').click
+
+          expect(page).to have_text("Current project template")
+
+          expect(page).to have_no_text("Other project template")
+        end
+      end
+    end
+  end
+
+  describe "creating meeting from template using 'Create from template' button" do
+    let!(:template) do
+      create(:onetime_template, project:, title: "Planning template").tap do |t|
+        create(:meeting_agenda_item, meeting: t, title: "Goals")
+        create(:meeting_agenda_item, meeting: t, title: "Tasks")
+        create(:meeting_agenda_item, meeting: t, title: "Timeline")
+      end
+    end
+
+    let(:template_show_page) { Pages::Meetings::Show.new(template) }
+
+    before do
+      template_show_page.visit!
+    end
+
+    it "can create a meeting from template page with button" do
+      expect(page).to have_link("Create meeting from template")
+      click_link "Create meeting from template"
+
+      expect(page).to have_dialog("New one-time meeting")
+
+      within_dialog "New one-time meeting" do
+        expect(page).to have_no_css('[data-test-selector="template_id"]')
+
+        fill_in "Title", with: "Sprint planning"
+
+        click_button "Create"
+      end
+
+      wait_for_network_idle
+
+      meeting = Meeting.last
+      expect(meeting.template).to be false
+      expect(meeting.title).to eq("Sprint planning")
+
+      expect(meeting.agenda_items.count).to eq(3)
+
+      expect(page).to have_text("Goals")
+      expect(page).to have_text("Tasks")
+      expect(page).to have_text("Timeline")
+    end
+  end
+
+  describe "permissions" do
+    let!(:template) do
+      create(:onetime_template,
+             project:,
+             title: "Permission test template")
+    end
+
+    context "as user with view_meetings only" do
+      let(:user_view_only) do
+        create(:user, member_with_permissions: { project => [:view_meetings] })
+      end
+
+      before do
+        logout
+        login_as(user_view_only)
+        visit project_meeting_path(project, template)
+      end
+
+      it "does not show 'Create meeting from template' button" do
+        expect(page).to have_no_link("Create meeting from template")
+      end
+    end
+
+    context "as user with create_meetings permission" do
+      let(:user_with_create) do
+        create(:user, member_with_permissions: { project => %i[view_meetings create_meetings] })
+      end
+
+      before do
+        logout
+        login_as(user_with_create)
+        visit project_meeting_path(project, template)
+      end
+
+      it "shows 'Create meeting from template' button" do
+        expect(page).to have_link("Create meeting from template")
+      end
+    end
+  end
+end

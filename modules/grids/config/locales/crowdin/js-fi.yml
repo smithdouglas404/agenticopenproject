@@ -2,6 +2,7 @@ fi:
   js:
     grid:
       add_widget: 'Lisää widgetti'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Poista widgetti'
       configure: 'Configure widget'
       widgets:

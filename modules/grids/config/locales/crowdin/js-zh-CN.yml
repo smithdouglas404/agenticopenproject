@@ -2,6 +2,7 @@ zh-CN:
   js:
     grid:
       add_widget: '添加微件'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: '移除微件'
       configure: '配置微件'
       widgets:

@@ -60,10 +60,6 @@ OpenProject::FeatureDecisions.add :portfolio_models,
                                   description: "Enables the creation and management of portfolio and program work spaces.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :new_project_overview,
-                                  description: "Enables the new project overview experience.",
-                                  force_active: true
-
 OpenProject::FeatureDecisions.add :scrum_projects,
                                   description: "Enables an overhauled version of the backlogs module to " \
                                                "support Scrum projects with a new sprint planning experience. "

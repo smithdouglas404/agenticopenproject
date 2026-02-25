@@ -368,7 +368,7 @@ ca:
     contained_in_type: "Contingut a la classe"
     confirm_destroy_option: "Eliminant una opció n'eliminareu totes les ocurrències (ex. en un paquet de treball). Segur que vols eliminar-ho?"
     reorder_alphabetical: "Reorganitza els valors alfabèticament"
-    reorder_confirmation: "Alerta: L'ordre actual dels valors disponibles es perdran. Vols continuar?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -395,6 +395,12 @@ ca:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Actualment no hi ha camps personalitzats.
       no_results_content_text: Crea un camp personalitzat nou
@@ -4804,7 +4810,6 @@ ca:
   text_length_between: "Longitud entre %{min} i %{max} caràcters."
   text_line_separated: "Es permeten diversos valors (una línia per cada valor)."
   text_load_default_configuration: "Carregar la configuració predeterminada"
-  text_min_max_length_info: "0 significa sense restricció"
   text_no_roles_defined: No hi ha rols definits.
   text_no_access_tokens_configurable: "No hi ha tokens d'accés que siguin configurables."
   text_no_configuration_data: "Encara no s'han configurat els rols, tipus, estats dels paquet de treball i flux de treball.\nÉs altament recomanable que carreguis la configuració predeterminada. Podràs modificar-la un cop carregada."
@@ -4819,7 +4824,6 @@ ca:
   text_powered_by: "Desenvolupat per %{link}"
   text_project_identifier_info: "Només es permeten lletres minúscules (a-z), números, guions i guions baixos, i ha de començar amb una lletra minúscula."
   text_reassign: "Reassigna al paquet de treball:"
-  text_regexp_info: "ex. ^[A-Z0-9]+$"
   text_regexp_multiline: 'S''aplica l''expressió regular en mode de múltilínia. Per exemple, ^---\s+'
   text_repository_usernames_mapping: "Seleccioneu l'assignació entre els usuaris del OpenProject i cada nom d'usuari trobat al repositori.\nEls usuaris amb el mateix nom d'usuari o correu del OpenProject i del repositori s'assignaran automàticament."
   text_status_changed_by_changeset: "Aplicat en el conjunt de canvis %{value}."

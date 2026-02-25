@@ -59,18 +59,18 @@ ru:
   budgets:
     widgets:
       budget_totals:
-        title: "Budget totals"
-        remaining_budget: "Remaining budget"
-        spent_budget: "Spent budget"
-        total_actual_costs: "Total actual costs"
-        total_planned_budget: "Total planned budget"
+        title: "Общая сумма бюджета"
+        remaining_budget: "Оставшийся бюджет"
+        spent_budget: "Израсходованный бюджет"
+        total_actual_costs: "Общие фактические затраты"
+        total_planned_budget: "Общий запланированный бюджет"
       budget_by_cost_type:
-        title: "Budget by cost type"
+        title: "Бюджет по видам затрат"
         blankslate:
           heading: "Start project controlling"
           description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
         caption:
-          zero: "No budget data."
+          zero: "Нет данных о бюджете."
           one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."
           other: "Data aggregated from %{count} budgets included in %{portfolios}, %{subprograms} and %{subprojects}."
         caption_simple:

@@ -25,5 +25,5 @@ fr:
       properties:
         storyPoints: "Points d'histoire"
     burndown:
-      day: "Day"
+      day: "Jour"
       points: "Points"

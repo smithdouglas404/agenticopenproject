@@ -2,6 +2,7 @@ lt:
   js:
     grid:
       add_widget: 'Pridėti valdiklį'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Išimti valdiklį'
       configure: 'Valdiklio nustatymai'
       widgets:

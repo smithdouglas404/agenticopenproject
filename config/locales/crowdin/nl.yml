@@ -368,7 +368,7 @@ nl:
     contained_in_type: "Opgenomen in type"
     confirm_destroy_option: "Het verwijderen van een optie zal alle voorkomingen verwijderen. Weet u zeker dat u deze optie wilt verwijderen?"
     reorder_alphabetical: "Rangschik waarden alfabetisch"
-    reorder_confirmation: "Waarschuwing: De huidige volgorde van beschikbare waarden zal verloren gaan. Doorgaan?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Werkpakket- of projectselectie is eerst vereist"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -395,6 +395,12 @@ nl:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
     tab:
       no_results_title_text: Momenteel zijn er geen aangepaste velden.
       no_results_content_text: Maak een nieuw aangepast veld
@@ -4808,7 +4814,6 @@ nl:
   text_length_between: "Lengte tussen %{min} en %{max} karakters."
   text_line_separated: "Meerdere waarden toegestaan (één regel voor elke waarde)."
   text_load_default_configuration: "De standaardconfiguratie laden"
-  text_min_max_length_info: "0 betekent geen beperking"
   text_no_roles_defined: Er zijn geen rollen gedefinieerd.
   text_no_access_tokens_configurable: "Er zijn geen toegangstokens die kunnen worden geconfigureerd."
   text_no_configuration_data: "Rollen, types, werkpakket statussen en workflow zijn nog niet geconfigureerd.\nHet wordt ten zeerste aangeraden om de standaard configuratie te laden. U kunt deze wijzigen zodra het is geladen."
@@ -4823,7 +4828,6 @@ nl:
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Alleen kleine letters (a-z), cijfers, streepjes en underscores (_) zijn toegestaan, moet beginnen met een kleine letter."
   text_reassign: "Opnieuw toewijzen aan werkpakket:"
-  text_regexp_info: "bijv. ^[A-Z0-9]+$"
   text_regexp_multiline: 'De regex wordt toegepast in een modus met meerdere regels. bijvoorbeeld, ^---\s+'
   text_repository_usernames_mapping: "Selecteer of update de gebruiker van de OpenProject gelinkt aan elke gebruikersnaam gevonden in het repository log. Gebruikers met de zelfde OpenProject en repository gebruikersnaam of e-mail worden automatisch gelinkt."
   text_status_changed_by_changeset: "Toegepast in changeset %{value}."

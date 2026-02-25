@@ -2,6 +2,7 @@ vi:
   js:
     grid:
       add_widget: 'Thêm tiện ích'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Xóa tiện ích'
       configure: 'Định cấu hình tiện ích'
       widgets:

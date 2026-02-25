@@ -38,7 +38,7 @@ RSpec.describe "Document collaboration settings admin",
   current_user { create(:admin) }
 
   context "when first time setup" do
-    it "can configure hocuspocus url and secret" do
+    it "can configure hocuspocus url and secret", without_env: ["OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET"] do
       visit admin_settings_document_collaboration_settings_path
 
       within_test_selector("collaboration-settings-disabled-notice") do
@@ -109,7 +109,8 @@ RSpec.describe "Document collaboration settings admin",
 
   context "with hocuspocus url set via environment variable",
           with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_URL" => "wss://env-hocuspocus.example.com" },
-          with_settings: { collaborative_editing_hocuspocus_secret: "secret1234" } do
+          with_settings: { collaborative_editing_hocuspocus_secret: "secret1234" },
+          without_env: ["OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET"] do
     before do
       reset(:collaborative_editing_hocuspocus_url)
       visit admin_settings_document_collaboration_settings_path

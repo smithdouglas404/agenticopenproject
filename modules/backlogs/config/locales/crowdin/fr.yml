@@ -26,7 +26,7 @@ fr:
   activerecord:
     attributes:
       sprint:
-        duration: "Sprint duration"
+        duration: "Durée du sprint"
       work_package:
         position: "Position"
         story_points: "Points d'histoire"
@@ -46,7 +46,7 @@ fr:
     task_type: "Type de tâche"
   backlogs:
     any: "tout"
-    column_width: "Column width"
+    column_width: "Largeur de la colonne"
     definition_of_done: "Définition de Fait"
     impediment: "Obstacle"
     label_versions_default_fold_state: "Afficher les versions de manière repliée"
@@ -64,8 +64,8 @@ fr:
     show_burndown_chart: "Graphique d'avancement"
     story: "Histoire"
     story_points:
-      one: "%{count} story point"
-      other: "%{count} story points"
+      one: "%{count} point d'histoire"
+      other: "%{count} points de l'histoire"
     task: "Tâche"
     task_color: "Couleur des tâches"
     unassigned: "Non assigné"
@@ -73,28 +73,28 @@ fr:
       header_backlogs: "Module des backlogs"
       button_update_backlogs: "Mettre à jour le module des backlogs"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} est vide"
+      blankslate_description: "Aucun élément n'a encore été planifié. Faites glisser les éléments ici pour les ajouter."
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "Réduire/développer %{name}"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "Pas d'histoires dans le carnet de commandes"
+        one: "%{count} article en attente"
+        other: "%{count} histoires en attente"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "Actions en attente"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        edit_sprint: "Editer le sprint"
+        new_story: "Nouvelle story"
+        stories_tasks: "Histoires/tâches"
+        task_board: "Tableau des tâches"
+        burndown_chart: "Graphique d'avancement"
         wiki: "Wiki"
-        properties: "Properties"
+        properties: "Propriétés"
     story_component:
-      label_drag_story: "Move %{name}"
+      label_drag_story: "Déplacer %{name}"
     story_menu_component:
-      label_actions: "Story actions"
+      label_actions: "Actions de l'histoire"
   backlogs_points_burn_direction: "Les points évoluent vers le haut/bas"
   backlogs_product_backlog: "Backlog de produit"
   backlogs_story: "Histoire"
@@ -102,14 +102,14 @@ fr:
   backlogs_task: "Tâche"
   backlogs_task_type: "Type de tâche"
   backlogs_wiki_template: "Modèle pour page wiki de sprint"
-  backlogs_empty_title: "No versions are defined yet"
-  backlogs_empty_action_text: "To start using backlogs, please create a version first"
-  backlogs_not_configured_title: "Backlogs not configured"
-  backlogs_not_configured_description: "Story and task types need to be set before using this module."
-  backlogs_not_configured_action_text: "Configure Backlogs"
+  backlogs_empty_title: "Aucune version n'est encore définie"
+  backlogs_empty_action_text: "Pour commencer à utiliser les backlogs, veuillez d'abord créer une version"
+  backlogs_not_configured_title: "Les carnets de commandes ne sont pas configurés"
+  backlogs_not_configured_description: "Les types d'histoires et de tâches doivent être définis avant d'utiliser ce module."
+  backlogs_not_configured_action_text: "Configurer les carnets de commandes"
   burndown:
-    story_points: "Story points"
-    story_points_ideal: "Story points (ideal)"
+    story_points: "Points d'histoire"
+    story_points_ideal: "Points d'histoire (idéal)"
   errors:
     attributes:
       task_type:
@@ -129,8 +129,8 @@ fr:
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:
     show:
-      blankslate_title: "No burndown data available"
-      blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
+      blankslate_title: "Pas de données disponibles sur le brûlage"
+      blankslate_description: "Définissez les dates de début et de fin du sprint afin de générer un tableau d'avancement."
   remaining_hours: "travail restant"
   version_settings_display_label: "Colonne dans le backlog"
   version_settings_display_option_left: "gauche"
