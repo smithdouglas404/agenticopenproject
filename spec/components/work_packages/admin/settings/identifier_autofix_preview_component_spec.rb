@@ -74,10 +74,11 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierAutofixPreviewComponent,
       expect(page).to have_text("VLNP")
     end
 
-    it "shows an example work package ID with -1 suffix" do
+    it "shows a realistic example work package ID" do
       render_inline(component)
-      expect(page).to have_text("FP-1")
-      expect(page).to have_text("VLNP-1")
+      # Numbers are deterministic from the handle's byte sum; format is handle + zero-padded number.
+      expect(page).to have_text("FP-151")    # "FP".bytes.sum % 500 + 1 = 151
+      expect(page).to have_text("VLNP-321")  # "VLNP".bytes.sum % 500 + 1 = 321
     end
 
     it "shows the special characters error caption" do

@@ -80,7 +80,7 @@
             render(Primer::Beta::Text.new) { entry[:suggested_handle] }
           end
           row.with_column(flex: 1) do
-            render(Primer::Beta::Text.new) { "#{entry[:suggested_handle]}-1" }
+            render(Primer::Beta::Text.new) { sample_wp_id(entry[:suggested_handle]) }
           end
         end
       end

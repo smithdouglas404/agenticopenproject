@@ -56,6 +56,15 @@ module WorkPackages
             I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_special_characters")
           end
         end
+
+        # Produces a realistic-looking example work package ID for the preview table.
+        # The sequence number is derived deterministically from the handle so it looks
+        # varied across projects but is stable across renders. Range: 1–500.
+        # Single-digit numbers are zero-padded ("FP-07"), two/three digits are not ("FP-42").
+        def sample_wp_id(handle)
+          n = (handle.bytes.sum % 500) + 1
+          "#{handle}-#{format('%02d', n)}"
+        end
       end
     end
   end
