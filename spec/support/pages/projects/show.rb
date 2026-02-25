@@ -99,7 +99,7 @@ module Pages
 
         wait_for_size_animation_completion("[data-test-selector='async-dialog-content']")
 
-        Components::Projects::ProjectCustomFields::EditDialog.new(project, custom_field)
+        Components::Projects::ProjectCustomFields::Dialog.new(project, custom_field)
       end
 
       def open_edit_dialog_for_life_cycle(life_cycle, wait_angular: false)

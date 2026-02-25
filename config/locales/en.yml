@@ -611,6 +611,8 @@ en:
       min_max:
         all: "0 means no restriction"
         project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
 
     tab:
       no_results_title_text: There are currently no custom fields.
@@ -1475,7 +1477,6 @@ en:
         scim_clients: "SCIM clients"
       calculated_value_error:
         error_code: "Error code"
-        customized: "Customized"
         customized_id: "Customized ID"
         customized_type: "Customized type"
       capability:
@@ -1503,6 +1504,7 @@ en:
         regexp: "Regular expression"
         searchable: "Searchable"
         admin_only: "Admin-only"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "Value"
       design_color:
@@ -2219,6 +2221,7 @@ en:
       comment: "Comment"
       custom_action: "Custom action"
       custom_field: "Custom field"
+      customized: "Customized"
       "doorkeeper/application": "OAuth application"
       enterprise_token:
         one: "Enterprise token"
@@ -3590,6 +3593,7 @@ en:
   label_duplicates: "duplicates"
   label_edit: "Edit"
   label_edit_x: "Edit: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "Toggle multiselect"
   label_enabled_project_custom_fields: "Enabled custom fields"
   label_enabled_project_modules: "Enabled modules"
@@ -3717,6 +3721,7 @@ en:
   label_lock_user: "Lock user"
   label_logged_as: "Logged in as"
   label_login: "Sign in"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "Custom logo desktop"
   label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Custom export logo"

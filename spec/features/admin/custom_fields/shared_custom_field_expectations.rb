@@ -150,6 +150,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
   # Form element labels, default English translation in the trailing comment:
   let(:label_name) { I18n.t("attributes.name") } # Name
   let(:label_section) { I18n.t("activerecord.attributes.project_custom_field.custom_field_section") } # Section
+  let(:label_has_comment) { I18n.t("activerecord.attributes.custom_field.has_comment") } # Add a comment text field
   let(:label_is_for_all) { I18n.t("attributes.is_for_all") } # For all projects
   let(:label_admin_only) { I18n.t("activerecord.attributes.custom_field.admin_only") } # Admin-only
   let(:label_searchable) { I18n.t("activerecord.attributes.custom_field.searchable") } # Searchable
@@ -183,6 +184,12 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       expect(page).to have_field(label_section)
     else
       expect(page).to have_no_label(label_section)
+    end
+
+    if type == "Project"
+      expect(page).to have_field(label_has_comment)
+    else
+      expect(page).to have_no_label(label_has_comment)
     end
 
     if type == "Work package"

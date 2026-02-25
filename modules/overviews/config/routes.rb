@@ -13,7 +13,7 @@ Rails.application.routes.draw do
           get "project_life_cycle_sidebar" => :project_life_cycle_sidebar, as: :life_cycle_sidebar
         end
 
-        resources :project_custom_fields, only: %i[edit update], as: :custom_fields
+        resources :project_custom_fields, only: %i[show edit update], as: :custom_fields
       end
     end
   end
