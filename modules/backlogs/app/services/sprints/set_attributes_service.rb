@@ -30,14 +30,14 @@
 
 module Sprints
   class SetAttributesService < ::BaseServices::SetAttributes
+    private
+
     def sprint_name_from_predecessor
       return model.name unless model.new_record?
 
       predecessor = model.project.sprints.last
       next_name_in_succession(predecessor)
     end
-
-    private
 
     def set_default_attributes(_params)
       set_sprint_name
