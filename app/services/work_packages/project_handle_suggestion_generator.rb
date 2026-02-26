@@ -65,6 +65,10 @@ module WorkPackages
   class ProjectHandleSuggestionGenerator
     HANDLE_MAX_LENGTH = 10
     FALLBACK_HANDLE = "PROJ"
+    # Upper bound for suffix counter — prevents an infinite loop if used_handles
+    # is somehow saturated. 10 000 projects sharing an acronym is unreachable in
+    # practice; raising here indicates a serious bug in the caller's pre-seeding.
+    SUFFIX_LIMIT = 10_000
 
     # @return [Array<Hash>] one entry per project with a problematic identifier:
     #   { project:, current_identifier:, suggested_handle:, error_reason: }
@@ -84,7 +88,7 @@ module WorkPackages
         .select(:id, :name, :identifier)
         .where("length(identifier) > ? OR identifier ~ ?", HANDLE_MAX_LENGTH, "[^a-zA-Z0-9]")
         .to_a
-        .then { |problematic| generate_suggestions(problematic) }
+        .then { generate_suggestions(it) }
     end
 
     private
@@ -178,6 +182,7 @@ module WorkPackages
     # @param base [String] the acronym to start from (already ≤ HANDLE_MAX_LENGTH)
     # @param used_handles [Set<String>] handles already assigned in this batch
     # @return [String] a unique handle ≤ HANDLE_MAX_LENGTH
+    # @raise [RuntimeError] if no unique candidate is found within SUFFIX_LIMIT
     def unique_handle(base, used_handles)
       # Fast path: acronym is unique, no suffix needed.
       return base unless used_handles.include?(base)
@@ -186,6 +191,9 @@ module WorkPackages
       # never exceeds HANDLE_MAX_LENGTH characters.
       counter = 2
       loop do
+        raise "Could not find a unique handle for base '#{base}' within #{SUFFIX_LIMIT} attempts" \
+          if counter > SUFFIX_LIMIT
+
         suffix    = counter.to_s
         candidate = "#{base.slice(0, HANDLE_MAX_LENGTH - suffix.length)}#{suffix}"
         break candidate unless used_handles.include?(candidate)
