@@ -33,6 +33,10 @@ module API
     module UserNonWorkingDays
       class NonWorkingDaysByUserAPI < ::API::OpenProjectAPI
         resource :non_working_days do
+          after_validation do
+            guard_feature_flag :user_working_times
+          end
+
           params do
             optional :year, type: Integer, desc: "Filter by year. Defaults to the current year."
           end

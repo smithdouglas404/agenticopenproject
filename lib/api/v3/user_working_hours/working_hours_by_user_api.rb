@@ -33,6 +33,10 @@ module API
     module UserWorkingHours
       class WorkingHoursByUserAPI < ::API::OpenProjectAPI
         resource :working_hours do
+          after_validation do
+            guard_feature_flag :user_working_times
+          end
+
           get do
             records = ::UserWorkingHours.visible(current_user).for_user(@user).order(valid_from: :desc)
 
