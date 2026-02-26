@@ -55,6 +55,34 @@ class ProjectCustomField < CustomField
   end
 
   class << self
+    def visible(user = User.current, project: nil)
+      if user.admin?
+        all
+      elsif user.allowed_in_any_project?(:select_project_custom_fields) || user.allowed_globally?(:add_project)
+        where(admin_only: false)
+      else
+        where(admin_only: false).where(mappings_with_view_project_attributes_permission(user, project).exists)
+      end
+    end
+
+    def toggleable_ids_in_project_settings(project, user, custom_field_section_id)
+      toggleable_ids(
+        project:,
+        user:,
+        custom_field_section_id:,
+        options: { is_for_all: false }
+      ).first
+    end
+
+    def toggleable_ids_in_creation_wizard_settings(project, custom_field_section_id)
+      toggleable_ids(
+        project:,
+        custom_field_section_id:,
+        options: { is_required: false },
+        invert_options: { is_required: true }
+      )
+    end
+
     private
 
     # Returns an array with:

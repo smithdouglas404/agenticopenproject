@@ -41,7 +41,7 @@ sk:
         sprint:
           cannot_end_before_it_starts: "Šprint nemôže byť ukončený ešte pred jeho spustením."
   attributes:
-    task_type: "Task type"
+    task_type: "Typ úlohy"
   backlogs:
     add_new_story: "Nový príbeh"
     any: "akékoľvek"
@@ -146,8 +146,8 @@ sk:
   label_webcal: "Webcal Feed"
   label_wiki: "Wiki"
   permission_view_master_backlog: "View master backlog"
-  permission_view_taskboards: "View taskboards"
-  permission_select_done_statuses: "Select done statuses"
+  permission_view_taskboards: "Zobrazenie tabúľ úloh"
+  permission_select_done_statuses: "Výber stavov hotovo"
   permission_update_sprints: "Aktualizácia šprinty"
   points_accepted: "body prijaté"
   points_committed: "body odovzdané"

@@ -70,6 +70,12 @@ const shouldProcessLink = (link:HTMLAnchorElement) => {
  * dynamically loaded content.
  */
 export default class ExternalLinksController extends ApplicationController {
+  static values = {
+    enabled: Boolean
+  };
+
+  declare readonly enabledValue:boolean;
+
   connect() {
     useMutation(this, { attributes: true, childList: true, subtree: true, attributeFilter: ['target', 'href'] });
 
@@ -77,9 +83,9 @@ export default class ExternalLinksController extends ApplicationController {
     document.querySelectorAll<HTMLAnchorElement>(LINK_QUERY).forEach((link)=>{
       if (!shouldProcessLink(link)) return;
 
-      if (isLinkBlank(link)) updateBlankLink(link);
+      if (isLinkBlank(link)) this.updateBlankLink(link);
 
-      if (isLinkExternal(link)) updateExternalLink(link);
+      if (isLinkExternal(link)) this.updateExternalLink(link);
     });
   }
 
@@ -89,16 +95,16 @@ export default class ExternalLinksController extends ApplicationController {
         if (isElement(node)) {
           // Added element itself is an external link
           if (isLink(node) && shouldProcessLink(node)) {
-            if (isLinkBlank(node)) updateBlankLink(node);
-            if (isLinkExternal(node)) updateExternalLink(node);
+            if (isLinkBlank(node)) this.updateBlankLink(node);
+            if (isLinkExternal(node)) this.updateExternalLink(node);
           }
 
           node.querySelectorAll<HTMLAnchorElement>(LINK_QUERY).forEach((link)=>{
             if (!shouldProcessLink(link)) return;
 
-            if (isLinkBlank(link)) updateBlankLink(link);
+            if (isLinkBlank(link)) this.updateBlankLink(link);
 
-            if (isLinkExternal(link)) updateExternalLink(link);
+            if (isLinkExternal(link)) this.updateExternalLink(link);
           });
         }
       });
@@ -110,28 +116,29 @@ export default class ExternalLinksController extends ApplicationController {
         isLink(mutation.target) &&
         shouldProcessLink(mutation.target)
       ) {
-        if (mutation.attributeName === 'target' && isLinkBlank(mutation.target)) updateBlankLink(mutation.target);
-        if (mutation.attributeName === 'href' && isLinkExternal(mutation.target)) updateExternalLink(mutation.target);
+        if (mutation.attributeName === 'target' && isLinkBlank(mutation.target)) this.updateBlankLink(mutation.target);
+        if (mutation.attributeName === 'href' && isLinkExternal(mutation.target)) this.updateExternalLink(mutation.target);
       }
     });
   }
-}
 
-function updateBlankLink(link:HTMLAnchorElement) {
-  // Ensure accessibility description
-  attributeTokenList(link, 'aria-describedby').add(BLANK_LINK_DESCRIPTION_ID);
-}
-
-function updateExternalLink(link:HTMLAnchorElement) {
-  // Ensure external link behavior
-  link.target = '_blank';
-  attributeTokenList(link, 'rel').add('noopener', 'noreferrer');
-
-  // Capture external links through redirect page
-  // The backend controller will redirect directly if the feature is disabled
-  if (!link.dataset.allowExternalLink) {
-    const originalHref = link.href;
-    const basePath = window.appBasePath ?? '';
-    link.href = `${basePath}/external_redirect?url=${encodeURIComponent(originalHref)}`;
+  private updateBlankLink(link:HTMLAnchorElement) {
+    // Ensure accessibility description
+    attributeTokenList(link, 'aria-describedby').add(BLANK_LINK_DESCRIPTION_ID);
   }
+
+  private updateExternalLink(link:HTMLAnchorElement) {
+    // Ensure external link behavior
+    link.target = '_blank';
+    attributeTokenList(link, 'rel').add('noopener', 'noreferrer');
+
+    // Capture external links through redirect page
+    // The backend controller will redirect directly if the feature is disabled
+    if (this.enabledValue && !link.dataset.allowExternalLink) {
+      const originalHref = link.href;
+      const basePath = window.appBasePath ?? '';
+      link.href = `${basePath}/external_redirect?url=${encodeURIComponent(originalHref)}`;
+    }
+  }
+
 }

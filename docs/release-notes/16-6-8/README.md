@@ -18,7 +18,17 @@ release_date: 2026-02-18
 
 ## Security fixes
 
+### CVE-2026-27006 - Path Traversal on OpenProject BIM Edition leads to Arbitrary File upload on BCF module, resulting in possible RCE when using file-based caching
 
+An authenticated attacker with BCF module access can write arbitrary files to any writable directory on the server through a path traversal vulnerability in the BCF import functionality. For docker-compose based installations, this can be expanded to a remote code execution using cache deserialization.
+
+
+
+This vulnerability was reported by user shafouzzz as part of the [YesWeHack.com OpenProject Bug Bounty program](https://yeswehack.com/programs/openproject), sponsored by the European Commission.
+
+
+
+For more information, please see the [GitHub advisory #GHSA-4fvm-rrc8-mgch](https://github.com/opf/openproject/security/advisories/GHSA-4fvm-rrc8-mgch)
 
 ### CVE-2026-27019 - Path Traversal via Incoming Email Attachments Leads to Arbitrary File Write and RCE
 

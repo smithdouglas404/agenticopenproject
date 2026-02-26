@@ -40,6 +40,7 @@ RSpec.describe McpTools::ListStatuses, with_flag: { mcp_server: true } do
 
   let(:access_token) { create(:oauth_access_token, scopes: "mcp", resource_owner: user) }
   let(:user) { create(:user) }
+  let(:permissions) { %i[view_work_packages] }
   let(:request_body) do
     {
       jsonrpc: "2.0",
@@ -61,6 +62,7 @@ RSpec.describe McpTools::ListStatuses, with_flag: { mcp_server: true } do
   let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
 
   before do
+    create(:member, user:, roles: [create(:project_role, permissions: permissions)])
     server_config.save!
     tool_config.save!
   end
@@ -82,6 +84,15 @@ RSpec.describe McpTools::ListStatuses, with_flag: { mcp_server: true } do
       let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
 
       it_behaves_like "MCP error response"
+    end
+
+    context "when lacking permission to see statuses" do
+      let(:permissions) { [] }
+
+      it "finds no statuses" do
+        subject
+        expect(parsed_results.dig("structuredContent", "count")).to eq(0)
+      end
     end
   end
 

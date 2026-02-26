@@ -124,7 +124,10 @@ class Storages::Admin::ProjectStoragesController < Projects::SettingsController
   end
 
   def destroy_info
-    respond_with_dialog Storages::ProjectStorages::Projects::DestroyConfirmationDialogComponent.new(storage: @project_storage)
+    respond_with_dialog Storages::ProjectStorages::DestroyConfirmationDialogComponent.new(
+      project_storage: @project_storage,
+      target: :project
+    )
   end
 
   private

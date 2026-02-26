@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,36 +28,34 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "api/v3/types/type_collection_representer"
-require "api/v3/types/type_representer"
+require "spec_helper"
 
-module API
-  module V3
-    module Types
-      class TypesAPI < ::API::OpenProjectAPI
-        resources :types do
-          after_validation do
-            authorize_in_any_project(%i[view_work_packages manage_types])
-          end
+RSpec.describe RecurringMeetingInterimResponse do
+  let(:project) { create(:project, enabled_module_names: %w[meetings]) }
+  let(:recurring_meeting) { create(:recurring_meeting, project:) }
+  let(:user) { create(:user) }
 
-          get do
-            types = Type.includes(:color).visible
-            TypeCollectionRepresenter
-              .new(types,
-                   self_link: api_v3_paths.types,
-                   current_user:)
-          end
+  describe "validations" do
+    describe "#start_time_must_be_valid_occurrence" do
+      context "when start_time matches an occurrence of the recurring meeting" do
+        let(:start_time) { recurring_meeting.start_time + 7.days }
 
-          route_param :id, type: Integer, desc: "Type ID" do
-            after_validation do
-              type = Type.visible.find(params[:id])
-              @representer = TypeRepresenter.new(type, current_user:)
-            end
+        it "is valid" do
+          response = described_class.new(recurring_meeting:, user:, start_time:,
+                                         participation_status: :accepted)
+          expect(response).to be_valid
+        end
+      end
 
-            get do
-              @representer
-            end
-          end
+      context "when start_time does not match any occurrence" do
+        let(:start_time) { recurring_meeting.start_time + 1.hour }
+
+        it "is invalid" do
+          response = described_class.new(recurring_meeting:, user:, start_time:,
+                                         participation_status: :accepted)
+          expect(response).not_to be_valid
+          expect(response.errors[:start_time])
+            .to include("is not a valid occurrence time for this recurring meeting")
         end
       end
     end

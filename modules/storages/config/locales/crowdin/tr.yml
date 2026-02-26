@@ -110,13 +110,13 @@ tr:
       one_drive_sync_service:
         create_folder: 'Yönetilen Proje Klasörü Oluşturma:'
         ensure_root_folder_permissions: 'Temel Klasör İzinlerini Ayarlayın:'
-        hide_inactive_folders: 'Hide Inactive Folders Step:'
+        hide_inactive_folders: 'Etkin Olmayan Klasörleri Gizle Adımı:'
         remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Yönetilen proje klasörü isimlendirmesi:'
       sharepoint_sync_service:
         create_folder: 'Yönetilen Proje Klasörü Oluşturma:'
         ensure_root_folder_permissions: 'Temel Klasör İzinlerini Ayarlayın:'
-        hide_inactive_folders: 'Hide Inactive Folders Step:'
+        hide_inactive_folders: 'Etkin Olmayan Klasörleri Gizle Adımı:'
         remote_folders: 'Read contents of the drive root folder:'
         rename_project_folder: 'Yönetilen proje klasörü isimlendirmesi:'
     errors:
@@ -265,7 +265,7 @@ tr:
       storage_audience_idp: Using access token obtained by identity provider during login, regardless of audience.
       storage_oauth: Depolama OAuth
       storage_provider: Depolama sağlayıcısı
-      token_exchange: Token Exchange
+      token_exchange: Anahtar takası
     health:
       actions:
         download_report: İndir
@@ -276,22 +276,22 @@ tr:
         ampf_configuration:
           client_folder_creation: Otomatik klasör oluşturma
           client_folder_removal: Otomatik klasör silme
-          drive_contents: Drive content
-          files_request: Fetching team folder files
+          drive_contents: Sücürü içeriği
+          files_request: Takım klasöründeki dosyaları getir
           header: Otomatik olarak yönetilen proje klasörleri
-          team_folder_app: 'Dependency: Team Folders'
-          team_folder_contents: Team folder content
-          team_folder_presence: Team folder exists
-          userless_access: Server-side request authentication
+          team_folder_app: 'Bağımlılık: Ekip Klasörleri'
+          team_folder_contents: Ekip klasörü içeriği
+          team_folder_presence: Ekip klasörü mevcut
+          userless_access: Sunucu tarafı kimlik doğrulaması
         authentication:
           existing_token: Kullanıcı anahtarı
           header: Kimlik doğrulaması
           non_provisioned_user: IDP tarafından sağlanan kullanıcı
-          offline_access: Configured OIDC offline_access scope
+          offline_access: Yapılandırılmış OIDC offline_access kapsamı
           provider_capabilities: Sağlayıcı yetenekleri
           provisioned_user_provider: OIDC tarafından sağlanan kullanıcı
           token_negotiable: Kullanıcı anahtarı özellikleri
-          user_bound_request: User-based request authentication
+          user_bound_request: Kullanıcı tabanlı kimlik doğrulaması
         base_configuration:
           capabilities_request: Uzak dosya depolama özellikleri
           client_id: İstemci ID
@@ -322,9 +322,9 @@ tr:
         nc_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
         nc_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         nc_oauth_token_missing: OpenProject cannot test the user level communication with Nextcloud as the user did not yet link their Nextcloud account.
-        nc_team_folder_not_found: The team folder could not be found.
-        nc_unexpected_content: Unexpected content found in the managed team folder.
-        nc_userless_access_denied: The configured app password is invalid.
+        nc_team_folder_not_found: Ekip klasörü bulunamadı.
+        nc_unexpected_content: Yönetilen ekip klasöründe beklenmeyen içerik bulundu.
+        nc_userless_access_denied: Yapılandırılan uygulama parolası geçersiz.
         not_configured: The connection could not be validated. Please finish configuration first.
         od_client_cant_delete_folder: The client is having trouble deleting folders. Please check the setup documentation for your storage.
         od_client_write_permission_missing: The client seems to have write permissions missing. Please check the setup documentation for your storage.
@@ -511,10 +511,10 @@ tr:
         members_connection_status: Üye bağlantı durumu
         new: Bu projeye bir dosya deposu ekle
       project_storage_members:
-        subtitle: Check the connection status for the storage %{storage_name_link} of all project members.
+        subtitle: Tüm proje üyelerinin %{storage_name_link} depolama alanı için bağlantı durumunu kontrol edin.
         title: Üyü bağlantı durumu
       project_storages:
-        delete: Remove file storage from project?
+        delete: Dosya depolama alanını projeden kaldırın?
     permission_header_explanation: 'Harici depolardaki dosya izinleri yalnızca otomatik olarak yönetilen proje klasörlerindeki klasörlere ve dosyalara uygulanır. Tüm dosya izinlerinin tüm depolama sağlayıcıları tarafından desteklenmediğini unutmayın. Daha fazla bilgi için lütfen <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>dosya depolama izinleriyle</a> ilgili belgeleri kontrol edin.'
     provider_types:
       label: Sağlayıcı türü
@@ -529,7 +529,7 @@ tr:
         name: OneDrive
         name_placeholder: ör. OneDrive
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: OpenProject erişim yönetimli belge kütüphanesi
         label_oauth_client_id: Azure OAuth Application (client) ID
         label_oauth_client_secret: Azure OAuth Client Secret Value
         name: SharePoint
