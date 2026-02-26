@@ -92,8 +92,9 @@ en:
         confirmation: "Are you sure you want to delete this Enterprise edition support token?"
       create_dialog:
         title: "Add Enterprise token"
-        type_token_text: "Type support token text"
+        type_token_text: "Your Enterprise token text"
         token_placeholder: "Paste your Enterprise edition support token here"
+        token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
       add_token: "Upload an Enterprise edition support token"
       replace_token: "Replace your current support token"
       order: "Order Enterprise on-premises edition"

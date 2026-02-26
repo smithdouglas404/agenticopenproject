@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,34 +26,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
 require "spec_helper"
 
-require_relative "shared_model"
-
-RSpec.describe Grids::MyPage do
+RSpec.describe Grids::Overview do
   let(:instance) { described_class.new(row_count: 5, column_count: 5) }
-  let(:user) { build_stubbed(:user) }
 
-  it_behaves_like "grid attributes"
-
-  context "attributes" do
-    it "#user" do
-      instance.user = user
-      expect(instance.user)
-        .to eql user
-    end
-  end
-
-  context "altering widgets" do
+  context "when altering widgets" do
     shared_examples_for "removing a query widget" do |identifier|
-      let(:query_user) { create(:user) }
+      let(:project) { create(:project) }
       let(:query) do
         create(:query,
-               user: query_user,
-               project: nil)
+               public: true,
+               project:)
       end
+
+      current_user { build_stubbed(:user) }
 
       before do
         widget = Grids::Widget.new(identifier:,
@@ -65,8 +56,12 @@ RSpec.describe Grids::MyPage do
         instance.save!
       end
 
-      context "when the query is owned by the user" do
-        current_user { query_user }
+      context "when the current user has the permission to manage public queries" do
+        before do
+          mock_permissions_for(current_user) do |mock|
+            mock.allow_in_project :manage_public_queries, project:
+          end
+        end
 
         it "removes the widget's query" do
           instance.widgets = []
@@ -76,7 +71,7 @@ RSpec.describe Grids::MyPage do
         end
       end
 
-      context "when the query is not owned by the user" do
+      context "when the current user lacks the permission to manage public queries" do
         current_user { create(:user) }
 
         it "removes the widget but keeps the query" do
@@ -89,9 +84,6 @@ RSpec.describe Grids::MyPage do
     end
 
     it_behaves_like "removing a query widget", "work_packages_table"
-    it_behaves_like "removing a query widget", "work_packages_assigned"
-    it_behaves_like "removing a query widget", "work_packages_accountable"
-    it_behaves_like "removing a query widget", "work_packages_watched"
-    it_behaves_like "removing a query widget", "work_packages_created"
+    it_behaves_like "removing a query widget", "work_packages_graph"
   end
 end
