@@ -20,7 +20,7 @@ lv:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: Pašreizējais atbildīgais
-      status: Statuss
+      status: Kanban
       version: Versija
       subproject: Subproject
       subtasks: Parent-child

@@ -20,7 +20,7 @@ ro:
       action: "Panou acțiune (%{attribute})"
     board_type_attributes:
       assignee: Executant
-      status: Stare
+      status: Kanban
       version: Versiune
       subproject: Subproiect
       subtasks: Părinte-copil

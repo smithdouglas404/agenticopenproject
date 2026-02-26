@@ -122,7 +122,15 @@ ru:
   error_notification_with_errors: "Не удалось отправить уведомление. Следующие получатели не могут быть уведомлены: %{recipients}"
   label_meeting: "Совещание"
   label_meeting_plural: "Совещания"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Новое совещание"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Новое однократное совещание"
   label_meeting_new_recurring: "Новое повторяющееся совещание"
   label_meeting_create: "Создать совещание"
@@ -289,6 +297,9 @@ ru:
         heading: "Удалить это совещание?"
         confirmation_message_html: >
           Это действие не обратимо. Пожалуйста, действуйте с осторожностью.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "Отменить это событие"
         heading: "Отменить это событие?"
@@ -492,6 +503,7 @@ ru:
     end_series_dialog:
       title: "Завершить серию совещаний"
   notice_successful_notification: "Обновление календаря отправлено всем участникам по электронной почте"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: Не установлен часовой пояс и применена %{zone}. Чтобы выбрать часовой пояс, пожалуйста, нажмите сюда.
   notice_meeting_updated: "Эта страница была обновлена кем-то другим. Перезагрузите страницу, чтобы просмотреть изменения."
   permission_create_meetings: "Создание совещания"
@@ -506,6 +518,8 @@ ru:
   text_duration_in_hours: "Длительность в часах"
   text_in_hours: "в часах"
   text_meeting_agenda_for_meeting: 'Повестка дня встречи «%{meeting}»'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Удалить будущие события?"
   text_meeting_series_end_early: "Завершение серии удалит любые будущие открытые или запланированные события совещания"
   text_meeting_closing_are_you_sure: "Вы уверены, что хотите закрыть повестку дня собрания?"
@@ -611,6 +625,9 @@ ru:
   text_meeting_in_progress_dropdown_description: "Итоги совещания, такие как информация или решения, принятые в ходе совещания."
   text_meeting_closed_dropdown_description: "Совещание закрыто. Вы больше не можете изменять пункты повестки дня или его результаты."
   text_meeting_draft_banner: "В настоящее время Вы находитесь в режиме черновика. Это совещание не будет рассылать никаких обновлений календаря или приглашений, даже если Вы измените детали совещания или добавите/удалите участников."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "Открыть это совещание и разослать приглашения?"
   text_exit_draft_mode_dialog_subtitle: "Вы не можете вернуться в режим черновика после того, как запланировали совещание."
   text_exit_draft_mode_dialog_template_title: "Открыть первое совещание из этой серии?"

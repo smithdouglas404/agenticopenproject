@@ -39,7 +39,7 @@ class MeetingsController < ApplicationController
   before_action :set_activity, only: %i[history]
   before_action :find_copy_from_meeting, only: %i[create]
   before_action :convert_params, only: %i[create update]
-  before_action :prevent_template_destruction, only: :destroy
+  before_action :prevent_series_template_destruction, only: :destroy
 
   helper :watchers
   include MeetingsHelper
@@ -74,7 +74,7 @@ class MeetingsController < ApplicationController
         if @meeting.state == "cancelled"
           render_404
         else
-          render(Meetings::ShowComponent.new(meeting: @meeting), layout: true)
+          render(Meetings::ShowComponent.new(meeting: @meeting, state: show_edit_state), layout: true)
         end
       end
     end
@@ -155,7 +155,8 @@ class MeetingsController < ApplicationController
   def new_dialog
     respond_with_dialog Meetings::Index::DialogComponent.new(
       meeting: @meeting,
-      project: @project
+      project: @project,
+      copy_from: @copy_from
     )
   end
 
@@ -336,10 +337,10 @@ class MeetingsController < ApplicationController
     @meeting.toggle!(:notify)
 
     # Reload to get the updated value
-    @meeting.recurring_meeting.template.reload if @meeting.template?
+    @meeting.recurring_meeting.template.reload if @meeting.series_template?
 
     if @meeting.notify?
-      if @meeting.template?
+      if @meeting.series_template?
         handle_series_notification
       else
         handle_notification(type: :toggle_notifications)
@@ -433,7 +434,7 @@ class MeetingsController < ApplicationController
     end
   end
 
-  def build_meeting
+  def build_meeting # rubocop:disable Metrics/AbcSize
     meeting =
       if params[:type] == "recurring"
         RecurringMeeting.new
@@ -447,6 +448,9 @@ class MeetingsController < ApplicationController
       .call(project: @project)
 
     @meeting = call.result
+
+    # When coming from the "Create from template" button, load the template to hide the form field
+    @copy_from = Meeting.onetime_templates.visible.find_by(id: params[:template_id]) if params[:template_id].present?
   end
 
   def global_upcoming_meetings
@@ -484,6 +488,9 @@ class MeetingsController < ApplicationController
 
     # Recurring meeting occurrences can only be copied as one-time meetings
     @converted_params[:recurring_meeting_id] = nil
+
+    # Onetime templates can only be copied as one-time meetings
+    @converted_params[:template] = false if @copy_from&.onetime_template?
   end
 
   def meeting_params
@@ -534,22 +541,44 @@ class MeetingsController < ApplicationController
   end
 
   def find_copy_from_meeting
-    copied_from_meeting_id = params[:copied_from_meeting_id] || params[:meeting][:copied_from_meeting_id]
+    # Check for template selection from form submission
+    template_id = params[:meeting][:template_id]
+    if template_id.present?
+      @copy_from = Meeting.onetime_templates.visible.find_by(id: template_id)
+      return
+    end
+
+    # Check for regular copy
+    copied_from_meeting_id = params[:meeting][:copied_from_meeting_id]
     return unless copied_from_meeting_id
 
     @copy_from = Meeting.visible.find(copied_from_meeting_id)
   end
 
   def copy_attributes
-    {
-      copy_agenda: copy_param(:copy_agenda),
-      copy_attachments: copy_param(:copy_attachments),
-      send_notifications: @converted_params[:send_notifications]
-    }
+    if @copy_from&.onetime_template?
+      {
+        copy_agenda: true,
+        copy_attachments: true,
+        send_notifications: @converted_params[:send_notifications]
+      }
+    elsif @copy_from&.series_template?
+      {
+        copy_agenda: true,
+        copy_attachments: false,
+        send_notifications: @converted_params[:send_notifications]
+      }
+    else
+      {
+        copy_agenda: copy_param(:copy_agenda),
+        copy_attachments: copy_param(:copy_attachments),
+        send_notifications: @converted_params[:send_notifications]
+      }
+    end
   end
 
-  def prevent_template_destruction
-    render_400 if @meeting.templated?
+  def prevent_series_template_destruction
+    render_400 if @meeting.series_template?
   end
 
   def redirect_to_project
@@ -612,5 +641,9 @@ class MeetingsController < ApplicationController
     end
 
     render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_notification))
+  end
+
+  def show_edit_state
+    params[:state] == "edit" ? :edit : :show
   end
 end

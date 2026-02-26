@@ -230,6 +230,15 @@ ro:
     errors:
       validation:
         start_time_different_date: "Partea de dată din startTime (%{start_time}) trebuie să fie aceeași cu data spentOn (%{spent_on})."
+  costs:
+    widgets:
+      actual_costs:
+        title: "Actual costs by month"
+        blankslate:
+          heading: "Start tracking your time and costs"
+          description: "Get an overview of your costs and logged time to monitor progress of your project"
+          action: "Log time"
+        view_details: "View actual costs details"
   ee:
     features:
       time_entry_time_restrictions: Necesită urmărirea exactă a timpului

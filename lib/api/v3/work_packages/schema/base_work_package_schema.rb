@@ -56,7 +56,6 @@ module API
 
           def writable?(property)
             property = property.to_s
-            return false if property == "subject" && type&.replacement_pattern_defined_for?(:subject)
 
             # Special case for milestones + date property
             property = "start_date" if property == "date" && milestone?

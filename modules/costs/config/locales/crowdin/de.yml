@@ -226,6 +226,15 @@ de:
     errors:
       validation:
         start_time_different_date: "Der Datumsteil von startTime (%{start_time}) muss mit dem Datum von spentOn (%{spent_on}) übereinstimmen."
+  costs:
+    widgets:
+      actual_costs:
+        title: "Actual costs by month"
+        blankslate:
+          heading: "Start tracking your time and costs"
+          description: "Get an overview of your costs and logged time to monitor progress of your project"
+          action: "Log time"
+        view_details: "View actual costs details"
   ee:
     features:
       time_entry_time_restrictions: Genaue Zeiterfassung erforderlich machen

@@ -156,6 +156,10 @@ class Sprint < Version
     Impediment.default_scope.where(version_id: self, project_id: project)
   end
 
+  def settings(project)
+    version_settings.find { it.project_id == project.id || it.project_id.nil? }
+  end
+
   private
 
   def create_wiki_page(page_title, author: User.current)

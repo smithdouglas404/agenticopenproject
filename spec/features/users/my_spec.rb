@@ -188,15 +188,11 @@ RSpec.describe "my", :js do
       end
 
       it "does not allow change of name and email but other fields can be changed" do
-        email_field = find_field("user[mail]", disabled: true)
-        firstname_field = find_field("user[firstname]", disabled: true)
-        lastname_field = find_field("user[lastname]", disabled: true)
+        expect(page).to have_field("user[mail]", readonly: true)
+        expect(page).to have_field("user[firstname]", readonly: true)
+        expect(page).to have_field("user[lastname]", readonly: true)
 
-        expect(email_field).to be_disabled
-        expect(firstname_field).to be_disabled
-        expect(lastname_field).to be_disabled
-
-        expect(page).to have_text(I18n.t("user.text_change_disabled_for_ldap_login"), count: 3)
+        expect(page).to have_text(I18n.t("user.text_change_disabled_for_provider_login"), count: 3)
 
         fill_in "Hobbies", with: "Ruby, DCS"
         click_on "Update profile"

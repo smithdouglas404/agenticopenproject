@@ -192,8 +192,8 @@ module OpenProject
 
       before do
         allow(::I18n)
-          .to receive(:t)
-          .with("translation_with_a_link")
+          .to receive(:translate)
+          .with("translation_with_a_link", *any_args)
           .and_return("There is a [link](url_1) in this translation! Maybe even [two](url_2)?")
       end
 

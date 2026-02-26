@@ -20,7 +20,7 @@ nl:
       action: "Actiebord (%{attribute})"
     board_type_attributes:
       assignee: Toegewezene
-      status: Status
+      status: Kanban
       version: Versie
       subproject: Subproject
       subtasks: Ouder-kind

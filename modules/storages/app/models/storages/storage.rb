@@ -57,7 +57,7 @@ module Storages
     validates :name, uniqueness: { case_sensitive: false }
 
     scope :visible, lambda { |user = User.current|
-      if user.allowed_in_any_project?(:manage_files_in_project)
+      if user.admin? || user.allowed_in_any_project?(:manage_files_in_project)
         all
       else
         where(project_storages: ProjectStorage.where(project: Project.allowed_to(user, :view_file_links)))

@@ -116,7 +116,15 @@ zh-CN:
   error_notification_with_errors: "发送通知失败。无法通知下列收件人：%{recipients}"
   label_meeting: "会议"
   label_meeting_plural: "会议"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "新增会议"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "新的动态会议"
   label_meeting_new_recurring: "新的定期会议"
   label_meeting_create: "创建会议"
@@ -274,6 +282,9 @@ zh-CN:
         heading: "删除这个会议？"
         confirmation_message_html: >
           此操作不可逆。请谨慎处理。
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "取消会议事件"
         heading: "取消此会议事件？"
@@ -471,6 +482,7 @@ zh-CN:
     end_series_dialog:
       title: "结束会议系列"
   notice_successful_notification: "已向所有与会者发送电子邮件日历更新"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: 没有设定时区，预设时区为 %{zone}。要选择您的时区，请单击此处。
   notice_meeting_updated: "此页面已被其他人更新。重新加载以查看更改。"
   permission_create_meetings: "创建会议"
@@ -485,6 +497,8 @@ zh-CN:
   text_duration_in_hours: "持续时间（单位：小时）"
   text_in_hours: "小时"
   text_meeting_agenda_for_meeting: '“%{meeting}”会议议程'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "删除未来发生的事件？"
   text_meeting_series_end_early: "结束系列将删除任何将来的公开会议或预定会议的事件"
   text_meeting_closing_are_you_sure: "确定要关闭该会议议程吗？"
@@ -590,6 +604,9 @@ zh-CN:
   text_meeting_in_progress_dropdown_description: "记录会议期间的信息需求或决策等成果。"
   text_meeting_closed_dropdown_description: "此会议已关闭。您不能再修改议程项目或成果。"
   text_meeting_draft_banner: "您目前处于草稿模式。即使您更改了会议详细信息或添加/移除了参与者，此会议也不会发送任何日历更新或邀请。"
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "是否打开此会议并发送邀请？"
   text_exit_draft_mode_dialog_subtitle: "会议安排完成后，您将无法返回到草稿模式。"
   text_exit_draft_mode_dialog_template_title: "是否打开此会议系列的第一个会议？"

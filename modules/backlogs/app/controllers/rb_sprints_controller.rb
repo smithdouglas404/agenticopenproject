@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,30 +28,64 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Responsible for exposing sprint CRUD. It SHOULD NOT be used for displaying the
-# taskboard since the taskboard is a management interface used for managing
-# objects within a sprint. For info about the taskboard, see
-# RbTaskboardsController
 class RbSprintsController < RbApplicationController
-  def update
-    result  = @sprint.update(params.permit(:name,
-                                           :start_date,
-                                           :effective_date))
-    status  = (result ? 200 : 400)
+  include OpTurbo::ComponentStream
 
-    respond_to do |format|
-      format.html { render partial: "sprint", status:, object: @sprint }
-    end
+  def edit_name
+    update_header_component_via_turbo_stream(state: :edit)
+    respond_with_turbo_streams
   end
 
-  # Overwrite load_sprint_and_project to load the sprint from the :id instead of
-  # :sprint_id
-  def load_sprint_and_project
-    if params[:id]
-      @sprint = Sprint.visible.find(params[:id])
-      @project = @sprint.project
-    elsif params[:project_id]
-      @project = Project.visible.find(params[:project_id])
+  def show_name
+    update_header_component_via_turbo_stream(state: :show)
+    respond_with_turbo_streams
+  end
+
+  def update
+    call = Versions::UpdateService
+      .new(user: current_user, model: @sprint)
+      .call(attributes: sprint_params)
+
+    if call.success?
+      status = 200
+      state = :show
+      @sprint = call.result
+      render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_update))
+    else
+      status = 422
+      state = :edit
+      render_error_flash_message_via_turbo_stream(
+        message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+      )
     end
+
+    update_header_component_via_turbo_stream(state:)
+    respond_with_turbo_streams(status:)
+  end
+
+  private
+
+  def update_header_component_via_turbo_stream(state: :show)
+    @backlog = Backlog.for(sprint: @sprint, project: @project)
+
+    update_via_turbo_stream(
+      component: Backlogs::BacklogHeaderComponent.new(
+        backlog: @backlog,
+        project: @project,
+        state:
+      )
+    )
+  end
+
+  # Overrides load_sprint_and_project to load the sprint from :id instead of :sprint_id
+  def load_sprint_and_project
+    @sprint = Sprint.visible.find(params[:id])
+    @project = @sprint.project
+    # This overrides sprint's project if we set another project, say a subproject
+    @project = Project.visible.find(params[:project_id])
+  end
+
+  def sprint_params
+    params.expect(sprint: %i[name start_date effective_date])
   end
 end

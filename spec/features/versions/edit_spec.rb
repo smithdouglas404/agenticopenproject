@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "version edit" do
+RSpec.describe "version edit", :js do
   let(:user) do
     create(:user,
            member_with_permissions: { version.project => %i[manage_versions view_work_packages] })
@@ -85,7 +85,7 @@ RSpec.describe "version edit" do
 
       # Should stay on the form page and show validation error
       expect(page).to have_text("Version 2.1")
-      expect(page).to have_css(".Banner--error", text: /Release Notes can't be blank./)
+      expect(page).to have_field(custom_field.name, with: "", validation_error: "Value can't be blank")
 
       # Now provide a valid value
       fill_in custom_field.name, with: "Security updates and bug fixes"

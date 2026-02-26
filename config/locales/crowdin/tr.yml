@@ -109,6 +109,180 @@ tr:
       explanation:
         text: "Bir kullanıcının bireysel eylemleri (örneğin, bir iş paketini iki kez güncelleme), yaş farkı belirtilen zaman aralığından azsa tek bir eylemde toplanır. Uygulama içinde tek bir eylem olarak görüntülenecektir. Bu aynı zamanda gönderilen e-posta sayısını azaltarak bildirimleri aynı süre kadar geciktirecek ve ayrıca %{webhook_link} gecikmesini etkileyecektir."
         link: "webhook"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from Jira server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after but not afterwards."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          reverted: "Reverted"
+          completed: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              one: "1 project"
+              other: "%{count} projects"
+            issues:
+              one: "1 issue"
+              other: "%{count} issues"
+            work_packages:
+              one: "1 work package"
+              other: "%{count} work packages"
+            types:
+              one: "1 type"
+              other: "%{count} types"
+            statuses:
+              one: "1 status"
+              other: "%{count} statuses"
+            users:
+              one: "1 user"
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Click the button below to query the host to see what data is available to import."
+              button_fetch: "Check available data from host"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host URL offers for import and what this tools is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              label_importing: "Currently importing"
+              elements:
+                relations: "Relations between issues"
+                workflows: "Custom workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "Permissions, roles"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              label_finalizing_progress: "Finalizing import..."
+              label_finalized: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
         description: "MCP (Model Bağlam Protokolü), AI ajanlarının bu OpenProject sisteminde sunulan araç ve kaynakları kullanıcılara erişilebilir kılmasını sağlar."
@@ -123,6 +297,16 @@ tr:
       server_form:
         description_caption: "MCP sunucusunun, ona bağlanan diğer uygulamalara nasıl tanımlanacağı."
         title_caption: "MCP sunucusuna bağlanan uygulamalara gösterilen kısa başlık."
+        tool_response_format: "Araç yanıt formatı"
+        tool_response_format_content_only_label: "Yalnızca içerik"
+        tool_response_format_content_only_caption: >
+          Bu örneğe bağlanan MCP istemcileri yapılandırılmış içeriği desteklemiyorsa bunu seçin. Araç yanıtları yalnızca düz metin içeriği içerecek ve yapılandırılmış sürümü dışarıda bırakacaktır.
+        tool_response_format_full_label: "Dolu"
+        tool_response_format_full_caption: >
+          En uyumlu seçenek. Araç yanıtları hem normal hem de yapılandırılmış içerik içerecek ve MCP istemcilerinin hangi biçimi okumak istediklerini seçmelerine olanak tanıyacaktır. Bu, dil modelinin işlemesi gereken belirteç sayısını artırabilir, potansiyel olarak maliyeti artırabilir ve performansı düşürebilir.
+        tool_response_format_structured_only_label: "Yalnızca yapılandırılmış içerik"
+        tool_response_format_structured_only_caption: >
+          Bu örneğe bağlanan MCP istemcilerinin yapılandırılmış içeriği desteklediğinden eminseniz bunu seçin. Araç yanıtları yalnızca yapılandırılmış içeriği içerecek ve metin temsilini dışarıda bırakacaktır.
       update:
         failure: "MCP yapılandırması güncellenemedi."
         success: "MCP yapılandırması başarıyla güncellendi."
@@ -362,7 +546,7 @@ tr:
     contained_in_type: "Kullanıldığı tipler"
     confirm_destroy_option: "Bir seçeneğin silinmesi, kullanıldığı her yerden (örneğin iş paketleri) silinmesine neden olur. Silmek istediğinizden emin misiniz?"
     reorder_alphabetical: "Değerleri alfabetik olarak yeniden sıralayın"
-    reorder_confirmation: "Uyarı: Mevcut değerlerin sırası kaybolacak. Devam et?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Öncelikle iş paketi veya proje seçimi gereklidir"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -389,6 +573,14 @@ tr:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: Şu anda özel bir alan bulunmamakta.
       no_results_content_text: Yeni bir özel alan oluştur
@@ -1039,7 +1231,6 @@ tr:
         title: "İş paketi paylaşımı için iş akışı eksik"
         message: "'İş paketi düzenleyicisi' rolü için hiçbir iş akışı yapılandırılmamıştır. Bir iş akışı olmadan, paylaşılan kullanıcı iş paketinin durumunu değiştiremez. İş akışları kopyalanabilir. Bir kaynak türü (örn. 'Görev') ve kaynak rolü (örn. 'Üye') seçin. Ardından hedef türleri seçin. Başlangıç olarak, tüm türleri hedef olarak seçebilirsiniz. Son olarak, hedef olarak 'İş paketi düzenleyicisi' rolünü seçin ve 'Kopyala' düğmesine basın. Varsayılanları bu şekilde oluşturduktan sonra, diğer tüm roller için yaptığınız gibi iş akışlarında ince ayar yapın."
         link_message: "İş akışlarını yönetim alanından yapılandırın."
-    templated_subject_hint: '%{type} türü aracılığıyla otomatik olarak oluşturulur'
     summary:
       reports:
         category:
@@ -1164,6 +1355,11 @@ tr:
         dependencies: "Bağımlılıklar"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Paylaşım"
+        finish_date: "Bitiş tarihi"
+      jira_import:
+        projects: "Projects"
       announcements:
         show_until: "Son yayın tarihi"
       attachment:
@@ -1182,7 +1378,6 @@ tr:
         scim_clients: "SCIM istemcileri"
       calculated_value_error:
         error_code: "Hata kodu"
-        customized: "Özelleştirilmiş"
         customized_id: "Özelleştirilmiş Kimlik"
         customized_type: "Özelleştirilmiş tür"
       capability:
@@ -1210,6 +1405,7 @@ tr:
         regexp: "Düzenli ifade"
         searchable: "Aranabilir"
         admin_only: "Yalnızca yönetici"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "Değer"
       design_color:
@@ -1538,6 +1734,7 @@ tr:
         not_available: "Sistem yapılandırması nedeniyle kullanılamaz.\n"
         not_deletable: "kaldırılamadı."
         not_current_user: "mevcut kullanıcı değil."
+        only_one_active_sprint_allowed: "proje başına yalnızca bir aktif sprint'e izin verilir."
         not_found: "bulunamadı."
         not_a_date: "geçerli bir tarih değil."
         not_a_datetime: "geçerli bir zaman değil."
@@ -1901,6 +2098,8 @@ tr:
               blank: "Please provide a token name"
               in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "Lütfen aşağıdaki alanları kontrol edin:"
         header:
@@ -1919,6 +2118,7 @@ tr:
       comment: "Yorum"
       custom_action: "Özel eylem"
       custom_field: "Özel alan"
+      customized: "Customized"
       "doorkeeper/application": "OAuth uygulaması"
       enterprise_token:
         one: "Kurumsal anahtar"
@@ -1950,6 +2150,9 @@ tr:
       scim_client:
         one: "SCIM istemcisi"
         other: "SCIM istemcileri"
+      jira:
+        one: "Jira"
+        other: "Jira"
       status: "İş paketi durumu"
       token/api:
         one: Erişim simgesi
@@ -2101,6 +2304,7 @@ tr:
     role: "Rol"
     roles: "Yetkiler"
     search: "Ara"
+    sprint: "Sprint"
     start_date: "Başlangıç tarihi"
     status: "Durum"
     state: "Durum"
@@ -2890,6 +3094,7 @@ tr:
     caused_changes:
       dates_changed: "Tarihler değişti"
       default_attribute_written: "Salt okunur öznitelikler yazıldı"
+      import: "Imported"
       progress_mode_changed_to_status_based: "İlerleme hesaplaması güncellendi"
       status_changed: "Durum '%{status_name}'"
       system_update: "OpenProject sistem güncellemesi:"
@@ -2897,6 +3102,15 @@ tr:
       total_percent_complete_mode_changed_to_work_weighted_average: "Tamamlanan % toplamlarının hesaplanması artık İşe göre ağırlıklandırılıyor."
       total_percent_complete_mode_changed_to_simple_average: "Calculation of % Complete totals now based on a simple average of only % Complete values."
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field}"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: öncülü olarak değişti %{link}
       work_package_parent_changed_times: by changes to parent %{link}
       work_package_children_changed_times: by changes to child %{link}
@@ -3222,8 +3436,8 @@ tr:
   label_duplicate: "kopya"
   label_duplicates: "kopyalayan"
   label_edit: "Düzenle"
-  label_edit_attribute: "Özellikleri düzenle"
   label_edit_x: "Düzenle: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "Çoklu seçimi etkinleştir"
   label_enabled_project_custom_fields: "Etkin özel alanlar"
   label_enabled_project_modules: "Aktif modüller"
@@ -3328,6 +3542,7 @@ tr:
   label_external_links: "Harici Bağlantılar"
   label_locale: "Dil ve bölge"
   label_jump_to_a_project: "Projeye git..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "Anahtar kelimeler"
   label_language_based: "Kullanıcının dili tabanlı"
   label_last_activity: "Son Aktivite"
@@ -3350,6 +3565,7 @@ tr:
   label_lock_user: "Kullanıcıyı kilitle"
   label_logged_as: "Giriş yapılan kullanıcı"
   label_login: "Oturum aç"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "Özel logo masaüstü"
   label_custom_logo_mobile: "Özel logo mobil"
   label_custom_export_logo: "Özel dışarı aktarma logosu"
@@ -3976,6 +4192,7 @@ tr:
   notice_successful_delete: "Silme başarılı."
   notice_successful_cancel: "İptal işlemi başarılı."
   notice_successful_update: "Güncelleme başarılı."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Oluşturulamadı."
   notice_unsuccessful_create_with_reason: "Oluşturma başarısız oldu: %{reason}"
   notice_unsuccessful_update: "Güncellenemedi."
@@ -4136,6 +4353,7 @@ tr:
   permission_edit_project_query: "Proje sorgusunu düzenleme"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4320,6 +4538,9 @@ tr:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "İlk giriş yönlendirmesi"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4364,6 +4585,9 @@ tr:
   setting_smtp_password: "SMTP parolası"
   setting_smtp_domain: "SMTP HELO alan adı"
   setting_activity_days_default: "Proje faaliyetin de gösterilen gün sayısı istinaden"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Uygulama alt başlığı"
   setting_app_title: "Uygulama başlığı"
   setting_attachment_max_size: "En büyük ek boyutu"
@@ -4473,7 +4697,6 @@ tr:
   setting_repository_checkout_text: "Ödeme talimat metni"
   setting_repository_log_display_limit: "Dosya günlüğünde görüntülenen revizyonların maksimum sayısı"
   setting_repository_truncate_at: "Depo tarayıcıda görüntülenen dosya sayısı üst sınırı"
-  setting_rest_api_enabled: "REST web hizmetini etkinleştir"
   setting_self_registration: "Kendi kendine kayıt"
   setting_self_registration_caption: >
     Kullanıcılar için kendi kendine kayıt mekanizmasını seçin. Bazı seçenekler kullanıcıların bu sistemde kendi hesaplarını etkinleştirmelerine izin verdiğinden, seçtiğiniz ayara dikkat edin.
@@ -4791,7 +5014,6 @@ tr:
   text_length_between: "%{min} ve %{max} karakter arası uzunluk."
   text_line_separated: "Birden fazla değer kullanılabilir (her değer için bir satır)."
   text_load_default_configuration: "Varsayılan yapılandırmayı yükle"
-  text_min_max_length_info: "0 sınırlama yok demektir"
   text_no_roles_defined: Hiçbir rol tanımlanmadı.
   text_no_access_tokens_configurable: "Yapılandırılacak erişim belirteçleri yok."
   text_no_configuration_data: "Roller, türleri, çalışma paketi durumu ve iş akışı henüz yapılandırılmadı. Varsayılan yapılandırmayı yüklemeniz kesinlikle önerilir. Yüklendikten sonra onu değiştirebileceksiniz."
@@ -4806,7 +5028,6 @@ tr:
   text_powered_by: "%{link} tarafından destekleniyor"
   text_project_identifier_info: "Yalnızca küçük harfler (a-z), sayılar, tire ve alt tire kullanılabilir ve mutlaka küçük harfle başlamalıdır."
   text_reassign: "İş paketine yeniden atama:"
-  text_regexp_info: "ör ^[A-Z0-9]+$"
   text_regexp_multiline: 'Regex (düzenli ifade) birden çok satırlı modda uygulanır. Örneğin, ^---\s+'
   text_repository_usernames_mapping: "Depo günlüklerinde bulunan her kullanıcı adına eşlenen OpenProject kullanıcısını seçin veya güncelleyin. Aynı OpenProject ve depo kullanıcı adına veya e-postasına sahip kullanıcılar otomatik olarak eşleştirilir."
   text_status_changed_by_changeset: "Uygulanan Değişiklik listesi %{value}."
@@ -4905,8 +5126,7 @@ tr:
     reset_failed_logins: "Başarısız oturumları sıfırlayın"
     status_user_and_brute_force: "%{user} ve %{brute_force}"
     status_change: "Durum değişikliği"
-    text_change_disabled_for_provider_login: "Ad, giriş sağlayıcınız tarafından belirlenir ve bu nedenle değiştirilemez."
-    text_change_disabled_for_ldap_login: "İsim ve e-posta LDAP tarafından belirlenir ve bu nedenle değiştirilemez."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Kilidi kaldır"
     unlock_and_reset_failed_logins: "Başarısız oturum açma işlemlerinin kilidini aç ve sıfırla"
     error_cannot_delete_user: "Kullanıcı silinemez"

@@ -20,7 +20,7 @@ ka:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: დამსაქმებელი
-      status: სტატუსი
+      status: Kanban
       version: ვერსია
       subproject: ქვეპროექტი
       subtasks: მშობელი-შვილი

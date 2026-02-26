@@ -2,10 +2,12 @@ lt:
   js:
     grid:
       add_widget: 'Pridėti valdiklį'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Išimti valdiklį'
       configure: 'Valdiklio nustatymai'
       widgets:
         missing_permission: "Jūs neturite teisų šio valdiklio peržiūrai."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Pritaikytas tekstas'
         documents:
@@ -27,8 +29,6 @@ lt:
           not_set: 'Nenustatyta'
           finished: 'Baigta'
           discontinued: 'Nutrauktas'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

@@ -24,3 +24,6 @@ pt-PT:
     work_packages:
       properties:
         storyPoints: "Pontos de histórico"
+    burndown:
+      day: "Day"
+      points: "Points"

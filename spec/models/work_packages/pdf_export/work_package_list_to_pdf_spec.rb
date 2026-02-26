@@ -443,4 +443,126 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageListToPdf do
       end
     end
   end
+
+  context "with a request for a PDF Report with relation columns",
+          with_ee: %i[work_package_query_relation_columns] do
+    let(:options) { { pdf_export_type: "report", long_text_fields: "" } }
+    let(:relation_table_headers) do
+      %i[id type subject status start_date due_date].map { |name| column_title(name) }
+    end
+
+    def relation_table_row(work_package)
+      [
+        work_package.id.to_s,
+        work_package.type.name,
+        work_package.subject,
+        work_package.status.name
+      ]
+    end
+
+    def detail_attributes(work_package, index)
+      [
+        "#{index}.", work_package.subject,
+        column_title(:id), work_package.id.to_s,
+        column_title(:status), work_package.status.name
+      ]
+    end
+
+    describe "with relation_child column" do
+      let(:column_names) { %w[id subject status relation_child] }
+
+      it "contains children table for parent work package" do
+        strings = pdf_strings_without_footers(2)
+        expect(strings).to eq [
+          *cover_page_content,
+          query.name,
+          "1.", "2", work_package_parent.subject,
+          "2.", "2", work_package_child.subject,
+          *detail_attributes(work_package_parent, "1"),
+          I18n.t(:"js.relation_labels.children"),
+          *relation_table_headers,
+          *relation_table_row(work_package_child),
+          *detail_attributes(work_package_child, "2")
+        ].join(" ")
+      end
+    end
+
+    describe "with relation_of_type column" do
+      let(:work_package_related) do
+        create(:work_package,
+               project:,
+               type: type_standard,
+               subject: "Work package 3")
+      end
+      let!(:relation) do
+        create(:relation,
+               from: work_package_parent,
+               to: work_package_related,
+               relation_type: Relation::TYPE_RELATES)
+      end
+      let(:column_names) { %w[id subject status relations_of_type_relates] }
+      let(:relates_caption) do
+        I18n.t(:"activerecord.attributes.query.relations_of_type_column",
+               type: I18n.t(:label_relates_to).capitalize)
+      end
+
+      it "contains related work packages table" do
+        strings = pdf_strings_without_footers(2)
+        expect(strings).to eq [
+          *cover_page_content,
+          query.name,
+          "1.", "2", work_package_parent.subject,
+          "2.", "2", work_package_child.subject,
+          "3.", "2", work_package_related.subject,
+          *detail_attributes(work_package_parent, "1"),
+          relates_caption,
+          *relation_table_headers,
+          *relation_table_row(work_package_related),
+          *detail_attributes(work_package_child, "2"),
+          *detail_attributes(work_package_related, "3"),
+          relates_caption,
+          *relation_table_headers,
+          *relation_table_row(work_package_parent)
+        ].join(" ")
+      end
+    end
+
+    describe "with relation_to_type column" do
+      let(:work_package_related) do
+        create(:work_package,
+               project:,
+               type: type_bug,
+               subject: "Work package 3")
+      end
+      let!(:relation) do
+        create(:relation,
+               from: work_package_parent,
+               to: work_package_related,
+               relation_type: Relation::TYPE_RELATES)
+      end
+      let(:column_names) { %W[id subject status relations_to_type_#{type_bug.id}] }
+      let(:to_type_caption) do
+        I18n.t(:"activerecord.attributes.query.relations_to_type_column",
+               type: type_bug.name)
+      end
+
+      it "contains related work packages of the specified type" do
+        strings = pdf_strings_without_footers(2)
+        show
+        expect(strings).to eq [
+          *cover_page_content,
+          query.name,
+          "1.", "2", work_package_parent.subject,
+          "2.", "2", work_package_child.subject,
+          "3.", "2", work_package_related.subject,
+          *detail_attributes(work_package_parent, "1"),
+          to_type_caption,
+          *relation_table_headers,
+          *relation_table_row(work_package_related),
+          *detail_attributes(work_package_child, "2"),
+          *detail_attributes(work_package_related, "3")
+        ].join(" ")
+      end
+    end
+  end
 end

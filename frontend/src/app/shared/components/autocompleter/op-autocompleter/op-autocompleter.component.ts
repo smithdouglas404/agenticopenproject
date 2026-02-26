@@ -334,6 +334,10 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
   }
 
   ngAfterViewInit():void {
+    // Store ng-select instance on the host element for access from Stimulus controllers
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-explicit-any
+    (this.elementRef.nativeElement as any).ngSelectComponentInstance = this.ngSelectInstance;
+
     if (this.inputName && this.model) {
       this.syncHiddenField(this.mappedInputValue);
     }

@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "shared_context"
 
-RSpec.describe "Show project custom fields on project overview page", :js, with_flag: { new_project_overview: true } do
+RSpec.describe "Show project custom fields on project overview page", :js do
   include TestSelectorFinders
 
   include_context "with seeded projects, members and project custom fields"

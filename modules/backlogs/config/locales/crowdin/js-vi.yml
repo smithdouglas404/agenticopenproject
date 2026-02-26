@@ -24,3 +24,6 @@ vi:
     work_packages:
       properties:
         storyPoints: "Điểm cốt truyện"
+    burndown:
+      day: "Day"
+      points: "Points"

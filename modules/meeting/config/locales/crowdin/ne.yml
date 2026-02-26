@@ -118,7 +118,15 @@ ne:
   error_notification_with_errors: "Failed to send notification. The following recipients could not be notified: %{recipients}"
   label_meeting: "Meeting"
   label_meeting_plural: "Meetings"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "New Meeting"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "New one-time meeting"
   label_meeting_new_recurring: "New recurring meeting"
   label_meeting_create: "Create meeting"
@@ -279,6 +287,9 @@ ne:
         heading: "Delete this meeting?"
         confirmation_message_html: >
           This action is not reversible. Please proceed with caution.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "Cancel meeting occurrence"
         heading: "Cancel this meeting occurrence?"
@@ -478,6 +489,7 @@ ne:
     end_series_dialog:
       title: "End meeting series"
   notice_successful_notification: "Email calendar update sent to all participants"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: No time zone is set and %{zone} is assumed. To choose your time zone, please click here.
   notice_meeting_updated: "This page has been updated by someone else. Reload to view changes."
   permission_create_meetings: "Create meetings"
@@ -492,6 +504,8 @@ ne:
   text_duration_in_hours: "Duration in hours"
   text_in_hours: "in hours"
   text_meeting_agenda_for_meeting: 'agenda for the meeting "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Delete future occurrences?"
   text_meeting_series_end_early: "Ending the series will delete any future open or scheduled meeting occurrences"
   text_meeting_closing_are_you_sure: "Are you sure you want to close the meeting agenda?"
@@ -597,6 +611,9 @@ ne:
   text_meeting_in_progress_dropdown_description: "Document outcomes like information needs or decisions taken during the meeting."
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
   text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
   text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
   text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"

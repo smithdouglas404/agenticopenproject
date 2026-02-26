@@ -116,7 +116,15 @@ zh-TW:
   error_notification_with_errors: "傳送通知失敗。以下的收件者將不會被通知到: %{recipients}"
   label_meeting: "會議"
   label_meeting_plural: "會議"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "新增會議"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "建立一次性會議"
   label_meeting_new_recurring: "新的重複性會議"
   label_meeting_create: "新增會議"
@@ -274,6 +282,9 @@ zh-TW:
         heading: "刪除這次會議？"
         confirmation_message_html: >
           此動作無法還原。請小心操作。
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "取消會議事件"
         heading: "取消此會議事件？"
@@ -471,6 +482,7 @@ zh-TW:
     end_series_dialog:
       title: "結束系列會議"
   notice_successful_notification: "透過電子郵件更新行事曆，並發送給所有參與者"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: 沒有設定時區，預設時區為 %{zone} 。請按這裡選擇您的時區。
   notice_meeting_updated: "本頁已由他人更新。重新載入以查看變更。"
   permission_create_meetings: "建立會議"
@@ -485,6 +497,8 @@ zh-TW:
   text_duration_in_hours: "持續時間 (小時)"
   text_in_hours: "小時數"
   text_meeting_agenda_for_meeting: '%{meeting} 的會議大綱'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "刪除未來會議？"
   text_meeting_series_end_early: "結束該系列會刪除任何未來開放或排程的會議事件"
   text_meeting_closing_are_you_sure: "確實要關閉議程嗎？"
@@ -590,6 +604,9 @@ zh-TW:
   text_meeting_in_progress_dropdown_description: "記錄會議期間的結果，例如資訊需求或所做的決策。"
   text_meeting_closed_dropdown_description: "此會議已結束，您無法再修改議程項目或結果。"
   text_meeting_draft_banner: "您目前處於草稿模式。即使您變更會議詳細資訊或新增/移除參與者，此會議也不會傳送任何行事曆更新或邀請。"
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "開啟此會議並發送邀請函？"
   text_exit_draft_mode_dialog_subtitle: "一旦排定會議，就無法返回草稿模式。"
   text_exit_draft_mode_dialog_template_title: "要開啟此會議系列的第一場會議嗎？"

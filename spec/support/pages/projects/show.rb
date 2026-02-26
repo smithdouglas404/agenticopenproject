@@ -93,13 +93,13 @@ module Pages
           # Once we create the project custom field inline editing, this can be reverted to a normal
           # capybara click method call.
           page.execute_script(
-            "document.querySelector('[data-test-selector=\"project-custom-field-edit-button-#{custom_field.id}\"]').click()"
+            "document.querySelector('[data-test-selector=\"project-custom-field-modal-button-#{custom_field.id}\"]').click()"
           )
         end
 
         wait_for_size_animation_completion("[data-test-selector='async-dialog-content']")
 
-        Components::Projects::ProjectCustomFields::EditDialog.new(project, custom_field)
+        Components::Projects::ProjectCustomFields::Dialog.new(project, custom_field)
       end
 
       def open_edit_dialog_for_life_cycle(life_cycle, wait_angular: false)

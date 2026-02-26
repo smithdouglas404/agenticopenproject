@@ -24,3 +24,6 @@ ru:
     work_packages:
       properties:
         storyPoints: "Исторические точки"
+    burndown:
+      day: "День"
+      points: "Точки"

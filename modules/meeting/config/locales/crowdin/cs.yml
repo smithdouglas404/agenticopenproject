@@ -122,7 +122,15 @@ cs:
   error_notification_with_errors: "Odeslání oznámení se nezdařilo. Následující příjemci nelze upozornit: %{recipients}"
   label_meeting: "Schůzka"
   label_meeting_plural: "Schůzky"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Nová schůzka"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Nová jednorázová schůzka"
   label_meeting_new_recurring: "Nová opakovaná schůzka"
   label_meeting_create: "Vytvořit schůzku"
@@ -289,6 +297,9 @@ cs:
         heading: "Smazat tuto schůzku?"
         confirmation_message_html: >
           This action is not reversible. Please proceed with caution.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "Zrušit výskyt schůzky"
         heading: "Zrušit výskyt schůzky"
@@ -492,11 +503,12 @@ cs:
     end_series_dialog:
       title: "Ukončení série schůzek"
   notice_successful_notification: "Email calendar update sent to all participants"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: Není nastaveno žádné časové pásmo a předpokládá se %{zone} . Chcete-li vybrat časové pásmo, klikněte prosím zde.
   notice_meeting_updated: "Tato stránka byla aktualizována někým jiným. Pro zobrazení změn znovu načtena."
   permission_create_meetings: "Vytvořit schůzku\n"
   permission_edit_meetings: "Upravit schůzku"
-  permission_delete_meetings: "Odstranit schůzky"
+  permission_delete_meetings: "Smazat schůzku"
   permission_view_meetings: "Zobrazit schůzky"
   permission_manage_agendas: "Správa zápisů"
   permission_manage_agendas_explanation: "Allows creating, editing and removing agenda items"
@@ -506,6 +518,8 @@ cs:
   text_duration_in_hours: "Doba trvání v hodinách"
   text_in_hours: "v hodinách"
   text_meeting_agenda_for_meeting: 'Agenda schůzky "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Vymazat budoucí výskyty?"
   text_meeting_series_end_early: "Ending the series will delete any future open or scheduled meeting occurrences"
   text_meeting_closing_are_you_sure: "Jste si jisti, že chcete ukončit program schůzky?"
@@ -611,6 +625,9 @@ cs:
   text_meeting_in_progress_dropdown_description: "Document outcomes like information needs or decisions taken during the meeting."
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
   text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
   text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
   text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"

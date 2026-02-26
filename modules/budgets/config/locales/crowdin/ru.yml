@@ -56,6 +56,41 @@ ru:
   caption_labor_costs: "Фактические трудозатраты"
   caption_material_costs: "Фактические затраты на единицу"
   budgets_title: "Бюджеты"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Общая сумма бюджета"
+        remaining_budget: "Оставшийся бюджет"
+        spent_budget: "Израсходованный бюджет"
+        total_actual_costs: "Общие фактические затраты"
+        total_planned_budget: "Общий запланированный бюджет"
+      budget_by_cost_type:
+        title: "Бюджет по видам затрат"
+        blankslate:
+          heading: "Start project controlling"
+          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+        caption:
+          zero: "Нет данных о бюджете."
+          one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."
+          other: "Data aggregated from %{count} budgets included in %{portfolios}, %{subprograms} and %{subprojects}."
+        caption_simple:
+          one: "Data aggregated from %{count} budget."
+          few: "Data aggregated from %{count} budgets."
+          many: "Data aggregated from %{count} budgets."
+          other: "Data aggregated from %{count} budgets."
+        portfolio:
+          zero: "no portfolios"
+          one: "1 portfolio"
+          other: "%{count} portfolios"
+        subprogram:
+          zero: "no subprograms"
+          one: "1 subprogram"
+          other: "%{count} subprograms"
+        subproject:
+          zero: "no subprojects"
+          one: "1 subproject"
+          other: "%{count} subprojects"
+        view_details: "View budget details"
   events:
     budget: "Бюджет изменен"
   help_click_to_edit: "Нажмите здесь, чтобы править."

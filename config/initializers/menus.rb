@@ -480,7 +480,7 @@ Redmine::MenuManager.map :admin_menu do |menu|
             { controller: "/admin/mcp_configurations", action: :index },
             if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
             caption: I18n.t("menus.admin.ai"),
-            icon: :"sparkle-fill"
+            icon: :sparkle
 
   menu.push :mcp_configurations,
             { controller: "/admin/mcp_configurations", action: :index },
@@ -662,6 +662,18 @@ Redmine::MenuManager.map :admin_menu do |menu|
             if: ->(_) { User.current.admin? },
             caption: :label_backlogs,
             icon: "op-backlogs"
+
+  menu.push :import,
+            { controller: "/admin/import/jira/instances", action: :index },
+            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.jira_import_active? },
+            caption: :label_import,
+            icon: "desktop-download"
+
+  menu.push :jira_import,
+            { controller: "/admin/import/jira/instances", action: :index },
+            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.jira_import_active? },
+            caption: :label_jira_import,
+            parent: :import
 end
 
 Redmine::MenuManager.map :project_menu do |menu|

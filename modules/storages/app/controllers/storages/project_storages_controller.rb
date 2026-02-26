@@ -121,7 +121,7 @@ class Storages::ProjectStoragesController < ApplicationController
   end
 
   def project_storage_scope
-    Storages::ProjectStorage.where(project_id: @project, id: @project_storage.id)
+    @project.project_storages.where(id: @project_storage.id)
   end
 
   def test_folder_access

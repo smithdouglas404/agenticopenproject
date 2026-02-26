@@ -35,10 +35,8 @@ module Storages
 
       layout :admin_or_frame_layout
 
-      model_object Storage
-
       before_action :require_admin
-      before_action :find_model_object
+      before_action :find_storage
 
       def admin_or_frame_layout
         return "turbo_rails/frame" if turbo_frame_request?
@@ -83,9 +81,8 @@ module Storages
         }.merge(@report.to_h).to_yaml(stringify_names: true)
       end
 
-      def find_model_object(object_id = :storage_id)
-        super
-        @storage = @object
+      def find_storage
+        @storage = ::Storages::Storage.visible.find(params[:storage_id])
       end
 
       def create_and_cache_report

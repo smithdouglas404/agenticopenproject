@@ -54,6 +54,8 @@ module Grids
       turbo_enabled: true,
       content_padding: Body::DEFAULT_PADDING,
       full_width: false,
+      half_width: false,
+      border: true,
       **system_arguments
     )
       super()
@@ -68,7 +70,9 @@ module Grids
       @system_arguments[:classes] = class_names(
         @system_arguments[:classes],
         "widget-box",
-        "widget-box_full-width" => full_width
+        "widget-box_full-width" => full_width,
+        "widget-box_half-width" => half_width,
+        "-no-border" => !border
       )
       @system_arguments[:id] ||= "#{key}-box"
 

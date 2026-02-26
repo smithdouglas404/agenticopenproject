@@ -58,11 +58,7 @@ module Overviews
     end
 
     def page_title
-      if OpenProject::FeatureDecisions.new_project_overview_active?
-        project.name
-      else
-        I18n.t("overviews.label_overview")
-      end
+      project.name
     end
 
     def favorited?

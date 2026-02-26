@@ -2,10 +2,12 @@
   js:
     grid:
       add_widget: 'Legg til widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Fjern widget'
       configure: 'Konfigurer widget'
       widgets:
         missing_permission: "Du har ikke nødvendige tillatelser til å se denne widgeten."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Tilpasset tekst'
         documents:
@@ -27,8 +29,6 @@
           not_set: 'Ikke angitt'
           finished: 'Fullført'
           discontinued: 'Utløpt'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:
