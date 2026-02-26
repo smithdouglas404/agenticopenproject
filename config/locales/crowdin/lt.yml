@@ -109,6 +109,192 @@ lt:
       explanation:
         text: "Visi atskiri naudotojo veiksmai (t.y. darbų paketo atnaujinimas du kartus) yra sugrupuojami į vieną veiksmą, jei laiko tarpas tarp jų yra mažesnis už šį nustatymą. Programoje jie bus rodomi kaip vienas veiksmas. Tiek pat bus pavėlinti ir pranešimai. Dėl to sumažės siunčiamų el.laiškų skaičius ir taipogi įtakos %{webhook_link} delsimą."
         link: "tinklo jungtis"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from Jira server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after but not afterwards."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          reverted: "Reverted"
+          completed: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              one: "1 project"
+              few: "%{count} projects"
+              many: "%{count} projects"
+              other: "%{count} projects"
+            issues:
+              one: "1 issue"
+              few: "%{count} issues"
+              many: "%{count} issues"
+              other: "%{count} issues"
+            work_packages:
+              one: "1 work package"
+              few: "%{count} work packages"
+              many: "%{count} work packages"
+              other: "%{count} work packages"
+            types:
+              one: "1 type"
+              few: "%{count} types"
+              many: "%{count} types"
+              other: "%{count} types"
+            statuses:
+              one: "1 status"
+              few: "%{count} statuses"
+              many: "%{count} statuses"
+              other: "%{count} statuses"
+            users:
+              one: "1 user"
+              few: "%{count} users"
+              many: "%{count} users"
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Click the button below to query the host to see what data is available to import."
+              button_fetch: "Check available data from host"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host URL offers for import and what this tools is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              label_importing: "Currently importing"
+              elements:
+                relations: "Relations between issues"
+                workflows: "Custom workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "Permissions, roles"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              label_finalizing_progress: "Finalizing import..."
+              label_finalized: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
         description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
@@ -123,6 +309,16 @@ lt:
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -358,7 +554,7 @@ lt:
     contained_in_type: "Laikomas tipe"
     confirm_destroy_option: "Ištrinant savybę, visi jos panaudojimai (pvz., darbų paketuose) taip pat bus ištrinti. Ar Jūs tikrai norite ištrinti?"
     reorder_alphabetical: "Perrikiuoti reikšmes alfabeto tvarka"
-    reorder_confirmation: "Dėmesio: Dabartinė galimų reikšmių tvarka bus prarasta. Tęsti?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -385,6 +581,14 @@ lt:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: Nėra jokių pasirinktinų laukų.
       no_results_content_text: Sukurti naują pasirinktinį lauką
@@ -1054,7 +1258,6 @@ lt:
         title: "Darbo paketo dalinimuisi trūksta darbo proceso"
         message: "Vaidmeniui „Darbo paketo redaktorius“ nesukonfigūruotas procesas. Be proceso naudotojas negali pakeisti darbo paketo būsenos. Procesą galima nukopijuoti. Parinkite šaltinio tipą („pvz. „Užduotis“) ir šaltinio vaidmenį (pvz. „Narys“). Tada parinkite paskirties tipus. Pradžiai galėtumėte kaip paskirtį parinkti visus tipus. Galų gale parinkite vaidmenį „Darbo paketų redaktorius“ kaip paskirtį ir spauskite „Kopijuoti“. Taip sukūrę numatytąjį variantą, patikslinkite procesus kaip tai darote su kitais vaidmenimis."
         link_message: "Konfigūruokite procesus administravime."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1179,6 +1382,11 @@ lt:
         dependencies: "Priklausomybės"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
+      jira_import:
+        projects: "Projects"
       announcements:
         show_until: "Rodyti iki"
       attachment:
@@ -1197,7 +1405,6 @@ lt:
         scim_clients: "SCIM clients"
       calculated_value_error:
         error_code: "Error code"
-        customized: "Customized"
         customized_id: "Customized ID"
         customized_type: "Customized type"
       capability:
@@ -1225,6 +1432,7 @@ lt:
         regexp: "Reguliari išraiška"
         searchable: "Galimas ieškoti"
         admin_only: "Admin-only"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "Reikšmė"
       design_color:
@@ -1553,6 +1761,7 @@ lt:
         not_available: "yra nepasiekiamas dėl sistemos konfigūracijos"
         not_deletable: "negali būti pašalintas."
         not_current_user: "nėra dabartinis naudotojas"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "nėra tinkama data."
         not_a_datetime: "nėra tinkama data ir laikas."
@@ -1920,6 +2129,8 @@ lt:
               blank: "Please provide a token name"
               in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "Prašome patikrinti šiuos laukelius:"
         header:
@@ -1944,6 +2155,7 @@ lt:
       comment: "Komentaras"
       custom_action: "Pasirinktinis veiksmas"
       custom_field: "Kliento laukelis"
+      customized: "Customized"
       "doorkeeper/application": "OAuth aplikacija"
       enterprise_token:
         one: "Enterprise token"
@@ -1989,6 +2201,11 @@ lt:
         few: "SCIM clients"
         many: "SCIM clients"
         other: "SCIM clients"
+      jira:
+        one: "Jira"
+        few: "Jira"
+        many: "Jira"
+        other: "Jira"
       status: "Darbų paketo būsena"
       token/api:
         one: Prieigos raktas
@@ -2154,6 +2371,7 @@ lt:
     role: "Vaidmuo"
     roles: "Vaidmenys"
     search: "Paieška"
+    sprint: "Sprint"
     start_date: "Pradžios data"
     status: "Būsena"
     state: "State"
@@ -2985,6 +3203,7 @@ lt:
     caused_changes:
       dates_changed: "Datos pasikeitė"
       default_attribute_written: "Tik-skaitymo atributai įrašyti"
+      import: "Imported"
       progress_mode_changed_to_status_based: "Eigos skaičiavimas atnaujintas"
       status_changed: "Status '%{status_name}'"
       system_update: "OpenProject sistemos atnaujinimas"
@@ -2992,6 +3211,15 @@ lt:
       total_percent_complete_mode_changed_to_work_weighted_average: "Calculation of % Complete totals now weighted by Work."
       total_percent_complete_mode_changed_to_simple_average: "Calculation of % Complete totals now based on a simple average of only % Complete values."
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field}"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: dėl pirmtako pakeitimų %{link}
       work_package_parent_changed_times: dėl tėvo pakeitimų %{link}
       work_package_children_changed_times: dėl vaiko pakeitimų %{link}
@@ -3317,8 +3545,8 @@ lt:
   label_duplicate: "dubliuoti"
   label_duplicates: "dubliuojasi"
   label_edit: "Redaguoti"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Redaguoti: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "Perjungti daugybinį pažymėjimą"
   label_enabled_project_custom_fields: "Įgalinti papildomi laukai"
   label_enabled_project_modules: "Įgalinti moduliai"
@@ -3423,6 +3651,7 @@ lt:
   label_external_links: "External links"
   label_locale: "Language and region"
   label_jump_to_a_project: "Peršokti į projektą..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "Raktažodžiai"
   label_language_based: "Paremta vartotojo kalba"
   label_last_activity: "Paskutinė veikla"
@@ -3445,6 +3674,7 @@ lt:
   label_lock_user: "Užrakinti vartotoją"
   label_logged_as: "Prisijungęs kaip"
   label_login: "Prisijungti"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "Custom logo desktop"
   label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Savas eksporto logotipas"
@@ -4074,6 +4304,7 @@ lt:
   notice_successful_delete: "Sėkmingas panaikinimas."
   notice_successful_cancel: "Successful cancellation."
   notice_successful_update: "Sėkmingai atnaujinta."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creation failed."
   notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
   notice_unsuccessful_update: "Update failed."
@@ -4236,6 +4467,7 @@ lt:
   permission_edit_project_query: "Edit project query"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4418,6 +4650,9 @@ lt:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4462,6 +4697,9 @@ lt:
   setting_smtp_password: "SMTP slaptažodis"
   setting_smtp_domain: "SMTP HELO domenas"
   setting_activity_days_default: "Projekto veiklos atvaizduojamų dienų skaičius"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Programos paantraštė"
   setting_app_title: "Programos pavadinimas"
   setting_attachment_max_size: "Didžiausias prisegamo failo dydis"
@@ -4571,7 +4809,6 @@ lt:
   setting_repository_checkout_text: "Kopijos nuskaitymo instrukcijų tekstas"
   setting_repository_log_display_limit: "Maksimalus revizijų skaičius rodomas failo žurnale"
   setting_repository_truncate_at: "Maksimalus failų skaičius, kuris rodomas repozitorijos naršyklėje"
-  setting_rest_api_enabled: "Įjungti REST tinklo tarnybą"
   setting_self_registration: "Registracija savarankiškai"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4889,7 +5126,6 @@ lt:
   text_length_between: "Ilgis tarp %{min} ir %{max} simbolių."
   text_line_separated: "Galimos kelios reikšmės (viena eilutė vienai reikšmei)."
   text_load_default_configuration: "Įkelti numatytąją konfigūraciją"
-  text_min_max_length_info: "0 reiškia jokių apribojimų"
   text_no_roles_defined: Nėra nustatytų vaidmenų.
   text_no_access_tokens_configurable: "Nėra prieigos raktų, kurie gali būti konfigūruojami."
   text_no_configuration_data: "Vaidmenys, tipai, darbų paketo būsenos ir darbų eiga dar nesukonfigūruoti. Stipriai rekomenduojama įkelti numatytąją konfigūraciją. Jūs ją galėsite redaguoti iškart po įkėlimo."
@@ -4904,7 +5140,6 @@ lt:
   text_powered_by: "Parengta pagal %{link}"
   text_project_identifier_info: "Leidžiamos tik mažosios raidės (a-z), skaitmenys, paprasti (-) ir žemi brūkšneliai (_). Taip pat privalo prasidėti mažąja raide."
   text_reassign: "Iš naujo priskirti darbų paketui:"
-  text_regexp_info: "pvz., ^[A-Z0-9]+$"
   text_regexp_multiline: 'Reguliarioji išraiška yra pritaikoma daug eilučių režime, pvz., ^---\s+'
   text_repository_usernames_mapping: "Parinkite ar atnaujinkite OpenProject naudotoją, kuris paminėtas repozitorijos žurnale.\nNaudotojai, turintys tą patį OpenProject ir repozitorijos vardą ar el. paštą yra automatiškai surišti."
   text_status_changed_by_changeset: "Atlikta pakeitimų pakete %{value}."
@@ -5005,8 +5240,7 @@ lt:
     reset_failed_logins: "Iš naujo nustatyti nepavykusių prisijungimų skaičių"
     status_user_and_brute_force: "%{user} ir %{brute_force}"
     status_change: "Būsenos keitimas"
-    text_change_disabled_for_provider_login: "Vardą nustatė jūsų prisijungimo tarnyba, todėl jis negali būti pakeistas."
-    text_change_disabled_for_ldap_login: "Vardą ir e-paštą nustato LDAP ir todėl to negalima keisti."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Atrakinti"
     unlock_and_reset_failed_logins: "Atrakintiir iš naujo nustatyti nepavykusius prisijungimus"
     error_cannot_delete_user: "User cannot be deleted"

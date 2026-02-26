@@ -35,6 +35,15 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
   before_action :find_project_custom_field
   before_action :authorize
 
+  def show
+    respond_with_dialog(
+      Overviews::ProjectCustomFields::ShowDialogComponent.new(
+        project: @project,
+        project_custom_field: @custom_field
+      )
+    )
+  end
+
   def edit
     respond_with_dialog(
       Overviews::ProjectCustomFields::EditDialogComponent.new(

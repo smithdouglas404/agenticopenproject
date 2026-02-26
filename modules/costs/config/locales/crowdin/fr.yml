@@ -226,6 +226,15 @@ fr:
     errors:
       validation:
         start_time_different_date: "La partie date de startTime (%{start_time}) doit être identique à la date de spentOn (%{spent_on})."
+  costs:
+    widgets:
+      actual_costs:
+        title: "Coûts réels par mois"
+        blankslate:
+          heading: "Commencez à suivre votre temps et vos coûts"
+          description: "Obtenez une vue d'ensemble de vos coûts et du temps enregistré pour suivre l'avancement de votre projet"
+          action: "Durée du journal"
+        view_details: "Voir les détails des coûts réels"
   ee:
     features:
       time_entry_time_restrictions: Exiger un suivi du temps exact

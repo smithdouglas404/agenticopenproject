@@ -8,14 +8,14 @@ get:
   description: Returns the collection of work packages that are related to the given workspace.
   parameters:
     - description: Workspace id
-      example: '1'
+      example: 1
       in: path
       name: id
       required: true
       schema:
         type: integer
     - description: Page number inside the requested collection.
-      example: '25'
+      example: 25
       in: query
       name: offset
       required: false
@@ -23,7 +23,7 @@ get:
         default: 1
         type: integer
     - description: Number of elements to display per page.
-      example: '25'
+      example: 25
       in: query
       name: pageSize
       required: false

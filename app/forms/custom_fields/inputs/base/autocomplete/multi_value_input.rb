@@ -53,7 +53,7 @@ class CustomFields::Inputs::Base::Autocomplete::MultiValueInput < CustomFields::
   end
 
   def custom_values
-    @custom_values ||= @object.custom_values_for_custom_field(id: @custom_field.id)
+    @custom_values ||= @object.custom_values_for_custom_field(@custom_field)
   end
 
   def invalid?

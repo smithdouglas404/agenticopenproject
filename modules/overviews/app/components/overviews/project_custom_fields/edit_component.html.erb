@@ -39,6 +39,20 @@
             populate_tree_view(tree_view, @project_custom_field, item_options:)
           end
         )
+
+        if @project_custom_field.has_comment?
+          concat(
+            f.fields_for(:custom_comments) do |builder|
+              render(
+                CustomFields::CommentField.new(
+                  builder,
+                  custom_field: @project_custom_field,
+                  object: @project
+                )
+              )
+            end
+          )
+        end
       else
         render(
           Projects::CustomFields::Form.new(

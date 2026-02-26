@@ -109,6 +109,174 @@ ko:
       explanation:
         text: "사용자의 개별 작업(예: 작업 패키지를 두 번 업데이트)은 연령 차이가 지정된 기간 미만인 경우 단일 작업으로 집계됩니다. 애플리케이션 내에서 단일 작업으로 표시됩니다. 또한 이는 전송되는 이메일 수를 줄이는 동일한 시간만큼 알림을 지연시키고 %{webhook_link} 지연에도 영향을 미칩니다."
         link: "webhook"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from Jira server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after but not afterwards."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          reverted: "Reverted"
+          completed: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              other: "%{count} projects"
+            issues:
+              other: "%{count} issues"
+            work_packages:
+              other: "%{count} work packages"
+            types:
+              other: "%{count} types"
+            statuses:
+              other: "%{count} statuses"
+            users:
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Click the button below to query the host to see what data is available to import."
+              button_fetch: "Check available data from host"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host URL offers for import and what this tools is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              label_importing: "Currently importing"
+              elements:
+                relations: "Relations between issues"
+                workflows: "Custom workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "Permissions, roles"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              label_finalizing_progress: "Finalizing import..."
+              label_finalized: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
         description: "모델 컨텍스트 프로토콜을 통해 AI 에이전트는 이 OpenProject 인스턴스에 의해 노출된 도구와 리소스를 사용자에게 제공할 수 있습니다."
@@ -123,6 +291,16 @@ ko:
       server_form:
         description_caption: "MCP 서버에 연결하는 다른 애플리케이션에 대해 MCP 서버가 설명되는 방식입니다."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP 구성을 업데이트할 수 없습니다."
         success: "MCP 구성이 업데이트되었습니다."
@@ -361,7 +539,7 @@ ko:
     contained_in_type: "타입에 포함됨."
     confirm_destroy_option: "옵션을 삭제하면 모든 해당 항목(예: 작업 패키지 내 모든 항목)이 삭제됩니다. 그래도 삭제하시겠습니까?"
     reorder_alphabetical: "알파벳순으로 값 재정렬"
-    reorder_confirmation: "경고: 사용 가능한 값의 현재 순서가 손실됩니다. 계속하시겠습니까?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "먼저 작업 패키지 또는 프로젝트를 선택해야 합니다"
     calculated_field_not_editable: "편집할 수 없는 특성입니다. 이 값은 자동으로 계산됩니다."
     no_role_assigment: "역할 할당 없음"
@@ -388,6 +566,14 @@ ko:
           작업 패키지 보기의 필터에서 사용자 지정 필드를 사용할 수 있도록 허용합니다. '모든 프로젝트용'을 선택한 경우에만 사용자 지정 필드가 글로벌 보기에 표시됩니다.
       formula:
         project: "숫자 값을 추가하거나 /를 입력하여 특성 또는 수학 연산자를 검색합니다."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: 사용자 필드가 없습니다.
       no_results_content_text: 새 사용자 필드 생성
@@ -1030,7 +1216,6 @@ ko:
         title: "작업 패키지 공유에 대한 워크플로 누락"
         message: "'작업 패키지 편집자' 역할에 대해 구성된 워크플로가 없습니다. 워크플로가 없으면 사용자와 공유된 워크플로는 작업 패키지의 상태를 변경할 수 없습니다. 워크플로를 복사할 수는 있습니다. 소스 유형(예: '작업')과 소스 역할(예: '멤버')을 선택하세요. 그런 다음 대상 유형을 선택하세요. 시작하기 위해 모든 유형을 대상으로 선택할 수 있습니다. 마지막으로 '작업 패키지 편집자' 역할을 대상으로 선택하고 '복사'를 누르세요. 기본값을 생성한 후 다른 모든 역할에 대해 수행하는 것처럼 워크플로를 미세 조정하세요."
         link_message: "관리에서 워크플로를 구성하세요."
-    templated_subject_hint: '%{type} 유형을 통해 자동으로 생성됨'
     summary:
       reports:
         category:
@@ -1155,6 +1340,11 @@ ko:
         dependencies: "종속성"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
+      jira_import:
+        projects: "Projects"
       announcements:
         show_until: "표시 기한"
       attachment:
@@ -1173,7 +1363,6 @@ ko:
         scim_clients: "SCIM 클라이언트"
       calculated_value_error:
         error_code: "오류 코드"
-        customized: "사용자 지정됨"
         customized_id: "사용자 지정된 ID"
         customized_type: "사용자 지정된 유형"
       capability:
@@ -1201,6 +1390,7 @@ ko:
         regexp: "정규 표현식"
         searchable: "검색가능한"
         admin_only: "관리자 전용"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "값"
       design_color:
@@ -1529,6 +1719,7 @@ ko:
         not_available: "- 시스템 구성으로 인해 사용 가능하지 않습니다."
         not_deletable: "- 삭제할 수 없습니다."
         not_current_user: "은(는) 현재 유효한 사용자가 아닙니다."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "- 찾을 수 없습니다."
         not_a_date: "은(는) 유효한 날짜가 아닙니다."
         not_a_datetime: "은(는) 유효한 날짜가 아닙니다."
@@ -1890,6 +2081,8 @@ ko:
               blank: "토큰 이름을 입력하세요"
               in_use: "이 토큰 이름은 이미 사용 중입니다. 다른 이름을 선택하세요"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "다음 필드를 확인 하십시오."
         header:
@@ -1905,6 +2098,7 @@ ko:
       comment: "코멘트"
       custom_action: "사용자 지정 작업"
       custom_field: "사용자 정의 필드"
+      customized: "Customized"
       "doorkeeper/application": "OAuth 애플리케이션"
       enterprise_token:
         other: "Enterprise 토큰"
@@ -1929,6 +2123,8 @@ ko:
         other: "역할"
       scim_client:
         other: "SCIM 클라이언트"
+      jira:
+        other: "Jira"
       status: "작업 패키지 상태"
       token/api:
         other: 액세스 토큰
@@ -2073,6 +2269,7 @@ ko:
     role: "역할"
     roles: "역할"
     search: "검색"
+    sprint: "Sprint"
     start_date: "시작 날짜"
     status: "상태"
     state: "상태"
@@ -2841,6 +3038,7 @@ ko:
     caused_changes:
       dates_changed: "변경된 날짜"
       default_attribute_written: "읽기 전용 특성 작성됨"
+      import: "Imported"
       progress_mode_changed_to_status_based: "진행률 계산 업데이트됨"
       status_changed: "상태 '%{status_name}'"
       system_update: "OpenProject 시스템 업데이트:"
@@ -2848,6 +3046,15 @@ ko:
       total_percent_complete_mode_changed_to_work_weighted_average: "이제 완료 % 합계 계산에는 작업별로 가중치가 적용됩니다."
       total_percent_complete_mode_changed_to_simple_average: "이제 완료 % 합계 계산은 완료 % 값의 단순 평균만을 기반으로 합니다."
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field}"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: 선행 단계 %{link}에 대한 변경 사항 기준
       work_package_parent_changed_times: 부모 %{link}에 대한 변경 사항 기준
       work_package_children_changed_times: 자식 %{link}에 대한 변경 사항 기준
@@ -3173,8 +3380,8 @@ ko:
   label_duplicate: "중복"
   label_duplicates: "복제"
   label_edit: "편집"
-  label_edit_attribute: "특성 편집"
   label_edit_x: "편집: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "다중 선택 토글"
   label_enabled_project_custom_fields: "사용자 정의 필드 사용"
   label_enabled_project_modules: "사용 가능한 모듈"
@@ -3279,6 +3486,7 @@ ko:
   label_external_links: "외부 링크"
   label_locale: "언어 및 지역"
   label_jump_to_a_project: "프로젝트로 이동..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "키워드"
   label_language_based: "사용자 언어에 따름"
   label_last_activity: "마지막 활동"
@@ -3301,6 +3509,7 @@ ko:
   label_lock_user: "사용자 잠금"
   label_logged_as: "로그인한 계정:"
   label_login: "로그인"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "사용자 지정 로고 데스크톱"
   label_custom_logo_mobile: "사용자 지정 로고 모바일"
   label_custom_export_logo: "사용자 지정 내보내기 로고"
@@ -3927,6 +4136,7 @@ ko:
   notice_successful_delete: "삭제에 성공했습니다."
   notice_successful_cancel: "취소에 성공했습니다."
   notice_successful_update: "업데이트에 성공했습니다."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "생성이 실패했습니다."
   notice_unsuccessful_create_with_reason: "생성 실패: %{reason}"
   notice_unsuccessful_update: "업데이트에 실패했습니다."
@@ -4086,6 +4296,7 @@ ko:
   permission_edit_project_query: "프로젝트 쿼리 편집"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0개 포트폴리오"
@@ -4268,6 +4479,9 @@ ko:
   setting_capture_external_links: "외부 링크 캡처"
   setting_capture_external_links_text: >
     활성화된 경우, 서식이 지정된 텍스트의 모든 외부 링크는 애플리케이션을 종료하기 전에 경고 페이지를 통해 리디렉션됩니다. 따라서 잠재적인 악성 외부 웹사이트로부터 사용자를 보호할 수 있습니다.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "첫 번째 로그인 리디렉션"
   setting_after_first_login_redirect_url_text_html: >
     첫 로그인 후 사용자를 리디렉션할 경로를 설정하세요. 비어 있으면 온보딩 투어의 홈페이지로 리디렉션됩니다. <br/> 예: <code>/my/page</code>
@@ -4312,6 +4526,9 @@ ko:
   setting_smtp_password: "SMTP 비밀번호"
   setting_smtp_domain: "SMTP HELO 도메인"
   setting_activity_days_default: "프로젝트 작업에 표시되는 기간(일)"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "응용 프로그램 부제목"
   setting_app_title: "응용 프로그램 제목"
   setting_attachment_max_size: "첨부 파일 최대 크기"
@@ -4421,7 +4638,6 @@ ko:
   setting_repository_checkout_text: "체크아웃 지침 텍스트"
   setting_repository_log_display_limit: "파일 로그 표시되는 최대 수정 수"
   setting_repository_truncate_at: "리포지토리 브라우저에 표시되는 최대 파일 수"
-  setting_rest_api_enabled: "REST 웹 서비스 사용"
   setting_self_registration: "자체 등록"
   setting_self_registration_caption: >
     사용자에 대한 자체 등록 메커니즘을 선택하세요. 일부 옵션은 사용자가 이 인스턴스에 대해 자신의 계정을 활성화하도록 허용하므로, 선택하는 설정에 주의해 주세요.
@@ -4739,7 +4955,6 @@ ko:
   text_length_between: "%{min} ~ %{max}자 사이의 길이"
   text_line_separated: "여러 값이 허용됩니다(각 값에 대해 한 줄)."
   text_load_default_configuration: "기본 구성 로드"
-  text_min_max_length_info: "0은 제한이 없음을 의미함"
   text_no_roles_defined: 정의된 역할이 없습니다.
   text_no_access_tokens_configurable: "구성할 수 있는 액세스 토큰이 없습니다."
   text_no_configuration_data: "역할, 유형, 작업 패키지 상태 및 워크플로가 아직 구성되지 않았습니다.\n기본 구성을 로드하는 것이 좋습니다. 로드한 후에 수정할 수 있습니다."
@@ -4754,7 +4969,6 @@ ko:
   text_powered_by: "%{link} 제공"
   text_project_identifier_info: "소문자(a-z), 숫자, 대시(-) 및 밑줄(_)만 허용됩니다. 소문자로 시작해야 합니다."
   text_reassign: "작업 패키지에 다시 할당:"
-  text_regexp_info: "예: ^[A-Z0-9]+$"
   text_regexp_multiline: '멀티라인 모드에서 정규식이 적용됩니다. 예, e.g., ^---\s+'
   text_repository_usernames_mapping: "리포지토리 로그에 있는 각 사용자 이름에 매핑된 OpenProject 사용자를 선택하거나 업데이트하세요.\n동일한 OpenProject 및 리포지토리 사용자 이름이나 이메일을 가진 사용자가 자동으로 매핑됩니다."
   text_status_changed_by_changeset: "변경 집합 %{value}에 적용되었습니다."
@@ -4852,8 +5066,7 @@ ko:
     reset_failed_logins: "실패한 로그인 재설정"
     status_user_and_brute_force: "%{user} 및 %{brute_force}"
     status_change: "상태 변경"
-    text_change_disabled_for_provider_login: "이 이름은 로그인 공급자가 설정하므로 변경 가능하지 않습니다."
-    text_change_disabled_for_ldap_login: "이름과 이메일은 LDAP에 의해 설정되므로 변경할 수 없습니다."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "잠금 해제"
     unlock_and_reset_failed_logins: "실패한 로그인 잠금 해제 및 재설정"
     error_cannot_delete_user: "User cannot be deleted"

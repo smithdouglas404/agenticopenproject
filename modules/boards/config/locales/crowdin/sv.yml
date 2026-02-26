@@ -20,7 +20,7 @@ sv:
       action: "Åtgärdstavla (%{attribute})"
     board_type_attributes:
       assignee: Tilldelad till
-      status: Status
+      status: Kanban
       version: Version
       subproject: Delprojekt
       subtasks: Förälder-barn

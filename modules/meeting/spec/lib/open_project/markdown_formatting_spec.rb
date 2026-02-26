@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -82,7 +83,7 @@ RSpec.describe OpenProject::TextFormatting,
     let(:meeting_link) do
       link_to(
         "Monthly coordination",
-        { controller: "/meetings", action: "show", id: meeting.id, only_path: true },
+        { controller: "/meetings", action: "show", project_id: project.id, id: meeting.id, only_path: true },
         class: "meeting op-uc-link",
         target: "_top"
       )

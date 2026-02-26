@@ -35,8 +35,7 @@ RSpec.describe DocumentsController do
 
   let(:admin) { create(:admin) }
   let(:project) { create(:project, name: "Test Project") }
-  let(:user) { create(:user) }
-  let(:role) { create(:project_role, permissions: [:view_documents]) }
+  let(:user) { create(:user, member_with_permissions: { project => [:view_documents] }) }
 
   let(:document_type) do
     create(:document_type, name: "Default Type")
@@ -129,15 +128,12 @@ RSpec.describe DocumentsController do
       let(:uncontainered) { create(:attachment, container: nil, author: admin) }
 
       before do
-        notify_project = project
-        create(:member, project: notify_project, user:, roles: [role])
-
         post :create,
              params: {
-               project_id: notify_project.identifier,
+               project_id: project.identifier,
                document: attributes_for(:document,
                                         title: "New Document",
-                                        project_id: notify_project.id,
+                                        project_id: project.id,
                                         type_id: document_type.id,
                                         kind: "classic"),
                attachments: { "1" => { id: uncontainered.id } }
@@ -186,20 +182,15 @@ RSpec.describe DocumentsController do
     end
   end
 
-  describe "define_token_payload",
+  describe "setup_collaboration_context",
            with_config: {
              collaborative_editing_hocuspocus_url: "wss://hocuspocus.local",
              collaborative_editing_hocuspocus_secret: "secret1234"
            } do
-    let(:manage_role) { create(:project_role, permissions: %i[view_documents manage_documents]) }
-    let(:view_only_role) { create(:project_role, permissions: [:view_documents]) }
-    let(:user_with_manage) { create(:user) }
-    let(:user_without_manage) { create(:user) }
+    let(:user_with_manage) { create(:user, member_with_permissions: { project => %i[view_documents manage_documents] }) }
+    let(:user_without_manage) { create(:user, member_with_permissions: { project => [:view_documents] }) }
 
     before do
-      create(:member, project:, user: user_with_manage, roles: [manage_role])
-      create(:member, project:, user: user_without_manage, roles: [view_only_role])
-
       document.update(kind: :collaborative)
     end
 

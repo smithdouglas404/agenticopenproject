@@ -20,7 +20,7 @@ ko:
       action: "작업 보드(%{attribute})"
     board_type_attributes:
       assignee: 담당자
-      status: 상태
+      status: Kanban
       version: 버전
       subproject: 하위 프로젝트
       subtasks: 부모-자식

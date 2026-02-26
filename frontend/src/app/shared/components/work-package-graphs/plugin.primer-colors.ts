@@ -36,6 +36,14 @@ import {
 
 export interface PrimerColorsPluginOptions {
   enabled?:boolean;
+  labelBased?:boolean;
+}
+
+declare module 'chart.js' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface PluginOptionsByType<TType extends ChartType> {
+    'primer-colors':PrimerColorsPluginOptions;
+  }
 }
 
 const PRIMER_COLORS = [
@@ -125,6 +133,50 @@ function getColorizer() {
   };
 }
 
+// djb2-style XOR hash → stable uint32 for a given label string
+function hashLabel(label:string):number {
+  let hash = 5381;
+  for (let i = 0; i < label.length; i++) {
+    hash = ((hash << 5) + hash) ^ label.charCodeAt(i);
+    hash = hash >>> 0; // keep as uint32
+  }
+  return hash;
+}
+
+// Build a collision-free label→palette-index map.
+// Each label's preferred slot is hash(label) % paletteSize.
+// If that slot is already claimed, linear-probe to the next free one.
+// Processing order: ascending preferred index, alphabetical tie-break — so the
+// same algorithm produces identical results for any subset of the same labels.
+function buildLabelColorMap(labels:string[]):Map<string, number> {
+  const paletteSize = PRIMER_COLORS.length;
+  const items = labels
+    .map((label) => ({ label, preferred: hashLabel(label) % paletteSize }))
+    .sort((a, b) => a.preferred - b.preferred || a.label.localeCompare(b.label));
+
+  const used = new Set<number>();
+  const map = new Map<string, number>();
+
+  for (const { label, preferred } of items) {
+    let slot = preferred;
+    while (used.has(slot)) {
+      slot = (slot + 1) % paletteSize;
+    }
+    used.add(slot);
+    map.set(label, slot);
+  }
+
+  return map;
+}
+
+// Assign colors to a single-dataset chart where each data point has its own label
+function assignColorsByLabel(dataset:ChartDataset, labels:string[]):void {
+  const colorMap = buildLabelColorMap(labels);
+  dataset.backgroundColor = dataset.data.map((_, i) => getMutedColor(colorMap.get(labels[i] ?? '') ?? 0));
+  dataset.borderColor = dataset.data.map((_, i) => getEmphasisColor(colorMap.get(labels[i] ?? '') ?? 0));
+  dataset.borderWidth = 1;
+}
+
 const plugin:Plugin<ChartType, PrimerColorsPluginOptions> = {
   id: 'primer-colors',
   defaults: { enabled: true },
@@ -135,7 +187,17 @@ const plugin:Plugin<ChartType, PrimerColorsPluginOptions> = {
     }
 
     const { data: { datasets } } = chart.config;
-    if (datasets.length === 1) {
+    if (options.labelBased) {
+      if (datasets.length === 1) {
+        assignColorsByLabel(datasets[0], (chart.data.labels ?? []) as string[]);
+      } else {
+        const labels = datasets.map((d) => d.label ?? '');
+        const colorMap = buildLabelColorMap(labels);
+        datasets.forEach((dataset:ChartDataset) => {
+          colorizeMultiDataset(dataset, colorMap.get(dataset.label ?? '') ?? 0);
+        });
+      }
+    } else if (datasets.length === 1) {
       const colorizer = getColorizer();
       datasets.forEach(colorizer);
     } else {

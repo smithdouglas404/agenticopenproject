@@ -3,7 +3,7 @@ ARG DEBIAN_BASE="trixie"
 # Add SBOM scan context for intermediate steps
 ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
 ARG BUILDKIT_SBOM_SCAN_STAGE=true
-FROM ruby:${RUBY_VERSION}-slim-${DEBIAN_BASE} AS base
+FROM ruby:${RUBY_VERSION}-slim-${DEBIAN_BASE} AS runtime-base
 LABEL maintainer="operations@openproject.com"
 
 ARG NODE_VERSION="22.21.0"
@@ -19,6 +19,8 @@ ENV DOCKER=1
 ENV APP_USER=app
 ENV APP_PATH=/app
 ENV APP_DATA_PATH=/var/openproject/assets
+ENV BUNDLE_PATH="$APP_PATH/vendor/bundle"
+ENV BUNDLE_APP_CONFIG="$APP_PATH/.bundle"
 ENV PGVERSION="17"
 ENV PGVERSION_CHOICES="13 15 17"
 ENV PGBIN="/usr/lib/postgresql/$PGVERSION/bin"
@@ -54,9 +56,18 @@ WORKDIR $APP_PATH
 # upgrade bundler
 RUN gem install bundler --no-document
 
-# system dependencies, nodejs
+# runtime dependencies
 COPY ./docker/prod/setup/preinstall-common.sh ./docker/prod/setup/preinstall-common.sh
 RUN ./docker/prod/setup/preinstall-common.sh
+
+FROM runtime-base AS build-base
+ARG NODE_VERSION="22.21.0"
+
+# build-only dependencies
+COPY ./docker/prod/setup/preinstall-build.sh ./docker/prod/setup/preinstall-build.sh
+RUN ./docker/prod/setup/preinstall-build.sh
+
+FROM build-base AS app-build
 
 # stuff required for gems
 COPY Gemfile Gemfile.* .ruby-version ./
@@ -73,15 +84,32 @@ COPY . .
 
 # Copy lock file again as the updated version was overriden by COPY just now
 RUN cp Gemfile.lock.bak Gemfile.lock && rm Gemfile.lock.bak && \
-  ./docker/prod/setup/precompile-assets.sh && \
-  ./docker/prod/setup/postinstall-common.sh && \
+  ./docker/prod/setup/precompile-assets.sh
+
+FROM app-build AS app-build-slim
+COPY ./docker/prod/setup/prune-slim-runtime.sh ./docker/prod/setup/prune-slim-runtime.sh
+RUN ./docker/prod/setup/prune-slim-runtime.sh
+
+FROM runtime-base AS app-runtime
+
+COPY --chown=$APP_USER:$APP_USER --from=app-build /app /app
+
+RUN ./docker/prod/setup/postinstall-common.sh && \
+  cp ./config/database.production.yml config/database.yml && \
+  ln -s $APP_PATH/docker/prod/setup/.irbrc /home/$APP_USER/
+
+FROM runtime-base AS app-runtime-slim
+
+COPY --chown=$APP_USER:$APP_USER --from=app-build-slim /app /app
+
+RUN ./docker/prod/setup/postinstall-common.sh && \
   cp ./config/database.production.yml config/database.yml && \
   ln -s $APP_PATH/docker/prod/setup/.irbrc /home/$APP_USER/
 
 # -------------------------------------
 # slim (public)
 # -------------------------------------
-FROM base AS slim
+FROM app-runtime-slim AS slim
 
 USER $APP_USER
 EXPOSE 8080
@@ -93,7 +121,7 @@ VOLUME ["$APP_DATA_PATH"]
 # slim-bim (public)
 # same as slim but with BIM support enabled
 # -------------------------------------
-FROM base AS slim-bim
+FROM app-runtime-slim AS slim-bim
 
 USER $APP_USER
 EXPOSE 8080
@@ -104,7 +132,7 @@ ENV OPENPROJECT_EDITION=bim
 # -------------------------------------
 # all-in-one (public)
 # -------------------------------------
-FROM base AS all-in-one
+FROM app-runtime AS all-in-one
 
 ENV OPENPROJECT_RAILS__CACHE__STORE=memcache
 ENV DATABASE_URL=postgres://openproject:openproject@127.0.0.1/openproject
@@ -114,8 +142,14 @@ COPY --from=openproject/gosu /go/bin/gosu /usr/local/bin/gosu
 RUN chmod +x /usr/local/bin/gosu && gosu nobody true
 
 COPY --from=openproject/hocuspocus:17.1.1 --chown=$APP_USER:$APP_USER /app /opt/hocuspocus
+# Keep node/npm in all-in-one for bundled hocuspocus even when BIM support is disabled.
+COPY --from=build-base /usr/local/bin/node /usr/local/bin/node
+COPY --from=build-base /usr/local/lib/node_modules /usr/local/lib/node_modules
 
 RUN ./docker/prod/setup/postinstall-onprem.sh && \
+  ln -sf ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
+  ln -sf ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx && \
+  ln -sf ../lib/node_modules/corepack/dist/corepack.js /usr/local/bin/corepack && \
   ln -s /app/docker/prod/setup/.irbrc /root/
 
 # Expose ports for apache and postgres

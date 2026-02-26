@@ -87,7 +87,7 @@ zh-CN:
         token_placeholder: "在此处粘贴您的企业版支持令牌"
       add_token: "上传企业版支持令牌"
       replace_token: "替换您当前的支持令牌"
-      order: "订购本地部署版的 Enterprise edition"
+      order: "订购本地部署的 Enterprise edition"
       paste: "粘贴您企业版的支持令牌"
       required_for_feature: "此功能仅限具激活的企业版支持令牌的订阅者使用。"
       enterprise_link: "如需了解详细信息，请单击此处。"
@@ -109,6 +109,174 @@ zh-CN:
       explanation:
         text: "如果用户的多项操作（例如，更新工作包两次）的时间间隔小于指定的时间跨度，则这些操作将被聚合为单个操作，并在应用程序中显示为单个操作。这也会将通知延迟同等的时间，从而减少电子邮件的发送数量，并且还会影响 %{webhook_link} 延迟。"
         link: "Webhook"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from Jira server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after but not afterwards."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          reverted: "Reverted"
+          completed: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              other: "%{count} projects"
+            issues:
+              other: "%{count} issues"
+            work_packages:
+              other: "%{count} work packages"
+            types:
+              other: "%{count} types"
+            statuses:
+              other: "%{count} statuses"
+            users:
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Click the button below to query the host to see what data is available to import."
+              button_fetch: "Check available data from host"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host URL offers for import and what this tools is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              label_importing: "Currently importing"
+              elements:
+                relations: "Relations between issues"
+                workflows: "Custom workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "Permissions, roles"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              label_finalizing_progress: "Finalizing import..."
+              label_finalized: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
         description: "Model Context Protocol 允许 AI 智能体向其用户提供此 OpenProject 实例所公开的工具和资源。"
@@ -123,6 +291,16 @@ zh-CN:
       server_form:
         description_caption: "如何向连接到 MCP 服务器的其他应用程序描述该 MCP 服务器。"
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP 配置无法更新。"
         success: "MCP 配置已成功更新。"
@@ -358,7 +536,7 @@ zh-CN:
     contained_in_type: "已包含在类型中"
     confirm_destroy_option: "删除某个选项将会删除其所有实例 (例如, 在工作包中)。确定要删除？"
     reorder_alphabetical: "按字母顺序重新排序"
-    reorder_confirmation: "警告：可用值的当前顺序将丢失。是否继续？"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "需要先选择工作包或项目"
     calculated_field_not_editable: "不可编辑属性。此值是自动计算的。"
     no_role_assigment: "无角色指定"
@@ -385,6 +563,14 @@ zh-CN:
           允许在工作包视图的筛选器中使用自定义字段。请注意，仅当选中“适用于所有项目”时，自定义字段才会显示在全局视图中。
       formula:
         project: "添加数值或输入 / 以搜索特性或数学运算符。"
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: 目前没有自定义字段。
       no_results_content_text: 创建新的自定义字段
@@ -1026,7 +1212,6 @@ zh-CN:
         title: "工作包共享缺少工作流"
         message: "没有为\"工作包编辑者\"角色配置工作流。没有工作流，共享用户就无法更改工作包的状态。工作流可以复制。选择一个源类型（例如\"任务\"）和源角色（例如\"成员\"）。然后选择目标类型。一开始，您可以将所有类型都选择为目标类型。最后，选择\"工作包编辑者\"角色作为目标，然后点击\"复制\"。在创建默认设置之后，像对其他角色一样进行微调，对工作流进行详细调整。"
         link_message: "在管理中配置工作流。"
-    templated_subject_hint: 通过类型 %{type}自动生成
     summary:
       reports:
         category:
@@ -1151,6 +1336,11 @@ zh-CN:
         dependencies: "依赖项"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
+      jira_import:
+        projects: "Projects"
       announcements:
         show_until: "显示截止日期"
       attachment:
@@ -1169,7 +1359,6 @@ zh-CN:
         scim_clients: "SCIM 客户端"
       calculated_value_error:
         error_code: "错误代码"
-        customized: "自定义"
         customized_id: "自定义ID"
         customized_type: "自定义类型"
       capability:
@@ -1197,6 +1386,7 @@ zh-CN:
         regexp: "正则表达式"
         searchable: "可搜索"
         admin_only: "仅管理员"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "值"
       design_color:
@@ -1228,7 +1418,7 @@ zh-CN:
         page: "页"
         row_count: "行数"
         column_count: "列数"
-        widgets: "微件"
+        widgets: "小部件"
       journal:
         notes: "备注"
         cause_type: "Cause 类型"
@@ -1525,6 +1715,7 @@ zh-CN:
         not_available: "因系统配置而不可用。"
         not_deletable: "无法删除。"
         not_current_user: "不是当前用户。"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "未找到"
         not_a_date: "不是有效的日期。"
         not_a_datetime: "不是有效的日期时间。"
@@ -1886,6 +2077,8 @@ zh-CN:
               blank: "请提供令牌名称"
               in_use: "此令牌名称已被使用，请选择其他令牌名称"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "请检查以下字段："
         header:
@@ -1901,6 +2094,7 @@ zh-CN:
       comment: "评论"
       custom_action: "自定义操作"
       custom_field: "自定义字段"
+      customized: "Customized"
       "doorkeeper/application": "OAuth应用程序"
       enterprise_token:
         other: "企业令牌"
@@ -1925,6 +2119,8 @@ zh-CN:
         other: "角色"
       scim_client:
         other: "SCIM 客户端"
+      jira:
+        other: "Jira"
       status: "工作包状态"
       token/api:
         other: 访问令牌
@@ -2069,6 +2265,7 @@ zh-CN:
     role: "角色"
     roles: "角色"
     search: "搜索"
+    sprint: "Sprint"
     start_date: "开始日期"
     status: "状态"
     state: "地区"
@@ -2837,6 +3034,7 @@ zh-CN:
     caused_changes:
       dates_changed: "日期已更改"
       default_attribute_written: "已写入只读属性"
+      import: "Imported"
       progress_mode_changed_to_status_based: "更新进度计算"
       status_changed: "状态 '%{status_name}'"
       system_update: "OpenProject 系统更新："
@@ -2844,6 +3042,15 @@ zh-CN:
       total_percent_complete_mode_changed_to_work_weighted_average: "现在按工作加权计算的 完成% 总数。"
       total_percent_complete_mode_changed_to_simple_average: "完成% 总数的计算现在仅基于完成% 值的简单平均值。"
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field}"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: 根据前置任务 %{link}的更改
       work_package_parent_changed_times: 通过对父级的更改 %{link}
       work_package_children_changed_times: 通过对子级的更改 %{link}
@@ -3169,8 +3376,8 @@ zh-CN:
   label_duplicate: "重复"
   label_duplicates: "复制"
   label_edit: "编辑"
-  label_edit_attribute: "编辑属性"
   label_edit_x: "编辑：%{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "切换多选"
   label_enabled_project_custom_fields: "启用自定义字段"
   label_enabled_project_modules: "启用的模块"
@@ -3275,6 +3482,7 @@ zh-CN:
   label_external_links: "外部链接"
   label_locale: "语言和地区"
   label_jump_to_a_project: "跳转到一个项目..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "关键词"
   label_language_based: "基于用户的语言"
   label_last_activity: "最近一次活动"
@@ -3297,6 +3505,7 @@ zh-CN:
   label_lock_user: "锁定用户"
   label_logged_as: "登录用户名"
   label_login: "登录"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "自定义徽标桌面版"
   label_custom_logo_mobile: "自定义徽标移动版"
   label_custom_export_logo: "自定义导出徽标"
@@ -3507,7 +3716,7 @@ zh-CN:
   label_revision_id: "修订版本 %{value}"
   label_revision_plural: "修订"
   label_roadmap: "路线图"
-  label_roadmap_edit: "编辑路线图%{name}"
+  label_roadmap_edit: "编辑路线图 %{name}"
   label_roadmap_due_in: "%{value} 到期"
   label_roadmap_no_work_packages: "该版本没有工作包。"
   label_roadmap_overdue: "%{value} 超时"
@@ -3921,6 +4130,7 @@ zh-CN:
   notice_successful_delete: "成功删除。"
   notice_successful_cancel: "取消成功"
   notice_successful_update: "成功更新。"
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "创建失败。"
   notice_unsuccessful_create_with_reason: "创建失败：%{reason}"
   notice_unsuccessful_update: "更新失败。"
@@ -4080,6 +4290,7 @@ zh-CN:
   permission_edit_project_query: "编辑项目查询"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 个项目组合"
@@ -4228,7 +4439,7 @@ zh-CN:
       managed: "在 OpenProject 中创建新的存储库"
     storage:
       not_available: "磁盘存储开销不可用于此存储库。"
-      update_timeout: "在 N 分钟内保留存储库最后所需的磁盘空间信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
+      update_timeout: "在 N 分钟内保留存储库最后所需磁盘空间的信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
       oauth_application_details: "关闭此窗口后，将无法再次访问客户端密钥值。请将这些值复制到 Nextcloud OpenProject 集成设置中："
       oauth_application_details_link_text: "转到设置页面"
       setup_documentation_details: "如果您在配置新文件存储方面需要帮助，请查看文档："
@@ -4262,6 +4473,9 @@ zh-CN:
   setting_capture_external_links: "捕获外部链接"
   setting_capture_external_links_text: >
     启用后，格式化文本中的所有外部链接在离开应用程序前都会重定向至警告页面。这有助于保护用户免受潜在恶意外部网站的危害。
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "首次登录重定向"
   setting_after_first_login_redirect_url_text_html: >
     设置用户首次登录后的重定向路径。如果该路径为空，则重定向到主页以进行导览介绍。 <br/> 示例： <code>/my/page</code>
@@ -4306,6 +4520,9 @@ zh-CN:
   setting_smtp_password: "SMTP 密码"
   setting_smtp_domain: "SMTP HELO 域"
   setting_activity_days_default: "项目活动显示的天数"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "应用副标题"
   setting_app_title: "应用程序标题"
   setting_attachment_max_size: "最大的附件大小"
@@ -4415,7 +4632,6 @@ zh-CN:
   setting_repository_checkout_text: "检出说明文本"
   setting_repository_log_display_limit: "在文件日志中显示的修订版本最大数目"
   setting_repository_truncate_at: "存储库浏览器中显示的最多的文件个数"
-  setting_rest_api_enabled: "启用 REST Web 服务"
   setting_self_registration: "自助注册"
   setting_self_registration_caption: >
     选择用户的自行注册机制。 请注意您的设置，因为有些选项允许用户在此实例中激活自己的帐户。
@@ -4437,7 +4653,7 @@ zh-CN:
   setting_session_ttl_hint: "当设置的值低于5时，其作用类似于禁用。"
   setting_session_ttl_enabled: "会话过期"
   setting_start_of_week: "一周起始日"
-  setting_sys_api_enabled: "启用存储库管理网页服务"
+  setting_sys_api_enabled: "启用版本库管理 web 服务"
   setting_sys_api_description: "存储库管理网页服务提供了集成的，用户授权的存储库访问。"
   setting_time_format: "时间"
   setting_total_percent_complete_mode: "计算 完成% 层次结构总数"
@@ -4733,7 +4949,6 @@ zh-CN:
   text_length_between: "长度介于 %{min} 和 %{max} 个字符。"
   text_line_separated: "允许有多个值 （每行一个值）。"
   text_load_default_configuration: "加载默认配置"
-  text_min_max_length_info: "0 表示没有限制"
   text_no_roles_defined: 没有定义的角色。
   text_no_access_tokens_configurable: "没有可配置的访问令牌。"
   text_no_configuration_data: "角色、类型、工作包状态和工作流尚未配置。\n强烈建议加载默认配置。之后您可以再进行修改。"
@@ -4748,7 +4963,6 @@ zh-CN:
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "只有小写字母 (a-z)、 数字、 短划线和下划线被允许，必须以小写字母开头。"
   text_reassign: "重新分配工作包:"
-  text_regexp_info: "例如 ^ [A-Z0-9]+$"
   text_regexp_multiline: '以多行模式应用正则表达式，如 ^---\s+'
   text_repository_usernames_mapping: "选择或更新每个在存储库日志中发现的用户名所映射到的 OpenProject 用户。\n使用相同 OpenProject 和存储库用户名或电子邮件的用户已被自动映射。"
   text_status_changed_by_changeset: "被实施在更改集 %{value} 中。"
@@ -4846,8 +5060,7 @@ zh-CN:
     reset_failed_logins: "重置失败的帐户"
     status_user_and_brute_force: "%{user} 和 %{brute_force}"
     status_change: "状态更改"
-    text_change_disabled_for_provider_login: "名称由您的登录提供商设置，因此无法更改。"
-    text_change_disabled_for_ldap_login: "姓名和电子邮件由 LDAP 设置，因此无法更改。"
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "解锁​​​​"
     unlock_and_reset_failed_logins: "解锁和重置失败的帐户"
     error_cannot_delete_user: "User cannot be deleted"
@@ -4867,7 +5080,7 @@ zh-CN:
   warning_user_limit_reached_admin: >
     添加额外的用户将超出当前限制。请<a href="%{upgrade_url}">升级您的计划</a>，以确保外部用户能够访问此实例。
   warning_user_limit_reached_instructions: >
-    您已达到用户限制（%{current}/%{max} 活跃用户）。请联系 sales@openproject.com 升级您的企业版计划以添加额外用户。
+    您达到了用户限制（%{current}/%{max}活跃用户）。 请联系sales@openproject.com以升级您的Enterprise edition计划并添加其他用户。
   warning_protocol_mismatch_html: >
 
   warning_bar:

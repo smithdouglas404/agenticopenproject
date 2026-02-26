@@ -137,10 +137,10 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
     describe "editing multiple fields" do
       let(:input_fields_dialog) do
-        Components::Projects::ProjectCustomFields::EditDialog.new(project, section_for_input_fields)
+        Components::Projects::ProjectCustomFields::Dialog.new(project, section_for_input_fields)
       end
       let(:select_fields_dialog) do
-        Components::Projects::ProjectCustomFields::EditDialog.new(project, section_for_select_fields)
+        Components::Projects::ProjectCustomFields::Dialog.new(project, section_for_select_fields)
       end
       let(:field) { FormFields::Primerized::AutocompleteField.new(list_project_custom_field) }
 

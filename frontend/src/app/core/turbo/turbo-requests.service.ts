@@ -32,9 +32,7 @@ export class TurboRequestsService {
       init.signal = controller.signal;
     }
 
-    const defaultHeaders:{'X-Authentication-Scheme':string, 'X-CSRF-Token'?:string} = {
-      'X-Authentication-Scheme': 'Session',
-    };
+    const defaultHeaders:{'X-CSRF-Token'?:string} = {};
     if(init.method && !(init.method === 'GET' || init.method === 'HEAD')) {
       defaultHeaders['X-CSRF-Token'] = getMetaContent('csrf-token');
     }

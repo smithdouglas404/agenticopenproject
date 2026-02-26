@@ -234,6 +234,15 @@ ru:
     errors:
       validation:
         start_time_different_date: "Дата startTime (%{start_time}) должна быть такой же, как дата spentOn (%{spent_on})."
+  costs:
+    widgets:
+      actual_costs:
+        title: "Фактические затраты по месяцам"
+        blankslate:
+          heading: "Start tracking your time and costs"
+          description: "Get an overview of your costs and logged time to monitor progress of your project"
+          action: "Добавить трудозатраты"
+        view_details: "View actual costs details"
   ee:
     features:
       time_entry_time_restrictions: Требует точного отслеживания времени

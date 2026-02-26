@@ -85,20 +85,21 @@ module OpenProject::TextFormatting::Matchers
                   { only_path: context[:only_path],
                     controller: "/meetings",
                     action: "show",
+                    project_id: meeting.project_id,
                     id: oid },
                   class: "meeting"
         end
       end
 
       def render_message
-        message = Message.includes(:parent).find_by(id: oid)
+        message = Message.visible.includes(:parent).find_by(id: oid)
         if message
           link_to_message(message, { only_path: context[:only_path] }, class: "message")
         end
       end
 
       def render_project
-        p = Project.find_by(id: oid)
+        p = Project.visible.find_by(id: oid)
         if p
           link_to_project(p, { only_path: context[:only_path] }, class: "project")
         end

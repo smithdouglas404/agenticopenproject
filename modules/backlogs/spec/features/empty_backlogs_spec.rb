@@ -48,12 +48,11 @@ RSpec.describe "Empty backlogs project",
   context "as admin" do
     let(:current_user) { create(:admin) }
 
-    it "shows a no results box with action" do
-      expect(page).to have_css(".generic-table--no-results-container", text: I18n.t(:backlogs_empty_title))
-      expect(page).to have_css(".generic-table--no-results-description", text: I18n.t(:backlogs_empty_action_text))
-
-      link = page.find ".generic-table--no-results-description a"
-      expect(link[:href]).to include(new_project_version_path(project))
+    it "shows blankslate with description" do
+      within ".blankslate" do
+        expect(page).to have_heading(I18n.t(:backlogs_empty_title))
+        expect(page).to have_text(I18n.t(:backlogs_empty_action_text))
+      end
     end
   end
 
@@ -61,9 +60,11 @@ RSpec.describe "Empty backlogs project",
     let(:role) { create(:project_role, permissions: %i(view_master_backlog)) }
     let(:current_user) { create(:user, member_with_roles: { project => role }) }
 
-    it "only shows a no results box" do
-      expect(page).to have_css(".generic-table--no-results-container", text: I18n.t(:backlogs_empty_title))
-      expect(page).to have_no_css(".generic-table--no-results-description")
+    it "shows a blankslate without description" do
+      within ".blankslate" do
+        expect(page).to have_heading(I18n.t(:backlogs_empty_title))
+        expect(page).to have_no_text(I18n.t(:backlogs_empty_action_text))
+      end
     end
   end
 end

@@ -118,7 +118,15 @@ fr:
   error_notification_with_errors: "L'envoi de notifications a échoué. Les destinataires suivant n'ont pas pu être notifiés : %{recipients}"
   label_meeting: "Réunion"
   label_meeting_plural: "Réunions"
+  label_meeting_templates: "Modèles"
+  label_meeting_template: "Modèle"
+  label_meeting_template_new: "Nouveau modèle"
+  label_meeting_template_create: "Créer un modèle"
+  label_meeting_template_delete: "Supprimer le modèle"
+  label_meeting_template_edit: "Éditer le modèle"
+  label_meeting_create_from_template: "Créer une réunion à partir d'un modèle"
   label_meeting_new: "Nouvelle réunion"
+  caption_meeting_template_select: "Sélectionnez un modèle et copier automatiquement ses éléments de l'ordre du jour"
   label_meeting_new_dynamic: "Nouvelle réunion ponctuelle"
   label_meeting_new_recurring: "Nouvelle réunion récurrente"
   label_meeting_create: "Créer une réunion"
@@ -279,6 +287,9 @@ fr:
         heading: "Supprimer cette réunion ?"
         confirmation_message_html: >
           Cette action est irréversible. Veuillez procéder avec prudence.
+        template:
+          title: "Supprimer le modèle"
+          heading: "Supprimer ce modèle\_?"
       occurrence:
         title: "Annuler l'occurrence de la réunion"
         heading: "Annuler cette occurrence de réunion ?"
@@ -478,6 +489,7 @@ fr:
     end_series_dialog:
       title: "Terminer la série de réunions"
   notice_successful_notification: "Mise à jour du calendrier par e-mail envoyée à tous les participants"
+  notice_meeting_template_created: "Modèle créé avec succès"
   notice_timezone_missing: Aucun fuseau horaire n'est défini et %{zone} est supposé. Pour choisir votre fuseau horaire, veuillez cliquer ici.
   notice_meeting_updated: "Cette page a été mise à jour par quelqu'un d'autre. Rechargez pour voir les changements."
   permission_create_meetings: "Créer des réunions"
@@ -492,6 +504,8 @@ fr:
   text_duration_in_hours: "Durée en heures"
   text_in_hours: "en heures"
   text_meeting_agenda_for_meeting: 'ordre du jour de la réunion «%{meeting} »'
+  text_meeting_template_blank_slate_heading: "Il n'y a pas de modèles à afficher"
+  text_meeting_template_blank_slate: "Vous pouvez créer un nouveau modèle pour des réunions ponctuelles"
   text_meeting_series_end_early_heading: "Supprimer les futures occurrences ?"
   text_meeting_series_end_early: "La fin de la série supprimera les futures occurrences de réunions ouvertes ou planifiées"
   text_meeting_closing_are_you_sure: "Voulez-vous vraiment clôturer l'ordre du jour de la réunion ?"
@@ -597,6 +611,9 @@ fr:
   text_meeting_in_progress_dropdown_description: "Documentez les résultats tels que les besoins d'information ou les décisions prises pendant la réunion."
   text_meeting_closed_dropdown_description: "Cette réunion est terminée. Vous ne pouvez plus modifier les points de l'ordre du jour ou les résultats."
   text_meeting_draft_banner: "Vous êtes actuellement en mode brouillon. Cette réunion n'enverra pas de mises à jour de calendrier ni d'invitations, même si vous modifiez les détails de la réunion ou si vous ajoutez/supprimez des participants."
+  text_onetime_meeting_template_banner: "Vous êtes en train de modifier un modèle de réunion. Vous pouvez utiliser ce modèle pour créer des réunions ponctuelles avec un ordre du jour prédéfini. Les modifications n'affecteront pas les réunions déjà créées."
+  text_onetime_meeting_template_empty_heading: "Votre modèle de réunion est vide"
+  text_onetime_meeting_template_description: "Vous pouvez ajouter des points de l'ordre du jour, des participants et des pièces jointes à ce modèle."
   text_exit_draft_mode_dialog_title: "Ouvrez cette réunion et envoyez des invitations ?"
   text_exit_draft_mode_dialog_subtitle: "Vous ne pouvez pas revenir au mode brouillon une fois que vous avez planifié une réunion."
   text_exit_draft_mode_dialog_template_title: "Ouvrez la première occurrence de cette série de réunions ?"

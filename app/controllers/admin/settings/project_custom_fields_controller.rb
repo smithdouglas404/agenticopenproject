@@ -43,7 +43,7 @@ module Admin::Settings
     before_action :find_custom_field,
                   only: %i(show edit project_mappings new_link link unlink update destroy delete_option reorder_alphabetical
                            move drop role_assignment update_role_assignment role_assignment_preview_dialog
-                           attribute_help_text update_attribute_help_text)
+                           attribute_help_text update_attribute_help_text list_items)
     before_action :prepare_custom_option_position, only: %i(update create)
     before_action :find_custom_option, only: :delete_option
     before_action :project_custom_field_mappings_query, only: %i[project_mappings unlink]
@@ -73,6 +73,8 @@ module Admin::Settings
     end
 
     def edit; end
+
+    def list_items; end
 
     def project_mappings; end
 

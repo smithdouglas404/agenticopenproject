@@ -31,14 +31,24 @@
 module OpenProject::TextFormatting
   module Filters
     class SanitizationFilter < HTML::Pipeline::SanitizationFilter
-      def allowlist
+      # Prefix for all id and name attributes so they cannot clobber document/window
+      # (e.g. id="constructor" becomes id="op-frag-constructor"). Anchors still work
+      # because we rewrite fragment links to use the same prefix. Used by
+      # TableOfContentsFilter when it assigns heading ids.
+      FRAGMENT_ID_PREFIX = "op-frag-"
+
+      def allowlist # rubocop:disable Metrics/AbcSize
         base = super
+        # Ensure id is allowed (for anchors); we make it safe by prefixing in the transformer.
+        base_attrs = base[:attributes].deep_dup
+        all_attrs = Array(base_attrs[:all])
+        base_attrs[:all] = all_attrs.include?("id") ? all_attrs : all_attrs + ["id"]
 
         Sanitize::Config.merge(
           base,
           elements: base[:elements] + %w[macro mention],
 
-          attributes: base[:attributes].deep_merge(
+          attributes: base_attrs.deep_merge(
             # Whitelist class and data-* attributes on all macros
             "macro" => ["class", :data],
             # mentions
@@ -75,9 +85,50 @@ module OpenProject::TextFormatting
 
       def transformers
         [
+          fragment_id_prefix_transformer,
+          fragment_link_rewrite_transformer,
           todo_list_transformer,
           code_block_transformer
         ]
+      end
+
+      # Prefix all id and name attributes so they cannot clobber document/window.
+      # e.g. id="constructor" -> id="op-frag-constructor"; anchors still work.
+      def fragment_id_prefix_transformer
+        prefix = FRAGMENT_ID_PREFIX
+        lambda { |env|
+          node = env[:node]
+          next unless node.element?
+
+          %w[id name].each do |attr|
+            val = node[attr]
+            next if val.blank?
+            next if val.start_with?(prefix)
+
+            node[attr] = "#{prefix}#{val}"
+          end
+        }
+      end
+
+      # Rewrite same-document fragment links to use the same prefix so anchors match.
+      # e.g. <a href="#section"> -> href="#op-frag-section"
+      def fragment_link_rewrite_transformer
+        prefix = FRAGMENT_ID_PREFIX
+        lambda { |env|
+          node = env[:node]
+          next unless node.name == "a"
+
+          href = node["href"]
+          return if href.blank?
+
+          # Only rewrite fragment-only links (#foo), not full URLs with fragment
+          next unless href.start_with?("#") && href.length > 1
+
+          fragment = href.slice(1..)
+          next if fragment.empty? || fragment.start_with?(prefix)
+
+          node["href"] = "##{prefix}#{fragment}"
+        }
       end
 
       # Transformer to fix task lists in sanitization

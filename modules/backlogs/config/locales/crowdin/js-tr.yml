@@ -24,3 +24,6 @@ tr:
     work_packages:
       properties:
         storyPoints: "Hikaye Puanları"
+    burndown:
+      day: "Day"
+      points: "Points"

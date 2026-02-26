@@ -116,7 +116,15 @@ id:
   error_notification_with_errors: "Gagal mengirim notifikasi. Berikut penerima yang tidak terkirim: %{recipients}"
   label_meeting: "Rapat"
   label_meeting_plural: "Rapat"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Rapat Baru"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Rapat satu waktu baru"
   label_meeting_new_recurring: "Rapat berulang baru"
   label_meeting_create: "Buat rapat"
@@ -274,6 +282,9 @@ id:
         heading: "Hapus rapat ini?"
         confirmation_message_html: >
           Tindakan ini tidak dapat dibatalkan. Harap berhati-hati saat melakukannya.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "Cancel meeting occurrence"
         heading: "Cancel this meeting occurrence?"
@@ -471,6 +482,7 @@ id:
     end_series_dialog:
       title: "Akhiri seri rapat"
   notice_successful_notification: "Email calendar update sent to all participants"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: Tidak ada zona waktu yang ditetapkan sehingga diasumsikan %{zone}. Untuk memilih zona waktu, silakan mengeklik di sini.
   notice_meeting_updated: "Halaman ini telah diperbarui oleh orang lain. Segarkan halaman untuk melihat perubahan."
   permission_create_meetings: "Membuat rapat"
@@ -485,6 +497,8 @@ id:
   text_duration_in_hours: "Durasi dalam jam"
   text_in_hours: "dalam jam"
   text_meeting_agenda_for_meeting: 'agenda untuk rapat "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Hapus acara yang akan datang?"
   text_meeting_series_end_early: "Mengakhiri seri ini akan menghapus semua rapat terbuka atau rapat yang akan datang"
   text_meeting_closing_are_you_sure: "Apakah Anda yakin ingin menutup agenda rapat?"
@@ -590,6 +604,9 @@ id:
   text_meeting_in_progress_dropdown_description: "Document outcomes like information needs or decisions taken during the meeting."
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
   text_meeting_draft_banner: "Saat ini, Anda berada dalam mode draf. Rapat ini tidak akan mengirimkan pembaruan kalender atau undangan, bahkan jika Anda mengubah detail rapat atau menambahkan/menghapus peserta."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "Buka rapat ini dan kirim undangan?"
   text_exit_draft_mode_dialog_subtitle: "Anda tidak dapat kembali ke mode draf setellah Anda menjadwalkan rapat."
   text_exit_draft_mode_dialog_template_title: "Buka acara yang pertama dalam seri rapat ini?"

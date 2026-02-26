@@ -36,6 +36,7 @@ class CostEntry < ApplicationRecord
   belongs_to :user
   belongs_to :logged_by, class_name: "User"
   include ::Costs::DeletedUserFallback
+
   belongs_to :cost_type
   belongs_to :budget
   belongs_to :rate, class_name: "CostRate"
@@ -55,6 +56,10 @@ class CostEntry < ApplicationRecord
             allow_blank: true
 
   scope :on_work_packages, ->(work_packages) { where(entity: work_packages) }
+
+  def self.effective_costs_sum
+    sum(arel_table.coalesce(arel_table[:overridden_costs], arel_table[:costs]))
+  end
 
   extend CostEntryScopes
   include Entry::Costs

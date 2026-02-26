@@ -118,7 +118,15 @@ it:
   error_notification_with_errors: "Impossibile inviare notifica. Non è possibile notificare i seguenti destinatari: %{recipients}"
   label_meeting: "Riunione"
   label_meeting_plural: "Riunioni"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Nuova riunione"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Nuova riunione una tantum"
   label_meeting_new_recurring: "Nuova riunione ricorrente"
   label_meeting_create: "Crea riunione"
@@ -279,6 +287,9 @@ it:
         heading: "Cancellare questa riunione?"
         confirmation_message_html: >
           Questa azione è irreversibile. Procedi con cautela.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "Cancella l'occorrenza della riunione"
         heading: "Cancellare questa occorrenza della riunione?"
@@ -478,6 +489,7 @@ it:
     end_series_dialog:
       title: "Termina serie di riunioni"
   notice_successful_notification: "Aggiornamento del calendario via e-mail inviato a tutti i partecipanti"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: Nessun fuso orario è impostato e la %{zone} è un requisito necessario. Per scegliere il tuo fuso orario, fare clic qui.
   notice_meeting_updated: "Questa pagina è stata aggiornata da qualcun altro. Ricarica per visualizzare le modifiche."
   permission_create_meetings: "Creare riunioni"
@@ -492,6 +504,8 @@ it:
   text_duration_in_hours: "Durata in ore"
   text_in_hours: "in ore"
   text_meeting_agenda_for_meeting: 'ordine del giorno della riunione "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Cancellare le occorrenze future?"
   text_meeting_series_end_early: "La chiusura della serie cancellerà tutte le future occorrenze di riunioni aperte o programmate"
   text_meeting_closing_are_you_sure: "Vuoi davvero chiudere l'agenda di questa riunione?"
@@ -597,6 +611,9 @@ it:
   text_meeting_in_progress_dropdown_description: "Documenta i risultati, come le esigenze informative o le decisioni prese durante la riunione."
   text_meeting_closed_dropdown_description: "Questa riunione è chiusa. Non puoi più modificare i punti all'ordine del giorno."
   text_meeting_draft_banner: "Al momento sei in modalità bozza. Questa riunione non invierà alcun aggiornamento del calendario né inviti, anche in caso di modifica dei dettagli della riunione o di aggiunta o rimozione di partecipanti."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
+  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
   text_exit_draft_mode_dialog_title: "Aprire questa riunione e inviare gli inviti?"
   text_exit_draft_mode_dialog_subtitle: "Non può tornare alla modalità bozza una volta programmata una riunione."
   text_exit_draft_mode_dialog_template_title: "Aprire la prima occorrenza di questa serie di riunioni?"

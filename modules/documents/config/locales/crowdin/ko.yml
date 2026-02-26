@@ -23,6 +23,8 @@ ko:
   plugin_openproject_documents:
     name: "OpenProject 문서"
     description: "프로젝트에서 문서 생성을 허용하는 OpenProject 플러그인입니다."
+  attributes:
+    collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
   activerecord:
     errors:
       models:
@@ -119,7 +121,8 @@ ko:
           some_unwritable: 일부 값은 환경 변수를 통해 구성되며 여기에서 편집할 수 없습니다.
         hocuspocus_server_url:
           label: "Hocuspocus 서버 URL"
-          caption: "작동 중인 Hocuspocus 서버의 주소입니다."
+          caption: "The WebSocket address of a working Hocuspocus server."
+          invalid_scheme: "Must use a WebSocket protocol (ws:// or wss://)."
         hocuspocus_server_secret:
           label: "클라이언트 비밀번호"
           caption: "Hocuspocus 서버에서 제공한 비밀번호를 붙여넣으세요."

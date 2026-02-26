@@ -40,7 +40,6 @@ RSpec.describe WorkPackages::CreateNoteContract do
     # we need to clear the changes information because otherwise the
     # contract will complain about all the changes to read_only attributes
     wp.send(:clear_changes_information)
-    allow(wp).to receive(:valid?).and_return true
 
     wp
   end
@@ -150,6 +149,19 @@ RSpec.describe WorkPackages::CreateNoteContract do
       end
 
       it_behaves_like "contract is invalid", subject: :error_readonly
+    end
+
+    describe "with the work package already being invalid" do
+      before do
+        work_package.done_ratio = -100
+
+        # Otherwise, the contract would complain about changing a read-only attribute
+        work_package.send(:clear_changes_information)
+
+        work_package.journal_notes = "abc"
+      end
+
+      it_behaves_like "contract is valid"
     end
   end
 end

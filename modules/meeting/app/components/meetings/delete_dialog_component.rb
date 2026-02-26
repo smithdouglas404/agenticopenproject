@@ -51,7 +51,8 @@ module Meetings
       if recurring_meeting.present?
         I18n.t("meeting.delete_dialog.occurrence.title")
       else
-        I18n.t("meeting.delete_dialog.one_time.title")
+        template = @meeting.onetime_template? ? ".template" : ""
+        I18n.t("meeting.delete_dialog.one_time#{template}.title")
       end
     end
 
@@ -59,7 +60,8 @@ module Meetings
       if recurring_meeting.present?
         I18n.t("meeting.delete_dialog.occurrence.heading")
       else
-        I18n.t("meeting.delete_dialog.one_time.heading")
+        template = @meeting.onetime_template? ? ".template" : ""
+        I18n.t("meeting.delete_dialog.one_time#{template}.heading")
       end
     end
 

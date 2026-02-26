@@ -72,7 +72,7 @@ module CustomFieldsHelper
   end
 
   def custom_field_tag_for_bulk_edit(name, custom_field, project = nil) # rubocop:disable Metrics/AbcSize
-    field_name = "#{name}[custom_field_values][#{custom_field.id}]"
+    field_name = name.present? ? "#{name}[custom_field_values][#{custom_field.id}]" : "custom_field_values[#{custom_field.id}]"
     field_id = "#{name}_custom_field_values_#{custom_field.id}"
     field_format = OpenProject::CustomFieldFormat.find_by(name: custom_field.field_format)
 

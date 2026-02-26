@@ -2,10 +2,12 @@ zh-TW:
   js:
     grid:
       add_widget: '新增小工具'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: '移除小工具'
       configure: '設定小工具'
       widgets:
         missing_permission: "您沒有必要的權限來檢視小工具。"
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: '自訂文字'
         documents:
@@ -27,8 +29,6 @@ zh-TW:
           not_set: '未設定'
           finished: '已完成'
           discontinued: '已中止'
-        project_status_beta:
-          title: '狀態 (BETA)'
         subprojects:
           title: '子項目'
         project_favorites:

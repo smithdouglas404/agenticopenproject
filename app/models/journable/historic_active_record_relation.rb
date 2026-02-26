@@ -101,7 +101,7 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
   #
   # SELECT * from work_packages
 
-  def build_arel(connection, aliases = nil)
+  def build_arel(aliases = nil)
     substitute_join_tables_in_where_clause(self)
 
     # Based on the previous modifications, build the algebra object and prepend

@@ -33,6 +33,9 @@ See COPYRIGHT and LICENSE files for more details.
     grid.with_widget(Grids::Widgets::ProjectStatus, @program)
     grid.with_widget(Grids::Widgets::Subitems, @program)
     grid.with_widget(Grids::Widgets::Members, @program)
+    grid.with_widget(Budgets::Widgets::BudgetTotals, @program)
+    grid.with_widget(Budgets::Widgets::BudgetByCostType, @program)
+    grid.with_widget(Costs::Widgets::ActualCosts, @program)
 
     grid.with_widget(Grids::ProjectAttributeWidgets, @program)
   end

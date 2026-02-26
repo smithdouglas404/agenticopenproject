@@ -23,6 +23,8 @@ id:
   plugin_openproject_documents:
     name: "Dokumen OpenProject"
     description: "Plugin OpenProject untuk memungkinkan pembuatan dokumen dalam proyek."
+  attributes:
+    collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
   activerecord:
     errors:
       models:
@@ -119,7 +121,8 @@ id:
           some_unwritable: Beberapa nilai dikonfigurasi melalui variabel lingkungan dan tidak dapat disunting di sini.
         hocuspocus_server_url:
           label: "URL server Hocuspocus"
-          caption: "Alamat server Hocuspocus yang sedang beroperasi."
+          caption: "The WebSocket address of a working Hocuspocus server."
+          invalid_scheme: "Must use a WebSocket protocol (ws:// or wss://)."
         hocuspocus_server_secret:
           label: "Klien rahasia"
           caption: "Salin kode rahasia yang disediakan oleh server Hocuspocus."

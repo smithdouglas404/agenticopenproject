@@ -2,10 +2,12 @@ nl:
   js:
     grid:
       add_widget: 'Widget toevoegen'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Widget verwijderen'
       configure: 'Widget configureren'
       widgets:
         missing_permission: "U hebt niet de vereiste rechten om deze widget te bekijken."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Aangepaste tekst'
         documents:
@@ -27,8 +29,6 @@ nl:
           not_set: 'Niet ingesteld'
           finished: 'Afgewerkt'
           discontinued: 'Stopgezet'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

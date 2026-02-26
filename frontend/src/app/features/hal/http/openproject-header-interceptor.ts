@@ -32,9 +32,7 @@ export class OpenProjectHeaderInterceptor implements HttpInterceptor {
   private handleAuthenticatedRequest(req:HttpRequest<any>, next:HttpHandler):Observable<HttpEvent<any>> {
     const csrfToken = getMetaContent('csrf-token');
 
-    let newHeaders = req.headers
-      .set('X-Authentication-Scheme', 'Session')
-      .set('X-Requested-With', 'XMLHttpRequest');
+    let newHeaders = req.headers.set('X-Requested-With', 'XMLHttpRequest');
 
     if (csrfToken) {
       newHeaders = newHeaders.set('X-CSRF-TOKEN', csrfToken);

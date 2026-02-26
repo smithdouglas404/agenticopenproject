@@ -109,6 +109,174 @@ vi:
       explanation:
         text: "Các hành động riêng lẻ của người dùng (ví dụ: cập nhật gói công việc hai lần) được tổng hợp thành một hành động nếu chênh lệch tuổi tác của họ nhỏ hơn khoảng thời gian đã chỉ định. Chúng sẽ được hiển thị dưới dạng một hành động duy nhất trong ứng dụng. Điều này cũng sẽ làm chậm thông báo với cùng một khoảng thời gian làm giảm số lượng email được gửi và cũng sẽ ảnh hưởng đến độ trễ %{webhook_link}."
         link: "webhook"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from Jira server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after but not afterwards."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          reverted: "Reverted"
+          completed: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              other: "%{count} projects"
+            issues:
+              other: "%{count} issues"
+            work_packages:
+              other: "%{count} work packages"
+            types:
+              other: "%{count} types"
+            statuses:
+              other: "%{count} statuses"
+            users:
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Click the button below to query the host to see what data is available to import."
+              button_fetch: "Check available data from host"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host URL offers for import and what this tools is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              label_importing: "Currently importing"
+              elements:
+                relations: "Relations between issues"
+                workflows: "Custom workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "Permissions, roles"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              label_finalizing_progress: "Finalizing import..."
+              label_finalized: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
         description: "Giao thức bối cảnh mô hình cho phép các tác nhân AI cung cấp cho người dùng của mình các công cụ và tài nguyên được cung cấp bởi phiên bản OpenProject này."
@@ -123,6 +291,16 @@ vi:
       server_form:
         description_caption: "Cách máy chủ MCP sẽ được mô tả cho các ứng dụng khác kết nối với nó."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "Không thể cập nhật cấu hình MCP."
         success: "Cấu hình MCP đã được cập nhật thành công."
@@ -361,7 +539,7 @@ vi:
     contained_in_type: "Chứa trong loại"
     confirm_destroy_option: "Xóa một tùy chọn sẽ xóa tất cả các sự kiện của nó (ví dụ như trong các gói công việc). Bạn có chắc bạn muốn xóa bỏ nó?"
     reorder_alphabetical: "Sắp xếp lại các giá trị theo thứ tự bảng chữ cái"
-    reorder_confirmation: "Cảnh báo: Thứ tự hiện tại của các giá trị sẵn có sẽ bị mất. Tiếp tục?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Lựa chọn gói công việc hoặc dự án là bắt buộc trước tiên"
     calculated_field_not_editable: "Thuộc tính không thể chỉnh sửa. Giá trị này được tính toán tự động."
     no_role_assigment: "Không phân công vai trò"
@@ -388,6 +566,14 @@ vi:
           Cho phép sử dụng trường tùy chỉnh trong bộ lọc trong chế độ xem gói công việc. Lưu ý rằng chỉ khi chọn 'Dành cho tất cả dự án', trường tùy chỉnh sẽ hiển thị ở chế độ xem chung.
       formula:
         project: "Thêm giá trị số hoặc nhập / để tìm kiếm thuộc tính hoặc toán tử toán học."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: Không có hiện tại không có trường tùy chỉnh.
       no_results_content_text: Tạo trường tùy chỉnh mới
@@ -1028,7 +1214,6 @@ vi:
         title: "Thiếu luồng công việc để chia sẻ gói công việc"
         message: "Không có quy trình làm việc nào được định cấu hình cho vai trò 'Trình chỉnh sửa gói công việc'. Nếu không có quy trình làm việc, nội dung được chia sẻ với người dùng không thể thay đổi trạng thái của gói công việc. Quy trình làm việc có thể được sao chép. Chọn loại nguồn (ví dụ: 'Nhiệm vụ') và vai trò nguồn (ví dụ: 'Thành viên'). Sau đó chọn loại mục tiêu. Để bắt đầu, bạn có thể chọn tất cả các loại làm mục tiêu. Cuối cùng, chọn vai trò 'Trình chỉnh sửa gói công việc' làm mục tiêu và nhấn 'Sao chép'. Sau khi đã tạo các giá trị mặc định, hãy tinh chỉnh quy trình làm việc như bạn thực hiện với mọi vai trò khác."
         link_message: "Cấu hình các quy trình công việc trong quản trị."
-    templated_subject_hint: Được tạo tự động thông qua loại %{type}
     summary:
       reports:
         category:
@@ -1153,6 +1338,11 @@ vi:
         dependencies: "phụ thuộc"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
+      jira_import:
+        projects: "Projects"
       announcements:
         show_until: "Hiển thị cho đến khi"
       attachment:
@@ -1171,7 +1361,6 @@ vi:
         scim_clients: "khách hàng SCIM"
       calculated_value_error:
         error_code: "Mã lỗi"
-        customized: "tùy chỉnh"
         customized_id: "ID tùy chỉnh"
         customized_type: "Loại tùy chỉnh"
       capability:
@@ -1199,6 +1388,7 @@ vi:
         regexp: "Biểu thức chính quy"
         searchable: "Có thể tìm kiếm được"
         admin_only: "Chỉ dành cho quản trị viên"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "Giá trị"
       design_color:
@@ -1527,6 +1717,7 @@ vi:
         not_available: "không khả dụng do cấu hình hệ thống."
         not_deletable: "không thể xóa được."
         not_current_user: "không phải là người dùng hiện tại."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "không tìm thấy."
         not_a_date: "không phải là ngày hợp lệ"
         not_a_datetime: "không phải là thời gian hợp lệ"
@@ -1888,6 +2079,8 @@ vi:
               blank: "Vui lòng cung cấp tên mã thông báo"
               in_use: "Tên mã thông báo này đã được sử dụng, vui lòng chọn tên khác"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "Vui lòng kiểm tra các mục sau đây:"
         header:
@@ -1903,6 +2096,7 @@ vi:
       comment: "Nhận xét"
       custom_action: "Tác vụ tùy chỉnh"
       custom_field: "Tùy chỉnh mục"
+      customized: "Customized"
       "doorkeeper/application": "Ứng dụng OAuth"
       enterprise_token:
         other: "Mã thông báo doanh nghiệp"
@@ -1927,6 +2121,8 @@ vi:
         other: "Vai trò"
       scim_client:
         other: "khách hàng SCIM"
+      jira:
+        other: "Jira"
       status: "Tình trạng work package"
       token/api:
         other: Mã thông báo truy cập
@@ -2009,7 +2205,7 @@ vi:
     body: "cơ thể"
     blocks_ids: "ID của các work package bị chặn"
     category: "thể loại"
-    comment: "bình luận"
+    comment: "Nhận xét"
     comments: "bình luận"
     content: "Nội dung"
     color: "màu sắc"
@@ -2071,6 +2267,7 @@ vi:
     role: "Vai trò"
     roles: "Vai trò"
     search: "tìm kiếm"
+    sprint: "Sprint"
     start_date: "Ngày bắt đầu"
     status: "Trạng thái"
     state: "tiểu bang"
@@ -2839,6 +3036,7 @@ vi:
     caused_changes:
       dates_changed: "Ngày đã thay đổi"
       default_attribute_written: "Thuộc tính chỉ đọc được viết"
+      import: "Imported"
       progress_mode_changed_to_status_based: "Đã cập nhật tính toán tiến độ"
       status_changed: "Trạng thái '%{status_name}'"
       system_update: "Cập nhật hệ thống OpenProject:"
@@ -2846,6 +3044,15 @@ vi:
       total_percent_complete_mode_changed_to_work_weighted_average: "Tính toán % tổng số hoàn thành hiện được tính theo Công việc."
       total_percent_complete_mode_changed_to_simple_average: "Tính toán tổng số % Hoàn thành hiện dựa trên mức trung bình đơn giản chỉ là các giá trị % Hoàn thành."
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field}"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: bằng những thay đổi đối với người tiền nhiệm %{link}
       work_package_parent_changed_times: bằng những thay đổi đối với cha mẹ %{link}
       work_package_children_changed_times: bởi những thay đổi đối với con %{link}
@@ -3171,8 +3378,8 @@ vi:
   label_duplicate: "Nhân đôi"
   label_duplicates: "Nhân đôi"
   label_edit: "Chỉnh sửa"
-  label_edit_attribute: "Chỉnh sửa thuộc tính"
   label_edit_x: "Chỉnh sửa: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "Bật/tắt đa lựa chọn"
   label_enabled_project_custom_fields: "Các trường tùy chỉnh đã bật"
   label_enabled_project_modules: "Các mô-đun đã bật"
@@ -3277,6 +3484,7 @@ vi:
   label_external_links: "Liên kết ngoài"
   label_locale: "Ngôn ngữ và khu vực"
   label_jump_to_a_project: "Chuyển đến một dự án..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "Từ khóa"
   label_language_based: "Dựa trên ngôn ngữ của người dùng"
   label_last_activity: "Hoạt động cuối cùng"
@@ -3299,6 +3507,7 @@ vi:
   label_lock_user: "Khóa người dùng"
   label_logged_as: "Đăng nhập như"
   label_login: "Đăng nhập"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "Máy tính để bàn logo tùy chỉnh"
   label_custom_logo_mobile: "Logo tùy chỉnh di động"
   label_custom_export_logo: "Logo xuất khẩu tùy chỉnh"
@@ -3589,7 +3798,7 @@ vi:
   label_used_by: "Được dùng bởi"
   label_used_by_types: "Được sử dụng bởi các loại"
   label_used_in_projects: "Được sử dụng trong các dự án"
-  label_user: "người dùng"
+  label_user: "Người dùng"
   label_user_and_permission: "Người dùng và quyền"
   label_user_named: "Người dùng %{name}"
   label_user_activity: "%{value} hoạt động"
@@ -3925,6 +4134,7 @@ vi:
   notice_successful_delete: "Xóa thành công."
   notice_successful_cancel: "Hủy thành công."
   notice_successful_update: "Cập nhật thành công."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Tạo không thành công."
   notice_unsuccessful_create_with_reason: "Tạo không thành công: %{reason}"
   notice_unsuccessful_update: "Cập nhật không thành công."
@@ -4085,6 +4295,7 @@ vi:
   permission_edit_project_query: "Chỉnh sửa truy vấn dự án"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 danh mục đầu tư"
@@ -4269,6 +4480,9 @@ vi:
   setting_capture_external_links: "Chụp các liên kết bên ngoài"
   setting_capture_external_links_text: >
     Khi tính năng này được kích hoạt, tất cả các liên kết ngoài trong văn bản định dạng sẽ được chuyển hướng qua một trang cảnh báo trước khi rời khỏi ứng dụng. Điều này giúp bảo vệ người dùng khỏi các trang web bên ngoài có thể chứa mã độc hại.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Chuyển hướng đăng nhập lần đầu"
   setting_after_first_login_redirect_url_text_html: >
     Đặt đường dẫn để chuyển hướng người dùng sau lần đăng nhập đầu tiên của họ. Nếu trống, hãy chuyển hướng đến trang chủ để xem chuyến tham quan giới thiệu. <br/> Ví dụ: <code>/my/page</code>
@@ -4313,6 +4527,9 @@ vi:
   setting_smtp_password: "Mật khẩu SMTP"
   setting_smtp_domain: "Tên miền SMTP HELO"
   setting_activity_days_default: "Ngày hiển thị trên hoạt động dự án"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "phụ đề ứng dụng"
   setting_app_title: "Tiêu đề ứng dụng"
   setting_attachment_max_size: "Tệp đính kèm tối đa. kích cỡ"
@@ -4422,7 +4639,6 @@ vi:
   setting_repository_checkout_text: "Văn bản hướng dẫn thanh toán"
   setting_repository_log_display_limit: "Số lượng bản sửa đổi tối đa được hiển thị trên nhật ký tệp"
   setting_repository_truncate_at: "Số lượng tệp tối đa được hiển thị trong trình duyệt kho lưu trữ"
-  setting_rest_api_enabled: "Kích hoạt dịch vụ web REST"
   setting_self_registration: "Tự đăng ký"
   setting_self_registration_caption: >
     Lựa chọn cơ chế tự đăng ký cho người dùng. Hãy cẩn thận với cài đặt bạn chọn vì một số tùy chọn cho phép người dùng kích hoạt tài khoản của chính họ trong trường hợp này.
@@ -4740,7 +4956,6 @@ vi:
   text_length_between: "Độ dài từ %{min} đến %{max} ký tự."
   text_line_separated: "Cho phép nhiều giá trị (mỗi giá trị một dòng)."
   text_load_default_configuration: "Tải cấu hình mặc định"
-  text_min_max_length_info: "0 có nghĩa là không hạn chế"
   text_no_roles_defined: Không có vai trò nào được xác định.
   text_no_access_tokens_configurable: "Không có mã thông báo truy cập nào có thể được cấu hình."
   text_no_configuration_data: "Vai trò, loại, trạng thái gói công việc và quy trình làm việc chưa được định cấu hình.\nRất khuyến khích tải cấu hình mặc định. Bạn sẽ có thể sửa đổi nó sau khi tải."
@@ -4755,7 +4970,6 @@ vi:
   text_powered_by: "Được cung cấp bởi %{link}"
   text_project_identifier_info: "Chỉ cho phép chữ cái viết thường (a-z), số, dấu gạch ngang và dấu gạch dưới, phải bắt đầu bằng chữ cái viết thường."
   text_reassign: "Phân công lại cho gói công việc:"
-  text_regexp_info: "ví dụ. ^[A-Z0-9]+$"
   text_regexp_multiline: 'Biểu thức được áp dụng ở chế độ đa dòng. Ví dụ: ^---\s+'
   text_repository_usernames_mapping: "Chọn hoặc cập nhật người dùng OpenProject được ánh xạ tới từng tên người dùng được tìm thấy trong nhật ký kho lưu trữ.\nNgười dùng có cùng tên người dùng hoặc email của OpenProject và kho lưu trữ sẽ được tự động ánh xạ."
   text_status_changed_by_changeset: "Được áp dụng trong bộ thay đổi %{value}."
@@ -4853,8 +5067,7 @@ vi:
     reset_failed_logins: "Đặt lại thông tin đăng nhập thất bại"
     status_user_and_brute_force: "%{user} và %{brute_force}"
     status_change: "Thay đổi trạng thái"
-    text_change_disabled_for_provider_login: "Tên được thiết lập với người cung cấp đăng nhập của bạn và vì thế không thể thay đổi"
-    text_change_disabled_for_ldap_login: "Tên và email do LDAP đặt và do đó không thể thay đổi."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Mở khoá"
     unlock_and_reset_failed_logins: "Mở khóa và đặt lại thông tin đăng nhập thất bại"
     error_cannot_delete_user: "User cannot be deleted"

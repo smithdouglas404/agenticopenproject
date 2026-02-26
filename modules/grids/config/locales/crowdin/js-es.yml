@@ -2,10 +2,12 @@ es:
   js:
     grid:
       add_widget: 'Agregar widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Quitar widget'
       configure: 'Configurar widget'
       widgets:
         missing_permission: "No tiene los permisos necesarios para ver este widget."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Texto personalizado'
         documents:
@@ -27,8 +29,6 @@ es:
           not_set: 'No establecido'
           finished: 'Terminado'
           discontinued: 'Discontinuado'
-        project_status_beta:
-          title: 'Estado (BETA)'
         subprojects:
           title: 'Subelementos'
         project_favorites:

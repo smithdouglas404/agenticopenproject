@@ -31,6 +31,7 @@
 class Setting < ApplicationRecord
   class NotWritableError < StandardError; end
 
+  extend Accessors
   extend Aliases
   extend MailSettings
 
@@ -73,73 +74,6 @@ class Setting < ApplicationRecord
                  Big5
                  Big5-HKSCS
                  TIS-620).freeze
-
-  class << self
-    def create_setting(name, value = {})
-      ::Settings::Definition.add(name, **value.symbolize_keys)
-    end
-
-    def create_setting_accessors(name)
-      return if [:installation_uuid].include?(name.to_sym)
-
-      # Defines getter and setter for each setting
-      # Then setting values can be read using: Setting.some_setting_name
-      # or set using Setting.some_setting_name = "some value"
-      src = <<-END_SRC
-        def self.#{name}
-          # when running too early, there is no settings table. do nothing
-          self[:#{name}] if settings_table_exists_yet?
-        end
-
-        def self.#{name}?
-          # when running too early, there is no settings table. do nothing
-          return unless settings_table_exists_yet?
-          definition = Settings::Definition[:#{name}]
-
-          if definition.format != :boolean
-            ActiveSupport::Deprecation.new.warn "Calling #{self}.#{name}? is deprecated since it is not a boolean", caller_locations
-          end
-
-          value = self[:#{name}]
-          ActiveRecord::Type::Boolean.new.cast(value) || false
-        end
-
-        def self.#{name}=(value)
-          if settings_table_exists_yet?
-            self[:#{name}] = value
-          else
-            logger.warn "Trying to save a setting named '#{name}' while there is no 'setting' table yet. This setting will not be saved!"
-            nil # when running too early, there is no settings table. do nothing
-          end
-        end
-
-        def self.#{name}_writable?
-          Settings::Definition[:#{name}].writable?
-        end
-      END_SRC
-      class_eval src, __FILE__, __LINE__
-    end
-
-    def method_missing(method, *, &)
-      if exists?(accessor_base_name(method))
-        create_setting_accessors(accessor_base_name(method))
-
-        send(method, *)
-      else
-        super
-      end
-    end
-
-    def respond_to_missing?(method_name, include_private = false)
-      exists?(accessor_base_name(method_name)) || super
-    end
-
-    private
-
-    def accessor_base_name(name)
-      name.to_s.sub(/(_writable\?)|(\?)|=\z/, "")
-    end
-  end
 
   validates :name,
             uniqueness: true,
@@ -221,28 +155,6 @@ class Setting < ApplicationRecord
   # Check whether a setting was defined
   def self.exists?(name)
     Settings::Definition[name].present?
-  end
-
-  def self.installation_uuid
-    if settings_table_exists_yet?
-      # we avoid the default getters and setters since the cache messes things up
-      setting = find_or_initialize_by(name: "installation_uuid")
-      if setting.value.blank?
-        setting.value = generate_installation_uuid
-        setting.save!
-      end
-      setting.value
-    else
-      "unknown"
-    end
-  end
-
-  def self.generate_installation_uuid
-    if Rails.env.test?
-      "test"
-    else
-      SecureRandom.uuid
-    end
   end
 
   %i[emails_header emails_footer].each do |mail|

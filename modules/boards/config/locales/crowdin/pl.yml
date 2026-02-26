@@ -20,7 +20,7 @@ pl:
       action: "Tablica działania (%{attribute})"
     board_type_attributes:
       assignee: Przypisany do
-      status: Status
+      status: Kanban
       version: Wersja
       subproject: Podprojekt
       subtasks: Nadrzędny-podrzędny 

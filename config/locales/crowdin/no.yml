@@ -109,6 +109,180 @@
       explanation:
         text: "Individuelle handlinger av en bruker (f.eks. oppdatering av en arbeidspakke to ganger) aggregeres til en enkelt handling hvis aldersforskjellen er mindre enn det spesifiserte tidsrommet. De vil bli vist som en enkelt handling i programmet. Dette vil også forsinke varslinger med samme tidsperiode som reduserer antall e-poster som sendes, og vil også påvirke %{webhook_link} forsinkelse."
         link: "webhook"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from Jira server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after but not afterwards."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          reverted: "Reverted"
+          completed: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              one: "1 project"
+              other: "%{count} projects"
+            issues:
+              one: "1 issue"
+              other: "%{count} issues"
+            work_packages:
+              one: "1 work package"
+              other: "%{count} work packages"
+            types:
+              one: "1 type"
+              other: "%{count} types"
+            statuses:
+              one: "1 status"
+              other: "%{count} statuses"
+            users:
+              one: "1 user"
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Click the button below to query the host to see what data is available to import."
+              button_fetch: "Check available data from host"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host URL offers for import and what this tools is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              label_importing: "Currently importing"
+              elements:
+                relations: "Relations between issues"
+                workflows: "Custom workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "Permissions, roles"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              label_finalizing_progress: "Finalizing import..."
+              label_finalized: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
         description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
@@ -123,6 +297,16 @@
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -361,7 +545,7 @@
     contained_in_type: "Type beholdt"
     confirm_destroy_option: "Sletting av et alternativ vil slette alle forekomster (f.eks i arbeidspakker). Er du sikker på at du vil slette den?"
     reorder_alphabetical: "Omorganiser verdier alfabetisk"
-    reorder_confirmation: "Advarsel: Gjeldende rekkefølge for tilgjengelige verdier vil gå tapt. Vil du fortsette?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -388,6 +572,14 @@
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: Det er ingen egendefinerte felt for øyeblikket.
       no_results_content_text: Opprett nytt egendefinert felt
@@ -1038,7 +1230,6 @@
         title: "Arbeidsflyt mangler for deling av arbeidspakker"
         message: "Ingen arbeidsflyt er konfigurert for rollen 'Arbeidspakke redaktør'. Uten en arbeidsflyt kan ikke brukeren endre status på arbeidspakken. Arbeidsflyt kan kopieres. Velg en kildetype (f.eks. 'oppgave') og en kilderolle (f.eks. 'medlem'). Velg så måltyper. Til å begynne med, kan du velge alle typene som mål. Til slutt velger du \"Redigeringsprogrammet for arbeidspakke\" som mål og press \"Copy\". Etter å ha opprettet standardinnstillingene, kan du finjustere arbeidsflytene som du gjør for hver annen rolle."
         link_message: "Konfigurer arbeidsmetodene i administrasjonen."
-    templated_subject_hint: Automatically generated through type %{type}
     summary:
       reports:
         category:
@@ -1163,6 +1354,11 @@
         dependencies: "Avhengigheter"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
+      jira_import:
+        projects: "Projects"
       announcements:
         show_until: "Vise til"
       attachment:
@@ -1181,7 +1377,6 @@
         scim_clients: "SCIM clients"
       calculated_value_error:
         error_code: "Error code"
-        customized: "Customized"
         customized_id: "Customized ID"
         customized_type: "Customized type"
       capability:
@@ -1209,6 +1404,7 @@
         regexp: "Regulære uttrykk"
         searchable: "Søkbar"
         admin_only: "Kun administratorer"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "Verdi"
       design_color:
@@ -1537,6 +1733,7 @@
         not_available: "er ikke tilgjengelig på grunn av en systemkonfigurasjon."
         not_deletable: "kan ikke slettes."
         not_current_user: "er ikke gjeldende bruker."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "er ikke en gyldig dato."
         not_a_datetime: "er ikke et gyldig tidspunkt for datoen."
@@ -1900,6 +2097,8 @@
               blank: "Please provide a token name"
               in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "Kontroller følgende felter:"
         header:
@@ -1918,6 +2117,7 @@
       comment: "Kommentar"
       custom_action: "Tilpasset handling"
       custom_field: "Egendefinert felt"
+      customized: "Customized"
       "doorkeeper/application": "OAuth program"
       enterprise_token:
         one: "Enterprise token"
@@ -1949,6 +2149,9 @@
       scim_client:
         one: "SCIM client"
         other: "SCIM clients"
+      jira:
+        one: "Jira"
+        other: "Jira"
       status: "Status for arbeidspakke"
       token/api:
         one: Access token
@@ -2100,6 +2303,7 @@
     role: "Rolle"
     roles: "Rolle"
     search: "Søk"
+    sprint: "Sprint"
     start_date: "Startdato"
     status: "Status"
     state: "State"
@@ -2889,6 +3093,7 @@
     caused_changes:
       dates_changed: "Datoer endret"
       default_attribute_written: "Skrivebeskyttet attributter skrevet"
+      import: "Imported"
       progress_mode_changed_to_status_based: "Fremdriftsberegning oppdatert"
       status_changed: "Status '%{status_name}'"
       system_update: "OpenProject system oppdatering:"
@@ -2896,6 +3101,15 @@
       total_percent_complete_mode_changed_to_work_weighted_average: "Beregning av % Komplette totaler er nå vektet av arbeid."
       total_percent_complete_mode_changed_to_simple_average: "Beregning av % fullstendige summer nå basert på et enkelt gjennomsnitt av bare % fullført verdier."
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field}"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: etter endringer i forgjenger %{link}
       work_package_parent_changed_times: etter endringer til overordnet %{link}
       work_package_children_changed_times: etter endringer i underordnet %{link}
@@ -3221,8 +3435,8 @@
   label_duplicate: "duplikat"
   label_duplicates: "duplikater"
   label_edit: "Rediger"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "Rediger: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "Veksle multivalg"
   label_enabled_project_custom_fields: "Aktiverte egendefinerte felt"
   label_enabled_project_modules: "Aktiverte moduler"
@@ -3327,6 +3541,7 @@
   label_external_links: "External links"
   label_locale: "Language and region"
   label_jump_to_a_project: "Gå til et prosjekt..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "Nøkkelord"
   label_language_based: "Basert på brukerens språk"
   label_last_activity: "Siste aktivitet"
@@ -3349,6 +3564,7 @@
   label_lock_user: "Lås bruker"
   label_logged_as: "Innlogget som"
   label_login: "Logg inn"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "Custom logo desktop"
   label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Tilpasset eksportlogo"
@@ -3976,6 +4192,7 @@
   notice_successful_delete: "Slettingen var vellykket."
   notice_successful_cancel: "Successful cancellation."
   notice_successful_update: "Oppdateringen var vellykket."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Creation failed."
   notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
   notice_unsuccessful_update: "Update failed."
@@ -4137,6 +4354,7 @@
   permission_edit_project_query: "Rediger prosjektspørring"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4321,6 +4539,9 @@
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "First login redirect"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
@@ -4365,6 +4586,9 @@
   setting_smtp_password: "SMTP passord"
   setting_smtp_domain: "SMTP HELO domene"
   setting_activity_days_default: "Dager som vises i prosjektaktivitet"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "Undertittel for applikasjon"
   setting_app_title: "Applikasjonsnavn"
   setting_attachment_max_size: "Maksstørrelse for vedlegg"
@@ -4474,7 +4698,6 @@
   setting_repository_checkout_text: "Instruksjoner for utsjekk"
   setting_repository_log_display_limit: "Maks antall revisjoner som vises i filloggen"
   setting_repository_truncate_at: "Maksimalt antall filer som vises i depot nettleser"
-  setting_rest_api_enabled: "Aktiver REST webservice"
   setting_self_registration: "Selv-registrering"
   setting_self_registration_caption: >
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
@@ -4792,7 +5015,6 @@
   text_length_between: "Lengde mellom %{min} og %{max} tegn."
   text_line_separated: "Flere verdier tillatt (en verdi pr. linje)."
   text_load_default_configuration: "Last inn standardoppsettet"
-  text_min_max_length_info: "0 betyr ingen restriksjoner"
   text_no_roles_defined: Det er ingen roller definert.
   text_no_access_tokens_configurable: "Det finnes ingen tilgangsnøkler som kan konfigureres."
   text_no_configuration_data: "Roller, typer, arbeidspakkestatuser og arbeidsflyt har ikke blitt satt opp ennå.\nDet er sterkt anbefalt å laste standardoppsettet. Du kan redigere disse når de er lastet inn."
@@ -4807,7 +5029,6 @@
   text_powered_by: "Driftes med %{link}"
   text_project_identifier_info: "Kun små bokstaver (a-z), tall, bindestrek og understrek er tillatt. Første tegn må være liten bokstav."
   text_reassign: "Tilordne til arbeidspakke:"
-  text_regexp_info: "f.eks. ^[A-Z0-9]+$"
   text_regexp_multiline: 'Denne regexen brukes i flerlinjemodus. f.eks ^---\s+'
   text_repository_usernames_mapping: "Velg eller oppdater OpenProject-brukeren knyttet til hvert enkelt brukernavn i pakkebrønn-loggen.\nBrukere med samme OpenProject- og pakkebrønn-brukernavn eller e-post tilknyttes automatisk."
   text_status_changed_by_changeset: "Benyttet i changeset %{value}."
@@ -4906,8 +5127,7 @@
     reset_failed_logins: "Nullstill mislykkede innlogginger"
     status_user_and_brute_force: "%{user} og %{brute_force}"
     status_change: "Endre status"
-    text_change_disabled_for_provider_login: "Navnet er angitt av påloggingsleverandøren og kan dermed ikke endres."
-    text_change_disabled_for_ldap_login: "Navnet og e-postadressen er satt av LDAP og kan dermed ikke endres."
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "Lås opp"
     unlock_and_reset_failed_logins: "Lås opp og nullstill mislykkede innloggingsforsøk"
     error_cannot_delete_user: "User cannot be deleted"

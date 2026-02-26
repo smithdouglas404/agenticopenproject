@@ -30,13 +30,15 @@
 
 module McpTools
   class Base
+    RESPONSE_FORMATS = %i[full content_only structured_only].freeze
+
     class << self
       def qualified_name
         "tools/#{name}"
       end
 
       def page_size
-        100
+        40
       end
 
       def default_title(title = nil)
@@ -176,7 +178,7 @@ module McpTools
         validate_root_output_schema!(@tool_context.output_schema)
       end
 
-      format_result(result)
+      format_response(result)
     end
 
     private
@@ -186,8 +188,18 @@ module McpTools
       raise NotImplemented, "#{self.class} needs to implement #call method"
     end
 
-    def format_result(result)
-      MCP::Tool::Response.new([{ type: "text", text: result.to_json }], structured_content: result)
+    def format_response(result)
+      plain = render_plain_content? ? format_content(result) : []
+      structured_content = render_structured_content? ? format_structured_content(result) : nil
+      MCP::Tool::Response.new(plain, **{ structured_content: }.compact)
+    end
+
+    def format_content(result)
+      [{ type: "text", text: result.to_json }]
+    end
+
+    def format_structured_content(result)
+      result
     end
 
     def current_user
@@ -199,6 +211,14 @@ module McpTools
       return if root_type == "object"
 
       raise "MCP tools must respond with a JSON object as the root element. #{self.class} responds in #{root_type}."
+    end
+
+    def render_plain_content?
+      %i[full content_only].include?(Setting.mcp_tool_response_format)
+    end
+
+    def render_structured_content?
+      %i[full structured_only].include?(Setting.mcp_tool_response_format)
     end
 
     # Usable by tool implementations. Takes a scope and filters it according to the passed params.

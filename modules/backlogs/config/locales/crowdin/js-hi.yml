@@ -24,3 +24,6 @@ hi:
     work_packages:
       properties:
         storyPoints: "कहानी अंक"
+    burndown:
+      day: "Day"
+      points: "Points"
