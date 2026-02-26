@@ -70,7 +70,7 @@ fr:
         meeting_participant:
           user_invalid: "n'est pas un participant valide."
         meeting_agenda_item:
-          section_not_belong_to_meeting: "Section does not belong to the same meeting."
+          section_not_belong_to_meeting: "La section n'appartient pas à la même réunion."
           user_invalid: "n'est pas un participant valide."
         recurring_meeting_interim_response:
           not_an_occurrence: "n'est pas une heure d'occurrence valide pour cette réunion récurrente"
