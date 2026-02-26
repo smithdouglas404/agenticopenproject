@@ -135,6 +135,7 @@ RSpec.describe AttributeHelpText::WorkPackage do
       end
       let(:cf_instance_for_all) do
         custom_field = create(:text_wp_custom_field, is_for_all: true)
+        type.custom_fields << custom_field
         create_cf_help_text(custom_field)
       end
 

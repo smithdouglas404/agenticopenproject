@@ -3352,7 +3352,7 @@ en:
         active_tokens: "Active tokens"
         blank_description: "There is no third-party application access configured and active for you."
         blank_title: "No OAuth application token"
-        last_used_at: "Last used at"
+        last_refreshed_at: "Last refreshed at"
         title: "OAuth"
         table_title: "OAuth application tokens"
         text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
