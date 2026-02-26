@@ -53,10 +53,14 @@ class CustomField < ApplicationRecord
 
   has_many :calculated_value_errors, dependent: :delete_all, inverse_of: "custom_field"
 
+  include Scopes::Scoped
+
   scope :hierarchy_root_and_children, -> { includes(hierarchy_root: { children: :children }) }
   scope :required, -> { where(is_required: true).where.not(field_format: "calculated_value") }
 
   scope :field_format_calculated_value, -> { where(field_format: "calculated_value") }
+
+  scopes :visible
 
   acts_as_list scope: [:type]
 

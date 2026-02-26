@@ -44,7 +44,7 @@ class RbStoriesController < RbApplicationController
   end
 
   def update
-    story = Story.find(params[:id])
+    story = Story.visible.find(params[:id])
 
     call = Stories::UpdateService
            .new(user: current_user, story:)

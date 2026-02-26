@@ -32,7 +32,9 @@ module MeetingAgendaItems
   class CreateContract < BaseContract
     attribute :item_type
 
-    validate :user_allowed_to_add, :validate_meeting_existence
+    validate :user_allowed_to_add,
+             :validate_meeting_existence,
+             :section_belongs_to_meeting
 
     def self.assignable_meetings(user)
       Meeting
@@ -70,6 +72,14 @@ module MeetingAgendaItems
       return if model.meeting.nil?
 
       errors.add :base, :does_not_exist unless visible?
+    end
+
+    def section_belongs_to_meeting
+      return if model.meeting_section.nil? || model.meeting.nil?
+
+      unless model.meeting_id == model.meeting_section.meeting_id
+        errors.add :base, :section_not_belong_to_meeting
+      end
     end
 
     private

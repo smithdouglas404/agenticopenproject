@@ -207,8 +207,15 @@ class UsersController < ApplicationController
   end
 
   def resend_invitation # rubocop:disable Metrics/AbcSize
+    if @user.admin? && !current_user.admin?
+      # non-admin users are not allowed to change admin status
+      flash[:error] = I18n.t("user.error_admin_change_on_non_admin")
+      redirect_to helpers.allowed_management_user_profile_path(@user)
+      return
+    end
+
     status = Principal.statuses[:invited]
-    @user.update status: status if @user.status != status
+    @user.update!(status: status) if @user.status != status
 
     token = UserInvitation.reinvite_user @user.id
 
