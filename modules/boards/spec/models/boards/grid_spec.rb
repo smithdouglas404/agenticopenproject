@@ -83,4 +83,48 @@ RSpec.describe Boards::Grid do
       end
     end
   end
+
+  describe "#destroy" do
+    context "with an associated query" do
+      let(:project) { create(:project) }
+      let(:instance) { described_class.new name: "foo", row_count: 2, column_count: 2, project: }
+      let(:query) do
+        create(:query,
+               public: true,
+               project: project)
+      end
+
+      current_user { build_stubbed(:user) }
+
+      before do
+        widget = Grids::Widget.new(identifier: "work_package_query",
+                                   start_row: 1,
+                                   end_row: 2,
+                                   start_column: 1,
+                                   end_column: 2,
+                                   options: { "queryId" => query.id })
+
+        instance.widgets = [widget]
+        instance.save!
+      end
+
+      context "when the user has the permissions to manage queries" do
+        before do
+          mock_permissions_for(current_user) do |mock|
+            mock.allow_in_project :manage_public_queries, project:
+          end
+        end
+
+        it "deletes the query" do
+          expect { instance.destroy }.to change(Query, :count).by(-1)
+        end
+      end
+
+      context "when the user lacks the permissions to manage queries" do
+        it "keeps the query" do
+          expect { instance.destroy }.not_to change(Query, :count)
+        end
+      end
+    end
+  end
 end
