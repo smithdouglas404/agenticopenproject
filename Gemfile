@@ -276,7 +276,7 @@ group :test do
   gem "rspec-rails", "~> 8.0.3", group: :development
 
   # Retry failures within the same environment
-  gem "retriable", "~> 3.1.1"
+  gem "retriable", "~> 3.2.1"
   gem "rspec-retry", "~> 0.6.1"
 
   # Accessibility tests
