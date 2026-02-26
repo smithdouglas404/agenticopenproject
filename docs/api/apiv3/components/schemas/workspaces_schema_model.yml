@@ -93,6 +93,9 @@ properties:
           href:
             type: string
             example: "/api/v3/workspaces/schema"
+patternProperties:
+  "^customField\\d+$":
+    $ref: './schema_property_model.yml'
 
 example:
   _type: Schema
