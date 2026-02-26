@@ -80,7 +80,7 @@ export default class extends Controller {
       const persistence = new IndexeddbPersistence(`op-doc-${this.documentNameValue}`, ydoc);
       this.indexeddbPersistence = persistence;
       persistence.on('synced', () => {
-        debugLog('[IndexedDB] Local document synced');
+        debugLog('(BlockNote Editor)  Local document synced via IndexedDB');
         resolve();
       });
     });
@@ -110,11 +110,6 @@ export default class extends Controller {
     
     LiveCollaborationManager.initializeYjsProvider(provider, ydoc);
     this.ownedProvider = provider;
-
-    // When the provider is synchronized, Y.Doc itself will detect the changes
-    provider.on('synced', () => {
-      debugLog('[Hocuspocus] Provider synced');
-    });
 
     if (this.refreshUrlValue && this.tokenExpiresInSecondsValue) {
       // Destroy any existing service to prevent duplicate timers if connect() is called multiple times

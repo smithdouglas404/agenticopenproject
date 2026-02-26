@@ -46,7 +46,10 @@ function useConnectionTimeout(provider:HocuspocusProvider|undefined, timeoutMs =
     setHasTimedOut(false);
     if (!provider) return;
 
-    if (provider.synced) return;
+    if (provider.synced) {
+      setHasTimedOut(false);
+      return;
+    }
 
     timeoutRef.current = setTimeout(() => {
       if (!provider.synced) {
@@ -116,7 +119,7 @@ export function useCollaboration(provider:HocuspocusProvider | undefined, doc:Y.
 
   useEffect(() => {
     if (hasTimedOut) {
-      debugLog('(BlockNote Editor) Timeout - offline mode');
+      debugLog('(BlockNote Editor) Connection to collaboration server timed out - now in offline mode');
       setIsLoading(false);
       setOfflineMode(true);
     }

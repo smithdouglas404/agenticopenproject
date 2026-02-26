@@ -81,7 +81,7 @@ class LiveCollaborationManagerClass {
    */
   
   // Public destroy to safely clean up the provider, document, and subscribers
-  destroy():void {
+  private destroy():void {
     this.destroyYjsProvider();
     this.destroyYjsDoc();
 
