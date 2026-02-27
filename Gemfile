@@ -69,7 +69,7 @@ gem "scimitar", "~> 2.13"
 gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.9.0"
-gem "closure_tree", "~> 9.5.0"
+gem "closure_tree", "~> 9.6.0"
 gem "rubytree", "~> 2.2.0"
 
 gem "addressable", "~> 2.8.0"
@@ -199,7 +199,7 @@ gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
 gem "nokogiri", "~> 1.19.1"
 
-gem "carrierwave", "~> 1.3.4"
+gem "carrierwave", "~> 2.2.6"
 gem "carrierwave_direct", "~> 2.1.0"
 gem "fog-aws"
 
@@ -276,7 +276,7 @@ group :test do
   gem "rspec-rails", "~> 8.0.3", group: :development
 
   # Retry failures within the same environment
-  gem "retriable", "~> 3.1.1"
+  gem "retriable", "~> 3.2.1"
   gem "rspec-retry", "~> 0.6.1"
 
   # Accessibility tests
