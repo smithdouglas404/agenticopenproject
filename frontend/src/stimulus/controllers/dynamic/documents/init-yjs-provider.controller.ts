@@ -41,6 +41,8 @@ import * as Y from 'yjs';
 import { IndexeddbPersistence } from 'y-indexeddb';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 
+const INDEXEDDB_SYNC_TIMEOUT_MS = 10_000;
+
 export default class extends Controller {
   static values = {
     hocuspocusUrl: String,
@@ -82,17 +84,16 @@ export default class extends Controller {
 
     // y-indexeddb does not emit an 'error' event, so a timeout is the only
     // protection against hanging indefinitely (e.g. private browsing, quota exceeded)
-    const TIMEOUT_MS = 10_000;
     const timeout = new Promise<never>((_, reject) =>
       window.setTimeout(
         () => reject(new Error('IndexedDB sync timed out')),
-        TIMEOUT_MS,
+        INDEXEDDB_SYNC_TIMEOUT_MS,
       )
     );
 
     return Promise.race([
       persistence.whenSynced.then(() => {
-        debugLog('(BlockNote Editor)  Local document synced via IndexedDB');
+        debugLog('(BlockNote Editor) Local document synced via IndexedDB');
       }),
       timeout,
     ]);
