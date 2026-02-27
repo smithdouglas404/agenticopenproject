@@ -90,7 +90,8 @@ en:
     show_edit_view:
       connection_error_notice:
         description: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
+          You are currently in offline mode.
+          Changes will be saved once the connection to the collaboration server is re-established
           Please contact the administrator if the problem persists.
         action: Try again
       connection_recovery_notice:
