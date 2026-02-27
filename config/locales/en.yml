@@ -1455,9 +1455,6 @@ en:
 
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       announcements:
@@ -4416,7 +4413,6 @@ en:
   permission_add_internal_comments: "Write internal comments"
   permission_archive_project: "Archive project"
   permission_create_user: "Create users"
-  permission_create_sprints: "Create sprints"
   permission_manage_user: "Edit users"
   permission_manage_placeholder_user: "Create, edit, and delete placeholder users"
   permission_add_subprojects: "Create subprojects"
