@@ -112,7 +112,25 @@ export default class extends Controller {
     const ydoc:Doc = new Y.Doc();
 
     // Waiting for the synchronization of the local copy of IndexedDB
-    await this.waitForIndexedDBSync(ydoc);
+    try {
+      await this.waitForIndexedDBSync(ydoc);
+    } catch (error) {
+      // IndexedDB unavailable or timed out — destroy the partial instance and
+      // continue without offline persistence so the editor still renders.
+      debugLog(
+        '(BlockNote Editor) Failed to sync IndexedDB persistence, continuing without offline persistence',
+        error,
+      );
+      this.destroyIndexedDBPersistence();
+    }
+
+    // If disconnect() was called during the IndexedDB await (e.g., Turbo navigation),
+    // abort to avoid overwriting the active provider on the new page.
+    if (!this.element.isConnected) {
+      this.destroyIndexedDBPersistence();
+      ydoc.destroy();
+      return;
+    }
 
     // Connecting the Hocuspocus Provider after the local data has been loaded
     const provider = new HocuspocusProvider({

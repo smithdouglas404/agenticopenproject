@@ -101,7 +101,7 @@ class BlockNoteElement extends HTMLElement {
 
   connectedCallback() {
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
-    if(!collaborationEnabled) return;
+    if (!collaborationEnabled) return;
 
     // Initialize Stimulus application within shadow DOM
     this.stimulusApp = Application.start(this.stimulusRoot);
