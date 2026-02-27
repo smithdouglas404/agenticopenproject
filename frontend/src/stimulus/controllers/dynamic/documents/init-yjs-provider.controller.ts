@@ -74,8 +74,9 @@ export default class extends Controller {
     return this.currentToken;
   };
 
-  // Helper function for waiting for IndexedDB synchronization
-  private waitForIndexedDBSync = (ydoc:Doc):Promise<void> => {
+  // Starts IndexedDB synchronization and returns a Promise that resolves when synced
+  // or rejects on timeout. Callers are not required to await it.
+  private startIndexedDBSync = (ydoc:Doc):Promise<void> => {
     const persistence = new IndexeddbPersistence(`op-doc-${this.documentNameValue}`, ydoc);
     this.indexeddbPersistence = persistence;
 
@@ -111,11 +112,11 @@ export default class extends Controller {
 
     const ydoc:Doc = new Y.Doc();
 
-    // Start IndexedDB sync in the background — do not block provider initialisation.
+    // Start IndexedDB sync in the background — does not block provider initialisation.
     // Y.js CRDTs handle out-of-order merges: the Hocuspocus server pushes the
     // authoritative state on connect (onLoadDocument), and any offline edits
     // IndexedDB applies afterward are forwarded to the server automatically.
-    this.waitForIndexedDBSync(ydoc).catch((error) => {
+    this.startIndexedDBSync(ydoc).catch((error) => {
       debugLog(
         '(BlockNote Editor) Failed to sync IndexedDB persistence, continuing without offline persistence',
         error,
