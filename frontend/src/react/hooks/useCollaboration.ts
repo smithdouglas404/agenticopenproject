@@ -38,6 +38,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 const DEFAULT_CONNECTION_TIMEOUT_MS = 5000;
 
+/**
+ * Calls `onTimeout` if the provider has not synced within `timeoutMs`.
+ * The timer is cancelled proactively when the provider emits 'synced',
+ * so it never fires after a successful connection.
+ */
 function useConnectionTimeout(provider:HocuspocusProvider, onTimeout:() => void, timeoutMs = DEFAULT_CONNECTION_TIMEOUT_MS) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout>|null>(null);
 
@@ -58,6 +63,8 @@ function useConnectionTimeout(provider:HocuspocusProvider, onTimeout:() => void,
       onTimeout();
     }, timeoutMs);
 
+    // Cancel the timer as soon as the provider syncs rather than waiting
+    // for the full timeout to elapse.
     provider.on('synced', cancel);
 
     return () => {
@@ -67,6 +74,15 @@ function useConnectionTimeout(provider:HocuspocusProvider, onTimeout:() => void,
   }, [provider, onTimeout, timeoutMs]);
 }
 
+/**
+ * Subscribes to the provider's 'synced' and 'disconnect' events and
+ * forwards them to the supplied callbacks.
+ *
+ * Listeners are registered before the initial synced check so that a
+ * sync event emitted between registration and the check is never lost.
+ * If the provider is already synced on mount, `onSynced` is called
+ * immediately.
+ */
 function useCollaborationProvider(
   provider:HocuspocusProvider,
   onSynced:() => void,
@@ -87,7 +103,24 @@ function useCollaborationProvider(
   }, [provider, onSynced, onDisconnect]);
 }
 
-export function useCollaboration(provider:HocuspocusProvider) {
+/**
+ * Tracks the real-time connection state of a HocuspocusProvider and
+ * exposes it as React state for the BlockNote editor.
+ *
+ * Returns:
+ * - `isLoading`   — true while waiting for the first sync after mount.
+ * - `offlineMode` — true when the connection is lost or timed out;
+ *                   the editor remains editable and changes are queued
+ *                   locally (IndexedDB) until the server is reachable again.
+ *
+ * Transitions:
+ *   mount → synced           : isLoading false, offlineMode false
+ *   mount → timeout (5s)     : isLoading false, offlineMode true
+ *   connected → disconnect   : offlineMode true
+ *   offline → re-synced      : offlineMode false
+ *   any → auth error         : isLoading false, offlineMode true
+ */
+function useCollaboration(provider:HocuspocusProvider) {
   const [isLoading, setIsLoading] = useState(true);
   const [offlineMode, setOfflineMode] = useState(false);
 
@@ -127,4 +160,4 @@ export function useCollaboration(provider:HocuspocusProvider) {
   return { isLoading, offlineMode } as const;
 }
 
-export { useCollaborationProvider };
+export { useCollaboration };
