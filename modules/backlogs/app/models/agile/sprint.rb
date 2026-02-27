@@ -56,16 +56,6 @@ module Agile
          default: "in_planning",
          validate: true
 
-    enum :sharing,
-         {
-           none: "none",
-           descendants: "descendants",
-           system: "system"
-         },
-         default: "none",
-         prefix: :sharing_with,
-         validate: true
-
     validates :name, presence: true
     validates :project, presence: true
     validates :start_date, presence: true
@@ -75,9 +65,6 @@ module Agile
               if: :start_date?
 
     validate :validate_only_one_active_sprint_per_project
-
-    # TODO: validate sharing is set to an allowed value, e.g. only admins may share systemwide (#71374, #71253)
-    # TODO: implement sharing logic once it has been defined (#71374)
 
     def date_range_set?
       start_date? && finish_date?

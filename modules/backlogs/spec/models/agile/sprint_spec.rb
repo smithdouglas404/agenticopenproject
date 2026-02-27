@@ -46,7 +46,6 @@ RSpec.describe Agile::Sprint do
     it { is_expected.to validate_presence_of(:finish_date) }
     it { is_expected.to validate_presence_of(:project) }
     it { is_expected.to validate_inclusion_of(:status).in_array(described_class.statuses.keys) }
-    it { is_expected.to validate_inclusion_of(:sharing).in_array(described_class.sharings.keys) }
 
     it "validates finish_date is after or equal to start_date" do
       sprint.finish_date = sprint.start_date - 1.day
@@ -112,14 +111,6 @@ RSpec.describe Agile::Sprint do
 
     it "status defaults to in_planning" do
       expect(sprint).to be_in_planning
-    end
-
-    it "has sharing enum with correct values" do
-      expect(described_class.sharings.keys).to contain_exactly("none", "descendants", "system")
-    end
-
-    it "sharing defaults to none" do
-      expect(sprint).to be_sharing_with_none
     end
   end
 
