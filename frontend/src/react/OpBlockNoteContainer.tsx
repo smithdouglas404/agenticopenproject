@@ -38,20 +38,16 @@ import { fetchConnectionTemplate } from './helpers/connection-template-fetcher';
 import { useCollaboration } from './hooks/useCollaboration';
 
 export interface OpBlockNoteContainerProps {
-  inputField:HTMLInputElement;
-  inputText?:string;
   activeUser:User;
   readOnly:boolean;
   openProjectUrl:string;
   attachmentsUploadUrl:string;
   attachmentsCollectionKey:string;
-  hocuspocusProvider?:HocuspocusProvider;
+  hocuspocusProvider:HocuspocusProvider;
   errorContainer?:HTMLElement;
 }
 
 export default function OpBlockNoteContainer({
-  inputField,
-  inputText,
   activeUser,
   readOnly,
   openProjectUrl,
@@ -60,44 +56,8 @@ export default function OpBlockNoteContainer({
   hocuspocusProvider,
   errorContainer,
 }:OpBlockNoteContainerProps) {
-  // Determine if we are in a test environment.
-  // process.env.NODE_ENV === 'test' will work for Node/Jest/Vitest tests
-  // window.OpenProject.environment === 'test' is used in OpenProject browser tests
-  // This allows you to run the editor in tests without HocuspocusProvider.
-  const isTest =
-    process.env.NODE_ENV === 'test' ||
-    (typeof window !== 'undefined' && window.OpenProject?.environment === 'test');
-
-  // Check: if we are NOT in the test and there is no HocuspocusProvider, we throw an error.
-  // This protects against starting the editor in an incorrect state (without a provider and IndexedDB).
-  if (!hocuspocusProvider && !isTest) {
-    throw new Error(
-      'HocuspocusProvider is required. IndexedDB should handle offline storage and sync.'
-    );
-  }
-
-  const doc:Y.Doc = hocuspocusProvider
-    ? hocuspocusProvider.document
-    : (() => {
-        // NOTE: only used in TEST environments
-        const newDoc = new Y.Doc();
-        if (inputText) {
-          try {
-            const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
-            Y.applyUpdate(newDoc, update);
-          } catch {
-            return new Y.Doc();
-          }
-        }
-        return newDoc;
-  })();
-
-  // useCollaboration hook handles syncing with provider and IndexedDB
-  const { isLoading, offlineMode } = useCollaboration(
-    hocuspocusProvider,
-    doc,
-  );
-
+  const doc:Y.Doc = hocuspocusProvider.document;
+  const { isLoading, offlineMode } = useCollaboration(hocuspocusProvider);
   const hadErrorRef = useRef(false);
 
   // Fetch error/recovery template based on connection state

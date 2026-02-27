@@ -85,7 +85,7 @@ export default class extends Controller {
       });
     });
 
-  async connect():Promise<void> {
+  private async setupProvider():Promise<void> {
     this.currentToken = this.tokenPayloadValue;
 
     const ydoc:Doc = new Y.Doc();
@@ -93,7 +93,7 @@ export default class extends Controller {
     // Waiting for the synchronization of the local copy of IndexedDB
     await this.waitForIndexedDBSync(ydoc);
 
-    // Connecting the Hocus Pocus Provider after the local data has been loaded
+    // Connecting the Hocuspocus Provider after the local data has been loaded
     const provider = new HocuspocusProvider({
       url: this.hocuspocusUrlValue,
       name: this.documentNameValue,
@@ -107,7 +107,7 @@ export default class extends Controller {
         );
       },
     });
-    
+
     LiveCollaborationManager.initializeYjsProvider(provider, ydoc);
     this.ownedProvider = provider;
 
@@ -122,12 +122,16 @@ export default class extends Controller {
     }
   }
 
+  connect():void {
+    void this.setupProvider();
+  }
+
   disconnect():void {
     this.tokenRefreshService?.destroy();
     this.tokenRefreshService = null;
 
     // Cleanup IndexedDB persistence
-    this.indexeddbPersistence?.destroy();
+    void this.indexeddbPersistence?.destroy();
     this.indexeddbPersistence = null;
 
     // Only destroy if we still own the active provider. During Turbo navigation,

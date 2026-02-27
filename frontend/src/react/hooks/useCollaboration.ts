@@ -35,13 +35,11 @@ import {
   ProviderAuthErrorKind,
 } from 'core-stimulus/services/documents/token-refresh.service';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import * as Y from 'yjs';
 
-function useConnectionTimeout(provider:HocuspocusProvider|undefined, timeoutMs = 5000) {
+function useConnectionTimeout(provider:HocuspocusProvider, timeoutMs = 5000) {
   const [hasTimedOut, setHasTimedOut] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>|null>(null);
-  const hasIndexedDB = typeof indexedDB !== 'undefined';
-  
+
   useEffect(() => {
     setHasTimedOut(false);
     if (!provider) return;
@@ -69,7 +67,7 @@ function useConnectionTimeout(provider:HocuspocusProvider|undefined, timeoutMs =
 }
 
 function useCollaborationProvider(
-  provider:HocuspocusProvider | undefined,
+  provider:HocuspocusProvider,
   onSynced:() => void,
   onDisconnect:() => void,
 ) {
@@ -90,7 +88,7 @@ function useCollaborationProvider(
   }, [provider, onSynced, onDisconnect]);
 }
 
-export function useCollaboration(provider:HocuspocusProvider | undefined, doc:Y.Doc) {
+export function useCollaboration(provider:HocuspocusProvider) {
   const [isLoading, setIsLoading] = useState(true);
   const [offlineMode, setOfflineMode] = useState(false);
 
