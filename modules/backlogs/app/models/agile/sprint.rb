@@ -38,7 +38,7 @@ module Agile
     belongs_to :project
     has_many :work_packages, dependent: :nullify
 
-    scope :for_project, ->(project) { where(project_id: [project, Project.sprint_sharer]) }
+    scope :for_project, ->(project) { where(project: project.receive_sprints_from) }
     scope :not_completed, -> { !completed }
     scope :order_by_date, -> do
       order(arel_table[:start_date].asc.nulls_last,

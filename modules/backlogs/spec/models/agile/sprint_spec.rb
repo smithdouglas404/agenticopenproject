@@ -126,6 +126,7 @@ RSpec.describe Agile::Sprint do
     end
 
     context "when a sprint sharer project exists" do
+      let(:project) { create(:project, sprint_sharing: "receive_shared") }
       let(:sharer_project) { create(:project, sprint_sharing: "share_all_projects") }
       let!(:shared_sprint) { create(:agile_sprint, project: sharer_project) }
 

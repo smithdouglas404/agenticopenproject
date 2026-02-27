@@ -42,6 +42,10 @@ module Projects::SprintSharing
     store_attribute :settings, :sprint_sharing, :string
 
     scope :sprint_sharing, ->(value) { where("settings->>'sprint_sharing' = ?", value) }
+    scope :share_sprints_with_all_projects, -> { sprint_sharing(SHARE_ALL_PROJECTS) }
+    scope :share_sprints_with_subprojects, -> { sprint_sharing(SHARE_SUBPROJECTS) }
+    scope :receive_shared_sprints, -> { sprint_sharing(RECEIVE_SHARED) }
+    scope :not_sharing_sprints, -> { sprint_sharing(NO_SHARING) }
 
     validate :validate_sprint_sharer_uniqueness
 
@@ -55,6 +59,39 @@ module Projects::SprintSharing
       super.presence || NO_SHARING
     end
 
+    def share_sprints_with_all_projects?
+      sprint_sharing == SHARE_ALL_PROJECTS
+    end
+
+    def share_sprints_with_subprojects?
+      sprint_sharing == SHARE_SUBPROJECTS
+    end
+
+    def receive_shared_sprints?
+      sprint_sharing == RECEIVE_SHARED
+    end
+
+    def not_sharing_sprints?
+      sprint_sharing == NO_SHARING
+    end
+
+    def receive_sprints_from
+      # If there are multiple projects from which a receiving project could take its sprints
+      # the order of priority is as follows (lowest to highest priority):
+      #   => All projects sharing
+      #   => Subproject sharing higher up the ancestor chain
+      case sprint_sharing
+      when NO_SHARING, nil
+        [self]
+      when RECEIVE_SHARED, SHARE_SUBPROJECTS
+        [self, ancestors.share_sprints_with_subprojects.last || self.class.sprint_sharer].compact
+      when SHARE_ALL_PROJECTS
+        [self, ancestors.share_sprints_with_subprojects.last].compact
+      end
+    end
+
+    private
+
     def validate_sprint_sharer_uniqueness
       if sprint_sharing == SHARE_ALL_PROJECTS &&
          (sharer = self.class.sprint_sharer) &&
@@ -67,7 +104,7 @@ module Projects::SprintSharing
 
   class_methods do
     def sprint_sharer
-      sprint_sharing(SHARE_ALL_PROJECTS).first
+      share_sprints_with_all_projects.first
     end
   end
 end
