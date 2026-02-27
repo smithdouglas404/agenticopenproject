@@ -416,8 +416,8 @@ GEM
       marcel (~> 1.0.0)
       mini_mime (>= 0.1.3)
       ssrf_filter (~> 1.0)
-    carrierwave_direct (2.1.0)
-      carrierwave (>= 1.0.0)
+    carrierwave_direct (3.0.0)
+      carrierwave (>= 2.2.0)
       fog-aws
     cbor (0.5.10.1)
     cgi (0.5.1)
@@ -1585,7 +1585,7 @@ DEPENDENCIES
   capybara-screenshot (~> 1.0.17)
   capybara_accessible_selectors!
   carrierwave (~> 2.2.6)
-  carrierwave_direct (~> 2.1.0)
+  carrierwave_direct (~> 3.0.0)
   climate_control
   closure_tree (~> 9.6.0)
   colored2
@@ -1841,7 +1841,7 @@ CHECKSUMS
   capybara-screenshot (1.0.27) sha256=afa1896cc23df77be1774e8d3b3ce3953bf060aeaa04ff87607b5daf689174f2
   capybara_accessible_selectors (0.15.0)
   carrierwave (2.2.6) sha256=cd9b6108fc7544e97e7fbcc561bd319a09f23c96816fdd0df8f2f45ffdc0dac3
-  carrierwave_direct (2.1.0) sha256=b0d5c19c1d17a05940e488cff644a3b2946422d6d494b2174b48f6a90c5dddbf
+  carrierwave_direct (3.0.0) sha256=da4105ec7beea2687817b95ad95181be3d657248ec1cb5a0e5c35a45b176fc2f
   cbor (0.5.10.1) sha256=79cdf79f18dcd9ee97e0b849c6d573e5a2e3ddc1954d180f384d6ed2612b6df0
   cgi (0.5.1) sha256=e93fcafc69b8a934fe1e6146121fa35430efa8b4a4047c4893764067036f18e9
   childprocess (5.1.0) sha256=9a8d484be2fd4096a0e90a0cd3e449a05bc3aa33f8ac9e4d6dcef6ac1455b6ec
