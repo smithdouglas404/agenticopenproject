@@ -36,21 +36,17 @@ import {
 } from 'core-stimulus/services/documents/token-refresh.service';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-function useConnectionTimeout(provider:HocuspocusProvider, timeoutMs = 5000) {
-  const [hasTimedOut, setHasTimedOut] = useState(false);
+function useConnectionTimeout(provider:HocuspocusProvider, onTimeout:() => void, timeoutMs = 5000) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout>|null>(null);
 
   useEffect(() => {
-    setHasTimedOut(false);
-
     if (provider.synced) {
-      setHasTimedOut(false);
       return;
     }
 
     timeoutRef.current = setTimeout(() => {
       if (!provider.synced) {
-        setHasTimedOut(true);
+        onTimeout();
       }
     }, timeoutMs);
 
@@ -60,9 +56,7 @@ function useConnectionTimeout(provider:HocuspocusProvider, timeoutMs = 5000) {
         timeoutRef.current = null;
       }
     };
-  }, [provider, timeoutMs]);
-
-  return hasTimedOut;
+  }, [provider, onTimeout, timeoutMs]);
 }
 
 function useCollaborationProvider(
@@ -71,12 +65,12 @@ function useCollaborationProvider(
   onDisconnect:() => void,
 ) {
   useEffect(() => {
+    provider.on('synced', onSynced);
+    provider.on('disconnect', onDisconnect);
+
     if (provider.synced) {
       onSynced();
     }
-
-    provider.on('synced', onSynced);
-    provider.on('disconnect', onDisconnect);
 
     return () => {
       provider.off('synced', onSynced);
@@ -101,17 +95,14 @@ export function useCollaboration(provider:HocuspocusProvider) {
     setOfflineMode(true); // show the banner, editing is available
   }, []);
 
-  const hasTimedOut = useConnectionTimeout(provider);
+  const handleTimeout = useCallback(() => {
+    debugLog('(BlockNote Editor) Connection to collaboration server timed out - now in offline mode');
+    setIsLoading(false);
+    setOfflineMode(true);
+  }, []);
 
+  useConnectionTimeout(provider, handleTimeout);
   useCollaborationProvider(provider, handleSynced, handleDisconnect);
-
-  useEffect(() => {
-    if (hasTimedOut) {
-      debugLog('(BlockNote Editor) Connection to collaboration server timed out - now in offline mode');
-      setIsLoading(false);
-      setOfflineMode(true);
-    }
-  }, [hasTimedOut]);
 
   useEffect(() => {
     const handleProviderAuthError = (event:Event) => {
