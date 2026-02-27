@@ -97,6 +97,36 @@ RSpec.describe WorkPackage, "custom_actions" do
       end
     end
 
+    context "with a custom field restriction" do
+      let(:conditions) { [CustomActions::Conditions::CustomField.all.first.new(custom_value.id)] }
+
+      context "with the CF having the same value" do
+        before do
+          work_package.custom_field_values = { custom_field.id => custom_value.id }
+          work_package.save!
+        end
+
+        it "returns the action" do
+          expect(work_package.custom_actions(user))
+            .to contain_exactly(custom_action)
+        end
+      end
+
+      context "with the CF having the different value" do
+        let(:other_custom_value) { custom_field.possible_values.last }
+        let(:conditions)         { [CustomActions::Conditions::CustomField.all.first.new(other_custom_value.id)] }
+
+        before do
+          work_package.custom_field_values = { custom_field.id => custom_value.id }
+          work_package.save!
+        end
+
+        it "does not return the action" do
+          expect(work_package.custom_actions(user)).to be_empty
+        end
+      end
+    end
+
     context "with a role restriction" do
       let(:conditions) do
         [CustomActions::Conditions::Role.new(role.id)]
