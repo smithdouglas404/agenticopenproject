@@ -47,7 +47,6 @@ en:
         content_binary: "Content binary"
         title: "Title"
 
-
   activity:
     filter:
       document: "Documents"
@@ -166,7 +165,6 @@ en:
           Hocuspocus server.
         primary_action: Enable real-time collaboration
         success: Real-time collaboration has been enabled.
-
 
       disable_text_collaboration_dialog:
         title: Disable real-time collaboration

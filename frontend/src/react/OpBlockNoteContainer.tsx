@@ -49,67 +49,85 @@ export interface OpBlockNoteContainerProps {
   errorContainer?:HTMLElement;
 }
 
-export default function OpBlockNoteContainer({ inputField,
-                                               inputText,
-                                               activeUser,
-                                               readOnly,
-                                               openProjectUrl,
-                                               attachmentsUploadUrl,
-                                               attachmentsCollectionKey,
-                                               hocuspocusProvider,
-                                               errorContainer }:OpBlockNoteContainerProps) {
+export default function OpBlockNoteContainer({
+  inputField,
+  inputText,
+  activeUser,
+  readOnly,
+  openProjectUrl,
+  attachmentsUploadUrl,
+  attachmentsCollectionKey,
+  hocuspocusProvider,
+  errorContainer,
+}:OpBlockNoteContainerProps) {
+  // Determine if we are in a test environment.
+  // process.env.NODE_ENV === 'test' will work for Node/Jest/Vitest tests
+  // window.OpenProject.environment === 'test' is used in OpenProject browser tests
+  // This allows you to run the editor in tests without HocuspocusProvider.
+  const isTest =
+    process.env.NODE_ENV === 'test' ||
+    (typeof window !== 'undefined' && window.OpenProject?.environment === 'test');
+
+  // Check: if we are NOT in the test and there is no HocuspocusProvider, we throw an error.
+  // This protects against starting the editor in an incorrect state (without a provider and IndexedDB).
+  if (!hocuspocusProvider && !isTest) {
+    throw new Error(
+      'HocuspocusProvider is required. IndexedDB should handle offline storage and sync.'
+    );
+  }
+
   const doc:Y.Doc = hocuspocusProvider
     ? hocuspocusProvider.document
     : (() => {
-      // NOTE: This should only be used in TEST environments where there is no provider.
-      const newDoc = new Y.Doc();
-      if (inputText) {
-        try {
-          const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
-          Y.applyUpdate(newDoc, update);
-        } catch (e) {
-          console.error('Failed to load document binary', e);
-          return new Y.Doc();
+        // NOTE: only used in TEST environments
+        const newDoc = new Y.Doc();
+        if (inputText) {
+          try {
+            const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
+            Y.applyUpdate(newDoc, update);
+          } catch {
+            return new Y.Doc();
+          }
         }
-      }
-      return newDoc;
-    })();
+        return newDoc;
+  })();
 
-  const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
+  // useCollaboration hook handles syncing with provider and IndexedDB
+  const { isLoading, offlineMode } = useCollaboration(
+    hocuspocusProvider,
+    doc,
+  );
+
   const hadErrorRef = useRef(false);
 
   // Fetch error/recovery template based on connection state
   useEffect(() => {
     if (!errorContainer) return;
 
-    if (connectionError) {
+    if (offlineMode) {
       hadErrorRef.current = true;
       void fetchConnectionTemplate('error', errorContainer);
     } else if (hadErrorRef.current) {
       // Only fetch recovery if we previously had an error (avoid fetching on initial render)
       void fetchConnectionTemplate('recovery', errorContainer);
     }
-  }, [connectionError, errorContainer]);
+  }, [offlineMode, errorContainer]);
 
   if (isLoading) {
     return <DocumentLoadingSkeleton />;
   }
 
-  if (connectionError) {
-    // Error UI is rendered in errorContainer via fetchConnectionTemplate (outside React tree)
-    return null;
-  }
-
   return (
-    <OpBlockNoteEditor
-      activeUser={activeUser}
-      readOnly={readOnly}
-      openProjectUrl={openProjectUrl}
-      attachmentsUploadUrl={attachmentsUploadUrl}
-      attachmentsCollectionKey={attachmentsCollectionKey}
-      hocuspocusProvider={hocuspocusProvider}
-      doc={doc}
-    />
+    <>
+      <OpBlockNoteEditor
+        activeUser={activeUser}
+        readOnly={readOnly}
+        openProjectUrl={openProjectUrl}
+        attachmentsUploadUrl={attachmentsUploadUrl}
+        attachmentsCollectionKey={attachmentsCollectionKey}
+        hocuspocusProvider={hocuspocusProvider}
+        doc={doc}
+      />
+    </>
   );
 }
-

@@ -30,14 +30,18 @@
 
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
-import { PROVIDER_AUTH_ERROR_EVENT, ProviderAuthErrorKind } from 'core-stimulus/services/documents/token-refresh.service';
+import {
+  PROVIDER_AUTH_ERROR_EVENT,
+  ProviderAuthErrorKind,
+} from 'core-stimulus/services/documents/token-refresh.service';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Y from 'yjs';
 
-function useConnectionTimeout(provider:HocuspocusProvider | undefined, timeoutMs = 5000) {
+function useConnectionTimeout(provider:HocuspocusProvider|undefined, timeoutMs = 5000) {
   const [hasTimedOut, setHasTimedOut] = useState(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>|null>(null);
+  const hasIndexedDB = typeof indexedDB !== 'undefined';
+  
   useEffect(() => {
     setHasTimedOut(false);
     if (!provider) return;
@@ -86,59 +90,38 @@ function useCollaborationProvider(
   }, [provider, onSynced, onDisconnect]);
 }
 
-function useLocalDocumentSync(doc:Y.Doc, inputField:HTMLInputElement, enabled:boolean) {
-  useEffect(() => {
-    if (!enabled) return;
-
-    const updateInput = () => {
-      const update = Y.encodeStateAsUpdate(doc);
-      const b64 = btoa(String.fromCharCode(...update));
-      inputField.value = b64;
-    };
-
-    doc.on('update', updateInput);
-
-    return () => {
-      doc.off('update', updateInput);
-      doc.destroy();
-    };
-  }, [doc, inputField, enabled]);
-}
-
-export function useCollaboration(
-  provider:HocuspocusProvider | undefined,
-  doc:Y.Doc,
-  inputField:HTMLInputElement,
-) {
+export function useCollaboration(provider:HocuspocusProvider | undefined, doc:Y.Doc) {
   const [isLoading, setIsLoading] = useState(true);
-  const [connectionError, setConnectionError] = useState(false);
+  const [offlineMode, setOfflineMode] = useState(false);
 
   const handleSynced = useCallback(() => {
     debugLog('(BlockNote Editor) synced with collaboration server');
     setIsLoading(false);
-    setConnectionError(false);
+    setOfflineMode(false); // banner disappears
   }, []);
 
   const handleDisconnect = useCallback(() => {
-    debugLog('(BlockNote Editor) Disconnected from collaboration server');
-    setConnectionError(true);
+    debugLog('(BlockNote Editor) Disconnected - offline mode');
+    setIsLoading(false);
+    setOfflineMode(true); // show the banner, editing is available
   }, []);
 
   const hasTimedOut = useConnectionTimeout(provider);
+
   useCollaborationProvider(provider, handleSynced, handleDisconnect);
-  useLocalDocumentSync(doc, inputField, !provider);
 
   useEffect(() => {
     if (!provider) {
       setIsLoading(false);
+      setOfflineMode(true);
     }
   }, [provider]);
 
   useEffect(() => {
     if (hasTimedOut) {
-      debugLog('(BlockNote Editor) Connection to collaboration server timed out');
-      setConnectionError(true);
+      debugLog('(BlockNote Editor) Connection to collaboration server timed out - now in offline mode');
       setIsLoading(false);
+      setOfflineMode(true);
     }
   }, [hasTimedOut]);
 
@@ -146,14 +129,15 @@ export function useCollaboration(
     const handleProviderAuthError = (event:Event) => {
       const customEvent = event as CustomEvent<{ kind:ProviderAuthErrorKind; message:string }>;
       debugLog(`(BlockNote Editor) Provider auth error: ${customEvent.detail.kind} - ${customEvent.detail.message}`);
-      setConnectionError(true);
+      setOfflineMode(true);
+      setIsLoading(false);
     };
 
     document.addEventListener(PROVIDER_AUTH_ERROR_EVENT, handleProviderAuthError);
     return () => document.removeEventListener(PROVIDER_AUTH_ERROR_EVENT, handleProviderAuthError);
   }, []);
 
-  return { isLoading, connectionError } as const;
+  return { isLoading, offlineMode } as const;
 }
 
 export { useCollaborationProvider };

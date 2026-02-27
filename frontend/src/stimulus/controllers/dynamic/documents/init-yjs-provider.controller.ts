@@ -1,39 +1,45 @@
 /*
  * -- copyright
- * openproject is an open source project management software.
- * copyright (c) the openproject gmbh
+ * OpenProject is an open source project management software.
+ * Copyright (C) the OpenProject GmbH
  *
- * this program is free software; you can redistribute it and/or
- * modify it under the terms of the gnu general public license version 3.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License version 3.
  *
- * openproject is a fork of chiliproject, which is a fork of redmine. the copyright follows:
- * copyright (c) 2006-2013 jean-philippe lang
- * copyright (c) 2010-2013 the chiliproject team
+ * OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+ * Copyright (C) 2006-2013 Jean-Philippe Lang
+ * Copyright (C) 2010-2013 the ChiliProject Team
  *
- * this program is free software; you can redistribute it and/or
- * modify it under the terms of the gnu general public license
- * as published by the free software foundation; either version 2
- * of the license, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * this program is distributed in the hope that it will be useful,
- * but without any warranty; without even the implied warranty of
- * merchantability or fitness for a particular purpose.  see the
- * gnu general public license for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * you should have received a copy of the gnu general public license
- * along with this program; if not, write to the free software
- * foundation, inc., 51 franklin street, fifth floor, boston, ma  02110-1301, usa.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * see copyright and license files for more details.
+ * See COPYRIGHT and LICENSE files for more details.
  * ++
  */
 
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { Controller } from '@hotwired/stimulus';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
-import { PROVIDER_AUTH_ERROR_EVENT, ProviderAuthErrorKind, TokenRefreshService } from 'core-stimulus/services/documents/token-refresh.service';
+import {
+  PROVIDER_AUTH_ERROR_EVENT,
+  ProviderAuthErrorKind,
+  TokenRefreshService,
+} from 'core-stimulus/services/documents/token-refresh.service';
 import type { Doc } from 'yjs';
 import * as Y from 'yjs';
+import { IndexeddbPersistence } from 'y-indexeddb';
+import { debugLog } from 'core-app/shared/helpers/debug_output';
 
 export default class extends Controller {
   static values = {
@@ -51,6 +57,7 @@ export default class extends Controller {
   declare readonly refreshUrlValue:string;
 
   private tokenRefreshService:TokenRefreshService | null = null;
+  private indexeddbPersistence:IndexeddbPersistence | null = null;
   private ownedProvider:HocuspocusProvider | null = null;
   private currentToken = '';
   private canUseCachedToken = true;
@@ -67,36 +74,50 @@ export default class extends Controller {
     return this.currentToken;
   };
 
-  connect():void {
+  // Helper function for waiting for IndexedDB synchronization
+  private waitForIndexedDBSync = (ydoc:Doc):Promise<void> =>
+    new Promise((resolve) => {
+      const persistence = new IndexeddbPersistence(`op-doc-${this.documentNameValue}`, ydoc);
+      this.indexeddbPersistence = persistence;
+      persistence.on('synced', () => {
+        debugLog('(BlockNote Editor)  Local document synced via IndexedDB');
+        resolve();
+      });
+    });
+
+  async connect():Promise<void> {
     this.currentToken = this.tokenPayloadValue;
 
     const ydoc:Doc = new Y.Doc();
+
+    // Waiting for the synchronization of the local copy of IndexedDB
+    await this.waitForIndexedDBSync(ydoc);
+
+    // Connecting the Hocus Pocus Provider after the local data has been loaded
     const provider = new HocuspocusProvider({
       url: this.hocuspocusUrlValue,
       name: this.documentNameValue,
       token: this.getToken,
       document: ydoc,
-      onAuthenticationFailed: () => {
-        document.dispatchEvent(new CustomEvent(PROVIDER_AUTH_ERROR_EVENT, {
-          detail: { kind: 'authentication' as ProviderAuthErrorKind, message: 'Authentication failed' },
-        }));
+      onAuthenticationFailed:() => {
+        document.dispatchEvent(
+          new CustomEvent(PROVIDER_AUTH_ERROR_EVENT, {
+            detail: { kind:'authentication' as ProviderAuthErrorKind, message:'Authentication failed' },
+          }),
+        );
       },
     });
-
+    
     LiveCollaborationManager.initializeYjsProvider(provider, ydoc);
     this.ownedProvider = provider;
 
     if (this.refreshUrlValue && this.tokenExpiresInSecondsValue) {
       // Destroy any existing service to prevent duplicate timers if connect() is called multiple times
       this.tokenRefreshService?.destroy();
-      this.tokenRefreshService = new TokenRefreshService(
-        provider,
-        this.refreshUrlValue,
-        (newToken) => {
-          this.currentToken = newToken;
-          this.canUseCachedToken = true;
-        },
-      );
+      this.tokenRefreshService = new TokenRefreshService(provider, this.refreshUrlValue, (newToken) => {
+        this.currentToken = newToken;
+        this.canUseCachedToken = true;
+      });
       this.tokenRefreshService.scheduleRefresh(this.tokenExpiresInSecondsValue);
     }
   }
@@ -104,6 +125,10 @@ export default class extends Controller {
   disconnect():void {
     this.tokenRefreshService?.destroy();
     this.tokenRefreshService = null;
+
+    // Cleanup IndexedDB persistence
+    this.indexeddbPersistence?.destroy();
+    this.indexeddbPersistence = null;
 
     // Only destroy if we still own the active provider. During Turbo navigation,
     // a new controller may have already replaced it — see destroyIfOwner().
