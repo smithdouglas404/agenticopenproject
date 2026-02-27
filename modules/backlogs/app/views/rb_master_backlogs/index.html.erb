@@ -51,9 +51,9 @@ See COPYRIGHT and LICENSE files for more details.
         leading_icon: :plus,
         label: I18n.t(:label_version_new),
         tag: :a,
-        href: url_for({ controller: "/versions", action: "new", project_id: @project })
+        href: new_project_version_path(@project)
       ) do
-        t("activerecord.models.version")
+        Version.human_model_name
       end
 
       if allow_sprint_creation?(@project)
@@ -68,7 +68,7 @@ See COPYRIGHT and LICENSE files for more details.
             test_selector: "op-sprints--new-sprint-button"
           }
         ) do
-          t("activerecord.models.sprint")
+          Agile::Sprint.human_model_name
         end
       end
     end
