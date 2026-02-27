@@ -104,6 +104,23 @@ function useCollaborationProvider(
 }
 
 /**
+ * Listens for PROVIDER_AUTH_ERROR_EVENT on the document and calls `onAuthError` when it fires.
+ * The event is dispatched when authentication fails on the Hocuspocus WebSocket connection.
+ */
+function useProviderAuthError(onAuthError:() => void) {
+  useEffect(() => {
+    const handler = (event:Event) => {
+      const { kind, message } = (event as CustomEvent<{ kind:ProviderAuthErrorKind; message:string }>).detail;
+      debugLog(`(BlockNote Editor) Provider auth error: ${kind} - ${message}`);
+      onAuthError();
+    };
+
+    document.addEventListener(PROVIDER_AUTH_ERROR_EVENT, handler);
+    return () => document.removeEventListener(PROVIDER_AUTH_ERROR_EVENT, handler);
+  }, [onAuthError]);
+}
+
+/**
  * Tracks the real-time connection state of a HocuspocusProvider and
  * exposes it as React state for the BlockNote editor.
  *
@@ -142,20 +159,14 @@ function useCollaboration(provider:HocuspocusProvider) {
     setOfflineMode(true);
   }, []);
 
+  const handleAuthError = useCallback(() => {
+    setOfflineMode(true);
+    setIsLoading(false);
+  }, []);
+
   useConnectionTimeout(provider, handleTimeout);
   useCollaborationProvider(provider, handleSynced, handleDisconnect);
-
-  useEffect(() => {
-    const handleProviderAuthError = (event:Event) => {
-      const customEvent = event as CustomEvent<{ kind:ProviderAuthErrorKind; message:string }>;
-      debugLog(`(BlockNote Editor) Provider auth error: ${customEvent.detail.kind} - ${customEvent.detail.message}`);
-      setOfflineMode(true);
-      setIsLoading(false);
-    };
-
-    document.addEventListener(PROVIDER_AUTH_ERROR_EVENT, handleProviderAuthError);
-    return () => document.removeEventListener(PROVIDER_AUTH_ERROR_EVENT, handleProviderAuthError);
-  }, []);
+  useProviderAuthError(handleAuthError);
 
   return { isLoading, offlineMode } as const;
 }
