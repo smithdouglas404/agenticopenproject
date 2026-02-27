@@ -113,18 +113,11 @@ module Redmine::MenuManager::TopMenuHelper
   def render_top_menu_right
     capture do
       concat render_top_menu_teaser
-      concat render_dev_user_switcher
       concat render_quick_add_menu
       concat render_notification_top_menu_node
       concat render_help_top_menu_node
       concat render_user_top_menu_node
     end
-  end
-
-  def render_dev_user_switcher
-    return "".html_safe unless Rails.env.development?
-
-    render(Development::UserSwitcherComponent.new)
   end
 
   private

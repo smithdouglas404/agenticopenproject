@@ -28,36 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Development
-  class UserSwitcherController < ApplicationController
-    # We need to allow non-admin users to switch back to admin
-    no_authorization_required! :switch
-
-    before_action :verify_development_mode
-
-    def switch
-      user = User.find_by(id: params[:user_id])
-
-      if user&.active?
-        login_user(user)
-        flash[:notice] = I18n.t("development.user_switcher.switched", name: user.name)
-      else
-        flash[:error] = I18n.t("development.user_switcher.user_not_found")
-      end
-
-      redirect_back_or_to root_path
+module DevToolsUserSwitcher
+  class Component < ApplicationComponent
+    def render?
+      User.current.logged?
     end
 
-    private
-
-    def development_mode_enabled?
-      Rails.env.development?
+    def users
+      @users ||= User.active
+                     .not_builtin
+                     .order(:lastname, :firstname)
     end
 
-    def verify_development_mode
-      return if development_mode_enabled?
-
-      render plain: "Development environment required", status: :forbidden
+    def current_user_name
+      User.current.name
     end
   end
 end

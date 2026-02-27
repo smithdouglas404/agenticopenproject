@@ -47,13 +47,6 @@ Rails.application.routes.draw do
 
   mount API::Mcp => "/mcp"
 
-  # Development-only routes - blocked at routing level if not in dev environment
-  constraints(->(_request) { Rails.env.development? }) do
-    namespace :development do
-      match "switch_user", to: "user_switcher#switch", via: %i[get post]
-    end
-  end
-
   # Redirect deprecated issue links to new work packages uris
   get "/issues(/)" => redirect("#{rails_relative_url_root}/work_packages")
   # The URI.escape doesn't escape / unless you ask it to.

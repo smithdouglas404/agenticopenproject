@@ -28,29 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Development
-  class UserSwitcherComponent < ApplicationComponent
-    def render?
-      Rails.env.development?
-    end
+module OpenProject
+  module DevTools
+    class Engine < ::Rails::Engine
+      engine_name :openproject_dev_tools
 
-    def users
-      return [] unless development_environment?
+      include OpenProject::Plugins::ActsAsOpEngine
 
-      @users ||= User.active
-                     .not_builtin
-                     .order(:lastname, :firstname)
-                     .limit(100)
-    end
+      register "openproject-dev_tools",
+               author_url: "https://www.openproject.org",
+               bundled: true,
+               name: "OpenProject Dev Tools"
 
-    def current_user_name
-      User.current.logged? ? User.current.name : "Anonymous"
-    end
-
-    private
-
-    def development_environment?
-      Rails.env.development?
+      config.to_prepare do
+        OpenProject::DevTools::Hooks::LayoutHook
+      end
     end
   end
 end
