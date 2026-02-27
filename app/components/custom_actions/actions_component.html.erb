@@ -52,7 +52,6 @@ See COPYRIGHT and LICENSE files for more details.
                                               inputValue: action.values.first
                                             } %>
                 <% in { type: :user, custom_field_based: false } %>
-                <% binding.pry %>
                   <% selected = action.value_objects.map { |v| { id: v[:value], name: v[:label] } } %>
                   <%= angular_component_tag "opce-user-autocompleter",
                                             inputs: {
