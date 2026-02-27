@@ -38,7 +38,7 @@ RSpec.describe "Test mail notification", :js do
     visit admin_settings_mail_notifications_path(tab: :notifications)
   end
 
-  it "shows the correct message on errors in test notification (Regression #28226)" do
+  it "shows the correct message on errors in test notification (Regression #28226)", with_ssrf_ip_allowlist: ['127.0.0.1'] do
     error_message = '"error" with <strong>Markup?</strong>'
     expect(UserMailer).to receive(:test_mail).with(admin)
       .and_raise error_message
