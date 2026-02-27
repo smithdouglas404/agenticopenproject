@@ -36,7 +36,9 @@ import {
 } from 'core-stimulus/services/documents/token-refresh.service';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-function useConnectionTimeout(provider:HocuspocusProvider, onTimeout:() => void, timeoutMs = 5000) {
+const DEFAULT_CONNECTION_TIMEOUT_MS = 5000;
+
+function useConnectionTimeout(provider:HocuspocusProvider, onTimeout:() => void, timeoutMs = DEFAULT_CONNECTION_TIMEOUT_MS) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout>|null>(null);
 
   useEffect(() => {
@@ -44,17 +46,23 @@ function useConnectionTimeout(provider:HocuspocusProvider, onTimeout:() => void,
       return;
     }
 
-    timeoutRef.current = setTimeout(() => {
-      if (!provider.synced) {
-        onTimeout();
-      }
-    }, timeoutMs);
-
-    return () => {
-      if (timeoutRef.current) {
+    const cancel = () => {
+      if (timeoutRef.current !== null) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
+    };
+
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = null;
+      onTimeout();
+    }, timeoutMs);
+
+    provider.on('synced', cancel);
+
+    return () => {
+      provider.off('synced', cancel);
+      cancel();
     };
   }, [provider, onTimeout, timeoutMs]);
 }
