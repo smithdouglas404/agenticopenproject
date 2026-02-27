@@ -98,4 +98,10 @@ module ProjectsHelper
            default: :project_initiation_request,
            scope: "settings.project_initiation_request.name.options")
   end
+
+  def portfolio_management_feature_required? = params[:workspace_type].in?(%w[portfolio program])
+
+  def portfolio_management_feature_missing?
+    portfolio_management_feature_required? && !EnterpriseToken.allows_to?(:portfolio_management)
+  end
 end
