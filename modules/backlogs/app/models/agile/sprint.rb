@@ -60,9 +60,10 @@ module Agile
     validates :name, presence: true
     validates :project, presence: true
     validates :start_date, presence: true
+    validates :finish_date, presence: true
     validates :finish_date,
-              presence: true,
-              comparison: { greater_than_or_equal_to: :start_date }
+              comparison: { greater_than_or_equal_to: :start_date },
+              if: :start_date?
 
     validate :validate_only_one_active_sprint_per_project
 

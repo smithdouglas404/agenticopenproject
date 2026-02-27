@@ -54,6 +54,21 @@ RSpec.describe Agile::Sprint do
       expect(sprint.errors[:finish_date]).to include(/must be greater than or equal to/)
     end
 
+    it "does not validate finish_date comparison when start_date is nil" do
+      sprint.start_date = nil
+      sprint.finish_date = Time.zone.today
+      expect(sprint).not_to be_valid
+      expect(sprint.errors[:start_date]).to be_present
+      expect(sprint.errors[:finish_date]).not_to include(/must be greater than or equal to/)
+    end
+
+    it "still validates finish_date presence even when start_date is nil" do
+      sprint.start_date = nil
+      sprint.finish_date = nil
+      expect(sprint).not_to be_valid
+      expect(sprint.errors[:finish_date]).to be_present
+    end
+
     context "with active sprint validation" do
       it "allows one active sprint per project" do
         sprint.status = "active"
