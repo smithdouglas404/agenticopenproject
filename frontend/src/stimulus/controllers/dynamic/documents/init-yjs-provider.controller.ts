@@ -75,17 +75,38 @@ export default class extends Controller {
   };
 
   // Helper function for waiting for IndexedDB synchronization
-  private waitForIndexedDBSync = (ydoc:Doc):Promise<void> =>
-    new Promise((resolve) => {
-      const persistence = new IndexeddbPersistence(`op-doc-${this.documentNameValue}`, ydoc);
-      this.indexeddbPersistence = persistence;
-      persistence.on('synced', () => {
+  private waitForIndexedDBSync = (ydoc:Doc):Promise<void> => {
+    const persistence = new IndexeddbPersistence(`op-doc-${this.documentNameValue}`, ydoc);
+    this.indexeddbPersistence = persistence;
+
+    // y-indexeddb does not emit an 'error' event, so a timeout is the only
+    // protection against hanging indefinitely (e.g. private browsing, quota exceeded)
+    const TIMEOUT_MS = 10_000;
+    const timeout = new Promise<never>((_, reject) =>
+      window.setTimeout(
+        () => reject(new Error('IndexedDB sync timed out')),
+        TIMEOUT_MS,
+      )
+    );
+
+    return Promise.race([
+      persistence.whenSynced.then(() => {
         debugLog('(BlockNote Editor)  Local document synced via IndexedDB');
-        resolve();
-      });
-    });
+      }),
+      timeout,
+    ]);
+  };
+
+  private destroyIndexedDBPersistence():void {
+    void this.indexeddbPersistence?.destroy();
+    this.indexeddbPersistence = null;
+  }
 
   private async setupProvider():Promise<void> {
+    // Clean up any prior incomplete setup to prevent leaking persistence
+    // instances on concurrent connect() invocations (e.g., rapid Turbo navigation)
+    this.destroyIndexedDBPersistence();
+
     this.currentToken = this.tokenPayloadValue;
 
     const ydoc:Doc = new Y.Doc();
@@ -123,16 +144,16 @@ export default class extends Controller {
   }
 
   connect():void {
-    void this.setupProvider();
+    this.setupProvider().catch((error) => {
+      debugLog('(BlockNote Editor) Failed to initialize Yjs provider', error);
+    });
   }
 
   disconnect():void {
     this.tokenRefreshService?.destroy();
     this.tokenRefreshService = null;
 
-    // Cleanup IndexedDB persistence
-    void this.indexeddbPersistence?.destroy();
-    this.indexeddbPersistence = null;
+    this.destroyIndexedDBPersistence();
 
     // Only destroy if we still own the active provider. During Turbo navigation,
     // a new controller may have already replaced it — see destroyIfOwner().

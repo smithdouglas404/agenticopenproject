@@ -91,7 +91,7 @@ en:
       connection_error_notice:
         description: |-
           You are currently in offline mode.
-          Changes will be saved once the connection to the collaboration server is re-established
+          Changes will be saved once the connection to the collaboration server is re-established.
           Please contact the administrator if the problem persists.
         action: Try again
       connection_recovery_notice:

@@ -71,8 +71,7 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
         "collaboration-disabled-notice",
         text: "Unable to open document because real-time text collaboration is disabled. " \
               "Please contact your administrator to enable real-time text collaboration " \
-              "if you want to access this document.",
-        wait: 10
+              "if you want to access this document."
       )
     end
   end

@@ -97,6 +97,10 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
       login_as(admin)
     end
 
+    # No hocuspocus server is started here intentionally. The editor initialises
+    # normally (IndexedDB syncs, HocuspocusProvider is created with the document
+    # URL), but the provider cannot connect. After the 5-second connection timeout
+    # in useConnectionTimeout the offline-mode banner is shown.
     it "renders a warning that the editor is in offline mode" do
       visit document_path(document)
 
@@ -104,7 +108,7 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
       expect(editor.shadow_root).to have_css(
         "[data-test-selector='connection-error-notice']",
         text: "You are currently in offline mode. " \
-              "Changes will be saved once the connection to the collaboration server is re-established " \
+              "Changes will be saved once the connection to the collaboration server is re-established. " \
               "Please contact the administrator if the problem persists.",
         wait: 10
       )

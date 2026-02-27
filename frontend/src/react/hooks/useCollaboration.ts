@@ -42,7 +42,6 @@ function useConnectionTimeout(provider:HocuspocusProvider, timeoutMs = 5000) {
 
   useEffect(() => {
     setHasTimedOut(false);
-    if (!provider) return;
 
     if (provider.synced) {
       setHasTimedOut(false);
@@ -72,8 +71,6 @@ function useCollaborationProvider(
   onDisconnect:() => void,
 ) {
   useEffect(() => {
-    if (!provider) return;
-
     if (provider.synced) {
       onSynced();
     }
@@ -107,13 +104,6 @@ export function useCollaboration(provider:HocuspocusProvider) {
   const hasTimedOut = useConnectionTimeout(provider);
 
   useCollaborationProvider(provider, handleSynced, handleDisconnect);
-
-  useEffect(() => {
-    if (!provider) {
-      setIsLoading(false);
-      setOfflineMode(true);
-    }
-  }, [provider]);
 
   useEffect(() => {
     if (hasTimedOut) {
