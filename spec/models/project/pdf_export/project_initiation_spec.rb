@@ -34,7 +34,7 @@ require_relative "../../projects/exporter/exportable_project_context"
 
 RSpec.describe Project::PDFExport::ProjectInitiation do
   include PDFExportSpecUtils
-  include ProjectHelper
+  include ProjectsHelper
   include Redmine::I18n
 
   include_context "with a project with an arrangement of custom fields"

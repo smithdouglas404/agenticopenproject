@@ -39,7 +39,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   include Project::PDFExport::Common::ProjectAttributes
   include Project::PDFExport::ProjectInitiation::Cover
   include Project::PDFExport::ProjectInitiation::Styles
-  include ProjectHelper
+  include ProjectsHelper
 
   attr_accessor :pdf
 

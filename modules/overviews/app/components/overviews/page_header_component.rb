@@ -33,7 +33,7 @@ module Overviews
     extend Dry::Initializer
 
     include ApplicationHelper
-    include ProjectHelper
+    include ProjectsHelper
     include Redmine::I18n
 
     option :project
