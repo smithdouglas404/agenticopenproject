@@ -25,6 +25,12 @@ da:
     description: "This module adds features enabling agile teams to work with OpenProject in Scrum projects."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,6 +48,8 @@ da:
               task_version_must_be_the_same_as_story_version: "skal være identisk med hovedhistorieversionen."
         sprint:
           cannot_end_before_it_starts: "Sprint kan ikke afsluttes før det starter."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Opgavetype"
   backlogs:
@@ -121,7 +129,9 @@ da:
   label_points_burn_down: "Ned"
   label_points_burn_up: "Op"
   label_sprint_impediments: "Sprint-hindringer"
+  label_sprint_new: "New sprint"
   label_task_board: "Opgaveoversigt"
+  permission_create_sprints: "Create sprints"
   permission_view_master_backlog: "Se hoved-backlog"
   permission_view_taskboards: "Vis opgaveoversigter"
   permission_select_done_statuses: "Vælg udført-statusser"

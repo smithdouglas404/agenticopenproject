@@ -25,6 +25,12 @@ el:
     description: "This module adds features enabling agile teams to work with OpenProject in Scrum projects."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,6 +48,8 @@ el:
               task_version_must_be_the_same_as_story_version: "πρέπει να είναι το ίδιο με την έκδοση ιστορίας του γονέα."
         sprint:
           cannot_end_before_it_starts: "Το sprint δεν μπορεί να λήξει πριν αρχίσει."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Task type"
   backlogs:
@@ -121,7 +129,9 @@ el:
   label_points_burn_down: "Κάτω"
   label_points_burn_up: "Πάνω"
   label_sprint_impediments: "Εμπόδια Sprint"
+  label_sprint_new: "New sprint"
   label_task_board: "Πίνακας εργασιών"
+  permission_create_sprints: "Create sprints"
   permission_view_master_backlog: "Εμφάνιση του κύριου backlog"
   permission_view_taskboards: "Εμφάνιση πινάκων εργασίας"
   permission_select_done_statuses: "Select done statuses"

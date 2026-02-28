@@ -25,12 +25,18 @@ ro:
     description: "This module adds features enabling agile teams to work with OpenProject in Scrum projects."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
         position: "Poziție"
         story_points: "Puncte"
-        backlogs_work_package_type: "Tipul de restante"
+        backlogs_work_package_type: "Tip restanță"
     errors:
       models:
         work_package:
@@ -42,6 +48,8 @@ ro:
               task_version_must_be_the_same_as_story_version: "trebuie să fie aceeași cu versiunea cerinței părinte."
         sprint:
           cannot_end_before_it_starts: "Sprint nu se poate termina înainte de a începe."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Tip de sarcină"
   backlogs:
@@ -123,7 +131,9 @@ ro:
   label_points_burn_down: "Jos"
   label_points_burn_up: "Sus"
   label_sprint_impediments: "Impedimentele Sprint"
+  label_sprint_new: "New sprint"
   label_task_board: "Tablă de sarcini"
+  permission_create_sprints: "Create sprints"
   permission_view_master_backlog: "Vizualizare master backlog"
   permission_view_taskboards: "Vizualizați tablourile de sarcini"
   permission_select_done_statuses: "Selectează stările realizate"

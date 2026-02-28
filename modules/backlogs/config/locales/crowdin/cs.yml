@@ -25,6 +25,12 @@ cs:
     description: "Tento modul přidává funkce umožňující agilním týmům pracovat s OpenProject v Scrum projektech."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Doba trvání sprintu"
       work_package:
@@ -42,6 +48,8 @@ cs:
               task_version_must_be_the_same_as_story_version: "musí být stejná jako verze nadřazeného příběhu."
         sprint:
           cannot_end_before_it_starts: "Sprint nemůže končit dříve, než začne."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Typ úlohy"
   backlogs:
@@ -125,7 +133,9 @@ cs:
   label_points_burn_down: "Dolů"
   label_points_burn_up: "Nahoru"
   label_sprint_impediments: "Běh impedimenty"
+  label_sprint_new: "New sprint"
   label_task_board: "Tabule úkolů"
+  permission_create_sprints: "Create sprints"
   permission_view_master_backlog: "Zobrazit hlavní nevyřízené položky"
   permission_view_taskboards: "Zobrazit tabuly úkolů"
   permission_select_done_statuses: "Vybrat stavy dokončených"

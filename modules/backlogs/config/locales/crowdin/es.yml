@@ -25,6 +25,12 @@ es:
     description: "Este módulo añade funciones que permiten a los equipos Agile trabajar con OpenProject en proyectos Scrum."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,6 +48,8 @@ es:
               task_version_must_be_the_same_as_story_version: "debe coincidir con la versión de la historia principal."
         sprint:
           cannot_end_before_it_starts: "El sprint no puede terminar antes del inicio."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Tipo de tarea"
   backlogs:
@@ -121,7 +129,9 @@ es:
   label_points_burn_down: "Abajo"
   label_points_burn_up: "Arriba"
   label_sprint_impediments: "Impedimentos de sprint"
+  label_sprint_new: "New sprint"
   label_task_board: "Tablero de tareas"
+  permission_create_sprints: "Create sprints"
   permission_view_master_backlog: "Ver backlog maestro"
   permission_view_taskboards: "Ver tablero de tareas"
   permission_select_done_statuses: "Seleccionar estados de finalización"

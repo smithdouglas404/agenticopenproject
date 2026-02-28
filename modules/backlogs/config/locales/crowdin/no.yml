@@ -25,6 +25,12 @@
     description: "Denne modulen legger til funksjoner som setter dynamiske team i stand til å arbeide med OpenProject i Scrum prosjekter."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,6 +48,8 @@
               task_version_must_be_the_same_as_story_version: "må være det samme som den overordnete historiens versjon."
         sprint:
           cannot_end_before_it_starts: "Sprinten kan ikke avsluttes før den starter."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Task type"
   backlogs:
@@ -121,7 +129,9 @@
   label_points_burn_down: "Ned"
   label_points_burn_up: "Opp"
   label_sprint_impediments: "Hindring i etappe"
+  label_sprint_new: "New sprint"
   label_task_board: "Oppgavetavle"
+  permission_create_sprints: "Create sprints"
   permission_view_master_backlog: "Vis master forsinkelse"
   permission_view_taskboards: "Vis oppgavetavler"
   permission_select_done_statuses: "Velg ferdige statuser"

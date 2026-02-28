@@ -25,6 +25,12 @@ ms:
     description: "Modul ini menambahkan fitur-fitur yang membolehkan kumpulan-kumpulan yang tangkas untuk bekerja menggunakan OpenProject di projek Scrum."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,6 +48,8 @@ ms:
               task_version_must_be_the_same_as_story_version: "perlu sama dengan versi cerita induk."
         sprint:
           cannot_end_before_it_starts: "Pecutan tidak boleh berakhir lebih awal sebelum ia bermula."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Task type"
   backlogs:
@@ -119,7 +127,9 @@ ms:
   label_points_burn_down: "Bawah"
   label_points_burn_up: "Atas"
   label_sprint_impediments: "Halangan Pecutan"
+  label_sprint_new: "New sprint"
   label_task_board: "Papan tugasan"
+  permission_create_sprints: "Create sprints"
   permission_view_master_backlog: "Paparkan tunggakan utama"
   permission_view_taskboards: "Lihat papan tugasan"
   permission_select_done_statuses: "Pilih status selesai"

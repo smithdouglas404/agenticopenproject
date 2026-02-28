@@ -1356,9 +1356,6 @@ et:
         dependencies: "Sõltuvused"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       announcements:

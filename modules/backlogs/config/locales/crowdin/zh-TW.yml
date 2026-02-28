@@ -21,10 +21,16 @@
 #++
 zh-TW:
   plugin_openproject_backlogs:
-    name: "OpenProject待辦事項"
+    name: "OpenProject代辦事項"
     description: "此模組新增了讓敏捷團隊能夠在 Scrum 專案中使用 OpenProject 的功能。"
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "分享"
       sprint:
         duration: "衝刺時間"
       work_package:
@@ -42,6 +48,8 @@ zh-TW:
               task_version_must_be_the_same_as_story_version: "必須與上層「使用者需求」(User Story)的版本相同。"
         sprint:
           cannot_end_before_it_starts: "進度不可以在開始前結束"
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "任務類型"
   backlogs:
@@ -119,7 +127,9 @@ zh-TW:
   label_points_burn_down: "減少"
   label_points_burn_up: "增加"
   label_sprint_impediments: "進度阻礙"
+  label_sprint_new: "New sprint"
   label_task_board: "任務看板"
+  permission_create_sprints: "Create sprints"
   permission_view_master_backlog: "檢視主待辦事項"
   permission_view_taskboards: "檢視任務看板"
   permission_select_done_statuses: "選擇完成狀態"

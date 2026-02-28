@@ -25,6 +25,12 @@ ja:
     description: "このモジュールには、アジャイルチームがスクラムプロジェクトでOpenProjectを使用できるようにする機能が追加されています。"
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,6 +48,8 @@ ja:
               task_version_must_be_the_same_as_story_version: "親ストーリーのバージョンと同じでなければなりません。"
         sprint:
           cannot_end_before_it_starts: "スプリントは開始する前に終了できません。"
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "タスクのタイプ"
   backlogs:
@@ -119,7 +127,9 @@ ja:
   label_points_burn_down: "ダウン"
   label_points_burn_up: "アップ"
   label_sprint_impediments: "スプリント障害事項"
+  label_sprint_new: "New sprint"
   label_task_board: "かんばん"
+  permission_create_sprints: "Create sprints"
   permission_view_master_backlog: "マスター バックログの表示"
   permission_view_taskboards: "かんばんの表示"
   permission_select_done_statuses: "完了ステータスを選択"

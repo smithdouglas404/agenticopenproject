@@ -25,6 +25,12 @@ zh-CN:
     description: "该模块为敏捷团队在敏捷项目中使用 OpenProject 添加了功能。"
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,6 +48,8 @@ zh-CN:
               task_version_must_be_the_same_as_story_version: "必须与父级故事的版本相同。"
         sprint:
           cannot_end_before_it_starts: "比赛不可以在开始前结束。"
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "任务类型"
   backlogs:
@@ -119,7 +127,9 @@ zh-CN:
   label_points_burn_down: "减少"
   label_points_burn_up: "增加"
   label_sprint_impediments: "冲刺 (sprint) 障碍"
+  label_sprint_new: "New sprint"
   label_task_board: "任务板"
+  permission_create_sprints: "Create sprints"
   permission_view_master_backlog: "查看主待办清单"
   permission_view_taskboards: "查看任务板"
   permission_select_done_statuses: "选择完成状态"
