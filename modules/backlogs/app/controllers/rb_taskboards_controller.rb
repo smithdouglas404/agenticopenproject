@@ -31,13 +31,22 @@
 class RbTaskboardsController < RbApplicationController
   menu_item :backlogs
 
-  helper :taskboards
+  before_action :load_or_create_board
 
   def show
-    @statuses     = Type.find(Task.type).statuses
-    @story_ids    = @sprint.stories(@project).map(&:id)
-    @last_updated = Task.children_of(@story_ids)
-                        .order(Arel.sql("updated_at DESC"))
-                        .first
+    redirect_to project_work_package_board_path(@project, @board)
+  end
+
+  private
+
+  def load_or_create_board
+    result = TaskBoards::CreateService.ensure(user: current_user, project: @project, sprint: @sprint, name: @sprint.board_name)
+
+    if result.success?
+      @board = result.result
+    else
+      flash[:error] = t(:error_task_board_creation_failed)
+      return redirect_back_or_to(backlogs_project_backlogs_path(@project)) # rubocop:disable Style/RedundantReturn
+    end
   end
 end

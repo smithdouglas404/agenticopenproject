@@ -49,13 +49,18 @@ RSpec.describe RbTaskboardsController do
   end
 
   describe "GET show" do
+    let(:board) { build_stubbed(:board_grid) }
+
     before do
+      allow(TaskBoards::CreateService)
+        .to receive(:ensure)
+        .and_return(ServiceResult.success(result: board))
+
       get :show, params: { project_id: project.identifier, sprint_id: sprint.id }
     end
 
-    it "performs that request" do
-      expect(response).to be_successful
-      expect(response).to render_template :show
+    it "redirects to the board" do
+      expect(response).to redirect_to(project_work_package_board_path(project, board))
     end
 
     context "as a member with view_sprints permission" do
@@ -63,8 +68,7 @@ RSpec.describe RbTaskboardsController do
       let(:permissions) { %i[view_sprints view_work_packages] }
 
       it "grants access" do
-        expect(response).to be_successful
-        expect(response).to render_template :show
+        expect(response).to redirect_to(project_work_package_board_path(project, board))
       end
     end
 
@@ -82,6 +86,24 @@ RSpec.describe RbTaskboardsController do
 
       it "denies access" do
         expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context "when board creation fails" do
+      before do
+        allow(TaskBoards::CreateService)
+          .to receive(:ensure)
+          .and_return(ServiceResult.failure(message: "something went wrong"))
+
+        get :show, params: { project_id: project.identifier, sprint_id: sprint.id }
+      end
+
+      it "redirects to the backlogs page" do
+        expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+      end
+
+      it "sets a flash error" do
+        expect(flash[:error]).to be_present
       end
     end
   end
