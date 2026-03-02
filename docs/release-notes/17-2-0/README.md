@@ -28,9 +28,11 @@ Take a look at our release video showing the most important features introduced 
 
 [feature: mcp_server ]
 
-OpenProject 17.2 introduces the **MCP Server**, a new Enterprise add-on that lays the foundation for robust integrations between OpenProject and external intelligent agents, automation tools, or systems that use the Model Context Protocol (MCP). This server exposes OpenProject’s APIv3 resources as MCP-compatible endpoints and enables secure, authenticated access for clients such as large language models or other MCP clients, opening the door to richer contextual interactions with your project data. 
+OpenProject 17.2 introduces the **MCP Server**, a new Enterprise add-on that lays the foundation for robust integrations between OpenProject and external intelligent agents, automation tools, or systems that use the Model Context Protocol (MCP). This server uses OpenProject’s APIv3 resources as MCP-compatible endpoints and enables secure, authenticated access for clients such as large language models or other MCP clients, opening the door to richer contextual interactions with your project data. 
 
-Included in this release are administrative UI support for configuring the MCP Server, infrastructure and metadata endpoints, and integration of MCP authentication with OpenProject’s OAuth2 and API key mechanisms. An initial set of MCP tools is provided to surface key entities (projects, work packages, users, etc.) as resources, and response sizes can be tuned for performance. With session-cookie and bearer-token support, the MCP Server acts as a secure bridge between your OpenProject instance and external systems that operate via MCP. See the **MCP Server documentation** for setup and examples. 
+Included in this release are administrative UI support for configuring the MCP Server, infrastructure and metadata endpoints, and integration of MCP authentication with OpenProject’s OAuth2 and API key mechanisms. An initial set of MCP tools and resources is provided to surface key entities (projects, work packages, users, etc.), and response formats can be adjusted based on your preferences. With session-cookie and bearer-token support, the MCP Server acts as a secure bridge between your OpenProject instance and external systems that operate via MCP. 
+
+![Model context protocol settings in OpenProject administration](openproject_system_guide_new_mcp.png)
 
 See the [**MCP Server documentation**](../../system-admin-guide/integrations/mcp-server/) for setup and examples.  
 
@@ -50,7 +52,7 @@ For more details, please refer to the [Meetings documentation](../../user-guide/
 
 [feature: capture_external_links ]
 
-Building on the external link safety options introduced in OpenProject 17.1, we’re expanding the protection capabilities in 17.2 to give administrators stronger stronger safeguards for user interactions with links that lead outside of OpenProject.
+Building on the external link safety options introduced in OpenProject 17.1, we’re expanding the protection capabilities in 17.2 to give administrators stronger safeguards for user interactions with links that lead outside of OpenProject.
 
 Administrators can now require users to be logged in before following external links. When this setting is enabled, anyone who is not authenticated will be redirected to the login page before being allowed to continue to the external destination. This helps reduce the risk of users being exposed to phishing, social engineering, or other malicious content by ensuring links are only accessible to signed-in members of your organization.
 
@@ -64,11 +66,11 @@ OpenProject 17.2 enhances the Project Overview to provide clearer financial insi
 
 #### Updated Overview widget for Budgets
 
-Project, program, and portfolio managers can now see key financial indicators at a glance. New budget widget displays planned budget, actual costs, spent ratio, and remaining budget, along with visual breakdowns by cost type and recent monthly actuals. Data is automatically aggregated across subprojects where applicable, giving stakeholders a consolidated financial snapshot without leaving the Oiew page.
+Project, program, and portfolio managers can now see key financial indicators at a glance. New budget widget displays planned budget, actual costs, spent ratio, and remaining budget, along with visual breakdowns by cost type and recent monthly actuals. Data is automatically aggregated across subprojects where applicable, giving stakeholders a consolidated financial snapshot without leaving the Overview page.
 
 This widget helps teams better understand financial status and trends directly within their project context. Keep in mind that both the Budgets and Time & Costs modules need to be enabled for the widget to work. 
 
-ADD IMAGE 
+![An example of project budget widget on a project home page in OpenProject](openproject_release_notes_17-2-0_budget_widget.png)
 
 Read more about [budget widgets](../../user-guide/project-home/project-widgets/#budget-widget).
 
@@ -78,7 +80,7 @@ The project description and project status widgets on the Overview tab are now e
 
 Note that users without edit permissions will continue to see the content in read-only mode.
 
-ADD IMAGE 
+![Overview tab of a project home page in OpenProject, showing the project description widget being edited](openproject_system_guide_project_home_overview_tab_edit.png)
 
 #### Improves accessibility of Project Overview and Dashboard Widgets
 
@@ -92,7 +94,7 @@ OpenProject 17.2 introduces optional comment fields for project attributes, givi
 
 Comments are displayed and edited alongside the respective attribute on the Project overview page and follow the same permission logic as the attribute itself. Changes are tracked in the project activity, included in exports, and available via the API. By adding structured context to project metadata, this enhancement improves transparency and supports better governance and decision-making across projects and teams.
 
-ADD IMAGE 
+![Setting to add a comment text field to a project atttribute in OpenProject administration](openproject_release_notes_17-2-0_project_attributes_comment.png)
 
 Read more about [project attributes in OpenProject](../../user-guide/project-home/project-attributes/).
 
@@ -102,11 +104,9 @@ OpenProject 17.2 enhances PDF exports to provide more complete and reliable repo
 
 Work package queries can now include relationship columns in PDF reports. Related work packages are exported as structured tables within the document, making it easier to document complex relationships and dependencies in a clear and shareable format. This ensures that important contextual information is no longer lost when generating formal reports.
 
-ADD IMAGE 
-
 In addition, PDF exports now support WebP images embedded in work package descriptions. Images in this modern format are automatically included in the generated document, improving consistency between on-screen content and exported reports.
 
-ADD IMAGE 
+![Example of a PDF export in OpenProject, showing a work package that includes children and a webp image](openproject_system_guide_pdf_export.png)
 
 Read more about [PDF exports in OpenProject](../../user-guide/work-packages/exporting/#pdf-export).
 
@@ -116,16 +116,18 @@ OpenProject 17.2 continues the transition to the Primer design system, further u
 
 #### Backlogs module update
 
-The Backlogs module has been updated using Primer components. This resulted in a cleaner layout and more consistent interaction patterns, while still preserving familiar functionality such as drag-and-drop and version-based organization.
+The Backlogs module has been updated using Primer components. This resulted in a cleaner layout and more consistent interaction patterns, while still preserving familiar functionality such as drag-and-drop and version-based organization. Work packages can now be viewed in a split screen for improved context and efficiency.
 
-ADD IMAGE 
+![New UX/UI updates for the OpenProject Backlogs module](openproject_system_guide_new_backlog.png)
 
 Read more about [Backlogs](../../user-guide/backlogs-scrum/).
 
 
 #### Improvements in administration interface
 
-Administrative interfaces for Custom Fields, Versions, and Groups have been further aligned with Primer. In particular, custom field forms are now consistently styled across all field types. Previously, the appearance varied depending on the type of custom field; this has been unified to provide a clearer and more predictable configuration experience for administrators.
+Administrative interfaces for Custom Fields, Versions, and Groups have been further aligned with Primer. 
+
+In particular, custom field forms are now consistently styled across all field types. Previously, the appearance varied depending on the type of custom field. This has been unified to provide a clearer and more predictable configuration experience for administrators.
 
 
 ## Important updates and breaking changes
@@ -147,63 +149,63 @@ OAuth tokens used for collaborative document editing (BlockNote ↔ Hocuspocus) 
 <!-- Warning: Anything within the below lines will be automatically removed by the release script -->
 <!-- BEGIN AUTOMATED SECTION -->
 
-- Bugfix: Children column on WP list cannot be expanded [[#64491](https://community.openproject.org/wp/64491)\]
-- Bugfix: DPA/AVV cannot be downloaded [[#67323](https://community.openproject.org/wp/67323)\]
-- Bugfix: BlockNote: Color for text not applied from the block side menu [[#67507](https://community.openproject.org/wp/67507)\]
-- Bugfix: Mobile web: When deep linking to a comment the comment is not fully scrolled into view [[#68221](https://community.openproject.org/wp/68221)\]
-- Bugfix: Updating the activity anchor URL without a page load does not highlight the relevant target element [[#68262](https://community.openproject.org/wp/68262)\]
-- Bugfix: Documents index page: pagination per page options overflow on mobile [[#68533](https://community.openproject.org/wp/68533)\]
-- Bugfix: Changing the filter on the activity tab with a large number of comments and slow network/compute lacks loading state while waiting for request completion [[#68878](https://community.openproject.org/wp/68878)\]
-- Bugfix: Flickering spec ./modules/meeting/spec/features/structured\_meetings/work\_package\_meetings\_tab\_spec.rb:392 [[#68952](https://community.openproject.org/wp/68952)\]
-- Bugfix: Clicking work package tabs triggers page reload and flickering \[[#69210](https://community.openproject.org/wp/69210)\]
-- Bugfix: Label for the admin document types reflects &quot;priorities&quot; instead of &quot;types&quot; in it&#39;s messaging \[[#69304](https://community.openproject.org/wp/69304)\]
-- Bugfix: Infinite SAML Seeding Loop Causing Disk Space Exhaustion \[[#69339](https://community.openproject.org/wp/69339)\]
-- Bugfix: &quot;Show attachments in the files tab by default&quot; potentially overwrites the setting for existing project \[[#69991](https://community.openproject.org/wp/69991)\]
-- Bugfix: Fix accessibility errors found by ERB Lint \[[#70166](https://community.openproject.org/wp/70166)\]
-- Bugfix: Missing list items when using checkboxes in tables \[[#70537](https://community.openproject.org/wp/70537)\]
-- Bugfix: Documents: when document content exceeds vertical height, the cursor does not scroll into view unless there is content typed \[[#70791](https://community.openproject.org/wp/70791)\]
-- Bugfix: Helm-Chart: Allow user to provide service specific annotations \[[#71055](https://community.openproject.org/wp/71055)\]
-- Bugfix: Activity tab overflows with long names \[[#71106](https://community.openproject.org/wp/71106)\]
-- Bugfix: Multi-user custom field requires clicking twice in order to be in focus \[[#71135](https://community.openproject.org/wp/71135)\]
-- Bugfix: Status translation issue on status widget \[[#71137](https://community.openproject.org/wp/71137)\]
-- Bugfix: Unnecessary empty journals on dragging work packages with automatic subjects \[[#71421](https://community.openproject.org/wp/71421)\]
-- Bugfix: Sending mails via sendmail does not work \[[#71447](https://community.openproject.org/wp/71447)\]
-- Bugfix: Error Content-Security-Policy with Hocuspocus integration due to URL scheme misconfiguration \[[#71888](https://community.openproject.org/wp/71888)\]
-- Bugfix: BlockNote Extension: Click on WP title opens new tab and redirects the current tab \[[#71898](https://community.openproject.org/wp/71898)\]
-- Bugfix: Connection error on successive navigation to and from a document \[[#71901](https://community.openproject.org/wp/71901)\]
-- Bugfix: Impossible to search for archived projects, page reverts to active projects list on its own \[[#71971](https://community.openproject.org/wp/71971)\]
-- Bugfix: Remove presenter field/participants references in onetime templates \[[#72222](https://community.openproject.org/wp/72222)\]
-- Bugfix: Space is too small for placeholder text in Backlogs module \[[#72366](https://community.openproject.org/wp/72366)\]
-- Bugfix: Missing caption in new template dialog \[[#72375](https://community.openproject.org/wp/72375)\]
-- Bugfix: Wrong wording in Enterprise on-prem support token input field \[[#72459](https://community.openproject.org/wp/72459)\]
-- Feature: Reusable meeting templates for meeting agendas \[[#35642](https://community.openproject.org/wp/35642)\]
-- Feature: Export relationship columns in PDF report \[[#66000](https://community.openproject.org/wp/66000)\]
-- Feature: Overview widget for Budgets \[[#66124](https://community.openproject.org/wp/66124)\]
-- Feature: Comment fields for project attributes \[[#66343](https://community.openproject.org/wp/66343)\]
-- Feature: Make project description and status widget editable on Overview tab \[[#67690](https://community.openproject.org/wp/67690)\]
-- Feature: Implement token refreshing and reduce token expiration time \[[#68460](https://community.openproject.org/wp/68460)\]
-- Feature: Display custom field type on form  \[[#68524](https://community.openproject.org/wp/68524)\]
-- Feature: MCP Server Infrastructure and Metadata Endpoint \[[#68683](https://community.openproject.org/wp/68683)\]
-- Feature: Integrate MCP Authentication with OpenProject OAuth2 \[[#68685](https://community.openproject.org/wp/68685)\]
-- Feature: Provide initial set of MCP Tools \[[#68686](https://community.openproject.org/wp/68686)\]
-- Feature: Expose OpenProject APIv3 Entities as MCP Resources \[[#68689](https://community.openproject.org/wp/68689)\]
-- Feature: Add Admin Page for MCP Configuration \[[#68690](https://community.openproject.org/wp/68690)\]
-- Feature: Standardized inplace edit fields based on Primer \[[#68832](https://community.openproject.org/wp/68832)\]
-- Feature: Add enterprise banner for MCP server \[[#70086](https://community.openproject.org/wp/70086)\]
-- Feature: Primerize Custom Field forms \[[#70292](https://community.openproject.org/wp/70292)\]
-- Feature: Support WebP images in PDF exports \[[#70333](https://community.openproject.org/wp/70333)\]
-- Feature: Use autocompleters in Admin/Backlogs page \[[#71069](https://community.openproject.org/wp/71069)\]
-- Feature: Improve Accessibility of Project Overview and Dashboard Widgets \[[#71075](https://community.openproject.org/wp/71075)\]
-- Feature: Allow to use API Keys as Bearer tokens \[[#71147](https://community.openproject.org/wp/71147)\]
-- Feature: Allow requiring to be logged in for external links \[[#71624](https://community.openproject.org/wp/71624)\]
-- Feature: Primerize versions project settings \[[#71641](https://community.openproject.org/wp/71641)\]
-- Feature: Primerize groups administration \[[#71642](https://community.openproject.org/wp/71642)\]
-- Feature: Rename &quot;Enable REST web service&quot; setting \[[#71886](https://community.openproject.org/wp/71886)\]
-- Feature: Reduce page size of MCP responses \[[#71977](https://community.openproject.org/wp/71977)\]
-- Feature: Allow to configure MCP tool response volume \[[#71978](https://community.openproject.org/wp/71978)\]
-- Feature: Allow authentication to MCP endpoint via session cookie \[[#72253](https://community.openproject.org/wp/72253)\]
-- Feature: Enable Column Sorting on Versions Overview \[[#72354](https://community.openproject.org/wp/72354)\]
-- Feature: MCP Server as a bridge between OpenProject and LLMs \[[#62781](https://community.openproject.org/wp/62781)\]
+- Bugfix: Children column on WP list cannot be expanded [[#64491](https://community.openproject.org/wp/64491)]
+- Bugfix: DPA/AVV cannot be downloaded [[#67323](https://community.openproject.org/wp/67323)]
+- Bugfix: BlockNote: Color for text not applied from the block side menu [[#67507](https://community.openproject.org/wp/67507)]
+- Bugfix: Mobile web: When deep linking to a comment the comment is not fully scrolled into view [[#68221](https://community.openproject.org/wp/68221)]
+- Bugfix: Updating the activity anchor URL without a page load does not highlight the relevant target element [[#68262](https://community.openproject.org/wp/68262)]
+- Bugfix: Documents index page: pagination per page options overflow on mobile [[#68533](https://community.openproject.org/wp/68533)]
+- Bugfix: Changing the filter on the activity tab with a large number of comments and slow network/compute lacks loading state while waiting for request completion [[#68878](https://community.openproject.org/wp/68878)]
+- Bugfix: Flickering spec ./modules/meeting/spec/features/structured_meetings/work_package_meetings_tab_spec.rb:392 [[#68952](https://community.openproject.org/wp/68952)]
+- Bugfix: Clicking work package tabs triggers page reload and flickering [[#69210](https://community.openproject.org/wp/69210)]
+- Bugfix: Label for the admin document types reflects "priorities" instead of "types" in its messaging [[#69304](https://community.openproject.org/wp/69304)]
+- Bugfix: Infinite SAML Seeding Loop Causing Disk Space Exhaustion [[#69339](https://community.openproject.org/wp/69339)]
+- Bugfix: "Show attachments in the files tab by default" potentially overwrites the setting for existing project [[#69991](https://community.openproject.org/wp/69991)]
+- Bugfix: Fix accessibility errors found by ERB Lint [[#70166](https://community.openproject.org/wp/70166)]
+- Bugfix: Missing list items when using checkboxes in tables [[#70537](https://community.openproject.org/wp/70537)]
+- Bugfix: Documents: when document content exceeds vertical height, the cursor does not scroll into view unless there is content typed [[#70791](https://community.openproject.org/wp/70791)]
+- Bugfix: Helm-Chart: Allow user to provide service specific annotations [[#71055](https://community.openproject.org/wp/71055)]
+- Bugfix: Activity tab overflows with long names [[#71106](https://community.openproject.org/wp/71106)]
+- Bugfix: Multi-user custom field requires clicking twice in order to be in focus [[#71135](https://community.openproject.org/wp/71135)]
+- Bugfix: Status translation issue on status widget [[#71137](https://community.openproject.org/wp/71137)]
+- Bugfix: Unnecessary empty journals on dragging work packages with automatic subjects [[#71421](https://community.openproject.org/wp/71421)]
+- Bugfix: Sending mails via sendmail does not work [[#71447](https://community.openproject.org/wp/71447)]
+- Bugfix: Error Content-Security-Policy with Hocuspocus integration due to URL scheme misconfiguration [[#71888](https://community.openproject.org/wp/71888)]
+- Bugfix: BlockNote Extension: Click on WP title opens new tab and redirects the current tab [[#71898](https://community.openproject.org/wp/71898)]
+- Bugfix: Connection error on successive navigation to and from a document [[#71901](https://community.openproject.org/wp/71901)]
+- Bugfix: Impossible to search for archived projects, page reverts to active projects list on its own [[#71971](https://community.openproject.org/wp/71971)]
+- Bugfix: Remove presenter field/participants references in onetime templates [[#72222](https://community.openproject.org/wp/72222)]
+- Bugfix: Space is too small for placeholder text in Backlogs module [[#72366](https://community.openproject.org/wp/72366)]
+- Bugfix: Missing caption in new template dialog [[#72375](https://community.openproject.org/wp/72375)]
+- Bugfix: Wrong wording in Enterprise on-prem support token input field [[#72459](https://community.openproject.org/wp/72459)]
+- Feature: Reusable meeting templates for meeting agendas [[#35642](https://community.openproject.org/wp/35642)]
+- Feature: Export relationship columns in PDF report [[#66000](https://community.openproject.org/wp/66000)]
+- Feature: Overview widget for Budgets [[#66124](https://community.openproject.org/wp/66124)]
+- Feature: Comment fields for project attributes [[#66343](https://community.openproject.org/wp/66343)]
+- Feature: Make project description and status widget editable on Overview tab [[#67690](https://community.openproject.org/wp/67690)]
+- Feature: Implement token refreshing and reduce token expiration time [[#68460](https://community.openproject.org/wp/68460)]
+- Feature: Display custom field type on form [[#68524](https://community.openproject.org/wp/68524)]
+- Feature: MCP Server Infrastructure and Metadata Endpoint [[#68683](https://community.openproject.org/wp/68683)]
+- Feature: Integrate MCP Authentication with OpenProject OAuth2 [[#68685](https://community.openproject.org/wp/68685)]
+- Feature: Provide initial set of MCP Tools [[#68686](https://community.openproject.org/wp/68686)]
+- Feature: Expose OpenProject APIv3 Entities as MCP Resources [[#68689](https://community.openproject.org/wp/68689)]
+- Feature: Add Admin Page for MCP Configuration [[#68690](https://community.openproject.org/wp/68690)]
+- Feature: Standardized inplace edit fields based on Primer [[#68832](https://community.openproject.org/wp/68832)]
+- Feature: Add enterprise banner for MCP server [[#70086](https://community.openproject.org/wp/70086)]
+- Feature: Primerize Custom Field forms [[#70292](https://community.openproject.org/wp/70292)]
+- Feature: Support WebP images in PDF exports [[#70333](https://community.openproject.org/wp/70333)]
+- Feature: Use autocompleters in Admin/Backlogs page [[#71069](https://community.openproject.org/wp/71069)]
+- Feature: Improve Accessibility of Project Overview and Dashboard Widgets [[#71075](https://community.openproject.org/wp/71075)]
+- Feature: Allow to use API Keys as Bearer tokens [[#71147](https://community.openproject.org/wp/71147)]
+- Feature: Allow requiring to be logged in for external links [[#71624](https://community.openproject.org/wp/71624)]
+- Feature: Primerize versions project settings [[#71641](https://community.openproject.org/wp/71641)]
+- Feature: Primerize groups administration [[#71642](https://community.openproject.org/wp/71642)]
+- Feature: Rename "Enable REST web service" setting [[#71886](https://community.openproject.org/wp/71886)]
+- Feature: Reduce page size of MCP responses [[#71977](https://community.openproject.org/wp/71977)]
+- Feature: Allow to configure MCP tool response volume [[#71978](https://community.openproject.org/wp/71978)]
+- Feature: Allow authentication to MCP endpoint via session cookie [[#72253](https://community.openproject.org/wp/72253)]
+- Feature: Enable Column Sorting on Versions Overview [[#72354](https://community.openproject.org/wp/72354)]
+- Feature: MCP Server as a bridge between OpenProject and LLMs [[#62781](https://community.openproject.org/wp/62781)]
 
 <!-- END AUTOMATED SECTION -->
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
