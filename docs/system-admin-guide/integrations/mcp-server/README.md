@@ -55,14 +55,33 @@ by OpenProject already, namely:
 
 In case OpenProject is used as the authentication provider, the configuration for the client has to be prepared by the administrator.
 Go to *Administration -> Authentication -> OAuth applications* and create an application with the `mcp` scope, entering
-the "Redirect URI" according to the instructions of your MCP client. Make sure that the application is marked as confidential.
+the "Redirect URI" according to the instructions of your MCP client. 
+
+> [!IMPORTANT]
+>
+> Make sure that the application is marked as confidential.
+
+![Create new OAuth application for an MCP server in OpenProject administration](openproject_system_guide_new_oauth_mcp.png)
+
+
 
 ### Customization
 
-Under *Administration -> Artificial Intelligence (AI) -> Model Context Protocol (MCP)* you can customize the MCP server further.
+You can customize the MCP server further under *Administration -> Artificial Intelligence (AI) -> Model Context Protocol (MCP)*. 
 
-Tools and Resources offered via MCP can be disabled separately here, as well as the entire MCP server. You can also change the
-descriptions and titles indicated towards MCP clients. This can be useful to introduce alternative naming for certain entities.
-For example if work packages are called "work items" in your day-to-day language, it can be helpful to rename "Search Work Packages"
-to "Search Work Items", so that users interacting with the MCP client understand what a tool does and the language model has an
-additional cue that there is an alias for "work packages".
+Here you can enable or disable the entire MCP server. You can also change the MCP server titles and descriptions indicated towards MCP clients, and the response format. 
+
+The available response format options are:
+
+- **Full**: The most compatible option. Tool responses will include both regular and  structured content, allowing MCP clients to choose which format they  want to read. This may increase the number of tokens that the language  model has to process, potentially increasing cost and decreasing  performance. 
+- **Structured content only**: Choose this if you are certain that MCP clients connecting to this instance  support structured content. Tool responses will only include structured  content and leave out its text representation. 
+- **Content only**: Choose this if MCP clients connecting to this instance do not support  structured content. Tool responses will only contain plain text content  and leave out the structured version. 
+
+![Model context protocol (MCP) settings under OpenProject administration](openproject_system_guide_new_mcp.png)
+
+
+You can also disable individual tools and resources provided via MCP. This can be useful if you want to introduce alternative naming for certain entities or limit available functionality.
+
+For example if work packages are called "work items" in your day-to-day language, it can be helpful to rename *Search work packages* to *Search work items*, so that users interacting with the MCP client understand what a tool does and the language model has an additional cue that there is an alias for "work packages".
+
+![MCP tools section settings in OpenProject administration](openproject_system_guide_new_mcp_tools.png)
