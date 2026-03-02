@@ -39,7 +39,7 @@ module Storages
           @use_cache = use_cache
         end
 
-        def call(storage:, http_options: {})
+        def call(storage:, http_options: {}) # rubocop:disable Metrics/AbcSize
           config = validate_configuration(storage).value_or { return Failure(it) }
 
           token_cache_key = TOKEN_CACHE_KEY % storage.id
