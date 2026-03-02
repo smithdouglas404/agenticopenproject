@@ -30,6 +30,25 @@
 
 import { ICKEditorInstance } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
 
+/**
+ * Returns a collapsed DOM Range at the given viewport coordinates.
+ * Prefers the modern `caretPositionFromPoint` API, falls back to the
+ * deprecated `caretRangeFromPoint` for browsers that do not support it yet.
+ */
+export function caretRangeFromPoint(x:number, y:number):Range|null {
+  if ('caretPositionFromPoint' in document) {
+    const pos = document.caretPositionFromPoint(x, y);
+    if (pos) {
+      const range = document.createRange();
+      range.setStart(pos.offsetNode, pos.offset);
+      range.collapse(true);
+      return range;
+    }
+    return null;
+  }
+  return (document as Document).caretRangeFromPoint?.(x, y) ?? null;
+}
+
 export function retrieveCkEditorInstance(element:HTMLElement):ICKEditorInstance|undefined {
   return getEditableElement(element)?.ckeditorInstance;
 }

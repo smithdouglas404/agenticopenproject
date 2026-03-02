@@ -31,6 +31,7 @@
 
 import { Controller } from '@hotwired/stimulus';
 import { renderStreamMessage } from '@hotwired/turbo';
+import { caretRangeFromPoint } from 'core-app/shared/helpers/ckeditor-helpers';
 
 export default class extends Controller {
   static values = {
@@ -49,6 +50,10 @@ export default class extends Controller {
     if (form) {
       this.boundFormDataHandler = (e:FormDataEvent) => this.appendStableKeySystemArguments(e);
       form.addEventListener('formdata', this.boundFormDataHandler);
+    }
+
+    if (this.element instanceof HTMLInputElement || this.element instanceof HTMLTextAreaElement) {
+      this.setCursorPosition(this.element);
     }
   }
 
@@ -71,6 +76,8 @@ export default class extends Controller {
     if (target.tagName === 'a' || target.closest('a')) {
       return;
     }
+
+    this.storeCursorPositionData(e);
 
     const response = await fetch(this.urlValue, {
       method: 'GET',
@@ -137,5 +144,61 @@ export default class extends Controller {
       current = current.parentElement!;
     }
     return false;
+  }
+
+  // When the controller is connected to a text input (i.e. the edit field has
+  // just been rendered), apply the stored char offset so the cursor lands where
+  // the user clicked in the display field.
+  private setCursorPosition(element:HTMLElement):void {
+    const offset = parseInt(document.body.dataset.inplaceEditCharOffset ?? '', 10);
+    delete document.body.dataset.inplaceEditCharOffset;
+    if (!isNaN(offset)) {
+      // requestAnimationFrame ensures autofocus has run and the element is focused.
+      // setSelectionRange is not supported on all input types (e.g. number, date) —
+      // those will silently keep the browser's default cursor placement.
+      requestAnimationFrame(() => {
+        try {
+          (element as HTMLInputElement).setSelectionRange(offset, offset);
+        } catch {
+          // ignore
+        }
+      });
+    }
+  }
+
+  private storeCursorPositionData(e:Event):void {
+    if (e instanceof MouseEvent) {
+      const container = e.currentTarget as HTMLElement;
+      const rect = container.getBoundingClientRect();
+      document.body.dataset.inplaceEditClickX = String(e.clientX - rect.left);
+      document.body.dataset.inplaceEditClickY = String(e.clientY - rect.top);
+
+      // For plain-text inputs: store the char offset at the click position so
+      // the rendered text input can place the cursor accurately via setSelectionRange.
+      const range = caretRangeFromPoint(e.clientX, e.clientY);
+      if (range && container.contains(range.startContainer)) {
+        document.body.dataset.inplaceEditCharOffset = String(
+          this.getCharOffset(container, range.startContainer, range.startOffset),
+        );
+      } else {
+        delete document.body.dataset.inplaceEditCharOffset;
+      }
+    } else {
+      delete document.body.dataset.inplaceEditClickX;
+      delete document.body.dataset.inplaceEditClickY;
+      delete document.body.dataset.inplaceEditCharOffset;
+    }
+  }
+
+  private getCharOffset(root:Element, targetNode:Node, targetOffset:number):number {
+    let count = 0;
+    let node:Node|null;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+
+    while ((node = walker.nextNode())) {
+      if (node === targetNode) return count + targetOffset;
+      count += (node as Text).length;
+    }
+    return count;
   }
 }
