@@ -32,6 +32,15 @@ module Documents
   module ShowEditView
     class ConnectionErrorNoticeComponent < ApplicationComponent
       include OpTurbo::Streamable
+
+      alias_method :document, :model
+
+      private
+
+      def readonly
+        @readonly ||= User.current.allowed_in_project?(:view_documents, document.project) &&
+          !User.current.allowed_in_project?(:manage_documents, document.project)
+      end
     end
   end
 end

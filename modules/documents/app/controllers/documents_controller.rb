@@ -79,7 +79,7 @@ class DocumentsController < ApplicationController
   end
 
   def render_connection_error
-    update_via_turbo_stream(component: Documents::ShowEditView::ConnectionErrorNoticeComponent.new)
+    update_via_turbo_stream(component: Documents::ShowEditView::ConnectionErrorNoticeComponent.new(@document))
 
     respond_with_turbo_streams
   end

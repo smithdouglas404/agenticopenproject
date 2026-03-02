@@ -90,9 +90,10 @@ en:
     show_edit_view:
       connection_error_notice:
         description: |-
-          You are currently in offline mode.
-          Changes will be saved once the connection to the collaboration server is re-established.
-          Please contact the administrator if the problem persists.
+          You are currently offline. You can continue editing. Your changes will be synced when the connection is restored.
+        description_readonly: |-
+          You are currently offline.
+          Real-time updates will resume once the connection is restored.
         action: Try again
       connection_recovery_notice:
         description: "The connection to the real-time text collaboration server has been restored."

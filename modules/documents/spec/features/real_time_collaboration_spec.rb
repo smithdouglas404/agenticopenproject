@@ -67,6 +67,26 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
         wait_for { document.reload.content_binary }.to be_present
         expect(document.description).to eq("Hello Hocuspocus\n")
       end
+
+      it "saves offline edits to the server when reconnected" do
+        # Visit with an unreachable hocuspocus URL → editor enters offline mode
+        Setting.collaborative_editing_hocuspocus_url = "ws://127.0.0.1:9999"
+
+        visit document_path(document)
+
+        expect(page).to have_test_selector("blocknote-document-description")
+        expect(editor.shadow_root).to have_css(
+          "[data-test-selector='connection-error-notice']", wait: 10
+        )
+
+        editor.fill_in("Offline edit")
+
+        # Reload with the real hocuspocus URL → IndexedDB-saved edits are forwarded to the server
+        Setting.collaborative_editing_hocuspocus_url = "ws://127.0.0.1:1234"
+        visit document_path(document)
+
+        wait_for { document.reload.description }.to eq("Offline edit\n")
+      end
     end
 
     context "with readonly permission" do
@@ -93,25 +113,40 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
   end
 
   context "when in offline mode (without a connection to the hocuspocus server)" do
-    before do
-      login_as(admin)
-    end
-
     # No hocuspocus server is started here intentionally. The editor initialises
     # normally (IndexedDB syncs, HocuspocusProvider is created with the document
     # URL), but the provider cannot connect. After the 5-second connection timeout
     # in useConnectionTimeout the offline-mode banner is shown.
-    it "renders a warning that the editor is in offline mode" do
-      visit document_path(document)
+    context "with write permission" do
+      before { login_as(admin) }
 
-      expect(page).to have_test_selector("blocknote-document-description")
-      expect(editor.shadow_root).to have_css(
-        "[data-test-selector='connection-error-notice']",
-        text: "You are currently in offline mode. " \
-              "Changes will be saved once the connection to the collaboration server is re-established. " \
-              "Please contact the administrator if the problem persists.",
-        wait: 10
-      )
+      it "renders a warning that the editor is in offline mode" do
+        visit document_path(document)
+
+        expect(page).to have_test_selector("blocknote-document-description")
+        expect(editor.shadow_root).to have_css(
+          "[data-test-selector='connection-error-notice']",
+          text: "You are currently offline. You can continue editing. " \
+                "Your changes will be synced when the connection is restored.",
+          wait: 10
+        )
+      end
+    end
+
+    context "with readonly permission" do
+      before { login_as(readonly_user) }
+
+      it "renders an offline warning without mentioning saving changes" do
+        visit document_path(document)
+
+        expect(page).to have_test_selector("blocknote-document-description")
+        expect(editor.shadow_root).to have_css(
+          "[data-test-selector='connection-error-notice']",
+          text: "You are currently offline. " \
+                "Real-time updates will resume once the connection is restored.",
+          wait: 10
+        )
+      end
     end
   end
 end
