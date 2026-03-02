@@ -35,11 +35,13 @@ class RbMasterBacklogsController < RbApplicationController
 
   before_action :load_backlogs, only: :index
 
-  helper_method :scrum_projects_enabled?
-
   def index
     if turbo_frame_request?
-      render partial: "list", layout: false
+      if scrum_projects_enabled?
+        render partial: "agile_list", layout: false
+      else
+        render partial: "list", layout: false
+      end
     else
       render :index
     end
@@ -66,9 +68,5 @@ class RbMasterBacklogsController < RbApplicationController
     else
       @sprint_backlogs = Backlog.sprint_backlogs(@project)
     end
-  end
-
-  def scrum_projects_enabled?
-    OpenProject::FeatureDecisions.scrum_projects_active?
   end
 end
