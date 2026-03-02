@@ -1,0 +1,17 @@
+.users-non-working-days-calendar-view
+  height: 100%
+
+  .op-fc-wrapper
+    flex-grow: 1
+
+    // Global non-working days rendered as FullCalendar background events
+    .fc-bg-event.non-working-day--global
+      background-color: var(--color-scale-red-2, #ffcece)
+      opacity: 0.8
+
+    // User non-working day ranges rendered as foreground all-day bars
+    .fc-event.non-working-day--user
+      background-color: var(--color-scale-blue-5, #0969da)
+      border-color: var(--color-scale-blue-6, #0550ae)
+      color: var(--fgColor-onEmphasis, #fff)
+      border-radius: 3px
