@@ -36,14 +36,20 @@ class RbMasterBacklogsController < RbApplicationController
   before_action :load_backlogs, only: :index
 
   def index
-    if turbo_frame_request?
-      if scrum_projects_enabled?
+    if OpenProject::FeatureDecisions.scrum_projects_active?
+      # Feature flag is active, render the new views
+      if turbo_frame_request?
         render partial: "agile_list", layout: false
       else
-        render partial: "list", layout: false
+        render :agile_index
       end
     else
-      render :index
+      # Feature flag is not active, render legacy views
+      if turbo_frame_request? # rubocop:disable Style/IfInsideElse
+        render partial: "list", layout: false
+      else
+        render :index
+      end
     end
   end
 
@@ -63,7 +69,7 @@ class RbMasterBacklogsController < RbApplicationController
   def load_backlogs
     @owner_backlogs = Backlog.owner_backlogs(@project)
 
-    if scrum_projects_enabled?
+    if OpenProject::FeatureDecisions.scrum_projects_active?
       @sprints = @project.sprints.open.order_by_date
     else
       @sprint_backlogs = Backlog.sprint_backlogs(@project)
