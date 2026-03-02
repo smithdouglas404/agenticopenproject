@@ -33,7 +33,7 @@ require "spec_helper"
 RSpec.describe API::V3::Meetings::MeetingRepresenter do
   include API::V3::Utilities::PathHelper
 
-  let(:workspace) { build_stubbed(:project) }
+  let(:workspace) { build_stubbed(:project, public: true) }
   let(:current_user) do
     build_stubbed(:user)
   end
