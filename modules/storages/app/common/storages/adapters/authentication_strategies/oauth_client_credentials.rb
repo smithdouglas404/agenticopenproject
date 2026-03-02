@@ -61,6 +61,10 @@ module Storages
           end
 
           operation_result
+        rescue HTTPX::HTTPError => e
+          Failure(Results::Error.new(code: :unauthorized, payload: e.response, source: self.class))
+        rescue HTTPX::TimeoutError => e
+          Failure(Results::Error.new(code: :timeout, payload: e.to_s, source: self.class))
         end
 
         private
@@ -73,7 +77,7 @@ module Storages
         end
 
         def write_cache(key, httpx_session)
-          access_token = httpx_session.instance_variable_get(:@options).oauth_session.access_token
+          access_token = httpx_session.send(:oauth_session).access_token
           Rails.cache.write(key, access_token, expires_in: 50.minutes)
         end
 
@@ -88,20 +92,11 @@ module Storages
         end
 
         def http_with_current_token(access_token:, http_options:)
-          opts = http_options.deep_merge({ headers: { "Authorization" => "Bearer #{access_token}" } })
-          Success(OpenProject.httpx.with(opts))
+          Success(OpenProject.httpx.bearer_auth(access_token).with(http_options))
         end
 
         def http_with_new_token(config:, http_options:)
-          http = OpenProject.httpx
-                            .oauth_auth(**config.to_h, token_endpoint_auth_method: "client_secret_post")
-                            .with_access_token
-                            .with(http_options)
-          Success(http)
-        rescue HTTPX::HTTPError => e
-          Failure(Results::Error.new(code: :unauthorized, payload: e.response, source: self.class))
-        rescue HTTPX::TimeoutError => e
-          Failure(Results::Error.new(code: :timeout, payload: e.to_s, source: self.class))
+          Success(OpenProject.httpx.plugin(:oauth).with(**http_options, oauth_options: config.to_h))
         end
       end
     end
