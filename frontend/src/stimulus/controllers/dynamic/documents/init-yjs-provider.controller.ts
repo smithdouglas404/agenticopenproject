@@ -103,7 +103,7 @@ export default class extends Controller {
     this.indexeddbPersistence = null;
   }
 
-  private setupProvider():void {
+  private async setupProvider():Promise<void> {
     // Clean up any prior incomplete setup to prevent leaking persistence
     // instances on concurrent connect() invocations (e.g., rapid Turbo navigation)
     this.destroyIndexedDBPersistence();
@@ -112,19 +112,28 @@ export default class extends Controller {
 
     const ydoc:Doc = new Y.Doc();
 
-    // Start IndexedDB sync in the background — do not block provider initialisation.
-    // Y.js CRDTs handle out-of-order merges: the Hocuspocus server pushes the
-    // authoritative state on connect (onLoadDocument), and any offline edits
-    // IndexedDB applies afterward are forwarded to the server automatically.
-    this.waitForIndexedDBSync(ydoc).catch((error) => {
+    // Waiting for the synchronization of the local copy of IndexedDB
+    try {
+      await this.waitForIndexedDBSync(ydoc);
+    } catch (error) {
+      // IndexedDB unavailable or timed out — destroy the partial instance and
+      // continue without offline persistence so the editor still renders.
       debugLog(
         '(BlockNote Editor) Failed to sync IndexedDB persistence, continuing without offline persistence',
         error,
       );
       this.destroyIndexedDBPersistence();
-    });
+    }
 
-    // Connecting the Hocuspocus Provider immediately (IndexedDB syncing in background)
+    // If disconnect() was called during the IndexedDB await (e.g., Turbo navigation),
+    // abort to avoid overwriting the active provider on the new page.
+    if (!this.element.isConnected) {
+      this.destroyIndexedDBPersistence();
+      ydoc.destroy();
+      return;
+    }
+
+    // Connecting the Hocuspocus Provider after the local data has been loaded
     const provider = new HocuspocusProvider({
       url: this.hocuspocusUrlValue,
       name: this.documentNameValue,
@@ -154,7 +163,9 @@ export default class extends Controller {
   }
 
   connect():void {
-    this.setupProvider();
+    this.setupProvider().catch((error) => {
+      debugLog('(BlockNote Editor) Failed to initialize Yjs provider', error);
+    });
   }
 
   disconnect():void {
