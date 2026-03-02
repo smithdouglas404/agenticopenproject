@@ -1146,6 +1146,7 @@ en:
         total_work_hours: "Total work hours"
         availability_description: "The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities."
         availability_factor: "Availability factor"
+        availability_factor_caption: "Define the percentage of your working time dedicated to project work."
         total_available_hours: "Total available work hours"
         title_availability_factor: "Availability factor"
         title_days_and_hours: "Days and hours"

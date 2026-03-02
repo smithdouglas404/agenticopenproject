@@ -37,7 +37,6 @@ export default class WorkingHoursFormController extends Controller {
     'individualSection',
     'sharedHoursInput',
     'dayCheckbox',
-    'dayHoursSection',
     'dayHoursInput',
     'totalWorkHoursDisplay',
     'availabilityFactorInput',
@@ -77,7 +76,7 @@ export default class WorkingHoursFormController extends Controller {
 
     if (hoursInput) {
       hoursInput.disabled = !checkbox.checked;
-      this.toggleDayHoursWrapperVisbility(day, checkbox.checked);
+      this.toggleDayHoursWrapperVisibility(day, checkbox.checked);
     }
 
     if (this.hoursModeValue === 'same') {
@@ -113,7 +112,7 @@ export default class WorkingHoursFormController extends Controller {
   }
 
   private detectHoursMode() {
-    const checked = document.querySelector<HTMLInputElement>('input[name="user_working_hours[hours_mode]"]:checked');
+    const checked = this.element.querySelector<HTMLInputElement>('input[name="user_working_hours[hours_mode]"]:checked');
     if (checked) {
       this.hoursModeValue = checked.value as 'same' | 'individual';
     }
@@ -124,7 +123,7 @@ export default class WorkingHoursFormController extends Controller {
   private hideDisabledDayHours() {
     this.dayCheckboxTargets.forEach((checkbox) => {
       const day = checkbox.dataset.day!;
-      this.toggleDayHoursWrapperVisbility(day, checkbox.checked);
+      this.toggleDayHoursWrapperVisibility(day, checkbox.checked);
     });
   }
 
@@ -151,33 +150,28 @@ export default class WorkingHoursFormController extends Controller {
     if (this.hoursModeValue === 'same') {
       const seconds = durationStringToSeconds(this.sharedHoursInputTarget.value);
       const checkedCount = this.dayCheckboxTargets.filter((cb) => cb.checked).length;
-      totalHours = (seconds / 3600) * checkedCount;
+      totalHours = seconds * checkedCount;
     } else {
       this.dayHoursInputTargets.forEach((input) => {
         const checkbox = this.dayCheckboxForDay(input.dataset.day!);
         if (checkbox?.checked) {
-          totalHours += durationStringToSeconds(input.value) / 3600;
+          totalHours += durationStringToSeconds(input.value);
         }
       });
     }
 
-    this.totalWorkHoursDisplayTarget.value = this.formatHours(totalHours);
+    this.totalWorkHoursDisplayTarget.value = formattedHour(totalHours);
 
     const factor = parseFloat(this.availabilityFactorInputTarget.value);
     const available = totalHours * (isNaN(factor) ? 100 : factor) / 100;
-    this.totalAvailableHoursDisplayTarget.value = this.formatHours(available);
-  }
-
-  private formatHours(hours:number):string {
-    const rounded = Math.round(hours * 100) / 100;
-    return `${rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(2).replace(/0+$/, '')}h`;
+    this.totalAvailableHoursDisplayTarget.value = formattedHour(available);
   }
 
   private dayHoursInputForDay(day:string):HTMLInputElement|undefined {
     return this.dayHoursInputTargets.find((el) => el.dataset.day === day);
   }
 
-  private toggleDayHoursWrapperVisbility(day:string, visible:boolean ) {
+  private toggleDayHoursWrapperVisibility(day:string, visible:boolean) {
     const input = this.dayHoursInputForDay(day);
 
     if (input) {

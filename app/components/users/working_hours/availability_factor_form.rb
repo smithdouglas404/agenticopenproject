@@ -44,6 +44,7 @@ class Users::WorkingHours::AvailabilityFactorForm < ApplicationForm
 
     form.text_field name: :availability_factor,
                     label: UserWorkingHours.human_attribute_name(:availability_factor),
+                    caption: I18n.t("users.working_hours.form.availability_factor_caption"),
                     input_width: :large,
                     inputmode: "numeric",
                     value: model.availability_factor,
