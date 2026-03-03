@@ -229,7 +229,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
     end
 
     describe "with single select fields" do
-      shared_examples "a autocomplete single select field" do
+      shared_examples "an autocomplete single select field" do
         it "shows the correct value if given" do
           overview_page.open_modal_for_custom_field(custom_field)
 
@@ -288,7 +288,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:second_option) { custom_field.custom_options.second.value }
         let(:third_option) { custom_field.custom_options.third.value }
 
-        it_behaves_like "a autocomplete single select field"
+        it_behaves_like "an autocomplete single select field"
 
         it "shows the default value if no value is given" do
           custom_field.custom_values.destroy_all
@@ -311,7 +311,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:second_option) { second_version.name }
         let(:third_option) { third_version.name }
 
-        it_behaves_like "a autocomplete single select field"
+        it_behaves_like "an autocomplete single select field"
 
         describe "with correct version scoping" do
           context "with a version on a different project" do
@@ -372,7 +372,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:second_option) { another_member_in_project.name }
         let(:third_option) { one_more_member_in_project.name }
 
-        it_behaves_like "a autocomplete single select field"
+        it_behaves_like "an autocomplete single select field"
 
         describe "with correct user scoping" do
           let!(:member_in_other_project) do
@@ -436,7 +436,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
     end
 
     describe "with multi select fields" do
-      shared_examples "a autocomplete multi select field" do
+      shared_examples "an autocomplete multi select field" do
         it "shows the correct value if given" do
           overview_page.open_modal_for_custom_field(custom_field)
 
@@ -512,7 +512,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:second_option) { custom_field.custom_options.second.value }
         let(:third_option) { custom_field.custom_options.third.value }
 
-        it_behaves_like "a autocomplete multi select field"
+        it_behaves_like "an autocomplete multi select field"
 
         it "shows the default value if no value is given" do
           multi_list_project_custom_field.custom_values.destroy_all
@@ -537,7 +537,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:second_option) { second_version.name }
         let(:third_option) { third_version.name }
 
-        it_behaves_like "a autocomplete multi select field"
+        it_behaves_like "an autocomplete multi select field"
 
         describe "with correct version scoping" do
           context "with a version on a different project" do
@@ -599,7 +599,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:second_option) { another_member_in_project.name }
         let(:third_option) { one_more_member_in_project.name }
 
-        it_behaves_like "a autocomplete multi select field"
+        it_behaves_like "an autocomplete multi select field"
 
         describe "with correct user scoping" do
           let!(:member_in_other_project) do

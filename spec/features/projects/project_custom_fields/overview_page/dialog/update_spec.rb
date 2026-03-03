@@ -494,7 +494,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
     end
 
     describe "with multi select fields" do
-      shared_examples "a autocomplete multi select field" do
+      shared_examples "an autocomplete multi select field" do
         it "saves single selected values properly" do
           custom_field.custom_values.delete_all
 
@@ -626,7 +626,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:first_option) { custom_field.custom_options.first.value }
         let(:second_option) { custom_field.custom_options.second.value }
 
-        it_behaves_like "a autocomplete multi select field"
+        it_behaves_like "an autocomplete multi select field"
       end
 
       describe "with multi version select list CF" do
@@ -636,7 +636,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:first_option) { first_version.name }
         let(:second_option) { second_version.name }
 
-        it_behaves_like "a autocomplete multi select field"
+        it_behaves_like "an autocomplete multi select field"
       end
 
       describe "with multi user select list CF" do
@@ -646,7 +646,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:first_option) { member_in_project.name }
         let(:second_option) { another_member_in_project.name }
 
-        it_behaves_like "a autocomplete multi select field"
+        it_behaves_like "an autocomplete multi select field"
 
         describe "with support for user groups" do
           let!(:group) do
