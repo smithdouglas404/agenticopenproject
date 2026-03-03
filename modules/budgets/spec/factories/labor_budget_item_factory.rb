@@ -31,5 +31,16 @@ FactoryBot.define do
     association :user
     association :budget
     hours { 0.0 }
+
+    after(:build) do |item|
+      project = item.budget&.project
+      principal = item.principal
+
+      next unless project&.persisted? && principal&.persisted?
+      next if Member.exists?(principal:, project:)
+
+      role = create(:project_role, permissions: [])
+      create(:member, principal:, project:, roles: [role])
+    end
   end
 end
