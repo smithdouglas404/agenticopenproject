@@ -160,6 +160,10 @@ class Sprint < Version
     version_settings.find { it.project_id == project.id || it.project_id.nil? }
   end
 
+  def board_name
+    "#{project.name}: #{name}"
+  end
+
   private
 
   def create_wiki_page(page_title, author: User.current)

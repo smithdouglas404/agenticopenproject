@@ -40,8 +40,7 @@ class RbTaskboardsController < RbApplicationController
   private
 
   def load_or_create_board
-    name   = "#{@project.name}: #{@sprint.name}"
-    result = TaskBoards::CreateService.ensure(user: current_user, project: @project, name:)
+    result = TaskBoards::CreateService.ensure(user: current_user, project: @project, name: @sprint.board_name)
 
     if result.success?
       @board = result.result
