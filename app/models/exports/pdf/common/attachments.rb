@@ -78,7 +78,7 @@ module Exports::PDF::Common::Attachments
 
   def temp_image_file(extension)
     tmp_file = Tempfile.new(["temp_image", extension])
-    @resized_images = [] if @resized_images.nil?
+    @resized_images ||= []
     @resized_images << tmp_file
     tmp_file.path
   end
