@@ -28,7 +28,7 @@ Take a look at our release video showing the most important features introduced 
 
 [feature: mcp_server ]
 
-OpenProject 17.2 introduces the **MCP Server**, a new Enterprise add-on that lays the foundation for robust integrations between OpenProject and external intelligent agents, automation tools, or systems that use the Model Context Protocol (MCP). This server uses OpenProject’s APIv3 resources as MCP-compatible endpoints and enables secure, authenticated access for clients such as large language models or other MCP clients, opening the door to richer contextual interactions with your project data. 
+OpenProject 17.2 introduces the **MCP Server**, a new Enterprise add-on that lays the foundation for robust integrations between OpenProject and systems that use the Model Context Protocol (MCP), such as large language models or automation tools. This server exposes OpenProject’s APIv3 resources as MCP-compatible endpoints and enables secure, authenticated access for clients such as large language models or other MCP clients, opening the door to richer contextual interactions with your project data. 
 
 Included in this release are administrative UI support for configuring the MCP Server, infrastructure and metadata endpoints, and integration of MCP authentication with OpenProject’s OAuth2 and API key mechanisms, including external OpenID Connect providers. An initial set of MCP tools and resources is provided to surface key entities (projects, work packages, users, etc.), and response formats can be adjusted based on your preferences. With session-cookie and bearer-token support, the MCP Server acts as a secure bridge between your OpenProject instance and external systems that operate via MCP. 
 
