@@ -14,7 +14,7 @@ class AddUserNonWorkingTimes < ActiveRecord::Migration[8.1]
     reversible do |direction|
       direction.up do
         execute <<~SQL.squish
-          ALTER TABLE non_working_times
+          ALTER TABLE user_non_working_times
           ADD CONSTRAINT no_overlapping_non_working_times
           EXCLUDE USING gist (
             user_id WITH =,
