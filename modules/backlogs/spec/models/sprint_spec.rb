@@ -261,6 +261,13 @@ RSpec.describe Sprint do
     end
   end
 
+  describe "#board_name" do
+    it "returns project name and sprint name separated by a colon" do
+      sprint = build_stubbed(:sprint, name: "Sprint 1", project: build_stubbed(:project, name: "My Project"))
+      expect(sprint.board_name).to eq("My Project: Sprint 1")
+    end
+  end
+
   describe "#wiki_page" do
     let(:wiki) { create :wiki, project: }
     let(:wiki_page) { WikiPage.where(wiki:, title: sprint.wiki_page).first }
