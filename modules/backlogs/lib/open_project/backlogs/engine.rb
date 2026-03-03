@@ -86,7 +86,7 @@ module OpenProject::Backlogs
                    require: :member
 
         permission :create_sprints,
-                   { rb_sprints: %i[new_dialog refresh_form create edit_name update],
+                   { rb_sprints: %i[new_dialog refresh_form create edit_name update edit_dialog update_agile_sprint],
                      rb_wikis: %i[edit update] },
                    permissible_on: :project,
                    require: :member,

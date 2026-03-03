@@ -32,6 +32,8 @@ module Backlogs
   module Sprints
     class DetailsForm < ApplicationForm
       form do |f|
+        f.hidden(name: :id)
+
         f.text_field(
           label: attribute_name(:name),
           name: :name,

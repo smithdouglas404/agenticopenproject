@@ -30,7 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render(
     Primer::Alpha::Dialog.new(
-      title: t(:label_sprint_new),
+      title:,
       size: :large,
       id: DIALOG_ID
     )
@@ -61,7 +61,7 @@ See COPYRIGHT and LICENSE files for more details.
             type: :submit
           )
         ) do
-          t("button_create")
+          button_caption
         end
       end
     end

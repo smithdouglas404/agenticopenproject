@@ -53,8 +53,7 @@ module Backlogs
       if @sprint.new_record?
         project_sprints_path(@sprint.project_id)
       else
-        # TODO: update path
-        ""
+        update_agile_sprint_project_sprint_path(@sprint.project_id, @sprint.id)
       end
     end
 

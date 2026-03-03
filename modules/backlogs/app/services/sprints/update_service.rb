@@ -28,34 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class NewSprintDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-
-    DIALOG_ID = "new-sprint-dialog"
-    FORM_ID = "new-sprint-dialog-form"
-    FOOTER_ID = "new-sprint-dialog-footer"
-
-    def initialize(sprint:, state: :create)
-      super
-
-      @sprint = sprint
-      @state = state
-    end
-
-    private
-
-    def state_create? = @state == :create
-
-    def state_edit? = @state == :edit
-
-    def title
-      state_create? ? t(:label_sprint_new) : t(:label_sprint_edit)
-    end
-
-    def button_caption
-      state_create? ? t(:button_create) : t(:button_save)
-    end
+class Sprints::UpdateService < BaseServices::Update
+  def instance_class
+    Agile::Sprint
   end
 end

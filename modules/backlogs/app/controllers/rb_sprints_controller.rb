@@ -31,7 +31,11 @@
 class RbSprintsController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  NEW_SPRINT_ACTIONS = %i[new_dialog edit_dialog create refresh_form].freeze
+  NEW_SPRINT_ACTIONS = %i[new_dialog
+                          edit_dialog
+                          create
+                          refresh_form
+                          update_agile_sprint].freeze
 
   skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
 
@@ -53,13 +57,16 @@ class RbSprintsController < RbApplicationController
     # TODO: visible-scope?
     @sprint = Agile::Sprint.find(params[:id])
 
-    respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint)
+    respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint, state: :edit)
   end
 
   def refresh_form
+    id = edit_agile_sprint_params[:sprint][:id]
+    sprint = id.present? ? Agile::Sprint.find(id) : Agile::Sprint.new
+
     call = Sprints::SetAttributesService.new(
       user: current_user,
-      model: Agile::Sprint.new,
+      model: sprint,
       contract_class: EmptyContract
     ).call(attributes: converted_agile_sprint_params)
 
@@ -84,7 +91,21 @@ class RbSprintsController < RbApplicationController
 
   # Called like this due to `update` being taken by legacy sprints.
   def update_agile_sprint
-    # TODO: implement
+    # TODO: visible-scope?
+    @sprint = Agile::Sprint.find(params[:id])
+
+    call = Sprints::UpdateService
+             .new(user: current_user, model: @sprint)
+             .call(attributes: agile_sprint_params[:sprint])
+
+    if call.success?
+      render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_update))
+      update_sprint_header_component_via_turbo_stream(sprint: call.result, state: :show)
+    else
+      update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
+    end
+
+    respond_with_turbo_streams
   end
 
   def edit_name
@@ -133,6 +154,15 @@ class RbSprintsController < RbApplicationController
     )
   end
 
+  def update_sprint_header_component_via_turbo_stream(sprint:, state: :show)
+    update_via_turbo_stream(
+      component: Backlogs::SprintHeaderComponent.new(
+        sprint:,
+        state:
+      )
+    )
+  end
+
   def update_new_sprint_form_component_via_turbo_stream(sprint:, base_errors: nil)
     update_via_turbo_stream(
       component: Backlogs::NewSprintFormComponent.new(
@@ -159,6 +189,10 @@ class RbSprintsController < RbApplicationController
 
   def agile_sprint_params
     params.permit(sprint: %i[name start_date finish_date])
+  end
+
+  def edit_agile_sprint_params
+    params.permit(sprint: %i[id name start_date finish_date])
   end
 
   def converted_agile_sprint_params
