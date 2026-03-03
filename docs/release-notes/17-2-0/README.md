@@ -30,7 +30,7 @@ Take a look at our release video showing the most important features introduced 
 
 OpenProject 17.2 introduces the **MCP Server**, a new Enterprise add-on that lays the foundation for robust integrations between OpenProject and external intelligent agents, automation tools, or systems that use the Model Context Protocol (MCP). This server uses OpenProject’s APIv3 resources as MCP-compatible endpoints and enables secure, authenticated access for clients such as large language models or other MCP clients, opening the door to richer contextual interactions with your project data. 
 
-Included in this release are administrative UI support for configuring the MCP Server, infrastructure and metadata endpoints, and integration of MCP authentication with OpenProject’s OAuth2 and API key mechanisms. An initial set of MCP tools and resources is provided to surface key entities (projects, work packages, users, etc.), and response formats can be adjusted based on your preferences. With session-cookie and bearer-token support, the MCP Server acts as a secure bridge between your OpenProject instance and external systems that operate via MCP. 
+Included in this release are administrative UI support for configuring the MCP Server, infrastructure and metadata endpoints, and integration of MCP authentication with OpenProject’s OAuth2 and API key mechanisms, including external OpenID Connect providers. An initial set of MCP tools and resources is provided to surface key entities (projects, work packages, users, etc.), and response formats can be adjusted based on your preferences. With session-cookie and bearer-token support, the MCP Server acts as a secure bridge between your OpenProject instance and external systems that operate via MCP. 
 
 ![Model context protocol settings in OpenProject administration](openproject_system_guide_new_mcp.png)
 
@@ -66,9 +66,9 @@ OpenProject 17.2 enhances the Project Overview to provide clearer financial insi
 
 #### Updated Overview widget for Budgets
 
-Project, program, and portfolio managers can now see key financial indicators at a glance. New budget widget displays planned budget, actual costs, spent ratio, and remaining budget, along with visual breakdowns by cost type and recent monthly actuals. Data is automatically aggregated across subprojects where applicable, giving stakeholders a consolidated financial snapshot without leaving the Overview page.
+Project, program, and portfolio managers can now see key financial indicators at a glance. New budget widgets displays planned budget, actual costs, spent ratio, and remaining budget, along with visual breakdowns by cost type and recent monthly actuals. Data is automatically aggregated across subprojects where applicable, giving stakeholders a consolidated financial snapshot without leaving the Overview page.
 
-This widget helps teams better understand financial status and trends directly within their project context. Keep in mind that both the Budgets and Time & Costs modules need to be enabled for the widget to work. 
+These widgets helps teams better understand financial status and trends directly within their project context. Keep in mind that both the Budgets and Time & Costs modules need to be enabled for the widget to work. 
 
 ![An example of project budget widget on a project home page in OpenProject](openproject_release_notes_17-2-0_budget_widget.png)
 
@@ -133,14 +133,15 @@ In particular, custom field forms are now consistently styled across all field t
 ## Important updates and breaking changes
 
 **“Enable REST web service” renamed**
-The system setting previously labeled “Enable REST web service” is now called “REST API enabled”. This is a naming change only and does not affect functionality.
+The system setting previously labeled “Enable REST web service” is now called “Enable API tokens”. This is a naming change only and does not affect functionality.
 
 **“Status” boards renamed to “Kanban” boards**
 To better reflect their purpose and common terminology, Status boards are now called Kanban boards. Existing boards and configurations remain unchanged.
 
 **Improved OAuth token security for document collaboration**
 OAuth tokens used for collaborative document editing (BlockNote ↔ Hocuspocus) now have shorter lifetimes and are automatically refreshed. This enhances security while keeping the editing experience unchanged.
-
+**API tokens usable as Bearer token**
+Newly generated API tokens can directly be used as Bearer tokens and do not need to be presented as basic auth credentials with the username `apikey`. This is intended to make usage of our APIs easier. The previously existing basic auth flow is still supported.
 
 <!--more-->
 
