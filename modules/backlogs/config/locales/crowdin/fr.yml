@@ -64,8 +64,8 @@ fr:
     show_burndown_chart: "Graphique d'avancement"
     story: "Histoire"
     story_points:
-      one: "%{count} point d'histoire"
-      other: "%{count} points de l'histoire"
+      one: "%{count} story point "
+      other: "%{count} story points"
     task: "Tâche"
     task_color: "Couleur des tâches"
     unassigned: "Non assigné"
@@ -104,11 +104,11 @@ fr:
   backlogs_wiki_template: "Modèle pour page wiki de sprint"
   backlogs_empty_title: "Aucune version n'est encore définie"
   backlogs_empty_action_text: "Pour commencer à utiliser les backlogs, veuillez d'abord créer une version"
-  backlogs_not_configured_title: "Les carnets de commandes ne sont pas configurés"
+  backlogs_not_configured_title: "Les backlogs ne sont pas configurés"
   backlogs_not_configured_description: "Les types d'histoires et de tâches doivent être définis avant d'utiliser ce module."
-  backlogs_not_configured_action_text: "Configurer les carnets de commandes"
+  backlogs_not_configured_action_text: "Configurer les backlogs"
   burndown:
-    story_points: "Points d'histoire"
+    story_points: "Story points"
     story_points_ideal: "Points d'histoire (idéal)"
   errors:
     attributes:
@@ -129,7 +129,7 @@ fr:
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:
     show:
-      blankslate_title: "Pas de données disponibles sur le brûlage"
+      blankslate_title: "Pas de données disponibles sur le burndown"
       blankslate_description: "Définissez les dates de début et de fin du sprint afin de générer un tableau d'avancement."
   remaining_hours: "travail restant"
   version_settings_display_label: "Colonne dans le backlog"

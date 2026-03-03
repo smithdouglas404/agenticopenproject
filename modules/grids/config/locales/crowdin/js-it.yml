@@ -19,7 +19,6 @@ it:
           title: 'Notizie'
         project_description:
           title: 'Descrizione'
-          no_results: "Nessuna descrizione ancora scritta. Una può essere fornita nelle \"Impostazioni di progetto\"."
         project_status:
           title: 'Stato'
           not_started: 'Non iniziato'

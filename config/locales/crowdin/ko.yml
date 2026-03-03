@@ -83,8 +83,9 @@ ko:
         confirmation: "이 Enterprise Edition 지원 토큰을 삭제하시겠습니까?"
       create_dialog:
         title: "Enterprise 토큰 추가"
-        type_token_text: "지원 토큰 텍스트 입력"
+        type_token_text: "Your Enterprise token text"
         token_placeholder: "여기에 Enterprise Edition 지원 토큰을 붙여넣으세요"
+        token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
       add_token: "Enterprise edition 지원 토큰을 업로드하세요."
       replace_token: "당신의 현재 지원 토큰을 바꾸세요."
       order: "Enterprise on-premises edition 주문하기"
@@ -109,6 +110,174 @@ ko:
       explanation:
         text: "사용자의 개별 작업(예: 작업 패키지를 두 번 업데이트)은 연령 차이가 지정된 기간 미만인 경우 단일 작업으로 집계됩니다. 애플리케이션 내에서 단일 작업으로 표시됩니다. 또한 이는 전송되는 이메일 수를 줄이는 동일한 시간만큼 알림을 지연시키고 %{webhook_link} 지연에도 영향을 미칩니다."
         link: "webhook"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          reverted: "Reverted"
+          completed: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              other: "%{count} projects"
+            issues:
+              other: "%{count} issues"
+            work_packages:
+              other: "%{count} work packages"
+            types:
+              other: "%{count} types"
+            statuses:
+              other: "%{count} statuses"
+            users:
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Check what data is available for import in the host Jira instance."
+              button_fetch: "Check available data"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance URL offers for import and what this tool is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host Jira instance."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              label_importing: "Currently importing"
+              elements:
+                relations: "Relations between issues"
+                workflows: "Project-level workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "User, group and project permissions"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              label_finalizing_progress: "Finalizing import..."
+              label_finalized: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
         description: "모델 컨텍스트 프로토콜을 통해 AI 에이전트는 이 OpenProject 인스턴스에 의해 노출된 도구와 리소스를 사용자에게 제공할 수 있습니다."
@@ -404,6 +573,8 @@ ko:
       min_max:
         all: "0 means no restriction"
         project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: 사용자 필드가 없습니다.
       no_results_content_text: 새 사용자 필드 생성
@@ -1173,6 +1344,8 @@ ko:
       agile/sprint:
         sharing: "Sharing"
         finish_date: "End date"
+      jira_import:
+        projects: "Projects"
       announcements:
         show_until: "표시 기한"
       attachment:
@@ -1191,7 +1364,6 @@ ko:
         scim_clients: "SCIM 클라이언트"
       calculated_value_error:
         error_code: "오류 코드"
-        customized: "사용자 지정됨"
         customized_id: "사용자 지정된 ID"
         customized_type: "사용자 지정된 유형"
       capability:
@@ -1219,6 +1391,7 @@ ko:
         regexp: "정규 표현식"
         searchable: "검색가능한"
         admin_only: "관리자 전용"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "값"
       design_color:
@@ -1909,6 +2082,8 @@ ko:
               blank: "토큰 이름을 입력하세요"
               in_use: "이 토큰 이름은 이미 사용 중입니다. 다른 이름을 선택하세요"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "다음 필드를 확인 하십시오."
         header:
@@ -1924,6 +2099,7 @@ ko:
       comment: "코멘트"
       custom_action: "사용자 지정 작업"
       custom_field: "사용자 정의 필드"
+      customized: "Customized"
       "doorkeeper/application": "OAuth 애플리케이션"
       enterprise_token:
         other: "Enterprise 토큰"
@@ -1948,6 +2124,8 @@ ko:
         other: "역할"
       scim_client:
         other: "SCIM 클라이언트"
+      jira:
+        other: "Jira"
       status: "작업 패키지 상태"
       token/api:
         other: 액세스 토큰
@@ -2444,6 +2622,7 @@ ko:
       gantt_pdf_export: Gantt PDF 내보내기
       ldap_groups: LDAP 사용자 및 그룹 동기화
       mcp_server: MCP 서버
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Nextcloud 저장소용 Single Sign-On
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 파일 저장소
       placeholder_users: 플레이스홀더 사용자
@@ -2522,6 +2701,8 @@ ko:
         description: "사용자 지정 작업은 상태, 역할, 유형 또는 프로젝트를 기반으로 특정 작업 패키지에서 사용할 수 있도록 미리 정의된 작업 세트에 대한 원클릭 바로 가기입니다."
       mcp_server:
         description: "MCP를 통해 AI 에이전트를 OpenProject 인스턴스와 통합합니다."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Nextcloud 저장소용 Single Sign-On"
         description: "Single Sign-On을 사용하여 Nextcloud 저장소에 대한 원활하고 안전한 인증을 활성화합니다. 액세스 관리를 간소화하고 사용자 편의성을 개선합니다."
@@ -2831,17 +3012,18 @@ ko:
         learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         missing: "아직 강조 표시된 기능이 없습니다."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
-            이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: 자동화된 프로젝트 시작(Enterprise 추가 기능).
-            line_1: "미팅: 새 작업 패키지 또는 기존 작업 패키지를 결과로 추가합니다."
-            line_2: "Meetings: show iCal responses in OpenProject."
-            line_3: "반복 미팅: 의제 항목을 다음 항목에 복제합니다."
-            line_4: "커뮤니티에 릴리스: 특성이 강조 표시됩니다."
-            line_5: 사용자 제공 콘텐츠에서 외부 링크를 열기 전에 표시되는 경고입니다(Enterprise 추가 기능).
-            line_6: 활동 탭 및 문서 모듈을 비롯한 성능 및 사용자 환경이 개선되었습니다.
+            line_0: AI workflows with a secure MCP server (Professional plan and higher)
+            line_1: Improved project home page with new widget for budgets and improved accessibility
+            line_2: "Meetings: Meeting templates (Basic plan and higher)"
+            line_3: Better transparency with project attribute comments.
+            line_4: PDF export enhancements
+            line_5: Increased security for external links (Premium plan and higher)
+            line_6: UI/UX improvements in the Backlogs module
+            line_7: Harmonized custom field forms
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -2861,6 +3043,7 @@ ko:
     caused_changes:
       dates_changed: "변경된 날짜"
       default_attribute_written: "읽기 전용 특성 작성됨"
+      import: "Imported"
       progress_mode_changed_to_status_based: "진행률 계산 업데이트됨"
       status_changed: "상태 '%{status_name}'"
       system_update: "OpenProject 시스템 업데이트:"
@@ -2868,6 +3051,15 @@ ko:
       total_percent_complete_mode_changed_to_work_weighted_average: "이제 완료 % 합계 계산에는 작업별로 가중치가 적용됩니다."
       total_percent_complete_mode_changed_to_simple_average: "이제 완료 % 합계 계산은 완료 % 값의 단순 평균만을 기반으로 합니다."
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field} updated"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: 선행 단계 %{link}에 대한 변경 사항 기준
       work_package_parent_changed_times: 부모 %{link}에 대한 변경 사항 기준
       work_package_children_changed_times: 자식 %{link}에 대한 변경 사항 기준
@@ -2954,7 +3146,7 @@ ko:
         active_tokens: "활성 토큰"
         blank_description: "타사 애플리케이션 액세스가 구성 및 활성화되어 있지 않습니다."
         blank_title: "OAuth 애플리케이션 토큰 없음"
-        last_used_at: "마지막 사용"
+        last_refreshed_at: "Last refreshed at"
         title: "OAuth"
         table_title: "OAuth 애플리케이션 토큰"
         text_hint: "OAuth 애플리케이션 토큰을 통해 타사 애플리케이션이 이 OpenProject 인스턴스와 연결할 수 있습니다."
@@ -3194,6 +3386,7 @@ ko:
   label_duplicates: "복제"
   label_edit: "편집"
   label_edit_x: "편집: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "다중 선택 토글"
   label_enabled_project_custom_fields: "사용자 정의 필드 사용"
   label_enabled_project_modules: "사용 가능한 모듈"
@@ -3298,6 +3491,7 @@ ko:
   label_external_links: "외부 링크"
   label_locale: "언어 및 지역"
   label_jump_to_a_project: "프로젝트로 이동..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "키워드"
   label_language_based: "사용자 언어에 따름"
   label_last_activity: "마지막 활동"
@@ -3320,6 +3514,7 @@ ko:
   label_lock_user: "사용자 잠금"
   label_logged_as: "로그인한 계정:"
   label_login: "로그인"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "사용자 지정 로고 데스크톱"
   label_custom_logo_mobile: "사용자 지정 로고 모바일"
   label_custom_export_logo: "사용자 지정 내보내기 로고"

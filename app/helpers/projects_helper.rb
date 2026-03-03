@@ -49,7 +49,12 @@ module ProjectsHelper
 
     @sort_criteria.criteria.reject! { |a, _| a == "lft" }
 
-    sort_header_with_action_menu(column, all_column_attributes, PROJECTS_FILTER_FOR_COLUMN_MAPPING, **,
+    filter_column_mapping = PROJECTS_FILTER_FOR_COLUMN_MAPPING
+    if column.is_a?(::Queries::Projects::Selects::CustomComment)
+      filter_column_mapping = filter_column_mapping.merge(column.attribute.to_s => nil)
+    end
+
+    sort_header_with_action_menu(column, all_column_attributes, filter_column_mapping, **,
                                  allowed_params: projects_query_param_names_for_sort)
   ensure
     @sort_criteria.criteria = former_criteria

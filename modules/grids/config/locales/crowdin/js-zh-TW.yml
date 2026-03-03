@@ -19,7 +19,6 @@ zh-TW:
           title: '最新消息'
         project_description:
           title: '說明'
-          no_results: "尚未寫入任何描述。可以在「項目設置」中新增。"
         project_status:
           title: '狀態'
           not_started: '未開始'

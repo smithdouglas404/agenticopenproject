@@ -2,7 +2,7 @@ fr:
   js:
     grid:
       add_widget: 'Ajouter un widget'
-      widget_menu_label: 'Show menu options for %{widgetName} widget'
+      widget_menu_label: 'Afficher le menu des options pour le widget %{widgetName}'
       remove: 'Supprimer le widget'
       configure: 'Configurer le widget'
       widgets:
@@ -19,7 +19,6 @@ fr:
           title: 'Actualités'
         project_description:
           title: 'Description'
-          no_results: "Aucune description n'a encore été écrite. Vous pouvez en trouver une dans les \"Paramètres du projet\"."
         project_status:
           title: 'Statut'
           not_started: 'Non démarré'

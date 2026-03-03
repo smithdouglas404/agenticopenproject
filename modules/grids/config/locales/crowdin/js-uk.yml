@@ -19,7 +19,6 @@ uk:
           title: 'Новини'
         project_description:
           title: 'Опис'
-          no_results: "Опис ще не створено. Можна вказати в налаштуваннях проекту."
         project_status:
           title: 'Статус'
           not_started: 'Не почато'

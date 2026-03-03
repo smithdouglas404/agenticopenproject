@@ -128,16 +128,41 @@ class JournalsController < ApplicationController
          "status_explanation",
          /\Aagenda_items_\d+_notes\z/
       # no additional checks
-    when /\Acustom_fields_(?<id>\d+)\z/
-      cf = CustomField.select(:field_format, :admin_only).find_by(id: Regexp.last_match[:id])
-
-      if cf.admin_only && !User.current.admin?
-        render_403
-      elsif cf.field_format != "text"
-        render_404
-      end
+    when /\Acustom_fields_(?<cf_id>\d+)\z/
+      ensure_custom_value_valid_for_diffing(Regexp.last_match(:cf_id))
+    when /\Acustom_comment_(?<cf_id>\d+)\z/
+      ensure_custom_comment_valid_for_diffing(Regexp.last_match(:cf_id))
     else
       render_404
+    end
+  end
+
+  def ensure_custom_value_valid_for_diffing(cf_id)
+    custom_field = CustomField.select(:field_format, :admin_only).find_by(id: cf_id)
+
+    if !allowed_to_view_custom_field_changes?(custom_field)
+      render_403
+    elsif custom_field && custom_field.field_format != "text"
+      render_404
+    end
+  end
+
+  def ensure_custom_comment_valid_for_diffing(cf_id)
+    custom_field = CustomField.select(:admin_only).find_by(id: cf_id)
+
+    if !allowed_to_view_custom_field_changes?(custom_field)
+      render_403
+    end
+  end
+
+  def allowed_to_view_custom_field_changes?(custom_field)
+    return true if User.current.admin?
+
+    if @journable.admin_only_custom_fields_allowed?
+      # don't reveal changes of deleted custom fields if those could have admin_only mark
+      custom_field && !custom_field.admin_only
+    else
+      true
     end
   end
 

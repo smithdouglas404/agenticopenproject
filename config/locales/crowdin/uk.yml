@@ -83,8 +83,9 @@ uk:
         confirmation: "Справді видалити цей маркер підтримки версії Enterprise?"
       create_dialog:
         title: "Додати маркер Enterprise"
-        type_token_text: "Введіть текст маркера підтримки"
+        type_token_text: "Your Enterprise token text"
         token_placeholder: "Вставте тут свій маркер підтримки версії Enterprise"
+        token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
       add_token: "Додати маркер підтримки версії Enterprise"
       replace_token: "Замініть поточний маркер підтримки"
       order: "Замовте локальну версію Enterprise"
@@ -109,6 +110,192 @@ uk:
       explanation:
         text: "Окремі дії користувача (напр., оновлення робочого пакета двічі) зводяться в одну дію, якщо відмінність у часі між ними менша за вказаний проміжок часу. Їх буде виведено як окремі дії в межах додатка. Крім того, це призведе до затримки сповіщень на такий самий проміжок часу, що зменшить кількість електронних листів, які надсилатимуться, а також вплине на затримку %{webhook_link}."
         link: "вебгука"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          reverted: "Reverted"
+          completed: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              one: "1 project"
+              few: "%{count} projects"
+              many: "%{count} projects"
+              other: "%{count} projects"
+            issues:
+              one: "1 issue"
+              few: "%{count} issues"
+              many: "%{count} issues"
+              other: "%{count} issues"
+            work_packages:
+              one: "1 work package"
+              few: "%{count} work packages"
+              many: "%{count} work packages"
+              other: "%{count} work packages"
+            types:
+              one: "1 type"
+              few: "%{count} types"
+              many: "%{count} types"
+              other: "%{count} types"
+            statuses:
+              one: "1 status"
+              few: "%{count} statuses"
+              many: "%{count} statuses"
+              other: "%{count} statuses"
+            users:
+              one: "1 user"
+              few: "%{count} users"
+              many: "%{count} users"
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Check what data is available for import in the host Jira instance."
+              button_fetch: "Check available data"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance URL offers for import and what this tool is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host Jira instance."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              label_importing: "Currently importing"
+              elements:
+                relations: "Relations between issues"
+                workflows: "Project-level workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "User, group and project permissions"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              label_finalizing_progress: "Finalizing import..."
+              label_finalized: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
         description: "Протокол контексту моделі дає змогу агентам ШІ надавати своїм користувачам інструменти й ресурси, доступні в цьому екземплярі OpenProject."
@@ -401,6 +588,8 @@ uk:
       min_max:
         all: "0 means no restriction"
         project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: Наразі немає спеціальних полів.
       no_results_content_text: Створіть нове спеціальне поле
@@ -1194,6 +1383,8 @@ uk:
       agile/sprint:
         sharing: "Sharing"
         finish_date: "End date"
+      jira_import:
+        projects: "Projects"
       announcements:
         show_until: "Показувати до"
       attachment:
@@ -1212,7 +1403,6 @@ uk:
         scim_clients: "Клієнти SCIM"
       calculated_value_error:
         error_code: "Код помилки"
-        customized: "Персоналізовано"
         customized_id: "Користувацький ідентифікатор"
         customized_type: "Користувацький тип"
       capability:
@@ -1240,6 +1430,7 @@ uk:
         regexp: "Регулярний вираз"
         searchable: "Доступно для пошуку"
         admin_only: "Тільки для адміністраторів"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "Значення"
       design_color:
@@ -1936,6 +2127,8 @@ uk:
               blank: "Укажіть ім’я маркера"
               in_use: "Це ім’я маркера вже використовується; виберіть інше"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "Перевірте наступні поля:"
         header:
@@ -1960,6 +2153,7 @@ uk:
       comment: "Коментар"
       custom_action: "Спеціальні дії"
       custom_field: "Користувацьке поле"
+      customized: "Customized"
       "doorkeeper/application": "Програма OAuth"
       enterprise_token:
         one: "Маркер Enterprise"
@@ -2005,6 +2199,11 @@ uk:
         few: "Клієнти SCIM"
         many: "Клієнти SCIM"
         other: "Клієнти SCIM"
+      jira:
+        one: "Jira"
+        few: "Jira"
+        many: "Jira"
+        other: "Jira"
       status: "Стан робочого пакета"
       token/api:
         one: Маркер доступу
@@ -2582,6 +2781,7 @@ uk:
       gantt_pdf_export: Експорт діаграми Ґантта в PDF
       ldap_groups: Синхронізація користувачів і груп LDAP
       mcp_server: Сервер MCP
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Єдиний вхід для сховища Nextcloud
       one_drive_sharepoint_file_storage: Сховище файлів OneDrive / SharePoint
       placeholder_users: Прототипи користувачів
@@ -2660,6 +2860,8 @@ uk:
         description: "Користувацькі дії – це ярлики набору попередньо визначених дій, які ви можете включати в певні пакети робіт залежно від статусу, ролі, типу або проєкту."
       mcp_server:
         description: "Інтегруйте ШІ-агентів у свій екземпляр OpenProject за допомогою MCP."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Єдиний вхід для сховища Nextcloud"
         description: "Увімкніть швидку й безпечну автентифікацію для свого сховища Nextcloud завдяки технології єдиного входу. Спростіть керування доступом і покращте взаємодію користувачів зі своїм продуктом."
@@ -2972,17 +3174,18 @@ uk:
         learn_about: "Дізнайтеся більше про всі нові функції"
         missing: "Ще немає виділених функцій."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
-            Цей випуск містить різноманітні нові функції та покращення, такі як:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Автоматизований запуск проєктів (надбудова Enterprise).
-            line_1: "Наради: додавайте нові або наявні пакети робіт як підсумки."
-            line_2: "Meetings: show iCal responses in OpenProject."
-            line_3: "Повторювані наради: копіюйте пункти порядку денного в наступну нараду."
-            line_4: "Випуск Community: виділення атрибутів."
-            line_5: Попередження перед відкриттям зовнішніх посилань у контенті, створеному користувачем (надбудова Enterprise).
-            line_6: Покращення продуктивності й взаємодії з користувачем, зокрема на вкладці «Дії» і в модулі «Документи».
+            line_0: AI workflows with a secure MCP server (Professional plan and higher)
+            line_1: Improved project home page with new widget for budgets and improved accessibility
+            line_2: "Meetings: Meeting templates (Basic plan and higher)"
+            line_3: Better transparency with project attribute comments.
+            line_4: PDF export enhancements
+            line_5: Increased security for external links (Premium plan and higher)
+            line_6: UI/UX improvements in the Backlogs module
+            line_7: Harmonized custom field forms
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -3002,6 +3205,7 @@ uk:
     caused_changes:
       dates_changed: "Дати змінено"
       default_attribute_written: "Атрибути лише для читання записано"
+      import: "Imported"
       progress_mode_changed_to_status_based: "Обчислення прогресу оновлено"
       status_changed: "Статус «%{status_name}»"
       system_update: "Оновлення системи OpenProject"
@@ -3009,6 +3213,15 @@ uk:
       total_percent_complete_mode_changed_to_work_weighted_average: "Під час обчислення підсумків атрибута «% завершення» тепер враховується значення атрибута «Робота»."
       total_percent_complete_mode_changed_to_simple_average: "Обчислення підсумків атрибута «% завершення» тепер ґрунтується на середньому арифметичному значень лише атрибута «% завершення»."
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field} updated"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: внесенням змін у попередній елемент %{link}
       work_package_parent_changed_times: внесенням змін у батькіський елемент %{link}
       work_package_children_changed_times: внесенням змін у дочірній елемент %{link}
@@ -3095,7 +3308,7 @@ uk:
         active_tokens: "Активні маркери"
         blank_description: "Для вас не налаштовано й не активовано доступ до сторонніх додатків."
         blank_title: "Немає маркера додатка OAuth"
-        last_used_at: "Востаннє використано о"
+        last_refreshed_at: "Last refreshed at"
         title: "OAuth"
         table_title: "Маркери додатків OAuth"
         text_hint: "Маркери додатків OAuth дають змогу стороннім додаткам обмінюватися даними із цим екземпляром OpenProject."
@@ -3335,6 +3548,7 @@ uk:
   label_duplicates: "Дублікати"
   label_edit: "Редагувати"
   label_edit_x: "Редагувати: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "Перемкнути мультиселекцію"
   label_enabled_project_custom_fields: "Увімкнено спеціальні поля"
   label_enabled_project_modules: "Включені модулі"
@@ -3417,7 +3631,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції зі встановлення"
+  label_installation_guides: "Інструкції із встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -3439,6 +3653,7 @@ uk:
   label_external_links: "Зовнішні посилання"
   label_locale: "Мова й регіон"
   label_jump_to_a_project: "Перейти до проекту..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "Ключові слова"
   label_language_based: "На основі мови користувача"
   label_last_activity: "Остання активність"
@@ -3461,6 +3676,7 @@ uk:
   label_lock_user: "Заблокувати користувача"
   label_logged_as: "Ви увійшли як"
   label_login: "Увійти"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "Користувацький логотип для ПК"
   label_custom_logo_mobile: "Користувацький логотип для мобільного"
   label_custom_export_logo: "Користувацький логотип експорту"

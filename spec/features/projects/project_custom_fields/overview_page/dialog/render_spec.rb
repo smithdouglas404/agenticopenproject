@@ -52,7 +52,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
   end
 
   it "renders the dialog body asynchronically" do
-    dialog = Components::Projects::ProjectCustomFields::EditDialog.new(project, boolean_project_custom_field)
+    dialog = Components::Projects::ProjectCustomFields::Dialog.new(project, boolean_project_custom_field)
 
     expect(page).to have_no_css(dialog.async_content_container_css_selector, visible: :all)
 

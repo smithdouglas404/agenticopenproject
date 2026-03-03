@@ -681,8 +681,8 @@ en:
 
   text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
   text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
-  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
-  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
+  text_onetime_meeting_template_empty_heading: "This meeting template is empty"
+  text_onetime_meeting_template_description: "Add agenda items and attachments to this template. They will be included in every meeting based on this template."
   text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
   text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
   text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"

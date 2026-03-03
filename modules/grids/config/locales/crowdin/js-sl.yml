@@ -19,7 +19,6 @@ sl:
           title: 'Novice'
         project_description:
           title: 'Description'
-          no_results: "Opis še ni bil napisan. Lahko ga dodate v 'Projektnih nastavitvah'. "
         project_status:
           title: 'Status'
           not_started: 'Ni začeto'

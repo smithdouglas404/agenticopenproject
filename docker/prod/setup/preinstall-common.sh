@@ -89,7 +89,6 @@ id $APP_USER || useradd -d /home/$APP_USER -m $APP_USER
 
 # Purge helper packages used only while building this stage.
 apt-get purge -yq --auto-remove \
-  file \
   gnupg2 \
   lsb-release
 

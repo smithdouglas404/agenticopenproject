@@ -19,7 +19,6 @@ ja:
           title: 'ニュース'
         project_description:
           title: 'Description'
-          no_results: "説明はまだ記載されていません。 1つは「プロジェクト設定」で入力できます。"
         project_status:
           title: 'Status'
           not_started: '未着手'

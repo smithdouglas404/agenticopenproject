@@ -40,6 +40,7 @@ class MeetingsController < ApplicationController
   before_action :find_copy_from_meeting, only: %i[create]
   before_action :convert_params, only: %i[create update]
   before_action :prevent_series_template_destruction, only: :destroy
+  before_action :check_for_enterprise_token, only: %i[create new_dialog]
 
   helper :watchers
   include MeetingsHelper
@@ -375,6 +376,22 @@ class MeetingsController < ApplicationController
   end
 
   private
+
+  def check_for_enterprise_token
+    return unless @copy_from&.onetime_template? && !EnterpriseToken.allows_to?(:meeting_templates)
+
+    respond_to do |format|
+      format.turbo_stream do
+        render_error_flash_message_via_turbo_stream(message: I18n.t(:notice_not_authorized))
+        response.status = :forbidden
+        respond_with_turbo_streams
+      end
+      format.any do
+        request.format = "html"
+        render_403
+      end
+    end
+  end
 
   def deliver_invitation_mails
     return false unless @meeting.notify?

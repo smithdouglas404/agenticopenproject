@@ -83,8 +83,9 @@ fr:
         confirmation: "Voulez-vous vraiment supprimer le jeton d'assistance de cette édition Enterprise ?"
       create_dialog:
         title: "Ajouter un jeton Enterprise"
-        type_token_text: "Saisissez le texte du jeton d'assistance"
+        type_token_text: "Texte de votre jeton d'entreprise"
         token_placeholder: "Collez votre jeton d'assistance pour l'édition Enterprise ici"
+        token_caption: "Pour en savoir plus sur l'activation de l'édition Enterprise, consultez notre [documentation](docs_url)."
       add_token: "Charger un jeton de support pour la version Entreprise"
       replace_token: "Remplacer votre licence actuelle"
       order: "Commander l'édition Entreprise auto-hébergée"
@@ -109,6 +110,180 @@ fr:
       explanation:
         text: "Les actions individuelles d'un utilisateur (par ex. mis à jour un lot de travaux deux fois) sont agrégés en une seule action si leur différence d'âge est inférieure à la période spécifiée. Elles seront affichées en une seule action dans l'application. Cela retardera également les notifications du même temps réduisant donc le nombre d'e-mails envoyés et affectera également le délai %{webhook_link}."
         link: "webhook"
+    import:
+      title: "Importation"
+    jira:
+      title: "Importation de Jira"
+      description: "Utilisez cet outil pour importer des données depuis votre instance Jira. Vous pouvez configurer plusieurs hôtes Jira et choisir les données à importer à chaque cycle d'importation."
+      errors:
+        cannot_delete_with_imports: "Impossible de supprimer un hôte Jira avec des importations existantes"
+      blank:
+        title: "Aucun hôte Jira n'est encore configuré"
+        description: "Configurez un hôte Jira pour commencer à importer des éléments de Jira vers cette instance d'OpenProject."
+      configuration:
+        title: "Configuration de Jira"
+        new: "Nouvelle configuration"
+      banner:
+        title: "Importation limitée"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Nom"
+          url: "URL du serveur/centre de données Jira"
+          personal_access_token: "Jeton d'accès personnel"
+        button_add: "Ajouter la configuration"
+        button_save: "Enregistrer la configuration"
+        button_test: "Tester la configuration"
+        button_delete_token: "Supprimer le jeton d'accès"
+        delete_token_confirm: "Êtes-vous sûr de vouloir supprimer le jeton ? Cela désactivera la connexion à Jira."
+        label_testing: "Test de la configuration..."
+      token_deleted: "Le jeton a été supprimé avec succès."
+      test:
+        success: "Connexion réussie à %{server} (version %{version})"
+        failed: "Échec de la connexion : Impossible de récupérer les informations sur le serveur"
+        error: "Une erreur inattendue s'est produite lors du test de la connexion"
+        connection_error: "Erreur de connexion : %{message}"
+        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        api_error: "L'API Jira a renvoyé le statut d'erreur %{status}. Veuillez vérifier l'URL de votre instance Jira et le jeton API."
+        token_error: "Jeton API invalide. Veuillez vérifier vos informations d'identification dans la configuration."
+        missing_credentials: "Veuillez fournir l'URL et le jeton d'accès personnel pour tester la connexion"
+        invalid_url: "Veuillez fournir une URL valide"
+      client:
+        connection_error: "Échec de la connexion au serveur Jira : %{message}"
+        connection_timeout: "La connexion au serveur Jira a expiré : %{message}"
+        parse_error: "Échec de l'analyse de la réponse de l'API Jira : %{message}"
+        api_error: "L'API Jira a renvoyé le statut d'erreur %{status}"
+      columns:
+        projects: "Projets"
+        last_change: "Dernière modification"
+        added: "Ajouté"
+        label_ago: "%{amount} il y a"
+      run:
+        title: "Importation"
+        history: "Historique"
+        remove_error: "Une importation Jira ne peut pas être supprimée lorsqu'elle est en cours d'exécution"
+        import_blocked_error: "Une autre importation Jira est actuellement en cours ou en attente de révision. Veuillez la terminer ou la corriger avant de commencer une nouvelle importation."
+        blank:
+          title: "Aucun cycle d'importation n'a encore été mis en place"
+          description: "Créez une exécution d'importation pour commencer à importer des informations à partir de cette instance Jira"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing."
+          button_import_run: "Importation"
+          button_edit_configuration: "Editer la configuration"
+        status:
+          initial: "Début"
+          instance_meta_fetching: "Récupération des métadonnées"
+          instance_meta_error: "Erreur dans l'extraction des métadonnées"
+          instance_meta_done: "Métadonnées recherchées"
+          configuring: "Sélectionnez le champ d'application"
+          projects_meta_fetching: "Récupérer les données d'un projet"
+          projects_meta_error: "Erreur dans l'extraction des données du projet"
+          projects_meta_done: "Données recueillies"
+          importing: "En cours"
+          import_error: "Erreur lors de l'importation"
+          imported: "Mode révision"
+          reverting: "Retour à l'état initial"
+          revert_error: "Erreur lors de l'inversion"
+          reverted: "Restauré"
+          completed: "Terminé"
+        wizard:
+          button_retry: "Réessayer"
+          parts:
+            projects:
+              one: "1 projet"
+              other: "%{count} projets"
+            issues:
+              one: "1 problème"
+              other: "%{count} problèmes"
+            work_packages:
+              one: "1 lot de travaux"
+              other: "%{count} lots de travaux"
+            types:
+              one: "1 type"
+              other: "%{count} types"
+            statuses:
+              one: "1 statut"
+              other: "%{count} statuts"
+            users:
+              one: "1 utilisateur"
+              other: "%{count} utilisateurs"
+          groups:
+            fetch:
+              title: "Obtenir les données de base"
+            groups_and_users:
+              title: "Groupes et utilisateurs"
+            configuration:
+              title: "Configurer l'importation"
+            confirming:
+              title: "Confirmer et importer"
+            review:
+              title: "Examiner l'importation"
+          sections:
+            fetch_data:
+              title: "Récupérer les métadonnées de l'instance"
+              caption_done: "Terminé"
+              description: "Check what data is available for import in the host Jira instance."
+              button_fetch: "Check available data"
+              label_progress: "Récupérer les données de Jira..."
+            groups_and_users:
+              title: "Groupes et utilisateurs"
+            import_scope:
+              title: "Champ d'application de l'importation"
+              caption: "Choisissez ce que vous voulez importer dans OpenProject"
+              caption_done: "Terminé"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance URL offers for import and what this tool is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host Jira instance."
+              label_available_data: "Données disponibles"
+              label_not_available_data: "Non disponible à l'importation"
+              button_select_projects: "Sélectionnez les projets à importer"
+              button_continue: "Continuer"
+              label_import: "Sélectionnez les projets que vous souhaitez importer."
+              button_select: "Sélectionner des projets"
+              label_selected_data: "Données sélectionnées pour l'importation"
+              label_progress: "Récupérer les données de Jira..."
+              label_importing: "Importation en cours"
+              elements:
+                relations: "Relations entre les questions"
+                workflows: "Project-level workflows"
+                users: "Utilisateurs"
+                sprints: "Sprints"
+                schemes: "Schémas"
+                permissions: "User, group and project permissions"
+            confirm_import:
+              title: "Importer les données"
+              caption: "Vérifiez vos paramètres d'importation et démarrez l'importation"
+              caption_done: "Terminé"
+              label_available_data: "Données disponibles à importer"
+              button_start: "Lancer l'importation"
+              description: "Vous êtes sur le point de lancer un cycle d'importation avec les paramètres suivants."
+              label_progress: "Import en cours..."
+              label_import_data: "Importation en cours"
+            import_result:
+              title: "Importer les résultats de l'exécution"
+              caption: "Vérifier l'exécution de l'importation ou annuler l'importation"
+              info: "L'importation a été effectuée avec succès."
+              label_results: "Importé"
+              label_revert: "Annuler l'importation"
+              button_revert: "Annuler l'importation"
+              button_done: "Finaliser l'importation"
+              preview_description: "Les données importées sont actuellement en mode révision. Cliquez sur \"Finaliser l'importation\" pour rendre l'importation permanente ou sur \"Revenir à l'importation\" pour annuler toutes les modifications apportées lors de cette importation."
+              label_finalizing_progress: "Finalisation de l'importation..."
+              label_finalized: "Importation finalisée."
+              label_revert_progress: "Importation réversible..."
+              label_reverted: "Importation annulée."
+          select_dialog:
+            filter_projects: "Filtrer par texte"
+          revert_dialog:
+            title: "Réinitialiser définitivement cette importation ?"
+            description: "Cela supprimera tous les objets importés (y compris des projets entiers), même s'il y a eu une activité de l'utilisateur dans ces projets après l'importation dans OpenProject."
+            confirm: "Je comprends que cette réversion effacera les données de façon permanente"
+          finalize_dialog:
+            title: "Finaliser cette importation ?"
+            description: "Une fois finalisée, cette importation ne peut plus être annulée. Toutes les données importées le seront définitivement."
+            confirm: "Je comprends que cette action ne peut être annulée"
+            confirm_button: "Compris"
+          select_projects:
+            title: "Sélectionner des projets"
     mcp_configurations:
       index:
         description: "Le protocole de contexte de modèle permet aux agents d'intelligence artificielle de fournir à leurs utilisateurs les outils et les ressources exposés par cette instance d'OpenProject."
@@ -371,7 +546,7 @@ fr:
     contained_in_type: "Figurant dans le type"
     confirm_destroy_option: "Supprimer une option supprimera toutes ses occurrences (ex. dans les plans de travail). Êtes-vous sûr de vouloir le supprimer ?"
     reorder_alphabetical: "Réorganiser les valeurs par ordre alphabétique"
-    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
+    reorder_confirmation: "Attention : L'ordre actuel des valeurs disponibles ainsi que toutes les valeurs non enregistrées seront perdus. Êtes-vous sûr de vouloir continuer ?"
     placeholder_version_select: "La sélection d'un lot de travaux ou d'un projet est requise en premier lieu"
     calculated_field_not_editable: "Attribut non modifiable. Cette valeur est calculée automatiquement."
     no_role_assigment: "Pas d'attribution de rôle"
@@ -399,11 +574,13 @@ fr:
       formula:
         project: "Ajoutez des valeurs numériques ou saisissez / pour rechercher un attribut ou un opérateur mathématique."
       regexp:
-        all: "eg. ^[A-Z0-9]+$"
-        project: "eg. ^[A-Z0-9]+$"
+        all: "ex. ^[A-Z0-9]+$"
+        project: "ex. ^[A-Z0-9]+$"
       min_max:
-        all: "0 means no restriction"
-        project: "0 means no restriction"
+        all: "0 signifie aucune restriction"
+        project: "0 pour aucune restriction"
+      has_comment:
+        project: "Permet à l'utilisateur d'ajouter un commentaire relatif à l'attribut du projet lorsqu'il sélectionne la valeur dans la vue d'ensemble du projet."
     tab:
       no_results_title_text: Il n'y a actuellement aucun champ personnalisé.
       no_results_content_text: Créer un nouveau champ personnalisé
@@ -1180,6 +1357,8 @@ fr:
       agile/sprint:
         sharing: "Partage"
         finish_date: "Échéance"
+      jira_import:
+        projects: "Projets"
       announcements:
         show_until: "Afficher jusqu'à"
       attachment:
@@ -1198,7 +1377,6 @@ fr:
         scim_clients: "Clients SCIM"
       calculated_value_error:
         error_code: "Code d’erreur"
-        customized: "Personnalisé"
         customized_id: "ID personnalisé"
         customized_type: "Type personnalisé"
       capability:
@@ -1226,6 +1404,7 @@ fr:
         regexp: "Expression régulière"
         searchable: "Recherchable"
         admin_only: "Administrateurs uniquement"
+        has_comment: "Ajouter un champ de texte pour les commentaires"
       custom_value:
         value: "Valeur"
       design_color:
@@ -1918,6 +2097,8 @@ fr:
               blank: "Veuillez fournir un nom de jeton"
               in_use: "Ce nom de jeton est déjà utilisé. Veuillez en choisir un autre"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Veuillez indiquer un protocole valide (http ou https)"
       template:
         body: "Veuillez vérifier les champs suivants :"
         header:
@@ -1936,6 +2117,7 @@ fr:
       comment: "Commentaire"
       custom_action: "Action personnalisée"
       custom_field: "Champ personnalisé"
+      customized: "Personnalisé"
       "doorkeeper/application": "Application OAuth"
       enterprise_token:
         one: "Jeton Enterprise"
@@ -1967,6 +2149,9 @@ fr:
       scim_client:
         one: "Client SCIM"
         other: "Clients SCIM"
+      jira:
+        one: "Jira"
+        other: "Jira"
       status: "Statut du lot de travaux"
       token/api:
         one: Jeton d'accès
@@ -2490,6 +2675,7 @@ fr:
       gantt_pdf_export: Exportation PDF de diagramme de Gantt
       ldap_groups: Synchronisation des utilisateurs LDAP et des groupes
       mcp_server: Serveur MCP
+      meeting_templates: Modèles de réunion réutilisables
       nextcloud_sso: Authentification unique pour le stockage Nextcloud
       one_drive_sharepoint_file_storage: Stockage de fichiers OneDrive/SharePoint
       placeholder_users: Utilisateurs fictifs
@@ -2568,6 +2754,8 @@ fr:
         description: "Les actions personnalisées sont des raccourcis en un clic vers un ensemble d'actions prédéfinies que vous pouvez rendre disponibles sur certains lots de travaux en fonction de l'état, du rôle, du type ou du projet."
       mcp_server:
         description: "Intégrez des agents d'intelligence artificielle à votre instance OpenProject grâce à MCP."
+      meeting_templates:
+        description: "Définissez des modèles de réunion avec une structure d'ordre du jour définie et gagnez du temps en les réutilisant lors de la création de nouvelles réunions."
       nextcloud_sso:
         title: "Authentification unique pour le stockage Nextcloud"
         description: "Activez l'authentification transparente et sécurisée pour votre stockage Nextcloud avec l'authentification unique. Simplifiez la gestion des accès et augmentez la commodité des utilisateurs."
@@ -2878,17 +3066,18 @@ fr:
         learn_about: "En savoir plus sur les nouvelles fonctionnalités"
         missing: "Il n'y a pas encore de fonctionnalités mises en évidence."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
-            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Lancement automatisé de projets (module complémentaire Enterprise).
-            line_1: "Réunions : ajoutez des work packages nouveaux ou existants en tant que résultats."
-            line_2: "Réunions : afficher les réponses iCal dans OpenProject."
-            line_3: "Réunions récurrentes : dupliquez les points de l'ordre du jour lors de la prochaine réunion."
-            line_4: "Mise à disposition de la Communauté : Mise en évidence des attributs."
-            line_5: Avertissement avant l'ouverture de liens externes dans le contenu fourni par l'utilisateur (module complémentaire Enterprise).
-            line_6: Amélioration des performances et de l'expérience utilisateur, y compris l'onglet Activité et le module Documents.
+            line_0: AI workflows with a secure MCP server (Professional plan and higher)
+            line_1: Improved project home page with new widget for budgets and improved accessibility
+            line_2: "Meetings: Meeting templates (Basic plan and higher)"
+            line_3: Better transparency with project attribute comments.
+            line_4: PDF export enhancements
+            line_5: Increased security for external links (Premium plan and higher)
+            line_6: UI/UX improvements in the Backlogs module
+            line_7: Harmonized custom field forms
     links:
       upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -2908,6 +3097,7 @@ fr:
     caused_changes:
       dates_changed: "Dates modifiées"
       default_attribute_written: "Attributs en lecture seule écrits"
+      import: "Importé"
       progress_mode_changed_to_status_based: "Mise à jour du calcul de la progression"
       status_changed: "Statut  « %{status_name} »"
       system_update: "Mise à jour du système OpenProject :"
@@ -2915,6 +3105,15 @@ fr:
       total_percent_complete_mode_changed_to_work_weighted_average: "Le calcul des totaux de % d'achèvement est désormais pondéré par le travail."
       total_percent_complete_mode_changed_to_simple_average: "Le calcul des totaux de % d'achèvement est désormais basé sur une simple moyenne des seules valeurs de % d'achèvement."
     cause_descriptions:
+      import:
+        header: "changements par %{author}"
+        field_changed: "%{field} a changé de %{old_value} à %{new_value}"
+        field_set: "%{field} sur %{value}"
+        field_removed: "%{field} supprimée"
+        field_updated: "%{field} updated"
+        deleted_with_diff: "%{field} supprimé (%{link})"
+        changed_with_diff: "%{field} modifié (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: par changement vers le prédécesseur %{link}
       work_package_parent_changed_times: par changement vers le parent %{link}
       work_package_children_changed_times: par changement vers l'enfant %{link}
@@ -3001,7 +3200,7 @@ fr:
         active_tokens: "Jetons actifs"
         blank_description: "Aucun accès à une application tierce n'est configuré et actif pour vous."
         blank_title: "Pas de jeton d'application OAuth"
-        last_used_at: "Dernière utilisation à"
+        last_refreshed_at: "Dernière mise à jour le"
         title: "OAuth"
         table_title: "Jetons d'application OAuth"
         text_hint: "Les jetons d'application OAuth permettent aux applications tierces de se connecter à cette instance d'OpenProject."
@@ -3241,6 +3440,7 @@ fr:
   label_duplicates: "Doublons"
   label_edit: "Éditer"
   label_edit_x: "Modifier : %{x}"
+  label_view_x: "Voir : %{x}"
   label_enable_multi_select: "Basculer multisélection"
   label_enabled_project_custom_fields: "Champs personnalisés activés"
   label_enabled_project_modules: "Modules activés"
@@ -3345,6 +3545,7 @@ fr:
   label_external_links: "Liens externes"
   label_locale: "Langue et région"
   label_jump_to_a_project: "Aller à un projet…"
+  label_jira_import: "Importation de Jira"
   label_keyword_plural: "Mots clés"
   label_language_based: "Basé sur le langage de l'utilisateur"
   label_last_activity: "Dernière activité"
@@ -3367,6 +3568,7 @@ fr:
   label_lock_user: "Verrouiller l’utilisateur"
   label_logged_as: "Connecté en tant que"
   label_login: "Connexion"
+  label_custom_comment: "%{name} commentaire"
   label_custom_logo: "Logo personnalisé pour ordinateur"
   label_custom_logo_mobile: "Logo personnalisé pour mobile"
   label_custom_export_logo: "Logo d'exportation personnalisé"

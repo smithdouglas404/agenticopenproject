@@ -216,7 +216,7 @@ module Import
                 comments.each do |comment|
                   author = User.find_by!(login: comment["author"]["name"])
                   add_member(project:, project_role:, member: author, user:)
-                  add_comment(work_package:, comment:, author:)
+                  journal_service.add_comment(comment:, user: author)
                 end
 
                 journal_service.call
@@ -258,77 +258,6 @@ module Import
       return "" if description.blank?
 
       Import::JiraWikiMarkupConverter.new(description).convert
-    end
-
-    def add_history_comment(work_package:, history:, user:)
-      notes = history.map do |entry|
-        history_entry(entry)
-      end.join("\n\n")
-      service_call = AddWorkPackageNoteService
-                       .new(user:, work_package:)
-                       .call(notes,
-                             send_notifications: false,
-                             internal: false)
-
-      raise service_call.message if service_call.failure?
-    end
-
-    def history_entry(entry)
-      entry_time = history_time(entry["created"])
-      entry_author = history_author_mention(entry["author"])
-      entry["items"].map do |item|
-        history_item(entry_author, entry_time, item)
-      end.join("\n\n")
-    end
-
-    def history_item(entry_author, entry_time, item)
-      if item["field"] == "description"
-        [
-          "<summary>",
-          history_header(entry_author, entry_time, item),
-          "<details>",
-          "from:",
-          "---",
-          convert_rich_text(item["fromString"]),
-          "---",
-          "to:",
-          "---",
-          convert_rich_text(item["toString"]),
-          "---",
-          "</details>",
-          "</summary>"
-        ].join("\n\n")
-      else
-        "#{history_header(entry_author, entry_time, item)}\nfrom `#{item['fromString']}` to `#{item['toString']}`"
-      end
-    end
-
-    def history_time(entry_time)
-      I18n.l(DateTime.iso8601(entry_time), format: :long)
-    rescue StandardError
-      entry_time
-    end
-
-    def history_header(entry_author, entry_time, item)
-      "#{entry_author} | <b>#{item['field']}</b> | #{entry_time}"
-    end
-
-    def history_author_mention(author)
-      user = User.find_by(login: author["name"])
-      return author["displayName"] unless user
-
-      %(<mention class="mention" data-id="#{user.id}" data-type="user" data-text="@#{user.name}">@#{user.name}</mention>)
-    end
-
-    def add_comment(work_package:, comment:, author:)
-      notes = convert_rich_text(comment["body"])
-      service_call = AddWorkPackageNoteService
-                       .new(user: author, work_package:)
-                       .call(notes,
-                             send_notifications: false,
-                             internal: false)
-
-      raise service_call.message if service_call.failure?
     end
 
     # rubocop:disable Metrics/AbcSize

@@ -30,6 +30,8 @@
 
 class MeetingTemplatesController < ApplicationController
   before_action :load_and_authorize_in_optional_project
+  before_action :require_enterprise_token,
+                except: %i[index]
 
   include Layout
   include OpTurbo::ComponentStream
@@ -93,6 +95,22 @@ class MeetingTemplatesController < ApplicationController
 
   def require_project
     render_404 unless @project
+  end
+
+  def require_enterprise_token
+    return if EnterpriseToken.allows_to?(:meeting_templates)
+
+    respond_to do |format|
+      format.turbo_stream do
+        render_error_flash_message_via_turbo_stream(message: I18n.t(:notice_not_authorized))
+        response.status = :forbidden
+        respond_with_turbo_streams
+      end
+      format.any do
+        request.format = "html"
+        render_403
+      end
+    end
   end
 
   def create_template_params

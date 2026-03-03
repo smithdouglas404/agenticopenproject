@@ -26,7 +26,7 @@ de:
         actual_costs:
           blankslate:
             title: "Keine Daten für das aktuelle Jahr"
-            description: "Log spent time and costs for work packages to start tracking actual costs"
+            description: "Buchen Sie Zeiten und Kosten um die tatsächlichen Aufwände zu verfolgen"
     text_are_you_sure: "Sind Sie sicher?"
     myTimeTracking:
       noSpecificTime: "Keine bestimmte Zeit"

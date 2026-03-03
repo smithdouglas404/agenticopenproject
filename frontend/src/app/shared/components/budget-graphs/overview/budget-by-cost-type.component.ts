@@ -52,7 +52,7 @@ export class BudgetByCostTypeComponent {
   private readonly i18n = inject(I18nService);
 
   readonly chartData = input.required<string>();
-  readonly currency = input<string>('EUR');
+  readonly currency = input<string>('€');
 
   readonly text = {
     noResults: {
@@ -77,10 +77,15 @@ export class BudgetByCostTypeComponent {
   }));
 
   private formatCurrency(value:number):string {
-    return new Intl.NumberFormat(undefined, {
-      style: 'currency',
-      currency: this.currency(),
-      maximumFractionDigits: 0,
-    }).format(value);
+    const currency = this.currency();
+    try {
+      return new Intl.NumberFormat(undefined, {
+        style: 'currency',
+        currency,
+        maximumFractionDigits: 0,
+      }).format(value);
+    } catch {
+      return `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 }).format(value)} ${currency}`;
+    }
   }
 }

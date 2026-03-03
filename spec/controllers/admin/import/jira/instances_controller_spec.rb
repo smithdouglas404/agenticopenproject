@@ -71,12 +71,12 @@ RSpec.describe Admin::Import::Jira::InstancesController do
     end
 
     it "returns forbidden for POST #create" do
-      post :create, params: { jira: jira_params }
+      post :create, params: { import_jira: jira_params }
       expect(response).to have_http_status(:forbidden)
     end
 
     it "returns forbidden for PATCH #update" do
-      patch :update, params: { id: jira.id, jira: jira_params }
+      patch :update, params: { id: jira.id, import_jira: jira_params }
       expect(response).to have_http_status(:forbidden)
     end
 
@@ -207,13 +207,13 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       end
 
       it "creates a new jira instance" do
-        post :create, params: { jira: jira_params }
+        post :create, params: { import_jira: jira_params }
         expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
         expect(response).to redirect_to(admin_import_jira_path(jira.id))
       end
 
       it "calls the create service with correct params" do
-        post :create, params: { jira: jira_params }
+        post :create, params: { import_jira: jira_params }
         expect(Import::Jiras::CreateService).to have_received(:new).with(user: admin)
         expect(create_service).to have_received(:call)
       end
@@ -229,18 +229,18 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       end
 
       it "renders the new template" do
-        post :create, params: { jira: jira_params }
+        post :create, params: { import_jira: jira_params }
         expect(response).to render_template(:new)
       end
 
       it "assigns the failed jira instance" do
-        post :create, params: { jira: jira_params }
+        post :create, params: { import_jira: jira_params }
         expect(assigns(:jira)).to eq(failed_jira)
       end
 
       it "does not create a jira instance" do
         expect do
-          post :create, params: { jira: jira_params }
+          post :create, params: { import_jira: jira_params }
         end.not_to change(Import::Jira, :count)
       end
     end
@@ -255,7 +255,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       end
 
       it "updates via turbo stream on failure" do
-        post :create, params: { jira: jira_params }, format: :turbo_stream
+        post :create, params: { import_jira: jira_params }, format: :turbo_stream
         expect(response).to have_http_status(:ok)
         expect(response.media_type).to eq("text/vnd.turbo-stream.html")
       end
@@ -285,13 +285,13 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       end
 
       it "updates the jira instance" do
-        patch :update, params: { id: jira.id, jira: update_params }
+        patch :update, params: { id: jira.id, import_jira: update_params }
         expect(flash[:notice]).to eq(I18n.t(:notice_successful_update))
         expect(response).to redirect_to(admin_import_jira_path(jira.id))
       end
 
       it "calls the update service with correct params" do
-        patch :update, params: { id: jira.id, jira: update_params }
+        patch :update, params: { id: jira.id, import_jira: update_params }
         expect(Import::Jiras::UpdateService).to have_received(:new).with(user: admin, model: jira)
         expect(update_service).to have_received(:call)
       end
@@ -306,12 +306,12 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       end
 
       it "renders the edit template" do
-        patch :update, params: { id: jira.id, jira: update_params }
+        patch :update, params: { id: jira.id, import_jira: update_params }
         expect(response).to render_template(:edit)
       end
 
       it "does not redirect" do
-        patch :update, params: { id: jira.id, jira: update_params }
+        patch :update, params: { id: jira.id, import_jira: update_params }
         expect(response).not_to redirect_to(action: :index)
       end
     end
@@ -325,7 +325,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       end
 
       it "updates via turbo stream on failure" do
-        patch :update, params: { id: jira.id, jira: update_params }, format: :turbo_stream
+        patch :update, params: { id: jira.id, import_jira: update_params }, format: :turbo_stream
         expect(response).to have_http_status(:ok)
         expect(response.media_type).to eq("text/vnd.turbo-stream.html")
       end
@@ -333,7 +333,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
 
     context "when jira does not exist" do
       it "returns 404" do
-        patch :update, params: { id: 999_999, jira: update_params }
+        patch :update, params: { id: 999_999, import_jira: update_params }
         expect(response).to have_http_status(:not_found)
       end
     end
@@ -400,7 +400,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
     describe "#jira_params" do
       it "permits name, url, and personal_access_token" do
         post :create, params: {
-          jira: {
+          import_jira: {
             name: "Test",
             url: "https://test.example.com",
             personal_access_token: "token",
@@ -609,7 +609,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
     end
 
     it "does not include personal_access_token in params when blank" do
-      patch :update, params: { id: jira.id, jira: { name: "Updated", url: "https://example.com", personal_access_token: "" } }
+      patch :update, params: { id: jira.id, import_jira: { name: "Updated", url: "https://example.com", personal_access_token: "" } }
       expect(update_service).to have_received(:call) do |args|
         expect(args).not_to have_key(:personal_access_token)
         expect(args).not_to have_key("personal_access_token")
@@ -617,7 +617,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
     end
 
     it "includes personal_access_token when provided" do
-      patch :update, params: { id: jira.id, jira: { name: "Updated", url: "https://example.com", personal_access_token: "new_token" } }
+      patch :update, params: { id: jira.id, import_jira: { name: "Updated", url: "https://example.com", personal_access_token: "new_token" } }
       expect(update_service).to have_received(:call) do |args|
         expect(args["personal_access_token"]).to eq("new_token")
       end

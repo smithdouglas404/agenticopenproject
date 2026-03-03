@@ -136,6 +136,14 @@ module CustomFields
         )
       end
 
+      if show_has_comment_field?
+        details_form.check_box(
+          name: :has_comment,
+          label: label(:has_comment),
+          caption: instructions(:has_comment)
+        )
+      end
+
       if show_is_required_field?
         details_form.check_box(
           name: :is_required,
@@ -224,6 +232,10 @@ module CustomFields
       %w[text].include?(model.field_format)
     end
 
+    def show_has_comment_field?
+      model.can_have_comment?
+    end
+
     def show_is_required_field?
       %w[calculated_value bool].exclude?(model.field_format)
     end
@@ -266,7 +278,7 @@ module CustomFields
     end
 
     def show_admin_only_field?
-      model.is_a?(ProjectCustomField) || model.is_a?(UserCustomField)
+      model.class.customized_class&.admin_only_custom_fields_allowed?
     end
 
     def show_editable_field?

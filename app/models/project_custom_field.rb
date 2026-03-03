@@ -46,6 +46,8 @@ class ProjectCustomField < CustomField
   has_one :role, through: :custom_fields_role
   accepts_nested_attributes_for :custom_fields_role, allow_destroy: true
 
+  scopes :visible
+
   scope :user_field_with_assigned_role, -> do
     joins(:custom_fields_role)
       .where.not(custom_fields_roles: { role_id: nil })

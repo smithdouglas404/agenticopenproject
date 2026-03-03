@@ -276,8 +276,8 @@ module Pages
         columns.each do |column|
           next if remaining_columns.include?(column.downcase)
 
-          select_autocomplete find(".op-draggable-autocomplete--input"),
-                              results_selector: ".ng-dropdown-panel-items",
+          select_autocomplete find("ng-select.op-draggable-autocomplete--input"),
+                              results_selector: "ng-dropdown-panel.op-draggable-autocomplete--input .ng-dropdown-panel-items",
                               query: column
         end
 
@@ -288,14 +288,13 @@ module Pages
         wait_for_network_idle
       end
 
-      def expect_no_config_columns(*columns, element_selector: ".op-draggable-autocomplete--input",
-                                   results_selector: ".ng-dropdown-panel-items")
+      def expect_no_config_columns(*columns)
         open_configure_view
 
         columns.each do |column|
-          expect_no_ng_option find(element_selector),
+          expect_no_ng_option find("ng-select.op-draggable-autocomplete--input"),
                               column,
-                              results_selector:
+                              results_selector: "ng-dropdown-panel.op-draggable-autocomplete--input .ng-dropdown-panel-items"
         end
 
         within "dialog" do

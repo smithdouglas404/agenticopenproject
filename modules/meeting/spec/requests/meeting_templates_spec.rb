@@ -89,7 +89,7 @@ RSpec.describe "Meeting templates requests",
     end
   end
 
-  describe "POST /meetings/templates" do
+  describe "POST /meetings/templates", with_ee: [:meeting_templates] do
     context "with valid params and project context" do
       before { login_as user_with_permissions }
 
@@ -144,6 +144,60 @@ RSpec.describe "Meeting templates requests",
       it "returns 403" do
         expect do
           post create_template_project_meetings_path(project)
+        end.not_to change(Meeting, :count)
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
+  describe "GET templates/new_dialog" do
+    context "without enterprise token" do
+      before { login_as user_with_permissions }
+
+      it "returns 403" do
+        get new_dialog_template_project_meetings_path(project)
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
+  describe "POST /meetings/templates" do
+    context "without enterprise token" do
+      before { login_as user_with_permissions }
+
+      it "returns 403 and does not create a template" do
+        expect do
+          post create_template_project_meetings_path(project)
+        end.not_to change(Meeting, :count)
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
+  describe "GET /meetings/new_dialog (create from new meeting dialog)" do
+    context "without enterprise token" do
+      before { login_as user_with_permissions }
+
+      it "returns 403" do
+        get new_dialog_project_meetings_path(project),
+            params: { template_id: onetime_template1.id }
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
+  describe "POST /meetings (create from template page)" do
+    context "without enterprise token" do
+      before { login_as user_with_permissions }
+
+      it "returns 403 and does not create a meeting" do
+        expect do
+          post project_meetings_path(project),
+               params: { meeting: { template_id: onetime_template1.id } }
         end.not_to change(Meeting, :count)
 
         expect(response).to have_http_status(:forbidden)

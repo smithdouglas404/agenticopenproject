@@ -83,8 +83,9 @@ vi:
         confirmation: "Bạn có chắc chắn muốn xóa mã thông báo hỗ trợ phiên bản Doanh nghiệp này không?"
       create_dialog:
         title: "Thêm mã thông báo doanh nghiệp"
-        type_token_text: "Nhập văn bản mã thông báo hỗ trợ"
+        type_token_text: "Your Enterprise token text"
         token_placeholder: "Dán mã thông báo hỗ trợ phiên bản Enterprise của bạn vào đây"
+        token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
       add_token: "Tải lên mã thông báo hỗ trợ phiên bản Enterprise"
       replace_token: "Thay thế support token hiện tại của bạn"
       order: "Đặt mua phiên bản tại chỗ của Enterprise"
@@ -109,6 +110,174 @@ vi:
       explanation:
         text: "Các hành động riêng lẻ của người dùng (ví dụ: cập nhật gói công việc hai lần) được tổng hợp thành một hành động nếu chênh lệch tuổi tác của họ nhỏ hơn khoảng thời gian đã chỉ định. Chúng sẽ được hiển thị dưới dạng một hành động duy nhất trong ứng dụng. Điều này cũng sẽ làm chậm thông báo với cùng một khoảng thời gian làm giảm số lượng email được gửi và cũng sẽ ảnh hưởng đến độ trễ %{webhook_link}."
         link: "webhook"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          reverted: "Reverted"
+          completed: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              other: "%{count} projects"
+            issues:
+              other: "%{count} issues"
+            work_packages:
+              other: "%{count} work packages"
+            types:
+              other: "%{count} types"
+            statuses:
+              other: "%{count} statuses"
+            users:
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Check what data is available for import in the host Jira instance."
+              button_fetch: "Check available data"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance URL offers for import and what this tool is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host Jira instance."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              label_importing: "Currently importing"
+              elements:
+                relations: "Relations between issues"
+                workflows: "Project-level workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "User, group and project permissions"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              label_finalizing_progress: "Finalizing import..."
+              label_finalized: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
         description: "Giao thức bối cảnh mô hình cho phép các tác nhân AI cung cấp cho người dùng của mình các công cụ và tài nguyên được cung cấp bởi phiên bản OpenProject này."
@@ -404,6 +573,8 @@ vi:
       min_max:
         all: "0 means no restriction"
         project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: Không có hiện tại không có trường tùy chỉnh.
       no_results_content_text: Tạo trường tùy chỉnh mới
@@ -1171,6 +1342,8 @@ vi:
       agile/sprint:
         sharing: "Sharing"
         finish_date: "End date"
+      jira_import:
+        projects: "Projects"
       announcements:
         show_until: "Hiển thị cho đến khi"
       attachment:
@@ -1189,7 +1362,6 @@ vi:
         scim_clients: "khách hàng SCIM"
       calculated_value_error:
         error_code: "Mã lỗi"
-        customized: "tùy chỉnh"
         customized_id: "ID tùy chỉnh"
         customized_type: "Loại tùy chỉnh"
       capability:
@@ -1217,6 +1389,7 @@ vi:
         regexp: "Biểu thức chính quy"
         searchable: "Có thể tìm kiếm được"
         admin_only: "Chỉ dành cho quản trị viên"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "Giá trị"
       design_color:
@@ -1907,6 +2080,8 @@ vi:
               blank: "Vui lòng cung cấp tên mã thông báo"
               in_use: "Tên mã thông báo này đã được sử dụng, vui lòng chọn tên khác"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "Vui lòng kiểm tra các mục sau đây:"
         header:
@@ -1922,6 +2097,7 @@ vi:
       comment: "Nhận xét"
       custom_action: "Tác vụ tùy chỉnh"
       custom_field: "Tùy chỉnh mục"
+      customized: "Customized"
       "doorkeeper/application": "Ứng dụng OAuth"
       enterprise_token:
         other: "Mã thông báo doanh nghiệp"
@@ -1946,6 +2122,8 @@ vi:
         other: "Vai trò"
       scim_client:
         other: "khách hàng SCIM"
+      jira:
+        other: "Jira"
       status: "Tình trạng work package"
       token/api:
         other: Mã thông báo truy cập
@@ -2028,7 +2206,7 @@ vi:
     body: "cơ thể"
     blocks_ids: "ID của các work package bị chặn"
     category: "thể loại"
-    comment: "Nhận xét"
+    comment: "bình luận"
     comments: "bình luận"
     content: "Nội dung"
     color: "màu sắc"
@@ -2442,6 +2620,7 @@ vi:
       gantt_pdf_export: Xuất PDF Gantt
       ldap_groups: Đồng bộ hóa nhóm và người dùng LDAP
       mcp_server: Máy chủ MCP
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Đăng nhập một lần để lưu trữ Nextcloud
       one_drive_sharepoint_file_storage: Lưu trữ tệp OneDrive/SharePoint
       placeholder_users: Người dùng giữ chỗ
@@ -2520,6 +2699,8 @@ vi:
         description: "Hành động tùy chỉnh là các phím tắt bằng một cú nhấp chuột tới một tập hợp các hành động được xác định trước mà bạn có thể cung cấp trên các gói công việc nhất định dựa trên trạng thái, vai trò, loại hoặc dự án."
       mcp_server:
         description: "Tích hợp các tác nhân AI với phiên bản OpenProject của bạn thông qua MCP."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Đăng nhập một lần để lưu trữ Nextcloud"
         description: "Cho phép xác thực liền mạch và an toàn cho bộ lưu trữ Nextcloud của bạn bằng Đăng nhập một lần. Đơn giản hóa việc quản lý truy cập và nâng cao sự thuận tiện cho người dùng."
@@ -2829,17 +3010,18 @@ vi:
         learn_about: "Tìm hiểu thêm về tất cả các tính năng mới"
         missing: "Chưa có tính năng nổi bật nào."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
-            Bản phát hành này bao gồm nhiều tính năng mới và cải tiến, chẳng hạn như:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Khởi tạo dự án tự động (Phần mở rộng doanh nghiệp).
-            line_1: "Họp: Thêm các gói công việc mới hoặc hiện có làm kết quả."
-            line_2: "Họp: Hiển thị phản hồi iCal trong OpenProject."
-            line_3: "Cuộc họp định kỳ: Sao chép các mục trong chương trình nghị sự sang lần họp tiếp theo."
-            line_4: "Phát hành cho cộng đồng: Tính năng làm nổi bật thuộc tính."
-            line_5: Cảnh báo trước khi mở các liên kết bên ngoài trong nội dung do người dùng cung cấp (Phần mở rộng doanh nghiệp).
-            line_6: Cải thiện hiệu suất và trải nghiệm người dùng, bao gồm tab Hoạt động và mô-đun Tài liệu.
+            line_0: AI workflows with a secure MCP server (Professional plan and higher)
+            line_1: Improved project home page with new widget for budgets and improved accessibility
+            line_2: "Meetings: Meeting templates (Basic plan and higher)"
+            line_3: Better transparency with project attribute comments.
+            line_4: PDF export enhancements
+            line_5: Increased security for external links (Premium plan and higher)
+            line_6: UI/UX improvements in the Backlogs module
+            line_7: Harmonized custom field forms
     links:
       upgrade_enterprise_edition: "Nâng cấp lên phiên bản Enterprise"
       postgres_migration: "Di chuyển cài đặt của bạn sang PostgreSQL"
@@ -2859,6 +3041,7 @@ vi:
     caused_changes:
       dates_changed: "Ngày đã thay đổi"
       default_attribute_written: "Thuộc tính chỉ đọc được viết"
+      import: "Imported"
       progress_mode_changed_to_status_based: "Đã cập nhật tính toán tiến độ"
       status_changed: "Trạng thái '%{status_name}'"
       system_update: "Cập nhật hệ thống OpenProject:"
@@ -2866,6 +3049,15 @@ vi:
       total_percent_complete_mode_changed_to_work_weighted_average: "Tính toán % tổng số hoàn thành hiện được tính theo Công việc."
       total_percent_complete_mode_changed_to_simple_average: "Tính toán tổng số % Hoàn thành hiện dựa trên mức trung bình đơn giản chỉ là các giá trị % Hoàn thành."
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field} updated"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: bằng những thay đổi đối với người tiền nhiệm %{link}
       work_package_parent_changed_times: bằng những thay đổi đối với cha mẹ %{link}
       work_package_children_changed_times: bởi những thay đổi đối với con %{link}
@@ -2952,7 +3144,7 @@ vi:
         active_tokens: "Mã thông báo hoạt động"
         blank_description: "Không có quyền truy cập ứng dụng của bên thứ ba nào được định cấu hình và hoạt động cho bạn."
         blank_title: "Không có mã thông báo ứng dụng OAuth"
-        last_used_at: "Được sử dụng lần cuối vào lúc"
+        last_refreshed_at: "Last refreshed at"
         title: "OAuth"
         table_title: "Mã thông báo ứng dụng OAuth"
         text_hint: "Mã thông báo ứng dụng OAuth cho phép ứng dụng của bên thứ ba kết nối với phiên bản OpenProject này."
@@ -3192,6 +3384,7 @@ vi:
   label_duplicates: "Nhân đôi"
   label_edit: "Chỉnh sửa"
   label_edit_x: "Chỉnh sửa: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "Bật/tắt đa lựa chọn"
   label_enabled_project_custom_fields: "Các trường tùy chỉnh đã bật"
   label_enabled_project_modules: "Các mô-đun đã bật"
@@ -3296,6 +3489,7 @@ vi:
   label_external_links: "Liên kết ngoài"
   label_locale: "Ngôn ngữ và khu vực"
   label_jump_to_a_project: "Chuyển đến một dự án..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "Từ khóa"
   label_language_based: "Dựa trên ngôn ngữ của người dùng"
   label_last_activity: "Hoạt động cuối cùng"
@@ -3318,6 +3512,7 @@ vi:
   label_lock_user: "Khóa người dùng"
   label_logged_as: "Đăng nhập như"
   label_login: "Đăng nhập"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "Máy tính để bàn logo tùy chỉnh"
   label_custom_logo_mobile: "Logo tùy chỉnh di động"
   label_custom_export_logo: "Logo xuất khẩu tùy chỉnh"
@@ -3608,7 +3803,7 @@ vi:
   label_used_by: "Được dùng bởi"
   label_used_by_types: "Được sử dụng bởi các loại"
   label_used_in_projects: "Được sử dụng trong các dự án"
-  label_user: "Người dùng"
+  label_user: "người dùng"
   label_user_and_permission: "Người dùng và quyền"
   label_user_named: "Người dùng %{name}"
   label_user_activity: "%{value} hoạt động"

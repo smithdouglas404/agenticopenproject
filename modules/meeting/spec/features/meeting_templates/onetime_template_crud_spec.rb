@@ -30,6 +30,8 @@
 
 require "spec_helper"
 
+require_relative "../../support/pages/meetings/show"
+
 RSpec.describe "Onetime templates CRUD", :js do
   shared_let(:admin) { create(:admin) }
   shared_let(:project) { create(:project, enabled_module_names: %i[meetings]) }
@@ -97,6 +99,16 @@ RSpec.describe "Onetime templates CRUD", :js do
   end
 
   describe "creating onetime templates" do
+    context "without enterprise token" do
+      before { visit templates_meetings_path }
+
+      it "does not show the create template button" do
+        expect(page).to have_no_css("#add-template-button")
+      end
+    end
+  end
+
+  describe "creating onetime templates", with_ee: [:meeting_templates] do
     include Components::Autocompleter::NgSelectAutocompleteHelpers
 
     context "when creating from global templates page" do
@@ -284,6 +296,26 @@ RSpec.describe "Onetime templates CRUD", :js do
         expect(page).to have_link("Edit template")
         expect(page).to have_link("Delete template")
       end
+    end
+  end
+
+  describe "adding agenda items to a template" do
+    let(:template) { create(:onetime_template, project:, title: "My template") }
+    let(:show_page) { Pages::Meetings::Show.new(template) }
+
+    before { show_page.visit! }
+
+    it "does not show or save a presenter" do
+      show_page.add_agenda_item do
+        expect(page).to have_no_css("label", text: "Presenter")
+
+        fill_in "Title", with: "Introduction"
+      end
+
+      wait_for_network_idle
+
+      show_page.expect_agenda_item title: "Introduction"
+      expect(MeetingAgendaItem.last.presenter).to be_nil
     end
   end
 

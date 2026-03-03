@@ -59,23 +59,23 @@ de:
   budgets:
     widgets:
       budget_totals:
-        title: "Budget totals"
-        remaining_budget: "Remaining budget"
-        spent_budget: "Spent budget"
-        total_actual_costs: "Total actual costs"
-        total_planned_budget: "Total planned budget"
+        title: "Budgetsumme"
+        remaining_budget: "Verbleibendes Budget"
+        spent_budget: "Verwendetes Budget"
+        total_actual_costs: "Gesamte tatsächlichen Kosten"
+        total_planned_budget: "Gesamtes geplantes Budget"
       budget_by_cost_type:
-        title: "Budget by cost type"
+        title: "Budget nach Kostenart"
         blankslate:
-          heading: "Start project controlling"
-          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+          heading: "Projektcontrolling starten"
+          description: "Erhalten Sie einen Überblick über Ihre Budgets und Kosten, um den Status Ihres Projekts effizient zu verfolgen"
         caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."
-          other: "Data aggregated from %{count} budgets included in %{portfolios}, %{subprograms} and %{subprojects}."
+          zero: "Keine Budgetdaten."
+          one: "Daten aus %{count} Budget, welches in folgenden Arbeitsbereichen enthalten ist: %{portfolios}, %{subprograms} und %{subprojects}."
+          other: "Daten aus %{count} Budgets, welches in folgenden Arbeitsbereichen enthalten sind: %{portfolios}, %{subprograms} und %{subprojects}."
         caption_simple:
-          one: "Data aggregated from %{count} budget."
-          other: "Data aggregated from %{count} budgets."
+          one: "Daten aggregiert aus %{count} Budget."
+          other: "Daten aggregiert aus %{count} Budgets."
         portfolio:
           zero: "keine Portfolios"
           one: "1 Portfolio"
@@ -88,7 +88,7 @@ de:
           zero: "keine Unterprojekte"
           one: "1 Unterprojekt"
           other: "%{count} Unterprojekte"
-        view_details: "View budget details"
+        view_details: "Budgetdetails anzeigen"
   events:
     budget: "Budget bearbeitet"
   help_click_to_edit: "Hier Klicken zum bearbeiten."

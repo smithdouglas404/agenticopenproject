@@ -50,7 +50,8 @@ OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
                                   force_active: true
 
 OpenProject::FeatureDecisions.add :mcp_server,
-                                  description: "Enables the experimental MCP API."
+                                  description: "Enables the experimental MCP API.",
+                                  force_active: true
 
 OpenProject::FeatureDecisions.add :minutes_styling_meeting_pdf,
                                   description: "Allow exporting a meeting with FITKO styling. " \

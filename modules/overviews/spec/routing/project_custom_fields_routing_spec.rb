@@ -32,6 +32,18 @@ require "rails_helper"
 
 RSpec.describe Overviews::ProjectCustomFieldsController do
   describe "routing" do
+    describe "#show" do
+      it do
+        expect(get("/projects/my-project/project_custom_fields/33"))
+          .to route_to(
+            controller: "overviews/project_custom_fields",
+            action: "show",
+            project_id: "my-project",
+            id: "33"
+          )
+      end
+    end
+
     describe "#edit" do
       it do
         expect(get("/projects/my-project/project_custom_fields/33/edit"))

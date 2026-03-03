@@ -350,7 +350,7 @@ RSpec.describe Query,
 
         query.project = nil
 
-        empty_wp_relation = double(visible_by_user: []) # rubocop:disable RSpec/VerifiedDoubles
+        empty_wp_relation = double(on_visible_type_and_project: [])
         # We cannot simply return `WorkPackageCustomField.none` here, as that aliases to `all` and would trigger
         # its own expectation again. Hence, we must set up a double.
         allow(WorkPackageCustomField)

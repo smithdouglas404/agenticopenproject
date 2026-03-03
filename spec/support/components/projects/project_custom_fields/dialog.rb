@@ -34,7 +34,7 @@ require "support/components/autocompleter/ng_select_autocomplete_helpers"
 module Components
   module Projects
     module ProjectCustomFields
-      class EditDialog < Components::Common::Modal
+      class Dialog < Components::Common::Modal
         include Components::Autocompleter::NgSelectAutocompleteHelpers
 
         attr_reader :project, :project_custom_field, :title
@@ -48,7 +48,7 @@ module Components
         end
 
         def dialog_css_selector
-          "dialog#edit-project-custom-field-dialog-#{@project_custom_field.id}"
+          "dialog#project-custom-field-dialog-#{@project_custom_field.id}"
         end
 
         def async_content_container_css_selector

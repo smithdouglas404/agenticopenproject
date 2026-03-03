@@ -9,7 +9,7 @@
   ) do |d|
     d.with_header(variant: :large)
     d.with_body(classes: "Overlay-body_autocomplete_height") do
-      render(Overviews::ProjectCustomFields::EditComponent.new(project_custom_field: @project_custom_field, project: @project, wrapper_id:))
+      render(body_component)
     end
     d.with_footer do
       component_collection do |footer_collection|
@@ -20,21 +20,10 @@
             }
           )
         ) do
-          t("button_cancel")
+          close_button_title
         end
-        footer_collection.with_component(
-          Primer::Beta::Button.new(
-            scheme: :primary,
-            type: :submit,
-            form: "project-custom-field-edit-form",
-            data: {
-              test_selector: "save-project-attributes-button",
-              turbo: true
-            }
-          )
-        ) do
-          t("button_save")
-        end
+
+        footer_buttons(footer_collection)
       end
     end
   end

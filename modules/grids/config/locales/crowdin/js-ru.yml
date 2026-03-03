@@ -19,7 +19,6 @@ ru:
           title: 'Новости'
         project_description:
           title: 'Описание'
-          no_results: "Описания еще нет. Его можно добавить в настройках проекта."
         project_status:
           title: 'Статус'
           not_started: 'Не начат'

@@ -51,6 +51,7 @@ class Journal < ApplicationRecord
   register_journal_formatter OpenProject::JournalFormatter::AgendaItemTitle
   register_journal_formatter OpenProject::JournalFormatter::Attachment
   register_journal_formatter OpenProject::JournalFormatter::Cause
+  register_journal_formatter OpenProject::JournalFormatter::CustomComment
   register_journal_formatter OpenProject::JournalFormatter::CustomField
   register_journal_formatter OpenProject::JournalFormatter::Diff
   register_journal_formatter OpenProject::JournalFormatter::FileLink
@@ -111,6 +112,7 @@ class Journal < ApplicationRecord
   has_many :agenda_item_journals, class_name: "Journal::MeetingAgendaItemJournal", dependent: :delete_all
   has_many :attachable_journals, class_name: "Journal::AttachableJournal", dependent: :delete_all
   has_many :customizable_journals, class_name: "Journal::CustomizableJournal", dependent: :delete_all
+  has_many :custom_comment_journals, class_name: "Journal::CustomCommentJournal", dependent: :delete_all
   has_many :project_phase_journals, class_name: "Journal::ProjectPhaseJournal", dependent: :delete_all
   has_many :storable_journals, class_name: "Journal::StorableJournal", dependent: :delete_all
 

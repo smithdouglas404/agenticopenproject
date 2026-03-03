@@ -19,7 +19,6 @@ zh-CN:
           title: '新闻'
         project_description:
           title: '描述'
-          no_results: "尚未写入任何描述。可以在“项目设置”中提供一个描述。"
         project_status:
           title: '状态'
           not_started: '未开始'

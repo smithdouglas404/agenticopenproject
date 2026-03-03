@@ -64,8 +64,8 @@ de:
     show_burndown_chart: "Burndown-Chart"
     story: "Story"
     story_points:
-      one: "%{count} story point"
-      other: "%{count} story points"
+      one: "%{count} Story-Point"
+      other: "%{count} Story-Points"
     task: "Aufgabe"
     task_color: "Farbe für Aufgaben"
     unassigned: "Nicht zugewiesen"
@@ -74,27 +74,27 @@ de:
       button_update_backlogs: "Backlog-Modul aktualisieren"
     backlog_component:
       blankslate_title: "%{name} ist leer"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_description: "Noch keine Arbeitspakete geplant. Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen."
     backlog_header_component:
       label_toggle_backlog: "%{name} ein-/ausklappen"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "Keine Arbeitspakete im Backlog"
+        one: "%{count} Arbeitspakete im Backlog"
+        other: "%{count} Geschichten im Backlog"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "Backlog-Aktionen"
       action_menu:
         edit_sprint: "Sprint bearbeiten"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        new_story: "Neues Arbeitspaket"
+        stories_tasks: "Stories/Aufgaben"
+        task_board: "Aufgaben-Board"
+        burndown_chart: "Burndown-Diagramm"
         wiki: "Wiki"
         properties: "Eigenschaften"
     story_component:
       label_drag_story: "%{name} verschieben"
     story_menu_component:
-      label_actions: "Story actions"
+      label_actions: "Weitere Aktionen"
   backlogs_points_burn_direction: "Burnup/-down Punkte"
   backlogs_product_backlog: "Produkt-Backlog"
   backlogs_story: "Story"
@@ -103,13 +103,13 @@ de:
   backlogs_task_type: "Aufgaben-Typ"
   backlogs_wiki_template: "Vorlage für das Sprint-Wiki"
   backlogs_empty_title: "Es sind noch keine Versionen definiert"
-  backlogs_empty_action_text: "To start using backlogs, please create a version first"
-  backlogs_not_configured_title: "Backlogs not configured"
-  backlogs_not_configured_description: "Story and task types need to be set before using this module."
-  backlogs_not_configured_action_text: "Configure Backlogs"
+  backlogs_empty_action_text: "Um mit der Verwendung von Backlogs zu beginnen, erstellen Sie bitte zunächst eine Version"
+  backlogs_not_configured_title: "Backlogs nicht konfiguriert"
+  backlogs_not_configured_description: "Die Story- und Aufgabentypen müssen vor der Verwendung dieses Moduls festgelegt werden."
+  backlogs_not_configured_action_text: "Backlogs konfigurieren"
   burndown:
-    story_points: "Story points"
-    story_points_ideal: "Story points (ideal)"
+    story_points: "Story-Points"
+    story_points_ideal: "Story-Points (ideal)"
   errors:
     attributes:
       task_type:
@@ -129,8 +129,8 @@ de:
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:
     show:
-      blankslate_title: "No burndown data available"
-      blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
+      blankslate_title: "Keine Burndown-Daten verfügbar"
+      blankslate_description: "Legen Sie Start- und Enddatum für den Sprint fest, um ein Burndown-Diagramm zu erstellen."
   remaining_hours: "verbleibender Aufwand"
   version_settings_display_label: "Spalte im Backlog"
   version_settings_display_option_left: "links"
