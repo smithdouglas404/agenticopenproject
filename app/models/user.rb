@@ -681,14 +681,19 @@ class User < Principal
   include Scimitar::Resources::Mixin
 
   def non_working_time_entities_for_year(year)
-    system_days = NonWorkingDay.for_year(year).to_a
-    user_days = non_working_times.for_year(year).to_a
-    system_day_dates = system_days.to_set(&:date)
-    system_days + user_days.reject { |d| system_day_dates.include?(d.date) }
+    NonWorkingDay.for_year(year).to_a + non_working_times.for_year(year).to_a
   end
 
   def non_working_days_for_year(year)
-    non_working_time_entities_for_year(year).map(&:date)
+    working_wdays = Setting.working_days.map { |d| d % 7 }
+    year_range = Date.new(year, 1, 1)..Date.new(year, 12, 31)
+
+    system_dates = NonWorkingDay.for_year(year).pluck(:date).to_set
+    user_dates = non_working_times.for_year(year).flat_map do |t|
+      ([t.start_date, year_range.begin].max..[t.end_date, year_range.end].min).to_a
+    end.to_set
+
+    (system_dates | user_dates).select { |d| working_wdays.include?(d.wday) }
   end
 
   protected
