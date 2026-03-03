@@ -186,6 +186,14 @@ module OpenProject::Bim::BcfXml
       extractor.viewpoints.each do |vp|
         next if issue.viewpoints.has_uuid?(vp[:uuid])
 
+        if vp[:viewpoint] != File.basename(vp[:viewpoint])
+          raise StandardError.new "Viewpoint file reference is not a file basename."
+        end
+
+        if vp[:snapshot] != File.basename(vp[:snapshot])
+          raise StandardError.new "Snapshot file reference is not a file basename."
+        end
+
         viewpoint = issue.viewpoints.build(
           issue:,
           uuid: vp[:uuid],
