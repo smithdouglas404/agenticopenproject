@@ -37,8 +37,11 @@ module Import
 
       Import::JiraFetchProjectsJob.perform_now(jira_import_id)
       fetch_and_save_users_data(jira_import)
-      import_users(jira_import)
-      Import::JiraImportProjectsJob.perform_now(jira_import_id)
+
+      Journal::NotificationConfiguration.with(false) do
+        import_users(jira_import)
+        Import::JiraImportProjectsJob.perform_now(jira_import_id)
+      end
 
       jira_import.transition_to!(:imported)
     rescue StandardError => e
