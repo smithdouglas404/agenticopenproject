@@ -26,10 +26,10 @@ ru:
   activerecord:
     attributes:
       agile/sprint:
-        duration: "Duration"
-        finish_date: "Finish date"
-        goal: "Sprint goal"
-        name: "Sprint name"
+        duration: "Продолжительность"
+        finish_date: "Дата окончания"
+        goal: "Цель спринта"
+        name: "Название спринта"
         sharing: "Совместное использование"
       sprint:
         duration: "Продолжительность спринта"
@@ -49,7 +49,7 @@ ru:
         sprint:
           cannot_end_before_it_starts: "Спринт не может заканчиваться до того, как начнется."
     models:
-      sprint: "Sprint"
+      sprint: "Спринт"
   attributes:
     task_type: "Тип задачи"
   backlogs:
@@ -133,9 +133,9 @@ ru:
   label_points_burn_down: "Вниз"
   label_points_burn_up: "Вверх"
   label_sprint_impediments: "Препятствия спринта"
-  label_sprint_new: "New sprint"
+  label_sprint_new: "Новый спринт"
   label_task_board: "Панель задач"
-  permission_create_sprints: "Create sprints"
+  permission_create_sprints: "Создание спринтов"
   permission_view_master_backlog: "Просмотреть главную невыполненную работу"
   permission_view_taskboards: "Просмотреть панели задач"
   permission_select_done_statuses: "Выберите завершенные статусы"

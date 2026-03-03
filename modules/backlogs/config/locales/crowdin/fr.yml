@@ -26,10 +26,10 @@ fr:
   activerecord:
     attributes:
       agile/sprint:
-        duration: "Duration"
-        finish_date: "Finish date"
-        goal: "Sprint goal"
-        name: "Sprint name"
+        duration: "Durée"
+        finish_date: "Date de fin"
+        goal: "Objectif du sprint"
+        name: "Nom du sprint"
         sharing: "Partage"
       sprint:
         duration: "Durée du sprint"
@@ -129,9 +129,9 @@ fr:
   label_points_burn_down: "Vers le bas"
   label_points_burn_up: "Vers le haut"
   label_sprint_impediments: "Obstacles de sprint"
-  label_sprint_new: "New sprint"
+  label_sprint_new: "Nouveau sprint"
   label_task_board: "Tableau des tâches"
-  permission_create_sprints: "Create sprints"
+  permission_create_sprints: "Créer des sprints"
   permission_view_master_backlog: "Afficher le backlog principal"
   permission_view_taskboards: "Voir les tableaux des tâches"
   permission_select_done_statuses: "Sélectionner les statuts terminés"
