@@ -29,7 +29,7 @@
 #++
 
 module Users
-  module NonWorkingDays
+  module NonWorkingTimes
     class CalendarComponent < ApplicationComponent
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers

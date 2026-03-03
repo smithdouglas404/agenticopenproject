@@ -29,7 +29,7 @@
 #++
 
 module Users
-  module NonWorkingDays
+  module NonWorkingTimes
     class SubHeaderComponent < ApplicationComponent
       options :year
 
