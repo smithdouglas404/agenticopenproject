@@ -36,10 +36,8 @@ module Admin::Import::Jira
     layout "admin"
 
     VALID_STEPS = %i[
-      init
       fetch_instance_meta
       fetch_projects_meta
-      import_scope
       configure
       import
       revert
@@ -109,10 +107,6 @@ module Admin::Import::Jira
       end
     end
 
-    def init
-      @jira_import.transition_to!(:initial)
-    end
-
     def fetch_instance_meta
       @jira_import.transition_to!(:instance_meta_fetching)
     end
@@ -141,10 +135,6 @@ module Admin::Import::Jira
           }
         )
         .first
-    end
-
-    def import_scope
-      @jira_import.transition_to!(:import_scope)
     end
 
     def configure
