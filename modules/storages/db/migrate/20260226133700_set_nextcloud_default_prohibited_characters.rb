@@ -28,41 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages
-  module Adapters
-    module Providers
-      module Nextcloud
-        class ManagedFolderIdentifier
-          def initialize(project_storage)
-            @storage = project_storage.storage
-            @project = project_storage.project
-          end
+class SetNextcloudDefaultProhibitedCharacters < ActiveRecord::Migration[8.0]
+  disable_ddl_transaction!
 
-          def name
-            "#{filter_restricted_characters(@project.name)} (#{@project.id})"
-          end
+  def up
+    execute <<~SQL.squish
+      UPDATE storages
+      SET provider_fields = provider_fields || '{ "forbidden_file_name_characters": "<>:\\"\\\\/|?*" }'::jsonb
+      WHERE provider_type = 'Storages::NextcloudStorage' AND NOT provider_fields ? 'forbidden_file_name_characters'
+    SQL
+  end
 
-          def path
-            "/#{@storage.group_folder}/#{name}/"
-          end
-
-          def location
-            path
-          end
-
-          private
-
-          def filter_restricted_characters(name)
-            # slashes have historically always been replaced with |
-            # hardcoding slash and backslash instead of making them configurable also prevents project names to be usable
-            # for directory-escape attempts (e.g. "../project name")
-            name = name.tr("/\\", "|")
-
-            # other forbidden characters are replaced with _, consistent with other storages
-            name.tr(@storage.forbidden_file_name_characters, "_")
-          end
-        end
-      end
-    end
+  def down
+    # we'll not delete any JSONB data on rollback
+    # though there's also no need to artificially block rollbacks past this version
   end
 end
