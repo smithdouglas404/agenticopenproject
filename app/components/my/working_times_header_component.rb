@@ -44,7 +44,7 @@ module My
           end
 
           nav.with_tab(selected: params[:action] == "non_working_days",
-                       href: my_non_working_days_path(year: Date.current.year)) do |tab|
+                       href: my_non_working_times_path(year: Date.current.year)) do |tab|
             tab.with_text { t(:label_non_working_days) }
           end
         end

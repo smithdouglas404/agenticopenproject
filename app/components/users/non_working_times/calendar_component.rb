@@ -45,8 +45,15 @@ module Users
           "users--non-working-days-events-value" => events_json,
           "users--non-working-days-year-value" => year,
           "users--non-working-days-locale-value" => I18n.locale,
-          "users--non-working-days-start-of-week-value" => first_day_of_week
+          "users--non-working-days-start-of-week-value" => first_day_of_week,
+          "users--non-working-days-working-days-value" => working_days.to_json
         }
+      end
+
+      def working_days
+        # Setting.working_days is mo=1, tu=2, we=3, th=4, fr=5, sa=6, su=7
+        # businessHours in fullcalendar is su=0, mo=1, tu=2, we=3, th=4, fr=5, sa=6
+        Setting.working_days.map { |day| day % 7 }.sort
       end
 
       def events_json

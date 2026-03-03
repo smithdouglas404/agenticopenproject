@@ -49,6 +49,7 @@ export default class UsersNonWorkingDaysController extends Controller {
     year: Number,
     locale: String,
     startOfWeek: Number,
+    workingDays: Array,
   };
 
   declare readonly calendarTarget:HTMLElement;
@@ -56,24 +57,12 @@ export default class UsersNonWorkingDaysController extends Controller {
   declare readonly yearValue:number;
   declare readonly localeValue:string;
   declare readonly startOfWeekValue:number;
+  declare readonly workingDaysValue:number[];
 
   private calendar:Calendar;
 
   connect() {
-    this.calendar = new Calendar(this.calendarTarget, {
-  plugins: [multiMonthPlugin],
-  initialView: 'multiMonthYear',
-  multiMonthMaxColumns: 1,
-      locales: allLocales,
-      locale: this.localeValue,
-      firstDay: this.startOfWeekValue,
-      initialDate: `${this.yearValue}-01-01`,
-      headerToolbar: false,
-      height: 'auto',
-      events: this.buildEvents(),
-    });
-
-    this.calendar.render();
+      this.initializeCalendar();
 
       // The stimulus controller gets initialized before the content wrapper is fully shown
       // so its height might not be set correctly yet.
@@ -84,6 +73,29 @@ export default class UsersNonWorkingDaysController extends Controller {
     if (this.calendar) {
       this.calendar.destroy();
     }
+  }
+
+  private initializeCalendar() {
+    this.calendar = new Calendar(this.calendarTarget, {
+      plugins: [multiMonthPlugin],
+      initialView: 'multiMonthYear',
+      multiMonthMaxColumns: 1,
+      locales: allLocales,
+      locale: this.localeValue,
+      firstDay: this.startOfWeekValue,
+      initialDate: `${this.yearValue}-01-01`,
+      headerToolbar: false,
+      events: this.buildEvents(),
+      nowIndicator: true,
+      height: '100%',
+      businessHours: {
+        daysOfWeek: this.workingDaysValue,
+        startTime: '00:00',
+        endTime: '24:00',
+      },
+    });
+
+    this.calendar.render();
   }
 
   private buildEvents() {
