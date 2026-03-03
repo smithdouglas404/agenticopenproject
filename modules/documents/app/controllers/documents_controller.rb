@@ -79,7 +79,10 @@ class DocumentsController < ApplicationController
   end
 
   def render_connection_error
-    update_via_turbo_stream(component: Documents::ShowEditView::ConnectionErrorNoticeComponent.new(@document))
+    blocking = ActiveRecord::Type::Boolean.new.cast(params[:blocking].presence || false)
+    update_via_turbo_stream(
+      component: Documents::ShowEditView::ConnectionErrorNoticeComponent.new(@document, blocking:)
+    )
 
     respond_with_turbo_streams
   end

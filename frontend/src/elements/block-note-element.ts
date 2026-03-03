@@ -113,7 +113,7 @@ class BlockNoteElement extends HTMLElement {
 
     this.renderCallback = (provider:HocuspocusProvider) => {
       this.reactRoot?.render(
-        React.createElement(React.StrictMode, null, this.BlockNoteReactContainer(provider))
+        React.createElement(React.StrictMode, null, this.BlockNoteReactContainer(provider, LiveCollaborationManager.hasLocalCache))
       );
     };
 
@@ -138,7 +138,7 @@ class BlockNoteElement extends HTMLElement {
     }
   }
 
-  private BlockNoteReactContainer = (hocuspocusProvider:HocuspocusProvider) => {
+  private BlockNoteReactContainer = (hocuspocusProvider:HocuspocusProvider, hasLocalCache:boolean) => {
     return React.createElement(
       ShadowDomWrapper,
       { target: this.editorMount },
@@ -151,6 +151,7 @@ class BlockNoteElement extends HTMLElement {
           attachmentsUploadUrl: this.getAttribute('attachments-upload-url') ?? '',
           attachmentsCollectionKey: this.getAttribute('attachments-collection-key') ?? '',
           hocuspocusProvider: hocuspocusProvider,
+          hasLocalCache: hasLocalCache,
           errorContainer: this.errorContainer,
         }
       )

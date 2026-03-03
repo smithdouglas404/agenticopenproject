@@ -125,6 +125,11 @@ export default class extends Controller {
       this.destroyIndexedDBPersistence();
     }
 
+    // Detect whether IndexedDB contained cached content for this document.
+    // A non-trivial state vector (> 1 byte) means the Y.Doc has real operations from a previous session.
+    const hasLocalCache = Y.encodeStateVector(ydoc).byteLength > 1;
+    LiveCollaborationManager.setHasLocalCache(hasLocalCache);
+
     // If disconnect() was called during the IndexedDB await (e.g., Turbo navigation),
     // abort to avoid overwriting the active provider on the new page.
     if (!this.element.isConnected) {

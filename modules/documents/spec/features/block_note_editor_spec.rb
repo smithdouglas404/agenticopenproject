@@ -31,6 +31,8 @@
 require "rails_helper"
 
 RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { real_time_text_collaboration_enabled: true } do
+  include_context "with hocuspocus"
+
   let(:admin) { create(:admin) }
   let(:document) { create(:document, :collaborative) }
   let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }

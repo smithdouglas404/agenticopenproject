@@ -35,7 +35,14 @@ module Documents
 
       alias_method :document, :model
 
+      def initialize(document, blocking: false)
+        super(document)
+        @blocking = blocking
+      end
+
       private
+
+      attr_reader :blocking
 
       def readonly
         @readonly ||= User.current.allowed_in_project?(:view_documents, document.project) &&

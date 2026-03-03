@@ -125,19 +125,24 @@ function useProviderAuthError(onAuthError:() => void) {
  * exposes it as React state for the BlockNote editor.
  *
  * Returns:
- * - `isLoading`   — true while waiting for the first sync after mount.
- * - `offlineMode` — true when the connection is lost or timed out;
- *                   the editor remains editable and changes are queued
- *                   locally (IndexedDB) until the server is reachable again.
+ * - `isLoading`       — true while waiting for the first sync after mount.
+ * - `offlineMode`     — true when the connection is lost or timed out; the editor
+ *                       remains editable and changes are queued locally (IndexedDB)
+ *                       until the server is reachable again (only when hasLocalCache).
+ * - `blockingOffline` — true when offline AND IndexedDB had no cached content at
+ *                       provider initialisation; the caller should hide the editor
+ *                       entirely to prevent a fresh empty Y.Doc from being synced as
+ *                       authoritative server state on reconnect.
  *
  * Transitions:
- *   mount → synced           : isLoading false, offlineMode false
- *   mount → timeout (5s)     : isLoading false, offlineMode true
- *   connected → disconnect   : offlineMode true
- *   offline → re-synced      : offlineMode false
- *   any → auth error         : isLoading false, offlineMode true
+ *   mount → synced                          : isLoading false, offlineMode false
+ *   mount → timeout (5s), hasLocalCache     : isLoading false, offlineMode true
+ *   mount → timeout (5s), !hasLocalCache    : isLoading false, blockingOffline true
+ *   connected → disconnect                  : offlineMode true
+ *   offline → re-synced                     : offlineMode false
+ *   any → auth error                        : isLoading false, offlineMode true
  */
-function useCollaboration(provider:HocuspocusProvider) {
+function useCollaboration(provider:HocuspocusProvider, hasLocalCache = false) {
   const [isLoading, setIsLoading] = useState(true);
   const [offlineMode, setOfflineMode] = useState(false);
 
@@ -168,7 +173,11 @@ function useCollaboration(provider:HocuspocusProvider) {
   useCollaborationProvider(provider, handleSynced, handleDisconnect);
   useProviderAuthError(handleAuthError);
 
-  return { isLoading, offlineMode } as const;
+  // When offline with no local cache, block the editor entirely to prevent an
+  // empty Y.Doc from being synced as the authoritative document on reconnect.
+  const blockingOffline = offlineMode && !hasLocalCache;
+
+  return { isLoading, offlineMode, blockingOffline } as const;
 }
 
 export { useCollaboration };

@@ -38,6 +38,20 @@ class LiveCollaborationManagerClass {
   yjsDocInstance:Doc|null = null;
 
   private listeners:Listener[] = [];
+  private hasLocalCacheValue = false;
+
+  /**
+   * Records whether IndexedDB had locally-cached document content at the time the
+   * provider was set up. Used by the editor to decide between soft offline mode
+   * (has cache → editing allowed) and hard blocking mode (no cache → editor hidden).
+   */
+  setHasLocalCache(value:boolean):void {
+    this.hasLocalCacheValue = value;
+  }
+
+  get hasLocalCache():boolean {
+    return this.hasLocalCacheValue;
+  }
 
   /**
    * Initializes the YJS Provider
@@ -84,6 +98,7 @@ class LiveCollaborationManagerClass {
     this.destroyYjsDoc();
 
     this.listeners = [];
+    this.hasLocalCacheValue = false;
   }
 
   private destroyYjsProvider():void {
