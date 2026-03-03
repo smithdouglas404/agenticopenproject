@@ -132,11 +132,11 @@ RSpec.describe "Project creation wizard",
     create(:project_custom_field_project_mapping, project:, project_custom_field: string_custom_field)
     create(:project_custom_field_project_mapping, project:, project_custom_field: list_custom_field)
     create(:project_custom_field_project_mapping, project:, project_custom_field: int_custom_field)
-
-    visit wizard_path
   end
 
   it "can visit the wizard path manually and navigate through sections" do
+    visit wizard_path
+
     # Should show the wizard page with the first section
     expect(page).to have_css("h3", text: "Basic Information")
     expect(page).to have_text("Project Description")
@@ -160,6 +160,8 @@ RSpec.describe "Project creation wizard",
   end
 
   it "shows different sections as separate pages" do
+    visit wizard_path
+
     # First section
     expect(page).to have_css("h3", text: "Basic Information")
     expect(page).to have_text("Project Description")
@@ -188,6 +190,8 @@ RSpec.describe "Project creation wizard",
   end
 
   it "displays and updates attribute help texts when focusing different fields" do
+    visit wizard_path
+
     # Initially, help text for the first field should be visible
     expect(page).to have_text("Enter a detailed description of your project goals and objectives.")
 
@@ -214,6 +218,8 @@ RSpec.describe "Project creation wizard",
   end
 
   it "updates and persists field values when clicking next" do
+    visit wizard_path
+
     # Fill in fields in first section (Project Description is a textarea)
     text_field_editor.set_markdown "This is a test project for validation"
     fill_in "Project Code", with: "TEST-001"
@@ -273,6 +279,8 @@ RSpec.describe "Project creation wizard",
   end
 
   it "shows completion checkmarks for sections with filled fields" do
+    visit wizard_path
+
     # Initially, no checkmarks should be visible
     page.within(".op-projects-wizard--sidebar") do
       section_item = find("a", text: "Basic Information")
@@ -298,6 +306,8 @@ RSpec.describe "Project creation wizard",
   end
 
   it "shows the correct last section behavior with Complete button" do
+    visit wizard_path
+
     # Navigate to last section via sidebar
     click_link "Project Details"
 
@@ -314,6 +324,8 @@ RSpec.describe "Project creation wizard",
   end
 
   it "can cancel and return to project overview" do
+    visit wizard_path
+
     # Fill in some data
     fill_in "Project Code", with: "CANCEL-TEST"
 
@@ -424,6 +436,8 @@ RSpec.describe "Project creation wizard",
     end
 
     it "denies access to the wizard" do
+      visit wizard_path
+
       # Should show an error message about lacking permissions
       expect(page).to have_text("You are not authorized to access this page")
     end
