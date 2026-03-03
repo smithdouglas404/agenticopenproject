@@ -37,6 +37,7 @@ module RecurringMeetings
     def validate_params
       @old_schedule_model = model.dup
       @old_location = model.template.location
+      @old_title = model.title
       super
     end
 
@@ -52,6 +53,8 @@ module RecurringMeetings
       end
 
       cleanup_cancelled_schedules(recurring_meeting)
+      update_future_occurrence_titles(recurring_meeting)
+
       update_template(call)
     end
 
@@ -151,6 +154,18 @@ module RecurringMeetings
         .find_each do |scheduled|
           occurring = recurring_meeting.schedule.occurs_at?(scheduled.start_time)
           scheduled.delete unless occurring
+      end
+    end
+
+    def update_future_occurrence_titles(recurring_meeting)
+      new_title = @template_params[:title]
+      return if new_title == @old_title
+
+      recurring_meeting
+        .scheduled_instances(upcoming: true)
+        .instantiated
+        .each do |scheduled|
+          scheduled.meeting.update_column(:title, new_title)
       end
     end
 
