@@ -6,18 +6,11 @@ require Rails.root.join("db/migrate/migration_utils/permission_adder")
 class MigrateBacklogsPermissions < ActiveRecord::Migration[8.1]
   def up
     ::Migration::MigrationUtils::PermissionRenamer.rename(:view_master_backlog, :view_sprints)
-
-    # TODO: This could also use the PermissionRenamer.rename, but since that method is using an
-    # SQL update query, we can potentially end up having duplicate permissions defined,
-    # if a user has both view_master_backlog and view_taskboards.
-    ::Migration::MigrationUtils::PermissionAdder.add(:view_taskboards, :view_sprints)
-    RolePermission.delete_by(permission: "view_taskboards")
+    ::Migration::MigrationUtils::PermissionRenamer.rename(:view_taskboards, :view_sprints)
 
     ::Migration::MigrationUtils::PermissionAdder.add(:manage_versions, :create_sprints)
-    ::Migration::MigrationUtils::PermissionAdder.add(:select_done_statuses, :create_sprints)
-    ::Migration::MigrationUtils::PermissionAdder.add(:update_sprints, :create_sprints)
-
-    RolePermission.delete_by(permission: %w(update_sprints select_done_statuses))
+    ::Migration::MigrationUtils::PermissionRenamer.rename(:select_done_statuses, :create_sprints)
+    ::Migration::MigrationUtils::PermissionRenamer.rename(:update_sprints, :create_sprints)
 
     ::Migration::MigrationUtils::PermissionAdder.add(:assign_versions, :manage_sprint_items)
     ::Migration::MigrationUtils::PermissionAdder.add(:add_work_packages, :manage_sprint_items)
@@ -26,7 +19,7 @@ class MigrateBacklogsPermissions < ActiveRecord::Migration[8.1]
 
   def down
     ::Migration::MigrationUtils::PermissionAdder.add(:view_sprints, :view_taskboards, force: true)
-    ::Migration::MigrationUtils::PermissionRenamer.rename("view_sprints", "view_master_backlog")
+    ::Migration::MigrationUtils::PermissionRenamer.rename(:view_sprints, :view_master_backlog, force: true)
 
     # Note: Some roles might receive extra permissions on the way down because,
     # we need to add back all the roles that have been merged on the way up.
