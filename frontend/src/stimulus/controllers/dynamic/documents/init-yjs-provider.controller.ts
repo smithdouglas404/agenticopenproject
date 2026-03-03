@@ -83,15 +83,17 @@ export default class extends Controller {
 
     // y-indexeddb does not emit an 'error' event, so a timeout is the only
     // protection against hanging indefinitely (e.g. private browsing, quota exceeded)
-    const timeout = new Promise<never>((_, reject) =>
-      window.setTimeout(
+    let timeoutId:ReturnType<typeof window.setTimeout> | undefined;
+    const timeout = new Promise<never>((_, reject) => {
+      timeoutId = window.setTimeout(
         () => reject(new Error('IndexedDB sync timed out')),
         INDEXEDDB_SYNC_TIMEOUT_MS,
-      )
-    );
+      );
+    });
 
     return Promise.race([
       persistence.whenSynced.then(() => {
+        window.clearTimeout(timeoutId);
         debugLog('(BlockNote Editor) Local document synced via IndexedDB');
       }),
       timeout,
