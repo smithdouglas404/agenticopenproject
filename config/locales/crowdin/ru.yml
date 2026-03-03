@@ -111,9 +111,9 @@ ru:
         text: "Личные действия пользователя (например, обновление пакета работ дважды) агрегируются в одно действие, если их разница во времени не больше указанной. Они будут отображаться как одно действие внутри приложения. Это также задерживает уведомление на такое же количество времени, уменьшая количество отправляемых писем и также повлияет на %{webhook_link} задержки."
         link: "вебхук"
     import:
-      title: "Import"
+      title: "Импорт"
     jira:
-      title: "Jira Import"
+      title: "Импорт из Jira"
       description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
       errors:
         cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
