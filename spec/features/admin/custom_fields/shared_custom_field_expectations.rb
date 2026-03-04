@@ -49,7 +49,7 @@ RSpec.shared_examples_for "list custom fields" do |type|
     check("multi_value")
 
     click_on "Save"
-    cf_page.expect_and_dismiss_flash(message: "Successful creation.")
+    cf_page.expect_flash(message: "Successful creation.")
     expect(page).to have_field("multi_value", checked: true)
 
     click_link "Items"

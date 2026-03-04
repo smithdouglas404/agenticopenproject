@@ -84,18 +84,26 @@ module CustomFields
     end
 
     def persisted_cf_has_no_items_or_projects?
-      if custom_field.list? && custom_field.custom_options.empty?
-        if custom_field.respond_to?(:projects)
-          custom_field.projects.empty?
-        end
+      return false unless custom_field.persisted?
+      return false unless custom_field_has_no_projects?
 
-        true
+      custom_field_has_no_items?
+    end
+
+    private
+
+    def custom_field_has_no_projects?
+      !custom_field.respond_to?(:projects) || custom_field.projects.empty?
+    end
+
+    def custom_field_has_no_items?
+      if custom_field.list?
+        custom_field.custom_options.empty?
+      elsif custom_field.hierarchical_list?
+        custom_field.hierarchy_root.children.empty?
+      else
+        false
       end
-
-      custom_field.persisted? &&
-        custom_field.hierarchical_list? &&
-        custom_field.hierarchy_root.children.empty? &&
-        custom_field.projects.empty?
     end
   end
 end

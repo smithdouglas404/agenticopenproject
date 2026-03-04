@@ -52,7 +52,7 @@ RSpec.describe "List custom fields edit", :js do
 
     click_on "Save"
 
-    index_cf_page.expect_and_dismiss_flash(message: "Successful creation.")
+    index_cf_page.expect_flash(message: "Successful creation.")
 
     click_link "Items"
 
