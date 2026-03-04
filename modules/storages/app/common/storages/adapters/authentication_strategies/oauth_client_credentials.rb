@@ -45,15 +45,15 @@ module Storages
           token_cache_key = TOKEN_CACHE_KEY % storage.id
           access_token = @use_cache ? Rails.cache.read(token_cache_key) : nil
 
-          http = build_http_session(access_token, config, http_options).value_or { return Failure(it) }
+          session = build_http_session(access_token, config, http_options).value_or { Failure(it) }
 
-          operation_result = yield http
+          operation_result = yield session
 
           return operation_result unless @use_cache
 
           case operation_result
           in Success if @use_cache && access_token.blank?
-            write_cache(token_cache_key, http)
+            write_cache(token_cache_key, session)
           in Failure(code: :forbidden)
             clear_cache(token_cache_key)
           else
@@ -62,6 +62,8 @@ module Storages
 
           operation_result
         rescue HTTPX::HTTPError => e
+          error("Error while refreshing OAuth token - Payload: #{e.response}")
+
           Failure(Results::Error.new(code: :unauthorized, payload: e.response, source: self.class))
         rescue HTTPX::TimeoutError => e
           Failure(Results::Error.new(code: :timeout, payload: e.to_s, source: self.class))
@@ -84,19 +86,8 @@ module Storages
         def clear_cache(key) = Rails.cache.delete(key)
 
         def build_http_session(access_token, config, http_options)
-          if access_token.present?
-            http_with_current_token(access_token:, http_options:)
-          else
-            http_with_new_token(config:, http_options:)
-          end
-        end
-
-        def http_with_current_token(access_token:, http_options:)
-          Success(OpenProject.httpx.bearer_auth(access_token).with(http_options))
-        end
-
-        def http_with_new_token(config:, http_options:)
-          Success(OpenProject.httpx.plugin(:oauth).with(**http_options, oauth_options: config.to_h))
+          Success(OpenProject.httpx.plugin(:oauth)
+                             .with(**http_options, oauth_options: { **config, access_token: access_token }))
         end
       end
     end

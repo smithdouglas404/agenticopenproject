@@ -91,15 +91,15 @@ module Storages
         end
 
         def handle_timeout(token, exception)
-          Rails.logger.error("Timeout while refreshing OAuth token. - Payload: #{exception.message}")
+          error("Timeout while refreshing OAuth token. - Payload: #{exception.message}")
           token.destroy!
           Failure(@error_data.with(error: :timeout_on_refresh, payload: exception))
         end
 
-        def handle_http_error(token, error)
-          Rails.logger.error("Error while refreshing OAuth token - Payload: #{error.response}")
+        def handle_http_error(token, exception)
+          error("Error while refreshing OAuth token - Payload: #{exception.response}")
           token.destroy!
-          Failure(@error_data.with(code: :unauthorized, payload: error.response))
+          Failure(@error_data.with(code: :unauthorized, payload: exception.response))
         end
 
         def current_token(client)
