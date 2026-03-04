@@ -36,7 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
       tooltip_direction: :se
     )
 
-    if user_allowed?(:update_sprints)
+    if user_allowed?(:create_sprints)
       menu.with_item(
         label: t(".action_menu.edit_sprint"),
         href: edit_dialog_project_sprint_path(project, sprint),
@@ -60,7 +60,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    if user_allowed?(:update_sprints) || user_allowed?(:add_work_packages)
+    if user_allowed?(:create_sprints) || user_allowed?(:add_work_packages)
       menu.with_divider
     end
 
@@ -74,16 +74,14 @@ See COPYRIGHT and LICENSE files for more details.
       item.with_leading_visual_icon(icon: :"op-view-list")
     end
 
-    if user_allowed?(:view_taskboards)
-      menu.with_item(
-        # TODO: what to do with the task board?
-        scheme: :danger,
-        label: t(".action_menu.task_board"),
-        tag: :a,
-        href: backlogs_project_sprint_taskboard_path(project, sprint)
-      ) do |item|
-        item.with_leading_visual_icon(icon: :"op-view-cards")
-      end
+    menu.with_item(
+      # TODO: what to do with the task board?
+      scheme: :danger,
+      label: t(".action_menu.task_board"),
+      tag: :a,
+      href: backlogs_project_sprint_taskboard_path(project, sprint)
+    ) do |item|
+      item.with_leading_visual_icon(icon: :"op-view-cards")
     end
 
     menu.with_item(
