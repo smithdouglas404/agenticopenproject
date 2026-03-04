@@ -50,13 +50,13 @@ When creating a new one-time meeting, users can choose from the available templa
 
 For more details, please refer to the [Meetings documentation](../../user-guide/meetings/one-time-meetings/).
 
-###  Increased security for external links (Enterprise add-on)
+###  Allow requiring to be logged in to open external links (Enterprise add-on)
 
 [feature: capture_external_links ]
 
 Building on the external link safety options introduced in OpenProject 17.1, we’re expanding the protection capabilities in 17.2 to give administrators stronger safeguards for user interactions with links that lead outside of OpenProject.
 
-Administrators can now require users to be logged in before following external links. When this setting is enabled, anyone who is not authenticated will be redirected to the login page before being allowed to continue to the external destination. This helps reduce the risk of users being exposed to phishing, social engineering, or other malicious content by ensuring links are only accessible to signed-in members of your organization.
+Administrators can now require users to be logged in before following external links. When this setting is enabled, anyone who is not authenticated will be redirected to the login page before being allowed to continue to the external destination. 
 
 ![A setting to require users to be logged in before following an external link from OpenProject](openproject_release_notes_17-2-0_external_links_log_in.png)
 
