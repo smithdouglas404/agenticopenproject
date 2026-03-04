@@ -94,17 +94,5 @@ See COPYRIGHT and LICENSE files for more details.
     ) do |item|
       item.with_leading_visual_icon(icon: :graph)
     end
-
-    if project.module_enabled? "wiki"
-      menu.with_item(
-        # TODO: will we keep the association between sprints and wiki pages?
-        scheme: :danger,
-        label: t(".action_menu.wiki"),
-        tag: :a,
-        href: edit_backlogs_project_sprint_wiki_path(project, sprint)
-      ) do |item|
-        item.with_leading_visual_icon(icon: :book)
-      end
-    end
   end
 %>
