@@ -44,6 +44,29 @@ RSpec.describe OpenProject::InplaceEdit::UpdateRegistry do
     end
   end
 
+  describe "#resolve_model_class" do
+    it "returns the registered class for the given param key" do
+      registry.register(Project, handler:, contract:)
+
+      expect(registry.resolve_model_class("project")).to eq(Project)
+    end
+
+    it "returns nil for unknown params" do
+      expect(registry.resolve_model_class("unknown")).to be_nil
+    end
+
+    it "handles namespaced models via param_key" do
+      namespaced_class = Class.new do
+        def self.model_name
+          ActiveModel::Name.new(self, nil, "Admin::User")
+        end
+      end
+      registry.register(namespaced_class, handler:, contract:)
+
+      expect(registry.resolve_model_class("admin_user")).to eq(namespaced_class)
+    end
+  end
+
   describe "#registered?" do
     it "returns true for registered model" do
       registry.register(Project, handler:, contract:)
