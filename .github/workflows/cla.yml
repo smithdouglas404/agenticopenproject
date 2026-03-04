@@ -14,6 +14,7 @@ permissions:
 
 jobs:
   CLAAssistant:
+    if: github.repository == 'opf/openproject'
     runs-on: ubuntu-latest
     steps:
       - name: "CLA Assistant"
