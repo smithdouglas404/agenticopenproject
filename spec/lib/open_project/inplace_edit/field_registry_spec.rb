@@ -31,13 +31,9 @@
 require "rails_helper"
 
 RSpec.describe OpenProject::InplaceEdit::FieldRegistry do
-  subject(:registry) { described_class }
+  subject(:registry) { described_class.new }
 
-  before do
-    registry.instance_variable_set(:@registry, {})
-  end
-
-  describe ".register" do
+  describe "#register" do
     it "registers a field component for an attribute" do
       registry.register(:description, :rich_text_component)
 
@@ -45,7 +41,7 @@ RSpec.describe OpenProject::InplaceEdit::FieldRegistry do
     end
   end
 
-  describe ".fetch" do
+  describe "#fetch" do
     it "returns the registered component for the attribute" do
       registry.register(:description, :rich_text_component)
 
