@@ -77,6 +77,10 @@ module Import
       get("/rest/api/2/serverInfo")
     end
 
+    def applicationrole
+      get("/rest/api/2/applicationrole")
+    end
+
     def all_cluster_nodes
       get("/rest/api/2/cluster/nodes")
     end
@@ -102,6 +106,16 @@ module Import
 
     def project_types
       get("/rest/api/2/project/type")
+    end
+
+    def project_versions(project_id_or_key:,
+                         start_at: 0,
+                         max_results: 100)
+      get("/rest/api/2/project/#{project_id_or_key}/version",
+          params: {
+            startAt: start_at,
+            maxResults: max_results
+          })
     end
 
     def issue_types

@@ -51,7 +51,8 @@ See COPYRIGHT and LICENSE files for more details.
     box.with_row(mb: 3) do
       render(Admin::Import::Jira::ImportRuns::InfoListBoxComponent.new(
         title: I18n.t(:"admin.jira.run.wizard.sections.confirm_import.label_available_data"),
-        list: import_selection
+        list: import_selection,
+        show_icon: false
       ))
     end
     if model.in_state?(:projects_meta_done)
@@ -80,7 +81,8 @@ See COPYRIGHT and LICENSE files for more details.
     box.with_row(mb: 3) do
       render(Admin::Import::Jira::ImportRuns::InfoListBoxComponent.new(
         title: I18n.t(:"admin.jira.run.wizard.sections.confirm_import.label_import_data"),
-        list: import_selection
+        list: import_selection,
+        show_icon: false
       ))
     end
   end
