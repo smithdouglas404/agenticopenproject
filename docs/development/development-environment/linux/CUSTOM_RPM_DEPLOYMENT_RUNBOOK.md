@@ -37,7 +37,9 @@ Collect these values first:
 - Fork repo: `shanjian/openproject`
 - Release base: `release-17.1.2`
 - Custom packaging branch: e.g. `release-17.1.2-custom`
-- Packager build URL/job for your branch (to download the RPM artifact)
+- Build method:
+  - GitHub Actions artifact build in your fork (no Packager.io), or
+  - Packager.io build
 - Production host SSH access
 - Maintenance window
 
@@ -68,9 +70,33 @@ git push origin v17.1.2-custom.1
 
 ---
 
-## 4) Build RPMs from Your Fork (Packager.io)
+## 4) Build RPMs from Your Fork
 
 Purpose: produce installable EL9 RPM artifacts from your branch.
+
+### 4.1 Recommended: GitHub Actions artifact build (no Packager.io)
+
+Use your fork CI to build RPM and download it as artifact.
+
+1. In your fork, create a workflow (or copy `packager.yml`) with these changes:
+   - remove `if: github.repository == 'opf/openproject'`
+   - keep only target `el:9`
+   - remove the `Publish` step
+   - add an artifact upload step
+2. Trigger the workflow with `workflow_dispatch` on branch `release-17.1.2-custom`.
+3. Download the generated RPM from workflow artifacts.
+
+Example artifact step:
+
+```yaml
+- name: Upload RPM artifact
+  uses: actions/upload-artifact@v4
+  with:
+    name: openproject-el9-rpm
+    path: ${{ steps.package.outputs.package_path }}
+```
+
+### 4.2 Optional: Packager.io build
 
 1. Open packager.io and add/configure your fork repository.
 2. Trigger a build for branch `release-17.1.2-custom`.
@@ -219,7 +245,9 @@ For each new custom release:
 
 1. Add commits to `release-17.1.2-custom`.
 2. Tag (e.g., `v17.1.2-custom.2`).
-3. Build new RPM artifact in packager.
+3. Build new RPM artifact using your chosen method:
+   - GitHub Actions artifact build (preferred), or
+   - Packager.io build
 4. On production:
 
 ```bash
@@ -249,3 +277,8 @@ sudo openproject restart
 5. Assuming local RPM install does not replace repo-installed package.
 - Symptom: fear that package manager blocks replacement.
 - Fix: `dnf install /path/to/openproject-...rpm` upgrades/replaces when package name matches (`openproject`).
+
+6. Fork build workflow never runs.
+- Symptom: no RPM artifacts created in fork CI.
+- Why: upstream `packager.yml` has `if: github.repository == 'opf/openproject'`.
+- Fix: use a fork-specific workflow (no repo guard, no publish step, upload artifacts).
