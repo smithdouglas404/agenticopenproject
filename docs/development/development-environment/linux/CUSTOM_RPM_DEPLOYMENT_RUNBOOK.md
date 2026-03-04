@@ -76,25 +76,55 @@ Purpose: produce installable EL9 RPM artifacts from your branch.
 
 ### 4.1 Recommended: GitHub Actions artifact build (no Packager.io)
 
-Use your fork CI to build RPM and download it as artifact.
+Use your fork CI to build RPM and download it as a GitHub Actions artifact.
+
+This path was executed successfully on `2026-03-04` in fork `shanjian/openproject`
+using workflow `.github/workflows/packager-fork-artifact.yml`.
 
 1. In your fork, create a workflow (or copy `packager.yml`) with these changes:
    - remove `if: github.repository == 'opf/openproject'`
    - keep only target `el:9`
    - remove the `Publish` step
    - add an artifact upload step
-2. Trigger the workflow with `workflow_dispatch` on branch `release-17.1.2-custom`.
-3. Download the generated RPM from workflow artifacts.
+2. Commit workflow file and push branch `release-17.1.2-custom`.
+3. Trigger the workflow:
 
-Example artifact step:
+```bash
+gh workflow run packager-fork-artifact.yml --ref release-17.1.2-custom
+```
+
+4. Get and monitor the latest run:
+
+```bash
+gh run list --workflow packager-fork-artifact.yml \
+  --branch release-17.1.2-custom --limit 1
+
+# Use the run id from the command above
+gh run watch <run-id> --exit-status
+```
+
+5. Download artifacts locally:
+
+```bash
+mkdir -p /tmp/openproject-rpm-artifact
+gh run download <run-id> --dir /tmp/openproject-rpm-artifact
+find /tmp/openproject-rpm-artifact -type f -name '*.rpm'
+```
+
+Example artifact step (from successful run):
 
 ```yaml
 - name: Upload RPM artifact
   uses: actions/upload-artifact@v4
   with:
-    name: openproject-el9-rpm
+    name: openproject-el9-rpm-${{ github.run_number }}
     path: ${{ steps.package.outputs.package_path }}
+    retention-days: 30
 ```
+
+Observed successful runs:
+- `22690249854` (push) -> artifact `openproject-el9-rpm-1`
+- `22690781958` (workflow_dispatch) -> artifact `openproject-el9-rpm-2`
 
 ### 4.2 Optional: Packager.io build
 
