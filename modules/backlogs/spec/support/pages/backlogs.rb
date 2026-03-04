@@ -119,6 +119,14 @@ module Pages
       end
     end
 
+    def sprint_names_in_order
+      page.find_all("#sprint_backlogs_container > section .op-backlogs-collapsible--title").map(&:text)
+    end
+
+    def expect_sprint_names_in_order(*sprint_names)
+      expect(sprint_names_in_order).to match_array(sprint_names)
+    end
+
     def expect_sprint(sprint)
       expect(page)
         .to have_css("#sprint_backlogs_container #{backlog_selector(sprint)}")
@@ -194,6 +202,12 @@ module Pages
       expect(page).to have_current_path details_backlogs_project_backlogs_path(story.project, story)
 
       yield details_view
+    end
+
+    def open_create_sprint_dialog
+      click_on "Create"
+      new_sprint_button = page.find_test_selector("op-sprints--new-sprint-button")
+      new_sprint_button&.click
     end
 
     private
