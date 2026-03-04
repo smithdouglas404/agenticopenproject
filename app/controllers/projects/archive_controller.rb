@@ -52,7 +52,7 @@ class Projects::ArchiveController < ApplicationController
   def find_project_including_archived
     # The visible scope filters out archived projects, but here we want to explicitly unarchive them.
     # The contracts do proper permission checks, so we can skip the visible scope here.
-    @project = Project.find(params[:project_id])
+    @project = Project.enhanced_find(params[:project_id])
   end
 
   def change_status_action(status)

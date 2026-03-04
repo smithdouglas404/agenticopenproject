@@ -81,7 +81,7 @@ class HourlyRate < Rate
              .order(Arel.sql("valid_from DESC"))
              .first
       if rate.nil?
-        project = Project.find(project) unless project.is_a?(Project)
+        project = Project.enhanced_find(project) unless project.is_a?(Project)
         rate = where(["user_id = ? and project_id in (?) and valid_from <= ?",
                       user_id,
                       project.ancestors.to_a,

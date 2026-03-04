@@ -86,6 +86,6 @@ class CategoriesController < ApplicationController
   end
 
   def find_project
-    @project = Project.visible.find(params[:project_id])
+    @project = Project.visible.enhanced_find(params[:project_id])
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,45 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Grids
-  class Factory
-    class << self
-      def build(scope, user)
-        attributes = ::Grids::Configuration.attributes_from_scope(scope)
+module Projects::IdentifierFinder
+  def enhanced_find(*args, allow_nil: false)
+    id = args.first
+    return find(*args) if args.count != 1 || !semantic_id?(id)
 
-        grid_class = attributes[:class]
-        grid_project = project_from_id(attributes[:project_id])
+    result = find_by(identifier: id)
+    return result if result.present?
 
-        new_default(grid_class, grid_project, user)
-      end
-
-      private
-
-      def new_default(klass, project, user)
-        params = class_defaults(klass)
-
-        if klass.reflect_on_association(:project)
-          params[:project] = project
-        end
-
-        if klass.reflect_on_association(:user)
-          params[:user] = user
-        end
-
-        klass.new(params)
-      end
-
-      def class_defaults(klass)
-        params = ::Grids::Configuration.defaults(klass)
-
-        params || { row_count: 4, column_count: 5, widgets: [] }
-      end
-
-      def project_from_id(id)
-        Project.enhanced_find(id) if id
-      rescue ActiveRecord::RecordNotFound
-        nil
-      end
+    former_id_project = Project::FormerIdentifier.find_by(identifier: id)&.project
+    if former_id_project && exists?(id: former_id_project.id)
+      return former_id_project
     end
+
+    return nil if allow_nil
+
+    raise ActiveRecord::RecordNotFound, "Couldn't find Project with identifier #{id.inspect}"
+  end
+
+  private
+
+  def semantic_id?(id)
+    return false if !id.is_a?(String) # e.g. Array
+    return false if id.to_i.to_s == id.to_s # database ID as String
+
+    true
   end
 end

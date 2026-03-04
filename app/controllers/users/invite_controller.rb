@@ -134,7 +134,7 @@ class Users::InviteController < ApplicationController
   end
 
   def set_project
-    @project = Project.find(params[:project_id]) if params[:project_id].present?
+    @project = Project.enhanced_find(params[:project_id]) if params[:project_id].present?
   end
 
   def dialog_title

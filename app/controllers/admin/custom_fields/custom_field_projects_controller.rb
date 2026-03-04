@@ -103,7 +103,7 @@ class Admin::CustomFields::CustomFieldProjectsController < ApplicationController
 
   def find_projects_to_activate_for_custom_field
     if (project_ids = params.to_unsafe_h[:custom_fields_project][:project_ids]).present?
-      @projects = Project.visible.find(project_ids)
+      @projects = Project.visible.enhanced_find(project_ids)
     else
       initialize_custom_field_project
       @custom_field_project.errors.add(:project_ids, :blank)

@@ -185,7 +185,7 @@ class ProjectsController < ApplicationController
   def find_project_including_archived
     # The actions that use this method are only accessible to admins, so we can show them archived projects as well and
     # can skip the visible scope here.
-    @project = Project.find(params[:id])
+    @project = Project.enhanced_find(params[:id])
   end
 
   def from_template? = @template.present?
@@ -298,7 +298,7 @@ class ProjectsController < ApplicationController
   end
 
   def find_optional_parent
-    @parent = Project.visible(current_user).find(params[:parent_id]) if params[:parent_id].present?
+    @parent = Project.visible(current_user).enhanced_find(params[:parent_id]) if params[:parent_id].present?
   end
 
   def export_list(query, mime_type)

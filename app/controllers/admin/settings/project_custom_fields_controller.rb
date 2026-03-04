@@ -242,7 +242,7 @@ module Admin::Settings
     def find_custom_field_projects_to_link
       project_ids = params.to_unsafe_h[:project_custom_field_project_mapping][:project_ids]
       if project_ids.present?
-        @projects = Project.find(project_ids)
+        @projects = Project.enhanced_find(project_ids)
       else
         project_mapping = ProjectCustomFieldProjectMapping.new(project_custom_field: @custom_field)
         project_mapping.errors.add(:project_ids, :blank)

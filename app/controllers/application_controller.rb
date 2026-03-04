@@ -243,20 +243,20 @@ class ApplicationController < ActionController::Base
   end
 
   # Find project of id params[:id]
-  # Note: find() is Project.friendly.find()
+  # Note: Will find by id or identifier or former identifiers
   def find_project
-    @project = Project.visible.find(params[:id])
+    @project = Project.visible.enhanced_find(params[:id])
   end
 
   # Find project of id params[:project_id]
-  # Note: find() is Project.friendly.find()
+  # Note: Will find by id or identifier or former identifiers
   def find_project_by_project_id
-    @project = Project.visible.find(params[:project_id])
+    @project = Project.visible.enhanced_find(params[:project_id])
   end
 
   # Find project by project_id if given
   def find_optional_project
-    @project = Project.visible.find(params[:project_id]) if params[:project_id].present?
+    @project = Project.visible.enhanced_find(params[:project_id]) if params[:project_id].present?
   rescue ActiveRecord::RecordNotFound
     render_404
   end

@@ -42,9 +42,9 @@ RSpec.describe Projects::Settings::GeneralController do
     let(:project) { build_stubbed(:project) }
 
     before do
-      visible_relation = instance_double(ActiveRecord::Relation)
+      visible_relation = instance_double(Project.relation_delegate_class(ActiveRecord::Relation))
       allow(Project).to receive(:visible).and_return(visible_relation)
-      allow(visible_relation).to receive(:find).with(project.identifier).and_return(project)
+      allow(visible_relation).to receive(:enhanced_find).with(project.identifier).and_return(project)
 
       update_service = instance_double(Projects::UpdateService, call: service_result)
 

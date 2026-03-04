@@ -56,7 +56,7 @@ module API
                   end
 
                   def find_project
-                    Project.find(params[:id])
+                    Project.enhanced_find(params[:id])
                   end
                 end
 

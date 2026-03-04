@@ -171,8 +171,8 @@ RSpec.describe RbSprintsController do
     shared_let(:user) { create(:admin) }
     current_user { user }
 
-    let(:visible_projects_scope) { instance_double(ActiveRecord::Relation) }
-    let(:visible_sprints_scope) { instance_double(ActiveRecord::Relation) }
+    let(:visible_projects_scope) { instance_double(Project.relation_delegate_class(ActiveRecord::Relation)) }
+    let(:visible_sprints_scope) { instance_double(Sprint.relation_delegate_class(ActiveRecord::Relation)) }
 
     before do
       allow(Setting)
@@ -184,7 +184,7 @@ RSpec.describe RbSprintsController do
               .and_return(visible_projects_scope)
 
       allow(visible_projects_scope)
-        .to receive(:find)
+        .to receive(:enhanced_find)
               .with(project.identifier)
               .and_return(project)
 

@@ -29,7 +29,9 @@
 #++
 
 class Project < ApplicationRecord
-  extend FriendlyId
+  extend Projects::IdentifierFinder
+  relation_delegate_class(ActiveRecord::Relation).include(Projects::IdentifierFinder)
+  relation_delegate_class(ActiveRecord::AssociationRelation).include(Projects::IdentifierFinder)
 
   include Projects::Activity
   include Projects::AncestorsFromRoot
@@ -47,7 +49,8 @@ class Project < ApplicationRecord
   IDENTIFIER_MAX_LENGTH = 100
 
   # reserved identifiers
-  RESERVED_IDENTIFIERS = %w[new menu queries filters].freeze
+  RESERVED_IDENTIFIERS = %w[new menu queries filters edit index session login logout users admin
+                            stylesheets assets javascripts images].freeze
 
   enum :workspace_type, {
     project: "project",
@@ -120,6 +123,11 @@ class Project < ApplicationRecord
 
   has_many :subproject_template_assignments,
            dependent: :delete_all
+
+  has_many :former_identifiers,
+           class_name: "Project::FormerIdentifier",
+           inverse_of: :project,
+           dependent: :destroy
 
   accepts_nested_attributes_for :available_phases
   validates_associated :available_phases, on: :saving_phases
@@ -214,7 +222,7 @@ class Project < ApplicationRecord
 
   validates_associated :repository, :wiki
 
-  friendly_id :identifier, use: :finders
+  after_save :save_former_identifier, if: :saved_change_to_identifier?
 
   scopes :activated_in_storage,
          :allowed_to,
@@ -282,6 +290,10 @@ class Project < ApplicationRecord
     name
   end
 
+  def to_param
+    identifier.presence.to_param || super
+  end
+
   def workspace_label
     case workspace_type
     when "program"
@@ -347,6 +359,17 @@ class Project < ApplicationRecord
   def allowed_actions
     @allowed_actions ||= allowed_permissions.flat_map do |permission|
       OpenProject::AccessControl.allowed_actions(permission)
+    end
+  end
+
+  private
+
+  def save_former_identifier
+    former_id = saved_changes[:identifier].first
+    return if former_id.blank?
+
+    unless former_identifiers.exists?(identifier: former_id)
+      former_identifiers.create!(identifier: former_id)
     end
   end
 end

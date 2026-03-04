@@ -32,7 +32,7 @@ RSpec.describe Grids::CreateContract, "for Grids::Overview" do
   let(:project) do
     build_stubbed(:project).tap do |p|
       allow(Project)
-        .to receive(:find)
+        .to receive(:enhanced_find)
         .with(p.identifier)
         .and_return(p)
     end

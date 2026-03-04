@@ -158,7 +158,7 @@ class MessagesController < ApplicationController
   private
 
   def find_project_and_forum
-    @project = Project.visible.find(params[:project_id])
+    @project = Project.visible.enhanced_find(params[:project_id])
     @forum = @project.forums.find(params[:forum_id])
   end
 

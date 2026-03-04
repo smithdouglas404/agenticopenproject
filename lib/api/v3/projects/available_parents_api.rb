@@ -43,7 +43,7 @@ module API
             model: Project,
             scope: -> do
               project = if params[:of]
-                          Project.find(params[:of])
+                          Project.enhanced_find(params[:of])
                         else
                           Project.new(workspace_type: params[:workspace_type] || "project")
                         end

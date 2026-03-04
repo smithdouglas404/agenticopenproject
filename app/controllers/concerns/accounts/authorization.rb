@@ -82,7 +82,7 @@ module Accounts::Authorization
 
   # Find a project based on params[:project_id]
   def load_and_authorize_in_optional_project
-    @project = Project.find(params[:project_id]) if params[:project_id].present?
+    @project = Project.enhanced_find(params[:project_id]) if params[:project_id].present?
 
     do_authorize({ controller: controller_path, action: action_name }, global: params[:project_id].blank?)
   end
@@ -222,7 +222,7 @@ module Accounts::Authorization
       authorization_checked_by_default_action(**args.slice(:only, :except))
 
       before_action(**args) do
-        @project = Project.find(params[:project_id])
+        @project = Project.enhanced_find(params[:project_id])
         do_authorize(permission, global: false)
       end
     end

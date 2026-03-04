@@ -104,7 +104,7 @@ class CostlogController < ApplicationController
       @work_package = WorkPackage.visible.find(params[:work_package_id])
       @project = @work_package.project
     elsif params[:project_id]
-      @project = Project.visible.find(params[:project_id])
+      @project = Project.visible.enhanced_find(params[:project_id])
     else
       render_404
     end

@@ -140,7 +140,7 @@ class HourlyRatesController < ApplicationController
   end
 
   def find_project
-    @project = Project.visible.find(params[:project_id])
+    @project = Project.visible.enhanced_find(params[:project_id])
   end
 
   def find_user

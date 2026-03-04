@@ -138,7 +138,7 @@ class RbSprintsController < RbApplicationController
   end
 
   def load_project
-    @project = Project.visible.find(params[:project_id])
+    @project = Project.visible.enhanced_find(params[:project_id])
   end
 
   def sprint_params

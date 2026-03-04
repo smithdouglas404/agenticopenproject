@@ -34,7 +34,7 @@ module ReportingHelper
   include WorkPackagesHelper
 
   def with_project(project)
-    project = Project.find(project) unless project.is_a? Project
+    project = Project.enhanced_find(project) unless project.is_a? Project
     project_was = @project
     @project = project
     yield
@@ -105,7 +105,7 @@ module ReportingHelper
     when :activity_id
       mapped value, Enumeration, "<i>#{I18n.t(:caption_material_costs)}</i>".html_safe
     when :project_id
-      link_to_project Project.find(value.to_i)
+      link_to_project Project.enhanced_find(value.to_i)
     when :user_id, :assigned_to_id, :author_id, :logged_by_id
       link_to_user(User.visible.find_by(id: value.to_i) || DeletedUser.first)
     when :tweek

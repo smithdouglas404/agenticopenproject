@@ -41,7 +41,7 @@ class RbApplicationController < ApplicationController
   # Loads the project to be used by the authorize filter to determine if
   # User.current has permission to invoke the method in question.
   def load_sprint_and_project
-    @project = Project.visible.find(params[:project_id])
+    @project = Project.visible.enhanced_find(params[:project_id])
 
     # because of strong params, we want to pluck this variable out right now,
     # otherwise it causes issues where we are doing `attributes=`.

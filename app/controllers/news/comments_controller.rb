@@ -57,7 +57,7 @@ class News::CommentsController < ApplicationController
   end
 
   def find_news_and_project
-    @project = Project.visible.find(params[:project_id])
+    @project = Project.visible.enhanced_find(params[:project_id])
     @news = @project.news.visible.find(params[:news_id])
   end
 end

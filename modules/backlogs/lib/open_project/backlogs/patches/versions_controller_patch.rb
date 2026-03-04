@@ -40,7 +40,7 @@ module OpenProject::Backlogs::Patches::VersionsControllerPatch
         # @project is already set by the VersionsController's find_version before action to the version's project
         # here we want to add that we always set it to the project from params if present
         if params[:project_id].present?
-          @project = Project.visible.find(params[:project_id])
+          @project = Project.visible.enhanced_find(params[:project_id])
         end
       end
 

@@ -156,7 +156,7 @@ class Storages::Admin::Storages::ProjectStoragesController < ApplicationControll
 
   def find_projects_to_activate_for_storage # rubocop:disable Metrics/AbcSize
     if (project_ids = params.to_unsafe_h[:storages_project_storage][:project_ids]).present?
-      @projects = Project.visible.find(project_ids)
+      @projects = Project.visible.enhanced_find(project_ids)
     else
       initialize_project_storage
       @project_storage.errors.add(:project_ids, :blank)

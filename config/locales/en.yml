@@ -1610,6 +1610,8 @@ en:
         custom_field_section: Section
       subproject_template_assignment:
         workspace_type: "Workspace type"
+      project/former_identifier:
+        identifier: "Identifier"
       project/phase:
         date_range: "Date range"
         definition: "Definition"
@@ -2244,6 +2246,9 @@ en:
       project:
         one: "Project"
         other: "Projects"
+      project/former_identifier:
+        one: "Former project identifier"
+        other: "Former project identifiers"
       project_query:
         one: "Project list"
         other: "Project lists"

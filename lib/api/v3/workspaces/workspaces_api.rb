@@ -48,7 +48,7 @@ module API
                            Project
                          else
                            Project.visible(current_user)
-                         end.find(params[:id])
+                         end.enhanced_find(params[:id])
             end
 
             mount ::API::V3::Workspaces::InstanceApis

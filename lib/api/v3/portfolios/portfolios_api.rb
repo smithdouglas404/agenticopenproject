@@ -51,7 +51,7 @@ module API
                            Project.portfolio
                          else
                            Project.portfolio.visible(current_user)
-                         end.find(params[:id])
+                         end.enhanced_find(params[:id])
             end
 
             mount ::API::V3::Workspaces::InstanceApis

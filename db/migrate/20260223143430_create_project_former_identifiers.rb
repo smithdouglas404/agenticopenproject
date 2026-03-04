@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -21,50 +23,22 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Grids
-  class Factory
-    class << self
-      def build(scope, user)
-        attributes = ::Grids::Configuration.attributes_from_scope(scope)
+class CreateProjectFormerIdentifiers < ActiveRecord::Migration[8.0]
+  def change
+    create_table :project_former_identifiers do |t|
+      t.references :project, null: false, foreign_key: { on_delete: :cascade }, index: true
+      t.string :identifier, null: false
 
-        grid_class = attributes[:class]
-        grid_project = project_from_id(attributes[:project_id])
-
-        new_default(grid_class, grid_project, user)
-      end
-
-      private
-
-      def new_default(klass, project, user)
-        params = class_defaults(klass)
-
-        if klass.reflect_on_association(:project)
-          params[:project] = project
-        end
-
-        if klass.reflect_on_association(:user)
-          params[:user] = user
-        end
-
-        klass.new(params)
-      end
-
-      def class_defaults(klass)
-        params = ::Grids::Configuration.defaults(klass)
-
-        params || { row_count: 4, column_count: 5, widgets: [] }
-      end
-
-      def project_from_id(id)
-        Project.enhanced_find(id) if id
-      rescue ActiveRecord::RecordNotFound
-        nil
-      end
+      t.timestamps
     end
+
+    add_index :project_former_identifiers,
+              :identifier,
+              unique: true
   end
 end

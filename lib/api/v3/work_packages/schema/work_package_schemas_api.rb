@@ -98,7 +98,7 @@ module API
             namespace ":project-:type" do
               after_validation do
                 begin
-                  @project = Project.find(params[:project])
+                  @project = Project.enhanced_find(params[:project])
                   @type = Type.find(params[:type])
                 rescue ActiveRecord::RecordNotFound
                   raise404

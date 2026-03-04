@@ -138,7 +138,7 @@ class VersionsController < ApplicationController
   end
 
   def find_project
-    @project = Project.visible.find(params[:project_id])
+    @project = Project.visible.enhanced_find(params[:project_id])
   end
 
   def retrieve_selected_type_ids(selectable_types, default_types = nil)

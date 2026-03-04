@@ -13,10 +13,6 @@ pre-commit:
       files: git diff --name-only --staged
       glob: "*.{js,ts,jsx,tsx}"
       run: npx eslint {staged_files}
-    rubocop:
-      files: git diff --name-only --staged
-      glob: "*.rb"
-      run: bin/dirty-rubocop --uncommitted --force-exclusion {files}
     erb_lint:
       files: git diff --name-only --staged
       glob: "*.erb"

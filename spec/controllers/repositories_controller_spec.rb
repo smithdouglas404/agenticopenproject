@@ -57,7 +57,7 @@ RSpec.describe RepositoriesController do
 
     visible_relation = instance_double(Project.all.class).as_null_object
     allow(Project).to receive(:visible).and_return(visible_relation)
-    allow(visible_relation).to receive(:find).and_return(project)
+    allow(visible_relation).to receive(:enhanced_find).and_return(project)
 
     allow(project).to receive(:repository).and_return(repository)
   end

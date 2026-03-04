@@ -77,7 +77,7 @@ module Grids
         return nil unless project_id
 
         unless project_id.match?(/\A\d+\z/)
-          project_id = Project.find(project_id).id
+          project_id = Project.enhanced_find(project_id).id
         end
 
         operator_strategy.sql_for_field([project_id],

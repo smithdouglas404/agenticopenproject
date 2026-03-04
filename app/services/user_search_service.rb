@@ -44,7 +44,7 @@ class UserSearchService
     self.params = params
 
     @users_only = users_only
-    @project = Project.find(params[:project_id]) if params[:project_id]
+    @project = Project.enhanced_find(params[:project_id]) if params[:project_id]
   end
 
   def scope

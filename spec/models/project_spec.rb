@@ -643,4 +643,45 @@ RSpec.describe Project do
       end
     end
   end
+
+  describe "#save_former_identifier" do
+    let(:project) { create(:project, identifier: "original-id") }
+
+    it "writes the former identifier to former_identifiers when it is changed" do
+      expect do
+        project.update!(identifier: "new-id")
+      end.to change { project.former_identifiers.count }.by(1)
+
+      expect(project.former_identifiers.last.identifier).to eq("original-id")
+    end
+
+    it "does not write to former_identifiers if the identifier did not change" do
+      expect do
+        project.update!(name: "New Name")
+      end.not_to change { project.former_identifiers.count }
+    end
+
+    it "does not write to former_identifiers if the identifier was nil before (new record)" do
+      new_project = build(:project, identifier: nil)
+      expect do
+        new_project.save!
+      end.not_to change(Project::FormerIdentifier, :count)
+    end
+
+    it "does not write to former_identifiers if the identifier is already there" do
+      project.update!(identifier: "new-id")
+      project.update!(identifier: "original-id")
+      expect do
+        project.update!(identifier: "even-newer-id")
+      end.not_to change { project.former_identifiers.count }
+    end
+  end
+
+  describe "#to_param" do
+    let(:project) { create(:project, identifier: "myproject") }
+
+    it "returns the identifier" do
+      expect(project.to_param).to eq("myproject")
+    end
+  end
 end
