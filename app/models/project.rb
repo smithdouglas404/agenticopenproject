@@ -29,8 +29,6 @@
 #++
 
 class Project < ApplicationRecord
-  # extend FriendlyId
-
   include Projects::Activity
   include Projects::AncestorsFromRoot
   include Projects::CustomFields
@@ -168,8 +166,7 @@ class Project < ApplicationRecord
     end
   end
 
-  # TODO
-  acts_as_searchable columns: %W(#{table_name}.name #{table_name}.description),
+  acts_as_searchable columns: %W(#{table_name}.name #{table_name}.identifier #{table_name}.description),
                      date_column: "#{table_name}.created_at",
                      project_key: "id",
                      permission: nil
