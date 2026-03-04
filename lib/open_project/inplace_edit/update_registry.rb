@@ -57,9 +57,7 @@ module OpenProject
       end
 
       def resolve_model_class(param)
-        class_name = param.to_s.camelize
-
-        @registry.keys.find { |klass| klass.name == class_name }
+        @registry.keys.find { |klass| klass.model_name.param_key == param.to_s }
       end
 
       @default = new
