@@ -76,9 +76,8 @@ export default class extends Controller {
     return this.currentToken;
   };
 
-  // Helper function for waiting for IndexedDB synchronization
   private waitForIndexedDBSync = (ydoc:Doc):Promise<void> => {
-    const persistence = new IndexeddbPersistence(`op-doc-${this.documentNameValue}`, ydoc);
+    const persistence = new IndexeddbPersistence(this.documentNameValue, ydoc);
     this.indexeddbPersistence = persistence;
 
     // y-indexeddb does not emit an 'error' event, so a timeout is the only
