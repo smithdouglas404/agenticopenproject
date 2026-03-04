@@ -33,6 +33,7 @@ require "spec_helper"
 RSpec.describe TaskBoards::CreateService do
   let(:user) { create(:user) }
   let(:project) { create(:project) }
+  let(:sprint) { create(:sprint, project:) }
   let(:type_task) { create(:type_task) }
   let(:status1) { create(:status) }
   let(:status2) { create(:status) }
@@ -47,7 +48,7 @@ RSpec.describe TaskBoards::CreateService do
   end
 
   describe ".ensure" do
-    subject(:result) { described_class.ensure(user:, project:, name: "Test Board") }
+    subject(:result) { described_class.ensure(user:, project:, sprint:, name: "Test Board") }
 
     context "when a board with the given name already exists" do
       let!(:existing_board) { create(:board_grid_with_query, project:, name: "Test Board") }
@@ -91,7 +92,7 @@ RSpec.describe TaskBoards::CreateService do
   end
 
   describe "#call" do
-    subject(:result) { instance.call(project:, name: "Test Board") }
+    subject(:result) { instance.call(project:, sprint:, name: "Test Board") }
 
     context "when successful" do
       it { is_expected.to be_success }
@@ -114,6 +115,26 @@ RSpec.describe TaskBoards::CreateService do
           "type" => "action",
           "attribute" => "status"
         )
+      end
+
+      it "filters each query by the sprint version" do
+        result.result.widgets.each do |widget|
+          query = Query.find(widget.options[:query_id])
+          version_filter = query.filters.find { |f| f.field.to_s == "version_id" }
+          expect(version_filter).not_to be_nil
+          expect(version_filter.operator).to eq("=")
+          expect(version_filter.values).to eq([sprint.id.to_s])
+        end
+      end
+
+      it "filters each query by the task type" do
+        result.result.widgets.each do |widget|
+          query = Query.find(widget.options[:query_id])
+          type_filter = query.filters.find { |f| f.field.to_s == "type_id" }
+          expect(type_filter).not_to be_nil
+          expect(type_filter.operator).to eq("=")
+          expect(type_filter.values).to eq([type_task.id.to_s])
+        end
       end
     end
 

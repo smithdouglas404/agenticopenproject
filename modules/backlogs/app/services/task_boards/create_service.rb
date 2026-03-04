@@ -29,11 +29,11 @@
 #++
 
 class TaskBoards::CreateService
-  def self.ensure(user:, project:, name:)
+  def self.ensure(user:, project:, sprint:, name:)
     board = ::Boards::Grid.find_by(project:, name:)
     return ServiceResult.success(result: board) if board
 
-    new(user:).call(project:, name:)
+    new(user:).call(project:, sprint:, name:)
   rescue ActiveRecord::RecordNotUnique
     ServiceResult.success(result: ::Boards::Grid.find_by!(project:, name:))
   end
@@ -44,16 +44,16 @@ class TaskBoards::CreateService
     @user = user
   end
 
-  def call(project:, name:)
-    create(project:, name:)
+  def call(project:, sprint:, name:)
+    create(project:, sprint:, name:)
   end
 
   private
 
-  def create(project:, name:)
+  def create(project:, sprint:, name:)
     ApplicationRecord.transaction do
       statuses = Type.find(Task.type).statuses
-      queries  = create_queries(statuses, project:)
+      queries  = create_queries(statuses, project:, sprint:)
       widgets  = build_widgets(queries)
 
       grid = ::Boards::Grid.create!(
@@ -86,12 +86,14 @@ class TaskBoards::CreateService
     end
   end
 
-  def create_queries(statuses, project:)
+  def create_queries(statuses, project:, sprint:)
     statuses.map do |status|
       Query.new_default(project:, user:).tap do |query|
         query.name = status.name
         query.public = true
         query.add_filter("status_id", "=", [status.id])
+        query.add_filter("version_id", "=", [sprint.id.to_s])
+        query.add_filter("type_id", "=", [Task.type.to_s])
         query.sort_criteria = [[:manual_sorting, "asc"]]
         query.save!
       end
