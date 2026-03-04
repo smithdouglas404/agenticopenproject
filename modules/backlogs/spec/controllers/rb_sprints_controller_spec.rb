@@ -102,14 +102,16 @@ RSpec.describe RbSprintsController do
           }
         end
 
-        it "responds with success and creates a sprint", :aggregate_failures do
+        it "responds with success, creates a sprint, and redirects to backlogs", :aggregate_failures do
           post :create, format: :turbo_stream, params: params
 
           expect(response).to be_successful
           expect(response).to have_http_status :ok
-          expect(response).to have_turbo_stream action: "flash"
-          # See feature spec for detailed expectations on the created sprint and rendered components
+          expect(response.body).to include("turbo-stream")
+          expect(response.body).to include("action=\"redirect_to\"")
+          expect(response.body).to include(backlogs_project_backlogs_path(project))
           expect(project.reload.sprints.last.name).to eq("My Sprint")
+          expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
         end
 
         context "without the 'create_sprints' permission" do

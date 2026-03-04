@@ -81,13 +81,12 @@ class RbSprintsController < RbApplicationController
              .call(attributes: converted_agile_sprint_params)
 
     if call.success?
-      render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_create))
-      replace_backlogs_container_via_turbo_stream
+      flash[:notice] = I18n.t(:notice_successful_create)
+      render turbo_stream: turbo_stream.redirect_to(backlogs_project_backlogs_path(@project))
     else
       update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
+      respond_with_turbo_streams
     end
-
-    respond_with_turbo_streams
   end
 
   # Called like this due to `update` being taken by legacy sprints.
@@ -172,18 +171,6 @@ class RbSprintsController < RbApplicationController
       ),
       status: :bad_request
     )
-  end
-
-  # This is usually done by the RbMasterBacklogsController, it feels wrong to have this here
-  def replace_backlogs_container_via_turbo_stream
-    @owner_backlogs = Backlog.owner_backlogs(@project)
-    @sprints = @project.sprints.open.order_by_date
-
-    turbo_streams << OpTurbo::StreamComponent.new(
-      action: :replace,
-      target: "backlogs_container",
-      template: render_to_string(partial: "rb_master_backlogs/agile_list", layout: false)
-    ).render_in(view_context)
   end
 
   # Overrides load_sprint_and_project to load the sprint from :id instead of :sprint_id
