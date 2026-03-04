@@ -84,6 +84,42 @@ RSpec.describe RbSprintsController do
       end
     end
 
+    describe "GET #edit_dialog" do
+      let!(:sprint) { create(:agile_sprint, project:) }
+
+      context "with the feature flag inactive" do
+        it "responds with forbidden" do
+          get :edit_dialog, params: { project_id: project.id, id: sprint.id }, format: :turbo_stream
+
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :forbidden
+        end
+      end
+
+      context "with the feature flag active", with_flag: { scrum_projects: true } do
+        it "responds with success", :aggregate_failures do
+          get :edit_dialog, params: { project_id: project.id, id: sprint.id }, format: :turbo_stream
+
+          expect(response).to be_successful
+          expect(response).to have_http_status :ok
+          expect(response).to have_turbo_stream action: "dialog", target: "backlogs-new-sprint-dialog-component"
+          expect(assigns(:project)).to eq(project)
+          expect(assigns(:sprint)).to eq(sprint)
+        end
+
+        context "without the 'create_sprints' permission" do
+          let(:permissions) { all_permissions - [:create_sprints] }
+
+          it "responds with forbidden", :aggregate_failures do
+            get :edit_dialog, params: { project_id: project.id, id: sprint.id }, format: :turbo_stream
+
+            expect(response).not_to be_successful
+            expect(response).to have_http_status :forbidden
+          end
+        end
+      end
+    end
+
     describe "POST #create" do
       context "with the feature flag inactive" do
         it "responds with forbidden" do
@@ -127,6 +163,49 @@ RSpec.describe RbSprintsController do
       end
     end
 
+    describe "PUT #update_agile_sprint" do
+      let!(:sprint) { create(:agile_sprint, name: "Original sprint name", project:) }
+
+      context "with the feature flag inactive" do
+        it "responds with forbidden" do
+          put :update_agile_sprint, params: { id: sprint.id, project_id: project.id }, format: :turbo_stream
+
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :forbidden
+        end
+      end
+
+      context "with the feature flag active", with_flag: { scrum_projects: true } do
+        let(:params) do
+          {
+            id: sprint.id,
+            project_id: project.id,
+            sprint: { name: "Changed sprint name" }
+          }
+        end
+
+        it "responds with success", :aggregate_failures do
+          put :update_agile_sprint, format: :turbo_stream, params: params
+
+          expect(response).to be_successful
+          expect(response).to have_http_status :ok
+          expect(response.body).to have_turbo_stream action: "flash"
+          expect(sprint.reload.name).to eq("Changed sprint name")
+        end
+
+        context "without the 'create_sprints' permission" do
+          let(:permissions) { all_permissions - [:create_sprints] }
+
+          it "responds with forbidden", :aggregate_failures do
+            put :update_agile_sprint, format: :turbo_stream, params: params
+
+            expect(response).not_to be_successful
+            expect(response).to have_http_status :forbidden
+          end
+        end
+      end
+    end
+
     describe "GET #refresh_form" do
       context "with the feature flag inactive" do
         it "responds with forbidden" do
@@ -151,6 +230,7 @@ RSpec.describe RbSprintsController do
           expect(response).to be_successful
           expect(response).to have_http_status :ok
           expect(response).to have_turbo_stream action: "update", target: "backlogs-new-sprint-form-component"
+          expect(assigns(:sprint)).to be_nil
         end
 
         context "without the 'create_sprints' permission" do
@@ -161,6 +241,24 @@ RSpec.describe RbSprintsController do
 
             expect(response).not_to be_successful
             expect(response).to have_http_status :forbidden
+          end
+        end
+
+        context "when refreshing the form in edit mode by passing a sprint id" do
+          let!(:sprint) { create(:agile_sprint, project:) }
+          let(:params) do
+            {
+              project_id: project.id,
+              sprint: { id: sprint.id, name: "My Sprint", start_date: "2025-10-05", finish_date: "2025-10-15" }
+            }
+          end
+
+          it "responds with success", :aggregate_failures do
+            get :refresh_form, format: :turbo_stream, params: params
+
+            expect(response).to be_successful
+            expect(response).to have_http_status :ok
+            expect(response).to have_turbo_stream action: "update", target: "backlogs-new-sprint-form-component"
           end
         end
       end
