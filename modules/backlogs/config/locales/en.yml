@@ -98,12 +98,23 @@ en:
       blankslate_title: "%{name} is empty"
       blankslate_description: "No items planned yet. Drag items here to add them."
 
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
+
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
         other: "%{count} stories in backlog"
+
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
 
     backlog_menu_component:
       label_actions: "Backlog actions"
@@ -115,6 +126,15 @@ en:
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
+
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
 
     story_component:
       label_drag_story: "Move %{name}"
