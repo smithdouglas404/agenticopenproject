@@ -32,8 +32,8 @@ require "rails_helper"
 RSpec.describe OpenProject::InplaceEdit::UpdateRegistry do
   subject(:registry) { described_class.new }
 
-  let(:handler) { instance_double(OpenProject::InplaceEdit::Handlers::ProjectUpdate) }
-  let(:contract) { instance_double(Projects::UpdateContract) }
+  let(:handler) { class_double(OpenProject::InplaceEdit::Handlers::ProjectUpdate) }
+  let(:contract) { class_double(Projects::UpdateContract) }
 
   describe "#register" do
     it "registers handler and contract for a model" do
