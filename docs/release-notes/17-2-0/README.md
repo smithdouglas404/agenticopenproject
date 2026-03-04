@@ -28,7 +28,7 @@ Take a look at our release video showing the most important features introduced 
 
 [feature: mcp_server ]
 
-OpenProject 17.2 introduces the **MCP Server**, a new Enterprise add-on that lays the foundation for robust integrations between OpenProject and systems that use the Model Context Protocol (MCP), such as large language models or automation tools. This server exposes OpenProject’s APIv3 resources as MCP-compatible endpoints and enables secure, authenticated access for clients such as large language models or other MCP clients, opening the door to richer contextual interactions with your project data. 
+OpenProject 17.2 introduces the **MCP Server**, a new Enterprise add-on that lays the foundation for robust integrations between OpenProject and AI systems, including large language models (LLMs), as well as other tools that use the Model Context Protocol (MCP). This server exposes OpenProject's APIv3 resources as MCP-compatible endpoints and enables secure, authenticated access for clients such as LLMs or other MCP clients, opening the door to richer contextual interactions with your project data.
 
 Included in this release are administrative UI support for configuring the MCP Server, infrastructure and metadata endpoints, and integration of MCP authentication with OpenProject’s OAuth2 and API key mechanisms, including external OpenID Connect providers. An initial set of MCP tools and resources is provided to surface key entities (projects, work packages, users, etc.), and response formats can be adjusted based on your preferences. With session-cookie and bearer-token support, the MCP Server acts as a secure bridge between your OpenProject instance and external systems that operate via MCP. 
 
@@ -40,7 +40,9 @@ See the [**MCP Server documentation**](../../system-admin-guide/integrations/mcp
 
 [feature: meeting_templates ]
 
-Preparing meetings often involves recreating the same agenda structure again and again. With OpenProject 17.2, administrators can now define reusable meeting templates that provide a predefined agenda layout for their teams. These templates help ensure that important discussion points are consistently covered and that project meetings follow a clear, standardized structure.
+Preparing meetings often involves recreating the same agenda structure again and again. With OpenProject 17.2, administrators can now define reusable meeting templates that provide a predefined agenda layout for their teams.
+
+These templates make it easy to start meetings with a proven structure instead of building the agenda from scratch each time. Even when meetings are not held regularly, teams can reuse well-designed formats that guide discussions and help ensure that important topics are addressed.
 
 When creating a new one-time meeting, users can choose from the available templates to automatically populate the agenda with the predefined sections and items. This saves time during setup and promotes alignment across teams. 
 
@@ -64,11 +66,11 @@ Read more about [capturing external links in OpenProject](../../system-admin-gui
 
 OpenProject 17.2 enhances the Project Overview to provide clearer financial insights, easier inline editing, and improved accessibility. Together, these updates make the Overview page a more powerful and inclusive central hub for project information.
 
-#### Updated Overview widget for Budgets
+#### Updated Overview widgets for Budgets
 
-Project, program, and portfolio managers can now see key financial indicators at a glance. New budget widgets displays planned budget, actual costs, spent ratio, and remaining budget, along with visual breakdowns by cost type and recent monthly actuals. Data is automatically aggregated across subprojects where applicable, giving stakeholders a consolidated financial snapshot without leaving the Overview page.
+Project, program, and portfolio managers can now see key financial indicators at a glance. New budget widgets display planned budget, actual costs, spent ratio, and remaining budget, along with visual breakdowns by cost type and recent monthly actuals. Data is automatically aggregated across subprojects where applicable, giving stakeholders a consolidated financial snapshot without leaving the Overview page.
 
-These widgets helps teams better understand financial status and trends directly within their project context. Keep in mind that both the Budgets and Time & Costs modules need to be enabled for the widget to work. 
+These widgets help teams better understand financial status and trends directly within their project context. Keep in mind that both the Budgets and Time & Costs modules need to be enabled for the widgets to work. 
 
 ![An example of project budget widget on a project home page in OpenProject](openproject_release_notes_17-2-0_budget_widget.png)
 
@@ -76,7 +78,7 @@ Read more about [budget widgets](../../user-guide/project-home/project-widgets/#
 
 #### Editable project description and project status widgets on a Project view tab
 
-The project description and project status widgets on the Overview tab are now editable inline. Based on your feedback, we’ve streamlined the experience so authorized users can update content directly where they view it,  without switching to another tab.
+The project description and project status widgets on the Overview tab are now editable inline. Based on your feedback, we’ve streamlined the experience so authorized users can update content directly where they view it, without switching to another tab.
 
 Note that users without edit permissions will continue to see the content in read-only mode.
 
@@ -100,7 +102,7 @@ Read more about [project attributes in OpenProject](../../user-guide/project-hom
 
 ### PDF export improvements
 
-OpenProject 17.2 enhances PDF exports to provide more complete and reliable reporting.
+OpenProject 17.2 enhances PDF exports to provide more exhaustive and reliable reporting.
 
 Work package queries can now include relationship columns in PDF reports. Related work packages are exported as structured tables within the document, making it easier to document complex relationships and dependencies in a clear and shareable format. This ensures that important contextual information is no longer lost when generating formal reports.
 
