@@ -549,10 +549,7 @@ RSpec.describe Project do
     end
 
     it "is set from name" do
-      project = described_class.new(name: "foo")
-
-      project.validate
-
+      project = create(:project, name: "foo")
       expect(project.identifier).to eq("foo")
     end
 
@@ -640,6 +637,75 @@ RSpec.describe Project do
 
       it "is falsey" do
         expect(workspace).not_to be_parent_allowed
+      end
+    end
+  end
+
+  # TODO: Maybe move them to a seapate file project/identifier_finder_spec.rb
+  context "with project identifiers" do
+    let!(:project) { create(:project, name: "My Project") }
+    let!(:project_identifier) { create(:project_identifier, project:, handle: "my") }
+    let!(:other_project) { create(:project) }
+    let!(:other_project_identifier) { create(:project_identifier, project: other_project, handle: "other") }
+
+    describe ".find" do
+      describe "with a string" do
+        it "finds by handle" do
+          expect(described_class.find("my")).to eq(project)
+          expect(described_class.find("other")).to eq(other_project)
+        end
+
+        it "raises if not found and nil is not allowed" do
+          expect { described_class.find("unknown") }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+
+        it "does not raise if not found and nil is allowed" do
+          expect(described_class.find("unknown", allow_nil: true)).to be_nil
+        end
+
+        it "finds by handle when used with a scope" do
+          expect(described_class.active.find("my")).to eq(project)
+        end
+
+        it "finds by handle when used with an association" do
+          user = create(:user)
+          create(:member, project:, principal: user, roles: [create(:project_role)])
+          expect(user.projects.find("my")).to eq(project)
+        end
+      end
+
+      describe "with a number" do
+        let(:unknown_id) { other_project.id + 1 }
+
+        it "finds by id" do
+          expect(described_class.find(project.id)).to eq(project)
+          expect(described_class.find(other_project.id)).to eq(other_project)
+        end
+
+        it "finds by id when used with a scope" do
+          expect(described_class.active.find(project.id)).to eq(project)
+        end
+
+        it "finds by handle when used with an association" do
+          user = create(:user)
+          create(:member, project:, principal: user, roles: [create(:project_role)])
+          expect(user.projects.find(project.id)).to eq(project)
+        end
+
+        it "raises if not found and nil is not allowed" do
+          expect { described_class.find(unknown_id) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+
+        # TODO - this uses super and raises
+        # it "does not raise if not found and nil is allowed" do
+        #   expect(described_class.find(unknown_id, allow_nil: true)).to be_nil
+        # end
+      end
+    end
+
+    describe ".exists?" do
+      it "works with an id" do
+        # TODO
       end
     end
   end

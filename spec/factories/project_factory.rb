@@ -44,12 +44,16 @@ FactoryBot.define do
       #     other_user => [role2, role3]
       #   }
       member_with_roles { {} }
+
+      # example:
+      #   identifier: "project_x"
+      identifier { nil }
     end
 
     workspace_type { "project" }
 
     sequence(:name) { |n| "My Project No. #{n}" }
-    sequence(:identifier) { |n| "myproject_no_#{n}" }
+    # sequence(:identifier) { |n| "myproject_no_#{n}" }
 
     callback(:after_build) do |_project, evaluator|
       is_build_strategy = evaluator.instance_eval { @build_strategy.is_a? FactoryBot::Strategy::Build }
@@ -77,6 +81,10 @@ FactoryBot.define do
 
       evaluator.member_with_roles.each do |principal, role_or_roles|
         create(:member, principal:, project: project, roles: Array(role_or_roles))
+      end
+
+      if evaluator.identifier.present?
+        create(:project_identifier, project: project, handle: evaluator.identifier, current: true)
       end
     end
 

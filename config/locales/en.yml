@@ -1430,6 +1430,9 @@ en:
         start_date: "Start date"
         start_date_caption: "Follows the previous phase."
         finish_date: "Finish date"
+      project/identifier:
+        handle: "Identifier"
+        current: "currently used"
       project/phase_definition:
         name: "Name"
         color: "Color"
@@ -2054,6 +2057,9 @@ en:
       project:
         one: "Project"
         other: "Projects"
+      project/identifier:
+        one: "Project identifier"
+        other: "Project identifiers"
       project_query:
         one: "Project list"
         other: "Project lists"

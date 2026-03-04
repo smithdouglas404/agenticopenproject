@@ -29,7 +29,7 @@
 #++
 
 class Project < ApplicationRecord
-  extend FriendlyId
+  # extend FriendlyId
 
   include Projects::Activity
   include Projects::AncestorsFromRoot
@@ -42,6 +42,10 @@ class Project < ApplicationRecord
   include Projects::CreationWizard
 
   include ::Scopes::Scoped
+
+  extend Projects::IdentifierFinder
+  relation_delegate_class(::ActiveRecord::Relation).include(Projects::IdentifierFinder)
+  relation_delegate_class(::ActiveRecord::AssociationRelation).include(Projects::IdentifierFinder)
 
   # Maximum length for project identifiers
   IDENTIFIER_MAX_LENGTH = 100
@@ -121,6 +125,16 @@ class Project < ApplicationRecord
   has_many :subproject_template_assignments,
            dependent: :delete_all
 
+  has_many :identifiers,
+           class_name: "Project::Identifier",
+           inverse_of: :project,
+           dependent: :destroy
+
+  has_one :identifier,
+          -> { where(current: true) },
+          class_name: "Project::Identifier",
+          inverse_of: :project
+
   accepts_nested_attributes_for :available_phases
   validates_associated :available_phases, on: :saving_phases
 
@@ -144,6 +158,7 @@ class Project < ApplicationRecord
   # or update callback will also be executed alongside the `:saving_custom_fields` callbacks.
   # This problem does not affect the contextless callbacks, they are always executed.
 
+  # TODO: Is this still necessary?!
   def validation_context
     case Array(super)
     in [*, :saving_custom_fields, *] => context
@@ -153,18 +168,39 @@ class Project < ApplicationRecord
     end
   end
 
-  acts_as_searchable columns: %W(#{table_name}.name #{table_name}.identifier #{table_name}.description),
+  # TODO
+  acts_as_searchable columns: %W(#{table_name}.name #{table_name}.description),
                      date_column: "#{table_name}.created_at",
                      project_key: "id",
                      permission: nil
 
-  acts_as_journalized
 
   # Necessary for acts_as_searchable which depends on the event_datetime method for sorting
   acts_as_event title: Proc.new { |o| "#{Project.model_name.human}: #{o.name}" },
                 url: Proc.new { |o| { controller: "overviews/overviews", action: "show", project_id: o } },
                 author: nil,
                 datetime: :created_at
+
+  after_save :set_identifier
+
+  acts_as_journalized data_sql: ->(project) {
+    <<~SQL.squish
+    LEFT JOIN LATERAL (
+      SELECT handle AS identifier
+      FROM project_identifiers pi
+      WHERE pi.project_id = #{Project.table_name}.id
+        AND pi.current = TRUE
+      ORDER BY pi.id DESC
+      LIMIT 1
+    ) current_identifier ON TRUE
+  SQL
+  }
+
+  acts_as_journalized
+
+  # def journaled_columns_names
+  #   super - [:identifier]
+  # end
 
   register_journal_formatted_fields "active", formatter_key: :active_status
   register_journal_formatted_fields "cause", formatter_key: :cause
@@ -186,34 +222,29 @@ class Project < ApplicationRecord
 
   normalizes :name, with: ->(name) { name.squish }
 
+
+  # TODO: Move below?
+  def set_identifier
+    if identifier.nil?
+      identifiers.create(current: true)
+    end
+  end
+
   # TODO: we temporarily disable this validation because it leads to failed tests
   # it implicitly assumes a db:seed-created standard type to be present and currently
   # neither development nor deployment setups are prepared for this
   # validates_presence_of :types
 
-  acts_as_url :name,
-              url_attribute: :identifier,
-              sync_url: false, # Don't update identifier when name changes
-              only_when_blank: true, # Only generate when identifier not set
-              limit: IDENTIFIER_MAX_LENGTH,
-              blacklist: RESERVED_IDENTIFIERS,
-              adapter: OpenProject::ActsAsUrl::Adapter::OpActiveRecord # use a custom adapter able to handle edge cases
-
-  validates :identifier,
-            presence: true,
-            uniqueness: { case_sensitive: true },
-            length: { maximum: IDENTIFIER_MAX_LENGTH },
-            exclusion: RESERVED_IDENTIFIERS,
-            if: ->(p) { p.persisted? || p.identifier.present? }
-
-  # Contains only a-z, 0-9, dashes and underscores but cannot consist of numbers only as it would clash with the id.
-  validates :identifier,
-            format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
-            if: ->(p) { p.identifier_changed? && p.identifier.present? }
+  # TODO!!! This must write to the join model now
+  # acts_as_url :name,
+  #             url_attribute: :identifier,
+  #             sync_url: false, # Don't update identifier when name changes
+  #             only_when_blank: true, # Only generate when identifier not set
+  #             limit: IDENTIFIER_MAX_LENGTH,
+  #             blacklist: RESERVED_IDENTIFIERS,
+  #             adapter: OpenProject::ActsAsUrl::Adapter::OpActiveRecord # use a custom adapter able to handle edge cases
 
   validates_associated :repository, :wiki
-
-  friendly_id :identifier, use: :finders
 
   scopes :activated_in_storage,
          :allowed_to,
@@ -248,6 +279,10 @@ class Project < ApplicationRecord
     finished: 4,
     discontinued: 5
   }
+
+  def to_param
+    identifier.presence.to_param || super
+  end
 
   def visible?(user = User.current)
     active? && (public? || user.admin? || user.access_to?(self))
