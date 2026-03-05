@@ -39,31 +39,9 @@ module WorkPackages
 
         def initialize
           super
-          # FIXME: Replace WHERE clause with:
-          #   Project.where.not(id: OldProjectIdentifier.where(current: true).select(:project_id))
-          # once all valid identifiers have been migrated to handle rows.
-          problematic_scope = Project.where(
-            "length(identifier) > ? OR identifier ~ ?",
-            WorkPackages::ProjectHandleSuggestionGenerator::HANDLE_MAX_LENGTH,
-            "[^a-zA-Z0-9]"
-          )
-
-          @total_count = problematic_scope.count
-          preview_projects = problematic_scope
-            .select(:id, :name, :identifier)
-            .limit(WorkPackages::Admin::Settings::IdentifierAutofixSectionComponent::DISPLAY_COUNT)
-            .to_a
-
-          in_use_handles = Project.where.not(id: problematic_scope.select(:id)).pluck(:identifier).to_set
-          # TODO: Replace with OldProjectIdentifier.pluck(:identifier).to_set
-          # once the OldProjectIdentifier model and migration are added.
-          reserved_handles = Set.new
-
-          @projects_data = WorkPackages::ProjectHandleSuggestionGenerator.call(
-            preview_projects,
-            in_use_handles:,
-            reserved_handles:
-          )
+          result         = WorkPackages::IdentifierAutofix::PreviewQuery.new.call
+          @projects_data = result.projects_data
+          @total_count   = result.total_count
         end
 
         def has_problematic_projects?

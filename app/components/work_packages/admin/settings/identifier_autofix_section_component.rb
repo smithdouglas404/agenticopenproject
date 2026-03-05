@@ -48,16 +48,7 @@ module WorkPackages
         attr_reader :total_count, :displayed, :remaining_count
 
         def error_label(error_reason)
-          case error_reason
-          when :too_long
-            I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_too_long")
-          when :special_characters
-            I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_special_characters")
-          when :in_use
-            I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_in_use")
-          when :reserved
-            I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_reserved")
-          end
+          I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_#{error_reason}")
         end
 
         # Produces a realistic-looking example work package ID for the preview table.

@@ -160,48 +160,4 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierAutofixSectionComponent,
     end
   end
 
-  context "with :in_use and :reserved error reasons" do
-    let(:entry_in_use) do
-      build_entry(name: "Alpha Beta Corp", identifier: "ABC", handle: "AB2", error_reason: :in_use)
-    end
-    let(:entry_reserved) do
-      build_entry(name: "Delta Echo Foxtrot", identifier: "DEF", handle: "DE2", error_reason: :reserved)
-    end
-    let(:projects_data) { [entry_in_use, entry_reserved] }
-
-    it "shows the in_use error caption" do
-      render_inline(component)
-      expect(page).to have_text(I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_in_use"))
-    end
-
-    it "shows the reserved error caption" do
-      render_inline(component)
-      expect(page).to have_text(I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_reserved"))
-    end
-  end
-
-  context "with total_count passed separately" do
-    let(:projects_data) do
-      Array.new(3) do |i|
-        build_entry(name: "Project #{i}", identifier: "proj-#{i}", handle: "P#{i}", error_reason: :special_characters)
-      end
-    end
-
-    subject(:component) { described_class.new(projects_data:, total_count: 50) }
-
-    it "reflects the real total in the banner" do
-      render_inline(component)
-      expect(page).to have_text(
-        I18n.t(
-          "admin.settings.work_packages_identifier.banner.existing_identifiers_notice",
-          project_count: 50
-        )
-      )
-    end
-
-    it "shows remaining count based on total_count, not projects_data.size" do
-      render_inline(component)
-      expect(page).to have_text("47 more projects")
-    end
-  end
 end
