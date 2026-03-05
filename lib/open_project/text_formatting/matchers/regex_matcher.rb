@@ -32,12 +32,16 @@ module OpenProject::TextFormatting
   module Matchers
     class RegexMatcher
       def self.call(node, doc:, context:)
-        content = node.to_html
+        # Selma text chunks return HTML-encoded content (e.g. &quot; instead of ").
+        # We unescape &quot; → " so that quoted link patterns like source:"/file" match.
+        # Other entities (&amp;, &lt;) are left encoded since they won't match link patterns
+        # and are safe to reinject into the HTML stream without re-encoding.
+        content = node.to_s.gsub("&quot;", '"')
         return unless applicable?(content)
 
-        # Replace the content
+        # Replace the content (Selma text chunks use replace with as: :html)
         if process_node!(content, context)
-          node.replace(content)
+          node.replace(content, as: :html)
         end
       rescue RuntimeError
         # If an error is occurred, instead of failing hard, simply do not replace.

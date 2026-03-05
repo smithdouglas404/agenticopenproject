@@ -28,56 +28,65 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "task_list/filter"
-
 module OpenProject::TextFormatting
   module Filters
-    # Overwriting the gem class to roll with our own classes
-    class TaskListFilter < ::TaskList::Filter
-      # Copied and adapted from parent class
-      #
-      # Renders the item checkbox in a span including the item state.
-      #
-      # Returns an HTML-safe String.
-      def render_item_checkbox(item)
-        %(<input type="checkbox"
-        class="op-uc-list--task-checkbox"
-        #{'checked="checked"' if item.complete?}
-        disabled="disabled"
-      />)
+    # Renders GFM task list items.
+    #
+    # When the Commonmarker `tasklist` extension is disabled (our default), list
+    # items whose text begins with "[ ] " or "[x] " are rendered as plain text:
+    #   <li>[ ] unchecked item</li>
+    #   <li>[x] checked item</li>
+    #
+    # This filter detects those patterns in the first text chunk of each <li>
+    # and replaces them with a disabled checkbox input.
+    class TaskListFilter < HTMLPipeline::NodeFilter
+      SELECTOR = Selma::Selector.new(
+        match_element: "li",
+        match_text_within: "li"
+      )
+
+      ITEM_PATTERN   = /\A\[([xX ])\] /
+      CHECKED_VALUES = %w[x X].freeze
+
+      def selector
+        SELECTOR
       end
 
-      # Copied and adapted from parent class.
-      # The added css classes are adapted or removed.
-      #
-      # Filters the source for task list items.
-      #
-      # Each item is wrapped in HTML to identify, style, and layer
-      # useful behavior on top of.
-      #
-      # Modifications apply to the parsed document directly.
-      #
-      # Returns nothing.
-      def filter! # rubocop:disable Metrics/AbcSize
-        list_items(doc).reverse_each do |li|
-          next if list_items(li.parent).empty?
+      def after_initialize
+        @expect_first_chunk = false
+      end
 
-          add_css_class(li.parent, "op-uc-list_task-list")
+      def reset!
+        after_initialize
+      end
 
-          outer, inner =
-            if p = li.xpath(ItemParaSelector)[0]
-              [p, p.inner_html]
-            else
-              [li, li.inner_html]
-            end
-          if match = inner.chomp =~ ItemPattern && $1
-            item = TaskList::Item.new(match, inner)
-            # prepend because we're iterating in reverse
-            task_list_items.unshift item
+      def handle_element(element)
+        return unless element.tag_name == "li"
 
-            outer.inner_html = render_task_list_item(item)
-          end
-        end
+        @expect_first_chunk = true
+      end
+
+      def handle_text_chunk(text)
+        return unless @expect_first_chunk
+
+        @expect_first_chunk = false
+        content = text.to_s
+
+        return unless (m = content.match(ITEM_PATTERN))
+
+        checked   = CHECKED_VALUES.include?(m[1])
+        remaining = content.sub(ITEM_PATTERN, "")
+        checkbox  = render_checkbox(checked)
+
+        text.replace("#{checkbox}#{remaining}", as: :html)
+      end
+
+      private
+
+      def render_checkbox(checked)
+        attrs = +%( type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled")
+        attrs << %( checked="checked") if checked
+        "<input#{attrs}/>"
       end
     end
   end

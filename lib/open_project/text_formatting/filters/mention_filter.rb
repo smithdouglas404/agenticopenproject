@@ -30,25 +30,40 @@
 
 module OpenProject::TextFormatting
   module Filters
-    class MentionFilter < HTML::Pipeline::Filter
+    class MentionFilter < HTMLPipeline::NodeFilter
       include ERB::Util
       include ActionView::Helpers::UrlHelper
       include OpenProject::ObjectLinking
       include OpenProject::StaticRouting::UrlHelpers
 
-      def call
-        doc.search("mention").each do |mention|
-          anchor = mention_anchor(mention)
-          mention.replace(anchor) if anchor
-        end
+      SELECTOR = Selma::Selector.new(
+        match_element: "mention"
+      )
 
-        doc
+      def selector
+        SELECTOR
       end
+
+      def after_initialize
+        @pending_mention = nil
+        @pending_text = nil
+      end
+
+      def handle_element(element)
+        anchor_html = mention_anchor_html(element)
+        if anchor_html
+          element.before(anchor_html, as: :html)
+        end
+        element.remove
+      end
+
+      # For link_to
+      def controller; end
 
       private
 
-      def mention_anchor(mention)
-        mention_instance = class_from_mention(mention)
+      def mention_anchor_html(element)
+        mention_instance = class_from_mention(element)
 
         case mention_instance
         when Group
@@ -56,9 +71,10 @@ module OpenProject::TextFormatting
         when User
           user_mention(mention_instance)
         when WorkPackage
-          work_package_mention(mention_instance, mention)
+          work_package_mention(mention_instance, element)
         else
-          mention_instance
+          # fallback: render the text content (set via inner content)
+          h(element["data-text"].presence || "")
         end
       end
 
@@ -74,8 +90,11 @@ module OpenProject::TextFormatting
                       class: "user-mention")
       end
 
-      def work_package_mention(work_package, mention)
-        case mention.text.count("#")
+      def work_package_mention(work_package, element)
+        text_content = element["data-text"] || ""
+        hash_count   = text_content.count("#")
+
+        case hash_count
         when 3
           ApplicationController.helpers.content_tag "opce-macro-wp-quickinfo",
                                                     "",
@@ -95,8 +114,8 @@ module OpenProject::TextFormatting
         end
       end
 
-      def class_from_mention(mention)
-        mention_class = case mention.attributes["data-type"].value
+      def class_from_mention(element)
+        mention_class = case element["data-type"]
                         when "user"
                           User
                         when "group"
@@ -109,24 +128,16 @@ module OpenProject::TextFormatting
 
         mention_class
           .visible
-          .find_by(id: mention_id(mention)) || fallback_text(mention)
+          .find_by(id: mention_id(element)) || fallback_text(element)
       end
 
-      ##
-      # Pass the content of the mention back to Nokogiri
-      # without unescaping any sanitization taken place already.
-      def fallback_text(mention)
-        Nokogiri::XML::Text.new(mention.text, doc)
+      def fallback_text(element)
+        h(element["data-text"].presence || "")
       end
 
-      # For link_to
-      def controller; end
-
-      def mention_id(mention)
-        attribute_value = mention.attributes["data-id"]&.value
-
+      def mention_id(element)
+        attribute_value = element["data-id"]
         id_match = attribute_value&.match(/\d+/)
-
         id_match ? id_match[0] : nil
       end
     end

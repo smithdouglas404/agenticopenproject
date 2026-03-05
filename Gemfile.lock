@@ -467,8 +467,6 @@ GEM
     date_validator (0.12.0)
       activemodel (>= 3)
       activesupport (>= 3)
-    deckar01-task_list (2.3.3)
-      html-pipeline
     declarative (0.0.20)
     dentaku (3.5.7)
       bigdecimal
@@ -1605,7 +1603,6 @@ DEPENDENCIES
   daemons
   dalli (~> 5.0.0)
   date_validator (~> 0.12.0)
-  deckar01-task_list (~> 2.3.1)
   dentaku (~> 3.5)
   disposable (~> 0.6.2)
   doorkeeper (~> 5.9.0)
@@ -1879,7 +1876,6 @@ CHECKSUMS
   dalli (5.0.2) sha256=818469227b9acdd9da3fc65ec5ae75d4020115545879e5e8f95634085e9a8749
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   date_validator (0.12.0) sha256=68c9834da240347b9c17441c553a183572508617ebfbe8c020020f3192ce3058
-  deckar01-task_list (2.3.3) sha256=918abaf3f81e6c0d224c2b7bef593d7f84ee5847a0692726d24e3fb272c2c758
   declarative (0.0.20) sha256=8021dd6cb17ab2b61233c56903d3f5a259c5cf43c80ff332d447d395b17d9ff9
   dentaku (3.5.7) sha256=8d15a4a801ac8e1491dd2842bb76e38dd2794e9c8aa0f6e06f59d7ec62727db0
   descendants_tracker (0.0.4) sha256=e9c41dd4cfbb85829a9301ea7e7c48c2a03b26f09319db230e6479ccdc780897

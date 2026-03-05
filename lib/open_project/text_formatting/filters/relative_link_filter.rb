@@ -30,19 +30,26 @@
 
 module OpenProject::TextFormatting
   module Filters
-    class RelativeLinkFilter < HTML::Pipeline::Filter
-      def call
+    class RelativeLinkFilter < HTMLPipeline::NodeFilter
+      SELECTOR = Selma::Selector.new(match_element: "a")
+
+      def selector
+        SELECTOR
+      end
+
+      def after_initialize
+        @rewriter = nil
+      end
+
+      def handle_element(element)
         # We only care for absolute rendering
-        unless context[:only_path] == false
-          return doc
-        end
+        return unless context[:only_path] == false
 
-        rewriter = ::OpenProject::TextFormatting::Helpers::LinkRewriter.new context
-        doc.css('a[href^="/"]').each do |node|
-          node["href"] = rewriter.replace node["href"]
-        end
+        href = element["href"]
+        return unless href&.start_with?("/")
 
-        doc
+        @rewriter ||= ::OpenProject::TextFormatting::Helpers::LinkRewriter.new(context)
+        element["href"] = @rewriter.replace(href)
       end
     end
   end

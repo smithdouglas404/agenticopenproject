@@ -30,19 +30,27 @@
 
 module OpenProject::TextFormatting
   module Filters
-    class LinkAttributeFilter < HTML::Pipeline::Filter
-      def call
-        links.each do |node|
-          next if node["target"] || node["href"]&.start_with?("#")
+    class LinkAttributeFilter < HTMLPipeline::NodeFilter
+      SELECTOR = Selma::Selector.new(match_element: "a")
 
-          node["target"] = context.fetch(:target, "_top")
-        end
-
-        doc
+      def selector
+        SELECTOR
       end
 
-      def links
-        doc.css("a")
+      def handle_element(element)
+        href = element["href"]
+
+        # Strip style attribute to prevent hidden/malicious links (e.g. display:none)
+        element.remove_attribute("style")
+
+        # Add rel to all links (replacing the old SanitizationFilter add_attributes behaviour)
+        existing_rel = element["rel"]
+        element["rel"] = "noopener noreferrer" if existing_rel.blank?
+
+        # Skip fragment-only links and links that already have a target
+        return if element["target"] || href&.start_with?("#")
+
+        element["target"] = context.fetch(:target, "_top")
       end
     end
   end

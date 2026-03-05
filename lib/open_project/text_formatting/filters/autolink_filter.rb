@@ -30,7 +30,10 @@
 
 module OpenProject::TextFormatting
   module Filters
-    # HTML Filter for auto_linking urls in HTML.
+    # HTML NodeFilter for auto-linking urls and email addresses in HTML text nodes.
+    #
+    # Runs post-conversion on the HTML output so that content inside
+    # <pre>, <code>, <a>, and <kbd> blocks is not auto-linked.
     #
     # Context options:
     #
@@ -38,14 +41,31 @@ module OpenProject::TextFormatting
     #     classes: (string) Classes to add to auto linked urls and mails
     #     enabled: (boolean)
     #
-    # This filter does not write additional information to the context.
-    class AutolinkFilter < HTML::Pipeline::Filter
-      def call
-        autolink_context = default_autolink_options.merge context.fetch(:autolink, {})
-        return doc if autolink_context[:enabled] == false
+    class AutolinkFilter < HTMLPipeline::NodeFilter
+      SELECTOR = Selma::Selector.new(
+        match_text_within: "*",
+        ignore_text_within: %w[pre code a kbd]
+      )
 
-        ::Rinku.auto_link(html, :all, "class=\"#{autolink_context[:classes]}\" rel=\"noopener noreferrer\"", nil,
-                          Rinku::AUTOLINK_SHORT_DOMAINS)
+      def selector
+        SELECTOR
+      end
+
+      def handle_text_chunk(text)
+        autolink_context = default_autolink_options.merge context.fetch(:autolink, {})
+        return if autolink_context[:enabled] == false
+
+        content = text.to_s
+        target  = context.fetch(:target, "_top")
+        attrs   = "class=\"#{autolink_context[:classes]}\" rel=\"noopener noreferrer\" target=\"#{target}\""
+        linked  = ::Rinku.auto_link(
+          content,
+          :all,
+          attrs,
+          nil,
+          Rinku::AUTOLINK_SHORT_DOMAINS
+        )
+        text.replace(linked, as: :html) if linked != content
       end
 
       def default_autolink_options

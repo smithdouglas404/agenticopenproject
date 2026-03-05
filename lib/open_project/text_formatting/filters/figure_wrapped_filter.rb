@@ -30,57 +30,30 @@
 
 module OpenProject::TextFormatting
   module Filters
-    class FigureWrappedFilter < HTML::Pipeline::Filter
-      include ActionView::Context
-      include ActionView::Helpers::TagHelper
-
-      def call
-        doc.search("table", "img").each do |element|
-          case element.name
-          when "img", "table"
-            wrap_element(element)
-          else
-            # nothing
-          end
-        end
-
-        doc
-      end
-
-      private
-
-      # Wrap img elements like this
-      # <figure>
-      #   <div class="op-uc-figure--content">
-      #     <img></img>
-      #   </div>
-      # <figure>
-      #
-      # and
+    class FigureWrappedFilter < HTMLPipeline::NodeFilter
+      # Wrap img and table elements:
       #
       # <figure>
       #   <div class="op-uc-figure--content">
-      #     <table></table>
+      #     <img></img>  (or <table></table>)
       #   </div>
-      # <figure>
+      # </figure>
+      #
+      # The figure and img/table elements later get CSS classes applied by BemCssFilter.
+      SELECTOR = Selma::Selector.new(match_element: "img, table")
 
-      # The figure and img/table element later on get css classes applied to them so it does
-      # not have to happen here.
-      def wrap_element(element)
-        wrap_in_div(element)
-        wrap_in_figure(element.parent)
+      def selector
+        SELECTOR
       end
 
-      def wrap_in_figure(element)
-        element.wrap("<figure>") unless element.parent&.name == "figure"
-      end
+      def handle_element(element)
+        # Only wrap if the parent is not already a div (content wrapper) or figure
+        # We check ancestors: skip if already wrapped
+        ancestors = element.ancestors
+        return if ancestors.include?("figure")
 
-      def wrap_in_div(element)
-        element.wrap("<div>") unless element.parent&.name == "div"
-
-        div = element.parent
-
-        div["class"] = "op-uc-figure--content"
+        element.before('<figure><div class="op-uc-figure--content">', as: :html)
+        element.after("</div></figure>", as: :html)
       end
     end
   end

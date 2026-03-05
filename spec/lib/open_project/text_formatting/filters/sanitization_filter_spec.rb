@@ -34,9 +34,8 @@ RSpec.describe OpenProject::TextFormatting::Filters::SanitizationFilter do
   let(:context) { {} }
 
   def sanitize(html)
-    filter = described_class.new(html, context)
-    result = filter.call
-    result.respond_to?(:to_html) ? result.to_html : result.to_s
+    filter = described_class::FragmentIdPrefixFilter.new(context: context)
+    Selma::Rewriter.new(sanitizer: nil, handlers: [filter]).rewrite(html)
   end
 
   describe "DOM clobbering prevention via fragment id prefix" do

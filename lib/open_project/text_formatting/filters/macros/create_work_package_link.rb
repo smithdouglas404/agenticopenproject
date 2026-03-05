@@ -43,7 +43,8 @@ module OpenProject::TextFormatting::Filters::Macros
     end
 
     def apply(macro, result:, context:)
-      macro.replace work_package_link(macro, context)
+      macro.before(work_package_link(macro, context), as: :html)
+      macro.remove
     end
 
     def work_package_link(macro, context) # rubocop:disable Metrics/AbcSize
