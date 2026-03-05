@@ -105,6 +105,7 @@ RSpec.describe BudgetsController do
 
       it "destroys the budget" do
         expect { delete :destroy, params: { id: budget.id, todo: "delete" } }.to change(Budget, :count).by(-1)
+        expect { budget.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -130,6 +131,7 @@ RSpec.describe BudgetsController do
         it "destroys the budget" do
           expect { delete :destroy, params: { id: budget.id, todo: "reassign", reassign_to_id: other_budget.id } }
             .to change(Budget, :count).by(-1)
+          expect { budget.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
       end
 
