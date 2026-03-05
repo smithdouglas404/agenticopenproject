@@ -257,7 +257,7 @@ class BudgetsController < ApplicationController
                        nil
                      end
 
-    WorkPackage.where(budget_id: @budget.id).find_each(batch_size: 100) do |work_package|
+    @budget.work_packages.find_each(batch_size: 100) do |work_package|
       work_package.journal_cause = Journal::CausedByBudgetDeletion.new(budget: @budget)
       work_package.update!(budget_id: reassign_to_id)
     end
