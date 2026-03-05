@@ -100,6 +100,12 @@ module Pages
       end
     end
 
+    def click_in_sprint_menu(sprint, item_name)
+      within_sprint_menu(sprint) do |menu|
+        menu.find(:menuitem, text: item_name).click
+      end
+    end
+
     def click_in_story_menu(story, item_name)
       within_story_menu(story) do |menu|
         menu.find(:menuitem, text: item_name).click
@@ -138,16 +144,30 @@ module Pages
     end
 
     def expect_story_in_sprint(story, sprint)
-      within_backlog(sprint) do
-        expect(page)
-          .to have_selector(story_selector(story).to_s)
+      if sprint.is_a?(Agile::Sprint)
+        within_sprint(sprint) do
+          expect(page)
+            .to have_selector(work_package_selector(story).to_s)
+        end
+      else
+        within_backlog(sprint) do
+          expect(page)
+            .to have_selector(story_selector(story).to_s)
+        end
       end
     end
 
     def expect_story_not_in_sprint(story, sprint)
-      within_backlog(sprint) do
-        expect(page)
-          .to have_no_selector(story_selector(story).to_s)
+      if sprint.is_a?(Agile::Sprint)
+        within_sprint(sprint) do
+          expect(page)
+            .to have_no_selector(work_package_selector(story).to_s)
+        end
+      else
+        within_backlog(sprint) do
+          expect(page)
+            .to have_no_selector(story_selector(story).to_s)
+        end
       end
     end
 
@@ -210,6 +230,22 @@ module Pages
       new_sprint_button&.click
     end
 
+    def expect_sprint_dialog
+      expect(page).to have_css("#new-sprint-dialog")
+    end
+
+    def expect_create_work_package_dialog
+      expect(page).to have_css("#create-work-package-dialog")
+    end
+
+    def within_sprint_menu(backlog, &)
+      within_sprint(backlog) do
+        find(:button, accessible_name: "Sprint actions").click
+
+        within(:menu, &)
+      end
+    end
+
     private
 
     def within_story(story, &)
@@ -220,12 +256,24 @@ module Pages
       within(backlog_selector(backlog), &)
     end
 
+    def within_sprint(sprint, &)
+      within(sprint_selector(sprint), &)
+    end
+
+    def sprint_selector(sprint)
+      "#agile_sprint_#{sprint.id}"
+    end
+
     def backlog_selector(backlog)
       "#backlog_#{backlog.id}"
     end
 
     def story_selector(story)
       "#story_#{story.id}"
+    end
+
+    def work_package_selector(story)
+      "#work_package_#{story.id}"
     end
   end
 end
