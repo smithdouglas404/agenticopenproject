@@ -6,6 +6,7 @@ import 'core-js/es/reflect';
 
 import 'zone.js/testing';
 import { getTestBed } from '@angular/core/testing';
+import { NgModule, provideZonelessChangeDetection } from '@angular/core';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
@@ -21,9 +22,16 @@ registerDialogStreamAction();
 // Declare global I18n shim
 window.I18n = new I18n();
 
+@NgModule({
+  imports: [BrowserDynamicTestingModule],
+  exports: [BrowserDynamicTestingModule],
+  providers: [provideZonelessChangeDetection()],
+})
+class ZonelessBrowserDynamicTestingModule {}
+
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
+  ZonelessBrowserDynamicTestingModule,
   platformBrowserDynamicTesting(),
   {
     teardown: { destroyAfterEach: false },
