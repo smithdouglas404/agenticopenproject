@@ -39,7 +39,7 @@ module Agile
     has_many :work_packages, dependent: :nullify
 
     scope :for_project, ->(project) { where(project:) }
-    scope :open, -> { !completed }
+    scope :not_completed, -> { !completed }
     scope :order_by_date, -> do
       reorder(Arel.sql("start_date ASC NULLS LAST, finish_date ASC NULLS LAST"))
     end
