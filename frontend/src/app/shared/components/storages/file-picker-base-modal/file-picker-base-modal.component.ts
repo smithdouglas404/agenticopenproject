@@ -120,9 +120,11 @@ export abstract class FilePickerBaseModalComponent extends OpModalComponent impl
           this.breadcrumbs = this.makeBreadcrumbs(storageFiles.ancestors, storageFiles.parent);
           this.storageFiles$.next(storageFiles.files);
           this.loading$.next('success');
+          this.cdRef.markForCheck();
         },
         error: (error) => {
           this.loading$.next('error');
+          this.cdRef.markForCheck();
           throw error;
         },
       });
@@ -160,9 +162,11 @@ export abstract class FilePickerBaseModalComponent extends OpModalComponent impl
           this.breadcrumbs = this.makeBreadcrumbs(storageFiles.ancestors, storageFiles.parent);
           this.storageFiles$.next(storageFiles.files);
           this.loading$.next('success');
+          this.cdRef.markForCheck();
         },
         error: (error) => {
           this.loading$.next('error');
+          this.cdRef.markForCheck();
           throw error;
         },
       });
