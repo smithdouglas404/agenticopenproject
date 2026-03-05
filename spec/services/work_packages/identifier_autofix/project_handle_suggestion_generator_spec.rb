@@ -76,7 +76,7 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator
       it "appends a numeric suffix to resolve conflicts" do
         handles = described_class.call([project_sc1, project_sc2]).pluck(:suggested_handle)
         expect(handles).to include("SC")
-        expect(handles.any? { |h| h.match?(/\ASC\d+\z/) }).to be true
+        expect(handles.any? { it.match?(/\ASC\d+\z/) }).to be true
       end
     end
   end
@@ -109,12 +109,6 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator
       expect(described_class.call([project]).first[:suggested_handle]).to eq("SC")
     end
 
-    it "appends '2' when the base is already taken" do
-      p1 = create(:project, identifier: "sc-app",    name: "Stream Communicator")
-      p2 = create(:project, identifier: "stream-ch", name: "Stream Channel")
-      expect(described_class.call([p1, p2]).pluck(:suggested_handle)).to contain_exactly("SC", "SC2")
-    end
-
     it "increments the suffix until unique" do
       p1 = create(:project, identifier: "sc-a", name: "Stream Communicator")
       p2 = create(:project, identifier: "sc-b", name: "Stream Channel")
@@ -126,7 +120,7 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator
       p1 = create(:project, identifier: "a-b-c-d-e-f-g-h-i-j", name: "A B C D E F G H I J")
       p2 = create(:project, identifier: "a-b-c-d-e-f-g-h-i-j-x", name: "A B C D E F G H I J")
       handles = described_class.call([p1, p2]).pluck(:suggested_handle)
-      expect(handles.all? { |h| h.length <= described_class::HANDLE_MAX_LENGTH }).to be true
+      expect(handles.all? { it.length <= described_class::HANDLE_MAX_LENGTH }).to be true
       expect(handles.uniq.size).to eq(2)
     end
 
@@ -135,7 +129,7 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator
       project = create(:project, identifier: "sc-app", name: "Stream Communicator")
       result = described_class.call([project], in_use_handles: Set["SC"])
       expect(result.first[:suggested_handle]).not_to eq("SC")
-      expect(result.first[:suggested_handle]).to match(/\ASC\d+\z/)
+      expect(result.first[:suggested_handle]).to match(/\ASC\d+\z/) # e.g. "SC2"
     end
   end
 
