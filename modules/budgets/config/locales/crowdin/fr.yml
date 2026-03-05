@@ -44,7 +44,7 @@ fr:
         labor_budget_item:
           attributes:
             principal:
-              not_a_member_of_budget_project: "is not a member of the budget's project"
+              not_a_member_of_budget_project: "n'est pas membre du projet du budget"
     models:
       budget: "Budget"
       material_budget_item: "Unité"
