@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -11,6 +12,8 @@ import {
   Output,
 } from '@angular/core';
 import { EditFieldHandler } from 'core-app/shared/components/fields/edit/editing-portal/edit-field-handler';
+import { HalResourceEditFieldHandler } from 'core-app/shared/components/fields/edit/field-handler/hal-resource-edit-field-handler';
+import { takeUntil } from 'rxjs/operators';
 import {
   OpEditingPortalChangesetToken,
   OpEditingPortalHandlerToken,
@@ -56,6 +59,7 @@ export class EditFormPortalComponent implements OnInit, OnDestroy, AfterViewInit
     readonly injector:Injector,
     readonly editField:EditFieldService,
     readonly elementRef:ElementRef,
+    readonly cdRef:ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -71,6 +75,12 @@ export class EditFormPortalComponent implements OnInit, OnDestroy, AfterViewInit
 
     this.componentClass = this.editField.getSpecificClassFor(this.change.pristineResource._type, this.handler.fieldName, this.schema.type);
     this.fieldInjector = createLocalInjector(this.injector, this.change, this.handler, this.schema);
+
+    if (this.handler instanceof HalResourceEditFieldHandler) {
+      this.handler.errorsChanged$
+        .pipe(takeUntil(this.handler.onDestroy))
+        .subscribe(() => this.cdRef.detectChanges());
+    }
   }
 
   ngOnDestroy() {

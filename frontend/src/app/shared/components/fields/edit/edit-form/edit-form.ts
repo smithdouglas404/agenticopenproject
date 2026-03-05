@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Injector } from '@angular/core';
+import { ApplicationRef, Injector } from '@angular/core';
 import { States } from 'core-app/core/states/states.service';
 import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
 import {
@@ -255,17 +255,22 @@ export abstract class EditForm<T extends HalResource = HalResource> {
   }
 
   private setErrorsForFields(erroneousFields:string[]) {
-    // Accumulate errors for the given response
-    const promises:Promise<any>[] = erroneousFields.map((fieldName:string) => this.requireVisible(fieldName).then(() => {
+    // Immediately set errors on already-active fields (synchronous, no polling needed).
+    // This handles the common case where the field is already open when the 422 arrives.
+    erroneousFields.forEach((fieldName:string) => {
       if (this.activeFields[fieldName]) {
         this.activeFields[fieldName].setErrors(this.errorsPerAttribute[fieldName] || []);
       }
+    });
 
-      return this.activateWhenNeeded(fieldName) as any;
-    }));
+    // Activate any fields that are not yet visible / open (e.g. required custom fields).
+    const promises:Promise<any>[] = erroneousFields.map((fieldName:string) => this.requireVisible(fieldName).then(() => this.activateWhenNeeded(fieldName) as any));
 
     Promise.all(promises)
       .then(() => {
+        // Force a global CD pass so portal bindings (e.g. [disabled], [ngClass]) update
+        // immediately after inFlight is reset and errors are set — required in zoneless mode.
+        this.injector.get(ApplicationRef).tick();
         setTimeout(() => this.focusOnFirstError());
       })
       .catch(() => {
