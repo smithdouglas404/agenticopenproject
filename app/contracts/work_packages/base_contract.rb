@@ -51,6 +51,8 @@ module WorkPackages
               permission: %i(assign_versions manage_sprint_items) do
       validate_version_is_assignable
     end
+    attribute :release_versions,
+              permission: :assign_versions
 
     validate :validate_no_reopen_on_closed_version
 

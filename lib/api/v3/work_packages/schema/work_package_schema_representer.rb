@@ -311,6 +311,18 @@ module API
                                          },
                                          required: false
 
+          schema_with_allowed_collection :release_versions,
+                                         type: "[]Version",
+                                         value_representer: Versions::VersionRepresenter,
+                                         link_factory: ->(version) {
+                                           {
+                                             href: api_v3_paths.version(version.id),
+                                             title: version.name
+                                           }
+                                         },
+                                         values_callback: -> { represented.assignable_versions },
+                                         required: false
+
           schema_with_allowed_collection :priority,
                                          value_representer: Priorities::PriorityRepresenter,
                                          link_factory: ->(priority) {
