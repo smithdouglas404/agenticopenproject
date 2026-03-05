@@ -21,12 +21,6 @@
 #++
 ru:
   js:
-    budgets:
-      widgets:
-        budget_by_cost_type:
-          blankslate:
-            title: "Нет данных о бюджете"
-            description: "Add planned unit and labor costs to this project to start tracking the budget"
     work_packages:
       properties:
         costObject: "Бюджет"

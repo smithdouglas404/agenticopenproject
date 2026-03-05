@@ -75,6 +75,9 @@ tr:
         blankslate:
           heading: "Proje kontrolüne başlayın"
           description: "Projenizin sağlık durumunu verimli bir şekilde takip etmek için bütçelerinize ve maliyetlerinize genel bir bakış elde edin"
+        blankslate_zero:
+          heading: "Budget details missing"
+          description: "Add details about your planned budget to see data here"
         caption:
           zero: "Bütçe verisi yok."
           one: "Veriler %{portfolios}, %{subprograms} ve %{subprojects} adreslerinde yer alan %{count} bütçesinden derlenmiştir."

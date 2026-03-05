@@ -70,10 +70,10 @@ pl:
     errors:
       models:
         meeting_participant:
-          user_invalid: "is not a valid participant."
+          user_invalid: "nie jest prawidłowym uczestnikiem."
         meeting_agenda_item:
-          section_not_belong_to_meeting: "Section does not belong to the same meeting."
-          user_invalid: "is not a valid participant."
+          section_not_belong_to_meeting: "Sekcja nie należy do tego samego spotkania."
+          user_invalid: "nie jest prawidłowym uczestnikiem."
         recurring_meeting_interim_response:
           not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
@@ -122,15 +122,15 @@ pl:
   error_notification_with_errors: "Nie udało się wysłać powiadomienie do adresatów: %{recipients}"
   label_meeting: "Spotkanie"
   label_meeting_plural: "Spotkania"
-  label_meeting_templates: "Templates"
-  label_meeting_template: "Template"
-  label_meeting_template_new: "New template"
-  label_meeting_template_create: "Create template"
-  label_meeting_template_delete: "Delete template"
-  label_meeting_template_edit: "Edit template"
-  label_meeting_create_from_template: "Create meeting from template"
+  label_meeting_templates: "Szablony"
+  label_meeting_template: "Szablon"
+  label_meeting_template_new: "Nowy szablon"
+  label_meeting_template_create: "Utwórz szablon"
+  label_meeting_template_delete: "Usuń szablon"
+  label_meeting_template_edit: "Edytuj szablon"
+  label_meeting_create_from_template: "Utwórz spotkanie z szablonu"
   label_meeting_new: "Nowe spotkanie"
-  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_meeting_template_select: "Wybierz szablon, aby automatycznie skopiować z niego punkty planu spotkania"
   label_meeting_new_dynamic: "Nowe spotkanie jednorazowe"
   label_meeting_new_recurring: "Nowe spotkanie cykliczne"
   label_meeting_create: "Utwórz spotkanie"
@@ -298,8 +298,8 @@ pl:
         confirmation_message_html: >
           To działanie jest nieodwracalne. Postępuj ostrożnie.
         template:
-          title: "Delete template"
-          heading: "Delete this template?"
+          title: "Usuń szablon"
+          heading: "Usunąć ten szablon?"
       occurrence:
         title: "Anuluj wystąpienie spotkania"
         heading: "Anulować to wystąpienie spotkania?"
@@ -503,7 +503,7 @@ pl:
     end_series_dialog:
       title: "Zakończ serię spotkań"
   notice_successful_notification: "Aktualizacja zaproszenia do kalendarza jest wysyłana pocztą elektroniczną do wszystkich uczestników"
-  notice_meeting_template_created: "Template successfully created"
+  notice_meeting_template_created: "Szablon został utworzony"
   notice_timezone_missing: 'Została ustawiona domyślna strefa czasowa: %{zone}. Aby zmienić strefę czasową, kliknij tutaj.'
   notice_meeting_updated: "Ta strona została zaktualizowana przez kogoś innego. Załaduj ją ponownie, aby wyświetlić zmiany."
   permission_create_meetings: "Utwórz spotkanie"
@@ -518,8 +518,8 @@ pl:
   text_duration_in_hours: "Czas trwania w godzinach"
   text_in_hours: "w godzinach"
   text_meeting_agenda_for_meeting: 'agenda spotkania "%{meeting}"'
-  text_meeting_template_blank_slate_heading: "There are no templates to display"
-  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
+  text_meeting_template_blank_slate_heading: "Nie ma żadnych szablonów do wyświetlenia"
+  text_meeting_template_blank_slate: "Możesz utworzyć nowy szablon jednorazowych spotkań"
   text_meeting_series_end_early_heading: "Usunąć przyszłe wystąpienia?"
   text_meeting_series_end_early: "Zakończenie serii spowoduje usunięcie wszelkich przyszłych otwartych lub zaplanowanych wystąpień spotkania"
   text_meeting_closing_are_you_sure: "Czy na pewno chcesz zamknąć plan spotkania?"
@@ -625,9 +625,9 @@ pl:
   text_meeting_in_progress_dropdown_description: "Udokumentuj wyniki, takie jak potrzeby informacyjne lub decyzje podjęte podczas spotkania."
   text_meeting_closed_dropdown_description: "To spotkanie jest zamknięte. Nie można już modyfikować pozycji planu spotkania ani wyników."
   text_meeting_draft_banner: "Jesteś teraz w trybie wersji roboczej. To spotkanie nie wyśle żadnych aktualizacji kalendarza ani zaproszeń, nawet jeśli zmienisz szczegóły spotkania lub dodasz/usuniesz uczestników."
-  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
-  text_onetime_meeting_template_empty_heading: "This meeting template is empty"
-  text_onetime_meeting_template_description: "Add agenda items and attachments to this template. They will be included in every meeting based on this template."
+  text_onetime_meeting_template_banner: "Obecnie edytujesz szablon spotkania. Możesz użyć tego szablonu do tworzenia jednorazowych spotkań z predefiniowanym planem spotkania. Zmiany nie będą miały wpływu na już utworzone spotkania."
+  text_onetime_meeting_template_empty_heading: "Ten szablon spotkania jest pusty"
+  text_onetime_meeting_template_description: "Dodaj punkty planu spotkania i załączniki do tego szablonu. Będą one dołączane do każdego spotkania opartego na tym szablonie."
   text_exit_draft_mode_dialog_title: "Otworzyć to spotkanie i wysłać zaproszenia?"
   text_exit_draft_mode_dialog_subtitle: "Po zaplanowaniu spotkania nie można powrócić do trybu wersji roboczej."
   text_exit_draft_mode_dialog_template_title: "Otworzyć pierwsze wystąpienie z tej serii spotkań?"

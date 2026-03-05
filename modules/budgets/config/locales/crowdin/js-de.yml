@@ -21,12 +21,6 @@
 #++
 de:
   js:
-    budgets:
-      widgets:
-        budget_by_cost_type:
-          blankslate:
-            title: "Keine Budgetdaten"
-            description: "Fügen Sie diesem Projekt die geplanten Material- und Arbeitskosten hinzu, um mit der Überwachung des Budgets zu beginnen"
     work_packages:
       properties:
         costObject: "Budget"

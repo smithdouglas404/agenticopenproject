@@ -75,6 +75,9 @@ fr:
         blankslate:
           heading: "Démarrer le contrôle du projet"
           description: "Obtenez une vue d'ensemble de vos budgets et de vos coûts pour suivre efficacement l'état de santé de votre projet"
+        blankslate_zero:
+          heading: "Budget details missing"
+          description: "Add details about your planned budget to see data here"
         caption:
           zero: "Pas de données budgétaires."
           one: "Données agrégées à partir de %{count} budget inclus dans %{portfolios}, %{subprograms} et %{subprojects}."
