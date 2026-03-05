@@ -13,6 +13,7 @@ import { GridRemoveWidgetService } from 'core-app/shared/components/grids/grid/r
 import { WidgetWpGraphComponent } from 'core-app/shared/components/grids/widgets/wp-graph/wp-graph.component';
 import { GridWidgetArea } from 'core-app/shared/components/grids/areas/grid-widget-area';
 import { BrowserDetector } from 'core-app/core/browser/browser-detector.service';
+import { WidgetChangeset } from 'core-app/shared/components/grids/widgets/widget-changeset';
 
 export interface WidgetRegistration {
   identifier:string;
@@ -87,6 +88,10 @@ export class GridComponent implements OnDestroy, OnInit {
       .then(() => this.cdRef.detectChanges());
   }
 
+  public resizeEnd(area:GridWidgetArea) {
+    void this.resize.end(area)?.then(() => this.cdRef.detectChanges());
+  }
+
   public widgetComponent(area:GridWidgetArea) {
     const { widget } = area;
 
@@ -109,7 +114,12 @@ export class GridComponent implements OnDestroy, OnInit {
   }
 
   public widgetComponentOutput(area:GridWidgetArea) {
-    return { resourceChanged: this.layout.saveWidgetChangeset.bind(this.layout) };
+    return {
+      resourceChanged: (changeset:WidgetChangeset) => {
+        void this.layout.saveWidgetChangeset(changeset)
+          .then(() => this.cdRef.detectChanges());
+      },
+    };
   }
 
   public get gridColumnStyle() {
