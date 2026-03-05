@@ -61,6 +61,12 @@ module Storages
           end
 
           operation_result
+        # HTTPX default behaviour is to return error responses and not raise errors unless
+        # explicitly asked by using the `#raise_for_status`method.
+        #
+        # On Storages codebase we handle the error responses, but the OAuth
+        # plugin raises and exception when it fails to get a Token..
+        # The handling below will only apply to authentication errors.
         rescue HTTPX::HTTPError => e
           error("Error while refreshing OAuth token - Payload: #{e.response}")
 
