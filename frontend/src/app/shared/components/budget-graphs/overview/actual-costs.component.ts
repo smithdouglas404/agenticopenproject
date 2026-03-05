@@ -67,7 +67,7 @@ export class ActualCostsComponent {
 
   readonly barChartOptions:Signal<ChartConfiguration<'bar'>['options']> = computed<ChartConfiguration<'bar'>['options']>(() => ({
     font: chartFont,
-    aspectRatio: 1.5,
+    aspectRatio: 1,
     scales: {
       x: {
         stacked: true,
