@@ -45,8 +45,6 @@ module Budgets::ProjectAggregation
   private
 
   def applicable_projects
-    return Project.where(id: project.id) unless project.portfolio?
-
     project.self_and_descendants.reorder(nil)
   end
 end
