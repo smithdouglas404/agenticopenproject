@@ -89,6 +89,9 @@ en:
         blankslate:
           heading: "Start project controlling"
           description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+        blankslate_zero:
+          heading: "Budget details missing"
+          description: "Add details about your planned budget to see data here"
         caption:
           zero: "No budget data."
           one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."

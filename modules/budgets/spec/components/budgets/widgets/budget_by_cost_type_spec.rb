@@ -115,6 +115,13 @@ RSpec.describe Budgets::Widgets::BudgetByCostType, type: :component do
   context "with a portfolio project" do
     let(:project) { create(:portfolio) }
     let!(:budget) { create(:budget, project:) }
+    let!(:labor_item) do
+      create(:labor_budget_item,
+             budget: budget,
+             user: current_user,
+             hours: 100,
+             amount: BigDecimal("5000"))
+    end
 
     it "displays full caption with portfolio detail" do
       expect(rendered_component).to have_text(/Data aggregated from 1 budget included in/)
