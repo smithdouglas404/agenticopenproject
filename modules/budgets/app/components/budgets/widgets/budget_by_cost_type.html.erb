@@ -33,16 +33,10 @@ See COPYRIGHT and LICENSE files for more details.
       flex_layout do |flex|
         flex.with_row do
           render(Primer::Beta::Text.new(color: :subtle, font_size: :small)) do
-            if project.portfolio?
-              t(
-                ".caption",
-                count: budget_count,
-                portfolios: t(".portfolio", count: workspace_counts[:portfolio] || 0),
-                subprograms: t(".subprogram", count: workspace_counts[:program] || 0),
-                subprojects: t(".subproject", count: workspace_counts[:project] || 0)
-              )
+            if project.children.any?
+              t(".caption_with_subitems", count: budget_count, workspace: project.workspace_label)
             else
-              t(".caption_simple", count: budget_count)
+              t(".caption", count: budget_count, workspace: project.workspace_label)
             end
           end
         end
