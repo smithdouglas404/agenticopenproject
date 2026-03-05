@@ -758,7 +758,7 @@ lv:
         title: "Make this project private?"
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
-      change_identifier: Change identifier
+      change_identifier: Change project identifier
       subitems:
         template_section: >
           Select templates to be used when creating new subitems.

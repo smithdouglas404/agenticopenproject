@@ -49,6 +49,23 @@ See COPYRIGHT and LICENSE files for more details.
 <%= render(Primer::BaseComponent.new(tag: :section, mb: 4)) do %>
   <%=
     render(Primer::Beta::Subhead.new) do |component|
+      component.with_heading(tag: :h3, size: :medium) { t(:label_identifier) }
+    end
+  %>
+  <%=
+    settings_primer_form_with(model: project, url: project_identifier_path(project), method: :get) do |f|
+      render(Primer::Forms::FormList.new(
+        Projects::Settings::IdentifierForm.new(f),
+        Projects::Settings::Submit.new(f, label: t("projects.settings.change_identifier"))
+      ))
+    end
+  %>
+<% end %>
+
+
+<%= render(Primer::BaseComponent.new(tag: :section, mb: 4)) do %>
+  <%=
+    render(Primer::Beta::Subhead.new) do |component|
       component.with_heading(tag: :h3, size: :medium) { I18n.t("projects.settings.header_status") }
     end
   %>
