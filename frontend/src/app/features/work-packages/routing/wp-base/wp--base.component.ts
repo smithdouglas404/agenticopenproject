@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { EditFormRoutingService } from 'core-app/shared/components/fields/edit/edit-form/edit-form-routing.service';
 import { WorkPackageEditFormRoutingService } from 'core-app/features/work-packages/routing/wp-edit-form/wp-edit-form-routing.service';
 import {
@@ -47,6 +47,9 @@ export const wpBaseSelector = 'work-packages-base';
     { provide: EditFormRoutingService, useClass: WorkPackageEditFormRoutingService },
   ],
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackagesBaseComponent {
 }

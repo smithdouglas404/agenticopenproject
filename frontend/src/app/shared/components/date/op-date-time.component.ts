@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 
 @Component({
@@ -39,6 +39,9 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
     </span>
   `,
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class OpDateTimeComponent implements OnInit {
   @Input() dateTimeValue:any;

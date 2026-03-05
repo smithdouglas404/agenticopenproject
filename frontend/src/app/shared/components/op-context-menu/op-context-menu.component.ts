@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import {
   OpContextMenuItem,
   OpContextMenuLocalsMap,
@@ -9,6 +9,9 @@ import { OPContextMenuService } from 'core-app/shared/components/op-context-menu
 @Component({
   templateUrl: './op-context-menu.html',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class OPContextMenuComponent {
   public items:OpContextMenuItem[];

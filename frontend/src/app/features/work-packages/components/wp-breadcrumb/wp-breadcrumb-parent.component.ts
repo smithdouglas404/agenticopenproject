@@ -27,6 +27,7 @@
 //++
 
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -42,6 +43,9 @@ import { PathHelperService } from 'core-app/core/path-helper/path-helper.service
   templateUrl: './wp-breadcrumb-parent.html',
   selector: 'wp-breadcrumb-parent',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageBreadcrumbParentComponent {
   @Input() workPackage:WorkPackageResource;

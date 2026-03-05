@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   WpTableConfigurationModalComponent,
 } from 'core-app/features/work-packages/components/wp-table/configuration-modal/wp-table-configuration.modal';
@@ -39,6 +39,9 @@ import { firstValueFrom } from 'rxjs';
   selector: 'widget-wp-table-menu',
   templateUrl: '../menu/widget-menu.component.html',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WidgetWpTableMenuComponent extends WidgetWpSetMenuComponent {
   @InjectField() currentUser:CurrentUserService;

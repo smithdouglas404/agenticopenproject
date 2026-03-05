@@ -28,6 +28,7 @@
 
 import { UIRouterGlobals } from '@uirouter/core';
 import {
+  ChangeDetectionStrategy,
   Component,
   Input,
   OnInit,
@@ -44,6 +45,9 @@ import { WorkPackageResource } from 'core-app/features/hal/resources/work-packag
   templateUrl: './wp-tab-wrapper.html',
   selector: 'op-wp-tab',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WpTabWrapperComponent implements OnInit {
   @Input() public workPackageId:string;

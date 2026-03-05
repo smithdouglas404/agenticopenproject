@@ -27,6 +27,7 @@
 //++
 
 import {
+  ChangeDetectionStrategy,
   Component,
   Input,
   HostBinding,
@@ -46,6 +47,9 @@ import { AbstractDateTimeValueController } from '../abstract-filter-date-time-va
   selector: 'op-filter-date-time-value',
   templateUrl: './filter-date-time-value.component.html',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FilterDateTimeValueComponent extends AbstractDateTimeValueController implements OnInit {
   @HostBinding('id') get id() {

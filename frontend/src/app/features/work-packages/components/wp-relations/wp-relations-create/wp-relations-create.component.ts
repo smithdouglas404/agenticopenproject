@@ -1,5 +1,7 @@
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
 } from '@angular/core';
@@ -13,6 +15,9 @@ import { WorkPackageRelationsService } from '../wp-relations.service';
   selector: 'wp-relations-create',
   templateUrl: './wp-relation-create.template.html',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageRelationsCreateComponent {
   @Input() readonly workPackage:WorkPackageResource;
@@ -38,6 +43,7 @@ export class WorkPackageRelationsCreateComponent {
     protected wpRelations:WorkPackageRelationsService,
     protected notificationService:WorkPackageNotificationService,
     protected halEvents:HalEventsService,
+    protected cdRef:ChangeDetectorRef,
   ) {
   }
 
@@ -72,5 +78,6 @@ export class WorkPackageRelationsCreateComponent {
     this.showRelationsCreateForm = !this.showRelationsCreateForm;
     // Reset value
     this.selectedWpId = '';
+    this.cdRef.markForCheck();
   }
 }

@@ -28,6 +28,7 @@
 
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   Injector,
@@ -94,6 +95,9 @@ import { IDay } from 'core-app/core/state/days/day.model';
   selector: 'wp-timeline-container',
   templateUrl: './wp-timeline-container.html',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageTimelineTableController extends UntilDestroyedMixin implements AfterViewInit {
   private element:HTMLElement;

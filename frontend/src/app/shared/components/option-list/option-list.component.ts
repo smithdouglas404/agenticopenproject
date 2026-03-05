@@ -1,4 +1,6 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   forwardRef,
@@ -27,9 +29,14 @@ export type IOpOptionListValue<T> = T|null;
     multi: true,
   }],
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class OpOptionListComponent<T> implements ControlValueAccessor {
   @HostBinding('class.op-option-list') className = true;
+
+  constructor(private cdRef:ChangeDetectorRef) {}
 
   @Input() options:IOpOptionListOption<T>[] = [];
 
@@ -62,6 +69,7 @@ export class OpOptionListComponent<T> implements ControlValueAccessor {
 
   writeValue(value:IOpOptionListValue<T>) {
     this._selected = value;
+    this.cdRef.markForCheck();
   }
 
   registerOnChange(fn:any) {

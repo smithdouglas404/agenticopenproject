@@ -1,7 +1,7 @@
 import { firstValueFrom, Observable } from 'rxjs';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { HttpParams } from '@angular/common/http';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnInit } from '@angular/core';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import {
   IUserAutocompleteItem,
@@ -17,6 +17,9 @@ import { ID } from '@datorama/akita';
 @Component({
   templateUrl: '../op-autocompleter/op-autocompleter.component.html',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class MembersAutocompleterComponent extends UserAutocompleterComponent implements OnInit {
   @Input() principalType?:PrincipalType;
@@ -24,6 +27,7 @@ export class MembersAutocompleterComponent extends UserAutocompleterComponent im
   readonly pathHelper = inject(PathHelperService);
   readonly currentUser = inject(CurrentUserService);
   readonly apiV3Service = inject(ApiV3Service);
+  readonly cdRef = inject(ChangeDetectorRef);
 
   ngOnInit() {
     super.ngOnInit();
@@ -36,6 +40,7 @@ export class MembersAutocompleterComponent extends UserAutocompleterComponent im
           if (canCreate) {
             this.addTag = this.createPlaceholderUser.bind(this);
             this.addTagText = this.I18n.t('js.invite_user_modal.placeholder_add_tag');
+            this.cdRef.markForCheck();
           }
         });
     }

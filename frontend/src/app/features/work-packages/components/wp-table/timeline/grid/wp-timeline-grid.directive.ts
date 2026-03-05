@@ -27,6 +27,7 @@
 //++
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
 } from '@angular/core';
@@ -46,6 +47,9 @@ import { WeekdayService } from 'core-app/core/days/weekday.service';
   selector: 'wp-timeline-grid',
   template: '<div class="wp-table-timeline--grid"></div>',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageTableTimelineGrid implements AfterViewInit {
   private activeZoomLevel:TimelineZoomLevel;

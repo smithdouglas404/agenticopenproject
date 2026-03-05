@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ContentChild,
   HostBinding,
@@ -15,6 +16,9 @@ import {
   selector: 'spot-selector-field',
   templateUrl: './selector-field.component.html',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SpotSelectorFieldComponent {
   @HostBinding('class.spot-form-field') className = true;

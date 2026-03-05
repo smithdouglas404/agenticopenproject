@@ -27,7 +27,7 @@
 //++
 
 import {
-  Component, ElementRef, Injector, OnInit,
+  ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit,
 } from '@angular/core';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { State } from '@openproject/reactivestates';
@@ -81,6 +81,9 @@ function newSegment(vp:TimelineViewParameters,
   selector: 'wp-timeline-relations',
   template: '<div class="wp-table-timeline--relations"></div>',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageTableTimelineRelations extends UntilDestroyedMixin implements OnInit {
   @InjectField() querySpace:IsolatedQuerySpace;

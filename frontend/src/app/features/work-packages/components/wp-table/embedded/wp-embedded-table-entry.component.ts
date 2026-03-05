@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, Input,
+  ChangeDetectionStrategy, Component, ElementRef, Input,
 } from '@angular/core';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import {
@@ -17,6 +17,9 @@ export const wpTableEntrySelector = 'wp-embedded-table-entry';
                          [configuration]="configuration" />
   `,
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkPackageEmbeddedTableEntryComponent {
   @Input() public queryProps:unknown;
