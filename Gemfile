@@ -50,7 +50,7 @@ gem "connection_pool", "~> 3.0.2"
 
 gem "rdoc", ">= 2.4.2"
 
-gem "doorkeeper", "~> 5.8.0"
+gem "doorkeeper", "~> 5.9.0"
 # Maintain our own omniauth due to relative URL root issues
 # see upstream PR: https://github.com/omniauth/omniauth/pull/903
 gem "omniauth", git: "https://github.com/opf/omniauth", ref: "7eb21563ba047ef86d71f099975587b5ec88f9c9"
@@ -78,7 +78,7 @@ gem "addressable", "~> 2.8.9"
 gem "auto_strip_attributes", "~> 2.5"
 
 # Provide timezone info for TZInfo used by AR
-gem "tzinfo-data", "~> 1.2025.1"
+gem "tzinfo-data", "~> 1.2026.1"
 
 # to generate html-diffs (e.g. for wiki comparison)
 gem "htmldiff"
@@ -161,7 +161,7 @@ gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
 
-gem "mcp", "~> 0.7.0"
+gem "mcp", "~> 0.8.0"
 
 gem "meta-tags", "~> 2.22.3"
 
@@ -239,7 +239,7 @@ gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
 gem "opentelemetry-instrumentation-all", "~> 0.90.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.4.0"
+gem "view_component", "~> 4.5.0"
 # Lookbook
 gem "lookbook", "2.3.14"
 
