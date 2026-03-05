@@ -220,6 +220,8 @@ class Project < ApplicationRecord
             format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
             if: ->(p) { p.identifier_changed? && p.identifier.present? }
 
+  validate :identifier_not_taken_by_former_identifiers, if: ->(p) { p.identifier_changed? }
+
   validates_associated :repository, :wiki
 
   after_save :save_former_identifier, if: :saved_change_to_identifier?
@@ -370,6 +372,13 @@ class Project < ApplicationRecord
 
     unless former_identifiers.exists?(identifier: former_id)
       former_identifiers.create!(identifier: former_id)
+    end
+  end
+
+  def identifier_not_taken_by_former_identifiers
+    already_existing = Project::FormerIdentifier.where.not(project_id: id).exists?(identifier: identifier)
+    if already_existing
+      errors.add(:identifier, :taken)
     end
   end
 end

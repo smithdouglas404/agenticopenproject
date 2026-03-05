@@ -192,9 +192,9 @@ RSpec.describe Project do
 
     context "when updating the name" do
       it "persists the update" do
-        project.save
+        project.save!
         project.name = "A new name"
-        project.save
+        project.save!
         project.reload
 
         expect(project.name).to eql("A new name")
@@ -566,6 +566,31 @@ RSpec.describe Project do
 
         expect(project.identifier).not_to eq(word)
       end
+    end
+
+    it "is not allowed to clash with another project" do
+      create(:project, identifier: "existing")
+
+      project = build(:project, identifier: "existing")
+      expect(project).not_to be_valid
+      expect(project.errors[:identifier]).to include("has already been taken.")
+    end
+
+    it "is not allowed to clash with a former identifier of another project" do
+      other_project = create(:project, identifier: "former-id")
+      other_project.update!(identifier: "new-id")
+
+      project = build(:project, identifier: "former-id")
+      expect(project).not_to be_valid
+      expect(project.errors[:identifier]).to include("has already been taken.")
+    end
+
+    it "is allowed to be the same as its own former identifier" do
+      project = create(:project, identifier: "old-id")
+      project.update!(identifier: "new-id")
+
+      project.identifier = "old-id"
+      expect(project).to be_valid
     end
 
     # The acts_as_url plugin defines validation callbacks on :create and it is not automatically
