@@ -79,7 +79,19 @@ class DocumentsController < ApplicationController
   end
 
   def render_connection_error
-    update_via_turbo_stream(component: Documents::ShowEditView::ConnectionErrorNoticeComponent.new)
+    render_warning_flash_message_via_turbo_stream(
+      message: I18n.t("documents.show_edit_view.connection_error_notice.description"),
+      action_button_content: I18n.t("documents.show_edit_view.connection_error_notice.action"),
+      action_button_arguments: {
+        id: "connection-error-retry-button",
+        tag: :button,
+        data: { 
+          turbo: false,
+          action: "click->flash#reloadPage"
+        },
+        size: :medium
+      }
+    )
 
     respond_with_turbo_streams
   end

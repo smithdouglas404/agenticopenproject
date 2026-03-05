@@ -40,7 +40,7 @@ import OpZenModeController from 'core-stimulus/controllers/zen-mode.controller';
 import CheckAllController from 'core-stimulus/controllers/check-all.controller';
 import CheckableController from 'core-stimulus/controllers/checkable.controller';
 import TruncationController from 'core-stimulus/controllers/truncation.controller';
-
+import ConnectionStatusController from './controllers/dynamic/connection-status.controller'
 declare global {
   interface Window {
     Stimulus:Application;
@@ -85,6 +85,7 @@ OpenProjectStimulusApplication.preregister('editable-page-header-title', Editabl
 OpenProjectStimulusApplication.preregister('check-all', CheckAllController);
 OpenProjectStimulusApplication.preregister('checkable', CheckableController);
 OpenProjectStimulusApplication.preregister('truncation', TruncationController);
+OpenProjectStimulusApplication.preregister('documents--connection-status', ConnectionStatusController);
 
 const instance = OpenProjectStimulusApplication.start();
 window.Stimulus = instance;

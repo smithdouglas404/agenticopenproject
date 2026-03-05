@@ -93,11 +93,15 @@ module OpTurbo
     end
 
     def render_success_flash_message_via_turbo_stream(**)
-      render_flash_message_via_turbo_stream(**, scheme: :success)
+      render_flash_message_via_turbo_stream(**, scheme: :success, icon: :"check")
     end
 
     def render_error_flash_message_via_turbo_stream(**)
       render_flash_message_via_turbo_stream(**, scheme: :danger, icon: :stop)
+    end
+
+    def render_warning_flash_message_via_turbo_stream(**)
+      render_flash_message_via_turbo_stream(**, scheme: :warning, icon: :"cloud-offline")
     end
 
     def render_live_region_update_message(message:, politeness: "polite", delay: nil)
@@ -106,10 +110,15 @@ module OpTurbo
         .render_in(view_context)
     end
 
-    def render_flash_message_via_turbo_stream(message:, component: OpPrimer::FlashComponent, **)
+    def render_flash_message_via_turbo_stream(message:, component: OpPrimer::FlashComponent, action_button_arguments: nil, action_button_content: nil, **)
       return if message.blank?
 
       instance = component.new(**).with_content(message)
+      
+      if action_button_arguments.present?
+        instance.with_action_button(**action_button_arguments) { action_button_content }
+      end
+      
       turbo_streams << instance.render_as_turbo_stream(view_context:, action: :flash)
     end
 
