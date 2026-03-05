@@ -232,7 +232,7 @@ fr:
         title: "Coûts réels par mois"
         blankslate:
           heading: "Commencez à suivre votre temps et vos coûts"
-          description: "Obtenez une vue d'ensemble de vos coûts et du temps enregistré pour suivre l'avancement de votre projet"
+          description: "Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget."
           action: "Durée du journal"
         view_details: "Voir les détails des coûts réels"
   ee:

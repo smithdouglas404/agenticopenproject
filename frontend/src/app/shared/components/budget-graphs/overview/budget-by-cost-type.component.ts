@@ -38,13 +38,12 @@ import { ChartConfiguration, ChartData } from 'chart.js';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { chartFont, chartLegend, createPieTooltipRenderer } from 'core-app/shared/components/budget-graphs/chart.config';
 import PrimerColorsPlugin from 'core-app/shared/components/work-package-graphs/plugin.primer-colors';
-import { NoResultsComponent } from 'core-app/shared/components/blankslate/no-results.component';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 @Component({
   selector: 'opce-budget-by-cost-type',
   templateUrl: './budget-by-cost-type.component.html',
-  imports: [BaseChartDirective, NoResultsComponent],
+  imports: [BaseChartDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideCharts(withDefaultRegisterables(PrimerColorsPlugin))],
 })
@@ -53,13 +52,6 @@ export class BudgetByCostTypeComponent {
 
   readonly chartData = input.required<string>();
   readonly currency = input<string>('€');
-
-  readonly text = {
-    noResults: {
-      title: this.i18n.t('js.budgets.widgets.budget_by_cost_type.blankslate.title'),
-      description: this.i18n.t('js.budgets.widgets.budget_by_cost_type.blankslate.description'),
-    },
-  };
 
   readonly pieChartData = computed<ChartData<'pie'>>(() => JSON.parse(this.chartData()) as ChartData<'pie'>);
   readonly hasChartData = computed(() => this.pieChartData().datasets[0].data.length > 0);

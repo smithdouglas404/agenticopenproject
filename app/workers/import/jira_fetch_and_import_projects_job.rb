@@ -51,21 +51,86 @@ module Import
 
     private
 
-    # rubocop:disable Metrics/AbcSize
     def fetch_and_save_users_data(jira_import)
-      user_keys = Set.new
-      JiraIssue.find_each do |issue|
-        payload = issue.payload["fields"]
-        payload
-          .slice("creator", "reporter", "assignee")
-          .each_value { |v| user_keys << v["key"] if v.present? }
-        payload["comment"]["comments"].each { |c| user_keys << c["author"]["key"] }
-      end
+      user_keys, mention_usernames = collect_user_to_import
+      resolve_mention_user_keys(mention_usernames, user_keys, jira_import.client)
+      upsert_data = build_users_upsert_data(user_keys, jira_import)
+      Import::JiraUser.upsert_all(upsert_data, unique_by: %i[jira_id jira_user_key])
+    end
 
+    def collect_user_to_import
+      user_keys = Set.new
+      mention_usernames = Set.new
+      JiraIssue.find_each do |issue|
+        collect_user_keys_from_issue(user_keys, mention_usernames, issue)
+      end
+      [user_keys, mention_usernames]
+    end
+
+    def collect_user_keys_from_issue(user_keys, mention_usernames, issue)
+      payload = issue.payload["fields"]
+      collect_field_user_keys(user_keys, mention_usernames, payload)
+      collect_comment_user_keys(user_keys, mention_usernames, payload)
+      collect_changelog_user_keys(user_keys, issue)
+    end
+
+    def collect_field_user_keys(user_keys, mention_usernames, payload)
+      payload
+        .slice("creator", "reporter", "assignee")
+        .each_value { |v| user_keys << v["key"] if v.present? }
+      collect_markup_mentions(payload["description"], mention_usernames)
+    end
+
+    def collect_comment_user_keys(user_keys, mention_usernames, payload)
+      payload.dig("comment", "comments").each do |c|
+        user_keys << c.dig("author", "key")
+        collect_markup_mentions(c["body"], mention_usernames)
+      end
+    end
+
+    def resolve_mention_user_keys(mention_usernames, user_keys, jira_client)
+      mention_usernames.compact.each do |username|
+        user = jira_client.user_by_username(username:)
+        user_keys << user["key"] if user.present?
+      end
+    end
+
+    def collect_changelog_user_keys(user_keys, issue)
+      (issue.payload.dig("changelog", "histories") || []).each do |entry|
+        user_keys << entry.dig("author", "key") if entry.dig("author", "key").present?
+      end
+    end
+
+    def collect_markup_mentions(text, mention_usernames)
+      return if text.blank?
+
+      ast = JiraWikiMarkup::Parser.new(text).parse
+      collect_mentions_from_node(ast, mention_usernames)
+    end
+
+    # rubocop:disable Metrics/AbcSize
+    def collect_mentions_from_node(node, mention_usernames)
+      case node
+      when JiraWikiMarkup::Nodes::Mention
+        mention_usernames << node.username
+      when JiraWikiMarkup::Nodes::List
+        node.items.each { |item| collect_mentions_from_node(item, mention_usernames) }
+      when JiraWikiMarkup::Nodes::ListItem
+        node.children.each { |child| collect_mentions_from_node(child, mention_usernames) }
+        collect_mentions_from_node(node.sublist, mention_usernames) if node.sublist
+      else
+        return unless node.respond_to?(:children)
+
+        node.children.each { |child| collect_mentions_from_node(child, mention_usernames) }
+      end
+    end
+    # rubocop:enable Metrics/AbcSize
+
+    def build_users_upsert_data(user_keys, jira_import)
       jira_client = jira_import.client
       updated_at = Time.zone.now
       created_at = updated_at
-      users_upsert_data = user_keys.map do |jira_user_key|
+      user_keys.compact.map do |jira_user_key|
         # here we send a direct user request to get group memberships
         # which are not returned by users_search endpoint
         jira_user_by_key = jira_client.user_by_key(key: jira_user_key)
@@ -78,9 +143,7 @@ module Import
           updated_at:
         }
       end
-      Import::JiraUser.upsert_all(users_upsert_data, unique_by: %i[jira_id jira_user_key])
     end
-    # rubocop:enable Metrics/AbcSize
 
     def import_users(jira_import)
       Import::JiraUser.where(jira_import_id: jira_import.id).find_each do |jira_user|

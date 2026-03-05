@@ -235,7 +235,6 @@ zh-TW:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -260,7 +259,7 @@ zh-TW:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1346,6 +1345,10 @@ zh-TW:
         finish_date: "結束日期"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "只顯示到"
       attachment:
@@ -3041,6 +3044,7 @@ zh-TW:
   journals:
     changes_retracted: "更改已被撤銷"
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "日期變更"
       default_attribute_written: "已寫入只讀屬性"
       import: "Imported"
@@ -3066,6 +3070,7 @@ zh-TW:
       work_package_related_changed_times: 因與%{link}相關而異動
       work_package_duplicate_closed: 重複的工作套件會自動更新狀態 %{link}
       unaccessable_work_package_changed: 因相關工作套件而異動
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "因工作天數 (%{changes})變更而異動"
         days:

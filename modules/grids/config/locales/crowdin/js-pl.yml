@@ -2,12 +2,12 @@ pl:
   js:
     grid:
       add_widget: 'Dodaj widżet'
-      widget_menu_label: 'Show menu options for %{widgetName} widget'
+      widget_menu_label: 'Pokaż opcje menu widżetu %{widgetName}'
       remove: 'Usuń widżet'
       configure: 'Konfiguruj widżet'
       widgets:
         missing_permission: "Nie masz uprawnień niezbędnych do wyświetlenia tego widżetu."
-        not_available: "This widget is currently unavailable."
+        not_available: "Ten widżet jest obecnie niedostępny."
         custom_text:
           title: 'Tekst niestandardowy/użytkownika'
         documents:

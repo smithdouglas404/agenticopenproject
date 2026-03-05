@@ -182,6 +182,7 @@ Newly generated API tokens can directly be used as Bearer tokens and do not need
 - Bugfix: Missing caption in new template dialog [[#72375](https://community.openproject.org/wp/72375)]
 - Bugfix: Wrong wording in Enterprise on-prem support token input field [[#72459](https://community.openproject.org/wp/72459)]
 - Feature: Reusable meeting templates for meeting agendas [[#35642](https://community.openproject.org/wp/35642)]
+- Feature: Primerized Backlogs list [[#57688](https://community.openproject.org/wp/57688)]
 - Feature: Export relationship columns in PDF report [[#66000](https://community.openproject.org/wp/66000)]
 - Feature: Overview widget for Budgets [[#66124](https://community.openproject.org/wp/66124)]
 - Feature: Comment fields for project attributes [[#66343](https://community.openproject.org/wp/66343)]
@@ -197,6 +198,7 @@ Newly generated API tokens can directly be used as Bearer tokens and do not need
 - Feature: Add enterprise banner for MCP server [[#70086](https://community.openproject.org/wp/70086)]
 - Feature: Primerize Custom Field forms [[#70292](https://community.openproject.org/wp/70292)]
 - Feature: Support WebP images in PDF exports [[#70333](https://community.openproject.org/wp/70333)]
+- Feature: Rename status boards to kanban boards [[#70911](https://community.openproject.org/wp/70911)]
 - Feature: Use autocompleters in Admin/Backlogs page [[#71069](https://community.openproject.org/wp/71069)]
 - Feature: Improve Accessibility of Project Overview and Dashboard Widgets [[#71075](https://community.openproject.org/wp/71075)]
 - Feature: Allow to use API Keys as Bearer tokens [[#71147](https://community.openproject.org/wp/71147)]
@@ -208,6 +210,7 @@ Newly generated API tokens can directly be used as Bearer tokens and do not need
 - Feature: Allow to configure MCP tool response volume [[#71978](https://community.openproject.org/wp/71978)]
 - Feature: Allow authentication to MCP endpoint via session cookie [[#72253](https://community.openproject.org/wp/72253)]
 - Feature: Enable Column Sorting on Versions Overview [[#72354](https://community.openproject.org/wp/72354)]
+- Feature: Add "beta" label in MCP Admin settings headline [[#72511](https://community.openproject.org/wp/72511)]
 - Feature: MCP Server as a bridge between OpenProject and LLMs [[#62781](https://community.openproject.org/wp/62781)]
 
 <!-- END AUTOMATED SECTION -->

@@ -241,7 +241,6 @@ pt-PT:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -266,7 +265,7 @@ pt-PT:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1362,6 +1361,10 @@ pt-PT:
         finish_date: "End date"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "Exibir até"
       attachment:
@@ -3098,6 +3101,7 @@ pt-PT:
   journals:
     changes_retracted: "As mudanças foram retraídas."
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Datas alteradas"
       default_attribute_written: "Escrita de atributos só de leitura"
       import: "Imported"
@@ -3123,6 +3127,7 @@ pt-PT:
       work_package_related_changed_times: por alterações no %{link} relacionado
       work_package_duplicate_closed: O estado foi automaticamente atualizado pelo pacote de trabalho duplicado %{link}
       unaccessable_work_package_changed: por alterações num pacote de trabalho relacionado
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "por alterações nos dias úteis (%{changes})"
         days:

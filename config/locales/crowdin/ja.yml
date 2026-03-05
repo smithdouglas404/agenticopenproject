@@ -235,7 +235,6 @@ ja:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -260,7 +259,7 @@ ja:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1348,6 +1347,10 @@ ja:
         finish_date: "End date"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "までを表示"
       attachment:
@@ -3043,6 +3046,7 @@ ja:
   journals:
     changes_retracted: "変更は取り下げられました。"
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "日付を変更"
       default_attribute_written: "読み取り専用属性が書き込まれました"
       import: "Imported"
@@ -3068,6 +3072,7 @@ ja:
       work_package_related_changed_times: 関連する %{link} への変更によって
       work_package_duplicate_closed: このステータスは重複したワークパッケージ %{link}によって自動的に更新されました
       unaccessable_work_package_changed: 関連するワークパッケージに変更を加えることで
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "営業日数の変更 (%{changes})"
         days:

@@ -253,7 +253,6 @@ ru:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -278,7 +277,7 @@ ru:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1393,6 +1392,10 @@ ru:
         finish_date: "Дата окончания"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "Отобразить до"
       attachment:
@@ -3211,6 +3214,7 @@ ru:
   journals:
     changes_retracted: "Изменения отменены."
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Даты изменены"
       default_attribute_written: "Запись атрибутов со свойством \"только для чтения\""
       import: "Imported"
@@ -3236,6 +3240,7 @@ ru:
       work_package_related_changed_times: внесением изменений в связанный элемент %{link}
       work_package_duplicate_closed: Статус был автоматически обновлен дубликатом пакета работ %{link}
       unaccessable_work_package_changed: внесением изменений в связанный пакет работ
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "внесением изменений в рабочие дни (%{changes})"
         days:

@@ -232,7 +232,7 @@ tr:
         title: "Aylara göre gerçek maliyetler"
         blankslate:
           heading: "Zamanınızı ve maliyetlerinizi takip etmeye başlayın"
-          description: "Projenizin ilerleyişini izlemek için maliyetlerinize ve kaydedilen zamana genel bir bakış elde edin"
+          description: "Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget."
           action: "Günlük zamanı"
         view_details: "Gerçek maliyet ayrıntılarını görüntüleyin"
   ee:

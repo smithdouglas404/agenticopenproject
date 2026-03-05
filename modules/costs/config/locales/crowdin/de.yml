@@ -232,7 +232,7 @@ de:
         title: "Tatsächliche Kosten pro Monat"
         blankslate:
           heading: "Erfassen Sie Ihre Zeit und Kosten"
-          description: "Verschaffen Sie sich einen Überblick über Ihre Kosten und die erfasste Zeit, um den Fortschritt Ihres Projekts zu überwachen."
+          description: "Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget."
           action: "Zeit buchen"
         view_details: "Details zu den tatsächlichen Kosten anzeigen"
   ee:

@@ -253,7 +253,6 @@ cs:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -278,7 +277,7 @@ cs:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1395,6 +1394,10 @@ cs:
         finish_date: "End date"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "Zobrazit do"
       attachment:
@@ -3213,6 +3216,7 @@ cs:
   journals:
     changes_retracted: "Změny byly staženy."
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Data změněna"
       default_attribute_written: "Zápis atributů pouze pro čtení"
       import: "Imported"
@@ -3238,6 +3242,7 @@ cs:
       work_package_related_changed_times: podle změn na související %{link}
       work_package_duplicate_closed: Stav byl automaticky aktualizován duplicitním pracovním balíčkem %{link}
       unaccessable_work_package_changed: prostřednictvím změn souvisejícího pracovního balíčku
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "podle změn na pracovní dny (%{changes})"
         days:

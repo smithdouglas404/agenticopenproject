@@ -253,7 +253,6 @@ uk:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -278,7 +277,7 @@ uk:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1389,6 +1388,10 @@ uk:
         finish_date: "End date"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "Показувати до"
       attachment:
@@ -3207,6 +3210,7 @@ uk:
   journals:
     changes_retracted: "Зміни було відхилено."
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Дати змінено"
       default_attribute_written: "Атрибути лише для читання записано"
       import: "Imported"
@@ -3232,6 +3236,7 @@ uk:
       work_package_related_changed_times: внесенням змін у пов’язаний елемент %{link}
       work_package_duplicate_closed: Статус автоматично оновлено на основі дубліката пакета робіт %{link}
       unaccessable_work_package_changed: внесенням змін у пов’язаний пакет робіт
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "внесенням змін у робочі дні (%{changes})"
         days:

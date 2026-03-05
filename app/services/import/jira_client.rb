@@ -199,6 +199,10 @@ module Import
       get("/rest/api/2/user", params: { key:, expand: "groups" })
     end
 
+    def user_by_username(username:)
+      get("/rest/api/2/user", params: { username:, expand: "groups" })
+    end
+
     def groups(query: "", max_results: 1000)
       get("/rest/api/2/groups/picker", params: { query:, maxResults: max_results })
     end

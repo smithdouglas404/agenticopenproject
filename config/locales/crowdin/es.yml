@@ -241,7 +241,6 @@ es:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -266,7 +265,7 @@ es:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1362,6 +1361,10 @@ es:
         finish_date: "End date"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "Mostrar hasta"
       attachment:
@@ -3098,6 +3101,7 @@ es:
   journals:
     changes_retracted: "Se deshicieron los cambios."
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Cambio de fechas"
       default_attribute_written: "Atributos de solo lectura escritos"
       import: "Imported"
@@ -3123,6 +3127,7 @@ es:
       work_package_related_changed_times: por cambios en los %{link} relacionados
       work_package_duplicate_closed: El estado fue actualizado automáticamente por el paquete de trabajo duplicado %{link}
       unaccessable_work_package_changed: por cambios en un paquete de trabajo relacionado
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "por cambios en días laborables (%{changes})"
         days:

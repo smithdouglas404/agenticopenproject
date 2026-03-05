@@ -241,7 +241,6 @@ it:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -266,7 +265,7 @@ it:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1362,6 +1361,10 @@ it:
         finish_date: "End date"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "Visualizza fino a"
       attachment:
@@ -3098,6 +3101,7 @@ it:
   journals:
     changes_retracted: "Le modifiche sono state annullate."
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Date cambiate"
       default_attribute_written: "Attributi di sola lettura scritti"
       import: "Imported"
@@ -3123,6 +3127,7 @@ it:
       work_package_related_changed_times: da modifiche a elemento correlato %{link}
       work_package_duplicate_closed: Lo stato è stato aggiornato automaticamente dalla macro-attività duplicata %{link}
       unaccessable_work_package_changed: da modifiche a macro-attività correlata
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "da modifiche ai giorni lavorativi (%{changes})"
         days:

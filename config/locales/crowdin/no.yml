@@ -241,7 +241,6 @@
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -266,7 +265,7 @@
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1364,6 +1363,10 @@
         finish_date: "End date"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "Vise til"
       attachment:
@@ -3100,6 +3103,7 @@
   journals:
     changes_retracted: "Endringene er trukket tilbake."
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Datoer endret"
       default_attribute_written: "Skrivebeskyttet attributter skrevet"
       import: "Imported"
@@ -3125,6 +3129,7 @@
       work_package_related_changed_times: etter endringer i relatert %{link}
       work_package_duplicate_closed: The status was automatically updated by the duplicated work package %{link}
       unaccessable_work_package_changed: etter endringer i en relatert arbeidspakke
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "av endringer i arbeidsdager (%{changes})"
         days:

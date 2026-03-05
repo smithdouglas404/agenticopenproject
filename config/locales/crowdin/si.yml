@@ -241,7 +241,6 @@ si:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -266,7 +265,7 @@ si:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1365,6 +1364,10 @@ si:
         finish_date: "End date"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "ප්රදර්ශනය වන තුරු"
       attachment:
@@ -3101,6 +3104,7 @@ si:
   journals:
     changes_retracted: "The changes were retracted."
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Dates changed"
       default_attribute_written: "Read-only attributes written"
       import: "Imported"
@@ -3126,6 +3130,7 @@ si:
       work_package_related_changed_times: by changes to related %{link}
       work_package_duplicate_closed: The status was automatically updated by the duplicated work package %{link}
       unaccessable_work_package_changed: by changes to a related work package
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "by changes to working days (%{changes})"
         days:

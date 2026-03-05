@@ -35,7 +35,7 @@ class ApplyWorkPackageAttachmentSettingsToExistingProjects < ActiveRecord::Migra
       SET settings = jsonb_set(
         settings,
         '{deactivate_work_package_attachments}',
-        (SELECT to_jsonb(settings.value::boolean)
+        (SELECT to_jsonb(not settings.value::boolean)
          FROM settings
          WHERE settings.name = 'show_work_package_attachments')
       )

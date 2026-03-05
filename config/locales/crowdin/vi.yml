@@ -235,7 +235,6 @@ vi:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
@@ -260,7 +259,7 @@ vi:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
               label_finalizing_progress: "Finalizing import..."
               label_finalized: "Import finalized."
               label_revert_progress: "Reverting import..."
@@ -1348,6 +1347,10 @@ vi:
         finish_date: "End date"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
       announcements:
         show_until: "Hiển thị cho đến khi"
       attachment:
@@ -3043,6 +3046,7 @@ vi:
   journals:
     changes_retracted: "Những thay đổi đã bị rút lại"
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Ngày đã thay đổi"
       default_attribute_written: "Thuộc tính chỉ đọc được viết"
       import: "Imported"
@@ -3068,6 +3072,7 @@ vi:
       work_package_related_changed_times: bởi những thay đổi đối với %{link} có liên quan
       work_package_duplicate_closed: Trạng thái được cập nhật tự động bởi gói công việc trùng lặp %{link}
       unaccessable_work_package_changed: bằng cách thay đổi gói công việc liên quan
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "do thay đổi ngày làm việc (%{changes})"
         days:
