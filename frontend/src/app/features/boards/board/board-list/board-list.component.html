@@ -31,7 +31,9 @@
       <board-list-menu class="op-board-list--menu"
         data-test-selector="op-board-list--menu"
         [board]="board"
-        (onRemove)="deleteList()" />
+        [resource]="resource"
+        (onRemove)="deleteList()"
+        (onReload)="updateQuery(true)" />
     </div>
     <div class="op-board-list--query-container drop-zone"
       [ngClass]="{ '-with-create-button': board.isAction || showAddButton }">
