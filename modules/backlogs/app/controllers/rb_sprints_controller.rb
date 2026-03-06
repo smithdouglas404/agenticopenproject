@@ -75,7 +75,7 @@ class RbSprintsController < RbApplicationController
     respond_with_turbo_streams
   end
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
     call = Sprints::CreateService
              .new(user: current_user)
              .call(attributes: converted_agile_sprint_params)
@@ -90,7 +90,7 @@ class RbSprintsController < RbApplicationController
   end
 
   # Called like this due to `update` being taken by legacy sprints.
-  def update_agile_sprint
+  def update_agile_sprint # rubocop:disable Metrics/AbcSize
     # TODO: visible-scope?
     @sprint = Agile::Sprint.find(params[:id])
 

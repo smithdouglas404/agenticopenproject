@@ -137,7 +137,7 @@ module RbCommonHelper
   end
 
   def allow_sprint_creation?(project)
-    scrum_projects_enabled? && User.current.allowed_in_project?(:create_sprints, project)
+    scrum_projects_enabled? && current_user.allowed_in_project?(:create_sprints, project)
   end
 
   private
