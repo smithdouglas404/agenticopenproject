@@ -1553,6 +1553,7 @@ en:
         text: "Page content"
       work_package:
         ancestor: "Descendants of" # used for filtering of work packages that are descendants of a given work package
+        author: "Reporter"
         begin_insertion: "Begin of the insertion"
         begin_deletion: "Begin of the deletion"
         children: "Subelements"

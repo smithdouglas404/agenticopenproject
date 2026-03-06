@@ -121,10 +121,14 @@ module Type::AttributeGroups
     values = work_package_attributes_by_default_group_key
     values.reject! { |k, _| k == :estimates_and_progress } if is_milestone?
 
-    default_groups.keys.each_with_object([]) do |groupkey, array|
+    groups = default_groups.keys.each_with_object([]) do |groupkey, array|
       members = values[groupkey]
       array << [groupkey, members] if members.present?
     end
+
+    return groups unless replace_accountable_with_reporter?
+
+    replace_accountable_with_reporter(groups)
   end
 
   def reload(*args)
@@ -183,6 +187,36 @@ module Type::AttributeGroups
   # This method might get patched by modules.
   def default_attribute?(active_cfs, key)
     !(CustomField.custom_field_attribute?(key) && !active_cfs.include?(key))
+  end
+
+  def replace_accountable_with_reporter(groups)
+    normalized_groups = groups.map do |group_key, members|
+      normalized_members = members.dup
+
+      normalized_members.delete("responsible")
+      normalized_members.delete("author") unless group_key.to_sym == :people
+
+      [group_key, normalized_members]
+    end
+
+    people_group = normalized_groups.find { |group_key, _| group_key.to_sym == :people }
+
+    if people_group
+      people_members = people_group.last
+      unless people_members.include?("author")
+        assignee_index = people_members.index("assignee")
+        insertion_index = assignee_index ? assignee_index + 1 : people_members.length
+        people_members.insert(insertion_index, "author")
+      end
+    else
+      normalized_groups << [:people, ["author"]]
+    end
+
+    normalized_groups.reject { |_group_key, members| members.blank? }
+  end
+
+  def replace_accountable_with_reporter?
+    %w[Task Bug].include?(name)
   end
 
   def to_attribute_group_class(groups)
