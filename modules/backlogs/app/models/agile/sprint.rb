@@ -41,7 +41,8 @@ module Agile
     scope :for_project, ->(project) { where(project:) }
     scope :not_completed, -> { !completed }
     scope :order_by_date, -> do
-      reorder(Arel.sql("start_date ASC NULLS LAST, finish_date ASC NULLS LAST"))
+      order(arel_table[:start_date].asc.nulls_last,
+            arel_table[:finish_date].asc.nulls_last)
     end
 
     enum :status,
