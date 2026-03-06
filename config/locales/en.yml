@@ -642,11 +642,13 @@ en:
   op_dry_validation:
     or: "or"
     errors:
+      unexpected_key: "is not allowed"
       array?: "must be an array."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
       filled?: "must be filled."
+      format?: "is in invalid format"
       greater_or_equal_zero: "must be greater or equal to 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
@@ -673,7 +675,9 @@ en:
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
       str?: "must be a string."
+      time?: "must be a time"
       type?: "must be %{type}."
+      uri?: "is not a valid URI"
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Enabled"
