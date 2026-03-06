@@ -15,7 +15,9 @@ Versions are also used to enable the Backlogs module, i.e., to create a product 
 
 ## Create a new version
 
-To create a new version for your project, navigate to *Project settings → Versions* in the project menu and click the green **+ Version** button.
+Navigate to *Project settings → Versions* in the project menu. You will see an overview of all existing versions. Per default, the existing versions will be sorted by the *Name*, which is indicated by an arrow next to the column header. To change the sorting order, click the name of any column you wish to use for sorting instead. 
+
+ To create a new version for your project, click the green **+ Version** button. 
 
 ![Versions in project settings in OpenProject](openproject_user_guide_project_settings_work_packages_versions.png)
 
