@@ -190,6 +190,7 @@ RSpec.describe RbSprintsController do
           expect(response).to be_successful
           expect(response).to have_http_status :ok
           expect(response.body).to have_turbo_stream action: "flash"
+          expect(response.body).to include("Successful update.")
           expect(sprint.reload.name).to eq("Changed sprint name")
         end
 
