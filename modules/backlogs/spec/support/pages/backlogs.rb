@@ -225,9 +225,11 @@ module Pages
     end
 
     def open_create_sprint_dialog
-      click_on "Create"
-      new_sprint_button = page.find_test_selector("op-sprints--new-sprint-button")
-      new_sprint_button&.click
+      find(:button, accessible_name: "Create").click
+
+      within(:menu) do |menu|
+        menu.find(:menuitem, "Sprint").click
+      end
     end
 
     def expect_sprint_dialog
