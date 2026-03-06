@@ -37,7 +37,9 @@ Collect these values first:
 - Fork repo: `shanjian/openproject`
 - Release base: `release-17.1.2`
 - Custom packaging branch: e.g. `release-17.1.2-custom`
-- Packager build URL/job for your branch (to download the RPM artifact)
+- Build method:
+  - GitHub Actions artifact build in your fork (no Packager.io), or
+  - Packager.io build
 - Production host SSH access
 - Maintenance window
 
@@ -68,9 +70,63 @@ git push origin v17.1.2-custom.1
 
 ---
 
-## 4) Build RPMs from Your Fork (Packager.io)
+## 4) Build RPMs from Your Fork
 
 Purpose: produce installable EL9 RPM artifacts from your branch.
+
+### 4.1 Recommended: GitHub Actions artifact build (no Packager.io)
+
+Use your fork CI to build RPM and download it as a GitHub Actions artifact.
+
+This path was executed successfully on `2026-03-04` in fork `shanjian/openproject`
+using workflow `.github/workflows/packager-fork-artifact.yml`.
+
+1. In your fork, create a workflow (or copy `packager.yml`) with these changes:
+   - remove `if: github.repository == 'opf/openproject'`
+   - keep only target `el:9`
+   - remove the `Publish` step
+   - add an artifact upload step
+2. Commit workflow file and push branch `release-17.1.2-custom`.
+3. Trigger the workflow:
+
+```bash
+gh workflow run packager-fork-artifact.yml --ref release-17.1.2-custom
+```
+
+4. Get and monitor the latest run:
+
+```bash
+gh run list --workflow packager-fork-artifact.yml \
+  --branch release-17.1.2-custom --limit 1
+
+# Use the run id from the command above
+gh run watch <run-id> --exit-status
+```
+
+5. Download artifacts locally:
+
+```bash
+mkdir -p /tmp/openproject-rpm-artifact
+gh run download <run-id> --dir /tmp/openproject-rpm-artifact
+find /tmp/openproject-rpm-artifact -type f -name '*.rpm'
+```
+
+Example artifact step (from successful run):
+
+```yaml
+- name: Upload RPM artifact
+  uses: actions/upload-artifact@v4
+  with:
+    name: openproject-el9-rpm-${{ github.run_number }}
+    path: ${{ steps.package.outputs.package_path }}
+    retention-days: 30
+```
+
+Observed successful runs:
+- `22690249854` (push) -> artifact `openproject-el9-rpm-1`
+- `22690781958` (workflow_dispatch) -> artifact `openproject-el9-rpm-2`
+
+### 4.2 Optional: Packager.io build
 
 1. Open packager.io and add/configure your fork repository.
 2. Trigger a build for branch `release-17.1.2-custom`.
@@ -157,6 +213,8 @@ Notes:
   - `sudo dnf reinstall -y /tmp/openproject-17.1.2-custom.1-1.el9.x86_64.rpm`
 - If you need to move to an older build:
   - `sudo dnf downgrade -y /tmp/openproject-17.1.2-custom.0-1.el9.x86_64.rpm`
+- If a broken unrelated repo blocks `dnf` metadata refresh, do one-time bypass:
+  - `sudo dnf install -y /tmp/openproject-...rpm --disablerepo=<repo-id>`
 
 ### 7.4 Apply OpenProject configure/migrations
 
@@ -219,7 +277,9 @@ For each new custom release:
 
 1. Add commits to `release-17.1.2-custom`.
 2. Tag (e.g., `v17.1.2-custom.2`).
-3. Build new RPM artifact in packager.
+3. Build new RPM artifact using your chosen method:
+   - GitHub Actions artifact build (preferred), or
+   - Packager.io build
 4. On production:
 
 ```bash
@@ -249,3 +309,81 @@ sudo openproject restart
 5. Assuming local RPM install does not replace repo-installed package.
 - Symptom: fear that package manager blocks replacement.
 - Fix: `dnf install /path/to/openproject-...rpm` upgrades/replaces when package name matches (`openproject`).
+
+6. Fork build workflow never runs.
+- Symptom: no RPM artifacts created in fork CI.
+- Why: upstream `packager.yml` has `if: github.repository == 'opf/openproject'`.
+- Fix: use a fork-specific workflow (no repo guard, no publish step, upload artifacts).
+
+7. `dnf` fails with `Failed to download metadata for repo 'pgdg13'`.
+- Symptom: install/upgrade aborts before package transaction.
+- Why: stale PostgreSQL 13 repository config returns 404.
+- Fix:
+  - one-time install: `--disablerepo=pgdg13`
+  - permanent: disable repo with `sudo dnf config-manager --set-disabled pgdg13`
+
+---
+
+## 12) PostgreSQL Upgrade and Cleanup (RHEL/Rocky 9)
+
+Purpose: move to a supported PostgreSQL version and keep upgrade/cleanup steps explicit.
+
+OpenProject 17.x recommends PostgreSQL `16+`. On Rocky/RHEL 9, distro module `postgresql:16` is a straightforward path.
+
+### 12.1 Upgrade PostgreSQL and keep existing data
+
+Use this when you want to preserve current OpenProject data.
+
+```bash
+# Stop app before DB changes
+sudo openproject stop || true
+
+# Disable stale PGDG 13 repo (permanent fix for metadata 404)
+sudo dnf config-manager --set-disabled pgdg13
+sudo dnf clean all
+sudo dnf makecache
+
+# Switch to distro PostgreSQL 16 stream
+sudo dnf module reset -y postgresql
+sudo dnf module enable -y postgresql:16
+sudo dnf install -y postgresql-server postgresql-contrib
+
+# Start PostgreSQL service
+sudo systemctl enable --now postgresql
+```
+
+Then re-run OpenProject config/start:
+
+```bash
+sudo openproject configure
+sudo openproject restart
+```
+
+Verification:
+
+```bash
+sudo -u postgres psql -c "select version();"
+sudo openproject config:get DATABASE_URL
+sudo -u postgres psql -c "show data_directory;"
+```
+
+If old data appears after restart, this is expected when `DATABASE_URL` still points to the same database/cluster.
+
+### 12.2 Cleanup/reset database (non-production only)
+
+Use this only when you explicitly want a clean/empty database.
+
+```bash
+sudo openproject stop || true
+sudo systemctl stop postgresql
+
+# WARNING: destructive
+sudo rm -rf /var/lib/pgsql/data
+sudo postgresql-setup --initdb
+sudo systemctl enable --now postgresql
+
+sudo openproject configure
+sudo openproject restart
+```
+
+This deletes all existing PostgreSQL data in `/var/lib/pgsql/data`.

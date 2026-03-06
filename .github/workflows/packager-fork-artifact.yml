@@ -1,0 +1,48 @@
+name: Package RPM Artifact (Fork)
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release-17.1.2-custom
+
+jobs:
+  build-el9-rpm:
+    name: el:9
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: app
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: p4ssw0rd
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup version
+        id: setup
+        run: |
+          VERSION=$(ruby -r ./lib/open_project/version.rb -e "puts OpenProject::VERSION")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Package el:9
+        uses: pkgr/action/package@main
+        id: package
+        with:
+          target: el:9
+          version: ${{ steps.setup.outputs.version }}
+          debug: true
+          cache_prefix: ${{ github.ref_name }}
+          env: |
+            DATABASE_URL=postgres://app:p4ssw0rd@127.0.0.1:5432/app
+
+      - name: Upload RPM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openproject-el9-rpm-${{ github.run_number }}
+          path: ${{ steps.package.outputs.package_path }}
+          retention-days: 30
