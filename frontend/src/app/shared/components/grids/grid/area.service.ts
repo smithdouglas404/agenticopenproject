@@ -172,7 +172,11 @@ export class GridAreaService {
           return updatedGrid;
         }),
         catchError((error:unknown) => {
-          this.toastService.addError(error as HttpErrorResponse);
+          if (error instanceof HttpErrorResponse) {
+            this.toastService.addError(error);
+          } else {
+            this.toastService.addError(this.i18n.t('js.ajax_error.generic'));
+          }
           return throwError(() => error);
         }),
       );
