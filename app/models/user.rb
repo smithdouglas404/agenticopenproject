@@ -686,14 +686,21 @@ class User < Principal
 
   def non_working_days_for_year(year)
     working_wdays = Setting.working_days.map { |d| d % 7 }
-    year_range = Date.new(year, 1, 1)..Date.new(year, 12, 31)
+    all_dates = system_non_working_dates_for_year(year) | user_non_working_dates_for_year(year)
+    all_dates.select { |d| working_wdays.include?(d.wday) }
+  end
 
-    system_dates = NonWorkingDay.for_year(year).pluck(:date).to_set
-    user_dates = non_working_times.for_year(year).flat_map do |t|
+  private
+
+  def system_non_working_dates_for_year(year)
+    NonWorkingDay.for_year(year).pluck(:date).to_set
+  end
+
+  def user_non_working_dates_for_year(year)
+    year_range = Date.new(year, 1, 1)..Date.new(year, 12, 31)
+    non_working_times.for_year(year).flat_map do |t|
       ([t.start_date, year_range.begin].max..[t.end_date, year_range.end].min).to_a
     end.to_set
-
-    (system_dates | user_dates).select { |d| working_wdays.include?(d.wday) }
   end
 
   protected

@@ -40,7 +40,7 @@ module My
 
       private
 
-      def wrapper_data
+      def wrapper_data # rubocop:disable Metrics/AbcSize
         {
           "controller" => "my--time-tracking",
           "my--time-tracking-mode-value" => mode,

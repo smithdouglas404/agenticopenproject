@@ -43,14 +43,19 @@ module Users
       def call
         render(Users::NonWorkingTimes::SubHeaderComponent.new(year:, user:)) +
         render(Primer::Alpha::Layout.new(classes: "users-non-working-times-year-overview")) do |layout|
-          layout.with_main do
-            render(Users::NonWorkingTimes::CalendarComponent.new(non_working_times: non_working_times, year: year, user:))
-          end
-
-          layout.with_sidebar(col_placement: :end) do
-            render(Users::NonWorkingTimes::SidebarComponent.new(non_working_times: non_working_times, year: year, user:))
-          end
+          layout.with_main { render_calendar }
+          layout.with_sidebar(col_placement: :end) { render_sidebar }
         end
+      end
+
+      private
+
+      def render_calendar
+        render(Users::NonWorkingTimes::CalendarComponent.new(non_working_times:, year:, user:))
+      end
+
+      def render_sidebar
+        render(Users::NonWorkingTimes::SidebarComponent.new(non_working_times:, year:, user:))
       end
     end
   end

@@ -87,17 +87,19 @@ module Users
         system_dates = non_working_times.grep(NonWorkingDay).to_set(&:date)
         non_working_times
           .grep(UserNonWorkingTime)
-          .map do |nwt|
-            clipped = nwt.clip_to_year(year, system_non_working_dates: system_dates)
-            {
-              start: clipped.start_date.iso8601,
-              end: (clipped.end_date + 1.day).iso8601,
-              title: event_title(clipped),
-              working_days: clipped.working_days_count,
-              type: "user",
-              edit_url: can_update? ? edit_user_non_working_time_path(user, nwt.id) : nil
-            }.compact
-          end
+          .map { |nwt| user_event_for(nwt, system_dates) }
+      end
+
+      def user_event_for(nwt, system_dates)
+        clipped = nwt.clip_to_year(year, system_non_working_dates: system_dates)
+        {
+          start: clipped.start_date.iso8601,
+          end: (clipped.end_date + 1.day).iso8601,
+          title: event_title(clipped),
+          working_days: clipped.working_days_count,
+          type: "user",
+          edit_url: can_update? ? edit_user_non_working_time_path(user, nwt.id) : nil
+        }.compact
       end
 
       def event_title(clipped)
