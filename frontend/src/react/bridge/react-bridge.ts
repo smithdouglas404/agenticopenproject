@@ -1,5 +1,6 @@
 import React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
+import { registerPortalRoot } from '@primer/react';
 import { PrimerProviderWrapper } from './primer-provider-wrapper';
 
 export class ReactBridge {
@@ -11,7 +12,18 @@ export class ReactBridge {
     return new Promise((resolve) => {
       const container = document.createElement('div');
       container.setAttribute('data-react-bridge', 'true');
+      container.style.position = 'fixed';
+      container.style.inset = '0';
+      container.style.zIndex = '1100';
       document.body.appendChild(container);
+
+      const portalRoot = document.createElement('div');
+      portalRoot.setAttribute('data-primer-portal-root', 'true');
+      portalRoot.style.position = 'fixed';
+      portalRoot.style.inset = '0';
+      portalRoot.style.zIndex = '1100';
+      container.appendChild(portalRoot);
+      registerPortalRoot(portalRoot);
 
       let root:Root | null = null;
 
