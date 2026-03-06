@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GridWidgetArea } from 'core-app/shared/components/grids/areas/grid-widget-area';
 import { GridArea } from 'core-app/shared/components/grids/areas/grid-area';
@@ -8,10 +9,10 @@ import { SchemaResource } from 'core-app/features/hal/resources/schema-resource'
 import { WidgetChangeset } from 'core-app/shared/components/grids/widgets/widget-changeset';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, throwError } from 'rxjs';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { ApiV3GridForm } from 'core-app/core/apiv3/endpoints/grids/apiv3-grid-form';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class GridAreaService {
@@ -169,6 +170,10 @@ export class GridAreaService {
           this.toastService.addSuccess(this.i18n.t('js.notice_successful_update'));
 
           return updatedGrid;
+        }),
+        catchError((error:unknown) => {
+          this.toastService.addError(error as HttpErrorResponse);
+          return throwError(() => error);
         }),
       );
 
