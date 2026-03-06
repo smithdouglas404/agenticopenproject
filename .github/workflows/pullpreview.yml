@@ -3,9 +3,6 @@ name: pullpreview
 concurrency: ${{ github.ref }}
 
 on:
-  schedule:
-    # this is used to make sure no dangling resources are left
-    - cron: "30 2 * * *"
   pull_request:
     types: [labeled, unlabeled, synchronize, closed, reopened]
 

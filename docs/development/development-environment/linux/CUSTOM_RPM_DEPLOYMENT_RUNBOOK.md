@@ -213,6 +213,8 @@ Notes:
   - `sudo dnf reinstall -y /tmp/openproject-17.1.2-custom.1-1.el9.x86_64.rpm`
 - If you need to move to an older build:
   - `sudo dnf downgrade -y /tmp/openproject-17.1.2-custom.0-1.el9.x86_64.rpm`
+- If a broken unrelated repo blocks `dnf` metadata refresh, do one-time bypass:
+  - `sudo dnf install -y /tmp/openproject-...rpm --disablerepo=<repo-id>`
 
 ### 7.4 Apply OpenProject configure/migrations
 
@@ -312,3 +314,76 @@ sudo openproject restart
 - Symptom: no RPM artifacts created in fork CI.
 - Why: upstream `packager.yml` has `if: github.repository == 'opf/openproject'`.
 - Fix: use a fork-specific workflow (no repo guard, no publish step, upload artifacts).
+
+7. `dnf` fails with `Failed to download metadata for repo 'pgdg13'`.
+- Symptom: install/upgrade aborts before package transaction.
+- Why: stale PostgreSQL 13 repository config returns 404.
+- Fix:
+  - one-time install: `--disablerepo=pgdg13`
+  - permanent: disable repo with `sudo dnf config-manager --set-disabled pgdg13`
+
+---
+
+## 12) PostgreSQL Upgrade and Cleanup (RHEL/Rocky 9)
+
+Purpose: move to a supported PostgreSQL version and keep upgrade/cleanup steps explicit.
+
+OpenProject 17.x recommends PostgreSQL `16+`. On Rocky/RHEL 9, distro module `postgresql:16` is a straightforward path.
+
+### 12.1 Upgrade PostgreSQL and keep existing data
+
+Use this when you want to preserve current OpenProject data.
+
+```bash
+# Stop app before DB changes
+sudo openproject stop || true
+
+# Disable stale PGDG 13 repo (permanent fix for metadata 404)
+sudo dnf config-manager --set-disabled pgdg13
+sudo dnf clean all
+sudo dnf makecache
+
+# Switch to distro PostgreSQL 16 stream
+sudo dnf module reset -y postgresql
+sudo dnf module enable -y postgresql:16
+sudo dnf install -y postgresql-server postgresql-contrib
+
+# Start PostgreSQL service
+sudo systemctl enable --now postgresql
+```
+
+Then re-run OpenProject config/start:
+
+```bash
+sudo openproject configure
+sudo openproject restart
+```
+
+Verification:
+
+```bash
+sudo -u postgres psql -c "select version();"
+sudo openproject config:get DATABASE_URL
+sudo -u postgres psql -c "show data_directory;"
+```
+
+If old data appears after restart, this is expected when `DATABASE_URL` still points to the same database/cluster.
+
+### 12.2 Cleanup/reset database (non-production only)
+
+Use this only when you explicitly want a clean/empty database.
+
+```bash
+sudo openproject stop || true
+sudo systemctl stop postgresql
+
+# WARNING: destructive
+sudo rm -rf /var/lib/pgsql/data
+sudo postgresql-setup --initdb
+sudo systemctl enable --now postgresql
+
+sudo openproject configure
+sudo openproject restart
+```
+
+This deletes all existing PostgreSQL data in `/var/lib/pgsql/data`.
