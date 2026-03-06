@@ -131,6 +131,16 @@ Administrative interfaces for Custom Fields, Versions, and Groups have been furt
 
 In particular, custom field forms are now consistently styled across all field types. Previously, the appearance varied depending on the type of custom field. This has been unified to provide a clearer and more predictable configuration experience for administrators.
 
+###  Jira importer (feature flag)
+
+We are working on a new Jira import wizard designed to help teams migrate core project data from Jira into OpenProject more easily. The importer focuses on bringing over essential user-generated content such as issues, comments, attachments, and project structures, reducing the need for manual recreation or fragile third-party workarounds. 
+
+> [!IMPORTANT]
+> This functionality is still under active development and currently available only behind a feature flag for early testing. We’re sharing this preview to start the conversation with teams considering a move from Jira. More capabilities will follow in upcoming releases.
+
+![Add a new confgiruration to Jira importer under OpenProject administration](openproject_release_notes_17-2-0_jira_migrator.png)
+
+To find out more [see what we are working on](https://community.openproject.org/projects/jira-migration/work_packages).
 
 ## Important updates and breaking changes
 
@@ -152,35 +162,6 @@ Newly generated API tokens can directly be used as Bearer tokens and do not need
 <!-- Warning: Anything within the below lines will be automatically removed by the release script -->
 <!-- BEGIN AUTOMATED SECTION -->
 
-- Bugfix: Children column on WP list cannot be expanded [[#64491](https://community.openproject.org/wp/64491)]
-- Bugfix: DPA/AVV cannot be downloaded [[#67323](https://community.openproject.org/wp/67323)]
-- Bugfix: BlockNote: Color for text not applied from the block side menu [[#67507](https://community.openproject.org/wp/67507)]
-- Bugfix: Mobile web: When deep linking to a comment the comment is not fully scrolled into view [[#68221](https://community.openproject.org/wp/68221)]
-- Bugfix: Updating the activity anchor URL without a page load does not highlight the relevant target element [[#68262](https://community.openproject.org/wp/68262)]
-- Bugfix: Documents index page: pagination per page options overflow on mobile [[#68533](https://community.openproject.org/wp/68533)]
-- Bugfix: Changing the filter on the activity tab with a large number of comments and slow network/compute lacks loading state while waiting for request completion [[#68878](https://community.openproject.org/wp/68878)]
-- Bugfix: Flickering spec ./modules/meeting/spec/features/structured_meetings/work_package_meetings_tab_spec.rb:392 [[#68952](https://community.openproject.org/wp/68952)]
-- Bugfix: Clicking work package tabs triggers page reload and flickering [[#69210](https://community.openproject.org/wp/69210)]
-- Bugfix: Label for the admin document types reflects "priorities" instead of "types" in its messaging [[#69304](https://community.openproject.org/wp/69304)]
-- Bugfix: Infinite SAML Seeding Loop Causing Disk Space Exhaustion [[#69339](https://community.openproject.org/wp/69339)]
-- Bugfix: "Show attachments in the files tab by default" potentially overwrites the setting for existing project [[#69991](https://community.openproject.org/wp/69991)]
-- Bugfix: Fix accessibility errors found by ERB Lint [[#70166](https://community.openproject.org/wp/70166)]
-- Bugfix: Missing list items when using checkboxes in tables [[#70537](https://community.openproject.org/wp/70537)]
-- Bugfix: Documents: when document content exceeds vertical height, the cursor does not scroll into view unless there is content typed [[#70791](https://community.openproject.org/wp/70791)]
-- Bugfix: Helm-Chart: Allow user to provide service specific annotations [[#71055](https://community.openproject.org/wp/71055)]
-- Bugfix: Activity tab overflows with long names [[#71106](https://community.openproject.org/wp/71106)]
-- Bugfix: Multi-user custom field requires clicking twice in order to be in focus [[#71135](https://community.openproject.org/wp/71135)]
-- Bugfix: Status translation issue on status widget [[#71137](https://community.openproject.org/wp/71137)]
-- Bugfix: Unnecessary empty journals on dragging work packages with automatic subjects [[#71421](https://community.openproject.org/wp/71421)]
-- Bugfix: Sending mails via sendmail does not work [[#71447](https://community.openproject.org/wp/71447)]
-- Bugfix: Error Content-Security-Policy with Hocuspocus integration due to URL scheme misconfiguration [[#71888](https://community.openproject.org/wp/71888)]
-- Bugfix: BlockNote Extension: Click on WP title opens new tab and redirects the current tab [[#71898](https://community.openproject.org/wp/71898)]
-- Bugfix: Connection error on successive navigation to and from a document [[#71901](https://community.openproject.org/wp/71901)]
-- Bugfix: Impossible to search for archived projects, page reverts to active projects list on its own [[#71971](https://community.openproject.org/wp/71971)]
-- Bugfix: Remove presenter field/participants references in onetime templates [[#72222](https://community.openproject.org/wp/72222)]
-- Bugfix: Space is too small for placeholder text in Backlogs module [[#72366](https://community.openproject.org/wp/72366)]
-- Bugfix: Missing caption in new template dialog [[#72375](https://community.openproject.org/wp/72375)]
-- Bugfix: Wrong wording in Enterprise on-prem support token input field [[#72459](https://community.openproject.org/wp/72459)]
 - Feature: Reusable meeting templates for meeting agendas [[#35642](https://community.openproject.org/wp/35642)]
 - Feature: Primerized Backlogs list [[#57688](https://community.openproject.org/wp/57688)]
 - Feature: Export relationship columns in PDF report [[#66000](https://community.openproject.org/wp/66000)]
@@ -212,20 +193,49 @@ Newly generated API tokens can directly be used as Bearer tokens and do not need
 - Feature: Enable Column Sorting on Versions Overview [[#72354](https://community.openproject.org/wp/72354)]
 - Feature: Add "beta" label in MCP Admin settings headline [[#72511](https://community.openproject.org/wp/72511)]
 - Feature: MCP Server as a bridge between OpenProject and LLMs [[#62781](https://community.openproject.org/wp/62781)]
+- Bugfix: Children column on WP list cannot be expanded [[#64491](https://community.openproject.org/wp/64491)]
+- Bugfix: DPA/AVV cannot be downloaded [[#67323](https://community.openproject.org/wp/67323)]
+- Bugfix: BlockNote: Color for text not applied from the block side menu [[#67507](https://community.openproject.org/wp/67507)]
+- Bugfix: Mobile web: When deep linking to a comment the comment is not fully scrolled into view [[#68221](https://community.openproject.org/wp/68221)]
+- Bugfix: Updating the activity anchor URL without a page load does not highlight the relevant target element [[#68262](https://community.openproject.org/wp/68262)]
+- Bugfix: Documents index page: pagination per page options overflow on mobile [[#68533](https://community.openproject.org/wp/68533)]
+- Bugfix: Changing the filter on the activity tab with a large number of comments and slow network/compute lacks loading state while waiting for request completion [[#68878](https://community.openproject.org/wp/68878)]
+- Bugfix: Flickering spec ./modules/meeting/spec/features/structured_meetings/work_package_meetings_tab_spec.rb:392 [[#68952](https://community.openproject.org/wp/68952)]
+- Bugfix: Clicking work package tabs triggers page reload and flickering [[#69210](https://community.openproject.org/wp/69210)]
+- Bugfix: Label for the admin document types reflects "priorities" instead of "types" in its messaging [[#69304](https://community.openproject.org/wp/69304)]
+- Bugfix: Infinite SAML Seeding Loop Causing Disk Space Exhaustion [[#69339](https://community.openproject.org/wp/69339)]
+- Bugfix: "Show attachments in the files tab by default" potentially overwrites the setting for existing project [[#69991](https://community.openproject.org/wp/69991)]
+- Bugfix: Fix accessibility errors found by ERB Lint [[#70166](https://community.openproject.org/wp/70166)]
+- Bugfix: Missing list items when using checkboxes in tables [[#70537](https://community.openproject.org/wp/70537)]
+- Bugfix: Documents: when document content exceeds vertical height, the cursor does not scroll into view unless there is content typed [[#70791](https://community.openproject.org/wp/70791)]
+- Bugfix: Helm-Chart: Allow user to provide service specific annotations [[#71055](https://community.openproject.org/wp/71055)]
+- Bugfix: Activity tab overflows with long names [[#71106](https://community.openproject.org/wp/71106)]
+- Bugfix: Multi-user custom field requires clicking twice in order to be in focus [[#71135](https://community.openproject.org/wp/71135)]
+- Bugfix: Status translation issue on status widget [[#71137](https://community.openproject.org/wp/71137)]
+- Bugfix: Unnecessary empty journals on dragging work packages with automatic subjects [[#71421](https://community.openproject.org/wp/71421)]
+- Bugfix: Sending mails via sendmail does not work [[#71447](https://community.openproject.org/wp/71447)]
+- Bugfix: Error Content-Security-Policy with Hocuspocus integration due to URL scheme misconfiguration [[#71888](https://community.openproject.org/wp/71888)]
+- Bugfix: BlockNote Extension: Click on WP title opens new tab and redirects the current tab [[#71898](https://community.openproject.org/wp/71898)]
+- Bugfix: Connection error on successive navigation to and from a document [[#71901](https://community.openproject.org/wp/71901)]
+- Bugfix: Impossible to search for archived projects, page reverts to active projects list on its own [[#71971](https://community.openproject.org/wp/71971)]
+- Bugfix: Remove presenter field/participants references in onetime templates [[#72222](https://community.openproject.org/wp/72222)]
+- Bugfix: Space is too small for placeholder text in Backlogs module [[#72366](https://community.openproject.org/wp/72366)]
+- Bugfix: Missing caption in new template dialog [[#72375](https://community.openproject.org/wp/72375)]
+- Bugfix: Wrong wording in Enterprise on-prem support token input field [[#72459](https://community.openproject.org/wp/72459)]
+
 
 <!-- END AUTOMATED SECTION -->
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release. UPDATE
-Your support, alongside the efforts of our amazing Community, helps drive these innovations.
+A very special thank you goes to AMG, Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations.
 
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Holger Schantin, Stefan Weiberg, Jure Uršič, Natalie Stettner, Romain Besson.
+Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Alexander Aleschenko, Gabor Alexovics, Jörg Mollowitz and Александр Татаринцев. 
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
-UPDATE
+- [Adam Siemienski](https://crowdin.com/profile/siemienas), for a great number of translations into Polish.
+- [Mehmet Coşkun](https://crowdin.com/profile/mmehmet.ccoskun), for a great number of translations into Turkish.
+- [Liangzdz](https://crowdin.com/profile/liangzdz), for a great number of translations into Chinese Simplified.
 
 Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
-
