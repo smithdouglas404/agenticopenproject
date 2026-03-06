@@ -50,7 +50,7 @@ class Users::NonWorkingTimesController < ApplicationController
   end
 
   def new
-    @non_working_time = @user.non_working_times.build
+    @non_working_time = @user.non_working_times.build(prefilled_params)
 
     respond_with_dialog(
       Users::NonWorkingTimes::DialogComponent.new(user: @user, non_working_time: @non_working_time)
@@ -139,5 +139,9 @@ class Users::NonWorkingTimesController < ApplicationController
 
   def non_working_time_params
     params.expect(user_non_working_time: %i[start_date end_date])
+  end
+
+  def prefilled_params
+    params.permit(:start_date, :end_date)
   end
 end

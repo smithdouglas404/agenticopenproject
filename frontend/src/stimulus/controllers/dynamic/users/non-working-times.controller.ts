@@ -30,10 +30,12 @@
 
 import { Controller } from '@hotwired/stimulus';
 import { Calendar } from '@fullcalendar/core';
+import interactionPlugin from '@fullcalendar/interaction';
 import multiMonthPlugin from '@fullcalendar/multimonth';
 import allLocales from '@fullcalendar/core/locales-all';
 import { renderStreamMessage } from '@hotwired/turbo';
 import { TurboHelpers } from 'core-turbo/helpers';
+import moment from 'moment';
 
 interface NonWorkingDayEvent {
   date?:string;
@@ -54,6 +56,7 @@ export default class NonWorkingTimesController extends Controller {
     locale: String,
     startOfWeek: Number,
     workingDays: Array,
+    newUrl: String,
   };
 
   declare readonly calendarTarget:HTMLElement;
@@ -62,6 +65,8 @@ export default class NonWorkingTimesController extends Controller {
   declare readonly localeValue:string;
   declare readonly startOfWeekValue:number;
   declare readonly workingDaysValue:number[];
+  declare readonly hasNewUrlValue:boolean;
+  declare readonly newUrlValue:string;
 
   private calendar:Calendar;
 
@@ -84,7 +89,7 @@ export default class NonWorkingTimesController extends Controller {
 
   initializeCalendar() {
     this.calendar = new Calendar(this.calendarTarget, {
-      plugins: [multiMonthPlugin],
+      plugins: [multiMonthPlugin, interactionPlugin],
       initialView: 'multiMonthYear',
       multiMonthMaxColumns: 1,
       locales: allLocales,
@@ -106,6 +111,14 @@ export default class NonWorkingTimesController extends Controller {
           info.jsEvent.preventDefault();
           this.openDialog(editUrl);
         }
+      },
+      selectable: this.hasNewUrlValue,
+      select: (info) => {
+        const inclusiveEnd = moment(info.end).subtract(12, 'hours').toDate();
+        const endStr = inclusiveEnd.toISOString().slice(0, 10);
+        const url = `${this.newUrlValue}?start_date=${info.startStr}&end_date=${endStr}`;
+        this.openDialog(url);
+        this.calendar.unselect();
       },
     });
 

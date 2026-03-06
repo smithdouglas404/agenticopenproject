@@ -44,8 +44,12 @@ module Users
         user.present? && UserNonWorkingTimes::UpdateContract.can_update?(user: User.current, target_user: user)
       end
 
+      def can_create?
+        user.present? && UserNonWorkingTimes::CreateContract.can_create?(user: User.current, target_user: user)
+      end
+
       def wrapper_data
-        {
+        data = {
           "controller" => "users--non-working-times",
           "users--non-working-times-events-value" => events_json,
           "users--non-working-times-year-value" => year,
@@ -53,6 +57,12 @@ module Users
           "users--non-working-times-start-of-week-value" => first_day_of_week,
           "users--non-working-times-working-days-value" => working_days.to_json
         }
+
+        if can_create?
+          data["users--non-working-times-new-url-value"] = new_user_non_working_time_path(user)
+        end
+
+        data
       end
 
       def working_days
