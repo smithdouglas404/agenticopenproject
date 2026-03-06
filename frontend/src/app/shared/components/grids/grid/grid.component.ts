@@ -117,11 +117,10 @@ export class GridComponent implements OnDestroy, OnInit {
     return {
       resourceChanged: (changeset:WidgetChangeset) => {
         void this.layout.saveWidgetChangeset(changeset)
-          .then(() => this.cdRef.detectChanges())
           .catch((error:unknown) => {
             console.error('Widget changeset save failed:', error);
-            this.cdRef.detectChanges();
-          });
+          })
+          .finally(() => this.cdRef.detectChanges());
       },
     };
   }
