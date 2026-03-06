@@ -28,9 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-RSpec.shared_examples_for "acts_as_customizable included" do
+RSpec.shared_examples_for "acts_as_customizable included" do |admin_only_allowed:, comments:|
   describe "admin_only_custom_fields_allowed? instance and class methods" do
-    let(:expectation) { admin_only_custom_fields_allowed ? be_truthy : be_falsey }
+    let(:expectation) { admin_only_allowed ? be_truthy : be_falsey }
 
     describe ".admin_only_custom_fields_allowed?" do
       it { expect(described_class.admin_only_custom_fields_allowed?).to expectation }
@@ -42,7 +42,7 @@ RSpec.shared_examples_for "acts_as_customizable included" do
   end
 
   describe "can_have_custom_comments? instance and class methods" do
-    let(:expectation) { can_have_custom_comments ? be_truthy : be_falsey }
+    let(:expectation) { comments ? be_truthy : be_falsey }
 
     describe ".can_have_custom_comments?" do
       it { expect(described_class.can_have_custom_comments?).to expectation }
