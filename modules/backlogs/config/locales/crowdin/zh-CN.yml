@@ -26,7 +26,7 @@ zh-CN:
   activerecord:
     attributes:
       sprint:
-        duration: "Sprint duration"
+        duration: "冲刺持续时间"
       work_package:
         position: "位置"
         story_points: "故事点"
@@ -46,7 +46,7 @@ zh-CN:
     task_type: "任务类型"
   backlogs:
     any: "任一"
-    column_width: "Column width"
+    column_width: "列宽"
     definition_of_done: "完成的定义"
     impediment: "障碍"
     label_versions_default_fold_state: "显示已折叠的版本"
@@ -54,7 +54,7 @@ zh-CN:
     work_package_is_closed: "工作包已完成，当"
     label_is_done_status: "状态 %{status_name} 表示已完成"
     points_label:
-      other: "points"
+      other: "点数"
     positions_could_not_be_rebuilt: "无法重建顺序"
     positions_rebuilt_successfully: "已成功重建顺序"
     rebuild: "重建"
@@ -63,7 +63,7 @@ zh-CN:
     show_burndown_chart: "燃尽图"
     story: "故事"
     story_points:
-      other: "%{count} story points"
+      other: "%{count} 个故事点"
     task: "任务"
     task_color: "任务颜色"
     unassigned: "未指定"
@@ -71,21 +71,21 @@ zh-CN:
       header_backlogs: "积压工作模块"
       button_update_backlogs: "更新积压工作模块"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} 为空"
+      blankslate_description: "尚未计划项目。将项目拖到此处即可添加。"
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "折叠/展开 %{name}"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "待办清单中没有故事"
+        one: "待办清单中有 %{count} 个故事"
+        other: "待办清单中有 %{count} 个故事"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "待办清单操作"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
+        edit_sprint: "编辑冲刺"
+        new_story: "新故事"
+        stories_tasks: "故事/任务"
+        task_board: "任务板"
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"

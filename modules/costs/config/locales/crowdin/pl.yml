@@ -240,7 +240,7 @@ pl:
         title: "Rzeczywiste koszty według miesięcy"
         blankslate:
           heading: "Zacznij śledzić swój czas i koszty"
-          description: "Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget."
+          description: "Uzyskaj przegląd kosztów i zarejestrowanego czasu, aby monitorować postęp projektu. Upewnij się, że pakiety robocze są powiązane z właściwym budżetem."
           action: "Rejestruj czas pracy"
         view_details: "Wyświetl szczegóły rzeczywistych kosztów"
   ee:

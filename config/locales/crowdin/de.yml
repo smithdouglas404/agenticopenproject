@@ -1357,9 +1357,9 @@ de:
       jira_import:
         projects: "Projekte"
       "import/jira":
-        name: "Jira instance name"
-        url: "Jira instance URL"
-        personal_access_token: "Personal access token"
+        name: "Name der Jira-Instanz"
+        url: "URL der Jira-Instanz"
+        personal_access_token: "Persönlicher Zugangs-Token"
       announcements:
         show_until: "Anzeigen bis"
       attachment:

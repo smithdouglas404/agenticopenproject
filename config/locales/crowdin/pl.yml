@@ -125,7 +125,7 @@ pl:
         new: "Nowa konfiguracja"
       banner:
         title: "Ograniczony import"
-        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        description: "To narzędzie importu jest obecnie w wersji beta i może importować tylko podstawowe dane: projekty, zgłoszenia problemów (nazwa, tytuł, opis, załączniki), użytkowników (nazwa, adres e-mail, członkostwo w projekcie), statusy i typy. Nie może importować przepływów pracy, pól niestandardowych, relacji między problemami ani uprawnień. Obecnie obsługujemy tylko serwery / centra danych Jira w wersjach 10.x i 11.x. Wystąpienia w chmurze nie są obecnie obsługiwane."
       form:
         fields:
           name: "Nazwa"
@@ -143,7 +143,7 @@ pl:
         failed: "Połączenie nie powiodło się: nie można pobrać informacji o serwerze"
         error: "Podczas testowania połączenia wystąpił nieoczekiwany błąd"
         connection_error: "Błąd połączenia: %{message}"
-        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        parse_error: "Nie udało się przeanalizować odpowiedzi z serwera. Serwer może nie być prawidłowym wystąpieniem usługi Jira."
         api_error: "Interfejs API Jira zwrócił status błędu %{status}. Sprawdź adres URL wystąpienia usługi Jira i token interfejsu API."
         token_error: "Nieprawidłowy token interfejsu API. Sprawdź swoje dane poświadczenia w konfiguracji."
         missing_credentials: "Aby przetestować połączenie, podaj zarówno adres URL, jak i osobisty token dostępu"
@@ -167,7 +167,7 @@ pl:
           title: "Nie skonfigurowano jeszcze żadnych uruchomień importu"
           description: "Utwórz uruchomienie importu, aby rozpocząć importowanie informacji z tego wystąpienia usługi Jira"
         index:
-          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing."
+          description: "Przy każdym uruchomieniu importu możesz importować różne zestawy danych. Cofnięcie uruchomionego importu możliwe jest natychmiast po przejściu z trybu przeglądu, ale nie po sfinalizowaniu importu."
           button_import_run: "Uruchomienie importu"
           button_edit_configuration: "Edytuj konfigurację"
         status:
@@ -234,8 +234,8 @@ pl:
             fetch_data:
               title: "Pobierz metadane wystąpienia"
               caption_done: "Ukończono"
-              description: "Check what data is available for import in the host Jira instance."
-              button_fetch: "Check available data"
+              description: "Sprawdź, jakie dane są dostępne do importu w wystąpieniu hosta Jira."
+              button_fetch: "Sprawdź dostępne dane"
               label_progress: "Pobieranie danych z Jira..."
             groups_and_users:
               title: "Grupy i użytkownicy"
@@ -243,8 +243,8 @@ pl:
               title: "Zakres importu"
               caption: "Wybierz co chcesz zaimportować do OpenProject"
               caption_done: "Ukończono"
-              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance URL offers for import and what this tool is able to import right now."
-              description: "Select what data you want to import from the available data fetched from the host Jira instance."
+              label_info: "Pamiętaj, że to narzędzie importu jest w wersji beta i nie może importować wszystkich typów danych. Poniżej znajduje się podsumowanie tego, co adres URL wystąpienia hosta Jira oferuje do importu i co to narzędzie jest obecnie w stanie zaimportować."
+              description: "Wybierz dane, które chcesz zaimportować z dostępnych danych pobranych z hosta wystąpienia Jira."
               label_available_data: "Dostępne dane"
               label_not_available_data: "Niedostępne do importu"
               button_select_projects: "Wybierz projekty do zaimportowania"
@@ -255,11 +255,11 @@ pl:
               label_progress: "Pobieranie danych z Jira..."
               elements:
                 relations: "Relacje między problemami"
-                workflows: "Project-level workflows"
+                workflows: "Przepływy pracy na poziomie projektu"
                 users: "Użytkownicy"
                 sprints: "Sprinty"
                 schemes: "Schematy"
-                permissions: "User, group and project permissions"
+                permissions: "Uprawnienia użytkowników, grup i projektów"
             confirm_import:
               title: "Importuj dane"
               caption: "Sprawdź ustawienia importu i rozpocznij import"
@@ -297,7 +297,7 @@ pl:
             title: "Wybierz projekty"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta."
+        description: "Protokół kontekstu modelu umożliwia agentom AI dostarczanie użytkownikom narzędzi i zasobów udostępnianych przez to wystąpienie OpenProject. Ta funkcja jest nadal w wersji beta."
         resources_heading: "Zasoby"
         resources_description: "OpenProject implementuje następujące zasoby. Każdy z nich może zostać włączony, przemianowany i opisany zgodnie z Twoim życzeniem. Aby uzyskać więcej informacji, zapoznaj się z [dokumentacją zasobów MCP](docs_url)."
         resources_submit: "Zaktualizuj zasoby"
@@ -607,8 +607,8 @@ pl:
     confirmation_live_message_unchecked: "Przycisk kontynuowania jest teraz nieaktywny. Aby kontynuować, zaznacz pole wyboru."
   mcp_configurations:
     server_url_component:
-      caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
-      label: "Server URL"
+      caption: "Adres URL, pod którym będzie dostępny serwer MCP OpenProject. Wymagany do skonfigurowania klientów MCP."
+      label: "Adres URL serwera"
   op_dry_validation:
     or: "lub"
     errors:
@@ -815,7 +815,7 @@ pl:
         is_for_all_blank_slate:
           heading: Dla wszystkich projektów
           description: Ten atrybut projektu jest włączony we wszystkich projektach, ponieważ jest zaznaczona opcja „Dla wszystkich projektów”. Nie można go wyłączyć dla poszczególnych projektów.
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: Tego atrybutu projektu nie można wyłączyć, ponieważ jest on ustawiony jako <a href=%{pir_submission_url} target="_blank">osoba przypisana w chwili przesłania</a> żądań zainicjowania projektów.
       types:
         no_results_title_text: Nie ma dostępnych typów.
         form:
@@ -831,8 +831,8 @@ pl:
         new_label: "Nowy priorytet"
       creation_wizard:
         errors:
-          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
-          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
+          no_work_package_type: "Nie udało się włączyć żądania zainicjowania projektu, ponieważ wymaga to co najmniej jednego aktywnego typu pakietu roboczego, a ten projekt nie ma żadnego. Dodaj co najmniej jeden typ pakietu roboczego do tego projektu."
+          no_status_when_submitted: "Nie udało się włączyć żądania zainicjowania projektu, ponieważ typ pakietu roboczego %{type} wymaga co najmniej jednego powiązanego z nim statusu. Włącz co najmniej jeden przepływ pracy statusu dla tego typu pakietu roboczego."
         export:
           description_attachment_export: "Wygenerowany artefakt zostanie zapisany jako załącznik PDF do pakietu roboczego artefaktu."
           description_file_link_export: "Pakiet roboczy artefaktu będzie zawierał link do pliku PDF przechowywanego w zewnętrznym magazynie plików. Wymaga działającego magazynu plików z automatycznie zarządzanymi folderami tego projektu. Obecnie obsługiwane są tylko magazyny plików Nextcloud."
@@ -846,7 +846,7 @@ pl:
         label_request_submission: "Przesłanie żądania"
         project_attributes_description: >
           Wybierz atrybuty projektu, które powinny zostać uwzględnione w żądaniu zainicjowania projektu. Ta lista zawiera tylko [atrybuty projektu](project_attributes_url) włączone dla tego projektu.
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: Tego atrybutu projektu nie można wyłączyć dla tego żądania zainicjowania projektu, ponieważ jest on zdefiniowany jako wymagany. Może to zmienić administrator wystąpienia w <a href=%{admin_settings_url} target="_blank">ustawieniach administracyjnych</a>.
     status:
       button_edit: Edytuj status
     wizard:
@@ -1386,14 +1386,14 @@ pl:
   activerecord:
     attributes:
       agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
+        sharing: "Udostępnianie"
+        finish_date: "Data zakończenia"
       jira_import:
         projects: "Projekty"
       "import/jira":
-        name: "Jira instance name"
-        url: "Jira instance URL"
-        personal_access_token: "Personal access token"
+        name: "Nazwa wystąpienia Jira"
+        url: "Adres URL wystąpienia Jira"
+        personal_access_token: "Osobisty token dostępu"
       announcements:
         show_until: "Wyświetlaj do"
       attachment:
@@ -2790,7 +2790,7 @@ pl:
       gantt_pdf_export: Eksport wykresu Gantta w formacie PDF
       ldap_groups: Synchronizacja użytkowników i grup LDAP
       mcp_server: Model Context Protocol (MCP)
-      meeting_templates: Reusable meeting templates
+      meeting_templates: Szablony spotkań wielokrotnego użytku
       nextcloud_sso: Logowanie jednokrotne do magazynu Nextcloud
       one_drive_sharepoint_file_storage: Magazyn plików OneDrive/SharePoint
       placeholder_users: Użytkownicy zastępczy
@@ -2868,9 +2868,9 @@ pl:
         title: "Działania niestandardowe"
         description: "Akcje niestandardowe są skrótami do zestawu predefiniowanych akcji, które można udostępnić w określonych pakietach roboczych na podstawie statusu, roli, typu lub projektu."
       mcp_server:
-        description: "Bring OpenProject into your AI workflows with a secure MCP server."
+        description: "Wprowadź OpenProject do swoich przepływów pracy AI przy użyciu bezpiecznego serwera MCP."
       meeting_templates:
-        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
+        description: "Zdefiniuj szablony spotkań z ustaloną strukturą planu spotkania i oszczędzaj czas, używając ich ponownie podczas tworzenia nowych spotkań."
       nextcloud_sso:
         title: "Logowanie jednokrotne do magazynu Nextcloud"
         description: "Włącz bezproblemowe, bezpieczne uwierzytelnianie dla swojego magazynu Nextcloud za pomocą logowania jednokrotnego. Uprość zarządzanie dostępem i zwiększ wygodę użytkowników."
@@ -3185,16 +3185,16 @@ pl:
         #We need to include the version to invalidate outdated translations in other locales
         "17_2":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
           new_features_list:
-            line_0: AI workflows with a secure MCP server (Professional plan and higher)
-            line_1: Improved project home page with new widget for budgets and improved accessibility
-            line_2: "Meetings: Meeting templates (Basic plan and higher)"
-            line_3: Better transparency with project attribute comments.
-            line_4: PDF export enhancements
-            line_5: Increased security for external links (Premium plan and higher)
-            line_6: UI/UX improvements in the Backlogs module
-            line_7: Harmonized custom field forms
+            line_0: Przepływy pracy AI przy użyciu bezpiecznego serwera MCP (plan Professional i wyższe)
+            line_1: Ulepszona strona główna projektu z nowym widżetem budżetów i lepszą dostępnością
+            line_2: "Spotkania: szablony spotkań (plan Basic i wyższe)"
+            line_3: Większa przejrzystość dzięki komentarzom do atrybutów projektu.
+            line_4: Ulepszenia eksportu plików PDF
+            line_5: Zwiększone bezpieczeństwo linków zewnętrznych (plan Premium i wyższe)
+            line_6: Ulepszenia UI/UX w module Backlogs
+            line_7: Zharmonizowane formularze pól niestandardowych
     links:
       upgrade_enterprise_edition: "Aktualizuj do wersji Enterprise"
       postgres_migration: "Migrowanie instalacji do PostgreSQL"
@@ -3212,7 +3212,7 @@ pl:
   journals:
     changes_retracted: "Zmiany zostały wycofane."
     caused_changes:
-      budget_deleted: "Budget has been deleted"
+      budget_deleted: "Budżet został usunięty"
       dates_changed: "Daty zostały zmienione"
       default_attribute_written: "Zapisano atrybuty tylko do odczytu"
       import: "Zaimportowano"
@@ -3228,7 +3228,7 @@ pl:
         field_changed: "W polu %{field} wartość %{old_value} zmieniła się na %{new_value}"
         field_set: "W polu %{field} ustawiono wartość %{value}"
         field_removed: "Usunięto pole %{field}"
-        field_updated: "%{field} updated"
+        field_updated: "Zaktualizowano %{field}"
         deleted_with_diff: "Usunięto pole %{field} (%{link})"
         changed_with_diff: "Zmieniono pole %{field} (%{link})"
         set_with_diff: "Ustawiono pole %{field} (%{link})"
@@ -3238,7 +3238,7 @@ pl:
       work_package_related_changed_times: przez zmiany powiązanego %{link}
       work_package_duplicate_closed: Status został automatycznie zaktualizowany przez zduplikowany pakiet roboczy %{link}
       unaccessable_work_package_changed: poprzez zmiany powiązanego pakietu roboczego
-      budget_deleted: Budget has been deleted
+      budget_deleted: Budżet został usunięty
       working_days_changed:
         changed: "przez zmiany dni roboczych (%{changes})"
         days:
@@ -3405,7 +3405,7 @@ pl:
   label_always_visible: "Zawsze wyświetlana"
   label_announcement: "Ogłoszenie"
   label_angular: "AngularJS"
-  label_app_modules: "%{app_title} modules"
+  label_app_modules: "Moduły %{app_title}"
   label_api_access_key: "Klucz dostępu API"
   label_api_access_key_created_on: "Klucz API utworzony %{value} temu"
   label_api_access_key_type: "API"
@@ -5256,7 +5256,7 @@ pl:
     text_change_disabled_for_provider_login: "Nazwa i adres e-mail są ustawiane przez dostawcę usług logowania i dlatego nie można ich zmienić."
     unlock: "Odblokuj"
     unlock_and_reset_failed_logins: "Odblokuj i resetuj nieudane logowania"
-    error_cannot_delete_user: "User cannot be deleted"
+    error_cannot_delete_user: "Nie można usunąć użytkownika"
   version_status_closed: "Zamknięte"
   version_status_locked: "zablokowane"
   version_status_open: "Otwarte"

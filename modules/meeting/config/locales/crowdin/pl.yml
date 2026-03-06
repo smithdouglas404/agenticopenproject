@@ -62,7 +62,7 @@ pl:
         end_date: "Data zakończenia"
         iterations: "Wystąpienia"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "Czas rozpoczęcia"
       meeting_participant:
         invited: "Zaproszeni"
         attended: "Uczestniczył"
@@ -75,7 +75,7 @@ pl:
           section_not_belong_to_meeting: "Sekcja nie należy do tego samego spotkania."
           user_invalid: "nie jest prawidłowym uczestnikiem."
         recurring_meeting_interim_response:
-          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
+          not_an_occurrence: "nie jest prawidłowym czasem wystąpienia tego spotkania cyklicznego"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "W serii znajduje się jedno otwarte spotkanie, które nie jest uwzględnione w nowym harmonogramie. Dostosuj harmonogram tak, aby obejmował wszystkie istniejące spotkania."
@@ -256,9 +256,9 @@ pl:
         header: "Anulowano: spotkanie „%{title}”"
         header_occurrence: "Anulowano: wystąpienie spotkania „%{title}”"
         header_series: "Anulowano: serię spotkań „%{title}”"
-        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_occurrence: "Wystąpienie „%{title}” zostało anulowane przez użytkownika %{actor} lub usunięto Cię jako uczestnika"
+        summary_series: "Seria spotkań „%{title}” została anulowana przez użytkownika %{actor} lub usunięto Cię jako uczestnika"
+        summary: "„%{title}” anulował użytkownik %{actor} lub usunięto Cię jako uczestnika"
         date_time: "Zaplanowana data/godzina"
       participant_added:
         header: "Spotkanie „%{title}” — dodano uczestnika"
@@ -272,7 +272,7 @@ pl:
         summary_series: "Użytkownik %{actor} usunął uczestnika %{participant} z serii spotkań „%{title}”"
       ended:
         header_series: "Zakończono: serię spotkań „%{title}”"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
+        summary_series: "Seria spotkań „%{title}” została zakończona przez użytkownika %{actor}"
       updated:
         header: "Spotkanie „%{title}” zostało zaktualizowane"
         summary: "Spotkanie „%{title}” zostało zaktualizowane przez użytkownika %{actor}"
@@ -565,8 +565,8 @@ pl:
   label_agenda_item_move_up: "Przenieś wyżej"
   label_agenda_item_move_down: "Przenieś niżej"
   label_agenda_item_duplicate: "Duplikuj"
-  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
+  label_agenda_item_duplicate_in_next: "Duplikuj w następnym spotkaniu"
+  label_agenda_item_duplicate_in_next_title: "Zduplikować w następnym spotkaniu?"
   label_agenda_item_add_notes: "Dodawanie notatek"
   label_agenda_item_add_outcome: "Dodaj wynik"
   label_agenda_item_work_package_add: "Dodaj pakiet roboczy"
