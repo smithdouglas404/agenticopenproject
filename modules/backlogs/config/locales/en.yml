@@ -206,7 +206,7 @@ en:
           receive_shared:
             label: "Receive shared sprints"
             caption: "This project can only use sprints shared by other projects."
-            warning: "This project can only use sprints shared by other projects. If any were created in this project in the past, they will not be visible."
+            warning: "This project can only use sprints shared by other projects. Unused sprints created in this project in the past, will no longer be visible."
           share_all_projects:
             label: "All projects"
             caption: "Sprints created in this project will be available to all projects in this instance. If you select this option, it will no longer be available to other projects."
