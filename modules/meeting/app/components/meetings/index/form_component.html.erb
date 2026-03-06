@@ -31,7 +31,7 @@
 
         if @project.nil?
           modal_body.with_row(mb: 3) do
-            render(Meeting::ProjectAutocompleter.new(f))
+            render(Meeting::ProjectAutocompleter.new(f, meeting: @meeting))
           end
         end
 
