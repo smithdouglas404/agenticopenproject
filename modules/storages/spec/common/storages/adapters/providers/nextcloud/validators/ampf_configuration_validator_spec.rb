@@ -45,8 +45,9 @@ module Storages
 
             let(:files_response) do
               Success(Results::StorageFileCollection.new(
-                        files: [StorageFile.new(id: project_folder_id, name: project_storage.managed_project_folder_name)],
-                        parent: StorageFile.new(id: "root", name: "root"),
+                        files: [Results::StorageFile.new(id: project_folder_id,
+                                                         name: project_storage.managed_project_folder_name)],
+                        parent: Results::StorageFile.new(id: "root", name: "root"),
                         ancestors: []
                       ))
             end
@@ -143,10 +144,10 @@ module Storages
               let(:files_response) do
                 Success(Results::StorageFileCollection.new(
                           files: [
-                            StorageFile.new(id: project_folder_id, name: "I am your father"),
-                            StorageFile.new(id: "noooooooooo", name: "testimony_of_luke_skywalker.md")
+                            Results::StorageFile.new(id: project_folder_id, name: "I am your father"),
+                            Results::StorageFile.new(id: "noooooooooo", name: "testimony_of_luke_skywalker.md")
                           ],
-                          parent: StorageFile.new(id: "root", name: "root"),
+                          parent: Results::StorageFile.new(id: "root", name: "root"),
                           ancestors: []
                         ))
               end
