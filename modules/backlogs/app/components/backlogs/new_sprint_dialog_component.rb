@@ -32,30 +32,34 @@ module Backlogs
   class NewSprintDialogComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
+    include Primer::FetchOrFallbackHelper
 
     DIALOG_ID = "new-sprint-dialog"
     FORM_ID = "new-sprint-dialog-form"
     FOOTER_ID = "new-sprint-dialog-footer"
 
-    def initialize(sprint:, state: :create)
+    STATE_DEFAULT = :create
+    STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
+
+    attr_reader :sprint, :state
+
+    delegate :create?, :edit?, to: :state
+
+    def initialize(sprint:, state: STATE_DEFAULT)
       super
 
       @sprint = sprint
-      @state = state
+      @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
     end
 
     private
 
-    def state_create? = @state == :create
-
-    def state_edit? = @state == :edit
-
     def title
-      state_create? ? t(:label_sprint_new) : t(:label_sprint_edit)
+      create? ? t(:label_sprint_new) : t(:label_sprint_edit)
     end
 
     def button_caption
-      state_create? ? t(:button_create) : t(:button_save)
+      create? ? t(:button_create) : t(:button_save)
     end
   end
 end
