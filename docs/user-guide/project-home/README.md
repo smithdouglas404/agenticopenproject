@@ -54,7 +54,7 @@ The **Overview** tab is a pre-configured to provide a concise summary of the pro
 
   - [News](project-widgets/#news-widget)  
 
-  - [Budgets](project-widgets/#budgets-widget)
+  - [Budgets](project-widgets/#budgets-widgets)
 
   - Optional: [Project attributes](project-attributes). 
     
