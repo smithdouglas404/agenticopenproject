@@ -126,7 +126,7 @@ module Pages
     end
 
     def sprint_names_in_order
-      page.find_all("#sprint_backlogs_container > section .op-backlogs-collapsible--title").map(&:text)
+      page.find_all("#sprint_backlogs_container > section .CollapsibleHeader-title").map(&:text)
     end
 
     def expect_sprint_names_in_order(*sprint_names)

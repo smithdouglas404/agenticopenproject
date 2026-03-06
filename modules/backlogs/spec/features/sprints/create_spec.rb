@@ -103,7 +103,7 @@ RSpec.describe "Create", :js do
           click_on "Create"
         end
 
-        wait_for_reload
+        expect_and_dismiss_flash(message: "Successful creation.")
         backlogs_page.expect_sprint_names_in_order(initial_sprint.name, "Created sprint")
 
         sprint = project.reload.sprints.last
