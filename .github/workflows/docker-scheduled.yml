@@ -1,9 +1,6 @@
 name: Docker / Scheduled builds
 
 on:
-  # build dev and release branches daily
-  schedule:
-    - cron: "20 2 * * *" # Daily at 02:20
   workflow_dispatch: # Allow manual trigger
 
 jobs:
