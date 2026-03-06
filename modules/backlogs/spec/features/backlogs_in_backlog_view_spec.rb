@@ -123,13 +123,13 @@ RSpec.describe "Backlogs in backlog view", :js do
 
     # Versions can be folded
     backlogs_page
-      .expect_story_in_sprint(sprint_story1, sprint)
+      .expect_story_in_backlog(sprint_story1, sprint)
 
     backlogs_page
       .fold_backlog(sprint)
 
     backlogs_page
-      .expect_story_not_in_sprint(sprint_story1, sprint)
+      .expect_story_not_in_backlog(sprint_story1, sprint)
 
     # The backlogs can be folded by default
     visit my_interface_path
@@ -142,13 +142,13 @@ RSpec.describe "Backlogs in backlog view", :js do
     backlogs_page.visit!
 
     backlogs_page
-      .expect_story_not_in_sprint(sprint_story1, sprint)
+      .expect_story_not_in_backlog(sprint_story1, sprint)
 
     backlogs_page
       .fold_backlog(sprint)
 
     backlogs_page
-      .expect_story_in_sprint(sprint_story1, sprint)
+      .expect_story_in_backlog(sprint_story1, sprint)
 
     # Alter the attributes of the sprint
     sleep(0.5)

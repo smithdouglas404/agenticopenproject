@@ -144,30 +144,30 @@ module Pages
     end
 
     def expect_story_in_sprint(story, sprint)
-      if sprint.is_a?(Agile::Sprint)
-        within_sprint(sprint) do
-          expect(page)
-            .to have_selector(work_package_selector(story).to_s)
-        end
-      else
-        within_backlog(sprint) do
-          expect(page)
-            .to have_selector(story_selector(story).to_s)
-        end
+      within_sprint(sprint) do
+        expect(page)
+          .to have_selector(work_package_selector(story).to_s)
+      end
+    end
+
+    def expect_story_in_backlog(story, backlog)
+      within_backlog(backlog) do
+        expect(page)
+          .to have_selector(story_selector(story).to_s)
       end
     end
 
     def expect_story_not_in_sprint(story, sprint)
-      if sprint.is_a?(Agile::Sprint)
-        within_sprint(sprint) do
-          expect(page)
-            .to have_no_selector(work_package_selector(story).to_s)
-        end
-      else
-        within_backlog(sprint) do
-          expect(page)
-            .to have_no_selector(story_selector(story).to_s)
-        end
+      within_sprint(sprint) do
+        expect(page)
+          .to have_no_selector(work_package_selector(story).to_s)
+      end
+    end
+
+    def expect_story_not_in_backlog(story, backlog)
+      within_backlog(backlog) do
+        expect(page)
+          .to have_no_selector(story_selector(story).to_s)
       end
     end
 
