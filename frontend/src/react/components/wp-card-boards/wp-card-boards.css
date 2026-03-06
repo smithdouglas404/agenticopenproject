@@ -1,0 +1,156 @@
+op-wp-card-boards {
+  display: block;
+}
+
+.op-wp-card-boards {
+  width: 100%;
+  user-select: none;
+}
+
+op-wp-card-boards + op-wp-card-boards {
+  margin-top: var(--stack-gap-normal, 16px);
+}
+
+.op-wp-card-boards--selected .op-wp-card-boards--box {
+  background-color: var(--selection-bgColor);
+}
+
+.op-wp-card-boards--closed:not(.op-wp-card-boards--selected) .op-wp-card-boards--box {
+  background-color: var(--bgColor-muted, #f6f8fa);
+}
+
+.op-wp-card-boards--closed:not(.op-wp-card-boards--selected) .op-wp-card-boards--body {
+  opacity: 0.6;
+}
+
+.op-wp-card-boards--box {
+  display: flex;
+  gap: 4px;
+  align-items: flex-start;
+  padding: 8px 16px 6px 8px;
+  background: var(--bgColor-default, white);
+  border: 1px solid var(--borderColor-default);
+  border-radius: 6px;
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.04), 0px 1px 3px 0px rgba(0, 0, 0, 0.04);
+}
+
+.op-wp-card-boards--grabber {
+  display: flex;
+  align-items: center;
+  padding-top: 4px;
+  color: var(--fgColor-muted, #636c76);
+  cursor: grab;
+  flex-shrink: 0;
+}
+
+.op-wp-card-boards--body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.op-wp-card-boards--header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.op-wp-card-boards--labels {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.op-wp-card-boards--id {
+  white-space: nowrap;
+}
+
+.op-wp-card-boards--menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--fgColor-muted, #636c76);
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.op-wp-card-boards--menu-button:hover {
+  background: var(--bgColor-muted, #f6f8fa);
+}
+
+.op-wp-card-boards--box:hover .op-wp-card-boards--menu-button {
+  opacity: 1;
+}
+
+.op-wp-card-boards--subject {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.43;
+  word-break: break-word;
+}
+
+.op-wp-card-boards--footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0;
+  width: 100%;
+}
+
+.op-wp-card-boards--assignee {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-right: 8px;
+  flex-shrink: 0;
+}
+
+.op-wp-card-boards--assignee-name {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--fgColor-muted, #636c76);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
+}
+
+.op-wp-card-boards--story-points {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--fgColor-muted, #636c76);
+  white-space: nowrap;
+  min-width: 30px;
+}
+
+.op-wp-card-boards--priority {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.op-wp-card-boards--priority-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: var(--fgColor-muted, #636c76);
+}
+
+.op-wp-card-boards--priority-name {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--fgColor-muted, #636c76);
+  white-space: nowrap;
+}

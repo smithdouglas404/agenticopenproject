@@ -11,19 +11,27 @@
   }
 
   @for (wp of workPackages; track trackByHref($index, wp)) {
-    <wp-single-card [workPackage]="wp"
-      [attr.data-is-new]="isNewResource(wp) || undefined"
-      [attr.data-work-package-id]="wp.id"
-      [attr.data-class-identifier]="cardView.classIdentifier(wp)"
-      [showInfoButton]="showInfoButton"
-      [showStatusButton]="showStatusButton"
-      [showRemoveButton]="cardsRemovable"
-      [highlightingMode]="highlightingMode"
-      [draggable]="this.canDragOutOf(wp)"
-      [orientation]="orientation"
-      [shrinkOnMobile]="shrinkOnMobile"
-      (onRemove)="removeCard(wp)"
-      (stateLinkClicked)="stateLinkClicked.emit($event)" />
+    @if (!isNewResource(wp)) {
+      <op-wp-card-boards
+        [attr.data-wp]="serializeWpCard(wp)"
+        [attr.data-work-package-id]="wp.id"
+        [attr.data-class-identifier]="cardView.classIdentifier(wp)"
+      ></op-wp-card-boards>
+    } @else {
+      <wp-single-card [workPackage]="wp"
+        [attr.data-is-new]="true"
+        [attr.data-work-package-id]="wp.id"
+        [attr.data-class-identifier]="cardView.classIdentifier(wp)"
+        [showInfoButton]="showInfoButton"
+        [showStatusButton]="showStatusButton"
+        [showRemoveButton]="cardsRemovable"
+        [highlightingMode]="highlightingMode"
+        [draggable]="this.canDragOutOf(wp)"
+        [orientation]="orientation"
+        [shrinkOnMobile]="shrinkOnMobile"
+        (onRemove)="removeCard(wp)"
+        (stateLinkClicked)="stateLinkClicked.emit($event)" />
+    }
     @if (shrinkOnMobile) {
       <hr
         class="form--separator hidden-for-desktop">

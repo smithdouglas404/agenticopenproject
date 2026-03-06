@@ -44,6 +44,7 @@ import { QueryResource } from 'core-app/features/hal/resources/query-resource';
 import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
+import type { WpCardData } from 'core-react/components/wp-card-boards/types';
 
 export type CardViewOrientation = 'horizontal'|'vertical';
 
@@ -226,6 +227,24 @@ export class WorkPackageCardViewComponent extends UntilDestroyedMixin implements
     classes += this.shrinkOnMobile ? ' -shrink' : '';
 
     return classes;
+  }
+
+  public serializeWpCard(wp:WorkPackageResource):string {
+    const data:WpCardData = {
+      id: wp.id!,
+      subject: wp.subject,
+      typeName: wp.type?.name ?? '',
+      typeId: wp.type?.id ?? '',
+      projectIdentifier: wp.project?.identifier ?? wp.project?.name ?? '',
+      assigneeName: wp.assignee?.name,
+      assigneeAvatarUrl: wp.assignee?.avatar,
+      storyPoints: wp.storyPoints as number | undefined,
+      priorityName: wp.priority?.name,
+      priorityId: wp.priority?.id,
+      draggable: this.canDragOutOf?.(wp) ?? false,
+    };
+
+    return JSON.stringify(data);
   }
 
   /**
