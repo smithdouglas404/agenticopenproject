@@ -85,14 +85,12 @@ export class GridComponent implements OnDestroy, OnInit {
     void this
       .add
       .widget(area)
-      .then(() => this.cdRef.detectChanges())
-      .catch(() => this.cdRef.detectChanges());
+      .finally(() => this.cdRef.detectChanges());
   }
 
   public resizeEnd(area:GridWidgetArea) {
     void this.resize.end(area)
-      ?.then(() => this.cdRef.detectChanges())
-      .catch(() => this.cdRef.detectChanges());
+      ?.finally(() => this.cdRef.detectChanges());
   }
 
   public widgetComponent(area:GridWidgetArea) {
@@ -120,8 +118,7 @@ export class GridComponent implements OnDestroy, OnInit {
     return {
       resourceChanged: (changeset:WidgetChangeset) => {
         void this.layout.saveWidgetChangeset(changeset)
-          .then(() => this.cdRef.detectChanges())
-          .catch(() => this.cdRef.detectChanges());
+          .finally(() => this.cdRef.detectChanges());
       },
     };
   }
