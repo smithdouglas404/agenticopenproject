@@ -749,7 +749,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       it_behaves_like "has basic schema properties" do
         let(:path) { "author" }
         let(:type) { "User" }
-        let(:name) { I18n.t("attributes.author") }
+        let(:name) { I18n.t("activerecord.attributes.work_package.author") }
         let(:required) { true }
         let(:writable) { false }
         let(:location) { "_links" }

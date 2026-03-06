@@ -155,6 +155,37 @@ RSpec.describe Type do
         group_members.nil? || group_members.size.zero?
       end).to be_falsey
     end
+
+    it "keeps accountable in people for non-task/bug types" do
+      people_group = subject.find { |group_key, _| group_key.to_sym == :people }
+
+      expect(people_group).to be_present
+      expect(people_group.last).to include("assignee", "responsible")
+    end
+
+    shared_examples "shows reporter instead of accountable" do
+      it do
+        people_group = subject.find { |group_key, _| group_key.to_sym == :people }
+        all_attributes = subject.flat_map(&:last)
+
+        expect(people_group).to be_present
+        expect(people_group.last).to include("assignee", "author")
+        expect(people_group.last).not_to include("responsible")
+        expect(all_attributes).not_to include("responsible")
+      end
+    end
+
+    context "when the type is task" do
+      let(:type) { build(:type_task) }
+
+      it_behaves_like "shows reporter instead of accountable"
+    end
+
+    context "when the type is bug" do
+      let(:type) { build(:type_bug) }
+
+      it_behaves_like "shows reporter instead of accountable"
+    end
   end
 
   describe "custom fields" do
