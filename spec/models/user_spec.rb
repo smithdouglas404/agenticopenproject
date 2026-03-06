@@ -1153,6 +1153,7 @@ RSpec.describe User do
         end
 
         it "does not include weekend days within the range" do
+          week_with_saturday_and_sunday_as_weekend
           expect(subject).not_to include(Date.new(year, 7, 12), Date.new(year, 7, 13))
         end
       end

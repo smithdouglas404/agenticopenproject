@@ -378,10 +378,10 @@ RSpec.describe MyController do
         expect(response).to render_template "working_hours"
       end
 
-      it "assigns @current_working_hours and @working_hours" do
+      it "assigns @current_working_hours and @past_working_hours" do
         subject
         expect(assigns(:current_working_hours)).to eq(user_working_hours)
-        expect(assigns(:working_hours)).to eq([user_working_hours])
+        expect(assigns(:past_working_hours)).to eq([user_working_hours])
       end
     end
 

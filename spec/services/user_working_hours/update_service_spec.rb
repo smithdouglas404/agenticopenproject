@@ -60,11 +60,11 @@ RSpec.describe UserWorkingHours::UpdateService do
     end
   end
 
-  context "when the record has today as valid_from (already in effect)" do
+  context "when the record has today as valid_from (current schedule)" do
     let(:working_hours) { create(:user_working_hours, user: target_user, valid_from: Date.current) }
 
-    it "is unsuccessful" do
-      expect(service_call).to be_failure
+    it "is successful because today's schedule is editable in place" do
+      expect(service_call).to be_success
     end
   end
 
