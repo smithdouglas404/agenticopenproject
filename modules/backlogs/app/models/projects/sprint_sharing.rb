@@ -47,11 +47,11 @@ module Projects::SprintSharing
     scope :receive_shared_sprints, -> { sprint_sharing(RECEIVE_SHARED) }
     scope :not_sharing_sprints, -> { sprint_sharing(NO_SHARING) }
 
-    validate :validate_sprint_sharer_uniqueness
+    validate :validate_global_sprint_sharer_uniqueness
   end
 
   class_methods do
-    def sprint_sharer
+    def global_sprint_sharer
       share_sprints_with_all_projects.active.first
     end
   end
@@ -89,15 +89,15 @@ module Projects::SprintSharing
     when nil, NO_SHARING, SHARE_SUBPROJECTS, SHARE_ALL_PROJECTS
       [self]
     when RECEIVE_SHARED
-      [ancestors.share_sprints_with_subprojects.last || self.class.sprint_sharer].compact
+      [ancestors.share_sprints_with_subprojects.last || self.class.global_sprint_sharer].compact
     end
   end
 
   private
 
-  def validate_sprint_sharer_uniqueness
+  def validate_global_sprint_sharer_uniqueness
     if sprint_sharing == SHARE_ALL_PROJECTS &&
-        (sharer = self.class.sprint_sharer) &&
+        (sharer = self.class.global_sprint_sharer) &&
         sharer != self
 
       errors.add :sprint_sharing, :share_all_projects_already_taken, name: sharer.name

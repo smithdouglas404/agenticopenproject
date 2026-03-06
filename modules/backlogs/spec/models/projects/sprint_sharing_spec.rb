@@ -89,10 +89,10 @@ RSpec.describe Projects::SprintSharing do
     end
   end
 
-  describe ".sprint_sharer" do
+  describe ".global_sprint_sharer" do
     context "when no project shares with all projects" do
       it "returns nil" do
-        expect(Project.sprint_sharer).to be_nil
+        expect(Project.global_sprint_sharer).to be_nil
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe Projects::SprintSharing do
       before { project.update!(sprint_sharing: "share_all_projects") }
 
       it "returns that project" do
-        expect(Project.sprint_sharer).to eq(project)
+        expect(Project.global_sprint_sharer).to eq(project)
       end
     end
 
@@ -108,12 +108,12 @@ RSpec.describe Projects::SprintSharing do
       before { project.update!(sprint_sharing: "share_all_projects", active: false) }
 
       it "returns nil" do
-        expect(Project.sprint_sharer).to be_nil
+        expect(Project.global_sprint_sharer).to be_nil
       end
     end
   end
 
-  describe "#validate_sprint_sharer_uniqueness" do
+  describe "#validate_global_sprint_sharer_uniqueness" do
     context "when no other project shares with all projects" do
       it "allows setting share_all_projects" do
         project.sprint_sharing = "share_all_projects"

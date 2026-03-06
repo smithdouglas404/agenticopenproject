@@ -82,11 +82,11 @@ module Projects
         end
 
         def share_all_projects_disabled?
-          sprint_sharer && sprint_sharer != model
+          global_sprint_sharer && global_sprint_sharer != model
         end
 
-        def sprint_sharer
-          @sprint_sharer ||= Project.sprint_sharer
+        def global_sprint_sharer
+          @global_sprint_sharer ||= Project.global_sprint_sharer
         end
 
         def banner_for(option, type: :info)
