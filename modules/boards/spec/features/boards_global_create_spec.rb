@@ -102,7 +102,7 @@ RSpec.describe "Boards",
 
         context 'when creating a "Status" board' do
           before do
-            new_board_page.set_board_type "Status"
+            new_board_page.set_board_type "Kanban"
             new_board_page.click_on_submit
 
             wait_for_reload

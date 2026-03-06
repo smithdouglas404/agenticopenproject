@@ -115,7 +115,7 @@ RSpec.describe "Status action board",
     board_index.visit!
 
     # Create new board
-    board_page = board_index.create_board action: "Status"
+    board_page = board_index.create_board action: "Kanban"
 
     # expect lists of default status
     board_page.expect_list "Open"
