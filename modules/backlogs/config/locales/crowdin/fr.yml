@@ -29,7 +29,7 @@ fr:
         duration: "Durée du sprint"
       work_package:
         position: "Position"
-        story_points: "Points d'histoire"
+        story_points: "Story points"
         backlogs_work_package_type: "Type de backlog"
     errors:
       models:
@@ -46,7 +46,7 @@ fr:
     task_type: "Type de tâche"
   backlogs:
     any: "tout"
-    column_width: "Largeur de la colonne"
+    column_width: "Largeur de colonne"
     definition_of_done: "Définition de Fait"
     impediment: "Obstacle"
     label_versions_default_fold_state: "Afficher les versions de manière repliée"
@@ -61,10 +61,10 @@ fr:
     rebuild: "Reconstruire"
     rebuild_positions: "Reconstruire les positions"
     remaining_hours: "Travail restant"
-    show_burndown_chart: "Graphique d'avancement"
+    show_burndown_chart: "Graphique burndown"
     story: "Histoire"
     story_points:
-      one: "%{count} story point "
+      one: "%{count} story point"
       other: "%{count} story points"
     task: "Tâche"
     task_color: "Couleur des tâches"
@@ -78,17 +78,17 @@ fr:
     backlog_header_component:
       label_toggle_backlog: "Réduire/développer %{name}"
       label_story_count:
-        zero: "Pas d'histoires dans le carnet de commandes"
-        one: "%{count} article en attente"
-        other: "%{count} histoires en attente"
+        zero: "Aucune histoire dans le backlog"
+        one: "%{count} histoire dans le backlog"
+        other: "%{count} histoires dans le backlog"
     backlog_menu_component:
-      label_actions: "Actions en attente"
+      label_actions: "Actions dans le backlog"
       action_menu:
-        edit_sprint: "Editer le sprint"
-        new_story: "Nouvelle story"
+        edit_sprint: "Modifier le sprint"
+        new_story: "Nouvelle histoire"
         stories_tasks: "Histoires/tâches"
         task_board: "Tableau des tâches"
-        burndown_chart: "Graphique d'avancement"
+        burndown_chart: "Graphique burndown"
         wiki: "Wiki"
         properties: "Propriétés"
     story_component:
@@ -103,13 +103,13 @@ fr:
   backlogs_task_type: "Type de tâche"
   backlogs_wiki_template: "Modèle pour page wiki de sprint"
   backlogs_empty_title: "Aucune version n'est encore définie"
-  backlogs_empty_action_text: "Pour commencer à utiliser les backlogs, veuillez d'abord créer une version"
+  backlogs_empty_action_text: "Veuillez créer une version avant de commencer à utiliser les backlogs"
   backlogs_not_configured_title: "Les backlogs ne sont pas configurés"
   backlogs_not_configured_description: "Les types d'histoires et de tâches doivent être définis avant d'utiliser ce module."
   backlogs_not_configured_action_text: "Configurer les backlogs"
   burndown:
     story_points: "Story points"
-    story_points_ideal: "Points d'histoire (idéal)"
+    story_points_ideal: "Story points (idéal)"
   errors:
     attributes:
       task_type:
@@ -129,8 +129,8 @@ fr:
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:
     show:
-      blankslate_title: "Pas de données disponibles sur le burndown"
-      blankslate_description: "Définissez les dates de début et de fin du sprint afin de générer un tableau d'avancement."
+      blankslate_title: "Aucune donnée disponible sur le burndown"
+      blankslate_description: "Définissez les dates de début et de fin du sprint afin de générer un graphique burndown."
   remaining_hours: "travail restant"
   version_settings_display_label: "Colonne dans le backlog"
   version_settings_display_option_left: "gauche"

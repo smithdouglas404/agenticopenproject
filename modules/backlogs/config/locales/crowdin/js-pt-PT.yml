@@ -25,5 +25,5 @@ pt-PT:
       properties:
         storyPoints: "Pontos de histórico"
     burndown:
-      day: "Day"
-      points: "Points"
+      day: "Dia"
+      points: "Pontos"
