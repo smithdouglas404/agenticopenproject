@@ -41,10 +41,10 @@ module Bim::Bcf::API::V2_1
                                                        scope: -> { visible_projects })
                                              .mount
 
-      route_param :id, regexp: /\A(\d+)\z/ do
+      route_param :id do
         after_validation do
           @project = visible_projects
-                     .find(params[:id])
+                     .enhanced_find(params[:id])
         end
 
         get &::Bim::Bcf::API::V2_1::Endpoints::Show.new(model: Project).mount
