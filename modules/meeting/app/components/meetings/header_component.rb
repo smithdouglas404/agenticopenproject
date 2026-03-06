@@ -107,6 +107,7 @@ module Meetings
         mobile_icon: :plus,
         size: :medium,
         href: new_dialog_project_meetings_path(@project, template_id: @meeting.id),
+        id: "create-meeting-from-template",
         data: { turbo_stream: true },
         aria: { label: I18n.t("label_meeting_create_from_template") }
       }

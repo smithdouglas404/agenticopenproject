@@ -207,8 +207,8 @@ RSpec.describe "Create meeting from template", :js do
 
       before { template_show_page.visit! }
 
-      it "does not show 'Create meeting from template' button" do
-        expect(page).to have_no_link("Create meeting from template")
+      it "does not show '+ Meeting' button" do
+        expect(page).to have_no_link(id: "create-meeting-from-template")
       end
     end
   end
@@ -229,8 +229,8 @@ RSpec.describe "Create meeting from template", :js do
     end
 
     it "can create a meeting from template page with button" do
-      expect(page).to have_link("Create meeting from template")
-      click_link "Create meeting from template"
+      expect(page).to have_link(id: "create-meeting-from-template")
+      click_link(id: "create-meeting-from-template")
 
       expect(page).to have_dialog("New one-time meeting")
 
@@ -274,8 +274,8 @@ RSpec.describe "Create meeting from template", :js do
         visit project_meeting_path(project, template)
       end
 
-      it "does not show 'Create meeting from template' button" do
-        expect(page).to have_no_link("Create meeting from template")
+      it "does not show the '+ Meeting' button" do
+        expect(page).to have_no_link(id: "create-meeting-from-template")
       end
     end
 
@@ -290,8 +290,8 @@ RSpec.describe "Create meeting from template", :js do
         visit project_meeting_path(project, template)
       end
 
-      it "shows 'Create meeting from template' button" do
-        expect(page).to have_link("Create meeting from template")
+      it "shows the '+ Meeting' button" do
+        expect(page).to have_link(id: "create-meeting-from-template")
       end
     end
   end
