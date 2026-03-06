@@ -84,9 +84,9 @@ module OpenProject::TextFormatting
       private
 
       def render_checkbox(checked)
-        attrs = +%( type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled")
-        attrs << %( checked="checked") if checked
-        "<input#{attrs}/>"
+        attrs = +%( type="checkbox" class="op-uc-list--task-checkbox" disabled)
+        attrs << %( checked) if checked
+        "<input#{attrs}>"
       end
     end
   end

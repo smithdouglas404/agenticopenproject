@@ -63,6 +63,13 @@ module OpenProject::TextFormatting
 
         # We allow linking to filenames that are replaced with their attachment URL
         lookup_attachment_by_name(element)
+
+        # Selma's :relative protocol only allows URLs that contain a "/".
+        # Bare filenames (e.g. "image.jpg", "file.pdf") have no slash and would
+        # be stripped by the sanitizer in Pass 3.  Normalise them to "./filename"
+        # so they survive sanitization while remaining valid relative references.
+        src_after = element["src"]
+        element["src"] = "./#{src_after}" if src_after.present? && !src_after.include?("/")
       end
 
       ##

@@ -75,6 +75,9 @@ module OpenProject::TextFormatting
       def auto_link_custom_protocols(text, autolink_context)
         content = text.to_s
 
+        # Skip text that already contains HTML (e.g. already auto-linked by AutolinkFilter)
+        return if content.include?("<")
+
         matched = false
         content.gsub!(self.class.regexp) do |href|
           matched = true

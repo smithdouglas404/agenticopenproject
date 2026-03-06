@@ -120,7 +120,9 @@ module OpenProject::TextFormatting
         return I18n.t(:label_wiki_toc_empty) if @headings.empty?
 
         content_tag(:nav, class: "op-uc-toc") do
-          render_nested(@headings.dup)
+          content_tag(:ul, class: "op-uc-toc--list") do
+            render_nested(@headings.dup)
+          end
         end
       rescue StandardError => e
         Rails.logger.error { "Failed to render table of contents: #{e} #{e.message}" }

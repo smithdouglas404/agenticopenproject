@@ -39,9 +39,9 @@ module OpenProject::TextFormatting::Filters::Macros
     end
 
     def apply(macro, result:, context:)
-      raise "The TableOfContentsFilter needs to run before." unless result[:toc]
+      raise "The TableOfContentsFilter needs to run before." unless context[:toc]
 
-      macro.before(result[:toc], as: :html)
+      macro.before(context[:toc], as: :html)
       macro.remove
     end
   end

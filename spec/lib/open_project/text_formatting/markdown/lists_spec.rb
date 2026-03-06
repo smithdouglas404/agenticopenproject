@@ -100,15 +100,15 @@ RSpec.describe OpenProject::TextFormatting,
         <<~EXPECTED
           <ul class="op-uc-list_task-list op-uc-list">
             <li class="op-uc-list--item">
-                <input type="checkbox" class="op-uc-list--task-checkbox" disabled>
+                <input type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled" />
                 First ToDo
             </li>
             <li class="op-uc-list--item">
-                <input type="checkbox" class="op-uc-list--task-checkbox" disabled>
+                <input type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled" />
                 Second ToDo
             </li>
             <li class="op-uc-list--item">
-                <input type="checkbox" class="op-uc-list--task-checkbox" disabled>
+                <input type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled" />
                 Third ToDo
             </li>
           </ul>
@@ -208,7 +208,7 @@ RSpec.describe OpenProject::TextFormatting,
                       <td class="op-uc-table--cell">
                         <ul class="op-uc-list_task-list op-uc-list">
                           <li class="op-uc-list--item">
-                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled>
+                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled" />
                             <code class='op-uc-code'>
                               <span>asdf</span>
                             </code>
@@ -218,7 +218,7 @@ RSpec.describe OpenProject::TextFormatting,
                       <td class="op-uc-table--cell">
                         <ul class="op-uc-list_task-list op-uc-list">
                           <li class="op-uc-list--item">
-                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled>
+                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled" />
                             <a class="op-uc-link" target="_top" href="https://example.com/" rel="noopener noreferrer">
                               <span>asdfasd</span>
                               <span> asdf</span>
@@ -229,7 +229,7 @@ RSpec.describe OpenProject::TextFormatting,
                       <td class="op-uc-table--cell">
                         <ul class="op-uc-list_task-list op-uc-list" >
                           <li class="op-uc-list--item">
-                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled>
+                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled" />
                             <span>asdfasdf</span>
                           </li>
                         </ul>
@@ -239,14 +239,14 @@ RSpec.describe OpenProject::TextFormatting,
                       <td class="op-uc-table--cell">
                         <ul class="op-uc-list_task-list op-uc-list">
                           <li class="op-uc-list--item">
-                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled>
+                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled" />
                           </li>
                         </ul>
                       </td>
                       <td class="op-uc-table--cell">
                         <ul class="op-uc-list_task-list op-uc-list">
                           <li class="op-uc-list--item">
-                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled>
+                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled" />
                             <strong></strong>
                             <span><strong>asdf</strong></span>
                           </li>
@@ -255,7 +255,7 @@ RSpec.describe OpenProject::TextFormatting,
                       <td class="op-uc-table--cell">
                         <ul class="op-uc-list_task-list op-uc-list">
                           <li class="op-uc-list--item">
-                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled>
+                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled" />
                           </li>
                         </ul>
                       </td>
@@ -316,7 +316,7 @@ RSpec.describe OpenProject::TextFormatting,
                       <td class="op-uc-table--cell">
                         <ul class="op-uc-list_task-list op-uc-list">
                           <li class="op-uc-list--item">
-                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled>
+                            <input type="checkbox" class="op-uc-list--task-checkbox" disabled="disabled" />
                             <span>asdfasdfasdf </span>
                             <a class="op-uc-link" href="https://example.com/" target="_top" rel="noopener noreferrer">
                               <span>foobar</span>

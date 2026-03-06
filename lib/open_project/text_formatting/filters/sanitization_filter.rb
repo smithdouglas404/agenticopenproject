@@ -44,6 +44,9 @@ module OpenProject::TextFormatting
         data-id data-detailed data-macro-name data-project data-wiki-page data-filter
       ].freeze
 
+      # Data attributes added to links by MentionFilter and PatternMatcherFilter.
+      LINK_HOVER_CARD_ATTRIBUTES = %w[data-hover-card-trigger-target data-hover-card-url].freeze
+
       # Build a Selma sanitization config for use as HTMLPipeline's sanitization_config.
       # Must be a method (not a constant) because allowed protocols are read from the DB.
       def self.config
@@ -52,22 +55,36 @@ module OpenProject::TextFormatting
         base_protocols = HTMLPipeline::SanitizationFilter::DEFAULT_CONFIG[:protocols]
 
         Selma::Sanitizer::Config.freeze_config({
-          elements: base_elements + %w[macro mention],
+          elements: base_elements + %w[
+            input nav macro mention
+            opce-macro-attribute-value opce-macro-attribute-label
+            opce-macro-wp-quickinfo opce-macro-embedded-table
+          ],
 
           attributes: base_attrs.merge(
             all: base_attrs[:all] + %w[class style],
+            "a"       => (base_attrs["a"] || []) + LINK_HOVER_CARD_ATTRIBUTES,
             "macro"   => ["class"] + MACRO_DATA_ATTRIBUTES,
             "mention" => %w[class data-type data-text data-id],
             "figure"  => %w[class style],
             "img"     => (base_attrs["img"] || []) + %w[style],
+            "input"   => %w[type class disabled checked],
+            "nav"     => %w[class],
             "table"   => (base_attrs["table"] || []) + %w[style],
             "th"      => (base_attrs["th"]    || []) + %w[style],
             "tr"      => (base_attrs["tr"]    || []) + %w[style],
             "td"      => (base_attrs["td"]    || []) + %w[style],
+            "opce-macro-attribute-value" => %w[data-model data-id data-attribute],
+            "opce-macro-attribute-label" => %w[data-model data-id data-attribute],
+            "opce-macro-wp-quickinfo"    => %w[data-id data-detailed],
+            "opce-macro-embedded-table"  => %w[data-query-props],
           ),
 
           protocols: base_protocols.merge(
-            "a" => { "href" => Setting::AllowedLinkProtocols.all + [:relative] }
+            "a" => {
+              "href"                => Setting::AllowedLinkProtocols.all + [:relative],
+              "data-hover-card-url" => ["http", "https", :relative]
+            }
           ),
 
           allow_comments: false,

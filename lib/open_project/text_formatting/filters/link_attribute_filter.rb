@@ -43,12 +43,18 @@ module OpenProject::TextFormatting
         # Strip style attribute to prevent hidden/malicious links (e.g. display:none)
         element.remove_attribute("style")
 
-        # Add rel to all links (replacing the old SanitizationFilter add_attributes behaviour)
+        # TOC nav contains fragment links to same-page headings; they need neither
+        # target nor rel.  Other fragment links (e.g. heading permalink anchors)
+        # are not inside <nav> and do receive rel but not target.
+        in_nav = element.ancestors.include?("nav")
+        return if element["target"] || (href&.start_with?("#") && in_nav)
+
+        # Add rel to all links that are not same-page TOC links
         existing_rel = element["rel"]
         element["rel"] = "noopener noreferrer" if existing_rel.blank?
 
-        # Skip fragment-only links and links that already have a target
-        return if element["target"] || href&.start_with?("#")
+        # Skip target for fragment links (permalink anchors stay in place)
+        return if href&.start_with?("#")
 
         element["target"] = context.fetch(:target, "_top")
       end

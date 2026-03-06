@@ -40,20 +40,40 @@ module OpenProject::TextFormatting
       # </figure>
       #
       # The figure and img/table elements later get CSS classes applied by BemCssFilter.
-      SELECTOR = Selma::Selector.new(match_element: "img, table")
+      SELECTOR = Selma::Selector.new(match_element: "img, table, figure > div")
 
       def selector
         SELECTOR
       end
 
       def handle_element(element)
-        # Only wrap if the parent is not already a div (content wrapper) or figure
-        # We check ancestors: skip if already wrapped
-        ancestors = element.ancestors
-        return if ancestors.include?("figure")
+        # For <div> that is a direct child of <figure>: ensure it carries the
+        # op-uc-figure--content class (added when the <div> is user-authored
+        # and lacks the class).
+        if element.tag_name == "div"
+          existing = element["class"]
+          unless existing&.include?("op-uc-figure--content")
+            element["class"] = [existing.presence, "op-uc-figure--content"].compact.join(" ")
+          end
+          return
+        end
 
-        element.before('<figure><div class="op-uc-figure--content">', as: :html)
-        element.after("</div></figure>", as: :html)
+        ancestors = element.ancestors
+        in_figure = ancestors.include?("figure")
+        in_content_div = ancestors.include?("div")
+
+        if in_figure
+          # Already inside a user-written <figure>: only add the content <div> wrapper
+          # unless one is already present (avoid double-wrapping).
+          return if in_content_div
+
+          element.before('<div class="op-uc-figure--content">', as: :html)
+          element.after("</div>", as: :html)
+        else
+          # Not yet wrapped: insert full <figure><div> ... </div></figure> scaffold.
+          element.before('<figure><div class="op-uc-figure--content">', as: :html)
+          element.after("</div></figure>", as: :html)
+        end
       end
     end
   end

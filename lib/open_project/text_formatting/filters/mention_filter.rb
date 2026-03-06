@@ -36,8 +36,12 @@ module OpenProject::TextFormatting
       include OpenProject::ObjectLinking
       include OpenProject::StaticRouting::UrlHelpers
 
+      # Also match <br> inside <mention> so we can remove hardbreak artifacts:
+      # Commonmarker with hardbreaks:true converts every newline to <br />, including
+      # newlines inside <mention> inner content. Those <br> elements are stripped
+      # when the mention falls back to remove_and_keep_content.
       SELECTOR = Selma::Selector.new(
-        match_element: "mention"
+        match_element: "mention, mention br"
       )
 
       def selector
@@ -45,16 +49,30 @@ module OpenProject::TextFormatting
       end
 
       def after_initialize
-        @pending_mention = nil
-        @pending_text = nil
+        @in_fallback_mention = false
+      end
+
+      def reset!
+        after_initialize
       end
 
       def handle_element(element)
+        if element.tag_name == "br"
+          element.remove if @in_fallback_mention
+          return
+        end
+
         anchor_html = mention_anchor_html(element)
         if anchor_html
+          @in_fallback_mention = false
           element.before(anchor_html, as: :html)
+          element.remove
+        else
+          # No entity found: keep inner content (e.g. display text) as fallback.
+          # Set flag so nested <br> elements (hardbreak artifacts) are stripped.
+          @in_fallback_mention = true
+          element.remove_and_keep_content
         end
-        element.remove
       end
 
       # For link_to
@@ -73,8 +91,8 @@ module OpenProject::TextFormatting
         when WorkPackage
           work_package_mention(mention_instance, element)
         else
-          # fallback: render the text content (set via inner content)
-          h(element["data-text"].presence || "")
+          # fallback: nil signals handle_element to use remove_and_keep_content
+          nil
         end
       end
 
@@ -131,8 +149,8 @@ module OpenProject::TextFormatting
           .find_by(id: mention_id(element)) || fallback_text(element)
       end
 
-      def fallback_text(element)
-        h(element["data-text"].presence || "")
+      def fallback_text(_element)
+        nil
       end
 
       def mention_id(element)

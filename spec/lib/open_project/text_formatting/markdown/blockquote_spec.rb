@@ -61,7 +61,7 @@ RSpec.describe OpenProject::TextFormatting,
       <<~EXPECTED
         <p class="op-uc-p">John said:</p>
         <blockquote class="op-uc-blockquote">
-        <p class="op-uc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas sed libero.<br>
+        <p class="op-uc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas sed libero.<br />
         Nullam commodo metus accumsan nulla. Curabitur lobortis dui id dolor.</p>
         <ul class="op-uc-list">
           <li class="op-uc-list--item">Donec odio lorem,</li>
