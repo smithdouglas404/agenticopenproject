@@ -38,6 +38,8 @@ import { BoardActionsRegistryService } from 'core-app/features/boards/board/boar
 import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
 import { BoardService } from 'core-app/features/boards/board/board.service';
 import { BoardActionService } from 'core-app/features/boards/board/board-actions/board-action.service';
+import { GridWidgetResource } from 'core-app/features/hal/resources/grid-widget-resource';
+import { BoardStatusMappingService } from 'core-app/features/boards/board/status-mapping/board-status-mapping.service';
 
 @Component({
   selector: 'board-list-menu',
@@ -47,28 +49,45 @@ import { BoardActionService } from 'core-app/features/boards/board/board-actions
 export class BoardListMenuComponent {
   @Input() board:Board;
 
+  @Input() resource:GridWidgetResource;
+
   @Output() onRemove = new EventEmitter<void>();
+
+  @Output() onReload = new EventEmitter<void>();
 
   constructor(readonly opModalService:OpModalService,
     readonly authorisationService:AuthorisationService,
     private readonly querySpace:IsolatedQuerySpace,
     private readonly boardService:BoardService,
     private readonly boardActionRegistry:BoardActionsRegistryService,
+    private readonly statusMappingService:BoardStatusMappingService,
     readonly I18n:I18nService) {
   }
 
   public get menuItems() {
     return async () => {
-      const items:OpContextMenuItem[] = [
-        {
-          disabled: !this.canDelete,
-          linkText: this.I18n.t('js.boards.lists.delete'),
+      const items:OpContextMenuItem[] = [];
+
+      if (this.board.isAction && this.board.actionAttribute === 'status' && this.canManage) {
+        items.push({
+          linkText: this.I18n.t('js.boards.lists.configure_statuses'),
           onClick: () => {
-            this.onRemove.emit();
+            void this.statusMappingService.openDialog(this.board, this.resource, () => {
+              this.onReload.emit();
+            });
             return true;
           },
+        });
+      }
+
+      items.push({
+        disabled: !this.canDelete,
+        linkText: this.I18n.t('js.boards.lists.delete'),
+        onClick: () => {
+          this.onRemove.emit();
+          return true;
         },
-      ];
+      });
 
       // Add action specific menu entries
       if (this.board.isAction) {

@@ -118,8 +118,11 @@ RSpec.describe TaskBoards::CreateService do
       end
 
       it "filters each query by the sprint version" do
+        queries_by_id = Query.where(id: result.result.widgets.map { |widget| widget.options[:query_id] })
+                             .index_by { |query| query.id.to_s }
+
         result.result.widgets.each do |widget|
-          query = Query.find(widget.options[:query_id])
+          query = queries_by_id.fetch(widget.options[:query_id].to_s)
           version_filter = query.filters.find { |f| f.field.to_s == "version_id" }
           expect(version_filter).not_to be_nil
           expect(version_filter.operator).to eq("=")

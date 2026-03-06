@@ -12,6 +12,12 @@ en:
       label_board_type: 'Board type'
       lists:
         delete: 'Delete list'
+        configure_statuses: 'Configure'
+        status_mapping:
+          dialog_title: 'Configure column'
+          dialog_subtitle: 'Select the statuses to include in this column'
+          filter_placeholder: 'Filter statuses...'
+          no_selection_notice: 'At least one status must be selected.'
 
       version:
         is_locked: 'Version is locked. No items can be added to this version.'
