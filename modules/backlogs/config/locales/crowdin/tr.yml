@@ -25,6 +25,12 @@ tr:
     description: "Bu modül, çevik ekiplerin Scrum projelerinde OpenProject ile çalışmasını sağlayan özellikler ekler."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Paylaşım"
       sprint:
         duration: "Sprint süresi"
       work_package:
@@ -42,6 +48,8 @@ tr:
               task_version_must_be_the_same_as_story_version: "ana hikaye sürümüyle aynı olmalıdır."
         sprint:
           cannot_end_before_it_starts: "Sprint başlamadan önce bitemez."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Görev türü"
   backlogs:
@@ -121,11 +129,13 @@ tr:
   label_points_burn_down: "Aşağı"
   label_points_burn_up: "Yukarı"
   label_sprint_impediments: "Sprint Engelleri"
+  label_sprint_new: "New sprint"
   label_task_board: "Görev panosu"
-  permission_view_master_backlog: "Ana bekleme günlüğünü görüntüleme"
-  permission_view_taskboards: "Görev tahtalarını görüntüleme"
-  permission_select_done_statuses: "Tamamlanan durumları seçiniz"
-  permission_update_sprints: "Süratleri güncelle"
+  permission_view_sprints: "View sprints"
+  permission_create_sprints: "Create sprints"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_manage_sprint_items: "Manage sprint items"
+  permission_share_sprint: "Share sprint"
   project_module_backlogs: "İş listesi"
   rb_burndown_charts:
     show:

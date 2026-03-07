@@ -25,6 +25,12 @@ id:
     description: "Modul ini menambahkan fitur yang memungkinkan tim yang gesit bekerja dengan OpenProject dalam proyek Scrum."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,6 +48,8 @@ id:
               task_version_must_be_the_same_as_story_version: "harus sama seperti versi kisah orang tua."
         sprint:
           cannot_end_before_it_starts: "Sprint tidak bisa berakhir sebelum mulai."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Jenis tugas"
   backlogs:
@@ -119,11 +127,13 @@ id:
   label_points_burn_down: "Menurun"
   label_points_burn_up: "Naik"
   label_sprint_impediments: "Hanbatan kekuatan"
+  label_sprint_new: "New sprint"
   label_task_board: "Papan tugas"
-  permission_view_master_backlog: "Lihat backlog master"
-  permission_view_taskboards: "Lihat papan tugas"
-  permission_select_done_statuses: "Pilih status selesai"
-  permission_update_sprints: "Perbarui sprint"
+  permission_view_sprints: "View sprints"
+  permission_create_sprints: "Create sprints"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_manage_sprint_items: "Manage sprint items"
+  permission_share_sprint: "Share sprint"
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:
     show:

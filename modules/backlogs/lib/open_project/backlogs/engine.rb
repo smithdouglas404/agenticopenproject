@@ -59,50 +59,52 @@ module OpenProject::Backlogs
         end
 
         OpenProject::AccessControl.permission(:edit_work_packages).tap do |edit|
-          edit.controller_actions << "rb_stories/move"
-          edit.controller_actions << "rb_stories/reorder"
           edit.controller_actions << "rb_tasks/update"
           edit.controller_actions << "rb_impediments/update"
         end
       end
 
       project_module :backlogs, dependencies: :work_package_tracking do
-        # Master backlog permissions
-        permission :view_master_backlog,
+        permission :view_sprints,
                    { rb_master_backlogs: %i[index details],
                      rb_sprints: %i[index show show_name],
                      rb_wikis: :show,
                      rb_stories: %i[index show],
                      rb_queries: :show,
-                     rb_burndown_charts: :show },
-                   permissible_on: :project
-
-        permission :view_taskboards,
-                   { rb_taskboards: :show,
-                     rb_sprints: :show,
-                     rb_stories: :show,
+                     rb_burndown_charts: :show,
+                     rb_taskboards: :show,
                      rb_tasks: %i[index show],
-                     rb_impediments: %i[index show],
-                     rb_wikis: :show,
-                     rb_burndown_charts: :show },
-                   permissible_on: :project
-
-        permission :select_done_statuses,
-                   {
-                     "projects/settings/backlogs": %i[show update rebuild_positions]
-                   },
+                     rb_impediments: %i[index show] },
                    permissible_on: :project,
-                   require: :member
+                   dependencies: :view_work_packages
 
-        # Sprint permissions
-        # :show_sprints and :list_sprints are implicit in :view_master_backlog permission
-        permission :update_sprints,
-                   {
-                     rb_sprints: %i[edit_name update],
-                     rb_wikis: %i[edit update]
-                   },
+        permission :create_sprints,
+                   { rb_sprints: %i[new_dialog refresh_form create edit_name update],
+                     rb_wikis: %i[edit update],
+                     "projects/settings/backlogs": %i[show update rebuild_positions] },
                    permissible_on: :project,
-                   require: :member
+                   require: :member,
+                   dependencies: :view_sprints
+
+        permission :start_complete_sprint,
+                   {},
+                   permissible_on: :project,
+                   require: :member,
+                   dependencies: :view_sprints,
+                   visible: -> { OpenProject::FeatureDecisions.scrum_projects_active? }
+
+        permission :manage_sprint_items,
+                   { rb_stories: %i[move reorder] },
+                   permissible_on: :project,
+                   require: :member,
+                   dependencies: %i[view_sprints add_work_packages edit_work_packages]
+
+        permission :share_sprint,
+                   {},
+                   permissible_on: :project,
+                   require: :member,
+                   dependencies: :create_sprints,
+                   visible: -> { OpenProject::FeatureDecisions.scrum_projects_active? }
       end
 
       menu :project_menu,

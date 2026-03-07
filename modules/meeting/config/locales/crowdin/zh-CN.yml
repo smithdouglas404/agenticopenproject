@@ -124,6 +124,7 @@ zh-CN:
   label_meeting_template_edit: "编辑模板"
   label_meeting_create_from_template: "根据模板创建会议"
   label_meeting_new: "新增会议"
+  caption_meeting_template_select: "选择一个模板，以自动复制其议程条目"
   label_meeting_new_dynamic: "新的动态会议"
   label_meeting_new_recurring: "新的定期会议"
   label_meeting_create: "创建会议"
@@ -189,8 +190,6 @@ zh-CN:
   label_time_zone: "时区"
   label_start_date: "开始日期"
   label_subscribe_icalendar: "订阅日历"
-  caption_meeting_template_select: "选择一个模板，以自动复制其议程条目"
-  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -607,7 +606,7 @@ zh-CN:
   text_meeting_draft_banner: "您目前处于草稿模式。即使您更改了会议详细信息或添加/移除了参与者，此会议也不会发送任何日历更新或邀请。"
   text_onetime_meeting_template_banner: "您当前正在编辑会议模板。您可以使用此模板创建具有预定义议程的一次性会议。更改不会影响已创建的会议。"
   text_onetime_meeting_template_empty_heading: "此会议模板为空"
-  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
+  text_onetime_meeting_template_description: "请将议程条目和附件添加到此模板。所有基于此模板的会议都将包含这些内容。"
   text_exit_draft_mode_dialog_title: "是否打开此会议并发送邀请？"
   text_exit_draft_mode_dialog_subtitle: "会议安排完成后，您将无法返回到草稿模式。"
   text_exit_draft_mode_dialog_template_title: "是否打开此会议系列的第一个会议？"

@@ -126,6 +126,7 @@ pt-BR:
   label_meeting_template_edit: "Editar modelo"
   label_meeting_create_from_template: "Criar reunião a partir de um modelo"
   label_meeting_new: "Nova Reunião"
+  caption_meeting_template_select: "Selecione um modelo para copiar automaticamente os itens da agenda"
   label_meeting_new_dynamic: "Nova reunião única"
   label_meeting_new_recurring: "Nova reunião recorrente"
   label_meeting_create: "Criar reunião"
@@ -194,8 +195,6 @@ pt-BR:
   label_time_zone: "Fuso horário"
   label_start_date: "Data de início"
   label_subscribe_icalendar: "Assinar calendário"
-  caption_meeting_template_select: "Selecione um modelo para copiar automaticamente os itens da agenda"
-  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -614,7 +613,7 @@ pt-BR:
   text_meeting_draft_banner: "Você está no modo rascunho. Esta reunião não enviará nenhuma atualização de calendário ou convite, mesmo que você altere os detalhes da reunião ou adicione/remoca participantes."
   text_onetime_meeting_template_banner: "Você está editando um modelo de reunião. Use este modelo para criar reuniões únicas com uma agenda predefinida. As alterações não afetarão reuniões já criadas."
   text_onetime_meeting_template_empty_heading: "Este modelo de reunião está vazio"
-  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
+  text_onetime_meeting_template_description: "Add agenda items and attachments to this template. They will be included in every meeting based on this template."
   text_exit_draft_mode_dialog_title: "Abrir esta reunião e enviar convites?"
   text_exit_draft_mode_dialog_subtitle: "Você não pode retornar ao modo rascunho após você agendar a reunião."
   text_exit_draft_mode_dialog_template_title: "Abrir a primeira ocorrência desta série de reuniões?"

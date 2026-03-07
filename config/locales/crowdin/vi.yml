@@ -1342,9 +1342,6 @@ vi:
         dependencies: "phụ thuộc"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -2213,7 +2210,7 @@ vi:
     body: "cơ thể"
     blocks_ids: "ID của các work package bị chặn"
     category: "thể loại"
-    comment: "bình luận"
+    comment: "Nhận xét"
     comments: "bình luận"
     content: "Nội dung"
     color: "màu sắc"
@@ -3812,7 +3809,7 @@ vi:
   label_used_by: "Được dùng bởi"
   label_used_by_types: "Được sử dụng bởi các loại"
   label_used_in_projects: "Được sử dụng trong các dự án"
-  label_user: "người dùng"
+  label_user: "Người dùng"
   label_user_and_permission: "Người dùng và quyền"
   label_user_named: "Người dùng %{name}"
   label_user_activity: "%{value} hoạt động"

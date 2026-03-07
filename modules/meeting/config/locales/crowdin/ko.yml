@@ -124,6 +124,7 @@ ko:
   label_meeting_template_edit: "템플릿 편집"
   label_meeting_create_from_template: "템플릿에서 미팅 만들기"
   label_meeting_new: "새 미팅"
+  caption_meeting_template_select: "템플릿을 선택하면 의제 항목이 자동으로 복사됩니다."
   label_meeting_new_dynamic: "새로운 일회성 미팅"
   label_meeting_new_recurring: "새로운 반복 미팅"
   label_meeting_create: "미팅 생성"
@@ -189,8 +190,6 @@ ko:
   label_time_zone: "표준 시간대"
   label_start_date: "시작일"
   label_subscribe_icalendar: "캘린더 구독"
-  caption_meeting_template_select: "템플릿을 선택하면 의제 항목이 자동으로 복사됩니다."
-  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -607,7 +606,7 @@ ko:
   text_meeting_draft_banner: "초안 모드에 현재 있습니다. 이 미팅은 미팅 세부 정보를 변경하거나 참가자를 추가/제거하더라도 캘린더 업데이트나 초대장을 전송하지 않습니다."
   text_onetime_meeting_template_banner: "현재 미팅 템플릿을 편집하는 중입니다. 이 템플릿을 사용하여 사전 정의된 의제가 있는 일회성 미팅을 만들 수 있습니다. 변경 사항은 이미 생성된 미팅에 영향을 미치지 않습니다."
   text_onetime_meeting_template_empty_heading: "이 미팅 템플릿은 비어 있습니다"
-  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
+  text_onetime_meeting_template_description: "이 템플릿에 의제 항목과 첨부 파일을 추가하세요. 이 템플릿에 기반한 모든 미팅에 해당 의제 항목과 첨부 파일이 포함됩니다."
   text_exit_draft_mode_dialog_title: "이 미팅을 열고 초대장을 보내시겠습니까?"
   text_exit_draft_mode_dialog_subtitle: "미팅을 예약한 후에는 초안 모드로 돌아갈 수 없습니다."
   text_exit_draft_mode_dialog_template_title: "이 미팅 시리즈의 첫 번째 항목을 열어보시겠습니까?"

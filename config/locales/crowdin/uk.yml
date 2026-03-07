@@ -1383,9 +1383,6 @@ uk:
         dependencies: "Залежності"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3640,7 +3637,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"

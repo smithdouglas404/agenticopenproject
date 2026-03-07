@@ -25,6 +25,12 @@ de:
     description: "Dieses Modul fügt Funktionen hinzu, die es agilen Teams ermöglichen, mit OpenProject in Scrum-Projekten zu arbeiten."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Dauer"
+        finish_date: "Endtermin"
+        goal: "Sprint-Ziel"
+        name: "Sprint-Name"
+        sharing: "Teilen"
       sprint:
         duration: "Sprintdauer"
       work_package:
@@ -42,6 +48,8 @@ de:
               task_version_must_be_the_same_as_story_version: "muss der Version der übergeordneten Story entsprechen."
         sprint:
           cannot_end_before_it_starts: "Sprint kann nicht enden, bevor er begonnen hat."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Aufgaben-Typ"
   backlogs:
@@ -121,11 +129,13 @@ de:
   label_points_burn_down: "Runter"
   label_points_burn_up: "Hoch"
   label_sprint_impediments: "Sprint Hindernisse"
+  label_sprint_new: "Neuer Sprint"
   label_task_board: "Taskboard"
-  permission_view_master_backlog: "Master Backlog ansehen"
-  permission_view_taskboards: "Taskboard ansehen"
-  permission_select_done_statuses: "Abgeschlossene Status auswählen"
-  permission_update_sprints: "Sprints bearbeiten"
+  permission_view_sprints: "View sprints"
+  permission_create_sprints: "Sprints erstellen"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_manage_sprint_items: "Manage sprint items"
+  permission_share_sprint: "Share sprint"
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:
     show:

@@ -126,6 +126,7 @@ fr:
   label_meeting_template_edit: "Éditer le modèle"
   label_meeting_create_from_template: "Créer une réunion à partir d'un modèle"
   label_meeting_new: "Nouvelle réunion"
+  caption_meeting_template_select: "Sélectionnez un modèle pour copier automatiquement ses points de l'ordre du jour"
   label_meeting_new_dynamic: "Nouvelle réunion ponctuelle"
   label_meeting_new_recurring: "Nouvelle réunion récurrente"
   label_meeting_create: "Créer une réunion"
@@ -194,8 +195,6 @@ fr:
   label_time_zone: "Fuseau horaire"
   label_start_date: "Date de début"
   label_subscribe_icalendar: "S'abonner au calendrier"
-  caption_meeting_template_select: "Sélectionnez un modèle pour copier automatiquement ses points de l'ordre du jour"
-  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -614,7 +613,7 @@ fr:
   text_meeting_draft_banner: "Vous êtes actuellement en mode brouillon. Cette réunion n'enverra pas de mises à jour de calendrier ni d'invitations, même si vous modifiez les détails de la réunion ou si vous ajoutez/supprimez des participants."
   text_onetime_meeting_template_banner: "Vous êtes en train de modifier un modèle de réunion. Vous pouvez utiliser ce modèle pour créer des réunions ponctuelles avec un ordre du jour prédéfini. Les modifications n'affecteront pas les réunions déjà créées."
   text_onetime_meeting_template_empty_heading: "Ce modèle de réunion est vide"
-  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
+  text_onetime_meeting_template_description: "Ajoutez des éléments à l'ordre du jour et des pièces jointes à ce modèle. Ils seront inclus dans chaque réunion basée sur ce modèle."
   text_exit_draft_mode_dialog_title: "Ouvrez cette réunion et envoyez des invitations ?"
   text_exit_draft_mode_dialog_subtitle: "Vous ne pouvez pas revenir au mode brouillon une fois que vous avez planifié une réunion."
   text_exit_draft_mode_dialog_template_title: "Ouvrez la première occurrence de cette série de réunions ?"
