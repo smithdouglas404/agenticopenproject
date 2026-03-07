@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - release-17.1.2-custom
+      - custom/release-17.1.2
 
 jobs:
   build-el9-rpm:
