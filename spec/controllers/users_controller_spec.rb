@@ -209,6 +209,34 @@ RSpec.describe UsersController do
       end
     end
 
+    context "with create_user permission rights" do
+      let(:user_with_create_user_permission) do
+        create(:user, global_permissions: %i[view_all_principals create_user manage_user])
+      end
+
+      before do
+        expect(ActionMailer::Base.deliveries).to be_empty
+
+        as_logged_in_user user_with_create_user_permission do
+          perform_enqueued_jobs do
+            post :resend_invitation, params: { id: invited_user.id }
+          end
+        end
+      end
+
+      it "redirects back to the edit user page" do
+        expect(response).to redirect_to edit_user_path(invited_user)
+      end
+
+      it "sends another activation email" do
+        mail = ActionMailer::Base.deliveries.first.body.parts.first.body.to_s
+        token = Token::Invitation.find_by user_id: invited_user.id
+
+        expect(mail).to include "activate your account"
+        expect(mail).to include token.value
+      end
+    end
+
     context "with admin rights" do
       before do
         expect(ActionMailer::Base.deliveries).to be_empty
@@ -230,6 +258,39 @@ RSpec.describe UsersController do
 
         expect(mail).to include "activate your account"
         expect(mail).to include token.value
+      end
+    end
+
+    context "when trying to modify an admin" do
+      let(:affected_user) { create(:admin) }
+
+      subject do
+        as_logged_in_user acting_user do
+          post :resend_invitation, params: { id: affected_user.id }
+        end
+      end
+
+      context "as non-admin" do
+        let(:acting_user) { create(:user, global_permissions: %i[view_all_principals create_user manage_user]) }
+
+        it "does not allow changing the status of an admin" do
+          subject
+
+          expect(flash[:error]).to eq(I18n.t("user.error_admin_change_on_non_admin"))
+          expect(response).to redirect_to(action: :edit)
+        end
+      end
+
+      context "as admin" do
+        let(:acting_user) { admin }
+
+        it "allows changing the status of an admin" do
+          subject
+
+          affected_user.reload
+
+          expect(affected_user).to be_invited
+        end
       end
     end
   end

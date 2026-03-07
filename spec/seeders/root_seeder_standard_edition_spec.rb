@@ -131,7 +131,7 @@ RSpec.describe RootSeeder,
       member_role = root_seeder.seed_data.find_reference(:default_role_member)
       expect(member_role.permissions).to include(
         :view_work_packages, # from common basic data
-        :view_taskboards, # from backlogs module
+        :view_sprints, # from backlogs module
         :show_board_views, # from board module
         :view_documents, # from documents module
         :view_budgets, # from costs module

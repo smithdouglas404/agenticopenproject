@@ -86,7 +86,7 @@ module Projects
       #
       # relevant especially for the project API
 
-      model.all_available_custom_fields.map(&:attribute_name)
+      model.all_available_custom_fields.flat_map(&:all_attribute_names)
     end
 
     private

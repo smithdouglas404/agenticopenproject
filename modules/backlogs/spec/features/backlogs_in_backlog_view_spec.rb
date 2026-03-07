@@ -52,14 +52,14 @@ RSpec.describe "Backlogs in backlog view", :js do
     create(:project_role,
            permissions: %i(
              view_project
-             view_master_backlog
+             view_sprints
+             create_sprints
+             manage_sprint_items
              add_work_packages
              view_work_packages
              edit_work_packages
              manage_subtasks
              manage_versions
-             update_sprints
-             assign_versions
            ))
   end
   let!(:current_user) do

@@ -2,6 +2,7 @@ el:
   js:
     grid:
       add_widget: 'Προσθήκη widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Αφαίρεση widget'
       configure: 'Ρύθμιση widget'
       widgets:
@@ -18,7 +19,6 @@ el:
           title: 'Νέα'
         project_description:
           title: 'Description'
-          no_results: "Δεν έχει γραφτεί ακόμα περιγραφή. Μπορεί να παρασχεθεί μια στις 'Ρυθμίσεις έργου'."
         project_status:
           title: 'Status'
           not_started: 'Not started'

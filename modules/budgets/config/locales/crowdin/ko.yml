@@ -39,6 +39,12 @@ ko:
         base_amount: "기본 금액"
       work_package:
         budget_subject: "예산 제목"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "is not a member of the budget's project"
     models:
       budget: "예산"
       material_budget_item: "단위"
@@ -59,35 +65,28 @@ ko:
   budgets:
     widgets:
       budget_totals:
-        title: "Budget totals"
-        remaining_budget: "Remaining budget"
-        spent_budget: "Spent budget"
-        total_actual_costs: "Total actual costs"
-        total_planned_budget: "Total planned budget"
+        title: "예산 합계"
+        remaining_budget: "남은 예산"
+        spent_budget: "소비된 예산"
+        total_actual_costs: "총 실제 비용"
+        total_planned_budget: "총 계획 예산"
       budget_by_cost_type:
-        title: "Budget by cost type"
+        title: "비용 유형별 예산"
         blankslate:
-          heading: "Start project controlling"
-          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+          heading: "프로젝트 제어 시작"
+          description: "예산 및 비용에 대한 개요를 확인하여 효율적으로 프로젝트 상태를 추적합니다"
+        blankslate_zero:
+          heading: "예산 세부 정보 누락"
+          description: "계획된 예산에 대한 세부 정보를 추가하여 여기에서 데이터를 확인합니다"
         caption:
+          zero: "예산 데이터가 없습니다."
+          one: "Data aggregated from %{count} budget included in this %{workspace}."
+          other: "Data aggregated from %{count} budgets included in this %{workspace}."
+        caption_with_subitems:
           zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."
-          other: "Data aggregated from %{count} budgets included in %{portfolios}, %{subprograms} and %{subprojects}."
-        caption_simple:
-          other: "Data aggregated from %{count} budgets."
-        portfolio:
-          zero: "no portfolios"
-          one: "1 portfolio"
-          other: "%{count} portfolios"
-        subprogram:
-          zero: "no subprograms"
-          one: "1 subprogram"
-          other: "%{count} subprograms"
-        subproject:
-          zero: "no subprojects"
-          one: "1 subproject"
-          other: "%{count} subprojects"
-        view_details: "View budget details"
+          one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
+          other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
+        view_details: "예산 세부 정보 보기"
   events:
     budget: "예산 편집됨"
   help_click_to_edit: "편집하려면 여기를 클릭하세요."

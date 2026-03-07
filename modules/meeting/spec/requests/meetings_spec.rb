@@ -136,4 +136,69 @@ RSpec.describe "Meeting requests",
       end
     end
   end
+
+  describe "delete" do
+    shared_let(:user_with_delete) do
+      create(:user, member_with_permissions: { project => %i[view_meetings delete_meetings] })
+    end
+
+    before { login_as user_with_delete }
+
+    describe "template deletion restrictions" do
+      context "when deleting series template" do
+        let(:recurring_meeting) { create(:recurring_meeting, project:) }
+        let(:series_template) { recurring_meeting.template }
+
+        it "renders a 400" do
+          delete project_meeting_path(project, series_template)
+
+          expect(response).to have_http_status(:bad_request)
+        end
+
+        it "does not delete the template" do
+          series_template_id = series_template.id
+
+          delete project_meeting_path(project, series_template)
+
+          expect(Meeting.exists?(series_template_id)).to be true
+        end
+      end
+
+      context "when deleting onetime template" do
+        let(:onetime_template) { create(:onetime_template, project:) }
+
+        it "returns successful redirect" do
+          delete project_meeting_path(project, onetime_template)
+
+          expect(response).to have_http_status(:see_other)
+        end
+
+        it "deletes the template" do
+          onetime_template_id = onetime_template.id
+
+          delete project_meeting_path(project, onetime_template)
+
+          expect(Meeting.exists?(onetime_template_id)).to be false
+        end
+      end
+
+      context "when deleting regular onetime meeting" do
+        let(:regular_meeting) { create(:meeting, project:, template: false) }
+
+        it "returns successful redirect" do
+          delete project_meeting_path(project, regular_meeting)
+
+          expect(response).to have_http_status(:see_other)
+        end
+
+        it "deletes the meeting" do
+          regular_meeting_id = regular_meeting.id
+
+          delete project_meeting_path(project, regular_meeting)
+
+          expect(Meeting.exists?(regular_meeting_id)).to be false
+        end
+      end
+    end
+  end
 end

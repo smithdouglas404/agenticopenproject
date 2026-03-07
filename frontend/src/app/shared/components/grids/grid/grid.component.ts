@@ -119,6 +119,24 @@ export class GridComponent implements OnDestroy, OnInit {
       this.GRID_AREA_HEIGHT);
   }
 
+  public get widgetAreasForDisplay():GridWidgetArea[] {
+    // Convert a 2D grid position to a flat linear index so widgets can be
+    // sorted by visual order (left-to-right, top-to-bottom) instead of their
+    // insertion order. Multiplying by numColumns ensures each row starts at a
+    // higher index than all cells of the previous row (e.g. for 3 columns:
+    // row 1 → 1–3, row 2 → 4–6, …). startRow is 1-based, hence the "- 1".
+    const index = (a:GridWidgetArea) =>
+      (a.startRow - 1) * this.layout.numColumns + a.startColumn;
+
+    const key = (a:GridWidgetArea) =>
+      (a.widget?.id ?? a.guid).toString();
+
+    return [...(this.layout.widgetAreas || [])].sort((a, b) => {
+      const diff = index(a) - index(b);
+      return diff !== 0 ? diff : key(a).localeCompare(key(b));
+    });
+  }
+
   public identifyGridArea(index:number, area:GridArea) {
     return area.guid;
   }

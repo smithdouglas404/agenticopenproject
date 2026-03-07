@@ -39,6 +39,12 @@ tr:
         base_amount: "Matrah tutarı"
       work_package:
         budget_subject: "Bütçe başlığı"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "is not a member of the budget's project"
     models:
       budget: "Bütçe"
       material_budget_item: "Birim"
@@ -69,25 +75,17 @@ tr:
         blankslate:
           heading: "Proje kontrolüne başlayın"
           description: "Projenizin sağlık durumunu verimli bir şekilde takip etmek için bütçelerinize ve maliyetlerinize genel bir bakış elde edin"
+        blankslate_zero:
+          heading: "Budget details missing"
+          description: "Add details about your planned budget to see data here"
         caption:
           zero: "Bütçe verisi yok."
-          one: "Veriler %{portfolios}, %{subprograms} ve %{subprojects} adreslerinde yer alan %{count} bütçesinden derlenmiştir."
-          other: "Veriler %{portfolios}, %{subprograms} ve %{subprojects} adreslerinde yer alan %{count} bütçelerinden derlenmiştir."
-        caption_simple:
-          one: "Veriler %{count} bütçesinden derlenmiştir."
-          other: "Veriler %{count} bütçelerinden derlenmiştir."
-        portfolio:
-          zero: "portföy yok"
-          one: "1 portföy"
-          other: "%{count} portföy"
-        subprogram:
-          zero: "alt program yok"
-          one: "1 alt program"
-          other: "%{count} alt program"
-        subproject:
-          zero: "alt proje yok"
-          one: "1 alt proje"
-          other: "%{count} alt proje"
+          one: "Data aggregated from %{count} budget included in this %{workspace}."
+          other: "Data aggregated from %{count} budgets included in this %{workspace}."
+        caption_with_subitems:
+          zero: "No budget data."
+          one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
+          other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
         view_details: "Bütçe ayrıntılarını görüntüle"
   events:
     budget: "Bütçe düzenlendi"

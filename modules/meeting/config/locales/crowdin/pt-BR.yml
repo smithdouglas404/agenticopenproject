@@ -68,10 +68,10 @@ pt-BR:
     errors:
       models:
         meeting_participant:
-          user_invalid: "is not a valid participant."
+          user_invalid: "não é um participante válido."
         meeting_agenda_item:
-          section_not_belong_to_meeting: "Section does not belong to the same meeting."
-          user_invalid: "is not a valid participant."
+          section_not_belong_to_meeting: "A seção não pertence à mesma reunião."
+          user_invalid: "não é um participante válido."
         recurring_meeting_interim_response:
           not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
@@ -118,7 +118,15 @@ pt-BR:
   error_notification_with_errors: "Falha ao enviar notificação. Os seguintes destinatários não puderam ser notificados: %{recipients}"
   label_meeting: "Reunião"
   label_meeting_plural: "Reuniões"
+  label_meeting_templates: "Modelos"
+  label_meeting_template: "Modelo"
+  label_meeting_template_new: "Novo modelo"
+  label_meeting_template_create: "Criar modelo"
+  label_meeting_template_delete: "Excluir modelo"
+  label_meeting_template_edit: "Editar modelo"
+  label_meeting_create_from_template: "Criar reunião a partir de um modelo"
   label_meeting_new: "Nova Reunião"
+  caption_meeting_template_select: "Selecione um modelo para copiar automaticamente os itens da agenda"
   label_meeting_new_dynamic: "Nova reunião única"
   label_meeting_new_recurring: "Nova reunião recorrente"
   label_meeting_create: "Criar reunião"
@@ -279,6 +287,9 @@ pt-BR:
         heading: "Excluir esta reunião?"
         confirmation_message_html: >
           Essa ação não pode ser desfeita. Prossiga com cautela.
+        template:
+          title: "Excluir modelo"
+          heading: "Excluir este modelo?"
       occurrence:
         title: "Cancelar ocorrência da reunião"
         heading: "Cancelar esta ocorrência da reunião?"
@@ -478,6 +489,7 @@ pt-BR:
     end_series_dialog:
       title: "Encerrar série de reuniões"
   notice_successful_notification: "Atualização do calendário enviada por e-mail para todos os participantes"
+  notice_meeting_template_created: "Modelo criado com sucesso"
   notice_timezone_missing: Nenhum fuso horário está definido, portanto assumiu-se %{zone}. Para escolher o seu fuso horário, clique aqui.
   notice_meeting_updated: "Esta página foi atualizada por outra pessoa. Recarregue para visualizar as alterações."
   permission_create_meetings: "Criar reuniões"
@@ -492,6 +504,8 @@ pt-BR:
   text_duration_in_hours: "Duração em horas"
   text_in_hours: "em horas"
   text_meeting_agenda_for_meeting: 'agenda para a reunião "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "Não há modelos para exibir"
+  text_meeting_template_blank_slate: "Você pode criar um novo modelo para reuniões únicas"
   text_meeting_series_end_early_heading: "Excluir ocorrências futuras?"
   text_meeting_series_end_early: "Encerrar a série excluirá qualquer reunião futura, aberta ou agendada"
   text_meeting_closing_are_you_sure: "Você tem certeza de que deseja encerar a pauta da reunião?"
@@ -597,6 +611,9 @@ pt-BR:
   text_meeting_in_progress_dropdown_description: "Registre os resultados como solicitações de informação ou decisões tomadas durante a reunião."
   text_meeting_closed_dropdown_description: "Esta reunião está encerrada. Já não é possível modificar os pontos da ordem de trabalhos ou os resultados."
   text_meeting_draft_banner: "Você está no modo rascunho. Esta reunião não enviará nenhuma atualização de calendário ou convite, mesmo que você altere os detalhes da reunião ou adicione/remoca participantes."
+  text_onetime_meeting_template_banner: "Você está editando um modelo de reunião. Use este modelo para criar reuniões únicas com uma agenda predefinida. As alterações não afetarão reuniões já criadas."
+  text_onetime_meeting_template_empty_heading: "Este modelo de reunião está vazio"
+  text_onetime_meeting_template_description: "Add agenda items and attachments to this template. They will be included in every meeting based on this template."
   text_exit_draft_mode_dialog_title: "Abrir esta reunião e enviar convites?"
   text_exit_draft_mode_dialog_subtitle: "Você não pode retornar ao modo rascunho após você agendar a reunião."
   text_exit_draft_mode_dialog_template_title: "Abrir a primeira ocorrência desta série de reuniões?"

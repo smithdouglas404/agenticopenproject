@@ -166,8 +166,8 @@ module Costs
     end
 
     initializer "costs.settings" do
-      ::Settings::Definition.add "costs_currency", default: "EUR", format: :string
-      ::Settings::Definition.add "costs_currency_format", default: "%n %u", format: :string
+      ::Settings::Definition.add "costs_currency", default: "€", format: :string
+      ::Settings::Definition.add "costs_currency_format", default: "%n %u", format: :string, allowed: ["%u %n", "%n %u"]
       ::Settings::Definition.add "allow_tracking_start_and_end_times", default: false, format: :boolean
       ::Settings::Definition.add "enforce_tracking_start_and_end_times", default: false, format: :boolean
     end

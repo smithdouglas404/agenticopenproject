@@ -739,6 +739,39 @@ Rails.application.routes.draw do
       post "plugin/:id", action: :update_plugin
     end
 
+    namespace :import, constraints: lambda { |_request| OpenProject::FeatureDecisions.jira_import_active? } do
+      get "/", to: redirect("/admin/import/jira")
+      resources :jira, controller: "/admin/import/jira/instances" do
+        collection do
+          post :test
+        end
+        member do
+          delete :delete_token
+        end
+        resources :run, controller: "/admin/import/jira/import_runs", module: :jiras do
+          member do
+            get :continue
+            post :continue
+            delete :remove
+
+            get :revert_modal
+            get :finalize_modal
+            get :history
+          end
+
+          resource :select_projects,
+                   controller: "/admin/import/jira/import_runs/select_projects",
+                   only: %i[show update] do
+            post :filter
+            get :switch_page
+            get :check_all
+            get :uncheck_all
+            get :toggle
+          end
+        end
+      end
+    end
+
     resources :quarantined_attachments,
               controller: "/admin/attachments/quarantined_attachments",
               only: %i[index destroy]

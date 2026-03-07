@@ -29,6 +29,8 @@
 #++
 
 class UserCustomField < CustomField
+  scopes :visible
+
   def type_name
     :label_user_plural
   end

@@ -104,7 +104,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
   describe "with insufficient Edit attribute permission on the update dialog" do
     let(:member) { member_with_project_attributes_edit_permissions }
     let(:custom_field) { boolean_project_custom_field }
-    let(:dialog) { Components::Projects::ProjectCustomFields::EditDialog.new(project, custom_field) }
+    let(:dialog) { Components::Projects::ProjectCustomFields::Dialog.new(project, custom_field) }
 
     before do
       login_as member

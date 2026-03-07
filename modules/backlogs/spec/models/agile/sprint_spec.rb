@@ -46,12 +46,27 @@ RSpec.describe Agile::Sprint do
     it { is_expected.to validate_presence_of(:finish_date) }
     it { is_expected.to validate_presence_of(:project) }
     it { is_expected.to validate_inclusion_of(:status).in_array(described_class.statuses.keys) }
-    it { is_expected.to validate_inclusion_of(:sharing).in_array(described_class::SPRINT_SHARINGS) }
+    it { is_expected.to validate_inclusion_of(:sharing).in_array(described_class.sharings.keys) }
 
     it "validates finish_date is after or equal to start_date" do
       sprint.finish_date = sprint.start_date - 1.day
       expect(sprint).not_to be_valid
       expect(sprint.errors[:finish_date]).to include(/must be greater than or equal to/)
+    end
+
+    it "does not validate finish_date comparison when start_date is nil" do
+      sprint.start_date = nil
+      sprint.finish_date = Time.zone.today
+      expect(sprint).not_to be_valid
+      expect(sprint.errors[:start_date]).to be_present
+      expect(sprint.errors[:finish_date]).not_to include(/must be greater than or equal to/)
+    end
+
+    it "still validates finish_date presence even when start_date is nil" do
+      sprint.start_date = nil
+      sprint.finish_date = nil
+      expect(sprint).not_to be_valid
+      expect(sprint.errors[:finish_date]).to be_present
     end
 
     context "with active sprint validation" do
@@ -96,16 +111,15 @@ RSpec.describe Agile::Sprint do
     end
 
     it "status defaults to in_planning" do
-      expect(sprint.status).to eq("in_planning")
+      expect(sprint).to be_in_planning
     end
 
-    it "allows sharing settings" do
-      expect(sprint).to allow_values(*%w[none descendants system]).for(:sharing)
-      expect(sprint).not_to allow_value(*%w[invalid_value hierarchy tree]).for(:sharing)
+    it "has sharing enum with correct values" do
+      expect(described_class.sharings.keys).to contain_exactly("none", "descendants", "system")
     end
 
     it "sharing defaults to none" do
-      expect(sprint.sharing).to eq("none")
+      expect(sprint).to be_sharing_with_none
     end
   end
 

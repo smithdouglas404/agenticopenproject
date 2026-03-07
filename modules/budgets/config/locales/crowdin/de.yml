@@ -39,6 +39,12 @@ de:
         base_amount: "Grundbetrag"
       work_package:
         budget_subject: "Budgettitel"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "ist kein Mitglied des Budgetprojekts"
     models:
       budget: "Budget"
       material_budget_item: "Stück"
@@ -59,36 +65,28 @@ de:
   budgets:
     widgets:
       budget_totals:
-        title: "Budget totals"
-        remaining_budget: "Remaining budget"
-        spent_budget: "Spent budget"
-        total_actual_costs: "Total actual costs"
-        total_planned_budget: "Total planned budget"
+        title: "Budgetsumme"
+        remaining_budget: "Verbleibendes Budget"
+        spent_budget: "Verwendetes Budget"
+        total_actual_costs: "Gesamte tatsächlichen Kosten"
+        total_planned_budget: "Gesamtes geplantes Budget"
       budget_by_cost_type:
-        title: "Budget by cost type"
+        title: "Budget nach Kostenart"
         blankslate:
-          heading: "Start project controlling"
-          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+          heading: "Projektcontrolling starten"
+          description: "Erhalten Sie einen Überblick über Ihre Budgets und Kosten, um den Status Ihres Projekts effizient zu verfolgen"
+        blankslate_zero:
+          heading: "Budgetdetails fehlen"
+          description: "Fügen Sie Details zu Ihrem geplanten Budget hinzu, um die Daten hier zu sehen"
         caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."
-          other: "Data aggregated from %{count} budgets included in %{portfolios}, %{subprograms} and %{subprojects}."
-        caption_simple:
-          one: "Data aggregated from %{count} budget."
-          other: "Data aggregated from %{count} budgets."
-        portfolio:
-          zero: "keine Portfolios"
-          one: "1 Portfolio"
-          other: "%{count} Portfolios"
-        subprogram:
-          zero: "keine Unterprogramme"
-          one: "1 Unterprogramm"
-          other: "%{count} Unterprogramme"
-        subproject:
-          zero: "keine Unterprojekte"
-          one: "1 Unterprojekt"
-          other: "%{count} Unterprojekte"
-        view_details: "View budget details"
+          zero: "Keine Budgetdaten."
+          one: "Daten aggregiert aus %{count} Budget in diesem %{workspace}."
+          other: "Daten aggregiert aus %{count} Budgets in diesem %{workspace}."
+        caption_with_subitems:
+          zero: "Keine Budgetdaten."
+          one: "Daten aggregiert aus %{count} Budget in diesem %{workspace} und seinen Unterelementen."
+          other: "Daten aggregiert aus %{count} Budgets in diesem %{workspace} und seinen Unterelementen."
+        view_details: "Budgetdetails anzeigen"
   events:
     budget: "Budget bearbeitet"
   help_click_to_edit: "Hier Klicken zum bearbeiten."

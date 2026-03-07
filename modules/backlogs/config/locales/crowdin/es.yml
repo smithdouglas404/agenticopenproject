@@ -25,8 +25,14 @@ es:
     description: "Este módulo añade funciones que permiten a los equipos Agile trabajar con OpenProject en proyectos Scrum."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duración"
+        finish_date: "Fecha de finalización"
+        goal: "Objetivo del sprint"
+        name: "Nombre del sprint"
+        sharing: "Uso compartido"
       sprint:
-        duration: "Sprint duration"
+        duration: "Duración del sprint"
       work_package:
         position: "Posición"
         story_points: "Puntos de Historia"
@@ -42,11 +48,13 @@ es:
               task_version_must_be_the_same_as_story_version: "debe coincidir con la versión de la historia principal."
         sprint:
           cannot_end_before_it_starts: "El sprint no puede terminar antes del inicio."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Tipo de tarea"
   backlogs:
     any: "cualquiera"
-    column_width: "Column width"
+    column_width: "Ancho de columna"
     definition_of_done: "Criterio de Aceptación"
     impediment: "Impedimento"
     label_versions_default_fold_state: "Mostrar versiones colapsadas"
@@ -54,8 +62,8 @@ es:
     work_package_is_closed: "El paquete de trabajo esta terminado, cuando"
     label_is_done_status: "El estado %{status_name} significa completado"
     points_label:
-      one: "point"
-      other: "points"
+      one: "punto"
+      other: "puntos"
     positions_could_not_be_rebuilt: "Las posiciones no pudieron ser reconstruidas."
     positions_rebuilt_successfully: "Posiciones reconstruidas con éxito."
     rebuild: "Reconstruir"
@@ -64,8 +72,8 @@ es:
     show_burndown_chart: "Diagrama de Quemado"
     story: "Historia"
     story_points:
-      one: "%{count} story point"
-      other: "%{count} story points"
+      one: "%{count} punto de historia"
+      other: "%{count} puntos de historia"
     task: "Tarea"
     task_color: "Color de la tarea"
     unassigned: "No asignado"
@@ -73,24 +81,24 @@ es:
       header_backlogs: "Módulo de trabajos pendientes"
       button_update_backlogs: "Actualizar módulo de trabajos pendientes"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} está vacío"
+      blankslate_description: "Aún no hay elementos previstos. Arrastre los elementos aquí para añadirlos."
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "Contraer/expandir %{name}"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "No hay historias en backlog"
+        one: "%{count} historia en backlog"
+        other: "%{count} historias en backlog"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "Acciones de backlog"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        edit_sprint: "Editar sprint"
+        new_story: "Nueva historia"
+        stories_tasks: "Historias/tareas"
+        task_board: "Panel de tareas"
+        burndown_chart: "Diagrama Burndown"
         wiki: "Wiki"
-        properties: "Properties"
+        properties: "Propiedades"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -121,11 +129,13 @@ es:
   label_points_burn_down: "Abajo"
   label_points_burn_up: "Arriba"
   label_sprint_impediments: "Impedimentos de sprint"
+  label_sprint_new: "New sprint"
   label_task_board: "Tablero de tareas"
-  permission_view_master_backlog: "Ver backlog maestro"
-  permission_view_taskboards: "Ver tablero de tareas"
-  permission_select_done_statuses: "Seleccionar estados de finalización"
-  permission_update_sprints: "Actualizar sprints"
+  permission_view_sprints: "View sprints"
+  permission_create_sprints: "Create sprints"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_manage_sprint_items: "Manage sprint items"
+  permission_share_sprint: "Share sprint"
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:
     show:

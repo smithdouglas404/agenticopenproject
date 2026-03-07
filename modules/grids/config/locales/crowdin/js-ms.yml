@@ -2,6 +2,7 @@ ms:
   js:
     grid:
       add_widget: 'Tambah widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Buang widget'
       configure: 'Konfigurasi widget'
       widgets:
@@ -18,7 +19,6 @@ ms:
           title: 'Berita'
         project_description:
           title: 'Description'
-          no_results: "Tiada deskripsi yang tertulis lagi. Deskripsi boleh diberikan di 'Tetapan Projek'."
         project_status:
           title: 'Status'
           not_started: 'Belum dimulakan'

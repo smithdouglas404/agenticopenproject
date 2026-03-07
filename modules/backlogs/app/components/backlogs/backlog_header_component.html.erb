@@ -33,10 +33,10 @@ See COPYRIGHT and LICENSE files for more details.
       <% grid.with_area(:collapsible) do %>
         <%=
           render(
-            Backlogs::CollapsibleComponent.new(
+            Primer::OpenProject::BorderBox::CollapsibleHeader.new(
               collapsible_id: "#{dom_id(backlog)}-list",
-              toggle_label: t(".label_toggle_backlog", name: sprint.name),
-              collapsed:
+              collapsed:,
+              multi_line: false
             )
           ) do |collapsible|
             collapsible.with_title { sprint.name }

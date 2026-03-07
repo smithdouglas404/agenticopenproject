@@ -35,7 +35,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
   include_context "with seeded projects, members and project custom fields"
 
   let(:overview_page) { Pages::Projects::Show.new(project) }
-  let(:dialog) { Components::Projects::ProjectCustomFields::EditDialog.new(project, custom_field) }
+  let(:dialog) { Components::Projects::ProjectCustomFields::Dialog.new(project, custom_field) }
 
   before do
     login_as member_with_project_attributes_edit_permissions

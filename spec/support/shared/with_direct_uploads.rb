@@ -172,14 +172,19 @@ RSpec.configure do |config|
 
     WithDirectUploads.new(self).before example
 
-    class FogAttachment < Attachment
-      # Remounting the uploader overrides the original file setter taking care of setting,
-      # among other things, the content type. So we have to restore that original
-      # method this way.
-      # We do this in a new, separate class, as to not interfere with any other specs.
-      alias_method :set_file, :file=
-      mount_uploader :file, FogFileUploader
-      alias_method :file=, :set_file
+    # Only define FogAttachment once. In CW 2.x, mount_uploader uses prepend,
+    # so re-opening the class and re-mounting would stack prepend modules and
+    # cause infinite recursion with the alias_method trick below.
+    unless defined?(FogAttachment)
+      class FogAttachment < Attachment
+        # Remounting the uploader overrides the original file setter taking care of setting,
+        # among other things, the content type. So we have to restore that original
+        # method this way.
+        # We do this in a new, separate class, as to not interfere with any other specs.
+        alias_method :set_file, :file=
+        mount_uploader :file, FogFileUploader
+        alias_method :file=, :set_file
+      end
     end
   end
 

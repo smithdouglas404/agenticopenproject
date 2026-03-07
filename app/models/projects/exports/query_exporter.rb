@@ -52,7 +52,7 @@ module Projects::Exports
         .results
         .with_required_storage
         .with_latest_activity
-        .includes(:custom_values)
+        .includes(:custom_values, :custom_comments)
         .merge(Project.allowed_to(User.current, :export_projects))
     end
 

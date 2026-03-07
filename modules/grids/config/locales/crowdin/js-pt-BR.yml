@@ -2,6 +2,7 @@ pt-BR:
   js:
     grid:
       add_widget: 'Adicionar widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Remover widget'
       configure: 'Configurar widget'
       widgets:
@@ -18,7 +19,6 @@ pt-BR:
           title: 'Notícias'
         project_description:
           title: 'Descrição'
-          no_results: "Nenhuma descrição foi escrita. Uma pode ser fornecida nas 'Configurações do Projeto'."
         project_status:
           title: 'Status'
           not_started: 'Não iniciado'

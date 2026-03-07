@@ -115,7 +115,7 @@ module Pages
 
     def fold_backlog(backlog)
       within_backlog(backlog) do
-        find(:button, accessible_name: "Collapse/Expand #{backlog.name}").click
+        find(:button, aria: { controls: "backlog_#{backlog.id}-list" }).click
       end
     end
 

@@ -39,6 +39,12 @@ fr:
         base_amount: "Montant de base"
       work_package:
         budget_subject: "Titre du budget"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "n'est pas membre du projet du budget"
     models:
       budget: "Budget"
       material_budget_item: "Unité"
@@ -68,26 +74,18 @@ fr:
         title: "Budget par type de coût"
         blankslate:
           heading: "Démarrer le contrôle du projet"
-          description: "Obtenez une vue d'ensemble de vos budgets et de vos coûts pour suivre efficacement l'état de santé de votre projet"
+          description: "Profitez d'une vue d'ensemble de vos budgets et de vos coûts pour suivre efficacement l'état de santé de votre projet"
+        blankslate_zero:
+          heading: "Détails du budget manquant"
+          description: "Ajoutez les détails de votre budget prévisionnel pour voir les données ici"
         caption:
+          zero: "Aucune donnée budgétaire."
+          one: "Données agrégées à partir de %{count} budget inclus dans ce %{workspace}."
+          other: "Données agrégées à partir des %{count} budgets inclus dans ce %{workspace}."
+        caption_with_subitems:
           zero: "Pas de données budgétaires."
-          one: "Données agrégées à partir de %{count} budget inclus dans %{portfolios}, %{subprograms} et %{subprojects}."
-          other: "Les données agrégées à partir des budgets de %{count} sont incluses dans %{portfolios}, %{subprograms} et %{subprojects}."
-        caption_simple:
-          one: "Données agrégées à partir du budget %{count}."
-          other: "Données agrégées à partir des budgets %{count}."
-        portfolio:
-          zero: "pas de portefeuilles"
-          one: "1 portefeuille"
-          other: "%{count} portefeuilles"
-        subprogram:
-          zero: "pas de sous-programmes"
-          one: "1 sous-programme"
-          other: "%{count} sous-programmes"
-        subproject:
-          zero: "pas de sous-projets"
-          one: "1 sous-projet"
-          other: "%{count} sous-projets"
+          one: "Les données agrégées à partir du budget %{count} sont incluses dans ce %{workspace} et ses sous-points."
+          other: "Les données agrégées à partir des %{count} budgets sont incluses dans ce %{workspace} et ses sous-éléments."
         view_details: "Voir les détails du budget"
   events:
     budget: "Budget modifié"

@@ -33,7 +33,8 @@ module WorkPackages
     include UnchangedProject
 
     attribute :lock_version,
-              permission: %i[edit_work_packages change_work_package_status assign_versions manage_subtasks move_work_packages] do
+              permission: %i[edit_work_packages change_work_package_status assign_versions manage_sprint_items manage_subtasks
+                             move_work_packages] do
       if model.lock_version.nil? || model.lock_version_changed?
         errors.add :base, :error_conflict
       end
@@ -60,6 +61,7 @@ module WorkPackages
       with_unchanged_project_id do
         next if allowed_in_work_package?(:edit_work_packages) ||
                 allowed_in_project?(:assign_versions) ||
+                allowed_in_project?(:manage_sprint_items) ||
                 allowed_in_project?(:change_work_package_status) ||
                 allowed_in_project?(:manage_subtasks) ||
                 allowed_in_project?(:move_work_packages)

@@ -25,6 +25,12 @@ uk:
     description: "Цей модуль додає функції, завдяки яким agile-команди можуть працювати над проєктами Scrum в OpenProject."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,6 +48,8 @@ uk:
               task_version_must_be_the_same_as_story_version: "має збігатись із версією батьківської історії."
         sprint:
           cannot_end_before_it_starts: "Спринт не може закінчитися, перш ніж він почне працювати."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Тип завдання"
   backlogs:
@@ -125,11 +133,13 @@ uk:
   label_points_burn_down: "Вниз"
   label_points_burn_up: "Вгору"
   label_sprint_impediments: "Перешкоди спринту"
+  label_sprint_new: "New sprint"
   label_task_board: "Дошка завдань"
-  permission_view_master_backlog: "Перегляд головного backlog-у"
-  permission_view_taskboards: "Перегляд панелі завдань"
-  permission_select_done_statuses: "Виберіть завершені статуси"
-  permission_update_sprints: "Оновлення спринту"
+  permission_view_sprints: "View sprints"
+  permission_create_sprints: "Create sprints"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_manage_sprint_items: "Manage sprint items"
+  permission_share_sprint: "Share sprint"
   project_module_backlogs: "Невиконані завдання"
   rb_burndown_charts:
     show:

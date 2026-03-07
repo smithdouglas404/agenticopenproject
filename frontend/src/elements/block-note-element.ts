@@ -31,7 +31,6 @@
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { Application } from '@hotwired/stimulus';
-import ExternalLinksController from 'core-stimulus/controllers/external-links.controller';
 import FlashController from 'core-stimulus/controllers/flash.controller';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { ShadowDomWrapper } from 'op-blocknote-extensions';
@@ -74,10 +73,6 @@ class BlockNoteElement extends HTMLElement {
 
     this.editorMount = document.createElement('div');
 
-    // Copy over definition for external-links handling
-    this.editorMount.dataset.controller = 'external-links';
-    this.editorMount.dataset.externalLinksEnabledValue = document.body.dataset.externalLinksEnabledValue;
-
     this.stimulusRoot.appendChild(this.errorContainer);
     this.stimulusRoot.appendChild(this.editorMount);
     shadowRoot.appendChild(this.stimulusRoot);
@@ -103,7 +98,6 @@ class BlockNoteElement extends HTMLElement {
     // Initialize Stimulus application within shadow DOM
     this.stimulusApp = Application.start(this.stimulusRoot);
     this.stimulusApp.register('flash', FlashController);
-    this.stimulusApp.register('external-links', ExternalLinksController);
 
     // Initialize React application within shadow DOM
     this.reactRoot = createRoot(this.editorMount);

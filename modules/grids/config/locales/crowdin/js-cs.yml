@@ -2,6 +2,7 @@ cs:
   js:
     grid:
       add_widget: 'Přidat widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Odstranit widget'
       configure: 'Konfigurovat widget'
       widgets:
@@ -18,7 +19,6 @@ cs:
           title: 'Novinky'
         project_description:
           title: 'Description'
-          no_results: "Zatím nebyl napsán žádný popis. Můžete ho uvést v \"Nastavení projektu\"."
         project_status:
           title: 'Status'
           not_started: 'Nezahájeno'

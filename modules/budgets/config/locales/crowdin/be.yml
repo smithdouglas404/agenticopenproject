@@ -39,6 +39,12 @@ be:
         base_amount: "Base amount"
       work_package:
         budget_subject: "Budget title"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "is not a member of the budget's project"
     models:
       budget: "Budget"
       material_budget_item: "Unit"
@@ -69,27 +75,17 @@ be:
         blankslate:
           heading: "Start project controlling"
           description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+        blankslate_zero:
+          heading: "Budget details missing"
+          description: "Add details about your planned budget to see data here"
         caption:
           zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."
-          other: "Data aggregated from %{count} budgets included in %{portfolios}, %{subprograms} and %{subprojects}."
-        caption_simple:
-          one: "Data aggregated from %{count} budget."
-          few: "Data aggregated from %{count} budgets."
-          many: "Data aggregated from %{count} budgets."
-          other: "Data aggregated from %{count} budgets."
-        portfolio:
-          zero: "no portfolios"
-          one: "1 portfolio"
-          other: "%{count} portfolios"
-        subprogram:
-          zero: "no subprograms"
-          one: "1 subprogram"
-          other: "%{count} subprograms"
-        subproject:
-          zero: "no subprojects"
-          one: "1 subproject"
-          other: "%{count} subprojects"
+          one: "Data aggregated from %{count} budget included in this %{workspace}."
+          other: "Data aggregated from %{count} budgets included in this %{workspace}."
+        caption_with_subitems:
+          zero: "No budget data."
+          one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
+          other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
         view_details: "View budget details"
   events:
     budget: "Budget edited"
