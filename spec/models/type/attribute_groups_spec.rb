@@ -208,6 +208,24 @@ RSpec.describe Type do
 
       it_behaves_like "shows reporter instead of accountable"
     end
+
+    context "when the type is feature" do
+      let(:type) { build(:type_feature) }
+
+      it_behaves_like "shows reporter instead of accountable"
+    end
+
+    context "when the type is summary task" do
+      let(:type) { build(:type, name: "Summary task") }
+
+      it_behaves_like "shows reporter instead of accountable"
+    end
+
+    context "when the type is milestone" do
+      let(:type) { build(:type_milestone) }
+
+      it_behaves_like "shows reporter instead of accountable"
+    end
   end
 
   describe "custom fields" do

@@ -30,7 +30,15 @@
 
 module Type::AttributeGroups
   extend ActiveSupport::Concern
-  REPORTER_TYPE_NAMES = ["task", "bug", "user story", "epic"].freeze
+  REPORTER_TYPE_NAMES = [
+    "task",
+    "bug",
+    "user story",
+    "epic",
+    "feature",
+    "summary task",
+    "milestone"
+  ].freeze
 
   included do
     before_save :write_attribute_groups_objects
