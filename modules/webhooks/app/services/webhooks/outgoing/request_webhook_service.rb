@@ -13,7 +13,7 @@ module Webhooks
 
       def call!(body:, headers:)
         begin
-          response = SsrfFilter.post(
+          response = OpenProject::SsrfProtection.post(
             webhook.url,
             headers:,
             body:

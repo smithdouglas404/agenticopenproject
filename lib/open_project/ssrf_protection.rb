@@ -57,7 +57,7 @@ module OpenProject
       end
 
       def safe_ip_address(ip_address)
-        ip_address if !unsafe_ip_address?(ip_address) || allowed_ip_address?(ip_address)
+        ip_address if !unsafe_ip_address?(ip_address)
       end
 
       def allowed_ip_address?(ip_address)
@@ -66,6 +66,14 @@ module OpenProject
 
       def resolver
         SsrfFilter::DEFAULT_RESOLVER
+      end
+
+      private
+
+      def unsafe_ip_address?(ip_address)
+        return false if allowed_ip_address?(ip_address)
+
+        super
       end
     end
   end

@@ -93,6 +93,47 @@ RSpec.describe Webhooks::Outgoing::RequestWebhookService, :webmock, type: :model
       end
     end
 
+    context "when the webhook URL points to a private IP" do
+      let(:instance) { described_class.new(private_webhook, event_name: :created, current_user: user) }
+      let(:private_webhook) { create(:webhook, all_projects: true, url: "http://192.168.1.1/hook", secret: nil) }
+
+      subject { instance.call!(body: "body", headers: {}) }
+
+      it "creates a log entry" do
+        expect { subject }.to change(Webhooks::Log, :count).by(1)
+      end
+
+      it "logs response_code -1 and an error message indicating the IP is private" do
+        subject
+        log = Webhooks::Log.last
+        expect(log.response_code).to eq(-1)
+        expect(log.response_body).to include("192.168.1.1")
+      end
+    end
+
+    context "when the webhook URL points to a private IP that is on the allowlist",
+            with_ssrf_ip_allowlist: %w[192.168.1.1] do
+      let(:instance) { described_class.new(private_webhook, event_name: :created, current_user: user) }
+      let(:private_webhook) { create(:webhook, all_projects: true, url: "http://192.168.1.1/hook", secret: nil) }
+
+      before do
+        stub_request(:post, "http://192.168.1.1/hook")
+          .to_return(status: 200, body: "OK")
+      end
+
+      subject { instance.call!(body: "body", headers: {}) }
+
+      it "creates a log entry" do
+        expect { subject }.to change(Webhooks::Log, :count).by(1)
+      end
+
+      it "logs response_code 200, indicating the request succeeded" do
+        subject
+        log = Webhooks::Log.last
+        expect(log.response_code).to eq(200)
+      end
+    end
+
     context "when an unexpected error occurs" do
       before do
         stub_request(:post, webhook.url).to_raise(StandardError.new("something went wrong"))
