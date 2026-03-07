@@ -33,7 +33,7 @@ require "rails_helper"
 RSpec.describe WorkPackages::IdentifierAutofix::PreviewQuery do
   subject(:result) { described_class.new.call }
 
-  let(:display_count) { WorkPackages::Admin::Settings::IdentifierAutofixSectionComponent::DISPLAY_COUNT }
+  let(:display_count) { described_class::DISPLAY_COUNT }
 
   def create_problematic_project(name:, identifier:)
     create(:project, name:, identifier:)

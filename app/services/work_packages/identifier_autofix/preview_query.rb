@@ -32,12 +32,13 @@ module WorkPackages
   module IdentifierAutofix
     class PreviewQuery
       Result = Data.define(:projects_data, :total_count)
+      DISPLAY_COUNT = 5
 
       def call
         total   = problematic_scope.count
         preview = problematic_scope
                     .select(:id, :name, :identifier)
-                    .limit(WorkPackages::Admin::Settings::IdentifierAutofixSectionComponent::DISPLAY_COUNT)
+                    .limit(DISPLAY_COUNT)
                     .to_a
 
         suggestions = WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator.call(

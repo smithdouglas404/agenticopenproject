@@ -34,7 +34,7 @@ module WorkPackages
       class IdentifierAutofixSectionComponent < ApplicationComponent
         include OpPrimer::ComponentHelpers
 
-        DISPLAY_COUNT = 5
+        DISPLAY_COUNT = WorkPackages::IdentifierAutofix::PreviewQuery::DISPLAY_COUNT
 
         def initialize(projects_data:, total_count: projects_data.size)
           super()
@@ -48,7 +48,8 @@ module WorkPackages
         attr_reader :total_count, :displayed, :remaining_count
 
         def error_label(error_reason)
-          I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_#{error_reason}")
+          I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_#{error_reason}",
+                 default: "")
         end
 
         # Produces a realistic-looking example work package ID for the preview table.

@@ -44,10 +44,15 @@ module WorkPackages
           raise ArgumentError, "Unknown state: #{state}" unless STATES.include?(state)
 
           super()
-          @state         = state
-          result         = WorkPackages::IdentifierAutofix::PreviewQuery.new.call
-          @projects_data = result.projects_data
-          @total_count   = result.total_count
+          @state = state
+          if state == :edit
+            result         = WorkPackages::IdentifierAutofix::PreviewQuery.new.call
+            @projects_data = result.projects_data
+            @total_count   = result.total_count
+          else
+            @projects_data = []
+            @total_count   = 0
+          end
         end
 
         def has_problematic_projects?
