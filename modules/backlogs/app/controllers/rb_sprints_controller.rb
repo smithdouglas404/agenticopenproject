@@ -54,15 +54,14 @@ class RbSprintsController < RbApplicationController
   end
 
   def edit_dialog
-    # TODO: visible-scope?
-    @sprint = Agile::Sprint.find(params[:id])
+    @sprint = Agile::Sprint.visible.find(params[:id])
 
     respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: @sprint, state: :edit)
   end
 
   def refresh_form
     id = edit_agile_sprint_params[:sprint][:id]
-    sprint = id.present? ? Agile::Sprint.find(id) : Agile::Sprint.new
+    sprint = id.present? ? Agile::Sprint.visible.find(id) : Agile::Sprint.new
 
     call = Sprints::SetAttributesService.new(
       user: current_user,
@@ -91,8 +90,7 @@ class RbSprintsController < RbApplicationController
 
   # Called like this due to `update` being taken by legacy sprints.
   def update_agile_sprint # rubocop:disable Metrics/AbcSize
-    # TODO: visible-scope?
-    @sprint = Agile::Sprint.find(params[:id])
+    @sprint = Agile::Sprint.visible.find(params[:id])
 
     call = Sprints::UpdateService
              .new(user: current_user, model: @sprint)
