@@ -235,6 +235,18 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
                   .at_path("_attributeGroups/2/_embedded/query/_type")
         end
       end
+
+      context "when author is part of the people group" do
+        let(:attribute_groups) do
+          [Type::AttributeGroup.new(wp_type, "People", %w[assignee author])]
+        end
+
+        it "keeps author in the rendered attributes" do
+          expect(subject)
+            .to be_json_eql(%w[assignee author].to_json)
+            .at_path("_attributeGroups/0/attributes")
+        end
+      end
     end
 
     describe "lock version" do

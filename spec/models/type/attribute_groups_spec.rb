@@ -173,6 +173,16 @@ RSpec.describe Type do
         expect(people_group.last).not_to include("responsible")
         expect(all_attributes).not_to include("responsible")
       end
+
+      it "keeps reporter as an active member in attribute groups" do
+        people_group = type.attribute_groups.find do |group|
+          group.is_a?(Type::AttributeGroup) && group.key.to_sym == :people
+        end
+
+        expect(people_group).to be_present
+        expect(people_group.active_members(nil)).to include("author")
+        expect(people_group.active_members(nil)).not_to include("responsible")
+      end
     end
 
     context "when the type is task" do
