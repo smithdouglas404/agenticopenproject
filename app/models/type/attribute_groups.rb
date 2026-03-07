@@ -30,6 +30,7 @@
 
 module Type::AttributeGroups
   extend ActiveSupport::Concern
+  REPORTER_TYPE_NAMES = ["task", "bug", "user story", "epic"].freeze
 
   included do
     before_save :write_attribute_groups_objects
@@ -216,7 +217,7 @@ module Type::AttributeGroups
   end
 
   def replace_accountable_with_reporter?
-    %w[Task Bug].include?(name)
+    REPORTER_TYPE_NAMES.include?(name.to_s.downcase)
   end
 
   def to_attribute_group_class(groups)

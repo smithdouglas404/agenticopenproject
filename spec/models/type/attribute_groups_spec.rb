@@ -156,7 +156,7 @@ RSpec.describe Type do
       end).to be_falsey
     end
 
-    it "keeps accountable in people for non-task/bug types" do
+    it "keeps accountable in people for non-target types" do
       people_group = subject.find { |group_key, _| group_key.to_sym == :people }
 
       expect(people_group).to be_present
@@ -193,6 +193,18 @@ RSpec.describe Type do
 
     context "when the type is bug" do
       let(:type) { build(:type_bug) }
+
+      it_behaves_like "shows reporter instead of accountable"
+    end
+
+    context "when the type is user story" do
+      let(:type) { build(:type, name: "User story") }
+
+      it_behaves_like "shows reporter instead of accountable"
+    end
+
+    context "when the type is epic" do
+      let(:type) { build(:type, name: "Epic") }
 
       it_behaves_like "shows reporter instead of accountable"
     end
