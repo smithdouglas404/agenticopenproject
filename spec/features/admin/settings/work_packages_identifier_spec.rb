@@ -54,7 +54,7 @@ RSpec.describe "Work packages identifier admin settings", :js do
       click_button I18n.t("button_save")
 
       expect(page).to have_current_path(settings_path)
-      expect(page).to have_no_css("[role=alertdialog]")
+      expect(page).to have_no_dialog
     end
   end
 
@@ -73,7 +73,7 @@ RSpec.describe "Work packages identifier admin settings", :js do
         click_button I18n.t("button_save")
 
         expect(page).to have_current_path(settings_path)
-        expect(page).to have_no_css("[role=alertdialog]")
+        expect(page).to have_no_dialog
       end
     end
 
@@ -93,13 +93,13 @@ RSpec.describe "Work packages identifier admin settings", :js do
       it "opens the confirmation dialog when 'Autofix and save' is clicked" do
         click_button I18n.t("admin.settings.work_packages_identifier.button_autofix")
 
-        expect(page).to have_css("[role=alertdialog]", visible: :visible)
+        expect(page).to have_dialog "Change work package identifiers"
       end
 
       it "shows the dialog heading and checkbox" do
         click_button I18n.t("admin.settings.work_packages_identifier.button_autofix")
 
-        within("[role=alertdialog]") do
+        within_dialog "Change work package identifiers" do
           expect(page).to have_text(I18n.t("admin.settings.work_packages_identifier.dialog.heading"))
           expect(page).to have_field(
             I18n.t("admin.settings.work_packages_identifier.dialog.checkbox_label"),
@@ -111,7 +111,7 @@ RSpec.describe "Work packages identifier admin settings", :js do
       it "enables the confirm button only after checking the checkbox" do
         click_button I18n.t("admin.settings.work_packages_identifier.button_autofix")
 
-        within("[role=alertdialog]") do
+        within "[role=alertdialog]" do
           confirm_text = I18n.t("admin.settings.work_packages_identifier.dialog.confirm_button")
 
           expect(page).to have_button(confirm_text, disabled: true)
