@@ -55,11 +55,11 @@ module Backlogs
     end
 
     def stories
-      @sprint.work_packages
+      sprint.work_packages
     end
 
     def wrapper_uniq_by
-      @sprint.id
+      sprint.id
     end
 
     private
@@ -76,7 +76,7 @@ module Backlogs
       {
         generic_drag_and_drop_target: "container",
         target_container_accessor: ":scope > ul",
-        target_id: @sprint.id,
+        target_id: sprint.id,
         target_allowed_drag_type: "story"
       }
     end
