@@ -195,19 +195,11 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   }
 
   deleteGroup(group:TypeGroup):void {
-    void this.typeBanner.conditional(
-      'edit_attribute_groups',
-      () => this.typeBanner.showEEOnlyHint(),
-      () => {
-        if (group.type === 'attribute') {
-          this.updateInactives(this.inactives.concat(group.attributes));
-        }
+    if (group.type === 'attribute') {
+      this.updateInactives(this.inactives.concat(group.attributes));
+    }
 
-        this.groups = this.groups.filter((el) => el !== group);
-
-        return group;
-      },
-    );
+    this.groups = this.groups.filter((el) => el !== group);
   }
 
   createGroup(type:TypeGroupType, groupName = ''):TypeGroup {
