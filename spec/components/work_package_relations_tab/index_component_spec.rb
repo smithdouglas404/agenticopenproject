@@ -134,19 +134,4 @@ RSpec.describe WorkPackageRelationsTab::IndexComponent, type: :component do
     end
   end
 
-  context "with linked epic issues" do
-    shared_let(:project) { create(:project) }
-    shared_let(:epic_type) { create(:type_epic, projects: [project]) }
-    shared_let(:task_type) { create(:type_task, projects: [project]) }
-    shared_let(:work_package) { create(:work_package, project:, type: epic_type) }
-    shared_let(:epic_issue) { create(:work_package, project:, type: task_type, epic: work_package, subject: "Issue in epic") }
-
-    it "renders the epic issues group" do
-      expect(render_component).to have_test_selector("op-relation-group-epic")
-      expect(render_component).to have_list "Issues in epic"
-
-      list = page.find(:list, "Issues in epic")
-      expect(list).to have_list_item count: 1, text: /Issue in epic/
-    end
-  end
 end

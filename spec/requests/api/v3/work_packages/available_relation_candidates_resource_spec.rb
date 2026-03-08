@@ -208,6 +208,17 @@ RSpec.describe API::V3::WorkPackages::AvailableRelationCandidatesAPI do
         end
       end
 
+      context "with an undefined query value" do
+        let(:href) { "/api/v3/work_packages/#{task_source.id}/available_relation_candidates?type=epic&query=undefined" }
+
+        it "returns an empty collection instead of crashing" do
+          request
+
+          expect(last_response).to have_http_status(200)
+          expect(JSON.parse(last_response.body).dig("_embedded", "elements")).to eq([])
+        end
+      end
+
       context "for non-allowed source types" do
         let(:href) { "/api/v3/work_packages/#{epic_source.id}/available_relation_candidates?type=epic" }
 

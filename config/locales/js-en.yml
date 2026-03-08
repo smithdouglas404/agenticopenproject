@@ -784,6 +784,7 @@ en:
       parent: "Parent"
       child: "Child"
       children: "Children"
+      epic: "Issues in Epic"
       relates: "Related To"
       duplicates: "Duplicates"
       duplicated: "Duplicated by"

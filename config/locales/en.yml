@@ -1214,8 +1214,8 @@ en:
       label_required_plural: "required by"
       required_description: "Marks this work package as being a requirement to the related one"
 
-      label_epic_singular: "issue in epic"
-      label_epic_plural: "issues in epic"
+      label_epic_singular: "issue in Epic"
+      label_epic_plural: "issues in Epic"
       label_parent_singular: "parent"
       label_parent_plural: "parent"
       label_other_relations: "Other relations"
@@ -1574,6 +1574,7 @@ en:
         journal_internal: Internal Journal
         notify: "Notify" # used in custom actions
         epic: "Epic"
+        relatable: "Related work package"
         parent: "Parent"
         parent_issue: "Parent"
         parent_work_package: "Parent"
@@ -3690,6 +3691,7 @@ en:
   label_related_work_packages: "Related work packages"
   label_relates: "related to"
   label_relates_to: "related to"
+  label_epic: "issues in Epic"
   label_relation: "Relation"
   label_relation_actions: "Relation actions"
   label_relation_delete: "Delete relation"
