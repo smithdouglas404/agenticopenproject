@@ -31,6 +31,7 @@ Click the **+** icon and choose which kind of widget you want to add.
 
 You can add various widgets to your project dashboard. Available widgets in OpenProject include:
 
+- Budget
 - Calendar
 - Custom text
 - Description
@@ -43,6 +44,14 @@ You can add various widgets to your project dashboard. Available widgets in Open
 - Work packages graph
 - Work packages overview
 - Work packages table
+
+### Budget widget
+
+The budget widget helps you monitor the financial health of a project directly from the project home page. It displays key figures such as total planned budget, total actual costs, spent ratio, and remaining budget. It also includes a visual breakdown of planned budget by cost type.
+
+To use budget widgets, the **Budgets** and **Time and costs** modules need to be enabled for the project. You also need the relevant permissions to view budgets and cost information.
+
+If your project contains subprojects, budget data can be aggregated across subitems so you get a consolidated overview. From the widget, you can navigate directly to the detailed [Budgets](../../budgets/) view.
 
 ### Calendar widget
 
