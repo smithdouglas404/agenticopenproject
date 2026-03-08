@@ -95,12 +95,12 @@ RSpec.describe Type do
       let(:type) { build(:type, name: "Epic") }
 
       before do
-        type.write_attribute(:attribute_groups, [[:people, %w[assignee responsible]],
+        type.write_attribute(:attribute_groups, [["People", %i[assignee responsible]],
                                                  [:details, %w[priority]]])
       end
 
       it "shows reporter instead of accountable" do
-        people_group = type.attribute_groups.find { |group| group.key.to_sym == :people }
+        people_group = type.attribute_groups.find { |group| group.key.to_s.casecmp("people").zero? }
 
         expect(people_group).to be_present
         expect(people_group.attributes).to include("assignee", "author")

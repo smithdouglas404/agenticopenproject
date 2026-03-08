@@ -201,15 +201,15 @@ module Type::AttributeGroups
 
   def replace_accountable_with_reporter(groups)
     normalized_groups = groups.map do |group_key, members|
-      normalized_members = members.dup
+      normalized_members = Array(members).map(&:to_s)
 
       normalized_members.delete("responsible")
-      normalized_members.delete("author") unless group_key.to_sym == :people
+      normalized_members.delete("author") unless people_group?(group_key)
 
       [group_key, normalized_members]
     end
 
-    people_group = normalized_groups.find { |group_key, _| group_key.to_sym == :people }
+    people_group = normalized_groups.find { |group_key, _| people_group?(group_key) }
 
     if people_group
       people_members = people_group.last
@@ -226,7 +226,11 @@ module Type::AttributeGroups
   end
 
   def replace_accountable_with_reporter?
-    REPORTER_TYPE_NAMES.include?(name.to_s.downcase)
+    REPORTER_TYPE_NAMES.include?(name.to_s.strip.downcase)
+  end
+
+  def people_group?(group_key)
+    group_key.to_s.casecmp("people").zero?
   end
 
   def to_attribute_group_class(groups)
