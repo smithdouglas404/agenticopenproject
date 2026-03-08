@@ -100,6 +100,7 @@ module Type::AttributeGroups
   def attribute_groups
     self.attribute_groups_objects ||= begin
       groups = custom_attribute_groups || default_attribute_groups
+      groups = replace_accountable_with_reporter(groups) if replace_accountable_with_reporter?
 
       to_attribute_group_class(groups)
     end

@@ -91,6 +91,38 @@ RSpec.describe Type do
       it_behaves_like "returns default attributes"
     end
 
+    context "with persisted custom attribute groups for a target type" do
+      let(:type) { build(:type, name: "Epic") }
+
+      before do
+        type.write_attribute(:attribute_groups, [[:people, %w[assignee responsible]],
+                                                 [:details, %w[priority]]])
+      end
+
+      it "shows reporter instead of accountable" do
+        people_group = type.attribute_groups.find { |group| group.key.to_sym == :people }
+
+        expect(people_group).to be_present
+        expect(people_group.attributes).to include("assignee", "author")
+        expect(people_group.attributes).not_to include("responsible")
+      end
+    end
+
+    context "with persisted custom attribute groups for a non-target type" do
+      let(:type) { build(:type, name: "Ticket") }
+
+      before do
+        type.write_attribute(:attribute_groups, [[:people, %w[assignee responsible]]])
+      end
+
+      it "keeps accountable" do
+        people_group = type.attribute_groups.find { |group| group.key.to_sym == :people }
+
+        expect(people_group).to be_present
+        expect(people_group.attributes).to include("assignee", "responsible")
+      end
+    end
+
     context "with a query group" do
       let(:type) { create(:type) }
       let(:query) { build(:global_query, user_id: 0) }
