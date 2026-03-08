@@ -58,7 +58,12 @@ class RbMasterBacklogsController < RbApplicationController
       render "work_packages/split_view", layout: false
     else
       load_backlogs
-      render :index
+
+      if OpenProject::FeatureDecisions.scrum_projects_active?
+        render :agile_index
+      else
+        render :index
+      end
     end
   end
 
