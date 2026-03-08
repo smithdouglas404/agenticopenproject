@@ -89,8 +89,6 @@ module Agile
       Day.working.from_range(from: start_date, to: finish_date).count
     end
 
-    def has_burndown? = false
-
     private
 
     # TODO: consider moving this validation to the database level to ensure data integrity.

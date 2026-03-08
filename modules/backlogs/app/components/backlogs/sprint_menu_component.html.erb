@@ -74,25 +74,23 @@ See COPYRIGHT and LICENSE files for more details.
       item.with_leading_visual_icon(icon: :"op-view-list")
     end
 
-    menu.with_item(
-      # TODO: what to do with the task board?
-      scheme: :danger,
-      label: t(".action_menu.task_board"),
-      tag: :a,
-      href: backlogs_project_sprint_taskboard_path(project, sprint)
-    ) do |item|
-      item.with_leading_visual_icon(icon: :"op-view-cards")
-    end
-
-    menu.with_item(
-      # TODO: what to do with the burndown chart?
-      scheme: :danger,
-      label: t(".action_menu.burndown_chart"),
-      tag: :a,
-      href: backlogs_project_sprint_burndown_chart_path(project, sprint),
-      disabled: !sprint.has_burndown?
-    ) do |item|
-      item.with_leading_visual_icon(icon: :graph)
-    end
+    # menu.with_item(
+    #   # TODO: what to do with the task board?
+    #   label: t(".action_menu.task_board"),
+    #   tag: :a,
+    #   href: backlogs_project_sprint_taskboard_path(project, sprint)
+    # ) do |item|
+    #   item.with_leading_visual_icon(icon: :"op-view-cards")
+    # end
+    #
+    # menu.with_item(
+    #   # TODO: what to do with the burndown chart?
+    #   label: t(".action_menu.burndown_chart"),
+    #   tag: :a,
+    #   href: backlogs_project_sprint_burndown_chart_path(project, sprint),
+    #   disabled: !sprint.has_burndown?
+    # ) do |item|
+    #   item.with_leading_visual_icon(icon: :graph)
+    # end
   end
 %>
