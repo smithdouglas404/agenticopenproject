@@ -89,7 +89,7 @@ module WorkPackage::Journalized
                   name: JournalizedProcs.event_name,
                   url: JournalizedProcs.event_url
 
-    register_journal_formatted_fields "parent_id", formatter_key: :id
+    register_journal_formatted_fields "parent_id", "epic_id", formatter_key: :id
     register_journal_formatted_fields "estimated_hours", "derived_estimated_hours",
                                       "remaining_hours", "derived_remaining_hours",
                                       formatter_key: :chronic_duration
@@ -104,7 +104,7 @@ module WorkPackage::Journalized
     register_journal_formatted_fields "project_phase_definition_id", formatter_key: :project_phase_definition
 
     # Joined
-    register_journal_formatted_fields :parent_id, :project_id,
+    register_journal_formatted_fields :parent_id, :epic_id, :project_id,
                                       :budget_id,
                                       :status_id, :type_id,
                                       :assigned_to_id, :priority_id,

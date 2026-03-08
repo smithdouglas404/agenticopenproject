@@ -85,6 +85,12 @@ module WorkPackages
     attribute :parent_id,
               permission: :manage_subtasks
 
+    attribute :epic_id,
+              permission: :edit_work_packages,
+              writable: ->(*) {
+                WorkPackage.epic_source_type?(model.type) || (model.epic_id_changed? && model.epic_id.nil?)
+              }
+
     attribute :project_phase_definition_id,
               permission: :view_project_phases do
       validate_phase_active_in_project
@@ -147,6 +153,10 @@ module WorkPackages
     validate :validate_parent_in_same_project
     validate :validate_parent_not_self
     validate :validate_parent_not_subtask
+    validate :validate_epic_exists
+    validate :validate_epic_not_self
+    validate :validate_epic_target_type
+    validate :validate_epic_visible
 
     validate :validate_status_exists
     validate :validate_status_transition
@@ -315,6 +325,36 @@ module WorkPackages
         # add our own error
         errors.add :parent, :cant_link_a_work_package_with_a_descendant
       end
+    end
+
+    def validate_epic_exists
+      if model.epic.is_a?(WorkPackage::InexistentWorkPackage) ||
+        (model.epic_id && model.epic.nil?)
+        errors.add :epic, :does_not_exist
+      end
+    end
+
+    def validate_epic_not_self
+      if model.epic == model
+        errors.add :epic, :cannot_be_self_assigned
+      end
+    end
+
+    def validate_epic_target_type
+      return if model.epic.blank?
+      return if errors.include?(:epic)
+      return if WorkPackage.epic_target_type?(model.epic.type)
+
+      errors.add :epic, :must_be_epic
+    end
+
+    def validate_epic_visible
+      return if model.epic_id.nil? || model.epic.nil?
+      return unless model.epic_id_changed?
+      return if model.epic.is_a?(WorkPackage::InexistentWorkPackage)
+      return if model.epic.visible?
+
+      errors.add :epic_id, :error_unauthorized
     end
 
     def current_parent_unrelatable?

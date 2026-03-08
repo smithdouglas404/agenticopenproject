@@ -131,31 +131,38 @@ class WorkPackageRelationsTab::RelationsMediator
     @ghost_children ||= work_package.children.where.not(id: visible_children.select(:id)).load
   end
 
+  def visible_epic_issues
+    return [] unless work_package.epic_type?
+
+    @visible_epic_issues ||= work_package.epic_issues.visible.load
+  end
+
+  def ghost_epic_issues
+    return [] unless work_package.epic_type?
+
+    @ghost_epic_issues ||= work_package.epic_issues.where.not(id: visible_epic_issues.select(:id)).load
+  end
+
   def relation_groups
-    @relation_groups ||= Relation::ORDERED_TYPES.map { |type| relation_group(type) }
-                                                .filter(&:any?)
+    @relation_groups ||= begin
+      groups = Relation::ORDERED_TYPES.map { |type| relation_group(type) }
+                                      .filter(&:any?)
+      groups << relation_group(:epic) if work_package.epic_type? && (visible_epic_issues.any? || ghost_epic_issues.any?)
+      groups
+    end
   end
 
   def relation_group(type)
     case type
+    when :epic
+      epic_relation_group
     when Relation::TYPE_PARENT
-      RelationGroup.new(
-        type:,
-        work_package:,
-        visible_relations: visible_parents,
-        ghost_relations: ghost_parents
-      )
+      hierarchy_relation_group(type:, visible_relations: visible_parents, ghost_relations: ghost_parents)
     when Relation::TYPE_CHILD
-      RelationGroup.new(
-        type:,
-        work_package:,
-        visible_relations: visible_children,
-        ghost_relations: ghost_children
-      )
+      hierarchy_relation_group(type:, visible_relations: visible_children, ghost_relations: ghost_children)
     else
-      RelationGroup.new(
+      hierarchy_relation_group(
         type:,
-        work_package:,
         visible_relations: filter_relations_by_type(visible_relations, type),
         ghost_relations: filter_relations_by_type(ghost_relations, type)
       )
@@ -166,11 +173,20 @@ class WorkPackageRelationsTab::RelationsMediator
     [
       visible_relations, ghost_relations,
       visible_parents, ghost_parents,
-      visible_children, ghost_children
+      visible_children, ghost_children,
+      visible_epic_issues, ghost_epic_issues
     ].sum(&:count)
   end
 
   private
+
+  def epic_relation_group
+    hierarchy_relation_group(type: :epic, visible_relations: visible_epic_issues, ghost_relations: ghost_epic_issues)
+  end
+
+  def hierarchy_relation_group(type:, visible_relations:, ghost_relations:)
+    RelationGroup.new(type:, work_package:, visible_relations:, ghost_relations:)
+  end
 
   def filter_relations_by_type(relations, type)
     relations.select do |relation|

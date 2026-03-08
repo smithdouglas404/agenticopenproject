@@ -907,6 +907,36 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       end
     end
 
+    describe "epic" do
+      it_behaves_like "has basic schema properties" do
+        let(:path) { "epic" }
+        let(:type) { "WorkPackage" }
+        let(:name) { I18n.t("activerecord.attributes.work_package.epic") }
+        let(:required) { false }
+        let(:writable) { true }
+        let(:location) { "_links" }
+      end
+
+      it_behaves_like "links to allowed values via collection link" do
+        let(:path) { "epic" }
+        let(:href) { api_v3_paths.work_package_available_relation_candidates(work_package.id, type: :epic) }
+      end
+
+      context "when creating" do
+        let(:work_package) do
+          build(:work_package, project:) do |wp|
+            allow(wp)
+              .to receive(:available_custom_fields)
+                    .and_return(available_custom_fields)
+          end
+        end
+
+        it_behaves_like "does not link to allowed values" do
+          let(:path) { "epic" }
+        end
+      end
+    end
+
     describe "type" do
       it_behaves_like "has basic schema properties" do
         let(:path) { "type" }

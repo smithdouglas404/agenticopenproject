@@ -552,6 +552,7 @@ class PermittedParams
           :version_id,
           :budget_id,
           :parent_id,
+          :epic_id,
           :priority_id,
           :remaining_hours,
           :responsible_id,

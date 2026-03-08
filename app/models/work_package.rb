@@ -49,6 +49,8 @@ class WorkPackage < ApplicationRecord
 
   DONE_RATIO_OPTIONS = %w[field status].freeze
   TOTAL_PERCENT_COMPLETE_MODE_OPTIONS = %w[work_weighted_average simple_average].freeze
+  EPIC_TARGET_TYPE_NAMES = ["epic"].freeze
+  EPIC_SOURCE_TYPE_NAMES = ["task", "bug", "story", "user story"].freeze
 
   belongs_to :project
   belongs_to :type
@@ -60,10 +62,16 @@ class WorkPackage < ApplicationRecord
   belongs_to :project_phase_definition, class_name: "Project::PhaseDefinition", optional: true
   belongs_to :priority, class_name: "IssuePriority"
   belongs_to :category, class_name: "Category", optional: true
+  belongs_to :epic, class_name: "WorkPackage", optional: true, inverse_of: :epic_issues
 
   has_many :time_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
   has_many :file_links, dependent: :delete_all, class_name: "Storages::FileLink", as: :container
   has_many :storages, through: :project
+  has_many :epic_issues,
+           class_name: "WorkPackage",
+           foreign_key: :epic_id,
+           inverse_of: :epic,
+           dependent: :nullify
 
   has_and_belongs_to_many :changesets, -> { # rubocop:disable Rails/HasAndBelongsToMany
     order("#{Changeset.table_name}.committed_on ASC, #{Changeset.table_name}.id ASC")
@@ -228,6 +236,22 @@ class WorkPackage < ApplicationRecord
     Setting.percent_complete_on_status_closed == "set_100p"
   end
 
+  def self.epic_source_type?(type_or_name)
+    type_name_in?(type_or_name, EPIC_SOURCE_TYPE_NAMES)
+  end
+
+  def self.epic_target_type?(type_or_name)
+    type_name_in?(type_or_name, EPIC_TARGET_TYPE_NAMES)
+  end
+
+  def self.relatable_epics_for(work_package)
+    return none if work_package.blank? || !epic_source_type?(work_package.type)
+
+    where(type_id: Type.where("LOWER(name) IN (?)", EPIC_TARGET_TYPE_NAMES))
+      .visible
+      .where.not(id: work_package.id)
+  end
+
   # Returns true if usr or current user is allowed to view the work_package
   def visible?(usr = User.current)
     usr.allowed_in_work_package?(:view_work_packages, self)
@@ -304,6 +328,14 @@ class WorkPackage < ApplicationRecord
   end
 
   alias_method :is_milestone?, :milestone?
+
+  def epic_type?
+    self.class.epic_target_type?(type)
+  end
+
+  def epic_source_type?
+    self.class.epic_source_type?(type)
+  end
 
   def included_in_totals_calculation?
     !status.excluded_from_totals
@@ -560,6 +592,10 @@ class WorkPackage < ApplicationRecord
 
   private_class_method :available_custom_field_key
 
+  Type.add_constraint(:epic, lambda { |type, **|
+    WorkPackage.epic_source_type?(type)
+  })
+
   def custom_field_cache_key
     [project_id, type_id]
   end
@@ -571,6 +607,12 @@ class WorkPackage < ApplicationRecord
   end
 
   private
+
+  def self.type_name_in?(type_or_name, names)
+    type_name = type_or_name.respond_to?(:name) ? type_or_name.name : type_or_name
+    names.include?(type_name.to_s.strip.downcase)
+  end
+  private_class_method :type_name_in?
 
   def derived_progress_hints
     @derived_progress_hints ||= {}

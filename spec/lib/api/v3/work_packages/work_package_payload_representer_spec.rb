@@ -386,6 +386,31 @@ RSpec.describe API::V3::WorkPackages::WorkPackagePayloadRepresenter do
         end
       end
 
+      describe "epic" do
+        context "with an epic" do
+          let(:epic) { build_stubbed(:work_package) }
+
+          before do
+            work_package.epic = epic
+            allow(epic)
+              .to receive(:visible?)
+              .and_return(true)
+          end
+
+          it_behaves_like "linked property" do
+            let(:property) { "epic" }
+            let(:link) { "/api/v3/work_packages/#{epic.id}" }
+          end
+        end
+
+        context "without an epic" do
+          it_behaves_like "linked property" do
+            let(:property) { :epic }
+            let(:link) { nil }
+          end
+        end
+      end
+
       describe "budgets" do
         context "without a cost object assigned" do
           let(:budget) { nil }
@@ -712,6 +737,50 @@ RSpec.describe API::V3::WorkPackages::WorkPackagePayloadRepresenter do
 
         it "leaves attribute unchanged" do
           expect(subject.parent).to eql(parent)
+        end
+      end
+    end
+
+    describe "epic" do
+      let(:epic) { build_stubbed(:work_package) }
+      let(:new_epic) do
+        wp = build_stubbed(:work_package)
+        allow(WorkPackage)
+          .to receive(:find_by)
+          .with(id: wp.id.to_s)
+          .and_return(wp)
+        wp
+      end
+      let(:path) { api_v3_paths.work_package(new_epic.id) }
+      let(:links) do
+        { epic: href }
+      end
+
+      before do
+        work_package.epic = epic
+      end
+
+      describe "with a valid href" do
+        let(:href) { { href: path } }
+
+        it "sets attribute to the specified id" do
+          expect(subject.epic).to eql(new_epic)
+        end
+      end
+
+      describe "with a null href" do
+        let(:href) { { href: nil } }
+
+        it "sets attribute to nil" do
+          expect(subject.epic).to be_nil
+        end
+      end
+
+      describe "with an invalid link" do
+        let(:href) { {} }
+
+        it "leaves attribute unchanged" do
+          expect(subject.epic).to eql(epic)
         end
       end
     end

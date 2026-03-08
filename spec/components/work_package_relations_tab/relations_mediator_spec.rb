@@ -124,6 +124,24 @@ RSpec.describe WorkPackageRelationsTab::RelationsMediator do
     end
   end
 
+  context "with an epic work package and linked issues" do
+    shared_let(:project) { create(:project) }
+    shared_let(:epic_type) { create(:type_epic, projects: [project]) }
+    shared_let(:task_type) { create(:type_task, projects: [project]) }
+    shared_let(:work_package) { create(:work_package, project:, type: epic_type) }
+    shared_let(:epic_issue) { create(:work_package, project:, type: task_type, epic: work_package) }
+
+    it "returns linked issues in the epic relation group" do
+      expect(mediator.relation_group(:epic).all_relation_items).to contain_exactly(
+        have_attributes(class: described_class::RelationItem, type: "epic", related: epic_issue, visibility: :visible)
+      )
+    end
+
+    it "counts linked epic issues in all_relations_count" do
+      expect(mediator.all_relations_count).to eq 1
+    end
+  end
+
   describe "RelationGroup" do
     shared_let(:work_package) { create(:work_package) }
 

@@ -42,6 +42,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
     described_class.create(work_package, current_user:, embed_links:, timestamps:, query:)
   end
   let(:parent) { nil }
+  let(:epic) { nil }
   let(:priority) { build_stubbed(:priority, updated_at: Time.zone.now) }
   let(:assignee) { nil }
   let(:responsible) { nil }
@@ -65,6 +66,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
                   duration:,
                   done_ratio: 50,
                   parent:,
+                  epic:,
                   type:,
                   project: workspace,
                   project_phase_definition:,
@@ -1083,6 +1085,47 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
 
           it_behaves_like "has an empty link" do
             let(:link) { "parent" }
+          end
+        end
+      end
+
+      describe "epic" do
+        let(:visible_epic) do
+          build_stubbed(:work_package) do |wp|
+            allow(wp)
+              .to receive(:visible?)
+                    .and_return(true)
+          end
+        end
+        let(:invisible_epic) do
+          build_stubbed(:work_package) do |wp|
+            allow(wp)
+              .to receive(:visible?)
+                    .and_return(false)
+          end
+        end
+
+        context "with no epic" do
+          it_behaves_like "has an empty link" do
+            let(:link) { "epic" }
+          end
+        end
+
+        context "when epic is visible" do
+          let(:epic) { visible_epic }
+
+          it_behaves_like "has a titled link" do
+            let(:link) { "epic" }
+            let(:href) { api_v3_paths.work_package(visible_epic.id) }
+            let(:title) { visible_epic.subject }
+          end
+        end
+
+        context "when epic is not visible" do
+          let(:epic) { invisible_epic }
+
+          it_behaves_like "has an empty link" do
+            let(:link) { "epic" }
           end
         end
       end

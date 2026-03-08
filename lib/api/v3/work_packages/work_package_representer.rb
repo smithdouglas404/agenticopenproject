@@ -603,6 +603,44 @@ module API
                               represented.parent = new_parent
                             end
 
+        associated_resource :epic,
+                            v3_path: :work_package,
+                            representer: ::API::V3::WorkPackages::WorkPackageRepresenter,
+                            skip_render: ->(*) { represented.epic && !represented.epic.visible? },
+                            link_title_attribute: :subject,
+                            uncacheable_link: true,
+                            link: ->(*) {
+                              if represented.epic&.visible?
+                                {
+                                  href: api_v3_paths.work_package(represented.epic.id),
+                                  title: represented.epic.subject
+                                }
+                              else
+                                {
+                                  href: nil
+                                }
+                              end
+                            },
+                            setter: ->(fragment:, **) do
+                              next if fragment.empty?
+
+                              href = fragment["href"]
+
+                              new_epic =
+                                if href
+                                  id = ::API::Utilities::ResourceLinkParser
+                                    .parse_id href,
+                                              property: "epic",
+                                              expected_version: "3",
+                                              expected_namespace: "work_packages"
+
+                                  WorkPackage.find_by(id:) ||
+                                    ::WorkPackage::InexistentWorkPackage.new(id:)
+                                end
+
+                              represented.epic = new_epic
+                            end
+
         associated_resource :budget,
                             as: :budget,
                             v3_path: :budget,

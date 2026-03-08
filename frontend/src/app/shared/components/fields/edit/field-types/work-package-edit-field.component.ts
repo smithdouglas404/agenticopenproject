@@ -67,7 +67,7 @@ export class WorkPackageEditFieldComponent extends SelectEditFieldComponent {
   }
 
   protected fetchAllowedValueQuery(query?:string):Promise<CollectionResource> {
-    if (this.name === 'parent') {
+    if (this.name === 'parent' || this.name === 'epic') {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       return this.schema.allowedValues.$link.$fetch({ query }) as Promise<CollectionResource>;
     }

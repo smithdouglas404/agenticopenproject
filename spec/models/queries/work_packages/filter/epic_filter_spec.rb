@@ -29,26 +29,30 @@
 #++
 
 require "spec_helper"
-require_relative "shared_query_select_specs"
 
-RSpec.describe Queries::WorkPackages::Selects::PropertySelect do
-  let(:instance) { described_class.new(:query_column) }
+RSpec.describe Queries::WorkPackages::Filter::EpicFilter do
+  let(:project) { build_stubbed(:project) }
+  let(:query) { build_stubbed(:query, project:) }
 
-  it_behaves_like "query column"
+  it_behaves_like "basic query filter" do
+    let(:class_key) { :epic }
+    let(:type) { :list }
 
-  describe "instances" do
-    it "the done_ratio column exists" do
-      expect(described_class.instances.map(&:name)).to include :done_ratio
+    before do
+      instance.context = query
+    end
+  end
+
+  describe "#where" do
+    subject(:where) { instance.where }
+
+    before do
+      instance.operator = "="
+      instance.values = %w[1 2]
     end
 
-    it "the epic column exists" do
-      expect(described_class.instances.map(&:name)).to include :epic
-    end
-
-    context "when duration feature flag enabled" do
-      it "column exists" do
-        expect(described_class.instances.map(&:name)).to include :duration
-      end
+    it "filters by epic_id" do
+      expect(where).to include("work_packages.epic_id")
     end
   end
 end

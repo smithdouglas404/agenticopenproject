@@ -253,6 +253,17 @@ module API
                                      end
                                    }
 
+          schema_with_allowed_link :epic,
+                                   type: "WorkPackage",
+                                   required: false,
+                                   writable: true,
+                                   href_callback: ->(*) {
+                                     work_package = represented.work_package
+                                     if work_package&.persisted?
+                                       api_v3_paths.work_package_available_relation_candidates(represented.id, type: :epic)
+                                     end
+                                   }
+
           schema_with_allowed_link :assignee,
                                    type: "User",
                                    required: false,

@@ -1214,6 +1214,8 @@ en:
       label_required_plural: "required by"
       required_description: "Marks this work package as being a requirement to the related one"
 
+      label_epic_singular: "issue in epic"
+      label_epic_plural: "issues in epic"
       label_parent_singular: "parent"
       label_parent_plural: "parent"
       label_other_relations: "Other relations"
@@ -1571,6 +1573,7 @@ en:
           true: "include non-working days"
         journal_internal: Internal Journal
         notify: "Notify" # used in custom actions
+        epic: "Epic"
         parent: "Parent"
         parent_issue: "Parent"
         parent_work_package: "Parent"
@@ -1920,6 +1923,8 @@ en:
               cannot_be_self_assigned: "cannot be assigned to itself."
               cannot_be_in_another_project: "cannot be in another project."
               not_a_valid_parent: "is invalid."
+            epic:
+              must_be_epic: "must be of type Epic."
             schedule_manually:
               cannot_be_automatically_scheduled: "cannot be set to false (automatically scheduled) as it has no predecessors or children."
             start_date:
@@ -2566,6 +2571,7 @@ en:
   description_message_content: "Message content"
   description_my_project: "You are member"
   description_notes: "Notes"
+  description_epic_work_package: "Epic work package of current"
   description_parent_work_package: "Parent work package of current"
   description_project_scope: "Search scope"
   description_query_sort_criteria_attribute: "Sort attribute"

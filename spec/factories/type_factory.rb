@@ -100,9 +100,20 @@ FactoryBot.define do
       position { 4 }
     end
 
+    factory :type_story do
+      name { "Story" }
+      position { 5 }
+    end
+
     factory :type_milestone do
       name { "Milestone" }
-      position { 5 }
+      position { 6 }
+      is_milestone { true }
+    end
+
+    factory :type_epic do
+      name { "Epic" }
+      position { 7 }
       is_milestone { true }
     end
   end
