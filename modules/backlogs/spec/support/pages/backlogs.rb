@@ -130,7 +130,7 @@ module Pages
     end
 
     def expect_sprint_names_in_order(*sprint_names)
-      expect(sprint_names_in_order).to match_array(sprint_names)
+      expect(sprint_names_in_order).to eq(sprint_names)
     end
 
     def expect_sprint(sprint)
