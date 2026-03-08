@@ -44,7 +44,7 @@ pt-BR:
         labor_budget_item:
           attributes:
             principal:
-              not_a_member_of_budget_project: "is not a member of the budget's project"
+              not_a_member_of_budget_project: "não é membro do projeto do orçamento"
     models:
       budget: "Orçamento"
       material_budget_item: "Unidade"
@@ -80,12 +80,12 @@ pt-BR:
           description: "Adicione os detalhes do orçamento planejado para visualizar os dados aqui"
         caption:
           zero: "Nenhum dado de orçamento."
-          one: "Data aggregated from %{count} budget included in this %{workspace}."
-          other: "Data aggregated from %{count} budgets included in this %{workspace}."
+          one: "Dados agregados de %{count} orçamento incluídos neste %{workspace}."
+          other: "Dados agregados de %{count} orçamentos incluídos neste %{workspace}."
         caption_with_subitems:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
-          other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
+          zero: "Sem dados de orçamento."
+          one: "Dados agregados de %{count} orçamento incluídos neste %{workspace} e em seus subitens."
+          other: "Dados agregados de %{count} orçamentos incluídos neste %{workspace} e em seus subitens."
         view_details: "Ver detalhes do orçamento"
   events:
     budget: "Orçamento editado"

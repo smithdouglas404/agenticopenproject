@@ -44,7 +44,7 @@ zh-CN:
         labor_budget_item:
           attributes:
             principal:
-              not_a_member_of_budget_project: "不是预算项目的成员"
+              not_a_member_of_budget_project: "不属于预算的项目"
     models:
       budget: "预算"
       material_budget_item: "单位"
@@ -76,8 +76,8 @@ zh-CN:
           heading: "开始项目控制"
           description: "概括了解预算和成本，有效跟踪项目的健康状况"
         blankslate_zero:
-          heading: "预算详情缺失"
-          description: "添加计划预算的详情，以便在此处查看数据"
+          heading: "预算详细信息缺失"
+          description: "添加计划预算的详细信息，以便在此处查看数据"
         caption:
           zero: "无预算数据。"
           one: "从包含在此 %{workspace} 中的 %{count} 个预算中汇总的数据。"
@@ -86,7 +86,7 @@ zh-CN:
           zero: "无预算数据。"
           one: "从包含在此 %{workspace} 及其子条目中的 %{count} 个预算中汇总的数据。"
           other: "从包含在此 %{workspace} 及其子条目中的 %{count} 个预算中汇总的数据。"
-        view_details: "查看预算详情"
+        view_details: "查看预算详细信息"
   events:
     budget: "预算已编辑"
   help_click_to_edit: "单击此处进行编辑。"

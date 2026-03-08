@@ -225,12 +225,12 @@ zh-CN:
   costs:
     widgets:
       actual_costs:
-        title: "每月实际成本"
+        title: "实际成本（按月）"
         blankslate:
           heading: "开始跟踪时间和成本"
           description: "概括了解成本和记录的时间，以便监控项目进度。确保工作包与正确的预算相关联。"
           action: "记录时间"
-        view_details: "查看实际成本详情"
+        view_details: "查看实际成本详细信息"
   ee:
     features:
       time_entry_time_restrictions: 需要准确的时间跟踪

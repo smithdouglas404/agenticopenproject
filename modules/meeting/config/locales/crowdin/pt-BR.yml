@@ -60,7 +60,7 @@ pt-BR:
         end_date: "Data de término"
         iterations: "Ocorrências"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "Hora de início"
       meeting_participant:
         invited: "Convidado"
         attended: "Participou"
@@ -73,7 +73,7 @@ pt-BR:
           section_not_belong_to_meeting: "A seção não pertence à mesma reunião."
           user_invalid: "não é um participante válido."
         recurring_meeting_interim_response:
-          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
+          not_an_occurrence: "não é um horário válido para esta reunião recorrente"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Há uma reunião aberta na série que não está contemplada na nova programação. Ajuste a programação para incluir todas as reuniões existentes."
@@ -194,8 +194,8 @@ pt-BR:
   label_time_zone: "Fuso horário"
   label_start_date: "Data de início"
   label_subscribe_icalendar: "Assinar calendário"
-  caption_meeting_template_select: "Selecione um modelo para copiar automaticamente os itens da agenda"
-  caption_template_project_select: "Please select the project in which to create this meeting template"
+  caption_meeting_template_select: "Selecione um modelo para copiar automaticamente os itens da pauta"
+  caption_template_project_select: "Selecione o projeto no qual deseja criar este modelo de reunião"
   meeting:
     participants:
       label:
@@ -208,7 +208,7 @@ pt-BR:
         no_participants: "Sem participantes"
         show_all: "Mostrar todos"
       text:
-        template: "Esses participantes serão adicionados automaticamente a todas as reuniões futuras à medida que forem agendadas."
+        template: "Esses participantes serão convidados automaticamente para todas as futuras reuniões à medida que forem criadas."
         manage_participants: "Pesquisar e adicionar membros do projeto como participantes desta reunião."
         search_for_members: "Pesquisar membros do projeto"
       blankslate:
@@ -216,7 +216,7 @@ pt-BR:
         description: "Ainda não há participantes."
     attachments:
       template: "Esses arquivos anexados serão adicionados a todas as reuniões futuras da série."
-      text: "Os arquivos anexados podem ser acessados por todos os participantes da reunião. Além disso, você pode simplesmente arrastá-los e soltá-los nas anotações do item da agenda."
+      text: "Os arquivos anexados estão disponíveis para todos os participantes da reunião. Você também pode arrastá-los e soltá-los nas anotações dos itens da pauta."
     copy:
       title: "Copiar reunião: %{title}"
       attachments: "Copiar anexos"
@@ -390,8 +390,8 @@ pt-BR:
       total_items: "%{current} de %{total}"
       previous: "Anterior"
       next: "Próximo"
-      no_items: "Sem itens na agenda"
-      no_items_flash: "Não há itens na agenda para apresentar."
+      no_items: "Sem itens na pauta"
+      no_items_flash: "Não há itens na pauta para apresentar."
     ical_response:
       update_failed: "Não foi possível atualizar status de participação."
       meeting_not_found: "Reunião não encontrada por UID."
@@ -557,7 +557,7 @@ pt-BR:
   label_agenda_item_add_notes: "Adicionar anotações"
   label_agenda_item_add_outcome: "Adicionar resultado"
   label_agenda_item_work_package_add: "Adicionar pacote de trabalho"
-  label_agenda_item_work_package: "Pacote de trabalho do item da agenda"
+  label_agenda_item_work_package: "Pacote de trabalho do Item da pauta"
   label_section_rename: "Renomear seção"
   label_agenda_outcome: "Resultado"
   label_agenda_new_outcome: "Novo resultado"
@@ -584,8 +584,8 @@ pt-BR:
   label_series_backlog_clear_title: "Limpar backlog da série?"
   text_series_backlog_clear_description: >
     Isso removerá todos os itens do backlog da série, que é compartilhado com todas as reuniões desta série. Tem certeza de que deseja continuar? Essa ação é irreversível.
-  text_agenda_item_title: 'Item da agenda "%{title}"'
-  text_agenda_work_package_deleted: "Item da agenda para o pacote de trabalho excluído"
+  text_agenda_item_title: 'Item da pauta "%{title}"'
+  text_agenda_work_package_deleted: "Item da pauta para o pacote de trabalho excluído"
   text_deleted_agenda_item: "Item da agenda excluído"
   label_initial_meeting_details: "Reunião"
   label_meeting_details: "Detalhes da reunião"
@@ -604,7 +604,7 @@ pt-BR:
   label_meeting_close_action: "Fechar reunião"
   label_meeting_in_progress_action: "Iniciar reunião"
   label_meeting_open_action: "Reunião aberta"
-  text_meeting_draft_description: "Prepare sua agenda no modo rascunho. Esta reunião não enviará nenhuma atualização de calendário ou convite, mesmo que você altere os detalhes da reunião ou adicione/remova participantes."
+  text_meeting_draft_description: "Prepare sua pauta em modo rascunho. Esta reunião não enviará nenhuma atualização de calendário ou convites, mesmo que você altere os detalhes da reunião ou adicione/remova participantes."
   text_meeting_open_description: "Você pode adicionar ou remover participantes e itens da agenda. Assim que a agenda estiver pronta, marque-a como \"Em andamento\" para registrar os resultados."
   text_meeting_closed_description: "Esta reunião está fechada. Você não pode mais adicionar/remover itens da agenda."
   text_meeting_in_progress_description: "Você pode modificar a agenda, registrar os resultados de cada item e acompanhar a presença dos participantes. Após a conclusão da reunião, você pode marcá-la como encerrada para bloqueá-la."
@@ -612,11 +612,11 @@ pt-BR:
   text_meeting_in_progress_dropdown_description: "Registre os resultados como solicitações de informação ou decisões tomadas durante a reunião."
   text_meeting_closed_dropdown_description: "Esta reunião está encerrada. Já não é possível modificar os pontos da ordem de trabalhos ou os resultados."
   text_meeting_draft_banner: "Você está no modo rascunho. Esta reunião não enviará nenhuma atualização de calendário ou convite, mesmo que você altere os detalhes da reunião ou adicione/remoca participantes."
-  text_onetime_meeting_template_banner: "Você está editando um modelo de reunião. Use este modelo para criar reuniões únicas com uma agenda predefinida. As alterações não afetarão reuniões já criadas."
+  text_onetime_meeting_template_banner: "Você está editando um modelo de reunião. Pode usar este modelo para criar reuniões pontuais com uma pauta predefinida. Alterações não afetarão reuniões já criadas."
   text_onetime_meeting_template_empty_heading: "Este modelo de reunião está vazio"
-  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
+  text_onetime_meeting_template_empty_description: "Adicione aqui itens de pauta, seções e anexos. Eles serão incluídos em todas as reuniões criadas com este modelo."
   text_exit_draft_mode_dialog_title: "Abrir esta reunião e enviar convites?"
-  text_exit_draft_mode_dialog_subtitle: "Você não pode retornar ao modo rascunho após você agendar a reunião."
+  text_exit_draft_mode_dialog_subtitle: "Não é possível voltar ao modo rascunho depois de agendar uma reunião."
   text_exit_draft_mode_dialog_template_title: "Abrir a primeira ocorrência desta série de reuniões?"
   text_exit_draft_mode_dialog_template_subtitle: "Você não pode retornar ao modo rascunho após isto."
   text_meeting_not_editable_anymore: "A reunião não pode mais ser editada."
@@ -630,17 +630,17 @@ pt-BR:
   text_add_work_package_to_meeting_form: "O pacote de trabalho será adicionado à reunião selecionada ou ao backlog como um item da agenda."
   text_add_work_package_to_meeting_description: "Um pacote de trabalho pode ser adicionado a uma ou várias reuniões para discussão. Quaisquer anotações sobre ele também ficarão visíveis aqui."
   text_agenda_item_no_notes: "Nenhum comentário foi feito"
-  text_agenda_item_not_editable_anymore: "Este item da agenda não pode mais ser editado."
+  text_agenda_item_not_editable_anymore: "Este item da pauta não pode mais ser editado."
   text_agenda_item_move_next_meeting: "Este item será transferido para a próxima reunião em %{date} às %{time}."
-  text_agenda_item_moved_to_next_meeting: "Item da agenda movido para a próxima reunião em %{date}"
-  text_agenda_item_duplicate_in_next_meeting: "Tem certeza de que deseja adicionar uma cópia deste item da agenda à próxima reunião, em %{date} às %{time}? Os resultados não serão duplicados."
-  text_agenda_item_duplicated_in_next_meeting: "Item da agenda duplicado na próxima reunião, em %{date}"
+  text_agenda_item_moved_to_next_meeting: "Item da pauta movido para a próxima reunião em %{date}"
+  text_agenda_item_duplicate_in_next_meeting: "Tem certeza de que deseja adicionar uma cópia deste item da pauta à próxima reunião, em %{date} às %{time}? Os resultados não serão duplicados."
+  text_agenda_item_duplicated_in_next_meeting: "Item da pauta duplicado na próxima reunião, em %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Este pacote de trabalho ainda não está programado na agenda de uma reunião futura."
   text_agenda_item_no_available_occurrence: "Todas as ocorrências futuras foram canceladas."
   text_agenda_item_dialog_skipping_cancelled_one: "Observação: Ignorar a ocorrência cancelada em %{date}."
   text_agenda_item_dialog_skipping_cancelled_many: "Observação: Ignorar %{count} ocorrências canceladas."
   text_work_package_add_to_meeting_hint: 'Use o botão "Adicionar à reunião" para adicionar este pacote de trabalho a uma próxima reunião.'
-  text_work_package_has_no_past_meeting_agenda_items: "Este pacote de trabalho não foi adicionado como item da agenda em uma reunião anterior."
+  text_work_package_has_no_past_meeting_agenda_items: "Este pacote de trabalho não foi adicionado como item da pauta em uma reunião anterior."
   text_email_updates_muted: "As atualizações de calendário por e-mail estão silenciadas. Os participantes não receberão convites atualizados por e-mail quando você fizer alterações."
   text_email_updates_enabled: "As atualizações de calendário por e-mail estão habilitados. Todos os participantes receberão convites atualizados por e-mail quando você fizer alterações."
   my_account:

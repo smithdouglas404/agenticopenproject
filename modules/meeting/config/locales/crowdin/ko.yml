@@ -59,7 +59,7 @@ ko:
         end_date: "종료 날짜"
         iterations: "항목"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "시작 시간"
       meeting_participant:
         invited: "초대됨"
         attended: "참석함"

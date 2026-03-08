@@ -141,7 +141,7 @@ zh-CN:
       test:
         success: "成功连接到 %{server}（版本 %{version}）"
         failed: "连接失败：无法检索服务器信息"
-        error: "测试连接时意外出错"
+        error: "测试连接时发生意外错误"
         connection_error: "连接错误：%{message}"
         parse_error: "服务器响应解析失败。服务器可能不是有效的 Jira 实例。"
         api_error: "Jira API 返回错误状态 %{status}。请检查您的 Jira 实例 URL 和 API 令牌。"
@@ -149,15 +149,15 @@ zh-CN:
         missing_credentials: "请提供 URL 和个人访问令牌，以测试连接"
         invalid_url: "请提供有效的 URL"
       client:
-        connection_error: "Jira 服务器连接失败：%{message}"
+        connection_error: "无法连接到 Jira 服务器：%{message}"
         connection_timeout: "与 Jira 服务器的连接超时：%{message}"
-        parse_error: "Jira API 响应解析失败：%{message}"
+        parse_error: "无法解析 Jira API 响应：%{message}"
         api_error: "Jira API 返回错误状态 %{status}"
       columns:
         projects: "项目"
         last_change: "上次更改"
         added: "已添加"
-        label_ago: "%{amount} 前"
+        label_ago: "%{amount}前"
       run:
         title: "导入运行"
         history: "历史记录"
@@ -169,7 +169,7 @@ zh-CN:
         index:
           description: "每次导入运行都可以导入不同的数据集。可以在审核模式后立即撤消导入运行，但不能在完成后撤消。"
           button_import_run: "导入运行"
-          button_edit_configuration: "编辑设置"
+          button_edit_configuration: "编辑配置"
         status:
           initial: "开始"
           instance_meta_fetching: "正在获取元数据"
@@ -182,7 +182,7 @@ zh-CN:
           importing: "进行中"
           import_error: "导入过程中出错"
           imported: "审核模式"
-          reverting: "撤消中"
+          reverting: "正在撤消"
           revert_error: "撤消过程中出错"
           reverted: "已撤消"
           completed: "已完成"
@@ -200,7 +200,7 @@ zh-CN:
             statuses:
               other: "%{count} 种状态"
             users:
-              other: "%{count} 名用户"
+              other: "%{count} 个用户"
           groups:
             fetch:
               title: "获取基础数据"
@@ -294,13 +294,13 @@ zh-CN:
         tool_response_format: "工具响应格式"
         tool_response_format_content_only_label: "仅内容"
         tool_response_format_content_only_caption: >
-          如果连接到此实例的 MCP 客户端不支持结构化内容，则选中此项。此后，工具响应将只包含纯文本内容，而不包含结构化版本。
+          如果连接到此实例的 MCP 客户端不支持结构化内容，则选中此项。工具响应将只包含纯文本内容，而不包含结构化版本。
         tool_response_format_full_label: "完整"
         tool_response_format_full_caption: >
           最兼容的选项。工具响应将包含常规内容和结构化内容，MCP 客户端可以选择要读取的格式。这可能会增加语言模型需要处理的词元数，从而可能导致成本增加，性能降低。
         tool_response_format_structured_only_label: "仅结构化内容"
         tool_response_format_structured_only_caption: >
-          如果您确定连接到此实例的 MCP 客户端支持结构化内容，则选中此项。此后，工具响应将只包含结构化内容，而不包含其文本表示。
+          如果您确定连接到此实例的 MCP 客户端支持结构化内容，则选中此项。工具响应将只包含结构化内容，而不包含其文本表示。
       update:
         failure: "MCP 配置无法更新。"
         success: "MCP 配置已成功更新。"
@@ -570,7 +570,7 @@ zh-CN:
         all: "0 表示无限制"
         project: "0 表示无限制"
       has_comment:
-        project: "用户可以在项目概览中选择值时添加与项目特性相关的注释。"
+        project: "允许用户在项目概览中选择值时添加与项目特性相关的注释。"
     tab:
       no_results_title_text: 目前没有自定义字段。
       no_results_content_text: 创建新的自定义字段
@@ -589,7 +589,7 @@ zh-CN:
     confirmation_live_message_unchecked: "继续按钮现已失效。您需要勾选复选框才能继续。"
   mcp_configurations:
     server_url_component:
-      caption: "可连接 OpenProject MCP 服务器的 URL。设置 MCP 客户端时需要使用。"
+      caption: "可以访问 OpenProject MCP 服务器的 URL。设置 MCP 客户端时需要使用。"
       label: "服务器 URL"
   op_dry_validation:
     or: "或"
@@ -810,7 +810,7 @@ zh-CN:
         new_label: "新优先级"
       creation_wizard:
         errors:
-          no_work_package_type: "无法启用项目启动请求，因为它至少需要一个活动的工作包类型，但此项目没有。请为此项目至少添加一种工作包类型。"
+          no_work_package_type: "无法启用项目启动请求，因为它至少需要一个有效工作包类型，但此项目没有。请为此项目至少添加一种工作包类型。"
           no_status_when_submitted: "无法启用项目启动请求，因为工作包类型 %{type} 至少需要一个与之相关的状态。请为此工作包类型至少启用一个状态工作流。"
         export:
           description_attachment_export: "生成的工件将作为 PDF 附件保存到工件工作包中。"
@@ -825,7 +825,7 @@ zh-CN:
         label_request_submission: "请求提交"
         project_attributes_description: >
           选择哪些项目特性应包含在项目启动请求中。此列表仅包含为此项目启用的[项目特性](project_attributes_url)。
-        enabled_because_required_html: 无法为此项目启动请求禁用此项目特性，因为它被定义为必填项。实例管理员可在<a href=%{admin_settings_url} target="_blank">管理设置</a>中更改此设置。
+        enabled_because_required_html: 无法为此项目启动请求禁用此项目特性，因为它被定义为必选项。实例管理员可以在<a href=%{admin_settings_url} target="_blank">管理设置</a>中更改此设置。
     status:
       button_edit: 编辑状态
     wizard:
@@ -1341,7 +1341,7 @@ zh-CN:
   activerecord:
     attributes:
       agile/sprint:
-        sharing: "共享中"
+        sharing: "共享"
         finish_date: "结束日期"
       jira_import:
         projects: "项目"
@@ -1723,7 +1723,7 @@ zh-CN:
         not_available: "因系统配置而不可用。"
         not_deletable: "无法删除。"
         not_current_user: "不是当前用户。"
-        only_one_active_sprint_allowed: "每个项目只允许有一个活跃的冲刺。"
+        only_one_active_sprint_allowed: "每个项目只允许有一个有效冲刺。"
         not_found: "未找到"
         not_a_date: "不是有效的日期。"
         not_a_datetime: "不是有效的日期时间。"
@@ -3019,8 +3019,8 @@ zh-CN:
           new_features_title: >
             此版本包含各种新功能和改进，例如：
           new_features_list:
-            line_0: 通过安全的 MCP 服务器实现的 AI 工作流（专业版及更高版本）
-            line_1: 改进了项目主页，新增了预算微件，提高了可访问性
+            line_0: 通过安全的 MCP 服务器实现的 AI 工作流（专业方案及更高版本）
+            line_1: 改进了项目首页，新增了预算微件，提高了可访问性
             line_2: "会议：会议模板（基本方案及更高版本）"
             line_3: 通过项目特性注释，提高了透明度。
             line_4: PDF 导出增强功能
@@ -3057,13 +3057,13 @@ zh-CN:
     cause_descriptions:
       import:
         header: "更改者：%{author}"
-        field_changed: "%{field} 已从 %{old_value} 更改为 %{new_value}"
-        field_set: "%{field} 设置为 %{value}"
-        field_removed: "%{field} 已移除"
-        field_updated: "%{field} 已更新"
-        deleted_with_diff: "%{field} 已删除 (%{link})"
-        changed_with_diff: "%{field} 已更改 (%{link})"
-        set_with_diff: "%{field} 已设置 (%{link})"
+        field_changed: "“%{field}”已从 %{old_value} 更改为 %{new_value}"
+        field_set: "“%{field}”设置为 %{value}"
+        field_removed: "“%{field}”已移除"
+        field_updated: "“%{field}”已更新"
+        deleted_with_diff: "“%{field}”已删除 (%{link})"
+        changed_with_diff: "“%{field}”已更改 (%{link})"
+        set_with_diff: "“%{field}”已设置 (%{link})"
       work_package_predecessor_changed_times: 根据前置任务 %{link}的更改
       work_package_parent_changed_times: 通过对父级的更改 %{link}
       work_package_children_changed_times: 通过对子级的更改 %{link}
@@ -3222,7 +3222,7 @@ zh-CN:
   label_added: "已添加"
   label_added_by: "由%{author}添加"
   label_added_by_on: "由 %{author} 添加 %{date}"
-  label_added_time_by: "由 %{author} %{age} 前添加"
+  label_added_time_by: "由 %{author} %{age}前添加"
   label_additional_workflow_transitions_for_assignee: "当用户是受理人时允许额外的转移"
   label_additional_workflow_transitions_for_author: "当用户是作者时允许额外转移"
   label_administration: "管理"
@@ -3239,7 +3239,7 @@ zh-CN:
   label_angular: "AngularJS"
   label_app_modules: "%{app_title} 模块"
   label_api_access_key: "API 访问键"
-  label_api_access_key_created_on: "API 访问密钥创建于 %{value} 前"
+  label_api_access_key_created_on: "API 访问密钥创建于 %{value}前"
   label_api_access_key_type: "API"
   label_auto_option: "（自动）"
   label_ical_access_key_type: "iCalendar"
@@ -3424,7 +3424,7 @@ zh-CN:
   label_favorite: "收藏夹"
   label_feed_plural: "订阅源"
   label_feeds_access_key: "RSS 访问密钥"
-  label_feeds_access_key_created_on: "RSS 访问密钥创建于 %{value} 前"
+  label_feeds_access_key_created_on: "RSS 访问密钥创建于 %{value}前"
   label_feeds_access_key_type: "RSS 订阅"
   label_file_plural: "文件"
   label_filter: "筛选器"
@@ -3519,7 +3519,7 @@ zh-CN:
   label_lock_user: "锁定用户"
   label_logged_as: "登录用户名"
   label_login: "登录"
-  label_custom_comment: "%{name} 注释"
+  label_custom_comment: "%{name}注释"
   label_custom_logo: "自定义徽标桌面版"
   label_custom_logo_mobile: "自定义徽标移动版"
   label_custom_export_logo: "自定义导出徽标"
@@ -3803,9 +3803,9 @@ zh-CN:
   label_type_new: "新类型"
   label_type_plural: "类型"
   label_ui: "用户界面"
-  label_updated_time: "%{value} 前更新"
+  label_updated_time: "%{value}前更新"
   label_updated_time_at: "%{author} %{age}"
-  label_updated_time_by: "%{author} 于 %{age} 前更新"
+  label_updated_time_by: "%{author} 于 %{age}前更新"
   label_upgrade_guides: "升级指南"
   label_used_by: "使用于"
   label_used_by_types: "用于类型"
@@ -4304,7 +4304,7 @@ zh-CN:
   permission_edit_project_query: "编辑项目查询"
   placeholders:
     default: "-"
-    templated_hint: 通过类型 %{type} 自动生成
+    templated_hint: 通过“%{type}”类型自动生成
   portfolio:
     count:
       zero: "0 个项目组合"

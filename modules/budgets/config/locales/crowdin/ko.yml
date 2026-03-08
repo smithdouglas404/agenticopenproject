@@ -83,7 +83,7 @@ ko:
           one: "Data aggregated from %{count} budget included in this %{workspace}."
           other: "Data aggregated from %{count} budgets included in this %{workspace}."
         caption_with_subitems:
-          zero: "No budget data."
+          zero: "예산 데이터가 없습니다."
           one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
           other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
         view_details: "예산 세부 정보 보기"

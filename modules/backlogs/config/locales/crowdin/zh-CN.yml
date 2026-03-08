@@ -87,7 +87,7 @@ zh-CN:
         stories_tasks: "故事/任务"
         task_board: "任务板"
         burndown_chart: "燃尽图"
-        wiki: "维基百科"
+        wiki: "维基"
         properties: "属性"
     story_component:
       label_drag_story: "移动 %{name}"

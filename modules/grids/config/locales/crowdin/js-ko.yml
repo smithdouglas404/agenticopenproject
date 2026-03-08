@@ -2,12 +2,12 @@ ko:
   js:
     grid:
       add_widget: '위젯 추가'
-      widget_menu_label: 'Show menu options for %{widgetName} widget'
+      widget_menu_label: '%{widgetName} 위젯의 메뉴 옵션 표시'
       remove: '위젯 제거'
       configure: '위젯 구성'
       widgets:
         missing_permission: "이 위젯을 보는 데 필요한 권한이 없습니다."
-        not_available: "This widget is currently unavailable."
+        not_available: "이 위젯은 현재 사용할 수 없습니다."
         custom_text:
           title: '사용자 지정 텍스트'
         documents:
