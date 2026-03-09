@@ -98,7 +98,7 @@ module Storages
                 last_modified_by_id: data[:modifier_id],
                 permissions: data[:dav_permissions],
                 location: location(data[:path])
-              ).or { Failure(error.with(payload: it.errors.inspect)) }
+              ).or { Failure(error.with(payload: it.errors.messages)) }
             end
 
             def location(file_path)
