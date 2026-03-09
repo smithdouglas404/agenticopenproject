@@ -135,11 +135,12 @@ ru:
   label_sprint_impediments: "Препятствия спринта"
   label_sprint_new: "Новый спринт"
   label_task_board: "Панель задач"
-  permission_view_sprints: "View sprints"
   permission_create_sprints: "Создание спринтов"
-  permission_start_complete_sprint: "Start/complete sprint"
   permission_manage_sprint_items: "Manage sprint items"
+  permission_select_done_statuses: "Выберите завершенные статусы"
   permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "Бэклоги"
   rb_burndown_charts:
     show:

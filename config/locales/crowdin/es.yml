@@ -181,7 +181,7 @@ es:
           projects_meta_done: "Información recopilada"
           importing: "En curso"
           import_error: "Error durante la importación"
-          imported: "Review mode"
+          imported: "Modo de revisión"
           reverting: "Revirtiendo"
           revert_error: "Error durante la reversión"
           reverted: "Revertido"

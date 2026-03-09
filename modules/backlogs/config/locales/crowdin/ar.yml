@@ -139,11 +139,12 @@ ar:
   label_sprint_impediments: "عوائق السباق"
   label_sprint_new: "New sprint"
   label_task_board: "لوحة المهمة"
-  permission_view_sprints: "View sprints"
   permission_create_sprints: "Create sprints"
-  permission_start_complete_sprint: "Start/complete sprint"
   permission_manage_sprint_items: "Manage sprint items"
+  permission_select_done_statuses: "حدد حالات الاتمام"
   permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "الأعمال المتراكمة غير المنجزة"
   rb_burndown_charts:
     show:

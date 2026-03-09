@@ -129,11 +129,12 @@ zh-CN:
   label_sprint_impediments: "冲刺 (sprint) 障碍"
   label_sprint_new: "新冲刺"
   label_task_board: "任务板"
-  permission_view_sprints: "查看冲刺"
   permission_create_sprints: "创建冲刺"
-  permission_start_complete_sprint: "开始/完成冲刺"
   permission_manage_sprint_items: "管理冲刺条目"
+  permission_select_done_statuses: "选择完成状态"
   permission_share_sprint: "共享冲刺"
+  permission_start_complete_sprint: "开始/完成冲刺"
+  permission_view_sprints: "查看冲刺"
   project_module_backlogs: "待办清单"
   rb_burndown_charts:
     show:

@@ -129,11 +129,12 @@ ko:
   label_sprint_impediments: "스프린트 제한"
   label_sprint_new: "새로운 스프린트"
   label_task_board: "작업 보드"
-  permission_view_sprints: "스프린트 보기"
   permission_create_sprints: "스프린트 만들기"
-  permission_start_complete_sprint: "스프린트 시작/완료"
   permission_manage_sprint_items: "스프린트 항목 관리"
+  permission_select_done_statuses: "완료 상태 선택"
   permission_share_sprint: "스프린트 공유"
+  permission_start_complete_sprint: "스프린트 시작/완료"
+  permission_view_sprints: "스프린트 보기"
   project_module_backlogs: "백로그"
   rb_burndown_charts:
     show:

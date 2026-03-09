@@ -131,11 +131,12 @@ es:
   label_sprint_impediments: "Impedimentos de sprint"
   label_sprint_new: "Nuevo sprint"
   label_task_board: "Tablero de tareas"
-  permission_view_sprints: "Ver sprints"
   permission_create_sprints: "Crear sprints"
-  permission_start_complete_sprint: "Iniciar/completar sprint"
   permission_manage_sprint_items: "Gestionar elementos de sprint"
+  permission_select_done_statuses: "Seleccionar estados de finalización"
   permission_share_sprint: "Compartir sprint"
+  permission_start_complete_sprint: "Iniciar/completar sprint"
+  permission_view_sprints: "Ver sprints"
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:
     show:

@@ -129,11 +129,12 @@ th:
   label_sprint_impediments: "อุปสรรคของสปรินท์"
   label_sprint_new: "สปรินท์ใหม่"
   label_task_board: "กระดานงาน"
-  permission_view_sprints: "ดูสปรินท์"
   permission_create_sprints: "สร้างสปรินท์"
-  permission_start_complete_sprint: "เริ่มต้น/เสร็จสิ้นสปรินท์"
   permission_manage_sprint_items: "จัดการรายการในสปรินท์"
+  permission_select_done_statuses: "Select done statuses"
   permission_share_sprint: "แชร์สปรินท์"
+  permission_start_complete_sprint: "เริ่มต้น/เสร็จสิ้นสปรินท์"
+  permission_view_sprints: "ดูสปรินท์"
   project_module_backlogs: "รายการงานคงค้าง"
   rb_burndown_charts:
     show:

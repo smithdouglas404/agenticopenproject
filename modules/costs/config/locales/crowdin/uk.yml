@@ -213,10 +213,10 @@ uk:
   project_module_costs: "Час і витрати"
   setting_allow_tracking_start_and_end_times: "Дозволити час початку й закінчення"
   setting_costs_currency: "Валюта"
-  setting_costs_currency_caption: "This is the unit of currency. It can be a three-letter ISO code like EUR, USD or JPY or a symbol like €, $ or ¥."
-  setting_costs_currency_format: "Currency format"
-  setting_costs_currency_format_prefix: "Before the number (e.g. EUR 100)"
-  setting_costs_currency_format_suffix: "After the number (e.g. 100 EUR)"
+  setting_costs_currency_caption: "Це одиниця валюти. На її позначення може використовуватися трилітерний код ISO (наприклад, EUR, USD чи JPY) або символ (€, $, ¥ тощо)."
+  setting_costs_currency_format: "Формат валюти"
+  setting_costs_currency_format_prefix: "Перед числом (наприклад, EUR 100)"
+  setting_costs_currency_format_suffix: "Після числа (наприклад, 100 EUR)"
   setting_enforce_tracking_start_and_end_times: "Вимагати час початку й закінчення"
   setting_enforce_without_allow: "Вимога часу початку й закінчення неможлива без відповідного налаштування"
   setting_allow_tracking_start_and_end_times_caption: "Дає змогу вводити час початку й закінчення в журнал обліку часу."
@@ -240,12 +240,12 @@ uk:
   costs:
     widgets:
       actual_costs:
-        title: "Actual costs by month"
+        title: "Фактичні витрати по місяцях"
         blankslate:
-          heading: "Start tracking your time and costs"
-          description: "Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget."
-          action: "Log time"
-        view_details: "View actual costs details"
+          heading: "Почніть відстежувати час і витрати"
+          description: "Переглядайте свої витрати й зафіксований час, щоб контролювати прогрес роботи над проєктом. Переконайтеся, що пакети робіт зв’язано з відповідним бюджетом."
+          action: "Записати час"
+        view_details: "Переглянути дані пор фактичні витрати"
   ee:
     features:
       time_entry_time_restrictions: Вимагати точного відстеження часу
