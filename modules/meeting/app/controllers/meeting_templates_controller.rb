@@ -40,11 +40,13 @@ class MeetingTemplatesController < ApplicationController
   menu_item :meetings
 
   def index
-    @templates = Meeting.onetime_templates
-                        .visible
-                        .order(:title)
-
-    @templates = @templates.where(project_id: @project.id) if @project
+    @templates = if @project
+                   Meeting.available_onetime_templates.where(project_id: @project.id).order(:title)
+                 else
+                   accessible_ids = Project.allowed_to(User.current, :view_meetings).select(:id)
+                   base = Meeting.available_onetime_templates
+                   base.where(project_id: accessible_ids).or(base.where(sharing: :system)).order(:title)
+                 end
 
     render "meeting_templates/index",
            locals: { menu_name: project_or_global_menu }

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,32 +29,30 @@
 #++
 
 module Meetings
-  class BaseContract < ::ModelContract
-    def self.model
-      Meeting
+  class SidePanel::SharingComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
+
+    def initialize(meeting:)
+      super
+
+      @meeting = meeting
+      @project = meeting.project
     end
 
-    attribute :title
-    attribute :author_id
-    attribute :project_id
-    attribute :location
-    attribute :duration
-    attribute :state
-    attribute :start_date
-    attribute :start_time
-    attribute :start_time_hour
-    attribute :template
-    attribute :notify
-    attribute :sharing do
-      validate_sharing_only_on_onetime_templates
+    def render?
+      User.current.allowed_in_project?(:edit_meetings, @project)
     end
 
     private
 
-    def validate_sharing_only_on_onetime_templates
-      return if model.onetime_template?
+    def sharing_label(sharing)
+      I18n.t("label_meeting_template_sharing_#{sharing}")
+    end
 
-      errors.add :sharing, :not_allowed if model.sharing.present?
+    def change_sharing_path(sharing)
+      change_sharing_project_meeting_path(@project, @meeting, sharing:)
     end
   end
 end

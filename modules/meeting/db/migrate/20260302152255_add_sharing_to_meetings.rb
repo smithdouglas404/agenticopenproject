@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,33 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Meetings
-  class BaseContract < ::ModelContract
-    def self.model
-      Meeting
-    end
-
-    attribute :title
-    attribute :author_id
-    attribute :project_id
-    attribute :location
-    attribute :duration
-    attribute :state
-    attribute :start_date
-    attribute :start_time
-    attribute :start_time_hour
-    attribute :template
-    attribute :notify
-    attribute :sharing do
-      validate_sharing_only_on_onetime_templates
-    end
-
-    private
-
-    def validate_sharing_only_on_onetime_templates
-      return if model.onetime_template?
-
-      errors.add :sharing, :not_allowed if model.sharing.present?
-    end
+class AddSharingToMeetings < ActiveRecord::Migration[8.1]
+  def change
+    add_column :meetings, :sharing, :string, null: true, default: nil
   end
 end
