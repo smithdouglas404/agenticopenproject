@@ -128,23 +128,25 @@ function useProviderAuthError(onAuthError:() => void) {
  * - `isLoading`       — true while waiting for the first sync after mount.
  * - `offlineMode`     — true when the connection is lost or timed out; the editor
  *                       remains editable and changes are queued locally (IndexedDB)
- *                       until the server is reachable again (only when hasLocalCache).
+ *                       until the server is reachable again (only when hasCachedDocument).
  * - `blockingOffline` — true when offline AND IndexedDB had no cached content at
  *                       provider initialisation; the caller should hide the editor
  *                       entirely to prevent a fresh empty Y.Doc from being synced as
  *                       authoritative server state on reconnect.
  *
  * Transitions:
- *   mount → synced                          : isLoading false, offlineMode false
- *   mount → timeout (5s), hasLocalCache     : isLoading false, offlineMode true
- *   mount → timeout (5s), !hasLocalCache    : isLoading false, blockingOffline true
- *   connected → disconnect                  : offlineMode true
- *   offline → re-synced                     : offlineMode false
- *   any → auth error                        : isLoading false, offlineMode true
+ *   mount → synced                              : isLoading false, offlineMode false
+ *   mount → timeout (5s), hasCachedDocument     : isLoading false, offlineMode true
+ *   mount → timeout (5s), !hasCachedDocument    : isLoading false, blockingOffline true
+ *   connected → disconnect                      : offlineMode true
+ *   offline → re-synced                         : offlineMode false
+ *   any → auth error                            : isLoading false, blockingOffline true (cache cleared)
  */
-function useCollaboration(provider:HocuspocusProvider, hasLocalCache = false) {
+function useCollaboration(provider:HocuspocusProvider, hasCachedDocument = false) {
   const [isLoading, setIsLoading] = useState(true);
   const [offlineMode, setOfflineMode] = useState(false);
+  // Initialized from prop; set to false on auth error to reflect that the cache was cleared.
+  const [hasCachedDocumentState, setHasCachedDocumentState] = useState(hasCachedDocument);
 
   const handleSynced = useCallback(() => {
     debugLog('(BlockNote Editor) synced with collaboration server');
@@ -165,6 +167,9 @@ function useCollaboration(provider:HocuspocusProvider, hasLocalCache = false) {
   }, []);
 
   const handleAuthError = useCallback(() => {
+    // Treat as no local cache: the IDB was cleared by the controller on auth error.
+    // This ensures blockingOffline=true regardless of the initial hasCachedDocument value.
+    setHasCachedDocumentState(false);
     setOfflineMode(true);
     setIsLoading(false);
   }, []);
@@ -175,7 +180,7 @@ function useCollaboration(provider:HocuspocusProvider, hasLocalCache = false) {
 
   // When offline with no local cache, block the editor entirely to prevent an
   // empty Y.Doc from being synced as the authoritative document on reconnect.
-  const blockingOffline = offlineMode && !hasLocalCache;
+  const blockingOffline = offlineMode && !hasCachedDocumentState;
 
   return { isLoading, offlineMode, blockingOffline } as const;
 }

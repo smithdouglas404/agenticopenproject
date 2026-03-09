@@ -44,7 +44,7 @@ export interface OpBlockNoteContainerProps {
   attachmentsUploadUrl:string;
   attachmentsCollectionKey:string;
   hocuspocusProvider:HocuspocusProvider;
-  hasLocalCache?:boolean;
+  hasCachedDocument?:boolean;
   errorContainer?:HTMLElement;
 }
 
@@ -55,11 +55,11 @@ export default function OpBlockNoteContainer({
   attachmentsUploadUrl,
   attachmentsCollectionKey,
   hocuspocusProvider,
-  hasLocalCache = false,
+  hasCachedDocument = false,
   errorContainer,
 }:OpBlockNoteContainerProps) {
   const doc:Y.Doc = hocuspocusProvider.document;
-  const { isLoading, offlineMode, blockingOffline } = useCollaboration(hocuspocusProvider, hasLocalCache);
+  const { isLoading, offlineMode, blockingOffline } = useCollaboration(hocuspocusProvider, hasCachedDocument);
   const hadErrorRef = useRef(false);
 
   // Fetch error/recovery template based on connection state

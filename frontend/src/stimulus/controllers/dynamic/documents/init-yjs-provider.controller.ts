@@ -38,7 +38,7 @@ import {
 } from 'core-stimulus/services/documents/token-refresh.service';
 import type { Doc } from 'yjs';
 import * as Y from 'yjs';
-import { IndexeddbPersistence } from 'y-indexeddb';
+import { clearDocument, IndexeddbPersistence } from 'y-indexeddb';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 
 const INDEXEDDB_SYNC_TIMEOUT_MS = 10_000;
@@ -61,6 +61,7 @@ export default class extends Controller {
   private tokenRefreshService:TokenRefreshService | null = null;
   private indexeddbPersistence:IndexeddbPersistence | null = null;
   private ownedProvider:HocuspocusProvider | null = null;
+  private authErrorAbortController:AbortController | null = null;
   private currentToken = '';
   private canUseCachedToken = true;
 
@@ -104,10 +105,25 @@ export default class extends Controller {
     this.indexeddbPersistence = null;
   }
 
+  // Purges the locally-cached document content when an auth error occurs.
+  // Covers both auth error sources: HP WebSocket onAuthenticationFailed and
+  // TokenRefreshService session expiry — both dispatch PROVIDER_AUTH_ERROR_EVENT.
+  private clearIndexedDBCache = ():void => {
+    if (this.indexeddbPersistence) {
+      void this.indexeddbPersistence.clearData();
+      this.indexeddbPersistence = null;
+    } else {
+      // Persistence may have been destroyed already; clear the database by name
+      void clearDocument(this.documentNameValue);
+    }
+  };
+
   private async setupProvider():Promise<void> {
     // Clean up any prior incomplete setup to prevent leaking persistence
     // instances on concurrent connect() invocations (e.g., rapid Turbo navigation)
     this.destroyIndexedDBPersistence();
+    this.authErrorAbortController?.abort();
+    this.authErrorAbortController = new AbortController();
 
     this.currentToken = this.tokenPayloadValue;
 
@@ -128,8 +144,8 @@ export default class extends Controller {
 
     // Detect whether IndexedDB contained cached content for this document.
     // A non-trivial state vector (> 1 byte) means the Y.Doc has real operations from a previous session.
-    const hasLocalCache = Y.encodeStateVector(ydoc).byteLength > 1;
-    LiveCollaborationManager.setHasLocalCache(hasLocalCache);
+    const hasCachedDocument = Y.encodeStateVector(ydoc).byteLength > 1;
+    LiveCollaborationManager.setHasCachedDocument(hasCachedDocument);
 
     // If disconnect() was called during the IndexedDB await (e.g., Turbo navigation),
     // abort to avoid overwriting the active provider on the new page.
@@ -152,6 +168,10 @@ export default class extends Controller {
           }),
         );
       },
+    });
+
+    document.addEventListener(PROVIDER_AUTH_ERROR_EVENT, this.clearIndexedDBCache, {
+      signal: this.authErrorAbortController.signal,
     });
 
     LiveCollaborationManager.initializeYjsProvider(provider, ydoc);
@@ -177,6 +197,9 @@ export default class extends Controller {
   disconnect():void {
     this.tokenRefreshService?.destroy();
     this.tokenRefreshService = null;
+
+    this.authErrorAbortController?.abort();
+    this.authErrorAbortController = null;
 
     this.destroyIndexedDBPersistence();
 
