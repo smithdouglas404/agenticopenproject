@@ -33,7 +33,7 @@ class RbStoriesController < RbApplicationController
 
   before_action :load_story
 
-  def move # rubocop:disable Metrics/AbcSize
+  def move_legacy # rubocop:disable Metrics/AbcSize
     # The update service reloads the story internally (via #move_after),
     # so we memoize the previous version_id before the call.
     version_id_was = @story.version_id

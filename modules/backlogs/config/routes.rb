@@ -71,7 +71,7 @@ Rails.application.routes.draw do
 
         resources :stories, controller: :rb_stories, only: [] do
           member do
-            put :move
+            put :move_legacy
             post :reorder
           end
         end
