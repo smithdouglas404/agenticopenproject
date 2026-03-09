@@ -218,6 +218,7 @@ Four summary widgets provide a quick overview of the financial situation of the 
 - **Spent budget** – the percentage of the planned budget that has already been spent
 - **Remaining budget** – the difference between planned budget and actual costs
 
+
 ### Budget by cost type
 
 The **Budget by cost type** widget displays a **pie chart** showing the distribution of planned budget across different cost types, including: 
@@ -227,6 +228,7 @@ The **Budget by cost type** widget displays a **pie chart** showing the distribu
 
 Click the **View budget details** link at the bottom of the widget to open the budgets page for the current project.
 
+
 ### Actual costs per month
 
 The **Actual costs per month** widget displays a **stacked bar chart** showing the monthly actual costs for the **last 12 full calendar months**, ending with the current month. Each bar represents one month, each color indicates a different cost type.
@@ -234,8 +236,6 @@ The **Actual costs per month** widget displays a **stacked bar chart** showing t
 Actual costs include labor costs from logged time and unit costs from cost entries
 
 Click the  **View actual cost details** link at the bottom of the widget to open the cost reports filtered for the current project.
-
-
 
 
 ## Resize and reorder widgets
