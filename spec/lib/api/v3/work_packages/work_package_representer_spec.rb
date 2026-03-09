@@ -81,7 +81,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
                                     spent_hours:,
                                     derived_start_date:,
                                     derived_due_date:,
-                                    release_versions: [])
+                                    target_versions: [])
     end
   end
   let(:all_permissions) do
@@ -687,32 +687,32 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       end
     end
 
-    describe "releaseVersions" do
-      context "when no release versions are set" do
+    describe "targetVersions" do
+      context "when no target versions are set" do
         it "has an empty links array" do
-          expect(subject).to be_json_eql([].to_json).at_path("_links/releaseVersions")
+          expect(subject).to be_json_eql([].to_json).at_path("_links/targetVersions")
         end
       end
 
-      context "when release versions are set" do
+      context "when target versions are set" do
         let!(:version) { build_stubbed(:version, project: workspace) }
 
         before do
-          allow(work_package).to receive(:release_versions).and_return([version])
+          allow(work_package).to receive(:target_versions).and_return([version])
         end
 
         it "links each version" do
           expect(subject).to be_json_eql(api_v3_paths.version(version.id).to_json)
-            .at_path("_links/releaseVersions/0/href")
+            .at_path("_links/targetVersions/0/href")
           expect(subject).to be_json_eql(version.to_s.to_json)
-            .at_path("_links/releaseVersions/0/title")
+            .at_path("_links/targetVersions/0/title")
         end
 
         it "embeds each version" do
           expect(subject).to be_json_eql("Version".to_json)
-            .at_path("_embedded/releaseVersions/0/_type")
+            .at_path("_embedded/targetVersions/0/_type")
           expect(subject).to be_json_eql(version.name.to_json)
-            .at_path("_embedded/releaseVersions/0/name")
+            .at_path("_embedded/targetVersions/0/name")
         end
       end
     end

@@ -59,9 +59,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         .with(:version, current_user)
         .and_return([])
       allow(schema)
-        .to receive(:assignable_versions)
-        .and_return([])
-      allow(schema)
         .to receive(:assignable_project_phases)
               .and_return(assignable_project_phases)
     end
@@ -1023,7 +1020,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       end
     end
 
-    describe "release versions" do
+    describe "target versions" do
       context "if having the assign_versions permission" do
         let(:permissions) { [:assign_versions] }
         let(:values) { build_stubbed_list(:version, 3) }
@@ -1033,16 +1030,16 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         end
 
         it_behaves_like "has basic schema properties" do
-          let(:path) { "releaseVersions" }
+          let(:path) { "targetVersions" }
           let(:type) { "[]Version" }
-          let(:name) { I18n.t("activerecord.attributes.work_package.release_versions") }
+          let(:name) { I18n.t("activerecord.attributes.work_package.target_versions") }
           let(:required) { false }
           let(:writable) { true }
           let(:location) { "_links" }
         end
 
         it_behaves_like "links to and embeds allowed values directly" do
-          let(:path) { "releaseVersions" }
+          let(:path) { "targetVersions" }
           let(:hrefs) { values.map { |v| "/api/v3/versions/#{v.id}" } }
         end
       end
@@ -1051,9 +1048,9 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         let(:permissions) { [:edit_work_packages] }
 
         it_behaves_like "has basic schema properties" do
-          let(:path) { "releaseVersions" }
+          let(:path) { "targetVersions" }
           let(:type) { "[]Version" }
-          let(:name) { I18n.t("activerecord.attributes.work_package.release_versions") }
+          let(:name) { I18n.t("activerecord.attributes.work_package.target_versions") }
           let(:required) { false }
           let(:writable) { false }
           let(:location) { "_links" }

@@ -28,18 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CreateWorkPackageReleaseVersions < ActiveRecord::Migration[8.1]
-  def change
-    create_table :work_package_release_versions, id: false do |t|
-      t.references :work_package, null: false, foreign_key: { on_delete: :cascade }, index: false
-      t.references :version,      null: false, foreign_key: { on_delete: :cascade }, index: false
-      t.timestamps
-    end
+class WorkPackageTargetVersion < ApplicationRecord
+  self.primary_key = %i[work_package_id version_id]
 
-    add_index :work_package_release_versions, [:work_package_id, :version_id],
-              unique: true,
-              name: "idx_wp_release_versions_on_wp_and_version"
-    add_index :work_package_release_versions, :version_id,
-              name: "idx_wp_release_versions_on_version"
-  end
+  belongs_to :work_package
+  belongs_to :version
 end

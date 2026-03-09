@@ -565,7 +565,7 @@ module API
                             v3_path: :version,
                             representer: ::API::V3::Versions::VersionRepresenter
 
-        associated_resources :release_versions,
+        associated_resources :target_versions,
                              v3_path: :version,
                              representer: ::API::V3::Versions::VersionRepresenter
 

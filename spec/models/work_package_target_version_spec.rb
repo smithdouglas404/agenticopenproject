@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackageReleaseVersion do
+RSpec.describe WorkPackageTargetVersion do
   let(:project) { create(:project) }
   let(:version) { create(:version, project:) }
   let(:work_package) { create(:work_package, project:) }
@@ -59,15 +59,15 @@ RSpec.describe WorkPackageReleaseVersion do
     end
   end
 
-  describe "Version#release_work_packages" do
+  describe "Version#target_work_packages" do
     it "returns work packages linked via the join table" do
-      expect(version.release_work_packages).to include(work_package)
+      expect(version.target_work_packages).to include(work_package)
     end
   end
 
-  describe "WorkPackage#release_versions" do
+  describe "WorkPackage#target_versions" do
     it "returns versions linked via the join table" do
-      expect(work_package.release_versions).to include(version)
+      expect(work_package.target_versions).to include(version)
     end
   end
 end

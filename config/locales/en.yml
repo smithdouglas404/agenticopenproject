@@ -1933,7 +1933,7 @@ en:
         subproject: "Subproject"
         time_entries: "Log time"
         type: "Type"
-        release_versions: "Release versions"
+        target_versions: "Target versions"
         version: "Version"
         watcher: "Watcher"
 

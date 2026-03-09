@@ -311,7 +311,7 @@ module API
                                          },
                                          required: false
 
-          schema_with_allowed_collection :release_versions,
+          schema_with_allowed_collection :target_versions,
                                          type: "[]Version",
                                          value_representer: Versions::VersionRepresenter,
                                          link_factory: ->(version) {

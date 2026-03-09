@@ -61,8 +61,8 @@ class WorkPackage < ApplicationRecord
   belongs_to :priority, class_name: "IssuePriority"
   belongs_to :category, class_name: "Category", optional: true
 
-  has_many :work_package_release_versions, dependent: :delete_all
-  has_many :release_versions, through: :work_package_release_versions, source: :version
+  has_many :work_package_target_versions, dependent: :delete_all
+  has_many :target_versions, through: :work_package_target_versions, source: :version
   # has_many :affect_versions, through: :work_package_affect_version
   has_many :time_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
   has_many :file_links, dependent: :delete_all, class_name: "Storages::FileLink", as: :container
