@@ -160,14 +160,24 @@ export default class GenericDragAndDropController extends Controller {
     const dropUrl = el.getAttribute('data-drop-url');
     const data = this.buildData(el, target);
 
-    if (dropUrl) {
+    if (!dropUrl) {
+      return;
+    }
+
+    try {
       const request = new FetchRequest('put', dropUrl, { body: data, responseKind: 'turbo-stream' });
       const response = await request.perform();
 
       if (!response.ok) {
         this.revertDrop(el);
-        debugLog('Failed to sort item');
+        debugLog(`Failed to sort item: ${response.statusCode}`);
       }
+    } catch (error) {
+      this.revertDrop(el);
+      debugLog('Failed to sort item due to request error', error);
+    } finally {
+      this.dragOriginSource = null;
+      this.dragOriginNextSibling = null;
     }
   }
 
