@@ -125,7 +125,7 @@ ko:
         new: "새 구성"
       banner:
         title: "제한된 가져오기"
-        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        description: "이 가져오기 도구는 현재 베타 버전이며 프로젝트, 이슈(이름, 제목, 설명, 첨부 파일), 사용자(이름, 이메일, 프로젝트 멤버십), 상태 및 유형과 같은 기본 데이터만 가져올 수 있습니다. 워크플로, 사용자 지정 필드, 이슈 관계 또는 권한은 가져올 수 없습니다. Jira Server/Data Center 버전 10.x 및 11.x만 현재 지원합니다. 클라우드 인스턴스는 현재 지원되지 않습니다."
       form:
         fields:
           name: "이름"
@@ -143,7 +143,7 @@ ko:
         failed: "연결 실패: 서버 정보를 검색할 수 없습니다"
         error: "연결을 테스트하는 동안 예기치 않은 오류가 발생했습니다"
         connection_error: "연결 오류: %{message}"
-        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        parse_error: "서버에서 응답을 구문 분석하지 못했습니다. 서버가 유효한 Jira 인스턴스가 아닐 수 있습니다."
         api_error: "Jira API가 오류 상태 %{status}을(를) 반환했습니다. Jira 인스턴스 URL 및 API 토큰을 확인하세요."
         token_error: "잘못된 API 토큰입니다. 구성에서 자격 증명을 확인하세요."
         missing_credentials: "URL과 개인 액세스 토큰을 모두 제공하여 연결을 테스트하세요"
@@ -167,7 +167,7 @@ ko:
           title: "가져오기 실행이 아직 설정되지 않음"
           description: "가져오기 실행을 만들어서 이 Jira 인스턴스에서 정보 가져오기를 시작하세요"
         index:
-          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing."
+          description: "가져오기를 실행할 때마다 다른 데이터 세트를 가져올 수 있습니다. 검토 모드에서 가져오기 실행은 직후에 실행 취소할 수 있지만 완료한 후에는 실행 취소할 수 없습니다."
           button_import_run: "가져오기 실행"
           button_edit_configuration: "구성 편집"
         status:
@@ -216,8 +216,8 @@ ko:
             fetch_data:
               title: "인스턴스 메타 데이터 가져오기"
               caption_done: "완료됨"
-              description: "Check what data is available for import in the host Jira instance."
-              button_fetch: "Check available data"
+              description: "호스트 Jira 인스턴스에서 가져올 수 있는 데이터를 확인하세요."
+              button_fetch: "사용 가능한 데이터 확인"
               label_progress: "Jira에서 데이터를 가져오는 중..."
             groups_and_users:
               title: "그룹 및 사용자"
@@ -225,8 +225,8 @@ ko:
               title: "가져오기 범위"
               caption: "OpenProject로 가져올 항목을 선택합니다"
               caption_done: "완료됨"
-              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance URL offers for import and what this tool is able to import right now."
-              description: "Select what data you want to import from the available data fetched from the host Jira instance."
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now."
+              description: "호스트 Jira 인스턴스에서 가져온 사용 가능한 데이터에서 가져올 데이터를 선택합니다."
               label_available_data: "사용 가능한 데이터"
               label_not_available_data: "가져오기에 사용할 수 없음"
               button_select_projects: "가져올 프로젝트 선택"
@@ -237,11 +237,11 @@ ko:
               label_progress: "Jira에서 데이터를 가져오는 중..."
               elements:
                 relations: "이슈 간의 관계"
-                workflows: "Project-level workflows"
+                workflows: "프로젝트 수준 워크플로"
                 users: "사용자"
                 sprints: "스프린트"
                 schemes: "스키마"
-                permissions: "User, group and project permissions"
+                permissions: "사용자, 그룹 및 프로젝트 권한"
             confirm_import:
               title: "데이터 가져오기"
               caption: "가져오기 설정을 검토하고 가져오기를 시작합니다"
@@ -266,6 +266,12 @@ ko:
               label_reverted: "가져오기를 되돌렸습니다."
           select_dialog:
             filter_projects: "텍스트로 필터링"
+          import_dialog:
+            title: "Start this import?"
+            confirm_button: "Start import"
+            description: >
+              This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            confirm: "I understand and made the necessary preparations"
           revert_dialog:
             title: "이 가져오기를 영구적으로 되돌리시겠습니까?"
             description: "이렇게 하면 OpenProject의 가져오기 후 해당 프로젝트에 사용자 활동이 있더라도 가져온 모든 개체(전체 프로젝트 포함)가 삭제됩니다."
@@ -279,7 +285,7 @@ ko:
             title: "프로젝트 선택"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta."
+        description: "모델 컨텍스트 프로토콜을 통해 AI 에이전트는 이 OpenProject 인스턴스에 의해 노출된 도구와 리소스를 사용자에게 제공할 수 있습니다. 이 기능은 아직 베타 버전입니다."
         resources_heading: "리소스"
         resources_description: "OpenProject는 다음 리소스를 구현합니다. 원하는 대로 각 도구를 활성화하고, 이름을 바꾸고, 설명할 수 있습니다. 자세한 내용은 [MCP 리소스의 문서](docs_url)를 참조하세요."
         resources_submit: "리소스 업데이트"
@@ -592,7 +598,7 @@ ko:
     confirmation_live_message_unchecked: "진행 버튼이 이제 비활성화되었습니다. 계속하려면 확인란을 선택해야 합니다."
   mcp_configurations:
     server_url_component:
-      caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
+      caption: "OpenProject MCP 서버에 연결할 수 있는 URL입니다. MCP 클라이언트를 설정하는 데 필요합니다."
       label: "서버 URL"
   op_dry_validation:
     or: "또는"
@@ -797,7 +803,7 @@ ko:
         is_for_all_blank_slate:
           heading: 모든 프로젝트용
           description: '"모든 프로젝트용" 옵션이 선택되었으므로 모든 프로젝트에서 이 프로젝트 특성이 활성화되었습니다. 개별 프로젝트에 대해 비활성화할 수 없습니다.'
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: 이 프로젝트 특성은 프로젝트 시작 요청 <a href=%{pir_submission_url} target="_blank">제출 시 담당자</a>로 설정되었으므로 비활성화할 수 없습니다.
       types:
         no_results_title_text: 사용 가능한 타입이 없습니다.
         form:
@@ -813,8 +819,8 @@ ko:
         new_label: "새로운 우선 순위"
       creation_wizard:
         errors:
-          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
-          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
+          no_work_package_type: "프로젝트 시작 요청을 사용하려면 활성 작업 패키지 유형이 하나 이상 필요하지만 이 프로젝트에는 하나도 없기 때문에 프로젝트 시작 요청을 활성화하지 못했습니다. 이 프로젝트에 작업 패키지 유형을 하나 이상 추가하세요."
+          no_status_when_submitted: "작업 패키지 유형 %{type}에는 연결된 상태가 하나 이상 필요하므로 프로젝트 시작 요청을 활성화하지 못했습니다. 이 작업 패키지 유형에 대한 상태 워크플로를 하나 이상 활성화하세요."
         export:
           description_attachment_export: "생성된 아티팩트는 아티팩트 작업 패키지에 PDF 첨부 파일로 저장됩니다."
           description_file_link_export: "아티팩트 작업 패키지에는 외부 파일 저장소에 저장된 PDF에 대한 파일 링크가 있습니다. 이 프로젝트에 대해 자동으로 관리되는 프로젝트 폴더가 있는 작업 파일 저장소가 필요합니다. 현재는 Nextcloud 파일 저장소만 지원됩니다."
@@ -828,7 +834,7 @@ ko:
         label_request_submission: "요청 제출"
         project_attributes_description: >
           프로젝트 시작 요청에 포함해야 하는 프로젝트 특성을 선택합니다. 이 목록에는 해당 프로젝트에 대해 활성화된 [프로젝트 특성](project_attributes_url)만 포함됩니다.
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: 이 프로젝트 특성은 필수로 정의되어 있으므로 이 프로젝트 시작 요청에 대해 비활성화할 수 없습니다. 이 특성은 인스턴스의 관리자가 <a href=%{admin_settings_url} target="_blank">관리 설정</a>에서 변경할 수 있습니다.
     status:
       button_edit: 상태 편집
     wizard:
@@ -2707,9 +2713,9 @@ ko:
         title: "사용자 지정 작업"
         description: "사용자 지정 작업은 상태, 역할, 유형 또는 프로젝트를 기반으로 특정 작업 패키지에서 사용할 수 있도록 미리 정의된 작업 세트에 대한 원클릭 바로 가기입니다."
       mcp_server:
-        description: "Bring OpenProject into your AI workflows with a secure MCP server."
+        description: "안전한 MCP 서버를 사용하여 AI 워크플로에 OpenProject를 도입하세요."
       meeting_templates:
-        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
+        description: "설정된 의제 구조로 미팅 템플릿을 정의하고, 새 미팅을 만들 때 이 템플릿을 재사용하여 시간을 절약하세요."
       nextcloud_sso:
         title: "Nextcloud 저장소용 Single Sign-On"
         description: "Single Sign-On을 사용하여 Nextcloud 저장소에 대한 원활하고 안전한 인증을 활성화합니다. 액세스 관리를 간소화하고 사용자 편의성을 개선합니다."
@@ -3021,16 +3027,16 @@ ko:
         #We need to include the version to invalidate outdated translations in other locales
         "17_2":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
           new_features_list:
-            line_0: AI workflows with a secure MCP server (Professional plan and higher)
-            line_1: Improved project home page with new widget for budgets and improved accessibility
-            line_2: "Meetings: Meeting templates (Basic plan and higher)"
-            line_3: Better transparency with project attribute comments.
-            line_4: PDF export enhancements
-            line_5: Increased security for external links (Premium plan and higher)
-            line_6: UI/UX improvements in the Backlogs module
-            line_7: Harmonized custom field forms
+            line_0: 안전한 MCP 서버를 사용하는 AI 워크플로(Professional 플랜 이상)
+            line_1: 새 예산 위젯이 포함되고 접근성이 향상되어 프로젝트 홈 페이지가 개선됨
+            line_2: "미팅: 미팅 템플릿(Basic 플랜 이상)"
+            line_3: Better transparency with project attribute comments
+            line_4: PDF 내보내기 개선 사항
+            line_5: 외부 링크에 대한 보안 강화됨(Premium 플랜 이상)
+            line_6: 백로그 모듈의 UI/UX 개선 사항
+            line_7: 통합 사용자 지정 필드 양식
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -3048,7 +3054,7 @@ ko:
   journals:
     changes_retracted: "변경 사항이 취소되었습니다."
     caused_changes:
-      budget_deleted: "Budget has been deleted"
+      budget_deleted: "예산이 삭제되었습니다"
       dates_changed: "변경된 날짜"
       default_attribute_written: "읽기 전용 특성 작성됨"
       import: "가져옴"
@@ -3064,7 +3070,7 @@ ko:
         field_changed: "%{field}이(가) %{old_value}에서 %{new_value}(으)로 변경됨"
         field_set: "%{field}이(가) %{value}(으)로 설정됨"
         field_removed: "%{field} 제거됨"
-        field_updated: "%{field} updated"
+        field_updated: "%{field} 업데이트됨"
         deleted_with_diff: "%{field} 삭제됨(%{link})"
         changed_with_diff: "%{field} 변경됨(%{link})"
         set_with_diff: "%{field} 설정됨(%{link})"
@@ -3074,7 +3080,7 @@ ko:
       work_package_related_changed_times: 관련 %{link}에 대한 변경 사항 기준
       work_package_duplicate_closed: 중복 작업 패키지에 의해 자동으로 상태가 업데이트되었습니다(%{link})
       unaccessable_work_package_changed: 관련 작업 패키지에 대한 변경 사항 기준
-      budget_deleted: Budget has been deleted
+      budget_deleted: 예산이 삭제되었습니다
       working_days_changed:
         changed: "근무일에 대한 변경 사항 기준(%{changes})"
         days:
@@ -3241,7 +3247,7 @@ ko:
   label_always_visible: "항상 표시"
   label_announcement: "공지 사항"
   label_angular: "AngularJS"
-  label_app_modules: "%{app_title} modules"
+  label_app_modules: "%{app_title} 모듈"
   label_api_access_key: "API 액세스 키"
   label_api_access_key_created_on: "API 액세스 키가 %{value} 전에 생성되었습니다."
   label_api_access_key_type: "API"
@@ -5083,7 +5089,7 @@ ko:
     text_change_disabled_for_provider_login: "이름 및 이메일은 로그인 공급자가 설정하므로 변경할 수 없습니다."
     unlock: "잠금 해제"
     unlock_and_reset_failed_logins: "실패한 로그인 잠금 해제 및 재설정"
-    error_cannot_delete_user: "User cannot be deleted"
+    error_cannot_delete_user: "사용자를 삭제할 수 없습니다"
   version_status_closed: "닫음"
   version_status_locked: "잠김"
   version_status_open: "열기"

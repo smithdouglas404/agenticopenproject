@@ -231,7 +231,7 @@ sv:
               title: "Import scope"
               caption: "Choose what you want to import into OpenProject"
               caption_done: "Completed"
-              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance URL offers for import and what this tool is able to import right now."
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now."
               description: "Select what data you want to import from the available data fetched from the host Jira instance."
               label_available_data: "Available data"
               label_not_available_data: "Not available for import"
@@ -272,6 +272,12 @@ sv:
               label_reverted: "Import reverted."
           select_dialog:
             filter_projects: "Filter by text"
+          import_dialog:
+            title: "Start this import?"
+            confirm_button: "Start import"
+            description: >
+              This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            confirm: "I understand and made the necessary preparations"
           revert_dialog:
             title: "Permanently revert this import?"
             description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
@@ -3082,7 +3088,7 @@ sv:
             line_0: AI workflows with a secure MCP server (Professional plan and higher)
             line_1: Improved project home page with new widget for budgets and improved accessibility
             line_2: "Meetings: Meeting templates (Basic plan and higher)"
-            line_3: Better transparency with project attribute comments.
+            line_3: Better transparency with project attribute comments
             line_4: PDF export enhancements
             line_5: Increased security for external links (Premium plan and higher)
             line_6: UI/UX improvements in the Backlogs module

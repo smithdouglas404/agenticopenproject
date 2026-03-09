@@ -26,7 +26,7 @@ uk:
   activerecord:
     attributes:
       sprint:
-        duration: "Sprint duration"
+        duration: "Тривалість спринту"
       work_package:
         position: "Позиція"
         story_points: "Сторі-поінти"
@@ -54,10 +54,10 @@ uk:
     work_package_is_closed: "Робочий пакет виконується, коли"
     label_is_done_status: "Стан %{status_name} означає виконано"
     points_label:
-      one: "point"
-      few: "points"
-      many: "points"
-      other: "points"
+      one: "одиниця"
+      few: "одиниці"
+      many: "одиниць"
+      other: "одиниці"
     positions_could_not_be_rebuilt: "Позиції не могли бути відновлені."
     positions_rebuilt_successfully: "Позиції успішно відновлені."
     rebuild: "Перебудувати"
@@ -66,10 +66,10 @@ uk:
     show_burndown_chart: "Графік Burndown"
     story: "Історія"
     story_points:
-      one: "%{count} story point"
-      few: "%{count} story points"
-      many: "%{count} story points"
-      other: "%{count} story points"
+      one: "%{count} cторі-поінт"
+      few: "%{count} сторі-поінти"
+      many: "%{count} сторі-поінтів"
+      other: "%{count} сторі-поінта"
     task: "Завдання"
     task_color: "Колір завдання"
     unassigned: "Не призначено"
@@ -77,28 +77,28 @@ uk:
       header_backlogs: "Модуль невиконаних завдань"
       button_update_backlogs: "Оновити модуль невиконаних завдань"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} нічого не містить"
+      blankslate_description: "Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх."
     backlog_header_component:
       label_toggle_backlog: "Згорнути/розгорнути %{name}"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "Немає історій у беклозі"
+        one: "%{count} історія в беклозі"
+        other: "%{count} історії(-й) у беклозі"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "Дії беклогу"
       action_menu:
-        edit_sprint: "Edit sprint"
+        edit_sprint: "Редагувати спринт"
         new_story: "Нова історія"
         stories_tasks: "Історії/Завдання"
         task_board: "Дошка завдань"
-        burndown_chart: "Burndown chart"
+        burndown_chart: "Діаграма згорання завдань"
         wiki: "Wiki"
         properties: "Властивості"
     story_component:
       label_drag_story: "Перемістити %{name}"
     story_menu_component:
-      label_actions: "Story actions"
+      label_actions: "Дії історії"
   backlogs_points_burn_direction: "Бали спалюються вгору/вниз"
   backlogs_product_backlog: "Backlog продукту"
   backlogs_story: "Історія"
@@ -106,14 +106,14 @@ uk:
   backlogs_task: "Завдання"
   backlogs_task_type: "Тип завдання"
   backlogs_wiki_template: "Шаблон для спринтерської вікі-сторінки"
-  backlogs_empty_title: "No versions are defined yet"
-  backlogs_empty_action_text: "To start using backlogs, please create a version first"
-  backlogs_not_configured_title: "Backlogs not configured"
-  backlogs_not_configured_description: "Story and task types need to be set before using this module."
-  backlogs_not_configured_action_text: "Configure Backlogs"
+  backlogs_empty_title: "Версії ще не визначено"
+  backlogs_empty_action_text: "Щоб почати користуватися беклогами, спочатку створіть версію"
+  backlogs_not_configured_title: "Беклоги не налаштовано"
+  backlogs_not_configured_description: "Перш ніж використовувати цей модуль, необхідно визначити типи історій і завдань."
+  backlogs_not_configured_action_text: "Налаштувати беклоги"
   burndown:
-    story_points: "Story points"
-    story_points_ideal: "Story points (ideal)"
+    story_points: "Сторі-поінти"
+    story_points_ideal: "Сторі-поінти (ідеально)"
   errors:
     attributes:
       task_type:
@@ -133,8 +133,8 @@ uk:
   project_module_backlogs: "Невиконані завдання"
   rb_burndown_charts:
     show:
-      blankslate_title: "No burndown data available"
-      blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
+      blankslate_title: "Немає даних про згорання завдань"
+      blankslate_description: "Визначте дату початку й завершення спринту, щоб згенерувати діаграму згорання завдань."
   remaining_hours: "залишок роботи"
   version_settings_display_label: "Стовпець у backlog-у"
   version_settings_display_option_left: "зліва"

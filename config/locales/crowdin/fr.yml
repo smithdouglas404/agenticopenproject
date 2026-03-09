@@ -231,7 +231,7 @@ fr:
               title: "Portée de l'importation"
               caption: "Choisissez ce que vous voulez importer dans OpenProject"
               caption_done: "Terminé"
-              label_info: "Veuillez noter que cet outil d'importation est en version bêta et qu'il ne peut pas importer tous les types de données. Voici un résumé de ce que l'URL de l'instance Jira hôte offre à l'importation et de ce que cet outil est capable d'importer pour le moment."
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now."
               description: "Sélectionnez les données que vous souhaitez importer parmi les données disponibles extraites de l'instance Jira hôte."
               label_available_data: "Données disponibles"
               label_not_available_data: "Indisponibles pour l'importation"
@@ -272,6 +272,12 @@ fr:
               label_reverted: "Importation annulée."
           select_dialog:
             filter_projects: "Filtrer par texte"
+          import_dialog:
+            title: "Start this import?"
+            confirm_button: "Start import"
+            description: >
+              This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            confirm: "I understand and made the necessary preparations"
           revert_dialog:
             title: "Annuler définitivement cette importation ?"
             description: "Cette opération supprimera tous les objets importés (y compris les projets entiers), même s'il y a eu une activité de l'utilisateur dans ces projets après l'importation dans OpenProject."
@@ -3080,7 +3086,7 @@ fr:
             line_0: Flux de travail d'IA avec un serveur MCP sécurisé (abonnements Professional et supérieurs)
             line_1: Amélioration de la page d'accueil du projet avec un nouveau widget pour les budgets et amélioration de l'accessibilité
             line_2: "Réunions : modèles de réunion (abonnements Basic et supérieurs)"
-            line_3: Meilleure transparence avec les commentaires sur les attributs de projet.
+            line_3: Better transparency with project attribute comments
             line_4: Amélioration de l'exportation PDF
             line_5: Sécurité accrue pour les liens externes (à partir de l'abonnement Premium)
             line_6: Améliorations UI/UX dans le module Backlogs

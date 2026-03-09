@@ -65,28 +65,28 @@ uk:
   budgets:
     widgets:
       budget_totals:
-        title: "Budget totals"
-        remaining_budget: "Remaining budget"
-        spent_budget: "Spent budget"
-        total_actual_costs: "Total actual costs"
-        total_planned_budget: "Total planned budget"
+        title: "Загальні суми бюджету"
+        remaining_budget: "Залишок бюджету"
+        spent_budget: "Витрачений бюджет"
+        total_actual_costs: "Загальна сума фактичних витрат"
+        total_planned_budget: "Загальна сума запланованого бюджету"
       budget_by_cost_type:
-        title: "Budget by cost type"
+        title: "Бюджет за типом витрат"
         blankslate:
-          heading: "Start project controlling"
-          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+          heading: "Почніть контролювати роботу над проєктом"
+          description: "Переглядайте свої бюджети й витрати, щоб ефективно відстежувати стан проєкту"
         blankslate_zero:
-          heading: "Budget details missing"
-          description: "Add details about your planned budget to see data here"
+          heading: "Немає інформації про бюджет"
+          description: "Додайте інформацію про запланований бюджет, щоб побачити дані тут"
         caption:
-          zero: "No budget data."
+          zero: "Немає даних про бюджет."
           one: "Data aggregated from %{count} budget included in this %{workspace}."
           other: "Data aggregated from %{count} budgets included in this %{workspace}."
         caption_with_subitems:
           zero: "No budget data."
           one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
           other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
-        view_details: "View budget details"
+        view_details: "Переглянути інформацію про бюджет"
   events:
     budget: "Бюджет відредаговано"
   help_click_to_edit: "Натисніть тут, щоб редагувати."

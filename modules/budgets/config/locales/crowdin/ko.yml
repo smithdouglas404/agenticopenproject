@@ -44,7 +44,7 @@ ko:
         labor_budget_item:
           attributes:
             principal:
-              not_a_member_of_budget_project: "is not a member of the budget's project"
+              not_a_member_of_budget_project: "- 예산 프로젝트의 멤버가 아닙니다"
     models:
       budget: "예산"
       material_budget_item: "단위"
@@ -80,12 +80,12 @@ ko:
           description: "계획된 예산에 대한 세부 정보를 추가하여 여기에서 데이터를 확인합니다"
         caption:
           zero: "예산 데이터가 없습니다."
-          one: "Data aggregated from %{count} budget included in this %{workspace}."
-          other: "Data aggregated from %{count} budgets included in this %{workspace}."
+          one: "이 %{workspace}에 포함된 %{count} 예산에서 집계된 데이터입니다."
+          other: "이 %{workspace}에 포함된 %{count} 예산에서 집계된 데이터입니다."
         caption_with_subitems:
           zero: "예산 데이터가 없습니다."
-          one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
-          other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
+          one: "이 %{workspace} 및 해당 하위 항목에 포함된 %{count} 예산에서 집계된 데이터입니다."
+          other: "이 %{workspace} 및 해당 하위 항목에 포함된 %{count} 예산에서 집계된 데이터입니다."
         view_details: "예산 세부 정보 보기"
   events:
     budget: "예산 편집됨"

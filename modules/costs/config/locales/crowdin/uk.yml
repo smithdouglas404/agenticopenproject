@@ -237,12 +237,12 @@ uk:
   costs:
     widgets:
       actual_costs:
-        title: "Actual costs by month"
+        title: "Фактичні витрати по місяцях"
         blankslate:
-          heading: "Start tracking your time and costs"
-          description: "Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget."
-          action: "Log time"
-        view_details: "View actual costs details"
+          heading: "Почніть відстежувати час і витрати"
+          description: "Переглядайте свої витрати й зафіксований час, щоб контролювати прогрес роботи над проєктом. Переконайтеся, що пакети робіт зв’язано з відповідним бюджетом."
+          action: "Записати час"
+        view_details: "Переглянути дані пор фактичні витрати"
   ee:
     features:
       time_entry_time_restrictions: Вимагати точного відстеження часу
