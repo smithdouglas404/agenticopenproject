@@ -25,6 +25,12 @@ tr:
     description: "Bu modül, çevik ekiplerin Scrum projelerinde OpenProject ile çalışmasını sağlayan özellikler ekler."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Paylaşım"
       sprint:
         duration: "Sprint süresi"
       work_package:
@@ -42,6 +48,8 @@ tr:
               task_version_must_be_the_same_as_story_version: "ana hikaye sürümüyle aynı olmalıdır."
         sprint:
           cannot_end_before_it_starts: "Sprint başlamadan önce bitemez."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Görev türü"
   backlogs:
@@ -75,12 +83,21 @@ tr:
     backlog_component:
       blankslate_title: "%{name} boş"
       blankslate_description: "Henüz planlanan öğe yok. Eklemek için öğeleri buraya sürükleyin."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "Daralt/Genişlet %{name}"
       label_story_count:
         zero: "Kuyrukta hikaye yok"
         one: "%{count} kuyruktaki hikaye"
         other: "%{count} kuyruktaki hikayeler"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "Kuyruk eylemleri"
       action_menu:
@@ -91,6 +108,14 @@ tr:
         burndown_chart: "Burndown grafiği"
         wiki: "Wiki"
         properties: "Özellikler"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "Taşı %{name}"
     story_menu_component:
@@ -118,14 +143,19 @@ tr:
   label_backlogs_unconfigured: "Backlog'ları henüz yapılandırmadınız. Lütfen% %{administration}> %{plugins} adresine gidin, ardından bu eklenti için %{configure} bağlantısını tıklayın. Alanları belirledikten sonra, aracı kullanmaya başlamak için bu sayfaya geri dönün."
   label_blocks_ids: "Bloke iş paketleri kimlikleri"
   label_column_in_backlog: "Sütununda birikim var"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "Aşağı"
   label_points_burn_up: "Yukarı"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Sprint Engelleri"
+  label_sprint_new: "New sprint"
   label_task_board: "Görev panosu"
-  permission_view_master_backlog: "Ana bekleme günlüğünü görüntüleme"
-  permission_view_taskboards: "Görev tahtalarını görüntüleme"
+  permission_create_sprints: "Create sprints"
+  permission_manage_sprint_items: "Manage sprint items"
   permission_select_done_statuses: "Tamamlanan durumları seçiniz"
-  permission_update_sprints: "Süratleri güncelle"
+  permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "İş listesi"
   rb_burndown_charts:
     show:

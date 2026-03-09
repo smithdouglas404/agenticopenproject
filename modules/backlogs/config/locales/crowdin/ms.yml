@@ -25,6 +25,12 @@ ms:
     description: "Modul ini menambahkan fitur-fitur yang membolehkan kumpulan-kumpulan yang tangkas untuk bekerja menggunakan OpenProject di projek Scrum."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,6 +48,8 @@ ms:
               task_version_must_be_the_same_as_story_version: "perlu sama dengan versi cerita induk."
         sprint:
           cannot_end_before_it_starts: "Pecutan tidak boleh berakhir lebih awal sebelum ia bermula."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Task type"
   backlogs:
@@ -73,12 +81,21 @@ ms:
     backlog_component:
       blankslate_title: "%{name} is empty"
       blankslate_description: "No items planned yet. Drag items here to add them."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
         other: "%{count} stories in backlog"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "Backlog actions"
       action_menu:
@@ -89,6 +106,14 @@ ms:
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -116,14 +141,19 @@ ms:
   label_backlogs_unconfigured: "Anda masih belum mengkonfigurasi tunggakan. Sila pergi ke  %{administration} > %{plugins}, kemudian klik pautan %{configure} untuk plugin ini. Setelah anda menetapkan ruangan, kembali ke halaman ini untuk mula menggunakan alat ini."
   label_blocks_ids: "ID pakej kerja yang disekat"
   label_column_in_backlog: "Kolum dalam tunggakan"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "Bawah"
   label_points_burn_up: "Atas"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Halangan Pecutan"
+  label_sprint_new: "New sprint"
   label_task_board: "Papan tugasan"
-  permission_view_master_backlog: "Paparkan tunggakan utama"
-  permission_view_taskboards: "Lihat papan tugasan"
+  permission_create_sprints: "Create sprints"
+  permission_manage_sprint_items: "Manage sprint items"
   permission_select_done_statuses: "Pilih status selesai"
-  permission_update_sprints: "Kemas kini pecutan"
+  permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "Tunggakan"
   rb_burndown_charts:
     show:

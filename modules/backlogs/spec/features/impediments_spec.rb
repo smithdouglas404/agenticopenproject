@@ -54,12 +54,12 @@ RSpec.describe "Impediments on taskboard", :js,
   end
   let(:role) do
     create(:project_role,
-           permissions: %i(view_taskboards
+           permissions: %i(view_sprints
                            add_work_packages
                            view_work_packages
                            edit_work_packages
                            manage_subtasks
-                           assign_versions
+                           manage_sprint_items
                            work_package_assigned))
   end
   let!(:current_user) do

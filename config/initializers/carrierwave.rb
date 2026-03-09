@@ -56,6 +56,12 @@ module CarrierWave
   end
 end
 
+# CW 2.0 changed the default cache_storage from :file to nil.
+# Restore :file to keep Attachment.clean_cached_files! working.
+CarrierWave.configure do |config|
+  config.cache_storage = :file
+end
+
 unless OpenProject::Configuration.fog_credentials.empty?
   CarrierWave::Configuration.configure_fog!
 end

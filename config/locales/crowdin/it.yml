@@ -1362,9 +1362,6 @@ it:
         dependencies: "Dipendenze"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Condivisione"
-        finish_date: "Data di fine"
       jira_import:
         projects: "Progetti"
       "import/jira":
