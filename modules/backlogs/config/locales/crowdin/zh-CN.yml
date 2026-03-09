@@ -25,6 +25,12 @@ zh-CN:
     description: "该模块为敏捷团队在敏捷项目中使用 OpenProject 添加了功能。"
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "持续时间"
+        finish_date: "完成日期"
+        goal: "冲刺目标"
+        name: "冲刺名称"
+        sharing: "共享"
       sprint:
         duration: "冲刺持续时间"
       work_package:
@@ -42,6 +48,8 @@ zh-CN:
               task_version_must_be_the_same_as_story_version: "必须与父级故事的版本相同。"
         sprint:
           cannot_end_before_it_starts: "比赛不可以在开始前结束。"
+    models:
+      sprint: "冲刺"
   attributes:
     task_type: "任务类型"
   backlogs:
@@ -119,11 +127,13 @@ zh-CN:
   label_points_burn_down: "减少"
   label_points_burn_up: "增加"
   label_sprint_impediments: "冲刺 (sprint) 障碍"
+  label_sprint_new: "新冲刺"
   label_task_board: "任务板"
-  permission_view_master_backlog: "查看主待办清单"
-  permission_view_taskboards: "查看任务板"
-  permission_select_done_statuses: "选择完成状态"
-  permission_update_sprints: "更新迭代"
+  permission_view_sprints: "查看冲刺"
+  permission_create_sprints: "创建冲刺"
+  permission_start_complete_sprint: "开始/完成冲刺"
+  permission_manage_sprint_items: "管理冲刺条目"
+  permission_share_sprint: "共享冲刺"
   project_module_backlogs: "待办清单"
   rb_burndown_charts:
     show:

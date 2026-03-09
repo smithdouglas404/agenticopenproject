@@ -31,6 +31,50 @@
 class RbSprintsController < RbApplicationController
   include OpTurbo::ComponentStream
 
+  NEW_SPRINT_ACTIONS = %i[new_dialog create refresh_form].freeze
+
+  skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
+
+  before_action :not_authorized_on_feature_flag_inactive,
+                :load_project,
+                only: NEW_SPRINT_ACTIONS
+
+  def new_dialog
+    call = Sprints::SetAttributesService.new(
+      user: current_user,
+      model: Agile::Sprint.new,
+      contract_class: EmptyContract
+    ).call(attributes: converted_agile_sprint_params)
+
+    respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: call.result)
+  end
+
+  def refresh_form
+    call = Sprints::SetAttributesService.new(
+      user: current_user,
+      model: Agile::Sprint.new,
+      contract_class: EmptyContract
+    ).call(attributes: converted_agile_sprint_params)
+
+    update_via_turbo_stream(component: Backlogs::NewSprintFormComponent.new(sprint: call.result))
+
+    respond_with_turbo_streams
+  end
+
+  def create
+    call = Sprints::CreateService
+             .new(user: current_user)
+             .call(attributes: converted_agile_sprint_params)
+
+    if call.success?
+      render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_create))
+    else
+      update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
+    end
+
+    respond_with_turbo_streams
+  end
+
   def edit_name
     update_header_component_via_turbo_stream(state: :edit)
     respond_with_turbo_streams
@@ -77,15 +121,43 @@ class RbSprintsController < RbApplicationController
     )
   end
 
+  def update_new_sprint_form_component_via_turbo_stream(sprint:, base_errors: nil)
+    update_via_turbo_stream(
+      component: Backlogs::NewSprintFormComponent.new(
+        sprint:,
+        base_errors:
+      ),
+      status: :bad_request
+    )
+  end
+
   # Overrides load_sprint_and_project to load the sprint from :id instead of :sprint_id
   def load_sprint_and_project
     @sprint = Sprint.visible.find(params[:id])
-    @project = @sprint.project
-    # This overrides sprint's project if we set another project, say a subproject
+    load_project
+  end
+
+  def load_project
     @project = Project.visible.find(params[:project_id])
   end
 
   def sprint_params
     params.expect(sprint: %i[name start_date effective_date])
+  end
+
+  def agile_sprint_params
+    params.permit(sprint: %i[name start_date finish_date])
+  end
+
+  def converted_agile_sprint_params
+    # Do some preprocessing to make the params easier to use
+    converted_sprint_params = agile_sprint_params[:sprint].to_h
+    converted_sprint_params[:project] = @project
+
+    converted_sprint_params
+  end
+
+  def not_authorized_on_feature_flag_inactive
+    render_403 unless OpenProject::FeatureDecisions.scrum_projects_active?
   end
 end

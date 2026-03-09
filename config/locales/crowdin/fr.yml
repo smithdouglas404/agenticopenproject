@@ -1357,9 +1357,6 @@ fr:
         dependencies: "Dépendances"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Partage"
-        finish_date: "Échéance"
       jira_import:
         projects: "Projets"
       "import/jira":

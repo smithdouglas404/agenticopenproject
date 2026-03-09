@@ -1344,9 +1344,6 @@ th:
         dependencies: "ส่วนที่อ้างอิง"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":

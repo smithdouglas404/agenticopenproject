@@ -35,7 +35,7 @@ RSpec.describe Stories::CreateService, type: :model do
   let(:type_feature) { create(:type_feature) }
 
   let(:user) do
-    create(:user, member_with_permissions: { project => %i(add_work_packages manage_subtasks assign_versions) })
+    create(:user, member_with_permissions: { project => %i(add_work_packages manage_subtasks manage_sprint_items) })
   end
 
   let(:instance) do

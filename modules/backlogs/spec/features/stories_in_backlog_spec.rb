@@ -52,12 +52,12 @@ RSpec.describe "Stories in backlog", :js, :settings_reset do
   end
   let(:role) do
     create(:project_role,
-           permissions: %i(view_master_backlog
+           permissions: %i(view_sprints
+                           manage_sprint_items
                            add_work_packages
                            view_work_packages
                            edit_work_packages
-                           manage_subtasks
-                           assign_versions))
+                           manage_subtasks))
   end
   let!(:current_user) do
     create(:user,

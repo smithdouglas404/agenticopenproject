@@ -25,6 +25,12 @@ ko:
     description: "이 모듈은 애자일 팀이 Scrum 프로젝트에서 OpenProject로 작업할 수 있도록 하는 기능을 추가합니다."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "기간"
+        finish_date: "완료 날짜"
+        goal: "스프린트 목표"
+        name: "스프린트 이름"
+        sharing: "공유"
       sprint:
         duration: "스프린트 기간"
       work_package:
@@ -42,6 +48,8 @@ ko:
               task_version_must_be_the_same_as_story_version: "은(는) 부모 스토리의 버전과 동일해야 합니다."
         sprint:
           cannot_end_before_it_starts: "스프린트는 시작되기 전에 끝날 수 없습니다."
+    models:
+      sprint: "스프린트"
   attributes:
     task_type: "작업 유형"
   backlogs:
@@ -119,11 +127,13 @@ ko:
   label_points_burn_down: "아래"
   label_points_burn_up: "위"
   label_sprint_impediments: "스프린트 제한"
+  label_sprint_new: "새로운 스프린트"
   label_task_board: "작업 보드"
-  permission_view_master_backlog: "마스터 백로그 보기"
-  permission_view_taskboards: "작업 보드 보기"
-  permission_select_done_statuses: "완료 상태 선택"
-  permission_update_sprints: "스프린트 업데이트"
+  permission_view_sprints: "스프린트 보기"
+  permission_create_sprints: "스프린트 만들기"
+  permission_start_complete_sprint: "스프린트 시작/완료"
+  permission_manage_sprint_items: "스프린트 항목 관리"
+  permission_share_sprint: "스프린트 공유"
   project_module_backlogs: "백로그"
   rb_burndown_charts:
     show:

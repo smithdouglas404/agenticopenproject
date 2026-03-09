@@ -1344,9 +1344,6 @@ ko:
         dependencies: "종속성"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "공유"
-        finish_date: "종료 날짜"
       jira_import:
         projects: "프로젝트"
       "import/jira":

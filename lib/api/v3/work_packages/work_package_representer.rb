@@ -657,7 +657,8 @@ module API
           @current_user_update_allowed =
             current_user.allowed_in_work_package?(:edit_work_packages, represented) ||
               current_user.allowed_in_project?(:change_work_package_status, represented.project) ||
-              current_user.allowed_in_project?(:assign_versions, represented.project)
+              current_user.allowed_in_project?(:assign_versions, represented.project) ||
+              current_user.allowed_in_project?(:manage_sprint_items, represented.project)
         end
 
         def view_time_entries_allowed?

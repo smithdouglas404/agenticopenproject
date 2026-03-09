@@ -1359,9 +1359,6 @@ tr:
         dependencies: "Bağımlılıklar"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Paylaşım"
-        finish_date: "Bitiş tarihi"
       jira_import:
         projects: "Projects"
       "import/jira":
