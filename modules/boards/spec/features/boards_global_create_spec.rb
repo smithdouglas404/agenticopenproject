@@ -49,13 +49,9 @@ RSpec.describe "Boards",
     end
 
     context "with a Community Edition", with_ee: %i[] do
-      it "renders an enterprise banner and disables all restricted board types", :aggregate_failures do
-        expect(page).to have_enterprise_banner
-        expect(page).to have_selector(:radio_button, "Basic")
-        expect(page).to have_selector(:radio_button, "Kanban", disabled: false)
-
-        %w[Assignee Version Subproject Parent-child].each do |restricted_board_type|
-          expect(page).to have_selector(:radio_button, restricted_board_type, disabled: true)
+      it "enables all board types", :aggregate_failures do
+        %w[Basic Kanban Assignee Version Subproject Parent-child].each do |board_type|
+          expect(page).to have_selector(:radio_button, board_type, disabled: false)
         end
       end
 

@@ -106,18 +106,22 @@ RSpec.describe Boards::BoardsController do
       end
     end
 
-    context "when creating a restricted board type in Community Edition" do
-      it "returns 403 forbidden" do
+    context "when creating an assignee board in Community Edition" do
+      let(:assignee_service_instance) { instance_double(Boards::AssigneeBoardCreateService, call: service_result) }
+
+      it "allows creating the board" do
+        expect(Boards::AssigneeBoardCreateService).to receive(:new).with(user: user).and_return(assignee_service_instance)
+
         post :create,
              params: {
                project_id: project.id,
                boards_grid: {
-                 name: "Assignee board",
-                 attribute: "assignee"
-               }
-             }
+                  name: "Assignee board",
+                  attribute: "assignee"
+                }
+              }
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to redirect_to(project_work_package_board_path(project, board))
       end
     end
   end

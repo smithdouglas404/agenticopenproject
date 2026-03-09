@@ -11,7 +11,6 @@ module ::Boards
 
     before_action :build_board_grid, only: %i[new]
     before_action :load_query, only: %i[index]
-    before_action :ensure_board_type_not_restricted, only: %i[create]
 
     menu_item :boards
 
@@ -83,16 +82,6 @@ module ::Boards
 
     def build_board_grid
       @board_grid = Boards::Grid.new
-    end
-
-    def ensure_board_type_not_restricted
-      render_403 if restricted_board_type?
-    end
-
-    def restricted_board_type?
-      return false if EnterpriseToken.allows_to?(:board_view)
-
-      %w[assignee version subproject subtasks].include?(board_grid_params[:attribute])
     end
 
     def service_call
