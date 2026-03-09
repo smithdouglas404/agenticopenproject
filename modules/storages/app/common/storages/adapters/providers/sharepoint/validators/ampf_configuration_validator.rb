@@ -78,12 +78,10 @@ module Storages
 
             def delete_folder(folder)
               Input::DeleteFolder.build(location: folder.id).bind do |input_data|
-                Registry["sharepoint.commands.delete_folder"].call(storage: @storage, auth_strategy:, input_data:)
-                                                             .either(->(_) { pass_check(:client_folder_removal) },
-                                                                     lambda { |_|
-                                                                       fail_check(:client_folder_removal,
-                                                                                  :sp_client_cant_delete_folder)
-                                                                     })
+                Registry["sharepoint.commands.delete_folder"]
+                  .call(storage: @storage, auth_strategy:, input_data:)
+                  .either(->(_) { pass_check(:client_folder_removal) },
+                          ->(_) { fail_check(:client_folder_removal, :sp_client_cant_delete_folder) })
               end
             end
 
