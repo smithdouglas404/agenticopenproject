@@ -33,7 +33,7 @@ require_relative "../../support/pages/backlogs"
 
 RSpec.describe "Edit", :js do
   let(:project) { create(:project) }
-  let(:all_permissions) { %i[view_sprints add_work_packages view_work_packages create_sprints] }
+  let(:all_permissions) { %i[view_sprints add_work_packages view_work_packages create_sprints manage_sprint_items] }
   let(:permissions) { all_permissions }
   let(:user) do
     create(:user, member_with_permissions: { project => permissions })
@@ -135,12 +135,10 @@ RSpec.describe "Edit", :js do
       context "when editing a sprint" do
         it "displays all menu entries" do
           backlogs_page.within_sprint_menu(first_sprint) do |menu|
-            expect(menu).to have_selector :menuitem, count: 4
+            expect(menu).to have_selector :menuitem, count: 3
             expect(menu).to have_selector :menuitem, "Edit sprint"
             expect(menu).to have_selector :menuitem, "New story"
             expect(menu).to have_selector :menuitem, "Stories/Tasks"
-            expect(menu).to have_selector :menuitem, "Task board"
-            expect(menu).to have_selector :menuitem, "Burndown chart", disabled: true # disabled item does not count
           end
         end
 
@@ -159,16 +157,14 @@ RSpec.describe "Edit", :js do
           backlogs_page.expect_sprint_names_in_order("Changed name", second_sprint.name)
         end
 
-        context "when lacking the 'add_work_packages' permission" do
-          let(:permissions) { all_permissions - %i[add_work_packages] }
+        context "when lacking the 'manage_sprint_items' permission" do
+          let(:permissions) { all_permissions - %i[manage_sprint_items] }
 
           it "has no menu entry for creating a new story" do
             backlogs_page.within_sprint_menu(first_sprint) do |menu|
-              expect(menu).to have_selector :menuitem, count: 3
+              expect(menu).to have_selector :menuitem, count: 2
               expect(menu).to have_selector :menuitem, "Edit sprint"
               expect(menu).to have_selector :menuitem, "Stories/Tasks"
-              expect(menu).to have_selector :menuitem, "Task board"
-              expect(menu).to have_selector :menuitem, "Burndown chart", disabled: true
 
               expect(menu).to have_no_selector :menuitem, "New story"
             end
