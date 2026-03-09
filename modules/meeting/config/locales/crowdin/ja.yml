@@ -124,7 +124,6 @@ ja:
   label_meeting_template_edit: "Edit template"
   label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "新しい会議"
-  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "新しい一度限りの会議"
   label_meeting_new_recurring: "定期的な会議の作成"
   label_meeting_create: "会議を作成"
@@ -190,6 +189,8 @@ ja:
   label_time_zone: "タイムゾーン"
   label_start_date: "開始日"
   label_subscribe_icalendar: "カレンダーを購読する"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -606,7 +607,7 @@ ja:
   text_meeting_draft_banner: "現在下書きモードです。 会議の詳細を変更したり出席者を追加/削除したりしても，この会議はカレンダーの更新や招待状を送信しません。"
   text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
   text_onetime_meeting_template_empty_heading: "This meeting template is empty"
-  text_onetime_meeting_template_description: "Add agenda items and attachments to this template. They will be included in every meeting based on this template."
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "この会議を開いて招待を送信しますか？"
   text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
   text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"

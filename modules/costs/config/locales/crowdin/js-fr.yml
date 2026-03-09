@@ -30,6 +30,6 @@ fr:
       properties:
         overallCosts: "Coûts globaux"
         spentUnits: "Unités consommées"
-    button_log_costs: "Consigner coûts unitaires"
+    button_log_costs: "Consigner des coûts unitaires"
     label_hour: "heure"
     label_hours: "heures"

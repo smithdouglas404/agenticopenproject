@@ -46,7 +46,7 @@ uk:
     task_type: "Тип завдання"
   backlogs:
     any: "будь-який"
-    column_width: "Column width"
+    column_width: "Ширина стовпця"
     definition_of_done: "Визначення завершено"
     impediment: "Перешкода"
     label_versions_default_fold_state: "Показати складені версії"
@@ -80,7 +80,7 @@ uk:
       blankslate_title: "%{name} is empty"
       blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "Згорнути/розгорнути %{name}"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
@@ -89,14 +89,14 @@ uk:
       label_actions: "Backlog actions"
       action_menu:
         edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
+        new_story: "Нова історія"
+        stories_tasks: "Історії/Завдання"
+        task_board: "Дошка завдань"
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
-        properties: "Properties"
+        properties: "Властивості"
     story_component:
-      label_drag_story: "Move %{name}"
+      label_drag_story: "Перемістити %{name}"
     story_menu_component:
       label_actions: "Story actions"
   backlogs_points_burn_direction: "Бали спалюються вгору/вниз"

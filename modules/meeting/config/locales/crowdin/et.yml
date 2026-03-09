@@ -126,7 +126,6 @@ et:
   label_meeting_template_edit: "Edit template"
   label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Uus koosolek"
-  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "New one-time meeting"
   label_meeting_new_recurring: "New recurring meeting"
   label_meeting_create: "Create meeting"
@@ -195,6 +194,8 @@ et:
   label_time_zone: "Ajavöönd"
   label_start_date: "Alguskuupäev"
   label_subscribe_icalendar: "Subscribe to calendar"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -613,7 +614,7 @@ et:
   text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
   text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
   text_onetime_meeting_template_empty_heading: "This meeting template is empty"
-  text_onetime_meeting_template_description: "Add agenda items and attachments to this template. They will be included in every meeting based on this template."
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
   text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
   text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"

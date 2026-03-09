@@ -54,7 +54,7 @@ zh-CN:
     work_package_is_closed: "工作包已完成，当"
     label_is_done_status: "状态 %{status_name} 表示已完成"
     points_label:
-      other: "点数"
+      other: "点"
     positions_could_not_be_rebuilt: "无法重建顺序"
     positions_rebuilt_successfully: "已成功重建顺序"
     rebuild: "重建"
@@ -72,27 +72,27 @@ zh-CN:
       button_update_backlogs: "更新积压工作模块"
     backlog_component:
       blankslate_title: "%{name} 为空"
-      blankslate_description: "尚未计划项目。将项目拖到此处即可添加。"
+      blankslate_description: "尚未计划条目。请将条目拖到此处以添加。"
     backlog_header_component:
       label_toggle_backlog: "折叠/展开 %{name}"
       label_story_count:
-        zero: "待办清单中没有故事"
-        one: "待办清单中有 %{count} 个故事"
-        other: "待办清单中有 %{count} 个故事"
+        zero: "积压工作中没有故事"
+        one: "积压工作中有 %{count} 个故事"
+        other: "积压工作中有 %{count} 个故事"
     backlog_menu_component:
-      label_actions: "待办清单操作"
+      label_actions: "积压工作操作"
       action_menu:
         edit_sprint: "编辑冲刺"
         new_story: "新故事"
         stories_tasks: "故事/任务"
         task_board: "任务板"
-        burndown_chart: "Burndown chart"
-        wiki: "Wiki"
-        properties: "Properties"
+        burndown_chart: "燃尽图"
+        wiki: "维基"
+        properties: "属性"
     story_component:
-      label_drag_story: "Move %{name}"
+      label_drag_story: "移动 %{name}"
     story_menu_component:
-      label_actions: "Story actions"
+      label_actions: "故事操作"
   backlogs_points_burn_direction: "点数燃尽曲线"
   backlogs_product_backlog: "产品待办清单"
   backlogs_story: "故事"
@@ -100,14 +100,14 @@ zh-CN:
   backlogs_task: "任务"
   backlogs_task_type: "任务类型"
   backlogs_wiki_template: "冲刺 (Sprint) 的维基页面模板"
-  backlogs_empty_title: "No versions are defined yet"
-  backlogs_empty_action_text: "To start using backlogs, please create a version first"
-  backlogs_not_configured_title: "Backlogs not configured"
-  backlogs_not_configured_description: "Story and task types need to be set before using this module."
-  backlogs_not_configured_action_text: "Configure Backlogs"
+  backlogs_empty_title: "尚未定义版本"
+  backlogs_empty_action_text: "要开始使用积压工作，请先创建一个版本"
+  backlogs_not_configured_title: "未配置积压工作"
+  backlogs_not_configured_description: "使用此模块前，需要设置故事和任务类型。"
+  backlogs_not_configured_action_text: "配置积压工作"
   burndown:
-    story_points: "Story points"
-    story_points_ideal: "Story points (ideal)"
+    story_points: "故事点"
+    story_points_ideal: "故事点（理想）"
   errors:
     attributes:
       task_type:
@@ -127,8 +127,8 @@ zh-CN:
   project_module_backlogs: "待办清单"
   rb_burndown_charts:
     show:
-      blankslate_title: "No burndown data available"
-      blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
+      blankslate_title: "没有可用的燃尽数据"
+      blankslate_description: "设置冲刺的开始和结束日期，以生成燃尽图。"
   remaining_hours: "剩余工时"
   version_settings_display_label: "待办清单中的列"
   version_settings_display_option_left: "左"

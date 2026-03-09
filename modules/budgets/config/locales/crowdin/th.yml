@@ -26,19 +26,19 @@ th:
     attributes:
       budget:
         author: "ผู้เขียน"
-        available: "Available"
-        budget: "Planned"
-        budget_ratio: "Spent (ratio)"
+        available: "พร้อมใช้งาน"
+        budget: "วางแผนแล้ว"
+        budget_ratio: "ใช้ไปแล้ว (อัตราส่วน)"
         description: "คำอธิบาย"
-        spent: "Spent"
+        spent: "ใช้ไปแล้ว"
         status: "สถานะ"
         subject: "หัวข้อ"
-        type: "Cost type"
-        labor_budget: "Planned labor costs"
-        material_budget: "Planned unit costs"
-        base_amount: "Base amount"
+        type: "ประเภทต้นทุน"
+        labor_budget: "ต้นทุนแรงงานที่วางแผนไว้"
+        material_budget: "ต้นทุนหน่วยที่วางแผนไว้"
+        base_amount: "จำนวนฐาน"
       work_package:
-        budget_subject: "Budget title"
+        budget_subject: "ชื่องบประมาณ"
     errors:
       models:
         labor_budget_item:
@@ -46,14 +46,14 @@ th:
             principal:
               not_a_member_of_budget_project: "is not a member of the budget's project"
     models:
-      budget: "Budget"
-      material_budget_item: "Unit"
+      budget: "งบประมาณ"
+      material_budget_item: "หน่วย"
   activity:
     filter:
-      budget: "Budgets"
+      budget: "งบประมาณ"
   attributes:
-    budget: "Budget"
-  button_add_budget_item: "Add planned costs"
+    budget: "งบประมาณ"
+  button_add_budget_item: "เพิ่มต้นทุนที่วางแผนไว้"
   button_add_budget: "Add budget"
   button_add_cost_type: "Add cost type"
   button_cancel_edit_budget: "Cancel editing budget"

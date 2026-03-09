@@ -124,7 +124,6 @@ vi:
   label_meeting_template_edit: "Edit template"
   label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Cuộc họp mới"
-  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Cuộc họp một lần mới"
   label_meeting_new_recurring: "Cuộc họp định kỳ mới"
   label_meeting_create: "Tạo cuộc họp"
@@ -190,6 +189,8 @@ vi:
   label_time_zone: "Múi giờ"
   label_start_date: "Ngày bắt đầu"
   label_subscribe_icalendar: "Đăng ký lịch"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -606,7 +607,7 @@ vi:
   text_meeting_draft_banner: "Bạn hiện đang ở chế độ nháp. Cuộc họp này sẽ không gửi bất kỳ cập nhật lịch hoặc lời mời nào, ngay cả khi bạn thay đổi chi tiết cuộc họp hoặc thêm/xóa người tham gia."
   text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
   text_onetime_meeting_template_empty_heading: "This meeting template is empty"
-  text_onetime_meeting_template_description: "Add agenda items and attachments to this template. They will be included in every meeting based on this template."
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Mở cuộc họp này và gửi lời mời?"
   text_exit_draft_mode_dialog_subtitle: "Bạn không thể quay lại chế độ nháp sau khi lên lịch cuộc họp."
   text_exit_draft_mode_dialog_template_title: "Mở lần xuất hiện đầu tiên của chuỗi cuộc họp này?"

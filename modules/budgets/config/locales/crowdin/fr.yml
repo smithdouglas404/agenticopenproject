@@ -74,18 +74,18 @@ fr:
         title: "Budget par type de coût"
         blankslate:
           heading: "Démarrer le contrôle du projet"
-          description: "Obtenez une vue d'ensemble de vos budgets et de vos coûts pour suivre efficacement l'état de santé de votre projet"
+          description: "Profitez d'une vue d'ensemble de vos budgets et de vos coûts pour suivre efficacement l'état de santé de votre projet"
         blankslate_zero:
-          heading: "Budget details missing"
-          description: "Add details about your planned budget to see data here"
+          heading: "Détails du budget manquant"
+          description: "Ajoutez les détails de votre budget prévisionnel pour voir les données ici"
         caption:
-          zero: "Pas de données budgétaires."
-          one: "Data aggregated from %{count} budget included in this %{workspace}."
-          other: "Data aggregated from %{count} budgets included in this %{workspace}."
+          zero: "Aucune donnée budgétaire."
+          one: "Données agrégées à partir de %{count} budget inclus dans ce %{workspace}."
+          other: "Données agrégées à partir des %{count} budgets inclus dans ce %{workspace}."
         caption_with_subitems:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
-          other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
+          zero: "Pas de données budgétaires."
+          one: "Les données agrégées à partir du budget %{count} sont incluses dans ce %{workspace} et ses sous-points."
+          other: "Les données agrégées à partir des %{count} budgets sont incluses dans ce %{workspace} et ses sous-éléments."
         view_details: "Voir les détails du budget"
   events:
     budget: "Budget modifié"

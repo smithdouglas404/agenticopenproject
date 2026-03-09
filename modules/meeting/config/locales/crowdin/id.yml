@@ -124,7 +124,6 @@ id:
   label_meeting_template_edit: "Edit template"
   label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Rapat Baru"
-  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Rapat satu waktu baru"
   label_meeting_new_recurring: "Rapat berulang baru"
   label_meeting_create: "Buat rapat"
@@ -190,6 +189,8 @@ id:
   label_time_zone: "Zona waktu"
   label_start_date: "Tanggal mulai"
   label_subscribe_icalendar: "Langganan ke kalender"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -606,7 +607,7 @@ id:
   text_meeting_draft_banner: "Saat ini, Anda berada dalam mode draf. Rapat ini tidak akan mengirimkan pembaruan kalender atau undangan, bahkan jika Anda mengubah detail rapat atau menambahkan/menghapus peserta."
   text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
   text_onetime_meeting_template_empty_heading: "This meeting template is empty"
-  text_onetime_meeting_template_description: "Add agenda items and attachments to this template. They will be included in every meeting based on this template."
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Buka rapat ini dan kirim undangan?"
   text_exit_draft_mode_dialog_subtitle: "Anda tidak dapat kembali ke mode draf setellah Anda menjadwalkan rapat."
   text_exit_draft_mode_dialog_template_title: "Buka acara yang pertama dalam seri rapat ini?"

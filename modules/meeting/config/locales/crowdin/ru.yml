@@ -130,7 +130,6 @@ ru:
   label_meeting_template_edit: "Редактировать шаблон"
   label_meeting_create_from_template: "Создать встречу из шаблона"
   label_meeting_new: "Новое совещание"
-  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Новое однократное совещание"
   label_meeting_new_recurring: "Новое повторяющееся совещание"
   label_meeting_create: "Создать совещание"
@@ -205,6 +204,8 @@ ru:
   label_time_zone: "Часовой пояс"
   label_start_date: "Дата начала"
   label_subscribe_icalendar: "Подписаться на календарь"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -627,7 +628,7 @@ ru:
   text_meeting_draft_banner: "В настоящее время Вы находитесь в режиме черновика. Это совещание не будет рассылать никаких обновлений календаря или приглашений, даже если Вы измените детали совещания или добавите/удалите участников."
   text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
   text_onetime_meeting_template_empty_heading: "This meeting template is empty"
-  text_onetime_meeting_template_description: "Add agenda items and attachments to this template. They will be included in every meeting based on this template."
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Открыть это совещание и разослать приглашения?"
   text_exit_draft_mode_dialog_subtitle: "Вы не можете вернуться в режим черновика после того, как запланировали совещание."
   text_exit_draft_mode_dialog_template_title: "Открыть первое совещание из этой серии?"

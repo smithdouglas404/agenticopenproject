@@ -87,7 +87,7 @@ fr:
     button_advanced_filter: "Filtre avancé"
     button_list_view: "Vue en liste"
     button_show_view: "Affichage plein écran"
-    button_log_time: "Afficher l'horodatage"
+    button_log_time: "Consigner du temps"
     button_start_timer: "Démarrer le suivi du temps"
     button_stop_timer: "Arrêter le suivi du temps"
     button_more: "Plus"
@@ -705,7 +705,7 @@ fr:
         nevermind: "Peu importe"
     time_entry:
       work_package_required: "Nécessite d'abord la sélection d'un lot de travaux."
-      title: "Consigner temps"
+      title: "Consigner du temps"
       tracking: "Suivi du temps"
       stop: "Arrêter"
     timer:

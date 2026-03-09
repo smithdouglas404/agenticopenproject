@@ -44,7 +44,7 @@ de:
         labor_budget_item:
           attributes:
             principal:
-              not_a_member_of_budget_project: "is not a member of the budget's project"
+              not_a_member_of_budget_project: "ist kein Mitglied des Budgetprojekts"
     models:
       budget: "Budget"
       material_budget_item: "Stück"
@@ -76,16 +76,16 @@ de:
           heading: "Projektcontrolling starten"
           description: "Erhalten Sie einen Überblick über Ihre Budgets und Kosten, um den Status Ihres Projekts effizient zu verfolgen"
         blankslate_zero:
-          heading: "Budget details missing"
-          description: "Add details about your planned budget to see data here"
+          heading: "Budgetdetails fehlen"
+          description: "Fügen Sie Details zu Ihrem geplanten Budget hinzu, um die Daten hier zu sehen"
         caption:
           zero: "Keine Budgetdaten."
-          one: "Data aggregated from %{count} budget included in this %{workspace}."
-          other: "Data aggregated from %{count} budgets included in this %{workspace}."
+          one: "Daten aggregiert aus %{count} Budget in diesem %{workspace}."
+          other: "Daten aggregiert aus %{count} Budgets in diesem %{workspace}."
         caption_with_subitems:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
-          other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
+          zero: "Keine Budgetdaten."
+          one: "Daten aggregiert aus %{count} Budget in diesem %{workspace} und seinen Unterelementen."
+          other: "Daten aggregiert aus %{count} Budgets in diesem %{workspace} und seinen Unterelementen."
         view_details: "Budgetdetails anzeigen"
   events:
     budget: "Budget bearbeitet"

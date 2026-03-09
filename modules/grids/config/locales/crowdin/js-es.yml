@@ -2,12 +2,12 @@ es:
   js:
     grid:
       add_widget: 'Agregar widget'
-      widget_menu_label: 'Show menu options for %{widgetName} widget'
+      widget_menu_label: 'Mostrar opciones de menú para el widget %{widgetName}'
       remove: 'Quitar widget'
       configure: 'Configurar widget'
       widgets:
         missing_permission: "No tiene los permisos necesarios para ver este widget."
-        not_available: "This widget is currently unavailable."
+        not_available: "Este widget no está disponible actualmente."
         custom_text:
           title: 'Texto personalizado'
         documents:

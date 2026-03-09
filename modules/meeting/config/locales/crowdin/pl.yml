@@ -130,7 +130,6 @@ pl:
   label_meeting_template_edit: "Edytuj szablon"
   label_meeting_create_from_template: "Utwórz spotkanie z szablonu"
   label_meeting_new: "Nowe spotkanie"
-  caption_meeting_template_select: "Wybierz szablon, aby automatycznie skopiować z niego punkty planu spotkania"
   label_meeting_new_dynamic: "Nowe spotkanie jednorazowe"
   label_meeting_new_recurring: "Nowe spotkanie cykliczne"
   label_meeting_create: "Utwórz spotkanie"
@@ -205,6 +204,8 @@ pl:
   label_time_zone: "Strefa czasowa"
   label_start_date: "Data rozpoczęcia"
   label_subscribe_icalendar: "Subskrybuj kalendarz"
+  caption_meeting_template_select: "Wybierz szablon, aby automatycznie skopiować z niego punkty planu spotkania"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -627,7 +628,7 @@ pl:
   text_meeting_draft_banner: "Jesteś teraz w trybie wersji roboczej. To spotkanie nie wyśle żadnych aktualizacji kalendarza ani zaproszeń, nawet jeśli zmienisz szczegóły spotkania lub dodasz/usuniesz uczestników."
   text_onetime_meeting_template_banner: "Obecnie edytujesz szablon spotkania. Możesz użyć tego szablonu do tworzenia jednorazowych spotkań z predefiniowanym planem spotkania. Zmiany nie będą miały wpływu na już utworzone spotkania."
   text_onetime_meeting_template_empty_heading: "Ten szablon spotkania jest pusty"
-  text_onetime_meeting_template_description: "Dodaj punkty planu spotkania i załączniki do tego szablonu. Będą one dołączane do każdego spotkania opartego na tym szablonie."
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Otworzyć to spotkanie i wysłać zaproszenia?"
   text_exit_draft_mode_dialog_subtitle: "Po zaplanowaniu spotkania nie można powrócić do trybu wersji roboczej."
   text_exit_draft_mode_dialog_template_title: "Otworzyć pierwsze wystąpienie z tej serii spotkań?"

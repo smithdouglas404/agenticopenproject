@@ -2,12 +2,12 @@ zh-CN:
   js:
     grid:
       add_widget: '添加微件'
-      widget_menu_label: 'Show menu options for %{widgetName} widget'
+      widget_menu_label: '显示 %{widgetName} 微件的菜单选项'
       remove: '移除微件'
       configure: '配置微件'
       widgets:
         missing_permission: "您没有查看此微件所需的权限。"
-        not_available: "This widget is currently unavailable."
+        not_available: "此微件目前不可用。"
         custom_text:
           title: '自定义文本'
         documents:

@@ -124,7 +124,6 @@ zh-TW:
   label_meeting_template_edit: "Edit template"
   label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "新增會議"
-  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "建立一次性會議"
   label_meeting_new_recurring: "新的重複性會議"
   label_meeting_create: "新增會議"
@@ -190,6 +189,8 @@ zh-TW:
   label_time_zone: "時區"
   label_start_date: "開始日期"
   label_subscribe_icalendar: "訂閱行事曆"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -606,7 +607,7 @@ zh-TW:
   text_meeting_draft_banner: "您目前處於草稿模式。即使您變更會議詳細資訊或新增/移除參與者，此會議也不會傳送任何行事曆更新或邀請。"
   text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
   text_onetime_meeting_template_empty_heading: "This meeting template is empty"
-  text_onetime_meeting_template_description: "Add agenda items and attachments to this template. They will be included in every meeting based on this template."
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "開啟此會議並發送邀請函？"
   text_exit_draft_mode_dialog_subtitle: "一旦排定會議，就無法返回草稿模式。"
   text_exit_draft_mode_dialog_template_title: "要開啟此會議系列的第一場會議嗎？"

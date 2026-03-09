@@ -44,7 +44,7 @@ pt-BR:
         labor_budget_item:
           attributes:
             principal:
-              not_a_member_of_budget_project: "is not a member of the budget's project"
+              not_a_member_of_budget_project: "não é membro do projeto do orçamento"
     models:
       budget: "Orçamento"
       material_budget_item: "Unidade"
@@ -65,28 +65,28 @@ pt-BR:
   budgets:
     widgets:
       budget_totals:
-        title: "Budget totals"
-        remaining_budget: "Remaining budget"
-        spent_budget: "Spent budget"
-        total_actual_costs: "Total actual costs"
-        total_planned_budget: "Total planned budget"
+        title: "Totais do orçamento"
+        remaining_budget: "Orçamento restante"
+        spent_budget: "Orçamento gasto"
+        total_actual_costs: "Total dos custos reais"
+        total_planned_budget: "Total do orçamento planejado"
       budget_by_cost_type:
-        title: "Budget by cost type"
+        title: "Orçamento por tipo de custo"
         blankslate:
-          heading: "Start project controlling"
-          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+          heading: "Iniciar controle do projeto"
+          description: "Obtenha uma visão geral dos seus orçamentos e custos para acompanhar com eficiência a situação do seu projeto"
         blankslate_zero:
-          heading: "Budget details missing"
-          description: "Add details about your planned budget to see data here"
+          heading: "Detalhes de orçamento ausentes"
+          description: "Adicione os detalhes do orçamento planejado para visualizar os dados aqui"
         caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in this %{workspace}."
-          other: "Data aggregated from %{count} budgets included in this %{workspace}."
+          zero: "Nenhum dado de orçamento."
+          one: "Dados agregados de %{count} orçamento incluídos neste %{workspace}."
+          other: "Dados agregados de %{count} orçamentos incluídos neste %{workspace}."
         caption_with_subitems:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
-          other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
-        view_details: "View budget details"
+          zero: "Sem dados de orçamento."
+          one: "Dados agregados de %{count} orçamento incluídos neste %{workspace} e em seus subitens."
+          other: "Dados agregados de %{count} orçamentos incluídos neste %{workspace} e em seus subitens."
+        view_details: "Ver detalhes do orçamento"
   events:
     budget: "Orçamento editado"
   help_click_to_edit: "Clique aqui para editar."

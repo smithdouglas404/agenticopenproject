@@ -48,7 +48,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         custom_field.update!(is_required: true)
         field = FormFields::Primerized::InputField.new(custom_field)
 
-        dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+        dialog = overview_page.open_modal_for_custom_field(custom_field)
 
         dialog.within_async_content do
           expect(page).to have_text("String field")
@@ -67,16 +67,27 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         end
       end
 
-      describe "does not loose the unpersisted values of the custom fields" do
-        shared_examples "keeps the cleared value" do
+      describe "does not loose the unpersisted values" do
+        shared_examples "keeps the unpersisted values" do
           it "keeps the value" do
             invalid_custom_field.update!(is_required: true)
-            dialog = overview_page.open_edit_dialog_for_custom_field(invalid_custom_field)
+            dialog = overview_page.open_modal_for_custom_field(invalid_custom_field)
             invalid_field.clear
             dialog.submit
 
             invalid_field.expect_error(I18n.t("activerecord.errors.messages.blank"))
             invalid_field.expect_blank
+          end
+
+          it "keeps the custom comment value" do
+            invalid_custom_field.update!(is_required: true, has_comment: true)
+            dialog = overview_page.open_modal_for_custom_field(invalid_custom_field)
+            invalid_field.clear
+            fill_in "Comment", with: "A helpful comment"
+            dialog.submit
+
+            invalid_field.expect_error(I18n.t("activerecord.errors.messages.blank"))
+            expect(page).to have_field("Comment", with: "A helpful comment")
           end
         end
 
@@ -84,7 +95,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           let(:invalid_custom_field) { string_project_custom_field }
           let(:invalid_field) { FormFields::Primerized::InputField.new(invalid_custom_field) }
 
-          it_behaves_like "keeps the cleared value"
+          it_behaves_like "keeps the unpersisted values"
         end
 
         context "with select fields" do
@@ -92,21 +103,21 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             let(:invalid_custom_field) { version_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
 
           context "with user selected" do
             let(:invalid_custom_field) { user_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
 
           context "with list selected" do
             let(:invalid_custom_field) { list_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
         end
 
@@ -115,21 +126,21 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             let(:invalid_custom_field) { multi_version_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
 
           context "with multi user selected" do
             let(:invalid_custom_field) { multi_user_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
 
           context "with multi list selected" do
             let(:invalid_custom_field) { multi_list_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
         end
       end
@@ -148,10 +159,10 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         list_project_custom_field.update!(is_required: true)
         list_project_custom_field.custom_values.destroy_all
 
-        dialog = overview_page.open_edit_dialog_for_custom_field(string_project_custom_field)
+        dialog = overview_page.open_modal_for_custom_field(string_project_custom_field)
         dialog.close
 
-        dialog = overview_page.open_edit_dialog_for_custom_field(list_project_custom_field)
+        dialog = overview_page.open_modal_for_custom_field(list_project_custom_field)
         dialog.submit
 
         field.expect_error(I18n.t("activerecord.errors.messages.blank"))
@@ -175,14 +186,14 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         it "validates required fields only within their respective sections" do
           # Test 1: Multi-select field can be saved even when other required fields are invalid
           multi_list_field_dialog =
-            overview_page.open_edit_dialog_for_custom_field(multi_list_project_custom_field)
+            overview_page.open_modal_for_custom_field(multi_list_project_custom_field)
 
           multi_list_field_dialog.submit
           multi_list_field_dialog.expect_closed
 
           # Test 2: Edit the required string field
           string_field_dialog =
-            overview_page.open_edit_dialog_for_custom_field(string_project_custom_field)
+            overview_page.open_modal_for_custom_field(string_project_custom_field)
 
           # Submit without filling - should show error
           string_field_dialog.submit
@@ -191,7 +202,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
           # Test 3: Edit the required list field
           list_field_dialog =
-            overview_page.open_edit_dialog_for_custom_field(list_project_custom_field)
+            overview_page.open_modal_for_custom_field(list_project_custom_field)
 
           # Submit without filling - should show error
           list_field_dialog.submit
@@ -204,7 +215,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
           # Test 5: The required string field dialog still fails validation when empty
           string_field_dialog =
-            overview_page.open_edit_dialog_for_custom_field(string_project_custom_field)
+            overview_page.open_modal_for_custom_field(string_project_custom_field)
           string_field_dialog.submit
           string_field.expect_error(I18n.t("activerecord.errors.messages.blank"))
 
@@ -222,7 +233,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           custom_field.update!(is_required: true)
           custom_field.custom_values.destroy_all
 
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.submit
 
@@ -272,7 +283,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           it "allows saving the dialog even if the calculated custom field is invalid" do
             custom_field.custom_values.destroy_all
 
-            dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+            dialog = overview_page.open_modal_for_custom_field(custom_field)
 
             dialog.submit
 
@@ -320,7 +331,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           custom_field.update!(is_required: true)
           custom_field.custom_values.destroy_all
 
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.submit
 
@@ -356,7 +367,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           custom_field.update!(is_required: true)
           custom_field.custom_values.destroy_all
 
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.submit
 
