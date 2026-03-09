@@ -28,63 +28,50 @@ See COPYRIGHT and LICENSE files for more details.
 ++# %>
 
 <%= component_wrapper(tag: :header) do %>
-  <% if show? %>
-    <%= grid_layout("op-backlogs-header", tag: :div) do |grid| %>
-      <% grid.with_area(:collapsible) do %>
-        <%=
-          render(
-            Primer::OpenProject::BorderBox::CollapsibleHeader.new(
-              collapsible_id: "#{dom_id(sprint)}-list",
-              collapsed:,
-              multi_line: false
-            )
-          ) do |collapsible|
-            collapsible.with_title { sprint.name }
-            collapsible.with_count(
-              scheme: :default,
-              count: story_count,
-              round: true,
-              aria: {
-                label: t(".label_story_count", count: story_count),
-                live: "polite"
-              }
-            )
-            collapsible.with_description(role: "group") do
-              format_date_range(date_range)
-            end
+  <%= grid_layout("op-backlogs-header", tag: :div) do |grid| %>
+    <% grid.with_area(:collapsible) do %>
+      <%=
+        render(
+          Primer::OpenProject::BorderBox::CollapsibleHeader.new(
+            collapsible_id: "#{dom_id(sprint)}-list",
+            collapsed:,
+            multi_line: false
+          )
+        ) do |collapsible|
+          collapsible.with_title { sprint.name }
+          collapsible.with_count(
+            scheme: :default,
+            count: story_count,
+            round: true,
+            aria: {
+              label: t(".label_story_count", count: story_count),
+              live: "polite"
+            }
+          )
+          collapsible.with_description(role: "group") do
+            format_date_range(date_range)
           end
-        %>
-      <% end %>
+        end
+      %>
+    <% end %>
 
-      <% grid.with_area(:points) do %>
-        <%=
-          render(
-            Primer::Beta::Text.new(
-              color: :subtle,
-              classes: "velocity",
-              aria: { live: "polite" }
-            )
-          ) do
-        %>
-          <%= story_points %>
-          <span class="op-backlogs-points-label"> <%= t(:"backlogs.points_label", count: story_points) %></span>
-        <% end %>
-      <% end %>
-
-      <% grid.with_area(:menu) do %>
-        <%= render(Backlogs::SprintMenuComponent.new(sprint:, project:)) %>
+    <% grid.with_area(:points) do %>
+      <%=
+        render(
+          Primer::Beta::Text.new(
+            color: :subtle,
+            classes: "velocity",
+            aria: { live: "polite" }
+          )
+        ) do
+      %>
+        <%= story_points %>
+        <span class="op-backlogs-points-label"> <%= t(:"backlogs.points_label", count: story_points) %></span>
       <% end %>
     <% end %>
-  <% else %>
-    <%=
-      primer_form_with(
-        url: backlogs_project_sprint_path(project, sprint),
-        model: sprint,
-        method: :patch,
-        class: "op-backlogs-header-form"
-      ) do |f|
-        render(Backlogs::BacklogHeaderForm.new(f, cancel_path: show_name_backlogs_project_sprint_path(project, sprint)))
-      end
-    %>
+
+    <% grid.with_area(:menu) do %>
+      <%= render(Backlogs::SprintMenuComponent.new(sprint:, project:)) %>
+    <% end %>
   <% end %>
 <% end %>

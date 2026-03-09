@@ -36,25 +36,19 @@ module Backlogs
     include Redmine::I18n
     include RbCommonHelper
 
-    STATE_DEFAULT = :show
-    STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
-
-    attr_reader :sprint, :state, :collapsed, :current_user
+    attr_reader :sprint, :collapsed, :current_user
 
     delegate :project, to: :sprint
     delegate :name, to: :sprint, prefix: :sprint
-    delegate :edit?, :show?, to: :state
 
     def initialize(
       sprint:,
-      state: STATE_DEFAULT,
       folded: false,
       current_user: User.current
     )
       super()
 
       @sprint = sprint
-      @state = ActiveSupport::StringInquirer.new(fetch_or_fallback(STATE_OPTIONS, state, STATE_DEFAULT).to_s)
       @collapsed = folded
       @current_user = current_user
     end
