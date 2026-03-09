@@ -836,6 +836,12 @@ en:
           The project will only be visible to project members depending on their role and associated permissions.
           Sub-projects are not affected and have their own settings.
       change_identifier: Change identifier
+      change_identifier_dialog_title: Change project identifier
+      change_identifier_format_hint_semantic: "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. The first character has to be a letter."
+      change_identifier_format_hint_legacy: "Only lowercase letters (a–z), numbers, dashes or underscores."
+      change_identifier_warning: >
+        This will permanently change identifiers and URLs of all work packages in this project.
+        The previous identifier and URLs will nevertheless continue to redirect properly.
       subitems:
         template_section: >
           Select templates to be used when creating new subitems.

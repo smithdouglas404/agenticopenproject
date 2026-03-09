@@ -29,10 +29,16 @@
 #++
 
 class Projects::IdentifierController < ApplicationController
+  include OpTurbo::ComponentStream
+
   before_action :find_project_by_project_id
   before_action :authorize
 
   def show; end
+
+  def confirm_dialog
+    respond_with_dialog Projects::Settings::ChangeIdentifierDialogComponent.new(project: @project)
+  end
 
   def update
     service_call = Projects::UpdateService

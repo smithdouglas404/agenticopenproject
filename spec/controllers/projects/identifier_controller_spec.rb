@@ -36,6 +36,15 @@ RSpec.describe Projects::IdentifierController do
   current_user { create(:admin) }
   render_views
 
+  describe "confirm_dialog" do
+    it "responds with a turbo stream" do
+      get :confirm_dialog, params: { project_id: project.id }, format: :turbo_stream
+
+      expect(response).to have_http_status(:ok)
+      expect(response.media_type).to eq "text/vnd.turbo-stream.html"
+    end
+  end
+
   describe "update" do
     it "sets the project identifier to the provided value" do
       put :update, params: { project_id: project.id, project: { identifier: "new-identifier" } }

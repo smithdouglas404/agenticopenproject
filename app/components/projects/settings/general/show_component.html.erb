@@ -53,13 +53,15 @@ See COPYRIGHT and LICENSE files for more details.
     end
   %>
   <%=
-    settings_primer_form_with(model: project, url: project_identifier_path(project), method: :get) do |f|
-      render(Primer::Forms::FormList.new(
-        Projects::Settings::IdentifierForm.new(f),
-        Projects::Settings::Submit.new(f, label: t("projects.settings.change_identifier"))
-      ))
+    settings_primer_form_with(model: project, url: project_settings_general_path(project)) do |f|
+      render(Primer::Forms::FormList.new(Projects::Settings::IdentifierForm.new(f)))
     end
   %>
+  <%= render(Primer::Beta::Button.new(
+        tag: :a,
+        href: confirm_dialog_project_identifier_path(project),
+        data: { turbo_stream: true }
+      )) { t("projects.settings.change_identifier") } %>
 <% end %>
 
 
