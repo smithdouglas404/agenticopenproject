@@ -35,7 +35,7 @@ Navigate to *Administration* -> *Attribute help texts* to set up help texts for 
 To add an Attribute help texts for custom fields click on the green **+ Attribute help text** button.
 
 1. **Choose the attribute** you'd like to explain from the drop-down menu. This list includes work package attributes and custom fields.
-2. Add a **caption**, which will be displayed directly under the work package attribute or custom field.
+2. Add a **caption** to provide additional context.
 3. Add **help text**. You can add in-line pictures, links or videos, too. This help text will be shown in work package or project forms for the users.
 4. Add **attachments**, e.g. excerpts from a process manual.
 5. **Save** your changes.
