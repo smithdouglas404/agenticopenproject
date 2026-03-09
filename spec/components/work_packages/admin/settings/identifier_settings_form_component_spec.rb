@@ -55,12 +55,12 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "renders the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_text(I18n.t("admin.settings.work_packages_identifier.in_progress.banner_message"))
+      expect(page).to have_text("Project identifiers are currently being updated to project-based alphanumerical identifiers.")
     end
 
     it "does not render the success banner" do
       render_component(component)
-      expect(page).to have_no_text(I18n.t("admin.settings.work_packages_identifier.success_banner"))
+      expect(page).to have_no_text("Successfully updated work package identifier format.")
     end
 
     it "renders the radio buttons as disabled" do
@@ -71,8 +71,8 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render the save or autofix buttons" do
       render_component(component)
-      expect(page).to have_no_button(I18n.t("button_save"))
-      expect(page).to have_no_button(I18n.t("admin.settings.work_packages_identifier.button_autofix"))
+      expect(page).to have_no_button("Save")
+      expect(page).to have_no_link("Autofix and save")
     end
 
     it "does not call PreviewQuery" do
@@ -86,12 +86,12 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "renders the success banner" do
       render_component(component)
-      expect(page).to have_text(I18n.t("admin.settings.work_packages_identifier.success_banner"))
+      expect(page).to have_text("Successfully updated work package identifier format.")
     end
 
     it "does not render the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_no_text(I18n.t("admin.settings.work_packages_identifier.in_progress.banner_message"))
+      expect(page).to have_no_text("Project identifiers are currently being updated to project-based alphanumerical identifiers.")
     end
 
     it "renders the radio buttons as enabled" do
@@ -116,13 +116,13 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "renders the save button" do
       render_component(component)
-      expect(page).to have_button(I18n.t("button_save"))
+      expect(page).to have_button("Save")
     end
 
     it "does not render in-progress or success content" do
       render_component(component)
-      expect(page).to have_no_text(I18n.t("admin.settings.work_packages_identifier.in_progress.banner_message"))
-      expect(page).to have_no_text(I18n.t("admin.settings.work_packages_identifier.success_banner"))
+      expect(page).to have_no_text("Project identifiers are currently being updated to project-based alphanumerical identifiers.")
+      expect(page).to have_no_text("Successfully updated work package identifier format.")
     end
 
     context "with problematic projects and alphanumeric setting",
@@ -144,12 +144,12 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
       it "hides the plain save button" do
         render_component(component)
-        expect(page).to have_no_button(I18n.t("button_save"))
+        expect(page).to have_no_button("Save")
       end
 
       it "renders the autofix button" do
         render_component(component)
-        expect(page).to have_button(I18n.t("admin.settings.work_packages_identifier.button_autofix"))
+        expect(page).to have_link("Autofix and save")
       end
     end
   end
