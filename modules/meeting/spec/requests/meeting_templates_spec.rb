@@ -177,7 +177,7 @@ RSpec.describe "Meeting templates requests",
     end
   end
 
-  describe "GET /meetings/new_dialog (create from new meeting dialog)" do
+  describe "GET /meetings/new_dialog (create from new meeting dialog test test)" do
     context "without enterprise token" do
       before { login_as user_with_permissions }
 
