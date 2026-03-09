@@ -41,9 +41,13 @@ module WithSsrfWebhookStubsMixin
   # URLs that already contain an IP address are returned unchanged.
   def ssrf_resolved_url(url)
     uri = URI.parse(url)
-    return url if [Resolv::IPv4::Regex, Resolv::IPv6::Regex].any? { uri.host.match?(_1) }
+    return url if ip_address?(uri.host)
 
     url.sub(uri.host, SSRF_TEST_IP)
+  end
+
+  def ip_address?(host)
+    [Resolv::IPv4::Regex, Resolv::IPv6::Regex].any? { host.match?(_1) }
   end
 end
 
@@ -53,7 +57,7 @@ RSpec.shared_context "with ssrf webhook stubs" do
   before do
     safe_ip = IPAddr.new(WithSsrfWebhookStubsMixin::SSRF_TEST_IP)
     allow(OpenProject::SsrfProtection).to receive(:resolver).and_return(
-      ->(_hostname) { [safe_ip] }
+      ->(hostname) { ip_address?(hostname) ? [IPAddr.new(hostname)] : [safe_ip] }
     )
   end
 end

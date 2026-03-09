@@ -31,20 +31,19 @@
 require "spec_helper"
 
 RSpec.describe Webhooks::Outgoing::RequestWebhookService, :webmock, type: :model do
+  include_context "with ssrf webhook stubs"
+
   let(:user) { build_stubbed(:user) }
   let(:instance) { described_class.new(webhook, event_name: :created, current_user: user) }
 
-  # Use an IP-based URL so SsrfFilter (which replaces hostnames with resolved IPs before calling
-  # Net::HTTP) makes a request that WebMock can stub by URL. DNS resolution of "93.184.216.34"
-  # returns itself, and it is not in SsrfFilter's private-address blacklist.
-  shared_let(:webhook) { create(:webhook, all_projects: true, url: "https://93.184.216.34/test/42", secret: nil) }
+  shared_let(:webhook) { create(:webhook, all_projects: true, url: "https://example.net/test/42", secret: nil) }
 
   subject { instance.call!(body: "body", headers: {}) }
 
   describe "#call!" do
     context "when the request is successful" do
       before do
-        stub_request(:post, webhook.url)
+        stub_request(:post, ssrf_resolved_url(webhook.url))
           .with(body: "body", headers: { "X-Custom" => "header" })
           .to_return(status: 200, body: "OK", headers: { "Content-Type" => "application/json" })
       end
@@ -53,8 +52,8 @@ RSpec.describe Webhooks::Outgoing::RequestWebhookService, :webmock, type: :model
 
       it "makes a POST request to the webhook URL with the given body and headers" do
         subject
-        expect(WebMock).to have_requested(:post, webhook.url)
-          .with(body: "body", headers: { "X-Custom" => "header" }).once
+        expect(WebMock).to have_requested(:post, ssrf_resolved_url(webhook.url))
+          .with(body: "body", headers: { "X-Custom" => "header", "Host" => "example.net" }).once
       end
 
       it "creates a log entry" do
@@ -72,7 +71,7 @@ RSpec.describe Webhooks::Outgoing::RequestWebhookService, :webmock, type: :model
 
     context "when the request times out" do
       before do
-        stub_request(:post, webhook.url).to_timeout
+        stub_request(:post, ssrf_resolved_url(webhook.url)).to_timeout
       end
 
       it "re-raises the timeout error while still creating a log entry" do
@@ -84,7 +83,7 @@ RSpec.describe Webhooks::Outgoing::RequestWebhookService, :webmock, type: :model
 
     context "when request_url fails with SSL errors" do
       before do
-        stub_request(:post, webhook.url).to_raise(OpenSSL::SSL::SSLError)
+        stub_request(:post, ssrf_resolved_url(webhook.url)).to_raise(OpenSSL::SSL::SSLError)
       end
 
       it "still logs the exception" do
@@ -136,7 +135,7 @@ RSpec.describe Webhooks::Outgoing::RequestWebhookService, :webmock, type: :model
 
     context "when an unexpected error occurs" do
       before do
-        stub_request(:post, webhook.url).to_raise(StandardError.new("something went wrong"))
+        stub_request(:post, ssrf_resolved_url(webhook.url)).to_raise(StandardError.new("something went wrong"))
       end
 
       it "creates a log entry" do

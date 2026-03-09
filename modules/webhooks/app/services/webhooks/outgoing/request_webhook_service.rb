@@ -53,7 +53,7 @@ module Webhooks
       def response_attributes(response:, exception:)
         {
           response_code: response&.code&.to_i || -1,
-          response_headers: response&.to_hash&.transform_keys { |k| k.underscore.to_sym }.transform_values(&:first),
+          response_headers: response&.to_hash&.transform_keys { |k| k.underscore.to_sym }&.transform_values(&:first),
           response_body: response&.body || exception&.message
         }
       end
