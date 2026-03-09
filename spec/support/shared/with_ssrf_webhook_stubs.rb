@@ -47,7 +47,7 @@ module WithSsrfWebhookStubsMixin
   end
 
   def ip_address?(host)
-    [Resolv::IPv4::Regex, Resolv::IPv6::Regex].any? { host.match?(_1) }
+    [Resolv::IPv4::Regex, Resolv::IPv6::Regex].any? { host.match? it }
   end
 end
 
