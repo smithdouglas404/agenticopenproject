@@ -1181,10 +1181,12 @@ module Settings
       },
       ssrf_protection_ip_allowlist: {
         description: "
-          Connections to certain IP addresses (such as private ranges) are blocked to prevent SSRF attacks.
+          Connections to certain IP addresses (such as private ranges, c.f. [1]) are blocked to prevent SSRF attacks.
           Use this setting to explicitly allow given IP addresses which would otherwise be blocked.
           Takes a comma or space separated list of IPv4 and IPv6 addresses (including masks for ranges),
           e.g. `192.168.255.255/16`.
+
+          [1] https://github.com/arkadiyt/ssrf_filter/blob/main/lib/ssrf_filter/ssrf_filter.rb#L28-L58
         ".squish,
         format: :string,
         default: "",
