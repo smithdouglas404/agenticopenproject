@@ -31,10 +31,11 @@ module Projects
   module Settings
     class IdentifierForm < ApplicationForm
       form do |f|
+        caption_key = Project.semantic_alphanumeric_identifier? ? :text_project_identifier_description : :text_project_identifier_url_description
         f.text_field(
           name: :identifier,
           label: attribute_name(:identifier),
-          caption: I18n.t(:text_project_identifier_description),
+          caption: I18n.t(caption_key),
           disabled: true
         )
       end

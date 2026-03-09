@@ -58,7 +58,17 @@ See COPYRIGHT and LICENSE files for more details.
 
     <%= styled_label_tag "identifier", Project.human_attribute_name(:identifier), class: "-required" %>
     <div class="danger-zone--verification">
-      <%= f.text_field :identifier %>
+      <% if Project.semantic_alphanumeric_identifier? %>
+        <%= f.text_field :identifier,
+                         pattern: "[A-Z][A-Z0-9_]*",
+                         maxlength: 10,
+                         title: t(:text_project_identifier_handle_format) %>
+      <% else %>
+        <%= f.text_field :identifier,
+                         pattern: "[a-z][a-z0-9\\-_]*",
+                         maxlength: 100,
+                         title: t(:text_project_identifier_format) %>
+      <% end %>
       <span>
         <%= f.submit t(:button_update), class: "button -primary -with-icon icon-checkmark" %>
       </span>

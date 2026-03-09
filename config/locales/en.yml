@@ -5367,6 +5367,9 @@ en:
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Only lower case letters (a-z), numbers, dashes and underscores are allowed, must start with a lower case letter."
   text_project_identifier_description: "The project identifier is prepended to all work package IDs. If the identifier is \"PROJ\" for example, the work package identifier will be \"PROJ-12\" or \"PROJ-246\"."
+  text_project_identifier_url_description: "The project identifier is included in the URL of the project."
+  text_project_identifier_handle_format: "Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters)."
+  text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
   text_reassign: "Reassign to work package:"
   text_regexp_multiline: 'The regex is applied in a multi-line mode. e.g., ^---\s+'
   text_repository_usernames_mapping: "Select or update the OpenProject user mapped to each username found in the repository log.\nUsers with the same OpenProject and repository username or email are automatically mapped."

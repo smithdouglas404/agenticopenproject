@@ -210,7 +210,13 @@ class Project < ApplicationRecord
   # Contains only a-z, 0-9, dashes and underscores but cannot consist of numbers only as it would clash with the id.
   validates :identifier,
             format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
-            if: ->(p) { p.identifier_changed? && p.identifier.present? }
+            if: ->(p) { p.identifier_changed? && p.identifier.present? && !p.class.semantic_alphanumeric_identifier? }
+
+  # When semantic work package IDs with alphanumeric mode are active, identifiers must follow JIRA-style key rules.
+  validates :identifier,
+            format: { with: /\A[A-Z][A-Z0-9_]*\z/ },
+            length: { maximum: 10 },
+            if: ->(p) { p.identifier_changed? && p.identifier.present? && p.class.semantic_alphanumeric_identifier? }
 
   validates_associated :repository, :wiki
 
@@ -264,6 +270,10 @@ class Project < ApplicationRecord
 
   def copy_allowed?
     User.current.allowed_in_project?(:copy_projects, self)
+  end
+
+  def self.semantic_alphanumeric_identifier?
+    OpenProject::FeatureDecisions.semantic_work_package_ids_active? && Setting::WorkPackageIdentifier.alphanumeric?
   end
 
   def self.selectable_projects
