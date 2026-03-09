@@ -1184,6 +1184,78 @@ RSpec.describe WorkPackages::BaseContract do
     end
   end
 
+  describe "target_versions" do
+    subject(:contract) { described_class.new(work_package, current_user) }
+
+    let(:assignable_version) { build_stubbed(:version) }
+    let(:other_version) { build_stubbed(:version) }
+
+    before do
+      allow(work_package).to receive(:assignable_versions).and_return([assignable_version])
+    end
+
+    context "with only assignable versions" do
+      before do
+        allow(work_package).to receive(:target_versions).and_return([assignable_version])
+        subject.validate
+      end
+
+      it "is valid" do
+        expect(subject.errors).to be_empty
+      end
+    end
+
+    context "with an unassignable version" do
+      before do
+        allow(work_package).to receive(:target_versions).and_return([other_version])
+        subject.validate
+      end
+
+      it "is invalid" do
+        expect(subject.errors.symbols_for(:target_versions)).to eql [:inclusion]
+      end
+    end
+
+    context "without the necessary permission to change versions" do
+      let(:permissions) { super() - %i[assign_versions] }
+
+      it "is not writable" do
+        expect(subject.writable?(:target_versions)).to be false
+      end
+    end
+
+    context "for a closed target version" do
+      let(:closed_version) { build_stubbed(:version, status: "closed") }
+
+      before do
+        allow(work_package).to receive(:assignable_versions).and_return([closed_version])
+      end
+
+      context "when reopening a work package" do
+        before do
+          allow(work_package).to receive(:reopened?).and_return(true)
+          allow(work_package).to receive(:target_versions).and_return([closed_version])
+          subject.validate
+        end
+
+        it "is invalid" do
+          expect(subject.errors[:base]).to eql [I18n.t(:error_can_not_reopen_work_package_on_closed_version)]
+        end
+      end
+
+      context "when not reopening the work package" do
+        before do
+          allow(work_package).to receive(:target_versions).and_return([closed_version])
+          subject.validate
+        end
+
+        it "is valid" do
+          expect(subject.errors).to be_empty
+        end
+      end
+    end
+  end
+
   describe "parent" do
     let(:parent) { build_stubbed(:work_package) }
 

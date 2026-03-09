@@ -52,9 +52,12 @@ module WorkPackages
       validate_version_is_assignable
     end
     attribute :target_versions,
-              permission: :assign_versions
+              permission: :assign_versions do
+      validate_target_versions_are_assignable
+    end
 
     validate :validate_no_reopen_on_closed_version
+    validate :validate_no_reopen_on_closed_target_version
 
     attribute :project_id
 
@@ -373,6 +376,24 @@ module WorkPackages
     def validate_version_is_assignable
       if model.version_id && model.assignable_versions.map(&:id).exclude?(model.version_id)
         errors.add :version_id, :inclusion
+      end
+    end
+
+    def validate_target_versions_are_assignable
+      return if model.target_versions.empty?
+
+      assignable_ids = model.assignable_versions.map(&:id)
+      model.target_versions.each do |version|
+        unless assignable_ids.include?(version.id)
+          errors.add :target_versions, :inclusion
+          break
+        end
+      end
+    end
+
+    def validate_no_reopen_on_closed_target_version
+      if model.target_versions.any?(&:closed?) && model.reopened?
+        errors.add :base, I18n.t(:error_can_not_reopen_work_package_on_closed_version)
       end
     end
 

@@ -1837,6 +1837,47 @@ RSpec.describe WorkPackages::SetAttributesService,
         end
       end
 
+      context "for target_versions" do
+        let(:shared_version) { build_stubbed(:version) }
+        let(:other_version) { build_stubbed(:version) }
+        let(:assigned_target_versions) { [] }
+
+        before do
+          without_partial_double_verification do
+            allow(work_package).to receive(:target_versions).and_return([shared_version, other_version])
+            allow(work_package).to receive(:target_versions=) { |versions| assigned_target_versions.replace(versions) }
+          end
+        end
+
+        context "when none are shared in the new project" do
+          it "clears all target versions" do
+            subject
+
+            expect(assigned_target_versions).to be_empty
+          end
+        end
+
+        context "when some are shared in the new project" do
+          let(:new_versions) { [shared_version] }
+
+          it "keeps only the shared target versions" do
+            subject
+
+            expect(assigned_target_versions).to eq([shared_version])
+          end
+        end
+
+        context "when all are shared in the new project" do
+          let(:new_versions) { [shared_version, other_version] }
+
+          it "keeps all target versions" do
+            subject
+
+            expect(assigned_target_versions).to eq([shared_version, other_version])
+          end
+        end
+      end
+
       context "for category" do
         before do
           work_package.category = category

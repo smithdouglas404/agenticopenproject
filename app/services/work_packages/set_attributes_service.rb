@@ -266,6 +266,7 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
 
     model.change_by_system do
       set_version_to_nil
+      clear_target_versions_not_in_project
       reassign_category
       set_parent_to_nil
 
@@ -354,6 +355,13 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
        work_package.project&.shared_versions&.exclude?(work_package.version)
       work_package.version = nil
     end
+  end
+
+  def clear_target_versions_not_in_project
+    return if work_package.target_versions.empty?
+
+    shared = work_package.project&.shared_versions || Version.none
+    work_package.target_versions = work_package.target_versions.select { |v| shared.include?(v) }
   end
 
   def set_parent_to_nil
