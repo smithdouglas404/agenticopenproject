@@ -47,7 +47,7 @@ module Import
         firstname:,
         lastname:,
         mail: payload["emailAddress"],
-        status: payload["active"] ? :active : :locked
+        status: :locked
       }
     end
 

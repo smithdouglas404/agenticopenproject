@@ -69,5 +69,15 @@ module Import
     def project_ids
       (projects || []).pluck("id")
     end
+
+    def destroy_jira_objects
+      Import::JiraField.where(jira_import_id: id).destroy_all
+      Import::JiraIssue.where(jira_import_id: id).destroy_all
+      Import::JiraIssueType.where(jira_import_id: id).destroy_all
+      Import::JiraPriority.where(jira_import_id: id).destroy_all
+      Import::JiraProject.where(jira_import_id: id).destroy_all
+      Import::JiraStatus.where(jira_import_id: id).destroy_all
+      Import::JiraUser.where(jira_import_id: id).destroy_all
+    end
   end
 end

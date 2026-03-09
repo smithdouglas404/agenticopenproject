@@ -37,7 +37,8 @@ module Import
                       delete_users
                       delete_groups
                       delete_project_roles
-                      delete_references].freeze
+                      delete_references
+                      delete_jira_objects].freeze
 
     def build_enumerator(jira_import_id, cursor:)
       @jira_import = Import::JiraImport.find(jira_import_id)
@@ -134,6 +135,10 @@ module Import
 
     def delete_references
       Import::JiraOpenProjectReference.where(jira_import_id: @jira_import.id).delete_all
+    end
+
+    def delete_jira_objects
+      @jira_import.destroy_jira_objects
       @jira_import.transition_to!(:reverted, job_id: job_id)
     end
   end

@@ -28,36 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira::ImportRuns
-  class StatusBadgeComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
+module Users
+  class JiraImportUpdateContract < BaseContract
+    validate :user_limit_not_exceeded
 
-    def initialize(status, **system_arguments)
-      super
+    private
 
-      @title = I18n.t(status.to_s, default: "", scope: "admin.jira.run.status")
-      @system_arguments = system_arguments.merge({ bg: status_color_scheme(status) })
-    end
-
-    def status_color_scheme(status)
-      case status
-      when Import::JiraImportStateMachine::IMPORT_ERROR,
-           Import::JiraImportStateMachine::REVERT_ERROR,
-           Import::JiraImportStateMachine::INSTANCE_META_ERROR,
-           Import::JiraImportStateMachine::PROJECTS_META_ERROR,
-           Import::JiraImportStateMachine::FINALIZING_ERROR
-        :danger
-      when Import::JiraImportStateMachine::FINALIZING_DONE,
-           Import::JiraImportStateMachine::REVERTED
-        :success
-      when Import::JiraImportStateMachine::INSTANCE_META_FETCHING,
-           Import::JiraImportStateMachine::PROJECTS_META_FETCHING,
-           Import::JiraImportStateMachine::IMPORTING,
-           Import::JiraImportStateMachine::FINALIZING,
-           Import::JiraImportStateMachine::REVERTING
-        :accent
-      else
-        :attention
+    def user_limit_not_exceeded
+      if OpenProject::Enterprise.user_limit_reached?
+        errors.add :base, :user_limit_reached
       end
     end
   end

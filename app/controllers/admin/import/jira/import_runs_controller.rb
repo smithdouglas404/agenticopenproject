@@ -150,7 +150,7 @@ module Admin::Import::Jira
     end
 
     def finalize
-      @jira_import.transition_to!(:completed)
+      @jira_import.transition_to!(:finalizing)
     end
 
     def find_jira_and_jira_import

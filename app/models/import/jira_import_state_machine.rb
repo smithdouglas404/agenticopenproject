@@ -48,13 +48,16 @@ module Import
     state :importing
     state :import_error
     state :imported
-    state :completed
 
     state :reverting
     state :revert_error
     state :revert_cancelling
     state :revert_cancelled
     state :reverted
+
+    state :finalizing
+    state :finalizing_error
+    state :finalizing_done
 
     transition from: INITIAL,                to: [INSTANCE_META_FETCHING]
     transition from: INSTANCE_META_FETCHING, to: [INSTANCE_META_DONE, INSTANCE_META_ERROR]
@@ -66,7 +69,9 @@ module Import
     transition from: PROJECTS_META_DONE,     to: [IMPORTING]
     transition from: IMPORTING,              to: [IMPORTED, IMPORT_ERROR]
     transition from: IMPORT_ERROR,           to: [IMPORTING, REVERTING]
-    transition from: IMPORTED,               to: [COMPLETED, REVERTING]
+    transition from: IMPORTED,               to: [FINALIZING, REVERTING]
+    transition from: FINALIZING,             to: [FINALIZING_ERROR, FINALIZING_DONE]
+    transition from: FINALIZING_ERROR,       to: [FINALIZING]
     transition from: REVERTING,              to: [REVERTED, REVERT_CANCELLING, REVERT_ERROR]
     transition from: REVERT_CANCELLING,      to: [REVERT_CANCELLED]
     transition from: REVERT_CANCELLED,       to: [REVERTING]
@@ -94,12 +99,17 @@ module Import
       transition.save!
     end
 
+    after_transition(to: :finalizing) do |jira_import, transition|
+      job = Import::JiraFinalizeImportJob.perform_later(jira_import.id)
+    end
+
     def status_running?
       [
         INSTANCE_META_FETCHING,
         PROJECTS_META_FETCHING,
         IMPORTING,
-        REVERTING
+        REVERTING,
+        FINALIZING
       ].include?(current_state)
     end
 

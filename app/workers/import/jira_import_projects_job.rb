@@ -184,7 +184,7 @@ module Import
               end
 
               service_call = WorkPackages::CreateService
-                               .new(user: author || User.system)
+                               .new(user: author || User.system, contract_class: EmptyContract)
                                .call(
                                  project:,
                                  subject: jira_issue.payload["fields"]["summary"],
@@ -277,7 +277,7 @@ module Import
         tempfile.define_singleton_method(:content_type) { mime_type }
         tempfile.define_singleton_method(:size) { size }
         call = Attachments::CreateService
-                 .new(user: author)
+                 .new(user: author, contract_class: EmptyContract)
                  .call(container: work_package, filename:, file: tempfile)
 
         call.on_failure do
@@ -289,7 +289,7 @@ module Import
 
     def add_member(project:, project_role:, member:, user:)
       service_call = Members::CreateService
-                       .new(user:)
+                       .new(user:, contract_class: EmptyContract)
                        .call(
                          project:,
                          roles: [project_role],

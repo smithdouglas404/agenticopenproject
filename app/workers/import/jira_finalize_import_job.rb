@@ -28,37 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira::ImportRuns
-  class StatusBadgeComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
+module Import
+  class JiraFinalizeImportJob < ApplicationJob
+    def perform(jira_import_id)
+      jira_import = Import::JiraImport.find(jira_import_id)
 
-    def initialize(status, **system_arguments)
-      super
-
-      @title = I18n.t(status.to_s, default: "", scope: "admin.jira.run.status")
-      @system_arguments = system_arguments.merge({ bg: status_color_scheme(status) })
+      unlock_active_jira_users(jira_import)
+      jira_import.destroy_jira_objects
+      jira_import.transition_to!(:finalizing_done)
+    rescue StandardError => e
+      jira_import&.transition_to!(:finalizing_error, error: e.message)
+      jira_import&.update!(job_id: nil, error: e.message)
     end
 
-    def status_color_scheme(status)
-      case status
-      when Import::JiraImportStateMachine::IMPORT_ERROR,
-           Import::JiraImportStateMachine::REVERT_ERROR,
-           Import::JiraImportStateMachine::INSTANCE_META_ERROR,
-           Import::JiraImportStateMachine::PROJECTS_META_ERROR,
-           Import::JiraImportStateMachine::FINALIZING_ERROR
-        :danger
-      when Import::JiraImportStateMachine::FINALIZING_DONE,
-           Import::JiraImportStateMachine::REVERTED
-        :success
-      when Import::JiraImportStateMachine::INSTANCE_META_FETCHING,
-           Import::JiraImportStateMachine::PROJECTS_META_FETCHING,
-           Import::JiraImportStateMachine::IMPORTING,
-           Import::JiraImportStateMachine::FINALIZING,
-           Import::JiraImportStateMachine::REVERTING
-        :accent
-      else
-        :attention
-      end
+    private
+
+    def unlock_active_jira_users(jira_import)
+      Import::JiraOpenProjectReference
+        .where(
+          jira_import_id: jira_import.id,
+          jira_entity_class: "Import::JiraUser",
+          uses_existing: false
+        )
+        .find_each do |ref|
+          jira_user = ref.jira_leg
+          next unless jira_user.payload["active"]
+
+          op_user = ref.op_leg
+        Journal::NotificationConfiguration.with(false) do
+          call = Users::UpdateService
+                   .new(model: user, user: User.system, contact_class: JiraImportUpdateContract)
+                   .call(status: :active)
+        end
+          call.on_failure do
+            raise call.message
+          end
+        end
     end
   end
 end

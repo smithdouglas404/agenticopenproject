@@ -52,16 +52,16 @@ module Import
     private
 
     def fetch_and_save_users_data(jira_import)
-      user_keys, mention_usernames = collect_user_to_import
+      user_keys, mention_usernames = collect_user_to_import(jira_import)
       resolve_mention_user_keys(mention_usernames, user_keys, jira_import.client)
       upsert_data = build_users_upsert_data(user_keys, jira_import)
       Import::JiraUser.upsert_all(upsert_data, unique_by: %i[jira_id jira_user_key])
     end
 
-    def collect_user_to_import
+    def collect_user_to_import(jira_import)
       user_keys = Set.new
       mention_usernames = Set.new
-      JiraIssue.find_each do |issue|
+      JiraIssue.where(jira_import:).find_each do |issue|
         collect_user_keys_from_issue(user_keys, mention_usernames, issue)
       end
       [user_keys, mention_usernames]
@@ -155,7 +155,7 @@ module Import
     # rubocop:disable Metrics/AbcSize
     def import_user(jira_user, jira_import)
       call = Users::CreateService
-               .new(user: User.system)
+               .new(user: User.system, contract_class: EmptyContract)
                .call(jira_user.to_op_attributes)
 
       call.on_success do |_result|

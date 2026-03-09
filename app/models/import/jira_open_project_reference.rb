@@ -35,12 +35,25 @@ module Import
     belongs_to :jira, class_name: "Import::Jira"
     belongs_to :jira_import, class_name: "Import::JiraImport"
 
+    def self.debug(jira_import_id)
+      where(jira_import_id:).order(:uses_existing).each do |ref|
+        op = ref.op_leg
+        jira = ref.jira_leg
+        a = ref.uses_existing
+        puts "USES_EXISTING=#{a.to_s.upcase} OPEN_PROJECT:#{op} JIRA:#{jira}"
+      end
+    end
+
     def op_leg
-      op_entity_class.constantize.find(op_entity_id)
+      op_entity_class&.constantize&.find(op_entity_id)
+    rescue ActiveRecord::RecordNotFound => e
+      raise "#{op_entity_class} with id #{op_entity_id} not found!"
     end
 
     def jira_leg
-      jira_entity_class.constantize.find(jira_entity_id)
+      jira_entity_class&.constantize&.find(jira_entity_id)
+    rescue ActiveRecord::RecordNotFound => e
+      raise "#{jira_entity_class} with id #{jira_entity_id} not found!"
     end
   end
 end
