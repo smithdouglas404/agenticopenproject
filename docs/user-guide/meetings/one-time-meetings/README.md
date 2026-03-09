@@ -58,7 +58,7 @@ Click the green **+ Template** button to create a new template. When creating a 
 
 ![Create new meeting template in OpenProject](openproject_userguide_meetings_create_new_template.png)
 
-In the template that opens, enter and save a title of that template. Define the agenda structure and add attachments to the template same way as you would when creating a one-time meeting.
+In the template that opens, enter and save a title. Define the agenda structure and add attachments to the template same way as you would when creating a one-time meeting.
 
 ![Name and define a new meeting template in OpenProject](openproject_userguide_meetings_templates_name_save.png)
 
