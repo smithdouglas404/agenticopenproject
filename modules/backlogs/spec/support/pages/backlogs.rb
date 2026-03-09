@@ -187,13 +187,19 @@ module Pages
     end
 
     def within_details_view(story, &)
+      details_view = expect_details_view(story)
+
+      yield details_view
+    end
+
+    def expect_details_view(story)
       details_view = Pages::PrimerizedSplitWorkPackage.new(story)
       details_view.expect_tab :overview
       details_view.expect_subject
 
       expect(page).to have_current_path details_backlogs_project_backlogs_path(story.project, story)
 
-      yield details_view
+      details_view
     end
 
     private

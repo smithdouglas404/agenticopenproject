@@ -186,6 +186,20 @@ RSpec.describe "Stories in backlog", :js, :settings_reset do
     backlogs_page.expect_story_in_sprint(sprint_story1, backlog)
   end
 
+  it "switches the details view from one story to another" do
+    backlogs_page
+      .click_in_story_menu(sprint_story1, "Open details view")
+
+    backlogs_page.expect_details_view(sprint_story1)
+    backlogs_page.expect_story_in_sprint(sprint_story2, sprint)
+
+    backlogs_page
+      .click_in_story_menu(sprint_story2, "Open details view")
+
+    backlogs_page.expect_details_view(sprint_story2)
+    backlogs_page.expect_story_in_sprint(sprint_story1, sprint)
+  end
+
   it "removes story from sprint when type is changed to non-story type via details view" do
     backlogs_page
       .edit_story_in_details_view(sprint_story2, type: task.name)
