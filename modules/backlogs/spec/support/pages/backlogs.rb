@@ -172,17 +172,19 @@ module Pages
 
     def within_backlog_menu(backlog, &)
       within_backlog(backlog) do
-        find(:button, accessible_name: "Backlog actions").click
+        button = find(:button, accessible_name: "Backlog actions")
+        button.click
 
-        within(:menu, &)
+        within_menu_controlled_by(button, &)
       end
     end
 
     def within_story_menu(story, &)
       within_story(story) do
-        find(:button, accessible_name: "Story actions").click
+        button = find(:button, accessible_name: "Story actions")
+        button.click
 
-        within(:menu, &)
+        within_menu_controlled_by(button, &)
       end
     end
 
@@ -198,6 +200,7 @@ module Pages
       details_view.expect_subject
 
       expect(page).to have_current_path details_backlogs_project_backlogs_path(story.project, story)
+      wait_for_network_idle
 
       details_view
     end
@@ -218,6 +221,14 @@ module Pages
 
     def story_selector(story)
       "#story_#{story.id}"
+    end
+
+    def within_menu_controlled_by(button)
+      menu_id = button[:controls] || button["aria-controls"]
+
+      within(:menu, id: menu_id) do
+        yield page
+      end
     end
   end
 end
