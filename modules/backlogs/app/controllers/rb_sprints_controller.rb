@@ -98,7 +98,7 @@ class RbSprintsController < RbApplicationController
 
     if call.success?
       render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_update))
-      update_sprint_header_component_via_turbo_stream(sprint: call.result, state: :show)
+      update_sprint_header_component_via_turbo_stream(sprint: call.result)
     else
       update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
     end
@@ -152,13 +152,8 @@ class RbSprintsController < RbApplicationController
     )
   end
 
-  def update_sprint_header_component_via_turbo_stream(sprint:, state: :show)
-    update_via_turbo_stream(
-      component: Backlogs::SprintHeaderComponent.new(
-        sprint:,
-        state:
-      )
-    )
+  def update_sprint_header_component_via_turbo_stream(sprint:)
+    update_via_turbo_stream(component: Backlogs::SprintHeaderComponent.new(sprint:))
   end
 
   def update_new_sprint_form_component_via_turbo_stream(sprint:, base_errors: nil)
