@@ -83,12 +83,21 @@ ca:
     backlog_component:
       blankslate_title: "%{name} is empty"
       blankslate_description: "No items planned yet. Drag items here to add them."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
         other: "%{count} stories in backlog"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "Backlog actions"
       action_menu:
@@ -99,6 +108,14 @@ ca:
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -126,8 +143,10 @@ ca:
   label_backlogs_unconfigured: "No has configurat les llistes de pendents encara. Si us plau, ves a %{administration} > %{plugins}, a continuació, fes clic a l'enllaç de %{configure} per a aquest plugin. Una vegada hagis omplert els camps, torna a aquesta pàgina per començar a utilitzar l'eina."
   label_blocks_ids: "Identificadors dels paquets de treball bloquejats"
   label_column_in_backlog: "Columna al backlog"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "A baix"
   label_points_burn_up: "Amunt"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Impediments de sprint"
   label_sprint_new: "New sprint"
   label_task_board: "Tauler de tasques"

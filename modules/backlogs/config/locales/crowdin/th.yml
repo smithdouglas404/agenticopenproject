@@ -81,12 +81,21 @@ th:
     backlog_component:
       blankslate_title: "%{name} ว่างอยู่"
       blankslate_description: "ยังไม่มีรายการที่วางแผนไว้ ลากรายการมาวางที่นี่เพื่อเพิ่ม"
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "พับ/ขยาย %{name}"
       label_story_count:
         zero: "ไม่มีสตอรี่ในรายการงานคงค้าง"
         one: "%{count} สตอรี่ในรายการงานคงค้าง"
         other: "%{count} สตอรี่ในรายการงานคงค้าง"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "การจัดการรายการงานคงค้าง"
       action_menu:
@@ -97,6 +106,14 @@ th:
         burndown_chart: "กราฟติดตามงาน (Burndown)"
         wiki: "วิกิ"
         properties: "คุณสมบัติ"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "ย้าย %{name}"
     story_menu_component:
@@ -124,8 +141,10 @@ th:
   label_backlogs_unconfigured: "คุณยังไม่ได้ตั้งค่ารายการงานคงค้าง กรุณาไปที่ %{administration} > %{plugins} จากนั้นคลิกที่ลิงก์ %{configure} ของปลั๊กอินนี้ เมื่อคุณตั้งค่าฟิลด์ต่าง ๆ เรียบร้อยแล้ว ให้กลับมาที่หน้านี้เพื่อเริ่มใช้งานเครื่องมือ"
   label_blocks_ids: "Id ของแพคเกจการทำงานที่ถูกบล็อก"
   label_column_in_backlog: "คอลัมน์ในรายการงานคงค้าง"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "ลง"
   label_points_burn_up: "ขึ้น"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "อุปสรรคของสปรินท์"
   label_sprint_new: "สปรินท์ใหม่"
   label_task_board: "กระดานงาน"

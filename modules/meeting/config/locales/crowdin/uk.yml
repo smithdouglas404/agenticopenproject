@@ -629,7 +629,7 @@ uk:
   text_meeting_draft_banner: "Зараз ви працюєте в режимі чернетки: оновлення або запрошення з календаря не надсилатимуться щодо цієї наради, навіть якщо змінити її дані або додати/видалити учасників."
   text_onetime_meeting_template_banner: "Ви редагуєте шаблон наради. Цей шаблон можна використовувати для створення одноразових нарад із заздалегідь визначеним порядком денним. Зміни не вплинуть на вже створені наради."
   text_onetime_meeting_template_empty_heading: "Цей шаблон наради порожній"
-  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
+  text_onetime_meeting_template_empty_description: "Сюди можна додавати пункти порядку денного, розділи й вкладення. Їх буде включено в кожну зустріч, створену з використанням цього шаблону."
   text_exit_draft_mode_dialog_title: "Відкрити цю нараду й надіслати запрошення?"
   text_exit_draft_mode_dialog_subtitle: "Запланувавши нараду, не можна повернутися в режим чернетки."
   text_exit_draft_mode_dialog_template_title: "Відкрити першу нараду цієї серії?"

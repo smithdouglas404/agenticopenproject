@@ -83,12 +83,21 @@ fr:
     backlog_component:
       blankslate_title: "%{name} est vide"
       blankslate_description: "Aucun élément n'a encore été planifié. Faites glisser les éléments ici pour les ajouter."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "Réduire/développer %{name}"
       label_story_count:
         zero: "Aucune histoire dans le backlog"
         one: "%{count} histoire dans le backlog"
         other: "%{count} histoires dans le backlog"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "Actions dans le backlog"
       action_menu:
@@ -99,6 +108,14 @@ fr:
         burndown_chart: "Graphique burndown"
         wiki: "Wiki"
         properties: "Propriétés"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "Déplacer %{name}"
     story_menu_component:
@@ -126,8 +143,10 @@ fr:
   label_backlogs_unconfigured: "Vous n'avez pas encore configuré Backlogs. Veuillez vous rendre dans %{administration} > %{plugins}, puis cliquer sur le lien %{configure} pour ce plugin. Une fois que vous avez défini les champs, revenez sur cette page pour commencer à utiliser l'outil."
   label_blocks_ids: "ID des lots de travaux bloqués"
   label_column_in_backlog: "Colonne dans le backlog"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "Vers le bas"
   label_points_burn_up: "Vers le haut"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Obstacles de sprint"
   label_sprint_new: "Nouveau sprint"
   label_task_board: "Tableau des tâches"

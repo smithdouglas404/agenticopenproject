@@ -255,11 +255,11 @@ uk:
               label_progress: "Отримання даних із Jira…"
               elements:
                 relations: "Зв’язки між проблемами"
-                workflows: "Project-level workflows"
+                workflows: "Робочі процеси на рівні проєктів"
                 users: "Користувачі"
                 sprints: "Спринти"
                 schemes: "Схеми"
-                permissions: "User, group and project permissions"
+                permissions: "Дозволи для користувачів, груп і проєктів"
             confirm_import:
               title: "Імпортуйте дані"
               caption: "Перегляньте налаштування імпорту й запустіть його"
@@ -287,19 +287,19 @@ uk:
           revert_dialog:
             title: "Остаточно скасувати цей імпорт?"
             description: "Буде видалено всі імпортовані об’єкти (зокрема цілі проєкти), навіть якщо користувачі виконували з ними дії в OpenProject після імпорту."
-            confirm: "I understand that this reversion will delete data permanently"
+            confirm: "Я розумію, що скасування внесених змін призведе до остаточного видалення даних"
           finalize_dialog:
-            title: "Finalize this import?"
-            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
-            confirm: "I understand that this action cannot be undone"
-            confirm_button: "Understood"
+            title: "Завершити цей імпорт?"
+            description: "Якщо ви завершите цей імпорт, то більше не зможете його скасувати. Усі імпортовані дані буде остаточно збережено в системі."
+            confirm: "Я розумію, що цю дію не можна відмінити"
+            confirm_button: "Зрозуміло"
           select_projects:
-            title: "Select projects"
+            title: "Виберіть проєкти"
     mcp_configurations:
       index:
         description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta."
         resources_heading: "Ресурси"
-        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject реалізує наведені нижче ресурси. Кожен із них можна ввімкнути, перейменувати й описати як завгодно. Щоб дізнатися більше, ознайомтеся з [документацією щодо ресурсів MCP] (docs_url)."
         resources_submit: "Оновити ресурси"
         tools_heading: "Інструменти"
         tools_description: "OpenProject реалізує наведені нижче інструменти. Кожен із них можна ввімкнути, перейменувати й описати як завгодно. Щоб дізнатися більше, ознайомтеся з [документацією щодо інструментів MCP] (docs_url)."
@@ -308,9 +308,9 @@ uk:
         success: "Конфігурації MCP оновлено."
       server_form:
         description_caption: "Опис сервера MCP для інших додатків, які підключаються до нього."
-        title_caption: "A short title shown to applications that connect to the MCP server."
-        tool_response_format: "Tool response format"
-        tool_response_format_content_only_label: "Content only"
+        title_caption: "Короткий заголовок, який відображається для додатків, що підключаються до сервера MCP."
+        tool_response_format: "Формат відповіді інструмента"
+        tool_response_format_content_only_label: "Лише вміст"
         tool_response_format_content_only_caption: >
           Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
         tool_response_format_full_label: "Full"
@@ -585,8 +585,8 @@ uk:
         all: "eg. ^[A-Z0-9]+$"
         project: "eg. ^[A-Z0-9]+$"
       min_max:
-        all: "0 means no restriction"
-        project: "0 means no restriction"
+        all: "0 означає відсутність обмежень"
+        project: "0 означає відсутність обмежень"
       has_comment:
         project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
@@ -608,7 +608,7 @@ uk:
   mcp_configurations:
     server_url_component:
       caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
-      label: "Server URL"
+      label: "URL-адреса сервера"
   op_dry_validation:
     or: "або"
     errors:
@@ -1384,11 +1384,11 @@ uk:
   activerecord:
     attributes:
       jira_import:
-        projects: "Projects"
+        projects: "Проєкти"
       "import/jira":
-        name: "Jira instance name"
-        url: "Jira instance URL"
-        personal_access_token: "Personal access token"
+        name: "Назва екземпляра Jira"
+        url: "URL-адреса екземпляра Jira"
+        personal_access_token: "Персональний маркер доступу"
       announcements:
         show_until: "Показувати до"
       attachment:
@@ -1763,7 +1763,7 @@ uk:
         not_available: "– недоступно через налаштування системи."
         not_deletable: "не можна видалити."
         not_current_user: "не поточний користувач."
-        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
+        only_one_active_sprint_allowed: "дозволяється лише один активний спринт для кожного проєкту."
         not_found: "не знайдено."
         not_a_date: "не є дійсною датою."
         not_a_datetime: "не є дійсним датою."
@@ -1873,7 +1873,7 @@ uk:
         meeting:
           error_conflict: "Не вдалося зберегти, тому що зустріч була оновлена кимось іншим в цей час. Будь ласка, перезавантажте сторінку."
         message:
-          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
+          cannot_move_message_to_forum_of_different_project: "Повідомлення не можна перенести на форум іншого проєкту."
         notifications:
           at_least_one_channel: "Необхідно вказати принаймні один канал для надсилання сповіщень."
           attributes:
@@ -2132,7 +2132,7 @@ uk:
               in_use: "Це ім’я маркера вже використовується; виберіть інше"
               format: "%{message}"
         jira:
-          invalid_protocol: "Please provide a valid protocol (http or https)"
+          invalid_protocol: "Укажіть дійсний протокол (http або https)"
       template:
         body: "Перевірте наступні поля:"
         header:
@@ -2157,7 +2157,7 @@ uk:
       comment: "Коментар"
       custom_action: "Спеціальні дії"
       custom_field: "Користувацьке поле"
-      customized: "Customized"
+      customized: "Персоналізовано"
       "doorkeeper/application": "Програма OAuth"
       enterprise_token:
         one: "Маркер Enterprise"
@@ -2373,7 +2373,7 @@ uk:
     role: "роль"
     roles: "Роль"
     search: "Пошук"
-    sprint: "Sprint"
+    sprint: "Спринт"
     start_date: "Початок"
     status: "Статус"
     state: "Стан"
@@ -2785,7 +2785,7 @@ uk:
       gantt_pdf_export: Експорт діаграми Ґантта в PDF
       ldap_groups: Синхронізація користувачів і груп LDAP
       mcp_server: Model Context Protocol (MCP)
-      meeting_templates: Reusable meeting templates
+      meeting_templates: Шаблони нарад, які можна використовувати повторно
       nextcloud_sso: Єдиний вхід для сховища Nextcloud
       one_drive_sharepoint_file_storage: Сховище файлів OneDrive / SharePoint
       placeholder_users: Прототипи користувачів
@@ -3185,7 +3185,7 @@ uk:
             line_0: AI workflows with a secure MCP server (Professional plan and higher)
             line_1: Improved project home page with new widget for budgets and improved accessibility
             line_2: "Meetings: Meeting templates (Basic plan and higher)"
-            line_3: Better transparency with project attribute comments.
+            line_3: Більша прозорість завдяки коментарям до атрибутів проєктів.
             line_4: PDF export enhancements
             line_5: Increased security for external links (Premium plan and higher)
             line_6: Покращення UI/UX у модулі беклогів
@@ -3210,7 +3210,7 @@ uk:
       budget_deleted: "Budget has been deleted"
       dates_changed: "Дати змінено"
       default_attribute_written: "Атрибути лише для читання записано"
-      import: "Imported"
+      import: "Імпортовано"
       progress_mode_changed_to_status_based: "Обчислення прогресу оновлено"
       status_changed: "Статус «%{status_name}»"
       system_update: "Оновлення системи OpenProject"

@@ -83,12 +83,21 @@ fa:
     backlog_component:
       blankslate_title: "%{name} خالی است"
       blankslate_description: "هنوز موردی برنامه ریزی نشده است. موارد را برای اضافه کردن به اینجا بکشید."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "جمع کردن/باز کردن %{name}"
       label_story_count:
         zero: "هیچ داستانی در لیست انتظار نیست"
         one: "%{count} داستان در لیست کار های عقب افتاده"
         other: "%{count} داستان های در لیست کارهای عقب افتاده"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "اقدامات عقب افتاده"
       action_menu:
@@ -99,6 +108,14 @@ fa:
         burndown_chart: "نمودار خلاصه"
         wiki: "ویکی"
         properties: "ویژگی ها"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "انتقال %{name}"
     story_menu_component:
@@ -126,8 +143,10 @@ fa:
   label_backlogs_unconfigured: "شما هنوز پس‌افت‌ها را پیکربندی نکرده‌اید. لطفاً به %{administration} > %{plugins} بروید، سپس برای این افزونه روی %{configure}  کلیک کنید. وقتی همۀ قسمت‌ها را تکمیل کردید، برای استفاده از این ابزار به همین صفحه برگردید. "
   label_blocks_ids: "شناسه‌های مسدود کاربسته‌ها"
   label_column_in_backlog: "ستون در پس‌افت"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "پایین"
   label_points_burn_up: "بالا"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: " موانع تاخت"
   label_sprint_new: "New sprint"
   label_task_board: "تابلوی وظیفه"

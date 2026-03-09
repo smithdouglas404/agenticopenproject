@@ -2673,7 +2673,7 @@ de:
       gantt_pdf_export: Gantt PDF Export
       ldap_groups: LDAP-Benutzer- und Gruppensynchronisation
       mcp_server: Model Context Protocol (MCP)
-      meeting_templates: Reusable meeting templates
+      meeting_templates: Wiederverwendbare Besprechungs-Vorlagen
       nextcloud_sso: Single Sign-On für Nextcloud-Speicher
       one_drive_sharepoint_file_storage: OneDrive/SharePoint-Datei-Speicher
       placeholder_users: Platzhalter-Benutzer
@@ -3071,8 +3071,8 @@ de:
             line_0: AI workflows with a secure MCP server (Professional plan and higher)
             line_1: Improved project home page with new widget for budgets and improved accessibility
             line_2: "Meetings: Meeting templates (Basic plan and higher)"
-            line_3: Better transparency with project attribute comments.
-            line_4: PDF export enhancements
+            line_3: Bessere Transparenz durch Kommentare zu Projektattributen.
+            line_4: Verbesserungen beim PDF-Export
             line_5: Increased security for external links (Premium plan and higher)
             line_6: UI/UX improvements in the Backlogs module
             line_7: Harmonized custom field forms
