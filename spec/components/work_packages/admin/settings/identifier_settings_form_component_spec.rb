@@ -66,6 +66,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
     it "renders the radio buttons as disabled" do
       render_component(component)
       expect(page).to have_field("Instance-wide numerical sequence (default)", disabled: true)
+      expect(page).to have_field("Project-based alphanumerical identifiers", disabled: true)
     end
 
     it "does not render the save or autofix buttons" do
@@ -96,6 +97,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
     it "renders the radio buttons as enabled" do
       render_component(component)
       expect(page).to have_field("Instance-wide numerical sequence (default)", disabled: false)
+      expect(page).to have_field("Project-based alphanumerical identifiers", disabled: false)
     end
 
     it "does not call PreviewQuery" do
