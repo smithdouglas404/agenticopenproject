@@ -46,7 +46,7 @@ For information on setting up recurring meeting series and templates, please ref
 
 Meeting templates allow you to reuse a predefined meeting structure when creating one-time meetings. They make it easy to start meetings with a proven structure instead of creating the agenda from scratch each time. 
 
-Meeting templates can be created either globally or within a specific project. To access them, open the **Meetings** module and select **Templates** from the left-hand menu. In the **Templates** view you can see all templates you have access to. When viewing templates globally, an additional **Project** column indicates which project each template belongs to. 
+Meeting templates are always associated with a specific project, but they can be created either from within a project or from the global **Meetings** page. To access them, open the **Meetings** module and select **Templates** from the left-hand menu. In the **Templates** view you can see all templates you have access to. When viewing templates globally, an additional **Project** column indicates which project each template belongs to. 
 
 ![Reusable meeting templates in OpenProject](openproject_userguide_meetings_templates.png)
 
@@ -73,7 +73,7 @@ When creating a new **one-time meeting**, you can optionally select a **Meeting 
 > [!NOTE]
 > Changes made to the template later will not affect meetings that were already created from it.
 
-You can also open a template and click **Create meeting from template** to create a new meeting in the same project.
+You can also open a template and click **+ Meeting** button to create a new meeting in the same project.
 
 ![Create a new one-time meeting from a meeting template view in OpenProject meeting template](openproject_userguide_meetings_templates_create_new_meeting.png)
 
