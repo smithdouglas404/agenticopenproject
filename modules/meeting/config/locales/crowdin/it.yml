@@ -126,7 +126,6 @@ it:
   label_meeting_template_edit: "Modifica modello"
   label_meeting_create_from_template: "Crea una riunione da un modello"
   label_meeting_new: "Nuova riunione"
-  caption_meeting_template_select: "Seleziona un modello per copiare automaticamente i suoi elementi dell'ordine del giorno"
   label_meeting_new_dynamic: "Nuova riunione una tantum"
   label_meeting_new_recurring: "Nuova riunione ricorrente"
   label_meeting_create: "Crea riunione"
@@ -195,6 +194,8 @@ it:
   label_time_zone: "Fuso orario"
   label_start_date: "Data di inizio"
   label_subscribe_icalendar: "Iscriviti al calendario"
+  caption_meeting_template_select: "Seleziona un modello per copiare automaticamente i suoi elementi dell'ordine del giorno"
+  caption_template_project_select: "Seleziona il progetto in cui creare questo modello di riunione"
   meeting:
     participants:
       label:
@@ -613,7 +614,7 @@ it:
   text_meeting_draft_banner: "Al momento sei in modalità bozza. Questa riunione non invierà alcun aggiornamento del calendario né inviti, anche in caso di modifica dei dettagli della riunione o di aggiunta o rimozione di partecipanti."
   text_onetime_meeting_template_banner: "Stai modificando un modello di riunione. Puoi utilizzare questo modello per creare riunioni singole con un ordine del giorno predefinito. Le modifiche non influiranno sulle riunioni già create."
   text_onetime_meeting_template_empty_heading: "Questo modello di riunione è vuoto"
-  text_onetime_meeting_template_description: "Aggiungi a questo modello i punti all'ordine del giorno e gli allegati. Saranno inclusi in ogni riunione basata su questo modello."
+  text_onetime_meeting_template_empty_description: "Aggiungi a questo modello i punti all'ordine del giorno, le sezioni e gli allegati. Saranno inclusi in ogni riunione creata usando questo modello."
   text_exit_draft_mode_dialog_title: "Aprire questa riunione e inviare gli inviti?"
   text_exit_draft_mode_dialog_subtitle: "Non può tornare alla modalità bozza una volta programmata una riunione."
   text_exit_draft_mode_dialog_template_title: "Aprire la prima occorrenza di questa serie di riunioni?"
