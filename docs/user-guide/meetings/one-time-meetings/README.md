@@ -73,7 +73,7 @@ When creating a new **one-time meeting**, you can optionally select a **Meeting 
 > [!NOTE]
 > Changes made to the template later will not affect meetings that were already created from it.
 
-You can also open a template and click **+ Meeting** button to create a new meeting in the same project.
+You can also open a template and click the **+ Meeting** button to create a new meeting in the same project.
 
 ![Create a new one-time meeting from a meeting template view in OpenProject meeting template](openproject_userguide_meetings_templates_create_new_meeting.png)
 
