@@ -30,10 +30,10 @@ RSpec.describe Projects::SprintSharing do
   end
 
   describe "scopes" do
-    let!(:no_sharing_project) { create(:project, sprint_sharing: "no_sharing") }
-    let!(:all_projects_sharer) { create(:project, sprint_sharing: "share_all_projects") }
-    let!(:subprojects_sharer) { create(:project, sprint_sharing: "share_subprojects") }
-    let!(:receiver) { create(:project, sprint_sharing: "receive_shared") }
+    shared_let(:no_sharing_project) { create(:project, sprint_sharing: "no_sharing") }
+    shared_let(:all_projects_sharer) { create(:project, sprint_sharing: "share_all_projects") }
+    shared_let(:subprojects_sharer) { create(:project, sprint_sharing: "share_subprojects") }
+    shared_let(:receiver) { create(:project, sprint_sharing: "receive_shared") }
 
     describe ".share_sprints_with_all_projects" do
       it "returns projects that share with all projects" do
