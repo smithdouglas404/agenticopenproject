@@ -103,7 +103,7 @@ module Storages
           end
 
           def extract_location(json)
-            # the host_uri (host_uri here) always include a trailing slash, so we re-add it.
+            # the host_uri always includes a trailing slash, so we re-add it.
             "/#{json[:webUrl].delete_prefix(host_uri)}"
           end
 
