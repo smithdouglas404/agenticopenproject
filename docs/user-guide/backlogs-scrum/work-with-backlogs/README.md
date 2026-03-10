@@ -40,15 +40,15 @@ In order to create a new work package in the *Backlogs* module, click on the **M
 
 ![Create a new user story from a product backlog in Backlogs module in OpenProject](openproject_user_guide_backlogs_new_user_story.png)
 
-A pop-up form will appear to create a new work package. Here, you directly specify the work package type, subject and description. The list of types contains those work package types that are activated in the [System Administration](../../../system-admin-guide/backlogs/). Click **Create** to proceed.
+> A form dialog will appear to create a new work package. Here, you directly specify the work package type, subject and description. The list of types contains those work package types that are activated in the [System Administration](../../../system-admin-guide/backlogs/). Click **Create** to proceed.
 
 ![A form to create a new work package in Backlogs module](openproject_user_guide_backlogs_new_wp_form.png)
 
-A new line will be added in the backlogs to show the newly created story.
+A new item will be added to the backlog to display the newly created story.
 
 ![newly created user story added to a sprint in Backlogs module in OpenProject](openproject_user_guide_backlogs_new_user_story_added.png)
 
-Clicking on a line within the sprint opens the work package detail view on the right side, so you can make adjustments while staying in the Backlogs module.
+> Clicking on an item within the sprint opens the work package detail view on the right side, so you can make adjustments while staying in the Backlogs module.
 
 ![User story opened in a detailed view on the right side of sprints in Backlogs module in OpenProject](openproject_user_guide_backlogs_story_detailed_view.png)
 
