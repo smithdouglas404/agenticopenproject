@@ -224,7 +224,6 @@ Four summary widgets provide a quick overview of the financial situation of the 
 The **Budget by cost type** widget displays a **pie chart** showing the distribution of planned budget across different cost types, including: 
 - All cost types currently used in the budgets
 - **Labor costs** as an additional cost type (if greater than 0)
-- **Base amount** as an additional cost type (if defined)
 
 Click the **View budget details** link at the bottom of the widget to open the budgets page for the current project.
 
