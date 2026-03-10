@@ -3667,7 +3667,6 @@ en:
   label_float: "Float"
   label_folder: "Folder"
   label_follows: "follows"
-  label_force_user_language_to_default: "Set language of users having a non allowed language to default"
   label_form_configuration: "Form configuration"
   label_formula: "Formula"
   label_gantt_chart: "Gantt chart"
