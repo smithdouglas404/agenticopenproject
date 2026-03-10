@@ -40,6 +40,10 @@ Rails.application.routes.draw do
         get :edit_dialog
         put :update_agile_sprint
       end
+
+      resources :stories, controller: :rb_stories, only: [] do
+        put :move
+      end
     end
   end
 
