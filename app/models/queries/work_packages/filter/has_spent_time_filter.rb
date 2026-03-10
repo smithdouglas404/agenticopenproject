@@ -50,34 +50,20 @@ class Queries::WorkPackages::Filter::HasSpentTimeFilter < Queries::WorkPackages:
   def where
     return nil if values.blank?
 
-    if values.size == 1
-      date = values[0].blank? ? nil : Date.parse(values[0])
+    from_date = values[0].blank? ? nil : Date.parse(values[0])
+    to_date   = values[1].blank? ? nil : Date.parse(values[1])
 
-      <<-SQL
-        EXISTS (
-          SELECT 1
-          FROM time_entries
-          WHERE time_entries.entity_type = 'WorkPackage'
-            AND time_entries.entity_id = work_packages.id
-            AND time_entries.spent_on = '#{quoted_date_from_utc(date)}'
-            AND time_entries.hours > 0
-        )
-      SQL
-    else
-      from_date = values[0].blank? ? nil : Date.parse(values[0])
-      to_date = values[1].blank? ? nil : Date.parse(values[1])
-
-      <<-SQL
-        EXISTS (
-          SELECT 1
-          FROM time_entries
-          WHERE time_entries.entity_type = 'WorkPackage'
-            AND time_entries.entity_id = work_packages.id
-            AND #{date_range_clause('time_entries', 'spent_on', from_date, to_date)}
-            AND time_entries.hours > 0
-        )
-      SQL
-    end
+    <<~SQL.squish
+      EXISTS (
+        SELECT 1
+        FROM time_entries
+        WHERE time_entries.entity_type = 'WorkPackage'
+          AND time_entries.entity_id = work_packages.id
+          AND #{date_range_clause('time_entries', 'spent_on', from_date, to_date)}
+          AND time_entries.hours > 0
+          AND time_entries.ongoing = false
+      )
+    SQL
   rescue Date::Error
     nil
   end

@@ -28,21 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module Queries
-      module Schemas
-        class HasSpentTimeFilterDependencyRepresenter <
-          FilterDependencyRepresenter
-          def href_callback; end
+require "spec_helper"
 
-          private
+RSpec.describe API::V3::Queries::Schemas::HasSpentTimeFilterDependencyRepresenter do
+  let(:filter) { instance_double(Queries::WorkPackages::Filter::HasSpentTimeFilter) }
+  let(:operator) { instance_double(Queries::Operators::BetweenDate, to_sym: :"<>d") }
+  let(:representer) { described_class.new(filter, operator, current_user: nil) }
 
-          def type
-            "[2]Date"
-          end
-        end
-      end
+  describe "#type" do
+    it 'returns "[2]Date"' do
+      expect(representer.send(:type)).to eq("[2]Date")
+    end
+  end
+
+  describe "#href_callback" do
+    it "returns nil" do
+      expect(representer.href_callback).to be_nil
     end
   end
 end
