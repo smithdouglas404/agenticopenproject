@@ -5,100 +5,101 @@ description: Business and technical analysis report for the OpenProject project.
 keywords: openproject, business analysis, technical analysis
 ---
 
-# OpenProject 项目分析报告（业务 + 技术）
+# OpenProject project analysis report (business + technical)
 
-> 基于仓库现有文档（README、开发文档与架构文档）的简要分析，面向产品、研发与实施团队。
+> Concise analysis based on existing repository documentation (README, development guides, and architecture docs), intended for product, engineering, and implementation teams.
 
-## 1. 项目定位与业务价值
+## 1. Project positioning and business value
 
-OpenProject 是一个 Web 端开源项目管理平台，核心目标是支持团队完成从规划、执行到交付的全流程协作。
+OpenProject is a web-based, open-source project management platform. Its core value is supporting end-to-end collaboration from planning and execution to delivery.
 
-从业务场景看，它覆盖：
+From a business capability perspective, it covers:
 
-- 项目计划与排期（Roadmap、甘特、任务分解）
-- 团队协作与执行（Work packages、看板、讨论、Wiki）
-- 敏捷研发管理（Agile/Scrum）
-- 过程与成本管理（工时、预算、成本）
-- 研发协同集成（GitHub / GitLab / Nextcloud 等）
+- Project planning and scheduling (roadmaps, Gantt, task breakdown)
+- Team collaboration and execution (work packages, boards, forums, wiki)
+- Agile delivery management (Agile/Scrum)
+- Process and cost management (time tracking, budgeting, cost reporting)
+- Development integrations (GitHub / GitLab / Nextcloud and others)
 
-从商业模式看，项目提供：
+From a product model perspective, it provides:
 
-- **Community Edition**：开源免费，自托管
-- **Enterprise Edition**：企业增强能力（如高级集成、支持服务、云托管/本地部署）
+- **Community edition**: open-source and free, self-hosted
+- **Enterprise edition**: enterprise features and support (e.g., OIDC/SAML SSO, LDAP, SCIM API, Nextcloud integration, cloud/on-prem options)
+- **BIM edition**: a construction-focused edition with BIM-related capabilities
 
-这类“双版本”模式在保证社区活跃度的同时，也形成可持续商业闭环。
+This dual-edition model helps keep the community open while supporting sustainable commercial operations.
 
-## 2. 目标用户与典型应用场景
+## 2. Target users and typical scenarios
 
-### 2.1 目标用户
+### 2.1 Target users
 
-- 软件研发团队（需求、研发、测试、发布协同）
-- 项目/PMO 团队（多项目管理、里程碑与进度跟踪）
-- 需要私有化部署的组织（政府、教育、制造、建筑等）
+- Software delivery teams (product, engineering, QA, release coordination)
+- Project/PMO teams (multi-project management, milestones, progress tracking)
+- Organizations requiring self-hosting/private deployment (public sector, education, manufacturing, construction, etc.)
 
-### 2.2 典型场景
+### 2.2 Typical scenarios
 
-- 跨角色协作：产品、研发、测试、运维在统一平台追踪工作包
-- 研发管理：需求与 Pull Request 关联，形成端到端可追溯链路
-- 企业管理：通过 LDAP/SSO/SAML/OIDC 等融入企业身份体系
+- Cross-role collaboration: product, engineering, QA, and operations track work in one place
+- Engineering traceability: requirements linked with Pull Requests for end-to-end visibility
+- Enterprise operations: identity integration through LDAP/SSO/SAML/OIDC
 
-## 3. 技术架构分析
+## 3. Technical architecture analysis
 
-### 3.1 技术栈（仓库当前方向）
+### 3.1 Technology stack (current repository direction)
 
-- **后端**：Ruby on Rails（MVC）
-- **前端**：Hotwire（Turbo + Stimulus）为新方向；仓库中仍有部分 Angular 代码并逐步迁移
-- **数据层**：PostgreSQL
-- **应用服务**：Puma
-- **异步任务**：后台 worker
-- **缓存/存储**：Memcached/Redis/File cache + 文件系统或对象存储（S3 兼容）
+- **Backend**: Ruby on Rails (MVC)
+- **Frontend**: Hotwire (Turbo + Stimulus) as the current direction, with legacy Angular parts being migrated to custom elements
+- **Data layer**: PostgreSQL
+- **Application server**: Puma
+- **Async processing**: Good Job workers (Active Job backend)
+- **Cache/storage**: Memcached/Redis/file cache + filesystem or S3-compatible object storage
 
-### 3.2 架构特点
+### 3.2 Architecture characteristics
 
-- 采用典型 Web 分层架构：反向代理/负载均衡 + Rails 应用 + DB/缓存/对象存储
-- 通过 API 与 Webhook 支持外部系统双向集成
-- 具备多种发布形态：Package、Docker、Helm、Cloud，适配不同企业基础设施
+- Typical layered web architecture: reverse proxy/load balancer + Rails app + DB/cache/object storage
+- Bi-directional integration through APIs and webhooks
+- Multiple distribution/deployment forms: packages, Docker, Helm, and cloud
 
-### 3.3 工程化与交付能力
+### 3.3 Engineering and delivery capabilities
 
-- 仓库具备完整 CI 工作流（测试、Lint、安全扫描等）
-- 采用语义化版本管理（SemVer）
-- 文档体系结构化程度高（开发、测试、架构、代码评审规范均较完整）
+- The repository includes full CI workflows (tests, linting, security scanning)
+- Semantic versioning (SemVer) is used
+- Documentation is structured and broad (development, testing, architecture, review guidelines, and ViewComponent previews through Lookbook)
 
-## 4. 优势与挑战
+## 4. Strengths and challenges
 
-### 4.1 主要优势
+### 4.1 Main strengths
 
-- 业务覆盖广：从任务管理到研发协同再到企业级集成
-- 开源透明：代码、流程、路线图公开，社区协作基础好
-- 部署灵活：满足从中小团队到企业私有化场景的差异化需求
-- 可扩展：插件与集成体系成熟，便于生态扩展
+- Broad functional coverage: task management, engineering collaboration, and enterprise integrations
+- Open and transparent model: code, process, and roadmap are publicly visible
+- Flexible deployment: suitable for both small teams and enterprise self-hosted setups
+- Strong extensibility: mature plugin and integration ecosystem
 
-### 4.2 主要挑战
+### 4.2 Main challenges
 
-- 大型单体仓库（monorepo）对新贡献者理解成本较高
-- 前端技术迁移期（Angular -> Hotwire/Stimulus）存在阶段性维护复杂度
-- 复杂业务域带来较高测试与回归成本
+- Large monorepo size can increase onboarding cost for new contributors
+- Frontend migration phase (Angular to Hotwire/Stimulus) increases short-term maintenance complexity
+- Complex business domain increases regression and testing effort
 
-## 5. 建议与后续方向
+## 5. Recommendations and next steps
 
-### 5.1 业务层建议
+### 5.1 Business recommendations
 
-- 按行业模板化（如软件研发、工程建设、政府项目）强化开箱即用能力
-- 进一步突出“项目管理 + 开发协同”一体化价值，增强差异化定位
+- Strengthen out-of-the-box value through industry templates (software delivery, construction, public sector)
+- Further highlight integrated value of "project management + engineering collaboration"
 
-### 5.2 技术层建议
+### 5.2 Technical recommendations
 
-- 持续推进前端统一技术路线，降低双栈维护成本
-- 继续加强架构文档与贡献者引导，缩短新开发者上手时间
-- 针对高价值链路（任务流转、权限、通知、外部集成）持续优化测试稳定性与执行效率
+- Continue frontend technology convergence to reduce dual-stack maintenance cost
+- Improve architecture docs and contributor onboarding guidance
+- Keep optimizing test stability and execution speed for high-value paths (workflow transitions, permissions, notifications, integrations)
 
-## 6. 结论
+## 6. Conclusion
 
-OpenProject 是一个具备成熟业务能力和工程化体系的开源项目管理平台。其核心竞争力在于：
+OpenProject is a mature open-source project management platform with strong business capabilities and engineering practices. Its core strengths are:
 
-1. 业务覆盖深度与企业可用性
-2. 开源社区与商业支持并行的可持续模式
-3. 可扩展、可私有化、可集成的架构设计
+1. Depth of business coverage and enterprise readiness
+2. A sustainable model that combines open-source community and commercial support
+3. An architecture designed for extensibility, self-hosting, and integrations
 
-若继续在“前端技术收敛”“贡献者体验提升”“行业化方案沉淀”三方面投入，该项目在中大型组织协作管理场景中具备长期竞争力。
+With continued investment in frontend convergence, contributor experience, and verticalized solutions, OpenProject has strong long-term competitiveness in medium-to-large collaborative delivery environments.
