@@ -22,7 +22,7 @@ release_date: 2026-03-11
 
 Take a look at our release video showing the most important features introduced in OpenProject 17.2.0:
 
-![Release video of OpenProject 17.2]( UPDATE LINK) 
+![Release video of OpenProject 17.2](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_2_release.mp4)
 
 ### MCP Server (Enterprise add-on)
 
@@ -74,7 +74,7 @@ These widgets help teams better understand financial status and trends directly 
 
 ![An example of project budget widget on a project home page in OpenProject](openproject_release_notes_17-2-0_budget_widget.png)
 
-Read more about [budget widgets](../../user-guide/project-home/project-widgets/#budget-widget).
+Read more about [budget widgets](../../user-guide/project-home/project-widgets/#budgets-widgets).
 
 #### Editable project description and project status widgets on a Project view tab
 
