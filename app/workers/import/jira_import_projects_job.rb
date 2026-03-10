@@ -172,14 +172,10 @@ module Import
               ### WORK PACKAGE
               # required because otherwise project.types does not include type and then wp creation fails.
               project.reload
-              author_name = jira_issue.payload.dig("fields", "creator", "name")
-              author = if author_name.present?
-                         User.find_by!(login: author_name)
-                       end
-              assignee_name = jira_issue.payload.dig("fields", "assignee", "name")
-              assigned_to = if assignee_name.present?
-                              User.find_by!(login: assignee_name)
-                            end
+              author_key = jira_issue.payload.dig("fields", "creator", "key")
+              author = find_user(author_key, jira_import)
+              assignee_key = jira_issue.payload.dig("fields", "assignee", "key")
+              assigned_to = find_user(assignee_key, jira_import)
               members = [author, assigned_to]
               members.uniq!
               members.compact!
@@ -245,6 +241,20 @@ module Import
     # rubocop:enable Metrics/AbcSize
 
     private
+
+    def find_user(jira_user_key, jira_import)
+      return if jira_user_key.blank?
+
+      jira_user = Import::JiraUser.find_by(jira_user_key:, jira_import:)
+      if jira_user
+        JiraOpenProjectReference.find_by!(
+          jira_entity_class: "Import::JiraUser",
+          jira_entity_id: jira_user.id
+        ).op_leg
+      else
+        raise "Import::JiraUser with jira_user_key #{jira_user_key} not found!"
+      end
+    end
 
     def convert_rich_text(description)
       return "" if description.blank?

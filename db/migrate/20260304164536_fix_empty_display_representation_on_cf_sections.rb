@@ -28,8 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira::ImportRuns
-  class WizardStepGroupsAndUsersComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
+class FixEmptyDisplayRepresentationOnCfSections < ActiveRecord::Migration[8.1]
+  def up
+    execute <<~SQL.squish
+      UPDATE custom_field_sections
+      SET display_representation = '{"overview": "#{CustomFieldSection::DEFAULT_OVERVIEW_KEY}"}'
+      WHERE display_representation = '{}'
+    SQL
+  end
+
+  def down
+    # No rollback: we cannot distinguish sections that originally had {}
+    # from ones that legitimately had the default value set.
   end
 end

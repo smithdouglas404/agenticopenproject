@@ -241,7 +241,6 @@ de:
               button_select: "Projekte auswählen"
               label_selected_data: "Ausgewählte Daten für den Import"
               label_progress: "Abrufen von Daten aus Jira..."
-              label_importing: "Wird gerade importiert"
               elements:
                 relations: "Beziehungen zwischen Tickets"
                 workflows: "Workflows auf Projektebene"
@@ -1352,9 +1351,6 @@ de:
         dependencies: "Abhängigkeiten"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Teilen"
-        finish_date: "Enddatum"
       jira_import:
         projects: "Projekte"
       announcements:

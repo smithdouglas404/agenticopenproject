@@ -48,30 +48,60 @@ RSpec.describe RbStoriesController do
   end
 
   describe "PUT #move" do
-    let(:other_sprint) { create(:sprint, name: "Sprint 2", project:) }
+    context "with a version from the same project" do
+      let(:other_sprint) { create(:sprint, name: "Sprint 2", project:) }
 
-    it "responds with success", :aggregate_failures do
-      put :move, params: {
-                   project_id: project.id,
-                   sprint_id: sprint.id,
-                   id: story.id,
-                   target_id: other_sprint.id,
-                   position: 1
-                 },
-                 format: :turbo_stream
+      it "responds with success", :aggregate_failures do
+        put :move, params: {
+                     project_id: project.id,
+                     sprint_id: sprint.id,
+                     id: story.id,
+                     target_id: other_sprint.id,
+                     position: 1
+                   },
+                   format: :turbo_stream
 
-      expect(response).to be_successful
-      expect(response).to have_http_status :ok
-      expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
-      expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{other_sprint.id}"
-      expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
-      expect(assigns(:project)).to eq(project)
-      expect(assigns(:sprint)).to eq(sprint)
-      expect(assigns(:story)).to eq(story)
-      expect(assigns(:backlog)).to be_a(Backlog)
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{other_sprint.id}"
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:story)).to eq(story)
+        expect(assigns(:backlog)).to be_a(Backlog)
+      end
+    end
+
+    context "with a version from another project" do
+      let(:other_project) { create(:project) }
+      let(:other_sprint) { create(:sprint, name: "Sprint 2", project: other_project, sharing: "system") }
+      let(:story) { create(:story, status:, version: other_sprint, project:) }
+
+      it "responds with success", :aggregate_failures do
+        put :move, params: {
+                     project_id: project.id,
+                     sprint_id: other_sprint.id,
+                     id: story.id,
+                     target_id: sprint.id,
+                     position: 1
+                   },
+                   format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{other_sprint.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(other_sprint)
+        expect(assigns(:story)).to eq(story)
+        expect(assigns(:backlog)).to be_a(Backlog)
+      end
     end
 
     context "when service call fails" do
+      let(:other_sprint) { create(:sprint, name: "Sprint 2", project:) }
       let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
 
       before do

@@ -125,7 +125,7 @@ fr:
         new: "Nouvelle configuration"
       banner:
         title: "Importation limitée"
-        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        description: "Cet outil d'importation est actuellement en version bêta et ne peut importer que des données de base : projets, tickets (nom, titre, description, pièces jointes), utilisateurs (nom, email, appartenance à un projet), statuts et types. Il ne peut pas importer les flux de travail, les champs personnalisés, les relations entre les tickets, ou les autorisations. Nous ne prenons actuellement en charge que les versions 10.x et 11.x de Jira Server/Data Center. Les instances cloud ne sont pas prises en charge pour le moment."
       form:
         fields:
           name: "Nom"
@@ -143,7 +143,7 @@ fr:
         failed: "Échec de la connexion : Impossible de récupérer les informations sur le serveur"
         error: "Une erreur inattendue s'est produite lors du test de la connexion"
         connection_error: "Erreur de connexion : %{message}"
-        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        parse_error: "Impossible d'analyser la réponse du serveur. Le serveur n'est peut-être pas une instance Jira valide."
         api_error: "L'API Jira a renvoyé le statut d'erreur %{status}. Veuillez vérifier l'URL de votre instance Jira et le jeton API."
         token_error: "Jeton API invalide. Veuillez vérifier vos informations d'identification dans la configuration."
         missing_credentials: "Veuillez fournir l'URL et le jeton d'accès personnel pour tester la connexion"
@@ -167,7 +167,7 @@ fr:
           title: "Aucun cycle d'importation n'a encore été mis en place"
           description: "Créez une exécution d'importation pour commencer à importer des informations à partir de cette instance Jira"
         index:
-          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing."
+          description: "Vous pouvez importer différents ensembles de données à chaque cycle d'importation. Il est possible d'annuler une importation immédiatement après en mode révision, mais pas après la finalisation."
           button_import_run: "Importation"
           button_edit_configuration: "Editer la configuration"
         status:
@@ -222,8 +222,8 @@ fr:
             fetch_data:
               title: "Récupérer les métadonnées de l'instance"
               caption_done: "Terminé"
-              description: "Check what data is available for import in the host Jira instance."
-              button_fetch: "Check available data"
+              description: "Vérifiez quelles données sont disponibles pour l'importation dans l'instance Jira hôte."
+              button_fetch: "Vérifier les données disponibles"
               label_progress: "Récupérer les données de Jira..."
             groups_and_users:
               title: "Groupes et utilisateurs"
@@ -231,8 +231,8 @@ fr:
               title: "Champ d'application de l'importation"
               caption: "Choisissez ce que vous voulez importer dans OpenProject"
               caption_done: "Terminé"
-              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance URL offers for import and what this tool is able to import right now."
-              description: "Select what data you want to import from the available data fetched from the host Jira instance."
+              label_info: "Veuillez noter que cet outil d'importation est en version bêta et qu'il ne peut pas importer tous les types de données. Voici un résumé de ce que l'URL de l'instance Jira hôte offre à l'importation et de ce que cet outil est capable d'importer pour le moment."
+              description: "Sélectionnez les données que vous souhaitez importer parmi les données disponibles extraites de l'instance Jira hôte."
               label_available_data: "Données disponibles"
               label_not_available_data: "Non disponible à l'importation"
               button_select_projects: "Sélectionnez les projets à importer"
@@ -241,14 +241,13 @@ fr:
               button_select: "Sélectionner des projets"
               label_selected_data: "Données sélectionnées pour l'importation"
               label_progress: "Récupérer les données de Jira..."
-              label_importing: "Importation en cours"
               elements:
                 relations: "Relations entre les questions"
-                workflows: "Project-level workflows"
+                workflows: "Workflows au niveau du projet"
                 users: "Utilisateurs"
                 sprints: "Sprints"
                 schemes: "Schémas"
-                permissions: "User, group and project permissions"
+                permissions: "Autorisations d'utilisateur, de groupe et de projet"
             confirm_import:
               title: "Importer les données"
               caption: "Vérifiez vos paramètres d'importation et démarrez l'importation"
@@ -286,7 +285,7 @@ fr:
             title: "Sélectionner des projets"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta."
+        description: "Le protocole de contexte de modèle permet aux agents d'IA de fournir à leurs utilisateurs les outils et les ressources exposés par cette instance d'OpenProject. Cette fonctionnalité est encore en version bêta."
         resources_heading: "Ressources"
         resources_description: "OpenProject met en œuvre les ressources suivantes. Chacune d'entre elles peut être activée, renommée et décrite comme vous le souhaitez. Pour plus d'informations, veuillez vous référer à la [documentation sur les ressources MCP](docs_url)."
         resources_submit: "Mettre à jour les ressources"
@@ -599,8 +598,8 @@ fr:
     confirmation_live_message_unchecked: "Le bouton pour continuer est maintenant inactif. Vous devez cocher la case pour continuer."
   mcp_configurations:
     server_url_component:
-      caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
-      label: "Server URL"
+      caption: "L'URL à laquelle le serveur MCP OpenProject sera joignable. Requis pour la configuration des clients MCP."
+      label: "URL du serveur"
   op_dry_validation:
     or: "ou"
     errors:
@@ -2675,7 +2674,7 @@ fr:
       edit_attribute_groups: Modifier les groupes d'attributs
       gantt_pdf_export: Exportation PDF de diagramme de Gantt
       ldap_groups: Synchronisation des utilisateurs LDAP et des groupes
-      mcp_server: Model Context Protocol (MCP)
+      mcp_server: Protocole de contexte de modèle (MCP)
       meeting_templates: Modèles de réunion réutilisables
       nextcloud_sso: Authentification unique pour le stockage Nextcloud
       one_drive_sharepoint_file_storage: Stockage de fichiers OneDrive/SharePoint
@@ -2754,7 +2753,7 @@ fr:
         title: "Actions personnalisées"
         description: "Les actions personnalisées sont des raccourcis en un clic vers un ensemble d'actions prédéfinies que vous pouvez rendre disponibles sur certains lots de travaux en fonction de l'état, du rôle, du type ou du projet."
       mcp_server:
-        description: "Bring OpenProject into your AI workflows with a secure MCP server."
+        description: "Introduisez OpenProject dans vos workflows AI avec un serveur MCP sécurisé."
       meeting_templates:
         description: "Définissez des modèles de réunion avec une structure d'ordre du jour définie et gagnez du temps en les réutilisant lors de la création de nouvelles réunions."
       nextcloud_sso:
@@ -3069,16 +3068,16 @@ fr:
         #We need to include the version to invalidate outdated translations in other locales
         "17_2":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que:
           new_features_list:
-            line_0: AI workflows with a secure MCP server (Professional plan and higher)
-            line_1: Improved project home page with new widget for budgets and improved accessibility
-            line_2: "Meetings: Meeting templates (Basic plan and higher)"
-            line_3: Better transparency with project attribute comments.
-            line_4: PDF export enhancements
-            line_5: Increased security for external links (Premium plan and higher)
-            line_6: UI/UX improvements in the Backlogs module
-            line_7: Harmonized custom field forms
+            line_0: Workflows AI avec un serveur MCP sécurisé (plan Professionnel et supérieurs)
+            line_1: Amélioration de la page d'accueil du projet avec un nouveau widget pour les budgets et amélioration de l'accessibilité
+            line_2: "Réunions : Modèles de réunion (plan de base et supérieurs)"
+            line_3: Meilleure transparence des commentaires sur les attributs des projets.
+            line_4: Amélioration de l'exportation PDF
+            line_5: Sécurité accrue pour les liens externes (à partir du plan Premium)
+            line_6: Améliorations UI/UX dans le module Backlogs
+            line_7: Formulaires de champs personnalisés harmonisés
     links:
       upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -3111,7 +3110,7 @@ fr:
         field_changed: "%{field} a changé de %{old_value} à %{new_value}"
         field_set: "%{field} sur %{value}"
         field_removed: "%{field} supprimée"
-        field_updated: "%{field} updated"
+        field_updated: "%{field} mis à jour"
         deleted_with_diff: "%{field} supprimé (%{link})"
         changed_with_diff: "%{field} modifié (%{link})"
         set_with_diff: "%{field} set (%{link})"

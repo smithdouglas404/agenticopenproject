@@ -39,20 +39,6 @@ module Import
     state :instance_meta_error
     state :instance_meta_done
 
-    state :groups_and_users_init
-
-    state :groups_and_users_fetching
-    state :groups_and_users_fetching_cancelling
-    state :groups_and_users_fetching_cancelled
-    state :groups_and_users_fetching_error
-    state :groups_and_users_fetching_done
-
-    state :groups_and_users_importing
-    state :groups_and_users_importing_cancelling
-    state :groups_and_users_importing_cancelled
-    state :groups_and_users_importing_error
-    state :groups_and_users_importing_done
-
     state :import_scope
     state :configuring
     state :projects_meta_fetching
@@ -73,19 +59,7 @@ module Import
     transition from: INITIAL,                to: [INSTANCE_META_FETCHING]
     transition from: INSTANCE_META_FETCHING, to: [INSTANCE_META_DONE, INSTANCE_META_ERROR]
     transition from: INSTANCE_META_ERROR,    to: [INSTANCE_META_FETCHING]
-    transition from: INSTANCE_META_DONE,     to: [GROUPS_AND_USERS_INIT]
-    transition from: GROUPS_AND_USERS_INIT,  to: [GROUPS_AND_USERS_FETCHING]
-    transition from: GROUPS_AND_USERS_FETCHING,  to: [GROUPS_AND_USERS_FETCHING_ERROR,
-                                                      GROUPS_AND_USERS_FETCHING_CANCELLING,
-                                                      GROUPS_AND_USERS_FETCHING_DONE]
-    transition from: GROUPS_AND_USERS_FETCHING_CANCELLING, to: [GROUPS_AND_USERS_FETCHING_CANCELLED]
-    transition from: GROUPS_AND_USERS_FETCHING_ERROR, to: [GROUPS_AND_USERS_FETCHING]
-    transition from: GROUPS_AND_USERS_FETCHING_DONE,  to: [GROUPS_AND_USERS_IMPORTING]
-    transition from: GROUPS_AND_USERS_IMPORTING, to: [GROUPS_AND_USERS_IMPORTING_ERROR,
-                                                      GROUPS_AND_USERS_IMPORTING_DONE]
-    transition from: GROUPS_AND_USERS_IMPORTING_ERROR, to: [GROUPS_AND_USERS_IMPORTING]
-    transition from: GROUPS_AND_USERS_IMPORTING_DONE, to: [IMPORT_SCOPE]
-    transition from: IMPORT_SCOPE,           to: [CONFIGURING]
+    transition from: INSTANCE_META_DONE,     to: [CONFIGURING, INSTANCE_META_FETCHING]
     transition from: CONFIGURING,            to: [PROJECTS_META_FETCHING]
     transition from: PROJECTS_META_FETCHING, to: [PROJECTS_META_DONE, PROJECTS_META_ERROR]
     transition from: PROJECTS_META_ERROR,    to: [PROJECTS_META_FETCHING]
@@ -97,22 +71,6 @@ module Import
     transition from: REVERT_CANCELLING,      to: [REVERT_CANCELLED]
     transition from: REVERT_CANCELLED,       to: [REVERTING]
     transition from: REVERT_ERROR,           to: [REVERTING]
-
-    after_transition(to: :groups_and_users_fetching) do |jira_import, _transition|
-      Import::JiraFetchGroupsAndUsersJob.perform_later(jira_import.id)
-    end
-
-    after_transition(to: :groups_and_users_importing) do |jira_import, _transition|
-      Import::JiraImportGroupsAndUsersJob.perform_later(jira_import.id)
-    end
-
-    after_transition(to: :groups_and_users_fetching_done) do |jira_import, _transition|
-      jira_import.update_column(:cursor, nil)
-    end
-
-    after_transition(to: :groups_and_users_importing_done) do |jira_import, _transition|
-      jira_import.update_column(:cursor, nil)
-    end
 
     after_transition(to: :reverted) do |jira_import, _transition|
       jira_import.update_column(:cursor, nil)
@@ -140,8 +98,6 @@ module Import
       [
         INSTANCE_META_FETCHING,
         PROJECTS_META_FETCHING,
-        GROUPS_AND_USERS_FETCHING,
-        GROUPS_AND_USERS_IMPORTING,
         IMPORTING,
         REVERTING
       ].include?(current_state)

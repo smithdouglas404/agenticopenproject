@@ -321,7 +321,7 @@ GEM
       activesupport (>= 6.1)
     acts_as_tree (2.9.1)
       activerecord (>= 3.0.0)
-    addressable (2.8.8)
+    addressable (2.8.9)
       public_suffix (>= 2.0.2, < 8.0)
     aes_key_wrap (1.1.0)
     afm (1.0.0)
@@ -619,7 +619,7 @@ GEM
     glob (0.4.0)
     globalid (1.3.0)
       activesupport (>= 6.1)
-    good_job (4.13.2)
+    good_job (4.13.3)
       activejob (>= 6.1.0)
       activerecord (>= 6.1.0)
       concurrent-ruby (>= 1.3.1)
@@ -895,7 +895,7 @@ GEM
       actionview
       openproject-octicons (= 19.32.1)
       railties
-    openproject-primer_view_components (0.81.1)
+    openproject-primer_view_components (0.82.0)
       actionview (>= 7.2.0)
       activesupport (>= 7.2.0)
       openproject-octicons (>= 19.30.1)
@@ -1175,7 +1175,7 @@ GEM
     psych (5.3.1)
       date
       stringio
-    public_suffix (7.0.2)
+    public_suffix (7.0.5)
     puffing-billy (4.0.3)
       addressable (~> 2.5)
       cgi
@@ -1568,7 +1568,7 @@ DEPENDENCIES
   activerecord-session_store (~> 2.2.0)
   acts_as_list (~> 1.2.6)
   acts_as_tree (~> 2.9.0)
-  addressable (~> 2.8.0)
+  addressable (~> 2.8.9)
   airbrake (~> 13.0.0)
   appsignal (~> 4.7)
   auto_strip_attributes (~> 2.5)
@@ -1621,7 +1621,7 @@ DEPENDENCIES
   friendly_id (~> 5.6.0)
   fuubar (~> 2.5.0)
   globalid (~> 1.3)
-  good_job (~> 4.13.2)
+  good_job (~> 4.13.3)
   google-apis-gmail_v1
   googleauth
   grape (~> 3.1.1)
@@ -1679,7 +1679,7 @@ DEPENDENCIES
   openproject-octicons (~> 19.32.0)
   openproject-octicons_helper (~> 19.32.0)
   openproject-openid_connect!
-  openproject-primer_view_components (~> 0.81.1)
+  openproject-primer_view_components (~> 0.82.0)
   openproject-recaptcha!
   openproject-reporting!
   openproject-storages!
@@ -1804,7 +1804,7 @@ CHECKSUMS
   activesupport (8.1.2) sha256=88842578ccd0d40f658289b0e8c842acfe9af751afee2e0744a7873f50b6fdae
   acts_as_list (1.2.6) sha256=8345380900b7bee620c07ad00991ccee59af3d8c9e8574f426e321da2865fdc8
   acts_as_tree (2.9.1) sha256=b869eb10a8de38616b64ffcf9e882d3d99c8e06909c4057078a76c3b89a9a2f3
-  addressable (2.8.8) sha256=7c13b8f9536cf6364c03b9d417c19986019e28f7c00ac8132da4eb0fe393b057
+  addressable (2.8.9) sha256=cc154fcbe689711808a43601dee7b980238ce54368d23e127421753e46895485
   aes_key_wrap (1.1.0) sha256=b935f4756b37375895db45669e79dfcdc0f7901e12d4e08974d5540c8e0776a5
   afm (1.0.0) sha256=5bd4d6f6241e7014ef090985ec6f4c3e9745f6de0828ddd58bc1efdd138f4545
   airbrake (13.0.5) sha256=901f5074c25d5ef77ed87f5bde7a28400a7324f5d7013a8a12d07e0099cc31b6
@@ -1936,7 +1936,7 @@ CHECKSUMS
   fuubar (2.5.1) sha256=b272a7804b282661c7fab583a3764f92543cb482c365ae39c685cd218fdd4880
   glob (0.4.0) sha256=893dc9e2d24abe13dda907ce0cda576f680ff382f2a6cf9e543f98ecbe29238c
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
-  good_job (4.13.2) sha256=c10eb032d8096c5132861b7935d529cf66c63e18ce00b1a26b6e69cb7775b8d1
+  good_job (4.13.3) sha256=37478710dddd2630ed055f2159111ce6f7f14482d8ccb412142ee04674151e2e
   google-apis-core (1.0.2) sha256=ba4579aaadc902d6cc7bc8db88f566ab00f5e31ea87ab41e9f9a032c470f2629
   google-apis-gmail_v1 (0.47.0) sha256=3064434b6da55b85e2828ce4bb0f4d04e8cfd187a4ab262ceb1dcb01f98e49ef
   google-cloud-env (2.3.1) sha256=0faac01eb27be78c2591d64433663b1a114f8f7af55a4f819755426cac9178e7
@@ -2059,7 +2059,7 @@ CHECKSUMS
   openproject-octicons (19.32.1) sha256=32253f3256ad4e1aec36442558ce140623c01e5241d9b90f6eb6d317f462781e
   openproject-octicons_helper (19.32.1) sha256=7676059927ae940170fb13d62f88b885985a3f0d483e1bb246475afcffd90f8f
   openproject-openid_connect (1.0.0)
-  openproject-primer_view_components (0.81.1) sha256=ebda313d71f4c7e82b9a31e0d54b1e2b5ac3776816161fb61517ced1d945587d
+  openproject-primer_view_components (0.82.0) sha256=c3d61578d26e6fa6e4bfaf520345de01cc09b487c9841de78494017aadd65ae2
   openproject-recaptcha (1.0.0)
   openproject-reporting (1.0.0)
   openproject-storages (1.0.0)
@@ -2163,7 +2163,7 @@ CHECKSUMS
   pry-rails (0.3.11) sha256=a69e28e24a34d75d1f60bcf241192a54253f8f7ef8a62cba1e75750a9653593d
   pry-rescue (1.6.0) sha256=985bfd506d9866b587fd86790cf8445266a41b7f92c627fc5b21ec7d92aba6db
   psych (5.3.1) sha256=eb7a57cef10c9d70173ff74e739d843ac3b2c019a003de48447b2963d81b1974
-  public_suffix (7.0.2) sha256=9114090c8e4e7135c1fd0e7acfea33afaab38101884320c65aaa0ffb8e26a857
+  public_suffix (7.0.5) sha256=1a8bb08f1bbea19228d3bed6e5ed908d1cb4f7c2726d18bd9cadf60bc676f623
   puffing-billy (4.0.3) sha256=376fe2e2cc3ff9d48814a15153db80970cf0539ba026ac5108c971c2e160883c
   puma (7.2.0) sha256=bf8ef4ab514a4e6d4554cb4326b2004eba5036ae05cf765cfe51aba9706a72a8
   puma-plugin-statsd (2.7.0) sha256=04f243a7233f4d06ec0e26f1a3522bce18a5910ae711763fabff22681bdad08b

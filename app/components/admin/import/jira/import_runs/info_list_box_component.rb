@@ -34,10 +34,11 @@ module Admin::Import::Jira::ImportRuns
 
     attr_reader :title, :list, :system_arguments
 
-    def initialize(title:, list:, **system_arguments)
+    def initialize(title:, list:, show_icon: true, **system_arguments)
       super()
       @title = title
       @list = list
+      @show_icon = show_icon
       @system_arguments = system_arguments
     end
 
@@ -57,14 +58,16 @@ module Admin::Import::Jira::ImportRuns
     end
 
     def render_item(item)
-      concat(render(
-               Primer::Beta::Octicon.new(
-                 icon: item[:checked] ? :"check-circle" : :"x-circle",
-                 color: item[:checked] ? :success : :danger
-               )
-             ))
+      if @show_icon
+        concat(render(
+                 Primer::Beta::Octicon.new(
+                   icon: item[:checked] ? :"check-circle" : :"x-circle",
+                   color: item[:checked] ? :success : :danger
+                 )
+               ))
+      end
       if item[:url].present?
-        concat(render(Primer::Beta::Link.new(href: item[:url], ml: 1)) { item[:label] })
+        concat(render(Primer::Beta::Link.new(href: item[:url], ml: 1, target: "_blank")) { item[:label] })
       else
         concat(render(Primer::Beta::Text.new(ml: 1)) { item[:label] })
       end

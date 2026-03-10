@@ -72,7 +72,7 @@ gem "awesome_nested_set", "~> 3.9.0"
 gem "closure_tree", "~> 9.6.0"
 gem "rubytree", "~> 2.2.0"
 
-gem "addressable", "~> 2.8.0"
+gem "addressable", "~> 2.8.9"
 
 # Remove whitespace from model input
 gem "auto_strip_attributes", "~> 2.5"
@@ -127,7 +127,7 @@ gem "multi_json", "~> 1.19.0"
 gem "oj", "~> 3.16.12"
 
 gem "daemons"
-gem "good_job", "~> 4.13.2" # update should be done manually in sync with saas-openproject version.
+gem "good_job", "~> 4.13.3" # update should be done manually in sync with saas-openproject version.
 
 gem "rack-protection", "~> 3.2.0"
 
@@ -433,4 +433,4 @@ end
 
 gem "openproject-octicons", "~>19.32.0"
 gem "openproject-octicons_helper", "~>19.32.0"
-gem "openproject-primer_view_components", "~>0.81.1"
+gem "openproject-primer_view_components", "~>0.82.0"

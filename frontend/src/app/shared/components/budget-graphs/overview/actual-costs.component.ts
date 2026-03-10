@@ -37,7 +37,6 @@ import {
 import { ChartConfiguration, ChartData } from 'chart.js';
 import 'chartjs-adapter-luxon';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { NoResultsComponent } from 'core-app/shared/components/blankslate/no-results.component';
 import { chartFont, chartLegend, createBarTooltipRenderer } from 'core-app/shared/components/budget-graphs/chart.config';
 import PrimerColorsPlugin from 'core-app/shared/components/work-package-graphs/plugin.primer-colors';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
@@ -45,7 +44,7 @@ import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2
 @Component({
   selector: 'opce-actual-costs',
   templateUrl: './actual-costs.component.html',
-  imports: [BaseChartDirective, NoResultsComponent],
+  imports: [BaseChartDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideCharts(withDefaultRegisterables(PrimerColorsPlugin))],
 })
@@ -55,19 +54,12 @@ export class ActualCostsComponent {
   readonly chartData = input.required<string>();
   readonly currency = input<string>('€');
 
-  readonly text = {
-    noResults: {
-      title: this.i18n.t('js.costs.widgets.actual_costs.blankslate.title'),
-      description: this.i18n.t('js.costs.widgets.actual_costs.blankslate.description'),
-    },
-  };
-
   readonly barChartData = computed<ChartData<'bar'>>(() => JSON.parse(this.chartData()) as ChartData<'bar'>);
   readonly hasChartData = computed(() => this.barChartData().datasets.length > 0);
 
   readonly barChartOptions:Signal<ChartConfiguration<'bar'>['options']> = computed<ChartConfiguration<'bar'>['options']>(() => ({
     font: chartFont,
-    aspectRatio: 1.5,
+    aspectRatio: 1,
     scales: {
       x: {
         stacked: true,
