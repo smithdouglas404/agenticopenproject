@@ -31,6 +31,8 @@
 require "spec_helper"
 
 RSpec.describe WorkPackageCommentWebhookJob, :webmock, type: :model do
+  include_context "with ssrf webhook stubs"
+
   let(:user) { create(:admin) }
   let(:request_url) { "http://example.net/test/42" }
   let(:journal) { work_package.journals.last }
@@ -51,7 +53,7 @@ RSpec.describe WorkPackageCommentWebhookJob, :webmock, type: :model do
   end
 
   let(:stub) do
-    stub_request(:post, stubbed_url.sub("http://", "")).with(
+    stub_request(:post, ssrf_resolved_url(stubbed_url)).with(
       body: hash_including(
         "action" => event_name,
         "activity" => hash_including(
@@ -59,7 +61,7 @@ RSpec.describe WorkPackageCommentWebhookJob, :webmock, type: :model do
           "comment" => hash_including("raw" => notes)
         )
       ),
-      headers: request_headers
+      headers: request_headers.merge(host: "example.net")
     ).to_return(
       status: response_code,
       body: response_body,

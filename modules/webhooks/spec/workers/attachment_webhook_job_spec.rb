@@ -29,6 +29,8 @@
 require "spec_helper"
 
 RSpec.describe AttachmentWebhookJob, :webmock, type: :job do
+  include_context "with ssrf webhook stubs"
+
   shared_let(:user) { create(:admin) }
   shared_let(:request_url) { "http://example.net/test/42" }
   shared_let(:project) { create(:project, name: "Foo Bar") }
@@ -50,7 +52,7 @@ RSpec.describe AttachmentWebhookJob, :webmock, type: :job do
   end
 
   let(:stub) do
-    stub_request(:post, stubbed_url.sub("http://", ""))
+    stub_request(:post, ssrf_resolved_url(stubbed_url))
       .with(
         body: hash_including(
           "action" => event,
@@ -59,7 +61,7 @@ RSpec.describe AttachmentWebhookJob, :webmock, type: :job do
             "id" => attachment.id
           )
         ),
-        headers: request_headers
+        headers: request_headers.merge(host: "example.net")
       )
       .to_return(
         status: response_code,
