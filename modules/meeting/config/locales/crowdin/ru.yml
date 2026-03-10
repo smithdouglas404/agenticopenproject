@@ -72,7 +72,7 @@ ru:
         meeting_participant:
           user_invalid: "не является действительным участником."
         meeting_agenda_item:
-          section_not_belong_to_meeting: "Section does not belong to the same meeting."
+          section_not_belong_to_meeting: "Раздел не принадлежит к одному и тому же совещанию."
           user_invalid: "не является действительным участником."
         recurring_meeting_interim_response:
           not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
@@ -204,7 +204,7 @@ ru:
   label_time_zone: "Часовой пояс"
   label_start_date: "Дата начала"
   label_subscribe_icalendar: "Подписаться на календарь"
-  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_meeting_template_select: "Выберите шаблон для автоматического копирования его повестки дня"
   caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
@@ -629,8 +629,8 @@ ru:
   text_meeting_in_progress_dropdown_description: "Итоги совещания, такие как информация или решения, принятые в ходе совещания."
   text_meeting_closed_dropdown_description: "Совещание закрыто. Вы больше не можете изменять пункты повестки дня или его результаты."
   text_meeting_draft_banner: "В настоящее время Вы находитесь в режиме черновика. Это совещание не будет рассылать никаких обновлений календаря или приглашений, даже если Вы измените детали совещания или добавите/удалите участников."
-  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
-  text_onetime_meeting_template_empty_heading: "This meeting template is empty"
+  text_onetime_meeting_template_banner: "В данный момент Вы редактируете шаблон совещания. Вы можете использовать этот шаблон для создания одноразовых совещаний с заранее определенной повесткой дня. Изменения не повлияют на уже созданные совещания."
+  text_onetime_meeting_template_empty_heading: "Этот шаблон совещания пуст"
   text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Открыть это совещание и разослать приглашения?"
   text_exit_draft_mode_dialog_subtitle: "Вы не можете вернуться в режим черновика после того, как запланировали совещание."

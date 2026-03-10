@@ -90,11 +90,11 @@ ko:
           program:
             zero: "예산 데이터가 없습니다."
             one: "이 프로그램 및 해당 하위 항목에 포함된 %{count}개 예산에서 집계된 데이터입니다."
-            other: "Data aggregated from %{count} budgets included in this program and its subitems."
+            other: "이 프로그램 및 해당 하위 항목에 포함된 %{count}개 예산에서 집계된 데이터입니다."
           portfolio:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this portfolio and its subitems."
-            other: "Data aggregated from %{count} budgets included in this portfolio and its subitems."
+            zero: "예산 데이터가 없습니다."
+            one: "이 포트폴리오 및 해당 하위 항목에 포함된 %{count}개 예산에서 집계된 데이터입니다."
+            other: "이 포트폴리오 및 해당 하위 항목에 포함된 %{count}개 예산에서 집계된 데이터입니다."
         view_details: "예산 세부 정보 보기"
   events:
     budget: "예산 편집됨"

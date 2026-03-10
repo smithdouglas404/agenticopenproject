@@ -44,7 +44,7 @@ ru:
         labor_budget_item:
           attributes:
             principal:
-              not_a_member_of_budget_project: "is not a member of the budget's project"
+              not_a_member_of_budget_project: "не является участником бюджета проекта"
     models:
       budget: "Бюджет"
       material_budget_item: "Единица"
@@ -73,29 +73,29 @@ ru:
       budget_by_cost_type:
         title: "Бюджет по видам затрат"
         blankslate:
-          heading: "Start project controlling"
-          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+          heading: "Начать контроль над проектом"
+          description: "Получите обзор Ваших бюджетов и затрат, чтобы эффективно отслеживать состояние здоровья Вашего проекта"
         blankslate_zero:
-          heading: "Budget details missing"
-          description: "Add details about your planned budget to see data here"
+          heading: "Отсутствуют детали бюджета"
+          description: "Добавьте подробную информацию о планируемом бюджете, чтобы увидеть данные здесь"
         count_caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget"
-          other: "Data aggregated from %{count} budgets"
+          zero: "Нет данных о бюджете."
+          one: "Данные собраны из %{count} бюджета"
+          other: "Данные собраны из %{count} бюджетов"
         count_caption_with_subitems:
           project:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this project and its subitems."
-            other: "Data aggregated from %{count} budgets included in this project and its subitems."
+            zero: "Нет данных о бюджете."
+            one: "Данные, собранные из %{count} бюджета, включены в этот проект и его подпроекты."
+            other: "Данные, собранные из %{count} бюджетов, включены в этот проект и его подпроекты."
           program:
-            zero: "No budget data."
+            zero: "Нет данных о бюджете."
             one: "Data aggregated from %{count} budget included in this program and its subitems."
             other: "Data aggregated from %{count} budgets included in this program and its subitems."
           portfolio:
             zero: "No budget data."
             one: "Data aggregated from %{count} budget included in this portfolio and its subitems."
             other: "Data aggregated from %{count} budgets included in this portfolio and its subitems."
-        view_details: "View budget details"
+        view_details: "Посмотреть детали бюджета"
   events:
     budget: "Бюджет изменен"
   help_click_to_edit: "Нажмите здесь, чтобы править."

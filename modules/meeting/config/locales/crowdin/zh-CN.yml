@@ -210,8 +210,8 @@ zh-CN:
         heading: "沒有与会者"
         description: "还没有参加者。"
     attachments:
-      onetime_template: "These attached files will be included in all future meetings using this template."
-      series_template: "These attached files will be included in all future meetings in the series."
+      onetime_template: "今后所有使用此模板的会议都将包含这些随附文件。"
+      series_template: "今后此系列中的所有会议都将包含这些随附文件。"
       text: "所有与会者都可以查看附件。您还可以将这些文件拖放到议程项目注释中。"
     copy:
       title: "复制会议： %{title}"
@@ -288,7 +288,7 @@ zh-CN:
           title: "删除模板"
           heading: "是否删除此模板？"
           confirmation_message_html: >
-            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
+            此操作无法撤消。请谨慎操作。使用此模板创建的现有会议将不受影响。
       occurrence:
         title: "取消会议事件"
         heading: "取消此会议事件？"

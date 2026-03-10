@@ -2,12 +2,12 @@ ru:
   js:
     grid:
       add_widget: 'Добавить виджет'
-      widget_menu_label: 'Show menu options for %{widgetName} widget'
+      widget_menu_label: 'Показать настройки меню для виджета %{widgetName}'
       remove: 'Удалить виджет'
       configure: 'Настроить виджет'
       widgets:
         missing_permission: "У вас нет необходимых прав для просмотра этого виджета."
-        not_available: "This widget is currently unavailable."
+        not_available: "В настоящее время этот виджет недоступен."
         custom_text:
           title: 'Пользовательский текст'
         documents:

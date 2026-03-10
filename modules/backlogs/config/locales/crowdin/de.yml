@@ -26,7 +26,7 @@ de:
   activerecord:
     attributes:
       sprint:
-        duration: "Sprintdauer"
+        duration: "Sprint-Dauer"
       work_package:
         position: "Position"
         story_points: "Story-Punkte"

@@ -215,8 +215,8 @@ fr:
         heading: "Aucun participant"
         description: "Il n'y a pas encore de participants."
     attachments:
-      onetime_template: "These attached files will be included in all future meetings using this template."
-      series_template: "These attached files will be included in all future meetings in the series."
+      onetime_template: "Ces fichiers joints seront inclus dans toutes les futures réunions de la série."
+      series_template: "Ces fichiers joints seront inclus dans toutes les futures réunions de la série."
       text: "Les fichiers joints sont accessibles à tous les participants à la réunion. Vous pouvez également les glisser-déposer dans les notes relatives aux points de l'ordre du jour."
     copy:
       title: "Copier la réunion : %{title}"
@@ -293,7 +293,7 @@ fr:
           title: "Supprimer le modèle"
           heading: "Supprimer ce modèle ?"
           confirmation_message_html: >
-            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
+            Cette action n'est pas réversible. Veuillez procéder avec prudence. Les réunions existantes qui ont été créées à l'aide de ce modèle ne seront pas affectées.
       occurrence:
         title: "Annuler l'occurrence de la réunion"
         heading: "Annuler cette occurrence de réunion ?"

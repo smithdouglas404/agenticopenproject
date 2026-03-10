@@ -175,7 +175,7 @@ de:
           instance_meta_fetching: "Abrufen von Metadaten"
           instance_meta_error: "Fehler beim Abrufen von Metadaten"
           instance_meta_done: "Metadaten abgerufen"
-          import_scope: "Select scope"
+          import_scope: "Umfang auswählen"
           configuring: "Umfang auswählen"
           projects_meta_fetching: "Abrufen von Projektdaten"
           projects_meta_error: "Fehler beim Abrufen von Projektdaten"
@@ -185,12 +185,12 @@ de:
           imported: "Überprüfungsmodus"
           reverting: "Rückgängig machen"
           revert_error: "Fehler beim Revertieren"
-          revert_cancelling: "Cancelling revert"
-          revert_cancelled: "Revert cancelled"
+          revert_cancelling: "Rückgängig machen abbrechen"
+          revert_cancelled: "Rückgängig machen abgebrochen"
           reverted: "Rückgängig gemacht"
-          finalizing: "Finalizing"
-          finalizing_error: "Error during finalizing"
-          finalizing_done: "Completed"
+          finalizing: "Abschließen"
+          finalizing_error: "Fehler beim Abschließen"
+          finalizing_done: "Abgeschlossen"
         wizard:
           button_retry: "Erneut versuchen"
           parts:
@@ -271,9 +271,9 @@ de:
               button_revert: "Import rückgängig machen"
               button_done: "Import abschließen"
               preview_description: 'Die importierten Daten befinden sich derzeit im Überprüfungsmodus. Klicken Sie auf "Import abschließen", um den Import dauerhaft zu machen, oder auf "Import rückgängig machen", um alle in diesem Importlauf vorgenommenen Änderungen rückgängig zu machen.'
-              label_finalize_import: "Finalize import"
-              label_finalizing: "Finalizing import..."
-              label_finalizing_done: "Import finalized."
+              label_finalize_import: "Import abschließen"
+              label_finalizing: "Import wird abgeschlossen..."
+              label_finalizing_done: "Import abgeschlossen."
               label_revert_progress: "Import wird rückgängig gemacht..."
               label_reverted: "Import rückgängig gemacht."
           select_dialog:
@@ -310,13 +310,13 @@ de:
         description_caption: "Wie der MCP-Server gegenüber anderen Anwendungen beschrieben wird, die sich damit verbinden."
         title_caption: "Ein kurzer Titel, der Anwendungen angezeigt wird, die sich mit dem MCP-Server verbinden."
         tool_response_format: "Antwortformat des Tools"
-        tool_response_format_content_only_label: "Nur Inhalt"
+        tool_response_format_content_only_label: "Nur unstrukturiert (content)"
         tool_response_format_content_only_caption: >
           Wählen Sie diese Option, wenn MCP-Clients, die sich mit dieser Instanz verbinden, keine strukturierten Inhalte unterstützen. Die Antworten des Tools enthalten dann nur den reinen Textinhalt und lassen die strukturierte Inhalte aus.
         tool_response_format_full_label: "Vollständig"
         tool_response_format_full_caption: >
           Die kompatibelste Option. Die Antworten des Tools enthalten sowohl reguläre als auch strukturierte Inhalte, so dass MCP-Clients wählen können, welches Format sie lesen möchten. Dies kann die Anzahl der Token erhöhen, die das Sprachmodell verarbeiten muss, was die Kosten erhöhen und die Leistung verringern kann.
-        tool_response_format_structured_only_label: "Nur strukturierte Inhalte"
+        tool_response_format_structured_only_label: "Nur strukturiert (structured content)"
         tool_response_format_structured_only_caption: >
           Wählen Sie diese Option, wenn Sie sicher sind, dass MCP-Clients, die sich mit dieser Instanz verbinden, strukturierte Inhalte unterstützen. Die Antworten des Tools enthalten dann nur strukturierte Inhalte und nicht deren Textdarstellung.
       update:
@@ -1374,7 +1374,7 @@ de:
         personal_access_token: "Persönlicher Zugangs-Token"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira import"
+        jira_import: "Jira Import"
       announcements:
         show_until: "Anzeigen bis"
       attachment:
@@ -4209,7 +4209,7 @@ de:
   notice_parent_item_not_found: "Übergeordnetes Element nicht gefunden."
   notice_project_not_deleted: "Das Projekt wurde nicht gelöscht."
   notice_project_not_found: "Projekt nicht gefunden."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe: "Die SMTP-Adresse %{address} ist nicht sicher. Bitte fügen Sie sie zu OPENPROJECT_SSRF_PROTECTION_ALLOWLIST hinzu."
   notice_successful_connection: "Verbindung erfolgreich."
   notice_successful_create: "Erfolgreich angelegt."
   notice_successful_delete: "Erfolgreich gelöscht."

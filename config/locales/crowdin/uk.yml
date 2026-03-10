@@ -3700,7 +3700,7 @@ uk:
   label_lock_user: "Заблокувати користувача"
   label_logged_as: "Ви увійшли як"
   label_login: "Увійти"
-  label_custom_comment: "Коментар %{name}"
+  label_custom_comment: "Коментар до атрибута «%{name}»"
   label_custom_logo: "Користувацький логотип для ПК"
   label_custom_logo_mobile: "Користувацький логотип для мобільного"
   label_custom_export_logo: "Користувацький логотип експорту"

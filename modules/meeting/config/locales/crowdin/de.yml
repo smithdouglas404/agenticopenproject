@@ -215,8 +215,8 @@ de:
         heading: "Keine Teilnehmer"
         description: "Es gibt noch keine Teilnehmer."
     attachments:
-      onetime_template: "These attached files will be included in all future meetings using this template."
-      series_template: "These attached files will be included in all future meetings in the series."
+      onetime_template: "Diese angehängten Dateien werden bei allen zukünftigen Besprechungen mit dieser Vorlage berücksichtigt."
+      series_template: "Die angehängten Dateien werden in alle künftigen Besprechungen dieser Terminserie einbezogen."
       text: "Angehängte Dateien sind für alle Teilnehmer der Besprechung verfügbar. Sie können diese auch per Drag-and-drop in die Notizen der Tagesordnungspunkte ziehen."
     copy:
       title: "Besprechung kopieren: %{title}"
@@ -293,7 +293,7 @@ de:
           title: "Vorlage löschen"
           heading: "Vorlage löschen?"
           confirmation_message_html: >
-            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
+            Diese Aktion kann nicht rückgängig gemacht werden. Bitte gehen Sie mit Vorsicht vor. Bestehende Meetings, die mit dieser Vorlage erstellt wurden, sind davon nicht betroffen.
       occurrence:
         title: "Wiederkehrende Besprechung absagen"
         heading: "Dieses Ereignis absagen?"
