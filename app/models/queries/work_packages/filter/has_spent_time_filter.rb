@@ -53,6 +53,8 @@ class Queries::WorkPackages::Filter::HasSpentTimeFilter < Queries::WorkPackages:
     from_date = values[0].blank? ? nil : Date.parse(values[0])
     to_date   = values[1].blank? ? nil : Date.parse(values[1])
 
+    allowed_project_ids = Project.allowed_to(User.current, :view_time_entries).select(:id).to_sql
+
     <<~SQL.squish
       EXISTS (
         SELECT 1
@@ -62,6 +64,7 @@ class Queries::WorkPackages::Filter::HasSpentTimeFilter < Queries::WorkPackages:
           AND #{date_range_clause('time_entries', 'spent_on', from_date, to_date)}
           AND time_entries.hours > 0
           AND time_entries.ongoing = false
+          AND time_entries.project_id IN (#{allowed_project_ids})
       )
     SQL
   rescue Date::Error
