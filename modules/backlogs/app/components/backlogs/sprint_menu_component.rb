@@ -34,12 +34,20 @@ module Backlogs
 
     attr_reader :sprint, :project, :current_user
 
-    def initialize(sprint:, project:, current_user: User.current)
+    def initialize(sprint:, project:, current_user: User.current, **system_arguments)
       super()
 
       @sprint = sprint
       @project = project
       @current_user = current_user
+
+      @system_arguments = system_arguments
+      @system_arguments[:menu_id] = dom_target(sprint, :menu)
+      @system_arguments[:anchor_align] = :end
+      @system_arguments[:classes] = class_names(
+        @system_arguments[:classes],
+        "hide-when-print"
+      )
     end
 
     def stories

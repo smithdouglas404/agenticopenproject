@@ -123,6 +123,12 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
 
         expect(page).to have_css("action-menu")
       end
+
+      it "renders a stable id on the sprint menu trigger" do
+        render_component
+
+        expect(page).to have_element(:button, id: /\Aagile_sprint_#{sprint.id}_menu-button\z/)
+      end
     end
 
     context "with no stories" do

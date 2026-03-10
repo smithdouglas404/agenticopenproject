@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= component_wrapper(tag: :section) do %>
   <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
-    <% border_box.with_header do %>
+    <% border_box.with_header(id: dom_target(sprint, :header)) do %>
       <%= render(Backlogs::SprintHeaderComponent.new(sprint:, folded: folded?)) %>
     <% end %>
     <% if stories.empty? %>
