@@ -210,7 +210,8 @@ id:
         heading: "Tidak ada peserta"
         description: "Belum ada peserta."
     attachments:
-      template: "Berkas-berkas yang terlampir ini akan disertakan dalam semua pertemuan mendatang dalam rangkaian ini."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "File terlampir tersedia untuk semua peserta rapat. Anda juga dapat menyeret dan meletakkannya ke dalam catatan item agenda."
     copy:
       title: "Salinan rapat: %{title}"
@@ -286,6 +287,8 @@ id:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Cancel meeting occurrence"
         heading: "Cancel this meeting occurrence?"

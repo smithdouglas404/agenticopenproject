@@ -175,6 +175,7 @@ zh-TW:
           instance_meta_fetching: "Fetching meta data"
           instance_meta_error: "Error fetching meta data"
           instance_meta_done: "Meta data fetched"
+          import_scope: "Select scope"
           configuring: "Select scope"
           projects_meta_fetching: "Fetching project data"
           projects_meta_error: "Error fetching project data"
@@ -184,8 +185,12 @@ zh-TW:
           imported: "Review mode"
           reverting: "Reverting"
           revert_error: "Error during revert"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Reverted"
-          completed: "Completed"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Retry"
           parts:
@@ -260,8 +265,9 @@ zh-TW:
               button_revert: "Revert import"
               button_done: "Finalize import"
               preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
-              label_finalizing_progress: "Finalizing import..."
-              label_finalized: "Import finalized."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Reverting import..."
               label_reverted: "Import reverted."
           select_dialog:
@@ -1355,6 +1361,9 @@ zh-TW:
         name: "Jira instance name"
         url: "Jira instance URL"
         personal_access_token: "Personal access token"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "只顯示到"
       attachment:
@@ -4146,6 +4155,7 @@ zh-TW:
   notice_parent_item_not_found: "未找到父項目。"
   notice_project_not_deleted: "專案沒有被刪除"
   notice_project_not_found: "未找到專案。"
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "連接成功"
   notice_successful_create: "建立成功"
   notice_successful_delete: "刪除成功"

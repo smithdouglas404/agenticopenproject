@@ -210,7 +210,8 @@ ms:
         heading: "Tiada peserta"
         description: "There are no participants yet."
     attachments:
-      template: "Fail yang dilampirkan ini akan disertakan dalam semua mesyuarat akan datang dalam siri ini."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Fail yang dilampirkan tersedia kepada semua peserta mesyuarat. Anda juga boleh menarik dan melepaskannya ke dalam nota item agenda."
     copy:
       title: "Salin mesyuarat: %{title}"
@@ -286,6 +287,8 @@ ms:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Cancel meeting occurrence"
         heading: "Cancel this meeting occurrence?"

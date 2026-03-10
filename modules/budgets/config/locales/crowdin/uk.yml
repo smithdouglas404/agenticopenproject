@@ -44,7 +44,7 @@ uk:
         labor_budget_item:
           attributes:
             principal:
-              not_a_member_of_budget_project: "is not a member of the budget's project"
+              not_a_member_of_budget_project: "не є учасником проєкту бюджету"
     models:
       budget: "Бюджет"
       material_budget_item: "Одиниця"
@@ -79,22 +79,22 @@ uk:
           heading: "Немає інформації про бюджет"
           description: "Додайте інформацію про запланований бюджет, щоб побачити дані тут"
         count_caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget"
-          other: "Data aggregated from %{count} budgets"
+          zero: "Немає даних про бюджет."
+          one: "Дані, агреговані з %{count} бюджету"
+          other: "Дані, агреговані з %{count} бюджетів"
         count_caption_with_subitems:
           project:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this project and its subitems."
-            other: "Data aggregated from %{count} budgets included in this project and its subitems."
+            zero: "Немає даних про бюджет."
+            one: "Дані, агреговані з %{count} бюджету, включено в цей проєкт і його піделементи."
+            other: "Дані, агреговані з %{count} бюджетів, включено в цей проєкт і його піделементи."
           program:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this program and its subitems."
-            other: "Data aggregated from %{count} budgets included in this program and its subitems."
+            zero: "Немає даних про бюджет."
+            one: "Дані, агреговані з %{count} бюджету, включено в цю програму і її піделементи."
+            other: "Дані, агреговані з %{count} бюджетів, включено в цю програму і її піделементи."
           portfolio:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this portfolio and its subitems."
-            other: "Data aggregated from %{count} budgets included in this portfolio and its subitems."
+            zero: "Немає даних про бюджет."
+            one: "Дані, агреговані з %{count} бюджету, включено в цей портфель і його піделементи."
+            other: "Дані, агреговані з %{count} бюджетів, включено в цей портфель і його піделементи."
         view_details: "Переглянути інформацію про бюджет"
   events:
     budget: "Бюджет відредаговано"

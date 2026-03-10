@@ -82,21 +82,21 @@ uk:
     backlog_header_component:
       label_toggle_backlog: "Згорнути/розгорнути %{name}"
       label_story_count:
-        zero: "Немає історій у беклозі"
-        one: "%{count} історія в беклозі"
-        other: "%{count} історії(-й) у беклозі"
+        zero: "У беклозі немає історій"
+        one: "У беклозі %{count} історія"
+        other: "У беклозі стільки історій: %{count}"
     backlog_menu_component:
       label_actions: "Дії беклогу"
       action_menu:
         edit_sprint: "Редагувати спринт"
         new_story: "Нова історія"
-        stories_tasks: "Історії/Завдання"
+        stories_tasks: "Історії/завдання"
         task_board: "Дошка завдань"
         burndown_chart: "Діаграма згорання завдань"
         wiki: "Wiki"
         properties: "Властивості"
     story_component:
-      label_drag_story: "Перемістити %{name}"
+      label_drag_story: "Перемістити історію «%{name}»"
     story_menu_component:
       label_actions: "Дії історії"
   backlogs_points_burn_direction: "Бали спалюються вгору/вниз"

@@ -210,7 +210,8 @@ vi:
         heading: "Không có người tham gia"
         description: "Chưa có người tham gia."
     attachments:
-      template: "Các tệp đính kèm này sẽ được đưa vào tất cả các cuộc họp trong tương lai trong chuỗi."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Các tệp đính kèm có sẵn cho tất cả những người tham gia cuộc họp. Bạn cũng có thể kéo và thả chúng vào ghi chú mục chương trình nghị sự."
     copy:
       title: "Sao chép cuộc họp: %{title}"
@@ -286,6 +287,8 @@ vi:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Hủy cuộc họp diễn ra"
         heading: "Hủy cuộc họp này diễn ra?"

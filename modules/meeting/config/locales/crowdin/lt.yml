@@ -225,7 +225,8 @@ lt:
         heading: "Nėra dalyvių"
         description: "There are no participants yet."
     attachments:
-      template: "These attached files will be included in all future meetings in the series."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Prisegti failai prieinami visiems susitikimo dalyviams. Taipogi galite nutempti juos į plano elemento pastabas."
     copy:
       title: "Kopijuoti susitikimą: %{title}"
@@ -301,6 +302,8 @@ lt:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Cancel meeting occurrence"
         heading: "Cancel this meeting occurrence?"

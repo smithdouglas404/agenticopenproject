@@ -215,7 +215,8 @@ hu:
         heading: "Nincsenek résztvevők"
         description: "Még nincsenek résztvevők."
     attachments:
-      template: "Ezeket a csatolt fájlok minden ismételt megbeszélésben szerepelni fognak."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "A csatolt fájlok az ülés valamennyi résztvevője számára elérhetők. Ezeket a napirendi pontok jegyzeteibe is behúzhatja."
     copy:
       title: "%{title} megbeszélés másolása"
@@ -291,6 +292,8 @@ hu:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Cancel meeting occurrence"
         heading: "Cancel this meeting occurrence?"

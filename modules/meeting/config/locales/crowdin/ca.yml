@@ -215,7 +215,8 @@ ca:
         heading: "No hi ha participants"
         description: "There are no participants yet."
     attachments:
-      template: "These attached files will be included in all future meetings in the series."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Els fitxers adjunts estan disponibles per a tots els participants de la reunió. També podeu arrossegar-los i deixar-los anar a les notes dels punts de l'agenda."
     copy:
       title: "Copia la reunió: %{title}"
@@ -291,6 +292,8 @@ ca:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Cancel meeting occurrence"
         heading: "Cancel this meeting occurrence?"

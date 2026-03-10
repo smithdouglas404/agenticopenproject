@@ -195,7 +195,7 @@ pt-PT:
   label_start_date: "Data de início"
   label_subscribe_icalendar: "Subscrever o calendário"
   caption_meeting_template_select: "Selecione um modelo para copiar automaticamente os seus pontos da agenda"
-  caption_template_project_select: "Please select the project in which to create this meeting template"
+  caption_template_project_select: "Selecione o projeto em que quer criar este modelo de reunião"
   meeting:
     participants:
       label:
@@ -215,7 +215,8 @@ pt-PT:
         heading: "Sem participantes"
         description: "Ainda não há participantes."
     attachments:
-      template: "Estes ficheiros em anexo serão incluídos em todas as futuras reuniões da série."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Os ficheiros anexados estão disponíveis para todos os participantes na reunião. Também pode arrastar e soltar estes ficheiros nas notas do item da agenda."
     copy:
       title: "Copiar reunião: %{title}"
@@ -291,6 +292,8 @@ pt-PT:
         template:
           title: "Eliminar modelo"
           heading: "Eliminar este modelo?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Cancelar ocorrência de reunião"
         heading: "Cancelar esta ocorrência de reunião?"
@@ -614,7 +617,7 @@ pt-PT:
   text_meeting_draft_banner: "Está no modo de rascunho. Esta reunião não enviará atualizações de calendário ou convites, mesmo que altere os detalhes da reunião ou adicione/remova participantes."
   text_onetime_meeting_template_banner: "Está a editar um modelo de reunião. Pode utilizar este modelo para criar reuniões únicas com uma agenda predefinida. As alterações não afetarão as reuniões já criadas."
   text_onetime_meeting_template_empty_heading: "Este modelo de reunião está vazio"
-  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
+  text_onetime_meeting_template_empty_description: "Adicione elementos da agenda, secções e anexos aqui. Serão incluídos em todas as reuniões criadas com este modelo."
   text_exit_draft_mode_dialog_title: "Abrir esta reunião e enviar convites?"
   text_exit_draft_mode_dialog_subtitle: "Não pode regressar ao modo de rascunho após agendar uma reunião."
   text_exit_draft_mode_dialog_template_title: "Abrir a primeira ocorrência desta série de reuniões?"

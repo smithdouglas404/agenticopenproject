@@ -79,22 +79,22 @@ pt-BR:
           heading: "Detalhes de orçamento ausentes"
           description: "Adicione os detalhes do orçamento planejado para visualizar os dados aqui"
         count_caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget"
-          other: "Data aggregated from %{count} budgets"
+          zero: "Sem dados de orçamento."
+          one: "Dados agregados de %{count} orçamento"
+          other: "Dados agregados de %{count} orçamentos"
         count_caption_with_subitems:
           project:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this project and its subitems."
-            other: "Data aggregated from %{count} budgets included in this project and its subitems."
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados de %{count} orçamento incluídos neste projeto e em seus subitens."
+            other: "Dados agregados de %{count} orçamentos incluídos neste projeto e em seus subitens."
           program:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this program and its subitems."
-            other: "Data aggregated from %{count} budgets included in this program and its subitems."
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados de %{count} orçamento incluídos neste programa e em seus subitens."
+            other: "Dados agregados de %{count} orçamentos incluídos neste programa e em seus subitens."
           portfolio:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this portfolio and its subitems."
-            other: "Data aggregated from %{count} budgets included in this portfolio and its subitems."
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados de %{count} orçamento incluídos neste portfólio e em seus subitens."
+            other: "Dados agregados de %{count} orçamentos incluídos neste portfólio e em seus subitens."
         view_details: "Ver detalhes do orçamento"
   events:
     budget: "Orçamento editado"

@@ -210,7 +210,8 @@ ja:
         heading: "参加者なし"
         description: "まだ参加者はいない。"
     attachments:
-      template: "これらの添付ファイルは、今後の一連の会議に含まれます。"
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "添付ファイルはすべての会議参加者が利用可能です。また、これらのファイルを議題項目のノートにドラッグアンドドロップすることもできます。"
     copy:
       title: "会議をコピー：%{title}"
@@ -286,6 +287,8 @@ ja:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "会議のキャンセル"
         heading: "この会議をキャンセルしますか？"

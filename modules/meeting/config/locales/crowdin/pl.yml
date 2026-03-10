@@ -205,7 +205,7 @@ pl:
   label_start_date: "Data rozpoczęcia"
   label_subscribe_icalendar: "Subskrybuj kalendarz"
   caption_meeting_template_select: "Wybierz szablon, aby automatycznie skopiować z niego punkty planu spotkania"
-  caption_template_project_select: "Please select the project in which to create this meeting template"
+  caption_template_project_select: "Wybierz projekt, w którym ma zostać utworzony ten szablon spotkania"
   meeting:
     participants:
       label:
@@ -225,7 +225,8 @@ pl:
         heading: "Brak uczestników"
         description: "Nie ma jeszcze żadnych uczestników."
     attachments:
-      template: "Załączone pliki zostaną uwzględnione we wszystkich przyszłych spotkaniach z tej serii."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Załączone pliki są dostępne dla wszystkich uczestników spotkania. Można je również przeciągać i upuszczać w notatkach do punktów planu spotkania."
     copy:
       title: "Kopiuj spotkanie: %{title}"
@@ -301,6 +302,8 @@ pl:
         template:
           title: "Usuń szablon"
           heading: "Usunąć ten szablon?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Anuluj wystąpienie spotkania"
         heading: "Anulować to wystąpienie spotkania?"
@@ -628,7 +631,7 @@ pl:
   text_meeting_draft_banner: "Jesteś teraz w trybie wersji roboczej. To spotkanie nie wyśle żadnych aktualizacji kalendarza ani zaproszeń, nawet jeśli zmienisz szczegóły spotkania lub dodasz/usuniesz uczestników."
   text_onetime_meeting_template_banner: "Obecnie edytujesz szablon spotkania. Możesz użyć tego szablonu do tworzenia jednorazowych spotkań z predefiniowanym planem spotkania. Zmiany nie będą miały wpływu na już utworzone spotkania."
   text_onetime_meeting_template_empty_heading: "Ten szablon spotkania jest pusty"
-  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
+  text_onetime_meeting_template_empty_description: "Dodaj punkty planu spotkania, sekcje i załączniki tutaj. Będą one dołączane do każdego spotkania utworzonego przy użyciu tego szablonu."
   text_exit_draft_mode_dialog_title: "Otworzyć to spotkanie i wysłać zaproszenia?"
   text_exit_draft_mode_dialog_subtitle: "Po zaplanowaniu spotkania nie można powrócić do trybu wersji roboczej."
   text_exit_draft_mode_dialog_template_title: "Otworzyć pierwsze wystąpienie z tej serii spotkań?"

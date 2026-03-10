@@ -215,7 +215,8 @@ sv:
         heading: "Inga deltagare"
         description: "Det finns inga deltagare ännu."
     attachments:
-      template: "Dessa bifogade filer kommer att inkluderas i alla framtida möten i serien."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Bifogade filer är tillgängliga för alla mötesdeltagare. Du kan också dra och släppa dem i dagordningspunktens anteckningar."
     copy:
       title: "Kopiera möte: %{title}"
@@ -291,6 +292,8 @@ sv:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Avbryt förekomst av möte"
         heading: "Avbryt denna förekomst av möte?"

@@ -225,7 +225,8 @@ ru:
         heading: "Нет участников"
         description: "Пока нет участников."
     attachments:
-      template: "Эти прикрепленные файлы будут включены во все последующие совещания этой серии."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Прикрепленные файлы доступны всем участникам совещания. Вы также можете перенести их в примечания к пунктам повестки дня."
     copy:
       title: "Копировать совещание %{title}"
@@ -301,6 +302,8 @@ ru:
         template:
           title: "Удалить шаблон"
           heading: "Удалить этот шаблон?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Отменить это событие"
         heading: "Отменить это событие?"

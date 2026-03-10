@@ -175,6 +175,7 @@ de:
           instance_meta_fetching: "Abrufen von Metadaten"
           instance_meta_error: "Fehler beim Abrufen von Metadaten"
           instance_meta_done: "Metadaten abgerufen"
+          import_scope: "Select scope"
           configuring: "Umfang auswählen"
           projects_meta_fetching: "Abrufen von Projektdaten"
           projects_meta_error: "Fehler beim Abrufen von Projektdaten"
@@ -184,8 +185,12 @@ de:
           imported: "Überprüfungsmodus"
           reverting: "Rückgängig machen"
           revert_error: "Fehler beim Revertieren"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Rückgängig gemacht"
-          completed: "Abgeschlossen"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Erneut versuchen"
           parts:
@@ -266,8 +271,9 @@ de:
               button_revert: "Import rückgängig machen"
               button_done: "Import abschließen"
               preview_description: 'Die importierten Daten befinden sich derzeit im Überprüfungsmodus. Klicken Sie auf "Import abschließen", um den Import dauerhaft zu machen, oder auf "Import rückgängig machen", um alle in diesem Importlauf vorgenommenen Änderungen rückgängig zu machen.'
-              label_finalizing_progress: "Import wird abgeschlossen..."
-              label_finalized: "Import abgeschlossen."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Import wird rückgängig gemacht..."
               label_reverted: "Import rückgängig gemacht."
           select_dialog:
@@ -291,7 +297,7 @@ de:
             title: "Projekte auswählen"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta."
+        description: "Das Model Context Protocol ermöglicht es KI-Agenten, ihren Nutzern Tools und Ressourcen bereitzustellen, die diese OpenProject-Instanz zur Verfügung stellt. Die Funktion befindet sich noch in der Beta-Phase."
         resources_heading: "Ressourcen"
         resources_description: "OpenProject stellt die folgenden Ressourcen bereit. Jede Ressource kann nach Wunsch aktiviert, umbenannt und beschrieben werden. Weitere Informationen finden sich in der [Dokumentation zu MCP-Ressourcen](docs_url)."
         resources_submit: "Ressourcen aktualisieren"
@@ -1366,6 +1372,9 @@ de:
         name: "Name der Jira-Instanz"
         url: "URL der Jira-Instanz"
         personal_access_token: "Persönlicher Zugangs-Token"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Anzeigen bis"
       attachment:
@@ -2760,9 +2769,9 @@ de:
         title: "Benutzerdefinierte Aktionen"
         description: "Selbstdefinierte Aktionen sind Verknüpfungen zu einer Reihe von vordefinierten Aktionen, die Sie für bestimmte Arbeitspakete je nach Status, Rolle, Typ oder Projekt mit nur einem Klick auf einen Button auslösen."
       mcp_server:
-        description: "Bring OpenProject into your AI workflows with a secure MCP server."
+        description: "Integrieren Sie OpenProject mittels eines sicheren MCP-Servers in Ihren KI-Workflows."
       meeting_templates:
-        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
+        description: "Definieren Sie Besprechungsvorlagen mit einer festen Agenda-Struktur und sparen Sie Zeit, indem Sie sie bei der Erstellung neuer Besprechungen wiederverwenden."
       nextcloud_sso:
         title: "Single Sign-On für Nextcloud-Speicher"
         description: "Aktivieren Sie nahtlose und sichere Authentifizierung für Ihren Nextcloud-Speicher mit Single Sign-On. Vereinfachen Sie das Zugriffsmanagement und erhöhen Sie den Benutzerkomfort."
@@ -3075,16 +3084,16 @@ de:
         #We need to include the version to invalidate outdated translations in other locales
         "17_2":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
           new_features_list:
-            line_0: AI workflows with a secure MCP server (Professional plan and higher)
-            line_1: Improved project home page with new widget for budgets and improved accessibility
-            line_2: "Meetings: Meeting templates (Basic plan and higher)"
-            line_3: Better transparency with project attribute comments
+            line_0: KI-Workflows mit einem sicheren MCP-Server (Professional-Plan und höher)
+            line_1: Verbesserte Projekt-Startseite mit neuem Widget für Budgets und verbesserter Barrierefreiheit
+            line_2: "Besprechungen: Besprechungsvorlagen (Basisplan und höher)"
+            line_3: Bessere Transparenz durch Kommentare zu Projektattributen
             line_4: Verbesserungen beim PDF-Export
-            line_5: Increased security for external links (Premium plan and higher)
-            line_6: UI/UX improvements in the Backlogs module
-            line_7: Harmonized custom field forms
+            line_5: Erhöhte Sicherheit für externe Links (Premium Plan und höher)
+            line_6: UI/UX Verbesserungen im Backlogs-Modul
+            line_7: Harmonisierte Formulare für benutzerdefinierte Felder
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
@@ -3102,7 +3111,7 @@ de:
   journals:
     changes_retracted: "Die Änderungen wurden zurückgezogen."
     caused_changes:
-      budget_deleted: "Budget has been deleted"
+      budget_deleted: "Budget wurde gelöscht"
       dates_changed: "Datum geändert"
       default_attribute_written: "Nur-Lese-Attribute wurde geschrieben"
       import: "Importiert"
@@ -3128,7 +3137,7 @@ de:
       work_package_related_changed_times: durch Änderungen an verwandtem Arbeitspaket %{link}
       work_package_duplicate_closed: Der Status wurde automatisch durch das als Duplikat markierte Arbeitspaket %{link} aktualisiert
       unaccessable_work_package_changed: nach Änderungen an einem zugehörigen Arbeitspaket
-      budget_deleted: Budget has been deleted
+      budget_deleted: Budget wurde gelöscht
       working_days_changed:
         changed: "Durch Änderungen an Werktagen (%{changes})"
         days:
@@ -4200,6 +4209,7 @@ de:
   notice_parent_item_not_found: "Übergeordnetes Element nicht gefunden."
   notice_project_not_deleted: "Das Projekt wurde nicht gelöscht."
   notice_project_not_found: "Projekt nicht gefunden."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Verbindung erfolgreich."
   notice_successful_create: "Erfolgreich angelegt."
   notice_successful_delete: "Erfolgreich gelöscht."

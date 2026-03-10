@@ -175,6 +175,7 @@ ko:
           instance_meta_fetching: "메타 데이터를 가져오는 중"
           instance_meta_error: "메타 데이터를 가져오는 중에 오류 발생"
           instance_meta_done: "메타 데이터 가져옴"
+          import_scope: "Select scope"
           configuring: "범위 선택"
           projects_meta_fetching: "프로젝트 데이터를 가져오는 중"
           projects_meta_error: "프로젝트 데이터를 가져오는 중에 오류 발생"
@@ -184,8 +185,12 @@ ko:
           imported: "검토 모드"
           reverting: "되돌리는 중"
           revert_error: "되돌리는 중에 오류 발생"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "되돌림"
-          completed: "완료됨"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "다시 시도"
           parts:
@@ -225,7 +230,7 @@ ko:
               title: "가져오기 범위"
               caption: "OpenProject로 가져올 항목을 선택합니다"
               caption_done: "완료됨"
-              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now."
+              label_info: "이 가져오기 도구는 베타 버전이며 일부 유형의 데이터를 가져올 수 없다는 점에 유의하세요. 호스트 Jira 인스턴스에서 가져오기용으로 제공하는 항목과 이 도구에서 현재 가져올 수 있는 항목에 대한 요약은 다음과 같습니다."
               description: "호스트 Jira 인스턴스에서 가져온 사용 가능한 데이터에서 가져올 데이터를 선택합니다."
               label_available_data: "사용 가능한 데이터"
               label_not_available_data: "가져오기에 사용할 수 없음"
@@ -260,18 +265,19 @@ ko:
               button_revert: "가져오기 되돌리기"
               button_done: "가져오기 완료"
               preview_description: '가져온 데이터는 현재 검토 모드에 있습니다. 가져오기를 영구적으로 적용하려면 "가져오기 완료"를 클릭하고, 가져오기 실행에서 변경된 모든 사항을 취소하려면 "가져오기 되돌리기"를 클릭합니다.'
-              label_finalizing_progress: "가져오기를 완료하는 중..."
-              label_finalized: "가져오기가 완료되었습니다."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "가져오기를 되돌리는 중..."
               label_reverted: "가져오기를 되돌렸습니다."
           select_dialog:
             filter_projects: "텍스트로 필터링"
           import_dialog:
-            title: "Start this import?"
-            confirm_button: "Start import"
+            title: "이 가져오기를 시작하시겠습니까?"
+            confirm_button: "가져오기 시작"
             description: >
-              This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
-            confirm: "I understand and made the necessary preparations"
+              이 가져오기 도구는 알파 기능입니다. 아직 Jira에서 일부 데이터를 가져올 수 없으며 이 OpenProject 인스턴스에 불완전한 데이터가 남을 수 있습니다. <b>프로덕션 환경을 사용하지 말고, 시작하기 전에 OpenProject 데이터의 백업을 만드세요.</b>
+            confirm: "이해했으며 필요한 준비를 마쳤습니다"
           revert_dialog:
             title: "이 가져오기를 영구적으로 되돌리시겠습니까?"
             description: "이렇게 하면 OpenProject의 가져오기 후 해당 프로젝트에 사용자 활동이 있더라도 가져온 모든 개체(전체 프로젝트 포함)가 삭제됩니다."
@@ -1359,6 +1365,9 @@ ko:
         name: "Jira 인스턴스 이름"
         url: "Jira 인스턴스 URL"
         personal_access_token: "개인 액세스 토큰"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "표시 기한"
       attachment:
@@ -3032,7 +3041,7 @@ ko:
             line_0: 안전한 MCP 서버를 사용하는 AI 워크플로(Professional 플랜 이상)
             line_1: 새 예산 위젯이 포함되고 접근성이 향상되어 프로젝트 홈 페이지가 개선됨
             line_2: "미팅: 미팅 템플릿(Basic 플랜 이상)"
-            line_3: Better transparency with project attribute comments
+            line_3: 프로젝트 특성 코멘트의 투명성 향상됨
             line_4: PDF 내보내기 개선 사항
             line_5: 외부 링크에 대한 보안 강화됨(Premium 플랜 이상)
             line_6: 백로그 모듈의 UI/UX 개선 사항
@@ -4151,6 +4160,7 @@ ko:
   notice_parent_item_not_found: "부모 항목을 찾을 수 없습니다."
   notice_project_not_deleted: "프로젝트가 삭제되지 않았습니다."
   notice_project_not_found: "프로젝트를 찾을 수 없습니다."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "연결에 성공했습니다."
   notice_successful_create: "생성에 성공했습니다."
   notice_successful_delete: "삭제에 성공했습니다."

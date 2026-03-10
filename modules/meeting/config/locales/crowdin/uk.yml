@@ -62,7 +62,7 @@ uk:
         end_date: "Дата завершення"
         iterations: "Повторення"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "Час початку"
       meeting_participant:
         invited: "Запрошені"
         attended: "Відвідано"
@@ -75,7 +75,7 @@ uk:
           section_not_belong_to_meeting: "Розділ не належить до тієї самої наради."
           user_invalid: "не є дійсним учасником."
         recurring_meeting_interim_response:
-          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
+          not_an_occurrence: "не є дійсним часом проведення цієї повторюваної наради"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Одна відкрита нарада в серії не входить у новий розклад. Налаштуйте розклад так, щоб він охоплював усі наявні наради."
@@ -204,8 +204,8 @@ uk:
   label_time_zone: "Часовий пояс"
   label_start_date: "Дата початку"
   label_subscribe_icalendar: "Підписатися на календар"
-  caption_meeting_template_select: "Виберіть шаблон, щоб автоматично скопіювати пункти порядку денного"
-  caption_template_project_select: "Please select the project in which to create this meeting template"
+  caption_meeting_template_select: "Виберіть шаблон, щоб автоматично скопіювати з нього пункти порядку денного"
+  caption_template_project_select: "Виберіть проєкт, у якому ви хочете створити цей шаблон наради"
   meeting:
     participants:
       label:
@@ -225,7 +225,8 @@ uk:
         heading: "Немає учасників"
         description: "Учасників ще немає."
     attachments:
-      template: "Ці прикріплені файли додаватимуться до всіх майбутніх нарад серії."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Прикріплені файли доступні всім учасникам наради. Ви також можете перетягнути їх у примітки до пунктів порядку денного."
     copy:
       title: "Копіювати нараду: %{title}"
@@ -257,9 +258,9 @@ uk:
         header: "Скасовано: нарада «%{title}»"
         header_occurrence: "Скасовано: нарада серії «%{title}»"
         header_series: "Скасовано: серія нарад «%{title}»"
-        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_occurrence: "Нараду серії «%{title}» скасував(-ла) %{actor}, або вас видалено з учасників"
+        summary_series: "Серію нарад «%{title}» скасував(-ла) %{actor}, або вас видалено з учасників"
+        summary: "Нараду «%{title}» скасував(-ла) %{actor}, або вас видалено з учасників"
         date_time: "Заплановані дата/час"
       participant_added:
         header: "Нарада «%{title}» — додано учасника"
@@ -273,7 +274,7 @@ uk:
         summary_series: "Виконавець %{actor} вилучив учасника %{participant} із серії нарад «%{title}»"
       ended:
         header_series: "Завершено: серія нарад «%{title}»"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
+        summary_series: "Серію нарад «%{title}» завершив(-ла) %{actor}"
       updated:
         header: "Нараду «%{title}» оновлено"
         summary: "Нараду «%{title}» оновив(-ла) %{actor}"
@@ -301,6 +302,8 @@ uk:
         template:
           title: "Видалити шаблон"
           heading: "Видалити цей шаблон?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Скасувати нараду серії"
         heading: "Скасувати цю нараду серії?"
@@ -566,8 +569,8 @@ uk:
   label_agenda_item_move_up: "Перемістити вгору"
   label_agenda_item_move_down: "Перемістити вниз"
   label_agenda_item_duplicate: "Дублювати"
-  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
+  label_agenda_item_duplicate_in_next: "Дублювати в наступну нараду"
+  label_agenda_item_duplicate_in_next_title: "Дублювати в наступну нараду?"
   label_agenda_item_add_notes: "Додати примітки"
   label_agenda_item_add_outcome: "Додати результат"
   label_agenda_item_work_package_add: "Додати пакет робіт"

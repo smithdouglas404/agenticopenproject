@@ -175,6 +175,7 @@ pt-PT:
           instance_meta_fetching: "A recolher metadados"
           instance_meta_error: "Erro ao recolher metadados"
           instance_meta_done: "Metadados recolhidos"
+          import_scope: "Select scope"
           configuring: "Selecionar âmbito"
           projects_meta_fetching: "A recolher dados do projeto"
           projects_meta_error: "Erro ao recolher os dados do projeto"
@@ -184,8 +185,12 @@ pt-PT:
           imported: "Modo de revisão"
           reverting: "A reverter"
           revert_error: "Erro durante a reversão"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Revertido"
-          completed: "Concluído"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Tentar novamente"
           parts:
@@ -231,7 +236,7 @@ pt-PT:
               title: "Âmbito de importação"
               caption: "Escolha o que quer importar para o OpenProject"
               caption_done: "Concluído"
-              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now."
+              label_info: "Tenha em atenção que esta ferramenta de importação está em fase beta e não consegue importar todos os tipos de dados. Eis um resumo do que a instância do Jira anfitrião oferece para importação, e o que esta ferramenta consegue importar neste momento."
               description: "Selecione os dados que pretende importar a partir dos dados disponíveis obtidos na instância anfitriã do Jira."
               label_available_data: "Dados disponíveis"
               label_not_available_data: "Não disponível para importação"
@@ -266,18 +271,19 @@ pt-PT:
               button_revert: "Reverter importação"
               button_done: "Finalizar importação"
               preview_description: 'Os dados importados estão em modo de revisão. Clique em "Finalizar importação" para tornar a importação permanente ou em "Reverter importação" para anular todas as alterações feitas nesta importação.'
-              label_finalizing_progress: "A finalizar importação..."
-              label_finalized: "Importação finalizada."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "A reverter a importação..."
               label_reverted: "Importação revertida."
           select_dialog:
             filter_projects: "Filtrar por texto"
           import_dialog:
-            title: "Start this import?"
-            confirm_button: "Start import"
+            title: "Iniciar esta importação?"
+            confirm_button: "Iniciar importação"
             description: >
-              This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
-            confirm: "I understand and made the necessary preparations"
+              Este importador é uma funcionalidade alfa. Ainda não consegue importar todos os dados do Jira, e pode deixar dados incompletos nesta instância do OpenProject. <b>Não utilize um ambiente de produção e crie uma cópia de segurança dos seus dados do OpenProject antes de começar.</b>
+            confirm: "Compreendo e fiz os preparativos necessários"
           revert_dialog:
             title: "Reverter permanentemente esta importação?"
             description: "Isto vai eliminar todos os objetos importados (incluindo projetos inteiros), mesmo que tenha havido atividade do utilizador nesses projetos após a importação no OpenProject."
@@ -1371,6 +1377,9 @@ pt-PT:
         name: "Nome da instância do Jira"
         url: "URL da instância do Jira"
         personal_access_token: "Token de acesso pessoal"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Exibir até"
       attachment:
@@ -3085,7 +3094,7 @@ pt-PT:
             line_0: Fluxos de trabalho de IA com um servidor MCP seguro (plano Professional e superior)
             line_1: Página inicial do projeto melhorada com um novo widget para orçamentos e melhor acessibilidade
             line_2: "Reuniões: Modelos de reunião (Plano básico e superior)"
-            line_3: Better transparency with project attribute comments
+            line_3: Maior transparência nos comentários sobre os atributos dos projetos
             line_4: Melhorias na exportação de PDF
             line_5: Maior segurança para ligações externas (plano Premium e superior)
             line_6: Melhorias de UI/UX no módulo Backlogs
@@ -4204,6 +4213,7 @@ pt-PT:
   notice_parent_item_not_found: "O elemento pai não foi encontrado."
   notice_project_not_deleted: "O projeto não foi eliminado."
   notice_project_not_found: "Projeto não encontrado."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Ligação bem sucedida."
   notice_successful_create: "Criado com sucesso."
   notice_successful_delete: "Eliminado com sucesso."

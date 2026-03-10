@@ -225,7 +225,8 @@ cs:
         heading: "Nikdo tu není"
         description: "There are no participants yet."
     attachments:
-      template: "These attached files will be included in all future meetings in the series."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Přiložené soubory jsou k dispozici všem účastníkům schůzky. Můžete je také přetáhnout do poznámek k pořadu jednání."
     copy:
       title: "Kopírovat schůzku %{title}"
@@ -301,6 +302,8 @@ cs:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Zrušit výskyt schůzky"
         heading: "Zrušit výskyt schůzky"

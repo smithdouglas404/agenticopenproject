@@ -210,7 +210,8 @@ zh-TW:
         heading: "沒有與會者"
         description: "目前還沒有與會者。"
     attachments:
-      template: "這些隨附的檔案將納入所有未來的系列會議中。"
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "所有會議參與者都可以使用附件， 您也可以將它們拖放到議程項目註釋中。"
     copy:
       title: "複製會議 %{title}"
@@ -286,6 +287,8 @@ zh-TW:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "取消會議事件"
         heading: "取消此會議事件？"
