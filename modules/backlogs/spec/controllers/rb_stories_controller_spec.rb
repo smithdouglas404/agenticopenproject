@@ -65,6 +65,8 @@ RSpec.describe RbStoriesController do
         expect(response).to have_http_status :ok
         expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
         expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{other_sprint.id}"
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{sprint.id}"][method="morph"])
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{other_sprint.id}"][method="morph"])
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:sprint)).to eq(sprint)
@@ -92,6 +94,8 @@ RSpec.describe RbStoriesController do
         expect(response).to have_http_status :ok
         expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{other_sprint.id}"
         expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{other_sprint.id}"][method="morph"])
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{sprint.id}"][method="morph"])
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:sprint)).to eq(other_sprint)
@@ -112,7 +116,7 @@ RSpec.describe RbStoriesController do
           .and_return(update_service)
       end
 
-      it "renders an error flash", :aggregate_failures do
+      it "renders an error flash with 422", :aggregate_failures do
         put :move, params: {
                      project_id: project.id,
                      sprint_id: sprint.id,
@@ -122,9 +126,9 @@ RSpec.describe RbStoriesController do
                    },
                    format: :turbo_stream
 
-        expect(response).to be_successful
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
       end
     end
   end
@@ -137,6 +141,7 @@ RSpec.describe RbStoriesController do
       expect(response).to be_successful
       expect(response).to have_http_status :ok
       expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+      assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{sprint.id}"][method="morph"])
       expect(assigns(:project)).to eq(project)
       expect(assigns(:sprint)).to eq(sprint)
       expect(assigns(:story)).to eq(story)
@@ -154,13 +159,13 @@ RSpec.describe RbStoriesController do
           .and_return(update_service)
       end
 
-      it "renders an error flash", :aggregate_failures do
+      it "renders an error flash with 422", :aggregate_failures do
         post :reorder, params: { project_id: project.id, sprint_id: sprint.id, id: story.id, direction: "highest" },
                        format: :turbo_stream
 
-        expect(response).to be_successful
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
       end
     end
   end

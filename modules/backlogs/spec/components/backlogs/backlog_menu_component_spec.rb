@@ -129,6 +129,14 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
   describe "always-visible items" do
     let(:permissions) { [:view_sprints] }
 
+    it "renders a stable id on the action menu and stories/tasks item" do
+      render_component
+
+      expect(page).to have_element(:button, id: /\Abacklog_#{sprint.id}_menu-button\z/)
+      expect(page).to have_element(:ul, id: /\Abacklog_#{sprint.id}_menu-list\z/)
+      expect(page).to have_element(:a, id: /\Asprint_#{sprint.id}_menu_stories_tasks\z/)
+    end
+
     it "shows Stories/Tasks link" do
       render_component
 

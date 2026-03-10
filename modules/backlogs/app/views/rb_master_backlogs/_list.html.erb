@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<turbo-frame id="backlogs_container" refresh="morph" class="op-backlogs-page">
+<%= turbo_frame_tag :backlogs_container, refresh: :morph, class: "op-backlogs-page" do %>
   <% if @owner_backlogs.empty? && @sprint_backlogs.empty? %>
     <%=
       render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
@@ -49,4 +49,4 @@ See COPYRIGHT and LICENSE files for more details.
       </div>
     </div>
   <% end %>
-</turbo-frame>
+<% end %>

@@ -97,6 +97,12 @@ RSpec.describe Backlogs::BacklogComponent, type: :component do
         expect(page).to have_css(".Box-header h3", text: "Sprint 1")
       end
 
+      it "renders a stable id on the backlog header" do
+        render_component
+
+        expect(page).to have_element(:div, class: "Box-header", id: /\Abacklog_#{sprint.id}_header\z/)
+      end
+
       it "renders StoryComponent for each story" do
         render_component
 

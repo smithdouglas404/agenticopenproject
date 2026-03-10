@@ -221,6 +221,8 @@ class MeetingsController < ApplicationController
 
     if recurring
       redirect_to project_recurring_meeting_path(@project, recurring), status: :see_other
+    elsif @meeting.onetime_template?
+      redirect_to templates_project_meetings_path(@project), status: :see_other
     else
       redirect_back_or_default project_meetings_path(@project), status: :see_other
     end

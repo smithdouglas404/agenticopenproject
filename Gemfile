@@ -201,6 +201,7 @@ gem "nokogiri", "~> 1.19.1"
 
 gem "carrierwave", "~> 2.2.6"
 gem "carrierwave_direct", "~> 3.0.0"
+gem "ssrf_filter", "~> 1.3"
 gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.241"

@@ -28,7 +28,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++# %>
 
 <%=
-  render(Primer::Alpha::ActionMenu.new(anchor_align: :end, classes: "hide-when-print")) do |menu|
+  render(Primer::Alpha::ActionMenu.new(**@system_arguments)) do |menu|
     menu.with_show_button(
       scheme: :invisible,
       icon: :"kebab-horizontal",
@@ -38,6 +38,7 @@ See COPYRIGHT and LICENSE files for more details.
 
     if user_allowed?(:create_sprints)
       menu.with_item(
+        id: dom_target(sprint, :menu, :edit_sprint),
         label: t(".action_menu.edit_sprint"),
         href: edit_name_backlogs_project_sprint_path(project, sprint),
         content_arguments: { data: { turbo_stream: true } }
@@ -48,6 +49,7 @@ See COPYRIGHT and LICENSE files for more details.
 
     if user_allowed?(:manage_sprint_items)
       menu.with_item(
+        id: dom_target(sprint, :menu, :new_story),
         label: t(".action_menu.new_story"),
         href: new_project_work_packages_dialog_path(
           project,
@@ -65,6 +67,7 @@ See COPYRIGHT and LICENSE files for more details.
     end
 
     menu.with_item(
+      id: dom_target(sprint, :menu, :stories_tasks),
       label: t(".action_menu.stories_tasks"),
       tag: :a,
       href: backlogs_project_sprint_query_path(project, sprint)
@@ -74,6 +77,7 @@ See COPYRIGHT and LICENSE files for more details.
 
     if backlog.sprint_backlog?
       menu.with_item(
+        id: dom_target(sprint, :menu, :task_board),
         label: t(".action_menu.task_board"),
         tag: :a,
         href: backlogs_project_sprint_taskboard_path(project, sprint)
@@ -82,6 +86,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
 
       menu.with_item(
+        id: dom_target(sprint, :menu, :burndown_chart),
         label: t(".action_menu.burndown_chart"),
         tag: :a,
         href: backlogs_project_sprint_burndown_chart_path(project, sprint),
@@ -92,6 +97,7 @@ See COPYRIGHT and LICENSE files for more details.
 
       if project.module_enabled? "wiki"
         menu.with_item(
+          id: dom_target(sprint, :menu, :wiki),
           label: t(".action_menu.wiki"),
           tag: :a,
           href: edit_backlogs_project_sprint_wiki_path(project, sprint)
@@ -103,6 +109,7 @@ See COPYRIGHT and LICENSE files for more details.
 
     if user_allowed?(:create_sprints)
       menu.with_item(
+        id: dom_target(sprint, :menu, :properties),
         label: t(".action_menu.properties"),
         tag: :a,
         href: edit_version_path(sprint, back_url: backlogs_project_backlogs_path(project), project_id: project)

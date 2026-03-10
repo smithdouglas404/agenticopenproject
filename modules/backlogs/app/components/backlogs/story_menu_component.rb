@@ -32,7 +32,7 @@ module Backlogs
   class StoryMenuComponent < ApplicationComponent
     attr_reader :story, :sprint, :project, :max_position, :current_user
 
-    def initialize(story:, sprint:, max_position:, current_user: User.current)
+    def initialize(story:, sprint:, max_position:, current_user: User.current, **system_arguments)
       super()
 
       @story = story
@@ -40,6 +40,14 @@ module Backlogs
       @project = sprint.project
       @max_position = max_position
       @current_user = current_user
+
+      @system_arguments = system_arguments
+      @system_arguments[:menu_id] = dom_target(story, :menu)
+      @system_arguments[:anchor_align] = :end
+      @system_arguments[:classes] = class_names(
+        @system_arguments[:classes],
+        "hide-when-print"
+      )
     end
 
     private
@@ -61,6 +69,7 @@ module Backlogs
 
     def build_move_item(menu, label:, direction:, icon:)
       menu.with_item(
+        id: dom_target(story, :menu, direction),
         label:,
         tag: :button,
         href: reorder_backlogs_project_sprint_story_path(project, sprint, story),

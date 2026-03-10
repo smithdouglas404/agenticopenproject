@@ -36,12 +36,6 @@ export default class BacklogsController extends Controller<HTMLElement> {
   static outlets = ['backlogs--story'];
   declare backlogsStoryOutlets:StoryController[];
 
-  static values = {
-    listUrl: String,
-  };
-
-  declare listUrlValue:string;
-
   private abortController:AbortController|null = null;
   private service:HalEventsService|null = null;
   private subscription:Subscription|null = null;
@@ -96,7 +90,7 @@ export default class BacklogsController extends Controller<HTMLElement> {
   }
 
   private refreshList() {
-    this.listElement.src = this.listUrlValue;
+    void this.listElement.reload();
   }
 
   private get listElement() {

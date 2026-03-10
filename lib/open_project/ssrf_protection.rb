@@ -32,6 +32,53 @@ module OpenProject
   class SsrfProtection < ::SsrfFilter
     class << self
       ##
+      # Performs an SSRF-safe HTTP POST request to the given URL.
+      #
+      # Resolves the hostname and blocks requests to private/reserved IP ranges
+      # (loopback, link-local, RFC 1918, etc.) to prevent server-side request forgery.
+      # Use OPENPROJECT_SSRF_PROTECTION_IP_ALLOWLIST to explicitly permit specific private IPs.
+      #
+      # @param url [String, URI] The URL to POST to (must use http or https)
+      # @param options [Hash] Request options
+      # @option options [String] :body Request body to send
+      # @option options [Hash] :headers Additional HTTP headers, e.g. { "Content-Type" => "application/json" }
+      # @option options [Hash] :params Query parameters to merge into the URL
+      # @option options [Array<String>] :scheme_whitelist Allowed URI schemes (default: ["http", "https"])
+      # @option options [Integer] :max_redirects Maximum number of redirects to follow (default: 10)
+      # @option options [Hash] :http_options Options passed directly to Net::HTTP.start (e.g. read_timeout:, open_timeout:)
+      # @option options [Proc] :resolver Custom DNS resolver; receives a hostname and returns an array of IPAddr objects
+      # @yield [Net::HTTP::Post] Optional block to further configure the request object before it is sent
+      # @return [Net::HTTPResponse] The HTTP response
+      # @raise [SsrfFilter::InvalidUriScheme] If the URI scheme is not in the whitelist
+      # @raise [SsrfFilter::UnresolvedHostname] If the hostname cannot be resolved
+      # @raise [SsrfFilter::PrivateIPAddress] If all resolved IPs are private/blocked
+      # @raise [SsrfFilter::CRLFInjection] If CRLF characters are detected in headers
+      # @raise [SsrfFilter::TooManyRedirects] If the redirect limit is exceeded (not possible with the default of 0)
+      #
+      # Redirects are disabled by default (max_redirects: 0). Following a redirect
+      # on a POST is almost always wrong: SsrfFilter (which we inherit from) re-POSTs the full body to the redirect target
+      # regardless of the redirect status code, which can leak the payload to an unintended server.
+      # RFC 7231 only requires re-posting on 307/308; 301/302 should switch to GET. Override
+      # max_redirects only if you fully understand the implications.
+      #
+      # @example Simple JSON POST
+      #   response = OpenProject::SsrfProtection.post(
+      #     "https://example.com/api/hook",
+      #     headers: { "Content-Type" => "application/json" },
+      #     body: { event: "updated" }.to_json
+      #   )
+      #
+      # @example POST with custom timeout
+      #   response = OpenProject::SsrfProtection.post(
+      #     "https://example.com/notify",
+      #     body: payload,
+      #     http_options: { open_timeout: 5, read_timeout: 10 }
+      #   )
+      def post(url, options = {}, &)
+        super(url, { max_redirects: 0, resolver: resolver }.merge(options), &)
+      end
+
+      ##
       # Given a hostname or IP address, returns the first one which is safe to use
       # for triggering a user initiated request.
       #
@@ -57,7 +104,7 @@ module OpenProject
       end
 
       def safe_ip_address(ip_address)
-        ip_address if !unsafe_ip_address?(ip_address) || allowed_ip_address?(ip_address)
+        ip_address if !unsafe_ip_address?(ip_address)
       end
 
       def allowed_ip_address?(ip_address)
@@ -66,6 +113,14 @@ module OpenProject
 
       def resolver
         SsrfFilter::DEFAULT_RESOLVER
+      end
+
+      private
+
+      def unsafe_ip_address?(ip_address)
+        return false if allowed_ip_address?(ip_address)
+
+        super
       end
     end
   end

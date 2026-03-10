@@ -148,7 +148,8 @@ class RbSprintsController < RbApplicationController
         backlog: @backlog,
         project: @project,
         state:
-      )
+      ),
+      method: :morph
     )
   end
 
