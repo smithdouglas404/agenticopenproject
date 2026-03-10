@@ -101,3 +101,4 @@ A GitHub action will enforce the [CLA](https://www.openproject.org/legal/contrib
 * [Running Tests](testing)
 * [API Documentation](../api)
 * [Report a Bug](report-a-bug)
+* [Project analysis report](project-analysis)
