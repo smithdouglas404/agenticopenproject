@@ -192,7 +192,7 @@ Budgets widgets provide a quick overview of the financial status of a project. T
 
 Budgets widgets are only displayed if the following conditions are met:
 - Both **Budgets** and **Time and costs** modules are activated in the project.
-- At least one budget is created in a project or subproject.
+- At least one budget exists in the project or one of its subprojects. Some widgets may display placeholder messages if no cost data has been entered yet.
 - At least one work package is assigned to a budget.
 - The user has these necessary permissions to view the financial information:
   - view_budgets
