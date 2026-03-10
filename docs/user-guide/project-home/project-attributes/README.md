@@ -24,7 +24,7 @@ Project attributes are always grouped in sections.
 
 ![Project home page showing project attributes on the right side pane in OpenProject](openproject_user_guide_project_overview_project_attributes_section.png)
 
-To edit the value of any visible project attribute, simply click on that value. A modal will be displayed with all the attributes in that section.
+To edit the value of any visible project attribute, simply click on that value. A modal will be displayed with all the attributes in that section. If the option to add a comment was enabled for this particular attribute, you will also see a comment field, in which you can add more information on the value change.
 
 ![Edit a project attribute section on project overview page](openproject_user_guide_project_overview_project_attributes_section_edit_new.png)
 

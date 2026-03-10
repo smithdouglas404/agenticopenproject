@@ -29,10 +29,6 @@
 module OpenProject::Backlogs::Patches::VersionsControllerPatch
   def self.included(base) # rubocop:disable Metrics/AbcSize
     base.class_eval do
-      include VersionSettingsHelper
-
-      helper :version_settings
-
       before_action :override_project_from_id, only: %i[edit update]
 
       append_before_action :add_project_to_version_settings_attributes, only: %i[update create]

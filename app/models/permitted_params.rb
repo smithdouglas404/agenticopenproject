@@ -294,7 +294,8 @@ class PermittedParams
                                                 :status_explanation,
                                                 work_package_custom_field_ids: [],
                                                 type_ids: [],
-                                                enabled_module_names: [])
+                                                enabled_module_names: [],
+                                                custom_comments: {})
 
     whitelist
       .tap { nilify_params!(it, :status_code) }
@@ -303,7 +304,7 @@ class PermittedParams
 
   def new_project
     params
-      .expect(project: %i[name description parent_id workspace_type])
+      .expect(project: %i[name description parent_id workspace_type] + [{ custom_comments: {} }])
       .merge(custom_field_values(:project))
   end
 
@@ -514,6 +515,7 @@ class PermittedParams
           :content_right_to_left,
           :custom_field_section_id,
           :allow_non_open_versions,
+          :has_comment,
           { custom_options_attributes: %i(id value default_value position) },
           { type_ids: [] }
         ],
@@ -555,6 +557,7 @@ class PermittedParams
           :priority_id,
           :remaining_hours,
           :responsible_id,
+          :sprint_id,
           :start_date,
           :status_id,
           :type_id,

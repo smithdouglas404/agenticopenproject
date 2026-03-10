@@ -44,6 +44,10 @@ Rails.application.routes.draw do
       get :fetch_timezone
 
       get "ical/:token", controller: "meetings/ical", action: :index, as: "ical_feed"
+
+      get "templates", action: :index, controller: "meeting_templates", as: "templates"
+      get "templates/new_dialog", action: :new_dialog, controller: "meeting_templates", as: "new_dialog_template"
+      post "templates", action: :create, controller: "meeting_templates", as: "create_template"
     end
   end
 
@@ -54,6 +58,10 @@ Rails.application.routes.draw do
         get :new_dialog
         get "menu" => "meetings/menus#show"
         get :fetch_timezone
+
+        get "templates", action: :index, controller: "meeting_templates", as: "templates"
+        get "templates/new_dialog", action: :new_dialog, controller: "meeting_templates", as: "new_dialog_template"
+        post "templates", action: :create, controller: "meeting_templates", as: "create_template"
       end
 
       member do
@@ -65,6 +73,7 @@ Rails.application.routes.draw do
         get :details_dialog
         put :update_details
         put :change_state
+        put :change_sharing
         post :notify
         get :history
         get :delete_dialog

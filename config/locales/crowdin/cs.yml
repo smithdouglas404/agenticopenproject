@@ -83,8 +83,9 @@ cs:
         confirmation: "Are you sure you want to delete this Enterprise edition support token?"
       create_dialog:
         title: "Add Enterprise token"
-        type_token_text: "Type support token text"
+        type_token_text: "Your Enterprise token text"
         token_placeholder: "Paste your Enterprise edition support token here"
+        token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
       add_token: "Nahrát  podpůrný token Enterprise Edition"
       replace_token: "Nahradit aktuální podpůrný token"
       order: "Objednat Enterprise Edici"
@@ -109,9 +110,206 @@ cs:
       explanation:
         text: "Individuální akce/úpravy uživatele (např. dvojnásobná aktualizace pracovního balíčku se sečtou do jediné akce, pokud je jejich časový rozdíl menší než stanovený čas. Budou zobrazeny jako jedna akce v rámci aplikace. Toto také zpozdí oznámení o stejný čas a sníží tak počet zasílaných e-mailů a ovlivní se také zpoždění na adrese %{webhook_link}."
         link: "webhook"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          import_scope: "Select scope"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
+          reverted: "Reverted"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              one: "1 project"
+              few: "%{count} projects"
+              many: "%{count} projects"
+              other: "%{count} projects"
+            issues:
+              one: "1 issue"
+              few: "%{count} issues"
+              many: "%{count} issues"
+              other: "%{count} issues"
+            work_packages:
+              one: "1 work package"
+              few: "%{count} work packages"
+              many: "%{count} work packages"
+              other: "%{count} work packages"
+            types:
+              one: "1 type"
+              few: "%{count} types"
+              many: "%{count} types"
+              other: "%{count} types"
+            statuses:
+              one: "1 status"
+              few: "%{count} statuses"
+              many: "%{count} statuses"
+              other: "%{count} statuses"
+            users:
+              one: "1 user"
+              few: "%{count} users"
+              many: "%{count} users"
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Check what data is available for import in the host Jira instance."
+              button_fetch: "Check available data"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host Jira instance."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              elements:
+                relations: "Relations between issues"
+                workflows: "Project-level workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "User, group and project permissions"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          import_dialog:
+            title: "Start this import?"
+            confirm_button: "Start import"
+            description: >
+              This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            confirm: "I understand and made the necessary preparations"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta."
         resources_heading: "Resources"
         resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Update resources"
@@ -371,7 +569,7 @@ cs:
     contained_in_type: "Obsahuje typ"
     confirm_destroy_option: "Smazáním možnosti smažete všechny výskyty (např. v pracovních balíčcích). Opravdu ji chcete odstranit?"
     reorder_alphabetical: "Změnit pořadí abecedně"
-    reorder_confirmation: "Varování: Aktuální pořadí dostupných hodnot bude ztraceno. Pokračovat?"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "Nejprve je nutné vybrat pracovní balíček nebo projekt"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -398,6 +596,14 @@ cs:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: V současné době nejsou žádná vlastní pole.
       no_results_content_text: Vytvořit nové vlastní pole
@@ -414,6 +620,10 @@ cs:
   danger_dialog:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+  mcp_configurations:
+    server_url_component:
+      caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
+      label: "Server URL"
   op_dry_validation:
     or: "nebo"
     errors:
@@ -473,7 +683,7 @@ cs:
     edit:
       synchronized_groups: "Synchronized groups"
     index:
-      description: By grouping users together, you can add them as members to the same projects or assign the same global roles to them.
+      description: Seskupováním uživatelů je můžete přidat jako členy do stejných projektů nebo jim přiřadit stejné globální role.
     table_component:
       blank_slate:
         description: You can define named groups of users with specific permissions.
@@ -502,10 +712,10 @@ cs:
         many: "<strong>%{count}</strong> sub-items"
         other: "<strong>%{count}</strong> sub-items"
     lists:
-      active: "Active portfolios"
-      my: "My portfolios"
-      favorited: "Favorite portfolios"
-      archived: "Archived portfolios"
+      active: "Aktivní portfolia"
+      my: "Moje portfolia"
+      favorited: "Oblíbená portfolia"
+      archived: "Archivovaná portfolia"
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
@@ -754,8 +964,8 @@ cs:
       dialog:
         token/api:
           dialog_title: "Vytvořit nový API token"
-          attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
-          dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
+          attention_text: "Zacházejte s tokeny API jako s hesly. Kdokoli s tímto tokenem bude mít přístup k informacím z této instance, sdílejte je tedy pouze s důvěryhodnými uživateli."
+          dialog_body: "Tento token umožní aplikacím třetích stran komunikovat s vaší instancí. Chcete-li nový token API odlišit, pojmenujte jej."
           create_button: "Vytvořit"
           name_label: "Název tokenu"
       created_dialog:
@@ -789,8 +999,8 @@ cs:
       matrix_checkbox_label: "Assign %{permission} permission to %{role} role"
       matrix_check_all_label: "Assign all %{module} permissions to all roles"
       matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
-      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
-      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
+      matrix_check_uncheck_all_in_row_label_html: "Přepnout <em>%{permission}</em> oprávnění pro všechny role"
+      matrix_check_uncheck_all_in_col_label_html: "Přepnout všechna %{module} oprávnění pro <em>%{role}</em> roli"
   users:
     autologins:
       prompt: "Zůstaňte přihlášeni po %{num_days}"
@@ -806,7 +1016,7 @@ cs:
       browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Správa relací"
-      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
+      instructions: "Ke svému účtu jste přihlášeni na následujících zařízeních. Deaktivujte relace, které neznáte nebo které pocházejí ze zařízení, která neovládáte."
       may_not_delete_current: "Aktuální relaci nelze odstranit."
       deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
@@ -934,7 +1144,7 @@ cs:
   themes:
     dark: "Tmavé"
     light: "Světlý"
-    sync_with_os: "Automatic (match OS color mode)"
+    sync_with_os: "Automaticky (podle barevného režimu OS)"
   types:
     index:
       no_results_title_text: V současné době neexistují žádné typy.
@@ -994,7 +1204,7 @@ cs:
       matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
       matrix_check_all_label: "Allow all transitions"
       matrix_uncheck_all_label: "Disallow all transitions"
-      matrix_check_uncheck_all_in_row_label_html: "Toggle transitions from <em>%{old_status}</em> to all new statuses"
+      matrix_check_uncheck_all_in_row_label_html: "Přepnout přechody z <em>%{old_status}</em> na všechny nové stavy"
       matrix_check_uncheck_all_in_col_label_html: "Toggle transitions from all old statuses to <em>%{new_status}</em>"
   work_flows:
     index:
@@ -1191,9 +1401,15 @@ cs:
         dependencies: "Závislosti"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
+      jira_import:
+        projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Zobrazit do"
       attachment:
@@ -1212,7 +1428,6 @@ cs:
         scim_clients: "SCIM clients"
       calculated_value_error:
         error_code: "Error code"
-        customized: "Customized"
         customized_id: "Customized ID"
         customized_type: "Customized type"
       capability:
@@ -1240,6 +1455,7 @@ cs:
         regexp: "Regulární výraz"
         searchable: "Vyhledávatelné"
         admin_only: "Pouze pro správce"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "Hodnota"
       design_color:
@@ -1449,9 +1665,9 @@ cs:
         identity_url: "Adresa URL identity"
       user_preference:
         header_look_and_feel: "Vzhled a chování"
-        header_alerts: "Alerts"
+        header_alerts: "Upozornění"
         button_update_look_and_feel: "Aktualizovat vzhled a chování"
-        button_update_alerts: "Update alerts"
+        button_update_alerts: "Upravit upozornění"
         button_update_user_information: "Update profile"
         comments_sorting: "Display work package activity sorted by"
         disable_keyboard_shortcuts: "Disable keyboard shortcuts"
@@ -1459,17 +1675,17 @@ cs:
           You can choose to disable default <a href="%{href}">keyboard shortcuts</a> if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
         dismissed_enterprise_banners: "Hidden enterprise banners"
         impaired: "Režim usnadnění"
-        auto_hide_popups: "Automatically hide success banners"
-        auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
+        auto_hide_popups: "Automaticky skrýt oznámení úspěchu"
+        auto_hide_popups_caption: "Pokud je tato funkce povolena, zelená oznámení úspěchu po 5 sekundách automaticky zmizí."
         warn_on_leaving_unsaved: "Upozornit mě při opuštění pracovního balíčku s neuloženými změnami"
-        increase_theme_contrast: "Increase theme contrast"
-        increase_contrast: "Increase contrast"
-        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
-        force_light_theme_contrast: "Force high-contrast when in Light mode"
-        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
-        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
-        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
-        theme: "Color mode"
+        increase_theme_contrast: "Zvýšit kontrast motivu"
+        increase_contrast: "Zvýšit kontrast"
+        increase_contrast_caption: "Aktivuje režim vysokého kontrastu pro vybraný barevný režim."
+        force_light_theme_contrast: "Vynutit vysoký kontrast ve světlém režimu"
+        force_dark_theme_contrast: "Vynutit vysoký kontrast v tmavém režimu"
+        force_light_theme_contrast_caption: "Během automatického barevného módu použít vysoce kontrastní verzi světlého režimu."
+        force_dark_theme_contrast_caption: "Během automatického barevného módu použít vysoce kontrastní verzi tmavého režimu."
+        theme: "Barevný režim"
         time_zone: "Časové pásmo"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Denní připomenutí"
@@ -1937,6 +2153,8 @@ cs:
               blank: "Please provide a token name"
               in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "Zkontrolujte, prosím, následující pole:"
         header:
@@ -1961,6 +2179,7 @@ cs:
       comment: "Komentář"
       custom_action: "Vlastní akce"
       custom_field: "Vlastní pole"
+      customized: "Customized"
       "doorkeeper/application": "OAuth aplikace"
       enterprise_token:
         one: "Enterprise token"
@@ -2006,6 +2225,11 @@ cs:
         few: "SCIM clients"
         many: "SCIM clients"
         other: "SCIM clients"
+      jira:
+        one: "Jira"
+        few: "Jira"
+        many: "Jira"
+        other: "Jira"
       status: "Stav pracovního balíčku"
       token/api:
         one: Přístupový token
@@ -2582,7 +2806,8 @@ cs:
       edit_attribute_groups: Edit Attribute Groups
       gantt_pdf_export: Gantt PDF export
       ldap_groups: LDAP users and group sync
-      mcp_server: MCP Server
+      mcp_server: Model Context Protocol (MCP)
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
       placeholder_users: Placeholder Users
@@ -2604,14 +2829,14 @@ cs:
       title: "Doplňky Enterprise Edice"
       plan_title: "Enterprise %{plan} add-on"
       plan_name: "%{plan} enterprise plan"
-      plan_text_html: "Available starting with the %{plan_name}."
+      plan_text_html: "K dispozici od plánu %{plan_name}."
       unlimited: "Bez omezení"
       already_have_token: >
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
-      homescreen_subline: By upgrading, you will also be supporting an open source project.
+        Plán Enterprise rozšiřuje komunitní edici OpenProject o další [Enterprise doplňky](enterprise_url) a profesionální podporu, což je ideální pro organizace provozující OpenProject v kritickém prostředí.
+      homescreen_subline: Upgradováním také podpoříte projekt s otevřeným zdrojovým kódem.
       baseline_comparison:
         description: Zvýraznit změny provedené v tomto seznamu od té doby v minulosti.
       benefits:
@@ -2660,13 +2885,15 @@ cs:
         title: "Vlastní akce"
         description: "Vlastní akce jsou zkratky jedním kliknutím na sadu předem definovaných akcí, které můžete zpřístupnit na základě stavu některých pracovních balíčků. role, typ nebo projekt."
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "Bring OpenProject into your AI workflows with a secure MCP server."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Single Sign-On for Nextcloud Storage"
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
       scim_api:
         title: "SCIM clients"
-        description: "Automate user management in OpenProject by seamlessly integrating external identity services like Microsoft Entra or Keycloak through our SCIM Server API. Available starting with the Enterprise corporate plan."
+        description: "Automatizujte správu uživatelů v OpenProject pomocí integrace externích služeb identit, jako je Microsoft Entra nebo Keycloak, prostřednictvím našeho SCIM Server API. K dispozici od plánu Enterprise."
       sso_auth_providers:
         title: "Single Sign-On (SSO)"
         description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
@@ -2685,7 +2912,7 @@ cs:
         title: "Write internal comments only a small group can see"
         description: " "
       portfolio_management:
-        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
+        description: Uspořádáním projektů do portfolií a programů je sladíte se svými strategickými cíli.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"
@@ -2973,17 +3200,18 @@ cs:
         learn_about: "Learn more about all new features"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Automated project initiation (Enterprise add-on).
-            line_1: "Meetings: add new or existing work packages as outcomes."
-            line_2: "Meetings: show iCal responses in OpenProject."
-            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
-            line_4: "Release to Community: Attribute highlighting."
-            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
-            line_6: Improved performance and user experience, including the Activity tab and Documents module.
+            line_0: AI workflows with a secure MCP server (Professional plan and higher)
+            line_1: Improved project home page with new widget for budgets and improved accessibility
+            line_2: "Meetings: Meeting templates (Basic plan and higher)"
+            line_3: Better transparency with project attribute comments
+            line_4: PDF export enhancements
+            line_5: Increased security for external links (Premium plan and higher)
+            line_6: UI/UX improvements in the Backlogs module
+            line_7: Harmonized custom field forms
     links:
       upgrade_enterprise_edition: "Upgradovat na Enterprise Edici"
       postgres_migration: "Migrujte vaši instalaci na PostgreSQL"
@@ -3001,8 +3229,10 @@ cs:
   journals:
     changes_retracted: "Změny byly staženy."
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Data změněna"
       default_attribute_written: "Zápis atributů pouze pro čtení"
+      import: "Imported"
       progress_mode_changed_to_status_based: "Výpočet průběhu byl aktualizován"
       status_changed: "Stav '%{status_name}'"
       system_update: "Aktualizace systému OpenProject:"
@@ -3010,12 +3240,22 @@ cs:
       total_percent_complete_mode_changed_to_work_weighted_average: "Výpočet % úplných celků nyní vážený Prací."
       total_percent_complete_mode_changed_to_simple_average: "Výpočet % úplných celků nyní na základě jednoduchého průměru pouze % úplných hodnot."
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field} updated"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: podle změn na předchůdce %{link}
       work_package_parent_changed_times: podle změn na nadřazený %{link}
       work_package_children_changed_times: podle změn na potomka %{link}
       work_package_related_changed_times: podle změn na související %{link}
       work_package_duplicate_closed: Stav byl automaticky aktualizován duplicitním pracovním balíčkem %{link}
       unaccessable_work_package_changed: prostřednictvím změn souvisejícího pracovního balíčku
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "podle změn na pracovní dny (%{changes})"
         days:
@@ -3058,10 +3298,10 @@ cs:
       mails_and_notifications: "E-maily a oznámení"
       mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
-      label: "Add…"
+      label: "Přidat…"
   my_account:
     access_tokens:
-      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
+      description: "Poskytovatelské tokeny vydává OpenProject a umožňuje tím přístup ostatním aplikacím. Klientské tokeny jsou vydávány jinými aplikacemi a umožňují OpenProjectu přistup k nim."
       no_results:
         title: "Žádné přístupové tokeny k zobrazení"
         description: "Všechny byly zakázány. Znovu povoleny mohou být v nabídce administrace."
@@ -3075,13 +3315,13 @@ cs:
         client:
           title: "Client tokens"
         provider:
-          title: "Provider tokens"
+          title: "Poskytovatelské tokeny"
       token/api:
         blank_description: "There is no API token yet. You can create one using the button below."
         blank_title: "No API token"
         title: "API"
         table_title: "API tokens"
-        text_hint: "OAuth tokeny umožňují aplikacím třetích stran spojení s touto instancí OpenProjekt."
+        text_hint: "OAuth tokeny umožňují aplikacím třetích stran spojení s touto instancí OpenProject."
         static_token_name: "API token"
         disabled_text: "API tokeny nejsou administrátorem povoleny. Pro použití této funkce kontaktujte svého správce."
         add_button: "API token"
@@ -3096,7 +3336,7 @@ cs:
         active_tokens: "Active tokens"
         blank_description: "There is no third-party application access configured and active for you."
         blank_title: "No OAuth application token"
-        last_used_at: "Last used at"
+        last_refreshed_at: "Last refreshed at"
         title: "OAuth"
         table_title: "OAuth application tokens"
         text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
@@ -3104,9 +3344,9 @@ cs:
         blank_description: "There are no OAuth client tokens yet."
         blank_title: "No OAuth client tokens"
         failed: "An error occurred and the token couldn't be removed. Please try again later."
-        integration_type: "Integration type"
+        integration_type: "Typ integrace"
         table_title: "OAuth client tokens"
-        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        text_hint: "Klientské tokeny OAuth umožňují této instanci OpenProject připojit se k externím aplikacím, jako jsou například úložiště souborů."
         title: "OAuth"
         remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
         removed: "OAuth client token successfully removed"
@@ -3336,6 +3576,7 @@ cs:
   label_duplicates: "duplikovaů"
   label_edit: "Upravit"
   label_edit_x: "Edit: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "Přepnout multiselect"
   label_enabled_project_custom_fields: "Povoleno volitelné pole"
   label_enabled_project_modules: "Povolené moduly"
@@ -3438,8 +3679,9 @@ cs:
   label_language: "Jazyk"
   label_languages: "Jazyky"
   label_external_links: "External links"
-  label_locale: "Language and region"
+  label_locale: "Jazyk a region"
   label_jump_to_a_project: "Přejít na projekt..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "Klíčová slova"
   label_language_based: "Na základě jazyka uživatele"
   label_last_activity: "Poslední aktivita"
@@ -3462,6 +3704,7 @@ cs:
   label_lock_user: "Uzamknout uživatele"
   label_logged_as: "Přihlášen jako"
   label_login: "Přihlásit se"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "Custom logo desktop"
   label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Vlastní logo exportu"
@@ -3588,7 +3831,7 @@ cs:
   label_planning: "Plánování"
   label_please_login: "Přihlaste se prosím"
   label_plugins: "Pluginy"
-  label_portfolio_plural: "Portfolios"
+  label_portfolio_plural: "Portfolia"
   label_modules_and_plugins: "Moduly a pluginy"
   label_precedes: "předchází"
   label_preferences: "Nastavení"
@@ -4085,6 +4328,7 @@ cs:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projekt nebyl odstraněn."
   notice_project_not_found: "Projekt nebyl nalezen."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Úspěšné připojení."
   notice_successful_create: "Úspěšné vytvoření."
   notice_successful_delete: "Úspěšné odstranění."
@@ -4139,8 +4383,8 @@ cs:
   permission_add_work_packages: "Přidat pracovní balíčky"
   permission_add_messages: "Odesílat zprávy"
   permission_add_project: "Vytvořit projekty"
-  permission_add_portfolios: "Create portfolios"
-  permission_add_programs: "Create programs"
+  permission_add_portfolios: "Vytvořit portfolia"
+  permission_add_programs: "Vytvořit programy"
   permission_add_work_package_attachments: "Přidat přílohy"
   permission_add_work_package_attachments_explanation: "Umožňuje přidávat přílohy bez oprávnění upravovat pracovní balíčky"
   permission_add_internal_comments: "Write internal comments"
@@ -4221,7 +4465,7 @@ cs:
   permission_share_work_packages: "Sdílet pracovní balíčky"
   permission_manage_types: "Vyberte typy"
   permission_manage_own_reminders: "Vytvořit vlastní připomenutí"
-  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals: "Zobrazit všechny uživatele a skupiny"
   permission_view_all_principals_explanation: >
     Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Zobrazit projekty"
@@ -4254,20 +4498,20 @@ cs:
   permission_edit_project_query: "Upravit dotaz projektu"
   placeholders:
     default: "-"
-    templated_hint: Automatically generated through type %{type}
+    templated_hint: Automaticky generováno pomocí typu %{type}
   portfolio:
     count:
-      zero: "0 portfolios"
+      zero: "0 portfolií"
       one: "1 portfolio"
-      other: "%{count} portfolios"
+      other: "%{count} portfolií"
   program:
     count:
-      zero: "0 programs"
+      zero: "0 programů"
       one: "1 program"
       other: "%{count} programs"
   project:
     archive:
-      title: "Archive project"
+      title: "Archivovat projekt"
       are_you_sure: "Opravdu chcete archivovat projekt '%{name}'?"
       archived: "Archivováno"
     count:
@@ -4462,7 +4706,7 @@ cs:
     For more information on attributes and supported resources, please see the %{api_documentation_link}.
   setting_apiv3_max_page_size: "Maximální velikost stránky API"
   setting_apiv3_max_page_size_instructions: >
-    Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
+    Nastavte maximální velikost stránky, kterou bude vracet API. Nebude možné provádět API požadavky, které vracejí více hodnot na jedné stránce.
   setting_apiv3_max_page_size_warning: >
     Please only change this value if you are sure why you need it. Setting to a high value will result in significant performance impacts, while a value lower than the per page options will cause errors in paginated views.
   setting_apiv3_docs: "Dokumentace"
@@ -4470,7 +4714,7 @@ cs:
   setting_apiv3_docs_enabled_instructions_html: >
     Pokud je stránka dokumentace povolena, můžete získat interaktivní pohled na dokumentaci APIv3 pod <a href="%{link}" target="_blank">%{link}</a>.
   setting_apiv3_docs_enabled_instructions_warning: >
-    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
+    Upozorňujeme, že povolení dokumentace API v produkčním systému může vést k odhalení citlivých informací nebo ke ztrátě dat, pokud nebudete opatrní. Doporučujeme toto nastavení povolit pouze pro účely vývoje.
   setting_attachment_whitelist: "Seznam povolených povolených příloh"
   setting_email_delivery_method: "Způsob zasílání emailu"
   setting_emails_salutation: "Oslovujte  uživatele v e-mailech s"
@@ -4915,7 +5159,6 @@ cs:
   text_length_between: "Délka mezi %{min} a %{max} znaky."
   text_line_separated: "Více hodnot povoleno (jeden řádek pro každou hodnotu)."
   text_load_default_configuration: "Nahrát výchozí konfiguraci"
-  text_min_max_length_info: "0 znamená bez omezení"
   text_no_roles_defined: Nebyly definovány žádné role.
   text_no_access_tokens_configurable: "Neexistují žádné přístupové tokeny, které by mohly být nakonfigurovány."
   text_no_configuration_data: "Role, typy, stavy úkolů ani průběh práce nebyly zatím nakonfigurovány.\nJe silně doporučeno nahrát výchozí konfiguraci. Poté si můžete vše upravit."
@@ -4930,7 +5173,6 @@ cs:
   text_powered_by: "Běží na %{link}"
   text_project_identifier_info: "Jsou povolena pouze malá písmena (a-z), číslice, pomlčky a podtržítka. Musí začínat malým písmenem."
   text_reassign: "Přiřadit k pracovnímu balíčku:"
-  text_regexp_info: "např. ^[A-Z0-9]+$"
   text_regexp_multiline: 'regex je použit v režimu více řádků. např.: ^---\s+'
   text_repository_usernames_mapping: "Vyberte nebo aktualizujte mapovaný uživatel OpenProject ke každému uživatelskému jménu nalezenému v protokolu repozitáře.\nUživatelé se stejným OpenProject a repozitářovým jménem nebo e-mailem jsou automaticky mapováni."
   text_status_changed_by_changeset: "Aplikováno v sadě změn %{value}."

@@ -2,6 +2,7 @@ sv:
   js:
     grid:
       add_widget: 'Lägg till widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Ta bort widget'
       configure: 'Konfigurera widget'
       widgets:
@@ -18,7 +19,6 @@ sv:
           title: 'Nyheter'
         project_description:
           title: 'Description'
-          no_results: "Ingen beskrivning har skrivits ännu. Den kan anges i 'Projektinställningar'."
         project_status:
           title: 'Status'
           not_started: 'Inte påbörjad'

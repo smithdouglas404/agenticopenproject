@@ -45,7 +45,8 @@ module Meetings
       [
         my_meetings_item,
         recurring_menu_item,
-        all_meetings_item
+        all_meetings_item,
+        templates_menu_item
       ].compact
     end
 
@@ -55,6 +56,22 @@ module Meetings
       my_meetings_href = polymorphic_path([project, :meetings])
       menu_item(title: I18n.t(:label_my_meetings),
                 selected: params[:current_href] == my_meetings_href && params[:filters].blank?)
+    end
+
+    def templates_menu_item
+      return unless User.current.logged?
+
+      templates_href = if project
+                         templates_project_meetings_path(project)
+                       else
+                         templates_meetings_path
+                       end
+      menu_item(
+        title: I18n.t(:label_meeting_templates),
+        href: templates_href,
+        selected: params[:current_href] == templates_href,
+        show_enterprise_icon: !EnterpriseToken.allows_to?(:meeting_templates)
+      )
     end
 
     def all_meetings_item

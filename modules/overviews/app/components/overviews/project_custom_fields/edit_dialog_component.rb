@@ -30,29 +30,35 @@
 
 module Overviews
   module ProjectCustomFields
-    class EditDialogComponent < ApplicationComponent
-      include ApplicationHelper
-      include OpTurbo::Streamable
-      include OpPrimer::ComponentHelpers
-
-      def initialize(project:, project_custom_field:)
-        super
-        @project = project
-        @project_custom_field = project_custom_field
-      end
-
+    class EditDialogComponent < DialogComponent
       private
 
-      def dialog_title
-        @project_custom_field.project_custom_field_section.name
+      def body_component
+        Overviews::ProjectCustomFields::EditComponent.new(
+          project_custom_field: @project_custom_field,
+          project: @project,
+          wrapper_id:
+        )
       end
 
-      def dialog_id
-        "edit-project-custom-field-dialog-#{@project_custom_field.id}"
+      def close_button_title
+        t("button_cancel")
       end
 
-      def wrapper_id
-        "##{dialog_id}"
+      def footer_buttons(footer_collection)
+        footer_collection.with_component(
+          Primer::Beta::Button.new(
+            scheme: :primary,
+            type: :submit,
+            form: "project-custom-field-edit-form",
+            data: {
+              test_selector: "save-project-attributes-button",
+              turbo: true
+            }
+          )
+        ) do
+          t("button_save")
+        end
       end
     end
   end

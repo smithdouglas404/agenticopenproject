@@ -25,8 +25,14 @@ uk:
     description: "Цей модуль додає функції, завдяки яким agile-команди можуть працювати над проєктами Scrum в OpenProject."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Тривалість"
+        finish_date: "Дата закінчення"
+        goal: "Ціль спринту"
+        name: "Ім’я спринту"
+        sharing: "Надання доступу"
       sprint:
-        duration: "Sprint duration"
+        duration: "Тривалість спринту"
       work_package:
         position: "Позиція"
         story_points: "Сторі-поінти"
@@ -42,11 +48,13 @@ uk:
               task_version_must_be_the_same_as_story_version: "має збігатись із версією батьківської історії."
         sprint:
           cannot_end_before_it_starts: "Спринт не може закінчитися, перш ніж він почне працювати."
+    models:
+      sprint: "Спринт"
   attributes:
     task_type: "Тип завдання"
   backlogs:
     any: "будь-який"
-    column_width: "Column width"
+    column_width: "Ширина стовпця"
     definition_of_done: "Визначення завершено"
     impediment: "Перешкода"
     label_versions_default_fold_state: "Показати складені версії"
@@ -54,10 +62,10 @@ uk:
     work_package_is_closed: "Робочий пакет виконується, коли"
     label_is_done_status: "Стан %{status_name} означає виконано"
     points_label:
-      one: "point"
-      few: "points"
-      many: "points"
-      other: "points"
+      one: "одиниця"
+      few: "одиниці"
+      many: "одиниць"
+      other: "одиниці"
     positions_could_not_be_rebuilt: "Позиції не могли бути відновлені."
     positions_rebuilt_successfully: "Позиції успішно відновлені."
     rebuild: "Перебудувати"
@@ -66,10 +74,10 @@ uk:
     show_burndown_chart: "Графік Burndown"
     story: "Історія"
     story_points:
-      one: "%{count} story point"
-      few: "%{count} story points"
-      many: "%{count} story points"
-      other: "%{count} story points"
+      one: "%{count} cторі-поінт"
+      few: "%{count} сторі-поінти"
+      many: "%{count} сторі-поінтів"
+      other: "%{count} сторі-поінта"
     task: "Завдання"
     task_color: "Колір завдання"
     unassigned: "Не призначено"
@@ -77,28 +85,45 @@ uk:
       header_backlogs: "Модуль невиконаних завдань"
       button_update_backlogs: "Оновити модуль невиконаних завдань"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} нічого не містить"
+      blankslate_description: "Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх."
+    sprint_component:
+      blankslate_title: "%{name} нічого не містить"
+      blankslate_description: "Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх."
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "Згорнути/розгорнути %{name}"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "У беклозі немає історій"
+        one: "У беклозі %{count} історія"
+        other: "У беклозі стільки історій: %{count}"
+    sprint_header_component:
+      label_toggle_backlog: "Згорнути/розгорнути %{name}"
+      label_story_count:
+        zero: "У спринті немає історій"
+        one: "У спринті %{count} історія"
+        other: "У спринті стільки історій: %{count}"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "Дії беклогу"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        edit_sprint: "Редагувати спринт"
+        new_story: "Нова історія"
+        stories_tasks: "Історії/завдання"
+        task_board: "Дошка завдань"
+        burndown_chart: "Діаграма згорання завдань"
         wiki: "Wiki"
-        properties: "Properties"
+        properties: "Властивості"
+    sprint_menu_component:
+      label_actions: "Дії спринту"
+      action_menu:
+        edit_sprint: "Редагувати спринт"
+        new_story: "Нова історія"
+        stories_tasks: "Історії/завдання"
+        task_board: "Дошка завдань"
+        burndown_chart: "Діаграма згорання завдань"
     story_component:
-      label_drag_story: "Move %{name}"
+      label_drag_story: "Перемістити історію «%{name}»"
     story_menu_component:
-      label_actions: "Story actions"
+      label_actions: "Дії історії"
   backlogs_points_burn_direction: "Бали спалюються вгору/вниз"
   backlogs_product_backlog: "Backlog продукту"
   backlogs_story: "Історія"
@@ -106,14 +131,14 @@ uk:
   backlogs_task: "Завдання"
   backlogs_task_type: "Тип завдання"
   backlogs_wiki_template: "Шаблон для спринтерської вікі-сторінки"
-  backlogs_empty_title: "No versions are defined yet"
-  backlogs_empty_action_text: "To start using backlogs, please create a version first"
-  backlogs_not_configured_title: "Backlogs not configured"
-  backlogs_not_configured_description: "Story and task types need to be set before using this module."
-  backlogs_not_configured_action_text: "Configure Backlogs"
+  backlogs_empty_title: "Версії ще не визначено"
+  backlogs_empty_action_text: "Щоб почати користуватися беклогами, спочатку створіть версію"
+  backlogs_not_configured_title: "Беклоги не налаштовано"
+  backlogs_not_configured_description: "Перш ніж використовувати цей модуль, необхідно визначити типи історій і завдань."
+  backlogs_not_configured_action_text: "Налаштувати беклоги"
   burndown:
-    story_points: "Story points"
-    story_points_ideal: "Story points (ideal)"
+    story_points: "Сторі-поінти"
+    story_points_ideal: "Сторі-поінти (ідеально)"
   errors:
     attributes:
       task_type:
@@ -122,19 +147,24 @@ uk:
   label_backlogs_unconfigured: "Ви ще не настроїли Backlogs. Перейдіть на %{administration}>%{plugins}, потім натисніть посилання %{configure} для цього плагіна. Після того, як ви встановите поля, поверніться на цю сторінку, щоб розпочати використання інструмента."
   label_blocks_ids: "Ідентифікатори заблокованих робочих пакетів"
   label_column_in_backlog: "Стовпець у backlog-у"
+  label_used_as_backlog: "Використовується як беклог"
   label_points_burn_down: "Вниз"
   label_points_burn_up: "Вгору"
+  label_sprint_edit: "Редагувати спринт"
   label_sprint_impediments: "Перешкоди спринту"
+  label_sprint_new: "Новий спринт"
   label_task_board: "Дошка завдань"
-  permission_view_master_backlog: "Перегляд головного backlog-у"
-  permission_view_taskboards: "Перегляд панелі завдань"
+  permission_create_sprints: "Створення спринтів"
+  permission_manage_sprint_items: "Керування елементами спринтів"
   permission_select_done_statuses: "Виберіть завершені статуси"
-  permission_update_sprints: "Оновлення спринту"
+  permission_share_sprint: "Надання доступу до спринтів"
+  permission_start_complete_sprint: "Початок/завершення спринтів"
+  permission_view_sprints: "Перегляд спринтів"
   project_module_backlogs: "Невиконані завдання"
   rb_burndown_charts:
     show:
-      blankslate_title: "No burndown data available"
-      blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
+      blankslate_title: "Немає даних про згорання завдань"
+      blankslate_description: "Визначте дату початку й завершення спринту, щоб згенерувати діаграму згорання завдань."
   remaining_hours: "залишок роботи"
   version_settings_display_label: "Стовпець у backlog-у"
   version_settings_display_option_left: "зліва"

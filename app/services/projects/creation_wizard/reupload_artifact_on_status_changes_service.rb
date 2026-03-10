@@ -31,7 +31,7 @@
 module Projects::CreationWizard
   class ReuploadArtifactOnStatusChangesService
     include Contracted
-    include ProjectHelper
+    include ProjectsHelper
     include ArtifactExporter
     include Rails.application.routes.url_helpers
     prepend Projects::Concerns::UpdateDemoData

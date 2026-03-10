@@ -89,15 +89,11 @@ module CustomFields
         if call.success?
           flash[:notice] = t(:notice_successful_update)
           call_hook(:controller_custom_fields_edit_after_save, custom_field: @custom_field)
-          path = if tab == :list_items
-                   list_item_path(@custom_field,
-                                  id: @custom_field.id)
-                 else
-                   edit_path(@custom_field, id: @custom_field.id)
-                 end
-          redirect_to(path)
+
+          redirect_to(update_path(tab))
         else
-          render action: :edit, status: :unprocessable_entity
+          flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+          render tab == :list_items ? :list_items : :edit, status: :unprocessable_entity
         end
       end
 
@@ -108,7 +104,7 @@ module CustomFields
           .each_with_index
           .map do |custom_option, index|
             { id: custom_option.id, position: index + 1 }
-        end
+          end
 
         perform_update({ custom_options_attributes: reordered_options }, tab: :list_items)
       end
@@ -170,6 +166,16 @@ module CustomFields
         return unless params[:custom_field]
 
         params[:custom_field][:custom_options_attributes]
+      end
+
+      private
+
+      def update_path(tab)
+        if tab == :list_items
+          list_item_path(@custom_field, id: @custom_field.id)
+        else
+          edit_path(@custom_field, id: @custom_field.id)
+        end
       end
     end
   end

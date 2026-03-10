@@ -42,6 +42,7 @@ hu:
         start_date: "dátum"
         start_time: "Kezdés"
         start_time_hour: "Kezdés"
+        sharing: "Sharing"
       meeting_agenda_item:
         title: "Cím"
         author: "Szerző"
@@ -118,6 +119,13 @@ hu:
   error_notification_with_errors: "Nem sikerült elküldeni az értesítőt. A következő címzettek nem lettek értesítve: %{recipients}"
   label_meeting: "Megbeszélés"
   label_meeting_plural: "Megbeszélések"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Új megbeszélés"
   label_meeting_new_dynamic: "Új egyszeri megbeszélés"
   label_meeting_new_recurring: "Új ismétlődő megbeszélés"
@@ -187,6 +195,8 @@ hu:
   label_time_zone: "Időzóna"
   label_start_date: "Kezdési dátum"
   label_subscribe_icalendar: "Feliratkozás az iCalendars-ra"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -206,7 +216,8 @@ hu:
         heading: "Nincsenek résztvevők"
         description: "Még nincsenek résztvevők."
     attachments:
-      template: "Ezeket a csatolt fájlok minden ismételt megbeszélésben szerepelni fognak."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "A csatolt fájlok az ülés valamennyi résztvevője számára elérhetők. Ezeket a napirendi pontok jegyzeteibe is behúzhatja."
     copy:
       title: "%{title} megbeszélés másolása"
@@ -279,6 +290,11 @@ hu:
         heading: "Megbeszélés törlése?"
         confirmation_message_html: >
           Nem visszavonható művelet! Biztos benne?
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Cancel meeting occurrence"
         heading: "Cancel this meeting occurrence?"
@@ -478,6 +494,7 @@ hu:
     end_series_dialog:
       title: "Ismétlődő megbeszélés befejezése"
   notice_successful_notification: "Email calendar update sent to all participants"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: Nincs időzóna beállítva, %{zone} a feltételezett. Időzóna beállításához kattintson ide.
   notice_meeting_updated: "Ezt az oldalt valaki más frissítette. A változások megtekintéséhez töltse újra."
   permission_create_meetings: "Megbeszélések létrehozása"
@@ -492,6 +509,8 @@ hu:
   text_duration_in_hours: "Hossza (óra)"
   text_in_hours: "órában"
   text_meeting_agenda_for_meeting: 'a "%{meeting}" megbeszélés napirendje'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Delete future occurrences?"
   text_meeting_series_end_early: "Ending the series will delete any future open or scheduled meeting occurrences"
   text_meeting_closing_are_you_sure: "Biztosan le szeretnéd zárni a megbeszélés napirendjét?"
@@ -597,10 +616,18 @@ hu:
   text_meeting_in_progress_dropdown_description: "Document outcomes like information needs or decisions taken during the meeting."
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
   text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "This meeting template is empty"
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
   text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
   text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
   text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
+  label_meeting_template_sharing: "Sharing"
+  label_meeting_template_sharing_none: "Only this project"
+  label_meeting_template_sharing_descendants: "Subprojects"
+  label_meeting_template_sharing_system: "All projects"
+  text_meeting_template_sharing_description: "This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied."
   text_meeting_not_editable_anymore: "Ez a megbeszélés már nem szerkeszthető."
   text_meeting_not_present_anymore: "Ez a megbeszélés törlésre került. Kérjük, válasszon ki egy másik megbeszélést."
   label_add_work_package_to_meeting_dialog_title: "Select meeting"

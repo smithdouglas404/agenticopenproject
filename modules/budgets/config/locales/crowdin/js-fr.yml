@@ -21,12 +21,6 @@
 #++
 fr:
   js:
-    budgets:
-      widgets:
-        budget_by_cost_type:
-          blankslate:
-            title: "Pas de données budgétaires"
-            description: "Ajoutez les coûts unitaires et de main-d'œuvre prévus à ce projet pour commencer à suivre le budget"
     work_packages:
       properties:
         costObject: "Budget"

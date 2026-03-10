@@ -3,7 +3,7 @@ sidebar_navigation:
   title: API and webhooks
   priority: 900
 description: Configure APIs and webhooks in OpenProject.
-keywords: api webhooks
+keywords: api webhooks, cors, token, api token
 ---
 # API and webhooks
 
@@ -12,8 +12,6 @@ Configure all API-related settings and add and manage webhooks to your OpenProje
 Navigate to **Administration → API and webhooks**.
 
 ## API
-
-<!-- TODO: Replace screenshot with new version -->
 ![API settings in OpenProject administration](openproject_system_admin_guide_api.png)
 
 Here, you can manage whether users can create personal API tokens, this setting allows users to access the OpenProject APIs using an API token created from the user's "Account settings" page.

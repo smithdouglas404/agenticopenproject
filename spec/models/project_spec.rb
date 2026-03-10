@@ -492,7 +492,7 @@ RSpec.describe Project do
     let(:instance) { project }
   end
 
-  it_behaves_like "acts_as_customizable included" do
+  it_behaves_like "acts_as_customizable included", admin_only_allowed: true, comments: true do
     let!(:model_instance) { project }
     let!(:new_model_instance) { build_project }
     let!(:custom_field) { create(:string_project_custom_field) }

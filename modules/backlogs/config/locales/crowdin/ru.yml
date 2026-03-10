@@ -25,6 +25,12 @@ ru:
     description: "Этот модуль добавляет функции, позволяющие agile-командам работать с OpenProject в Scrum проектах."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Продолжительность"
+        finish_date: "Дата окончания"
+        goal: "Цель спринта"
+        name: "Название спринта"
+        sharing: "Совместное использование"
       sprint:
         duration: "Продолжительность спринта"
       work_package:
@@ -42,6 +48,8 @@ ru:
               task_version_must_be_the_same_as_story_version: "должен совпадать с версией родительской истории."
         sprint:
           cannot_end_before_it_starts: "Спринт не может заканчиваться до того, как начнется."
+    models:
+      sprint: "Спринт"
   attributes:
     task_type: "Тип задачи"
   backlogs:
@@ -79,12 +87,21 @@ ru:
     backlog_component:
       blankslate_title: "%{name} пустой"
       blankslate_description: "Пока ничего не запланировано. Перетащите элементы сюда, чтобы добавить их."
+    sprint_component:
+      blankslate_title: "%{name} пустой"
+      blankslate_description: "Пока ничего не запланировано. Перетащите элементы сюда, чтобы добавить их."
     backlog_header_component:
       label_toggle_backlog: "Свернуть/Развернуть %{name}"
       label_story_count:
         zero: "Нет историй в бэклоге"
         one: "%{count} история в бэклоге"
         other: "%{count} историй в бэклоге"
+    sprint_header_component:
+      label_toggle_backlog: "Свернуть/Развернуть %{name}"
+      label_story_count:
+        zero: "Нет историй в спринте"
+        one: "%{count} история в спринте"
+        other: "%{count} историй в спринте"
     backlog_menu_component:
       label_actions: "Действия в рамках бэклога"
       action_menu:
@@ -95,6 +112,14 @@ ru:
         burndown_chart: "Сводная таблица"
         wiki: "Wiki"
         properties: "Свойства"
+    sprint_menu_component:
+      label_actions: "Действия в спринте"
+      action_menu:
+        edit_sprint: "Редактировать спринт"
+        new_story: "Новая история"
+        stories_tasks: "Истории/задачи"
+        task_board: "Панель задач"
+        burndown_chart: "Сводная таблица"
     story_component:
       label_drag_story: "Переместить %{name}"
     story_menu_component:
@@ -122,14 +147,19 @@ ru:
   label_backlogs_unconfigured: "Вы еще не настроили Невыполненные работы. Перейдите на страницу %{administration} > %{plugins}, а затем нажмите на ссылку %{configure} для получения этого дополнения. После того как вы настроите поля, возвратитесь на эту страницу, чтобы начать пользоваться инструментом."
   label_blocks_ids: "Идентификаторы заблокированных рабочих пакетов"
   label_column_in_backlog: "Колонка в бэклоге"
+  label_used_as_backlog: "Используется как бэклог"
   label_points_burn_down: "Вниз"
   label_points_burn_up: "Вверх"
+  label_sprint_edit: "Редактировать спринт"
   label_sprint_impediments: "Препятствия спринта"
+  label_sprint_new: "Новый спринт"
   label_task_board: "Панель задач"
-  permission_view_master_backlog: "Просмотреть главную невыполненную работу"
-  permission_view_taskboards: "Просмотреть панели задач"
+  permission_create_sprints: "Создание спринтов"
+  permission_manage_sprint_items: "Управление пунктами спринта"
   permission_select_done_statuses: "Выберите завершенные статусы"
-  permission_update_sprints: "Обновить спринты"
+  permission_share_sprint: "Поделиться спринтом"
+  permission_start_complete_sprint: "Начать/завершить спринт"
+  permission_view_sprints: "Просмотр спринтов"
   project_module_backlogs: "Бэклоги"
   rb_burndown_charts:
     show:

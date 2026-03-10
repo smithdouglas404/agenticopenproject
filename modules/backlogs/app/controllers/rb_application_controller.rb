@@ -46,7 +46,7 @@ class RbApplicationController < ApplicationController
     # because of strong params, we want to pluck this variable out right now,
     # otherwise it causes issues where we are doing `attributes=`.
     if (@sprint_id = params.delete(:sprint_id))
-      @sprint = Sprint.visible.where(project: @project).find(@sprint_id)
+      @sprint = Sprint.visible.apply_to(@project).find(@sprint_id)
     end
   end
 

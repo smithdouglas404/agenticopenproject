@@ -25,8 +25,14 @@ ko:
     description: "이 모듈은 애자일 팀이 Scrum 프로젝트에서 OpenProject로 작업할 수 있도록 하는 기능을 추가합니다."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "기간"
+        finish_date: "완료 날짜"
+        goal: "스프린트 목표"
+        name: "스프린트 이름"
+        sharing: "공유"
       sprint:
-        duration: "Sprint duration"
+        duration: "스프린트 기간"
       work_package:
         position: "위치"
         story_points: "스토리 포인트"
@@ -42,11 +48,13 @@ ko:
               task_version_must_be_the_same_as_story_version: "은(는) 부모 스토리의 버전과 동일해야 합니다."
         sprint:
           cannot_end_before_it_starts: "스프린트는 시작되기 전에 끝날 수 없습니다."
+    models:
+      sprint: "스프린트"
   attributes:
     task_type: "작업 유형"
   backlogs:
     any: "모두"
-    column_width: "Column width"
+    column_width: "열 너비"
     definition_of_done: "완료 정의"
     impediment: "제한"
     label_versions_default_fold_state: "접힌 버전 표시"
@@ -54,7 +62,7 @@ ko:
     work_package_is_closed: "다음 경우에 작업 패키지가 완료됩니다."
     label_is_done_status: "%{status_name} 상태는 완료를 의미합니다."
     points_label:
-      other: "points"
+      other: "포인트"
     positions_could_not_be_rebuilt: "위치를 다시 빌드할 수 없습니다."
     positions_rebuilt_successfully: "위치가 성공적으로 다시 빌드되었습니다."
     rebuild: "다시 빌드"
@@ -63,7 +71,7 @@ ko:
     show_burndown_chart: "번다운 차트"
     story: "스토리"
     story_points:
-      other: "%{count} story points"
+      other: "%{count} 스토리 포인트"
     task: "작업"
     task_color: "작업 색상"
     unassigned: "할당되지 않음"
@@ -71,28 +79,45 @@ ko:
       header_backlogs: "백로그 모듈"
       button_update_backlogs: "백로그 모듈 업데이트"
     backlog_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name}이(가) 비어 있습니다"
+      blankslate_description: "아직 계획된 항목이 없습니다. 항목을 추가하려면 여기로 드래그하세요."
+    sprint_component:
+      blankslate_title: "%{name}이(가) 비어 있습니다"
+      blankslate_description: "아직 계획된 항목이 없습니다. 항목을 추가하려면 여기로 드래그하세요."
     backlog_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "%{name} 축소/확장"
       label_story_count:
-        zero: "No stories in backlog"
-        one: "%{count} story in backlog"
-        other: "%{count} stories in backlog"
+        zero: "백로그에 스토리 없음"
+        one: "백로그의 %{count}개 스토리"
+        other: "백로그의 %{count}개 스토리"
+    sprint_header_component:
+      label_toggle_backlog: "%{name} 축소/확장"
+      label_story_count:
+        zero: "스프린트의 스토리 없음"
+        one: "스프린트의 %{count}개 스토리"
+        other: "스프린트의 %{count}개 스토리"
     backlog_menu_component:
-      label_actions: "Backlog actions"
+      label_actions: "백로그 작업"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
-        wiki: "Wiki"
-        properties: "Properties"
+        edit_sprint: "스프린트 편집"
+        new_story: "새로운 스토리"
+        stories_tasks: "스토리/작업"
+        task_board: "작업 보드"
+        burndown_chart: "번다운 차트"
+        wiki: "위키"
+        properties: "속성"
+    sprint_menu_component:
+      label_actions: "스프린트 작업"
+      action_menu:
+        edit_sprint: "스프린트 편집"
+        new_story: "새로운 스토리"
+        stories_tasks: "스토리/작업"
+        task_board: "작업 보드"
+        burndown_chart: "번다운 차트"
     story_component:
-      label_drag_story: "Move %{name}"
+      label_drag_story: "%{name} 이동"
     story_menu_component:
-      label_actions: "Story actions"
+      label_actions: "스토리 작업"
   backlogs_points_burn_direction: "포인트 번 업/다운"
   backlogs_product_backlog: "제품 백로그"
   backlogs_story: "스토리"
@@ -100,14 +125,14 @@ ko:
   backlogs_task: "일감"
   backlogs_task_type: "작업 유형"
   backlogs_wiki_template: "스프린트 위키 페이지에 대한 템플릿"
-  backlogs_empty_title: "No versions are defined yet"
-  backlogs_empty_action_text: "To start using backlogs, please create a version first"
-  backlogs_not_configured_title: "Backlogs not configured"
-  backlogs_not_configured_description: "Story and task types need to be set before using this module."
-  backlogs_not_configured_action_text: "Configure Backlogs"
+  backlogs_empty_title: "아직 정의된 버전 없음"
+  backlogs_empty_action_text: "백로그 사용을 시작하려면 먼저 버전을 만드세요"
+  backlogs_not_configured_title: "백로그 구성 안 됨"
+  backlogs_not_configured_description: "이 모듈을 사용하기 전에 스토리 및 작업 유형을 설정해야 합니다."
+  backlogs_not_configured_action_text: "백로그 구성"
   burndown:
-    story_points: "Story points"
-    story_points_ideal: "Story points (ideal)"
+    story_points: "스토리 포인트"
+    story_points_ideal: "스토리 포인트(적합함)"
   errors:
     attributes:
       task_type:
@@ -116,19 +141,24 @@ ko:
   label_backlogs_unconfigured: "백로그를 아직 구성하지 않았습니다. %{administration} > %{plugins}(으)로 이동한 다음 이 플러그인의 %{configure} 링크를 클릭하세요. 필드를 설정한 후 이 페이지로 돌아가서 해당 도구 사용을 시작하세요."
   label_blocks_ids: "차단된 작업 패키지의 ID"
   label_column_in_backlog: "백로그의 열"
+  label_used_as_backlog: "백로그로 사용됨"
   label_points_burn_down: "아래"
   label_points_burn_up: "위"
+  label_sprint_edit: "스프린트 편집"
   label_sprint_impediments: "스프린트 제한"
+  label_sprint_new: "새로운 스프린트"
   label_task_board: "작업 보드"
-  permission_view_master_backlog: "마스터 백로그 보기"
-  permission_view_taskboards: "작업 보드 보기"
+  permission_create_sprints: "스프린트 만들기"
+  permission_manage_sprint_items: "스프린트 항목 관리"
   permission_select_done_statuses: "완료 상태 선택"
-  permission_update_sprints: "스프린트 업데이트"
+  permission_share_sprint: "스프린트 공유"
+  permission_start_complete_sprint: "스프린트 시작/완료"
+  permission_view_sprints: "스프린트 보기"
   project_module_backlogs: "백로그"
   rb_burndown_charts:
     show:
-      blankslate_title: "No burndown data available"
-      blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
+      blankslate_title: "사용 가능한 번다운 데이터 없음"
+      blankslate_description: "스프린트의 시작 날짜와 종료 날짜를 설정하여 번다운 차트를 생성합니다."
   remaining_hours: "남은 작업"
   version_settings_display_label: "백로그의 열"
   version_settings_display_option_left: "왼쪽"

@@ -4,14 +4,14 @@ th:
       saml/provider:
         display_name: ชื่อ
         identifier: รหัส
-        secret: Secret
-        scope: Scope
-        assertion_consumer_service_url: ACS (Assertion consumer service) URL
-        limit_self_registration: Limit self registration
-        sp_entity_id: Service entity ID
-        metadata_url: Identity provider metadata URL
-        name_identifier_format: Name identifier format
-        idp_sso_service_url: Identity provider login endpoint
+        secret: รหัสลับ
+        scope: ขอบเขตงาน
+        assertion_consumer_service_url: URL บริการยืนยันตัวตน (ACS)
+        limit_self_registration: จำกัดการลงทะเบียนด้วยตนเอง
+        sp_entity_id: รหัสระบุเอนทิตีบริการ (Service Entity ID)
+        metadata_url: URL ข้อมูลเมทาดาตาของผู้ให้บริการระบุตัวตน (IdP)
+        name_identifier_format: รูปแบบรหัสระบุชื่อ (Name Identifier Format)
+        idp_sso_service_url: จุดลงชื่อเข้าใช้ของผู้ให้บริการระบุตัวตน (IdP)
         idp_slo_service_url: Identity provider logout endpoint
         idp_cert: Public certificate of identity provider
         authn_requests_signed: Sign SAML AuthnRequests

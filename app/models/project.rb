@@ -130,7 +130,7 @@ class Project < ApplicationRecord
 
   acts_as_favoritable
 
-  acts_as_customizable validate_on: :saving_custom_fields
+  acts_as_customizable validate_on: :saving_custom_fields, comments: true, admin_only_allowed: true
   # extended in Projects::CustomFields in order to support sections
   # and project-level activation of custom fields
 
@@ -175,6 +175,7 @@ class Project < ApplicationRecord
   register_journal_formatted_fields "public", formatter_key: :visibility
   register_journal_formatted_fields "parent_id", formatter_key: :subproject_named_association
   register_journal_formatted_fields /\Acustom_fields_\d+\z/, formatter_key: :custom_field
+  register_journal_formatted_fields /\Acustom_comment_\d+\z/, formatter_key: :custom_comment
   register_journal_formatted_fields /\Aproject_phase_\d+_active\z/, formatter_key: :project_phase_active
   register_journal_formatted_fields /\Aproject_phase_\d+_date_range\z/, formatter_key: :project_phase_dates
 

@@ -35,6 +35,9 @@ RSpec.describe Overviews::ProjectCustomFieldsController, "edit_project_attribute
                type: :controller do
   include PermissionSpecs
 
+  # render dialog displaying project attributes
+  check_permission_required_for("overviews/project_custom_fields#show", :view_project_attributes)
+
   # render dialog with inputs for editing project attributes with edit_project permission
   check_permission_required_for("overviews/project_custom_fields#edit", :edit_project_attributes)
 

@@ -132,7 +132,7 @@ class User < Principal
      blocked_if_login_since]
   end
 
-  acts_as_customizable
+  acts_as_customizable admin_only_allowed: true
 
   attr_accessor :password, :password_confirmation, :last_before_login_on
 

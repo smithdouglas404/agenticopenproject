@@ -44,6 +44,7 @@ ru:
         start_date: "Дата"
         start_time: "Время начала"
         start_time_hour: "Время начала"
+        sharing: "Совместное использование"
       meeting_agenda_item:
         title: "Заголовок"
         author: "Автор"
@@ -72,7 +73,7 @@ ru:
         meeting_participant:
           user_invalid: "не является действительным участником."
         meeting_agenda_item:
-          section_not_belong_to_meeting: "Section does not belong to the same meeting."
+          section_not_belong_to_meeting: "Раздел не принадлежит к одному и тому же совещанию."
           user_invalid: "не является действительным участником."
         recurring_meeting_interim_response:
           not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
@@ -122,6 +123,13 @@ ru:
   error_notification_with_errors: "Не удалось отправить уведомление. Следующие получатели не могут быть уведомлены: %{recipients}"
   label_meeting: "Совещание"
   label_meeting_plural: "Совещания"
+  label_meeting_templates: "Шаблоны"
+  label_meeting_template: "Шаблон"
+  label_meeting_template_new: "Новый шаблон"
+  label_meeting_template_create: "Создать шаблон"
+  label_meeting_template_delete: "Удалить шаблон"
+  label_meeting_template_edit: "Редактировать шаблон"
+  label_meeting_create_from_template: "Создать встречу из шаблона"
   label_meeting_new: "Новое совещание"
   label_meeting_new_dynamic: "Новое однократное совещание"
   label_meeting_new_recurring: "Новое повторяющееся совещание"
@@ -197,6 +205,8 @@ ru:
   label_time_zone: "Часовой пояс"
   label_start_date: "Дата начала"
   label_subscribe_icalendar: "Подписаться на календарь"
+  caption_meeting_template_select: "Выберите шаблон для автоматического копирования его повестки дня"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -216,7 +226,8 @@ ru:
         heading: "Нет участников"
         description: "Пока нет участников."
     attachments:
-      template: "Эти прикрепленные файлы будут включены во все последующие совещания этой серии."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Прикрепленные файлы доступны всем участникам совещания. Вы также можете перенести их в примечания к пунктам повестки дня."
     copy:
       title: "Копировать совещание %{title}"
@@ -289,6 +300,11 @@ ru:
         heading: "Удалить это совещание?"
         confirmation_message_html: >
           Это действие не обратимо. Пожалуйста, действуйте с осторожностью.
+        template:
+          title: "Удалить шаблон"
+          heading: "Удалить этот шаблон?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Отменить это событие"
         heading: "Отменить это событие?"
@@ -492,6 +508,7 @@ ru:
     end_series_dialog:
       title: "Завершить серию совещаний"
   notice_successful_notification: "Обновление календаря отправлено всем участникам по электронной почте"
+  notice_meeting_template_created: "Шаблон успешно создан"
   notice_timezone_missing: Не установлен часовой пояс и применена %{zone}. Чтобы выбрать часовой пояс, пожалуйста, нажмите сюда.
   notice_meeting_updated: "Эта страница была обновлена кем-то другим. Перезагрузите страницу, чтобы просмотреть изменения."
   permission_create_meetings: "Создание совещания"
@@ -506,6 +523,8 @@ ru:
   text_duration_in_hours: "Длительность в часах"
   text_in_hours: "в часах"
   text_meeting_agenda_for_meeting: 'Повестка дня встречи «%{meeting}»'
+  text_meeting_template_blank_slate_heading: "Нет шаблонов для отображения"
+  text_meeting_template_blank_slate: "Вы можете создать новый шаблон для одноразовых встреч"
   text_meeting_series_end_early_heading: "Удалить будущие события?"
   text_meeting_series_end_early: "Завершение серии удалит любые будущие открытые или запланированные события совещания"
   text_meeting_closing_are_you_sure: "Вы уверены, что хотите закрыть повестку дня собрания?"
@@ -571,13 +590,13 @@ ru:
   label_backlog_clear: "Очистить бэклог"
   label_backlog_clear_button: "Очистить все"
   text_backlog_clear_error: "При попытке очистить бэклог произошла одна или несколько ошибок."
-  label_agenda_backlog: "Накопившееся отставание в повестке дня"
+  label_agenda_backlog: "Бэклог повестки"
   text_agenda_backlog: >
     Этот список невыполненных работ уникален для данного разового собрания. Вы можете перетаскивать элементы, чтобы добавлять или удалять их из повестки дня собрания.
   label_agenda_backlog_clear_title: "Очистить бэклог по повестке дня?"
   text_agenda_backlog_clear_description: >
     Вы уверены, что хотите удалить все пункты повестки дня? Это действие необратимо.
-  label_series_backlog: "Бэклог серий"
+  label_series_backlog: "Бэклог повестки серии совещаний"
   text_series_backlog: >
     Общий бэклог для всех совещаний серии. Вы можете добавлять и удалять элементы в конкретное совещание при помощи перетаскивания.
   label_series_backlog_clear_title: "Очистить бэклог серии?"
@@ -611,10 +630,18 @@ ru:
   text_meeting_in_progress_dropdown_description: "Итоги совещания, такие как информация или решения, принятые в ходе совещания."
   text_meeting_closed_dropdown_description: "Совещание закрыто. Вы больше не можете изменять пункты повестки дня или его результаты."
   text_meeting_draft_banner: "В настоящее время Вы находитесь в режиме черновика. Это совещание не будет рассылать никаких обновлений календаря или приглашений, даже если Вы измените детали совещания или добавите/удалите участников."
+  text_onetime_meeting_template_banner: "В данный момент Вы редактируете шаблон совещания. Вы можете использовать этот шаблон для создания одноразовых совещаний с заранее определенной повесткой дня. Изменения не повлияют на уже созданные совещания."
+  text_onetime_meeting_template_empty_heading: "Этот шаблон совещания пуст"
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Открыть это совещание и разослать приглашения?"
   text_exit_draft_mode_dialog_subtitle: "Вы не можете вернуться в режим черновика после того, как запланировали совещание."
   text_exit_draft_mode_dialog_template_title: "Открыть первое совещание из этой серии?"
   text_exit_draft_mode_dialog_template_subtitle: "После этого Вы не сможете вернуться в режим черновика."
+  label_meeting_template_sharing: "Совместное использование"
+  label_meeting_template_sharing_none: "Только этот проект"
+  label_meeting_template_sharing_descendants: "Подпроекты"
+  label_meeting_template_sharing_system: "Все проекты"
+  text_meeting_template_sharing_description: "Этот шаблон можно использовать совместно с подпроектами или другими проектами. Будут скопированы только пункты повестки дня и вложения."
   text_meeting_not_editable_anymore: "Это совещание больше нельзя редактировать."
   text_meeting_not_present_anymore: "Это совещание было удалено. Пожалуйста, выберите другое."
   label_add_work_package_to_meeting_dialog_title: "Выберите совещание"

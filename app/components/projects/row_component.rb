@@ -73,13 +73,11 @@ module Projects
     end
 
     def column_value(column)
-      if custom_field_column?(column)
-        custom_field_column(column)
-      elsif project_phase_column?(column)
-        project_phase_column(column)
-      else
-        send(column.attribute)
-      end
+      return custom_field_column(column) if custom_field_column?(column)
+      return custom_comment_column(column) if custom_comment_column?(column)
+      return project_phase_column(column) if project_phase_column?(column)
+
+      send(column.attribute)
     end
 
     def custom_field_column(column) # rubocop:disable Metrics/AbcSize
@@ -119,6 +117,21 @@ module Projects
       else
         custom_value
       end
+    end
+
+    def custom_comment_column(column)
+      return nil unless user_can_view_project_attributes?
+
+      cf = column.custom_field
+      comment = cf.comment_for(project)&.text
+      return nil if comment.blank?
+
+      render OpenProject::Common::AttributeComponent.new(
+        "dialog-#{project.id}-cfc-#{cf.id}",
+        column.caption,
+        comment,
+        format: false
+      )
     end
 
     def project_phase_column(column)
@@ -272,14 +285,10 @@ module Projects
     def additional_css_class(column)
       if column.attribute == :name
         "project--hierarchy #{'archived' if project.archived?}"
-      elsif %i[status_explanation description].include?(column.attribute)
-        "project-long-text-container"
       elsif column.attribute == :favorited
         "-w-abs-45"
       elsif custom_field_column?(column)
-        cf = column.custom_field
-        formattable = cf.field_format == "text" ? " project-long-text-container" : ""
-        "format-#{cf.field_format}#{formattable}"
+        "format-#{column.custom_field.field_format}"
       end
     end
 
@@ -446,6 +455,10 @@ module Projects
 
     def custom_field_column?(column)
       column.is_a?(::Queries::Projects::Selects::CustomField)
+    end
+
+    def custom_comment_column?(column)
+      column.is_a?(::Queries::Projects::Selects::CustomComment)
     end
 
     def project_phase_column?(column)

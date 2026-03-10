@@ -2,6 +2,7 @@ th:
   js:
     grid:
       add_widget: 'Add widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'เอาเครื่องมือออก'
       configure: 'Configure widget'
       widgets:
@@ -18,7 +19,6 @@ th:
           title: 'ข่าวสาร'
         project_description:
           title: 'Description'
-          no_results: "No description has been written yet. One can be provided in the 'Project settings'."
         project_status:
           title: 'Status'
           not_started: 'Not started'

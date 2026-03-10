@@ -34,6 +34,7 @@ class Meeting::ProjectAutocompleter < ApplicationForm
       id: "project_id",
       label: Project.model_name.human,
       required: true,
+      caption:,
       autocomplete_options: {
         with_search_icon: true,
         openDirectly: false,
@@ -46,5 +47,17 @@ class Meeting::ProjectAutocompleter < ApplicationForm
         }
       }
     )
+  end
+
+  def initialize(meeting:)
+    super()
+
+    @meeting = meeting
+  end
+
+  def caption
+    return if @meeting.is_a?(RecurringMeeting)
+
+    @meeting.onetime_template? ? I18n.t("caption_template_project_select") : nil
   end
 end

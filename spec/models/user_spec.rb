@@ -1079,7 +1079,7 @@ RSpec.describe User do
     subject { create(:attachment) }
   end
 
-  it_behaves_like "acts_as_customizable included" do
+  it_behaves_like "acts_as_customizable included", admin_only_allowed: true, comments: false do
     let!(:model_instance) { create(:user) }
     let!(:new_model_instance) { user }
     let!(:custom_field) { create(:user_custom_field, :string) }

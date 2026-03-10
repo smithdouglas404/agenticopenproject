@@ -77,7 +77,7 @@ module OpenProject
 
     def type_from_file_command
       # On BSDs, `file` doesn't give a result code of 1 if the file doesn't exist.
-      type, status = Open3.capture2("file", "-b", "--mime", "--", Shellwords.escape(@filename))
+      type, status = Open3.capture2("file", "-b", "--mime", "--", @filename)
 
       if type.nil? || status.to_i > 0 || type.match(/\(.*?\)/)
         type = SENSIBLE_DEFAULT

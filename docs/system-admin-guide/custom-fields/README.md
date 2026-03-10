@@ -3,7 +3,7 @@ sidebar_navigation:
   title: Custom fields
   priority: 960
 description: Manage custom fields in OpenProject.
-keywords: manage custom fields
+keywords: manage custom fields, custom field, custom fields
 ---
 # Manage custom fields
 
@@ -65,7 +65,7 @@ Hierarchy custom fields allow organizing hierarchical structures in work package
 
 ![Create a new custom field of type hierarchy](openproject_system_guide_new_custom_field_new_hierarchy.png)
 
-You can edit the name and initial settings under the *Details* tab. 
+You can edit the name and initial settings under the *Details* tab at any time. 
 
 ![Detailed view of a custom field in OpenProject administration](openproject_system_guide_new_custom_hierarchy_details_tab.png)
 
@@ -188,7 +188,7 @@ To **delete** a custom field, click on the delete icon next to the respective cu
 
 ## Define custom field help text
 
-To define field caption and help text click on an existing custom field and navigate to **Attribute help texts** tab. Here you can define the following:
+To define field caption and help text click on an existing custom field and navigate to **Help text** tab. Here you can define the following:
 
 - **Caption** - a short text that will be displayed as a custom field caption to provide context. Please note, that the caption text is currently only displayed for project attributes. 
 - **Help text** - a longer text that will be shown when a user hovers over a question mark next to the custom field name. Here you can provide more detailed explanation. This is a required field.
@@ -200,4 +200,4 @@ To define field caption and help text click on an existing custom field and navi
 
 
 
-![Work package custom field detailed view, showing *Attribute help texts* tab in OpenProject administration](open_project_system_admin_guide_custom_field_attribute_text.png)
+![Work package custom field detailed view, showing *Help text* tab in OpenProject administration](open_project_system_admin_guide_custom_field_attribute_text.png)

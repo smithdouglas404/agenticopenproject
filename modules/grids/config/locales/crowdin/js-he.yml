@@ -2,6 +2,7 @@ he:
   js:
     grid:
       add_widget: 'הוסף ווידג''ט'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'הסר רכיב'
       configure: 'הגדר תוסף'
       widgets:
@@ -18,7 +19,6 @@ he:
           title: 'חדשות'
         project_description:
           title: 'Description'
-          no_results: "No description has been written yet. One can be provided in the 'Project settings'."
         project_status:
           title: 'Status'
           not_started: 'Not started'

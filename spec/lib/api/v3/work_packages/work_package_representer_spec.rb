@@ -490,6 +490,20 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
         end
       end
 
+      context "when user lacks edit permission but has manage_sprint_items" do
+        let(:permissions) { all_permissions - [:edit_work_packages] + [:manage_sprint_items] }
+
+        it_behaves_like "has an untitled link" do
+          let(:link) { "update" }
+          let(:href) { api_v3_paths.work_package_form(work_package.id) }
+        end
+
+        it_behaves_like "has an untitled link" do
+          let(:link) { "updateImmediately" }
+          let(:href) { api_v3_paths.work_package(work_package.id) }
+        end
+      end
+
       context "when user lacks edit permission but has change_work_package_status" do
         let(:permissions) { all_permissions - [:edit_work_packages] + [:change_work_package_status] }
 

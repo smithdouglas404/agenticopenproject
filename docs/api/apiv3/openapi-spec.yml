@@ -266,6 +266,8 @@ paths:
     "$ref": "./paths/help_texts.yml"
   "/api/v3/help_texts/{id}":
     "$ref": "./paths/help_text.yml"
+  "/api/v3/meetings":
+    "$ref": "./paths/meetings.yml"
   "/api/v3/meetings/{id}":
     "$ref": "./paths/meeting.yml"
   "/api/v3/meetings/{id}/attachments":
@@ -589,6 +591,10 @@ components:
       $ref: "./components/examples/hierarchy_item_collection_response.yml"
     HierarchyItemResponse:
       $ref: "./components/examples/hierarchy_item_response.yml"
+    MeetingCollectionSimpleResponse:
+      $ref: "./components/examples/meeting_collection_simple_response.yml"
+    MeetingSimpleResponse:
+      $ref: "./components/examples/meeting_simple_response.yml"
     MembershipCreateRequestCustomMessage:
       $ref: "./components/examples/membership-create-request-custom-message.yml"
     MembershipCreateRequestGlobalRole:
@@ -602,9 +608,9 @@ components:
     MembershipSimpleCollectionResponse:
       $ref: "./components/examples/membership-simple-collection-response.yml"
     MembershipSimpleResponse:
-      $ref: "./components/examples/membership-simple-response.yml"
+      $ref: "./components/examples/membership_simple_response.yml"
     MembershipUpdateAdditionalRoles:
-      $ref: "./components/examples/membership-update-additional-roles.yml"
+      $ref: "./components/examples/membership_update_additional_roles.yml"
     MentionedNotification:
       $ref: "./components/examples/mentioned_notification.yml"
     NotificationCollection:
@@ -749,6 +755,8 @@ components:
       "$ref": "./components/schemas/project_configuration_model.yml"
     CustomActionModel:
       "$ref": "./components/schemas/custom_action_model.yml"
+    CustomCommentProperties:
+      "$ref": "./components/schemas/custom_comment_properties.yml"
     CustomFieldLinkedProperties:
       "$ref": "./components/schemas/custom_field_linked_properties.yml"
     CustomFieldProperties:
@@ -825,6 +833,8 @@ components:
       "$ref": "./components/schemas/list_of_news_model.yml"
     List_workspaces_by_versionModel:
       "$ref": "./components/schemas/list_workspaces_by_version_model.yml"
+    MeetingCollectionModel:
+      "$ref": "./components/schemas/meeting_collection_model.yml"
     MeetingModel:
       "$ref": "./components/schemas/meeting_model.yml"
     MarkdownModel:

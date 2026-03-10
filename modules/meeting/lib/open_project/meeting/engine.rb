@@ -47,7 +47,8 @@ module OpenProject::Meeting
                                   presentation generate_pdf_dialog history],
                      "meetings/menus": %i[show],
                      work_package_meetings_tab: %i[index count],
-                     recurring_meetings: %i[index show new create download_ics]
+                     recurring_meetings: %i[index show new create download_ics],
+                     meeting_templates: %i[index]
                    },
                    permissible_on: :project
         permission :create_meetings,
@@ -55,7 +56,8 @@ module OpenProject::Meeting
                      meetings: %i[new create copy new_dialog fetch_timezone],
                      recurring_meetings: %i[new create copy init template_completed],
                      "recurring_meetings/schedule": %i[update_text],
-                     "meetings/menus": %i[show]
+                     "meetings/menus": %i[show],
+                     meeting_templates: %i[new create new_dialog]
                    },
                    dependencies: :view_meetings,
                    permissible_on: :project,
@@ -63,7 +65,7 @@ module OpenProject::Meeting
                    contract_actions: { meetings: %i[create] }
         permission :edit_meetings,
                    {
-                     meetings: %i[edit cancel_edit update update_title change_state toggle_notifications_dialog
+                     meetings: %i[edit cancel_edit update update_title change_state change_sharing toggle_notifications_dialog
                                   details_dialog update_details toggle_notifications exit_draft_mode_dialog exit_draft_mode],
                      recurring_meetings: %i[edit cancel_edit update update_title details_dialog update_details
                                             notify end_series end_series_dialog],

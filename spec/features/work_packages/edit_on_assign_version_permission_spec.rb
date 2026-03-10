@@ -10,7 +10,7 @@ RSpec.describe "edit work package", :js do
            lastname: "Guy",
            member_with_permissions: { project => permissions })
   end
-  let(:permissions) { %i[view_work_packages assign_versions] }
+  let(:permissions) { %i[view_work_packages manage_sprint_items assign_versions] }
 
   let(:cf_all) do
     create(:work_package_custom_field, is_for_all: true, field_format: "text")
@@ -43,7 +43,21 @@ RSpec.describe "edit work package", :js do
 
   context "as a user having only the assign_versions permission" do
     it "can only change the version" do
-      wp_page.update_attributes version: version.name
+      wp_page.fill_in_attributes version: version.name
+
+      wp_page.expect_toast(message: "Successful update")
+      wp_page.expect_attributes version: version.name
+
+      subject_field = wp_page.work_package_field("subject")
+      subject_field.expect_read_only
+    end
+  end
+
+  context "as a user having only the manage_sprint_items permission" do
+    let(:permissions) { %i[view_work_packages manage_sprint_items] }
+
+    it "can only change the version" do
+      wp_page.fill_in_attributes version: version.name
 
       wp_page.expect_toast(message: "Successful update")
       wp_page.expect_attributes version: version.name

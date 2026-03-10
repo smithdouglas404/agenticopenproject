@@ -39,6 +39,12 @@ zh-CN:
         base_amount: "基础金额"
       work_package:
         budget_subject: "预算标题"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "不属于预算的项目"
     models:
       budget: "预算"
       material_budget_item: "单位"
@@ -59,35 +65,37 @@ zh-CN:
   budgets:
     widgets:
       budget_totals:
-        title: "Budget totals"
-        remaining_budget: "Remaining budget"
-        spent_budget: "Spent budget"
-        total_actual_costs: "Total actual costs"
-        total_planned_budget: "Total planned budget"
+        title: "预算总额"
+        remaining_budget: "剩余预算"
+        spent_budget: "已用预算"
+        total_actual_costs: "实际成本总额"
+        total_planned_budget: "计划预算总额"
       budget_by_cost_type:
-        title: "Budget by cost type"
+        title: "按成本类型分列的预算"
         blankslate:
-          heading: "Start project controlling"
-          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
-        caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."
-          other: "Data aggregated from %{count} budgets included in %{portfolios}, %{subprograms} and %{subprojects}."
-        caption_simple:
-          other: "Data aggregated from %{count} budgets."
-        portfolio:
-          zero: "no portfolios"
-          one: "1 portfolio"
-          other: "%{count} portfolios"
-        subprogram:
-          zero: "no subprograms"
-          one: "1 subprogram"
-          other: "%{count} subprograms"
-        subproject:
-          zero: "no subprojects"
-          one: "1 subproject"
-          other: "%{count} subprojects"
-        view_details: "View budget details"
+          heading: "开始项目控制"
+          description: "概括了解预算和成本，有效跟踪项目的健康状况"
+        blankslate_zero:
+          heading: "预算详细信息缺失"
+          description: "添加计划预算的详细信息，以便在此处查看数据"
+        count_caption:
+          zero: "无预算数据。"
+          one: "从 %{count} 个预算中汇总的数据"
+          other: "从 %{count} 个预算中汇总的数据"
+        count_caption_with_subitems:
+          project:
+            zero: "无预算数据。"
+            one: "从包含在此项目及其子条目中的 %{count} 个预算中汇总的数据。"
+            other: "从包含在此项目及其子条目中的 %{count} 个预算中汇总的数据。"
+          program:
+            zero: "无预算数据。"
+            one: "从包含在此计划及其子条目中的 %{count} 个预算中汇总的数据。"
+            other: "从包含在此计划及其子条目中的 %{count} 个预算中汇总的数据。"
+          portfolio:
+            zero: "无预算数据。"
+            one: "从包含在此项目组合及其子条目中的 %{count} 个预算中汇总的数据。"
+            other: "从包含在此项目组合及其子条目中的 %{count} 个预算中汇总的数据。"
+        view_details: "查看预算详细信息"
   events:
     budget: "预算已编辑"
   help_click_to_edit: "单击此处进行编辑。"

@@ -49,7 +49,7 @@ RSpec.describe "Multi-value custom fields creation", :js, :selenium do
     fill_in "custom_field_name", with: "My List CF"
 
     click_on "Save"
-    index_cf_page.expect_and_dismiss_flash(message: "Successful creation.")
+    index_cf_page.expect_flash(message: "Successful creation.")
 
     click_link "Items"
     wait_for_network_idle

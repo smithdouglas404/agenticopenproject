@@ -33,7 +33,13 @@ require_relative "../shared_context"
 
 RSpec.describe "Edit project custom fields on project overview page", :js do
   include_context "with seeded projects, members and project custom fields"
+
   let(:overview_page) { Pages::Projects::Show.new(project) }
+  let(:enable_comments) { false }
+
+  before do
+    ProjectCustomField.update_all(has_comment: true) if enable_comments
+  end
 
   describe "with insufficient View attributes permissions" do
     before do
@@ -43,6 +49,14 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
     it "does not show the attributes sidebar" do
       overview_page.expect_no_visible_sidebar
+    end
+
+    context "when comments are allowed" do
+      let(:enable_comments) { true }
+
+      it "does not show the modal buttons" do
+        overview_page.expect_no_visible_sidebar
+      end
     end
   end
 
@@ -57,6 +71,16 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         expect(page).to have_text("Input fields")
       end
     end
+
+    context "when comments are allowed" do
+      let(:enable_comments) { true }
+
+      it "does not show the modal buttons" do
+        overview_page.within_project_attributes_sidebar do
+          expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-modal-button-']")
+        end
+      end
+    end
   end
 
   describe "with Edit project permissions" do
@@ -65,9 +89,19 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
       overview_page.visit_page
     end
 
-    it "does not show the edit buttons" do
+    it "does not show the modal buttons" do
       overview_page.within_project_attributes_sidebar do
         expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-modal-button-']")
+      end
+    end
+
+    context "when comments are allowed" do
+      let(:enable_comments) { true }
+
+      it "does not show the modal buttons" do
+        overview_page.within_project_attributes_sidebar do
+          expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-modal-button-']")
+        end
       end
     end
   end
@@ -81,9 +115,19 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
       overview_page.visit_page
     end
 
-    it "does not show the edit buttons" do
+    it "does not show the modal buttons" do
       overview_page.within_project_attributes_sidebar do
         expect(page).to have_no_css("[data-test-selector*='project-custom-field-modal-button-']")
+      end
+    end
+
+    context "when comments are allowed" do
+      let(:enable_comments) { true }
+
+      it "shows the modal buttons on all enabled custom fields" do
+        overview_page.within_project_attributes_sidebar do
+          expect(page).to have_css("[data-test-selector*='project-custom-field-modal-button-']", count: 15)
+        end
       end
     end
   end
@@ -94,9 +138,19 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
       overview_page.visit_page
     end
 
-    it "shows the edit buttons" do
+    it "shows the modal buttons" do
       overview_page.within_project_attributes_sidebar do
         expect(page).to have_css("[data-test-selector*='project-custom-field-modal-button-']", count: 13)
+      end
+    end
+
+    context "when comments are allowed" do
+      let(:enable_comments) { true }
+
+      it "shows the modal buttons on all enabled custom fields" do
+        overview_page.within_project_attributes_sidebar do
+          expect(page).to have_css("[data-test-selector*='project-custom-field-modal-button-']", count: 15)
+        end
       end
     end
   end
@@ -104,7 +158,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
   describe "with insufficient Edit attribute permission on the update dialog" do
     let(:member) { member_with_project_attributes_edit_permissions }
     let(:custom_field) { boolean_project_custom_field }
-    let(:dialog) { Components::Projects::ProjectCustomFields::EditDialog.new(project, custom_field) }
+    let(:dialog) { Components::Projects::ProjectCustomFields::Dialog.new(project, custom_field) }
 
     before do
       login_as member
@@ -112,7 +166,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
     end
 
     it "responds with a permission denied message" do
-      overview_page.open_edit_dialog_for_custom_field(custom_field)
+      overview_page.open_modal_for_custom_field(custom_field)
       # Change role to project edit, so the user won't have the project attributes edit role
       member_with_project_attributes_edit_permissions.memberships.first.update(roles: [edit_project_role])
       member_with_project_attributes_edit_permissions.reload
