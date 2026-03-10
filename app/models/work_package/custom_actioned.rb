@@ -31,13 +31,25 @@
 module WorkPackage::CustomActioned
   extend ActiveSupport::Concern
 
+  class_methods do
+    def custom_actions(items, user)
+      standard_conditions, cf_conditions = ::CustomAction.available_conditions.partition do |klass|
+        klass.ancestors.exclude?(::CustomActions::Conditions::CustomField)
+      end
+
+      scope = standard_conditions.inject(::CustomAction.all) do |query, condition|
+        query.merge(condition.custom_action_scope(items, user))
+      end
+
+      return scope if cf_conditions.empty?
+
+      scope.merge(::CustomActions::Conditions::CustomField.custom_fields_with(items))
+    end
+  end
+
   included do
     def custom_actions(user)
-      @custom_actions = CustomAction
-                        .available_conditions
-                        .inject(CustomAction.all) do |scope, condition|
-        scope.merge(condition.custom_action_scope(self, user))
-      end
+      self.class.custom_actions(self, user)
     end
   end
 end

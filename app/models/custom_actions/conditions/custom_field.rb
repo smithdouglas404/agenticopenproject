@@ -94,26 +94,46 @@ class CustomActions::Conditions::CustomField < CustomActions::Conditions::Base
     end
   end
 
-  def self.custom_action_scope(work_packages, _user)
-    ca = CustomAction.arel_table
-    cf = Arel::Table.new(:custom_fields).alias("cf_#{custom_field.id}")
-    cacf = Arel::Table.new(:custom_actions_custom_fields).alias("cacf_#{custom_field.id}")
-
-    join_cacf = ca.join(cacf, Arel::Nodes::OuterJoin)
-                  .on(cacf[:custom_action_id].eq(ca[:id]))
-                  .join_sources
-    join_cf = ca.join(cf, Arel::Nodes::OuterJoin)
-                .on(cacf[:custom_field_id].eq(cf[:id])
-                .and(cf[:id].eq(custom_field.id)))
-                .join_sources
-    condition = cacf[:value].in(custom_field_values(work_packages))
-                            .or(cf[:id].eq(nil))
-
-    CustomAction.joins(join_cacf).joins(join_cf).where(condition)
+  def self.custom_action_scope(_items, _user)
+    raise "Mustn't use that. Something gone really bad."
   end
 
-  def self.custom_field_values(work_packages)
-    Array(work_packages)
+  def self.custom_fields_with(items)
+    items = Array.wrap(items)
+    return CustomAction.all if items.empty?
+
+    cf_query = CustomValue
+               .select(:custom_field_id, :value)
+               .where(
+                 customized_type: items.first.class.name,
+                 customized_id: items.map(&:id)
+               )
+
+    CustomAction.where(<<~SQL.squish)
+      NOT EXISTS (
+        SELECT 1
+        FROM (
+          SELECT cacf.custom_field_id
+          FROM custom_actions_custom_fields cacf
+          WHERE cacf.custom_action_id = custom_actions.id
+          GROUP BY cacf.custom_field_id
+        ) action_cf
+
+        WHERE NOT EXISTS (
+          SELECT 1
+          FROM custom_actions_custom_fields cacf2
+          JOIN (#{cf_query.to_sql}) item_cf
+            ON item_cf.custom_field_id = cacf2.custom_field_id
+           AND item_cf.value = cacf2.value
+          WHERE cacf2.custom_action_id = custom_actions.id
+            AND cacf2.custom_field_id = action_cf.custom_field_id
+        )
+      )
+    SQL
+  end
+
+  def self.custom_field_values(items)
+    Array.wrap(items)
       .flat_map(&:custom_field_values)
       .filter_map { it.value.to_s if it.custom_field_id == custom_field.id }
       .uniq
