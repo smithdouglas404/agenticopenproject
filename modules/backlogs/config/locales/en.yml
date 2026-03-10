@@ -69,6 +69,7 @@ en:
     any: "any"
     column_width: "Column width"
     definition_of_done: "Definition of Done"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
     impediment: "Impediment"
     label_versions_default_fold_state: "Show versions folded"
     caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."

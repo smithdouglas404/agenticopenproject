@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,38 +28,43 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-require_relative "../support/pages/projects/settings/backlogs"
+module Projects
+  module Settings
+    class BacklogsSettingsForm < ApplicationForm
+      form do |f|
+        f.autocompleter(
+          name: :done_status_ids,
+          label: I18n.t(:"backlogs.definition_of_done"),
+          caption: I18n.t(:"backlogs.definition_of_done_caption"),
+          autocomplete_options: {
+            multiple: true,
+            closeOnSelect: false,
+            clearable: false,
+            decorated: true,
+            data: {
+              test_selector: "done_status_ids_autocomplete"
+            }
+          }
+        ) do |list|
+          available_statuses.each do |label, value|
+            active = value.in?(model.done_status_ids)
 
-RSpec.describe "Resolved status" do
-  let!(:project) do
-    create(:project,
-           enabled_module_names: %w(backlogs))
-  end
-  let!(:status) { create(:status, is_default: true) }
-  let(:role) do
-    create(:project_role,
-           permissions: %i[select_done_statuses view_sprints])
-  end
-  let!(:current_user) do
-    create(:user,
-           member_with_roles: { project => role })
-  end
-  let(:settings_page) { Pages::Projects::Settings::Backlogs.new(project) }
+            list.option(
+              label:,
+              value:,
+              selected: active
+            )
+          end
+        end
 
-  before do
-    login_as current_user
-  end
+        f.submit(scheme: :primary, name: :apply, label: I18n.t(:button_save))
+      end
 
-  it "allows setting a status as done although it is not closed" do
-    settings_page.visit!
+      private
 
-    check status.name
-    click_button "Save"
-
-    expect_flash(type: :success, message: "Successful update")
-
-    expect(page)
-      .to have_checked_field(status.name)
+      def available_statuses
+        Status.pluck(:name, :id)
+      end
+    end
   end
 end
