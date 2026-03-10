@@ -84,7 +84,7 @@ Note that users without edit permissions will continue to see the content in rea
 
 ![Overview tab of a project home page in OpenProject, showing the project description widget being edited](openproject_system_guide_project_home_overview_tab_edit.png)
 
-#### Improves accessibility of Project Overview and Dashboard Widgets
+#### Improved accessibility of Project Overview and Dashboard Widgets
 
 We have significantly improved the accessibility of widgets on both the Project Overview and Project dashboard pages. Widgets are now fully operable via keyboard, provide clearer structural semantics for screen readers, and follow WCAG 2.1 AA guidelines for focus management, labeling, and navigation order.
 
