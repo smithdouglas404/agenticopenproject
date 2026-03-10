@@ -214,7 +214,7 @@ module Import
 
                 comments = jira_issue.payload.dig("fields", "comment", "comments") || []
                 comments.each do |comment|
-                  author = User.find_by!(login: comment["author"]["name"])
+                  author = find_user(comment["author"]["key"], jira_import)
                   add_member(project:, project_role:, member: author, user:)
                   journal_service.add_comment(comment:, user: author)
                 end
@@ -223,7 +223,7 @@ module Import
 
                 attachments = jira_issue.payload.dig("fields", "attachment") || []
                 attachments.each do |attachment|
-                  author = User.find_by!(login: attachment["author"]["name"])
+                  author = find_user(attachment["author"]["key"], jira_import)
                   add_member(project:, project_role:, member: author, user:)
                   add_attachment(jira_client:, work_package:, attachment:, author:)
                 end
