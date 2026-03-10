@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,39 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Bim::Bcf::API::V2_1
-  class ProjectsAPI < ::API::OpenProjectAPI
-    resources :projects do
-      helpers do
-        def visible_projects
-          Project
-            .visible(current_user)
-            .has_module(:bim)
-        end
-      end
+require "spec_helper"
+require "rack/test"
 
-      get &::Bim::Bcf::API::V2_1::Endpoints::Index.new(model: Project,
-                                                       scope: -> { visible_projects })
-                                             .mount
+RSpec.describe "API BCF XML historical identifier redirect", content_type: :json do
+  shared_let(:project) { create(:project, enabled_module_names: %w[bim work_package_tracking]) }
+  shared_let(:role) { create(:project_role, permissions: [:view_linked_issues]) }
+  shared_let(:user) { create(:user, member_with_roles: { project => role }) }
 
-      route_param :id do
-        helpers ::API::Helpers::HistoricalIdentifierRedirect
+  current_user { user }
 
-        after_validation do
-          @project = visible_projects
-                     .find(params[:id])
-
-          redirect_if_historical_identifier(:id, @project)
-        end
-
-        get &::Bim::Bcf::API::V2_1::Endpoints::Show.new(model: Project).mount
-        put &::Bim::Bcf::API::V2_1::Endpoints::Update
-               .new(model: Project)
-               .mount
-
-        mount ::Bim::Bcf::API::V2_1::TopicsAPI
-        mount ::Bim::Bcf::API::V2_1::ProjectExtensions::API
-      end
-    end
+  describe "GET /api/bcf_xml_api/v1/projects/:id/bcf_xml" do
+    it_behaves_like "API redirects GET requests using a historical project identifier",
+                    "/api/bcf_xml_api/v1/projects/:id/bcf_xml"
   end
 end

@@ -674,6 +674,44 @@ RSpec.describe Project do
     end
   end
 
+  describe "identifier history" do
+    let!(:project) { create(:project, identifier: "sc") }
+
+    it "records old identifier in friendly_id_slugs when identifier changes" do
+      project.update!(identifier: "scp")
+      expect(FriendlyId::Slug.where(sluggable: project).pluck(:slug)).to include("sc")
+    end
+
+    it "can still find the project via its old identifier" do
+      project.update!(identifier: "scp")
+      expect(described_class.friendly.find("sc")).to eq(project)
+    end
+
+    it "returns the project with its current identifier when found via old identifier" do
+      project.update!(identifier: "scp")
+      found = described_class.friendly.find("sc")
+      expect(found.identifier).to eq("scp")
+    end
+
+    it "locks old identifier to the original project (not reusable by others)" do
+      project.update!(identifier: "scp")
+      slug = FriendlyId::Slug.find_by(slug: "sc")
+      expect(slug.sluggable_id).to eq(project.id)
+    end
+
+    it "allows the project to revert to a previously used identifier" do
+      project.update!(identifier: "scp")
+      expect { project.update!(identifier: "sc") }.not_to raise_error
+      expect(project.identifier).to eq("sc")
+    end
+
+    it "is valid when reverting to own historical identifier" do
+      project.update!(identifier: "scp")
+      project.identifier = "sc"
+      expect(project).to be_valid
+    end
+  end
+
   describe "#allowed_parent_workspace_types" do
     {
       project: %i[portfolio program project],

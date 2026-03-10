@@ -36,6 +36,27 @@ RSpec.describe Projects::IdentifierController do
   current_user { create(:admin) }
   render_views
 
+  describe "show" do
+    context "when accessing an old identifier" do
+      let!(:old_identifier) { project.identifier }
+
+      before { project.update!(identifier: "new-identifier") }
+
+      it "redirects GET to the current identifier with 301" do
+        get :show, params: { project_id: old_identifier }
+        expect(response).to redirect_to(project_identifier_path("new-identifier"))
+        expect(response).to have_http_status(:moved_permanently)
+      end
+    end
+
+    context "when accessing via numeric project id" do
+      it "does not redirect" do
+        get :show, params: { project_id: project.id.to_s }
+        expect(response).not_to have_http_status(:moved_permanently)
+      end
+    end
+  end
+
   describe "update" do
     it "sets the project identifier to the provided value" do
       put :update, params: { project_id: project.id, project: { identifier: "new-identifier" } }
