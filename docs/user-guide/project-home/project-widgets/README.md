@@ -200,7 +200,7 @@ Budgets widgets are only displayed if the following conditions are met:
   - view_cost_rates
   - view_time_entries
   - view_hourly_rates
-- The user has to have a defined an hourly rate.
+- The user has to have a defined hourly rate.
 - At least one time and/or unit costs entry is logged for the work package (the work package that is assigned to a budget). If no relevant data is available, the widgets display guidance messages. For example if **no budgets exist**, the widget encourages creating a budget.
 
 ### Aggregation across project hierarchy
