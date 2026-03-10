@@ -30,7 +30,7 @@ uk:
         finish_date: "Дата закінчення"
         goal: "Ціль спринту"
         name: "Ім’я спринту"
-        sharing: "Sharing"
+        sharing: "Надання доступу"
       sprint:
         duration: "Тривалість спринту"
       work_package:
@@ -88,40 +88,40 @@ uk:
       blankslate_title: "%{name} нічого не містить"
       blankslate_description: "Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх."
     sprint_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name} нічого не містить"
+      blankslate_description: "Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх."
     backlog_header_component:
       label_toggle_backlog: "Згорнути/розгорнути %{name}"
       label_story_count:
-        zero: "Немає історій у беклозі"
-        one: "%{count} історія в беклозі"
-        other: "%{count} історії(-й) у беклозі"
+        zero: "У беклозі немає історій"
+        one: "У беклозі %{count} історія"
+        other: "У беклозі стільки історій: %{count}"
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "Згорнути/розгорнути %{name}"
       label_story_count:
-        zero: "No stories in sprint"
-        one: "%{count} story in sprint"
-        other: "%{count} stories in sprint"
+        zero: "У спринті немає історій"
+        one: "У спринті %{count} історія"
+        other: "У спринті стільки історій: %{count}"
     backlog_menu_component:
       label_actions: "Дії беклогу"
       action_menu:
         edit_sprint: "Редагувати спринт"
         new_story: "Нова історія"
-        stories_tasks: "Історії/Завдання"
+        stories_tasks: "Історії/завдання"
         task_board: "Дошка завдань"
         burndown_chart: "Діаграма згорання завдань"
         wiki: "Wiki"
         properties: "Властивості"
     sprint_menu_component:
-      label_actions: "Sprint actions"
+      label_actions: "Дії спринту"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        edit_sprint: "Редагувати спринт"
+        new_story: "Нова історія"
+        stories_tasks: "Історії/завдання"
+        task_board: "Дошка завдань"
+        burndown_chart: "Діаграма згорання завдань"
     story_component:
-      label_drag_story: "Перемістити %{name}"
+      label_drag_story: "Перемістити історію «%{name}»"
     story_menu_component:
       label_actions: "Дії історії"
   backlogs_points_burn_direction: "Бали спалюються вгору/вниз"
@@ -147,10 +147,10 @@ uk:
   label_backlogs_unconfigured: "Ви ще не настроїли Backlogs. Перейдіть на %{administration}>%{plugins}, потім натисніть посилання %{configure} для цього плагіна. Після того, як ви встановите поля, поверніться на цю сторінку, щоб розпочати використання інструмента."
   label_blocks_ids: "Ідентифікатори заблокованих робочих пакетів"
   label_column_in_backlog: "Стовпець у backlog-у"
-  label_used_as_backlog: "Used as backlog"
+  label_used_as_backlog: "Використовується як беклог"
   label_points_burn_down: "Вниз"
   label_points_burn_up: "Вгору"
-  label_sprint_edit: "Edit sprint"
+  label_sprint_edit: "Редагувати спринт"
   label_sprint_impediments: "Перешкоди спринту"
   label_sprint_new: "Новий спринт"
   label_task_board: "Дошка завдань"

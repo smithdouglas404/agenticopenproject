@@ -82,8 +82,8 @@ ko:
       blankslate_title: "%{name}이(가) 비어 있습니다"
       blankslate_description: "아직 계획된 항목이 없습니다. 항목을 추가하려면 여기로 드래그하세요."
     sprint_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "%{name}이(가) 비어 있습니다"
+      blankslate_description: "아직 계획된 항목이 없습니다. 항목을 추가하려면 여기로 드래그하세요."
     backlog_header_component:
       label_toggle_backlog: "%{name} 축소/확장"
       label_story_count:
@@ -91,11 +91,11 @@ ko:
         one: "백로그의 %{count}개 스토리"
         other: "백로그의 %{count}개 스토리"
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "%{name} 축소/확장"
       label_story_count:
-        zero: "No stories in sprint"
-        one: "%{count} story in sprint"
-        other: "%{count} stories in sprint"
+        zero: "스프린트의 스토리 없음"
+        one: "스프린트의 %{count}개 스토리"
+        other: "스프린트의 %{count}개 스토리"
     backlog_menu_component:
       label_actions: "백로그 작업"
       action_menu:
@@ -107,13 +107,13 @@ ko:
         wiki: "위키"
         properties: "속성"
     sprint_menu_component:
-      label_actions: "Sprint actions"
+      label_actions: "스프린트 작업"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        edit_sprint: "스프린트 편집"
+        new_story: "새로운 스토리"
+        stories_tasks: "스토리/작업"
+        task_board: "작업 보드"
+        burndown_chart: "번다운 차트"
     story_component:
       label_drag_story: "%{name} 이동"
     story_menu_component:
@@ -141,10 +141,10 @@ ko:
   label_backlogs_unconfigured: "백로그를 아직 구성하지 않았습니다. %{administration} > %{plugins}(으)로 이동한 다음 이 플러그인의 %{configure} 링크를 클릭하세요. 필드를 설정한 후 이 페이지로 돌아가서 해당 도구 사용을 시작하세요."
   label_blocks_ids: "차단된 작업 패키지의 ID"
   label_column_in_backlog: "백로그의 열"
-  label_used_as_backlog: "Used as backlog"
+  label_used_as_backlog: "백로그로 사용됨"
   label_points_burn_down: "아래"
   label_points_burn_up: "위"
-  label_sprint_edit: "Edit sprint"
+  label_sprint_edit: "스프린트 편집"
   label_sprint_impediments: "스프린트 제한"
   label_sprint_new: "새로운 스프린트"
   label_task_board: "작업 보드"

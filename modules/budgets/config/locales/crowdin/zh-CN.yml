@@ -79,22 +79,22 @@ zh-CN:
           heading: "预算详细信息缺失"
           description: "添加计划预算的详细信息，以便在此处查看数据"
         count_caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget"
-          other: "Data aggregated from %{count} budgets"
+          zero: "无预算数据。"
+          one: "从 %{count} 个预算中汇总的数据"
+          other: "从 %{count} 个预算中汇总的数据"
         count_caption_with_subitems:
           project:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this project and its subitems."
-            other: "Data aggregated from %{count} budgets included in this project and its subitems."
+            zero: "无预算数据。"
+            one: "从包含在此项目及其子条目中的 %{count} 个预算中汇总的数据。"
+            other: "从包含在此项目及其子条目中的 %{count} 个预算中汇总的数据。"
           program:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this program and its subitems."
-            other: "Data aggregated from %{count} budgets included in this program and its subitems."
+            zero: "无预算数据。"
+            one: "从包含在此计划及其子条目中的 %{count} 个预算中汇总的数据。"
+            other: "从包含在此计划及其子条目中的 %{count} 个预算中汇总的数据。"
           portfolio:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this portfolio and its subitems."
-            other: "Data aggregated from %{count} budgets included in this portfolio and its subitems."
+            zero: "无预算数据。"
+            one: "从包含在此项目组合及其子条目中的 %{count} 个预算中汇总的数据。"
+            other: "从包含在此项目组合及其子条目中的 %{count} 个预算中汇总的数据。"
         view_details: "查看预算详细信息"
   events:
     budget: "预算已编辑"

@@ -79,22 +79,22 @@ de:
           heading: "Budgetdetails fehlen"
           description: "Fügen Sie Details zu Ihrem geplanten Budget hinzu, um die Daten hier zu sehen"
         count_caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget"
-          other: "Data aggregated from %{count} budgets"
+          zero: "Keine Budgetdaten."
+          one: "Daten aggregiert aus %{count} Budget"
+          other: "Daten aggregiert aus %{count} Budgets"
         count_caption_with_subitems:
           project:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this project and its subitems."
-            other: "Data aggregated from %{count} budgets included in this project and its subitems."
+            zero: "Keine Budgetdaten."
+            one: "Daten aggregiert aus %{count} Budget in diesem Projekt und seinen Unterelementen."
+            other: "Daten aggregiert aus %{count} Budgets in diesem Projekt und seinen Unterelementen."
           program:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this program and its subitems."
-            other: "Data aggregated from %{count} budgets included in this program and its subitems."
+            zero: "Keine Budgetdaten."
+            one: "Daten aggregiert aus %{count} Budget in diesem Programm und seinen Unterelementen."
+            other: "Daten aggregiert aus %{count} Budgets in diesem Programm und seinen Unterelementen."
           portfolio:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this portfolio and its subitems."
-            other: "Data aggregated from %{count} budgets included in this portfolio and its subitems."
+            zero: "Keine Budgetdaten."
+            one: "Daten aggregiert aus %{count} Budget in diesem Portfolio und seinen Unterelementen."
+            other: "Daten aggregiert aus %{count} Budgets in diesem Portfolio und seinen Unterelementen."
         view_details: "Budgetdetails anzeigen"
   events:
     budget: "Budget bearbeitet"

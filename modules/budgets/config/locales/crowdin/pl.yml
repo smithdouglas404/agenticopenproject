@@ -79,22 +79,22 @@ pl:
           heading: "Brak szczegółów budżetu"
           description: "Aby zobaczyć tutaj dane, dodaj szczegóły dotyczące planowanego budżetu"
         count_caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget"
-          other: "Data aggregated from %{count} budgets"
+          zero: "Brak danych budżetowych."
+          one: "Dane zagregowane z %{count} budżetu"
+          other: "Dane zagregowane z %{count} budżetów"
         count_caption_with_subitems:
           project:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this project and its subitems."
-            other: "Data aggregated from %{count} budgets included in this project and its subitems."
+            zero: "Brak danych budżetowych."
+            one: "Dane zagregowane z %{count} budżetu zawarte w tym projekcie i jego podpozycjach."
+            other: "Dane zagregowane z %{count} budżetów zawarte w tym projekcie i jego podpozycjach."
           program:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this program and its subitems."
-            other: "Data aggregated from %{count} budgets included in this program and its subitems."
+            zero: "Brak danych budżetowych."
+            one: "Dane zagregowane z %{count} budżetu zawarte w tym programie i jego podpozycjach."
+            other: "Dane zagregowane z %{count} budżetów zawarte w tym programie i jego podpozycjach."
           portfolio:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this portfolio and its subitems."
-            other: "Data aggregated from %{count} budgets included in this portfolio and its subitems."
+            zero: "Brak danych budżetowych."
+            one: "Dane zagregowane z %{count} budżetu zawarte w tym portfolio i jego podpozycjach."
+            other: "Dane zagregowane z %{count} budżetów zawarte w tym portfolio i jego podpozycjach."
         view_details: "Wyświetl szczegóły budżetu"
   events:
     budget: "Budżet edytowany"

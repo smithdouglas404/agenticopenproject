@@ -79,22 +79,22 @@ pt-PT:
           heading: "Faltam dados orçamentais"
           description: "Adicione detalhes sobre o seu orçamento planeado para ver os dados aqui"
         count_caption:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget"
-          other: "Data aggregated from %{count} budgets"
+          zero: "Sem dados de orçamento."
+          one: "Dados agregados de %{count} orçamento"
+          other: "Dados agregados de %{count} orçamentos"
         count_caption_with_subitems:
           project:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this project and its subitems."
-            other: "Data aggregated from %{count} budgets included in this project and its subitems."
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados a partir de %{count} orçamento incluído neste projeto e seus sub-elementos."
+            other: "Dados agregados a partir de %{count} orçamentos incluído neste projeto e seus sub-elementos."
           program:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this program and its subitems."
-            other: "Data aggregated from %{count} budgets included in this program and its subitems."
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados a partir de %{count} orçamento incluído neste programa e seus sub-elementos."
+            other: "Dados agregados a partir de %{count} orçamentos incluídos neste programa e seus sub-elementos."
           portfolio:
-            zero: "No budget data."
-            one: "Data aggregated from %{count} budget included in this portfolio and its subitems."
-            other: "Data aggregated from %{count} budgets included in this portfolio and its subitems."
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados a partir de %{count} orçamento incluído nesta carteira e seus sub-elementos."
+            other: "Dados agregados a partir de %{count} orçamentos incluídos nesta carteira e seus sub-elementos."
         view_details: "Ver detalhes do orçamento"
   events:
     budget: "Orçamento editado"

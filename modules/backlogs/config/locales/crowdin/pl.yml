@@ -88,8 +88,8 @@ pl:
       blankslate_title: "Element %{name} jest pusty"
       blankslate_description: "Nie zaplanowano jeszcze żadnych punktów. Przeciągnij punkty tutaj, aby je dodać."
     sprint_component:
-      blankslate_title: "%{name} is empty"
-      blankslate_description: "No items planned yet. Drag items here to add them."
+      blankslate_title: "Element %{name} jest pusty"
+      blankslate_description: "Nie zaplanowano jeszcze żadnych punktów. Przeciągnij punkty tutaj, aby je dodać."
     backlog_header_component:
       label_toggle_backlog: "Zwiń/rozwiń %{name}"
       label_story_count:
@@ -97,11 +97,11 @@ pl:
         one: "%{count} historia w backlogu"
         other: "Liczba historii w backlogu: %{count}"
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_toggle_backlog: "Zwiń/rozwiń %{name}"
       label_story_count:
-        zero: "No stories in sprint"
-        one: "%{count} story in sprint"
-        other: "%{count} stories in sprint"
+        zero: "Brak historii w sprincie"
+        one: "%{count} historia w sprincie"
+        other: "Liczba historii w sprincie: %{count}"
     backlog_menu_component:
       label_actions: "Działania backlogu"
       action_menu:
@@ -113,13 +113,13 @@ pl:
         wiki: "Wiki"
         properties: "Właściwości"
     sprint_menu_component:
-      label_actions: "Sprint actions"
+      label_actions: "Działania w ramach sprintu"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        edit_sprint: "Edytuj sprint"
+        new_story: "Nowa historia"
+        stories_tasks: "Historie/zadania"
+        task_board: "Panel zadań"
+        burndown_chart: "Wykres spalania (burndown)"
     story_component:
       label_drag_story: "Przenieś %{name}"
     story_menu_component:
@@ -147,10 +147,10 @@ pl:
   label_backlogs_unconfigured: "Jeszcze nie skonfigurowałeś backlogów. Przejdź do %{administration} > %{plugins}, następnie kliknij link %{configure} dla otrzymania tego dodatku. Po ustawieniu pól, wróć na tę stronę, aby zacząć korzystanie z narzędzia."
   label_blocks_ids: "Identyfikatory zablokowanych pakietów prac"
   label_column_in_backlog: "Kolumna w backlogu"
-  label_used_as_backlog: "Used as backlog"
+  label_used_as_backlog: "Służy jako backlog"
   label_points_burn_down: "W dół"
   label_points_burn_up: "W górę"
-  label_sprint_edit: "Edit sprint"
+  label_sprint_edit: "Edytuj sprint"
   label_sprint_impediments: "Przeszkody sprintu"
   label_sprint_new: "Nowy sprint"
   label_task_board: "Panel zadań"

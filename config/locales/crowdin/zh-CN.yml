@@ -225,7 +225,7 @@ zh-CN:
               title: "导入范围"
               caption: "选择要导入 OpenProject 的内容"
               caption_done: "已完成"
-              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now."
+              label_info: "请注意，此导入工具仍处于测试阶段，不能导入所有类型的数据。以下是主机 Jira 实例提供的导入功能摘要，以及此工具目前能够导入的内容。"
               description: "在从主机 Jira 实例获取的可用数据中选择要导入的数据。"
               label_available_data: "可用数据"
               label_not_available_data: "不可导入"
@@ -267,11 +267,11 @@ zh-CN:
           select_dialog:
             filter_projects: "按文本筛选"
           import_dialog:
-            title: "Start this import?"
-            confirm_button: "Start import"
+            title: "是否开始此导入？"
+            confirm_button: "开始导入"
             description: >
-              This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
-            confirm: "I understand and made the necessary preparations"
+              此导入器是一项 alpha 功能。它还不能从 Jira 导入所有数据，可能会在此 OpenProject 实例上留下不完整的数据。 <b>请勿在生产环境中使用，在开始之前，请先创建 OpenProject 数据备份。</b>
+            confirm: "我明白，我已做好了必要的准备"
           revert_dialog:
             title: "是否永久撤消此导入？"
             description: "这将删除所有导入的对象（包括整个项目），即使在 OpenProject 上导入后这些项目中有用户活动。"
@@ -3025,7 +3025,7 @@ zh-CN:
             line_0: 通过安全的 MCP 服务器实现的 AI 工作流（专业方案及更高版本）
             line_1: 改进了项目首页，新增了预算微件，提高了可访问性
             line_2: "会议：会议模板（基本方案及更高版本）"
-            line_3: Better transparency with project attribute comments
+            line_3: 通过项目特性注释，提高了透明度
             line_4: PDF 导出增强功能
             line_5: 提高了外部链接的安全性（高级方案及更高版本）
             line_6: 积压工作模块中的 UI/UX 改进
