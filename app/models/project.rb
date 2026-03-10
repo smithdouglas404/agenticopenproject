@@ -202,10 +202,16 @@ class Project < ApplicationRecord
 
   validates :identifier,
             presence: true,
-            uniqueness: { case_sensitive: true },
+            uniqueness: { case_sensitive: true }, # currently owned by another project
             length: { maximum: IDENTIFIER_MAX_LENGTH },
             exclusion: RESERVED_IDENTIFIERS,
             if: ->(p) { p.persisted? || p.identifier.present? }
+
+  # Complements the uniqueness validation above: once an identifier has been used by a
+  # project, it remains reserved for that project even after the project moves to a new
+  # identifier. This prevents another project from claiming a "retired" identifier.
+  # Powered by the friendly_id :history extension — see the friendly_id declaration below.
+  validate :identifier_not_historically_reserved, if: ->(p) { p.identifier_changed? }
 
   # Contains only a-z, 0-9, dashes and underscores but cannot consist of numbers only as it would clash with the id.
   validates :identifier,
@@ -214,7 +220,14 @@ class Project < ApplicationRecord
 
   validates_associated :repository, :wiki
 
-  friendly_id :identifier, use: :finders
+  friendly_id :identifier, use: %i[finders history], slug_column: :identifier
+
+  # FriendlyId::Slugged adds after_validation :unset_slug_if_invalid, which reverts the
+  # slug column to its previous value when validation fails. With slug_column: :identifier,
+  # this would reset a manually-set identifier back to nil on new records. Since the
+  # identifier is managed by acts_as_url and user input (not FriendlyId's slug generator),
+  # we disable this behaviour entirely.
+  def unset_slug_if_invalid; end
 
   scopes :activated_in_storage,
          :allowed_to,
@@ -355,5 +368,22 @@ class Project < ApplicationRecord
     OpenProject::Notifications.send(
       OpenProject::Events::MODULE_DISABLED, disabled_module:
     )
+  end
+
+  private
+
+  # Checks friendly_id_slugs for any project that previously used this identifier and
+  # has since changed it. Excludes projects that still hold the identifier as their
+  # current one — those are already caught by the uniqueness validation above, and
+  # including them here would produce a duplicate error.
+  def identifier_not_historically_reserved
+    return if errors.any? { |error| error.attribute == :identifier && error.type == :taken }
+
+    already_existing = FriendlyId::Slug
+                         .where(slug: identifier, sluggable_type: self.class.to_s)
+                         .where.not(sluggable_id: id)
+                         .exists?
+
+    errors.add(:identifier, :taken) if already_existing
   end
 end

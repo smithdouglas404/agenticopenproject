@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,39 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Bim::Bcf::API::V2_1
-  class ProjectsAPI < ::API::OpenProjectAPI
-    resources :projects do
-      helpers do
-        def visible_projects
-          Project
-            .visible(current_user)
-            .has_module(:bim)
-        end
-      end
+class InitializeHistoricIdentifiers < ActiveRecord::Migration[8.1]
+  def up
+    execute <<~SQL.squish
+      INSERT INTO friendly_id_slugs (slug, sluggable_id, sluggable_type, scope, created_at)
+      SELECT p.identifier, p.id, 'Project', NULL, NOW()
+      FROM projects p
+      WHERE p.identifier IS NOT NULL
+      AND NOT EXISTS (
+        SELECT 1 FROM friendly_id_slugs fis
+        WHERE fis.slug = p.identifier
+        AND fis.sluggable_id = p.id
+        AND fis.sluggable_type = 'Project'
+        AND fis.scope IS NULL
+      )
+    SQL
+  end
 
-      get &::Bim::Bcf::API::V2_1::Endpoints::Index.new(model: Project,
-                                                       scope: -> { visible_projects })
-                                             .mount
-
-      route_param :id do
-        helpers ::API::Helpers::HistoricalIdentifierRedirect
-
-        after_validation do
-          @project = visible_projects
-                     .find(params[:id])
-
-          redirect_if_historical_identifier(:id, @project)
-        end
-
-        get &::Bim::Bcf::API::V2_1::Endpoints::Show.new(model: Project).mount
-        put &::Bim::Bcf::API::V2_1::Endpoints::Update
-               .new(model: Project)
-               .mount
-
-        mount ::Bim::Bcf::API::V2_1::TopicsAPI
-        mount ::Bim::Bcf::API::V2_1::ProjectExtensions::API
-      end
-    end
+  def down
+    # nothing to do / not possible
   end
 end

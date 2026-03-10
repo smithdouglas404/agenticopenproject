@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,39 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Bim::Bcf::API::V2_1
-  class ProjectsAPI < ::API::OpenProjectAPI
-    resources :projects do
-      helpers do
-        def visible_projects
-          Project
-            .visible(current_user)
-            .has_module(:bim)
-        end
-      end
+require "spec_helper"
 
-      get &::Bim::Bcf::API::V2_1::Endpoints::Index.new(model: Project,
-                                                       scope: -> { visible_projects })
-                                             .mount
+RSpec.describe Projects::ArchiveController do
+  let(:user) { create(:admin) }
+  let(:project) { create(:project) }
 
-      route_param :id do
-        helpers ::API::Helpers::HistoricalIdentifierRedirect
+  before do
+    login_as(user)
+  end
 
-        after_validation do
-          @project = visible_projects
-                     .find(params[:id])
+  describe "historic identifier handling" do
+    let!(:old_identifier) { project.identifier }
 
-          redirect_if_historical_identifier(:id, @project)
-        end
+    before { project.update!(identifier: "current-identifier") }
 
-        get &::Bim::Bcf::API::V2_1::Endpoints::Show.new(model: Project).mount
-        put &::Bim::Bcf::API::V2_1::Endpoints::Update
-               .new(model: Project)
-               .mount
-
-        mount ::Bim::Bcf::API::V2_1::TopicsAPI
-        mount ::Bim::Bcf::API::V2_1::ProjectExtensions::API
-      end
+    it "does not redirect turbo_stream requests with historical identifier" do
+      get :dialog, params: { project_id: old_identifier }, format: :turbo_stream
+      expect(response).to be_successful
+      expect(response).not_to have_http_status(:moved_permanently)
     end
   end
 end

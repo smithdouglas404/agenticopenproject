@@ -246,17 +246,47 @@ class ApplicationController < ActionController::Base
   # Note: find() is Project.friendly.find()
   def find_project
     @project = Project.visible.find(params[:id])
+    redirect_if_historical_project_identifier(:id)
   end
 
   # Find project of id params[:project_id]
   # Note: find() is Project.friendly.find()
   def find_project_by_project_id
     @project = Project.visible.find(params[:project_id])
+    redirect_if_historical_project_identifier(:project_id)
+  end
+
+  # Redirects to the project's current identifier if the request used a historical slug.
+  # friendly_id's :history extension records old identifiers in friendly_id_slugs; if the
+  # param is a slug (param.friendly_id? is truthy) that no longer matches the current
+  # identifier, it must be a historical slug. Numeric IDs are passed through without redirect.
+  # Only redirects HTML requests; turbo_stream and other formats are left as-is.
+  def redirect_if_historical_project_identifier(identifier_param_key)
+    param = params[identifier_param_key]
+    return unless request.get? && request.format.symbol == :html && param.friendly_id? && param != @project.identifier
+
+    redirect_to canonical_project_url(identifier_param_key), status: :moved_permanently
+  end
+
+  def canonical_project_url(identifier_param_key)
+    # Reconstruct the URL from path + query parameters, and prevent user-supplied
+    # options such as :host or :protocol from influencing the redirect target.
+    safe_path_params  = request.path_parameters.symbolize_keys
+    safe_query_params = request.query_parameters.symbolize_keys
+
+    safe_path_params[identifier_param_key] = @project.identifier
+    safe_query_params.except!(:host, :protocol, :subdomain, :domain, :port)
+
+    url_for(safe_path_params.merge(safe_query_params).merge(only_path: true))
   end
 
   # Find project by project_id if given
   def find_optional_project
-    @project = Project.visible.find(params[:project_id]) if params[:project_id].present?
+    return if params[:project_id].blank?
+    
+    @project = Project.visible.find(params[:project_id])
+    redirect_if_historical_project_identifier(:project_id)
+    nil if performed?
   rescue ActiveRecord::RecordNotFound
     render_404
   end

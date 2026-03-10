@@ -558,6 +558,21 @@ RSpec.describe ProjectsController do
     end
   end
 
+  describe "#copy_form with a historical identifier" do
+    let(:project) { create(:project, identifier: "blog") }
+
+    before do
+      old_identifier = project.identifier
+      project.update!(identifier: "new-blog")
+      get "copy_form", params: { id: old_identifier }
+    end
+
+    it "redirects to the current identifier with 301" do
+      expect(response).to redirect_to(copy_project_path("new-blog"))
+      expect(response).to have_http_status(:moved_permanently)
+    end
+  end
+
   describe "#copy" do
     let(:project) { create(:project, identifier: "blog") }
 
@@ -607,5 +622,11 @@ RSpec.describe ProjectsController do
         expect(response).to render_template "copy_form"
       end
     end
+  end
+
+  describe "historic identifier redirect" do
+    let(:project) { create(:project) }
+
+    it_behaves_like "redirects GET requests using a historical project :id", :destroy_info
   end
 end

@@ -360,4 +360,10 @@ RSpec.describe VersionsController do
       expect { Version.find(@deleted) }.to raise_error ActiveRecord::RecordNotFound
     end
   end
+
+  describe "historic identifier redirect" do
+    before { login_as(user) }
+
+    it_behaves_like "redirects GET requests using a historical project identifier", :index
+  end
 end

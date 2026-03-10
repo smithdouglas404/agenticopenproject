@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,39 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Bim::Bcf::API::V2_1
-  class ProjectsAPI < ::API::OpenProjectAPI
-    resources :projects do
-      helpers do
-        def visible_projects
-          Project
-            .visible(current_user)
-            .has_module(:bim)
-        end
-      end
-
-      get &::Bim::Bcf::API::V2_1::Endpoints::Index.new(model: Project,
-                                                       scope: -> { visible_projects })
-                                             .mount
-
-      route_param :id do
-        helpers ::API::Helpers::HistoricalIdentifierRedirect
-
-        after_validation do
-          @project = visible_projects
-                     .find(params[:id])
-
-          redirect_if_historical_identifier(:id, @project)
-        end
-
-        get &::Bim::Bcf::API::V2_1::Endpoints::Show.new(model: Project).mount
-        put &::Bim::Bcf::API::V2_1::Endpoints::Update
-               .new(model: Project)
-               .mount
-
-        mount ::Bim::Bcf::API::V2_1::TopicsAPI
-        mount ::Bim::Bcf::API::V2_1::ProjectExtensions::API
-      end
+class CreateFriendlyIdSlugs < ActiveRecord::Migration[8.1]
+  def change
+    create_table :friendly_id_slugs do |t|
+      t.string   :slug,           null: false
+      t.bigint   :sluggable_id,   null: false
+      t.string   :sluggable_type, limit: 50
+      t.string   :scope
+      t.datetime :created_at
     end
+
+    add_index :friendly_id_slugs, %i[sluggable_type sluggable_id]
+    add_index :friendly_id_slugs, %i[slug sluggable_type],
+              length: { slug: 140, sluggable_type: 50 }
+    add_index :friendly_id_slugs, %i[slug sluggable_type scope],
+              length: { slug: 70, sluggable_type: 50, scope: 70 },
+              unique: true
   end
 end
