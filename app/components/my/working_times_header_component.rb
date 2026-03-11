@@ -30,25 +30,31 @@
 
 module My
   class WorkingTimesHeaderComponent < ApplicationComponent
-    def call # rubocop:disable Metrics/AbcSize
+    def call
       render(Primer::OpenProject::PageHeader.new) do |header|
         header.with_title { t(:label_schedule_and_availability) }
         header.with_breadcrumbs(
           [{ href: my_account_path, text: t(:label_my_account) },
            t(:label_schedule_and_availability)]
         )
-        header.with_tab_nav(label: "label") do |nav|
-          nav.with_tab(selected: params[:action] == "working_hours",
-                       href: my_working_hours_path) do |tab|
-            tab.with_text { t(:label_working_hours) }
-          end
 
-          nav.with_tab(selected: params[:action] == "non_working_times",
-                       href: my_non_working_times_path(year: Date.current.year)) do |tab|
-            tab.with_text { t(:label_non_working_days) }
-          end
-        end
+        helpers.render_tab_header_nav(header, tabs)
       end
+    end
+
+    def tabs
+      [
+        {
+          name: "working_hours",
+          path: my_working_hours_path,
+          label: t(:label_working_hours)
+        },
+        {
+          name: "non_working_times",
+          path: my_non_working_times_path(year: Date.current.year),
+          label: t(:label_non_working_days)
+        }
+      ]
     end
   end
 end
