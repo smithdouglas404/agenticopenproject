@@ -914,6 +914,23 @@ time_entry_activities:
 types:
   - reference: :default_type_task
     t_name: Task
+    t_description: |-
+      ## Summary
+      (What needs to be done)
+
+      ## Goal / Expected outcome
+      (Definition of done)
+
+      ## Scope
+      - In scope:
+      - Out of scope:
+
+      ## Acceptance criteria
+      - [ ]
+      - [ ]
+
+      ## Dependencies / Links
+      (Related work packages, docs, blockers)
     is_default: true
     color_name: :default_color_blue
     is_in_roadmap: true
@@ -946,6 +963,39 @@ types:
     position: 6
   - reference: :default_type_bug
     t_name: Bug
+    t_description: |-
+      ## Summary
+      (One-sentence defect summary and impact)
+
+      ## Environment
+      - Product/app version:
+      - Browser + version:
+      - OS/device + version:
+      - Project:
+
+      ## Steps to reproduce
+      1.
+      2.
+      3.
+
+      ## Expected behavior
+      (What should happen)
+
+      ## Actual behavior
+      (What actually happens)
+
+      ## Reproducibility
+      - [ ] Always
+      - [ ] Intermittent
+      - [ ] Could not reproduce reliably
+
+      ## Evidence
+      (Logs, screenshots, links, crash IDs)
+
+      ## Impact
+      - Severity:
+      - Priority:
+      - Affected users/workflow:
     color_name: 'red-7'
     is_in_roadmap: true
     position: 7
