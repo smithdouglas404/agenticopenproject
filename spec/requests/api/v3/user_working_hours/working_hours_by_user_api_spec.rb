@@ -120,6 +120,18 @@ RSpec.describe API::V3::UserWorkingHours::WorkingHoursByUserAPI do
         end
       end
 
+      context "with manage_own_working_times viewing another user's records" do
+        let(:other_user) { create(:user, global_permissions: [:manage_own_working_times]) }
+
+        current_user { other_user }
+
+        before { get path }
+
+        it "returns 404" do
+          expect(last_response).to have_http_status(404)
+        end
+      end
+
       context "with 'me' as the user ID" do
         current_user { target_user }
 
