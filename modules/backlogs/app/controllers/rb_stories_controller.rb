@@ -156,7 +156,7 @@ class RbStoriesController < RbApplicationController
       # if it is used as a backlog. We will keep a "regular" version reference.
       # Otherwise, moving a story to a sprint would delete it from any version it is
       # assigned to.
-      if version_is_backlog?(@story.version)
+      if @story.version&.used_as_backlog?
         { version_id: nil, sprint_id: target_id }
       else
         { sprint_id: target_id }
@@ -164,14 +164,6 @@ class RbStoriesController < RbApplicationController
     else
       raise ArgumentError, "target_type must include one of: version, sprint."
     end
-  end
-
-  def version_is_backlog?(version)
-    return false unless version
-
-    settings = version.version_settings&.where(project: @project)&.first
-
-    settings&.display_right?
   end
 
   def target_version?(move_attributes)
