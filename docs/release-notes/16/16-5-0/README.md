@@ -27,7 +27,7 @@ You can now place a work package directly into a specific agenda section when ad
 
 In the *Notes* section, you can add text that will be displayed together with the meeting title in the *Meetings* tab of the work package.
 
-[See our user guide to learn more about how to add work packages to meetings](../../user-guide/work-packages/add-work-packages-to-meetings).
+[See our user guide to learn more about how to add work packages to meetings](../../../user-guide/work-packages/add-work-packages-to-meetings).
 
 ![OpenProject work package, Meetings tab: Modal to "Select a meeting" with the Meeting selected being a Marketing daily and a "Add to section" dropdown with two sections to choose from.](openproject-16-5-meeting-tab-highlighted.png)
 
@@ -42,7 +42,7 @@ Additionally, **checkboxes for high contrast** are now displayed, depending on t
 
 This new feature is particularly helpful for the automatic mode, where you can now differentiate whether you want high contrast to be displayed only in dark mode or only in light mode, for example.
 
-[Learn more about the *Look and feel* options in OpenProject](../../user-guide/account-settings/#look-and-feel).
+[Learn more about the *Look and feel* options in OpenProject](../../../user-guide/account-settings/#look-and-feel).
 
 ![OpenProject account settings / Interface: Look and feel options reduced to "Dark", "Light" and "Automatic". Automatic is selected and below two checkboxes are displayed:" Force high contrast when in Light mode" and "Force high-contrast when in Dark mode".](openproject-16-5-increase-contrast-automatic.png)
 
@@ -114,7 +114,7 @@ This menu is useful not only for new users, but also for anyone looking for addi
 - Bugfix: ID link in notification center always points to last opened project \[[#66751](https://community.openproject.org/wp/66751)\]
 - Bugfix: Removing widgets from Projects Overview page is very slow/unresponsive \[[#66753](https://community.openproject.org/wp/66753)\]
 - Bugfix: Activity shows changes to admin only custom fields also to non admin users \[[#66925](https://community.openproject.org/wp/66925)\]
-- Bugfix: LDAP Groupsync settings can&#39;t be edited in synced LDAP group \[[#66941](https://community.openproject.org/wp/66941)\]
+- Bugfix: LDAP group sync settings can&#39;t be edited in synced LDAP group \[[#66941](https://community.openproject.org/wp/66941)\]
 - Bugfix: Do not use unspecified ServiceProviderConfig.AuthenticationSchemes.type \[[#67055](https://community.openproject.org/wp/67055)\]
 - Bugfix: Application password cannot be validated for Nextcloud storage using SSO \[[#67071](https://community.openproject.org/wp/67071)\]
 - Bugfix: Work packages export dialog description attribute dragger locale \[[#67181](https://community.openproject.org/wp/67181)\]
@@ -122,7 +122,7 @@ This menu is useful not only for new users, but also for anyone looking for addi
 - Bugfix: User cannot create a folder in the File picker \[[#67233](https://community.openproject.org/wp/67233)\]
 - Bugfix: File picker UI lets user upload to root folder even though it&#39;s not permitted \[[#67235](https://community.openproject.org/wp/67235)\]
 - Bugfix: User doesn&#39;t get visual feedback their new OIDC provider was successfully saved \[[#67257](https://community.openproject.org/wp/67257)\]
-- Bugfix: Meetings series is not correctly ended if series has more than 1 existing occurence \[[#67297](https://community.openproject.org/wp/67297)\]
+- Bugfix: Meetings series is not correctly ended if series has more than 1 existing occurrence \[[#67297](https://community.openproject.org/wp/67297)\]
 - Bugfix: Incorrect terminology in docs and UI: &quot;Favored&quot; vs &quot;Favorited&quot; \[[#67312](https://community.openproject.org/wp/67312)\]
 - Bugfix: Older meetings show series backlog as &#39;untitled section&#39; \[[#67381](https://community.openproject.org/wp/67381)\]
 - Bugfix: Cost reports month locale \[[#67466](https://community.openproject.org/wp/67466)\]
@@ -162,8 +162,8 @@ This menu is useful not only for new users, but also for anyone looking for addi
 - Feature: Update the Getting started video linked in the application help menu \[[#67176](https://community.openproject.org/wp/67176)\]
 - Feature: Update help menu and widget on start page in application \[[#67177](https://community.openproject.org/wp/67177)\]
 - Feature: Update Enterprise plan text in widget on application start page \[[#67178](https://community.openproject.org/wp/67178)\]
-- Feature: Add/remove projects from favourite via the API \[[#67241](https://community.openproject.org/wp/67241)\]
-- Feature: Hide segmented control and include sub-itmes checkbox of the filterable tree view \[[#67541](https://community.openproject.org/wp/67541)\]
+- Feature: Add/remove projects from favorite via the API \[[#67241](https://community.openproject.org/wp/67241)\]
+- Feature: Hide segmented control and include sub-items checkbox of the filterable tree view \[[#67541](https://community.openproject.org/wp/67541)\]
 
 <!-- END AUTOMATED SECTION -->
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
@@ -178,4 +178,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [Samo](https://crowdin.com/profile/SamoE), for a great number of translations into Turkish.
 - [Kuma Yamashita](https://crowdin.com/profile/dredgk), for a great number of translations into Japanese.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

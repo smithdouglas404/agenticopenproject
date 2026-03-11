@@ -93,7 +93,7 @@ OpenProject 17.2 introduces optional comment fields for project attributes, givi
 
 Comments are displayed and edited alongside the respective attribute on the Project overview page and follow the same permission logic as the attribute itself. Changes are tracked in the project activity, included in exports, and available via the API. By adding structured context to project metadata, this enhancement improves transparency and supports better governance and decision-making across projects and teams.
 
-![Setting to add a comment text field to a project atttribute in OpenProject administration](openproject_release_notes_17-2-0_project_attributes_comment.png)
+![Setting to add a comment text field to a project attribute in OpenProject administration](openproject_release_notes_17-2-0_project_attributes_comment.png)
 
 Read more about [project attributes in OpenProject](../../user-guide/project-home/project-attributes/).
 
@@ -135,7 +135,7 @@ We are working on a new Jira import wizard designed to help teams migrate core p
 > [!IMPORTANT]
 > This functionality is still under active development and currently available only behind a feature flag for early testing. We’re sharing this preview to start the conversation with teams considering a move from Jira. More capabilities will follow in upcoming releases.
 
-![Add a new confgiruration to Jira importer under OpenProject administration](openproject_release_notes_17-2-0_jira_migrator.png)
+![Add a new configuration to Jira importer under OpenProject administration](openproject_release_notes_17-2-0_jira_migrator.png)
 
 To find out more [see what we are working on](https://community.openproject.org/projects/jira-migration/work_packages).
 

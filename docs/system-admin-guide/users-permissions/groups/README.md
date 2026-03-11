@@ -39,7 +39,7 @@ You will then see the detailed view of the group, including following tabs:
 - Users
 - Projects
 - Global roles
-- Synchronised groups
+- Synchronized groups
 
 ![Edit groups in OpenProject administration](openproject_system_guide_edit_new_group.png)
 
@@ -67,7 +67,7 @@ In order to add a global role to a group, at least one global role needs to be [
 
 ### Synchronized groups 
 
-Click the **Synchronized groups** tab to see if this group has been synchronised with groups in external identity providers like OpenID. If no synchronisation has yet been set up, this list will be empty. You can set this up in your [Authentication settings](../../authentication).
+Click the **Synchronized groups** tab to see if this group has been synchronized with groups in external identity providers like OpenID. If no synchronization has yet been set up, this list will be empty. You can set this up in your [Authentication settings](../../authentication).
 
 ### Delete a group
 

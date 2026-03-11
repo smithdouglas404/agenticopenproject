@@ -28,7 +28,7 @@ Please note that if you have customized the sidebar colors, your individual sett
 
 ### Primer design system added to project create and project copy forms
 
-The forms for [creating and copying projects](../../getting-started/projects/#create-a-new-project) now use the [Primer design system](https://www.openproject.org/blog/primer-design-system/), providing a cleaner and more consistent interface. This improves accessibility and ensures the process remains just as familiar.
+The forms for [creating and copying projects](../../../getting-started/projects/#create-a-new-project) now use the [Primer design system](https://www.openproject.org/blog/primer-design-system/), providing a cleaner and more consistent interface. This improves accessibility and ensures the process remains just as familiar.
 
 If you **copy** a project or create a project **based on a template**, you will immediately be able to choose which modules and parts you want to copy and which to skip. Also, the option to activate sending email notifications during the project copy is much more visible. Before 16.2, you had to click on Copy Options to unfold.
 
@@ -38,7 +38,7 @@ If you **copy** a project or create a project **based on a template**, you will 
 
 PDF work package exports in OpenProject now support **non-Latin characters and emojis**. This means that project information written in scripts such as Chinese, Arabic, Cyrillic, or accented characters — as well as any emojis you use in work packages, meetings, or descriptions — will display correctly in exported PDF files. This ensures that documents generated from OpenProject reflect your content accurately, no matter which language or symbols you use.
 
-[Read more about work package PDF exports with OpenProject](../../user-guide/work-packages/exporting/)
+[Read more about work package PDF exports with OpenProject](../../../user-guide/work-packages/exporting/)
 
 ![PDF export extract from an OpenProject work package that contains emojis, symbols and non-Latin characters](openproject-16-2-pdf-export.png)
 
@@ -50,13 +50,13 @@ The + Relation menu has been reorganized with a new two-level structure, making 
 
 ![OpenProject work package Relations tab when clicking on +Relation, showing some relations unfolded under 'Other relations'](openproject-user-guide-relations-second-level-navigation.png)
 
-[Read more about relations in OpenProject](../../user-guide/work-packages/work-package-relations-hierarchies/).
+[Read more about relations in OpenProject](../../../user-guide/work-packages/work-package-relations-hierarchies/).
 
 ### Select formats for custom fields and project attributes earlier in creation process
 
 When creating a new custom field, you can now select the format — such as text, list, or date — right at the beginning, on the index page of custom fields and project attributes. The same applies to project attributes. This streamlines the creation process and avoids unnecessary steps, since each type opens directly in the appropriate form. This improvement is especially helpful for administrators who frequently set up new custom fields or project attributes.
 
-Read more about how to manage [custom fields](../../system-admin-guide/custom-fields/) and [project attributes](../../user-guide/projects/project-settings/project-attributes/) in OpenProject.
+Read more about how to manage [custom fields](../../../system-admin-guide/custom-fields/) and [project attributes](../../../user-guide/projects/project-settings/project-attributes/) in OpenProject.
 
 ![OpenProject administration to add a new custom field: Dropdown lets you choose the type during the first step](openproject-16-2-custom-field-type.png)
 
@@ -65,11 +65,11 @@ Read more about how to manage [custom fields](../../system-admin-guide/custom-fi
 In the **My time tracking** module, the week and work week views now automatically collapse future and past days while keeping today expanded. This helps you focus on logging time for the current and past days without being distracted by empty future slots. If you view a past week, all days are expanded as before.
 
 > [!TIP]
-> Don't know the My time tracking module yet? We released it with [OpenProject 16.0.0](../../release-notes/16-0-0/). This module shows individual time entries in a calendar or list view, and is very helpful if you use start and end times for your time tracking. 
+> Don't know the My time tracking module yet? We released it with [OpenProject 16.0.0](../16-0-0/). This module shows individual time entries in a calendar or list view, and is very helpful if you use start and end times for your time tracking. 
 
 ![OpenProject's My time tracking module in list view, only Today expanded](user-guide-my-time-tracking-module-list-view.png)
 
-[Learn more about the My time tracking module in our documentation](../../user-guide/time-and-costs/my-time-tracking/).
+[Learn more about the My time tracking module in our documentation](../../../user-guide/time-and-costs/my-time-tracking/).
 
 ### Option to disable keyboard shortcuts for better accessibility
 
@@ -83,7 +83,7 @@ When you set a reminder for a work package, OpenProject now confirms this with a
 
 ![User information that appears when setting a reminder: Reminder set successfully. You will receive a notification for this work package tomorrow.](openproject-16-2-reminder.png)
 
-[Learn more about work package reminders in OpenProject](../../user-guide/work-packages/edit-work-package/#work-package-reminders).
+[Learn more about work package reminders in OpenProject](../../../user-guide/work-packages/edit-work-package/#work-package-reminders).
 
 ## Important technical changes
 
@@ -93,7 +93,7 @@ OpenProject 16.2 adds a **SCIM server API**, available as an Enterprise add-on i
 
 ![OpenProject administration with option to add a new SCIM client](openproject-16-2-scim-api.png)
 
-[Learn more about authentication methods with OpenProject](../../system-admin-guide/authentication/).
+[Learn more about authentication methods with OpenProject](../../../system-admin-guide/authentication/).
 
 ### API support for internal comments
 
@@ -101,7 +101,7 @@ The API has been extended to fully support **internal comments on work packages*
 
 ### Commenting on work packages fires a webhook
 
-When a comment is added to a work package, it now triggers a webhook. This enables external systems to react in real time to comments in OpenProject, for example by updating dashboards or notifying integrated tools. [See our system admin guide to learn more about webhooks for OpenProject](../../system-admin-guide/api-and-webhooks/#webhooks).
+When a comment is added to a work package, it now triggers a webhook. This enables external systems to react in real time to comments in OpenProject, for example by updating dashboards or notifying integrated tools. [See our system admin guide to learn more about webhooks for OpenProject](../../../system-admin-guide/api-and-webhooks/#webhooks).
 
 <!--more-->
 
@@ -226,4 +226,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [rmiyata](https://crowdin.com/profile/rmiyata), for a great number of translations into Japanese.
 - [rubenpedrolopez](https://crowdin.com/profile/rubenpedrolopez), for a great number of translations into Spanish.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

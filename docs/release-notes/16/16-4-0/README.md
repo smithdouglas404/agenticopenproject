@@ -25,7 +25,7 @@ Users can now enable **automatic color mode** under *Account settings → Interf
 > [!NOTE]
 > If a user has enabled dark mode — either by default or through automatic switching — this overrides the instance’s design settings for that user.
 
-[Learn more about the *Look and feel* options in OpenProject](../../user-guide/account-settings/#look-and-feel). 
+[Learn more about the *Look and feel* options in OpenProject](../../../user-guide/account-settings/#look-and-feel). 
 
 ![Screenshot of OpenProject 16.4: Account settings to adjust color mode, Automatic mode selected](openproject-16-4-color-mode-light-1.png)
 
@@ -50,7 +50,7 @@ The exported PDF includes:
 - All selected attributes from the project list, shown in the same order as in the table.
 - Section titles linked to the respective project in OpenProject.
 
-To export a project list, open the **More (three dots)** menu in the top right corner of the list and select Export. In the export modal, you can choose between XLS, CSV, or PDF. [Read more about project lists in our documentation](../../user-guide/projects/project-lists/#export-project-lists).
+To export a project list, open the **More (three dots)** menu in the top right corner of the list and select Export. In the export modal, you can choose between XLS, CSV, or PDF. [Read more about project lists in our documentation](../../../user-guide/projects/project-lists/#export-project-lists).
 
 ![Screenshot of OpenProject 16.4: Export modal for PDF export of project lists, choosing the file format - XLS, CSV and PDF](openproject-16-4-export-project-list-highlighted.png)
 
@@ -86,7 +86,7 @@ Other meetings improvements include:
 - Ability to remove participants directly from the dialog.
 - Cleaner display in the meeting right side and PDF export: only Attended is shown (no more 'Invited' label).
 
-[Learn more about meeting management with OpenProject](../../user-guide/meetings/#meeting-management).
+[Learn more about meeting management with OpenProject](../../../user-guide/meetings/#meeting-management).
 
 ![Screenshot of OpenProject 16.4: Meeting participants modal with autocomplete and 'Mark as attended' button](openproject-16-4-meeting-participants.png)
 
@@ -102,7 +102,7 @@ Key capabilities include:
 - Distinguish between locally managed and synchronized memberships.
 - Retain full administrative control to rename or delete synced groups and memberships.
 
-This provides flexibility for organizations, especially when self-registration is enabled. Unlike LDAP synchronization, group updates are applied on login, giving admins full control over membership changes. [Read more about OIDC in our documentation](../../system-admin-guide/authentication/openid-providers/).
+This provides flexibility for organizations, especially when self-registration is enabled. Unlike LDAP synchronization, group updates are applied on login, giving admins full control over membership changes. [Read more about OIDC in our documentation](../../../system-admin-guide/authentication/openid-providers/).
 
 This feature was developed with the support of Helmholtz-Zentrum Berlin.
 
@@ -112,7 +112,7 @@ With OpenProject 16.4, it is now easier to set up and track budgets. When creati
 
 In addition, **project lists** now include columns for planned budget, spent budget, spent percentage, and available budget, giving you a clearer overview across projects.
 
-These updates make budgeting more practical for everyday use, and we will continue to expand budgets and cost management in future releases. [Read more about budgets in our user guide](../../user-guide/budgets/).
+These updates make budgeting more practical for everyday use, and we will continue to expand budgets and cost management in future releases. [Read more about budgets in our user guide](../../../user-guide/budgets/).
 
 ![Screenshot of OpenProject 16.4: New budget with highlighted Base amount](openproject-16-4-budgets-highlighted.png)
 
@@ -143,7 +143,7 @@ The SCIM server functionality (Enterprise add-on) introduced in OpenProject 16.2
 
 - **Clear error for insufficient plan**: If the Enterprise subscription level does not include SCIM, the server now returns a 403 Forbidden with a clear message instead of a generic 401 error.
 
-These changes make SCIM integrations more robust and transparent, improving interoperability with identity providers. [Read more about SCIM provisioning in our documentation](../../system-admin-guide/authentication/scim/).
+These changes make SCIM integrations more robust and transparent, improving interoperability with identity providers. [Read more about SCIM provisioning in our documentation](../../../system-admin-guide/authentication/scim/).
 
 <!--more-->
 
@@ -248,4 +248,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [William](https://crowdin.com/profile/williamfromtw), for a great number of translations into Chinese Traditional.
 - [OlhaTrotska](https://crowdin.com/profile/OlhaTrotska), for a great number of translations into Ukrainian.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
