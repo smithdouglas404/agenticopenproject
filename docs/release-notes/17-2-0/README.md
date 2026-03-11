@@ -14,10 +14,6 @@ release_date: 2026-03-11
  The release contains several bug fixes and we recommend updating to the newest version.
  In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
-<!-- BEGIN CVE AUTOMATED SECTION -->
-
-<!-- END CVE AUTOMATED SECTION -->
-
 ## Important feature changes
 
 Take a look at our release video showing the most important features introduced in OpenProject 17.2.0:
@@ -156,6 +152,10 @@ OAuth tokens used for collaborative document editing (BlockNote ↔ Hocuspocus) 
 Newly generated API tokens can directly be used as Bearer tokens and do not need to be presented as basic auth credentials with the username `apikey`. This is intended to make usage of our APIs easier. The previously existing basic auth flow is still supported.
 
 <!--more-->
+
+<!-- BEGIN CVE AUTOMATED SECTION -->
+
+<!-- END CVE AUTOMATED SECTION -->
 
 ## Bug fixes and changes
 
