@@ -36,9 +36,9 @@ class UserWorkingHours < ApplicationRecord
   belongs_to :user, inverse_of: :working_hours
 
   validates :valid_from, presence: true, uniqueness: { scope: :user_id }
-  validates :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday,
+  validates :monday_hours, :tuesday_hours, :wednesday_hours, :thursday_hours, :friday_hours, :saturday_hours, :sunday_hours,
             presence: true,
-            numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 24 * 60 }
+            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 24 }
   validates :availability_factor,
             presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }

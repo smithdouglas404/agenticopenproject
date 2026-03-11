@@ -39,12 +39,12 @@ RSpec.describe UserWorkingHours do
     it { is_expected.to validate_presence_of(:valid_from) }
 
     %i[monday tuesday wednesday thursday friday saturday sunday].each do |day|
-      it { is_expected.to validate_presence_of(day) }
+      it { is_expected.to validate_presence_of(:"#{day}_hours") }
 
       it do
-        expect(subject).to validate_numericality_of(day).only_integer
-                                                        .is_greater_than_or_equal_to(0)
-                                                        .is_less_than_or_equal_to(24 * 60)
+        expect(subject).to validate_numericality_of(:"#{day}_hours")
+                                                    .is_greater_than_or_equal_to(0)
+                                                    .is_less_than_or_equal_to(24)
       end
     end
 
