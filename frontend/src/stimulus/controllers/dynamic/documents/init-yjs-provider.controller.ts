@@ -68,6 +68,7 @@ export default class extends Controller {
   };
 
   connect():void {
+    if (!this.hocuspocusUrlValue) return;
     this.currentToken = this.tokenPayloadValue;
 
     const ydoc:Doc = new Y.Doc();
