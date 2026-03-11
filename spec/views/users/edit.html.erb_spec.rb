@@ -32,25 +32,25 @@ require "spec_helper"
 
 RSpec.describe "users/edit" do
   let(:admin) { build(:admin) }
+  let(:current_user) { admin }
 
   before do
     # The url_for is missing the users id that is usually taken
     # from request parameters
     controller.request.path_parameters[:id] = user.id
+
+    assign(:user, user)
+    assign(:auth_sources, [])
+    assign(:contract, Users::UpdateContract.new(user, current_user))
+
+    without_partial_double_verification do
+      allow(view).to receive(:current_user).and_return(current_user)
+    end
   end
 
   context "authentication provider" do
     let(:user) { create(:user, identity_url: "#{provider.slug}:veryuniqueid") }
     let(:provider) { create(:oidc_provider, slug: "test_provider", display_name: "The Test Provider") }
-
-    before do
-      assign(:user, user)
-      assign(:auth_sources, [])
-
-      without_partial_double_verification do
-        allow(view).to receive(:current_user).and_return(admin)
-      end
-    end
 
     it "shows the authentication provider" do
       render
@@ -69,16 +69,8 @@ RSpec.describe "users/edit" do
   context "with an invited user" do
     let(:user) { build_stubbed(:invited_user) }
 
-    before do
-      assign(:user, user)
-      assign(:auth_sources, [])
-    end
-
     context "for an admin" do
       before do
-        without_partial_double_verification do
-          allow(view).to receive(:current_user).and_return(admin)
-        end
         render
       end
 
@@ -88,12 +80,9 @@ RSpec.describe "users/edit" do
     end
 
     context "for a non-admin with manage_user global permission" do
-      let(:non_admin) { create(:user, global_permissions: [:manage_user]) }
+      let(:current_user) { create(:user, global_permissions: [:manage_user]) }
 
       before do
-        without_partial_double_verification do
-          allow(view).to receive(:current_user).and_return(non_admin)
-        end
         render
       end
 
@@ -107,12 +96,6 @@ RSpec.describe "users/edit" do
     let(:user) { create(:user) }
 
     before do
-      assign(:user, user)
-      assign(:auth_sources, [])
-
-      without_partial_double_verification do
-        allow(view).to receive(:current_user).and_return(admin)
-      end
       render
     end
 
@@ -123,15 +106,6 @@ RSpec.describe "users/edit" do
 
   context "with password-based login" do
     let(:user) { build(:user, id: 42) }
-
-    before do
-      assign :user, user
-      assign :auth_sources, []
-
-      without_partial_double_verification do
-        allow(view).to receive(:current_user).and_return(admin)
-      end
-    end
 
     context "with password login disabled" do
       before do

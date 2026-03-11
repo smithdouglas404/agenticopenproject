@@ -39,6 +39,12 @@ es:
         base_amount: "Importe base"
       work_package:
         budget_subject: "Título de presupuesto"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "no es miembro del proyecto presupuestario"
     models:
       budget: "Presupuesto"
       material_budget_item: "Unidad"
@@ -56,6 +62,40 @@ es:
   caption_labor_costs: "Costos laborales actuales"
   caption_material_costs: "Costos unitarios actuales"
   budgets_title: "Presupuestos"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Total del presupuesto"
+        remaining_budget: "Presupuesto restante"
+        spent_budget: "Presupuesto gastado"
+        total_actual_costs: "Costes reales totales"
+        total_planned_budget: "Presupuesto total previsto"
+      budget_by_cost_type:
+        title: "Presupuesto por tipo de coste"
+        blankslate:
+          heading: "Comience a controlar su proyecto"
+          description: "Obtenga una visión general de los presupuestos y costes para realizar un seguimiento eficaz del estado de su proyecto"
+        blankslate_zero:
+          heading: "Faltan detalles del presupuesto"
+          description: "Añada detalles sobre su presupuesto previsto para ver los datos aquí"
+        count_caption:
+          zero: "No hay datos presupuestarios."
+          one: "Datos recopilados de %{count} presupuesto"
+          other: "Datos recopilados de %{count} presupuestos"
+        count_caption_with_subitems:
+          project:
+            zero: "No hay datos presupuestarios."
+            one: "Datos recopilados de %{count} presupuesto incluido en este proyecto y sus subelementos."
+            other: "Datos recopilados de %{count} presupuestos incluidos en este proyecto y sus subelementos."
+          program:
+            zero: "No hay datos presupuestarios."
+            one: "Datos recopilados de %{count} presupuesto incluido en este programa y sus subelementos."
+            other: "Datos recopilados de %{count} presupuestos incluidos en este programa y sus subelementos."
+          portfolio:
+            zero: "No hay datos presupuestarios."
+            one: "Datos recopilados de %{count} presupuesto incluido en esta cartera y sus subelementos."
+            other: "Datos recopilados de %{count} presupuestos incluidos en esta cartera y sus subelementos."
+        view_details: "Ver los detalles del presupuesto"
   events:
     budget: "Presupuesto editado"
   help_click_to_edit: "Haga clic aquí para editar."

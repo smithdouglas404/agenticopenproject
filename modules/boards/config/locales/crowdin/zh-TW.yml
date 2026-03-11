@@ -20,7 +20,7 @@ zh-TW:
       action: "行動項看板 (%{attribute})"
     board_type_attributes:
       assignee: 執行者
-      status: 狀態
+      status: Kanban
       version: 版本
       subproject: 子專案
       subtasks: 主任務-子任務

@@ -31,149 +31,78 @@
 require "spec_helper"
 
 RSpec.describe CustomFields::Scopes::Visible do
-  shared_let(:project_cf) { create(:string_project_custom_field) }
-  shared_let(:work_package_cf) { create(:string_wp_custom_field) }
-  shared_let(:user_cf) { create(:user_custom_field) }
-  shared_let(:group_cf) { create(:group_custom_field) }
-  shared_let(:version_cf) { create(:version_custom_field) }
-  shared_let(:time_entry_cf) { create(:time_entry_custom_field) }
-
-  let(:project_cf_visible) { false }
-  let(:work_package_cf_visible) { false }
-  let(:user_cf_visible) { false }
-  let(:group_cf_visible) { false }
-  let(:version_cf_visible) { false }
-  let(:time_entry_cf_visible) { false }
-
-  # Since there would be very many tests here, we break the rule of testing
-  # the scope as a black box. Knowing that the scope relies on the individual visible scopes of each
-  # custom field class, we test them by selectively enabling/disabling the scopes of each.
+  # Since there would be very many tests here, only test the integration aspect of this method which
+  # calls the visible scopes of each custom field class.
+  # See the individual specs for the individual scopes.
   describe ".visible" do
     subject { CustomField.visible(current_user) }
 
-    current_user { build_stubbed(:user) }
-
-    before do
-      {
-        ProjectCustomField => project_cf_visible,
-        WorkPackageCustomField => work_package_cf_visible,
-        UserCustomField => user_cf_visible,
-        GroupCustomField => group_cf_visible,
-        VersionCustomField => version_cf_visible,
-        TimeEntryCustomField => time_entry_cf_visible
-      }.each do |klass, visible|
-        allow(klass)
-          .to receive(:visible)
-                .with(current_user)
-                .and_return(visible ? klass.all : klass.none)
-      end
-    end
+    shared_current_user { create(:user) }
 
     context "for a project custom field" do
-      context "if the fields are visible" do
-        let(:project_cf_visible) { true }
-
-        it "returns the project custom field" do
-          expect(subject).to contain_exactly(project_cf)
+      let(:type) { create(:type) }
+      let!(:visible_project_cf) { create(:string_project_custom_field) }
+      let!(:invisible_project_cf) { create(:string_project_custom_field) }
+      let!(:project) do
+        create(:project, members: { current_user => create(:project_role, permissions: %i[view_project_attributes]) }) do |p|
+          p.project_custom_fields << visible_project_cf
         end
       end
 
-      context "if the fields are invisible" do
-        let(:project_cf_visible) { false }
-
-        it "does not return the project custom field" do
-          expect(subject).to be_empty
-        end
+      it "returns the visible project custom field" do
+        expect(subject).to contain_exactly(visible_project_cf)
       end
     end
 
     context "for a work package custom field" do
-      context "if the fields are visible" do
-        let(:work_package_cf_visible) { true }
-
-        it "returns the work package custom field" do
-          expect(subject).to contain_exactly(work_package_cf)
+      let(:type) { create(:type) }
+      let!(:visible_wp_cf) { create(:string_wp_custom_field) }
+      let!(:invisible_wp_cf) { create(:string_wp_custom_field) }
+      let!(:project) do
+        create(:project, types: [type], members: { current_user => create(:project_role) }) do |p|
+          p.work_package_custom_fields << visible_wp_cf
+          type.custom_fields = [visible_wp_cf, invisible_wp_cf]
         end
       end
 
-      context "if the fields are invisible" do
-        let(:work_package_cf_visible) { false }
-
-        it "does not return the work package custom field" do
-          expect(subject).to be_empty
-        end
+      it "returns the visible work package custom field" do
+        expect(subject).to contain_exactly(visible_wp_cf)
       end
     end
 
     context "for a user custom field" do
-      context "if the fields are visible" do
-        let(:user_cf_visible) { true }
+      let!(:visible_user_cf) { create(:user_custom_field, admin_only: false) }
+      let!(:invisible_user_cf) { create(:user_custom_field, admin_only: true) }
 
-        it "returns the user custom field" do
-          expect(subject).to contain_exactly(user_cf)
-        end
-      end
-
-      context "if the fields are invisible" do
-        let(:user_cf_visible) { false }
-
-        it "does not return the user custom field" do
-          expect(subject).to be_empty
-        end
+      it "returns the visible user custom field" do
+        expect(subject).to contain_exactly(visible_user_cf)
       end
     end
 
     context "for a group custom field" do
-      context "if the fields are visible" do
-        let(:group_cf_visible) { true }
+      let!(:visible_group_cf) { create(:group_custom_field, admin_only: false) }
+      let!(:invisible_group_cf) { create(:group_custom_field, admin_only: true) }
 
-        it "returns the group custom field" do
-          expect(subject).to contain_exactly(group_cf)
-        end
-      end
-
-      context "if the fields are invisible" do
-        let(:group_cf_visible) { false }
-
-        it "does not return the group custom field" do
-          expect(subject).to be_empty
-        end
+      it "returns the visible group custom field" do
+        expect(subject).to contain_exactly(visible_group_cf)
       end
     end
 
     context "for a version custom field" do
-      context "if the fields are visible" do
-        let(:version_cf_visible) { true }
+      # There are no invisible version cfs
+      let!(:visible_version_cf) { create(:version_custom_field) }
 
-        it "returns the version custom field" do
-          expect(subject).to contain_exactly(version_cf)
-        end
-      end
-
-      context "if the fields are invisible" do
-        let(:version_cf_visible) { false }
-
-        it "does not return the version custom field" do
-          expect(subject).to be_empty
-        end
+      it "returns the visible version field" do
+        expect(subject).to contain_exactly(visible_version_cf)
       end
     end
 
     context "for a time_entry custom field" do
-      context "if the fields are visible" do
-        let(:time_entry_cf_visible) { true }
+      # There are no invisible time_entry cfs
+      let!(:visible_time_entry_cf) { create(:time_entry_custom_field) }
 
-        it "returns the time_entry custom field" do
-          expect(subject).to contain_exactly(time_entry_cf)
-        end
-      end
-
-      context "if the fields are invisible" do
-        let(:time_entry_cf_visible) { false }
-
-        it "does not return the time_entry custom field" do
-          expect(subject).to be_empty
-        end
+      it "returns the visible time_entry field" do
+        expect(subject).to contain_exactly(visible_time_entry_cf)
       end
     end
   end

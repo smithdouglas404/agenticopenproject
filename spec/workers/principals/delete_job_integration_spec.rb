@@ -87,11 +87,9 @@ RSpec.describe Principals::DeleteJob, type: :model do
     end
 
     shared_examples_for "labor_budget_item handling" do
-      let(:item) { build(:labor_budget_item, user: principal) }
+      let!(:item) { create(:labor_budget_item, principal:) }
 
       before do
-        item.save!
-
         job
       end
 

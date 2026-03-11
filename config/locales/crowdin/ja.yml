@@ -83,8 +83,9 @@ ja:
         confirmation: "このエンタープライズ版のサポートトークンを削除してもよろしいですか？"
       create_dialog:
         title: "エンタープライズトークンを追加"
-        type_token_text: "サポートトークンテキストを入力"
+        type_token_text: "Your Enterprise token text"
         token_placeholder: "ここにエンタープライズ・トークンを貼り付け"
+        token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
       add_token: "エンタープライズ版サポートのトークンをアップロードする。"
       replace_token: "現在のサポート トークンを置き換え"
       order: "オンプレミス版 Enterprise Edition を購入"
@@ -109,9 +110,188 @@ ja:
       explanation:
         text: "ユーザーの個々のアクション（例えば、ワークパッケージを2回更新する）は、それらの年齢差が指定されたタイムスパン未満である場合、単一のアクションに集約されます。これらはアプリケーション内で1つのアクションとして表示されます。これはまた、送信されるメールの数を減らし、 %{webhook_link} の遅延にも影響します。"
         link: "webhook"
+    import:
+      title: "Import"
+    jira:
+      title: "Jira Import"
+      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      errors:
+        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+      blank:
+        title: "No Jira hosts configured yet"
+        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+      configuration:
+        title: "Jira configuration"
+        new: "New configuration"
+      banner:
+        title: "Limited import"
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+      form:
+        fields:
+          name: "Name"
+          url: "Jira Server/Data Center URL"
+          personal_access_token: "Personal Access Token"
+        button_add: "Add configuration"
+        button_save: "Save configuration"
+        button_test: "Test configuration"
+        button_delete_token: "Delete token"
+        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
+        label_testing: "Testing configuration..."
+      token_deleted: "Token was successfully deleted."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "An unexpected error occurred while testing the connection"
+        connection_error: "Connection error: %{message}"
+        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
+        token_error: "Invalid API token. Please check your credentials in the configuration."
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
+      client:
+        connection_error: "Failed to connect to Jira server: %{message}"
+        connection_timeout: "Connection to Jira server timed out: %{message}"
+        parse_error: "Failed to parse Jira API response: %{message}"
+        api_error: "Jira API returned error status %{status}"
+      columns:
+        projects: "Projects"
+        last_change: "Last change"
+        added: "Added"
+        label_ago: "%{amount} ago"
+      run:
+        title: "Import run"
+        history: "History"
+        remove_error: "A Jira import cannot be removed while it is running"
+        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        blank:
+          title: "No import runs set up yet"
+          description: "Create an import run to start importing information from this Jira instance"
+        index:
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing."
+          button_import_run: "Import run"
+          button_edit_configuration: "Edit configuration"
+        status:
+          initial: "Start"
+          instance_meta_fetching: "Fetching meta data"
+          instance_meta_error: "Error fetching meta data"
+          instance_meta_done: "Meta data fetched"
+          import_scope: "Select scope"
+          configuring: "Select scope"
+          projects_meta_fetching: "Fetching project data"
+          projects_meta_error: "Error fetching project data"
+          projects_meta_done: "Data gathered"
+          importing: "In progress"
+          import_error: "Error during import"
+          imported: "Review mode"
+          reverting: "Reverting"
+          revert_error: "Error during revert"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
+          reverted: "Reverted"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
+        wizard:
+          button_retry: "Retry"
+          parts:
+            projects:
+              other: "%{count} projects"
+            issues:
+              other: "%{count} issues"
+            work_packages:
+              other: "%{count} work packages"
+            types:
+              other: "%{count} types"
+            statuses:
+              other: "%{count} statuses"
+            users:
+              other: "%{count} users"
+          groups:
+            fetch:
+              title: "Get base data"
+            groups_and_users:
+              title: "Groups and Users"
+            configuration:
+              title: "Configure import"
+            confirming:
+              title: "Confirm and import"
+            review:
+              title: "Review import"
+          sections:
+            fetch_data:
+              title: "Fetch instance meta data"
+              caption_done: "Completed"
+              description: "Check what data is available for import in the host Jira instance."
+              button_fetch: "Check available data"
+              label_progress: "Fetching data from Jira..."
+            groups_and_users:
+              title: "Groups and Users"
+            import_scope:
+              title: "Import scope"
+              caption: "Choose what you want to import into OpenProject"
+              caption_done: "Completed"
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host Jira instance."
+              label_available_data: "Available data"
+              label_not_available_data: "Not available for import"
+              button_select_projects: "Select projects to import"
+              button_continue: "Continue"
+              label_import: "Select which projects you would like to import."
+              button_select: "Select projects"
+              label_selected_data: "Selected data for import"
+              label_progress: "Fetching data from Jira..."
+              elements:
+                relations: "Relations between issues"
+                workflows: "Project-level workflows"
+                users: "Users"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "User, group and project permissions"
+            confirm_import:
+              title: "Import data"
+              caption: "Review your import settings and start the import"
+              caption_done: "Completed"
+              label_available_data: "Available data to import"
+              button_start: "Start import"
+              description: "You are about to start an import run with the following settings."
+              label_progress: "Import in progress..."
+              label_import_data: "Currently importing"
+            import_result:
+              title: "Import run results"
+              caption: "Review import run or revert import"
+              info: "Import run successful."
+              label_results: "Imported"
+              label_revert: "Revert import"
+              button_revert: "Revert import"
+              button_done: "Finalize import"
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
+              label_revert_progress: "Reverting import..."
+              label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
+          import_dialog:
+            title: "Start this import?"
+            confirm_button: "Start import"
+            description: >
+              This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            confirm: "I understand and made the necessary preparations"
+          revert_dialog:
+            title: "Permanently revert this import?"
+            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
+            confirm: "I understand that this reversion will delete data permanently"
+          finalize_dialog:
+            title: "Finalize this import?"
+            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
+            confirm: "I understand that this action cannot be undone"
+            confirm_button: "Understood"
+          select_projects:
+            title: "Select projects"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta."
         resources_heading: "Resources"
         resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Update resources"
@@ -123,6 +303,16 @@ ja:
       server_form:
         description_caption: "How the MCP server will be described to other applications who connect to it."
         title_caption: "A short title shown to applications that connect to the MCP server."
+        tool_response_format: "Tool response format"
+        tool_response_format_content_only_label: "Content only"
+        tool_response_format_content_only_caption: >
+          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
+        tool_response_format_full_label: "Full"
+        tool_response_format_full_caption: >
+          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
+        tool_response_format_structured_only_label: "Structured content only"
+        tool_response_format_structured_only_caption: >
+          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
       update:
         failure: "MCP configuration could not be updated."
         success: "MCP configuration was updated successfully."
@@ -359,7 +549,7 @@ ja:
     contained_in_type: "タイプに含まれる"
     confirm_destroy_option: "オプションを削除すると、そのすべての派生 (例えばワークパッケージ) が削除されます。削除してもよろしいですか?"
     reorder_alphabetical: "値をアルファベット順に並べ替える"
-    reorder_confirmation: "警告：利用可能な値の現在の順序は失われます。続行しますか？"
+    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
     placeholder_version_select: "最初にワークパッケージまたはプロジェクトの選択が必要です"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     no_role_assigment: "No role assignment"
@@ -386,6 +576,14 @@ ja:
           Allow the custom field to be used in a filter in work package views. Note that only with 'For all projects' selected, the custom field will show up in global views.
       formula:
         project: "Add numeric values or type / to search for an attribute or a mathematical operator."
+      regexp:
+        all: "eg. ^[A-Z0-9]+$"
+        project: "eg. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 means no restriction"
+        project: "0 means no restriction"
+      has_comment:
+        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
     tab:
       no_results_title_text: 現在、カスタム フィールドはありません。
       no_results_content_text: 新しいカスタム フィールドを作成
@@ -402,14 +600,20 @@ ja:
   danger_dialog:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+  mcp_configurations:
+    server_url_component:
+      caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
+      label: "Server URL"
   op_dry_validation:
     or: "または"
     errors:
+      unexpected_key: "is not allowed."
       array?: "must be an array."
       decimal?: "10進数である必要があります。"
       defined: "を定義してはならない。"
       eql?: "must be equal to %{left}."
       filled?: "を入力する必要があります。"
+      format?: "is in invalid format."
       greater_or_equal_zero: "は 0 以上でなければなりません。"
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
@@ -436,7 +640,9 @@ ja:
         parent:
           not_descendant: "階層ルートの子孫でなければなりません。"
       str?: "must be a string."
+      time?: "must be a time."
       type?: "must be %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "ワークフローコピーのタイプ"
       enabled: "有効"
@@ -1028,7 +1234,6 @@ ja:
         title: "ワークパッケージの共有のためのワークフローがありません"
         message: "「ワークパッケージエディタ」ロールに対してワークフローが設定されていません。ワークフローがなければ、ユーザーと共有されたワークパッケージのステータスは変更できません。 ワークフローをコピーすることができます。ソースタイプ(例:「タスク」)とソースロール(例:「メンバー」)を選択します。 次に、ターゲットタイプを選択します。最初に、すべてのタイプをターゲットとして選択できます。 最後に、「ワークパッケージの編集」ロールをターゲットとして選択し、「コピー」を押します。 このようにしてデフォルトを作成した後、他のすべてのロールに対して行うようにワークフローを微調整します。"
         link_message: "管理画面でワークフローを構成します。"
-    templated_subject_hint: '%{type}タイプで自動生成されます'
     summary:
       reports:
         category:
@@ -1153,6 +1358,18 @@ ja:
         dependencies: "依存関係"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
+      jira_import:
+        projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "までを表示"
       attachment:
@@ -1171,7 +1388,6 @@ ja:
         scim_clients: "SCIMクライアント"
       calculated_value_error:
         error_code: "Error code"
-        customized: "Customized"
         customized_id: "Customized ID"
         customized_type: "Customized type"
       capability:
@@ -1199,6 +1415,7 @@ ja:
         regexp: "正規表現"
         searchable: "検索対象"
         admin_only: "管理者のみ"
+        has_comment: "Add a comment text field"
       custom_value:
         value: "値"
       design_color:
@@ -1527,6 +1744,7 @@ ja:
         not_available: "はシステム構成のため使用できません。"
         not_deletable: "削除できません。"
         not_current_user: "現在のユーザーではありません。"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "見つかりません。"
         not_a_date: "は有効な日付ではありません。"
         not_a_datetime: "は有効な日時ではありません。"
@@ -1888,6 +2106,8 @@ ja:
               blank: "トークン名を入力してください"
               in_use: "このトークン名は既に使用されています。違うトークン名を入力してください"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "次のフィールドをチェックしてください："
         header:
@@ -1903,6 +2123,7 @@ ja:
       comment: "コメント"
       custom_action: "カスタムアクション"
       custom_field: "カスタムフィールド"
+      customized: "Customized"
       "doorkeeper/application": "OAuthアプリケーション"
       enterprise_token:
         other: "エンタープライズトークン"
@@ -1927,6 +2148,8 @@ ja:
         other: "ロール"
       scim_client:
         other: "SCIMクライアント"
+      jira:
+        other: "Jira"
       status: "ステータス名"
       token/api:
         other: アクセストークン
@@ -2071,6 +2294,7 @@ ja:
     role: "ロール"
     roles: "ロール"
     search: "検索"
+    sprint: "Sprint"
     start_date: "開始日"
     status: "ステータス"
     state: "状態"
@@ -2421,7 +2645,8 @@ ja:
       edit_attribute_groups: 属性グループを編集
       gantt_pdf_export: ガントPDFをエクスポート
       ldap_groups: LDAP ユーザーとグループ同期
-      mcp_server: MCP Server
+      mcp_server: Model Context Protocol (MCP)
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Nextcloudストレージのシングルサインオン。
       one_drive_sharepoint_file_storage: OneDrive/SharePointファイルストレージ
       placeholder_users: プレースホルダー ユーザー
@@ -2499,7 +2724,9 @@ ja:
         title: "カスタムアクション"
         description: "カスタムアクションは、ステータスに基づいて特定のワークパッケージで利用できる、事前に定義されたアクションです。"
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "Bring OpenProject into your AI workflows with a secure MCP server."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Nextcloudストレージへのシングルサインオン"
         description: "シングルサインオンでNextcloudストレージのシームレスかつセキュアな認証を可能にします。アクセス管理を簡素化し、ユーザーの利便性を向上させます。"
@@ -2809,17 +3036,18 @@ ja:
         learn_about: "すべての新機能の詳細"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Automated project initiation (Enterprise add-on).
-            line_1: "Meetings: add new or existing work packages as outcomes."
-            line_2: "Meetings: show iCal responses in OpenProject."
-            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
-            line_4: "Release to Community: Attribute highlighting."
-            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
-            line_6: Improved performance and user experience, including the Activity tab and Documents module.
+            line_0: AI workflows with a secure MCP server (Professional plan and higher)
+            line_1: Improved project home page with new widget for budgets and improved accessibility
+            line_2: "Meetings: Meeting templates (Basic plan and higher)"
+            line_3: Better transparency with project attribute comments
+            line_4: PDF export enhancements
+            line_5: Increased security for external links (Premium plan and higher)
+            line_6: UI/UX improvements in the Backlogs module
+            line_7: Harmonized custom field forms
     links:
       upgrade_enterprise_edition: "エンタープライズ版にアップグレード"
       postgres_migration: "PostgreSQL にインストールを移行しています"
@@ -2837,8 +3065,10 @@ ja:
   journals:
     changes_retracted: "変更は取り下げられました。"
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "日付を変更"
       default_attribute_written: "読み取り専用属性が書き込まれました"
+      import: "Imported"
       progress_mode_changed_to_status_based: "進捗の計算が更新されました"
       status_changed: "状態 '%{status_name}'"
       system_update: "OpenProject システムの更新："
@@ -2846,12 +3076,22 @@ ja:
       total_percent_complete_mode_changed_to_work_weighted_average: "作業で加重された全体合計の%を計算します。"
       total_percent_complete_mode_changed_to_simple_average: "%の計算 完全な合計は、単純な平均のみに基づいています。"
     cause_descriptions:
+      import:
+        header: "changes by %{author}"
+        field_changed: "%{field} changed from %{old_value} to %{new_value}"
+        field_set: "%{field} set to %{value}"
+        field_removed: "%{field} removed"
+        field_updated: "%{field} updated"
+        deleted_with_diff: "%{field} deleted (%{link})"
+        changed_with_diff: "%{field} changed (%{link})"
+        set_with_diff: "%{field} set (%{link})"
       work_package_predecessor_changed_times: 前身の %{link}への変更によって
       work_package_parent_changed_times: 親の%{link}の変更により
       work_package_children_changed_times: 子 %{link}への変更によって
       work_package_related_changed_times: 関連する %{link} への変更によって
       work_package_duplicate_closed: このステータスは重複したワークパッケージ %{link}によって自動的に更新されました
       unaccessable_work_package_changed: 関連するワークパッケージに変更を加えることで
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "営業日数の変更 (%{changes})"
         days:
@@ -2932,7 +3172,7 @@ ja:
         active_tokens: "Active tokens"
         blank_description: "There is no third-party application access configured and active for you."
         blank_title: "No OAuth application token"
-        last_used_at: "Last used at"
+        last_refreshed_at: "Last refreshed at"
         title: "OAuth"
         table_title: "OAuth application tokens"
         text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
@@ -3171,8 +3411,8 @@ ja:
   label_duplicate: "重複"
   label_duplicates: "次と重複"
   label_edit: "編集"
-  label_edit_attribute: "Edit attribute"
   label_edit_x: "編集: %{x}"
+  label_view_x: "View: %{x}"
   label_enable_multi_select: "複数選択の切り替え"
   label_enabled_project_custom_fields: "有効なカスタム フィールド"
   label_enabled_project_modules: "有効なモジュール"
@@ -3277,6 +3517,7 @@ ja:
   label_external_links: "External links"
   label_locale: "言語と地域"
   label_jump_to_a_project: "プロジェクトへ移動..."
+  label_jira_import: "Jira Import"
   label_keyword_plural: "キーワード"
   label_language_based: "ユーザの言語設定に基づく"
   label_last_activity: "最新の活動"
@@ -3299,6 +3540,7 @@ ja:
   label_lock_user: "ユーザーをロック"
   label_logged_as: "ログイン中"
   label_login: "ログイン"
+  label_custom_comment: "%{name} comment"
   label_custom_logo: "Custom logo desktop"
   label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "カスタムエクスポートロゴ"
@@ -3920,11 +4162,13 @@ ja:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "プロジェクトを削除していません。"
   notice_project_not_found: "プロジェクトが見つかりません。"
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "正常に接続しました。"
   notice_successful_create: "正常に作成しました。"
   notice_successful_delete: "正常に削除しました。"
   notice_successful_cancel: "キャンセルしました。"
   notice_successful_update: "正常に更新しました。"
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "作成に失敗しました"
   notice_unsuccessful_create_with_reason: "作成失敗： %{reason}"
   notice_unsuccessful_update: "更新に失敗しました。"
@@ -4085,6 +4329,7 @@ ja:
   permission_edit_project_query: "プロジェクトのクエリを編集"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolios"
@@ -4269,6 +4514,9 @@ ja:
   setting_capture_external_links: "Capture external links"
   setting_capture_external_links_text: >
     When enabled, all external links in formatted text will redirect through a warning page before leaving the application. This helps protect users from potentially malicious external websites.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "最初のログインリダイレクト"
   setting_after_first_login_redirect_url_text_html: >
     最初のログイン後にユーザーをリダイレクトするパスを設定します。空の場合は、オンボーディングツアーのホームページにリダイレクトします。 <br/> 例: <code>/my/page</code>
@@ -4313,6 +4561,9 @@ ja:
   setting_smtp_password: "SMTPパスワード"
   setting_smtp_domain: "SMTP HELO ドメイン"
   setting_activity_days_default: "プロジェクトの活動ページに表示される日数"
+  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled_caption: >
+    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
   setting_app_subtitle: "アプリケーションのサブタイトル"
   setting_app_title: "アプリケーションのタイトル"
   setting_attachment_max_size: "添付ファイルの最大サイズ"
@@ -4422,7 +4673,6 @@ ja:
   setting_repository_checkout_text: "チェックアウトの手順テキスト"
   setting_repository_log_display_limit: "ログファイルに出力されるリビジョンの最大数"
   setting_repository_truncate_at: "リポジトリブラウザーで表示するファイルの最大数"
-  setting_rest_api_enabled: "RESTによるWebサービスを有効にする"
   setting_self_registration: "ユーザーよるアカウント登録"
   setting_self_registration_caption: >
     ユーザーの自己登録メカニズムを選択する。オプションによっては、ユーザが自分のアカウントをこのサイトにアクティベートできるものもあるので、選択する設定には注意してください。
@@ -4740,7 +4990,6 @@ ja:
   text_length_between: "長さは%{min}から%{max}文字までです。"
   text_line_separated: "(1行ごとに書くことで)複数の値を設定できます。"
   text_load_default_configuration: "デフォルト設定をロード"
-  text_min_max_length_info: "0だと無制限になります。"
   text_no_roles_defined: 役割が定義されていません。
   text_no_access_tokens_configurable: "設定できるアクセストークンがありません。"
   text_no_configuration_data: "ロール、ワークパッケージのステータスとタイプ、ワークフローが未設定です。\nデフォルト設定のロードを強くお勧めします。ロードした後、それを修正することができます。"
@@ -4755,7 +5004,6 @@ ja:
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "アルファベット小文字(a-z)・数字・ハイフン・アンダースコアが使えます。アルファベット小文字で始まる必要があります。"
   text_reassign: "ワークパッケージへの再割り当て:"
-  text_regexp_info: "例) ^[A-Z0-9]+$"
   text_regexp_multiline: '正規表現は、複数行モードで適用されます。例えば、^---\s+'
   text_repository_usernames_mapping: "リポジトリのログから検出されたユーザ名をどのOpenProjectユーザに関連づけるかを選択してください。\nログ上のユーザ名またはメールアドレスがOpenProjectのユーザと一致する場合は自動的に関連づけます。"
   text_status_changed_by_changeset: "変更履歴%{value}で適用されました。"
@@ -4853,8 +5101,7 @@ ja:
     reset_failed_logins: "失敗したログイン数をリセットする"
     status_user_and_brute_force: "%{user}かつ%{brute_force}"
     status_change: "ステータスの変更"
-    text_change_disabled_for_provider_login: "名前はログインプロバイダーによって設定されるため、変更できません。"
-    text_change_disabled_for_ldap_login: "名前と電子メールはLDAPによって設定されるため、変更することはできない。"
+    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
     unlock: "ロックを解除"
     unlock_and_reset_failed_logins: "ロックを解除して、失敗したログイン数をリセットする"
     error_cannot_delete_user: "User cannot be deleted"

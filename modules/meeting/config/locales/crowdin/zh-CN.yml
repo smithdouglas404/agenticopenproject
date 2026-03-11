@@ -59,7 +59,7 @@ zh-CN:
         end_date: "结束日期"
         iterations: "事件"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "开始时间"
       meeting_participant:
         invited: "已邀请"
         attended: "已参加"
@@ -67,12 +67,12 @@ zh-CN:
     errors:
       models:
         meeting_participant:
-          user_invalid: "is not a valid participant."
+          user_invalid: "不是有效的参与者。"
         meeting_agenda_item:
-          section_not_belong_to_meeting: "Section does not belong to the same meeting."
-          user_invalid: "is not a valid participant."
+          section_not_belong_to_meeting: "该部分不属于同一个会议。"
+          user_invalid: "不是有效的参与者。"
         recurring_meeting_interim_response:
-          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
+          not_an_occurrence: "不是此定期会议的有效事件时间"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "该系列会议中有一次公开会议未列入新时间表。请调整时间表，将会议包含在内。"
@@ -116,6 +116,13 @@ zh-CN:
   error_notification_with_errors: "发送通知失败。无法通知下列收件人：%{recipients}"
   label_meeting: "会议"
   label_meeting_plural: "会议"
+  label_meeting_templates: "模板"
+  label_meeting_template: "模板"
+  label_meeting_template_new: "新建模板"
+  label_meeting_template_create: "创建模板"
+  label_meeting_template_delete: "删除模板"
+  label_meeting_template_edit: "编辑模板"
+  label_meeting_create_from_template: "根据模板创建会议"
   label_meeting_new: "新增会议"
   label_meeting_new_dynamic: "新的动态会议"
   label_meeting_new_recurring: "新的定期会议"
@@ -182,6 +189,8 @@ zh-CN:
   label_time_zone: "时区"
   label_start_date: "开始日期"
   label_subscribe_icalendar: "订阅日历"
+  caption_meeting_template_select: "选择一个模板，以自动复制其议程条目"
+  caption_template_project_select: "请选择要在其中创建此会议模板的项目"
   meeting:
     participants:
       label:
@@ -201,7 +210,8 @@ zh-CN:
         heading: "沒有与会者"
         description: "还没有参加者。"
     attachments:
-      template: "这些文件将被自动添加到之后创建的所有系列会议中。"
+      onetime_template: "今后所有使用此模板的会议都将包含这些随附文件。"
+      series_template: "今后此系列中的所有会议都将包含这些随附文件。"
       text: "所有与会者都可以查看附件。您还可以将这些文件拖放到议程项目注释中。"
     copy:
       title: "复制会议： %{title}"
@@ -233,9 +243,9 @@ zh-CN:
         header: "已取消：会议 '%{title}'"
         header_occurrence: "已取消：会议事件 '%{title}'"
         header_series: "已取消：会议系列 '%{title}'"
-        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_occurrence: "'%{title}' 的事件已被 %{actor} 取消，或者您的参与者身份已被移除"
+        summary_series: "会议系列 '%{title}' 已被 %{actor} 取消，或者您的参与者身份已被移除"
+        summary: "'%{title}' 已被 %{actor} 取消，或者您的参与者身份已被移除"
         date_time: "预定日期/时间"
       participant_added:
         header: "会议 '%{title}' - 已添加参加者"
@@ -249,7 +259,7 @@ zh-CN:
         summary_series: "%{actor} 将 %{participant} 从会议系列 '%{title}' 中移除"
       ended:
         header_series: "结束：会议系列 '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
+        summary_series: "会议系列 '%{title}' 已由 %{actor} 结束"
       updated:
         header: "会议 '%{title}' 已更新"
         summary: "会议 '%{title}' 已由 %{actor} 更新"
@@ -274,6 +284,11 @@ zh-CN:
         heading: "删除这个会议？"
         confirmation_message_html: >
           此操作不可逆。请谨慎处理。
+        template:
+          title: "删除模板"
+          heading: "是否删除此模板？"
+          confirmation_message_html: >
+            此操作无法撤消。请谨慎操作。使用此模板创建的现有会议将不受影响。
       occurrence:
         title: "取消会议事件"
         heading: "取消此会议事件？"
@@ -471,6 +486,7 @@ zh-CN:
     end_series_dialog:
       title: "结束会议系列"
   notice_successful_notification: "已向所有与会者发送电子邮件日历更新"
+  notice_meeting_template_created: "模板创建成功"
   notice_timezone_missing: 没有设定时区，预设时区为 %{zone}。要选择您的时区，请单击此处。
   notice_meeting_updated: "此页面已被其他人更新。重新加载以查看更改。"
   permission_create_meetings: "创建会议"
@@ -485,6 +501,8 @@ zh-CN:
   text_duration_in_hours: "持续时间（单位：小时）"
   text_in_hours: "小时"
   text_meeting_agenda_for_meeting: '“%{meeting}”会议议程'
+  text_meeting_template_blank_slate_heading: "没有可显示的模板"
+  text_meeting_template_blank_slate: "可以为一次性会议创建新模板"
   text_meeting_series_end_early_heading: "删除未来发生的事件？"
   text_meeting_series_end_early: "结束系列将删除任何将来的公开会议或预定会议的事件"
   text_meeting_closing_are_you_sure: "确定要关闭该会议议程吗？"
@@ -530,8 +548,8 @@ zh-CN:
   label_agenda_item_move_up: "向上移动"
   label_agenda_item_move_down: "向下移动"
   label_agenda_item_duplicate: "复制"
-  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
+  label_agenda_item_duplicate_in_next: "在下次会议中重复"
+  label_agenda_item_duplicate_in_next_title: "是否在下次会议中重复？"
   label_agenda_item_add_notes: "添加备注"
   label_agenda_item_add_outcome: "添加成果"
   label_agenda_item_work_package_add: "添加工作包"
@@ -590,6 +608,9 @@ zh-CN:
   text_meeting_in_progress_dropdown_description: "记录会议期间的信息需求或决策等成果。"
   text_meeting_closed_dropdown_description: "此会议已关闭。您不能再修改议程项目或成果。"
   text_meeting_draft_banner: "您目前处于草稿模式。即使您更改了会议详细信息或添加/移除了参与者，此会议也不会发送任何日历更新或邀请。"
+  text_onetime_meeting_template_banner: "您当前正在编辑会议模板。您可以使用此模板创建具有预定义议程的一次性会议。更改不会影响已创建的会议。"
+  text_onetime_meeting_template_empty_heading: "此会议模板为空"
+  text_onetime_meeting_template_empty_description: "在此处添加议程条目、部分和附件。使用此模板创建的每个会议都将包含这些内容。"
   text_exit_draft_mode_dialog_title: "是否打开此会议并发送邀请？"
   text_exit_draft_mode_dialog_subtitle: "会议安排完成后，您将无法返回到草稿模式。"
   text_exit_draft_mode_dialog_template_title: "是否打开此会议系列的第一个会议？"

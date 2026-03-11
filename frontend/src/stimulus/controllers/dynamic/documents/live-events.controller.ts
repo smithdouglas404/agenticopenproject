@@ -43,19 +43,27 @@ export default class extends ApplicationController {
   declare readonly popoverTarget:HTMLElement;
 
   private provider:HocuspocusProvider|null = null;
+  private readyCallback:((provider:HocuspocusProvider) => void) | null = null;
   private currentUsers = new Map<number, LiveUser>();
 
   connect() {
-    LiveCollaborationManager.onReady((provider:HocuspocusProvider) => {
+    this.readyCallback = (provider:HocuspocusProvider) => {
       this.provider = provider;
       this.provider.on('awarenessUpdate', this.onAwarenessUpdate);
       this.provider.on('stateless', this.onStateless);
-    });
+    };
+    LiveCollaborationManager.onReady(this.readyCallback);
 
     useDebounce(this, { wait: 1000 });
   }
 
   disconnect() {
+    // Deregister before cleanup to prevent stale callbacks firing into a detached controller
+    if (this.readyCallback) {
+      LiveCollaborationManager.offReady(this.readyCallback);
+      this.readyCallback = null;
+    }
+
     this.currentUsers.clear();
 
     this.provider?.off('awarenessUpdate', this.onAwarenessUpdate);
@@ -119,7 +127,6 @@ export default class extends ApplicationController {
       method: 'GET',
       headers: {
         Accept: 'text/vnd.turbo-stream.html',
-        'X-Authentication-Scheme': 'Session',
       },
     })
       .then((response:Response) => {

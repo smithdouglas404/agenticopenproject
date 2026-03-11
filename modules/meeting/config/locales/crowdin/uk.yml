@@ -62,7 +62,7 @@ uk:
         end_date: "Дата завершення"
         iterations: "Повторення"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "Час початку"
       meeting_participant:
         invited: "Запрошені"
         attended: "Відвідано"
@@ -70,12 +70,12 @@ uk:
     errors:
       models:
         meeting_participant:
-          user_invalid: "is not a valid participant."
+          user_invalid: "не є дійсним учасником."
         meeting_agenda_item:
-          section_not_belong_to_meeting: "Section does not belong to the same meeting."
-          user_invalid: "is not a valid participant."
+          section_not_belong_to_meeting: "Розділ не належить до тієї самої наради."
+          user_invalid: "не є дійсним учасником."
         recurring_meeting_interim_response:
-          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
+          not_an_occurrence: "не є дійсним часом проведення цієї повторюваної наради"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Одна відкрита нарада в серії не входить у новий розклад. Налаштуйте розклад так, щоб він охоплював усі наявні наради."
@@ -122,6 +122,13 @@ uk:
   error_notification_with_errors: "Не вдалося надіслати сповіщення. Неможливо отримати сповіщення про таких одержувачів: %{recipients}"
   label_meeting: "Зустріч"
   label_meeting_plural: "Зустрічі"
+  label_meeting_templates: "Шаблони"
+  label_meeting_template: "Шаблон"
+  label_meeting_template_new: "Новий шаблон"
+  label_meeting_template_create: "Створити шаблон"
+  label_meeting_template_delete: "Видалити шаблон"
+  label_meeting_template_edit: "Редагувати шаблон"
+  label_meeting_create_from_template: "Створити нараду на основі шаблона"
   label_meeting_new: "Нова зустріч"
   label_meeting_new_dynamic: "Нова одноразова нарада"
   label_meeting_new_recurring: "Нова повторювана нарада"
@@ -197,6 +204,8 @@ uk:
   label_time_zone: "Часовий пояс"
   label_start_date: "Дата початку"
   label_subscribe_icalendar: "Підписатися на календар"
+  caption_meeting_template_select: "Виберіть шаблон, щоб автоматично скопіювати з нього пункти порядку денного"
+  caption_template_project_select: "Виберіть проєкт, у якому ви хочете створити цей шаблон наради"
   meeting:
     participants:
       label:
@@ -216,7 +225,8 @@ uk:
         heading: "Немає учасників"
         description: "Учасників ще немає."
     attachments:
-      template: "Ці прикріплені файли додаватимуться до всіх майбутніх нарад серії."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Прикріплені файли доступні всім учасникам наради. Ви також можете перетягнути їх у примітки до пунктів порядку денного."
     copy:
       title: "Копіювати нараду: %{title}"
@@ -248,9 +258,9 @@ uk:
         header: "Скасовано: нарада «%{title}»"
         header_occurrence: "Скасовано: нарада серії «%{title}»"
         header_series: "Скасовано: серія нарад «%{title}»"
-        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_occurrence: "Нараду серії «%{title}» скасував(-ла) %{actor}, або вас видалено з учасників"
+        summary_series: "Серію нарад «%{title}» скасував(-ла) %{actor}, або вас видалено з учасників"
+        summary: "Нараду «%{title}» скасував(-ла) %{actor}, або вас видалено з учасників"
         date_time: "Заплановані дата/час"
       participant_added:
         header: "Нарада «%{title}» — додано учасника"
@@ -264,7 +274,7 @@ uk:
         summary_series: "Виконавець %{actor} вилучив учасника %{participant} із серії нарад «%{title}»"
       ended:
         header_series: "Завершено: серія нарад «%{title}»"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
+        summary_series: "Серію нарад «%{title}» завершив(-ла) %{actor}"
       updated:
         header: "Нараду «%{title}» оновлено"
         summary: "Нараду «%{title}» оновив(-ла) %{actor}"
@@ -289,6 +299,11 @@ uk:
         heading: "Видалити цю нараду?"
         confirmation_message_html: >
           Зверніть увагу: цю дію не можна відмінити.
+        template:
+          title: "Видалити шаблон"
+          heading: "Видалити цей шаблон?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Скасувати нараду серії"
         heading: "Скасувати цю нараду серії?"
@@ -492,6 +507,7 @@ uk:
     end_series_dialog:
       title: "Завершити серію нарад"
   notice_successful_notification: "Оновлення з календаря надіслано електронною поштою всім учасникам"
+  notice_meeting_template_created: "Шаблон успішно створено"
   notice_timezone_missing: Часовий пояс не встановлено і %{zone} передбачається. Щоб вибрати часовий пояс, натисніть тут.
   notice_meeting_updated: "Цю сторінку оновив інший користувач. Перезавантажте її, щоб побачити зміни."
   permission_create_meetings: "Створюйте зустрічі"
@@ -506,6 +522,8 @@ uk:
   text_duration_in_hours: "Тривалість у годинах"
   text_in_hours: "у годинах"
   text_meeting_agenda_for_meeting: 'порядку денного засідання %{meeting}'
+  text_meeting_template_blank_slate_heading: "Шаблонів не знайдено"
+  text_meeting_template_blank_slate: "Ви можете створити шаблон для одноразових нарад"
   text_meeting_series_end_early_heading: "Видалити майбутні наради серії?"
   text_meeting_series_end_early: "Завершення серії призведе до видалення всіх наступних відкритих або запланованих нарад"
   text_meeting_closing_are_you_sure: "Справді закрити порядок денний заходу?"
@@ -551,8 +569,8 @@ uk:
   label_agenda_item_move_up: "Перемістити вгору"
   label_agenda_item_move_down: "Перемістити вниз"
   label_agenda_item_duplicate: "Дублювати"
-  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
+  label_agenda_item_duplicate_in_next: "Дублювати в наступну нараду"
+  label_agenda_item_duplicate_in_next_title: "Дублювати в наступну нараду?"
   label_agenda_item_add_notes: "Додати примітки"
   label_agenda_item_add_outcome: "Додати результат"
   label_agenda_item_work_package_add: "Додати пакет робіт"
@@ -611,6 +629,9 @@ uk:
   text_meeting_in_progress_dropdown_description: "Результати документа, такі як потреби в інформації або рішення, прийняті під час наради."
   text_meeting_closed_dropdown_description: "Це закрита нарада. Ви більше не можете змінювати пункти порядку денного або результати."
   text_meeting_draft_banner: "Зараз ви працюєте в режимі чернетки: оновлення або запрошення з календаря не надсилатимуться щодо цієї наради, навіть якщо змінити її дані або додати/видалити учасників."
+  text_onetime_meeting_template_banner: "Ви редагуєте шаблон наради. Цей шаблон можна використовувати для створення одноразових нарад із заздалегідь визначеним порядком денним. Зміни не вплинуть на вже створені наради."
+  text_onetime_meeting_template_empty_heading: "Цей шаблон наради порожній"
+  text_onetime_meeting_template_empty_description: "Сюди можна додавати пункти порядку денного, розділи й вкладення. Їх буде включено в кожну зустріч, створену з використанням цього шаблону."
   text_exit_draft_mode_dialog_title: "Відкрити цю нараду й надіслати запрошення?"
   text_exit_draft_mode_dialog_subtitle: "Запланувавши нараду, не можна повернутися в режим чернетки."
   text_exit_draft_mode_dialog_template_title: "Відкрити першу нараду цієї серії?"

@@ -29,6 +29,8 @@
 require "spec_helper"
 
 RSpec.describe TimeEntryWebhookJob, :webmock, type: :job do
+  include_context "with ssrf webhook stubs"
+
   shared_let(:user) { create(:admin) }
   shared_let(:request_url) { "http://example.net/test/42" }
   shared_let(:time_entry) { create(:time_entry, hours: 10) }
@@ -51,7 +53,7 @@ RSpec.describe TimeEntryWebhookJob, :webmock, type: :job do
     end
 
     let(:stub) do
-      stub_request(:post, stubbed_url.sub("http://", ""))
+      stub_request(:post, ssrf_resolved_url(stubbed_url))
         .with(
           body: hash_including(
             "action" => event,
@@ -60,7 +62,7 @@ RSpec.describe TimeEntryWebhookJob, :webmock, type: :job do
               "hours" => "PT10H"
             )
           ),
-          headers: request_headers
+          headers: request_headers.merge(host: "example.net")
         )
         .to_return(
           status: response_code,

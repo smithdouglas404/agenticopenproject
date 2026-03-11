@@ -31,6 +31,12 @@
 
 require "capybara/cuprite"
 
+module CupriteCdpLogger
+  class << self
+    attr_accessor :logger
+  end
+end
+
 def headful_mode?
   ActiveRecord::Type::Boolean.new.cast(ENV.fetch("OPENPROJECT_TESTING_NO_HEADLESS", nil))
 end
@@ -79,6 +85,9 @@ def register_better_cuprite(language, name: :"better_cuprite_#{language}")
     end
 
     options = configure_remote_chrome(options)
+
+    CupriteCdpLogger.logger = StringIO.new
+    options = options.merge(logger: CupriteCdpLogger.logger)
 
     browser_options = {
       "disable-dev-shm-usage": nil,

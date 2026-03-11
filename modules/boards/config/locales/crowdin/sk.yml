@@ -20,7 +20,7 @@ sk:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: Priradené
-      status: Stav
+      status: Kanban
       version: Verzia
       subproject: Podprojekt
       subtasks: Parent-child

@@ -20,7 +20,7 @@ vi:
       action: "Bảng hành động (%{attribute})"
     board_type_attributes:
       assignee: Người được chuyển nhượng
-      status: trạng thái
+      status: Kanban
       version: Phiên bản
       subproject: dự án con
       subtasks: Cha-con

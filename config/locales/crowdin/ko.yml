@@ -83,8 +83,9 @@ ko:
         confirmation: "이 Enterprise Edition 지원 토큰을 삭제하시겠습니까?"
       create_dialog:
         title: "Enterprise 토큰 추가"
-        type_token_text: "지원 토큰 텍스트 입력"
+        type_token_text: "내 Enterprise 토큰 텍스트"
         token_placeholder: "여기에 Enterprise Edition 지원 토큰을 붙여넣으세요"
+        token_caption: "Enterprise 버전을 활성화하는 방법에 대해 자세히 알아보려면 [설명서](docs_url )를 참조하세요."
       add_token: "Enterprise edition 지원 토큰을 업로드하세요."
       replace_token: "당신의 현재 지원 토큰을 바꾸세요."
       order: "Enterprise on-premises edition 주문하기"
@@ -109,11 +110,190 @@ ko:
       explanation:
         text: "사용자의 개별 작업(예: 작업 패키지를 두 번 업데이트)은 연령 차이가 지정된 기간 미만인 경우 단일 작업으로 집계됩니다. 애플리케이션 내에서 단일 작업으로 표시됩니다. 또한 이는 전송되는 이메일 수를 줄이는 동일한 시간만큼 알림을 지연시키고 %{webhook_link} 지연에도 영향을 미칩니다."
         link: "webhook"
+    import:
+      title: "가져오기"
+    jira:
+      title: "Jira 가져오기"
+      description: "이 도구를 사용하여 Jira 인스턴스에서 데이터를 가져옵니다. 여러 Jira 호스트를 구성하고 가져오기 실행 각각에서 가져올 항목을 선택할 수 있습니다."
+      errors:
+        cannot_delete_with_imports: "기존 가져오기가 있는 Jira 호스트는 삭제할 수 없습니다"
+      blank:
+        title: "아직 구성된 Jira 호스트 없음"
+        description: "Jira에서 이 OpenProject 인스턴스로 항목 가져오기를 시작하려면 Jira 호스트를 구성합니다."
+      configuration:
+        title: "Jira 구성"
+        new: "새 구성"
+      banner:
+        title: "제한된 가져오기"
+        description: "이 가져오기 도구는 현재 베타 버전이며 프로젝트, 이슈(이름, 제목, 설명, 첨부 파일), 사용자(이름, 이메일, 프로젝트 멤버십), 상태 및 유형과 같은 기본 데이터만 가져올 수 있습니다. 워크플로, 사용자 지정 필드, 이슈 관계 또는 권한은 가져올 수 없습니다. Jira Server/Data Center 버전 10.x 및 11.x만 현재 지원합니다. 클라우드 인스턴스는 현재 지원되지 않습니다."
+      form:
+        fields:
+          name: "이름"
+          url: "Jira 서버/데이터 센터 URL"
+          personal_access_token: "개인 액세스 토큰"
+        button_add: "구성 추가"
+        button_save: "구성 저장"
+        button_test: "구성 테스트"
+        button_delete_token: "토큰 삭제"
+        delete_token_confirm: "토큰을 삭제하시겠습니까? 그러면 Jira 연결이 비활성화됩니다."
+        label_testing: "구성 테스트 중..."
+      token_deleted: "토큰이 삭제되었습니다."
+      test:
+        success: "%{server}(버전 %{version})에 연결되었습니다"
+        failed: "연결 실패: 서버 정보를 검색할 수 없습니다"
+        error: "연결을 테스트하는 동안 예기치 않은 오류가 발생했습니다"
+        connection_error: "연결 오류: %{message}"
+        parse_error: "서버에서 응답을 구문 분석하지 못했습니다. 서버가 유효한 Jira 인스턴스가 아닐 수 있습니다."
+        api_error: "Jira API가 오류 상태 %{status}을(를) 반환했습니다. Jira 인스턴스 URL 및 API 토큰을 확인하세요."
+        token_error: "잘못된 API 토큰입니다. 구성에서 자격 증명을 확인하세요."
+        missing_credentials: "URL과 개인 액세스 토큰을 모두 제공하여 연결을 테스트하세요"
+        invalid_url: "유효한 URL을 제공하세요"
+      client:
+        connection_error: "Jira 서버에 연결하지 못했습니다: %{message}"
+        connection_timeout: "Jira 서버에 연결이 시간 초과되었습니다: %{message}"
+        parse_error: "Jira API 응답을 구문 분석하지 못했습니다: %{message}"
+        api_error: "Jira API가 오류 상태 %{status}을(를) 반환했습니다"
+      columns:
+        projects: "프로젝트"
+        last_change: "마지막 변경"
+        added: "추가됨"
+        label_ago: "%{amount} 전"
+      run:
+        title: "가져오기 실행"
+        history: "기록"
+        remove_error: "Jira 가져오기는 실행되는 동안 제거할 수 없습니다"
+        import_blocked_error: "다른 Jira 가져오기 실행이 현재 진행 중이거나 검토를 기다리는 중입니다. 새 가져오기를 시작하기 전에 완료하거나 되돌리세요."
+        blank:
+          title: "가져오기 실행이 아직 설정되지 않음"
+          description: "가져오기 실행을 만들어서 이 Jira 인스턴스에서 정보 가져오기를 시작하세요"
+        index:
+          description: "가져오기를 실행할 때마다 다른 데이터 세트를 가져올 수 있습니다. 검토 모드에서 가져오기 실행은 직후에 실행 취소할 수 있지만 마무리한 후에는 실행 취소할 수 없습니다."
+          button_import_run: "가져오기 실행"
+          button_edit_configuration: "구성 편집"
+        status:
+          initial: "시작"
+          instance_meta_fetching: "메타 데이터를 가져오는 중"
+          instance_meta_error: "메타 데이터를 가져오는 중에 오류 발생"
+          instance_meta_done: "메타 데이터 가져옴"
+          import_scope: "범위 선택"
+          configuring: "범위 선택"
+          projects_meta_fetching: "프로젝트 데이터를 가져오는 중"
+          projects_meta_error: "프로젝트 데이터를 가져오는 중에 오류 발생"
+          projects_meta_done: "데이터 수집함"
+          importing: "진행 중"
+          import_error: "가져오는 중에 오류 발생"
+          imported: "검토 모드"
+          reverting: "되돌리는 중"
+          revert_error: "되돌리는 중에 오류 발생"
+          revert_cancelling: "되돌리기 취소 중"
+          revert_cancelled: "되돌리기 취소됨"
+          reverted: "되돌림"
+          finalizing: "마무리 중"
+          finalizing_error: "마무리 중 오류 발생"
+          finalizing_done: "완료됨"
+        wizard:
+          button_retry: "다시 시도"
+          parts:
+            projects:
+              other: "%{count}개 프로젝트"
+            issues:
+              other: "%{count}개 이슈"
+            work_packages:
+              other: "%{count}개 작업 패키지"
+            types:
+              other: "%{count}개 유형"
+            statuses:
+              other: "%{count}개 상태"
+            users:
+              other: "%{count}명 사용자"
+          groups:
+            fetch:
+              title: "기본 데이터 가져오기"
+            groups_and_users:
+              title: "그룹 및 사용자"
+            configuration:
+              title: "가져오기 구성"
+            confirming:
+              title: "확인 및 가져오기"
+            review:
+              title: "가져오기 검토"
+          sections:
+            fetch_data:
+              title: "인스턴스 메타 데이터 가져오기"
+              caption_done: "완료됨"
+              description: "호스트 Jira 인스턴스에서 가져올 수 있는 데이터를 확인하세요."
+              button_fetch: "사용 가능한 데이터 확인"
+              label_progress: "Jira에서 데이터를 가져오는 중..."
+            groups_and_users:
+              title: "그룹 및 사용자"
+            import_scope:
+              title: "가져오기 범위"
+              caption: "OpenProject로 가져올 항목을 선택합니다"
+              caption_done: "완료됨"
+              label_info: "이 가져오기 도구는 베타 버전이며 일부 유형의 데이터를 가져올 수 없다는 점에 유의하세요. 호스트 Jira 인스턴스에서 가져오기용으로 제공하는 항목과 이 도구에서 현재 가져올 수 있는 항목에 대한 요약은 다음과 같습니다."
+              description: "호스트 Jira 인스턴스에서 가져온 사용 가능한 데이터에서 가져올 데이터를 선택합니다."
+              label_available_data: "사용 가능한 데이터"
+              label_not_available_data: "가져오기에 사용할 수 없음"
+              button_select_projects: "가져올 프로젝트 선택"
+              button_continue: "계속"
+              label_import: "가져올 프로젝트를 선택합니다."
+              button_select: "프로젝트 선택"
+              label_selected_data: "가져올 데이터 선택함"
+              label_progress: "Jira에서 데이터를 가져오는 중..."
+              elements:
+                relations: "이슈 간의 관계"
+                workflows: "프로젝트 수준 워크플로"
+                users: "사용자"
+                sprints: "스프린트"
+                schemes: "스키마"
+                permissions: "사용자, 그룹 및 프로젝트 권한"
+            confirm_import:
+              title: "데이터 가져오기"
+              caption: "가져오기 설정을 검토하고 가져오기를 시작합니다"
+              caption_done: "완료됨"
+              label_available_data: "가져올 수 있는 데이터"
+              button_start: "가져오기 시작"
+              description: "다음 설정으로 가져오기 실행을 시작하려고 합니다."
+              label_progress: "가져오기 진행 중..."
+              label_import_data: "현재 가져오는 중"
+            import_result:
+              title: "가져오기 실행 결과"
+              caption: "가져오기 실행 검토 또는 가져오기 되돌리기"
+              info: "가져오기 실행에 성공했습니다."
+              label_results: "가져옴"
+              label_revert: "가져오기 되돌리기"
+              button_revert: "가져오기 되돌리기"
+              button_done: "가져오기 마무리"
+              preview_description: '가져온 데이터는 현재 검토 모드에 있습니다. 가져오기를 영구적으로 적용하려면 "가져오기 마무리"를 클릭하고, 가져오기 실행에서 변경된 모든 사항을 취소하려면 "가져오기 되돌리기"를 클릭합니다.'
+              label_finalize_import: "가져오기 마무리"
+              label_finalizing: "가져오기 마무리 중..."
+              label_finalizing_done: "가져오기가 마무리되었습니다."
+              label_revert_progress: "가져오기를 되돌리는 중..."
+              label_reverted: "가져오기를 되돌렸습니다."
+          select_dialog:
+            filter_projects: "텍스트로 필터링"
+          import_dialog:
+            title: "이 가져오기를 시작하시겠습니까?"
+            confirm_button: "가져오기 시작"
+            description: >
+              이 가져오기 도구는 알파 기능입니다. 아직 Jira에서 일부 데이터를 가져올 수 없으며 이 OpenProject 인스턴스에 불완전한 데이터가 남을 수 있습니다. <b>프로덕션 환경을 사용하지 말고, 시작하기 전에 OpenProject 데이터의 백업을 만드세요.</b>
+            confirm: "이해했으며 필요한 준비를 마쳤습니다"
+          revert_dialog:
+            title: "이 가져오기를 영구적으로 되돌리시겠습니까?"
+            description: "이렇게 하면 OpenProject의 가져오기 후 해당 프로젝트에 사용자 활동이 있더라도 가져온 모든 개체(전체 프로젝트 포함)가 삭제됩니다."
+            confirm: "이 되돌리기를 통해 데이터가 영구적으로 삭제됨을 이해합니다"
+          finalize_dialog:
+            title: "이 가져오기를 마무리하시겠습니까?"
+            description: "이 가져오기가 마무리되면 더 이상 되돌릴 수 없습니다. 가져온 모든 데이터는 영구적으로 가져오게 됩니다."
+            confirm: "이 작업을 취소할 수 없음을 이해합니다."
+            confirm_button: "이해함"
+          select_projects:
+            title: "프로젝트 선택"
     mcp_configurations:
       index:
-        description: "모델 컨텍스트 프로토콜을 통해 AI 에이전트는 이 OpenProject 인스턴스에 의해 노출된 도구와 리소스를 사용자에게 제공할 수 있습니다."
+        description: "모델 컨텍스트 프로토콜을 통해 AI 에이전트는 이 OpenProject 인스턴스에 의해 노출된 도구와 리소스를 사용자에게 제공할 수 있습니다. 이 기능은 아직 베타 버전입니다."
         resources_heading: "리소스"
-        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject는 다음 리소스를 구현합니다. 원하는 대로 각 도구를 활성화하고, 이름을 바꾸고, 설명할 수 있습니다. 자세한 내용은 [MCP 리소스의 문서](docs_url)를 참조하세요."
         resources_submit: "리소스 업데이트"
         tools_heading: "도구"
         tools_description: "OpenProject는 다음 도구를 구현합니다. 원하는 대로 각 도구를 활성화하고, 이름을 바꾸고, 설명할 수 있습니다. 자세한 내용은 [MCP 도구의 문서](docs_url)를 참조하세요."
@@ -122,7 +302,17 @@ ko:
         success: "MCP 구성이 업데이트되었습니다."
       server_form:
         description_caption: "MCP 서버에 연결하는 다른 애플리케이션에 대해 MCP 서버가 설명되는 방식입니다."
-        title_caption: "A short title shown to applications that connect to the MCP server."
+        title_caption: "MCP 서버에 연결하는 애플리케이션에 표시되는 짧은 제목입니다."
+        tool_response_format: "도구 응답 형식"
+        tool_response_format_content_only_label: "콘텐츠 전용"
+        tool_response_format_content_only_caption: >
+          이 인스턴스에 연결하는 MCP 클라이언트가 구조화된 콘텐츠를 지원하지 않는 경우 이 옵션을 선택하세요. 도구 응답에는 일반 텍스트 콘텐츠만 포함되며 구조화된 버전은 제외됩니다.
+        tool_response_format_full_label: "전체"
+        tool_response_format_full_caption: >
+          가장 호환성이 높은 옵션입니다. 도구 응답에는 일반 콘텐츠와 구조화된 콘텐츠가 모두 포함되므로, MCP 클라이언트가 원하는 형식을 선택할 수 있습니다. 이렇게 하면 언어 모델이 처리해야 하는 토큰 수가 증가하여, 잠재적으로 비용이 높아지고 성능이 저하될 수 있습니다.
+        tool_response_format_structured_only_label: "구조화된 콘텐츠 전용"
+        tool_response_format_structured_only_caption: >
+          이 인스턴스에 연결하는 MCP 클라이언트가 구조화된 콘텐츠를 지원하는 것이 분명한 경우 이 옵션을 선택하세요. 도구 응답에는 구조화된 콘텐츠만 포함되며 텍스트 표현은 제외됩니다.
       update:
         failure: "MCP 구성을 업데이트할 수 없습니다."
         success: "MCP 구성이 업데이트되었습니다."
@@ -361,7 +551,7 @@ ko:
     contained_in_type: "타입에 포함됨."
     confirm_destroy_option: "옵션을 삭제하면 모든 해당 항목(예: 작업 패키지 내 모든 항목)이 삭제됩니다. 그래도 삭제하시겠습니까?"
     reorder_alphabetical: "알파벳순으로 값 재정렬"
-    reorder_confirmation: "경고: 사용 가능한 값의 현재 순서가 손실됩니다. 계속하시겠습니까?"
+    reorder_confirmation: "경고: 사용 가능한 값의 현재 순서 및 저장되지 않은 모든 값이 손실됩니다. 계속하시겠습니까?"
     placeholder_version_select: "먼저 작업 패키지 또는 프로젝트를 선택해야 합니다"
     calculated_field_not_editable: "편집할 수 없는 특성입니다. 이 값은 자동으로 계산됩니다."
     no_role_assigment: "역할 할당 없음"
@@ -388,6 +578,14 @@ ko:
           작업 패키지 보기의 필터에서 사용자 지정 필드를 사용할 수 있도록 허용합니다. '모든 프로젝트용'을 선택한 경우에만 사용자 지정 필드가 글로벌 보기에 표시됩니다.
       formula:
         project: "숫자 값을 추가하거나 /를 입력하여 특성 또는 수학 연산자를 검색합니다."
+      regexp:
+        all: "예: ^[A-Z0-9]+$"
+        project: "예: ^[A-Z0-9]+$"
+      min_max:
+        all: "0은 제한이 없음을 의미합니다"
+        project: "0은 제한이 없음을 의미합니다"
+      has_comment:
+        project: "사용자가 프로젝트 개요에서 값을 선택할 때 프로젝트 특성과 관련된 코멘트를 추가할 수 있습니다."
     tab:
       no_results_title_text: 사용자 필드가 없습니다.
       no_results_content_text: 새 사용자 필드 생성
@@ -404,14 +602,20 @@ ko:
   danger_dialog:
     confirmation_live_message_checked: "진행 버튼이 이제 활성화되었습니다."
     confirmation_live_message_unchecked: "진행 버튼이 이제 비활성화되었습니다. 계속하려면 확인란을 선택해야 합니다."
+  mcp_configurations:
+    server_url_component:
+      caption: "OpenProject MCP 서버에 연결할 수 있는 URL입니다. MCP 클라이언트를 설정하는 데 필요합니다."
+      label: "서버 URL"
   op_dry_validation:
     or: "또는"
     errors:
+      unexpected_key: "is not allowed."
       array?: "- 배열이어야 합니다."
       decimal?: "- 소수여야 합니다."
       defined: "- 정의해서는 안 됩니다."
       eql?: "- %{left}과(와) 같아야 합니다."
       filled?: "- 입력해야 합니다."
+      format?: "is in invalid format."
       greater_or_equal_zero: "- 0보다 크거나 같아야 합니다."
       gteq?: "- %{num}보다 크거나 같아야 합니다."
       hash?: "- 해시여야 합니다."
@@ -438,7 +642,9 @@ ko:
         parent:
           not_descendant: "- 계층 루트의 하위 항목이어야 합니다."
       str?: "- 문자열이어야 합니다."
+      time?: "must be a time."
       type?: "- %{type}이어야(여야) 합니다."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "워크플로 복사의 유형"
       enabled: "활성화됨"
@@ -607,7 +813,7 @@ ko:
         is_for_all_blank_slate:
           heading: 모든 프로젝트용
           description: '"모든 프로젝트용" 옵션이 선택되었으므로 모든 프로젝트에서 이 프로젝트 특성이 활성화되었습니다. 개별 프로젝트에 대해 비활성화할 수 없습니다.'
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: 이 프로젝트 특성은 프로젝트 시작 요청 <a href=%{pir_submission_url} target="_blank">제출 시 담당자</a>로 설정되었으므로 비활성화할 수 없습니다.
       types:
         no_results_title_text: 사용 가능한 타입이 없습니다.
         form:
@@ -623,8 +829,8 @@ ko:
         new_label: "새로운 우선 순위"
       creation_wizard:
         errors:
-          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
-          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
+          no_work_package_type: "프로젝트 시작 요청을 사용하려면 활성 작업 패키지 유형이 하나 이상 필요하지만 이 프로젝트에는 하나도 없기 때문에 프로젝트 시작 요청을 활성화하지 못했습니다. 이 프로젝트에 작업 패키지 유형을 하나 이상 추가하세요."
+          no_status_when_submitted: "작업 패키지 유형 %{type}에는 연결된 상태가 하나 이상 필요하므로 프로젝트 시작 요청을 활성화하지 못했습니다. 이 작업 패키지 유형에 대한 상태 워크플로를 하나 이상 활성화하세요."
         export:
           description_attachment_export: "생성된 아티팩트는 아티팩트 작업 패키지에 PDF 첨부 파일로 저장됩니다."
           description_file_link_export: "아티팩트 작업 패키지에는 외부 파일 저장소에 저장된 PDF에 대한 파일 링크가 있습니다. 이 프로젝트에 대해 자동으로 관리되는 프로젝트 폴더가 있는 작업 파일 저장소가 필요합니다. 현재는 Nextcloud 파일 저장소만 지원됩니다."
@@ -638,7 +844,7 @@ ko:
         label_request_submission: "요청 제출"
         project_attributes_description: >
           프로젝트 시작 요청에 포함해야 하는 프로젝트 특성을 선택합니다. 이 목록에는 해당 프로젝트에 대해 활성화된 [프로젝트 특성](project_attributes_url)만 포함됩니다.
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: 이 프로젝트 특성은 필수로 정의되어 있으므로 이 프로젝트 시작 요청에 대해 비활성화할 수 없습니다. 이 특성은 인스턴스의 관리자가 <a href=%{admin_settings_url} target="_blank">관리 설정</a>에서 변경할 수 있습니다.
     status:
       button_edit: 상태 편집
     wizard:
@@ -1030,7 +1236,6 @@ ko:
         title: "작업 패키지 공유에 대한 워크플로 누락"
         message: "'작업 패키지 편집자' 역할에 대해 구성된 워크플로가 없습니다. 워크플로가 없으면 사용자와 공유된 워크플로는 작업 패키지의 상태를 변경할 수 없습니다. 워크플로를 복사할 수는 있습니다. 소스 유형(예: '작업')과 소스 역할(예: '멤버')을 선택하세요. 그런 다음 대상 유형을 선택하세요. 시작하기 위해 모든 유형을 대상으로 선택할 수 있습니다. 마지막으로 '작업 패키지 편집자' 역할을 대상으로 선택하고 '복사'를 누르세요. 기본값을 생성한 후 다른 모든 역할에 대해 수행하는 것처럼 워크플로를 미세 조정하세요."
         link_message: "관리에서 워크플로를 구성하세요."
-    templated_subject_hint: '%{type} 유형을 통해 자동으로 생성됨'
     summary:
       reports:
         category:
@@ -1155,6 +1360,18 @@ ko:
         dependencies: "종속성"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "공유"
+        finish_date: "종료 날짜"
+      jira_import:
+        projects: "프로젝트"
+      "import/jira":
+        name: "Jira 인스턴스 이름"
+        url: "Jira 인스턴스 URL"
+        personal_access_token: "개인 액세스 토큰"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira 가져오기"
       announcements:
         show_until: "표시 기한"
       attachment:
@@ -1173,7 +1390,6 @@ ko:
         scim_clients: "SCIM 클라이언트"
       calculated_value_error:
         error_code: "오류 코드"
-        customized: "사용자 지정됨"
         customized_id: "사용자 지정된 ID"
         customized_type: "사용자 지정된 유형"
       capability:
@@ -1201,6 +1417,7 @@ ko:
         regexp: "정규 표현식"
         searchable: "검색가능한"
         admin_only: "관리자 전용"
+        has_comment: "코멘트 텍스트 필드 추가"
       custom_value:
         value: "값"
       design_color:
@@ -1529,6 +1746,7 @@ ko:
         not_available: "- 시스템 구성으로 인해 사용 가능하지 않습니다."
         not_deletable: "- 삭제할 수 없습니다."
         not_current_user: "은(는) 현재 유효한 사용자가 아닙니다."
+        only_one_active_sprint_allowed: "프로젝트당 하나의 활성 스프린트만 허용됩니다."
         not_found: "- 찾을 수 없습니다."
         not_a_date: "은(는) 유효한 날짜가 아닙니다."
         not_a_datetime: "은(는) 유효한 날짜가 아닙니다."
@@ -1635,7 +1853,7 @@ ko:
         meeting:
           error_conflict: "그 사이에 다른 사람이 미팅을 업데이트했기 때문에 저장할 수 없습니다. 페이지를 다시 로드하세요."
         message:
-          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
+          cannot_move_message_to_forum_of_different_project: "다른 프로젝트의 포럼으로 메시지를 이동할 수 없습니다."
         notifications:
           at_least_one_channel: "알림을 보낼 채널을 하나 이상 지정해야 합니다."
           attributes:
@@ -1890,6 +2108,8 @@ ko:
               blank: "토큰 이름을 입력하세요"
               in_use: "이 토큰 이름은 이미 사용 중입니다. 다른 이름을 선택하세요"
               format: "%{message}"
+        jira:
+          invalid_protocol: "유효한 프로토콜(http 또는 https)을 입력하세요"
       template:
         body: "다음 필드를 확인 하십시오."
         header:
@@ -1905,6 +2125,7 @@ ko:
       comment: "코멘트"
       custom_action: "사용자 지정 작업"
       custom_field: "사용자 정의 필드"
+      customized: "사용자 지정됨"
       "doorkeeper/application": "OAuth 애플리케이션"
       enterprise_token:
         other: "Enterprise 토큰"
@@ -1929,6 +2150,8 @@ ko:
         other: "역할"
       scim_client:
         other: "SCIM 클라이언트"
+      jira:
+        other: "Jira"
       status: "작업 패키지 상태"
       token/api:
         other: 액세스 토큰
@@ -2073,6 +2296,7 @@ ko:
     role: "역할"
     roles: "역할"
     search: "검색"
+    sprint: "스프린트"
     start_date: "시작 날짜"
     status: "상태"
     state: "상태"
@@ -2423,7 +2647,8 @@ ko:
       edit_attribute_groups: 특성 그룹 편집
       gantt_pdf_export: Gantt PDF 내보내기
       ldap_groups: LDAP 사용자 및 그룹 동기화
-      mcp_server: MCP 서버
+      mcp_server: 모델 컨텍스트 프로토콜(MCP)
+      meeting_templates: 재사용 가능한 미팅 템플릿
       nextcloud_sso: Nextcloud 저장소용 Single Sign-On
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 파일 저장소
       placeholder_users: 플레이스홀더 사용자
@@ -2501,7 +2726,9 @@ ko:
         title: "사용자 지정 작업"
         description: "사용자 지정 작업은 상태, 역할, 유형 또는 프로젝트를 기반으로 특정 작업 패키지에서 사용할 수 있도록 미리 정의된 작업 세트에 대한 원클릭 바로 가기입니다."
       mcp_server:
-        description: "MCP를 통해 AI 에이전트를 OpenProject 인스턴스와 통합합니다."
+        description: "안전한 MCP 서버를 사용하여 AI 워크플로에 OpenProject를 도입하세요."
+      meeting_templates:
+        description: "설정된 의제 구조로 미팅 템플릿을 정의하고, 새 미팅을 만들 때 이 템플릿을 재사용하여 시간을 절약하세요."
       nextcloud_sso:
         title: "Nextcloud 저장소용 Single Sign-On"
         description: "Single Sign-On을 사용하여 Nextcloud 저장소에 대한 원활하고 안전한 인증을 활성화합니다. 액세스 관리를 간소화하고 사용자 편의성을 개선합니다."
@@ -2811,17 +3038,18 @@ ko:
         learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         missing: "아직 강조 표시된 기능이 없습니다."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
             이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
           new_features_list:
-            line_0: 자동화된 프로젝트 시작(Enterprise 추가 기능).
-            line_1: "미팅: 새 작업 패키지 또는 기존 작업 패키지를 결과로 추가합니다."
-            line_2: "Meetings: show iCal responses in OpenProject."
-            line_3: "반복 미팅: 의제 항목을 다음 항목에 복제합니다."
-            line_4: "커뮤니티에 릴리스: 특성이 강조 표시됩니다."
-            line_5: 사용자 제공 콘텐츠에서 외부 링크를 열기 전에 표시되는 경고입니다(Enterprise 추가 기능).
-            line_6: 활동 탭 및 문서 모듈을 비롯한 성능 및 사용자 환경이 개선되었습니다.
+            line_0: 안전한 MCP 서버를 사용하는 AI 워크플로(Professional 플랜 이상)
+            line_1: 새 예산 위젯이 포함되고 접근성이 향상되어 프로젝트 홈 페이지가 개선됨
+            line_2: "미팅: 미팅 템플릿(Basic 플랜 이상)"
+            line_3: 프로젝트 특성 코멘트의 투명성 향상됨
+            line_4: PDF 내보내기 개선 사항
+            line_5: 외부 링크에 대한 보안 강화됨(Premium 플랜 이상)
+            line_6: 백로그 모듈의 UI/UX 개선 사항
+            line_7: 통합 사용자 지정 필드 양식
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -2839,8 +3067,10 @@ ko:
   journals:
     changes_retracted: "변경 사항이 취소되었습니다."
     caused_changes:
+      budget_deleted: "예산이 삭제되었습니다"
       dates_changed: "변경된 날짜"
       default_attribute_written: "읽기 전용 특성 작성됨"
+      import: "가져옴"
       progress_mode_changed_to_status_based: "진행률 계산 업데이트됨"
       status_changed: "상태 '%{status_name}'"
       system_update: "OpenProject 시스템 업데이트:"
@@ -2848,12 +3078,22 @@ ko:
       total_percent_complete_mode_changed_to_work_weighted_average: "이제 완료 % 합계 계산에는 작업별로 가중치가 적용됩니다."
       total_percent_complete_mode_changed_to_simple_average: "이제 완료 % 합계 계산은 완료 % 값의 단순 평균만을 기반으로 합니다."
     cause_descriptions:
+      import:
+        header: "%{author} 님이 변경함"
+        field_changed: "%{field}이(가) %{old_value}에서 %{new_value}(으)로 변경됨"
+        field_set: "%{field}이(가) %{value}(으)로 설정됨"
+        field_removed: "%{field} 제거됨"
+        field_updated: "%{field} 업데이트됨"
+        deleted_with_diff: "%{field} 삭제됨(%{link})"
+        changed_with_diff: "%{field} 변경됨(%{link})"
+        set_with_diff: "%{field} 설정됨(%{link})"
       work_package_predecessor_changed_times: 선행 단계 %{link}에 대한 변경 사항 기준
       work_package_parent_changed_times: 부모 %{link}에 대한 변경 사항 기준
       work_package_children_changed_times: 자식 %{link}에 대한 변경 사항 기준
       work_package_related_changed_times: 관련 %{link}에 대한 변경 사항 기준
       work_package_duplicate_closed: 중복 작업 패키지에 의해 자동으로 상태가 업데이트되었습니다(%{link})
       unaccessable_work_package_changed: 관련 작업 패키지에 대한 변경 사항 기준
+      budget_deleted: 예산이 삭제되었습니다
       working_days_changed:
         changed: "근무일에 대한 변경 사항 기준(%{changes})"
         days:
@@ -2934,7 +3174,7 @@ ko:
         active_tokens: "활성 토큰"
         blank_description: "타사 애플리케이션 액세스가 구성 및 활성화되어 있지 않습니다."
         blank_title: "OAuth 애플리케이션 토큰 없음"
-        last_used_at: "마지막 사용"
+        last_refreshed_at: "마지막 새로고침:"
         title: "OAuth"
         table_title: "OAuth 애플리케이션 토큰"
         text_hint: "OAuth 애플리케이션 토큰을 통해 타사 애플리케이션이 이 OpenProject 인스턴스와 연결할 수 있습니다."
@@ -3020,7 +3260,7 @@ ko:
   label_always_visible: "항상 표시"
   label_announcement: "공지 사항"
   label_angular: "AngularJS"
-  label_app_modules: "%{app_title} modules"
+  label_app_modules: "%{app_title} 모듈"
   label_api_access_key: "API 액세스 키"
   label_api_access_key_created_on: "API 액세스 키가 %{value} 전에 생성되었습니다."
   label_api_access_key_type: "API"
@@ -3173,8 +3413,8 @@ ko:
   label_duplicate: "중복"
   label_duplicates: "복제"
   label_edit: "편집"
-  label_edit_attribute: "특성 편집"
   label_edit_x: "편집: %{x}"
+  label_view_x: "보기: %{x}"
   label_enable_multi_select: "다중 선택 토글"
   label_enabled_project_custom_fields: "사용자 정의 필드 사용"
   label_enabled_project_modules: "사용 가능한 모듈"
@@ -3279,6 +3519,7 @@ ko:
   label_external_links: "외부 링크"
   label_locale: "언어 및 지역"
   label_jump_to_a_project: "프로젝트로 이동..."
+  label_jira_import: "Jira 가져오기"
   label_keyword_plural: "키워드"
   label_language_based: "사용자 언어에 따름"
   label_last_activity: "마지막 활동"
@@ -3301,6 +3542,7 @@ ko:
   label_lock_user: "사용자 잠금"
   label_logged_as: "로그인한 계정:"
   label_login: "로그인"
+  label_custom_comment: "%{name} 코멘트"
   label_custom_logo: "사용자 지정 로고 데스크톱"
   label_custom_logo_mobile: "사용자 지정 로고 모바일"
   label_custom_export_logo: "사용자 지정 내보내기 로고"
@@ -3922,11 +4164,13 @@ ko:
   notice_parent_item_not_found: "부모 항목을 찾을 수 없습니다."
   notice_project_not_deleted: "프로젝트가 삭제되지 않았습니다."
   notice_project_not_found: "프로젝트를 찾을 수 없습니다."
+  notice_smtp_address_unsafe: "SMTP 주소 %{address}은(는) 안전하지 않습니다. OPENPROJECT_SSRF_PROTECTION_ALLOWLIST에 추가하세요."
   notice_successful_connection: "연결에 성공했습니다."
   notice_successful_create: "생성에 성공했습니다."
   notice_successful_delete: "삭제에 성공했습니다."
   notice_successful_cancel: "취소에 성공했습니다."
   notice_successful_update: "업데이트에 성공했습니다."
+  notice_successful_move: "%{from}에서 %{to}(으)로 이동했습니다."
   notice_unsuccessful_create: "생성이 실패했습니다."
   notice_unsuccessful_create_with_reason: "생성 실패: %{reason}"
   notice_unsuccessful_update: "업데이트에 실패했습니다."
@@ -4086,6 +4330,7 @@ ko:
   permission_edit_project_query: "프로젝트 쿼리 편집"
   placeholders:
     default: "-"
+    templated_hint: '%{type} 유형을 통해 자동으로 생성됨'
   portfolio:
     count:
       zero: "0개 포트폴리오"
@@ -4268,6 +4513,9 @@ ko:
   setting_capture_external_links: "외부 링크 캡처"
   setting_capture_external_links_text: >
     활성화된 경우, 서식이 지정된 텍스트의 모든 외부 링크는 애플리케이션을 종료하기 전에 경고 페이지를 통해 리디렉션됩니다. 따라서 잠재적인 악성 외부 웹사이트로부터 사용자를 보호할 수 있습니다.
+  setting_capture_external_links_require_login: "사용자가 로그인해야 함"
+  setting_capture_external_links_require_login_text: >
+    이 옵션을 활성화하면, 외부 링크를 클릭하려는 사용자는 로그인해야 계속할 수 있습니다.
   setting_after_first_login_redirect_url: "첫 번째 로그인 리디렉션"
   setting_after_first_login_redirect_url_text_html: >
     첫 로그인 후 사용자를 리디렉션할 경로를 설정하세요. 비어 있으면 온보딩 투어의 홈페이지로 리디렉션됩니다. <br/> 예: <code>/my/page</code>
@@ -4312,6 +4560,9 @@ ko:
   setting_smtp_password: "SMTP 비밀번호"
   setting_smtp_domain: "SMTP HELO 도메인"
   setting_activity_days_default: "프로젝트 작업에 표시되는 기간(일)"
+  setting_api_tokens_enabled: "API 토큰 활성화"
+  setting_api_tokens_enabled_caption: >
+    사용자가 계정 설정에서 개인 API 토큰을 만들 수 있는지 여부를 결정합니다. 해당 토큰은 APIv3 및 MCP와 같은 OpenProject의 다양한 API에 액세스하는 데 사용할 수 있습니다.
   setting_app_subtitle: "응용 프로그램 부제목"
   setting_app_title: "응용 프로그램 제목"
   setting_attachment_max_size: "첨부 파일 최대 크기"
@@ -4421,7 +4672,6 @@ ko:
   setting_repository_checkout_text: "체크아웃 지침 텍스트"
   setting_repository_log_display_limit: "파일 로그 표시되는 최대 수정 수"
   setting_repository_truncate_at: "리포지토리 브라우저에 표시되는 최대 파일 수"
-  setting_rest_api_enabled: "REST 웹 서비스 사용"
   setting_self_registration: "자체 등록"
   setting_self_registration_caption: >
     사용자에 대한 자체 등록 메커니즘을 선택하세요. 일부 옵션은 사용자가 이 인스턴스에 대해 자신의 계정을 활성화하도록 허용하므로, 선택하는 설정에 주의해 주세요.
@@ -4739,7 +4989,6 @@ ko:
   text_length_between: "%{min} ~ %{max}자 사이의 길이"
   text_line_separated: "여러 값이 허용됩니다(각 값에 대해 한 줄)."
   text_load_default_configuration: "기본 구성 로드"
-  text_min_max_length_info: "0은 제한이 없음을 의미함"
   text_no_roles_defined: 정의된 역할이 없습니다.
   text_no_access_tokens_configurable: "구성할 수 있는 액세스 토큰이 없습니다."
   text_no_configuration_data: "역할, 유형, 작업 패키지 상태 및 워크플로가 아직 구성되지 않았습니다.\n기본 구성을 로드하는 것이 좋습니다. 로드한 후에 수정할 수 있습니다."
@@ -4754,7 +5003,6 @@ ko:
   text_powered_by: "%{link} 제공"
   text_project_identifier_info: "소문자(a-z), 숫자, 대시(-) 및 밑줄(_)만 허용됩니다. 소문자로 시작해야 합니다."
   text_reassign: "작업 패키지에 다시 할당:"
-  text_regexp_info: "예: ^[A-Z0-9]+$"
   text_regexp_multiline: '멀티라인 모드에서 정규식이 적용됩니다. 예, e.g., ^---\s+'
   text_repository_usernames_mapping: "리포지토리 로그에 있는 각 사용자 이름에 매핑된 OpenProject 사용자를 선택하거나 업데이트하세요.\n동일한 OpenProject 및 리포지토리 사용자 이름이나 이메일을 가진 사용자가 자동으로 매핑됩니다."
   text_status_changed_by_changeset: "변경 집합 %{value}에 적용되었습니다."
@@ -4852,11 +5100,10 @@ ko:
     reset_failed_logins: "실패한 로그인 재설정"
     status_user_and_brute_force: "%{user} 및 %{brute_force}"
     status_change: "상태 변경"
-    text_change_disabled_for_provider_login: "이 이름은 로그인 공급자가 설정하므로 변경 가능하지 않습니다."
-    text_change_disabled_for_ldap_login: "이름과 이메일은 LDAP에 의해 설정되므로 변경할 수 없습니다."
+    text_change_disabled_for_provider_login: "이름 및 이메일은 로그인 공급자가 설정하므로 변경할 수 없습니다."
     unlock: "잠금 해제"
     unlock_and_reset_failed_logins: "실패한 로그인 잠금 해제 및 재설정"
-    error_cannot_delete_user: "User cannot be deleted"
+    error_cannot_delete_user: "사용자를 삭제할 수 없습니다"
   version_status_closed: "닫음"
   version_status_locked: "잠김"
   version_status_open: "열기"

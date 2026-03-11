@@ -31,7 +31,7 @@
 module Projects::CreationWizard
   class CreateArtifactWorkPackageService < ::BaseServices::BaseContracted
     include Contracted
-    include ProjectHelper
+    include ProjectsHelper
     include ArtifactExporter
     include Rails.application.routes.url_helpers
     prepend Projects::Concerns::UpdateDemoData
@@ -182,9 +182,8 @@ module Projects::CreationWizard
     end
 
     def assignee_mention_tag
-      return if assigned_to_id.nil?
-
-      principal = Principal.find(assigned_to_id)
+      principal = Principal.visible.find_by(id: assigned_to_id)
+      return "" if principal.nil?
 
       ApplicationController.helpers.content_tag(
         "mention",

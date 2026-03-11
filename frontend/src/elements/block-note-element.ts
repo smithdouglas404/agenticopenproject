@@ -40,15 +40,30 @@ import { createRoot } from 'react-dom/client';
 import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
 
 class BlockNoteElement extends HTMLElement {
-  private mount:HTMLDivElement;
+  private stimulusRoot:HTMLDivElement;
+  private editorMount:HTMLDivElement;
   private errorContainer:HTMLDivElement;
   private reactRoot:Root|null = null;
   private stimulusApp:Application|null = null;
+  private renderCallback:((provider?:HocuspocusProvider) => void) | null = null;
 
   constructor() {
     super();
 
     const shadowRoot = this.attachShadow({ mode: 'open' });
+
+    // Wrapper div as Stimulus root so both errorContainer and editorMount are in scope
+    this.stimulusRoot = document.createElement('div');
+    const browserSpecificClasses = this.getAttribute('browser-specific-classes')?.split(' ') ?? [];
+    if (browserSpecificClasses.length > 0) {
+      this.stimulusRoot.classList.add(...browserSpecificClasses);
+    }
+    // Clone the blank-target link description into the shadow DOM
+    // so aria-describedby references resolve for links inside the editor
+    const blankLinkDesc = document.getElementById('open-blank-target-link-description');
+    if (blankLinkDesc) {
+      this.stimulusRoot.appendChild(blankLinkDesc.cloneNode(true));
+    }
 
     // Container for connection error/recovery messages (rendered by React via fetchConnectionTemplate)
     this.errorContainer = document.createElement('div');
@@ -56,14 +71,11 @@ class BlockNoteElement extends HTMLElement {
     this.errorContainer.dataset.controller = 'flash';
     this.errorContainer.dataset.flashAutohideValue = 'true';
 
-    this.mount = document.createElement('div');
-    const browserSpecificClasses = this.getAttribute('browser-specific-classes')?.split(' ') ?? [];
-    if (browserSpecificClasses.length > 0) {
-      this.mount.classList.add(...browserSpecificClasses);
-    }
+    this.editorMount = document.createElement('div');
 
-    shadowRoot.appendChild(this.errorContainer);
-    shadowRoot.appendChild(this.mount);
+    this.stimulusRoot.appendChild(this.errorContainer);
+    this.stimulusRoot.appendChild(this.editorMount);
+    shadowRoot.appendChild(this.stimulusRoot);
 
     const blockNoteStylesheetUrl = this.getAttribute('blocknote-stylesheet-url');
     if (blockNoteStylesheetUrl) {
@@ -84,28 +96,34 @@ class BlockNoteElement extends HTMLElement {
 
   connectedCallback() {
     // Initialize Stimulus application within shadow DOM
-    this.stimulusApp = Application.start(this.errorContainer);
+    this.stimulusApp = Application.start(this.stimulusRoot);
     this.stimulusApp.register('flash', FlashController);
 
     // Initialize React application within shadow DOM
-    this.reactRoot = createRoot(this.mount);
+    this.reactRoot = createRoot(this.editorMount);
 
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
 
-    const render = (provider?:HocuspocusProvider) => {
+    this.renderCallback = (provider?:HocuspocusProvider) => {
       this.reactRoot?.render(
         React.createElement(React.StrictMode, null, this.BlockNoteReactContainer(provider))
       );
     };
 
     if (collaborationEnabled) {
-      LiveCollaborationManager.onReady(render);
+      LiveCollaborationManager.onReady(this.renderCallback);
     } else {
-      render();
+      this.renderCallback();
     }
   }
 
   disconnectedCallback() {
+    // Deregister before unmount to prevent stale callbacks firing into a detached element
+    if (this.renderCallback) {
+      LiveCollaborationManager.offReady(this.renderCallback);
+      this.renderCallback = null;
+    }
+
     if (this.reactRoot) {
       this.reactRoot.unmount();
       this.reactRoot = null;
@@ -120,7 +138,7 @@ class BlockNoteElement extends HTMLElement {
   private BlockNoteReactContainer = (hocuspocusProvider?:HocuspocusProvider) => {
     return React.createElement(
       ShadowDomWrapper,
-      { target: this.mount },
+      { target: this.editorMount },
       React.createElement(
         OpBlockNoteContainer,
         {

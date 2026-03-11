@@ -30,5 +30,6 @@
 
 module Token
   class API < Named
+    prefix :opapi
   end
 end

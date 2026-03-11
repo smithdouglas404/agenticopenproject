@@ -20,7 +20,7 @@ de:
       action: "Aktionsboard (%{attribute})"
     board_type_attributes:
       assignee: Zugewiesen an
-      status: Status
+      status: Kanban
       version: Version
       subproject: Unterprojekt
       subtasks: Eltern-Kind

@@ -21,6 +21,7 @@ For information on setting up recurring meeting series and templates, please ref
 | Topic                                                        | Content                                                    |
 | ------------------------------------------------------------ | ---------------------------------------------------------- |
 | [Create a new meeting](#create-a-new-meeting)                | How to create a new meeting in OpenProject.                |
+| [Meeting templates](#meeting-templates-enterprise-add-on)    | How to use meeting templates (Enterprise add-on).          |
 | [Meetings draft mode](#meeting-draft-mode)                   | How to prepare a new meeting behind the scenes.            |
 | [Edit a meeting](#edit-a-meeting)                            | How to edit an existing meeting.                           |
 | [Add a work package to the agenda](#add-a-work-package-to-the-agenda) | How to add a work package to a meeting agenda.             |
@@ -39,6 +40,44 @@ For information on setting up recurring meeting series and templates, please ref
 
 ## Create and edit one-time meetings
 
+### Meeting templates (Enterprise add-on)
+
+[feature: meeting_templates ]
+
+Meeting templates allow you to reuse a predefined meeting structure when creating one-time meetings. They make it easy to start meetings with a proven structure instead of creating the agenda from scratch each time. 
+
+Meeting templates are always associated with a specific project, but they can be created either from within a project or from the global **Meetings** page. To access them, open the **Meetings** module and select **Templates** from the left-hand menu. In the **Templates** view you can see all templates you have access to. When viewing templates globally, an additional **Project** column indicates which project each template belongs to. 
+
+![Reusable meeting templates in OpenProject](openproject_userguide_meetings_templates.png)
+
+Use the **More** menu (⋯) next to a template to edit or delete the template. 
+
+![Edit or delete a meeting template in OpenProject](openproject_userguide_meetings_templates_edit_delete.png)
+
+Click the green **+ Template** button to create a new template. When creating a template from the global view, you first need to select the project the template should belong to. Click the **Create template** button to proceed.
+
+![Create new meeting template in OpenProject](openproject_userguide_meetings_create_new_template.png)
+
+In the template that opens, enter and save a title. Define the agenda structure and add attachments to the template same way as you would when creating a one-time meeting.
+
+![Name and define a new meeting template in OpenProject](openproject_userguide_meetings_templates_name_save.png)
+
+You can edit, delete, or view the history through the **More (three dots)** menu in the top right corner and selecting the respective option.
+
+![Edit, delete or view a meeting template history](openproject_userguide_meetings_templates_edit_delete_history.png)
+
+When creating a new **one-time meeting**, you can optionally select a **Meeting template**. The template field is empty by default. After selecting a template, the agenda and attachments are copied to the new meeting.
+
+![Select a template when creating a new one-time meeting in OpenProject](openproject_userguide_meetings_templates_new_meeting.png)
+
+> [!NOTE]
+> Changes made to the template later will not affect meetings that were already created from it.
+
+You can also open a template and click the **+ Meeting** button to create a new meeting in the same project.
+
+![Create a new one-time meeting from a meeting template view in OpenProject meeting template](openproject_userguide_meetings_templates_create_new_meeting.png)
+
+
 ### Create a new meeting
 
 You can either create a meeting from within a project or from the global **Meetings** module.
@@ -52,6 +91,8 @@ For steps on setting up recurring meetings please consult [this page](../recurri
 If you choose the **one-time** option, enter your meeting's title, location, start date and time, and duration. 
 
 If you are creating a meeting from a global module you will first need to select a project to which the meeting is attributed. 
+
+If you are using (reusable meeting templates)(#meeting-templates-enterprise-add-on), you can also select a template. 
 
 ![Create a new one-time meeting in OpenProject](openproject_userguide_meetings_new_onetime_meeting_form.png)
 

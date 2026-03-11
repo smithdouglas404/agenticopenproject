@@ -1,0 +1,16 @@
+.op-inplace-edit
+  &--display-field
+    &_editable
+      margin-left: -9px !important // cancel out 8px padding + 1px border
+      margin-right: -9px !important // cancel out 8px padding + 1px border
+      padding: var(--base-size-8)
+      width: calc(100% + 18px) !important
+      border: 1px solid transparent
+      border-radius: var(--borderRadius-medium)
+
+      &:hover, &:focus
+        border-color: var(--borderColor-default)
+        box-shadow: var(--shadow-inset)
+
+    &:not(&_editable)
+      cursor: not-allowed

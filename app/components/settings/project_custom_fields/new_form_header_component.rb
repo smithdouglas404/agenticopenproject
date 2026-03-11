@@ -31,6 +31,11 @@
 module Settings
   module ProjectCustomFields
     class NewFormHeaderComponent < ApplicationComponent
+      def page_title
+        concat t("settings.project_attributes.new.heading")
+        concat render(Primer::Beta::Text.new(color: :muted)) { " (#{helpers.label_for_custom_field_format(model.field_format)})" }
+      end
+
       def breadcrumb_items
         [
           { href: admin_index_path, text: t("label_administration") },

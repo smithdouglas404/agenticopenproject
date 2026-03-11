@@ -132,20 +132,14 @@ RSpec.describe API::V3::Activities::ActivitiesByWorkPackageAPI, with_ee: [:inter
 
       context "with an erroneous work package" do
         before do
-          work_package.subject = ""
+          work_package.done_ratio = -100
           work_package.save!(validate: false)
         end
 
-        include_context "create activity"
+        it_behaves_like "valid activity request" do
+          let(:status_code) { 201 }
 
-        it "responds with error" do
-          expect(last_response).to have_http_status :unprocessable_entity
-        end
-
-        it "notes the error" do
-          expect(last_response.body)
-            .to be_json_eql("Subject can't be blank.".to_json)
-            .at_path("message")
+          include_context "create activity"
         end
       end
 

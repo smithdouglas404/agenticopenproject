@@ -59,7 +59,7 @@ ko:
         end_date: "종료 날짜"
         iterations: "항목"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "시작 시간"
       meeting_participant:
         invited: "초대됨"
         attended: "참석함"
@@ -67,12 +67,12 @@ ko:
     errors:
       models:
         meeting_participant:
-          user_invalid: "is not a valid participant."
+          user_invalid: "- 유효한 참가자가 아닙니다."
         meeting_agenda_item:
-          section_not_belong_to_meeting: "Section does not belong to the same meeting."
-          user_invalid: "is not a valid participant."
+          section_not_belong_to_meeting: "섹션이 같은 미팅에 속하지 않습니다."
+          user_invalid: "- 유효한 참가자가 아닙니다."
         recurring_meeting_interim_response:
-          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
+          not_an_occurrence: "- 이 반복 미팅에 유효한 항목 시간이 아닙니다"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "이 시리즈에는 새로운 스케줄에 포함되지 않은 오픈 미팅이 하나 있습니다. 모든 기존 미팅을 포함하도록 스케줄을 조정하세요."
@@ -116,6 +116,13 @@ ko:
   error_notification_with_errors: "알림을 보내지 못했습니다. 다음 수신자에게 알리지 못했습니다. %{recipients}"
   label_meeting: "미팅"
   label_meeting_plural: "미팅"
+  label_meeting_templates: "템플릿"
+  label_meeting_template: "템플릿"
+  label_meeting_template_new: "새 템플릿"
+  label_meeting_template_create: "템플릿 만들기"
+  label_meeting_template_delete: "템플릿 삭제"
+  label_meeting_template_edit: "템플릿 편집"
+  label_meeting_create_from_template: "템플릿에서 미팅 만들기"
   label_meeting_new: "새 미팅"
   label_meeting_new_dynamic: "새로운 일회성 미팅"
   label_meeting_new_recurring: "새로운 반복 미팅"
@@ -182,6 +189,8 @@ ko:
   label_time_zone: "표준 시간대"
   label_start_date: "시작일"
   label_subscribe_icalendar: "캘린더 구독"
+  caption_meeting_template_select: "템플릿을 선택하면 의제 항목이 자동으로 복사됩니다."
+  caption_template_project_select: "이 미팅 템플릿을 만들 프로젝트를 선택하세요"
   meeting:
     participants:
       label:
@@ -201,7 +210,8 @@ ko:
         heading: "참가자 없음"
         description: "아직 참가자가 없습니다."
     attachments:
-      template: "이러한 첨부 파일은 시리즈의 모든 향후 미팅에 포함됩니다."
+      onetime_template: "이러한 첨부 파일은 이 템플릿을 사용하는 모든 향후 미팅에 포함됩니다."
+      series_template: "이러한 첨부 파일은 시리즈의 모든 향후 미팅에 포함됩니다."
       text: "첨부된 파일은 모든 미팅 참가자가 사용할 수 있습니다. 이러한 파일을 의제 항목 메모에 끌어다 놓을 수도 있습니다."
     copy:
       title: "미팅 복사: %{title}"
@@ -233,9 +243,9 @@ ko:
         header: "취소됨: 미팅 '%{title}'"
         header_occurrence: "취소됨: 미팅 항목 '%{title}'"
         header_series: "취소됨: 미팅 시리즈 '%{title}'"
-        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_occurrence: "'%{title}' 항목이 %{actor} 님에 의해 취소되었거나, 참가자에서 회원님이 제거되었습니다"
+        summary_series: "'%{title}' 미팅 시리즈가 %{actor} 님에 의해 취소되었거나, 참가자에서 회원님이 제거되었습니다"
+        summary: "'%{title}'이(가) %{actor} 님에 의해 취소되었거나, 참가자에서 회원님이 제거되었습니다"
         date_time: "스케줄링된 날짜/시간"
       participant_added:
         header: "미팅 '%{title}' - 참가자 추가됨"
@@ -249,7 +259,7 @@ ko:
         summary_series: "%{actor} 님이 미팅 시리즈 '%{title}'에서 %{participant} 님을 제거했습니다"
       ended:
         header_series: "종료됨: 미팅 시리즈 '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
+        summary_series: "'%{title}' 미팅 시리즈를 %{actor} 님이 종료했습니다"
       updated:
         header: "'%{title}' 미팅이 업데이트되었습니다"
         summary: "'%{title}' 미팅을 %{actor} 님이 업데이트했습니다"
@@ -274,6 +284,11 @@ ko:
         heading: "이 미팅을 삭제하시겠습니까?"
         confirmation_message_html: >
           이 작업은 되돌릴 수 없습니다. 주의하여 진행하세요.
+        template:
+          title: "템플릿 삭제"
+          heading: "이 템플릿을 삭제하시겠습니까?"
+          confirmation_message_html: >
+            이 작업은 되돌릴 수 없습니다. 주의해서 진행하시기 바랍니다. 이 템플릿을 사용하여 만든 기존 미팅은 영향을 받지 않습니다.
       occurrence:
         title: "미팅 항목 취소"
         heading: "이 미팅 항목을 취소하시겠습니까?"
@@ -409,7 +424,7 @@ ko:
       button_finalize: "첫 번째 미팅 열기"
       blank_title: "미팅 시리즈 템플릿이 비어 있습니다."
       description: >
-        이 템플릿은 시리즈의 새로운 미팅이 생성될 때마다 사용됩니다. 이 템플릿에 안건 항목, 참가자 및 첨부 파일을 추가할 수 있습니다.
+        이 템플릿은 시리즈의 새로운 미팅이 생성될 때마다 사용됩니다. 이 템플릿에 의제 항목, 참가자 및 첨부 파일을 추가할 수 있습니다.
       label_view_template: "템플릿 보기"
       label_edit_template: "템플릿 편집"
       banner_html: >
@@ -471,6 +486,7 @@ ko:
     end_series_dialog:
       title: "미팅 시리즈 종료"
   notice_successful_notification: "모든 참가자에게 보내는 이메일 캘린더 업데이트"
+  notice_meeting_template_created: "템플릿이 생성되었습니다"
   notice_timezone_missing: 표준 시간대가 설정되지 않았으며 %{zone}(으)로 간주됩니다. 해당 표준 시간대를 선택하려면 여기를 클릭하세요.
   notice_meeting_updated: "이 페이지는 다른 사람이 업데이트했습니다. 변경 사항을 보려면 다시 로드하세요."
   permission_create_meetings: "미팅 생성"
@@ -485,6 +501,8 @@ ko:
   text_duration_in_hours: "기간(시간)"
   text_in_hours: " 시간"
   text_meeting_agenda_for_meeting: '미팅 "%{meeting}"에 대한 의제'
+  text_meeting_template_blank_slate_heading: "표시할 템플릿이 없습니다"
+  text_meeting_template_blank_slate: "일회성 미팅을 위한 새 템플릿을 만들 수 있습니다"
   text_meeting_series_end_early_heading: "향후 항목을 삭제하시겠습니까?"
   text_meeting_series_end_early: "이 시리즈를 종료하면 향후 오픈 또는 예정된 미팅 항목이 모두 삭제됩니다"
   text_meeting_closing_are_you_sure: "미팅 어젠더를 닫으시겠습니까?"
@@ -530,8 +548,8 @@ ko:
   label_agenda_item_move_up: "위로 이동"
   label_agenda_item_move_down: "아래로 이동"
   label_agenda_item_duplicate: "복제"
-  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
+  label_agenda_item_duplicate_in_next: "다음 미팅에 복제"
+  label_agenda_item_duplicate_in_next_title: "다음 미팅에 복제하시겠습니까?"
   label_agenda_item_add_notes: "메모 추가"
   label_agenda_item_add_outcome: "결과 추가"
   label_agenda_item_work_package_add: "작업 패키지 추가"
@@ -590,6 +608,9 @@ ko:
   text_meeting_in_progress_dropdown_description: "미팅 중에 이루어진 결정 사항 또는 필요한 정보 등의 결과를 문서화합니다."
   text_meeting_closed_dropdown_description: "이 미팅은 종료되었습니다. 더 이상 의제 항목 또는 결과를 수정할 수 없습니다."
   text_meeting_draft_banner: "초안 모드에 현재 있습니다. 이 미팅은 미팅 세부 정보를 변경하거나 참가자를 추가/제거하더라도 캘린더 업데이트나 초대장을 전송하지 않습니다."
+  text_onetime_meeting_template_banner: "현재 미팅 템플릿을 편집하는 중입니다. 이 템플릿을 사용하여 사전 정의된 의제가 있는 일회성 미팅을 만들 수 있습니다. 변경 사항은 이미 생성된 미팅에 영향을 미치지 않습니다."
+  text_onetime_meeting_template_empty_heading: "이 미팅 템플릿은 비어 있습니다"
+  text_onetime_meeting_template_empty_description: "여기에 의제 항목, 섹션 및 첨부 파일을 추가하세요. 이 템플릿을 사용하여 생성된 모든 미팅에 해당 항목이 포함됩니다."
   text_exit_draft_mode_dialog_title: "이 미팅을 열고 초대장을 보내시겠습니까?"
   text_exit_draft_mode_dialog_subtitle: "미팅을 예약한 후에는 초안 모드로 돌아갈 수 없습니다."
   text_exit_draft_mode_dialog_template_title: "이 미팅 시리즈의 첫 번째 항목을 열어보시겠습니까?"

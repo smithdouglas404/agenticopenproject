@@ -54,18 +54,13 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       expect(rendered_component).to have_css ".PageHeader-contextBar"
     end
 
-    it "renders current page without breadcrumbs", with_flag: { new_project_overview: true } do
+    it "renders current page without breadcrumbs" do
       expect(rendered_component).to have_text project.name
-      expect(rendered_component).to have_css ".PageHeader--noBreadcrumb"
-    end
-
-    it "renders current page without breadcrumbs", with_flag: { new_project_overview: false } do
-      expect(rendered_component).to have_text "Overview"
       expect(rendered_component).to have_css ".PageHeader--noBreadcrumb"
     end
   end
 
-  context "with the feature flag enabled", with_flag: { new_project_overview: true } do
+  context "with the feature flag enabled" do
     it "renders a Page Header (with tab nav)" do
       expect(rendered_component).to have_element "page-header", class: "PageHeader--withTabNav"
     end
@@ -90,16 +85,6 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       it "renders title" do
         expect(rendered_component).to have_heading project.name, class: "PageHeader-title"
       end
-    end
-  end
-
-  context "with the feature flag disabled", with_flag: { new_project_overview: false } do
-    it "renders a Page Header" do
-      expect(rendered_component).to have_element "page-header"
-    end
-
-    it "renders title" do
-      expect(rendered_component).to have_heading "Overview", class: "PageHeader-title"
     end
   end
 
@@ -187,7 +172,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     end
   end
 
-  describe "tab bar", with_flag: { new_project_overview: true } do
+  describe "tab bar" do
     context "when user has permission to view project" do
       let(:user) { build_stubbed(:admin) }
 

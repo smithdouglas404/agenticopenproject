@@ -30,7 +30,7 @@
 
 class CostlogController < ApplicationController
   menu_item :work_packages
-  before_action :find_project, :authorize, only: %i[edit new create update destroy]
+  before_action :find_cost_entry_work_package_or_project, :authorize, only: %i[edit new create update destroy]
   before_action :find_associated_objects, only: %i[create update]
 
   helper :work_packages
@@ -73,7 +73,7 @@ class CostlogController < ApplicationController
     elsif @cost_entry.save
 
       flash[:notice] = t(:notice_successful_update)
-      redirect_back fallback_location: polymorphic_path(@cost_entry.entity)
+      redirect_back_or_to(polymorphic_path(@cost_entry.entity))
 
     else
       render action: "edit"
@@ -90,34 +90,32 @@ class CostlogController < ApplicationController
     if request.referer.include?("cost_reports")
       redirect_to controller: "/cost_reports", action: :index
     else
-      redirect_back fallback_location: polymorphic_path(@cost_entry.entity)
+      redirect_back_or_to(polymorphic_path(@cost_entry.entity))
     end
   end
 
   private
 
-  def find_project
-    # copied from timelog_controller.rb
+  def find_cost_entry_work_package_or_project # rubocop:disable Metrics/AbcSize
     if params[:id]
-      @cost_entry = CostEntry.find(params[:id])
+      @cost_entry = CostEntry.visible.find(params[:id])
       @project = @cost_entry.project
     elsif params[:work_package_id]
-      @work_package = WorkPackage.find(params[:work_package_id])
+      @work_package = WorkPackage.visible.find(params[:work_package_id])
       @project = @work_package.project
     elsif params[:project_id]
-      @project = Project.find(params[:project_id])
+      @project = Project.visible.find(params[:project_id])
     else
       render_404
-      false
     end
   end
 
-  def find_associated_objects
+  def find_associated_objects # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     user_id = cost_entry_params.delete(:user_id)
     @user = if @cost_entry.present? && @cost_entry.user_id == user_id
               @cost_entry.user
             else
-              User.find_by(id: user_id)
+              User.visible.find_by(id: user_id)
             end
 
     entity_id = cost_entry_params.delete(:entity_id)
@@ -125,7 +123,7 @@ class CostlogController < ApplicationController
     @work_package = if @cost_entry.present? && @cost_entry.entity_type == "WorkPackage" && @cost_entry.entity_id == entity_id
                       @cost_entry.entity
                     elsif entity_type == "WorkPackage"
-                      WorkPackage.find_by(id: entity_id)
+                      WorkPackage.visible.find_by(id: entity_id)
                     end
 
     cost_type_id = cost_entry_params.delete(:cost_type_id)

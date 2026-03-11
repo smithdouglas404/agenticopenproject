@@ -20,7 +20,7 @@ hi:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: अनुदिष्ट
-      status: अवस्था
+      status: Kanban
       version: संस्करण
       subproject: परियोजना की उपपरियोजना
       subtasks: Parent-child

@@ -34,17 +34,29 @@ class ExternalLinkWarningController < ApplicationController
   skip_before_action :check_if_login_required
   no_authorization_required! :show
 
-  before_action :parse_external_url, only: [:show]
-  before_action :verify_capture_enabled, only: [:show]
+  before_action :parse_external_url
+  before_action :verify_capture_enabled
+  before_action :optional_require_login
 
   def show; end
 
   private
 
+  def login_back_url_params
+    params.permit(:url)
+  end
+
   def verify_capture_enabled
     unless capture_enabled?
       redirect_to @external_url, allow_other_host: true, status: :see_other
     end
+  end
+
+  def optional_require_login
+    return unless Setting.capture_external_links?
+    return unless Setting.capture_external_links_require_login?
+
+    require_login
   end
 
   def capture_enabled?

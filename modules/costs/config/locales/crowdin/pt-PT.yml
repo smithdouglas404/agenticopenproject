@@ -226,6 +226,15 @@ pt-PT:
     errors:
       validation:
         start_time_different_date: "A parte da data de startTime (%{start_time}) tem de ser a mesma que a data de spentOn (%{spent_on})."
+  costs:
+    widgets:
+      actual_costs:
+        title: "Custos reais por mês"
+        blankslate:
+          heading: "Comece a controlar o seu tempo e os seus custos"
+          description: "Obtenha uma síntese dos custos e do tempo registado para monitorizar o progresso do seu projeto. Confirme se os pacotes de trabalho estão associados ao orçamento correto."
+          action: "Registo de tempo"
+        view_details: "Ver detalhes dos custos reais"
   ee:
     features:
       time_entry_time_restrictions: Exigir controlo exato das horas

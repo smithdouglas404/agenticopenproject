@@ -211,6 +211,12 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
         } else {
           this.setValues(values.elements);
         }
+
+        if (this.requestFocus) {
+          // Focus and open the field once the values are loaded
+          this.ngSelectComponent.focus();
+          this.openAutocompleteSelectField();
+        }
       });
     } else {
       this.setValues([]);

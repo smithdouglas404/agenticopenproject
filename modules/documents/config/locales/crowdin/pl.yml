@@ -23,6 +23,8 @@ pl:
   plugin_openproject_documents:
     name: "Dokumenty OpenProject"
     description: "Wtyczka OpenProject umożliwiająca tworzenie dokumentów w projektach."
+  attributes:
+    collaborative_editing_hocuspocus_url: "Adres URL serwera Hocuspocus"
   activerecord:
     errors:
       models:
@@ -125,7 +127,8 @@ pl:
           some_unwritable: Niektóre wartości są konfigurowane za pomocą zmiennych środowiskowych i nie można ich edytować tutaj.
         hocuspocus_server_url:
           label: "Adres URL serwera Hocuspocus"
-          caption: "Adres działającego serwera Hocuspocus."
+          caption: "Adres WebSocket działającego serwera Hocuspocus."
+          invalid_scheme: "Musi używać protokołu WebSocket (ws:// lub wss://)."
         hocuspocus_server_secret:
           label: "Klucz tajny klienta"
           caption: "Wklej klucz tajny dostarczony przez serwer Hocuspocus."

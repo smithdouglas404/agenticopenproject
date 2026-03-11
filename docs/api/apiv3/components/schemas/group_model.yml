@@ -2,6 +2,7 @@
 ---
 allOf:
   - $ref: './principal_model.yml'
+  - $ref: "./custom_field_properties.yml"
   - type: object
     required:
       - _type
@@ -42,6 +43,13 @@ allOf:
                     - user has permission `manage_members` in any project
 
                     **Resource**: User
+          memberships:
+            allOf:
+              - $ref: './link.yml'
+              - description: |-
+                  An collection of all memberships of the group.
+
+                  **Resource**: MembershipCollection
           delete:
             allOf:
               - $ref: './link.yml'

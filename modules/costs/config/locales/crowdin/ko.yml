@@ -222,6 +222,15 @@ ko:
     errors:
       validation:
         start_time_different_date: "startTime(%{start_time})의 날짜 부분은 spentOn(%{spent_on}) 날짜와 동일해야 합니다."
+  costs:
+    widgets:
+      actual_costs:
+        title: "월별 실제 비용"
+        blankslate:
+          heading: "시간 및 비용 추적 시작"
+          description: "비용 및 기록된 시간에 대한 개요를 확인하여 프로젝트의 진행률을 모니터링합니다. 작업 패키지가 올바른 예산과 연결되어 있는지 확인해야 합니다."
+          action: "시간 기록"
+        view_details: "실제 비용 세부 정보 보기"
   ee:
     features:
       time_entry_time_restrictions: 정확한 시간 추적 요구

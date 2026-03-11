@@ -2,30 +2,31 @@ name: crowdin
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * *' # Daily at 03:00
+    - cron: "0 3 * * *" # Daily at 03:00
 
 permissions: {}
 jobs:
   setup:
+    if: github.repository == 'opf/openproject'
     runs-on: ubuntu-latest
     outputs:
       latest_release_branch: ${{ steps.find_latest_release.outputs.branch }}
     steps:
-    - id: find_latest_release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPOSITORY: ${{ github.repository }}
-      run: |
-        BRANCH=$(curl -H "Authorization: token $GITHUB_TOKEN" \
-          https://api.github.com/repos/$GITHUB_REPOSITORY/branches?protected=true | \
-          jq -r '.[].name' | grep '^release/' | sort --version-sort | tail -1
-        )
-        if [ "$BRANCH" = "" ]; then
-          echo "Invalid release branch found: $BRANCH"
-          exit 1
-        fi
+      - id: find_latest_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          BRANCH=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/$GITHUB_REPOSITORY/branches?protected=true | \
+            jq -r '.[].name' | grep '^release/' | sort --version-sort | tail -1
+          )
+          if [ "$BRANCH" = "" ]; then
+            echo "Invalid release branch found: $BRANCH"
+            exit 1
+          fi
 
-        echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
+          echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
 
   crowdin:
     permissions:

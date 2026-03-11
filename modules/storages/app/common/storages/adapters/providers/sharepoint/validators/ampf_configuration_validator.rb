@@ -63,13 +63,23 @@ module Storages
             # but there are some challenges to it. We need to figure out a good way to go about this
             # 2025-04-08 @mereghost
             def client_permissions
-              folder = create_folder.value!
-              delete_folder(folder)
+              create_folder.either(-> { delete_folder(it) }, ->(_) { find_and_delete_folder })
+            end
+
+            def find_and_delete_folder
+              Input::Files.build(folder: "/#{@storage.managed_drive_name}").bind do |input_data|
+                Registry["sharepoint.queries.files"].call(storage: @storage, auth_strategy:,
+                                                          input_data:).bind do |files_collection|
+                  folder = files_collection.find { it.name == TEST_FOLDER_NAME }
+                  delete_folder(folder) if folder
+                end
+              end
             end
 
             def delete_folder(folder)
               Input::DeleteFolder.build(location: folder.id).bind do |input_data|
-                Registry["sharepoint.commands.delete_folder"].call(storage: @storage, auth_strategy:, input_data:)
+                Registry["sharepoint.commands.delete_folder"]
+                  .call(storage: @storage, auth_strategy:, input_data:)
                   .either(->(_) { pass_check(:client_folder_removal) },
                           ->(_) { fail_check(:client_folder_removal, :sp_client_cant_delete_folder) })
               end
@@ -78,17 +88,24 @@ module Storages
             def create_folder
               Input::CreateFolder.build(folder_name: TEST_FOLDER_NAME,
                                         parent_location: @storage.managed_drive_id).bind do |input_data|
-                folder_result = Registry["sharepoint.commands.create_folder"].call(storage: @storage, auth_strategy:, input_data:)
+                folder_result = Registry["sharepoint.commands.create_folder"]
+                                .call(storage: @storage, auth_strategy:, input_data:)
 
-                folder_result.either(
-                  ->(_) { pass_check(:client_folder_creation) },
-                  ->(error) do
-                    code = error.code == :conflict ? :sp_existing_test_folder : :sp_client_write_permission_missing
-                    fail_check(:client_folder_creation, code, context: { folder_name: TEST_FOLDER_NAME })
-                  end
-                )
+                handle_folder_creation_result(folder_result)
 
                 folder_result
+              end
+            end
+
+            def handle_folder_creation_result(result)
+              return pass_check(:client_folder_creation) if result.success?
+
+              if result.failure.code == :conflict
+                warn_check(:client_folder_creation,
+                           :sp_existing_test_folder, context: { folder_name: TEST_FOLDER_NAME })
+              else
+                fail_check(:client_folder_creation,
+                           :sp_client_write_permission_missing, context: { folder_name: TEST_FOLDER_NAME })
               end
             end
 

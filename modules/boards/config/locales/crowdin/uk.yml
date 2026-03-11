@@ -20,7 +20,7 @@ uk:
       action: "Дошка дій (%{attribute})"
     board_type_attributes:
       assignee: Виконавець
-      status: Стан
+      status: Канбан
       version: Версія
       subproject: Підпроєкт
       subtasks: Батьківські й дочірні елементи

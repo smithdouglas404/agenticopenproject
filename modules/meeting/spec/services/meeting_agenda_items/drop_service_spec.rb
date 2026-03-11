@@ -94,7 +94,7 @@ RSpec.describe MeetingAgendaItems::DropService do
           end.not_to change { meeting_agenda_item }
 
           expect(service_call).to be_failure
-          expect(service_call.errors).to match(/Couldn't find MeetingSection/)
+          expect(service_call.errors[:base].join).to match(/Couldn't find MeetingSection/)
         end
       end
 
@@ -161,7 +161,7 @@ RSpec.describe MeetingAgendaItems::DropService do
           expect { service_call }.not_to change { meeting_agenda_item.reload.meeting_section_id }
 
           expect(service_call).to be_failure
-          expect(service_call.errors).to match(/Couldn't find MeetingSection/)
+          expect(service_call.errors[:base].join).to match(/Couldn't find MeetingSection/)
         end
       end
 
@@ -172,7 +172,7 @@ RSpec.describe MeetingAgendaItems::DropService do
           expect { service_call }.not_to change { meeting_agenda_item.reload.meeting_section_id }
 
           expect(service_call).to be_failure
-          expect(service_call.errors).to match(/Couldn't find MeetingSection/)
+          expect(service_call.errors[:base].join).to match(/Couldn't find MeetingSection/)
         end
       end
     end
@@ -216,7 +216,7 @@ RSpec.describe MeetingAgendaItems::DropService do
             .not_to change { meeting_agenda_item.reload.meeting_section_id }
 
           expect(result).to be_failure
-          expect(result.errors).to match(/Couldn't find MeetingSection/)
+          expect(result.errors[:base].join).to match(/Couldn't find MeetingSection/)
         end
       end
     end

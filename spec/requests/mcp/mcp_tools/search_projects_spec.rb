@@ -33,7 +33,6 @@ require "spec_helper"
 RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
-    header "X-Authentication-Scheme", "Bearer"
     header "Content-Type", "application/json"
     post "/mcp", request_body.to_json
   end
@@ -67,7 +66,7 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
   end
 
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
-    it_behaves_like "MCP response with structured content"
+    it_behaves_like "MCP text tool"
 
     it "finds all projects without filters" do
       subject
@@ -179,7 +178,7 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
     context "when passing an invalid project status" do
       let(:call_args) { { status_code: "blubb" } }
 
-      it_behaves_like "MCP error response"
+      it_behaves_like "MCP tool execution error response"
     end
 
     context "when user can't see projects" do
@@ -189,12 +188,6 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
         subject
         expect(parsed_results.dig("structuredContent", "items")).to be_empty
       end
-    end
-
-    context "when the tool is disabled via configuration" do
-      let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
-
-      it_behaves_like "MCP error response"
     end
   end
 

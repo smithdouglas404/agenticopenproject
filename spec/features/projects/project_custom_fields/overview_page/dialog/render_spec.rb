@@ -42,7 +42,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
   end
 
   it "opens a dialog showing the input for project custom field" do
-    dialog = overview_page.open_edit_dialog_for_custom_field(boolean_project_custom_field)
+    dialog = overview_page.open_modal_for_custom_field(boolean_project_custom_field)
 
     dialog.expect_open
 
@@ -52,23 +52,23 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
   end
 
   it "renders the dialog body asynchronically" do
-    dialog = Components::Projects::ProjectCustomFields::EditDialog.new(project, boolean_project_custom_field)
+    dialog = Components::Projects::ProjectCustomFields::Dialog.new(project, boolean_project_custom_field)
 
     expect(page).to have_no_css(dialog.async_content_container_css_selector, visible: :all)
 
-    overview_page.open_edit_dialog_for_custom_field(boolean_project_custom_field)
+    overview_page.open_modal_for_custom_field(boolean_project_custom_field)
 
     expect(page).to have_css(dialog.async_content_container_css_selector, visible: :visible)
   end
 
   it "can be closed via close icon or cancel button" do
-    dialog = overview_page.open_edit_dialog_for_custom_field(boolean_project_custom_field)
+    dialog = overview_page.open_modal_for_custom_field(boolean_project_custom_field)
 
     dialog.close_via_icon
 
     dialog.expect_closed
 
-    dialog = overview_page.open_edit_dialog_for_custom_field(string_project_custom_field)
+    dialog = overview_page.open_modal_for_custom_field(string_project_custom_field)
 
     dialog.close_via_button
 
