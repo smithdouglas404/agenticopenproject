@@ -61,7 +61,6 @@ module Queries::WorkPackages
     filter Filter::WatcherFilter
     filter Filter::DatesIntervalFilter
     filter Filter::ParentFilter
-    filter Filter::EpicFilter
     filter Filter::PrecedesFilter
     filter Filter::ProjectPhaseFilter
     filter Filter::FollowsFilter

@@ -262,10 +262,8 @@ RSpec.describe Sprint do
   end
 
   describe "#wiki_page" do
-    let(:project) do
-      create(:project, enabled_module_names: %w[work_package_tracking backlogs wiki])
-    end
-    let(:wiki_page) { WikiPage.where(wiki: project.wiki, title: sprint.wiki_page).first }
+    let(:wiki) { create :wiki, project: }
+    let(:wiki_page) { WikiPage.where(wiki:, title: sprint.wiki_page).first }
     let(:user) { create :user }
 
     before do
@@ -283,20 +281,6 @@ RSpec.describe Sprint do
       expect { subject }.not_to raise_error
 
       expect(wiki_page.text).to start_with("h1. #{sprint.name}")
-    end
-
-    context "when the project wiki is missing but wiki module is enabled" do
-      before do
-        project.wiki.destroy!
-      end
-
-      it "re-creates the wiki and creates the sprint wiki page" do
-        expect { subject }.not_to raise_error
-
-        project.reload
-        expect(project.wiki).to be_present
-        expect(project.wiki.find_page(sprint.wiki_page_title)&.text).to start_with("h1. #{sprint.name}")
-      end
     end
   end
 end

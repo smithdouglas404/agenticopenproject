@@ -191,43 +191,6 @@ RSpec.describe API::V3::WorkPackages::AvailableRelationCandidatesAPI do
       end
     end
 
-    describe "epic relation candidates" do
-      shared_let(:task_type) { create(:type_task, projects: [project1, project2]) }
-      shared_let(:epic_type) { create(:type_epic, projects: [project1, project2]) }
-
-      shared_let(:task_source) { create(:work_package, project: project2, type: task_type, subject: "Task source") }
-      shared_let(:epic_candidate) { create(:work_package, project: project1, type: epic_type, subject: "Epic candidate") }
-      shared_let(:non_epic_candidate) { create(:work_package, project: project1, type: task_type, subject: "Task candidate") }
-      shared_let(:epic_source) { create(:work_package, project: project2, type: epic_type, subject: "Epic source") }
-
-      context "for allowed source types" do
-        let(:href) { "/api/v3/work_packages/#{task_source.id}/available_relation_candidates?type=epic" }
-
-        it "returns only visible epic work packages across projects" do
-          expect(subjects).to contain_exactly(epic_candidate.id, epic_source.id)
-        end
-      end
-
-      context "with an undefined query value" do
-        let(:href) { "/api/v3/work_packages/#{task_source.id}/available_relation_candidates?type=epic&query=undefined" }
-
-        it "returns an empty collection instead of crashing" do
-          request
-
-          expect(last_response).to have_http_status(200)
-          expect(JSON.parse(last_response.body).dig("_embedded", "elements")).to eq([])
-        end
-      end
-
-      context "for non-allowed source types" do
-        let(:href) { "/api/v3/work_packages/#{epic_source.id}/available_relation_candidates?type=epic" }
-
-        it "returns no candidates" do
-          expect(subjects).to be_empty
-        end
-      end
-    end
-
     context "when a project is archived" do
       let(:href) { "/api/v3/work_packages/#{wp2.id}/available_relation_candidates?query=WP" }
 

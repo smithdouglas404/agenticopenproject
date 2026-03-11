@@ -167,8 +167,11 @@ module OpenProject::TextFormatting::Matchers
           .first
 
         if meeting&.visible?(User.current)
-          link_to meeting.title,
-                  { only_path: context[:only_path], controller: "/meetings", action: "show", id: meeting.id },
+          link_to meeting.title, { only_path: context[:only_path],
+                                   controller: "/meetings",
+                                   action: "show",
+                                   project_id: meeting.project_id,
+                                   id: meeting.id },
                   class: "meeting"
         end
       end

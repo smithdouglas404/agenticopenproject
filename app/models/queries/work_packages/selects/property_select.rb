@@ -57,11 +57,6 @@ class Queries::WorkPackages::Selects::PropertySelect < Queries::WorkPackages::Se
       association: "ancestors_relations",
       sortable: false
     },
-    epic: {
-      association: "epic",
-      sortable: "#{WorkPackage.table_name}.epic_id",
-      groupable: "#{WorkPackage.table_name}.epic_id"
-    },
     status: {
       association: "status",
       sortable: "position",

@@ -2,10 +2,12 @@ ru:
   js:
     grid:
       add_widget: 'Добавить виджет'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Удалить виджет'
       configure: 'Настроить виджет'
       widgets:
         missing_permission: "У вас нет необходимых прав для просмотра этого виджета."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Пользовательский текст'
         documents:
@@ -17,7 +19,6 @@ ru:
           title: 'Новости'
         project_description:
           title: 'Описание'
-          no_results: "Описания еще нет. Его можно добавить в настройках проекта."
         project_status:
           title: 'Статус'
           not_started: 'Не начат'
@@ -27,8 +28,6 @@ ru:
           not_set: 'Не задано'
           finished: 'Завершен'
           discontinued: 'Прекращен'
-        project_status_beta:
-          title: 'Статус (BETA)'
         subprojects:
           title: 'Подпроекты'
         project_favorites:

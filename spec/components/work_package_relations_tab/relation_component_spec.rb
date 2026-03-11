@@ -209,18 +209,4 @@ RSpec.describe WorkPackageRelationsTab::RelationComponent, type: :component do
       end
     end
   end
-
-  context "with epic issue relation item" do
-    let(:relation_item) { build_relation_item(type: :epic, relation: child, visibility: :visible) }
-
-    it "renders a title link" do
-      expect(render_component(relation_item:))
-        .to have_link child.subject, href: work_package_path(child)
-    end
-
-    it "does not render an action menu" do
-      expect(render_component(relation_item:))
-        .to have_no_menu
-    end
-  end
 end

@@ -67,11 +67,9 @@ export class WorkPackageEditFieldComponent extends SelectEditFieldComponent {
   }
 
   protected fetchAllowedValueQuery(query?:string):Promise<CollectionResource> {
-    if (this.name === 'parent' || this.name === 'epic') {
-      const queryParams = query ? { query } : {};
-
+    if (this.name === 'parent') {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      return this.schema.allowedValues.$link.$fetch(queryParams) as Promise<CollectionResource>;
+      return this.schema.allowedValues.$link.$fetch({ query }) as Promise<CollectionResource>;
     }
 
     return super.fetchAllowedValueQuery(query);

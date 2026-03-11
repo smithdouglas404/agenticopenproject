@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,7 +32,7 @@ class Projects::Settings::BacklogsController < Projects::SettingsController
   menu_item :settings_backlogs
 
   def show
-    @statuses_done_for_project = @project.done_statuses.select(:id).map(&:id)
+    @statuses_done_for_project = @project.done_statuses.pluck(:id)
   end
 
   def update

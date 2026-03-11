@@ -60,7 +60,6 @@ module Queries::Operators
     Queries::Operators::PartOf,
     Queries::Operators::Requires,
     Queries::Operators::Required,
-    Queries::Operators::Epic,
     Queries::Operators::Parent,
     Queries::Operators::Children,
     Queries::Operators::Child

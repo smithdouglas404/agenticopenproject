@@ -34,7 +34,7 @@ class Users::HoverCardComponent < ApplicationComponent
   def initialize(id:)
     super
 
-    @user = User.find_by(id:)
+    @user = User.visible.find_by(id:)
   end
 
   def render?

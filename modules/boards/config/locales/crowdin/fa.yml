@@ -20,7 +20,7 @@ fa:
       action: "تابلوی فعالیت (%{attribute})"
     board_type_attributes:
       assignee: نماینده
-      status: وضعیت
+      status: Kanban
       version: نسخه
       subproject: زیر پروژه
       subtasks: والد-فرزند

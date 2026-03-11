@@ -30,15 +30,6 @@
 
 module Type::AttributeGroups
   extend ActiveSupport::Concern
-  REPORTER_TYPE_NAMES = [
-    "task",
-    "bug",
-    "user story",
-    "epic",
-    "feature",
-    "summary task",
-    "milestone"
-  ].freeze
 
   included do
     before_save :write_attribute_groups_objects
@@ -100,7 +91,6 @@ module Type::AttributeGroups
   def attribute_groups
     self.attribute_groups_objects ||= begin
       groups = custom_attribute_groups || default_attribute_groups
-      groups = replace_accountable_with_reporter(groups) if replace_accountable_with_reporter?
 
       to_attribute_group_class(groups)
     end
@@ -131,14 +121,10 @@ module Type::AttributeGroups
     values = work_package_attributes_by_default_group_key
     values.reject! { |k, _| k == :estimates_and_progress } if is_milestone?
 
-    groups = default_groups.keys.each_with_object([]) do |groupkey, array|
+    default_groups.keys.each_with_object([]) do |groupkey, array|
       members = values[groupkey]
       array << [groupkey, members] if members.present?
     end
-
-    return groups unless replace_accountable_with_reporter?
-
-    replace_accountable_with_reporter(groups)
   end
 
   def reload(*args)
@@ -197,40 +183,6 @@ module Type::AttributeGroups
   # This method might get patched by modules.
   def default_attribute?(active_cfs, key)
     !(CustomField.custom_field_attribute?(key) && !active_cfs.include?(key))
-  end
-
-  def replace_accountable_with_reporter(groups)
-    normalized_groups = groups.map do |group_key, members|
-      normalized_members = Array(members).map(&:to_s)
-
-      normalized_members.delete("responsible")
-      normalized_members.delete("author") unless people_group?(group_key)
-
-      [group_key, normalized_members]
-    end
-
-    people_group = normalized_groups.find { |group_key, _| people_group?(group_key) }
-
-    if people_group
-      people_members = people_group.last
-      unless people_members.include?("author")
-        assignee_index = people_members.index("assignee")
-        insertion_index = assignee_index ? assignee_index + 1 : people_members.length
-        people_members.insert(insertion_index, "author")
-      end
-    else
-      normalized_groups << [:people, ["author"]]
-    end
-
-    normalized_groups.reject { |_group_key, members| members.blank? }
-  end
-
-  def replace_accountable_with_reporter?
-    REPORTER_TYPE_NAMES.include?(name.to_s.strip.downcase)
-  end
-
-  def people_group?(group_key)
-    group_key.to_s.casecmp("people").zero?
   end
 
   def to_attribute_group_class(groups)

@@ -39,6 +39,12 @@ pl:
         base_amount: "Kwota podstawowa"
       work_package:
         budget_subject: "Tytuł budżetu"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "nie jest członkiem projektu budżetu"
     models:
       budget: "Budżet"
       material_budget_item: "Jednostka"
@@ -56,6 +62,31 @@ pl:
   caption_labor_costs: "Rzeczywiste koszty pracy"
   caption_material_costs: "Rzeczywiste koszty jednostkowe"
   budgets_title: "Budżety"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Sumy budżetowe"
+        remaining_budget: "Pozostały budżet"
+        spent_budget: "Wydany budżet"
+        total_actual_costs: "Łączne koszty rzeczywiste"
+        total_planned_budget: "Łączny planowany budżet"
+      budget_by_cost_type:
+        title: "Budżet według typu kosztów"
+        blankslate:
+          heading: "Rozpocznij kontrolowanie projektu"
+          description: "Uzyskaj przegląd swoich budżetów i kosztów, aby skutecznie śledzić stan projektu"
+        blankslate_zero:
+          heading: "Brak szczegółów budżetu"
+          description: "Aby zobaczyć tutaj dane, dodaj szczegóły dotyczące planowanego budżetu"
+        caption:
+          zero: "Brak danych budżetowych."
+          one: "Dane zagregowane z %{count} budżetu zawarte w tej %{workspace}."
+          other: "Dane zagregowane z %{count} budżetów zawartych na tej %{workspace}."
+        caption_with_subitems:
+          zero: "Brak danych budżetowych."
+          one: "Dane zagregowane z %{count} budżetu zawarte w tej %{workspace} i jej podpozycjach."
+          other: "Dane zagregowane z %{count} budżetów zawarte w tej %{workspace} i jej podpozycjach."
+        view_details: "Wyświetl szczegóły budżetu"
   events:
     budget: "Budżet edytowany"
   help_click_to_edit: "Kliknij tutaj aby edytować."

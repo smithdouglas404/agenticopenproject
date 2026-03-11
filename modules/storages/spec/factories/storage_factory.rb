@@ -93,6 +93,7 @@ FactoryBot.define do
     sequence(:host) { |n| "https://host#{n}.example.com/" }
     authentication_method { "two_way_oauth2" }
     storage_audience { nil }
+    forbidden_file_name_characters { "" }
 
     trait :with_oauth_configured do
       after(:create) do |storage, _evaluator|

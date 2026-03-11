@@ -139,12 +139,23 @@ class WorkPackageRelationsTab::RelationsMediator
   def relation_group(type)
     case type
     when Relation::TYPE_PARENT
-      hierarchy_relation_group(type:, visible_relations: visible_parents, ghost_relations: ghost_parents)
-    when Relation::TYPE_CHILD
-      hierarchy_relation_group(type:, visible_relations: visible_children, ghost_relations: ghost_children)
-    else
-      hierarchy_relation_group(
+      RelationGroup.new(
         type:,
+        work_package:,
+        visible_relations: visible_parents,
+        ghost_relations: ghost_parents
+      )
+    when Relation::TYPE_CHILD
+      RelationGroup.new(
+        type:,
+        work_package:,
+        visible_relations: visible_children,
+        ghost_relations: ghost_children
+      )
+    else
+      RelationGroup.new(
+        type:,
+        work_package:,
         visible_relations: filter_relations_by_type(visible_relations, type),
         ghost_relations: filter_relations_by_type(ghost_relations, type)
       )
@@ -160,10 +171,6 @@ class WorkPackageRelationsTab::RelationsMediator
   end
 
   private
-
-  def hierarchy_relation_group(type:, visible_relations:, ghost_relations:)
-    RelationGroup.new(type:, work_package:, visible_relations:, ghost_relations:)
-  end
 
   def filter_relations_by_type(relations, type)
     relations.select do |relation|

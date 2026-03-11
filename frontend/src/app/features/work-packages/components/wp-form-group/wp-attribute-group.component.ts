@@ -64,7 +64,7 @@ export class WorkPackageFormAttributeGroupComponent extends UntilDestroyedMixin 
    * @param {FieldDescriptor} field
    */
   public shouldHideField(descriptor:FieldDescriptor) {
-    const field = descriptor.field ?? descriptor.fields![0];
-    return this.wpEditForm.editMode && !field.writable && descriptor.name !== 'author';
+    const field = descriptor.field || descriptor.fields![0];
+    return this.wpEditForm.editMode && !field.writable;
   }
 }

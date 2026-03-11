@@ -136,4 +136,115 @@ RSpec.describe "Meeting requests",
       end
     end
   end
+
+  describe "delete" do
+    shared_let(:user_with_delete) do
+      create(:user, member_with_permissions: { project => %i[view_meetings delete_meetings] })
+    end
+
+    before { login_as user_with_delete }
+
+    describe "template deletion restrictions" do
+      context "when deleting series template" do
+        let(:recurring_meeting) { create(:recurring_meeting, project:) }
+        let(:series_template) { recurring_meeting.template }
+
+        it "renders a 400" do
+          delete project_meeting_path(project, series_template)
+
+          expect(response).to have_http_status(:bad_request)
+        end
+
+        it "does not delete the template" do
+          series_template_id = series_template.id
+
+          delete project_meeting_path(project, series_template)
+
+          expect(Meeting.exists?(series_template_id)).to be true
+        end
+      end
+
+      context "when deleting onetime template" do
+        let(:onetime_template) { create(:onetime_template, project:) }
+
+        it "returns successful redirect" do
+          delete project_meeting_path(project, onetime_template)
+
+          expect(response).to have_http_status(:see_other)
+        end
+
+        it "deletes the template" do
+          onetime_template_id = onetime_template.id
+
+          delete project_meeting_path(project, onetime_template)
+
+          expect(Meeting.exists?(onetime_template_id)).to be false
+        end
+      end
+
+      context "when deleting regular onetime meeting" do
+        let(:regular_meeting) { create(:meeting, project:, template: false) }
+
+        it "returns successful redirect" do
+          delete project_meeting_path(project, regular_meeting)
+
+          expect(response).to have_http_status(:see_other)
+        end
+
+        it "deletes the meeting" do
+          regular_meeting_id = regular_meeting.id
+
+          delete project_meeting_path(project, regular_meeting)
+
+          expect(Meeting.exists?(regular_meeting_id)).to be false
+        end
+      end
+    end
+  end
+
+  describe "GET new_dialog - template selector visibility", with_ee: [:meeting_templates] do
+    shared_let(:ancestor_project) { create(:project, enabled_module_names: %i[meetings]) }
+    shared_let(:current_project) { create(:project, enabled_module_names: %i[meetings], parent: ancestor_project) }
+    shared_let(:descendant_project) { create(:project, enabled_module_names: %i[meetings], parent: current_project) }
+    shared_let(:unrelated_project) { create(:project, enabled_module_names: %i[meetings]) }
+
+    shared_let(:user) do
+      create(:user, member_with_permissions: { current_project => %i[view_meetings create_meetings] })
+    end
+
+    shared_let(:own_template) { create(:onetime_template, project: current_project, title: "Own template") }
+    shared_let(:ancestor_none_template) do
+      create(:onetime_template, project: ancestor_project, sharing: :none, title: "Ancestor none")
+    end
+    shared_let(:ancestor_descendants_template) do
+      create(:onetime_template, project: ancestor_project, sharing: :descendants, title: "Ancestor descendants")
+    end
+    shared_let(:descendant_none_template) do
+      create(:onetime_template, project: descendant_project, sharing: :none, title: "Descendant none")
+    end
+    shared_let(:descendant_descendants_template) do
+      create(:onetime_template, project: descendant_project, sharing: :descendants, title: "Descendant descendants")
+    end
+    shared_let(:unrelated_none_template) do
+      create(:onetime_template, project: unrelated_project, sharing: :none, title: "Unrelated none")
+    end
+    shared_let(:system_template) do
+      create(:onetime_template, project: unrelated_project, sharing: :system, title: "System template")
+    end
+
+    before { login_as user }
+
+    it "shows own and those shared with descendants and all projects" do
+      get new_dialog_project_meetings_path(current_project), as: :turbo_stream
+
+      expect(response.body).to include("Own template")
+      expect(response.body).to include("Ancestor descendants")
+      expect(response.body).to include("System template")
+
+      expect(response.body).not_to include("Ancestor none")
+      expect(response.body).not_to include("Descendant none")
+      expect(response.body).not_to include("Descendant descendants")
+      expect(response.body).not_to include("Unrelated none")
+    end
+  end
 end

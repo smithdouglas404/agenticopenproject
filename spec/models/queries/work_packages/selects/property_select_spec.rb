@@ -41,10 +41,6 @@ RSpec.describe Queries::WorkPackages::Selects::PropertySelect do
       expect(described_class.instances.map(&:name)).to include :done_ratio
     end
 
-    it "the epic column exists" do
-      expect(described_class.instances.map(&:name)).to include :epic
-    end
-
     context "when duration feature flag enabled" do
       it "column exists" do
         expect(described_class.instances.map(&:name)).to include :duration

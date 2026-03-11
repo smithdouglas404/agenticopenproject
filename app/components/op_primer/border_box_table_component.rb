@@ -106,6 +106,10 @@ module OpPrimer
       false
     end
 
+    def has_header?
+      true
+    end
+
     def has_footer?
       false
     end

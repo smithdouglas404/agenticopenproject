@@ -31,6 +31,7 @@ Click the **+** icon and choose which kind of widget you want to add.
 
 You can add various widgets to your project dashboard. Available widgets in OpenProject include:
 
+- Budget
 - Calendar
 - Custom text
 - Description
@@ -43,6 +44,8 @@ You can add various widgets to your project dashboard. Available widgets in Open
 - Work packages graph
 - Work packages overview
 - Work packages table
+
+### Budget widget
 
 ### Calendar widget
 

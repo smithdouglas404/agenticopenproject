@@ -37,7 +37,7 @@ RSpec.describe TwoFactorAuthentication::Users::TwoFactorDevicesController do
       let(:logged_in_user) { other_user }
 
       it "does not give access" do
-        expect(response).to have_http_status :forbidden
+        expect(response).to have_http_status :not_found
       end
     end
 

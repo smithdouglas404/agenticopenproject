@@ -235,18 +235,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
                   .at_path("_attributeGroups/2/_embedded/query/_type")
         end
       end
-
-      context "when author is part of the people group" do
-        let(:attribute_groups) do
-          [Type::AttributeGroup.new(wp_type, "People", %w[assignee author])]
-        end
-
-        it "keeps author in the rendered attributes" do
-          expect(subject)
-            .to be_json_eql(%w[assignee author].to_json)
-            .at_path("_attributeGroups/0/attributes")
-        end
-      end
     end
 
     describe "lock version" do
@@ -295,6 +283,26 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       it_behaves_like "indicates length requirements" do
         let(:min_length) { 1 }
         let(:max_length) { 255 }
+      end
+
+      context "on a work package which's type has an auto-generated subject" do
+        before do
+          allow(wp_type)
+            .to receive(:enabled_patterns)
+                .and_return({ subject: double })
+        end
+
+        it_behaves_like "has basic schema properties" do
+          let(:type) { "String" }
+          let(:name) { I18n.t("attributes.subject") }
+          let(:required) { true }
+          let(:writable) { false }
+          let(:has_default) { true }
+        end
+
+        it_behaves_like "defines the placeholder to display" do
+          let(:placeholder) { I18n.t("placeholders.templated_hint", type: wp_type.name) }
+        end
       end
     end
 
@@ -761,7 +769,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       it_behaves_like "has basic schema properties" do
         let(:path) { "author" }
         let(:type) { "User" }
-        let(:name) { I18n.t("activerecord.attributes.work_package.author") }
+        let(:name) { I18n.t("attributes.author") }
         let(:required) { true }
         let(:writable) { false }
         let(:location) { "_links" }
@@ -903,36 +911,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
 
         it_behaves_like "does not link to allowed values" do
           let(:path) { "parent" }
-        end
-      end
-    end
-
-    describe "epic" do
-      it_behaves_like "has basic schema properties" do
-        let(:path) { "epic" }
-        let(:type) { "WorkPackage" }
-        let(:name) { I18n.t("activerecord.attributes.work_package.epic") }
-        let(:required) { false }
-        let(:writable) { true }
-        let(:location) { "_links" }
-      end
-
-      it_behaves_like "links to allowed values via collection link" do
-        let(:path) { "epic" }
-        let(:href) { api_v3_paths.work_package_available_relation_candidates(work_package.id, type: :epic) }
-      end
-
-      context "when creating" do
-        let(:work_package) do
-          build(:work_package, project:) do |wp|
-            allow(wp)
-              .to receive(:available_custom_fields)
-                    .and_return(available_custom_fields)
-          end
-        end
-
-        it_behaves_like "does not link to allowed values" do
-          let(:path) { "epic" }
         end
       end
     end
@@ -1259,8 +1237,8 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         call_count = 0
         allow(work_package.type)
           .to receive(:attribute_groups) do
-          call_count += 1
-          []
+            call_count += 1
+            []
         end
 
         # Rendering two times, the Type#attribute_groups

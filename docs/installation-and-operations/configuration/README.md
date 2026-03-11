@@ -153,7 +153,7 @@ Configuring OpenProject through environment variables is described in detail [in
 
 #### Real-time collaboration
 
-The AIO (all-in-one) container comes bundled with the [hocuspocus](https://github.com/opf/op-blocknote-hocuspocus) server needed
+The AIO (all-in-one) container comes bundled with the [hocuspocus](https://github.com/opf/openproject/tree/dev/extensions/op-blocknote-hocuspocus) server needed
 for the real-time collaboration feature for documents.
 
 This is controlled via the following two environment variables, shown with their default values.

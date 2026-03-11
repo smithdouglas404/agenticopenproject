@@ -87,7 +87,7 @@ fr:
     button_advanced_filter: "Filtre avancé"
     button_list_view: "Vue en liste"
     button_show_view: "Affichage plein écran"
-    button_log_time: "Afficher l'horodatage"
+    button_log_time: "Consigner du temps"
     button_start_timer: "Démarrer le suivi du temps"
     button_stop_timer: "Arrêter le suivi du temps"
     button_more: "Plus"
@@ -513,10 +513,10 @@ fr:
         wiki: "Dans le <b>wiki</b> vous pouvez documenter et partager vos connaissances avec votre équipe."
         backlogs:
           overview: "Gérez votre travail dans la vue <b>backlogs</b>."
-          sprints: "Sur la droite, vous avez le backlog de produit et le backlog des bugs. Sur la gauche, vous avez leurs sprints respectifs. Ici, vous pouvez créer des <b>épopées, histoires d'utilisateurs et bugs</b>, prioriser via glisser-déposer et les ajouter à un sprint."
+          sprints: "Sur la droite, vous avez le backlog de produit et le backlog des bugs. Sur la gauche, vous avez leurs sprints respectifs. Ici, vous pouvez créer des <b>epics, user stories et bugs</b>, les prioriser via glisser-déposer et les ajouter à un sprint."
           task_board_arrow: "Pour voir votre <b>Tableau de bord des Tâches</b>, ouvrez le menu déroulant Sprint..."
           task_board_select: "…et sélectionnez l'entrée <b>Tableau de bord des Tâches</b>."
-          task_board: "Le tableau des tâches visualise la <b>progression pour ce sprint</b>. Cliquez sur l'icône plus (+) à côté d'un récit utilisateur pour ajouter de nouvelles tâches ou obstacles. <br> Le statut peut être mis à jour par glisser-déposer."
+          task_board: "Le tableau des tâches visualise la <b>progression pour ce sprint</b>. Cliquez sur l'icône plus (+) à côté d'une user story pour ajouter de nouvelles tâches ou de nouveaux obstacles. <br> Le statut peut être mis à jour par glisser-déposer."
         boards:
           overview: "Sélectionnez <b>tableaux</b> pour déplacer la vue et gérer votre projet en utilisant la vue des tableaux agiles."
           lists_kanban: "Ici, vous pouvez créer plusieurs listes (colonnes) dans votre tableau. Cette fonctionnalité vous permet de créer un <b>tableau Kanban</b>, par exemple."
@@ -705,7 +705,7 @@ fr:
         nevermind: "Peu importe"
     time_entry:
       work_package_required: "Nécessite d'abord la sélection d'un lot de travaux."
-      title: "Consigner temps"
+      title: "Consigner du temps"
       tracking: "Suivi du temps"
       stop: "Arrêter"
     timer:

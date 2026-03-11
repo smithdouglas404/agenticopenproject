@@ -54,11 +54,8 @@ module McpTools
       McpResources.read_resource_content(self.class.resource.uri, resources_considered: McpResources.all)
     end
 
-    def format_result(content)
-      MCP::Tool::Response.new(
-        [{ type: "resource", resource: McpResources.format_json_resource(self.class.resource.uri, content) }],
-        structured_content: content
-      )
+    def format_content(result)
+      [{ type: "resource", resource: McpResources.format_json_resource(self.class.resource.uri, result) }]
     end
   end
 end

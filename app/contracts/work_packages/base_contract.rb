@@ -46,8 +46,9 @@ module WorkPackages
     attribute :type_id
     attribute :priority_id
     attribute :category_id
+    # TODO: manage_sprint_items can be removed once the sprint_id is in place.
     attribute :version_id,
-              permission: :assign_versions do
+              permission: %i(assign_versions manage_sprint_items) do
       validate_version_is_assignable
     end
 
@@ -84,12 +85,6 @@ module WorkPackages
 
     attribute :parent_id,
               permission: :manage_subtasks
-
-    attribute :epic_id,
-              permission: :edit_work_packages,
-              writable: ->(*) {
-                WorkPackage.epic_source_type?(model.type) || (model.epic_id_changed? && model.epic_id.nil?)
-              }
 
     attribute :project_phase_definition_id,
               permission: :view_project_phases do
@@ -137,6 +132,14 @@ module WorkPackages
 
     attribute :budget
 
+    validates :subject,
+              presence: true,
+              unless: -> { model.type&.replacement_pattern_defined_for?(:subject) }
+    validates :subject, length: { maximum: 255 }
+
+    # TODO: add validation, check permission (#71253)
+    attribute :sprint_id
+
     validates :due_date,
               date: { after_or_equal_to: :start_date,
                       message: :greater_than_or_equal_to_start_date,
@@ -153,10 +156,6 @@ module WorkPackages
     validate :validate_parent_in_same_project
     validate :validate_parent_not_self
     validate :validate_parent_not_subtask
-    validate :validate_epic_exists
-    validate :validate_epic_not_self
-    validate :validate_epic_target_type
-    validate :validate_epic_visible
 
     validate :validate_status_exists
     validate :validate_status_transition
@@ -249,6 +248,16 @@ module WorkPackages
 
     def valid?(context = :saving_custom_fields) = super
 
+    def writable_attributes
+      attributes = super
+
+      unless auto_generated_attributes_writable?
+        attributes -= auto_generated_attribute_names
+      end
+
+      attributes
+    end
+
     private
 
     def validate_after_soonest_start(date_attribute)
@@ -325,36 +334,6 @@ module WorkPackages
         # add our own error
         errors.add :parent, :cant_link_a_work_package_with_a_descendant
       end
-    end
-
-    def validate_epic_exists
-      if model.epic.is_a?(WorkPackage::InexistentWorkPackage) ||
-        (model.epic_id && model.epic.nil?)
-        errors.add :epic, :does_not_exist
-      end
-    end
-
-    def validate_epic_not_self
-      if model.epic == model
-        errors.add :epic, :cannot_be_self_assigned
-      end
-    end
-
-    def validate_epic_target_type
-      return if model.epic.blank?
-      return if errors.include?(:epic)
-      return if WorkPackage.epic_target_type?(model.epic.type)
-
-      errors.add :epic, :must_be_epic
-    end
-
-    def validate_epic_visible
-      return if model.epic_id.nil? || model.epic.nil?
-      return unless model.epic_id_changed?
-      return if model.epic.is_a?(WorkPackage::InexistentWorkPackage)
-      return if model.epic.visible?
-
-      errors.add :epic_id, :error_unauthorized
     end
 
     def current_parent_unrelatable?
@@ -719,6 +698,12 @@ module WorkPackages
 
     def leaf_or_manually_scheduled?
       model.leaf? || model.schedule_manually?
+    end
+
+    def auto_generated_attributes_writable? = false
+
+    def auto_generated_attribute_names
+      (model.type && model.type.enabled_patterns&.keys&.map(&:to_s)) || []
     end
   end
 end

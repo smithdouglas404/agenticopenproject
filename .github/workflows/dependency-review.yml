@@ -31,9 +31,6 @@ permissions:
 
 jobs:
   dependency-review:
-    # Dependency review requires the repository dependency graph.
-    # Forks commonly do not have this feature enabled.
-    if: ${{ github.repository == 'opf/openproject' }}
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout repository'

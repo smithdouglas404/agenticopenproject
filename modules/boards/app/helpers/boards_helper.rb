@@ -10,7 +10,7 @@ module BoardsHelper
   def board_types
     [
       build_board_type_attributes("basic", "lists", false),
-      build_board_type_attributes("status", "status", false),
+      build_board_type_attributes("status", "status"),
       build_board_type_attributes("assignee", "assignees"),
       build_board_type_attributes("version", "version"),
       build_board_type_attributes("subproject", "subproject"),
@@ -18,7 +18,7 @@ module BoardsHelper
     ]
   end
 
-  def build_board_type_attributes(type_name, image_name, disabled = false)
+  def build_board_type_attributes(type_name, image_name, disabled = !EnterpriseToken.allows_to?(:board_view))
     BoardTypeAttributes.new(type_name,
                             I18n.t("boards.board_type_attributes.#{type_name}"),
                             I18n.t("boards.board_type_descriptions.#{type_name}"),

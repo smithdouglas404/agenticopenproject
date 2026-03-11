@@ -42,6 +42,7 @@ sv:
         start_date: "Datum"
         start_time: "Starttid"
         start_time_hour: "Starttid"
+        sharing: "Sharing"
       meeting_agenda_item:
         title: "Titel"
         author: "Upphovsman"
@@ -118,6 +119,13 @@ sv:
   error_notification_with_errors: "Det gick inte att skicka underrättelse. Följande mottagare kunde inte underrättas: %{recipients}"
   label_meeting: "Möte"
   label_meeting_plural: "Möten"
+  label_meeting_templates: "Templates"
+  label_meeting_template: "Template"
+  label_meeting_template_new: "New template"
+  label_meeting_template_create: "Create template"
+  label_meeting_template_delete: "Delete template"
+  label_meeting_template_edit: "Edit template"
+  label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Nytt möte"
   label_meeting_new_dynamic: "Nytt engångsmöte"
   label_meeting_new_recurring: "Nytt återkommande möte"
@@ -187,6 +195,8 @@ sv:
   label_time_zone: "Tidszon"
   label_start_date: "Startdatum"
   label_subscribe_icalendar: "Prenumerera på kalender"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -279,6 +289,9 @@ sv:
         heading: "Ta bort detta möte?"
         confirmation_message_html: >
           Denna åtgärd är inte reversibel. Vänligen fortsätt med försiktighet.
+        template:
+          title: "Delete template"
+          heading: "Delete this template?"
       occurrence:
         title: "Avbryt förekomst av möte"
         heading: "Avbryt denna förekomst av möte?"
@@ -478,6 +491,7 @@ sv:
     end_series_dialog:
       title: "Avsluta mötesserier"
   notice_successful_notification: "Uppdatering av e-postkalender skickad till alla deltagare"
+  notice_meeting_template_created: "Template successfully created"
   notice_timezone_missing: Ingen tidszon angiven och %{zone} antas. För att välja din tidszon, vänligen klicka här.
   notice_meeting_updated: "Denna sida har uppdaterats av någon annan. Ladda om för att se ändringar."
   permission_create_meetings: "Skapa möten"
@@ -492,6 +506,8 @@ sv:
   text_duration_in_hours: "Varaktighet i timmar"
   text_in_hours: "i timmar"
   text_meeting_agenda_for_meeting: 'agenda för mötet "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "There are no templates to display"
+  text_meeting_template_blank_slate: "You can create a new template for one-time meetings"
   text_meeting_series_end_early_heading: "Ta bort framtida händelser?"
   text_meeting_series_end_early: "Om du avslutar serien raderas alla framtida öppna eller schemalagda möteshändelser"
   text_meeting_closing_are_you_sure: "Är du säker på att du vill stänga möteskalendern?"
@@ -597,10 +613,18 @@ sv:
   text_meeting_in_progress_dropdown_description: "Dokumentresultat som informationsbehov eller beslut som fattas under mötet."
   text_meeting_closed_dropdown_description: "Det här mötet är stängt. Du kan inte ändra agendapunkter eller resultat längre."
   text_meeting_draft_banner: "Du befinner dig för närvarande i utkastläge. Det här mötet kommer inte att skicka ut några kalenderuppdateringar eller inbjudningar, även om du ändrar mötesdetaljer eller lägger till/tar bort deltagare."
+  text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
+  text_onetime_meeting_template_empty_heading: "This meeting template is empty"
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Öppna detta möte och skicka inbjudningar?"
   text_exit_draft_mode_dialog_subtitle: "Du kan inte gå tillbaka till utkastet när du schemalägger ett möte."
   text_exit_draft_mode_dialog_template_title: "Öppna den första förekomsten av denna mötesserie?"
   text_exit_draft_mode_dialog_template_subtitle: "Du kan inte återgå till utkastläget efter detta."
+  label_meeting_template_sharing: "Sharing"
+  label_meeting_template_sharing_none: "Only this project"
+  label_meeting_template_sharing_descendants: "Subprojects"
+  label_meeting_template_sharing_system: "All projects"
+  text_meeting_template_sharing_description: "This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied."
   text_meeting_not_editable_anymore: "Detta möte är inte längre redigerbart."
   text_meeting_not_present_anymore: "Detta möte har tagits bort. Vänligen välj ett annat möte."
   label_add_work_package_to_meeting_dialog_title: "Välj möte"

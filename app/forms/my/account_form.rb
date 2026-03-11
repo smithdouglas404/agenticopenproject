@@ -35,15 +35,15 @@ class My::AccountForm < ApplicationForm
       label: User.human_attribute_name(:login),
       input_width: :small,
       value: @user.login,
-      readonly: true
+      readonly: disabled?(:login)
     )
 
     f.text_field(
       name: :firstname,
       label: User.human_attribute_name(:firstname),
       input_width: :small,
-      disabled: @login_via_provider || @login_via_ldap,
-      caption: name_caption,
+      readonly: disabled?(:firstname),
+      caption: disabled_caption(:firstname),
       required: true,
       autocomplete: "given-name"
     )
@@ -52,8 +52,8 @@ class My::AccountForm < ApplicationForm
       name: :lastname,
       label: User.human_attribute_name(:lastname),
       input_width: :small,
-      disabled: @login_via_provider || @login_via_ldap,
-      caption: name_caption,
+      readonly: disabled?(:lastname),
+      caption: disabled_caption(:lastname),
       required: true,
       autocomplete: "family-name"
     )
@@ -63,8 +63,8 @@ class My::AccountForm < ApplicationForm
       type: :email,
       label: User.human_attribute_name(:mail),
       input_width: :small,
-      disabled: @login_via_ldap,
-      caption: @login_via_ldap ? I18n.t("user.text_change_disabled_for_ldap_login") : nil,
+      readonly: disabled?(:mail),
+      caption: disabled_caption(:mail),
       required: true,
       autocomplete: "email"
     )
@@ -73,15 +73,17 @@ class My::AccountForm < ApplicationForm
   def initialize(user:)
     super()
     @user = user
-    @login_via_provider = !!@user.identity_url
-    @login_via_ldap = !!@user.ldap_auth_source_id
+
+    @contract = Users::UpdateContract.new(@user, User.current)
   end
 
-  def name_caption
-    if @login_via_provider
-      I18n.t("user.text_change_disabled_for_provider_login")
-    elsif @login_via_ldap
-      I18n.t("user.text_change_disabled_for_ldap_login")
-    end
+  def disabled?(attribute)
+    !@contract.writable?(attribute)
+  end
+
+  def disabled_caption(attribute)
+    return nil if @contract.writable?(attribute)
+
+    I18n.t("user.text_change_disabled_for_provider_login")
   end
 end

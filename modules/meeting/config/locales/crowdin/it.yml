@@ -42,6 +42,7 @@ it:
         start_date: "Data"
         start_time: "Ora di inizio"
         start_time_hour: "Ora di inizio"
+        sharing: "Sharing"
       meeting_agenda_item:
         title: "Titolo"
         author: "Autore"
@@ -60,7 +61,7 @@ it:
         end_date: "Data di scadenza"
         iterations: "Ricorrenze"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "Ora di inizio"
       meeting_participant:
         invited: "Invitato"
         attended: "Ha partecipato"
@@ -68,12 +69,12 @@ it:
     errors:
       models:
         meeting_participant:
-          user_invalid: "is not a valid participant."
+          user_invalid: "non è un partecipante valido."
         meeting_agenda_item:
-          section_not_belong_to_meeting: "Section does not belong to the same meeting."
-          user_invalid: "is not a valid participant."
+          section_not_belong_to_meeting: "La sezione non appartiene alla stessa riunione."
+          user_invalid: "non è un partecipante valido."
         recurring_meeting_interim_response:
-          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
+          not_an_occurrence: "non è un orario di occorrenza valido per questa riunione ricorrente"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "C'è una riunione aperta nella serie che non è coperta dal nuovo programma. Adatta il programma per includere tutte le riunioni esistenti."
@@ -118,6 +119,13 @@ it:
   error_notification_with_errors: "Impossibile inviare notifica. Non è possibile notificare i seguenti destinatari: %{recipients}"
   label_meeting: "Riunione"
   label_meeting_plural: "Riunioni"
+  label_meeting_templates: "Modelli"
+  label_meeting_template: "Modello"
+  label_meeting_template_new: "Nuovo modello"
+  label_meeting_template_create: "Crea modello"
+  label_meeting_template_delete: "Elimina modello"
+  label_meeting_template_edit: "Modifica modello"
+  label_meeting_create_from_template: "Crea una riunione da un modello"
   label_meeting_new: "Nuova riunione"
   label_meeting_new_dynamic: "Nuova riunione una tantum"
   label_meeting_new_recurring: "Nuova riunione ricorrente"
@@ -187,6 +195,8 @@ it:
   label_time_zone: "Fuso orario"
   label_start_date: "Data di inizio"
   label_subscribe_icalendar: "Iscriviti al calendario"
+  caption_meeting_template_select: "Seleziona un modello per copiare automaticamente i suoi elementi dell'ordine del giorno"
+  caption_template_project_select: "Seleziona il progetto in cui creare questo modello di riunione"
   meeting:
     participants:
       label:
@@ -238,9 +248,9 @@ it:
         header: "Cancellata: riunione \"%{title}\""
         header_occurrence: "Cancellata: occorrenza della riunione \"%{title}\""
         header_series: "Cancellata: serie di riunioni \"%{title}\""
-        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_occurrence: "Un'occorrenza di '%{title}' è stata annullata da %{actor}, oppure ti hanno rimosso come partecipante"
+        summary_series: "La serie di riunioni '%{title}' è stata annullata da %{actor} oppure ti hanno rimosso come partecipante"
+        summary: "'%{title}' è stata annullata da %{actor} oppure ti hanno rimosso come partecipante"
         date_time: "Data/ora programmata"
       participant_added:
         header: "Riunione '%{title}' - Partecipante aggiunto"
@@ -254,7 +264,7 @@ it:
         summary_series: "%{actor} ha rimosso %{participant} dalla serie di riunioni '%{title}'"
       ended:
         header_series: "Terminata: serie di riunioni \"%{title}\""
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
+        summary_series: "La serie di riunioni '%{title}' è stata conclusa da %{actor}"
       updated:
         header: "La riunione \"%{title}\" è stata aggiornata"
         summary: "La riunione \"%{title}\" è stata aggiornata da %{actor}"
@@ -279,6 +289,9 @@ it:
         heading: "Cancellare questa riunione?"
         confirmation_message_html: >
           Questa azione è irreversibile. Procedi con cautela.
+        template:
+          title: "Elimina modello"
+          heading: "Eliminare questo modello?"
       occurrence:
         title: "Cancella l'occorrenza della riunione"
         heading: "Cancellare questa occorrenza della riunione?"
@@ -478,6 +491,7 @@ it:
     end_series_dialog:
       title: "Termina serie di riunioni"
   notice_successful_notification: "Aggiornamento del calendario via e-mail inviato a tutti i partecipanti"
+  notice_meeting_template_created: "Modello creato correttamente"
   notice_timezone_missing: Nessun fuso orario è impostato e la %{zone} è un requisito necessario. Per scegliere il tuo fuso orario, fare clic qui.
   notice_meeting_updated: "Questa pagina è stata aggiornata da qualcun altro. Ricarica per visualizzare le modifiche."
   permission_create_meetings: "Creare riunioni"
@@ -492,6 +506,8 @@ it:
   text_duration_in_hours: "Durata in ore"
   text_in_hours: "in ore"
   text_meeting_agenda_for_meeting: 'ordine del giorno della riunione "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "Non ci sono modelli da visualizzare"
+  text_meeting_template_blank_slate: "È possibile creare un nuovo modello per riunioni una tantum"
   text_meeting_series_end_early_heading: "Cancellare le occorrenze future?"
   text_meeting_series_end_early: "La chiusura della serie cancellerà tutte le future occorrenze di riunioni aperte o programmate"
   text_meeting_closing_are_you_sure: "Vuoi davvero chiudere l'agenda di questa riunione?"
@@ -537,8 +553,8 @@ it:
   label_agenda_item_move_up: "Sposta su"
   label_agenda_item_move_down: "Sposta giu"
   label_agenda_item_duplicate: "Duplica"
-  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
+  label_agenda_item_duplicate_in_next: "Duplica nella prossima riunione"
+  label_agenda_item_duplicate_in_next_title: "Duplicare nella prossima riunione?"
   label_agenda_item_add_notes: "Aggiungi nota"
   label_agenda_item_add_outcome: "Aggiungi risultato"
   label_agenda_item_work_package_add: "Aggiungi macro-attività"
@@ -597,10 +613,18 @@ it:
   text_meeting_in_progress_dropdown_description: "Documenta i risultati, come le esigenze informative o le decisioni prese durante la riunione."
   text_meeting_closed_dropdown_description: "Questa riunione è chiusa. Non puoi più modificare i punti all'ordine del giorno."
   text_meeting_draft_banner: "Al momento sei in modalità bozza. Questa riunione non invierà alcun aggiornamento del calendario né inviti, anche in caso di modifica dei dettagli della riunione o di aggiunta o rimozione di partecipanti."
+  text_onetime_meeting_template_banner: "Stai modificando un modello di riunione. Puoi utilizzare questo modello per creare riunioni singole con un ordine del giorno predefinito. Le modifiche non influiranno sulle riunioni già create."
+  text_onetime_meeting_template_empty_heading: "Questo modello di riunione è vuoto"
+  text_onetime_meeting_template_empty_description: "Aggiungi a questo modello i punti all'ordine del giorno, le sezioni e gli allegati. Saranno inclusi in ogni riunione creata usando questo modello."
   text_exit_draft_mode_dialog_title: "Aprire questa riunione e inviare gli inviti?"
   text_exit_draft_mode_dialog_subtitle: "Non può tornare alla modalità bozza una volta programmata una riunione."
   text_exit_draft_mode_dialog_template_title: "Aprire la prima occorrenza di questa serie di riunioni?"
   text_exit_draft_mode_dialog_template_subtitle: "Non puoi tornare alla modalità bozza dopo averlo fatto."
+  label_meeting_template_sharing: "Sharing"
+  label_meeting_template_sharing_none: "Only this project"
+  label_meeting_template_sharing_descendants: "Subprojects"
+  label_meeting_template_sharing_system: "All projects"
+  text_meeting_template_sharing_description: "This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied."
   text_meeting_not_editable_anymore: "Questa riunione non è più modificabile."
   text_meeting_not_present_anymore: "Questa riunione è stata eliminata. Seleziona un'altra riunione."
   label_add_work_package_to_meeting_dialog_title: "Seleziona riunione"

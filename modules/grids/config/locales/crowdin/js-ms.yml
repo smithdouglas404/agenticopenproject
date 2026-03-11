@@ -2,10 +2,12 @@ ms:
   js:
     grid:
       add_widget: 'Tambah widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Buang widget'
       configure: 'Konfigurasi widget'
       widgets:
         missing_permission: "Anda tidak mempunyai kebenaran yang diperlukan untuk melihat widget ini."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Teks tersuai'
         documents:
@@ -17,7 +19,6 @@ ms:
           title: 'Berita'
         project_description:
           title: 'Description'
-          no_results: "Tiada deskripsi yang tertulis lagi. Deskripsi boleh diberikan di 'Tetapan Projek'."
         project_status:
           title: 'Status'
           not_started: 'Belum dimulakan'
@@ -27,8 +28,6 @@ ms:
           not_set: 'Belum ditetapkan'
           finished: 'Telah selesai'
           discontinued: 'Dihentikan'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subitems'
         project_favorites:

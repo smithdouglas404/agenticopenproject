@@ -12,13 +12,20 @@ You can configure how OpenProject handles **external links** in formatted text (
 
 ## Enable external link capture
 
-To enable the Capture external links setting navigate to *Administration ->System settings -> External links* and check the **Capture external links**  option. Don't forget to save your changes. 
+To enable the Capture external links setting navigate to *Administration → System settings → External links*. Here you can enable the following settings: 
+
+- **Capture external links**: when this option is turned on, all outbound links in formatted text will first lead to a warning page before users leave the application. 
+- **Require users to be logged in**: when enabled, users must sign in before they can proceed to any external website.
+
+Don't forget to save your changes. 
 
 ![Enable warning message for external links in OpenProject administration](openproject_system_admin_guide_external_links.png)
 
-Once enabled, OpenProject will redirect external links in formatted text through a warning page.
+Once *Capturing external links* is enabled, OpenProject will redirect external links in formatted text through a warning page. Here is an example of a warning page:
 
 ![Example of a warning message for an external link in OpenProject](openproject_system_admin_guide_external_links_warning_message.png)
+
+If the requirement to be logged in is activated and users are not logged in, they will first be redirected to the login page.
 
 ## What is an external link?
 

@@ -12,6 +12,11 @@ on:
         description: "The main docker tag to use (e.g., 'dev' or '16.3.0')"
         required: true
         type: string
+      use_test_registry:
+        description: "Use openproject/openproject-test registry instead (for testing)"
+        required: false
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
       branch:
@@ -33,7 +38,15 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 
 jobs:
+  build-hocuspocus:
+    uses: ./.github/workflows/hocuspocus-docker.yml
+    with:
+      use_test_registry: ${{ inputs.use_test_registry }}
+      branch: ${{ inputs.branch }}
+      tag: ${{ inputs.tag }}
+    secrets: inherit
   setup:
+    needs: [build-hocuspocus]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -100,7 +113,7 @@ jobs:
           ./docker/prod/setup/precompile-assets.sh
           # public/assets will be saved as artifact, so temporarily copying config file there as well
           cp config/frontend_assets.manifest.json public/assets/frontend_assets.manifest.json
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           path: public/
           name: public-assets-${{ inputs.tag }}-${{ github.sha }}
@@ -160,7 +173,7 @@ jobs:
         run: |
           cp ./docker/prod/Dockerfile ./Dockerfile
       - name: Download precompiled public assets
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: public-assets-${{ inputs.tag }}-${{ github.sha }}
           path: public/
@@ -252,23 +265,12 @@ jobs:
           if [ -d vendor/bundle.bak ]; then
             mv vendor/bundle.bak vendor/bundle
           fi
-      - name: Test
-        # We only test the native container. If that fails the builds for the others
-        # will be cancelled as well.
-        if: matrix.platform == 'linux/amd64' && matrix.target == 'all-in-one'
+      - name: Validate image
         run: |
-          docker run \
-            --name openproject \
-            -d -p 8080:80 --platform ${{ matrix.platform }} \
-            -e SUPERVISORD_LOG_LEVEL=debug \
-            -e OPENPROJECT_LOGIN__REQUIRED=false \
-            -e OPENPROJECT_HTTPS=false \
-            ${{ steps.build.outputs.imageid }}
-
-          sleep 60
-
-          docker logs openproject --tail 100
-          wget -O- --retry-on-http-error=503,502 --retry-connrefused http://localhost:8080/api/v3
+          ./script/ci/docker_validate_image.sh \
+            --image "${{ steps.build.outputs.imageid }}" \
+            --target "${{ matrix.target }}" \
+            --platform "${{ matrix.platform }}"
       - name: Push image
         id: push
         uses: docker/build-push-action@v6
@@ -289,7 +291,7 @@ jobs:
           digest="${{ steps.push.outputs.digest }}"
           touch "/tmp/digests/${digest#sha256:}"
       - name: Upload digest
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: digests-${{ inputs.tag }}-${{ matrix.target }}--${{ matrix.digest }}
           path: /tmp/digests/*
@@ -305,13 +307,13 @@ jobs:
       - build
     steps:
       - name: Merge digests
-        uses: actions/upload-artifact/merge@v6
+        uses: actions/upload-artifact/merge@v7
         with:
           pattern: "digests-${{ inputs.tag }}-${{ matrix.target }}--*"
           overwrite: true
           name: "merged-digests-${{ inputs.tag }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
       - name: Download digests
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: "merged-digests-${{ inputs.tag }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
           path: /tmp/digests
@@ -352,7 +354,7 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ needs.setup.outputs.registry_image }}:${{ steps.meta.outputs.version }}
-  notify:
+  notify-failure:
     needs: [setup, build, merge]
     if: ${{ always() && contains(needs.*.result, 'failure') }}
     uses: ./.github/workflows/email-notification.yml

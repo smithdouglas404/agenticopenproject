@@ -133,5 +133,4 @@ RSpec.describe WorkPackageRelationsTab::IndexComponent, type: :component do
       expect(list_item).to have_primer_label("Closest")
     end
   end
-
 end

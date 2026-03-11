@@ -111,7 +111,7 @@ export class PrincipalRendererService {
     const type = typeFromHref(hrefFromPrincipal(principal))!;
 
     if (!avatar.hide) {
-      const el = this.renderAvatar(principal, avatar, hoverCard, type);
+      const el = this.renderAvatar(principal, avatar, hoverCard, type, !name.hide);
       container.appendChild(el);
     }
 
@@ -127,6 +127,7 @@ export class PrincipalRendererService {
     options:AvatarOptions,
     hoverCard:HoverCardOptions,
     type:PrincipalType,
+    ariaHidden:boolean,
   ) {
     const userInitials = this.getInitials(principal.name);
     const colorMode = this.colors.colorMode();
@@ -143,6 +144,13 @@ export class PrincipalRendererService {
     fallback.textContent = userInitials;
 
     this.setHoverCardAttributes(fallback, hoverCard, principal, type);
+
+    if (ariaHidden) {
+      fallback.setAttribute('aria-hidden', 'true');
+    } else {
+      fallback.setAttribute('role', 'img');
+      fallback.setAttribute('aria-label', options.imageAltText ?? principal.name);
+    }
 
     if (type === 'placeholder_user' && colorMode !== colorModes.lightHighContrast) {
       fallback.style.color = colorCode;

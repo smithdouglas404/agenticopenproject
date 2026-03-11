@@ -44,6 +44,20 @@ RSpec.describe JournalsController do
   describe "GET diff" do
     render_views
 
+    shared_examples "the diff is shown" do |value|
+      it { expect(response).to have_http_status(:ok) }
+
+      it "presents the diff correctly" do
+        expect(response.body.strip).to be_html_eql <<-HTML
+          <div class="text-diff">
+            <label class="sr-only">Begin of the insertion</label>
+            <ins class="diffmod">#{value}</ins>
+            <label class="sr-only">End of the insertion</label>
+          </div>
+        HTML
+      end
+    end
+
     context "for work package description" do
       shared_let(:work_package) do
         create(:work_package, type: project.types.first,
@@ -58,21 +72,7 @@ RSpec.describe JournalsController do
       end
 
       describe "with a user having :view_work_package permission" do
-        it { expect(response).to have_http_status(:ok) }
-
-        it "presents the diff correctly" do
-          expect(response.body.strip).to be_html_eql <<-HTML
-            <div class="text-diff">
-              <label class="sr-only">Begin of the insertion</label>
-              <ins class="diffmod">
-                description
-                <br/>
-                more changes
-              </ins>
-              <label class="sr-only">End of the insertion</label>
-            </div>
-          HTML
-        end
+        include_examples "the diff is shown", "description<br/>more changes"
       end
 
       describe "with a user not having the :view_work_package permission" do
@@ -100,23 +100,19 @@ RSpec.describe JournalsController do
       let(:params) { { id: work_package.last_journal.id.to_s, field: "custom_fields_#{custom_field.id}", format: "js" } }
 
       before do
-        work_package.update custom_field_values: { custom_field.id => "foo" }
+        work_package.update custom_field.attribute_name => "foo"
       end
 
       context "with format text" do
         let(:factory_name) { :text_wp_custom_field }
 
         describe "with a user having :view_work_package permission" do
-          it { expect(response).to have_http_status(:ok) }
+          include_examples "the diff is shown", "foo"
 
-          it "presents the diff correctly" do
-            expect(response.body.strip).to be_html_eql <<-HTML
-              <div class="text-diff">
-                <label class="sr-only">Begin of the insertion</label>
-                <ins class="diffmod">foo</ins>
-                <label class="sr-only">End of the insertion</label>
-              </div>
-            HTML
+          context "when field gets deleted" do
+            before { custom_field.destroy }
+
+            include_examples "the diff is shown", "foo"
           end
         end
 
@@ -128,34 +124,39 @@ RSpec.describe JournalsController do
       end
 
       context "with format string" do
-        let(:factory_name) { :wp_custom_field }
+        let(:factory_name) { :string_wp_custom_field }
 
         it { expect(response).to have_http_status(:not_found) }
+
+        context "when field gets deleted (and we loose format information)" do
+          before { custom_field.destroy }
+
+          include_examples "the diff is shown", "foo"
+        end
       end
     end
 
     context "for project custom field" do
       let(:params) { { id: project.last_journal.id.to_s, field: "custom_fields_#{custom_field.id}", format: "js" } }
+      let(:custom_field) { create(factory_name, admin_only:, projects: [project]) }
 
       before do
-        project.update custom_field_values: { custom_field.id => "foo" }
+        project.update custom_field.attribute_name => "bar"
       end
 
       context "with format text" do
+        let(:factory_name) { :text_project_custom_field }
+
         context "when visible to everyone" do
-          let!(:custom_field) { create(:text_project_custom_field, projects: [project]) }
+          let(:admin_only) { false }
 
           describe "with a user being project member" do
-            it { expect(response).to have_http_status(:ok) }
+            include_examples "the diff is shown", "bar"
 
-            it "presents the diff correctly" do
-              expect(response.body.strip).to be_html_eql <<-HTML
-                <div class="text-diff">
-                  <label class="sr-only">Begin of the insertion</label>
-                  <ins class="diffmod">foo</ins>
-                  <label class="sr-only">End of the insertion</label>
-                </div>
-              HTML
+            context "when field gets deleted" do
+              before { custom_field.destroy }
+
+              it { expect(response).to have_http_status(:forbidden) }
             end
           end
 
@@ -163,38 +164,134 @@ RSpec.describe JournalsController do
             let(:user) { build_stubbed(:user) }
 
             it { expect(response).to have_http_status(:forbidden) }
-          end
-        end
 
-        context "when admin only" do
-          let!(:custom_field) { create(:text_project_custom_field, :admin_only, projects: [project]) }
+            context "when field gets deleted" do
+              before { custom_field.destroy }
 
-          describe "with a non admin user being a project member" do
-            it { expect(response).to have_http_status(:forbidden) }
+              it { expect(response).to have_http_status(:forbidden) }
+            end
           end
 
           describe "with an admin user" do
             let(:user) { build_stubbed(:admin) }
 
-            it { expect(response).to have_http_status(:ok) }
+            include_examples "the diff is shown", "bar"
 
-            it "presents the diff correctly" do
-              expect(response.body.strip).to be_html_eql <<-HTML
-                <div class="text-diff">
-                  <label class="sr-only">Begin of the insertion</label>
-                  <ins class="diffmod">foo</ins>
-                  <label class="sr-only">End of the insertion</label>
-                </div>
-              HTML
+            context "when field gets deleted" do
+              before { custom_field.destroy }
+
+              # this should be 200, see https://community.openproject.org/wp/72230
+              it { expect(response).to have_http_status(:bad_request) }
+            end
+          end
+        end
+
+        context "when admin only" do
+          let(:admin_only) { true }
+
+          describe "with a user being a project member" do
+            it { expect(response).to have_http_status(:forbidden) }
+
+            context "when field gets deleted (and we loose format information, but also admin_only mark)" do
+              before { custom_field.destroy }
+
+              it { expect(response).to have_http_status(:forbidden) }
+            end
+          end
+
+          describe "with an admin user" do
+            let(:user) { build_stubbed(:admin) }
+
+            include_examples "the diff is shown", "bar"
+
+            context "when field gets deleted (and we loose format information)" do
+              before { custom_field.destroy }
+
+              # this should be 200, see https://community.openproject.org/wp/72230
+              it { expect(response).to have_http_status(:bad_request) }
             end
           end
         end
       end
 
       context "with format string" do
-        let!(:custom_field) { create(:string_project_custom_field, projects: [project]) }
+        let(:factory_name) { :string_project_custom_field }
+        let(:admin_only) { false }
 
         it { expect(response).to have_http_status(:not_found) }
+      end
+    end
+
+    context "for project custom comment" do
+      let(:params) { { id: project.last_journal.id.to_s, field: "custom_comment_#{custom_field.id}", format: "js" } }
+      let(:custom_field) { create(:string_project_custom_field, :has_comment, admin_only:, projects: [project]) }
+
+      before do
+        project.update custom_field.comment_attribute_name => "baz"
+      end
+
+      context "when visible to everyone" do
+        let(:admin_only) { false }
+
+        describe "with a user being project member" do
+          include_examples "the diff is shown", "baz"
+
+          context "when field gets deleted" do
+            before { custom_field.destroy }
+
+            it { expect(response).to have_http_status(:forbidden) }
+          end
+        end
+
+        describe "with a user not being project member" do
+          let(:user) { build_stubbed(:user) }
+
+          it { expect(response).to have_http_status(:forbidden) }
+
+          context "when field gets deleted" do
+            before { custom_field.destroy }
+
+            it { expect(response).to have_http_status(:forbidden) }
+          end
+        end
+
+        describe "with an admin user" do
+          let(:user) { build_stubbed(:admin) }
+
+          include_examples "the diff is shown", "baz"
+
+          context "when field gets deleted" do
+            before { custom_field.destroy }
+
+            include_examples "the diff is shown", "baz"
+          end
+        end
+      end
+
+      context "when admin only" do
+        let(:admin_only) { true }
+
+        describe "with a user being a project member" do
+          it { expect(response).to have_http_status(:forbidden) }
+
+          context "when field gets deleted (and we loose admin_only mark)" do
+            before { custom_field.destroy }
+
+            it { expect(response).to have_http_status(:forbidden) }
+          end
+        end
+
+        describe "with an admin user" do
+          let(:user) { build_stubbed(:admin) }
+
+          include_examples "the diff is shown", "baz"
+
+          context "when field gets deleted (and we loose format information)" do
+            before { custom_field.destroy }
+
+            include_examples "the diff is shown", "baz"
+          end
+        end
       end
     end
 
@@ -206,17 +303,7 @@ RSpec.describe JournalsController do
       end
 
       describe "with a user being member of the project" do
-        it { expect(response).to have_http_status(:ok) }
-
-        it "presents the diff correctly" do
-          expect(response.body.strip).to be_html_eql <<-HTML
-            <div class="text-diff">
-              <label class="sr-only">Begin of the insertion</label>
-              <ins class="diffmod">description</ins>
-              <label class="sr-only">End of the insertion</label>
-            </div>
-          HTML
-        end
+        include_examples "the diff is shown", "description"
       end
 
       describe "with a user not being member of the project" do
@@ -268,6 +355,109 @@ RSpec.describe JournalsController do
         let(:user) { build_stubbed(:admin) }
 
         it { expect(response).to have_http_status(:forbidden) }
+      end
+    end
+
+    context "for an import journal with a description diff" do
+      shared_let(:work_package) do
+        create(:work_package, type: project.types.first, author: user, project:, description: "")
+      end
+
+      shared_let(:import_journal) do
+        cause = Journal::CausedByImport.new(
+          author_name: "Imported User",
+          history: [{ "field" => "description", "fromString" => "old text", "toString" => "new text" }]
+        )
+        work_package.add_journal(user: User.system, notes: "", cause:)
+        work_package.save_journals
+        work_package.last_journal
+      end
+
+      let(:params) { { id: import_journal.id.to_s, field: :description, format: "js" } }
+
+      describe "with a user having :view_work_packages permission" do
+        it { expect(response).to have_http_status(:ok) }
+
+        it "presents the diff of the imported description" do
+          # The diff is word-level, so "old" and "new" appear in separate <ins>/<del> spans
+          expect(response.body).to include("text-diff")
+          expect(response.body).to include("old")
+          expect(response.body).to include("new")
+        end
+      end
+
+      describe "with a user without permission" do
+        let(:user) { build_stubbed(:user) }
+
+        it { expect(response).to have_http_status(:forbidden) }
+      end
+    end
+
+    context "for an import journal where the description was set (no previous value)" do
+      shared_let(:work_package) do
+        create(:work_package, type: project.types.first, author: user, project:, description: "")
+      end
+
+      shared_let(:import_journal) do
+        cause = Journal::CausedByImport.new(
+          author_name: "Imported User",
+          history: [{ "field" => "description", "fromString" => nil, "toString" => "first description" }]
+        )
+        work_package.add_journal(user: User.system, notes: "", cause:)
+        work_package.save_journals
+        work_package.last_journal
+      end
+
+      let(:params) { { id: import_journal.id.to_s, field: :description, format: "js" } }
+
+      it { expect(response).to have_http_status(:ok) }
+
+      it "presents the diff with the new value" do
+        expect(response.body).to include("first description")
+      end
+    end
+
+    context "for an import journal with a non-description field change" do
+      shared_let(:work_package) do
+        create(:work_package, type: project.types.first, author: user, project:)
+      end
+
+      shared_let(:import_journal) do
+        cause = Journal::CausedByImport.new(
+          author_name: "Imported User",
+          history: [{ "field" => "status", "fromString" => "Open", "toString" => "Closed" }]
+        )
+        work_package.add_journal(user: User.system, notes: "", cause:)
+        work_package.save_journals
+        work_package.last_journal
+      end
+
+      let(:params) { { id: import_journal.id.to_s, field: :description, format: "js" } }
+
+      it "returns 400 because no diffable description value exists" do
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+
+    context "for an import journal when the field param does not match any import item" do
+      shared_let(:work_package) do
+        create(:work_package, type: project.types.first, author: user, project:)
+      end
+
+      shared_let(:import_journal) do
+        cause = Journal::CausedByImport.new(
+          author_name: "Imported User",
+          history: [{ "field" => "description", "fromString" => "a", "toString" => "b" }]
+        )
+        work_package.add_journal(user: User.system, notes: "", cause:)
+        work_package.save_journals
+        work_package.last_journal
+      end
+
+      let(:params) { { id: import_journal.id.to_s, field: :status_explanation, format: "js" } }
+
+      it "returns 400 when the field is valid for diffing but has no matching import item" do
+        expect(response).to have_http_status(:bad_request)
       end
     end
   end

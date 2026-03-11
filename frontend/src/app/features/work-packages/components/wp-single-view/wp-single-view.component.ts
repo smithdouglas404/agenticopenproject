@@ -50,7 +50,6 @@ import { DisplayField } from 'core-app/shared/components/fields/display/display-
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
 import { HookService } from 'core-app/features/plugins/hook-service';
 import { WorkPackageChangeset } from 'core-app/features/work-packages/components/wp-edit/work-package-changeset';
-import { QueryRequestParams } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
 import { randomString } from 'core-app/shared/helpers/random-string';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
@@ -108,8 +107,6 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
   // Grouped fields returned from API
   public groupedFields:GroupDescriptor[] = [];
 
-  public epicIssuesQueryProps:Partial<QueryRequestParams>|null = null;
-
   // Project context as an indicator
   // when editing the work package in a different project
   public projectContext:{
@@ -137,9 +134,6 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
     infoRow: {
       createdBy: this.I18n.t('js.label_created_by'),
       lastUpdatedOn: this.I18n.t('js.label_last_updated_on'),
-    },
-    epicIssues: {
-      label: this.I18n.t('js.relation_labels.epic'),
     },
   };
 
@@ -222,7 +216,6 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
 
     // eslint-disable-next-line no-underscore-dangle
     this.groupedFields = this.rebuildGroupedFields(change, this.schema(resource)._attributeGroups) as GroupDescriptor[];
-    this.epicIssuesQueryProps = this.buildEpicIssuesQueryProps(resource);
     this.cdRef.detectChanges();
   }
 
@@ -270,14 +263,6 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
     const queryInNew = isNewResource(this.workPackage) && !!group.query;
 
     return isEmpty || queryInNew;
-  }
-
-  public showEpicIssuesAfter(group:GroupDescriptor):boolean {
-    return this.showEpicIssuesSection() && this.isCostsGroup(group);
-  }
-
-  public showEpicIssuesAtEnd():boolean {
-    return this.showEpicIssuesSection() && !this.groupedFields.some((group) => this.isCostsGroup(group));
   }
 
   /**
@@ -459,29 +444,5 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
       return this.halEditing.typedState(this.workPackage).value!.schema;
     }
     return this.schemaCache.of(resource);
-  }
-
-  private showEpicIssuesSection():boolean {
-    return this.epicIssuesQueryProps !== null;
-  }
-
-  private buildEpicIssuesQueryProps(resource:WorkPackageResource):Partial<QueryRequestParams>|null {
-    if (isNewResource(resource) || !resource.id || !this.isEpicType(resource)) {
-      return null;
-    }
-
-    return {
-      filters: JSON.stringify([{ epic: { operator: '=', values: [resource.id] } }]),
-      'columns[]': ['id', 'type', 'subject', 'status'],
-      showHierarchies: false,
-    };
-  }
-
-  private isCostsGroup(group:GroupDescriptor):boolean {
-    return group.name.toLowerCase() === this.I18n.t('js.work_packages.property_groups.costs').toLowerCase();
-  }
-
-  private isEpicType(resource:WorkPackageResource):boolean {
-    return resource.type?.name?.toLowerCase() === 'epic';
   }
 }

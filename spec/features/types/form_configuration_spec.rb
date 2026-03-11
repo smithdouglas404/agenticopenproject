@@ -377,20 +377,6 @@ RSpec.describe "form configuration", :js, :selenium do
       find(".group-edit-handler", text: "DETAILS").click
       dialog.expect_open
     end
-
-    it "allows hiding sections and fields" do
-      login_as(admin)
-      visit edit_type_form_configuration_path(type)
-
-      form.remove_group("Details")
-      form.remove_attribute("assignee")
-      form.save_changes
-      expect_flash(message: "Successful update.")
-
-      type.reload
-      expect(type.attribute_groups.map(&:key)).not_to include(:details)
-      expect(type.attribute_groups.flat_map(&:attributes)).not_to include("assignee")
-    end
   end
 
   describe "form submission", :js, with_ee: %i[edit_attribute_groups] do

@@ -64,4 +64,8 @@ export abstract class WidgetAbstractMenuComponent {
   public get hasMenu() {
     return this.layout.isEditable;
   }
+
+  public widgetMenuLabel():string {
+    return this.i18n.t('js.grid.widget_menu_label', { widgetName: this.resource.options.name });
+  }
 }

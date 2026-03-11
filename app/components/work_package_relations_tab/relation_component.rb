@@ -34,7 +34,7 @@ class WorkPackageRelationsTab::RelationComponent < ApplicationComponent
 
   attr_reader :relation_item, :editable
 
-  delegate :closest?, :relation, :visible?, :work_package, :type, to: :relation_item
+  delegate :closest?, :relation, :visible?, :work_package, to: :relation_item
 
   # Checks if the relation or child work package is visible to the current user
   #
@@ -55,17 +55,15 @@ class WorkPackageRelationsTab::RelationComponent < ApplicationComponent
 
   private
 
-  def hierarchy_relationship? = relation.nil? && (type.parent? || type.child?)
-
-  def epic_relationship? = relation.nil? && type.epic?
+  def hierarchy_relationship? = relation.nil?
 
   def should_render_edit_option?
-    relation.present? && allowed_to_manage_relations?
+    # Children and parent can not be edited as it's not a relation.
+    !hierarchy_relationship? && allowed_to_manage_relations?
   end
 
   def should_render_action_menu?
     return false unless editable?
-    return false if epic_relationship?
 
     if hierarchy_relationship?
       allowed_to_manage_subtasks?
@@ -84,7 +82,7 @@ class WorkPackageRelationsTab::RelationComponent < ApplicationComponent
   end
 
   def should_display_description?
-    return false if hierarchy_relationship? || epic_relationship?
+    return false if hierarchy_relationship?
 
     relation.description.present?
   end
@@ -94,24 +92,24 @@ class WorkPackageRelationsTab::RelationComponent < ApplicationComponent
   end
 
   def should_display_dates_row?
-    hierarchy_relationship? || epic_relationship? || relation.follows? || relation.precedes?
+    hierarchy_relationship? || relation.follows? || relation.precedes?
   end
 
   def follows?
-    return false if hierarchy_relationship? || epic_relationship?
+    return false if hierarchy_relationship?
 
     relation.relation_type_for(work_package) == Relation::TYPE_FOLLOWS
   end
 
   def precedes?
-    return false if hierarchy_relationship? || epic_relationship?
+    return false if hierarchy_relationship?
 
     relation.relation_type_for(work_package) == Relation::TYPE_PRECEDES
   end
 
   def edit_path
-    if hierarchy_relationship? || epic_relationship?
-      raise NotImplementedError, "Hierarchy and epic links are not editable in this dialog"
+    if hierarchy_relationship?
+      raise NotImplementedError, "Children and parent relationships are not editable"
     else
       edit_work_package_relation_path(work_package, relation)
     end
@@ -120,8 +118,6 @@ class WorkPackageRelationsTab::RelationComponent < ApplicationComponent
   def destroy_path
     if hierarchy_relationship?
       work_package_hierarchy_relation_path(work_package, related_work_package)
-    elsif epic_relationship?
-      raise NotImplementedError, "Epic links are not deleted in the relations action menu"
     else
       work_package_relation_path(work_package, relation)
     end

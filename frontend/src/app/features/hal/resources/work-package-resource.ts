@@ -60,7 +60,6 @@ export interface WorkPackageResourceEmbedded {
   availableWatchers:HalResource|any;
   category:HalResource|any;
   children:WorkPackageResource[];
-  epic:WorkPackageResource|null;
   parent:WorkPackageResource|null;
   priority:HalResource|any;
   project:HalResource|any;

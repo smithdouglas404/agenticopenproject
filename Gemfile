@@ -41,16 +41,16 @@ gem "activemodel-serializers-xml", "~> 1.0.1"
 gem "activerecord-import", "~> 2.2.0"
 gem "activerecord-session_store", "~> 2.2.0"
 gem "ox"
-gem "rails", "~> 8.0.4"
+gem "rails", "~> 8.1.2"
 gem "responders", "~> 3.2"
 
 gem "ffi", "~> 1.15"
 
-gem "connection_pool", "~> 2.5.5"
+gem "connection_pool", "~> 3.0.2"
 
 gem "rdoc", ">= 2.4.2"
 
-gem "doorkeeper", "~> 5.8.0"
+gem "doorkeeper", "~> 5.9.0"
 # Maintain our own omniauth due to relative URL root issues
 # see upstream PR: https://github.com/omniauth/omniauth/pull/903
 gem "omniauth", git: "https://github.com/opf/omniauth", ref: "7eb21563ba047ef86d71f099975587b5ec88f9c9"
@@ -69,16 +69,16 @@ gem "scimitar", "~> 2.13"
 gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.9.0"
-gem "closure_tree", "~> 9.3.0"
-gem "rubytree", "~> 2.1.0"
+gem "closure_tree", "~> 9.6.0"
+gem "rubytree", "~> 2.2.0"
 
-gem "addressable", "~> 2.8.0"
+gem "addressable", "~> 2.8.9"
 
 # Remove whitespace from model input
 gem "auto_strip_attributes", "~> 2.5"
 
 # Provide timezone info for TZInfo used by AR
-gem "tzinfo-data", "~> 1.2025.1"
+gem "tzinfo-data", "~> 1.2026.1"
 
 # to generate html-diffs (e.g. for wiki comparison)
 gem "htmldiff"
@@ -127,7 +127,7 @@ gem "multi_json", "~> 1.19.0"
 gem "oj", "~> 3.16.12"
 
 gem "daemons"
-gem "good_job", "~> 4.12.0" # update should be done manually in sync with saas-openproject version.
+gem "good_job", "~> 4.13.3" # update should be done manually in sync with saas-openproject version.
 
 gem "rack-protection", "~> 3.2.0"
 
@@ -161,11 +161,16 @@ gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
 
-gem "mcp", "~> 0.4.0"
+gem "mcp", "~> 0.8.0"
 
-gem "meta-tags", "~> 2.22.2"
+gem "meta-tags", "~> 2.22.3"
 
 gem "paper_trail", "~> 17.0.0"
+
+# State machine with audit trail
+gem "statesman", "~> 13.1.0"
+
+gem "job-iteration"
 
 gem "op-clamav-client", "~> 3.4", require: "clamav"
 
@@ -177,8 +182,8 @@ gem "ice_cube", "~> 0.17.0"
 
 group :production do
   # we use dalli as standard memcache client
-  # requires memcached 1.4+
-  gem "dalli", "~> 3.2.0"
+  # requires memcached 1.6+
+  gem "dalli", "~> 5.0.0"
   gem "redis", "~> 5.4.0"
 end
 
@@ -192,17 +197,17 @@ gem "puma", "~> 7.1"
 gem "puma-plugin-statsd", "~> 2.7"
 gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
-gem "nokogiri", "~> 1.19.0"
+gem "nokogiri", "~> 1.19.1"
 
-gem "carrierwave", "~> 1.3.4"
-gem "carrierwave_direct", "~> 2.1.0"
+gem "carrierwave", "~> 2.2.6"
+gem "carrierwave_direct", "~> 3.0.0"
 gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.241"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.211"
+gem "aws-sdk-s3", "~> 1.213"
 
-gem "openproject-token", "~> 8.6.0"
+gem "openproject-token", "~> 8.8.0"
 
 gem "plaintext", "~> 0.3.7"
 
@@ -231,10 +236,10 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.89.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.90.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.2.0"
+gem "view_component", "~> 4.5.0"
 # Lookbook
 gem "lookbook", "2.3.14"
 
@@ -250,7 +255,7 @@ gem "turbo-rails", "~> 2.0.20"
 
 # There is a problem with version 1.4.0. Do not update until you're sure there is no infinite hang
 # happenning in failing tests when WebMock or VCR stub cannot be found.
-gem "httpx", "~> 1.6.3"
+gem "httpx", "~> 1.7.2"
 
 # Brings actual deep-freezing to most ruby objects
 gem "ice_nine"
@@ -262,16 +267,16 @@ group :test do
 
   # Test prof provides factories from code
   # and other niceties
-  gem "test-prof", "~> 1.4.0"
+  gem "test-prof", "~> 1.5.0"
   gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
 
   gem "rack_session_access"
   gem "rspec", "~> 3.13.2"
   # also add to development group, so 'spec' rake task gets loaded
-  gem "rspec-rails", "~> 8.0.0", group: :development
+  gem "rspec-rails", "~> 8.0.3", group: :development
 
   # Retry failures within the same environment
-  gem "retriable", "~> 3.1.1"
+  gem "retriable", "~> 3.2.1"
   gem "rspec-retry", "~> 0.6.1"
 
   # Accessibility tests
@@ -321,7 +326,7 @@ group :ldap do
 end
 
 group :development do
-  gem "listen", "~> 3.9.0" # Use for event-based reloaders
+  gem "listen", "~> 3.10.0" # Use for event-based reloaders
 
   gem "letter_opener_web"
 
@@ -352,7 +357,7 @@ group :development, :test do
   # https://github.com/puma/puma/issues/2835#issuecomment-2302133927
   gem "byebug"
 
-  gem "pry-byebug", "~> 3.11.0", platforms: [:mri]
+  gem "pry-byebug", "~> 3.12.0", platforms: [:mri]
   gem "pry-rails", "~> 0.3.6"
   gem "pry-rescue", "~> 1.6.0"
 
@@ -371,7 +376,7 @@ group :development, :test do
   gem "erblint-github", require: false
 
   # Brakeman scanner
-  gem "brakeman", "~> 7.1.1"
+  gem "brakeman", "~> 8.0.1"
 
   # i18n-tasks helps find and manage missing and unused translations.
   gem "i18n-tasks", "~> 1.1.0", require: false
@@ -380,10 +385,10 @@ group :development, :test do
   gem "active_record_doctor", "~> 2.0.1"
 end
 
-gem "bootsnap", "~> 1.20.0", require: false
+gem "bootsnap", "~> 1.23.0", require: false
 
 # API gems
-gem "grape", "~> 2.4.0"
+gem "grape", "~> 3.1.1"
 gem "grape_logging", "~> 3.0.0"
 gem "roar", "~> 1.2.0"
 
@@ -412,7 +417,7 @@ gem "activerecord-nulldb-adapter", "~> 1.2.2"
 
 # Have application level locks on the database to have a mutex shared between workers/hosts.
 # We e.g. employ this to safeguard the creation of journals.
-gem "with_advisory_lock", "~> 7.0.2"
+gem "with_advisory_lock", "~> 7.5.0"
 
 # Load Gemfile.modules explicitly to allow dependabot to work
 eval_gemfile "./Gemfile.modules"
@@ -428,4 +433,4 @@ end
 
 gem "openproject-octicons", "~>19.32.0"
 gem "openproject-octicons_helper", "~>19.32.0"
-gem "openproject-primer_view_components", "~>0.80.2"
+gem "openproject-primer_view_components", "~>0.82.0"

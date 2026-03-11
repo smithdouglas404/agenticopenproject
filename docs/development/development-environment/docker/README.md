@@ -452,13 +452,14 @@ to have Nextcloud running to test the Nextcloud-OpenProject integration. To do t
 
 ### Alternative: Using Let's encrypt
 
-An alternative approach is to issue certificates through Let's encrypt. This allows you to skip steps related to usage and setup
-of a custom, non-trusted CA. However, it requires that you have access to a domain name that you control and requires additional
-step to make the reverse proxy publicly reachable, which is not in scope of what this documentation can cover.
+An alternative approach is to issue certificates through Let's encrypt. This allows you to skip steps related to usage
+and setup of a custom, non-trusted CA. However, it requires that you have access to a domain name that you control and
+requires an additional step to make the reverse proxy publicly reachable, which is not in the scope of what this
+documentation can cover.
 
-If you need such a setup, you can change the `docker-compose.override.yml` for the reverse proxy, to use `letsencrypt` (see the
-corresponding `docker-compose.override.example.yml`). Make sure to export an environment variable with your alternative DNS zone
-before starting anything via docker compose. For example:
+If you need such a setup, you can change the `docker-compose.override.yml` for the reverse proxy, to use `letsencrypt`
+(see the corresponding `docker-compose.override.example.yml`). Make sure to export an environment variable, or define
+it in the `.env` files, with your alternative DNS zone before starting anything via docker compose. For example:
 
 ```bash
 export OPENPROJECT_DOCKER_DEV_TLD=dev.example.com

@@ -33,7 +33,7 @@ class Tasks::CreateService
     self.user = user
   end
 
-  def call(attributes: {}, prev: "")
+  def call(attributes: {}, prev_id: "")
     attributes[:type_id] = Task.type
 
     create_call = WorkPackages::CreateService
@@ -41,7 +41,7 @@ class Tasks::CreateService
                   .call(**attributes)
 
     if create_call.success?
-      create_call.result.move_after prev
+      create_call.result.move_after prev_id:
     end
 
     create_call

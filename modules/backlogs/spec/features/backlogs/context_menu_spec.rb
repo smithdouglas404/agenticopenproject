@@ -38,9 +38,9 @@ RSpec.describe "Backlogs context menu", :js do
   shared_let(:user) do
     create(:user,
            member_with_permissions: { project => %i[add_work_packages
-                                                    view_master_backlog
-                                                    view_taskboards
-                                                    view_work_packages] })
+                                                    view_sprints
+                                                    view_work_packages
+                                                    manage_sprint_items] })
   end
   shared_let(:sprint) do
     create(:version,
@@ -80,11 +80,12 @@ RSpec.describe "Backlogs context menu", :js do
   context "when the backlog is a sprint backlog (displayed on the left, the default)" do
     it "displays all menu entries" do
       within_backlog_context_menu do |menu|
-        expect(menu).to have_link I18n.t("backlogs.add_new_story")
-        expect(menu).to have_link I18n.t("label_stories_tasks")
-        expect(menu).to have_link I18n.t("label_task_board")
-        expect(menu).to have_link I18n.t("backlogs.show_burndown_chart")
-        expect(menu).to have_link I18n.t("label_wiki")
+        expect(menu).to have_selector :menuitem, count: 5
+        expect(menu).to have_selector :menuitem, "New story"
+        expect(menu).to have_selector :menuitem, "Stories/Tasks"
+        expect(menu).to have_selector :menuitem, "Task board"
+        expect(menu).to have_selector :menuitem, "Burndown chart"
+        expect(menu).to have_selector :menuitem, "Wiki"
       end
     end
   end
@@ -97,13 +98,14 @@ RSpec.describe "Backlogs context menu", :js do
              display: VersionSetting::DISPLAY_RIGHT)
     end
 
-    it 'only displays the "New story" and "Stories/Tasks" menu entries' do
+    it "only displays 2 menu entries" do
       within_backlog_context_menu do |menu|
-        expect(menu).to have_link I18n.t("backlogs.add_new_story")
-        expect(menu).to have_link I18n.t("label_stories_tasks")
-        expect(menu).to have_no_link I18n.t("label_task_board")
-        expect(menu).to have_no_link I18n.t("backlogs.show_burndown_chart")
-        expect(menu).to have_no_link I18n.t("label_wiki")
+        expect(menu).to have_selector :menuitem, count: 2
+        expect(menu).to have_selector :menuitem, "New story"
+        expect(menu).to have_selector :menuitem, "Stories/Tasks"
+        expect(menu).to have_no_selector :menuitem, "Task board"
+        expect(menu).to have_no_selector :menuitem, "Burndown chart"
+        expect(menu).to have_no_selector :menuitem, "Wiki"
       end
     end
   end
@@ -113,9 +115,9 @@ RSpec.describe "Backlogs context menu", :js do
       sprint.update(start_date: nil)
     end
 
-    it 'does not display the "Burndown chart" menu entry' do
+    it 'disables the "Burndown chart" menu entry' do
       within_backlog_context_menu do |menu|
-        expect(menu).to have_no_link I18n.t("backlogs.show_burndown_chart")
+        expect(menu).to have_selector :menuitem, "Burndown chart", disabled: true
       end
     end
   end
@@ -125,33 +127,21 @@ RSpec.describe "Backlogs context menu", :js do
       sprint.update(effective_date: nil)
     end
 
-    it 'does not display the "Burndown chart" menu entry' do
+    it 'disables the "Burndown chart" menu entry' do
       within_backlog_context_menu do |menu|
-        expect(menu).to have_no_link I18n.t("backlogs.show_burndown_chart")
+        expect(menu).to have_selector :menuitem, "Burndown chart", disabled: true
       end
     end
   end
 
-  context "when the user does not have add_work_packages permission" do
+  context "when the user does not have manage_sprint_items permission" do
     before do
-      RolePermission.where(permission: "add_work_packages").delete_all
+      RolePermission.where(permission: "manage_sprint_items").delete_all
     end
 
     it 'does not display the "New story" menu entry' do
       within_backlog_context_menu do |menu|
-        expect(menu).to have_no_link I18n.t("backlogs.add_new_story")
-      end
-    end
-  end
-
-  context "when the user does not have view_taskboards permission" do
-    before do
-      RolePermission.where(permission: "view_taskboards").delete_all
-    end
-
-    it 'does not display the "Task board" menu entry' do
-      within_backlog_context_menu do |menu|
-        expect(menu).to have_no_link I18n.t("label_task_board")
+        expect(menu).to have_no_selector :menuitem, "New story"
       end
     end
   end
@@ -163,7 +153,7 @@ RSpec.describe "Backlogs context menu", :js do
 
     it 'does not display the "Wiki" menu entry' do
       within_backlog_context_menu do |menu|
-        expect(menu).to have_no_link I18n.t("label_wiki")
+        expect(menu).to have_no_selector :menuitem, "Wiki"
       end
     end
   end

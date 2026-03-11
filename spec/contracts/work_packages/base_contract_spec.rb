@@ -1241,65 +1241,6 @@ RSpec.describe WorkPackages::BaseContract do
     end
   end
 
-  describe "epic" do
-    let(:task_type) { build_stubbed(:type_task) }
-    let(:epic_type) { build_stubbed(:type_epic) }
-    let(:epic) do
-      build_stubbed(:work_package, type: epic_type).tap do |epic_wp|
-        allow(epic_wp).to receive(:visible?).and_return(true)
-      end
-    end
-
-    before do
-      allow(project).to receive(:types).and_return([task_type, epic_type])
-      work_package.type = task_type
-      work_package.epic = epic
-    end
-
-    subject do
-      contract.validate
-
-      contract.errors.symbols_for(:epic)
-    end
-
-    context "when self assigning" do
-      let(:epic) { work_package }
-
-      it "returns an error for epic" do
-        expect(subject).to include(:cannot_be_self_assigned)
-      end
-    end
-
-    context "when an invalid epic_id is set" do
-      before do
-        work_package.epic = nil
-        work_package.epic_id = -1
-      end
-
-      it "is invalid" do
-        expect(subject).to include(:does_not_exist)
-      end
-    end
-
-    context "when the selected target is not an epic type" do
-      let(:epic_type) { build_stubbed(:type_task) }
-
-      it "is invalid" do
-        expect(subject).to include(:must_be_epic)
-      end
-    end
-
-    context "when the source type does not support epic links" do
-      let(:task_type) { build_stubbed(:type, name: "Feature") }
-
-      it "is invalid" do
-        contract.validate
-
-        expect(contract.errors.symbols_for(:epic_id)).to include(:error_readonly)
-      end
-    end
-  end
-
   describe "type" do
     context "for disabled type" do
       before do

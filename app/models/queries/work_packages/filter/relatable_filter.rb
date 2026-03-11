@@ -49,17 +49,7 @@ class Queries::WorkPackages::Filter::RelatableFilter < Queries::WorkPackages::Fi
   end
 
   def apply_to(query_scope)
-    if scope_operator == "epic"
-      work_package = WorkPackage.find_by(id: values.first)
-
-      if work_package
-        query_scope.where(id: WorkPackage.relatable_epics_for(work_package).select(:id))
-      else
-        query_scope.none
-      end
-    else
-      query_scope.relatable(WorkPackage.find_by(id: values.first), scope_operator)
-    end
+    query_scope.relatable(WorkPackage.visible.find_by(id: values.first), scope_operator)
   end
 
   private

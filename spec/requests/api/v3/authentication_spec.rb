@@ -187,6 +187,9 @@ RSpec.describe "API V3 Authentication" do
       let(:token) { create(:oauth_access_token, resource_owner: nil, application:) }
       let(:application) { create(:oauth_application) }
       let(:oauth_access_token) { token.plaintext_token }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3"}
+      end
 
       # Note: This is just caused by DoorkeeperOauth rejecting to handle this case and auth falling through to basic auth
       # more specific examples can be found at spec/requests/oauth/client_credentials_flow_spec.rb
@@ -194,10 +197,7 @@ RSpec.describe "API V3 Authentication" do
 
       it "returns unauthorized" do
         expect(last_response).to have_http_status :unauthorized
-
-        # Note: This is just caused by DoorkeeperOauth rejecting to handle this case and auth falling through to basic auth
-        # more specific examples can be found at spec/requests/oauth/client_credentials_flow_spec.rb
-        expect(last_response.header["WWW-Authenticate"]).to eq('Basic realm="OpenProject API"')
+        expect(last_response.header["WWW-Authenticate"]).to eq(expected_www_auth_header)
         expect(JSON.parse(last_response.body)).to eq(error_response_body)
       end
 
@@ -221,6 +221,74 @@ RSpec.describe "API V3 Authentication" do
             expect(JSON.parse(last_response.body)).to eq(error_response_body)
           end
         end
+      end
+    end
+  end
+
+  describe "API Key as Bearer token" do
+    let(:token) { create(:api_token, user:) }
+    let(:bearer_token) { token.plain_value }
+    let(:expected_message) { "You did not provide the correct credentials." }
+
+    before do
+      user
+
+      header "Authorization", "Bearer #{bearer_token}"
+
+      get resource
+    end
+
+    context "with a valid access token" do
+      it "authenticates successfully" do
+        expect(last_response).to have_http_status :ok
+      end
+    end
+
+    context "with an invalid access token" do
+      let(:bearer_token) { "opapi-1337" }
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+      end
+
+      it "returns unauthorized" do
+        expect(last_response).to have_http_status :unauthorized
+        expect(last_response.header["WWW-Authenticate"]).to eq(expected_www_auth_header)
+        expect(JSON.parse(last_response.body)).to eq(error_response_body)
+      end
+    end
+
+    context "when the token's user can't be found" do
+      let(:expected_www_auth_header) do
+        %{Bearer realm="OpenProject API", #{resource_metadata}, scope="api_v3", error="invalid_token"}
+      end
+
+      around do |ex|
+        # create the token before deleting the user; right now it especially works, because a foreign key constraint prevents
+        # tokens without users
+        token
+        user.destroy!
+        ex.run
+      end
+
+      it "returns unauthorized" do
+        expect(last_response).to have_http_status :unauthorized
+        expect(last_response.header["WWW-Authenticate"]).to eq(expected_www_auth_header)
+        expect(JSON.parse(last_response.body)).to eq(error_response_body)
+      end
+    end
+
+    context "when the token's user is locked" do
+      let(:user) { create(:user, :locked) }
+      let(:expected_www_auth_header) do
+        "Bearer realm=\"OpenProject API\", #{resource_metadata}, scope=\"api_v3\", error=\"invalid_token\", " \
+          "error_description=\"#{expected_error_description}\""
+      end
+      let(:expected_error_description) { "The user account is locked" }
+
+      it "returns unauthorized" do
+        expect(last_response).to have_http_status :unauthorized
+        expect(last_response.header["WWW-Authenticate"]).to eq(expected_www_auth_header)
+        expect(JSON.parse(last_response.body)).to eq(error_response_body)
       end
     end
   end
@@ -264,7 +332,7 @@ RSpec.describe "API V3 Authentication" do
           end
 
           it "returns the WWW-Authenticate header" do
-            expect(last_response.header["WWW-Authenticate"]).to include 'Basic realm="OpenProject API"'
+            expect(last_response.header["WWW-Authenticate"]).to include 'Bearer realm="OpenProject API"'
           end
         end
 
@@ -315,34 +383,7 @@ RSpec.describe "API V3 Authentication" do
 
           it "returns the WWW-Authenticate header" do
             expect(last_response.header["WWW-Authenticate"])
-              .to include 'Basic realm="OpenProject API"'
-          end
-        end
-
-        context 'with invalid credentials an X-Authentication-Scheme "Session"' do
-          let(:expected_message) { "You did not provide the correct credentials." }
-
-          before do
-            set_basic_auth_header(username, password.reverse)
-            header "X-Authentication-Scheme", "Session"
-            get resource
-          end
-
-          it "returns 401 unauthorized" do
-            expect(last_response).to have_http_status :unauthorized
-          end
-
-          it "returns the correct JSON response" do
-            expect(JSON.parse(last_response.body)).to eq error_response_body
-          end
-
-          it "returns the correct content type header" do
-            expect(last_response.headers["Content-Type"]).to eq "application/hal+json; charset=utf-8"
-          end
-
-          it "returns the WWW-Authenticate header" do
-            expect(last_response.header["WWW-Authenticate"])
-              .to include 'Session realm="OpenProject API"'
+              .to include 'Bearer realm="OpenProject API"'
           end
         end
 

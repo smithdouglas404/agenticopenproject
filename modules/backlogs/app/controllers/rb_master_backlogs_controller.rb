@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,12 +29,55 @@
 #++
 
 class RbMasterBacklogsController < RbApplicationController
+  include WorkPackages::WithSplitView
+
   menu_item :backlogs
 
-  def index
-    @owner_backlogs = Backlog.owner_backlogs(@project)
-    @sprint_backlogs = Backlog.sprint_backlogs(@project)
+  before_action :load_backlogs, only: :index
 
-    @last_update = (@sprint_backlogs + @owner_backlogs).filter_map(&:updated_at).max
+  def index
+    if OpenProject::FeatureDecisions.scrum_projects_active?
+      # Feature flag is active, render the new views
+      if turbo_frame_request?
+        render partial: "agile_list", layout: false
+      else
+        render :agile_index
+      end
+    else
+      # Feature flag is not active, render legacy views
+      if turbo_frame_request? # rubocop:disable Style/IfInsideElse
+        render partial: "list", layout: false
+      else
+        render :index
+      end
+    end
+  end
+
+  def details
+    if turbo_frame_request?
+      render "work_packages/split_view", layout: false
+    else
+      load_backlogs
+
+      if OpenProject::FeatureDecisions.scrum_projects_active?
+        render :agile_index
+      else
+        render :index
+      end
+    end
+  end
+
+  def split_view_base_route = backlogs_project_backlogs_path(request.query_parameters)
+
+  private
+
+  def load_backlogs
+    @owner_backlogs = Backlog.owner_backlogs(@project)
+
+    if OpenProject::FeatureDecisions.scrum_projects_active?
+      @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
+    else
+      @sprint_backlogs = Backlog.sprint_backlogs(@project)
+    end
   end
 end

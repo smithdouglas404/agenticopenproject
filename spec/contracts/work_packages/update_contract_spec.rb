@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 
 require "spec_helper"
-require "contracts/work_packages/shared_base_contract"
+require "contracts/work_packages/shared_contract_examples"
 
 RSpec.describe WorkPackages::UpdateContract do
   include_context "work package contract"
@@ -327,45 +327,6 @@ RSpec.describe WorkPackages::UpdateContract do
       end
     end
 
-    describe "epic_id" do
-      shared_let(:source_type) { create(:type_task, projects: [persisted_project]) }
-      shared_let(:epic_type) { create(:type_epic, projects: [persisted_project]) }
-      shared_let(:epic) { create(:work_package, project: persisted_project, type: epic_type) }
-
-      let(:work_package) do
-        create(:work_package,
-               project: persisted_project,
-               type: source_type,
-               status: persisted_status)
-      end
-
-      let(:epic_visible) { true }
-
-      before do
-        work_package.epic = epic
-
-        allow(epic)
-          .to receive(:visible?)
-                .and_return(epic_visible)
-      end
-
-      context "if the user has edit permissions" do
-        it_behaves_like "contract is valid"
-      end
-
-      context "if the user lacks edit permissions" do
-        let(:permissions) { [:view_work_packages] }
-
-        it_behaves_like "contract is invalid", epic_id: :error_readonly
-      end
-
-      context "when the user cannot access the epic" do
-        let(:epic_visible) { false }
-
-        it_behaves_like "contract is invalid", epic_id: :error_unauthorized
-      end
-    end
-
     describe "project_phase_definition" do
       let(:permissions) { super() + %i[view_project_phases move_work_packages] }
 
@@ -423,9 +384,21 @@ RSpec.describe WorkPackages::UpdateContract do
     context "for a user having only the assign_versions permission" do
       let(:permissions) { %i[assign_versions] }
 
-      it "includes all attributes except version_id" do
+      it "includes version_id only" do
         expect(subject)
-          .to include("version_id", "version")
+          .to include("version_id", "version", "lock_version_id", "lock_version")
+
+        expect(subject)
+          .not_to include("subject", "start_date", "description")
+      end
+    end
+
+    context "for a user having only the manage_sprint_items permission" do
+      let(:permissions) { %i[manage_sprint_items] }
+
+      it "includes version_id only" do
+        expect(subject)
+          .to include("version_id", "version", "lock_version_id", "lock_version")
 
         expect(subject)
           .not_to include("subject", "start_date", "description")

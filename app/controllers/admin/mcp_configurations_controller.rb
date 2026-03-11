@@ -48,6 +48,7 @@ module Admin
     def update
       config = McpConfiguration.find(params[:id])
       if config.update(mcp_config_params)
+        update_tool_response_format
         flash[:notice] = t(".success")
       else
         flash[:error] = t(".failure")
@@ -72,6 +73,17 @@ module Admin
 
     def mcp_config_params
       params.expect(mcp_configuration: %i[enabled title description])
+    end
+
+    def update_tool_response_format
+      return if tool_response_format_param.nil?
+      return unless McpTools::Base::RESPONSE_FORMATS.include?(tool_response_format_param.to_sym)
+
+      Setting.mcp_tool_response_format = tool_response_format_param
+    end
+
+    def tool_response_format_param
+      params.dig(:mcp_configuration, :tool_response_format)
     end
   end
 end
