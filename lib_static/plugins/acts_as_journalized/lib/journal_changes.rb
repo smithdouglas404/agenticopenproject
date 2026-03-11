@@ -41,7 +41,8 @@ module JournalChanges
       get_custom_fields_changes,
       get_project_phases_changes,
       get_file_links_changes,
-      get_agenda_items_changes
+      get_agenda_items_changes,
+      get_associated_versions_changes
     ].compact
 
     @changes = changes.reduce({}.with_indifferent_access, :merge!)
@@ -148,6 +149,26 @@ module JournalChanges
       %i[title duration_in_minutes notes position work_package_id],
       key_prefix: "agenda_items"
     )
+  end
+
+  def get_associated_versions_changes
+    return unless journable.respond_to?(:work_package_associated_versions)
+
+    target_changes = ::Acts::Journalized::Differ::Association.new(
+      predecessor,
+      self,
+      association: ->(j) { j.work_package_associated_version_journals.where(kind: "target") },
+      id_attribute: :version_id
+    ).single_attribute_changes(:name, key_prefix: "target_versions")
+
+    observed_in_changes = ::Acts::Journalized::Differ::Association.new(
+      predecessor,
+      self,
+      association: ->(j) { j.work_package_associated_version_journals.where(kind: "observed_in") },
+      id_attribute: :version_id
+    ).single_attribute_changes(:name, key_prefix: "observed_in_versions")
+
+    target_changes.merge!(observed_in_changes)
   end
 
   private

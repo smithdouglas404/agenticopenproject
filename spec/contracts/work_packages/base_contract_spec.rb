@@ -1233,8 +1233,7 @@ RSpec.describe WorkPackages::BaseContract do
 
       context "when reopening a work package" do
         before do
-          allow(work_package).to receive(:reopened?).and_return(true)
-          allow(work_package).to receive(:target_versions).and_return([closed_version])
+          allow(work_package).to receive_messages(reopened?: true, associated_versions: [closed_version])
           subject.validate
         end
 

@@ -52,12 +52,16 @@ module WorkPackages
       validate_version_is_assignable
     end
     attribute :target_versions,
-              permission: :assign_versions do
-      validate_target_versions_are_assignable
+              permission: %i[assign_versions manage_sprint_items] do
+      validate_associated_versions_are_assignable(:target_versions)
+    end
+    attribute :observed_in_versions,
+              permission: %i[assign_versions manage_sprint_items] do
+      validate_associated_versions_are_assignable(:observed_in_versions)
     end
 
     validate :validate_no_reopen_on_closed_version
-    validate :validate_no_reopen_on_closed_target_version
+    validate :validate_no_reopen_on_closed_associated_version
 
     attribute :project_id
 
@@ -379,21 +383,16 @@ module WorkPackages
       end
     end
 
-    def validate_target_versions_are_assignable
-      return if model.target_versions.empty?
+    def validate_associated_versions_are_assignable(association)
+      versions = model.public_send(association)
+      return if versions.empty?
 
       assignable_ids = model.assignable_versions.map(&:id)
-      model.target_versions.each do |version|
+      versions.each do |version|
         unless assignable_ids.include?(version.id)
-          errors.add :target_versions, :inclusion
+          errors.add association, :inclusion
           break
         end
-      end
-    end
-
-    def validate_no_reopen_on_closed_target_version
-      if model.target_versions.any?(&:closed?) && model.reopened?
-        errors.add :base, I18n.t(:error_can_not_reopen_work_package_on_closed_version)
       end
     end
 
@@ -518,6 +517,12 @@ module WorkPackages
 
     def validate_no_reopen_on_closed_version
       if model.version_id && model.reopened? && model.version.closed?
+        errors.add :base, I18n.t(:error_can_not_reopen_work_package_on_closed_version)
+      end
+    end
+
+    def validate_no_reopen_on_closed_associated_version
+      if model.associated_versions.any?(&:closed?) && model.reopened?
         errors.add :base, I18n.t(:error_can_not_reopen_work_package_on_closed_version)
       end
     end

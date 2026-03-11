@@ -1899,6 +1899,8 @@ en:
         parent_title: "Parent page"
         redirect_existing_links: "Redirect existing links"
         text: "Page content"
+      work_package_associated_version:
+        kind: "Kind"
       work_package:
         ancestor: "Descendants of" # used for filtering of work packages that are descendants of a given work package
         begin_insertion: "Begin of the insertion"
@@ -1934,6 +1936,7 @@ en:
         time_entries: "Log time"
         type: "Type"
         target_versions: "Target versions"
+        observed_in_versions: "Observed in versions"
         version: "Version"
         watcher: "Watcher"
 

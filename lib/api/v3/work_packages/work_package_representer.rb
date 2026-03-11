@@ -569,6 +569,10 @@ module API
                              v3_path: :version,
                              representer: ::API::V3::Versions::VersionRepresenter
 
+        associated_resources :observed_in_versions,
+                             v3_path: :version,
+                             representer: ::API::V3::Versions::VersionRepresenter
+
         associated_resource :parent,
                             v3_path: :work_package,
                             representer: ::API::V3::WorkPackages::WorkPackageRepresenter,

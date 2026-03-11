@@ -28,32 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Journals::CreateService
-  class Association
-    include Helpers
-
-    ASSOCIATION_NAMES = %i[
-      AgendaItemable
-      Attachable
-      CustomComment
-      Customizable
-      ProjectPhase
-      Storable
-      WorkPackageAssociatedVersionable
-    ].freeze
-
-    def self.for(journable)
-      ASSOCIATION_NAMES
-        .map { "Journals::CreateService::#{it}".constantize.new(journable) }
-        .select(&:associated?)
+class CreateWorkPackageAssociatedVersions < ActiveRecord::Migration[8.1]
+  def change
+    create_table :work_package_associated_versions, id: false do |t|
+      t.references :work_package, null: false, foreign_key: { on_delete: :cascade }, index: false
+      t.references :version,      null: false, foreign_key: { on_delete: :cascade }, index: false
+      t.string :kind, null: false
+      t.timestamps
     end
 
-    attr_reader :journable
-
-    def initialize(journable)
-      @journable = journable
-    end
-
-    def name = self.class.name.demodulize.underscore
+    add_index :work_package_associated_versions, %i[work_package_id version_id kind],
+              unique: true,
+              name: "idx_wp_assoc_versions_on_wp_version_kind"
+    add_index :work_package_associated_versions, :version_id,
+              name: "idx_wp_assoc_versions_on_version"
   end
 end

@@ -28,32 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Journals::CreateService
-  class Association
-    include Helpers
+class WorkPackageAssociatedVersion < ApplicationRecord
+  self.primary_key = %i[work_package_id version_id kind]
 
-    ASSOCIATION_NAMES = %i[
-      AgendaItemable
-      Attachable
-      CustomComment
-      Customizable
-      ProjectPhase
-      Storable
-      WorkPackageAssociatedVersionable
-    ].freeze
+  KINDS = %w[target observed_in].freeze
 
-    def self.for(journable)
-      ASSOCIATION_NAMES
-        .map { "Journals::CreateService::#{it}".constantize.new(journable) }
-        .select(&:associated?)
-    end
+  belongs_to :work_package
+  belongs_to :version
 
-    attr_reader :journable
-
-    def initialize(journable)
-      @journable = journable
-    end
-
-    def name = self.class.name.demodulize.underscore
-  end
+  validates :kind, inclusion: { in: KINDS }
 end

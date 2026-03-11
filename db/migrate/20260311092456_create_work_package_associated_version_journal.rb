@@ -28,9 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class WorkPackageTargetVersion < ApplicationRecord
-  self.primary_key = %i[work_package_id version_id]
+class CreateWorkPackageAssociatedVersionJournal < ActiveRecord::Migration[8.1]
+  def change
+    create_table :work_package_associated_version_journals do |t| # rubocop:disable Rails/CreateTableWithTimestamps
+      t.bigint :journal_id,  null: false
+      t.bigint :version_id,  null: false
+      t.string :kind,        null: false
+      t.string :name,        null: false, default: ""
 
-  belongs_to :work_package
-  belongs_to :version
+      t.index :journal_id
+      t.index :version_id
+    end
+  end
 end

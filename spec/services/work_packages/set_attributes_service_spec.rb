@@ -1844,7 +1844,7 @@ RSpec.describe WorkPackages::SetAttributesService,
 
         before do
           without_partial_double_verification do
-            allow(work_package).to receive(:target_versions).and_return([shared_version, other_version])
+            allow(work_package).to receive_messages(target_versions: [shared_version, other_version], observed_in_versions: [])
             allow(work_package).to receive(:target_versions=) { |versions| assigned_target_versions.replace(versions) }
           end
         end

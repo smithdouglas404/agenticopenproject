@@ -61,9 +61,22 @@ class WorkPackage < ApplicationRecord
   belongs_to :priority, class_name: "IssuePriority"
   belongs_to :category, class_name: "Category", optional: true
 
-  has_many :work_package_target_versions, dependent: :delete_all
-  has_many :target_versions, through: :work_package_target_versions, source: :version
-  # has_many :affect_versions, through: :work_package_affect_version
+  has_many :work_package_associated_versions, dependent: :delete_all
+  has_many :associated_versions, through: :work_package_associated_versions, source: :version
+  has_many :target_versions, -> { where(work_package_associated_versions: { kind: "target" }) },
+           through: :work_package_associated_versions, source: :version
+  has_many :observed_in_versions, -> { where(work_package_associated_versions: { kind: "observed_in" }) },
+           through: :work_package_associated_versions, source: :version
+
+  # totally not sure about these two here, will review later
+  def target_version_ids=(ids)
+    set_associated_version_ids("target", ids)
+  end
+
+  def observed_in_version_ids=(ids)
+    set_associated_version_ids("observed_in", ids)
+  end
+
   has_many :time_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
   has_many :file_links, dependent: :delete_all, class_name: "Storages::FileLink", as: :container
   has_many :storages, through: :project
@@ -570,6 +583,15 @@ class WorkPackage < ApplicationRecord
   end
 
   private
+
+  def set_associated_version_ids(kind, ids)
+    ids = Array(ids).map(&:to_i).reject(&:zero?)
+    existing = work_package_associated_versions.where(kind:)
+    existing.where.not(version_id: ids).delete_all
+    (ids - existing.pluck(:version_id)).each do |version_id|
+      work_package_associated_versions.build(version_id:, kind:)
+    end
+  end
 
   def derived_progress_hints
     @derived_progress_hints ||= {}

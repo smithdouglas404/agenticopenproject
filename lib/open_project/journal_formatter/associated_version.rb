@@ -28,46 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+class OpenProject::JournalFormatter::AssociatedVersion < JournalFormatter::Base
+  def render(key, values, options = { html: true })
+    label, old_value, value = format_details(key, values)
 
-RSpec.describe WorkPackageTargetVersion do
-  let(:project) { create(:project) }
-  let(:version) { create(:version, project:) }
-  let(:work_package) { create(:work_package, project:) }
-  let!(:join_row) { described_class.create!(work_package:, version:) }
-
-  it { is_expected.to belong_to(:work_package) }
-  it { is_expected.to belong_to(:version) }
-
-  describe "cascades" do
-    context "when deleting the work package" do
-      it "removes the join row" do
-        wp_id = work_package.id
-        work_package.destroy!
-
-        expect(described_class.where(work_package_id: wp_id)).not_to exist
-      end
+    if options[:html]
+      label, old_value, value = *format_html_details(label, old_value, value)
     end
 
-    context "when deleting the version" do
-      it "removes the join row" do
-        version_id = version.id
-        version.destroy!
+    render_detail_text(label, value, old_value)
+  end
 
-        expect(described_class.where(version_id:)).not_to exist
-      end
+  private
+
+  def render_detail_text(label, value, old_value)
+    if value.blank?
+      I18n.t(:text_journal_deleted, label:, old: old_value)
+    else
+      I18n.t(:text_journal_added, label:, value:)
     end
   end
 
-  describe "Version#target_work_packages" do
-    it "returns work packages linked via the join table" do
-      expect(version.target_work_packages).to include(work_package)
-    end
-  end
-
-  describe "WorkPackage#target_versions" do
-    it "returns versions linked via the join table" do
-      expect(work_package.target_versions).to include(version)
-    end
+  def label(key)
+    kind_attr = key.start_with?("observed_in_") ? :observed_in_versions : :target_versions
+    WorkPackage.human_attribute_name(kind_attr)
   end
 end
