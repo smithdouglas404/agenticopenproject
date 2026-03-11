@@ -212,6 +212,8 @@ class Project < ApplicationRecord
             format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
             if: ->(p) { p.identifier_changed? && p.identifier.present? }
 
+  validate :identifier_not_taken_by_former_identifiers, if: ->(p) { p.identifier_changed? }
+
   validates_associated :repository, :wiki
 
   friendly_id :identifier, use: %i[finders history], slug_column: :identifier
@@ -355,5 +357,18 @@ class Project < ApplicationRecord
     OpenProject::Notifications.send(
       OpenProject::Events::MODULE_DISABLED, disabled_module:
     )
+  end
+
+  private
+
+  def identifier_not_taken_by_former_identifiers
+    already_existing = FriendlyId::Slug
+                         .where(slug: identifier, sluggable_type: self.class.to_s)
+                         .where.not(sluggable_id: id)
+                         .exists?
+
+    if already_existing
+      errors.add(:identifier, :taken)
+    end
   end
 end
