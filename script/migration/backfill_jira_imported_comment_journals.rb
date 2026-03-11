@@ -14,6 +14,7 @@
 # - map author email to OpenProject user and update journals.user_id
 # - set journals.created_at / updated_at from embedded timestamp
 # - strip the import preamble from notes
+# - drop import-admin journals that only set Epic/Version (they corrupt chronology)
 # - normalize journals.validity_period for touched work packages
 #
 # ---------------------------------------------------------------------------
@@ -35,16 +36,10 @@
 #    - Source install:
 #      DRY_RUN=false bundle exec rails runner script/migration/backfill_jira_imported_comment_journals.rb
 #
-# 4) Optional scoped run (single/multiple projects):
-#      PROJECTS=my-project,123 DRY_RUN=false bundle exec rails runner ...
-#
-# 5) Optional normalization-only pass:
-#      NORMALIZE_ONLY=true DRY_RUN=false bundle exec rails runner ...
-#
-# 6) Verify remaining marker-prefixed import rows:
+# 4) Verify remaining marker-prefixed import rows:
 #      bundle exec rails runner "puts Journal.where(journable_type:'WorkPackage').where(\"notes ~ E'^[[:space:]]*\\\\[(COMMENT|HISTORY)\\\\]'\").count"
 #
-# 7) Verify unresolved mapping issues:
+# 5) Verify unresolved mapping issues:
 #    Inspect script summary output:
 #      - missing_user
 #      - no_email
@@ -56,23 +51,15 @@
 #
 # Environment variables:
 #   DRY_RUN=true|false                 default: true
-#   PROJECTS=identifier_or_id,...      optional
-#   BATCH_SIZE=500                     default: 500
-#   LIMIT=1000                         optional
-#   STRIP_PREAMBLE=true|false          default: true
-#   ALLOW_TIMESTAMP_ONLY=true|false    default: true (update date/body even if user cannot be mapped)
-#   NORMALIZE_VALIDITY=true|false      default: true
-#   NORMALIZE_MISMATCHED=true|false    default: true (also normalize pre-existing validity mismatches)
-#   NORMALIZE_ONLY=true|false          default: false
-#   SAMPLE_LIMIT=20                    default: 20
-#
-# Compatibility:
-#   KEEP_PREAMBLE=true is equivalent to STRIP_PREAMBLE=false.
 
 require "set"
 require "time"
 
 class JiraImportedCommentJournalBackfill
+  DEFAULT_BATCH_SIZE = 500
+  DEFAULT_SAMPLE_LIMIT = 20
+  DEFAULT_UNPARSABLE_DETAIL_LIMIT = 200
+
   ISO_TS_REGEX = /
     \d{4}-\d{2}-\d{2}
     T\d{2}:\d{2}:\d{2}
@@ -84,84 +71,114 @@ class JiraImportedCommentJournalBackfill
   MARKER_START_REGEX = /\A[[:space:]\uFEFF]*\[(COMMENT|HISTORY)\]/i.freeze
   MARKER_ANY_REGEX = /\[(COMMENT|HISTORY)\]/i.freeze
   AUTHOR_LINE_REGEX = /^[[:space:]]*Author:[[:space:]]*(?<author>[^\r\n]*)/i.freeze
+  IMPORTER_ONLY_DETAIL_KEYS = %w[version version_id epic epic_id].freeze
 
   attr_reader :dry_run,
               :batch_size,
-              :limit,
-              :project_filters,
               :strip_preamble,
               :allow_timestamp_only,
               :normalize_validity,
               :normalize_mismatched,
-              :normalize_only,
-              :sample_limit
+              :drop_unparsable_imported,
+              :fix_initial_created_event,
+              :align_initial_to_work_package,
+              :sample_limit,
+              :print_unparsable_details,
+              :unparsable_detail_limit
 
   def initialize
     @dry_run = env_true?("DRY_RUN", default: true)
-    @batch_size = ENV.fetch("BATCH_SIZE", "500").to_i
-    @limit = ENV["LIMIT"]&.to_i
-    @project_filters = ENV["PROJECTS"]&.split(",")&.map(&:strip)&.reject(&:blank?) || []
-
-    @strip_preamble = !env_true?("KEEP_PREAMBLE", default: false)
-    if ENV.key?("STRIP_PREAMBLE")
-      @strip_preamble = env_true?("STRIP_PREAMBLE", default: true)
-    end
-
-    @allow_timestamp_only = env_true?("ALLOW_TIMESTAMP_ONLY", default: true)
-    @normalize_validity = env_true?("NORMALIZE_VALIDITY", default: true)
-    @normalize_mismatched = env_true?("NORMALIZE_MISMATCHED", default: true)
-    @normalize_only = env_true?("NORMALIZE_ONLY", default: false)
-    @sample_limit = ENV.fetch("SAMPLE_LIMIT", "20").to_i
+    @batch_size = DEFAULT_BATCH_SIZE
+    @strip_preamble = true
+    @allow_timestamp_only = true
+    @normalize_validity = true
+    @normalize_mismatched = true
+    @drop_unparsable_imported = true
+    @fix_initial_created_event = true
+    @align_initial_to_work_package = true
+    @sample_limit = DEFAULT_SAMPLE_LIMIT
+    @print_unparsable_details = dry_run
+    @unparsable_detail_limit = DEFAULT_UNPARSABLE_DETAIL_LIMIT
 
     @user_id_cache = {}
   end
 
   def run!
     puts "Starting Jira imported activity backfill"
-    puts "DRY_RUN=#{dry_run} BATCH_SIZE=#{batch_size} LIMIT=#{limit || 'none'} PROJECTS=#{project_filters.join(',').presence || 'all'}"
-    puts "STRIP_PREAMBLE=#{strip_preamble} ALLOW_TIMESTAMP_ONLY=#{allow_timestamp_only}"
-    puts "NORMALIZE_VALIDITY=#{normalize_validity} NORMALIZE_MISMATCHED=#{normalize_mismatched} NORMALIZE_ONLY=#{normalize_only}"
+    puts "DRY_RUN=#{dry_run} BATCH_SIZE=#{batch_size}"
+    puts "Fixed behavior: STRIP_PREAMBLE=true ALLOW_TIMESTAMP_ONLY=true DROP_UNPARSABLE_IMPORTED=true"
+    puts "Fixed behavior: FIX_INITIAL_CREATED_EVENT=true ALIGN_INITIAL_TO_WORK_PACKAGE=true"
 
     touched_work_package_ids = Set.new
     stats = Hash.new(0)
     samples = Hash.new { |h, k| h[k] = [] }
     missing_user_emails = Hash.new(0)
+    unparsable_details = []
+    creation_seed_by_work_package = {}
 
     scope = candidate_scope
     puts "Candidate journals: #{scope.count}"
 
-    unless normalize_only
-      iterate_scope(scope) do |journal|
-        status, parsed = parse_imported_activity(journal.notes)
-        unless status == :ok
-          stats[status] += 1
-          append_sample(samples, status, journal.id)
-          next
-        end
-
-        attrs = build_attrs(journal, parsed, stats:, missing_user_emails:)
-        next if attrs.nil?
-
-        if attrs.empty?
-          stats[:already_aligned] += 1
-          next
-        end
+    iterate_scope(scope) do |journal|
+      status, parsed = parse_imported_activity(journal.notes)
+      unless status == :ok
+        stats[status] += 1
+        append_sample(samples, status, journal.id)
+        capture_unparsable_detail(unparsable_details, journal, status)
 
         if dry_run
-          stats[:would_update] += 1
+          stats[:would_drop_unparsable] += 1
         else
-          journal.update_columns(attrs)
-          stats[:updated] += 1
+          journal.destroy!
+          stats[:dropped_unparsable] += 1
         end
-
         touched_work_package_ids << journal.journable_id
-      rescue StandardError => e
-        stats[:error] += 1
-        append_sample(samples, :error, "#{journal.id}:#{e.class}:#{e.message}")
+        next
       end
+
+      track_creation_seed(creation_seed_by_work_package, journal, parsed)
+
+      attrs = build_attrs(journal, parsed, stats:, missing_user_emails:)
+      next if attrs.nil?
+
+      if attrs.empty?
+        stats[:already_aligned] += 1
+        next
+      end
+
+      if dry_run
+        stats[:would_update] += 1
+      else
+        journal.update_columns(attrs)
+        stats[:updated] += 1
+      end
+
+      touched_work_package_ids << journal.journable_id
+    rescue StandardError => e
+      stats[:error] += 1
+      append_sample(samples, :error, "#{journal.id}:#{e.class}:#{e.message}")
     end
 
-    print_summary(stats, samples, missing_user_emails)
+    drop_import_admin_epic_version_entries!(
+      touched_work_package_ids:,
+      stats:,
+      samples:
+    )
+
+    apply_initial_created_event_fix!(
+      creation_seed_by_work_package:,
+      touched_work_package_ids:,
+      stats:,
+      samples:
+    )
+
+    align_initial_journals_to_work_packages!(
+      touched_work_package_ids:,
+      stats:,
+      samples:
+    )
+
+    print_summary(stats, samples, missing_user_emails, unparsable_details)
 
     if dry_run
       puts "Dry run complete. No data changed."
@@ -183,37 +200,13 @@ class JiraImportedCommentJournalBackfill
   private
 
   def candidate_scope
-    scope = Journal.where(journable_type: "WorkPackage")
-                   .where("notes ~ E'^[[:space:]]*\\\\[(COMMENT|HISTORY)\\\\]'")
-                   .joins("INNER JOIN work_packages ON work_packages.id = journals.journable_id")
-
-    if project_filters.any?
-      project_ids = resolve_project_ids(project_filters)
-      raise "No matching projects for PROJECTS=#{project_filters.join(',')}" if project_ids.empty?
-
-      scope = scope.where("work_packages.project_id IN (?)", project_ids)
-    end
-
-    scope = scope.limit(limit) if limit&.positive?
-    scope
+    Journal.where(journable_type: "WorkPackage")
+           .where("notes ~ E'^[[:space:]]*\\\\[(COMMENT|HISTORY)\\\\]'")
+           .joins("INNER JOIN work_packages ON work_packages.id = journals.journable_id")
   end
 
   def iterate_scope(scope, &block)
-    if limit&.positive?
-      scope.each(&block)
-    else
-      scope.find_each(batch_size:, &block)
-    end
-  end
-
-  def resolve_project_ids(filters)
-    filters.filter_map do |token|
-      if token.match?(/\A\d+\z/)
-        token.to_i
-      else
-        Project.find_by(identifier: token)&.id
-      end
-    end.uniq
+    scope.find_each(batch_size:, &block)
   end
 
   def parse_imported_activity(raw)
@@ -293,13 +286,201 @@ class JiraImportedCommentJournalBackfill
     attrs
   end
 
+  def track_creation_seed(creation_seed_by_work_package, journal, parsed)
+    work_package_id = journal.journable_id
+    mapped_user_id = parsed[:email].present? ? user_id_for_email(parsed[:email]) : nil
+
+    candidate = {
+      timestamp: parsed[:timestamp],
+      user_id: mapped_user_id,
+      email: parsed[:email],
+      source_journal_id: journal.id
+    }
+
+    existing = creation_seed_by_work_package[work_package_id]
+
+    if existing.nil? ||
+       candidate[:timestamp] < existing[:timestamp] ||
+       (candidate[:timestamp] == existing[:timestamp] && existing[:user_id].nil? && candidate[:user_id].present?)
+      creation_seed_by_work_package[work_package_id] = candidate
+    end
+  end
+
+  def apply_initial_created_event_fix!(creation_seed_by_work_package:, touched_work_package_ids:, stats:, samples:)
+    puts "Work packages with parsed imported activity: #{creation_seed_by_work_package.count}"
+
+    creation_seed_by_work_package.each do |work_package_id, seed|
+      apply_initial_created_event_fix_for_work_package!(
+        work_package_id:,
+        seed:,
+        touched_work_package_ids:,
+        stats:,
+        samples:
+      )
+    rescue StandardError => e
+      stats[:initial_fix_error] += 1
+      append_sample(samples, :initial_fix_error, "wp=#{work_package_id}:#{e.class}:#{e.message}")
+    end
+  end
+
+  def apply_initial_created_event_fix_for_work_package!(work_package_id:, seed:, touched_work_package_ids:, stats:, samples:)
+    initial_journal = Journal.where(journable_type: "WorkPackage", journable_id: work_package_id)
+                             .order(:version, :id)
+                             .select(:id, :user_id, :created_at, :updated_at)
+                             .first
+    unless initial_journal
+      stats[:missing_initial_journal] += 1
+      append_sample(samples, :missing_initial_journal, work_package_id)
+      return
+    end
+
+    work_package = WorkPackage.where(id: work_package_id)
+                              .select(:id, :author_id, :created_at)
+                              .first
+    unless work_package
+      stats[:missing_work_package] += 1
+      append_sample(samples, :missing_work_package, work_package_id)
+      return
+    end
+
+    journal_attrs = {}
+    if initial_journal.created_at != seed[:timestamp]
+      journal_attrs[:created_at] = seed[:timestamp]
+      journal_attrs[:updated_at] = seed[:timestamp]
+    elsif initial_journal.updated_at != seed[:timestamp]
+      journal_attrs[:updated_at] = seed[:timestamp]
+    end
+
+    if seed[:user_id].present?
+      journal_attrs[:user_id] = seed[:user_id] if initial_journal.user_id != seed[:user_id]
+    else
+      stats[:initial_missing_user] += 1
+      append_sample(samples,
+                    :initial_missing_user,
+                    "wp=#{work_package_id} email=#{seed[:email] || 'none'} source_journal=#{seed[:source_journal_id]}")
+      return unless allow_timestamp_only
+    end
+
+    work_package_attrs = {}
+    work_package_attrs[:created_at] = seed[:timestamp] if work_package.created_at != seed[:timestamp]
+    if seed[:user_id].present? && work_package.author_id != seed[:user_id]
+      work_package_attrs[:author_id] = seed[:user_id]
+    end
+
+    journal_changed = journal_attrs.any?
+    work_package_changed = work_package_attrs.any?
+
+    if journal_changed
+      if dry_run
+        stats[:would_update_initial_journal] += 1
+      else
+        Journal.where(id: initial_journal.id).update_all(journal_attrs)
+        stats[:updated_initial_journal] += 1
+      end
+      touched_work_package_ids << work_package_id if journal_attrs.key?(:created_at) || journal_attrs.key?(:updated_at)
+    end
+
+    if work_package_changed
+      if dry_run
+        stats[:would_update_work_package_created_event] += 1
+      else
+        WorkPackage.where(id: work_package.id).update_all(work_package_attrs)
+        stats[:updated_work_package_created_event] += 1
+      end
+    end
+
+    return if journal_changed || work_package_changed
+
+    stats[:initial_created_event_already_aligned] += 1
+  end
+
+  def drop_import_admin_epic_version_entries!(touched_work_package_ids:, stats:, samples:)
+    admin_user_ids = importer_admin_user_ids
+
+    if admin_user_ids.empty?
+      puts "Importer admin user not found; skipping import-admin epic/version cleanup."
+      return
+    end
+
+    scope = Journal.where(journable_type: "WorkPackage", user_id: admin_user_ids)
+                   .where("version > 1")
+                   .where("COALESCE(notes, '') = ''")
+
+    puts "Potential import-admin journals (empty note): #{scope.count}"
+
+    iterate_scope(scope) do |journal|
+      changed_keys = journal.details.keys.map(&:to_s)
+      next if changed_keys.empty?
+      next unless changed_keys.all? { |key| IMPORTER_ONLY_DETAIL_KEYS.include?(key) }
+
+      append_sample(samples, :import_admin_epic_version, journal.id)
+      if dry_run
+        stats[:would_drop_import_admin_epic_version] += 1
+      else
+        journal.destroy!
+        stats[:dropped_import_admin_epic_version] += 1
+      end
+      touched_work_package_ids << journal.journable_id
+    rescue StandardError => e
+      stats[:import_admin_epic_version_error] += 1
+      append_sample(samples, :import_admin_epic_version_error, "#{journal.id}:#{e.class}:#{e.message}")
+    end
+  end
+
+  def importer_admin_user_ids
+    @importer_admin_user_ids ||= begin
+      ids = User.where("LOWER(firstname) = 'openproject' AND LOWER(lastname) = 'admin'").pluck(:id)
+      ids = User.where("LOWER(login) = 'admin'").pluck(:id) if ids.empty?
+      ids.uniq
+    end
+  end
+
+  def align_initial_journals_to_work_packages!(touched_work_package_ids:, stats:, samples:)
+    scope = mismatched_initial_journals_scope
+    count = scope.count
+    puts "Initial journals misaligned with work packages: #{count}"
+    return if count.zero?
+
+    sample_ids = scope.limit(sample_limit).pluck("journals.id")
+    sample_ids.each { |id| append_sample(samples, :initial_wp_alignment, id) }
+
+    if dry_run
+      stats[:would_align_initial_from_work_package] += count
+      return
+    end
+
+    scope.select("journals.id, journals.journable_id, work_packages.author_id AS wp_author_id, work_packages.created_at AS wp_created_at")
+         .find_each(batch_size:) do |journal|
+      attrs = {
+        created_at: journal.wp_created_at,
+        updated_at: journal.wp_created_at
+      }
+      attrs[:user_id] = journal.wp_author_id if journal.wp_author_id.present?
+
+      Journal.where(id: journal.id).update_all(attrs)
+      stats[:aligned_initial_from_work_package] += 1
+      touched_work_package_ids << journal.journable_id
+    end
+  end
+
+  def mismatched_initial_journals_scope
+    Journal.where(journable_type: "WorkPackage", version: 1)
+           .joins("INNER JOIN work_packages ON work_packages.id = journals.journable_id")
+           .where("work_packages.author_id IS NOT NULL")
+           .where(<<~SQL.squish)
+             journals.user_id IS DISTINCT FROM work_packages.author_id
+             OR journals.created_at IS DISTINCT FROM work_packages.created_at
+             OR journals.updated_at IS DISTINCT FROM work_packages.created_at
+           SQL
+  end
+
   def user_id_for_email(email)
     return @user_id_cache[email] if @user_id_cache.key?(email)
 
     @user_id_cache[email] = User.where("LOWER(mail) = ?", email).pick(:id)
   end
 
-  def print_summary(stats, samples, missing_user_emails)
+  def print_summary(stats, samples, missing_user_emails, unparsable_details)
     puts "Summary: #{stats.sort_by { |k, _| k.to_s }.to_h.inspect}"
 
     samples.each do |key, values|
@@ -308,18 +489,57 @@ class JiraImportedCommentJournalBackfill
       puts "#{key} sample: #{values.join(', ')}"
     end
 
-    return if missing_user_emails.empty?
-
-    puts "Top missing-user emails:"
-    missing_user_emails.sort_by { |_, c| -c }.first(20).each do |email, count|
-      puts "  #{email}: #{count}"
+    unless missing_user_emails.empty?
+      puts "Top missing-user emails:"
+      missing_user_emails.sort_by { |_, c| -c }.first(20).each do |email, count|
+        puts "  #{email}: #{count}"
+      end
     end
+
+    print_unparsable_details_report(unparsable_details, stats)
   end
 
   def append_sample(samples, key, value)
     return if samples[key].size >= sample_limit
 
     samples[key] << value
+  end
+
+  def capture_unparsable_detail(unparsable_details, journal, status)
+    return unless dry_run && print_unparsable_details
+    return if unparsable_detail_limit.positive? && unparsable_details.size >= unparsable_detail_limit
+
+    text = normalize_text(journal.notes)
+    first_line = text.lines.first.to_s.strip[0, 300]
+    preview = text.gsub(/\s+/, " ").strip[0, 500]
+
+    unparsable_details << {
+      id: journal.id,
+      work_package_id: journal.journable_id,
+      version: journal.version,
+      reason: status,
+      first_line:,
+      preview:
+    }
+  end
+
+  def print_unparsable_details_report(unparsable_details, stats)
+    return unless dry_run && print_unparsable_details
+
+    total_parse_fails = stats.sum do |k, v|
+      k.to_s.start_with?("parse_fail_") ? v : 0
+    end
+    return if total_parse_fails.zero?
+
+    shown = unparsable_details.count
+    limit_label = unparsable_detail_limit.positive? ? unparsable_detail_limit : "none"
+    puts "Unparsable imported journals (dry run): showing #{shown}/#{total_parse_fails} (limit=#{limit_label})"
+
+    unparsable_details.each do |detail|
+      puts "  id=#{detail[:id]} work_package_id=#{detail[:work_package_id]} version=#{detail[:version]} reason=#{detail[:reason]}"
+      puts "    first_line=#{detail[:first_line].inspect}"
+      puts "    preview=#{detail[:preview].inspect}"
+    end
   end
 
   def normalize_work_package_journals(work_package_ids)
@@ -387,18 +607,11 @@ class JiraImportedCommentJournalBackfill
   end
 
   def mismatched_validity_work_package_ids
-    scope = Journal.where(journable_type: "WorkPackage")
-                   .joins("INNER JOIN work_packages ON work_packages.id = journals.journable_id")
-                   .where("lower(journals.validity_period) IS DISTINCT FROM journals.created_at")
-
-    if project_filters.any?
-      project_ids = resolve_project_ids(project_filters)
-      raise "No matching projects for PROJECTS=#{project_filters.join(',')}" if project_ids.empty?
-
-      scope = scope.where("work_packages.project_id IN (?)", project_ids)
-    end
-
-    scope.distinct.pluck(:journable_id)
+    Journal.where(journable_type: "WorkPackage")
+           .joins("INNER JOIN work_packages ON work_packages.id = journals.journable_id")
+           .where("lower(journals.validity_period) IS DISTINCT FROM journals.created_at")
+           .distinct
+           .pluck(:journable_id)
   end
 
   def normalize_text(raw)
