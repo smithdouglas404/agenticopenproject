@@ -74,9 +74,11 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
       )
     end
 
+    copy_day_errors_to_shared_hours
+
     form.group(data: { "users--working-hours-form-target": "sameHoursSection" }) do |group|
       group.text_field name: :shared_hours,
-                       label: I18n.t("users.working_hours.form.work_hours"),
+                       label: UserWorkingHours.human_attribute_name(:shared_hours),
                        input_width: :large,
                        value: shared_hours,
                        data: {
@@ -140,6 +142,13 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
   def shared_hours
     first_enabled = UserWorkingHours::DAYS.find { |d| day_enabled?(d) }
     first_enabled ? day_hours(first_enabled) : "#{Setting.hours_per_day.round(2)}h"
+  end
+
+  def copy_day_errors_to_shared_hours
+    UserWorkingHours::DAYS
+      .flat_map { |day| model.errors[:"#{day}_hours"] }
+      .uniq
+      .each { |message| model.errors.add(:shared_hours, message) }
   end
 
   def full_day_name(day)

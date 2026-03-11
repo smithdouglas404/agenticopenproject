@@ -1844,6 +1844,7 @@ en:
         sunday: "Sunday"
         sunday_hours: "Sunday hours"
         availability_factor: "Availability factor"
+        shared_hours: "Work hours"
       version:
         effective_date: "Finish date"
         sharing: "Sharing"
