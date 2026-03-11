@@ -30,7 +30,7 @@ OpenProject 16.6 introduces new project attribute types that make portfolio eval
 
 **Weighted item lists** extend this concept by allowing administrators to assign numeric scores to list options, such as effort levels or risk ratings. These values can then be used as input for calculated results.
 
-**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Weighted item lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in the example below) is changed. This allows teams to calculate project scores and prioritise consistently across the portfolio.
+**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Weighted item lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in the example below) is changed. This allows teams to calculate project scores and prioritize consistently across the portfolio.
 
 Here's an example of a calculated value called 'Overall score (calculated)' with the following formula: `(Strategic impact * 0.6) + (Benefit ​* 0.3) - (Effort * 0.1)`
 
@@ -65,7 +65,7 @@ Administrators can now change the parent of an item within a [hierarchical custo
 
 To do so, administrators need to navigate to *Administration → Custom fields*, select a custom field type hierarchy and click on the *Items* tab. Then they click on the *More* icon and select *Change parent*. A dialog opens showing the current hierarchy tree. From there, administrators can search, select a new parent, and save the updated structure. The hierarchy is updated immediately after saving. Like mentioned above, this also works for project attributes.
 
-![OpenProject 16.6: Custom field type hierarchy in the administration, tab 'Items', one item is selected with the 'More' menu and the option to change parent is higlighted](openproject-16-6-custom-field-hierarchy-change-parent.png)
+![OpenProject 16.6: Custom field type hierarchy in the administration, tab 'Items', one item is selected with the 'More' menu and the option to change parent is highlighted](openproject-16-6-custom-field-hierarchy-change-parent.png)
 
 ### Updated 'More' menu of meetings with a 'Move to section' option
 

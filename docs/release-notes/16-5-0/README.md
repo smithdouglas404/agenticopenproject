@@ -114,7 +114,7 @@ This menu is useful not only for new users, but also for anyone looking for addi
 - Bugfix: ID link in notification center always points to last opened project \[[#66751](https://community.openproject.org/wp/66751)\]
 - Bugfix: Removing widgets from Projects Overview page is very slow/unresponsive \[[#66753](https://community.openproject.org/wp/66753)\]
 - Bugfix: Activity shows changes to admin only custom fields also to non admin users \[[#66925](https://community.openproject.org/wp/66925)\]
-- Bugfix: LDAP Groupsync settings can&#39;t be edited in synced LDAP group \[[#66941](https://community.openproject.org/wp/66941)\]
+- Bugfix: LDAP group sync settings can&#39;t be edited in synced LDAP group \[[#66941](https://community.openproject.org/wp/66941)\]
 - Bugfix: Do not use unspecified ServiceProviderConfig.AuthenticationSchemes.type \[[#67055](https://community.openproject.org/wp/67055)\]
 - Bugfix: Application password cannot be validated for Nextcloud storage using SSO \[[#67071](https://community.openproject.org/wp/67071)\]
 - Bugfix: Work packages export dialog description attribute dragger locale \[[#67181](https://community.openproject.org/wp/67181)\]
@@ -122,7 +122,7 @@ This menu is useful not only for new users, but also for anyone looking for addi
 - Bugfix: User cannot create a folder in the File picker \[[#67233](https://community.openproject.org/wp/67233)\]
 - Bugfix: File picker UI lets user upload to root folder even though it&#39;s not permitted \[[#67235](https://community.openproject.org/wp/67235)\]
 - Bugfix: User doesn&#39;t get visual feedback their new OIDC provider was successfully saved \[[#67257](https://community.openproject.org/wp/67257)\]
-- Bugfix: Meetings series is not correctly ended if series has more than 1 existing occurence \[[#67297](https://community.openproject.org/wp/67297)\]
+- Bugfix: Meetings series is not correctly ended if series has more than 1 existing occurrence \[[#67297](https://community.openproject.org/wp/67297)\]
 - Bugfix: Incorrect terminology in docs and UI: &quot;Favored&quot; vs &quot;Favorited&quot; \[[#67312](https://community.openproject.org/wp/67312)\]
 - Bugfix: Older meetings show series backlog as &#39;untitled section&#39; \[[#67381](https://community.openproject.org/wp/67381)\]
 - Bugfix: Cost reports month locale \[[#67466](https://community.openproject.org/wp/67466)\]
@@ -162,8 +162,8 @@ This menu is useful not only for new users, but also for anyone looking for addi
 - Feature: Update the Getting started video linked in the application help menu \[[#67176](https://community.openproject.org/wp/67176)\]
 - Feature: Update help menu and widget on start page in application \[[#67177](https://community.openproject.org/wp/67177)\]
 - Feature: Update Enterprise plan text in widget on application start page \[[#67178](https://community.openproject.org/wp/67178)\]
-- Feature: Add/remove projects from favourite via the API \[[#67241](https://community.openproject.org/wp/67241)\]
-- Feature: Hide segmented control and include sub-itmes checkbox of the filterable tree view \[[#67541](https://community.openproject.org/wp/67541)\]
+- Feature: Add/remove projects from favorite via the API \[[#67241](https://community.openproject.org/wp/67241)\]
+- Feature: Hide segmented control and include sub-items checkbox of the filterable tree view \[[#67541](https://community.openproject.org/wp/67541)\]
 
 <!-- END AUTOMATED SECTION -->
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
