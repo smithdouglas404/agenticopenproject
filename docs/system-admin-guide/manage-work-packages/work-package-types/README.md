@@ -35,6 +35,97 @@ Click the green **+ Type** button to add a new work package type in the system, 
 
 ![Create a new work package type in OpenProject administration](openproject_system_guide_new_work_package_typ.png)
 
+## Bug and task template runbook
+
+Use this runbook to roll out consistent bug/task intake templates in a configuration-first way.
+OpenProject applies the **type description** as the default description when a new work package of that type is created.
+In fresh standard seeding, Task and Bug starter templates are provided by default.
+For existing installations, use the rollout steps below to apply them.
+
+### Copy/paste template for **Bug** type description
+
+```md
+## Summary
+(One-sentence defect summary and impact)
+
+## Environment
+- Product/app version:
+- Browser + version:
+- OS/device + version:
+- Project:
+
+## Steps to reproduce
+1.
+2.
+3.
+
+## Expected behavior
+(What should happen)
+
+## Actual behavior
+(What actually happens)
+
+## Reproducibility
+- [ ] Always
+- [ ] Intermittent
+- [ ] Could not reproduce reliably
+
+## Evidence
+(Logs, screenshots, links, crash IDs)
+
+## Impact
+- Severity:
+- Priority:
+- Affected users/workflow:
+```
+
+### Copy/paste template for **Task** type description
+
+```md
+## Summary
+(What needs to be done)
+
+## Goal / Expected outcome
+(Definition of done)
+
+## Scope
+- In scope:
+- Out of scope:
+
+## Acceptance criteria
+- [ ]
+- [ ]
+
+## Dependencies / Links
+(Related work packages, docs, blockers)
+```
+
+### Rollout steps
+
+1. Pilot in 1-2 projects first:
+   1. Go to **Administration -> Work packages -> Types -> Bug** and paste the Bug template into **Description**.
+   2. Repeat for **Task** with the Task template.
+2. Validate in both creation paths:
+   1. Global create (`/work_packages/new`)
+   2. Project create (`/projects/:project_id/work_packages/new`)
+3. Confirm behavior:
+   1. Template is prefilled for new Bug/Task.
+   2. Switching type replaces only untouched default text.
+   3. User-edited descriptions are not overwritten on type switch.
+4. Roll out globally to all projects using Bug/Task types.
+5. Revisit after adoption and decide whether to add required custom fields for stricter intake.
+
+### Project-specific variants
+
+Type descriptions are global per type. If a specific project needs a different template (for example, extra iOS version/device fields), create a dedicated type variant such as **iOS Bug** and enable it only for that project under the type's **Projects** tab.
+
+### Industry references
+
+- [Google Chrome extension bug filing guidance](https://developer.chrome.com/docs/extensions/support/file-a-bug)
+- [Mozilla Bugzilla bug-writing guidelines](https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html)
+- [Microsoft Azure DevOps bug work item guidance](https://learn.microsoft.com/en-us/azure/devops/boards/backlogs/manage-bugs)
+- [GitLab issue/description templates](https://docs.gitlab.com/user/project/description_templates/)
+
 ## Work package form configuration (Enterprise add-on)
 
 You can freely **configure the attributes shown** for each work package type to decide which attributes are shown in the form and how they are grouped.
@@ -118,4 +209,3 @@ Under the **Generate PDF** tab of  *Administration -> Work packages -> Types* yo
 The template determines the design and attributes visible in the exported PDF of a work package using this type. The first  template on the list is selected by default.
 
 ![Generate PDF tab under work package types settings in OpenProject administration](openproject_system_guide_work_package_types_pdf_tab.png)
-
