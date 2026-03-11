@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# Foreman/Overmind default the base port to 5000; align local defaults with OpenProject docs.
 base_port="${PORT:-3000}"
 
 if command -v overmind &> /dev/null; then
