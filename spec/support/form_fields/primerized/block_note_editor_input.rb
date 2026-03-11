@@ -15,7 +15,7 @@ module FormFields
       end
 
       def open_add_work_package_dialog
-        send_keys_to_editor("/link")
+        send_keys_to_editor("/work package")
         send_keys(:enter)
       end
 
