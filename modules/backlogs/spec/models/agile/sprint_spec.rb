@@ -125,6 +125,46 @@ RSpec.describe Agile::Sprint do
     end
   end
 
+  describe "#task_board" do
+    let(:sprint) { create(:agile_sprint, project:) }
+
+    context "when a sprint task board exists" do
+      let!(:board) do
+        create(:board_grid_with_query,
+               project:,
+               name: "Renamed board",
+               linked: sprint)
+      end
+
+      it "returns the existing board" do
+        expect(sprint.task_board).to eq(board)
+      end
+
+      it "returns true for #task_board?" do
+        expect(sprint).to be_task_board
+      end
+    end
+
+    context "when only same-name or same-filter boards exist" do
+      let!(:same_name_board) { create(:board_grid_with_query, project:, name: sprint.board_name) }
+      let!(:matching_filters_board) do
+        create(:board_grid_with_query,
+               project:,
+               options: {
+                 "filters" => [{ "sprint_id" => { "operator" => "=", "values" => [sprint.id.to_s] } }]
+               })
+      end
+
+      it "returns nil" do
+        expect(sprint.task_board).to be_nil
+      end
+
+      it "returns false for #task_board?" do
+        expect(sprint).not_to be_task_board
+      end
+    end
+  end
+
   describe "work_package association" do
     let(:sprint) { create(:agile_sprint, project:) }
     let(:work_package) { create(:work_package, project:, sprint:) }

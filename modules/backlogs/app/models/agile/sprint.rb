@@ -39,6 +39,11 @@ module Agile
 
     belongs_to :project
     has_many :work_packages, dependent: :nullify
+    has_one :task_board,
+            as: :linked,
+            class_name: "Boards::Grid",
+            inverse_of: :linked,
+            dependent: :nullify
 
     scopes :for_project,
            :not_completed,
@@ -76,6 +81,10 @@ module Agile
 
     def board_name
       "#{project.name}: #{name}"
+    end
+
+    def task_board?
+      task_board.present?
     end
 
     private
