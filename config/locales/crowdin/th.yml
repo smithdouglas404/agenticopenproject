@@ -1360,9 +1360,6 @@ th:
         dependencies: "ส่วนที่อ้างอิง"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3459,7 +3456,6 @@ th:
   label_float: "ลอย"
   label_folder: "Folder"
   label_follows: "ดังต่อไปนี้"
-  label_force_user_language_to_default: "พบภาษาที่ไม่อนุญาตให้ใช้เป็นค่าเริ่มต้น ในชุดภาษาของผู้ใช้"
   label_form_configuration: "Form configuration"
   label_formula: "Formula"
   label_gantt_chart: "Gantt chart"
@@ -4953,7 +4949,7 @@ th:
   text_default_administrator_account_changed: "มีการเปลี่ยนค่าตั้งต้นของผู้ดูแลระบบ"
   text_default_encoding: "ค่าเริ่มต้น: UTF-8"
   text_destroy: "ลบ"
-  text_destroy_with_associated: "มีการลบออบเจคต์ที่เกี่ยวข้องกับชุดภารกิจ ซึ่งเป็นประเภทดังต่อไปนี้:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "คุณต้องการจะทำอะไร ?"
   text_diff_truncated: "... มีการตัดผลต่างเนื่องจากมีความยาวเกินกว่าที่สามารถแสดงผลได้"
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

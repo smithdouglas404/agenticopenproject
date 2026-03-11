@@ -1390,9 +1390,6 @@ hr:
         dependencies: "Ovisnosti"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3571,7 +3568,6 @@ hr:
   label_float: "Plutajući"
   label_folder: "Mapa"
   label_follows: "slijedi"
-  label_force_user_language_to_default: "Postavi zadani jezik za korisnike koji imaju nedozvoljeni jezik kao zadani"
   label_form_configuration: "Form configuration"
   label_formula: "Formula"
   label_gantt_chart: "Gantt chart"
@@ -5069,7 +5065,7 @@ hr:
   text_default_administrator_account_changed: "Default administrator account changed"
   text_default_encoding: "Zadana vrijednost: UTF-8"
   text_destroy: "Obriši"
-  text_destroy_with_associated: "There are additional objects assossociated with the work package(s) that are to be deleted. Those objects are of the following types:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Što želite uraditi?"
   text_diff_truncated: "... This diff was truncated because it exceeds the maximum size that can be displayed."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

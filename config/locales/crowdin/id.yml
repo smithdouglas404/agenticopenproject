@@ -1356,9 +1356,6 @@ id:
         dependencies: "Dependensi"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3455,7 +3452,6 @@ id:
   label_float: "Float"
   label_folder: "Folder"
   label_follows: "Berikut"
-  label_force_user_language_to_default: "Set bahasa user ke default"
   label_form_configuration: "Form configuration"
   label_formula: "Formula"
   label_gantt_chart: "Bagan Gantt"
@@ -4946,7 +4942,7 @@ id:
   text_default_administrator_account_changed: "Akun administrator default terlah dirubah"
   text_default_encoding: "Default: UTF-8"
   text_destroy: "Hapus"
-  text_destroy_with_associated: "Ada tambahan objek terasosiasi dengan Work Package yang akan dihapus. Objek tersebut adalah Tipe :"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Apa yang ingin Anda lakukan?"
   text_diff_truncated: "... diff ini telah dipotong karena melebihi batas maks. yang dapat ditampilkan."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

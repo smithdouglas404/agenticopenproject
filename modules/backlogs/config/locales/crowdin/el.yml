@@ -25,6 +25,12 @@ el:
     description: "This module adds features enabling agile teams to work with OpenProject in Scrum projects."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,12 +48,15 @@ el:
               task_version_must_be_the_same_as_story_version: "πρέπει να είναι το ίδιο με την έκδοση ιστορίας του γονέα."
         sprint:
           cannot_end_before_it_starts: "Το sprint δεν μπορεί να λήξει πριν αρχίσει."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Task type"
   backlogs:
     any: "οποιoδήποτε"
     column_width: "Column width"
     definition_of_done: "Ορισμός των Ολοκληρωμένων"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
     impediment: "Εμπόδιο"
     label_versions_default_fold_state: "Εμφάνιση συμπτυγμένων εκδόσεων"
     caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
@@ -75,12 +84,21 @@ el:
     backlog_component:
       blankslate_title: "%{name} is empty"
       blankslate_description: "No items planned yet. Drag items here to add them."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
         other: "%{count} stories in backlog"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "Backlog actions"
       action_menu:
@@ -91,6 +109,14 @@ el:
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -118,14 +144,19 @@ el:
   label_backlogs_unconfigured: "Δεν έχετε διαμορφώσει τα Backlogs ακόμη. Παρακαλούμε πηγαίνετε στο %{administration} > %{plugins}, έπειτα κάντε κλικ στον σύνδεσμο %{configure} για αυτό το πρόσθετο. Μόλις έχετε ορίσει τα πεδία, επιστρέψτε σε αυτή την σελίδα για να αρχίσετε να χρησιμοποιείτε το εργαλείο."
   label_blocks_ids: "Ταυτότητες μπλοκαρισμένων πακέτων εργασίας"
   label_column_in_backlog: "Στήλη στο backlog"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "Κάτω"
   label_points_burn_up: "Πάνω"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Εμπόδια Sprint"
+  label_sprint_new: "New sprint"
   label_task_board: "Πίνακας εργασιών"
-  permission_view_master_backlog: "Εμφάνιση του κύριου backlog"
-  permission_view_taskboards: "Εμφάνιση πινάκων εργασίας"
+  permission_create_sprints: "Create sprints"
+  permission_manage_sprint_items: "Manage sprint items"
   permission_select_done_statuses: "Select done statuses"
-  permission_update_sprints: "Ενημέρωση των sprints"
+  permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:
     show:

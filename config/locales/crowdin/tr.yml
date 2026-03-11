@@ -1375,9 +1375,6 @@ tr:
         dependencies: "Bağımlılıklar"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Paylaşım"
-        finish_date: "Bitiş tarihi"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3515,7 +3512,6 @@ tr:
   label_float: "Ondalık"
   label_folder: "Klasör"
   label_follows: "takip eder"
-  label_force_user_language_to_default: "Varsayılan olmayan izin verildi bir dil olan kullanıcı dilini ayarlama"
   label_form_configuration: "Formu yapılandırma"
   label_formula: "Formül"
   label_gantt_chart: "Gantt görünümü"
@@ -5009,7 +5005,7 @@ tr:
   text_default_administrator_account_changed: "Varsayılan yönetici hesabı değişti"
   text_default_encoding: "Varsayılan: UTF-8"
   text_destroy: "Sil"
-  text_destroy_with_associated: "Silinecek iş paketleri ile birlikte ek nesne(ler) vardır. Bu nesneler aşağıdaki türdedir:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Ne yapmak istiyorsun?"
   text_diff_truncated: "... Bu fark, görüntülenebilecek maksimum boyutu aştığı için kesildi."
   text_email_delivery_not_configured: "E-posta teslimi yapılandırılmamış ve bildirimler devre dışı bırakılmış.\nSMTP sunucunuzu etkinleştirmek için yapılandırın."

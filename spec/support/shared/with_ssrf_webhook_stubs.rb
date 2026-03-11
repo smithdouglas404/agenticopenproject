@@ -29,22 +29,10 @@
 module WithSsrfWebhookStubsMixin
   ##
   # A safe public IP returned by the stubbed resolver for any hostname.
-  # It is not in SsrfFilter's private-address blocklist, so SSRF validation passes,
-  # and WebMock stubs using this IP will match the actual Net::HTTP request.
+  # It is not in SsrfFilter's private-address blocklist, so SSRF validation passes.
+  # ssrf_filter 1.3+ makes requests to the original hostname URL (not the resolved IP),
+  # passing the resolved IP via the `ipaddr:` option to Net::HTTP.start instead.
   SSRF_TEST_IP = "93.184.216.34"
-
-  ##
-  # Translates a webhook URL containing a hostname to the IP-based URL that
-  # SsrfFilter will use when making the actual HTTP request. Use this when
-  # setting up WebMock stubs so that they match the resolved request.
-  #
-  # URLs that already contain an IP address are returned unchanged.
-  def ssrf_resolved_url(url)
-    uri = URI.parse(url)
-    return url if ip_address?(uri.host)
-
-    url.sub(uri.host, SSRF_TEST_IP)
-  end
 
   def ip_address?(host)
     [Resolv::IPv4::Regex, Resolv::IPv6::Regex].any? { host.match? it }

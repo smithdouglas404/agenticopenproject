@@ -1375,9 +1375,6 @@ af:
         dependencies: "Dependencies"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3515,7 +3512,6 @@ af:
   label_float: "Dryf"
   label_folder: "Folder"
   label_follows: "volg"
-  label_force_user_language_to_default: "Stel taal van gebruikers wat 'n nie-toegelate taal gebruik na verstektaal"
   label_form_configuration: "Vorm konfigurasie"
   label_formula: "Formula"
   label_gantt_chart: "Gantt chart"
@@ -5011,7 +5007,7 @@ af:
   text_default_administrator_account_changed: "Default administrator account changed"
   text_default_encoding: "Default: UTF-8"
   text_destroy: "Skrap"
-  text_destroy_with_associated: "There are additional objects assossociated with the work package(s) that are to be deleted. Those objects are of the following types:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Wat wil jy doen?"
   text_diff_truncated: "... This diff was truncated because it exceeds the maximum size that can be displayed."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

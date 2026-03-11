@@ -1371,9 +1371,6 @@ el:
         dependencies: "Εξαρτήσεις"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3511,7 +3508,6 @@ el:
   label_float: "Float"
   label_folder: "Φάκελος"
   label_follows: "ακολουθεί"
-  label_force_user_language_to_default: "Ορίστε την γλώσσα των χρηστών που έχουν μια μη επιτρεπόμενη γλώσσα ως προεπιλογή"
   label_form_configuration: "Διαμόρφωση φόρμας"
   label_formula: "Formula"
   label_gantt_chart: "Διάγραμμα Gantt"
@@ -5006,7 +5002,7 @@ el:
   text_default_administrator_account_changed: "Ο προεπιλεγμένος λογαριασμός του διαχειριστή άλλαξε"
   text_default_encoding: "Προεπιλογή: UTF-8"
   text_destroy: "Διαγραφή"
-  text_destroy_with_associated: "Υπάρχουν επιπλέον αντικείμενα μαζί με το πακέτο εργασίας που πρόκειται να διαγραφεί. Τα αντικείμενα αυτά είναι των παρακάτω τύπων:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Τι θέλετε να κάνετε;"
   text_diff_truncated: "... Αυτό το diff περικόπηκε επειδή υπερβαίνει το μέγιστο μέγεθος που μπορεί να εμφανιστεί."
   text_email_delivery_not_configured: "Η διανομή email δεν είναι διαμορφωμένη και οι ειδοποιήσεις είναι απενεργοποιημένες.\nΔιαμορφώστε τον SMTP εξυπηρετητή για τις ενεργοποιήσετε."

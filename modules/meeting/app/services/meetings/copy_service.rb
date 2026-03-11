@@ -94,7 +94,7 @@ module Meetings
     end
 
     def writable_meeting_attributes(meeting)
-      instantiate_contract(meeting, user).writable_attributes - %w[start_date start_time_hour uid]
+      instantiate_contract(meeting, user).writable_attributes - %w[start_date start_time_hour uid sharing]
     end
 
     def copy_meeting_attachment(copy)

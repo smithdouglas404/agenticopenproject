@@ -25,6 +25,12 @@ uk:
     description: "Цей модуль додає функції, завдяки яким agile-команди можуть працювати над проєктами Scrum в OpenProject."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Тривалість"
+        finish_date: "Дата закінчення"
+        goal: "Ціль спринту"
+        name: "Ім’я спринту"
+        sharing: "Надання доступу"
       sprint:
         duration: "Тривалість спринту"
       work_package:
@@ -42,12 +48,15 @@ uk:
               task_version_must_be_the_same_as_story_version: "має збігатись із версією батьківської історії."
         sprint:
           cannot_end_before_it_starts: "Спринт не може закінчитися, перш ніж він почне працювати."
+    models:
+      sprint: "Спринт"
   attributes:
     task_type: "Тип завдання"
   backlogs:
     any: "будь-який"
     column_width: "Ширина стовпця"
     definition_of_done: "Визначення завершено"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
     impediment: "Перешкода"
     label_versions_default_fold_state: "Показати складені версії"
     caption_versions_default_fold_state: "Версії не розгортатимуться за замовчуванням при перегляді невиконаних завдань. Кожну версію потрібно розгортати вручну."
@@ -79,12 +88,21 @@ uk:
     backlog_component:
       blankslate_title: "%{name} нічого не містить"
       blankslate_description: "Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх."
+    sprint_component:
+      blankslate_title: "%{name} нічого не містить"
+      blankslate_description: "Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх."
     backlog_header_component:
       label_toggle_backlog: "Згорнути/розгорнути %{name}"
       label_story_count:
         zero: "У беклозі немає історій"
         one: "У беклозі %{count} історія"
         other: "У беклозі стільки історій: %{count}"
+    sprint_header_component:
+      label_toggle_backlog: "Згорнути/розгорнути %{name}"
+      label_story_count:
+        zero: "У спринті немає історій"
+        one: "У спринті %{count} історія"
+        other: "У спринті стільки історій: %{count}"
     backlog_menu_component:
       label_actions: "Дії беклогу"
       action_menu:
@@ -95,6 +113,14 @@ uk:
         burndown_chart: "Діаграма згорання завдань"
         wiki: "Wiki"
         properties: "Властивості"
+    sprint_menu_component:
+      label_actions: "Дії спринту"
+      action_menu:
+        edit_sprint: "Редагувати спринт"
+        new_story: "Нова історія"
+        stories_tasks: "Історії/завдання"
+        task_board: "Дошка завдань"
+        burndown_chart: "Діаграма згорання завдань"
     story_component:
       label_drag_story: "Перемістити історію «%{name}»"
     story_menu_component:
@@ -122,14 +148,19 @@ uk:
   label_backlogs_unconfigured: "Ви ще не настроїли Backlogs. Перейдіть на %{administration}>%{plugins}, потім натисніть посилання %{configure} для цього плагіна. Після того, як ви встановите поля, поверніться на цю сторінку, щоб розпочати використання інструмента."
   label_blocks_ids: "Ідентифікатори заблокованих робочих пакетів"
   label_column_in_backlog: "Стовпець у backlog-у"
+  label_used_as_backlog: "Використовується як беклог"
   label_points_burn_down: "Вниз"
   label_points_burn_up: "Вгору"
+  label_sprint_edit: "Редагувати спринт"
   label_sprint_impediments: "Перешкоди спринту"
+  label_sprint_new: "Новий спринт"
   label_task_board: "Дошка завдань"
-  permission_view_master_backlog: "Перегляд головного backlog-у"
-  permission_view_taskboards: "Перегляд панелі завдань"
+  permission_create_sprints: "Створення спринтів"
+  permission_manage_sprint_items: "Керування елементами спринтів"
   permission_select_done_statuses: "Виберіть завершені статуси"
-  permission_update_sprints: "Оновлення спринту"
+  permission_share_sprint: "Надання доступу до спринтів"
+  permission_start_complete_sprint: "Початок/завершення спринтів"
+  permission_view_sprints: "Перегляд спринтів"
   project_module_backlogs: "Невиконані завдання"
   rb_burndown_charts:
     show:

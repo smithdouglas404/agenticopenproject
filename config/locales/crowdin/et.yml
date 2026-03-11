@@ -1375,9 +1375,6 @@ et:
         dependencies: "Sõltuvused"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3515,7 +3512,6 @@ et:
   label_float: "Ujuvkomaarv"
   label_folder: "Kaust"
   label_follows: "järgneb"
-  label_force_user_language_to_default: "Sea keel kasutajatele, kellel on vaikimisi keeleks valitud mittelubatud keel"
   label_form_configuration: "Vormi seadistamine"
   label_formula: "Formula"
   label_gantt_chart: "Gantt diagrammi"
@@ -5011,7 +5007,7 @@ et:
   text_default_administrator_account_changed: "Algne administraatori konto on muudetud"
   text_default_encoding: "Vaikimisi: UTF-8"
   text_destroy: "Kustuta"
-  text_destroy_with_associated: "Kustutamiseks määratud teema(de)ga on seostatud veel objekte. Objektid on järgnevate tüüpidega:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Mis sa soovid ette võtta?"
   text_diff_truncated: "... Osa erinevusi jäi välja, sest neid on näitamiseks liiga palju."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

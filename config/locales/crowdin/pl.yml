@@ -1401,9 +1401,6 @@ pl:
         dependencies: "Zależności"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Udostępnianie"
-        finish_date: "Data zakończenia"
       jira_import:
         projects: "Projekty"
       "import/jira":
@@ -3623,7 +3620,6 @@ pl:
   label_float: "Liczba rzeczywista"
   label_folder: "Katalog"
   label_follows: "Następujący"
-  label_force_user_language_to_default: "Ustaw język domyślny dla użytkowników o innych ustawieniach językowych niż dozwolone"
   label_form_configuration: "Konfiguracja formularza"
   label_formula: "Wzór"
   label_gantt_chart: "Wykres Gantta"
@@ -5120,7 +5116,7 @@ pl:
   text_default_administrator_account_changed: "Domyślne konto administratora zostało zmienione"
   text_default_encoding: "Domyślnie: UTF-8"
   text_destroy: "Usuń"
-  text_destroy_with_associated: "Istnieją dodatkowe obiekty powiązane z pakietami roboczymi, które będą usunięte. Te obiekty są następujących typów:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Co chcesz zrobić?"
   text_diff_truncated: "... This diff was truncated because it exceeds the maximum size that can be displayed."
   text_email_delivery_not_configured: "Dostarczanie poczty elektronicznej nie jest skonfigurowane, a powiadomienia są wyłączone.\nSkonfiguruj swój serwer SMTP, aby je włączyć."

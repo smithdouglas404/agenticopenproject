@@ -1403,9 +1403,6 @@ ru:
         dependencies: "Связи"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Совместное использование"
-        finish_date: "Дата окончания"
       jira_import:
         projects: "Проекты"
       "import/jira":
@@ -3625,7 +3622,6 @@ ru:
   label_float: "Плавающий"
   label_folder: "Папка"
   label_follows: "Следует"
-  label_force_user_language_to_default: "Язык, который пользователям нельзя установить как действующий по-умолчанию"
   label_form_configuration: "Настройка форм"
   label_formula: "Формула"
   label_gantt_chart: "Диаграмма Ганта"
@@ -5122,7 +5118,7 @@ ru:
   text_default_administrator_account_changed: "Первоначальная учетная запись администратора была изменена"
   text_default_encoding: "По-умолчанию: UTF-8"
   text_destroy: "Удалить"
-  text_destroy_with_associated: "Есть дополнительные объекты, ассоцированные с пакетом(-ами) работ, которые должны быть удалены. Это объекты следующих типов:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Что Вы хотите сделать?"
   text_diff_truncated: "... Этот разностность(diff) была усечена, так как она превышает максимальный размер, которые может быть отображен."
   text_email_delivery_not_configured: "Доставка электронной почты не настроена, уведомления отключены.\nНастройте SMTP-сервер, чтобы включить их."

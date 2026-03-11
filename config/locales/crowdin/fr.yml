@@ -615,13 +615,11 @@ fr:
   op_dry_validation:
     or: "ou"
     errors:
-      unexpected_key: "is not allowed."
       array?: "doit être un tableau."
       decimal?: "doit être une décimale."
       defined: "ne doit pas être défini."
       eql?: "doit être égal à %{left}."
       filled?: "doit être rempli."
-      format?: "is in invalid format."
       greater_or_equal_zero: "doit être supérieur ou égal à 0."
       gteq?: "doit être supérieur ou égal à %{num}."
       hash?: "doit être un hachage."
@@ -648,9 +646,7 @@ fr:
         parent:
           not_descendant: "doit être un descendant de la racine de la hiérarchie."
       str?: "doit être une chaîne de caractères."
-      time?: "must be a time."
       type?: "doit être de type : %{type}."
-      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Type de copie du flux de travail"
       enabled: "Activé"
@@ -1373,9 +1369,6 @@ fr:
         dependencies: "Dépendances"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Partage"
-        finish_date: "Échéance"
       jira_import:
         projects: "Projets"
       "import/jira":
@@ -3513,7 +3506,6 @@ fr:
   label_float: "Flottant"
   label_folder: "Dossier"
   label_follows: "suivi"
-  label_force_user_language_to_default: "Pour cet utilisateur, revenir au langage par defaut"
   label_form_configuration: "Configuration du formulaire"
   label_formula: "Formule"
   label_gantt_chart: "Diagramme de Gantt"
@@ -5009,7 +5001,7 @@ fr:
   text_default_administrator_account_changed: "Le compte administrateur par défaut a été changé"
   text_default_encoding: "Défaut: UTF-8"
   text_destroy: "Supprimer"
-  text_destroy_with_associated: "Il y a des objets supplémentaires associés à ce(s) lot(s) de travaux qui doivent être supprimés. Ces objets sont des types suivants :"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Que voulez-vous faire?"
   text_diff_truncated: "... Cette « diff » a été tronquée car elle dépasse la taille maximale d'affichage."
   text_email_delivery_not_configured: "L'envoi d'e-mails n'est pas configuré et les notifications sont désactivées.\nConfigurer votre serveur SMTP pour les activer."

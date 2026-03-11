@@ -108,7 +108,7 @@ ja:
     jemalloc_allocator: Jemalloc メモリアロケータ
     journal_aggregation:
       explanation:
-        text: "ユーザーの個々のアクション（例えば、ワークパッケージを2回更新する）は、それらの年齢差が指定されたタイムスパン未満である場合、単一のアクションに集約されます。これらはアプリケーション内で1つのアクションとして表示されます。これはまた、送信されるメールの数を減らし、 %{webhook_link} の遅延にも影響します。"
+        text: "ユーザーの個々のアクション (例:ワークパッケージを2回更新する)は、指定された時間範囲よりも時間差が小さい場合、単一のアクションに集約されます。 これらはアプリケーション内で単一のアクションとして表示されます。 これにより、送信されるメールの数が減少し、 %{webhook_link} の遅延にも影響します。"
         link: "webhook"
     import:
       title: "Import"
@@ -318,13 +318,13 @@ ja:
         success: "MCP configuration was updated successfully."
     scim_clients:
       authentication_methods:
-        sso: "IDプロバイダーからのJWT"
-        oauth2_client: "OAuth 2.0クライアント認証情報"
+        sso: "アイデンティティプロバイダからのJWT"
+        oauth2_client: "OAuth 2.0 クライアント資格情報"
         oauth2_token: "静的アクセストークン"
       created_client_credentials_dialog_component:
-        title: "クライアント認証情報の作成"
-        heading: "クライアント認証情報が生成されました"
-        one_time_hint: "クライアント・シークレットが表示されるのはこの時だけです。必ずコピーしてください。"
+        title: "クライアントの資格情報が作成されました"
+        heading: "クライアントの資格情報が生成されました"
+        one_time_hint: "クライアントのシークレットが表示される唯一の時間です。今すぐコピーしてください。"
       created_token_dialog_component:
         title: "トークンを作成しました"
         heading: "トークンが生成されました"
@@ -337,21 +337,21 @@ ja:
       edit:
         label_delete_scim_client: "SCIM クライアントを削除"
       form:
-        auth_provider_description: "これは、SCIM プロバイダによって追加されたユーザが OpenProject で認証するために使用するサービスです。"
-        authentication_method_description_html: "これは SCIM クライアントが OpenProject で認証する方法です。OAuth トークンに<code>scim_v2</code>スコープが含まれていることを確認してください。"
-        description: "これらの設定オプションの詳細については、[SCIMクライアントの設定に関する文書](docs_url)を参照してください。"
+        auth_provider_description: "これは、SCIMプロバイダが追加したユーザーがOpenProjectでの認証に使用するサービスです。"
+        authentication_method_description_html: "これは SCIM クライアントが OpenProject で認証する方法です。OAuth トークンに <code>scim_v2</code> スコープが含まれていることを確認してください。"
+        description: "設定オプションの詳細については、[SCIM クライアントの設定に関するドキュメント](docs_url)を参照してください。"
         jwt_sub_description: "例えば、Keycloakの場合、これはSCIMクライアントに関連付けられたサービスアカウントのUUIDです。あなたのユースケースにあった Subject claim を見つける方法については [ドキュメント](docs_url) を参照してください。"
-        name_description: "このクライアントが設定された理由を他の管理者が理解しやすい名前を選んでください。"
+        name_description: "他の管理者がこのクライアントが設定された理由を理解するのに役立つ名前を選択してください。"
       index:
-        description: "ここで設定された SCIM クライアントは、OpenProject SCIM サーバ API と対話し、ユーザアカウントやグループのプロビジョニング、更新、デプロビジョニングを行うことができます。"
-        label_create_button: "SCIMクライアントの追加"
+        description: "ここで設定されたSCIMクライアントは、OpenProjectのSCIMサーバー APIと相互作用して、ユーザーアカウントとグループのプロビジョニング、更新、およびデプロビジョニングを行うことができます。"
+        label_create_button: "SCIMクライアントを追加"
       new:
         title: "新しいSCIMクライアント"
       revoke_static_token_dialog_component:
         confirm_button: "取り消す"
-        title: "静的トークンの失効"
-        heading: "このトークンを本当に取り消しますか？"
-        description: "このトークンを使っている SCIM クライアントは、OpenProject の SCIM サーバ API にアクセスできなくなります。"
+        title: "静的トークンを取り消す"
+        heading: "このトークンを取り消してもよろしいですか？"
+        description: "このトークンを使用する SCIM クライアントは、OpenProject の SCIM サーバ API にアクセスできなくなります。"
       table_component:
         blank_slate:
           title: "SCIMクライアントがまだ設定されていません"
@@ -902,26 +902,26 @@ ja:
         other: "また、 %{shared_work_packages_link} はこのユーザーと共有されています。"
       remove_project_membership_or_work_package_shares_too: "直接のメンバーとしてのユーザーだけを削除したい（および共有を維持したい）、またはワークパッケージの共有も削除しますか？"
       will_remove_all_user_access_priveleges: "このメンバーを削除すると、プロジェクトへのユーザーのすべてのアクセス権が削除されます。ユーザーはまだサイトの一部として存在します。"
-      will_remove_all_group_access_priveleges: "このメンバを削除すると、プロジェクトに対するグループのすべてのアクセス権が削除されます。グループはサイトの一部としてまだ存在します。"
-      cannot_delete_inherited_membership: "このプロジェクトのメンバーであるグループに所属しているため、このメンバーを削除することはできません。"
-      cannot_delete_inherited_membership_note_admin_html: "%{administration_settings_link}で、プロジェクトのメンバーとしてグループを削除することも、特定のメンバーをグループから削除することもできます。"
-      cannot_delete_inherited_membership_note_non_admin: "プロジェクトのメンバーとしてグループを削除するか、管理者に連絡してこの特定のメンバーをグループから削除することができます。"
+      will_remove_all_group_access_priveleges: "このメンバーを削除すると、グループのすべてのアクセス権がプロジェクトに削除されます。グループはサイトの一部として存在します。"
+      cannot_delete_inherited_membership: "このメンバーはこのプロジェクトのメンバーであるグループに属しているため、削除できません。"
+      cannot_delete_inherited_membership_note_admin_html: "プロジェクトのメンバーとしてグループを削除するか、 %{administration_settings_link} のグループからこの特定のメンバーを削除することができます。"
+      cannot_delete_inherited_membership_note_non_admin: "プロジェクトのメンバーとしてグループを削除するか、管理者に問い合わせてグループから特定のメンバーを削除することができます。"
     delete_work_package_shares_dialog:
-      title: "ワーク・パッケージ・シェアの破棄"
+      title: "ワークパッケージの共有の取り消し"
       shared_with_this_user_html:
         other: "%{all_shared_work_packages_link} はこのユーザーと共有されています。"
       shared_with_this_group_html:
         other: "%{all_shared_work_packages_link} はこのグループと共有されています。"
       shared_with_permission_html:
         other: "%{shared_work_packages_link} のみが %{shared_role_name} 権限と共有されています。"
-      revoke_all_or_with_role: "すべての共有ワークパッケージ、または %{shared_role_name} 権限を持つワークパッケージのみへのアクセス権を剥奪しますか？"
-      will_not_affect_inherited_shares: "(これは、そのグループと共有しているワークパッケージには影響しません）。"
-      cannot_remove_inherited: "グループで共有されたワークパッケージの共有は削除できません。"
-      cannot_remove_inherited_with_role: "ロール %{shared_role_name} で共有されるワークパッケージは、グループを介して共有され、削除することはできません。"
-      cannot_remove_inherited_note_admin_html: "%{administration_settings_link}、グループへの共有を取り消すか、グループからこの特定のメンバーを削除することができます。"
-      cannot_remove_inherited_note_non_admin: "グループへの共有を取り消すか、管理者に連絡して特定のメンバーをグループから削除することができます。"
-      will_revoke_directly_granted_access: "このアクションは、グループと共有されているワークパッケージ以外の、すべてのワークパッケージへのアクセス権を剥奪する。"
-      will_revoke_access_to_all: "このアクションは、すべてのアクセス権を剥奪する。"
+      revoke_all_or_with_role: "共有されたワークパッケージ、または %{shared_role_name} 権限を持つワークパッケージのみへのアクセスを取り消しますか？"
+      will_not_affect_inherited_shares: "(これはグループと共有されているワークパッケージには影響しません)。"
+      cannot_remove_inherited: "グループ間で共有されるワークパッケージは削除できません。"
+      cannot_remove_inherited_with_role: "ワークパッケージとロール %{shared_role_name} が共有されているため、削除できません。"
+      cannot_remove_inherited_note_admin_html: "あなたは、グループへの共有を取り消すか、 %{administration_settings_link} のグループからこの特定のメンバーを削除することができます。"
+      cannot_remove_inherited_note_non_admin: "共有をグループに取り消すか、管理者に問い合わせてグループから特定のメンバーを削除することができます。"
+      will_revoke_directly_granted_access: "このアクションは、すべてのユーザーへのアクセスを取り消しますが、グループと共有されているワークパッケージです。"
+      will_revoke_access_to_all: "このアクションは、すべてのユーザーへのアクセスを取り消します。"
   my:
     access_token:
       dialog:
@@ -945,7 +945,7 @@ ja:
       no_results_title_text: "現在、有効なアクセス トークンはありません。"
       notice_api_token_revoked: "APIトークンが削除されました。新しいトークンを作成するには、APIセクションの作成ボタンを使用してください。"
       notice_rss_token_revoked: "RSSトークンが削除されました。新しいトークンを作成するには、RSSセクションのリンクを使用してください。"
-      notice_ical_token_revoked: 'プロジェクト "%{project_name}" のカレンダー "%{calendar_name}" の iCalendar トークン "%{token_name}" が失効しました。このトークンを持つiCalendar URLは無効になりました。'
+      notice_ical_token_revoked: 'プロジェクト "%{token_name}" のカレンダー "%{calendar_name}" の iCalendar トークン "%{project_name}" が取り消されました。 このトークンのiCalendar URLは無効です。'
     password_confirmation_dialog:
       confirmation_required: "You need to enter your account password to confirm this change."
       title: "Confirm your password to continue"
@@ -966,7 +966,7 @@ ja:
       matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
   users:
     autologins:
-      prompt: "ログインしたまま %{num_days}"
+      prompt: "%{num_days} のログインを維持"
     sessions:
       session_name: "%{browser_name} %{browser_version} の %{os_name}"
       browser: "ブラウザ"
@@ -980,17 +980,17 @@ ja:
       current: "Current (this device)"
       title: "セッション管理"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
-      may_not_delete_current: "現在のセッションを削除することはできません。"
+      may_not_delete_current: "現在のセッションは削除できません。"
       deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "このユーザーは現在以下のグループのメンバーです："
       no_results_title_text: このユーザーは現在どのグループのメンバーでもありません。
-      summary_with_more: '%{names} と %{count_link}のメンバー。'
-      more: "%{count} もっと見る"
-      summary: '%{names}のメンバー。'
+      summary_with_more: '%{names} と %{count_link} のメンバー。'
+      more: "%{count} 以上"
+      summary: '%{names} のメンバー .'
     memberships:
       no_results_title_text: このユーザは現在プロジェクトのメンバーではありません。
-    open_profile: "プロフィール"
+    open_profile: "プロファイルを開く"
     invite_user_modal:
       invite: "招待"
       title:
@@ -1047,7 +1047,7 @@ ja:
   placeholder_users:
     right_to_manage_members_missing: >
       プレースホルダーユーザを削除する権限がありません。 プレースホルダー ユーザーがメンバーであるすべてのプロジェクトのメンバーを管理する権利はありません。
-    delete_tooltip: "プレースホルダー・ユーザーの削除"
+    delete_tooltip: "プレースホルダー ユーザーを削除"
     deletion_info:
       heading: "プレースホルダー ユーザー %{name} を削除"
       data_consequences: >
@@ -1065,11 +1065,11 @@ ja:
   reactions:
     action_title: "リアクト"
     add_reaction: "リアクションを追加"
-    react_with: "%{reaction} と リアクト"
-    and_user: "および %{user}"
+    react_with: "%{reaction} で反応する"
+    and_user: "と %{user}"
     and_others:
       other: と %{count} その他
-    reaction_by: "%{reaction} によって"
+    reaction_by: "%{reaction} による"
   reportings:
     index:
       no_results_title_text: 現在、ステータス報告はありません。
@@ -1080,19 +1080,20 @@ ja:
         このステータスの色を割り当てたり変更する場合にクリックします。
         ステータスボタンに表示され、テーブル内のワークパッケージを強調表示するために使用できます。
       status_default_text: |-
-        新しいワークパッケージは、デフォルトでこのタイプに設定される。読み取り専用にはできない。
+        新しいワークパッケージはデフォルトでこのタイプに設定されています。読み取り専用にすることはできません。
       status_excluded_from_totals_text: |-
-        このステータスを持つワークパッケージを、階層内の「作業」、「
-        残作業」、「完了率」の合計から除外するには、このオプションをオンにします。
+        このオプションをオンにすると、このステータスのワークパッケージを合計作業量、
+        残作業量、および階層構造で完了させることができます。
       status_percent_complete_text: |-
         <a href="%{href}">ステータスベースの進捗計算モードでは</a>、このステータスが選択されると、作業
         パッケージの「完了%」が自動的にこの値に設定される。
         ワークベースモードでは無視される。
       status_readonly_html: |
-        このステータスを持つワークパッケージを読み取り専用としてマークするには、このオプションをチェックする。
-        ステータス以外の属性は変更できません。
+        ワークパッケージを読み取り専用としてマークするには、このオプションをオンにしてください。
+        ステータスを除いて変更することはできません。
+
         <br>
-        <strong>注意</strong>: 継承された値 (子やリレーションなど) は適用されます。
+        <strong>メモ</strong>: 継承された値 (例えば、子や関連) が適用されます。
     index:
       no_results_title_text: 現在、ワークパッケージのステータスはありません。
       no_results_content_text: 新しいステータスを追加
@@ -1102,7 +1103,7 @@ ja:
         is_readonly: "読み取り専用"
         excluded_from_totals: "合計から除外"
   themes:
-    dark: "暗い"
+    dark: "ダーク"
     light: "ライト"
     sync_with_os: "自動(OSのテーマ設定に追従)"
   types:
@@ -1220,15 +1221,15 @@ ja:
       could_not_be_saved: "次のワークパッケージを保存できませんでした:"
       none_could_be_saved: "%{total} ワークパッケージのどれも更新できませんでした。"
       x_out_of_y_could_be_saved: "%{failing} の %{total} ワークパッケージのうち、 %{success} を更新できませんでした。"
-      selected_because_descendants: "%{selected} のワークパッケージが選択されたが、合計 %{total} のワークパッケージが影響を受け、その中には子孫も含まれる。"
-      descendant: "選択された子孫"
+      selected_because_descendants: "%{selected} ワークパッケージが選択されている間、合計で %{total} ワークパッケージが子孫を含む影響を受けます。"
+      descendant: "選択された子孫です"
     move:
       no_common_statuses_exists: "選択されたすべてのワークパッケージに利用できるステータスはありません。 それらの状態は変更できません。"
       unsupported_for_multiple_projects: "複数のプロジェクトからのワークパッケージの一括移動 / コピーはサポートされていません"
       current_type_not_available_in_target_project: >
-        ワークパッケージの現在のタイプがターゲットプロジェクトで有効になっていません。変更しない場合は、ターゲットプロジェクトでタイプを有効にしてください。そうでない場合は、リストからターゲットプロジェクトで使用可能なタイプを選択してください。
+        ターゲット プロジェクトで現在のワークパッケージのタイプが有効になっていません。 変更を行わないようにしたい場合は、対象プロジェクトのタイプを有効にしてください。 それ以外の場合は、リストからターゲット プロジェクトで使用可能なタイプを選択します。
       bulk_current_type_not_available_in_target_project: >
-        ワークパッケージの現在のタイプがターゲットプロジェクトで有効になっていません。変更しない場合は、ターゲットプロジェクトでタイプを有効にしてください。そうでない場合は、リストからターゲットプロジェクトで使用可能なタイプを選択してください。
+        現在のタイプのワークパッケージはターゲット プロジェクトで有効になっていません。 変更を行わないようにしたい場合は、対象プロジェクトのタイプを有効にしてください。 それ以外の場合は、リストからターゲット プロジェクトで使用可能なタイプを選択します。
     sharing:
       missing_workflow_warning:
         title: "ワークパッケージの共有のためのワークフローがありません"
@@ -1252,9 +1253,9 @@ ja:
           no_results_title_text: 現在、有効なバージョンはありません。
   work_package_relations_tab:
     index:
-      action_bar_title: "他のワークパッケージとのリレーションを追加して、それらの間にリンクを作成する。"
-      no_results_title_text: 現在、利用可能な関係はない。
-      blankslate_heading: "関係なし"
+      action_bar_title: "他のワークパッケージにリレーションを追加して、その間にリンクを作成します。"
+      no_results_title_text: 現在利用可能なリレーションはありません。
+      blankslate_heading: "リレーションなし"
       blankslate_description: "このワークパッケージにはまだリレーションがありません。"
     label_add_child_button: "子要素"
     label_add_x: "%{x} を追加"
@@ -1358,9 +1359,6 @@ ja:
         dependencies: "依存関係"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3457,7 +3455,6 @@ ja:
   label_float: "小数"
   label_folder: "フォルダ"
   label_follows: "次の項目に後続"
-  label_force_user_language_to_default: "ユーザーの言語設定が利用許可されていない場合、デフォルト言語を利用する"
   label_form_configuration: "フォーム設定"
   label_formula: "数式"
   label_gantt_chart: "ガントチャート"
@@ -4951,7 +4948,7 @@ ja:
   text_default_administrator_account_changed: "管理者アカウントでデフォルト設定が変更済み"
   text_default_encoding: "既定値: UTF-8"
   text_destroy: "削除"
-  text_destroy_with_associated: "削除されるワークパッケージと追加の対象物が関連付けています。それらの対象物は次の種類です："
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "どれかを選択して下さい。"
   text_diff_truncated: "... 差分の行数が表示可能な上限を超えました。超過分は表示しません。"
   text_email_delivery_not_configured: "メール配信が設定されておらず、通知が無効になっています。\nSMTPサーバーを有効にしてください。"

@@ -132,6 +132,14 @@ module RbCommonHelper
     item.remaining_hours.blank? || item.remaining_hours == 0 ? "" : item.remaining_hours
   end
 
+  def scrum_projects_enabled?
+    OpenProject::FeatureDecisions.scrum_projects_active?
+  end
+
+  def allow_sprint_creation?(project)
+    scrum_projects_enabled? && current_user.allowed_in_project?(:create_sprints, project)
+  end
+
   private
 
   def work_package_status_for_id(id)

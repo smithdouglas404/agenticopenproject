@@ -1371,9 +1371,6 @@ nl:
         dependencies: "Afhankelijkheden"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3511,7 +3508,6 @@ nl:
   label_float: "Zwevend"
   label_folder: "Map"
   label_follows: "volgt"
-  label_force_user_language_to_default: "Taal van gebruikers met een niet toegestane taal op standaard instellen"
   label_form_configuration: "Formulierconfiguratie"
   label_formula: "Formula"
   label_gantt_chart: "Gantt-grafiek"
@@ -5006,7 +5002,7 @@ nl:
   text_default_administrator_account_changed: "Standaard beheerdersaccount gewijzigd"
   text_default_encoding: "Standaardinstelling: UTF-8"
   text_destroy: "Verwijderen"
-  text_destroy_with_associated: "Er zijn extra objecten gerelateerd aan het/de te verwijderen werkpakket(ten). Deze objecten zijn van de soorten:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Wat wilt u doen?"
   text_diff_truncated: "... deze diff is truncated vanwege dat de maximale grote is overschreden om te tonen."
   text_email_delivery_not_configured: "E-mailbezorging is niet geconfigureerd, en meldingen zijn uitgeschakeld.\nConfigureer uw SMTP-server om deze in te schakelen."

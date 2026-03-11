@@ -25,6 +25,12 @@ fa:
     description: "This module adds features enabling agile teams to work with OpenProject in Scrum projects."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "مدت زمان اسپرینت"
       work_package:
@@ -42,12 +48,15 @@ fa:
               task_version_must_be_the_same_as_story_version: "باید از  همان نگارش داستان زادآوران باشد."
         sprint:
           cannot_end_before_it_starts: "Sprint cannot end before it starts."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "نوع وظیفه"
   backlogs:
     any: "any"
     column_width: "عرض ستون"
     definition_of_done: "Definition of Done"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
     impediment: "Impediment"
     label_versions_default_fold_state: "Show versions folded"
     caption_versions_default_fold_state: "در هنگام مشاهده backlog ها، نسخه‌ها به صورت پیش‌فرض بازنخواهندشد. هر کدام باید به صورت دستی باز شوند."
@@ -75,12 +84,21 @@ fa:
     backlog_component:
       blankslate_title: "%{name} خالی است"
       blankslate_description: "هنوز موردی برنامه ریزی نشده است. موارد را برای اضافه کردن به اینجا بکشید."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "جمع کردن/باز کردن %{name}"
       label_story_count:
         zero: "هیچ داستانی در لیست انتظار نیست"
         one: "%{count} داستان در لیست کار های عقب افتاده"
         other: "%{count} داستان های در لیست کارهای عقب افتاده"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "اقدامات عقب افتاده"
       action_menu:
@@ -91,6 +109,14 @@ fa:
         burndown_chart: "نمودار خلاصه"
         wiki: "ویکی"
         properties: "ویژگی ها"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "انتقال %{name}"
     story_menu_component:
@@ -118,14 +144,19 @@ fa:
   label_backlogs_unconfigured: "شما هنوز پس‌افت‌ها را پیکربندی نکرده‌اید. لطفاً به %{administration} > %{plugins} بروید، سپس برای این افزونه روی %{configure}  کلیک کنید. وقتی همۀ قسمت‌ها را تکمیل کردید، برای استفاده از این ابزار به همین صفحه برگردید. "
   label_blocks_ids: "شناسه‌های مسدود کاربسته‌ها"
   label_column_in_backlog: "ستون در پس‌افت"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "پایین"
   label_points_burn_up: "بالا"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: " موانع تاخت"
+  label_sprint_new: "New sprint"
   label_task_board: "تابلوی وظیفه"
-  permission_view_master_backlog: "نمایش بک لاگ اصلی"
-  permission_view_taskboards: "مشاهده تابلو وظایف"
+  permission_create_sprints: "Create sprints"
+  permission_manage_sprint_items: "Manage sprint items"
   permission_select_done_statuses: "انتخاب وضعیت های انجام شده"
-  permission_update_sprints: "بروزرسانی دوره‌ها"
+  permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "وظایف"
   rb_burndown_charts:
     show:

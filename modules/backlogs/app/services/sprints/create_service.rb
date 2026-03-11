@@ -27,35 +27,9 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-require "carrierwave"
 
-##
-# Adapt carrierwave to match fixes for CVE-2023-49090.
-# https://github.com/carrierwaveuploader/carrierwave/security/advisories/GHSA-vfmv-jfc5-pjjw
-module OpenProject::Patches::CarrierwaveSanitizedFile
-  extend ActiveSupport::Concern
-
-  included do
-    def content_type
-      return @content_type if @content_type
-
-      if @file.respond_to?(:content_type) and @file.content_type
-        Marcel::MimeType.for(declared_type: @file.content_type.to_s.chomp)
-      elsif path
-        @content_type = Attachment.content_type_for(path)
-      end
-    end
-
-    # create the directory if it doesn't exist
-    # Overwritten to avoid ruby 2.7 deprecations
-    def mkdir!(path, directory_permissions)
-      options = {}
-      options[:mode] = directory_permissions if directory_permissions
-      FileUtils.mkdir_p(File.dirname(path), **options)
-    end
+class Sprints::CreateService < BaseServices::Create
+  def instance_class
+    Agile::Sprint
   end
-end
-
-OpenProject::Patches.patch_gem_version "carrierwave", "1.3.4" do
-  CarrierWave::SanitizedFile.include OpenProject::Patches::CarrierwaveSanitizedFile
 end

@@ -1372,9 +1372,6 @@ ca:
         dependencies: "Dependències"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3512,7 +3509,6 @@ ca:
   label_float: "Flotant"
   label_folder: "Carpeta"
   label_follows: "segueix"
-  label_force_user_language_to_default: "Definir la llengua pels usuaris que tenen una llengua per defecte no permesa"
   label_form_configuration: "Configuració del formulari"
   label_formula: "Formula"
   label_gantt_chart: "Diagrama de Gantt"
@@ -5002,7 +4998,7 @@ ca:
   text_default_administrator_account_changed: "S'ha canviat el compte d'administrador predeterminat"
   text_default_encoding: "Per defecte: UTF-8"
   text_destroy: "Esborrar"
-  text_destroy_with_associated: "Hi ha objectes addicionals associats amb el(s) paquet(s) de treball que es suprimiran. Aquests objectes són dels tipus següents:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Què vols fer?"
   text_diff_truncated: "... Aquestes diferències s'han truncat perquè excedeixen la mida màxima que es pot mostrar."
   text_email_delivery_not_configured: "L'entrega de correu electrònic no està configurada, i les notificacions estan desactivades.\nConfigura el teu servidor SMTP per a habilitar-les."

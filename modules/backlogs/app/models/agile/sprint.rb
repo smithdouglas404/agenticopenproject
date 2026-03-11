@@ -38,6 +38,15 @@ module Agile
     belongs_to :project
     has_many :work_packages, dependent: :nullify
 
+    scope :for_project, ->(project) { where(project:) }
+    scope :not_completed, -> { !completed }
+    scope :order_by_date, -> do
+      order(arel_table[:start_date].asc.nulls_last,
+            arel_table[:finish_date].asc.nulls_last)
+    end
+    # FIXME: replace this stub with a meaningful implementation.
+    scope :visible, -> { all }
+
     enum :status,
          {
            in_planning: "in_planning",
@@ -60,14 +69,25 @@ module Agile
     validates :name, presence: true
     validates :project, presence: true
     validates :start_date, presence: true
+    validates :finish_date, presence: true
     validates :finish_date,
-              presence: true,
-              comparison: { greater_than_or_equal_to: :start_date }
+              comparison: { greater_than_or_equal_to: :start_date },
+              if: :start_date?
 
     validate :validate_only_one_active_sprint_per_project
 
     # TODO: validate sharing is set to an allowed value, e.g. only admins may share systemwide (#71374, #71253)
     # TODO: implement sharing logic once it has been defined (#71374)
+
+    def date_range_set?
+      start_date? && finish_date?
+    end
+
+    def duration
+      return nil unless date_range_set?
+
+      Day.working.from_range(from: start_date, to: finish_date).count
+    end
 
     private
 

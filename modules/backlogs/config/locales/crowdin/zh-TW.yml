@@ -21,10 +21,16 @@
 #++
 zh-TW:
   plugin_openproject_backlogs:
-    name: "OpenProject待辦事項"
+    name: "OpenProject代辦事項"
     description: "此模組新增了讓敏捷團隊能夠在 Scrum 專案中使用 OpenProject 的功能。"
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "分享"
       sprint:
         duration: "衝刺時間"
       work_package:
@@ -42,12 +48,15 @@ zh-TW:
               task_version_must_be_the_same_as_story_version: "必須與上層「使用者需求」(User Story)的版本相同。"
         sprint:
           cannot_end_before_it_starts: "進度不可以在開始前結束"
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "任務類型"
   backlogs:
     any: "任何"
     column_width: "欄寬"
     definition_of_done: "定義"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
     impediment: "阻礙"
     label_versions_default_fold_state: "顯示精簡版本"
     caption_versions_default_fold_state: "檢視待辦清單時，版本預設不會展開，需手動逐一展開。"
@@ -73,12 +82,21 @@ zh-TW:
     backlog_component:
       blankslate_title: "%{name} 為空"
       blankslate_description: "尚未規劃任何項目。將項目拖曳至此即可新增。"
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "折疊/展開 %{name}"
       label_story_count:
         zero: "目前沒有待辦故事"
         one: "待辦清單中有 %{count} 個故事"
         other: "待辦清單中有 %{count} 個故事"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "待辦清單操作"
       action_menu:
@@ -89,6 +107,14 @@ zh-TW:
         burndown_chart: "燃盡圖"
         wiki: "維基"
         properties: "屬性"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "移動 %{name}"
     story_menu_component:
@@ -116,14 +142,19 @@ zh-TW:
   label_backlogs_unconfigured: "您尚未設定待辦事項。請前往 '%{administration} -> %{plugins}' 然後在 %{configure} 連結上按一下。當你設定欄位後，再返回這個頁面使用這個工具。"
   label_blocks_ids: "被禁止的工作套件 IDs"
   label_column_in_backlog: "待辦事項的欄位"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "減少"
   label_points_burn_up: "增加"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "進度阻礙"
+  label_sprint_new: "New sprint"
   label_task_board: "任務看板"
-  permission_view_master_backlog: "檢視主待辦事項"
-  permission_view_taskboards: "檢視任務看板"
+  permission_create_sprints: "Create sprints"
+  permission_manage_sprint_items: "Manage sprint items"
   permission_select_done_statuses: "選擇完成狀態"
-  permission_update_sprints: "更新進度"
+  permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "待辦事項"
   rb_burndown_charts:
     show:

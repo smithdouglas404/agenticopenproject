@@ -1373,9 +1373,6 @@ hi:
         dependencies: "Dependencies"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3513,7 +3510,6 @@ hi:
   label_float: "फ्लोट"
   label_folder: "Folder"
   label_follows: "फॉलो करें"
-  label_force_user_language_to_default: "डिफ़ॉल्ट करने के लिए एक गैर अनुमति भाषा वाले उपयोगकर्ताओं की भाषा सेट करें"
   label_form_configuration: "Form configuration"
   label_formula: "Formula"
   label_gantt_chart: "गैंट चार्ट"
@@ -5009,7 +5005,7 @@ hi:
   text_default_administrator_account_changed: "Default administrator account changed"
   text_default_encoding: "Default: UTF-8"
   text_destroy: "मिटाएँ"
-  text_destroy_with_associated: "There are additional objects assossociated with the work package(s) that are to be deleted. Those objects are of the following types:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "What do you want to do?"
   text_diff_truncated: "... This diff was truncated because it exceeds the maximum size that can be displayed."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

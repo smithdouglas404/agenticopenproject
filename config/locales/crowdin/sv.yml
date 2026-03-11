@@ -1375,9 +1375,6 @@ sv:
         dependencies: "Beroenden"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3515,7 +3512,6 @@ sv:
   label_float: "Flyttal"
   label_folder: "Mapp"
   label_follows: "följer"
-  label_force_user_language_to_default: "Välj standardspråk för användare som har ett icke tillåtet språk"
   label_form_configuration: "Ställ in formulär"
   label_formula: "Formel"
   label_gantt_chart: "Gantt-schema"
@@ -5009,7 +5005,7 @@ sv:
   text_default_administrator_account_changed: "Standardadministratörskontot har ändrats"
   text_default_encoding: "Standard: UTF-8"
   text_destroy: "Ta bort"
-  text_destroy_with_associated: "Det finns ytterligare objekt kopplade med det/de arbetspaket som ska tas bort. Dessa objekt är av följande typer:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Vad vill du göra?"
   text_diff_truncated: "... Denna diff trunkerades eftersom den överskrider den maximala storleken som kan visas."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

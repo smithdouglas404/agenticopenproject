@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,38 +28,41 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-require_relative "../support/pages/projects/settings/backlogs"
+module Backlogs
+  class NewSprintFormComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-RSpec.describe "Resolved status" do
-  let!(:project) do
-    create(:project,
-           enabled_module_names: %w(backlogs))
-  end
-  let!(:status) { create(:status, is_default: true) }
-  let(:role) do
-    create(:project_role,
-           permissions: %i[select_done_statuses])
-  end
-  let!(:current_user) do
-    create(:user,
-           member_with_roles: { project => role })
-  end
-  let(:settings_page) { Pages::Projects::Settings::Backlogs.new(project) }
+    FORM_ID = NewSprintDialogComponent::FORM_ID
 
-  before do
-    login_as current_user
-  end
+    def initialize(sprint:, base_errors: nil)
+      super
 
-  it "allows setting a status as done although it is not closed" do
-    settings_page.visit!
+      @sprint = sprint
+      @base_errors = base_errors
+    end
 
-    check status.name
-    click_button "Save"
+    private
 
-    expect_flash(type: :success, message: "Successful update")
+    def http_verb
+      @sprint.new_record? ? :post : :put
+    end
 
-    expect(page)
-      .to have_checked_field(status.name)
+    def form_url
+      if @sprint.new_record?
+        project_sprints_path(@sprint.project_id)
+      else
+        update_agile_sprint_project_sprint_path(@sprint.project_id, @sprint.id)
+      end
+    end
+
+    def data_attributes
+      {
+        controller: "refresh-on-form-changes",
+        "refresh-on-form-changes-target": "form",
+        "refresh-on-form-changes-turbo-stream-url-value": refresh_form_project_sprints_path(@sprint.project_id)
+      }
+    end
   end
 end

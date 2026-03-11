@@ -1374,9 +1374,6 @@
         dependencies: "Avhengigheter"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3514,7 +3511,6 @@
   label_float: "Flyt"
   label_folder: "Mappe"
   label_follows: "følger"
-  label_force_user_language_to_default: "Sett språk for brukere som har et ikke-tillatt språk som standard"
   label_form_configuration: "Skjema konfigurering"
   label_formula: "Formula"
   label_gantt_chart: "Gantt diagram"
@@ -5010,7 +5006,7 @@
   text_default_administrator_account_changed: "Standard administratorkonto er endret"
   text_default_encoding: "Standard: UTF-8"
   text_destroy: "Slett"
-  text_destroy_with_associated: "Det er andre objekter tilknyttet arbeidspakken(e) som er i ferd med å bli slettet. Disse objektene er av følgende typer:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Hva vil du gjøre?"
   text_diff_truncated: "... Denne diff ble forkortet fordi den overstiger maksimalgrensen for hva som kan vises."
   text_email_delivery_not_configured: "E-postlevering er ikke konfigurert, og varsler er deaktivert.\nKonfigurer SMTP-serveren for å aktivere dem."

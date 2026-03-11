@@ -1399,9 +1399,6 @@ uk:
         dependencies: "Залежності"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Надання доступу"
-        finish_date: "Дата завершення"
       jira_import:
         projects: "Проєкти"
       "import/jira":
@@ -3621,7 +3618,6 @@ uk:
   label_float: "З плаваючою крапкою"
   label_folder: "Папка"
   label_follows: "слідкувати"
-  label_force_user_language_to_default: "Встановити мову користувачів, які мають не підтримувану мову, за умовчанням"
   label_form_configuration: "Конфігурація форми"
   label_formula: "Формула"
   label_gantt_chart: "Діаграма Ґанта"
@@ -3659,7 +3655,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -5119,7 +5115,7 @@ uk:
   text_default_administrator_account_changed: "Обліковий запис адміністратора за замовчуванням змінений"
   text_default_encoding: "По замовчуванню: UTF-8"
   text_destroy: "Видалити"
-  text_destroy_with_associated: "Існують додаткові об'єкти, асоційовані з робочими пакетами, які потрібно видалити. Ці об'єкти мають наступні типи:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Що ти хочеш зробити?"
   text_diff_truncated: "... Це порівняння (diff) було скорочене, оскільки воно перевищує максимальний розмір, який можна відобразити."
   text_email_delivery_not_configured: "Доставку електронної пошти не налаштовано, і сповіщення вимкнуто.\nНалаштуйте свій SMTP-сервер, щоб увімкнути їх."

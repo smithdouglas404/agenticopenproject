@@ -1360,9 +1360,6 @@ ko:
         dependencies: "종속성"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "공유"
-        finish_date: "종료 날짜"
       jira_import:
         projects: "프로젝트"
       "import/jira":
@@ -3459,7 +3456,6 @@ ko:
   label_float: "부동"
   label_folder: "폴더"
   label_follows: "팔로우"
-  label_force_user_language_to_default: "허용되지 않는 언어가 있는 사용자의 언어를 기본값으로 설정"
   label_form_configuration: "양식 구성"
   label_formula: "공식"
   label_gantt_chart: "Gantt 차트"
@@ -4950,7 +4946,7 @@ ko:
   text_default_administrator_account_changed: "기본 관리자 계정 변경됨"
   text_default_encoding: "기본: UTF-8"
   text_destroy: "삭제"
-  text_destroy_with_associated: "삭제할 작업 패키지와 연결된 추가 개체가 있습니다. 이러한 개체의 유형은 다음과 같습니다."
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "어떤 작업을 수행하시겠습니까?"
   text_diff_truncated: "... 이 차이점은 표시할 수 있는 최대 크기를 초과하므로 잘렸습니다."
   text_email_delivery_not_configured: "이메일 배달이 구성되지 않았고, 알림이 비활성화되었습니다.\nSMTP 서버를 구성하여 활성화하세요."

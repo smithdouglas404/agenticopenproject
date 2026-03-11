@@ -25,6 +25,12 @@ fr:
     description: "Ce module ajoute des fonctionnalités permettant aux équipes agiles de travailler avec OpenProject dans le cadre de projets Scrum."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Durée"
+        finish_date: "Date de fin"
+        goal: "Objectif du sprint"
+        name: "Nom du sprint"
+        sharing: "Partage"
       sprint:
         duration: "Durée du sprint"
       work_package:
@@ -42,12 +48,15 @@ fr:
               task_version_must_be_the_same_as_story_version: "doit être identique à la version de l'histoire parente."
         sprint:
           cannot_end_before_it_starts: "Un sprint ne peut pas se terminer avant d'avoir débuté."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Type de tâche"
   backlogs:
     any: "tout"
     column_width: "Largeur de colonne"
     definition_of_done: "Définition de Fait"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
     impediment: "Obstacle"
     label_versions_default_fold_state: "Afficher les versions de manière repliée"
     caption_versions_default_fold_state: "Les versions ne seront pas développées par défaut lors de l'affichage des backlogs. Chacune devra être développée manuellement."
@@ -75,12 +84,21 @@ fr:
     backlog_component:
       blankslate_title: "%{name} est vide"
       blankslate_description: "Aucun élément n'a encore été planifié. Faites glisser les éléments ici pour les ajouter."
+    sprint_component:
+      blankslate_title: "%{name} est vide"
+      blankslate_description: "Aucun élément n'a encore été planifié. Faites glisser les éléments ici pour les ajouter."
     backlog_header_component:
       label_toggle_backlog: "Réduire/développer %{name}"
       label_story_count:
         zero: "Aucune histoire dans le backlog"
         one: "%{count} histoire dans le backlog"
         other: "%{count} histoires dans le backlog"
+    sprint_header_component:
+      label_toggle_backlog: "Réduire/développer %{name}"
+      label_story_count:
+        zero: "Aucune story dans le sprint"
+        one: "%{count} story dans le sprint"
+        other: "%{count} stories dans le sprint"
     backlog_menu_component:
       label_actions: "Actions dans le backlog"
       action_menu:
@@ -91,6 +109,14 @@ fr:
         burndown_chart: "Graphique burndown"
         wiki: "Wiki"
         properties: "Propriétés"
+    sprint_menu_component:
+      label_actions: "Actions du sprint"
+      action_menu:
+        edit_sprint: "Modifier le sprint"
+        new_story: "Nouvelle story"
+        stories_tasks: "Stories/tâches"
+        task_board: "Tableau des tâches"
+        burndown_chart: "Graphique burndown"
     story_component:
       label_drag_story: "Déplacer %{name}"
     story_menu_component:
@@ -118,14 +144,19 @@ fr:
   label_backlogs_unconfigured: "Vous n'avez pas encore configuré Backlogs. Veuillez vous rendre dans %{administration} > %{plugins}, puis cliquer sur le lien %{configure} pour ce plugin. Une fois que vous avez défini les champs, revenez sur cette page pour commencer à utiliser l'outil."
   label_blocks_ids: "ID des lots de travaux bloqués"
   label_column_in_backlog: "Colonne dans le backlog"
+  label_used_as_backlog: "Utilisé comme backlog"
   label_points_burn_down: "Vers le bas"
   label_points_burn_up: "Vers le haut"
+  label_sprint_edit: "Modifier le sprint"
   label_sprint_impediments: "Obstacles de sprint"
+  label_sprint_new: "Nouveau sprint"
   label_task_board: "Tableau des tâches"
-  permission_view_master_backlog: "Afficher le backlog principal"
-  permission_view_taskboards: "Voir les tableaux des tâches"
+  permission_create_sprints: "Créer des sprints"
+  permission_manage_sprint_items: "Gérer les éléments du sprint"
   permission_select_done_statuses: "Sélectionner les statuts terminés"
-  permission_update_sprints: "Éditer les sprints"
+  permission_share_sprint: "Partager le sprint"
+  permission_start_complete_sprint: "Commencer/terminer le sprint"
+  permission_view_sprints: "Voir les sprints"
   project_module_backlogs: "Backlogs"
   rb_burndown_charts:
     show:

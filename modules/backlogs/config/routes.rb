@@ -27,6 +27,23 @@
 #++
 
 Rails.application.routes.draw do
+  # Routes for the new Agile::Sprint
+  # Scoped under projects for permissions:
+  resources :projects, only: [] do
+    resources :sprints, controller: :rb_sprints, only: %i[create] do
+      collection do
+        get :new_dialog
+        get :refresh_form
+      end
+
+      member do
+        get :edit_dialog
+        put :update_agile_sprint
+      end
+    end
+  end
+
+  # Legacy routes
   scope "", as: "backlogs" do
     scope "projects/:project_id", as: "project" do
       resources :backlogs, controller: :rb_master_backlogs, only: :index do

@@ -1198,7 +1198,7 @@ es:
           automatic_with_children: "Fechas determinadas por paquetes de trabajo secundarios."
           automatic_with_predecessor: "La fecha de inicio la fija un predecesor."
           manual_mobile: "Programado manualmente."
-          manually_scheduled: "Programado manualmente. No afectadas por relaciones."
+          manually_scheduled: "Programado manualmente. Fechas no afectadas por relaciones."
       blankslate:
         title: "Sin predecesores"
         description: "Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano."
@@ -1372,9 +1372,6 @@ es:
         dependencies: "Dependencias"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Uso compartido"
-        finish_date: "Fecha de finalización"
       jira_import:
         projects: "Proyectos"
       "import/jira":
@@ -3512,7 +3509,6 @@ es:
   label_float: "Desprender"
   label_folder: "Carpeta"
   label_follows: "sigue"
-  label_force_user_language_to_default: "Configurar idioma de usuarios que tienen un lenguaje no permitido por defecto"
   label_form_configuration: "Configuración del formato"
   label_formula: "Fórmula"
   label_gantt_chart: "Diagrama de Gantt"
@@ -5007,7 +5003,7 @@ es:
   text_default_administrator_account_changed: "Se ha cambiado la cuenta de administrador por defecto"
   text_default_encoding: "Por defecto: UTF-8"
   text_destroy: "Borrar"
-  text_destroy_with_associated: "Hay objetos adicionales asociados a los paquetes de trabajo que van a ser eliminados. Esos objetos son de los siguientes tipos:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "¿Qué quieres hacer?"
   text_diff_truncated: "... Esta diferencia se truncó porque excede el tamaño máximo que puede visualizarse."
   text_email_delivery_not_configured: "No se ha configurado la entrega de correo electrónico y se han deshabilitado las notificaciones.\nConfigure el servidor SMTP para habilitarlas."

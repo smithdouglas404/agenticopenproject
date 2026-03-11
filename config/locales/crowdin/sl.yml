@@ -1404,9 +1404,6 @@ sl:
         dependencies: "Odvisnosti"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -2655,8 +2652,8 @@ sl:
       - "avgust"
       - "september"
       - "oktober"
-      - "november"
-      - "december"
+      - "November"
+      - "December"
     order:
       - :leto
       - :mesec
@@ -3626,7 +3623,6 @@ sl:
   label_float: "Lebdeti"
   label_folder: "Mapa"
   label_follows: "Sledi"
-  label_force_user_language_to_default: "Nastavite jezik uporabnikov ki nimajo dovoljenja privzetega jezika"
   label_form_configuration: "Konfiguracija obrazca"
   label_formula: "Formula"
   label_gantt_chart: "Gantogram"
@@ -5125,7 +5121,7 @@ sl:
   text_default_administrator_account_changed: "Spremenjen privzeti administratorski račun"
   text_default_encoding: "Privzeto: UTF-8"
   text_destroy: "Izbriši"
-  text_destroy_with_associated: "Obstajajo dodatni objekti, povezani z delovnim paketom, ki jih je treba izbrisati. Ti predmeti so naslednje vrste:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Kaj želite storiti?"
   text_diff_truncated: "... Ta sprememba je bila odsekana ker presega največjo velikost ki je lahko prikazana."
   text_email_delivery_not_configured: "Dostava e-pošte ni konfigurirana in obvestila so onemogočena.\nKonfigurirajte strežnik SMTP, da jih omogočite."

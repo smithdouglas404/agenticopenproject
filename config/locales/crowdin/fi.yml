@@ -1375,9 +1375,6 @@ fi:
         dependencies: "Riippuvuudet"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3515,7 +3512,6 @@ fi:
   label_float: "Liukuluku"
   label_folder: "Kansio"
   label_follows: "seuraa"
-  label_force_user_language_to_default: "Määritä oletuskieli jos käytössä on kieli joka ei ole sallittu"
   label_form_configuration: "Lomakkeen muokkaus"
   label_formula: "Formula"
   label_gantt_chart: "Gantt-kaavio"
@@ -5011,7 +5007,7 @@ fi:
   text_default_administrator_account_changed: "Oletuarvoinen järjestelmävalvoja muutettu"
   text_default_encoding: "Default: UTF-8"
   text_destroy: "Poista"
-  text_destroy_with_associated: "There are additional objects assossociated with the work package(s) that are to be deleted. Those objects are of the following types:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Mitä sinä haluat tehdä?"
   text_diff_truncated: "... Tämä katkaistiin koska suurin mahdollinen näytettävä määrä tuli täyteen."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

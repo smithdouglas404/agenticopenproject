@@ -1435,9 +1435,6 @@ ar:
         dependencies: "الاعتماديات"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3739,7 +3736,6 @@ ar:
   label_float: "عدد عشري"
   label_folder: "مجلد"
   label_follows: "تتبع"
-  label_force_user_language_to_default: "إعطاء لغة للمستخدمين غير اللغة المسموح بها بشكل افتراضي"
   label_form_configuration: "تشكيل النموذج"
   label_formula: "Formula"
   label_gantt_chart: "Gantt chart"
@@ -5241,7 +5237,7 @@ ar:
   text_default_administrator_account_changed: "تغيير حساب المسؤول الافتراضي"
   text_default_encoding: "الافتراضي: UTF-8"
   text_destroy: "احذف"
-  text_destroy_with_associated: "وهناك كائنات إضافية مرتبطة مع الحزمة (الحزم) العمل الموجودة المراد حذفها. هذه الكائنات من الأنواع التالية: "
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "ماذا تريد أن تفعل؟"
   text_diff_truncated: "... تم اقتطاعه لأنه يتجاوز الحد الأقصى للحجم التي يمكن عرضها."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

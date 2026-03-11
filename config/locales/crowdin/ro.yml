@@ -1390,9 +1390,6 @@ ro:
         dependencies: "Dependenţe"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3524,7 +3521,7 @@ ro:
   label_duplicated_by: "dublat de"
   label_duplicate: "duplicat"
   label_duplicates: "dublează"
-  label_edit: "Editează"
+  label_edit: "Editare"
   label_edit_x: "Editare: %{x}"
   label_view_x: "View: %{x}"
   label_enable_multi_select: "Comutare selecție multiplă"
@@ -3571,7 +3568,6 @@ ro:
   label_float: "Număr real"
   label_folder: "Dosar"
   label_follows: "urmează după"
-  label_force_user_language_to_default: "Setare limbă pentru utilizatorii care au o limbă implicită nepermisă"
   label_form_configuration: "Configurare formular"
   label_formula: "Formulă"
   label_gantt_chart: "Grafic Gantt"
@@ -3582,7 +3578,7 @@ ro:
   label_global_roles: "Roluri globale"
   label_git_path: "Calea catre directorul .git"
   label_greater_or_equal: ">="
-  label_group_by: "Grupează după"
+  label_group_by: "Grupare după"
   label_group_new: "Grupare nouă"
   label_group: "Grup"
   label_group_named: "Grup %{name}"
@@ -5068,7 +5064,7 @@ ro:
   text_default_administrator_account_changed: "Contul de administrator implicit a fost schimbat"
   text_default_encoding: "Implicit: UTF-8"
   text_destroy: "Șterge"
-  text_destroy_with_associated: "Există obiecte suplimentare asociate cu pachetul(ele) de lucru care urmează să fie șters(e). Aceste obiecte sunt de următoarele tipuri:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Ce vrei să faci?"
   text_diff_truncated: "... Acest diff a fost trunchiat deoarece depășește dimensiunea maximă care poate fi afișată."
   text_email_delivery_not_configured: "Livrarea e-mailurilor nu este configurată, iar notificările sunt dezactivate.\nConfigurați serverul SMTP pentru a le activa."

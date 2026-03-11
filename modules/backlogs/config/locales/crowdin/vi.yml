@@ -25,6 +25,12 @@ vi:
     description: "Mô-đun này bổ sung các tính năng cho phép các nhóm linh hoạt làm việc với OpenProject trong các dự án Scrum."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -42,12 +48,15 @@ vi:
               task_version_must_be_the_same_as_story_version: "phải giống với phiên bản của bảng cha."
         sprint:
           cannot_end_before_it_starts: "Sprint không thể kết thúc trước khi nó bắt đầu."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Loại nhiệm vụ"
   backlogs:
     any: "bất kỳ"
     column_width: "Column width"
     definition_of_done: "Định nghĩa về Hoàn thành"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
     impediment: "Trở ngại"
     label_versions_default_fold_state: "Hiển thị các phiên bản \n"
     caption_versions_default_fold_state: "Các phiên bản sẽ không được mở rộng theo mặc định khi xem hồ sơ tồn đọng. Mỗi cái phải được mở rộng bằng tay."
@@ -73,12 +82,21 @@ vi:
     backlog_component:
       blankslate_title: "%{name} is empty"
       blankslate_description: "No items planned yet. Drag items here to add them."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
         other: "%{count} stories in backlog"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "Backlog actions"
       action_menu:
@@ -89,6 +107,14 @@ vi:
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -116,14 +142,19 @@ vi:
   label_backlogs_unconfigured: "Bạn chưa cấu hình Bảng nhiệm vụ tồn đọng. Vui lòng vào %{administration} > %{plugins}, sau đó nhấp vào liên kết %{configure} cho gắn thêm này. Khi bạn đã thiết lập các trường, quay lại trang này để bắt đầu sử dụng công cụ."
   label_blocks_ids: "ID của các work package bị chặn"
   label_column_in_backlog: "Cột tồn đọng"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "Xuống"
   label_points_burn_up: "lên"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Trở ngại nước rút"
+  label_sprint_new: "New sprint"
   label_task_board: "Bảng nhiệm vụ"
-  permission_view_master_backlog: "Xem tồn đọng chính"
-  permission_view_taskboards: "Xem bảng tác vụ"
+  permission_create_sprints: "Create sprints"
+  permission_manage_sprint_items: "Manage sprint items"
   permission_select_done_statuses: "Chọn trạng thái hoàn thành"
-  permission_update_sprints: "Cập nhật các lần chạy nước rút"
+  permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "tồn đọng"
   rb_burndown_charts:
     show:

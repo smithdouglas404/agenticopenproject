@@ -1358,9 +1358,6 @@ vi:
         dependencies: "phụ thuộc"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -2232,7 +2229,7 @@ vi:
     body: "cơ thể"
     blocks_ids: "ID của các work package bị chặn"
     category: "thể loại"
-    comment: "bình luận"
+    comment: "Nhận xét"
     comments: "bình luận"
     content: "Nội dung"
     color: "màu sắc"
@@ -3457,7 +3454,6 @@ vi:
   label_float: "Số thực"
   label_folder: "Thư mục"
   label_follows: "theo dõi"
-  label_force_user_language_to_default: "Có một ngôn ngữ không được cho phép để mặc định trong thiết lập ngôn ngữ cho người sử dụng"
   label_form_configuration: "Mẫu cấu hình"
   label_formula: "Công thức"
   label_gantt_chart: "Biểu đồ Gantt"
@@ -3831,7 +3827,7 @@ vi:
   label_used_by: "Được dùng bởi"
   label_used_by_types: "Được sử dụng bởi các loại"
   label_used_in_projects: "Được sử dụng trong các dự án"
-  label_user: "người dùng"
+  label_user: "Người dùng"
   label_user_and_permission: "Người dùng và quyền"
   label_user_named: "Người dùng %{name}"
   label_user_activity: "%{value} hoạt động"
@@ -4951,7 +4947,7 @@ vi:
   text_default_administrator_account_changed: "Tài khoản quản trị viên mặc định đã thay đổi"
   text_default_encoding: "Mặc định: UTF-8"
   text_destroy: "xóa"
-  text_destroy_with_associated: "Có các đối tượng bổ sung liên quan đến (các) gói công việc sẽ bị xóa. Các đối tượng đó có các loại sau:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Bạn muốn làm gì?"
   text_diff_truncated: "... Sự khác biệt này đã bị cắt bớt vì nó vượt quá kích thước tối đa có thể được hiển thị."
   text_email_delivery_not_configured: "Gửi email không được cấu hình và thông báo bị vô hiệu hóa.\nCấu hình máy chủ SMTP của bạn để kích hoạt chúng."

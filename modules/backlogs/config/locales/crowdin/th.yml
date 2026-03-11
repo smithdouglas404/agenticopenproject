@@ -25,6 +25,12 @@ th:
     description: "This module adds features enabling agile teams to work with OpenProject in Scrum projects."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "ระยะเวลา"
+        finish_date: "วันที่เสร็จสิ้น"
+        goal: "เป้าหมายสปริ๊นต์"
+        name: "ชื่อสปรินต์"
+        sharing: "Sharing"
       sprint:
         duration: "ระยะเวลาการสปรินต์"
       work_package:
@@ -42,12 +48,15 @@ th:
               task_version_must_be_the_same_as_story_version: "เวอร์ชันต้องตรงกับสตอรี่หลัก"
         sprint:
           cannot_end_before_it_starts: "กรุณาระบุวันสิ้นสุดให้หลังจากวันเริ่มต้นสปรินต์"
+    models:
+      sprint: "สปรินท์"
   attributes:
     task_type: "ประเภทงาน"
   backlogs:
     any: "ทั้งหมด"
     column_width: "ความกว้างของคอลัมน์"
     definition_of_done: "นิยามของคำว่าเสร็จสิ้น"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
     impediment: "รายการอุปสรรค"
     label_versions_default_fold_state: "แสดงเวอร์ชันที่พับอยู่"
     caption_versions_default_fold_state: "เวอร์ชันจะถูกพับไว้เป็นค่าเริ่มต้น กรุณาคลิกเพื่อขยายดูทีละรายการ"
@@ -73,12 +82,21 @@ th:
     backlog_component:
       blankslate_title: "%{name} ว่างอยู่"
       blankslate_description: "ยังไม่มีรายการที่วางแผนไว้ ลากรายการมาวางที่นี่เพื่อเพิ่ม"
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "พับ/ขยาย %{name}"
       label_story_count:
         zero: "ไม่มีสตอรี่ในรายการงานคงค้าง"
         one: "%{count} สตอรี่ในรายการงานคงค้าง"
         other: "%{count} สตอรี่ในรายการงานคงค้าง"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "การจัดการรายการงานคงค้าง"
       action_menu:
@@ -89,6 +107,14 @@ th:
         burndown_chart: "กราฟติดตามงาน (Burndown)"
         wiki: "วิกิ"
         properties: "คุณสมบัติ"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "ย้าย %{name}"
     story_menu_component:
@@ -116,14 +142,19 @@ th:
   label_backlogs_unconfigured: "คุณยังไม่ได้ตั้งค่ารายการงานคงค้าง กรุณาไปที่ %{administration} > %{plugins} จากนั้นคลิกที่ลิงก์ %{configure} ของปลั๊กอินนี้ เมื่อคุณตั้งค่าฟิลด์ต่าง ๆ เรียบร้อยแล้ว ให้กลับมาที่หน้านี้เพื่อเริ่มใช้งานเครื่องมือ"
   label_blocks_ids: "Id ของแพคเกจการทำงานที่ถูกบล็อก"
   label_column_in_backlog: "คอลัมน์ในรายการงานคงค้าง"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "ลง"
   label_points_burn_up: "ขึ้น"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "อุปสรรคของสปรินท์"
+  label_sprint_new: "สปรินท์ใหม่"
   label_task_board: "กระดานงาน"
-  permission_view_master_backlog: "View master backlog"
-  permission_view_taskboards: "View taskboards"
+  permission_create_sprints: "สร้างสปรินท์"
+  permission_manage_sprint_items: "จัดการรายการในสปรินท์"
   permission_select_done_statuses: "Select done statuses"
-  permission_update_sprints: "Update sprints"
+  permission_share_sprint: "แชร์สปรินท์"
+  permission_start_complete_sprint: "เริ่มต้น/เสร็จสิ้นสปรินท์"
+  permission_view_sprints: "ดูสปรินท์"
   project_module_backlogs: "รายการงานคงค้าง"
   rb_burndown_charts:
     show:

@@ -1405,9 +1405,6 @@ sk:
         dependencies: "Závislosti"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3627,7 +3624,6 @@ sk:
   label_float: "Plávajúce (float)"
   label_folder: "Priečinok"
   label_follows: "nasleduje"
-  label_force_user_language_to_default: "Nastavenie jazyka užívateľov ktorí majú nastavený ako predvolený nepovolený jazyk"
   label_form_configuration: "Konfigurácia formulára"
   label_formula: "Formula"
   label_gantt_chart: "Ganttov diagram"
@@ -5126,7 +5122,7 @@ sk:
   text_default_administrator_account_changed: "Predvolené nastavenie administrátorského účtu bolo zmenené"
   text_default_encoding: "Predvolené: UTF-8"
   text_destroy: "Odstrániť"
-  text_destroy_with_associated: "Existujú ďalšie objekty spojené s pracovným balíčkom(-ami), ktoré sa majú vymazať. Tieto objekty sú z týchto typov:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Čo chcete urobiť?"
   text_diff_truncated: "... Tento výpis rozdielov bol skrátený, pretože prekračuje maximálny počet riadkov, ktorý môže byť zobrazený."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

@@ -1374,9 +1374,6 @@ hu:
         dependencies: "Szükséges összetevők"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3514,7 +3511,6 @@ hu:
   label_float: "Mozgó"
   label_folder: "Mappa"
   label_follows: "követi ezt"
-  label_force_user_language_to_default: "Nyelv beállitása a felhasználóknak, amelyeknél nem az alapértelmezett nyelv az elfogadott"
   label_form_configuration: "Űrlap konfiguráció"
   label_formula: "Formula"
   label_gantt_chart: "Gantt-diagram"
@@ -5009,7 +5005,7 @@ hu:
   text_default_administrator_account_changed: "Az alapértelmezett rendszergazdai fiók megváltozott"
   text_default_encoding: "Alapértelmezett érték: UTF-8"
   text_destroy: "Törlés"
-  text_destroy_with_associated: "További objektumok vannak hozzárendelve, a feladatcsoport(ok)hoz, amelyeket törölni kell. Ezek az objektumok a következők:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Mit szeretne tenni?"
   text_diff_truncated: "... Ez a különbség csonkolva lett, mert meghaladja a maximálisan megjeleníthető méretet."
   text_email_delivery_not_configured: "Email küldés nincs bekonfigurálva, és az értesítések ki vannak kapcsolva.\nÁllítsa be az SMTP szervert, hogy engedélyezze azokat."
