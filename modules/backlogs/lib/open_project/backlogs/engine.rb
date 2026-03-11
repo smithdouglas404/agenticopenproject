@@ -78,7 +78,7 @@ module OpenProject::Backlogs
                      rb_tasks: %i[index show],
                      rb_impediments: %i[index show] },
                    permissible_on: :project,
-                   dependencies: :view_work_packages
+                   dependencies: %i[view_work_packages show_board_views]
 
         permission :select_done_statuses,
                    {
@@ -98,7 +98,7 @@ module OpenProject::Backlogs
                    {},
                    permissible_on: :project,
                    require: :member,
-                   dependencies: :view_sprints,
+                   dependencies: %i[view_sprints manage_board_views],
                    visible: -> { OpenProject::FeatureDecisions.scrum_projects_active? }
 
         permission :manage_sprint_items,
