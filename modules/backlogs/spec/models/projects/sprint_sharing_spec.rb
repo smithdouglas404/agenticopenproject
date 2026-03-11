@@ -103,16 +103,24 @@ RSpec.describe Projects::SprintSharing do
       end
     end
 
+    shared_examples "executes a single SQL query" do
+      it "resolves sprint_source in a single query" do
+        expect { project.sprint_source.load }.to have_a_query_limit(1)
+      end
+    end
+
     context "when sprint_sharing is no_sharing (default)" do
       let(:project_sprint_sharing) { "no_sharing" }
 
       it_behaves_like "returns the project itself"
+      it_behaves_like "executes a single SQL query"
     end
 
     context "when sprint_sharing is share_subprojects" do
       let(:project_sprint_sharing) { "share_subprojects" }
 
       it_behaves_like "returns the project itself"
+      it_behaves_like "executes a single SQL query"
     end
 
     context "when sprint_sharing is share_all_projects" do
@@ -122,6 +130,7 @@ RSpec.describe Projects::SprintSharing do
       let(:project_sprint_sharing) { "share_all_projects" }
 
       it_behaves_like "returns the project itself"
+      it_behaves_like "executes a single SQL query"
     end
 
     context "when sprint_sharing is receive_shared" do
@@ -135,6 +144,8 @@ RSpec.describe Projects::SprintSharing do
         it "returns only the global sharer" do
           expect(project.sprint_source).to contain_exactly(global_sharer)
         end
+
+        it_behaves_like "executes a single SQL query"
       end
 
       context "with a global sharer and both ancestors sharing subprojects" do
@@ -145,6 +156,8 @@ RSpec.describe Projects::SprintSharing do
         it "returns only the closest sharing ancestor" do
           expect(project.sprint_source).to contain_exactly(parent_project)
         end
+
+        it_behaves_like "executes a single SQL query"
       end
 
       context "with no sharing sources" do
@@ -155,6 +168,8 @@ RSpec.describe Projects::SprintSharing do
         it "returns an empty scope" do
           expect(project.sprint_source).to be_empty
         end
+
+        it_behaves_like "executes a single SQL query"
       end
     end
   end

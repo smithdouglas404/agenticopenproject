@@ -31,15 +31,26 @@
 require "spec_helper"
 
 RSpec.describe Agile::Sprints::Scopes::ForProject do
-  let(:project) { create(:project) }
+  let(:sprint_sharing) { "no_sharing" }
+  let(:project) { create(:project, sprint_sharing:) }
   let(:global_sharer) { create(:project, sprint_sharing: "share_all_projects") }
   let(:other_project) { create(:project) }
   let!(:sprint_in_project) { create(:agile_sprint, project:) }
   let!(:global_sprint) { create(:agile_sprint, project: global_sharer) }
   let!(:sprint_in_other_project) { create(:agile_sprint, project: other_project) }
 
+  shared_examples "executes a single SQL query" do
+    it "resolves for_project in a single query" do
+      expect { Agile::Sprint.for_project(project).load }.to have_a_query_limit(1)
+    end
+  end
+
   describe ".for_project" do
-    context "when project does not receive sprints" do
+    context "when project does not receive sprints (no_sharing)" do
+      let(:sprint_sharing) { "no_sharing" }
+
+      it_behaves_like "executes a single SQL query"
+
       context "and there are no work package assignments" do
         it "returns only the project's own sprint" do
           expect(Agile::Sprint.for_project(project)).to contain_exactly(sprint_in_project)
@@ -65,8 +76,52 @@ RSpec.describe Agile::Sprints::Scopes::ForProject do
       end
     end
 
+    context "when project is a sender (share_subprojects)" do
+      let(:sprint_sharing) { "share_subprojects" }
+
+      it_behaves_like "executes a single SQL query"
+
+      context "and there are no work package assignments" do
+        it "returns only the project's own sprint" do
+          expect(Agile::Sprint.for_project(project)).to contain_exactly(sprint_in_project)
+        end
+      end
+
+      context "and a work package in the project is assigned to a sprint from another project" do
+        let!(:cross_project_sprint) { create(:agile_sprint, project: other_project) }
+        let!(:work_package) { create(:work_package, project:, sprint: cross_project_sprint) }
+
+        it "returns both the own sprint and the cross-project sprint" do
+          expect(Agile::Sprint.for_project(project)).to contain_exactly(sprint_in_project, cross_project_sprint)
+        end
+      end
+    end
+
+    context "when project is a sender (share_all_projects)" do
+      let(:sprint_sharing) { "share_all_projects" }
+
+      it_behaves_like "executes a single SQL query"
+
+      context "and there are no work package assignments" do
+        it "returns only the project's own sprint" do
+          expect(Agile::Sprint.for_project(project)).to contain_exactly(sprint_in_project)
+        end
+      end
+
+      context "and a work package in the project is assigned to a sprint from another project" do
+        let!(:cross_project_sprint) { create(:agile_sprint, project: other_project) }
+        let!(:work_package) { create(:work_package, project:, sprint: cross_project_sprint) }
+
+        it "returns both the own sprint and the cross-project sprint" do
+          expect(Agile::Sprint.for_project(project)).to contain_exactly(sprint_in_project, cross_project_sprint)
+        end
+      end
+    end
+
     context "when project receives shared sprints" do
-      let(:project) { create(:project, sprint_sharing: "receive_shared") }
+      let(:sprint_sharing) { "receive_shared" }
+
+      it_behaves_like "executes a single SQL query"
 
       context "and there is only a global sharer" do
         it "returns only the sprints shared from the global sharer project" do
@@ -100,7 +155,7 @@ RSpec.describe Agile::Sprints::Scopes::ForProject do
 
       context "and there is a subproject-sharing ancestor" do
         let(:subproject_sharer) { create(:project, sprint_sharing: "share_subprojects") }
-        let(:project) { create(:project, parent: subproject_sharer, sprint_sharing: "receive_shared") }
+        let(:project) { create(:project, parent: subproject_sharer, sprint_sharing:) }
         let!(:subproject_sprint) { create(:agile_sprint, project: subproject_sharer) }
 
         it "returns only the sprints shared from the closest subproject-sharing ancestor" do

@@ -84,13 +84,7 @@ module Projects::SprintSharing
     # Receivers see external sprints from the closest ancestor sharing
     # subprojects, falling back to the global sharer.
     if receive_shared_sprints?
-      closest_ancestor = closest_sharing_ancestor
-
-      self.class
-        .where(id: closest_ancestor).limit(1) # Both sides of `or` must be structurally identical
-        .or(
-          self.class.global_sprint_sharer_relation.where.not(closest_ancestor.arel.exists)
-        )
+      closest_sharing_ancestor_or_global_sharer
     else
       self.class.where(id:)
     end
@@ -98,7 +92,11 @@ module Projects::SprintSharing
 
   private
 
-  def closest_sharing_ancestor
-    ancestors.share_sprints_with_subprojects.reorder(lft: :desc).limit(1)
+  def closest_sharing_ancestor_or_global_sharer
+    closest_ancestor = ancestors.share_sprints_with_subprojects.reorder(lft: :desc).limit(1)
+
+    self.class
+      .where(id: closest_ancestor).limit(1) # Both sides of `or` must be structurally identical
+      .or(self.class.global_sprint_sharer_relation.where.not(closest_ancestor.arel.exists))
   end
 end
