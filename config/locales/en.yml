@@ -1124,7 +1124,7 @@ en:
         blank_description: "Create a future schedule to plan changes ahead of time"
       history:
         title: "Schedule history"
-        description: "View your past work schedule changes and restore previous working times"
+        description: "View your past work schedules."
         blank_title: "No schedule history yet"
         blank_description: "Past schedule changes will appear here"
       destroy:
