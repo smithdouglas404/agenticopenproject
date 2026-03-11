@@ -45,7 +45,7 @@ See COPYRIGHT and LICENSE files for more details.
     <% end %>
   <% end %>
 
-  <%= render(Primer::Box.new(display: :flex, style: "gap: 12px; flex-wrap: wrap;")) do %>
+  <%= render(Primer::Box.new(display: :flex, classes: "gap-3")) do %>
     <%= render(
           Users::WorkingHours::StatCardComponent.new(
             label: t("users.working_hours.current_schedule.work_days"),
