@@ -103,9 +103,10 @@ class Sprint < Version
   end
 
   def wiki_page
-    return "" unless project.wiki
+    wiki = resolved_wiki
+    return "" unless wiki
 
-    create_wiki_page(name) unless project.wiki.find_page(name)
+    create_wiki_page(name, wiki:) unless wiki.find_page(name)
     update_attribute(:wiki_page_title, name) if wiki_page_title.blank?
 
     wiki_page_title
@@ -158,15 +159,29 @@ class Sprint < Version
 
   private
 
-  def create_wiki_page(page_title, author: User.current)
-    template = project.wiki.find_page(Setting.plugin_openproject_backlogs["wiki_template"])
+  def resolved_wiki
+    wiki = project.wiki
+    wiki = nil unless wiki&.persisted?
+    wiki || create_project_wiki
+  end
+
+  def create_project_wiki
+    return unless project.module_enabled?("wiki")
+
+    project.create_wiki(start_page: "Wiki")
+  rescue ActiveRecord::RecordNotUnique
+    project.reload.wiki
+  end
+
+  def create_wiki_page(page_title, wiki:, author: User.current)
+    template = wiki.find_page(Setting.plugin_openproject_backlogs["wiki_template"])
     page_text = if template
                   "h1. #{name}\n\n#{template.text}"
                 else
                   "h1. #{name}"
                 end
 
-    page = project.wiki.pages.build(title: page_title, text: page_text, author:)
+    page = wiki.pages.build(title: page_title, text: page_text, author:)
     page.save!
   end
 end
