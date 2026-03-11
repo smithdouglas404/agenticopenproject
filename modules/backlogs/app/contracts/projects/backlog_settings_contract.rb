@@ -40,7 +40,7 @@ module Projects
     validate :validate_permissions
     validate :validate_global_sprint_sharer_uniqueness
     validates :sprint_sharing, presence: true
-    validates :sprint_sharing, inclusion: { in: Project::SPRINT_SHARING_OPTIONS }, allow_blank: true
+    validates :sprint_sharing, inclusion: { in: Project::SPRINT_SHARING_MODES }, allow_blank: true
 
     def validate_model? = false
 

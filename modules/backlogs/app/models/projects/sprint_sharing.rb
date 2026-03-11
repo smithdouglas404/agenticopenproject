@@ -36,7 +36,7 @@ module Projects::SprintSharing
   SHARE_SUBPROJECTS  = "share_subprojects"
   RECEIVE_SHARED     = "receive_shared"
 
-  SPRINT_SHARING_OPTIONS = [NO_SHARING, SHARE_ALL_PROJECTS, SHARE_SUBPROJECTS, RECEIVE_SHARED].freeze
+  SPRINT_SHARING_MODES = [NO_SHARING, SHARE_ALL_PROJECTS, SHARE_SUBPROJECTS, RECEIVE_SHARED].freeze
 
   included do
     store_attribute :settings, :sprint_sharing, :string
@@ -49,7 +49,11 @@ module Projects::SprintSharing
 
   class_methods do
     def global_sprint_sharer
-      share_sprints_with_all_projects.active.first
+      global_sprint_sharer_relation.first
+    end
+
+    def global_sprint_sharer_relation
+      share_sprints_with_all_projects.active.limit(1)
     end
   end
 
@@ -75,25 +79,26 @@ module Projects::SprintSharing
     sprint_sharing == NO_SHARING
   end
 
-  def receive_sprints_from
+  def sprint_source
     # Senders and non-sharing projects only see their own sprints.
     # Receivers see external sprints from the closest ancestor sharing
     # subprojects, falling back to the global sharer.
     if receive_shared_sprints?
-      closest_ancestor = ancestors
-        .share_sprints_with_subprojects
-        .reorder(lft: :desc)
-        .limit(1)
+      closest_ancestor = closest_sharing_ancestor
 
       self.class
-        .where(id: closest_ancestor)
+        .where(id: closest_ancestor).limit(1) # Both sides of `or` must be structurally identical
         .or(
-          self.class.share_sprints_with_all_projects
-            .active
-            .where.not(Arel::Nodes::Exists.new(closest_ancestor.select(:id).arel))
+          self.class.global_sprint_sharer_relation.where.not(closest_ancestor.arel.exists)
         )
     else
       self.class.where(id:)
     end
+  end
+
+  private
+
+  def closest_sharing_ancestor
+    ancestors.share_sprints_with_subprojects.reorder(lft: :desc).limit(1)
   end
 end

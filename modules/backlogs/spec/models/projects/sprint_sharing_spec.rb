@@ -5,15 +5,15 @@ require "spec_helper"
 RSpec.describe Projects::SprintSharing do
   let(:project) { create(:project) }
 
-  describe "SPRINT_SHARING_OPTIONS" do
+  describe "SPRINT_SHARING_MODES" do
     it "defines all supported sprint sharing options" do
-      expect(described_class::SPRINT_SHARING_OPTIONS).to match_array(
+      expect(described_class::SPRINT_SHARING_MODES).to match_array(
         %w[share_all_projects share_subprojects no_sharing receive_shared]
       )
     end
 
     it "is exposed on Project" do
-      expect(Project::SPRINT_SHARING_OPTIONS).to eq(described_class::SPRINT_SHARING_OPTIONS)
+      expect(Project::SPRINT_SHARING_MODES).to eq(described_class::SPRINT_SHARING_MODES)
     end
   end
 
@@ -82,7 +82,7 @@ RSpec.describe Projects::SprintSharing do
     end
   end
 
-  describe "#receive_sprints_from" do
+  describe "#sprint_source" do
     let(:global_sprint_sharing) { "share_all_projects" }
     let(:root_sprint_sharing) { "share_subprojects" }
     let(:parent_sprint_sharing) { "share_subprojects" }
@@ -99,7 +99,7 @@ RSpec.describe Projects::SprintSharing do
 
     shared_examples "returns the project itself" do
       it "returns only itself" do
-        expect(project.receive_sprints_from).to contain_exactly(project)
+        expect(project.sprint_source).to contain_exactly(project)
       end
     end
 
@@ -133,7 +133,7 @@ RSpec.describe Projects::SprintSharing do
         let(:parent_sprint_sharing) { "no_sharing" }
 
         it "returns only the global sharer" do
-          expect(project.receive_sprints_from).to contain_exactly(global_sharer)
+          expect(project.sprint_source).to contain_exactly(global_sharer)
         end
       end
 
@@ -143,7 +143,7 @@ RSpec.describe Projects::SprintSharing do
         let(:parent_sprint_sharing) { "share_subprojects" }
 
         it "returns only the closest sharing ancestor" do
-          expect(project.receive_sprints_from).to contain_exactly(parent_project)
+          expect(project.sprint_source).to contain_exactly(parent_project)
         end
       end
 
@@ -153,7 +153,7 @@ RSpec.describe Projects::SprintSharing do
         let(:parent_sprint_sharing) { "no_sharing" }
 
         it "returns an empty scope" do
-          expect(project.receive_sprints_from).to be_empty
+          expect(project.sprint_source).to be_empty
         end
       end
     end

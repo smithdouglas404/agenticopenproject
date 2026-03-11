@@ -30,7 +30,7 @@ RSpec.describe Projects::BacklogSettingsContract, type: :model do
 
     it do
       expect(subject)
-        .to validate_inclusion_of(:sprint_sharing).in_array(Project::SPRINT_SHARING_OPTIONS)
+        .to validate_inclusion_of(:sprint_sharing).in_array(Project::SPRINT_SHARING_MODES)
     end
 
     # This spec of explicitly setting sprint_sharing to empty is required because the

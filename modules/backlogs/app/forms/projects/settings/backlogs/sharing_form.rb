@@ -47,7 +47,7 @@ module Projects
             name: :sprint_sharing,
             label: I18n.t("projects.settings.backlog_sharing.sprint_sharing")
           ) do |group|
-            Project::SPRINT_SHARING_OPTIONS.each do |option|
+            Project::SPRINT_SHARING_MODES.each do |option|
               group.radio_button(
                 label: sharing_option_text(option, :label),
                 value: option,
