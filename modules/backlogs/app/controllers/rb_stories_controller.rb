@@ -39,89 +39,40 @@ class RbStoriesController < RbApplicationController
   before_action :load_project, :load_sprint, :load_story, only: NEW_SPRINT_ACTIONS
 
   # Move a story from a Sprint to another Sprint or an Agile::Sprint.
-  def move_legacy # rubocop:disable Metrics/AbcSize
-    move_attributes = infer_attributes_from_target
-
+  def move_legacy
     # The update service reloads the story internally (via #move_after),
     # so we memoize the previous version_id before the call.
     version_id_was = @story.version_id
 
-    call = Stories::UpdateService
-      .new(user: current_user, story: @story)
-      .call(
-        attributes: move_attributes,
-        position: move_params[:position].to_i
-      )
-
-    unless call.success?
-      render_error_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      )
+    move_attributes = infer_attributes_from_target
+    unless move_story(move_attributes)
       return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
-    replace_backlog_component_via_turbo_stream(sprint: @sprint)
-
     if target_sprint?(move_attributes)
-      new_sprint = @story.sprint.becomes(Agile::Sprint)
-
-      render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
-      )
-
-      replace_sprint_component_via_turbo_stream(sprint: new_sprint)
+      moved_to_sprint
     elsif target_version?(move_attributes) && @story.version_id != version_id_was
-      new_sprint = @story.version.becomes(Sprint)
-
-      render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
-      )
-      replace_backlog_component_via_turbo_stream(sprint: new_sprint)
+      moved_to_version
     end
 
     respond_with_turbo_streams
   end
 
   # Move a story from an Agile::Sprint to another Agile::Sprint or a Sprint.
-  def move # rubocop:disable Metrics/AbcSize
-    move_attributes = infer_attributes_from_target
-
+  def move
     # The update service reloads the story internally (via #move_after),
     # so we memoize the previous sprint_id before the call.
     sprint_id_was = @story.sprint_id
 
-    call = Stories::UpdateService
-             .new(user: current_user, story: @story)
-             .call(
-               attributes: move_attributes,
-               position: move_params[:position].to_i
-             )
-
-    unless call.success?
-      render_error_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      )
+    move_attributes = infer_attributes_from_target
+    unless move_story(move_attributes)
       return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
-    replace_sprint_component_via_turbo_stream(sprint: @sprint)
-
     if target_version?(move_attributes)
-      new_sprint = @story.version.becomes(Sprint)
-
-      render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
-      )
-
-      replace_backlog_component_via_turbo_stream(sprint: new_sprint)
+      moved_to_version
     elsif target_sprint?(move_attributes) && @story.sprint_id != sprint_id_was
-      new_sprint = @story.sprint.becomes(Agile::Sprint)
-
-      render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
-      )
-
-      replace_sprint_component_via_turbo_stream(sprint: new_sprint)
+      moved_to_sprint
     end
 
     respond_with_turbo_streams
@@ -145,6 +96,54 @@ class RbStoriesController < RbApplicationController
   end
 
   private
+
+  def move_story(move_attributes)
+    call = update_story_with_target_and_position(attributes: move_attributes)
+
+    unless call.success?
+      render_error_flash_message_via_turbo_stream(
+        message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+      )
+      return false
+    end
+
+    # Update source component so that the moved story disappears
+    replace_typed_component_via_turbo_stream(sprint: @sprint)
+  end
+
+  def update_story_with_target_and_position(attributes:)
+    Stories::UpdateService
+      .new(user: current_user, story: @story)
+      .call(
+        attributes:,
+        position: move_params[:position].to_i
+      )
+  end
+
+  def replace_typed_component_via_turbo_stream(sprint:)
+    if sprint.is_a?(Agile::Sprint)
+      replace_sprint_component_via_turbo_stream(sprint:)
+    else
+      replace_backlog_component_via_turbo_stream(sprint:)
+    end
+  end
+
+  def moved_to_version
+    moved_to(new_sprint: @story.version.becomes(Sprint))
+  end
+
+  def moved_to_sprint
+    moved_to(new_sprint: @story.sprint.becomes(Agile::Sprint))
+  end
+
+  def moved_to(new_sprint:)
+    render_success_flash_message_via_turbo_stream(
+      message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
+    )
+
+    # Update the target component so that the moved story shows up
+    replace_typed_component_via_turbo_stream(sprint: new_sprint)
+  end
 
   def infer_attributes_from_target
     target_type, target_id = move_params[:target_id].split(":")
