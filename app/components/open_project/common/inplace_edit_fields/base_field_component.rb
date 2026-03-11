@@ -47,6 +47,20 @@ module OpenProject
           @system_arguments = system_arguments
         end
 
+        def comment_field_if_enabled(form)
+          return unless show_comment_field?
+
+          form.text_area(name: "#{model.class.model_name.param_key}[custom_comments][#{custom_field.id}]",
+                         scope_name_to_model: false,
+                         label: I18n.t("attributes.comment"),
+                         value: model.custom_comment_for(custom_field)&.text,
+                         rows: 5)
+        end
+
+        def show_comment_field?
+          custom_field? && custom_field&.has_comment?
+        end
+
         def custom_field?
           attribute.to_s.start_with?("custom_field_")
         end

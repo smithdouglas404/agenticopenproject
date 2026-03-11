@@ -56,6 +56,8 @@ module OpenProject
                               },
                               **@system_arguments)
 
+          comment_field_if_enabled(form)
+
           if show_action_buttons
             form.group(layout: :horizontal, justify_content: :flex_end) do |button_group|
               button_group.submit(name: :reset,

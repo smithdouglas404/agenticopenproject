@@ -125,7 +125,7 @@ module OpenProject
       end
 
       def open_in_dialog?
-        @open_in_dialog
+        @open_in_dialog || (custom_field? && custom_field&.has_comment?)
       end
 
       def dialog_edit_url

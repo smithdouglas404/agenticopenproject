@@ -34,9 +34,10 @@ module OpenProject
       class BooleanInputComponent < BaseFieldComponent
         def call
           form.check_box name: attribute,
-                         data: { controller: "inplace-edit",
-                                 action: "click->inplace-edit#submitForm" },
+                         **additional_arguments,
                          **@system_arguments
+
+          comment_field_if_enabled(form)
         end
 
         private
@@ -48,6 +49,15 @@ module OpenProject
             attribute:,
             system_arguments_json: @system_arguments.to_json
           )
+        end
+
+        def additional_arguments
+          if show_action_buttons
+            {
+              data: { controller: "inplace-edit",
+                      action: "click->inplace-edit#submitForm" }
+            }
+          end
         end
       end
     end

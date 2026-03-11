@@ -60,7 +60,9 @@ module OpenProject
             render_autocompleter
           end
 
-          if @show_action_buttons
+          comment_field_if_enabled(form)
+
+          if show_action_buttons
             form.group(layout: :horizontal, justify_content: :flex_end) do |button_group|
               button_group.submit(name: :reset,
                                   type: :submit,

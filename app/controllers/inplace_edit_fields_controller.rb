@@ -118,15 +118,26 @@ class InplaceEditFieldsController < ApplicationController
 
   def permitted_params
     if custom_field_via_fields_for?
-      transform_custom_field_values_params
+      transform_custom_field_values_params.merge(custom_comments_params)
     else
-      params.expect(@model.model_name.param_key => [@attribute])
+      params.expect(@model.model_name.param_key => [@attribute]).merge(custom_comments_params)
     end
   end
 
   def custom_field_via_fields_for?
     @attribute.to_s.start_with?("custom_field_") &&
       params[@model.model_name.param_key]&.key?(:custom_field_values)
+  end
+
+  def custom_comments_params
+    return {} unless @attribute.to_s.start_with?("custom_field_")
+
+    custom_field_id = @attribute.to_s.delete_prefix("custom_field_")
+    raw_comment = params.dig(@model.model_name.param_key, :custom_comments, custom_field_id)
+
+    return {} if raw_comment.nil?
+
+    { custom_comments: { custom_field_id => raw_comment } }
   end
 
   def transform_custom_field_values_params

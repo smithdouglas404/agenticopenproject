@@ -35,10 +35,10 @@ module OpenProject
         def call
           form.text_field name: attribute,
                           autofocus: true,
-                          data: { controller: "inplace-edit",
-                                  inplace_edit_url_value: reset_url,
-                                  action: "keydown.esc->inplace-edit#request" },
+                          **additional_arguments,
                           **@system_arguments
+
+          comment_field_if_enabled(form)
         end
 
         private
@@ -50,6 +50,16 @@ module OpenProject
             attribute:,
             system_arguments_json: @system_arguments.to_json
           )
+        end
+
+        def additional_arguments
+          if show_action_buttons
+            {
+              data: { controller: "inplace-edit",
+                      inplace_edit_url_value: reset_url,
+                      action: "keydown.esc->inplace-edit#request" }
+            }
+          end
         end
       end
     end

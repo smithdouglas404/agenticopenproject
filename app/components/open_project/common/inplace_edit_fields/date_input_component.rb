@@ -39,10 +39,22 @@ module OpenProject
 
         def call
           form.text_field name: attribute,
-                          data: { controller: "inplace-edit",
-                                  inplace_edit_url_value: reset_url,
-                                  action: "keydown.esc->inplace-edit#request change->inplace-edit#submitForm" },
+                          **additional_arguments,
                           **@system_arguments
+
+          comment_field_if_enabled(form)
+        end
+
+        private
+
+        def additional_arguments
+          if show_action_buttons
+            {
+              data: { controller: "inplace-edit",
+                      inplace_edit_url_value: reset_url,
+                      action: "keydown.esc->inplace-edit#request change->inplace-edit#submitForm" }
+            }
+          end
         end
       end
     end
