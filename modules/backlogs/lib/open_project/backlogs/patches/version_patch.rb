@@ -42,7 +42,7 @@ module OpenProject::Backlogs::Patches::VersionPatch
 
       settings = version_settings&.where(project:)&.first
 
-      settings&.display_right?
+      !!settings&.display_right?
     end
 
     def rebuild_story_positions(project = self.project)
