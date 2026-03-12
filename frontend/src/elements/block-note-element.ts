@@ -152,7 +152,6 @@ class BlockNoteElement extends HTMLElement {
           attachmentsCollectionKey: this.getAttribute('attachments-collection-key') ?? '',
           hocuspocusProvider: hocuspocusProvider,
           hasCachedDocument: hasCachedDocument,
-          errorContainer: this.errorContainer,
         }
       )
     );

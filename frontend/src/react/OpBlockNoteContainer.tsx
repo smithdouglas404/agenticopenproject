@@ -34,7 +34,6 @@ import { useEffect, useRef } from 'react';
 import * as Y from 'yjs';
 import { DocumentLoadingSkeleton } from './components/DocumentLoadingSkeleton';
 import { OpBlockNoteEditor } from './components/OpBlockNoteEditor';
-import { fetchConnectionTemplate } from './helpers/connection-template-fetcher';
 import { useCollaboration } from './hooks/useCollaboration';
 
 export interface OpBlockNoteContainerProps {
@@ -45,7 +44,6 @@ export interface OpBlockNoteContainerProps {
   attachmentsCollectionKey:string;
   hocuspocusProvider:HocuspocusProvider;
   hasCachedDocument?:boolean;
-  errorContainer?:HTMLElement;
 }
 
 export default function OpBlockNoteContainer({
@@ -56,31 +54,34 @@ export default function OpBlockNoteContainer({
   attachmentsCollectionKey,
   hocuspocusProvider,
   hasCachedDocument = false,
-  errorContainer,
 }:OpBlockNoteContainerProps) {
   const doc:Y.Doc = hocuspocusProvider.document;
   const { isLoading, offlineMode, blockingOffline } = useCollaboration(hocuspocusProvider, hasCachedDocument);
   const hadErrorRef = useRef(false);
 
-  // Fetch error/recovery template based on connection state
+  // Dispatch connection status events
   useEffect(() => {
-    if (!errorContainer) return;
-
     if (offlineMode) {
       hadErrorRef.current = true;
-      void fetchConnectionTemplate('error', errorContainer, { blocking: blockingOffline });
+
+      window.dispatchEvent(
+        new CustomEvent('documents:connection-error', {
+          detail: { blocking: blockingOffline },
+        }),
+      );
     } else if (hadErrorRef.current) {
-      // Only fetch recovery if we previously had an error (avoid fetching on initial render)
-      void fetchConnectionTemplate('recovery', errorContainer);
+      window.dispatchEvent(
+        new CustomEvent('documents:connection-recovery'),
+      );
     }
-  }, [offlineMode, errorContainer]);
+  }, [offlineMode, blockingOffline]);
 
   if (isLoading) {
     return <DocumentLoadingSkeleton />;
   }
 
   // When offline with no local cache, show only the error banner (rendered via
-  // errorContainer) and hide the editor entirely. A fresh empty Y.Doc must not be
+  // ConnectionStatusController) and hide the editor entirely. A fresh empty Y.Doc must not be
   // editable — it would be synced as authoritative server state on reconnect,
   // overwriting real document content.
   if (blockingOffline) {
