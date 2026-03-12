@@ -41,7 +41,7 @@ module Projects
       name = params[:name].to_s.strip
       return render json: {}, status: :unprocessable_entity if name.blank?
 
-      identifier = WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator.suggest_for_name(name)
+      identifier = Project.suggest_identifier(name)
       render json: { identifier: }
     end
   end

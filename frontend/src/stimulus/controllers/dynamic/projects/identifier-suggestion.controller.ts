@@ -63,8 +63,10 @@ export default class extends Controller {
     this.identifierInput.addEventListener('input', this.handleInput);
 
     if (this.urlValue) {
-      this.identifierInput.placeholder = I18n.t('js.projects.identifier_suggestion.set_name_first');
-      this.identifierInput.readOnly = true;
+      if (!this.identifierInput.value) {
+        this.identifierInput.placeholder = I18n.t('js.projects.identifier_suggestion.set_name_first');
+        this.identifierInput.readOnly = true;
+      }
 
       this.debouncedSuggest = debounce(
         (name:string) => this.fetchSuggestion(name),

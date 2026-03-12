@@ -284,6 +284,14 @@ class Project < ApplicationRecord
     OpenProject::FeatureDecisions.semantic_work_package_ids_active? && Setting::WorkPackageIdentifier.alphanumeric?
   end
 
+  def self.suggest_identifier(name)
+    if semantic_alphanumeric_identifier?
+      WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator.suggest_for_name(name)
+    else
+      name.to_url.first(IDENTIFIER_MAX_LENGTH).presence || "project"
+    end
+  end
+
   def self.selectable_projects
     Project.visible.select { |p| User.current.member_of? p }.sort_by(&:to_s)
   end

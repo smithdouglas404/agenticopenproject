@@ -45,16 +45,13 @@ module Projects
     end
 
     def identifier_suggestion_data
+      flag_active = OpenProject::FeatureDecisions.semantic_work_package_ids_active?
       data = {
         controller: "projects--identifier-suggestion",
-        "projects--identifier-suggestion-mode-value": semantic_identifier? ? "semantic" : "legacy"
+        "projects--identifier-suggestion-mode-value": Project.semantic_alphanumeric_identifier? ? "semantic" : "legacy"
       }
-      data[:"projects--identifier-suggestion-url-value"] = projects_identifier_suggestion_path if semantic_identifier?
+      data[:"projects--identifier-suggestion-url-value"] = projects_identifier_suggestion_path if flag_active
       data
-    end
-
-    def semantic_identifier?
-      Project.semantic_alphanumeric_identifier?
     end
 
     def workspaces_path
