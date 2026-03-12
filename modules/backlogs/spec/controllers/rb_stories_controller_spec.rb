@@ -37,9 +37,9 @@ RSpec.describe RbStoriesController do
   current_user { user }
 
   let(:project) { create(:project) }
-  let(:status)  { create(:status, name: "status 1", is_default: true) }
-  let(:sprint)  { create(:sprint, project:) }
-  let(:story)   { create(:story, status:, version: sprint, project:) }
+  let(:status) { create(:status, name: "status 1", is_default: true) }
+  let(:version_sprint) { create(:sprint, project:) }
+  let(:story) { create(:story, status:, version: version_sprint, project:) }
 
   before do
     allow(Setting)
@@ -49,27 +49,27 @@ RSpec.describe RbStoriesController do
 
   describe "PUT #move_legacy" do
     context "with a version from the same project" do
-      let(:other_sprint) { create(:sprint, name: "Sprint 2", project:) }
+      let(:other_version_sprint) { create(:sprint, name: "Sprint 2", project:) }
 
       it "responds with success", :aggregate_failures do
         put :move_legacy, params: {
                             project_id: project.id,
-                            sprint_id: sprint.id,
+                            sprint_id: version_sprint.id,
                             id: story.id,
-                            target_id: "version:#{other_sprint.id}",
+                            target_id: "version:#{other_version_sprint.id}",
                             position: 1
                           },
                           format: :turbo_stream
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{other_sprint.id}"
-        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{sprint.id}"][method="morph"])
-        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{other_sprint.id}"][method="morph"])
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{version_sprint.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{other_version_sprint.id}"
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{version_sprint.id}"][method="morph"])
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{other_version_sprint.id}"][method="morph"]) # rubocop:disable Layout/LineLength
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(assigns(:project)).to eq(project)
-        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:sprint)).to eq(version_sprint)
         expect(assigns(:story)).to eq(story)
         expect(assigns(:backlog)).to be_a(Backlog)
       end
@@ -77,35 +77,35 @@ RSpec.describe RbStoriesController do
 
     context "with a version from another project" do
       let(:other_project) { create(:project) }
-      let(:other_sprint) { create(:sprint, name: "Sprint 2", project: other_project, sharing: "system") }
-      let(:story) { create(:story, status:, version: other_sprint, project:) }
+      let(:other_version_sprint) { create(:sprint, name: "Sprint 2", project: other_project, sharing: "system") }
+      let(:story) { create(:story, status:, version: other_version_sprint, project:) }
 
       it "responds with success", :aggregate_failures do
         put :move_legacy, params: {
                             project_id: project.id,
-                            sprint_id: other_sprint.id,
+                            sprint_id: other_version_sprint.id,
                             id: story.id,
-                            target_id: "version:#{sprint.id}",
+                            target_id: "version:#{version_sprint.id}",
                             position: 1
                           },
                           format: :turbo_stream
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{other_sprint.id}"
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
-        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{other_sprint.id}"][method="morph"])
-        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{sprint.id}"][method="morph"])
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{other_version_sprint.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{version_sprint.id}"
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{other_version_sprint.id}"][method="morph"]) # rubocop:disable Layout/LineLength
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{version_sprint.id}"][method="morph"])
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(assigns(:project)).to eq(project)
-        expect(assigns(:sprint)).to eq(other_sprint)
+        expect(assigns(:sprint)).to eq(other_version_sprint)
         expect(assigns(:story)).to eq(story)
         expect(assigns(:backlog)).to be_a(Backlog)
       end
     end
 
     context "when service call fails" do
-      let(:other_sprint) { create(:sprint, name: "Sprint 2", project:) }
+      let(:other_version_sprint) { create(:sprint, name: "Sprint 2", project:) }
       let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
 
       before do
@@ -119,31 +119,31 @@ RSpec.describe RbStoriesController do
       it "renders an error flash with 422", :aggregate_failures do
         put :move_legacy, params: {
                             project_id: project.id,
-                            sprint_id: sprint.id,
+                            sprint_id: version_sprint.id,
                             id: story.id,
-                            target_id: "version:#{other_sprint.id}",
+                            target_id: "version:#{other_version_sprint.id}",
                             position: 1
                           },
                           format: :turbo_stream
 
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
-        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{version_sprint.id}"
       end
     end
   end
 
   describe "POST #reorder" do
     it "responds with success", :aggregate_failures do
-      post :reorder, params: { project_id: project.id, sprint_id: sprint.id, id: story.id, direction: "highest" },
+      post :reorder, params: { project_id: project.id, sprint_id: version_sprint.id, id: story.id, direction: "highest" },
                      format: :turbo_stream
 
       expect(response).to be_successful
       expect(response).to have_http_status :ok
-      expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
-      assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{sprint.id}"][method="morph"])
+      expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{version_sprint.id}"
+      assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{version_sprint.id}"][method="morph"])
       expect(assigns(:project)).to eq(project)
-      expect(assigns(:sprint)).to eq(sprint)
+      expect(assigns(:sprint)).to eq(version_sprint)
       expect(assigns(:story)).to eq(story)
       expect(assigns(:backlog)).to be_a(Backlog)
     end
@@ -160,12 +160,12 @@ RSpec.describe RbStoriesController do
       end
 
       it "renders an error flash with 422", :aggregate_failures do
-        post :reorder, params: { project_id: project.id, sprint_id: sprint.id, id: story.id, direction: "highest" },
+        post :reorder, params: { project_id: project.id, sprint_id: version_sprint.id, id: story.id, direction: "highest" },
                        format: :turbo_stream
 
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
-        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{version_sprint.id}"
       end
     end
   end
