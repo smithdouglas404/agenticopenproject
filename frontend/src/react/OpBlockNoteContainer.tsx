@@ -34,7 +34,6 @@ import { useEffect, useRef } from 'react';
 import * as Y from 'yjs';
 import { DocumentLoadingSkeleton } from './components/DocumentLoadingSkeleton';
 import { OpBlockNoteEditor } from './components/OpBlockNoteEditor';
-import { fetchConnectionTemplate } from './helpers/connection-template-fetcher';
 import { useCollaboration } from './hooks/useCollaboration';
 
 export interface OpBlockNoteContainerProps {
@@ -44,7 +43,6 @@ export interface OpBlockNoteContainerProps {
   attachmentsUploadUrl:string;
   attachmentsCollectionKey:string;
   hocuspocusProvider:HocuspocusProvider;
-  errorContainer?:HTMLElement;
 }
 
 export default function OpBlockNoteContainer({
@@ -54,24 +52,19 @@ export default function OpBlockNoteContainer({
   attachmentsUploadUrl,
   attachmentsCollectionKey,
   hocuspocusProvider,
-  errorContainer,
 }:OpBlockNoteContainerProps) {
   const doc:Y.Doc = hocuspocusProvider.document;
   const { isLoading, offlineMode } = useCollaboration(hocuspocusProvider);
   const hadErrorRef = useRef(false);
 
-  // Fetch error/recovery template based on connection state
   useEffect(() => {
-    if (!errorContainer) return;
-
     if (offlineMode) {
       hadErrorRef.current = true;
-      void fetchConnectionTemplate('error', errorContainer, { blocking: true });
+      window.dispatchEvent(new CustomEvent('documents:connection-error'));
     } else if (hadErrorRef.current) {
-      // Only fetch recovery if we previously had an error (avoid fetching on initial render)
-      void fetchConnectionTemplate('recovery', errorContainer);
+      window.dispatchEvent(new CustomEvent('documents:connection-recovery'));
     }
-  }, [offlineMode, errorContainer]);
+  }, [offlineMode]);
 
   if (isLoading) {
     return <DocumentLoadingSkeleton />;

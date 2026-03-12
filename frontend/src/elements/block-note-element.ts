@@ -42,7 +42,6 @@ import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
 class BlockNoteElement extends HTMLElement {
   private stimulusRoot:HTMLDivElement;
   private editorMount:HTMLDivElement;
-  private errorContainer:HTMLDivElement;
   private reactRoot:Root|null = null;
   private stimulusApp:Application|null = null;
   private renderCallback:((provider:HocuspocusProvider) => void) | null = null;
@@ -65,15 +64,16 @@ class BlockNoteElement extends HTMLElement {
       this.stimulusRoot.appendChild(blankLinkDesc.cloneNode(true));
     }
 
-    // Container for connection error/recovery messages (rendered by React via fetchConnectionTemplate)
-    this.errorContainer = document.createElement('div');
-    this.errorContainer.id = 'documents-show-edit-view-connection-error-notice-component';
-    this.errorContainer.dataset.controller = 'flash';
-    this.errorContainer.dataset.flashAutohideValue = 'true';
+    // Container for connection error/recovery messages — managed by Stimulus FlashController
+    // which listens for documents:connection-error / documents:connection-recovery events
+    const errorContainer = document.createElement('div');
+    errorContainer.id = 'documents-show-edit-view-connection-error-notice-component';
+    errorContainer.dataset.controller = 'flash';
+    errorContainer.dataset.flashAutohideValue = 'true';
 
     this.editorMount = document.createElement('div');
 
-    this.stimulusRoot.appendChild(this.errorContainer);
+    this.stimulusRoot.appendChild(errorContainer);
     this.stimulusRoot.appendChild(this.editorMount);
     shadowRoot.appendChild(this.stimulusRoot);
 
@@ -145,7 +145,6 @@ class BlockNoteElement extends HTMLElement {
           attachmentsUploadUrl: this.getAttribute('attachments-upload-url') ?? '',
           attachmentsCollectionKey: this.getAttribute('attachments-collection-key') ?? '',
           hocuspocusProvider,
-          errorContainer: this.errorContainer,
         }
       )
     );
