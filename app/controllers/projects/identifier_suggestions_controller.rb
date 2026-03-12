@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,45 +26,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
 module Projects
-  class NewComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
+  class IdentifierSuggestionsController < ApplicationController
+    before_action :require_login
+    no_authorization_required! :show
 
-    options :project, :template, :step
+    def show
+      unless OpenProject::FeatureDecisions.semantic_work_package_ids_active?
+        render json: {}, status: :not_found and return
+      end
 
-    def step_2_display
-      { display: :none } unless step == 2
-    end
-
-    def step_3_display
-      { display: :none } unless step == 3
-    end
-
-    def identifier_suggestion_data
-      data = {
-        controller: "projects--identifier-suggestion",
-        "projects--identifier-suggestion-mode-value": semantic_identifier? ? "semantic" : "legacy"
-      }
-      data[:"projects--identifier-suggestion-url-value"] = projects_identifier_suggestion_path if semantic_identifier?
-      data
-    end
-
-    def semantic_identifier?
-      OpenProject::FeatureDecisions.semantic_work_package_ids_active?
-    end
-
-    def workspaces_path
-      workspace_type = if Project.workspace_types.key?(project.workspace_type)
-                         project.workspace_type
-                       else
-                         "project"
-                       end
-
-      url_for(workspace_type.pluralize.to_sym)
+      identifier = WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator.suggest_for_name(params[:name])
+      render json: { identifier: }
     end
   end
 end

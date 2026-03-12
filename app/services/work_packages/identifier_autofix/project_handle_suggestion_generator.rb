@@ -54,6 +54,14 @@ module WorkPackages
         new.call(projects, reserved_handles:, in_use_handles:)
       end
 
+      def self.suggest_for_name(name)
+        new.suggest_for_name(name)
+      end
+
+      def suggest_for_name(name)
+        handle_from_name(name)
+      end
+
       def call(projects, reserved_handles:, in_use_handles:)
         generate_suggestions(projects, reserved_handles:, in_use_handles:)
       end

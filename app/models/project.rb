@@ -47,7 +47,7 @@ class Project < ApplicationRecord
   IDENTIFIER_MAX_LENGTH = 100
 
   # reserved identifiers
-  RESERVED_IDENTIFIERS = %w[new menu queries filters].freeze
+  RESERVED_IDENTIFIERS = %w[new menu queries filters identifier_suggestion].freeze
 
   enum :workspace_type, {
     project: "project",
