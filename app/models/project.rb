@@ -221,7 +221,10 @@ class Project < ApplicationRecord
   validates :identifier,
             format: { with: /\A[A-Z][A-Z0-9_]*\z/, message: :no_special_characters },
             length: { maximum: SEMANTIC_IDENTIFIER_MAX_LENGTH },
-            if: ->(p) { p.identifier_changed? && p.identifier.present? && Project.semantic_alphanumeric_identifier? && p.identifier.match?(/\A[A-Z]/) }
+            if: ->(p) {
+              p.identifier_changed? && p.identifier.present? && Project.semantic_alphanumeric_identifier? &&
+                          p.identifier.match?(/\A[A-Z]/)
+            }
 
   validates_associated :repository, :wiki
 
