@@ -176,6 +176,11 @@ class RbSprintsController < RbApplicationController
     load_project
   end
 
+  def load_project
+    @project = Project.visible.find(params[:project_id])
+    redirect_if_historical_project_identifier(:project_id)
+  end
+
   def sprint_params
     params.expect(sprint: %i[name start_date effective_date])
   end
