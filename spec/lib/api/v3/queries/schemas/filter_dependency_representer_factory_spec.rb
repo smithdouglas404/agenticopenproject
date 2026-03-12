@@ -79,6 +79,14 @@ RSpec.describe API::V3::Queries::Schemas::FilterDependencyRepresenterFactory do
       end
     end
 
+    context "with epic filter" do
+      let(:filter) { Queries::WorkPackages::Filter::EpicFilter.create! }
+
+      it "is the by work package dependency" do
+        expect(subject).to be_a(API::V3::Queries::Schemas::EpicFilterDependencyRepresenter)
+      end
+    end
+
     context "created_at filter" do
       let(:filter) { Queries::WorkPackages::Filter::CreatedAtFilter.create! }
 

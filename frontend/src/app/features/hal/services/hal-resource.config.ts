@@ -72,6 +72,7 @@ const halResourceDefaultConfig:Record<string, HalResourceFactoryConfigInterface>
     cls: WorkPackageResource,
     attrTypes: {
       parent: 'WorkPackage',
+      epic: 'WorkPackage',
       ancestors: 'WorkPackage',
       children: 'WorkPackage',
       relations: 'Relation',

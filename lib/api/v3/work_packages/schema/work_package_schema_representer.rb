@@ -114,15 +114,7 @@ module API
           schema :subject,
                  type: "String",
                  min_length: 1,
-                 max_length: 255,
-                 has_default: -> {
-                   represented.type&.replacement_pattern_defined_for?(:subject)
-                 },
-                 placeholder: -> {
-                   if represented.type&.replacement_pattern_defined_for?(:subject)
-                     I18n.t("placeholders.templated_hint", type: represented.type.name)
-                   end
-                 }
+                 max_length: 255
 
           schema :description,
                  type: "Formattable",
@@ -261,6 +253,17 @@ module API
                                      end
                                    }
 
+          schema_with_allowed_link :epic,
+                                   type: "WorkPackage",
+                                   required: false,
+                                   writable: true,
+                                   href_callback: ->(*) {
+                                     work_package = represented.work_package
+                                     if work_package&.persisted?
+                                       api_v3_paths.work_package_available_relation_candidates(represented.id, type: :epic)
+                                     end
+                                   }
+
           schema_with_allowed_link :assignee,
                                    type: "User",
                                    required: false,
@@ -395,6 +398,7 @@ module API
           def form_config_attribute_cache_key(group)
             ["wp_schema_attribute_group",
              group.key,
+             group.attributes,
              I18n.locale,
              represented.project,
              represented.type,

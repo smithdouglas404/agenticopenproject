@@ -596,11 +596,49 @@ module API
                                               expected_version: "3",
                                               expected_namespace: "work_packages"
 
-                                  WorkPackage.visible.find_by(id:) ||
+                                  WorkPackage.find_by(id:) ||
                                     ::WorkPackage::InexistentWorkPackage.new(id:)
                                 end
 
                               represented.parent = new_parent
+                            end
+
+        associated_resource :epic,
+                            v3_path: :work_package,
+                            representer: ::API::V3::WorkPackages::WorkPackageRepresenter,
+                            skip_render: ->(*) { represented.epic && !represented.epic.visible? },
+                            link_title_attribute: :subject,
+                            uncacheable_link: true,
+                            link: ->(*) {
+                              if represented.epic&.visible?
+                                {
+                                  href: api_v3_paths.work_package(represented.epic.id),
+                                  title: represented.epic.subject
+                                }
+                              else
+                                {
+                                  href: nil
+                                }
+                              end
+                            },
+                            setter: ->(fragment:, **) do
+                              next if fragment.empty?
+
+                              href = fragment["href"]
+
+                              new_epic =
+                                if href
+                                  id = ::API::Utilities::ResourceLinkParser
+                                    .parse_id href,
+                                              property: "epic",
+                                              expected_version: "3",
+                                              expected_namespace: "work_packages"
+
+                                  WorkPackage.find_by(id:) ||
+                                    ::WorkPackage::InexistentWorkPackage.new(id:)
+                                end
+
+                              represented.epic = new_epic
                             end
 
         associated_resource :budget,
@@ -657,8 +695,7 @@ module API
           @current_user_update_allowed =
             current_user.allowed_in_work_package?(:edit_work_packages, represented) ||
               current_user.allowed_in_project?(:change_work_package_status, represented.project) ||
-              current_user.allowed_in_project?(:assign_versions, represented.project) ||
-              current_user.allowed_in_project?(:manage_sprint_items, represented.project)
+              current_user.allowed_in_project?(:assign_versions, represented.project)
         end
 
         def view_time_entries_allowed?
