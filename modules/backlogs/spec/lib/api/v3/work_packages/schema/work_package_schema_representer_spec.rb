@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,7 +26,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
 require "spec_helper"
 
@@ -75,7 +77,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter, with
       end
     end
 
-    context "not a story" do
+    context "when not a story" do
       before do
         allow(schema.type).to receive(:story?).and_return(false)
       end
