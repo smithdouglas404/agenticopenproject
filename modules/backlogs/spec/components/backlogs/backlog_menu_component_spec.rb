@@ -168,10 +168,13 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       let(:project) { create(:project, types: [type_feature, type_task], enabled_module_names: %w[backlogs wiki]) }
 
       it "shows Wiki item" do
+        expected_wiki_path = Rails.application.routes.url_helpers.backlogs_project_sprint_wiki_path(project, sprint)
         render_component
 
         expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.wiki"))
         expect(page).to have_octicon(:book)
+        expect(page).to have_link(I18n.t(:"backlogs.backlog_menu_component.action_menu.wiki"),
+                                  href: expected_wiki_path)
       end
     end
 
