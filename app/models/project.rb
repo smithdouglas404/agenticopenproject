@@ -45,6 +45,7 @@ class Project < ApplicationRecord
 
   # Maximum length for project identifiers
   IDENTIFIER_MAX_LENGTH = 100
+  SEMANTIC_IDENTIFIER_MAX_LENGTH = 10
 
   # reserved identifiers
   RESERVED_IDENTIFIERS = %w[new menu queries filters identifier_dialog].freeze
@@ -214,9 +215,13 @@ class Project < ApplicationRecord
 
   # When semantic work package IDs with alphanumeric mode are active, identifiers must follow JIRA-style key rules.
   validates :identifier,
-            format: { with: /\A[A-Z][A-Z0-9_]*\z/ },
-            length: { maximum: 10 },
+            format: { with: /\A[A-Z]/, message: :must_start_with_letter },
             if: ->(p) { p.identifier_changed? && p.identifier.present? && Project.semantic_alphanumeric_identifier? }
+
+  validates :identifier,
+            format: { with: /\A[A-Z][A-Z0-9_]*\z/, message: :no_special_characters },
+            length: { maximum: SEMANTIC_IDENTIFIER_MAX_LENGTH },
+            if: ->(p) { p.identifier_changed? && p.identifier.present? && Project.semantic_alphanumeric_identifier? && p.identifier.match?(/\A[A-Z]/) }
 
   validates_associated :repository, :wiki
 

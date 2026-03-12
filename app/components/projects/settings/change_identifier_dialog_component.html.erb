@@ -36,27 +36,11 @@ See COPYRIGHT and LICENSE files for more details.
       <%= t("projects.settings.change_identifier_warning") %>
     <% end %>
 
-    <%= form_with model: project,
-                  url: project_identifier_path(project),
-                  id: "change-identifier-form",
-                  class: "mt-3" do |f| %>
-      <% if Project.semantic_alphanumeric_identifier? %>
-        <%= f.text_field :identifier,
-                         class: "FormControl-input width-full",
-                         pattern: "[A-Z][A-Z0-9_]*",
-                         maxlength: 10,
-                         required: true,
-                         title: t(:text_project_identifier_handle_format) %>
-        <p class="note"><%= t("projects.settings.change_identifier_format_hint_semantic") %></p>
-      <% else %>
-        <%= f.text_field :identifier,
-                         class: "FormControl-input width-full",
-                         pattern: "[a-z][a-z0-9\\-_]*",
-                         maxlength: 100,
-                         required: true,
-                         title: t(:text_project_identifier_format) %>
-        <p class="note"><%= t("projects.settings.change_identifier_format_hint_legacy") %></p>
-      <% end %>
+    <%= settings_primer_form_with(model: project,
+                                  url: project_identifier_path(project),
+                                  id: "change-identifier-form",
+                                  class: "mt-4") do |f| %>
+      <%= render(Primer::Forms::FormList.new(Projects::Settings::EditableIdentifierForm.new(f))) %>
     <% end %>
   <% end %>
 

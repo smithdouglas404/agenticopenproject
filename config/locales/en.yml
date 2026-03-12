@@ -2022,6 +2022,9 @@ en:
               project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "still in use by work packages: %{types}"
+            identifier:
+              must_start_with_letter: "The first character has to be a letter."
+              no_special_characters: "Special characters not allowed."
             enabled_modules:
               dependency_missing: "The module '%{dependency}' needs to be enabled as well since the module '%{module}' depends on it."
               format: "%{message}"

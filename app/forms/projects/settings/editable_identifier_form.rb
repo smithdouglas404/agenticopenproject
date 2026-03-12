@@ -37,7 +37,7 @@ module Projects
             label: attribute_name(:identifier),
             caption: I18n.t("projects.settings.change_identifier_format_hint_semantic"),
             required: true,
-            maxlength: 10,
+            maxlength: Project::SEMANTIC_IDENTIFIER_MAX_LENGTH,
             validation_message: validation_message_for(:identifier)
           )
         else

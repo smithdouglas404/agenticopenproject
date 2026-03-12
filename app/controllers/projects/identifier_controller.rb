@@ -45,7 +45,10 @@ class Projects::IdentifierController < ApplicationController
     if service_call.success?
       flash[:notice] = I18n.t(:notice_successful_update)
       redirect_to project_settings_general_path(@project)
-    else
+    elsif OpenProject::FeatureDecisions.semantic_work_package_ids_active? # Handle error for the new modal
+      respond_with_dialog Projects::Settings::ChangeIdentifierDialogComponent.new(project: @project),
+                          status: :unprocessable_entity
+    else # Handle error for the legacy standalone identifier setting page
       render action: "show", status: :unprocessable_entity
     end
   end

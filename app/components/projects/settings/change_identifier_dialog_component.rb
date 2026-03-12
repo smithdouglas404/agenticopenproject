@@ -32,6 +32,7 @@ module Projects
   module Settings
     class ChangeIdentifierDialogComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
+      include OpPrimer::FormHelpers
       include OpTurbo::Streamable
 
       attr_reader :project
