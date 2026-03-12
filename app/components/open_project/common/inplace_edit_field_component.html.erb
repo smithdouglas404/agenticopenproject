@@ -4,7 +4,8 @@
       uniq_by: wrapper_uniq_by,
       data: {
         test_selector: wrapper_test_selector,
-        turbo_stream_target: wrapper_id
+        turbo_stream_target: wrapper_id,
+        inplace_edit_stable_key: wrapper_uniq_by
       }
     ) do %>
   <% if display_field_component.present? && !enforce_edit_mode %>

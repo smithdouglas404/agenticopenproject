@@ -110,6 +110,10 @@ module OpenProject
             }
           end
 
+          def render_calculation_error
+            # no-op — subclasses may override to render a calculation error row
+          end
+
           def input_specific_call
             render(Primer::BaseComponent.new(tag: :div, **display_field_arguments)) do
               render_display_value

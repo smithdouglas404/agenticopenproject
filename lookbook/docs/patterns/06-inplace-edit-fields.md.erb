@@ -240,6 +240,36 @@ class HierarchyListComponent < BaseFieldComponent
 end
 ```
 
+#### CalculatedValueInputComponent
+
+`CalculatedValueInputComponent` is a **display-only** field component used for calculated custom fields. Calculated fields derive their value from other fields via a formula — they cannot be edited directly.
+
+The component always passes `writable: false` to its parent `DisplayFieldComponent`, which prevents the Stimulus inplace-edit controller from being attached to the DOM element. It also renders a non-editable tooltip.
+
+When a calculation fails, the component renders an inline error beneath the value via the `render_calculation_error` hook.
+
+**Automatic refresh of calculated fields:**
+
+Calculated field values depend on other (non-calculated) fields. When a non-calculated field is saved, the controller automatically refreshes all calculated fields that depend on it:
+
+1. After a successful save, `InplaceEditFieldsController#refresh_calculated_dependents` calls `available_custom_fields.affected_calculated_fields([cf_id])` to find all direct and transitive dependents.
+2. For each dependent, a new `InplaceEditFieldComponent` is rendered with the updated value and any calculation errors.
+3. The rendered component is pushed as a Turbo Stream `replace` using a CSS selector (`targets:`), targeting every DOM element with a matching `data-inplace-edit-stable-key` attribute.
+
+The `stable_key` is a deterministic string derived from the model class, model ID, and attribute name (e.g. `project_42_custom_field_18`). Unlike the UUID-based `wrapper_key`, it is consistent across page loads and independent of dialog state, which makes CSS-selector targeting reliable even when the same field appears multiple times on the page.
+
+```
+Non-calculated field saved (POST /inplace_edit_fields/update)
+  └─ refresh_calculated_dependents
+       └─ affected_calculated_fields([cf_id])  →  [cf_18, cf_22]
+            └─ turbo-stream replace targets="[data-inplace-edit-stable-key='project_42_custom_field_18']"
+            └─ turbo-stream replace targets="[data-inplace-edit-stable-key='project_42_custom_field_22']"
+```
+
+**Presentation context preservation:**
+
+Calculated fields have no edit form, so their display settings (`truncated`, `open_in_dialog`) are not available in the DOM when a refresh is triggered. The controller inherits these settings from the `system_arguments_json` of the field being saved — valid because fields in the same container share the same presentation context.
+
 #### DisplayFieldComponents
 
 `DisplayFieldComponents` render the attribute value in read-only mode. They handle formatting and attach the Stimulus controller that triggers the switch to edit mode.

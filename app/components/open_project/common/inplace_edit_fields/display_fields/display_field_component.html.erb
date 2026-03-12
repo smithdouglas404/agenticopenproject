@@ -27,6 +27,10 @@
         )
       )
     end
+
+    if (error_html = render_calculation_error).present?
+      flex.with_row(w: :full) { error_html }
+    end
   end
 %>
 

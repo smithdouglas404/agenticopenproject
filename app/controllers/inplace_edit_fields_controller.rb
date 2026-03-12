@@ -62,6 +62,7 @@ class InplaceEditFieldsController < ApplicationController
         message: I18n.t(:notice_successful_update)
       )
       close_dialog_via_turbo_stream(dialog_id) if dialog_id
+      refresh_calculated_dependents
     end
 
     replace_via_turbo_stream(
@@ -125,13 +126,17 @@ class InplaceEditFieldsController < ApplicationController
     end
   end
 
+  def custom_field_attribute?
+    @attribute.to_s.start_with?("custom_field_")
+  end
+
   def custom_field_via_fields_for?
-    @attribute.to_s.start_with?("custom_field_") &&
+    custom_field_attribute? &&
       params[@model.model_name.param_key]&.key?(:custom_field_values)
   end
 
   def custom_comments_params
-    return {} unless @attribute.to_s.start_with?("custom_field_")
+    return {} unless custom_field_attribute?
 
     custom_field_id = @attribute.to_s.delete_prefix("custom_field_")
     raw_comment = params.dig(@model.model_name.param_key, :custom_comments, custom_field_id)
@@ -196,6 +201,42 @@ class InplaceEditFieldsController < ApplicationController
   def dialog_id
     wrapper_id = system_arguments.to_h["wrapper_id"]
     wrapper_id&.delete_prefix("#")
+  end
+
+  def refresh_calculated_dependents
+    return unless custom_field_attribute?
+    return unless @model.respond_to?(:available_custom_fields)
+
+    affected = affected_calculated_fields
+    return if affected.empty?
+
+    # Inherit presentation args from the submitted system_arguments.
+    # Fields in the same container share the same context (e.g. both truncated
+    # in the sidebar), so this preserves the correct display for dependents.
+    presentation_args = system_arguments.to_h.symbolize_keys.slice(:truncated, :open_in_dialog)
+    affected.each { |custom_field| turbo_streams << calculated_field_turbo_stream(custom_field, presentation_args) }
+  end
+
+  def affected_calculated_fields
+    cf_id = @attribute.to_s.delete_prefix("custom_field_").to_i
+    @model.available_custom_fields.affected_calculated_fields([cf_id])
+  end
+
+  def calculated_field_turbo_stream(custom_field, presentation_args)
+    attribute = custom_field.attribute_name.to_sym
+    comp = OpenProject::Common::InplaceEditFieldComponent.new(
+      model: @model,
+      attribute:,
+      update_registry:,
+      **presentation_args
+    )
+    stable_key = "#{@model.class.name.parameterize(separator: '_')}_#{@model.id}_#{attribute}"
+    comp.render_as_turbo_stream(
+      view_context:,
+      action: :replace,
+      target: nil,
+      targets: "[data-inplace-edit-stable-key='#{stable_key}']"
+    )
   end
 
   def update_registry
