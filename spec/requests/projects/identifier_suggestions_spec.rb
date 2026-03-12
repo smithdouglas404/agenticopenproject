@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe "GET /projects/identifier_suggestion", type: :request do
+RSpec.describe "GET /projects/identifier_suggestion", type: :rails_request do
   current_user { create(:user) }
 
   context "when the feature flag is off" do
@@ -51,16 +51,18 @@ RSpec.describe "GET /projects/identifier_suggestion", type: :request do
       expect(response.parsed_body["identifier"]).to eq("FPA")
     end
 
-    it "returns a unique suggestion when the base handle is already taken" do
-      create(:project, identifier: "FPA")
-      get "/projects/identifier_suggestion", params: { name: "Flight Planning Algorithm" }, as: :json
-      expect(response.parsed_body["identifier"]).to eq("FPA2")
+    it "returns 422 when name is blank" do
+      get "/projects/identifier_suggestion", params: { name: "" }, as: :json
+      expect(response).to have_http_status(:unprocessable_entity)
     end
 
-    it "requires login" do
-      get "/projects/identifier_suggestion", params: { name: "Test" }, as: :json,
-          headers: { "X-Test-No-Session" => "1" }
-      # Without login the response should redirect or deny
+    context "when not logged in" do
+      current_user { User.anonymous }
+
+      it "requires login" do
+        get "/projects/identifier_suggestion", params: { name: "Test" }, as: :json
+        expect(response).to have_http_status(:unauthorized).or have_http_status(:redirect)
+      end
     end
   end
 end

@@ -38,7 +38,10 @@ module Projects
         render json: {}, status: :not_found and return
       end
 
-      identifier = WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator.suggest_for_name(params[:name])
+      name = params[:name].to_s.strip
+      return render json: {}, status: :unprocessable_entity if name.blank?
+
+      identifier = WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator.suggest_for_name(name)
       render json: { identifier: }
     end
   end

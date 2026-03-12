@@ -54,7 +54,7 @@ module Projects
     end
 
     def semantic_identifier?
-      OpenProject::FeatureDecisions.semantic_work_package_ids_active?
+      Project.semantic_alphanumeric_identifier?
     end
 
     def workspaces_path

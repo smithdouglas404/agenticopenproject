@@ -81,6 +81,16 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator
     end
   end
 
+  describe ".suggest_for_name" do
+    it "returns an acronym derived from a multi-word name" do
+      expect(described_class.suggest_for_name("Flight Planning Algorithm")).to eq("FPA")
+    end
+
+    it "returns an uppercase prefix for a single-word name" do
+      expect(described_class.suggest_for_name("Banana")).to eq("BAN")
+    end
+  end
+
   describe "handle generation from project name" do
     {
       # Single-word names: first SINGLE_WORD_LENGTH (3) transliterated chars

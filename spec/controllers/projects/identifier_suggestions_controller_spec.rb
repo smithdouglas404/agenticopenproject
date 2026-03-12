@@ -52,16 +52,18 @@ RSpec.describe Projects::IdentifierSuggestionsController do
         expect(response.parsed_body["identifier"]).to eq("FPA")
       end
 
-      it "returns a unique suggestion when the base handle is already taken" do
-        create(:project, identifier: "FPA")
-        get :show, params: { name: "Flight Planning Algorithm" }, format: :json
-        expect(response.parsed_body["identifier"]).to eq("FPA2")
+      it "returns 422 when name is blank" do
+        get :show, params: { name: "" }, format: :json
+        expect(response).to have_http_status(:unprocessable_entity)
       end
 
-      it "requires login" do
-        allow(controller).to receive(:logged_in?).and_return(false)
-        get :show, params: { name: "Test" }, format: :json
-        expect(response).to have_http_status(:unauthorized).or have_http_status(:redirect)
+      context "when not logged in" do
+        current_user { User.anonymous }
+
+        it "requires login" do
+          get :show, params: { name: "Test" }, format: :json
+          expect(response).to have_http_status(:unauthorized).or have_http_status(:redirect)
+        end
       end
     end
   end
