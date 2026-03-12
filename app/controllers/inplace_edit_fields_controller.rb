@@ -61,6 +61,7 @@ class InplaceEditFieldsController < ApplicationController
       render_success_flash_message_via_turbo_stream(
         message: I18n.t(:notice_successful_update)
       )
+      close_dialog_via_turbo_stream(dialog_id) if dialog_id
     end
 
     replace_via_turbo_stream(
@@ -145,13 +146,19 @@ class InplaceEditFieldsController < ApplicationController
     custom_field_id = @attribute.to_s.delete_prefix("custom_field_")
 
     # Strong Parameters doesn't support dynamic keys in nested hashes
-    # So we extract the value directly from the raw params
-    raw_value = params.dig(model_key, :custom_field_values, custom_field_id)
+    # So we extract the value directly from the raw params.
+    # Two formats are supported:
+    #   - Array format: project[custom_field_values][] (used by FilterableTreeView / hierarchy fields)
+    #   - Hash format:  project[custom_field_values][{id}] (used by SelectList / legacy fields_for)
+    cf_values = params.dig(model_key, :custom_field_values)
+    raw_value = cf_values.is_a?(Array) ? cf_values : cf_values&.dig(custom_field_id)
 
     # Handle both single-select and multi-select
     processed_value = if raw_value.is_a?(Array)
-                        # Remove empty strings from the hidden field
-                        cleaned_values = raw_value.compact_blank
+                        # Remove empty strings from the hidden field, then extract the actual value.
+                        # FilterableTreeView encodes each selected item as a JSON payload
+                        # {"path":[...],"value":"<id>"} — extract only the "value" field.
+                        cleaned_values = raw_value.compact_blank.filter_map { |v| extract_tree_view_value(v) }
                         # For single-select, unwrap the array to get the single value
                         cleaned_values.size <= 1 ? cleaned_values.first : cleaned_values
                       else
@@ -161,14 +168,34 @@ class InplaceEditFieldsController < ApplicationController
     { @attribute => processed_value }
   end
 
+  def extract_tree_view_value(raw)
+    parsed = JSON.parse(raw)
+    parsed.is_a?(Hash) ? parsed["value"] : raw
+  rescue JSON::ParserError
+    raw
+  end
+
   def component(enforce_edit_mode: false)
+    args = system_arguments.to_h.symbolize_keys
+
+    # When saving from a dialog, restore the page component's id so the Turbo
+    # Stream replacement targets the correct wrapper on the page. Also strip
+    # dialog-specific arguments that must not bleed into the display component.
+    args[:id] = args.delete(:page_component_id) if args[:page_component_id]
+    args = args.except(:wrapper_id, :form_id)
+
     OpenProject::Common::InplaceEditFieldComponent.new(
       model: @model,
       attribute: @attribute,
       enforce_edit_mode:,
       update_registry:,
-      **system_arguments.to_h.symbolize_keys
+      **args
     )
+  end
+
+  def dialog_id
+    wrapper_id = system_arguments.to_h["wrapper_id"]
+    wrapper_id&.delete_prefix("#")
   end
 
   def update_registry

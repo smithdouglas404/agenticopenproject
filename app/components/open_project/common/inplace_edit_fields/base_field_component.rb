@@ -38,6 +38,10 @@ module OpenProject
           DisplayFields::DisplayFieldComponent
         end
 
+        def self.open_in_dialog?
+          false
+        end
+
         def initialize(form:, attribute:, model:, show_action_buttons: true, **system_arguments)
           super()
           @form = form

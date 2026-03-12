@@ -56,6 +56,7 @@ module OpenProject
         @system_arguments[:id] = system_arguments[:id] || SecureRandom.uuid
         @system_arguments[:required] ||= required?
         @system_arguments[:label] ||= field_label
+        @system_arguments[:truncated] = truncated
       end
 
       def field_class
@@ -125,7 +126,7 @@ module OpenProject
       end
 
       def open_in_dialog?
-        @open_in_dialog || (custom_field? && custom_field&.has_comment?)
+        @open_in_dialog || field_class.open_in_dialog? || (custom_field? && custom_field&.has_comment?)
       end
 
       def dialog_edit_url
@@ -135,7 +136,7 @@ module OpenProject
           model: model.class.name,
           id: model.id,
           attribute:,
-          system_arguments_json: @system_arguments.except(:id).to_json
+          system_arguments_json: @system_arguments.except(:id).merge(page_component_id: @system_arguments[:id]).to_json
         )
       end
 
