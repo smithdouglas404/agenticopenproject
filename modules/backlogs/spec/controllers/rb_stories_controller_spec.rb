@@ -47,19 +47,19 @@ RSpec.describe RbStoriesController do
       .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
   end
 
-  describe "PUT #move" do
+  describe "PUT #move_legacy" do
     context "with a version from the same project" do
       let(:other_sprint) { create(:sprint, name: "Sprint 2", project:) }
 
       it "responds with success", :aggregate_failures do
-        put :move, params: {
-                     project_id: project.id,
-                     sprint_id: sprint.id,
-                     id: story.id,
-                     target_id: other_sprint.id,
-                     position: 1
-                   },
-                   format: :turbo_stream
+        put :move_legacy, params: {
+                            project_id: project.id,
+                            sprint_id: sprint.id,
+                            id: story.id,
+                            target_id: "version:#{other_sprint.id}",
+                            position: 1
+                          },
+                          format: :turbo_stream
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
@@ -81,14 +81,14 @@ RSpec.describe RbStoriesController do
       let(:story) { create(:story, status:, version: other_sprint, project:) }
 
       it "responds with success", :aggregate_failures do
-        put :move, params: {
-                     project_id: project.id,
-                     sprint_id: other_sprint.id,
-                     id: story.id,
-                     target_id: sprint.id,
-                     position: 1
-                   },
-                   format: :turbo_stream
+        put :move_legacy, params: {
+                            project_id: project.id,
+                            sprint_id: other_sprint.id,
+                            id: story.id,
+                            target_id: "version:#{sprint.id}",
+                            position: 1
+                          },
+                          format: :turbo_stream
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
@@ -117,14 +117,14 @@ RSpec.describe RbStoriesController do
       end
 
       it "renders an error flash with 422", :aggregate_failures do
-        put :move, params: {
-                     project_id: project.id,
-                     sprint_id: sprint.id,
-                     id: story.id,
-                     target_id: other_sprint.id,
-                     position: 1
-                   },
-                   format: :turbo_stream
+        put :move_legacy, params: {
+                            project_id: project.id,
+                            sprint_id: sprint.id,
+                            id: story.id,
+                            target_id: "version:#{other_sprint.id}",
+                            position: 1
+                          },
+                          format: :turbo_stream
 
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
