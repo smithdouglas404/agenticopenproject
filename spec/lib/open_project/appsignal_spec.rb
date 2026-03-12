@@ -45,6 +45,11 @@ RSpec.describe OpenProject::Appsignal do
       expect(Appsignal).not_to have_received(:send_error)
     end
 
+    it "does nothing if the log context exception is not an Exception" do
+      described_class.exception_handler("message", exception: "not an exception")
+      expect(Appsignal).not_to have_received(:send_error)
+    end
+
     it "stores the exception in current appsignal transaction if one is available" do
       transaction = Appsignal::Transaction.create SecureRandom.uuid
       allow(transaction).to receive(:set_error)
