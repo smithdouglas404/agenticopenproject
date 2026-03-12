@@ -52,24 +52,32 @@ RSpec.describe "Projects", "editing settings", :js do
   end
 
   describe "identifier edit" do
-    before { with_flags(semantic_work_package_ids: true) }
-
-    it "updates the project identifier via dialog" do
-      visit project_settings_general_path(project)
-
+    it "updates the project identifier" do
+      visit projects_path
+      click_on project.name
+      click_on "Project settings"
       click_on "Change identifier"
 
-      expect(page).to have_dialog "Change project identifier"
+      expect(page).to have_content "Change the project's identifier".upcase
+      expect(page).to have_current_path "/projects/foo-project/identifier"
 
-      within "dialog" do
-        expect(page).to have_text "This will permanently change identifiers and URLs"
-        fill_in "project[identifier]", with: "foo-bar"
-        click_on "Change identifier"
-      end
+      fill_in "project[identifier]", with: "foo-bar"
+      click_on "Update"
 
       expect(page).to have_content "Successful update."
-      expect(page).to have_current_path %r{/projects/foo-bar/settings/general}
-      expect(project.reload.identifier).to eq "foo-bar"
+      expect(page)
+        .to have_current_path %r{/projects/foo-bar/settings/general}
+      expect(Project.first.identifier).to eq "foo-bar"
+    end
+
+    it "displays error messages on invalid input" do
+      visit project_identifier_path(project)
+
+      fill_in "project[identifier]", with: "FOOO"
+      click_on "Update"
+
+      expect(page).to have_content "Identifier is invalid."
+      expect(page).to have_current_path "/projects/foo-project/identifier"
     end
   end
 
