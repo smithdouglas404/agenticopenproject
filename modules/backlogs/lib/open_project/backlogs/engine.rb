@@ -169,7 +169,9 @@ module OpenProject::Backlogs
     extend_api_response(:v3, :work_packages, :work_package,
                         &::OpenProject::Backlogs::Patches::API::WorkPackageRepresenter.extension)
 
-    # TODO: check if this can be simply removed as it already gets its info by patching the WPRepresenter
+    # TODO: This should not be necessary as the WorkPackagePayloadRepresenter already inherits from
+    # the WorkPackageRepresenter. But removing this line makes tests fail. It appears that the
+    # patch on the WorkPackageRepresenter in GitHubIntegration is failing if this is removed.
     extend_api_response(:v3, :work_packages, :work_package_payload,
                         &::OpenProject::Backlogs::Patches::API::WorkPackageRepresenter.extension)
 
