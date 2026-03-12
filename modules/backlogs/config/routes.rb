@@ -42,7 +42,9 @@ Rails.application.routes.draw do
       end
 
       resources :stories, controller: :rb_stories, only: [] do
-        put :move
+        member do
+          put :move
+        end
       end
     end
   end

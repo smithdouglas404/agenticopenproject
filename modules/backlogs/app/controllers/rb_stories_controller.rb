@@ -191,7 +191,7 @@ class RbStoriesController < RbApplicationController
   end
 
   def load_story
-    @story = WorkPackage.visible.find(params[:story_id])
+    @story = WorkPackage.visible.find(params[:id])
   end
 
   def load_sprint
