@@ -18,6 +18,4 @@
 /out-tsc
 /generated_typings
 /src/app/features/plugins/linked/
-/src/app/features/plugins/linked-plugins.module.ts
-/src/app/features/plugins/linked-plugins.styles.sass
 /legacy/app/plugins/*
