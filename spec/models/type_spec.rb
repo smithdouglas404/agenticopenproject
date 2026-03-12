@@ -158,6 +158,24 @@ RSpec.describe Type do
         expect(subject).not_to have_key("ignore_non_working_days")
       end
     end
+
+    context "for reporter types" do
+      let(:type) { build(:type_task) }
+
+      it "returns reporter and hides accountable" do
+        expect(subject).to have_key("author")
+        expect(subject).not_to have_key("responsible")
+      end
+    end
+
+    context "for non-reporter types" do
+      let(:type) { build(:type, name: "Ticket") }
+
+      it "keeps accountable and does not expose reporter" do
+        expect(subject).to have_key("responsible")
+        expect(subject).not_to have_key("author")
+      end
+    end
   end
 
   describe "#patterns" do

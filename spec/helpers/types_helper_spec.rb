@@ -39,6 +39,20 @@ RSpec.describe TypesHelper do
       expect(helper.form_configuration_groups(type)[:inactives]).to be_an Array
     end
 
+    context "for reporter types" do
+      let(:type) { build(:type_task) }
+
+      it "shows reporter in people and does not list accountable as inactive" do
+        groups = helper.form_configuration_groups(type)
+        people_group = groups[:actives].find { |group| group[:key].to_s == "people" }
+
+        expect(people_group).to be_present
+        expect(people_group[:attributes].pluck(:key)).to include("author")
+        expect(people_group[:attributes].find { |attribute| attribute[:key] == "author" }[:translation]).to eq("Reporter")
+        expect(groups[:inactives].pluck(:key)).not_to include("responsible")
+      end
+    end
+
     describe ":inactives" do
       subject { helper.form_configuration_groups(type)[:inactives] }
 

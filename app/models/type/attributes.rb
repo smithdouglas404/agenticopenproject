@@ -180,10 +180,19 @@ module Type::Attributes
   ##
   # Get all applicable work package attributes
   def work_package_attributes(merge_date: true)
-    all_attributes = self.class.all_work_package_form_attributes(merge_date:)
+    available_attributes = self.class.all_work_package_form_attributes(merge_date:)
+    filtered_attributes = available_attributes.select { |key, _| passes_attribute_constraint? key }
 
-    # Reject those attributes that are not available for this type.
-    all_attributes.select { |key, _| passes_attribute_constraint? key }
+    return filtered_attributes unless respond_to?(:reporter_type?) && reporter_type?
+
+    filtered_attributes
+      .except("responsible")
+      .tap do |attributes|
+        # Author is required internally and therefore filtered from
+        # all_work_package_form_attributes. For reporter types we need it in
+        # form configuration instead of responsible.
+        attributes["author"] ||= available_attributes["author"] || { required: false, has_default: false }
+      end
   end
 
   ##

@@ -146,6 +146,10 @@ module Type::AttributeGroups
     super
   end
 
+  def reporter_type?
+    REPORTER_TYPE_NAMES.include?(name.to_s.strip.downcase)
+  end
+
   def unset_attribute_groups_objects
     self.attribute_groups_objects = nil
   end
@@ -226,7 +230,7 @@ module Type::AttributeGroups
   end
 
   def replace_accountable_with_reporter?
-    REPORTER_TYPE_NAMES.include?(name.to_s.strip.downcase)
+    reporter_type?
   end
 
   def people_group?(group_key)
