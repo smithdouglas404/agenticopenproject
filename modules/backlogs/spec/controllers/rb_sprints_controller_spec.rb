@@ -389,4 +389,144 @@ RSpec.describe RbSprintsController do
       end
     end
   end
+
+  describe "legacy actions" do
+    shared_let(:type_feature) { create(:type_feature) }
+    shared_let(:type_task) { create(:type_task) }
+    shared_let(:user) { create(:admin) }
+    current_user { user }
+
+    let(:visible_projects_scope) { instance_double(ActiveRecord::Relation) }
+    let(:visible_sprints_scope) { instance_double(ActiveRecord::Relation) }
+
+    before do
+      allow(Setting)
+        .to receive(:plugin_openproject_backlogs)
+              .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
+
+      allow(Project)
+        .to receive(:visible)
+              .and_return(visible_projects_scope)
+
+      allow(visible_projects_scope)
+        .to receive(:find)
+              .with(project.identifier)
+              .and_return(project)
+
+      allow(Sprint)
+        .to receive(:visible)
+              .and_return(visible_sprints_scope)
+
+      allow(visible_sprints_scope)
+        .to receive(:find)
+              .with(sprint.id.to_s)
+              .and_return(sprint)
+    end
+
+    describe "GET #edit_name" do
+      let(:project) { build_stubbed(:project) }
+      let(:sprint) { build_stubbed(:sprint) }
+
+      it "responds with success", :aggregate_failures do
+        get :edit_name, params: { project_id: project.identifier, id: sprint.id }, format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:backlog)).to be_a(Backlog)
+      end
+    end
+
+    describe "GET #show_name" do
+      let(:project) { build_stubbed(:project) }
+      let(:sprint) { build_stubbed(:sprint) }
+
+      it "responds with success", :aggregate_failures do
+        get :show_name, params: { project_id: project.identifier, id: sprint.id }, format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:backlog)).to be_a(Backlog)
+      end
+    end
+
+    describe "PATCH #update" do
+      let(:project) { build_stubbed(:project) }
+      let(:sprint) { build_stubbed(:sprint) }
+
+      before do
+        update_service = instance_double(Versions::UpdateService, call: service_result)
+
+        allow(Versions::UpdateService)
+          .to receive(:new)
+                .with(user:, model: sprint)
+                .and_return(update_service)
+      end
+
+      context "when service call succeeds" do
+        let(:service_result) { ServiceResult.success(result: sprint) }
+
+        it "responds with success", :aggregate_failures do
+          patch :update,
+                params: { project_id: project.identifier, id: sprint.id, sprint: { name: "Updated Sprint" } },
+                format: :turbo_stream
+
+          expect(response).to be_successful
+          expect(response).to have_http_status :ok
+          expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+          expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+          expect(assigns(:project)).to eq(project)
+          expect(assigns(:sprint)).to eq(sprint)
+          expect(assigns(:backlog)).to be_a(Backlog)
+        end
+      end
+
+      context "when service call fails" do
+        let(:service_result) { ServiceResult.failure(result: sprint) }
+
+        before do
+          project.name = ""
+        end
+
+        it "responds with 422", :aggregate_failures do
+          patch :update,
+                params: { project_id: project.identifier, id: sprint.id, sprint: { name: "" } },
+                format: :turbo_stream
+
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :unprocessable_entity
+          expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+          expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+          expect(assigns(:project)).to eq(project)
+          expect(assigns(:sprint)).to eq(sprint)
+          expect(assigns(:backlog)).to be_a(Backlog)
+        end
+      end
+    end
+  end
+
+  describe "stale identifier handling" do
+    let(:user) { create(:user, member_with_permissions: { project => %i[view_sprints create_sprints] }) }
+    let(:project) { create(:project) }
+    let!(:old_identifier) { project.identifier }
+
+    before do
+      login_as(user)
+      project.update!(identifier: "current-identifier")
+      allow(Setting)
+        .to receive(:plugin_openproject_backlogs)
+              .and_return({ "story_types" => [1], "task_type" => 2 })
+    end
+
+    it "does not redirect turbo_stream requests with historical identifier" do
+      get :new_dialog, params: { project_id: old_identifier }, format: :turbo_stream
+      expect(response).to be_successful
+      expect(response).not_to have_http_status(:moved_permanently)
+    end
+  end
 end
