@@ -40,6 +40,8 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "@openproject/octicons"
       - dependency-name: "@openproject/primer-view-components"
+      - dependency-name: "@primer/primitives"
+      - dependency-name: "@primer/css"
   - package-ecosystem: "bundler"
     directory: "/"
     schedule:
