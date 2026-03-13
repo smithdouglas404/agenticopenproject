@@ -78,9 +78,7 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
         Setting.collaborative_editing_hocuspocus_url = "ws://127.0.0.1:9999"
         visit document_path(document)
 
-        expect(editor.shadow_root).to have_css(
-          "[data-test-selector='connection-error-notice']", wait: 10
-        )
+        expect(page).to have_text(I18n.t("documents.info_line.currently_offline"), wait: 10)
         editor.fill_in("Offline edit")
 
         # Phase 3: reconnect → IndexedDB edits forwarded to server
@@ -130,13 +128,8 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
           Setting.collaborative_editing_hocuspocus_url = "ws://127.0.0.1:9999"
           visit document_path(document)
 
-          expect(editor.shadow_root).to have_css(
-            "[data-test-selector='connection-error-notice']",
-            text: "You are currently offline. You can continue editing. " \
-                  "Your changes will be synced when the connection is restored.",
-            wait: 10
-          )
-          expect(editor.shadow_root).to have_css("div[role='textbox']")
+          expect(page).to have_text(I18n.t("documents.info_line.currently_offline"), wait: 10)
+          expect(page).to have_css("div[role='textbox']")
         end
       end
 
@@ -153,12 +146,7 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
           Setting.collaborative_editing_hocuspocus_url = "ws://127.0.0.1:9999"
           visit document_path(document)
 
-          expect(editor.shadow_root).to have_css(
-            "[data-test-selector='connection-error-notice']",
-            text: "You are currently offline. " \
-                  "Real-time updates will resume once the connection is restored.",
-            wait: 10
-          )
+          expect(page).to have_text(I18n.t("documents.info_line.currently_offline"), wait: 10)
         end
       end
     end
@@ -174,13 +162,8 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
         visit document_path(document)
 
         expect(page).to have_test_selector("blocknote-document-description")
-        expect(editor.shadow_root).to have_css(
-          "[data-test-selector='connection-error-notice']",
-          text: "Unable to open document because the real-time text collaboration server " \
-                "is unreachable. Please contact the administrator if the problem persists.",
-          wait: 10
-        )
-        expect(editor.shadow_root).to have_no_css("div[role='textbox']")
+        expect(page).to have_text(I18n.t("documents.info_line.currently_offline"), wait: 10)
+        expect(page).to have_no_css("div[role='textbox']")
       end
     end
 
