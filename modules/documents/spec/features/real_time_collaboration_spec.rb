@@ -129,7 +129,7 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
           visit document_path(document)
 
           expect(page).to have_text(I18n.t("documents.info_line.currently_offline"), wait: 10)
-          expect(page).to have_css("div[role='textbox']")
+          expect(editor.shadow_root).to have_css("div[role='textbox']")
         end
       end
 
@@ -163,7 +163,7 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
 
         expect(page).to have_test_selector("blocknote-document-description")
         expect(page).to have_text(I18n.t("documents.info_line.currently_offline"), wait: 10)
-        expect(page).to have_no_css("div[role='textbox']")
+        expect(editor.shadow_root).to have_no_css("div[role='textbox']")
       end
     end
 
