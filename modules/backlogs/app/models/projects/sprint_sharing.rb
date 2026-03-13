@@ -79,6 +79,12 @@ module Projects::SprintSharing
     sprint_sharing == NO_SHARING
   end
 
+  def not_sharing_sprints!
+    return if not_sharing_sprints?
+
+    update_column(:settings, settings.merge("sprint_sharing" => NO_SHARING))
+  end
+
   def sprint_source
     # Senders and non-sharing projects only see their own sprints.
     # Receivers see external sprints from the closest ancestor sharing

@@ -185,6 +185,21 @@ module OpenProject::Backlogs
       OpenProject::Backlogs::Hooks::UserSettingsHook
     end
 
+    initializer "openproject_backlogs.event_subscriptions" do
+      Rails.application.config.after_initialize do
+        OpenProject::Notifications.subscribe(OpenProject::Events::MODULE_DISABLED) do |payload|
+          disabled_module = payload[:disabled_module]
+          next unless disabled_module.name == "backlogs"
+
+          disabled_module.project.not_sharing_sprints!
+        end
+
+        OpenProject::Notifications.subscribe(OpenProject::Events::PROJECT_ARCHIVED) do |payload|
+          payload[:project].not_sharing_sprints!
+        end
+      end
+    end
+
     config.to_prepare do
       ::Type.add_constraint :position, ->(type, project: nil) do
         if project.present?
