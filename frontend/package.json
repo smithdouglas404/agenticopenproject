@@ -115,7 +115,7 @@
     "@openproject/reactivestates": "^3.0.1",
     "@primer/css": "^22.1.0",
     "@primer/live-region-element": "^0.8.0",
-    "@primer/primitives": "^11.5.0",
+    "@primer/primitives": "^11.3.2",
     "@primer/view-components": "npm:@openproject/primer-view-components@^0.82.0",
     "@rails/request.js": "^0.0.13",
     "@stimulus-components/auto-submit": "^6.0.0",
