@@ -101,6 +101,15 @@ RSpec.describe OpenProject::Backlogs::SprintFilter do
       end
     end
 
+    describe "dependency representer" do
+      it "maps to the sprint dependency representer" do
+        dependency = API::V3::Queries::Schemas::FilterDependencyRepresenterFactory.create(instance,
+                                                                                          Queries::Operators::Equals)
+
+        expect(dependency).to be_a(API::V3::Queries::Schemas::SprintFilterDependencyRepresenter)
+      end
+    end
+
     describe "#value_objects" do
       let(:sprint1) { build_stubbed(:agile_sprint) }
       let(:sprint2) { build_stubbed(:agile_sprint) }
