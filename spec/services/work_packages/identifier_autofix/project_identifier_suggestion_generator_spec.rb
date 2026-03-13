@@ -174,6 +174,21 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGener
       # "GO" is taken, no further expansion possible, so numeric suffix
       expect(result.first[:suggested_identifier]).to eq("GO2")
     end
+
+    it "assigns identifiers in array order — first project claims the base" do
+      p1 = create(:project, identifier: "bad-a", name: "Stream Communicator")
+      p2 = create(:project, identifier: "bad-b", name: "Stream Channel")
+      result = described_class.call([p1, p2])
+
+      # p1 is first in the array, so it claims "SC"; p2 gets the widened "STC"
+      expect(result[0][:suggested_identifier]).to eq("SC")
+      expect(result[1][:suggested_identifier]).to eq("STC")
+
+      # Reversed order: p2 now claims "SC"
+      reversed = described_class.call([p2, p1])
+      expect(reversed[0][:suggested_identifier]).to eq("SC")
+      expect(reversed[1][:suggested_identifier]).to eq("STC")
+    end
   end
 
   describe ".suggest_identifier" do

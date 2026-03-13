@@ -140,51 +140,35 @@ module WorkPackages
       # "Stream Communicator" → ["SC", "STC", "STCO", "STRCO", …]
       # "A B C D E F G H I J K" → ["ABCDE", "ABCDEF", …, "ABCDEFGHIJ"]
       #
-      # Phase 1: Truncate initials to IDENTIFIER_LENGTH[:base], then
-      #          progressively include more initials up to IDENTIFIER_LENGTH[:max].
-      # Phase 2: If still room, expand words beyond single chars.
+      # Starts with initials truncated to IDENTIFIER_LENGTH[:base], progressively
+      # includes more initials, then expands words beyond single chars.
       def multi_word_candidates(words)
         clean_words = words.map { |w| w.upcase.chars }
-        candidates = initial_truncation_candidates(clean_words)
+        candidates = initial_candidates(clean_words)
 
-        return candidates if candidates.last&.length.to_i >= IDENTIFIER_LENGTH[:max]
-
-        chars_per_word = clean_words.map { 1 }
-        append_expansion_candidates(candidates, clean_words, chars_per_word)
+        expand_words_into(candidates, clean_words) if candidates.last.length < IDENTIFIER_LENGTH[:max]
         candidates
       end
 
-      # Phase 1: progressively longer slices of the initials string,
-      # starting at IDENTIFIER_LENGTH[:base].
-      def initial_truncation_candidates(clean_words)
+      def initial_candidates(clean_words)
         initials = clean_words.map(&:first).join[0, IDENTIFIER_LENGTH[:max]]
         start = [IDENTIFIER_LENGTH[:base], initials.length].min
         (start..initials.length).map { |len| initials[0, len] }
       end
 
-      # Phase 2: pull more characters from each word left-to-right.
-      def append_expansion_candidates(candidates, clean_words, chars_per_word)
-        expand_word_candidates(clean_words, chars_per_word).each do |c|
-          candidates << c unless candidates.include?(c)
-          break if c.length >= IDENTIFIER_LENGTH[:max]
-        end
-      end
-
-      def expand_word_candidates(clean_words, chars_per_word)
-        candidates = []
+      # Progressively pulls more characters from each word left-to-right.
+      def expand_words_into(candidates, clean_words)
+        chars_per_word = clean_words.map { 1 }
 
         loop do
-          candidate = build_candidate(clean_words, chars_per_word)
-          candidates << candidate unless candidates.include?(candidate)
-          break if candidate.length >= IDENTIFIER_LENGTH[:max]
-
           expandable = clean_words.index.with_index { |cw, i| chars_per_word[i] < cw.length }
           break unless expandable
 
           chars_per_word[expandable] += 1
+          candidate = build_candidate(clean_words, chars_per_word)
+          candidates << candidate unless candidates.include?(candidate)
+          break if candidate.length >= IDENTIFIER_LENGTH[:max]
         end
-
-        candidates
       end
 
       def build_candidate(clean_words, chars_per_word)
@@ -192,7 +176,8 @@ module WorkPackages
       end
 
       # Strips leading digits so identifiers always start with a letter.
-      # Returns nil if nothing remains after stripping.
+      # For names like "3D Printing Lab", initials "3PL" become "PL".
+      # This is lossy but acceptable for auto-generated suggestions.
       def ensure_starts_with_letter(candidate)
         stripped = candidate.sub(/\A\d+/, "")
         stripped.presence
@@ -209,6 +194,9 @@ module WorkPackages
       end
 
       def numeric_suffix_fallback(base, used_identifiers)
+        # Ensure the base itself starts with a letter before appending digits.
+        base = ensure_starts_with_letter(base) || FALLBACK_IDENTIFIER
+
         counter = 2
         loop do
           raise "Could not find a unique identifier for base '#{base}' within #{SUFFIX_LIMIT} attempts" \
