@@ -36,7 +36,7 @@ class RbStoriesController < RbApplicationController
   skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
 
   before_action :legacy_load_story, except: NEW_SPRINT_ACTIONS
-  before_action :load_project, :load_sprint, :load_story, only: NEW_SPRINT_ACTIONS
+  prepend_before_action :load_sprint, :load_project, :load_story, only: NEW_SPRINT_ACTIONS
 
   # Move a story from a Sprint to another Sprint or an Agile::Sprint.
   def move_legacy
@@ -45,7 +45,7 @@ class RbStoriesController < RbApplicationController
     version_id_was = @story.version_id
 
     move_attributes = infer_attributes_from_target
-    unless move_story(move_attributes)
+    unless move_story(move_attributes).success?
       return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
@@ -65,7 +65,7 @@ class RbStoriesController < RbApplicationController
     sprint_id_was = @story.sprint_id
 
     move_attributes = infer_attributes_from_target
-    unless move_story(move_attributes)
+    unless move_story(move_attributes).success?
       return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
@@ -100,15 +100,16 @@ class RbStoriesController < RbApplicationController
   def move_story(move_attributes)
     call = update_story_with_target_and_position(attributes: move_attributes)
 
-    unless call.success?
+    if call.success?
+      # Update source component so that the moved story disappears
+      replace_typed_component_via_turbo_stream(sprint: @sprint)
+    else
       render_error_flash_message_via_turbo_stream(
         message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
       )
-      return false
     end
 
-    # Update source component so that the moved story disappears
-    replace_typed_component_via_turbo_stream(sprint: @sprint)
+    call
   end
 
   def update_story_with_target_and_position(attributes:)

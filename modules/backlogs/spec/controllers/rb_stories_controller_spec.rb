@@ -33,9 +33,10 @@ require "rails_helper"
 RSpec.describe RbStoriesController do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
-  shared_let(:user) { create(:admin) }
+
   current_user { user }
 
+  let(:user) { create(:admin) }
   let(:project) { create(:project) }
   let(:status) { create(:status, name: "status 1", is_default: true) }
   let(:version_sprint) { create(:sprint, project:) }
@@ -51,6 +52,24 @@ RSpec.describe RbStoriesController do
   end
 
   describe "PUT #move_legacy" do
+    context "with a user lacking project permission" do
+      let(:user) { create(:user) }
+
+      it "responds with 403" do
+        put :move_legacy, params: {
+                            project_id: project.id,
+                            sprint_id: version_sprint.id,
+                            id: story.id,
+                            target_id: "foo",
+                            position: 1
+                          },
+                          format: :turbo_stream
+
+        expect(response).not_to be_successful
+        expect(response).to have_http_status :not_found
+      end
+    end
+
     context "with a version from the same project" do
       let(:other_version_sprint) { create(:sprint, name: "Sprint 2", project:) }
 
