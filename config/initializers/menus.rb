@@ -415,7 +415,7 @@ Redmine::MenuManager.map :admin_menu do |menu|
             parent: :admin_work_packages
 
   menu.push :workflows,
-            { controller: "/workflows", action: "edit" },
+            { controller: "/workflows", action: "index" },
             if: ->(_) { User.current.admin? },
             caption: ->(_) { Workflow.model_name.human },
             parent: :admin_work_packages

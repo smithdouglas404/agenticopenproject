@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,33 +26,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
 module Workflows
-  class PageHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include ApplicationHelper
-
-    def initialize(state:)
-      super
-      @state = state
+  class TableComponent < ::OpPrimer::BorderBoxTableComponent
+    def columns
+      headers.map(&:first)
     end
 
-    def breadcrumb_items
-      [{ href: admin_index_path, text: t("label_administration") },
-       { href: admin_settings_work_packages_general_path, text: t(:label_work_package_plural) },
-       title]
+    def headers
+      [
+        [:name, { caption: Type.model_name.human }]
+      ]
     end
 
-    def title
-      case @state
-      when :summarized
-        t(:label_workflow_summary)
-      when :copy
-        t(:label_workflow_copy)
-      else
-        t(:label_workflow_plural)
-      end
+    def empty_row_message
+      I18n.t :no_results_title_text
+    end
+
+    def mobile_title
+      Type.model_name.human
     end
   end
 end

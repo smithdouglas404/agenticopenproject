@@ -28,31 +28,50 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Workflows
-  class PageHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include ApplicationHelper
+require "spec_helper"
 
-    def initialize(state:)
-      super
-      @state = state
+RSpec.describe "Workflows index" do
+  include Toasts::Expectations
+
+  let(:admin)  { create(:admin) }
+  let!(:types) { create_list(:type, 3) }
+
+  current_user { admin }
+
+  before do
+    visit url_for(controller: "/workflows", action: :index)
+  end
+
+  it "is accessible", :js, :selenium do
+    expect(page).to be_axe_clean.within("#content")
+  end
+
+  it "allows navigating to any Edit page" do
+    expect(page).to have_heading("Workflows")
+
+    some_type = types.sample
+    within_role :table do
+      click_link some_type.name
     end
 
-    def breadcrumb_items
-      [{ href: admin_index_path, text: t("label_administration") },
-       { href: admin_settings_work_packages_general_path, text: t(:label_work_package_plural) },
-       title]
+    expect(page).to have_heading some_type.name
+  end
+
+  it "allows navigating to Workflow summary page" do
+    within ".PageHeader-actions" do
+      click_on "Summary"
     end
 
-    def title
-      case @state
-      when :summarized
-        t(:label_workflow_summary)
-      when :copy
-        t(:label_workflow_copy)
-      else
-        t(:label_workflow_plural)
-      end
+    expect(page).to have_heading "Summary"
+    expect(page).to have_current_path(summarized_workflows_path)
+  end
+
+  it "allows navigating to Workflow copy page" do
+    within ".PageHeader-actions" do
+      click_on "Copy"
     end
+
+    expect(page).to have_heading "Copy workflow"
+    expect(page).to have_current_path(copy_workflows_path)
   end
 end

@@ -26,10 +26,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<% html_title t(:label_administration), t(:label_workflow_plural) -%>
+<% html_title t(:label_administration), t(:label_workflow_plural), @type.name -%>
 
 <% content_for :content_header do %>
-  <%= render Workflows::EditPageHeaderComponent.new(tabs: workflow_tabs) %>
+  <%= render Workflows::EditPageHeaderComponent.new(@type, tabs: workflow_tabs(@type)) %>
 <% end %>
 
 <%= styled_form_tag({}, method: "get") do %>
@@ -42,12 +42,6 @@ See COPYRIGHT and LICENSE files for more details.
         <%= styled_label_tag :role_id, Role.model_name.human, class: "simple-filters--filter-name" %>
         <div class="simple-filters--filter-value">
           <%= styled_select_tag "role_id", options_from_collection_for_select(@roles, "id", "name", @role && @role.id) %>
-        </div>
-      </li>
-      <li class="simple-filters--filter">
-        <%= styled_label_tag :type_id, Type.model_name.human, class: "simple-filters--filter-name" %>
-        <div class="simple-filters--filter-value">
-          <%= styled_select_tag "type_id", options_from_collection_for_select(@types, "id", "name", @type && @type.id) %>
         </div>
       </li>
       <li class="simple-filters--controls">
@@ -80,7 +74,7 @@ See COPYRIGHT and LICENSE files for more details.
           <%= hidden_field_tag "role_id", @role.id %>
           <%= hidden_field_tag "tab", params[:tab] || "always" %>
 
-          <%= render_tabs workflow_tabs %>
+    <%= render_tabs workflow_tabs(@type) %>
 
           <%=
             render Primer::Beta::Button.new(scheme: :primary, type: :submit, id: "work-flow-save-button") do

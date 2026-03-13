@@ -78,7 +78,7 @@ RSpec.describe WorkflowsController do
 
   current_user { build_stubbed(:admin) }
 
-  describe "#index" do
+  describe "#summarized" do
     let(:counts) { [] }
 
     before do
@@ -86,7 +86,7 @@ RSpec.describe WorkflowsController do
         .to receive(:count_by_type_and_role)
         .and_return(counts)
 
-      get :show
+      get :summarized
     end
 
     it "is successful" do
@@ -133,10 +133,6 @@ RSpec.describe WorkflowsController do
         .to receive(:all)
               .and_return [type_status, non_type_status]
 
-      allow(Type)
-        .to receive(:order)
-              .and_return([type])
-
       allow(role_scope)
         .to receive(:order)
               .and_return([role])
@@ -144,7 +140,7 @@ RSpec.describe WorkflowsController do
 
     context "without parameters" do
       before do
-        get :edit
+        get :edit, params: { type_id: type.id.to_s }
       end
 
       it "is successful" do
@@ -162,19 +158,14 @@ RSpec.describe WorkflowsController do
           .to be_nil
       end
 
-      it "does not assign type" do
+      it "does assign type" do
         expect(assigns[:type])
-          .to be_nil
+          .to eq type
       end
 
       it "assigns roles" do
         expect(assigns[:roles])
           .to eq [role]
-      end
-
-      it "assigns types" do
-        expect(assigns[:types])
-          .to eq [type]
       end
     end
 
@@ -194,8 +185,6 @@ RSpec.describe WorkflowsController do
           .to eq type
         expect(assigns[:roles])
           .to eq [role]
-        expect(assigns[:types])
-          .to eq [type]
         expect(assigns[:statuses])
           .to eq type.statuses
       end
@@ -217,8 +206,6 @@ RSpec.describe WorkflowsController do
           .to eq type
         expect(assigns[:roles])
           .to eq [role]
-        expect(assigns[:types])
-          .to eq [type]
         expect(assigns[:statuses])
           .to eq Status.all
       end
@@ -252,11 +239,6 @@ RSpec.describe WorkflowsController do
       it "assigns roles" do
         expect(assigns[:roles])
           .to eq [role]
-      end
-
-      it "assigns types" do
-        expect(assigns[:types])
-          .to eq [type]
       end
 
       it "assigns statuses" do
@@ -299,7 +281,7 @@ RSpec.describe WorkflowsController do
 
     it "redirects to edit" do
       expect(response)
-        .to redirect_to edit_workflows_path(role_id: role.id, type_id: type.id, tab: "always")
+        .to redirect_to edit_workflow_path(type, role_id: role.id, tab: "always")
     end
   end
 

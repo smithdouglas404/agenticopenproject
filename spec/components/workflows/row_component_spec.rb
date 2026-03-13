@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,32 +26,38 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
+#
+require "rails_helper"
 
-module Workflows
-  class PageHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include ApplicationHelper
+RSpec.describe Workflows::RowComponent, type: :component do
+  include Rails.application.routes.url_helpers
 
-    def initialize(state:)
-      super
-      @state = state
-    end
+  def render_component(...)
+    render_inline(described_class.new(...))
+  end
 
-    def breadcrumb_items
-      [{ href: admin_index_path, text: t("label_administration") },
-       { href: admin_settings_work_packages_general_path, text: t(:label_work_package_plural) },
-       title]
-    end
+  let(:type) { build_stubbed(:type) }
+  let(:table) do
+    instance_double(
+      Workflows::TableComponent,
+      columns: %i[name],
+      main_column?: false,
+      mobile_columns: %i[name],
+      mobile_labels: %i[name],
+      column_title: "Type",
+      has_actions?: false
+    )
+  end
 
-    def title
-      case @state
-      when :summarized
-        t(:label_workflow_summary)
-      when :copy
-        t(:label_workflow_copy)
-      else
-        t(:label_workflow_plural)
+  subject(:rendered_component) do
+    render_component(row: type, table:)
+  end
+
+  describe "Type name and link to edit" do
+    it "renders the project name as a link" do
+      expect(rendered_component).to have_role(:cell, text: type.name) do |cell|
+        expect(cell).to have_link(type.name, href: edit_workflow_path(type))
       end
     end
   end

@@ -26,25 +26,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
+<% html_title t(:label_administration), t(:label_workflow_plural) -%>
 
-<%=
-  render(
-    Primer::OpenProject::DangerDialog.new(
-      id: DIALOG_ID,
-      title: t("admin.workflows.statuses_removal_dialog.title"),
-      confirm_button_text: t("admin.workflows.statuses_removal_dialog.confirm"),
-      form_arguments: { action: helpers.edit_workflow_path(@type), method: :get, data: { turbo_frame: "workflow-table" } }
-    )
-  ) do |dialog|
-    dialog.with_confirmation_message do |message|
-      message.with_heading(tag: :h2) { t("admin.workflows.statuses_removal_dialog.heading", count: @removed_count) }
-      message.with_description_content(t("admin.workflows.statuses_removal_dialog.description"))
-    end
+<%= render Workflows::PageHeaderComponent.new(state: :index) %>
 
-    dialog.with_additional_details do
-      concat(hidden_field_tag(:role_id, @role.id))
-      concat(hidden_field_tag(:tab, @tab))
-      @status_ids.each { |id| concat(hidden_field_tag("status_ids[]", id)) }
-    end
-  end
-%>
+<%= render Workflows::TableComponent.new(rows: @types) %>

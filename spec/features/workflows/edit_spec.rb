@@ -49,7 +49,7 @@ RSpec.describe "Workflow edit" do
   current_user { admin }
 
   before do
-    visit url_for(controller: "/workflows", action: :edit)
+    visit url_for(controller: "/workflows", action: :edit, type_id: type.id)
   end
 
   it "allows adding another workflow" do
@@ -177,8 +177,8 @@ RSpec.describe "Workflow edit" do
       click_on "Summary"
     end
 
-    expect(page).to have_heading "Summary"
-    expect(page).to have_current_path(workflows_path)
+    expect(page).to have_heading("Summary")
+    expect(page).to have_current_path(summarized_workflows_path)
   end
 
   it "allows navigating to Workflow copy page" do

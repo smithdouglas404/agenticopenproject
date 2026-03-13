@@ -36,15 +36,17 @@ class WorkflowsController < ApplicationController
   before_action :require_admin
 
   before_action :find_roles, except: :update
-  before_action :find_types, except: :update
+  before_action :find_types, except: %i[edit update]
 
   before_action :find_role, only: :update
-  before_action :find_type, only: :update
+  before_action :find_type, only: %i[edit update]
 
   before_action :find_optional_role, only: %i[edit status_dialog confirm_statuses]
   before_action :find_optional_type, only: %i[edit status_dialog confirm_statuses]
 
-  def show
+  def index; end
+
+  def summarized
     @workflow_counts = Workflow.count_by_type_and_role
     @roles = @workflow_counts.first&.last&.map(&:first)
   end
@@ -66,7 +68,7 @@ class WorkflowsController < ApplicationController
 
     if call.success?
       flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to action: "edit", role_id: @role, type_id: @type, tab:
+      redirect_to edit_workflow_path(@type, role_id: @role.id, tab:)
     end
   end
 
@@ -125,9 +127,9 @@ class WorkflowsController < ApplicationController
         removed_count: removed_count
       )
     else
-      redirect_to edit_workflows_path(
+      redirect_to edit_workflow_path(
+        params[:type_id],
         role_id: params[:role_id],
-        type_id: params[:type_id],
         tab: params[:tab] || "always",
         status_ids: current_status_ids
       ), status: :see_other
