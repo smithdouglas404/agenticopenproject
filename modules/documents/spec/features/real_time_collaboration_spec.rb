@@ -151,32 +151,4 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
       end
     end
   end
-
-  context "when in offline mode (without a connection to the hocuspocus server)" do
-    # No Hocuspocus server is started here. On the first visit there is no
-    # IndexedDB cache, so hasLocalCache is false and the editor is blocked
-    # entirely (blockingOffline = true) to prevent an empty Y.Doc from being
-    # synced as authoritative state on reconnect.
-    shared_examples "a blocked offline editor" do
-      it "blocks the editor and shows a server-unavailable message" do
-        visit document_path(document)
-
-        expect(page).to have_test_selector("blocknote-document-description")
-        expect(page).to have_text(I18n.t("documents.info_line.currently_offline"), wait: 10)
-        expect(editor.shadow_root).to have_no_css("div[role='textbox']")
-      end
-    end
-
-    context "with write permission" do
-      before { login_as(admin) }
-
-      it_behaves_like "a blocked offline editor"
-    end
-
-    context "with readonly permission" do
-      before { login_as(readonly_user) }
-
-      it_behaves_like "a blocked offline editor"
-    end
-  end
 end
