@@ -76,7 +76,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierAutofixSectionComponent,
 
     it "shows a realistic example work package ID" do
       render_inline(component)
-      # Numbers are deterministic from the handle's byte sum; format is handle + zero-padded number.
+      # Numbers are deterministic from the identifier's byte sum.
       expect(page).to have_text("FP-151")    # "FP".bytes.sum % 500 + 1 = 151
       expect(page).to have_text("VLNP-321")  # "VLNP".bytes.sum % 500 + 1 = 321
     end

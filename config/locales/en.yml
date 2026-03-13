@@ -394,7 +394,7 @@ en:
         box_header:
           label_project: Project
           label_previous_identifier: Previous identifier
-          label_autofixed_suggestion: Autofixed suggestion
+          label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
           error_too_long: Has to be fewer than 5 characters

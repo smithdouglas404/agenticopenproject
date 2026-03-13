@@ -46,21 +46,18 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGener
         expect(result.size).to eq(1)
         expect(result.first[:project]).to eq(project)
         expect(result.first[:current_identifier]).to eq("verylongidentifier")
-        expect(result.first[:error_reason]).to eq(:too_long)
         expect(result.first[:suggested_identifier]).to be_present
-        expect(result.first[:suggested_identifier].length).to be <= described_class::IDENTIFIER_MAX_LENGTH
+        expect(result.first[:suggested_identifier].length).to be <= described_class::DEFAULT_IDENTIFIER_BASE_LENGTH
       end
     end
 
     context "when a project has a special-character identifier" do
-      # "fs" is 2 chars (≤ IDENTIFIER_MAX_LENGTH) but contains no special chars;
-      # use "f-s" (3 chars ≤ IDENTIFIER_MAX_LENGTH) to trigger :special_characters.
       shared_let(:project) { create(:project, identifier: "f-s", name: "Fly Sky") }
 
-      it "returns a suggestion entry with error_reason :special_characters" do
+      it "returns a suggestion entry with a suggested_identifier" do
         result = described_class.call([project])
         expect(result.size).to eq(1)
-        expect(result.first[:error_reason]).to eq(:special_characters)
+        expect(result.first[:suggested_identifier]).to eq("FS")
       end
     end
 
@@ -94,7 +91,7 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGener
       "Social media marketing" => "SMM",
       "Arcanos (mobile-web-app)" => "AMWA",
       "Flight Planning Training" => "FPT",
-      "A B C D E F G H I J K" => "ABCDE", # truncated to IDENTIFIER_MAX_LENGTH (5)
+      "A B C D E F G H I J K" => "ABCDE", # truncated to DEFAULT_IDENTIFIER_BASE_LENGTH (5)
       "Cécile Martin" => "CM", # Unicode: "Cécile" is one word, not ["C","cile"]
       "étude de cas" => "EDC", # Unicode: é→E via transliteration
       # Non-Latin scripts have no transliteration entries (I18n.transliterate → "?").
@@ -122,11 +119,11 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGener
       expect(described_class.call([p1, p2, p3]).pluck(:suggested_identifier)).to contain_exactly("SC", "SC2", "SC3")
     end
 
-    it "trims the base to fit within IDENTIFIER_MAX_LENGTH when adding a suffix" do
+    it "trims the base to fit within DEFAULT_IDENTIFIER_BASE_LENGTH when adding a suffix" do
       p1 = create(:project, identifier: "a-b-c-d-e-f-g-h-i-j", name: "A B C D E F G H I J")
       p2 = create(:project, identifier: "a-b-c-d-e-f-g-h-i-j-x", name: "A B C D E F G H I J")
       identifiers = described_class.call([p1, p2]).pluck(:suggested_identifier)
-      expect(identifiers.all? { it.length <= described_class::IDENTIFIER_MAX_LENGTH }).to be true
+      expect(identifiers.all? { it.length <= described_class::DEFAULT_IDENTIFIER_BASE_LENGTH }).to be true
       expect(identifiers.uniq.size).to eq(2)
     end
 
@@ -139,55 +136,19 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGener
     end
   end
 
-  describe "error reason assignment" do
-    it "assigns :too_long when identifier length exceeds IDENTIFIER_MAX_LENGTH" do
-      project = create(:project, identifier: "verylongidentifier", name: "Test")
-      expect(described_class.call([project]).first[:error_reason]).to eq(:too_long)
-    end
-
-    it "assigns :special_characters when identifier has non-alphanumeric chars but is short" do
-      project = create(:project, identifier: "ab-c", name: "Test")
-      expect(described_class.call([project]).first[:error_reason]).to eq(:special_characters)
-    end
-
-    it "assigns :too_long (priority) when identifier is both too long and has special chars" do
-      project = create(:project, identifier: "my-very-long-identifier", name: "Test")
-      expect(described_class.call([project]).first[:error_reason]).to eq(:too_long)
-    end
-
-    it "assigns :in_use when identifier is another project's active identifier" do
-      # "abc" is valid (lowercase alphanumeric, ≤ 5 chars, no special chars)
-      project = create(:project, identifier: "abc", name: "Alpha Beta Corp")
-      result = described_class.call([project], in_use_identifiers: Set["abc"])
-      expect(result.first[:error_reason]).to eq(:in_use)
-    end
-
-    it "assigns :reserved when identifier appears in historical identifiers" do
-      project = create(:project, identifier: "abc", name: "Alpha Beta Corp")
-      result = described_class.call([project], reserved_identifiers: Set["abc"])
-      expect(result.first[:error_reason]).to eq(:reserved)
-    end
-
-    it "prefers :in_use over :reserved when identifier is in both sets" do
-      project = create(:project, identifier: "abc", name: "Alpha Beta Corp")
-      result = described_class.call([project], in_use_identifiers: Set["abc"], reserved_identifiers: Set["abc"])
-      expect(result.first[:error_reason]).to eq(:in_use)
-    end
-
-    it "prefers :too_long over :in_use when identifier is also too long" do
-      # "toolong" is 7 chars (> IDENTIFIER_MAX_LENGTH=5) and alphanumeric — too_long wins
-      project = create(:project, identifier: "toolong", name: "Too Long Identifier")
-      result = described_class.call([project], in_use_identifiers: Set["toolong"])
-      expect(result.first[:error_reason]).to eq(:too_long)
-    end
-  end
-
   describe ".suggest_identifier" do
     it "produces the same identifier as .call for the same name" do
       project = build_stubbed(:project, name: "Alpha Beta", identifier: "alpha-beta")
       batch_result = described_class.call([project]).first[:suggested_identifier]
       single_result = described_class.suggest_identifier("Alpha Beta")
       expect(single_result).to eq(batch_result)
+    end
+  end
+
+  describe ".call result shape" do
+    it "does not include error_reason (that is PreviewQuery's concern)" do
+      project = create(:project, identifier: "ab-c", name: "Test")
+      expect(described_class.call([project]).first).not_to have_key(:error_reason)
     end
   end
 end

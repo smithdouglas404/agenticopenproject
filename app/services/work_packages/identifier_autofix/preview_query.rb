@@ -47,24 +47,37 @@ module WorkPackages
           reserved_identifiers:
         )
 
-        Result.new(projects_data: suggestions, total_count: total)
+        projects_data = suggestions.map do |entry|
+          entry.merge(error_reason: error_reason(entry[:current_identifier]))
+        end
+
+        Result.new(projects_data:, total_count: total)
       end
 
       private
 
-      # FIXME: Replace WHERE clause with:
-      #   Project.where.not(id: OldProjectIdentifier.where(current: true).select(:project_id))
-      # once all valid identifiers have been migrated to handle rows.
       def problematic_scope
         @problematic_scope ||= Project.where(
           "length(identifier) > ? OR identifier ~ ?",
-          WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator::IDENTIFIER_MAX_LENGTH,
+          ProjectIdentifierSuggestionGenerator::MAX_IDENTIFIER_LENGTH,
           "[^a-zA-Z0-9]"
         )
       end
 
+      def error_reason(identifier)
+        if identifier.length > ProjectIdentifierSuggestionGenerator::MAX_IDENTIFIER_LENGTH
+          :too_long
+        elsif identifier.match?(/[^a-zA-Z0-9]/)
+          :special_characters
+        elsif in_use_identifiers.include?(identifier)
+          :in_use
+        elsif reserved_identifiers.include?(identifier)
+          :reserved
+        end
+      end
+
       def in_use_identifiers
-        Project.where.not(id: problematic_scope.select(:id)).pluck(:identifier).to_set
+        @in_use_identifiers ||= Project.where.not(id: problematic_scope.select(:id)).pluck(:identifier).to_set
       end
 
       def reserved_identifiers

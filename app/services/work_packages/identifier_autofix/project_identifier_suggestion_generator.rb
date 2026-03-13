@@ -37,15 +37,9 @@ module WorkPackages
     # projects produce the same acronym, a numeric suffix resolves the collision
     # ("SC", "SC2", "SC3", …).
     #
-    # Each result entry includes an error_reason classifying why the project's
-    # current identifier is problematic:
-    #   - :too_long            — identifier length exceeds IDENTIFIER_MAX_LENGTH
-    #   - :special_characters  — identifier contains characters outside [a-zA-Z0-9]
-    #   - :in_use              — identifier is another project's active identifier
-    #   - :reserved            — identifier appears in another project's identifier history
-    #
     class ProjectIdentifierSuggestionGenerator
-      IDENTIFIER_MAX_LENGTH = 5
+      MAX_IDENTIFIER_LENGTH = 10
+      DEFAULT_IDENTIFIER_BASE_LENGTH = 5
       SINGLE_WORD_LENGTH = 3
       FALLBACK_IDENTIFIER = "PROJ"
       SUFFIX_LIMIT = 10_000
@@ -82,8 +76,7 @@ module WorkPackages
           {
             project:,
             current_identifier: project.identifier,
-            suggested_identifier: identifier,
-            error_reason: error_reason(project.identifier, reserved_identifiers:, in_use_identifiers:)
+            suggested_identifier: identifier
           }
         end
       end
@@ -112,7 +105,7 @@ module WorkPackages
         end.join
         return FALLBACK_IDENTIFIER if acronym.empty?
 
-        acronym.slice(0, IDENTIFIER_MAX_LENGTH)
+        acronym.slice(0, DEFAULT_IDENTIFIER_BASE_LENGTH)
       end
 
       def unique_identifier(base, used_identifiers)
@@ -124,22 +117,10 @@ module WorkPackages
             if counter > SUFFIX_LIMIT
 
           suffix    = counter.to_s
-          candidate = "#{base.slice(0, IDENTIFIER_MAX_LENGTH - suffix.length)}#{suffix}"
+          candidate = "#{base.slice(0, DEFAULT_IDENTIFIER_BASE_LENGTH - suffix.length)}#{suffix}"
           break candidate unless used_identifiers.include?(candidate)
 
           counter += 1
-        end
-      end
-
-      def error_reason(identifier, reserved_identifiers:, in_use_identifiers:)
-        if identifier.length > IDENTIFIER_MAX_LENGTH
-          :too_long
-        elsif identifier.match?(/[^a-zA-Z0-9]/)
-          :special_characters
-        elsif in_use_identifiers.include?(identifier)
-          :in_use
-        elsif reserved_identifiers.include?(identifier)
-          :reserved
         end
       end
 

@@ -95,10 +95,27 @@ RSpec.describe WorkPackages::IdentifierAutofix::PreviewQuery do
     end
   end
 
-  it "returns Result entries shaped like generator output" do
+  it "returns Result entries with project, current_identifier, suggested_identifier, and error_reason" do
     create_problematic_project(name: "Alpha Beta", identifier: "alpha-beta")
 
     entry = result.projects_data.first
     expect(entry).to include(:project, :current_identifier, :suggested_identifier, :error_reason)
+  end
+
+  describe "error_reason classification" do
+    it "assigns :too_long when identifier length exceeds MAX_IDENTIFIER_LENGTH" do
+      create_problematic_project(name: "Test", identifier: "averylongidentifier")
+      expect(result.projects_data.first[:error_reason]).to eq(:too_long)
+    end
+
+    it "assigns :special_characters when identifier has non-alphanumeric chars but is short" do
+      create_problematic_project(name: "Test", identifier: "ab-c")
+      expect(result.projects_data.first[:error_reason]).to eq(:special_characters)
+    end
+
+    it "assigns :too_long (priority) when identifier is both too long and has special chars" do
+      create_problematic_project(name: "Test", identifier: "my-very-long-identifier")
+      expect(result.projects_data.first[:error_reason]).to eq(:too_long)
+    end
   end
 end

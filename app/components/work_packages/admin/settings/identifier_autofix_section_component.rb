@@ -53,12 +53,11 @@ module WorkPackages
         end
 
         # Produces a realistic-looking example work package ID for the preview table.
-        # The sequence number is derived deterministically from the handle so it looks
+        # The sequence number is derived deterministically from the identifier so it looks
         # varied across projects but is stable across renders. Range: 1–500.
-        # Single-digit numbers are zero-padded ("FP-07"), two/three digits are not ("FP-42").
-        def sample_wp_id(handle)
-          n = (handle.bytes.sum % 500) + 1
-          "#{handle}-#{format('%02d', n)}"
+        def sample_wp_id(identifier)
+          n = (identifier.bytes.sum % 500) + 1
+          "#{identifier}-#{n}"
         end
       end
     end
