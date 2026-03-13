@@ -95,7 +95,7 @@ module OpenProject::Backlogs
                    dependencies: :view_sprints
 
         permission :start_complete_sprint,
-                   { rb_sprints: :start },
+                   { rb_sprints: %i[start finish] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: %i[view_sprints manage_board_views],

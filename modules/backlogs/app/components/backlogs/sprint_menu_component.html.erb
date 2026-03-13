@@ -52,6 +52,20 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
+    if show_finish_sprint_action?
+      menu.with_item(
+        label: t(".action_menu.finish_sprint"),
+        tag: :button,
+        href: finish_project_sprint_path(project, sprint),
+        form_arguments: {
+          method: :patch,
+          data: { turbo: false }
+        }
+      ) do |item|
+        item.with_leading_visual_icon(icon: :check)
+      end
+    end
+
     if user_allowed?(:create_sprints)
       menu.with_item(
         id: dom_target(sprint, :menu, :edit_sprint),

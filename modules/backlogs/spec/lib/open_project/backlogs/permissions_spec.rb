@@ -62,6 +62,10 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
       expect(subject.dependencies).to contain_exactly(:view_sprints, :manage_board_views)
     end
 
+    it "covers both start and finish sprint actions" do
+      expect(subject.controller_actions).to include("rb_sprints/start", "rb_sprints/finish")
+    end
+
     context "when scrum_projects feature flag is active", with_flag: { scrum_projects: true } do
       it { is_expected.to be_visible }
     end

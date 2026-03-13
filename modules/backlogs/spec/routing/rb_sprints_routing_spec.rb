@@ -65,5 +65,14 @@ RSpec.describe RbSprintsController do
         id: "21"
       )
     }
+
+    it {
+      expect(patch("/projects/project_42/sprints/21/finish")).to route_to(
+        controller: "rb_sprints",
+        action: "finish",
+        project_id: "project_42",
+        id: "21"
+      )
+    }
   end
 end

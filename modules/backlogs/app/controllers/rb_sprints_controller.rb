@@ -36,13 +36,13 @@ class RbSprintsController < RbApplicationController
                           create
                           refresh_form
                           update_agile_sprint].freeze
-  START_ACTIONS = %i[start].freeze
+  SPRINT_STATE_ACTIONS = %i[start finish].freeze
 
   skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
 
   before_action :not_authorized_on_feature_flag_inactive,
                 :load_project,
-                only: NEW_SPRINT_ACTIONS + START_ACTIONS
+                only: NEW_SPRINT_ACTIONS + SPRINT_STATE_ACTIONS
 
   def new_dialog
     call = Sprints::SetAttributesService.new(
@@ -108,6 +108,7 @@ class RbSprintsController < RbApplicationController
   end
 
   def start
+    return render_403 unless OpenProject::FeatureDecisions.scrum_projects_active?
     return render_404 unless @sprint.in_planning?
 
     result = start_sprint
@@ -118,6 +119,20 @@ class RbSprintsController < RbApplicationController
                   notice: I18n.t(:notice_successful_update)
     else
       respond_with_start_failure(message: start_failure_message(result.message))
+    end
+  end
+
+  def finish
+    return render_403 unless OpenProject::FeatureDecisions.scrum_projects_active?
+    return render_404 unless @sprint.active?
+
+    result = finish_sprint
+
+    if result.success?
+      redirect_to backlogs_project_backlogs_path(@project),
+                  notice: I18n.t(:notice_successful_update)
+    else
+      respond_with_finish_failure(message: finish_failure_message(result.message))
     end
   end
 
@@ -190,7 +205,7 @@ class RbSprintsController < RbApplicationController
     load_project
 
     @sprint = if OpenProject::FeatureDecisions.scrum_projects_active? &&
-                 (NEW_SPRINT_ACTIONS + START_ACTIONS).include?(action_name.to_sym)
+                 (NEW_SPRINT_ACTIONS + SPRINT_STATE_ACTIONS).include?(action_name.to_sym)
                 Agile::Sprint.for_project(@project).visible.find(params[:id])
               else
                 Sprint.visible.find(params[:id])
@@ -223,6 +238,12 @@ class RbSprintsController < RbApplicationController
       .call
   end
 
+  def finish_sprint
+    Sprints::FinishService
+      .new(user: current_user, model: @sprint)
+      .call
+  end
+
   def respond_with_start_failure(message:)
     render_error_flash_message_via_turbo_stream(message:)
 
@@ -240,6 +261,25 @@ class RbSprintsController < RbApplicationController
       I18n.t(:notice_unsuccessful_start)
     end
   end
+
+  def respond_with_finish_failure(message:)
+    render_error_flash_message_via_turbo_stream(message:)
+
+    respond_with_turbo_streams(status: :unprocessable_entity) do |format|
+      format.html do
+        redirect_back_or_to(backlogs_project_backlogs_path(@project), alert: message)
+      end
+    end
+  end
+
+  def finish_failure_message(reason)
+    if reason.present?
+      I18n.t(:notice_unsuccessful_finish_with_reason, reason:)
+    else
+      I18n.t(:notice_unsuccessful_finish)
+    end
+  end
+
   def not_authorized_on_feature_flag_inactive
     render_403 unless OpenProject::FeatureDecisions.scrum_projects_active?
   end

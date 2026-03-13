@@ -456,6 +456,91 @@ RSpec.describe RbSprintsController do
       end
     end
 
+    describe "PATCH #finish" do
+      let!(:sprint) { create(:agile_sprint, project:, status: "active") }
+      let(:request_params) { { project_id: project.id, id: sprint.id } }
+      let(:service_result) do
+        ServiceResult.success(
+          result: sprint.tap { |finished_sprint| finished_sprint.status = "completed" }
+        )
+      end
+      let(:service) { instance_double(Sprints::FinishService, call: service_result) }
+
+      before do
+        allow(Sprints::FinishService)
+          .to receive(:new)
+          .with(user:, model: sprint)
+          .and_return(service)
+      end
+
+      context "with the feature flag inactive" do
+        it "responds with not found" do
+          patch :finish, params: request_params
+
+          expect(response).not_to be_successful
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "with the feature flag active", with_flag: { scrum_projects: true } do
+        it "finishes the sprint and redirects to the backlog", :aggregate_failures do
+          patch :finish, params: request_params
+
+          expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+          expect(flash[:notice]).to eq(I18n.t(:notice_successful_update))
+          expect(service).to have_received(:call)
+        end
+
+        context "when finishing fails" do
+          let(:service_result) { ServiceResult.failure(message: "something went wrong") }
+
+          it "redirects back to the backlog", :aggregate_failures do
+            patch :finish, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(
+              I18n.t(:notice_unsuccessful_finish_with_reason, reason: "something went wrong")
+            )
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "when finishing fails without an explicit message" do
+          let(:service_result) { ServiceResult.failure }
+
+          it "redirects back with the default finish failure message", :aggregate_failures do
+            patch :finish, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_finish))
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "without the 'start_complete_sprint' permission" do
+          let(:permissions) { all_permissions - [:start_complete_sprint] }
+
+          it "responds with forbidden" do
+            patch :finish, params: request_params
+
+            expect(response).not_to be_successful
+            expect(response).to have_http_status(:forbidden)
+          end
+        end
+
+        context "when the sprint is already completed" do
+          let!(:sprint) { create(:agile_sprint, project:, status: "completed") }
+
+          it "responds with not found" do
+            patch :finish, params: request_params
+
+            expect(response).not_to be_successful
+            expect(response).to have_http_status(:not_found)
+          end
+        end
+      end
+    end
+
     describe "GET #refresh_form" do
       context "with the feature flag inactive" do
         it "responds with forbidden" do

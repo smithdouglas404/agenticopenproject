@@ -39,6 +39,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
   let(:user) { create(:user) }
   let(:permissions) { [] }
   let(:start_sprint_path) { Rails.application.routes.url_helpers.start_project_sprint_path(project, sprint) }
+  let(:finish_sprint_path) { Rails.application.routes.url_helpers.finish_project_sprint_path(project, sprint) }
 
   before do
     allow(Setting)
@@ -127,10 +128,18 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
                  finish_date: Date.tomorrow,
                  status: "active")
         end
+        let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint] }
 
-        it "shows Task board after Stories/Tasks" do
+        it "shows Finish sprint first and Task board after Stories/Tasks" do
           render_component
 
+          expect(menu_items.first).to eq("Finish sprint")
+          expect(page).to have_octicon(:check)
+          expect(page).to have_css(
+            "form[action='#{finish_sprint_path}'][data-turbo='false'] " \
+            "input[name='_method'][value='patch']",
+            visible: :hidden
+          )
           expect(menu_items).to include("Stories/Tasks", "Task board")
           expect(menu_items.index("Task board")).to be > menu_items.index("Stories/Tasks")
         end

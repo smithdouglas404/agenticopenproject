@@ -68,6 +68,10 @@ module Backlogs
       scrum_projects_active? && sprint.in_planning? && user_allowed?(:start_complete_sprint)
     end
 
+    def show_finish_sprint_action?
+      scrum_projects_active? && sprint.active? && user_allowed?(:start_complete_sprint)
+    end
+
     def disable_start_sprint_action?
       scrum_projects_active? &&
         sprint.in_planning? &&

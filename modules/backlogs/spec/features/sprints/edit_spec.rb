@@ -175,6 +175,38 @@ RSpec.describe "Edit", :js do
           backlogs_page.expect_sprint_names_in_order("Changed name", second_sprint.name)
         end
 
+        context "when the sprint is active" do
+          let!(:first_sprint) do
+            create(:agile_sprint,
+                   project:,
+                   status: "active",
+                   start_date: Date.new(2025, 9, 5),
+                   finish_date: Date.new(2025, 9, 15))
+          end
+
+          let!(:second_sprint) do
+            create(:agile_sprint,
+                   project:,
+                   start_date: Date.new(2025, 9, 16),
+                   finish_date: Date.new(2025, 9, 26))
+          end
+
+          let!(:task_board) { create(:board_grid_with_query, project:, linked: first_sprint) }
+
+          it "finishes the sprint and returns to the backlog" do
+            backlogs_page.within_sprint_menu(first_sprint) do |menu|
+              expect(menu).to have_selector :menuitem, "Finish sprint"
+              expect(menu).to have_css "form[action='#{finish_project_sprint_path(project, first_sprint)}'][data-turbo='false']"
+              menu.find(:button, "Finish sprint").click
+            end
+
+            backlogs_page.expect_current_path
+            expect_and_dismiss_flash type: :success, message: "Successful update."
+            expect(first_sprint.reload).to be_completed
+            backlogs_page.expect_sprint_names_in_order(second_sprint.name)
+          end
+        end
+
         context "when lacking the 'manage_sprint_items' permission" do
           let(:permissions) { all_permissions - %i[manage_sprint_items] }
 
