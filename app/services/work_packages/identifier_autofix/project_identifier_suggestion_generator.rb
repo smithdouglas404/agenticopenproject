@@ -172,7 +172,8 @@ module WorkPackages
       end
 
       def build_candidate(clean_words, chars_per_word)
-        clean_words.each_with_index.map { |cw, i| cw.first(chars_per_word[i]).join }.join[0, IDENTIFIER_LENGTH[:max]]
+        parts = clean_words.each_with_index.map { |cw, i| cw.first(chars_per_word[i]).join }
+        parts.join[0, IDENTIFIER_LENGTH[:max]]
       end
 
       # Strips leading digits so identifiers always start with a letter.
@@ -184,6 +185,7 @@ module WorkPackages
       end
 
       # Iterates through expansion candidates, then falls back to numeric suffix.
+      # Candidates are already filtered to start with a letter and meet min length.
       def find_unique(candidates, used_identifiers)
         candidates.each do |candidate|
           return candidate unless used_identifiers.include?(candidate)
