@@ -82,7 +82,7 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
 
     describe "#updated_at" do
       before do
-        allow(portfolio).to receive(:updated_at).and_return(45.days.ago)
+        allow(portfolio).to receive(:updated_at).and_return(30.days.ago)
       end
 
       it "shows when the portfolio was last updated" do
