@@ -94,7 +94,6 @@ apt-get purge -yq --auto-remove \
 
 # curl/wget are only needed during installation in this stage.
 apt-get purge -yq --auto-remove \
-  curl \
   wget
 
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
