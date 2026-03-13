@@ -28,12 +28,14 @@
  * ++
  */
 
-import { HocuspocusProvider } from '@hocuspocus/provider';
-import { Controller } from '@hotwired/stimulus';
-import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
-import { PROVIDER_AUTH_ERROR_EVENT, ProviderAuthErrorKind, TokenRefreshService } from 'core-stimulus/services/documents/token-refresh.service';
-import type { Doc } from 'yjs';
 import * as Y from 'yjs';
+
+import { PROVIDER_AUTH_ERROR_EVENT, ProviderAuthErrorKind, TokenRefreshService } from 'core-stimulus/services/documents/token-refresh.service';
+
+import { Controller } from '@hotwired/stimulus';
+import type { Doc } from 'yjs';
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 
 export default class extends Controller {
   static values = {
@@ -68,6 +70,7 @@ export default class extends Controller {
   };
 
   connect():void {
+    if (!this.hocuspocusUrlValue) return;
     this.currentToken = this.tokenPayloadValue;
 
     const ydoc:Doc = new Y.Doc();

@@ -38,6 +38,7 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
   before do
     login_as(admin)
 
+    Setting.collaborative_editing_hocuspocus_url = ""
     # This is here while we don't have a setting defined for enabling/disabling collaboration
     # rubocop:disable RSpec/AnyInstance
     allow_any_instance_of(Primer::OpenProject::Forms::BlockNoteEditor).to receive(:collaboration_enabled).and_return(false)
@@ -84,7 +85,7 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
       expect(page).to have_test_selector("blocknote-document-description")
 
       editor.open_add_work_package_dialog
-      editor.element.fill_in("Link existing work package", with: "test")
+      editor.shadow_root.fill_in("Link existing work package", with: "test")
       expect(editor.element).to have_content("AAA test") # wait for dropdown to open
       expect(editor.element.text).to match(/AAA test.*CCC test.*BBB test/m)
     end
@@ -102,8 +103,8 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
       expect(page).to have_test_selector("blocknote-document-description")
 
       editor.open_add_work_package_dialog
-      editor.element.fill_in("Link existing work package", with: "tiger")
-      editor.element.all("div", text: "pet a tiger").last.click
+      editor.shadow_root.fill_in("Link existing work package", with: "tiger")
+      editor.shadow_root.all("div", text: "pet a tiger").last.click
 
       expect(editor.element).to have_no_content("Link existing work package") # search dialog is closed
       expect(editor.element.text).to match(/LIFE GOALS\s#\d+\sOpen\spet a tiger/)

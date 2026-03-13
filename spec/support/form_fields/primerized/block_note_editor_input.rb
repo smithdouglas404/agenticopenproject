@@ -15,8 +15,12 @@ module FormFields
       end
 
       def open_add_work_package_dialog
-        send_keys_to_editor("/work package")
-        send_keys(:enter)
+        send_keys_to_editor("/openproject")
+        element.send_keys(:enter)
+      end
+
+      def find_work_package_search_field
+        shadow_root.find("input.op-bn-search--input")
       end
 
       def fill_in(content)
