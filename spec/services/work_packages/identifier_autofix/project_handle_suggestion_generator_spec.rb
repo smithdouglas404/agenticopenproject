@@ -181,4 +181,13 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator
       expect(result.first[:error_reason]).to eq(:too_long)
     end
   end
+
+  describe ".suggest_handle" do
+    it "produces the same handle as .call for the same name" do
+      project = build_stubbed(:project, name: "Alpha Beta", identifier: "alpha-beta")
+      batch_result = described_class.call([project]).first[:suggested_handle]
+      single_result = described_class.suggest_handle("Alpha Beta")
+      expect(single_result).to eq(batch_result)
+    end
+  end
 end

@@ -54,16 +54,25 @@ module WorkPackages
         new.call(projects, reserved_handles:, in_use_handles:)
       end
 
+      # Returns a single suggested handle string for the given project name.
+      #
+      def self.suggest_handle(name, reserved_handles: Set.new, in_use_handles: Set.new)
+        new.suggest_handle(name, reserved_handles:, in_use_handles:)
+      end
+
       def call(projects, reserved_handles:, in_use_handles:)
         generate_suggestions(projects, reserved_handles:, in_use_handles:)
+      end
+
+      def suggest_handle(name, reserved_handles: Set.new, in_use_handles: Set.new)
+        base = handle_from_name(name)
+        unique_handle(base, combined_handles(reserved_handles, in_use_handles))
       end
 
       private
 
       def generate_suggestions(projects, reserved_handles:, in_use_handles:)
-        used_handles = Set.new
-        used_handles.merge(in_use_handles)
-        used_handles.merge(reserved_handles)
+        used_handles = combined_handles(reserved_handles, in_use_handles)
 
         projects.map do |project|
           base   = handle_from_name(project.name)
@@ -132,6 +141,10 @@ module WorkPackages
         elsif reserved_handles.include?(identifier)
           :reserved
         end
+      end
+
+      def combined_handles(*sets)
+        sets.reduce(Set.new, :merge)
       end
     end
   end
