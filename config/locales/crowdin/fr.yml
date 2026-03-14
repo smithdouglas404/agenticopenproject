@@ -185,8 +185,8 @@ fr:
           imported: "Mode révision"
           reverting: "Rétablissement en cours"
           revert_error: "Erreur lors de la restauration"
-          revert_cancelling: "Cancelling revert"
-          revert_cancelled: "Revert cancelled"
+          revert_cancelling: "Annulation de la réversion"
+          revert_cancelled: "Annulation de l'annulation"
           reverted: "Restauré"
           finalizing: "Finalisation"
           finalizing_error: "Erreur lors de la finalisation"
@@ -615,13 +615,13 @@ fr:
   op_dry_validation:
     or: "ou"
     errors:
-      unexpected_key: "is not allowed."
+      unexpected_key: "n'est pas autorisé."
       array?: "doit être un tableau."
       decimal?: "doit être une décimale."
       defined: "ne doit pas être défini."
       eql?: "doit être égal à %{left}."
       filled?: "doit être rempli."
-      format?: "is in invalid format."
+      format?: "est dans un format non valide."
       greater_or_equal_zero: "doit être supérieur ou égal à 0."
       gteq?: "doit être supérieur ou égal à %{num}."
       hash?: "doit être un hachage."
@@ -648,9 +648,9 @@ fr:
         parent:
           not_descendant: "doit être un descendant de la racine de la hiérarchie."
       str?: "doit être une chaîne de caractères."
-      time?: "must be a time."
+      time?: "doit être un moment."
       type?: "doit être de type : %{type}."
-      uri?: "is not a valid URI."
+      uri?: "n’est pas une URL valide."
     rules:
       copy_workflow_from: "Type de copie du flux de travail"
       enabled: "Activé"
@@ -1035,7 +1035,7 @@ fr:
         no_results_user: "Aucun utilisateur n'a été trouvé"
         invite_user: "Invité :"
         no_results_placeholder: "Aucun utilisateur fictif n'a été trouvé"
-        create_new_placeholder: "Créer un nouveau utilisateur fictif :"
+        create_new_placeholder: "Créer un nouvel utilisateur fictif :"
         no_results_group: "Aucun groupe n'a été trouvé"
         invite_to_project: "Inviter à rejoindre %{project_name}"
         required:
@@ -4998,7 +4998,7 @@ fr:
   text_default_administrator_account_changed: "Le compte administrateur par défaut a été changé"
   text_default_encoding: "Défaut: UTF-8"
   text_destroy: "Supprimer"
-  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
+  text_destroy_with_associated: "Il y a des objets supplémentaires associés à ce(s) lot(s) de travaux qui doivent être supprimés. Ces objets sont des types suivants :"
   text_destroy_what_to_do: "Que voulez-vous faire?"
   text_diff_truncated: "... Cette « diff » a été tronquée car elle dépasse la taille maximale d'affichage."
   text_email_delivery_not_configured: "L'envoi d'e-mails n'est pas configuré et les notifications sont désactivées.\nConfigurer votre serveur SMTP pour les activer."
@@ -5044,7 +5044,7 @@ fr:
   text_notice_too_many_values_are_inperformant: "Remarque : L'affichage de plus de 100 articles par page peut augmenter le temps de chargement de la page."
   text_notice_security_badge_displayed_html: >
     Remarque : si cette option est activée, un badge indiquant l'état de votre installation s'affichera dans le panneau <a href="%{information_panel_path}">%{information_panel_label}</a> administration et sur la page d'accueil. Il n'est affiché que pour les administrateurs. <br/>Le badge vérifiera votre version actuelle d'OpenProject par rapport à la base de données officielle d'OpenProject pour vous avertir de toute mise à jour ou vulnérabilité connue. Pour plus d'informations sur ce que la vérification fournit, quelles données sont nécessaires pour fournir les mises à jour disponibles, et comment désactiver cette vérification, veuillez visiter <a href="%{more_info_url}">la documentation de configuration</a>.
-  text_own_membership_delete_confirmation: "Vous êtes sur le point de retirer tout ou partie de vos permissions et ne pourrez peut-être plus modifier le projet par la suite.\nÊtes vous sûr de vouloir continuer?"
+  text_own_membership_delete_confirmation: "Vous êtes sur le point de retirer tout ou partie de vos permissions et ne pourrez peut-être plus modifier le projet par la suite.\nVoulez-vous vraiment continuer?"
   text_permanent_delete_confirmation_checkbox_label: "Je comprends que cette suppression ne peut pas être annulée"
   text_permanent_remove_confirmation_checkbox_label: "Je comprends que cette suppression ne peut pas être annulée"
   text_plugin_assets_writable: "Répertoire des « plugin assets » est accessible en écriture"
@@ -5066,7 +5066,7 @@ fr:
   text_wrote: "a écrit"
   text_warn_on_leaving_unsaved: "Le lot de travaux contient du texte non sauvegardé qui sera perdu si vous quittez cette page."
   text_what_did_you_change_click_to_add_comment: "Qu’avez-vous changé ? Cliquez ici pour ajouter un commentaire"
-  text_wiki_destroy_confirmation: "Êtes vous sur de vouloir supprimer ce wiki et tout son contenu?"
+  text_wiki_destroy_confirmation: "Voulez-vous vraiment supprimer ce wiki et tout son contenu?"
   text_wiki_page_destroy_children: "Supprimer les pages enfants et toute leur descendance"
   text_wiki_page_destroy_question: "Cette page possède %{descendants} page(s) enfant et descendant(s). Que voulez vous faire?"
   text_wiki_page_nullify_children: "Garder les pages enfants en tant que pages d'origine"
@@ -5123,7 +5123,7 @@ fr:
     all: "tous"
     active: "actif"
     activate: "Activer"
-    activate_and_reset_failed_logins: "Activer et réinitialiser les connexions echouées"
+    activate_and_reset_failed_logins: "Activer et réinitialiser les connexions échouées"
     authentication_provider: "Fournisseur d'authentification"
     identity_url_text: "L'identifiant unique interne fourni par le fournisseur d'authentification."
     authentication_settings_disabled_due_to_external_authentication: >
@@ -5146,7 +5146,7 @@ fr:
     no_login: "Cet utilisateur s'authentifie avec un mot de passe. Tant que cela est désactivé, il ne peut s'authentifier."
     password_change_unsupported: Le changement de mot de passe n'est pas supporté.
     registered: "enregistré"
-    reset_failed_logins: "Réinitialiser les connexions echouées"
+    reset_failed_logins: "Réinitialiser les connexions échouées"
     status_user_and_brute_force: "%{user} et %{brute_force}"
     status_change: "Changement de statut"
     text_change_disabled_for_provider_login: "Le nom et l'adresse électronique sont définis par votre fournisseur d'accès et ne peuvent donc pas être modifiés."
