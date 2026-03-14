@@ -121,6 +121,15 @@ RSpec.describe "API v3 roles resource" do
           .to be(403)
       end
     end
+
+    context "as admin without memberships in any project" do
+      let(:current_user) { create(:admin) }
+
+      it "returns 200" do
+        expect(subject.status)
+          .to be(200)
+      end
+    end
   end
 
   describe "GET /api/v3/roles/:id" do
