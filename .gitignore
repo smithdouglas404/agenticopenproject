@@ -100,7 +100,7 @@ npm-debug.log*
 *.icloud
 .rspec
 .byebug_history
-
+/vendor/bundle
 # coverage in plugins
 /lib/plugins/*/coverage
 
