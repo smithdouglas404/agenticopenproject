@@ -46,7 +46,6 @@ class ProjectsController < ApplicationController
   before_action :find_optional_template, only: %i[new create]
 
   no_authorization_required! :index
-  no_authorization_required! :identifier_dialog
 
   include SortHelper
   include PaginationHelper
