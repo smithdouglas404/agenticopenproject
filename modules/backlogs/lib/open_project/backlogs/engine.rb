@@ -195,13 +195,9 @@ module OpenProject::Backlogs
         end
       end
 
-      ::Type.add_constraint :story_points, ->(type, project: nil) do
-        if project.present?
-          project.backlogs_enabled? && type.story?
-        else
-          # Allow globally configuring the attribute if story
-          type.story?
-        end
+      ::Type.add_constraint :story_points, ->(_type, **) do
+        # Story points are available for all work package types and projects.
+        true
       end
 
       ::Type.add_default_mapping(:estimates_and_progress, :story_points)

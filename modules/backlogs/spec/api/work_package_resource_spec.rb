@@ -73,7 +73,24 @@ RSpec.describe "API v3 Work package resource" do
 
       it { expect(last_response).to have_http_status :ok }
 
-      it { is_expected.not_to have_json_path("storyPoints") }
+      it { is_expected.to be_json_eql(work_package.story_points.to_json).at_path("storyPoints") }
+    end
+
+    context "bug type" do
+      let(:bug_type) { create(:type_bug) }
+      let(:project) { create(:project, types: [bug_type]) }
+      let(:work_package) do
+        create(:work_package,
+               project:,
+               type: bug_type,
+               story_points: 8,
+               estimated_hours: 5,
+               remaining_hours: 5)
+      end
+
+      include_context "query work package"
+
+      it { is_expected.to be_json_eql(work_package.story_points.to_json).at_path("storyPoints") }
     end
   end
 

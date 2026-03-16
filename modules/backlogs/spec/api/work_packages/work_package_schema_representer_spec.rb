@@ -46,7 +46,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
     login_as(current_user)
 
     allow(schema.project).to receive(:backlogs_enabled?).and_return(true)
-    allow(work_package.type).to receive(:story?).and_return(true)
     allow(work_package).to receive(:leaf?).and_return(true)
   end
 
@@ -66,8 +65,8 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         allow(schema.project).to receive(:backlogs_enabled?).and_return(false)
       end
 
-      it "does not show story points" do
-        expect(subject).not_to have_json_path("storyPoints")
+      it "still shows story points" do
+        expect(subject).to have_json_path("storyPoints")
       end
     end
 
@@ -76,8 +75,16 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         allow(schema.type).to receive(:story?).and_return(false)
       end
 
-      it "does not show story points" do
-        expect(subject).not_to have_json_path("storyPoints")
+      it "still shows story points" do
+        expect(subject).to have_json_path("storyPoints")
+      end
+    end
+
+    context "for bug type" do
+      let(:work_package) { build_stubbed(:work_package, type: build_stubbed(:type_bug)) }
+
+      it "shows story points" do
+        expect(subject).to have_json_path("storyPoints")
       end
     end
   end

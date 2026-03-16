@@ -47,12 +47,16 @@ module OpenProject::Backlogs
                    type: "Integer",
                    required: false,
                    show_if: ->(*) {
-                     backlogs_constraint_passed?(:story_points)
+                     type_constraint_passed?(:story_points)
                    }
 
             define_method :backlogs_constraint_passed? do |attribute|
               represented.project&.backlogs_enabled? &&
-                (!represented.type || represented.type.passes_attribute_constraint?(attribute))
+                type_constraint_passed?(attribute)
+            end
+
+            define_method :type_constraint_passed? do |attribute|
+              !represented.type || represented.type.passes_attribute_constraint?(attribute, project: represented.project)
             end
           end
         end

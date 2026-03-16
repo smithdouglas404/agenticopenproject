@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,27 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject::Backlogs
-  module Patches
-    module API
-      module WorkPackageRepresenter
-        module_function
+require "spec_helper"
 
-        def extension
-          ->(*) do
-            property :position,
-                     render_nil: true,
-                     skip_render: ->(*) do
-                       !(backlogs_enabled? && type && type.passes_attribute_constraint?(:position))
-                     end
+RSpec.describe OpenProject::Backlogs::QueryBacklogsSelect do
+  describe ".instances" do
+    subject(:attribute_names) { described_class.instances(context).map(&:name) }
 
-            property :story_points,
-                     render_nil: true,
-                     skip_render: ->(*) do
-                       !(type && type.passes_attribute_constraint?(:story_points, project: project))
-                     end
-          end
-        end
+    context "without context" do
+      let(:context) { nil }
+
+      it "returns all backlogs selects" do
+        expect(attribute_names).to contain_exactly(:story_points, :position)
+      end
+    end
+
+    context "when backlogs is enabled" do
+      let(:context) { instance_double(Project, backlogs_enabled?: true) }
+
+      it "returns all backlogs selects" do
+        expect(attribute_names).to contain_exactly(:story_points, :position)
+      end
+    end
+
+    context "when backlogs is disabled" do
+      let(:context) { instance_double(Project, backlogs_enabled?: false) }
+
+      it "returns only story points" do
+        expect(attribute_names).to contain_exactly(:story_points)
       end
     end
   end

@@ -40,8 +40,7 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     validates_numericality_of :story_points, only_integer: true,
                                              allow_nil: true,
                                              greater_than_or_equal_to: 0,
-                                             less_than: 10_000,
-                                             if: -> { backlogs_enabled? }
+                                             less_than: 10_000
 
     belongs_to :sprint, class_name: "Agile::Sprint", optional: true
 

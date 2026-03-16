@@ -43,9 +43,13 @@ module OpenProject::Backlogs
     }
 
     def self.instances(context = nil)
-      return [] if context && !context.backlogs_enabled?
+      active_selects = if context && !context.backlogs_enabled?
+                         backlogs_selects.except(:position)
+                       else
+                         backlogs_selects
+                       end
 
-      backlogs_selects.map do |name, options|
+      active_selects.map do |name, options|
         new(name, options)
       end
     end

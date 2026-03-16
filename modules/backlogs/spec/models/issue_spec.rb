@@ -79,6 +79,13 @@ RSpec.describe WorkPackage do
         work_package.story_points = "1.3"
         expect(work_package).not_to be_valid
       end
+
+      it "is still validated when backlogs module is disabled" do
+        work_package.project.enabled_module_names = Array(work_package.project.enabled_module_names) - ["backlogs"]
+        work_package.story_points = "-1"
+
+        expect(work_package).not_to be_valid
+      end
     end
   end
 
