@@ -1,11 +1,12 @@
 name: Package
 on:
   push:
+    tags:
+      - v*
     branches:
       - packaging/*
       - dev
       - release/*
-      - stable/*
   workflow_dispatch:
 
 jobs:
