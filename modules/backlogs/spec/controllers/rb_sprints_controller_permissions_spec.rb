@@ -39,7 +39,7 @@ RSpec.describe RbSprintsController, "permissions" do
     create(:project, enabled_module_names: %w[work_package_tracking backlogs]).tap do |p|
       create(:member,
              user: current_user,
-             roles: [create(:project_role, permissions: [:update_sprints])],
+             roles: [create(:project_role, permissions: [:create_sprints])],
              project: p)
     end
   end
@@ -80,7 +80,7 @@ RSpec.describe RbSprintsController, "permissions" do
       before do
         create(:member,
                user: current_user,
-               roles: [create(:project_role, permissions: %i[view_work_packages view_versions update_sprints])],
+               roles: [create(:project_role, permissions: %i[view_work_packages view_versions create_sprints])],
                project: sprint_project)
       end
 

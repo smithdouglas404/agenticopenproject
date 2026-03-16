@@ -73,6 +73,7 @@ Rails.application.routes.draw do
         get :details_dialog
         put :update_details
         put :change_state
+        put :change_sharing
         post :notify
         get :history
         get :delete_dialog

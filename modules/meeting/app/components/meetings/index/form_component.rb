@@ -83,7 +83,7 @@ module Meetings
     def available_templates
       return [] unless @project
 
-      @available_templates ||= Meeting.onetime_templates.where(project: @project).visible
+      @available_templates ||= Meeting.templates_visible_in_project(@project)
     end
   end
 end

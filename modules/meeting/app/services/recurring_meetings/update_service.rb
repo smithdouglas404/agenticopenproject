@@ -162,10 +162,10 @@ module RecurringMeetings
       return if new_title == @old_title
 
       recurring_meeting
-        .scheduled_instances(upcoming: true)
-        .instantiated
-        .each do |scheduled|
-          scheduled.meeting.update_column(:title, new_title)
+      .scheduled_instances(upcoming: true)
+      .instantiated
+      .each do |scheduled|
+        scheduled.meeting.update_column(:title, new_title)
       end
     end
 

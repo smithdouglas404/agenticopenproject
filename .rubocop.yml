@@ -226,6 +226,10 @@ Rails/SkipsModelValidations:
 RSpecRails/HttpStatus:
   Enabled: false
 
+# The block form of `travel_to` is often the tighter and safer option in our Rails specs.
+RSpecRails/TravelAround:
+  Enabled: false
+
 # expect not_to change is not working as expected
 # if you chain it with multiple expected changes
 RSpec/ChangeByZero:

@@ -97,6 +97,13 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
 
       expect(page).to have_css("action-menu")
     end
+
+    it "renders a drag handle compatible with GenericDragAndDropController" do
+      render_component
+
+      expect(page).to have_css(".DragHandle[role='button'][tabindex='0']")
+      expect(page).to have_css(".DragHandle[aria-label='Move Test Story Subject']")
+    end
   end
 
   describe "story points handling" do

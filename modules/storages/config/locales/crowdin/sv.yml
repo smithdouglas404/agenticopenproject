@@ -372,6 +372,7 @@ sv:
         failure: Vissa kontroller misslyckades och systemet fungerar inte som förväntat.
         success: Alla anslutningar och system fungerar som förväntat.
         warning: Vissa kontroller gav tillbaka en varning. Detta kan leda till oväntat beteende.
+      synced: 'Last sync: %{datetime}'
       title: Rapport om hälsostatus
     health_email_notifications:
       description_disabled: Administratörer kommer inte att få uppdateringar via e-post när det finns viktiga uppdateringar.

@@ -198,6 +198,8 @@ module Components
       end
 
       def open_filters
+        return if filters_expanded?
+
         retry_block do
           toggle_filters_section
           expect(page).to have_css(".op-filters-form.-expanded")
@@ -211,6 +213,13 @@ module Components
 
       def toggle_filters_section
         filters_toggle.click
+      end
+
+      def filters_expanded?
+        # wait for widgets to be loaded (filters button should be visible)
+        filters_toggle
+
+        page.has_css?(".op-filters-form.-expanded", wait: 0)
       end
 
       def autocomplete_filter?(filter)

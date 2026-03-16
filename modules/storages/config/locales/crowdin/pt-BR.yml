@@ -372,6 +372,7 @@ pt-BR:
         failure: Alguns testes não passaram e o sistema não está funcionando corretamente.
         success: Todas as conexões e sistemas estão operando normalmente.
         warning: Alguns testes retornaram um alerta. Isso pode causar comportamentos inesperados.
+      synced: 'Last sync: %{datetime}'
       title: Relatório de status de integridade
     health_email_notifications:
       description_disabled: Os administradores não receberão atualizações por e-mail quando houver atualizações importantes.

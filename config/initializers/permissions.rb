@@ -399,7 +399,8 @@ Rails.application.reloader.to_prepare do
       wpt.permission :add_work_package_attachments,
                      {},
                      permissible_on: %i[work_package project],
-                     dependencies: :view_work_packages
+                     dependencies: :view_work_packages,
+                     contract_actions: { work_package_attachments: %i[create] }
 
       # WorkPackage categories
       wpt.permission :manage_categories,

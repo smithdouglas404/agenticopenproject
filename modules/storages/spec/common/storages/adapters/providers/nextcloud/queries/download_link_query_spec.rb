@@ -82,14 +82,12 @@ module Storages
               end
 
               context "with outbound request returning 200 and an empty body" do
-                it "refreshes the token and returns success", vcr: "nextcloud/download_link_query_unauthorized" do
+                it "fails with code invalid_response", vcr: "nextcloud/download_link_query_unauthorized" do
                   download_link = subject.call(auth_strategy:, input_data:)
-                  expect(download_link).to be_success
+                  expect(download_link).to be_failure
 
-                  uri = download_link.value!
-                  expect(uri.host).to eq("nextcloud.local")
-                  expect(uri.path)
-                    .to match(/index.php\/apps\/integration_openproject\/direct\/[0-9a-zA-Z]+\/#{file_link.origin_name}/)
+                  error = download_link.failure
+                  expect(error.code).to eq(:invalid_response)
                 end
               end
             end

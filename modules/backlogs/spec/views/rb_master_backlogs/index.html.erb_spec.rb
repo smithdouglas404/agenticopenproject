@@ -32,7 +32,7 @@ RSpec.describe "rb_master_backlogs/index" do
   let(:user) { create(:user) }
   let(:role_allowed) do
     create(:project_role,
-           permissions: %i[view_master_backlog view_taskboards])
+           permissions: %i[view_sprints])
   end
   let(:statuses) do
     [create(:status, is_default: true),

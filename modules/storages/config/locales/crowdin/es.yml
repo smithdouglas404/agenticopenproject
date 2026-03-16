@@ -372,6 +372,7 @@ es:
         failure: Algunas comprobaciones han fallado y el sistema no funciona como se esperaba.
         success: Todas las conexiones y sistemas funcionan según lo previsto.
         warning: Algunas comprobaciones devolvieron una advertencia. Esto puede dar lugar a un comportamiento inesperado.
+      synced: 'Last sync: %{datetime}'
       title: Informe de estado de salud
     health_email_notifications:
       description_disabled: Los administradores no recibirán actualizaciones por correo electrónico cuando haya actualizaciones importantes.
