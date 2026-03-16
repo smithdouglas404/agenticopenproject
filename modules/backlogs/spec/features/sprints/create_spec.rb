@@ -76,6 +76,14 @@ RSpec.describe "Create", :js do
   end
 
   context "with the feature flag active", with_flag: { scrum_projects: true } do
+    it "shows a correct breadcrumb menu" do
+      within ".PageHeader-breadcrumbs" do
+        expect(page).to have_link(href: project_path(project), text: project.name)
+        expect(page).to have_link(href: sprint_planning_backlogs_project_backlogs_path(project), text: "Backlogs")
+        expect(page).to have_text("Sprint planning")
+      end
+    end
+
     context "with the 'create_sprints' permissions" do
       let(:start_date) { Date.new(2025, 10, 5) }
       let(:start_date_fmt) { start_date.strftime("%Y-%m-%d") }
