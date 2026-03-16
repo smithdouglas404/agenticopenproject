@@ -55,7 +55,7 @@ RSpec.describe Projects::CopyFormComponent, type: :component do
     end
 
     it "includes the set_name_first translation" do
-      translation = I18n.t('js.projects.identifier_suggestion.set_name_first')
+      translation = I18n.t("js.projects.identifier_suggestion.set_name_first")
       expect(render_component).to have_css(
         "[data-projects--identifier-suggestion-set-name-first-value='#{translation}']"
       )
