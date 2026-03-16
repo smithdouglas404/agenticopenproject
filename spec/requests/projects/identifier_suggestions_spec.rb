@@ -33,18 +33,7 @@ require "rails_helper"
 RSpec.describe "GET /projects/identifier_suggestion", type: :rails_request do
   current_user { create(:user) }
 
-  context "when the feature flag is off" do
-    before { with_flags(semantic_work_package_ids: false) }
-
-    it "returns 404" do
-      get "/projects/identifier_suggestion", params: { name: "My Project" }, as: :json
-      expect(response).to have_http_status(:not_found)
-    end
-  end
-
-  context "when the feature flag is on" do
-    before { with_flags(semantic_work_package_ids: true) }
-
+  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
     it "returns a suggested identifier derived from the name" do
       get "/projects/identifier_suggestion", params: { name: "Flight Planning Algorithm" }, as: :json
       expect(response).to have_http_status(:ok)
