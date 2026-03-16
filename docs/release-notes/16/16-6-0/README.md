@@ -30,7 +30,7 @@ OpenProject 16.6 introduces new project attribute types that make portfolio eval
 
 **Weighted item lists** extend this concept by allowing administrators to assign numeric scores to list options, such as effort levels or risk ratings. These values can then be used as input for calculated results.
 
-**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Weighted item lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in the example below) is changed. This allows teams to calculate project scores and prioritise consistently across the portfolio.
+**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Weighted item lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in the example below) is changed. This allows teams to calculate project scores and prioritize consistently across the portfolio.
 
 Here's an example of a calculated value called 'Overall score (calculated)' with the following formula: `(Strategic impact * 0.6) + (Benefit ​* 0.3) - (Effort * 0.1)`
 
@@ -61,11 +61,11 @@ While this is a small update by itself, it marks the beginning of a major improv
 
 ### Possibility to change parent of a custom field item (Enterprise add-on)
 
-Administrators can now change the parent of an item within a [hierarchical custom field (Enterprise add-on)](../../system-admin-guide/custom-fields/#hierarchy-custom-field-enterprise-add-on) or project attribute. This makes it easier to rearrange existing items without recreating them from scratch. 
+Administrators can now change the parent of an item within a [hierarchical custom field (Enterprise add-on)](../../../system-admin-guide/custom-fields/#hierarchy-custom-field-enterprise-add-on) or project attribute. This makes it easier to rearrange existing items without recreating them from scratch. 
 
 To do so, administrators need to navigate to *Administration → Custom fields*, select a custom field type hierarchy and click on the *Items* tab. Then they click on the *More* icon and select *Change parent*. A dialog opens showing the current hierarchy tree. From there, administrators can search, select a new parent, and save the updated structure. The hierarchy is updated immediately after saving. Like mentioned above, this also works for project attributes.
 
-![OpenProject 16.6: Custom field type hierarchy in the administration, tab 'Items', one item is selected with the 'More' menu and the option to change parent is higlighted](openproject-16-6-custom-field-hierarchy-change-parent.png)
+![OpenProject 16.6: Custom field type hierarchy in the administration, tab 'Items', one item is selected with the 'More' menu and the option to change parent is highlighted](openproject-16-6-custom-field-hierarchy-change-parent.png)
 
 ### Updated 'More' menu of meetings with a 'Move to section' option
 
@@ -73,7 +73,7 @@ In the Meetings module, the *More (three dots) menu* for agenda items has been i
 
 The new *Move → Move to section* option opens a dialog where users can select the desired section from a dropdown list. Additionally, users can still move an agenda item to the backlog or to the next meeting (if it's part of a meeting series).
 
-[Learn more about meeting management with OpenProject](../../user-guide/work-packages/add-work-packages-to-meetings).
+[Learn more about meeting management with OpenProject](../../../user-guide/work-packages/add-work-packages-to-meetings).
 
 ![OpenProject 16.6: Meetings module showing the options when clicking on the More menu on an agenda item](meetings_move_menu.png)
 
@@ -89,7 +89,7 @@ In *Administration → Work packages → Workflows*, the workflow table now feat
 
 Additionally, the table is now split into three tabs — *Default transitions*, *User is author*, and *User is assignee* — each showing the relevant workflow configuration. Before 16.6, these additional transitions were often overlooked as they were positioned below the table.
 
-[Read more about managing work package workflows in OpenProject](../../system-admin-guide/manage-work-packages/work-package-workflows/).
+[Read more about managing work package workflows in OpenProject](../../../system-admin-guide/manage-work-packages/work-package-workflows/).
 
 ![OpenProject 16.6: Administration for work package workflows highlighting the new tabs and that the header and right column are sticky when scrolling](openproject-16-6-work-package-workflow-highlighted.png)
 
@@ -191,4 +191,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [Pickart](https://crowdin.com/profile/fantasmak10), for a great number of translations into Catalan.
 - [Maxime77](https://crowdin.com/profile/maxime77), for a great number of translations into French.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

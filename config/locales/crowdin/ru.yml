@@ -626,13 +626,13 @@ ru:
   op_dry_validation:
     or: "или"
     errors:
-      unexpected_key: "is not allowed."
+      unexpected_key: "не разрешено."
       array?: "должно быть массивом."
       decimal?: "должно быть десятичным."
       defined: "не должно быть определено."
       eql?: "должно быть равно %{left}."
       filled?: "должно быть заполнено."
-      format?: "is in invalid format."
+      format?: "неверный формат."
       greater_or_equal_zero: "должно быть больше или равно 0."
       gteq?: "должно быть больше или равно %{num}."
       hash?: "должно быть хэш."
@@ -659,9 +659,9 @@ ru:
         parent:
           not_descendant: "должно быть потомком корневого уровня иерархии."
       str?: "должно быть строкой."
-      time?: "must be a time."
+      time?: "должно быть единицей времени."
       type?: "должно быть %{type}."
-      uri?: "is not a valid URI."
+      uri?: "не является допустимым URI."
     rules:
       copy_workflow_from: "Тип копии рабочего процесса"
       enabled: "Включено"

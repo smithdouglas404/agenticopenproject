@@ -412,7 +412,7 @@ You can download a meeting as an iCalendar event. Select the dropdown by clickin
 
 Read more about [subscribing to a calendar](../../calendar/#subscribe-to-a-calendar).
 
-![An icon to download a meeting as an iCalendar event in OpenProject meetings moduel](openproject_userguide_meetings_download_ical.png)
+![An icon to download a meeting as an iCalendar event in OpenProject meetings module](openproject_userguide_meetings_download_ical.png)
 
 Please keep in mind that downloading a meeting as an iCalendar event adds it to your calendar, but it does not keep the meeting synchronized automatically.
 

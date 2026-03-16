@@ -31,7 +31,7 @@ A user can have one or more roles which grant permissions on different levels.
 
 ### Global role
 
-**Global roles** allow aministrators to delegate administrative tasks to individual users.
+**Global roles** allow administrators to delegate administrative tasks to individual users.
 
 | Scope of the role                                            | Permission examples                                          | Customization options                                        |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -115,7 +115,7 @@ The form shows the available global permissions which can be assigned to the new
 > [!TIP]
 > To create a subproject for an existing project the project permission "Create subprojects" is also required.
 
-- Create portolios
+- Create portfolios
 
 - Create programs
 

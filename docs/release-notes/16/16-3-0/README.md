@@ -38,7 +38,7 @@ The setting is available as a checkbox in the meeting template form and lets you
 
 ![Screenshot showing OpenProject meeting template with overlay to disable email notifications](openproject-16-3-meeting-notifications-highlighted.png)
 
-[Learn more about meeting management with OpenProject](../../user-guide/meetings/).
+[Learn more about meeting management with OpenProject](../../../user-guide/meetings/).
 
 ### Ongoing timers shown in the My time tracking module
 
@@ -54,19 +54,19 @@ Not familiar with the My time tracking module yet? [Learn more about it in our b
 
 In OpenProject 15.5, we introduced the ability to display a sum for the % Complete column in work package tables. In 16.3, this feature has been improved to ensure **accurate sums across different progress calculation modes**. This applies especially when some work packages do not contain values for Work or Remaining work.
 
-[Learn more about progress tracking and reporting with OpenProject](../../user-guide/time-and-costs/progress-tracking/).
+[Learn more about progress tracking and reporting with OpenProject](../../../user-guide/time-and-costs/progress-tracking/).
 
 ### Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on)
 
 Administrators using the Nextcloud integration in the Corporate plan can now benefit from a more specific health check. If **token exchange is configured but not supported by the linked identity provider** (e.g. due to older OIDC settings), the new check will now clearly identify this issue. This helps diagnose connection problems more reliably and avoids misleading error messages about token refresh failures.
 
-[Learn more about monitoring your OpenProject installation](../../installation-and-operations/operation/monitoring/).
+[Learn more about monitoring your OpenProject installation](../../../installation-and-operations/operation/monitoring/).
 
 ### Autocomplete for cost reporting user and work package fields
 
 Creating **cost reports** is now easier and faster. OpenProject 16.3 introduces **autocomplete for key filter fields** like User, Project and Work package, helping you find the right person or task with just a few keystrokes.
 
-[Learn more about cost reporting with OpenProject](../../user-guide/time-and-costs/reporting/).
+[Learn more about cost reporting with OpenProject](../../../user-guide/time-and-costs/reporting/).
 
 <!--more-->
 
@@ -150,5 +150,5 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [William](https://crowdin.com/profile/williamfromtw), for a great number of translations into Chinese Traditional.
 - [OlhaTrotska](https://crowdin.com/profile/OlhaTrotska), for a great number of translations into Ukrainian.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
 

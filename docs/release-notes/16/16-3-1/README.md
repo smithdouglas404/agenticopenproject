@@ -12,7 +12,7 @@ Release date: 2025-08-13
 
 We released OpenProject [OpenProject 16.3.1](https://community.openproject.org/versions/2218).
 
-A bug was identified that prevents the user account menu from displaying correctly if you use a [direct login provider](../../system-admin-guide/authentication/login-registration-settings/) instead of the standard login form.
+A bug was identified that prevents the user account menu from displaying correctly if you use a [direct login provider](../../../system-admin-guide/authentication/login-registration-settings/) instead of the standard login form.
 If you are not using a direct login provider, you are not affected by this.
 
 The release also contains some additional bug fixes that were not ready in time for the 16.3.0 release.

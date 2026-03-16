@@ -14,6 +14,146 @@ release_date: 2026-03-11
  The release contains several bug fixes and we recommend updating to the newest version.
  In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
+
+## Important feature changes
+
+Take a look at our release video showing the most important features introduced in OpenProject 17.2.0:
+
+![Release video of OpenProject 17.2](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_2_release.mp4)
+
+### MCP Server (Enterprise add-on)
+
+[feature: mcp_server ]
+
+OpenProject 17.2 introduces the **MCP Server**, a new Enterprise add-on that lays the foundation for robust integrations between OpenProject and AI systems, including large language models (LLMs), as well as other tools that use the Model Context Protocol (MCP). This server exposes OpenProject's APIv3 resources as MCP-compatible endpoints and enables secure, authenticated access for clients such as LLMs or other MCP clients, opening the door to richer contextual interactions with your project data.
+
+Included in this release are administrative UI support for configuring the MCP Server, infrastructure and metadata endpoints, and integration of MCP authentication with OpenProject’s OAuth2 and API key mechanisms, including external OpenID Connect providers. An initial set of MCP tools and resources is provided to surface key entities (projects, work packages, users, etc.), and response formats can be adjusted based on your preferences. With session-cookie and bearer-token support, the MCP Server acts as a secure bridge between your OpenProject instance and external systems that operate via MCP. 
+
+![Model context protocol settings in OpenProject administration](openproject_system_guide_new_mcp.png)
+
+See the [**MCP Server documentation**](../../system-admin-guide/integrations/mcp-server/) for setup and examples.  
+
+### Reusable meeting templates (Enterprise add-on)
+
+[feature: meeting_templates ]
+
+Preparing meetings often involves recreating the same agenda structure again and again. With OpenProject 17.2, administrators can now define reusable meeting templates that provide a predefined agenda layout for their teams.
+
+These templates make it easy to start meetings with a proven structure instead of building the agenda from scratch each time. Even when meetings are not held regularly, teams can reuse well-designed formats that guide discussions and help ensure that important topics are addressed.
+
+When creating a new one-time meeting, users can choose from the available templates to automatically populate the agenda with the predefined sections and items. This saves time during setup and promotes alignment across teams. 
+
+![Meetings templates listed in an OpenProject project](openproject_release_notes_17-2-0_meetings_template.png)
+
+For more details, please refer to the [Meetings documentation](../../user-guide/meetings/one-time-meetings/).
+
+###  Allow requiring to be logged in to open external links (Enterprise add-on)
+
+[feature: capture_external_links ]
+
+Building on the external link safety options introduced in OpenProject 17.1, we’re expanding the protection capabilities in 17.2 to give administrators stronger safeguards for user interactions with links that lead outside of OpenProject.
+
+Administrators can now require users to be logged in before following external links. When this setting is enabled, anyone who is not authenticated will be redirected to the login page before being allowed to continue to the external destination. 
+
+![A setting to require users to be logged in before following an external link from OpenProject](openproject_release_notes_17-2-0_external_links_log_in.png)
+
+Read more about [capturing external links in OpenProject](../../system-admin-guide/system-settings/external-links/).
+
+### Project Overview page improvements
+
+OpenProject 17.2 enhances the Project Overview to provide clearer financial insights, easier inline editing, and improved accessibility. Together, these updates make the Overview page a more powerful and inclusive central hub for project information.
+
+#### Updated Overview widgets for Budgets
+
+Project, program, and portfolio managers can now see key financial indicators at a glance. New budget widgets display planned budget, actual costs, spent ratio, and remaining budget, along with visual breakdowns by cost type and recent monthly actuals. Data is automatically aggregated across subprojects where applicable, giving stakeholders a consolidated financial snapshot without leaving the Overview page.
+
+These widgets help teams better understand financial status and trends directly within their project context. Keep in mind that both the Budgets and Time & Costs modules need to be enabled for the widgets to work. 
+
+![An example of project budget widget on a project home page in OpenProject](openproject_release_notes_17-2-0_budget_widget.png)
+
+Read more about [budget widgets](../../user-guide/project-home/project-widgets/#budgets-widgets).
+
+#### Editable project description and project status widgets on a Project view tab
+
+The project description and project status widgets on the Overview tab are now editable inline. Based on your feedback, we’ve streamlined the experience so authorized users can update content directly where they view it, without switching to another tab.
+
+Note that users without edit permissions will continue to see the content in read-only mode.
+
+![Overview tab of a project home page in OpenProject, showing the project description widget being edited](openproject_system_guide_project_home_overview_tab_edit.png)
+
+#### Improved accessibility of Project Overview and Dashboard Widgets
+
+We have significantly improved the accessibility of widgets on both the Project Overview and Project dashboard pages. Widgets are now fully operable via keyboard, provide clearer structural semantics for screen readers, and follow WCAG 2.1 AA guidelines for focus management, labeling, and navigation order.
+
+These improvements ensure that project information and controls are accessible to all users, including those relying on assistive technologies.
+
+### Comment fields for project attributes 
+
+OpenProject 17.2 introduces optional comment fields for project attributes, giving portfolio and project managers additional context behind selected values. Administrators can now enable a dedicated comment field for individual project attributes. This allows users to document the reasoning, assumptions, or background information related to a specific attribute value directly where it is maintained.
+
+Comments are displayed and edited alongside the respective attribute on the Project overview page and follow the same permission logic as the attribute itself. Changes are tracked in the project activity, included in exports, and available via the API. By adding structured context to project metadata, this enhancement improves transparency and supports better governance and decision-making across projects and teams.
+
+![Setting to add a comment text field to a project attribute in OpenProject administration](openproject_release_notes_17-2-0_project_attributes_comment.png)
+
+Read more about [project attributes in OpenProject](../../user-guide/project-home/project-attributes/).
+
+### PDF export improvements
+
+OpenProject 17.2 enhances PDF exports to provide more exhaustive and reliable reporting.
+
+Work package queries can now include relationship columns in PDF reports. Related work packages are exported as structured tables within the document, making it easier to document complex relationships and dependencies in a clear and shareable format. This ensures that important contextual information is no longer lost when generating formal reports.
+
+In addition, PDF exports now support WebP images embedded in work package descriptions. Images in this modern format are automatically included in the generated document, improving consistency between on-screen content and exported reports.
+
+![Example of a PDF export in OpenProject, showing a work package that includes children and a webp image](openproject_system_guide_pdf_export.png)
+
+Read more about [PDF exports in OpenProject](../../user-guide/work-packages/exporting/#pdf-export).
+
+### UX/UI updates with the Primer design system
+
+OpenProject 17.2 continues the transition to the Primer design system, further unifying the look and feel across the application.
+
+#### Backlogs module update
+
+The Backlogs module has been updated using Primer components. This resulted in a cleaner layout and more consistent interaction patterns, while still preserving familiar functionality such as drag-and-drop and version-based organization. Work packages can now be viewed in a split screen for improved context and efficiency.
+
+![New UX/UI updates for the OpenProject Backlogs module](openproject_system_guide_new_backlog.png)
+
+Read more about [Backlogs](../../user-guide/backlogs-scrum/).
+
+
+#### Improvements in administration interface
+
+Administrative interfaces for Custom Fields, Versions, and Groups have been further aligned with Primer. 
+
+In particular, custom field forms are now consistently styled across all field types. Previously, the appearance varied depending on the type of custom field. This has been unified to provide a clearer and more predictable configuration experience for administrators.
+
+###  Jira importer (feature flag)
+
+We are working on a new Jira import wizard designed to help teams migrate core project data from Jira into OpenProject more easily. The importer focuses on bringing over essential user-generated content such as issues, comments, attachments, and project structures, reducing the need for manual recreation or fragile third-party workarounds. 
+
+> [!IMPORTANT]
+> This functionality is still under active development and currently available only behind a feature flag for early testing. We’re sharing this preview to start the conversation with teams considering a move from Jira. More capabilities will follow in upcoming releases.
+
+![Add a new configuration to Jira importer under OpenProject administration](openproject_release_notes_17-2-0_jira_migrator.png)
+
+To find out more [see what we are working on](https://community.openproject.org/projects/jira-migration/work_packages).
+
+## Important updates and breaking changes
+
+**“Enable REST web service” renamed**
+The system setting previously labeled “Enable REST web service” is now called “Enable API tokens”. This is a naming change only and does not affect functionality.
+
+**“Status” boards renamed to “Kanban” boards**
+To better reflect their purpose and common terminology, Status boards are now called Kanban boards. Existing boards and configurations remain unchanged.
+
+**Improved OAuth token security for document collaboration**
+OAuth tokens used for collaborative document editing (BlockNote ↔ Hocuspocus) now have shorter lifetimes and are automatically refreshed. This enhances security while keeping the editing experience unchanged.
+**API tokens usable as Bearer token**
+Newly generated API tokens can directly be used as Bearer tokens and do not need to be presented as basic auth credentials with the username `apikey`. This is intended to make usage of our APIs easier. The previously existing basic auth flow is still supported.
+
+<!--more-->
+
 <!-- BEGIN CVE AUTOMATED SECTION -->
 
 ## Security fixes
@@ -109,144 +249,6 @@ For more information, please see the [GitHub advisory #GHSA-9wr7-j98g-2jh3](http
 
 <!-- END CVE AUTOMATED SECTION -->
 
-## Important feature changes
-
-Take a look at our release video showing the most important features introduced in OpenProject 17.2.0:
-
-![Release video of OpenProject 17.2](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_2_release.mp4)
-
-### MCP Server (Enterprise add-on)
-
-[feature: mcp_server ]
-
-OpenProject 17.2 introduces the **MCP Server**, a new Enterprise add-on that lays the foundation for robust integrations between OpenProject and AI systems, including large language models (LLMs), as well as other tools that use the Model Context Protocol (MCP). This server exposes OpenProject's APIv3 resources as MCP-compatible endpoints and enables secure, authenticated access for clients such as LLMs or other MCP clients, opening the door to richer contextual interactions with your project data.
-
-Included in this release are administrative UI support for configuring the MCP Server, infrastructure and metadata endpoints, and integration of MCP authentication with OpenProject’s OAuth2 and API key mechanisms, including external OpenID Connect providers. An initial set of MCP tools and resources is provided to surface key entities (projects, work packages, users, etc.), and response formats can be adjusted based on your preferences. With session-cookie and bearer-token support, the MCP Server acts as a secure bridge between your OpenProject instance and external systems that operate via MCP. 
-
-![Model context protocol settings in OpenProject administration](openproject_system_guide_new_mcp.png)
-
-See the [**MCP Server documentation**](../../system-admin-guide/integrations/mcp-server/) for setup and examples.  
-
-### Reusable meeting templates (Enterprise add-on)
-
-[feature: meeting_templates ]
-
-Preparing meetings often involves recreating the same agenda structure again and again. With OpenProject 17.2, administrators can now define reusable meeting templates that provide a predefined agenda layout for their teams.
-
-These templates make it easy to start meetings with a proven structure instead of building the agenda from scratch each time. Even when meetings are not held regularly, teams can reuse well-designed formats that guide discussions and help ensure that important topics are addressed.
-
-When creating a new one-time meeting, users can choose from the available templates to automatically populate the agenda with the predefined sections and items. This saves time during setup and promotes alignment across teams. 
-
-![Meetings templates listed in an OpenProject project](openproject_release_notes_17-2-0_meetings_template.png)
-
-For more details, please refer to the [Meetings documentation](../../user-guide/meetings/one-time-meetings/).
-
-###  Allow requiring to be logged in to open external links (Enterprise add-on)
-
-[feature: capture_external_links ]
-
-Building on the external link safety options introduced in OpenProject 17.1, we’re expanding the protection capabilities in 17.2 to give administrators stronger safeguards for user interactions with links that lead outside of OpenProject.
-
-Administrators can now require users to be logged in before following external links. When this setting is enabled, anyone who is not authenticated will be redirected to the login page before being allowed to continue to the external destination. 
-
-![A setting to require users to be logged in before following an external link from OpenProject](openproject_release_notes_17-2-0_external_links_log_in.png)
-
-Read more about [capturing external links in OpenProject](../../system-admin-guide/system-settings/external-links/).
-
-### Project Overview page improvements
-
-OpenProject 17.2 enhances the Project Overview to provide clearer financial insights, easier inline editing, and improved accessibility. Together, these updates make the Overview page a more powerful and inclusive central hub for project information.
-
-#### Updated Overview widgets for Budgets
-
-Project, program, and portfolio managers can now see key financial indicators at a glance. New budget widgets display planned budget, actual costs, spent ratio, and remaining budget, along with visual breakdowns by cost type and recent monthly actuals. Data is automatically aggregated across subprojects where applicable, giving stakeholders a consolidated financial snapshot without leaving the Overview page.
-
-These widgets help teams better understand financial status and trends directly within their project context. Keep in mind that both the Budgets and Time & Costs modules need to be enabled for the widgets to work. 
-
-![An example of project budget widget on a project home page in OpenProject](openproject_release_notes_17-2-0_budget_widget.png)
-
-Read more about [budget widgets](../../user-guide/project-home/project-widgets/#budgets-widgets).
-
-#### Editable project description and project status widgets on a Project view tab
-
-The project description and project status widgets on the Overview tab are now editable inline. Based on your feedback, we’ve streamlined the experience so authorized users can update content directly where they view it, without switching to another tab.
-
-Note that users without edit permissions will continue to see the content in read-only mode.
-
-![Overview tab of a project home page in OpenProject, showing the project description widget being edited](openproject_system_guide_project_home_overview_tab_edit.png)
-
-#### Improved accessibility of Project Overview and Dashboard Widgets
-
-We have significantly improved the accessibility of widgets on both the Project Overview and Project dashboard pages. Widgets are now fully operable via keyboard, provide clearer structural semantics for screen readers, and follow WCAG 2.1 AA guidelines for focus management, labeling, and navigation order.
-
-These improvements ensure that project information and controls are accessible to all users, including those relying on assistive technologies.
-
-### Comment fields for project attributes 
-
-OpenProject 17.2 introduces optional comment fields for project attributes, giving portfolio and project managers additional context behind selected values. Administrators can now enable a dedicated comment field for individual project attributes. This allows users to document the reasoning, assumptions, or background information related to a specific attribute value directly where it is maintained.
-
-Comments are displayed and edited alongside the respective attribute on the Project overview page and follow the same permission logic as the attribute itself. Changes are tracked in the project activity, included in exports, and available via the API. By adding structured context to project metadata, this enhancement improves transparency and supports better governance and decision-making across projects and teams.
-
-![Setting to add a comment text field to a project atttribute in OpenProject administration](openproject_release_notes_17-2-0_project_attributes_comment.png)
-
-Read more about [project attributes in OpenProject](../../user-guide/project-home/project-attributes/).
-
-### PDF export improvements
-
-OpenProject 17.2 enhances PDF exports to provide more exhaustive and reliable reporting.
-
-Work package queries can now include relationship columns in PDF reports. Related work packages are exported as structured tables within the document, making it easier to document complex relationships and dependencies in a clear and shareable format. This ensures that important contextual information is no longer lost when generating formal reports.
-
-In addition, PDF exports now support WebP images embedded in work package descriptions. Images in this modern format are automatically included in the generated document, improving consistency between on-screen content and exported reports.
-
-![Example of a PDF export in OpenProject, showing a work package that includes children and a webp image](openproject_system_guide_pdf_export.png)
-
-Read more about [PDF exports in OpenProject](../../user-guide/work-packages/exporting/#pdf-export).
-
-### UX/UI updates with the Primer design system
-
-OpenProject 17.2 continues the transition to the Primer design system, further unifying the look and feel across the application.
-
-#### Backlogs module update
-
-The Backlogs module has been updated using Primer components. This resulted in a cleaner layout and more consistent interaction patterns, while still preserving familiar functionality such as drag-and-drop and version-based organization. Work packages can now be viewed in a split screen for improved context and efficiency.
-
-![New UX/UI updates for the OpenProject Backlogs module](openproject_system_guide_new_backlog.png)
-
-Read more about [Backlogs](../../user-guide/backlogs-scrum/).
-
-
-#### Improvements in administration interface
-
-Administrative interfaces for Custom Fields, Versions, and Groups have been further aligned with Primer. 
-
-In particular, custom field forms are now consistently styled across all field types. Previously, the appearance varied depending on the type of custom field. This has been unified to provide a clearer and more predictable configuration experience for administrators.
-
-###  Jira importer (feature flag)
-
-We are working on a new Jira import wizard designed to help teams migrate core project data from Jira into OpenProject more easily. The importer focuses on bringing over essential user-generated content such as issues, comments, attachments, and project structures, reducing the need for manual recreation or fragile third-party workarounds. 
-
-> [!IMPORTANT]
-> This functionality is still under active development and currently available only behind a feature flag for early testing. We’re sharing this preview to start the conversation with teams considering a move from Jira. More capabilities will follow in upcoming releases.
-
-![Add a new confgiruration to Jira importer under OpenProject administration](openproject_release_notes_17-2-0_jira_migrator.png)
-
-To find out more [see what we are working on](https://community.openproject.org/projects/jira-migration/work_packages).
-
-## Important updates and breaking changes
-
-**“Enable REST web service” renamed**
-The system setting previously labeled “Enable REST web service” is now called “Enable API tokens”. This is a naming change only and does not affect functionality.
-
-**“Status” boards renamed to “Kanban” boards**
-To better reflect their purpose and common terminology, Status boards are now called Kanban boards. Existing boards and configurations remain unchanged.
-
-**Improved OAuth token security for document collaboration**
-OAuth tokens used for collaborative document editing (BlockNote ↔ Hocuspocus) now have shorter lifetimes and are automatically refreshed. This enhances security while keeping the editing experience unchanged.
-**API tokens usable as Bearer token**
-Newly generated API tokens can directly be used as Bearer tokens and do not need to be presented as basic auth credentials with the username `apikey`. This is intended to make usage of our APIs easier. The previously existing basic auth flow is still supported.
-
-<!--more-->
 
 ## Bug fixes and changes
 

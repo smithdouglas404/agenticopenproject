@@ -32,11 +32,11 @@ Take a look at our release video showing the most important features introduced 
 
 Meeting organization becomes even easier with OpenProject 16.0: Meeting backlogs allow users to collect, manage, and prepare agenda items more flexibly — both for one-time meetings and for recurring meeting series.
 
-In one-time meetings, the new [**Agenda backlog**](../../user-guide/meetings/one-time-meetings/#agenda-backlogs) stores topics that are not yet assigned to the current meeting but may be added later.
+In one-time meetings, the new [**Agenda backlog**](../../../user-guide/meetings/one-time-meetings/#agenda-backlogs) stores topics that are not yet assigned to the current meeting but may be added later.
 
 ![A one-time meeting in OpenProject with an Agenda backlog and info to 'Drag items here or create a new one'.](openproject-16-0-meeting-backlogs-one-time-highlighted.png)
 
-In recurring meetings, the shared [**Series backlog**](../../user-guide/meetings/recurring-meetings/#meeting-backlogs-for-recurring-meetings) helps track open points across all meeting occurrences and move items between them as priorities change.
+In recurring meetings, the shared [**Series backlog**](../../../user-guide/meetings/recurring-meetings/#meeting-backlogs-for-recurring-meetings) helps track open points across all meeting occurrences and move items between them as priorities change.
 
 ![A recurring meeting in OpenProject with a Series backlog and and options to Edit, add notes, Move to current meeting or Remove from agenda.](openproject-16-0-meeting-backlogs-recurring-options.png)
 
@@ -64,7 +64,7 @@ All users with these permissions then see an "Internal comment" checkbox when ad
 > [!NOTE]
 > Starting with 16.0, **files uploaded in the Activity tab will not be included in the Files tab**. Even though internal comments are the technical trigger for this change, it applies to both regular and internal comments.
 
-Find out more about [internal comments in this user guide](../../user-guide/activity/#internal-comments-enterprise-add-on) and [this blog article](https://www.openproject.org/blog/internal-comments/).
+Find out more about [internal comments in this user guide](../../../user-guide/activity/#internal-comments-enterprise-add-on) and [this blog article](https://www.openproject.org/blog/internal-comments/).
 
 ## Automatically generated work package subjects (Enterprise add-on)
 
@@ -74,11 +74,11 @@ OpenProject now supports automatically generated subjects for work packages. Thi
 
 This is especially useful for structured processes such as vacation requests, IT tickets, or maintenance reports, where consistent naming is required. Subject patterns can include static text as well as dynamic placeholders like project name, work package type, or custom field values.
 
-Get an [introduction in the user guide](../../user-guide/work-packages/automatic-subjects/), learn more about [configuring automatically generated work package subjects in OpenProject system administration guide](../../system-admin-guide/manage-work-packages/work-package-types/automatic-subjects/), or consult this [blog article](https://www.openproject.org/blog/automatically-generated-work-package-subjects/) for more use case examples. 
+Get an [introduction in the user guide](../../../user-guide/work-packages/automatic-subjects/), learn more about [configuring automatically generated work package subjects in OpenProject system administration guide](../../../system-admin-guide/manage-work-packages/work-package-types/automatic-subjects/), or consult this [blog article](https://www.openproject.org/blog/automatically-generated-work-package-subjects/) for more use case examples. 
 
 ## Separate time tracking module with calendar view
 
-OpenProject 16.0 offers a separate time tracking module with a calendar view. It is accessible from the global view and listed in the left side bar navigation called [My time tracking](../../user-guide/time-and-costs/my-time-tracking/). There, users can view and edit their logged time with start and end times. Users can switch between daily, weekly, work week and monthly views and also log new time entries directly by clicking in the calendar.
+OpenProject 16.0 offers a separate time tracking module with a calendar view. It is accessible from the global view and listed in the left side bar navigation called [My time tracking](../../../user-guide/time-and-costs/my-time-tracking/). There, users can view and edit their logged time with start and end times. Users can switch between daily, weekly, work week and monthly views and also log new time entries directly by clicking in the calendar.
 
 Each day shows the sum of the tracked time, and in the weekly and monthly views, the total tracked time is displayed in the lower right corner.
 
@@ -86,7 +86,7 @@ Each day shows the sum of the tracked time, and in the weekly and monthly views,
 
 Please note that this module has to be activated by an administrator first. Navigate to *Administration → Time and costs → Defaults* and check the box next to 'Allow exact time tracking' to enable tracking start and finish dates. If 'Allow exact time tracking' is enabled, the calendar becomes the default view for the My time tracking module. If 'Require exact times' is checked, users must provide both start and end times when logging time. Otherwise, the list view remains the default. In the calendar view, all entries are then displayed at the top of the respective day column.
 
-Learn more about My time tracking module in [this user guide](../../user-guide/time-and-costs/my-time-tracking/) and [this blog article](https://www.openproject.org/blog/time-tracking-module/).
+Learn more about My time tracking module in [this user guide](../../../user-guide/time-and-costs/my-time-tracking/) and [this blog article](https://www.openproject.org/blog/time-tracking-module/).
 
 ### Time entries with legally required mandatory fields: start time and finish time
 
@@ -104,7 +104,7 @@ From time to time an Enterprise add-on is released for the free Community versio
 
 The work package graph widgets display information about the work packages within a project and can be shown in different views, such as bar graphs or pie charts.
 
-[Learn more about this feature in our user guide](../../user-guide/project-home/project-widgets/#work-package-graph-widgets).
+[Learn more about this feature in our user guide](../../../user-guide/project-home/project-widgets/#work-package-graph-widgets).
 
 ![Different graphs displayed on a project overview page in OpenProject: Work package status in a pie chart, work packages progress in a graph with percentages, closed + open work packages sorted by type and number of assignees.](openproject-project-reports.png)
 
@@ -116,7 +116,7 @@ As requested by our users, you can now add a parent work package relation by cho
 
 ## Save work package export configuration
 
-When [exporting a (public or private) work package table](../../user-guide/work-packages/exporting/), users can now save their configuration settings, e.g. a specific order and display of columns or long text fields. This saves time and allows users to share the export settings with their team (e.g. for a defects and approval report). Please note that this setting is not individual and will **change the default configuration for this specific format and type for everyone**.
+When [exporting a (public or private) work package table](../../../user-guide/work-packages/exporting/), users can now save their configuration settings, e.g. a specific order and display of columns or long text fields. This saves time and allows users to share the export settings with their team (e.g. for a defects and approval report). Please note that this setting is not individual and will **change the default configuration for this specific format and type for everyone**.
 
 ![OpenProject work package table export modal with a highlighted checkbox to save settings.](openproject-16-0-save-export-settings-highlighted.png)
 
@@ -140,7 +140,7 @@ OpenProject 16.0 introduces a major improvement for customers of the Enterprise 
 
 Instead of mutually acting as OAuth servers and clients, both OpenProject and Nextcloud can now authenticate against a common Identity Provider (IDP). This allows OpenProject to reuse the user session to call Nextcloud APIs directly — improving the user experience and reducing complexity in daily workflows.
 
-Please see [our system admin guide](../../system-admin-guide/integrations/nextcloud/oidc-sso/) to learn how to set up this integration.
+Please see [our system admin guide](../../../system-admin-guide/integrations/nextcloud/oidc-sso/) to learn how to set up this integration.
 
 This is the first version of OpenProject to support this new integration method with Nextcloud. Since this feature was not yet
 exposed to large installations, we still consider it experimental. Please share your feedback regarding this new feature with us and stay tuned
@@ -148,7 +148,7 @@ for further enhancements around it.
 
 ## Breaking: API requests with JWT issued by OpenID Connect provider require scope
 
-In [OpenProject 14.4.0](../../release-notes/14/14-0-0/) we introduced the possibility to access the OpenProject API through a JSON Web Token created by an OpenID Connect
+In [OpenProject 14.4.0](../../../release-notes/14/14-0-0/) we introduced the possibility to access the OpenProject API through a JSON Web Token created by an OpenID Connect
 provider. Back then we only intended them to be used in the context of our APIv3. However, as OpenProject evolves further, we want to
 be able to use them in additional contexts. Starting with OpenProject 16.0.0, we will therefore require all tokens to carry a scope called
 `api_v3` for API requests to our APIv3. This is consistent with other tokens issued by OpenProject itself.
@@ -300,4 +300,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [Gzyyy](https://crowdin.com/profile/gzyyy), for a great number of translations into Chinese simplified.
 - [rlmpereira](https://crowdin.com/profile/rlmpereira), for a great number of translations into Portuguese.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

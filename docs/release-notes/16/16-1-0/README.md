@@ -33,7 +33,7 @@ You’ll find the full life cycle directly in the project overview page, where y
 > [!NOTE]
 > With the Enterprise add-on available in the Premium plan or higher, you can configure existing project phases and phase gates and even create new ones. This is done in the global settings. The project-level features are available in all editions, with pre-defined phases based on the [open source PM² framework](https://www.openproject.org/pm2/).
 
-[Read more about working with a project life cycle in OpenProject](../../system-admin-guide/projects/project-life-cycle/).
+[Read more about working with a project life cycle in OpenProject](../../../system-admin-guide/projects/project-life-cycle/).
 
 ### Export meetings in PDF format
 
@@ -51,7 +51,7 @@ The export is available via the More (⋯) menu for both one-time meetings and i
 
 The PDF is generated in A4 format and includes a clearly structured layout. 
 
-[Learn more about exporting meetings in PDF format in our documentation](../../user-guide/meetings/one-time-meetings/#export-a-meeting).
+[Learn more about exporting meetings in PDF format in our documentation](../../../user-guide/meetings/one-time-meetings/#export-a-meeting).
 
 ![Overlay of Export PDF options for OpenProject meetings](openproject-16-1-export-meeting-to-pdf.png)
 
@@ -69,7 +69,7 @@ To make setting reminders even quicker, OpenProject now offers pre-filled option
 
 Selecting one of the quick options will open the reminder dialog with a pre-filled date and time – typically at 9:00 local time on the selected future day. You can still adjust the date, time, and add a note before saving the reminder.
 
-[Learn more about work package reminders in our documentation](../../user-guide/work-packages/edit-work-package/#work-package-reminders).
+[Learn more about work package reminders in our documentation](../../../user-guide/work-packages/edit-work-package/#work-package-reminders).
 
 ![Dropdown menu on a work package when clicking on the reminder icon, with options to quickly choose a date to be reminded](openproject-16-1-reminder-options.png)
 
@@ -92,7 +92,7 @@ Please note that negative lags can be counterintuitive:
 > [!NOTE]
 > **Only working days** are taken into account. For example: If work package A finishes on a Tuesday and Saturday/Sunday are non-working days, then a lag of -3 will schedule its successor (work package B) to start on the previous Friday.
 
-[Learn more about work package relations in our documentation](../../user-guide/work-packages/work-package-relations-hierarchies/#work-package-relations).
+[Learn more about work package relations in our documentation](../../../user-guide/work-packages/work-package-relations-hierarchies/#work-package-relations).
 
 ### Display hierarchy trees for hierarchy custom fields (Enterprise add-on)
 
@@ -102,7 +102,7 @@ This tree helps you understand the position of the current item in the overall h
 
 Clicking on any entry in the tree opens that item in the same view, making it easy to move through even complex hierarchies without losing context.
 
-[Learn more about custom fields in our system admin guide](../../system-admin-guide/custom-fields/).
+[Learn more about custom fields in our system admin guide](../../../system-admin-guide/custom-fields/).
 
 ![Example of a hierarchy custom field with the new visualization, the hierarchical tree](openproject-hierarchy-custom-field-tree.png)
 
@@ -220,4 +220,4 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [rmiyata](https://crowdin.com/profile/rmiyata), for a great number of translations into Japanese.
 - [William](https://crowdin.com/profile/williamfromtw), for a great number of translations into Chinese Traditional.
 
-Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

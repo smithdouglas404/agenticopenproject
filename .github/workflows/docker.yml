@@ -137,30 +137,25 @@ jobs:
           - platform: linux/amd64
             digest: amd64-slim
             bim_support: false
-            debian_base: trixie
             target: slim
             runner: runner=4cpu-linux-x64
           - platform: linux/amd64
             digest: amd64-bim
             bim_support: true
-            debian_base: bookworm
             target: slim-bim
             runner: runner=4cpu-linux-x64
           - platform: linux/arm64/v8
             digest: arm64-slim
-            debian_base: trixie
             bim_support: false
             target: slim
             runner: runner=4cpu-linux-arm64
           - platform: linux/amd64
             digest: amd64-aio
-            debian_base: bookworm
             bim_support: true
             target: all-in-one
             runner: runner=4cpu-linux-x64
           - platform: linux/arm64/v8
             digest: arm64-aio
-            debian_base: trixie
             bim_support: false
             target: all-in-one
             runner: runner=4cpu-linux-arm64
@@ -222,7 +217,7 @@ jobs:
         with:
           path: |
             vendor/bundle
-          key: ${{ matrix.platform }}-${{ matrix.debian_base }}-vendor-bundle-${{ github.ref }}
+          key: ${{ matrix.platform }}-trixie-vendor-bundle-${{ github.ref }}
       - name: Include vendor/bundle in this build (so we can use it from the cache above)
         run: |
           sed -i 's/vendor\/bundle//g' .dockerignore
@@ -234,15 +229,14 @@ jobs:
           platforms: ${{ matrix.platform }}
           target: ${{ matrix.target }}
           build-args: |
-            DEBIAN_BASE=${{ matrix.debian_base }}
             BIM_SUPPORT=${{ matrix.bim_support }}
             BUILDKIT_PROGRESS=plain
           pull: true
           load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},manifests_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
-          cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},manifests_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
+          cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
+          cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
       - name: Extract vendor/bundle from container
         run: |
           docker create --name bundle ${{ steps.build.outputs.imageid }}
@@ -279,12 +273,11 @@ jobs:
           platforms: ${{ matrix.platform }}
           target: ${{ matrix.target }}
           build-args: |
-            DEBIAN_BASE=${{ matrix.debian_base }}
             BIM_SUPPORT=${{ matrix.bim_support }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ needs.setup.outputs.registry_image }},push-by-digest=true,name-canonical=true,push=true
-          cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},manifests_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
-          cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},manifests_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
+          cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
+          cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/trixie,manifests_prefix=cache/${{ github.repository }}/trixie,region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
       - name: Export digest
         run: |
           mkdir -p /tmp/digests

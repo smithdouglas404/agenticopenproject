@@ -17,7 +17,7 @@ This means, a certain type of work package, e.g. a Task, can have the following 
 
 To edit a workflow, first decide if you want to edit default transitions that apply to all users (depending only on the role) or for the specific cases where a user is the author or the assignee. Three tabs on top of the screen allow you to choose this:
 
-![Tabs to select between default transitions, when the user is the author or when the user is the asignee](admin_workflow_tabs.png)
+![Tabs to select between default transitions, when the user is the author or when the user is the assignee](admin_workflow_tabs.png)
 
 Once you are in the right tab:
 
