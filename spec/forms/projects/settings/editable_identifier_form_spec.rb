@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Projects::Settings::IdentifierForm, type: :forms do
+RSpec.describe Projects::Settings::EditableIdentifierForm, type: :forms do
   include_context "with rendered form"
 
   let(:model) { build_stubbed(:project, identifier: "my-project") }

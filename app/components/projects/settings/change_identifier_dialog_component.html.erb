@@ -40,7 +40,7 @@ See COPYRIGHT and LICENSE files for more details.
                                   url: project_identifier_path(project),
                                   id: "change-identifier-form",
                                   mt: 4) do |f| %>
-      <%= render(Primer::Forms::FormList.new(Projects::Settings::IdentifierForm.new(f))) %>
+      <%= render(Primer::Forms::FormList.new(Projects::Settings::EditableIdentifierForm.new(f))) %>
     <% end %>
   <% end %>
 
