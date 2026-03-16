@@ -77,7 +77,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
       it "does not show the modal buttons" do
         overview_page.within_project_attributes_sidebar do
-          expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-modal-button-']")
+          expect(page).to have_no_test_selector("[data-test-selector*='inplace-edit-dialog-button-']")
         end
       end
     end
@@ -91,7 +91,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
     it "does not show the modal buttons" do
       overview_page.within_project_attributes_sidebar do
-        expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-modal-button-']")
+        expect(page).to have_no_test_selector("[data-test-selector*='inplace-edit-dialog-button-']")
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
       it "does not show the modal buttons" do
         overview_page.within_project_attributes_sidebar do
-          expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-modal-button-']")
+          expect(page).to have_no_test_selector("[data-test-selector*='inplace-edit-dialog-button-']")
         end
       end
     end
@@ -117,7 +117,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
     it "does not show the modal buttons" do
       overview_page.within_project_attributes_sidebar do
-        expect(page).to have_no_css("[data-test-selector*='project-custom-field-modal-button-']")
+        expect(page).to have_no_css("[data-test-selector*='inplace-edit-dialog-button-']")
       end
     end
 
@@ -126,7 +126,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
       it "shows the modal buttons on all enabled custom fields" do
         overview_page.within_project_attributes_sidebar do
-          expect(page).to have_css("[data-test-selector*='project-custom-field-modal-button-']", count: 15)
+          expect(page).to have_css("[data-test-selector*='inplace-edit-dialog-button-']", count: 15)
         end
       end
     end
@@ -140,7 +140,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
     it "shows the modal buttons" do
       overview_page.within_project_attributes_sidebar do
-        expect(page).to have_css("[data-test-selector*='project-custom-field-modal-button-']", count: 13)
+        expect(page).to have_css("[data-test-selector*='inplace-edit-dialog-button-']", count: 13)
       end
     end
 
@@ -149,7 +149,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
       it "shows the modal buttons on all enabled custom fields" do
         overview_page.within_project_attributes_sidebar do
-          expect(page).to have_css("[data-test-selector*='project-custom-field-modal-button-']", count: 15)
+          expect(page).to have_css("[data-test-selector*='inplace-edit-dialog-button-']", count: 15)
         end
       end
     end

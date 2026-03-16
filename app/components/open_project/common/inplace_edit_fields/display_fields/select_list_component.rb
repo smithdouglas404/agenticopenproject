@@ -42,7 +42,7 @@ module OpenProject
 
             if value.present? && value != [nil]
               if custom_field?
-                formatted_custom_field_values
+                formatted_custom_field_values.presence || t("placeholders.default")
               else
                 value.is_a?(Array) ? value.map(&:to_s).join(", ") : value.to_s
               end

@@ -87,7 +87,7 @@ module Pages
 
       def expect_custom_field_without_modal_button(custom_field)
         within_custom_field_container(custom_field) do
-          expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-modal-button-']")
+          expect(page).to have_no_test_selector("[data-test-selector*='inplace-edit-dialog-button-']")
         end
       end
 
@@ -99,7 +99,7 @@ module Pages
           # Once we create the project custom field inline editing, this can be reverted to a normal
           # capybara click method call.
           page.execute_script(
-            "document.querySelector('[data-test-selector=\"project-custom-field-modal-button-#{custom_field.id}\"]').click()"
+            "document.querySelector('[data-test-selector=\"inplace-edit-dialog-button-#{custom_field.id}\"]').click()"
           )
         end
 

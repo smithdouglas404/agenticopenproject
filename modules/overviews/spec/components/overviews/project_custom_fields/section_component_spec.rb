@@ -53,6 +53,6 @@ RSpec.describe Overviews::ProjectCustomFields::SectionComponent, type: :componen
   end
 
   it "renders two custom fields" do
-    expect(rendered_component).to have_css ".op-inplace-edit--display-field", count: 2
+    expect(rendered_component).to have_css ".op-project-custom-field-container", count: 2
   end
 end

@@ -1,7 +1,9 @@
 <%=
   flex_layout(
     align_items: :flex_start,
-    justify_content: :space_between
+    justify_content: :space_between,
+    test_selector: @system_arguments[:test_selector],
+    classes: @system_arguments[:display_classes]
   ) do |flex|
     flex.with_row(mb: 1) do
       render OpenProject::Common::AttributeLabelComponent.new(

@@ -148,7 +148,7 @@ module OpenProject
         {
           dialog_controller_name: "inplace-edit",
           dialog_url: dialog_edit_url,
-          dialog_test_selector: "inplace-edit-dialog-button-#{wrapper_key}"
+          dialog_test_selector: "inplace-edit-dialog-button-#{model.id}"
         }
       end
 

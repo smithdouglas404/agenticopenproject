@@ -470,7 +470,7 @@ RSpec.describe "Projects copy", :js,
 
         overview_page.within_project_attributes_sidebar do
           # User has no permission to edit project attributes.
-          expect(page).to have_no_css("[data-test-selector*='project-custom-field-modal-button-']")
+          expect(page).to have_no_css("[data-test-selector*='inplace-edit-dialog-button-']")
           # The custom fields are still copied from the parent project.
           expect(page).to have_content(project_custom_field.name)
           expect(page).to have_content("some text cf")

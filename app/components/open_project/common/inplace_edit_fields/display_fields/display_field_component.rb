@@ -51,7 +51,7 @@ module OpenProject
 
             if value.is_a?(TrueClass) || value.is_a?(FalseClass)
               boolean_display_value(value)
-            elsif value.present?
+            elsif value.present? && value != [nil]
               value.to_s
             else
               t("placeholders.default")
