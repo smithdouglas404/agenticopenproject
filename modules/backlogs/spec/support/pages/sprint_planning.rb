@@ -31,18 +31,12 @@
 require "support/pages/page"
 
 module Pages
-  class Backlogs < Page
+  class SprintPlanning < Page
     attr_reader :project
 
     def initialize(project)
       super()
       @project = project
-    end
-
-    def enter_edit_backlog_mode(backlog)
-      within_backlog_menu(backlog) do |menu|
-        menu.find(:menuitem, "Edit sprint").click
-      end
     end
 
     def alter_attributes_in_details_view(story, **attributes)
@@ -57,45 +51,14 @@ module Pages
       end
     end
 
-    def alter_attributes_in_edit_backlog_mode(backlog, **attributes)
-      within_backlog(backlog) do
-        attributes.each do |key, value|
-          case key
-          when :name
-            fill_in "Name", with: value
-          when :start_date
-            fill_in "Start date", with: value
-          when :effective_date
-            fill_in "Finish date", with: value
-          else
-            raise NotImplementedError
-          end
-        end
-      end
-    end
-
-    def save_backlog_from_edit_mode(backlog)
-      within_backlog(backlog) do
-        find_field("Name").send_keys :return
-      end
-    end
-
-    def edit_backlog(backlog, **attributes)
-      enter_edit_backlog_mode(backlog)
-
-      alter_attributes_in_edit_backlog_mode(backlog, **attributes)
-
-      save_backlog_from_edit_mode(backlog)
-    end
-
     def edit_story_in_details_view(story, **attributes)
       click_in_story_menu(story, "Open details view")
 
       alter_attributes_in_details_view(story, **attributes)
     end
 
-    def click_in_backlog_menu(backlog, item_name)
-      within_backlog_menu(backlog) do |menu|
+    def click_in_sprint_menu(sprint, item_name)
+      within_sprint_menu(sprint) do |menu|
         menu.find(:menuitem, text: item_name).click
       end
     end
@@ -113,33 +76,25 @@ module Pages
       drag_n_drop_element from: moved_element, to: target_element, offset_x: 0, offset_y: before ? -5 : +10
     end
 
-    def fold_backlog(backlog)
-      within_backlog(backlog) do
-        find(:button, aria: { controls: "backlog_#{backlog.id}-list" }).click
+    def sprint_names_in_order
+      page.find_all("#sprint_backlogs_container > section .CollapsibleHeader-title").map(&:text)
+    end
+
+    def expect_sprint_names_in_order(*sprint_names)
+      expect(sprint_names_in_order).to eq(sprint_names)
+    end
+
+    def expect_story_in_sprint(story, sprint)
+      within_sprint(sprint) do
+        expect(page)
+          .to have_selector(work_package_selector(story).to_s)
       end
     end
 
-    def expect_sprint(sprint)
-      expect(page)
-        .to have_css("#sprint_backlogs_container #{backlog_selector(sprint)}")
-    end
-
-    def expect_backlog(sprint)
-      expect(page)
-        .to have_css("#owner_backlogs_container #{backlog_selector(sprint)}")
-    end
-
-    def expect_story_in_backlog(story, backlog)
-      within_backlog(backlog) do
+    def expect_story_not_in_sprint(story, sprint)
+      within_sprint(sprint) do
         expect(page)
-          .to have_selector(story_selector(story).to_s)
-      end
-    end
-
-    def expect_story_not_in_backlog(story, backlog)
-      within_backlog(backlog) do
-        expect(page)
-          .to have_no_selector(story_selector(story).to_s)
+          .to have_no_selector(work_package_selector(story).to_s)
       end
     end
 
@@ -150,16 +105,6 @@ module Pages
       end
     end
 
-    def expect_stories_in_order(backlog, *stories)
-      within_backlog(backlog) do
-        ids = stories.map { |s| "story_#{s.id}" }
-        existing_ids_in_order = all(ids.map { |id| "##{id}" }.join(", ")).pluck(:id)
-
-        expect(existing_ids_in_order)
-          .to eql(ids)
-      end
-    end
-
     def expect_and_dismiss_error(message)
       expect(page).to have_content message
 
@@ -167,16 +112,7 @@ module Pages
     end
 
     def path
-      backlogs_project_backlogs_path(project)
-    end
-
-    def within_backlog_menu(backlog, &)
-      within_backlog(backlog) do
-        button = find(:button, accessible_name: "Backlog actions")
-        button.click
-
-        within_menu_controlled_by(button, &)
-      end
+      sprint_planning_backlogs_project_backlogs_path(project)
     end
 
     def within_story_menu(story, &)
@@ -205,8 +141,24 @@ module Pages
       details_view
     end
 
+    def open_create_sprint_dialog
+      find_test_selector("op-sprints--new-sprint-button", text: "Sprint").click
+    end
+
+    def expect_sprint_dialog
+      expect(page).to have_css("#new-sprint-dialog")
+    end
+
     def expect_create_work_package_dialog
       expect(page).to have_css("#create-work-package-dialog")
+    end
+
+    def within_sprint_menu(backlog, &)
+      within_sprint(backlog) do
+        find(:button, accessible_name: "Sprint actions").click
+
+        within(:menu, &)
+      end
     end
 
     private
@@ -215,8 +167,12 @@ module Pages
       within(story_selector(story), &)
     end
 
-    def within_backlog(backlog, &)
-      within(backlog_selector(backlog), &)
+    def within_sprint(sprint, &)
+      within(sprint_selector(sprint), &)
+    end
+
+    def sprint_selector(sprint)
+      "#agile_sprint_#{sprint.id}"
     end
 
     def backlog_selector(backlog)

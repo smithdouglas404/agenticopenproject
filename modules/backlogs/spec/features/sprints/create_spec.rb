@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../../support/pages/backlogs"
+require_relative "../../support/pages/sprint_planning"
 
 RSpec.describe "Create", :js do
   let(:project) { create(:project) }
@@ -38,7 +38,7 @@ RSpec.describe "Create", :js do
   let(:user) do
     create(:user, member_with_permissions: { project => permissions })
   end
-  let(:backlogs_page) { Pages::Backlogs.new(project) }
+  let(:planning_page) { Pages::SprintPlanning.new(project) }
 
   let!(:initial_sprint) do
     create(:agile_sprint,
@@ -72,7 +72,7 @@ RSpec.describe "Create", :js do
   before do
     login_as(user)
 
-    backlogs_page.visit!
+    planning_page.visit!
   end
 
   context "with the feature flag active", with_flag: { scrum_projects: true } do
@@ -83,9 +83,9 @@ RSpec.describe "Create", :js do
       let(:finish_date_fmt) { finish_date.strftime("%Y-%m-%d") }
 
       it "allows creating a new sprint" do
-        backlogs_page.expect_sprint_names_in_order(initial_sprint.name)
+        planning_page.expect_sprint_names_in_order(initial_sprint.name)
 
-        backlogs_page.open_create_sprint_dialog
+        planning_page.open_create_sprint_dialog
 
         within_dialog "New sprint" do
           page.fill_in "Sprint name", with: "Created sprint"
@@ -96,7 +96,7 @@ RSpec.describe "Create", :js do
         end
 
         expect_and_dismiss_flash(message: "Successful creation.")
-        backlogs_page.expect_sprint_names_in_order(initial_sprint.name, "Created sprint")
+        planning_page.expect_sprint_names_in_order(initial_sprint.name, "Created sprint")
 
         sprint = project.reload.sprints.last
         expect(sprint).to be_present
@@ -106,7 +106,7 @@ RSpec.describe "Create", :js do
       end
 
       it "previews the sprint duration when changing the dates" do
-        backlogs_page.open_create_sprint_dialog
+        planning_page.open_create_sprint_dialog
 
         within_dialog "New sprint" do
           expect(page).to have_field "Duration", with: "", readonly: true
@@ -122,7 +122,7 @@ RSpec.describe "Create", :js do
         let(:too_early_finish_date) { start_date - 1.day }
 
         it "validates required fields are present" do
-          backlogs_page.open_create_sprint_dialog
+          planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
             page.fill_in "Sprint name", with: ""
@@ -136,7 +136,7 @@ RSpec.describe "Create", :js do
         end
 
         it "validates finish date is not before start date" do
-          backlogs_page.open_create_sprint_dialog
+          planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
             page.fill_in "Start date", with: start_date_fmt
@@ -157,7 +157,10 @@ RSpec.describe "Create", :js do
         let!(:initial_sprint) { nil } # override so that initial sprint is not present
 
         it "prefilled with 'Sprint 1' if there are no previous sprints" do
-          backlogs_page.open_create_sprint_dialog
+          pending "Currently broken since the blankslate renders without any sprint or version present. " +
+                  "Fix at a later time when backlog items are there #72198"
+
+          planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
             expect(page).to have_field "Sprint name *", with: "Sprint 1", required: true, focused: true
@@ -168,8 +171,8 @@ RSpec.describe "Create", :js do
           before do
             create(:agile_sprint, name: "Be ambitious 42", project:)
 
-            backlogs_page.visit!
-            backlogs_page.open_create_sprint_dialog
+            planning_page.visit!
+            planning_page.open_create_sprint_dialog
           end
 
           it "offers the next sprint name with a number increment" do

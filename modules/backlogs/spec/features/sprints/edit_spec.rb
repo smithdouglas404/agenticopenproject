@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../../support/pages/backlogs"
+require_relative "../../support/pages/sprint_planning"
 
 RSpec.describe "Edit", :js do
   let(:project) { create(:project) }
@@ -38,7 +38,7 @@ RSpec.describe "Edit", :js do
   let(:user) do
     create(:user, member_with_permissions: { project => permissions })
   end
-  let(:backlogs_page) { Pages::Backlogs.new(project) }
+  let(:planning_page) { Pages::SprintPlanning.new(project) }
 
   let(:story_type) do
     create(:type_feature)
@@ -94,20 +94,20 @@ RSpec.describe "Edit", :js do
   before do
     login_as(user)
 
-    backlogs_page.visit!
+    planning_page.visit!
   end
 
   context "with the feature flag active", with_flag: { scrum_projects: true } do
     it "lists all open sprints" do
-      backlogs_page.expect_sprint_names_in_order(first_sprint.name, second_sprint.name)
+      planning_page.expect_sprint_names_in_order(first_sprint.name, second_sprint.name)
 
-      backlogs_page.expect_story_in_sprint(work_package, first_sprint)
-      backlogs_page.expect_story_not_in_sprint(work_package, second_sprint)
+      planning_page.expect_story_in_sprint(work_package, first_sprint)
+      planning_page.expect_story_not_in_sprint(work_package, second_sprint)
     end
 
     it "adds a work package to a sprint" do
-      backlogs_page.click_in_sprint_menu(first_sprint, "New story")
-      backlogs_page.expect_create_work_package_dialog
+      planning_page.click_in_sprint_menu(first_sprint, "New story")
+      planning_page.expect_create_work_package_dialog
 
       page.within("#create-work-package-dialog") do
         page.fill_in "Subject", with: "Story created in sprint"
@@ -120,13 +120,13 @@ RSpec.describe "Edit", :js do
       expect_and_dismiss_flash type: :success, message: "New work package created and added as a child"
       created_wp = first_sprint.reload.work_packages.last
       expect(created_wp.subject).to eq("Story created in sprint")
-      backlogs_page.expect_story_in_sprint(created_wp, first_sprint)
+      planning_page.expect_story_in_sprint(created_wp, first_sprint)
     end
 
     context "with the 'create_sprints' permissions" do
       context "when editing a sprint" do
         it "displays all menu entries" do
-          backlogs_page.within_sprint_menu(first_sprint) do |menu|
+          planning_page.within_sprint_menu(first_sprint) do |menu|
             expect(menu).to have_selector :menuitem, count: 3
             expect(menu).to have_selector :menuitem, "Edit sprint"
             expect(menu).to have_selector :menuitem, "New story"
@@ -135,10 +135,10 @@ RSpec.describe "Edit", :js do
         end
 
         it "edits the sprint name" do
-          backlogs_page.expect_sprint_names_in_order(first_sprint.name, second_sprint.name)
+          planning_page.expect_sprint_names_in_order(first_sprint.name, second_sprint.name)
 
-          backlogs_page.click_in_sprint_menu(first_sprint, "Edit sprint")
-          backlogs_page.expect_sprint_dialog
+          planning_page.click_in_sprint_menu(first_sprint, "Edit sprint")
+          planning_page.expect_sprint_dialog
 
           within_dialog "Edit sprint" do
             page.fill_in "Sprint name", with: "Changed name"
@@ -146,14 +146,14 @@ RSpec.describe "Edit", :js do
           end
 
           wait_for_reload
-          backlogs_page.expect_sprint_names_in_order("Changed name", second_sprint.name)
+          planning_page.expect_sprint_names_in_order("Changed name", second_sprint.name)
         end
 
         context "when lacking the 'manage_sprint_items' permission" do
           let(:permissions) { all_permissions - %i[manage_sprint_items] }
 
           it "has no menu entry for creating a new story" do
-            backlogs_page.within_sprint_menu(first_sprint) do |menu|
+            planning_page.within_sprint_menu(first_sprint) do |menu|
               expect(menu).to have_selector :menuitem, count: 2
               expect(menu).to have_selector :menuitem, "Edit sprint"
               expect(menu).to have_selector :menuitem, "Stories/Tasks"
@@ -174,7 +174,7 @@ RSpec.describe "Edit", :js do
       end
 
       it "has no menu entry for editing a sprint" do
-        backlogs_page.within_sprint_menu(first_sprint) do |menu|
+        planning_page.within_sprint_menu(first_sprint) do |menu|
           expect(menu).to have_selector :menuitem, "Stories/Tasks"
           expect(menu).to have_no_selector :menuitem, "Edit sprint"
         end
