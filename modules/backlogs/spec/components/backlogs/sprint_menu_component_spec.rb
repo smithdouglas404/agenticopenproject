@@ -61,21 +61,21 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
     context "with :manage_sprint_items permission" do
       let(:permissions) { %i[view_sprints manage_sprint_items] }
 
-      it "shows Add new story item with compose icon" do
+      it "shows Add new work package item with plus icon" do
         render_component
 
-        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
-        expect(page).to have_octicon(:compose)
+        expect(page).to have_text(I18n.t(:"backlogs.sprint_menu_component.action_menu.add_work_package"))
+        expect(page).to have_octicon(:plus)
       end
     end
 
     context "without :manage_sprint_items permission" do
       let(:permissions) { [:view_sprints] }
 
-      it "does not show Add new story item" do
+      it "does not show Add work package item" do
         render_component
 
-        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+        expect(page).to have_no_text(I18n.t(:"backlogs.sprint_menu_component.action_menu.add_work_package"))
       end
     end
 
@@ -86,7 +86,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         render_component
 
         expect(page).to have_css("action-menu")
-        expect(page).to have_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
+        expect(page).to have_text(I18n.t("backlogs.sprint_menu_component.action_menu.edit_sprint"))
         expect(page).to have_octicon(:pencil)
       end
     end
@@ -97,26 +97,8 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
       it "does not show Edit item" do
         render_component
 
-        expect(page).to have_no_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
+        expect(page).to have_no_text(I18n.t("backlogs.sprint_menu_component.action_menu.edit_sprint"))
       end
-    end
-  end
-
-  describe "always-visible items" do
-    let(:permissions) { [:view_sprints] }
-
-    it "renders stable ids on the action menu and stories/tasks item" do
-      render_component
-
-      expect(page).to have_element(:button, id: /\Aagile_sprint_#{sprint.id}_menu-button\z/)
-      expect(page).to have_element(:ul, id: /\Aagile_sprint_#{sprint.id}_menu-list\z/)
-      expect(page).to have_element(:a, id: /\Aagile_sprint_#{sprint.id}_menu_stories_tasks\z/)
-    end
-
-    it "shows Stories/Tasks link" do
-      render_component
-
-      expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.stories_tasks"))
     end
   end
 end

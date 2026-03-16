@@ -149,10 +149,7 @@ en:
       label_actions: "Sprint actions"
       action_menu:
         edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        add_work_package: "Add work package"
 
     story_component:
       label_drag_story: "Move %{name}"

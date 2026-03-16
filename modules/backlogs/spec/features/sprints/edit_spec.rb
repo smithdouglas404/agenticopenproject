@@ -106,7 +106,7 @@ RSpec.describe "Edit", :js do
     end
 
     it "adds a work package to a sprint" do
-      planning_page.click_in_sprint_menu(first_sprint, "New story")
+      planning_page.click_in_sprint_menu(first_sprint, "Add work package")
       planning_page.expect_create_work_package_dialog
 
       page.within("#create-work-package-dialog") do
@@ -127,10 +127,9 @@ RSpec.describe "Edit", :js do
       context "when editing a sprint" do
         it "displays all menu entries" do
           planning_page.within_sprint_menu(first_sprint) do |menu|
-            expect(menu).to have_selector :menuitem, count: 3
+            expect(menu).to have_selector :menuitem, count: 2
             expect(menu).to have_selector :menuitem, "Edit sprint"
-            expect(menu).to have_selector :menuitem, "New story"
-            expect(menu).to have_selector :menuitem, "Stories/Tasks"
+            expect(menu).to have_selector :menuitem, "Add work package"
           end
         end
 
@@ -154,11 +153,10 @@ RSpec.describe "Edit", :js do
 
           it "has no menu entry for creating a new story" do
             planning_page.within_sprint_menu(first_sprint) do |menu|
-              expect(menu).to have_selector :menuitem, count: 2
+              expect(menu).to have_selector :menuitem, count: 1
               expect(menu).to have_selector :menuitem, "Edit sprint"
-              expect(menu).to have_selector :menuitem, "Stories/Tasks"
 
-              expect(menu).to have_no_selector :menuitem, "New story"
+              expect(menu).to have_no_selector :menuitem, "Add work package"
             end
           end
         end
@@ -175,7 +173,6 @@ RSpec.describe "Edit", :js do
 
       it "has no menu entry for editing a sprint" do
         planning_page.within_sprint_menu(first_sprint) do |menu|
-          expect(menu).to have_selector :menuitem, "Stories/Tasks"
           expect(menu).to have_no_selector :menuitem, "Edit sprint"
         end
       end

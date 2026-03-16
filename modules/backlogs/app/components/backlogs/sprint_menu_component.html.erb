@@ -50,7 +50,7 @@ See COPYRIGHT and LICENSE files for more details.
     if user_allowed?(:manage_sprint_items)
       menu.with_item(
         id: dom_target(sprint, :menu, :new_story),
-        label: t(".action_menu.new_story"),
+        label: t(".action_menu.add_work_package"),
         href: new_project_work_packages_dialog_path(
           project,
           sprint_id: sprint.id,
@@ -58,24 +58,13 @@ See COPYRIGHT and LICENSE files for more details.
         ),
         content_arguments: { data: { turbo_stream: true } }
       ) do |item|
-        item.with_leading_visual_icon(icon: :compose)
+        item.with_leading_visual_icon(icon: :plus)
       end
     end
 
-    if user_allowed?(:create_sprints) || user_allowed?(:add_work_packages)
-      menu.with_divider
-    end
-
-    menu.with_item(
-      # TODO: sprint_id filter does not exist for work packages. Add?
-      id: dom_target(sprint, :menu, :stories_tasks),
-      scheme: :danger,
-      label: t(".action_menu.stories_tasks"),
-      tag: :a,
-      href: project_work_packages_path(project, sprint_id: sprint.id)
-    ) do |item|
-      item.with_leading_visual_icon(icon: :"op-view-list")
-    end
+    # if user_allowed?(:create_sprints) || user_allowed?(:add_work_packages)
+    #   menu.with_divider
+    # end
 
     # menu.with_item(
     #   # TODO: what to do with the task board?
