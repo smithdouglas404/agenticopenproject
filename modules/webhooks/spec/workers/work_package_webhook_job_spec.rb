@@ -36,10 +36,11 @@ RSpec.describe WorkPackageWebhookJob, :webmock, type: :model do
   shared_let(:request_url) { "http://example.net/test/42" }
   shared_let(:work_package) { create(:work_package, subject: title) }
   shared_let(:webhook) { create(:webhook, all_projects: true, url: request_url, secret: nil) }
+  shared_let(:journal) { work_package.journals.first }
 
   shared_examples "a work package webhook call" do
     let(:event) { "work_package:created" }
-    let(:job) { described_class.perform_now webhook.id, work_package, event }
+    let(:job) { described_class.perform_now webhook.id, journal, event }
 
     let(:stubbed_url) { request_url }
 
@@ -158,6 +159,115 @@ RSpec.describe WorkPackageWebhookJob, :webmock, type: :model do
       it "includes the custom field value" do
         subject
 
+        expect(stub).to have_been_requested
+
+        log = Webhooks::Log.last
+        embedded_project = JSON.parse(log.request_body)["work_package"]["_embedded"]["project"]
+        expect(embedded_project[custom_field.attribute_name(:camel_case)]).to eq "wat"
+      end
+    end
+  end
+
+  describe "actor field on updated event" do
+    let(:author) { create(:user, firstname: "Original", lastname: "Author") }
+    let(:updater) { create(:user, firstname: "Update", lastname: "User") }
+    let(:work_package) { create(:work_package, author:, subject: title) }
+    let(:journal) do
+      work_package.add_journal(user: updater, notes: "Updated the work package")
+      work_package.save!
+      work_package.journals.last
+    end
+
+    it_behaves_like "a work package webhook call" do
+      let(:event) { "work_package:updated" }
+
+      it "includes actor matching the journal user, not the work package author" do
+        subject
+        expect(stub).to have_been_requested
+
+        log = Webhooks::Log.last
+        payload = JSON.parse(log.request_body)
+
+        expect(payload["actor"]["id"]).to eq updater.id
+        expect(payload["actor"]["name"]).to eq updater.name
+        expect(payload["actor"]["_type"]).to eq "User"
+        expect(payload["actor"]["_links"]["self"]["href"]).to eq "/api/v3/users/#{updater.id}"
+
+        # Author in the work package payload is still the original creator
+        author_href = payload["work_package"]["_links"]["author"]["href"]
+        expect(author_href).to include("/api/v3/users/#{author.id}")
+      end
+    end
+  end
+
+  describe "actor field on created event" do
+    let(:creator) { create(:user, firstname: "Creator", lastname: "Person") }
+    let(:work_package) { User.execute_as(creator) { create(:work_package, author: creator, subject: title) } }
+    let(:journal) { work_package.journals.first }
+
+    it_behaves_like "a work package webhook call" do
+      let(:event) { "work_package:created" }
+
+      it "includes actor matching the creator" do
+        subject
+        expect(stub).to have_been_requested
+
+        log = Webhooks::Log.last
+        payload = JSON.parse(log.request_body)
+
+        expect(payload["actor"]["id"]).to eq creator.id
+        expect(payload["actor"]["name"]).to eq creator.name
+      end
+    end
+  end
+
+  describe "actor absent when journal user has been deleted" do
+    let(:updater) { create(:user) }
+    let(:journal) do
+      work_package.add_journal(user: updater, notes: "Updated")
+      work_package.save!
+      work_package.journals.last
+    end
+
+    before { updater.destroy }
+
+    it_behaves_like "a work package webhook call" do
+      let(:event) { "work_package:updated" }
+
+      it "fires the webhook without an actor key" do
+        expect { subject }.not_to raise_error
+        expect(stub).to have_been_requested
+
+        log = Webhooks::Log.last
+        payload = JSON.parse(log.request_body)
+        expect(payload).not_to have_key("actor")
+      end
+    end
+  end
+
+  describe "admin custom field regression with journal (PR #16912)" do
+    shared_let(:project) { work_package.project }
+    shared_let(:custom_field) do
+      create(:project_custom_field, :string, admin_only: true, projects: [project])
+    end
+    shared_let(:custom_value) do
+      create(:custom_value,
+             custom_field:,
+             customized: project,
+             value: "wat")
+    end
+    let(:updater) { create(:admin) }
+    let(:journal) do
+      work_package.add_journal(user: updater, notes: "Updated")
+      work_package.save!
+      work_package.journals.last
+    end
+
+    it_behaves_like "a work package webhook call" do
+      let(:event) { "work_package:updated" }
+
+      it "includes the custom field value" do
+        subject
         expect(stub).to have_been_requested
 
         log = Webhooks::Log.last

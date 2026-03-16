@@ -87,10 +87,14 @@ class RepresentedWebhookJob < WebhookJob
     # to_json needs to be called within the system user block in order to
     # have all the custom field visibility permissions set up correctly.
     User.system.run_given do
-      {
-        action: event_name,
-        payload_key => represented_payload
-      }.to_json
+      payload = { action: event_name, payload_key => represented_payload }
+      actor = actor_payload
+      payload[:actor] = actor if actor
+      payload.to_json
     end
+  end
+
+  def actor_payload
+    nil
   end
 end
