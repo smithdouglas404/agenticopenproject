@@ -40,8 +40,8 @@ See COPYRIGHT and LICENSE files for more details.
       end
     %>
   <% else %>
-    <div class="op-backlogs-container" data-controller="generic-drag-and-drop">
-      <div id="owner_backlogs_container" class="op-backlogs-lists">
+    <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop">
+      <div id="owner_backlogs_container" class="op-sprint-planning-lists">
         <%=
           render(Primer::Beta::Subhead.new(hide_border: true)) do |head|
             head.with_heading(tag: :h3, font_weight: :bold, size: :medium) { t(:label_backlog) }
@@ -50,7 +50,7 @@ See COPYRIGHT and LICENSE files for more details.
 
         <%= render(Backlogs::BacklogComponent.with_collection(@owner_backlogs, project: @project)) %>
       </div>
-      <div id="sprint_backlogs_container" class="op-backlogs-lists">
+      <div id="sprint_backlogs_container" class="op-sprint-planning-lists">
         <%=
           render(Primer::Beta::Subhead.new(hide_border: true)) do |head|
             head.with_heading(tag: :h3, font_weight: :bold, size: :medium) { Agile::Sprint.human_model_name.pluralize }
