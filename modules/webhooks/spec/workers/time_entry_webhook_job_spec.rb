@@ -43,7 +43,7 @@ RSpec.describe TimeEntryWebhookJob, :webmock, type: :job do
     let(:stubbed_url) { request_url }
 
     let(:request_headers) do
-      { content_type: "application/json", accept: "application/json" }
+      { "Content-Type": "application/json", Accept: "application/json" }
     end
 
     let(:response_code) { 200 }

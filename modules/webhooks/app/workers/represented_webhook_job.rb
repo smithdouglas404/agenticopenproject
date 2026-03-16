@@ -61,8 +61,8 @@ class RepresentedWebhookJob < WebhookJob
 
   def request_headers
     {
-      content_type: "application/json",
-      accept: "application/json"
+      "Content-Type": "application/json",
+      Accept: "application/json"
     }
   end
 
