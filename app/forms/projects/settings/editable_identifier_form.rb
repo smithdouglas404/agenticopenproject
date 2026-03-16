@@ -37,7 +37,6 @@ module Projects
             label: attribute_name(:identifier),
             caption: I18n.t("projects.settings.change_identifier_format_hint_semantic"),
             required: true,
-            maxlength: Project::SEMANTIC_IDENTIFIER_MAX_LENGTH,
             validation_message: validation_message_for(:identifier)
           )
         else
@@ -46,7 +45,6 @@ module Projects
             label: attribute_name(:identifier),
             caption: I18n.t("projects.settings.change_identifier_format_hint_legacy"),
             required: true,
-            maxlength: Project::IDENTIFIER_MAX_LENGTH,
             validation_message: validation_message_for(:identifier)
           )
         end
@@ -55,7 +53,7 @@ module Projects
       private
 
       def validation_message_for(attribute)
-        model.errors.messages_for(attribute).to_sentence.presence
+        model.errors.full_messages_for(attribute).to_sentence.presence
       end
     end
   end

@@ -51,7 +51,7 @@ RSpec.describe Projects::IdentifierController do
         put :update, params: { project_id: project.id, project: { identifier: "bad identifier" }, format: :turbo_stream }
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.body).to include("is invalid")
+        expect(response.body).to include("Identifier is invalid")
         expect(project.reload.identifier).to eq(previous_identifier)
       end
     end
