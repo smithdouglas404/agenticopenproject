@@ -79,7 +79,7 @@ module WorkPackages
       end
 
       def suggest_identifier(name, reserved_identifiers: Set.new, in_use_identifiers: Set.new)
-        used = combined_identifiers(reserved_identifiers, in_use_identifiers)
+        used = reserved_identifiers | in_use_identifiers
         candidates = identifier_candidates(name)
         find_unique(candidates, used)
       end
@@ -87,7 +87,7 @@ module WorkPackages
       private
 
       def generate_suggestions(projects, reserved_identifiers:, in_use_identifiers:)
-        used_identifiers = combined_identifiers(reserved_identifiers, in_use_identifiers)
+        used_identifiers = reserved_identifiers | in_use_identifiers
 
         projects.map do |project|
           candidates = identifier_candidates(project.name)
@@ -211,10 +211,6 @@ module WorkPackages
 
           counter += 1
         end
-      end
-
-      def combined_identifiers(set_a, set_b)
-        set_a | set_b
       end
     end
   end
