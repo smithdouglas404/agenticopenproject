@@ -372,6 +372,7 @@ it:
         failure: Alcuni controlli non sono riusciti e il sistema non funziona come previsto.
         success: Tutte le connessioni e i sistemi funzionano come previsto.
         warning: Alcuni controlli hanno restituito un avviso. Questo può causare comportamenti imprevisti.
+      synced: 'Last sync: %{datetime}'
       title: Report sullo stato di salute
     health_email_notifications:
       description_disabled: Gli amministratori non riceveranno aggiornamenti via email quando ci sono aggiornamenti importanti.

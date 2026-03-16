@@ -27,33 +27,13 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+
 require "spec_helper"
+require "services/base_services/behaves_like_create_service"
 
-# Adapt the carrierwave sanitized file tests to the content type detector
-RSpec.describe OpenProject::Patches::CarrierwaveSanitizedFile do
-  let(:file) { FileHelpers.mock_uploaded_file(name: "original-filename.txt") }
-
-  it "uses the first one when multiple mime types are given using a semicolon" do
-    allow(file).to receive(:content_type).and_return("image/png; text/html")
-
-    sanitized_file = CarrierWave::SanitizedFile.new(file)
-
-    expect(sanitized_file.content_type).to eq("image/png")
-  end
-
-  it "uses the first one when multiple mime types are given using a comma" do
-    allow(file).to receive(:content_type).and_return("image/png, text/html")
-
-    sanitized_file = CarrierWave::SanitizedFile.new(file)
-
-    expect(sanitized_file.content_type).to eq("image/png")
-  end
-
-  it "drops content type parameters" do
-    allow(file).to receive(:content_type).and_return("text/html; charset=utf-8")
-
-    sanitized_file = CarrierWave::SanitizedFile.new(file)
-
-    expect(sanitized_file.content_type).to eq("text/html")
+RSpec.describe Sprints::CreateService, type: :model do
+  it_behaves_like "BaseServices create service" do
+    let(:model_class) { Agile::Sprint }
+    let(:factory) { :agile_sprint }
   end
 end

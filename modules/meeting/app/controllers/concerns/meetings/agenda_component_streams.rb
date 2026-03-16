@@ -89,6 +89,16 @@ module Meetings
         )
       end
 
+      def update_sidebar_sharing_component_via_turbo_stream(meeting: @meeting)
+        return unless meeting.onetime_template?
+
+        update_via_turbo_stream(
+          component: Meetings::SidePanel::SharingComponent.new(
+            meeting:
+          )
+        )
+      end
+
       def update_add_user_form_component_via_turbo_stream(meeting: @meeting)
         update_via_turbo_stream(
           component: Meetings::Participants::AddUserFormComponent.new(meeting:)

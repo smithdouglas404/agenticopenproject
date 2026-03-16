@@ -204,4 +204,74 @@ RSpec.describe "Meeting templates requests",
       end
     end
   end
+
+  describe "GET /projects/:id/meetings/templates (project templates index page)" do
+    shared_let(:ancestor_project) { create(:project, enabled_module_names: %i[meetings]) }
+    shared_let(:current_project) { create(:project, enabled_module_names: %i[meetings], parent: ancestor_project) }
+    shared_let(:descendant_project) { create(:project, enabled_module_names: %i[meetings], parent: current_project) }
+    shared_let(:unrelated_project) { create(:project, enabled_module_names: %i[meetings]) }
+
+    shared_let(:user) do
+      create(:user, member_with_permissions: { current_project => %i[view_meetings] })
+    end
+
+    shared_let(:own_template) { create(:onetime_template, project: current_project, title: "Own template") }
+    shared_let(:ancestor_none_template) do
+      create(:onetime_template, project: ancestor_project, sharing: :none, title: "Ancestor none")
+    end
+    shared_let(:ancestor_descendants_template) do
+      create(:onetime_template, project: ancestor_project, sharing: :descendants, title: "Ancestor descendants")
+    end
+    shared_let(:descendant_template) do
+      create(:onetime_template, project: descendant_project, sharing: :descendants, title: "Descendant template")
+    end
+    shared_let(:system_template) do
+      create(:onetime_template, project: unrelated_project, sharing: :system, title: "System template")
+    end
+
+    before { login_as user }
+
+    it "shows only templates belonging to the project, regardless of sharing level" do
+      get templates_project_meetings_path(current_project)
+
+      expect(response.body).to include("Own template")
+
+      expect(response.body).not_to include("Ancestor none")
+      expect(response.body).not_to include("Ancestor descendants")
+      expect(response.body).not_to include("Descendant template")
+      expect(response.body).not_to include("System template")
+    end
+  end
+
+  describe "GET /meetings/templates (global templates index page)" do
+    shared_let(:accessible_project) { create(:project, enabled_module_names: %i[meetings]) }
+    shared_let(:inaccessible_project) { create(:project, enabled_module_names: %i[meetings]) }
+
+    shared_let(:user) do
+      create(:user, member_with_permissions: { accessible_project => %i[view_meetings] })
+    end
+
+    shared_let(:own_template) { create(:onetime_template, project: accessible_project, title: "Own template") }
+    shared_let(:inaccessible_none_template) do
+      create(:onetime_template, project: inaccessible_project, sharing: :none, title: "Inaccessible none")
+    end
+    shared_let(:inaccessible_descendants_template) do
+      create(:onetime_template, project: inaccessible_project, sharing: :descendants, title: "Inaccessible descendants")
+    end
+    shared_let(:system_template) do
+      create(:onetime_template, project: inaccessible_project, sharing: :system, title: "System template")
+    end
+
+    before { login_as user }
+
+    it "shows system templates and templates from accessible projects" do
+      get templates_meetings_path
+
+      expect(response.body).to include("Own template")
+      expect(response.body).to include("System template")
+
+      expect(response.body).not_to include("Inaccessible none")
+      expect(response.body).not_to include("Inaccessible descendants")
+    end
+  end
 end

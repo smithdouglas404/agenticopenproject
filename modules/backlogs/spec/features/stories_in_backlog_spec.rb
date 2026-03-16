@@ -52,12 +52,12 @@ RSpec.describe "Stories in backlog", :js, :settings_reset do
   end
   let(:role) do
     create(:project_role,
-           permissions: %i(view_master_backlog
+           permissions: %i(view_sprints
+                           manage_sprint_items
                            add_work_packages
                            view_work_packages
                            edit_work_packages
-                           manage_subtasks
-                           assign_versions))
+                           manage_subtasks))
   end
   let!(:current_user) do
     create(:user,
@@ -144,22 +144,22 @@ RSpec.describe "Stories in backlog", :js, :settings_reset do
 
   it "displays stories in correct order, calculates velocity, and allows editing story points" do
     backlogs_page
-      .expect_story_in_sprint(sprint_story1, sprint)
+      .expect_story_in_backlog(sprint_story1, sprint)
 
     backlogs_page
-      .expect_story_in_sprint(sprint_story2, sprint)
+      .expect_story_in_backlog(sprint_story2, sprint)
 
     backlogs_page
-      .expect_story_in_sprint(backlog_story1, backlog)
+      .expect_story_in_backlog(backlog_story1, backlog)
 
     backlogs_page
-      .expect_story_not_in_sprint(sprint_story2_parent, sprint)
+      .expect_story_not_in_backlog(sprint_story2_parent, sprint)
 
     backlogs_page
-      .expect_story_not_in_sprint(sprint_story1_task, sprint)
+      .expect_story_not_in_backlog(sprint_story1_task, sprint)
 
     backlogs_page
-      .expect_story_not_in_sprint(sprint_story_in_other_project, sprint)
+      .expect_story_not_in_backlog(sprint_story_in_other_project, sprint)
 
     backlogs_page
       .expect_stories_in_order(sprint, sprint_story1, sprint_story2)
@@ -182,8 +182,8 @@ RSpec.describe "Stories in backlog", :js, :settings_reset do
     backlogs_page
       .edit_story_in_details_view(sprint_story1, version: backlog)
 
-    backlogs_page.expect_story_not_in_sprint(sprint_story1, sprint)
-    backlogs_page.expect_story_in_sprint(sprint_story1, backlog)
+    backlogs_page.expect_story_not_in_backlog(sprint_story1, sprint)
+    backlogs_page.expect_story_in_backlog(sprint_story1, backlog)
   end
 
   it "switches the details view from one story to another" do
@@ -191,19 +191,19 @@ RSpec.describe "Stories in backlog", :js, :settings_reset do
       .click_in_story_menu(sprint_story1, "Open details view")
 
     backlogs_page.expect_details_view(sprint_story1)
-    backlogs_page.expect_story_in_sprint(sprint_story2, sprint)
+    backlogs_page.expect_story_in_backlog(sprint_story2, sprint)
 
     backlogs_page
       .click_in_story_menu(sprint_story2, "Open details view")
 
     backlogs_page.expect_details_view(sprint_story2)
-    backlogs_page.expect_story_in_sprint(sprint_story1, sprint)
+    backlogs_page.expect_story_in_backlog(sprint_story1, sprint)
   end
 
   it "removes story from sprint when type is changed to non-story type via details view" do
     backlogs_page
       .edit_story_in_details_view(sprint_story2, type: task.name)
 
-    backlogs_page.expect_story_not_in_sprint(sprint_story2, sprint)
+    backlogs_page.expect_story_not_in_backlog(sprint_story2, sprint)
   end
 end

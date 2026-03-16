@@ -80,6 +80,8 @@ module OpenProject
     WATCHER_ADDED = "watcher_added"
     WATCHER_DESTROYED = "watcher_destroyed"
 
+    MODULE_DISABLED = "module_disabled"
+
     WORK_PACKAGE_SHARED = "work_package_shared"
   end
 end

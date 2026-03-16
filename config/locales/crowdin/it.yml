@@ -1372,9 +1372,6 @@ it:
         dependencies: "Dipendenze"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Condivisione"
-        finish_date: "Data di fine"
       jira_import:
         projects: "Progetti"
       "import/jira":
@@ -3512,7 +3509,6 @@ it:
   label_float: "Virgola mobile"
   label_folder: "Cartella"
   label_follows: "segue"
-  label_force_user_language_to_default: "Imposta la lingua degli utenti che non hanno una lingua consentita a quella predefinita"
   label_form_configuration: "Configurazione del modulo"
   label_formula: "Formula"
   label_gantt_chart: "Diagramma di Gantt"
@@ -3891,12 +3887,6 @@ it:
   label_user_named: "Utente %{name}"
   label_user_activity: "attività di %{value}"
   label_user_anonymous: "Anonimo"
-  label_user_mail_option_all: "Per qualsiasi evento su tutti i miei progetti"
-  label_user_mail_option_none: "Per nessun evento"
-  label_user_mail_option_only_assigned: "Solo per cose alle quali sono stato assegnato"
-  label_user_mail_option_only_my_events: "Solo per le cose che osservo o nelle quali sono coinvolto"
-  label_user_mail_option_only_owner: "Solo per le cose di cui sono proprietario"
-  label_user_mail_option_selected: "Per qualsiasi evento solo nei progetti selezionati"
   label_user_menu: "Menu utente"
   label_user_new: "Nuovo utente"
   label_user_plural: "Utenti"
@@ -3936,7 +3926,6 @@ it:
   label_wiki_show_index_page_link: "Mostra voce del sotto-menù 'Sommario'"
   label_wiki_show_menu_item: "Mostra come voce del menù nella navigazione del progetto"
   label_wiki_show_new_page_link: "Mostra voce del sotto-menù 'Crea nuova pagina figlio'"
-  label_wiki_show_submenu_item: "Mostra come voce di sottomenù di "
   label_wiki_start: "Pagina iniziale"
   label_work: "Lavoro"
   label_work_package: "Macro-attività"
@@ -5008,7 +4997,7 @@ it:
   text_default_administrator_account_changed: "Account amministratore predefinito cambiato"
   text_default_encoding: "Predefinito: UTF-8"
   text_destroy: "Cancella"
-  text_destroy_with_associated: "Ci sono ulteriori oggetti associati con la/le macro-attività che devono essere eliminati. Tali oggetti sono dei seguenti tipi:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Cosa vuoi fare?"
   text_diff_truncated: "... Questo diff è stato troncato perché supera la dimensione massima che può essere visualizzata."
   text_email_delivery_not_configured: "Consegna email non configurata. Le notifiche sono state disabilitate.\nConfigura il tuo server SMTP per abilitarle."

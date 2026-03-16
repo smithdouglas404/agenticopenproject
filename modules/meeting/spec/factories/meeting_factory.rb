@@ -67,6 +67,7 @@ FactoryBot.define do
       meeting.sequence(:title) { |n| "Onetime template #{n}" }
       template { true }
       recurring_meeting { nil }
+      sharing { :none }
     end
   end
 end

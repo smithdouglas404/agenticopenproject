@@ -57,8 +57,14 @@ jobs:
       - name: Resolve bug in git https://stackoverflow.com/a/63879454/96823
         run: git repack -d
 
-      - name: Get one commit more to connect the history of dev and release branches
-        run: git fetch --deepen 1 origin "$BASE_BRANCH" "$RELEASE_BRANCH"
+      - name: Get more commits to connect the history of dev and release branches
+        run: |
+          for i in $(seq 1 10); do
+            git fetch --deepen 10 origin "$BASE_BRANCH" "$RELEASE_BRANCH"
+            git merge-base --all HEAD origin/"$RELEASE_BRANCH" && exit 0
+          done
+          echo "Failed to fetch merge base" >&2
+          exit 1
 
       - name: Create branch without checkout just to have shorter automatic commit message
         run: git branch "$RELEASE_BRANCH" origin/"$RELEASE_BRANCH"

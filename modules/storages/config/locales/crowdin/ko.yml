@@ -370,6 +370,7 @@ ko:
         failure: 일부 검사가 실패하여 시스템이 예상대로 작동되지 않습니다.
         success: 모든 연결과 시스템이 예상대로 작동 중입니다.
         warning: 일부 검사에서 경고가 반환되었습니다. 이로 인해 예상치 못한 동작이 발생할 수 있습니다.
+      synced: 'Last sync: %{datetime}'
       title: 상태 보고서
     health_email_notifications:
       description_disabled: 중요 업데이트가 있을 때 관리자에게 이메일로 업데이트가 전송되지 않습니다.

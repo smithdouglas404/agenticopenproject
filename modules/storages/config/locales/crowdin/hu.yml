@@ -372,6 +372,7 @@ hu:
         failure: Some checks failed and the system does not work as expected.
         success: All connections and systems are working as expected.
         warning: Some checks returned a warning. This can lead to unexpected behaviour.
+      synced: 'Last sync: %{datetime}'
       title: Health status report
     health_email_notifications:
       description_disabled: Admins will not receive updates by email when there are important updates.

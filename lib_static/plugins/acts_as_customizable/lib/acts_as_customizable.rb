@@ -48,7 +48,7 @@ module Redmine
           # N.B. the default for validate should be false, however specs seem to think differently
           has_many :custom_values, -> {
             includes(:custom_field)
-              .order("#{CustomField.table_name}.position")
+              .order("#{CustomField.table_name}.position", "#{CustomValue.table_name}.id")
           }, as: :customized,
              dependent: :delete_all,
              validate: false,
