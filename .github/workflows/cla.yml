@@ -41,6 +41,7 @@ jobs:
             NobodysNightmare,
             RobinWagner,
             akabiru,
+            anna-mohn,
             as-op,
             astock2,
             ba1ash,
@@ -53,10 +54,12 @@ jobs:
             corinnaguenther,
             crohr,
             dependabot[bot],
+            dfriquet,
             dombesz,
             dominic-braeunlein,
             dsteiner,
             dtohmucu,
+            fereshtehnm,
             gleone-art,
             ihor-khomenko,
             judithroth,
@@ -80,8 +83,8 @@ jobs:
             vspielau,
             wielinde,
             yanzubrytskyi,
-            ehassan01
-
+            ehassan01,
+            thykel
           # the followings are the optional inputs - If the optional inputs are not given, then default values will be taken
           remote-organization-name: opf
           remote-repository-name: legal

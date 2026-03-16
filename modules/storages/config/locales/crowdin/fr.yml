@@ -372,6 +372,7 @@ fr:
         failure: Certaines vérifications ont échoué et le système ne fonctionne pas comme prévu.
         success: Toutes les connexions et les systèmes fonctionnent comme prévu.
         warning: Certaines vérifications ont renvoyé un avertissement. Cela peut entraîner un comportement inattendu.
+      synced: 'Dernière synchronisation : %{datetime}'
       title: Rapport sur l'état de santé
     health_email_notifications:
       description_disabled: Les administrateurs ne recevront pas de mises à jour par e-mail lors des mises à jour importantes.

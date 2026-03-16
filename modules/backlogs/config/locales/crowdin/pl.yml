@@ -25,6 +25,14 @@ pl:
     description: "Moduł ten dodaje funkcje umożliwiające zwinnym zespołom pracę z OpenProject w projektach Scrum."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Czas trwania"
+        finish_date: "Data zakończenia"
+        goal: "Cel sprintu"
+        name: "Nazwa sprintu"
+        sharing: "Udostępnianie"
+      project:
+        sprint_sharing: "Sprint sharing"
       sprint:
         duration: "Czas trwania sprintu"
       work_package:
@@ -33,6 +41,11 @@ pl:
         backlogs_work_package_type: "Typ backlogu"
     errors:
       models:
+        project:
+          attributes:
+            sprint_sharing:
+              share_all_projects_already_taken: "cannot be set because project \"%{name}\" is already sharing with all projects."
+              share_all_projects_already_taken_anonymous: "cannot be set because another project is already sharing with all projects."
         work_package:
           attributes:
             blocks_ids:
@@ -42,12 +55,18 @@ pl:
               task_version_must_be_the_same_as_story_version: "musi być taka sama jak wersja story nadrzędnej."
         sprint:
           cannot_end_before_it_starts: "Sprint nie może się skończyć przed swoim rozpoczęciem."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Typ zadania"
   backlogs:
     any: "którekolwiek"
     column_width: "Szerokość kolumny"
     definition_of_done: "Definicja Zrobione"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
+    done_status: "Done status"
+    sharing_description: "This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing)."
+    sharing: "Sharing"
     impediment: "Przeszkoda"
     label_versions_default_fold_state: "Pokaż zwinięte wersje"
     caption_versions_default_fold_state: "Wersje nie będą domyślnie rozwijane podczas przeglądania backlogów. Każdą z nich należy rozwinąć ręcznie."
@@ -79,12 +98,21 @@ pl:
     backlog_component:
       blankslate_title: "Element %{name} jest pusty"
       blankslate_description: "Nie zaplanowano jeszcze żadnych punktów. Przeciągnij punkty tutaj, aby je dodać."
+    sprint_component:
+      blankslate_title: "Element %{name} jest pusty"
+      blankslate_description: "Nie zaplanowano jeszcze żadnych punktów. Przeciągnij punkty tutaj, aby je dodać."
     backlog_header_component:
       label_toggle_backlog: "Zwiń/rozwiń %{name}"
       label_story_count:
         zero: "Brak historii w backlogu"
         one: "%{count} historia w backlogu"
         other: "Liczba historii w backlogu: %{count}"
+    sprint_header_component:
+      label_toggle_backlog: "Zwiń/rozwiń %{name}"
+      label_story_count:
+        zero: "Brak historii w sprincie"
+        one: "%{count} historia w sprincie"
+        other: "Liczba historii w sprincie: %{count}"
     backlog_menu_component:
       label_actions: "Działania backlogu"
       action_menu:
@@ -95,6 +123,14 @@ pl:
         burndown_chart: "Wykres spalania (burndown)"
         wiki: "Wiki"
         properties: "Właściwości"
+    sprint_menu_component:
+      label_actions: "Działania w ramach sprintu"
+      action_menu:
+        edit_sprint: "Edytuj sprint"
+        new_story: "Nowa historia"
+        stories_tasks: "Historie/zadania"
+        task_board: "Panel zadań"
+        burndown_chart: "Wykres spalania (burndown)"
     story_component:
       label_drag_story: "Przenieś %{name}"
     story_menu_component:
@@ -122,15 +158,41 @@ pl:
   label_backlogs_unconfigured: "Jeszcze nie skonfigurowałeś backlogów. Przejdź do %{administration} > %{plugins}, następnie kliknij link %{configure} dla otrzymania tego dodatku. Po ustawieniu pól, wróć na tę stronę, aby zacząć korzystanie z narzędzia."
   label_blocks_ids: "Identyfikatory zablokowanych pakietów prac"
   label_column_in_backlog: "Kolumna w backlogu"
+  label_used_as_backlog: "Służy jako backlog"
   label_points_burn_down: "W dół"
   label_points_burn_up: "W górę"
+  label_sprint_edit: "Edytuj sprint"
   label_sprint_impediments: "Przeszkody sprintu"
+  label_sprint_new: "Nowy sprint"
   label_task_board: "Panel zadań"
-  permission_view_master_backlog: "Wyświetl master backlog"
-  permission_view_taskboards: "Wyświetl panel zadań"
+  permission_create_sprints: "Utwórz sprinty"
+  permission_manage_sprint_items: "Zarządzaj elementami sprintu"
   permission_select_done_statuses: "Wybierz wykonane statusy"
-  permission_update_sprints: "Aktualizuj sprint"
+  permission_share_sprint: "Udostępnij sprint"
+  permission_start_complete_sprint: "Rozpocznij/ukończ sprint"
+  permission_view_sprints: "Wyświetl sprinty"
   project_module_backlogs: "Backlogi"
+  projects:
+    settings:
+      backlog_sharing:
+        options:
+          no_sharing:
+            label: "Don't share"
+            caption: "Sprints created in this project will only be available and visible to this project. They will also not be visible to subprojects."
+          receive_shared:
+            label: "Receive shared sprints"
+            caption: "This project can only use sprints shared by other projects."
+            warning: "This project can only use sprints shared by other projects. Unused sprints created in this project in the past, will no longer be visible."
+          share_all_projects:
+            label: "All projects"
+            caption: "Sprints created in this project will be available to all projects in this instance. If you select this option, it will no longer be available to other projects."
+            disabled_caption: "Option not available since project \"%{name}\" is currently sharing with all projects and only one project can do this."
+            disabled_caption_anonymous: "Option not available since another project is currently sharing with all projects and only one project can do this."
+          share_subprojects:
+            label: "Subprojects"
+            caption: "Sprints created in this project will be available to all subprojects of the current project."
+            info: "Sharing a sprint will share the name, status and the start and finish dates in all projects. These cannot be modified in projects that receive and use these sprints."
+        sprint_sharing: Share sprints
   rb_burndown_charts:
     show:
       blankslate_title: "Brak dostępnych danych spalania"

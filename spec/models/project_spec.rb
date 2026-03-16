@@ -540,6 +540,23 @@ RSpec.describe Project do
     end
   end
 
+  describe "#custom_values_for_custom_field" do
+    let(:custom_field) { create(:list_project_custom_field, multi_value: true) }
+    # intentionally out of order
+    let!(:cv2) { create(:custom_value, id: 1002, customized: project, custom_field:) }
+    let!(:cv1) { create(:custom_value, id: 1001, customized: project, custom_field:) }
+    let!(:cv3) { create(:custom_value, id: 1003, customized: project, custom_field:) }
+
+    before do
+      allow(project).to receive(:available_custom_fields) { ProjectCustomField.all }
+    end
+
+    it "returns values ordered by id" do
+      values = project.custom_values_for_custom_field(custom_field)
+      expect(values).to eq([cv1, cv2, cv3])
+    end
+  end
+
   describe "url identifier" do
     let(:reserved) do
       Rails.application.routes.routes

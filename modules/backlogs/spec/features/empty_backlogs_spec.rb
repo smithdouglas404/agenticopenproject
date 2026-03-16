@@ -57,7 +57,7 @@ RSpec.describe "Empty backlogs project",
   end
 
   context "as regular member" do
-    let(:role) { create(:project_role, permissions: %i(view_master_backlog)) }
+    let(:role) { create(:project_role, permissions: %i(view_sprints)) }
     let(:current_user) { create(:user, member_with_roles: { project => role }) }
 
     it "shows a blankslate without description" do

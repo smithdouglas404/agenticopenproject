@@ -384,9 +384,21 @@ RSpec.describe WorkPackages::UpdateContract do
     context "for a user having only the assign_versions permission" do
       let(:permissions) { %i[assign_versions] }
 
-      it "includes all attributes except version_id" do
+      it "includes version_id only" do
         expect(subject)
-          .to include("version_id", "version")
+          .to include("version_id", "version", "lock_version_id", "lock_version")
+
+        expect(subject)
+          .not_to include("subject", "start_date", "description")
+      end
+    end
+
+    context "for a user having only the manage_sprint_items permission" do
+      let(:permissions) { %i[manage_sprint_items] }
+
+      it "includes version_id only" do
+        expect(subject)
+          .to include("version_id", "version", "lock_version_id", "lock_version")
 
         expect(subject)
           .not_to include("subject", "start_date", "description")

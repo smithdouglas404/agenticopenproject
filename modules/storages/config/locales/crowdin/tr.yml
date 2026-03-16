@@ -372,6 +372,7 @@ tr:
         failure: Bazı kontroller başarısız oldu ve sistem beklendiği gibi çalışmıyor.
         success: Tüm bağlantılar ve sistemler beklendiği gibi çalışıyor.
         warning: Bazı kontroller bir uyarı döndürdü. Bu beklenmedik davranışlara yol açabilir.
+      synced: 'Last sync: %{datetime}'
       title: Sağlık durumu raporu
     health_email_notifications:
       description_disabled: Önemli güncellemeler olduğunda yöneticiler e-posta ile güncelleme almayacaktır.

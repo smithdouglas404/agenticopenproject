@@ -294,6 +294,23 @@ class MeetingsController < ApplicationController
     respond_with_turbo_streams
   end
 
+  def change_sharing
+    sharing = params[:sharing]
+
+    if Meeting.sharings.key?(sharing)
+      call = ::Meetings::UpdateService
+        .new(user: current_user, model: @meeting)
+        .call(sharing:)
+
+      render_base_error_in_flash_message_via_turbo_stream(call.errors) unless call.success?
+    end
+
+    update_header_component_via_turbo_stream
+    update_sidebar_sharing_component_via_turbo_stream
+
+    respond_with_turbo_streams
+  end
+
   def download_ics
     ::Meetings::ICalService
       .new(user: current_user, meeting: @meeting)
@@ -469,7 +486,7 @@ class MeetingsController < ApplicationController
     @meeting = call.result
 
     # When coming from the "Create from template" button, load the template to hide the form field
-    @copy_from = Meeting.onetime_templates.visible.find_by(id: params[:template_id]) if params[:template_id].present?
+    @copy_from = Meeting.templates_visible_in_project(@project).find_by(id: params[:template_id]) if params[:template_id].present?
   end
 
   def global_upcoming_meetings
@@ -563,7 +580,7 @@ class MeetingsController < ApplicationController
     # Check for template selection from form submission
     template_id = params[:meeting][:template_id]
     if template_id.present?
-      @copy_from = Meeting.onetime_templates.visible.find_by(id: template_id)
+      @copy_from = Meeting.templates_visible_in_project(@project).find_by(id: template_id)
       return
     end
 

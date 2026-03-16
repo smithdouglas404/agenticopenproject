@@ -1356,9 +1356,6 @@ id:
         dependencies: "Dependensi"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3455,7 +3452,6 @@ id:
   label_float: "Float"
   label_folder: "Folder"
   label_follows: "Berikut"
-  label_force_user_language_to_default: "Set bahasa user ke default"
   label_form_configuration: "Form configuration"
   label_formula: "Formula"
   label_gantt_chart: "Bagan Gantt"
@@ -3834,12 +3830,6 @@ id:
   label_user_named: "User %{name}"
   label_user_activity: "%{value} aktivitas"
   label_user_anonymous: "Anonimus"
-  label_user_mail_option_all: "Untuk semua Event pada semua proyek saya"
-  label_user_mail_option_none: "Tidak ada event"
-  label_user_mail_option_only_assigned: "Hanya untuk hal-hal yang saya ditugaskan untuk"
-  label_user_mail_option_only_my_events: "Hanya untuk hal-hal yang saya pantau atau saya terlibat didalamnya"
-  label_user_mail_option_only_owner: "Hanya untuk hal-hal yang saya sebagai Ownernya"
-  label_user_mail_option_selected: "For any event on the selected projects only"
   label_user_menu: "User menu"
   label_user_new: "User baru"
   label_user_plural: "User"
@@ -3879,7 +3869,6 @@ id:
   label_wiki_show_index_page_link: "Tampilkan item submenu 'Daftar isi'"
   label_wiki_show_menu_item: "Tampilkan sebagai item menu navigasi Project"
   label_wiki_show_new_page_link: "Tampilkan submenu item 'Buat sub-halaman baru'"
-  label_wiki_show_submenu_item: "Tampilkan sebagai submenu item "
   label_wiki_start: "Homepage"
   label_work: "Work"
   label_work_package: "Paket-Penugasan"
@@ -4946,7 +4935,7 @@ id:
   text_default_administrator_account_changed: "Akun administrator default terlah dirubah"
   text_default_encoding: "Default: UTF-8"
   text_destroy: "Hapus"
-  text_destroy_with_associated: "Ada tambahan objek terasosiasi dengan Work Package yang akan dihapus. Objek tersebut adalah Tipe :"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Apa yang ingin Anda lakukan?"
   text_diff_truncated: "... diff ini telah dipotong karena melebihi batas maks. yang dapat ditampilkan."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

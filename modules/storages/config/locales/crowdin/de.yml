@@ -372,6 +372,7 @@ de:
         failure: Einige Überprüfungen sind fehlgeschlagen und das System funktioniert nicht wie erwartet.
         success: Alle Verbindungen und Systeme funktionieren wie erwartet.
         warning: Einige Überprüfungen ergaben eine Warnung. Dies kann zu unerwartetem Verhalten führen.
+      synced: 'Zuletzt aktualisiert: %{datetime}'
       title: Gesundheitsstatusbericht
     health_email_notifications:
       description_disabled: Administrator:innen erhalten keine E-Mail-Updates, wenn es wichtige Änderungen gibt.

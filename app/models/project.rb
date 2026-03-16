@@ -77,7 +77,7 @@ class Project < ApplicationRecord
   has_many :principals, through: :member_principals, source: :principal
   has_many :calculated_value_errors, dependent: :delete_all, as: :customized
 
-  has_many :enabled_modules, dependent: :delete_all
+  has_many :enabled_modules, dependent: :delete_all, after_remove: :module_disabled
   has_and_belongs_to_many :types, -> {
     order("#{::Type.table_name}.position")
   }
@@ -221,7 +221,8 @@ class Project < ApplicationRecord
          :assignable_parents,
          :available_custom_fields,
          :available_templates,
-         :visible
+         :visible,
+         :with_settings
 
   scope :has_module, ->(mod) {
     where(["#{Project.table_name}.id IN (SELECT em.project_id FROM #{EnabledModule.table_name} em WHERE em.name=?)", mod.to_s])
@@ -348,5 +349,11 @@ class Project < ApplicationRecord
     @allowed_actions ||= allowed_permissions.flat_map do |permission|
       OpenProject::AccessControl.allowed_actions(permission)
     end
+  end
+
+  def module_disabled(disabled_module)
+    OpenProject::Notifications.send(
+      OpenProject::Events::MODULE_DISABLED, disabled_module:
+    )
   end
 end

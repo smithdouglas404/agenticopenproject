@@ -41,13 +41,17 @@ class RbApplicationController < ApplicationController
   # Loads the project to be used by the authorize filter to determine if
   # User.current has permission to invoke the method in question.
   def load_sprint_and_project
-    @project = Project.visible.find(params[:project_id])
+    load_project
 
     # because of strong params, we want to pluck this variable out right now,
     # otherwise it causes issues where we are doing `attributes=`.
     if (@sprint_id = params.delete(:sprint_id))
       @sprint = Sprint.visible.apply_to(@project).find(@sprint_id)
     end
+  end
+
+  def load_project
+    @project = Project.visible.find(params[:project_id])
   end
 
   def check_if_plugin_is_configured
