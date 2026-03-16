@@ -137,30 +137,25 @@ jobs:
           - platform: linux/amd64
             digest: amd64-slim
             bim_support: false
-            debian_base: trixie
             target: slim
             runner: runner=4cpu-linux-x64
           - platform: linux/amd64
             digest: amd64-bim
             bim_support: true
-            debian_base: bookworm
             target: slim-bim
             runner: runner=4cpu-linux-x64
           - platform: linux/arm64/v8
             digest: arm64-slim
-            debian_base: trixie
             bim_support: false
             target: slim
             runner: runner=4cpu-linux-arm64
           - platform: linux/amd64
             digest: amd64-aio
-            debian_base: bookworm
             bim_support: true
             target: all-in-one
             runner: runner=4cpu-linux-x64
           - platform: linux/arm64/v8
             digest: arm64-aio
-            debian_base: trixie
             bim_support: false
             target: all-in-one
             runner: runner=4cpu-linux-arm64

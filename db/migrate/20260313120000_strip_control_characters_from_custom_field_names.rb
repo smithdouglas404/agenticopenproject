@@ -23,33 +23,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# TODO: check if this can be postponed and if some plugins can make use of the ActiveSupport.on_load hooks
+class StripControlCharactersFromCustomFieldNames < ActiveRecord::Migration[7.1]
+  def up
+    execute <<~SQL.squish
+      UPDATE custom_fields
+      SET name = regexp_replace(name, E'[\\x01-\\x1F\\x7F]', '', 'g')
+      WHERE name ~ E'[\\x01-\\x1F\\x7F]'
+    SQL
+  end
 
-# Loads the core plugins located in lib_static/plugins
-CORE_PLUGINS = %w[
-  acts_as_attachable
-  acts_as_customizable
-  acts_as_event
-  acts_as_journalized
-  acts_as_searchable
-  verification
-].freeze
-
-CORE_PLUGINS.map { |name| Rails.root.join("lib_static/plugins", name).to_s }.each do |directory|
-  if File.directory?(directory)
-    lib = File.join(directory, "lib")
-
-    $:.unshift lib
-    Rails.configuration.paths.add lib, eager_load: true, glob: "**[^test]/*"
-
-    initializer = File.join(directory, "init.rb")
-    if File.file?(initializer)
-      eval(File.read(initializer), binding, initializer)
-    end
+  def down
+    # Irreversible — stripped characters cannot be restored
   end
 end
