@@ -31,17 +31,29 @@ module Projects
   module Settings
     class IdentifierForm < ApplicationForm
       form do |f|
-        caption_key = if Setting::WorkPackageIdentifier.alphanumeric?
-                        :text_project_identifier_description
-                      else
-                        :text_project_identifier_url_description
-                      end
-        f.text_field(
-          name: :identifier,
-          label: attribute_name(:identifier),
-          caption: I18n.t(caption_key),
-          disabled: true
-        )
+        if Setting::WorkPackageIdentifier.alphanumeric?
+          f.text_field(
+            name: :identifier,
+            label: attribute_name(:identifier),
+            caption: I18n.t("projects.settings.change_identifier_format_hint_semantic"),
+            required: true,
+            validation_message: validation_message_for(:identifier)
+          )
+        else
+          f.text_field(
+            name: :identifier,
+            label: attribute_name(:identifier),
+            caption: I18n.t("projects.settings.change_identifier_format_hint_legacy"),
+            required: true,
+            validation_message: validation_message_for(:identifier)
+          )
+        end
+      end
+
+      private
+
+      def validation_message_for(attribute)
+        model.errors.full_messages_for(attribute).to_sentence.presence
       end
     end
   end
