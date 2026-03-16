@@ -31,25 +31,23 @@
 require "rails_helper"
 
 RSpec.describe OpenProject::InplaceEdit::FieldRegistry do
-  subject(:registry) { described_class }
+  subject(:registry) { described_class.new }
 
-  before do
-    registry.instance_variable_set(:@registry, {})
-  end
+  let(:rich_text_component) { Class.new }
 
-  describe ".register" do
+  describe "#register" do
     it "registers a field component for an attribute" do
-      registry.register(:description, :rich_text_component)
+      registry.register(:description, rich_text_component)
 
-      expect(registry.fetch(:description)).to eq(:rich_text_component)
+      expect(registry.fetch(:description)).to eq(rich_text_component)
     end
   end
 
-  describe ".fetch" do
+  describe "#fetch" do
     it "returns the registered component for the attribute" do
-      registry.register(:description, :rich_text_component)
+      registry.register(:description, rich_text_component)
 
-      expect(registry.fetch(:description)).to eq(:rich_text_component)
+      expect(registry.fetch(:description)).to eq(rich_text_component)
     end
 
     it "falls back to TextInputComponent if attribute is not registered" do
@@ -58,9 +56,9 @@ RSpec.describe OpenProject::InplaceEdit::FieldRegistry do
     end
 
     it "normalizes attribute names to strings" do
-      registry.register("description", :rich_text_component)
+      registry.register("description", rich_text_component)
 
-      expect(registry.fetch(:description)).to eq(:rich_text_component)
+      expect(registry.fetch(:description)).to eq(rich_text_component)
     end
   end
 end

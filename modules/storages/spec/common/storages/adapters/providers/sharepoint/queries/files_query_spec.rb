@@ -325,6 +325,37 @@ module Storages
 
               it_behaves_like "storage adapter: error response", :not_found
             end
+
+            context "when the site and collection have the same name" do
+              let(:folder) { "/OPTest" }
+
+              it "correctly parses the location for the files", vcr: "sharepoint/files_query_collection_site_same_name" do
+                result = described_class.call(storage:, auth_strategy:, input_data:)
+                expect(result).to be_success
+
+                file_collection = result.value!
+
+                expect(file_collection.files.size).to eq(2)
+                expect(file_collection.files.map(&:location)).to all(match(/\/OPTest\/.+/))
+                expect(file_collection.parent.location).to eq("/OPTest")
+              end
+            end
+
+            context "when the site and collection and folder have the same name" do
+              let(:folder) { "/OPTest/OPTest" }
+
+              it "correctly parses the location for the files", vcr: "sharepoint/files_query_collection_site_folder_same_name" do
+                result = described_class.call(storage:, auth_strategy:, input_data:)
+                expect(result).to be_success
+
+                file_collection = result.value!
+
+                expect(file_collection.files.size).to eq(1)
+                expect(file_collection.files.first.location).to eq("/OPTest/OPTest/OPTest.md")
+                expect(file_collection.files.first.name).to eq("OPTest.md")
+                expect(file_collection.parent.location).to eq("/OPTest/OPTest")
+              end
+            end
           end
         end
       end

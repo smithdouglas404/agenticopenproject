@@ -44,15 +44,18 @@ module Admin::Import::Jira::ImportRuns
       when Import::JiraImportStateMachine::IMPORT_ERROR,
            Import::JiraImportStateMachine::REVERT_ERROR,
            Import::JiraImportStateMachine::INSTANCE_META_ERROR,
-           Import::JiraImportStateMachine::PROJECTS_META_ERROR
+           Import::JiraImportStateMachine::PROJECTS_META_ERROR,
+           Import::JiraImportStateMachine::FINALIZING_ERROR
         :danger
-      when Import::JiraImportStateMachine::COMPLETED,
+      when Import::JiraImportStateMachine::FINALIZING_DONE,
            Import::JiraImportStateMachine::REVERTED
         :success
       when Import::JiraImportStateMachine::INSTANCE_META_FETCHING,
            Import::JiraImportStateMachine::PROJECTS_META_FETCHING,
            Import::JiraImportStateMachine::IMPORTING,
-           Import::JiraImportStateMachine::REVERTING
+           Import::JiraImportStateMachine::FINALIZING,
+           Import::JiraImportStateMachine::REVERTING,
+           Import::JiraImportStateMachine::REVERT_CANCELLING
         :accent
       else
         :attention

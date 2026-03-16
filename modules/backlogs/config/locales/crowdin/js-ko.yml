@@ -25,5 +25,5 @@ ko:
       properties:
         storyPoints: "스토리 포인트"
     burndown:
-      day: "Day"
-      points: "Points"
+      day: "일"
+      points: "포인트"

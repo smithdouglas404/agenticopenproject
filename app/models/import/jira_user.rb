@@ -40,15 +40,14 @@ module Import
     end
 
     def to_op_attributes
-      firstname = payload["displayName"].split[0..-2].join(" ")
-      lastname = payload["displayName"].split[-1]
+      firstname, lastname = split_display_name(payload["displayName"])
       {
         login: payload["name"],
         password: SecureRandom.uuid,
         firstname:,
         lastname:,
         mail: payload["emailAddress"],
-        status: payload["active"] ? :active : :locked
+        status: :locked
       }
     end
 
@@ -57,6 +56,13 @@ module Import
       User.where(login: op_attributes[:login]).or(
         User.where(mail: op_attributes[:mail])
       )
+    end
+
+    private
+
+    def split_display_name(display_name)
+      parts = display_name.split
+      parts.length > 1 ? [parts[0..-2].join(" "), parts[-1]] : [parts[0], parts[0]]
     end
   end
 end

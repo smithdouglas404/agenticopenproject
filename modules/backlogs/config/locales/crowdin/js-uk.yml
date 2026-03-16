@@ -25,5 +25,5 @@ uk:
       properties:
         storyPoints: "Сторі-поінти"
     burndown:
-      day: "Day"
-      points: "Points"
+      day: "День"
+      points: "Одиниці"

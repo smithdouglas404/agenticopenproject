@@ -43,7 +43,7 @@ module Storages
 
         context "with valid oauth credentials", vcr: "auth/one_drive/client_credentials" do
           it "return success" do
-            result = Authentication[strategy_data].call(storage:, http_options: {}) { |http| make_request(http) }
+            result = Authentication[strategy_data].call(storage:) { make_request(it) }
 
             expect(result).to be_success
             expect(result.value!).to eq("EXPECTED_RESULT")
@@ -51,9 +51,7 @@ module Storages
 
           it "caches the token if use_cache is true" do
             strategy_data = Input::Strategy.build(key: :oauth_client_credentials, use_cache: true)
-            Authentication[strategy_data].call(storage:, http_options: {}) do |http|
-              make_request(http)
-            end
+            Authentication[strategy_data].call(storage:) { make_request(it) }
 
             cache_key = described_class::TOKEN_CACHE_KEY % storage.id
             expect(Rails.cache.read(cache_key)).not_to be_nil
@@ -62,7 +60,7 @@ module Storages
 
         context "with invalid client secret", vcr: "auth/one_drive/client_credentials_invalid_client_secret" do
           it "must return unauthorized" do
-            result = Authentication[strategy_data].call(storage:) { |http| make_request(http) }
+            result = Authentication[strategy_data].call(storage:) { make_request(it) }
             expect(result).to be_failure
 
             error = result.failure
@@ -73,7 +71,7 @@ module Storages
 
         context "with invalid client id", vcr: "auth/one_drive/client_credentials_invalid_client_id" do
           it "must return unauthorized" do
-            result = Authentication[strategy_data].call(storage:) { |http| make_request(http) }
+            result = Authentication[strategy_data].call(storage:) { make_request(it) }
             expect(result).to be_failure
 
             error = result.failure
@@ -84,7 +82,9 @@ module Storages
 
         private
 
-        def make_request(http) = handle_response(http.get(request_url))
+        def make_request(http)
+          handle_response(http.get(request_url))
+        end
 
         def handle_response(response)
           case response

@@ -50,7 +50,6 @@ module Import
       available = collect_metadata(client)
       jira_import.update!(job_id: nil, available:, error: nil)
       jira_import.transition_to!(:instance_meta_done)
-      jira_import.transition_to!(:groups_and_users_init)
     rescue StandardError => e
       jira_import&.transition_to!(:instance_meta_error, error: e.message)
       jira_import&.update!(job_id: nil, error: e.message)
@@ -60,6 +59,9 @@ module Import
       issue_types_count = client.issue_types_count
       statuses_count = client.statuses_count
       issues_count = client.issues_count
+      users_count = client.applicationrole.inject(0) do |users_count, application|
+        users_count + application["userCount"]
+      end
       projects = client.projects.map do |project|
         { "id" => project["id"], "key" => project["key"], "name" => project["name"] }
       end
@@ -69,6 +71,7 @@ module Import
         "total_issues" => issues_count,
         "total_statuses" => statuses_count,
         "total_issue_types" => issue_types_count,
+        "total_users" => users_count,
         "server_info" => server_info
       }
     end

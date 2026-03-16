@@ -19,7 +19,6 @@ ro:
           title: 'Noutăţi'
         project_description:
           title: 'Descriere'
-          no_results: "Nu a fost scrisă încă nicio descriere. Aceasta poate fi adăugată în \"Setări proiect\"."
         project_status:
           title: 'Stare'
           not_started: 'Neînceput'

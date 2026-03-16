@@ -12,7 +12,7 @@ fr:
     upsell:
       team_planner_view:
         title: "Planificateur d'équipe"
-        description: "Obtenez un aperçu complet du planning de votre équipe avec le planificateur d'équipe. Allongez, raccourcissez et faites glisser les paquets de travail pour modifier les dates, les déplacer ou changer les assignés."
+        description: "Obtenez un aperçu complet du planning de votre équipe avec le planificateur d'équipe. Allongez, raccourcissez et faites glisser les lots de travaux pour modifier les dates, les déplacer ou changer les assignés."
   team_planner:
     label_team_planner: "Planificateur d'équipe"
     label_new_team_planner: "Nouveau planificateur d'équipe"

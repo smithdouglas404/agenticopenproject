@@ -100,6 +100,12 @@ module Pages
       end
     end
 
+    def click_in_sprint_menu(sprint, item_name)
+      within_sprint_menu(sprint) do |menu|
+        menu.find(:menuitem, text: item_name).click
+      end
+    end
+
     def click_in_story_menu(story, item_name)
       within_story_menu(story) do |menu|
         menu.find(:menuitem, text: item_name).click
@@ -115,8 +121,16 @@ module Pages
 
     def fold_backlog(backlog)
       within_backlog(backlog) do
-        find(:button, accessible_name: "Collapse/Expand #{backlog.name}").click
+        find(:button, aria: { controls: "backlog_#{backlog.id}-list" }).click
       end
+    end
+
+    def sprint_names_in_order
+      page.find_all("#sprint_backlogs_container > section .CollapsibleHeader-title").map(&:text)
+    end
+
+    def expect_sprint_names_in_order(*sprint_names)
+      expect(sprint_names_in_order).to eq(sprint_names)
     end
 
     def expect_sprint(sprint)
@@ -130,14 +144,28 @@ module Pages
     end
 
     def expect_story_in_sprint(story, sprint)
-      within_backlog(sprint) do
+      within_sprint(sprint) do
+        expect(page)
+          .to have_selector(work_package_selector(story).to_s)
+      end
+    end
+
+    def expect_story_in_backlog(story, backlog)
+      within_backlog(backlog) do
         expect(page)
           .to have_selector(story_selector(story).to_s)
       end
     end
 
     def expect_story_not_in_sprint(story, sprint)
-      within_backlog(sprint) do
+      within_sprint(sprint) do
+        expect(page)
+          .to have_no_selector(work_package_selector(story).to_s)
+      end
+    end
+
+    def expect_story_not_in_backlog(story, backlog)
+      within_backlog(backlog) do
         expect(page)
           .to have_no_selector(story_selector(story).to_s)
       end
@@ -172,28 +200,61 @@ module Pages
 
     def within_backlog_menu(backlog, &)
       within_backlog(backlog) do
-        find(:button, accessible_name: "Backlog actions").click
+        button = find(:button, accessible_name: "Backlog actions")
+        button.click
 
-        within(:menu, &)
+        within_menu_controlled_by(button, &)
       end
     end
 
     def within_story_menu(story, &)
       within_story(story) do
-        find(:button, accessible_name: "Story actions").click
+        button = find(:button, accessible_name: "Story actions")
+        button.click
 
-        within(:menu, &)
+        within_menu_controlled_by(button, &)
       end
     end
 
     def within_details_view(story, &)
+      details_view = expect_details_view(story)
+
+      yield details_view
+    end
+
+    def expect_details_view(story)
       details_view = Pages::PrimerizedSplitWorkPackage.new(story)
       details_view.expect_tab :overview
       details_view.expect_subject
 
       expect(page).to have_current_path details_backlogs_project_backlogs_path(story.project, story)
+      wait_for_network_idle
 
-      yield details_view
+      details_view
+    end
+
+    def open_create_sprint_dialog
+      find(:button, accessible_name: "Create").click
+
+      within(:menu) do |menu|
+        menu.find(:menuitem, "Sprint").click
+      end
+    end
+
+    def expect_sprint_dialog
+      expect(page).to have_css("#new-sprint-dialog")
+    end
+
+    def expect_create_work_package_dialog
+      expect(page).to have_css("#create-work-package-dialog")
+    end
+
+    def within_sprint_menu(backlog, &)
+      within_sprint(backlog) do
+        find(:button, accessible_name: "Sprint actions").click
+
+        within(:menu, &)
+      end
     end
 
     private
@@ -206,12 +267,32 @@ module Pages
       within(backlog_selector(backlog), &)
     end
 
+    def within_sprint(sprint, &)
+      within(sprint_selector(sprint), &)
+    end
+
+    def sprint_selector(sprint)
+      "#agile_sprint_#{sprint.id}"
+    end
+
     def backlog_selector(backlog)
       "#backlog_#{backlog.id}"
     end
 
     def story_selector(story)
       "#story_#{story.id}"
+    end
+
+    def work_package_selector(story)
+      "#work_package_#{story.id}"
+    end
+
+    def within_menu_controlled_by(button)
+      menu_id = button[:controls] || button["aria-controls"]
+
+      within(:menu, id: menu_id) do
+        yield page
+      end
     end
   end
 end

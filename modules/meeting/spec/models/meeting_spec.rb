@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -186,6 +187,86 @@ RSpec.describe Meeting do
       it "does not raise an exception (Regression #61632)" do
         expect { meeting.destroy! }.not_to raise_error
         expect { meeting.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe ".templates_visible_in_project" do
+    shared_let(:ancestor_project) { create(:project) }
+    shared_let(:current_project) { create(:project, parent: ancestor_project) }
+    shared_let(:descendant_project) { create(:project, parent: current_project) }
+    shared_let(:unrelated_project) { create(:project) }
+
+    shared_let(:user) { create(:user, member_with_permissions: { current_project => [:view_meetings] }) }
+
+    subject { described_class.templates_visible_in_project(current_project, user) }
+
+    context "with templates in the same project" do
+      shared_let(:template_none) { create(:onetime_template, project: current_project, sharing: :none) }
+      shared_let(:template_descendants) { create(:onetime_template, project: current_project, sharing: :descendants) }
+      shared_let(:template_system) { create(:onetime_template, project: current_project, sharing: :system) }
+
+      it { expect(subject).to include(template_none) }
+      it { expect(subject).to include(template_descendants) }
+      it { expect(subject).to include(template_system) }
+    end
+
+    context "with templates in an unrelated project" do
+      shared_let(:template_none) { create(:onetime_template, project: unrelated_project, sharing: :none) }
+      shared_let(:template_descendants) { create(:onetime_template, project: unrelated_project, sharing: :descendants) }
+      shared_let(:template_system) { create(:onetime_template, project: unrelated_project, sharing: :system) }
+
+      it { expect(subject).not_to include(template_none) }
+      it { expect(subject).not_to include(template_descendants) }
+      it { expect(subject).to include(template_system) }
+    end
+
+    context "with templates in a descendant project" do
+      shared_let(:template_none) { create(:onetime_template, project: descendant_project, sharing: :none) }
+      shared_let(:template_descendants) { create(:onetime_template, project: descendant_project, sharing: :descendants) }
+      shared_let(:template_system) { create(:onetime_template, project: descendant_project, sharing: :system) }
+
+      it { expect(subject).not_to include(template_none) }
+      it { expect(subject).not_to include(template_descendants) }
+      it { expect(subject).to include(template_system) }
+    end
+
+    context "with templates in an ancestor project" do
+      shared_let(:template_none) { create(:onetime_template, project: ancestor_project, sharing: :none) }
+      shared_let(:template_descendants) { create(:onetime_template, project: ancestor_project, sharing: :descendants) }
+      shared_let(:template_system) { create(:onetime_template, project: ancestor_project, sharing: :system) }
+
+      it { expect(subject).not_to include(template_none) }
+      it { expect(subject).to include(template_descendants) }
+      it { expect(subject).to include(template_system) }
+    end
+  end
+
+  describe "sharing" do
+    context "for a regular meeting" do
+      let(:meeting) { build(:meeting, project:, sharing: :none) }
+
+      it "is invalid" do
+        expect(meeting).not_to be_valid
+        expect(meeting.errors[:sharing]).to be_present
+      end
+    end
+
+    context "for a series template" do
+      let(:recurring) { create(:recurring_meeting, project:) }
+      let(:meeting) { build(:meeting_template, sharing: :none, recurring_meeting: recurring) }
+
+      it "is invalid" do
+        expect(meeting).not_to be_valid
+        expect(meeting.errors[:sharing]).to be_present
+      end
+    end
+
+    context "for an onetime template" do
+      let(:meeting) { build(:onetime_template, project:, sharing: :none) }
+
+      it "is valid" do
+        expect(meeting).to be_valid
       end
     end
   end

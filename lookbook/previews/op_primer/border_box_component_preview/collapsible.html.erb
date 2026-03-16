@@ -1,8 +1,8 @@
-<%= render(Primer::Beta::BorderBox.new) do |component| %>
+<%= render(Primer::Beta::BorderBox.new(list_id: "border-box-list")) do |component| %>
   <% component.with_header do %>
     <%= render(Primer::OpenProject::FlexLayout.new(align_items: :flex_start)) do |flex| %>
       <%= flex.with_column(flex: 1, pt: 1) do %>
-        <%= render(Primer::OpenProject::BorderBox::CollapsibleHeader.new(box: component)) do |header|
+        <%= render(Primer::OpenProject::BorderBox::CollapsibleHeader.new(collapsible_id: "border-box-list")) do |header|
           header.with_count(count: 3)
           header.with_title { "Collapsible title" }
           header.with_description { "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor" }

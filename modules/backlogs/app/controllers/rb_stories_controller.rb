@@ -31,35 +31,48 @@
 class RbStoriesController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  before_action :load_story
+  NEW_SPRINT_ACTIONS = %i[move].freeze
 
-  def move # rubocop:disable Metrics/AbcSize
+  skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
+
+  before_action :legacy_load_story, except: NEW_SPRINT_ACTIONS
+  prepend_before_action :load_sprint, :load_project, :load_story, only: NEW_SPRINT_ACTIONS
+
+  # Move a story from a Sprint to another Sprint or an Agile::Sprint.
+  def move_legacy
     # The update service reloads the story internally (via #move_after),
     # so we memoize the previous version_id before the call.
     version_id_was = @story.version_id
 
-    call = Stories::UpdateService
-      .new(user: current_user, story: @story)
-      .call(
-        attributes: { version_id: move_params[:target_id] },
-        position: move_params[:position].to_i
-      )
-
-    unless call.success?
-      render_error_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      )
+    move_attributes = infer_attributes_from_target
+    unless move_story(move_attributes).success?
+      return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
-    replace_backlog_component_via_turbo_stream(sprint: @sprint)
+    if target_sprint?(move_attributes)
+      moved_to_sprint
+    elsif target_version?(move_attributes) && @story.version_id != version_id_was
+      moved_to_version
+    end
 
-    if @story.version_id != version_id_was
-      new_sprint = @story.version.becomes(Sprint)
+    respond_with_turbo_streams
+  end
 
-      render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
-      )
-      replace_backlog_component_via_turbo_stream(sprint: new_sprint)
+  # Move a story from an Agile::Sprint to another Agile::Sprint or a Sprint.
+  def move
+    # The update service reloads the story internally (via #move_after),
+    # so we memoize the previous sprint_id before the call.
+    sprint_id_was = @story.sprint_id
+
+    move_attributes = infer_attributes_from_target
+    unless move_story(move_attributes).success?
+      return respond_with_turbo_streams(status: :unprocessable_entity)
+    end
+
+    if target_version?(move_attributes)
+      moved_to_version
+    elsif target_sprint?(move_attributes) && @story.sprint_id != sprint_id_was
+      moved_to_sprint
     end
 
     respond_with_turbo_streams
@@ -74,6 +87,7 @@ class RbStoriesController < RbApplicationController
       render_error_flash_message_via_turbo_stream(
         message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
       )
+      return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
     replace_backlog_component_via_turbo_stream(sprint: @sprint)
@@ -83,13 +97,106 @@ class RbStoriesController < RbApplicationController
 
   private
 
+  def move_story(move_attributes)
+    call = update_story_with_target_and_position(attributes: move_attributes)
+
+    if call.success?
+      # Update source component so that the moved story disappears
+      replace_typed_component_via_turbo_stream(sprint: @sprint)
+    else
+      render_error_flash_message_via_turbo_stream(
+        message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
+      )
+    end
+
+    call
+  end
+
+  def update_story_with_target_and_position(attributes:)
+    Stories::UpdateService
+      .new(user: current_user, story: @story)
+      .call(
+        attributes:,
+        position: move_params[:position].to_i
+      )
+  end
+
+  def replace_typed_component_via_turbo_stream(sprint:)
+    if sprint.is_a?(Agile::Sprint)
+      replace_sprint_component_via_turbo_stream(sprint:)
+    else
+      replace_backlog_component_via_turbo_stream(sprint:)
+    end
+  end
+
+  def moved_to_version
+    moved_to(new_sprint: @story.version.becomes(Sprint))
+  end
+
+  def moved_to_sprint
+    moved_to(new_sprint: @story.sprint.becomes(Agile::Sprint))
+  end
+
+  def moved_to(new_sprint:)
+    render_success_flash_message_via_turbo_stream(
+      message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
+    )
+
+    # Update the target component so that the moved story shows up
+    replace_typed_component_via_turbo_stream(sprint: new_sprint)
+  end
+
+  def infer_attributes_from_target
+    target_type, target_id = move_params[:target_id].split(":")
+
+    case target_type
+    when "version"
+      { version_id: target_id, sprint_id: nil }
+    when "sprint"
+      # If the story is assigned to a version, we will only nullify the version
+      # if it is used as a backlog. We will keep a "regular" version reference.
+      # Otherwise, moving a story to a sprint would delete it from any version it is
+      # assigned to.
+      if @story.version&.used_as_backlog?
+        { version_id: nil, sprint_id: target_id }
+      else
+        { sprint_id: target_id }
+      end
+    else
+      raise ArgumentError, "target_type must include one of: version, sprint."
+    end
+  end
+
+  def target_version?(move_attributes)
+    move_attributes[:version_id].present?
+  end
+
+  def target_sprint?(move_attributes)
+    move_attributes[:sprint_id].present?
+  end
+
   def replace_backlog_component_via_turbo_stream(sprint:)
     @backlog = Backlog.for(sprint:, project: @project)
-    replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog: @backlog, project: @project))
+    replace_via_turbo_stream(
+      component: Backlogs::BacklogComponent.new(backlog: @backlog, project: @project),
+      method: :morph
+    )
+  end
+
+  def replace_sprint_component_via_turbo_stream(sprint:)
+    replace_via_turbo_stream(component: Backlogs::SprintComponent.new(sprint: sprint))
+  end
+
+  def legacy_load_story
+    @story = Story.visible.find(params[:id])
   end
 
   def load_story
-    @story = Story.visible.find(params[:id])
+    @story = WorkPackage.visible.find(params[:id])
+  end
+
+  def load_sprint
+    @sprint = Agile::Sprint.for_project(@project).visible.find(params[:sprint_id])
   end
 
   def move_params

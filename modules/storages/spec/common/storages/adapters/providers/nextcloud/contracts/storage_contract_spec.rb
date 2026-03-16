@@ -95,8 +95,7 @@ module Storages
                               "Please verify that the connection is functioning properly."
                     expect(subject.errors.to_hash).to eq({ password: [message] })
 
-                    # twice due to HTTPX retry plugin being enabled.
-                    expect(credentials_request).to have_been_made.twice
+                    expect(credentials_request).to have_been_made
                   end
                 end
 

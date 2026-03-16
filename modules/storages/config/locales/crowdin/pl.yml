@@ -376,6 +376,7 @@ pl:
         failure: Niektóre kontrole nie powiodły się i system nie działa zgodnie z oczekiwaniami.
         success: Wszystkie połączenia i systemy działają zgodnie z oczekiwaniami.
         warning: Niektóre kontrole zwróciły ostrzeżenie. Może to prowadzić do nieoczekiwanego sposobu działania.
+      synced: 'Last sync: %{datetime}'
       title: Raport o stanie
     health_email_notifications:
       description_disabled: Administratorzy nie będą otrzymywać aktualizacji pocztą elektroniczną, gdy pojawią się ważne aktualizacje.

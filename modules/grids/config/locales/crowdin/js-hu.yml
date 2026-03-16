@@ -19,7 +19,6 @@ hu:
           title: 'Hírek'
         project_description:
           title: 'Description'
-          no_results: "Még nem írt leírást. Az egyik megtalálható a 'Projekt beállításai' részben."
         project_status:
           title: 'Status'
           not_started: 'El nem kezdett'

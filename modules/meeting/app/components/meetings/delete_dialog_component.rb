@@ -69,7 +69,8 @@ module Meetings
       if recurring_meeting.present?
         t("meeting.delete_dialog.occurrence.confirmation_message_html")
       else
-        t("meeting.delete_dialog.one_time.confirmation_message_html")
+        template = @meeting.onetime_template? ? ".template" : ""
+        t("meeting.delete_dialog.one_time#{template}.confirmation_message_html")
       end
     end
 

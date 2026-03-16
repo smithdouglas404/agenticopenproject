@@ -42,7 +42,7 @@ See COPYRIGHT and LICENSE files for more details.
       })
     end
   end
-  if model.in_state?(:import_scope)
+  if model.in_state?(:instance_meta_done)
     box.with_row(mb: 3, mt: 3) do
       render(Primer::Alpha::Banner.new(scheme: :warning, icon: :alert)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.label_info")

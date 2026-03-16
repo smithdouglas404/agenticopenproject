@@ -61,6 +61,6 @@ class Meeting::TemplateAutocompleter < ApplicationForm
   private
 
   def templates
-    Meeting.onetime_templates.where(project: @project).visible.order(:title)
+    Meeting.templates_visible_in_project(@project).order(:title)
   end
 end

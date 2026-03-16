@@ -31,6 +31,7 @@
 module Import
   module Jiras
     class CreateContract < BaseContract
+      validates :personal_access_token, presence: true
     end
   end
 end

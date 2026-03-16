@@ -36,11 +36,15 @@ module Import
     belongs_to :jira_import, class_name: "Import::JiraImport"
 
     def op_leg
-      op_entity_class.constantize.find(op_entity_id)
+      op_entity_class&.constantize&.find(op_entity_id)
+    rescue ActiveRecord::RecordNotFound
+      raise "#{op_entity_class} with id #{op_entity_id} not found!"
     end
 
     def jira_leg
-      jira_entity_class.constantize.find(jira_entity_id)
+      jira_entity_class&.constantize&.find(jira_entity_id)
+    rescue ActiveRecord::RecordNotFound
+      raise "#{jira_entity_class} with id #{jira_entity_id} not found!"
     end
   end
 end

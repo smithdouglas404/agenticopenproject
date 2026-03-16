@@ -31,7 +31,7 @@
 class CustomFieldSection < ApplicationRecord
   OVERVIEW__SIDEBAR_KEY = "sidebar"
   OVERVIEW__MAIN_AREA_KEY = "main_area"
-  DEFAULT_OVERVIEW_KEY = OVERVIEW__SIDEBAR_KEY.freeze
+  DEFAULT_OVERVIEW_KEY = OVERVIEW__SIDEBAR_KEY
 
   acts_as_list scope: [:type]
 
@@ -39,7 +39,7 @@ class CustomFieldSection < ApplicationRecord
 
   default_scope { order(:position) }
 
-  store_attribute :display_representation, :overview, :string
+  store_attribute :display_representation, :overview, :string, default: DEFAULT_OVERVIEW_KEY
 
   def shown_in_overview_sidebar?
     overview == OVERVIEW__SIDEBAR_KEY

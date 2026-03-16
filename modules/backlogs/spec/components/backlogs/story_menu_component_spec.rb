@@ -66,11 +66,24 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
   end
 
   describe "standard items" do
+    it "renders stable ids for the action menu and primary links" do
+      render_component
+
+      expect(page).to have_element(:button, id: /\Astory_#{story.id}_menu-button\z/)
+      expect(page).to have_element(:ul, id: /\Astory_#{story.id}_menu-list\z/)
+      expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_details\z/)
+      expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_fullscreen\z/)
+    end
+
     it "shows Open details link (split view)" do
       render_component
 
       expect(page).to have_text(I18n.t(:"js.button_open_details"))
       expect(page).to have_octicon(:"op-view-split")
+      expect(page).to have_css(
+        "a[data-turbo-frame='content-bodyRight'][data-turbo-action='advance']",
+        text: I18n.t(:"js.button_open_details")
+      )
     end
 
     it "shows Open fullscreen link (full page)" do
@@ -78,6 +91,10 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
 
       expect(page).to have_text(I18n.t(:"js.button_open_fullscreen"))
       expect(page).to have_octicon(:"screen-full")
+      expect(page).to have_css(
+        "a[data-turbo-frame='_top']",
+        text: I18n.t(:"js.button_open_fullscreen")
+      )
     end
 
     it "shows a divider before move options" do

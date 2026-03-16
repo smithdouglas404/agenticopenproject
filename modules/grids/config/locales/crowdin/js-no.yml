@@ -19,7 +19,6 @@
           title: 'Nyheter'
         project_description:
           title: 'Description'
-          no_results: "Ingen beskrivelse har blitt skrevet ennå. Den kan oppgis i \"Prosjektinnstillinger\"."
         project_status:
           title: 'Status'
           not_started: 'Ikke påbegynt'

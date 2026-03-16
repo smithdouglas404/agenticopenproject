@@ -48,14 +48,19 @@ The **Overview** tab is a pre-configured to provide a concise summary of the pro
 
   - [Status](./project-widgets/#status-widget) 
 
-  - [Subitems](./project-widgets/#subitems-widget)  
+  - [Subitems](./project-widgets/#subitems-widget) 
 
   - [Members](./project-widgets/#members-widget) 
 
-  - [News](project-widgets/#news-widget)  
+  - [News](project-widgets/#news-widget) 
+
+  - [Budgets](project-widgets/#budgets-widgets)
+
+    > [!TIP]
+    > If you do not see the budget widgets, make sure you have the required permissions, that the Budgets or Time and costs module is activated for the project, and that a budget already exists.
 
   - Optional: [Project attributes](project-attributes). 
-    
+
     >  [!TIP]
     >
     > Project attributes are usually displayed under the **project life cycle** section on the right, but a project attribute section can also be placed centrally under the pre-defined widgets. This placement can be changed under system administration.  

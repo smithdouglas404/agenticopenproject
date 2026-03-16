@@ -36,12 +36,8 @@ module Admin::Import::Jira
     layout "admin"
 
     VALID_STEPS = %i[
-      init
       fetch_instance_meta
-      fetch_groups_and_users
-      import_groups_and_users
       fetch_projects_meta
-      import_scope
       configure
       import
       revert
@@ -51,7 +47,7 @@ module Admin::Import::Jira
     menu_item :jira_import
 
     before_action :require_admin
-    before_action :find_jira_and_jira_import, only: %i[show continue remove revert_modal finalize_modal history]
+    before_action :find_jira_and_jira_import, only: %i[show continue remove revert_modal import_modal finalize_modal history]
 
     def show; end
 
@@ -66,6 +62,10 @@ module Admin::Import::Jira
       stream_wizard
     rescue StandardError => e
       handle_error(e)
+    end
+
+    def import_modal
+      respond_with_dialog Admin::Import::Jira::ImportRuns::ImportConfirmDialogComponent.new(jira_import: @jira_import)
     end
 
     def revert_modal
@@ -111,10 +111,6 @@ module Admin::Import::Jira
       end
     end
 
-    def init
-      @jira_import.transition_to!(:initial)
-    end
-
     def fetch_instance_meta
       @jira_import.transition_to!(:instance_meta_fetching)
     end
@@ -145,20 +141,8 @@ module Admin::Import::Jira
         .first
     end
 
-    def import_scope
-      @jira_import.transition_to!(:import_scope)
-    end
-
     def configure
       @jira_import.transition_to!(:configuring)
-    end
-
-    def fetch_groups_and_users
-      @jira_import.transition_to!(:groups_and_users_fetching)
-    end
-
-    def import_groups_and_users
-      @jira_import.transition_to!(:groups_and_users_importing)
     end
 
     def revert
@@ -166,7 +150,7 @@ module Admin::Import::Jira
     end
 
     def finalize
-      @jira_import.transition_to!(:completed)
+      @jira_import.transition_to!(:finalizing)
     end
 
     def find_jira_and_jira_import

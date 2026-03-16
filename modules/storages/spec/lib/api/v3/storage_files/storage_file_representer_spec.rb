@@ -37,7 +37,7 @@ RSpec.describe API::V3::StorageFiles::StorageFileRepresenter do
   let(:last_modified_at) { DateTime.now }
   let(:storage) { build_stubbed(:nextcloud_storage) }
   let(:file) do
-    Storages::StorageFile.new(
+    Storages::Adapters::Results::StorageFile.new(
       id: 42,
       name: "readme.md",
       size: 4096,

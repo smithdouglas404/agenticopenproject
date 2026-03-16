@@ -19,7 +19,6 @@ vi:
           title: 'tin tức'
         project_description:
           title: 'mô tả'
-          no_results: "Chưa có mô tả nào được viết. Một cái có thể được cung cấp trong 'Cài đặt dự án'."
         project_status:
           title: 'trạng thái'
           not_started: 'Chưa bắt đầu'

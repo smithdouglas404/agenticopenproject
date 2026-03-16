@@ -40,6 +40,7 @@ class MeetingsController < ApplicationController
   before_action :find_copy_from_meeting, only: %i[create]
   before_action :convert_params, only: %i[create update]
   before_action :prevent_series_template_destruction, only: :destroy
+  before_action :check_for_enterprise_token, only: %i[create new_dialog]
 
   helper :watchers
   include MeetingsHelper
@@ -220,6 +221,8 @@ class MeetingsController < ApplicationController
 
     if recurring
       redirect_to project_recurring_meeting_path(@project, recurring), status: :see_other
+    elsif @meeting.onetime_template?
+      redirect_to templates_project_meetings_path(@project), status: :see_other
     else
       redirect_back_or_default project_meetings_path(@project), status: :see_other
     end
@@ -287,6 +290,23 @@ class MeetingsController < ApplicationController
       update_all_via_turbo_stream
       update_backlog_via_turbo_stream(collapsed: nil)
     end
+
+    respond_with_turbo_streams
+  end
+
+  def change_sharing
+    sharing = params[:sharing]
+
+    if Meeting.sharings.key?(sharing)
+      call = ::Meetings::UpdateService
+        .new(user: current_user, model: @meeting)
+        .call(sharing:)
+
+      render_base_error_in_flash_message_via_turbo_stream(call.errors) unless call.success?
+    end
+
+    update_header_component_via_turbo_stream
+    update_sidebar_sharing_component_via_turbo_stream
 
     respond_with_turbo_streams
   end
@@ -376,6 +396,22 @@ class MeetingsController < ApplicationController
 
   private
 
+  def check_for_enterprise_token
+    return unless @copy_from&.onetime_template? && !EnterpriseToken.allows_to?(:meeting_templates)
+
+    respond_to do |format|
+      format.turbo_stream do
+        render_error_flash_message_via_turbo_stream(message: I18n.t(:notice_not_authorized))
+        response.status = :forbidden
+        respond_with_turbo_streams
+      end
+      format.any do
+        request.format = "html"
+        render_403
+      end
+    end
+  end
+
   def deliver_invitation_mails
     return false unless @meeting.notify?
 
@@ -450,7 +486,7 @@ class MeetingsController < ApplicationController
     @meeting = call.result
 
     # When coming from the "Create from template" button, load the template to hide the form field
-    @copy_from = Meeting.onetime_templates.visible.find_by(id: params[:template_id]) if params[:template_id].present?
+    @copy_from = Meeting.templates_visible_in_project(@project).find_by(id: params[:template_id]) if params[:template_id].present?
   end
 
   def global_upcoming_meetings
@@ -544,7 +580,7 @@ class MeetingsController < ApplicationController
     # Check for template selection from form submission
     template_id = params[:meeting][:template_id]
     if template_id.present?
-      @copy_from = Meeting.onetime_templates.visible.find_by(id: template_id)
+      @copy_from = Meeting.templates_visible_in_project(@project).find_by(id: template_id)
       return
     end
 

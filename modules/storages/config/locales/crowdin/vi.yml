@@ -370,6 +370,7 @@ vi:
         failure: Một số lần kiểm tra không thành công và hệ thống không hoạt động như mong đợi.
         success: Tất cả các kết nối và hệ thống đều hoạt động như mong đợi.
         warning: Một số kiểm tra trả lại một cảnh báo. Điều này có thể dẫn đến hành vi không mong muốn.
+      synced: 'Last sync: %{datetime}'
       title: Báo cáo tình trạng sức khoẻ
     health_email_notifications:
       description_disabled: Quản trị viên sẽ không nhận được thông tin cập nhật qua email khi có thông tin cập nhật quan trọng.

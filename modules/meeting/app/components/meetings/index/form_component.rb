@@ -71,6 +71,8 @@ module Meetings
     end
 
     def creating_onetime_meeting?
+      return false unless EnterpriseToken.allows_to?(:meeting_templates)
+
       !@meeting.persisted? && !@meeting.is_a?(RecurringMeeting) && !@template
     end
 
@@ -81,7 +83,7 @@ module Meetings
     def available_templates
       return [] unless @project
 
-      @available_templates ||= Meeting.onetime_templates.where(project: @project).visible
+      @available_templates ||= Meeting.templates_visible_in_project(@project)
     end
   end
 end

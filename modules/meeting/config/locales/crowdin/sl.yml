@@ -44,6 +44,7 @@ sl:
         start_date: "Datum"
         start_time: "Start time"
         start_time_hour: "Start time"
+        sharing: "Sharing"
       meeting_agenda_item:
         title: "Naslov"
         author: "Avtor"
@@ -130,7 +131,6 @@ sl:
   label_meeting_template_edit: "Edit template"
   label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Nov sestanek"
-  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "New one-time meeting"
   label_meeting_new_recurring: "New recurring meeting"
   label_meeting_create: "Create meeting"
@@ -205,6 +205,8 @@ sl:
   label_time_zone: "Časovni pas"
   label_start_date: "Datum začetka"
   label_subscribe_icalendar: "Subscribe to calendar"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -224,7 +226,8 @@ sl:
         heading: "No participants"
         description: "There are no participants yet."
     attachments:
-      template: "These attached files will be included in all future meetings in the series."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Attached files are available to all meeting participants. You can also drag and drop these into agenda item notes."
     copy:
       title: "Copy meeting: %{title}"
@@ -300,6 +303,8 @@ sl:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Cancel meeting occurrence"
         heading: "Cancel this meeting occurrence?"
@@ -626,12 +631,17 @@ sl:
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
   text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
   text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
-  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
-  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
+  text_onetime_meeting_template_empty_heading: "This meeting template is empty"
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
   text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
   text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
   text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
+  label_meeting_template_sharing: "Sharing"
+  label_meeting_template_sharing_none: "Only this project"
+  label_meeting_template_sharing_descendants: "Subprojects"
+  label_meeting_template_sharing_system: "All projects"
+  text_meeting_template_sharing_description: "This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied."
   text_meeting_not_editable_anymore: "This meeting is not editable anymore."
   text_meeting_not_present_anymore: "This meeting was deleted. Please select another meeting."
   label_add_work_package_to_meeting_dialog_title: "Select meeting"

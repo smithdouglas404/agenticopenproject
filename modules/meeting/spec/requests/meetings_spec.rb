@@ -201,4 +201,50 @@ RSpec.describe "Meeting requests",
       end
     end
   end
+
+  describe "GET new_dialog - template selector visibility", with_ee: [:meeting_templates] do
+    shared_let(:ancestor_project) { create(:project, enabled_module_names: %i[meetings]) }
+    shared_let(:current_project) { create(:project, enabled_module_names: %i[meetings], parent: ancestor_project) }
+    shared_let(:descendant_project) { create(:project, enabled_module_names: %i[meetings], parent: current_project) }
+    shared_let(:unrelated_project) { create(:project, enabled_module_names: %i[meetings]) }
+
+    shared_let(:user) do
+      create(:user, member_with_permissions: { current_project => %i[view_meetings create_meetings] })
+    end
+
+    shared_let(:own_template) { create(:onetime_template, project: current_project, title: "Own template") }
+    shared_let(:ancestor_none_template) do
+      create(:onetime_template, project: ancestor_project, sharing: :none, title: "Ancestor none")
+    end
+    shared_let(:ancestor_descendants_template) do
+      create(:onetime_template, project: ancestor_project, sharing: :descendants, title: "Ancestor descendants")
+    end
+    shared_let(:descendant_none_template) do
+      create(:onetime_template, project: descendant_project, sharing: :none, title: "Descendant none")
+    end
+    shared_let(:descendant_descendants_template) do
+      create(:onetime_template, project: descendant_project, sharing: :descendants, title: "Descendant descendants")
+    end
+    shared_let(:unrelated_none_template) do
+      create(:onetime_template, project: unrelated_project, sharing: :none, title: "Unrelated none")
+    end
+    shared_let(:system_template) do
+      create(:onetime_template, project: unrelated_project, sharing: :system, title: "System template")
+    end
+
+    before { login_as user }
+
+    it "shows own and those shared with descendants and all projects" do
+      get new_dialog_project_meetings_path(current_project), as: :turbo_stream
+
+      expect(response.body).to include("Own template")
+      expect(response.body).to include("Ancestor descendants")
+      expect(response.body).to include("System template")
+
+      expect(response.body).not_to include("Ancestor none")
+      expect(response.body).not_to include("Descendant none")
+      expect(response.body).not_to include("Descendant descendants")
+      expect(response.body).not_to include("Unrelated none")
+    end
+  end
 end

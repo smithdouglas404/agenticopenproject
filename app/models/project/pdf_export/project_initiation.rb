@@ -39,7 +39,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   include Project::PDFExport::Common::ProjectAttributes
   include Project::PDFExport::ProjectInitiation::Cover
   include Project::PDFExport::ProjectInitiation::Styles
-  include ProjectHelper
+  include ProjectsHelper
 
   attr_accessor :pdf
 
@@ -190,8 +190,19 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
            .map do |section, custom_fields|
              {
                caption: section.name,
-               fields: custom_fields.map do |custom_field|
-                 { key: "cf_#{custom_field.id}", caption: custom_field.name, custom_field: }
+               fields: custom_fields.each_with_object([]) do |custom_field, fields|
+                 fields << {
+                   key: "cf_#{custom_field.id}",
+                   caption: custom_field.name,
+                   custom_field:
+                 }
+                 if custom_field.has_comment?
+                   fields << {
+                     key: "cfc_#{custom_field.id}",
+                     caption: I18n.t(:label_custom_comment, name: custom_field.name),
+                     custom_field:
+                   }
+                 end
                end
              }
     end

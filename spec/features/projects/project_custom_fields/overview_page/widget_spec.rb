@@ -156,7 +156,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
     end
 
     it "can edit a project custom field from within the widget" do
-      overview_page.open_edit_dialog_for_custom_field(string_project_custom_field)
+      overview_page.open_modal_for_custom_field(string_project_custom_field)
       page.fill_in(string_project_custom_field.name, with: "My super awesome new value")
       page.click_on "Save"
 

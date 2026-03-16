@@ -58,7 +58,7 @@ module MeetingAgendaItems
       if series_template?
         t(:"recurring_meeting.template.description")
       elsif onetime_template?
-        t(:text_onetime_meeting_template_description)
+        t(:text_onetime_meeting_template_empty_description)
       else
         t(%i[text_meeting_empty_description1 text_meeting_empty_description2]).join(" ")
       end

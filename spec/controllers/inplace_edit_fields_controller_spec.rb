@@ -36,11 +36,16 @@ RSpec.describe InplaceEditFieldsController do
   let(:attribute) { :name }
   let(:model_param) { "project" }
 
-  before do
-    allow(controller).to receive(:current_user).and_return(user)
+  let(:update_registry) do
+    contract = double
+    allow(contract).to receive(:new).and_return(double(writable?: true))
+    registry = OpenProject::InplaceEdit::UpdateRegistry.new
+    registry.register(Project, handler:, contract:)
+    registry
+  end
 
-    allow(OpenProject::InplaceEdit::UpdateRegistry)
-      .to receive_messages(registered?: true, fetch_handler: handler)
+  before do
+    allow(controller).to receive_messages(current_user: user, update_registry:)
 
     allow(Project)
       .to receive(:visible)
@@ -136,10 +141,6 @@ RSpec.describe InplaceEditFieldsController do
     let(:handler) { double }
 
     it "returns 404 for unsupported model" do
-      allow(OpenProject::InplaceEdit::UpdateRegistry)
-        .to receive(:registered?)
-              .and_return(false)
-
       get :edit, params: {
         model: "invalid_model",
         id: 123,

@@ -44,5 +44,16 @@ module Meetings
     attribute :start_time_hour
     attribute :template
     attribute :notify
+    attribute :sharing do
+      validate_sharing_only_on_onetime_templates
+    end
+
+    private
+
+    def validate_sharing_only_on_onetime_templates
+      return if model.onetime_template?
+
+      errors.add :sharing, :not_allowed if model.sharing.present?
+    end
   end
 end

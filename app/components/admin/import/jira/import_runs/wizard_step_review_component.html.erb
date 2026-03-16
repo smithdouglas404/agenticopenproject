@@ -52,6 +52,30 @@ See COPYRIGHT and LICENSE files for more details.
         render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(model, 'revert'))
       end
     end
+  elsif model.in_state?(:finalizing, :finalizing_done, :finalizing_error)
+    box.with_row do
+      concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
+        I18n.t(:"admin.jira.run.wizard.sections.import_result.label_finalize_import")
+      })
+    end
+    case model.current_state.to_sym
+    when :finalizing
+      box.with_row(mt: 3) do
+        render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
+          I18n.t(:"admin.jira.run.wizard.sections.import_result.label_finalizing")
+        ))
+      end
+    when :finalizing_done
+      box.with_row(mt: 3) do
+        render(Primer::Alpha::Banner.new(scheme: :success, icon: :"check-circle")) {
+          I18n.t(:"admin.jira.run.wizard.sections.import_result.label_finalizing_done")
+        }
+      end
+    when :finalizing_error
+      box.with_row(mt: 3) do
+        render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(model, 'finalize'))
+      end
+    end
   else
     box.with_row do
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
@@ -70,7 +94,7 @@ See COPYRIGHT and LICENSE files for more details.
         }
       end
     end
-    if model.in_state?(:imported, :completed)
+    if model.in_state?(:imported, :finalizing_done)
       box.with_row(mt: 3, mb: 3) do
         render(Admin::Import::Jira::ImportRuns::InfoListBoxComponent.new(
           title: I18n.t(:"admin.jira.run.wizard.sections.import_result.label_results"),

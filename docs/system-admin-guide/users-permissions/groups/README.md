@@ -30,17 +30,22 @@ Give a name for your new group, which must be unique, and click the green **Crea
 
 ## Add users to a group, edit or remove groups
 
-You can add users to a group and edit a group by clicking on the **name of the group** and  delete the group by clicking on **delete** icon in the respective line.
+To add users to a group, edit or delete it, start by clicking the **name of the group**.
 
 ![Edit or delete groups in OpenProject administration](openproject_system_guide_edit_delete_groups.png)
 
-After clicking on a group's name, you can **change the group name**, **add or remove group members** and **assign groups to projects**.
+You will then see the detailed view of the group, including following tabs: 
+- General
+- Users
+- Projects
+- Global roles
+- Synchronized groups
 
 ![Edit groups in OpenProject administration](openproject_system_guide_edit_new_group.png)
 
 ### Add users to a group
 
-Click the **Users** tab. Select the users you want to add to this group from the **New user** drop-down list. Click the green **Add** button. Users already in the group are not shown in the list. Click the **X** next to a user to remove that user from the group.
+Select the **Users** tab. Select the users you want to add to this group from the **New user** drop-down list. Click the green **Add** button. Users already in the group are not shown in the list. Click the **X** next to a user to remove that user from the group.
 
 ![Add new members to a group in OpenProject administration](openproject_system_guide_edit_new_group_add_members.png)
 
@@ -59,6 +64,10 @@ Click the **Projects** tab. Select the projects you want to add this group to fr
 Click the **Global Roles** tab. Select the global roles you want to add to this group. Click the **Add** button.
 
 In order to add a global role to a group, at least one global role needs to be [created](../roles-permissions) in the system (a role with the **Global role** field ticked).
+
+### Synchronized groups 
+
+Click the **Synchronized groups** tab to see if this group has been synchronized with groups in external identity providers like OpenID. If no synchronization has yet been set up, this list will be empty. You can set this up in your [Authentication settings](../../authentication).
 
 ### Delete a group
 

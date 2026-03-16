@@ -60,7 +60,7 @@ class Budget < ApplicationRecord
   validates :subject, length: { minimum: 1, maximum: 255 }
 
   class << self
-    def visible(user)
+    def visible(user = User.current)
       includes(:project)
         .references(:projects)
         .merge(Project.allowed_to(user, :view_budgets))

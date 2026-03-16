@@ -55,13 +55,16 @@ module Components
           "#{dialog_css_selector} [data-test-selector='async-dialog-content']"
         end
 
-        def within_dialog(&)
-          within(dialog_css_selector, &)
+        def within_dialog(close_after_yield: false, &)
+          within(dialog_css_selector, &).tap do
+            close if close_after_yield
+          end
         end
 
         def within_async_content(close_after_yield: false, &)
-          within(async_content_container_css_selector, &)
-          close if close_after_yield
+          within(async_content_container_css_selector, &).tap do
+            close if close_after_yield
+          end
         end
 
         def close

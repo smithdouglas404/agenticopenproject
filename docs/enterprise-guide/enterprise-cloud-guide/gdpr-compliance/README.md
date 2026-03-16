@@ -73,4 +73,8 @@ Please navigate to *Administration -> GDPR* and you can now review and sign your
 
 ![OpenProject DPA in OpenProject administration](openproject_enterprise_guide_gdpr.png)
 
+Once you sign the DPA, you can **download** or  **reset** it by clicking one of the respective buttons. 
+
+![GDPR page in OpenProject administration, showing buttons to download signed DPA and to reset DPA](openproject_enterprise_guide_gdpr_dpa_signed.png)
+
 Find out more about [OpenProject's security features](../../../security-and-privacy/statement-on-security/#openproject-security-features).
