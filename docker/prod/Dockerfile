@@ -141,7 +141,7 @@ ENV PGDATA=/var/openproject/pgdata
 COPY --from=openproject/gosu /go/bin/gosu /usr/local/bin/gosu
 RUN chmod +x /usr/local/bin/gosu && gosu nobody true
 
-COPY --from=openproject/hocuspocus:17.0.6 --chown=$APP_USER:$APP_USER /app /opt/hocuspocus
+COPY --from=openproject/hocuspocus:17.1.3 --chown=$APP_USER:$APP_USER /app /opt/hocuspocus
 
 RUN ./docker/prod/setup/postinstall-onprem.sh && \
   ln -sf ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
