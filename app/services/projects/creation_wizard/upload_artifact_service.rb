@@ -29,42 +29,49 @@
 #++
 
 module Projects::CreationWizard
-  class ReuploadArtifactOnStatusChangesService
-    prepend Projects::Concerns::UpdateDemoData
+  class UploadArtifactService
+    include ArtifactExporter
 
-    attr_reader :current_user, :artifact_work_package
+    attr_reader :user, :project, :artifact_work_package
 
-    delegate :project, to: :artifact_work_package
-
-    def initialize(current_user:, work_package:)
-      @current_user = current_user
+    def initialize(user:, project:, work_package:)
+      @user = user
+      @project = project
       @artifact_work_package = work_package
     end
 
-    def call!(changes:)
-      return if changes["status_id"].blank?
-      return unless update_is_artifact_work_package?
-
-      User.execute_as_admin(current_user) do
-        update_artifact
+    def call
+      if store_attachment_locally?
+        return add_attachment_locally
       end
-    end
 
-    def update_is_artifact_work_package?
-      project.project_creation_wizard_artifact_work_package_id.to_s == artifact_work_package.id.to_s
+      if project_storage.nil?
+        return ServiceResult.failure(message: I18n.t("projects.wizard.create_artifact_storage_error"))
+      end
+
+      upload_artifact_to_storage
     end
 
     private
 
-    def update_artifact
-      call = UploadArtifactService
-        .new(user: current_user, project:, work_package: artifact_work_package)
-        .call
+    def add_attachment_locally
+      export = create_pdf_export!
+      file = OpenProject::Files.create_uploaded_file(
+        name: export.title,
+        content_type: export.mime_type,
+        content: export.content,
+        binary: true
+      )
 
-      if call.success?
-        Rails.logger.debug { "Updated artifact for creation wizard in ##{artifact_work_package.id}" }
+      attachment = artifact_work_package.attachments.create(
+        author: user,
+        file:
+      )
+
+      if attachment.persisted?
+        ServiceResult.success(result: attachment)
       else
-        Rails.logger.error("Failed to process artifact change for ##{artifact_work_package.id}: ##{call.message}")
+        ServiceResult.failure(result: attachment, errors: attachment.errors)
       end
     end
   end
