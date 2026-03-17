@@ -263,21 +263,21 @@ class ApplicationController < ActionController::Base
   # Only redirects HTML requests; turbo_stream and other formats are left as-is.
   def redirect_if_historical_project_identifier(identifier_param_key)
     param = params[identifier_param_key]
-    if request.get? && request.format.symbol == :html && param.friendly_id? && param != @project.identifier
-      # Reconstruct the URL from path + query parameters, and prevent user-supplied
-      # options such as :host or :protocol from influencing the redirect target.
-      safe_path_params  = request.path_parameters.symbolize_keys
-      safe_query_params = request.query_parameters.symbolize_keys
+    return unless request.get? && request.format.symbol == :html && param.friendly_id? && param != @project.identifier
 
-      # Ensure the identifier in the path matches the current project identifier.
-      safe_path_params[identifier_param_key] = @project.identifier
+    redirect_to canonical_project_url(identifier_param_key), status: :moved_permanently
+  end
 
-      # Remove any URL option keys that could affect the redirect target.
-      safe_query_params.except!(:host, :protocol, :subdomain, :domain, :port)
+  def canonical_project_url(identifier_param_key)
+    # Reconstruct the URL from path + query parameters, and prevent user-supplied
+    # options such as :host or :protocol from influencing the redirect target.
+    safe_path_params  = request.path_parameters.symbolize_keys
+    safe_query_params = request.query_parameters.symbolize_keys
 
-      redirect_to url_for(safe_path_params.merge(safe_query_params).merge(only_path: true)),
-                  status: :moved_permanently
-    end
+    safe_path_params[identifier_param_key] = @project.identifier
+    safe_query_params.except!(:host, :protocol, :subdomain, :domain, :port)
+
+    url_for(safe_path_params.merge(safe_query_params).merge(only_path: true))
   end
 
   # Find project by project_id if given

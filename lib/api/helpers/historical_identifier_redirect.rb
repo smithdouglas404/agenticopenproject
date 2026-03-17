@@ -50,34 +50,29 @@ module API
       #   end
       def redirect_if_historical_identifier(identifier_param, project)
         param_value = params[identifier_param]
+        return unless request.get? && param_value.friendly_id? && param_value != project.identifier
 
-        # Only redirect if:
-        # 1. The parameter is a friendly_id slug (not numeric ID)
-        # 2. The parameter doesn't match the project's current identifier
-        if request.get? && param_value.friendly_id? && param_value != project.identifier
-          # Reconstruct only the path and query string, not the full URL
-          # This prevents Host header injection and open redirect attacks
-          path = request.path
-          query_string = request.query_string
+        redirect canonical_identifier_path(identifier_param, param_value, project), permanent: true
+      end
 
-          # Replace the old identifier in the path
-          new_path = path.sub(
-            %r{(/)#{Regexp.escape(param_value)}(/|-|$)},
-            "\\1#{project.identifier}\\2"
+      def canonical_identifier_path(identifier_param, param_value, project)
+        # Replace the old identifier in the path.
+        # This prevents Host header injection and open redirect attacks.
+        new_path = request.path.sub(
+          %r{(/)#{Regexp.escape(param_value)}(/|-|$)},
+          "\\1#{project.identifier}\\2"
+        )
+
+        # Replace the old identifier in query parameters if present
+        if request.query_string.present?
+          new_query_string = request.query_string.gsub(
+            /(\A|&)#{Regexp.escape(identifier_param.to_s)}=#{Regexp.escape(param_value)}(&|\z)/,
+            "\\1#{identifier_param}=#{CGI.escape(project.identifier)}\\2"
           )
-
-          # Replace the old identifier in query parameters if present
-          if query_string.present?
-            new_query_string = query_string.gsub(
-              /(\A|&)#{Regexp.escape(identifier_param.to_s)}=#{Regexp.escape(param_value)}(&|\z)/,
-              "\\1#{identifier_param}=#{CGI.escape(project.identifier)}\\2"
-            )
-            new_path += "?#{new_query_string}"
-          end
-
-          # Return 301 Moved Permanently with path-only redirect
-          redirect new_path, permanent: true
+          new_path += "?#{new_query_string}"
         end
+
+        new_path
       end
     end
   end
