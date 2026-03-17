@@ -68,6 +68,10 @@ enterprise_features:
     href: https://www.openproject.org/docs/system-admin-guide/manage-work-packages/work-package-status/#create-a-new-work-package-status
   work_package_subject_generation:
     href: https://www.openproject.org/docs/system-admin-guide/manage-work-packages/work-package-types/automatic-subjects/
+enterprise_guide:
+  on_premises:
+    activate:
+      href: https://www.openproject.org/docs/enterprise-guide/enterprise-on-premises-guide/activate-enterprise-on-premises/
 enterprise_support:
   href: https://www.openproject.org/docs/enterprise-guide/support/
   label: :label_enterprise_support
@@ -87,7 +91,7 @@ glossary:
 github:
   href: https://github.com/opf/openproject
 hocuspocus_server_docs:
-  href: https://github.com/opf/op-blocknote-hocuspocus
+  href: https://github.com/opf/openproject/tree/dev/extensions/op-blocknote-hocuspocus
 ical_docs:
   href: https://www.openproject.org/docs/user-guide/calendar/#subscribe-to-a-calendar
 installation_guides:

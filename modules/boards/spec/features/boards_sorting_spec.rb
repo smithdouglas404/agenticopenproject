@@ -65,7 +65,7 @@ RSpec.describe "Work Package boards sorting spec",
     query_menu.expect_item "My Action Board"
 
     board_page = board_index.create_board title: "My Status Board",
-                                          action: "Status"
+                                          action: "Kanban"
     board_page.back_to_index
 
     board_index.expect_boards_listed "My Status Board",

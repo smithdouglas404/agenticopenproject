@@ -33,15 +33,21 @@ $widget-box--enumeration-width: 20px
   &.-flex
     display: flex
     flex-flow: row wrap
-    // cancel the margin of the outer elements to align with the rest of the page
-    margin: 0 -10px
+    gap: var(--stack-gap-normal)
 
     .widget-box
       flex: 1
-      flex-basis: 32%
+      flex-basis: calc(50% - var(--stack-gap-normal))
       max-height: 750px // Avoid that individual widgets blow the whole grid
       display: flex
       flex-direction: column
+
+      &_half-width
+        flex-basis: calc(25% - var(--stack-gap-normal))
+        min-width: 200px
+
+        @media screen and (max-width: $breakpoint-lg)
+          flex-basis: calc(50% - var(--stack-gap-normal))
 
       &_full-width
         flex-basis: 100%
@@ -77,9 +83,14 @@ $widget-box--enumeration-width: 20px
     &.-no-border
       padding: 0
       border: 0
+      box-shadow: none
 
     &--teaser-image
       width: 200px
+
+    // Unfortunately, we cannot add a class to that container, so we have to use the Primer class
+    .blankslate-container
+      margin: auto
 
     .widget-box--enumeration
       margin-left: 1.5rem
@@ -185,6 +196,7 @@ $widget-box--enumeration-width: 20px
     font-weight: var(--base-text-weight-bold)
     color: var(--fgColor-default) !important
     padding: 0 !important
+    @include text-shortener
 
   .toolbar--editable-toolbar
     height: 20px

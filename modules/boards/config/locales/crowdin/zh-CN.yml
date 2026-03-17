@@ -20,7 +20,7 @@ zh-CN:
       action: "操作面板 (%{attribute})"
     board_type_attributes:
       assignee: 受理人
-      status: 状态
+      status: 看板
       version: 版本
       subproject: 子项目
       subtasks: 父子

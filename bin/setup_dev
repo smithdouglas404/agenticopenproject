@@ -21,6 +21,9 @@ try 'echo "{}" > config/frontend_assets.manifest.json'
 echo "Installing node_modules ... "
 try '(cd frontend && npm ci) >> log/setup_dev.log'
 
+echo "Installing hocuspocus dependencies..."
+try '(cd extensions/op-blocknote-hocuspocus && npm ci) >> log/setup_dev.log'
+
 echo "Linking plugin modules and exporting frontend locale files"
 try 'bundle exec rails openproject:plugins:register_frontend assets:export_locales >> log/setup_dev.log'
 

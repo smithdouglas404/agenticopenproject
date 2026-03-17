@@ -55,7 +55,13 @@ module OpenProject
         end
 
         def call
-          form.rich_text_area(name: attribute, **@system_arguments)
+          form.rich_text_area(name: attribute,
+                              wrapper_data_attributes: {
+                                controller: "ckeditor-focus",
+                                ckeditor_focus_target: "editor",
+                                ckeditor_focus_autofocus_value: true
+                              },
+                              **@system_arguments)
 
           form.group(layout: :horizontal, justify_content: :flex_end) do |button_group|
             button_group.submit(name: :reset,

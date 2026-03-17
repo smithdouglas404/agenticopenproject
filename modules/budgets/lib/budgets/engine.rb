@@ -43,7 +43,8 @@ module Budgets
                    {
                      budgets: %i[index show edit update destroy destroy_info new create copy]
                    },
-                   permissible_on: :project
+                   permissible_on: :project,
+                   dependencies: :view_budgets
       end
 
       menu :project_menu,

@@ -2,10 +2,12 @@ pt-BR:
   js:
     grid:
       add_widget: 'Adicionar widget'
+      widget_menu_label: 'Exibir opções de menu para o widget %{widgetName}'
       remove: 'Remover widget'
       configure: 'Configurar widget'
       widgets:
         missing_permission: "Você não tem as permissões necessárias para visualizar este widget."
+        not_available: "Este widget não está disponível no momento."
         custom_text:
           title: 'Texto personalizado'
         documents:
@@ -17,7 +19,6 @@ pt-BR:
           title: 'Notícias'
         project_description:
           title: 'Descrição'
-          no_results: "Nenhuma descrição foi escrita. Uma pode ser fornecida nas 'Configurações do Projeto'."
         project_status:
           title: 'Status'
           not_started: 'Não iniciado'

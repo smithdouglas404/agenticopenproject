@@ -66,7 +66,7 @@ class DocumentsController < ApplicationController
 
   def render_avatars
     user_ids = params[:user_ids]
-    @users = User.where(id: user_ids)
+    @users = User.visible.where(id: user_ids)
     update_via_turbo_stream(component: Documents::ShowEditView::PageHeader::LiveUsersComponent.new(users: @users))
 
     respond_with_turbo_streams

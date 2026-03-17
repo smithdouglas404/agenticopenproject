@@ -56,6 +56,8 @@ class Meeting < ApplicationRecord
 
   scope :templated, -> { where(template: true) }
   scope :not_templated, -> { where(template: false) }
+  scope :onetime_templates, -> { where(template: true, recurring_meeting_id: nil) }
+  scope :series_templates, -> { where(template: true).where.not(recurring_meeting_id: nil) }
 
   scope :not_cancelled, -> { where.not.cancelled }
 
@@ -89,6 +91,10 @@ class Meeting < ApplicationRecord
     joins(:participants).where(meeting_participants: { user_id: user.id })
   }
 
+  scope :available_onetime_templates, -> {
+    onetime_templates.where(project_id: Project.active.select(:id))
+  }
+
   acts_as_attachable(
     after_remove: :attachments_changed,
     order: "#{Attachment.table_name}.file",
@@ -116,6 +122,7 @@ class Meeting < ApplicationRecord
   accepts_nested_attributes_for :participants, allow_destroy: true
 
   validates :title, :project_id, presence: true
+  validates :sharing, absence: true, unless: :onetime_template?
 
   validates :duration, numericality: { greater_than: 0 }
 
@@ -132,6 +139,21 @@ class Meeting < ApplicationRecord
     cancelled: 4,
     closed: 5
   }
+
+  enum :sharing, {
+    none: "none",
+    descendants: "descendants",
+    system: "system"
+  }, prefix: :sharing, validate: { allow_nil: true }
+
+  def self.templates_visible_in_project(project, user = User.current)
+    accessible_ids = Project.allowed_to(user, :view_meetings).select(:id)
+
+    available_onetime_templates
+      .where(project_id: project.id).where(project_id: accessible_ids)
+      .or(available_onetime_templates.where(sharing: :descendants, project_id: project.ancestors.select(:id)))
+      .or(available_onetime_templates.where(sharing: :system))
+  end
 
   def recurring?
     recurring_meeting_id.present?
@@ -157,14 +179,16 @@ class Meeting < ApplicationRecord
   end
 
   def start_month
-    start_time.month
+    start_time&.month
   end
 
   def start_year
-    start_time.year
+    start_time&.year
   end
 
   def end_time
+    return nil if start_time.nil?
+
     start_time + duration.hours
   end
 
@@ -174,6 +198,14 @@ class Meeting < ApplicationRecord
 
   def templated?
     !!template
+  end
+
+  def series_template?
+    template? && recurring_meeting_id.present?
+  end
+
+  def onetime_template?
+    template? && recurring_meeting_id.nil?
   end
 
   # One-time meeting time zone
@@ -192,6 +224,8 @@ class Meeting < ApplicationRecord
   end
 
   def notify?
+    return false if onetime_template?
+
     if recurring?
       recurring_meeting.template.notify
     else
@@ -258,9 +292,23 @@ class Meeting < ApplicationRecord
   end
 
   def send_emails?
+    return false if onetime_template?
     return false if template? && recurring_meeting.scheduled_meetings.none?
 
     persisted? && notify?
+  end
+
+  # Override virtual_start_time methods for onetime templates
+  def set_initial_values
+    return if onetime_template?
+
+    super
+  end
+
+  def validate_date_and_time
+    return if onetime_template?
+
+    super
   end
 
   private

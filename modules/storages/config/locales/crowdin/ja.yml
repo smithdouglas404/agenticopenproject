@@ -370,6 +370,7 @@ ja:
         failure: いくつかのチェックに失敗し、システムが期待どおりに動作しません。
         success: すべての接続とシステムは期待どおりに動作しています。
         warning: いくつかのチェックが警告を返しました。これは予期しない動作につながる可能性があります。
+      synced: 'Last sync: %{datetime}'
       title: 健康状態レポート
     health_email_notifications:
       description_disabled: 管理者は、重要なアップデートがあった場合、メールでアップデートを受け取ることはできません。

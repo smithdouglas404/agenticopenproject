@@ -173,18 +173,6 @@ module ApplicationHelper
     end.join.html_safe
   end
 
-  def html_safe_gsub(string, *gsub_args, &)
-    html_safe = string.html_safe?
-    result = string.gsub(*gsub_args, &)
-
-    # We only mark the string as safe if the previous string was already safe
-    if html_safe
-      result.html_safe # rubocop:disable Rails/OutputSafety
-    else
-      result
-    end
-  end
-
   def authoring(created, author, options = {})
     label = options[:label] || :label_added_time_by
     I18n.t(label, author: link_to_user(author), age: time_tag(created)).html_safe
@@ -265,9 +253,9 @@ module ApplicationHelper
 
   # Same as Rails' simple_format helper without using paragraphs
   def simple_format_without_paragraph(text)
-    html_safe_gsub(text.to_s, /\r\n?/, "\n")
-      .then { |res| html_safe_gsub(res, /\n\n+/, "<br /><br />") }
-      .then { |res| html_safe_gsub(res, /([^\n]\n)(?=[^\n])/, '\1<br />') }
+    text.to_s.html_safe_gsub(/\r\n?/, "\n")
+      .then { it.html_safe_gsub(/\n\n+/, "<br /><br />") }
+      .then { it.html_safe_gsub(/([^\n]\n)(?=[^\n])/, '\1<br />') }
   end
 
   def lang_options_for_select(blank = true)
@@ -305,6 +293,7 @@ module ApplicationHelper
       controller: "application auto-theme-switcher hover-card-trigger beforeunload external-links highlight-target-element",
       relative_url_root: root_path,
       overflowing_identifier: ".__overflowing_body",
+      external_links_enabled_value: Setting.capture_external_links?,
       rendered_at: Time.zone.now.iso8601,
       turbo: local_assigns[:turbo_opt_out] ? "false" : nil
     }.merge(user_theme_data_attributes)

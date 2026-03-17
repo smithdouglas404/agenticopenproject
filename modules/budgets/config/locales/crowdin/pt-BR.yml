@@ -39,6 +39,12 @@ pt-BR:
         base_amount: "Valor base"
       work_package:
         budget_subject: "Título do orçamento"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "não é membro do projeto do orçamento"
     models:
       budget: "Orçamento"
       material_budget_item: "Unidade"
@@ -56,6 +62,40 @@ pt-BR:
   caption_labor_costs: "Custos atuais do trabalho"
   caption_material_costs: "Custos unitários atuais"
   budgets_title: "Orçamentos"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Totais do orçamento"
+        remaining_budget: "Orçamento restante"
+        spent_budget: "Orçamento gasto"
+        total_actual_costs: "Total dos custos reais"
+        total_planned_budget: "Total do orçamento planejado"
+      budget_by_cost_type:
+        title: "Orçamento por tipo de custo"
+        blankslate:
+          heading: "Iniciar controle do projeto"
+          description: "Obtenha uma visão geral dos seus orçamentos e custos para acompanhar com eficiência a situação do seu projeto"
+        blankslate_zero:
+          heading: "Detalhes de orçamento ausentes"
+          description: "Adicione os detalhes do orçamento planejado para visualizar os dados aqui"
+        count_caption:
+          zero: "Sem dados de orçamento."
+          one: "Dados agregados de %{count} orçamento"
+          other: "Dados agregados de %{count} orçamentos"
+        count_caption_with_subitems:
+          project:
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados de %{count} orçamento incluídos neste projeto e em seus subitens."
+            other: "Dados agregados de %{count} orçamentos incluídos neste projeto e em seus subitens."
+          program:
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados de %{count} orçamento incluídos neste programa e em seus subitens."
+            other: "Dados agregados de %{count} orçamentos incluídos neste programa e em seus subitens."
+          portfolio:
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados de %{count} orçamento incluídos neste portfólio e em seus subitens."
+            other: "Dados agregados de %{count} orçamentos incluídos neste portfólio e em seus subitens."
+        view_details: "Ver detalhes do orçamento"
   events:
     budget: "Orçamento editado"
   help_click_to_edit: "Clique aqui para editar."

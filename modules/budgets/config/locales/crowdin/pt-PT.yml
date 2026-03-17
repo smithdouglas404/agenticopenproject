@@ -39,6 +39,12 @@ pt-PT:
         base_amount: "Valor base"
       work_package:
         budget_subject: "Título do Orçamento"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "não é membro do projeto do orçamento"
     models:
       budget: "Orçamento"
       material_budget_item: "Unidade"
@@ -56,6 +62,40 @@ pt-PT:
   caption_labor_costs: "Custos reais do trabalho"
   caption_material_costs: "Custos reais de unidade"
   budgets_title: "Orçamentos"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Totais do orçamento"
+        remaining_budget: "Orçamento restante"
+        spent_budget: "Orçamento gasto"
+        total_actual_costs: "Custos totais efetivos"
+        total_planned_budget: "Orçamento total previsto"
+      budget_by_cost_type:
+        title: "Orçamento por tipo de custos"
+        blankslate:
+          heading: "Iniciar o controlo do projeto"
+          description: "Obtenha uma síntese dos orçamentos e custos para acompanhar eficazmente o estado de saúde do seu projeto"
+        blankslate_zero:
+          heading: "Faltam dados orçamentais"
+          description: "Adicione detalhes sobre o seu orçamento planeado para ver os dados aqui"
+        count_caption:
+          zero: "Sem dados de orçamento."
+          one: "Dados agregados de %{count} orçamento"
+          other: "Dados agregados de %{count} orçamentos"
+        count_caption_with_subitems:
+          project:
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados a partir de %{count} orçamento incluído neste projeto e seus sub-elementos."
+            other: "Dados agregados a partir de %{count} orçamentos incluído neste projeto e seus sub-elementos."
+          program:
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados a partir de %{count} orçamento incluído neste programa e seus sub-elementos."
+            other: "Dados agregados a partir de %{count} orçamentos incluídos neste programa e seus sub-elementos."
+          portfolio:
+            zero: "Sem dados de orçamento."
+            one: "Dados agregados a partir de %{count} orçamento incluído nesta carteira e seus sub-elementos."
+            other: "Dados agregados a partir de %{count} orçamentos incluídos nesta carteira e seus sub-elementos."
+        view_details: "Ver detalhes do orçamento"
   events:
     budget: "Orçamento editado"
   help_click_to_edit: "Clique aqui para editar."

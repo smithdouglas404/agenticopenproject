@@ -307,9 +307,81 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
         end
       end
 
+      context "when the RECURRENCE-ID uses a TZID-qualified local time (e.g., from Open-Xchange)" do
+        let(:partstat) { "ACCEPTED" }
+        let(:recurrence_id_in_berlin) { recurrence_id.in_time_zone("Europe/Berlin") }
+
+        let(:ical_string) do
+          <<~ICAL
+            BEGIN:VCALENDAR
+            PRODID:-//Open-Xchange//8.45.77//EN
+            VERSION:2.0
+            CALSCALE:GREGORIAN
+            METHOD:REPLY
+            BEGIN:VTIMEZONE
+            TZID:Europe/Berlin
+            BEGIN:DAYLIGHT
+            TZNAME:CEST
+            TZOFFSETFROM:+0100
+            TZOFFSETTO:+0200
+            DTSTART:19700329T020000
+            RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+            END:DAYLIGHT
+            BEGIN:STANDARD
+            TZNAME:CET
+            TZOFFSETFROM:+0200
+            TZOFFSETTO:+0100
+            DTSTART:19701025T030000
+            RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+            END:STANDARD
+            END:VTIMEZONE
+            BEGIN:VEVENT
+            DTSTART;TZID=Europe/Berlin:#{recurrence_id_in_berlin.strftime('%Y%m%dT%H%M%S')}
+            DTEND;TZID=Europe/Berlin:#{(recurrence_id_in_berlin + 1.hour).strftime('%Y%m%dT%H%M%S')}
+            DTSTAMP:#{Time.current.utc.strftime('%Y%m%dT%H%M%SZ')}
+            ORGANIZER;CN=OpenProject:mailto:meetingresponse@example.com
+            UID:#{recurring_meeting.uid}
+            RECURRENCE-ID;TZID=Europe/Berlin:#{recurrence_id_in_berlin.strftime('%Y%m%dT%H%M%S')}
+            #{attendee_string}
+            CREATED:#{meeting.created_at.utc.strftime('%Y%m%dT%H%M%SZ')}
+            LAST-MODIFIED:#{Time.current.utc.strftime('%Y%m%dT%H%M%SZ')}
+            SEQUENCE:0
+            STATUS:CONFIRMED
+            SUMMARY:#{meeting.title}
+            TRANSP:OPAQUE
+            END:VEVENT
+            END:VCALENDAR
+          ICAL
+        end
+
+        it "finds the meeting occurrence and updates the participant's status" do
+          expect { subject }.to change {
+            meeting.participants.find_by(user: user).participation_status
+          }.from("needs_action").to("accepted")
+          expect(RecurringMeetingInterimResponse.count).to eq(0)
+          expect(subject).to be_success
+        end
+
+        context "when the recurring meeting occurrence is not yet instantiated" do
+          let(:recurrence_id_in_berlin) { (recurring_meeting.start_time + 14.days).in_time_zone("Europe/Berlin") }
+
+          it "creates an interim response with the correct start time" do
+            expect { subject }.to change(RecurringMeetingInterimResponse, :count).by(1)
+
+            expect(subject).to be_success
+
+            interim_response = RecurringMeetingInterimResponse.last
+            expect(interim_response.user).to eq(user)
+            expect(interim_response.recurring_meeting).to eq(recurring_meeting)
+            expect(interim_response.start_time).to eq(recurrence_id_in_berlin.utc)
+            expect(interim_response.participation_status).to eq("accepted")
+          end
+        end
+      end
+
       context "when no meeting occurrence is found for the recurrence ID" do
         let(:partstat) { "ACCEPTED" }
-        let(:recurrence_date) { 2.years.from_now.change(usec: 0) }
+        let(:recurrence_date) { (recurring_meeting.start_time + 14.days).change(usec: 0) }
 
         let(:additional_ical_properties) do
           "RECURRENCE-ID:#{recurrence_date.utc.strftime('%Y%m%dT%H%M%SZ')}"
@@ -330,7 +402,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
 
       context "when an interim response already for this recurrence (the user has already responded and changes)" do
         let(:partstat) { "DECLINED" }
-        let(:recurrence_date) { recurring_meeting.start_time + 1.month }
+        let(:recurrence_date) { recurring_meeting.start_time + 21.days }
         let!(:existing_response) do
           RecurringMeetingInterimResponse.create!(
             user: user,

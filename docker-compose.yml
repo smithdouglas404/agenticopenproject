@@ -123,6 +123,13 @@ services:
     networks:
       - testing
 
+  hocuspocus-test:
+    image: openproject/hocuspocus:latest
+    environment:
+      SECRET: secret12345
+    networks:
+      - testing
+
   frontend-test:
     build:
       <<: *frontend-build
@@ -157,8 +164,11 @@ services:
         condition: service_healthy
       cuprite-chrome:
         condition: service_started
+      hocuspocus-test:
+        condition: service_started
     environment:
       RAILS_ENV: test
+      OPENPROJECT_TESTING_WITH_DOCKER: "true"
       OPENPROJECT_RAILS__RELATIVE__URL__ROOT: "${OPENPROJECT_RAILS__RELATIVE__URL__ROOT:-}"
       DATABASE_URL: postgresql://openproject:openproject@db-test/openproject
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"

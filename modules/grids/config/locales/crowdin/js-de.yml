@@ -2,10 +2,12 @@ de:
   js:
     grid:
       add_widget: 'Widget hinzufügen'
+      widget_menu_label: 'Menüoptionen für das Widget %{widgetName} anzeigen'
       remove: 'Widget entfernen'
       configure: 'Widget konfigurieren'
       widgets:
         missing_permission: "Sie verfügen nicht über die erforderlichen Berechtigungen, um dieses Steuerelement anzuzeigen."
+        not_available: "Dieses Widget ist derzeit nicht verfügbar."
         custom_text:
           title: 'Benutzerdefinierter Text'
         documents:
@@ -17,7 +19,6 @@ de:
           title: 'Neuigkeiten'
         project_description:
           title: 'Beschreibung'
-          no_results: "Noch keine Beschreibung festgelegt. Sie kann in den 'Projekteinstellungen' erstellt werden."
         project_status:
           title: 'Status'
           not_started: 'Nicht gestartet'
@@ -50,7 +51,7 @@ de:
           title: 'Arbeitspaket-Tabelle'
         work_packages_graph:
           title: 'Arbeitspaket-Graph'
-          summary: "%{chartType} Tabelle mit Arbeitspaketen, die %{description} sind."
+          summary: "%{chartType} Diagramm zeigt Arbeitspakete. Zusammenfassung: %{description}."
         work_packages_calendar:
           title: 'Kalender'
         work_packages_overview:

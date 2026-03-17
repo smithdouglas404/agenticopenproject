@@ -2,10 +2,12 @@ ro:
   js:
     grid:
       add_widget: 'Adaugă widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Eliminați widget-ul'
       configure: 'Configurați widget-ul'
       widgets:
         missing_permission: "Nu ai drepturile necesare pentru a vizualiza acest widget."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Text customizat'
         documents:
@@ -17,7 +19,6 @@ ro:
           title: 'Noutăţi'
         project_description:
           title: 'Descriere'
-          no_results: "Nu a fost scrisă încă nicio descriere. Aceasta poate fi adăugată în \"Setări proiect\"."
         project_status:
           title: 'Stare'
           not_started: 'Neînceput'

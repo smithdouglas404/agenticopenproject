@@ -31,16 +31,24 @@
 module OpenProject
   module InplaceEdit
     class FieldRegistry
-      @registry = {}
+      def initialize
+        @registry = {}
+      end
+
+      def register(attribute_name, field_component)
+        @registry[attribute_name.to_s] = field_component
+      end
+
+      def fetch(attribute_name)
+        @registry.fetch(attribute_name.to_s) { Common::InplaceEditFields::TextInputComponent }
+      end
+
+      @default = new
 
       class << self
-        def register(attribute_name, field_component)
-          @registry[attribute_name.to_s] = field_component
-        end
+        attr_reader :default
 
-        def fetch(attribute_name)
-          @registry.fetch(attribute_name.to_s) { Common::InplaceEditFields::TextInputComponent }
-        end
+        delegate :register, :fetch, to: :@default
       end
     end
   end

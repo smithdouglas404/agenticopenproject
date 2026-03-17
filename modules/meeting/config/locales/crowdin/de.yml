@@ -22,13 +22,13 @@
 #English strings go here for Rails i18n
 de:
   plugin_openproject_meeting:
-    name: "OpenProject Besprechung"
+    name: "OpenProject Besprechungen"
     description: >-
-      Besprechungen für OpenProject
+      Dieses Modul fügt Funktionen zur Unterstützung von Besprechungen zu OpenProject hinzu. Sie können Besprechungen planen und dabei Teilnehmer aus demselben Projekt auswählen, die an der Besprechung teilnehmen sollen. Es kann eine Tagesordnung erstellt und an die Eingeladenen gesendet werden. Nach der Besprechung können die Teilnehmer ausgewählt und Protokolle auf der Grundlage der Tagesordnung erstellt werden. Schließlich kann das Protokoll an alle Teilnehmer und Eingeladenen gesendet werden.
   activerecord:
     attributes:
       meeting:
-        type: "Besprechungstyp"
+        type: "Art der Besprechung"
         location: "Ort/Raum"
         duration: "Dauer"
         notes: "Anmerkungen"
@@ -42,6 +42,7 @@ de:
         start_date: "Datum"
         start_time: "Startzeit"
         start_time_hour: "Startzeit"
+        sharing: "Teilen"
       meeting_agenda_item:
         title: "Titel"
         author: "Autor"
@@ -59,6 +60,8 @@ de:
         end_after: "Ende der Terminserie"
         end_date: "Enddatum"
         iterations: "Ereignisse"
+      recurring_meeting_interim_response:
+        start_time: "Startzeit"
       meeting_participant:
         invited: "Eingeladen"
         attended: "Teilgenommen"
@@ -68,7 +71,10 @@ de:
         meeting_participant:
           user_invalid: "ist kein gültiger Teilnehmer."
         meeting_agenda_item:
+          section_not_belong_to_meeting: "Die Sektion gehört nicht zur gleichen Besprechung."
           user_invalid: "ist kein gültiger Teilnehmer."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "ist keine gültige Uhrzeit für dieses wiederkehrende Treffen"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Es gibt eine offene Besprechung in der Terminserie, die nicht durch den neuen Zeitplan abgedeckt ist. Passen Sie den Zeitplan an, um alle bestehenden Meetings einzuschließen."
@@ -113,6 +119,13 @@ de:
   error_notification_with_errors: "Benachrichtigungversenden fehlgeschlagen. Folgende Empfänger konnten nicht benachrichtigt werden: %{recipients}"
   label_meeting: "Besprechung"
   label_meeting_plural: "Besprechungen"
+  label_meeting_templates: "Vorlagen"
+  label_meeting_template: "Vorlage"
+  label_meeting_template_new: "Neue Vorlage"
+  label_meeting_template_create: "Vorlage erstellen"
+  label_meeting_template_delete: "Vorlage löschen"
+  label_meeting_template_edit: "Vorlage bearbeiten"
+  label_meeting_create_from_template: "Besprechung aus Vorlage erstellen"
   label_meeting_new: "Neue Besprechung"
   label_meeting_new_dynamic: "Neue einmalige Besprechung"
   label_meeting_new_recurring: "Neue Terminserie"
@@ -130,7 +143,7 @@ de:
   label_meeting_date_and_time: "Datum und Zeit"
   label_meeting_diff: "Differenz"
   label_meeting_send_updates: "E-Mail-Kalender-Aktualisierungen senden"
-  label_meeting_send_updates_caption: "Versenden Sie E-Mail-Einladungen an alle Teilnehmer dieser Besprechung"
+  label_meeting_send_updates_caption: "Versenden Sie E-Mail-Einladungen an alle Teilnehmenden dieser Besprechung"
   label_recurring_meeting: "Wiederkehrende Besprechung"
   label_recurring_meeting_part_of: "Teil einer Terminserie"
   label_recurring_meeting_new: "Neue Terminserie"
@@ -182,6 +195,8 @@ de:
   label_time_zone: "Zeitzone"
   label_start_date: "Beginn"
   label_subscribe_icalendar: "Im Kalender abonnieren"
+  caption_meeting_template_select: "Wählen Sie eine Vorlage, um deren Tagesordnungspunkte automatisch zu kopieren"
+  caption_template_project_select: "Bitte wählen Sie das Projekt aus, in dem Sie diese Besprechungsvorlage erstellen möchten"
   meeting:
     participants:
       label:
@@ -201,7 +216,8 @@ de:
         heading: "Keine Teilnehmer"
         description: "Es gibt noch keine Teilnehmer."
     attachments:
-      template: "Die angehängten Dateien werden in alle künftigen Besprechungen dieser Terminserie einbezogen."
+      onetime_template: "Diese angehängten Dateien werden bei allen zukünftigen Besprechungen mit dieser Vorlage berücksichtigt."
+      series_template: "Die angehängten Dateien werden in alle künftigen Besprechungen dieser Terminserie einbezogen."
       text: "Angehängte Dateien sind für alle Teilnehmer der Besprechung verfügbar. Sie können diese auch per Drag-and-drop in die Notizen der Tagesordnungspunkte ziehen."
     copy:
       title: "Besprechung kopieren: %{title}"
@@ -260,7 +276,7 @@ de:
         new_date_time: "Neue(s) Datum/Zeit"
         old_location: "Alter Ort"
         new_location: "Neuer Ort"
-    label_mail_all_participants: "E-Mail an alle Teilnehmer senden"
+    label_mail_all_participants: "E-Mail Einladung an alle Teilnehmenden versenden"
     types:
       one_time: "Einmalig"
       recurring: "Terminserie"
@@ -274,6 +290,11 @@ de:
         heading: "Diese Besprechung löschen?"
         confirmation_message_html: >
           Diese Aktion kann nicht rückgängig gemacht werden. Bitte prüfen Sie die Angaben, bevor Sie fortfahren.
+        template:
+          title: "Vorlage löschen"
+          heading: "Vorlage löschen?"
+          confirmation_message_html: >
+            Diese Aktion kann nicht rückgängig gemacht werden. Bitte gehen Sie mit Vorsicht vor. Bestehende Meetings, die mit dieser Vorlage erstellt wurden, sind davon nicht betroffen.
       occurrence:
         title: "Wiederkehrende Besprechung absagen"
         heading: "Dieses Ereignis absagen?"
@@ -473,6 +494,7 @@ de:
     end_series_dialog:
       title: "Terminserie beenden"
   notice_successful_notification: "E-Mail-Kalendereinladung an alle Teilnehmer gesendet"
+  notice_meeting_template_created: "Vorlage wurde erstellt"
   notice_timezone_missing: Keine Zeitzone eingestellt und daher %{zone} angenommen. Um Ihre Zeitzone einzustellen, klicken Sie bitte hier.
   notice_meeting_updated: "Diese Seite wurde von einem anderen Benutzer verändert. Laden Sie neu, um die Änderungen zu sehen."
   permission_create_meetings: "Besprechungen erstellen"
@@ -487,6 +509,8 @@ de:
   text_duration_in_hours: "Dauer in Stunden"
   text_in_hours: "in Stunden"
   text_meeting_agenda_for_meeting: 'die Agenda für die Besprechung "%{meeting}"'
+  text_meeting_template_blank_slate_heading: "Es gibt keine Vorlagen zum Anzeigen"
+  text_meeting_template_blank_slate: "Sie können eine neue Vorlage für einmalige Besprechungen erstellen"
   text_meeting_series_end_early_heading: "Zukünftige Ereignisse löschen?"
   text_meeting_series_end_early: "Durch das Beenden der Terminserie werden alle zukünftigen offenen oder geplanten Besprechungsereignisse gelöscht"
   text_meeting_closing_are_you_sure: "Sind Sie sicher, dass Sie die Agenda schließen wollen?"
@@ -592,10 +616,18 @@ de:
   text_meeting_in_progress_dropdown_description: "Ergebnisse der Besprechung festhalten, wie z. B. Informationsbedarf oder Entscheidungen, die während der Besprechung getroffen werden."
   text_meeting_closed_dropdown_description: "Diese Besprechung ist geschlossen. Sie können keine Tagesordnungspunkte mehr hinzufügen/entfernen."
   text_meeting_draft_banner: "Dieses Meeting ist derzeit ein Entwurf. Diese Besprechung sendet keine Kalenderaktualisierungen oder Einladungen, selbst wenn Sie Besprechungsdetails ändern oder Teilnehmer hinzufügen/entfernen."
+  text_onetime_meeting_template_banner: "Sie bearbeiten gerade eine Meeting-Vorlage. Sie können diese Vorlage verwenden, um einmalige Besprechungen mit einer vordefinierten Tagesordnung zu erstellen. Änderungen wirken sich nicht auf bereits erstellte Meetings aus."
+  text_onetime_meeting_template_empty_heading: "Die Vorlage für Besprechungen ist leer"
+  text_onetime_meeting_template_empty_description: "Fügen Sie hier Tagesordnungspunkte, Abschnitte und Anhänge hinzu. Sie werden in jede mit dieser Vorlage erstellte Besprechung aufgenommen."
   text_exit_draft_mode_dialog_title: "Diese Besprechung öffnen und Einladungen verschicken?"
   text_exit_draft_mode_dialog_subtitle: "Sie können nicht mehr zum Entwurfsmodus zurückkehren, sobald Sie die Besprechung eröffnen."
   text_exit_draft_mode_dialog_template_title: "Das erste Vorkommen dieser Terminserie öffnen?"
   text_exit_draft_mode_dialog_template_subtitle: "Sie können danach nicht mehr in den Entwurfsmodus zurückkehren."
+  label_meeting_template_sharing: "Teilen"
+  label_meeting_template_sharing_none: "Nur dieses Projekt"
+  label_meeting_template_sharing_descendants: "Unterprojekte"
+  label_meeting_template_sharing_system: "Alle Projekte"
+  text_meeting_template_sharing_description: "Diese Vorlage kann mit Unterprojekten oder anderen Projekten geteilt werden. Es werden nur die Tagesordnungspunkte und Anhänge kopiert."
   text_meeting_not_editable_anymore: "Diese Besprechung ist nicht mehr bearbeitbar."
   text_meeting_not_present_anymore: "Dieses Meeting wurde gelöscht. Bitte wählen Sie eine andere Besprechung."
   label_add_work_package_to_meeting_dialog_title: "Besprechung auswählen"

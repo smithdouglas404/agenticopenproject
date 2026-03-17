@@ -2,10 +2,12 @@ zh-CN:
   js:
     grid:
       add_widget: '添加微件'
+      widget_menu_label: '显示 %{widgetName} 微件的菜单选项'
       remove: '移除微件'
       configure: '配置微件'
       widgets:
         missing_permission: "您没有查看此微件所需的权限。"
+        not_available: "此微件目前不可用。"
         custom_text:
           title: '自定义文本'
         documents:
@@ -17,7 +19,6 @@ zh-CN:
           title: '新闻'
         project_description:
           title: '描述'
-          no_results: "尚未写入任何描述。可以在“项目设置”中提供一个描述。"
         project_status:
           title: '状态'
           not_started: '未开始'

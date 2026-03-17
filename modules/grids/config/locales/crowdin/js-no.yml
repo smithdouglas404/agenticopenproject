@@ -2,10 +2,12 @@
   js:
     grid:
       add_widget: 'Legg til widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Fjern widget'
       configure: 'Konfigurer widget'
       widgets:
         missing_permission: "Du har ikke nødvendige tillatelser til å se denne widgeten."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Tilpasset tekst'
         documents:
@@ -17,7 +19,6 @@
           title: 'Nyheter'
         project_description:
           title: 'Description'
-          no_results: "Ingen beskrivelse har blitt skrevet ennå. Den kan oppgis i \"Prosjektinnstillinger\"."
         project_status:
           title: 'Status'
           not_started: 'Ikke påbegynt'

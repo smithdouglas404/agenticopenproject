@@ -12,6 +12,7 @@ on:
 
 jobs:
   compute-inputs:
+    if: github.repository == 'opf/openproject'
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.compute.outputs.tag }}
@@ -45,7 +46,7 @@ jobs:
           echo "tag=$TAG_REF" | tee -a "$GITHUB_OUTPUT"
 
   build:
-    needs: compute-inputs
+    needs: [compute-inputs]
     uses: ./.github/workflows/docker.yml
     with:
       branch: ${{ needs.compute-inputs.outputs.branch }}

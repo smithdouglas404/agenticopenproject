@@ -23,7 +23,7 @@ fr:
   js:
     work_packages:
       properties:
-        storyPoints: "Points d'histoire"
+        storyPoints: "Story points"
     burndown:
-      day: "Day"
+      day: "Jour"
       points: "Points"

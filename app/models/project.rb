@@ -77,7 +77,7 @@ class Project < ApplicationRecord
   has_many :principals, through: :member_principals, source: :principal
   has_many :calculated_value_errors, dependent: :delete_all, as: :customized
 
-  has_many :enabled_modules, dependent: :delete_all
+  has_many :enabled_modules, dependent: :delete_all, after_remove: :module_disabled
   has_and_belongs_to_many :types, -> {
     order("#{::Type.table_name}.position")
   }
@@ -130,7 +130,7 @@ class Project < ApplicationRecord
 
   acts_as_favoritable
 
-  acts_as_customizable validate_on: :saving_custom_fields
+  acts_as_customizable validate_on: :saving_custom_fields, comments: true, admin_only_allowed: true
   # extended in Projects::CustomFields in order to support sections
   # and project-level activation of custom fields
 
@@ -175,6 +175,7 @@ class Project < ApplicationRecord
   register_journal_formatted_fields "public", formatter_key: :visibility
   register_journal_formatted_fields "parent_id", formatter_key: :subproject_named_association
   register_journal_formatted_fields /\Acustom_fields_\d+\z/, formatter_key: :custom_field
+  register_journal_formatted_fields /\Acustom_comment_\d+\z/, formatter_key: :custom_comment
   register_journal_formatted_fields /\Aproject_phase_\d+_active\z/, formatter_key: :project_phase_active
   register_journal_formatted_fields /\Aproject_phase_\d+_date_range\z/, formatter_key: :project_phase_dates
 
@@ -220,7 +221,8 @@ class Project < ApplicationRecord
          :assignable_parents,
          :available_custom_fields,
          :available_templates,
-         :visible
+         :visible,
+         :with_settings
 
   scope :has_module, ->(mod) {
     where(["#{Project.table_name}.id IN (SELECT em.project_id FROM #{EnabledModule.table_name} em WHERE em.name=?)", mod.to_s])
@@ -347,5 +349,11 @@ class Project < ApplicationRecord
     @allowed_actions ||= allowed_permissions.flat_map do |permission|
       OpenProject::AccessControl.allowed_actions(permission)
     end
+  end
+
+  def module_disabled(disabled_module)
+    OpenProject::Notifications.send(
+      OpenProject::Events::MODULE_DISABLED, disabled_module:
+    )
   end
 end

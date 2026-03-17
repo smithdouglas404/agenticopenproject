@@ -34,14 +34,16 @@ module Users
 
     attribute :login,
               writable: ->(*) {
-                can_create_or_manage_users? && model.id != user.id
+                can_create_or_manage_users? && !editing_self?
               }
-    attribute :firstname
-    attribute :lastname
+    attribute :firstname, writable: ->(*) { can_create_or_manage_users? || can_change_self? }
+    attribute :lastname, writable: ->(*) { can_create_or_manage_users? || can_change_self? }
     attribute :mail,
-              writable: ->(*) { model.new_record? || model.id == user.id || user.admin? }
+              # We restrict email changes to admins (not :manage_user role), to prevent privilege escalation
+              # Escalation path: change email of user with desired permissions to own email -> reset password -> login as user
+              writable: ->(*) { model.new_record? || user.admin? || can_change_self? }
     attribute :admin,
-              writable: ->(*) { user.admin? && model.id != user.id }
+              writable: ->(*) { user.admin? && !editing_self? }
     attribute :language
 
     attribute :ldap_auth_source_id,
@@ -110,6 +112,21 @@ module Users
 
     def can_create_or_manage_users?
       user.allowed_globally?(:manage_user) || user.allowed_globally?(:create_user)
+    end
+
+    def editing_self?
+      model.id == user.id
+    end
+
+    def can_change_self?
+      # Editing of own attributes is disallowed when external auth source defines attributes
+      return false if authenticates_externally?
+
+      editing_self?
+    end
+
+    def authenticates_externally?
+      model.uses_external_authentication? || model.ldap_auth_source_id
     end
   end
 end

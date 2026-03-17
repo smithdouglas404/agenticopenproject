@@ -41,12 +41,13 @@ module Meetings
       end
     end
 
-    def set_default_attributes(_params)
+    def set_default_attributes(_params) # rubocop:disable Metrics/AbcSize
       model.change_by_system do
         model.author = user
         model.duration ||= 1
         model.state = "draft" if !model.recurring? || model.template?
         model.notify = false
+        model.sharing = "none" if model.onetime_template?
       end
     end
 

@@ -370,6 +370,7 @@ zh-CN:
         failure: 有些检查失败，系统无法按预期运行。
         success: 所有连接和系统都按预期运行。
         warning: 某些检查返回了警告。这可能导致异常行为。
+      synced: 'Last sync: %{datetime}'
       title: 健康状况报告
     health_email_notifications:
       description_disabled: 当有重要更新时，管理员将不会通过电子邮件收到更新提醒。

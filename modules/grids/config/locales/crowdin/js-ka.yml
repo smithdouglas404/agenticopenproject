@@ -2,10 +2,12 @@ ka:
   js:
     grid:
       add_widget: 'ვიჯეტის დამატება'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'ვიჯეტის წაშლა'
       configure: 'Configure widget'
       widgets:
         missing_permission: "You don't have the necessary permissions to view this widget."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'მომხმარებლის ტექსტი'
         documents:
@@ -17,7 +19,6 @@ ka:
           title: 'სიახლეები'
         project_description:
           title: 'Description'
-          no_results: "No description has been written yet. One can be provided in the 'Project settings'."
         project_status:
           title: 'Status'
           not_started: 'დაწყებული არაა'

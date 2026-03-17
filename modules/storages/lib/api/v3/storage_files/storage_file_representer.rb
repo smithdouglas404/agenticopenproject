@@ -57,7 +57,7 @@ module API::V3::StorageFiles
     property :permissions
 
     def _type
-      Storages::StorageFile.name.split("::").last
+      Storages::Adapters::Results::StorageFile.name.split("::").last
     end
   end
 end

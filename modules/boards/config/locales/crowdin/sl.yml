@@ -20,7 +20,7 @@ sl:
       action: "Tabla opravil (%{attribute})"
     board_type_attributes:
       assignee: Prevzemnik
-      status: Stanje
+      status: Kanban
       version: Različica
       subproject: Podprojekt
       subtasks: Starš-otrok

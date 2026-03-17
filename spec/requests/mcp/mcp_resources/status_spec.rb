@@ -38,7 +38,8 @@ RSpec.describe McpResources::Status, with_flag: { mcp_server: true } do
   end
 
   let(:access_token) { create(:oauth_access_token, scopes: "mcp", resource_owner: user) }
-  let(:user) { create(:admin) } # using an admin, to ensure visibility of everything
+  let(:user) { create(:user) }
+  let(:permissions) { %i[view_work_packages] }
   let(:request_body) do
     {
       jsonrpc: "2.0",
@@ -57,6 +58,7 @@ RSpec.describe McpResources::Status, with_flag: { mcp_server: true } do
   let(:resource_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
 
   before do
+    create(:member, user:, roles: [create(:project_role, permissions: permissions)])
     server_config.save!
     resource_config.save!
   end
@@ -79,6 +81,12 @@ RSpec.describe McpResources::Status, with_flag: { mcp_server: true } do
 
     context "when requesting a non-existing status" do
       let(:resource_uri) { "http://test.host/api/v3/statuses/#{status.id + 1}" }
+
+      it_behaves_like "MCP empty resource response"
+    end
+
+    context "when requesting a status not visible to the user" do
+      let(:permissions) { [] }
 
       it_behaves_like "MCP empty resource response"
     end

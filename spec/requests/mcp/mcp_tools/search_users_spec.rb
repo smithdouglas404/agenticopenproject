@@ -72,7 +72,7 @@ RSpec.describe McpTools::SearchUsers, with_flag: { mcp_server: true } do
   end
 
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
-    it_behaves_like "MCP response with structured content"
+    it_behaves_like "MCP text tool"
 
     it "finds all users without filters" do
       subject
@@ -170,12 +170,6 @@ RSpec.describe McpTools::SearchUsers, with_flag: { mcp_server: true } do
           expect(parsed_results.dig("structuredContent", "items").size).to eq(overspilling_users)
         end
       end
-    end
-
-    context "when the tool is disabled via configuration" do
-      let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
-
-      it_behaves_like "MCP error response"
     end
   end
 

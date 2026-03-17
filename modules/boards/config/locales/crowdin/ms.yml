@@ -20,7 +20,7 @@ ms:
       action: "Board tindakan (%{attribute})"
     board_type_attributes:
       assignee: Penerima tugasan
-      status: Status
+      status: Kanban
       version: Versi
       subproject: Subprojek
       subtasks: Induk-anak

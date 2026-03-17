@@ -38,7 +38,7 @@ Synchronizing a single LDAP group allows you to connect an existing group in Ope
 LDAP group synchronization extends the memberships defined by  administrators in an existing OpenProject group. Important things to  note are:
 
 - You need to have created at least one manual group in the OpenProject administration before you continue.
-- Group synchronization for this group is enabled by an administrator cerating a *synchronized LDAP group* that ties the OpenProject group to an LDAP entry.
+- Group synchronization for this group is enabled by an administrator creating a *synchronized LDAP group* that ties the OpenProject group to an LDAP entry.
 - Only synchronized memberships will be removed from the OpenProject group. If you want to add a user outside your LDAP authentication to an OpenProject group, you can do so without the membership being affected from the group synchronization.
 
 ### Single synchronized groups

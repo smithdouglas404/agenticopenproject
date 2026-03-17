@@ -24,7 +24,7 @@ This is for a single server running OpenProject for up to 200 total users. Depen
 
 ## Database
 
-OpenProject officially supports [PostgreSQL version 16](https://www.postgresql.org/) or above since [OpenProject 16.0.0](https://www.openproject.org/docs/release-notes/16-0-0/).
+OpenProject officially supports [PostgreSQL version 16](https://www.postgresql.org/) or above since [OpenProject 16.0.0](../../release-notes/16/16-0-0/).
 
 PostgreSQL versions 13 - 15 are not officially supported, but MAY continue to work, but could result in incompatibilities and degraded performance in the future. If you are using one of these versions currently, we have a [migration guide on how to upgrade to PostgreSQL 17](../misc/migration-to-postgresql17/) and strongly recommend you to upgrade your DBMS, as there are significant performance improvements.
 
@@ -192,7 +192,7 @@ The [package-based installation](../installation/packaged) requires one of the f
 Both the package and docker based installations will install and setup the the [Ruby runtime](https://www.ruby-lang.org/en/), as well as the [Puma application server](https://puma.io/) that are required by OpenProject to run.
 
 For the [packaged installation](../installation/packaged/) and the [all-in-one docker container](../installation/docker#all-in-one-container) container, an [Apache](https://httpd.apache.org/) web server and a [PostgreSQL 17](https://www.postgresql.org/) database are installed.
-The all-in-one container will only additionally install [hocuspocus](https://github.com/opf/op-blocknote-hocuspocus), which is required for the [real-time collaboration](../../user-guide/documents/#collaborative-editing) feature in OpenProject.
+The all-in-one container will only additionally install [hocuspocus](https://github.com/opf/openproject/tree/dev/extensions/op-blocknote-hocuspocus), which is required for the [real-time collaboration](../../user-guide/documents/#collaborative-editing) feature in OpenProject.
 ## Client
 
 OpenProject supports the latest versions of the major browsers.

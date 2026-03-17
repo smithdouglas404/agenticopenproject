@@ -31,6 +31,95 @@ require "spec_helper"
 RSpec.describe Version do
   it { is_expected.to have_many :version_settings }
 
+  describe "#used_as_backlog?" do
+    let(:project) { create(:project) }
+    let(:version) { create(:version, project:) }
+
+    context "when backlogs is not enabled" do
+      before do
+        project.enabled_module_names = project.enabled_module_names - ["backlogs"]
+      end
+
+      it "returns false" do
+        expect(version.used_as_backlog?(project)).to be false
+      end
+    end
+
+    context "when backlogs is enabled" do
+      before do
+        project.enabled_module_names = project.enabled_module_names + ["backlogs"]
+      end
+
+      context "when no version_settings exist" do
+        it "returns false" do
+          expect(version.used_as_backlog?(project)).to be false
+        end
+      end
+
+      context "when version_settings exist with display_right" do
+        before do
+          create(:version_setting, version:, project:, display: VersionSetting::DISPLAY_RIGHT)
+        end
+
+        it "returns true" do
+          expect(version.used_as_backlog?(project)).to be true
+        end
+      end
+
+      context "when version_settings exist with display_left" do
+        before do
+          create(:version_setting, version:, project:, display: VersionSetting::DISPLAY_LEFT)
+        end
+
+        it "returns false" do
+          expect(version.used_as_backlog?(project)).to be false
+        end
+      end
+
+      context "when version_settings exist with display_none" do
+        before do
+          create(:version_setting, version:, project:, display: VersionSetting::DISPLAY_NONE)
+        end
+
+        it "returns false" do
+          expect(version.used_as_backlog?(project)).to be false
+        end
+      end
+
+      context "when multiple version_settings exist for different projects" do
+        let(:other_project) { create(:project) }
+
+        before do
+          project.enabled_module_names = project.enabled_module_names + ["backlogs"]
+          other_project.enabled_module_names = other_project.enabled_module_names + ["backlogs"]
+          create(:version_setting, version:, project:, display: VersionSetting::DISPLAY_RIGHT)
+          create(:version_setting, version:, project: other_project, display: VersionSetting::DISPLAY_LEFT)
+        end
+
+        it "returns true for the project with display_right" do
+          expect(version.used_as_backlog?(project)).to be true
+        end
+
+        it "returns false for the project with display_left" do
+          expect(version.used_as_backlog?(other_project)).to be false
+        end
+      end
+
+      context "when project parameter is not provided" do
+        context "and version has a project" do
+          before do
+            project.enabled_module_names = project.enabled_module_names + ["backlogs"]
+            create(:version_setting, version:, project:, display: VersionSetting::DISPLAY_RIGHT)
+          end
+
+          it "uses the version's project" do
+            expect(version.used_as_backlog?).to be true
+          end
+        end
+      end
+    end
+  end
+
   describe "rebuild positions" do
     def build_work_package(options = {})
       build(:work_package, options.reverse_merge(version_id: version.id,

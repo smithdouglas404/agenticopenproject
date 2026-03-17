@@ -2,10 +2,12 @@ uk:
   js:
     grid:
       add_widget: 'Додати віджет'
+      widget_menu_label: 'Показати пункти меню для віджета «%{widgetName}»'
       remove: 'Видалити віджет'
       configure: 'Налаштувати віджет'
       widgets:
         missing_permission: "У вас немає дозволів для перегляду цього віджета."
+        not_available: "Цей віджет зараз недоступний."
         custom_text:
           title: 'Текстовий блок'
         documents:
@@ -17,7 +19,6 @@ uk:
           title: 'Новини'
         project_description:
           title: 'Опис'
-          no_results: "Опис ще не створено. Можна вказати в налаштуваннях проекту."
         project_status:
           title: 'Статус'
           not_started: 'Не почато'

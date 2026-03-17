@@ -25,5 +25,5 @@ zh-CN:
       properties:
         storyPoints: "故事点"
     burndown:
-      day: "Day"
-      points: "Points"
+      day: "天"
+      points: "点"

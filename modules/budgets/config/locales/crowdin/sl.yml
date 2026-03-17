@@ -39,6 +39,12 @@ sl:
         base_amount: "Base amount"
       work_package:
         budget_subject: "Naslov proračuna"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "is not a member of the budget's project"
     models:
       budget: "Proračun"
       material_budget_item: "Enota"
@@ -56,6 +62,40 @@ sl:
   caption_labor_costs: "Dejanski stroški dela"
   caption_material_costs: "Dejanski stroški enote"
   budgets_title: "Proračuni"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Budget totals"
+        remaining_budget: "Remaining budget"
+        spent_budget: "Spent budget"
+        total_actual_costs: "Total actual costs"
+        total_planned_budget: "Total planned budget"
+      budget_by_cost_type:
+        title: "Budget by cost type"
+        blankslate:
+          heading: "Start project controlling"
+          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
+        blankslate_zero:
+          heading: "Budget details missing"
+          description: "Add details about your planned budget to see data here"
+        count_caption:
+          zero: "No budget data."
+          one: "Data aggregated from %{count} budget"
+          other: "Data aggregated from %{count} budgets"
+        count_caption_with_subitems:
+          project:
+            zero: "No budget data."
+            one: "Data aggregated from %{count} budget included in this project and its subitems."
+            other: "Data aggregated from %{count} budgets included in this project and its subitems."
+          program:
+            zero: "No budget data."
+            one: "Data aggregated from %{count} budget included in this program and its subitems."
+            other: "Data aggregated from %{count} budgets included in this program and its subitems."
+          portfolio:
+            zero: "No budget data."
+            one: "Data aggregated from %{count} budget included in this portfolio and its subitems."
+            other: "Data aggregated from %{count} budgets included in this portfolio and its subitems."
+        view_details: "View budget details"
   events:
     budget: "Proračun urejen"
   help_click_to_edit: "Kliknite tukaj, za urejanje"

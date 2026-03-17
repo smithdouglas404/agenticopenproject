@@ -83,8 +83,9 @@ pt-BR:
         confirmation: "Tem certeza de que deseja excluir este token de suporte da edição Enterprise?"
       create_dialog:
         title: "Adicionar token Enterprise"
-        type_token_text: "Digitar texto do token de suporte"
+        type_token_text: "Seu texto de token Enterprise"
         token_placeholder: "Colar seu token de suporte da edição Enterprise"
+        token_caption: "Para saber mais sobre como ativar a edição Enterprise, consulte nossa [documentação](docs_url)."
       add_token: "Carregar um token de suporte da edição Enterprise "
       replace_token: "Substitua seu token atual de suporte"
       order: "Solicitar edição Enterprise local"
@@ -109,11 +110,196 @@ pt-BR:
       explanation:
         text: "As ações individuais de um usuário (por exemplo, atualizar um pacote de trabalho duas vezes) são agregadas em uma única ação se o intervalo de tempo for menor que o intervalo especificado. Eles serão exibidos como uma única ação dentro do aplicativo. Isso também atrasará as notificações no mesmo intervalo de tempo, reduzindo o número de e-mails enviados e também afetará o atraso de %{webhook_link}."
         link: "webhook"
+    import:
+      title: "Importar"
+    jira:
+      title: "Importação do Jira"
+      description: "Use esta ferramenta para importar dados da sua instância do Jira. Você pode configurar vários hosts do Jira e escolher o que importar em cada execução de importação."
+      errors:
+        cannot_delete_with_imports: "Não é possível excluir o host do Jira enquanto houver importações existentes"
+      blank:
+        title: "Nenhum host do Jira configurado até o momento"
+        description: "Configure um host do Jira para começar a importar itens do Jira para esta instância do OpenProject."
+      configuration:
+        title: "Configuração do Jira"
+        new: "Nova configuração"
+      banner:
+        title: "Importação limitada"
+        description: "Esta ferramenta de importação está atualmente em versão beta e só consegue importar dados básicos: projetos, tarefas (nome, título, descrição, anexos), usuários (nome, e-mail, participação em projetos), status e tipos. Não é possível importar fluxos de trabalho, campos personalizados, relações entre tarefas ou permissões. No momento, só damos suporte às versões 10.x e 11.x do Jira Server/Data Center. Instâncias Cloud não possuem suporte."
+      form:
+        fields:
+          name: "Nome"
+          url: "URL do Jira Server/Data Center"
+          personal_access_token: "Token de acesso pessoal"
+        button_add: "Adicionar configuração"
+        button_save: "Salvar configuração"
+        button_test: "Testar configuração"
+        button_delete_token: "Excluir token"
+        delete_token_confirm: "Tem certeza de que deseja excluir o token? Isso desativará a conexão com o Jira."
+        label_testing: "Testando configuração..."
+      token_deleted: "Token excluído com sucesso."
+      test:
+        success: "Conectado com sucesso a %{server} (versão %{version})"
+        failed: "Falha na conexão: não foi possível recuperar as informações do servidor"
+        error: "Ocorreu um erro inesperado ao testar a conexão"
+        connection_error: "Erro de conexão: %{message}"
+        parse_error: "Falha ao interpretar a resposta do servidor. O servidor pode não ser uma instância válida do Jira."
+        api_error: "A API do Jira retornou o status de erro %{status}. Verifique o URL da sua instância do Jira e o token da API."
+        token_error: "Token da API inválido. Verifique suas credenciais na configuração."
+        missing_credentials: "Forneça tanto o URL quanto o Token de Acesso Pessoal para testar a conexão"
+        invalid_url: "Forneça um URL válido"
+      client:
+        connection_error: "Falha ao conectar ao servidor Jira: %{message}"
+        connection_timeout: "O tempo de conexão com o servidor Jira esgotou: %{message}"
+        parse_error: "Falha ao analisar a resposta da API do Jira: %{message}"
+        api_error: "A API do Jira retornou o status de erro %{status}"
+      columns:
+        projects: "Projetos"
+        last_change: "Última alteração"
+        added: "Adicionado"
+        label_ago: "Há %{amount}"
+      run:
+        title: "Execução de importação"
+        history: "Histórico"
+        remove_error: "Uma importação do Jira não pode ser removida enquanto estiver em execução"
+        import_blocked_error: "Outra execução de importação do Jira está em andamento ou aguardando revisão. Conclua ou reverta-a antes de iniciar uma nova importação."
+        blank:
+          title: "Ainda não há execuções de importação configuradas"
+          description: "Crie uma execução de importação para começar a importar informações desta instância do Jira"
+        index:
+          description: "Você pode importar diferentes conjuntos de dados em cada execução de importação. É possível desfazer uma execução de importação imediatamente após o modo de revisão, mas não após a finalização."
+          button_import_run: "Execução de importação"
+          button_edit_configuration: "Editar configuração"
+        status:
+          initial: "Iniciar"
+          instance_meta_fetching: "Buscando metadados"
+          instance_meta_error: "Erro ao buscar metadados"
+          instance_meta_done: "Metadados obtidos"
+          import_scope: "Select scope"
+          configuring: "Selecione o escopo"
+          projects_meta_fetching: "Buscando dados do projeto"
+          projects_meta_error: "Erro ao buscar dados do projeto"
+          projects_meta_done: "Dados coletados"
+          importing: "Em andamento"
+          import_error: "Erro durante importação"
+          imported: "Modo de revisão"
+          reverting: "Revertendo"
+          revert_error: "Erro durante a reversão"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
+          reverted: "Revertido"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
+        wizard:
+          button_retry: "Tentar novamente"
+          parts:
+            projects:
+              one: "1 projeto"
+              other: "%{count} projetos"
+            issues:
+              one: "1 tarefa"
+              other: "%{count} tarefas"
+            work_packages:
+              one: "1 pacote de trabalho"
+              other: "%{count} pacotes de trabalho"
+            types:
+              one: "1 tipo"
+              other: "%{count} tipos"
+            statuses:
+              one: "1 status"
+              other: "%{count} status"
+            users:
+              one: "1 usuário"
+              other: "%{count} usuários"
+          groups:
+            fetch:
+              title: "Obter dados básicos"
+            groups_and_users:
+              title: "Grupos e usuários"
+            configuration:
+              title: "Configurar importação"
+            confirming:
+              title: "Confirmar e importar"
+            review:
+              title: "Revisar importação"
+          sections:
+            fetch_data:
+              title: "Buscar metadados da instância"
+              caption_done: "Concluído"
+              description: "Verifique quais dados estão disponíveis para importação na instância do Jira host."
+              button_fetch: "Verificar dados disponíveis"
+              label_progress: "Buscando dados do Jira..."
+            groups_and_users:
+              title: "Grupos e usuários"
+            import_scope:
+              title: "Escopo da importação"
+              caption: "Escolha o que deseja importar para o OpenProject"
+              caption_done: "Concluído"
+              label_info: "Observe que esta ferramenta de importação está em versão beta e não consegue importar todos os tipos de dados. A seguir, um resumo do que a instância Jira host oferece para importação e do que esta ferramenta consegue importar no momento."
+              description: "Selecione os dados que deseja importar a partir das informações disponíveis obtidas da instância Jira host."
+              label_available_data: "Dados disponíveis"
+              label_not_available_data: "Não disponível para importação"
+              button_select_projects: "Selecione os projetos para importar"
+              button_continue: "Continuar"
+              label_import: "Selecione os projetos que você deseja importar."
+              button_select: "Selecionar projetos"
+              label_selected_data: "Dados selecionados para importação"
+              label_progress: "Buscando dados do Jira..."
+              elements:
+                relations: "Relações entre tarefas"
+                workflows: "Fluxos de trabalho no nível do projeto"
+                users: "Usuários"
+                sprints: "Sprints"
+                schemes: "Esquemas"
+                permissions: "Permissões de usuários, grupos e projetos"
+            confirm_import:
+              title: "Importar dados"
+              caption: "Revise suas configurações de importação e inicie a importação"
+              caption_done: "Concluído"
+              label_available_data: "Dados disponíveis para importação"
+              button_start: "Iniciar importação"
+              description: "Você está prestes a iniciar uma execução de importação com as seguintes configurações."
+              label_progress: "Importação em andamento..."
+              label_import_data: "Importando no momento"
+            import_result:
+              title: "Resultados da execução de importação"
+              caption: "Revisar execução de importação ou reverter importação"
+              info: "Execução de importação concluída com sucesso."
+              label_results: "Importado"
+              label_revert: "Reverter importação"
+              button_revert: "Reverter importação"
+              button_done: "Finalize importação"
+              preview_description: 'Os dados importados estão atualmente em modo de revisão. Clique em “Finalizar importação” para tornar a importação permanente ou em “Reverter importação” para desfazer todas as alterações feitas nesta execução de importação.'
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
+              label_revert_progress: "Revertendo importação..."
+              label_reverted: "Importação revertida."
+          select_dialog:
+            filter_projects: "Filtrar por texto"
+          import_dialog:
+            title: "Iniciar esta importação?"
+            confirm_button: "Iniciar importação"
+            description: >
+              Este importador é um recurso em versão alfa. Ele ainda não consegue importar todos os dados do Jira e pode deixar dados incompletos nesta instância do OpenProject. <b>Não use um ambiente de produção e crie um backup dos dados do OpenProject antes de iniciar.</b>
+            confirm: "Entendo e fiz os preparativos necessários"
+          revert_dialog:
+            title: "Deseja reverter esta importação de forma permanente?"
+            description: "Isso excluirá todos os objetos importados (incluindo projetos inteiros), mesmo que tenha havido atividade de usuários nesses projetos após a importação no OpenProject."
+            confirm: "Estou ciente de que esta reversão excluirá os dados de forma permanente"
+          finalize_dialog:
+            title: "Deseja finalizar esta importação?"
+            description: "Após a finalização, esta importação não poderá mais ser revertida. Todos os dados importados se tornarão permanentes."
+            confirm: "Compreendo que esta ação é irreversível"
+            confirm_button: "Compreendido"
+          select_projects:
+            title: "Selecionar projetos"
     mcp_configurations:
       index:
-        description: "O protocolo de contexto do modelo permite que agentes de IA forneçam aos seus usuários ferramentas e recursos disponibilizados por esta instância do OpenProject."
+        description: "O protocolo de contexto do modelo permite que agentes de IA forneçam aos seus usuários ferramentas e recursos disponibilizados por esta instância do OpenProject. Este recurso ainda está em versão beta."
         resources_heading: "Recursos"
-        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "O OpenProject implementa as seguintes recursos. Cada uma pode ser habilitada, renomeada e descrita conforme desejado. Para mais informações, consulte a [documentação sobre recursos MCP](docs_url)."
         resources_submit: "Atualizar recursos"
         tools_heading: "Ferramentas"
         tools_description: "O OpenProject implementa as seguintes ferramentas. Cada uma pode ser habilitada, renomeada e descrita conforme desejado. Para mais informações, consulte a [documentação sobre ferramentas MCP](docs_url)."
@@ -122,7 +308,17 @@ pt-BR:
         success: "Configurações MCP atualizadas com sucesso."
       server_form:
         description_caption: "Como o servidor MCP será descrito para outros aplicativos que se conectarem a ele."
-        title_caption: "A short title shown to applications that connect to the MCP server."
+        title_caption: "Um título curto exibido para aplicativos que se conectam ao servidor MCP."
+        tool_response_format: "Formato de resposta da ferramenta"
+        tool_response_format_content_only_label: "Apenas conteúdo"
+        tool_response_format_content_only_caption: >
+          Escolha esta opção se os clientes MCP que se conectam a esta instância não derem suporte ao conteúdo estruturado. As respostas da ferramenta só conterão texto simples, sem a versão estruturada.
+        tool_response_format_full_label: "Completo"
+        tool_response_format_full_caption: >
+          A opção mais compatível. As respostas da ferramenta incluirão tanto o conteúdo normal quanto o estruturado, permitindo que os clientes MCP escolham qual formato desejam visualizar. Isso pode aumentar o número de tokens que o modelo de linguagem precisa processar, potencialmente elevando o custo e reduzindo o desempenho.
+        tool_response_format_structured_only_label: "Somente conteúdo estruturado"
+        tool_response_format_structured_only_caption: >
+          Escolha esta opção se tiver certeza de que os clientes MCP que se conectam a esta instância derem suporte ao conteúdo estruturado. As respostas da ferramenta incluirão apenas o conteúdo estruturado, sem a versão em texto.
       update:
         failure: "A configuração MCP não pôde ser atualizada."
         success: "Configuração MCP atualizada com sucesso."
@@ -360,7 +556,7 @@ pt-BR:
     contained_in_type: "Contido no tipo"
     confirm_destroy_option: "Removendo uma opção removerá todas as suas ocorrências (ex. em pacotes de trabalho). Tem certeza que você quer removê-la?"
     reorder_alphabetical: "Reorganizar valores em ordem alfabética"
-    reorder_confirmation: "Aviso: A ordem atual dos valores disponíveis será perdida. Continuar?"
+    reorder_confirmation: "Aviso: A ordem atual dos valores disponíveis, assim como todos os valores não salvos, será perdida. Tem certeza de que deseja continuar?"
     placeholder_version_select: "Primeiro é necessária a seleção do pacote de trabalho ou projeto"
     calculated_field_not_editable: "Atributo não editável. O valor é calculado automaticamente."
     no_role_assigment: "Nenhuma atribuição de função"
@@ -387,6 +583,14 @@ pt-BR:
           Permite que o campo personalizado seja usado como filtro nas visualizações de pacotes de trabalho. Observe que apenas com a opção "Para todos os projetos" selecionada o campo personalizado aparecerá nas visualizações globais.
       formula:
         project: "Adicione valores numéricos ou digite / para buscar um atributo ou um operador matemático."
+      regexp:
+        all: "ex. ^[A-Z0-9]+$"
+        project: "ex. ^[A-Z0-9]+$"
+      min_max:
+        all: "0 significa que não há restrição"
+        project: "0 significa que não há restrição"
+      has_comment:
+        project: "Permite ao usuário adicionar um comentário relacionado ao atributo do projeto ao selecionar o valor na visão geral do projeto."
     tab:
       no_results_title_text: Atualmente, não há campos personalizados.
       no_results_content_text: Criar um novo campo personalizado
@@ -403,14 +607,20 @@ pt-BR:
   danger_dialog:
     confirmation_live_message_checked: "O botão para prosseguir agora está ativo."
     confirmation_live_message_unchecked: "O botão para prosseguir está desativado. É necessário marcar a caixa de seleção para continuar."
+  mcp_configurations:
+    server_url_component:
+      caption: "O URL em que o servidor MCP do OpenProject estará acessível. Necessário para configurar os clientes MCP."
+      label: "URL do servidor"
   op_dry_validation:
     or: "ou"
     errors:
+      unexpected_key: "is not allowed."
       array?: "deve ser um array."
       decimal?: "deve ser um número decimal."
       defined: "não deve ser definido."
       eql?: "deve ser igual a %{left}."
       filled?: "deve ser preenchido."
+      format?: "is in invalid format."
       greater_or_equal_zero: "deve ser maior ou igual a 0."
       gteq?: "deve ser maior ou igual a %{num}."
       hash?: "deve ser um hash."
@@ -437,7 +647,9 @@ pt-BR:
         parent:
           not_descendant: "deve ser um descendente da raiz da hierarquia."
       str?: "deve ser uma cadeia de caracteres."
+      time?: "must be a time."
       type?: "dever ser %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Tipo de cópia do fluxo de trabalho"
       enabled: "Habilitado"
@@ -607,7 +819,7 @@ pt-BR:
         is_for_all_blank_slate:
           heading: Para todos os projetos
           description: Este atributo de projeto está ativado em todos os projetos, pois a opção “Para todos os projetos” está selecionada. Não é possível desativá-lo para projetos individuais.
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: Este atributo do projeto não pode ser desativado, pois está configurado como <a href=%{pir_submission_url} target="_blank">responsável ao enviar</a> nas solicitações de início de projeto.
       types:
         no_results_title_text: Atualmente, não há tipos disponíveis.
         form:
@@ -623,8 +835,8 @@ pt-BR:
         new_label: "Nova prioridade"
       creation_wizard:
         errors:
-          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
-          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
+          no_work_package_type: "Falha ao ativar a solicitação de início de projeto, pois é necessário ter pelo menos um tipo de pacote de trabalho ativo, e este projeto não possui nenhum. Adicione pelo menos um tipo de pacote de trabalho a este projeto."
+          no_status_when_submitted: "Falha ao ativar a solicitação de início de projeto, pois o tipo de pacote de trabalho %{type} precisa ter pelo menos um status associado. Habilite pelo menos um fluxo de trabalho de status para este tipo de pacote de trabalho."
         export:
           description_attachment_export: "O artefato gerado será salvo como um anexo PDF no pacote de trabalho do artefato."
           description_file_link_export: "O pacote de trabalho do artefato incluirá um link para um PDF armazenado em um armazenamento de arquivos externo. É necessário que o armazenamento ofereça gerenciamento automático de pastas por projeto. Atualmente, apenas armazenamentos Nextcloud são compatíveis."
@@ -638,7 +850,7 @@ pt-BR:
         label_request_submission: "Envio de solicitação"
         project_attributes_description: >
           Selecione quais atributos do projeto devem ser incluídos na solicitação de início do projeto. Esta lista inclui apenas [atributos do projeto](project_attributes_url) habilitados para este projeto.
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: Este atributo do projeto não pode ser desativado para esta solicitação de início de projeto, pois é obrigatório. Essa opção pode ser alterada pelo <a href=%{admin_settings_url} target="_blank">administrador da instância</a> nas configurações de administração.
     status:
       button_edit: Editar status
     wizard:
@@ -1160,9 +1372,15 @@ pt-BR:
         dependencies: "Dependências"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
+      jira_import:
+        projects: "Projetos"
+      "import/jira":
+        name: "Nome da instância Jira"
+        url: "URL da instância Jira"
+        personal_access_token: "Token de acesso de pessoal"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Exibir até"
       attachment:
@@ -1181,7 +1399,6 @@ pt-BR:
         scim_clients: "Clientes SCIM"
       calculated_value_error:
         error_code: "Código de erro"
-        customized: "Personalizado"
         customized_id: "ID personalizado"
         customized_type: "Tipo personalizado"
       capability:
@@ -1209,6 +1426,7 @@ pt-BR:
         regexp: "Expressão regular"
         searchable: "Pesquisável"
         admin_only: "Apenas administrador"
+        has_comment: "Adicionar um campo de texto para comentário"
       custom_value:
         value: "Valor"
       design_color:
@@ -1537,7 +1755,7 @@ pt-BR:
         not_available: "não está disponível devido a uma configuração do sistema."
         not_deletable: "não pode ser excluído."
         not_current_user: "não é o usuário atual."
-        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
+        only_one_active_sprint_allowed: "apenas uma sprint ativa é permitida por projeto."
         not_found: "não encontrado."
         not_a_date: "não é uma data válida."
         not_a_datetime: "não é uma data/hora válida."
@@ -1645,7 +1863,7 @@ pt-BR:
         meeting:
           error_conflict: "Não foi possível salvar, pois a reunião foi atualizada por outra pessoa enquanto isso. Atualize a página, por favor."
         message:
-          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
+          cannot_move_message_to_forum_of_different_project: "Uma mensagem não pode ser movida para um fórum de outro projeto."
         notifications:
           at_least_one_channel: "É necessário especificar pelo menos um canal para o envio de notificações."
           attributes:
@@ -1901,6 +2119,8 @@ pt-BR:
               blank: "Forneça um nome para o token"
               in_use: "Este nome de token já está em uso, escolha outro"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Forneça um protocolo válido (http ou https)"
       template:
         body: "Por favor, verifique os seguintes campos:"
         header:
@@ -1919,6 +2139,7 @@ pt-BR:
       comment: "Comentário"
       custom_action: "Ação personalizada"
       custom_field: "Campo personalizado"
+      customized: "Personalizado"
       "doorkeeper/application": "Aplicação OAuth"
       enterprise_token:
         one: "Token Enterprise"
@@ -1950,6 +2171,9 @@ pt-BR:
       scim_client:
         one: "Cliente SCIM"
         other: "Clientes SCIM"
+      jira:
+        one: "Jira"
+        other: "Jira"
       status: "Situação do pacote de trabalho"
       token/api:
         one: Token de acesso
@@ -2472,7 +2696,8 @@ pt-BR:
       edit_attribute_groups: Editar atributo de grupos
       gantt_pdf_export: Exportar diagrama de Gantt para PDF
       ldap_groups: Sincronização de usuários e grupos LDAP
-      mcp_server: Servidor MCP
+      mcp_server: Protocolo de Contexto do Modelo (MCP)
+      meeting_templates: Modelos de reunião reutilizáveis
       nextcloud_sso: Autenticação única para o armazenamento do Nextcloud
       one_drive_sharepoint_file_storage: Armazenamento de Arquivos OneDrive/SharePoint
       placeholder_users: Usuários Genéricos
@@ -2550,7 +2775,9 @@ pt-BR:
         title: "Ações personalizadas"
         description: "As ações personalizadas são atalhos de clique único para um conjunto de ações pré-definidas que você pode disponibilizar em certos pacotes de trabalho com base no estado, função, tipo ou projeto."
       mcp_server:
-        description: "Integre agentes de IA à sua instância do OpenProject por meio do MCP."
+        description: "Integre o OpenProject aos seus fluxos de trabalho de IA com um servidor MCP seguro."
+      meeting_templates:
+        description: "Defina modelos de reunião com uma estrutura de pauta predefinida e economize tempo reutilizando-os ao criar novas reuniões."
       nextcloud_sso:
         title: "Autenticação única para o armazenamento do Nextcloud"
         description: "Ative a autenticação segura e contínua para o seu armazenamento Nextcloud com Autenticação única. Simplifique o gerenciamento de acessos e melhore a experiência do usuário."
@@ -2861,17 +3088,18 @@ pt-BR:
         learn_about: "Saiba mais sobre todos os novos recursos"
         missing: "Ainda não há recursos destacados."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
             A versão traz diversos novos recursos e melhorias, como:
           new_features_list:
-            line_0: Início de projeto automatizado (complementos Enterprise).
-            line_1: "Reuniões: adicionar pacotes de trabalho novos ou existentes como resultados."
-            line_2: "Reuniões: exibir respostas do iCal no OpenProject."
-            line_3: "Reuniões recorrentes: duplicar itens da pauta para a próxima ocorrência."
-            line_4: "Versão para a comunidade: Realce de atributos."
-            line_5: Aviso antes de abrir links externos em conteúdo fornecido pelo usuário (complementos Enterprise).
-            line_6: Desempenho e experiência do usuário aprimorados, incluindo a aba Atividade e o módulo Documentos.
+            line_0: Fluxos de trabalho de IA com um servidor MCP seguro (plano Professional ou superior)
+            line_1: Página inicial do projeto aprimorada, com novo widget para orçamentos e acessibilidade melhorada
+            line_2: "Reuniões: Modelos de reunião (plano Basic ou superior)"
+            line_3: Mais transparência com comentários nos atributos do projeto
+            line_4: Melhorias na exportação para PDF
+            line_5: Segurança reforçada para links externos (plano Premium ou superior)
+            line_6: Melhorias de UI/UX no módulo de Backlogs
+            line_7: Formulários de campos personalizados harmonizados
     links:
       upgrade_enterprise_edition: "Atualizar para a edição Enterprise"
       postgres_migration: "Migrando sua instalação para PostgreSQL"
@@ -2889,8 +3117,10 @@ pt-BR:
   journals:
     changes_retracted: "As mudanças foram retraídas."
     caused_changes:
+      budget_deleted: "Orçamento foi excluído"
       dates_changed: "Datas alteradas"
       default_attribute_written: "Atributos de somente leitura escritos"
+      import: "Importado"
       progress_mode_changed_to_status_based: "Cálculo de progresso atualizado"
       status_changed: "Status '%{status_name}'"
       system_update: "Atualização do sistema OpenProject:"
@@ -2898,12 +3128,22 @@ pt-BR:
       total_percent_complete_mode_changed_to_work_weighted_average: "O cálculo dos totais de % de conclusão agora é ponderado pelo Trabalho."
       total_percent_complete_mode_changed_to_simple_average: "O cálculo dos totais de % de conclusão agora é feito com base na média simples dos valores de % de conclusão."
     cause_descriptions:
+      import:
+        header: "alterações por %{author}"
+        field_changed: "%{field} alterado de %{old_value} para %{new_value}"
+        field_set: "%{field} definido como %{value}"
+        field_removed: "%{field} removido"
+        field_updated: "%{field} atualizado"
+        deleted_with_diff: "%{field} excluído (%{link})"
+        changed_with_diff: "%{field} alterado (%{link})"
+        set_with_diff: "%{field} definido (%{link})"
       work_package_predecessor_changed_times: por alterações ao antecessor %{link}
       work_package_parent_changed_times: por alterações ao primário %{link}
       work_package_children_changed_times: por alterações ao secundário %{link}
       work_package_related_changed_times: por alterações ao %{link} relacionado
       work_package_duplicate_closed: O status foi atualizado automaticamente pelo pacote de trabalho duplicado %{link}
       unaccessable_work_package_changed: por alterações a um pacote de trabalho relacionado
+      budget_deleted: Orçamento foi excluído
       working_days_changed:
         changed: "por alterações a dias úteis (%{changes})"
         days:
@@ -2984,7 +3224,7 @@ pt-BR:
         active_tokens: "Tokens ativos"
         blank_description: "Não há nenhum acesso ativo de aplicativos de terceiros configurado para sua conta."
         blank_title: "Sem token de aplicativo OAuth"
-        last_used_at: "Último uso em"
+        last_refreshed_at: "Última atualização em"
         title: "OAuth"
         table_title: "Tokens de aplicativo OAuth"
         text_hint: "Tokens de aplicativo OAuth permitem que aplicativos de terceiros se conectem a esta instância do OpenProject."
@@ -3224,6 +3464,7 @@ pt-BR:
   label_duplicates: "Duplicados"
   label_edit: "Editar"
   label_edit_x: "Editar: %{x}"
+  label_view_x: "Visualizar: %{x}"
   label_enable_multi_select: "Alterna para seleção múltipla"
   label_enabled_project_custom_fields: "Campos personalizados habilitados"
   label_enabled_project_modules: "Módulos habilitados"
@@ -3268,7 +3509,6 @@ pt-BR:
   label_float: "Ponto flutuante"
   label_folder: "Pasta"
   label_follows: "Segue"
-  label_force_user_language_to_default: "Configurar o idioma de usuário que tem uma linguagem não permitida como padrão"
   label_form_configuration: "Configuração do formulário"
   label_formula: "Fórmula"
   label_gantt_chart: "Gráfico de Gantt"
@@ -3328,6 +3568,7 @@ pt-BR:
   label_external_links: "Links externos"
   label_locale: "Idioma e região"
   label_jump_to_a_project: "Saltar para um projeto..."
+  label_jira_import: "Importação do Jira"
   label_keyword_plural: "Palavras-chave"
   label_language_based: "Com base no idioma do usuário"
   label_last_activity: "Última atividade"
@@ -3350,6 +3591,7 @@ pt-BR:
   label_lock_user: "Bloquear usuário"
   label_logged_as: "Conectado como"
   label_login: "Fazer login"
+  label_custom_comment: "Comentário de %{name}"
   label_custom_logo: "Logotipo personalizado para desktop"
   label_custom_logo_mobile: "Logotipo personalizado para celular"
   label_custom_export_logo: "Logo de exportação personalizado"
@@ -3645,12 +3887,6 @@ pt-BR:
   label_user_named: "Usuário %{name}"
   label_user_activity: "atividade do %{value}"
   label_user_anonymous: "Anônimo"
-  label_user_mail_option_all: "Para qualquer evento em todos os meus projetos"
-  label_user_mail_option_none: "Não há eventos"
-  label_user_mail_option_only_assigned: "Só para coisas que estou designado"
-  label_user_mail_option_only_my_events: "Somente para as coisas que eu acompanho ou participo"
-  label_user_mail_option_only_owner: "Somente para as coisas que eu sou o dono"
-  label_user_mail_option_selected: "Para qualquer evento somente nos projetos selecionados"
   label_user_menu: "Menu de usuários"
   label_user_new: "Novo usuário"
   label_user_plural: "Usuários"
@@ -3690,7 +3926,6 @@ pt-BR:
   label_wiki_show_index_page_link: "Mostrar submenu 'Tabela de Conteúdos'"
   label_wiki_show_menu_item: "Mostrar como item de menu de navegação do projeto"
   label_wiki_show_new_page_link: "Mostrar o item de submenu 'Criar nova página filho'"
-  label_wiki_show_submenu_item: "Mostrar como item do submenu de "
   label_wiki_start: "Página inicial"
   label_work: "Trabalho"
   label_work_package: "Pacote de trabalho"
@@ -3971,12 +4206,13 @@ pt-BR:
   notice_parent_item_not_found: "Item pai não encontrado."
   notice_project_not_deleted: "O projeto não foi excluído."
   notice_project_not_found: "Projeto não encontrado."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Conectado com sucesso."
   notice_successful_create: "Criado com sucesso."
   notice_successful_delete: "Exclusão bem sucedida."
   notice_successful_cancel: "Cancelamento bem-sucedido."
   notice_successful_update: "Atualizado com sucesso."
-  notice_successful_move: "Successful move from %{from} to %{to}."
+  notice_successful_move: "Movido com sucesso de %{from} para %{to}."
   notice_unsuccessful_create: "Falha na criação."
   notice_unsuccessful_create_with_reason: "Falha na criação: %{reason}"
   notice_unsuccessful_update: "Falha na atualização."
@@ -4138,7 +4374,7 @@ pt-BR:
   permission_edit_project_query: "Editar consulta do projeto"
   placeholders:
     default: "-"
-    templated_hint: Automatically generated through type %{type}
+    templated_hint: Gerado automaticamente através do tipo %{type}
   portfolio:
     count:
       zero: "0 portfólios"
@@ -4323,9 +4559,9 @@ pt-BR:
   setting_capture_external_links: "Capturar links externos"
   setting_capture_external_links_text: >
     Quando ativado, todos os links externos em textos formatados serão redirecionados por uma página de aviso antes de sair do aplicativo. Isso ajuda a proteger os usuários de sites externos potencialmente maliciosos.
-  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login: "Exigir que os usuários estejam conectados"
   setting_capture_external_links_require_login_text: >
-    When enabled, users wanting to click on external links need to be logged in before being able to continue.
+    Quando habilitado, os usuários que desejarem clicar em links externos precisarão estar conectados antes de continuar.
   setting_after_first_login_redirect_url: "Redirecionamento de primeiro login"
   setting_after_first_login_redirect_url_text_html: >
     Defina um caminho para redirecionar os usuários após o primeiro login. Se deixado em branco, eles serão redirecionados para a página inicial do tour de introdução. <br/> Exemplo: <code>/my/page</code>
@@ -4370,9 +4606,9 @@ pt-BR:
   setting_smtp_password: "Senha SMTP"
   setting_smtp_domain: "Domínio SMTP HELO"
   setting_activity_days_default: "Dias exibidos na atividade de projeto"
-  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled: "Ativar tokens de API"
   setting_api_tokens_enabled_caption: >
-    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
+    Determine se os usuários podem criar tokens de API pessoais nas configurações da conta. Esses tokens podem ser usados para acessar as diferentes APIs do OpenProject, como APIv3 e MCP.
   setting_app_subtitle: "Subtítulo do aplicativo"
   setting_app_title: "Título da aplicação"
   setting_attachment_max_size: "Tamanho máximo dos anexos"
@@ -4760,7 +4996,7 @@ pt-BR:
   text_default_administrator_account_changed: "Conta do administrador padrão alterada"
   text_default_encoding: "Padrão: UTF-8"
   text_destroy: "Excluir"
-  text_destroy_with_associated: "Existem objetos adicionais associados com o pacote de trabalho que serão excluídos. Esses objetos são dos seguintes tipos:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "O que você quer fazer?"
   text_diff_truncated: "... Este diff foi truncado porque excede o tamanho máximo que pode ser exibido."
   text_email_delivery_not_configured: "O envio de e-mails não está configurado e as notificações estão desativadas.\nConfigure seu servidor de SMTP para ativá-los."
@@ -4799,7 +5035,6 @@ pt-BR:
   text_length_between: "Tamanho entre %{min} e %{max} caracteres."
   text_line_separated: "Vários valores permitidos (uma linha para cada valor)."
   text_load_default_configuration: "Carregar a configuração padrão"
-  text_min_max_length_info: "0 significa nenhuma restrição"
   text_no_roles_defined: Não há nenhuma função definida.
   text_no_access_tokens_configurable: "Não há nenhum token de acesso que pode ser configurado."
   text_no_configuration_data: "Papéis, tipos, situação do pacote de trabalho e fluxo de trabalho não foram configurados ainda. É altamente recomendável carregar a configuração padrão. Uma vez carregada, você será capaz de modificá-la."
@@ -4814,7 +5049,6 @@ pt-BR:
   text_powered_by: "Desenvolvido por %{link}"
   text_project_identifier_info: "Apenas letras minúsculas (a-z), números, hífens e sublinhados são permitidos, deve-se começar com uma letra minúscula."
   text_reassign: "Reatribua ao pacote de trabalho:"
-  text_regexp_info: "ex. ^[A-Z0-9]+$"
   text_regexp_multiline: 'A expressão regular é aplicada no modo multilinha. Por exemplo: ^---\s+'
   text_repository_usernames_mapping: "Selecionar ou atualizar o usuário do OpenProject mapeado para cada nome de usuário encontrado no log do repositório. Os usuários com o mesmo nome de usuário OpenProject e repositório ou e-mail serão mapeados automaticamente."
   text_status_changed_by_changeset: "Aplicado no conjunto de alterações %{value}."
@@ -4913,11 +5147,10 @@ pt-BR:
     reset_failed_logins: "Redefinição de logins que falharam"
     status_user_and_brute_force: "%{user} e %{brute_force}"
     status_change: "Mudança de situação"
-    text_change_disabled_for_provider_login: "O nome é definido por seu fornecedor de início de sessão e, desta forma, não pode ser alterado."
-    text_change_disabled_for_ldap_login: "O nome e o e-mail são definidos pelo LDAP e, por isso, não podem ser alterados."
+    text_change_disabled_for_provider_login: "O nome e o e-mail são definidos por seu provedor de login e, por isso, não podem ser alterados."
     unlock: "Desbloquear"
     unlock_and_reset_failed_logins: "Desbloquear e redefinir logins com falha"
-    error_cannot_delete_user: "User cannot be deleted"
+    error_cannot_delete_user: "Usuário não pode ser excluído"
   version_status_closed: "fechado"
   version_status_locked: "bloqueado"
   version_status_open: "aberto"

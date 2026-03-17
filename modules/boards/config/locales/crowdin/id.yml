@@ -20,7 +20,7 @@ id:
       action: "Papan aksi (%{attribute}"
     board_type_attributes:
       assignee: Pelimpahan
-      status: Status
+      status: Kanban
       version: Versi
       subproject: Sub-Project
       subtasks: Orangtua-anak

@@ -35,11 +35,13 @@ module OpenProject
 
       attr_reader :model, :attribute, :enforce_edit_mode
 
-      def initialize(model:, attribute:, enforce_edit_mode: false, **system_arguments)
+      def initialize(model:, attribute:, enforce_edit_mode: false,
+                     update_registry: OpenProject::InplaceEdit::UpdateRegistry.default, **system_arguments)
         super()
         @model = model
         @attribute = attribute
         @enforce_edit_mode = enforce_edit_mode
+        @update_registry = update_registry
         @system_arguments = system_arguments
         @system_arguments[:id] = system_arguments[:id] || SecureRandom.uuid
       end
@@ -85,7 +87,7 @@ module OpenProject
       def writable?
         return @writable if defined?(@writable)
 
-        contract_class = OpenProject::InplaceEdit::UpdateRegistry.fetch_contract(model)
+        contract_class = @update_registry.fetch_contract(model)
         @writable =
           if contract_class.present?
             contract_class.new(model, User.current).writable?(attribute)

@@ -2,10 +2,12 @@ cs:
   js:
     grid:
       add_widget: 'Přidat widget'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Odstranit widget'
       configure: 'Konfigurovat widget'
       widgets:
         missing_permission: "Nemáte potřebná oprávnění k zobrazení tohoto widgetu."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Vlastní text'
         documents:
@@ -17,7 +19,6 @@ cs:
           title: 'Novinky'
         project_description:
           title: 'Description'
-          no_results: "Zatím nebyl napsán žádný popis. Můžete ho uvést v \"Nastavení projektu\"."
         project_status:
           title: 'Status'
           not_started: 'Nezahájeno'

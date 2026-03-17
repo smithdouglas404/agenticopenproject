@@ -83,8 +83,9 @@ zh-CN:
         confirmation: "确定要删除此企业版支持令牌吗？"
       create_dialog:
         title: "添加企业令牌"
-        type_token_text: "输入支持令牌文本"
+        type_token_text: "您的企业令牌文本"
         token_placeholder: "在此处粘贴您的企业版支持令牌"
+        token_caption: "要详细了解如何激活企业版，请查阅我们的[文档](docs_url)。"
       add_token: "上传企业版支持令牌"
       replace_token: "替换您当前的支持令牌"
       order: "订购本地部署的 Enterprise edition"
@@ -109,11 +110,190 @@ zh-CN:
       explanation:
         text: "如果用户的多项操作（例如，更新工作包两次）的时间间隔小于指定的时间跨度，则这些操作将被聚合为单个操作，并在应用程序中显示为单个操作。这也会将通知延迟同等的时间，从而减少电子邮件的发送数量，并且还会影响 %{webhook_link} 延迟。"
         link: "Webhook"
+    import:
+      title: "导入"
+    jira:
+      title: "Jira 导入"
+      description: "使用此工具从您的 Jira 实例中导入数据。您可以配置多个 Jira 主机，并选择每次导入运行要导入的内容。"
+      errors:
+        cannot_delete_with_imports: "无法删除具有现有导入的 Jira 主机"
+      blank:
+        title: "尚未配置 Jira 主机"
+        description: "配置 Jira 主机，以开始将 Jira 中的条目导入此 OpenProject 实例。"
+      configuration:
+        title: "Jira 配置"
+        new: "新配置"
+      banner:
+        title: "受限导入"
+        description: "此导入工具目前处于测试阶段，只能导入基本数据：项目、问题（名称、标题、描述、附件）、用户（名称、电子邮件地址、项目成员资格）、状态和类型。不能导入工作流、自定义字段、问题关系或权限。我们目前仅支持 Jira Server/Data Center 版本 10.x 和 11.x。目前不支持云实例。"
+      form:
+        fields:
+          name: "名称"
+          url: "Jira 服务器/数据中心 URL"
+          personal_access_token: "个人访问令牌"
+        button_add: "添加配置"
+        button_save: "保存配置"
+        button_test: "测试配置"
+        button_delete_token: "删除令牌"
+        delete_token_confirm: "确定要删除令牌吗？这将禁用 Jira 连接。"
+        label_testing: "正在测试配置…"
+      token_deleted: "令牌已成功删除。"
+      test:
+        success: "成功连接到 %{server}（版本 %{version}）"
+        failed: "连接失败：无法检索服务器信息"
+        error: "测试连接时发生意外错误"
+        connection_error: "连接错误：%{message}"
+        parse_error: "服务器响应解析失败。服务器可能不是有效的 Jira 实例。"
+        api_error: "Jira API 返回错误状态 %{status}。请检查您的 Jira 实例 URL 和 API 令牌。"
+        token_error: "API 令牌无效。请在配置中检查您的凭据。"
+        missing_credentials: "请提供 URL 和个人访问令牌，以测试连接"
+        invalid_url: "请提供有效的 URL"
+      client:
+        connection_error: "无法连接到 Jira 服务器：%{message}"
+        connection_timeout: "与 Jira 服务器的连接超时：%{message}"
+        parse_error: "无法解析 Jira API 响应：%{message}"
+        api_error: "Jira API 返回错误状态 %{status}"
+      columns:
+        projects: "项目"
+        last_change: "上次更改"
+        added: "已添加"
+        label_ago: "%{amount}前"
+      run:
+        title: "导入运行"
+        history: "历史记录"
+        remove_error: "无法移除正在运行的 Jira 导入"
+        import_blocked_error: "另一个 Jira 导入运行当前正在执行或等待审核。请先完成或撤消当前运行，然后再开始新的导入。"
+        blank:
+          title: "尚未设置导入运行"
+          description: "创建导入运行，开始从此 Jira 实例中导入信息"
+        index:
+          description: "每次导入运行都可以导入不同的数据集。可以在审核模式后立即撤消导入运行，但不能在完成后撤消。"
+          button_import_run: "导入运行"
+          button_edit_configuration: "编辑配置"
+        status:
+          initial: "开始"
+          instance_meta_fetching: "正在获取元数据"
+          instance_meta_error: "获取元数据时出错"
+          instance_meta_done: "元数据已获取"
+          import_scope: "选择范围"
+          configuring: "选择范围"
+          projects_meta_fetching: "正在获取项目数据"
+          projects_meta_error: "获取项目数据时出错"
+          projects_meta_done: "数据已收集"
+          importing: "进行中"
+          import_error: "导入过程中出错"
+          imported: "审核模式"
+          reverting: "正在撤消"
+          revert_error: "撤消过程中出错"
+          revert_cancelling: "正在取消撤消"
+          revert_cancelled: "已取消撤消"
+          reverted: "已撤消"
+          finalizing: "正在完成"
+          finalizing_error: "完成过程中出错"
+          finalizing_done: "已完成"
+        wizard:
+          button_retry: "重试"
+          parts:
+            projects:
+              other: "%{count} 个项目"
+            issues:
+              other: "%{count} 个问题"
+            work_packages:
+              other: "%{count} 个工作包"
+            types:
+              other: "%{count} 种类型"
+            statuses:
+              other: "%{count} 种状态"
+            users:
+              other: "%{count} 个用户"
+          groups:
+            fetch:
+              title: "获取基础数据"
+            groups_and_users:
+              title: "群组和用户"
+            configuration:
+              title: "配置导入"
+            confirming:
+              title: "确认并导入"
+            review:
+              title: "审核导入"
+          sections:
+            fetch_data:
+              title: "获取实例元数据"
+              caption_done: "已完成"
+              description: "检查主机 Jira 实例中有哪些数据可以导入。"
+              button_fetch: "检查可用数据"
+              label_progress: "正在从 Jira 获取数据…"
+            groups_and_users:
+              title: "群组和用户"
+            import_scope:
+              title: "导入范围"
+              caption: "选择要导入 OpenProject 的内容"
+              caption_done: "已完成"
+              label_info: "请注意，此导入工具仍处于测试阶段，不能导入所有类型的数据。以下是主机 Jira 实例提供的导入摘要，以及此工具目前能够导入的内容。"
+              description: "在从主机 Jira 实例获取的可用数据中选择要导入的数据。"
+              label_available_data: "可用数据"
+              label_not_available_data: "不可导入"
+              button_select_projects: "选择要导入的项目"
+              button_continue: "继续"
+              label_import: "选择要导入的项目。"
+              button_select: "选择项目"
+              label_selected_data: "已选择要导入的数据"
+              label_progress: "正在从 Jira 获取数据…"
+              elements:
+                relations: "问题之间的关系"
+                workflows: "项目级工作流"
+                users: "用户"
+                sprints: "冲刺"
+                schemes: "方案"
+                permissions: "用户、群组和项目权限"
+            confirm_import:
+              title: "导入数据"
+              caption: "审核导入设置并开始导入"
+              caption_done: "已完成"
+              label_available_data: "可导入的数据"
+              button_start: "开始导入"
+              description: "您即将使用以下设置开始导入运行。"
+              label_progress: "正在导入…"
+              label_import_data: "当前正在导入"
+            import_result:
+              title: "导入运行结果"
+              caption: "审核导入运行或撤消导入"
+              info: "导入运行成功。"
+              label_results: "已导入"
+              label_revert: "撤消导入"
+              button_revert: "撤消导入"
+              button_done: "完成导入"
+              preview_description: '导入的数据当前处于审核模式。点击“完成导入”可永久导入，点击“撤消导入”可撤消本次导入运行中的所有更改。'
+              label_finalize_import: "完成导入"
+              label_finalizing: "正在完成导入…"
+              label_finalizing_done: "导入已完成。"
+              label_revert_progress: "正在撤消导入…"
+              label_reverted: "导入已撤消。"
+          select_dialog:
+            filter_projects: "按文本筛选"
+          import_dialog:
+            title: "是否开始此导入？"
+            confirm_button: "开始导入"
+            description: >
+              此导入功能是一项 alpha 功能。它还不能从 Jira 导入所有数据，可能会在此 OpenProject 实例上留下不完整的数据。 <b>请勿在生产环境中使用，在开始之前，请先创建 OpenProject 数据备份。</b>
+            confirm: "我明白，我已做好了必要的准备"
+          revert_dialog:
+            title: "是否永久撤消此导入？"
+            description: "这将删除所有导入的对象（包括整个项目），即使在 OpenProject 上导入后这些项目中有用户活动。"
+            confirm: "我明白，此撤消操作会永久删除数据"
+          finalize_dialog:
+            title: "是否完成此导入？"
+            description: "完成后，此导入将无法再撤消。所有导入的数据将永久导入。"
+            confirm: "我明白此操作无法撤消"
+            confirm_button: "明白了"
+          select_projects:
+            title: "选择项目"
     mcp_configurations:
       index:
-        description: "Model Context Protocol 允许 AI 智能体向其用户提供此 OpenProject 实例所公开的工具和资源。"
+        description: "Model Context Protocol 允许 AI 智能体向其用户提供此 OpenProject 实例所公开的工具和资源。此功能仍处于测试阶段。"
         resources_heading: "资源"
-        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject 实现了以下资源。每种工具都可以根据需要启用、重命名和描述。有关详情，请参阅[关于 MCP 资源的文档](docs_url)。"
         resources_submit: "更新资源"
         tools_heading: "工具"
         tools_description: "OpenProject 实现了以下工具。每种工具都可以根据需要启用、重命名和描述。有关详情，请参阅[关于 MCP 工具的文档](docs_url)。"
@@ -122,7 +302,17 @@ zh-CN:
         success: "MCP 配置已成功更新。"
       server_form:
         description_caption: "如何向连接到 MCP 服务器的其他应用程序描述该 MCP 服务器。"
-        title_caption: "A short title shown to applications that connect to the MCP server."
+        title_caption: "展示给连接到 MCP 服务器的应用程序的简短标题。"
+        tool_response_format: "工具响应格式"
+        tool_response_format_content_only_label: "仅内容"
+        tool_response_format_content_only_caption: >
+          如果连接到此实例的 MCP 客户端不支持结构化内容，则选中此项。工具响应将只包含纯文本内容，而不包含结构化版本。
+        tool_response_format_full_label: "完整"
+        tool_response_format_full_caption: >
+          最兼容的选项。工具响应将包含常规内容和结构化内容，MCP 客户端可以选择要读取的格式。这可能会增加语言模型需要处理的词元数，从而可能导致成本增加，性能降低。
+        tool_response_format_structured_only_label: "仅结构化内容"
+        tool_response_format_structured_only_caption: >
+          如果您确定连接到此实例的 MCP 客户端支持结构化内容，则选中此项。工具响应将只包含结构化内容，而不包含其文本表示。
       update:
         failure: "MCP 配置无法更新。"
         success: "MCP 配置已成功更新。"
@@ -358,7 +548,7 @@ zh-CN:
     contained_in_type: "已包含在类型中"
     confirm_destroy_option: "删除某个选项将会删除其所有实例 (例如, 在工作包中)。确定要删除？"
     reorder_alphabetical: "按字母顺序重新排序"
-    reorder_confirmation: "警告：可用值的当前顺序将丢失。是否继续？"
+    reorder_confirmation: "警告：当前的可用值顺序以及所有未保存的值都将丢失。确定要继续吗？"
     placeholder_version_select: "需要先选择工作包或项目"
     calculated_field_not_editable: "不可编辑属性。此值是自动计算的。"
     no_role_assigment: "无角色指定"
@@ -385,6 +575,14 @@ zh-CN:
           允许在工作包视图的筛选器中使用自定义字段。请注意，仅当选中“适用于所有项目”时，自定义字段才会显示在全局视图中。
       formula:
         project: "添加数值或输入 / 以搜索特性或数学运算符。"
+      regexp:
+        all: "例如 ^[A-Z0-9]+$"
+        project: "例如 ^[A-Z0-9]+$"
+      min_max:
+        all: "0 表示无限制"
+        project: "0 表示无限制"
+      has_comment:
+        project: "允许用户在项目概览中选择值时添加与项目特性相关的注释。"
     tab:
       no_results_title_text: 目前没有自定义字段。
       no_results_content_text: 创建新的自定义字段
@@ -401,14 +599,20 @@ zh-CN:
   danger_dialog:
     confirmation_live_message_checked: "继续按钮现已激活。"
     confirmation_live_message_unchecked: "继续按钮现已失效。您需要勾选复选框才能继续。"
+  mcp_configurations:
+    server_url_component:
+      caption: "可以访问 OpenProject MCP 服务器的 URL。设置 MCP 客户端时需要使用。"
+      label: "服务器 URL"
   op_dry_validation:
     or: "或"
     errors:
+      unexpected_key: "is not allowed."
       array?: "必须为一个数组。"
       decimal?: "必须为小数。"
       defined: "不得定义。"
       eql?: "必须等于 %{left}。"
       filled?: "必须填写"
+      format?: "is in invalid format."
       greater_or_equal_zero: "必须大于或等于 0"
       gteq?: "必须大于或等于 %{num}。"
       hash?: "必须是一个哈希值。"
@@ -435,7 +639,9 @@ zh-CN:
         parent:
           not_descendant: "必须是层级根节点的后代。"
       str?: "必须是一个字符串。"
+      time?: "must be a time."
       type?: "必须是 %{type}。"
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "工作流副本的类型"
       enabled: "已启用"
@@ -604,7 +810,7 @@ zh-CN:
         is_for_all_blank_slate:
           heading: 适用于所有项目
           description: 由于选中了“适用于所有项目”选项，所有项目都启用了此项目特性。无法为个别项目停用该特性。
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: 无法禁用此项目特性，因为在<a href=%{pir_submission_url} target="_blank">提交项目启动请求时，它被设为受理人</a>。
       types:
         no_results_title_text: 目前有可用的类型。
         form:
@@ -620,8 +826,8 @@ zh-CN:
         new_label: "新优先级"
       creation_wizard:
         errors:
-          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
-          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
+          no_work_package_type: "无法启用项目启动请求，因为它至少需要一个有效工作包类型，但此项目没有。请为此项目至少添加一种工作包类型。"
+          no_status_when_submitted: "无法启用项目启动请求，因为工作包类型 %{type} 至少需要一个与之相关的状态。请为此工作包类型至少启用一个状态工作流。"
         export:
           description_attachment_export: "生成的工件将作为 PDF 附件保存到工件工作包中。"
           description_file_link_export: "工件工作包将有一个文件链接，指向存储在外部文件存储空间的 PDF 文件。此项目需要一个有效文件存储空间，其中包含自动管理的项目文件夹。目前仅支持 Nextcloud 文件存储空间。"
@@ -635,7 +841,7 @@ zh-CN:
         label_request_submission: "请求提交"
         project_attributes_description: >
           选择哪些项目特性应包含在项目启动请求中。此列表仅包含为此项目启用的[项目特性](project_attributes_url)。
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: 无法为此项目启动请求禁用此项目特性，因为它被定义为必选项。实例管理员可以在<a href=%{admin_settings_url} target="_blank">管理设置</a>中更改此设置。
     status:
       button_edit: 编辑状态
     wizard:
@@ -1150,9 +1356,15 @@ zh-CN:
         dependencies: "依赖项"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
+      jira_import:
+        projects: "项目"
+      "import/jira":
+        name: "Jira 实例名称"
+        url: "Jira 实例 URL"
+        personal_access_token: "个人访问令牌"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira 导入"
       announcements:
         show_until: "显示截止日期"
       attachment:
@@ -1171,7 +1383,6 @@ zh-CN:
         scim_clients: "SCIM 客户端"
       calculated_value_error:
         error_code: "错误代码"
-        customized: "自定义"
         customized_id: "自定义ID"
         customized_type: "自定义类型"
       capability:
@@ -1199,6 +1410,7 @@ zh-CN:
         regexp: "正则表达式"
         searchable: "可搜索"
         admin_only: "仅管理员"
+        has_comment: "添加注释文本字段"
       custom_value:
         value: "值"
       design_color:
@@ -1527,7 +1739,7 @@ zh-CN:
         not_available: "因系统配置而不可用。"
         not_deletable: "无法删除。"
         not_current_user: "不是当前用户。"
-        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
+        only_one_active_sprint_allowed: "每个项目只允许有一个有效冲刺。"
         not_found: "未找到"
         not_a_date: "不是有效的日期。"
         not_a_datetime: "不是有效的日期时间。"
@@ -1634,7 +1846,7 @@ zh-CN:
         meeting:
           error_conflict: "无法保存，因为会议已被其他人同时更新。请重新加载页面。"
         message:
-          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
+          cannot_move_message_to_forum_of_different_project: "无法将消息转移到其他项目的论坛。"
         notifications:
           at_least_one_channel: "至少需要指定一个发送通知的通道。"
           attributes:
@@ -1889,6 +2101,8 @@ zh-CN:
               blank: "请提供令牌名称"
               in_use: "此令牌名称已被使用，请选择其他令牌名称"
               format: "%{message}"
+        jira:
+          invalid_protocol: "请提供有效的协议（http 或 https）"
       template:
         body: "请检查以下字段："
         header:
@@ -1904,6 +2118,7 @@ zh-CN:
       comment: "评论"
       custom_action: "自定义操作"
       custom_field: "自定义字段"
+      customized: "自定义"
       "doorkeeper/application": "OAuth应用程序"
       enterprise_token:
         other: "企业令牌"
@@ -1928,6 +2143,8 @@ zh-CN:
         other: "角色"
       scim_client:
         other: "SCIM 客户端"
+      jira:
+        other: "Jira"
       status: "工作包状态"
       token/api:
         other: 访问令牌
@@ -2072,7 +2289,7 @@ zh-CN:
     role: "角色"
     roles: "角色"
     search: "搜索"
-    sprint: "Sprint"
+    sprint: "冲刺"
     start_date: "开始日期"
     status: "状态"
     state: "地区"
@@ -2423,7 +2640,8 @@ zh-CN:
       edit_attribute_groups: 编辑属性组
       gantt_pdf_export: 甘特图 PDF 导出
       ldap_groups: LDAP 用户和群组同步
-      mcp_server: MCP 服务器
+      mcp_server: Model Context Protocol (MCP)
+      meeting_templates: 可重用会议模板
       nextcloud_sso: Nextcloud存储的单点登录(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 文件存储
       placeholder_users: 占位符用户
@@ -2501,7 +2719,9 @@ zh-CN:
         title: "自定义操作"
         description: "自定义操作是一键快捷方式，指向一组预定义的操作，您可以根据状态、角色、类型或项目在某些工作包上使用这些操作。"
       mcp_server:
-        description: "通过 MCP 将 AI 智能体与 OpenProject 实例集成。"
+        description: "通过安全的 MCP 服务器将 OpenProject 引入您的 AI 工作流。"
+      meeting_templates:
+        description: "定义具有设定的议程结构的会议模板，并在创建新会议时重复使用这些模板，从而节省时间。"
       nextcloud_sso:
         title: "Nextcloud存储的单点登录(SSO)"
         description: "使用单点登录为您的 Nextcloud 存储启用无缝且安全的身份验证。简化访问管理并提升用户便利性。"
@@ -2811,17 +3031,18 @@ zh-CN:
         learn_about: "详细了解所有新功能"
         missing: "目前还没有高亮显示的功能。"
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
-            此版本包含多项新功能和改进，例如：
+            此版本包含各种新功能和改进，例如：
           new_features_list:
-            line_0: 自动化项目启动（企业版附加组件）。
-            line_1: "会议：添加新工作包或现有工作包作为成果。"
-            line_2: "Meetings: show iCal responses in OpenProject."
-            line_3: "定期会议：将议程条目复制到下一事件。"
-            line_4: "发布到社区：特性高亮显示。"
-            line_5: 在打开用户提供内容中的外部链接前发出警告（企业版附加组件）。
-            line_6: 提升了性能和用户体验，包括“活动”选项卡和“文档”模块。
+            line_0: 通过安全的 MCP 服务器实现的 AI 工作流（专业方案及更高版本）
+            line_1: 改进了项目首页，新增了预算微件，提高了可访问性
+            line_2: "会议：会议模板（基本方案及更高版本）"
+            line_3: 通过项目特性注释，提高了透明度
+            line_4: PDF 导出增强功能
+            line_5: 提高了外部链接的安全性（高级方案及更高版本）
+            line_6: 积压工作模块中的 UI/UX 改进
+            line_7: 统一的自定义字段表单
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -2839,8 +3060,10 @@ zh-CN:
   journals:
     changes_retracted: "更改已撤回。"
     caused_changes:
+      budget_deleted: "预算已删除"
       dates_changed: "日期已更改"
       default_attribute_written: "已写入只读属性"
+      import: "已导入"
       progress_mode_changed_to_status_based: "更新进度计算"
       status_changed: "状态 '%{status_name}'"
       system_update: "OpenProject 系统更新："
@@ -2848,12 +3071,22 @@ zh-CN:
       total_percent_complete_mode_changed_to_work_weighted_average: "现在按工作加权计算的 完成% 总数。"
       total_percent_complete_mode_changed_to_simple_average: "完成% 总数的计算现在仅基于完成% 值的简单平均值。"
     cause_descriptions:
+      import:
+        header: "更改者：%{author}"
+        field_changed: "“%{field}”已从 %{old_value} 更改为 %{new_value}"
+        field_set: "“%{field}”设置为 %{value}"
+        field_removed: "“%{field}”已移除"
+        field_updated: "“%{field}”已更新"
+        deleted_with_diff: "“%{field}”已删除 (%{link})"
+        changed_with_diff: "“%{field}”已更改 (%{link})"
+        set_with_diff: "“%{field}”已设置 (%{link})"
       work_package_predecessor_changed_times: 根据前置任务 %{link}的更改
       work_package_parent_changed_times: 通过对父级的更改 %{link}
       work_package_children_changed_times: 通过对子级的更改 %{link}
       work_package_related_changed_times: 通过对相关内容的更改 %{link}
       work_package_duplicate_closed: 重复的工作包自动更新了状态 %{link}
       unaccessable_work_package_changed: 通过对相关工作包的更改
+      budget_deleted: 预算已删除
       working_days_changed:
         changed: "通过更改工作日（%{changes}）"
         days:
@@ -2934,7 +3167,7 @@ zh-CN:
         active_tokens: "有效令牌"
         blank_description: "没有为您配置和激活第三方应用程序访问权限。"
         blank_title: "没有 OAuth 应用程序令牌"
-        last_used_at: "最近使用时间"
+        last_refreshed_at: "最后刷新时间"
         title: "OAuth"
         table_title: "OAuth 应用程序令牌"
         text_hint: "OAuth 应用程序令牌允许第三方应用程序与此 OpenProject 实例关联。"
@@ -3005,7 +3238,7 @@ zh-CN:
   label_added: "已添加"
   label_added_by: "由%{author}添加"
   label_added_by_on: "由 %{author} 添加 %{date}"
-  label_added_time_by: "由 %{author} %{age} 前添加"
+  label_added_time_by: "由 %{author} %{age}前添加"
   label_additional_workflow_transitions_for_assignee: "当用户是受理人时允许额外的转移"
   label_additional_workflow_transitions_for_author: "当用户是作者时允许额外转移"
   label_administration: "管理"
@@ -3020,9 +3253,9 @@ zh-CN:
   label_always_visible: "总是显示"
   label_announcement: "公告"
   label_angular: "AngularJS"
-  label_app_modules: "%{app_title} modules"
+  label_app_modules: "%{app_title} 模块"
   label_api_access_key: "API 访问键"
-  label_api_access_key_created_on: "API 访问密钥创建于 %{value} 前"
+  label_api_access_key_created_on: "API 访问密钥创建于 %{value}前"
   label_api_access_key_type: "API"
   label_auto_option: "（自动）"
   label_ical_access_key_type: "iCalendar"
@@ -3174,6 +3407,7 @@ zh-CN:
   label_duplicates: "复制"
   label_edit: "编辑"
   label_edit_x: "编辑：%{x}"
+  label_view_x: "查看：%{x}"
   label_enable_multi_select: "切换多选"
   label_enabled_project_custom_fields: "启用自定义字段"
   label_enabled_project_modules: "启用的模块"
@@ -3206,7 +3440,7 @@ zh-CN:
   label_favorite: "收藏夹"
   label_feed_plural: "订阅源"
   label_feeds_access_key: "RSS 访问密钥"
-  label_feeds_access_key_created_on: "RSS 访问密钥创建于 %{value} 前"
+  label_feeds_access_key_created_on: "RSS 访问密钥创建于 %{value}前"
   label_feeds_access_key_type: "RSS 订阅"
   label_file_plural: "文件"
   label_filter: "筛选器"
@@ -3218,7 +3452,6 @@ zh-CN:
   label_float: "浮点数"
   label_folder: "文件夹"
   label_follows: "跟踪"
-  label_force_user_language_to_default: "设置拥有非允许语言的用户的默认语言"
   label_form_configuration: "表格配置"
   label_formula: "公式"
   label_gantt_chart: "甘特图"
@@ -3278,6 +3511,7 @@ zh-CN:
   label_external_links: "外部链接"
   label_locale: "语言和地区"
   label_jump_to_a_project: "跳转到一个项目..."
+  label_jira_import: "Jira 导入"
   label_keyword_plural: "关键词"
   label_language_based: "基于用户的语言"
   label_last_activity: "最近一次活动"
@@ -3300,6 +3534,7 @@ zh-CN:
   label_lock_user: "锁定用户"
   label_logged_as: "登录用户名"
   label_login: "登录"
+  label_custom_comment: "%{name}注释"
   label_custom_logo: "自定义徽标桌面版"
   label_custom_logo_mobile: "自定义徽标移动版"
   label_custom_export_logo: "自定义导出徽标"
@@ -3583,9 +3818,9 @@ zh-CN:
   label_type_new: "新类型"
   label_type_plural: "类型"
   label_ui: "用户界面"
-  label_updated_time: "%{value} 前更新"
+  label_updated_time: "%{value}前更新"
   label_updated_time_at: "%{author} %{age}"
-  label_updated_time_by: "%{author} 于 %{age} 前更新"
+  label_updated_time_by: "%{author} 于 %{age}前更新"
   label_upgrade_guides: "升级指南"
   label_used_by: "使用于"
   label_used_by_types: "用于类型"
@@ -3595,12 +3830,6 @@ zh-CN:
   label_user_named: "用户 %{name}"
   label_user_activity: "%{value} 的活动"
   label_user_anonymous: "匿名"
-  label_user_mail_option_all: "对于我所有项目的任何事件"
-  label_user_mail_option_none: "没有事件"
-  label_user_mail_option_only_assigned: "仅为指派给我的内容"
-  label_user_mail_option_only_my_events: "仅为我关注或参与的内容"
-  label_user_mail_option_only_owner: "仅为我是所有者的内容"
-  label_user_mail_option_selected: "只对于所选项目的任何事件......"
   label_user_menu: "用户菜单"
   label_user_new: "新用户"
   label_user_plural: "用户"
@@ -3640,7 +3869,6 @@ zh-CN:
   label_wiki_show_index_page_link: "显示‘目录’子菜单项"
   label_wiki_show_menu_item: "显示为项目导航中的菜单项"
   label_wiki_show_new_page_link: "显示‘创建新的子页面’子菜单项"
-  label_wiki_show_submenu_item: "显示为子菜单项"
   label_wiki_start: "起始页"
   label_work: "工时"
   label_work_package: "工作包"
@@ -3919,12 +4147,13 @@ zh-CN:
   notice_parent_item_not_found: "未找到父项"
   notice_project_not_deleted: "项目没有被删除"
   notice_project_not_found: "未找到项目。"
+  notice_smtp_address_unsafe: "SMTP 地址 %{address} 不安全。请将其添加到 OPENPROJECT_SSRF_PROTECTION_ALLOWLIST。"
   notice_successful_connection: "成功连接。"
   notice_successful_create: "成功创建。"
   notice_successful_delete: "成功删除。"
   notice_successful_cancel: "取消成功"
   notice_successful_update: "成功更新。"
-  notice_successful_move: "Successful move from %{from} to %{to}."
+  notice_successful_move: "成功从 %{from} 移动到 %{to}。"
   notice_unsuccessful_create: "创建失败。"
   notice_unsuccessful_create_with_reason: "创建失败：%{reason}"
   notice_unsuccessful_update: "更新失败。"
@@ -4084,7 +4313,7 @@ zh-CN:
   permission_edit_project_query: "编辑项目查询"
   placeholders:
     default: "-"
-    templated_hint: Automatically generated through type %{type}
+    templated_hint: 通过“%{type}”类型自动生成
   portfolio:
     count:
       zero: "0 个项目组合"
@@ -4267,9 +4496,9 @@ zh-CN:
   setting_capture_external_links: "捕获外部链接"
   setting_capture_external_links_text: >
     启用后，格式化文本中的所有外部链接在离开应用程序前都会重定向至警告页面。这有助于保护用户免受潜在恶意外部网站的危害。
-  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login: "需要用户登录"
   setting_capture_external_links_require_login_text: >
-    When enabled, users wanting to click on external links need to be logged in before being able to continue.
+    启用后，想要点击外部链接的用户需要先登录，然后才能继续操作。
   setting_after_first_login_redirect_url: "首次登录重定向"
   setting_after_first_login_redirect_url_text_html: >
     设置用户首次登录后的重定向路径。如果该路径为空，则重定向到主页以进行导览介绍。 <br/> 示例： <code>/my/page</code>
@@ -4314,9 +4543,9 @@ zh-CN:
   setting_smtp_password: "SMTP 密码"
   setting_smtp_domain: "SMTP HELO 域"
   setting_activity_days_default: "项目活动显示的天数"
-  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled: "启用 API 令牌"
   setting_api_tokens_enabled_caption: >
-    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
+    决定用户是否可以在帐户设置中创建个人 API 令牌。这些令牌可用于访问 OpenProject 的不同 API，如 APIv3 和 MCP。
   setting_app_subtitle: "应用副标题"
   setting_app_title: "应用程序标题"
   setting_attachment_max_size: "最大的附件大小"
@@ -4704,7 +4933,7 @@ zh-CN:
   text_default_administrator_account_changed: "更改默认管理员帐户"
   text_default_encoding: "默认值： UTF-8"
   text_destroy: "删除"
-  text_destroy_with_associated: "有额外的对象关联到要删除的工作包。这些对象是以下类型："
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "你想做什么？"
   text_diff_truncated: "...这个比较被截断，因为它超出了可显示的最大大小。"
   text_email_delivery_not_configured: "电子邮件传送未配置，通知已禁用。\n配置您的 SMTP 服务器将其启用。"
@@ -4743,7 +4972,6 @@ zh-CN:
   text_length_between: "长度介于 %{min} 和 %{max} 个字符。"
   text_line_separated: "允许有多个值 （每行一个值）。"
   text_load_default_configuration: "加载默认配置"
-  text_min_max_length_info: "0 表示没有限制"
   text_no_roles_defined: 没有定义的角色。
   text_no_access_tokens_configurable: "没有可配置的访问令牌。"
   text_no_configuration_data: "角色、类型、工作包状态和工作流尚未配置。\n强烈建议加载默认配置。之后您可以再进行修改。"
@@ -4758,7 +4986,6 @@ zh-CN:
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "只有小写字母 (a-z)、 数字、 短划线和下划线被允许，必须以小写字母开头。"
   text_reassign: "重新分配工作包:"
-  text_regexp_info: "例如 ^ [A-Z0-9]+$"
   text_regexp_multiline: '以多行模式应用正则表达式，如 ^---\s+'
   text_repository_usernames_mapping: "选择或更新每个在存储库日志中发现的用户名所映射到的 OpenProject 用户。\n使用相同 OpenProject 和存储库用户名或电子邮件的用户已被自动映射。"
   text_status_changed_by_changeset: "被实施在更改集 %{value} 中。"
@@ -4856,11 +5083,10 @@ zh-CN:
     reset_failed_logins: "重置失败的帐户"
     status_user_and_brute_force: "%{user} 和 %{brute_force}"
     status_change: "状态更改"
-    text_change_disabled_for_provider_login: "名称由您的登录提供商设置，因此无法更改。"
-    text_change_disabled_for_ldap_login: "姓名和电子邮件由 LDAP 设置，因此无法更改。"
+    text_change_disabled_for_provider_login: "名称和电子邮件地址由您的登录提供商设置，因此无法更改。"
     unlock: "解锁​​​​"
     unlock_and_reset_failed_logins: "解锁和重置失败的帐户"
-    error_cannot_delete_user: "User cannot be deleted"
+    error_cannot_delete_user: "无法删除用户"
   version_status_closed: "关闭"
   version_status_locked: "锁定"
   version_status_open: "打开"

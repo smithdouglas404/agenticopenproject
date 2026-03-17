@@ -82,21 +82,27 @@ For each work package, a table of attributes is included, where attributes corre
 
 The table of attributes is followed by the work package description and, if necessary, custom long text fields, which support [embedded work package and project attributes](../../wysiwyg/#attributes).
 
-> [!TIP]
-> If you used page breaks in work package descriptions, contents will be split into separate pages accordingly. 
+##### Page breaks 
+
+If you used page breaks in work package descriptions, contents will be split into separate pages accordingly. 
 
 ![OpenProject_pdf_report_export](openproject-pdf-export-work-plans.png)
 
-> [!TIP]
-> If ["display sums" is activated](../work-package-table-configuration/) in the work package table, then the sum table is included between the table of contents and work packages description in an Overview section.
+##### Display sums 
+If ["display sums" is activated](../work-package-table-configuration/) in the work package table, then the sum table is included between the table of contents and work packages description in an Overview section.
 
-![OpenProject_work_package_table_sum](openproject_wp_table_total_sum.png)
+![A work package table in OpenProject, highlighting total sum under the work packages list](openproject_wp_table_total_sum.png)
 
-![OpenProject_pdf_report_sum](openproject_wp_report_total_sum.png)
+![A PDF export in OpenProject, highlighting a dedicated section to values from *Total sum* field in work packages table](openproject_wp_report_total_sum.png)
+
+##### Display relations
+If relations, such as *children*, *blocked by*, *followed by*, etc. are included in the report as columns, they will be included in dedicated blocks.
+
+![A pdf export of OpenProject work packages, displaying dedicated sections to existing work package relations](openproject_pdf_report_relations.png)
 
 #### PDF Report with images
 
-If you select the **Include images** option, your PDF Report will include the images from the work package description.
+If you select the **Include images** option, your PDF Report will include the images from the work package description. Supported formats include PNG, JPG, WebP. If an animated WebP or a GIF is used, the first frame will be included into the report.
 
 ![Include images in OpenProject work packages export](openproject_wp_report_include_images_checked.png)
 

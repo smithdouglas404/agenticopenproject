@@ -70,7 +70,7 @@ th:
   label_filter: "ตัวกรอง"
   label_filter_add: "Add Filter"
   label_filter_plural: "ตัวกรอง"
-  label_group_by: "Group by"
+  label_group_by: "จัดกลุ่มโดย"
   label_group_by_add: "Add Group-by Attribute"
   label_inactive: "«inactive»"
   label_no: "ไม่ใช่"

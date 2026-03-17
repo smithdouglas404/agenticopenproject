@@ -2,7 +2,7 @@ name: create-merge-release-into-dev-pr
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 3 * * *' # Daily at 03:30
+    - cron: "30 3 * * *" # Daily at 03:30
 
 env:
   BASE_BRANCH: dev
@@ -10,25 +10,26 @@ env:
 permissions: {}
 jobs:
   setup:
+    if: github.repository == 'opf/openproject'
     runs-on: ubuntu-latest
     outputs:
       latest_release_branch: ${{ steps.find_latest_release.outputs.branch }}
     steps:
-    - id: find_latest_release
-      env:
-        GITHUB_TOKEN: ${{ secrets.OPENPROJECTCI_GH_CORE_PAT }}
-        GITHUB_REPOSITORY: ${{ github.repository }}
-      run: |
-        BRANCH=$(curl -H "Authorization: token $GITHUB_TOKEN" \
-          https://api.github.com/repos/$GITHUB_REPOSITORY/branches?protected=true | \
-          jq -r '.[].name' | grep '^release/' | sort --version-sort | tail -1
-        )
-        if [ "$BRANCH" = "" ]; then
-          echo "Invalid release branch found: $BRANCH"
-          exit 1
-        fi
+      - id: find_latest_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.OPENPROJECTCI_GH_CORE_PAT }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          BRANCH=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/$GITHUB_REPOSITORY/branches?protected=true | \
+            jq -r '.[].name' | grep '^release/' | sort --version-sort | tail -1
+          )
+          if [ "$BRANCH" = "" ]; then
+            echo "Invalid release branch found: $BRANCH"
+            exit 1
+          fi
 
-        echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
+          echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
 
   merge-or-create-pr:
     env:
@@ -56,8 +57,14 @@ jobs:
       - name: Resolve bug in git https://stackoverflow.com/a/63879454/96823
         run: git repack -d
 
-      - name: Get one commit more to connect the history of dev and release branches
-        run: git fetch --deepen 1 origin "$BASE_BRANCH" "$RELEASE_BRANCH"
+      - name: Get more commits to connect the history of dev and release branches
+        run: |
+          for i in $(seq 1 10); do
+            git fetch --deepen 10 origin "$BASE_BRANCH" "$RELEASE_BRANCH"
+            git merge-base --all HEAD origin/"$RELEASE_BRANCH" && exit 0
+          done
+          echo "Failed to fetch merge base" >&2
+          exit 1
 
       - name: Create branch without checkout just to have shorter automatic commit message
         run: git branch "$RELEASE_BRANCH" origin/"$RELEASE_BRANCH"

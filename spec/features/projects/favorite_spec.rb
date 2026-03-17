@@ -63,7 +63,7 @@ RSpec.describe "Favorite projects", :js do
 
       click_link_or_button(accessible_name: "Add to favorites")
 
-      expect(page).to have_css "a", accessible_name: "Remove from favorite"
+      expect(page).to have_css "a", accessible_name: "Remove from favorites"
 
       project.reload
       expect(project).to be_favorited_by(user)

@@ -37,7 +37,9 @@ RSpec.describe "Persisted lists on projects index page",
   shared_let(:user) { create(:user) }
 
   shared_let(:manager)   { create(:project_role, name: "Manager") }
-  shared_let(:developer) { create(:project_role, name: "Developer") }
+  # The permission is not necessary for any of the tests. But it enables one more code path
+  # where a regression occured before (#72362).
+  shared_let(:developer) { create(:project_role, name: "Developer", permissions: %i(export_projects)) }
 
   shared_let(:custom_field) { create(:text_project_custom_field) }
   shared_let(:invisible_custom_field) { create(:project_custom_field, admin_only: true) }

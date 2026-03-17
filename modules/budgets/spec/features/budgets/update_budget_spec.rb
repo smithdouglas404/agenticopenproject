@@ -28,7 +28,7 @@
 
 require_relative "../../spec_helper"
 
-RSpec.describe "updating a budget", :js do
+RSpec.describe "updating a budget", :js, with_settings: { costs_currency: "EUR" } do
   let(:project) do
     create(:project_with_types,
            enabled_module_names: %i[budgets costs work_package_tracking],

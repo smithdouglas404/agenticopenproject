@@ -2,10 +2,12 @@ hu:
   js:
     grid:
       add_widget: 'Widget hozzáadása'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Widget eltávolítása'
       configure: 'Widget konfigurálása'
       widgets:
         missing_permission: "Nincs meg a szükséges jogosultsága a widget megtekintéséhez."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Egyéni szöveg'
         documents:
@@ -17,7 +19,6 @@ hu:
           title: 'Hírek'
         project_description:
           title: 'Description'
-          no_results: "Még nem írt leírást. Az egyik megtalálható a 'Projekt beállításai' részben."
         project_status:
           title: 'Status'
           not_started: 'El nem kezdett'

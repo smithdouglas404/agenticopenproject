@@ -25,5 +25,5 @@ he:
       properties:
         storyPoints: "Story Points"
     burndown:
-      day: "Day"
-      points: "Points"
+      day: "יום"
+      points: "נקודות"

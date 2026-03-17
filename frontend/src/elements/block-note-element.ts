@@ -31,7 +31,6 @@
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { Application } from '@hotwired/stimulus';
-import ExternalLinksController from 'core-stimulus/controllers/external-links.controller';
 import FlashController from 'core-stimulus/controllers/flash.controller';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { ShadowDomWrapper } from 'op-blocknote-extensions';
@@ -46,6 +45,7 @@ class BlockNoteElement extends HTMLElement {
   private errorContainer:HTMLDivElement;
   private reactRoot:Root|null = null;
   private stimulusApp:Application|null = null;
+  private renderCallback:((provider?:HocuspocusProvider) => void) | null = null;
 
   constructor() {
     super();
@@ -72,7 +72,6 @@ class BlockNoteElement extends HTMLElement {
     this.errorContainer.dataset.flashAutohideValue = 'true';
 
     this.editorMount = document.createElement('div');
-    this.editorMount.dataset.controller = 'external-links';
 
     this.stimulusRoot.appendChild(this.errorContainer);
     this.stimulusRoot.appendChild(this.editorMount);
@@ -99,27 +98,32 @@ class BlockNoteElement extends HTMLElement {
     // Initialize Stimulus application within shadow DOM
     this.stimulusApp = Application.start(this.stimulusRoot);
     this.stimulusApp.register('flash', FlashController);
-    this.stimulusApp.register('external-links', ExternalLinksController);
 
     // Initialize React application within shadow DOM
     this.reactRoot = createRoot(this.editorMount);
 
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
 
-    const render = (provider?:HocuspocusProvider) => {
+    this.renderCallback = (provider?:HocuspocusProvider) => {
       this.reactRoot?.render(
         React.createElement(React.StrictMode, null, this.BlockNoteReactContainer(provider))
       );
     };
 
     if (collaborationEnabled) {
-      LiveCollaborationManager.onReady(render);
+      LiveCollaborationManager.onReady(this.renderCallback);
     } else {
-      render();
+      this.renderCallback();
     }
   }
 
   disconnectedCallback() {
+    // Deregister before unmount to prevent stale callbacks firing into a detached element
+    if (this.renderCallback) {
+      LiveCollaborationManager.offReady(this.renderCallback);
+      this.renderCallback = null;
+    }
+
     if (this.reactRoot) {
       this.reactRoot.unmount();
       this.reactRoot = null;

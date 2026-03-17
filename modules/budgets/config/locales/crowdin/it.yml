@@ -39,6 +39,12 @@ it:
         base_amount: "Importo base"
       work_package:
         budget_subject: "Titolo del bilancio"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "non è un membro del progetto di budget"
     models:
       budget: "Bilancio"
       material_budget_item: "Unità"
@@ -56,6 +62,40 @@ it:
   caption_labor_costs: "Costo del lavoro effettivo"
   caption_material_costs: "Costi effettivi unitari"
   budgets_title: "Budget"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Totali del budget"
+        remaining_budget: "Budget rimanente"
+        spent_budget: "Budget speso"
+        total_actual_costs: "Totale costi effettivi"
+        total_planned_budget: "Budget totale pianificato"
+      budget_by_cost_type:
+        title: "Budget per tipo di costo"
+        blankslate:
+          heading: "Avvia il controllo del progetto"
+          description: "Ottieni una panoramica dei tuoi budget e costi per monitorare in modo efficiente lo stato di salute del tuo progetto"
+        blankslate_zero:
+          heading: "Dettagli del budget mancanti"
+          description: "Aggiungi dettagli sul tuo budget pianificato per visualizzare i dati qui"
+        count_caption:
+          zero: "Nessun dato di budget."
+          one: "Dati aggregati da %{count} budget"
+          other: "Dati aggregati da %{count} budget"
+        count_caption_with_subitems:
+          project:
+            zero: "Nessun dato di budget."
+            one: "Dati aggregati da %{count} budget incluso in questo progetto e nei suoi sottoelementi."
+            other: "Dati aggregati da %{count} budget inclusi in questo progetto e nei suoi sottoelementi."
+          program:
+            zero: "Nessun dato di budget."
+            one: "Dati aggregati da %{count} budget incluso in questo programma e nei suoi sottoelementi."
+            other: "Dati aggregati da %{count} budget inclusi in questo programma e nei suoi sottoelementi."
+          portfolio:
+            zero: "Nessun dato di budget."
+            one: "Dati aggregati da %{count} budget incluso in questo portfolio e nei suoi sottoelementi."
+            other: "Dati aggregati da %{count} budget inclusi in questo portfolio e nei suoi sottoelementi."
+        view_details: "Visualizza i dettagli del budget"
   events:
     budget: "Bilancio modificato"
   help_click_to_edit: "Clicca qui per modificare."

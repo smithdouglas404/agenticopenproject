@@ -20,7 +20,7 @@ it:
       action: "Scheda d'azione (%{attribute})"
     board_type_attributes:
       assignee: Assegnatario
-      status: Stato
+      status: Kanban
       version: Versione
       subproject: Sottoprogetto
       subtasks: genitore-figlio

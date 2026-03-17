@@ -179,6 +179,64 @@ The work package table widget includes a work package table to the project home.
 
 ![Work packages table widget on a project home page in OpenProject](openproject_user_guide_project_home_wp_table_widget.png)
 
+## Budgets widgets
+
+> [!NOTE]
+> Budgets widgets are only available on the **Overview tab** of a project home page.
+
+Budgets widgets provide a quick overview of the financial status of a project. They summarize planned budgets, actual costs, and remaining budget based on the budgets defined in the project.
+
+![Example of budgets widgets under Overview tab on project home page in OpenProject](openproject_user_guide_project_overview_budgets_widgets.png)
+
+### Prerequisites
+
+Budgets widgets are only displayed if the following conditions are met:
+- Both **Budgets** and **Time and costs** modules are activated in the project.
+- At least one budget exists in the project or one of its subprojects. Some widgets may display placeholder messages if no cost data has been entered yet.
+- At least one work package is assigned to a budget.
+- The user has these necessary permissions to view the financial information:
+  - View budgets
+  - View booked costs
+  - View cost rates
+  - View spent time
+  - View all hourly rates
+- The user has to have a defined hourly rate.
+- At least one time and/or unit costs entry is logged for the work package (the work package that is assigned to a budget). If no relevant data is available, the widgets display guidance messages. For example if **no budgets exist**, the widget encourages creating a budget.
+
+### Aggregation across project hierarchy
+
+Budget data is aggregated across the project hierarchy. Budgets from the hierarchy are counted **only once**
+
+If a project has sub-projects, the widgets display the **aggregated values of budgets from the current project and its sub-projects**, provided the user has permission to view those projects and their financial data.
+
+### Budget summary widgets
+
+Four summary widgets provide a quick overview of the financial situation of the project:
+
+- **Total actual costs** – the sum of recorded labor and unit costs
+- **Total planned budget** – the total planned amount from all budgets
+- **Spent budget** – the percentage of the planned budget that has already been spent
+- **Remaining budget** – the difference between planned budget and actual costs
+
+
+### Budget by cost type
+
+The **Budget by cost type** widget displays a **pie chart** showing the distribution of planned budget across different cost types, including: 
+- All cost types currently used in the budgets
+- **Labor costs** as an additional cost type (if greater than 0)
+
+Click the **View budget details** link at the bottom of the widget to open the budgets page for the current project.
+
+
+### Actual costs per month
+
+The **Actual costs per month** widget displays a **stacked bar chart** showing the monthly actual costs for the **last 12 full calendar months**, ending with the current month. Each bar represents one month, each color indicates a different cost type.
+
+Actual costs include labor costs from logged time and unit costs from cost entries
+
+Click the  **View actual cost details** link at the bottom of the widget to open the cost reports filtered for the current project.
+
+
 ## Resize and reorder widgets
 
 To **reorder** a widget, click the dots icon on the upper left hand corner and drag the widget with the mouse to the new position.

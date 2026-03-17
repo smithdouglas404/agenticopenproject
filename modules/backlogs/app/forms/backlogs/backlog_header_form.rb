@@ -45,6 +45,8 @@ module Backlogs
       f.group(layout: :horizontal) do |dates|
         dates.single_date_picker(
           name: :start_date,
+          input_width: :xsmall,
+          full_width: false,
           label: attribute_name(:start_date),
           placeholder: attribute_name(:start_date),
           visually_hide_label: true,
@@ -52,6 +54,8 @@ module Backlogs
         )
         dates.single_date_picker(
           name: :effective_date,
+          input_width: :xsmall,
+          full_width: false,
           label: attribute_name(:effective_date),
           placeholder: attribute_name(:effective_date),
           visually_hide_label: true,

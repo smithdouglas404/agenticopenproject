@@ -27,13 +27,11 @@ In OpenProject, work packages can have different **types** (for example *User st
 
 ### Select story types
 
-The currently selected story types are shown in the **Selected type** section. Click the section to open the select panel, adjust the selection (multiple selections are possible), and click **Apply** to save your changes and close the panel.
-
-![Select story types for sprints in Backlog administration settings in OpenProject](openproject_system_admin_guide_backlogs_select_story_types.png)
+The currently selected story types are shown in the **Story types** field. Click the field to open and adjust the selection in the dropdown menu (multiple selections are possible).![Select story types for sprints in Backlog administration settings in OpenProject](openproject_system_admin_guide_backlogs_select_story_types.png)
 
 ### Select task type
 
-The task type is configured in the same way as story types, but only one work package type can be selected. Click the **Selected types** section, choose one work package type, and click **Apply**.
+The task type is configured in the same way as story types, but only one work package type can be selected. Click the **Task type** field and choose one work package type from the dropdown menu.
 
 > [!NOTE]
 > Work package types selected for Story types and Task types must be different. For example, a *User story* can be selected for a story type OR a task type, but not both at the same time. It will not be selectable for *Story types*, as long as it is selected as a *Task type*, and vice versa.

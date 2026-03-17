@@ -39,6 +39,12 @@ tr:
         base_amount: "Matrah tutarı"
       work_package:
         budget_subject: "Bütçe başlığı"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "is not a member of the budget's project"
     models:
       budget: "Bütçe"
       material_budget_item: "Birim"
@@ -56,6 +62,40 @@ tr:
   caption_labor_costs: "Gerçek iş gücü maliyetleri"
   caption_material_costs: "Gerçek birim maliyetler"
   budgets_title: "Bütçeler"
+  budgets:
+    widgets:
+      budget_totals:
+        title: "Bütçe toplamları"
+        remaining_budget: "Kalan bütçe"
+        spent_budget: "Harcanan bütçe"
+        total_actual_costs: "Toplam gerçek maliyetler"
+        total_planned_budget: "Planlanan toplam bütçe"
+      budget_by_cost_type:
+        title: "Maliyet türüne göre bütçe"
+        blankslate:
+          heading: "Proje kontrolüne başlayın"
+          description: "Projenizin sağlık durumunu verimli bir şekilde takip etmek için bütçelerinize ve maliyetlerinize genel bir bakış elde edin"
+        blankslate_zero:
+          heading: "Budget details missing"
+          description: "Add details about your planned budget to see data here"
+        count_caption:
+          zero: "No budget data."
+          one: "Data aggregated from %{count} budget"
+          other: "Data aggregated from %{count} budgets"
+        count_caption_with_subitems:
+          project:
+            zero: "No budget data."
+            one: "Data aggregated from %{count} budget included in this project and its subitems."
+            other: "Data aggregated from %{count} budgets included in this project and its subitems."
+          program:
+            zero: "No budget data."
+            one: "Data aggregated from %{count} budget included in this program and its subitems."
+            other: "Data aggregated from %{count} budgets included in this program and its subitems."
+          portfolio:
+            zero: "No budget data."
+            one: "Data aggregated from %{count} budget included in this portfolio and its subitems."
+            other: "Data aggregated from %{count} budgets included in this portfolio and its subitems."
+        view_details: "Bütçe ayrıntılarını görüntüle"
   events:
     budget: "Bütçe düzenlendi"
   help_click_to_edit: "Düzenlemek için buraya tıklayın."

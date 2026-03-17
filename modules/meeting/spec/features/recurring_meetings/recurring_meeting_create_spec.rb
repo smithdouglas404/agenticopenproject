@@ -74,6 +74,10 @@ RSpec.describe "Recurring meetings creation",
     travel_to(Date.new(2024, 12, 1))
   end
 
+  after do
+    travel_back
+  end
+
   context "with a user with permissions" do
     it "can create a recurring meeting" do
       login_as current_user

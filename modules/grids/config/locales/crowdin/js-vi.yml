@@ -2,10 +2,12 @@ vi:
   js:
     grid:
       add_widget: 'Thêm tiện ích'
+      widget_menu_label: 'Show menu options for %{widgetName} widget'
       remove: 'Xóa tiện ích'
       configure: 'Định cấu hình tiện ích'
       widgets:
         missing_permission: "Bạn không có quyền cần thiết để xem tiện ích này."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Văn bản tùy chỉnh'
         documents:
@@ -17,7 +19,6 @@ vi:
           title: 'tin tức'
         project_description:
           title: 'mô tả'
-          no_results: "Chưa có mô tả nào được viết. Một cái có thể được cung cấp trong 'Cài đặt dự án'."
         project_status:
           title: 'trạng thái'
           not_started: 'Chưa bắt đầu'

@@ -37,6 +37,14 @@ module OpenProject::Backlogs::Patches::VersionPatch
   end
 
   module InstanceMethods
+    def used_as_backlog?(project = self.project)
+      return false unless project.backlogs_enabled?
+
+      settings = version_settings&.where(project:)&.first
+
+      !!settings&.display_right?
+    end
+
     def rebuild_story_positions(project = self.project)
       return unless project.backlogs_enabled?
 

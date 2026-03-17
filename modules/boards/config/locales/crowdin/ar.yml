@@ -20,7 +20,7 @@ ar:
       action: "Action board (%{attribute})"
     board_type_attributes:
       assignee: المُسند إليه
-      status: الحالة
+      status: Kanban
       version: الإصدار
       subproject: مشروع فرعي
       subtasks: الاصل والفرع
