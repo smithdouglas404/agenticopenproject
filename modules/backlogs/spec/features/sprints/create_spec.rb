@@ -84,6 +84,12 @@ RSpec.describe "Create", :js do
       end
     end
 
+    it "renders the menu" do
+      within "#main-menu" do
+        expect(page).to have_css(".selected", text: "Sprint planning")
+      end
+    end
+
     context "with the 'create_sprints' permissions" do
       let(:start_date) { Date.new(2025, 10, 5) }
       let(:start_date_fmt) { start_date.strftime("%Y-%m-%d") }
