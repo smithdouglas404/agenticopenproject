@@ -29,43 +29,45 @@
 #++
 
 module Projects::CreationWizard
-  class ReuploadArtifactOnStatusChangesService
-    prepend Projects::Concerns::UpdateDemoData
+  class SubmitArtifactService
+    attr_reader :user, :project
 
-    attr_reader :current_user, :artifact_work_package
-
-    delegate :project, to: :artifact_work_package
-
-    def initialize(current_user:, work_package:)
-      @current_user = current_user
-      @artifact_work_package = work_package
+    def initialize(user:, project:)
+      @user = user
+      @project = project
     end
 
-    def call!(changes:)
-      return if changes["status_id"].blank?
-      return unless update_is_artifact_work_package?
-
-      User.execute_as_admin(current_user) do
-        update_artifact
+    def call
+      if artifact_work_package_exists?
+        upload_artifact
+      else
+        create_artifact_work_package
       end
-    end
-
-    def update_is_artifact_work_package?
-      project.project_creation_wizard_artifact_work_package_id.to_s == artifact_work_package.id.to_s
     end
 
     private
 
-    def update_artifact
-      call = UploadArtifactService
-        .new(user: current_user, project:, work_package: artifact_work_package)
+    def artifact_work_package_exists?
+      WorkPackage.exists?(project.project_creation_wizard_artifact_work_package_id)
+    end
+
+    def create_artifact_work_package
+      CreateArtifactWorkPackageService
+        .new(user:, model: project)
+        .call
+    end
+
+    def upload_artifact
+      work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+      upload_call = UploadArtifactService
+        .new(user:, project:, work_package:)
         .call
 
-      if call.success?
-        Rails.logger.debug { "Updated artifact for creation wizard in ##{artifact_work_package.id}" }
-      else
-        Rails.logger.error("Failed to process artifact change for ##{artifact_work_package.id}: ##{call.message}")
+      service_call = ServiceResult.success(result: project)
+      upload_call.on_failure do
+        service_call.merge!(upload_call, without_success: true)
       end
+      service_call
     end
   end
 end
