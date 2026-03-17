@@ -43,7 +43,9 @@ module API
             # Handle redirect for historical identifier in :of query param
             if params[:of]
               @of_project = Project.find(params[:of])
-              redirect_if_historical_identifier(:of, @of_project)
+              redirect_if_historical_project_identifier(params[:of], @of_project) do
+                api_v3_paths.projects_available_parents(of: @of_project.identifier)
+              end
             end
           end
 

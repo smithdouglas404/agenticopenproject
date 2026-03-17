@@ -71,7 +71,9 @@ module API
                            Project.visible(current_user)
                          end.find(params[:id])
 
-              redirect_if_historical_identifier(:id, @project)
+              redirect_if_historical_project_identifier(params[:id], @project) do
+                api_v3_paths.project(@project.identifier)
+              end
             end
 
             mount API::V3::Projects::Copy::CopyAPI

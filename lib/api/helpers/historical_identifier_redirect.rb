@@ -31,52 +31,21 @@
 module API
   module Helpers
     module HistoricalIdentifierRedirect
-      # Redirects API requests using a historical project identifier to the canonical URL
-      # with the project's current identifier.
+      # Issues a 301 redirect to the canonical URL when the request uses a historical
+      # project identifier. The canonical URL is provided by the caller via a block,
+      # which is only evaluated when a redirect is actually needed.
       #
-      # Returns a 301 Moved Permanently response when the request uses a historical
-      # (retired) project identifier. This ensures API responses always use canonical URLs.
-      #
-      # @param identifier_param [Symbol] The route parameter name (e.g., :id, :project, :of)
+      # @param param_value [String] The identifier value from the request params
       # @param project [Project] The loaded project instance
+      # @yieldreturn [String] The canonical URL to redirect to
       #
-      # @example In a Grape API endpoint
-      #   route_param :id do
-      #     after_validation do
-      #       helpers ::API::Helpers::HistoricalIdentifierRedirect
-      #       @project = Project.find(params[:id])
-      #       redirect_if_historical_identifier(:id, @project)
-      #     end
+      # @example
+      #   redirect_if_historical_project_identifier(params[:id], @project) do
+      #     api_v3_paths.project(@project.identifier)
       #   end
-      def redirect_if_historical_identifier(identifier_param, project)
-        param_value = params[identifier_param]
-
-        # Only redirect if:
-        # 1. The parameter is a friendly_id slug (not numeric ID)
-        # 2. The parameter doesn't match the project's current identifier
+      def redirect_if_historical_project_identifier(param_value, project)
         if request.get? && param_value.friendly_id? && param_value != project.identifier
-          # Reconstruct only the path and query string, not the full URL
-          # This prevents Host header injection and open redirect attacks
-          path = request.path
-          query_string = request.query_string
-
-          # Replace the old identifier in the path
-          new_path = path.sub(
-            %r{(/)#{Regexp.escape(param_value)}(/|$)},
-            "\\1#{project.identifier}\\2"
-          )
-
-          # Replace the old identifier in query parameters if present
-          if query_string.present?
-            new_query_string = query_string.gsub(
-              /(\A|&)#{Regexp.escape(identifier_param.to_s)}=#{Regexp.escape(param_value)}(&|\z)/,
-              "\\1#{identifier_param}=#{CGI.escape(project.identifier)}\\2"
-            )
-            new_path += "?#{new_query_string}"
-          end
-
-          # Return 301 Moved Permanently with path-only redirect
-          redirect new_path, permanent: true
+          redirect yield, permanent: true
         end
       end
     end

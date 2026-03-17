@@ -39,7 +39,9 @@ module API
 
               after_validation do
                 @project = Project.find(params[:id])
-                redirect_if_historical_identifier(:id, @project)
+                redirect_if_historical_project_identifier(params[:id], @project) do
+                  "/api/bcf_xml_api/projects/#{@project.identifier}"
+                end
               end
 
               namespace "bcf_xml" do

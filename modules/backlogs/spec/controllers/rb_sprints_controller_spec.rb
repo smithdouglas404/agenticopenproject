@@ -510,7 +510,7 @@ RSpec.describe RbSprintsController do
     end
   end
 
-  describe "historic identifier handling" do
+  describe "historic identifier handling", with_flag: { scrum_projects: true } do
     let(:user) { create(:user, member_with_permissions: { project => %i[view_sprints create_sprints] }) }
     let(:project) { create(:project) }
     let!(:old_identifier) { project.identifier }

@@ -106,7 +106,9 @@ module API
                   raise404
                 end
 
-                redirect_if_historical_identifier(:project, @project)
+                redirect_if_historical_project_identifier(params[:project], @project) do
+                  api_v3_paths.work_package_schema(@project.identifier, params[:type])
+                end
 
                 authorize_in_any_work_package(:view_work_packages, in_project: @project) do
                   raise404
