@@ -52,7 +52,8 @@ See COPYRIGHT and LICENSE files for more details.
              backlogs__story_id_value: story.id,
              backlogs__story_split_url_value: details_backlogs_project_backlogs_path(project, story),
              backlogs__story_full_url_value: work_package_path(story),
-             backlogs__story_selected_class: "Box-row--blue"
+             backlogs__story_selected_class: "Box-row--blue",
+             test_selector: card_test_selector(story)
            ),
            tabindex: 0
          ) do %>

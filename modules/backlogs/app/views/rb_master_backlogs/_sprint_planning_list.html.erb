@@ -100,7 +100,7 @@ See COPYRIGHT and LICENSE files for more details.
             end
           end %>
 
-        <%= render(Backlogs::SprintComponent.with_collection(@sprints)) %>
+        <%= render(Backlogs::SprintComponent.with_collection(@sprints, project: @project)) %>
       </div>
     </div>
   <% end %>

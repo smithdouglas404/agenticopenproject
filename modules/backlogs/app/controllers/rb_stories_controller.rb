@@ -184,7 +184,7 @@ class RbStoriesController < RbApplicationController
   end
 
   def replace_sprint_component_via_turbo_stream(sprint:)
-    replace_via_turbo_stream(component: Backlogs::SprintComponent.new(sprint: sprint))
+    replace_via_turbo_stream(component: Backlogs::SprintComponent.new(sprint: sprint, project: @project))
   end
 
   def legacy_load_story

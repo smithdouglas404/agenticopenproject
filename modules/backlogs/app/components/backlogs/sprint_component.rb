@@ -34,14 +34,13 @@ module Backlogs
     include OpTurbo::Streamable
     include RbCommonHelper
 
-    attr_reader :sprint, :current_user
+    attr_reader :sprint, :current_user, :project
 
-    delegate :project, to: :sprint
-
-    def initialize(sprint:, current_user: User.current, **system_arguments)
+    def initialize(sprint:, project:, current_user: User.current, **system_arguments)
       super()
 
       @sprint = sprint
+      @project = project
       @current_user = current_user
 
       @system_arguments = system_arguments
@@ -50,12 +49,13 @@ module Backlogs
       @system_arguments[:padding] = :condensed
       @system_arguments[:data] = merge_data(
         @system_arguments,
-        { data: drop_target_config }
+        { data: drop_target_config },
+        { data: { test_selector: "sprint-#{sprint.id}" } }
       )
     end
 
     def stories
-      sprint.work_packages
+      sprint.work_packages.where(project: @project).order(:position)
     end
 
     def wrapper_uniq_by
@@ -87,6 +87,10 @@ module Backlogs
         draggable_type: "story",
         drop_url: move_project_sprint_story_path(project, sprint, story)
       }
+    end
+
+    def card_test_selector(story)
+      "work-package-#{story.id}"
     end
   end
 end
