@@ -47,7 +47,7 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <% content_for :content_body do %>
-  <%= render partial: "sprint_planning_list" %>
+  <%= turbo_frame_tag :backlogs_container, refresh: :morph, src: sprint_planning_backlogs_project_backlogs_path(@project) %>
 <% end %>
 
 <% content_for :content_body_right do %>

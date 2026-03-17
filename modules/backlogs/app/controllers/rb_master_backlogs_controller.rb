@@ -76,7 +76,7 @@ class RbMasterBacklogsController < RbApplicationController
 
   def split_view_base_route
     if OpenProject::FeatureDecisions.scrum_projects_active?
-      sprint_planning_backlogs_project_backlogs_path(@project)
+      sprint_planning_backlogs_project_backlogs_path(request.query_parameters)
     else
       backlogs_project_backlogs_path(request.query_parameters)
     end

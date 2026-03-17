@@ -81,6 +81,40 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
     end
   end
 
+  describe "GET #sprint_planning" do
+    context "without the scrum project feature flag" do
+      it "is not successful" do
+        get "/projects/#{project.identifier}/backlogs/sprint_planning"
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context "with the scrum project feature flag active", with_flag: { scrum_projects: true } do
+      it "is successful" do
+        get "/projects/#{project.identifier}/backlogs/sprint_planning"
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:sprint_planning)
+
+        expect(response).to have_turbo_frame "backlogs_container", src: "/projects/#{project.identifier}/backlogs/sprint_planning"
+        expect(response).to have_turbo_frame "content-bodyRight"
+      end
+
+      context "with a Turbo Frame request" do
+        it "renders the sprint planning list partial" do
+          get "/projects/#{project.identifier}/backlogs/sprint_planning", headers: { "Turbo-Frame" => "backlogs_container" }
+
+          expect(response).to have_http_status(:ok)
+          expect(response).to render_template("rb_master_backlogs/_sprint_planning_list")
+
+          expect(response).to have_turbo_frame "backlogs_container"
+          expect(response).to have_no_turbo_frame "content-bodyRight"
+        end
+      end
+    end
+  end
+
   describe "GET #details" do
     it "is successful" do
       get "/projects/#{project.identifier}/backlogs/details/#{story.id}"
