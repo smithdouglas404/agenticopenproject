@@ -263,7 +263,7 @@ class ApplicationController < ActionController::Base
   # Only redirects HTML requests; turbo_stream and other formats are left as-is.
   def redirect_if_historical_project_identifier(identifier_param_key)
     param = params[identifier_param_key]
-    if request.get? && request.format.html? && param.friendly_id? && param != @project.identifier
+    if request.get? && request.format.symbol == :html && param.friendly_id? && param != @project.identifier
       # Reconstruct the URL from path + query parameters, and prevent user-supplied
       # options such as :host or :protocol from influencing the redirect target.
       safe_path_params  = request.path_parameters.symbolize_keys

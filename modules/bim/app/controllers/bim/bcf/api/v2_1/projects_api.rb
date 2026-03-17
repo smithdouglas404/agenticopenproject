@@ -48,7 +48,9 @@ module Bim::Bcf::API::V2_1
           @project = visible_projects
                      .find(params[:id])
 
-          redirect_if_historical_identifier(:id, @project)
+          redirect_if_historical_project_identifier(params[:id], @project) do
+            bcf_v2_1_paths.project(@project.identifier)
+          end
         end
 
         get &::Bim::Bcf::API::V2_1::Endpoints::Show.new(model: Project).mount
