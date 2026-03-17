@@ -204,6 +204,10 @@ en:
 
     story_menu_component:
       label_actions: "Story actions"
+      action_menu:
+        copy_url_to_clipboard: "Copy URL to clipboard"
+        copy_work_package_id: "Copy work package ID"
+        move_menu: "Move"
 
   backlogs_points_burn_direction: "Points burn up/down"
   backlogs_product_backlog: "Product backlog"
