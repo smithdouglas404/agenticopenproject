@@ -567,11 +567,13 @@ module API
 
         associated_resources :target_versions,
                              v3_path: :version,
-                             representer: ::API::V3::Versions::VersionRepresenter
+                             representer: ::API::V3::Versions::VersionRepresenter,
+                             skip_render: ->(*) { !OpenProject::FeatureDecisions.multiple_versions_active? }
 
         associated_resources :observed_in_versions,
                              v3_path: :version,
-                             representer: ::API::V3::Versions::VersionRepresenter
+                             representer: ::API::V3::Versions::VersionRepresenter,
+                             skip_render: ->(*) { !OpenProject::FeatureDecisions.multiple_versions_active? }
 
         associated_resource :parent,
                             v3_path: :work_package,

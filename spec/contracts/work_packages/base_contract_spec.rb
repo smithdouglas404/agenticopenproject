@@ -1184,7 +1184,7 @@ RSpec.describe WorkPackages::BaseContract do
     end
   end
 
-  describe "target_versions" do
+  describe "target_versions", with_flag: { multiple_versions: true } do
     subject(:contract) { described_class.new(work_package, current_user) }
 
     let(:assignable_version) { build_stubbed(:version) }

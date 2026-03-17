@@ -52,16 +52,19 @@ module WorkPackages
       validate_version_is_assignable
     end
     attribute :target_versions,
-              permission: %i[assign_versions manage_sprint_items] do
+              permission: %i[assign_versions manage_sprint_items],
+              writable: ->(*) { OpenProject::FeatureDecisions.multiple_versions_active? } do
       validate_associated_versions_are_assignable(:target_versions)
     end
     attribute :observed_in_versions,
-              permission: %i[assign_versions manage_sprint_items] do
+              permission: %i[assign_versions manage_sprint_items],
+              writable: ->(*) { OpenProject::FeatureDecisions.multiple_versions_active? } do
       validate_associated_versions_are_assignable(:observed_in_versions)
     end
 
     validate :validate_no_reopen_on_closed_version
-    validate :validate_no_reopen_on_closed_associated_version
+    validate :validate_no_reopen_on_closed_associated_version,
+             if: -> { OpenProject::FeatureDecisions.multiple_versions_active? }
 
     attribute :project_id
 

@@ -1020,7 +1020,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       end
     end
 
-    describe "target versions" do
+    describe "target versions", with_flag: { multiple_versions: true } do
       context "if having the assign_versions permission" do
         let(:permissions) { [:assign_versions] }
         let(:values) { build_stubbed_list(:version, 3) }

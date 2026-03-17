@@ -321,7 +321,8 @@ module API
                                            }
                                          },
                                          values_callback: -> { represented.assignable_versions },
-                                         required: false
+                                         required: false,
+                                         show_if: ->(*) { OpenProject::FeatureDecisions.multiple_versions_active? }
 
           schema_with_allowed_collection :observed_in_versions,
                                          type: "[]Version",
@@ -333,7 +334,8 @@ module API
                                            }
                                          },
                                          values_callback: -> { represented.assignable_versions },
-                                         required: false
+                                         required: false,
+                                         show_if: ->(*) { OpenProject::FeatureDecisions.multiple_versions_active? }
 
           schema_with_allowed_collection :priority,
                                          value_representer: Priorities::PriorityRepresenter,

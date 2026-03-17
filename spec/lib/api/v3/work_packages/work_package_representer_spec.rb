@@ -687,7 +687,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       end
     end
 
-    describe "targetVersions" do
+    describe "targetVersions", with_flag: { multiple_versions: true } do
       context "when no target versions are set" do
         it "has an empty links array" do
           expect(subject).to be_json_eql([].to_json).at_path("_links/targetVersions")
