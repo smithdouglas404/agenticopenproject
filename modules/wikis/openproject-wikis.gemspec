@@ -35,10 +35,10 @@ Gem::Specification.new do |s|
 
   s.authors     = "OpenProject GmbH"
   s.email       = "info@openproject.org"
-  s.homepage    = "https://community.openproject.org/projects/wikis"  # TODO check this URL
   s.summary     = "OpenProject Wikis"
   s.description = "Allows linking work packages to pages in wikis, such as XWiki or the internal OpenProject wiki."
   s.license     = "GPLv3"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + %w(CHANGELOG.md README.md)
+  s.metadata["rubygems_mfa_required"] = "true"
 end

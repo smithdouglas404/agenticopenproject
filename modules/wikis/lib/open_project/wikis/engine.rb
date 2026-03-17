@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
+# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
 # or not at all
 require "open_project/plugins"
 
@@ -39,8 +39,7 @@ module OpenProject::Wikis
     include OpenProject::Plugins::ActsAsOpEngine
 
     register "openproject-wikis",
-             :author_url => "https://openproject.org",
-             :requires_openproject => ">= 17.0.0"
-
+             author_url: "https://openproject.org",
+             requires_openproject: ">= 17.0.0"
   end
 end
