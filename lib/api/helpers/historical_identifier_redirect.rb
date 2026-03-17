@@ -62,7 +62,7 @@ module API
 
           # Replace the old identifier in the path
           new_path = path.sub(
-            %r{(/)#{Regexp.escape(param_value)}(/|$)},
+            %r{(/)#{Regexp.escape(param_value)}(/|-|$)},
             "\\1#{project.identifier}\\2"
           )
 
