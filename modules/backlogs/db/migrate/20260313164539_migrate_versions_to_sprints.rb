@@ -56,7 +56,7 @@ class MigrateVersionsToSprints < ActiveRecord::Migration[8.0]
            .where("work_packages.project_id = version_settings.project_id")
            .includes(:project)
            .group("versions.id")
-           .select("versions.*, array_agg(work_packages.id) AS wp_ids")
+           .select("versions.*, array_agg(DISTINCT work_packages.id) AS wp_ids")
            .map { |version| [version, version.wp_ids] }
   end
 
