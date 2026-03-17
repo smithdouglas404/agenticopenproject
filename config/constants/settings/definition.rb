@@ -1400,6 +1400,14 @@ module Settings
       end
     end
 
+    def env_name
+      self.class.env_name(self)
+    end
+
+    def possible_env_names
+      self.class.possible_env_names(self)
+    end
+
     def derive_default(default)
       @default = default.is_a?(Hash) ? default.deep_stringify_keys : default
       @default.freeze
@@ -1689,8 +1697,6 @@ module Settings
         ].compact
       end
 
-      public :possible_env_names
-
       def env_name_nested(definition)
         "#{ENV_PREFIX}#{definition.name.upcase.gsub('_', '__')}"
       end
@@ -1708,6 +1714,8 @@ module Settings
 
         definition.env_alias.upcase
       end
+
+      public :possible_env_names, :env_name
 
       ##
       # Extract the configuration value from the given environment variable
