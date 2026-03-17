@@ -42,7 +42,7 @@ module Workflows
     def breadcrumb_items
       [{ href: admin_index_path, text: t("label_administration") },
        { href: admin_settings_work_packages_general_path, text: t(:label_work_package_plural) },
-       { href: workflows_path, text: Workflow.model_name.human },
+       { href: workflows_path, text: t(:label_workflow_plural) },
        title]
     end
 

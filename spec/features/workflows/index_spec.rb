@@ -47,13 +47,16 @@ RSpec.describe "Workflows index" do
   end
 
   it "allows quick-filtering by type name", :js do
-    some_type = types.sample
+    within "ul.Box-list" do
+      expect(page).to have_css %{[data-filter--filter-list-target="searchItem"]}, count: types.count
+    end
 
+    some_type = types.sample
     fill_in "Filter by type name…", with: some_type.name
 
-    within_role :table do
+    within "ul.Box-list" do
       expect(page).to have_css %{[data-filter--filter-list-target="searchItem"]}, count: 1
-      expect(page).to have_row some_type.name
+      expect(page).to have_css("li", text: some_type.name)
     end
   end
 
@@ -61,7 +64,7 @@ RSpec.describe "Workflows index" do
     expect(page).to have_heading("Workflows")
 
     some_type = types.sample
-    within_role :table do
+    within "ul.Box-list" do
       click_link some_type.name
     end
 

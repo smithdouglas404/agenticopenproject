@@ -38,19 +38,20 @@ RSpec.describe Workflows::TableComponent, type: :component do
   end
 
   subject(:rendered_component) do
-    render_component(rows: types)
+    render_component(types)
   end
 
-  shared_examples_for "rendering Border Box Grid headings" do
-    include_examples "rendering Border Box Grid heading", text: "Type"
-    include_examples "rendering Border Box Grid mobile heading", text: "Type"
+  shared_examples_for "rendering Border Box headings" do |text:|
+    it "renders Border Box heading '#{text}'" do
+      expect(rendered_component).to have_css ".Box-header", text:
+    end
   end
 
   context "with no types" do
     let(:types) { create_list(:type, 0) }
 
     it_behaves_like "rendering Box", row_count: 1
-    it_behaves_like "rendering Border Box Grid headings"
+    it_behaves_like "rendering Border Box headings", text: "Type"
     it_behaves_like "rendering Blank Slate", heading: "Nothing to display"
   end
 
@@ -58,14 +59,13 @@ RSpec.describe Workflows::TableComponent, type: :component do
     let(:types) { create_list(:type, 2) }
 
     it_behaves_like "rendering Box", row_count: 2
-    it_behaves_like "rendering Border Box Grid headings"
-    it_behaves_like "rendering Border Box Grid rows", row_count: 2, col_count: 1
+    it_behaves_like "rendering Border Box headings", text: "Type"
 
     it "renders row content" do
-      expect(rendered_component).to have_row(types.first.name) do |row|
+      expect(rendered_component).to have_css("li", text: types.first.name) do |row|
         expect(row).to have_link(types.first.name, href: edit_workflow_path(types.first))
       end
-      expect(rendered_component).to have_row(types.second.name) do |row|
+      expect(rendered_component).to have_css("li", text: types.second.name) do |row|
         expect(row).to have_link(types.second.name, href: edit_workflow_path(types.second))
       end
     end

@@ -29,23 +29,7 @@
 #++
 
 module Workflows
-  class TableComponent < ::OpPrimer::BorderBoxTableComponent
-    def columns
-      headers.map(&:first)
-    end
-
-    def headers
-      [
-        [:name, { caption: Type.model_name.human }]
-      ]
-    end
-
-    def empty_row_message
-      I18n.t :no_results_title_text
-    end
-
-    def mobile_title
-      Type.model_name.human
-    end
+  class TableComponent < ApplicationComponent
+    def types = model
   end
 end

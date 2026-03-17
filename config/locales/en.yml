@@ -402,8 +402,10 @@ en:
         default_transitions: "Default transitions"
         user_author: "User is author"
         user_assignee: "User is assignee"
-      type_filter:
-        label: "Filter by type name…"
+      index:
+        description: "Configure status transitions for each work package type."
+        type_filter:
+          label: "Filter by type name…"
 
   authentication:
     login_and_registration: "Login and registration"

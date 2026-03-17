@@ -26,35 +26,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<% html_title t(:label_administration), t(:label_workflow_plural) -%>
-
-<%= render Workflows::PageHeaderComponent.new(state: :index) %>
 
 <%=
-  flex_layout data: { controller: "filter--filter-list", "filter--filter-list-clear-button-id-value": "type-filter-clear-button" } do |flex|
-    flex.with_row do
-      render(Primer::OpenProject::SubHeader.new) do |subheader|
-        subheader.with_filter_input(
-          name: "type-filter-input",
-          label: t("admin.workflows.index.type_filter.label"),
-          visually_hide_label: true,
-          placeholder: t("admin.workflows.index.type_filter.label"),
-          leading_visual: {
-            icon: :search,
-            size: :small
-          },
-          show_clear_button: true,
-          clear_button_id: "type-filter-clear-button",
-          data: {
-            action: "input->filter--filter-list#filterLists",
-            "filter--filter-list-target": "filter"
-          }
-        )
+  render(Primer::Beta::BorderBox.new) do |component|
+    component.with_header do |header|
+      header.with_title(tag: :h2) do
+        Type.model_name.human
       end
     end
-
-    flex.with_row do
-      render Workflows::TableComponent.new(@types)
+    types.each do |type|
+      component.with_row(data: { "filter--filter-list-target": "searchItem" }) do
+        link_to type.name, edit_workflow_path(type), class: "text-bold"
+      end
+    end
+    if types.empty?
+      component.with_row do
+        render(Primer::Beta::Blankslate.new(border: false)) do |component|
+          component.with_heading(tag: :h2) { I18n.t(:label_nothing_display) }
+          component.with_description { I18n.t(:no_results_title_text) }
+        end
+      end
     end
   end
 %>
