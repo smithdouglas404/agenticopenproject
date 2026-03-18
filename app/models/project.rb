@@ -215,18 +215,15 @@ class Project < ApplicationRecord
               p.identifier_changed? && p.identifier.present? && !Setting::WorkPackageIdentifier.alphanumeric?
             }
 
-  # When semantic work package IDs with alphanumeric mode are active, identifiers must follow JIRA-style key rules.
+  # When semantic work package IDs with alphanumeric mode are active, identifiers must follow semantic style key rules.
   validates :identifier,
             format: { with: /\A[A-Z]/, message: :must_start_with_letter },
             if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
 
   validates :identifier,
-            format: { with: /\A[A-Z][A-Z0-9_]*\z/, message: :no_special_characters },
+            format: { with: /[A-Z][A-Z0-9_]*\z/, message: :no_special_characters },
             length: { maximum: SEMANTIC_IDENTIFIER_MAX_LENGTH },
-            if: ->(p) {
-              p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? &&
-                          p.identifier.match?(/\A[A-Z]/)
-            }
+            if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
 
   validates_associated :repository, :wiki
 
