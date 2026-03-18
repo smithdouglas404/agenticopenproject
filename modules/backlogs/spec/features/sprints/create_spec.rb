@@ -72,14 +72,6 @@ RSpec.describe "Create", :js do
   before do
     login_as(user)
 
-    # Legacy backlogs module requires type configuration
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-            .and_return("story_types" => [story_type.id.to_s,
-                                          story_type2.id.to_s,
-                                          inactive_story_type.id.to_s],
-                        "task_type" => task_type.id.to_s)
-
     backlogs_page.visit!
   end
 
