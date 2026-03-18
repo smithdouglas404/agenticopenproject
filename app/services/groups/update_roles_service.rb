@@ -45,7 +45,10 @@ module Groups
 
     def modify_members_and_roles(params)
       member = params.fetch(:member)
-      user_ids = params.fetch(:user_ids) { model.self_and_descendants.flat_map(&:user_ids).uniq }
+      user_ids = params.fetch(:user_ids) do
+        group_ids = model.descendants.pluck(:id)
+        (model.self_and_descendants.flat_map(&:user_ids) + group_ids).uniq
+      end
 
       sql_query = ::OpenProject::SqlSanitization
                     .sanitize(update_roles_cte,
@@ -73,6 +76,7 @@ module Groups
                  member_roles.id
           FROM #{MemberRole.table_name} member_roles
           WHERE member_roles.member_id = :member_id
+          AND member_roles.inherited_from IS NULL
         ),
         -- delete all roles assigned to users that group no longer has but keep those that the user
         -- has independently of the group (not inherited) or inherited from a different group

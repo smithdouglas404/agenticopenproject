@@ -553,4 +553,189 @@ RSpec.describe "Group hierarchy membership propagation", type: :model do
       expect(new_user.memberships.find_by(project:)&.roles).to contain_exactly(root_role, mid_role)
     end
   end
+
+  # ---------------------------------------------------------------------------
+  # Child group membership propagation — descendant groups themselves get
+  # inherited Member records, not just the users within them
+  # ---------------------------------------------------------------------------
+
+  describe "child group membership propagation" do
+    describe "Members::CreateService" do
+      it "creates inherited memberships for descendant groups when a parent group is added to a project" do
+        root_group = create(:group, members: [root_user])
+        mid_group  = create(:group, members: [mid_user], parent: root_group)
+        leaf_group = create(:group, members: [leaf_user], parent: mid_group)
+
+        Members::CreateService
+          .new(user: admin)
+          .call(principal: root_group, project_id: project.id, role_ids: [role.id])
+
+        mid_member = Member.find_by(principal: mid_group, project:)
+        leaf_member = Member.find_by(principal: leaf_group, project:)
+
+        expect(mid_member).to be_present
+        expect(mid_member.roles).to contain_exactly(role)
+        expect(mid_member.member_roles.all? { |mr| mr.inherited_from.present? }).to be(true)
+
+        expect(leaf_member).to be_present
+        expect(leaf_member.roles).to contain_exactly(role)
+        expect(leaf_member.member_roles.all? { |mr| mr.inherited_from.present? }).to be(true)
+      end
+
+      it "does not create inherited memberships for ancestor groups" do
+        root_group = create(:group, members: [root_user])
+        mid_group  = create(:group, members: [mid_user], parent: root_group)
+        create(:group, members: [leaf_user], parent: mid_group)
+
+        Members::CreateService
+          .new(user: admin)
+          .call(principal: mid_group, project_id: project.id, role_ids: [role.id])
+
+        expect(Member.find_by(principal: root_group, project:)).to be_nil
+      end
+    end
+
+    describe "Members::UpdateService" do
+      it "updates inherited roles on descendant group members when the parent group's roles change" do
+        root_group = create(:group, members: [root_user])
+        mid_group  = create(:group, members: [mid_user], parent: root_group)
+        leaf_group = create(:group, members: [leaf_user], parent: mid_group)
+
+        second_role = create(:project_role)
+
+        Members::CreateService
+          .new(user: admin)
+          .call(principal: root_group, project_id: project.id, role_ids: [role.id])
+
+        group_member = Member.find_by!(principal: root_group, project:)
+
+        Members::UpdateService
+          .new(user: admin, model: group_member)
+          .call(role_ids: [role.id, second_role.id])
+
+        expect(Member.find_by(principal: mid_group, project:).roles).to contain_exactly(role, second_role)
+        expect(Member.find_by(principal: leaf_group, project:).roles).to contain_exactly(role, second_role)
+      end
+    end
+
+    describe "Members::DeleteService" do
+      it "removes inherited memberships from descendant groups when the parent group's membership is deleted" do
+        root_group = create(:group, members: [root_user])
+        mid_group  = create(:group, members: [mid_user], parent: root_group)
+        leaf_group = create(:group, members: [leaf_user], parent: mid_group)
+
+        Members::CreateService
+          .new(user: admin)
+          .call(principal: root_group, project_id: project.id, role_ids: [role.id])
+
+        group_member = Member.find_by!(principal: root_group, project:)
+
+        Members::DeleteService
+          .new(user: admin, model: group_member)
+          .call
+
+        expect(Member.find_by(principal: mid_group, project:)).to be_nil
+        expect(Member.find_by(principal: leaf_group, project:)).to be_nil
+      end
+    end
+
+    describe "parent change" do
+      it "propagates ancestor memberships to child groups when a parent is assigned" do
+        root_group = create(:group, members: [root_user])
+        mid_group  = create(:group, members: [mid_user])
+        leaf_group = create(:group, members: [leaf_user], parent: mid_group)
+
+        Members::CreateService
+          .new(user: admin)
+          .call(principal: root_group, project_id: project.id, role_ids: [role.id])
+
+        Groups::UpdateService
+          .new(user: admin, model: mid_group)
+          .call(parent_id: root_group.id)
+
+        expect(Member.find_by(principal: mid_group, project:)&.roles).to contain_exactly(role)
+        expect(Member.find_by(principal: leaf_group, project:)&.roles).to contain_exactly(role)
+      end
+
+      it "cleans up inherited child group memberships when the parent link is broken" do
+        root_group = create(:group, members: [root_user])
+        mid_group  = create(:group, members: [mid_user], parent: root_group)
+        leaf_group = create(:group, members: [leaf_user], parent: mid_group)
+
+        Members::CreateService
+          .new(user: admin)
+          .call(principal: root_group, project_id: project.id, role_ids: [role.id])
+
+        # Verify child groups have memberships before breaking the link
+        expect(Member.find_by(principal: mid_group, project:)).to be_present
+        expect(Member.find_by(principal: leaf_group, project:)).to be_present
+
+        Groups::UpdateService
+          .new(user: admin, model: mid_group)
+          .call(parent_id: nil)
+
+        expect(Member.find_by(principal: mid_group, project:)).to be_nil
+        expect(Member.find_by(principal: leaf_group, project:)).to be_nil
+      end
+    end
+
+    describe "Members::DeleteService with pre-existing child group membership" do
+      it "retains the child group's own membership when the parent group's membership is deleted" do
+        mid_role   = create(:project_role)
+        root_role  = create(:project_role)
+        root_group = create(:group, members: [root_user])
+        mid_group  = create(:group, members: [mid_user], parent: root_group)
+        leaf_group = create(:group, members: [leaf_user], parent: mid_group)
+
+        # mid_group gets its own direct membership first
+        Members::CreateService
+          .new(user: admin)
+          .call(principal: mid_group, project_id: project.id, role_ids: [mid_role.id])
+
+        # Then root_group is added — this propagates root_role to mid_group, leaf_group, and all users
+        Members::CreateService
+          .new(user: admin)
+          .call(principal: root_group, project_id: project.id, role_ids: [root_role.id])
+
+        # mid_group now has both its direct mid_role and inherited root_role
+        expect(Member.find_by(principal: mid_group, project:).roles).to contain_exactly(mid_role, root_role)
+        expect(Member.find_by(principal: leaf_group, project:)&.roles).to contain_exactly(mid_role, root_role)
+
+        # Delete root_group's membership
+        root_member = Member.find_by!(principal: root_group, project:)
+        Members::DeleteService
+          .new(user: admin, model: root_member)
+          .call
+
+        # mid_group keeps its own direct membership with mid_role
+        expect(Member.find_by(principal: mid_group, project:)&.roles).to contain_exactly(mid_role)
+        # leaf_group keeps the inherited mid_role from mid_group
+        expect(Member.find_by(principal: leaf_group, project:)&.roles).to contain_exactly(mid_role)
+        # Users also retain mid_role
+        expect(mid_user.memberships.find_by(project:)&.roles).to contain_exactly(mid_role)
+        expect(leaf_user.memberships.find_by(project:)&.roles).to contain_exactly(mid_role)
+      end
+    end
+
+    describe "user removal from group" do
+      it "does not affect child group memberships when a user is removed from a group" do
+        root_group = create(:group, members: [root_user])
+        mid_group  = create(:group, members: [mid_user], parent: root_group)
+        leaf_group = create(:group, members: [leaf_user], parent: mid_group)
+
+        Members::CreateService
+          .new(user: admin)
+          .call(principal: root_group, project_id: project.id, role_ids: [role.id])
+
+        # Remove leaf_user from leaf_group
+        Groups::UpdateService
+          .new(user: admin, model: leaf_group)
+          .call(remove_user_ids: [leaf_user.id])
+
+        # Child group memberships should remain intact
+        expect(Member.find_by(principal: mid_group, project:)&.roles).to contain_exactly(role)
+        expect(Member.find_by(principal: leaf_group, project:)&.roles).to contain_exactly(role)
+      end
+    end
+  end
 end

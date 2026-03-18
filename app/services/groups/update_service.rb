@@ -113,13 +113,15 @@ class Groups::UpdateService < BaseServices::Update
   end
 
   def propagate_ancestor_memberships
+    group_ids = model.self_and_descendants.pluck(:id)
     user_ids = model.self_and_descendants.flat_map(&:user_ids).uniq
-    return if user_ids.empty?
+    principal_ids = (user_ids + group_ids).uniq
+    return if principal_ids.empty?
 
     model.ancestors.each do |ancestor|
       Groups::CreateInheritedRolesService
         .new(ancestor, current_user: user)
-        .call(user_ids:)
+        .call(user_ids: principal_ids)
     end
   end
 
@@ -128,16 +130,18 @@ class Groups::UpdateService < BaseServices::Update
     return unless former_parent
 
     affected_users = model.self_and_descendants.flat_map(&:users).uniq
-    return if affected_users.empty?
+    affected_group_ids = model.self_and_descendants.pluck(:id)
+    return if affected_users.empty? && affected_group_ids.empty?
 
     former_parent.self_and_ancestors.each do |ancestor|
       users_not_in_ancestor = affected_users.reject { |u| ancestor.user_ids.include?(u.id) }
-      next if users_not_in_ancestor.empty?
+      principal_ids_to_clean = users_not_in_ancestor.map(&:id) + affected_group_ids
+      next if principal_ids_to_clean.empty?
 
       role_ids_to_clean = MemberRole
         .joins(:member)
         .where(inherited_from: ancestor.members.joins(:member_roles).select("member_roles.id"))
-        .where(members: { user_id: users_not_in_ancestor.map(&:id) })
+        .where(members: { user_id: principal_ids_to_clean })
         .pluck(:id)
 
       next if role_ids_to_clean.empty?

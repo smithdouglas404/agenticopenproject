@@ -28,39 +28,53 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Members::UpdateService < BaseServices::Update
-  include Members::Concerns::CleanedUp
-  include Members::Concerns::NotificationSender
+# Like GroupFilter but hierarchy-aware: matches members who are users of the
+# given group or any of its descendant groups, as well as the descendant
+# groups themselves (which carry inherited Member records).
+class Queries::Members::Filters::GroupHierarchyFilter < Queries::Members::Filters::MemberFilter
+  def self.key
+    :group_hierarchy
+  end
 
-  around_call :post_process
+  def allowed_values
+    @allowed_values ||= ::Group.pluck(:id).map { |g| [g, g.to_s] }
+  end
 
-  private
+  def available?
+    ::Group.exists?
+  end
 
-  def post_process
-    service_call = yield
+  def type
+    :list_optional
+  end
 
-    return unless service_call.success?
+  def human_name
+    I18n.t("query_fields.member_of_group")
+  end
 
-    member = service_call.result
+  def joins
+    :principal
+  end
 
-    if member.principal.is_a?(Group)
-      update_group_roles(member)
-    else
-      send_notification(member)
+  def where
+    case operator
+    when "="
+      "users.id IN (#{hierarchy_subselect})"
+    when "!"
+      "users.id NOT IN (#{hierarchy_subselect})"
+    when "*"
+      "users.id IN (#{User.within_group([]).select(:id).to_sql})"
+    when "!*"
+      "users.id NOT IN (#{User.within_group([]).select(:id).to_sql})"
     end
   end
 
-  def update_group_roles(member)
-    group_ids = member.principal.descendants.pluck(:id)
-    user_ids = member.principal.self_and_descendants.flat_map(&:user_ids).uniq
-    principal_ids = (user_ids + group_ids).uniq
+  private
 
-    Groups::UpdateRolesService
-      .new(member.principal, current_user: user, contract_class: EmptyContract)
-      .call(member:, user_ids: principal_ids, send_notifications: send_notifications?, message: notification_message)
-  end
-
-  def event_type
-    OpenProject::Events::MEMBER_UPDATED
+  def hierarchy_subselect
+    groups = Group.where(id: values.map(&:to_i))
+    all_group_ids = groups.flat_map { |g| g.self_and_descendants.pluck(:id) }.uniq
+    user_ids = User.in_group(all_group_ids).pluck(:id)
+    (user_ids + all_group_ids).uniq.join(",").presence || "NULL"
   end
 end

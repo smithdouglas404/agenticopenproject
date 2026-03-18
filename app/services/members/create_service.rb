@@ -46,15 +46,35 @@ class Members::CreateService < BaseServices::Create
 
   protected
 
+  # When a Group is being added as a member to a project, an inherited Member
+  # may already exist (created by ancestor group membership propagation).
+  # In that case, find the existing member so we add direct roles to it
+  # rather than failing on the uniqueness constraint.
+  def instance(params)
+    principal = params[:principal]
+    if principal.is_a?(Group)
+      Member.find_or_initialize_by(
+        user_id: principal.id,
+        project_id: params[:project_id],
+        entity_type: params[:entity_type],
+        entity_id: params[:entity_id]
+      )
+    else
+      super
+    end
+  end
+
   def add_group_memberships(member)
     return unless member.principal.is_a?(Group)
 
     project_ids = member.project_id.nil? ? nil : [member.project_id]
+    group_ids = member.principal.descendants.pluck(:id)
     user_ids = member.principal.self_and_descendants.flat_map(&:user_ids).uniq
+    principal_ids = (user_ids + group_ids).uniq
 
     Groups::CreateInheritedRolesService
       .new(member.principal, current_user: user, contract_class: EmptyContract)
-      .call(user_ids: user_ids, send_notifications: false, project_ids:)
+      .call(user_ids: principal_ids, send_notifications: false, project_ids:)
   end
 
   def event_type
