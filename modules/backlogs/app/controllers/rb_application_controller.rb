@@ -35,6 +35,7 @@ class RbApplicationController < ApplicationController
   before_action :load_sprint_and_project,
                 :check_if_plugin_is_configured,
                 :authorize
+  redirect_historical_project_identifier param_key: :project_id
 
   private
 
@@ -42,7 +43,6 @@ class RbApplicationController < ApplicationController
   # User.current has permission to invoke the method in question.
   def load_sprint_and_project
     load_project
-    redirect_if_historical_project_identifier(:project_id)
     return if performed?
 
     # because of strong params, we want to pluck this variable out right now,

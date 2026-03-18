@@ -56,6 +56,7 @@ class ApplicationController < ActionController::Base
   include Security::DefaultUrlOptions
   include OpModalFlashable
   include DynamicContentSecurityPolicy
+  include Projects::HistoricalIdentifierRedirect
 
   layout "base"
 
@@ -246,45 +247,18 @@ class ApplicationController < ActionController::Base
   # Note: find() is Project.friendly.find()
   def find_project
     @project = Project.visible.find(params[:id])
-    redirect_if_historical_project_identifier(:id)
   end
 
   # Find project of id params[:project_id]
   # Note: find() is Project.friendly.find()
   def find_project_by_project_id
     @project = Project.visible.find(params[:project_id])
-    redirect_if_historical_project_identifier(:project_id)
-  end
-
-  # Redirects to the project's current identifier if the request used a historical slug.
-  # friendly_id's :history extension records old identifiers in friendly_id_slugs; if the
-  # param is a slug (param.friendly_id? is truthy) that no longer matches the current
-  # identifier, it must be a historical slug. Numeric IDs are passed through without redirect.
-  # Only redirects HTML requests; turbo_stream and other formats are left as-is.
-  def redirect_if_historical_project_identifier(identifier_param_key)
-    param = params[identifier_param_key]
-    if request.get? && request.format.symbol == :html && param.friendly_id? && param != @project.identifier
-      # Reconstruct the URL from path + query parameters, and prevent user-supplied
-      # options such as :host or :protocol from influencing the redirect target.
-      safe_path_params  = request.path_parameters.symbolize_keys
-      safe_query_params = request.query_parameters.symbolize_keys
-
-      # Ensure the identifier in the path matches the current project identifier.
-      safe_path_params[identifier_param_key] = @project.identifier
-
-      # Remove any URL option keys that could affect the redirect target.
-      safe_query_params.except!(:host, :protocol, :subdomain, :domain, :port)
-
-      redirect_to url_for(safe_path_params.merge(safe_query_params).merge(only_path: true)),
-                  status: :moved_permanently
-    end
   end
 
   # Find project by project_id if given
   def find_optional_project
     if params[:project_id].present?
       @project = Project.visible.find(params[:project_id])
-      redirect_if_historical_project_identifier(:project_id)
       nil if performed?
     end
   rescue ActiveRecord::RecordNotFound

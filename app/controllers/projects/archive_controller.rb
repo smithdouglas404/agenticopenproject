@@ -34,6 +34,7 @@ class Projects::ArchiveController < ApplicationController
   before_action :find_project_including_archived
   before_action :authorize, only: %i[create dialog]
   before_action :require_admin, only: [:destroy]
+  redirect_historical_project_identifier param_key: :project_id
 
   def create
     change_status_action(:archive)
@@ -54,7 +55,6 @@ class Projects::ArchiveController < ApplicationController
     # The contracts do proper permission checks. Project admins (regular users with admin role)
     # may reach these actions via an old identifier, so redirect if needed.
     @project = Project.find(params[:project_id])
-    redirect_if_historical_project_identifier(:project_id)
   end
 
   def change_status_action(status)

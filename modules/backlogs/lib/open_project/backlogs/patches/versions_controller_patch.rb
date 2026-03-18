@@ -30,6 +30,7 @@ module OpenProject::Backlogs::Patches::VersionsControllerPatch
   def self.included(base) # rubocop:disable Metrics/AbcSize
     base.class_eval do
       before_action :override_project_from_id, only: %i[edit update]
+      redirect_historical_project_identifier param_key: :project_id, only: %i[edit update]
 
       append_before_action :add_project_to_version_settings_attributes, only: %i[update create]
       append_before_action :whitelist_update_params, only: :update
@@ -41,7 +42,6 @@ module OpenProject::Backlogs::Patches::VersionsControllerPatch
         # here we want to add that we always set it to the project from params if present
         if params[:project_id].present?
           @project = Project.visible.find(params[:project_id])
-          redirect_if_historical_project_identifier(:project_id)
         end
       end
 

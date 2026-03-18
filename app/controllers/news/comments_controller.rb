@@ -34,6 +34,7 @@ class News::CommentsController < ApplicationController
   before_action :find_news_and_project
   before_action :find_comment, only: [:destroy]
   before_action :authorize
+  redirect_historical_project_identifier param_key: :project_id
 
   def create
     @comment = Comment.new(permitted_params.comment)
@@ -58,7 +59,6 @@ class News::CommentsController < ApplicationController
 
   def find_news_and_project
     @project = Project.visible.find(params[:project_id])
-    redirect_if_historical_project_identifier(:project_id)
     return if performed?
 
     @news = @project.news.visible.find(params[:news_id])

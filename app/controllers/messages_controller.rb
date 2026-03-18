@@ -36,6 +36,7 @@ class MessagesController < ApplicationController
   before_action :authorize, except: %i[edit update destroy]
   # Checked inside the method.
   no_authorization_required! :edit, :update, :destroy
+  redirect_historical_project_identifier param_key: :project_id
 
   include AttachmentsHelper
   include PaginationHelper
@@ -159,7 +160,6 @@ class MessagesController < ApplicationController
 
   def find_project_and_forum
     @project = Project.visible.find(params[:project_id])
-    redirect_if_historical_project_identifier(:project_id)
     return if performed?
 
     @forum = @project.forums.find(params[:forum_id])

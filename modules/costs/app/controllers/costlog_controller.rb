@@ -32,6 +32,7 @@ class CostlogController < ApplicationController
   menu_item :work_packages
   before_action :find_cost_entry_work_package_or_project, :authorize, only: %i[edit new create update destroy]
   before_action :find_associated_objects, only: %i[create update]
+  redirect_historical_project_identifier param_key: :project_id, only: %i[edit new create update destroy]
 
   helper :work_packages
   include CostlogHelper
@@ -105,7 +106,6 @@ class CostlogController < ApplicationController
       @project = @work_package.project
     elsif params[:project_id]
       @project = Project.visible.find(params[:project_id])
-      redirect_if_historical_project_identifier(:project_id)
       nil if performed?
     else
       render_404

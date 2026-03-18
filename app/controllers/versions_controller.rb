@@ -35,6 +35,7 @@ class VersionsController < ApplicationController
   before_action :find_version, except: %i[index new create close_completed]
   before_action :find_project, only: %i[index new create close_completed]
   before_action :authorize
+  redirect_historical_project_identifier param_key: :project_id, only: %i[index new create close_completed]
 
   def index
     @types = @project.types.order(Arel.sql("position"))
@@ -139,7 +140,6 @@ class VersionsController < ApplicationController
 
   def find_project
     @project = Project.visible.find(params[:project_id])
-    redirect_if_historical_project_identifier(:project_id)
   end
 
   def retrieve_selected_type_ids(selectable_types, default_types = nil)

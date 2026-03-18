@@ -42,6 +42,7 @@ class HourlyRatesController < ApplicationController
 
   # #show, #edit and #update have their own authorization
   before_action :authorize, except: %i[show edit update]
+  redirect_historical_project_identifier param_key: :project_id, only: %i[show]
   no_authorization_required! :show,
                              :edit,
                              :update
@@ -141,7 +142,6 @@ class HourlyRatesController < ApplicationController
 
   def find_project
     @project = Project.visible.find(params[:project_id])
-    redirect_if_historical_project_identifier(:project_id)
   end
 
   def find_user

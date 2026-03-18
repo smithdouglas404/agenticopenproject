@@ -42,6 +42,7 @@ class RbSprintsController < RbApplicationController
   before_action :not_authorized_on_feature_flag_inactive,
                 :load_project,
                 only: NEW_SPRINT_ACTIONS
+  redirect_historical_project_identifier param_key: :project_id, only: NEW_SPRINT_ACTIONS
 
   def new_dialog
     call = Sprints::SetAttributesService.new(
@@ -178,7 +179,6 @@ class RbSprintsController < RbApplicationController
 
   def load_project
     @project = Project.visible.find(params[:project_id])
-    redirect_if_historical_project_identifier(:project_id)
   end
 
   def sprint_params

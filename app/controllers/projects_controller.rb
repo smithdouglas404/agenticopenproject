@@ -43,6 +43,7 @@ class ProjectsController < ApplicationController
   before_action :require_admin, only: %i[destroy destroy_info]
   before_action :find_optional_parent, only: :new
   before_action :find_optional_template, only: %i[new create]
+  redirect_historical_project_identifier param_key: :id, except: %i[index new create destroy destroy_info]
 
   no_authorization_required! :index
 
@@ -186,7 +187,6 @@ class ProjectsController < ApplicationController
     # Skips the visible scope so archived projects are accessible.
     # Project admins (regular users with admin role) may reach these actions via an old identifier.
     @project = Project.find(params[:id])
-    redirect_if_historical_project_identifier(:id)
   end
 
   def from_template? = @template.present?

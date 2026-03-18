@@ -34,6 +34,7 @@ class CategoriesController < ApplicationController
   before_action :find_category_and_project, except: %i[new create]
   before_action :find_project, only: %i[new create]
   before_action :authorize
+  redirect_historical_project_identifier param_key: :project_id, only: %i[new create]
 
   def new
     @category = @project.categories.build
@@ -87,6 +88,5 @@ class CategoriesController < ApplicationController
 
   def find_project
     @project = Project.visible.find(params[:project_id])
-    redirect_if_historical_project_identifier(:project_id)
   end
 end

@@ -56,6 +56,7 @@ class WikiController < ApplicationController
   before_action :find_wiki_page, only: %i[show]
   before_action :handle_new_wiki_page, only: %i[show]
   before_action :build_wiki_page, only: %i[new]
+  redirect_historical_project_identifier param_key: :project_id
 
   include AttachableServiceCall
   include AttachmentsHelper
@@ -371,7 +372,6 @@ class WikiController < ApplicationController
 
   def find_wiki
     @project = Project.visible.find(params[:project_id])
-    redirect_if_historical_project_identifier(:project_id)
     return if performed?
 
     @wiki = @project.wiki

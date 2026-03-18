@@ -33,6 +33,7 @@ class Users::InviteController < ApplicationController
 
   authorize_with_permission :manage_members, global: true
   before_action :set_project, only: :start_dialog
+  redirect_historical_project_identifier param_key: :project_id, only: :start_dialog
 
   def start_dialog
     respond_with_dialog(
@@ -136,7 +137,6 @@ class Users::InviteController < ApplicationController
   def set_project
     if params[:project_id].present?
       @project = Project.find(params[:project_id])
-      redirect_if_historical_project_identifier(:project_id)
     end
   end
 
