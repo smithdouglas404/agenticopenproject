@@ -29,7 +29,7 @@
 #++
 
 FactoryBot.define do
-  factory :wiki do
+  factory :wiki, class: "::LegacyWiki" do # TODO: actually the factory should be renamed to legacy_wiki
     start_page { "Wiki" }
     project
   end

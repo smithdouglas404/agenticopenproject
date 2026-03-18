@@ -74,7 +74,7 @@ class Activities::WikiPageActivityProvider < Activities::BaseActivityProvider
   end
 
   def wikis_table
-    @wikis_table ||= Wiki.arel_table
+    @wikis_table ||= LegacyWiki.arel_table
   end
 
   def url_helper_parameter(event)

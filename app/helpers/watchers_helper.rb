@@ -62,7 +62,7 @@ module WatchersHelper
     watched = object.watched_by?(user)
 
     path = send(:"#{(watched ? 'unwatch' : 'watch')}_path",
-                object_type: object.class.to_s.underscore.pluralize,
+                object_type: ::OpenProject::Acts::Watchable::Registry.route_name(object.class),
                 object_id: object.id)
 
     label = watched ? I18n.t(:button_unwatch) : I18n.t(:button_watch)

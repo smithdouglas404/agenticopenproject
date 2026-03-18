@@ -28,15 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Wiki < ApplicationRecord
+class LegacyWiki < ApplicationRecord
   belongs_to :project
   has_many :pages, -> {
     order("title")
-  }, class_name: "WikiPage", dependent: :destroy
+  }, class_name: "WikiPage", foreign_key: :wiki_id, dependent: :destroy
   has_many :wiki_menu_items, -> {
     order("name")
   }, class_name: "MenuItems::WikiMenuItem", dependent: :delete_all, foreign_key: "navigatable_id"
-  has_many :redirects, class_name: "WikiRedirect", dependent: :delete_all
+  has_many :redirects, class_name: "WikiRedirect", foreign_key: :wiki_id, dependent: :delete_all, inverse_of: :wiki
 
   acts_as_watchable permission: :view_wiki_pages
 
@@ -91,8 +91,8 @@ class Wiki < ApplicationRecord
   # Finds a page by title
   # The given string can be of one of the forms: "title" or "project:title"
   # Examples:
-  #   Wiki.find_page("bar", project => foo)
-  #   Wiki.find_page("foo:bar")
+  #   LegacyWiki.find_page("bar", project => foo)
+  #   LegacyWiki.find_page("foo:bar")
   def self.find_page(title, options = {})
     project = options[:project]
     if title.to_s =~ %r{\A([^:]+):(.*)\z}

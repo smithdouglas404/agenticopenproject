@@ -29,7 +29,7 @@
 #++
 
 class WikiRedirect < ApplicationRecord
-  belongs_to :wiki
+  belongs_to :wiki, class_name: "LegacyWiki"
 
   validates :title, :redirects_to, presence: true
   validates :title, :redirects_to, length: { maximum: 255 }

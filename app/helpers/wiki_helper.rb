@@ -62,7 +62,7 @@ module WikiHelper
   def wiki_module_breadcrumb(project, page)
     {
       href: toc_project_wiki_path(project, page),
-      text: Wiki.human_model_name
+      text: LegacyWiki.human_model_name
     }
   end
 

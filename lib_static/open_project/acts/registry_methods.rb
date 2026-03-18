@@ -35,18 +35,29 @@ module OpenProject
         models[model_name.singularize.camelize]
       end
 
+      def route_name(model)
+        name = names[model]
+        return nil if name.nil?
+
+        name.underscore.pluralize
+      end
+
       def add(*models, reset: false)
         instance_methods_module = module_parent.const_get(:InstanceMethods)
         acts_as_method_name = "acts_as_#{module_parent_name.demodulize.underscore}"
 
         self.models.clear if reset
 
-        models.each do |model|
+        models.each do |definition|
+          model, name = Array(definition)
+          name = model.name if name.nil?
+
           unless model.ancestors.include?(instance_methods_module)
             raise ArgumentError.new("Model #{model} does not include #{acts_as_method_name}")
           end
 
-          self.models[model.name] = model
+          self.models[name] = model
+          names[model] = name
         end
       end
 
@@ -54,6 +65,10 @@ module OpenProject
 
       def models
         @models ||= Hash.new
+      end
+
+      def names
+        @names ||= Hash.new
       end
     end
   end

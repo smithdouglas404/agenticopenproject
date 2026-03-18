@@ -56,7 +56,7 @@ Rails.application.reloader.to_prepare do
   OpenProject::ProjectLatestActivity.register on: "News"
 
   OpenProject::ProjectLatestActivity.register on: "WikiPage",
-                                              chain: %w(Wiki)
+                                              chain: %w(LegacyWiki)
 
   OpenProject::ProjectLatestActivity.register on: "Message",
                                               chain: "Forum"

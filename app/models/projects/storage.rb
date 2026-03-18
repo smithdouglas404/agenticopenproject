@@ -91,7 +91,7 @@ module Projects::Storage
     def wiki_storage_sql
       <<~SQL.squish
         SELECT wiki.project_id, SUM(wiki_attached.filesize) AS filesize
-        FROM #{Wiki.table_name} wiki
+        FROM #{LegacyWiki.table_name} wiki
         JOIN #{WikiPage.table_name} pages
           ON pages.wiki_id = wiki.id
         JOIN #{Attachment.table_name} wiki_attached

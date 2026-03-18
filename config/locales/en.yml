@@ -2259,6 +2259,7 @@ en:
       issue_priority:
         one: "Priority"
         other: "Priorities"
+      legacy_wiki: "Wiki"
       meeting_participant: "Meeting participant"
       member: "Member"
       news: "News"

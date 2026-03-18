@@ -38,7 +38,7 @@ Rails.application.config.to_prepare do
     Meeting,
     Message,
     News,
-    Wiki,
+    [LegacyWiki, "Wiki"],
     WikiPage,
     WorkPackage,
     reset: true

@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Wiki do
+RSpec.describe LegacyWiki do
   let(:project) { create(:project, disable_modules: "wiki") }
   let(:start_page) { "The wiki start page" }
   let(:wiki) { project.create_legacy_wiki start_page: }
@@ -64,7 +64,7 @@ RSpec.describe Wiki do
       wiki.start_page = "Another start page"
       wiki.save
 
-      expect(Wiki)
+      expect(described_class)
         .to exist(start_page: "Another start page")
     end
   end

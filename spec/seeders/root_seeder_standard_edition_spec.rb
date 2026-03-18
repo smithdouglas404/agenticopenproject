@@ -55,7 +55,7 @@ RSpec.describe RootSeeder,
       expect(Project.count).to eq 2
       expect(EnabledModule.count).to eq 15
       expect(WorkPackage.count).to eq 36
-      expect(Wiki.count).to eq 2
+      expect(LegacyWiki.count).to eq 2
       expect(Query.having_views.count).to eq 8
       expect(View.where(type: "work_packages_table").count).to eq 5
       expect(View.where(type: "team_planner").count).to eq 1
@@ -184,7 +184,7 @@ RSpec.describe RootSeeder,
       it "does not create additional data and does not raise any errors" do # rubocop:disable RSpec/MultipleExpectations
         expect(Project.count).to eq 2
         expect(WorkPackage.count).to eq 36
-        expect(Wiki.count).to eq 2
+        expect(LegacyWiki.count).to eq 2
         expect(Query.having_views.count).to eq 8
         expect(View.where(type: "work_packages_table").count).to eq 5
         expect(View.where(type: "team_planner").count).to eq 1
@@ -214,7 +214,7 @@ RSpec.describe RootSeeder,
       it "does not create additional data and does not raise any errors" do
         expect(Project.count).to eq 2
         expect(WorkPackage.count).to eq 36
-        expect(Wiki.count).to eq 2
+        expect(LegacyWiki.count).to eq 2
       end
     end
 

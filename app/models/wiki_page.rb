@@ -29,7 +29,7 @@
 #++
 
 class WikiPage < ApplicationRecord
-  belongs_to :wiki, touch: true
+  belongs_to :wiki, touch: true, class_name: "LegacyWiki"
   has_one :project, through: :wiki
   belongs_to :author, class_name: 'User'
 
@@ -45,14 +45,14 @@ class WikiPage < ApplicationRecord
               adapter: OpenProject::ActsAsUrl::Adapter::OpActiveRecord # use a custom adapter able to handle edge cases
 
   acts_as_watchable
-  acts_as_event title: Proc.new { |o| "#{Wiki.model_name.human}: #{o.title}" },
+  acts_as_event title: Proc.new { |o| "#{LegacyWiki.model_name.human}: #{o.title}" },
                 description: :text,
                 url: Proc.new { |o| { controller: '/wiki', action: 'show', project_id: o.wiki.project, id: o.title } }
 
   acts_as_searchable columns: %W[#{WikiPage.table_name}.title text],
                      include: [{ wiki: :project }],
                      references: %i[wikis],
-                     project_key: "#{Wiki.table_name}.project_id"
+                     project_key: "#{LegacyWiki.table_name}.project_id"
 
   acts_as_journalized
 

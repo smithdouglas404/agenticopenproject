@@ -97,7 +97,7 @@ class Project < ApplicationRecord
   has_many :forums, -> { order("position ASC") }, dependent: :destroy
   has_one :repository, dependent: :destroy
   has_many :changesets, through: :repository
-  has_one :legacy_wiki, dependent: :destroy, class_name: "Wiki"
+  has_one :legacy_wiki, dependent: :destroy
   has_many :budgets, dependent: :destroy
   has_many :notification_settings, dependent: :destroy
   has_many :project_storages, dependent: :destroy, class_name: "Storages::ProjectStorage"

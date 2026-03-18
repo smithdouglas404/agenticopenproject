@@ -84,7 +84,7 @@ module Tasks
           project.enabled_modules.create name: "wiki"
 
           if project.legacy_wiki.nil?
-            Wiki.create! project:, start_page: "Wiki", status: 1
+            LegacyWiki.create! project:, start_page: "Wiki", status: 1
             project.reload
           end
         end

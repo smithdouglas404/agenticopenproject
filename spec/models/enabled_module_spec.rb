@@ -79,11 +79,11 @@ RSpec.describe EnabledModule do
       expect do
         project.enabled_module_names = []
         project.reload
-      end.not_to change(Wiki, :count)
+      end.not_to change(LegacyWiki, :count)
 
       expect do
         project.enabled_module_names = ["wiki"]
-      end.not_to change(Wiki, :count)
+      end.not_to change(LegacyWiki, :count)
 
       expect(project.legacy_wiki).not_to be_nil
     end
