@@ -39,7 +39,7 @@ module PaginationHelper
     return unless paginator.total_entries > 0
 
     content_tag(:div, class: "op-pagination") do
-      concat pagination_pages_section(paginator, renderer: OpenProject::LinkRenderer, params:, allowed_params:, **)
+      concat pagination_pages_section(paginator, params:, allowed_params:, **)
       concat pagination_options_section(paginator, params:, allowed_params:) if per_page_links
     end
   end
@@ -113,10 +113,59 @@ module PaginationHelper
 
   private
 
-  def pagination_pages_section(paginator, **)
-    content_tag(:nav, class: "op-pagination--pages", aria: { label: I18n.t(:"js.pagination.page_navigation") }) do
-      pagination_entries(paginator, **)
+  def pagination_pages_section(paginator, params:, allowed_params:, **)
+    content_tag(:div, class: "op-pagination--pages") do
+      safe_join(
+        [
+          render_primer_pagination(paginator, params:, allowed_params:, **),
+          pagination_range(paginator)
+        ]
+      )
     end
+  end
+
+  def render_primer_pagination(paginator, params:, allowed_params:, **)
+    render(
+      Primer::Alpha::Pagination.new(
+        page_count: paginator.total_pages,
+        current_page: paginator.current_page,
+        href_builder: ->(page) { pagination_href(page, params:, allowed_params:) },
+        **primer_pagination_arguments(**)
+      )
+    )
+  end
+
+  def primer_pagination_arguments(**)
+    {
+      show_pages: {
+        narrow: false,
+        regular: true,
+        wide: true
+      }
+    }
+  end
+
+  def pagination_href(page, params:, allowed_params:)
+    allowed_params ||= %w[filters sortBy]
+
+    url_for(
+      params
+        .merge(page:)
+        .merge(safe_query_params(allowed_params))
+    )
+  end
+
+  def pagination_range(paginator)
+    page_first = paginator.offset + 1
+    page_last = paginator.offset + paginator.length
+    total = paginator.total_entries
+
+    content_tag(
+      :div,
+      "(#{page_first} - #{page_last}/#{total})",
+      class: "op-pagination--range",
+      aria: { live: "polite" }
+    )
   end
 
   def pagination_options_section(paginator, params:, allowed_params:)
@@ -132,24 +181,6 @@ module PaginationHelper
           **params.merge(safe_query_params(allowed_params))
         )
       end
-    end
-  end
-
-  ##
-  # Builds the pagination nav with pages and range
-  def pagination_entries(paginator, **)
-    page_first = paginator.offset + 1
-    page_last = paginator.offset + paginator.length
-    total = paginator.total_entries
-
-    content_tag(:ul, class: "op-pagination--items op-pagination--items_start", role: "presentation") do
-      concat will_paginate(paginator, **, container: false)
-      concat content_tag(
-        :li,
-        "(#{page_first} - #{page_last}/#{total})",
-        class: "op-pagination--range",
-        aria: { live: "polite" }
-      )
     end
   end
 
