@@ -99,6 +99,22 @@ RSpec.describe Sprints::StartService do
     end
   end
 
+  context "when the database unique constraint rejects sprint activation" do
+    before do
+      allow(sprint)
+        .to receive(:active!)
+        .and_raise(ActiveRecord::RecordNotUnique)
+    end
+
+    it "returns failure with the active sprint error", :aggregate_failures do
+      expect(result).not_to be_success
+      expect(result.errors[:status]).to include("only one active sprint is allowed per project.")
+      expect(result.message).to eq(sprint.errors.full_messages.to_sentence)
+      expect(sprint.reload).to be_in_planning
+      expect(sprint.task_board).to be_nil
+    end
+  end
+
   context "when the sprint is already active" do
     let(:status) { "active" }
 

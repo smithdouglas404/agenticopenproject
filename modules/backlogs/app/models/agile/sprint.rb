@@ -66,8 +66,13 @@ module Agile
     validates :finish_date,
               comparison: { greater_than_or_equal_to: :start_date },
               if: :start_date?
-
-    validate :validate_only_one_active_sprint_per_project
+    validates :status,
+              uniqueness: {
+                scope: :project_id,
+                conditions: -> { active },
+                message: :only_one_active_sprint_allowed
+              },
+              if: :active?
 
     def date_range_set?
       start_date? && finish_date?
@@ -85,24 +90,6 @@ module Agile
 
     def task_board?
       task_board.present?
-    end
-
-    private
-
-    # TODO: consider moving this validation to the database level to ensure data integrity.
-    # Doing this in Rails can lead to race conditions. Revisit this topic once the sharing
-    # logic has been fully specified.
-    def validate_only_one_active_sprint_per_project
-      return if !active? || project_id.blank?
-
-      existing_active_sprint = self.class
-                                   .where(project_id:, status: "active")
-                                   .where.not(id:)
-                                   .exists?
-
-      if existing_active_sprint
-        errors.add(:status, :only_one_active_sprint_allowed)
-      end
     end
   end
 end

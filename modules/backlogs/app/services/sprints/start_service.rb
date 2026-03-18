@@ -58,6 +58,9 @@ class Sprints::StartService < BaseServices::BaseCallable
     ServiceResult.success(result: model)
   rescue ActiveRecord::RecordInvalid
     unsuccessful_start_result
+  rescue ActiveRecord::RecordNotUnique
+    add_only_one_active_sprint_error
+    unsuccessful_start_result
   end
 
   def unsuccessful_start_result
@@ -76,5 +79,11 @@ class Sprints::StartService < BaseServices::BaseCallable
 
   def unsuccessful_start_message
     model.errors.full_messages.to_sentence if model.errors.any?
+  end
+
+  def add_only_one_active_sprint_error
+    return if model.errors.added?(:status, :only_one_active_sprint_allowed)
+
+    model.errors.add(:status, :only_one_active_sprint_allowed)
   end
 end
