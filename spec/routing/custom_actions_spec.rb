@@ -72,4 +72,26 @@ RSpec.describe "custom_actions routes" do
         .to route_to("custom_actions#destroy", id: "42")
     end
   end
+
+  describe "turbo stream collection routes" do
+    it "links GET /admin/custom_actions/action_section" do
+      expect(get("/admin/custom_actions/action_section"))
+        .to route_to("custom_actions#action_section")
+    end
+
+    it "links GET /admin/custom_actions/condition_section" do
+      expect(get("/admin/custom_actions/condition_section"))
+        .to route_to("custom_actions#condition_section")
+    end
+
+    it "links GET /admin/custom_actions/remove_action_section" do
+      expect(get("/admin/custom_actions/remove_action_section"))
+        .to route_to("custom_actions#remove_action_section")
+    end
+
+    it "links GET /admin/custom_actions/remove_condition_section" do
+      expect(get("/admin/custom_actions/remove_condition_section"))
+        .to route_to("custom_actions#remove_condition_section")
+    end
+  end
 end

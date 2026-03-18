@@ -31,12 +31,15 @@
 class CustomActionsController < ApplicationController
   before_action :require_admin
 
-  guard_enterprise_feature(:custom_actions, only: %i[new create edit update]) do
+  guard_enterprise_feature(:custom_actions,
+                          only: %i[new create edit update action_section condition_section
+                                   remove_action_section remove_condition_section]) do
     redirect_to action: :index
   end
 
-  before_action :find_custom_action, only: %i(edit update destroy)
-  before_action :pad_params, only: %i(create update)
+  before_action :find_custom_action, only: %i[edit update destroy]
+  before_action :find_custom_action_for_section, only: %i[action_section condition_section]
+  before_action :pad_params, only: %i[create update]
 
   layout "admin"
 
@@ -70,10 +73,70 @@ class CustomActionsController < ApplicationController
     redirect_to custom_actions_path, status: :see_other
   end
 
+  def action_section
+    key = params[:key].to_s.delete_prefix("action_")
+    action = @custom_action.all_actions.find { it.key.to_s == key }
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.append("custom-actions-form--active-actions",
+                             partial: "custom_actions/action_section",
+                             locals: { action: })
+        ], status: :ok
+      end
+    end
+  end
+
+  def condition_section
+    key = params[:key].to_s.delete_prefix("condition_")
+    condition = @custom_action.all_conditions.find { it.key.to_s == key }
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.append("custom-actions-form--active-conditions",
+                             partial: "custom_actions/condition_section",
+                             locals: { condition: })
+        ], status: :ok
+      end
+    end
+  end
+
+  def remove_action_section
+    key = params[:key].to_s
+    section_id = "action_section_#{key.sub(/\Aaction_/, '')}"
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(section_id)
+        ], status: :ok
+      end
+    end
+  end
+
+  def remove_condition_section
+    key = params[:key].to_s
+    section_id = "condition_section_#{key.sub(/\Acondition_/, '')}"
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(section_id)
+        ], status: :ok
+      end
+    end
+  end
+
   private
 
   def find_custom_action
     @custom_action = CustomAction.find(params[:id])
+  end
+
+  def find_custom_action_for_section
+    @custom_action = params[:id].present? ? CustomAction.find_by(id: params[:id]) : new
   end
 
   def index_or_render(render_action)

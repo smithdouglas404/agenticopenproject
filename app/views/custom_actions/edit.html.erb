@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,8 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
-
+++# %>
 <% html_title t(:label_administration), t("custom_actions.edit", name: @custom_action.name) %>
 
 <%=
@@ -43,10 +42,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= error_messages_for @custom_action %>
 
-<% content_controller "hide-sections" %>
-
-<%= labelled_tabular_form_for @custom_action,
-                              data: { "hide-sections-target": "form" } do |f| %>
+<%= labelled_tabular_form_for @custom_action do |f| %>
   <%= render partial: "form", locals: { f: f } %>
   <%= styled_button_tag t(:button_save), class: "-primary -with-icon icon-checkmark" %>
 <% end %>

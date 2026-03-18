@@ -26,144 +26,19 @@ See COPYRIGHT and LICENSE files for more details.
   </legend>
 
   <div id="custom-actions-form--active-actions">
-    <% all_actions.each do |action| %>
-      <% action_key = "action_#{action.key}" %>
-      <section class="hide-section"
-        data-hide-sections-target="section"
-        data-name="<%= action_key %>"
-        <%= tag.attributes(data: { section_name: action_key }, hidden: active_section_keys.include?(action_key) ? nil : true) %>
-      >
-        <div class="form--field">
-          <%= styled_label_tag("custom_action_actions_#{action.key}", action.human_name, class: "-top") %>
-          <% input_name = "custom_action[actions][#{action.key}]" %>
-          <% if %i(associated_property boolean user project).include?(action.type) %>
-            <div class="form--field-container">
-              <div class="form--select-container -middle">
-                <% case action %>
-                <% in { type: :project } %>
-                  <%= angular_component_tag "opce-project-autocompleter",
-                                            inputs: {
-                                              multiple: false,
-                                              filters: [{ name: "active", operator: "=", values: ["t"] }],
-                                              resource: "projects",
-                                              inputName: input_name,
-                                              appendTo: "body",
-                                              labelForId: "custom_action_actions_#{action.key}",
-                                              inputValue: action.values.first
-                                            } %>
-                <% in { type: :user, custom_field_based: false } %>
-                  <% selected = action.value_objects.map { |v| { id: v[:value], name: v[:label] } } %>
-                  <%= angular_component_tag "opce-user-autocompleter",
-                                            inputs: {
-                                              multiple: action.multi_value?,
-                                              hideSelected: true,
-                                              defaultData: false,
-                                              placeholder: I18n.t(:label_user_search),
-                                              resource: "principals",
-                                              url: ::API::V3::Utilities::PathHelper::ApiV3Path.principals,
-                                              model: action.multi_value? ? selected : selected.first,
-                                              inputName: input_name,
-                                              filters: [
-                                                { name: "status", operator: "!", values: [Principal.statuses["locked"].to_s] }
-                                              ],
-                                              appendTo: "body",
-                                              additionalOptions: [
-                                                { id: nil, name: I18n.t("placeholders.default") },
-                                                { id: action.current_user_value_key, name: action.current_user_name }
-                                              ],
-                                              searchKey: "any_name_attribute",
-                                              labelForId: "custom_action_actions_#{action.key}",
-                                              focusDirectly: false
-                                            } %>
-                <% else %>
-                  <% selected = action.value_objects.map { |v| { id: v[:value], name: v[:label] } } %>
-                  <%= angular_component_tag "opce-autocompleter",
-                                            inputs: {
-                                              multiple: action.multi_value?,
-                                              hideSelected: true,
-                                              defaultData: false,
-                                              items: action.allowed_values.map { |v| { id: v[:value], name: v[:label] } },
-                                              model: action.multi_value? ? selected : selected.first,
-                                              inputName: input_name,
-                                              bindLabel: "name",
-                                              labelForId: "custom_action_actions_#{action.key}",
-                                              appendTo: "body"
-                                            } %>
-                <% end %>
-              </div>
-            </div>
-          <% elsif %i(date_property).include?(action.type) %>
-            <div class="form--field-container">
-              <% date = action.values.first %>
-              <%= angular_component_tag "opce-custom-date-action-admin",
-                                        data: { "field-value": date.try(:iso8601) || date, "field-name": input_name } %>
-            </div>
-          <% elsif %i(string_property text_property).include?(action.type) %>
-            <div class="form--field-container">
-              <%= styled_text_field_tag input_name,
-                                        action.values,
-                                        container_class: "-slim",
-                                        step: "any" %>
-            </div>
-          <% elsif %i(link_property).include?(action.type) %>
-            <div class="form--field-container">
-              <%= styled_url_field_tag input_name,
-                                       action.values,
-                                       container_class: "-slim",
-                                       step: "any" %>
-            </div>
-          <% elsif action.type == :float_property %>
-            <div class="form--field-container">
-              <%= styled_number_field_tag input_name,
-                                          action.values,
-                                          container_class: "-slim",
-                                          min: action.minimum,
-                                          max: action.maximum,
-                                          step: "any" %>
-            </div>
-          <% elsif action.type == :integer_property %>
-            <div class="form--field-container">
-              <%= styled_number_field_tag input_name,
-                                          action.values,
-                                          container_class: "-slim",
-                                          min: action.minimum,
-                                          max: action.maximum,
-                                          step: 1 %>
-            </div>
-          <% end %>
-          <button type="button"
-                  class="spot-link"
-                  title="<%= t(:button_close) %>"
-                  data-action="click->hide-sections#hide">
-            <%= op_icon("icon-close icon-small") %>
-          </button>
-        </div>
-      </section>
+    <% custom_action.actions.each do |action| %>
+      <%= render partial: "custom_actions/action_section",
+                 locals: {
+                   action: action
+                 } %>
     <% end %>
   </div>
 
   <div class="form--space"></div>
 
-  <div class="form--field">
-    <label class="form--label" for="add-custom-action-select">
-      <%= op_icon("icon-add icon4") %>
-      <%= I18n.t(:"custom_actions.actions.add") %>
-    </label>
-    <span class="form--field-container">
-      <span class="form--select-container -middle">
-        <%= select_tag "add_action",
-                       options_for_select(
-                         @custom_action.all_actions.map { [it.human_name, "action_#{it.key}"] },
-                         disabled: active_section_keys
-                       ),
-                       id: "add-custom-action-select",
-                       prompt: t(:"custom_actions.actions.add"),
-                       data: {
-                         "hide-sections-target": "select",
-                         action: "change->hide-sections#add"
-                       },
-                       class: "form--select" %>
-      </span>
-    </span>
-  </div>
+  <%= render partial: "custom_actions/add_action_select",
+             locals: {
+               custom_action: custom_action,
+               active_section_keys: active_section_keys
+             } %>
 </fieldset>

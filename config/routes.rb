@@ -626,7 +626,14 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :custom_actions, except: :show
+    resources :custom_actions, except: :show do
+      collection do
+        get :action_section
+        get :condition_section
+        get :remove_action_section
+        get :remove_condition_section
+      end
+    end
 
     namespace :oauth do
       resources :applications do
