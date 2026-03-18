@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Wikis::Annotate
+class WikiPage::Annotate
   attr_reader :lines, :content
 
   def initialize(content)
