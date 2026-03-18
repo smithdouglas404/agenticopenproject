@@ -37,11 +37,6 @@ module API
             route_param :id do
               helpers ::API::Helpers::HistoricalIdentifierRedirect
 
-              after_validation do
-                @project = Project.find(params[:id])
-                redirect_if_historical_identifier(:id, @project)
-              end
-
               namespace "bcf_xml" do
                 helpers do
                   # Global helper to set allowed content_types
@@ -74,6 +69,8 @@ module API
                     raise API::Errors::NotFound.new
                   end
 
+                  redirect_if_historical_identifier(:id, project)
+
                   query = Query.new_default(project:)
                   updated_query = ::API::V3::UpdateQueryFromV3ParamsService.new(query, User.current).call(params)
 
@@ -89,6 +86,8 @@ module API
                   authorize_in_project(:manage_bcf, project:) do
                     raise API::Errors::NotFound.new
                   end
+
+                  redirect_if_historical_identifier(:id, project)
 
                   begin
                     file = params[:bcf_xml_file][:tempfile]
