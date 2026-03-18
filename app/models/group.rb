@@ -52,6 +52,10 @@ class Group < Principal
            through: :group_users,
            before_add: :fail_add
 
+  has_many :synchronized_groups,
+           class_name: "::LdapGroups::SynchronizedGroup",
+           dependent: :destroy
+
   acts_as_customizable
 
   alias_attribute(:name, :lastname)
