@@ -87,7 +87,7 @@ gem "htmldiff"
 gem "stringex", "~> 2.8.5"
 
 # CommonMark markdown parser with GFM extension
-gem "commonmarker", "~> 2.6.0"
+gem "commonmarker", "~> 2.7.0"
 
 # HTML pipeline for transformations on text formatter output
 # such as sanitization or additional features
@@ -163,7 +163,7 @@ gem "matrix", "~> 0.4.3"
 
 gem "mcp", "~> 0.8.0"
 
-gem "meta-tags", "~> 2.22.3"
+gem "meta-tags", "~> 2.23.0"
 
 gem "paper_trail", "~> 17.0.0"
 
@@ -236,8 +236,8 @@ gem "yabeda-puma-plugin"
 gem "yabeda-rails"
 
 # opentelemetry
-gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.90.0", require: false
+gem "opentelemetry-exporter-otlp", "~> 0.32.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.91.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
 gem "view_component", "~> 4.5.0"
@@ -277,7 +277,7 @@ group :test do
   gem "rspec-rails", "~> 8.0.4", group: :development
 
   # Retry failures within the same environment
-  gem "retriable", "~> 3.2.1"
+  gem "retriable", "~> 3.4.1"
   gem "rspec-retry", "~> 0.6.1"
 
   # Accessibility tests
