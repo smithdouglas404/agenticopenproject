@@ -67,8 +67,8 @@ module Projects
       #
       # @example
       #   redirect_historical_project_identifier param_key: :project_id, only: %i[show edit]
-      def self.redirect_historical_project_identifier(param_key: :project_id, **options)
-        before_action(**options) do
+      def self.redirect_historical_project_identifier(param_key: :project_id, **)
+        before_action(**) do
           check_and_redirect_historical_project_identifier(param_key)
         end
       end
