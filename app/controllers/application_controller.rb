@@ -282,11 +282,11 @@ class ApplicationController < ActionController::Base
 
   # Find project by project_id if given
   def find_optional_project
-    if params[:project_id].present?
-      @project = Project.visible.find(params[:project_id])
-      redirect_if_historical_project_identifier(:project_id)
-      nil if performed?
-    end
+    return if params[:project_id].blank?
+    
+    @project = Project.visible.find(params[:project_id])
+    redirect_if_historical_project_identifier(:project_id)
+    nil if performed?
   rescue ActiveRecord::RecordNotFound
     render_404
   end
