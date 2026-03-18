@@ -68,11 +68,12 @@ module Import
 
         Import::JiraProject.where(jira_id:, jira_project_id: project_ids).find_each do |jira_project|
           ### PROJECT
+          identifier = jira_project.payload.fetch("key").downcase
           service_call = Projects::CreateService
                            .new(user:)
                            .call(
                              name: jira_project.payload.fetch("name"),
-                             identifier: jira_project.payload.fetch("key").downcase,
+                             identifier:,
                              description: jira_project.payload.fetch("description"),
                              active: true,
                              public: false,
@@ -231,6 +232,11 @@ module Import
                 raise service_call.message
               end
             end
+          elsif (error = service_call.errors.find { |e| e.attribute == :identifier && e.type == :taken }) && error.present?
+            taken_identifier = error.options[:value]
+            project = Project.find_by!(identifier: taken_identifier)
+            raise "You are trying to import a project with already used " \
+                  "identifier: #{taken_identifier}. Existing project: #{project}."
           else
             raise service_call.message
           end

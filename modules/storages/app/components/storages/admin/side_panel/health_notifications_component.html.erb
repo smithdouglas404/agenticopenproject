@@ -36,7 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
         notifications_container.with_row do
           concat(
             render(Primer::Beta::Text.new(pr: 2, test_selector: "storage-health-checked-at")) do
-              I18n.t("storages.health.checked", datetime: helpers.format_time(@storage.health_checked_at))
+              I18n.t("storages.health.synced", datetime: helpers.format_time(@storage.health_checked_at))
             end
           )
 

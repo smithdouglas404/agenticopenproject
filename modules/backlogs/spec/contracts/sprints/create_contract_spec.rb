@@ -41,14 +41,12 @@ RSpec.describe Sprints::CreateContract do
                       project:,
                       start_date: sprint_start_date,
                       finish_date: sprint_finish_date,
-                      status: sprint_status,
-                      sharing: sprint_sharing)
+                      status: sprint_status)
   end
   let(:sprint_name) { "Sprint 1" }
   let(:sprint_start_date) { Time.zone.today }
   let(:sprint_finish_date) { Time.zone.today + 14.days }
   let(:sprint_status) { "in_planning" }
-  let(:sprint_sharing) { "none" }
   let(:permissions) { [:create_sprints] }
 
   subject(:contract) { described_class.new(sprint, user) }

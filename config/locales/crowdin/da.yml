@@ -107,9 +107,8 @@ da:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -3888,12 +3887,6 @@ da:
   label_user_named: "User %{name}"
   label_user_activity: "%{value}s aktivitet"
   label_user_anonymous: "Anonymt"
-  label_user_mail_option_all: "For enhver hændelse i alle mine projekter"
-  label_user_mail_option_none: "Ingen hændelser"
-  label_user_mail_option_only_assigned: "Kun i forbindelse med det jeg er tilknyttet"
-  label_user_mail_option_only_my_events: "Kun for det jeg fører tilsyn med eller er involveret i"
-  label_user_mail_option_only_owner: "Kun for det jeg er ejer af"
-  label_user_mail_option_selected: "Kun for hændelser i de valgte projekter"
   label_user_menu: "User menu"
   label_user_new: "Ny bruger"
   label_user_plural: "Brugere"
@@ -3933,7 +3926,6 @@ da:
   label_wiki_show_index_page_link: "Vis undermenupunkt 'Indhold'"
   label_wiki_show_menu_item: "Vis som menupunkt i projektnavigeringen"
   label_wiki_show_new_page_link: "Vis undermenupunktet 'Opret ny underside'"
-  label_wiki_show_submenu_item: "Vis som punkt i undermenu til "
   label_wiki_start: "Startside"
   label_work: "Work"
   label_work_package: "Arbejdspakke"
@@ -4215,7 +4207,7 @@ da:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projektet blev ikke slettet."
   notice_project_not_found: "Project not found."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Forbindelse gennemført."
   notice_successful_create: "Oprettelse gennemført."
   notice_successful_delete: "Sletning gennemført."

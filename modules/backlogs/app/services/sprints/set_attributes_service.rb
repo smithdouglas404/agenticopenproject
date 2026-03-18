@@ -41,16 +41,15 @@ module Sprints
 
     def set_default_attributes(_params)
       set_sprint_name
-      set_status_and_sharing
+      set_default_status
     end
 
     def set_sprint_name
       model.name ||= sprint_name_from_predecessor
     end
 
-    def set_status_and_sharing
+    def set_default_status
       model.status ||= "in_planning"
-      model.sharing ||= "none"
     end
 
     def next_name_in_succession(predecessor)

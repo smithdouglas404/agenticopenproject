@@ -197,7 +197,7 @@ de:
   permission_log_costs: "Stückkosten buchen"
   permission_log_own_costs: "Eigene Stückkosten buchen"
   permission_view_cost_entries: "Gebuchte Kosten ansehen"
-  permission_view_cost_rates: "Anzeigen von Stückpreisen"
+  permission_view_cost_rates: "Stückkosten ansehen"
   permission_view_hourly_rates: "Alle Stundensätze ansehen"
   permission_view_own_cost_entries: "Eigene gebuchte Kosten ansehen"
   permission_view_own_hourly_rate: "Eigene Stundensätze ansehen"

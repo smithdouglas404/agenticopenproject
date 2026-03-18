@@ -31,9 +31,9 @@ cs:
         spent: "Strávený čas"
         spent_on: "Datum"
         logged_by: "Zadáno"
-        entity: Přihlášen 
-        entity_id: Přihlášen 
-        entity_gid: Přihlášen 
+        entity: Přihlášen
+        entity_id: Přihlášen
+        entity_gid: Přihlášen
       cost_type:
         unit: "Název jednotky"
         unit_plural: "Název Pluralizované jednotky"
@@ -61,9 +61,9 @@ cs:
         start_time: Čas zahájení
         end_time: Čas dokončení
         time: Čas
-        entity: Přihlášen 
-        entity_id: Přihlášen 
-        entity_gid: Přihlášen 
+        entity: Přihlášen
+        entity_id: Přihlášen
+        entity_gid: Přihlášen
     models:
       time_entry:
         one: "Vstup času"
@@ -242,8 +242,8 @@ cs:
       actual_costs:
         title: "Actual costs by month"
         blankslate:
-          heading: "Start tracking your time and costs"
-          description: "Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget."
+          heading: "Začněte sledovat svůj čas a náklady"
+          description: "Získejte přehled o vašich nákladech a zalogovaném čase pro sledování průběhu vašeho projektu. Ujistěte se, že pracovní balíčky jsou přiřazeny ke správnému rozpočtu."
           action: "Log time"
         view_details: "View actual costs details"
   ee:

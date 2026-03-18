@@ -107,9 +107,8 @@ ru:
         trial: "Пробная версия"
     jemalloc_allocator: Распределитель памяти Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Личные действия пользователя (например, обновление пакета работ дважды) агрегируются в одно действие, если их разница во времени не больше указанной. Они будут отображаться как одно действие внутри приложения. Это также задерживает уведомление на такое же количество времени, уменьшая количество отправляемых писем и также повлияет на %{webhook_link} задержки."
-        link: "вебхук"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Импорт"
     jira:
@@ -626,13 +625,13 @@ ru:
   op_dry_validation:
     or: "или"
     errors:
-      unexpected_key: "is not allowed."
+      unexpected_key: "не разрешено."
       array?: "должно быть массивом."
       decimal?: "должно быть десятичным."
       defined: "не должно быть определено."
       eql?: "должно быть равно %{left}."
       filled?: "должно быть заполнено."
-      format?: "is in invalid format."
+      format?: "неверный формат."
       greater_or_equal_zero: "должно быть больше или равно 0."
       gteq?: "должно быть больше или равно %{num}."
       hash?: "должно быть хэш."
@@ -659,9 +658,9 @@ ru:
         parent:
           not_descendant: "должно быть потомком корневого уровня иерархии."
       str?: "должно быть строкой."
-      time?: "must be a time."
+      time?: "должно быть единицей времени."
       type?: "должно быть %{type}."
-      uri?: "is not a valid URI."
+      uri?: "не является допустимым URI."
     rules:
       copy_workflow_from: "Тип копии рабочего процесса"
       enabled: "Включено"
@@ -4000,12 +3999,6 @@ ru:
   label_user_named: "Пользователь %{name}"
   label_user_activity: "%{value} деятельности"
   label_user_anonymous: "Анонимно"
-  label_user_mail_option_all: "Для любого события на моих проектах"
-  label_user_mail_option_none: "Нет событий"
-  label_user_mail_option_only_assigned: "Только для тех, которые мне поручены"
-  label_user_mail_option_only_my_events: "Только для тех, в которых я наблюдатель или участник"
-  label_user_mail_option_only_owner: "Только для тех, которыми я владею"
-  label_user_mail_option_selected: "Для любого события, но только для выбранных проектов"
   label_user_menu: "Пользовательское меню"
   label_user_new: "Новый пользователь"
   label_user_plural: "Пользователи"
@@ -4045,7 +4038,6 @@ ru:
   label_wiki_show_index_page_link: "Показать пункт подменю «Содержание»"
   label_wiki_show_menu_item: "Показать как меню в навигации по проекту"
   label_wiki_show_new_page_link: "Показать пункт подменю «Создать новую дочернюю страницу»"
-  label_wiki_show_submenu_item: "Показать как пункт подменю "
   label_wiki_start: "Начальная страница"
   label_work: "Предполагаемое время"
   label_work_package: "Пакет работ"
@@ -4328,7 +4320,7 @@ ru:
   notice_parent_item_not_found: "Родительский элемент не найден."
   notice_project_not_deleted: "Проект удалён не был."
   notice_project_not_found: "Проект не найден."
-  notice_smtp_address_unsafe: "SMTP-адрес %{address} небезопасен. Пожалуйста, добавьте его в список OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Подключение выполнено."
   notice_successful_create: "Создание выполнено."
   notice_successful_delete: "Удаление выполнено."
@@ -5118,7 +5110,7 @@ ru:
   text_default_administrator_account_changed: "Первоначальная учетная запись администратора была изменена"
   text_default_encoding: "По-умолчанию: UTF-8"
   text_destroy: "Удалить"
-  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
+  text_destroy_with_associated: "Есть дополнительные объекты, ассоцированные с пакетом(-ами) работ, которые должны быть удалены. Это объекты следующих типов:"
   text_destroy_what_to_do: "Что Вы хотите сделать?"
   text_diff_truncated: "... Этот разностность(diff) была усечена, так как она превышает максимальный размер, которые может быть отображен."
   text_email_delivery_not_configured: "Доставка электронной почты не настроена, уведомления отключены.\nНастройте SMTP-сервер, чтобы включить их."

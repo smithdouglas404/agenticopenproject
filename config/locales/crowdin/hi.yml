@@ -107,9 +107,8 @@ hi:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -3888,12 +3887,6 @@ hi:
   label_user_named: "उपयोगकर्ता %{name}"
   label_user_activity: "%{value}'s activity"
   label_user_anonymous: "अज्ञात"
-  label_user_mail_option_all: "For any event on all my projects"
-  label_user_mail_option_none: "No events"
-  label_user_mail_option_only_assigned: "Only for things I am assigned to"
-  label_user_mail_option_only_my_events: "Only for things I watch or I'm involved in"
-  label_user_mail_option_only_owner: "Only for things I am the owner of"
-  label_user_mail_option_selected: "For any event on the selected projects only"
   label_user_menu: "User menu"
   label_user_new: "New user"
   label_user_plural: "Users"
@@ -3933,7 +3926,6 @@ hi:
   label_wiki_show_index_page_link: "Show submenu item 'Table of Contents'"
   label_wiki_show_menu_item: "Show as menu item in project navigation"
   label_wiki_show_new_page_link: "Show submenu item 'Create new child page'"
-  label_wiki_show_submenu_item: "Show as submenu item of "
   label_wiki_start: "प्रारंभ पृष्ठ"
   label_work: "Work"
   label_work_package: "कार्य पैकेज"
@@ -4215,7 +4207,7 @@ hi:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "The project wasn't deleted."
   notice_project_not_found: "Project not found."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Successful connection."
   notice_successful_create: "Successful creation."
   notice_successful_delete: "Successful deletion."

@@ -148,7 +148,7 @@ This numeric value is required and can be used in calculations — for example, 
 
 [feature: calculated_values ]
 
-**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Weighted item lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., Benefit or Effort in the example below) is changed. This allows teams to calculate project scores and prioritise consistently across the portfolio.
+**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Weighted item lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., Benefit or Effort in the example below) is changed. This allows teams to calculate project scores and prioritize consistently across the portfolio.
 
 To set up a project attribute of the **Calculated value** type, follow the same procedure as when adding a standard project attribute and select the *Calculated value* option. Define the name, section it will appear in and the calculation formula. 
 

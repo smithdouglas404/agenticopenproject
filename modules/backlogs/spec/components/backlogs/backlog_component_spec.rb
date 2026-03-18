@@ -119,7 +119,7 @@ RSpec.describe Backlogs::BacklogComponent, type: :component do
         box = page.find(".Box")
         expect(box["data-generic-drag-and-drop-target"]).to eq("container")
         expect(box["data-target-container-accessor"]).to eq(":scope > ul")
-        expect(box["data-target-id"]).to eq(sprint.id.to_s)
+        expect(box["data-target-id"]).to eq("version:#{sprint.id}")
         expect(box["data-target-allowed-drag-type"]).to eq("story")
       end
 
@@ -129,7 +129,7 @@ RSpec.describe Backlogs::BacklogComponent, type: :component do
         story_row = page.find(".Box-row[id='story_#{story1.id}']")
         expect(story_row["data-draggable-id"]).to eq(story1.id.to_s)
         expect(story_row["data-draggable-type"]).to eq("story")
-        expect(story_row["data-drop-url"]).to end_with(move_backlogs_project_sprint_story_path(project, sprint, story1))
+        expect(story_row["data-drop-url"]).to end_with(move_legacy_backlogs_project_sprint_story_path(project, sprint, story1))
       end
 
       it "renders story rows with proper classes" do

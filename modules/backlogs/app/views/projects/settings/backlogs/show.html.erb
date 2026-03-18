@@ -27,41 +27,22 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%=
-  render Primer::OpenProject::PageHeader.new do |header|
-    header.with_title { t(:label_backlogs) }
+<%= turbo_frame_tag "backlogs-settings" do %>
+  <%= render(
+        Projects::Settings::Backlogs::SettingsHeaderComponent.new(
+          project: @project,
+          selected_tab: :done_status
+        )
+      ) %>
 
-    header.with_breadcrumbs(
-      [{ href: project_overview_path(@project), text: @project.name },
-       { href: project_settings_general_path(@project), text: I18n.t(:label_project_settings) },
-       t(:label_backlogs)]
-    )
-
-    header.with_action_menu(
-      menu_arguments: { anchor_align: :end },
-      button_arguments: {
-        icon: :"kebab-horizontal",
-        "aria-label": t(:label_more)
-      }
-    ) do |menu|
-      menu.with_item(
-        tag: :button,
-        href: rebuild_positions_project_settings_backlogs_path(@project),
-        label: t(:"backlogs.rebuild_positions"),
-        form_arguments: { method: :post }
-      ) do |item|
-        item.with_leading_visual_icon(icon: :sync)
-      end
-    end
-  end
-%>
-
-<%=
-  settings_primer_form_with(
-    url: project_settings_backlogs_path(@project),
-    model: @project,
-    method: :patch
-  ) do |f|
-%>
-  <%= render Projects::Settings::BacklogsSettingsForm.new(f) %>
+  <%=
+    settings_primer_form_with(
+      url: project_settings_backlogs_path(@project),
+      model: @project,
+      method: :patch,
+      data: { turbo_frame: "_top" }
+    ) do |f|
+  %>
+    <%= render Projects::Settings::BacklogsSettingsForm.new(f) %>
+  <% end %>
 <% end %>

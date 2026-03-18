@@ -107,9 +107,8 @@ pl:
         trial: "Wersja próbna"
     jemalloc_allocator: Alokator pamięci Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Indywidualne działania użytkownika (np. dwukrotna aktualizacja pakietu roboczego) są agregowane w jedno działanie, jeśli różnica czasowa między nimi jest mniejsza niż określony przedział czasowy. Będą one wyświetlane jako jedno działanie w aplikacji. Spowoduje to również opóźnienie powiadomień o tę samą ilość czasu, zmniejszając liczbę wysyłanych wiadomości e-mail i wpłynie też na opóźnienie %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -3998,12 +3997,6 @@ pl:
   label_user_named: "Użytkownik %{name}"
   label_user_activity: "Aktywność użytkownika: %{value}"
   label_user_anonymous: "Anonimowy"
-  label_user_mail_option_all: "Dla każdego zdarzenia we wszystkich moich projektach"
-  label_user_mail_option_none: "Brak zdarzeń"
-  label_user_mail_option_only_assigned: "Tylko do rzeczy do których jestem przydzielony"
-  label_user_mail_option_only_my_events: "Tylko to co obserwuję lub jestem zaangażowany"
-  label_user_mail_option_only_owner: "Tylko do rzeczy, których jestem właścicielem"
-  label_user_mail_option_selected: "Dla każdego zdarzenia w wybranych projektach"
   label_user_menu: "Menu użytkownika"
   label_user_new: "Nowy użytkownik"
   label_user_plural: "Użytkownicy"
@@ -4043,7 +4036,6 @@ pl:
   label_wiki_show_index_page_link: "Pokaż element podmenu \"Spis treści\""
   label_wiki_show_menu_item: "Pokaż jako element menu w nawigacji projektu"
   label_wiki_show_new_page_link: "Pokaż element podmenu \"Utwórz nową stronę podrzędną\""
-  label_wiki_show_submenu_item: "Pokaż jako pozycję podmenu "
   label_wiki_start: "Strona startowa"
   label_work: "Praca"
   label_work_package: "Zadanie"
@@ -4326,7 +4318,7 @@ pl:
   notice_parent_item_not_found: "Nie znaleziono elementu nadrzędnego."
   notice_project_not_deleted: "Projekt nie został usunięty."
   notice_project_not_found: "Nie znaleziono projektu."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Połączenie zakończone sukcesem."
   notice_successful_create: "Tworzenie zakończone sukcesem."
   notice_successful_delete: "Usuwanie zakończone sukcesem."

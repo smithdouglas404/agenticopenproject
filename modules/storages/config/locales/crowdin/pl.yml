@@ -279,6 +279,8 @@ pl:
           drive_contents: Zawartość dysku
           files_request: Pobieranie plików folderu zespołu
           header: Automatycznie zarządzane foldery projektu
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: 'Zależność: foldery zespołów'
           team_folder_contents: Zawartość folderu zespołu
           team_folder_presence: Folder zespołu istnieje
@@ -326,8 +328,10 @@ pl:
         nc_oauth_request_not_found: Nie znaleziono punktu końcowego, z którego można pobrać informacje o aktualnie połączonym użytkowniku. Aby uzyskać więcej informacji, sprawdź dzienniki serwera.
         nc_oauth_request_unauthorized: Bieżący użytkownik nie ma uprawnień dostępu do zdalnego magazynu plików. Aby uzyskać więcej informacji, sprawdź dzienniki serwera.
         nc_oauth_token_missing: Aplikacja OpenProject nie może przetestować komunikacji z usługą Nextcloud na poziomie użytkownika, ponieważ użytkownik nie powiązał jeszcze swojego konta Nextcloud.
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: Nie można znaleźć folderu zespołu.
-        nc_unexpected_content: W folderze zarządzanego zespołu znaleziono nieoczekiwaną zawartość.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: Skonfigurowane hasło aplikacji jest nieprawidłowe.
         not_configured: Nie można zweryfikować połączenia. Najpierw zakończ konfigurację.
         od_client_cant_delete_folder: Klient ma problemy z usunięciem folderów. Sprawdź dokumentację konfiguracji swojej pamięci masowej.
@@ -376,6 +380,7 @@ pl:
         failure: Niektóre kontrole nie powiodły się i system nie działa zgodnie z oczekiwaniami.
         success: Wszystkie połączenia i systemy działają zgodnie z oczekiwaniami.
         warning: Niektóre kontrole zwróciły ostrzeżenie. Może to prowadzić do nieoczekiwanego sposobu działania.
+      synced: 'Last sync: %{datetime}'
       title: Raport o stanie
     health_email_notifications:
       description_disabled: Administratorzy nie będą otrzymywać aktualizacji pocztą elektroniczną, gdy pojawią się ważne aktualizacje.

@@ -63,7 +63,7 @@ ru:
         end_date: "Дате окончания"
         iterations: "События"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "Время начала"
       meeting_participant:
         invited: "Приглашённые"
         attended: "Участвовал"
@@ -76,7 +76,7 @@ ru:
           section_not_belong_to_meeting: "Раздел не принадлежит к одному и тому же совещанию."
           user_invalid: "не является действительным участником."
         recurring_meeting_interim_response:
-          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
+          not_an_occurrence: "не является допустимым временем повторения совещания"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "В серии есть одно открытое совещание, которое не включено в новый график. Измените график, чтобы включить все существующие совещания."
@@ -206,7 +206,7 @@ ru:
   label_start_date: "Дата начала"
   label_subscribe_icalendar: "Подписаться на календарь"
   caption_meeting_template_select: "Выберите шаблон для автоматического копирования его повестки дня"
-  caption_template_project_select: "Please select the project in which to create this meeting template"
+  caption_template_project_select: "Пожалуйста, выберите проект, в котором будет создан этот шаблон совещания"
   meeting:
     participants:
       label:
@@ -226,8 +226,8 @@ ru:
         heading: "Нет участников"
         description: "Пока нет участников."
     attachments:
-      onetime_template: "These attached files will be included in all future meetings using this template."
-      series_template: "These attached files will be included in all future meetings in the series."
+      onetime_template: "Эти прикрепленные файлы будут включены во все последующие совещания, проводимые по этому шаблону."
+      series_template: "Эти прикрепленные файлы будут включены во все последующие совещания этой серии."
       text: "Прикрепленные файлы доступны всем участникам совещания. Вы также можете перенести их в примечания к пунктам повестки дня."
     copy:
       title: "Копировать совещание %{title}"
@@ -259,9 +259,9 @@ ru:
         header: "Отменено: совещание '%{title}'"
         header_occurrence: "Отменено: событие совещания '%{title}'"
         header_series: "Отменено: серия совещаний '%{title}'"
-        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
+        summary_occurrence: "Начало '%{title}' было отменено %{actor}, или вы были удалены из списка участников"
+        summary_series: "Серия совещаний '%{title}' была отменена %{actor}, или вы были удалены из списка участников"
+        summary: "'%{title}' было отменено %{actor}, или вы были удалены из списка участников"
         date_time: "Запланированная дата/время"
       participant_added:
         header: "Совещание '%{title}' - участник добавлен"
@@ -275,7 +275,7 @@ ru:
         summary_series: "%{actor} удалил %{participant} из серии совещаний '%{title}'"
       ended:
         header_series: "Завершено: Серия совещаний '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
+        summary_series: "Серия совещаний '%{title}' была завершена %{actor}"
       updated:
         header: "Встреча '%{title}' была обновлена"
         summary: "Совещание '%{title}' было обновлено пользователем %{actor}"
@@ -304,7 +304,7 @@ ru:
           title: "Удалить шаблон"
           heading: "Удалить этот шаблон?"
           confirmation_message_html: >
-            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
+            Это действие не обратимо. Пожалуйста, действуйте с осторожностью. Существующие совещания, созданные с помощью этого шаблона, не будут затронуты.
       occurrence:
         title: "Отменить это событие"
         heading: "Отменить это событие?"
@@ -570,8 +570,8 @@ ru:
   label_agenda_item_move_up: "Вверх"
   label_agenda_item_move_down: "Вниз"
   label_agenda_item_duplicate: "Дубликат"
-  label_agenda_item_duplicate_in_next: "Duplicate in next meeting"
-  label_agenda_item_duplicate_in_next_title: "Duplicate in next meeting?"
+  label_agenda_item_duplicate_in_next: "Продублировать в следующее совещание"
+  label_agenda_item_duplicate_in_next_title: "Продублировать в следующее совещание?"
   label_agenda_item_add_notes: "Добавить заметки"
   label_agenda_item_add_outcome: "Добавить итог"
   label_agenda_item_work_package_add: "Добавить пакет работ"
@@ -632,7 +632,7 @@ ru:
   text_meeting_draft_banner: "В настоящее время Вы находитесь в режиме черновика. Это совещание не будет рассылать никаких обновлений календаря или приглашений, даже если Вы измените детали совещания или добавите/удалите участников."
   text_onetime_meeting_template_banner: "В данный момент Вы редактируете шаблон совещания. Вы можете использовать этот шаблон для создания одноразовых совещаний с заранее определенной повесткой дня. Изменения не повлияют на уже созданные совещания."
   text_onetime_meeting_template_empty_heading: "Этот шаблон совещания пуст"
-  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
+  text_onetime_meeting_template_empty_description: "Добавьте сюда пункты повестки дня, разделы и вложения. Они будут включены в каждое совещание, созданное с помощью этого шаблона."
   text_exit_draft_mode_dialog_title: "Открыть это совещание и разослать приглашения?"
   text_exit_draft_mode_dialog_subtitle: "Вы не можете вернуться в режим черновика после того, как запланировали совещание."
   text_exit_draft_mode_dialog_template_title: "Открыть первое совещание из этой серии?"

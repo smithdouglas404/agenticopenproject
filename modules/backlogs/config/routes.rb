@@ -40,6 +40,12 @@ Rails.application.routes.draw do
         get :edit_dialog
         put :update_agile_sprint
       end
+
+      resources :stories, controller: :rb_stories, only: [] do
+        member do
+          put :move
+        end
+      end
     end
   end
 
@@ -71,7 +77,7 @@ Rails.application.routes.draw do
 
         resources :stories, controller: :rb_stories, only: [] do
           member do
-            put :move
+            put :move_legacy
             post :reorder
           end
         end
@@ -88,6 +94,8 @@ Rails.application.routes.draw do
 
   scope "projects/:project_id", as: "project", module: "projects" do
     namespace "settings" do
+      resource :backlog_sharing, only: %i[show update]
+
       resource :backlogs, only: %i[show update] do
         member do
           post "rebuild_positions" => "backlogs#rebuild_positions"

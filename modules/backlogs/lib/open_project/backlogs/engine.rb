@@ -100,13 +100,13 @@ module OpenProject::Backlogs
                    visible: -> { OpenProject::FeatureDecisions.scrum_projects_active? }
 
         permission :manage_sprint_items,
-                   { rb_stories: %i[move reorder] },
+                   { rb_stories: %i[move move_legacy reorder] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
 
         permission :share_sprint,
-                   {},
+                   { "projects/settings/backlog_sharings": %i[show update] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :create_sprints,
@@ -183,6 +183,21 @@ module OpenProject::Backlogs
     config.to_prepare do
       OpenProject::Backlogs::Hooks::LayoutHook
       OpenProject::Backlogs::Hooks::UserSettingsHook
+    end
+
+    initializer "openproject_backlogs.event_subscriptions" do
+      Rails.application.config.after_initialize do
+        OpenProject::Notifications.subscribe(OpenProject::Events::MODULE_DISABLED) do |payload|
+          disabled_module = payload[:disabled_module]
+          next unless disabled_module.name == "backlogs"
+
+          disabled_module.project.not_sharing_sprints!
+        end
+
+        OpenProject::Notifications.subscribe(OpenProject::Events::PROJECT_ARCHIVED) do |payload|
+          payload[:project].not_sharing_sprints!
+        end
+      end
     end
 
     config.to_prepare do

@@ -107,9 +107,8 @@ cs:
         trial: "Trial"
     jemalloc_allocator: Jemalloc alokátor paměti
     journal_aggregation:
-      explanation:
-        text: "Individuální akce/úpravy uživatele (např. dvojnásobná aktualizace pracovního balíčku se sečtou do jediné akce, pokud je jejich časový rozdíl menší než stanovený čas. Budou zobrazeny jako jedna akce v rámci aplikace. Toto také zpozdí oznámení o stejný čas a sníží tak počet zasílaných e-mailů a ovlivní se také zpoždění na adrese %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -3960,7 +3959,7 @@ cs:
   label_subproject: "Podprojekt"
   label_subproject_new: "Nový podprojekt"
   label_subproject_plural: "Podprojekty"
-  label_subitems: "Subitems"
+  label_subitems: "Dílčí položky"
   label_subtask_plural: "Podúkoly"
   label_summary: "Souhrn"
   label_system: "Systém"
@@ -4002,12 +4001,6 @@ cs:
   label_user_named: "Uživatel %{name}"
   label_user_activity: "Aktivita %{value}"
   label_user_anonymous: "Anonymní"
-  label_user_mail_option_all: "Pro všechny události všech mých projektů"
-  label_user_mail_option_none: "Žádné události"
-  label_user_mail_option_only_assigned: "Pouze pro věci, na které jsem přidělen"
-  label_user_mail_option_only_my_events: "Pouze pro věci, které sleduji nebo jsem v nich zapojen"
-  label_user_mail_option_only_owner: "Pouze pro věci, kde jsem majitelem"
-  label_user_mail_option_selected: "Pouze pro každou událost na vybraných projektech"
   label_user_menu: "User menu"
   label_user_new: "Nový uživatel"
   label_user_plural: "Uživatelé"
@@ -4047,7 +4040,6 @@ cs:
   label_wiki_show_index_page_link: "Zobrazit položku podnabídky 'Obsah'"
   label_wiki_show_menu_item: "Zobrazit jako položku nabídky navigaci projektu"
   label_wiki_show_new_page_link: "Zobrazit položku menu \"Vytvořit novou podřízenou stránku\""
-  label_wiki_show_submenu_item: "Zobrazit jako položku podnabídky "
   label_wiki_start: "Úvodní stránka"
   label_work: "Práce"
   label_work_package: "Pracovní balíček"
@@ -4330,7 +4322,7 @@ cs:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projekt nebyl odstraněn."
   notice_project_not_found: "Projekt nebyl nalezen."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Úspěšné připojení."
   notice_successful_create: "Úspěšné vytvoření."
   notice_successful_delete: "Úspěšné odstranění."

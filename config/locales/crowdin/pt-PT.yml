@@ -107,9 +107,8 @@ pt-PT:
         trial: "Teste"
     jemalloc_allocator: Alocador de memória Jemalloc
     journal_aggregation:
-      explanation:
-        text: "As ações individuais de um utilizador (por exemplo, atualizar um pacote de trabalho duas vezes) são agregadas numa única ação se a sua diferença de idade for menor que o intervalo de tempo especificado. Serão mostradas como uma única ação dentro da aplicação. Também vai atrasar as notificações pelo mesmo período de tempo, o que reduz o número de e-mails enviados, e afeta ainda o atraso de %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Importar"
     jira:
@@ -3887,12 +3886,6 @@ pt-PT:
   label_user_named: "Utilizador %{name}"
   label_user_activity: "Atividade de %{value}"
   label_user_anonymous: "Anónimo"
-  label_user_mail_option_all: "Para qualquer evento em todos os meus projetos"
-  label_user_mail_option_none: "Sem eventos"
-  label_user_mail_option_only_assigned: "Só para coisas que estou designado"
-  label_user_mail_option_only_my_events: "Apenas para coisas que observo ou em que estou envolvido"
-  label_user_mail_option_only_owner: "Apenas para coisas das quais sou proprietário"
-  label_user_mail_option_selected: "Para qualquer evento apenas nos projetos selecionados"
   label_user_menu: "Menu do utilizador"
   label_user_new: "Novo Utilizador"
   label_user_plural: "Utilizadores"
@@ -3932,7 +3925,6 @@ pt-PT:
   label_wiki_show_index_page_link: "Mostrar sub-menu 'Tabela de Conteúdos'"
   label_wiki_show_menu_item: "Mostrar como item de menu de navegação do projecto"
   label_wiki_show_new_page_link: "Mostrar o item de sub-menu 'Criar nova página filha'"
-  label_wiki_show_submenu_item: "Mostrar como item do sub-menu de "
   label_wiki_start: "Página inicial"
   label_work: "Trabalho"
   label_work_package: "Pacote de trabalho"
@@ -4213,7 +4205,7 @@ pt-PT:
   notice_parent_item_not_found: "O elemento pai não foi encontrado."
   notice_project_not_deleted: "O projeto não foi eliminado."
   notice_project_not_found: "Projeto não encontrado."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Ligação bem sucedida."
   notice_successful_create: "Criado com sucesso."
   notice_successful_delete: "Eliminado com sucesso."

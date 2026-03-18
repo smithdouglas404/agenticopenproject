@@ -107,9 +107,8 @@ ja:
         trial: "試用版"
     jemalloc_allocator: Jemalloc メモリアロケータ
     journal_aggregation:
-      explanation:
-        text: "ユーザーの個々のアクション (例:ワークパッケージを2回更新する)は、指定された時間範囲よりも時間差が小さい場合、単一のアクションに集約されます。 これらはアプリケーション内で単一のアクションとして表示されます。 これにより、送信されるメールの数が減少し、 %{webhook_link} の遅延にも影響します。"
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -3833,12 +3832,6 @@ ja:
   label_user_named: "ユーザー名 %{name}"
   label_user_activity: "%{value}の活動"
   label_user_anonymous: "匿名ユーザ"
-  label_user_mail_option_all: "参加しているプロジェクトの全イベント"
-  label_user_mail_option_none: "通知しない"
-  label_user_mail_option_only_assigned: "自分が担当している事柄のみ"
-  label_user_mail_option_only_my_events: "ウォッチまたは関係している事柄のみ"
-  label_user_mail_option_only_owner: "自分が作成した事柄のみ"
-  label_user_mail_option_selected: "選択したプロジェクトのみのイベントに対して"
   label_user_menu: "ユーザーメニュー"
   label_user_new: "新規ユーザ"
   label_user_plural: "ユーザ"
@@ -3878,7 +3871,6 @@ ja:
   label_wiki_show_index_page_link: "下位のメニューで「目次」を表示"
   label_wiki_show_menu_item: "プロジェクトのメニューで項目として表示"
   label_wiki_show_new_page_link: "下位のメニューで「子ページを新規作成」の項目を表示"
-  label_wiki_show_submenu_item: "上位のメニュー項目"
   label_wiki_start: "開始ページ"
   label_work: "予定時間"
   label_work_package: "ワーク パッケージ"
@@ -4159,7 +4151,7 @@ ja:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "プロジェクトを削除していません。"
   notice_project_not_found: "プロジェクトが見つかりません。"
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "正常に接続しました。"
   notice_successful_create: "正常に作成しました。"
   notice_successful_delete: "正常に削除しました。"

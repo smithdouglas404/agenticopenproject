@@ -20,7 +20,7 @@
 #See COPYRIGHT and LICENSE files for more details.
 #++
 fr:
-  no_results_title_text: Il n'y a présentement rien à afficher.
+  no_results_title_text: Il n'y a actuellement rien à afficher.
   activities:
     index:
       no_results_title_text: Il n’y a pas eu d'activité pour le projet pendant cette période.
@@ -107,9 +107,8 @@ fr:
         trial: "Essai"
     jemalloc_allocator: Allocateur de mémoire Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Les actions individuelles d'un utilisateur (par ex. mis à jour un lot de travaux deux fois) sont agrégés en une seule action si leur différence d'âge est inférieure à la période spécifiée. Elles seront affichées en une seule action dans l'application. Cela retardera également les notifications du même temps réduisant donc le nombre d'e-mails envoyés et affectera également le délai %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Importation"
     jira:
@@ -185,8 +184,8 @@ fr:
           imported: "Mode révision"
           reverting: "Rétablissement en cours"
           revert_error: "Erreur lors de la restauration"
-          revert_cancelling: "Cancelling revert"
-          revert_cancelled: "Revert cancelled"
+          revert_cancelling: "Annulation de la réversion"
+          revert_cancelled: "Annulation de l'annulation"
           reverted: "Restauré"
           finalizing: "Finalisation"
           finalizing_error: "Erreur lors de la finalisation"
@@ -446,7 +445,7 @@ fr:
         Si vous cochez cette case, OpenProject créera automatiquement de nouveaux utilisateurs à partir de leurs entrées LDAP
         lorsqu'ils s'authentifieront pour la première fois avec OpenProject.
         Laissez ceci non coché pour permettre uniquement aux comptes existants dans OpenProject de s'authentifier via LDAP!
-    connection_encryption: "Cryptage de la connexion"
+    connection_encryption: "Chiffrement de la connexion"
     encryption_details: "Options LDAPS / STARTTLS"
     system_account: "Compte système"
     system_account_legend: |
@@ -615,11 +614,13 @@ fr:
   op_dry_validation:
     or: "ou"
     errors:
+      unexpected_key: "n'est pas autorisé."
       array?: "doit être un tableau."
       decimal?: "doit être une décimale."
       defined: "ne doit pas être défini."
       eql?: "doit être égal à %{left}."
       filled?: "doit être rempli."
+      format?: "est dans un format non valide."
       greater_or_equal_zero: "doit être supérieur ou égal à 0."
       gteq?: "doit être supérieur ou égal à %{num}."
       hash?: "doit être un hachage."
@@ -646,7 +647,9 @@ fr:
         parent:
           not_descendant: "doit être un descendant de la racine de la hiérarchie."
       str?: "doit être une chaîne de caractères."
+      time?: "doit être un moment."
       type?: "doit être de type : %{type}."
+      uri?: "n’est pas une URL valide."
     rules:
       copy_workflow_from: "Type de copie du flux de travail"
       enabled: "Activé"
@@ -1031,7 +1034,7 @@ fr:
         no_results_user: "Aucun utilisateur n'a été trouvé"
         invite_user: "Invité :"
         no_results_placeholder: "Aucun utilisateur fictif n'a été trouvé"
-        create_new_placeholder: "Créer un nouveau utilisateur fictif :"
+        create_new_placeholder: "Créer un nouvel utilisateur fictif :"
         no_results_group: "Aucun groupe n'a été trouvé"
         invite_to_project: "Inviter à rejoindre %{project_name}"
         required:
@@ -1051,7 +1054,7 @@ fr:
         next_button: "Envoyer une invitation"
       success_message:
         user: "L'utilisateur peut maintenant se connecter pour accéder à %{project}. En attendant, vous pouvez déjà compter sur cet utilisateur et l'assigner à des lots de travaux, par exemple."
-        placeholder_user: "L'utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des taches avec cet utilisateur et l'assigner à des lots de travaux, par exemple."
+        placeholder_user: "L'utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des tâches avec cet utilisateur et l'assigner à des lots de travaux, par exemple."
         group: "Le groupe fait maintenant partie du projet %{project}. En attendant, vous pouvez déjà compter sur ce groupe et l'assigner à des lots de travaux, par exemple."
   page:
     text: "Texte"
@@ -1178,7 +1181,7 @@ fr:
       matrix_check_uncheck_all_in_col_label_html: "Activer/désactiver les transitions de tous les anciens statuts vers <em>%{new_status}</em>"
   work_flows:
     index:
-      no_results_title_text: Il n'y a actuellement aucun flux de travaux.
+      no_results_title_text: Il n'y a actuellement aucun flux de travail.
   work_packages:
     datepicker_modal:
       banner:
@@ -1871,7 +1874,7 @@ fr:
             reason:
               no_notification_reason: "ne peut pas être vide car IAN est choisi comme canal."
             reason_mail_digest:
-              no_notification_reason: "ne peut pas être vide car le digest d'email est est choisi comme un canal."
+              no_notification_reason: "ne peut pas être vide car le digest d'email est choisi comme un canal."
         non_working_day:
           attributes:
             date:
@@ -2207,9 +2210,9 @@ fr:
       created_on: "créé le %{datetime}"
       created_on_time_entry: "temps enregistré le %{datetime}"
       updated_by_on: "mis à jour par %{user} le %{datetime}"
-      updated_by_on_time_entry: "temps enregistré mis à jour par %{user} le %{datetime}"
+      updated_by_on_time_entry: "temps consigné mis à jour par %{user} le %{datetime}"
       updated_on: "mis à jour le %{datetime}"
-      updated_on_time_entry: "temps enregistré mis à jour le %{datetime}"
+      updated_on_time_entry: "temps consigné mis à jour le %{datetime}"
       deleted_on: "supprimé le %{datetime}"
       deleted_by_on: "supprimé par %{user} le %{datetime}"
       added_on: "ajouté le %{datetime}"
@@ -2633,7 +2636,7 @@ fr:
         other: "%{count} ans"
       x_seconds:
         one: "une seconde"
-        other: "%{count} seconde"
+        other: "%{count} secondes"
       x_seconds_abbreviated:
         one: "1 s"
         other: "%{count} s"
@@ -2650,7 +2653,7 @@ fr:
   description_active: "Actif ?"
   description_attachment_toggle: "Afficher/Masquer les pièces jointes"
   description_autocomplete: >
-    Ce champ utilise la saisie semi-automatique. Lorsque vous tapez le titre d'un lot de travaux, vous recevrez une liste de choix possibles. Choisissez-en un en utilisant les flèches haut et bas et selectionnez-le avec Tab ou Entrée. Sinon, vous pouvez entrer le numéro de lot de travaux directement.
+    Ce champ utilise la saisie semi-automatique. Lorsque vous tapez le titre d'un lot de travaux, vous recevrez une liste de choix possibles. Choisissez-en un en utilisant les flèches haut et bas et sélectionnez-le avec Tab ou Entrée. Sinon, vous pouvez entrer le numéro de lot de travaux directement.
   description_available_columns: "Colonnes disponibles"
   description_choose_project: "Projets"
   description_compare_from: "Comparer avec"
@@ -2890,8 +2893,8 @@ fr:
   error_unable_to_connect: "Impossible de se connecter (%{value})"
   error_unable_delete_wiki: "Impossible de supprimer la page wiki."
   error_unable_update_wiki: "Impossible de mettre la page wiki à jour."
-  error_workflow_copy_source: "Veuillez sélectioner un type de source ou rôle"
-  error_workflow_copy_target: "Veuillez sélectioner une cible type(s) et rôle(s)"
+  error_workflow_copy_source: "Veuillez sélectionner un type de source ou rôle"
+  error_workflow_copy_target: "Veuillez sélectionner une cible type(s) et rôle(s)"
   error_menu_item_not_created: L'élément de menu n'a pas pu être ajouté
   error_menu_item_not_saved: L'élément de menu n'a pas pu être sauvegardé
   error_wiki_root_menu_item_conflict: >
@@ -3057,7 +3060,7 @@ fr:
     no_results_text: "Aucun résultat"
   toggle_switch:
     label_on: "Activé"
-    label_off: "Désactiver"
+    label_off: "Désactivé"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: "."
@@ -3140,7 +3143,7 @@ fr:
       work_package_related_changed_times: par changement vers %{link} connexe
       work_package_duplicate_closed: Le statut a été mis à jour automatiquement par le doublon de lot de travaux %{link}
       unaccessable_work_package_changed: par changement vers un lot de travaux connexe
-      budget_deleted: La budget a été supprimé
+      budget_deleted: Le budget a été supprimé
       working_days_changed:
         changed: "par changement vers des jours ouvrables (%{changes})"
         days:
@@ -3305,11 +3308,11 @@ fr:
   label_all_words: "Tous les mots"
   label_all_open_wps: "Tous les ouverts"
   label_always_visible: "Toujours affiché"
-  label_announcement: "Annonce ou avis. "
+  label_announcement: "Annonce"
   label_angular: "AngularJS"
   label_app_modules: "Modules %{app_title}"
   label_api_access_key: "Clé d'accès API"
-  label_api_access_key_created_on: "Clé d'accès API créé il y a %{value}"
+  label_api_access_key_created_on: "Clé d'accès API créée il y a %{value}"
   label_api_access_key_type: "API"
   label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
@@ -3358,7 +3361,7 @@ fr:
   label_branch: "Branche"
   label_browse: "Parcourir"
   label_builtin: "Intégré"
-  label_bulk_edit_selected_work_packages: "Edition en masse des Lots de Travaux selectionnés"
+  label_bulk_edit_selected_work_packages: "Édition en masse des lots de travaux sélectionnés"
   label_bundled: "(Inclus)"
   label_calendar: "Calendrier"
   label_calendars_and_dates: "Calendriers et dates"
@@ -3406,7 +3409,7 @@ fr:
   label_copy_source: "Source"
   label_copy_target: "Cible"
   label_copy_workflow_from: "Copier flux de travail à partir de"
-  label_copy_project: "Copier projet"
+  label_copy_project: "Copie du projet"
   label_core_version: "Version du cœur"
   label_core_build: "Construction de base"
   label_created_by: "Créé par %{user}"
@@ -3492,7 +3495,7 @@ fr:
   label_f_hour: "%{value} heure"
   label_f_hour_plural: "%{value} heures"
   label_favorite: "Favori"
-  label_feed_plural: "Fluxs"
+  label_feed_plural: "Flux"
   label_feeds_access_key: "Clé d'accès RSS"
   label_feeds_access_key_created_on: "Clé d'accès RSS créé il y a %{value}"
   label_feeds_access_key_type: "RSS"
@@ -3675,7 +3678,7 @@ fr:
   label_not_configured: "Non configuré"
   label_not_found: "non trouvé"
   label_none: "aucune"
-  label_none_parentheses: "(none)"
+  label_none_parentheses: "(aucun)"
   label_not_contains: "ne contient pas"
   label_not_equals: "n'est pas"
   label_life_cycle_step_plural: "Cycle de vie du projet"
@@ -3884,16 +3887,10 @@ fr:
   label_user_named: "Utilisateur %{name}"
   label_user_activity: "Activité de %{value}"
   label_user_anonymous: "Anonyme"
-  label_user_mail_option_all: "Tout évènement dans tous mes projets"
-  label_user_mail_option_none: "Aucun évènement"
-  label_user_mail_option_only_assigned: "Les éléments qui me sont assignés"
-  label_user_mail_option_only_my_events: "Uniquement pour les éléments que je suis ou auxquels je participe"
-  label_user_mail_option_only_owner: "Les éléments dont je suis le propriétaire"
-  label_user_mail_option_selected: "Pour chaque événement sur le projet selectionné seulement"
   label_user_menu: "Menu utilisateur"
   label_user_new: "Nouvel utilisateur"
   label_user_plural: "Utilisateurs"
-  label_user_search: "Recherche d'Utilisateurs"
+  label_user_search: "Recherche d'utilisateurs"
   label_user_settings: "Paramètres de l'utilisateur"
   label_users_settings: "Paramètres des utilisateurs"
   label_value_x: "Valeur : %{x}"
@@ -3929,7 +3926,6 @@ fr:
   label_wiki_show_index_page_link: "Montrer l'entrée de sous-menu 'Table des Matières'"
   label_wiki_show_menu_item: "Afficher en tant qu'élément dans le menu de navigation du projet"
   label_wiki_show_new_page_link: "Montrer le sous-menu 'Créer une nouvelle page enfant'"
-  label_wiki_show_submenu_item: "Montrer comme sous-menu de "
   label_wiki_start: "Page d'accueil"
   label_work: "Travail"
   label_work_package: "Lot de travaux"
@@ -3948,7 +3944,7 @@ fr:
   label_work_package_tracking: "Suivi des lots de travaux"
   label_work_package_view_all: "Afficher tous les lots de travaux"
   label_workflow: "Flux de travail"
-  label_workflow_copy: "Copier le processus d'entreprise"
+  label_workflow_copy: "Copier le flux de travail"
   label_workflow_plural: "Flux de travail"
   label_workflow_summary: "Résumé"
   label_working_days_and_hours: "Jours et heures travaillés"
@@ -4211,8 +4207,8 @@ fr:
   notice_parent_item_not_found: "L'élément parent est introuvable."
   notice_project_not_deleted: "Le projet n'a pas été supprimé."
   notice_project_not_found: "Projet introuvable."
-  notice_smtp_address_unsafe: "L'adresse SMTP %{address} n'est pas sûre. Veuillez l'ajouter à OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
-  notice_successful_connection: "Connection réussie."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
+  notice_successful_connection: "Connexion réussie."
   notice_successful_create: "Création réussie."
   notice_successful_delete: "Suppression réussie."
   notice_successful_cancel: "Annulation réussie."
@@ -4234,7 +4230,7 @@ fr:
   notice_wont_delete_auth_source: La connexion LDAP ne peut pas être supprimée tant que des utilisateurs l'utilisent.
   notice_project_cannot_update_custom_fields: "Vous ne pouvez pas mettre à jour les champs personnalisés disponibles du projet. Le projet n’est pas valide : %{errors}"
   notice_attachment_migration_wiki_page: >
-    Cette page a été générée automatiquement durant la mise à jour de OpenProject. Il contient toutes les pièces jointes précédemment associées à la %{container_type} « %{container_name} ».
+    Cette page a été générée automatiquement durant la mise à jour de OpenProject. Elle contient toutes les pièces jointes précédemment associées à la %{container_type} « %{container_name} ».
   #Default format for numbers
   number:
     format:
@@ -4630,9 +4626,9 @@ fr:
   setting_use_wysiwyg_description: "Sélectionnez cette option pour activer l’éditeur CKEditor5 WYSIWYG pour tous les utilisateurs par défaut. CKEditor a des fonctionnalités limitées pour GFM Markdown."
   setting_column_options: "Colonnes de listes du lot de travaux par défaut"
   setting_commit_fix_keywords: "Réparer les mots clés"
-  setting_commit_logs_encoding: "Encoding of the Commit messages"
-  setting_commit_logtime_activity_id: "Activité pour les « Logged Time »"
-  setting_commit_logtime_enabled: "Activer « time logging »"
+  setting_commit_logs_encoding: "Encodage des messages de commit"
+  setting_commit_logtime_activity_id: "Activité pour le temps consignés"
+  setting_commit_logtime_enabled: "Activer la consignation de temps"
   setting_commit_ref_keywords: "Referencement des mots clés"
   setting_consent_time: "Moment de l'accord"
   setting_consent_info: "Texte d'information sur l'accord"
@@ -4682,7 +4678,7 @@ fr:
   setting_work_package_startdate_is_adddate: "Utiliser la date actuelle comme date de début des nouveaux lots de travaux"
   setting_work_packages_projects_export_limit: "Limite d'exportation des lots de travaux/projets"
   setting_journal_aggregation_time_minutes: "Actions utilisateur agrégées dans"
-  setting_log_requesting_user: "Enregister le login utilisateur, nom et adresse e-mail pour toutes les requêtes"
+  setting_log_requesting_user: "Enregistrer le login utilisateur, nom et adresse e-mail pour toutes les requêtes"
   setting_login_required: "Authentification requise"
   setting_login_required_caption: "Lorsque cette case est cochée, toutes les requêtes envoyées à l'application doivent être authentifiées."
   setting_lost_password: "Activer la réinitialisation du mot de passe"
@@ -4695,11 +4691,11 @@ fr:
   setting_new_project_user_role_id: "Rôle donné à un utilisateur non administrateur qui crée un projet"
   setting_new_project_send_confirmation_email: "Envoyer une notification à l'auteur lors de la création d'un nouveau projet"
   setting_new_project_notification_text: "Texte de la notification"
-  setting_password_active_rules: "Les classes de caractère activées"
-  setting_password_count_former_banned: "Nombre des plus récent mots des passe utilisé qui sont interdit de réutilisation."
+  setting_password_active_rules: "Classes de caractères actives"
+  setting_password_count_former_banned: "Nombre de mots de passe récents interdits de réutilisation"
   setting_password_days_valid: "Nombre de jours après lequel le changement de mot de passe est obligatoire"
   setting_password_min_length: "Longueur minimale"
-  setting_password_min_adhered_rules: "Nombre minimale des classe de caractère requise"
+  setting_password_min_adhered_rules: "Nombre minimal de classes de caractères requises"
   setting_per_page_options: "Options des objets par page"
   setting_percent_complete_on_status_closed: "% d'achèvement lorsque le statut est fermé"
   setting_percent_complete_on_status_closed_no_change: "Aucun changement"
@@ -4722,7 +4718,7 @@ fr:
   setting_repository_checkout_base_url: "URL de base de « checkout »"
   setting_repository_checkout_text: "Texte d'instruction de « checkout »"
   setting_repository_log_display_limit: "Nombre maximal des révisions affichées sur « file log »"
-  setting_repository_truncate_at: "Le nombre maiximum de fichiers exposes au navigateur"
+  setting_repository_truncate_at: "Le nombre maximum de fichiers affichés dans le navigateur de dépôt"
   setting_self_registration: "Auto-enregistrement"
   setting_self_registration_caption: >
     Choisissez le mécanisme d'auto-inscription pour les utilisateurs. Faites attention au paramètre que vous choisissez, car certaines options permettent aux utilisateurs d'activer leurs propres comptes pour cette instance.
@@ -4882,7 +4878,7 @@ fr:
           project_mandate: "Mandat du projet"
       submission:
         description_template: >
-          **Ce dossier de travail a été créé automatiquement à l'issue du flux de travail %{wizard_name} .** Un artefact PDF contenant toutes les informations soumises a été généré et joint à ce dossier de travail à des fins de référence et d'audit. Si vous avez besoin de mettre à jour ou de réexécuter les étapes d'initiation, vous pouvez rouvrir l'assistant à tout moment en utilisant le lien ci-dessous :
+          **Ce dossier de travail a été créé automatiquement à l'issue du flux de travail %{wizard_name}.** Un artefact PDF contenant toutes les informations soumises a été généré et joint à ce dossier de travail à des fins de référence et d'audit. Si vous avez besoin de mettre à jour ou de réexécuter les étapes d'initiation, vous pouvez rouvrir l'assistant à tout moment en utilisant le lien ci-dessous :
         description: "Lorsqu'un utilisateur envoie une demande de lancement de projet, un nouveau lot de travail est créé avec l'artefact de la demande en pièce jointe au format PDF. Les paramètres ci-dessous définissent le type, le statut et le destinataire de ce nouveau lot de travaux."
         work_package_type: "Type de lot de travaux"
         work_package_type_caption: "Le type de lot de travaux qui doit être utilisé pour stocker l'artefact terminé."
@@ -5001,7 +4997,7 @@ fr:
   text_default_administrator_account_changed: "Le compte administrateur par défaut a été changé"
   text_default_encoding: "Défaut: UTF-8"
   text_destroy: "Supprimer"
-  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
+  text_destroy_with_associated: "Il y a des objets supplémentaires associés à ce(s) lot(s) de travaux qui doivent être supprimés. Ces objets sont des types suivants :"
   text_destroy_what_to_do: "Que voulez-vous faire?"
   text_diff_truncated: "... Cette « diff » a été tronquée car elle dépasse la taille maximale d'affichage."
   text_email_delivery_not_configured: "L'envoi d'e-mails n'est pas configuré et les notifications sont désactivées.\nConfigurer votre serveur SMTP pour les activer."
@@ -5042,12 +5038,12 @@ fr:
   text_load_default_configuration: "Charger la configuration par défaut"
   text_no_roles_defined: Il n'y a pas de rôles définis.
   text_no_access_tokens_configurable: "Il n'y a aucun jeton d'accès qui puisse être configuré."
-  text_no_configuration_data: "Les rôles, les types, l'état des lots de travaux et les flux de travaux n'ont pas encore été configurés.\nIl est fortement recommandé de charger la configuration par défaut. Vous serez capable de la modifier une fois chargée."
+  text_no_configuration_data: "Les rôles, les types, l'état des lots de travaux et les flux de travail n'ont pas encore été configurés.\nIl est fortement recommandé de charger la configuration par défaut. Vous serez capable de la modifier une fois chargée."
   text_no_notes: "Il n'existe aucun commentaire pour ce lot de travaux."
   text_notice_too_many_values_are_inperformant: "Remarque : L'affichage de plus de 100 articles par page peut augmenter le temps de chargement de la page."
   text_notice_security_badge_displayed_html: >
     Remarque : si cette option est activée, un badge indiquant l'état de votre installation s'affichera dans le panneau <a href="%{information_panel_path}">%{information_panel_label}</a> administration et sur la page d'accueil. Il n'est affiché que pour les administrateurs. <br/>Le badge vérifiera votre version actuelle d'OpenProject par rapport à la base de données officielle d'OpenProject pour vous avertir de toute mise à jour ou vulnérabilité connue. Pour plus d'informations sur ce que la vérification fournit, quelles données sont nécessaires pour fournir les mises à jour disponibles, et comment désactiver cette vérification, veuillez visiter <a href="%{more_info_url}">la documentation de configuration</a>.
-  text_own_membership_delete_confirmation: "Vous êtes sur le point de retirer tout ou partie de vos permissions et ne pourrez peut-être plus modifier le projet par la suite.\nÊtes vous sûr de vouloir continuer?"
+  text_own_membership_delete_confirmation: "Vous êtes sur le point de retirer tout ou partie de vos permissions et ne pourrez peut-être plus modifier le projet par la suite.\nVoulez-vous vraiment continuer?"
   text_permanent_delete_confirmation_checkbox_label: "Je comprends que cette suppression ne peut pas être annulée"
   text_permanent_remove_confirmation_checkbox_label: "Je comprends que cette suppression ne peut pas être annulée"
   text_plugin_assets_writable: "Répertoire des « plugin assets » est accessible en écriture"
@@ -5069,7 +5065,7 @@ fr:
   text_wrote: "a écrit"
   text_warn_on_leaving_unsaved: "Le lot de travaux contient du texte non sauvegardé qui sera perdu si vous quittez cette page."
   text_what_did_you_change_click_to_add_comment: "Qu’avez-vous changé ? Cliquez ici pour ajouter un commentaire"
-  text_wiki_destroy_confirmation: "Êtes vous sur de vouloir supprimer ce wiki et tout son contenu?"
+  text_wiki_destroy_confirmation: "Voulez-vous vraiment supprimer ce wiki et tout son contenu?"
   text_wiki_page_destroy_children: "Supprimer les pages enfants et toute leur descendance"
   text_wiki_page_destroy_question: "Cette page possède %{descendants} page(s) enfant et descendant(s). Que voulez vous faire?"
   text_wiki_page_nullify_children: "Garder les pages enfants en tant que pages d'origine"
@@ -5126,7 +5122,7 @@ fr:
     all: "tous"
     active: "actif"
     activate: "Activer"
-    activate_and_reset_failed_logins: "Activer et réinitialiser les connexions echouées"
+    activate_and_reset_failed_logins: "Activer et réinitialiser les connexions échouées"
     authentication_provider: "Fournisseur d'authentification"
     identity_url_text: "L'identifiant unique interne fourni par le fournisseur d'authentification."
     authentication_settings_disabled_due_to_external_authentication: >
@@ -5149,7 +5145,7 @@ fr:
     no_login: "Cet utilisateur s'authentifie avec un mot de passe. Tant que cela est désactivé, il ne peut s'authentifier."
     password_change_unsupported: Le changement de mot de passe n'est pas supporté.
     registered: "enregistré"
-    reset_failed_logins: "Réinitialiser les connexions echouées"
+    reset_failed_logins: "Réinitialiser les connexions échouées"
     status_user_and_brute_force: "%{user} et %{brute_force}"
     status_change: "Changement de statut"
     text_change_disabled_for_provider_login: "Le nom et l'adresse électronique sont définis par votre fournisseur d'accès et ne peuvent donc pas être modifiés."
@@ -5471,7 +5467,7 @@ fr:
       none_given: "Aucune application OAuth n'a été autorisée à accéder à votre compte utilisateur."
     x_active_tokens:
       one: "un jeton actif"
-      other: "un jeton actif %{count}"
+      other: "%{count} jetons actifs"
     flows:
       authorization_code: "Flux de code d'autorisation"
       client_credentials: "Flux des informations d'identification client"
@@ -5527,8 +5523,8 @@ fr:
         invalid_scope: "Vous n'êtes pas autorisé à accéder à la ressource demandée (invalid_scope)."
   http:
     request:
-      failed_authorization: "La requête côté serveur a échoué en s'autorisant elle-même."
-      missing_authorization: "La requête latérale du serveur a échoué en raison de l'absence d'informations d'autorisation."
+      failed_authorization: "La requête côté serveur a échoué lors de l'authentification."
+      missing_authorization: "La requête côté serveur a échoué en raison de l'absence d'informations d'autorisation."
     response:
       unexpected: "Réponse inattendue reçue."
   you: vous

@@ -46,6 +46,29 @@ RSpec.describe ApplyWorkPackageAttachmentSettingsToExistingProjects, type: :mode
   describe "up migration" do
     subject { ActiveRecord::Migration.suppress_messages { described_class.migrate(:up) } }
 
+    context "when the global setting does not exist" do
+      it "does not change the configuration of already configured projects" do
+        subject
+
+        expect(project_with_visible_attachments.reload.deactivate_work_package_attachments?).to be_falsey
+        expect(project_with_hidden_attachments.reload.deactivate_work_package_attachments?).to be_truthy
+      end
+
+      it "does not change unrelated settings" do
+        subject
+
+        expect(project_with_visible_attachments.reload.settings["some_unrelated_setting"]).to eq(42)
+        expect(project_with_hidden_attachments.reload.settings["some_unrelated_setting"]).to eq(42)
+        expect(undecided_project.reload.settings["some_unrelated_setting"]).to eq(42)
+      end
+
+      it "changes undecided projects to show attachments (default)" do
+        subject
+
+        expect(undecided_project.reload.deactivate_work_package_attachments?).to be_falsey
+      end
+    end
+
     context "when the global setting is to show attachments" do
       before do
         Setting.create!(name: "show_work_package_attachments", value: true)

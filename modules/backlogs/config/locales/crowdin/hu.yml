@@ -31,6 +31,8 @@ hu:
         goal: "Sprint goal"
         name: "Sprint name"
         sharing: "Sharing"
+      project:
+        sprint_sharing: "Sprint sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -39,6 +41,11 @@ hu:
         backlogs_work_package_type: "Backlog típus"
     errors:
       models:
+        project:
+          attributes:
+            sprint_sharing:
+              share_all_projects_already_taken: "cannot be set because project \"%{name}\" is already sharing with all projects."
+              share_all_projects_already_taken_anonymous: "cannot be set because another project is already sharing with all projects."
         work_package:
           attributes:
             blocks_ids:
@@ -57,6 +64,9 @@ hu:
     column_width: "Column width"
     definition_of_done: "A \"Kész\" meghatározása"
     definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
+    done_status: "Done status"
+    sharing_description: "This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing)."
+    sharing: "Sharing"
     impediment: "Akadály"
     label_versions_default_fold_state: "Összecsukott verziók mutatása"
     caption_versions_default_fold_state: "A verziók alapértelmezés szerint nem lesznek kibontva a várólista (backlog) megtekintésekor. Mindegyiket manuálisan kell kibontani."
@@ -158,6 +168,27 @@ hu:
   permission_start_complete_sprint: "Start/complete sprint"
   permission_view_sprints: "View sprints"
   project_module_backlogs: "Backlogs"
+  projects:
+    settings:
+      backlog_sharing:
+        options:
+          no_sharing:
+            label: "Don't share"
+            caption: "Sprints created in this project will only be available and visible to this project. They will also not be visible to subprojects."
+          receive_shared:
+            label: "Receive shared sprints"
+            caption: "This project can only use sprints shared by other projects."
+            warning: "This project can only use sprints shared by other projects. Unused sprints created in this project in the past, will no longer be visible."
+          share_all_projects:
+            label: "All projects"
+            caption: "Sprints created in this project will be available to all projects in this instance. If you select this option, it will no longer be available to other projects."
+            disabled_caption: "Option not available since project \"%{name}\" is currently sharing with all projects and only one project can do this."
+            disabled_caption_anonymous: "Option not available since another project is currently sharing with all projects and only one project can do this."
+          share_subprojects:
+            label: "Subprojects"
+            caption: "Sprints created in this project will be available to all subprojects of the current project."
+            info: "Sharing a sprint will share the name, status and the start and finish dates in all projects. These cannot be modified in projects that receive and use these sprints."
+        sprint_sharing: Share sprints
   rb_burndown_charts:
     show:
       blankslate_title: "No burndown data available"

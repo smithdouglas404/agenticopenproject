@@ -195,11 +195,11 @@ Budgets widgets are only displayed if the following conditions are met:
 - At least one budget exists in the project or one of its subprojects. Some widgets may display placeholder messages if no cost data has been entered yet.
 - At least one work package is assigned to a budget.
 - The user has these necessary permissions to view the financial information:
-  - view_budgets
-  - view_cost_entries
-  - view_cost_rates
-  - view_time_entries
-  - view_hourly_rates
+  - View budgets
+  - View booked costs
+  - View cost rates
+  - View spent time
+  - View all hourly rates
 - The user has to have a defined hourly rate.
 - At least one time and/or unit costs entry is logged for the work package (the work package that is assigned to a budget). If no relevant data is available, the widgets display guidance messages. For example if **no budgets exist**, the widget encourages creating a budget.
 

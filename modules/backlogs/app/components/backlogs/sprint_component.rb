@@ -76,7 +76,7 @@ module Backlogs
       {
         generic_drag_and_drop_target: "container",
         target_container_accessor: ":scope > ul",
-        target_id: sprint.id,
+        target_id: "sprint:#{sprint.id}",
         target_allowed_drag_type: "story"
       }
     end
@@ -85,7 +85,7 @@ module Backlogs
       {
         draggable_id: story.id,
         draggable_type: "story",
-        drop_url: move_backlogs_project_sprint_story_path(project, sprint, story)
+        drop_url: move_project_sprint_story_path(project, sprint, story)
       }
     end
   end

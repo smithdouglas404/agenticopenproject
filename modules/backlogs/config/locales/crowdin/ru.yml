@@ -31,6 +31,8 @@ ru:
         goal: "Цель спринта"
         name: "Название спринта"
         sharing: "Совместное использование"
+      project:
+        sprint_sharing: "Sprint sharing"
       sprint:
         duration: "Продолжительность спринта"
       work_package:
@@ -39,6 +41,11 @@ ru:
         backlogs_work_package_type: "Тип невыполненной работы"
     errors:
       models:
+        project:
+          attributes:
+            sprint_sharing:
+              share_all_projects_already_taken: "cannot be set because project \"%{name}\" is already sharing with all projects."
+              share_all_projects_already_taken_anonymous: "cannot be set because another project is already sharing with all projects."
         work_package:
           attributes:
             blocks_ids:
@@ -56,7 +63,10 @@ ru:
     any: "любой"
     column_width: "Ширина столбца"
     definition_of_done: "Определение термина \"Завершено\""
-    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
+    definition_of_done_caption: "Пакеты работ с такими статусами рассматриваются как завершенные в представлениях бэклога и отчетах."
+    done_status: "Done status"
+    sharing_description: "This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing)."
+    sharing: "Sharing"
     impediment: "Препятствие"
     label_versions_default_fold_state: "Показать свернутые версии"
     caption_versions_default_fold_state: "Версии не будут разворачиваться по умолчанию при просмотре бэклогов. Каждая версия должна быть развернута вручную."
@@ -162,6 +172,27 @@ ru:
   permission_start_complete_sprint: "Начать/завершить спринт"
   permission_view_sprints: "Просмотр спринтов"
   project_module_backlogs: "Бэклоги"
+  projects:
+    settings:
+      backlog_sharing:
+        options:
+          no_sharing:
+            label: "Don't share"
+            caption: "Спринты, созданные в этом проекте, будут доступны и видны только в этом проекте. Они также не будут видны подпроектам."
+          receive_shared:
+            label: "Receive shared sprints"
+            caption: "Этот проект может использовать только спринты, совместно используемые другими проектами."
+            warning: "Этот проект может использовать только общие спринты других проектов. Неиспользуемые спринты, созданные в этом проекте в прошлом, больше не будут видны."
+          share_all_projects:
+            label: "Все проекты"
+            caption: "Sprints created in this project will be available to all projects in this instance. If you select this option, it will no longer be available to other projects."
+            disabled_caption: "Option not available since project \"%{name}\" is currently sharing with all projects and only one project can do this."
+            disabled_caption_anonymous: "Option not available since another project is currently sharing with all projects and only one project can do this."
+          share_subprojects:
+            label: "Подпроекты"
+            caption: "Sprints created in this project will be available to all subprojects of the current project."
+            info: "Sharing a sprint will share the name, status and the start and finish dates in all projects. These cannot be modified in projects that receive and use these sprints."
+        sprint_sharing: Share sprints
   rb_burndown_charts:
     show:
       blankslate_title: "Нет сводных данных"
