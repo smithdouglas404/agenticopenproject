@@ -408,6 +408,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: IssuePriority.model_name.human(count: :other),
             parent: :admin_work_packages
 
+  menu.push :work_packages_identifier,
+            { controller: "/admin/settings/work_packages_identifier", action: :show },
+            if: ->(_) { OpenProject::FeatureDecisions.semantic_work_package_ids_active? && User.current.admin? },
+            caption: :label_identifier,
+            parent: :admin_work_packages
+
   menu.push :progress_tracking,
             { controller: "/admin/settings/progress_tracking", action: :show },
             if: ->(_) { User.current.admin? },

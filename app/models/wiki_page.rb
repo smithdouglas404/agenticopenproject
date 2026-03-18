@@ -161,7 +161,7 @@ class WikiPage < ApplicationRecord
     content_to = journals.find_by(version: version_to)
     content_from = journals.find_by(version: version_from)
 
-    content_to && content_from ? Wikis::Diff.new(content_to, content_from) : nil
+    content_to && content_from ? WikiPage::Diff.new(content_to, content_from) : nil
   end
 
   def version
@@ -171,7 +171,7 @@ class WikiPage < ApplicationRecord
   def annotate(compare_version = nil)
     compare_version = compare_version ? compare_version.to_i : version
     c = journals.find_by(version: compare_version)
-    c ? Wikis::Annotate.new(c) : nil
+    c ? WikiPage::Annotate.new(c) : nil
   end
 
   # Returns true if usr is allowed to edit the page, otherwise false

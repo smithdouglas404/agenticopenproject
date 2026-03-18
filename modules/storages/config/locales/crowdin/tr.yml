@@ -279,6 +279,8 @@ tr:
           drive_contents: Sücürü içeriği
           files_request: Takım klasöründeki dosyaları getir
           header: Otomatik olarak yönetilen proje klasörleri
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: 'Bağımlılık: Ekip Klasörleri'
           team_folder_contents: Ekip klasörü içeriği
           team_folder_presence: Ekip klasörü mevcut
@@ -322,8 +324,10 @@ tr:
         nc_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
         nc_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         nc_oauth_token_missing: OpenProject cannot test the user level communication with Nextcloud as the user did not yet link their Nextcloud account.
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: Ekip klasörü bulunamadı.
-        nc_unexpected_content: Yönetilen ekip klasöründe beklenmeyen içerik bulundu.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: Yapılandırılan uygulama parolası geçersiz.
         not_configured: The connection could not be validated. Please finish configuration first.
         od_client_cant_delete_folder: The client is having trouble deleting folders. Please check the setup documentation for your storage.

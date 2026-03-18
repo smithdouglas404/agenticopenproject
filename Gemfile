@@ -124,7 +124,7 @@ gem "sys-filesystem", "~> 1.5.0", require: false
 gem "bcrypt", "~> 3.1.6"
 
 gem "multi_json", "~> 1.19.0"
-gem "oj", "~> 3.16.12"
+gem "oj", "~> 3.16.16"
 
 gem "daemons"
 gem "good_job", "~> 4.13.3" # update should be done manually in sync with saas-openproject version.
@@ -208,7 +208,7 @@ gem "aws-sdk-core", "~> 3.241"
 # File upload via fog + screenshots on travis
 gem "aws-sdk-s3", "~> 1.213"
 
-gem "openproject-token", "~> 8.8.0"
+gem "openproject-token", "~> 8.8.2"
 
 gem "plaintext", "~> 0.3.7"
 
@@ -274,7 +274,7 @@ group :test do
   gem "rack_session_access"
   gem "rspec", "~> 3.13.2"
   # also add to development group, so 'spec' rake task gets loaded
-  gem "rspec-rails", "~> 8.0.3", group: :development
+  gem "rspec-rails", "~> 8.0.4", group: :development
 
   # Retry failures within the same environment
   gem "retriable", "~> 3.2.1"

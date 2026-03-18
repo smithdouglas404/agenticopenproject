@@ -85,7 +85,7 @@ fr:
     models:
       recurring_meeting: "Réunion récurrente"
       meeting: "Réunion ponctuelle"
-      meeting_agenda_item: ""
+      meeting_agenda_item: "Point d'ordre du jour"
       meeting_agenda: "Ordre du jour"
       meeting_section: "Section"
       token/ical_meeting:

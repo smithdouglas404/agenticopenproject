@@ -558,7 +558,7 @@ fr:
       date_alerts:
         milestone_date: "Date jalon"
         overdue: "En retard"
-        overdue_since: "pour %{difference_in_days}."
+        overdue_since: "de %{difference_in_days}."
         property_today: "a lieu aujourd'hui."
         property_is: "a lieu dans %{difference_in_days}."
         property_was: "avait lieu il y a %{difference_in_days}."
@@ -993,7 +993,7 @@ fr:
         embedded_tab_disabled: "Cet onglet de configuration n'est pas disponible pour la vue intégrée que vous êtes en train de modifier."
         default: "défaut"
         display_settings: "Paramètres d'affichage"
-        default_mode: "Liste ombrée"
+        default_mode: "Liste"
         hierarchy_mode: "Hiérarchie"
         hierarchy_hint: "Tous les résultats du tableau filtrés seront augmentés de leurs ancêtres . Les hiérarchies peuvent être dépliées et repliées."
         display_sums_hint: "Afficher les sommes de tous les attributs sommables dans une ligne sous les résultats du tableau."

@@ -279,6 +279,8 @@ ja:
           drive_contents: Drive content
           files_request: Fetching team folder files
           header: 自動的に管理されるプロジェクトフォルダ
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: 'Dependency: Team Folders'
           team_folder_contents: Team folder content
           team_folder_presence: Team folder exists
@@ -320,8 +322,10 @@ ja:
         nc_oauth_request_not_found: 現在接続しているユーザーを取得するエンドポイントが見つかりませんでした。詳細については、サーバーのログを確認してください。
         nc_oauth_request_unauthorized: 現在のユーザーにはリモートファイルストレージにアクセスする権限がありません。サーバーのログを確認してください。
         nc_oauth_token_missing: OpenProject は、Nextcloudアカウントへのリンクがまだないため、Nextcloudとのユーザーレベルの通信をテストできません。
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: The team folder could not be found.
-        nc_unexpected_content: Unexpected content found in the managed team folder.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: 設定されているアプリのパスワードが無効です。
         not_configured: 接続を検証できませんでした。先に設定を完了してください。
         od_client_cant_delete_folder: クライアントがフォルダを削除できません。ストレージのセットアップドキュメントを確認してください。

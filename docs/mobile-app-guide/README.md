@@ -54,7 +54,6 @@ The app is still under development, and many core features are planned for futur
 *   **Deep-linking (including on-premises support):** Seamlessly open specific work packages, projects, or comments directly from links in emails, chats, or browser pages — whether you’re using the cloud or an on-premises instance.
 *   **Multi-device UI:** Enjoy a consistent, responsive experience across phones, tablets and macOS, with layouts optimized for each device size and orientation.
 *   **Real-time push notifications:** Receive updates instantly as they happen — from mentions and comments to task status changes — ensuring you never miss important activity.
-*   **Write internal comments:** Add internal comments directly from the app, enabling secure collaboration within your project team while keeping external communications separate.
 *   **Meeting agendas in the app:** Access and review meeting agendas on the go to stay prepared and aligned with your team wherever you are.
 
 These upcoming features will make the OpenProject Mobile App even more connected, collaborative, and aligned with the full OpenProject experience.
@@ -86,7 +85,7 @@ To access and use the **OpenProject Mobile App (Beta)**, you’ll need the follo
 > [!NOTE]
 > If you have a previous version of OpenProject you can connect your OpenProject instance by asking your administrator to enable the Built in OAuth applications flag under_ `_{BASE_URL}/admin/settings/experimental_`.
 *   **Minimum system requirements:**
-    *   **iOS 15** or later
+    *   **iOS 17** or later
     *   **Android 12** or later
 *   **Built-in OAuth applications enabled:** Make sure that the built-in OAuth applications are **enabled in your administration settings** (`{BASE_URL}/admin/oauth/applications`). This is required for successful login from the mobile app.
 ![Applications setting to enable the built-in OAuth](mobile_app_oauth_authentication.png)

@@ -279,6 +279,8 @@ it:
           drive_contents: Contenuto dell'unità
           files_request: Recupero dei file delle cartelle di team
           header: Cartelle di progetto gestite automaticamente
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: 'Dipendenza: Cartelle di team'
           team_folder_contents: Contenuto della cartella di team
           team_folder_presence: La cartella di team esiste
@@ -322,8 +324,10 @@ it:
         nc_oauth_request_not_found: L'endpoint per recuperare l'utente attualmente connesso non è stato trovato. Per ulteriori informazioni, consulta i log del server.
         nc_oauth_request_unauthorized: L'utente attuale non è autorizzato ad accedere all'archivio file remoto. Per ulteriori informazioni, consulta i log del server.
         nc_oauth_token_missing: OpenProject non può testare la comunicazione a livello utente con Nextcloud poiché l'utente non ha ancora collegato il proprio account Nextcloud.
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: Impossibile trovare la cartella di team.
-        nc_unexpected_content: Contenuto inatteso trovato nella cartella di team gestita.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: La password dell'app configurata non è valida.
         not_configured: Non è stato possibile verificare la connessione. Prima è necessario completare la configurazione.
         od_client_cant_delete_folder: Il cliente riscontra problemi con l'eliminazione delle cartelle. Consulta la documentazione di configurazione del tuo archivio.

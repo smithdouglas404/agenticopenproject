@@ -156,6 +156,8 @@ module RbCommonHelper
   end
 
   def backlogs_types
+    return [] if scrum_projects_enabled?
+
     @backlogs_types ||= begin
       backlogs_ids = Setting.plugin_openproject_backlogs["story_types"]
       backlogs_ids << Setting.plugin_openproject_backlogs["task_type"]
@@ -165,6 +167,8 @@ module RbCommonHelper
   end
 
   def story_types
+    return [] if scrum_projects_enabled?
+
     @story_types ||= begin
       backlogs_type_ids = Setting.plugin_openproject_backlogs["story_types"].map(&:to_i)
 

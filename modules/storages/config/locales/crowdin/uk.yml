@@ -279,6 +279,8 @@ uk:
           drive_contents: Вміст диска
           files_request: Отримання файлів із папок команди
           header: Папки проєкту з автоматичним керуванням
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: 'Залежність: папки команди'
           team_folder_contents: Вміст папки команди
           team_folder_presence: Папка команди існує
@@ -326,8 +328,10 @@ uk:
         nc_oauth_request_not_found: Кінцеву точку для отримання підключеного зараз користувача не знайдено. Щоб дізнатися більше, перевірте журнали сервера.
         nc_oauth_request_unauthorized: Поточний користувач не має дозволу на доступ до віддаленого файлового сховища. Щоб дізнатися більше, перевірте журнали сервера.
         nc_oauth_token_missing: OpenProject не може перевірити з’єднання на рівні користувача з Nextcloud, оскільки користувач досі не зв’язав свій обліковий запис Nextcloud.
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: Папку команди не знайдено.
-        nc_unexpected_content: У папці керованої команди знайдено неочікуваний вміст.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: Налаштований пароль застосунку недійсний.
         not_configured: Не вдалося перевірити підключення. Спочатку налаштуйте конфігурацію.
         od_client_cant_delete_folder: Клієнту не вдалося видалити папки. Ознайомтеся з документацією щодо конфігурації для свого сховища.

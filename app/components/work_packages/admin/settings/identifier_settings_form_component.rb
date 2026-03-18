@@ -1,0 +1,110 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+#
+
+module WorkPackages
+  module Admin
+    module Settings
+      class IdentifierSettingsFormComponent < ApplicationComponent
+        include OpPrimer::FormHelpers
+        include OpTurbo::Streamable
+
+        STATES = %i[edit change_in_progress completed].freeze
+
+        attr_reader :projects_data, :total_count, :state
+
+        def initialize(state: :edit)
+          raise ArgumentError, "Unknown state: #{state}" unless STATES.include?(state)
+
+          super()
+          @state = state
+          if state == :edit
+            result         = WorkPackages::IdentifierAutofix::PreviewQuery.new.call
+            @projects_data = result.projects_data
+            @total_count   = result.total_count
+          else
+            @projects_data = []
+            @total_count   = 0
+          end
+        end
+
+        def has_problematic_projects?
+          total_count > 0
+        end
+
+        private
+
+        def form_id = "wp-identifier-settings-form"
+
+        def show_autofix_section?
+          state == :edit && Setting::WorkPackageIdentifier.alphanumeric? && has_problematic_projects?
+        end
+
+        def change_in_progress? = state == :change_in_progress
+        def completed?          = state == :completed
+
+        def wrapper_data_attrs
+          if change_in_progress?
+            poll_for_changes_controller_attrs
+          else
+            work_package_identifier_controller_attrs
+          end
+        end
+
+        def poll_for_changes_controller_attrs
+          {
+            data: {
+              controller: "poll-for-changes",
+              poll_for_changes_url_value: url_helpers.status_admin_settings_work_packages_identifier_path,
+              poll_for_changes_interval_value: 5000
+            }
+          }
+        end
+
+        def work_package_identifier_controller_attrs
+          {
+            data: {
+              controller: "admin--work-packages-identifier",
+              admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?
+            }
+          }
+        end
+
+        def radio_button_options
+          if change_in_progress?
+            { button_options: { disabled: true } }
+          else
+            { button_options: { data: { action: "change->admin--work-packages-identifier#handleChange" } } }
+          end
+        end
+      end
+    end
+  end
+end
