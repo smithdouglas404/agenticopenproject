@@ -40,7 +40,7 @@ module Admin
     before_action :require_admin
 
     def index
-      @groups = Group.organizational_units
+      @groups = Group.organizational_units.visible
     end
   end
 end
