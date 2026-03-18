@@ -134,10 +134,10 @@ class Users::InviteController < ApplicationController
   end
 
   def set_project
-    if params[:project_id].present?
-      @project = Project.find(params[:project_id])
-      redirect_if_historical_project_identifier(:project_id)
-    end
+    return if params[:project_id].blank?
+    
+    @project = Project.find(params[:project_id])
+    redirect_if_historical_project_identifier(:project_id)
   end
 
   def dialog_title
