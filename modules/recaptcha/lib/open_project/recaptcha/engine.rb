@@ -1,5 +1,6 @@
 require "open_project/plugins"
 require "recaptcha"
+require "open_project/recaptcha/services"
 
 module OpenProject::Recaptcha
   class Engine < ::Rails::Engine
@@ -11,7 +12,7 @@ module OpenProject::Recaptcha
              author_url: "https://www.openproject.org",
              settings: {
                default: {
-                 recaptcha_type: ::OpenProject::Recaptcha::TYPE_DISABLED,
+                 recaptcha_type: ::OpenProject::Recaptcha::Services::DISABLED.value,
                  response_limit: 5000
                }
              },
@@ -22,6 +23,11 @@ module OpenProject::Recaptcha
            parent: :authentication,
            caption: ->(*) { I18n.t("recaptcha.label_recaptcha") }
     end
+
+    assets %w(
+      recaptcha/type-hcaptcha.svg
+      recaptcha/type-turnstile.svg
+    )
 
     initializer "openproject.configuration" do
       ::Settings::Definition.add OpenProject::Recaptcha::Configuration::CONFIG_KEY, default: false
