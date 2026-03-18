@@ -36,10 +36,10 @@ RSpec.describe WikiController do
   shared_let(:project) do
     create(:project).tap(&:reload)
   end
-  shared_let(:wiki) { project.wiki }
+  shared_let(:wiki) { project.legacy_wiki }
 
   shared_let(:existing_page) do
-    create(:wiki_page, wiki_id: project.wiki.id, title: "ExistingPage", author: admin)
+    create(:wiki_page, wiki_id: project.legacy_wiki.id, title: "ExistingPage", author: admin)
   end
 
   describe "actions" do
@@ -66,7 +66,7 @@ RSpec.describe WikiController do
 
       it "assigns pages" do
         expect(assigns[:pages])
-          .to eq project.wiki.pages
+          .to eq project.legacy_wiki.pages
       end
     end
 
@@ -82,7 +82,7 @@ RSpec.describe WikiController do
 
         expect(assigns[:page]).to be_new_record
         expect(assigns[:page]).to be_a WikiPage
-        expect(assigns[:page].wiki).to eq(project.wiki)
+        expect(assigns[:page].wiki).to eq(project.legacy_wiki)
       end
 
       it "renders the new action" do
@@ -193,7 +193,7 @@ RSpec.describe WikiController do
 
       context "when querying for no specific page" do
         let(:get_page) do
-          project.wiki.update_column(:start_page, existing_page.title)
+          project.legacy_wiki.update_column(:start_page, existing_page.title)
 
           get :show, params: { project_id: project }
         end
@@ -362,7 +362,7 @@ RSpec.describe WikiController do
                  page: { text: "h1. abc", title: "abc" }
                }
 
-          page = project.wiki.pages.find_by title: "abc"
+          page = project.legacy_wiki.pages.find_by title: "abc"
           expect(page).not_to be_nil
           expect(page.text).to eq("h1. abc")
         end
@@ -396,7 +396,7 @@ RSpec.describe WikiController do
                  page: { text: "h1. abc", title: "" }
                }
 
-          expect(assigns[:wiki]).to eq(project.wiki)
+          expect(assigns[:wiki]).to eq(project.legacy_wiki)
           expect(assigns[:wiki]).not_to be_new_record
         end
 
@@ -837,7 +837,7 @@ RSpec.describe WikiController do
 
       it "assigns pages" do
         expect(assigns[:pages])
-          .to eq project.wiki.pages
+          .to eq project.legacy_wiki.pages
       end
 
       it "is an html response" do
@@ -975,26 +975,26 @@ RSpec.describe WikiController do
     # creating pages
     let!(:page_with_content) do
       create(:wiki_page,
-             wiki_id: project.wiki.id,
+             wiki_id: project.legacy_wiki.id,
              title: "PagewithContent",
              author_id: admin.id)
     end
     let!(:page_default) do
       create(:wiki_page,
-             wiki_id: project.wiki.id,
+             wiki_id: project.legacy_wiki.id,
              title: "Wiki",
              author_id: admin.id)
     end
     let!(:unrelated_page) do
       create(:wiki_page,
-             wiki_id: project.wiki.id,
+             wiki_id: project.legacy_wiki.id,
              title: "UnrelatedPage",
              author_id: admin.id)
     end
 
     let(:child_page) do
       create(:wiki_page,
-             wiki_id: project.wiki.id,
+             wiki_id: project.legacy_wiki.id,
              parent_id: page_with_content.id,
              title: "#{page_with_content.title} child",
              author_id: admin.id)
@@ -1016,17 +1016,17 @@ RSpec.describe WikiController do
     describe "- main menu links" do
       before do
         @main_menu_item_for_page_with_content = create(:wiki_menu_item,
-                                                       navigatable_id: project.wiki.id,
+                                                       navigatable_id: project.legacy_wiki.id,
                                                        title: "Item for Page with Content",
                                                        name: page_with_content.slug)
 
         @main_menu_item_for_new_wiki_page = create(:wiki_menu_item,
-                                                   navigatable_id: project.wiki.id,
+                                                   navigatable_id: project.legacy_wiki.id,
                                                    title: "Item for new WikiPage",
                                                    name: "new-wiki-page")
 
         @other_menu_item = create(:wiki_menu_item,
-                                  navigatable_id: project.wiki.id,
+                                  navigatable_id: project.legacy_wiki.id,
                                   title: "Item for other page",
                                   name: unrelated_page.slug)
       end
@@ -1113,7 +1113,7 @@ RSpec.describe WikiController do
       describe "- wiki_menu_item containing special chars only" do
         before do
           @wiki_menu_item = create(:wiki_menu_item,
-                                   navigatable_id: project.wiki.id,
+                                   navigatable_id: project.legacy_wiki.id,
                                    title: "?",
                                    name: "help")
           @other_wiki_menu_item = @other_menu_item

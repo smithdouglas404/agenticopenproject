@@ -62,12 +62,12 @@ RSpec.describe "Wysiwyg child pages spec", :js do
   before do
     login_as(user)
 
-    project.wiki.pages << wiki_page
-    project.wiki.pages << parent_page
-    project.wiki.pages << child_page
+    project.legacy_wiki.pages << wiki_page
+    project.legacy_wiki.pages << parent_page
+    project.legacy_wiki.pages << child_page
     child_page.parent = parent_page
     child_page.save!
-    project.wiki.save!
+    project.legacy_wiki.save!
     login_as(user)
   end
 

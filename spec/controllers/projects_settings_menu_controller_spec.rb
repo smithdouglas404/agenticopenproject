@@ -75,7 +75,7 @@ RSpec.describe Projects::Settings::ModulesController, "menu" do
   describe "show" do
     describe "without wiki" do
       before do
-        project.wiki.destroy
+        project.legacy_wiki.destroy!
         project.reload
       end
 
@@ -92,11 +92,11 @@ RSpec.describe Projects::Settings::ModulesController, "menu" do
       describe "with custom wiki menu item" do
         before do
           main_item = create(:wiki_menu_item,
-                             navigatable_id: project.wiki.id,
+                             navigatable_id: project.legacy_wiki.id,
                              name: "example",
                              title: "Example Title")
           create(:wiki_menu_item,
-                 navigatable_id: project.wiki.id,
+                 navigatable_id: project.legacy_wiki.id,
                  name: "sub",
                  title: "Sub Title",
                  parent_id: main_item.id)

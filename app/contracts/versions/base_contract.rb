@@ -80,7 +80,7 @@ module Versions
     end
 
     def assignable_wiki_pages
-      wiki = model.project.wiki
+      wiki = model.project.legacy_wiki
 
       if wiki
         wiki.pages
@@ -112,9 +112,9 @@ module Versions
     end
 
     def validate_page_title_in_wiki
-      return unless model.wiki_page_title.present? && model.project&.wiki
+      return unless model.wiki_page_title.present? && model.project&.legacy_wiki
 
-      errors.add :wiki_page_title, :inclusion unless model.project.wiki.find_page(model.wiki_page_title)
+      errors.add :wiki_page_title, :inclusion unless model.project.legacy_wiki.find_page(model.wiki_page_title)
     end
   end
 end

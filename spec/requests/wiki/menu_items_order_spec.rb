@@ -35,7 +35,7 @@ RSpec.describe "Menu items order",
                type: :rails_request do
   shared_let(:admin) { create(:admin) }
   let(:project) { create(:project, enabled_module_names: %w[wiki]) }
-  let(:wiki) { project.wiki }
+  let(:wiki) { project.legacy_wiki }
 
   let!(:item3) { create(:wiki_menu_item, wiki:, title: "3. FAQ") }
   let!(:item2) { create(:wiki_menu_item, wiki:, title: "2. New chapter") }

@@ -93,19 +93,19 @@ class Sprint < Version
   def has_wiki_page
     return false if wiki_page_title.blank?
 
-    page = project.wiki.find_page(wiki_page_title)
+    page = project.legacy_wiki.find_page(wiki_page_title)
     return false if !page
 
-    template = project.wiki.find_page(Setting.plugin_openproject_backlogs["wiki_template"])
+    template = project.legacy_wiki.find_page(Setting.plugin_openproject_backlogs["wiki_template"])
     return false if template && page.text == template.text
 
     true
   end
 
   def wiki_page
-    return "" unless project.wiki
+    return "" unless project.legacy_wiki
 
-    create_wiki_page(name) unless project.wiki.find_page(name)
+    create_wiki_page(name) unless project.legacy_wiki.find_page(name)
     update_attribute(:wiki_page_title, name) if wiki_page_title.blank?
 
     wiki_page_title
@@ -163,14 +163,14 @@ class Sprint < Version
   private
 
   def create_wiki_page(page_title, author: User.current)
-    template = project.wiki.find_page(Setting.plugin_openproject_backlogs["wiki_template"])
+    template = project.legacy_wiki.find_page(Setting.plugin_openproject_backlogs["wiki_template"])
     page_text = if template
                   "h1. #{name}\n\n#{template.text}"
                 else
                   "h1. #{name}"
                 end
 
-    page = project.wiki.pages.build(title: page_title, text: page_text, author:)
+    page = project.legacy_wiki.pages.build(title: page_title, text: page_text, author:)
     page.save!
   end
 end

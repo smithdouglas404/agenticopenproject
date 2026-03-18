@@ -143,12 +143,12 @@ RSpec.describe Project do
     end
 
     it "creates a wiki" do
-      expect(project.wiki).to be_present
+      expect(project.legacy_wiki).to be_present
     end
 
     it "creates a wiki menu item named like the default start page" do
-      expect(project.wiki.wiki_menu_items).to be_one
-      expect(project.wiki.wiki_menu_items.first.title).to eq(project.wiki.start_page)
+      expect(project.legacy_wiki.wiki_menu_items).to be_one
+      expect(project.legacy_wiki.wiki_menu_items.first.title).to eq(project.legacy_wiki.start_page)
     end
   end
 

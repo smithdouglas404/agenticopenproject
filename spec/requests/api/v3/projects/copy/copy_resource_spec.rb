@@ -51,7 +51,7 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
   end
 
   shared_let(:work_package) { create(:work_package, project: source_project) }
-  shared_let(:wiki_page) { create(:wiki_page, wiki: source_project.wiki) }
+  shared_let(:wiki_page) { create(:wiki_page, wiki: source_project.legacy_wiki) }
 
   shared_let(:current_user) do
     create(:user,
@@ -154,8 +154,8 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
         project = Project.find_by(identifier: "my-copied-project")
         expect(project).to be_present
 
-        expect(source_project.wiki.pages.count).to eq 1
-        expect(project.wiki.pages.count).to eq 0
+        expect(source_project.legacy_wiki.pages.count).to eq 1
+        expect(project.legacy_wiki.pages.count).to eq 0
 
         expect(source_project.work_packages.count).to eq 1
         expect(project.work_packages.count).to eq 1

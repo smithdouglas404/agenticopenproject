@@ -43,7 +43,7 @@ RSpec.describe "wiki child pages", :js, :selenium do
   end
   let(:parent_page) do
     create(:wiki_page,
-           wiki: project.wiki)
+           wiki: project.legacy_wiki)
   end
   let(:child_page_name) { 'The child page !@#{$%^&*()_},./<>?;\':' }
 

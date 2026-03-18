@@ -44,7 +44,7 @@ RSpec.describe Projects::Storage do
     create(:work_package, project: project1)
     create_list(:attachment, 10, filesize: 250, container: wp)
 
-    wikipage = create(:wiki_page, wiki: project1.wiki)
+    wikipage = create(:wiki_page, wiki: project1.legacy_wiki)
     create(:attachment, filesize: 10000, container: wikipage)
 
     repo = create(:repository_git, project: project2)

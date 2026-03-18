@@ -75,7 +75,7 @@ module Versions
     end
 
     def wiki_page
-      return "" if wiki_page_title.blank? || version.project.wiki.nil?
+      return "" if wiki_page_title.blank? || version.project.legacy_wiki.nil?
 
       helpers.link_to_if_authorized(wiki_page_title,
                                     controller: "/wiki",

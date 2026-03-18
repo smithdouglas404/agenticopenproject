@@ -37,7 +37,7 @@ RSpec.describe "External link capture", :js, :selenium do
   let(:external_url) { "https://www.openproject.org/" }
   let!(:wiki_page) do
     create(:wiki_page,
-           wiki: project.wiki,
+           wiki: project.legacy_wiki,
            author: admin,
            title: "Wiki Page with external link",
            text: %(A link to <a href="#{external_url}">OpenProject</a>.))

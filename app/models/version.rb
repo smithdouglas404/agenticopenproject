@@ -162,8 +162,8 @@ class Version < ApplicationRecord
   end
 
   def wiki_page
-    if project.wiki && wiki_page_title.present?
-      @wiki_page ||= project.wiki.find_page(wiki_page_title)
+    if project.legacy_wiki && wiki_page_title.present?
+      @wiki_page ||= project.legacy_wiki.find_page(wiki_page_title)
     end
     @wiki_page
   end

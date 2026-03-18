@@ -33,7 +33,7 @@ require "spec_helper"
 RSpec.describe Wiki do
   let(:project) { create(:project, disable_modules: "wiki") }
   let(:start_page) { "The wiki start page" }
-  let(:wiki) { project.create_wiki start_page: }
+  let(:wiki) { project.create_legacy_wiki start_page: }
 
   describe "creation" do
     it_behaves_like "acts_as_watchable included" do
@@ -52,7 +52,7 @@ RSpec.describe Wiki do
       end
 
       it "requires a start_page" do
-        wiki = project.create_wiki start_page: nil
+        wiki = project.create_legacy_wiki start_page: nil
         expect(wiki)
           .to be_new_record
       end

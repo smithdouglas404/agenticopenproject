@@ -30,7 +30,7 @@ module Redmine::MenuManager::WikiMenuHelper
   def build_wiki_menus(project)
     return unless project.enabled_module_names.include? "wiki"
 
-    project_wiki = project.wiki
+    project_wiki = project.legacy_wiki
     return if project_wiki.nil?
 
     wiki_main_items(project_wiki).reverse_each do |main_item|
@@ -48,7 +48,7 @@ module Redmine::MenuManager::WikiMenuHelper
               icon: "book",
               html: { class: "wiki-menu--main-item" }
 
-    if project.wiki.pages.any?
+    if project.legacy_wiki.pages.any?
       push_wiki_menu_partial(main_item, menu)
     end
   rescue ArgumentError => e

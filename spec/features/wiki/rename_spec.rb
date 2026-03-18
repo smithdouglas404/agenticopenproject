@@ -36,7 +36,7 @@ RSpec.describe "Wiki page", :js do
     create(:user, member_with_permissions: { project => %i[view_wiki_pages rename_wiki_pages] })
   end
   let!(:wiki_page) do
-    create(:wiki_page, wiki: project.wiki, title: initial_name)
+    create(:wiki_page, wiki: project.legacy_wiki, title: initial_name)
   end
   let(:initial_name) { "Initial name" }
   let(:rename_name) { "Rename name" }

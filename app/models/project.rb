@@ -97,7 +97,7 @@ class Project < ApplicationRecord
   has_many :forums, -> { order("position ASC") }, dependent: :destroy
   has_one :repository, dependent: :destroy
   has_many :changesets, through: :repository
-  has_one :wiki, dependent: :destroy
+  has_one :legacy_wiki, dependent: :destroy, class_name: "Wiki"
   has_many :budgets, dependent: :destroy
   has_many :notification_settings, dependent: :destroy
   has_many :project_storages, dependent: :destroy, class_name: "Storages::ProjectStorage"
@@ -212,7 +212,7 @@ class Project < ApplicationRecord
             format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
             if: ->(p) { p.identifier_changed? && p.identifier.present? }
 
-  validates_associated :repository, :wiki
+  validates_associated :repository, :legacy_wiki
 
   friendly_id :identifier, use: :finders
 

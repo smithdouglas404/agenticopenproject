@@ -44,9 +44,9 @@ RSpec.describe "project export", :js do
 
     login_as(current_user)
 
-    project.wiki.pages << wiki_page1
+    project.legacy_wiki.pages << wiki_page1
 
-    project.wiki.save!
+    project.legacy_wiki.save!
 
     visit project_wiki_path(project, "Some title!")
   end

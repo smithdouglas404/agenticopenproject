@@ -40,7 +40,7 @@ RSpec.describe WikiMenuItemsController do
 
     @params = {}
     @params[:project_id] = @project.id
-    page = create(:wiki_page, wiki: @project.wiki)
+    page = create(:wiki_page, wiki: @project.legacy_wiki)
     @params[:id] = page.title
   end
 

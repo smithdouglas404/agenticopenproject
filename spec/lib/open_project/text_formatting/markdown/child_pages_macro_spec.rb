@@ -65,13 +65,13 @@ RSpec.describe "OpenProject child pages macro" do
   shared_let(:current_page) do
     create(:wiki_page,
            title: "Current page",
-           wiki: project.wiki)
+           wiki: project.legacy_wiki)
   end
 
   shared_let(:middle_page) do
     create(:wiki_page,
            title: "Node from same project",
-           wiki: project.wiki,
+           wiki: project.legacy_wiki,
            parent_id: current_page.id,
            text: "# Node Page from same project")
   end
@@ -79,7 +79,7 @@ RSpec.describe "OpenProject child pages macro" do
   shared_let(:node_page_invisible_project) do
     create(:wiki_page,
            title: "Node page from invisible project",
-           wiki: invisible_project.wiki,
+           wiki: invisible_project.legacy_wiki,
            text: "# Page from invisible project")
   end
 
@@ -87,7 +87,7 @@ RSpec.describe "OpenProject child pages macro" do
     create(:wiki_page,
            title: "Leaf page from same project",
            parent_id: middle_page.id,
-           wiki: project.wiki,
+           wiki: project.legacy_wiki,
            text: "# Leaf page from same project")
   end
 
@@ -95,14 +95,14 @@ RSpec.describe "OpenProject child pages macro" do
     create(:wiki_page,
            title: "Leaf page from invisible project",
            parent_id: node_page_invisible_project.id,
-           wiki: invisible_project.wiki,
+           wiki: invisible_project.legacy_wiki,
            text: "# Leaf page from invisible project")
   end
 
   shared_let(:leaf_page_member_project) do
     create(:wiki_page,
            title: "Leaf page from member project",
-           wiki: member_project.wiki,
+           wiki: member_project.legacy_wiki,
            text: "# Leaf page from member project")
   end
 

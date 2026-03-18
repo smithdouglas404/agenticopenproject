@@ -109,7 +109,7 @@ module OpenProject::TextFormatting
         # When wiki link is escaped with ![[...]]
         # or link_project is missing,
         # return the whole match
-        if escaped || !(project && project.wiki)
+        if escaped || !(project && project.legacy_wiki)
           return all
         end
 
@@ -128,7 +128,7 @@ module OpenProject::TextFormatting
         @page = CGI.unescapeHTML(page)
 
         # check if page exists
-        wiki_page = project.wiki.find_page(page)
+        wiki_page = project.legacy_wiki.find_page(page)
         default_wiki_title = wiki_page.nil? ? page : wiki_page.title
         wiki_title = title || default_wiki_title
 

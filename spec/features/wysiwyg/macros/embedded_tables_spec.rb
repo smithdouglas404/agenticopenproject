@@ -147,7 +147,7 @@ RSpec.describe "Wysiwyg embedded work package tables",
           expect_and_dismiss_flash(message: "Successful creation.")
 
           # Embedded queries
-          wikipage = project.wiki.pages.last
+          wikipage = project.legacy_wiki.pages.last
           expect(wikipage.text).to include("subprojectId")
 
           # Delete the project

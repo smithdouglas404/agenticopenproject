@@ -75,7 +75,7 @@ module DemoData
       version.wiki_page_title = config["title"]
 
       Journal::NotificationConfiguration.with false do
-        WikiPage.create! wiki: version.project.wiki,
+        WikiPage.create! wiki: version.project.legacy_wiki,
                          title: version.wiki_page_title,
                          author: User.admin.first,
                          text: with_references(config["content"])

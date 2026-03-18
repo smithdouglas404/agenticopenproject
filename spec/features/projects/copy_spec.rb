@@ -147,7 +147,7 @@ RSpec.describe "Projects copy", :js,
              attachments: [build(:attachment, filename: "work_package_attachment.pdf")])
     end
 
-    let!(:wiki) { project.wiki }
+    let!(:wiki) { project.legacy_wiki }
     let!(:wiki_page) do
       create(:wiki_page,
              title: "Attached",
@@ -528,8 +528,8 @@ RSpec.describe "Projects copy", :js,
       copied_settings_type_page.expect_type_inactive(inactive_type)
 
       # Expect wiki was copied
-      expect(copied_project.wiki.pages.count).to eq(project.wiki.pages.count)
-      copied_page = copied_project.wiki.find_page "Attached"
+      expect(copied_project.legacy_wiki.pages.count).to eq(project.legacy_wiki.pages.count)
+      copied_page = copied_project.legacy_wiki.find_page "Attached"
       expect(copied_page).not_to be_nil
       expect(copied_page.attachments.map(&:filename))
         .to eq ["wiki_page_attachment.pdf"]

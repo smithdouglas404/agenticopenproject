@@ -100,9 +100,8 @@ class Wiki < ApplicationRecord
       title = $2
       project = Project.find_by(identifier: project_identifier) || Project.find_by(name: project_identifier)
     end
-    if project && project.wiki
-      project.wiki.find_page(title)
-    end
+
+    project&.legacy_wiki&.find_page(title)
   end
 
   def create_menu_item_for_start_page

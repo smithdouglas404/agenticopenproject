@@ -70,7 +70,7 @@ See COPYRIGHT and LICENSE files for more details.
         t(:button_delete)
       end
     end
-    if authorize_for(:wiki, :edit) && !(@version.wiki_page_title.blank? || @version.project.wiki.nil?)
+    if authorize_for(:wiki, :edit) && !(@version.wiki_page_title.blank? || @version.project.legacy_wiki.nil?)
       header.with_action_button(
         tag: :a,
         mobile_icon: :pencil,

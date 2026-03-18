@@ -38,7 +38,7 @@ RSpec.describe "Wiki Activity", :js do
                                                     view_wiki_edits] })
   end
   let(:project) { create(:project, enabled_module_names: %w[wiki activity]) }
-  let(:wiki) { project.wiki }
+  let(:wiki) { project.legacy_wiki }
   let(:editor) { Components::WysiwygEditor.new }
 
   before do

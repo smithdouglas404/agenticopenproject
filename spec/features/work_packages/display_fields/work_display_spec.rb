@@ -35,7 +35,7 @@ RSpec.describe "Work display", :js do
 
   shared_let(:project) { create(:project) }
   shared_let(:user) { create(:admin) }
-  shared_let(:wiki_page) { create(:wiki_page, wiki: project.wiki) }
+  shared_let(:wiki_page) { create(:wiki_page, wiki: project.legacy_wiki) }
   shared_let(:query) do
     create(:query,
            project:,

@@ -48,8 +48,8 @@ RSpec.describe "WYSIWYG UI localization", :js do
 
   before do
     login_as(user)
-    project.wiki.pages << wiki_page
-    project.wiki.save!
+    project.legacy_wiki.pages << wiki_page
+    project.legacy_wiki.save!
 
     visit edit_project_wiki_path(project, wiki_page.slug)
   end

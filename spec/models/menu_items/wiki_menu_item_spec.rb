@@ -44,7 +44,7 @@ RSpec.describe MenuItems::WikiMenuItem do
     @project.enabled_modules << EnabledModule.new(name: "wiki")
     @project.reload
 
-    wiki_item = @project.wiki.wiki_menu_items.first
+    wiki_item = @project.legacy_wiki.wiki_menu_items.first
     expect(wiki_item.name).to eql "wiki"
     expect(wiki_item.title).to eql "Wiki"
     expect(wiki_item.slug).to eql "wiki"
@@ -84,11 +84,11 @@ RSpec.describe MenuItems::WikiMenuItem do
       @project.enabled_modules << EnabledModule.new(name: "wiki")
       @project.reload
 
-      @menu_item_1 = create(:wiki_menu_item, wiki: @project.wiki,
+      @menu_item_1 = create(:wiki_menu_item, wiki: @project.legacy_wiki,
                                              name: "Item 1",
                                              title: "Item 1")
 
-      @menu_item_2 = create(:wiki_menu_item, wiki: @project.wiki,
+      @menu_item_2 = create(:wiki_menu_item, wiki: @project.legacy_wiki,
                                              name: "Item 2",
                                              parent_id: @menu_item_1.id,
                                              title: "Item 2")
@@ -108,7 +108,7 @@ RSpec.describe MenuItems::WikiMenuItem do
       end
 
       it "the associated wiki" do
-        @project.wiki.destroy
+        @project.legacy_wiki.destroy
         expect(MenuItems::WikiMenuItem.all).not_to be_any
       end
     end

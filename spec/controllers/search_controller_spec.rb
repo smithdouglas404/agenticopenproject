@@ -58,7 +58,7 @@ RSpec.describe SearchController do
   shared_let(:wiki_page) do
     create(:wiki_page,
            title: "How to solve an issue",
-           wiki: project.wiki)
+           wiki: project.legacy_wiki)
   end
 
   shared_let(:work_package_1) do

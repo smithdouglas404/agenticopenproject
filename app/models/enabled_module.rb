@@ -44,7 +44,7 @@ class EnabledModule < ApplicationRecord
     case name
     when "wiki"
       # Create a wiki with a default start page
-      if project && project.wiki.nil?
+      if project && project.legacy_wiki.nil?
         Wiki.create(project:, start_page: "Wiki")
       end
     when "repository"

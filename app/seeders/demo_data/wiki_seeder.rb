@@ -57,7 +57,7 @@ module DemoData
 
     def create_wiki_page!(data, project:, parent: nil)
       WikiPage.create!(
-        wiki: project.wiki,
+        wiki: project.legacy_wiki,
         title: data[:title],
         parent:,
         author: admin_user,

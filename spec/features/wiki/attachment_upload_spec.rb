@@ -41,7 +41,7 @@ RSpec.describe "Upload attachment to wiki page", :js, :selenium do
   let(:image_fixture) { UploadedFile.load_from("spec/fixtures/files/image.png") }
   let(:editor) { Components::WysiwygEditor.new }
   let(:attachments_list) { Components::AttachmentsList.new }
-  let(:wiki_page_content) { project.wiki.pages.first.text }
+  let(:wiki_page_content) { project.legacy_wiki.pages.first.text }
 
   before do
     login_as(user)

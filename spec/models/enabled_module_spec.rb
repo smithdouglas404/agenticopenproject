@@ -69,12 +69,12 @@ RSpec.describe EnabledModule do
     let(:modules) { %w[wiki] }
 
     it "creates a wiki" do
-      expect(project.wiki).not_to be_nil
-      expect(project.wiki.start_page).to eq("Wiki")
+      expect(project.legacy_wiki).not_to be_nil
+      expect(project.legacy_wiki.start_page).to eq("Wiki")
     end
 
     it "does not create a separate wiki when one exists already" do
-      expect(project.wiki).not_to be_nil
+      expect(project.legacy_wiki).not_to be_nil
 
       expect do
         project.enabled_module_names = []
@@ -85,22 +85,22 @@ RSpec.describe EnabledModule do
         project.enabled_module_names = ["wiki"]
       end.not_to change(Wiki, :count)
 
-      expect(project.wiki).not_to be_nil
+      expect(project.legacy_wiki).not_to be_nil
     end
 
     context "with disabled module" do
       let(:modules) { [] }
 
       it "does not create a wiki" do
-        expect(project.wiki).to be_nil
+        expect(project.legacy_wiki).to be_nil
       end
 
       it "creates a wiki when the module is enabled at a later time" do
         project.enabled_module_names = ["wiki"]
         project.reload
 
-        expect(project.wiki).not_to be_nil
-        expect(project.wiki.start_page).to eq("Wiki")
+        expect(project.legacy_wiki).not_to be_nil
+        expect(project.legacy_wiki.start_page).to eq("Wiki")
       end
     end
   end

@@ -41,7 +41,7 @@ RSpec.describe "Upload attachment to meetings", :js do
   let(:attachments) { Components::Attachments.new }
   let(:image_fixture) { UploadedFile.load_from("spec/fixtures/files/image.png") }
   let(:editor) { Components::WysiwygEditor.new "#content", "opce-ckeditor-augmented-textarea" }
-  let(:wiki_page_content) { project.wiki.pages.first.text }
+  let(:wiki_page_content) { project.legacy_wiki.pages.first.text }
   let(:attachment_list) { Components::AttachmentsList.new("#content") }
 
   let(:meeting) { create(:meeting, project:) }

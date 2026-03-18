@@ -37,7 +37,7 @@ RSpec.describe "Toggle watching", :js do
   let(:news) { create(:news, project:) }
   let(:forum) { create(:forum, project:) }
   let(:message) { create(:message, forum:) }
-  let(:wiki) { project.wiki }
+  let(:wiki) { project.legacy_wiki }
   let(:wiki_page) { create(:wiki_page, wiki:) }
 
   before do

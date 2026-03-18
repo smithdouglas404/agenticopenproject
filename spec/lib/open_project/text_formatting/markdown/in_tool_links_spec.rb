@@ -431,14 +431,14 @@ RSpec.describe OpenProject::TextFormatting,
         project_2.reload
 
         wiki_page_2_1 = create(:wiki_page,
-                               wiki: project_2.wiki,
+                               wiki: project_2.legacy_wiki,
                                title: "Start Page")
 
-        project_2.wiki.pages << wiki_page_2_1
-        project_2.wiki.start_page = "Start Page"
-        project_2.wiki.save!
+        project_2.legacy_wiki.pages << wiki_page_2_1
+        project_2.legacy_wiki.start_page = "Start Page"
+        project_2.legacy_wiki.save!
 
-        project.wiki = wiki_1
+        project.legacy_wiki = wiki_1
 
         wiki_1.pages << wiki_page_1_1
         wiki_1.pages << wiki_page_1_2
@@ -677,7 +677,7 @@ RSpec.describe OpenProject::TextFormatting,
       end
 
       before do
-        project.wiki = wiki
+        project.legacy_wiki = wiki
         wiki.pages << wiki_page
       end
 

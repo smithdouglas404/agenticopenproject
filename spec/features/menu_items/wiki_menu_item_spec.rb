@@ -42,7 +42,7 @@ RSpec.describe "Wiki menu items",
                                                     delete_wiki_pages] })
   end
   let(:project) { create(:project, enabled_module_names: %w[wiki]) }
-  let(:wiki) { project.wiki }
+  let(:wiki) { project.legacy_wiki }
   let(:parent_menu) { wiki.wiki_menu_items.find_by(name: "wiki") }
   let(:wiki_page) { create(:wiki_page, wiki:) }
   let(:other_wiki_page) do
@@ -79,7 +79,7 @@ RSpec.describe "Wiki menu items",
       wiki.wiki_menu_items.reload
       expect(wiki.wiki_menu_items.count).to eq(3)
 
-      visit project_wiki_path(project, project.wiki)
+      visit project_wiki_path(project, project.legacy_wiki)
 
       wiki.wiki_menu_items.reload
       expect(wiki.wiki_menu_items.count).to eq(2)
@@ -150,7 +150,7 @@ RSpec.describe "Wiki menu items",
 
     # removing the menu item which is also the last wiki menu item
     # removing the default wiki menu item programmatically first
-    MenuItems::WikiMenuItem.where(navigatable_id: project.wiki.id, name: "wiki").delete_all
+    MenuItems::WikiMenuItem.where(navigatable_id: project.legacy_wiki.id, name: "wiki").delete_all
     visit project_wiki_path(project, other_wiki_page)
 
     page.find_test_selector("wiki-more-dropdown-menu").click

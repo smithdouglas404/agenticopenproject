@@ -37,7 +37,7 @@ class WikiMenuItemsController < ApplicationController
     next controller.wiki_menu_item.menu_identifier if controller.wiki_menu_item.try(:persisted?)
 
     project = controller.instance_variable_get(:@project)
-    if (page = project.wiki.pages.find_by(id: controller.params[:id]))
+    if (page = project.legacy_wiki.pages.find_by(id: controller.params[:id]))
       default_menu_item(controller, page)
     end
   end
@@ -46,7 +46,7 @@ class WikiMenuItemsController < ApplicationController
     next controller.wiki_menu_item.menu_identifier if controller.wiki_menu_item.try(:persisted?)
 
     project = controller.instance_variable_get(:@project)
-    if (page = project.wiki.pages.find_by(id: controller.params[:id]))
+    if (page = project.legacy_wiki.pages.find_by(id: controller.params[:id]))
       default_menu_item(controller, page)
     end
   end
@@ -110,9 +110,9 @@ class WikiMenuItemsController < ApplicationController
   end
 
   def select_main_menu_item
-    @page = @project.wiki.pages.find params[:id]
+    @page = @project.legacy_wiki.pages.find params[:id]
     @possible_wiki_pages = @project
-                           .wiki
+                           .legacy_wiki
                            .pages
                            .includes(:parent)
                            .reject do |page|
@@ -123,10 +123,10 @@ class WikiMenuItemsController < ApplicationController
   end
 
   def replace_main_menu_item # rubocop:disable Metrics/AbcSize
-    current_page = @project.wiki.pages.find(params[:id])
+    current_page = @project.legacy_wiki.pages.find(params[:id])
 
     if current_menu_item = current_page.menu_item
-      page = @project.wiki.pages.find(params[:wiki_page][:id])
+      page = @project.legacy_wiki.pages.find(params[:wiki_page][:id])
 
       if page && current_menu_item != page.menu_item
         create_main_menu_item_for_wiki_page(page, current_menu_item.options)
@@ -145,7 +145,7 @@ class WikiMenuItemsController < ApplicationController
   end
 
   def get_data_from_params(params) # rubocop:disable Metrics/AbcSize
-    wiki = @project.wiki
+    wiki = @project.legacy_wiki
 
     @page = wiki.find_page(params[:id])
     @page_title = @page.title

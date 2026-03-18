@@ -157,7 +157,7 @@ RSpec.describe "Wysiwyg code block macro", :js, :selenium do
 
         expect_and_dismiss_flash(message: "Successful creation.")
 
-        wiki_page = project.wiki.find_page("wiki")
+        wiki_page = project.legacy_wiki.find_page("wiki")
         text = wiki_page.text.gsub(/\r\n?/, "\n")
         expect(text.strip).to eq(expected.strip)
 

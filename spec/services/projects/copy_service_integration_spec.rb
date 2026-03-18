@@ -51,8 +51,8 @@ RSpec.describe(
   shared_let(:source_view) { create(:view_work_packages_table, query: source_query) }
   shared_let(:source_category) { create(:category, project: source, name: "Stock management") }
   shared_let(:source_version) { create(:version, project: source, name: "Version A") }
-  shared_let(:source_wiki_page) { create(:wiki_page, wiki: source.wiki) }
-  shared_let(:source_child_wiki_page) { create(:wiki_page, wiki: source.wiki, parent: source_wiki_page) }
+  shared_let(:source_wiki_page) { create(:wiki_page, wiki: source.legacy_wiki) }
+  shared_let(:source_child_wiki_page) { create(:wiki_page, wiki: source.legacy_wiki, parent: source_wiki_page) }
   shared_let(:source_forum) { create(:forum, project: source) }
   shared_let(:source_topic) { create(:message, forum: source_forum) }
   shared_let(:source_project_phase) do
@@ -408,14 +408,14 @@ RSpec.describe(
         expect(project_copy.work_packages.count).to eq 2
         expect(project_copy.forums.count).to eq 1
         expect(project_copy.forums.first.messages.count).to eq 1
-        expect(project_copy.wiki).to be_present
-        expect(project_copy.wiki.pages.count).to eq 2
+        expect(project_copy.legacy_wiki).to be_present
+        expect(project_copy.legacy_wiki.pages.count).to eq 2
         expect(project_copy.queries.count).to eq 1
         expect(project_copy.queries[0].views.count).to eq 1
         expect(project_copy.versions.count).to eq 1
-        expect(project_copy.wiki.pages.root.text).to eq source_wiki_page.text
-        expect(project_copy.wiki.pages.leaves.first.text).to eq source_child_wiki_page.text
-        expect(project_copy.wiki.start_page).to eq "Wiki"
+        expect(project_copy.legacy_wiki.pages.root.text).to eq source_wiki_page.text
+        expect(project_copy.legacy_wiki.pages.leaves.first.text).to eq source_child_wiki_page.text
+        expect(project_copy.legacy_wiki.start_page).to eq "Wiki"
         expect(project_copy.phases.count).to eq 1
 
         # Cleared attributes
@@ -1119,10 +1119,10 @@ RSpec.describe(
         let(:only_args) { %i[wiki] }
 
         it "copies wiki menu items" do
-          source.wiki.wiki_menu_items << create(:wiki_menu_item_with_parent, wiki: source.wiki)
+          source.legacy_wiki.wiki_menu_items << create(:wiki_menu_item_with_parent, wiki: source.legacy_wiki)
 
           expect(subject).to be_success
-          expect(project_copy.wiki.wiki_menu_items.count).to eq 3
+          expect(project_copy.legacy_wiki.wiki_menu_items.count).to eq 3
         end
 
         it "ignores wiki attachments" do
@@ -1131,9 +1131,9 @@ RSpec.describe(
 
           expect(subject).to be_success
           expect(subject.errors).to be_empty
-          expect(project_copy.wiki.pages.count).to eq 2
+          expect(project_copy.legacy_wiki.pages.count).to eq 2
 
-          page = project_copy.wiki.pages.find_by(title: source_wiki_page.title)
+          page = project_copy.legacy_wiki.pages.find_by(title: source_wiki_page.title)
           expect(page.attachments.count).to eq(0)
         end
 
@@ -1146,9 +1146,9 @@ RSpec.describe(
 
             expect(subject).to be_success
             expect(subject.errors).to be_empty
-            expect(project_copy.wiki.pages.count).to eq 2
+            expect(project_copy.legacy_wiki.pages.count).to eq 2
 
-            page = project_copy.wiki.pages.find_by(title: source_wiki_page.title)
+            page = project_copy.legacy_wiki.pages.find_by(title: source_wiki_page.title)
             expect(page.attachments.count).to eq(1)
             expect(page.attachments.first.author).to eql(current_user)
           end
@@ -1192,9 +1192,9 @@ RSpec.describe(
         expect(project_copy.work_packages.count).to eq 0
         expect(project_copy.forums.count).to eq 0
         # Default wiki page
-        expect(project_copy.wiki).to be_present
-        expect(project_copy.wiki.pages.count).to eq 0
-        expect(project_copy.wiki.wiki_menu_items.count).to eq 1
+        expect(project_copy.legacy_wiki).to be_present
+        expect(project_copy.legacy_wiki.pages.count).to eq 0
+        expect(project_copy.legacy_wiki.wiki_menu_items.count).to eq 1
         expect(project_copy.queries.count).to eq 0
         expect(project_copy.versions.count).to eq 0
         expect(project_copy.phases.count).to eq 0

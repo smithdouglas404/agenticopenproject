@@ -70,7 +70,7 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
     end
     let!(:other_project) { create(:project, name: "Some other project") }
     let!(:work_package) { create(:work_package, project: template) }
-    let!(:wiki_page) { create(:wiki_page, wiki: template.wiki) }
+    let!(:wiki_page) { create(:wiki_page, wiki: template.legacy_wiki) }
 
     let!(:role) do
       create(:project_role, permissions: %i[view_project view_work_packages copy_projects add_subprojects])
@@ -135,8 +135,8 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
       wp_target = project.work_packages.first.attributes.except(*%w[id author_id project_id updated_at created_at])
       expect(wp_target).to eq(wp_source)
 
-      wiki_source = template.wiki.pages.first
-      wiki_target = project.wiki.pages.first
+      wiki_source = template.legacy_wiki.pages.first
+      wiki_target = project.legacy_wiki.pages.first
       expect(wiki_source.title).to eq(wiki_target.title)
       expect(wiki_source.text).to eq(wiki_target.text)
     end

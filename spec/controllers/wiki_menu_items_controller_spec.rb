@@ -35,7 +35,7 @@ RSpec.describe WikiMenuItemsController do
 
   # create project with wiki
   let(:project) { create(:project).reload } # a wiki is created for project, but the object doesn't know of it (FIXME?)
-  let(:wiki) { project.wiki }
+  let(:wiki) { project.legacy_wiki }
 
   let(:wiki_page) { create(:wiki_page, wiki:) } # first wiki page without child pages
   let!(:top_level_wiki_menu_item) do

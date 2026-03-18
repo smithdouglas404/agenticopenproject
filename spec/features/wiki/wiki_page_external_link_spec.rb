@@ -38,7 +38,7 @@ RSpec.describe "Wiki page external link", :js, :selenium do
   let(:project) { create(:project, enabled_module_names: %w[wiki]) }
   let!(:wiki_page) do
     create(:wiki_page,
-           wiki: project.wiki,
+           wiki: project.legacy_wiki,
            author: admin,
            title: "Wiki Page No. 55",
            text: "A link to <a href='#{external_url}'>OpenProject</a>.")

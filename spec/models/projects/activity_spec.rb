@@ -51,14 +51,14 @@ RSpec.describe Projects::Activity, "core" do
     project.reload
 
     create(:wiki_page,
-           wiki: project.wiki)
+           wiki: project.legacy_wiki)
   end
 
   let(:wiki_page2) do
     project.reload
 
     create(:wiki_page,
-           wiki: project.wiki)
+           wiki: project.legacy_wiki)
   end
 
   let(:news) do

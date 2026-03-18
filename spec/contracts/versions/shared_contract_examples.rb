@@ -42,7 +42,7 @@ RSpec.shared_examples_for "version contract" do
 
   let(:root_project) { build_stubbed(:project) }
   let(:version_project) do
-    build_stubbed(:project, wiki: project_wiki).tap do |p|
+    build_stubbed(:project, legacy_wiki: project_wiki).tap do |p|
       allow(p)
         .to receive(:root)
         .and_return(root_project)

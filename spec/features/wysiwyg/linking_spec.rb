@@ -53,7 +53,7 @@ RSpec.describe "Wysiwyg linking", :js do
 
       expect_flash(message: "Successful creation.")
 
-      wiki_page = project.wiki.pages.first.reload
+      wiki_page = project.legacy_wiki.pages.first.reload
 
       expect(wiki_page.text).to eq(
         "[http://example.org/link with spaces](http://example.org/link%20with%20spaces)"
@@ -65,7 +65,7 @@ RSpec.describe "Wysiwyg linking", :js do
 
   describe "linking in a wiki page with different protocols",
            with_settings: { allowed_link_protocols: %w[data] } do
-    let(:wiki_page) { create(:wiki_page, wiki: project.wiki) }
+    let(:wiki_page) { create(:wiki_page, wiki: project.legacy_wiki) }
     let(:always_allowed_protocols) { Setting::AllowedLinkProtocols::ALWAYS_ALLOWED }
 
     before do

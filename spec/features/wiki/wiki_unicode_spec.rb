@@ -80,11 +80,11 @@ RSpec.describe "Wiki unicode title spec", :js do
   before do
     login_as(user)
 
-    project.wiki.pages << wiki_page_1
-    project.wiki.pages << wiki_page_2
-    project.wiki.pages << wiki_page_3
+    project.legacy_wiki.pages << wiki_page_1
+    project.legacy_wiki.pages << wiki_page_2
+    project.legacy_wiki.pages << wiki_page_3
 
-    project.wiki.save!
+    project.legacy_wiki.save!
 
     visit project_wiki_path(project, :wiki)
 

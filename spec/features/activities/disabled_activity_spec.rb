@@ -48,10 +48,10 @@ RSpec.describe "Disabled activity", :js do
   let!(:work_package3) { create(:work_package, project: project3) }
 
   let!(:wiki_page1) do
-    create(:wiki_page, wiki: project1.wiki)
+    create(:wiki_page, wiki: project1.legacy_wiki)
   end
   let!(:wiki_page2) do
-    create(:wiki_page, wiki: project2.wiki)
+    create(:wiki_page, wiki: project2.legacy_wiki)
   end
   let!(:wiki_page3) do
     wiki = create(:wiki, project: project3)
