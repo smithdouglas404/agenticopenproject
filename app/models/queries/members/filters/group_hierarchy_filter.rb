@@ -28,12 +28,53 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Wikis::Diff < Redmine::Helpers::Diff
-  attr_reader :content_to, :content_from
+# Like GroupFilter but hierarchy-aware: matches members who are users of the
+# given group or any of its descendant groups, as well as the descendant
+# groups themselves (which carry inherited Member records).
+class Queries::Members::Filters::GroupHierarchyFilter < Queries::Members::Filters::MemberFilter
+  def self.key
+    :group_hierarchy
+  end
 
-  def initialize(content_to, content_from)
-    @content_to = content_to
-    @content_from = content_from
-    super(content_to.data.text, content_from.data.text)
+  def allowed_values
+    @allowed_values ||= ::Group.pluck(:id).map { |g| [g, g.to_s] }
+  end
+
+  def available?
+    ::Group.exists?
+  end
+
+  def type
+    :list_optional
+  end
+
+  def human_name
+    I18n.t("query_fields.member_of_group")
+  end
+
+  def joins
+    :principal
+  end
+
+  def where
+    case operator
+    when "="
+      "users.id IN (#{hierarchy_subselect})"
+    when "!"
+      "users.id NOT IN (#{hierarchy_subselect})"
+    when "*"
+      "users.id IN (#{User.within_group([]).select(:id).to_sql})"
+    when "!*"
+      "users.id NOT IN (#{User.within_group([]).select(:id).to_sql})"
+    end
+  end
+
+  private
+
+  def hierarchy_subselect
+    groups = Group.where(id: values.map(&:to_i))
+    all_group_ids = groups.flat_map { |g| g.self_and_descendants.pluck(:id) }.uniq
+    user_ids = User.in_group(all_group_ids).pluck(:id)
+    (user_ids + all_group_ids).uniq.join(",").presence || "NULL"
   end
 end

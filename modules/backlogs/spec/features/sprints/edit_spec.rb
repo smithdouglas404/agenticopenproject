@@ -107,7 +107,6 @@ RSpec.describe "Edit", :js do
                         "task_type" => task_type.id.to_s)
 
     create(:workflow, type: task_type, old_status: default_status, new_status: default_status, role: create(:project_role))
-
     backlogs_page.visit!
   end
 

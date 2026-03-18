@@ -221,7 +221,7 @@ cs:
       text:
         template: "Tito účastníci budou automaticky pozváni na všechna budoucí zasedání po jejich vytvoření."
         manage_participants: "Search for and add project members as participants to this meeting."
-        search_for_members: "Search for project members"
+        search_for_members: "Vyhledávání členů projektu"
       blankslate:
         heading: "Nikdo tu není"
         description: "There are no participants yet."

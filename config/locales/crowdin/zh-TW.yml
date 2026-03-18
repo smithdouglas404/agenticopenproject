@@ -107,9 +107,8 @@ zh-TW:
         trial: "試用"
     jemalloc_allocator: Jemalloc 記憶體分配器
     journal_aggregation:
-      explanation:
-        text: "使用者的個別操作（例如：在短時間內更新同一工作套件兩次）若時間差距小於指定時長，系統會將這些操作合併為單一動作，並於應用程式中以單一動作顯示。\n此機制同時會延遲通知發送相同的時間，以減少電子郵件數量，並且會影響 %{webhook_link} 的延遲時間。"
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -4148,7 +4147,7 @@ zh-TW:
   notice_parent_item_not_found: "未找到父項目。"
   notice_project_not_deleted: "專案沒有被刪除"
   notice_project_not_found: "未找到專案。"
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "連接成功"
   notice_successful_create: "建立成功"
   notice_successful_delete: "刪除成功"

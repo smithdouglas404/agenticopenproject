@@ -29,7 +29,7 @@ cs:
           finished: 'Dokončeno'
           discontinued: 'Zrušeno'
         subprojects:
-          title: 'Subitems'
+          title: 'Dílčí položky'
         project_favorites:
           title: 'Oblíbené projekty'
           no_results: 'Momentálně nemáte žádné oblíbené projekty. Klikněte na ikonu hvězdičky v nástěnce projektu pro přidání jednoho do oblíbených.'

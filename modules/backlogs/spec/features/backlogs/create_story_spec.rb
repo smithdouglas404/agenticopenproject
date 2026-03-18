@@ -112,11 +112,6 @@ RSpec.describe "Backlogs", :js do
       # TODO: removed in OP #57688, to be reimplemented
       # fill_in "Story Points", with: "5"
 
-      # inactive types should not be selectable but the user can choose from the
-      # active types
-      # TODO: removed in OP #57688, to be reimplemented
-      # expect(page).to have_no_css("option", text: inactive_story_type.name)
-
       select_combo_box_option story_type2.name, from: "Type"
 
       # saving the new story

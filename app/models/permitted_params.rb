@@ -309,7 +309,7 @@ class PermittedParams
   end
 
   def copy_project_options
-    copy_options_params = params.expect(copy_options: [[dependencies: []], :send_notifications])
+    copy_options_params = params.expect(copy_options: [[{ dependencies: [] }], :send_notifications])
     copy_options_params[:dependencies].compact_blank!
     copy_options_params
   end
@@ -526,8 +526,9 @@ class PermittedParams
           name
           reassign_to_id
         ),
-        group: [
-          :lastname
+        group: %i[
+          lastname
+          parent_id
         ],
         membership: [
           :project_id,
@@ -541,7 +542,7 @@ class PermittedParams
           ] }
         ],
         member: [
-          role_ids: []
+          { role_ids: [] }
         ],
         new_work_package: [
           :assigned_to_id,

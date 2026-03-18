@@ -31,13 +31,11 @@
 require "spec_helper"
 
 RSpec.describe "version edit", :js do
-  let(:user) do
-    create(:user,
-           member_with_permissions: { version.project => %i[manage_versions view_work_packages] })
-  end
-  let(:version) { create(:version) }
-  let(:project) { version.project }
+  let(:project) { create(:project, enabled_module_names: %w[backlogs work_package_tracking]) }
+  let(:version) { create(:version, project:, sharing: "descendants") }
   let(:new_version_name) { "A new version name" }
+  let(:permissions) { { project => %i[manage_versions view_work_packages] } }
+  let(:user) { create(:user, member_with_permissions: permissions) }
 
   before do
     login_as(user)
@@ -57,6 +55,51 @@ RSpec.describe "version edit", :js do
       .to have_current_path(version_path(version))
     expect(page)
       .to have_content new_version_name
+  end
+
+  context "when editing a shared version from a subproject with backlogs enabled", :js do
+    let(:child_project) do
+      create(:project, parent: project, enabled_module_names: %w[backlogs work_package_tracking])
+    end
+    let(:permissions) do
+      { project => %i[manage_versions view_work_packages],
+        child_project => %i[manage_versions view_work_packages] }
+    end
+
+    it "persists the version setting scoped to the subproject, not the parent project (Regression#73187)" do
+      visit edit_version_path(version, project_id: child_project.id)
+
+      select I18n.t(:version_settings_display_option_right),
+             from: I18n.t(:label_column_in_backlog)
+
+      click_button I18n.t(:button_save)
+
+      expect(page).to have_text(I18n.t(:notice_successful_update))
+
+      # it creates a version setting for the child project
+      setting = VersionSetting.find_by(version:, project: child_project)
+      expect(setting).not_to be_nil
+      expect(setting).to be_display_right
+
+      # it does not create a version setting for the parent project
+      expect(VersionSetting.exists?(version:, project:)).to be false
+
+      # visiting the parent project shows the default version setting
+      visit edit_version_path(version, project_id: project.id)
+
+      expect(page).to have_select(
+        I18n.t(:label_column_in_backlog),
+        selected: I18n.t(:version_settings_display_option_left)
+      )
+
+      # revisiting the settings page shows the correct version setting
+      visit edit_version_path(version, project_id: child_project.id)
+
+      expect(page).to have_select(
+        I18n.t(:label_column_in_backlog),
+        selected: I18n.t(:version_settings_display_option_right)
+      )
+    end
   end
 
   context "with a custom field" do

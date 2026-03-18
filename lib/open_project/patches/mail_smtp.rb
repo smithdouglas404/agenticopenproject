@@ -28,41 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Wikis::Annotate
-  attr_reader :lines, :content
+require "mail"
 
-  def initialize(content)
-    @content = content
-    current = content
-    current_lines = current.data.text.split(/\r?\n/)
-    @lines = current_lines.map { |t| [nil, nil, t] }
-    positions = []
-    current_lines.size.times { |i| positions << i }
-    while current.previous
-      d = current.previous.data.text.split(/\r?\n/).diff(current.data.text.split(/\r?\n/)).diffs.flatten
-      d.each_slice(3) do |s|
-        sign = s[0]
-        line = s[1]
-        if sign == "+" && positions[line] && positions[line] != -1 && @lines[positions[line]][0].nil?
-          @lines[positions[line]][0] = current.version
-          @lines[positions[line]][1] = current.data.author
+##
+# Correctly pass tls_hostname from Rails until [1] is resolved and the gem updated.
+#
+# [1] https://github.com/mikel/mail/issues/1660
+module OpenProject::Patches
+  module Mail
+    module SMTP
+      private
+
+      def build_smtp_session
+        super.tap do |smtp|
+          smtp.tls_hostname = settings[:tls_hostname] if settings[:tls_hostname]
         end
       end
-      d.each_slice(3) do |s|
-        sign = s[0]
-        line = s[1]
-        if sign == "-"
-          positions.insert(line, -1)
-        else
-          positions[line] = nil
-        end
-      end
-      positions.compact!
-      # Stop if every line is annotated
-      break unless @lines.detect { |line| line[0].nil? }
-
-      current = current.previous
     end
-    @lines.each { |line| line[0] ||= current.version }
   end
+end
+
+OpenProject::Patches.patch_gem_version "mail", "2.9.0" do
+  Mail::SMTP.prepend OpenProject::Patches::Mail::SMTP
 end

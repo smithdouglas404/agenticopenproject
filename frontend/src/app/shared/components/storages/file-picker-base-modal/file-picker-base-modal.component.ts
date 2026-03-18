@@ -173,7 +173,7 @@ export abstract class FilePickerBaseModalComponent extends OpModalComponent impl
       return of('/');
     }
 
-    if (this.locals.projectFolderMode === 'automatic' && this.locals.projectFolderHref === null) {
+    if (this.locals.projectFolderMode === 'automatic' && !this.locals.projectFolderHref) {
       this.showAlert.next('managedFolderNotFound');
       return of('/');
     }

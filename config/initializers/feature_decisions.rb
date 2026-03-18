@@ -68,3 +68,8 @@ OpenProject::FeatureDecisions.add :jira_import,
 OpenProject::FeatureDecisions.add :scrum_projects,
                                   description: "Enables an overhauled version of the backlogs module to " \
                                                "support Scrum projects with a new sprint planning experience. "
+
+OpenProject::FeatureDecisions.add :semantic_work_package_ids,
+                                  description: "Enables the use of semantic work package IDs, " \
+                                               "in the schema <project identifier>-<sequence number>. " \
+                                               "See #71626 for details."

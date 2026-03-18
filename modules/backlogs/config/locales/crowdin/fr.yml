@@ -32,7 +32,7 @@ fr:
         name: "Nom du sprint"
         sharing: "Partage"
       project:
-        sprint_sharing: "Sprint sharing"
+        sprint_sharing: "Partage de sprint"
       sprint:
         duration: "Durée du sprint"
       work_package:
@@ -44,8 +44,8 @@ fr:
         project:
           attributes:
             sprint_sharing:
-              share_all_projects_already_taken: "cannot be set because project \"%{name}\" is already sharing with all projects."
-              share_all_projects_already_taken_anonymous: "cannot be set because another project is already sharing with all projects."
+              share_all_projects_already_taken: "ne peut pas être défini car le projet \"%{name}\" est déjà partagé avec tous les projets."
+              share_all_projects_already_taken_anonymous: "ne peut pas être défini parce qu'un autre projet est déjà partagé avec tous les projets."
         work_package:
           attributes:
             blocks_ids:
@@ -63,10 +63,10 @@ fr:
     any: "tout"
     column_width: "Largeur de colonne"
     definition_of_done: "Définition de Fait"
-    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
-    done_status: "Done status"
-    sharing_description: "This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing)."
-    sharing: "Sharing"
+    definition_of_done_caption: "Les work packages ayant ces statuts sont traités comme terminés dans les vues du carnet de commandes et dans les rapports."
+    done_status: "État terminé"
+    sharing_description: "Ce projet peut soit partager ses propres sprints, soit recevoir des sprints partagés, soit gérer les sprints de manière indépendante (sans partage)."
+    sharing: "Partage"
     impediment: "Obstacle"
     label_versions_default_fold_state: "Afficher les versions de manière repliée"
     caption_versions_default_fold_state: "Les versions ne seront pas développées par défaut lors de l'affichage des backlogs. Chacune devra être développée manuellement."
@@ -173,22 +173,22 @@ fr:
       backlog_sharing:
         options:
           no_sharing:
-            label: "Don't share"
-            caption: "Sprints created in this project will only be available and visible to this project. They will also not be visible to subprojects."
+            label: "Ne pas partager"
+            caption: "Les sprints créés dans ce projet ne seront disponibles et visibles que pour ce projet. Ils ne seront pas non plus visibles par les sous-projets."
           receive_shared:
-            label: "Receive shared sprints"
-            caption: "This project can only use sprints shared by other projects."
-            warning: "This project can only use sprints shared by other projects. Unused sprints created in this project in the past, will no longer be visible."
+            label: "Recevoir des sprints partagés"
+            caption: "Ce projet ne peut utiliser que des sprints partagés par d'autres projets."
+            warning: "Ce projet ne peut utiliser que des sprints partagés par d'autres projets. Les sprints inutilisés créés dans ce projet par le passé ne seront plus visibles."
           share_all_projects:
-            label: "All projects"
-            caption: "Sprints created in this project will be available to all projects in this instance. If you select this option, it will no longer be available to other projects."
-            disabled_caption: "Option not available since project \"%{name}\" is currently sharing with all projects and only one project can do this."
-            disabled_caption_anonymous: "Option not available since another project is currently sharing with all projects and only one project can do this."
+            label: "Tous les projets"
+            caption: "Les sprints créés dans ce projet seront disponibles pour tous les projets de cette instance. Si vous sélectionnez cette option, les sprints ne seront plus disponibles pour les autres projets."
+            disabled_caption: "L'option n'est pas disponible car le projet \"%{name}\" est actuellement partagé avec tous les projets et seul un projet peut le faire."
+            disabled_caption_anonymous: "Option non disponible car un autre projet est actuellement en train de partager avec tous les projets et seul un projet peut le faire."
           share_subprojects:
-            label: "Subprojects"
-            caption: "Sprints created in this project will be available to all subprojects of the current project."
-            info: "Sharing a sprint will share the name, status and the start and finish dates in all projects. These cannot be modified in projects that receive and use these sprints."
-        sprint_sharing: Share sprints
+            label: "Sous-projets"
+            caption: "Les sprints créés dans ce projet seront disponibles pour tous les sous-projets du projet en cours."
+            info: "Le partage d'un sprint entraîne le partage du nom, du statut et des dates de début et de fin dans tous les projets. Ceux-ci ne peuvent pas être modifiés dans les projets qui reçoivent et utilisent ces sprints."
+        sprint_sharing: Partager les sprints
   rb_burndown_charts:
     show:
       blankslate_title: "Aucune donnée disponible sur le burndown"

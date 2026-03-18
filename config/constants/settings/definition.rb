@@ -1321,6 +1321,15 @@ module Settings
       work_packages_bulk_request_limit: {
         default: 10
       },
+      work_packages_identifier: {
+        description: "Defines how work packages are identified in the UI (e.g. in links and titles). " \
+                     "The 'numeric' option uses the work package numerical ID, " \
+                     "while 'alphanumeric' uses the project identifier and the work package ID separated by a dash " \
+                     "(e.g. 'PROJA-123').",
+        format: :string,
+        allowed: -> { Setting::WorkPackageIdentifier::ALLOWED_VALUES },
+        default: "numeric"
+      },
       work_package_list_default_highlighted_attributes: {
         default: ["status", "priority", "due_date"],
         allowed: -> {
@@ -1398,6 +1407,14 @@ module Settings
       if persist_on_first_read && default.nil?
         raise ArgumentError, "Settings using persist_on_first_read need to have a default value"
       end
+    end
+
+    def env_name
+      self.class.env_name(self)
+    end
+
+    def possible_env_names
+      self.class.possible_env_names(self)
     end
 
     def derive_default(default)
@@ -1633,8 +1650,8 @@ module Settings
         env_var_hash_part
           .scan(/(?:[a-zA-Z0-9]|__)+/)
           .map do |seg|
-          unescape_underscores(seg.downcase)
-        end
+            unescape_underscores(seg.downcase)
+          end
       end
 
       # takes the path provided and transforms it into a deeply nested hash
@@ -1689,8 +1706,6 @@ module Settings
         ].compact
       end
 
-      public :possible_env_names
-
       def env_name_nested(definition)
         "#{ENV_PREFIX}#{definition.name.upcase.gsub('_', '__')}"
       end
@@ -1708,6 +1723,8 @@ module Settings
 
         definition.env_alias.upcase
       end
+
+      public :possible_env_names, :env_name
 
       ##
       # Extract the configuration value from the given environment variable

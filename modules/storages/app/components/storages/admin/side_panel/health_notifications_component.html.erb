@@ -59,6 +59,22 @@ See COPYRIGHT and LICENSE files for more details.
             end
           end
         end
+
+        notifications_container.with_row(mt: 2) do
+          if sync_pending?
+            render(Primer::OpenProject::InlineMessage.new(scheme: :success)) { t(".sync_queued") }
+          else
+            render(Primer::Beta::Button.new(
+              tag: :a,
+              scheme: :link,
+              data: { turbo_method: :post },
+              href: ampf_sync_now_admin_settings_storage_path(@storage)
+            )) do |button|
+              button.with_leading_visual_icon(icon: :sync)
+              t(".sync_now")
+            end
+          end
+        end
       end
     end
   end

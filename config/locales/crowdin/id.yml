@@ -107,9 +107,8 @@ id:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Setiap tindakan pengguna (mis. memperbarui paket kerja dua kali) digabungkan menjadi satu tindakan jika perbedaan usianya kurang dari rentang waktu yang ditentukan.  Mereka akan ditampilkan sebagai tindakan tunggal dalam aplikasi.  Ini juga akan menunda pemberitahuan dengan jumlah waktu yang sama sehingga mengurangi jumlah email yang dikirim dan juga akan memengaruhi penundaan %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -4149,7 +4148,7 @@ id:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Project tidak dihapus."
   notice_project_not_found: "Project not found."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Sambungan berhasil."
   notice_successful_create: "Berhasil dibuat."
   notice_successful_delete: "Berhasil dihapus."

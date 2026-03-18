@@ -107,9 +107,8 @@ tr:
         trial: "Deneme"
     jemalloc_allocator: Jemalloc bellek ayırıcı
     journal_aggregation:
-      explanation:
-        text: "Bir kullanıcının bireysel eylemleri (örneğin, bir iş paketini iki kez güncelleme), yaş farkı belirtilen zaman aralığından azsa tek bir eylemde toplanır. Uygulama içinde tek bir eylem olarak görüntülenecektir. Bu aynı zamanda gönderilen e-posta sayısını azaltarak bildirimleri aynı süre kadar geciktirecek ve ayrıca %{webhook_link} gecikmesini etkileyecektir."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -4209,7 +4208,7 @@ tr:
   notice_parent_item_not_found: "Üst öğe bulunamadı."
   notice_project_not_deleted: "Proje silinemedi."
   notice_project_not_found: "Proje bulunamadı."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Bağlantı başarılı."
   notice_successful_create: "Oluşturma başarılı."
   notice_successful_delete: "Silme başarılı."

@@ -163,6 +163,12 @@ module Versions
         end
       end
 
+      f.hidden(
+        name: "project_id",
+        value: project.id,
+        scope_name_to_model: false
+      )
+
       render_custom_fields(form: f)
 
       f.submit(

@@ -78,7 +78,7 @@ cs:
         description: "The connection to the real-time text collaboration server has been restored."
       tabs: "Document tabs"
     index_page:
-      name: "Název:"
+      name: "Název"
       type: "Typ"
       updated_at: "Last edited"
       label_legacy: "Legacy"
