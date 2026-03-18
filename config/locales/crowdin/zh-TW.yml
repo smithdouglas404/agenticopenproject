@@ -4159,7 +4159,7 @@ zh-TW:
   notice_parent_item_not_found: "未找到父項目。"
   notice_project_not_deleted: "專案沒有被刪除"
   notice_project_not_found: "未找到專案。"
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "連接成功"
   notice_successful_create: "建立成功"
   notice_successful_delete: "刪除成功"

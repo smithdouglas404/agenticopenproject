@@ -4213,7 +4213,7 @@ de:
   notice_parent_item_not_found: "Übergeordnetes Element nicht gefunden."
   notice_project_not_deleted: "Das Projekt wurde nicht gelöscht."
   notice_project_not_found: "Projekt nicht gefunden."
-  notice_smtp_address_unsafe: "Die SMTP-Adresse %{address} ist nicht sicher. Bitte fügen Sie sie zu OPENPROJECT_SSRF_PROTECTION_ALLOWLIST hinzu."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Verbindung erfolgreich."
   notice_successful_create: "Erfolgreich angelegt."
   notice_successful_delete: "Erfolgreich gelöscht."

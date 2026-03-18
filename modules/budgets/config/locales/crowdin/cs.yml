@@ -71,9 +71,9 @@ cs:
         total_actual_costs: "Total actual costs"
         total_planned_budget: "Total planned budget"
       budget_by_cost_type:
-        title: "Budget by cost type"
+        title: "Rozpočet podle typu nákladů"
         blankslate:
-          heading: "Start project controlling"
+          heading: "Zahájit projektový controlling"
           description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
         blankslate_zero:
           heading: "Budget details missing"

@@ -4164,7 +4164,7 @@ ko:
   notice_parent_item_not_found: "부모 항목을 찾을 수 없습니다."
   notice_project_not_deleted: "프로젝트가 삭제되지 않았습니다."
   notice_project_not_found: "프로젝트를 찾을 수 없습니다."
-  notice_smtp_address_unsafe: "SMTP 주소 %{address}은(는) 안전하지 않습니다. OPENPROJECT_SSRF_PROTECTION_ALLOWLIST에 추가하세요."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "연결에 성공했습니다."
   notice_successful_create: "생성에 성공했습니다."
   notice_successful_delete: "삭제에 성공했습니다."

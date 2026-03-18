@@ -4216,7 +4216,7 @@ nl:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Het project is niet verwijderd."
   notice_project_not_found: "Project niet gevonden."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Geslaagde verbinding."
   notice_successful_create: "Aanmaak geslaagd."
   notice_successful_delete: "Verwijdering geslaagd."

@@ -4218,7 +4218,7 @@ it:
   notice_parent_item_not_found: "L'elemento genitore non è stato trovato."
   notice_project_not_deleted: "Il progetto non è stato eliminato."
   notice_project_not_found: "Progetto non trovato."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Connesso con successo."
   notice_successful_create: "Creato con successo."
   notice_successful_delete: "Cancellato con successo."

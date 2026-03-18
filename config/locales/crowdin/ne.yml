@@ -4221,7 +4221,7 @@ ne:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "The project wasn't deleted."
   notice_project_not_found: "Project not found."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Successful connection."
   notice_successful_create: "Successful creation."
   notice_successful_delete: "Successful deletion."

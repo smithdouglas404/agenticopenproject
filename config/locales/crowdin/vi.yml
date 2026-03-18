@@ -4162,7 +4162,7 @@ vi:
   notice_parent_item_not_found: "Không tìm thấy mục gốc."
   notice_project_not_deleted: "Dự án không bị xóa."
   notice_project_not_found: "Dự án không được tìm thấy."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Kết nối thành công."
   notice_successful_create: "Sáng tạo thành công."
   notice_successful_delete: "Xóa thành công."

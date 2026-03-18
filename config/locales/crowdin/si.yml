@@ -4221,7 +4221,7 @@ si:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "ව්යාපෘතිය මකා දැමුවේ නැත."
   notice_project_not_found: "Project not found."
-  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "සාර්ථක සම්බන්ධතාවයක්."
   notice_successful_create: "සාර්ථක නිර්මාණය."
   notice_successful_delete: "සාර්ථක මකාදැමීම."
