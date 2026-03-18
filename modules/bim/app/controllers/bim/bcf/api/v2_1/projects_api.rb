@@ -43,6 +43,7 @@ module Bim::Bcf::API::V2_1
 
       route_param :id do
         helpers ::API::Helpers::HistoricalIdentifierRedirect
+        helpers ::API::Bim::Utilities::PathHelper
 
         after_validation do
           @project = visible_projects
