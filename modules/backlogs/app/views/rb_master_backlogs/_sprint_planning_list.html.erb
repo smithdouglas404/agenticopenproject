@@ -43,10 +43,17 @@ See COPYRIGHT and LICENSE files for more details.
     <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop">
       <div id="owner_backlogs_container" class="op-sprint-planning-lists">
         <%=
-          # `margin bottom` of 8 is needed to push the content down enough so that it is level
-          # with the "Sprints" content section:
-          render(Primer::Beta::Subhead.new(hide_border: true, mb: 8)) do |head|
+          render(Primer::Beta::Subhead.new(hide_border: true)) do |head|
             head.with_heading(tag: :h3, font_weight: :bold, size: :medium) { t(:label_backlog) }
+
+            if allow_sprint_creation?(@project)
+              # Ugly hack:
+              # This button will not be rendered, but still takes up space to push the left side down a bit.
+              # Remove as soon as the `+ Sprint` button moves from the Subhead into a SubHeader.
+              head.with_actions do
+                render(Primer::Beta::Button.new(tag: :a, visibility: :hidden)) { "spacer" }
+              end
+            end
           end
         %>
 
@@ -56,11 +63,27 @@ See COPYRIGHT and LICENSE files for more details.
         <%=
           render(Primer::Beta::Subhead.new(hide_border: true)) do |head|
             head.with_heading(tag: :h3, font_weight: :bold, size: :medium) { Agile::Sprint.human_model_name.pluralize }
+
+            if allow_sprint_creation?(@project)
+              head.with_actions do
+                render Primer::Beta::Button.new(
+                  tag: :a,
+                  label: Agile::Sprint.human_model_name,
+                  href: new_dialog_project_sprints_path(@project),
+                  data: {
+                    controller: "async-dialog",
+                    test_selector: "op-sprints--new-sprint-button"
+                  }
+                ) do |button|
+                  button.with_leading_visual_icon(icon: :plus)
+                  Agile::Sprint.human_model_name
+                end
+              end
+            end
           end
         %>
 
-        <%=
-          render(Primer::OpenProject::SubHeader.new) do |subheader|
+        <%#= render(Primer::OpenProject::SubHeader.new) do |subheader|
             if allow_sprint_creation?(@project)
               subheader.with_action_button(
                 leading_icon: :plus,
@@ -75,8 +98,7 @@ See COPYRIGHT and LICENSE files for more details.
                 Agile::Sprint.human_model_name
               end
             end
-          end
-        %>
+          end %>
 
         <%= render(Backlogs::SprintComponent.with_collection(@sprints)) %>
       </div>
