@@ -37,7 +37,7 @@ class HourlyRatesController < ApplicationController
   include HourlyRatesHelper
 
   before_action :find_optional_project, only: %i[edit update]
-  before_action :find_project, only: %i[show]
+  before_action :find_project_by_project_id, only: %i[show]
   before_action :find_user, only: %i[show edit update]
 
   # #show, #edit and #update have their own authorization
@@ -138,10 +138,6 @@ class HourlyRatesController < ApplicationController
     else
       user.default_rates.delete_all
     end
-  end
-
-  def find_project
-    @project = Project.visible.find(params[:project_id])
   end
 
   def find_user

@@ -32,7 +32,7 @@ class CategoriesController < ApplicationController
   menu_item :settings_categories
 
   before_action :find_category_and_project, except: %i[new create]
-  before_action :find_project, only: %i[new create]
+  before_action :find_project_by_project_id, only: %i[new create]
   before_action :authorize
   redirect_historical_project_identifier param_key: :project_id, only: %i[new create]
 
@@ -84,9 +84,5 @@ class CategoriesController < ApplicationController
   def find_category_and_project
     @category = Category.find(params[:id])
     @project = @category.project
-  end
-
-  def find_project
-    @project = Project.visible.find(params[:project_id])
   end
 end

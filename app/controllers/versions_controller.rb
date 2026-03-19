@@ -33,7 +33,7 @@ class VersionsController < ApplicationController
   menu_item :settings_versions
 
   before_action :find_version, except: %i[index new create close_completed]
-  before_action :find_project, only: %i[index new create close_completed]
+  before_action :find_project_by_project_id, only: %i[index new create close_completed]
   before_action :authorize
   redirect_historical_project_identifier param_key: :project_id, only: %i[index new create close_completed]
 
@@ -136,10 +136,6 @@ class VersionsController < ApplicationController
 
   def redirect_back_or_version_settings
     redirect_back_or_default(project_settings_versions_path(@project))
-  end
-
-  def find_project
-    @project = Project.visible.find(params[:project_id])
   end
 
   def retrieve_selected_type_ids(selectable_types, default_types = nil)
