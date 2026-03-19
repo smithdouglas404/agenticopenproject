@@ -43,7 +43,7 @@ RSpec.describe Projects::Settings::EditableIdentifierForm, type: :forms do
 
     it "renders an editable field with the legacy caption" do
       expect(page).to have_field "Identifier", with: "my-project", disabled: false
-      expect(page).to have_text I18n.t("projects.settings.change_identifier_format_hint_legacy")
+      expect(page).to have_text "Only lowercase letters (a–z), numbers, dashes or underscores."
     end
   end
 
@@ -56,7 +56,7 @@ RSpec.describe Projects::Settings::EditableIdentifierForm, type: :forms do
 
     it "renders an editable field with the semantic caption" do
       expect(page).to have_field "Identifier", with: "my-project", disabled: false
-      expect(page).to have_text I18n.t("projects.settings.change_identifier_format_hint_semantic")
+      expect(page).to have_text "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter."
     end
   end
 
@@ -69,7 +69,7 @@ RSpec.describe Projects::Settings::EditableIdentifierForm, type: :forms do
 
     it "renders an editable field with the legacy caption" do
       expect(page).to have_field "Identifier", with: "my-project", disabled: false
-      expect(page).to have_text I18n.t("projects.settings.change_identifier_format_hint_legacy")
+      expect(page).to have_text "Only lowercase letters (a–z), numbers, dashes or underscores."
     end
   end
 end
