@@ -34,6 +34,7 @@ module API
           include WorkPackage::CustomActioned
 
           def apply(work_package)
+            custom_actions = ::WorkPackage.custom_actions(work_package, User.current)
             applicable_actions = custom_actions.select do |action|
               action.conditions_fulfilled?(work_package, User.current)
             end
@@ -46,10 +47,6 @@ module API
           end
 
           private
-
-          def custom_actions
-            ::WorkPackage.custom_actions(workpackages, User.current)
-          end
 
           module CustomActionAccessor
             extend ActiveSupport::Concern

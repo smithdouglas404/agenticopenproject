@@ -94,11 +94,7 @@ class CustomActions::Conditions::CustomField < CustomActions::Conditions::Base
     end
   end
 
-  def self.custom_action_scope(_items, _user)
-    raise "Mustn't use that. Something gone really bad."
-  end
-
-  def self.custom_fields_with(items)
+  def self.custom_action_scope(items, _user)
     items = Array.wrap(items)
     return CustomAction.all if items.empty?
 
@@ -130,13 +126,6 @@ class CustomActions::Conditions::CustomField < CustomActions::Conditions::Base
         )
       )
     SQL
-  end
-
-  def self.custom_field_values(items)
-    Array.wrap(items)
-      .flat_map(&:custom_field_values)
-      .filter_map { it.value.to_s if it.custom_field_id == custom_field.id }
-      .uniq
   end
 
   def human_name

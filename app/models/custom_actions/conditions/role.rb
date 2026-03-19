@@ -41,6 +41,11 @@ class CustomActions::Conditions::Role < CustomActions::Conditions::Base
       :role
     end
 
+    def custom_action_scope(work_packages, user)
+      role_ids = roles_in_project(work_packages, user).map(&:id)
+      build_query(role_ids)
+    end
+
     def roles_in_project(work_packages, user)
       with_request_store(projects_of(work_packages)) do |projects|
         projects.filter_map do |project|
@@ -50,12 +55,6 @@ class CustomActions::Conditions::Role < CustomActions::Conditions::Base
     end
 
     private
-
-    def custom_action_scope_has_current(work_packages, user)
-      CustomAction
-        .includes(association_key)
-        .where(habtm_table => { key_id => roles_in_project(work_packages, user) })
-    end
 
     def projects_of(work_packages)
       # Using this if/else instead of Array(work_packages)
