@@ -212,6 +212,7 @@ OpenProject supports the latest versions of the major browsers.
 
 #### Nextcloud Server
 
+* [Nextcloud 30](https://nextcloud.com/changelog/#latest30)
 * [Nextcloud 31](https://nextcloud.com/changelog/#latest31)
 * [Nextcloud 32](https://nextcloud.com/changelog/#latest32)
 * [Nextcloud 33](https://nextcloud.com/changelog/#latest33)
