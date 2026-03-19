@@ -664,9 +664,11 @@ RSpec.describe Project do
   describe ".suggest_identifier" do
     context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
       it "delegates to ProjectIdentifierSuggestionGenerator" do
-        expect(WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
+        allow(WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
           .to receive(:suggest_identifier).with("My Project").and_return("MP")
         expect(described_class.suggest_identifier("My Project")).to eq("MP")
+        expect(WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
+          .to have_received(:suggest_identifier).with("My Project")
       end
     end
 

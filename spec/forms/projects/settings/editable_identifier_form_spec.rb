@@ -56,7 +56,8 @@ RSpec.describe Projects::Settings::EditableIdentifierForm, type: :forms do
 
     it "renders an editable field with the semantic caption" do
       expect(page).to have_field "Identifier", with: "my-project", disabled: false
-      expect(page).to have_text "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter."
+      expect(page).to have_text "Only uppercase letters (A–Z), numbers or underscores. " \
+                                "Max 10 characters. Must start with a letter."
     end
   end
 
