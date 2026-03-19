@@ -75,8 +75,7 @@ export default class extends ApplicationController {
       useDebounce(this, { wait: this.debounceValue });
 
       this.nameTarget.addEventListener('blur', () => {
-        const name = this.nameTarget.value.trim();
-        if (name) void this.fetchSuggestion(name);
+        void this.fetchSuggestion();
       }, { signal });
     }
   }
@@ -101,8 +100,11 @@ export default class extends ApplicationController {
     }
   }
 
-  private async fetchSuggestion(name:string):Promise<void> {
-    if (!this.urlValue || !this.hasIdentifierTarget) return;
+  private async fetchSuggestion():Promise<void> {
+    if (!this.urlValue || !this.hasIdentifierTarget || !this.hasNameTarget) return;
+
+    const name = this.nameTarget.value.trim();
+    if (!name) return;
 
     this.identifierTarget.readOnly = true;
     this.identifierTarget.placeholder = I18n.t('js.projects.identifier_suggestion.loading');
