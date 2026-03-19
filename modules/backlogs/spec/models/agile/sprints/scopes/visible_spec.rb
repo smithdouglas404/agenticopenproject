@@ -71,7 +71,7 @@ RSpec.describe Agile::Sprints::Scopes::Visible do
     end
   end
 
-  context "for a user with view_sprnts in both projects" do
+  context "for a user with view_sprints in both projects" do
     current_user { user_with_permission_in_both }
 
     it "returns sprints from both projects" do

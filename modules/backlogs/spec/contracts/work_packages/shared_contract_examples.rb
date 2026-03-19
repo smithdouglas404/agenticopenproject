@@ -161,7 +161,7 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
       # Otherwise, the production would need to have a superfluous check.
       let(:effective_permissions) { permissions - [:manage_sprint_items] }
 
-      it "includes non of the backlogs attributes", :aggregate_failures do
+      it "includes none of the backlogs attributes", :aggregate_failures do
         expect(contract.writable_attributes).not_to include("story_points", "sprint", "position")
       end
     end

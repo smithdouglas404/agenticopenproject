@@ -455,7 +455,7 @@ RSpec.describe WorkPackages::UpdateContract do
   end
 
   describe ".add_comments_allowed?" do
-    context "with the user having manage_subtasks" do
+    context "with the user having add_work_package_comments" do
       let(:permissions) { [:add_work_package_comments] }
 
       it "is allowed" do
