@@ -8,11 +8,14 @@
 #
 # Usage:
 #   it_behaves_like "redirects GET requests using a historical project identifier",
-#                   :index, { project_id: :injected_by_shared_example }
+#                   :index
 #
 #   # With extra required params (e.g. forum_id):
 #   it_behaves_like "redirects GET requests using a historical project identifier",
 #                   :index, { forum_id: -> { forum.id } }
+#
+#   Attention: If you manually set a param for the project id it will be overwritten
+#              by the example.
 #
 # The param key for the project is always :project_id.
 # To test with :id instead, use the "...via :id" variant below.
@@ -23,7 +26,7 @@ RSpec.shared_examples "redirects GET requests using a historical project identif
 
   it "redirects to the same action with the current identifier (301)" do
     resolved = extra_params.transform_values { |v| v.respond_to?(:call) ? instance_exec(&v) : v }
-    get action, params: { project_id: old_identifier }.merge(resolved)
+    get action, params: { project_id: old_identifier }.reverse_merge(resolved)
     expect(response).to have_http_status(:moved_permanently)
     expect(response.location).to include("current-identifier")
   end
@@ -37,7 +40,7 @@ RSpec.shared_examples "redirects GET requests using a historical project :id" do
 
   it "redirects to the same action with the current identifier (301)" do
     resolved = extra_params.transform_values { |v| v.respond_to?(:call) ? instance_exec(&v) : v }
-    get action, params: { id: old_identifier }.merge(resolved)
+    get action, params: { id: old_identifier }.reverse_merge(resolved)
     expect(response).to have_http_status(:moved_permanently)
     expect(response.location).to include("current-identifier")
   end
