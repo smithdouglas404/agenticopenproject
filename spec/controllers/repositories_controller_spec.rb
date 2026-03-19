@@ -348,6 +348,7 @@ RSpec.describe RepositoriesController do
   describe "historic identifier redirect" do
     let(:project) { create(:project) }
     let(:repository) { create(:repository_subversion, project:) }
+    let(:permissions) { [:browse_repository] }
 
     before do
       allow(User).to receive(:current).and_return(user)
