@@ -174,15 +174,6 @@ RSpec.describe RbSprintsController do
     end
 
     describe "GET #new_dialog" do
-      context "with the feature flag inactive" do
-        it "responds with forbidden" do
-          get :new_dialog, params: { project_id: project.id }, format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-        end
-      end
-
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         it "responds with success", :aggregate_failures do
           get :new_dialog, params: { project_id: project.id }, format: :turbo_stream
@@ -209,15 +200,6 @@ RSpec.describe RbSprintsController do
     describe "GET #edit_dialog" do
       let!(:sprint) { create(:agile_sprint, project:) }
 
-      context "with the feature flag inactive" do
-        it "responds with forbidden" do
-          get :edit_dialog, params: { project_id: project.id, id: sprint.id }, format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-        end
-      end
-
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         it "responds with success", :aggregate_failures do
           get :edit_dialog, params: { project_id: project.id, id: sprint.id }, format: :turbo_stream
@@ -243,15 +225,6 @@ RSpec.describe RbSprintsController do
     end
 
     describe "POST #create" do
-      context "with the feature flag inactive" do
-        it "responds with forbidden" do
-          post :create, params: { project_id: project.id }, format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-        end
-      end
-
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         let(:params) do
           {
@@ -287,15 +260,6 @@ RSpec.describe RbSprintsController do
 
     describe "PUT #update_agile_sprint" do
       let!(:sprint) { create(:agile_sprint, name: "Original sprint name", project:) }
-
-      context "with the feature flag inactive" do
-        it "responds with forbidden" do
-          put :update_agile_sprint, params: { id: sprint.id, project_id: project.id }, format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-        end
-      end
 
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         let(:params) do
@@ -342,15 +306,6 @@ RSpec.describe RbSprintsController do
           .to receive(:new)
           .with(user:, model: sprint)
           .and_return(service)
-      end
-
-      context "with the feature flag inactive" do
-        it "responds with not found" do
-          patch :start, params: request_params, format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status(:not_found)
-        end
       end
 
       context "with the feature flag active", with_flag: { scrum_projects: true } do
@@ -473,15 +428,6 @@ RSpec.describe RbSprintsController do
           .and_return(service)
       end
 
-      context "with the feature flag inactive" do
-        it "responds with not found" do
-          patch :finish, params: request_params
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status(:not_found)
-        end
-      end
-
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         it "finishes the sprint and redirects to the backlog", :aggregate_failures do
           patch :finish, params: request_params
@@ -542,15 +488,6 @@ RSpec.describe RbSprintsController do
     end
 
     describe "GET #refresh_form" do
-      context "with the feature flag inactive" do
-        it "responds with forbidden" do
-          get :refresh_form, params: { project_id: project.id }, format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-        end
-      end
-
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         let(:params) do
           {
