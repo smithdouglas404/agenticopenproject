@@ -35,16 +35,22 @@ import { filterSuggestionItems } from '@blocknote/core/extensions';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { initializeOpBlockNoteExtensions, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
+import {
+  initializeOpBlockNoteExtensions,
+  openProjectWorkPackageBlockSpec,
+  inlineWorkPackageSpec,
+  inlineWorkPackageSlashMenu,
+} from 'op-blocknote-extensions';
 import { useCallback, useEffect, useMemo } from 'react';
 import * as Y from 'yjs';
 import { useBlockNoteAttachments } from '../hooks/useBlockNoteAttachments';
 import { useBlockNoteLocale } from '../hooks/useBlockNoteLocale';
 import { useOpTheme } from '../hooks/useOpTheme';
+import { useInlineWpEvents } from '../hooks/useInlineWpEvents';
 
 interface CollaborativeUser {
-  name:string;
-  color:string;
+  name: string;
+  color: string;
 }
 
 export interface OpBlockNoteEditorProps {
@@ -61,6 +67,9 @@ export interface OpBlockNoteEditorProps {
 const schema = BlockNoteSchema.create().extend({
   blockSpecs: {
     openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
+  },
+  inlineContentSpecs:{
+    inlineWorkPackage:inlineWorkPackageSpec,
   },
 });
 
@@ -113,12 +122,14 @@ export function OpBlockNoteEditor({
   }, [hocuspocusProvider, doc, activeUser, localeDictionary, attachmentsEnabled, uploadFile, captureExternalLinks]);
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
-  type EditorType = typeof editor;
+
+  useInlineWpEvents(editor);
+
   const theme = useOpTheme();
 
-  const getCustomSlashMenuItems = useCallback((editorInstance:EditorType) => [
+  const getCustomSlashMenuItems = useCallback((editorInstance:typeof editor) => [
     ...getDefaultReactSlashMenuItems(editorInstance),
-    openProjectWorkPackageSlashMenu(editorInstance),
+    inlineWorkPackageSlashMenu(editorInstance),
   ], []);
 
   return (
