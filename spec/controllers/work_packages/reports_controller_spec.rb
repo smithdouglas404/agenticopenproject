@@ -183,4 +183,10 @@ RSpec.describe WorkPackages::ReportsController do
       end
     end
   end
+
+  describe "historic identifier redirect" do
+    before { allow(User).to receive(:current).and_return user }
+
+    it_behaves_like "redirects GET requests using a historical project identifier", :report
+  end
 end

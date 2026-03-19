@@ -36,6 +36,7 @@ class WorkPackages::DialogsController < ApplicationController
   before_action :build_work_package, only: %i[new]
 
   authorize_with_permission :add_work_packages
+  redirect_historical_project_identifier param_key: :project_id
 
   def new
     respond_with_dialog WorkPackages::Dialogs::CreateDialogComponent.new(work_package: @work_package, project: @project)

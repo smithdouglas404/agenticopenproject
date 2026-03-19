@@ -35,6 +35,7 @@ class ForumsController < ApplicationController
   before_action :find_forum, only: %i[show edit update move destroy]
 
   before_action :authorize
+  redirect_historical_project_identifier param_key: :project_id
 
   accept_key_auth :show
 

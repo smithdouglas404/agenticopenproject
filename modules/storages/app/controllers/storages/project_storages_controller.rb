@@ -37,6 +37,7 @@ class Storages::ProjectStoragesController < ApplicationController
   before_action :find_project_by_project_id
   before_action :find_project_storage
   before_action :render_403, unless: -> { User.current.allowed_in_project?(:view_file_links, @project) }
+  redirect_historical_project_identifier param_key: :project_id
   no_authorization_required! :open
 
   before_action :ensure_remote_identity, only: :open

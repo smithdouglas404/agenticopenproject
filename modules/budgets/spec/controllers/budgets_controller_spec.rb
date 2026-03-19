@@ -199,4 +199,13 @@ RSpec.describe BudgetsController do
       end
     end
   end
+
+  describe "historic identifier redirect" do
+    let(:project) { create(:project) }
+    let(:user) { create(:user, member_with_permissions: { project => %i[view_budgets] }) }
+
+    before { allow(User).to receive(:current).and_return user }
+
+    it_behaves_like "redirects GET requests using a historical project identifier", :new
+  end
 end

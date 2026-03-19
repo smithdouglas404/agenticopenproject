@@ -31,6 +31,7 @@
 class Projects::TemplatedController < ApplicationController
   before_action :find_project_by_project_id
   before_action :authorize
+  redirect_historical_project_identifier param_key: :project_id
 
   def create
     change_templated_action(true)

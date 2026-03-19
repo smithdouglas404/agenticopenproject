@@ -39,6 +39,7 @@ class DocumentsController < ApplicationController
   before_action :find_project_by_project_id, only: %i[index search new create]
   before_action :find_document, except: %i[index search new create]
   before_action :authorize
+  redirect_historical_project_identifier param_key: :project_id, only: %i[index search new create]
 
   def index
     @documents = list_documents_query

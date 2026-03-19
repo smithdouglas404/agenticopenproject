@@ -34,6 +34,7 @@ class Projects::StatusController < ApplicationController
 
   before_action :find_project_by_project_id
   before_action :authorize
+  redirect_historical_project_identifier param_key: :project_id
 
   def update
     change_status_action(params.fetch(:status_code).presence)

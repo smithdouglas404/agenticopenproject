@@ -33,6 +33,7 @@ module Documents
     before_action :find_project_by_project_id
     before_action :find_document
     before_action :authorize
+    redirect_historical_project_identifier param_key: :project_id
 
     def create
       token_result = Documents::OAuth::TokenWithMetadataService.new(

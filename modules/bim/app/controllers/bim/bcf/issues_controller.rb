@@ -33,6 +33,7 @@ module Bim
 
       before_action :find_project_by_project_id
       before_action :authorize
+      redirect_historical_project_identifier param_key: :project_id
       before_action :import_canceled?
 
       before_action :check_file_param, only: %i[prepare_import]

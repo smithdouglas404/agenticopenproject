@@ -41,6 +41,8 @@ class BudgetsController < ApplicationController
     :update_material_budget_item,
     :update_labor_budget_item
   ]
+  redirect_historical_project_identifier param_key: :project_id,
+                                         only: %i[new create update_material_budget_item update_labor_budget_item]
 
   no_authorization_required! :update_material_budget_item,
                              :update_labor_budget_item

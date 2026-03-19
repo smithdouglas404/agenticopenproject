@@ -29,6 +29,7 @@ module ::Boards
   class MenusController < ApplicationController
     before_action :find_project_by_project_id,
                   :authorize
+    redirect_historical_project_identifier param_key: :project_id
 
     def show
       @submenu_menu_items = ::Boards::Menu.new(project: @project, params:).menu_items

@@ -34,6 +34,7 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
   before_action :find_project_by_project_id
   before_action :find_project_custom_field
   before_action :authorize
+  redirect_historical_project_identifier param_key: :project_id
 
   def show
     respond_with_dialog(

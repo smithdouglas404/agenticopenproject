@@ -34,6 +34,7 @@ class MembersController < ApplicationController
   before_action :find_project_by_project_id
   before_action :find_member, except: %i[index create autocomplete_for_member destroy_by_principal]
   before_action :authorize
+  redirect_historical_project_identifier param_key: :project_id
 
   def index
     set_index_data!

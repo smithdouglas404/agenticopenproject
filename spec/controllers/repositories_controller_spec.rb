@@ -344,4 +344,16 @@ RSpec.describe RepositoriesController do
       end
     end
   end
+
+  describe "historic identifier redirect" do
+    let(:project) { create(:project) }
+    let(:repository) { create(:repository_subversion, project:) }
+
+    before do
+      allow(User).to receive(:current).and_return(user)
+      allow(Setting).to receive(:enabled_scm).and_return(["subversion"])
+    end
+
+    it_behaves_like "redirects GET requests using a historical project identifier", :show
+  end
 end

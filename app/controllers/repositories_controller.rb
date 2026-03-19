@@ -48,6 +48,7 @@ class RepositoriesController < ApplicationController
 
   before_action :find_project_by_project_id
   before_action :authorize
+  redirect_historical_project_identifier param_key: :project_id
   before_action :find_repository, except: %i[update create destroy destroy_info]
   accept_key_auth :revisions
 

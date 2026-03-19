@@ -31,6 +31,7 @@
 class WorkPackages::ReportsController < ApplicationController
   menu_item :work_packages
   before_action :find_project_by_project_id, :authorize
+  redirect_historical_project_identifier param_key: :project_id
 
   def report
     reports_service = Reports::ReportsService.new(@project)
