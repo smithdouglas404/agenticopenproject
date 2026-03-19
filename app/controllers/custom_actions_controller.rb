@@ -104,8 +104,8 @@ class CustomActionsController < ApplicationController
   end
 
   def remove_action_section
-    key = params[:key].to_s
-    section_id = "action_section_#{key.sub(/\Aaction_/, '')}"
+    key = params[:key].to_s.delete_prefix("action_")
+    section_id = "action_section_#{key}"
 
     respond_to do |format|
       format.turbo_stream do
@@ -117,8 +117,8 @@ class CustomActionsController < ApplicationController
   end
 
   def remove_condition_section
-    key = params[:key].to_s
-    section_id = "condition_section_#{key.sub(/\Acondition_/, '')}"
+    key = params[:key].to_s.delete_prefix("condition_")
+    section_id = "condition_section_#{key}"
 
     respond_to do |format|
       format.turbo_stream do
