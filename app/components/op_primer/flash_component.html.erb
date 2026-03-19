@@ -36,7 +36,9 @@ See COPYRIGHT and LICENSE files for more details.
         turbo_temporary: true,
         "flash-target": "item",
         autohide: @autohide,
-        unique_key: @unique_key
+        unique_key: @unique_key,
+        flash_type: @flash_type,
+        announcement: strip_tags(trimmed_content.to_s).squish
       }.compact
     )
   ) do

@@ -107,12 +107,14 @@ module OpTurbo
       turbo_streams << target_component.insert_as_turbo_stream(component:, view_context:, action: :before)
     end
 
-    def render_success_flash_message_via_turbo_stream(**)
-      render_flash_message_via_turbo_stream(**, scheme: :success)
+    def render_success_flash_message_via_turbo_stream(message:, **options)
+      render_flash_message_via_turbo_stream(message:, flash_type: :success, scheme: :success, **options)
+      render_live_region_update_message(message:, politeness: "polite")
     end
 
-    def render_error_flash_message_via_turbo_stream(**)
-      render_flash_message_via_turbo_stream(**, scheme: :danger, icon: :stop)
+    def render_error_flash_message_via_turbo_stream(message:, **options)
+      render_flash_message_via_turbo_stream(message:, flash_type: :error, scheme: :danger, icon: :stop, **options)
+      render_live_region_update_message(message:, politeness: "assertive")
     end
 
     def render_live_region_update_message(message:, politeness: "polite", delay: nil)
@@ -121,10 +123,10 @@ module OpTurbo
         .render_in(view_context)
     end
 
-    def render_flash_message_via_turbo_stream(message:, component: OpPrimer::FlashComponent, **)
+    def render_flash_message_via_turbo_stream(message:, component: OpPrimer::FlashComponent, flash_type: nil, **options)
       return if message.blank?
 
-      instance = component.new(**).with_content(message)
+      instance = component.new(flash_type:, **options).with_content(message)
       turbo_streams << instance.render_as_turbo_stream(view_context:, action: :flash)
     end
 

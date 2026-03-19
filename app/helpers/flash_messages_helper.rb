@@ -28,7 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 #
-
 module FlashMessagesHelper
   extend ActiveSupport::Concern
 
@@ -40,7 +39,7 @@ module FlashMessagesHelper
   #
   # @return [String] an HTML-safe string.
   def render_flash_messages
-    safe_join build_flash_components.map { it.render_in(self) }, "\n"
+    safe_join(build_flash_entries.map { |entry| entry[:component].render_in(self) }, "\n")
   end
 
   # Renders flash messages wrapped in `<turbo-stream>` tags, suitable for
@@ -48,7 +47,14 @@ module FlashMessagesHelper
   #
   # @return [String] an HTML-safe string.
   def render_flash_messages_as_turbo_streams
-    safe_join(build_flash_components.map { it.render_as_turbo_stream(view_context: self, action: :flash) })
+    streams = build_flash_entries.flat_map do |entry|
+      [
+        entry[:component].render_as_turbo_stream(view_context: self, action: :flash),
+        render_live_region_stream(entry[:announcement], politeness: entry[:politeness])
+      ].compact
+    end
+
+    safe_join(streams)
   end
 
   def render_flash_modal
@@ -62,11 +68,20 @@ module FlashMessagesHelper
 
   private
 
-  def build_flash_components
+  def build_flash_entries
     flash
       .reject { |k, _| k.start_with? "_" }
       .reject { |k, _| k.to_s == "op_modal" }
-      .map { |k, v| build_flash_component(k.to_sym, v) }
+      .map do |key, value|
+      type = key.to_sym
+
+      {
+        type:,
+        politeness: flash_politeness(type),
+        announcement: flash_announcement_text(value),
+        component: build_flash_component(type, value)
+      }
+    end
   end
 
   def mapped_flash_type(type)
@@ -82,6 +97,15 @@ module FlashMessagesHelper
     end
   end
 
+  def flash_politeness(type)
+    case type
+    when :error, :danger
+      "assertive"
+    else
+      "polite"
+    end
+  end
+
   def build_flash_component(type, *args)
     options = args.extract_options!
     content = args.first || options[:message]
@@ -89,12 +113,38 @@ module FlashMessagesHelper
     action_button_arguments = options.delete(:action_button_arguments)
     action_button_content = options.delete(:action_button_content)
 
-    OpPrimer::FlashComponent.new(scheme: mapped_flash_type(type), **options).tap do |component|
+    mapped_type = mapped_flash_type(type)
+
+    OpPrimer::FlashComponent.new(
+      scheme: mapped_type,
+      flash_type: type,
+      **options
+    ).tap do |component|
       component.with_content(join_flash_messages(content))
 
       if action_button_arguments.present?
         component.with_action_button(**action_button_arguments) { action_button_content }
       end
     end
+  end
+
+  def flash_announcement_text(value)
+    content =
+      if value.respond_to?(:to_h)
+        hash = value.to_h.with_indifferent_access
+        hash[:message] || value
+      else
+        value
+      end
+
+    ActionController::Base.helpers.strip_tags(join_flash_messages(content).to_s).squish
+  end
+
+  def render_live_region_stream(message, politeness:)
+    return if message.blank?
+
+    OpTurbo::StreamComponent
+      .new(action: :liveRegion, message:, politeness:, target: nil)
+      .render_in(self)
   end
 end

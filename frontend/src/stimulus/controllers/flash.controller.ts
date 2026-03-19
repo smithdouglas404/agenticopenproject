@@ -1,4 +1,5 @@
 import { ApplicationController } from 'stimulus-use';
+import { announce } from '@primer/live-region-element';
 
 export const SUCCESS_AUTOHIDE_TIMEOUT = 5000;
 
@@ -7,13 +8,12 @@ export default class FlashController extends ApplicationController {
     autohide: Boolean,
   };
 
-  declare autohideValue:boolean;
-
   static targets = [
     'item',
-    'flash', // only to detect removal
+    'flash',
   ];
 
+  declare autohideValue:boolean;
   declare readonly itemTargets:HTMLElement[];
 
   reloadPage() {
@@ -21,6 +21,8 @@ export default class FlashController extends ApplicationController {
   }
 
   itemTargetConnected(element:HTMLElement) {
+    this.announceFlash(element);
+
     const autohide = element.dataset.autohide === 'true';
     if (this.autohideValue && autohide) {
       setTimeout(() => element.remove(), SUCCESS_AUTOHIDE_TIMEOUT);
@@ -33,5 +35,16 @@ export default class FlashController extends ApplicationController {
         target.remove();
       }
     });
+  }
+
+  private announceFlash(element:HTMLElement) {
+    const message = element.dataset.announcement?.trim();
+    if (!message) return;
+
+    const flashType = element.dataset.flashType;
+    const politeness =
+      flashType === 'error' || flashType === 'danger' ? 'assertive' : 'polite';
+
+    void announce(message, { politeness });
   }
 }

@@ -27,23 +27,27 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
 module OpPrimer
   class FlashComponent < Primer::Alpha::Banner
     include ApplicationHelper
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(**system_arguments)
+    def initialize(flash_type: nil, **system_arguments)
       @unique_key = system_arguments.delete(:unique_key)
+      @flash_type = flash_type&.to_sym
 
       system_arguments[:test_selector] ||= "op-primer-flash-message"
       system_arguments[:dismiss_scheme] ||= :remove
-      system_arguments[:dismiss_label] ||= I18n.t(:button_close)
+      system_arguments[:dismiss_label] ||= dismiss_label_for(@flash_type)
       system_arguments[:data] ||= {}
       system_arguments[:data]["flash-target"] = "flash"
+      system_arguments[:data]["flash-type"] = @flash_type
+      system_arguments[:data]["flash-role"] = aria_role
+      system_arguments[:role] ||= aria_role
 
-      @autohide = system_arguments[:scheme] == :success && system_arguments[:dismiss_scheme] != :none
+      @autohide = autohide?
+      system_arguments[:data]["autohide"] = @autohide
 
       super
     end
@@ -58,6 +62,23 @@ module OpPrimer
 
     def render?
       trimmed_content.present?
+    end
+
+    def autohide?
+      @flash_type.in?([:success, :notice])
+    end
+
+    def aria_role
+      @flash_type.in?([:error, :danger]) ? "alert" : "status"
+    end
+
+    def dismiss_label_for(type)
+      case type
+      when :error, :danger
+        I18n.t("js.dismiss_error_notification", default: "Dismiss error notification")
+      else
+        I18n.t("js.dismiss_notification", default: "Dismiss notification")
+      end
     end
   end
 end
