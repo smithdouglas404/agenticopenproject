@@ -31,7 +31,7 @@
 module Projects
   class IdentifierSuggestionsController < ApplicationController
     before_action :require_login
-    no_authorization_required! :show
+    before_action :authorize
 
     def show
       name = params[:name].to_s.strip
