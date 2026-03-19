@@ -59,8 +59,6 @@ class News::CommentsController < ApplicationController
 
   def find_news_and_project
     @project = Project.visible.find(params[:project_id])
-    return if performed?
-
     @news = @project.news.visible.find(params[:news_id])
   end
 end

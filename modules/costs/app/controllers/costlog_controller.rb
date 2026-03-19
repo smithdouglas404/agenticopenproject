@@ -106,7 +106,6 @@ class CostlogController < ApplicationController
       @project = @work_package.project
     elsif params[:project_id]
       @project = Project.visible.find(params[:project_id])
-      nil if performed?
     else
       render_404
     end

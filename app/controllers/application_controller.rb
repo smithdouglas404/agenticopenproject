@@ -257,10 +257,7 @@ class ApplicationController < ActionController::Base
 
   # Find project by project_id if given
   def find_optional_project
-    if params[:project_id].present?
-      @project = Project.visible.find(params[:project_id])
-      nil if performed?
-    end
+    @project = Project.visible.find(params[:project_id]) if params[:project_id].present?
   rescue ActiveRecord::RecordNotFound
     render_404
   end

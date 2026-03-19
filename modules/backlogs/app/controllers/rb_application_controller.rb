@@ -43,7 +43,6 @@ class RbApplicationController < ApplicationController
   # User.current has permission to invoke the method in question.
   def load_sprint_and_project
     load_project
-    return if performed?
 
     # because of strong params, we want to pluck this variable out right now,
     # otherwise it causes issues where we are doing `attributes=`.
