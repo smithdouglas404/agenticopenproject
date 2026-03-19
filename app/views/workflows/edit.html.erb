@@ -49,11 +49,13 @@ See COPYRIGHT and LICENSE files for more details.
 
     <%= render_tabs workflow_tabs(@type) %>
 
-          <%=
-            render Primer::Beta::Button.new(scheme: :primary, type: :submit, id: "work-flow-save-button") do
-              t(:button_save)
-            end
-          %>
+          <div class="workflow-save-bar">
+            <%=
+              render Primer::Beta::Button.new(scheme: :primary, type: :submit, mt: 2, ml: 3, mb: 4) do
+                t(:button_save)
+              end
+            %>
+          </div>
         <% end %>
     <% else %>
       <%= render Workflows::BlankslateComponent.new(role: @role, type: @type, tab: params[:tab]) %>
