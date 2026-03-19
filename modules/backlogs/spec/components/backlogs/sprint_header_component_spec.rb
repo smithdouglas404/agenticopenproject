@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Backlogs::SprintHeaderComponent, type: :component, with_flag: { scrum_projects: true } do
+RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
   shared_let(:default_status) { create(:default_status) }

@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Backlogs::SprintMenuComponent, type: :component, with_flag: { scrum_projects: true } do
+RSpec.describe Backlogs::SprintMenuComponent, type: :component do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
 
@@ -109,74 +109,74 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component, with_flag: { scr
   describe "task board actions" do
     let(:permissions) { %i[view_sprints view_work_packages] }
 
-    context "with the feature flag active", with_flag: { scrum_projects: true } do
-      context "when the sprint is active" do
-        let(:sprint) do
+    context "when the sprint is active" do
+      let(:sprint) do
+        create(:agile_sprint,
+               project:,
+               name: "Sprint 1",
+               start_date: Date.yesterday,
+               finish_date: Date.tomorrow,
+               status: "active")
+      end
+      let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint] }
+
+      it "shows Finish sprint first and Task board after Stories/Tasks" do
+        render_component
+
+        expect(menu_items.first).to eq("Finish sprint")
+        expect(page).to have_octicon(:check)
+        expect(page).to have_css(
+          "form[action='#{finish_sprint_path}'][data-turbo='false'] " \
+          "input[name='_method'][value='patch']",
+          visible: :hidden
+        )
+        expect(menu_items).to include("Stories/Tasks", "Task board")
+        expect(menu_items.index("Task board")).to be > menu_items.index("Stories/Tasks")
+      end
+    end
+
+    context "when the sprint is in planning and the user can start it" do
+      let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint] }
+
+      it "shows Start sprint as the first item" do
+        render_component
+
+        expect(menu_items.first).to eq("Start sprint")
+        expect(page).to have_octicon(:play)
+        expect(page).to have_no_selector(:menuitem, text: "Task board")
+        expect(page).to have_css(
+          "form[action='#{start_sprint_path}'][data-turbo='false'] " \
+          "input[name='_method'][value='patch']",
+          visible: :hidden
+        )
+      end
+
+      context "when another sprint is already active" do
+        let!(:active_sprint) do
           create(:agile_sprint,
                  project:,
-                 name: "Sprint 1",
+                 name: "Sprint 2",
                  start_date: Date.yesterday,
                  finish_date: Date.tomorrow,
                  status: "active")
         end
-        let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint] }
 
-        it "shows Finish sprint first and Task board after Stories/Tasks" do
+        it "shows Start sprint disabled with a description" do
           render_component
 
-          expect(menu_items.first).to eq("Finish sprint")
-          expect(page).to have_octicon(:check)
-          expect(page).to have_css(
-            "form[action='#{finish_sprint_path}'][data-turbo='false'] " \
-            "input[name='_method'][value='patch']",
-            visible: :hidden
+          expect(menu_items.first).to include("Start sprint")
+          expect(page).to have_selector(
+            :menuitem,
+            text: "Start sprint",
+            disabled: true
           )
-          expect(menu_items).to include("Stories/Tasks", "Task board")
-          expect(menu_items.index("Task board")).to be > menu_items.index("Stories/Tasks")
-        end
-      end
-
-      context "when the sprint is in planning and the user can start it" do
-        let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint] }
-
-        it "shows Start sprint as the first item" do
-          render_component
-
-          expect(menu_items.first).to eq("Start sprint")
-          expect(page).to have_octicon(:play)
-          expect(page).to have_no_selector(:menuitem, text: "Task board")
-          expect(page).to have_css(
-            "form[action='#{start_sprint_path}'][data-turbo='false'] " \
-            "input[name='_method'][value='patch']",
-            visible: :hidden
-          )
-        end
-
-        context "when another sprint is already active" do
-          let!(:active_sprint) do
-            create(:agile_sprint,
-                   project:,
-                   name: "Sprint 2",
-                   start_date: Date.yesterday,
-                   finish_date: Date.tomorrow,
-                   status: "active")
-          end
-
-          it "shows Start sprint disabled with a description" do
-            render_component
-
-            expect(menu_items.first).to include("Start sprint")
-            expect(page).to have_selector(
-              :menuitem,
-              text: "Start sprint",
-              disabled: true
-            )
-            expect(page).to have_text("Another sprint is already active.")
-          end
+          expect(page).to have_text("Another sprint is already active.")
         end
       end
 
       context "when the sprint is in planning and the user cannot start it" do
+        let(:permissions) { %i[view_sprints view_work_packages] }
+
         it "does not show task-board-related items" do
           render_component
 
