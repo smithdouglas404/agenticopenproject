@@ -109,8 +109,8 @@ RSpec.describe "Role creation", :js do
     visit(url_for(controller: :workflows, action: :index, only_path: true))
     click_link type.name
 
-    select "New role name", from: "Role"
-    click_button "Edit"
+    click_button existing_role.name
+    click_link "New role name"
 
     old_status = existing_workflow.old_status.name
     new_status = existing_workflow.new_status.name

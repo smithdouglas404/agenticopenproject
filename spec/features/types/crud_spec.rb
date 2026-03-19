@@ -72,9 +72,6 @@ RSpec.describe "Types", :js do
     visit(url_for(controller: :workflows, action: :index, only_path: true))
     click_on "A new type"
 
-    select existing_role.name, from: "Role"
-    click_on "Edit"
-
     from_id = existing_workflow.old_status_id
     to_id = existing_workflow.new_status_id
 
