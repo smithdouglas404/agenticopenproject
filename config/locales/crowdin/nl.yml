@@ -107,9 +107,8 @@ nl:
         trial: "Trial"
     jemalloc_allocator: Jemalloc geheugentoewijzer
     journal_aggregation:
-      explanation:
-        text: "Individuele acties van een gebruiker (bijv. het bijwerken van een werkpakket twee keer) wordt samengevoegd tot een enkele actie als hun leeftijdverschil minder is dan de aangegeven timespat. Ze worden weergegeven als een enkele actie binnen de applicatie. Dit zal ook meldingen vertragen met dezelfde tijd die het aantal verstuurde e-mails vermindert en zal ook %{webhook_link} vertraging beïnvloeden."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1371,9 +1370,6 @@ nl:
         dependencies: "Afhankelijkheden"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3511,7 +3507,6 @@ nl:
   label_float: "Zwevend"
   label_folder: "Map"
   label_follows: "volgt"
-  label_force_user_language_to_default: "Taal van gebruikers met een niet toegestane taal op standaard instellen"
   label_form_configuration: "Formulierconfiguratie"
   label_formula: "Formula"
   label_gantt_chart: "Gantt-grafiek"
@@ -3890,12 +3885,6 @@ nl:
   label_user_named: "Gebruiker %{name}"
   label_user_activity: "%{value} activiteit"
   label_user_anonymous: "Anoniem"
-  label_user_mail_option_all: "Voor een evenement op al mijn projecten"
-  label_user_mail_option_none: "Geen evenementen"
-  label_user_mail_option_only_assigned: "Alleen voor dingen die aan mij toegewezen zijn"
-  label_user_mail_option_only_my_events: "Alleen voor dingen die ik kijk of waar ik bij betrokken ben"
-  label_user_mail_option_only_owner: "Alleen voor dingen waar ik de eigenaar van ben"
-  label_user_mail_option_selected: "Voor een gebeurtenis op de geselecteerde projecten alleen"
   label_user_menu: "User menu"
   label_user_new: "Nieuwe gebruiker"
   label_user_plural: "Gebruikers"
@@ -3935,7 +3924,6 @@ nl:
   label_wiki_show_index_page_link: "Toon submenu item 'Inhoudsopgave'"
   label_wiki_show_menu_item: "Weergeven als menu-item in project navigatie"
   label_wiki_show_new_page_link: "Vervolgmenu-item 'Maken nieuwe onderliggende pagina' weergeven"
-  label_wiki_show_submenu_item: "Toon als submenu-item van "
   label_wiki_start: "Startpagina"
   label_work: "Werk"
   label_work_package: "Werkpakket"
@@ -5006,7 +4994,7 @@ nl:
   text_default_administrator_account_changed: "Standaard beheerdersaccount gewijzigd"
   text_default_encoding: "Standaardinstelling: UTF-8"
   text_destroy: "Verwijderen"
-  text_destroy_with_associated: "Er zijn extra objecten gerelateerd aan het/de te verwijderen werkpakket(ten). Deze objecten zijn van de soorten:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Wat wilt u doen?"
   text_diff_truncated: "... deze diff is truncated vanwege dat de maximale grote is overschreden om te tonen."
   text_email_delivery_not_configured: "E-mailbezorging is niet geconfigureerd, en meldingen zijn uitgeschakeld.\nConfigureer uw SMTP-server om deze in te schakelen."

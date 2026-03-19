@@ -107,9 +107,8 @@ si:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1375,9 +1374,6 @@ si:
         dependencies: "පරායත්තතා"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3515,7 +3511,6 @@ si:
   label_float: "පාවෙන"
   label_folder: "ෆෝල්ඩරය"
   label_follows: "පහත සඳහන්"
-  label_force_user_language_to_default: "පෙරනිමියට අවසර නොලත් භාෂාවක් ඇති පරිශීලකයින්ගේ භාෂාව සකසන්න"
   label_form_configuration: "ආකෘති වින්යාසය"
   label_formula: "Formula"
   label_gantt_chart: "ගැන්ට් සටහන"
@@ -3894,12 +3889,6 @@ si:
   label_user_named: "පරිශීලක %{name}"
   label_user_activity: "%{value}ගේ ක්රියාකාරකම්"
   label_user_anonymous: "නිර්නාමික"
-  label_user_mail_option_all: "මගේ සියලු ව්යාපෘතිවල ඕනෑම සිදුවීමක් සඳහා"
-  label_user_mail_option_none: "සිදුවීම් නැත"
-  label_user_mail_option_only_assigned: "මට පවරා ඇති දේවල් සඳහා පමණි"
-  label_user_mail_option_only_my_events: "මම නරඹන දේවල් සඳහා පමණක් හෝ මම සම්බන්ධ වෙනවා"
-  label_user_mail_option_only_owner: "මම අයිතිකරු වන්නේ දේවල් සඳහා පමණි"
-  label_user_mail_option_selected: "තෝරාගත් ව්යාපෘතිවල ඕනෑම සිදුවීමක් සඳහා පමණි"
   label_user_menu: "User menu"
   label_user_new: "නව පරිශීලක"
   label_user_plural: "පරිශීලකයන්"
@@ -3939,7 +3928,6 @@ si:
   label_wiki_show_index_page_link: "උප මෙනු අයිතමය පෙන්වන්න 'අන්තර්ගත වගුව'"
   label_wiki_show_menu_item: "ව්යාපෘති සංචලනය තුළ මෙනු අයිතමය ලෙස පෙන්වන්න"
   label_wiki_show_new_page_link: "උප මෙනු අයිතමය පෙන්වන්න 'නව ළමා පිටුව සාදන්න'"
-  label_wiki_show_submenu_item: "උප මෙනු අයිතමය ලෙස පෙන්වන්න "
   label_wiki_start: "ආරම්භක පිටුව"
   label_work: "Work"
   label_work_package: "වැඩ පැකේජය"
@@ -5011,7 +4999,7 @@ si:
   text_default_administrator_account_changed: "පෙරනිමි පරිපාලක ගිණුම වෙනස්"
   text_default_encoding: "පෙරනිමි: UTF-8"
   text_destroy: "මකන්න"
-  text_destroy_with_associated: "මකා දැමිය යුතු වැඩ පැකේජය (ය) සමඟ එකතු වී ඇති අතිරේක වස්තු තිබේ. එම වස්තූන් පහත සඳහන් වර්ග වලින් සමන්විත වේ:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "ඔබට කුමක් කිරීමට අවශ්යද?"
   text_diff_truncated: "... එය ප්රදර්ශනය කළ හැකි උපරිම ප්රමාණය ඉක්මවා යන නිසා මෙම diff ටන්ක කරන ලදී."
   text_email_delivery_not_configured: "විද්යුත් තැපැල් බෙදා හැරීම වින්යාසගත කර නොමැති අතර දැනුම්දීම් අක්රීය කර ඇත.\nඒවා සක්රීය කිරීම සඳහා ඔබේ SMTP සේවාදායකය සකසන්න."

@@ -59,8 +59,36 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
   end
 
   describe "permission-based items" do
-    context "with :update_sprints permission" do
-      let(:permissions) { %i[view_master_backlog update_sprints] }
+    context "with :manage_sprint_items permission" do
+      let(:permissions) { %i[view_sprints manage_sprint_items] }
+
+      it "shows Add new story item with compose icon" do
+        render_component
+
+        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+        expect(page).to have_octicon(:compose)
+      end
+    end
+
+    context "without :manage_sprint_items permission" do
+      let(:permissions) { [:view_sprints] }
+
+      it "does not show Add new story item" do
+        render_component
+
+        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+      end
+    end
+
+    context "with :create_sprints permission" do
+      let(:permissions) { %i[view_sprints create_sprints] }
+
+      it "shows Properties item with gear icon" do
+        render_component
+
+        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
+        expect(page).to have_octicon(:gear)
+      end
 
       it "shows Edit item with pencil icon" do
         render_component
@@ -71,8 +99,14 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       end
     end
 
-    context "without :update_sprints permission" do
-      let(:permissions) { [:view_master_backlog] }
+    context "without :create_sprints permission" do
+      let(:permissions) { [:view_sprints] }
+
+      it "does not show Properties item" do
+        render_component
+
+        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
+      end
 
       it "does not show Edit item" do
         render_component
@@ -81,50 +115,8 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       end
     end
 
-    context "with :add_work_packages permission" do
-      let(:permissions) { %i[view_master_backlog add_work_packages] }
-
-      it "shows Add new story item with compose icon" do
-        render_component
-
-        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
-        expect(page).to have_octicon(:compose)
-      end
-    end
-
-    context "without :add_work_packages permission" do
-      let(:permissions) { [:view_master_backlog] }
-
-      it "does not show Add new story item" do
-        render_component
-
-        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
-      end
-    end
-
-    context "with :manage_versions permission" do
-      let(:permissions) { %i[view_master_backlog manage_versions] }
-
-      it "shows Properties item with gear icon" do
-        render_component
-
-        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
-        expect(page).to have_octicon(:gear)
-      end
-    end
-
-    context "without :manage_versions permission" do
-      let(:permissions) { [:view_master_backlog] }
-
-      it "does not show Properties item" do
-        render_component
-
-        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
-      end
-    end
-
-    context "with :view_taskboards permission" do
-      let(:permissions) { %i[view_master_backlog view_taskboards] }
+    context "with :view_sprints permission" do
+      let(:permissions) { %i[view_sprints] }
 
       it "shows Task board item" do
         render_component
@@ -132,20 +124,10 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
         expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.task_board"))
       end
     end
-
-    context "without :view_taskboards permission" do
-      let(:permissions) { [:view_master_backlog] }
-
-      it "does not show Task board item" do
-        render_component
-
-        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.task_board"))
-      end
-    end
   end
 
   describe "always-visible items" do
-    let(:permissions) { [:view_master_backlog] }
+    let(:permissions) { [:view_sprints] }
 
     it "renders a stable id on the action menu and stories/tasks item" do
       render_component
@@ -190,7 +172,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
 
   describe "module-based items" do
     context "when wiki module is enabled" do
-      let(:permissions) { [:view_master_backlog] }
+      let(:permissions) { [:view_sprints] }
       let(:project) { create(:project, types: [type_feature, type_task], enabled_module_names: %w[backlogs wiki]) }
 
       it "shows Wiki item" do
@@ -202,7 +184,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
     end
 
     context "when wiki module is disabled" do
-      let(:permissions) { [:view_master_backlog] }
+      let(:permissions) { [:view_sprints] }
       let(:project) { create(:project, types: [type_feature, type_task], enabled_module_names: %w[backlogs]) }
 
       it "does not show Wiki item" do

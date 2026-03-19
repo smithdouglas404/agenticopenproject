@@ -45,6 +45,20 @@ RSpec.describe Meetings::UpdateContract do
 
     it_behaves_like "contract is valid"
 
+    context "when setting sharing on a non-template" do
+      let(:meeting) { create(:meeting, project:, sharing: nil) }
+
+      before { meeting.sharing = "none" }
+
+      it_behaves_like "contract is invalid", sharing: %i[present not_allowed]
+    end
+
+    context "when setting sharing on a onetime template" do
+      let(:meeting) { create(:onetime_template, project:, sharing: :none) }
+
+      it_behaves_like "contract is valid"
+    end
+
     context "when lock_version is changed" do
       before do
         allow(meeting).to receive(:lock_version_changed?).and_return(true)

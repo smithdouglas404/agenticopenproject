@@ -279,6 +279,8 @@ pt-BR:
           drive_contents: Conteúdo da unidade
           files_request: Buscando arquivos da pasta da equipe
           header: Pastas de projeto gerenciadas automaticamente
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: 'Dependência: Pastas da equipe'
           team_folder_contents: Conteúdo da pasta da equipe
           team_folder_presence: A pasta da equipe existe
@@ -322,8 +324,10 @@ pt-BR:
         nc_oauth_request_not_found: O endpoint para recuperar o usuário conectado não foi encontrado. Verifique os logs do servidor para mais detalhes.
         nc_oauth_request_unauthorized: O usuário atual não está autorizado a acessar o armazenamento remoto de arquivos. Verifique os logs do servidor para mais informações.
         nc_oauth_token_missing: O OpenProject não pode testar a comunicação do usuário com o Nextcloud, pois a conta do Nextcloud ainda não foi vinculada.
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: A pasta da equipe não pôde ser localizada.
-        nc_unexpected_content: Conteúdo inesperado encontrado na pasta da equipe gerenciado.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: A senha configurada do aplicativo não é válida.
         not_configured: A conexão não pôde ser validada. Conclua a configuração primeiro.
         od_client_cant_delete_folder: O cliente está com dificuldades para excluir pastas. Verifique a documentação de configuração do seu armazenamento.
@@ -372,6 +376,7 @@ pt-BR:
         failure: Alguns testes não passaram e o sistema não está funcionando corretamente.
         success: Todas as conexões e sistemas estão operando normalmente.
         warning: Alguns testes retornaram um alerta. Isso pode causar comportamentos inesperados.
+      synced: 'Last sync: %{datetime}'
       title: Relatório de status de integridade
     health_email_notifications:
       description_disabled: Os administradores não receberão atualizações por e-mail quando houver atualizações importantes.

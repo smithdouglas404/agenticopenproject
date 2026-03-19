@@ -107,9 +107,8 @@ ro:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Acțiunile individuale ale unui utilizator (de exemplu, actualizarea de două ori a unui pachet de lucru) sunt agregate într-o singură acțiune dacă diferența de vechime dintre ele este mai mică decât intervalul de timp specificat. Acestea vor fi afișate ca o singură acțiune în cadrul aplicației. De asemenea, acest lucru va întârzia notificările cu aceeași perioadă de timp, reducând numărul de e-mailuri trimise și va afecta, de asemenea, întârzierea %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1390,9 +1389,6 @@ ro:
         dependencies: "Dependenţe"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3524,7 +3520,7 @@ ro:
   label_duplicated_by: "dublat de"
   label_duplicate: "duplicat"
   label_duplicates: "dublează"
-  label_edit: "Editează"
+  label_edit: "Editare"
   label_edit_x: "Editare: %{x}"
   label_view_x: "View: %{x}"
   label_enable_multi_select: "Comutare selecție multiplă"
@@ -3571,7 +3567,6 @@ ro:
   label_float: "Număr real"
   label_folder: "Dosar"
   label_follows: "urmează după"
-  label_force_user_language_to_default: "Setare limbă pentru utilizatorii care au o limbă implicită nepermisă"
   label_form_configuration: "Configurare formular"
   label_formula: "Formulă"
   label_gantt_chart: "Grafic Gantt"
@@ -3582,7 +3577,7 @@ ro:
   label_global_roles: "Roluri globale"
   label_git_path: "Calea catre directorul .git"
   label_greater_or_equal: ">="
-  label_group_by: "Grupează după"
+  label_group_by: "Grupare după"
   label_group_new: "Grupare nouă"
   label_group: "Grup"
   label_group_named: "Grup %{name}"
@@ -3950,12 +3945,6 @@ ro:
   label_user_named: "Utilizator %{name}"
   label_user_activity: "Activitatea lui %{value}"
   label_user_anonymous: "Anonim"
-  label_user_mail_option_all: "Pentru orice eveniment în toate proiectele mele"
-  label_user_mail_option_none: "Pentru niciun eveniment"
-  label_user_mail_option_only_assigned: "Doar pentru tichete pe care trebuie să le execut"
-  label_user_mail_option_only_my_events: "Doar pentru tichete pentru care sunt observator sau în care sunt implicat"
-  label_user_mail_option_only_owner: "Doar pentru tichete pentru care sunt responsabil"
-  label_user_mail_option_selected: "Pentru orice eveniment doar în proiectele selectate"
   label_user_menu: "User menu"
   label_user_new: "Utilizator nou"
   label_user_plural: "Utilizatori"
@@ -3995,7 +3984,6 @@ ro:
   label_wiki_show_index_page_link: "Afișare submeniu 'Cuprins'"
   label_wiki_show_menu_item: "Afișare ca meniu în navigarea proiectului"
   label_wiki_show_new_page_link: "Afișează submeniu 'Creează pagină copil'"
-  label_wiki_show_submenu_item: "Afișare ca submeniu pentru "
   label_wiki_start: "Pagina de start"
   label_work: "Muncă"
   label_work_package: "Pachet de lucru"
@@ -5068,7 +5056,7 @@ ro:
   text_default_administrator_account_changed: "Contul de administrator implicit a fost schimbat"
   text_default_encoding: "Implicit: UTF-8"
   text_destroy: "Șterge"
-  text_destroy_with_associated: "Există obiecte suplimentare asociate cu pachetul(ele) de lucru care urmează să fie șters(e). Aceste obiecte sunt de următoarele tipuri:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Ce vrei să faci?"
   text_diff_truncated: "... Acest diff a fost trunchiat deoarece depășește dimensiunea maximă care poate fi afișată."
   text_email_delivery_not_configured: "Livrarea e-mailurilor nu este configurată, iar notificările sunt dezactivate.\nConfigurați serverul SMTP pentru a le activa."

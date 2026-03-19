@@ -275,6 +275,11 @@ Redmine::MenuManager.map :my_menu do |menu|
             { controller: "/my", action: "account" },
             caption: :label_account,
             icon: "person"
+  menu.push :working_hours,
+            { controller: "/my", action: "working_hours" },
+            caption: :label_schedule_and_availability,
+            icon: "calendar",
+            if: ->(_) { OpenProject::FeatureDecisions.user_working_times_active? }
   menu.push :locale,
             { controller: "/my", action: "locale" },
             caption: :label_locale,
@@ -406,6 +411,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             { controller: "/admin/settings/work_package_priorities" },
             if: ->(_) { User.current.admin? },
             caption: IssuePriority.model_name.human(count: :other),
+            parent: :admin_work_packages
+
+  menu.push :work_packages_identifier,
+            { controller: "/admin/settings/work_packages_identifier", action: :show },
+            if: ->(_) { OpenProject::FeatureDecisions.semantic_work_package_ids_active? && User.current.admin? },
+            caption: :label_identifier,
             parent: :admin_work_packages
 
   menu.push :progress_tracking,

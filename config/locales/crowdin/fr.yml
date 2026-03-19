@@ -107,9 +107,8 @@ fr:
         trial: "Essai"
     jemalloc_allocator: Allocateur de mémoire Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Les actions individuelles d'un utilisateur (par ex. un lot de travaux mis à jour deux fois) sont agrégées en une seule action si leur différence d'âge est inférieure à la période spécifiée. Elles seront affichées en une seule action dans l'application. Cela retardera également les notifications du même temps réduisant donc le nombre d'e-mails envoyés et affectera également le délai %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Importation"
     jira:
@@ -1373,9 +1372,6 @@ fr:
         dependencies: "Dépendances"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Partage"
-        finish_date: "Échéance"
       jira_import:
         projects: "Projets"
       "import/jira":
@@ -3513,7 +3509,6 @@ fr:
   label_float: "Flottant"
   label_folder: "Dossier"
   label_follows: "suivi"
-  label_force_user_language_to_default: "Pour cet utilisateur, revenir au langage par defaut"
   label_form_configuration: "Configuration du formulaire"
   label_formula: "Formule"
   label_gantt_chart: "Diagramme de Gantt"
@@ -3892,12 +3887,6 @@ fr:
   label_user_named: "Utilisateur %{name}"
   label_user_activity: "Activité de %{value}"
   label_user_anonymous: "Anonyme"
-  label_user_mail_option_all: "Tout évènement dans tous mes projets"
-  label_user_mail_option_none: "Aucun évènement"
-  label_user_mail_option_only_assigned: "Les éléments qui me sont assignés"
-  label_user_mail_option_only_my_events: "Uniquement pour les éléments que je suis ou auxquels je participe"
-  label_user_mail_option_only_owner: "Les éléments dont je suis le propriétaire"
-  label_user_mail_option_selected: "Pour chaque événement sur le projet selectionné seulement"
   label_user_menu: "Menu utilisateur"
   label_user_new: "Nouvel utilisateur"
   label_user_plural: "Utilisateurs"
@@ -3937,7 +3926,6 @@ fr:
   label_wiki_show_index_page_link: "Montrer l'entrée de sous-menu 'Table des Matières'"
   label_wiki_show_menu_item: "Afficher en tant qu'élément dans le menu de navigation du projet"
   label_wiki_show_new_page_link: "Montrer le sous-menu 'Créer une nouvelle page enfant'"
-  label_wiki_show_submenu_item: "Montrer comme sous-menu de "
   label_wiki_start: "Page d'accueil"
   label_work: "Travail"
   label_work_package: "Lot de travaux"

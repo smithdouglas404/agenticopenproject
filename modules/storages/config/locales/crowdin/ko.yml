@@ -279,6 +279,8 @@ ko:
           drive_contents: 드라이브 콘텐츠
           files_request: 팀 폴더 파일 가져오기
           header: 자동으로 관리되는 프로젝트 폴더
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: '종속성: 팀 폴더'
           team_folder_contents: 팀 폴더 콘텐츠
           team_folder_presence: 팀 폴더가 존재합니다
@@ -320,8 +322,10 @@ ko:
         nc_oauth_request_not_found: 현재 연결된 사용자를 가져올 엔드포인트를 찾을 수 없습니다. 자세한 내용은 서버 로그를 확인하세요.
         nc_oauth_request_unauthorized: 현재 사용자는 원격 파일 저장소에 액세스할 수 있는 권한이 없습니다. 자세한 내용은 서버 로그를 확인하세요.
         nc_oauth_token_missing: 사용자가 아직 Nextcloud 계정을 링크하지 않았기 때문에 OpenProject가 Nextcloud와의 사용자 수준 통신을 테스트할 수 없습니다.
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: 팀 폴더를 찾을 수 없습니다.
-        nc_unexpected_content: 관리되는 팀 폴더에서 예기치 않은 콘텐츠가 발견되었습니다.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: 구성된 앱 암호가 잘못되었습니다.
         not_configured: 연결에 대한 유효성 검사를 할 수 없습니다. 먼저 구성을 완료하세요.
         od_client_cant_delete_folder: 클라이언트에서 폴더를 삭제하는 중에 문제가 발생했습니다. 저장소에 대한 설정 설명서를 확인하세요.
@@ -370,6 +374,7 @@ ko:
         failure: 일부 검사가 실패하여 시스템이 예상대로 작동되지 않습니다.
         success: 모든 연결과 시스템이 예상대로 작동 중입니다.
         warning: 일부 검사에서 경고가 반환되었습니다. 이로 인해 예상치 못한 동작이 발생할 수 있습니다.
+      synced: 'Last sync: %{datetime}'
       title: 상태 보고서
     health_email_notifications:
       description_disabled: 중요 업데이트가 있을 때 관리자에게 이메일로 업데이트가 전송되지 않습니다.

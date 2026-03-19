@@ -318,6 +318,26 @@ RSpec.describe Principals::DeleteJob, type: :model do
       end
     end
 
+    shared_examples_for "working hours handling" do
+      let!(:working_hours) { create(:user_working_hours, user: principal) }
+
+      it "removes the working hours" do
+        job
+
+        expect(UserWorkingHours.find_by(id: working_hours.id)).to be_nil
+      end
+    end
+
+    shared_examples_for "non working times handling" do
+      let!(:non_working_time) { create(:user_non_working_time, user: principal) }
+
+      it "removes the non working times" do
+        job
+
+        expect(UserNonWorkingTime.find_by(id: non_working_time.id)).to be_nil
+      end
+    end
+
     shared_examples_for "public cost_query handling" do
       let!(:query) { create(:public_cost_query, user: principal) }
 
@@ -472,6 +492,8 @@ RSpec.describe Principals::DeleteJob, type: :model do
       it_behaves_like "cost_query handling"
       it_behaves_like "project query handling"
       it_behaves_like "mention rewriting"
+      it_behaves_like "working hours handling"
+      it_behaves_like "non working times handling"
 
       describe "favorites" do
         before do

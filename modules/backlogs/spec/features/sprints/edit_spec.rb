@@ -1,0 +1,184 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+require "spec_helper"
+require_relative "../../support/pages/backlogs"
+
+RSpec.describe "Edit", :js do
+  let(:project) { create(:project) }
+  let(:all_permissions) { %i[view_sprints add_work_packages view_work_packages create_sprints manage_sprint_items] }
+  let(:permissions) { all_permissions }
+  let(:user) do
+    create(:user, member_with_permissions: { project => permissions })
+  end
+  let(:backlogs_page) { Pages::Backlogs.new(project) }
+
+  let(:story_type) do
+    create(:type_feature)
+  end
+  let(:story_type2) do
+    type = create(:type)
+
+    project.types << type
+
+    type
+  end
+  let(:inactive_story_type) do
+    create(:type)
+  end
+
+  let(:task_type) do
+    type = create(:type_task)
+    project.types << type
+
+    type
+  end
+
+  let!(:closed_sprint) do
+    create(:agile_sprint,
+           project:,
+           status: "completed",
+           start_date: Date.new(2025, 8, 25),
+           finish_date: Date.new(2025, 9, 4))
+  end
+
+  let!(:first_sprint) do
+    create(:agile_sprint,
+           project:,
+           start_date: Date.new(2025, 9, 5),
+           finish_date: Date.new(2025, 9, 15))
+  end
+
+  let!(:second_sprint) do
+    create(:agile_sprint,
+           project:,
+           start_date: Date.new(2025, 9, 16),
+           finish_date: Date.new(2025, 9, 26))
+  end
+
+  let!(:work_package) do
+    create(:work_package, subject: "First work package", project:, sprint: first_sprint, type: story_type)
+  end
+
+  # Necessary so that work packages can be created via dialog
+  shared_let(:default_status) { create(:default_status) }
+  shared_let(:default_priority) { create(:default_priority) }
+
+  before do
+    login_as(user)
+
+    backlogs_page.visit!
+  end
+
+  context "with the feature flag active", with_flag: { scrum_projects: true } do
+    it "lists all open sprints" do
+      backlogs_page.expect_sprint_names_in_order(first_sprint.name, second_sprint.name)
+
+      backlogs_page.expect_story_in_sprint(work_package, first_sprint)
+      backlogs_page.expect_story_not_in_sprint(work_package, second_sprint)
+    end
+
+    it "adds a work package to a sprint" do
+      backlogs_page.click_in_sprint_menu(first_sprint, "New story")
+      backlogs_page.expect_create_work_package_dialog
+
+      page.within("#create-work-package-dialog") do
+        page.fill_in "Subject", with: "Story created in sprint"
+
+        click_on "Create"
+      end
+
+      wait_for_reload
+
+      expect_and_dismiss_flash type: :success, message: "New work package created and added as a child"
+      created_wp = first_sprint.reload.work_packages.last
+      expect(created_wp.subject).to eq("Story created in sprint")
+      backlogs_page.expect_story_in_sprint(created_wp, first_sprint)
+    end
+
+    context "with the 'create_sprints' permissions" do
+      context "when editing a sprint" do
+        it "displays all menu entries" do
+          backlogs_page.within_sprint_menu(first_sprint) do |menu|
+            expect(menu).to have_selector :menuitem, count: 3
+            expect(menu).to have_selector :menuitem, "Edit sprint"
+            expect(menu).to have_selector :menuitem, "New story"
+            expect(menu).to have_selector :menuitem, "Stories/Tasks"
+          end
+        end
+
+        it "edits the sprint name" do
+          backlogs_page.expect_sprint_names_in_order(first_sprint.name, second_sprint.name)
+
+          backlogs_page.click_in_sprint_menu(first_sprint, "Edit sprint")
+          backlogs_page.expect_sprint_dialog
+
+          within_dialog "Edit sprint" do
+            page.fill_in "Sprint name", with: "Changed name"
+            page.click_button "Save"
+          end
+
+          wait_for_reload
+          backlogs_page.expect_sprint_names_in_order("Changed name", second_sprint.name)
+        end
+
+        context "when lacking the 'manage_sprint_items' permission" do
+          let(:permissions) { all_permissions - %i[manage_sprint_items] }
+
+          it "has no menu entry for creating a new story" do
+            backlogs_page.within_sprint_menu(first_sprint) do |menu|
+              expect(menu).to have_selector :menuitem, count: 2
+              expect(menu).to have_selector :menuitem, "Edit sprint"
+              expect(menu).to have_selector :menuitem, "Stories/Tasks"
+
+              expect(menu).to have_no_selector :menuitem, "New story"
+            end
+          end
+        end
+      end
+    end
+
+    context "without the necessary permissions" do
+      let(:permissions) { all_permissions - [:create_sprints] }
+
+      it "is missing the 'new sprint' button" do
+        expect(page).to have_no_button "Create"
+        expect(page).not_to have_test_selector("op-sprints--new-sprint-button")
+      end
+
+      it "has no menu entry for editing a sprint" do
+        backlogs_page.within_sprint_menu(first_sprint) do |menu|
+          expect(menu).to have_selector :menuitem, "Stories/Tasks"
+          expect(menu).to have_no_selector :menuitem, "Edit sprint"
+        end
+      end
+    end
+  end
+end

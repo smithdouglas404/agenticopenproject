@@ -107,9 +107,8 @@ el:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1371,9 +1370,6 @@ el:
         dependencies: "Εξαρτήσεις"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3511,7 +3507,6 @@ el:
   label_float: "Float"
   label_folder: "Φάκελος"
   label_follows: "ακολουθεί"
-  label_force_user_language_to_default: "Ορίστε την γλώσσα των χρηστών που έχουν μια μη επιτρεπόμενη γλώσσα ως προεπιλογή"
   label_form_configuration: "Διαμόρφωση φόρμας"
   label_formula: "Formula"
   label_gantt_chart: "Διάγραμμα Gantt"
@@ -3890,12 +3885,6 @@ el:
   label_user_named: "Χρήστης %{name}"
   label_user_activity: "δραστηριότητα του %{value}"
   label_user_anonymous: "Ανώνυμος"
-  label_user_mail_option_all: "Για όλα τα συμβάντα σε όλα τα έργα μου"
-  label_user_mail_option_none: "Κανένα συμβάν"
-  label_user_mail_option_only_assigned: "Μόνο για αντικείμενα που έχουν ανατεθεί σε μένα"
-  label_user_mail_option_only_my_events: "Μόνο για αντικείμενα που παρακολουθώ ή συμμετέχω"
-  label_user_mail_option_only_owner: "Μόνο για αντικείμενα που μου ανήκουν"
-  label_user_mail_option_selected: "Για όλες τις εξελίξεις μόνο στα επιλεγμένα έργα"
   label_user_menu: "User menu"
   label_user_new: "Νέος χρήστης"
   label_user_plural: "Χρήστες"
@@ -3935,7 +3924,6 @@ el:
   label_wiki_show_index_page_link: "Εμφάνιση του αντικειμένου υπομενού 'Πίνακας Περιεχομένων'"
   label_wiki_show_menu_item: "Εμφάνιση ως αντικείμενο μενού στην πλοήγηση έργου"
   label_wiki_show_new_page_link: "Εμφάνιση του αντικειμένου υπομενού 'Δημιουργία καινούργιας σελίδας παιδιού'"
-  label_wiki_show_submenu_item: "Εμφάνιση ως αντικείμενο υπομενού του "
   label_wiki_start: "Σελίδα έναρξης"
   label_work: "Work"
   label_work_package: "Εργασία"
@@ -5006,7 +4994,7 @@ el:
   text_default_administrator_account_changed: "Ο προεπιλεγμένος λογαριασμός του διαχειριστή άλλαξε"
   text_default_encoding: "Προεπιλογή: UTF-8"
   text_destroy: "Διαγραφή"
-  text_destroy_with_associated: "Υπάρχουν επιπλέον αντικείμενα μαζί με το πακέτο εργασίας που πρόκειται να διαγραφεί. Τα αντικείμενα αυτά είναι των παρακάτω τύπων:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Τι θέλετε να κάνετε;"
   text_diff_truncated: "... Αυτό το diff περικόπηκε επειδή υπερβαίνει το μέγιστο μέγεθος που μπορεί να εμφανιστεί."
   text_email_delivery_not_configured: "Η διανομή email δεν είναι διαμορφωμένη και οι ειδοποιήσεις είναι απενεργοποιημένες.\nΔιαμορφώστε τον SMTP εξυπηρετητή για τις ενεργοποιήσετε."

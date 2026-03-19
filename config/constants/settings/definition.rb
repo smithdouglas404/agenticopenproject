@@ -1321,6 +1321,15 @@ module Settings
       work_packages_bulk_request_limit: {
         default: 10
       },
+      work_packages_identifier: {
+        description: "Defines how work packages are identified in the UI (e.g. in links and titles). " \
+                     "The 'numeric' option uses the work package numerical ID, " \
+                     "while 'alphanumeric' uses the project identifier and the work package ID separated by a dash " \
+                     "(e.g. 'PROJA-123').",
+        format: :string,
+        allowed: -> { Setting::WorkPackageIdentifier::ALLOWED_VALUES },
+        default: "numeric"
+      },
       work_package_list_default_highlighted_attributes: {
         default: ["status", "priority", "due_date"],
         allowed: -> {
@@ -1641,8 +1650,8 @@ module Settings
         env_var_hash_part
           .scan(/(?:[a-zA-Z0-9]|__)+/)
           .map do |seg|
-          unescape_underscores(seg.downcase)
-        end
+            unescape_underscores(seg.downcase)
+          end
       end
 
       # takes the path provided and transforms it into a deeply nested hash

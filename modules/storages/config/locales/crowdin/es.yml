@@ -279,6 +279,8 @@ es:
           drive_contents: Contenido de la unidad
           files_request: Obteniendo archivos de carpetas de equipo
           header: Carpetas de proyecto gestionadas automáticamente
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: 'Dependencia: Carpetas de equipo'
           team_folder_contents: Contenido de la carpeta de equipo
           team_folder_presence: La carpeta del equipo existe
@@ -322,8 +324,10 @@ es:
         nc_oauth_request_not_found: No se ha encontrado el terminal para obtener el usuario actualmente conectado. Consulte los registros del servidor para obtener más información.
         nc_oauth_request_unauthorized: El usuario actual no está autorizado a acceder al almacenamiento remoto de archivos. Consulte los registros del servidor para obtener más información.
         nc_oauth_token_missing: OpenProject no puede probar la comunicación a nivel de usuario con Nextcloud, ya que el usuario aún no ha vinculado su cuenta de Nextcloud.
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: No se ha podido encontrar la carpeta del equipo.
-        nc_unexpected_content: Se ha encontrado contenido inesperado en la carpeta del equipo gestionada.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: La contraseña configurada de la aplicación no es válida.
         not_configured: No se ha podido validar la conexión. Por favor, termine primero la configuración.
         od_client_cant_delete_folder: El cliente tiene problemas para eliminar carpetas. Consulte la documentación de configuración de su almacenamiento.
@@ -372,6 +376,7 @@ es:
         failure: Algunas comprobaciones han fallado y el sistema no funciona como se esperaba.
         success: Todas las conexiones y sistemas funcionan según lo previsto.
         warning: Algunas comprobaciones devolvieron una advertencia. Esto puede dar lugar a un comportamiento inesperado.
+      synced: 'Last sync: %{datetime}'
       title: Informe de estado de salud
     health_email_notifications:
       description_disabled: Los administradores no recibirán actualizaciones por correo electrónico cuando haya actualizaciones importantes.

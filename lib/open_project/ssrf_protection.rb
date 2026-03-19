@@ -30,35 +30,6 @@
 
 module OpenProject
   class SsrfProtection < ::SsrfFilter
-    # ssrf_filter works by resolving the hostname to a public IP, then connecting to that IP
-    # directly (to prevent DNS-rebinding attacks). For HTTPS, Net::HTTP must set the SNI hostname
-    # so the server knows which certificate to serve.
-    #
-    # However, modern Net::HTTP (net-http gem) explicitly skips setting SNI when the address is
-    # an IP (correctly per RFC 6066 §3 — IP literals are not valid in SNI). ssrf_filter 1.0.x
-    # patches SSLSocket#hostname= to inject the original hostname, but that patch never fires
-    # because Net::HTTP never calls hostname= for IP addresses.
-    #
-    # This patch targets SSLSocket#connect instead, which IS called regardless of address type.
-    # It sets the SNI hostname from ssrf_filter's thread-local just before the TLS handshake,
-    # making HTTPS work for SNI-dependent servers (e.g. Cloudflare-hosted webhooks).
-    #
-    # This patch can be removed once release/17.2 is retired — on dev we use ssrf_filter ~> 1.3
-    # which resolves this differently.
-    ::OpenSSL::SSL::SSLSocket.class_eval do
-      # Net::Protocol#ssl_socket_connect uses connect_nonblock when a timeout is set (the common
-      # case), falling back to connect only when timeout is nil. Patch both to be safe.
-      %i[connect connect_nonblock].each do |meth|
-        original = instance_method(meth)
-        define_method(meth) do |**kwargs|
-          if (hostname = ::Thread.current[::SsrfFilter::FIBER_LOCAL_KEY])
-            self.hostname = hostname
-          end
-          original.bind(self).call(**kwargs)
-        end
-      end
-    end
-
     class << self
       ##
       # Performs an SSRF-safe HTTP POST request to the given URL.

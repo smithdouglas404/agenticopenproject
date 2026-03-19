@@ -107,9 +107,8 @@ hr:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1390,9 +1389,6 @@ hr:
         dependencies: "Ovisnosti"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3571,7 +3567,6 @@ hr:
   label_float: "Plutajući"
   label_folder: "Mapa"
   label_follows: "slijedi"
-  label_force_user_language_to_default: "Postavi zadani jezik za korisnike koji imaju nedozvoljeni jezik kao zadani"
   label_form_configuration: "Form configuration"
   label_formula: "Formula"
   label_gantt_chart: "Gantt chart"
@@ -3950,12 +3945,6 @@ hr:
   label_user_named: "User %{name}"
   label_user_activity: "%{value}-a aktivnost"
   label_user_anonymous: "Anonimno"
-  label_user_mail_option_all: "Za bilo koji događaj na svim mojim projektima"
-  label_user_mail_option_none: "Nema novih događanja"
-  label_user_mail_option_only_assigned: "Samo stvari koje su mi dodijeljene"
-  label_user_mail_option_only_my_events: "Samo stvari koje nadgledam ili u koje sam uključen"
-  label_user_mail_option_only_owner: "Samo za stvari kojih sam vlasnik"
-  label_user_mail_option_selected: "Za bilo koji događaj na samo odabranim projektima"
   label_user_menu: "User menu"
   label_user_new: "Novi korisnik"
   label_user_plural: "Korisnici"
@@ -3995,7 +3984,6 @@ hr:
   label_wiki_show_index_page_link: "Prikaži stavku podizbornika 'Kazalo sadržaja'"
   label_wiki_show_menu_item: "Prikaži kao stavku izbornika u izborniku projekta"
   label_wiki_show_new_page_link: "Prikaži stavku podizbornika 'Kreiraj novu podređenu stranicu'"
-  label_wiki_show_submenu_item: "Prikaži kao stavku podizbornika iz "
   label_wiki_start: "Početna stranica"
   label_work: "Work"
   label_work_package: "Radni paket"
@@ -5069,7 +5057,7 @@ hr:
   text_default_administrator_account_changed: "Default administrator account changed"
   text_default_encoding: "Zadana vrijednost: UTF-8"
   text_destroy: "Obriši"
-  text_destroy_with_associated: "There are additional objects assossociated with the work package(s) that are to be deleted. Those objects are of the following types:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Što želite uraditi?"
   text_diff_truncated: "... This diff was truncated because it exceeds the maximum size that can be displayed."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

@@ -107,9 +107,8 @@ tr:
         trial: "Deneme"
     jemalloc_allocator: Jemalloc bellek ayırıcı
     journal_aggregation:
-      explanation:
-        text: "Bir kullanıcının bireysel eylemleri (örneğin, bir iş paketini iki kez güncelleme), yaş farkı belirtilen zaman aralığından azsa tek bir eylemde toplanır. Uygulama içinde tek bir eylem olarak görüntülenecektir. Bu aynı zamanda gönderilen e-posta sayısını azaltarak bildirimleri aynı süre kadar geciktirecek ve ayrıca %{webhook_link} gecikmesini etkileyecektir."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1375,9 +1374,6 @@ tr:
         dependencies: "Bağımlılıklar"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Paylaşım"
-        finish_date: "Bitiş tarihi"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3515,7 +3511,6 @@ tr:
   label_float: "Ondalık"
   label_folder: "Klasör"
   label_follows: "takip eder"
-  label_force_user_language_to_default: "Varsayılan olmayan izin verildi bir dil olan kullanıcı dilini ayarlama"
   label_form_configuration: "Formu yapılandırma"
   label_formula: "Formül"
   label_gantt_chart: "Gantt görünümü"
@@ -3894,12 +3889,6 @@ tr:
   label_user_named: "%{name} kullanıcısı"
   label_user_activity: "%{value}'ın faaliyet"
   label_user_anonymous: "Anonim"
-  label_user_mail_option_all: "Tüm projelerimdeki herhangi bir olay için"
-  label_user_mail_option_none: "Etkinlik yok"
-  label_user_mail_option_only_assigned: "Sadece bana atanan şeyler için"
-  label_user_mail_option_only_my_events: "Sadece takip ettiğim ya da dahil olduklarım için"
-  label_user_mail_option_only_owner: "Sadece sahibi olduğum şeyler için"
-  label_user_mail_option_selected: "Yalnızca seçilen projelerdeki herhangi bir etkinlik için"
   label_user_menu: "Kullanıcı menüsü"
   label_user_new: "Yeni kullanıcı"
   label_user_plural: "Kullanıcılar"
@@ -3939,7 +3928,6 @@ tr:
   label_wiki_show_index_page_link: "Alt menü öğesini göster 'İçindekiler tablosu'"
   label_wiki_show_menu_item: "Proje gezintisinde menü öğesi olarak göster"
   label_wiki_show_new_page_link: "Alt menü öğesini göster 'Yeni alt sayfa oluştur'"
-  label_wiki_show_submenu_item: "Alt menü öğesi olarak göster "
   label_wiki_start: "Başlangıç sayfası"
   label_work: "Çalışma"
   label_work_package: "İş paketi"
@@ -5009,7 +4997,7 @@ tr:
   text_default_administrator_account_changed: "Varsayılan yönetici hesabı değişti"
   text_default_encoding: "Varsayılan: UTF-8"
   text_destroy: "Sil"
-  text_destroy_with_associated: "Silinecek iş paketleri ile birlikte ek nesne(ler) vardır. Bu nesneler aşağıdaki türdedir:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Ne yapmak istiyorsun?"
   text_diff_truncated: "... Bu fark, görüntülenebilecek maksimum boyutu aştığı için kesildi."
   text_email_delivery_not_configured: "E-posta teslimi yapılandırılmamış ve bildirimler devre dışı bırakılmış.\nSMTP sunucunuzu etkinleştirmek için yapılandırın."

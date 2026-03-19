@@ -56,7 +56,7 @@ RSpec.describe WorkPackageWebhookJob, :webmock, type: :model do
     end
 
     let(:stub) do
-      stub_request(:post, ssrf_resolved_url(stubbed_url))
+      stub_request(:post, stubbed_url)
         .with(
           body: hash_including(
             "action" => event,

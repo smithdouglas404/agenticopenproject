@@ -107,9 +107,8 @@ ko:
         trial: "평가판"
     jemalloc_allocator: Jemalloc 메모리 할당기
     journal_aggregation:
-      explanation:
-        text: "사용자의 개별 작업(예: 작업 패키지를 두 번 업데이트)은 연령 차이가 지정된 기간 미만인 경우 단일 작업으로 집계됩니다. 애플리케이션 내에서 단일 작업으로 표시됩니다. 또한 이는 전송되는 이메일 수를 줄이는 동일한 시간만큼 알림을 지연시키고 %{webhook_link} 지연에도 영향을 미칩니다."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "가져오기"
     jira:
@@ -1360,9 +1359,6 @@ ko:
         dependencies: "종속성"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "공유"
-        finish_date: "종료 날짜"
       jira_import:
         projects: "프로젝트"
       "import/jira":
@@ -3459,7 +3455,6 @@ ko:
   label_float: "부동"
   label_folder: "폴더"
   label_follows: "팔로우"
-  label_force_user_language_to_default: "허용되지 않는 언어가 있는 사용자의 언어를 기본값으로 설정"
   label_form_configuration: "양식 구성"
   label_formula: "공식"
   label_gantt_chart: "Gantt 차트"
@@ -3838,12 +3833,6 @@ ko:
   label_user_named: "사용자 %{name}"
   label_user_activity: "%{value}의 작업"
   label_user_anonymous: "익명"
-  label_user_mail_option_all: "모든 내 프로젝트의 이벤트에 대해"
-  label_user_mail_option_none: "이벤트 없음"
-  label_user_mail_option_only_assigned: "나에게 할당된 사항만"
-  label_user_mail_option_only_my_events: "내가 주시하거나 관련된 사항만"
-  label_user_mail_option_only_owner: "내가 소유자인 사항만"
-  label_user_mail_option_selected: "선택된 프로젝트에서 발생하는 이벤트만"
   label_user_menu: "사용자 메뉴"
   label_user_new: "새 사용자"
   label_user_plural: "사용자"
@@ -3883,7 +3872,6 @@ ko:
   label_wiki_show_index_page_link: "하위 메뉴 항목 '목차' 표시"
   label_wiki_show_menu_item: "프로젝트 탐색에서 메뉴 항목으로 표시"
   label_wiki_show_new_page_link: "하위 메뉴 항목 '새 자식 페이지 만들기' 표시"
-  label_wiki_show_submenu_item: "다음의 하위 메뉴 항목으로 표시: "
   label_wiki_start: "시작 페이지"
   label_work: "작업"
   label_work_package: "작업 패키지"
@@ -4950,7 +4938,7 @@ ko:
   text_default_administrator_account_changed: "기본 관리자 계정 변경됨"
   text_default_encoding: "기본: UTF-8"
   text_destroy: "삭제"
-  text_destroy_with_associated: "삭제할 작업 패키지와 연결된 추가 개체가 있습니다. 이러한 개체의 유형은 다음과 같습니다."
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "어떤 작업을 수행하시겠습니까?"
   text_diff_truncated: "... 이 차이점은 표시할 수 있는 최대 크기를 초과하므로 잘렸습니다."
   text_email_delivery_not_configured: "이메일 배달이 구성되지 않았고, 알림이 비활성화되었습니다.\nSMTP 서버를 구성하여 활성화하세요."

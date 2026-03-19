@@ -107,9 +107,8 @@ vi:
         trial: "thử nghiệm"
     jemalloc_allocator: Bộ cấp phát bộ nhớ Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Các hành động riêng lẻ của người dùng (ví dụ: cập nhật gói công việc hai lần) được tổng hợp thành một hành động nếu chênh lệch tuổi tác của họ nhỏ hơn khoảng thời gian đã chỉ định. Chúng sẽ được hiển thị dưới dạng một hành động duy nhất trong ứng dụng. Điều này cũng sẽ làm chậm thông báo với cùng một khoảng thời gian làm giảm số lượng email được gửi và cũng sẽ ảnh hưởng đến độ trễ %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1358,9 +1357,6 @@ vi:
         dependencies: "phụ thuộc"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -2232,7 +2228,7 @@ vi:
     body: "cơ thể"
     blocks_ids: "ID của các work package bị chặn"
     category: "thể loại"
-    comment: "bình luận"
+    comment: "Nhận xét"
     comments: "bình luận"
     content: "Nội dung"
     color: "màu sắc"
@@ -3457,7 +3453,6 @@ vi:
   label_float: "Số thực"
   label_folder: "Thư mục"
   label_follows: "theo dõi"
-  label_force_user_language_to_default: "Có một ngôn ngữ không được cho phép để mặc định trong thiết lập ngôn ngữ cho người sử dụng"
   label_form_configuration: "Mẫu cấu hình"
   label_formula: "Công thức"
   label_gantt_chart: "Biểu đồ Gantt"
@@ -3831,17 +3826,11 @@ vi:
   label_used_by: "Được dùng bởi"
   label_used_by_types: "Được sử dụng bởi các loại"
   label_used_in_projects: "Được sử dụng trong các dự án"
-  label_user: "người dùng"
+  label_user: "Người dùng"
   label_user_and_permission: "Người dùng và quyền"
   label_user_named: "Người dùng %{name}"
   label_user_activity: "%{value} hoạt động"
   label_user_anonymous: "vô danh"
-  label_user_mail_option_all: "Bất kỳ sự kiện trên tất cả dự án của tôi"
-  label_user_mail_option_none: "Không có sự kiện"
-  label_user_mail_option_only_assigned: "Chỉ những thứ tôi được phân công"
-  label_user_mail_option_only_my_events: "Chỉ những thứ tôi theo dõi hoặc liên quan"
-  label_user_mail_option_only_owner: "Chỉ những thứ tôi sở hữu"
-  label_user_mail_option_selected: "Chỉ dành cho bất kỳ sự kiện nào trên các dự án đã chọn"
   label_user_menu: "Trình đơn người dùng"
   label_user_new: "Người dùng mới"
   label_user_plural: "Người dùng"
@@ -3881,7 +3870,6 @@ vi:
   label_wiki_show_index_page_link: "Hiển thị mục menu con 'Mục lục'"
   label_wiki_show_menu_item: "Hiển thị dưới dạng mục menu trong điều hướng dự án"
   label_wiki_show_new_page_link: "Hiển thị mục menu con 'Tạo trang con mới'"
-  label_wiki_show_submenu_item: "Hiển thị dưới dạng mục menu con của"
   label_wiki_start: "Trang bắt đầu"
   label_work: "làm việc"
   label_work_package: "Work Package"
@@ -4951,7 +4939,7 @@ vi:
   text_default_administrator_account_changed: "Tài khoản quản trị viên mặc định đã thay đổi"
   text_default_encoding: "Mặc định: UTF-8"
   text_destroy: "xóa"
-  text_destroy_with_associated: "Có các đối tượng bổ sung liên quan đến (các) gói công việc sẽ bị xóa. Các đối tượng đó có các loại sau:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Bạn muốn làm gì?"
   text_diff_truncated: "... Sự khác biệt này đã bị cắt bớt vì nó vượt quá kích thước tối đa có thể được hiển thị."
   text_email_delivery_not_configured: "Gửi email không được cấu hình và thông báo bị vô hiệu hóa.\nCấu hình máy chủ SMTP của bạn để kích hoạt chúng."

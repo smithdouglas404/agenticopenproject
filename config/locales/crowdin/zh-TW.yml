@@ -107,9 +107,8 @@ zh-TW:
         trial: "試用"
     jemalloc_allocator: Jemalloc 記憶體分配器
     journal_aggregation:
-      explanation:
-        text: "使用者的個別操作（例如：在短時間內更新同一工作套件兩次）若時間差距小於指定時長，系統會將這些操作合併為單一動作，並於應用程式中以單一動作顯示。\n此機制同時會延遲通知發送相同的時間，以減少電子郵件數量，並且會影響 %{webhook_link} 的延遲時間。"
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1356,9 +1355,6 @@ zh-TW:
         dependencies: "依賴套件"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "分享"
-        finish_date: "結束日期"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3450,12 +3446,11 @@ zh-TW:
   label_filter_add: "新增條件"
   label_filter_by: "篩選條件："
   label_filter_any_name_attribute: "名稱屬性"
-  label_filter_plural: "篩選條件"
+  label_filter_plural: "篩選器"
   label_filters_toggle: "顯示/隱藏篩選條件"
   label_float: "浮點數"
   label_folder: "資料夾"
   label_follows: "關注"
-  label_force_user_language_to_default: "設置使用者使用預設語言"
   label_form_configuration: "表單設置"
   label_formula: "公式"
   label_gantt_chart: "甘特圖"
@@ -3465,8 +3460,8 @@ zh-TW:
   label_global_modules: "全域模組"
   label_global_roles: "全域角色"
   label_git_path: ".git 目錄的路徑"
-  label_greater_or_equal: "之前"
-  label_group_by: "分類"
+  label_greater_or_equal: ">="
+  label_group_by: "分組依據"
   label_group_new: "新增群組"
   label_group: "群組"
   label_group_named: "群組名稱 %{name}"
@@ -3478,7 +3473,7 @@ zh-TW:
   label_hierarchy: "階層"
   label_hierarchy_leaf: "頁面結構頁"
   label_home: "Home"
-  label_subject_or_id: "名稱或 id"
+  label_subject_or_id: "主旨或 id"
   label_calendar_subscriptions: "訂閱行事曆"
   label_identifier: "識別碼"
   label_in: "在"
@@ -3529,7 +3524,7 @@ zh-TW:
   label_latest_revision_plural: "最新版本"
   label_ldap_authentication: "LDAP 認證"
   label_learn_more: "了解更多"
-  label_less_or_equal: "之後"
+  label_less_or_equal: "<="
   label_less_than_ago: "幾天內"
   label_link_url: "連結(URL)"
   label_list: "清單"
@@ -3834,12 +3829,6 @@ zh-TW:
   label_user_named: "用戶名 %{name}"
   label_user_activity: "%{value} 的活動"
   label_user_anonymous: "匿名者"
-  label_user_mail_option_all: "對於我所有的專案的任何事件"
-  label_user_mail_option_none: "沒有事件"
-  label_user_mail_option_only_assigned: "只針對我被指派的事情"
-  label_user_mail_option_only_my_events: "只針對我關注的或者與我有關的事情"
-  label_user_mail_option_only_owner: "針對我是擁有者的事情"
-  label_user_mail_option_selected: "只有在已選取的專案的任何事件"
   label_user_menu: "使用者選單"
   label_user_new: "新增使用者"
   label_user_plural: "使用者"
@@ -3879,7 +3868,6 @@ zh-TW:
   label_wiki_show_index_page_link: "顯示子功能表 '表格內容'"
   label_wiki_show_menu_item: "在專案導覽中以子功能表呈現"
   label_wiki_show_new_page_link: "顯示子功能表 '新增子頁面'"
-  label_wiki_show_submenu_item: "呈現於子功能表的 "
   label_wiki_start: "開始頁面"
   label_work: "工時"
   label_work_package: "工作套件"
@@ -4947,7 +4935,7 @@ zh-TW:
   text_default_administrator_account_changed: "預設管理者帳號已更改"
   text_default_encoding: "預設值: UTF-8"
   text_destroy: "删除"
-  text_destroy_with_associated: "欲刪除的工作套件還關聯有其他物件，這些物件類型如下："
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "您想要做什麼？"
   text_diff_truncated: "... 此差異被截斷, 因為它超出了可以顯示的最大大小。"
   text_email_delivery_not_configured: "電子郵件傳送未配置，通知已禁用。\n配置您的 SMTP 服務器將其啓用。"

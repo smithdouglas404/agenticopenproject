@@ -107,9 +107,8 @@ sk:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1405,9 +1404,6 @@ sk:
         dependencies: "Závislosti"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3627,7 +3623,6 @@ sk:
   label_float: "Plávajúce (float)"
   label_folder: "Priečinok"
   label_follows: "nasleduje"
-  label_force_user_language_to_default: "Nastavenie jazyka užívateľov ktorí majú nastavený ako predvolený nepovolený jazyk"
   label_form_configuration: "Konfigurácia formulára"
   label_formula: "Formula"
   label_gantt_chart: "Ganttov diagram"
@@ -4006,12 +4001,6 @@ sk:
   label_user_named: "Užívateľ %{name}"
   label_user_activity: "Aktivita používateľa %{value}"
   label_user_anonymous: "Anonymný"
-  label_user_mail_option_all: "Pre všetky udalosti všetkých mojich projektov"
-  label_user_mail_option_none: "Žiadne udalosti"
-  label_user_mail_option_only_assigned: "Len pre veci, na ktoré som priradený"
-  label_user_mail_option_only_my_events: "Len pre veci, ktoré sledujem, alebo v ktorých som zapojený"
-  label_user_mail_option_only_owner: "Len pre veci, ktorých som vlastníkom"
-  label_user_mail_option_selected: "Pre každú udalosť len na vybraných projektoch"
   label_user_menu: "User menu"
   label_user_new: "Nový uživateľ"
   label_user_plural: "Užívatelia"
@@ -4051,7 +4040,6 @@ sk:
   label_wiki_show_index_page_link: "Zobraziť položku podmenu \"Obsah\""
   label_wiki_show_menu_item: "Zobraziť ako položku menu v navigácii projektu"
   label_wiki_show_new_page_link: "Zobraziť položku submenu \"Vytvoriť novú podradenú stránku\""
-  label_wiki_show_submenu_item: "Zobraziť ako položku submenu "
   label_wiki_start: "Úvodná stránka"
   label_work: "Work"
   label_work_package: "Pracovný balíček"
@@ -5126,7 +5114,7 @@ sk:
   text_default_administrator_account_changed: "Predvolené nastavenie administrátorského účtu bolo zmenené"
   text_default_encoding: "Predvolené: UTF-8"
   text_destroy: "Odstrániť"
-  text_destroy_with_associated: "Existujú ďalšie objekty spojené s pracovným balíčkom(-ami), ktoré sa majú vymazať. Tieto objekty sú z týchto typov:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Čo chcete urobiť?"
   text_diff_truncated: "... Tento výpis rozdielov bol skrátený, pretože prekračuje maximálny počet riadkov, ktorý môže byť zobrazený."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

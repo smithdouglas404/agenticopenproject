@@ -107,9 +107,8 @@ ms:
         trial: "Trial"
     jemalloc_allocator: Pengagih ingatan Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Tindakan individu pengguna (cth. mengemas kini pakej kerja dua kali) dikumpulkan ke dalam satu tindakan tunggal jika perbezaan umur mereka kurang daripada tempoh masa yang ditetapkan. Mereka akan dipaparkan sebagai tindakan tunggal dalam aplikasi. Ini juga akan menangguhkan pemberitahuan dengan jumlah masa yang sama, mengurangkan bilangan e-mel yang dihantar serta akan memberi kesan kepada penagguhan %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1358,9 +1357,6 @@ ms:
         dependencies: "Dependencies"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3457,7 +3453,6 @@ ms:
   label_float: "Terapung"
   label_folder: "Folder"
   label_follows: "ikuti"
-  label_force_user_language_to_default: "Tetapkan bahasa pengguna yang mempunyai bahasa yang tidak dibenarkan kepada default"
   label_form_configuration: "Konfigurasi borang"
   label_formula: "Formula"
   label_gantt_chart: "Carta Gantt"
@@ -3836,12 +3831,6 @@ ms:
   label_user_named: "Pengguna %{name}"
   label_user_activity: "aktiviti %{value}"
   label_user_anonymous: "Anonim"
-  label_user_mail_option_all: "Untuk sebarang peristiwa pada semua projek saya"
-  label_user_mail_option_none: "Tiada peristiwa"
-  label_user_mail_option_only_assigned: "Hanya untuk perkara yang ditugaskan kepada saya"
-  label_user_mail_option_only_my_events: "Hanya untuk perkara yang saya perhatikan atau yang saya terlibat dalam"
-  label_user_mail_option_only_owner: "Hanya untuk perkara yang merupakan saya pemiliknya"
-  label_user_mail_option_selected: "Untuk sebarang peristiwa pada projek yang terpilih sahaja"
   label_user_menu: "User menu"
   label_user_new: "Pengguna baharu"
   label_user_plural: "Pengguna-pengguna"
@@ -3881,7 +3870,6 @@ ms:
   label_wiki_show_index_page_link: "Paparkan item submenu 'Jadual Kandungan'"
   label_wiki_show_menu_item: "Paparkan sebagai item menu dalam navigasi projek"
   label_wiki_show_new_page_link: "Paparkan item submenu 'Cipta laman anak baharu'"
-  label_wiki_show_submenu_item: "Paparkan sebagai item submenu "
   label_wiki_start: "Halaman mula"
   label_work: "Kerja"
   label_work_package: "Pakej kerja"
@@ -4950,7 +4938,7 @@ ms:
   text_default_administrator_account_changed: "Akaun default pentadbir diubah"
   text_default_encoding: "Default: UTF-8"
   text_destroy: "Padam"
-  text_destroy_with_associated: "Terdapat objek tambahan yang berkaitan dengan pakej kerja yang perlu dipadam. Objek tersebut adalah daripada jenis berikut:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Apakah yang anda ingin lakukan?"
   text_diff_truncated: "... Perbezaan ini dipendekkan kerana ia melebihi saiz maksimum yang boleh dipaparkan."
   text_email_delivery_not_configured: "Penghantaran e-mel belum dikonfigurasi, dan pemberitahuan telah dinyahaktifkan.\nKonfigurasikan server SMTP anda untuk mengaktifkannya."

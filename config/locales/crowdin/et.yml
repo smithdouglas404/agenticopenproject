@@ -107,9 +107,8 @@ et:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1375,9 +1374,6 @@ et:
         dependencies: "Sõltuvused"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3515,7 +3511,6 @@ et:
   label_float: "Ujuvkomaarv"
   label_folder: "Kaust"
   label_follows: "järgneb"
-  label_force_user_language_to_default: "Sea keel kasutajatele, kellel on vaikimisi keeleks valitud mittelubatud keel"
   label_form_configuration: "Vormi seadistamine"
   label_formula: "Formula"
   label_gantt_chart: "Gantt diagrammi"
@@ -3894,12 +3889,6 @@ et:
   label_user_named: "User %{name}"
   label_user_activity: "%{value}-s tegevus"
   label_user_anonymous: "Anonüümne"
-  label_user_mail_option_all: "Kõigi sündmuste kohta minu projektides"
-  label_user_mail_option_none: "Sündmusi pole"
-  label_user_mail_option_only_assigned: "Ainult minule määratud tööde kohta"
-  label_user_mail_option_only_my_events: "Ainult tööde kohta, mida ma jälgin või millega olen seotud"
-  label_user_mail_option_only_owner: "Ainult minu omanduses olevate asjade kohta"
-  label_user_mail_option_selected: "For any event on the selected projects only"
   label_user_menu: "User menu"
   label_user_new: "Uus kasutaja"
   label_user_plural: "Kasutajad"
@@ -3939,7 +3928,6 @@ et:
   label_wiki_show_index_page_link: "Kuva alammenüü valik \"Sisukord\""
   label_wiki_show_menu_item: "Näita lehe nime projektimenüüs"
   label_wiki_show_new_page_link: "Näita alammenüüs valikut 'Loo uus alamleht'"
-  label_wiki_show_submenu_item: "Näita kui alammenüüd (<--) "
   label_wiki_start: "Esileht"
   label_work: "Töö"
   label_work_package: "Teema"
@@ -5011,7 +4999,7 @@ et:
   text_default_administrator_account_changed: "Algne administraatori konto on muudetud"
   text_default_encoding: "Vaikimisi: UTF-8"
   text_destroy: "Kustuta"
-  text_destroy_with_associated: "Kustutamiseks määratud teema(de)ga on seostatud veel objekte. Objektid on järgnevate tüüpidega:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Mis sa soovid ette võtta?"
   text_diff_truncated: "... Osa erinevusi jäi välja, sest neid on näitamiseks liiga palju."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

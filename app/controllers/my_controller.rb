@@ -50,7 +50,9 @@ class MyController < ApplicationController
                              :change_password,
                              :password_confirmation_dialog,
                              :notifications,
-                             :reminders
+                             :reminders,
+                             :non_working_times,
+                             :working_hours
 
   menu_item :account, only: [:account]
   menu_item :locale, only: [:locale]
@@ -58,6 +60,7 @@ class MyController < ApplicationController
   menu_item :password, only: [:password]
   menu_item :notifications, only: [:notifications]
   menu_item :reminders, only: [:reminders]
+  menu_item :working_hours, only: %i[working_hours non_working_times]
 
   def account; end
 
@@ -96,6 +99,27 @@ class MyController < ApplicationController
   # Configure user's mail reminders
   def reminders; end
 
+  def working_hours
+    render_403 unless OpenProject::FeatureDecisions.user_working_times_active?
+
+    @current_working_hours = @user.working_hours.current
+
+    @future_working_hours = @user.working_hours.upcoming(Date.current + 1)
+
+    @past_working_hours = if @current_working_hours
+                            @user.working_hours.history_for(@current_working_hours)
+                          else
+                            UserWorkingHours.none
+                          end
+  end
+
+  def non_working_times
+    render_403 unless OpenProject::FeatureDecisions.user_working_times_active?
+
+    @year = (params[:year].presence || Date.current.year).to_i
+    @non_working_times = @user.non_working_time_entities_for_year(@year)
+  end
+
   private
 
   def redirect_if_password_change_not_allowed_for(user)
@@ -119,7 +143,7 @@ class MyController < ApplicationController
       flash[:error] = error_account_update_failed(result)
     end
 
-    redirect_back(fallback_location: my_account_path)
+    redirect_back_or_to(my_account_path)
   end
 
   def handle_email_changes

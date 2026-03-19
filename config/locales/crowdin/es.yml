@@ -107,9 +107,8 @@ es:
         trial: "Prueba"
     jemalloc_allocator: Asignador de memoria Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Las acciones individuales de un usuario (como actualizar dos veces un paquete de trabajo) se combinan en una sola acción si la diferencia de antigüedad es inferior al intervalo de tiempo especificado. Se mostrarán como una sola acción en la aplicación. También se retrasarán las notificaciones por la misma cantidad de tiempo, lo que reducirá el número de correos electrónicos enviados y causará también que se retrase el %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Importar"
     jira:
@@ -1198,7 +1197,7 @@ es:
           automatic_with_children: "Fechas determinadas por paquetes de trabajo secundarios."
           automatic_with_predecessor: "La fecha de inicio la fija un predecesor."
           manual_mobile: "Programado manualmente."
-          manually_scheduled: "Programado manualmente. No afectadas por relaciones."
+          manually_scheduled: "Programado manualmente. Fechas no afectadas por relaciones."
       blankslate:
         title: "Sin predecesores"
         description: "Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano."
@@ -1372,9 +1371,6 @@ es:
         dependencies: "Dependencias"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Uso compartido"
-        finish_date: "Fecha de finalización"
       jira_import:
         projects: "Proyectos"
       "import/jira":
@@ -3512,7 +3508,6 @@ es:
   label_float: "Desprender"
   label_folder: "Carpeta"
   label_follows: "sigue"
-  label_force_user_language_to_default: "Configurar idioma de usuarios que tienen un lenguaje no permitido por defecto"
   label_form_configuration: "Configuración del formato"
   label_formula: "Fórmula"
   label_gantt_chart: "Diagrama de Gantt"
@@ -3891,12 +3886,6 @@ es:
   label_user_named: "Usuario %{name}"
   label_user_activity: "Actividad de %{value} "
   label_user_anonymous: "Anónimo"
-  label_user_mail_option_all: "Para cualquier evento en todos mis proyectos"
-  label_user_mail_option_none: "No hay eventos"
-  label_user_mail_option_only_assigned: "Sólo para cosas asignadas a mí"
-  label_user_mail_option_only_my_events: "Sólo para cosas que controlo o en las que participo"
-  label_user_mail_option_only_owner: "Sólo para cosas de las que soy el dueño"
-  label_user_mail_option_selected: "Únicamente para cualquier evento de los proyectos seleccionados"
   label_user_menu: "Menú de usuario"
   label_user_new: "Nuevo usuario"
   label_user_plural: "Usuarios"
@@ -3936,7 +3925,6 @@ es:
   label_wiki_show_index_page_link: "Mostrar el elemento de submenú 'Tabla de contenidos'"
   label_wiki_show_menu_item: "Mostrar como elemento de menú de navegación de proyecto"
   label_wiki_show_new_page_link: "Mostrar el elemento de submenú 'Crear nueva página hija'"
-  label_wiki_show_submenu_item: "Mostrar como elemento de submenú de "
   label_wiki_start: "Página de inicio"
   label_work: "Trabajo"
   label_work_package: "Paquete de trabajo"
@@ -5007,7 +4995,7 @@ es:
   text_default_administrator_account_changed: "Se ha cambiado la cuenta de administrador por defecto"
   text_default_encoding: "Por defecto: UTF-8"
   text_destroy: "Borrar"
-  text_destroy_with_associated: "Hay objetos adicionales asociados a los paquetes de trabajo que van a ser eliminados. Esos objetos son de los siguientes tipos:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "¿Qué quieres hacer?"
   text_diff_truncated: "... Esta diferencia se truncó porque excede el tamaño máximo que puede visualizarse."
   text_email_delivery_not_configured: "No se ha configurado la entrega de correo electrónico y se han deshabilitado las notificaciones.\nConfigure el servidor SMTP para habilitarlas."

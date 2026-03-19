@@ -107,9 +107,8 @@ lt:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Visi atskiri naudotojo veiksmai (t.y. darbų paketo atnaujinimas du kartus) yra sugrupuojami į vieną veiksmą, jei laiko tarpas tarp jų yra mažesnis už šį nustatymą. Programoje jie bus rodomi kaip vienas veiksmas. Tiek pat bus pavėlinti ir pranešimai. Dėl to sumažės siunčiamų el.laiškų skaičius ir taipogi įtakos %{webhook_link} delsimą."
-        link: "tinklo jungtis"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1402,9 +1401,6 @@ lt:
         dependencies: "Priklausomybės"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3624,7 +3620,6 @@ lt:
   label_float: "Skaičius su kableliu"
   label_folder: "Aplankas"
   label_follows: "seka"
-  label_force_user_language_to_default: "Nustatyti numatytąją kalbą vartotojams, kurie nurodo, sistemoje nežinomą kalbą"
   label_form_configuration: "Formos konfigūracija"
   label_formula: "Formula"
   label_gantt_chart: "Ganto grafikas"
@@ -4003,12 +3998,6 @@ lt:
   label_user_named: "Naudotojas %{name}"
   label_user_activity: "%{value} veikla"
   label_user_anonymous: "Anonimas"
-  label_user_mail_option_all: "Bet kokiam įvykiui visuose mano projektuose"
-  label_user_mail_option_none: "Jokių įvykių"
-  label_user_mail_option_only_assigned: "Tiktai dalykams, kuriems esu priskirtas"
-  label_user_mail_option_only_my_events: "Tiktai dalykams, kuriuos stebiu arba esu įtrauktas"
-  label_user_mail_option_only_owner: "Tiktai dalykams, kurių šeimininkas esu aš"
-  label_user_mail_option_selected: "Bet kokiam įvykiui tiktai pasirinktuose projektuose"
   label_user_menu: "User menu"
   label_user_new: "Naujas vartotojas"
   label_user_plural: "Naudotojai"
@@ -4048,7 +4037,6 @@ lt:
   label_wiki_show_index_page_link: "Rodyti submeniu punktą „Turinys“"
   label_wiki_show_menu_item: "Rodyti kaip meniu punktą projekto navigacijoje"
   label_wiki_show_new_page_link: "Rodyti submeniu punktą „Sukurti naują vaiko puslapį“"
-  label_wiki_show_submenu_item: "Rodyti kaip submeniu punktą "
   label_wiki_start: "Pradžios puslapis"
   label_work: "Darbas"
   label_work_package: "Darbų paketas"
@@ -5121,7 +5109,7 @@ lt:
   text_default_administrator_account_changed: "Administratoriaus numatytoji paskyra pakeista"
   text_default_encoding: "Numatytasis: UTF-8"
   text_destroy: "Ištrinti"
-  text_destroy_with_associated: "Yra papildomų objektų, kurie susieti su darbų paketu(-ais), kurie ketinami ištrinti.\nTie objektai yra šių tipų:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Ką norite daryti?"
   text_diff_truncated: "... Šis diff'as sutrauktas, nes viršija maksimalų rodomų eilučių skaičių."
   text_email_delivery_not_configured: "El. laiškų pristatymas yra nesukonfigūruotas, dėl to pranešimai yra išjungti.\nSukonfigūruokite prisijungimą prie SMTP serverio pranešimų įjungimui."

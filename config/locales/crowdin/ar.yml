@@ -107,9 +107,8 @@ ar:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1435,9 +1434,6 @@ ar:
         dependencies: "الاعتماديات"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3739,7 +3735,6 @@ ar:
   label_float: "عدد عشري"
   label_folder: "مجلد"
   label_follows: "تتبع"
-  label_force_user_language_to_default: "إعطاء لغة للمستخدمين غير اللغة المسموح بها بشكل افتراضي"
   label_form_configuration: "تشكيل النموذج"
   label_formula: "Formula"
   label_gantt_chart: "Gantt chart"
@@ -4118,12 +4113,6 @@ ar:
   label_user_named: "User %{name}"
   label_user_activity: "نشاط %{value}'s"
   label_user_anonymous: "مجهول"
-  label_user_mail_option_all: "من أجل أي حدث في كافة المشاريع"
-  label_user_mail_option_none: "لا يوجد أحداث"
-  label_user_mail_option_only_assigned: "فقط لأشياء موكلة لي"
-  label_user_mail_option_only_my_events: "فقط لأشياء أشاهدها أو أشارك فيها"
-  label_user_mail_option_only_owner: "فقط لأشياء أملكها"
-  label_user_mail_option_selected: "من أجل أي حدث في المشاريع المحددة فقط"
   label_user_menu: "User menu"
   label_user_new: "مستخدم جديد"
   label_user_plural: "المستخدمين"
@@ -4163,7 +4152,6 @@ ar:
   label_wiki_show_index_page_link: "إظهار عنصر القائمة الفرعية ’جدول المحتويات’"
   label_wiki_show_menu_item: "إظهار كعنصر قائمة في مشروع الملاحة"
   label_wiki_show_new_page_link: "إظهار عنصر القائمة الفرعية 'إنشاء صفحة فرعية جديدة'"
-  label_wiki_show_submenu_item: "إظهار كعنصر قائمة فرعية من "
   label_wiki_start: "صفحة البداية"
   label_work: "Work"
   label_work_package: "مجموعة العمل"
@@ -5241,7 +5229,7 @@ ar:
   text_default_administrator_account_changed: "تغيير حساب المسؤول الافتراضي"
   text_default_encoding: "الافتراضي: UTF-8"
   text_destroy: "احذف"
-  text_destroy_with_associated: "وهناك كائنات إضافية مرتبطة مع الحزمة (الحزم) العمل الموجودة المراد حذفها. هذه الكائنات من الأنواع التالية: "
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "ماذا تريد أن تفعل؟"
   text_diff_truncated: "... تم اقتطاعه لأنه يتجاوز الحد الأقصى للحجم التي يمكن عرضها."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

@@ -107,9 +107,8 @@ pl:
         trial: "Wersja próbna"
     jemalloc_allocator: Alokator pamięci Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Indywidualne działania użytkownika (np. dwukrotna aktualizacja pakietu roboczego) są agregowane w jedno działanie, jeśli różnica czasowa między nimi jest mniejsza niż określony przedział czasowy. Będą one wyświetlane jako jedno działanie w aplikacji. Spowoduje to również opóźnienie powiadomień o tę samą ilość czasu, zmniejszając liczbę wysyłanych wiadomości e-mail i wpłynie też na opóźnienie %{webhook_link}."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1401,9 +1400,6 @@ pl:
         dependencies: "Zależności"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Udostępnianie"
-        finish_date: "Data zakończenia"
       jira_import:
         projects: "Projekty"
       "import/jira":
@@ -3623,7 +3619,6 @@ pl:
   label_float: "Liczba rzeczywista"
   label_folder: "Katalog"
   label_follows: "Następujący"
-  label_force_user_language_to_default: "Ustaw język domyślny dla użytkowników o innych ustawieniach językowych niż dozwolone"
   label_form_configuration: "Konfiguracja formularza"
   label_formula: "Wzór"
   label_gantt_chart: "Wykres Gantta"
@@ -4002,12 +3997,6 @@ pl:
   label_user_named: "Użytkownik %{name}"
   label_user_activity: "Aktywność użytkownika: %{value}"
   label_user_anonymous: "Anonimowy"
-  label_user_mail_option_all: "Dla każdego zdarzenia we wszystkich moich projektach"
-  label_user_mail_option_none: "Brak zdarzeń"
-  label_user_mail_option_only_assigned: "Tylko do rzeczy do których jestem przydzielony"
-  label_user_mail_option_only_my_events: "Tylko to co obserwuję lub jestem zaangażowany"
-  label_user_mail_option_only_owner: "Tylko do rzeczy, których jestem właścicielem"
-  label_user_mail_option_selected: "Dla każdego zdarzenia w wybranych projektach"
   label_user_menu: "Menu użytkownika"
   label_user_new: "Nowy użytkownik"
   label_user_plural: "Użytkownicy"
@@ -4047,7 +4036,6 @@ pl:
   label_wiki_show_index_page_link: "Pokaż element podmenu \"Spis treści\""
   label_wiki_show_menu_item: "Pokaż jako element menu w nawigacji projektu"
   label_wiki_show_new_page_link: "Pokaż element podmenu \"Utwórz nową stronę podrzędną\""
-  label_wiki_show_submenu_item: "Pokaż jako pozycję podmenu "
   label_wiki_start: "Strona startowa"
   label_work: "Praca"
   label_work_package: "Zadanie"
@@ -5120,7 +5108,7 @@ pl:
   text_default_administrator_account_changed: "Domyślne konto administratora zostało zmienione"
   text_default_encoding: "Domyślnie: UTF-8"
   text_destroy: "Usuń"
-  text_destroy_with_associated: "Istnieją dodatkowe obiekty powiązane z pakietami roboczymi, które będą usunięte. Te obiekty są następujących typów:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Co chcesz zrobić?"
   text_diff_truncated: "... This diff was truncated because it exceeds the maximum size that can be displayed."
   text_email_delivery_not_configured: "Dostarczanie poczty elektronicznej nie jest skonfigurowane, a powiadomienia są wyłączone.\nSkonfiguruj swój serwer SMTP, aby je włączyć."

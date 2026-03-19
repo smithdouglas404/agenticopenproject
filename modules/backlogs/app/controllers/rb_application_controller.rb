@@ -41,7 +41,7 @@ class RbApplicationController < ApplicationController
   # Loads the project to be used by the authorize filter to determine if
   # User.current has permission to invoke the method in question.
   def load_sprint_and_project
-    @project = Project.visible.find(params[:project_id])
+    load_project
 
     # because of strong params, we want to pluck this variable out right now,
     # otherwise it causes issues where we are doing `attributes=`.
@@ -50,7 +50,13 @@ class RbApplicationController < ApplicationController
     end
   end
 
+  def load_project
+    @project = Project.visible.find(params[:project_id])
+  end
+
   def check_if_plugin_is_configured
+    return if OpenProject::FeatureDecisions.scrum_projects_active?
+
     settings = Setting.plugin_openproject_backlogs
     if settings["story_types"].blank? || settings["task_type"].blank?
       respond_to do |format|

@@ -107,9 +107,8 @@ hu:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "A felhasználó egyes műveletei (pl. egy munkacsomag kétszeri frissítése) egyetlen műveletté egyesülnek, ha korkülönbségük kisebb, mint a megadott időtartam. Ezek egyetlen műveletként jelennek meg az alkalmazásban. Ez ugyanannyi idővel késlelteti az értesítéseket, csökkenti az elküldött emailek számát, valamint befolyásolja a %{webhook_link} késleltetését is.\n"
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1374,9 +1373,6 @@ hu:
         dependencies: "Szükséges összetevők"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3514,7 +3510,6 @@ hu:
   label_float: "Mozgó"
   label_folder: "Mappa"
   label_follows: "követi ezt"
-  label_force_user_language_to_default: "Nyelv beállitása a felhasználóknak, amelyeknél nem az alapértelmezett nyelv az elfogadott"
   label_form_configuration: "Űrlap konfiguráció"
   label_formula: "Formula"
   label_gantt_chart: "Gantt-diagram"
@@ -3893,12 +3888,6 @@ hu:
   label_user_named: "Felhasználó: %{name}"
   label_user_activity: "%{value} tevékenység"
   label_user_anonymous: "Anonymous"
-  label_user_mail_option_all: "Minden saját projektet érintő esetben"
-  label_user_mail_option_none: "Nem kérek értesítéseket"
-  label_user_mail_option_only_assigned: "Csak a hozzám rendelt feladatokról"
-  label_user_mail_option_only_my_events: "Csak a megfigyelt feladatok vagy amelyben részt veszek"
-  label_user_mail_option_only_owner: "Csak azok a feladatok, amelyeknek én vagyok a tulajdonosa"
-  label_user_mail_option_selected: "Minden eseményről a kiválasztott projektekben"
   label_user_menu: "User menu"
   label_user_new: "Új felhasználó"
   label_user_plural: "Felhasználók"
@@ -3938,7 +3927,6 @@ hu:
   label_wiki_show_index_page_link: "Megjeleníti az almenüpont feladatainak \"Tartalomjegyzékét\""
   label_wiki_show_menu_item: "Megjeleníti mint menüpont a projekt navigációban"
   label_wiki_show_new_page_link: "Almenüpont megjelenítése \" új gyermekoldal létrehozása\""
-  label_wiki_show_submenu_item: "Megjelenítés mint: almenüpont "
   label_wiki_start: "Kezdő oldal"
   label_work: "Munka"
   label_work_package: "Feladatcsoport"
@@ -5009,7 +4997,7 @@ hu:
   text_default_administrator_account_changed: "Az alapértelmezett rendszergazdai fiók megváltozott"
   text_default_encoding: "Alapértelmezett érték: UTF-8"
   text_destroy: "Törlés"
-  text_destroy_with_associated: "További objektumok vannak hozzárendelve, a feladatcsoport(ok)hoz, amelyeket törölni kell. Ezek az objektumok a következők:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Mit szeretne tenni?"
   text_diff_truncated: "... Ez a különbség csonkolva lett, mert meghaladja a maximálisan megjeleníthető méretet."
   text_email_delivery_not_configured: "Email küldés nincs bekonfigurálva, és az értesítések ki vannak kapcsolva.\nÁllítsa be az SMTP szervert, hogy engedélyezze azokat."

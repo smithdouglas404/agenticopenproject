@@ -107,9 +107,8 @@ fil:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1375,9 +1374,6 @@ fil:
         dependencies: "Dependencia"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3515,7 +3511,6 @@ fil:
   label_float: "Lumutang"
   label_folder: "Folder"
   label_follows: "sundan"
-  label_force_user_language_to_default: "Magtakda ng linggwahe ng mga gumagamit na mayroon pinayagang linggwahe sa default"
   label_form_configuration: "Form kompigurasyon"
   label_formula: "Formula"
   label_gantt_chart: "Gantt tsart"
@@ -3894,12 +3889,6 @@ fil:
   label_user_named: "User %{name}"
   label_user_activity: "%{value} aktibidad"
   label_user_anonymous: "Hindi kilala"
-  label_user_mail_option_all: "Sa kahit anong kaganapan sa lahat ng aking proyekto"
-  label_user_mail_option_none: "Walang mga kaganapan"
-  label_user_mail_option_only_assigned: "Sa mga bagay lamang ako nakatalaga sa"
-  label_user_mail_option_only_my_events: "Sa mga bagay ako tumingin o kasama ako sa"
-  label_user_mail_option_only_owner: "Sa mga bagay lamg ako na ako ang may-ari ng"
-  label_user_mail_option_selected: "Sa kahit anong kaganapan sa mga napiling proyekto lamang"
   label_user_menu: "User menu"
   label_user_new: "Bagong gumagamit"
   label_user_plural: "Mga gumagamit"
@@ -3939,7 +3928,6 @@ fil:
   label_wiki_show_index_page_link: "Ipakita ang aytem ng submenu 'Talaan ng Nilalaman'"
   label_wiki_show_menu_item: "Ipakita bilanh aytem na pagpipilian sa proyektong nabigasyon"
   label_wiki_show_new_page_link: "Ipakita ang submenu aytem 'Lumikha ng bagong bata na pahina'"
-  label_wiki_show_submenu_item: "Ipakita bilang submenu. aytem ng "
   label_wiki_start: "Simulan ang pahina"
   label_work: "Work"
   label_work_package: "Work package"
@@ -5009,7 +4997,7 @@ fil:
   text_default_administrator_account_changed: "I-default ang tagapangasiwa ng pagbago ng akwant"
   text_default_encoding: "I-default: UTF-8"
   text_destroy: "Burahin"
-  text_destroy_with_associated: "Mayroong karagdagang mga bagay naka-associaye sa work packGe na maaring burahin. Yung mga bagay ay ang mga sumusunod na uri:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Ano gusto mong gawin?"
   text_diff_truncated: "... Itong diff ay naka-truncatw dahil ito ay lamps na sa pinakamataas na laki na maaring ipakita."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

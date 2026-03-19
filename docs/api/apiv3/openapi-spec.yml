@@ -266,6 +266,8 @@ paths:
     "$ref": "./paths/help_texts.yml"
   "/api/v3/help_texts/{id}":
     "$ref": "./paths/help_text.yml"
+  "/api/v3/meetings":
+    "$ref": "./paths/meetings.yml"
   "/api/v3/meetings/{id}":
     "$ref": "./paths/meeting.yml"
   "/api/v3/meetings/{id}/attachments":
@@ -480,6 +482,14 @@ paths:
     "$ref": "./paths/user_form.yml"
   "/api/v3/users/{id}/lock":
     "$ref": "./paths/user_lock.yml"
+  "/api/v3/users/{id}/non_working_times":
+    "$ref": "./paths/user_non_working_times.yml"
+  "/api/v3/users/{id}/non_working_times/{non_working_time_id}":
+    "$ref": "./paths/user_non_working_times_date.yml"
+  "/api/v3/users/{id}/working_hours":
+    "$ref": "./paths/user_working_hours.yml"
+  "/api/v3/users/{id}/working_hours/{working_hours_id}":
+    "$ref": "./paths/user_working_hours_record.yml"
   "/api/v3/values/schema/{id}":
     "$ref": "./paths/values_schema.yml"
   "/api/v3/versions":
@@ -589,6 +599,10 @@ components:
       $ref: "./components/examples/hierarchy_item_collection_response.yml"
     HierarchyItemResponse:
       $ref: "./components/examples/hierarchy_item_response.yml"
+    MeetingCollectionSimpleResponse:
+      $ref: "./components/examples/meeting_collection_simple_response.yml"
+    MeetingSimpleResponse:
+      $ref: "./components/examples/meeting_simple_response.yml"
     MembershipCreateRequestCustomMessage:
       $ref: "./components/examples/membership-create-request-custom-message.yml"
     MembershipCreateRequestGlobalRole:
@@ -602,9 +616,9 @@ components:
     MembershipSimpleCollectionResponse:
       $ref: "./components/examples/membership-simple-collection-response.yml"
     MembershipSimpleResponse:
-      $ref: "./components/examples/membership-simple-response.yml"
+      $ref: "./components/examples/membership_simple_response.yml"
     MembershipUpdateAdditionalRoles:
-      $ref: "./components/examples/membership-update-additional-roles.yml"
+      $ref: "./components/examples/membership_update_additional_roles.yml"
     MentionedNotification:
       $ref: "./components/examples/mentioned_notification.yml"
     NotificationCollection:
@@ -827,6 +841,8 @@ components:
       "$ref": "./components/schemas/list_of_news_model.yml"
     List_workspaces_by_versionModel:
       "$ref": "./components/schemas/list_workspaces_by_version_model.yml"
+    MeetingCollectionModel:
+      "$ref": "./components/schemas/meeting_collection_model.yml"
     MeetingModel:
       "$ref": "./components/schemas/meeting_model.yml"
     MarkdownModel:
@@ -997,8 +1013,16 @@ components:
       "$ref": "./components/schemas/user_create_model.yml"
     UserModel:
       "$ref": "./components/schemas/user_model.yml"
+    UserNonWorkingTimeCollectionModel:
+      "$ref": "./components/schemas/user_non_working_time_collection_model.yml"
+    UserNonWorkingTimeModel:
+      "$ref": "./components/schemas/user_non_working_time_model.yml"
     UserPreferencesModel:
       "$ref": "./components/schemas/user_preferences_model.yml"
+    UserWorkingHoursCollectionModel:
+      "$ref": "./components/schemas/user_working_hours_collection_model.yml"
+    UserWorkingHoursModel:
+      "$ref": "./components/schemas/user_working_hours_model.yml"
     ValuesPropertyModel:
       "$ref": "./components/schemas/values_property_model.yml"
     VersionCollectionModel:
@@ -1109,6 +1133,7 @@ tags:
   - "$ref": "./tags/types.yml"
   - "$ref": "./tags/userpreferences.yml"
   - "$ref": "./tags/users.yml"
+  - "$ref": "./tags/user_working_times.yml"
   - "$ref": "./tags/values_property.yml"
   - "$ref": "./tags/versions.yml"
   - "$ref": "./tags/views.yml"

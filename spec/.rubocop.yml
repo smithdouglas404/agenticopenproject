@@ -5,3 +5,6 @@ Style/RescueModifier:
 
 Rails/FindEach:
   Enabled: false
+
+Rails/SaveBang:
+  Enabled: false

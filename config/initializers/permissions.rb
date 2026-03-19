@@ -286,6 +286,14 @@ Rails.application.reloader.to_prepare do
                      {},
                      permissible_on: :project_query,
                      require: :loggedin
+
+      map.permission :manage_own_working_times,
+                     {},
+                     permissible_on: :global
+
+      map.permission :manage_working_times,
+                     {},
+                     permissible_on: :global
     end
 
     map.project_module :work_package_tracking, order: 90 do |wpt|
@@ -399,7 +407,8 @@ Rails.application.reloader.to_prepare do
       wpt.permission :add_work_package_attachments,
                      {},
                      permissible_on: %i[work_package project],
-                     dependencies: :view_work_packages
+                     dependencies: :view_work_packages,
+                     contract_actions: { work_package_attachments: %i[create] }
 
       # WorkPackage categories
       wpt.permission :manage_categories,

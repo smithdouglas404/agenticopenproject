@@ -107,9 +107,8 @@ ru:
         trial: "Пробная версия"
     jemalloc_allocator: Распределитель памяти Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Личные действия пользователя (например, обновление пакета работ дважды) агрегируются в одно действие, если их разница во времени не больше указанной. Они будут отображаться как одно действие внутри приложения. Это также задерживает уведомление на такое же количество времени, уменьшая количество отправляемых писем и также повлияет на %{webhook_link} задержки."
-        link: "вебхук"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Импорт"
     jira:
@@ -1403,9 +1402,6 @@ ru:
         dependencies: "Связи"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Совместное использование"
-        finish_date: "Дата окончания"
       jira_import:
         projects: "Проекты"
       "import/jira":
@@ -3625,7 +3621,6 @@ ru:
   label_float: "Плавающий"
   label_folder: "Папка"
   label_follows: "Следует"
-  label_force_user_language_to_default: "Язык, который пользователям нельзя установить как действующий по-умолчанию"
   label_form_configuration: "Настройка форм"
   label_formula: "Формула"
   label_gantt_chart: "Диаграмма Ганта"
@@ -4004,12 +3999,6 @@ ru:
   label_user_named: "Пользователь %{name}"
   label_user_activity: "%{value} деятельности"
   label_user_anonymous: "Анонимно"
-  label_user_mail_option_all: "Для любого события на моих проектах"
-  label_user_mail_option_none: "Нет событий"
-  label_user_mail_option_only_assigned: "Только для тех, которые мне поручены"
-  label_user_mail_option_only_my_events: "Только для тех, в которых я наблюдатель или участник"
-  label_user_mail_option_only_owner: "Только для тех, которыми я владею"
-  label_user_mail_option_selected: "Для любого события, но только для выбранных проектов"
   label_user_menu: "Пользовательское меню"
   label_user_new: "Новый пользователь"
   label_user_plural: "Пользователи"
@@ -4049,7 +4038,6 @@ ru:
   label_wiki_show_index_page_link: "Показать пункт подменю «Содержание»"
   label_wiki_show_menu_item: "Показать как меню в навигации по проекту"
   label_wiki_show_new_page_link: "Показать пункт подменю «Создать новую дочернюю страницу»"
-  label_wiki_show_submenu_item: "Показать как пункт подменю "
   label_wiki_start: "Начальная страница"
   label_work: "Предполагаемое время"
   label_work_package: "Пакет работ"

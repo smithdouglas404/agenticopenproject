@@ -107,9 +107,8 @@ da:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1373,9 +1372,6 @@ da:
         dependencies: "Aflæggere"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3513,7 +3509,6 @@ da:
   label_float: "Flyd"
   label_folder: "Folder"
   label_follows: "følger"
-  label_force_user_language_to_default: "Sæt sprog for brugere, der har forhåndsvalgt et ikke gangbart sprog"
   label_form_configuration: "Form configuration"
   label_formula: "Formula"
   label_gantt_chart: "Gantt chart"
@@ -3892,12 +3887,6 @@ da:
   label_user_named: "User %{name}"
   label_user_activity: "%{value}s aktivitet"
   label_user_anonymous: "Anonymt"
-  label_user_mail_option_all: "For enhver hændelse i alle mine projekter"
-  label_user_mail_option_none: "Ingen hændelser"
-  label_user_mail_option_only_assigned: "Kun i forbindelse med det jeg er tilknyttet"
-  label_user_mail_option_only_my_events: "Kun for det jeg fører tilsyn med eller er involveret i"
-  label_user_mail_option_only_owner: "Kun for det jeg er ejer af"
-  label_user_mail_option_selected: "Kun for hændelser i de valgte projekter"
   label_user_menu: "User menu"
   label_user_new: "Ny bruger"
   label_user_plural: "Brugere"
@@ -3937,7 +3926,6 @@ da:
   label_wiki_show_index_page_link: "Vis undermenupunkt 'Indhold'"
   label_wiki_show_menu_item: "Vis som menupunkt i projektnavigeringen"
   label_wiki_show_new_page_link: "Vis undermenupunktet 'Opret ny underside'"
-  label_wiki_show_submenu_item: "Vis som punkt i undermenu til "
   label_wiki_start: "Startside"
   label_work: "Work"
   label_work_package: "Arbejdspakke"
@@ -5007,7 +4995,7 @@ da:
   text_default_administrator_account_changed: "Forhåndsvalgt administratorkonto ændret"
   text_default_encoding: "Forhåndsvalgt: UTF-8"
   text_destroy: "Slet"
-  text_destroy_with_associated: "Der er yderligere objekter tilknyttet arbejdspakken/-kerne som skal slettes. Disse er af følgende art:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Hvad vil du lave?"
   text_diff_truncated: "... Denne afvigelse blev undertrykt da den overstiger den længde, der kan vises."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

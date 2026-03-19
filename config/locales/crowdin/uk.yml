@@ -107,9 +107,8 @@ uk:
         trial: "Пробний період"
     jemalloc_allocator: Розподіл пам'яті Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Окремі дії користувача (напр., оновлення робочого пакета двічі) зводяться в одну дію, якщо відмінність у часі між ними менша за вказаний проміжок часу. Їх буде виведено як окремі дії в межах додатка. Крім того, це призведе до затримки сповіщень на такий самий проміжок часу, що зменшить кількість електронних листів, які надсилатимуться, а також вплине на затримку %{webhook_link}."
-        link: "вебгука"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Iмпорт"
     jira:
@@ -1399,9 +1398,6 @@ uk:
         dependencies: "Залежності"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Надання доступу"
-        finish_date: "Дата завершення"
       jira_import:
         projects: "Проєкти"
       "import/jira":
@@ -3621,7 +3617,6 @@ uk:
   label_float: "З плаваючою крапкою"
   label_folder: "Папка"
   label_follows: "слідкувати"
-  label_force_user_language_to_default: "Встановити мову користувачів, які мають не підтримувану мову, за умовчанням"
   label_form_configuration: "Конфігурація форми"
   label_formula: "Формула"
   label_gantt_chart: "Діаграма Ґанта"
@@ -3659,7 +3654,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -4000,12 +3995,6 @@ uk:
   label_user_named: "User %{name}"
   label_user_activity: "Дії користувача %{value}"
   label_user_anonymous: "Невідомий"
-  label_user_mail_option_all: "Для всіх подій у всіх моїх проектах"
-  label_user_mail_option_none: "Ніяких подій"
-  label_user_mail_option_only_assigned: "Тільки за те що я призначений"
-  label_user_mail_option_only_my_events: "Тільки для речей які я дивлюся чи я займаюся"
-  label_user_mail_option_only_owner: "Тільки для речей, за якими я спостерігаю або є власником"
-  label_user_mail_option_selected: "Для будь-якої події на вибраних проектах"
   label_user_menu: "Меню користувача"
   label_user_new: "Новий користувач"
   label_user_plural: "Користувачі"
@@ -4045,7 +4034,6 @@ uk:
   label_wiki_show_index_page_link: "Показати пункт підменю \"Зміст\""
   label_wiki_show_menu_item: "Показати як пункт меню в навігації по проекту"
   label_wiki_show_new_page_link: "Показати елемент підменю \"Створити нову початкову сторінку\""
-  label_wiki_show_submenu_item: "Показати як пункт підменю "
   label_wiki_start: "Початкова сторінка"
   label_work: "Робота"
   label_work_package: "Робочий пакет"
@@ -5119,7 +5107,7 @@ uk:
   text_default_administrator_account_changed: "Обліковий запис адміністратора за замовчуванням змінений"
   text_default_encoding: "По замовчуванню: UTF-8"
   text_destroy: "Видалити"
-  text_destroy_with_associated: "Існують додаткові об'єкти, асоційовані з робочими пакетами, які потрібно видалити. Ці об'єкти мають наступні типи:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Що ти хочеш зробити?"
   text_diff_truncated: "... Це порівняння (diff) було скорочене, оскільки воно перевищує максимальний розмір, який можна відобразити."
   text_email_delivery_not_configured: "Доставку електронної пошти не налаштовано, і сповіщення вимкнуто.\nНалаштуйте свій SMTP-сервер, щоб увімкнути їх."

@@ -279,6 +279,8 @@ de:
           drive_contents: Speicherinhalt
           files_request: Teamordnerdateien werden abgerufen
           header: Automatisch verwaltete Projektordner
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: 'Abhängigkeit: Teamordner'
           team_folder_contents: Inhalt des Teamordners
           team_folder_presence: Teamordner existiert
@@ -322,8 +324,10 @@ de:
         nc_oauth_request_not_found: Der Endpunkt für den Abruf des aktuell verbundenen Benutzers wurde nicht gefunden. Bitte überprüfen Sie die Serverprotokolle für weitere Informationen.
         nc_oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, auf den Remote-Datei-Speicher zuzugreifen. Bitte überprüfen Sie die Server-Protokolle für weitere Informationen.
         nc_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit Nextcloud nicht testen, da der Benutzer sein Nextcloud Konto noch nicht verknüpft hat.
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: Der Teamordner konnte nicht gefunden werden.
-        nc_unexpected_content: Unerwarteter Inhalt im verwalteten Teamordner gefunden.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: Das konfigurierte App-Passwort ist ungültig.
         not_configured: Die Verbindung konnte nicht validiert werden. Bitte schließen Sie zuerst die Konfiguration ab.
         od_client_cant_delete_folder: Der Client hat Probleme beim Löschen von Ordnern. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
@@ -372,6 +376,7 @@ de:
         failure: Einige Überprüfungen sind fehlgeschlagen und das System funktioniert nicht wie erwartet.
         success: Alle Verbindungen und Systeme funktionieren wie erwartet.
         warning: Einige Überprüfungen ergaben eine Warnung. Dies kann zu unerwartetem Verhalten führen.
+      synced: 'Zuletzt aktualisiert: %{datetime}'
       title: Gesundheitsstatusbericht
     health_email_notifications:
       description_disabled: Administrator:innen erhalten keine E-Mail-Updates, wenn es wichtige Änderungen gibt.

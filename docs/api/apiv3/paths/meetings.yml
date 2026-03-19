@@ -1,0 +1,19 @@
+# /api/v3/meetings
+---
+get:
+  summary: List all visible meetings
+  operationId: list_meetings
+  tags:
+    - Meetings
+  description: |- 
+    Retrieve a paginated collection of meetings visible to the authenticated user.
+  responses:
+    '200':
+      description: OK
+      content:
+        application/hal+json:
+          examples:
+            response:
+              $ref: "../components/examples/meeting_collection_simple_response.yml"
+          schema:
+            $ref: "../components/schemas/meeting_collection_model.yml"

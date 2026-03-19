@@ -113,14 +113,44 @@ module Versions
       if backlogs_enabled?
         setting = version_setting_for_project
 
-        f.select_list(
-          name: "version[version_settings_attributes][][display]",
-          scope_name_to_model: false,
-          label: I18n.t(:label_column_in_backlog),
-          input_width: :small
-        ) do |list|
-          position_display_options.each do |label, value|
-            list.option(label:, value:, selected: setting.display == value)
+        if OpenProject::FeatureDecisions.scrum_projects_active?
+          # We originally planned to render a check_box here. But since this changes the way Rails will submit the parameters,
+          # this would require changing the controller or services, too. With a feature flag in place, this adds quite a
+          # lot of complexity.
+          # To circumvent this, we will use a select list with two options for now. This will not require any changes to
+          # controllers or services. We can fix this once the feature flag has been removed.
+          f.select_list(
+            name: "version[version_settings_attributes][][display]",
+            scope_name_to_model: false,
+            label: I18n.t(:label_used_as_backlog),
+            input_width: :small
+          ) do |list|
+            # Maintain the current setting for the sake of migrating sprints to versions later on
+            current_display_setting = setting.display
+            value_for_no = if current_display_setting == VersionSetting::DISPLAY_RIGHT || current_display_setting.nil?
+                             VersionSetting::DISPLAY_NONE
+                           else
+                             current_display_setting
+                           end
+
+            list.option(label: I18n.t(:general_text_no),
+                        value: value_for_no,
+                        selected: setting.display != VersionSetting::DISPLAY_RIGHT)
+
+            list.option(label: I18n.t(:general_text_yes),
+                        value: VersionSetting::DISPLAY_RIGHT,
+                        selected: setting.display == VersionSetting::DISPLAY_RIGHT)
+          end
+        else
+          f.select_list(
+            name: "version[version_settings_attributes][][display]",
+            scope_name_to_model: false,
+            label: I18n.t(:label_column_in_backlog),
+            input_width: :small
+          ) do |list|
+            position_display_options.each do |label, value|
+              list.option(label:, value:, selected: setting.display == value)
+            end
           end
         end
 

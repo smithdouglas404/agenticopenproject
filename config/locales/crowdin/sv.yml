@@ -107,9 +107,8 @@ sv:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect %{webhook_link} delay."
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -1375,9 +1374,6 @@ sv:
         dependencies: "Beroenden"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
@@ -3515,7 +3511,6 @@ sv:
   label_float: "Flyttal"
   label_folder: "Mapp"
   label_follows: "följer"
-  label_force_user_language_to_default: "Välj standardspråk för användare som har ett icke tillåtet språk"
   label_form_configuration: "Ställ in formulär"
   label_formula: "Formel"
   label_gantt_chart: "Gantt-schema"
@@ -3894,12 +3889,6 @@ sv:
   label_user_named: "Användare %{name}"
   label_user_activity: "%{value}s aktivitet"
   label_user_anonymous: "Anonym"
-  label_user_mail_option_all: "För alla händelser i alla mina projekt"
-  label_user_mail_option_none: "Inga händelser"
-  label_user_mail_option_only_assigned: "Bara är saker jag tilldelade"
-  label_user_mail_option_only_my_events: "Endast för saker jag bevakar eller deltar i"
-  label_user_mail_option_only_owner: "Endast för saker är jag ägare till"
-  label_user_mail_option_selected: "Endast för alla händelser i valda projekt"
   label_user_menu: "Användarmeny"
   label_user_new: "Ny användare"
   label_user_plural: "Användare"
@@ -3939,7 +3928,6 @@ sv:
   label_wiki_show_index_page_link: "Visa undermenyn \"Innehållsförteckning\""
   label_wiki_show_menu_item: "Visa som menyobjekt i projektets meny"
   label_wiki_show_new_page_link: "Visa undermenyn \"Skapa ny underordnad sida\""
-  label_wiki_show_submenu_item: "Visa som undermenyalternativ för "
   label_wiki_start: "Startsida"
   label_work: "Arbete"
   label_work_package: "Arbetspaket"
@@ -5009,7 +4997,7 @@ sv:
   text_default_administrator_account_changed: "Standardadministratörskontot har ändrats"
   text_default_encoding: "Standard: UTF-8"
   text_destroy: "Ta bort"
-  text_destroy_with_associated: "Det finns ytterligare objekt kopplade med det/de arbetspaket som ska tas bort. Dessa objekt är av följande typer:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Vad vill du göra?"
   text_diff_truncated: "... Denna diff trunkerades eftersom den överskrider den maximala storleken som kan visas."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."
