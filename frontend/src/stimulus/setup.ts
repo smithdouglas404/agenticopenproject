@@ -83,7 +83,6 @@ OpenProjectStimulusApplication.preregister('external-links', ExternalLinksContro
 OpenProjectStimulusApplication.preregister('highlight-target-element', HighlightTargetElementController);
 OpenProjectStimulusApplication.preregister('select-autosize', SelectAutosizeController);
 OpenProjectStimulusApplication.preregister('editable-page-header-title', EditablePageHeaderTitleController);
-OpenProjectStimulusApplication.preregister('projects--identifier-suggestion', IdentifierSuggestionController);
 OpenProjectStimulusApplication.preregister('check-all', CheckAllController);
 OpenProjectStimulusApplication.preregister('checkable', CheckableController);
 OpenProjectStimulusApplication.preregister('truncation', TruncationController);
