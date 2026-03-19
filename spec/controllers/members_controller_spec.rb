@@ -441,10 +441,13 @@ RSpec.describe MembersController do
   end
 
   describe "historic identifier redirect" do
-    let(:project) { create(:project) }
+    let(:redirect_project) { create(:project) }
+    let(:redirect_user) { create(:user, member_with_permissions: { redirect_project => %i[view_members] }) }
 
-    before { allow(User).to receive(:current).and_return user }
+    before { allow(User).to receive(:current).and_return redirect_user }
 
-    it_behaves_like "redirects GET requests using a historical project identifier", :index
+    it_behaves_like "redirects GET requests using a historical project identifier", :index do
+      let(:project) { redirect_project }
+    end
   end
 end
