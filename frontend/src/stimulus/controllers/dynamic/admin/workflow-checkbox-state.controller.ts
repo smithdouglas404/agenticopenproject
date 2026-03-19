@@ -30,16 +30,21 @@
 
 import { Controller } from '@hotwired/stimulus';
 
+const SAVED_STATE_KEY = 'workflow-saved-state';
+
+interface SavedState {
+  formKey:string;
+  checkboxes:Record<string, boolean>;
+}
+
 export default class WorkflowCheckboxStateController extends Controller<HTMLFormElement> {
   connect() {
     const frame = this.element.closest<HTMLElement>('turbo-frame');
     frame?.addEventListener('turbo:before-frame-render', this.onBeforeFrameRender);
 
-    if (frame?.dataset.workflowRestorePending) {
-      delete frame.dataset.workflowRestorePending;
-      this.restoreState();
-    } else {
-      sessionStorage.removeItem(this.storageKey);
+    const saved = this.loadSavedState();
+    if (saved?.formKey === this.formKey) {
+      this.applyState(saved.checkboxes);
     }
 
     this.element.addEventListener('submit', this.onFormSubmit);
@@ -51,39 +56,39 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
   }
 
   private onBeforeFrameRender = () => {
-    this.saveState();
-    const frame = this.element.closest<HTMLElement>('turbo-frame');
-    if (frame) frame.dataset.workflowRestorePending = 'true';
+    const checkboxes:Record<string, boolean> = {};
+    this.element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((cb) => {
+      checkboxes[`${cb.dataset.oldStatus}:${cb.dataset.newStatus}:${cb.value}`] = cb.checked;
+    });
+
+    const state:SavedState = { formKey: this.formKey, checkboxes };
+    sessionStorage.setItem(SAVED_STATE_KEY, JSON.stringify(state));
   };
 
   private onFormSubmit = () => {
-    sessionStorage.removeItem(this.storageKey);
+    sessionStorage.removeItem(SAVED_STATE_KEY);
   };
 
-  private get storageKey():string {
-    return `workflow-transitions-${this.formValue('type_id')}-${this.formValue('role_id')}`;
+  private get formKey():string {
+    return `${this.formValue('type_id')}-${this.formValue('role_id')}`;
   }
 
   private formValue(name:string):string {
     return this.element.querySelector<HTMLInputElement>(`input[name="${name}"]`)!.value;
   }
 
-  private saveState():void {
-    const state:Record<string, boolean> = {};
-    this.element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((cb) => {
-      state[`${cb.dataset.oldStatus}:${cb.dataset.newStatus}:${cb.value}`] = cb.checked;
-    });
-    sessionStorage.setItem(this.storageKey, JSON.stringify(state));
+  private loadSavedState():SavedState | null {
+    const raw = sessionStorage.getItem(SAVED_STATE_KEY);
+    sessionStorage.removeItem(SAVED_STATE_KEY);
+    if (!raw) return null;
+
+    return JSON.parse(raw) as SavedState;
   }
 
-  private restoreState():void {
-    const raw = sessionStorage.getItem(this.storageKey);
-    if (!raw) return;
-
-    const state = JSON.parse(raw) as Record<string, boolean>;
+  private applyState(checkboxes:Record<string, boolean>):void {
     this.element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((cb) => {
       const key = `${cb.dataset.oldStatus}:${cb.dataset.newStatus}:${cb.value}`;
-      if (key in state) cb.checked = state[key];
+      if (key in checkboxes) cb.checked = checkboxes[key];
     });
   }
 }
