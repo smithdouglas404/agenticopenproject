@@ -250,14 +250,19 @@ RSpec.describe HourlyRatesController do
   end
 
   describe "historic identifier redirect" do
-    let(:project) { create(:project) }
-    let(:rate_user) { create(:user) }
+    let(:redirect_project) { create(:project) }
+    let(:rate_user) { create(:user, member_with_permissions: { redirect_project => [] }) }
+    let(:redirect_admin) { create(:admin, member_with_permissions: { redirect_project => [:view_hourly_rates] }) }
 
     before do
-      login_as(admin)
+      # Ensure rate_user is a member so the project has data
+      rate_user
+      login_as(redirect_admin)
     end
 
     it_behaves_like "redirects GET requests using a historical project identifier",
-                    :show, { id: -> { rate_user.id } }
+                    :show, { id: -> { rate_user.id } } do
+      let(:project) { redirect_project }
+    end
   end
 end
