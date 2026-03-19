@@ -81,7 +81,7 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
     create(:project,
            name: "Forbidden project",
            types: [type],
-           id: 666,
+           id: 1002,
            identifier: "forbidden-project",
            public: false,
            status_code: "on_track",
@@ -163,7 +163,7 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
   end
   let(:work_package) do
     create(:work_package,
-           id: 1,
+           id: 1001,
            project:,
            type:,
            subject: "Work package 1",
@@ -198,7 +198,7 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
   end
   let(:forbidden_work_package) do
     create(:work_package,
-           id: 10,
+           id: 1003,
            project: forbidden_project,
            type:,
            subject: "forbidden Work package",
@@ -435,10 +435,10 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
           ## Work package attributes and labels
           <table><tbody>#{supported_work_package_embeds_table}
             <tr><td>Custom field boolean</td><td>
-                workPackageValue:1:"#{cf_global_bool.name}"
+                workPackageValue:1001:"#{cf_global_bool.name}"
             </td></tr>
             <tr><td>Custom field rich text</td><td>
-                workPackageValue:1:"#{cf_long_text.name}"
+                workPackageValue:1001:"#{cf_long_text.name}"
             </td></tr>
             <tr><td>My link in table</td><td>workPackageValue:"#{cf_link.name}"</td></tr>
             <tr><td>No replacement of:</td><td>
@@ -595,6 +595,56 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
         # removing the footer text from the result for comparison, as the number of pages and page breaks are not important
         result = remove_pdf_page_footers(pdf[:strings].join(" "), 3)
         expect(result).to eq(expected_result)
+      end
+    end
+
+    describe "with multiple_versions flag", with_flag: { multiple_versions: true } do
+      let(:target_version) { create(:version, project:, name: "Target V1") }
+      let(:observed_version) { create(:version, project:, name: "Observed V1") }
+      let(:work_package) do
+        create(:work_package,
+               id: 1001,
+               project:,
+               type:,
+               subject: "Work package 1",
+               start_date: "2024-05-30",
+               due_date: "2025-03-13",
+               created_at: export_time,
+               updated_at: export_time,
+               author: user,
+               assigned_to: user,
+               responsible: user,
+               story_points: 1,
+               estimated_hours: 10,
+               done_ratio: 25,
+               remaining_hours: 9,
+               parent: parent_work_package,
+               priority:,
+               version:,
+               status:,
+               category:,
+               description:,
+               target_versions: [target_version],
+               observed_in_versions: [observed_version],
+               custom_values: {
+                 cf_long_text.id => cf_long_text_description,
+                 cf_empty_long_text.id => cf_empty_long_text_description,
+                 cf_disabled_in_project.id => "6.25",
+                 cf_global_bool.id => true,
+                 cf_link.id => "https://example.com"
+               }).tap do |wp|
+          allow(wp)
+            .to receive(:attachments)
+                  .and_return attachments
+        end
+      end
+
+      it "includes version fields in the PDF" do
+        result = remove_pdf_page_footers(pdf[:strings].join(" "), 2)
+        expect(result).to include("Target versions")
+        expect(result).to include("Target V1")
+        expect(result).to include("Observed in versions")
+        expect(result).to include("Observed V1")
       end
     end
 

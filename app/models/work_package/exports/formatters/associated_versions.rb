@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,22 +26,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
 module WorkPackage::Exports
-  module Attributes
-    def allowed_to_view_project_phases?(project)
-      User.current.allowed_in_project?(:view_project_phases, project) && project.phases.active.any?
-    end
+  module Formatters
+    class AssociatedVersions < ::Exports::Formatters::Default
+      def self.apply?(name, _export_format)
+        %i[target_versions observed_in_versions].include?(name.to_sym)
+      end
 
-    def allowed_to_view_attribute?(obj, attribute_name)
-      case attribute_name.to_sym
-      when :project_phase
-        obj.is_a?(WorkPackage) && allowed_to_view_project_phases?(obj.project)
-      when :target_versions, :observed_in_versions
-        OpenProject::FeatureDecisions.multiple_versions_active?
-      else
-        true
+      protected
+
+      def retrieve_value(object)
+        object.try(attribute)&.to_a
       end
     end
   end
