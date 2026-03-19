@@ -28,15 +28,16 @@
  * ++
  */
 
-import {Controller} from '@hotwired/stimulus';
-import {debounce, DebouncedFunc} from 'lodash';
+import {ApplicationController, useDebounce} from 'stimulus-use';
 
 const ALLOWED_CHARS:Record<string, RegExp> = {
   semantic: /[^A-Z0-9_]/g,
   legacy: /[^a-z0-9\-_]/g,
 };
 
-export default class extends Controller {
+export default class extends ApplicationController {
+  static debounces = ['fetchSuggestion'];
+
   static values = {
     url: String,
     debounce: {type: Number, default: 300},
@@ -51,7 +52,6 @@ export default class extends Controller {
 
   private nameInput:HTMLInputElement | null = null;
   private identifierInput:HTMLInputElement | null = null;
-  private debouncedSuggest:DebouncedFunc<(name:string) => Promise<void>> | null = null;
   private handleBlur:((event:Event) => void) | null = null;
   private handleInput:((event:Event) => void) | null = null;
 
@@ -70,14 +70,11 @@ export default class extends Controller {
         this.identifierInput.readOnly = true;
       }
 
-      this.debouncedSuggest = debounce(
-        (name:string) => this.fetchSuggestion(name),
-        this.debounceValue,
-      );
+      useDebounce(this, { wait: this.debounceValue });
 
       this.handleBlur = () => {
         const name = this.nameInput!.value.trim();
-        if (name) void this.debouncedSuggest!(name);
+        if (name) void this.fetchSuggestion(name);
       };
 
       this.nameInput.addEventListener('blur', this.handleBlur);
@@ -85,7 +82,6 @@ export default class extends Controller {
   }
 
   disconnect():void {
-    this.debouncedSuggest?.cancel();
     if (this.nameInput && this.handleBlur) {
       this.nameInput.removeEventListener('blur', this.handleBlur);
     }
