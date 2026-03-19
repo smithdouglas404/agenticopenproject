@@ -201,13 +201,13 @@ class Project < ApplicationRecord
               blacklist: RESERVED_IDENTIFIERS,
               adapter: OpenProject::ActsAsUrl::Adapter::OpActiveRecord # use a custom adapter able to handle edge cases
 
+  ### Validators for the legacy underscored identifier format (e.g. "project_one")
   validates :identifier,
             presence: true,
             uniqueness: { case_sensitive: true },
             length: { maximum: IDENTIFIER_MAX_LENGTH },
             exclusion: RESERVED_IDENTIFIERS,
             if: ->(p) { p.persisted? || p.identifier.present? }
-
   # Contains only a-z, 0-9, dashes and underscores but cannot consist of numbers only as it would clash with the id.
   validates :identifier,
             format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
@@ -215,11 +215,10 @@ class Project < ApplicationRecord
               p.identifier_changed? && p.identifier.present? && !Setting::WorkPackageIdentifier.alphanumeric?
             }
 
-  # When semantic work package IDs with alphanumeric mode are active, identifiers must follow semantic style key rules.
+  ### Validators for the uppercase identifier format (e.g. "PROJ1")
   validates :identifier,
             format: { with: /\A[A-Z]/, message: :must_start_with_letter },
             if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
-
   validates :identifier,
             format: { with: /\A[A-Z][A-Z0-9_]*\z/, message: :no_special_characters },
             length: { maximum: SEMANTIC_IDENTIFIER_MAX_LENGTH },
