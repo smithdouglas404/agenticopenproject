@@ -33,35 +33,22 @@ module OpenProject
     module InplaceEditFields
       module DisplayFields
         class UserSelectListComponent < SelectListComponent
-          include CustomFieldsHelper
-
-          attr_reader :model, :attribute, :writable
-
-          def formatted_custom_field_values
-            return @formatted_custom_field_values if defined?(@formatted_custom_field_values)
-
-            cf_values = custom_field_values
-
-            users = cf_values.filter_map(&:typed_value)
-
-            @formatted_custom_field_values = if custom_field.multi_value?
-                                               flex_layout do |avatar_container|
-                                                 users.each do |user|
-                                                   avatar_container.with_row do
-                                                     render_avatar(user)
-                                                   end
-                                                 end
-                                               end
-                                             else
-                                               render_avatar(users.first)
-                                             end
-          end
-
           private
 
-          def render_avatar(user)
-            return unless user
+          def render_custom_field_display_value
+            users = custom_field_values.filter_map(&:typed_value)
+            return t("placeholders.default") if users.empty?
 
+            if custom_field.multi_value?
+              flex_layout do |avatar_container|
+                users.each { |user| avatar_container.with_row { render_avatar(user) } }
+              end
+            else
+              render_avatar(users.first)
+            end
+          end
+
+          def render_avatar(user)
             render(::Users::AvatarComponent.new(user:, size: :mini))
           end
         end

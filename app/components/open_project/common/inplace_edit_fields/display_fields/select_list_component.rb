@@ -33,36 +33,13 @@ module OpenProject
     module InplaceEditFields
       module DisplayFields
         class SelectListComponent < DisplayFieldComponent
-          include CustomFieldsHelper
-
-          attr_reader :model, :attribute, :writable
-
-          def render_display_value
-            value = model.public_send(attribute)
-
-            if value.present? && value != [nil]
-              render_value(value)
-            else
-              t("placeholders.default")
-            end
-          end
-
           private
 
-          def render_value(value)
-            if custom_field?
-              formatted_custom_field_values.presence || t("placeholders.default")
-            else
-              value.is_a?(Array) ? value.join(", ") : value.to_s
-            end
-          end
+          def render_attribute_display_value
+            value = model.public_send(attribute)
+            return t("placeholders.default") unless value.present? && value != [nil]
 
-          def formatted_custom_field_values
-            return @formatted_custom_field_values if defined?(@formatted_custom_field_values)
-
-            values = custom_field_values.map { |v| format_value(v.value, custom_field) }
-
-            @formatted_custom_field_values = custom_field&.multi_value? ? values.join(", ") : values.first
+            value.is_a?(Array) ? value.join(", ") : value.to_s
           end
         end
       end
