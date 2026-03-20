@@ -34,7 +34,10 @@ class WorkPackages::RebuildPositionsService
   end
 
   def call
-    condition = " AND work_packages.project_id = #{@project.id}" if @project
+    condition = if @project
+                  ::OpenProject::SqlSanitization.sanitize " AND work_packages.project_id = :project_id",
+                                                          project_id: @project.id
+                end
 
     WorkPackage.connection.execute <<~SQL.squish
       UPDATE work_packages
