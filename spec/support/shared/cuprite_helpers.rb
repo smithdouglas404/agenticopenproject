@@ -77,6 +77,37 @@ def clear_input_field_contents(input_element)
   input_element.native.node.type(*backspaces)
 end
 
+# Executes the given block and waits for a Turbo Drive navigation to complete.
+#
+# Sets up a listener for turbo:load BEFORE yielding, avoiding the race
+# condition where the navigation completes before the listener is registered.
+#
+# @example
+#   wait_for_turbo { click_link_or_button "Save" }
+#   expect(page).to have_text("Saved")
+#
+def wait_for_turbo(&block)
+  unless using_cuprite?
+    yield if block
+    return
+  end
+
+  page.execute_script(<<~JS)
+    window.__opTurboLoaded = new Promise((resolve) => {
+      document.addEventListener('turbo:load', () => resolve(true), { once: true });
+    });
+  JS
+
+  yield
+
+  page.driver.evaluate_async_script(<<~JS)
+    window.__opTurboLoaded.then(() => {
+      delete window.__opTurboLoaded;
+      arguments[0](true);
+    });
+  JS
+end
+
 def using_cuprite?
   Capybara.javascript_driver == :better_cuprite_en
 end
