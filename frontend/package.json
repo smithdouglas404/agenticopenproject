@@ -19,7 +19,7 @@
     "@jsdevtools/coverage-istanbul-loader": "3.0.5",
     "@stylistic/eslint-plugin": "^5.7.1",
     "@types/codemirror": "5.60.5",
-    "@types/dom-navigation": "^1.0.3",
+    "@types/dom-navigation": "^1.0.7",
     "@types/dragula": "^3.7.5",
     "@types/flot": "^0.0.36",
     "@types/hammerjs": "^2.0.36",
