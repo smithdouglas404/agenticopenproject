@@ -39,22 +39,30 @@ module Projects::Identifier
     extend FriendlyId
 
     normalizes :identifier, with: OpenProject::RemoveAsciiControlCharacters
+    normalizes :identifier, with: ->(value) {
+      stripped = value.to_s.strip
+      Setting::WorkPackageIdentifier.alphanumeric? ? stripped.upcase : stripped.downcase
+    }
 
     acts_as_url :name,
                 url_attribute: :identifier,
                 sync_url: false, # Don't update identifier when name changes
                 only_when_blank: true, # Only generate when identifier not set
                 limit: IDENTIFIER_MAX_LENGTH,
+                force_downcase: false,
+                post_process: ->(_instance) {
+                  Setting::WorkPackageIdentifier.alphanumeric? ? :upcase : :downcase
+                },
                 blacklist: RESERVED_IDENTIFIERS,
                 adapter: OpenProject::ActsAsUrl::Adapter::OpActiveRecord # use a custom adapter able to handle edge cases
 
-    ### Validators for the legacy underscored identifier format (e.g. "project_one")
     validates :identifier,
               presence: true,
-              uniqueness: { case_sensitive: true },
+              uniqueness: { case_sensitive: false },
               length: { maximum: IDENTIFIER_MAX_LENGTH },
-              exclusion: RESERVED_IDENTIFIERS,
               if: ->(p) { p.persisted? || p.identifier.present? }
+
+    # Validators for the numeric identifier format (e.g. "project_one")
     # Contains only a-z, 0-9, dashes and underscores but cannot consist of numbers only as it would clash with the id.
     validates :identifier,
               format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
@@ -62,14 +70,11 @@ module Projects::Identifier
                 p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.numeric?
               }
 
-    ### Validators for the uppercase identifier format (e.g. "PROJ1")
-    validates :identifier,
-              format: { with: /\A[A-Z]/, message: :must_start_with_letter },
-              if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
-    validates :identifier,
-              format: { with: /\A[A-Z][A-Z0-9_]*\z/, message: :no_special_characters },
-              length: { maximum: SEMANTIC_IDENTIFIER_MAX_LENGTH },
-              if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
+    # Validators for the alphanumeric identifier format (e.g. "PROJ1")
+    validate :identifier_alphanumeric_format,
+             if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
+
+    validate :identifier_not_reserved, if: -> { identifier.present? }
 
     # Complements the uniqueness validation above: once an identifier has been used by a
     # project, it remains reserved for that project even after the project moves to a new
@@ -88,6 +93,12 @@ module Projects::Identifier
   end
 
   class_methods do
+    # Normalize the input to FriendlyID finders so that lookups are case-insensitive.
+    # FriendlyID's default parse_friendly_id returns the value unchanged.
+    def parse_friendly_id(value)
+      normalize_value_for(:identifier, value)
+    end
+
     def suggest_identifier(name)
       if Setting::WorkPackageIdentifier.alphanumeric?
         WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator.suggest_identifier(name)
@@ -117,14 +128,33 @@ module Projects::Identifier
 
   private
 
+  def identifier_alphanumeric_format
+    unless identifier.match?(/\A[A-Z]/)
+      errors.add(:identifier, :must_start_with_letter)
+      return
+    end
+
+    errors.add(:identifier, :no_special_characters) unless identifier.match?(/\A[A-Z][A-Z0-9_]*\z/)
+    if identifier.length > SEMANTIC_IDENTIFIER_MAX_LENGTH
+      errors.add(:identifier, :too_long, count: SEMANTIC_IDENTIFIER_MAX_LENGTH)
+    end
+  end
+
+  def identifier_not_reserved
+    if RESERVED_IDENTIFIERS.include?(identifier&.downcase)
+      errors.add(:identifier, :exclusion)
+    end
+  end
+
   # Checks friendly_id_slugs for any project that previously used this identifier and
   # has since changed it. It allows to switch back to an identifier the project itself
-  # has used before.
+  # has used before. Uses case-insensitive comparison to prevent cross-case collisions.
   def identifier_not_historically_reserved
     return if errors.any? { |error| error.attribute == :identifier && error.type == :taken }
 
     already_existing = FriendlyId::Slug
-                         .where(slug: identifier, sluggable_type: self.class.to_s)
+                         .where("LOWER(slug) = LOWER(?)", identifier)
+                         .where(sluggable_type: self.class.to_s)
                          .where.not(sluggable_id: id)
                          .exists?
 

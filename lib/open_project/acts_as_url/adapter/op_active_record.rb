@@ -50,6 +50,8 @@ module OpenProject
           read_attribute instance, settings.url_attribute
         end
 
+        ALLOWED_POST_TRANSFORMS = %i[upcase downcase].freeze
+
         private
 
         def modify_base_url
@@ -58,6 +60,15 @@ module OpenProject
           self.base_url = root.to_localized_slug(locale:, **configuration.string_extensions_settings)
 
           modify_base_url_custom_rules if base_url.empty?
+          apply_post_process
+        end
+
+        def apply_post_process
+          post_process = configuration.settings.post_process
+          return unless post_process
+
+          method = post_process.respond_to?(:call) ? post_process.call(instance) : post_process
+          self.base_url = base_url.public_send(method) if method && ALLOWED_POST_TRANSFORMS.include?(method)
         end
 
         def modify_base_url_custom_rules

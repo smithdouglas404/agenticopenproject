@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+require "rails_helper"
 
 RSpec.describe Projects::Identifier do
   describe "identifier normalization" do
@@ -37,7 +37,57 @@ RSpec.describe Projects::Identifier do
     it { is_expected.to normalize(:identifier).from("my\n\x00project\t").to("myproject") }
   end
 
-  describe "url identifier" do
+  describe ".normalize_value_for" do
+    context "when in numeric mode (default)" do
+      before { allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(false) }
+
+      it "downcases the value" do
+        expect(Project.normalize_value_for(:identifier, "PROJ")).to eq("proj")
+      end
+
+      it "strips whitespace" do
+        expect(Project.normalize_value_for(:identifier, "  proj  ")).to eq("proj")
+      end
+
+      it "returns nil unchanged" do
+        expect(Project.normalize_value_for(:identifier, nil)).to be_nil
+      end
+    end
+
+    context "when in alphanumeric mode" do
+      before { allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(true) }
+
+      it "upcases the value" do
+        expect(Project.normalize_value_for(:identifier, "proj")).to eq("PROJ")
+      end
+
+      it "strips whitespace" do
+        expect(Project.normalize_value_for(:identifier, "  proj  ")).to eq("PROJ")
+      end
+    end
+  end
+
+  describe "normalizes :identifier on Project" do
+    context "when in numeric mode (default)" do
+      before { allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(false) }
+
+      it "downcases identifier on assignment" do
+        project = Project.new(identifier: "MyProject")
+        expect(project.identifier).to eq("myproject")
+      end
+    end
+
+    context "when in alphanumeric mode" do
+      before { allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(true) }
+
+      it "upcases identifier on assignment" do
+        project = Project.new(identifier: "myproject")
+        expect(project.identifier).to eq("MYPROJECT")
+      end
+    end
+  end
+
+  describe "url identifier", with_settings: { work_packages_identifier: "numeric" } do
     let(:reserved) do
       Rails.application.routes.routes
         .map { |route| route.path.spec.to_s }
@@ -73,11 +123,28 @@ RSpec.describe Projects::Identifier do
       expect(project.errors[:identifier]).to include("has already been taken.")
     end
 
+    it "is not allowed to clash with another project case-insensitively" do
+      create(:project, identifier: "existing")
+
+      project = build(:project, identifier: "EXISTING")
+      expect(project).not_to be_valid
+      expect(project.errors[:identifier]).to include("has already been taken.")
+    end
+
     it "is not allowed to clash with a former identifier of another project" do
       other_project = create(:project, identifier: "former-id")
       other_project.update!(identifier: "new-id")
 
       project = build(:project, identifier: "former-id")
+      expect(project).not_to be_valid
+      expect(project.errors[:identifier]).to include("has already been taken.")
+    end
+
+    it "is not allowed to clash with a former identifier of another project case-insensitively" do
+      other_project = create(:project, identifier: "former-id")
+      other_project.update!(identifier: "new-id")
+
+      project = build(:project, identifier: "FORMER-ID")
       expect(project).not_to be_valid
       expect(project.errors[:identifier]).to include("has already been taken.")
     end
@@ -88,6 +155,12 @@ RSpec.describe Projects::Identifier do
 
       project.identifier = "old-id"
       expect(project).to be_valid
+    end
+
+    it "rejects reserved identifiers case-insensitively" do
+      project = build(:project, identifier: "NEW")
+      expect(project).not_to be_valid
+      expect(project.errors[:identifier]).to include("is reserved.")
     end
 
     # The acts_as_url plugin defines validation callbacks on :create and it is not automatically
