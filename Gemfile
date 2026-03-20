@@ -121,7 +121,7 @@ gem "csv", "~> 3.3"
 # provide compatible filesystem information for available storage
 gem "sys-filesystem", "~> 1.5.0", require: false
 
-gem "bcrypt", "~> 3.1.6"
+gem "bcrypt", "~> 3.1.22"
 
 gem "multi_json", "~> 1.19.0"
 gem "oj", "~> 3.16.16"
