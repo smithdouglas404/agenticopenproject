@@ -51,7 +51,7 @@ Navigate to *Administration → Import*. To create a new import configuration, c
 Provide the following details:
 -  A name for the import configuration
 -  Your Jira Server or Data Center URL
--  A Personal Access Token (requires Jira admin permissions)
+-  A Personal Access Token. The migration tool requires a token with admin permissions. Otherwise you will get 403 error during the import process.
 
 Click **Test configuration** to verify the connection.
 
