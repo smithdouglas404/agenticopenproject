@@ -105,7 +105,7 @@ To proceed, choose one of the following actions: finalize or revert the import.
 ![Finalize or revert import buttons in review mode](openproject_admin_import_jira_import_finalize_or_revert_import_buttons.png)
 
 **Finalize import**
--  Activates newly created users
+- Activates newly created users
 - Makes imported data permanent
 - Disables the option to revert the import
 
