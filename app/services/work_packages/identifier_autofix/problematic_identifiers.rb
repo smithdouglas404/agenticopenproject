@@ -110,8 +110,11 @@ module WorkPackages
       end
 
       def reserved_identifiers
-        # TODO: Wire up with FriendlyId::Slug historical identifiers
-        Set.new
+        @reserved_identifiers ||= FriendlyId::Slug
+                                    .where(sluggable_type: Project.name)
+                                    .where.not(slug: Project.select(:identifier))
+                                    .pluck(:slug)
+                                    .to_set
       end
 
       # A Set-like object backed by an ActiveRecord scope that avoids

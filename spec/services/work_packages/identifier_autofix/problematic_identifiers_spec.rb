@@ -116,6 +116,13 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProblematicIdentifiers do
       expect(analysis.error_reason("TAKEN")).to eq(:in_use)
     end
 
+    it "returns :reserved when identifier is a historical slug of another project" do
+      project = create_valid_project(name: "Gamma", identifier: "GAMMA")
+      FriendlyId::Slug.create!(slug: "OLDIE", sluggable: Project.find(project.id), sluggable_type: "Project")
+
+      expect(analysis.error_reason("OLDIE")).to eq(:reserved)
+    end
+
     it "returns :unknown when no classification matches" do
       expect(analysis.error_reason("VALID")).to eq(:unknown)
     end
@@ -133,6 +140,12 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProblematicIdentifiers do
 
       it "includes identifiers from non-problematic projects" do
         expect(exclusion.include?("ALPHA")).to be true
+      end
+
+      it "includes historical slugs (reserved identifiers)" do
+        FriendlyId::Slug.create!(slug: "OLDALPHA", sluggable_id: valid_project.id, sluggable_type: "Project")
+
+        expect(exclusion.include?("OLDALPHA")).to be true
       end
 
       it "excludes identifiers from problematic projects" do
@@ -171,6 +184,12 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProblematicIdentifiers do
 
       it "excludes identifiers from problematic projects" do
         expect(exclusion).not_to include("beta-project")
+      end
+
+      it "includes historical slugs (reserved identifiers)" do
+        FriendlyId::Slug.create!(slug: "OLDALPHA", sluggable_id: valid_project.id, sluggable_type: "Project")
+
+        expect(exclusion).to include("OLDALPHA")
       end
     end
   end
