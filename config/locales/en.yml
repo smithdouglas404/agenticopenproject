@@ -411,9 +411,13 @@ en:
           label_example_work_package_id: Example work package ID
         autofix_preview:
           error_too_long: Has to be fewer than 5 characters
+          error_numerical: Cannot be purely numerical
+          error_starts_with_number: Cannot start with a number
           error_special_characters: Special characters not allowed
+          error_not_uppercase: Must be uppercase
           error_in_use: Already in use as another project's active handle
           error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
             other: "... %{count} more projects"

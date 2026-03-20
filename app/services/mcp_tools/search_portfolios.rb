@@ -48,7 +48,7 @@ module McpTools
       type: :object,
       properties: {
         name: { type: "string", description: "Name of the portfolio. Accepts partial names, not case-sensitive." },
-        identifier: { type: "string", description: "Portfolio identifier. Case-sensitive, matching exactly." },
+        identifier: { type: "string", description: "Portfolio identifier. Case-insensitive, matching exactly." },
         status_code: { type: "string", enum: Project.status_codes.keys, description: "The portfolio status." }
       }
     )

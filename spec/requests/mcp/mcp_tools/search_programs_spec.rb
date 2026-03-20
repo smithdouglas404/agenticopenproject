@@ -90,12 +90,12 @@ RSpec.describe McpTools::SearchPrograms, with_flag: { mcp_server: true } do
       end
     end
 
-    context "when passing a non-exact identifier" do
+    context "when passing a case-variant identifier" do
       let(:call_args) { { identifier: "Abc" } }
 
-      it "does not find the program" do
+      it "finds the program (case-insensitive)" do
         subject
-        expect(parsed_results.dig("structuredContent", "items")).to be_empty
+        expect(parsed_results.dig("structuredContent", "items")).to be_present
       end
     end
 
