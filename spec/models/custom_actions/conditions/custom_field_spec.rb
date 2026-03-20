@@ -55,24 +55,21 @@ RSpec.describe CustomActions::Conditions::CustomField do
     end
   end
 
-  describe ".custom_field_values" do
-    before { allow(described_class).to receive(:custom_field).and_return(custom_field) }
+  describe "cleanup on custom field deletion" do
+    let(:custom_action) { create(:custom_action) }
 
-    let(:value1)      { instance_double(CustomFieldValue, custom_field_id: custom_field.id, value: 1) }
-    let(:value2)      { instance_double(CustomFieldValue, custom_field_id: custom_field.id, value: 2) }
-    let(:other_value) { instance_double(CustomFieldValue, custom_field_id: custom_field.id + 1, value: 999) }
-
-    let(:wp1) do
-      instance_double(WorkPackage, custom_field_values: { custom_field.id => value1, 99 => other_value }.values)
-    end
-    let(:wp2) do
-      instance_double(WorkPackage, custom_field_values: { custom_field.id => value2, 11 => value1 }.values)
+    before do
+      CustomActionsCustomField.create!(
+        custom_action:,
+        custom_field:,
+        value: custom_option1.id.to_s
+      )
     end
 
-    it "returns unique string values for matching custom field id" do
-      result = described_class.custom_field_values([wp1, wp2])
-
-      expect(result).to match_array(%w[1 2])
+    it "removes associated custom_actions_custom_fields rows when the custom field is destroyed" do
+      expect { custom_field.destroy }
+        .to change { CustomActionsCustomField.where(custom_field_id: custom_field.id).count }
+        .from(1).to(0)
     end
   end
 end
