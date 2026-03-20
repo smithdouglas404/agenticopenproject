@@ -43,7 +43,8 @@ module Projects::Identifier
                 sync_url: false, # Don't update identifier when name changes
                 only_when_blank: true, # Only generate when identifier not set
                 limit: IDENTIFIER_MAX_LENGTH,
-                blacklist: RESERVED_IDENTIFIERS
+                blacklist: RESERVED_IDENTIFIERS,
+                adapter: OpenProject::ActsAsUrl::Adapter::OpActiveRecord # use a custom adapter able to handle edge cases
 
     before_validation :generate_semantic_identifier,
                       on: :create,
