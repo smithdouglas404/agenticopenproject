@@ -28,35 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
-# or not at all
-require "open_project/plugins"
+module Wikis
+  class XWikiProvider < Provider
+    AUTHENTICATION_METHODS = [
+      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
+      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
+    ].freeze
 
-module OpenProject::Wikis
-  class Engine < ::Rails::Engine
-    engine_name :openproject_wikis
-
-    include OpenProject::Plugins::ActsAsOpEngine
-
-    register "openproject-wikis",
-             author_url: "https://openproject.org",
-             requires_openproject: ">= 17.0.0"
-
-    initializer "openproject_wikis.inflections" do
-      ActiveSupport::Inflector.inflections(:en) do |inflect|
-        inflect.acronym "XWiki"
-      end
-
-      OpenProject::Inflector.rule do |basename, abspath|
-        case basename
-        when "xwiki"
-          "XWiki"
-        when /\Axwiki_(.*)\z/
-          "XWiki#{default_inflect($1, abspath)}"
-        end
-      end
-    end
-
-    replace_principal_references "Wikis::PageLink" => %i[author_id]
+    store_attribute :options, :url, :string
+    store_attribute :options, :authentication_method, :string, default: "two_way_oauth2"
+    store_attribute :options, :wiki_audience, :string
+    store_attribute :options, :token_exchange_scope, :string
   end
 end

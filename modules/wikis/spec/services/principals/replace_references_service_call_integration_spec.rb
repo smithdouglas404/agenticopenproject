@@ -28,35 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
-# or not at all
-require "open_project/plugins"
+require "spec_helper"
+require_module_spec_helper
+require Rails.root.join("spec/services/principals/replace_references_context")
 
-module OpenProject::Wikis
-  class Engine < ::Rails::Engine
-    engine_name :openproject_wikis
+RSpec.describe Principals::ReplaceReferencesService, "#call", type: :model do
+  subject(:service_call) { instance.call(from: principal, to: to_principal) }
 
-    include OpenProject::Plugins::ActsAsOpEngine
+  shared_let(:other_user) { create(:user, firstname: "other user") }
+  shared_let(:principal) { create(:user, firstname: "old principal") }
+  shared_let(:to_principal) { create(:user, firstname: "new principal") }
 
-    register "openproject-wikis",
-             author_url: "https://openproject.org",
-             requires_openproject: ">= 17.0.0"
+  let(:instance) do
+    described_class.new
+  end
 
-    initializer "openproject_wikis.inflections" do
-      ActiveSupport::Inflector.inflections(:en) do |inflect|
-        inflect.acronym "XWiki"
-      end
-
-      OpenProject::Inflector.rule do |basename, abspath|
-        case basename
-        when "xwiki"
-          "XWiki"
-        when /\Axwiki_(.*)\z/
-          "XWiki#{default_inflect($1, abspath)}"
-        end
-      end
-    end
-
-    replace_principal_references "Wikis::PageLink" => %i[author_id]
+  context "with Wikis::RelationPageLink" do
+    it_behaves_like "rewritten record",
+                    :relation_wiki_page_link,
+                    :author_id
   end
 end
