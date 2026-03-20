@@ -75,6 +75,7 @@ module Projects::Identifier
                 p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.numeric?
               }
 
+    # Validators for the semantic identifier format
     validates :identifier,
               format: { with: /\A[A-Z]/, message: :must_start_with_letter },
               if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
