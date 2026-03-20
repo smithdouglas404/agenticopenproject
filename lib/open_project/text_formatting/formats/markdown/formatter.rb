@@ -35,7 +35,8 @@ module OpenProject::TextFormatting::Formats::Markdown
       result = pipeline.call(text, context)
       output = result[:output].to_s
 
-      output.html_safe
+      # html_safe required and safe after html pipeline runs
+      output.html_safe # rubocop:disable Rails/OutputSafety
     end
 
     def to_document(text)
