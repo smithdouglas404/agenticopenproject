@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe OpenProject::Backlogs::SprintFilter, with_flag: { scrum_projects: true } do
+RSpec.describe Queries::WorkPackages::Filter::SprintFilter, with_flag: { scrum_projects: true } do
   let(:scope_class) do
     Class.new do
       def for_project(_project); end

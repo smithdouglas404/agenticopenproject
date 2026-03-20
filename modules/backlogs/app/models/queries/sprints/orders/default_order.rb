@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,38 +26,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module API
-  module V3
-    module Queries
-      module Schemas
-        class SprintFilterDependencyRepresenter < FilterDependencyRepresenter
-          def json_cache_key
-            super + [filter.project&.id].compact
-          end
+class Queries::Sprints::Orders::DefaultOrder < Queries::Orders::Base
+  self.model = Sprint
 
-          def href_callback
-            query_params = "sortBy=#{to_query [%i(name asc)]}&pageSize=-1"
-
-            if filter.project.nil?
-              "#{api_v3_paths.sprints}?#{query_params}"
-            else
-              "#{api_v3_paths.project_sprints(filter.project.id)}?#{query_params}"
-            end
-          end
-
-          private
-
-          def type
-            "[]Sprint"
-          end
-
-          def to_query(param)
-            CGI.escape(::JSON.dump(param))
-          end
-        end
-      end
-    end
+  def self.key
+    /\A(id|name)\z/
   end
 end

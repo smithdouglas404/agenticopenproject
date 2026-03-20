@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,9 +26,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module OpenProject::Backlogs
+module Queries::WorkPackages::Filter
   class SprintFilter < ::Queries::WorkPackages::Filter::WorkPackageFilter
     def allowed_values
       @allowed_values ||= sprints.pluck(:id, :id).map { |value, id| [value.to_s, id.to_s] }

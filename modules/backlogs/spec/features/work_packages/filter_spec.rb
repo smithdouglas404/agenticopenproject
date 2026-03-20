@@ -114,48 +114,60 @@ RSpec.describe "Filter work packages by backlog filters", :js do
   end
 
   context "on the sprint", with_flag: { scrum_projects: true } do
-    it "allows filtering, saving and retaining the filter" do
-      filters.open
+    shared_examples_for "filtering on sprints" do
+      it "allows filtering by sprint" do
+        filters.open
 
-      filters.add_filter_by("Sprint", "is (OR)", own_sprint.name)
+        filters.add_filter_by("Sprint", "is (OR)", own_sprint.name)
 
-      wp_table.ensure_work_package_not_listed! work_package_in_shared_sprint,
-                                               work_package_with_story_type,
-                                               work_package_with_task_type
-      wp_table.expect_work_package_listed work_package_in_own_sprint
+        wp_table.ensure_work_package_not_listed! work_package_in_shared_sprint,
+                                                 work_package_with_story_type,
+                                                 work_package_with_task_type
+        wp_table.expect_work_package_listed work_package_in_own_sprint
 
-      filters.remove_filter "sprint"
+        filters.remove_filter "sprint"
 
-      filters.add_filter_by("Sprint", "is (OR)", shared_sprint.name)
+        filters.add_filter_by("Sprint", "is (OR)", shared_sprint.name)
 
-      wp_table.ensure_work_package_not_listed! work_package_in_own_sprint,
-                                               work_package_with_story_type,
-                                               work_package_with_task_type
-      wp_table.expect_work_package_listed work_package_in_shared_sprint
+        wp_table.ensure_work_package_not_listed! work_package_in_own_sprint,
+                                                 work_package_with_story_type,
+                                                 work_package_with_task_type
+        wp_table.expect_work_package_listed work_package_in_shared_sprint
 
-      filters.set_operator "Sprint", "is not"
+        filters.set_operator "Sprint", "is not"
 
-      wp_table.ensure_work_package_not_listed! work_package_in_shared_sprint
+        wp_table.ensure_work_package_not_listed! work_package_in_shared_sprint
 
-      wp_table.expect_work_package_listed work_package_in_own_sprint,
-                                          work_package_with_story_type,
-                                          work_package_with_task_type
+        wp_table.expect_work_package_listed work_package_in_own_sprint,
+                                            work_package_with_story_type,
+                                            work_package_with_task_type
 
-      filters.set_operator "Sprint", "is empty"
+        filters.set_operator "Sprint", "is empty"
 
-      wp_table.ensure_work_package_not_listed! work_package_in_shared_sprint,
-                                               work_package_in_own_sprint
+        wp_table.ensure_work_package_not_listed! work_package_in_shared_sprint,
+                                                 work_package_in_own_sprint
 
-      wp_table.expect_work_package_listed work_package_with_story_type,
-                                          work_package_with_task_type
+        wp_table.expect_work_package_listed work_package_with_story_type,
+                                            work_package_with_task_type
 
-      filters.set_operator "Sprint", "is not empty"
+        filters.set_operator "Sprint", "is not empty"
 
-      wp_table.ensure_work_package_not_listed! work_package_with_story_type,
-                                               work_package_with_task_type
+        wp_table.ensure_work_package_not_listed! work_package_with_story_type,
+                                                 work_package_with_task_type
 
-      wp_table.expect_work_package_listed work_package_in_shared_sprint,
-                                          work_package_in_own_sprint
+        wp_table.expect_work_package_listed work_package_in_shared_sprint,
+                                            work_package_in_own_sprint
+      end
+    end
+
+    context "when filtering inside a project" do
+      include_examples "filtering on sprints"
+    end
+
+    context "when filtering globally" do
+      let(:wp_table) { Pages::WorkPackagesTable.new }
+
+      include_examples "filtering on sprints"
     end
   end
 end
