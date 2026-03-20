@@ -31,6 +31,12 @@
 require "spec_helper"
 
 RSpec.describe Projects::Identifier do
+  describe "identifier normalization" do
+    subject { Project.new }
+
+    it { is_expected.to normalize(:identifier).from("my\n\x00project\t").to("myproject") }
+  end
+
   describe "url identifier" do
     let(:reserved) do
       Rails.application.routes.routes
