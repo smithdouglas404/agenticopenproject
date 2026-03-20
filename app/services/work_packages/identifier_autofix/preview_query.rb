@@ -43,8 +43,7 @@ module WorkPackages
 
         suggestions = WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator.call(
           preview,
-          in_use_identifiers:,
-          reserved_identifiers:
+          exclude: reserved_identifiers | in_use_identifiers
         )
 
         projects_data = suggestions.map do |entry|

@@ -64,35 +64,34 @@ module WorkPackages
       FALLBACK_IDENTIFIER = "PROJ"
       SUFFIX_LIMIT = 10_000
 
-      def self.call(projects, reserved_identifiers: Set.new, in_use_identifiers: Set.new)
-        new.call(projects, reserved_identifiers:, in_use_identifiers:)
+      def self.call(projects, exclude: Set.new)
+        new.call(projects, exclude:)
       end
 
       # Returns a single suggested identifier string for the given project name.
       #
-      def self.suggest_identifier(name, reserved_identifiers: Set.new, in_use_identifiers: Set.new)
-        new.suggest_identifier(name, reserved_identifiers:, in_use_identifiers:)
+      def self.suggest_identifier(name, exclude: Set.new)
+        new.suggest_identifier(name, exclude:)
       end
 
-      def call(projects, reserved_identifiers:, in_use_identifiers:)
-        generate_suggestions(projects, reserved_identifiers:, in_use_identifiers:)
+      def call(projects, exclude:)
+        generate_suggestions(projects, exclude:)
       end
 
-      def suggest_identifier(name, reserved_identifiers: Set.new, in_use_identifiers: Set.new)
-        used = reserved_identifiers | in_use_identifiers
+      def suggest_identifier(name, exclude: Set.new)
         candidates = identifier_candidates(name)
-        find_unique(candidates, used)
+        find_unique(candidates, exclude)
       end
 
       private
 
-      def generate_suggestions(projects, reserved_identifiers:, in_use_identifiers:)
-        used_identifiers = reserved_identifiers | in_use_identifiers
+      def generate_suggestions(projects, exclude:)
+        excluded = exclude.dup
 
         projects.map do |project|
           candidates = identifier_candidates(project.name)
-          identifier = find_unique(candidates, used_identifiers)
-          used_identifiers << identifier
+          identifier = find_unique(candidates, excluded)
+          excluded << identifier
 
           {
             project:,
