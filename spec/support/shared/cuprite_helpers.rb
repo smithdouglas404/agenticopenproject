@@ -143,6 +143,39 @@ def wait_for_turbo(timeout: 10, &block)
   JS
 end
 
+# Executes the given block and waits for a Turbo frame navigation to complete.
+#
+# Sets up a listener for turbo:frame-load BEFORE yielding, avoiding the race
+# condition where the frame loads before the listener is registered.
+#
+# @example
+#   wait_for_turbo_frame { click_link "Remove column" }
+#   expect(page).to have_text("Updated")
+#
+def wait_for_turbo_frame(timeout: 10, &block)
+  unless using_cuprite?
+    yield if block
+    return
+  end
+
+  timeout_ms = timeout * 1000
+  page.execute_script(<<~JS, timeout_ms)
+    window.__opTurboFrameLoaded = new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('wait_for_turbo_frame: no turbo:frame-load event within #{timeout}s')), arguments[0]);
+      document.addEventListener('turbo:frame-load', () => { clearTimeout(timer); resolve(true); }, { once: true });
+    });
+  JS
+
+  yield
+
+  page.driver.evaluate_async_script(<<~JS)
+    window.__opTurboFrameLoaded.then(() => {
+      delete window.__opTurboFrameLoaded;
+      arguments[0](true);
+    });
+  JS
+end
+
 def using_cuprite?
   Capybara.javascript_driver == :better_cuprite_en
 end
