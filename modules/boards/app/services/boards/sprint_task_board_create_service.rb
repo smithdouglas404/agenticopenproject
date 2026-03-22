@@ -63,7 +63,32 @@ module Boards
     end
 
     def statuses
-      @statuses ||= Type.find(Task.type).statuses
+      @statuses ||= statuses_from_last_sprint_board || statuses_from_sprint_work_packages
+    end
+
+    def statuses_from_last_sprint_board
+      last_board = Boards::Grid
+        .where(project: params[:project], linked_type: "Agile::Sprint")
+        .order(created_at: :desc)
+        .first
+
+      return nil unless last_board
+
+      status_ids = last_board.widgets
+        .sort_by(&:start_column)
+        .filter_map { |w| w.options.dig("filters", 0, "status_id", "values")&.first }
+
+      Status.where(id: status_ids) if status_ids.present?
+    end
+
+    def statuses_from_sprint_work_packages
+      type_ids = params[:sprint].work_packages.distinct.pluck(:type_id)
+
+      if type_ids.present?
+        Type.statuses(type_ids)
+      else
+        Type.find(Task.type).statuses
+      end
     end
 
     def query_name(status)

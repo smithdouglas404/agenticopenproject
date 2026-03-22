@@ -68,24 +68,10 @@ RSpec.describe Boards::SprintTaskBoardCreateService do
       )
     end
 
-    describe "column_count" do
-      it "matches the number of task type statuses" do
-        expect(subject.result.column_count).to eq(2)
-      end
-    end
-
     describe "widgets and queries" do
       let(:board) { subject.result }
       let(:widgets) { board.widgets }
       let(:queries) { Query.all }
-
-      it "creates one of each per task type status", :aggregate_failures do
-        subject
-
-        expect(widgets.count).to eq(2)
-        expect(queries.count).to eq(2)
-        expect(queries.map(&:name)).to contain_exactly(status1.name, status2.name)
-      end
 
       it "sets the status_id filter on each query and widget", :aggregate_failures do
         subject
@@ -103,6 +89,92 @@ RSpec.describe Boards::SprintTaskBoardCreateService do
       end
 
       it_behaves_like "sets the appropriate sort_criteria on each query"
+    end
+  end
+
+  describe "status columns" do
+    context "when a sprint board already exists on the project" do
+      let(:status3) { create(:status) }
+      let(:existing_sprint) { create(:agile_sprint, project:) }
+
+      let(:widget1) do
+        build(:grid_widget,
+              identifier: "work_package_query",
+              start_row: 1, end_row: 2, start_column: 1, end_column: 2,
+              options: {
+                "queryId" => 1,
+                "filters" => [{ "status_id" => { "operator" => "=", "values" => [status3.id.to_s] } }]
+              })
+      end
+
+      let(:widget2) do
+        build(:grid_widget,
+              identifier: "work_package_query",
+              start_row: 1, end_row: 2, start_column: 2, end_column: 3,
+              options: {
+                "queryId" => 2,
+                "filters" => [{ "status_id" => { "operator" => "=", "values" => [status1.id.to_s] } }]
+              })
+      end
+
+      before do
+        create(:board_grid,
+               project:,
+               linked: existing_sprint,
+               column_count: 2,
+               options: { "type" => "action", "attribute" => "status" },
+               widgets: [widget1, widget2])
+      end
+
+      it "reuses the columns from the most recently created sprint board" do
+        board = subject.result
+        query_names = board.contained_queries.pluck(:name)
+
+        expect(query_names).to contain_exactly(status3.name, status1.name)
+      end
+
+      it "sets column_count to match the previous board's columns" do
+        expect(subject.result.column_count).to eq(2)
+      end
+    end
+
+    context "when no sprint board exists on the project" do
+      context "when the sprint has work packages with different types" do
+        let(:other_type) { create(:type) }
+        let(:status3) { create(:status) }
+
+        before do
+          create(:workflow, type: other_type, old_status: status1, new_status: status3, role: create(:project_role))
+          create(:work_package, project:, sprint:, type: other_type, status: status1)
+        end
+
+        it "uses the union of statuses from all work package types" do
+          board = subject.result
+          query_names = board.contained_queries.pluck(:name)
+
+          expect(query_names).to contain_exactly(status1.name, status3.name)
+        end
+
+        it "sets column_count to match the number of statuses" do
+          type_ids = sprint.work_packages.distinct.pluck(:type_id)
+          expected_count = Type.statuses(type_ids).count
+
+          expect(subject.result.column_count).to eq(expected_count)
+        end
+      end
+
+      context "when the sprint has no work packages" do
+        it "falls back to the task type statuses" do
+          board = subject.result
+          query_names = board.contained_queries.pluck(:name)
+
+          expect(query_names).to contain_exactly(status1.name, status2.name)
+        end
+
+        it "sets column_count to match the number of task type statuses" do
+          expect(subject.result.column_count).to eq(2)
+        end
+      end
     end
   end
 end
