@@ -28,68 +28,45 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Sprints::FinishService < BaseServices::BaseCallable
-  include Shared::ServiceContext
-
-  attr_reader :user, :model
-
+class Sprints::FinishService < BaseServices::BaseContracted
   def initialize(user:, model:)
-    super()
-    @user = user
-    @model = model
+    super(user:)
+    self.model = model
   end
 
-  def perform
-    in_context(model, send_notifications: false) do
-      finish_sprint
+  protected
+
+  def before_perform(service_call)
+    if params[:move_to_sprint_id].present?
+      @target_sprint = Agile::Sprint.find_by(id: params[:move_to_sprint_id])
+
+      move_open_work_packages(@target_sprint).each do |result|
+        service_call.add_dependent!(result)
+      end
     end
+
+    service_call
+  end
+
+  def persist(service_call)
+    model.completed!
+    service_call
+  end
+
+  def default_contract_class
+    Sprints::FinishContract
   end
 
   private
 
-  def finish_sprint
-    return unsuccessful_finish_result unless model.active?
-
-    move_results = nil
-
-    if params[:move_to_sprint_id].present?
-      target_sprint = Agile::Sprint.find_by(id: params[:move_to_sprint_id])
-      unless target_sprint
-        model.errors.add(:base, :move_to_sprint_not_found)
-        return ServiceResult.failure(result: model, errors: model.errors)
-      end
-
-      move_results = move_open_work_packages(target_sprint)
-    end
-
-    open_count = model.work_packages.with_status_open.count
-    if open_count > 0
-      model.errors.add(:base, :unfinished_work_packages, count: open_count)
-      return ServiceResult.failure(result: model, errors: model.errors)
-    end
-
-    model.completed!
-
-    ServiceResult.success(result: model).tap do |result|
-      move_results&.each { |r| result.add_dependent!(r) }
-    end
-  rescue ActiveRecord::RecordInvalid
-    unsuccessful_finish_result
-  end
-
   def move_open_work_packages(target_sprint)
+    # TODO: Do this in order of the position
+    # and reorder into the sprint in that same order
+    # TODO: potentially do it with a different/no contract
+    # so that it is possible to move work packages in all
+    # projects the sprint is shared with.
     model.work_packages.with_status_open.map do |wp|
-      WorkPackages::UpdateService.new(user:, model: wp).call(sprint_id: target_sprint.id)
+      WorkPackages::UpdateService.new(user:, model: wp).call(sprint: target_sprint)
     end
-  end
-
-  def unsuccessful_finish_result
-    ServiceResult.failure(result: model,
-                          errors: model.errors,
-                          message: unsuccessful_finish_message)
-  end
-
-  def unsuccessful_finish_message
-    model.errors.full_messages.to_sentence if model.errors.any?
   end
 end

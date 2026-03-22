@@ -38,12 +38,18 @@ class RbSprintsController < RbApplicationController
                           update_agile_sprint].freeze
   SPRINT_STATE_ACTIONS = %i[start finish].freeze
 
+<<<<<<< HEAD
   skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
   skip_before_action :authorize, only: SPRINT_STATE_ACTIONS
 
   before_action :load_project, only: NEW_SPRINT_ACTIONS
   before_action :authorize_start!, only: :start
   before_action :authorize_finish!, only: :finish
+=======
+  skip_before_action :load_sprint_and_project, :authorize, only: NEW_SPRINT_ACTIONS
+
+  before_action :load_project, :authorize, only: NEW_SPRINT_ACTIONS
+>>>>>>> 804b77ad654 (present error message in modal)
 
   def new_dialog
     call = Sprints::SetAttributesService.new(
@@ -131,7 +137,6 @@ class RbSprintsController < RbApplicationController
         Backlogs::FinishSprintDialogComponent.new(
           sprint: @sprint,
           project: @project,
-          unfinished_count: @sprint.work_packages.with_status_open.count,
           available_sprints: Agile::Sprint.for_project(@project).not_completed.where.not(id: @sprint.id)
         )
       )
@@ -244,7 +249,7 @@ class RbSprintsController < RbApplicationController
   def finish_sprint
     Sprints::FinishService
       .new(user: current_user, model: @sprint)
-      .call(move_to_sprint_id: params[:move_to_sprint_id])
+      .call(move_to_sprint_id: params[:move_to_sprint_id], send_notifications: false)
   end
 
   def respond_with_start_finish_failure(message:)

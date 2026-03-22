@@ -28,31 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class FinishSprintDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-
-    DIALOG_ID = "finish-sprint-dialog"
-    FORM_ID = "finish-sprint-dialog-form"
-
-    attr_reader :sprint, :project, :available_sprints
-
-    def initialize(sprint:, project:, available_sprints:)
-      super
-      @sprint = sprint
-      @project = project
-      @available_sprints = available_sprints
-    end
+module Sprints
+  class FinishContract < BaseContract
+    validate :sprint_must_be_active
+    validate :user_allowed_to_finish
+    validate :no_unfinished_work_packages
 
     private
 
-    def title
-      t(".title")
+    def sprint_must_be_active
+      errors.add(:status, :not_active) unless model.active?
     end
 
-    def body_message
-      t(".body", message: sprint.errors[:base])
+    def user_allowed_to_finish
+      errors.add(:base, :error_unauthorized) unless user.allowed_in_project?(:start_complete_sprint, model.project)
+    end
+
+    def no_unfinished_work_packages
+      unfinished_work_package_count = model.work_packages.with_status_open.count
+
+      errors.add(:base, :unfinished_work_packages, count: unfinished_work_package_count) if unfinished_work_package_count > 0
     end
   end
 end

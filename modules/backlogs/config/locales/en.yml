@@ -76,8 +76,12 @@ en:
         agile/sprint:
           attributes:
             base:
-              unfinished_work_packages: "has work packages that are not completed."
-              move_to_sprint_not_found: "target sprint for moving work packages could not be found."
+              unfinished_work_packages:
+                one: "There is %{count} work package that was not completed in this sprint."
+                other: "There are %{count} work packages that were not completed in this sprint."
+              format: "%{message}"
+            status:
+              not_active: "is not active so it cannot be closed."
         sprint:
           cannot_end_before_it_starts: "Sprint cannot end before it starts."
 
@@ -155,9 +159,7 @@ en:
 
     finish_sprint_dialog_component:
       title: "There are work in progress items"
-      body:
-        one: "There is 1 work package that was not completed in this sprint. What would you like to do with it?"
-        other: "There are %{count} work packages that were not completed in this sprint. What would you like to do with these?"
+      body: "%{message}. What would you like to do?"
       select_sprint_label: "Select sprint"
       button_close_sprint: "Close sprint"
 
