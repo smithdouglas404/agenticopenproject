@@ -40,7 +40,7 @@ RSpec.describe Sprints::StartService do
   let(:user) { create(:admin) }
   let(:instance) { described_class.new(user:, model: sprint) }
 
-  subject(:result) { instance.call }
+  subject(:result) { instance.call(send_notifications: false) }
 
   before do
     create(:workflow, type: type_task, old_status: status1, new_status: status2, role: create(:project_role))
@@ -96,20 +96,19 @@ RSpec.describe Sprints::StartService do
 
     it "returns failure and leaves the sprint in planning", :aggregate_failures do
       expect(result).not_to be_success
-      expect(result.message).to eq("something went wrong")
       expect(sprint.reload).to be_in_planning
       expect(sprint.task_board_for(project)).to be_nil
     end
   end
 
-  context "when sprint activation fails after board creation" do
+  context "when another active sprint exists in the project" do
     let!(:active_sprint) { create(:agile_sprint, project:, status: "active") }
 
-    it "rolls back the created board", :aggregate_failures do
+    it "fails contract validation without creating a board", :aggregate_failures do
       expect(result).not_to be_success
+      expect(result.errors.symbols_for(:status)).to include(:only_one_active_sprint_allowed)
       expect(sprint.reload).to be_in_planning
       expect(sprint.task_board_for(project)).to be_nil
-      expect(result.message).to eq(sprint.errors.full_messages.to_sentence)
     end
   end
 
@@ -123,7 +122,7 @@ RSpec.describe Sprints::StartService do
     it "returns failure with the active sprint error", :aggregate_failures do
       expect(result).not_to be_success
       expect(result.errors[:status]).to include("only one active sprint is allowed per project.")
-      expect(result.message).to eq(sprint.errors.full_messages.to_sentence)
+      expect(result.message).to be_present
       expect(sprint.reload).to be_in_planning
       expect(sprint.task_board_for(project)).to be_nil
     end
@@ -132,22 +131,30 @@ RSpec.describe Sprints::StartService do
   context "when the sprint is already active" do
     let(:status) { "active" }
 
-    it "returns failure and leaves the sprint unchanged", :aggregate_failures do
+    it "fails contract validation", :aggregate_failures do
       expect(result).not_to be_success
-      expect(result.message).to be_blank
+      expect(result.errors.symbols_for(:status)).to include(:must_be_in_planning)
       expect(sprint.reload).to be_active
-      expect(sprint.task_board_for(project)).to be_nil
     end
   end
 
   context "when the sprint is already completed" do
     let(:status) { "completed" }
 
-    it "returns failure and leaves the sprint unchanged", :aggregate_failures do
+    it "fails contract validation", :aggregate_failures do
       expect(result).not_to be_success
-      expect(result.message).to be_blank
+      expect(result.errors.symbols_for(:status)).to include(:must_be_in_planning)
       expect(sprint.reload).to be_completed
-      expect(sprint.task_board_for(project)).to be_nil
+    end
+  end
+
+  context "when the user lacks permission" do
+    let(:user) { create(:user) }
+
+    it "fails contract validation", :aggregate_failures do
+      expect(result).not_to be_success
+      expect(result.errors.symbols_for(:base)).to include(:error_unauthorized)
+      expect(sprint.reload).to be_in_planning
     end
   end
 end

@@ -2002,6 +2002,7 @@ en:
         not_editable: "cannot be edited because it is already in effect."
         not_current_user: "is not the current user."
         system_wide_non_working_day_exists: "conflicts with an existing system-wide non-working day for this date."
+        must_be_in_planning: "must be in planning to start."
         only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "is not a valid date."

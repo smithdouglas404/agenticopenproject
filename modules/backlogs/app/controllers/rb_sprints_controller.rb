@@ -232,7 +232,7 @@ class RbSprintsController < RbApplicationController
   def start_sprint
     Sprints::StartService
       .new(user: current_user, model: @sprint)
-      .call
+      .call(send_notifications: false)
   end
 
   def finish_sprint

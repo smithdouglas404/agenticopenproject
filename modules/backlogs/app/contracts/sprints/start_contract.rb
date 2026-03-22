@@ -28,38 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Sprints::StartService < BaseServices::BaseContracted
-  def initialize(user:, model:, contract_class: Sprints::StartContract)
-    super(user:, contract_class:)
-    self.model = model
-  end
+module Sprints
+  class StartContract < ::BaseContract
+    validate :validate_permission
+    validate :validate_status_in_planning
+    validate :validate_no_other_active_sprint
 
-  private
+    private
 
-  def persist(service_call)
-    result = ensure_task_board
-    return result if result.failure?
+    def validate_permission
+      return if user.allowed_in_project?(:start_complete_sprint, model.project)
 
-    model.active!
+      errors.add :base, :error_unauthorized
+    end
 
-    service_call
-  rescue ActiveRecord::RecordNotUnique
-    add_only_one_active_sprint_error
-    ServiceResult.failure(result: model, errors: model.errors)
-  end
+    def validate_status_in_planning
+      return if model.in_planning?
 
-  def ensure_task_board
-    existing_board = model.task_board_for(model.project)
-    return ServiceResult.success(result: existing_board) if existing_board.present?
+      errors.add :status, :must_be_in_planning
+    end
 
-    Boards::SprintTaskBoardCreateService
-      .new(user:)
-      .call(project: model.project, sprint: model, name: model.board_name)
-  end
+    def validate_no_other_active_sprint
+      return unless model.in_planning?
+      return unless Agile::Sprint.where(project: model.project).active.where.not(id: model.id).exists?
 
-  def add_only_one_active_sprint_error
-    return if model.errors.added?(:status, :only_one_active_sprint_allowed)
-
-    model.errors.add(:status, :only_one_active_sprint_allowed)
+      errors.add :status, :only_one_active_sprint_allowed
+    end
   end
 end
