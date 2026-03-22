@@ -126,11 +126,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
 
         expect(menu_items.first).to eq("Finish sprint")
         expect(page).to have_octicon(:check)
-        expect(page).to have_css(
-          "form[action='#{finish_sprint_path}'][data-turbo='false'] " \
-          "input[name='_method'][value='patch']",
-          visible: :hidden
-        )
+        expect(page).to have_element(:form, action: finish_sprint_path, method: "post", "data-turbo": "false")
         expect(menu_items).to include("Stories/Tasks", "Task board")
         expect(menu_items.index("Task board")).to be > menu_items.index("Stories/Tasks")
       end
@@ -145,11 +141,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         expect(menu_items.first).to eq("Start sprint")
         expect(page).to have_octicon(:play)
         expect(page).to have_no_selector(:menuitem, text: "Task board")
-        expect(page).to have_css(
-          "form[action='#{start_sprint_path}'][data-turbo='false'] " \
-          "input[name='_method'][value='patch']",
-          visible: :hidden
-        )
+        expect(page).to have_element(:form, action: start_sprint_path, method: "post", "data-turbo": "false")
       end
 
       context "when another sprint is already active" do

@@ -101,7 +101,7 @@ RSpec.describe RbSprintsController do
       }
 
       it {
-        expect(patch("/projects/project_42/sprints/21/start")).to route_to(
+        expect(post("/projects/project_42/sprints/21/start")).to route_to(
           controller: "rb_sprints",
           action: "start",
           project_id: "project_42",
@@ -110,7 +110,7 @@ RSpec.describe RbSprintsController do
       }
 
       it {
-        expect(patch("/projects/project_42/sprints/21/finish")).to route_to(
+        expect(post("/projects/project_42/sprints/21/finish")).to route_to(
           controller: "rb_sprints",
           action: "finish",
           project_id: "project_42",
@@ -125,8 +125,8 @@ RSpec.describe RbSprintsController do
       it { expect(post("/projects/project_42/sprints")).not_to be_routable }
       it { expect(get("/projects/project_42/sprints/21/edit_dialog")).not_to be_routable }
       it { expect(put("/projects/project_42/sprints/21/update_agile_sprint")).not_to be_routable }
-      it { expect(patch("/projects/project_42/sprints/21/start")).not_to be_routable }
-      it { expect(patch("/projects/project_42/sprints/21/finish")).not_to be_routable }
+      it { expect(post("/projects/project_42/sprints/21/start")).not_to be_routable }
+      it { expect(post("/projects/project_42/sprints/21/finish")).not_to be_routable }
     end
   end
 end

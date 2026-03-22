@@ -43,7 +43,7 @@ See COPYRIGHT and LICENSE files for more details.
         href: start_project_sprint_path(project, sprint),
         disabled: disable_start_sprint_action?,
         form_arguments: {
-          method: :patch,
+          method: :post,
           data: { turbo: false }
         }
       ) do |item|
@@ -58,7 +58,7 @@ See COPYRIGHT and LICENSE files for more details.
         tag: :button,
         href: finish_project_sprint_path(project, sprint),
         form_arguments: {
-          method: :patch,
+          method: :post,
           data: { turbo: false }
         }
       ) do |item|

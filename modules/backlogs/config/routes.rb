@@ -40,8 +40,8 @@ Rails.application.routes.draw do
         end
 
         member do
-          patch :start
-          patch :finish
+          post :start
+          post :finish
           get :edit_dialog
           put :update_agile_sprint
         end

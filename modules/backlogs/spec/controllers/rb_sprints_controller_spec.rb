@@ -295,7 +295,7 @@ RSpec.describe RbSprintsController do
       end
     end
 
-    describe "PATCH #start" do
+    describe "POST #start" do
       let!(:sprint) { create(:agile_sprint, project:) }
       let(:service_result) { ServiceResult.success(result: sprint.tap { it.status = "active" }) }
       let(:service) { instance_double(Sprints::StartService, call: service_result) }
@@ -315,7 +315,7 @@ RSpec.describe RbSprintsController do
           let!(:sprint) { create(:agile_sprint, project: source_project) }
 
           it "responds with not found and does not call the service", :aggregate_failures do
-            patch :start, params: request_params
+            post :start, params: request_params
 
             expect(response).not_to be_successful
             expect(response).to have_http_status(:not_found)
@@ -331,7 +331,7 @@ RSpec.describe RbSprintsController do
           end
 
           it "starts the sprint and redirects to the board", :aggregate_failures do
-            patch :start, params: request_params
+            post :start, params: request_params
 
             expect(response).to redirect_to(project_work_package_board_path(project, existing_board))
             expect(service).to have_received(:call)
@@ -350,7 +350,7 @@ RSpec.describe RbSprintsController do
           end
 
           it "creates the board, starts the sprint, and redirects to the board", :aggregate_failures do
-            patch :start, params: request_params
+            post :start, params: request_params
 
             expect(response).to redirect_to(project_work_package_board_path(project, board))
             expect(service).to have_received(:call)
@@ -361,7 +361,7 @@ RSpec.describe RbSprintsController do
           let(:service_result) { ServiceResult.failure(message: "something went wrong") }
 
           it "redirects back to the backlog and leaves the sprint in planning", :aggregate_failures do
-            patch :start, params: request_params
+            post :start, params: request_params
 
             expect(response).to redirect_to(backlogs_project_backlogs_path(project))
             expect(flash[:alert]).to eq(
@@ -375,7 +375,7 @@ RSpec.describe RbSprintsController do
           let(:service_result) { ServiceResult.failure }
 
           it "redirects back with the default start failure message", :aggregate_failures do
-            patch :start, params: request_params
+            post :start, params: request_params
 
             expect(response).to redirect_to(backlogs_project_backlogs_path(project))
             expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
@@ -393,7 +393,7 @@ RSpec.describe RbSprintsController do
           end
 
           it "redirects back to the backlog and leaves the sprint in planning", :aggregate_failures do
-            patch :start, params: request_params
+            post :start, params: request_params
 
             expect(response).to redirect_to(backlogs_project_backlogs_path(project))
             expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
@@ -405,7 +405,7 @@ RSpec.describe RbSprintsController do
           let(:permissions) { all_permissions - [:start_complete_sprint] }
 
           it "responds with forbidden", :aggregate_failures do
-            patch :start, params: request_params
+            post :start, params: request_params
 
             expect(response).not_to be_successful
             expect(response).to have_http_status(:forbidden)
@@ -416,7 +416,7 @@ RSpec.describe RbSprintsController do
           let!(:sprint) { create(:agile_sprint, project:, status: "active") }
 
           it "responds with not found", :aggregate_failures do
-            patch :start, params: request_params
+            post :start, params: request_params
 
             expect(response).not_to be_successful
             expect(response).to have_http_status(:not_found)
@@ -425,7 +425,7 @@ RSpec.describe RbSprintsController do
       end
     end
 
-    describe "PATCH #finish" do
+    describe "POST #finish" do
       let!(:sprint) { create(:agile_sprint, project:, status: "active") }
       let(:request_params) { { project_id: project.id, id: sprint.id } }
       let(:service_result) do
@@ -449,7 +449,7 @@ RSpec.describe RbSprintsController do
           let!(:sprint) { create(:agile_sprint, project: source_project, status: "active") }
 
           it "responds with not found and does not call the service", :aggregate_failures do
-            patch :finish, params: request_params
+            post :finish, params: request_params
 
             expect(response).not_to be_successful
             expect(response).to have_http_status(:not_found)
@@ -458,7 +458,7 @@ RSpec.describe RbSprintsController do
         end
 
         it "finishes the sprint and redirects to the backlog", :aggregate_failures do
-          patch :finish, params: request_params
+          post :finish, params: request_params
 
           expect(response).to redirect_to(backlogs_project_backlogs_path(project))
           expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
@@ -469,7 +469,7 @@ RSpec.describe RbSprintsController do
           let(:service_result) { ServiceResult.failure(message: "something went wrong") }
 
           it "redirects back to the backlog", :aggregate_failures do
-            patch :finish, params: request_params
+            post :finish, params: request_params
 
             expect(response).to redirect_to(backlogs_project_backlogs_path(project))
             expect(flash[:alert]).to eq(
@@ -483,7 +483,7 @@ RSpec.describe RbSprintsController do
           let(:service_result) { ServiceResult.failure }
 
           it "redirects back with the default finish failure message", :aggregate_failures do
-            patch :finish, params: request_params
+            post :finish, params: request_params
 
             expect(response).to redirect_to(backlogs_project_backlogs_path(project))
             expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_finish))
@@ -495,7 +495,7 @@ RSpec.describe RbSprintsController do
           let(:permissions) { all_permissions - [:start_complete_sprint] }
 
           it "responds with forbidden", :aggregate_failures do
-            patch :finish, params: request_params
+            post :finish, params: request_params
 
             expect(response).not_to be_successful
             expect(response).to have_http_status(:forbidden)
@@ -506,7 +506,7 @@ RSpec.describe RbSprintsController do
           let!(:sprint) { create(:agile_sprint, project:, status: "completed") }
 
           it "responds with not found", :aggregate_failures do
-            patch :finish, params: request_params
+            post :finish, params: request_params
 
             expect(response).not_to be_successful
             expect(response).to have_http_status(:not_found)
