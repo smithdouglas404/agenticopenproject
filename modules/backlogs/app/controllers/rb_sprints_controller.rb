@@ -40,7 +40,7 @@ class RbSprintsController < RbApplicationController
 
   skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
 
-  before_action :load_project, only: NEW_SPRINT_ACTIONS + SPRINT_STATE_ACTIONS
+  before_action :load_project, only: NEW_SPRINT_ACTIONS
 
   def new_dialog
     call = Sprints::SetAttributesService.new(
