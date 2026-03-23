@@ -462,6 +462,22 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
       end
     end
 
+    context "when auto-generated identifier already exists" do
+      let!(:existing_project) do
+        create(:project, identifier: "FPA")
+      end
+
+      let(:body) do
+        { name: "Flight Planning Algorithm" }.to_json
+      end
+
+      it "creates the project with a unique alternative identifier" do
+        expect(last_response).to have_http_status(:created)
+
+        response_identifier = JSON.parse(last_response.body)["identifier"]
+        expect(response_identifier).not_to eq(existing_project.identifier)
+      end
+    end
     context "when an invalid identifier is provided" do
       let(:body) do
         {
