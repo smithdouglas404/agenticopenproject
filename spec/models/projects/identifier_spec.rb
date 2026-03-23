@@ -37,56 +37,6 @@ RSpec.describe Projects::Identifier do
     it { is_expected.to normalize(:identifier).from("my\n\x00project\t").to("myproject") }
   end
 
-  describe ".normalize_value_for" do
-    context "when in numeric mode (default)" do
-      before { allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(false) }
-
-      it "downcases the value" do
-        expect(Project.normalize_value_for(:identifier, "PROJ")).to eq("proj")
-      end
-
-      it "strips whitespace" do
-        expect(Project.normalize_value_for(:identifier, "  proj  ")).to eq("proj")
-      end
-
-      it "returns nil unchanged" do
-        expect(Project.normalize_value_for(:identifier, nil)).to be_nil
-      end
-    end
-
-    context "when in alphanumeric mode" do
-      before { allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(true) }
-
-      it "upcases the value" do
-        expect(Project.normalize_value_for(:identifier, "proj")).to eq("PROJ")
-      end
-
-      it "strips whitespace" do
-        expect(Project.normalize_value_for(:identifier, "  proj  ")).to eq("PROJ")
-      end
-    end
-  end
-
-  describe "normalizes :identifier on Project" do
-    context "when in numeric mode (default)" do
-      before { allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(false) }
-
-      it "downcases identifier on assignment" do
-        project = Project.new(identifier: "MyProject")
-        expect(project.identifier).to eq("myproject")
-      end
-    end
-
-    context "when in alphanumeric mode" do
-      before { allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(true) }
-
-      it "upcases identifier on assignment" do
-        project = Project.new(identifier: "myproject")
-        expect(project.identifier).to eq("MYPROJECT")
-      end
-    end
-  end
-
   describe "url identifier", with_settings: { work_packages_identifier: "numeric" } do
     let(:reserved) do
       Rails.application.routes.routes
@@ -126,9 +76,9 @@ RSpec.describe Projects::Identifier do
     it "is not allowed to clash with another project case-insensitively" do
       create(:project, identifier: "existing")
 
-      project = build(:project, identifier: "EXISTING")
-      expect(project).not_to be_valid
-      expect(project.errors[:identifier]).to include("has already been taken.")
+      expect do
+        Project.where(id: create(:project).id).update_all(identifier: "EXISTING")
+      end.to raise_error(ActiveRecord::RecordNotUnique)
     end
 
     it "is not allowed to clash with a former identifier of another project" do
@@ -144,8 +94,10 @@ RSpec.describe Projects::Identifier do
       other_project = create(:project, identifier: "former-id")
       other_project.update!(identifier: "new-id")
 
-      project = build(:project, identifier: "FORMER-ID")
-      expect(project).not_to be_valid
+      # Bypass format validation to test the LOWER() slug check directly
+      project = create(:project)
+      project.identifier = "FORMER-ID"
+      project.valid?
       expect(project.errors[:identifier]).to include("has already been taken.")
     end
 

@@ -39,10 +39,6 @@ module Projects::Identifier
     extend FriendlyId
 
     normalizes :identifier, with: OpenProject::RemoveAsciiControlCharacters
-    normalizes :identifier, with: ->(value) {
-      stripped = value.to_s.strip
-      Setting::WorkPackageIdentifier.alphanumeric? ? stripped.upcase : stripped.downcase
-    }
 
     acts_as_url :name,
                 url_attribute: :identifier,
@@ -93,12 +89,6 @@ module Projects::Identifier
   end
 
   class_methods do
-    # Normalize the input to FriendlyID finders so that lookups are case-insensitive.
-    # FriendlyID's default parse_friendly_id returns the value unchanged.
-    def parse_friendly_id(value)
-      normalize_value_for(:identifier, value)
-    end
-
     def suggest_identifier(name)
       if Setting::WorkPackageIdentifier.alphanumeric?
         WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator.suggest_identifier(name)
@@ -148,13 +138,14 @@ module Projects::Identifier
 
   # Checks friendly_id_slugs for any project that previously used this identifier and
   # has since changed it. It allows a project to switch back to an identifier it has
-  # used before. Plain equality works because `normalizes :identifier` ensures consistent
-  # casing before FriendlyId records the slug.
+  # used before. Uses LOWER() because slugs may be stored in a different case than the
+  # incoming identifier (e.g. old lowercase slug vs new uppercase alphanumeric identifier).
   def identifier_not_historically_reserved
     return if errors.any? { |error| error.attribute == :identifier && error.type == :taken }
 
     already_existing = FriendlyId::Slug
-                         .where(slug: identifier, sluggable_type: self.class.to_s)
+                         .where("LOWER(slug) = LOWER(?)", identifier)
+                         .where(sluggable_type: self.class.to_s)
                          .where.not(sluggable_id: id)
                          .exists?
 
