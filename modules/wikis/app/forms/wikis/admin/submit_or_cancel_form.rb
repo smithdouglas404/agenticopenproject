@@ -23,45 +23,45 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
-# or not at all
-require "open_project/plugins"
-
-module OpenProject::Wikis
-  class Engine < ::Rails::Engine
-    engine_name :openproject_wikis
-
-    include OpenProject::Plugins::ActsAsOpEngine
-
-    initializer "openproject_wikis.inflections" do
-      ActiveSupport::Inflector.inflections(:en) do |inflect|
-        inflect.acronym "XWiki"
-      end
-
-      OpenProject::Inflector.rule do |basename, abspath|
-        case basename
-        when "xwiki"
-          "XWiki"
-        when /\Axwiki_(.*)\z/
-          "XWiki#{default_inflect($1, abspath)}"
-        end
+module Wikis::Admin
+  class SubmitOrCancelForm < ApplicationForm
+    form do |buttons|
+      buttons.group(layout: :horizontal) do |button_group|
+        button_group.submit(**@submit_button_options)
+        button_group.button(**@cancel_button_options)
       end
     end
 
-    register "openproject-wikis",
-             author_url: "https://openproject.org",
-             requires_openproject: ">= 17.0.0" do
-      menu :admin_menu,
-           :wiki_providers,
-           { controller: "/wikis/admin/wiki_providers", action: :index },
-           if: ->(_) { User.current.admin? },
-           caption: :project_module_wiki_platforms,
-           icon: "browser"
+    def initialize(wiki_provider:, submit_button_options: {}, cancel_button_options: {})
+      super()
+      @wiki_provider = wiki_provider
+      @submit_button_options = default_submit_button_options.merge(submit_button_options)
+      @cancel_button_options = default_cancel_button_options.merge(cancel_button_options)
+    end
+
+    private
+
+    def default_submit_button_options
+      {
+        name: :submit,
+        scheme: :primary,
+        label: I18n.t("wikis.buttons.save_and_continue")
+      }
+    end
+
+    def default_cancel_button_options
+      {
+        name: :cancel,
+        scheme: :default,
+        tag: :a,
+        href: url_helpers.admin_settings_wiki_providers_path,
+        label: I18n.t("button_cancel")
+      }
     end
   end
 end

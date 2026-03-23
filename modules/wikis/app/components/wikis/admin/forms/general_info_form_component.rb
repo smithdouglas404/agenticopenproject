@@ -23,45 +23,28 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
-# or not at all
-require "open_project/plugins"
+module Wikis::Admin::Forms
+  class GeneralInfoFormComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
 
-module OpenProject::Wikis
-  class Engine < ::Rails::Engine
-    engine_name :openproject_wikis
+    alias_method :wiki_provider, :model
 
-    include OpenProject::Plugins::ActsAsOpEngine
-
-    initializer "openproject_wikis.inflections" do
-      ActiveSupport::Inflector.inflections(:en) do |inflect|
-        inflect.acronym "XWiki"
-      end
-
-      OpenProject::Inflector.rule do |basename, abspath|
-        case basename
-        when "xwiki"
-          "XWiki"
-        when /\Axwiki_(.*)\z/
-          "XWiki#{default_inflect($1, abspath)}"
-        end
+    def form_url
+      if wiki_provider.persisted?
+        admin_settings_wiki_provider_path(wiki_provider)
+      else
+        admin_settings_wiki_providers_path
       end
     end
 
-    register "openproject-wikis",
-             author_url: "https://openproject.org",
-             requires_openproject: ">= 17.0.0" do
-      menu :admin_menu,
-           :wiki_providers,
-           { controller: "/wikis/admin/wiki_providers", action: :index },
-           if: ->(_) { User.current.admin? },
-           caption: :project_module_wiki_platforms,
-           icon: "browser"
+    def form_method
+      wiki_provider.persisted? ? :patch : :post
     end
   end
 end

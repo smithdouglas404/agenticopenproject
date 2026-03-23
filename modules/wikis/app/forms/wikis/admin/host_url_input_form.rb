@@ -23,45 +23,24 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
-# or not at all
-require "open_project/plugins"
-
-module OpenProject::Wikis
-  class Engine < ::Rails::Engine
-    engine_name :openproject_wikis
-
-    include OpenProject::Plugins::ActsAsOpEngine
-
-    initializer "openproject_wikis.inflections" do
-      ActiveSupport::Inflector.inflections(:en) do |inflect|
-        inflect.acronym "XWiki"
-      end
-
-      OpenProject::Inflector.rule do |basename, abspath|
-        case basename
-        when "xwiki"
-          "XWiki"
-        when /\Axwiki_(.*)\z/
-          "XWiki#{default_inflect($1, abspath)}"
-        end
-      end
-    end
-
-    register "openproject-wikis",
-             author_url: "https://openproject.org",
-             requires_openproject: ">= 17.0.0" do
-      menu :admin_menu,
-           :wiki_providers,
-           { controller: "/wikis/admin/wiki_providers", action: :index },
-           if: ->(_) { User.current.admin? },
-           caption: :project_module_wiki_platforms,
-           icon: "browser"
+module Wikis::Admin
+  class HostUrlInputForm < ApplicationForm
+    form do |f|
+      f.text_field(
+        name: :url,
+        label: I18n.t("activerecord.attributes.wikis/xwiki_provider.url"),
+        required: true,
+        type: :url,
+        pattern: ".{1,255}",
+        placeholder: "https://xwiki.my-organisation.com",
+        caption: I18n.t("wikis.admin.wiki_providers.url_caption"),
+        input_width: :large
+      )
     end
   end
 end

@@ -1,7 +1,51 @@
 ---
 en:
   activerecord:
-    attributes: {}
+    attributes:
+      wikis/xwiki_provider:
+        name: Name
+        url: Host URL
+        authentication_method: Authentication method
+        authentication_methods:
+          oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
+          two_way_oauth2: Two-way OAuth 2.0 authorization code flow
+        token_exchange_scope: XWiki Scope
+        wiki_audience: XWiki Audience
     errors: {}
-    models: {}
-  wikis: {}
+    models:
+      wikis/inline_page_link:
+        one: Inline page link
+        other: Inline page links
+      wikis/internal_provider: Internal wiki
+      wikis/relation_page_link:
+        one: Relation page link
+        other: Relation page links
+      wikis/xwiki_provider: XWiki provider
+  project_module_wiki_platforms: Wiki platforms
+  wikis:
+    buttons:
+      save_and_continue: Save and continue
+    admin:
+      wiki_providers:
+        index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.
+        label_wiki_platform: Wiki platform
+        label_add_new: Add new wiki platform
+        label_new_xwiki_instance: New XWiki instance
+        no_results_title: You don't have any wiki platforms set up yet.
+        no_results_description: Add a wiki service to see them here.
+        label_edit: Edit XWiki instance
+        name_placeholder: XWiki Knowledgebase
+        name_caption: Give your storage a name so that users can differentiate between multiple wiki platforms.
+        url_caption: Please add the host address of your wiki platform including the https://. It should not be longer than 255 characters.
+        xwiki_instance: XWiki Instance
+        xwiki_instance_description_html: Please make sure you have administration privileges in your XWiki instance and the %{app_link} is installed before doing the setup.
+        xwiki_app_link_text: application "OpenProject Integration"
+        new_platform_html: Read our documentation on [setting up an XWiki integration](docs_url) for more information.
+        sections:
+          general_information: General information
+          oauth_applications: OAuth applications
+        oauth:
+          openproject_oauth: OpenProject OAuth
+          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
+          xwiki_oauth: XWiki OAuth
+          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
