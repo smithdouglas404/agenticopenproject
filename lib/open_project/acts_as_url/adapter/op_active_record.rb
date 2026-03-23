@@ -40,8 +40,6 @@ module OpenProject
         # Avoid generating the slug if the attribute is already set
         # and only_when_blank is true
         def ensure_unique_url!(instance)
-          return if Setting::WorkPackageIdentifier.alphanumeric?
-
           attribute = instance.send(settings.url_attribute)
           super if attribute.blank? || !settings.only_when_blank
         end

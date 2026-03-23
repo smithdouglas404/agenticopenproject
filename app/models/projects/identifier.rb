@@ -42,7 +42,7 @@ module Projects::Identifier
 
     ### ID generators
     # There are two supported formats:
-    # 1. legacy slug identifiers (e.g. "project_one"),
+    # 1. slug identifiers (e.g. "project_one"),
     #   with work packages identified by global ID (e.g. "#123")
     # 2. semantic identifiers (e.g. "PROJ1"), with work packages identified by
     #   a combination of project identifier and local ID (e.g. "PROJ1-123")
@@ -58,7 +58,6 @@ module Projects::Identifier
     before_validation :generate_semantic_identifier,
                       on: :create,
                       if: -> { Setting::WorkPackageIdentifier.alphanumeric? && identifier.blank? }
-    ###
 
     ### ID validators
     # Validators for the legacy underscored identifier format (e.g. "project_one")
@@ -83,7 +82,6 @@ module Projects::Identifier
               format: { with: /\A[A-Z][A-Z0-9_]*\z/, message: :no_special_characters },
               length: { maximum: SEMANTIC_IDENTIFIER_MAX_LENGTH },
               if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
-    ###
 
     # Complements the uniqueness validation above: once an identifier has been used by a
     # project, it remains reserved for that project even after the project moves to a new
