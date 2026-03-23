@@ -111,7 +111,7 @@ class WorkflowsController < ApplicationController
     if params[:dirty] == "true"
       # Necessary because the ActionMenu updates even when the confirmation dialog
       # is closed via "X". This update ensures the correct option is shown as selected
-      # with a preceding checkbox at all times.
+      # with a preceding checkbox at all times
       update_via_turbo_stream(
         component: Workflows::EditSubHeaderComponent.new(
           tab: current_tab,

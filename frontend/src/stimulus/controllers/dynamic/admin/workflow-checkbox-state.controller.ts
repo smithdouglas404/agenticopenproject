@@ -38,6 +38,21 @@ interface SavedState {
   checkboxes:Record<string, boolean>;
 }
 
+/**
+ * Handles two things:
+ * 1) Saving and restoring checked state of each checkbox when updating statuses,
+ * since this refreshes the turbo frame and the checked state is not directly saved
+ * to the DB
+ *
+ * 2) Marking the checkbox matrix as dirty when changes are made but not saved, and
+ * passing this info along when roles/tabs are changed to trigger a confirmation
+ * dialog when necessary:
+ *   - Roles are handled by setting an attribute on each ActionMenu item when dirty.
+ *   This param decides if the controller responds with a confirmation dialog,
+ *   or simply redirects
+ *   - Tabs are handled by listening for clicks on the tab headers, and directly
+ * calling the confirmation dialog from here when dirty
+ */
 export default class WorkflowCheckboxStateController extends Controller<HTMLFormElement> {
   private initialCheckboxState:Record<string, boolean> = {};
   private turboRequests:TurboRequestsService;
