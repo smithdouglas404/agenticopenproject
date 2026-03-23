@@ -126,24 +126,14 @@ module PaginationHelper
 
   def render_primer_pagination(paginator, params:, allowed_params:, **)
     render(
-      Primer::Alpha::Pagination.new(
+      Primer::OpenProject::Pagination.new(
         page_count: paginator.total_pages,
         current_page: paginator.current_page,
         href_builder: ->(page) { pagination_href(page, params:, allowed_params:) },
-        **primer_pagination_arguments(**)
       )
     )
   end
 
-  def primer_pagination_arguments(**)
-    {
-      show_pages: {
-        narrow: false,
-        regular: true,
-        wide: true
-      }
-    }
-  end
 
   def pagination_href(page, params:, allowed_params:)
     allowed_params ||= %w[filters sortBy]
