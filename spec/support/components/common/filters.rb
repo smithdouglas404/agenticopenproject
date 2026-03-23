@@ -200,11 +200,9 @@ module Components
       def open_filters
         return if filters_expanded?
 
-        retry_block do
-          toggle_filters_section
-          expect(page).to have_css(".op-filters-form.-expanded")
-          page.find_field("Add filter", visible: true)
-        end
+        toggle_filters_section
+        expect(page).to have_css(".op-filters-form.-expanded", wait: 5)
+        page.find_field("Add filter", visible: true)
       end
 
       def filters_toggle
