@@ -176,10 +176,8 @@ RSpec.describe "Enterprise trial management",
     fill_in "Last name", with: "Bar"
     fill_in "Email", with: mail
 
-    retry_block do
-      check "general_consent", allow_label_click: true
-      expect(page).to have_checked_field("general_consent")
-    end
+    check "general_consent", allow_label_click: true
+    expect(page).to have_checked_field("general_consent")
   end
 
   it "does not send a request when an internal validation fails" do

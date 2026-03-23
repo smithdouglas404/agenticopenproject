@@ -45,10 +45,8 @@ RSpec.describe "Project public/private toggle", :js do
 
     expect(page).to have_text I18n.t("projects.settings.public_confirmation.title")
 
-    retry_block do
-      check I18n.t("projects.settings.public_confirmation.checkbox")
-      click_button "Confirm"
-    end
+    check I18n.t("projects.settings.public_confirmation.checkbox")
+    click_button "Confirm"
 
     expect(page).to have_test_selector("op-projects-public-warning")
     expect(page).to have_text(I18n.t("projects.settings.public_warning"))
