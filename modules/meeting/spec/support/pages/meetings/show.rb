@@ -769,9 +769,7 @@ module Pages::Meetings
 
     # still a bit ambiguous, but better than nothing
     def expect_focused_ckeditor
-      retry_block do
-        expect(page.evaluate_script("document.activeElement.classList.contains('ck-focused')")).to be true
-      end
+      expect(page).to have_css(".ck-focused", wait: 10)
     end
 
     def expect_notes(text)
