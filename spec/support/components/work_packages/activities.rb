@@ -369,9 +369,9 @@ module Components
       end
 
       def filter_journals(filter, default_sorting: User.current.preference&.comments_sorting || "desc")
-        retry_block do
-          page.find_test_selector("op-wp-journals-filter-menu").click
+        page.find_test_selector("op-wp-journals-filter-menu").click
 
+        wait_for_turbo_stream do
           case filter
           when :all
             page.find_test_selector("op-wp-journals-filter-show-all").click
@@ -382,19 +382,17 @@ module Components
           end
         end
 
-        # Ensure the journals are reloaded
-        wait_for { page }.to have_test_selector("op-wp-journals-#{filter}-#{default_sorting}")
-        # the wait_for will not work on its own as the selector will be switched to the target filter before the page is updated
-        # so we still need to wait statically unfortunately to avoid flakyness
-        sleep 1
+        expect(page).to have_test_selector("op-wp-journals-#{filter}-#{default_sorting}", wait: 10)
       end
 
       def set_journal_sorting(sorting, default_filter: :all)
-        retry_block do
-          page.find_test_selector("op-wp-journals-sorting-menu").click
+        page.find_test_selector("op-wp-journals-sorting-menu").click
+
+        wait_for_turbo_stream do
           page.find_test_selector("op-wp-journals-sorting-#{sorting}").click
-          expect(page).to have_test_selector("op-wp-journals-#{default_filter}-#{sorting}")
         end
+
+        expect(page).to have_test_selector("op-wp-journals-#{default_filter}-#{sorting}", wait: 10)
       end
 
       def trigger_update_streams_poll
