@@ -60,7 +60,7 @@ class WorkflowsController < ApplicationController
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize
     tab = params[:tab] || "always"
 
     call = Workflows::BulkUpdateService

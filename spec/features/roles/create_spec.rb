@@ -110,7 +110,7 @@ RSpec.describe "Role creation", :js do
     click_link type.name
 
     click_button existing_role.name
-    click_link "New role name"
+    click_button "New role name"
 
     old_status = existing_workflow.old_status.name
     new_status = existing_workflow.new_status.name
