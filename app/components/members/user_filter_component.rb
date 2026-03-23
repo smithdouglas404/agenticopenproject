@@ -31,6 +31,7 @@
 module Members
   class UserFilterComponent < ::UserFilterComponent
     ALL_SHARED_FILTER_KEY = "all"
+    EXCLUDE_INHERITED_FILTER_KEY = :exclude_inherited
 
     def initially_visible?
       false
@@ -42,6 +43,14 @@ module Members
 
     def has_shares?
       true
+    end
+
+    def has_exclude_inherited_filter?
+      true
+    end
+
+    def exclude_inherited?
+      self.class.exclude_inherited_members?(params:)
     end
 
     def shares
@@ -62,12 +71,15 @@ module Members
     end
 
     def status_members_query(status)
-      params = {
+      query_params = {
         project_id: project.id,
         status:
       }
+      if params.key?(EXCLUDE_INHERITED_FILTER_KEY)
+        query_params[EXCLUDE_INHERITED_FILTER_KEY] = params[EXCLUDE_INHERITED_FILTER_KEY]
+      end
 
-      self.class.filter(params)
+      self.class.filter(query_params)
     end
 
     def filter_path
@@ -75,12 +87,26 @@ module Members
     end
 
     class << self
+      def query(params)
+        q = query_class_for(params).new
+
+        apply_filters(params, q)
+
+        q
+      end
+
       def base_query
         Queries::Members::MemberQuery
       end
 
       def filter_param_keys
-        super + %i(shared_role_id)
+        super + %i(shared_role_id exclude_inherited)
+      end
+
+      def exclude_inherited_members?(params:)
+        return true unless params.key?(EXCLUDE_INHERITED_FILTER_KEY)
+
+        ActiveModel::Type::Boolean.new.cast(params[EXCLUDE_INHERITED_FILTER_KEY])
       end
 
       def share_options
@@ -114,6 +140,14 @@ module Members
       end
 
       protected
+
+      def query_class_for(params)
+        if exclude_inherited_members?(params:)
+          Queries::Members::NonInheritedMemberQuery
+        else
+          base_query
+        end
+      end
 
       def filter_shares(query, role_id)
         if role_id === ALL_SHARED_FILTER_KEY

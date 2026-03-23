@@ -116,6 +116,14 @@ class IndividualPrincipalBaseFilterComponent < ApplicationComponent
     false
   end
 
+  def has_exclude_inherited_filter?
+    false
+  end
+
+  def exclude_inherited?
+    false
+  end
+
   def params
     model
   end

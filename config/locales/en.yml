@@ -726,6 +726,7 @@ en:
       shared: "Shared"
     filters:
       all_shares: "All shares"
+      hide_inherited_users: "Hide users inherited from groups"
     menu:
       all: "All"
       invited: "Invited"

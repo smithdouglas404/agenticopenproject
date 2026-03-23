@@ -110,9 +110,16 @@ See COPYRIGHT and LICENSE files for more details.
           %>
         </li>
       <% end %>
+      <% if has_exclude_inherited_filter? %>
+        <li class="simple-filters--filter">
+          <label class='simple-filters--filter-name' for='exclude_inherited'><%= t("members.filters.hide_inherited_users") %>:</label>
+          <%= hidden_field_tag "exclude_inherited", "0" %>
+          <%= check_box_tag "exclude_inherited", "1", exclude_inherited?, class: "simple-filters--filter-value" %>
+        </li>
+      <% end %>
       <li class="simple-filters--filter">
         <label class='simple-filters--filter-name' for='name'><%= User.human_attribute_name :name %>:</label>
-        <%= text_field_tag "name", params[:name], class: "simple-filters--filter-value" %>
+        <%= text_field_tag "name", params[:name], class: "simple-filters--filter-value", autocomplete: "off" %>
       </li>
       <li class="simple-filters--controls">
         <%= submit_tag t(:button_apply), class: "button -primary -small", name: nil %>
