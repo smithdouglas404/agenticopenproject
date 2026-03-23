@@ -43,6 +43,10 @@ module CustomActions
 
     private
 
+    def available_actions
+      @available_actions ||= custom_action.actions.reject { it.key == :inexistent }
+    end
+
     def active_section_keys
       @active_section_keys ||= @custom_action.actions.map { "action_#{it.key}" }
     end

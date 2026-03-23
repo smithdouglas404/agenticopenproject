@@ -40,7 +40,7 @@ See COPYRIGHT and LICENSE files for more details.
     <span class="form--select-container -middle">
       <%= select_tag "add_condition",
                      options_for_select(
-                       custom_action.all_conditions.map { [ _1.human_name, "condition_#{_1.key}" ] },
+                       custom_action.all_conditions.map { [ it.human_name, "condition_#{it.key}" ] },
                        disabled: active_section_keys
                      ),
                      id: "add-custom-action-condition-select",

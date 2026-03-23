@@ -26,7 +26,7 @@ See COPYRIGHT and LICENSE files for more details.
   </legend>
 
   <div id="custom-actions-form--active-actions">
-    <% custom_action.actions.each do |action| %>
+    <% available_actions.each do |action| %>
       <%= render partial: "custom_actions/action_section",
                  locals: {
                    action: action
