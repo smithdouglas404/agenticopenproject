@@ -445,7 +445,6 @@ en:
         We have prepared [upgrade guides for all installation methods](upgrade_guide).
         You can perform the upgrade ahead of the next release at any time by following the guides.
 
-
   authentication:
     login_and_registration: "Login and registration"
 
@@ -1583,12 +1582,6 @@ en:
         dependencies: "Dependencies"
 
   activerecord:
-    errors:
-      models:
-        group:
-          attributes:
-            parent_id:
-              circular_dependency: "would create a circular group hierarchy."
     attributes:
       jira_import:
         projects: "Projects"
@@ -1906,6 +1899,7 @@ en:
         sunday_hours: "Sunday hours"
         availability_factor: "Availability factor"
         shared_hours: "Work hours"
+        days: "Working days"
       version:
         effective_date: "Finish date"
         sharing: "Sharing"
@@ -2033,6 +2027,10 @@ en:
           is not providing a "Secure Context". Either use HTTPS or a loopback address, such as localhost.
         wrong_length: "is the wrong length (should be %{count} characters)."
       models:
+        group:
+          attributes:
+            parent_id:
+              circular_dependency: "would create a circular group hierarchy."
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2353,6 +2351,10 @@ en:
                 description: "'Password confirmation' should match the input in the 'New password' field."
             status:
               invalid_on_create: "is not a valid status for new users."
+        user_working_hours:
+          attributes:
+            days:
+              no_working_day: "At least one day needs to be configured as a working day."
         member:
           principal_blank: "Please choose at least one user or group."
           role_blank: "need to be assigned."
@@ -5376,7 +5378,7 @@ en:
       activities:
         enable_internal_comments: "Enable internal comments"
         helper_text_html: >
-          Internal comments allow an internal team to communicate amongst themselves privately. 
+          Internal comments allow an internal team to communicate amongst themselves privately.
           These are only visible to selected roles that have the necessary permissions and will not be visible publicly.
           [Click here to learn more](docs_url)
 
@@ -5529,7 +5531,7 @@ en:
   text_plugin_assets_writable: "Plugin assets directory writable"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Only lower case letters (a-z), numbers, dashes and underscores are allowed, must start with a lower case letter."
-  text_project_identifier_description: "The project identifier is prepended to all work package IDs. If the identifier is \"PROJ\" for example, the work package identifier will be \"PROJ-12\" or \"PROJ-246\"."
+  text_project_identifier_description: 'The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".'
   text_project_identifier_url_description: "The project identifier is included in the URL of the project."
   text_project_identifier_handle_format: "Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters)."
   text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
@@ -5671,10 +5673,10 @@ en:
     The activation email has expired. We sent you a new one to %{email}.
     Please click the link inside of it to activate your account.
   warning_user_limit_reached: >
-    Adding additional users will exceed the current limit. 
+    Adding additional users will exceed the current limit.
     Please contact an administrator to increase the user limit to ensure external users are able to access this instance.
   warning_user_limit_reached_admin_html: >
-    Adding additional users will exceed the current limit. 
+    Adding additional users will exceed the current limit.
     Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
     You reached your user limit (%{current}/%{max} active users).
@@ -5777,7 +5779,7 @@ en:
       Adding additional users will exceed the current limit.
       Please contact an administrator to increase the user limit to ensure external users are able to access this %{entity}.
     warning_user_limit_reached_admin_html: >
-      Adding additional users will exceed the current limit. 
+      Adding additional users will exceed the current limit.
       Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
     warning_no_selected_user: "Please select users to share this %{entity} with"
     warning_locked_user: "The user %{user} is locked and cannot be shared with"
