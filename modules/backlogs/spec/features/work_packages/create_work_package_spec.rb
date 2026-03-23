@@ -185,8 +185,14 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
              })
     end
 
-    it "does not show a menu item for creating a new work package" do
-      backlogs_page.expect_no_sprint_menu_item(sprint1, "Add work package")
+    it "does not show a menu (item for creating a new work package)" do
+      # At the moment, since there's no menu item, the entire menu will not be visible.
+      # Once we add more and more menu items back, the menu will be rendered, but the action
+      # will be missing. When that happens, the expectation has to be adjusted for something like
+      # this:
+      # backlogs_page.expect_no_sprint_menu_item(sprint1, "Add work package")
+
+      backlogs_page.expect_no_sprint_menu(sprint1)
     end
   end
 end

@@ -112,6 +112,12 @@ module Pages
         .to have_no_css("#{work_package_selector(work_package)} .DragHandle")
     end
 
+    def expect_no_sprint_menu(sprint)
+      within_sprint(sprint) do
+        expect(page).to have_no_button(accessible_name: "Sprint actions")
+      end
+    end
+
     def expect_no_sprint_menu_item(sprint, item_name)
       within_sprint_menu(sprint) do |_menu|
         expect(page)
