@@ -43,11 +43,8 @@ module Components
       def open
         SeleniumHubWaiter.wait
         expect_loaded
-        retry_block do
-          # Run in retry block because filters do nothing if not yet loaded
-          filter_button.click
-          find(filters_selector, visible: true)
-        end
+        filter_button.click
+        find(filters_selector, visible: true, wait: 5)
       end
 
       def open!
