@@ -83,9 +83,7 @@ module Components
         @opened = true
         ::Components::WorkPackages::SettingsMenu.new.open_and_choose "Configure view"
 
-        retry_block do
-          find(".op-tab-row--link", text: "HIGHLIGHTING", wait: 10).click
-        end
+        find(".op-tab-row--link", text: "HIGHLIGHTING", wait: 10).click
       end
 
       def assume_opened

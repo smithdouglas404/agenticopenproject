@@ -60,12 +60,10 @@ module Components
 
       def open!
         SeleniumHubWaiter.wait
-        retry_block do
-          next if open?
+        return if open?
 
-          scroll_to_and_click trigger
-          expect_open
-        end
+        scroll_to_and_click trigger
+        expect_open
       end
 
       def set_display_sums(enable: true)
@@ -109,14 +107,10 @@ module Components
       end
 
       def switch_to(target)
-        # Switching too fast may result in the click handler not yet firing
-        # so wait a bit initially
         SeleniumHubWaiter.wait unless using_cuprite?
 
-        retry_block do
-          find("#{selector} .op-tab-row--link", text: target.upcase, wait: 2).click
-          selected_tab(target)
-        end
+        find("#{selector} .op-tab-row--link", text: target.upcase, wait: 5).click
+        selected_tab(target)
       end
 
       def selector

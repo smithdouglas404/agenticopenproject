@@ -49,10 +49,8 @@ module Components
       end
 
       def open_and_choose(name)
-        retry_block do
-          open!
-          choose(name)
-        end
+        open!
+        choose(name)
       end
 
       def open!
