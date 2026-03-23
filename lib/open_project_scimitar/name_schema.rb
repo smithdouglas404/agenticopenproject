@@ -35,7 +35,7 @@ module OpenProjectScimitar
         Scimitar::Schema::Attribute.new(name: "familyName",
                                         caseExact: false,
                                         type: "string",
-                                        required: true),
+                                        required: false),
         Scimitar::Schema::Attribute.new(name: "givenName",
                                         caseExact: false,
                                         type: "string",

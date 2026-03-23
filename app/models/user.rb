@@ -144,7 +144,6 @@ class User < Principal
 
   validates :login,
             :firstname,
-            :lastname,
             :mail,
             presence: { unless: Proc.new { |user| user.builtin? } }
 

@@ -54,8 +54,8 @@ See COPYRIGHT and LICENSE files for more details.
         <div class="form--field -required -wide-label">
           <%= f.text_field :firstname, required: true %>
         </div>
-        <div class="form--field -required -wide-label">
-          <%= f.text_field :lastname, required: true %>
+        <div class="form--field -wide-label">
+          <%= f.text_field :lastname %>
         </div>
         <% if registration_show_email? %>
           <div class="form--field -required -wide-label">

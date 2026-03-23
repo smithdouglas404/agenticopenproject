@@ -80,7 +80,7 @@ RSpec.describe API::V3::Users::CreateFormAPI, content_type: :json do
                 .at_path("_embedded/payload/status")
 
         expect(body)
-          .to have_json_size(5)
+          .to have_json_size(4)
                 .at_path("_embedded/validationErrors")
 
         expect(body)
@@ -91,8 +91,6 @@ RSpec.describe API::V3::Users::CreateFormAPI, content_type: :json do
           .to have_json_path("_embedded/validationErrors/email")
         expect(body)
           .to have_json_path("_embedded/validationErrors/firstName")
-        expect(body)
-          .to have_json_path("_embedded/validationErrors/lastName")
 
         expect(body)
           .not_to have_json_path("_links/commit")

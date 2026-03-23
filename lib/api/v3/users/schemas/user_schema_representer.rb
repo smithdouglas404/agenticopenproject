@@ -65,7 +65,7 @@ module API
           schema :lastname,
                  as: :lastName,
                  type: "String",
-                 min_length: 1,
+                 required: false,
                  max_length: 255
 
           schema :avatar,

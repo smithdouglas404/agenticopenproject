@@ -68,9 +68,9 @@ RSpec.shared_examples "create user request flow" do
 
       expect(last_response).to have_http_status(:unprocessable_entity)
 
-      expect(errors.count).to eq(5)
+      expect(errors.count).to eq(4)
       expect(errors.collect { |el| el["_embedded"]["details"]["attribute"] })
-        .to contain_exactly("password", "login", "firstName", "lastName", "email")
+        .to contain_exactly("password", "login", "firstName", "email")
 
       expect(last_response.body)
         .to be_json_eql("urn:openproject-org:api:v3:errors:MultipleErrors".to_json)
@@ -128,10 +128,10 @@ RSpec.shared_examples "create user request flow" do
           .to be_json_eql("urn:openproject-org:api:v3:errors:MultipleErrors".to_json)
                 .at_path("errorIdentifier")
 
-        expect(errors.count).to eq 4
+        expect(errors.count).to eq 3
 
         attributes = errors.map { |error| error.dig("_embedded", "details", "attribute") }
-        expect(attributes).to contain_exactly("login", "firstName", "lastName", "email")
+        expect(attributes).to contain_exactly("login", "firstName", "email")
       end
     end
   end
