@@ -31,6 +31,19 @@
 require "spec_helper"
 
 RSpec.describe Projects::Identifier do
+  describe "validations" do
+    subject { create(:project) }
+
+    it { is_expected.to validate_uniqueness_of(:identifier).case_insensitive }
+    it { is_expected.to validate_length_of(:identifier).is_at_most(100) }
+  end
+
+  describe "database indexes" do
+    subject { Project.new }
+
+    it { is_expected.to have_db_index("lower((identifier)::text)").unique(true) }
+  end
+
   describe "identifier normalization" do
     subject { Project.new }
 
