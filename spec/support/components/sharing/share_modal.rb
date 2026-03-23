@@ -264,15 +264,8 @@ module Components
 
       def filter(filter_name, value)
         within(shares_header) do
-          retry_block do
-            # The button's text changes dynamically based on the currently selected option
-            # Hence the spec's readability is hindered by using something like
-            # `click_button filter_name.capitalize`
-            find("[data-test-selector='op-share-dialog-filter-#{filter_name}-button']").click
-
-            # Open the ActionMenu
-            find(".ActionListContent", text: value).click
-          end
+          find("[data-test-selector='op-share-dialog-filter-#{filter_name}-button']").click
+          find(".ActionListContent", text: value, wait: 5).click
         end
 
         wait_for_network_idle # Ensures filtering is done

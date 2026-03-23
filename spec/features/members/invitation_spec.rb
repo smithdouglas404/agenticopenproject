@@ -125,10 +125,8 @@ RSpec.describe "invite user via email", :js do
       it "does not allow finding that user" do
         members_page.visit!
 
-        retry_block do
-          members_page.open_new_member!
-          find_by_id("members_add_form")
-        end
+        members_page.open_new_member!
+        find_by_id("members_add_form")
 
         dropdown = members_page.search_principal! "hugo@openproject.com"
         expect(dropdown).to have_no_text "Hugo Hurried"
@@ -142,10 +140,8 @@ RSpec.describe "invite user via email", :js do
       it "user lookup by email" do
         members_page.visit!
 
-        retry_block do
-          members_page.open_new_member!
-          find_by_id("members_add_form")
-        end
+        members_page.open_new_member!
+        find_by_id("members_add_form")
 
         members_page.search_and_select_principal! "hugo@openproject.com",
                                                   "Hugo Hurriedhugo@openproject.com"
