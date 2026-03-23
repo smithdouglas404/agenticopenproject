@@ -31,16 +31,31 @@
 require "spec_helper"
 
 RSpec.describe WorkPackages::UpdateService, "sprint preservation on project change", type: :model do
-  shared_let(:user) { create(:admin) }
-
-  current_user { user }
-
   let(:source_project) do
     create(:project)
   end
 
   let(:target_project) do
     create(:project)
+  end
+
+  let(:project_permissions) do
+    %i[edit_work_packages
+       edit_project
+       move_work_packages
+       view_project
+       view_work_packages
+       manage_sprint_items]
+  end
+
+  let(:source_project_permissions) { project_permissions }
+  let(:target_project_permissions) { source_project_permissions }
+
+  let(:user) do
+    create(:user, member_with_permissions: {
+             source_project => source_project_permissions,
+             target_project => target_project_permissions
+           })
   end
 
   let(:sprint_in_source_project) do
@@ -59,6 +74,8 @@ RSpec.describe WorkPackages::UpdateService, "sprint preservation on project chan
   end
 
   let(:instance) { described_class.new(user:, model: work_package) }
+
+  current_user { user }
 
   describe "when changing the project" do
     context "when scrum_projects feature flag is active", with_flag: { scrum_projects: true } do
@@ -90,6 +107,21 @@ RSpec.describe WorkPackages::UpdateService, "sprint preservation on project chan
             expect(result).to be_success
             expect(work_package.reload.sprint_id).to eq(sprint_in_source_project.id)
             expect(work_package.project).to eq(target_project)
+          end
+
+          context "with the manage_sprint_items permission missing" do
+            let(:source_project_permissions) { project_permissions - %i[manage_sprint_items] }
+            let(:target_project_permissions) { project_permissions - %i[manage_sprint_items] }
+
+            it "preserves the sprint_id" do
+              result = instance.call(project: target_project)
+
+              # Ensure that the sprint id is set by the system, not by the user. If the user tried this,
+              # the service call would fail due to lacking permissions.
+              expect(result).to be_success
+              expect(work_package.reload.sprint_id).to eq(sprint_in_source_project.id)
+              expect(work_package.project).to eq(target_project)
+            end
           end
         end
 
