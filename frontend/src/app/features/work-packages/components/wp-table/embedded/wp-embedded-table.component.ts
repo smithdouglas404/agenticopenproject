@@ -100,7 +100,10 @@ export class WorkPackageEmbeddedTableComponent extends WorkPackageEmbeddedBaseCo
           .wpListService
           .loadQueryFromExisting(query, params, this.queryProjectScope),
       )
-        .then((query) => this.initializeStates(query));
+        .then((query) => {
+          this.initializeStates(query);
+          this.cdRef.markForCheck();
+        });
     });
   }
 
@@ -166,6 +169,7 @@ export class WorkPackageEmbeddedTableComponent extends WorkPackageEmbeddedBaseCo
       .then((query:QueryResource) => {
         this.initializeStates(query);
         this.onQueryLoaded.emit(query);
+        this.cdRef.markForCheck();
         return query;
       })
       .catch((error) => {
