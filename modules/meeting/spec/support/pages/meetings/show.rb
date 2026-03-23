@@ -246,10 +246,8 @@ module Pages::Meetings
       select_action(item, "Move to next meeting")
       expect_modal("Move to next meeting?")
 
-      retry_block do
-        page.within_modal "Move to next meeting?" do
-          click_on "Move"
-        end
+      page.within_modal "Move to next meeting?" do
+        click_on "Move"
       end
     end
 
@@ -260,30 +258,22 @@ module Pages::Meetings
       end
       expect_modal("Duplicate in next meeting?")
 
-      retry_block do
-        page.within_modal "Duplicate in next meeting?" do
-          click_on "Duplicate"
-        end
+      page.within_modal "Duplicate in next meeting?" do
+        click_on "Duplicate"
       end
     end
 
     def open_menu(item, &)
-      retry_block do
-        page.within("#meeting-agenda-item-#{item.id}") do
-          page.find_test_selector("op-meeting-agenda-actions").click
-        end
-        page.find(".Overlay")
-        page.within(".Overlay", &)
+      page.within("#meeting-agenda-item-#{item.id}") do
+        page.find_test_selector("op-meeting-agenda-actions").click
       end
+      page.within(".Overlay", wait: 5, &)
     end
 
     def select_outcome_action(action)
-      retry_block do
-        page.find_test_selector("op-meeting-outcome-actions").click
-        page.find(".Overlay")
-      end
+      page.find_test_selector("op-meeting-outcome-actions").click
 
-      page.within(".Overlay") do
+      page.within(".Overlay", wait: 5) do
         click_on action
       end
     end
@@ -293,25 +283,19 @@ module Pages::Meetings
     end
 
     def expect_no_outcome_action(item)
-      retry_block do
-        page.within("#meeting-agenda-item-#{item.id}") do
-          page.find_test_selector("op-meeting-agenda-actions").trigger("click")
-        end
-        page.find(".Overlay")
+      page.within("#meeting-agenda-item-#{item.id}") do
+        page.find_test_selector("op-meeting-agenda-actions").trigger("click")
       end
 
-      page.within(".Overlay") do
+      page.within(".Overlay", wait: 5) do
         expect(page).to have_no_text("Add outcome")
       end
     end
 
     def select_section_action(section, action)
-      retry_block do
-        click_on_section_menu(section)
-        page.find(".Overlay")
-      end
+      click_on_section_menu(section)
 
-      page.within(".Overlay") do
+      page.within(".Overlay", wait: 5) do
         click_on action
       end
     end
@@ -399,10 +383,8 @@ module Pages::Meetings
 
     def expect_empty_backlog
       within_backlog do
-        retry_block do
-          expect(page).to have_text("Drag items here or create a new one")
-          expect(page).to have_button("Add")
-        end
+        expect(page).to have_text("Drag items here or create a new one")
+        expect(page).to have_button("Add")
       end
     end
 
@@ -444,12 +426,10 @@ module Pages::Meetings
     end
 
     def select_backlog_action(action)
-      retry_block do
-        click_on_backlog_menu
-        page.find(".Overlay")
-        page.within(".Overlay") do
-          click_on action
-        end
+      click_on_backlog_menu
+
+      page.within(".Overlay", wait: 5) do
+        click_on action
       end
     end
 
@@ -506,13 +486,10 @@ module Pages::Meetings
     end
 
     def expect_item_edit_field_error(item, text)
-      # retry because the #meeting-agenda-items-form-component-<id> may not be
-      # updated yet and then becomes stale while checking for field error.
-      retry_block do
-        page.within("#meeting-agenda-items-form-component-#{item.id}") do
-          expect(page).to have_css(".FormControl-inlineValidation", text:)
-        end
-      end
+      expect(page).to have_css(
+        "#meeting-agenda-items-form-component-#{item.id} .FormControl-inlineValidation",
+        text:, wait: 10
+      )
     end
 
     def clear_item_edit_work_package_title
@@ -522,9 +499,7 @@ module Pages::Meetings
 
     def open_participant_form
       page.find_test_selector("manage-participants-button").click
-      retry_block do
-        expect_modal("Manage participants")
-      end
+      expect_modal("Manage participants")
     end
 
     def in_participant_form(&)
@@ -555,10 +530,8 @@ module Pages::Meetings
 
     def invite_participant(participant)
       id = "checkbox_invited_#{participant.id}"
-      retry_block do
-        check(id:)
-        raise "Expected #{participant.id} to be invited now" unless page.has_checked_field?(id:)
-      end
+      check(id:)
+      expect(page).to have_checked_field(id:)
     end
 
     def toggle_attendance(participant)
@@ -591,12 +564,9 @@ module Pages::Meetings
     end
 
     def close_meeting
-      retry_block do
-        click_on("Open")
-        page.find(".Overlay")
-      end
+      click_on("Open")
 
-      page.within(".Overlay") do
+      page.within(".Overlay", wait: 5) do
         click_on("Closed")
       end
       expect(page).to have_link("Reopen meeting")
@@ -661,12 +631,10 @@ module Pages::Meetings
     end
 
     def add_section(&)
-      retry_block do
+      wait_for_turbo_stream do
         page.within("#meeting-agenda-items-new-button-component") do
           click_on I18n.t(:button_add)
           click_on "Section"
-          # wait for the disabled button, indicating the turbo streams are applied
-          expect(page).to have_css("#meeting-agenda-items-new-button-component button[disabled='disabled']")
         end
       end
 
@@ -700,15 +668,13 @@ module Pages::Meetings
     end
 
     def check_add_section_path(meeting)
-      retry_block do
-        page.within("#meeting-agenda-items-new-button-component") do
-          click_on I18n.t(:button_add)
+      page.within("#meeting-agenda-items-new-button-component") do
+        click_on I18n.t(:button_add)
 
-          add_section_link = find_link("Section")
-          url = add_section_link[:href]
+        add_section_link = find_link("Section")
+        url = add_section_link[:href]
 
-          expect(URI.parse(url).path).to eq(project_meeting_sections_path(meeting.project, meeting))
-        end
+        expect(URI.parse(url).path).to eq(project_meeting_sections_path(meeting.project, meeting))
       end
     end
 
@@ -762,9 +728,7 @@ module Pages::Meetings
     end
 
     def expect_focused_input(input_id)
-      retry_block do
-        expect(page.evaluate_script("document.activeElement.id")).to eq(input_id)
-      end
+      expect(page).to have_css("##{input_id}:focus", wait: 10)
     end
 
     # still a bit ambiguous, but better than nothing
