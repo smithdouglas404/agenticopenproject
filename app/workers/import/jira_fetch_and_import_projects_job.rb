@@ -189,7 +189,7 @@ module Import
 
       jira_user_groups.each do |group_name|
         call = Groups::CreateService
-                 .new(user: User.system)
+                 .new(user: User.system, contract_class: EmptyContract)
                  .call(name: group_name)
         call.on_success do |result|
           group = result.result
