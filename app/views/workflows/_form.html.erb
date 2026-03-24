@@ -187,6 +187,8 @@ See COPYRIGHT and LICENSE files for more details.
               <% end %>
             </th>
             <% @statuses.each do |new_status| -%>
+              <% transition_saved = workflows.any? { it.old_status_id == old_status.id && it.new_status_id == new_status.id }
+                 newly_added_status = @added_status_ids.include?(old_status.id) || @added_status_ids.include?(new_status.id) %>
               <td>
                 <%=
                   render(Primer::BaseComponent.new(tag: :div, display: :flex, align_items: :center, mx: 1)) do
@@ -196,7 +198,7 @@ See COPYRIGHT and LICENSE files for more details.
                         name: "status[#{old_status.id}][#{new_status.id}]",
                         id: "status_#{old_status.id}_#{new_status.id}", # See BUG https://github.com/primer/view_components/issues/3811
                         value: name,
-                        checked: workflows.any? { it.old_status_id == old_status.id && it.new_status_id == new_status.id },
+                        checked: transition_saved || newly_added_status,
                         label: t(".matrix_checkbox_label", old_status: old_status.name, new_status: new_status.name),
                         visually_hide_label: true,
                         data: {

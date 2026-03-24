@@ -28,36 +28,24 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render Primer::OpenProject::PageHeader.new(classes: "workflows-page-header") do |header|
-    header.with_title { title }
-    header.with_breadcrumbs(breadcrumb_items)
-
-    header.with_action_button(
-      tag: :a,
-      mobile_icon: :copy,
-      mobile_label: t(:button_copy),
-      size: :medium,
-      href: copy_workflows_path,
-      aria: { label: I18n.t(:button_copy) },
-      title: I18n.t(:button_copy)
-    ) do |button|
-      button.with_leading_visual_icon(icon: :copy)
-      t(:button_copy)
+  render(Primer::Beta::BorderBox.new) do |component|
+    component.with_header do |header|
+      header.with_title(tag: :h2) do
+        Type.model_name.human
+      end
     end
-
-    header.with_action_button(
-      tag: :a,
-      mobile_icon: :info,
-      mobile_label: t(:label_workflow_summary),
-      size: :medium,
-      href: summarized_workflows_path,
-      aria: { label: I18n.t(:label_workflow_summary) },
-      title: I18n.t(:label_workflow_summary)
-    ) do |button|
-      button.with_leading_visual_icon(icon: :info)
-      t(:label_workflow_summary)
+    types.each do |type|
+      component.with_row(data: { "filter--filter-list-target": "searchItem" }) do
+        link_to type.name, edit_workflow_path(type), class: "text-bold"
+      end
     end
-
-    helpers.render_tab_header_nav(header, @tabs)
+    if types.empty?
+      component.with_row do
+        render(Primer::Beta::Blankslate.new(border: false)) do |component|
+          component.with_heading(tag: :h2) { I18n.t(:label_nothing_display) }
+          component.with_description { I18n.t(:no_results_title_text) }
+        end
+      end
+    end
   end
 %>

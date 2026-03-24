@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,49 +26,49 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
 require "spec_helper"
 
-RSpec.describe "Workflow copy" do
-  let(:role) { create(:project_role) }
-  let(:type) { create(:type) }
+RSpec.describe "Workflows index" do
+  include Toasts::Expectations
+
   let(:admin)  { create(:admin) }
-  let(:statuses) { (1..2).map { |_i| create(:status) } }
-  let!(:workflow) do
-    create(:workflow, role_id: role.id,
-                      type_id: type.id,
-                      old_status_id: statuses[0].id,
-                      new_status_id: statuses[1].id,
-                      author: false,
-                      assignee: false)
-  end
+  let!(:types) { create_list(:type, 3) }
 
   current_user { admin }
 
   before do
-    visit url_for(controller: "/workflows", action: :copy)
+    visit url_for(controller: "/workflows", action: :index)
   end
 
-  it "shows existing types and roles" do
-    select(role.name, from: :source_role_id)
-    within("#source_role_id") do
-      expect(page).to have_content(role.name)
-      expect(page).to have_content("--- #{I18n.t(:actionview_instancetag_blank_option)} ---")
+  it "is accessible", :js, :selenium do
+    expect(page).to be_axe_clean.within("#content")
+  end
+
+  it "allows quick-filtering by type name", :js do
+    within "ul.Box-list" do
+      expect(page).to have_css %{[data-filter--filter-list-target="searchItem"]}, count: types.count
     end
-    within("#source_type_id") do
-      expect(page).to have_content(type.name)
-      expect(page).to have_content("--- #{I18n.t(:actionview_instancetag_blank_option)} ---")
+
+    some_type = types.sample
+    fill_in "Filter by type name…", with: some_type.name
+
+    within "ul.Box-list" do
+      expect(page).to have_css %{[data-filter--filter-list-target="searchItem"]}, count: 1
+      expect(page).to have_css("li", text: some_type.name)
     end
   end
 
-  it "allows navigating to Workflow edit page" do
-    within ".PageHeader-actions" do
-      click_on "Edit"
+  it "allows navigating to any Edit page" do
+    expect(page).to have_heading("Workflows")
+
+    some_type = types.sample
+    within "ul.Box-list" do
+      click_link some_type.name
     end
 
-    expect(page).to have_heading "Workflow"
-    expect(page).to have_current_path(workflows_path)
+    expect(page).to have_heading some_type.name
   end
 
   it "allows navigating to Workflow summary page" do
@@ -78,5 +78,14 @@ RSpec.describe "Workflow copy" do
 
     expect(page).to have_heading "Summary"
     expect(page).to have_current_path(summarized_workflows_path)
+  end
+
+  it "allows navigating to Workflow copy page" do
+    within ".PageHeader-actions" do
+      click_on "Copy"
+    end
+
+    expect(page).to have_heading "Copy workflow"
+    expect(page).to have_current_path(copy_workflows_path)
   end
 end

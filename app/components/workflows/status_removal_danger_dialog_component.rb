@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,32 +26,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module WorkflowHelper
-  def workflow_tabs(type, current_role: nil, current_tab: nil)
-    [
-      { name: "always", label: I18n.t(:"admin.workflows.tabs.default_transitions") },
-      { name: "author", label: I18n.t(:"admin.workflows.tabs.user_author") },
-      { name: "assignee", label: I18n.t(:"admin.workflows.tabs.user_assignee") }
-    ].map do |tab|
-      tab.merge(
-        partial: "workflows/form",
-        path: edit_workflow_path(type, { tab: tab[:name] }.merge(params.permit(:role_id))),
-        data: if current_role
-                {
-                  workflow_tab_link: true,
-                  workflow_tab_current: tab[:name] == current_tab,
-                  confirmation_url: confirmation_dialog_workflows_path(
-                    type_id: type.id,
-                    role_id: current_role.id,
-                    next_tab: tab[:name],
-                    tab: current_tab || "always",
-                    dirty: true
-                  )
-                }
-              end
-      )
+module Workflows
+  class StatusRemovalDangerDialogComponent < ApplicationComponent
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
+
+    DIALOG_ID = "workflows-status-removal-dialog"
+
+    def initialize(role:, type:, tab:, status_ids:, removed_count:)
+      super
+      @role = role
+      @type = type
+      @tab = tab
+      @status_ids = Array(status_ids).flatten.map(&:to_i)
+      @removed_count = removed_count
     end
   end
 end

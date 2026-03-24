@@ -26,38 +26,35 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
+<% html_title t(:label_administration), t(:label_workflow_plural) -%>
+
+<%= render Workflows::PageHeaderComponent.new(state: :index) %>
 
 <%=
-  render Primer::OpenProject::PageHeader.new(classes: "workflows-page-header") do |header|
-    header.with_title { title }
-    header.with_breadcrumbs(breadcrumb_items)
-
-    header.with_action_button(
-      tag: :a,
-      mobile_icon: :copy,
-      mobile_label: t(:button_copy),
-      size: :medium,
-      href: copy_workflows_path,
-      aria: { label: I18n.t(:button_copy) },
-      title: I18n.t(:button_copy)
-    ) do |button|
-      button.with_leading_visual_icon(icon: :copy)
-      t(:button_copy)
+  flex_layout data: { controller: "filter--filter-list", "filter--filter-list-clear-button-id-value": "type-filter-clear-button" } do |flex|
+    flex.with_row do
+      render(Primer::OpenProject::SubHeader.new) do |subheader|
+        subheader.with_filter_input(
+          name: "type-filter-input",
+          label: t("admin.workflows.index.type_filter.label"),
+          visually_hide_label: true,
+          placeholder: t("admin.workflows.index.type_filter.label"),
+          leading_visual: {
+            icon: :search,
+            size: :small
+          },
+          show_clear_button: true,
+          clear_button_id: "type-filter-clear-button",
+          data: {
+            action: "input->filter--filter-list#filterLists",
+            "filter--filter-list-target": "filter"
+          }
+        )
+      end
     end
 
-    header.with_action_button(
-      tag: :a,
-      mobile_icon: :info,
-      mobile_label: t(:label_workflow_summary),
-      size: :medium,
-      href: summarized_workflows_path,
-      aria: { label: I18n.t(:label_workflow_summary) },
-      title: I18n.t(:label_workflow_summary)
-    ) do |button|
-      button.with_leading_visual_icon(icon: :info)
-      t(:label_workflow_summary)
+    flex.with_row do
+      render Workflows::TableComponent.new(@types)
     end
-
-    helpers.render_tab_header_nav(header, @tabs)
   end
 %>

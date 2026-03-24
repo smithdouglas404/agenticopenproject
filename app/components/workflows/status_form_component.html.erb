@@ -28,36 +28,22 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render Primer::OpenProject::PageHeader.new(classes: "workflows-page-header") do |header|
-    header.with_title { title }
-    header.with_breadcrumbs(breadcrumb_items)
-
-    header.with_action_button(
-      tag: :a,
-      mobile_icon: :copy,
-      mobile_label: t(:button_copy),
-      size: :medium,
-      href: copy_workflows_path,
-      aria: { label: I18n.t(:button_copy) },
-      title: I18n.t(:button_copy)
-    ) do |button|
-      button.with_leading_visual_icon(icon: :copy)
-      t(:button_copy)
-    end
-
-    header.with_action_button(
-      tag: :a,
-      mobile_icon: :info,
-      mobile_label: t(:label_workflow_summary),
-      size: :medium,
-      href: summarized_workflows_path,
-      aria: { label: I18n.t(:label_workflow_summary) },
-      title: I18n.t(:label_workflow_summary)
-    ) do |button|
-      button.with_leading_visual_icon(icon: :info)
-      t(:label_workflow_summary)
-    end
-
-    helpers.render_tab_header_nav(header, @tabs)
+  primer_form_with(
+    url: helpers.confirm_statuses_workflows_path,
+    method: :post,
+    id: FORM_ID,
+    data: { turbo_frame: "workflow-table" }
+  ) do |f|
+    render(
+      Workflows::StatusSelectForm.new(
+        f,
+        all_statuses: @all_statuses,
+        current_statuses: @current_statuses,
+        role: @role,
+        type: @type,
+        tab: @tab,
+        dialog_id:
+      )
+    )
   end
 %>

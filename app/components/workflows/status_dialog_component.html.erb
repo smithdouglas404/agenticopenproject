@@ -28,36 +28,41 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render Primer::OpenProject::PageHeader.new(classes: "workflows-page-header") do |header|
-    header.with_title { title }
-    header.with_breadcrumbs(breadcrumb_items)
+  render(
+    Primer::Alpha::Dialog.new(
+      id: DIALOG_ID,
+      title: t("admin.workflows.statuses_dialog.title"),
+      size: :medium_portrait
+    )
+  ) do |dialog|
+    dialog.with_header(variant: :large)
 
-    header.with_action_button(
-      tag: :a,
-      mobile_icon: :copy,
-      mobile_label: t(:button_copy),
-      size: :medium,
-      href: copy_workflows_path,
-      aria: { label: I18n.t(:button_copy) },
-      title: I18n.t(:button_copy)
-    ) do |button|
-      button.with_leading_visual_icon(icon: :copy)
-      t(:button_copy)
+    dialog.with_body(classes: "workflow-status-dialog-body") do
+      render(
+        Workflows::StatusFormComponent.new(
+          all_statuses: @all_statuses,
+          current_statuses: @current_statuses,
+          role: @role,
+          type: @type,
+          tab: @tab
+        )
+      )
     end
 
-    header.with_action_button(
-      tag: :a,
-      mobile_icon: :info,
-      mobile_label: t(:label_workflow_summary),
-      size: :medium,
-      href: summarized_workflows_path,
-      aria: { label: I18n.t(:label_workflow_summary) },
-      title: I18n.t(:label_workflow_summary)
-    ) do |button|
-      button.with_leading_visual_icon(icon: :info)
-      t(:label_workflow_summary)
-    end
+    dialog.with_footer do
+      component_collection do |footer|
+        footer.with_component(
+          Primer::Beta::Button.new(data: { "close-dialog-id": DIALOG_ID })
+        ) { t(:button_cancel) }
 
-    helpers.render_tab_header_nav(header, @tabs)
+        footer.with_component(
+          Primer::Beta::Button.new(
+            scheme: :primary,
+            type: :submit,
+            form: Workflows::StatusFormComponent::FORM_ID
+          )
+        ) { t("button_apply") }
+      end
+    end
   end
 %>

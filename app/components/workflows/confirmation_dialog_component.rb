@@ -28,30 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkflowHelper
-  def workflow_tabs(type, current_role: nil, current_tab: nil)
-    [
-      { name: "always", label: I18n.t(:"admin.workflows.tabs.default_transitions") },
-      { name: "author", label: I18n.t(:"admin.workflows.tabs.user_author") },
-      { name: "assignee", label: I18n.t(:"admin.workflows.tabs.user_assignee") }
-    ].map do |tab|
-      tab.merge(
-        partial: "workflows/form",
-        path: edit_workflow_path(type, { tab: tab[:name] }.merge(params.permit(:role_id))),
-        data: if current_role
-                {
-                  workflow_tab_link: true,
-                  workflow_tab_current: tab[:name] == current_tab,
-                  confirmation_url: confirmation_dialog_workflows_path(
-                    type_id: type.id,
-                    role_id: current_role.id,
-                    next_tab: tab[:name],
-                    tab: current_tab || "always",
-                    dirty: true
-                  )
-                }
-              end
-      )
+module Workflows
+  class ConfirmationDialogComponent < ApplicationComponent
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
+
+    DIALOG_ID = "workflows-confirmation-dialog"
+
+    def initialize(redirect_url:, next_role_id: nil, next_tab: nil)
+      super()
+      @redirect_url = redirect_url
+      @next_role_id = next_role_id
+      @next_tab = next_tab
     end
   end
 end

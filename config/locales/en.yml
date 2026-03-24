@@ -430,12 +430,38 @@ en:
         success_banner: Successfully updated work package identifier format.
         in_progress:
           banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
-
     workflows:
       tabs:
         default_transitions: "Default transitions"
         user_author: "User is author"
         user_assignee: "User is assignee"
+      index:
+        description: "Configure status transitions for each work package type."
+        type_filter:
+          label: "Filter by type name…"
+      status_button: "Status"
+      statuses_dialog:
+        title: "Statuses"
+        label: "Statuses enabled for this type"
+        caption: "Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it."
+      statuses_removal_dialog:
+        title: "Remove statuses"
+        heading:
+          one: "Remove 1 status?"
+          other: "Remove %{count} statuses?"
+        description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
+        confirm: "Remove"
+      leave_confirmation:
+        title: "Save changes before continuing?"
+        description: "You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?"
+        ignore: "Ignore changes"
+        save: "Save changes and continue"
+      role_selector:
+        label: "Role: %{role}"
+        no_role: "Select role"
+      blankslate:
+        title: "No status transitions configured"
+        description: "Add statuses to start configuring workflows for this role"    
     info:
       database_deprecation_html: >
         Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject.
@@ -4150,6 +4176,7 @@ en:
   label_start_to_start: "start to start"
   label_statistics: "Statistics"
   label_status: "Status"
+  label_status_plural: "Statuses"
   label_storage_free_space: "Remaining disk space"
   label_storage_used_space: "Used disk space"
   label_storage_group: "Storage filesystem %{identifier}"
