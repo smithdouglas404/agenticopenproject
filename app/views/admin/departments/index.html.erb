@@ -1,3 +1,3 @@
 <%= render(Admin::Departments::PageHeaderComponent.new) %>
 
-<%= render(Admin::Groups::GroupHierarchyLayoutComponent.new(groups: @groups)) %>
+<%= render(Admin::Groups::GroupHierarchyLayoutComponent.new(groups: @groups, active_group: @active_group)) %>

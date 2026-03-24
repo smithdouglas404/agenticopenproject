@@ -31,6 +31,7 @@
 module Admin
   module Groups
     class GroupHierarchyLayoutComponent < ApplicationComponent
+      include ApplicationHelper
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
@@ -44,12 +45,19 @@ module Admin
 
       def render_group_tree(tree, parent_id: nil)
         children_for(parent_id).each do |group|
+          node_attrs = {
+            label: group.name,
+            href: admin_department_path(group),
+            current: group == active_group,
+            data: { turbo_stream: true }
+          }
+
           if children?(group)
-            tree.with_sub_tree(label: group.name) do |sub_tree|
+            tree.with_sub_tree(**node_attrs, expanded: expanded?(group)) do |sub_tree|
               render_group_tree(sub_tree, parent_id: group.id)
             end
           else
-            tree.with_leaf(label: group.name)
+            tree.with_leaf(**node_attrs)
           end
         end
       end
@@ -66,6 +74,33 @@ module Admin
 
       def children?(group)
         children_by_parent_id.key?(group.id)
+      end
+
+      def expanded?(group)
+        return false unless active_group
+
+        active_group == group || active_group_ancestor_ids.include?(group.id)
+      end
+
+      def active_group_ancestor_ids
+        @active_group_ancestor_ids ||= compute_ancestor_ids(active_group)
+      end
+
+      def groups_by_id
+        @groups_by_id ||= groups.index_by(&:id)
+      end
+
+      def compute_ancestor_ids(group)
+        return [] unless group
+
+        ids = []
+        current = group
+        while current.parent_id
+          ids << current.parent_id
+          current = groups_by_id[current.parent_id]
+          break unless current
+        end
+        ids
       end
     end
   end

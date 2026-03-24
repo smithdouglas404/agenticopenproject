@@ -803,7 +803,7 @@ Rails.application.routes.draw do
     end
 
     resources :departments,
-              only: %i[index],
+              only: %i[index show],
               constraints: lambda { |_request| OpenProject::FeatureDecisions.departments_active? } do
       collection do
         get :edit_organization_name

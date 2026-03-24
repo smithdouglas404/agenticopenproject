@@ -38,9 +38,25 @@ module Admin
 
     # TODO: We will check for users permission here
     before_action :require_admin
+    before_action :find_active_group, only: :show
 
     def index
       @groups = Group.organizational_units.visible.order(:lastname)
+    end
+
+    def show
+      respond_to do |format|
+        format.turbo_stream do
+          replace_via_turbo_stream(component: Admin::Groups::GroupDetailComponent.new(group: @active_group))
+          turbo_streams << turbo_stream.push_state(admin_department_path(@active_group))
+          render turbo_stream: turbo_streams
+        end
+
+        format.html do
+          @groups = Group.organizational_units.visible.order(:lastname)
+          render action: :index
+        end
+      end
     end
 
     def edit_organization_name
@@ -60,6 +76,12 @@ module Admin
 
       replace_via_turbo_stream(component: Admin::Groups::OrganizationNameComponent.new)
       respond_with_turbo_streams
+    end
+
+    private
+
+    def find_active_group
+      @active_group = Group.organizational_units.visible.find(params[:id])
     end
   end
 end

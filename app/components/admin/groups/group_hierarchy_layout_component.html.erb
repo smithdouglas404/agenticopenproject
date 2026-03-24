@@ -33,11 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
   component_wrapper(tag: "turbo-frame", class: "admin-groups-tree-page--wrapper", refresh: :morph, data: { turbo_action: :advance }) do
     render(Primer::Alpha::Layout.new(stacking_breakpoint: :md, overflow: :hidden, h: :full, classes: "admin-groups-tree-page")) do |content|
       content.with_main(overflow: :auto) do
-        flex_layout do |container|
-          container.with_row do
-            render(Primer::Beta::Text.new) { "Main content for departments page" }
-          end
-        end
+        render(Admin::Groups::GroupDetailComponent.new(group: active_group))
       end
 
       content.with_sidebar(row_placement: :start, col_placement: :start, border: true, border_bottom: 0, p: 3, overflow: :auto, classes: "admin-groups-tree-page--sidebar") do
@@ -47,7 +43,7 @@ See COPYRIGHT and LICENSE files for more details.
           end
 
           sidebar.with_row do
-            render(Primer::Alpha::TreeView.new) do |tree_view|
+            render(Primer::Alpha::TreeView.new(node_variant: :anchor)) do |tree_view|
               render_group_tree(tree_view)
             end
           end
