@@ -111,6 +111,11 @@ en:
     task: "Task"
     task_color: "Task color"
     unassigned: "Unassigned"
+
+    administration_blankslate:
+      title: "Backlog admin settings are evolving"
+      text: "We are currently redesigning the Backlogs module. Admin settings for sprints and backlogs will be visible here in the near future. Project-level settings remain available."
+
     user_preference:
       header_backlogs: "Backlogs module"
       button_update_backlogs: "Update backlogs module"

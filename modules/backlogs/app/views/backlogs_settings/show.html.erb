@@ -40,15 +40,22 @@ See COPYRIGHT and LICENSE files for more details.
 %>
 
 <%=
-  settings_primer_form_with(
-    url: admin_backlogs_settings_path,
-    method: :put,
-    model: @settings,
-    scope: :settings,
-    data: {
-      controller: "admin--backlogs-settings"
-    }
-  ) do |f|
+  if OpenProject::FeatureDecisions.scrum_projects_active?
+    render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
+      blankslate.with_heading(tag: :h2).with_content(t("backlogs.administration_blankslate.title"))
+      blankslate.with_description_content(t("backlogs.administration_blankslate.text"))
+    end
+  else
+    settings_primer_form_with(
+      url: admin_backlogs_settings_path,
+      method: :put,
+      model: @settings,
+      scope: :settings,
+      data: {
+        controller: "admin--backlogs-settings"
+      }
+    ) do |f|
+      render Admin::Settings::BacklogsSettingsForm.new(f)
+    end
+  end
 %>
-  <%= render Admin::Settings::BacklogsSettingsForm.new(f) %>
-<% end %>
