@@ -414,6 +414,113 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
         end
       end
     end
+
+    describe "identifier reallocation on move" do
+      context "when in alphanumeric mode",
+              with_settings: { work_packages_identifier: Setting::WorkPackageIdentifier::ALPHANUMERIC } do
+        let(:source_project) { create(:project, identifier: "SRC", types: project_types) }
+        let(:target_project) { create(:project, identifier: "TGT", types: project_types) }
+        let(:target_permissions) { [:move_work_packages] }
+        let(:work_package) do
+          create(:work_package, project: source_project).tap do |wp|
+            wp.update_columns(sequence_number: 1, identifier: "SRC-1")
+            HistoricalWorkPackageIdentifier.create!(project: source_project, work_package: wp, sequence_number: 1)
+          end
+        end
+        let(:instance) { described_class.new(user:, model: work_package) }
+        let(:attributes) { { project_id: target_project.id } }
+
+        before do
+          create(:member, user:, project: source_project, roles: [role])
+        end
+
+        it "allocates a new identifier in the target project" do
+          expect(subject).to be_success
+
+          work_package.reload
+          expect(work_package.identifier).to eq("TGT-1")
+          expect(work_package.sequence_number).to eq(1)
+        end
+
+        it "records the old identifier in FriendlyId slug history" do
+          subject
+
+          expect(FriendlyId::Slug.where(slug: "SRC-1", sluggable_type: "WorkPackage")).to exist
+        end
+
+        it "makes the old identifier resolvable" do
+          subject
+
+          expect(WorkPackage.friendly.find("SRC-1")).to eq(work_package)
+          expect(WorkPackage.friendly.find("TGT-1")).to eq(work_package)
+        end
+
+        it "permanently reserves the old sequence in the source project" do
+          subject
+
+          expect(HistoricalWorkPackageIdentifier.where(project_id: source_project.id, sequence_number: 1)).to exist
+        end
+
+        it "creates a new HistoricalWorkPackageIdentifier in the target project" do
+          subject
+
+          record = HistoricalWorkPackageIdentifier.find_by(project: target_project, work_package:)
+          expect(record).to be_present
+          expect(record.sequence_number).to eq(1)
+        end
+
+        it "links the old historical record to its FriendlyId slug" do
+          subject
+
+          old_record = HistoricalWorkPackageIdentifier.find_by(project: source_project, work_package:)
+          expect(old_record.friendly_id_slug).to be_present
+          expect(old_record.friendly_id_slug.slug).to eq("SRC-1")
+        end
+
+        it "continues sequence numbering from target project's existing max" do
+          existing_wp = create(:work_package, project: target_project)
+          existing_wp.update_columns(sequence_number: 5, identifier: "TGT-5")
+          HistoricalWorkPackageIdentifier.create!(project: target_project, work_package: existing_wp, sequence_number: 5)
+
+          expect(subject).to be_success
+          expect(work_package.reload.sequence_number).to eq(6)
+          expect(work_package.identifier).to eq("TGT-6")
+        end
+
+        context "with descendants" do
+          let(:child_wp) do
+            create(:work_package, project: source_project, parent: work_package).tap do |wp|
+              wp.update_columns(sequence_number: 2, identifier: "SRC-2")
+              HistoricalWorkPackageIdentifier.create!(project: source_project, work_package: wp, sequence_number: 2)
+            end
+          end
+
+          before { child_wp }
+
+          it "reallocates identifiers for all moved work packages" do
+            expect(subject).to be_success
+
+            expect(work_package.reload.identifier).to eq("TGT-1")
+            expect(child_wp.reload.identifier).to eq("TGT-2")
+          end
+
+          it "records old identifiers for all moved work packages" do
+            subject
+
+            expect(FriendlyId::Slug.where(slug: "SRC-1", sluggable_type: "WorkPackage")).to exist
+            expect(FriendlyId::Slug.where(slug: "SRC-2", sluggable_type: "WorkPackage")).to exist
+          end
+        end
+      end
+
+      context "when in numeric mode",
+              with_settings: { work_packages_identifier: Setting::WorkPackageIdentifier::NUMERIC } do
+        it "does not modify identifiers" do
+          expect(subject).to be_success
+          expect(work_package.reload.identifier).to be_nil
+        end
+      end
+    end
   end
 
   describe "inheriting dates" do

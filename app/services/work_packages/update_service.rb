@@ -102,6 +102,11 @@ class WorkPackages::UpdateService < BaseServices::Update
       delete_relations(moved_work_packages)
       move_time_entries(moved_work_packages, work_package.project_id)
       move_work_package_memberships(moved_work_packages, work_package.project_id)
+      reallocate_identifiers_on_move(
+        moved_work_packages,
+        work_package.project,
+        work_package.project_id_before_last_save
+      )
     end
     if work_package.saved_change_to_type_id?
       reset_custom_values(work_package)
@@ -126,6 +131,46 @@ class WorkPackages::UpdateService < BaseServices::Update
     Member
       .where(entity: work_packages)
       .update_all(project_id:)
+  end
+
+  def reallocate_identifiers_on_move(moved_work_packages, target_project, source_project_id)
+    return unless Setting::WorkPackageIdentifier.alphanumeric?
+
+    wps_with_identifiers = moved_work_packages.select { |wp| wp.identifier.present? }
+    return if wps_with_identifiers.empty?
+
+    OpenProject::Mutex.with_advisory_lock_transaction(target_project, "wp_sequence") do
+      max_seq = HistoricalWorkPackageIdentifier
+                  .where(project_id: target_project.id)
+                  .maximum(:sequence_number).to_i
+
+      wps_with_identifiers.each do |work_package|
+        max_seq += 1
+        reallocate_single_identifier(work_package, target_project, source_project_id, max_seq)
+      end
+    end
+  end
+
+  def reallocate_single_identifier(work_package, target_project, source_project_id, new_seq)
+    old_identifier = work_package.identifier
+
+    slug = FriendlyId::Slug.create!(
+      slug: old_identifier, sluggable_type: "WorkPackage", sluggable_id: work_package.id
+    )
+
+    HistoricalWorkPackageIdentifier
+      .find_by(work_package_id: work_package.id, project_id: source_project_id,
+               sequence_number: work_package.sequence_number)
+      &.update!(friendly_id_slug: slug)
+
+    HistoricalWorkPackageIdentifier.create!(
+      project: target_project, work_package:, sequence_number: new_seq
+    )
+
+    work_package.update_columns(
+      sequence_number: new_seq,
+      identifier: "#{target_project.identifier}-#{new_seq}"
+    )
   end
 
   def reset_custom_values(work_package)
