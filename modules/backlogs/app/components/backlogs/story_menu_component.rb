@@ -32,12 +32,12 @@ module Backlogs
   class StoryMenuComponent < ApplicationComponent
     attr_reader :story, :sprint, :project, :max_position, :current_user
 
-    def initialize(story:, sprint:, max_position:, current_user: User.current, **system_arguments)
+    def initialize(story:, sprint:, project:, max_position:, current_user: User.current, **system_arguments)
       super()
 
       @story = story
       @sprint = sprint
-      @project = sprint.project
+      @project = project
       @max_position = max_position
       @current_user = current_user
 

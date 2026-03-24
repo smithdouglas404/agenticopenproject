@@ -80,6 +80,51 @@ module Pages
       page.find_all("#sprint_backlogs_container > section .CollapsibleHeader-title").map(&:text)
     end
 
+    def expect_work_packages_in_sprint_in_order(sprint,
+                                                work_packages: [])
+      raise ArgumentError, "work_packages should not be empty" if work_packages.empty?
+
+      within_sprint(sprint) do
+        selectors = work_packages.map { |wp| work_package_selector(wp) }
+
+        expect(page)
+          .to have_css(selectors.join(" + "))
+      end
+    end
+
+    def drag_work_package(moved, before: nil, into: nil)
+      raise ArgumentError, "You must specify a either before or into" unless before || into || (before && into)
+
+      moved_element = find("#{work_package_selector(moved)} .DragHandle")
+      target_element = if before
+                         find(work_package_selector(before))
+                       else
+                         find(sprint_selector(into))
+                       end
+
+      moved_element.native.drag_to(target_element.native, delay: 0.1)
+    rescue Capybara::Cuprite::ObsoleteNode
+      retry
+    end
+
+    def expect_work_package_not_draggable(work_package)
+      expect(page)
+        .to have_no_css("#{work_package_selector(work_package)} .DragHandle")
+    end
+
+    def expect_no_sprint_menu(sprint)
+      within_sprint(sprint) do
+        expect(page).to have_no_button(accessible_name: "Sprint actions")
+      end
+    end
+
+    def expect_no_sprint_menu_item(sprint, item_name)
+      within_sprint_menu(sprint) do |_menu|
+        expect(page)
+          .to have_no_selector(:menuitem, text: item_name)
+      end
+    end
+
     def expect_sprint_names_in_order(*sprint_names)
       expect(sprint_names_in_order).to eq(sprint_names)
     end
@@ -162,6 +207,10 @@ module Pages
       end
     end
 
+    def within_work_package_row(work_package, &)
+      within(work_package_selector(work_package), &)
+    end
+
     private
 
     def within_story(story, &)
@@ -173,7 +222,7 @@ module Pages
     end
 
     def sprint_selector(sprint)
-      "#agile_sprint_#{sprint.id}"
+      test_selector("sprint-#{sprint.id}")
     end
 
     def backlog_selector(backlog)
@@ -184,8 +233,8 @@ module Pages
       "#story_#{story.id}"
     end
 
-    def work_package_selector(story)
-      "#work_package_#{story.id}"
+    def work_package_selector(work_package)
+      test_selector("work-package-#{work_package.id}")
     end
 
     def within_menu_controlled_by(button)

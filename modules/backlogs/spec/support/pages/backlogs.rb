@@ -106,13 +106,6 @@ module Pages
       end
     end
 
-    def drag_in_sprint(moved, target, before: true)
-      moved_element = find(story_selector(moved))
-      target_element = find(story_selector(target))
-
-      drag_n_drop_element from: moved_element, to: target_element, offset_x: 0, offset_y: before ? -5 : +10
-    end
-
     def fold_backlog(backlog)
       within_backlog(backlog) do
         find(:button, aria: { controls: "backlog_#{backlog.id}-list" }).click
@@ -205,10 +198,6 @@ module Pages
       details_view
     end
 
-    def expect_create_work_package_dialog
-      expect(page).to have_css("#create-work-package-dialog")
-    end
-
     private
 
     def within_story(story, &)
@@ -219,6 +208,14 @@ module Pages
       within(backlog_selector(backlog), &)
     end
 
+    def within_sprint(sprint, &)
+      within(sprint_selector(sprint), &)
+    end
+
+    def sprint_selector(sprint)
+      test_selector("sprint-#{sprint.id}")
+    end
+
     def backlog_selector(backlog)
       "#backlog_#{backlog.id}"
     end
@@ -227,8 +224,8 @@ module Pages
       "#story_#{story.id}"
     end
 
-    def work_package_selector(story)
-      "#work_package_#{story.id}"
+    def work_package_selector(work_package)
+      test_selector("work-package-#{work_package.id}")
     end
 
     def within_menu_controlled_by(button)

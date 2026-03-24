@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,32 +26,33 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module Backlogs
-  class StoryComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
+class WorkPackages::RebuildPositionsService
+  def initialize(project: nil)
+    @project = project
+  end
 
-    attr_reader :story, :sprint, :project, :max_position, :current_user
+  def call
+    condition = if @project
+                  ::OpenProject::SqlSanitization.sanitize " AND work_packages.project_id = :project_id",
+                                                          project_id: @project.id
+                end
 
-    def initialize(story:, sprint:, project:, max_position:, current_user: User.current)
-      super()
-
-      @story = story
-      @sprint = sprint
-      @project = project
-      @max_position = max_position
-      @current_user = current_user
-    end
-
-    private
-
-    def story_points
-      story.story_points || 0
-    end
-
-    def draggable?
-      current_user.allowed_in_project?(:manage_sprint_items, project)
-    end
+    WorkPackage.connection.execute <<~SQL.squish
+      UPDATE work_packages
+      SET position = mapping.new_position
+      FROM (
+        SELECT
+          id,
+          ROW_NUMBER() OVER (
+            PARTITION BY project_id, sprint_id
+            ORDER BY position, created_at
+          ) AS new_position
+        FROM work_packages
+      ) AS mapping
+      WHERE work_packages.id = mapping.id
+      #{condition}
+    SQL
   end
 end
