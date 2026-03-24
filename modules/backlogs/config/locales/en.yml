@@ -135,6 +135,14 @@ en:
         one: "%{count} story in backlog"
         other: "%{count} stories in backlog"
 
+    inbox_component:
+      blankslate_title: "Inbox is empty"
+      blankslate_description: "No open work packages without a sprint assignment."
+      label_drag_work_package: "Move %{name}"
+      show_more:
+        one: "Show 1 more item"
+        other: "Show %{count} more items"
+
     inbox_item_component:
       label_drag_work_package: "Move %{name}"
 
