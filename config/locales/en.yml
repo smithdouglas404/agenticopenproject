@@ -690,6 +690,15 @@ en:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
 
+  pagination:
+    label: "Pagination"
+    prev: "Previous"
+    prev_page: "Previous Page"
+    next: "Next"
+    next_page: "Next Page"
+    page: "Page %{number}"
+    page_with_more: "Page %{number}..."
+
   mcp_configurations:
     server_url_component:
       caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
