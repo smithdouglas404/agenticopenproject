@@ -1,0 +1,138 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+require "spec_helper"
+
+RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
+  subject(:service) { described_class.new(target_project:, source_project_id: source_project.id) }
+
+  let(:source_project) { create(:project, identifier: "SRC") }
+  let(:target_project) { create(:project, identifier: "TGT") }
+
+  let(:work_package) do
+    create(:work_package, project: target_project).tap do |wp|
+      wp.update_columns(sequence_number: 1, identifier: "SRC-1")
+      HistoricalWorkPackageIdentifier.create!(project: source_project, work_package: wp, sequence_number: 1)
+    end
+  end
+
+  context "when in alphanumeric mode",
+          with_settings: { work_packages_identifier: Setting::WorkPackageIdentifier::ALPHANUMERIC } do
+    it "allocates a new identifier in the target project" do
+      service.call([work_package])
+
+      work_package.reload
+      expect(work_package.identifier).to eq("TGT-1")
+      expect(work_package.sequence_number).to eq(1)
+    end
+
+    it "records the old identifier in FriendlyId slug history" do
+      service.call([work_package])
+
+      expect(FriendlyId::Slug.where(slug: "SRC-1", sluggable_type: "WorkPackage")).to exist
+    end
+
+    it "makes the old identifier resolvable" do
+      service.call([work_package])
+
+      expect(WorkPackage.friendly.find("SRC-1")).to eq(work_package)
+      expect(WorkPackage.friendly.find("TGT-1")).to eq(work_package)
+    end
+
+    it "permanently reserves the old sequence in the source project" do
+      service.call([work_package])
+
+      expect(HistoricalWorkPackageIdentifier.where(project: source_project, sequence_number: 1)).to exist
+    end
+
+    it "creates a HistoricalWorkPackageIdentifier in the target project" do
+      service.call([work_package])
+
+      record = HistoricalWorkPackageIdentifier.find_by(project: target_project, work_package:)
+      expect(record).to be_present
+      expect(record.sequence_number).to eq(1)
+    end
+
+    it "links the old historical record to its FriendlyId slug" do
+      service.call([work_package])
+
+      old_record = HistoricalWorkPackageIdentifier.find_by(project: source_project, work_package:)
+      expect(old_record.friendly_id_slug).to be_present
+      expect(old_record.friendly_id_slug.slug).to eq("SRC-1")
+    end
+
+    it "continues from the target project's existing max sequence" do
+      existing_wp = create(:work_package, project: target_project)
+      existing_wp.update_columns(sequence_number: 5, identifier: "TGT-5")
+      HistoricalWorkPackageIdentifier.create!(project: target_project, work_package: existing_wp, sequence_number: 5)
+
+      service.call([work_package])
+
+      expect(work_package.reload.sequence_number).to eq(6)
+      expect(work_package.identifier).to eq("TGT-6")
+    end
+
+    it "allocates sequential numbers for multiple work packages" do
+      wp2 = create(:work_package, project: target_project).tap do |wp|
+        wp.update_columns(sequence_number: 2, identifier: "SRC-2")
+        HistoricalWorkPackageIdentifier.create!(project: source_project, work_package: wp, sequence_number: 2)
+      end
+
+      service.call([work_package, wp2])
+
+      expect(work_package.reload.identifier).to eq("TGT-1")
+      expect(wp2.reload.identifier).to eq("TGT-2")
+    end
+
+    it "skips work packages without identifiers" do
+      wp_without_id = create(:work_package, project: target_project)
+
+      expect { service.call([wp_without_id]) }
+        .not_to change(HistoricalWorkPackageIdentifier.where(project: target_project), :count)
+    end
+  end
+
+  context "when in numeric mode",
+          with_settings: { work_packages_identifier: Setting::WorkPackageIdentifier::NUMERIC } do
+    let(:source_project) { create(:project, identifier: "src") }
+    let(:target_project) { create(:project, identifier: "tgt") }
+
+    let(:work_package) do
+      create(:work_package, project: target_project)
+    end
+
+    it "is a no-op" do
+      expect { service.call([work_package]) }
+        .not_to change(HistoricalWorkPackageIdentifier.where(project: target_project), :count)
+
+      expect(work_package.reload.identifier).to be_nil
+    end
+  end
+end

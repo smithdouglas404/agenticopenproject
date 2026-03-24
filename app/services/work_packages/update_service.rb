@@ -134,43 +134,9 @@ class WorkPackages::UpdateService < BaseServices::Update
   end
 
   def reallocate_identifiers_on_move(moved_work_packages, target_project, source_project_id)
-    return unless Setting::WorkPackageIdentifier.alphanumeric?
-
-    wps_with_identifiers = moved_work_packages.select { |wp| wp.identifier.present? }
-    return if wps_with_identifiers.empty?
-
-    OpenProject::Mutex.with_advisory_lock_transaction(target_project, "wp_sequence") do
-      max_seq = HistoricalWorkPackageIdentifier
-                  .where(project_id: target_project.id)
-                  .maximum(:sequence_number).to_i
-
-      wps_with_identifiers.each do |work_package|
-        max_seq += 1
-        reallocate_single_identifier(work_package, target_project, source_project_id, max_seq)
-      end
-    end
-  end
-
-  def reallocate_single_identifier(work_package, target_project, source_project_id, new_seq)
-    old_identifier = work_package.identifier
-
-    slug = FriendlyId::Slug.create!(
-      slug: old_identifier, sluggable_type: "WorkPackage", sluggable_id: work_package.id
-    )
-
-    HistoricalWorkPackageIdentifier
-      .find_by(work_package_id: work_package.id, project_id: source_project_id,
-               sequence_number: work_package.sequence_number)
-      &.update!(friendly_id_slug: slug)
-
-    HistoricalWorkPackageIdentifier.create!(
-      project: target_project, work_package:, sequence_number: new_seq
-    )
-
-    work_package.update_columns(
-      sequence_number: new_seq,
-      identifier: "#{target_project.identifier}-#{new_seq}"
-    )
+    WorkPackages::ReallocateIdentifiersOnMoveService
+      .new(target_project:, source_project_id:)
+      .call(moved_work_packages)
   end
 
   def reset_custom_values(work_package)
