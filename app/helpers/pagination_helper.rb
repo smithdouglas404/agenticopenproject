@@ -129,11 +129,10 @@ module PaginationHelper
       Primer::OpenProject::Pagination.new(
         page_count: paginator.total_pages,
         current_page: paginator.current_page,
-        href_builder: ->(page) { pagination_href(page, params:, allowed_params:) },
+        href_builder: ->(page) { pagination_href(page, params:, allowed_params:) }
       )
     )
   end
-
 
   def pagination_href(page, params:, allowed_params:)
     allowed_params ||= %w[filters sortBy]
