@@ -10,6 +10,7 @@ en:
           oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
           two_way_oauth2: Two-way OAuth 2.0 authorization code flow
         token_exchange_scope: XWiki Scope
+        url: Instance URL
         wiki_audience: XWiki Audience
     errors: {}
     models:
@@ -49,3 +50,4 @@ en:
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
+  wikis: {}

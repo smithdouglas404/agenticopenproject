@@ -49,6 +49,8 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
            payload: jira_project_payload)
   end
 
+  let!(:default_status) { create(:default_status) }
+
   describe "#perform" do
     context "when a project with the same identifier already exists" do
       let!(:existing_project) { create(:project, identifier: "dyx", name: "Existing Project") }

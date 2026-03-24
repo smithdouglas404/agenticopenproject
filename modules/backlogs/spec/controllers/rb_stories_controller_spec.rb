@@ -221,7 +221,7 @@ RSpec.describe RbStoriesController do
     end
   end
 
-  describe "PUT #move" do
+  describe "PUT #move", with_flag: { scrum_projects: true } do
     let(:agile_sprint) { create(:agile_sprint, name: "Agile Sprint 1", project:) }
     let(:story_in_agile_sprint) { create(:work_package, status:, sprint: agile_sprint, project:) }
 

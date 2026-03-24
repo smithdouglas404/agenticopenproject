@@ -23,28 +23,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# TODO: Replace with the actual model from PR #72975 (Jan Sandbrink) once merged.
-# This mock is intentionally interface-compatible with that model.
 module Wikis
-  class XWikiProvider
-    include ActiveModel::Model
-    include ActiveModel::Attributes
+  class XWikiProvider < Provider
+    AUTHENTICATION_METHODS = [
+      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
+      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
+    ].freeze
 
-    attribute :id, :integer
-    attribute :name, :string
-    attribute :url, :string
-
-    def persisted?
-      id.present?
-    end
-
-    def to_param
-      id&.to_s
-    end
+    store_attribute :options, :url, :string
+    store_attribute :options, :authentication_method, :string, default: "two_way_oauth2"
+    store_attribute :options, :wiki_audience, :string
+    store_attribute :options, :token_exchange_scope, :string
   end
 end

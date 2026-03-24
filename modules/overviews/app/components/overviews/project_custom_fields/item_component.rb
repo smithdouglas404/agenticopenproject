@@ -33,72 +33,9 @@ module Overviews
     class ItemComponent < ShowComponent
       private
 
-      def show_comment? = false
-
-      def value_wrapper_attributes
-        if allowed_to_edit?
-          if calculated_value? && !has_comment?
-            non_editable_wrapper(id: calculated_value_tooltip_id)
-          else
-            modal_wrapper
-          end
-        elsif has_comment?
-          modal_wrapper
-        else
-          non_editable_wrapper
-        end
-      end
-
-      def allowed_to_edit?
-        User.current.allowed_in_project?(:edit_project_attributes, @project)
-      end
-
-      def modal_wrapper
-        action_label_key = allowed_to_edit? ? :label_edit_x : :label_view_x
-
-        url = if allowed_to_edit?
-                edit_project_custom_field_path(project_id: @project, id: @project_custom_field)
-              else
-                project_custom_field_path(project_id: @project, id: @project_custom_field)
-              end
-
-        {
-          tag: :div,
-          classes: "project-custom-field-clickable",
-          data: {
-            controller: "project-custom-field-modal async-dialog",
-            "project-custom-field-modal-url-value": url,
-            action: "click->project-custom-field-modal#open " \
-                    "keydown.enter->project-custom-field-modal#open " \
-                    "keydown.space->project-custom-field-modal#open " \
-                    "project-custom-field-modal:open-dialog->async-dialog#handleOpenDialog"
-          },
-          aria: {
-            label: [
-              I18n.t(action_label_key, x: @project_custom_field.name),
-              I18n.t(:label_value_x, x: accessible_value_text)
-            ].join(", ")
-          },
-          role: "button",
-          tabindex: 0,
-          test_selector: "project-custom-field-modal-button-#{@project_custom_field.id}"
-        }
-      end
-
-      def non_editable_wrapper(**)
-        {
-          tag: :div,
-          classes: "project-custom-field-non-editable",
-          aria: {
-            disabled: true,
-            label: [
-              @project_custom_field.name,
-              I18n.t(:label_value_x, x: accessible_value_text)
-            ].join(", ")
-          },
-          tabindex: 0,
-          **
-        }
+      def limited_space?
+        @project_custom_field.field_format == "text" &&
+          @project_custom_field.project_custom_field_section&.shown_in_overview_sidebar?
       end
     end
   end

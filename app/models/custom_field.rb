@@ -88,6 +88,7 @@ class CustomField < ApplicationRecord
   validates :has_comment, absence: true, unless: :can_have_comment?
 
   before_validation :check_searchability
+
   after_destroy :destroy_help_text
 
   # make sure int, float, date, and bool are not searchable

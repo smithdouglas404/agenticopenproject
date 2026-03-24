@@ -110,7 +110,7 @@ class MembersController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: build_members
+        render json: build_members, escape: true
       end
     end
   end

@@ -75,4 +75,4 @@ OpenProject::FeatureDecisions.add :user_working_times,
 OpenProject::FeatureDecisions.add :semantic_work_package_ids,
                                   description: "Enables the use of semantic work package IDs, " \
                                                "in the schema <project identifier>-<sequence number>. " \
-                                               "See #71626 for details."
+                                               "See #41855 for details."

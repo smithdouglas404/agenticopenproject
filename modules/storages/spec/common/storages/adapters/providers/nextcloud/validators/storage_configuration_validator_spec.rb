@@ -73,7 +73,7 @@ module Storages
                 allow(subject).to receive(:nextcloud_dependencies).and_return(absurd_version)
 
                 results = validator.call
-                expect(results[:dependencies_versions]).to be_a_failure
+                expect(results[:dependencies_versions]).to be_a_warning
                 expect(results[:dependencies_versions].code).to eq(:nc_dependency_version_mismatch)
                 expect(results[:dependencies_versions].context[:dependency]).to eq("Integration OpenProject")
               end

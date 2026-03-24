@@ -53,6 +53,8 @@ module OpenProject::Wikis
       end
     end
 
+    replace_principal_references "Wikis::PageLink" => %i[author_id]
+
     register "openproject-wikis",
              author_url: "https://openproject.org",
              requires_openproject: ">= 17.0.0" do

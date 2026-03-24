@@ -162,7 +162,7 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGener
 
     it "does not suggest an identifier that is already in use (pre-seeded collision)" do
       project = create(:project, identifier: "sc-app", name: "Stream Communicator")
-      result = described_class.call([project], in_use_identifiers: Set["SC"])
+      result = described_class.call([project], exclude: Set["SC"])
       # "SC" is taken, so it widens to "STC" (Stream → ST, Communicator → C)
       expect(result.first[:suggested_identifier]).to eq("STC")
     end
@@ -170,7 +170,7 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGener
     it "falls back to numeric suffix only when all expansion candidates are exhausted" do
       # Reserve all expansion candidates for "Go" (a 2-char word)
       project = create(:project, identifier: "bad-id", name: "Go")
-      result = described_class.call([project], in_use_identifiers: Set["GO"])
+      result = described_class.call([project], exclude: Set["GO"])
       # "GO" is taken, no further expansion possible, so numeric suffix
       expect(result.first[:suggested_identifier]).to eq("GO2")
     end

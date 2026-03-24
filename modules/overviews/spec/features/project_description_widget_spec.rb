@@ -75,18 +75,16 @@ RSpec.describe "Project description widget", :js do
 
       # Edit the project description
       # Find the editable description field
-      description_field = Turbo::TextEditorField.new(page,
-                                                     "description",
-                                                     selector:)
+      description_field = Components::Common::InplaceEditField.new(portfolio, :description)
+
       # Activate the field for editing
-      description_field.activate!
+      description_field.open_field
+
+      wait_for_network_idle
 
       # Set a new description
       new_description = "This is a **test** project description with markdown formatting."
-      description_field.set_value(new_description)
-
-      # Save the changes
-      description_field.save!
+      description_field.fill_and_submit_value(name: "project[description]", val: new_description, ckeditor: true)
 
       tested_page.expect_and_dismiss_flash message: I18n.t("js.notice_successful_update")
 

@@ -31,12 +31,7 @@
 class RbStoriesController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  NEW_SPRINT_ACTIONS = %i[move].freeze
-
-  skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
-
-  before_action :legacy_load_story, except: NEW_SPRINT_ACTIONS
-  prepend_before_action :load_sprint, :load_project, :load_story, only: NEW_SPRINT_ACTIONS
+  before_action :load_story
 
   # Move a story from a Sprint to another Sprint or an Agile::Sprint.
   def move_legacy
@@ -90,7 +85,7 @@ class RbStoriesController < RbApplicationController
       return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
-    replace_backlog_component_via_turbo_stream(sprint: @sprint)
+    replace_typed_component_via_turbo_stream(sprint: @sprint)
 
     respond_with_turbo_streams
   end
@@ -184,19 +179,16 @@ class RbStoriesController < RbApplicationController
   end
 
   def replace_sprint_component_via_turbo_stream(sprint:)
-    replace_via_turbo_stream(component: Backlogs::SprintComponent.new(sprint: sprint))
-  end
-
-  def legacy_load_story
-    @story = Story.visible.find(params[:id])
+    replace_via_turbo_stream(component: Backlogs::SprintComponent.new(sprint: sprint, project: @project),
+                             method: :morph)
   end
 
   def load_story
-    @story = WorkPackage.visible.find(params[:id])
-  end
-
-  def load_sprint
-    @sprint = Agile::Sprint.for_project(@project).visible.find(params[:sprint_id])
+    @story = if OpenProject::FeatureDecisions.scrum_projects_active?
+               WorkPackage.visible.find(params[:id])
+             else
+               Story.visible.find(params[:id])
+             end
   end
 
   def move_params

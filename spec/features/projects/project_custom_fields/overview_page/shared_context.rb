@@ -49,8 +49,9 @@ RSpec.shared_context "with seeded projects, members and project custom fields" d
     create(:project_role, permissions: %i[view_work_packages view_project_attributes edit_project])
   end
 
+  # TODO: Remove the edit_projects permission as soon as #73225 is fixed
   shared_let(:edit_attributes_role) do
-    create(:project_role, permissions: %i[view_work_packages view_project_attributes edit_project_attributes])
+    create(:project_role, permissions: %i[view_work_packages view_project_attributes edit_project_attributes edit_project])
   end
 
   let!(:admin) do

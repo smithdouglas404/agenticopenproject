@@ -38,6 +38,8 @@ module Projects::Identifier
   included do
     extend FriendlyId
 
+    normalizes :identifier, with: OpenProject::RemoveAsciiControlCharacters
+
     acts_as_url :name,
                 url_attribute: :identifier,
                 sync_url: false, # Don't update identifier when name changes

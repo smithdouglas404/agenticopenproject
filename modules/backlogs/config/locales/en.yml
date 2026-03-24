@@ -149,10 +149,7 @@ en:
       label_actions: "Sprint actions"
       action_menu:
         edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        add_work_package: "Add work package"
 
     story_component:
       label_drag_story: "Move %{name}"
@@ -183,6 +180,7 @@ en:
       task_type:
         cannot_be_story_type: "can not also be a story type"
 
+  label_backlog: "Backlog"
   label_backlogs: "Backlogs"
   label_backlogs_unconfigured: "You have not configured Backlogs yet. Please go to %{administration} > %{plugins}, then click on the %{configure} link for this plugin. Once you have set the fields, come back to this page to start using the tool."
   label_blocks_ids: "IDs of blocked work packages"
@@ -193,6 +191,7 @@ en:
   label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Sprint Impediments"
   label_sprint_new: "New sprint"
+  label_sprint_planning: "Sprint planning"
   label_task_board: "Task board"
 
   permission_create_sprints: "Create sprints"
