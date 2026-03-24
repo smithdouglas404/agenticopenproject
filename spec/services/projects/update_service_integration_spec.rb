@@ -135,4 +135,88 @@ RSpec.describe Projects::UpdateService, "integration", type: :model do
       expect(Setting.demo_projects_available).to be(false)
     end
   end
+
+  describe "work package identifier update on project rename" do
+    let(:permissions) { %i[edit_project view_project_attributes edit_project_attributes view_work_packages] }
+
+    context "when in alphanumeric mode",
+            with_settings: { work_packages_identifier: Setting::WorkPackageIdentifier::ALPHANUMERIC } do
+      let!(:project) { create(:project, identifier: "SC") }
+
+      let!(:wp1) do
+        wp = create(:work_package, project:)
+        wp.update_columns(sequence_number: 1, identifier: "SC-1")
+        HistoricalWorkPackageIdentifier.create!(project:, work_package: wp, sequence_number: 1)
+        wp
+      end
+
+      let!(:wp2) do
+        wp = create(:work_package, project:)
+        wp.update_columns(sequence_number: 2, identifier: "SC-2")
+        HistoricalWorkPackageIdentifier.create!(project:, work_package: wp, sequence_number: 2)
+        wp
+      end
+
+      let(:attributes) { { identifier: "SCO" } }
+
+      it "updates all work package identifiers to use the new project prefix" do
+        expect(service_result).to be_success
+
+        expect(wp1.reload.identifier).to eq("SCO-1")
+        expect(wp2.reload.identifier).to eq("SCO-2")
+      end
+
+      it "preserves sequence numbers unchanged" do
+        service_result
+
+        expect(wp1.reload.sequence_number).to eq(1)
+        expect(wp2.reload.sequence_number).to eq(2)
+      end
+
+      it "records old identifiers in FriendlyId slug history" do
+        service_result
+
+        expect(FriendlyId::Slug.where(slug: "SC-1", sluggable_type: "WorkPackage")).to exist
+        expect(FriendlyId::Slug.where(slug: "SC-2", sluggable_type: "WorkPackage")).to exist
+      end
+
+      it "makes old identifiers resolvable via FriendlyId" do
+        service_result
+
+        expect(WorkPackage.friendly.find("SC-1")).to eq(wp1)
+        expect(WorkPackage.friendly.find("SCO-1")).to eq(wp1)
+      end
+
+      it "does not modify historical_work_package_identifiers records" do
+        expect { service_result }.not_to change {
+          HistoricalWorkPackageIdentifier.where(project:).pluck(:sequence_number).sort
+        }
+      end
+    end
+
+    context "when in numeric mode",
+            with_settings: { work_packages_identifier: Setting::WorkPackageIdentifier::NUMERIC } do
+      let!(:project) { create(:project, identifier: "some-project") }
+      let(:attributes) { { identifier: "renamed-project" } }
+
+      let!(:wp) do
+        create(:work_package, project:)
+      end
+
+      it "does not touch work package identifiers" do
+        expect(service_result).to be_success
+        expect(wp.reload.identifier).to be_nil
+      end
+    end
+
+    context "when project has no work packages with identifiers",
+            with_settings: { work_packages_identifier: Setting::WorkPackageIdentifier::ALPHANUMERIC } do
+      let!(:project) { create(:project, identifier: "EMPTY") }
+      let(:attributes) { { identifier: "RENAMED" } }
+
+      it "completes without error" do
+        expect(service_result).to be_success
+      end
+    end
+  end
 end

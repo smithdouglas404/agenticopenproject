@@ -58,6 +58,7 @@ module Projects
 
       touch_on_custom_values_update
       notify_on_identifier_renamed
+      update_work_package_identifiers_on_rename
       send_update_notification
       update_wp_versions_on_parent_change
       handle_archiving
@@ -81,6 +82,32 @@ module Projects
 
     def only_custom_values_updated?
       !model.saved_changes? && model.custom_values.any?(&:saved_changes?)
+    end
+
+    def update_work_package_identifiers_on_rename
+      return unless memoized_changes["identifier"]
+      return unless Setting::WorkPackageIdentifier.alphanumeric?
+
+      wp_data = model.work_packages.where.not(identifier: nil).pluck(:id, :identifier)
+      return if wp_data.empty?
+
+      bulk_update_work_package_identifiers(model.identifier)
+      record_old_identifiers_in_slug_history(wp_data)
+    end
+
+    def bulk_update_work_package_identifiers(new_prefix)
+      model.work_packages.where.not(sequence_number: nil).update_all(
+        ["identifier = ? || '-' || CAST(sequence_number AS text)", new_prefix]
+      )
+    end
+
+    def record_old_identifiers_in_slug_history(wp_data)
+      now = Time.current
+      FriendlyId::Slug.insert_all(
+        wp_data.map do |wp_id, old_id|
+          { sluggable_type: "WorkPackage", sluggable_id: wp_id, slug: old_id, created_at: now }
+        end
+      )
     end
 
     def update_wp_versions_on_parent_change
