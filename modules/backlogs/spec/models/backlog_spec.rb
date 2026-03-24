@@ -68,10 +68,12 @@ RSpec.describe Backlog do
         wp1 = create(:work_package, project:, status: open_status, position: 2)
         wp2 = create(:work_package, project:, status: open_status, position: 1)
         wp3 = create(:work_package, project:, status: open_status, position: nil)
+        wp4 = create(:work_package, project:, status: open_status, position: nil)
 
         wp3.update_column(:position, nil)
+        wp4.update_column(:position, nil)
 
-        expect(inbox).to eq([wp2, wp1, wp3])
+        expect(inbox).to eq([wp2, wp1, wp3, wp4])
       end
     end
 
