@@ -126,7 +126,7 @@ RSpec.describe RbStoriesController do
       end
     end
 
-    context "with an Agile::Sprint as target" do
+    context "with an Agile::Sprint as target", with_flag: { scrum_projects: true } do
       let(:agile_sprint) { create(:agile_sprint, name: "Agile Sprint 1", project:) }
 
       it "responds with success and moves story to Agile::Sprint, removing the association to the version", :aggregate_failures do
@@ -225,7 +225,7 @@ RSpec.describe RbStoriesController do
     let(:agile_sprint) { create(:agile_sprint, name: "Agile Sprint 1", project:) }
     let(:story_in_agile_sprint) { create(:work_package, status:, sprint: agile_sprint, project:) }
 
-    context "with another Agile::Sprint as target" do
+    context "with another Agile::Sprint as target", with_flag: { scrum_projects: true } do
       let(:other_agile_sprint) { create(:agile_sprint, name: "Agile Sprint 2", project:) }
 
       it "responds with success and moves story to another Agile::Sprint", :aggregate_failures do
@@ -282,7 +282,7 @@ RSpec.describe RbStoriesController do
       end
     end
 
-    context "with a Sprint (Version) as target" do
+    context "with a Sprint (Version) as target", with_flag: { scrum_projects: true } do
       it "responds with success and moves story to Sprint", :aggregate_failures do
         put :move, params: {
                      project_id: project.id,

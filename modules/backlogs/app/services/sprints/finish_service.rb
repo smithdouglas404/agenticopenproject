@@ -28,54 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class SprintHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
-    include Primer::FetchOrFallbackHelper
-    include Redmine::I18n
-    include RbCommonHelper
+class Sprints::FinishService < BaseServices::BaseCallable
+  include Shared::ServiceContext
 
-    attr_reader :sprint, :project, :collapsed, :current_user, :active_sprint_ids
+  attr_reader :user, :model
 
-    delegate :name, to: :sprint, prefix: :sprint
+  def initialize(user:, model:)
+    super()
+    @user = user
+    @model = model
+  end
 
-    def initialize(
-      sprint:,
-      project:,
-      folded: false,
-      current_user: User.current,
-      active_sprint_ids: nil
-    )
-      super()
-
-      @sprint = sprint
-      @project = project
-      @collapsed = folded
-      @current_user = current_user
-      @active_sprint_ids = active_sprint_ids
+  def perform
+    in_context(model, send_notifications: false) do
+      finish_sprint
     end
+  end
 
-    def wrapper_uniq_by
-      sprint.id
-    end
+  private
 
-    def stories
-      @sprint.work_packages
-    end
+  def finish_sprint
+    return unsuccessful_finish_result unless model.active?
 
-    private
+    model.completed!
 
-    def story_points
-      @story_points ||= stories.sum { |story| story.story_points || 0 }
-    end
+    ServiceResult.success(result: model)
+  rescue ActiveRecord::RecordInvalid
+    unsuccessful_finish_result
+  end
 
-    def story_count
-      @story_count ||= stories.size
-    end
+  def unsuccessful_finish_result
+    ServiceResult.failure(result: model,
+                          errors: model.errors,
+                          message: unsuccessful_finish_message)
+  end
 
-    def date_range
-      [sprint.start_date, sprint.finish_date]
-    end
+  def unsuccessful_finish_message
+    model.errors.full_messages.to_sentence if model.errors.any?
   end
 end

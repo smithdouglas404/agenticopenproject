@@ -89,6 +89,7 @@ class RbMasterBacklogsController < RbApplicationController
 
     if OpenProject::FeatureDecisions.scrum_projects_active?
       @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
+      @active_sprint_ids = @sprints.select(&:active?).map(&:id)
     else
       @sprint_backlogs = Backlog.sprint_backlogs(@project)
     end

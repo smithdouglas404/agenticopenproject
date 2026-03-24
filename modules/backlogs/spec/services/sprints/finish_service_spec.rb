@@ -28,54 +28,41 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class SprintHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
-    include Primer::FetchOrFallbackHelper
-    include Redmine::I18n
-    include RbCommonHelper
+require "rails_helper"
 
-    attr_reader :sprint, :project, :collapsed, :current_user, :active_sprint_ids
+RSpec.describe Sprints::FinishService do
+  let(:user) { create(:admin) }
+  let(:project) { create(:project) }
+  let(:sprint) { create(:agile_sprint, project:, status:) }
+  let(:status) { "active" }
+  let(:instance) { described_class.new(user:, model: sprint) }
 
-    delegate :name, to: :sprint, prefix: :sprint
+  subject(:result) { instance.call }
 
-    def initialize(
-      sprint:,
-      project:,
-      folded: false,
-      current_user: User.current,
-      active_sprint_ids: nil
-    )
-      super()
-
-      @sprint = sprint
-      @project = project
-      @collapsed = folded
-      @current_user = current_user
-      @active_sprint_ids = active_sprint_ids
+  context "when the sprint is active" do
+    it "completes the sprint", :aggregate_failures do
+      expect(result).to be_success
+      expect(sprint.reload).to be_completed
     end
+  end
 
-    def wrapper_uniq_by
-      sprint.id
+  context "when the sprint is in planning" do
+    let(:status) { "in_planning" }
+
+    it "returns failure and leaves the sprint unchanged", :aggregate_failures do
+      expect(result).not_to be_success
+      expect(result.message).to be_blank
+      expect(sprint.reload).to be_in_planning
     end
+  end
 
-    def stories
-      @sprint.work_packages
-    end
+  context "when the sprint is already completed" do
+    let(:status) { "completed" }
 
-    private
-
-    def story_points
-      @story_points ||= stories.sum { |story| story.story_points || 0 }
-    end
-
-    def story_count
-      @story_count ||= stories.size
-    end
-
-    def date_range
-      [sprint.start_date, sprint.finish_date]
+    it "returns failure and leaves the sprint unchanged", :aggregate_failures do
+      expect(result).not_to be_success
+      expect(result.message).to be_blank
+      expect(sprint.reload).to be_completed
     end
   end
 end

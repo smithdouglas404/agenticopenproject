@@ -28,54 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class SprintHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
-    include Primer::FetchOrFallbackHelper
-    include Redmine::I18n
-    include RbCommonHelper
+module Sprints
+  class StartContract < ::BaseContract
+    validate :validate_permission
+    validate :validate_status_in_planning
+    validate :validate_no_other_active_sprint
 
-    attr_reader :sprint, :project, :collapsed, :current_user, :active_sprint_ids
-
-    delegate :name, to: :sprint, prefix: :sprint
-
-    def initialize(
-      sprint:,
-      project:,
-      folded: false,
-      current_user: User.current,
-      active_sprint_ids: nil
-    )
-      super()
-
-      @sprint = sprint
-      @project = project
-      @collapsed = folded
-      @current_user = current_user
-      @active_sprint_ids = active_sprint_ids
+    def self.can_start_or_finish?(user:, sprint:)
+      user.allowed_in_project?(:start_complete_sprint, sprint.project)
     end
 
-    def wrapper_uniq_by
-      sprint.id
-    end
-
-    def stories
-      @sprint.work_packages
+    def self.can_start?(user:, sprint:, project:)
+      can_start_or_finish?(user:, sprint:) &&
+        user.allowed_in_project?(:show_board_views, project)
     end
 
     private
 
-    def story_points
-      @story_points ||= stories.sum { |story| story.story_points || 0 }
+    def validate_permission
+      return if self.class.can_start_or_finish?(user:, sprint: model)
+
+      errors.add :base, :error_unauthorized
     end
 
-    def story_count
-      @story_count ||= stories.size
+    def validate_status_in_planning
+      return if model.in_planning?
+
+      errors.add :status, :must_be_in_planning
     end
 
-    def date_range
-      [sprint.start_date, sprint.finish_date]
+    def validate_no_other_active_sprint
+      return unless model.in_planning?
+      return unless Agile::Sprint.where(project: model.project).active.where.not(id: model.id).exists?
+
+      errors.add :status, :only_one_active_sprint_allowed
     end
   end
 end

@@ -28,54 +28,50 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class SprintHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
-    include Primer::FetchOrFallbackHelper
-    include Redmine::I18n
-    include RbCommonHelper
+class Sprints::StartService < BaseServices::BaseContracted
+  def initialize(user:, model:, contract_class: Sprints::StartContract)
+    super(user:, contract_class:)
+    self.model = model
+  end
 
-    attr_reader :sprint, :project, :collapsed, :current_user, :active_sprint_ids
+  private
 
-    delegate :name, to: :sprint, prefix: :sprint
+  def persist(service_call)
+    ensure_task_boards(service_call)
+    return service_call if service_call.failure?
 
-    def initialize(
-      sprint:,
-      project:,
-      folded: false,
-      current_user: User.current,
-      active_sprint_ids: nil
-    )
-      super()
+    model.active!
 
-      @sprint = sprint
-      @project = project
-      @collapsed = folded
-      @current_user = current_user
-      @active_sprint_ids = active_sprint_ids
+    service_call
+  rescue ActiveRecord::RecordNotUnique
+    add_only_one_active_sprint_error
+    service_call.success = false
+    service_call.result = model
+    service_call.errors = model.errors
+    service_call
+  end
+
+  def ensure_task_boards(service_call)
+    projects = Agile::Sprint.receiving_projects(model)
+
+    projects.each do |project|
+      next if model.task_board_for(project).present?
+
+      service_call.add_dependent!(
+        Boards::SprintTaskBoardCreateService
+          .new(user: User.system)
+          .call(project:, sprint: model, name: board_name)
+      )
     end
+  end
 
-    def wrapper_uniq_by
-      sprint.id
-    end
+  def board_name
+    "#{model.project.name}: #{model.name}"
+  end
 
-    def stories
-      @sprint.work_packages
-    end
+  def add_only_one_active_sprint_error
+    return if model.errors.added?(:status, :only_one_active_sprint_allowed)
 
-    private
-
-    def story_points
-      @story_points ||= stories.sum { |story| story.story_points || 0 }
-    end
-
-    def story_count
-      @story_count ||= stories.size
-    end
-
-    def date_range
-      [sprint.start_date, sprint.finish_date]
-    end
+    model.errors.add(:status, :only_one_active_sprint_allowed)
   end
 end

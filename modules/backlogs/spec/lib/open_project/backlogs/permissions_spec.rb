@@ -34,8 +34,8 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
   describe "view_sprints" do
     subject { described_class.permission(:view_sprints) }
 
-    it "depends on view_work_packages" do
-      expect(subject.dependencies).to contain_exactly(:view_work_packages)
+    it "depends on view_work_packages and show_board_views" do
+      expect(subject.dependencies).to contain_exactly(:view_work_packages, :show_board_views)
     end
   end
 
@@ -58,8 +58,12 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
   describe "start_complete_sprint" do
     subject { described_class.permission(:start_complete_sprint) }
 
-    it "depends on view_sprints" do
-      expect(subject.dependencies).to contain_exactly(:view_sprints)
+    it "depends on view_sprints and manage_board_views" do
+      expect(subject.dependencies).to contain_exactly(:view_sprints, :manage_board_views)
+    end
+
+    it "covers both start and finish sprint actions" do
+      expect(subject.controller_actions).to include("rb_sprints/start", "rb_sprints/finish")
     end
 
     context "when scrum_projects feature flag is active", with_flag: { scrum_projects: true } do

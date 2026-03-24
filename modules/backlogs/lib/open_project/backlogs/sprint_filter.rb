@@ -28,54 +28,54 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class SprintHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
-    include Primer::FetchOrFallbackHelper
-    include Redmine::I18n
-    include RbCommonHelper
-
-    attr_reader :sprint, :project, :collapsed, :current_user, :active_sprint_ids
-
-    delegate :name, to: :sprint, prefix: :sprint
-
-    def initialize(
-      sprint:,
-      project:,
-      folded: false,
-      current_user: User.current,
-      active_sprint_ids: nil
-    )
-      super()
-
-      @sprint = sprint
-      @project = project
-      @collapsed = folded
-      @current_user = current_user
-      @active_sprint_ids = active_sprint_ids
+module OpenProject::Backlogs
+  class SprintFilter < ::Queries::WorkPackages::Filter::WorkPackageFilter
+    def allowed_values
+      @allowed_values ||= sprints.pluck(:id, :id).map { |value, id| [value.to_s, id.to_s] }
     end
 
-    def wrapper_uniq_by
-      sprint.id
+    def available?
+      scrum_projects_active? && backlogs_enabled?
     end
 
-    def stories
-      @sprint.work_packages
+    def type
+      :list_optional
+    end
+
+    def self.key
+      :sprint_id
+    end
+
+    def human_name
+      WorkPackage.human_attribute_name(:sprint)
+    end
+
+    def ar_object_filter?
+      true
+    end
+
+    def value_objects
+      available_sprints = sprints.index_by(&:id)
+
+      values
+        .filter_map { |sprint_id| available_sprints[sprint_id.to_i] }
     end
 
     private
 
-    def story_points
-      @story_points ||= stories.sum { |story| story.story_points || 0 }
+    def backlogs_enabled?
+      project.nil? || project.module_enabled?(:backlogs)
     end
 
-    def story_count
-      @story_count ||= stories.size
+    def scrum_projects_active?
+      OpenProject::FeatureDecisions.scrum_projects_active?
     end
 
-    def date_range
-      [sprint.start_date, sprint.finish_date]
+    def sprints
+      @sprints ||= begin
+        scope = Agile::Sprint.visible
+        project ? scope.for_project(project) : scope
+      end
     end
   end
 end

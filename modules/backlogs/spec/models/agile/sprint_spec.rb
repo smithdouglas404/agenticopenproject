@@ -116,7 +116,56 @@ RSpec.describe Agile::Sprint do
 
   describe "associations" do
     it { is_expected.to have_many(:work_packages).dependent(:nullify) }
+    it { is_expected.to have_many(:task_boards).dependent(:nullify) }
     it { is_expected.to belong_to(:project) }
+  end
+
+  describe "#task_board_for" do
+    let(:sprint) { create(:agile_sprint, project:) }
+    let(:other_project) { create(:project) }
+
+    context "when a sprint task board exists" do
+      let!(:board) do
+        create(:board_grid_with_query,
+               project:,
+               name: "Renamed board",
+               linked: sprint)
+      end
+
+      it "returns the existing board for the requested project" do
+        expect(sprint.task_board_for(project)).to eq(board)
+      end
+
+      it "supports multiple task boards across projects" do
+        other_board = create(:board_grid_with_query, project: other_project, linked: sprint)
+
+        expect(sprint.task_board_for(project)).to eq(board)
+        expect(sprint.task_board_for(other_project)).to eq(other_board)
+      end
+    end
+
+    context "when only same-name or same-filter boards exist" do
+      let!(:same_name_board) { create(:board_grid_with_query, project:, name: "#{project.name}: #{sprint.name}") }
+      let!(:matching_filters_board) do
+        create(:board_grid_with_query,
+               project:,
+               options: {
+                 "filters" => [{ "sprint_id" => { "operator" => "=", "values" => [sprint.id.to_s] } }]
+               })
+      end
+
+      it "returns nil" do
+        expect(sprint.task_board_for(project)).to be_nil
+      end
+    end
+
+    context "when only another project's board exists" do
+      let!(:other_board) { create(:board_grid_with_query, project: other_project, linked: sprint) }
+
+      it "returns nil for the requested project" do
+        expect(sprint.task_board_for(project)).to be_nil
+      end
+    end
   end
 
   describe "work_package association" do

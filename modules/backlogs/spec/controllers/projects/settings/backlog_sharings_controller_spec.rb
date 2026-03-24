@@ -50,20 +50,4 @@ RSpec.describe Projects::Settings::BacklogSharingsController, with_flag: { scrum
       end
     end
   end
-
-  context "when scrum_projects feature flag is inactive", with_flag: { scrum_projects: false } do
-    let(:project) { build_stubbed(:project) }
-
-    it "returns 404 for show" do
-      get :show, params: { project_id: project.identifier }
-
-      expect(response).to have_http_status(:not_found)
-    end
-
-    it "returns 404 for update" do
-      patch :update, params: { project_id: project.identifier, project: { sprint_sharing: "no_sharing" } }
-
-      expect(response).to have_http_status(:not_found)
-    end
-  end
 end

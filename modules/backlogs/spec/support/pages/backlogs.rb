@@ -230,8 +230,9 @@ module Pages
 
     def within_menu_controlled_by(button)
       menu_id = button[:controls] || button["aria-controls"]
+      menu = page.find(:menu, id: menu_id)
 
-      within(:menu, id: menu_id) do
+      within(menu) do
         yield page
       end
     end

@@ -200,9 +200,10 @@ module Pages
 
     def within_sprint_menu(backlog, &)
       within_sprint(backlog) do
-        find(:button, accessible_name: "Sprint actions").click
+        button = find(:button, accessible_name: "Sprint actions")
+        button.click
 
-        within(:menu, &)
+        within_menu_controlled_by(button, &)
       end
     end
 
@@ -238,8 +239,9 @@ module Pages
 
     def within_menu_controlled_by(button)
       menu_id = button[:controls] || button["aria-controls"]
+      menu = page.find(:menu, id: menu_id)
 
-      within(:menu, id: menu_id) do
+      within(menu) do
         yield page
       end
     end

@@ -55,6 +55,9 @@ en:
         story_points: "Story Points"
 
     errors:
+      messages:
+        must_be_in_planning: "must be in planning to start."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
       models:
         project:
           attributes:
@@ -148,8 +151,12 @@ en:
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
+        start_sprint: "Start sprint"
+        finish_sprint: "Finish sprint"
+        start_sprint_disabled_description: "Another sprint is already active."
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
+        task_board: "Task board"
 
     story_component:
       label_drag_story: "Move %{name}"
@@ -193,6 +200,12 @@ en:
   label_sprint_new: "New sprint"
   label_sprint_planning: "Sprint planning"
   label_task_board: "Task board"
+  notice_successful_start: "The sprint was started."
+  notice_successful_finish: "The sprint was completed."
+  notice_unsuccessful_start: "The sprint could not be started."
+  notice_unsuccessful_start_with_reason: "The sprint could not be started: %{reason}"
+  notice_unsuccessful_finish: "The sprint could not be completed."
+  notice_unsuccessful_finish_with_reason: "The sprint could not be completed: %{reason}"
 
   permission_create_sprints: "Create sprints"
   permission_manage_sprint_items: "Manage sprint items"

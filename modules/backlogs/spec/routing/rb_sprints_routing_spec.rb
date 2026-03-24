@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -54,5 +56,77 @@ RSpec.describe RbSprintsController do
                                                                  project_id: "project_42",
                                                                  id: "21")
     }
+
+    context "with the feature flag active", with_flag: { scrum_projects: true } do
+      it {
+        expect(get("/projects/project_42/sprints/new_dialog")).to route_to(
+          controller: "rb_sprints",
+          action: "new_dialog",
+          project_id: "project_42"
+        )
+      }
+
+      it {
+        expect(get("/projects/project_42/sprints/refresh_form")).to route_to(
+          controller: "rb_sprints",
+          action: "refresh_form",
+          project_id: "project_42"
+        )
+      }
+
+      it {
+        expect(post("/projects/project_42/sprints")).to route_to(
+          controller: "rb_sprints",
+          action: "create",
+          project_id: "project_42"
+        )
+      }
+
+      it {
+        expect(get("/projects/project_42/sprints/21/edit_dialog")).to route_to(
+          controller: "rb_sprints",
+          action: "edit_dialog",
+          project_id: "project_42",
+          id: "21"
+        )
+      }
+
+      it {
+        expect(put("/projects/project_42/sprints/21/update_agile_sprint")).to route_to(
+          controller: "rb_sprints",
+          action: "update_agile_sprint",
+          project_id: "project_42",
+          id: "21"
+        )
+      }
+
+      it {
+        expect(post("/projects/project_42/sprints/21/start")).to route_to(
+          controller: "rb_sprints",
+          action: "start",
+          project_id: "project_42",
+          id: "21"
+        )
+      }
+
+      it {
+        expect(post("/projects/project_42/sprints/21/finish")).to route_to(
+          controller: "rb_sprints",
+          action: "finish",
+          project_id: "project_42",
+          id: "21"
+        )
+      }
+    end
+
+    context "with the feature flag inactive", with_flag: { scrum_projects: false } do
+      it { expect(get("/projects/project_42/sprints/new_dialog")).not_to be_routable }
+      it { expect(get("/projects/project_42/sprints/refresh_form")).not_to be_routable }
+      it { expect(post("/projects/project_42/sprints")).not_to be_routable }
+      it { expect(get("/projects/project_42/sprints/21/edit_dialog")).not_to be_routable }
+      it { expect(put("/projects/project_42/sprints/21/update_agile_sprint")).not_to be_routable }
+      it { expect(post("/projects/project_42/sprints/21/start")).not_to be_routable }
+      it { expect(post("/projects/project_42/sprints/21/finish")).not_to be_routable }
+    end
   end
 end
