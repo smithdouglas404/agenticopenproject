@@ -28,25 +28,45 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Agile
+  class SprintPlanningController < BaseController
+    include WorkPackages::WithSplitView
 
-RSpec.describe RbMasterBacklogsController do
-  describe "routing" do
-    it {
-      expect(get("/projects/project_42/backlogs")).to route_to(controller: "rb_master_backlogs",
-                                                               action: "index",
-                                                               project_id: "project_42")
-    }
+    menu_item :sprint_planning
 
-    it {
-      expect(get("/projects/project_42/backlogs/details/33")).to route_to(
-        controller: "rb_master_backlogs",
-        action: "details",
-        project_id: "project_42",
-        work_package_id: "33",
-        tab: :overview,
-        work_package_split_view: true
-      )
-    }
+    skip_before_action :load_sprint
+    before_action :load_backlogs, only: :show
+
+    def show
+      if turbo_frame_request?
+        render partial: "list", layout: false
+      else
+        render :show
+      end
+    end
+
+    def details
+      if turbo_frame_request?
+        render "work_packages/split_view", layout: false
+      else
+        load_backlogs
+        render :show
+      end
+    end
+
+    def split_view_base_route
+      sprint_planning_backlogs_project_backlogs_path(request.query_parameters)
+    end
+
+    private
+
+    def load_backlogs
+      @owner_backlogs = ::Backlog.owner_backlogs(@project)
+      @sprints = ::Agile::Sprint
+        .for_project(@project)
+        .not_completed
+        .order_by_date
+      @active_sprint_ids = @sprints.select(&:active?).map(&:id)
+    end
   end
 end

@@ -30,23 +30,43 @@
 
 require "spec_helper"
 
-RSpec.describe RbMasterBacklogsController do
+RSpec.describe Agile::SprintPlanningController do
   describe "routing" do
-    it {
-      expect(get("/projects/project_42/backlogs")).to route_to(controller: "rb_master_backlogs",
-                                                               action: "index",
-                                                               project_id: "project_42")
-    }
+    context "with the feature flag active", with_flag: { scrum_projects: true } do
+      it {
+        expect(get("/projects/project_42/backlogs/sprint_planning")).to route_to(
+          controller: "agile/sprint_planning",
+          action: "show",
+          project_id: "project_42"
+        )
+      }
 
-    it {
-      expect(get("/projects/project_42/backlogs/details/33")).to route_to(
-        controller: "rb_master_backlogs",
-        action: "details",
-        project_id: "project_42",
-        work_package_id: "33",
-        tab: :overview,
-        work_package_split_view: true
-      )
-    }
+      it {
+        expect(get("/projects/project_42/backlogs/details/33")).to route_to(
+          controller: "agile/sprint_planning",
+          action: "details",
+          project_id: "project_42",
+          work_package_id: "33",
+          tab: :overview,
+          work_package_split_view: true
+        )
+      }
+    end
+
+    context "with the feature flag active (named routes)", with_flag: { scrum_projects: true } do
+      it {
+        expect(get(sprint_planning_backlogs_project_backlogs_path("project_42"))).to route_to(
+          controller: "agile/sprint_planning",
+          action: "show",
+          project_id: "project_42"
+        )
+      }
+    end
+
+    context "with the feature flag inactive", with_flag: { scrum_projects: false } do
+      it "does not route sprint_planning" do
+        expect(get("/projects/project_42/backlogs/sprint_planning")).not_to be_routable
+      end
+    end
   end
 end

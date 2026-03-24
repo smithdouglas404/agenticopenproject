@@ -76,7 +76,9 @@ module OpenProject::Backlogs
                      rb_burndown_charts: :show,
                      rb_taskboards: :show,
                      rb_tasks: %i[index show],
-                     rb_impediments: %i[index show] },
+                     rb_impediments: %i[index show],
+                     "agile/sprint_planning": %i[show details],
+                     "agile/taskboards": :show },
                    permissible_on: :project,
                    dependencies: %i[view_work_packages show_board_views]
 
@@ -89,13 +91,15 @@ module OpenProject::Backlogs
 
         permission :create_sprints,
                    { rb_sprints: %i[new_dialog refresh_form create edit_name update edit_dialog update_agile_sprint],
-                     rb_wikis: %i[edit update] },
+                     rb_wikis: %i[edit update],
+                     "agile/sprints": %i[new_dialog refresh_form create edit_dialog update] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
 
         permission :start_complete_sprint,
-                   { rb_sprints: %i[start finish] },
+                   { rb_sprints: %i[start finish],
+                     "agile/sprints": %i[start finish] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: %i[view_sprints manage_board_views manage_sprint_items],
@@ -103,7 +107,8 @@ module OpenProject::Backlogs
 
         permission :manage_sprint_items,
                    { rb_stories: %i[move move_legacy reorder],
-                     inbox: %i[move reorder move_to_sprint_dialog] },
+                     inbox: %i[move reorder move_to_sprint_dialog],
+                     "agile/stories": :move },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
@@ -119,7 +124,7 @@ module OpenProject::Backlogs
       # Menu items that are there when feature flag is active
       menu :project_menu,
            :backlogs,
-           { controller: "/rb_master_backlogs", action: :sprint_planning },
+           { controller: "/agile/sprint_planning", action: :show },
            if: Proc.new { |project| project.module_enabled?(:backlogs) && OpenProject::FeatureDecisions.scrum_projects_active? },
            caption: :project_module_backlogs,
            after: :work_packages,
@@ -127,7 +132,7 @@ module OpenProject::Backlogs
 
       menu :project_menu,
            :sprint_planning,
-           { controller: "/rb_master_backlogs", action: :sprint_planning },
+           { controller: "/agile/sprint_planning", action: :show },
            if: Proc.new { |project| project.module_enabled?(:backlogs) && OpenProject::FeatureDecisions.scrum_projects_active? },
            caption: :label_sprint_planning,
            parent: :backlogs

@@ -28,25 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Agile
+  class TaskboardsController < BaseController
+    def show
+      @board = @sprint.task_board_for(@project)
 
-RSpec.describe RbMasterBacklogsController do
-  describe "routing" do
-    it {
-      expect(get("/projects/project_42/backlogs")).to route_to(controller: "rb_master_backlogs",
-                                                               action: "index",
-                                                               project_id: "project_42")
-    }
+      return redirect_to(project_work_package_board_path(@project, @board)) if @board
 
-    it {
-      expect(get("/projects/project_42/backlogs/details/33")).to route_to(
-        controller: "rb_master_backlogs",
-        action: "details",
-        project_id: "project_42",
-        work_package_id: "33",
-        tab: :overview,
-        work_package_split_view: true
-      )
-    }
+      render_404
+    end
   end
 end

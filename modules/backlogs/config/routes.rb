@@ -30,34 +30,52 @@
 
 Rails.application.routes.draw do
   constraints(Constraints::FeatureDecision.new(:scrum_projects)) do
-    # Routes for the new Agile::Sprint
-    # Scoped under projects for permissions:
-    resources :projects, only: [] do
-      resources :sprints, controller: :rb_sprints, only: %i[create] do
-        collection do
-          get :new_dialog
-          get :refresh_form
-        end
-
-        member do
-          post :start
-          post :finish
-          get :edit_dialog
-          put :update_agile_sprint
-        end
-
-        resources :stories, controller: :rb_stories, only: [] do
-          member do
-            put :move
+    # Sprint planning — mirrors legacy backlogs nesting for URL compatibility
+    scope "", as: "backlogs" do
+      scope "projects/:project_id", as: "project" do
+        resources :backlogs, controller: "agile/sprint_planning", only: [] do
+          collection do
+            get :sprint_planning, action: :show
+            get "details/:work_package_id(/:tab)",
+                action: :details,
+                work_package_split_view: true,
+                defaults: { tab: :overview }
           end
         end
       end
+    end
 
+    scope "projects/:project_id", as: "project" do
       resources :inbox, only: [] do
         member do
           put :move
           post :reorder
           get :move_to_sprint_dialog
+        end
+      end
+    end
+
+    # Sprint CRUD + lifecycle
+    scope module: "agile" do
+      scope "projects/:project_id", as: "project" do
+        resources :sprints, only: %i[create update] do
+          collection do
+            get :new_dialog
+            get :refresh_form
+          end
+          member do
+            post :start
+            post :finish
+            get :edit_dialog
+          end
+
+          resources :stories, only: [] do
+            member do
+              put :move
+            end
+          end
+
+          resource :taskboard, only: :show
         end
       end
     end
@@ -79,8 +97,6 @@ Rails.application.routes.draw do
               as: :details,
               work_package_split_view: true,
               defaults: { tab: :overview }
-
-          get :sprint_planning
         end
       end
 

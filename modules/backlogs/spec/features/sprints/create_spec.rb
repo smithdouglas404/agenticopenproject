@@ -207,6 +207,23 @@ RSpec.describe "Create", :js do
   end
 
   context "with the feature flag inactive" do
+    # Sprint planning URL doesn't exist when the flag is off — visit the legacy index
+    let(:planning_page) do
+      page_class = Class.new(Pages::Page) do
+        include Rails.application.routes.url_helpers
+
+        attr_reader :project
+
+        def initialize(project)
+          super()
+          @project = project
+        end
+
+        def path = backlogs_project_backlogs_path(project)
+      end
+      page_class.new(project)
+    end
+
     it "is missing the 'new sprint' button" do
       planning_page.visit!
 

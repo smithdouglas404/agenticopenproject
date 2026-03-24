@@ -28,25 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Agile
+  class BaseController < ApplicationController
+    helper :rb_common
 
-RSpec.describe RbMasterBacklogsController do
-  describe "routing" do
-    it {
-      expect(get("/projects/project_42/backlogs")).to route_to(controller: "rb_master_backlogs",
-                                                               action: "index",
-                                                               project_id: "project_42")
-    }
+    before_action :load_project
+    before_action :load_sprint
+    before_action :authorize
 
-    it {
-      expect(get("/projects/project_42/backlogs/details/33")).to route_to(
-        controller: "rb_master_backlogs",
-        action: "details",
-        project_id: "project_42",
-        work_package_id: "33",
-        tab: :overview,
-        work_package_split_view: true
-      )
-    }
+    private
+
+    def load_project
+      @project = Project.visible.find(params[:project_id])
+    end
+
+    def load_sprint
+      sprint_id = params[:sprint_id]
+      return unless sprint_id
+
+      @sprint = ::Agile::Sprint
+        .for_project(@project)
+        .visible
+        .find(sprint_id)
+    end
   end
 end

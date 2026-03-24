@@ -33,6 +33,8 @@ require "rails_helper"
 RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
   current_user { user }
 
+  shared_let(:type_feature) { create(:type_feature) }
+  shared_let(:type_task) { create(:type_task) }
   let(:user) { create(:admin) }
   let(:project) { create(:project) }
   let!(:work_packages) { create_list(:work_package, 5, project:) }
@@ -44,6 +46,10 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
   end
 
   before do
+    allow(Setting)
+      .to receive(:plugin_openproject_backlogs)
+      .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
+
     setup_service_result if defined?(service_result)
     subject
   end

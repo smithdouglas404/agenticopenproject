@@ -30,23 +30,30 @@
 
 require "spec_helper"
 
-RSpec.describe RbMasterBacklogsController do
+RSpec.describe Agile::StoriesController do
   describe "routing" do
-    it {
-      expect(get("/projects/project_42/backlogs")).to route_to(controller: "rb_master_backlogs",
-                                                               action: "index",
-                                                               project_id: "project_42")
-    }
+    context "with the feature flag active", with_flag: { scrum_projects: true } do
+      it {
+        expect(put("/projects/project_42/sprints/21/stories/85/move")).to route_to(
+          controller: "agile/stories",
+          action: "move",
+          project_id: "project_42",
+          sprint_id: "21",
+          id: "85"
+        )
+      }
+    end
 
-    it {
-      expect(get("/projects/project_42/backlogs/details/33")).to route_to(
-        controller: "rb_master_backlogs",
-        action: "details",
-        project_id: "project_42",
-        work_package_id: "33",
-        tab: :overview,
-        work_package_split_view: true
-      )
-    }
+    context "with the feature flag inactive", with_flag: { scrum_projects: false } do
+      it "routes to legacy controller" do
+        expect(put("/projects/project_42/sprints/21/stories/85/move")).to route_to(
+          controller: "rb_stories",
+          action: "move",
+          project_id: "project_42",
+          sprint_id: "21",
+          id: "85"
+        )
+      end
+    end
   end
 end
