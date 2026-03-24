@@ -48,8 +48,7 @@ module Admin
           node_attrs = {
             label: group.name,
             href: admin_department_path(group),
-            current: group == active_group,
-            data: { turbo_stream: true }
+            current: group == active_group
           }
 
           if children?(group)
@@ -88,6 +87,13 @@ module Admin
 
       def groups_by_id
         @groups_by_id ||= groups.index_by(&:id)
+      end
+
+      def ancestors_for(group)
+        return [] unless group
+
+        ancestor_ids = active_group_ancestor_ids
+        ancestor_ids.reverse.filter_map { |id| groups_by_id[id] }
       end
 
       def compute_ancestor_ids(group)

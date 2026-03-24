@@ -33,7 +33,13 @@ See COPYRIGHT and LICENSE files for more details.
   component_wrapper(tag: "turbo-frame", class: "admin-groups-tree-page--wrapper", refresh: :morph, data: { turbo_action: :advance }) do
     render(Primer::Alpha::Layout.new(stacking_breakpoint: :md, overflow: :hidden, h: :full, classes: "admin-groups-tree-page")) do |content|
       content.with_main(overflow: :auto) do
-        render(Admin::Groups::GroupDetailComponent.new(group: active_group))
+        render(
+          Admin::Groups::GroupDetailComponent.new(
+            group: active_group,
+            ancestors: ancestors_for(active_group),
+            child_groups: children_for(active_group&.id)
+          )
+        )
       end
 
       content.with_sidebar(row_placement: :start, col_placement: :start, border: true, border_bottom: 0, p: 3, overflow: :auto, classes: "admin-groups-tree-page--sidebar") do
