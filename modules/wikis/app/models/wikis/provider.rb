@@ -33,5 +33,13 @@ module Wikis
     self.table_name = "wiki_providers"
 
     has_many :page_links, dependent: :destroy
+
+    before_create :generate_universal_identifier
+
+    private
+
+    def generate_universal_identifier
+      self.universal_identifier ||= SecureRandom.uuid
+    end
   end
 end

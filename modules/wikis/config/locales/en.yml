@@ -4,13 +4,12 @@ en:
     attributes:
       wikis/xwiki_provider:
         name: Name
-        url: Host URL
+        url: Instance URL
         authentication_method: Authentication method
         authentication_methods:
           oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
           two_way_oauth2: Two-way OAuth 2.0 authorization code flow
         token_exchange_scope: XWiki Scope
-        url: Instance URL
         wiki_audience: XWiki Audience
     errors: {}
     models:
@@ -43,11 +42,10 @@ en:
         xwiki_app_link_text: application "OpenProject Integration"
         new_platform_html: Read our documentation on [setting up an XWiki integration](docs_url) for more information.
         sections:
-          general_information: General information
+          basic_details: Basic details
           oauth_applications: OAuth applications
         oauth:
           openproject_oauth: OpenProject OAuth
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
-  wikis: {}

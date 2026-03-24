@@ -37,21 +37,19 @@ RSpec.describe Wikis::Admin::WikiProvidersController do
   before { login_as admin }
 
   describe "GET #index" do
-    it "renders the index template" do
+    let!(:wiki_provider) { create(:xwiki_provider) }
+
+    it "renders the index template and assigns providers" do
       get :index
       expect(response).to be_successful
       expect(response).to render_template :index
-    end
-
-    it "assigns @wiki_providers" do
-      get :index
-      expect(assigns(:wiki_providers)).to eq([])
+      expect(assigns(:wiki_providers)).to include(wiki_provider)
     end
 
     context "when not admin" do
       before { login_as non_admin }
 
-      it "redirects to login" do
+      it "responds with an error" do
         get :index
         expect(response).not_to be_successful
       end
@@ -59,50 +57,68 @@ RSpec.describe Wikis::Admin::WikiProvidersController do
   end
 
   describe "GET #new" do
-    it "renders the new template" do
+    it "renders the new template with an unpersisted provider" do
       get :new
       expect(response).to be_successful
       expect(response).to render_template :new
-    end
-
-    it "assigns a new wiki provider" do
-      get :new
       expect(assigns(:wiki_provider)).to be_a(Wikis::XWikiProvider)
       expect(assigns(:wiki_provider)).not_to be_persisted
     end
   end
 
   describe "GET #edit" do
+    let(:wiki_provider) { create(:xwiki_provider) }
+
     it "renders the edit template" do
-      get :edit, params: { id: 1 }
+      get :edit, params: { id: wiki_provider.id }
       expect(response).to be_successful
       expect(response).to render_template :edit
+      expect(assigns(:wiki_provider)).to eq(wiki_provider)
     end
   end
 
   describe "POST #create" do
     let(:valid_params) { { wikis_xwiki_provider: { name: "My XWiki", url: "https://xwiki.example.com" } } }
+    let(:invalid_params) { { wikis_xwiki_provider: { name: "", url: "https://xwiki.example.com" } } }
 
-    it "redirects to index with a success notice" do
-      post :create, params: valid_params
-      expect(response).to redirect_to(admin_settings_wiki_providers_path)
-      expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
+    context "with valid params" do
+      it "creates a provider and redirects to index" do
+        expect { post :create, params: valid_params }
+          .to change(Wikis::XWikiProvider, :count).by(1)
+        expect(response).to redirect_to(admin_settings_wiki_providers_path)
+        expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
+      end
+    end
+
+    context "with invalid params" do
+      it "re-renders the new template" do
+        post :create, params: invalid_params
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to render_template :new
+      end
     end
   end
 
   describe "PATCH #update" do
-    let(:valid_params) { { id: 1, wikis_xwiki_provider: { name: "Updated XWiki", url: "https://xwiki.example.com" } } }
+    let(:wiki_provider) { create(:xwiki_provider) }
+    let(:valid_params) { { id: wiki_provider.id, wikis_xwiki_provider: { name: "Updated XWiki" } } }
 
-    it "redirects to edit with a success notice" do
-      patch :update, params: valid_params
-      expect(response).to redirect_to(edit_admin_settings_wiki_provider_path(id: 1))
-      expect(flash[:notice]).to eq(I18n.t(:notice_successful_update))
+    context "with valid params" do
+      it "updates the provider and redirects to edit" do
+        patch :update, params: valid_params
+        expect(wiki_provider.reload.name).to eq("Updated XWiki")
+        expect(response).to redirect_to(edit_admin_settings_wiki_provider_path(wiki_provider))
+        expect(flash[:notice]).to eq(I18n.t(:notice_successful_update))
+      end
     end
   end
 
   describe "DELETE #destroy" do
-    it "redirects to index with a success notice" do
-      delete :destroy, params: { id: 1 }
+    let!(:wiki_provider) { create(:xwiki_provider) }
+
+    it "deletes the provider and redirects to index" do
+      expect { delete :destroy, params: { id: wiki_provider.id } }
+        .to change(Wikis::XWikiProvider, :count).by(-1)
       expect(response).to redirect_to(admin_settings_wiki_providers_path)
       expect(flash[:notice]).to eq(I18n.t(:notice_successful_delete))
     end

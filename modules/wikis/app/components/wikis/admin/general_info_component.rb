@@ -29,11 +29,12 @@
 #++
 
 module Wikis::Admin
-  class WikiProviderViewComponent < ApplicationComponent
+  class GeneralInfoComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
+
+    def self.wrapper_key = :wiki_provider_general_info_section
 
     alias_method :wiki_provider, :model
-
-    options wizard_step: nil
   end
 end

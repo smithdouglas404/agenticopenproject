@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       resources :wiki_providers, controller: "/wikis/admin/wiki_providers", except: [:show] do
         member do
           get :confirm_destroy
+          get :edit_general_info
         end
       end
     end

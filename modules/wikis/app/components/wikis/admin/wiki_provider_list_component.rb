@@ -29,11 +29,9 @@
 #++
 
 module Wikis::Admin
-  class WikiProviderViewComponent < ApplicationComponent
+  class WikiProviderListComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    alias_method :wiki_provider, :model
-
-    options wizard_step: nil
+    alias_method :wiki_providers, :model
   end
 end

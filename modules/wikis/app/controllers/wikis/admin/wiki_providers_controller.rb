@@ -34,13 +34,12 @@ module Wikis
       layout "admin"
 
       before_action :require_admin
-      before_action :find_wiki_provider, only: %i[edit update destroy confirm_destroy]
+      before_action :find_wiki_provider, only: %i[edit update destroy confirm_destroy edit_general_info]
 
       menu_item :wiki_providers
 
       def index
-        # TODO: load from database once data architecture (#72975) is complete
-        @wiki_providers = []
+        @wiki_providers = Wikis::XWikiProvider.all
       end
 
       def new
@@ -48,22 +47,29 @@ module Wikis
       end
 
       def create
-        # TODO: persist via service once data architecture (#72975) is complete
         @wiki_provider = Wikis::XWikiProvider.new(wiki_provider_params)
-        flash[:notice] = I18n.t(:notice_successful_create)
-        redirect_to admin_settings_wiki_providers_path
+
+        if @wiki_provider.save
+          flash[:notice] = I18n.t(:notice_successful_create)
+          redirect_to edit_admin_settings_wiki_provider_path(@wiki_provider)
+        else
+          render :new, status: :unprocessable_entity
+        end
       end
 
       def edit; end
 
       def update
-        # TODO: persist via service once data architecture (#72975) is complete
-        flash[:notice] = I18n.t(:notice_successful_update)
-        redirect_to edit_admin_settings_wiki_provider_path(@wiki_provider)
+        if @wiki_provider.update(wiki_provider_params)
+          flash[:notice] = I18n.t(:notice_successful_update)
+          redirect_to edit_admin_settings_wiki_provider_path(@wiki_provider)
+        else
+          render :edit, status: :unprocessable_entity
+        end
       end
 
       def destroy
-        # TODO: delete via service once data architecture (#72975) is complete
+        @wiki_provider.destroy
         flash[:notice] = I18n.t(:notice_successful_delete)
         redirect_to admin_settings_wiki_providers_path
       end
@@ -72,11 +78,18 @@ module Wikis
         # TODO: implement confirmation dialog
       end
 
+      def edit_general_info
+        component = Wikis::Admin::Forms::GeneralInfoFormComponent.new(@wiki_provider)
+        render turbo_stream: turbo_stream.replace(
+          Wikis::Admin::GeneralInfoComponent.wrapper_key,
+          component
+        )
+      end
+
       private
 
       def find_wiki_provider
-        # TODO: load from database once data architecture (#72975) is complete
-        @wiki_provider = Wikis::XWikiProvider.new(id: params[:id].to_i)
+        @wiki_provider = Wikis::XWikiProvider.find(params[:id])
       end
 
       def wiki_provider_params
