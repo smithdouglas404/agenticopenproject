@@ -40,6 +40,7 @@ class WorkPackage < ApplicationRecord
   include WorkPackages::DerivedDates
   include WorkPackages::SpentTime
   include WorkPackages::Costs
+  include WorkPackages::Identifier
   include WorkPackages::Relations
   include ::Scopes::Scoped
   include HasMembers
