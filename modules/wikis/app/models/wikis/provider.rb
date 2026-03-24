@@ -34,6 +34,8 @@ module Wikis
 
     has_many :page_links, dependent: :destroy
 
+    validates :name, presence: true, uniqueness: true, length: { maximum: 255 }
+
     before_create :generate_universal_identifier
 
     private

@@ -29,7 +29,7 @@
 #++
 
 module Wikis::Admin
-  class HostUrlInputForm < ApplicationForm
+  class UrlInputForm < ApplicationForm
     form do |f|
       f.text_field(
         name: :url,
