@@ -32,11 +32,12 @@ class RbStoriesController < RbApplicationController
   include OpTurbo::ComponentStream
 
   NEW_SPRINT_ACTIONS = %i[move].freeze
+  LEGACY_SPRINT_ACTIONS = %i[move_legacy reorder].freeze
 
-  skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
+  skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS + LEGACY_SPRINT_ACTIONS
 
-  before_action :legacy_load_story, except: NEW_SPRINT_ACTIONS
-  prepend_before_action :load_sprint, :load_project, :load_story, only: NEW_SPRINT_ACTIONS
+  prepend_before_action :load_legacy_project_sprint_and_story, only: LEGACY_SPRINT_ACTIONS
+  prepend_before_action :load_new_project_sprint_and_story, only: NEW_SPRINT_ACTIONS
 
   # Move a story from a Sprint to another Sprint or an Agile::Sprint.
   def move_legacy
@@ -90,7 +91,7 @@ class RbStoriesController < RbApplicationController
       return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
-    replace_backlog_component_via_turbo_stream(sprint: @sprint)
+    replace_typed_component_via_turbo_stream(sprint: @sprint)
 
     respond_with_turbo_streams
   end
@@ -184,11 +185,28 @@ class RbStoriesController < RbApplicationController
   end
 
   def replace_sprint_component_via_turbo_stream(sprint:)
-    replace_via_turbo_stream(component: Backlogs::SprintComponent.new(sprint: sprint))
+    replace_via_turbo_stream(component: Backlogs::SprintComponent.new(sprint: sprint, project: @project),
+                             method: :morph)
   end
 
   def legacy_load_story
     @story = Story.visible.find(params[:id])
+  end
+
+  def load_legacy_project_sprint_and_story
+    load_project
+    legacy_load_sprint
+    legacy_load_story
+  end
+
+  def load_new_project_sprint_and_story
+    load_project
+    load_sprint
+    load_story
+  end
+
+  def legacy_load_sprint
+    @sprint = Sprint.visible.apply_to(@project).find(params[:sprint_id])
   end
 
   def load_story

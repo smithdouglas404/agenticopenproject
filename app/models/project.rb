@@ -29,8 +29,6 @@
 #++
 
 class Project < ApplicationRecord
-  extend FriendlyId
-
   include Projects::Activity
   include Projects::AncestorsFromRoot
   include Projects::CustomFields
@@ -40,14 +38,9 @@ class Project < ApplicationRecord
   include Projects::Versions
   include Projects::WorkPackageCustomFields
   include Projects::CreationWizard
+  include Projects::Identifier
 
   include ::Scopes::Scoped
-
-  # Maximum length for project identifiers
-  IDENTIFIER_MAX_LENGTH = 100
-
-  # reserved identifiers
-  RESERVED_IDENTIFIERS = %w[new menu queries filters].freeze
 
   enum :workspace_type, {
     project: "project",
@@ -134,25 +127,6 @@ class Project < ApplicationRecord
   # extended in Projects::CustomFields in order to support sections
   # and project-level activation of custom fields
 
-  # Override the `validation_context` getter to include the `default_validation_context` when the
-  # context is `:saving_custom_fields`. This is required, because the `acts_as_url` plugin from
-  # `stringex` defines a callback on the `:create` context for initialising the `identifier` field.
-  # Providing a custom context while creating the project, will not execute the callbacks on the
-  # `:create` or `:update` contexts, meaning the identifier will not get initialised.
-  # In order to initialise the identifier, the `default_validation_context` (`:create`, or `:update`)
-  # should be included when validating via the `:saving_custom_fields`. This way every create
-  # or update callback will also be executed alongside the `:saving_custom_fields` callbacks.
-  # This problem does not affect the contextless callbacks, they are always executed.
-
-  def validation_context
-    case Array(super)
-    in [*, :saving_custom_fields, *] => context
-      context | [default_validation_context]
-    else
-      super
-    end
-  end
-
   acts_as_searchable columns: %W(#{table_name}.name #{table_name}.identifier #{table_name}.description),
                      date_column: "#{table_name}.created_at",
                      project_key: "id",
@@ -192,29 +166,7 @@ class Project < ApplicationRecord
   # neither development nor deployment setups are prepared for this
   # validates_presence_of :types
 
-  acts_as_url :name,
-              url_attribute: :identifier,
-              sync_url: false, # Don't update identifier when name changes
-              only_when_blank: true, # Only generate when identifier not set
-              limit: IDENTIFIER_MAX_LENGTH,
-              blacklist: RESERVED_IDENTIFIERS,
-              adapter: OpenProject::ActsAsUrl::Adapter::OpActiveRecord # use a custom adapter able to handle edge cases
-
-  validates :identifier,
-            presence: true,
-            uniqueness: { case_sensitive: true },
-            length: { maximum: IDENTIFIER_MAX_LENGTH },
-            exclusion: RESERVED_IDENTIFIERS,
-            if: ->(p) { p.persisted? || p.identifier.present? }
-
-  # Contains only a-z, 0-9, dashes and underscores but cannot consist of numbers only as it would clash with the id.
-  validates :identifier,
-            format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
-            if: ->(p) { p.identifier_changed? && p.identifier.present? }
-
   validates_associated :repository, :wiki
-
-  friendly_id :identifier, use: :finders
 
   scopes :activated_in_storage,
          :allowed_to,

@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.OPENPROJECTCI_GH_FORK_TOKEN }}
 
       - name: Configure Git
         run: |
@@ -47,3 +47,8 @@ jobs:
             git reset --hard "upstream/$branch"
             git push origin "$branch" --force
           done
+
+      - name: Sync tags
+        run: |
+          git fetch upstream --tags
+          git push origin --tags --force

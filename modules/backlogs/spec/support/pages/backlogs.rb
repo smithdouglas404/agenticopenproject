@@ -100,37 +100,16 @@ module Pages
       end
     end
 
-    def click_in_sprint_menu(sprint, item_name)
-      within_sprint_menu(sprint) do |menu|
-        menu.find(:menuitem, text: item_name).click
-      end
-    end
-
     def click_in_story_menu(story, item_name)
       within_story_menu(story) do |menu|
         menu.find(:menuitem, text: item_name).click
       end
     end
 
-    def drag_in_sprint(moved, target, before: true)
-      moved_element = find(story_selector(moved))
-      target_element = find(story_selector(target))
-
-      drag_n_drop_element from: moved_element, to: target_element, offset_x: 0, offset_y: before ? -5 : +10
-    end
-
     def fold_backlog(backlog)
       within_backlog(backlog) do
         find(:button, aria: { controls: "backlog_#{backlog.id}-list" }).click
       end
-    end
-
-    def sprint_names_in_order
-      page.find_all("#sprint_backlogs_container > section .CollapsibleHeader-title").map(&:text)
-    end
-
-    def expect_sprint_names_in_order(*sprint_names)
-      expect(sprint_names_in_order).to eq(sprint_names)
     end
 
     def expect_sprint(sprint)
@@ -143,24 +122,10 @@ module Pages
         .to have_css("#owner_backlogs_container #{backlog_selector(sprint)}")
     end
 
-    def expect_story_in_sprint(story, sprint)
-      within_sprint(sprint) do
-        expect(page)
-          .to have_selector(work_package_selector(story).to_s)
-      end
-    end
-
     def expect_story_in_backlog(story, backlog)
       within_backlog(backlog) do
         expect(page)
           .to have_selector(story_selector(story).to_s)
-      end
-    end
-
-    def expect_story_not_in_sprint(story, sprint)
-      within_sprint(sprint) do
-        expect(page)
-          .to have_no_selector(work_package_selector(story).to_s)
       end
     end
 
@@ -233,30 +198,6 @@ module Pages
       details_view
     end
 
-    def open_create_sprint_dialog
-      find(:button, accessible_name: "Create").click
-
-      within(:menu) do |menu|
-        menu.find(:menuitem, "Sprint").click
-      end
-    end
-
-    def expect_sprint_dialog
-      expect(page).to have_css("#new-sprint-dialog")
-    end
-
-    def expect_create_work_package_dialog
-      expect(page).to have_css("#create-work-package-dialog")
-    end
-
-    def within_sprint_menu(backlog, &)
-      within_sprint(backlog) do
-        find(:button, accessible_name: "Sprint actions").click
-
-        within(:menu, &)
-      end
-    end
-
     private
 
     def within_story(story, &)
@@ -272,7 +213,7 @@ module Pages
     end
 
     def sprint_selector(sprint)
-      "#agile_sprint_#{sprint.id}"
+      test_selector("sprint-#{sprint.id}")
     end
 
     def backlog_selector(backlog)
@@ -283,14 +224,15 @@ module Pages
       "#story_#{story.id}"
     end
 
-    def work_package_selector(story)
-      "#work_package_#{story.id}"
+    def work_package_selector(work_package)
+      test_selector("work-package-#{work_package.id}")
     end
 
     def within_menu_controlled_by(button)
       menu_id = button[:controls] || button["aria-controls"]
+      menu = page.find(:menu, id: menu_id)
 
-      within(:menu, id: menu_id) do
+      within(menu) do
         yield page
       end
     end

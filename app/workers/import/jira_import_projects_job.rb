@@ -70,7 +70,7 @@ module Import
           ### PROJECT
           identifier = jira_project.payload.fetch("key").downcase
           service_call = Projects::CreateService
-                           .new(user:)
+                           .new(user:, contract_class: EmptyContract)
                            .call(
                              name: jira_project.payload.fetch("name"),
                              identifier:,
@@ -151,6 +151,19 @@ module Import
                 jira_import:,
                 uses_existing:
               )
+
+              ### Modify workfows for given role and type
+              statuses = Status.all
+              row = statuses.to_h do |status|
+                [status.id.to_s, ["always"]]
+              end
+              status_params = statuses.to_h do |status|
+                [status.id.to_s, row]
+              end
+              call = Workflows::BulkUpdateService
+                       .new(role: project_role, type:, tab: "always")
+                       .call(status_params)
+              raise call.message if call.failure?
 
               ### PRIORITY
               issue_priority = jira_issue.payload["fields"]["priority"]

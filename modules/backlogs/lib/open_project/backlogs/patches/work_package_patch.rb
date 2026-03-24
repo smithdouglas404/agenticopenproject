@@ -50,6 +50,8 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
 
   module ClassMethods
     def backlogs_types
+      return [] if OpenProject::FeatureDecisions.scrum_projects_active?
+
       # Unfortunately, this is not cachable so the following line would be wrong
       # @backlogs_types ||= Story.types << Task.type
       # Caching like in the line above would prevent the types selected
@@ -72,6 +74,8 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     end
 
     def is_story?
+      return false if OpenProject::FeatureDecisions.scrum_projects_active?
+
       backlogs_enabled? && Story.types.include?(type_id)
     end
 
@@ -80,11 +84,15 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     end
 
     def is_task?
-      backlogs_enabled? && (parent_id && type_id == Task.type && Task.type.present?)
+      return false if OpenProject::FeatureDecisions.scrum_projects_active?
+
+      backlogs_enabled? && parent_id && type_id == Task.type && Task.type.present?
     end
 
     def is_impediment?
-      backlogs_enabled? && (parent_id.nil? && type_id == Task.type && Task.type.present?)
+      return false if OpenProject::FeatureDecisions.scrum_projects_active?
+
+      backlogs_enabled? && parent_id.nil? && type_id == Task.type && Task.type.present?
     end
 
     def types
@@ -113,10 +121,12 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     end
 
     def backlogs_enabled?
-      !!project.try(:module_enabled?, "backlogs")
+      project&.backlogs_enabled?
     end
 
     def in_backlogs_type?
+      return false if OpenProject::FeatureDecisions.scrum_projects_active?
+
       backlogs_enabled? && WorkPackage.backlogs_types.include?(type.try(:id))
     end
   end

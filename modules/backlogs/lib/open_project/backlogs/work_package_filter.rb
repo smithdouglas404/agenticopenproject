@@ -80,6 +80,8 @@ module OpenProject::Backlogs
     private
 
     def backlogs_configured?
+      return false if OpenProject::FeatureDecisions.scrum_projects_active?
+
       Story.types.present? && Task.type.present?
     end
 

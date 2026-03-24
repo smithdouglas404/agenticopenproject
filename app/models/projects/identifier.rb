@@ -1,0 +1,133 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+module Projects::Identifier
+  extend ActiveSupport::Concern
+
+  IDENTIFIER_MAX_LENGTH = 100
+  SEMANTIC_IDENTIFIER_MAX_LENGTH = 10
+  RESERVED_IDENTIFIERS = %w[new menu queries filters identifier_update_dialog identifier_suggestion].freeze
+
+  included do
+    extend FriendlyId
+
+    normalizes :identifier, with: OpenProject::RemoveAsciiControlCharacters
+
+    acts_as_url :name,
+                url_attribute: :identifier,
+                sync_url: false, # Don't update identifier when name changes
+                only_when_blank: true, # Only generate when identifier not set
+                limit: IDENTIFIER_MAX_LENGTH,
+                blacklist: RESERVED_IDENTIFIERS,
+                adapter: OpenProject::ActsAsUrl::Adapter::OpActiveRecord # use a custom adapter able to handle edge cases
+
+    ### Validators for the legacy underscored identifier format (e.g. "project_one")
+    validates :identifier,
+              presence: true,
+              uniqueness: { case_sensitive: true },
+              length: { maximum: IDENTIFIER_MAX_LENGTH },
+              exclusion: RESERVED_IDENTIFIERS,
+              if: ->(p) { p.persisted? || p.identifier.present? }
+    # Contains only a-z, 0-9, dashes and underscores but cannot consist of numbers only as it would clash with the id.
+    validates :identifier,
+              format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
+              if: ->(p) {
+                p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.numeric?
+              }
+
+    ### Validators for the uppercase identifier format (e.g. "PROJ1")
+    validates :identifier,
+              format: { with: /\A[A-Z]/, message: :must_start_with_letter },
+              if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
+    validates :identifier,
+              format: { with: /\A[A-Z][A-Z0-9_]*\z/, message: :no_special_characters },
+              length: { maximum: SEMANTIC_IDENTIFIER_MAX_LENGTH },
+              if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
+
+    # Complements the uniqueness validation above: once an identifier has been used by a
+    # project, it remains reserved for that project even after the project moves to a new
+    # identifier. This prevents another project from claiming a "retired" identifier.
+    validate :identifier_not_historically_reserved, if: ->(p) { p.identifier_changed? }
+
+    friendly_id :identifier, use: %i[finders history], slug_column: :identifier
+
+    # FriendlyId::Slugged adds after_validation :unset_slug_if_invalid, which reverts the
+    # slug column to its previous value when validation fails. With slug_column: :identifier,
+    # this would reset a manually-set identifier back to nil on new records. Since the
+    # identifier is managed by acts_as_url and user input (not FriendlyId's slug generator),
+    # we disable this behaviour entirely.
+    # Must be inside `included` to override FriendlyId::Slugged in the MRO.
+    def unset_slug_if_invalid; end
+  end
+
+  class_methods do
+    def suggest_identifier(name)
+      if Setting::WorkPackageIdentifier.alphanumeric?
+        WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator.suggest_identifier(name)
+      else # This should closely enough emulate Project models' usage of acts_as_url
+        name.to_url.first(IDENTIFIER_MAX_LENGTH).presence || "project"
+      end
+    end
+  end
+
+  # Override the `validation_context` getter to include the `default_validation_context` when the
+  # context is `:saving_custom_fields`. This is required, because the `acts_as_url` plugin from
+  # `stringex` defines a callback on the `:create` context for initialising the `identifier` field.
+  # Providing a custom context while creating the project, will not execute the callbacks on the
+  # `:create` or `:update` contexts, meaning the identifier will not get initialised.
+  # In order to initialise the identifier, the `default_validation_context` (`:create`, or `:update`)
+  # should be included when validating via the `:saving_custom_fields`. This way every create
+  # or update callback will also be executed alongside the `:saving_custom_fields` callbacks.
+  # This problem does not affect the contextless callbacks, they are always executed.
+  def validation_context
+    case Array(super)
+    in [*, :saving_custom_fields, *] => context
+      context | [default_validation_context]
+    else
+      super
+    end
+  end
+
+  private
+
+  # Checks friendly_id_slugs for any project that previously used this identifier and
+  # has since changed it. It allows to switch back to an identifier the project itself
+  # has used before.
+  def identifier_not_historically_reserved
+    return if errors.any? { |error| error.attribute == :identifier && error.type == :taken }
+
+    already_existing = FriendlyId::Slug
+                         .where(slug: identifier, sluggable_type: self.class.to_s)
+                         .where.not(sluggable_id: id)
+                         .exists?
+
+    errors.add(:identifier, :taken) if already_existing
+  end
+end

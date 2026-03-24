@@ -30,6 +30,7 @@
 
 class UsersController < ApplicationController
   include OpTurbo::ComponentStream
+  include WorkingTimesAuthorization
 
   layout "admin"
 
@@ -88,6 +89,8 @@ class UsersController < ApplicationController
     @membership ||= Member.new
     @individual_principal = @user
     @contract = Users::UpdateContract.new(@user, current_user)
+
+    prepare_views_for_tab
   end
 
   def create # rubocop:disable Metrics/AbcSize
@@ -352,5 +355,28 @@ class UsersController < ApplicationController
       .merge(admin: params[:user][:admin] || false,
              login: params[:user][:login] || params[:user][:mail],
              status: User.statuses[:invited])
+  end
+
+  def prepare_views_for_tab # rubocop:disable Metrics/AbcSize
+    if params[:tab] == "non_working_times"
+      authorize_manage_working_times
+      check_working_times_feature_flag_is_active
+
+      @year = (params[:year].presence || Date.current.year).to_i
+      @non_working_times = @user.non_working_time_entities_for_year(@year)
+    elsif params[:tab] == "working_hours"
+      authorize_manage_working_times
+      check_working_times_feature_flag_is_active
+
+      @current_working_hours = @user.working_hours.current
+
+      @future_working_hours = @user.working_hours.upcoming(Date.current + 1)
+
+      @past_working_hours = if @current_working_hours
+                              @user.working_hours.history_for(@current_working_hours)
+                            else
+                              UserWorkingHours.none
+                            end
+    end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -40,15 +42,21 @@ RSpec.describe RbStoriesController do
       )
     }
 
-    it {
-      expect(put("/projects/project_42/sprints/21/stories/85/move")).to route_to(
-        controller: "rb_stories",
-        action: "move",
-        project_id: "project_42",
-        sprint_id: "21",
-        id: "85"
-      )
-    }
+    context "with the feature flag active", with_flag: { scrum_projects: true } do
+      it {
+        expect(put("/projects/project_42/sprints/21/stories/85/move")).to route_to(
+          controller: "rb_stories",
+          action: "move",
+          project_id: "project_42",
+          sprint_id: "21",
+          id: "85"
+        )
+      }
+    end
+
+    context "with the feature flag inactive", with_flag: { scrum_projects: false } do
+      it { expect(put("/projects/project_42/sprints/21/stories/85/move")).not_to be_routable }
+    end
 
     it {
       expect(post("/projects/project_42/sprints/21/stories/85/reorder")).to route_to(

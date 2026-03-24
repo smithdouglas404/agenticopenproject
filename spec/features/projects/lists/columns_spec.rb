@@ -188,18 +188,18 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
 
         # Remove "Name" column
         projects_page.click_table_header_to_open_action_menu("Name")
-        projects_page.remove_column_via_action_menu("Name")
-        wait_for_network_idle
+        wait_for_turbo_frame { projects_page.remove_column_via_action_menu("Name") }
 
         # Name was removed
+        projects_page.expect_no_columns("Name")
         projects_page.expect_columns_in_order("Created on", "Status")
 
         # Remove "Status" column, too
         projects_page.click_table_header_to_open_action_menu("project_status")
-        projects_page.remove_column_via_action_menu("project_status")
-        wait_for_network_idle
+        wait_for_turbo_frame { projects_page.remove_column_via_action_menu("project_status") }
 
         # It was removed
+        projects_page.expect_no_columns("Status")
         projects_page.expect_columns_in_order("Created on")
       end
     end

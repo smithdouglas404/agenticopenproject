@@ -172,7 +172,7 @@ RSpec.describe "Projects", "creation",
     let(:list_field) do
       FormFields::SelectFormField.new(
         list_custom_field,
-        selector: "[data-qa-field-name='#{list_custom_field.attribute_name(:kebab_case)}'"
+        selector: "[data-test-selector='#{list_custom_field.attribute_name(:kebab_case)}'"
       )
     end
 
@@ -235,7 +235,7 @@ RSpec.describe "Projects", "creation",
     let(:version_field) do
       FormFields::SelectFormField.new(
         version_custom_field,
-        selector: "[data-qa-field-name='#{version_custom_field.attribute_name(:kebab_case)}'"
+        selector: "[data-test-selector='#{version_custom_field.attribute_name(:kebab_case)}'"
       )
     end
 
@@ -479,7 +479,9 @@ RSpec.describe "Projects", "creation",
 
             fill_in "Text for Admins only", with: "foo"
 
-            click_on "Complete"
+            wait_for_turbo do
+              click_on "Complete"
+            end
 
             expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -557,6 +559,46 @@ RSpec.describe "Projects", "creation",
       # The required_not_for_all field should NOT be activated for the new project
       new_project = Project.find_by(name: "Project without step 3")
       expect(new_project.project_custom_field_ids).not_to include(required_not_for_all_custom_field.id)
+    end
+  end
+
+  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+    it "auto-suggests an identifier when the name field is blurred" do
+      projects_page.create_new_workspace
+      click_on "Continue"
+
+      fill_in "Name", with: "Flight Planning Algorithm"
+      find("body").click # blur the name field
+
+      expect(page).to have_field "Identifier", with: "FPA"
+    end
+
+    it "allows overriding the auto-suggested identifier" do
+      projects_page.create_new_workspace
+      click_on "Continue"
+
+      fill_in "Name", with: "Flight Planning Algorithm"
+      find("body").click
+      expect(page).to have_field "Identifier", with: "FPA"
+
+      fill_in "Identifier", with: "MYIDENT"
+      click_on "Complete"
+
+      expect_and_dismiss_flash type: :success, message: "Successful creation."
+      expect(page).to have_current_path %r{/projects/MYIDENT/?}
+    end
+
+    it "shows a validation error for identifiers not starting with a letter" do
+      projects_page.create_new_workspace
+      click_on "Continue"
+
+      fill_in "Name", with: "Flight Planning Algorithm"
+      find("body").click
+
+      fill_in "Identifier", with: "3INVALID"
+      click_on "Complete"
+
+      expect(page).to have_text "Identifier must start with a letter"
     end
   end
 

@@ -119,13 +119,16 @@ class MeetingsController < ApplicationController
     @meeting = call.result
 
     if call.success?
-      text = I18n.t(:notice_successful_create)
+      text = ActiveSupport::SafeBuffer.new
+      text << I18n.t(:notice_successful_create)
       unless User.current.pref.time_zone?
         link = I18n.t(:notice_timezone_missing, zone: formatted_time_zone_offset)
-        text += " #{view_context.link_to(link, { controller: '/my', action: :locale, anchor: 'pref_time_zone' },
-                                         class: 'link_to_profile')}"
+        text << " "
+        text << view_context.link_to(link,
+                                     { controller: "/my", action: :locale, anchor: "pref_time_zone" },
+                                     class: "link_to_profile")
       end
-      flash[:notice] = text.html_safe # rubocop:disable Rails/OutputSafety
+      flash[:notice] = text
 
       redirect_to status: :see_other, action: "show", id: @meeting
     else
@@ -317,7 +320,7 @@ class MeetingsController < ApplicationController
       .call
       .on_failure { |call| render_500(message: call.message) }
       .on_success do |call|
-        send_data call.result, filename: filename_for_content_disposition("#{@meeting.title}.ics")
+      send_data call.result, filename: filename_for_content_disposition("#{@meeting.title}.ics")
     end
   end
 
@@ -379,8 +382,8 @@ class MeetingsController < ApplicationController
 
   def exit_draft_mode
     call = ::Meetings::UpdateService
-             .new(user: current_user, model: @meeting)
-             .call({ state: "open", notify: meeting_params[:notify] == "1" })
+      .new(user: current_user, model: @meeting)
+      .call({ state: "open", notify: meeting_params[:notify] == "1" })
 
     if call.success?
       deliver_invitation_mails
@@ -419,11 +422,11 @@ class MeetingsController < ApplicationController
       .participants
       .invited
       .find_each do |participant|
-        MeetingMailer.invited(
-          @meeting,
-          participant.user,
-          User.current
-        ).deliver_later
+      MeetingMailer.invited(
+        @meeting,
+        participant.user,
+        User.current
+      ).deliver_later
     end
   end
 
@@ -646,12 +649,13 @@ class MeetingsController < ApplicationController
     service = MeetingNotificationService.new(@meeting)
     result = service.call(:invited)
 
-    message = if result.success?
-                I18n.t(:notice_successful_notification)
-              else
-                I18n.t(:error_notification_with_errors,
-                       recipients: result.errors.map(&:name).join("; "))
-              end
+    message =
+      if result.success?
+        I18n.t(:notice_successful_notification)
+      else
+        I18n.t(:error_notification_with_errors,
+               recipients: result.errors.map(&:name).join("; "))
+      end
 
     if type == :notify
       flash[result.success? ? :notice : :error] = message
@@ -669,11 +673,11 @@ class MeetingsController < ApplicationController
       .participants
       .invited
       .find_each do |participant|
-        MeetingSeriesMailer.invited(
-          recurring_meeting,
-          participant.user,
-          User.current
-        ).deliver_later
+      MeetingSeriesMailer.invited(
+        recurring_meeting,
+        participant.user,
+        User.current
+      ).deliver_later
     end
 
     render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_notification))

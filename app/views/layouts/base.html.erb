@@ -56,6 +56,7 @@ See COPYRIGHT and LICENSE files for more details.
   </div>
 </noscript>
 <opce-toasts-container></opce-toasts-container>
+<%= render partial: "layouts/flashes" %>
 <opce-modal-overlay></opce-modal-overlay>
 <live-region></live-region>
 <span id="open-blank-target-link-description" class="sr-only"><%= I18n.t("open_link_in_a_new_tab") %></span>
@@ -132,7 +133,6 @@ See COPYRIGHT and LICENSE files for more details.
     <div class="content-overlay"
          data-action="click->menus--main-toggle#toggleNavigation"></div>
     <%= content_tag :main, id: "content-wrapper", class: initial_classes, data: stimulus_content_data do %>
-      <%= render partial: "layouts/flashes" %>
       <% if show_onboarding_modal? %>
         <section data-augmented-model-wrapper
                  data-modal-initialize-now="true"

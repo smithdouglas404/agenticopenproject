@@ -279,6 +279,8 @@ zh-TW:
           drive_contents: 磁碟內容
           files_request: 擷取團隊資料夾檔案
           header: 自動管理的專案資料夾
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: '依賴性：團隊文件夾'
           team_folder_contents: 團隊資料夾內容
           team_folder_presence: 團隊資料夾存在
@@ -320,8 +322,10 @@ zh-TW:
         nc_oauth_request_not_found: 無法找到取得目前連線使用者的端點。請檢查伺服器日誌以取得更多資訊。
         nc_oauth_request_unauthorized: 當前使用者未獲授權存取遠端檔案儲存空間。請檢查伺服器日誌以取得進一步資訊。
         nc_oauth_token_missing: OpenProject 無法測試與 Nextcloud 的用戶級連線，因為沒有當前用戶的令牌(Token)。
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: 找不到團隊資料夾。
-        nc_unexpected_content: 在管理的團隊資料夾中發現意外內容。
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: 設定的應用程式密碼無效。
         not_configured: 連線無法驗證。請先完成設定。
         od_client_cant_delete_folder: 用戶刪除資料夾失敗，請檢查儲存空間的文件設定。

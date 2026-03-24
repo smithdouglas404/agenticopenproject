@@ -107,9 +107,8 @@ ru:
         trial: "Пробная версия"
     jemalloc_allocator: Распределитель памяти Jemalloc
     journal_aggregation:
-      explanation:
-        text: "Личные действия пользователя (например, обновление пакета работ дважды) агрегируются в одно действие, если их разница во времени не больше указанной. Они будут отображаться как одно действие внутри приложения. Это также задерживает уведомление на такое же количество времени, уменьшая количество отправляемых писем и также повлияет на %{webhook_link} задержки."
-        link: "вебхук"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Импорт"
     jira:
@@ -4321,7 +4320,7 @@ ru:
   notice_parent_item_not_found: "Родительский элемент не найден."
   notice_project_not_deleted: "Проект удалён не был."
   notice_project_not_found: "Проект не найден."
-  notice_smtp_address_unsafe: "SMTP-адрес %{address} небезопасен. Пожалуйста, добавьте его в список OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Подключение выполнено."
   notice_successful_create: "Создание выполнено."
   notice_successful_delete: "Удаление выполнено."

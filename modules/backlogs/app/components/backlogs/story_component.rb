@@ -32,13 +32,14 @@ module Backlogs
   class StoryComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    attr_reader :story, :sprint, :max_position, :current_user
+    attr_reader :story, :sprint, :project, :max_position, :current_user
 
-    def initialize(story:, sprint:, max_position:, current_user: User.current)
+    def initialize(story:, sprint:, project:, max_position:, current_user: User.current)
       super()
 
       @story = story
       @sprint = sprint
+      @project = project
       @max_position = max_position
       @current_user = current_user
     end
@@ -47,6 +48,10 @@ module Backlogs
 
     def story_points
       story.story_points || 0
+    end
+
+    def draggable?
+      current_user.allowed_in_project?(:manage_sprint_items, project)
     end
   end
 end

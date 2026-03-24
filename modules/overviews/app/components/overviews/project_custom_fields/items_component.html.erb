@@ -5,7 +5,6 @@
         render(
           Overviews::ProjectCustomFields::ItemComponent.new(
             project_custom_field:,
-            project_custom_field_values: attribute_load_service.get_eager_loaded_project_custom_field_values_for(project_custom_field.id),
             project: @project
           )
         )

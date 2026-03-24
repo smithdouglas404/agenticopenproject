@@ -124,38 +124,14 @@ module ApplicationHelper
     Project.project_tree(projects, &)
   end
 
-  def project_nested_ul(projects, &)
-    s = +""
-    if projects.any?
-      ancestors = []
-      Project.project_tree(projects) do |project, _level|
-        if ancestors.empty? || project.is_descendant_of?(ancestors.last)
-          s << "<ul>\n"
-        else
-          ancestors.pop
-          s << "</li>"
-          while ancestors.any? && !project.is_descendant_of?(ancestors.last)
-            ancestors.pop
-            s << "</ul></li>\n"
-          end
-        end
-        s << "<li>"
-        s << yield(project).to_s
-        ancestors << project
-      end
-      s << ("</li></ul>\n" * ancestors.size)
-    end
-    s.html_safe
-  end
-
   def principals_check_box_tags(name, principals)
     labeled_check_box_tags(name, principals,
                            title: :user_status_i18n,
                            class: :user_status_class)
   end
 
-  def labeled_check_box_tags(name, collection, options = {})
-    collection.sort.map do |object|
+  def labeled_check_box_tags(name, collection, options = {}) # rubocop:disable Metrics/AbcSize
+    fields = collection.sort.map do |object|
       id = name.gsub(/[\[\]]+/, "_") + object.id.to_s
 
       object_options = options.inject({}) do |h, (k, v)|
@@ -170,18 +146,30 @@ module ApplicationHelper
           styled_check_box_tag(name, object.id, false, id:) + object.to_s
         end
       end
-    end.join.html_safe
+    end
+
+    safe_join(fields)
   end
 
   def authoring(created, author, options = {})
     label = options[:label] || :label_added_time_by
-    I18n.t(label, author: link_to_user(author), age: time_tag(created)).html_safe
+    # Ensure we pass inputs here to html_escape
+    # which will respect html_safe?
+    author = ERB::Util.html_escape link_to_user(author)
+    age = ERB::Util.html_escape time_tag(created)
+
+    # OG: html_safe is used here with explicitly escaped inputs except for the translation file
+    I18n.t(label, author:, age:).html_safe
   end
 
   def authoring_at(creation_date, author)
     return if author.nil?
 
-    I18n.t(:label_added_by_on, author: link_to_user(author), date: creation_date).html_safe
+    author = ERB::Util.html_escape link_to_user(author)
+    date = ERB::Util.html_escape creation_date
+
+    # OG: html_safe is used here to avoid having to change this reusable key
+    I18n.t(:label_added_by_on, author:, date:).html_safe
   end
 
   def time_tag(time)
@@ -220,7 +208,8 @@ module ApplicationHelper
     formats = capture(Redmine::Views::OtherFormatsBuilder.new(self), &)
     unless formats.nil? || formats.strip.empty?
       content_tag "p", class: "other-formats" do
-        (I18n.t(:label_export_to) + formats).html_safe
+        concat I18n.t(:label_export_to)
+        concat formats
       end
     end
   end
@@ -273,6 +262,12 @@ module ApplicationHelper
     all_languages
       .map { |lang| translate_language(lang) }
       .sort_by(&:first)
+  end
+
+  def blank_select_option
+    content_tag(:option,
+                "--- #{t(:actionview_instancetag_blank_option)} ---",
+                disabled: true)
   end
 
   def theme_options_for_select
@@ -448,7 +443,7 @@ module ApplicationHelper
   # @param [optional, String] content the content of the ROBOTS tag.
   #   defaults to no index, follow, and no archive
   def robot_exclusion_tag(content = "NOINDEX,FOLLOW,NOARCHIVE")
-    "<meta name='ROBOTS' content='#{h(content)}' />".html_safe
+    content_tag(:meta, name: "ROBOTS", content:)
   end
 
   def permitted_params

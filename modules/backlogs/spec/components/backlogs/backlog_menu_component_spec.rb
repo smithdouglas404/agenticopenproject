@@ -37,7 +37,8 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
   let(:project) { create(:project, types: [type_feature, type_task]) }
   let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, effective_date: Date.tomorrow) }
   let(:stories) { [] }
-  let(:backlog) { Backlog.new(sprint:, stories:) }
+  let(:backlog) { Backlog.new(sprint:, stories:, owner_backlog:) }
+  let(:owner_backlog) { true }
   let(:user) { create(:user) }
   let(:permissions) { [] }
 
@@ -46,151 +47,293 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       .to receive(:plugin_openproject_backlogs)
       .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
 
-    # Set up user with specific permissions
-    create(:member,
-           project:,
-           principal: user,
-           roles: [create(:project_role, permissions:)])
-    login_as(user)
+    mock_permissions_for user do |mock|
+      mock.allow_in_project(*permissions, project:)
+    end
   end
 
   def render_component
     render_inline(described_class.new(backlog:, project:, current_user: user))
   end
 
-  describe "permission-based items" do
-    context "with :manage_sprint_items permission" do
-      let(:permissions) { %i[view_sprints manage_sprint_items] }
+  it "renders a stable id on the action menu and stories/tasks item" do
+    render_component
 
-      it "shows Add new story item with compose icon" do
-        render_component
+    expect(page).to have_element(:button, id: /\Abacklog_#{sprint.id}_menu-button\z/)
+    expect(page).to have_element(:ul, id: /\Abacklog_#{sprint.id}_menu-list\z/)
+    expect(page).to have_element(:a, id: /\Asprint_#{sprint.id}_menu_stories_tasks\z/)
+  end
 
-        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
-        expect(page).to have_octicon(:compose)
+  context "for a product owner backlog" do
+    let(:owner_backlog) { true }
+
+    describe "permission-based items" do
+      context "with :add_work_packages and :assign_versions permission" do
+        let(:permissions) { %i[view_sprints add_work_packages assign_versions] }
+
+        it "shows Add new story item with compose icon" do
+          render_component
+
+          expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+          expect(page).to have_octicon(:compose)
+        end
+      end
+
+      context "with :add_work_packages but without :assign_versions permission" do
+        let(:permissions) { %i[view_sprints add_work_packages] }
+
+        it "does not show Add new story item" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+        end
+      end
+
+      context "with :assign_versions but without :add_work_packages permission" do
+        let(:permissions) { %i[view_sprints assign_versions] }
+
+        it "does not show Add new story item" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+        end
+      end
+
+      context "without :assign_versions but with :add_work_packages and :manage_sprint_items permission" do
+        let(:permissions) { %i[view_sprints add_work_packages manage_sprint_items] }
+
+        it "does not show Add new story item" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+        end
+      end
+
+      context "with :create_sprints permission" do
+        let(:permissions) { %i[view_sprints create_sprints] }
+
+        it "shows Properties item with gear icon" do
+          render_component
+
+          expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
+          expect(page).to have_octicon(:gear)
+        end
+
+        it "shows Edit item with pencil icon" do
+          render_component
+
+          expect(page).to have_css("action-menu")
+          expect(page).to have_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
+          expect(page).to have_octicon(:pencil)
+        end
+      end
+
+      context "without :create_sprints permission" do
+        let(:permissions) { [:view_sprints] }
+
+        it "does not show Properties item" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
+        end
+
+        it "does not show Edit item" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
+        end
+      end
+
+      context "with :view_sprints permission" do
+        let(:permissions) { %i[view_sprints] }
+
+        it "does not show Task board item" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.task_board"))
+        end
       end
     end
 
-    context "without :manage_sprint_items permission" do
+    describe "permission independent items" do
       let(:permissions) { [:view_sprints] }
 
-      it "does not show Add new story item" do
+      it "shows Stories/Tasks link" do
         render_component
 
-        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.stories_tasks"))
+      end
+
+      it "shows no Burndown chart link" do
+        render_component
+
+        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
       end
     end
 
-    context "with :create_sprints permission" do
-      let(:permissions) { %i[view_sprints create_sprints] }
+    describe "module-based items" do
+      context "when wiki module is enabled" do
+        let(:permissions) { [:view_sprints] }
+        let(:project) { create(:project, types: [type_feature, type_task], enabled_module_names: %w[backlogs wiki]) }
 
-      it "shows Properties item with gear icon" do
-        render_component
+        it "does not show a Wiki item" do
+          render_component
 
-        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
-        expect(page).to have_octicon(:gear)
-      end
-
-      it "shows Edit item with pencil icon" do
-        render_component
-
-        expect(page).to have_css("action-menu")
-        expect(page).to have_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
-        expect(page).to have_octicon(:pencil)
-      end
-    end
-
-    context "without :create_sprints permission" do
-      let(:permissions) { [:view_sprints] }
-
-      it "does not show Properties item" do
-        render_component
-
-        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
-      end
-
-      it "does not show Edit item" do
-        render_component
-
-        expect(page).to have_no_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
-      end
-    end
-
-    context "with :view_sprints permission" do
-      let(:permissions) { %i[view_sprints] }
-
-      it "shows Task board item" do
-        render_component
-
-        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.task_board"))
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.wiki"))
+        end
       end
     end
   end
 
-  describe "always-visible items" do
-    let(:permissions) { [:view_sprints] }
+  context "for a sprint backlog" do
+    let(:owner_backlog) { false }
 
-    it "renders a stable id on the action menu and stories/tasks item" do
-      render_component
+    describe "permission-based items" do
+      context "with :add_work_packages and :assign_versions permission" do
+        let(:permissions) { %i[view_sprints add_work_packages assign_versions] }
 
-      expect(page).to have_element(:button, id: /\Abacklog_#{sprint.id}_menu-button\z/)
-      expect(page).to have_element(:ul, id: /\Abacklog_#{sprint.id}_menu-list\z/)
-      expect(page).to have_element(:a, id: /\Asprint_#{sprint.id}_menu_stories_tasks\z/)
-    end
+        it "shows Add new story item with compose icon" do
+          render_component
 
-    it "shows Stories/Tasks link" do
-      render_component
+          expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+          expect(page).to have_octicon(:compose)
+        end
+      end
 
-      expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.stories_tasks"))
-    end
+      context "with :add_work_packages but without :assign_versions permission" do
+        let(:permissions) { %i[view_sprints add_work_packages] }
 
-    it "shows Burndown chart link" do
-      render_component
+        it "does not show Add new story item" do
+          render_component
 
-      expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
-    end
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+        end
+      end
 
-    context "when sprint has no burndown (no dates)" do
-      let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: nil, effective_date: nil) }
+      context "with :assign_versions but without :add_work_packages permission" do
+        let(:permissions) { %i[view_sprints assign_versions] }
 
-      it "shows Burndown chart link as disabled" do
-        render_component
+        it "does not show Add new story item" do
+          render_component
 
-        burndown_item = page.find("li", text: I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
-        expect(burndown_item[:class]).to include("ActionListItem--disabled")
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+        end
+      end
+
+      context "without :assign_versions but with :add_work_packages and :manage_sprint_items permission" do
+        let(:permissions) { %i[view_sprints add_work_packages manage_sprint_items] }
+
+        it "does not show Add new story item" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+        end
+      end
+
+      context "with :create_sprints permission" do
+        let(:permissions) { %i[view_sprints create_sprints] }
+
+        it "shows Properties item with gear icon" do
+          render_component
+
+          expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
+          expect(page).to have_octicon(:gear)
+        end
+
+        it "shows Edit item with pencil icon" do
+          render_component
+
+          expect(page).to have_css("action-menu")
+          expect(page).to have_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
+          expect(page).to have_octicon(:pencil)
+        end
+      end
+
+      context "without :create_sprints permission" do
+        let(:permissions) { [:view_sprints] }
+
+        it "does not show Properties item" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.properties"))
+        end
+
+        it "does not show Edit item" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
+        end
+      end
+
+      context "with :view_sprints permission" do
+        let(:permissions) { %i[view_sprints] }
+
+        it "shows Task board item" do
+          render_component
+
+          expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.task_board"))
+        end
       end
     end
 
-    context "when sprint has burndown" do
-      it "shows Burndown chart link as enabled" do
-        render_component
-
-        burndown_item = page.find("li", text: I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
-        expect(burndown_item[:class]).not_to include("ActionListItem--disabled")
-      end
-    end
-  end
-
-  describe "module-based items" do
-    context "when wiki module is enabled" do
+    describe "permission independent items" do
       let(:permissions) { [:view_sprints] }
-      let(:project) { create(:project, types: [type_feature, type_task], enabled_module_names: %w[backlogs wiki]) }
 
-      it "shows Wiki item" do
+      it "shows Stories/Tasks link" do
         render_component
 
-        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.wiki"))
-        expect(page).to have_octicon(:book)
+        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.stories_tasks"))
+      end
+
+      it "shows Burndown chart link" do
+        render_component
+
+        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
+      end
+
+      context "when sprint has no burndown (no dates)" do
+        let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: nil, effective_date: nil) }
+
+        it "shows Burndown chart link as disabled" do
+          render_component
+
+          burndown_item = page.find("li", text: I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
+          expect(burndown_item[:class]).to include("ActionListItem--disabled")
+        end
+      end
+
+      context "when sprint has burndown" do
+        it "shows Burndown chart link as enabled" do
+          render_component
+
+          burndown_item = page.find("li", text: I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
+          expect(burndown_item[:class]).not_to include("ActionListItem--disabled")
+        end
       end
     end
 
-    context "when wiki module is disabled" do
-      let(:permissions) { [:view_sprints] }
-      let(:project) { create(:project, types: [type_feature, type_task], enabled_module_names: %w[backlogs]) }
+    describe "module-based items" do
+      context "when wiki module is enabled" do
+        let(:permissions) { [:view_sprints] }
+        let(:project) { create(:project, types: [type_feature, type_task], enabled_module_names: %w[backlogs wiki]) }
 
-      it "does not show Wiki item" do
-        render_component
+        it "shows Wiki item" do
+          render_component
 
-        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.wiki"))
+          expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.wiki"))
+          expect(page).to have_octicon(:book)
+        end
+      end
+
+      context "when wiki module is disabled" do
+        let(:permissions) { [:view_sprints] }
+        let(:project) { create(:project, types: [type_feature, type_task], enabled_module_names: %w[backlogs]) }
+
+        it "does not show Wiki item" do
+          render_component
+
+          expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.wiki"))
+        end
       end
     end
   end

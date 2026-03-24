@@ -141,7 +141,7 @@ module Meetings
 
         e.created = meeting.created_at.utc
         e.last_modified = meeting.updated_at.utc
-        e.sequence = meeting.lock_version
+        e.sequence = [meeting.lock_version, recurring_meeting.template.lock_version].max
 
         e.recurrence_id = ical_datetime(scheduled_meeting.start_time, timezone: recurring_meeting.time_zone)
         e.dtstart = ical_datetime(meeting.start_time, timezone: recurring_meeting.time_zone)

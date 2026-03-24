@@ -74,17 +74,25 @@ $op-backlogs-header--points-min-width-narrow: 2rem
   container-name: backlogsListsContainer
   container-type: inline-size
 
-.op-backlogs-container
+.op-backlogs-container, .op-sprint-planning-container
   display: flex
   flex-direction: row
   gap: var(--stack-gap-normal)
 
-.op-backlogs-lists
+  // Line that separates left side of sprint planning from right side of sprint planning
+  .op-sprint-planning-lists:first-child
+    border-right: 1px solid var(--borderColor-default)
+    padding-right: var(--stack-gap-normal)
+
+.op-backlogs-lists, .op-sprint-planning-lists
   display: flex
   flex-direction: column
   gap: var(--stack-gap-normal)
   flex: 1 1 100%
   overflow: hidden
+
+.op-sprint-planning-lists
+  padding-top: var(--base-size-16)
 
 //------------------ Header form responsive styling -----------------------
 // Note: Using hardcoded values because Sass doesn't interpolate variables in

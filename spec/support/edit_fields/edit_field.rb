@@ -315,6 +315,8 @@ class EditField
       "op-project-autocompleter"
     when :activity
       "activity-autocompleter"
+    when :sprint
+      "sprint-autocompleter"
     else
       "input"
     end

@@ -47,7 +47,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    if user_allowed?(:manage_sprint_items)
+    if user_allowed?(:add_work_packages) && user_allowed?(:assign_versions)
       menu.with_item(
         id: dom_target(sprint, :menu, :new_story),
         label: t(".action_menu.new_story"),

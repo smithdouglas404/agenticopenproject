@@ -36,12 +36,14 @@ class RbSprintsController < RbApplicationController
                           create
                           refresh_form
                           update_agile_sprint].freeze
+  SPRINT_STATE_ACTIONS = %i[start finish].freeze
 
   skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
+  skip_before_action :authorize, only: SPRINT_STATE_ACTIONS
 
-  before_action :not_authorized_on_feature_flag_inactive,
-                :load_project,
-                only: NEW_SPRINT_ACTIONS
+  before_action :load_project, only: NEW_SPRINT_ACTIONS
+  before_action :authorize_start!, only: :start
+  before_action :authorize_finish!, only: :finish
 
   def new_dialog
     call = Sprints::SetAttributesService.new(
@@ -81,7 +83,7 @@ class RbSprintsController < RbApplicationController
 
     if call.success?
       flash[:notice] = I18n.t(:notice_successful_create)
-      render turbo_stream: turbo_stream.redirect_to(backlogs_project_backlogs_path(@project))
+      render turbo_stream: turbo_stream.redirect_to(sprint_planning_backlogs_project_backlogs_path(@project))
     else
       update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
       respond_with_turbo_streams
@@ -104,6 +106,29 @@ class RbSprintsController < RbApplicationController
     end
 
     respond_with_turbo_streams
+  end
+
+  def start
+    result = start_sprint
+
+    if result.success?
+      @sprint = result.result
+      redirect_to project_work_package_board_path(@project, @sprint.task_board_for(@project)),
+                  notice: I18n.t(:notice_successful_start)
+    else
+      respond_with_start_finish_failure(message: start_finish_failure_message(:start, result.message))
+    end
+  end
+
+  def finish
+    result = finish_sprint
+
+    if result.success?
+      redirect_to backlogs_project_backlogs_path(@project),
+                  notice: I18n.t(:notice_successful_finish)
+    else
+      respond_with_start_finish_failure(message: start_finish_failure_message(:finish, result.message))
+    end
   end
 
   def edit_name
@@ -155,7 +180,7 @@ class RbSprintsController < RbApplicationController
 
   def update_sprint_header_component_via_turbo_stream(sprint:)
     update_via_turbo_stream(
-      component: Backlogs::SprintHeaderComponent.new(sprint:),
+      component: Backlogs::SprintHeaderComponent.new(sprint:, project: @project),
       method: :morph
     )
   end
@@ -172,8 +197,13 @@ class RbSprintsController < RbApplicationController
 
   # Overrides load_sprint_and_project to load the sprint from :id instead of :sprint_id
   def load_sprint_and_project
-    @sprint = Sprint.visible.find(params[:id])
     load_project
+
+    @sprint = if (NEW_SPRINT_ACTIONS + SPRINT_STATE_ACTIONS).include?(action_name.to_sym)
+                Agile::Sprint.for_project(@project).visible.find(params[:id])
+              else
+                Sprint.visible.find(params[:id])
+              end
   end
 
   def sprint_params
@@ -196,7 +226,45 @@ class RbSprintsController < RbApplicationController
     converted_sprint_params
   end
 
-  def not_authorized_on_feature_flag_inactive
-    render_403 unless OpenProject::FeatureDecisions.scrum_projects_active?
+  def start_sprint
+    Sprints::StartService
+      .new(user: current_user, model: @sprint)
+      .call(send_notifications: false)
+  end
+
+  def finish_sprint
+    Sprints::FinishService
+      .new(user: current_user, model: @sprint)
+      .call
+  end
+
+  def respond_with_start_finish_failure(message:)
+    render_error_flash_message_via_turbo_stream(message:)
+
+    respond_with_turbo_streams(status: :unprocessable_entity) do |format|
+      fallback_responses_for(format, alert: message)
+    end
+  end
+
+  def fallback_responses_for(format, **)
+    format.html { redirect_back_or_to(backlogs_project_backlogs_path(@project), **) }
+  end
+
+  def start_finish_failure_message(action, reason)
+    if reason.present?
+      I18n.t(:"notice_unsuccessful_#{action}_with_reason", reason:)
+    else
+      I18n.t(:"notice_unsuccessful_#{action}")
+    end
+  end
+
+  def authorize_start!
+    deny_access unless current_user.allowed_in_project?(:view_sprints, @project) &&
+      Sprints::StartContract.can_start?(user: current_user, sprint: @sprint, project: @project)
+  end
+
+  def authorize_finish!
+    deny_access unless current_user.allowed_in_project?(:view_sprints, @project) &&
+      Sprints::StartContract.can_start_or_finish?(user: current_user, sprint: @sprint)
   end
 end

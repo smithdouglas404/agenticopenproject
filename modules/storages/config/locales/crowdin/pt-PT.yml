@@ -279,6 +279,8 @@ pt-PT:
           drive_contents: Conteúdo da unidade
           files_request: A obter ficheiros da pasta de equipa
           header: Pastas do projeto geridas automaticamente
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: 'Dependência: Pastas de equipa'
           team_folder_contents: Conteúdo da pasta de equipa
           team_folder_presence: A pasta de equipa existe
@@ -322,8 +324,10 @@ pt-PT:
         nc_oauth_request_not_found: O terminal para o utilizador com sessão iniciada não foi encontrado. Consulte os registos do servidor para mais informações.
         nc_oauth_request_unauthorized: O utilizador atual não está autorizado a aceder ao armazenamento de ficheiros remoto. Verifique os registos do servidor para mais informações.
         nc_oauth_token_missing: O OpenProject não pode testar a comunicação de nível de utilizador com o Nextcloud uma vez que o utilizador ainda não associou a sua conta Nextcloud.
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: Não foi possível encontrar a pasta de equipa.
-        nc_unexpected_content: Conteúdo inesperado encontrado na pasta de equipa gerida.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: A palavra-passe da aplicação configurada é inválida.
         not_configured: Não foi possível validar a ligação.Termine, primeiro, a configuração.
         od_client_cant_delete_folder: O cliente está a ter problemas a eliminar pastas. Consulte a documentação de configuração para o seu armazenamento.

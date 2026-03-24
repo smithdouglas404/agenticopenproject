@@ -62,12 +62,6 @@ RSpec.describe "Omniauth authentication" do
     OmniAuth.config.logger = @omniauth_logger
   end
 
-  ##
-  # Returns a given translation up until the first occurrence of a parameter (exclusive).
-  def translation_substring(translation)
-    translation.scan(/(^.*) %\{/).first.first
-  end
-
   describe "existing user sign in" do
     it "redirects to back url" do
       visit account_lost_password_path
@@ -121,7 +115,7 @@ RSpec.describe "Omniauth authentication" do
       visit signout_path
 
       expect(page).to have_content(I18n.t(:notice_logged_out))
-      expect(page).to have_content translation_substring(I18n.t(:instructions_after_logout))
+      expect(page).to have_content "You can sign in again by clicking"
     end
 
     it "sign-in after previous sign-out shows my page" do
@@ -268,7 +262,7 @@ RSpec.describe "Omniauth authentication" do
 
       it_behaves_like "omniauth signin error" do
         let(:login_path) { signin_path }
-        let(:instructions) { translation_substring I18n.t(:instructions_after_error) }
+        let(:instructions) { "You can try to sign in again by clicking" }
       end
     end
   end

@@ -279,6 +279,8 @@ vi:
           drive_contents: Nội dung ổ đĩa
           files_request: Tải xuống các tệp trong thư mục của nhóm
           header: Thư mục dự án được quản lý tự động
+          project_folders_exist: Project folders exist
+          project_folders_linked: Project folders linked
           team_folder_app: 'Phụ thuộc: Thư mục nhóm'
           team_folder_contents: Nội dung thư mục của nhóm
           team_folder_presence: Thư mục nhóm đã tồn tại
@@ -320,8 +322,10 @@ vi:
         nc_oauth_request_not_found: Không tìm thấy điểm cuối để tìm nạp người dùng hiện được kết nối. Vui lòng kiểm tra nhật ký máy chủ để biết thêm thông tin.
         nc_oauth_request_unauthorized: Người dùng hiện tại không được phép truy cập vào bộ lưu trữ tệp từ xa. Vui lòng kiểm tra nhật ký máy chủ để biết thêm thông tin.
         nc_oauth_token_missing: OpenProject không thể kiểm tra giao tiếp ở cấp độ người dùng với Nextcloud vì người dùng chưa liên kết tài khoản Nextcloud của họ.
+        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
         nc_team_folder_not_found: Thư mục nhóm không thể được tìm thấy.
-        nc_unexpected_content: Nội dung không mong đợi được tìm thấy trong thư mục của nhóm được quản lý.
+        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
+        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
         nc_userless_access_denied: Mật khẩu ứng dụng đã định cấu hình không hợp lệ.
         not_configured: Kết nối không thể được xác nhận. Vui lòng hoàn tất cấu hình trước.
         od_client_cant_delete_folder: Máy khách đang gặp sự cố khi xóa các thư mục. Vui lòng kiểm tra tài liệu thiết lập cho bộ nhớ của bạn.

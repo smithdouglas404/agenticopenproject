@@ -56,7 +56,7 @@ RSpec.describe "Tasks on taskboard", :js,
                            view_work_packages
                            edit_work_packages
                            manage_subtasks
-                           manage_sprint_items
+                           assign_versions
                            work_package_assigned))
   end
   let!(:current_user) do

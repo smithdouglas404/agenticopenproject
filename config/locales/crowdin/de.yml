@@ -107,9 +107,8 @@ de:
         trial: "Probezeitraum"
     jemalloc_allocator: Jemalloc Speicher allocator
     journal_aggregation:
-      explanation:
-        text: "Individuelle Aktionen eines Benutzers (z.B. ein Arbeitspaket zweimal aktualisieren) werden zu einer einzigen Aktion zusammengefasst, wenn ihr Altersunterschied kleiner ist als der angegebene Zeitraum. Sie werden als eine einzige Aktion innerhalb der Anwendung angezeigt. Dadurch werden Benachrichtigungen um die gleiche Zeit verzögert, wodurch die Anzahl der gesendeten E-Mails verringert wird. Dies wirkt sich auch auf die Verzögerung von %{webhook_link} aus."
-        link: "Webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
@@ -4202,7 +4201,7 @@ de:
   notice_parent_item_not_found: "Übergeordnetes Element nicht gefunden."
   notice_project_not_deleted: "Das Projekt wurde nicht gelöscht."
   notice_project_not_found: "Projekt nicht gefunden."
-  notice_smtp_address_unsafe: "Die SMTP-Adresse %{address} ist nicht sicher. Bitte fügen Sie sie zu OPENPROJECT_SSRF_PROTECTION_ALLOWLIST hinzu."
+  notice_smtp_address_unsafe_env_hint: "SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable."
   notice_successful_connection: "Verbindung erfolgreich."
   notice_successful_create: "Erfolgreich angelegt."
   notice_successful_delete: "Erfolgreich gelöscht."

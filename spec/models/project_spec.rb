@@ -557,60 +557,6 @@ RSpec.describe Project do
     end
   end
 
-  describe "url identifier" do
-    let(:reserved) do
-      Rails.application.routes.routes
-        .map { |route| route.path.spec.to_s }
-        .filter_map { |path| path[%r{^/projects/(\w+)\(\.:format\)$}, 1] }
-        .uniq
-    end
-
-    it "is set from name" do
-      project = described_class.new(name: "foo")
-
-      project.validate
-
-      expect(project.identifier).to eq("foo")
-    end
-
-    it "is not allowed to clash with projects routing" do
-      expect(reserved).not_to be_empty
-
-      reserved.each do |word|
-        project = described_class.new(name: word)
-
-        project.validate
-
-        expect(project.identifier).not_to eq(word)
-      end
-    end
-
-    # The acts_as_url plugin defines validation callbacks on :create and it is not automatically
-    # called when calling a custom context. However we need the acts_as_url callback to set the
-    # identifier when the validations are called with the :saving_custom_fields context.
-    context "when validating with :saving_custom_fields context" do
-      it "is set from name" do
-        project = described_class.new(name: "foo")
-
-        project.validate(:saving_custom_fields)
-
-        expect(project.identifier).to eq("foo")
-      end
-
-      it "is not allowed to clash with projects routing" do
-        expect(reserved).not_to be_empty
-
-        reserved.each do |word|
-          project = described_class.new(name: word)
-
-          project.validate(:saving_custom_fields)
-
-          expect(project.identifier).not_to eq(word)
-        end
-      end
-    end
-  end
-
   describe "#allowed_parent_workspace_types" do
     {
       project: %i[portfolio program project],
@@ -660,4 +606,5 @@ RSpec.describe Project do
       end
     end
   end
+
 end

@@ -275,6 +275,11 @@ Redmine::MenuManager.map :my_menu do |menu|
             { controller: "/my", action: "account" },
             caption: :label_account,
             icon: "person"
+  menu.push :working_hours,
+            { controller: "/my", action: "working_hours" },
+            caption: :label_schedule_and_availability,
+            icon: "calendar",
+            if: ->(_) { OpenProject::FeatureDecisions.user_working_times_active? }
   menu.push :locale,
             { controller: "/my", action: "locale" },
             caption: :label_locale,
@@ -408,6 +413,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: IssuePriority.model_name.human(count: :other),
             parent: :admin_work_packages
 
+  menu.push :work_packages_identifier,
+            { controller: "/admin/settings/work_packages_identifier", action: :show },
+            if: ->(_) { OpenProject::FeatureDecisions.semantic_work_package_ids_active? && User.current.admin? },
+            caption: :label_identifier,
+            parent: :admin_work_packages
+
   menu.push :progress_tracking,
             { controller: "/admin/settings/progress_tracking", action: :show },
             if: ->(_) { User.current.admin? },
@@ -478,13 +489,13 @@ Redmine::MenuManager.map :admin_menu do |menu|
 
   menu.push :ai,
             { controller: "/admin/mcp_configurations", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            if: ->(_) { User.current.admin? },
             caption: I18n.t("menus.admin.ai"),
             icon: :sparkle
 
   menu.push :mcp_configurations,
             { controller: "/admin/mcp_configurations", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            if: ->(_) { User.current.admin? },
             caption: I18n.t("menus.admin.mcp_configurations"),
             enterprise_feature: "mcp_server",
             parent: :ai

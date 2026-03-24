@@ -28,11 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Agile::Sprints::Scopes::Visible
-  extend ActiveSupport::Concern
+module Agile::Sprints::Scopes
+  module Visible
+    extend ActiveSupport::Concern
 
-  class_methods do
-    # FIXME: replace this stub with a meaningful implementation.
-    def visible = all
+    class_methods do
+      # Returns all sprints the user is allowed to see.
+      # A sprint is visible if the user has the :view_sprints permission
+      # in the project the sprint belongs to.
+      def visible(user = User.current)
+        joins(:project)
+          .merge(Project.allowed_to(user, :view_sprints))
+      end
+    end
   end
 end

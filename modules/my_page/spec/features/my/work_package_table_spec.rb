@@ -110,10 +110,17 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       filters.add_filter_by("Type", "is (OR)", type.name)
       modal.save
 
+      # Wait for the filter save to complete before opening the column configuration,
+      # otherwise the two saves can race and only one change gets persisted.
+      wait_for_network_idle
+
       filter_area.configure_wp_table
       modal.switch_to("Columns")
       columns.assume_opened
       columns.remove "Subject"
+
+      # Wait for the column save to complete and the table to re-render
+      wait_for_network_idle
 
       expect(filter_area.area)
         .to have_css(".id", text: type_work_package.id)

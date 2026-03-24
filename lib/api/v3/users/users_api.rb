@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -88,6 +90,8 @@ module API
 
             mount ::API::V3::Users::UpdateFormAPI
             mount ::API::V3::UserPreferences::PreferencesByUserAPI
+            mount ::API::V3::UserWorkingHours::WorkingHoursByUserAPI
+            mount ::API::V3::UserNonWorkingTimes::NonWorkingTimesByUserAPI
 
             namespace :lock do
               # Authenticate lock transitions
