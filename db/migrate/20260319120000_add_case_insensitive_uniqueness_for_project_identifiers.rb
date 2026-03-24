@@ -50,15 +50,24 @@ class AddCaseInsensitiveUniquenessForProjectIdentifiers < ActiveRecord::Migratio
 
   # Resolves any existing case-colliding identifiers (e.g. "Foo" and "foo") so that
   # the unique LOWER(identifier) index can be created without violation errors.
-  # The oldest project (by id) keeps its identifier; duplicates get a "-N" suffix.
+  # The oldest project (by id) keeps its identifier; duplicates get a "_N" suffix.
+  #
+  # The NOT EXISTS guard skips rows where the suffixed identifier would itself collide.
+  # In practice this is extremely unlikely (requires both case-colliding identifiers
+  # AND a pre-existing "_N" variant). If it occurs, the subsequent index creation
+  # will fail, surfacing the issue for manual resolution.
   def deduplicate_case_colliding_identifiers
     execute <<~SQL.squish
-      UPDATE projects SET identifier = projects.identifier || '-' || counter.rn
+      UPDATE projects SET identifier = projects.identifier || '_' || counter.rn
       FROM (
         SELECT id, row_number() OVER (PARTITION BY LOWER(identifier) ORDER BY id) AS rn
         FROM projects
       ) AS counter
-      WHERE projects.id = counter.id AND counter.rn > 1;
+      WHERE projects.id = counter.id AND counter.rn > 1
+        AND NOT EXISTS (
+          SELECT 1 FROM projects p2
+          WHERE LOWER(p2.identifier) = LOWER(projects.identifier || '_' || counter.rn)
+        );
     SQL
   end
 end
