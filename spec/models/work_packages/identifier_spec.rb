@@ -33,6 +33,13 @@ require "spec_helper"
 RSpec.describe WorkPackages::Identifier do
   let(:project) { create(:project, identifier: "sc") }
 
+  describe "database indexes" do
+    subject { WorkPackage.new }
+
+    it { is_expected.to have_db_index(%i[project_id sequence_number]).unique(true) }
+    it { is_expected.to have_db_index(:identifier).unique(true) }
+  end
+
   describe "FriendlyId configuration" do
     it "uses the identifier column as the FriendlyId slug" do
       config = WorkPackage.friendly_id_config
