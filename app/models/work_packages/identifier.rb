@@ -43,4 +43,26 @@ module WorkPackages::Identifier
     # (not FriendlyId's slug generator), we disable this behaviour entirely.
     def unset_slug_if_invalid; end
   end
+
+  # Allocates a project-scoped sequence number and composes the semantic identifier.
+  # Must be called after the work package is persisted (needs id and project_id).
+  # Uses an advisory lock on the project to serialize concurrent allocations.
+  def allocate_identifier!
+    return unless Setting::WorkPackageIdentifier.alphanumeric?
+    return if identifier.present?
+
+    OpenProject::Mutex.with_advisory_lock_transaction(project, "wp_sequence") do
+      max_seq = HistoricalWorkPackageIdentifier
+                  .where(project_id:)
+                  .maximum(:sequence_number).to_i
+      next_seq = max_seq + 1
+
+      HistoricalWorkPackageIdentifier.create!(
+        project:, work_package: self, sequence_number: next_seq
+      )
+
+      update_columns(sequence_number: next_seq,
+                     identifier: "#{project.identifier}-#{next_seq}")
+    end
+  end
 end

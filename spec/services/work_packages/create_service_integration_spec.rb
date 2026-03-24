@@ -301,4 +301,73 @@ RSpec.describe WorkPackages::CreateService, "integration", type: :model do
       end
     end
   end
+
+  describe "semantic identifier allocation" do
+    context "when in alphanumeric mode",
+            with_settings: { work_packages_identifier: Setting::WorkPackageIdentifier::ALPHANUMERIC } do
+      let(:project) { create(:project, identifier: "SC", types: [type, default_type]) }
+      let(:attributes) { { subject: "First WP", project: } }
+
+      it "allocates a sequence number and identifier" do
+        expect(service_result).to be_success
+
+        wp = new_work_package.reload
+        expect(wp.sequence_number).to eq(1)
+        expect(wp.identifier).to eq("SC-1")
+      end
+
+      it "creates a HistoricalWorkPackageIdentifier record" do
+        expect(service_result).to be_success
+
+        record = HistoricalWorkPackageIdentifier.find_by(work_package: new_work_package)
+        expect(record).to be_present
+        expect(record.project).to eq(project)
+        expect(record.sequence_number).to eq(1)
+      end
+
+      it "allocates sequential numbers across multiple creates" do
+        wp1 = instance.call(subject: "First", project:).result
+        wp2 = instance.call(subject: "Second", project:).result
+        wp3 = instance.call(subject: "Third", project:).result
+
+        expect(wp1.reload.sequence_number).to eq(1)
+        expect(wp2.reload.sequence_number).to eq(2)
+        expect(wp3.reload.sequence_number).to eq(3)
+      end
+
+      it "scopes sequence numbers per project" do
+        other_project = create(:project, identifier: "INFRA", members: { user => role })
+
+        wp1 = instance.call(subject: "In original", project:).result
+        wp2 = instance.call(subject: "In other", project: other_project).result
+
+        expect(wp1.reload.sequence_number).to eq(1)
+        expect(wp2.reload.sequence_number).to eq(1)
+      end
+
+      it "makes the work package findable by its identifier" do
+        expect(service_result).to be_success
+
+        found = WorkPackage.friendly.find(new_work_package.identifier)
+        expect(found).to eq(new_work_package)
+      end
+    end
+
+    context "when in numeric mode",
+            with_settings: { work_packages_identifier: Setting::WorkPackageIdentifier::NUMERIC } do
+      let(:attributes) { { subject: "Numeric WP", project: } }
+
+      it "does not allocate a sequence number or identifier" do
+        expect(service_result).to be_success
+
+        wp = new_work_package.reload
+        expect(wp.sequence_number).to be_nil
+        expect(wp.identifier).to be_nil
+      end
+
+      it "does not create a HistoricalWorkPackageIdentifier record" do
+        expect { service_result }.not_to change(HistoricalWorkPackageIdentifier, :count)
+      end
+    end
+  end
 end
