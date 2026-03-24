@@ -307,6 +307,34 @@ RSpec.describe RbStoriesController do
       end
     end
 
+    context "with Inbox as target" do
+      let!(:existing_inbox_item) { create(:work_package, project:, status:, position: 1) }
+
+      it "responds with success and moves story to Inbox at the given position", :aggregate_failures do
+        put :move, params: {
+                     project_id: project.id,
+                     sprint_id: agile_sprint.id,
+                     id: story_in_agile_sprint.id,
+                     target_id: "inbox",
+                     position: 2
+                   },
+                   format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-inbox-component-#{project.id}"
+        assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{agile_sprint.id}"])
+        assert_select %(turbo-stream[action="replace"][target="backlogs-inbox-component-#{project.id}"][method="morph"])
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(agile_sprint)
+        expect(assigns(:story)).to eq(story_in_agile_sprint)
+        expect(story_in_agile_sprint.reload.sprint).to be_nil
+        expect(story_in_agile_sprint.reload.position).to eq(2)
+      end
+    end
+
     context "when service call fails" do
       let(:other_agile_sprint) { create(:agile_sprint, name: "Agile Sprint 2", project:) }
       let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
