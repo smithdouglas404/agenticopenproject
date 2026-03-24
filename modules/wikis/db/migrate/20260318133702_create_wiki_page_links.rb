@@ -28,35 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
-# or not at all
-require "open_project/plugins"
+class CreateWikiPageLinks < ActiveRecord::Migration[8.0]
+  def change
+    create_table :wiki_page_links do |t|
+      t.belongs_to :linkable, null: false, polymorphic: true
+      t.belongs_to :provider, null: false, foreign_key: { to_table: :wiki_providers, on_delete: :cascade }
+      t.belongs_to :author, null: true, foreign_key: { to_table: :users, on_delete: :nullify }
 
-module OpenProject::Wikis
-  class Engine < ::Rails::Engine
-    engine_name :openproject_wikis
+      t.string :type, null: false
+      t.string :identifier, null: false
 
-    include OpenProject::Plugins::ActsAsOpEngine
+      t.timestamps null: false
 
-    register "openproject-wikis",
-             author_url: "https://openproject.org",
-             requires_openproject: ">= 17.0.0"
-
-    initializer "openproject_wikis.inflections" do
-      ActiveSupport::Inflector.inflections(:en) do |inflect|
-        inflect.acronym "XWiki"
-      end
-
-      OpenProject::Inflector.rule do |basename, abspath|
-        case basename
-        when "xwiki"
-          "XWiki"
-        when /\Axwiki_(.*)\z/
-          "XWiki#{default_inflect($1, abspath)}"
-        end
-      end
+      t.index %i[type linkable_type linkable_id]
     end
-
-    replace_principal_references "Wikis::PageLink" => %i[author_id]
   end
 end

@@ -28,35 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
-# or not at all
-require "open_project/plugins"
+FactoryBot.define do
+  factory :wiki_page_link, class: "Wikis::PageLink" do
+    linkable factory: :work_package
+    provider factory: :internal_wiki_provider
 
-module OpenProject::Wikis
-  class Engine < ::Rails::Engine
-    engine_name :openproject_wikis
+    sequence(:identifier) { |i| "/path/#{i}" }
+  end
 
-    include OpenProject::Plugins::ActsAsOpEngine
+  factory :inline_wiki_page_link, class: "Wikis::InlinePageLink", parent: :wiki_page_link do
+    # ...
+  end
 
-    register "openproject-wikis",
-             author_url: "https://openproject.org",
-             requires_openproject: ">= 17.0.0"
-
-    initializer "openproject_wikis.inflections" do
-      ActiveSupport::Inflector.inflections(:en) do |inflect|
-        inflect.acronym "XWiki"
-      end
-
-      OpenProject::Inflector.rule do |basename, abspath|
-        case basename
-        when "xwiki"
-          "XWiki"
-        when /\Axwiki_(.*)\z/
-          "XWiki#{default_inflect($1, abspath)}"
-        end
-      end
-    end
-
-    replace_principal_references "Wikis::PageLink" => %i[author_id]
+  factory :relation_wiki_page_link, class: "Wikis::RelationPageLink", parent: :wiki_page_link do
+    author factory: :user
   end
 end

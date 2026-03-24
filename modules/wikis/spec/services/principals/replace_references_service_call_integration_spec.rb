@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -43,25 +43,9 @@ RSpec.describe Principals::ReplaceReferencesService, "#call", type: :model do
     described_class.new
   end
 
-  context "with MeetingAgendaItem" do
+  context "with Wikis::RelationPageLink" do
     it_behaves_like "rewritten record",
-                    MeetingAgendaItem,
-                    :author_id
-
-    it_behaves_like "rewritten record",
-                    MeetingAgendaItem,
-                    :presenter_id
-  end
-
-  context "with MeetingOutcome" do
-    it_behaves_like "rewritten record",
-                    MeetingOutcome,
-                    :author_id
-  end
-
-  context "with Journal::MeetingAgendaItemJournal" do
-    it_behaves_like "rewritten record",
-                    Journal::MeetingAgendaItemJournal,
+                    :relation_wiki_page_link,
                     :author_id
   end
 end
