@@ -74,11 +74,15 @@ RSpec.describe PaginationHelper do
     end
 
     it "renders a labelled nav element" do
-      expect(pagination).to have_element "nav", aria: { label: "Pagination navigation" }
+      expect(pagination).to have_element "nav", aria: { label: "Pagination" }
     end
 
-    it "renders 2 presentational lists" do
-      expect(pagination).to have_css "ul.op-pagination--items[role=presentation]", count: 2
+    it "renders the main pagination nav" do
+      expect(pagination).to have_css("nav[aria-label='Pagination']")
+    end
+
+    it "renders the per-page options list" do
+      expect(pagination).to have_css("ul.op-pagination--items[role='presentation']", count: 1)
     end
 
     it "has a next page link" do
@@ -95,8 +99,9 @@ RSpec.describe PaginationHelper do
     it "has links to every page except the current one" do
       pages.excluding(current_page).each do |page|
         path = work_packages_path(page:)
-        expect(pagination).to have_link text: page, exact_text: true, href: path, current: nil do |link|
+        expect(pagination).to have_link(page.to_s, href: path) do |link|
           expect(link["aria-label"]).to eq "Page #{page}"
+          expect(link["aria-current"]).to be_nil
         end
       end
     end
@@ -105,11 +110,9 @@ RSpec.describe PaginationHelper do
       expect(pagination).to have_no_link text: current_page, exact_text: true, current: "page"
     end
 
-    it "has a focusable element for the current page" do
-      expect(pagination).to have_css ".op-pagination--item_current", text: current_page, exact_text: true
-      expect(pagination).to have_element text: current_page, exact_text: true, aria: { current: "page" } do |element|
+    it "renders the current page with aria-current" do
+      expect(pagination).to have_element(aria: { current: "page" }, text: current_page.to_s) do |element|
         expect(element["aria-label"]).to eq "Page #{current_page}"
-        expect(element["tabindex"]).to eq "0"
       end
     end
 
@@ -129,7 +132,10 @@ RSpec.describe PaginationHelper do
 
         href = work_packages_path({ page: i }.merge(params))
 
-        expect(pagination).to have_link text: i, exact_text: true, href:, current: nil
+        expect(pagination).to have_link(i.to_s, href:) do |link|
+          expect(link["aria-label"]).to eq "Page #{i}"
+          expect(link["aria-current"]).to be_nil
+        end
       end
     end
 
@@ -220,7 +226,7 @@ RSpec.describe PaginationHelper do
       end
 
       it "does not render a labelled nav element" do
-        expect(pagination).to have_no_element "nav", aria: { label: "Pagination navigation" }
+        expect(pagination).to have_no_element "nav", aria: { label: "Pagination" }
       end
     end
   end
