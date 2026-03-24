@@ -68,7 +68,7 @@ module OpenProject::Backlogs
 
       project_module :backlogs, dependencies: :work_package_tracking do
         permission :view_sprints,
-                   { rb_master_backlogs: %i[index sprint_planning details],
+                   { rb_master_backlogs: %i[index details],
                      rb_sprints: %i[index show show_name],
                      rb_wikis: :show,
                      rb_stories: %i[index show],
@@ -90,7 +90,7 @@ module OpenProject::Backlogs
                    require: :member
 
         permission :create_sprints,
-                   { rb_sprints: %i[new_dialog refresh_form create edit_name update edit_dialog update_agile_sprint],
+                   { rb_sprints: %i[edit_name update],
                      rb_wikis: %i[edit update],
                      "agile/sprints": %i[new_dialog refresh_form create edit_dialog update] },
                    permissible_on: :project,
@@ -98,15 +98,14 @@ module OpenProject::Backlogs
                    dependencies: :view_sprints
 
         permission :start_complete_sprint,
-                   { rb_sprints: %i[start finish],
-                     "agile/sprints": %i[start finish] },
+                   { "agile/sprints": %i[start finish] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: %i[view_sprints manage_board_views manage_sprint_items],
                    visible: -> { OpenProject::FeatureDecisions.scrum_projects_active? }
 
         permission :manage_sprint_items,
-                   { rb_stories: %i[move move_legacy reorder],
+                   { rb_stories: %i[move reorder],
                      inbox: %i[move reorder move_to_sprint_dialog],
                      "agile/stories": :move },
                    permissible_on: :project,

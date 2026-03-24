@@ -82,7 +82,7 @@ module Backlogs
       {
         draggable_id: story.id,
         draggable_type: "story",
-        drop_url: move_legacy_backlogs_project_sprint_story_path(project, sprint, story)
+        drop_url: move_backlogs_project_sprint_story_path(project, sprint, story)
       }
     end
   end

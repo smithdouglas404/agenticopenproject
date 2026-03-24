@@ -31,27 +31,12 @@
 class RbMasterBacklogsController < RbApplicationController
   include WorkPackages::WithSplitView
 
-  # Without the feature flag, there is only the top level menu item, select it
   menu_item :backlogs_legacy
 
-  # With the feature flag, we have a proper menu, select the correct sub entry
-  current_menu_item [:sprint_planning] do
-    :sprint_planning
-  end
-
-  before_action :not_authorized_on_feature_flag_inactive, only: :sprint_planning
-  before_action :load_backlogs, only: %i[index sprint_planning]
-
-  def sprint_planning
-    if turbo_frame_request?
-      render partial: "sprint_planning_list", layout: false
-    else
-      render :sprint_planning
-    end
-  end
+  before_action :load_backlogs, only: :index
 
   def index
-    return redirect_to action: :sprint_planning if OpenProject::FeatureDecisions.scrum_projects_active?
+    return redirect_to sprint_planning_backlogs_project_backlogs_path(@project) if redirect_to_agile_sprint_planning?
 
     if turbo_frame_request?
       render partial: "list", layout: false
@@ -65,34 +50,22 @@ class RbMasterBacklogsController < RbApplicationController
       render "work_packages/split_view", layout: false
     else
       load_backlogs
-
-      if OpenProject::FeatureDecisions.scrum_projects_active?
-        render :sprint_planning
-      else
-        render :index
-      end
+      render :index
     end
   end
 
   def split_view_base_route
-    if OpenProject::FeatureDecisions.scrum_projects_active?
-      sprint_planning_backlogs_project_backlogs_path(request.query_parameters)
-    else
-      backlogs_project_backlogs_path(request.query_parameters)
-    end
+    backlogs_project_backlogs_path(request.query_parameters)
   end
 
   private
 
   def load_backlogs
     @owner_backlogs = Backlog.owner_backlogs(@project)
+    @sprint_backlogs = Backlog.sprint_backlogs(@project)
+  end
 
-    if OpenProject::FeatureDecisions.scrum_projects_active?
-      @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
-      @active_sprint_ids = @sprints.select(&:active?).map(&:id)
-      @inbox_work_packages = Backlog.inbox_for(project: @project)
-    else
-      @sprint_backlogs = Backlog.sprint_backlogs(@project)
-    end
+  def redirect_to_agile_sprint_planning?
+    OpenProject::FeatureDecisions.scrum_projects_active?
   end
 end
