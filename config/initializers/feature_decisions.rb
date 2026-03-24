@@ -49,10 +49,6 @@ OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
                                   description: "Allows the use of calculated values as a project attribute.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :mcp_server,
-                                  description: "Enables the experimental MCP API.",
-                                  force_active: true
-
 OpenProject::FeatureDecisions.add :minutes_styling_meeting_pdf,
                                   description: "Allow exporting a meeting with FITKO styling. " \
                                                "See #65124 for details."

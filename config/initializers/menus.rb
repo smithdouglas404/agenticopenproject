@@ -489,13 +489,13 @@ Redmine::MenuManager.map :admin_menu do |menu|
 
   menu.push :ai,
             { controller: "/admin/mcp_configurations", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            if: ->(_) { User.current.admin? },
             caption: I18n.t("menus.admin.ai"),
             icon: :sparkle
 
   menu.push :mcp_configurations,
             { controller: "/admin/mcp_configurations", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            if: ->(_) { User.current.admin? },
             caption: I18n.t("menus.admin.mcp_configurations"),
             enterprise_feature: "mcp_server",
             parent: :ai

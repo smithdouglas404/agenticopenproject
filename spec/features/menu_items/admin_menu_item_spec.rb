@@ -31,8 +31,7 @@
 require "spec_helper"
 
 RSpec.describe "Admin menu items",
-               :js,
-               with_flag: { mcp_server: true } do
+               :js do
   shared_let(:user) { create(:admin) }
 
   before do
