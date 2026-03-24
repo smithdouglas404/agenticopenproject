@@ -202,7 +202,7 @@ RSpec.describe "Start and finish sprints",
         planning_page.expect_sprint_finishing_modal
 
         planning_page.expect_sprints_to_choose_for_moving_unfinished_work_packages_to second_sprint
-        planning_page.choose_to_move_unfinished_work_packages second_sprint.name
+        planning_page.choose_to_move_unfinished_work_packages_to_sprint second_sprint.name
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
 

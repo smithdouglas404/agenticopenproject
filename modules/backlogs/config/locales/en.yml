@@ -159,7 +159,7 @@ en:
 
     finish_sprint_dialog_component:
       title: "There are work in progress items"
-      body: "%{message}. What would you like to do?"
+      body: "%{message} What would you like to do?"
       select_sprint_label: "Select sprint"
       button_close_sprint: "Close sprint"
 

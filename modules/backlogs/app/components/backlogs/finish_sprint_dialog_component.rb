@@ -52,7 +52,7 @@ module Backlogs
     end
 
     def body_message
-      t(".body", message: sprint.errors[:base])
+      t(".body", message: sprint.errors[:base].join)
     end
   end
 end

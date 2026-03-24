@@ -227,7 +227,7 @@ module Pages
       end
     end
 
-    def choose_to_move_unfinished_work_packages(sprint_name)
+    def choose_to_move_unfinished_work_packages_to_sprint(sprint_name)
       within sprint_finish_modal_selector do
         select sprint_name, from: "Select sprint"
 
