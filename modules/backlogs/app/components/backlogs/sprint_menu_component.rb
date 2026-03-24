@@ -62,11 +62,19 @@ module Backlogs
     end
 
     def show_start_sprint_action?
-      sprint.in_planning? && ::Sprints::StartContract.can_start?(user: current_user, sprint:, project:)
+      mutable_sprint_in_project? &&
+        sprint.in_planning? &&
+        ::Sprints::StartContract.can_start?(user: current_user, sprint:, project:)
     end
 
     def show_finish_sprint_action?
-      sprint.active? && ::Sprints::StartContract.can_start_or_finish?(user: current_user, sprint:)
+      mutable_sprint_in_project? &&
+        sprint.active? &&
+        ::Sprints::StartContract.can_start_or_finish?(user: current_user, sprint:)
+    end
+
+    def show_edit_sprint_action?
+      mutable_sprint_in_project? && user_allowed?(:create_sprints)
     end
 
     def disable_start_sprint_action?
@@ -97,6 +105,12 @@ module Backlogs
 
     def resolved_active_sprint_ids
       active_sprint_ids || Agile::Sprint.for_project(sprint.project).active.pluck(:id)
+    end
+
+    def mutable_sprint_in_project?
+      return @mutable_sprint_in_project if defined?(@mutable_sprint_in_project)
+
+      @mutable_sprint_in_project = project.sprint_source.exists?(id: sprint.project_id)
     end
   end
 end

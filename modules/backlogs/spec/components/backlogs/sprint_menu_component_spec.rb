@@ -305,5 +305,54 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         end
       end
     end
+
+    context "when the sprint is only visible through work package references" do
+      let(:source_project) { create(:project, types: [type_feature, type_task]) }
+      let(:project) { create(:project, types: [type_feature, type_task]) }
+      let(:sprint) do
+        create(:agile_sprint,
+               project: source_project,
+               name: "Referenced Sprint",
+               start_date: Date.yesterday,
+               finish_date: Date.tomorrow,
+               status: "active")
+      end
+      let(:permissions) do
+        %i[view_sprints view_work_packages show_board_views create_sprints manage_sprint_items start_complete_sprint]
+      end
+
+      before do
+        create(:member,
+               project: source_project,
+               principal: user,
+               roles: [create(:project_role, permissions: %i[view_sprints create_sprints start_complete_sprint])])
+        create(:work_package, project:, type: type_feature, sprint:)
+      end
+
+      it "hides Finish sprint and Edit sprint for an active sprint" do
+        render_component
+
+        expect(page).to have_no_selector(:menuitem, text: "Finish sprint")
+        expect(page).to have_no_selector(:menuitem, text: "Edit sprint")
+      end
+
+      context "when the sprint is in planning" do
+        let(:sprint) do
+          create(:agile_sprint,
+                 project: source_project,
+                 name: "Referenced Sprint",
+                 start_date: Date.yesterday,
+                 finish_date: Date.tomorrow,
+                 status: "in_planning")
+        end
+
+        it "hides Start sprint and Edit sprint" do
+          render_component
+
+          expect(page).to have_no_selector(:menuitem, text: "Start sprint")
+          expect(page).to have_no_selector(:menuitem, text: "Edit sprint")
+        end
+      end
+    end
   end
 end
