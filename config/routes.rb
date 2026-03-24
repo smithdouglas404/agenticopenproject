@@ -803,8 +803,17 @@ Rails.application.routes.draw do
     end
 
     resources :departments,
-              only: %i[index show],
+              only: %i[index show edit update],
               constraints: lambda { |_request| OpenProject::FeatureDecisions.departments_active? } do
+      member do
+        post "/members" => "departments#add_users", as: "members_of"
+        delete "/members:user_id" => "departments#remove_user", as: "member_of"
+        patch "/memberships:membership_id" => "departments#edit_membership", as: "membership_of"
+        put "/memberships:membership_id" => "departments#edit_membership"
+        delete "/memberships:membership_id" => "departments#destroy_membership"
+        post "/memberships" => "departments#create_memberships", as: "memberships_of"
+      end
+
       collection do
         get :edit_organization_name
         get :cancel_edit_organization_name

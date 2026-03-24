@@ -33,9 +33,27 @@ See COPYRIGHT and LICENSE files for more details.
       main.with_row(mb: 3) do
         render(Primer::Beta::BorderBox.new) do |box|
           box.with_header do
-            render(Primer::Beta::Breadcrumbs.new) do |loaf|
-              breadcrumb_items.each do |item|
-                loaf.with_item(href: item[:href] || "#", target: nil) { item[:label] }
+            flex_layout(align_items: :center, justify_content: :space_between) do |header|
+              header.with_column do
+                render(Primer::Beta::Breadcrumbs.new) do |loaf|
+                  breadcrumb_items.each do |item|
+                    loaf.with_item(href: item[:href] || "#", target: nil) { item[:label] }
+                  end
+                end
+              end
+
+              if group
+                header.with_column do
+                  render(
+                    Primer::Beta::IconButton.new(
+                      tag: :a,
+                      href: edit_admin_department_path(group),
+                      icon: :pencil,
+                      scheme: :invisible,
+                      "aria-label": I18n.t(:button_edit)
+                    )
+                  )
+                end
               end
             end
           end
@@ -55,6 +73,11 @@ See COPYRIGHT and LICENSE files for more details.
                       icon: "kebab-horizontal",
                       scheme: :invisible,
                       "aria-label": I18n.t(:label_actions)
+                    )
+                    menu.with_item(
+                      label: I18n.t(:button_edit),
+                      tag: :a,
+                      href: edit_admin_department_path(child)
                     )
                   end
                 end
