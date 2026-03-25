@@ -6,19 +6,22 @@ sidebar_navigation:
 
 # Migrating from JIRA to OpenProject
 
-Last edited on: March 22, 2026.
+Last edited on: March 25, 2026.
 
-The OpenProject team is actively developing an import tool for Jira Data Center. This feature is under active development. We release new features with every release. Information on this page may change as new migration options become available.
+The OpenProject team is actively developing the JIRA Migrator, an import tool for Jira Data Center. This feature is under active development. We release new features with every release. Information on this page may change as new migration options become available.
 
-## Purpose of the migration wizard
+Take a look at this video introducing the JIRA Migrator.
+
+![Video of the JIRA Migrator showing the solution developed by OpenProject on best way to migrate from JIRA to OpenProject](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_Jira_Migrator.mp4)
+
+## Purpose of the JIRA Migrator
 
 With the [end of life for JIRA Data Center](https://www.openproject.org/blog/jira-alternative-end-of-data-center/), many organizations are evaluating [OpenProject as a secure, open-source, and self-hosted alternative for project management and collaboration](https://www.openproject.org/alternative-atlassian-jira-data-center/).
 
 > [!WARNING]
->
 > This feature is under active development. Please only use it in test setups. We inform you about our progress and our recommendations when you can use it in production setups.
 
-## Data covered by the import wizard
+## Data covered by the JIRA Migrator
 
 This import tool is currently in beta and can only import basic data: 
 
@@ -28,7 +31,7 @@ This import tool is currently in beta and can only import basic data:
 - Statuses
 - Types
 
-## Data not covered by the import yet
+## Data not covered by the Migrator yet
 
 - Workflows
 - Custom fields
@@ -37,7 +40,7 @@ This import tool is currently in beta and can only import basic data:
 
 ## Supported Jira versions
 
-- We currently  only support Jira Server/Data Center versions 10.x and 11.x.
+- We currently only support Jira Server/Data Center versions 10.x and 11.x.
 - Cloud  instances are **not** supported at this time.
 
 ## Import preparation
@@ -85,8 +88,6 @@ In the *Get base data* section, click **Check available data** to retrieve metad
 Once fetched, you will see which data can and cannot be imported. Click **Continue**.
 
 ### Configure import
-
-
 
 ![Overview of available and unavailable Jira data for import](openproject_admin_import_jira_import_data_fetched.png)
 
@@ -178,6 +179,6 @@ A confirmation warning will also be shown.
 - Provide training to users.
 - Archive or decommission the legacy systems if applicable.
 
-## Current status and next steps of the import wizard
+## Current status and next steps of the JIRA Migrator
 
 You can follow the progress of OpenProject's [JIRA migration Stream](https://community.openproject.org/projects/jira-migration) and provide feedback.
