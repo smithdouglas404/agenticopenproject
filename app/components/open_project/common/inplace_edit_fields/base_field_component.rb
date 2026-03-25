@@ -77,7 +77,7 @@ module OpenProject
           @custom_field = CustomField.find_by(id: attribute.to_s.sub("custom_field_", "").to_i)
         end
 
-        def qa_field_name
+        def test_selector
           if custom_field?
             "custom-field-#{custom_field.id}"
           end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,14 +32,22 @@ module OpenProject::Backlogs::List
   extend ActiveSupport::Concern
 
   included do
+    # Once the scrum_projects_active feature flag is removed,
+    # add
+    #   scope [:project_id, :sprint_id]
     acts_as_list touch_on_update: false
+
     # acts as list adds a before destroy hook which messes
     # with the parent_id_was value
     skip_callback(:destroy, :before, :reload)
 
     # Reorder list, if work_package is removed from sprint
+    # To be removed once the scrum_projects_active feature flag is removed
     before_update :fix_other_work_package_positions
+    # To be removed once the scrum_projects_active feature flag is removed
     before_update :fix_own_work_package_position
+
+    private
 
     # Used by acts_list to limit the list to a certain subset within
     # the table.
@@ -45,16 +55,48 @@ module OpenProject::Backlogs::List
     # Also sanitize_sql seems to be unavailable in a sensible way. Therefore
     # we're using send to circumvent visibility work_packages.
     def scope_condition
-      self.class.send(:sanitize_sql, ["project_id = ? AND version_id = ? AND type_id IN (?)",
-                                      project_id, version_id, types])
+      if OpenProject::FeatureDecisions.scrum_projects_active?
+        { project_id:, sprint_id: }
+      else
+        self.class.send(:sanitize_sql, ["project_id = ? AND version_id = ? AND type_id IN (?)",
+                                        project_id, version_id, types])
+      end
     end
+
+    # rubocop:disable Style/ArrayIntersect
+    # rubocop:disable Performance/InefficientHashSearch
+    # Copied from acts_as_list.
+    # To be removed once the scrum_projects_active feature flag is removed
+    def scope_changed?
+      return false unless OpenProject::FeatureDecisions.scrum_projects_active?
+
+      (scope_condition.keys & changed.map(&:to_sym)).any?
+    end
+
+    # Copied from acts_as_list
+    # To be removed once the scrum_projects_active feature flag is removed
+    def destroyed_via_scope?
+      return false unless OpenProject::FeatureDecisions.scrum_projects_active?
+      return false unless destroyed_by_association
+
+      foreign_key = destroyed_by_association.foreign_key
+      if foreign_key.is_a?(Array)
+        # Composite foreign key - check if any keys overlap with scope
+        (scope_condition.keys & foreign_key.map(&:to_sym)).any?
+      else
+        # Single foreign key
+        scope_condition.keys.include?(foreign_key.to_sym)
+      end
+    end
+    # rubocop:enable Style/ArrayIntersect
+    # rubocop:enable Performance/InefficientHashSearch
 
     include InstanceMethods
   end
 
   module InstanceMethods
     def move_after(position: nil, prev_id: nil)
-      if acts_as_list_list.none?(:position)
+      if acts_as_list_list.all?(position: nil)
         # If no items have a position, create an order on position
         # silently. This can happen when sorting inside a version for the first
         # time after backlogs was activated and there have already been items
@@ -83,11 +125,13 @@ module OpenProject::Backlogs::List
 
     # Override acts_as_list implementation to avoid it calling save.
     # Calling save would remove the changes/saved_changes information.
-    def set_list_position(new_position, _raise_exception_if_save_fails = false)
+    def set_list_position(new_position, _raise_exception_if_save_fails = false) # rubocop:disable Style/OptionalBooleanParameter
       update_columns(position: new_position)
     end
 
-    def fix_other_work_package_positions
+    def fix_other_work_package_positions # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+      return if OpenProject::FeatureDecisions.scrum_projects_active?
+
       if changes.slice("project_id", "type_id", "version_id").present?
         if changes.slice("project_id", "version_id").blank? and
            Story.types.include?(type_id.to_i) and
@@ -131,7 +175,9 @@ module OpenProject::Backlogs::List
       end
     end
 
-    def fix_own_work_package_position
+    def fix_own_work_package_position # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+      return if OpenProject::FeatureDecisions.scrum_projects_active?
+
       if changes.slice("project_id", "type_id", "version_id").present?
         if changes.slice("project_id", "version_id").blank? and
            Story.types.include?(type_id.to_i) and

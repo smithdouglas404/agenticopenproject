@@ -10,10 +10,10 @@ description: |-
   most recently effective record (i.e., the one with the latest `validFrom` that is not in the
   future) is used for capacity calculations.
 
-  A `UserNonWorkingTime` marks a specific calendar date as a non-working day for a user
+  A `UserNonWorkingTime` marks a date range as non-working for a user
   (e.g., a personal day off or a local holiday not covered by the system-wide non-working days).
-  A user cannot have a personal non-working day on a date that is already a system-wide
-  non-working day.
+  If a personal non-working time overlaps with system-wide non-working days, those days
+  are not counted twice.
 
   ## UserWorkingHours Actions
 
@@ -67,14 +67,15 @@ description: |-
 
   ## UserNonWorkingTime Local Properties
 
-  | Property | Description                                             | Type    | Constraints | Supported operations |
-  | :------: | ------------------------------------------------------- | ------- | ----------- | -------------------- |
-  | id       | The unique identifier of the record                     | Integer | x > 0       | READ                 |
-  | date     | The date of the non-working day (ISO 8601 format)       | Date    | not null    | READ / WRITE         |
+  | Property  | Description                                                                     | Type    | Constraints          | Supported operations |
+  | :-------: | ------------------------------------------------------------------------------- | ------- | -------------------- | -------------------- |
+  | id        | The unique identifier of the record                                             | Integer | x > 0                | READ                 |
+  | startDate | The first date of the non-working time range (ISO 8601 format)                  | Date    | not null             | READ / WRITE         |
+  | endDate   | The last date of the non-working time range (ISO 8601 format)                   | Date    | not null, >= startDate | READ / WRITE       |
 
   ## UserNonWorkingTime Permissions
 
   - **Administrators** can read and manage personal non-working days for any user.
   - Users with the global **`manage_own_working_times`** permission can read and manage their own non-working days.
   - Users with the global **`manage_working_times`** permission can read and manage non-working days for any user.
-  - A personal non-working day cannot be created for a date that is already a system-wide non-working day.
+  - A personal non-working time must not overlap with another non-working time record for the same user.

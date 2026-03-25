@@ -59,10 +59,10 @@ module OpenProject
                       action: "keydown.esc->inplace-edit#request " \
                               "keydown.enter->inplace-edit#submitForm " \
                               "change->inplace-edit#submitForm",
-                      qa_field_name: }
+                      test_selector: }
             }
           else
-            { data: { qa_field_name: } }
+            { data: { test_selector: } }
           end
         end
       end

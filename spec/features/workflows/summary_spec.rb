@@ -47,7 +47,7 @@ RSpec.describe "Workflow summary", :js do
   current_user { admin }
 
   before do
-    visit url_for(controller: "/workflows", action: :show)
+    visit url_for(controller: "/workflows", action: :summarized)
   end
 
   it "displays a simple summary" do
@@ -65,7 +65,7 @@ RSpec.describe "Workflow summary", :js do
     end
 
     expect(page).to have_heading "Workflow"
-    expect(page).to have_current_path(edit_workflows_path)
+    expect(page).to have_current_path(workflows_path)
   end
 
   it "allows navigating to Workflow copy page" do

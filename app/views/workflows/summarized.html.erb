@@ -28,7 +28,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 <% html_title t(:label_administration), t(:label_workflow_plural), t(:label_workflow_summary) -%>
 
-<%= render Workflows::PageHeaderComponent.new(state: :show) %>
+<%= render Workflows::PageHeaderComponent.new(state: :summarized) %>
 
 <% if @workflow_counts.any? %>
 

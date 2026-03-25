@@ -185,8 +185,7 @@ class InplaceEditFieldsController < ApplicationController
   end
 
   def hierarchy_format_custom_field?(custom_field_id)
-    custom_field = @model.available_custom_fields.find { |cf| cf.id.to_s == custom_field_id }
-    custom_field&.field_format.in?(%w[hierarchy weighted_item_list])
+    @model.available_custom_fields.exists?(id: custom_field_id, field_format: %w[hierarchy weighted_item_list])
   end
 
   def component(enforce_edit_mode: false)

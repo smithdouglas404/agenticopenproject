@@ -48,7 +48,7 @@ module OpenProject
 
           @system_arguments[:data] = merge_data(
             @system_arguments,
-            data: { qa_field_name: }
+            data: { test_selector: }
           )
         end
 
@@ -59,6 +59,14 @@ module OpenProject
 
           comment_field_if_enabled(form)
           render_action_buttons if show_action_buttons
+        end
+
+        def test_selector
+          if custom_field?
+            "custom-field-#{custom_field.id}"
+          else
+            "augmented-text-area-#{attribute.to_s.parameterize(separator: '_')}"
+          end
         end
 
         private

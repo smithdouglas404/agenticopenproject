@@ -445,6 +445,56 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
     end
   end
 
+  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+    context "when identifier is not provided" do
+      let(:body) do
+        { name: "Flight Planning Algorithm" }.to_json
+      end
+
+      it "responds with 201 CREATED" do
+        expect(last_response).to have_http_status(:created)
+      end
+
+      it "auto-generates a semantic identifier from the name" do
+        expect(last_response.body)
+          .to be_json_eql("FPA".to_json)
+          .at_path("identifier")
+      end
+    end
+
+    context "when auto-generated identifier already exists" do
+      # The outer before already created a project with identifier "FPA".
+      # A second request with the same name must fail with a conflict.
+      let(:body) do
+        { name: "Flight Planning Algorithm" }.to_json
+      end
+
+      it "responds with 422" do
+        post path, body
+        expect(last_response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context "when an invalid identifier is provided" do
+      let(:body) do
+        {
+          name: "Flight Planning Algorithm",
+          identifier: "invalid-lowercase"
+        }.to_json
+      end
+
+      it "responds with 422" do
+        expect(last_response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "explains the identifier format error" do
+        expect(last_response.body)
+          .to be_json_eql("identifier".to_json)
+          .at_path("_embedded/errors/0/_embedded/details/attribute")
+      end
+    end
+  end
+
   context "without permission to create projects" do
     let(:permissions) { [] }
 

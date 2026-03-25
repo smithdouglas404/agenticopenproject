@@ -62,7 +62,7 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
 
   def render_component(position: 2, max_position: 3)
     story.update!(position:)
-    render_inline(described_class.new(story:, sprint:, max_position:, current_user: user))
+    render_inline(described_class.new(story:, sprint:, project:, max_position:, current_user: user))
   end
 
   describe "standard items" do

@@ -43,6 +43,12 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
       end
     end
 
+    if model.errors[:days].present?
+      form.html_content do
+        render(Primer::Alpha::Banner.new(mb: 3, icon: :stop, scheme: :danger)) { model.errors[:days].join("\n") }
+      end
+    end
+
     form.group(layout: :horizontal, mb: 2) do |group|
       ordered_days.each do |day|
         group.hidden name: "#{day}_hours", value: 0
@@ -125,7 +131,7 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
   end
 
   def day_enabled?(day)
-    model.public_send(day) > 0
+    model.public_send(day).to_i > 0
   end
 
   def day_hours(day)

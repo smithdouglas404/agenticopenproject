@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -31,6 +33,11 @@ require "spec_helper"
 RSpec.describe Boards::Grid do
   let(:instance) { described_class.new }
   let(:project) { build_stubbed(:project) }
+
+  describe "associations" do
+    it { is_expected.to belong_to(:project) }
+    it { is_expected.to belong_to(:linked).inverse_of(:task_boards).optional }
+  end
 
   describe "attributes" do
     it "#project" do

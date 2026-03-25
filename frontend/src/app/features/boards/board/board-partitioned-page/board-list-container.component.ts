@@ -17,7 +17,6 @@ import { HalResourceNotificationService } from 'core-app/features/hal/services/h
 import { BoardListsService } from 'core-app/features/boards/board/board-list/board-lists.service';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { BoardService } from 'core-app/features/boards/board/board.service';
-import { BannersService } from 'core-app/core/enterprise/banners.service';
 import { DragAndDropService } from 'core-app/shared/helpers/drag-and-drop/drag-and-drop.service';
 import { QueryUpdatedService } from 'core-app/features/boards/board/query-updated/query-updated.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
@@ -40,7 +39,6 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import {
   WorkPackageStatesInitializationService,
 } from 'core-app/features/work-packages/components/wp-list/wp-states-initialization.service';
-import { enterpriseDocsUrl } from 'core-app/core/setup/globals/constants.const';
 
 @Component({
   templateUrl: './board-list-container.component.html',
@@ -89,8 +87,6 @@ export class BoardListContainerComponent extends UntilDestroyedMixin implements 
 
   showHiddenListWarning = false;
 
-  available = this.Banner.allowsTo('board_view');
-
   private currentQueryUpdatedMonitoring:Subscription;
 
   constructor(
@@ -105,7 +101,6 @@ readonly I18n:I18nService,
     readonly injector:Injector,
     readonly apiV3Service:ApiV3Service,
     readonly Boards:BoardService,
-    readonly Banner:BannersService,
     readonly boardListCrossSelectionService:BoardListCrossSelectionService,
     readonly wpStatesInitialization:WorkPackageStatesInitializationService,
     readonly Drag:DragAndDropService,
@@ -125,10 +120,6 @@ readonly I18n:I18nService,
       .pipe(
         tap((board) => this.setupQueryUpdatedMonitoring(board)),
       );
-
-    this.board$.subscribe((board) => {
-      this.available = this.Banner.allowsTo('board_view') || board.isFree;
-    });
 
     this.Boards.currentBoard$.next(id);
 

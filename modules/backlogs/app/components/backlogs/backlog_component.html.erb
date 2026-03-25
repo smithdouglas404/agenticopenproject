@@ -56,7 +56,7 @@ See COPYRIGHT and LICENSE files for more details.
            ),
            tabindex: 0
          ) do %>
-        <%= render(Backlogs::StoryComponent.new(story:, sprint:, max_position:)) %>
+        <%= render(Backlogs::StoryComponent.new(story:, project:, sprint:, max_position:)) %>
       <% end %>
     <% end %>
   <% end %>

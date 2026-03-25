@@ -1,0 +1,95 @@
+<%# -- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++# %>
+<%= component_wrapper(tag: "turbo-frame", refresh: :morph) do %>
+  <%=
+    render(Primer::Beta::Subhead.new(hide_border: true)) do |head|
+      head.with_heading(tag: :h3, font_weight: :bold, size: :medium) do
+        concat t(:label_backlog)
+        concat render(Primer::Beta::Counter.new(count: total, scheme: :default, ml: 1))
+      end
+
+      if allow_sprint_creation?(project)
+        # Ugly hack:
+        # This button will not be rendered, but still takes up space to push the left side down a bit.
+        # Remove as soon as the `+ Sprint` button moves from the Subhead into a SubHeader.
+        head.with_actions do
+          render(Primer::Beta::Button.new(tag: :a, visibility: :hidden)) { "spacer" }
+        end
+      end
+    end
+  %>
+
+  <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
+    <% if work_packages.empty? %>
+      <% border_box.with_row(data: { empty_list_item: true }) do %>
+        <%=
+          render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
+            blankslate.with_heading(tag: :h4).with_content(t(".blankslate_title"))
+            blankslate.with_description_content(t(".blankslate_description"))
+          end
+        %>
+      <% end %>
+    <% end %>
+
+    <%= render Backlogs::InboxItemComponent.with_collection(
+          paginate? ? first_page : work_packages,
+          container: border_box,
+          project:,
+          max_position:
+        ) %>
+
+    <% if paginate? %>
+      <% border_box.with_row(
+           id: "inbox-more-row-#{project.id}", scheme: :neutral,
+           classes: "backlogs-inbox-component--show-more-row"
+         ) do %>
+        <%=
+          render(
+            Primer::Beta::Button.new(
+              scheme: :link,
+              tag: :a,
+              size: :large,
+              block: true,
+              align_content: :start,
+              underline: true,
+              href: sprint_planning_backlogs_project_backlogs_path(project, all: 1)
+            )
+          ) { t(".show_more", count: middle_count) }
+        %>
+      <% end %>
+
+      <%= render Backlogs::InboxItemComponent.with_collection(
+            last_page,
+            container: border_box,
+            project:,
+            max_position:
+          ) %>
+    <% end %>
+  <% end %>
+<% end %>

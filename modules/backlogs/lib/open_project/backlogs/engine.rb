@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -76,7 +78,7 @@ module OpenProject::Backlogs
                      rb_tasks: %i[index show],
                      rb_impediments: %i[index show] },
                    permissible_on: :project,
-                   dependencies: :view_work_packages
+                   dependencies: %i[view_work_packages show_board_views]
 
         permission :select_done_statuses,
                    {
@@ -93,14 +95,15 @@ module OpenProject::Backlogs
                    dependencies: :view_sprints
 
         permission :start_complete_sprint,
-                   {},
+                   { rb_sprints: %i[start finish] },
                    permissible_on: :project,
                    require: :member,
-                   dependencies: :view_sprints,
+                   dependencies: %i[view_sprints manage_board_views],
                    visible: -> { OpenProject::FeatureDecisions.scrum_projects_active? }
 
         permission :manage_sprint_items,
-                   { rb_stories: %i[move move_legacy reorder] },
+                   { rb_stories: %i[move move_legacy reorder],
+                     inbox: %i[move reorder] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
@@ -270,6 +273,7 @@ module OpenProject::Backlogs
 
       ::Queries::Register.register(::Query) do
         filter OpenProject::Backlogs::WorkPackageFilter
+        filter OpenProject::Backlogs::SprintFilter
 
         select OpenProject::Backlogs::QueryBacklogsSelect
       end

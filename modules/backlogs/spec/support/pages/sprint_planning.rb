@@ -80,6 +80,128 @@ module Pages
       page.find_all("#sprint_backlogs_container > section .CollapsibleHeader-title").map(&:text)
     end
 
+    def expect_work_packages_in_sprint_in_order(sprint,
+                                                work_packages: [])
+      raise ArgumentError, "work_packages should not be empty" if work_packages.empty?
+
+      within_sprint(sprint) do
+        selectors = work_packages.map { |wp| work_package_selector(wp) }
+
+        expect(page)
+          .to have_css(selectors.join(" + "))
+      end
+    end
+
+    def drag_work_package(moved, before: nil, into: nil)
+      raise ArgumentError, "You must specify a either before or into" unless before || into || (before && into)
+
+      moved_element = find("#{work_package_selector(moved)} .DragHandle")
+      target_element = if before
+                         find(work_package_selector(before))
+                       else
+                         find(sprint_selector(into))
+                       end
+
+      moved_element.native.drag_to(target_element.native, delay: 0.1)
+    rescue Capybara::Cuprite::ObsoleteNode
+      retry
+    end
+
+    def expect_work_package_not_draggable(work_package)
+      expect(page)
+        .to have_no_css("#{work_package_selector(work_package)} .DragHandle")
+    end
+
+    def expect_inbox_blankslate
+      within_inbox do
+        expect(page).to have_css("h4", text: "Backlog inbox is empty")
+      end
+    end
+
+    def expect_no_inbox_blankslate
+      within_inbox do
+        expect(page).to have_no_css("h4", text: "Backlog inbox is empty")
+      end
+    end
+
+    def expect_inbox_item(work_package)
+      within_inbox do
+        expect(page).to have_css(inbox_item_selector(work_package))
+      end
+    end
+
+    def expect_no_inbox_item(work_package)
+      within_inbox do
+        expect(page).to have_no_css(inbox_item_selector(work_package))
+      end
+    end
+
+    def expect_inbox_items_in_order(*work_packages)
+      within_inbox do
+        selectors = work_packages.map { |wp| inbox_item_selector(wp) }
+        expect(page).to have_css(selectors.join(" + "))
+      end
+    end
+
+    def within_inbox_menu(work_package, &)
+      within(inbox_item_selector(work_package)) do
+        button = find(:button, accessible_name: "Work package actions")
+        button.click
+        within_menu_controlled_by(button, &)
+      end
+      page.send_keys(:escape)
+    end
+
+    def click_in_inbox_menu(work_package, item_name)
+      within_inbox_menu(work_package) do |menu|
+        menu.find(:menuitem, text: item_name).click
+      end
+    end
+
+    def within_sprint_story_menu(story, &)
+      within(work_package_selector(story)) do
+        button = find(:button, accessible_name: "Story actions")
+        button.click
+        within_menu_controlled_by(button, &)
+      end
+      page.send_keys(:escape)
+    end
+
+    def click_in_sprint_story_menu(story, item_name)
+      within_sprint_story_menu(story) do |menu|
+        menu.find(:menuitem, text: item_name).click
+      end
+    end
+
+    def drag_inbox_item_to_sprint(work_package, sprint)
+      moved_element = find("#{inbox_item_selector(work_package)} .DragHandle")
+      target_element = find(sprint_selector(sprint))
+      moved_element.native.drag_to(target_element.native, delay: 0.1)
+    rescue Capybara::Cuprite::ObsoleteNode
+      retry
+    end
+
+    def drag_sprint_item_to_inbox(work_package)
+      moved_element = find("#{work_package_selector(work_package)} .DragHandle")
+      target_element = find("#inbox_#{project.id}")
+      moved_element.native.drag_to(target_element.native, delay: 0.1)
+    rescue Capybara::Cuprite::ObsoleteNode
+      retry
+    end
+
+    def expect_no_sprint_menu(sprint)
+      within_sprint(sprint) do
+        expect(page).to have_no_button(accessible_name: "Sprint actions")
+      end
+    end
+
+    def expect_no_sprint_menu_item(sprint, item_name)
+      within_sprint_menu(sprint) do |_menu|
+        expect(page)
+          .to have_no_selector(:menuitem, text: item_name)
+      end
+    end
+
     def expect_sprint_names_in_order(*sprint_names)
       expect(sprint_names_in_order).to eq(sprint_names)
     end
@@ -155,10 +277,15 @@ module Pages
 
     def within_sprint_menu(backlog, &)
       within_sprint(backlog) do
-        find(:button, accessible_name: "Sprint actions").click
+        button = find(:button, accessible_name: "Sprint actions")
+        button.click
 
-        within(:menu, &)
+        within_menu_controlled_by(button, &)
       end
+    end
+
+    def within_work_package_row(work_package, &)
+      within(work_package_selector(work_package), &)
     end
 
     private
@@ -171,8 +298,12 @@ module Pages
       within(sprint_selector(sprint), &)
     end
 
+    def within_inbox(&)
+      within("#inbox_#{project.id}", &)
+    end
+
     def sprint_selector(sprint)
-      "#agile_sprint_#{sprint.id}"
+      test_selector("sprint-#{sprint.id}")
     end
 
     def backlog_selector(backlog)
@@ -183,14 +314,19 @@ module Pages
       "#story_#{story.id}"
     end
 
-    def work_package_selector(story)
-      "#work_package_#{story.id}"
+    def work_package_selector(work_package)
+      test_selector("work-package-#{work_package.id}")
+    end
+
+    def inbox_item_selector(work_package)
+      "#work_package_#{work_package.id}"
     end
 
     def within_menu_controlled_by(button)
       menu_id = button[:controls] || button["aria-controls"]
+      menu = page.find(:menu, id: menu_id)
 
-      within(:menu, id: menu_id) do
+      within(menu) do
         yield page
       end
     end

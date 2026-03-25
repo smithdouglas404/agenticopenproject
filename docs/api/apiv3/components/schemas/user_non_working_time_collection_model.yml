@@ -16,7 +16,7 @@ allOf:
             allOf:
               - $ref: "./link.yml"
               - description: |-
-                  This collection of non-working day records.
+                  This collection of non-working times records.
                   **Resource**: UserNonWorkingTimeCollectionModel
       _embedded:
         type: object
@@ -26,7 +26,7 @@ allOf:
           elements:
             type: array
             description: |-
-              The array of personal non-working days for the user, ordered by date ascending.
+              The array of personal non-working times for the user, ordered by start date ascending.
             items:
               $ref: "./user_non_working_time_model.yml"
 
