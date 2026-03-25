@@ -50,12 +50,5 @@ class AddWorkPackageSemanticIdentifiers < ActiveRecord::Migration[8.1]
               where: "identifier IS NOT NULL",
               name: :index_work_packages_on_identifier
     end
-
-    # Journal columns for audit trail — auto-captured by the journal system
-    # on every normal save via BaseJournal.journaled_attributes introspection.
-    change_table :work_package_journals, bulk: true do |t|
-      t.bigint :sequence_number
-      t.string :identifier
-    end
   end
 end
