@@ -157,8 +157,6 @@ RSpec.describe "Create", :js do
         end
 
         it "prefilled with 'Sprint 1' if there are no previous sprints" do
-          pending "Currently broken since the blankslate renders without any sprint or version present. " +
-                  "Fix at a later time when backlog items are there #72198"
           planning_page.visit!
 
           planning_page.open_create_sprint_dialog
