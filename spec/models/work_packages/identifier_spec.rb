@@ -174,36 +174,6 @@ RSpec.describe WorkPackages::Identifier do
     end
   end
 
-  describe "has_many :historical_work_package_identifiers" do
-    let!(:work_package) { create(:work_package, project:) }
-
-    it "associates with historical records" do
-      record = HistoricalWorkPackageIdentifier.create!(
-        project:, work_package:, sequence_number: 1
-      )
-
-      expect(work_package.historical_work_package_identifiers).to include(record)
-    end
-
-    it "can have multiple records across different projects (move scenario)" do
-      target_project = create(:project, identifier: "infra")
-
-      rec1 = HistoricalWorkPackageIdentifier.create!(project:, work_package:, sequence_number: 5)
-      rec2 = HistoricalWorkPackageIdentifier.create!(project: target_project, work_package:, sequence_number: 1)
-
-      expect(work_package.historical_work_package_identifiers).to contain_exactly(rec1, rec2)
-    end
-
-    it "destroys historical records when work package is destroyed" do
-      HistoricalWorkPackageIdentifier.create!(
-        project:, work_package:, sequence_number: 1
-      )
-
-      expect { work_package.destroy! }
-        .to change(HistoricalWorkPackageIdentifier, :count).by(-1)
-    end
-  end
-
   describe "unset_slug_if_invalid override" do
     it "does not revert the identifier when validation fails" do
       wp = create(:work_package, project:)

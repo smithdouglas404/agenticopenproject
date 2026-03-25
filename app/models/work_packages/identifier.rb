@@ -36,8 +36,6 @@ module WorkPackages::Identifier
 
     friendly_id :identifier, use: %i[finders history], slug_column: :identifier
 
-    has_many :historical_work_package_identifiers, dependent: :destroy
-
     # FriendlyId::Slugged adds after_validation :unset_slug_if_invalid, which reverts the
     # slug column when validation fails. Since the identifier is managed by the service layer
     # (not FriendlyId's slug generator), we disable this behaviour entirely.
@@ -46,20 +44,22 @@ module WorkPackages::Identifier
 
   # Allocates a project-scoped sequence number and composes the semantic identifier.
   # Must be called after the work package is persisted (needs id and project_id).
-  # Uses an advisory lock on the project to serialize concurrent allocations.
+  # Uses an advisory lock to serialize concurrent allocations on the same project.
   def allocate_identifier!
     return unless Setting::WorkPackageIdentifier.alphanumeric?
     return if identifier.present?
 
     OpenProject::Mutex.with_advisory_lock_transaction(project, "wp_sequence") do
-      max_seq = HistoricalWorkPackageIdentifier
-                  .where(project_id:)
-                  .maximum(:sequence_number).to_i
-      next_seq = max_seq + 1
-
-      HistoricalWorkPackageIdentifier.create!(
-        project:, work_package: self, sequence_number: next_seq
-      )
+      next_seq = OpenProject::SqlSanitization.with_connection do |conn|
+        conn.select_value(
+          OpenProject::SqlSanitization.sanitize(<<~SQL.squish, project_id:)
+            UPDATE projects
+            SET wp_sequence_counter = wp_sequence_counter + 1
+            WHERE id = :project_id
+            RETURNING wp_sequence_counter
+          SQL
+        )
+      end
 
       update_columns(sequence_number: next_seq,
                      identifier: "#{project.identifier}-#{next_seq}")

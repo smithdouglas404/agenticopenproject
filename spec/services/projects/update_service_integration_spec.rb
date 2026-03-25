@@ -146,14 +146,12 @@ RSpec.describe Projects::UpdateService, "integration", type: :model do
       let!(:wp1) do
         wp = create(:work_package, project:)
         wp.update_columns(sequence_number: 1, identifier: "SC-1")
-        HistoricalWorkPackageIdentifier.create!(project:, work_package: wp, sequence_number: 1)
         wp
       end
 
       let!(:wp2) do
         wp = create(:work_package, project:)
         wp.update_columns(sequence_number: 2, identifier: "SC-2")
-        HistoricalWorkPackageIdentifier.create!(project:, work_package: wp, sequence_number: 2)
         wp
       end
 
@@ -187,10 +185,8 @@ RSpec.describe Projects::UpdateService, "integration", type: :model do
         expect(WorkPackage.friendly.find("SCO-1")).to eq(wp1)
       end
 
-      it "does not modify historical_work_package_identifiers records" do
-        expect { service_result }.not_to change {
-          HistoricalWorkPackageIdentifier.where(project:).pluck(:sequence_number).sort
-        }
+      it "does not modify the project's wp_sequence_counter" do
+        expect { service_result }.not_to change { project.reload.wp_sequence_counter }
       end
     end
 

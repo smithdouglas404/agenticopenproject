@@ -316,13 +316,10 @@ RSpec.describe WorkPackages::CreateService, "integration", type: :model do
         expect(wp.identifier).to eq("SC-1")
       end
 
-      it "creates a HistoricalWorkPackageIdentifier record" do
+      it "increments the project's wp_sequence_counter" do
         expect(service_result).to be_success
 
-        record = HistoricalWorkPackageIdentifier.find_by(work_package: new_work_package)
-        expect(record).to be_present
-        expect(record.project).to eq(project)
-        expect(record.sequence_number).to eq(1)
+        expect(project.reload.wp_sequence_counter).to eq(1)
       end
 
       it "allocates sequential numbers across multiple creates" do
@@ -365,8 +362,8 @@ RSpec.describe WorkPackages::CreateService, "integration", type: :model do
         expect(wp.identifier).to be_nil
       end
 
-      it "does not create a HistoricalWorkPackageIdentifier record" do
-        expect { service_result }.not_to change(HistoricalWorkPackageIdentifier, :count)
+      it "does not increment the project's wp_sequence_counter" do
+        expect { service_result }.not_to change { project.reload.wp_sequence_counter }
       end
     end
   end

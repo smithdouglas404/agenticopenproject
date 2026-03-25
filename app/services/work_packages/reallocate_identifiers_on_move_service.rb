@@ -32,9 +32,8 @@
 #
 # For each moved work package with an existing identifier:
 # 1. Records the old identifier in FriendlyId slug history (so it remains resolvable)
-# 2. Links the old HistoricalWorkPackageIdentifier to its slug for auditability
-# 3. Reserves a new sequence number in the target project
-# 4. Updates the work package with the new identifier
+# 2. Allocates a new sequence number from the target project's counter cache
+# 3. Updates the work package with the new identifier
 #
 # All operations run within a single advisory lock on the target project
 # to serialize sequence allocation.
@@ -53,25 +52,14 @@ class WorkPackages::ReallocateIdentifiersOnMoveService
     return if wps_with_identifiers.empty?
 
     OpenProject::Mutex.with_advisory_lock_transaction(target_project, "wp_sequence") do
-      max_seq = HistoricalWorkPackageIdentifier
-                  .where(project_id: target_project.id)
-                  .maximum(:sequence_number).to_i
-
       wps_with_identifiers.each do |work_package|
-        max_seq += 1
-        reallocate_single(work_package, max_seq)
+        record_old_slug(work_package)
+        allocate_new_identifier(work_package)
       end
     end
   end
 
   private
-
-  def reallocate_single(work_package, new_seq)
-    slug = record_old_slug(work_package)
-    link_historical_record_to_slug(work_package, slug)
-    reserve_new_sequence(work_package, new_seq)
-    update_work_package(work_package, new_seq)
-  end
 
   def record_old_slug(work_package)
     FriendlyId::Slug.create!(
@@ -79,23 +67,21 @@ class WorkPackages::ReallocateIdentifiersOnMoveService
     )
   end
 
-  def link_historical_record_to_slug(work_package, slug)
-    HistoricalWorkPackageIdentifier
-      .find_by(work_package_id: work_package.id, project_id: source_project_id,
-               sequence_number: work_package.sequence_number)
-      &.update!(friendly_id_slug: slug)
-  end
+  def allocate_new_identifier(work_package)
+    next_seq = OpenProject::SqlSanitization.with_connection do |conn|
+      conn.select_value(
+        OpenProject::SqlSanitization.sanitize(<<~SQL.squish, project_id: target_project.id)
+          UPDATE projects
+          SET wp_sequence_counter = wp_sequence_counter + 1
+          WHERE id = :project_id
+          RETURNING wp_sequence_counter
+        SQL
+      )
+    end
 
-  def reserve_new_sequence(work_package, new_seq)
-    HistoricalWorkPackageIdentifier.create!(
-      project: target_project, work_package:, sequence_number: new_seq
-    )
-  end
-
-  def update_work_package(work_package, new_seq)
     work_package.update_columns(
-      sequence_number: new_seq,
-      identifier: "#{target_project.identifier}-#{new_seq}"
+      sequence_number: next_seq,
+      identifier: "#{target_project.identifier}-#{next_seq}"
     )
   end
 end

@@ -39,7 +39,6 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
   let(:work_package) do
     create(:work_package, project: target_project).tap do |wp|
       wp.update_columns(sequence_number: 1, identifier: "SRC-1")
-      HistoricalWorkPackageIdentifier.create!(project: source_project, work_package: wp, sequence_number: 1)
     end
   end
 
@@ -51,6 +50,12 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
       work_package.reload
       expect(work_package.identifier).to eq("TGT-1")
       expect(work_package.sequence_number).to eq(1)
+    end
+
+    it "increments the target project's wp_sequence_counter" do
+      service.call([work_package])
+
+      expect(target_project.reload.wp_sequence_counter).to eq(1)
     end
 
     it "records the old identifier in FriendlyId slug history" do
@@ -66,32 +71,8 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
       expect(WorkPackage.friendly.find("TGT-1")).to eq(work_package)
     end
 
-    it "permanently reserves the old sequence in the source project" do
-      service.call([work_package])
-
-      expect(HistoricalWorkPackageIdentifier.where(project: source_project, sequence_number: 1)).to exist
-    end
-
-    it "creates a HistoricalWorkPackageIdentifier in the target project" do
-      service.call([work_package])
-
-      record = HistoricalWorkPackageIdentifier.find_by(project: target_project, work_package:)
-      expect(record).to be_present
-      expect(record.sequence_number).to eq(1)
-    end
-
-    it "links the old historical record to its FriendlyId slug" do
-      service.call([work_package])
-
-      old_record = HistoricalWorkPackageIdentifier.find_by(project: source_project, work_package:)
-      expect(old_record.friendly_id_slug).to be_present
-      expect(old_record.friendly_id_slug.slug).to eq("SRC-1")
-    end
-
-    it "continues from the target project's existing max sequence" do
-      existing_wp = create(:work_package, project: target_project)
-      existing_wp.update_columns(sequence_number: 5, identifier: "TGT-5")
-      HistoricalWorkPackageIdentifier.create!(project: target_project, work_package: existing_wp, sequence_number: 5)
+    it "continues from the target project's existing counter" do
+      target_project.update_column(:wp_sequence_counter, 5)
 
       service.call([work_package])
 
@@ -102,7 +83,6 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
     it "allocates sequential numbers for multiple work packages" do
       wp2 = create(:work_package, project: target_project).tap do |wp|
         wp.update_columns(sequence_number: 2, identifier: "SRC-2")
-        HistoricalWorkPackageIdentifier.create!(project: source_project, work_package: wp, sequence_number: 2)
       end
 
       service.call([work_package, wp2])
@@ -115,7 +95,7 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
       wp_without_id = create(:work_package, project: target_project)
 
       expect { service.call([wp_without_id]) }
-        .not_to change(HistoricalWorkPackageIdentifier.where(project: target_project), :count)
+        .not_to change { target_project.reload.wp_sequence_counter }
     end
   end
 
@@ -130,7 +110,7 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
 
     it "is a no-op" do
       expect { service.call([work_package]) }
-        .not_to change(HistoricalWorkPackageIdentifier.where(project: target_project), :count)
+        .not_to change { target_project.reload.wp_sequence_counter }
 
       expect(work_package.reload.identifier).to be_nil
     end

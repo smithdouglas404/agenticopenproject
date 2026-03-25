@@ -30,6 +30,10 @@
 
 class AddWorkPackageSemanticIdentifiers < ActiveRecord::Migration[8.1]
   def change
+    # Counter cache for O(1) sequence allocation per project.
+    # Monotonically increasing — never resets, even after WP deletion or move.
+    add_column :projects, :wp_sequence_counter, :bigint, default: 0, null: false
+
     # Columns on work_packages for project-scoped semantic identifiers (e.g. "SC-111").
     # - sequence_number: project-scoped auto-incrementing integer
     # - identifier: the composed semantic identifier string, used as FriendlyId slug column
@@ -39,31 +43,19 @@ class AddWorkPackageSemanticIdentifiers < ActiveRecord::Migration[8.1]
 
       t.index %i[project_id sequence_number],
               unique: true,
+              where: "sequence_number IS NOT NULL",
               name: :index_work_packages_on_project_id_and_sequence_number
       t.index :identifier,
               unique: true,
+              where: "identifier IS NOT NULL",
               name: :index_work_packages_on_identifier
     end
 
-    # Permanent record of every (project, sequence_number) assignment.
-    # Survives WP moves between projects — the old row stays, preventing
-    # the source project from ever reusing that sequence number.
-    # The optional FK to friendly_id_slugs links historical slugs back to
-    # their structured roots for auditability.
-    create_table :historical_work_package_identifiers do |t|
-      t.references :project, null: false, foreign_key: true, index: false
-      t.references :work_package, null: false, foreign_key: true, index: false
-      t.bigint :sequence_number, null: false
-      t.references :friendly_id_slug, foreign_key: { to_table: :friendly_id_slugs }, null: true, index: false
-      t.timestamps
+    # Journal columns for audit trail — auto-captured by the journal system
+    # on every normal save via BaseJournal.journaled_attributes introspection.
+    change_table :work_package_journals, bulk: true do |t|
+      t.bigint :sequence_number
+      t.string :identifier
     end
-
-    add_index :historical_work_package_identifiers,
-              %i[project_id sequence_number],
-              unique: true,
-              name: :idx_hwpi_project_sequence
-    add_index :historical_work_package_identifiers,
-              :work_package_id,
-              name: :idx_hwpi_work_package_id
   end
 end

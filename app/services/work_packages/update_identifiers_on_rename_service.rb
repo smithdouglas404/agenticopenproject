@@ -28,20 +28,44 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Permanent record of every (project, sequence_number) assignment for work packages.
+# Updates work package identifiers when a project is renamed.
 #
-# When a work package is created, a row is inserted here to reserve the sequence number.
-# When a work package moves to another project, the old row stays (permanently reserving
-# that sequence number in the source project) and a new row is created for the target project.
+# For each work package with an existing identifier:
+# 1. Records the old identifier in FriendlyId slug history (so it remains resolvable)
+# 2. Bulk-updates all identifiers to use the new project identifier prefix
 #
-# The optional FK to friendly_id_slugs links historical slug strings back to their
-# structured roots (project, work_package, sequence_number) for auditability.
-class HistoricalWorkPackageIdentifier < ApplicationRecord
-  belongs_to :project
-  belongs_to :work_package
-  belongs_to :friendly_id_slug, class_name: "FriendlyId::Slug", optional: true
+# Uses 2 SQL statements regardless of work package count.
+class WorkPackages::UpdateIdentifiersOnRenameService
+  attr_reader :project
 
-  validates :sequence_number, presence: true,
-                              numericality: { only_integer: true, greater_than: 0 },
-                              uniqueness: { scope: :project_id }
+  def initialize(project:)
+    @project = project
+  end
+
+  def call
+    return unless Setting::WorkPackageIdentifier.alphanumeric?
+
+    wp_data = project.work_packages.where.not(identifier: nil).pluck(:id, :identifier)
+    return if wp_data.empty?
+
+    bulk_update_identifiers
+    record_old_identifiers_in_slug_history(wp_data)
+  end
+
+  private
+
+  def bulk_update_identifiers
+    project.work_packages.where.not(sequence_number: nil).update_all(
+      ["identifier = ? || '-' || CAST(sequence_number AS text)", project.identifier]
+    )
+  end
+
+  def record_old_identifiers_in_slug_history(wp_data)
+    now = Time.current
+    FriendlyId::Slug.insert_all(
+      wp_data.map do |wp_id, old_id|
+        { sluggable_type: "WorkPackage", sluggable_id: wp_id, slug: old_id, created_at: now }
+      end
+    )
+  end
 end

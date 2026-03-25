@@ -424,7 +424,6 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
         let(:work_package) do
           create(:work_package, project: source_project).tap do |wp|
             wp.update_columns(sequence_number: 1, identifier: "SRC-1")
-            HistoricalWorkPackageIdentifier.create!(project: source_project, work_package: wp, sequence_number: 1)
           end
         end
         let(:instance) { described_class.new(user:, model: work_package) }
@@ -455,32 +454,14 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
           expect(WorkPackage.friendly.find("TGT-1")).to eq(work_package)
         end
 
-        it "permanently reserves the old sequence in the source project" do
+        it "increments the target project's wp_sequence_counter" do
           subject
 
-          expect(HistoricalWorkPackageIdentifier.where(project_id: source_project.id, sequence_number: 1)).to exist
+          expect(target_project.reload.wp_sequence_counter).to eq(1)
         end
 
-        it "creates a new HistoricalWorkPackageIdentifier in the target project" do
-          subject
-
-          record = HistoricalWorkPackageIdentifier.find_by(project: target_project, work_package:)
-          expect(record).to be_present
-          expect(record.sequence_number).to eq(1)
-        end
-
-        it "links the old historical record to its FriendlyId slug" do
-          subject
-
-          old_record = HistoricalWorkPackageIdentifier.find_by(project: source_project, work_package:)
-          expect(old_record.friendly_id_slug).to be_present
-          expect(old_record.friendly_id_slug.slug).to eq("SRC-1")
-        end
-
-        it "continues sequence numbering from target project's existing max" do
-          existing_wp = create(:work_package, project: target_project)
-          existing_wp.update_columns(sequence_number: 5, identifier: "TGT-5")
-          HistoricalWorkPackageIdentifier.create!(project: target_project, work_package: existing_wp, sequence_number: 5)
+        it "continues sequence numbering from target project's existing counter" do
+          target_project.update_column(:wp_sequence_counter, 5)
 
           expect(subject).to be_success
           expect(work_package.reload.sequence_number).to eq(6)
@@ -491,7 +472,6 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
           let(:child_wp) do
             create(:work_package, project: source_project, parent: work_package).tap do |wp|
               wp.update_columns(sequence_number: 2, identifier: "SRC-2")
-              HistoricalWorkPackageIdentifier.create!(project: source_project, work_package: wp, sequence_number: 2)
             end
           end
 

@@ -1957,11 +1957,6 @@ en:
         watcher: "Watcher"
         identifier: "Identifier"
         sequence_number: "Sequence number"
-      historical_work_package_identifier:
-        project: "Project"
-        work_package: "Work package"
-        sequence_number: "Sequence number"
-        friendly_id_slug: "Slug"
 
     errors:
       messages:
