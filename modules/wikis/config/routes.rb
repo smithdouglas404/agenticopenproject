@@ -28,44 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
-# or not at all
-require "open_project/plugins"
-
-module OpenProject::Wikis
-  class Engine < ::Rails::Engine
-    engine_name :openproject_wikis
-
-    include OpenProject::Plugins::ActsAsOpEngine
-
-    register "openproject-wikis",
-             author_url: "https://openproject.org" do
-               menu :work_package_split_view,
-                    :wikis,
-                    { tab: :wikis },
-                    skip_permissions_check: true,
-                    after: :relations,
-                    if: ->(_project) {
-                      # TODO: only display if there are wiki providers available
-                      OpenProject::FeatureDecisions.wiki_enhancements_active?
-                    }
-             end
-
-    initializer "openproject_wikis.inflections" do
-      ActiveSupport::Inflector.inflections(:en) do |inflect|
-        inflect.acronym "XWiki"
-      end
-
-      OpenProject::Inflector.rule do |basename, abspath|
-        case basename
-        when "xwiki"
-          "XWiki"
-        when /\Axwiki_(.*)\z/
-          "XWiki#{default_inflect($1, abspath)}"
+Rails.application.routes.draw do
+  resources :projects, only: %i[] do
+    resources :work_packages, only: %i[] do
+      resources :wikis, only: %i[] do
+        collection do
+          resources :tab, only: %i[index], controller: "work_package_wikis_tab", as: "wikis_tab"
         end
       end
     end
-
-    replace_principal_references "Wikis::PageLink" => %i[author_id]
   end
 end
