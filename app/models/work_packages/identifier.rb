@@ -36,6 +36,11 @@ module WorkPackages::Identifier
 
     friendly_id :identifier, use: %i[finders history], slug_column: :identifier
 
+    # Replace FriendlyId::History::FinderMethods with our ghost-aware version
+    # so that ghost identifiers (old project prefix + newer sequence) resolve.
+    friendly_id_config.finder_methods = WorkPackages::Identifier::GhostFinder
+    FriendlyId::Finders.setup(self)
+
     after_create :allocate_identifier!, if: -> { Setting::WorkPackageIdentifier.alphanumeric? && identifier.blank? }
 
     # FriendlyId::Slugged adds after_validation :unset_slug_if_invalid, which reverts the
