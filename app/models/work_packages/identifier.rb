@@ -36,19 +36,19 @@ module WorkPackages::Identifier
 
     friendly_id :identifier, use: %i[finders history], slug_column: :identifier
 
+    after_create :allocate_identifier!, if: -> { Setting::WorkPackageIdentifier.alphanumeric? && identifier.blank? }
+
     # FriendlyId::Slugged adds after_validation :unset_slug_if_invalid, which reverts the
     # slug column when validation fails. Since the identifier is managed by the service layer
     # (not FriendlyId's slug generator), we disable this behaviour entirely.
     def unset_slug_if_invalid; end
   end
 
+  private
+
   # Allocates a project-scoped sequence number and composes the semantic identifier.
-  # Must be called after the work package is persisted (needs id and project_id).
   # Uses an advisory lock to serialize concurrent allocations on the same project.
   def allocate_identifier!
-    return unless Setting::WorkPackageIdentifier.alphanumeric?
-    return if identifier.present?
-
     OpenProject::Mutex.with_advisory_lock_transaction(project, "wp_sequence") do
       next_seq = OpenProject::SqlSanitization.with_connection do |conn|
         conn.select_value(

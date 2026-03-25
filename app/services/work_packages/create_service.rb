@@ -61,7 +61,6 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
       # Avoid running validations again as we might be in a project copy scenario.
       work_package.attachments = work_package.attachments_replacements if work_package.attachments_replacements
       work_package.save(validate: false)
-      work_package.allocate_identifier!
 
       apply_patterns(work_package)
 
