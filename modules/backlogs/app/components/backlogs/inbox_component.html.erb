@@ -49,7 +49,7 @@ See COPYRIGHT and LICENSE files for more details.
     <% if work_packages.empty? %>
       <% border_box.with_row(data: { empty_list_item: true }) do %>
         <%=
-          render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
+          render Primer::Beta::Blankslate.new(spacious: true, role: "status", aria: { live: "polite" }) do |blankslate|
             blankslate.with_heading(tag: :h4).with_content(t(".blankslate_title"))
             blankslate.with_description_content(t(".blankslate_description"))
           end
