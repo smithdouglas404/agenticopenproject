@@ -12,13 +12,7 @@
 
         general_info_row.with_row(mb: 3) do
           render(Primer::Beta::Text.new(test_selector: "wiki-provider-configuration-instructions")) do
-            I18n.t("wikis.admin.wiki_providers.xwiki_instance_description_html",
-                  app_link: render(Primer::Beta::Link.new(
-                    href: ::OpenProject::Static::Links.url_for(:wiki_docs, :xwiki_app),
-                    target: "_blank",
-                    underline: true
-                  ) { I18n.t("wikis.admin.wiki_providers.xwiki_app_link_text") })
-            ).html_safe
+            I18n.t("wikis.admin.wiki_providers.xwiki_instance_description")
           end
         end
 

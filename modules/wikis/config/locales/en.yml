@@ -38,8 +38,7 @@ en:
         name_caption: Give your storage a name so that users can differentiate between multiple wiki platforms.
         url_caption: Please add the host address of your wiki platform including the https://. It should not be longer than 255 characters.
         xwiki_instance: XWiki Instance
-        xwiki_instance_description_html: Please make sure you have administration privileges in your XWiki instance and the %{app_link} is installed before doing the setup.
-        xwiki_app_link_text: application "OpenProject Integration"
+        xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
         new_platform_html: Read our documentation on [setting up an XWiki integration](docs_url) for more information.
         sections:
           basic_details: Basic details
