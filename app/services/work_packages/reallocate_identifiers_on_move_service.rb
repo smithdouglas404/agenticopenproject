@@ -30,10 +30,13 @@
 
 # Reallocates semantic identifiers when work packages move between projects.
 #
-# For each moved work package with an existing identifier:
-# 1. Records the old identifier in FriendlyId slug history (so it remains resolvable)
-# 2. Allocates a new sequence number from the target project's counter cache
-# 3. Updates the work package with the new identifier
+# Uses 3 bulk SQL statements (regardless of work package count):
+#   1. Reserves a block of sequence numbers from the target project's counter cache
+#   2. Records old identifiers in FriendlyId slug history (so they remain resolvable)
+#   3. Bulk-updates all work packages with new identifiers in a single CTE-based UPDATE
+#
+# Old identifiers are recorded manually because bulk SQL bypasses ActiveRecord
+# callbacks, so FriendlyId's automatic slug history tracking does not fire.
 #
 # All operations run within a single advisory lock on the target project
 # to serialize sequence allocation.
@@ -47,31 +50,63 @@ class WorkPackages::ReallocateIdentifiersOnMoveService
   def call(moved_work_packages)
     return unless Setting::WorkPackageIdentifier.alphanumeric?
 
-    wps_with_identifiers = moved_work_packages.select { |work_package| work_package.identifier.present? }
-    return if wps_with_identifiers.empty?
+    wp_data = moved_work_packages
+                .select { |wp| wp.identifier.present? }
+                .map { |wp| [wp.id, wp.identifier] }
+    return if wp_data.empty?
 
     OpenProject::Mutex.with_advisory_lock_transaction(target_project, "wp_sequence") do
-      wps_with_identifiers.each do |work_package|
-        record_old_slug(work_package)
-        allocate_new_identifier(work_package)
-      end
+      base_seq = reserve_sequence_block!(wp_data.size)
+      record_old_slugs(wp_data)
+      bulk_update_identifiers(wp_data.map(&:first), base_seq)
     end
   end
 
   private
 
-  def record_old_slug(work_package)
-    FriendlyId::Slug.create!(
-      slug: work_package.identifier, sluggable_type: "WorkPackage", sluggable_id: work_package.id
+  def reserve_sequence_block!(count)
+    final_seq = connection.select_value(<<~SQL.squish)
+      UPDATE projects
+      SET wp_sequence_counter = wp_sequence_counter + #{count}
+      WHERE id = #{target_project.id}
+      RETURNING wp_sequence_counter
+    SQL
+
+    final_seq - count
+  end
+
+  def record_old_slugs(wp_data)
+    now = Time.current
+    FriendlyId::Slug.insert_all(
+      wp_data.map do |wp_id, old_identifier|
+        { sluggable_type: WorkPackage.name, sluggable_id: wp_id, slug: old_identifier, scope: nil, created_at: now }
+      end,
+      unique_by: %i[slug sluggable_type scope]
     )
   end
 
-  def allocate_new_identifier(work_package)
-    next_seq = target_project.increment_wp_sequence!
+  # Assigns sequential identifiers to moved work packages in a single SQL statement.
+  #
+  # Uses a CTE with unnest(...) WITH ORDINALITY to expand the wp_ids array into
+  # (id, position) pairs, preserving input order. Each work package gets:
+  #   sequence_number = base_seq + position
+  #   identifier      = "PREFIX-{sequence_number}"
+  def bulk_update_identifiers(wp_ids, base_seq)
+    ids_array = "{#{wp_ids.map { |id| Integer(id) }.join(',')}}"
+    prefix = connection.quote(target_project.identifier)
 
-    work_package.update_columns(
-      sequence_number: next_seq,
-      identifier: "#{target_project.identifier}-#{next_seq}"
-    )
+    connection.execute(<<~SQL.squish)
+      WITH numbered AS (
+        SELECT id, ordinality AS rn
+        FROM unnest(#{connection.quote(ids_array)}::bigint[]) WITH ORDINALITY AS t(id, ordinality)
+      )
+      UPDATE work_packages
+      SET sequence_number = #{base_seq} + numbered.rn,
+          identifier = #{prefix} || '-' || CAST((#{base_seq} + numbered.rn) AS text)
+      FROM numbered
+      WHERE work_packages.id = numbered.id
+    SQL
   end
+
+  delegate :connection, to: OpenProject::SqlSanitization, private: true
 end
