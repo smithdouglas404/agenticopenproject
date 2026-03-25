@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackages::Identifier::GhostFinder do
+RSpec.describe WorkPackages::Identifier::FinderMethods do
   let(:project) { create(:project, identifier: "sc") }
 
   let!(:work_package) do

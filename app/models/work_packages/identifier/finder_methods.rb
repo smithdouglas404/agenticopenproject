@@ -39,7 +39,7 @@
 #   2. Slug history match (via FriendlyId::History)
 #   3. Ghost resolution: parse prefix + sequence, resolve prefix to project
 #      (via Project's own FriendlyId history), find WP by sequence_number
-module WorkPackages::Identifier::GhostFinder
+module WorkPackages::Identifier::FinderMethods
   include FriendlyId::History::FinderMethods
 
   def exists_by_friendly_id?(id)
