@@ -100,27 +100,6 @@ function findInlineChip(editor:AnyEditor, instanceId:string):FoundInlineBlock | 
   return found;
 }
 
-function findBlockWpCard(editor:AnyEditor, wpid:number): { blockId:string } | null {
-  let found:{ blockId:string } | null = null;
-
-  editor.forEachBlock((block) => {
-    if (found) return false;
-
-    const props = block.props as Record<string, unknown>;
-    if (
-      block.type === 'openProjectWorkPackage' &&
-      Number(props['wpid']) === wpid
-    ) {
-      found = { blockId:block.id };
-      return false;
-    }
-
-    return true;
-  });
-
-  return found;
-}
-
 // The updater returns the updated node, or null to remove it.
 // Returns found so the caller can use it without a second traversal.
 function updateInlineChip(
