@@ -49,6 +49,10 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
       end
     end
 
+    form.html_content do
+      content_tag(:label, UserWorkingHours.human_attribute_name(:days), class: "FormControl-label")
+    end
+
     form.group(layout: :horizontal, mb: 2) do |group|
       ordered_days.each do |day|
         group.hidden name: "#{day}_hours", value: 0
