@@ -82,10 +82,10 @@ RSpec.describe Wikis::Admin::WikiProvidersController do
     let(:invalid_params) { { wikis_xwiki_provider: { name: "", url: "https://xwiki.example.com" } } }
 
     context "with valid params" do
-      it "creates a provider and redirects to index" do
+      it "creates a provider and redirects to edit" do
         expect { post :create, params: valid_params }
           .to change(Wikis::XWikiProvider, :count).by(1)
-        expect(response).to redirect_to(admin_settings_wiki_providers_path)
+        expect(response).to redirect_to(edit_admin_settings_wiki_provider_path(Wikis::XWikiProvider.last))
         expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
       end
     end
@@ -121,6 +121,27 @@ RSpec.describe Wikis::Admin::WikiProvidersController do
         .to change(Wikis::XWikiProvider, :count).by(-1)
       expect(response).to redirect_to(admin_settings_wiki_providers_path)
       expect(flash[:notice]).to eq(I18n.t(:notice_successful_delete))
+    end
+  end
+
+  describe "GET #confirm_destroy" do
+    let(:wiki_provider) { create(:xwiki_provider) }
+
+    it "responds with a turbo stream dialog" do
+      get :confirm_destroy, params: { id: wiki_provider.id }, format: :turbo_stream
+      expect(response).to be_successful
+      expect(assigns(:wiki_provider)).to eq(wiki_provider)
+    end
+  end
+
+  describe "GET #edit_general_info" do
+    let(:wiki_provider) { create(:xwiki_provider) }
+
+    it "responds with a turbo stream replacing the general info section" do
+      get :edit_general_info, params: { id: wiki_provider.id }, format: :turbo_stream
+      expect(response).to be_successful
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      expect(assigns(:wiki_provider)).to eq(wiki_provider)
     end
   end
 end

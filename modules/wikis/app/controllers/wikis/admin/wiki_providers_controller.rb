@@ -48,6 +48,8 @@ module Wikis
         @wiki_provider = Wikis::XWikiProvider.new
       end
 
+      def edit; end
+
       def create
         @wiki_provider = Wikis::XWikiProvider.new(wiki_provider_params)
 
@@ -58,8 +60,6 @@ module Wikis
           render :new, status: :unprocessable_entity
         end
       end
-
-      def edit; end
 
       def update
         if @wiki_provider.update(wiki_provider_params)

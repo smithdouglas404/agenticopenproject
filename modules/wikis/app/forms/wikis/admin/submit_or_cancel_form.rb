@@ -59,9 +59,17 @@ module Wikis::Admin
         name: :cancel,
         scheme: :default,
         tag: :a,
-        href: url_helpers.admin_settings_wiki_providers_path,
+        href: cancel_path,
         label: I18n.t("button_cancel")
       }
+    end
+
+    def cancel_path
+      if @wiki_provider.persisted?
+        url_helpers.edit_admin_settings_wiki_provider_path(@wiki_provider)
+      else
+        url_helpers.admin_settings_wiki_providers_path
+      end
     end
   end
 end

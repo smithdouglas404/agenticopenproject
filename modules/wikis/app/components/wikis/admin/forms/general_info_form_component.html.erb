@@ -14,7 +14,7 @@
           render(Primer::Beta::Text.new(test_selector: "wiki-provider-configuration-instructions")) do
             I18n.t("wikis.admin.wiki_providers.xwiki_instance_description_html",
                   app_link: render(Primer::Beta::Link.new(
-                    href: "https://extensions.xwiki.org/xwiki/bin/view/Extension/OpenProject%20Integration%20Application/",
+                    href: ::OpenProject::Static::Links.url_for(:wiki_docs, :xwiki_app),
                     target: "_blank",
                     underline: true
                   ) { I18n.t("wikis.admin.wiki_providers.xwiki_app_link_text") })
