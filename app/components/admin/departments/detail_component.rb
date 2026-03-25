@@ -29,15 +29,56 @@
 #++
 
 module Admin
-  module Groups
-    class OrganizationNameComponent < ApplicationComponent
+  module Departments
+    class DetailComponent < ApplicationComponent
       include ApplicationHelper
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
-      def initialize
+      attr_reader :group, :ancestors, :child_groups
+
+      def initialize(group:, ancestors: [], child_groups: [])
         super(nil)
+        @group = group
+        @ancestors = ancestors
+        @child_groups = child_groups
       end
+
+      def breadcrumb_items
+        items = []
+
+        if group
+          items << { label: organization_name, href: admin_departments_path }
+          ancestors.each do |ancestor|
+            items << { label: ancestor.name, href: admin_department_path(ancestor) }
+          end
+          items << { label: group.name }
+        else
+          items << { label: organization_name }
+        end
+
+        items
+      end
+
+      def users
+        return [] unless group
+
+        @users ||= group.users
+      end
+
+      def show_users?
+        group.present? && (users.any? || child_groups.any?)
+      end
+
+      def show_global_empty_state?
+        group.blank? && child_groups.empty?
+      end
+
+      def show_department_empty_state?
+        group.present? && child_groups.empty? && users.empty?
+      end
+
+      private
 
       def organization_name
         Setting.organization_name.presence || I18n.t("setting_organization_name")

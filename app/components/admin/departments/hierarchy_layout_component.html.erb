@@ -34,7 +34,7 @@ See COPYRIGHT and LICENSE files for more details.
     render(Primer::Alpha::Layout.new(stacking_breakpoint: :md, overflow: :hidden, h: :full, classes: "admin-groups-tree-page")) do |content|
       content.with_main(overflow: :auto) do
         render(
-          Admin::Groups::GroupDetailComponent.new(
+          Admin::Departments::DetailComponent.new(
             group: active_group,
             ancestors: ancestors_for(active_group),
             child_groups: children_for(active_group&.id)
@@ -45,7 +45,7 @@ See COPYRIGHT and LICENSE files for more details.
       content.with_sidebar(row_placement: :start, col_placement: :start, border: true, border_bottom: 0, p: 3, overflow: :auto, classes: "admin-groups-tree-page--sidebar") do
         flex_layout do |sidebar|
           sidebar.with_row(mb: 3) do
-            render(Admin::Groups::OrganizationNameComponent.new)
+            render(Admin::Departments::OrganizationNameComponent.new)
           end
 
           sidebar.with_row do

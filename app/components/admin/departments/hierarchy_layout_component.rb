@@ -29,8 +29,8 @@
 #++
 
 module Admin
-  module Groups
-    class GroupHierarchyLayoutComponent < ApplicationComponent
+  module Departments
+    class HierarchyLayoutComponent < ApplicationComponent
       include ApplicationHelper
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers

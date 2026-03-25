@@ -119,12 +119,12 @@ module Admin
     end
 
     def edit_organization_name
-      replace_via_turbo_stream(component: Admin::Groups::OrganizationNameFormComponent.new)
+      replace_via_turbo_stream(component: Admin::Departments::OrganizationNameFormComponent.new)
       respond_with_turbo_streams
     end
 
     def cancel_edit_organization_name
-      replace_via_turbo_stream(component: Admin::Groups::OrganizationNameComponent.new)
+      replace_via_turbo_stream(component: Admin::Departments::OrganizationNameComponent.new)
       respond_with_turbo_streams
     end
 
@@ -133,7 +133,7 @@ module Admin
         .new(user: current_user)
         .call(organization_name: params[:organization_name])
 
-      replace_via_turbo_stream(component: Admin::Groups::OrganizationNameComponent.new)
+      replace_via_turbo_stream(component: Admin::Departments::OrganizationNameComponent.new)
       respond_with_turbo_streams
     end
 

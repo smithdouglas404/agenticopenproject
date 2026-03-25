@@ -29,8 +29,8 @@
 #++
 
 module Admin
-  module Groups
-    class OrganizationNameFormComponent < ApplicationComponent
+  module Departments
+    class OrganizationNameComponent < ApplicationComponent
       include ApplicationHelper
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
@@ -39,7 +39,9 @@ module Admin
         super(nil)
       end
 
-      delegate :wrapper_key, to: OrganizationNameComponent
+      def organization_name
+        Setting.organization_name.presence || I18n.t("setting_organization_name")
+      end
     end
   end
 end
