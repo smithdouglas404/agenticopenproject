@@ -152,8 +152,8 @@ RSpec.describe "Edit", :js do
             before { first_sprint.update!(status: "active") }
 
             it "validates required fields are present" do
-              backlogs_page.click_in_sprint_menu(first_sprint, "Edit sprint")
-              backlogs_page.expect_sprint_dialog
+              planning_page.click_in_sprint_menu(first_sprint, "Edit sprint")
+              planning_page.expect_sprint_dialog
 
               within_dialog "Edit sprint" do
                 page.fill_in "Sprint name", with: ""
