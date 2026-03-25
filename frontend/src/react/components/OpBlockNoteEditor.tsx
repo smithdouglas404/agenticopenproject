@@ -63,7 +63,7 @@ export interface OpBlockNoteEditorProps {
 }
 
 const schema = BlockNoteSchema.create().extend({
-  blockSpecs: {
+  blockSpecs:{
     openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
   },
   inlineContentSpecs:{
