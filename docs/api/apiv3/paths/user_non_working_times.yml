@@ -1,7 +1,7 @@
 # /api/v3/users/{id}/non_working_times
 ---
 get:
-  summary: List personal non-working days for a user
+  summary: List personal non-working times for a user
   operationId: list_user_non_working_times
   tags:
     - User Working Times
