@@ -166,3 +166,19 @@ ul.SegmentedControl,
 
 .Box-row:is(.Box-row--draggable)
   padding-left: 0
+
+// Apply the mobile styles as soon as the banner itself is small
+// Styles are copied from the PVC repo
+.op-primer-flash
+  x-banner
+    container-type: inline-size
+    display: block
+
+  .Banner
+    @container (max-width: 543.98px)
+      grid-template-areas: 'visual message close' '. actions actions'
+      grid-template-columns: min-content 1fr min-content
+      grid-template-rows: min-content min-content
+
+    & .Banner-actions
+      margin: var(--base-size-8) 0 0 var(--base-size-8)
