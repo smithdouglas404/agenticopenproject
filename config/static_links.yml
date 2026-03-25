@@ -155,7 +155,7 @@ shortcuts:
   label: homescreen.links.shortcuts
 wiki_docs:
   xwiki_setup:
-    href: https://www.openproject.org/docs/system-admin-guide/integrations/xwiki/
+    href: https://www.openproject.org/docs/system-admin-guide/integrations/
   xwiki_app:
     href: https://extensions.xwiki.org/xwiki/bin/view/Extension/OpenProject%20Integration%20Application/
 storage_docs:
