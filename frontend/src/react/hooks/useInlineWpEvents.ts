@@ -30,61 +30,67 @@
 
 import { useEffect } from 'react';
 import type { BlockNoteEditor, InlineContentFromConfig } from '@blocknote/core';
+import { wpBridge, makeInstanceId } from 'op-blocknote-extensions';
 import type { InlineWpSize } from 'op-blocknote-extensions';
 
-// BlockNote requires all three schema generics (blockSchema, inlineContentSchema,
-// styleSchema) to be passed explicitly. Since this hook is schema-agnostic by design
-// it works with any editor that has inlineWorkPackage registered we use
-// `any` here rather than threading the concrete schema type through as a generic.
+//Uses `any` generics this hook is schema-agnostic by design.
 type AnyEditor = BlockNoteEditor<any, any, any>;
-type AnyInlineNode = InlineContentFromConfig<any, any> & {
-  type:string;
-  props?:Record<string, unknown>;
-};
+type AnyInlineNode = InlineContentFromConfig<any, any>;
 
-interface ResizeEventDetail {
-  instanceId:string;
-  wpid:number;
-  size:InlineWpSize;
+interface InlineWpNode {
+  type:'inlineWorkPackage';
+  props:{
+    wpid:string;
+    // instanceId MUST be globally unique per document
+    instanceId:string;
+    size:InlineWpSize;
+  };
+  content:unknown[];
 }
 
-interface DeleteEventDetail {
-  instanceId:string;
-  wpid:number;
+// Must match InlineWpSize union update both if sizes change
+const VALID_SIZES:Set<InlineWpSize> = new Set(['xxs', 'xs', 's', 'm']);
+
+function isInlineWpNode(node:unknown): node is InlineWpNode {
+  if (typeof node !== 'object' || node === null) return false;
+  const n = node as Record<string, unknown>;
+  if (n['type'] !== 'inlineWorkPackage') return false;
+
+  const props = n['props'];
+  if (typeof props !== 'object' || props === null) return false;
+
+  const p = props as Record<string, unknown>;
+  return (
+    typeof p['instanceId'] === 'string' &&
+    typeof p['wpid'] === 'string' &&
+    typeof p['size'] === 'string' && VALID_SIZES.has(p['size'] as InlineWpSize)
+  );
 }
 
-interface PromoteToBlockDetail {
-  instanceId:string;
+function asInlineNode(node:InlineWpNode):AnyInlineNode {
+  return node as unknown as AnyInlineNode;
 }
 
-interface ConvertToInlineDetail {
-  wpid:number;
-  size:InlineWpSize;
+interface FoundInlineBlock {
+  blockId:string;
+  content:AnyInlineNode[];
+  chip:InlineWpNode;
 }
 
-
-// Walks all blocks (including nested) and returns the first one that contains
-// an `inlineWorkPackage` chip matching `instanceId`.
-// Also surfaces the chip's `wpid` string to avoid a second traversal.
-
-function findBlockByInstanceId(
-  editor:AnyEditor,
-  instanceId:string
-): { blockId:string; content:AnyInlineNode[]; wpid:string | undefined } | null {
-  let found: { blockId:string; content:AnyInlineNode[]; wpid:string | undefined } | null = null;
+function findInlineChip(editor:AnyEditor, instanceId:string):FoundInlineBlock | null {
+  let found: FoundInlineBlock | null = null;
 
   editor.forEachBlock((block) => {
     if (found) return false;
 
     const content = (block.content ?? []) as AnyInlineNode[];
     const chip = content.find(
-      (node) =>
-        node.type === 'inlineWorkPackage' &&
-        node.props?.instanceId === instanceId
+      (node):node is AnyInlineNode & InlineWpNode =>
+        isInlineWpNode(node) && node.props.instanceId === instanceId
     );
 
     if (chip) {
-      found = { blockId:block.id, content, wpid:chip.props?.wpid as string | undefined };
+      found = { blockId:block.id, content, chip };
       return false;
     }
 
@@ -94,24 +100,18 @@ function findBlockByInstanceId(
   return found;
 }
 
-
-// Finds the block-level `openProjectWorkPackage` block whose `wpid` matches.
-// Used when converting a block card to an inline chip.
-
-function findBlockWpBlock(
-  editor:AnyEditor,
-  wpid:number
-): { blockId:string } | null {
+function findBlockWpCard(editor:AnyEditor, wpid:number): { blockId:string } | null {
   let found:{ blockId:string } | null = null;
 
   editor.forEachBlock((block) => {
     if (found) return false;
 
+    const props = block.props as Record<string, unknown>;
     if (
       block.type === 'openProjectWorkPackage' &&
-      (block as any).props?.wpid === wpid
+      Number(props['wpid']) === wpid
     ) {
-      found = { blockId: block.id };
+      found = { blockId:block.id };
       return false;
     }
 
@@ -121,142 +121,123 @@ function findBlockWpBlock(
   return found;
 }
 
-export function useInlineWpEvents(editor:AnyEditor): void {
-  useEffect(() => {
-    // Resize
-    const handleResize = (e:Event):void => {
-      const { instanceId, size } = (e as CustomEvent<ResizeEventDetail>).detail;
+// The updater returns the updated node, or null to remove it.
+// Returns found so the caller can use it without a second traversal.
+function updateInlineChip(
+  editor:AnyEditor,
+  instanceId:string,
+  updater:(chip:InlineWpNode) => InlineWpNode | null
+): FoundInlineBlock | null {
+  const found = findInlineChip(editor, instanceId);
+  if (!found) return null;
 
-      // "M" means promote to a full block card
-      if (size === 'm') {
-        document.dispatchEvent(
-          new CustomEvent('op-inline-wp-promote-to-block', { detail:{ instanceId } })
-        );
-        return;
-      }
+  const updatedContent = found.content.reduce<AnyInlineNode[]>((acc, node) => {
+    if (!isInlineWpNode(node) || node.props.instanceId !== instanceId) {
+      acc.push(node);
+      return acc;
+    }
+    const updated = updater(node);
+    if (updated !== null) acc.push(asInlineNode(updated));
+    return acc;
+  }, []);
 
-      const found = findBlockByInstanceId(editor, instanceId);
-      if (!found) return;
+  editor.updateBlock(found.blockId, { content:updatedContent } as any);
+  return found;
+}
 
-      const updatedContent = found.content.map((node) => {
-        if (node.type === 'inlineWorkPackage' && node.props?.instanceId === instanceId) {
-          return { ...node, props: { ...node.props, size } };
-        }
-        return node;
-      });
+function moveCursorAfter(editor:AnyEditor, blockId:string):void {
+  requestAnimationFrame(() => {
+    editor.focus();
+    editor.setTextCursorPosition(blockId, 'end');
 
-      editor.updateBlock(found.blockId, { content: updatedContent } as any);
-    };
+    const cursor = editor.getTextCursorPosition();
+    if (!cursor?.nextBlock && cursor?.block) {
+      editor.insertBlocks([{ type: 'paragraph', content:[] }], cursor.block.id, 'after');
+    }
 
-    // Delete
-    const handleDelete = (e:Event):void => {
-      const { instanceId } = (e as CustomEvent<DeleteEventDetail>).detail;
+    const updated = editor.getTextCursorPosition();
+    if (updated?.nextBlock) {
+      editor.setTextCursorPosition(updated.nextBlock.id, 'start');
+    }
+  });
+}
 
-      const found = findBlockByInstanceId(editor, instanceId);
-      if (!found) return;
+function handleResize(editor:AnyEditor, instanceId:string, size:InlineWpSize):void {
+  if (size === 'm') {
+    handlePromoteToBlock(editor, instanceId);
+    return;
+  }
+  updateInlineChip(editor, instanceId, (chip) => ({
+    ...chip,
+    props:{ ...chip.props, size },
+  }));
+}
 
-      const updatedContent = found.content.filter(
-        (node) =>
-          !(node.type === 'inlineWorkPackage' && node.props?.instanceId === instanceId)
-      );
+function handleDelete(editor:AnyEditor, instanceId:string):void {
+  updateInlineChip(editor, instanceId, () => null);
+}
 
-      editor.updateBlock(found.blockId, { content:updatedContent } as any);
-    };
+function handlePromoteToBlock(editor:AnyEditor, instanceId:string):void {
+  const found = findInlineChip(editor, instanceId);
+  if (!found) return;
 
-    // Promote inline chip full block-level WP card
-    const handlePromoteToBlock = (e:Event):void => {
-      const { instanceId } = (e as CustomEvent<PromoteToBlockDetail>).detail;
+  // wpid must be a positive integer
+  const wpid = Number(found.chip.props.wpid);
+  if (Number.isNaN(wpid) || wpid <= 0) return;
 
-      const found = findBlockByInstanceId(editor, instanceId);
-      if (!found) return;
+  updateInlineChip(editor, instanceId, () => null);
 
-      const wpid = found.wpid ? Number(found.wpid) : undefined;
-      if (!wpid) return;
+  const [insertedBlock] = editor.insertBlocks(
+    [{ type:'openProjectWorkPackage', props: { wpid, initialized:true } } as any],
+    found.blockId,
+    'after'
+  );
 
-      // Remove the chip from its inline block
-      const updatedContent = found.content.filter(
-        (node) =>
-          !(node.type === 'inlineWorkPackage' && node.props?.instanceId === instanceId)
-      );
-      editor.updateBlock(found.blockId, { content: updatedContent } as any);
+  if (insertedBlock?.id) {
+    moveCursorAfter(editor, insertedBlock.id);
+  }
+}
 
-      // Insert openProjectWorkPackage block right after
-      const [insertedBlock] = editor.insertBlocks(
-        [{ type: 'openProjectWorkPackage', props: { wpid, initialized: true } } as any],
-        found.blockId,
-        'after'
-      );
+function handleConvertToInline(editor: AnyEditor, wpid: number, size: InlineWpSize, blockId: string): void {
+  const block = editor.getBlock(blockId);
+  if (!block) return;
 
-      requestAnimationFrame(() => {
-        if (!insertedBlock?.id) return;
-        editor.focus();
-        editor.setTextCursorPosition(insertedBlock.id, 'end');
+  const instanceId = makeInstanceId();
 
-        const cursor = editor.getTextCursorPosition();
-        if (!cursor?.nextBlock && cursor?.block) {
-          editor.insertBlocks(
-            [{ type: 'paragraph', content: [] }],
-            cursor.block.id,
-            'after'
-          );
-        }
-        const updatedCursor = editor.getTextCursorPosition();
-        if (updatedCursor?.nextBlock) {
-          editor.setTextCursorPosition(updatedCursor.nextBlock.id, 'start');
-        }
-      });
-    };
-
-    // Convert block card inline chip
-    const handleConvertToInline = (e:Event):void => {
-      const { wpid, size } = (e as CustomEvent<ConvertToInlineDetail>).detail;
-
-      const found = findBlockWpBlock(editor, wpid);
-      if (!found) return;
-
-      // Generate a fresh instanceId for the new inline chip
-      const instanceId = `iid-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-
-      // Insert a new paragraph with the inline chip BEFORE the block card.
-      // We use 'before' so the block card can be safely removed afterwards
-      // without the cursor jumping unexpectedly.
-      const [insertedParagraph] = editor.insertBlocks(
-        [
-          {
-            type: 'paragraph',
-            content: [
-              {
-                type: 'inlineWorkPackage',
-                props: { wpid:String(wpid), instanceId, size },
-              },
-            ],
-          } as any,
+  const [insertedParagraph] = editor.insertBlocks(
+    [
+      {
+        type: 'paragraph',
+        content: [
+          { type: 'inlineWorkPackage', props: { wpid: String(wpid), instanceId, size } },
         ],
-        found.blockId,
-        'before'
-      );
+      } as any,
+    ],
+    blockId,
+    'before'
+  );
 
-      // Remove the block-level card
-      editor.removeBlocks([found.blockId]);
+  editor.removeBlocks([blockId]);
 
-      // Place cursor at the end of the paragraph (after the chip)
-      requestAnimationFrame(() => {
-        if (!insertedParagraph?.id) return;
-        editor.focus();
-        editor.setTextCursorPosition(insertedParagraph.id, 'end');
-      });
-    };
+  requestAnimationFrame(() => {
+    if (!insertedParagraph?.id) return;
+    editor.focus();
+    editor.setTextCursorPosition(insertedParagraph.id, 'end');
+  });
+}
 
-    document.addEventListener('op-inline-wp-resize', handleResize);
-    document.addEventListener('op-inline-wp-delete', handleDelete);
-    document.addEventListener('op-inline-wp-promote-to-block', handlePromoteToBlock);
-    document.addEventListener('op-block-wp-to-inline', handleConvertToInline);
-
+// editor instance is stable for the lifetime of the component re-subscription only on editor replacement
+export function useInlineWpEvents(editor: AnyEditor):void {
+  useEffect(() => {
+    const offResize = wpBridge.onResize(({ instanceId, size }) => handleResize(editor, instanceId, size));
+    const offDelete = wpBridge.onDelete(({ instanceId }) => handleDelete(editor, instanceId));
+    const offToInline = wpBridge.onConvertToInline(({ wpid, size, blockId }) => 
+  handleConvertToInline(editor, wpid, size, blockId)
+);
     return () => {
-      document.removeEventListener('op-inline-wp-resize', handleResize);
-      document.removeEventListener('op-inline-wp-delete', handleDelete);
-      document.removeEventListener('op-inline-wp-promote-to-block', handlePromoteToBlock);
-      document.removeEventListener('op-block-wp-to-inline', handleConvertToInline);
+      offResize();
+      offDelete();
+      offToInline();
     };
   }, [editor]);
 }
