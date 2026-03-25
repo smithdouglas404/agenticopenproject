@@ -56,25 +56,22 @@ module OpenProject::Wikis
     replace_principal_references "Wikis::PageLink" => %i[author_id]
 
     register "openproject-wikis",
-             author_url: "https://openproject.org" do
-               menu :work_package_split_view,
-                    :wikis,
-                    { tab: :wikis },
-                    skip_permissions_check: true,
-                    after: :relations,
-                    if: ->(_project) {
-                      # TODO: only display if there are wiki providers available
-                      OpenProject::FeatureDecisions.wiki_enhancements_active?
-                    }
-             end
-
-    register "openproject-wikis",
              author_url: "https://openproject.org",
              requires_openproject: ">= 17.0.0" do
+      menu :work_package_split_view,
+           :wikis,
+           { tab: :wikis },
+           skip_permissions_check: true,
+           after: :relations,
+           if: ->(_project) {
+             # TODO: only display if there are wiki providers available
+             OpenProject::FeatureDecisions.wiki_enhancements_active?
+           }
+
       menu :admin_menu,
            :wiki_providers,
            { controller: "/wikis/admin/wiki_providers", action: :index },
-           if: ->(_) { User.current.admin? },
+           if: ->(_) { OpenProject::FeatureDecisions.wiki_enhancements_active? },
            caption: :project_module_wiki_platforms,
            icon: "browser"
     end
