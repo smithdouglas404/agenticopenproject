@@ -153,9 +153,10 @@ module Import
     end
 
     def upsert_custom_fields(used_custom_field_ids)
-      fields_upsert_data = @jira_client.fields.select do |field|
+      used_fields = @jira_client.fields.select do |field|
         field.fetch("custom", false) && used_custom_field_ids.include?(field.fetch("id"))
-      end.map do |field|
+      end
+      fields_upsert_data = used_fields.map do |field|
         {
           payload: field,
           jira_id: @jira_id,
