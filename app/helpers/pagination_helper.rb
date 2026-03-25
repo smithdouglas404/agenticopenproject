@@ -174,12 +174,10 @@ module PaginationHelper
   end
 
   def pagination_options_list(per_pages, current_per_page:, **)
-    content_tag(:ul, class: "op-pagination--items op-pagination--items_end", role: "presentation") do
-      safe_join [
-        content_tag(:li, I18n.t(:label_per_page), class: "op-pagination--label"),
-        per_pages.map { |per_page| pagination_options_item(per_page, current: per_page == current_per_page, **) }
-      ]
-    end
+    safe_join [
+      content_tag(:span, I18n.t(:label_per_page), class: "op-pagination--label"),
+      per_pages.map { |per_page| pagination_options_item(per_page, current: per_page == current_per_page, **) }
+    ]
   end
 
   ##
@@ -187,15 +185,15 @@ module PaginationHelper
   # determined from available options in the settings.
   def pagination_options_item(per_page, current:, **options)
     label = I18n.t("js.pagination.pages.show_per_page", number: per_page)
-    content_tag(:li, class: ["op-pagination--item", { "op-pagination--item_current": current }]) do
-      link_to_unless(
-        current,
-        per_page,
-        options.merge(page: 1, per_page:),
-        class: "op-pagination--item-link", aria: { label: }, target: "_top"
-      ) do
-        content_tag(:span, per_page, aria: { label:, current: "page" }, tabindex: 0)
-      end
-    end
+    aria_props = { label: }
+    aria_props[:current] = current if current
+
+    link_to(
+      per_page,
+      options.merge(page: 1, per_page:),
+      class: "Page",
+      aria: aria_props,
+      target: "_top"
+    )
   end
 end
