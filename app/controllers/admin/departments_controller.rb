@@ -43,16 +43,16 @@ module Admin
     before_action :find_group, only: %i[update add_users remove_user create_memberships edit_membership destroy_membership]
 
     def index
-      @groups = Group.organizational_units.visible.order(:lastname)
+      @groups = Group.with_detail.organizational_units.visible.order(:lastname)
     end
 
     def show
-      @groups = Group.organizational_units.visible.order(:lastname)
+      @groups = Group.with_detail.organizational_units.visible.order(:lastname)
       render action: :index
     end
 
     def edit
-      @group = Group.includes(:members, :users).find(params[:id])
+      @group = Group.includes(:members, :users, :group_detail).find(params[:id])
     end
 
     def update

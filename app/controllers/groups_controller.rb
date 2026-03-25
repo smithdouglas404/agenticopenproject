@@ -40,7 +40,7 @@ class GroupsController < ApplicationController
                                       edit_membership add_users]
 
   def index
-    @groups = Group.not_organizational_units.in_tree_order
+    @groups = Group.with_detail.not_organizational_units.in_tree_order
   end
 
   def show
