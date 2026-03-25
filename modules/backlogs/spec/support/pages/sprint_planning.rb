@@ -112,6 +112,83 @@ module Pages
         .to have_no_css("#{work_package_selector(work_package)} .DragHandle")
     end
 
+    def expect_inbox_blankslate
+      within_inbox do
+        expect(page).to have_css("h4", text: "Inbox is empty")
+      end
+    end
+
+    def expect_no_inbox_blankslate
+      within_inbox do
+        expect(page).to have_no_css("h4", text: "Inbox is empty")
+      end
+    end
+
+    def expect_inbox_item(work_package)
+      within_inbox do
+        expect(page).to have_css(inbox_item_selector(work_package))
+      end
+    end
+
+    def expect_no_inbox_item(work_package)
+      within_inbox do
+        expect(page).to have_no_css(inbox_item_selector(work_package))
+      end
+    end
+
+    def expect_inbox_items_in_order(*work_packages)
+      within_inbox do
+        selectors = work_packages.map { |wp| inbox_item_selector(wp) }
+        expect(page).to have_css(selectors.join(" + "))
+      end
+    end
+
+    def within_inbox_menu(work_package, &)
+      within(inbox_item_selector(work_package)) do
+        button = find(:button, accessible_name: "Work package actions")
+        button.click
+        within_menu_controlled_by(button, &)
+      end
+      page.send_keys(:escape)
+    end
+
+    def click_in_inbox_menu(work_package, item_name)
+      within_inbox_menu(work_package) do |menu|
+        menu.find(:menuitem, text: item_name).click
+      end
+    end
+
+    def within_sprint_story_menu(story, &)
+      within(work_package_selector(story)) do
+        button = find(:button, accessible_name: "Story actions")
+        button.click
+        within_menu_controlled_by(button, &)
+      end
+      page.send_keys(:escape)
+    end
+
+    def click_in_sprint_story_menu(story, item_name)
+      within_sprint_story_menu(story) do |menu|
+        menu.find(:menuitem, text: item_name).click
+      end
+    end
+
+    def drag_inbox_item_to_sprint(work_package, sprint)
+      moved_element = find("#{inbox_item_selector(work_package)} .DragHandle")
+      target_element = find(sprint_selector(sprint))
+      moved_element.native.drag_to(target_element.native, delay: 0.1)
+    rescue Capybara::Cuprite::ObsoleteNode
+      retry
+    end
+
+    def drag_sprint_item_to_inbox(work_package)
+      moved_element = find("#{work_package_selector(work_package)} .DragHandle")
+      target_element = find("#inbox_#{project.id}")
+      moved_element.native.drag_to(target_element.native, delay: 0.1)
+    rescue Capybara::Cuprite::ObsoleteNode
+      retry
+    end
+
     def expect_no_sprint_menu(sprint)
       within_sprint(sprint) do
         expect(page).to have_no_button(accessible_name: "Sprint actions")
@@ -221,6 +298,10 @@ module Pages
       within(sprint_selector(sprint), &)
     end
 
+    def within_inbox(&)
+      within("#inbox_#{project.id}", &)
+    end
+
     def sprint_selector(sprint)
       test_selector("sprint-#{sprint.id}")
     end
@@ -235,6 +316,10 @@ module Pages
 
     def work_package_selector(work_package)
       test_selector("work-package-#{work_package.id}")
+    end
+
+    def inbox_item_selector(work_package)
+      "#work_package_#{work_package.id}"
     end
 
     def within_menu_controlled_by(button)
