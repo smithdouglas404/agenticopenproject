@@ -268,9 +268,23 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
       set_version_to_nil
       reassign_category
       set_parent_to_nil
+      clear_sequence_number_on_move
 
       assign_default_type unless work_package.type
     end
+  end
+
+  # Nils the sequence_number to prevent unique index violations when the WP
+  # is saved with a new project_id. The partial unique index on
+  # (project_id, sequence_number) WHERE sequence_number IS NOT NULL would
+  # reject the save if the target project already has a WP with the same
+  # sequence_number. The identifier is intentionally preserved so that
+  # ReallocateIdentifiersOnMoveService (which runs post-save) can detect
+  # which WPs need reallocation and record old slugs in FriendlyId history.
+  def clear_sequence_number_on_move
+    return unless Setting::WorkPackageIdentifier.alphanumeric?
+
+    model.sequence_number = nil
   end
 
   def update_dates

@@ -468,6 +468,19 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
           expect(work_package.identifier).to eq("TGT-6")
         end
 
+        it "handles moving into a project that already has work packages with identifiers" do
+          create(:work_package, project: target_project).tap do |wp|
+            wp.update_columns(sequence_number: 1, identifier: "TGT-1")
+          end
+          target_project.update_column(:wp_sequence_counter, 1)
+
+          expect(subject).to be_success
+
+          work_package.reload
+          expect(work_package.sequence_number).to eq(2)
+          expect(work_package.identifier).to eq("TGT-2")
+        end
+
         context "with descendants" do
           let(:child_wp) do
             create(:work_package, project: source_project, parent: work_package).tap do |wp|
