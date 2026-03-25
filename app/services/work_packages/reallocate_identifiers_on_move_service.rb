@@ -38,11 +38,10 @@
 # All operations run within a single advisory lock on the target project
 # to serialize sequence allocation.
 class WorkPackages::ReallocateIdentifiersOnMoveService
-  attr_reader :target_project, :source_project_id
+  attr_reader :target_project
 
-  def initialize(target_project:, source_project_id:)
+  def initialize(target_project:)
     @target_project = target_project
-    @source_project_id = source_project_id
   end
 
   def call(moved_work_packages)
@@ -68,16 +67,7 @@ class WorkPackages::ReallocateIdentifiersOnMoveService
   end
 
   def allocate_new_identifier(work_package)
-    next_seq = OpenProject::SqlSanitization.with_connection do |conn|
-      conn.select_value(
-        OpenProject::SqlSanitization.sanitize(<<~SQL.squish, project_id: target_project.id)
-          UPDATE projects
-          SET wp_sequence_counter = wp_sequence_counter + 1
-          WHERE id = :project_id
-          RETURNING wp_sequence_counter
-        SQL
-      )
-    end
+    next_seq = target_project.next_wp_sequence!
 
     work_package.update_columns(
       sequence_number: next_seq,

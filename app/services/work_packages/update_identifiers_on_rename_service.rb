@@ -48,8 +48,8 @@ class WorkPackages::UpdateIdentifiersOnRenameService
     wp_data = project.work_packages.where.not(identifier: nil).pluck(:id, :identifier)
     return if wp_data.empty?
 
-    bulk_update_identifiers
     record_old_identifiers_in_slug_history(wp_data)
+    bulk_update_identifiers
   end
 
   private

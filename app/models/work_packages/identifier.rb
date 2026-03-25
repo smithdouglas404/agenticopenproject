@@ -50,16 +50,7 @@ module WorkPackages::Identifier
   # Uses an advisory lock to serialize concurrent allocations on the same project.
   def allocate_identifier!
     OpenProject::Mutex.with_advisory_lock_transaction(project, "wp_sequence") do
-      next_seq = OpenProject::SqlSanitization.with_connection do |conn|
-        conn.select_value(
-          OpenProject::SqlSanitization.sanitize(<<~SQL.squish, project_id:)
-            UPDATE projects
-            SET wp_sequence_counter = wp_sequence_counter + 1
-            WHERE id = :project_id
-            RETURNING wp_sequence_counter
-          SQL
-        )
-      end
+      next_seq = project.next_wp_sequence!
 
       update_columns(sequence_number: next_seq,
                      identifier: "#{project.identifier}-#{next_seq}")

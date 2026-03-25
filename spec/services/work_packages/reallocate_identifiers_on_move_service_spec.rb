@@ -31,7 +31,7 @@
 require "spec_helper"
 
 RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
-  subject(:service) { described_class.new(target_project:, source_project_id: source_project.id) }
+  subject(:service) { described_class.new(target_project:) }
 
   let(:source_project) { create(:project, identifier: "SRC") }
   let(:target_project) { create(:project, identifier: "TGT") }

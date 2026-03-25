@@ -102,11 +102,7 @@ class WorkPackages::UpdateService < BaseServices::Update
       delete_relations(moved_work_packages)
       move_time_entries(moved_work_packages, work_package.project_id)
       move_work_package_memberships(moved_work_packages, work_package.project_id)
-      reallocate_identifiers_on_move(
-        moved_work_packages,
-        work_package.project,
-        work_package.project_id_before_last_save
-      )
+      reallocate_identifiers_on_move(moved_work_packages, work_package.project)
     end
     if work_package.saved_change_to_type_id?
       reset_custom_values(work_package)
@@ -133,9 +129,9 @@ class WorkPackages::UpdateService < BaseServices::Update
       .update_all(project_id:)
   end
 
-  def reallocate_identifiers_on_move(moved_work_packages, target_project, source_project_id)
+  def reallocate_identifiers_on_move(moved_work_packages, target_project)
     WorkPackages::ReallocateIdentifiersOnMoveService
-      .new(target_project:, source_project_id:)
+      .new(target_project:)
       .call(moved_work_packages)
   end
 
