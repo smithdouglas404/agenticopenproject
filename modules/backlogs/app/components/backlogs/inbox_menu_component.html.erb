@@ -81,13 +81,11 @@ See COPYRIGHT and LICENSE files for more details.
         move_menu.with_leading_visual_icon(icon: :"op-arrow-in")
 
         with_item_group(move_menu) do
-          if show_move_items?
-            build_move_menu(move_menu)
-          end
+          build_move_menu(move_menu)
+        end
 
+        with_item_group(move_menu) do
           if show_move_to_sprint?
-            move_menu.with_divider if show_move_items?
-
             move_menu.with_item(
               id: dom_target(work_package, :menu, :move_to_sprint),
               label: t(".label_move_to_sprint"),
