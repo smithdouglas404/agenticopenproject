@@ -36,9 +36,13 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
   let(:source_project) { create(:project, identifier: "SRC") }
   let(:target_project) { create(:project, identifier: "TGT") }
 
+  # Simulate a WP that was created in source_project (callback allocates "SRC-N")
+  # and then moved to target_project (UpdateService changes project_id first).
+  # sequence_number is nilled out to avoid unique index collisions with the
+  # new allocation — the service is responsible for setting it on target.
   let(:work_package) do
-    create(:work_package, project: target_project).tap do |wp|
-      wp.update_columns(sequence_number: 1, identifier: "SRC-1")
+    create(:work_package, project: source_project).tap do |wp|
+      wp.update_columns(project_id: target_project.id, sequence_number: nil)
     end
   end
 
@@ -81,8 +85,8 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
     end
 
     it "allocates sequential numbers for multiple work packages" do
-      wp2 = create(:work_package, project: target_project).tap do |wp|
-        wp.update_columns(sequence_number: 2, identifier: "SRC-2")
+      wp2 = create(:work_package, project: source_project).tap do |wp|
+        wp.update_columns(project_id: target_project.id, sequence_number: nil)
       end
 
       service.call([work_package, wp2])
@@ -92,7 +96,8 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
     end
 
     it "skips work packages without identifiers" do
-      wp_without_id = create(:work_package, project: target_project)
+      wp_without_id = create(:work_package, project: source_project)
+      wp_without_id.update_columns(project_id: target_project.id, identifier: nil, sequence_number: nil)
 
       expect { service.call([wp_without_id]) }
         .not_to change { target_project.reload.wp_sequence_counter }
@@ -105,7 +110,9 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
     let(:target_project) { create(:project, identifier: "tgt") }
 
     let(:work_package) do
-      create(:work_package, project: target_project)
+      create(:work_package, project: source_project).tap do |wp|
+        wp.update_columns(project_id: target_project.id)
+      end
     end
 
     it "is a no-op" do
