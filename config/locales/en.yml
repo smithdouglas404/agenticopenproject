@@ -430,12 +430,38 @@ en:
         success_banner: Successfully updated work package identifier format.
         in_progress:
           banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
-
     workflows:
       tabs:
         default_transitions: "Default transitions"
         user_author: "User is author"
         user_assignee: "User is assignee"
+      index:
+        description: "Configure status transitions for each work package type."
+        type_filter:
+          label: "Filter by type name…"
+      status_button: "Status"
+      statuses_dialog:
+        title: "Statuses"
+        label: "Statuses enabled for this type"
+        caption: "Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it."
+      statuses_removal_dialog:
+        title: "Remove statuses"
+        heading:
+          one: "Remove 1 status?"
+          other: "Remove %{count} statuses?"
+        description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
+        confirm: "Remove"
+      leave_confirmation:
+        title: "Save changes before continuing?"
+        description: "You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?"
+        ignore: "Ignore changes"
+        save: "Save changes and continue"
+      role_selector:
+        label: "Role: %{role}"
+        no_role: "Select role"
+      blankslate:
+        title: "No status transitions configured"
+        description: "Add statuses to start configuring workflows for this role"
     info:
       database_deprecation_html: >
         Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject.
@@ -444,7 +470,6 @@ en:
         <br/>
         We have prepared [upgrade guides for all installation methods](upgrade_guide).
         You can perform the upgrade ahead of the next release at any time by following the guides.
-
 
   authentication:
     login_and_registration: "Login and registration"
@@ -690,6 +715,15 @@ en:
   danger_dialog:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+
+  pagination:
+    label: "Pagination"
+    prev: "Previous"
+    prev_page: "Previous Page"
+    next: "Next"
+    next_page: "Next Page"
+    page: "Page %{number}"
+    page_with_more: "Page %{number}..."
 
   mcp_configurations:
     server_url_component:
@@ -1583,12 +1617,6 @@ en:
         dependencies: "Dependencies"
 
   activerecord:
-    errors:
-      models:
-        group:
-          attributes:
-            parent_id:
-              circular_dependency: "would create a circular group hierarchy."
     attributes:
       jira_import:
         projects: "Projects"
@@ -1906,6 +1934,7 @@ en:
         sunday_hours: "Sunday hours"
         availability_factor: "Availability factor"
         shared_hours: "Work hours"
+        days: "Working days"
       version:
         effective_date: "Finish date"
         sharing: "Sharing"
@@ -2032,6 +2061,10 @@ en:
           is not providing a "Secure Context". Either use HTTPS or a loopback address, such as localhost.
         wrong_length: "is the wrong length (should be %{count} characters)."
       models:
+        group:
+          attributes:
+            parent_id:
+              circular_dependency: "would create a circular group hierarchy."
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2352,6 +2385,10 @@ en:
                 description: "'Password confirmation' should match the input in the 'New password' field."
             status:
               invalid_on_create: "is not a valid status for new users."
+        user_working_hours:
+          attributes:
+            days:
+              no_working_day: "At least one day needs to be configured as a working day."
         member:
           principal_blank: "Please choose at least one user or group."
           role_blank: "need to be assigned."
@@ -3464,6 +3501,7 @@ en:
         totals_removed_from_childless_work_packages: >-
           Work and progress totals automatically removed for non-parent work packages with <a href="%{href}" target="_blank">version update</a>.
           This is a maintenance task and can be safely ignored.
+        sprint_migration: "Version '%{version_name}' has been copied as a sprint."
       total_percent_complete_mode_changed_to_work_weighted_average: >-
         Child work packages without Work are ignored.
       total_percent_complete_mode_changed_to_simple_average: >-
@@ -4148,6 +4186,7 @@ en:
   label_start_to_start: "start to start"
   label_statistics: "Statistics"
   label_status: "Status"
+  label_status_plural: "Statuses"
   label_storage_free_space: "Remaining disk space"
   label_storage_used_space: "Used disk space"
   label_storage_group: "Storage filesystem %{identifier}"
@@ -5375,7 +5414,7 @@ en:
       activities:
         enable_internal_comments: "Enable internal comments"
         helper_text_html: >
-          Internal comments allow an internal team to communicate amongst themselves privately. 
+          Internal comments allow an internal team to communicate amongst themselves privately.
           These are only visible to selected roles that have the necessary permissions and will not be visible publicly.
           [Click here to learn more](docs_url)
 
@@ -5528,7 +5567,7 @@ en:
   text_plugin_assets_writable: "Plugin assets directory writable"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Only lower case letters (a-z), numbers, dashes and underscores are allowed, must start with a lower case letter."
-  text_project_identifier_description: "The project identifier is prepended to all work package IDs. If the identifier is \"PROJ\" for example, the work package identifier will be \"PROJ-12\" or \"PROJ-246\"."
+  text_project_identifier_description: 'The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".'
   text_project_identifier_url_description: "The project identifier is included in the URL of the project."
   text_project_identifier_handle_format: "Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters)."
   text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
@@ -5670,10 +5709,10 @@ en:
     The activation email has expired. We sent you a new one to %{email}.
     Please click the link inside of it to activate your account.
   warning_user_limit_reached: >
-    Adding additional users will exceed the current limit. 
+    Adding additional users will exceed the current limit.
     Please contact an administrator to increase the user limit to ensure external users are able to access this instance.
   warning_user_limit_reached_admin_html: >
-    Adding additional users will exceed the current limit. 
+    Adding additional users will exceed the current limit.
     Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
     You reached your user limit (%{current}/%{max} active users).
@@ -5776,7 +5815,7 @@ en:
       Adding additional users will exceed the current limit.
       Please contact an administrator to increase the user limit to ensure external users are able to access this %{entity}.
     warning_user_limit_reached_admin_html: >
-      Adding additional users will exceed the current limit. 
+      Adding additional users will exceed the current limit.
       Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
     warning_no_selected_user: "Please select users to share this %{entity} with"
     warning_locked_user: "The user %{user} is locked and cannot be shared with"

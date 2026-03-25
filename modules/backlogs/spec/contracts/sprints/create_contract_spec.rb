@@ -89,13 +89,13 @@ RSpec.describe Sprints::CreateContract do
     context "when start_date is blank" do
       let(:sprint_start_date) { nil }
 
-      it_behaves_like "contract is invalid", start_date: :blank
+      it_behaves_like "contract is valid"
     end
 
     context "when finish_date is blank" do
       let(:sprint_finish_date) { nil }
 
-      it_behaves_like "contract is invalid", finish_date: %i[blank blank]
+      it_behaves_like "contract is valid"
     end
 
     context "when finish_date is before start_date" do
@@ -103,6 +103,29 @@ RSpec.describe Sprints::CreateContract do
       let(:sprint_finish_date) { Time.zone.today - 1.day }
 
       it_behaves_like "contract is invalid", finish_date: %i[greater_than_or_equal_to]
+    end
+
+    context "when the sprint is active" do
+      let(:sprint_status) { "active" }
+
+      context "when start_date is blank" do
+        let(:sprint_start_date) { nil }
+
+        it_behaves_like "contract is invalid", start_date: :blank
+      end
+
+      context "when finish_date is blank" do
+        let(:sprint_finish_date) { nil }
+
+        it_behaves_like "contract is invalid", finish_date: :blank
+      end
+
+      context "when finish_date is before start_date" do
+        let(:sprint_start_date) { Time.zone.today }
+        let(:sprint_finish_date) { Time.zone.today - 1.day }
+
+        it_behaves_like "contract is invalid", finish_date: %i[greater_than_or_equal_to]
+      end
     end
 
     context "when user is admin without project permission" do

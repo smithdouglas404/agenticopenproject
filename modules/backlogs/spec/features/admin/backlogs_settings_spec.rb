@@ -59,7 +59,6 @@ RSpec.describe "Backlogs Admin Settings", :js do
     story_autocompleter.expect_selected "Feature", "Story"
   end
 
-
   scenario "updating task type" do
     expect(page).to have_heading "Backlogs"
 
@@ -126,10 +125,12 @@ RSpec.describe "Backlogs Admin Settings", :js do
     expect(page).to have_field "Template for sprint wiki page", with: "my_sprint_wiki_page"
   end
 
-  it "hides wiki and types selection on scrum projects feature flag active", with_flag: { scrum_projects: true } do
+  it "hides configuration on scrum projects feature flag active", with_flag: { scrum_projects: true } do
     expect(page).to have_no_field "Template for sprint wiki page"
     expect(page).to have_no_css "[data-test-selector='story_type_autocomplete']"
     expect(page).to have_no_css "[data-test-selector='task_type_autocomplete']"
-    expect(page).to have_css "fieldset", text: "Points burn up/down"
+    expect(page).to have_no_css "fieldset", text: "Points burn up/down"
+
+    expect(page).to have_content "Backlog admin settings are evolving"
   end
 end

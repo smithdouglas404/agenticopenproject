@@ -29,27 +29,30 @@
 #++
 
 class WorkflowsController < ApplicationController
+  include OpTurbo::ComponentStream
+
   layout "admin"
 
   before_action :require_admin
 
   before_action :find_roles, except: :update
-  before_action :find_types, except: :update
+  before_action :find_types, except: %i[edit update]
 
-  before_action :find_role, only: :update
-  before_action :find_type, only: :update
+  before_action :find_role, only: %i[update confirmation_dialog]
+  before_action :find_type, only: %i[edit update confirmation_dialog]
 
-  before_action :find_optional_role, only: :edit
-  before_action :find_optional_type, only: :edit
+  before_action :find_optional_role, only: %i[edit status_dialog confirm_statuses]
+  before_action :find_optional_type, only: %i[edit status_dialog confirm_statuses]
 
-  def show
+  def index; end
+
+  def summarized
     @workflow_counts = Workflow.count_by_type_and_role
     @roles = @workflow_counts.first&.last&.map(&:first)
   end
 
   def edit
-    @used_statuses_only = params[:used_statuses_only] == "1"
-
+    @current_tab = current_tab
     statuses_for_form
 
     if @type && @role && @statuses.any?
@@ -57,15 +60,18 @@ class WorkflowsController < ApplicationController
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize
     tab = params[:tab] || "always"
+
     call = Workflows::BulkUpdateService
            .new(role: @role, type: @type, tab:)
            .call(permitted_status_params)
 
     if call.success?
       flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to action: "edit", role_id: @role, type_id: @type, tab:
+      next_role_id = params[:next_role_id].presence
+      next_tab = params[:next_tab].presence
+      redirect_to edit_workflow_path(@type, role_id: next_role_id || @role.id, tab: next_tab || tab)
     end
   end
 
@@ -97,14 +103,100 @@ class WorkflowsController < ApplicationController
     end
   end
 
+  def confirmation_dialog # rubocop:disable Metrics/AbcSize
+    destination_role_id = params[:next_role_id].presence || @role.id
+    destination_tab = params[:next_tab].presence || current_tab
+    destination_url = edit_workflow_path(@type, role_id: destination_role_id, tab: destination_tab)
+
+    if params[:dirty] == "true"
+      # Necessary because the ActionMenu updates even when the confirmation dialog
+      # is closed via "X". This update ensures the correct option is shown as selected
+      # with a preceding checkbox at all times
+      update_via_turbo_stream(
+        component: Workflows::EditSubHeaderComponent.new(
+          tab: current_tab,
+          current_role: @role,
+          type: @type,
+          available_roles: @roles,
+          status_ids: [],
+          dirty: true
+        )
+      )
+      respond_with_dialog Workflows::ConfirmationDialogComponent.new(
+        redirect_url: destination_url,
+        next_role_id: params[:next_role_id].presence,
+        next_tab: params[:next_tab].presence
+      )
+    else
+      redirect_to destination_url, status: :see_other
+    end
+  end
+
+  def status_dialog
+    all_statuses = Status.order(:position)
+    current_statuses = if params[:status_ids].present?
+                         Status.where(id: params[:status_ids].map(&:to_i)).order(:position)
+                       elsif @type && @role
+                         statuses_for_role_and_type
+                       else
+                         Status.none
+                       end
+
+    respond_with_dialog Workflows::StatusDialogComponent.new(
+      all_statuses:,
+      current_statuses:,
+      role: @role,
+      type: @type,
+      tab: params[:tab] || "always"
+    )
+  end
+
+  def confirm_statuses # rubocop:disable Metrics/AbcSize
+    current_status_ids = Array(params[:status_ids]).flatten.map(&:to_i)
+    original_ids = Array(params[:original_status_ids]).flatten.map(&:to_i)
+    removed_count = (original_ids - current_status_ids).size
+
+    if removed_count > 0
+      respond_with_dialog Workflows::StatusRemovalDangerDialogComponent.new(
+        role: @role,
+        type: @type,
+        tab: params[:tab] || "always",
+        status_ids: current_status_ids,
+        removed_count: removed_count
+      )
+    else
+      redirect_to edit_workflow_path(
+        params[:type_id],
+        role_id: params[:role_id],
+        tab: params[:tab] || "always",
+        status_ids: current_status_ids
+      ), status: :see_other
+    end
+  end
+
   private
 
   def statuses_for_form
-    @statuses = if @type && @used_statuses_only && @type.statuses.any?
+    @added_status_ids = []
+    @statuses = if @type && params[:status_ids].present?
+                  status_ids = params[:status_ids].map(&:to_i)
+                  @added_status_ids = status_ids - statuses_for_role_and_type.pluck(:id)
+                  Status.where(id: status_ids).order(:position)
+                elsif @type && @role
+                  statuses_for_role_and_type
+                elsif @type
                   @type.statuses
                 else
                   Status.all
                 end
+  end
+
+  def statuses_for_role_and_type
+    @type.statuses(role: @role, tab: current_tab)
+  end
+
+  def current_tab
+    params[:tab] || "always"
   end
 
   def workflows_for_form
@@ -132,11 +224,11 @@ class WorkflowsController < ApplicationController
   end
 
   def find_optional_role
-    @role = eligible_roles.find_by(id: params[:role_id])
+    @role = eligible_roles.find_by(id: params[:role_id]) || eligible_roles.order(:builtin, :position).first
   end
 
   def find_optional_type
-    @type = ::Type.find_by(id: params[:type_id])
+    @type = ::Type.find_by(id: params[:type_id]) || ::Type.order(:position).first
   end
 
   def eligible_roles

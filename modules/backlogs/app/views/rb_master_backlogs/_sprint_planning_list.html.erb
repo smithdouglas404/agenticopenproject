@@ -42,22 +42,11 @@ See COPYRIGHT and LICENSE files for more details.
   <% else %>
     <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop">
       <div id="owner_backlogs_container" class="op-sprint-planning-lists">
-        <%=
-          render(Primer::Beta::Subhead.new(hide_border: true)) do |head|
-            head.with_heading(tag: :h3, font_weight: :bold, size: :medium) { t(:label_backlog) }
-
-            if allow_sprint_creation?(@project)
-              # Ugly hack:
-              # This button will not be rendered, but still takes up space to push the left side down a bit.
-              # Remove as soon as the `+ Sprint` button moves from the Subhead into a SubHeader.
-              head.with_actions do
-                render(Primer::Beta::Button.new(tag: :a, visibility: :hidden)) { "spacer" }
-              end
-            end
-          end
-        %>
-
-        <%= render(Backlogs::BacklogComponent.with_collection(@owner_backlogs, project: @project)) %>
+        <%= render Backlogs::InboxComponent.new(
+              work_packages: @inbox_work_packages,
+              project: @project,
+              show_all: params[:all].present?
+            ) %>
       </div>
       <div id="sprint_backlogs_container" class="op-sprint-planning-lists">
         <%=

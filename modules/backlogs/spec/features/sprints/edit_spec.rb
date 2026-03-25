@@ -146,6 +146,29 @@ RSpec.describe "Edit", :js do
             end
           end
         end
+
+        describe "validations" do
+          context "when sprint status is active" do
+            before { first_sprint.update!(status: "active") }
+
+            it "validates required fields are present" do
+              planning_page.click_in_sprint_menu(first_sprint, "Edit sprint")
+              planning_page.expect_sprint_dialog
+
+              within_dialog "Edit sprint" do
+                page.fill_in "Sprint name", with: ""
+                page.fill_in "Start date", with: ""
+                page.fill_in "Finish date", with: ""
+
+                page.click_button "Save"
+
+                expect(page).to have_field "Sprint name", validation_error: "can't be blank"
+                expect(page).to have_field "Start date", validation_error: "can't be blank"
+                expect(page).to have_field "Finish date", validation_error: "can't be blank"
+              end
+            end
+          end
+        end
       end
     end
 

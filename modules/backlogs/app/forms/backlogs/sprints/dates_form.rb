@@ -31,6 +31,8 @@
 module Backlogs
   module Sprints
     class DatesForm < ApplicationForm
+      delegate :active?, to: :model
+
       form do |f|
         f.group(layout: :horizontal) do |dates|
           dates.text_field(
@@ -38,7 +40,7 @@ module Backlogs
             type: :date,
             label: attribute_name(:start_date),
             placeholder: attribute_name(:start_date),
-            required: true,
+            required: active?,
             input_width: :small,
             data: {
               action: "change->refresh-on-form-changes#triggerTurboStream"
@@ -49,7 +51,7 @@ module Backlogs
             type: :date,
             label: attribute_name(:finish_date),
             placeholder: attribute_name(:finish_date),
-            required: true,
+            required: active?,
             input_width: :small,
             data: {
               action: "change->refresh-on-form-changes#triggerTurboStream"

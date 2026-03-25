@@ -32,51 +32,66 @@ require "spec_helper"
 
 RSpec.describe Agile::Sprint do
   let(:project) { create(:project) }
+  let(:sprint_status) { "in_planning" }
 
   subject(:sprint) do
     described_class.new(name: "Sprint 1",
                         project:,
                         start_date: Time.zone.today,
-                        finish_date: Time.zone.today + 14.days)
+                        finish_date: Time.zone.today + 14.days,
+                        status: sprint_status)
   end
 
   describe "validations" do
     it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_presence_of(:start_date) }
-    it { is_expected.to validate_presence_of(:finish_date) }
     it { is_expected.to validate_presence_of(:project) }
     it { is_expected.to validate_inclusion_of(:status).in_array(described_class.statuses.keys) }
 
-    it "validates finish_date is after or equal to start_date" do
-      sprint.finish_date = sprint.start_date - 1.day
-      expect(sprint).not_to be_valid
-      expect(sprint.errors[:finish_date]).to include(/must be greater than or equal to/)
-    end
-
-    it "does not validate finish_date comparison when start_date is nil" do
-      sprint.start_date = nil
-      sprint.finish_date = Time.zone.today
-      expect(sprint).not_to be_valid
-      expect(sprint.errors[:start_date]).to be_present
-      expect(sprint.errors[:finish_date]).not_to include(/must be greater than or equal to/)
-    end
-
-    it "still validates finish_date presence even when start_date is nil" do
+    it "allows nil start and finish dates" do
       sprint.start_date = nil
       sprint.finish_date = nil
-      expect(sprint).not_to be_valid
-      expect(sprint.errors[:finish_date]).to be_present
+      expect(sprint).to be_valid
+    end
+
+    it "allows a nil finish date when start date is present" do
+      sprint.start_date = Time.zone.today
+      sprint.finish_date = nil
+      expect(sprint).to be_valid
     end
 
     context "with active sprint validation" do
+      let(:sprint_status) { "active" }
+
+      it { is_expected.to validate_presence_of(:start_date) }
+      it { is_expected.to validate_presence_of(:finish_date) }
+
+      it "validates finish_date is after or equal to start_date" do
+        sprint.finish_date = sprint.start_date - 1.day
+        expect(sprint).not_to be_valid
+        expect(sprint.errors[:finish_date]).to include(/must be greater than or equal to/)
+      end
+
+      it "does not validate finish_date comparison when start_date is nil" do
+        sprint.start_date = nil
+        sprint.finish_date = Time.zone.today
+        expect(sprint).not_to be_valid
+        expect(sprint.errors[:start_date]).to be_present
+        expect(sprint.errors[:finish_date]).not_to include(/must be greater than or equal to/)
+      end
+
+      it "still validates finish_date presence even when start_date is nil" do
+        sprint.start_date = nil
+        sprint.finish_date = nil
+        expect(sprint).not_to be_valid
+        expect(sprint.errors[:finish_date]).to be_present
+      end
+
       it "allows one active sprint per project" do
-        sprint.status = "active"
         expect(sprint).to be_valid
       end
 
       it "prevents multiple active sprints in the same project" do
         create(:agile_sprint, project:, status: "active")
-        sprint.status = "active"
         expect(sprint).not_to be_valid
         expect(sprint.errors[:status]).to include("only one active sprint is allowed per project.")
       end
@@ -84,12 +99,10 @@ RSpec.describe Agile::Sprint do
       it "allows multiple active sprints in different projects" do
         other_project = create(:project)
         create(:agile_sprint, project: other_project, status: "active")
-        sprint.status = "active"
         expect(sprint).to be_valid
       end
 
       it "allows updating an existing active sprint" do
-        sprint.status = "active"
         sprint.save!
         sprint.name = "Updated Sprint"
         expect(sprint).to be_valid
@@ -180,6 +193,154 @@ RSpec.describe Agile::Sprint do
       work_package_id = work_package.id
       sprint.destroy!
       expect(WorkPackage.find(work_package_id).sprint_id).to be_nil
+    end
+  end
+
+  describe "#owned_by?" do
+    let(:sprint) { create(:agile_sprint, project:) }
+    let(:other_project) { create(:project) }
+
+    it "returns true when the sprint belongs to the given project" do
+      expect(sprint.owned_by?(project)).to be true
+    end
+
+    it "returns false when the sprint belongs to a different project" do
+      expect(sprint.owned_by?(other_project)).to be false
+    end
+  end
+
+  describe "#shared_with?" do
+    let(:sprint) { create(:agile_sprint, project:) }
+    let(:receiver_project) { create(:project, sprint_sharing: "receive_shared") }
+    let(:other_project) { create(:project, sprint_sharing: "no_sharing") }
+
+    context "when the sprint is owned by the project" do
+      it "returns false" do
+        expect(sprint.shared_with?(project)).to be false
+      end
+    end
+
+    context "when the sprint is visible to the project but not owned" do
+      before do
+        project.update(sprint_sharing: "share_all_projects")
+      end
+
+      it "returns true" do
+        expect(sprint.shared_with?(receiver_project)).to be true
+      end
+    end
+
+    context "when the sprint is not visible to the project" do
+      it "returns false" do
+        expect(sprint.shared_with?(other_project)).to be false
+      end
+    end
+
+    context "with subproject sharing" do
+      let(:parent_project) { create(:project, sprint_sharing: "share_subprojects") }
+      let(:child_project) { create(:project, parent: parent_project, sprint_sharing: "receive_shared") }
+      let(:parent_sprint) { create(:agile_sprint, project: parent_project) }
+
+      it "returns true when sprint is shared from parent to child" do
+        expect(parent_sprint.shared_with?(child_project)).to be true
+      end
+
+      it "returns false for the owning parent project" do
+        expect(parent_sprint.shared_with?(parent_project)).to be false
+      end
+    end
+
+    context "with work package assignment to unrelated project" do
+      let(:unrelated_sprint) { create(:agile_sprint, project: other_project) }
+
+      before do
+        create(:work_package, project:, sprint: unrelated_sprint)
+      end
+
+      it "returns true when sprint is visible via work package assignment" do
+        expect(unrelated_sprint.shared_with?(project)).to be true
+      end
+    end
+  end
+
+  describe "#visible_to?" do
+    let(:sprint) { create(:agile_sprint, project:) }
+    let(:receiver_project) { create(:project, sprint_sharing: "receive_shared") }
+    let(:other_project) { create(:project, sprint_sharing: "no_sharing") }
+
+    context "when the sprint is owned by the project" do
+      it "returns true" do
+        expect(sprint.visible_to?(project)).to be true
+      end
+    end
+
+    context "when the sprint is shared with the project" do
+      before do
+        project.update(sprint_sharing: "share_all_projects")
+      end
+
+      it "returns true" do
+        expect(sprint.visible_to?(receiver_project)).to be true
+      end
+    end
+
+    context "when the sprint is not visible to the project" do
+      it "returns false" do
+        expect(sprint.visible_to?(other_project)).to be false
+      end
+    end
+
+    context "with global sharing" do
+      let(:global_sharer) { create(:project, sprint_sharing: "share_all_projects") }
+      let(:global_sprint) { create(:agile_sprint, project: global_sharer) }
+
+      it "returns true for projects that receive shared sprints" do
+        expect(global_sprint.visible_to?(receiver_project)).to be true
+      end
+
+      it "returns true for the owning project" do
+        expect(global_sprint.visible_to?(global_sharer)).to be true
+      end
+
+      it "returns false for projects with no_sharing mode" do
+        expect(global_sprint.visible_to?(other_project)).to be false
+      end
+    end
+
+    context "with subproject sharing" do
+      let(:parent_project) { create(:project, sprint_sharing: "share_subprojects") }
+      let(:child_project) { create(:project, parent: parent_project, sprint_sharing: "receive_shared") }
+      let(:grandchild_project) { create(:project, parent: child_project, sprint_sharing: "receive_shared") }
+      let(:parent_sprint) { create(:agile_sprint, project: parent_project) }
+
+      it "returns true for direct child receiving shared sprints" do
+        expect(parent_sprint.visible_to?(child_project)).to be true
+      end
+
+      it "returns true for grandchild receiving shared sprints" do
+        expect(parent_sprint.visible_to?(grandchild_project)).to be true
+      end
+
+      it "returns true for the owning parent project" do
+        expect(parent_sprint.visible_to?(parent_project)).to be true
+      end
+    end
+
+    context "with work package assignment" do
+      let(:unrelated_project) { create(:project, sprint_sharing: "no_sharing") }
+      let(:unrelated_sprint) { create(:agile_sprint, project: unrelated_project) }
+
+      before do
+        create(:work_package, project:, sprint: unrelated_sprint)
+      end
+
+      it "returns true when sprint is visible via work package assignment" do
+        expect(unrelated_sprint.visible_to?(project)).to be true
+      end
+
+      it "returns true for the owning project" do
+        expect(unrelated_sprint.visible_to?(unrelated_project)).to be true
+      end
     end
   end
 end

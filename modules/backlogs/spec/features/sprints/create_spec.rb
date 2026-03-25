@@ -123,8 +123,8 @@ RSpec.describe "Create", :js do
             click_on "Create"
 
             expect(page).to have_field "Sprint name", validation_error: "can't be blank"
-            expect(page).to have_field "Start date", validation_error: "can't be blank"
-            expect(page).to have_field "Finish date", validation_error: "can't be blank"
+            expect(page).to have_field "Start date", validation_error: false
+            expect(page).to have_field "Finish date", validation_error: false
           end
         end
 

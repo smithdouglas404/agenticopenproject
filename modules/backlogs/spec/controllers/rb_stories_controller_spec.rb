@@ -126,35 +126,6 @@ RSpec.describe RbStoriesController do
       end
     end
 
-    context "with an Agile::Sprint as target", with_flag: { scrum_projects: true } do
-      let(:agile_sprint) { create(:agile_sprint, name: "Agile Sprint 1", project:) }
-
-      it "responds with success and moves story to Agile::Sprint, removing the association to the version", :aggregate_failures do
-        put :move_legacy, params: {
-                            project_id: project.id,
-                            sprint_id: version_sprint.id,
-                            id: story.id,
-                            target_id: "sprint:#{agile_sprint.id}",
-                            position: 1
-                          },
-                          format: :turbo_stream
-
-        expect(response).to be_successful
-        expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{version_sprint.id}"
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
-        assert_select %(turbo-stream[action="replace"][target="backlogs-backlog-component-#{version_sprint.id}"][method="morph"])
-        assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{agile_sprint.id}"])
-        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
-        expect(assigns(:project)).to eq(project)
-        expect(assigns(:sprint)).to eq(version_sprint)
-        expect(assigns(:story)).to eq(story)
-
-        # It will remove the association to the version since the version is used as backlog:
-        expect(story.reload.version).to be_nil
-      end
-    end
-
     context "when service call fails" do
       let(:other_version_sprint) { create(:sprint, name: "Sprint 2", project:) }
       let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
@@ -304,6 +275,34 @@ RSpec.describe RbStoriesController do
         expect(assigns(:sprint)).to eq(agile_sprint)
         expect(assigns(:story)).to eq(story_in_agile_sprint)
         expect(assigns(:backlog)).to be_a(Backlog)
+      end
+    end
+
+    context "with Inbox as target" do
+      let!(:existing_inbox_item) { create(:work_package, project:, status:, position: 1) }
+
+      it "responds with success and moves story to Inbox at the given position", :aggregate_failures do
+        put :move, params: {
+                     project_id: project.id,
+                     sprint_id: agile_sprint.id,
+                     id: story_in_agile_sprint.id,
+                     target_id: "inbox",
+                     position: 2
+                   },
+                   format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-inbox-component-#{project.id}"
+        assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{agile_sprint.id}"])
+        assert_select %(turbo-stream[action="replace"][target="backlogs-inbox-component-#{project.id}"][method="morph"])
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(agile_sprint)
+        expect(assigns(:story)).to eq(story_in_agile_sprint)
+        expect(story_in_agile_sprint.reload.sprint).to be_nil
+        expect(story_in_agile_sprint.reload.position).to eq(2)
       end
     end
 

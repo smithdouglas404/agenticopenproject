@@ -43,6 +43,8 @@ class UserWorkingHours < ApplicationRecord
             presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
 
+  validate :at_least_one_working_day_selected
+
   scope :for_user, ->(user) { where(user:) }
 
   scope :past, ->(date = Date.current) { where(valid_from: ..date).order(valid_from: :desc) }
@@ -142,5 +144,11 @@ class UserWorkingHours < ApplicationRecord
 
   def abbr_day_name(day)
     I18n.t("date.abbr_day_names")[DAY_ABBR_INDEX[day]]
+  end
+
+  def at_least_one_working_day_selected
+    if DAYS.all? { |day| public_send(day).zero? }
+      errors.add(:days, :no_working_day)
+    end
   end
 end

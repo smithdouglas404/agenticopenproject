@@ -129,8 +129,8 @@ export default class WorkingHoursFormController extends Controller {
 
   private updateDisplayMode() {
     const isSame = this.hoursModeValue === 'same';
-    this.sameHoursSectionTarget.hidden = !isSame;
-    this.individualSectionTarget.hidden = isSame;
+    this.sameHoursSectionTarget.classList.toggle('d-none', !isSame);
+    this.individualSectionTarget.classList.toggle('d-none', isSame);
   }
 
   private syncSameHoursToAllDays() {
@@ -160,11 +160,11 @@ export default class WorkingHoursFormController extends Controller {
       });
     }
 
-    this.totalWorkHoursDisplayTarget.value = formattedHour(totalHours);
+    this.totalWorkHoursDisplayTarget.value = formattedHour(totalHours, false);
 
     const factor = parseFloat(this.availabilityFactorInputTarget.value);
     const available = totalHours * (isNaN(factor) ? 100 : factor) / 100;
-    this.totalAvailableHoursDisplayTarget.value = formattedHour(available);
+    this.totalAvailableHoursDisplayTarget.value = formattedHour(available, false);
   }
 
   private dayHoursInputForDay(day:string):HTMLInputElement|undefined {

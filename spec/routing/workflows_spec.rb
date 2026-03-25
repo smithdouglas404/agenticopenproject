@@ -31,11 +31,13 @@
 require "spec_helper"
 
 RSpec.describe "workflows routes" do
-  it { expect(get("/workflows")).to route_to("workflows#show") }
+  it { expect(get("/workflows")).to route_to("workflows#index") }
 
-  it { expect(get("/workflows/edit")).to route_to("workflows#edit") }
-  it { expect(patch("/workflows")).to route_to("workflows#update") }
+  it { expect(get("/workflows/42/edit")).to route_to("workflows#edit", type_id: "42") }
+  it { expect(patch("/workflows/42")).to route_to("workflows#update", type_id: "42") }
 
   it { expect(get("/workflows/copy")).to route_to("workflows#copy") }
   it { expect(post("/workflows/copy")).to route_to("workflows#copy") }
+
+  it { expect(get("/workflows/summarized")).to route_to("workflows#summarized") }
 end
