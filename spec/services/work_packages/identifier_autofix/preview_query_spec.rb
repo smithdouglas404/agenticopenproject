@@ -114,6 +114,22 @@ RSpec.describe WorkPackages::IdentifierAutofix::PreviewQuery do
     expect(entry).to include(:project, :current_identifier, :suggested_identifier, :error_reason)
   end
 
+  context "when a historical slug exists in lowercase that matches a candidate" do
+    let!(:problematic) { create_project_with_raw_identifier(name: "Project", identifier: "project") }
+
+    before do
+      # Occupy "PRO" so the generator is forced to consider "PROJ" as the next candidate
+      create_project_with_raw_identifier(name: "Provisions", identifier: "PRO")
+      # Simulate a retired lowercase slug from a prior identifier rename
+      FriendlyId::Slug.create!(slug: "proj", sluggable: problematic)
+    end
+
+    it "excludes the uppercase form from suggestions" do
+      suggestions = result.projects_data.pluck(:suggested_identifier)
+      expect(suggestions).not_to include("PROJ")
+    end
+  end
+
   describe "error_reason classification" do
     it "assigns :too_long when identifier length exceeds MAX_IDENTIFIER_LENGTH" do
       create_project_with_raw_identifier(name: "Test", identifier: "averylongidentifier")
