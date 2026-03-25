@@ -108,7 +108,7 @@ module Pages
 
       def expect_current_page_number(number)
         within ".PaginationContainer" do
-          expect(page).to have_css("a.Page[aria-current='page']", text: number.to_s)
+          expect(page).to have_css("a.Page", text: number.to_s, aria: { current: "page" })
         end
       end
 
@@ -460,13 +460,13 @@ module Pages
 
       def expect_page_size(size)
         within ".op-pagination--options" do
-          expect(page).to have_css("span[aria-current='page']", text: /\A#{size}\z/)
+          expect(page).to have_css("span", text: /\A#{size}\z/, aria: { current: "page" })
         end
       end
 
       def go_to_page(page_number)
         within ".PaginationContainer" do
-          find("a[aria-label='Page #{page_number}'][href*='page=#{page_number}']", visible: true).click
+          click_link accessible_name: "Page #{page_number}"
         end
       end
 

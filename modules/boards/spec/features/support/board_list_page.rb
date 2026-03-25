@@ -99,7 +99,7 @@ module Pages
 
     def expect_to_be_on_page(number)
       within ".PaginationContainer" do
-        expect(page).to have_css("a[aria-current='page']", text: number)
+        expect(page).to have_css("a.Page", text: number, aria: { current: "page" })
       end
     end
 
