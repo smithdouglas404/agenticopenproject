@@ -34,12 +34,15 @@ module WorkPackages::Identifier
   included do
     extend FriendlyId
 
-    friendly_id :identifier, use: %i[finders history], slug_column: :identifier
-
-    # Replace FriendlyId::History::FinderMethods with our ghost-aware version
-    # so that ghost identifiers (old project prefix + newer sequence) resolve.
-    friendly_id_config.finder_methods = WorkPackages::Identifier::GhostFinder
-    FriendlyId::Finders.setup(self)
+    # Configures FriendlyId with slug history and a custom ghost finder.
+    # The GhostFinder extends the standard lookup chain so that identifiers
+    # using old project prefixes still resolve — e.g. "PROJ-11" finds the
+    # right WP even after the project was renamed to "BETTER".
+    friendly_id :identifier, slug_column: :identifier do |config|
+      config.use %i[finders history]
+      config.finder_methods = WorkPackages::Identifier::GhostFinder
+      FriendlyId::Finders.setup(WorkPackage)
+    end
 
     after_create :allocate_identifier!, if: -> { Setting::WorkPackageIdentifier.alphanumeric? && identifier.blank? }
 

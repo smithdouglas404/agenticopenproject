@@ -56,14 +56,9 @@ module WorkPackages::Identifier::GhostFinder
     prefix, seq = id.to_s.match(/\A(.+)-(\d+)\z/)&.captures
     return unless prefix && seq
 
-    project = resolve_project_by_identifier(prefix)
-    return unless project
-
+    project = Project.friendly.find(prefix)
     find_by(project_id: project.id, sequence_number: seq.to_i)
-  end
-
-  def resolve_project_by_identifier(prefix)
-    Project.find_by(identifier: prefix) ||
-      Project.joins(:slugs).where(friendly_id_slugs: { sluggable_type: "Project", slug: prefix }).first
+  rescue ActiveRecord::RecordNotFound
+    nil
   end
 end
