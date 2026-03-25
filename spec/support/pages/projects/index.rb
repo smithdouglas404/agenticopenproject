@@ -121,7 +121,7 @@ module Pages
 
       def expect_page_link(text)
         within ".op-pagination--pages" do
-          expect(page).to have_css("a.op-pagination--item-link", text:)
+          expect(page).to have_css("a.Page", text:)
         end
       end
 
@@ -155,12 +155,8 @@ module Pages
 
       def expect_page_sizes(model:)
         within ".op-pagination--options" do
-          pagination_links = page.all("a.op-pagination--item-link")
+          pagination_links = page.all("a.Page")
           expect(pagination_links.size).to be_positive
-
-          current_option = find("[aria-current='page']")
-          expect(current_option.tag_name).to eq("span")
-          expect(current_option["tabindex"]).to eq("0")
 
           pagination_links.each do |pagination_link|
             uri = URI.parse(pagination_link["href"])
@@ -454,13 +450,13 @@ module Pages
 
       def set_page_size(size)
         within ".op-pagination--options" do
-          find(".op-pagination--item", text: size).click
+          find("a.Page", text: size.to_s).click
         end
       end
 
       def expect_page_size(size)
         within ".op-pagination--options" do
-          expect(page).to have_css("span", text: /\A#{size}\z/, aria: { current: "page" })
+          expect(page).to have_css("a.Page", text: /\A#{size}\z/, aria: { current: "page" })
         end
       end
 

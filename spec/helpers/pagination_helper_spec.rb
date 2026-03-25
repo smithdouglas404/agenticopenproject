@@ -152,20 +152,14 @@ RSpec.describe PaginationHelper do
           expect(pagination).to have_element "nav", aria: { label: "Items per page selection" }
         end
 
-        it "has a link to every per page option except the current one" do
+        it "has a link to every per page option" do
           expect(pagination).to have_css(".op-pagination--options") do |pagination_options|
-            [50, 100].each do |other_per_page|
+            [10, 50, 100].each do |other_per_page|
               path = work_packages_path(page: current_page, per_page: other_per_page)
-              expect(pagination_options).to have_link href: path, current: nil do |link|
+              expect(pagination_options).to have_link href: path do |link|
                 expect(link["aria-label"]).to eq "Show #{other_per_page} per page"
               end
             end
-          end
-        end
-
-        it "does not have a link to the current per page option" do
-          expect(pagination).to have_css(".op-pagination--options") do |pagination_options|
-            expect(pagination_options).to have_no_link text: per_page, exact_text: true, current: "page"
           end
         end
 
@@ -173,7 +167,7 @@ RSpec.describe PaginationHelper do
           expect(pagination).to have_css(".op-pagination--options") do |pagination_options|
             expect(pagination_options).to have_link(per_page.to_s) do |link|
               expect(link["aria-label"]).to eq "Show #{per_page} per page"
-              expect(link["aria-current"]).to eq "true"
+              expect(link["aria-current"]).to eq "page"
               expect(link["class"]).to include("Page")
             end
           end

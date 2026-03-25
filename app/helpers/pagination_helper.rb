@@ -193,7 +193,7 @@ module PaginationHelper
   def pagination_options_item(per_page, current:, **options)
     label = I18n.t("js.pagination.pages.show_per_page", number: per_page)
     aria_props = { label: }
-    aria_props[:current] = current if current
+    aria_props[:current] = "page" if current
 
     link_to(
       per_page,
