@@ -124,12 +124,19 @@ module PaginationHelper
     end
   end
 
-  def render_primer_pagination(paginator, params:, allowed_params:, **)
+  def render_primer_pagination(paginator, params:, allowed_params:, turbo: false, turbo_action: nil, **)
+    link_arguments = {}
+    link_arguments[:data] = {}
+    link_arguments[:data][:turbo_stream] = true if turbo
+    link_arguments[:data][:turbo_action] = turbo_action if turbo_action.present?
+    link_arguments.delete(:data) if link_arguments[:data].empty?
+
     render(
       Primer::OpenProject::Pagination.new(
         page_count: paginator.total_pages,
         current_page: paginator.current_page,
-        href_builder: ->(page) { pagination_href(page, params:, allowed_params:) }
+        href_builder: ->(page) { pagination_href(page, params:, allowed_params:) },
+        link_arguments:
       )
     )
   end
