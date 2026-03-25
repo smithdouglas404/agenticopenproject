@@ -67,7 +67,7 @@ class WorkPackages::ReallocateIdentifiersOnMoveService
   end
 
   def allocate_new_identifier(work_package)
-    next_seq = target_project.next_wp_sequence!
+    next_seq = target_project.increment_wp_sequence!
 
     work_package.update_columns(
       sequence_number: next_seq,

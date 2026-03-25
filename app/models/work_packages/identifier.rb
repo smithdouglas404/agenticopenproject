@@ -50,7 +50,7 @@ module WorkPackages::Identifier
   # Uses an advisory lock to serialize concurrent allocations on the same project.
   def allocate_identifier!
     OpenProject::Mutex.with_advisory_lock_transaction(project, "wp_sequence") do
-      next_seq = project.next_wp_sequence!
+      next_seq = project.increment_wp_sequence!
 
       update_columns(sequence_number: next_seq,
                      identifier: "#{project.identifier}-#{next_seq}")

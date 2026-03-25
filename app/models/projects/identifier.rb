@@ -123,8 +123,8 @@ module Projects::Identifier
   end
 
   # Atomically increments the work package sequence counter and returns the new value.
-  # Must be called within an advisory lock to serialize concurrent allocations.
-  def next_wp_sequence!
+  # Callers must hold an advisory lock (OpenProject::Mutex) to serialize concurrent access.
+  def increment_wp_sequence!
     self.class.connection.select_value(<<~SQL.squish)
       UPDATE projects
       SET wp_sequence_counter = wp_sequence_counter + 1
