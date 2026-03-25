@@ -28,69 +28,94 @@ See COPYRIGHT and LICENSE files for more details.
 ++# %>
 
 <%= turbo_frame_tag "backlogs_container", refresh: :morph, class: "op-backlogs-page" do %>
-  <% if @owner_backlogs.empty? && @sprints.empty? %>
-    <%=
-      render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
-        blankslate.with_visual_icon(icon: :versions)
-        blankslate.with_heading(tag: :h2).with_content(t(:backlogs_empty_title))
+  <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop">
+    <div id="owner_backlogs_container" class="op-sprint-planning-lists">
+      <%= render Backlogs::InboxComponent.new(
+            work_packages: @inbox_work_packages,
+            project: @project,
+            show_all: params[:all].present?
+          ) %>
+    </div>
+    <div id="sprint_backlogs_container" class="op-sprint-planning-lists">
+      <%=
+        render(Primer::Beta::Subhead.new(hide_border: true)) do |head|
+          head.with_heading(tag: :h3, font_weight: :bold, size: :medium) { Agile::Sprint.human_model_name.pluralize }
 
-        if current_user.allowed_in_project?(:manage_versions, @project)
-          blankslate.with_description_content(t(:backlogs_empty_action_text))
-        end
-      end
-    %>
-  <% else %>
-    <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop">
-      <div id="owner_backlogs_container" class="op-sprint-planning-lists">
-        <%= render Backlogs::InboxComponent.new(
-              work_packages: @inbox_work_packages,
-              project: @project,
-              show_all: params[:all].present?
-            ) %>
-      </div>
-      <div id="sprint_backlogs_container" class="op-sprint-planning-lists">
-        <%=
-          render(Primer::Beta::Subhead.new(hide_border: true)) do |head|
-            head.with_heading(tag: :h3, font_weight: :bold, size: :medium) { Agile::Sprint.human_model_name.pluralize }
-
-            if allow_sprint_creation?(@project)
-              head.with_actions do
-                render Primer::Beta::Button.new(
-                  tag: :a,
-                  label: Agile::Sprint.human_model_name,
-                  href: new_dialog_project_sprints_path(@project),
-                  data: {
-                    controller: "async-dialog",
-                    test_selector: "op-sprints--new-sprint-button"
-                  }
-                ) do |button|
-                  button.with_leading_visual_icon(icon: :plus)
-                  Agile::Sprint.human_model_name
-                end
-              end
-            end
-          end
-        %>
-
-        <%#= render(Primer::OpenProject::SubHeader.new) do |subheader|
-            if allow_sprint_creation?(@project)
-              subheader.with_action_button(
-                leading_icon: :plus,
-                label: Agile::Sprint.human_model_name,
+          if allow_sprint_creation?(@project)
+            head.with_actions do
+              render Primer::Beta::Button.new(
                 tag: :a,
+                label: Agile::Sprint.human_model_name,
                 href: new_dialog_project_sprints_path(@project),
                 data: {
                   controller: "async-dialog",
                   test_selector: "op-sprints--new-sprint-button"
                 }
-              ) do
+              ) do |button|
+                button.with_leading_visual_icon(icon: :plus)
                 Agile::Sprint.human_model_name
               end
             end
-          end %>
+          end
+        end
+      %>
 
+      <%#= render(Primer::OpenProject::SubHeader.new) do |subheader|
+          if allow_sprint_creation?(@project)
+            subheader.with_action_button(
+              leading_icon: :plus,
+              label: Agile::Sprint.human_model_name,
+              tag: :a,
+              href: new_dialog_project_sprints_path(@project),
+              data: {
+                controller: "async-dialog",
+                test_selector: "op-sprints--new-sprint-button"
+              }
+            ) do
+              Agile::Sprint.human_model_name
+            end
+          end
+        end %>
+
+      <% if @sprints.empty? %>
+        <% can_create_sprints = current_user.allowed_in_project?(:create_sprints, @project) %>
+        <% can_manage_sprint_sharing = current_user.allowed_in_project?(:share_sprint, @project) %>
+        <% description_key =
+             if @project.receive_shared_sprints?
+               can_manage_sprint_sharing ? "backlogs.sprint_planning.blankslate.receive_shared_description_html" :
+                 "backlogs.sprint_planning.blankslate.receive_shared_no_actions_description_text"
+             elsif can_create_sprints && can_manage_sprint_sharing
+               "backlogs.sprint_planning.blankslate.description_html"
+             elsif can_create_sprints
+               "backlogs.sprint_planning.blankslate.create_sprint_description_text"
+             elsif can_manage_sprint_sharing
+               "backlogs.sprint_planning.blankslate.share_sprint_description_html"
+             else
+               "backlogs.sprint_planning.blankslate.no_actions_description_text"
+             end %>
+        <% description_content =
+             if can_manage_sprint_sharing
+               t(
+                 description_key,
+                 settings_link: link_to(
+                   t("backlogs.sprint_planning.blankslate.settings_link_text"),
+                   project_settings_backlog_sharing_path(@project)
+                 )
+               )
+             else
+               t(description_key)
+             end %>
+
+        <%=
+          render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
+            blankslate.with_visual_icon(icon: :versions)
+            blankslate.with_heading(tag: :h4).with_content(t("backlogs.sprint_planning.blankslate.title"))
+            blankslate.with_description_content(description_content)
+          end
+        %>
+      <% else %>
         <%= render(Backlogs::SprintComponent.with_collection(@sprints, project: @project, active_sprint_ids: @active_sprint_ids)) %>
-      </div>
+      <% end %>
     </div>
-  <% end %>
+  </div>
 <% end %>

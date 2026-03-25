@@ -146,6 +146,60 @@ module Pages
       end
     end
 
+    def expect_sprint_planning_blankslate
+      within_sprint_backlogs do
+        expect(page).to have_css("h4", text: "No sprints present yet")
+      end
+    end
+
+    def expect_sprint_planning_blankslate_description(text)
+      within_sprint_backlogs do
+        expect(page).to have_text(text)
+      end
+    end
+
+    def expect_no_sprint_planning_blankslate
+      within_sprint_backlogs do
+        expect(page).to have_no_css("h4", text: "No sprints present yet")
+      end
+    end
+
+    def expect_sprint_planning_settings_link
+      within_sprint_backlogs do
+        expect(page).to have_link(
+          "project settings",
+          href: project_settings_backlog_sharing_path(project)
+        )
+      end
+    end
+
+    def expect_no_sprint_planning_settings_link
+      within_sprint_backlogs do
+        expect(page).to have_no_link(
+          "project settings",
+          href: project_settings_backlog_sharing_path(project)
+        )
+      end
+    end
+
+    def expect_new_sprint_button
+      within_sprint_backlogs do
+        expect(page).to have_css(
+          test_selector("op-sprints--new-sprint-button"),
+          text: Agile::Sprint.human_model_name
+        )
+      end
+    end
+
+    def expect_no_new_sprint_button
+      within_sprint_backlogs do
+        expect(page).to have_no_css(
+          test_selector("op-sprints--new-sprint-button"),
+          text: Agile::Sprint.human_model_name
+        )
+      end
+    end
+
     def expect_inbox_item(work_package)
       within_inbox do
         expect(page).to have_css(inbox_item_selector(work_package))
@@ -381,6 +435,10 @@ module Pages
 
     def within_inbox(&)
       within("#inbox_#{project.id}", &)
+    end
+
+    def within_sprint_backlogs(&)
+      within("#sprint_backlogs_container", &)
     end
 
     def sprint_selector(sprint)

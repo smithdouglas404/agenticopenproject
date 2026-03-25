@@ -170,6 +170,17 @@ en:
       title: "Move to sprint"
       label_sprint: "Sprint"
 
+    sprint_planning:
+      blankslate:
+        title: "No sprints present yet"
+        description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
+        create_sprint_description_text: "To start planning your sprint, create one here."
+        share_sprint_description_html: "To start planning your sprint, go to the %{settings_link} to receive sprints from a different project."
+        no_actions_description_text: "No sprints are available for this project yet."
+        receive_shared_description_html: "This project receives sprints from a different project. Manage this in the %{settings_link}."
+        receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
+        settings_link_text: "project settings"
+
     sprint_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
