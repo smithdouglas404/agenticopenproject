@@ -82,7 +82,10 @@ RSpec.describe PaginationHelper do
     end
 
     it "renders the per-page options list" do
-      expect(pagination).to have_css("ul.op-pagination--items[role='presentation']", count: 1)
+      expect(pagination).to have_css(".op-pagination--options")
+      expect(pagination).to have_css("nav", accessible_name: "Items per page selection")
+      expect(pagination).to have_css(".op-pagination--label", text: "Per page")
+      expect(pagination).to have_css("a.Page", minimum: 1)
     end
 
     it "has a next page link" do
@@ -166,12 +169,12 @@ RSpec.describe PaginationHelper do
           end
         end
 
-        it "has a focusable element for the current per page option" do
+        it "marks the current per page option with aria-current" do
           expect(pagination).to have_css(".op-pagination--options") do |pagination_options|
-            expect(pagination_options).to have_css(".op-pagination--item_current", text: per_page)
-            expect(pagination_options).to have_element text: per_page, exact_text: true, aria: { current: "page" } do |element|
-              expect(element["aria-label"]).to eq "Show #{per_page} per page"
-              expect(element["tabindex"]).to eq "0"
+            expect(pagination_options).to have_link(per_page.to_s) do |link|
+              expect(link["aria-label"]).to eq "Show #{per_page} per page"
+              expect(link["aria-current"]).to eq "true"
+              expect(link["class"]).to include("Page")
             end
           end
         end
