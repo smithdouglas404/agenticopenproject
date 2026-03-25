@@ -39,10 +39,16 @@ module Agile
 
     belongs_to :project
     has_many :work_packages, dependent: :nullify
+    has_many :task_boards,
+             as: :linked,
+             class_name: "Boards::Grid",
+             inverse_of: :linked,
+             dependent: :nullify
 
     scopes :for_project,
            :not_completed,
            :order_by_date,
+           :receiving_projects,
            :visible
 
     enum :status,
@@ -61,8 +67,13 @@ module Agile
     validates :finish_date,
               comparison: { greater_than_or_equal_to: :start_date },
               if: :start_date?
-
-    validate :validate_only_one_active_sprint_per_project
+    validates :status,
+              uniqueness: {
+                scope: :project_id,
+                conditions: -> { active },
+                message: :only_one_active_sprint_allowed
+              },
+              if: :active?
 
     def date_range_set?
       start_date? && finish_date?
@@ -74,22 +85,20 @@ module Agile
       Day.working.from_range(from: start_date, to: finish_date).count
     end
 
-    private
+    def task_board_for(project)
+      task_boards.find_by(project:)
+    end
 
-    # TODO: consider moving this validation to the database level to ensure data integrity.
-    # Doing this in Rails can lead to race conditions. Revisit this topic once the sharing
-    # logic has been fully specified.
-    def validate_only_one_active_sprint_per_project
-      return if !active? || project_id.blank?
+    def owned_by?(project)
+      project_id == project.id
+    end
 
-      existing_active_sprint = self.class
-                                   .where(project_id:, status: "active")
-                                   .where.not(id:)
-                                   .exists?
+    def shared_with?(project)
+      self.class.for_project(project).exists?(id:) && !owned_by?(project)
+    end
 
-      if existing_active_sprint
-        errors.add(:status, :only_one_active_sprint_allowed)
-      end
+    def visible_to?(project)
+      self.class.for_project(project).exists?(id:)
     end
   end
 end

@@ -481,9 +481,10 @@ RSpec.describe "Open the Meetings tab",
             1
           )
 
-          page.within_test_selector("op-meeting-container-#{first_upcoming_meeting.id}") do
-            expect(page).to have_content("A very important note added from the meetings tab to the first meeting!")
-          end
+          expect(page).to have_test_selector(
+            "op-meeting-container-#{first_upcoming_meeting.id}",
+            text: "A very important note added from the meetings tab to the first meeting!"
+          )
 
           meetings_tab.open_add_to_meeting_dialog
 
@@ -493,9 +494,10 @@ RSpec.describe "Open the Meetings tab",
             2
           )
 
-          page.within_test_selector("op-meeting-container-#{second_upcoming_meeting.id}") do
-            expect(page).to have_content("A very important note added from the meetings tab to the second meeting!")
-          end
+          expect(page).to have_test_selector(
+            "op-meeting-container-#{second_upcoming_meeting.id}",
+            text: "A very important note added from the meetings tab to the second meeting!"
+          )
         end
 
         it "allows the user to select ongoing meetings", skip: "flickering spec (#68952)" do

@@ -172,7 +172,7 @@ RSpec.describe "Projects", "creation",
     let(:list_field) do
       FormFields::SelectFormField.new(
         list_custom_field,
-        selector: "[data-qa-field-name='#{list_custom_field.attribute_name(:kebab_case)}'"
+        selector: "[data-test-selector='#{list_custom_field.attribute_name(:kebab_case)}'"
       )
     end
 
@@ -235,7 +235,7 @@ RSpec.describe "Projects", "creation",
     let(:version_field) do
       FormFields::SelectFormField.new(
         version_custom_field,
-        selector: "[data-qa-field-name='#{version_custom_field.attribute_name(:kebab_case)}'"
+        selector: "[data-test-selector='#{version_custom_field.attribute_name(:kebab_case)}'"
       )
     end
 
@@ -479,7 +479,9 @@ RSpec.describe "Projects", "creation",
 
             fill_in "Text for Admins only", with: "foo"
 
-            click_on "Complete"
+            wait_for_turbo do
+              click_on "Complete"
+            end
 
             expect_and_dismiss_flash type: :success, message: "Successful creation."
 
@@ -594,6 +596,7 @@ RSpec.describe "Projects", "creation",
       find("body").click
       expect(page).to have_field "Identifier", with: "FPA"
 
+      expect(page).to have_field "Identifier", with: "FPA"
       fill_in "Identifier", with: "3INVALID"
       click_on "Complete"
 

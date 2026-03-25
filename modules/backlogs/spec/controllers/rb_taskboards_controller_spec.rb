@@ -33,14 +33,13 @@ require "spec_helper"
 RSpec.describe RbTaskboardsController do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
-  shared_let(:user) { create(:admin) }
-  current_user { user }
-
+  let(:user) { create(:user) }
   let(:permissions) { [] }
   let(:project) { create(:project, member_with_permissions: { user => permissions }) }
-  let(:status)  { create(:status, name: "status 1", is_default: true) }
-  let(:sprint)  { create(:sprint, project:) }
-  let(:story)   { create(:story, status:, version: sprint, project:) }
+  let(:status) { create(:status, name: "status 1", is_default: true) }
+  let(:board) { create(:board_grid_with_query, project:) }
+
+  current_user { user }
 
   before do
     allow(Setting)
@@ -49,39 +48,132 @@ RSpec.describe RbTaskboardsController do
   end
 
   describe "GET show" do
-    before do
-      get :show, params: { project_id: project.identifier, sprint_id: sprint.id }
+    context "with the feature flag active", with_flag: { scrum_projects: true } do
+      let(:sprint) { create(:agile_sprint, project:) }
+
+      context "when the board exists" do
+        let!(:other_project) { create(:project) }
+        let!(:other_board) { create(:board_grid_with_query, project: other_project, linked: sprint) }
+
+        before do
+          board.update!(linked: sprint)
+        end
+
+        context "as a member with view_sprints permission" do
+          let(:permissions) { %i[view_sprints view_work_packages] }
+
+          before do
+            get :show, params: { project_id: project.identifier, sprint_id: sprint.id }
+          end
+
+          it "redirects to the board" do
+            expect(response).to redirect_to(project_work_package_board_path(project, board))
+          end
+
+          it "uses the board for the current project" do
+            expect(response).to redirect_to(project_work_package_board_path(project, board))
+            expect(response).not_to redirect_to(project_work_package_board_path(other_project, other_board))
+          end
+        end
+      end
+
+      context "when the board does not exist" do
+        let(:permissions) { %i[view_sprints view_work_packages] }
+
+        before do
+          get :show, params: { project_id: project.identifier, sprint_id: sprint.id }
+        end
+
+        it "returns not found" do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "when the sprint is rendered in a receiving project" do
+        let(:source_project) { create(:project, sprint_sharing: "share_all_projects") }
+        let(:project) do
+          create(:project,
+                 sprint_sharing: "receive_shared",
+                 member_with_permissions: { user => permissions })
+        end
+        let(:permissions) { %i[view_sprints view_work_packages] }
+        let(:sprint) { create(:agile_sprint, project: source_project) }
+
+        before do
+          create(:board_grid_with_query, project: source_project, linked: sprint)
+          get :show, params: { project_id: project.identifier, sprint_id: sprint.id }
+        end
+
+        it "returns not found when the receiving project has no task board" do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "as a member without view_sprints permission" do
+        let(:permissions) { [:view_project] }
+
+        before do
+          board.update!(linked: sprint)
+          get :show, params: { project_id: project.identifier, sprint_id: sprint.id }
+        end
+
+        it "denies access" do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "as a non-member" do
+        current_user { create(:user) }
+
+        before do
+          board.update!(linked: sprint)
+          get :show, params: { project_id: project.identifier, sprint_id: sprint.id }
+        end
+
+        it "denies access" do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
     end
 
-    it "performs that request" do
-      expect(response).to be_successful
-      expect(response).to render_template :show
-    end
-
-    context "as a member with view_sprints permission" do
-      let(:user) { create(:user) }
+    context "with the feature flag inactive", with_flag: { scrum_projects: false } do
+      let(:sprint) { create(:sprint, project:) }
       let(:permissions) { %i[view_sprints view_work_packages] }
 
-      it "grants access" do
+      before do
+        get :show, params: { project_id: project.identifier, sprint_id: sprint.id }
+      end
+
+      it "renders the legacy show template" do
         expect(response).to be_successful
         expect(response).to render_template :show
       end
-    end
 
-    context "as a member without view_sprints permission" do
-      let(:user) { create(:user) }
-      let(:permissions) { [:view_project] }
+      context "as a member with view_sprints permission" do
+        let(:permissions) { %i[view_sprints view_work_packages] }
 
-      it "denies access" do
-        expect(response).to have_http_status(:not_found)
+        it "grants access" do
+          expect(response).to be_successful
+          expect(response).to render_template :show
+        end
       end
-    end
 
-    context "as a non-member" do
-      current_user { create(:user) }
+      context "as a member without view_sprints permission" do
+        let(:permissions) { [:view_project] }
 
-      it "denies access" do
-        expect(response).to have_http_status(:not_found)
+        it "denies access" do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "as a non-member" do
+        let(:permissions) { [] }
+
+        current_user { create(:user) }
+
+        it "denies access" do
+          expect(response).to have_http_status(:not_found)
+        end
       end
     end
   end

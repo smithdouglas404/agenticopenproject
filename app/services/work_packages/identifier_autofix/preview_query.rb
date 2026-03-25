@@ -53,7 +53,7 @@ module WorkPackages
       def generate_suggestions(analysis)
         ProjectIdentifierSuggestionGenerator.call(
           preview_projects(analysis.scope),
-          exclude: analysis.exclusion_set
+          exclude: analysis.exclusion_set.to_set(&:upcase)
         )
       end
 

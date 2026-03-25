@@ -41,5 +41,22 @@ module OpenProject::Wikis
     register "openproject-wikis",
              author_url: "https://openproject.org",
              requires_openproject: ">= 17.0.0"
+
+    initializer "openproject_wikis.inflections" do
+      ActiveSupport::Inflector.inflections(:en) do |inflect|
+        inflect.acronym "XWiki"
+      end
+
+      OpenProject::Inflector.rule do |basename, abspath|
+        case basename
+        when "xwiki"
+          "XWiki"
+        when /\Axwiki_(.*)\z/
+          "XWiki#{default_inflect($1, abspath)}"
+        end
+      end
+    end
+
+    replace_principal_references "Wikis::PageLink" => %i[author_id]
   end
 end

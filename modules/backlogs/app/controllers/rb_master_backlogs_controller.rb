@@ -31,25 +31,32 @@
 class RbMasterBacklogsController < RbApplicationController
   include WorkPackages::WithSplitView
 
-  menu_item :backlogs
+  # Without the feature flag, there is only the top level menu item, select it
+  menu_item :backlogs_legacy
 
-  before_action :load_backlogs, only: :index
+  # With the feature flag, we have a proper menu, select the correct sub entry
+  current_menu_item [:sprint_planning] do
+    :sprint_planning
+  end
+
+  before_action :not_authorized_on_feature_flag_inactive, only: :sprint_planning
+  before_action :load_backlogs, only: %i[index sprint_planning]
+
+  def sprint_planning
+    if turbo_frame_request?
+      render partial: "sprint_planning_list", layout: false
+    else
+      render :sprint_planning
+    end
+  end
 
   def index
-    if OpenProject::FeatureDecisions.scrum_projects_active?
-      # Feature flag is active, render the new views
-      if turbo_frame_request?
-        render partial: "agile_list", layout: false
-      else
-        render :agile_index
-      end
+    return redirect_to action: :sprint_planning if OpenProject::FeatureDecisions.scrum_projects_active?
+
+    if turbo_frame_request?
+      render partial: "list", layout: false
     else
-      # Feature flag is not active, render legacy views
-      if turbo_frame_request? # rubocop:disable Style/IfInsideElse
-        render partial: "list", layout: false
-      else
-        render :index
-      end
+      render :index
     end
   end
 
@@ -60,14 +67,20 @@ class RbMasterBacklogsController < RbApplicationController
       load_backlogs
 
       if OpenProject::FeatureDecisions.scrum_projects_active?
-        render :agile_index
+        render :sprint_planning
       else
         render :index
       end
     end
   end
 
-  def split_view_base_route = backlogs_project_backlogs_path(request.query_parameters)
+  def split_view_base_route
+    if OpenProject::FeatureDecisions.scrum_projects_active?
+      sprint_planning_backlogs_project_backlogs_path(request.query_parameters)
+    else
+      backlogs_project_backlogs_path(request.query_parameters)
+    end
+  end
 
   private
 
@@ -76,6 +89,7 @@ class RbMasterBacklogsController < RbApplicationController
 
     if OpenProject::FeatureDecisions.scrum_projects_active?
       @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
+      @active_sprint_ids = @sprints.select(&:active?).map(&:id)
     else
       @sprint_backlogs = Backlog.sprint_backlogs(@project)
     end

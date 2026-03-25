@@ -108,7 +108,7 @@ module Pages
         page.find(".ng-option-marked").click
         page.find(".ck-editor__editable").set(notes)
 
-        click_on("Save")
+        wait_for_turbo_stream { click_on("Save") }
 
         page.within_test_selector("op-upcoming-meetings-counter") do
           raise "Expected counter to eq #{counter}" unless page.has_content?(counter)

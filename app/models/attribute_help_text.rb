@@ -33,7 +33,7 @@ class AttributeHelpText < ApplicationRecord
 
   def self.cached(user)
     RequestStore.fetch(name) do
-      visible(user).select(:id, :attribute_name, :caption).index_by(&:attribute_name)
+      visible_condition(user).where(type: name).select(:id, :type, :attribute_name, :caption).index_by(&:attribute_name)
     end
   end
 
@@ -83,7 +83,7 @@ class AttributeHelpText < ApplicationRecord
     raise NotImplementedError
   end
 
-  def self.visible_condition
+  def self.visible_condition(_user = nil)
     raise NotImplementedError
   end
 

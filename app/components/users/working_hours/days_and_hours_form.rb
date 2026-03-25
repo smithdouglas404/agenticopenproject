@@ -41,6 +41,10 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
           I18n.t("users.working_hours.form.title_days_and_hours")
         end
       end
+
+      if model.errors[:days].present?
+        render(Primer::Alpha::Banner.new(mb: 3, icon: :stop, scheme: :danger)) { model.errors[:days].join("\n") }
+      end
     end
 
     form.group(layout: :horizontal, mb: 2) do |group|

@@ -117,7 +117,7 @@ en:
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
       caption: >
-        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
+        User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
     import:
       title: "Import"
     jira:
@@ -434,12 +434,38 @@ en:
         success_banner: Successfully updated work package identifier format.
         in_progress:
           banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
-
     workflows:
       tabs:
         default_transitions: "Default transitions"
         user_author: "User is author"
         user_assignee: "User is assignee"
+      index:
+        description: "Configure status transitions for each work package type."
+        type_filter:
+          label: "Filter by type name…"
+      status_button: "Status"
+      statuses_dialog:
+        title: "Statuses"
+        label: "Statuses enabled for this type"
+        caption: "Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it."
+      statuses_removal_dialog:
+        title: "Remove statuses"
+        heading:
+          one: "Remove 1 status?"
+          other: "Remove %{count} statuses?"
+        description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
+        confirm: "Remove"
+      leave_confirmation:
+        title: "Save changes before continuing?"
+        description: "You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?"
+        ignore: "Ignore changes"
+        save: "Save changes and continue"
+      role_selector:
+        label: "Role: %{role}"
+        no_role: "Select role"
+      blankslate:
+        title: "No status transitions configured"
+        description: "Add statuses to start configuring workflows for this role"    
     info:
       database_deprecation_html: >
         Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject.
@@ -448,7 +474,6 @@ en:
         <br/>
         We have prepared [upgrade guides for all installation methods](upgrade_guide).
         You can perform the upgrade ahead of the next release at any time by following the guides.
-
 
   authentication:
     login_and_registration: "Login and registration"
@@ -1587,12 +1612,6 @@ en:
         dependencies: "Dependencies"
 
   activerecord:
-    errors:
-      models:
-        group:
-          attributes:
-            parent_id:
-              circular_dependency: "would create a circular group hierarchy."
     attributes:
       jira_import:
         projects: "Projects"
@@ -1910,6 +1929,7 @@ en:
         sunday_hours: "Sunday hours"
         availability_factor: "Availability factor"
         shared_hours: "Work hours"
+        days: "Working days"
       version:
         effective_date: "Finish date"
         sharing: "Sharing"
@@ -2008,7 +2028,6 @@ en:
         not_editable: "cannot be edited because it is already in effect."
         not_current_user: "is not the current user."
         system_wide_non_working_day_exists: "conflicts with an existing system-wide non-working day for this date."
-        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "not found."
         not_a_date: "is not a valid date."
         not_a_datetime: "is not a valid date time."
@@ -2039,6 +2058,10 @@ en:
           is not providing a "Secure Context". Either use HTTPS or a loopback address, such as localhost.
         wrong_length: "is the wrong length (should be %{count} characters)."
       models:
+        group:
+          attributes:
+            parent_id:
+              circular_dependency: "would create a circular group hierarchy."
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2359,6 +2382,10 @@ en:
                 description: "'Password confirmation' should match the input in the 'New password' field."
             status:
               invalid_on_create: "is not a valid status for new users."
+        user_working_hours:
+          attributes:
+            days:
+              no_working_day: "At least one day needs to be configured as a working day."
         member:
           principal_blank: "Please choose at least one user or group."
           role_blank: "need to be assigned."
@@ -4155,6 +4182,7 @@ en:
   label_start_to_start: "start to start"
   label_statistics: "Statistics"
   label_status: "Status"
+  label_status_plural: "Statuses"
   label_storage_free_space: "Remaining disk space"
   label_storage_used_space: "Used disk space"
   label_storage_group: "Storage filesystem %{identifier}"
@@ -5080,7 +5108,7 @@ en:
   setting_work_package_properties: "Work package properties"
   setting_work_package_startdate_is_adddate: "Use current date as start date for new work packages"
   setting_work_packages_projects_export_limit: "Work packages / Projects export limit"
-  setting_journal_aggregation_time_minutes: "User actions aggregated within"
+  setting_journal_aggregation_time_minutes: "Aggregation period"
   setting_log_requesting_user: "Log user login, name, and mail address for all requests"
   setting_login_required: "Authentication required"
   setting_login_required_caption: "When checked, all requests to the application have to be authenticated."
@@ -5382,7 +5410,7 @@ en:
       activities:
         enable_internal_comments: "Enable internal comments"
         helper_text_html: >
-          Internal comments allow an internal team to communicate amongst themselves privately. 
+          Internal comments allow an internal team to communicate amongst themselves privately.
           These are only visible to selected roles that have the necessary permissions and will not be visible publicly.
           [Click here to learn more](docs_url)
 
@@ -5535,7 +5563,7 @@ en:
   text_plugin_assets_writable: "Plugin assets directory writable"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Only lower case letters (a-z), numbers, dashes and underscores are allowed, must start with a lower case letter."
-  text_project_identifier_description: "The project identifier is prepended to all work package IDs. If the identifier is \"PROJ\" for example, the work package identifier will be \"PROJ-12\" or \"PROJ-246\"."
+  text_project_identifier_description: 'The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".'
   text_project_identifier_url_description: "The project identifier is included in the URL of the project."
   text_project_identifier_handle_format: "Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters)."
   text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
@@ -5677,10 +5705,10 @@ en:
     The activation email has expired. We sent you a new one to %{email}.
     Please click the link inside of it to activate your account.
   warning_user_limit_reached: >
-    Adding additional users will exceed the current limit. 
+    Adding additional users will exceed the current limit.
     Please contact an administrator to increase the user limit to ensure external users are able to access this instance.
   warning_user_limit_reached_admin_html: >
-    Adding additional users will exceed the current limit. 
+    Adding additional users will exceed the current limit.
     Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
     You reached your user limit (%{current}/%{max} active users).
@@ -5783,7 +5811,7 @@ en:
       Adding additional users will exceed the current limit.
       Please contact an administrator to increase the user limit to ensure external users are able to access this %{entity}.
     warning_user_limit_reached_admin_html: >
-      Adding additional users will exceed the current limit. 
+      Adding additional users will exceed the current limit.
       Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
     warning_no_selected_user: "Please select users to share this %{entity} with"
     warning_locked_user: "The user %{user} is locked and cannot be shared with"

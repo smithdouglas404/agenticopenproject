@@ -126,6 +126,56 @@ RSpec.describe Type do
           expect(subject.pluck(:id)).to contain_exactly(default_status.id, statuses[0].id, statuses[1].id)
         end
       end
+
+      context "with role filter" do
+        let(:other_role) { create(:project_role) }
+        let(:other_statuses) { (1..2).map { create(:status) } }
+        let!(:other_workflow) do
+          create(:workflow, role_id: other_role.id,
+                            type_id: type.id,
+                            old_status_id: other_statuses[0].id,
+                            new_status_id: other_statuses[1].id)
+        end
+
+        subject { type.statuses(role:) }
+
+        it "returns only statuses for the given role" do
+          expect(subject.pluck(:id)).to contain_exactly(statuses[0].id, statuses[1].id)
+        end
+      end
+
+      context "with tab filter" do
+        let(:author_statuses) { (1..2).map { create(:status) } }
+        let(:assignee_statuses) { (1..2).map { create(:status) } }
+        let!(:author_workflow) do
+          create(:workflow, role_id: role.id,
+                            type_id: type.id,
+                            old_status_id: author_statuses[0].id,
+                            new_status_id: author_statuses[1].id,
+                            author: true,
+                            assignee: false)
+        end
+        let!(:assignee_workflow) do
+          create(:workflow, role_id: role.id,
+                            type_id: type.id,
+                            old_status_id: assignee_statuses[0].id,
+                            new_status_id: assignee_statuses[1].id,
+                            author: false,
+                            assignee: true)
+        end
+
+        it "returns only always statuses for the always tab" do
+          expect(type.statuses(tab: "always").pluck(:id)).to contain_exactly(statuses[0].id, statuses[1].id)
+        end
+
+        it "returns only author statuses for the author tab" do
+          expect(type.statuses(tab: "author").pluck(:id)).to contain_exactly(author_statuses[0].id, author_statuses[1].id)
+        end
+
+        it "returns only assignee statuses for the assignee tab" do
+          expect(type.statuses(tab: "assignee").pluck(:id)).to contain_exactly(assignee_statuses[0].id, assignee_statuses[1].id)
+        end
+      end
     end
   end
 

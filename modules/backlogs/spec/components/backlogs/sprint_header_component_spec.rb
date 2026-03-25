@@ -52,7 +52,7 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
   end
 
   def render_component(folded: false)
-    render_inline(described_class.new(sprint:, folded:, current_user: user))
+    render_inline(described_class.new(sprint:, project:, folded:, current_user: user))
   end
 
   describe "show state (default)" do

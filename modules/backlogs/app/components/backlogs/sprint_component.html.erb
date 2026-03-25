@@ -30,7 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%= component_wrapper(tag: :section) do %>
   <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
     <% border_box.with_header(id: dom_target(sprint, :header)) do %>
-      <%= render(Backlogs::SprintHeaderComponent.new(sprint:, folded: folded?)) %>
+      <%= render(Backlogs::SprintHeaderComponent.new(sprint:, project:, folded: folded?, active_sprint_ids:)) %>
     <% end %>
     <% if stories.empty? %>
       <% border_box.with_row(data: { empty_list_item: true }) do %>
@@ -45,18 +45,11 @@ See COPYRIGHT and LICENSE files for more details.
     <% stories.each do |story| %>
       <% border_box.with_row(
            id: dom_id(story),
-           classes: "Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable",
-           data: draggable_item_config(story).merge(
-             story: true,
-             controller: "backlogs--story",
-             backlogs__story_id_value: story.id,
-             backlogs__story_split_url_value: details_backlogs_project_backlogs_path(project, story),
-             backlogs__story_full_url_value: work_package_path(story),
-             backlogs__story_selected_class: "Box-row--blue"
-           ),
+           classes: story_classes_attribute,
+           data: story_data_attribute(story),
            tabindex: 0
          ) do %>
-        <%= render(Backlogs::StoryComponent.new(story:, sprint:, max_position:)) %>
+        <%= render(Backlogs::StoryComponent.new(story:, sprint:, project:, max_position:)) %>
       <% end %>
     <% end %>
   <% end %>

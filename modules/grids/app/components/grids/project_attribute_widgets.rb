@@ -40,6 +40,10 @@ module Grids
       ""
     end
 
+    def render?
+      current_user.allowed_in_project?(:view_project_attributes, @project)
+    end
+
     # For each configured section, call the the `with_widget` slot
     def before_render
       available_project_attributes_grouped_by_section.each do |section, project_custom_fields|

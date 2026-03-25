@@ -87,27 +87,28 @@ module Pages
 
       def expect_custom_field_without_modal_button(custom_field)
         within_custom_field_container(custom_field) do
-          expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-modal-button-']")
+          expect(page).to have_no_test_selector("[data-test-selector*='inplace-edit-dialog-button-']")
         end
       end
 
       def open_modal_for_custom_field(custom_field)
         scroll_to_element(page.find("[data-test-selector='project-custom-field-#{custom_field.id}']"))
-        within_custom_field_container(custom_field) do
-          # Link and user type custom fields might contain a clickable link inside the edit container.
-          # Use JavaScript to directly trigger the click event on the container to avoid nested links.
-          # Once we create the project custom field inline editing, this can be reverted to a normal
-          # capybara click method call.
-          page.execute_script(
-            "document.querySelector('[data-test-selector=\"project-custom-field-modal-button-#{custom_field.id}\"]').click()"
-          )
-        end
+        field = Components::Common::InplaceEditField.new(project, custom_field.attribute_name.to_sym, show_in_dialog: true)
+        field.open_field
 
-        dialog = Components::Projects::ProjectCustomFields::Dialog.new(project, custom_field)
+        wait_for_size_animation_completion(field.dialog.dialog_css_selector)
 
-        wait_for_size_animation_completion(dialog.dialog_css_selector)
+        field
+      end
 
-        dialog
+      def open_inplace_edit_field_for_custom_field(custom_field)
+        scroll_to_element(page.find("[data-test-selector='project-custom-field-#{custom_field.id}']"))
+        field = Components::Common::InplaceEditField.new(project, custom_field.attribute_name.to_sym)
+        field.open_field
+
+        wait_for_network_idle
+
+        field
       end
 
       def open_edit_dialog_for_life_cycle(life_cycle, wait_angular: false)

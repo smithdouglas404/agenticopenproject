@@ -116,7 +116,56 @@ RSpec.describe Agile::Sprint do
 
   describe "associations" do
     it { is_expected.to have_many(:work_packages).dependent(:nullify) }
+    it { is_expected.to have_many(:task_boards).dependent(:nullify) }
     it { is_expected.to belong_to(:project) }
+  end
+
+  describe "#task_board_for" do
+    let(:sprint) { create(:agile_sprint, project:) }
+    let(:other_project) { create(:project) }
+
+    context "when a sprint task board exists" do
+      let!(:board) do
+        create(:board_grid_with_query,
+               project:,
+               name: "Renamed board",
+               linked: sprint)
+      end
+
+      it "returns the existing board for the requested project" do
+        expect(sprint.task_board_for(project)).to eq(board)
+      end
+
+      it "supports multiple task boards across projects" do
+        other_board = create(:board_grid_with_query, project: other_project, linked: sprint)
+
+        expect(sprint.task_board_for(project)).to eq(board)
+        expect(sprint.task_board_for(other_project)).to eq(other_board)
+      end
+    end
+
+    context "when only same-name or same-filter boards exist" do
+      let!(:same_name_board) { create(:board_grid_with_query, project:, name: "#{project.name}: #{sprint.name}") }
+      let!(:matching_filters_board) do
+        create(:board_grid_with_query,
+               project:,
+               options: {
+                 "filters" => [{ "sprint_id" => { "operator" => "=", "values" => [sprint.id.to_s] } }]
+               })
+      end
+
+      it "returns nil" do
+        expect(sprint.task_board_for(project)).to be_nil
+      end
+    end
+
+    context "when only another project's board exists" do
+      let!(:other_board) { create(:board_grid_with_query, project: other_project, linked: sprint) }
+
+      it "returns nil for the requested project" do
+        expect(sprint.task_board_for(project)).to be_nil
+      end
+    end
   end
 
   describe "work_package association" do
@@ -131,6 +180,154 @@ RSpec.describe Agile::Sprint do
       work_package_id = work_package.id
       sprint.destroy!
       expect(WorkPackage.find(work_package_id).sprint_id).to be_nil
+    end
+  end
+
+  describe "#owned_by?" do
+    let(:sprint) { create(:agile_sprint, project:) }
+    let(:other_project) { create(:project) }
+
+    it "returns true when the sprint belongs to the given project" do
+      expect(sprint.owned_by?(project)).to be true
+    end
+
+    it "returns false when the sprint belongs to a different project" do
+      expect(sprint.owned_by?(other_project)).to be false
+    end
+  end
+
+  describe "#shared_with?" do
+    let(:sprint) { create(:agile_sprint, project:) }
+    let(:receiver_project) { create(:project, sprint_sharing: "receive_shared") }
+    let(:other_project) { create(:project, sprint_sharing: "no_sharing") }
+
+    context "when the sprint is owned by the project" do
+      it "returns false" do
+        expect(sprint.shared_with?(project)).to be false
+      end
+    end
+
+    context "when the sprint is visible to the project but not owned" do
+      before do
+        project.update(sprint_sharing: "share_all_projects")
+      end
+
+      it "returns true" do
+        expect(sprint.shared_with?(receiver_project)).to be true
+      end
+    end
+
+    context "when the sprint is not visible to the project" do
+      it "returns false" do
+        expect(sprint.shared_with?(other_project)).to be false
+      end
+    end
+
+    context "with subproject sharing" do
+      let(:parent_project) { create(:project, sprint_sharing: "share_subprojects") }
+      let(:child_project) { create(:project, parent: parent_project, sprint_sharing: "receive_shared") }
+      let(:parent_sprint) { create(:agile_sprint, project: parent_project) }
+
+      it "returns true when sprint is shared from parent to child" do
+        expect(parent_sprint.shared_with?(child_project)).to be true
+      end
+
+      it "returns false for the owning parent project" do
+        expect(parent_sprint.shared_with?(parent_project)).to be false
+      end
+    end
+
+    context "with work package assignment to unrelated project" do
+      let(:unrelated_sprint) { create(:agile_sprint, project: other_project) }
+
+      before do
+        create(:work_package, project:, sprint: unrelated_sprint)
+      end
+
+      it "returns true when sprint is visible via work package assignment" do
+        expect(unrelated_sprint.shared_with?(project)).to be true
+      end
+    end
+  end
+
+  describe "#visible_to?" do
+    let(:sprint) { create(:agile_sprint, project:) }
+    let(:receiver_project) { create(:project, sprint_sharing: "receive_shared") }
+    let(:other_project) { create(:project, sprint_sharing: "no_sharing") }
+
+    context "when the sprint is owned by the project" do
+      it "returns true" do
+        expect(sprint.visible_to?(project)).to be true
+      end
+    end
+
+    context "when the sprint is shared with the project" do
+      before do
+        project.update(sprint_sharing: "share_all_projects")
+      end
+
+      it "returns true" do
+        expect(sprint.visible_to?(receiver_project)).to be true
+      end
+    end
+
+    context "when the sprint is not visible to the project" do
+      it "returns false" do
+        expect(sprint.visible_to?(other_project)).to be false
+      end
+    end
+
+    context "with global sharing" do
+      let(:global_sharer) { create(:project, sprint_sharing: "share_all_projects") }
+      let(:global_sprint) { create(:agile_sprint, project: global_sharer) }
+
+      it "returns true for projects that receive shared sprints" do
+        expect(global_sprint.visible_to?(receiver_project)).to be true
+      end
+
+      it "returns true for the owning project" do
+        expect(global_sprint.visible_to?(global_sharer)).to be true
+      end
+
+      it "returns false for projects with no_sharing mode" do
+        expect(global_sprint.visible_to?(other_project)).to be false
+      end
+    end
+
+    context "with subproject sharing" do
+      let(:parent_project) { create(:project, sprint_sharing: "share_subprojects") }
+      let(:child_project) { create(:project, parent: parent_project, sprint_sharing: "receive_shared") }
+      let(:grandchild_project) { create(:project, parent: child_project, sprint_sharing: "receive_shared") }
+      let(:parent_sprint) { create(:agile_sprint, project: parent_project) }
+
+      it "returns true for direct child receiving shared sprints" do
+        expect(parent_sprint.visible_to?(child_project)).to be true
+      end
+
+      it "returns true for grandchild receiving shared sprints" do
+        expect(parent_sprint.visible_to?(grandchild_project)).to be true
+      end
+
+      it "returns true for the owning parent project" do
+        expect(parent_sprint.visible_to?(parent_project)).to be true
+      end
+    end
+
+    context "with work package assignment" do
+      let(:unrelated_project) { create(:project, sprint_sharing: "no_sharing") }
+      let(:unrelated_sprint) { create(:agile_sprint, project: unrelated_project) }
+
+      before do
+        create(:work_package, project:, sprint: unrelated_sprint)
+      end
+
+      it "returns true when sprint is visible via work package assignment" do
+        expect(unrelated_sprint.visible_to?(project)).to be true
+      end
+
+      it "returns true for the owning project" do
+        expect(unrelated_sprint.visible_to?(unrelated_project)).to be true
+      end
     end
   end
 end

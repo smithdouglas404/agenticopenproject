@@ -55,6 +55,9 @@ en:
         story_points: "Story Points"
 
     errors:
+      messages:
+        must_be_in_planning: "must be in planning to start."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
       models:
         project:
           attributes:
@@ -148,11 +151,12 @@ en:
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
+        start_sprint: "Start sprint"
+        finish_sprint: "Finish sprint"
+        start_sprint_disabled_description: "Another sprint is already active."
         edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
+        add_work_package: "Add work package"
         task_board: "Task board"
-        burndown_chart: "Burndown chart"
 
     story_component:
       label_drag_story: "Move %{name}"
@@ -183,6 +187,7 @@ en:
       task_type:
         cannot_be_story_type: "can not also be a story type"
 
+  label_backlog: "Backlog"
   label_backlogs: "Backlogs"
   label_backlogs_unconfigured: "You have not configured Backlogs yet. Please go to %{administration} > %{plugins}, then click on the %{configure} link for this plugin. Once you have set the fields, come back to this page to start using the tool."
   label_blocks_ids: "IDs of blocked work packages"
@@ -193,7 +198,14 @@ en:
   label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Sprint Impediments"
   label_sprint_new: "New sprint"
+  label_sprint_planning: "Sprint planning"
   label_task_board: "Task board"
+  notice_successful_start: "The sprint was started."
+  notice_successful_finish: "The sprint was completed."
+  notice_unsuccessful_start: "The sprint could not be started."
+  notice_unsuccessful_start_with_reason: "The sprint could not be started: %{reason}"
+  notice_unsuccessful_finish: "The sprint could not be completed."
+  notice_unsuccessful_finish_with_reason: "The sprint could not be completed: %{reason}"
 
   permission_create_sprints: "Create sprints"
   permission_manage_sprint_items: "Manage sprint items"

@@ -803,10 +803,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :workflows, only: %i[edit update show] do
-    member do
+  resources :workflows, only: %i[index edit update], param: :type_id do
+    collection do
       # We should fix this crappy routing (split up and rename controller methods)
       match "copy", action: "copy", via: %i[get post]
+      get "summarized"
+      get :status_dialog
+      post :confirm_statuses
+      post :confirmation_dialog
     end
   end
 
@@ -1117,6 +1121,7 @@ Rails.application.routes.draw do
     patch :update, controller: "inplace_edit_fields", action: :update
     get :reset, controller: "inplace_edit_fields", action: :reset
     get :edit, controller: "inplace_edit_fields", action: :edit
+    get :dialog, controller: "inplace_edit_fields", action: :dialog
   end
 
   if OpenProject::Configuration.lookbook_enabled?

@@ -119,6 +119,9 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       columns.assume_opened
       columns.remove "Subject"
 
+      # Wait for the column save to complete and the table to re-render
+      wait_for_network_idle
+
       expect(filter_area.area)
         .to have_css(".id", text: type_work_package.id)
 

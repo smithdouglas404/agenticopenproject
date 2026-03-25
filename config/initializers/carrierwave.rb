@@ -45,7 +45,6 @@ module CarrierWave
       end
 
       CarrierWave.configure do |config|
-        config.fog_provider    = "fog/aws"
         config.fog_credentials = credentials
         config.fog_directory   = directory
         config.fog_public      = public

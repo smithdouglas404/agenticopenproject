@@ -52,7 +52,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
   end
 
   def render_component
-    render_inline(described_class.new(sprint:, current_user: user))
+    render_inline(described_class.new(sprint:, project:, current_user: user))
   end
 
   describe "rendering" do
