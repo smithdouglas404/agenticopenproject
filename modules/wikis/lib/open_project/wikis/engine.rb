@@ -67,5 +67,17 @@ module OpenProject::Wikis
     end
 
     replace_principal_references "Wikis::PageLink" => %i[author_id]
+
+    add_api_path :wiki_providers do
+      "#{root}/wiki_providers"
+    end
+
+    add_api_path :wiki_provider do |id|
+      "#{wiki_providers}/#{id}"
+    end
+
+    add_api_endpoint "API::V3::Root" do
+      mount ::API::V3::Wikis::ProvidersAPI
+    end
   end
 end

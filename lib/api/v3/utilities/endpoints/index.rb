@@ -35,9 +35,11 @@ module API
                          api_name: model.name.demodulize,
                          scope: nil,
                          render_representer: nil,
-                         self_path: api_name.underscore.pluralize)
+                         self_path: api_name.underscore.pluralize,
+                         query_class: nil)
             super(model:, api_name:, scope:, render_representer:)
 
+            @query_class = query_class
             self.self_path = self_path
           end
 
@@ -53,7 +55,7 @@ module API
 
           def parse(request)
             ParamsToQueryService
-              .new(model, request.current_user)
+              .new(model, request.current_user, query_class: @query_class)
               .call(request.params)
           end
 

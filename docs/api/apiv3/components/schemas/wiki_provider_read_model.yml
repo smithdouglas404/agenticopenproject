@@ -1,0 +1,66 @@
+# Schema: StatusModel
+---
+type: object
+required:
+  - _type
+  - _links
+  - id
+  - name
+  - enabled
+  - createdAt
+  - updatedAt
+additionalProperties: false
+properties:
+  _type:
+    type: string
+    enum:
+      - WikiProvider
+  id:
+    type: integer
+    description: ID of this wiki provider
+    minimum: 1
+  name:
+    type: string
+    description: The name given to the provider. This will be shown in most user interfaces.
+  enabled:
+    type: boolean
+    description: Whether the provider is enabled and usable. Only settable for the internal provider.
+  universalIdentifier:
+    type: string
+    description: |
+      The universal identifier of the remote wiki provider. Can be used to disambiguate between multiple wiki providers, e.g. when filtering page links.
+
+      **Only visible to admins**, because this is a configuration-only property.
+  createdAt:
+    type: string
+    format: date-time
+    description: The time at which the provider was first set-up in OpenProject.
+  updatedAt:
+    type: string
+    format: date-time
+    description: The time at which the provider setup was last changed.
+  _links:
+    type: object
+    required:
+      - self
+    additionalProperties: false
+    properties:
+      self:
+        allOf:
+          - $ref: './link.yml'
+          - description: |-
+              This wiki provider.
+
+              **Resource**: WikiProvider
+example:
+  _type: WikiProvider
+  id: 1
+  name: Internal wiki
+  enabled: true
+  universalIdentifier: internal
+  createdAt: '2026-03-26T08:27:59.078Z'
+  updatedAt: '2026-03-26T08:27:59.078Z'
+  _links:
+    self:
+      href: "/api/v3/wiki_providers/1"
+      title: Internal wiki
