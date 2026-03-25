@@ -46,7 +46,7 @@ class WorkPackages::UpdateIdentifiersOnRenameService
   def call
     return unless Setting::WorkPackageIdentifier.alphanumeric?
 
-    wp_data = project.work_packages.where.not(identifier: nil).pluck(:id, :identifier)
+    wp_data = project.work_packages.identified.pluck(:id, :identifier)
     return if wp_data.empty?
 
     record_old_identifiers_in_slug_history(wp_data)
@@ -56,7 +56,7 @@ class WorkPackages::UpdateIdentifiersOnRenameService
   private
 
   def bulk_update_identifiers
-    project.work_packages.where.not(sequence_number: nil).update_all(
+    project.work_packages.identified.update_all(
       ["identifier = ? || '-' || CAST(sequence_number AS text)", project.identifier]
     )
   end

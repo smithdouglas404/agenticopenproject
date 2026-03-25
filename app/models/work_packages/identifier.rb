@@ -44,6 +44,8 @@ module WorkPackages::Identifier
       FriendlyId::Finders.setup(WorkPackage)
     end
 
+    scope :identified, -> { where.not(sequence_number: nil).where.not(identifier: nil) }
+
     after_create :allocate_identifier!, if: -> { Setting::WorkPackageIdentifier.alphanumeric? && identifier.blank? }
 
     # FriendlyId::Slugged adds after_validation :unset_slug_if_invalid, which reverts the

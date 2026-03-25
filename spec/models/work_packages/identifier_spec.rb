@@ -89,6 +89,24 @@ RSpec.describe WorkPackages::Identifier do
     end
   end
 
+  describe ".identified scope" do
+    let!(:identified_wp) do
+      wp = create(:work_package, project:)
+      wp.update_columns(identifier: "sc-1", sequence_number: 1)
+      wp
+    end
+
+    let!(:unidentified_wp) { create(:work_package, project:) }
+
+    it "includes work packages with both identifier and sequence_number" do
+      expect(WorkPackage.identified).to include(identified_wp)
+    end
+
+    it "excludes work packages without identifiers" do
+      expect(WorkPackage.identified).not_to include(unidentified_wp)
+    end
+  end
+
   describe "identifier uniqueness" do
     let!(:work_package) do
       wp = create(:work_package, project:)
