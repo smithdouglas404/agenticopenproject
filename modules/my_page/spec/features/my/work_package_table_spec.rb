@@ -142,7 +142,7 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
 
       my_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
 
-      sleep(1)
+      wait_for_network_idle
 
       # The whole of the configuration survives a reload
       # as it is persisted in the grid

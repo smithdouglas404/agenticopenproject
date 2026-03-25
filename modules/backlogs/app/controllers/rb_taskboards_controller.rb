@@ -34,10 +34,32 @@ class RbTaskboardsController < RbApplicationController
   helper :taskboards
 
   def show
-    @statuses     = Type.find(Task.type).statuses
-    @story_ids    = @sprint.stories(@project).map(&:id)
-    @last_updated = Task.children_of(@story_ids)
-                        .order(Arel.sql("updated_at DESC"))
-                        .first
+    if OpenProject::FeatureDecisions.scrum_projects_active?
+      @board = @sprint.task_board_for(@project)
+
+      return redirect_to(project_work_package_board_path(@project, @board)) if @board
+
+      render_404
+    else
+      @statuses     = Type.find(Task.type).statuses
+      @story_ids    = @sprint.stories(@project).map(&:id)
+      @last_updated = Task.children_of(@story_ids)
+                          .order(Arel.sql("updated_at DESC"))
+                          .first
+    end
+  end
+
+  private
+
+  def load_sprint_and_project
+    @project = Project.visible.find(params[:project_id])
+
+    return unless (@sprint_id = params.delete(:sprint_id))
+
+    @sprint = if OpenProject::FeatureDecisions.scrum_projects_active?
+                Agile::Sprint.for_project(@project).visible.find(@sprint_id)
+              else
+                Sprint.visible.apply_to(@project).find(@sprint_id)
+              end
   end
 end

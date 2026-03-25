@@ -39,6 +39,44 @@ RSpec.describe Backlog do
   end
 
   describe "Class Methods" do
+    describe ".inbox_for" do
+      let(:project) { create(:project) }
+      let(:open_status) { create(:status, is_closed: false) }
+      let(:closed_status) { create(:status, is_closed: true) }
+      let(:agile_sprint) { create(:agile_sprint, project:) }
+
+      before { login_as create(:admin) }
+
+      subject(:inbox) { described_class.inbox_for(project:) }
+
+      it "returns work packages with no sprint assigned and open status" do
+        inbox_wp = create(:work_package, project:, status: open_status)
+        create(:work_package, project:, status: closed_status)
+        create(:work_package, project:, status: open_status, sprint: agile_sprint)
+
+        expect(inbox).to contain_exactly(inbox_wp)
+      end
+
+      it "excludes work packages from other projects" do
+        create(:work_package, status: open_status)
+        own_wp = create(:work_package, project:, status: open_status)
+
+        expect(inbox).to contain_exactly(own_wp)
+      end
+
+      it "orders by position ascending, falling back to id for unpositioned items" do
+        wp1 = create(:work_package, project:, status: open_status, position: 2)
+        wp2 = create(:work_package, project:, status: open_status, position: 1)
+        wp3 = create(:work_package, project:, status: open_status, position: nil)
+        wp4 = create(:work_package, project:, status: open_status, position: nil)
+
+        wp3.update_column(:position, nil)
+        wp4.update_column(:position, nil)
+
+        expect(inbox).to eq([wp2, wp1, wp3, wp4])
+      end
+    end
+
     describe "#owner_backlogs" do
       describe "WITH one open version defined in the project" do
         before do

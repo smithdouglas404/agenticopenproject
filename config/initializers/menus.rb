@@ -404,7 +404,7 @@ Redmine::MenuManager.map :admin_menu do |menu|
   menu.push :statuses,
             { controller: "/statuses" },
             if: ->(_) { User.current.admin? },
-            caption: :label_status,
+            caption: :label_status_plural,
             parent: :admin_work_packages
 
   menu.push :priorities,
@@ -426,9 +426,9 @@ Redmine::MenuManager.map :admin_menu do |menu|
             parent: :admin_work_packages
 
   menu.push :workflows,
-            { controller: "/workflows", action: "edit" },
+            { controller: "/workflows", action: "index" },
             if: ->(_) { User.current.admin? },
-            caption: ->(_) { Workflow.model_name.human },
+            caption: ->(_) { I18n.t(:label_workflow_plural) },
             parent: :admin_work_packages
 
   menu.push :admin_projects_settings,
@@ -489,13 +489,13 @@ Redmine::MenuManager.map :admin_menu do |menu|
 
   menu.push :ai,
             { controller: "/admin/mcp_configurations", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            if: ->(_) { User.current.admin? },
             caption: I18n.t("menus.admin.ai"),
             icon: :sparkle
 
   menu.push :mcp_configurations,
             { controller: "/admin/mcp_configurations", action: :index },
-            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.mcp_server_active? },
+            if: ->(_) { User.current.admin? },
             caption: I18n.t("menus.admin.mcp_configurations"),
             enterprise_feature: "mcp_server",
             parent: :ai

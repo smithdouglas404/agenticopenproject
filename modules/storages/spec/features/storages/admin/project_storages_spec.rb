@@ -167,7 +167,7 @@ RSpec.describe "Admin lists project mappings for a storage",
 
       aggregate_failures "pagination links maintain the correct url" do
         within ".op-pagination" do
-          pagination_links = page.all(".op-pagination--item-link")
+          pagination_links = page.all("a.Page")
           expect(pagination_links.size).to be_positive
 
           pagination_links.each do |pagination_link|

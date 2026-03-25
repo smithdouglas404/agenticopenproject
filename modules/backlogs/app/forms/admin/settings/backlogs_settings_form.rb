@@ -34,62 +34,60 @@ module Admin
       include ::Settings::FormHelper
 
       form do |f|
-        unless scrum_projects_active?
-          f.autocompleter(
-            name: :story_types,
-            label: I18n.t(:backlogs_story_type),
-            caption: setting_caption(:plugin_openproject_backlogs, :story_types),
-            autocomplete_options: {
-              multiple: true,
-              closeOnSelect: false,
-              clearable: false,
-              decorated: true,
-              data: {
-                admin__backlogs_settings_target: "storyTypes",
-                test_selector: "story_type_autocomplete"
-              }
+        f.autocompleter(
+          name: :story_types,
+          label: I18n.t(:backlogs_story_type),
+          caption: setting_caption(:plugin_openproject_backlogs, :story_types),
+          autocomplete_options: {
+            multiple: true,
+            closeOnSelect: false,
+            clearable: false,
+            decorated: true,
+            data: {
+              admin__backlogs_settings_target: "storyTypes",
+              test_selector: "story_type_autocomplete"
             }
-          ) do |list|
-            available_types.each do |label, value|
-              active = value.in?(Story.types)
-              in_use = Task.type == value
+          }
+        ) do |list|
+          available_types.each do |label, value|
+            active = value.in?(Story.types)
+            in_use = Task.type == value
 
-              list.option(
-                label:,
-                value:,
-                selected: active,
-                disabled: in_use
-              )
-            end
+            list.option(
+              label:,
+              value:,
+              selected: active,
+              disabled: in_use
+            )
           end
+        end
 
-          f.autocompleter(
-            name: :task_type,
-            label: I18n.t(:backlogs_task_type),
-            caption: setting_caption(:plugin_openproject_backlogs, :task_type),
-            input_width: :small,
-            autocomplete_options: {
-              multiple: false,
-              closeOnSelect: true,
-              clearable: false,
-              decorated: true,
-              data: {
-                admin__backlogs_settings_target: "taskType",
-                test_selector: "task_type_autocomplete"
-              }
+        f.autocompleter(
+          name: :task_type,
+          label: I18n.t(:backlogs_task_type),
+          caption: setting_caption(:plugin_openproject_backlogs, :task_type),
+          input_width: :small,
+          autocomplete_options: {
+            multiple: false,
+            closeOnSelect: true,
+            clearable: false,
+            decorated: true,
+            data: {
+              admin__backlogs_settings_target: "taskType",
+              test_selector: "task_type_autocomplete"
             }
-          ) do |list|
-            available_types.each do |label, value|
-              active = Task.type == value
-              in_use = value.in?(Story.types)
+          }
+        ) do |list|
+          available_types.each do |label, value|
+            active = Task.type == value
+            in_use = value.in?(Story.types)
 
-              list.option(
-                label:,
-                value:,
-                selected: active,
-                disabled: in_use
-              )
-            end
+            list.option(
+              label:,
+              value:,
+              selected: active,
+              disabled: in_use
+            )
           end
         end
 
@@ -107,13 +105,11 @@ module Admin
           )
         end
 
-        unless scrum_projects_active?
-          f.text_field(
-            name: :wiki_template,
-            label: I18n.t(:backlogs_wiki_template),
-            input_width: :medium
-          )
-        end
+        f.text_field(
+          name: :wiki_template,
+          label: I18n.t(:backlogs_wiki_template),
+          input_width: :medium
+        )
 
         f.submit(scheme: :primary, name: :apply, label: I18n.t(:button_save))
       end
@@ -122,10 +118,6 @@ module Admin
 
       def available_types
         Type.pluck(:name, :id)
-      end
-
-      def scrum_projects_active?
-        OpenProject::FeatureDecisions.scrum_projects_active?
       end
     end
   end

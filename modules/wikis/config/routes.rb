@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -35,6 +35,15 @@ Rails.application.routes.draw do
         member do
           get :confirm_destroy
           get :edit_general_info
+        end
+      end
+    end
+  end
+  resources :projects, only: %i[] do
+    resources :work_packages, only: %i[] do
+      resources :wikis, only: %i[] do
+        collection do
+          resources :tab, only: %i[index], controller: "work_package_wikis_tab", as: "wikis_tab"
         end
       end
     end

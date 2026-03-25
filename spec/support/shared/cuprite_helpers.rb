@@ -102,12 +102,17 @@ def wait_for_turbo_stream(timeout: 10, &block)
 
   yield
 
-  page.driver.evaluate_async_script(<<~JS)
+  result = page.driver.evaluate_async_script(<<~JS)
     window.__opTurboStreamRendered.then(() => {
       delete window.__opTurboStreamRendered;
-      arguments[0](true);
+      arguments[0]({ success: true });
+    }).catch((e) => {
+      delete window.__opTurboStreamRendered;
+      arguments[0]({ success: false, error: e.message });
     });
   JS
+
+  raise result["error"] if result.is_a?(Hash) && !result["success"]
 end
 
 # Executes the given block and waits for a Turbo Drive navigation to complete.
@@ -135,12 +140,17 @@ def wait_for_turbo(timeout: 10, &block)
 
   yield
 
-  page.driver.evaluate_async_script(<<~JS)
+  result = page.driver.evaluate_async_script(<<~JS)
     window.__opTurboLoaded.then(() => {
       delete window.__opTurboLoaded;
-      arguments[0](true);
+      arguments[0]({ success: true });
+    }).catch((e) => {
+      delete window.__opTurboLoaded;
+      arguments[0]({ success: false, error: e.message });
     });
   JS
+
+  raise result["error"] if result.is_a?(Hash) && !result["success"]
 end
 
 # Executes the given block and waits for a Turbo frame navigation to complete.
@@ -168,12 +178,17 @@ def wait_for_turbo_frame(timeout: 10, &block)
 
   yield
 
-  page.driver.evaluate_async_script(<<~JS)
+  result = page.driver.evaluate_async_script(<<~JS)
     window.__opTurboFrameLoaded.then(() => {
       delete window.__opTurboFrameLoaded;
-      arguments[0](true);
+      arguments[0]({ success: true });
+    }).catch((e) => {
+      delete window.__opTurboFrameLoaded;
+      arguments[0]({ success: false, error: e.message });
     });
   JS
+
+  raise result["error"] if result.is_a?(Hash) && !result["success"]
 end
 
 def using_cuprite?

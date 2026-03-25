@@ -36,7 +36,7 @@ module Backlogs
     include Redmine::I18n
     include RbCommonHelper
 
-    attr_reader :sprint, :project, :collapsed, :current_user
+    attr_reader :sprint, :project, :collapsed, :current_user, :active_sprint_ids
 
     delegate :name, to: :sprint, prefix: :sprint
 
@@ -44,7 +44,8 @@ module Backlogs
       sprint:,
       project:,
       folded: false,
-      current_user: User.current
+      current_user: User.current,
+      active_sprint_ids: nil
     )
       super()
 
@@ -52,6 +53,7 @@ module Backlogs
       @project = project
       @collapsed = folded
       @current_user = current_user
+      @active_sprint_ids = active_sprint_ids
     end
 
     def wrapper_uniq_by

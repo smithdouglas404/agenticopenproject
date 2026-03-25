@@ -550,6 +550,48 @@ RSpec.describe OpenProject::JournalFormatter::Cause do
     end
   end
 
+  context "when the change was caused by a sprint migration" do
+    subject(:cause) do
+      {
+        "type" => "system_update",
+        "feature" => "sprint_migration",
+        "version_name" => "Sprint 1"
+      }
+    end
+
+    it do
+      expect(cause).to render_html_variant(
+        "<strong>#{I18n.t('journals.caused_changes.system_update')}</strong> " \
+        "#{I18n.t('journals.cause_descriptions.system_update.sprint_migration', version_name: 'Sprint 1')}"
+      )
+    end
+
+    it do
+      expect(cause).to render_raw_variant(
+        "#{I18n.t('journals.caused_changes.system_update')} " \
+        "#{I18n.t('journals.cause_descriptions.system_update.sprint_migration', version_name: 'Sprint 1')}"
+      )
+    end
+
+    context "when the version name contains HTML (XSS prevention)" do
+      before do
+        cause["version_name"] = "<script>alert('xss')</script>"
+      end
+
+      it "escapes the version name in HTML output" do
+        expect(cause).to render_html_variant(
+          a_string_including("&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;")
+        )
+      end
+
+      it "escapes the version name in raw text output" do
+        expect(cause).to render_raw_variant(
+          a_string_including("&lt;script&gt;alert('xss')&lt;/script&gt;")
+        )
+      end
+    end
+  end
+
   context "when the change was caused by an import" do
     subject(:cause) do
       {

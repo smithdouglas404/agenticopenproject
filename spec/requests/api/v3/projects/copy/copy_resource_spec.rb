@@ -194,6 +194,45 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
       end
     end
 
+    context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+      context "when identifier is not provided" do
+        let(:params) do
+          { name: "My copied project" }
+        end
+
+        it "returns a redirect to job" do
+          expect(response).to have_http_status(:found)
+        end
+
+        it "auto-generates a semantic identifier from the name" do
+          GoodJob.perform_inline
+
+          project = Project.find_by(name: "My copied project")
+          expect(project).to be_present
+          expect(project.identifier).to eq("MCP")
+        end
+      end
+
+      context "when an invalid identifier is provided" do
+        let(:params) do
+          {
+            name: "My copied project",
+            identifier: "invalid-lowercase"
+          }
+        end
+
+        it "returns 422" do
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+
+        it "explains the identifier format error" do
+          expect(response.body)
+            .to be_json_eql("identifier".to_json)
+            .at_path("_embedded/errors/0/_embedded/details/attribute")
+        end
+      end
+    end
+
     context "without the necessary permission" do
       let(:current_user) do
         create(:user,
