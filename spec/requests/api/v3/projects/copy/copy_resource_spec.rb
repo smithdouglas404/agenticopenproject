@@ -227,8 +227,8 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
 
         it "explains the identifier format error" do
           expect(response.body)
-            .to be_json_eql("identifier".to_json)
-            .at_path("_embedded/errors/0/_embedded/details/attribute")
+            .to be_json_eql("Identifier must start with a letter".to_json)
+            .at_path("message")
         end
       end
     end
