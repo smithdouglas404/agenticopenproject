@@ -72,7 +72,7 @@ RSpec.describe "Backlogs project settings sprint sharing", :js, with_flag: { scr
       expect(page).to have_no_text(I18n.t("projects.settings.backlog_sharing.options.share_subprojects.info"))
 
       # persists receive_shared
-      click_button I18n.t("button_save")
+      click_button "Save"
 
       expect_and_dismiss_flash(type: :success, message: I18n.t(:notice_successful_update))
       expect(page).to have_checked_field("Receive shared sprints")
@@ -88,7 +88,7 @@ RSpec.describe "Backlogs project settings sprint sharing", :js, with_flag: { scr
       expect(page).to have_no_text(I18n.t("projects.settings.backlog_sharing.options.receive_shared.warning"))
 
       # persists no_sharing
-      click_button I18n.t("button_save")
+      click_button "Save"
 
       expect_and_dismiss_flash(type: :success, message: I18n.t(:notice_successful_update))
       expect(page).to have_checked_field("Don't share")

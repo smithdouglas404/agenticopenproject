@@ -132,7 +132,7 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
           expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
 
           select sprint.name, from: "target_id"
-          click_button I18n.t("button_save")
+          click_button "Save"
         end
 
         planning_page.expect_no_inbox_item(inbox_wp1)

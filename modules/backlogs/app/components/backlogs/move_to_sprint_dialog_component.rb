@@ -38,12 +38,12 @@ module Backlogs
 
     attr_reader :work_package, :project, :sprints
 
-    def initialize(work_package:, project:, sprints:)
+    def initialize(work_package:, project:)
       super()
 
       @work_package = work_package
       @project = project
-      @sprints = sprints
+      @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
     end
   end
 end

@@ -28,11 +28,11 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Primer::Alpha::Dialog.new(title: t(".title"), id: DIALOG_ID)) do |d|
+  render(Primer::Alpha::Dialog.new(title: t(".title"), id: DIALOG_ID, size: :medium)) do |d|
     d.with_header(variant: :large)
 
     d.with_body do
-      form_with(
+      primer_form_with(
         url: move_project_inbox_path(project, work_package),
         method: :put,
         id: FORM_ID,
@@ -41,8 +41,8 @@ See COPYRIGHT and LICENSE files for more details.
         render(
           Primer::Alpha::Select.new(
             name: "target_id",
-            label: t(".label_sprint"),
-            input_width: :large
+            label: Agile::Sprint.human_model_name,
+            visually_hide_label: true
           )
         ) do |select|
           sprints.each do |sprint|
@@ -52,16 +52,16 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    d.with_footer do
+    d.with_footer(show_divider: true) do
       component_collection do |buttons|
         buttons.with_component(Primer::Beta::Button.new(data: { close_dialog_id: DIALOG_ID })) do
-          t("button_cancel")
+          t(:button_cancel)
         end
 
         buttons.with_component(
           Primer::Beta::Button.new(scheme: :primary, form: FORM_ID, data: { turbo: true }, type: :submit)
         ) do
-          t("button_save")
+          t(:button_save)
         end
       end
     end

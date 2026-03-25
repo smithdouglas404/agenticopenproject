@@ -37,8 +37,10 @@ class InboxController < RbApplicationController
   prepend_before_action :load_work_package, :load_project
 
   def move_to_sprint_dialog
-    sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
-    respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(work_package: @work_package, project: @project, sprints:)
+    respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(
+      work_package: @work_package,
+      project: @project
+    )
   end
 
   def reorder
@@ -106,7 +108,7 @@ class InboxController < RbApplicationController
   end
 
   def position_attributes
-    move_params[:position].present? ? { position: move_params[:position].to_i } : {}
+    { position: move_params[:position]&.to_i }.compact
   end
 
   def reorder_param
