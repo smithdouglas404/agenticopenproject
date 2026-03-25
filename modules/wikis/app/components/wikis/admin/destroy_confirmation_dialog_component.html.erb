@@ -27,35 +27,25 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% page_title = @wiki_provider.name.presence || t("wikis.admin.wiki_providers.label_edit") %>
-
-<% html_title t(:label_administration), t(:project_module_wiki_platforms), page_title %>
-
-<%= render(Primer::OpenProject::PageHeader.new) do |header| %>
-  <% header.with_title { page_title } %>
-
-  <% header.with_breadcrumbs([
-    { href: admin_index_path, text: t(:label_administration) },
-    { href: admin_settings_wiki_providers_path, text: t(:project_module_wiki_platforms) },
-    page_title
-  ]) %>
-
-  <% header.with_action_button(
-    tag: :a,
-    scheme: :danger,
-    mobile_icon: :trash,
-    mobile_label: t(:button_delete),
-    size: :medium,
-    href: confirm_destroy_admin_settings_wiki_provider_path(@wiki_provider),
-    aria: { label: I18n.t(:button_delete) },
-    title: I18n.t(:button_delete),
-    data: { "turbo-frame": "_top", controller: "async-dialog" }
-  ) do |button|
-    button.with_leading_visual_icon(icon: :trash)
-    t(:button_delete)
-  end %>
-<% end %>
-
-<%= content_tag("turbo-frame", id: "page-content") do %>
-  <%= render(Wikis::Admin::WikiProviderViewComponent.new(@wiki_provider)) %>
+<%=
+  render(
+    Primer::OpenProject::DangerDialog.new(
+      title: I18n.t("wikis.admin.wiki_providers.delete.title"),
+      form_arguments:,
+      size: :large
+    )
+  ) do |dialog|
+%>
+  <% dialog.with_confirmation_message do |message|
+       message.with_heading(tag: :h2) { I18n.t("wikis.admin.wiki_providers.delete.title") }
+     end %>
+  <% dialog.with_additional_details do %>
+    <% render(Primer::OpenProject::FlexLayout.new) do |flex| %>
+      <% flex.with_row do %>
+        <%= t("wikis.admin.wiki_providers.delete.warning_html",
+              wiki_provider: content_tag(:strong, @wiki_provider.name)) %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% dialog.with_confirmation_check_box_content(I18n.t(:text_permanent_delete_confirmation_checkbox_label)) %>
 <% end %>

@@ -31,6 +31,8 @@
 module Wikis
   module Admin
     class WikiProvidersController < ApplicationController
+      include OpTurbo::ComponentStream
+
       layout "admin"
 
       before_action :require_admin
@@ -39,7 +41,7 @@ module Wikis
       menu_item :wiki_providers
 
       def index
-        @wiki_providers = Wikis::XWikiProvider.all
+        @wiki_providers = Wikis::Provider.all
       end
 
       def new
@@ -69,21 +71,18 @@ module Wikis
       end
 
       def destroy
-        @wiki_provider.destroy
+        @wiki_provider.destroy!
         flash[:notice] = I18n.t(:notice_successful_delete)
         redirect_to admin_settings_wiki_providers_path
       end
 
       def confirm_destroy
-        # TODO: implement confirmation dialog
+        respond_with_dialog Wikis::Admin::DestroyConfirmationDialogComponent.new(wiki_provider: @wiki_provider)
       end
 
       def edit_general_info
-        component = Wikis::Admin::Forms::GeneralInfoFormComponent.new(@wiki_provider)
-        render turbo_stream: turbo_stream.replace(
-          Wikis::Admin::GeneralInfoComponent.wrapper_key,
-          component
-        )
+        update_via_turbo_stream(component: Wikis::Admin::Forms::GeneralInfoFormComponent.new(@wiki_provider))
+        respond_with_turbo_streams
       end
 
       private
