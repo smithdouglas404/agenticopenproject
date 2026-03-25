@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe InboxController do
+RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
   describe "routing" do
     it {
       expect(put("/projects/project_42/inbox/85/move")).to route_to(
