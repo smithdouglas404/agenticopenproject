@@ -349,8 +349,6 @@ ms:
     label_collapse_all: "Sembunyikan semua"
     label_collapse_text: "Collapse text"
     label_comment: "Komen"
-    label_committed_at: "%{committed_revision_link} pada %{date}"
-    label_committed_link: "semakan yang dilakukan %{revision_identifier}"
     label_contains: "mengandungi"
     label_created_on: "dicipta pada"
     label_edit_comment: "Edit komen ini"
@@ -1214,3 +1212,7 @@ ms:
       waiting_subtitle:
         network_off: "Terdapat masalah rangkaian."
         network_on: "Rangkaian kembali. Kami sedang mencuba."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

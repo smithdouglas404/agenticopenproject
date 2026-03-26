@@ -71,8 +71,7 @@ hu:
       error_invalid_settings: "A kiválasztott 2FA stratégiák érvénytelenek"
       failed_to_save_settings: "Nem sikerült frissíteni a 2FA beállításokat %{message}"
     admin:
-      self_edit_path: "2FA hozzáadásához vagy módosításához kérlek menj a %{self_edit_link}"
-      self_edit_link_name: "Kétlépcsős azonosítás a fiókoldalán\n"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "Ezen az útvonalon nem tudod szerkeszteni a 2FA-t. Menj a Saját Fiokom > Két faktorú azonosítás menübe"
       no_devices_for_user: "Nincs regisztrált 2FA eszköze a felhasználónak."
       all_devices_deleted: "A felhasználó összes 2FA eszköze törölve lett"
@@ -119,8 +118,8 @@ hu:
       failed_to_delete: "Nem sikerült törölni a 2FA eszközt"
       is_default_cannot_delete: "Az eszköz alapértelmezettként van megjelölve, és nem törölhető egy aktív biztonsági irányelv miatt. Törlés előtt jelöljön meg egy másik eszközt alapértelmezettként"
       not_existing: "Nincs regisztrál 2FA eszköz ehhez a felhasználóhoz"
-      2fa_from_input: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.

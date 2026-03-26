@@ -49,7 +49,8 @@ module Agile
            :not_completed,
            :order_by_date,
            :receiving_projects,
-           :visible
+           :visible,
+           :native_to_sprint_source
 
     enum :status,
          {

@@ -26,25 +26,35 @@ zh-TW:
   activerecord:
     attributes:
       agile/sprint:
-        duration: "Duration"
-        finish_date: "Finish date"
-        goal: "Sprint goal"
-        name: "Sprint name"
+        duration: "時長"
+        finish_date: "完成日期"
+        goal: "衝刺目標"
+        name: "Sprint 名稱"
         sharing: "分享"
+        statuses:
+          in_planning: "規劃中"
+          active: "啟用"
+          completed: "已完成"
       project:
-        sprint_sharing: "Sprint sharing"
+        sprint_sharing: "Sprint 共用"
       sprint:
         duration: "衝刺時間"
       work_package:
-        position: "位置"
-        story_points: "需求重要性"
         backlogs_work_package_type: "待辦事項類型"
+        position: "位置"
+        sprint: "衝刺"
+        story_points: "需求重要性"
     errors:
+      messages:
+        must_be_in_planning: "must be in planning to start."
+        only_one_active_sprint_allowed: "每個專案只允許一個活動衝刺。"
+        dates_required: "Start and finish dates are required in order to start the sprint."
       models:
         project:
+          receiving_sprints: "is receiving shared sprints. Own sprints cannot be created."
           attributes:
             sprint_sharing:
-              share_all_projects_already_taken: "cannot be set because project \"%{name}\" is already sharing with all projects."
+              share_all_projects_already_taken: "無法設定，因為專案 \"%{name}\" 已經與所有專案共用。"
               share_all_projects_already_taken_anonymous: "cannot be set because another project is already sharing with all projects."
         work_package:
           attributes:
@@ -53,10 +63,21 @@ zh-TW:
               must_block_at_least_one_work_package: "必須包含至少一個項目的 ID"
             version_id:
               task_version_must_be_the_same_as_story_version: "必須與上層「使用者需求」(User Story)的版本相同。"
+            sprint:
+              not_shared_with_project: "is not shared with the project the work package is in."
+              not_eligible_for_moving: "is not an active sprint in the project which holds the sprint the work package is moved out of."
+        agile/sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                other: "There are %{count} work packages that were not completed in this sprint."
+              format: "%{message}"
+            status:
+              not_active: "is not active so it cannot be closed."
         sprint:
           cannot_end_before_it_starts: "進度不可以在開始前結束"
     models:
-      sprint: "Sprint"
+      sprint: "衝刺"
   attributes:
     task_type: "任務類型"
   backlogs:
@@ -64,9 +85,9 @@ zh-TW:
     column_width: "欄寬"
     definition_of_done: "定義"
     definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
-    done_status: "Done status"
+    done_status: "完成狀態"
     sharing_description: "This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing)."
-    sharing: "Sharing"
+    sharing: "共享"
     impediment: "阻礙"
     label_versions_default_fold_state: "顯示精簡版本"
     caption_versions_default_fold_state: "檢視待辦清單時，版本預設不會展開，需手動逐一展開。"
@@ -86,6 +107,9 @@ zh-TW:
     task: "任務"
     task_color: "任務顏色"
     unassigned: "尚未指派"
+    administration_blankslate:
+      title: "Backlog admin settings are evolving"
+      text: "We are currently redesigning the Backlogs module. Admin settings for sprints and backlogs will be visible here in the near future. Project-level settings remain available."
     user_preference:
       header_backlogs: "待辦清單模組"
       button_update_backlogs: "更新待辦清單模組"
@@ -101,6 +125,34 @@ zh-TW:
         zero: "目前沒有待辦故事"
         one: "待辦清單中有 %{count} 個故事"
         other: "待辦清單中有 %{count} 個故事"
+    inbox_component:
+      blankslate_title: "Backlog inbox is empty"
+      blankslate_description: "All open work packages in this project will automatically appear here."
+      label_drag_work_package: "Move %{name}"
+      show_more:
+        other: "Show %{count} more items"
+    inbox_item_component:
+      label_drag_work_package: "Move %{name}"
+    inbox_menu_component:
+      label_actions: "Work package actions"
+      action_menu:
+        copy_url_to_clipboard: "Copy URL to clipboard"
+        copy_work_package_id: "Copy work package ID"
+        move_menu: "Move"
+      label_move_to_sprint: "Move to sprint"
+    move_to_sprint_dialog_component:
+      title: "Move to sprint"
+      label_sprint: "Sprint"
+    sprint_planning:
+      blankslate:
+        title: "No sprints present yet"
+        description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
+        create_sprint_description_text: "To start planning your sprint, create one here."
+        share_sprint_description_html: "To start planning your sprint, go to the %{settings_link} to receive sprints from a different project."
+        no_actions_description_text: "No sprints are available for this project yet."
+        receive_shared_description_html: "This project receives sprints from a different project. Manage this in the %{settings_link}."
+        receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
+        settings_link_text: "project settings"
     sprint_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
@@ -117,18 +169,34 @@ zh-TW:
         burndown_chart: "燃盡圖"
         wiki: "維基"
         properties: "屬性"
+    finish_sprint_dialog_component:
+      title: "There are work in progress items"
+      body: "%{message} What would you like to do with these?"
+      legend: "Action for unfinished work packages"
+      actions:
+        move_to_top_of_backlog: "Move them to the top of the backlog"
+        move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
+        move_to_sprint: "Move them to another sprint"
+      select_sprint_label: "Select sprint"
+      button_close_sprint: "Close sprint"
     sprint_menu_component:
-      label_actions: "Sprint actions"
+      label_actions: "衝刺行動"
       action_menu:
-        edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
+        start_sprint: "Start sprint"
+        finish_sprint: "Finish sprint"
+        start_sprint_disabled_description: "Another sprint is already active."
+        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
+        edit_sprint: "編輯衝刺"
+        add_work_package: "Add work package"
         task_board: "Task board"
-        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "移動 %{name}"
     story_menu_component:
       label_actions: "故事相關操作"
+      action_menu:
+        copy_url_to_clipboard: "Copy URL to clipboard"
+        copy_work_package_id: "Copy work package ID"
+        move_menu: "Move"
   backlogs_points_burn_direction: "重要性 增加/減少"
   backlogs_product_backlog: "產品待辦事項"
   backlogs_story: "使用者需求"
@@ -148,6 +216,8 @@ zh-TW:
     attributes:
       task_type:
         cannot_be_story_type: "不能同時是故事類型"
+  label_backlog: "Backlog"
+  label_inbox: "Inbox"
   label_backlogs: "待辦事項"
   label_backlogs_unconfigured: "您尚未設定待辦事項。請前往 '%{administration} -> %{plugins}' 然後在 %{configure} 連結上按一下。當你設定欄位後，再返回這個頁面使用這個工具。"
   label_blocks_ids: "被禁止的工作套件 IDs"
@@ -158,7 +228,14 @@ zh-TW:
   label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "進度阻礙"
   label_sprint_new: "New sprint"
+  label_sprint_planning: "Sprint planning"
   label_task_board: "任務看板"
+  notice_successful_start: "The sprint was started."
+  notice_successful_finish: "The sprint was completed."
+  notice_unsuccessful_start: "The sprint could not be started."
+  notice_unsuccessful_start_with_reason: "The sprint could not be started: %{reason}"
+  notice_unsuccessful_finish: "The sprint could not be completed."
+  notice_unsuccessful_finish_with_reason: "The sprint could not be completed: %{reason}"
   permission_create_sprints: "Create sprints"
   permission_manage_sprint_items: "Manage sprint items"
   permission_select_done_statuses: "選擇完成狀態"

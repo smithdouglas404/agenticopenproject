@@ -49,9 +49,9 @@ fr:
           non_object_attribute: "ne définit pas d'objet JSON à l'adresse %{attribute}."
   provider:
     delete_warning:
-      input_delete_confirmation: Saisissez le nom du fournisseur %{name} pour confirmer la suppression.
+      input_delete_confirmation_html: Saisissez le nom du fournisseur %{name} pour confirmer la suppression.
       irreversible_notice: La suppression d'un fournisseur SSO est une action irréversible.
-      provider: 'Voulez-vous vraiment supprimer le fournisseur SSO %{name} ? Pour confirmer cette action, veuillez saisir le nom du fournisseur dans le champ ci-dessous :'
+      provider_html: 'Voulez-vous vraiment supprimer le fournisseur SSO %{name} ? Pour confirmer cette action, veuillez saisir le nom du fournisseur dans le champ ci-dessous :'
       delete_result_1: Supprimez le fournisseur de la liste des fournisseurs disponibles.
       delete_result_user_count:
         zero: Aucun utilisateur n'utilise actuellement ce fournisseur. Aucune action supplémentaire n'est requise.

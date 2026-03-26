@@ -108,7 +108,7 @@
     jemalloc_allocator: Jemalloc minne allokator
     journal_aggregation:
       caption: >
-        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
+        User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
     import:
       title: "Import"
     jira:
@@ -379,11 +379,71 @@
         project_creation: "Project creation"
         notification_text_default: >
           <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
+      work_packages_identifier:
+        page_header:
+          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+        banner:
+          existing_identifiers_notice: >
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+        box_header:
+          label_project: Project
+          label_previous_identifier: Previous identifier
+          label_autofixed_suggestion: Future identifier
+          label_example_work_package_id: Example work package ID
+        autofix_preview:
+          error_too_long: Has to be fewer than 5 characters
+          error_special_characters: Special characters not allowed
+          error_in_use: Already in use as another project's active handle
+          error_reserved: Reserved by another project's handle history
+          remaining_projects:
+            one: "... 1 more project"
+            other: "... %{count} more projects"
+        button_autofix: Autofix and save
+        dialog:
+          title: Change work package identifiers
+          heading: Enable project-based work package IDs?
+          description: >
+            This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          confirm_button: Change identifiers
+          checkbox_label: I understand that this will permanently change all work package IDs
+        success_banner: Successfully updated work package identifier format.
+        in_progress:
+          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Default transitions"
         user_author: "User is author"
         user_assignee: "User is assignee"
+      index:
+        description: "Configure status transitions for each work package type."
+        type_filter:
+          label: "Filter by type name…"
+      status_button: "Status"
+      statuses_dialog:
+        title: "Statuses"
+        label: "Statuses enabled for this type"
+        caption: "Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it."
+      statuses_removal_dialog:
+        title: "Remove statuses"
+        heading:
+          one: "Remove 1 status?"
+          other: "Remove %{count} statuses?"
+        description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
+        confirm: "Remove"
+      leave_confirmation:
+        title: "Save changes before continuing?"
+        description: "You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?"
+        ignore: "Ignore changes"
+        save: "Save changes and continue"
+      role_selector:
+        label: "Role: %{role}"
+        no_role: "Select role"
+      blankslate:
+        title: "No status transitions configured"
+        description: "Add statuses to start configuring workflows for this role"
+    info:
+      database_deprecation_html: >
+        Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases. <br/> We have prepared [upgrade guides for all installation methods](upgrade_guide). You can perform the upgrade ahead of the next release at any time by following the guides.
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -607,6 +667,14 @@
   danger_dialog:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+  pagination:
+    label: "Pagination"
+    prev: "Previous"
+    prev_page: "Previous Page"
+    next: "Next"
+    next_page: "Next Page"
+    page: "Page %{number}"
+    page_with_more: "Page %{number}..."
   mcp_configurations:
     server_url_component:
       caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
@@ -767,6 +835,11 @@
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Endre identifier
+      change_identifier_dialog_title: Change project identifier
+      change_identifier_format_hint_semantic: "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter."
+      change_identifier_format_hint_legacy: "Only lowercase letters (a–z), numbers, dashes or underscores."
+      change_identifier_warning: >
+        This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
       subitems:
         template_section: >
           Select templates to be used when creating new subitems.
@@ -999,9 +1072,9 @@
     groups:
       member_in_these_groups: "Denne brukeren er for øyeblikket medlem av følgende grupper:"
       no_results_title_text: Denne brukeren er for øyeblikket ikke medlem i noen gruppe.
-      summary_with_more: Member of %{names} and %{count_link}.
+      summary_with_more_html: Member of %{names} and %{count_link}.
       more: "%{count} more"
-      summary: Member of %{names}.
+      summary_html: Member of %{names}.
     memberships:
       no_results_title_text: Denne brukeren er for øyeblikket ikke medlem av et prosjekt.
     open_profile: "Open profile"
@@ -1056,6 +1129,64 @@
         user: "Brukeren kan nå logge inn for å få tilgang til %{project}. Selv så kan du allerede planlegge med den brukeren og tilknytte arbeidspakker for forekomst."
         placeholder_user: "Plassholderen kan nå brukes i %{project}. Samtidig kan du allerede planlegge med den brukeren og tilordne arbeidspakker i forekomsten."
         group: "Gruppen er nå en del av %{project}. Dette betyr at du allerede kan planlegge med den gruppen og tildele arbeidspakker for forekomst."
+    working_hours:
+      current_schedule:
+        title: "Current schedule"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        availability_subtitle: "Dedicated to project work"
+        effective_hours: "Effective work hours"
+        effective_subtitle: "Per week"
+        not_set: "Not set"
+      future:
+        title: "Future schedules"
+        description: "Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically."
+        add_button: "Add future schedule"
+        blank_title: "No future schedules planned"
+        blank_description: "Create a future schedule to plan changes ahead of time"
+      history:
+        title: "Schedule history"
+        description: "View your past work schedules."
+        blank_title: "No schedule history yet"
+        blank_description: "Past schedule changes will appear here"
+      destroy:
+        confirm: "Are you sure you want to delete this working schedule?"
+      form:
+        title: "Plan a future work schedule"
+        title_current: "Edit current work schedule"
+        start_date: "Start date"
+        start_date_caption: "Select the date from when the new work schedule will be effective."
+        work_days: "Work days"
+        working_hours_label: "Working hours"
+        hours_mode_label: "Hours mode"
+        same_hours_mode: "Same hours per day"
+        individual_hours_mode: "Individual hours per day"
+        work_hours: "Work hours"
+        hours_per_day: "Hours per day"
+        per_day: "per day"
+        per_week: "per week"
+        total_work_hours: "Total work hours"
+        availability_description: "The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities."
+        availability_factor: "Availability factor"
+        availability_factor_caption: "Define the percentage of your working time dedicated to project work."
+        total_available_hours: "Total available work hours"
+        title_availability_factor: "Availability factor"
+        title_days_and_hours: "Days and hours"
+        title_future_dates: "Future dates"
+      table:
+        mobile_title: "Working schedules"
+        start_date: "Start date"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        effective_work_hours: "Effective work hours"
+        work_days_count:
+          one: "1 working day"
+          other: "%{count} working days"
+  user_preferences:
+    disable_keyboard_shortcuts_caption: >
+      You can choose to disable default [keyboard shortcuts](docs_url) if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
   page:
     text: "Tekst"
   placeholder_users:
@@ -1063,11 +1194,11 @@
       Du har ikke tilgang til å slette plassholderbrukeren. Du har ikke rettigheter til å administrere medlemmer i alle prosjekter som plassholderen er medlem av.
     delete_tooltip: "Slett plassholderbruker"
     deletion_info:
-      heading: "Slett plassholderbruker %{name}"
+      heading_html: "Delete placeholder user %{name}"
       data_consequences: >
         Alle forekomster av plassholderbrukeren (f.eks. som utførende, ansvarlig eller andre brukerverdier) blir tilordnet på nytt til en konto kalt "Slettet bruker". Siden dataene for hver slettede konto blir tilordnet denne kontoen vil det ikke være mulig å skille dataene brukeren har opprettet fra data for en annen slettet konto.
       irreversible: "Du kan ikke angre denne handlingen"
-      confirmation: "Skriv inn plassholderbrukernavnet %{name} for å bekrefte slettingen."
+      confirmation_html: "Enter the placeholder user name %{name} to confirm the deletion."
   priorities:
     edit:
       priority_color_text: |
@@ -1098,10 +1229,10 @@
         New work packages are by default set to this type. They cannot be read-only.
       status_excluded_from_totals_text: |-
         Velg denne innstillingen for å utelukke arbeidspakker med denne statusen fra oppsummeringer for Arbeid, Gjenstående arbeid og % Ferdig i et hierarki.
-      status_percent_complete_text: |-
-        I <a href="%{href}">statusbasert fremdriftsberegningsmodus</a>, % ferdig arbeid
-        -pakken blir automatisk satt til denne verdien når denne statusen er valgt.
-        Ignorert i arbeidsbasert modus.
+      status_percent_complete_text_html: |-
+        In [status-based progress calculation mode](setting_url), the % Complete of a work
+        package is automatically set to this value when this status is selected.
+        Ignored in work-based mode.
       status_readonly_html: |
         Check this option to mark work packages with this status as read-only.
         No attributes can be changed with the exception of the status.
@@ -1364,7 +1495,7 @@
       Brukerregistrering er begrenset for Single sign-on leverandøren '%{name}'. Be en administrator om å aktivere kontoen for deg eller endre grense for selvregistrering for denne leverandøren.
     login_with_auth_provider: "eller logg på med din eksisterende konto"
     signup_with_auth_provider: "eller registrer deg ved å bruke"
-    auth_source_login: Logg inn som <em>%{login}</em> for å aktivere kontoen din.
+    auth_source_login_html: Please login as <em>%{login}</em> to activate your account.
     omniauth_login: Vennligst logg inn for å aktivere kontoen din.
   actionview_instancetag_blank_option: "Vennligst velg"
   activemodel:
@@ -1635,6 +1766,11 @@
         consented_at: "Godkjent"
       group:
         identity_url: "Identitet URL"
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
+      group_detail:
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -1643,8 +1779,6 @@
         button_update_user_information: "Update profile"
         comments_sorting: "Display work package activity sorted by"
         disable_keyboard_shortcuts: "Disable keyboard shortcuts"
-        disable_keyboard_shortcuts_caption_html: |-
-          You can choose to disable default <a href="%{href}">keyboard shortcuts</a> if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
         dismissed_enterprise_banners: "Hidden enterprise banners"
         impaired: "Tilgjengelighetsmodus"
         auto_hide_popups: "Automatically hide success banners"
@@ -1665,6 +1799,28 @@
       users/invitation/form_model:
         principal_type: "Invitation type"
         id_or_email: "Navn eller e-postadresse"
+      user_non_working_time:
+        start_date: "Start date"
+        end_date: "End date"
+      user_working_hours:
+        valid_from: "Valid from"
+        monday: "Monday"
+        monday_hours: "Monday hours"
+        tuesday: "Tuesday"
+        tuesday_hours: "Tuesday hours"
+        wednesday: "Wednesday"
+        wednesday_hours: "Wednesday hours"
+        thursday: "Thursday"
+        thursday_hours: "Thursday hours"
+        friday: "Friday"
+        friday_hours: "Friday hours"
+        saturday: "Saturday"
+        saturday_hours: "Saturday hours"
+        sunday: "Sunday"
+        sunday_hours: "Sunday hours"
+        availability_factor: "Availability factor"
+        shared_hours: "Work hours"
+        days: "Working days"
       version:
         effective_date: "Sluttdato"
         sharing: "Deling"
@@ -1719,6 +1875,8 @@
         before: "må være før %{date}."
         before_or_equal_to: "må være før eller lik %{date}."
         blank: "kan ikke være blank."
+        not_before_start_date: "must not be before the start date."
+        overlapping_range: "overlaps with an existing non-working day range."
         blank_nested: "må ha egenskapen '%{property}' aktivert."
         cannot_delete_mapping: "er påkrevd. Kan ikke slettes."
         is_for_all_cannot_modify: "er for alle prosjekter og kan derfor ikke modifiseres."
@@ -1755,8 +1913,9 @@
         less_than_or_equal_to: "må være mindre enn eller lik %{count}."
         not_available: "er ikke tilgjengelig på grunn av en systemkonfigurasjon."
         not_deletable: "kan ikke slettes."
+        not_editable: "cannot be edited because it is already in effect."
         not_current_user: "er ikke gjeldende bruker."
-        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
+        system_wide_non_working_day_exists: "conflicts with an existing system-wide non-working day for this date."
         not_found: "not found."
         not_a_date: "er ikke en gyldig dato."
         not_a_datetime: "er ikke et gyldig tidspunkt for datoen."
@@ -1787,6 +1946,10 @@
           Ikke oppgi en "Secure Context". Enten bruk HTTPS eller en loopback address, som localhost.
         wrong_length: "har feil lengde (skal være %{count} tegn)."
       models:
+        group:
+          attributes:
+            parent_id:
+              circular_dependency: "would create a circular group hierarchy."
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -1897,6 +2060,9 @@
               project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "fortsatt i bruk av arbeidspakker: %{types}"
+            identifier:
+              must_start_with_letter: "must start with a letter"
+              no_special_characters: "may only contain uppercase letters, numbers, and underscores"
             enabled_modules:
               dependency_missing: "Modulen '%{dependency}' må være aktivert i tillegg siden modulen '%{module}' avhenger av den."
               format: "%{message}"
@@ -2102,6 +2268,10 @@
                 description: "Bekreftelse av passord må samsvare med inndata i det nye passordet feltet."
             status:
               invalid_on_create: "er ikke gyldig status for nye brukere."
+        user_working_hours:
+          attributes:
+            days:
+              no_working_day: "At least one day needs to be configured as a working day."
         member:
           principal_blank: "Velg minst én bruker eller gruppe."
           role_blank: "må tilordnes."
@@ -2368,8 +2538,8 @@
         Aktivering av sikkerhetskopier vil tillate brukeren med de nødvendige tillatelser, og denne sikkerhetskopinøkkelen å laste ned en sikkerhetskopi som inneholder alle data fra denne OpenProject installasjonen. Dette inkluderer data for alle andre brukere.
       info: >
         Du må generere en sikkerhetskopinøkkel for å kunne opprette en sikkerhetskopi. Hver gang du vil be om en sikkerhetskopi må du oppgi denne nøkkelen. Du kan slette sikkerhetskopinøkkelen for å deaktivere sikkerhetskopier for denne brukeren.
-      verification: >
-        Angi %{word} for å bekrefte at du vil %{action} sikkerhetskopinøkkelen.
+      verification_html: >
+        Enter %{word} to confirm you want to %{action} the backup token.
       verification_word_reset: tilbakestill
       verification_word_create: opprett
       warning: >
@@ -2808,7 +2978,7 @@
       title:
         one: "One day left of %{trial_plan} trial token"
         other: "%{count} days left of %{trial_plan} trial token"
-      description: "You have access to all %{trial_plan} features."
+      description_html: "You have access to all %{trial_plan} features."
     trial:
       not_found: "You have requested a trial token, but that request is no longer available. Please try again."
       wait_for_confirmation: "We sent you an email to confirm your address in order to retrieve a trial token."
@@ -2825,10 +2995,8 @@
       confirmation_subline: >
         Please, check your inbox and follow the steps to start your 14-day free trial.
       domain_caption: The token will be valid for your currently configured host name.
-      receive_newsletter_html: >
-        I want to receive the OpenProject <a target="_blank" href="https://www.openproject.org/newsletter/">newsletter</a>.
-      consent_html: >
-        I agree with the <a target="_blank" href="https://www.openproject.org/terms-of-service/">terms of service</a> and the <a target="_blank" href="https://www.openproject.org/data-privacy-and-security/">privacy policy</a>.
+      receive_newsletter: "I want to receive the OpenProject [newsletter](newsletter_url)."
+      consent: "I agree with the [terms of service](tos_url) and the [privacy policy](privacy_url)."
   email_calendar_updates:
     state:
       disabled: "Disabled."
@@ -2916,8 +3084,8 @@
     work_package_edit: "Arbeidspakke redigert"
     work_package_note: "Notat lagt til arbeidspakke"
     title:
-      project: "Prosjekt: %{name}"
-      subproject: "Underprosjekt: %{name}"
+      project_html: "Project: %{name}"
+      subproject_html: "Subproject: %{name}"
   export:
     dialog:
       title: "Eksportèr"
@@ -3168,6 +3336,7 @@
           Scheduling mode automatically adjusted with version update.
         totals_removed_from_childless_work_packages: >-
           Arbeids- og fremdriftssummer fjernet automatisk for ikke-overordnede arbeidspakker med <a href="%{href}" target="_blank">-versjon</a>. Dette er en vedlikeholdsoppgave og kan trygt ignoreres.
+        sprint_migration: "Version '%{version_name}' has been copied as a sprint."
       total_percent_complete_mode_changed_to_work_weighted_average: >-
         Arbeidspakker uten arbeid blir ignorert.
       total_percent_complete_mode_changed_to_simple_average: >-
@@ -3175,9 +3344,9 @@
   links:
     configuration_guide: "Konfigurasjonsveiviser"
     get_in_touch: "Har du spørsmål? Ta kontakt med oss."
-  instructions_after_registration: "Du kan logge inn ved å trykke på %{signin} så fort kontoen din er aktivert."
-  instructions_after_logout: "Du kan logge inn på nytt ved å trykke %{signin}."
-  instructions_after_error: "Du kan forsøke å logge inn på nytt ved å trykke %{signin}. Dersom feilen vedvarer må du kontakte din systemadministrator for hjelp."
+  instructions_after_registration_link: "You can sign in as soon as your account has been activated by clicking [here](signin_url)."
+  instructions_after_logout_link: "You can sign in again by clicking [here](signin_url)."
+  instructions_after_error_link: "You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help."
   menus:
     admin:
       ai: "Artificial Intelligence (AI)"
@@ -3369,6 +3538,8 @@
   label_calendar_show: "Vis kalender"
   label_category: "Kategori"
   label_completed: Fullført
+  label_committed_at_html: "%{committed_revision_link} at %{date}"
+  label_committed_link: "committed revision %{revision_identifier}"
   label_consent_settings: "Samtykke fra bruker"
   label_wiki_menu_item: Wiki menyelement
   label_select_main_menu_item: Velg nytt hovedmenyelement
@@ -3535,6 +3706,7 @@
   label_subject_or_id: "Emne eller ID"
   label_calendar_subscriptions: "Abonnementer til kalendere"
   label_identifier: "Identifikator"
+  label_project_identifier: "Project identifier"
   label_in: "i"
   label_in_less_than: "i mindre enn"
   label_in_more_than: "i mer enn"
@@ -3668,11 +3840,13 @@
   label_news_view_all: "Vis alle nyheter"
   label_next: "Neste"
   label_next_week: "Neste uke"
+  label_next_year: "Next year"
   label_no_change_option: "(Ingen endring)"
   label_no_data: "Ingen data å vise"
   label_no_due_date: "ingen ferdigmeldingsdato"
   label_no_start_date: "ingen startdato"
   label_no_parent_page: "Ingen overordnet side"
+  label_no_parent_group: "(No parent group)"
   label_notification_center_plural: "Varsler"
   label_nothing_display: "Ingenting å vise"
   label_nobody: "ingen"
@@ -3701,6 +3875,8 @@
   label_overall_activity: "Samlet aktivitet"
   label_overview: "Oversikt"
   label_page_title: "Sidetittel"
+  label_parent_group_caption: >
+    Setting a parent group will make this group a subgroup of the selected parent group. This will also inherit all memberships, including permissions of the parent group.
   label_part_of: "del av"
   label_password_lost: "Glemt passord?"
   label_password_rule_lowercase: "Små bokstaver"
@@ -3727,6 +3903,7 @@
   label_preview_not_available: "Forhåndsvisning ikke tilgjengelig"
   label_previous: "Forrige"
   label_previous_week: "Forrige uke"
+  label_previous_year: "Previous year"
   label_principal_invite_via_email: " eller inviter nye brukere via e-post"
   label_principal_search: "Legg til eksisterende brukere eller grupper"
   label_privacy_policy: "Data personvern og sikkerhetspolicy"
@@ -3838,6 +4015,7 @@
   label_start_to_start: "start til start"
   label_statistics: "Statistikk"
   label_status: "Status"
+  label_status_plural: "Statuses"
   label_storage_free_space: "Gjenværende diskplass"
   label_storage_used_space: "Brukt diskplass"
   label_storage_group: "Lagringsfilsystem %{identifier}"
@@ -3866,6 +4044,7 @@
   label_title: "Tittel"
   label_projects_menu: "Prosjekter"
   label_today: "i dag"
+  label_today_capitalized: "I dag"
   label_token_version: "Token Version"
   label_today_as_start_date: "Select today as start date."
   label_today_as_due_date: "Select today as finish date."
@@ -3886,7 +4065,7 @@
   label_user: "Bruker"
   label_user_and_permission: "Brukere og tillatelser"
   label_user_named: "Bruker %{name}"
-  label_user_activity: "%{value}s aktivitet"
+  label_user_activity_html: "%{value}'s activity"
   label_user_anonymous: "Anonym"
   label_user_menu: "User menu"
   label_user_new: "Ny bruker"
@@ -3973,6 +4152,15 @@
     one: "1 fil"
     other: "%{count} filer"
     zero: "ingen filer"
+  label_x_days:
+    one: "1 day"
+    other: "%{count} days"
+  label_x_working_days:
+    one: "1 working day"
+    other: "%{count} working days"
+  label_x_working_days_time_off:
+    one: "Time off: 1 working day"
+    other: "Time off: %{count} working days"
   label_yesterday: "i går"
   label_zen_mode: "Zen-modus"
   label_role_type: "Type"
@@ -3981,6 +4169,22 @@
   label_not_changeable: "(ikke mulig å endre)"
   label_global: "Globalt"
   label_seeded_from_env_warning: This record has been created through a setting environment variable. It is not editable through UI.
+  label_schedule_and_availability: "Schedule and availability"
+  label_working_hours: "Work schedule"
+  label_non_working_days: "Availability calendar"
+  label_non_working_days_with_count: "Non-working days (%{count})"
+  label_non_working_days_summary: "Summary"
+  button_add_non_working_time: "Time off"
+  button_edit_non_working_time: "Edit time off"
+  label_continued_from_previous_year: "continued from previous year"
+  label_continues_into_next_year: "continues into next year"
+  label_end_date: "Finish date"
+  label_working_days: "Working days"
+  label_non_working_times_with_count: "%{year} time off (%{count})"
+  label_non_working_times_summary: "%{year} summary"
+  label_total_user_non_working_times: "Personal non-working days"
+  label_total_global_non_working_days: "Global non-working days"
+  label_total_days_off: "Total days off"
   macro_execution_error: "Feil ved kjøring av makroen %{macro_name}"
   macro_unavailable: "Makroen %{macro_name} kan ikke vises."
   macros:
@@ -4015,7 +4219,7 @@
       center: "Til varslingssenter"
       see_in_center: "Se kommentar i varslingssenter"
       settings: "Endre e-postinnstillinger"
-    salutation: "Hei %{user}"
+    salutation: "Hello %{user},"
     salutation_full_name: "Fullt navn"
     work_packages:
       created_at: "Opprettet %{timestamp} av %{user} "
@@ -4045,7 +4249,7 @@
       note: "Note: “%{note}”"
     sharing:
       work_packages:
-        allowed_actions: "Du kan %{allowed_actions} denne arbeidspakken. Dette kan endre avhengig av din prosjektrolle og tillatelser."
+        allowed_actions_html: "You may %{allowed_actions} this work package. This can change depending on your project role and permissions."
         create_account: "For å få tilgang til denne arbeidspakken, må du opprette og aktivere en konto for %{instance}."
         open_work_package: "Åpne arbeidspakke"
         subject: "Arbeidspakke #%{id} ble delt med deg"
@@ -4144,9 +4348,9 @@
       roles: "Du har nå følgende roller:"
   mail_user_activation_limit_reached:
     subject: Grensen for brukeraktivering er nådd
-    message: |
-      En ny bruker (%{email}) prøvde å opprette en konto på et OpenProject miljø som du administrerer (%{host}).
-      Brukeren kan ikke aktivere sin konto siden brukergrensen er nådd.
+    message_html: |
+      A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
+      The user cannot activate their account since the user limit has been reached.
     steps:
       label: "For at brukeren skal kunne logge på kan du enten: "
       a: "Oppgrader din betalingsplan ([here](upgrade_url))" #here turned into a link
@@ -4330,6 +4534,12 @@
   permission_manage_versions: "Administrere versjoner"
   permission_manage_wiki: "Administrere wiki"
   permission_manage_wiki_menu: "Administrere wiki-meny"
+  permission_manage_own_working_times: "Manage own working times"
+  permission_manage_own_working_times_explanation: >
+    Allows users to manage their own working times, and personal non-working days.
+  permission_manage_working_times: "Manage working times for all users"
+  permission_manage_working_times_explanation: >
+    Allows users to manage working times for all users, including personal non-working days.
   permission_move_work_packages: "Flytt arbeidspakker"
   permission_protect_wiki_pages: "Beskytt wiki-sider"
   permission_rename_wiki_pages: "Gi nytt navn til wiki-sider"
@@ -4475,10 +4685,10 @@
       info: "Sletting av kodelageret kan ikke angres."
       info_not_managed: "Merk: Dette vil ikke slette innholdet i dette kodelageret, da det ikke administreres av OpenProject."
       managed_path_note: "Den følgende mappen vil bli slettet: %{path}"
-      repository_verification: "Skriv inn prosjektets identifikator %{identifier} for å bekrefte sletting av depotet."
+      repository_verification_html: "Enter the project's identifier %{identifier} to verify the deletion of its repository."
       subtitle: "Vil du virkelig slette %{repository_type} i prosjektet %{project_name}-?"
-      subtitle_not_managed: "Vil du virkelig fjerne den koblede %{repository_type} %{url} fra prosjektet %{project_name}?"
-      title: "Slett %{repository_type}"
+      subtitle_not_managed_html: "Do you really want to remove the linked %{repository_type} %{url} from the project %{project_name}?"
+      title_html: "Delete the %{repository_type}"
       title_not_managed: "Fjerne den koblede %{repository_type}?"
     errors:
       build_failed: "Kan ikke opprette kodelager med den valgte konfigurasjonen. %{reason}"
@@ -4528,7 +4738,7 @@
     storage:
       not_available: "Ledig lagring er ikke tilgjengelig for dette kodelageret."
       update_timeout: "Behold den siste nødvendige lagringsplassinformasjonen i et sted i N minutter.\nNår det kreves diskplass i et lagringssted, kan det være kostbart å øke denne verdien for å redusere ytelsesbelastningen."
-      oauth_application_details: "Den hemmelige verdien for klienten blir ikke tilgjengelig igjen etter at du har lukket dette vinduet. Kopier disse verdiene inn i Nextcloud OpenProject integrasjonsinnstillinger:"
+      oauth_application_details_html: "The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:"
       oauth_application_details_link_text: "Gå til innstillingssiden"
       setup_documentation_details: "Hvis du trenger hjelp til å konfigurere en ny fillagring, bør du kontrollere dokumentasjonen: "
       setup_documentation_details_link_text: "File storages setup"
@@ -4573,15 +4783,15 @@
   setting_apiv3_cors_title: "Cross-Origin Resource Sharing (CORS)"
   setting_apiv3_cors_enabled: "Aktiver CORS"
   setting_apiv3_cors_origins: "API V3 Cross-Origin Resource Sharing (CORS) tillatte opprinnelser"
-  setting_apiv3_cors_origins_text_html: >
-    Hvis CORS er aktivert, er dette opprinnelsen som har tilgang til OpenProject API. <br/> Kontroller <a href="%{origin_link}" target="_blank">Dokumentasjonen på Origin header</a> på hvordan angi de forventede verdiene.
+  setting_apiv3_cors_origins_instructions_html: >
+    If CORS is enabled, these are the origins that are allowed to access OpenProject API. <br/> Please check the [Documentation on the Origin header](docs_url) on how to specify the expected values.
   setting_apiv3_write_readonly_attributes: "Skrivetilgang til skrivebeskyttede egenskaper"
   setting_apiv3_write_readonly_attributes_instructions: >
     If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
   setting_apiv3_write_readonly_attributes_warning: >
     This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
-  setting_apiv3_write_readonly_attributes_additional: >
-    For more information on attributes and supported resources, please see the %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_additional_html: >
+    For more information on attributes and supported resources, please see the [API documentation](api_documentation_link).
   setting_apiv3_max_page_size: "Maksimal størrelse på API side"
   setting_apiv3_max_page_size_instructions: >
     Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
@@ -4678,7 +4888,7 @@
   setting_work_package_properties: "Egenskaper for arbeidspakke"
   setting_work_package_startdate_is_adddate: "Bruk gjeldende dato som startdato for nye arbeidspakker"
   setting_work_packages_projects_export_limit: "Eksportgrense for arbeidspakker/prosjekter"
-  setting_journal_aggregation_time_minutes: "Brukers handlinger aggregert innenfor"
+  setting_journal_aggregation_time_minutes: "Aggregation period"
   setting_log_requesting_user: "Logg brukernavn, navn og e-postadresse for alle forespørsler"
   setting_login_required: "Autentisering er påkrevd"
   setting_login_required_caption: "When checked, all requests to the application have to be authenticated."
@@ -4759,6 +4969,12 @@
   setting_welcome_text: "Velkommen blokktekst"
   setting_welcome_title: "Velkomst blokk tittel"
   setting_welcome_on_homescreen: "Vis velkomstblokk på hjemskjermen"
+  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_numeric_caption: >
+    Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
+  setting_work_packages_identifier_alphanumeric_caption: >
+    Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Standard utheving modus"
   setting_work_package_list_default_highlighted_attributes: "Standard inline uthevede egenskaper"
   setting_working_days: "Arbeidsdager"
@@ -4925,10 +5141,12 @@
       section_work_week: "Arbeidsuke"
       section_holidays_and_closures: "Ferier og lukking"
     work_packages:
+      work_package_identifier: "Work package identifier"
       not_allowed_text: "You do not have the necessary permissions to view this page."
       activities:
         enable_internal_comments: "Enable internal comments"
-        helper_text: "Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. %{link}"
+        helper_text_html: >
+          Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. [Click here to learn more](docs_url)
   text_formatting:
     markdown: "Rabatt"
     plain: "Ren tekst"
@@ -5050,6 +5268,10 @@
   text_plugin_assets_writable: "Mappen for programtillegg er skrivbar"
   text_powered_by: "Driftes med %{link}"
   text_project_identifier_info: "Kun små bokstaver (a-z), tall, bindestrek og understrek er tillatt. Første tegn må være liten bokstav."
+  text_project_identifier_description: 'The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".'
+  text_project_identifier_url_description: "The project identifier is included in the URL of the project."
+  text_project_identifier_handle_format: "Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters)."
+  text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
   text_reassign: "Tilordne til arbeidspakke:"
   text_regexp_multiline: 'Denne regexen brukes i flerlinjemodus. f.eks ^---\s+'
   text_repository_usernames_mapping: "Velg eller oppdater OpenProject-brukeren knyttet til hvert enkelt brukernavn i pakkebrønn-loggen.\nBrukere med samme OpenProject- og pakkebrønn-brukernavn eller e-post tilknyttes automatisk."
@@ -5157,18 +5379,18 @@
   version_status_locked: "låst"
   version_status_open: "åpne"
   note: Notat
-  note_password_login_disabled: "Passordinnlogging er deaktivert av %{configuration}."
+  note_password_login_disabled_link: "Password login has been disabled through a [configuration setting](configuration_url)."
   warning: Advarsel
   warning_attachments_not_saved: "%{count} fil(er) kunne ikke lagres."
-  warning_imminent_user_limit: >
-    Du har invitert flere brukere en planen din tillater.  Inviterte bruker vil kanksje ikke være i stand til å bli med i ditt OpenProject miljø.  Vennligst <a href="%{upgrade_url}"> oppgrader din plan</a> eller blokker eksisterende brukere for å tillate inviterte og registrerte brukere å bli med.
+  warning_imminent_user_limit_html: >
+    You invited more users than are supported by your current plan. Invited users may not be able to join your OpenProject environment. Please [upgrade your plan](upgrade_url) or block existing users in order to allow invited and registered users to join.
   warning_registration_token_expired: |
     Aktiverings-eposten har utløpt.  Vi sendte deg en ny til %{email}.
     Venligst bruk linken i den til å aktivere kontoen din.
   warning_user_limit_reached: >
     Å legg til ekstra brukere vil overskride gjeldende grense. Vennligst kontakt en administrator for å øke brukergrensen for å sikre at eksterne brukere har tilgang til denne forekomsten.
-  warning_user_limit_reached_admin: >
-    Å legg til ekstra brukere vil overskride gjeldende grense. Vennligst <a href="%{upgrade_url}">oppgrader planen din</a> for å sikre at eksterne brukere har tilgang til denne forekomsten.
+  warning_user_limit_reached_admin_html: >
+    Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
     Du har nådd din brukergrense (%{current}/%{max} aktive brukere). Vennligst kontakt sales@openproject.com for å oppgradere din Enterprise edition plan og legg til flere brukere.
   warning_protocol_mismatch_html: >
@@ -5228,7 +5450,7 @@
     reminders:
       label_remind_at: "Dato"
       note_placeholder: "Why are you setting this reminder?"
-      create_success_message: "Reminder set successfully. You will receive a notification for this work package %{reminder_time}."
+      create_success_message_html: "Reminder set successfully. You will receive a notification for this work package %{reminder_time}."
       success_update_message: "Reminder updated successfully."
       success_deletion_message: "Reminder deleted successfully."
   sharing:
@@ -5259,8 +5481,8 @@
     text_user_limit_reached_admins: 'Å legge til ekstra brukere overskrider gjeldende grense. <a href="%{upgrade_url}">oppgradere din plan</a> for å kunne legge til flere brukere.'
     warning_user_limit_reached: >
       Å legge til ekstra brukere vil overskride gjeldende grense. Kontakt en administrator for å øke brukergrensen for å sikre at eksterne brukere har tilgang til %{entity}.
-    warning_user_limit_reached_admin: >
-      Å legge til ekstra brukere vil overskride gjeldende grense. Vennligst <a href="%{upgrade_url}">oppgrader ditt abonnement</a> for å sikre at eksterne brukere har tilgang til %{entity}.
+    warning_user_limit_reached_admin_html: >
+      Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
     warning_no_selected_user: "Velg brukere du skal dele denne %{entity} med"
     warning_locked_user: "Brukeren %{user} er låst og kan ikke bli delt med"
     user_details:
@@ -5380,6 +5602,7 @@
       project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Ukjent - den valgte overordnet er usynlig på grunn av manglende tillatelser.
       definingProject: Undisclosed - The project is invisible because of lacking permissions.
+      definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Pre-autorisasjon"

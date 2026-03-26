@@ -5,8 +5,7 @@ ru:
     description: "Список и статус фоновых заданий."
   job_status_dialog:
     download_starts: 'Загрузка начнется автоматически.'
-    link_to_download: 'Или загрузить %{link}.'
-    click_here: 'нажмите здесь'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Фоновый статус работы'
     redirect: 'Вы перенаправлены.'
     redirect_link: 'Пожалуйста, нажмите здесь, чтобы продолжить.'

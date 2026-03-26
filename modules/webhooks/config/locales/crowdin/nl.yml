@@ -36,10 +36,8 @@ nl:
         updated: "Bijgewerkt"
         comment: "Commentaar"
         internal_comment: "Internal comment"
-      explanation:
-        text: >
-          Bij het voorkomen van een gebeurtenis zoals het maken van een werkpakket of een update van een project OpenProject stuurt een POST-aanvraag naar de geconfigureerde webeindpunten. Vaak wordt de afspraak verzonden nadat de %{link} voorbij is.
-        link: geconfigureerde aggregatie periode
+      explanation_html: >
+        Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
       status:
         enabled: 'Webhook is ingeschakeld'
         disabled: 'Webhook is uitgeschakeld'

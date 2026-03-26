@@ -36,10 +36,8 @@ zh-TW:
         updated: "已更新"
         comment: "留言"
         internal_comment: "內部留言"
-      explanation:
-        text: >
-          當建立或更新工作套件的"事件"發生時，OpenProject 將會傳送 POST 請求。 通常，事件是在 %{link} 過之後發送。
-        link: 設定的聚合週期
+      explanation_html: >
+        Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
       status:
         enabled: 'Webhook 已啟用'
         disabled: 'Webhook 已停用'

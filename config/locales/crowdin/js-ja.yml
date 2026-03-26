@@ -350,8 +350,6 @@ ja:
     label_collapse_all: "全てを折りたたむ"
     label_collapse_text: "Collapse text"
     label_comment: "コメント"
-    label_committed_at: "%{date}で%{committed_revision_link}"
-    label_committed_link: "コミットされたバージョン%{revision_identifier}"
     label_contains: "含む"
     label_created_on: "作成日時"
     label_edit_comment: "このコメントを編集"
@@ -1215,3 +1213,7 @@ ja:
       waiting_subtitle:
         network_off: "ネットワークに問題があります。"
         network_on: "ネットワークが戻った。我々は努力している。"
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

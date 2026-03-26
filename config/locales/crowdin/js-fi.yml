@@ -349,8 +349,6 @@ fi:
     label_collapse_all: "Tiivistä kaikki"
     label_collapse_text: "Collapse text"
     label_comment: "Kommentti"
-    label_committed_at: "%{committed_revision_link} %{date}"
-    label_committed_link: "committed revision %{revision_identifier}"
     label_contains: "sisältää"
     label_created_on: "luotu"
     label_edit_comment: "Muokkaa tätä kommenttia"
@@ -1218,3 +1216,7 @@ fi:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

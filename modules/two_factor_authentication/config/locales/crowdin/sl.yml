@@ -70,8 +70,7 @@ sl:
       error_invalid_settings: "Izbrane strategije 2FA so neveljavne"
       failed_to_save_settings: "Posodobitev nastavitev 2FA ni uspela: %{message}"
     admin:
-      self_edit_path: "Če želite dodati ali spremeniti svoje 2FA naprave, pojdite na %{self_edit_link}"
-      self_edit_link_name: "Dvofaktorna avtentikacija na strani vašega računa"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "Tukaj ne morete urejati svojih naprav 2FA. Namesto tega pojdite na Moj račun > Dvofaktorska overitev"
       no_devices_for_user: "Za tega uporabnika ni bila registrirana nobena naprava 2FA."
       all_devices_deleted: "Izbrisane so vse naprave 2FA tega uporabnika"
@@ -118,8 +117,8 @@ sl:
       failed_to_delete: "Brisanje naprave 2FA ni bilo mogoče."
       is_default_cannot_delete: "Naprava je označena kot privzeta in je ni mogoče izbrisati zaradi aktivnega varnostnega pravilnika. Pred brisanjem označite drugo napravo kot privzeto."
       not_existing: "Za vaš račun ni bila registrirana nobena naprava 2FA."
-      2fa_from_input: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.

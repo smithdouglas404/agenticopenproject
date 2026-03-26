@@ -30,6 +30,8 @@
 
 module Backlogs
   class InboxMenuComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
+
     attr_reader :work_package, :project, :max_position, :current_user
 
     def initialize(work_package:, project:, max_position:, current_user: User.current, **system_arguments)
@@ -51,9 +53,18 @@ module Backlogs
 
     private
 
+    def show_move_submenu?
+      show_move_items? || show_move_to_sprint?
+    end
+
     def show_move_items?
       allowed_to_manage_sprint_items? &&
       !(first_item? && last_item?)
+    end
+
+    def show_move_to_sprint?
+      allowed_to_manage_sprint_items? &&
+        Agile::Sprint.for_project(project).not_completed.exists?
     end
 
     def allowed_to_manage_sprint_items?

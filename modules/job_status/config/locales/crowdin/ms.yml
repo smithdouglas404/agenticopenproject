@@ -5,8 +5,7 @@ ms:
     description: "Senarai dan status latar belakang pekerjaan."
   job_status_dialog:
     download_starts: 'Proses muat turun akan bermula secara automatik.'
-    link_to_download: 'Atau, %{link} untuk memuat turun.'
-    click_here: 'klik sini'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Latar belakang status kerja'
     redirect: 'Anda sedang diubah hala.'
     redirect_link: 'Sila klik sini untuk teruskan.'

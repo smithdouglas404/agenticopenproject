@@ -38,10 +38,19 @@ module Wikis
 
     before_create :generate_universal_identifier
 
+    class << self
+      def registry_prefix = raise NotImplementedError, "SubclassResponsibility"
+    end
+
+    def resolve(registry_path)
+      Adapters::Registry["#{self.class.registry_prefix}.#{registry_path}"].new(self)
+    end
+
     private
 
     def generate_universal_identifier
       self.universal_identifier ||= SecureRandom.uuid
+      scope :enabled, -> { where(enabled: true) }
     end
   end
 end

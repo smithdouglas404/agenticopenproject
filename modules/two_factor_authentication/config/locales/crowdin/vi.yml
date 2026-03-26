@@ -71,8 +71,7 @@ vi:
       error_invalid_settings: "Phương án mã 2FA bạn lựa chon không hợp lệ"
       failed_to_save_settings: "Không cập nhật được cài đặt 2FA: %{message}"
     admin:
-      self_edit_path: "Để thêm hoặc sửa đổi thiết bị 2FA của riêng bạn, vui lòng truy cập %{self_edit_link}"
-      self_edit_link_name: "Xác thực hai yếu tố trên trang tài khoản của bạn"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "Bạn không được chỉnh sửa thiết bị 2FA của riêng mình trên đường dẫn này. Thay vào đó hãy chuyển đến Tài khoản của tôi > Xác thực hai yếu tố."
       no_devices_for_user: "Không có thiết bị 2FA nào được đăng ký cho người dùng này."
       all_devices_deleted: "Tất cả các thiết bị 2FA của người dùng này đã bị xóa"
@@ -119,8 +118,8 @@ vi:
       failed_to_delete: "Không thể xóa thiết bị 2FA."
       is_default_cannot_delete: "Thiết bị được đánh dấu là mặc định và không thể xóa do chính sách bảo mật đang hoạt động. Đánh dấu thiết bị khác làm mặc định trước khi xóa."
       not_existing: "Không có thiết bị 2FA nào được đăng ký cho tài khoản của bạn."
-      2fa_from_input: Vui lòng nhập mã từ <strong>%{device_name}</strong> để xác minh danh tính của bạn.
-      2fa_from_webauthn: Vui lòng cung cấp thiết bị WebAuthn <strong>%{device_name}</strong>. Nếu thiết bị dựa trên USB, hãy đảm bảo cắm vào và chạm vào nó. Sau đó nhấp vào nút đăng nhập.
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: Đăng ký thiết bị FIDO2 (như YubiKey) hoặc vùng bảo mật cho thiết bị di động của bạn.

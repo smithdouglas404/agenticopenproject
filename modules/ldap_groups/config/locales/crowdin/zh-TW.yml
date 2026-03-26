@@ -47,7 +47,7 @@ zh-TW:
         title: '移除同步篩選條件 %{name}'
         confirmation: "如果繼續,本同步篩選 %{name} 和藉此創建的群組 %{groups_count} 將會刪除"
         removed_groups: "警告: 將從OpenProject和專案中移除以下群組"
-        verification: "輸入篩選名稱 %{name} 以確定刪除"
+        verification_html: "Enter the filter name %{name} to verify the deletion."
       form:
         group_name_attribute_text: '輸入用於設定OpenProject群組名的LDAP群組屬性'
         filter_string_text: '輸入 RFC4515 LDAP 篩選條件以取得LDAP 中的群組。'
@@ -59,7 +59,7 @@ zh-TW:
         title: '移除同步群組 %{name}'
         confirmation: "如繼續，將移除同步的群組 %{name} 和所有透過該群組同步的全部 %{users_count} 個用戶。"
         info: "注意：OpenProject 群組本身以及在 LDAP 同步之外添加的成員將不會被移除。"
-        verification: "輸入專案的名稱 %{name} 來確認刪除"
+        verification_html: "Enter the group's name %{name} to verify the deletion."
       help_text_html: |
         此模組允許您在 LDAP 與 OpenProject 群組之間設置同步。
         它要求 LDAP 群組使用 <em>groupOfNames / memberOf</em> 屬性集才能與 OpenProject 一起使用。

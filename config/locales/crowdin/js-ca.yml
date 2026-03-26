@@ -349,8 +349,6 @@ ca:
     label_collapse_all: "Col·lapsar tot"
     label_collapse_text: "Collapse text"
     label_comment: "Comentari"
-    label_committed_at: "%{committed_revision_link} el %{date}"
-    label_committed_link: "revisió acceptada %{revision_identifier}"
     label_contains: "conté"
     label_created_on: "creat el"
     label_edit_comment: "Edita aquest comentari"
@@ -1218,3 +1216,7 @@ ca:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

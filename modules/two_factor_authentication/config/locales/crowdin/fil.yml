@@ -71,8 +71,7 @@ fil:
       error_invalid_settings: "Ang 2FA na mga deskarte na iyong napili ay walang bisa"
       failed_to_save_settings: "Bigo na ma-update ang 2FA na mga setting: %{message}"
     admin:
-      self_edit_path: "Para magdagdag o bawasan ang iyong sariing 2FA na mga aparato, pakiusap na mag punta sa %{self_edit_link}"
-      self_edit_link_name: "Ang Dalawang-dahilan ng pagpapatunay sa iyong pahina ng account"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "Hindi mo pwede na baguhin ang iyong sariling 2FA sa landas na ito. Magpunta sa Aking Account > Dalawang-dahilan ng pagpapatunay sa halip."
       no_devices_for_user: "Walang 2FA na aparato ang na rehistro para sa gumagamit na ito."
       all_devices_deleted: "Lahat ng 2Fa na mga aparato sa gumagamit na ito ay burado"
@@ -119,8 +118,8 @@ fil:
       failed_to_delete: "Bigo na mabura ang 2FA na aparato."
       is_default_cannot_delete: "Ang aparato ay namarkahan bilang default at hindi maari na burahin dahil sa aktibo nasiguridad na patakaran, Markahan ng ibang aparato bilang default bago burahin."
       not_existing: "Walang 2FA na aparato ang narehistro para sa iyong account."
-      2fa_from_input: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.

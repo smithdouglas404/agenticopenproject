@@ -36,9 +36,11 @@ RSpec.describe "Start and finish sprints",
                :js,
                with_ee: %i[board_view],
                with_flag: { scrum_projects: true } do
-  let(:project) do
+  shared_let(:project) do
     create(:project, enabled_module_names: %i[backlogs work_package_tracking board_view])
   end
+  shared_let(:default_status) { create(:default_status) }
+
   let(:permissions) do
     %i[view_sprints add_work_packages view_work_packages create_sprints manage_sprint_items
        start_complete_sprint show_board_views manage_board_views save_queries
@@ -75,10 +77,6 @@ RSpec.describe "Start and finish sprints",
            start_date: Date.new(2025, 8, 25),
            finish_date: Date.new(2025, 9, 4))
   end
-
-  # Necessary so that work packages can be created via dialog
-  shared_let(:default_status) { create(:default_status) }
-  shared_let(:default_priority) { create(:default_priority) }
 
   before do
     login_as(user)
@@ -146,7 +144,6 @@ RSpec.describe "Start and finish sprints",
     it "finishes the sprint and returns to the backlog" do
       planning_page.within_sprint_menu(first_sprint) do |menu|
         expect(menu).to have_selector :menuitem, "Finish sprint"
-        expect(menu).to have_css "form[action='#{finish_project_sprint_path(project, first_sprint)}'][data-turbo='false']"
         menu.find(:button, "Finish sprint").click
       end
 
@@ -154,6 +151,106 @@ RSpec.describe "Start and finish sprints",
       expect_and_dismiss_flash type: :success, message: "The sprint was completed."
       expect(first_sprint.reload).to be_completed
       planning_page.expect_sprint_names_in_order(second_sprint.name)
+    end
+
+    context "with unfinished work packages" do
+      let(:closed_status) { create(:status, is_closed: true) }
+      let!(:closed_work_package) do
+        create(:work_package,
+               project:,
+               subject: "Finished work package",
+               sprint: first_sprint,
+               status: closed_status)
+      end
+      let!(:unfinished_work_package1) do
+        create(:work_package,
+               subject: "First unfinished work package",
+               sprint: first_sprint,
+               project:)
+      end
+      let!(:unfinished_work_package2) do
+        create(:work_package,
+               subject: "Second unfinished work package",
+               sprint: first_sprint,
+               project:)
+      end
+      let!(:wp_in_next_sprint) do
+        create(:work_package,
+               subject: "Work package in next sprint",
+               sprint: second_sprint,
+               project:)
+      end
+      let!(:backlog_work_package) do
+        create(:work_package,
+               subject: "Backlog work package",
+               sprint: nil,
+               project:)
+      end
+
+      # This exists to test that sprints just present in the project
+      # because of work packages but not because they are genuinely shared, are not options to move
+      # work packages to.
+      let!(:sprint_from_other_project) do
+        create(:agile_sprint,
+               project: create(:project),
+               start_date: Date.new(2025, 9, 5),
+               finish_date: Date.new(2025, 9, 15)) do |sprint|
+          create(:work_package,
+                 subject: "Work package in other sprint",
+                 sprint:,
+                 project:)
+        end
+      end
+
+      it "allows moving unfinished work packages to the next sprint" do
+        planning_page.click_to_finish_sprint(first_sprint)
+
+        planning_page.expect_sprint_finishing_modal
+
+        planning_page.expect_sprints_to_choose_for_moving_unfinished_work_packages_to second_sprint
+        planning_page.choose_to_move_unfinished_work_packages_to_sprint second_sprint.name
+
+        planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
+
+        planning_page.expect_sprint_names_in_order(sprint_from_other_project.name, second_sprint.name)
+
+        planning_page.expect_work_packages_in_sprint_in_order(second_sprint,
+                                                              work_packages: [unfinished_work_package1,
+                                                                              unfinished_work_package2,
+                                                                              wp_in_next_sprint])
+
+        planning_page.expect_work_packages_in_inbox_in_order(work_packages: [backlog_work_package])
+      end
+
+      it "allows moving unfinished work packages to the top of the backlog" do
+        planning_page.click_to_finish_sprint(first_sprint)
+
+        planning_page.expect_sprint_finishing_modal
+        planning_page.choose_to_move_unfinished_work_packages_to_top_of_backlog
+
+        planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
+
+        planning_page.expect_sprint_names_in_order(sprint_from_other_project.name, second_sprint.name)
+
+        planning_page.expect_work_packages_in_inbox_in_order(work_packages: [unfinished_work_package1,
+                                                                             unfinished_work_package2,
+                                                                             backlog_work_package])
+      end
+
+      it "allows moving unfinished work packages to the bottom of the backlog" do
+        planning_page.click_to_finish_sprint(first_sprint)
+
+        planning_page.expect_sprint_finishing_modal
+        planning_page.choose_to_move_unfinished_work_packages_to_bottom_of_backlog
+
+        planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
+
+        planning_page.expect_sprint_names_in_order(sprint_from_other_project.name, second_sprint.name)
+
+        planning_page.expect_work_packages_in_inbox_in_order(work_packages: [backlog_work_package,
+                                                                             unfinished_work_package1,
+                                                                             unfinished_work_package2])
+      end
     end
   end
 end

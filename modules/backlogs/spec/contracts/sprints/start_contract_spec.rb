@@ -83,6 +83,24 @@ RSpec.describe Sprints::StartContract do
       end
     end
 
+    context "when the sprint has no start date" do
+      let(:sprint) { create(:agile_sprint, project:, status: sprint_status, start_date: nil) }
+
+      it "is invalid" do
+        expect(contract.validate).to be(false)
+        expect(contract.errors.symbols_for(:base)).to include(:dates_required)
+      end
+    end
+
+    context "when the sprint has no finish date" do
+      let(:sprint) { create(:agile_sprint, project:, status: sprint_status, finish_date: nil) }
+
+      it "is invalid" do
+        expect(contract.validate).to be(false)
+        expect(contract.errors.symbols_for(:base)).to include(:dates_required)
+      end
+    end
+
     context "when another active sprint exists in the project" do
       before do
         create(:agile_sprint,

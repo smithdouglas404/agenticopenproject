@@ -141,6 +141,18 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
       end
     end
 
+    context "when no position is provided" do
+      let!(:work_packages) { create_list(:work_package, 5, project:, sprint: agile_sprint) }
+      let(:position) { nil }
+
+      it "places the work package at the last position in the sprint" do
+        expect { work_package.reload }
+          .to change(work_package, :position).from(1).to(6)
+        expect { work_packages.each(&:reload) }
+          .not_to change { work_packages.map(&:position) }
+      end
+    end
+
     context "when service call fails" do
       let(:service_result) { ServiceResult.failure(message: "Move failed") }
 
@@ -149,6 +161,39 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace",
                                                   target: "backlogs-inbox-component-#{project.id}"
+      end
+    end
+
+    context "with a user lacking project permission" do
+      let(:user) { create(:user) }
+
+      it "responds with 404" do
+        expect(response).to have_http_status :not_found
+      end
+    end
+  end
+
+  describe "GET #move_to_sprint_dialog" do
+    let!(:sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
+
+    subject do
+      get :move_to_sprint_dialog,
+          params: { project_id: project.id, id: work_package.id },
+          format: :turbo_stream
+    end
+
+    context "when user has manage_sprint_items permission" do
+      it "responds with a dialog turbo stream", :aggregate_failures do
+        expect(response).to be_successful
+        expect(response).to have_turbo_stream action: "dialog"
+      end
+    end
+
+    context "with a user lacking manage_sprint_items permission" do
+      let(:user) { create(:user, member_with_permissions: { project => %i[view_work_packages] }) }
+
+      it "responds with 403" do
+        expect(response).to have_http_status :forbidden
       end
     end
 

@@ -108,7 +108,7 @@ ca:
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
       caption: >
-        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
+        User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
     import:
       title: "Import"
     jira:
@@ -379,11 +379,71 @@ ca:
         project_creation: "Project creation"
         notification_text_default: >
           <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
+      work_packages_identifier:
+        page_header:
+          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+        banner:
+          existing_identifiers_notice: >
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+        box_header:
+          label_project: Project
+          label_previous_identifier: Previous identifier
+          label_autofixed_suggestion: Future identifier
+          label_example_work_package_id: Example work package ID
+        autofix_preview:
+          error_too_long: Has to be fewer than 5 characters
+          error_special_characters: Special characters not allowed
+          error_in_use: Already in use as another project's active handle
+          error_reserved: Reserved by another project's handle history
+          remaining_projects:
+            one: "... 1 more project"
+            other: "... %{count} more projects"
+        button_autofix: Autofix and save
+        dialog:
+          title: Change work package identifiers
+          heading: Enable project-based work package IDs?
+          description: >
+            This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          confirm_button: Change identifiers
+          checkbox_label: I understand that this will permanently change all work package IDs
+        success_banner: Successfully updated work package identifier format.
+        in_progress:
+          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Default transitions"
         user_author: "User is author"
         user_assignee: "User is assignee"
+      index:
+        description: "Configure status transitions for each work package type."
+        type_filter:
+          label: "Filter by type name…"
+      status_button: "Status"
+      statuses_dialog:
+        title: "Statuses"
+        label: "Statuses enabled for this type"
+        caption: "Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it."
+      statuses_removal_dialog:
+        title: "Remove statuses"
+        heading:
+          one: "Remove 1 status?"
+          other: "Remove %{count} statuses?"
+        description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
+        confirm: "Remove"
+      leave_confirmation:
+        title: "Save changes before continuing?"
+        description: "You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?"
+        ignore: "Ignore changes"
+        save: "Save changes and continue"
+      role_selector:
+        label: "Role: %{role}"
+        no_role: "Select role"
+      blankslate:
+        title: "No status transitions configured"
+        description: "Add statuses to start configuring workflows for this role"
+    info:
+      database_deprecation_html: >
+        Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases. <br/> We have prepared [upgrade guides for all installation methods](upgrade_guide). You can perform the upgrade ahead of the next release at any time by following the guides.
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -604,6 +664,14 @@ ca:
   danger_dialog:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+  pagination:
+    label: "Pagination"
+    prev: "Previous"
+    prev_page: "Previous Page"
+    next: "Next"
+    next_page: "Next Page"
+    page: "Page %{number}"
+    page_with_more: "Page %{number}..."
   mcp_configurations:
     server_url_component:
       caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
@@ -764,6 +832,11 @@ ca:
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Canvia l'identificador
+      change_identifier_dialog_title: Change project identifier
+      change_identifier_format_hint_semantic: "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter."
+      change_identifier_format_hint_legacy: "Only lowercase letters (a–z), numbers, dashes or underscores."
+      change_identifier_warning: >
+        This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
       subitems:
         template_section: >
           Select templates to be used when creating new subitems.
@@ -996,9 +1069,9 @@ ca:
     groups:
       member_in_these_groups: "Aquest usuari és actualment membre dels següents grups:"
       no_results_title_text: Aquest usuari no és actualment membre de cap grup.
-      summary_with_more: Member of %{names} and %{count_link}.
+      summary_with_more_html: Member of %{names} and %{count_link}.
       more: "%{count} more"
-      summary: Member of %{names}.
+      summary_html: Member of %{names}.
     memberships:
       no_results_title_text: Aquest usuari no és actualment membre de cap projecte.
     open_profile: "Open profile"
@@ -1053,6 +1126,64 @@ ca:
         user: "L'usuari ara pot iniciar sessió per accedir a %{project}. Per tant, ja pots planejar amb aquest usuari i assignar-li paquets de treball."
         placeholder_user: "L'usuari de marcador de posició ara pot ser utilitzat a %{project}. Per tant, ja pots planejar amb aquest usuari i assignar-li paquets de treball."
         group: "El grup és ara part de %{project}. Per tant, ja pots planejar amb aquest grup i assignar-li paquets de treball."
+    working_hours:
+      current_schedule:
+        title: "Current schedule"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        availability_subtitle: "Dedicated to project work"
+        effective_hours: "Effective work hours"
+        effective_subtitle: "Per week"
+        not_set: "Not set"
+      future:
+        title: "Future schedules"
+        description: "Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically."
+        add_button: "Add future schedule"
+        blank_title: "No future schedules planned"
+        blank_description: "Create a future schedule to plan changes ahead of time"
+      history:
+        title: "Schedule history"
+        description: "View your past work schedules."
+        blank_title: "No schedule history yet"
+        blank_description: "Past schedule changes will appear here"
+      destroy:
+        confirm: "Are you sure you want to delete this working schedule?"
+      form:
+        title: "Plan a future work schedule"
+        title_current: "Edit current work schedule"
+        start_date: "Start date"
+        start_date_caption: "Select the date from when the new work schedule will be effective."
+        work_days: "Work days"
+        working_hours_label: "Working hours"
+        hours_mode_label: "Hours mode"
+        same_hours_mode: "Same hours per day"
+        individual_hours_mode: "Individual hours per day"
+        work_hours: "Work hours"
+        hours_per_day: "Hours per day"
+        per_day: "per day"
+        per_week: "per week"
+        total_work_hours: "Total work hours"
+        availability_description: "The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities."
+        availability_factor: "Availability factor"
+        availability_factor_caption: "Define the percentage of your working time dedicated to project work."
+        total_available_hours: "Total available work hours"
+        title_availability_factor: "Availability factor"
+        title_days_and_hours: "Days and hours"
+        title_future_dates: "Future dates"
+      table:
+        mobile_title: "Working schedules"
+        start_date: "Start date"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        effective_work_hours: "Effective work hours"
+        work_days_count:
+          one: "1 working day"
+          other: "%{count} working days"
+  user_preferences:
+    disable_keyboard_shortcuts_caption: >
+      You can choose to disable default [keyboard shortcuts](docs_url) if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
   page:
     text: "Text"
   placeholder_users:
@@ -1060,11 +1191,11 @@ ca:
       No pots eliminar un usuari de marcador de posició. No tens permís per administrar membres per tots els projectes dels quals l'usuari de marcador de posició és membre.
     delete_tooltip: "Elimina usuari de marcador de posició"
     deletion_info:
-      heading: "Elimina l'usuari de marcador de posició %{name}"
+      heading_html: "Delete placeholder user %{name}"
       data_consequences: >
         Tots els rols de l'usuari de marcador de posició (ex. assignat, responsable o altres valors d'usuari) seran reassignats a un compte anomenat "Usuari eliminat". Com que les dades de totes les comptes eliminades seran assignades a aquest compte no serà possible distingir les dades que l'usuari ha creat de les que altres usuaris eliminats han creat.
       irreversible: "Aquesta acció és irreversible"
-      confirmation: "Introdueix el nom de l'usuari de marcador de posició %{name} per confirmar l'eliminació."
+      confirmation_html: "Enter the placeholder user name %{name} to confirm the deletion."
   priorities:
     edit:
       priority_color_text: |
@@ -1096,8 +1227,8 @@ ca:
       status_excluded_from_totals_text: |-
         Check this option to exclude work packages with this status from totals of Work,
         Remaining work, and % Complete in a hierarchy.
-      status_percent_complete_text: |-
-        In <a href="%{href}">status-based progress calculation mode</a>, the % Complete of a work
+      status_percent_complete_text_html: |-
+        In [status-based progress calculation mode](setting_url), the % Complete of a work
         package is automatically set to this value when this status is selected.
         Ignored in work-based mode.
       status_readonly_html: |
@@ -1362,7 +1493,7 @@ ca:
       El registre d'usuari està limitat per al proveïdor d'inici de sessió únic '%{name}'. Si us plau, demaneu a un administrador que us activi el compte o que canviï el límit d'autoregistre d'aquest proveïdor.
     login_with_auth_provider: "o inicia la sessió amb el teu compte"
     signup_with_auth_provider: "o registra't mitjançant"
-    auth_source_login: Si us plau, entra com a <em>%{login}</em> per activar el teu compte.
+    auth_source_login_html: Please login as <em>%{login}</em> to activate your account.
     omniauth_login: Si us plau, entra per activar el teu compte.
   actionview_instancetag_blank_option: "Si us plau, selecciona"
   activemodel:
@@ -1633,6 +1764,11 @@ ca:
         consented_at: "Consentit a"
       group:
         identity_url: "URL d'identitat"
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
+      group_detail:
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -1641,8 +1777,6 @@ ca:
         button_update_user_information: "Update profile"
         comments_sorting: "Display work package activity sorted by"
         disable_keyboard_shortcuts: "Disable keyboard shortcuts"
-        disable_keyboard_shortcuts_caption_html: |-
-          You can choose to disable default <a href="%{href}">keyboard shortcuts</a> if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
         dismissed_enterprise_banners: "Hidden enterprise banners"
         impaired: "Mode d'accessibilitat"
         auto_hide_popups: "Automatically hide success banners"
@@ -1663,6 +1797,28 @@ ca:
       users/invitation/form_model:
         principal_type: "Invitation type"
         id_or_email: "Nom o adreça de correu electrònic"
+      user_non_working_time:
+        start_date: "Start date"
+        end_date: "End date"
+      user_working_hours:
+        valid_from: "Valid from"
+        monday: "Monday"
+        monday_hours: "Monday hours"
+        tuesday: "Tuesday"
+        tuesday_hours: "Tuesday hours"
+        wednesday: "Wednesday"
+        wednesday_hours: "Wednesday hours"
+        thursday: "Thursday"
+        thursday_hours: "Thursday hours"
+        friday: "Friday"
+        friday_hours: "Friday hours"
+        saturday: "Saturday"
+        saturday_hours: "Saturday hours"
+        sunday: "Sunday"
+        sunday_hours: "Sunday hours"
+        availability_factor: "Availability factor"
+        shared_hours: "Work hours"
+        days: "Working days"
       version:
         effective_date: "Data de finalització"
         sharing: "Compartint"
@@ -1717,6 +1873,8 @@ ca:
         before: "ha de ser abans de %{date}."
         before_or_equal_to: "ha de ser igual o abans de %{date}."
         blank: "no pot estar en blanc."
+        not_before_start_date: "must not be before the start date."
+        overlapping_range: "overlaps with an existing non-working day range."
         blank_nested: "és necessari de definir la propietat  '%{property}' ."
         cannot_delete_mapping: "is required. Cannot be deleted."
         is_for_all_cannot_modify: "is for all projects and can therefore not be modified."
@@ -1753,8 +1911,9 @@ ca:
         less_than_or_equal_to: "ha de ser menor o igual a %{count}."
         not_available: "no és disponible degut a la configuració del sistema."
         not_deletable: "no es pot eliminar."
+        not_editable: "cannot be edited because it is already in effect."
         not_current_user: "no és l'usuari actual."
-        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
+        system_wide_non_working_day_exists: "conflicts with an existing system-wide non-working day for this date."
         not_found: "not found."
         not_a_date: "no és una data vàlida."
         not_a_datetime: "no és una data-i-hora vàlida."
@@ -1785,6 +1944,10 @@ ca:
           no està proveint un "Context Segur". Utilitza HTTPS o bé una adreça de retroalimentació, com un host local.
         wrong_length: "la longitud és incorrecta (haurien de ser %{count} caràcters)."
       models:
+        group:
+          attributes:
+            parent_id:
+              circular_dependency: "would create a circular group hierarchy."
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -1895,6 +2058,9 @@ ca:
               project_initiation_request_disabled: "Project initiation request is disabled. It must be enabled to create the artifact work package."
             types:
               in_use_by_work_packages: "encara en ús pels paquets de treball: %{types}"
+            identifier:
+              must_start_with_letter: "must start with a letter"
+              no_special_characters: "may only contain uppercase letters, numbers, and underscores"
             enabled_modules:
               dependency_missing: "El mòdul \"%{dependency}\" necessita ser activat també, ja que el mòdul \"%{module}\" en depèn."
               format: "%{message}"
@@ -2100,6 +2266,10 @@ ca:
                 description: "'Confirmació de la contrasenya' ha de coincidir amb la introduïda al camp 'Nova contrasenya'."
             status:
               invalid_on_create: "no és un valor vàlid per a nous usuaris."
+        user_working_hours:
+          attributes:
+            days:
+              no_working_day: "At least one day needs to be configured as a working day."
         member:
           principal_blank: "Trieu com a mínim un usuari o grup."
           role_blank: "s'ha d'assignar."
@@ -2366,8 +2536,8 @@ ca:
         Activar les còpies de seguretat permetrà a qualsevol usuari amb els permisos adients i aquest token de còpia de seguretat descarregar-lo i obtenir totes les dades d'aquesta instal·lació d'OpenProject. Això, inclou les dades de tots els altres usuaris.
       info: >
         Hauràs de generar un token de còpia de seguretat per tal de crear la còpia de seguretat. Cada vegada que demanis una còpia de seguretat hauràs de validar aquest token. Pots eliminar el token de còpia de seguretat per desactivar les còpies de seguretat per aquest usuari.
-      verification: >
-        Escriu %{word} per confirmar que vols %{action} del token de la còpia de seguretat.
+      verification_html: >
+        Enter %{word} to confirm you want to %{action} the backup token.
       verification_word_reset: reinicia
       verification_word_create: crear
       warning: >
@@ -2806,7 +2976,7 @@ ca:
       title:
         one: "One day left of %{trial_plan} trial token"
         other: "%{count} days left of %{trial_plan} trial token"
-      description: "You have access to all %{trial_plan} features."
+      description_html: "You have access to all %{trial_plan} features."
     trial:
       not_found: "You have requested a trial token, but that request is no longer available. Please try again."
       wait_for_confirmation: "We sent you an email to confirm your address in order to retrieve a trial token."
@@ -2823,10 +2993,8 @@ ca:
       confirmation_subline: >
         Please, check your inbox and follow the steps to start your 14-day free trial.
       domain_caption: The token will be valid for your currently configured host name.
-      receive_newsletter_html: >
-        I want to receive the OpenProject <a target="_blank" href="https://www.openproject.org/newsletter/">newsletter</a>.
-      consent_html: >
-        I agree with the <a target="_blank" href="https://www.openproject.org/terms-of-service/">terms of service</a> and the <a target="_blank" href="https://www.openproject.org/data-privacy-and-security/">privacy policy</a>.
+      receive_newsletter: "I want to receive the OpenProject [newsletter](newsletter_url)."
+      consent: "I agree with the [terms of service](tos_url) and the [privacy policy](privacy_url)."
   email_calendar_updates:
     state:
       disabled: "Disabled."
@@ -2914,8 +3082,8 @@ ca:
     work_package_edit: "Paquet de treball editat"
     work_package_note: "Afegida nota al paquet de treball"
     title:
-      project: "Projecte: %{name}"
-      subproject: "Subprojecte: %{name}"
+      project_html: "Project: %{name}"
+      subproject_html: "Subproject: %{name}"
   export:
     dialog:
       title: "Exportar"
@@ -3166,6 +3334,7 @@ ca:
           Scheduling mode automatically adjusted with version update.
         totals_removed_from_childless_work_packages: >-
           Work and progress totals automatically removed for non-parent work packages with <a href="%{href}" target="_blank">version update</a>. This is a maintenance task and can be safely ignored.
+        sprint_migration: "Version '%{version_name}' has been copied as a sprint."
       total_percent_complete_mode_changed_to_work_weighted_average: >-
         Child work packages without Work are ignored.
       total_percent_complete_mode_changed_to_simple_average: >-
@@ -3173,9 +3342,9 @@ ca:
   links:
     configuration_guide: "Guia de configuració"
     get_in_touch: "Tens preguntes? Posa't en contacte amb nosaltres."
-  instructions_after_registration: "Podràs entrar tan aviat com hagis activat el teu compte fent clic a %{signin}."
-  instructions_after_logout: "Pots inscriure't de not fent clic a %{signin}."
-  instructions_after_error: "Pots intentar iniciar sessió fent clic a %{signin}. Si l'error continua, demana ajuda al teu administrador."
+  instructions_after_registration_link: "You can sign in as soon as your account has been activated by clicking [here](signin_url)."
+  instructions_after_logout_link: "You can sign in again by clicking [here](signin_url)."
+  instructions_after_error_link: "You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help."
   menus:
     admin:
       ai: "Artificial Intelligence (AI)"
@@ -3367,6 +3536,8 @@ ca:
   label_calendar_show: "Mostreu el calendari"
   label_category: "Categoria"
   label_completed: Completat
+  label_committed_at_html: "%{committed_revision_link} at %{date}"
+  label_committed_link: "committed revision %{revision_identifier}"
   label_consent_settings: "Consentiment d'usuari"
   label_wiki_menu_item: Element de menú Wiki
   label_select_main_menu_item: Seleccioneu nou element de menú principal
@@ -3533,6 +3704,7 @@ ca:
   label_subject_or_id: "Subjecte o ID"
   label_calendar_subscriptions: "Calendar subscriptions"
   label_identifier: "Identificador"
+  label_project_identifier: "Project identifier"
   label_in: "en"
   label_in_less_than: "en menys de"
   label_in_more_than: "en més de"
@@ -3666,11 +3838,13 @@ ca:
   label_news_view_all: "Visualitza totes les notícies"
   label_next: "Següent"
   label_next_week: "Setmana següent"
+  label_next_year: "Next year"
   label_no_change_option: "(sense canvis)"
   label_no_data: "No hi ha dades per mostrar"
   label_no_due_date: "sense data de final"
   label_no_start_date: "no hi ha data d'inici"
   label_no_parent_page: "Sense pàgina pare"
+  label_no_parent_group: "(No parent group)"
   label_notification_center_plural: "Notificacions"
   label_nothing_display: "Res a mostrar"
   label_nobody: "ningú"
@@ -3699,6 +3873,8 @@ ca:
   label_overall_activity: "Activitat global"
   label_overview: "Visió general"
   label_page_title: "Títol de pàgina"
+  label_parent_group_caption: >
+    Setting a parent group will make this group a subgroup of the selected parent group. This will also inherit all memberships, including permissions of the parent group.
   label_part_of: "part de"
   label_password_lost: "Has oblidat la teva contrasenya?"
   label_password_rule_lowercase: "Minúscula"
@@ -3725,6 +3901,7 @@ ca:
   label_preview_not_available: "Previsualització no disponible"
   label_previous: "Anterior"
   label_previous_week: "Setmana anterior"
+  label_previous_year: "Previous year"
   label_principal_invite_via_email: " o convidar a nous usuaris per correu electrònic"
   label_principal_search: "Afegir usuaris o grups existents"
   label_privacy_policy: "Privacitat de dades i política de seguretat"
@@ -3836,6 +4013,7 @@ ca:
   label_start_to_start: "de principi a principi"
   label_statistics: "Estadí­stiques"
   label_status: "Estat"
+  label_status_plural: "Statuses"
   label_storage_free_space: "Espai de disc restant"
   label_storage_used_space: "Espai de disc utilitzat"
   label_storage_group: "Sistema de fitxers %{identifier}"
@@ -3864,6 +4042,7 @@ ca:
   label_title: "Títol"
   label_projects_menu: "Projectes"
   label_today: "avui"
+  label_today_capitalized: "Avui"
   label_token_version: "Token Version"
   label_today_as_start_date: "Select today as start date."
   label_today_as_due_date: "Select today as finish date."
@@ -3884,7 +4063,7 @@ ca:
   label_user: "Usuari"
   label_user_and_permission: "Usuaris i permisos"
   label_user_named: "Usuari %{name}"
-  label_user_activity: "Activitat de %{value}"
+  label_user_activity_html: "%{value}'s activity"
   label_user_anonymous: "Anònim"
   label_user_menu: "User menu"
   label_user_new: "Nou usuari"
@@ -3971,6 +4150,15 @@ ca:
     one: "1 file"
     other: "%{count} fitxers"
     zero: "sense fitxers"
+  label_x_days:
+    one: "1 day"
+    other: "%{count} days"
+  label_x_working_days:
+    one: "1 working day"
+    other: "%{count} working days"
+  label_x_working_days_time_off:
+    one: "Time off: 1 working day"
+    other: "Time off: %{count} working days"
   label_yesterday: "ahir"
   label_zen_mode: "Zen mode"
   label_role_type: "Classe"
@@ -3979,6 +4167,22 @@ ca:
   label_not_changeable: "(no variable)"
   label_global: "Global"
   label_seeded_from_env_warning: This record has been created through a setting environment variable. It is not editable through UI.
+  label_schedule_and_availability: "Schedule and availability"
+  label_working_hours: "Work schedule"
+  label_non_working_days: "Availability calendar"
+  label_non_working_days_with_count: "Non-working days (%{count})"
+  label_non_working_days_summary: "Summary"
+  button_add_non_working_time: "Time off"
+  button_edit_non_working_time: "Edit time off"
+  label_continued_from_previous_year: "continued from previous year"
+  label_continues_into_next_year: "continues into next year"
+  label_end_date: "Finish date"
+  label_working_days: "Working days"
+  label_non_working_times_with_count: "%{year} time off (%{count})"
+  label_non_working_times_summary: "%{year} summary"
+  label_total_user_non_working_times: "Personal non-working days"
+  label_total_global_non_working_days: "Global non-working days"
+  label_total_days_off: "Total days off"
   macro_execution_error: "Error en l'execució de la macro %{macro_name}"
   macro_unavailable: "No es pot mostrar la macro %{macro_name}."
   macros:
@@ -4013,7 +4217,7 @@ ca:
       center: "Anar al Centre de notificacions"
       see_in_center: "Veure el comentari en el centre de notificacions"
       settings: "Canvia la configuració dels correus electrònics"
-    salutation: "Hola %{user}"
+    salutation: "Hello %{user},"
     salutation_full_name: "Full name"
     work_packages:
       created_at: "Creat a les %{timestamp} per %{user}"
@@ -4043,7 +4247,7 @@ ca:
       note: "Note: “%{note}”"
     sharing:
       work_packages:
-        allowed_actions: "You may %{allowed_actions} this work package. This can change depending on your project role and permissions."
+        allowed_actions_html: "You may %{allowed_actions} this work package. This can change depending on your project role and permissions."
         create_account: "To access this work package, you will need to create and activate an account on %{instance}."
         open_work_package: "Open work package"
         subject: "Work package #%{id} was shared with you"
@@ -4140,8 +4344,9 @@ ca:
       roles: "Ara tens els següents rols:"
   mail_user_activation_limit_reached:
     subject: S'ha arribat al límit d'activació d'usuaris
-    message: |
-      Un nou usuari (%{email}) ha intentat crear un compte d'OpenProject en el sistema que tu administres (%{host}). L'usuari no pot activar el seu compte, ja que s'ha assolit el límit d'usuaris.
+    message_html: |
+      A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
+      The user cannot activate their account since the user limit has been reached.
     steps:
       label: "Per permetre a l'usuari iniciar sessió pots:"
       a: "Actualitza el teu pla de pagament ([here](upgrade_url))" #here turned into a link
@@ -4324,6 +4529,12 @@ ca:
   permission_manage_versions: "Gestionar les versions"
   permission_manage_wiki: "Gestionar la wiki"
   permission_manage_wiki_menu: "Gestionar el menú wiki"
+  permission_manage_own_working_times: "Manage own working times"
+  permission_manage_own_working_times_explanation: >
+    Allows users to manage their own working times, and personal non-working days.
+  permission_manage_working_times: "Manage working times for all users"
+  permission_manage_working_times_explanation: >
+    Allows users to manage working times for all users, including personal non-working days.
   permission_move_work_packages: "Moure paquets de treball"
   permission_protect_wiki_pages: "Protegir les pàgines wiki"
   permission_rename_wiki_pages: "Canviar el nom de les pàgines wiki"
@@ -4467,10 +4678,10 @@ ca:
       info: "Eliminar el repositori és una acció irreversible."
       info_not_managed: "Nota: Això no suprimirà el contingut d'aquest repositori perquè no és administrat per OpenProject."
       managed_path_note: "S'esborrarà el directori següent: %{path}"
-      repository_verification: "Introduir l'identificador del projecte %{identifier} per verificar la supressió del seu repositori."
+      repository_verification_html: "Enter the project's identifier %{identifier} to verify the deletion of its repository."
       subtitle: "Estàs segur que vols eliminar el %{repository_type} del %{project_name} projecte?"
-      subtitle_not_managed: "Estàs segur que vols treure l'enllaç %{repository_type} %{url} del projecte %{project_name}?"
-      title: "Suprimir el %{repository_type}"
+      subtitle_not_managed_html: "Do you really want to remove the linked %{repository_type} %{url} from the project %{project_name}?"
+      title_html: "Delete the %{repository_type}"
       title_not_managed: "Eliminar la %{repository_type} enllaçat?"
     errors:
       build_failed: "No es pot crear el repositori amb la configuració seleccionada. %{reason}"
@@ -4520,7 +4731,7 @@ ca:
     storage:
       not_available: "El consum d'emmagatzematge de disc no està disponible per a aquest repositori."
       update_timeout: "Mantenir la darrera informació d'espai de disc necessari per a un dipòsit durant N minuts. Ja que comptar l'espai de disc necessari per un repostori pot ser costós, augmenteu aquest valor per reduir l'impacte en el rendiment."
-      oauth_application_details: "El valor secret de client no serà accessible de nou un cop tanquis aquesta pestanya. Si us plau, còpia aquests valors a la configuració de \"Nextcloud OpenProject Integration\":"
+      oauth_application_details_html: "The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:"
       oauth_application_details_link_text: "Ves a la pàgina de configuracions"
       setup_documentation_details: "Si necessites ajuda configurant un nou emmagatzematge de fitxer si us plau, comprova la nostra documentació:"
       setup_documentation_details_link_text: "File storages setup"
@@ -4565,15 +4776,15 @@ ca:
   setting_apiv3_cors_title: "Cross-Origin Resource Sharing (CORS)"
   setting_apiv3_cors_enabled: "Habilitar CORS"
   setting_apiv3_cors_origins: "\"API V3 Cross-Origin Resource Sharing (CORS)\" orígens permesos"
-  setting_apiv3_cors_origins_text_html: >
-    Si s'activa el CORS, aquests són els orígens que tenen permís per accedir a l'API d'OpenProject. <br/>Si us plau, valida la <a href="%{origin_link}" target="_blank">Documentació en l'encapçalament d'Origin</a> en com s'ha d'especificar els valors esperats.
+  setting_apiv3_cors_origins_instructions_html: >
+    If CORS is enabled, these are the origins that are allowed to access OpenProject API. <br/> Please check the [Documentation on the Origin header](docs_url) on how to specify the expected values.
   setting_apiv3_write_readonly_attributes: "Write access to read-only attributes"
   setting_apiv3_write_readonly_attributes_instructions: >
     If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
   setting_apiv3_write_readonly_attributes_warning: >
     This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
-  setting_apiv3_write_readonly_attributes_additional: >
-    For more information on attributes and supported resources, please see the %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_additional_html: >
+    For more information on attributes and supported resources, please see the [API documentation](api_documentation_link).
   setting_apiv3_max_page_size: "Màxima mida de pàgina API"
   setting_apiv3_max_page_size_instructions: >
     Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
@@ -4670,7 +4881,7 @@ ca:
   setting_work_package_properties: "Propietats de paquet de treball"
   setting_work_package_startdate_is_adddate: "Utilitzar la data actual com a data d'inici dels paquets de treball nous"
   setting_work_packages_projects_export_limit: "Límit d'exportació de paquets de treball/projectes"
-  setting_journal_aggregation_time_minutes: "Accions de l'usuari agrupades en"
+  setting_journal_aggregation_time_minutes: "Aggregation period"
   setting_log_requesting_user: "Registrar login d'usuari, nom i adreça de correu electrònic de totes les sol·licituds"
   setting_login_required: "Es necessita autenticació"
   setting_login_required_caption: "When checked, all requests to the application have to be authenticated."
@@ -4751,6 +4962,12 @@ ca:
   setting_welcome_text: "Bloc de text de benvinguda"
   setting_welcome_title: "Títol del bloc de benvinguda"
   setting_welcome_on_homescreen: "Mostrar el bloc de benvinguda a la pàgina d'inici"
+  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_numeric_caption: >
+    Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
+  setting_work_packages_identifier_alphanumeric_caption: >
+    Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Mètode de destacament per defecte"
   setting_work_package_list_default_highlighted_attributes: "Atributs de destacament en línia per defecte"
   setting_working_days: "Dies laborals"
@@ -4917,10 +5134,12 @@ ca:
       section_work_week: "Setmana laboral"
       section_holidays_and_closures: "Vacances i tancaments"
     work_packages:
+      work_package_identifier: "Work package identifier"
       not_allowed_text: "You do not have the necessary permissions to view this page."
       activities:
         enable_internal_comments: "Enable internal comments"
-        helper_text: "Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. %{link}"
+        helper_text_html: >
+          Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. [Click here to learn more](docs_url)
   text_formatting:
     markdown: "Markdown"
     plain: "Text sense format"
@@ -5042,6 +5261,10 @@ ca:
   text_plugin_assets_writable: "Es pot escriure als complements actius"
   text_powered_by: "Desenvolupat per %{link}"
   text_project_identifier_info: "Només es permeten lletres minúscules (a-z), números, guions i guions baixos, i ha de començar amb una lletra minúscula."
+  text_project_identifier_description: 'The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".'
+  text_project_identifier_url_description: "The project identifier is included in the URL of the project."
+  text_project_identifier_handle_format: "Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters)."
+  text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
   text_reassign: "Reassigna al paquet de treball:"
   text_regexp_multiline: 'S''aplica l''expressió regular en mode de múltilínia. Per exemple, ^---\s+'
   text_repository_usernames_mapping: "Seleccioneu l'assignació entre els usuaris del OpenProject i cada nom d'usuari trobat al repositori.\nEls usuaris amb el mateix nom d'usuari o correu del OpenProject i del repositori s'assignaran automàticament."
@@ -5149,18 +5372,18 @@ ca:
   version_status_locked: "bloquejat"
   version_status_open: "obrir"
   note: Nota
-  note_password_login_disabled: "La connexió amb contrasenya s'ha deshabilitat per %{configuration}."
+  note_password_login_disabled_link: "Password login has been disabled through a [configuration setting](configuration_url)."
   warning: Alerta
   warning_attachments_not_saved: "No s'han pogut desar %{count} fitxer(s)."
-  warning_imminent_user_limit: >
-    Has convidat a més usuaris dels permesos en el teu pla actual. Pot ser que els usuaris convidats no puguin unir-se al teu OpenProject. Si us plau, <a href="%{upgrade_url}">actualitza el teu pla</a> o bloqueja a usuaris per permetre als usuaris convidats registrar-se i unir-se.
+  warning_imminent_user_limit_html: >
+    You invited more users than are supported by your current plan. Invited users may not be able to join your OpenProject environment. Please [upgrade your plan](upgrade_url) or block existing users in order to allow invited and registered users to join.
   warning_registration_token_expired: |
     El correu electrònic d'activació ha caducat. N'enviarem un de nou a %{email}.
     Si us plau, fes clic a l'enllaç dins del correu per activar el teu compte.
   warning_user_limit_reached: >
     Adding additional users will exceed the current limit. Please contact an administrator to increase the user limit to ensure external users are able to access this instance.
-  warning_user_limit_reached_admin: >
-    Adding additional users will exceed the current limit. Please <a href="%{upgrade_url}">upgrade your plan</a> to be able to ensure external users are able to access this instance.
+  warning_user_limit_reached_admin_html: >
+    Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
     Has assolit el nombre d'usuaris límit (%{current}/%{max} usuaris actius. Si us plau, posa't en contacte amb sales@openproject.com per actualitzar la teva edició Enterpirse i afegir nous usuaris.
   warning_protocol_mismatch_html: >
@@ -5220,7 +5443,7 @@ ca:
     reminders:
       label_remind_at: "Data"
       note_placeholder: "Why are you setting this reminder?"
-      create_success_message: "Reminder set successfully. You will receive a notification for this work package %{reminder_time}."
+      create_success_message_html: "Reminder set successfully. You will receive a notification for this work package %{reminder_time}."
       success_update_message: "Reminder updated successfully."
       success_deletion_message: "Reminder deleted successfully."
   sharing:
@@ -5251,8 +5474,8 @@ ca:
     text_user_limit_reached_admins: 'Adding additional users will exceed the current limit. Please <a href="%{upgrade_url}">upgrade your plan</a> to be able to add more users.'
     warning_user_limit_reached: >
       Adding additional users will exceed the current limit. Please contact an administrator to increase the user limit to ensure external users are able to access this %{entity}.
-    warning_user_limit_reached_admin: >
-      Adding additional users will exceed the current limit. Please <a href="%{upgrade_url}">upgrade your plan</a> to be able to ensure external users are able to access this %{entity}.
+    warning_user_limit_reached_admin_html: >
+      Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
     warning_no_selected_user: "Please select users to share this %{entity} with"
     warning_locked_user: "The user %{user} is locked and cannot be shared with"
     user_details:
@@ -5372,6 +5595,7 @@ ca:
       project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: No revelat - L'ancestre és invisible per falta de permisos.
       definingProject: Undisclosed - The project is invisible because of lacking permissions.
+      definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Pre-autorització"

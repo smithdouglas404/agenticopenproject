@@ -49,9 +49,9 @@ pt-BR:
           non_object_attribute: "não define um objeto JSON em %{attribute}."
   provider:
     delete_warning:
-      input_delete_confirmation: Digite o nome do provedor %{name} para confirmar a exclusão.
+      input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
       irreversible_notice: Excluir um provedor SSO é uma ação irreversível.
-      provider: 'Tem certeza de que deseja excluir o provedor SSO %{name}? Para confirmar essa ação, insira o nome do provedor no campo abaixo. Isso irá:'
+      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
       delete_result_1: Remover o provedor da lista de provedores disponíveis.
       delete_result_user_count:
         zero: Nenhum usuário está utilizando este provedor no momento. Não é necessária nenhuma ação adicional.

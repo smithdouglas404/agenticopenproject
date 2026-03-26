@@ -36,10 +36,8 @@ de:
         updated: "Aktualisiert"
         comment: "Kommentar"
         internal_comment: "Interner Kommentar"
-      explanation:
-        text: >
-          Bei dem Auftreten eines Ereignisses wie der Erstellung eines Arbeitspakets oder einer Aktualisierung eines Projekts sendet OpenProject einen HTTP POST Request an die konfigurierten Web-Endpunkte. Oft wird das Ereignis nach Ablauf der %{link} gesendet.
-        link: konfigurierten Aggregationszeit
+      explanation_html: >
+        Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
       status:
         enabled: 'Webhook ist aktiv'
         disabled: 'Webhook ist deaktiviert'

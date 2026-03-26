@@ -349,8 +349,6 @@ fr:
     label_collapse_all: "Tout replier"
     label_collapse_text: "Réduire le texte"
     label_comment: "Commentaire"
-    label_committed_at: "%{committed_revision_link} le %{date}"
-    label_committed_link: "révision %{revision_identifier} soumise"
     label_contains: "contenus"
     label_created_on: "créé le"
     label_edit_comment: "Modifier ce commentaire"
@@ -1218,3 +1216,7 @@ fr:
       waiting_subtitle:
         network_off: "Un problème de réseau est survenu."
         network_on: "Le réseau est à nouveau disponible. Nous essayons."
+    projects:
+      identifier_suggestion:
+        loading: "Chargement des suggestions ..."
+        set_name_first: "Veuillez d'abord définir le nom."

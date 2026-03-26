@@ -36,7 +36,7 @@ cs:
         type: "Typ nákladu"
         labor_budget: "Plánované mzdové náklady"
         material_budget: "Plánované jednotkové náklady"
-        base_amount: "Base amount"
+        base_amount: "Základní částka"
       work_package:
         budget_subject: "Název rozpočtu"
     errors:

@@ -71,8 +71,7 @@ lt:
       error_invalid_settings: "Jūsų parinktos 2FA strategijos yra netinkamos"
       failed_to_save_settings: "Nepavyko atnaujinti 2FA nustatymų: %{message}"
     admin:
-      self_edit_path: "Norėdami pakeisti jūsų 2FA įrenginius, prašome eiti į %{self_edit_link}"
-      self_edit_link_name: "Dviejų veiksnių autentikacija jūsų paskyros puslapyje"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "Jūs negalite keisti jūsų 2FA įrenginių šiame kelyje. Eikite į Mano paskyra -> Dviejų veiksnių autentikacija."
       no_devices_for_user: "Šiam naudotojui nepriregistruotas joks 2FA įrenginys."
       all_devices_deleted: "Visi šio naudotojo 2FA įrenginiai buvo ištrinti"
@@ -119,8 +118,8 @@ lt:
       failed_to_delete: "Nepavyko ištrinti 2FA įrenginio."
       is_default_cannot_delete: "Šis įrenginys pažymėtas kaip numatytasis ir todėl negali būti ištrintas dėl aktyvios saugumo politikos. Prieš trindami pažymėkite kitą įrenginį kaip numatytąjį."
       not_existing: "Jūsų paskyrai nėra priregistruotas joks 2FA įrenginys."
-      2fa_from_input: Jūsų asmenybės identifikavimui prašome įvesti kodą iš jūsų <strong>%{device_name}</strong>.
-      2fa_from_webauthn: Prašome pateikti WebAuthn rrenginį <strong>%{device_name}</strong>. Jei tai USB įrenginys, įsitikinkite, kad jis įjungtas ir jį palieskite. Tada paspauskite prisijungimo mygtuką.
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.

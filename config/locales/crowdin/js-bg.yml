@@ -349,8 +349,6 @@ bg:
     label_collapse_all: "Свиване на всички"
     label_collapse_text: "Collapse text"
     label_comment: "Коментар"
-    label_committed_at: "%{committed_revision_link} в %{date}"
-    label_committed_link: "направена ревизия %{revision_identifier}"
     label_contains: "съдържа"
     label_created_on: "създадена на"
     label_edit_comment: "Редактиране на този коментар"
@@ -1218,3 +1216,7 @@ bg:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

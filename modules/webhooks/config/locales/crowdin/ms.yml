@@ -36,10 +36,8 @@ ms:
         updated: "Telah dikemas kini"
         comment: "Komen"
         internal_comment: "Internal comment"
-      explanation:
-        text: >
-          Apabila berlakunya peristiwa seperti ciptaan pakej kerja, atau projek yang telah dikemas kini, OpenProject akan menghantar permintaan POST kepada titik akhir web yang telah dikonfigurasi. Selalunya peristiwa tersebut akan dihantar selepas %{link} telah lepas.
-        link: tempoh pengumpulan yang dikonfigurasi
+      explanation_html: >
+        Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
       status:
         enabled: 'Webhook telah didayakan'
         disabled: 'Wekbook telah dinyahdayakan'

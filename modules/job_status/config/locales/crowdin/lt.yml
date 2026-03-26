@@ -5,8 +5,7 @@ lt:
     description: "Foninių darbų sąrašas ir būsena."
   job_status_dialog:
     download_starts: 'Parsisiuntimas turėtų prasidėti automatiškai.'
-    link_to_download: 'Or, %{link} to download.'
-    click_here: 'click here'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Foninės užduoties būklė'
     redirect: 'Nukreipiame jūsų naršyklę.'
     redirect_link: 'Norėdami tęsti spauskite čia.'

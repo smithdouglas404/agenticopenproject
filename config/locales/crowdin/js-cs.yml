@@ -265,7 +265,7 @@ cs:
         description: >
           Vyberte atributy, které chcete zobrazit v příslušných pozicích Ganttova diagramu. Všimněte si, že při najetí kursorem myši budou místo těchto atributů zobrazeny jeho popisky s daty.
       button_activate: "Zobrazit Ganttův diagram"
-      button_deactivate: "Skrýt Gantt"
+      button_deactivate: "Skrýt Ganttův diagram"
       filter:
         noneSelection: "(žádný)"
       selection_mode:
@@ -349,8 +349,6 @@ cs:
     label_collapse_all: "Sbalit vše"
     label_collapse_text: "Collapse text"
     label_comment: "Komentář"
-    label_committed_at: "%{committed_revision_link} v %{date}"
-    label_committed_link: "provedené revize %{revision_identifier}"
     label_contains: "obsahuje"
     label_created_on: "vytvořeno"
     label_edit_comment: "Upravit komentář"
@@ -684,14 +682,14 @@ cs:
           wiki_page_updated: "Wiki stránka aktualizována"
           membership_added: "Členství přidáno"
           membership_updated: "Členství bylo aktualizováno"
-        title: "E-mail upozornění "
+        title: "E-mailová upozornění"
         pause:
           label: "Dočasně pozastavit denní připomenutí e-mailem"
           first_day: "První den"
           last_day: "Poslední den"
     text_are_you_sure: "Jste si jisti?"
     text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
-    breadcrumb: "Breadcrumb"
+    breadcrumb: "Navigační lišta"
     text_data_lost: "Všechna zadaná data budou ztracena."
     text_user_wrote: "%{value} napsal:"
     types:
@@ -1226,3 +1224,7 @@ cs:
       waiting_subtitle:
         network_off: "Je tu problém se sítí."
         network_on: "Síť je zpátky . Zkoušíme to."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

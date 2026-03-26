@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<%= turbo_frame_tag :backlogs_container, refresh: :morph, class: "op-backlogs-page" do %>
+<%= turbo_frame_tag :backlogs_container, refresh: :morph do %>
   <% if @owner_backlogs.empty? && @sprint_backlogs.empty? %>
     <%=
       render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|

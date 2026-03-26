@@ -108,7 +108,7 @@ zh-TW:
     jemalloc_allocator: Jemalloc 記憶體分配器
     journal_aggregation:
       caption: >
-        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
+        User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
     import:
       title: "Import"
     jira:
@@ -373,11 +373,69 @@ zh-TW:
         project_creation: "專案建立"
         notification_text_default: >
           <p>您好，</p> <p>已建立新專案： projectValue:name</p> <p>謝謝</p>
+      work_packages_identifier:
+        page_header:
+          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+        banner:
+          existing_identifiers_notice: >
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+        box_header:
+          label_project: Project
+          label_previous_identifier: Previous identifier
+          label_autofixed_suggestion: Future identifier
+          label_example_work_package_id: Example work package ID
+        autofix_preview:
+          error_too_long: Has to be fewer than 5 characters
+          error_special_characters: Special characters not allowed
+          error_in_use: Already in use as another project's active handle
+          error_reserved: Reserved by another project's handle history
+          remaining_projects:
+            other: "... %{count} more projects"
+        button_autofix: Autofix and save
+        dialog:
+          title: Change work package identifiers
+          heading: Enable project-based work package IDs?
+          description: >
+            This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          confirm_button: Change identifiers
+          checkbox_label: I understand that this will permanently change all work package IDs
+        success_banner: Successfully updated work package identifier format.
+        in_progress:
+          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "預設轉換"
         user_author: "使用者為作者"
         user_assignee: "使用者為執行者"
+      index:
+        description: "Configure status transitions for each work package type."
+        type_filter:
+          label: "Filter by type name…"
+      status_button: "Status"
+      statuses_dialog:
+        title: "Statuses"
+        label: "Statuses enabled for this type"
+        caption: "Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it."
+      statuses_removal_dialog:
+        title: "Remove statuses"
+        heading:
+          other: "Remove %{count} statuses?"
+        description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
+        confirm: "Remove"
+      leave_confirmation:
+        title: "Save changes before continuing?"
+        description: "You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?"
+        ignore: "Ignore changes"
+        save: "Save changes and continue"
+      role_selector:
+        label: "Role: %{role}"
+        no_role: "Select role"
+      blankslate:
+        title: "No status transitions configured"
+        description: "Add statuses to start configuring workflows for this role"
+    info:
+      database_deprecation_html: >
+        Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases. <br/> We have prepared [upgrade guides for all installation methods](upgrade_guide). You can perform the upgrade ahead of the next release at any time by following the guides.
   authentication:
     login_and_registration: "登入及註冊"
   announcements:
@@ -600,6 +658,14 @@ zh-TW:
   danger_dialog:
     confirmation_live_message_checked: "繼續的按鈕現已啟用。"
     confirmation_live_message_unchecked: "繼續的按鈕現在沒有作用。您需要勾選核取方塊才能繼續。"
+  pagination:
+    label: "Pagination"
+    prev: "Previous"
+    prev_page: "Previous Page"
+    next: "Next"
+    next_page: "Next Page"
+    page: "Page %{number}"
+    page_with_more: "Page %{number}..."
   mcp_configurations:
     server_url_component:
       caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
@@ -759,6 +825,11 @@ zh-TW:
         description: >
           這個專案只對依據其角色和相關權限的專案成員可见。子專案不受影響，並擁有其自己的設定。
       change_identifier: 變更識別碼
+      change_identifier_dialog_title: Change project identifier
+      change_identifier_format_hint_semantic: "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter."
+      change_identifier_format_hint_legacy: "Only lowercase letters (a–z), numbers, dashes or underscores."
+      change_identifier_warning: >
+        This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
       subitems:
         template_section: >
           選取建立新子項時要使用的範本。
@@ -985,9 +1056,9 @@ zh-TW:
     groups:
       member_in_these_groups: "此用戶當前是以下群組的成員："
       no_results_title_text: 這個使用者目前不是任何群組的成員
-      summary_with_more: '%{names} 和 %{count_link}的成員。'
+      summary_with_more_html: Member of %{names} and %{count_link}.
       more: "其餘 %{count} 項"
-      summary: '%{names}的成員。'
+      summary_html: Member of %{names}.
     memberships:
       no_results_title_text: 這個使用者目前不是任何專案的成員
     open_profile: "開啟個人資料"
@@ -1042,6 +1113,63 @@ zh-TW:
         user: "使用者現在可以登入 %{project}。與此同時，您已經可以與該使用者一起進行規劃，例如指派工作套件。"
         placeholder_user: "佔位符現在可在 %{project} 中使用。與此同時，您已經可以使用該使用者進行規劃，例如指派工作套件。"
         group: "現在該群組成為 %{project} 的一部分。與此同時，您已經可以使用該群組進行規劃，例如指派工作套件。"
+    working_hours:
+      current_schedule:
+        title: "Current schedule"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        availability_subtitle: "Dedicated to project work"
+        effective_hours: "Effective work hours"
+        effective_subtitle: "Per week"
+        not_set: "Not set"
+      future:
+        title: "Future schedules"
+        description: "Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically."
+        add_button: "Add future schedule"
+        blank_title: "No future schedules planned"
+        blank_description: "Create a future schedule to plan changes ahead of time"
+      history:
+        title: "Schedule history"
+        description: "View your past work schedules."
+        blank_title: "No schedule history yet"
+        blank_description: "Past schedule changes will appear here"
+      destroy:
+        confirm: "Are you sure you want to delete this working schedule?"
+      form:
+        title: "Plan a future work schedule"
+        title_current: "Edit current work schedule"
+        start_date: "Start date"
+        start_date_caption: "Select the date from when the new work schedule will be effective."
+        work_days: "Work days"
+        working_hours_label: "Working hours"
+        hours_mode_label: "Hours mode"
+        same_hours_mode: "Same hours per day"
+        individual_hours_mode: "Individual hours per day"
+        work_hours: "Work hours"
+        hours_per_day: "Hours per day"
+        per_day: "per day"
+        per_week: "per week"
+        total_work_hours: "Total work hours"
+        availability_description: "The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities."
+        availability_factor: "Availability factor"
+        availability_factor_caption: "Define the percentage of your working time dedicated to project work."
+        total_available_hours: "Total available work hours"
+        title_availability_factor: "Availability factor"
+        title_days_and_hours: "Days and hours"
+        title_future_dates: "Future dates"
+      table:
+        mobile_title: "Working schedules"
+        start_date: "Start date"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        effective_work_hours: "Effective work hours"
+        work_days_count:
+          other: "%{count} working days"
+  user_preferences:
+    disable_keyboard_shortcuts_caption: >
+      You can choose to disable default [keyboard shortcuts](docs_url) if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
   page:
     text: "文字"
   placeholder_users:
@@ -1049,11 +1177,11 @@ zh-TW:
       您無權刪除佔位符使用者。您無權管理佔位使用者為成員的所有專案的成員。
     delete_tooltip: "刪除佔位使用者"
     deletion_info:
-      heading: "刪除佔位符使用者 %{name}"
+      heading_html: "Delete placeholder user %{name}"
       data_consequences: >
         出現的所有佔位符用戶(例如，作為受理人、負責人或其他用戶值) 將被重新分配給一個名為“已刪除用戶”的帳戶。 由於每個已刪除帳戶的數據都會被重新分配給此帳戶，因此無法將用戶創建的數據與另一個已刪除帳戶的數據區分。
       irreversible: "這一行動是不可還原的"
-      confirmation: "輸入佔位符使用者名稱 %{name} 確認刪除。"
+      confirmation_html: "Enter the placeholder user name %{name} to confirm the deletion."
   priorities:
     edit:
       priority_color_text: |
@@ -1083,9 +1211,10 @@ zh-TW:
         新工作套件預設為此類型。它們不能為唯讀。
       status_excluded_from_totals_text: |-
         勾選此選項以排除具有此狀態的工作套件，讓它們不計入階層中的工作總量、剩餘工作量及完成百分比。
-      status_percent_complete_text: |-
-        在 <a href="%{href}">狀態導向的進度計算模式</a> 中，選擇此狀態時，工作套件的完成百分比將自動設定為此值。
-        若使用工作量導向模式，此設定將被忽略。
+      status_percent_complete_text_html: |-
+        In [status-based progress calculation mode](setting_url), the % Complete of a work
+        package is automatically set to this value when this status is selected.
+        Ignored in work-based mode.
       status_readonly_html: |
         勾選此選項可以將該狀態的工作套件標記為唯讀。
         除狀態外，任何屬性都無法改變。
@@ -1346,7 +1475,7 @@ zh-TW:
       用戶註冊在'%{name}'單點登錄提供商上受限。請向管理員請求啟用您的賬戶，或者更改該提供商的自主註冊限制。
     login_with_auth_provider: "或使用您的現有帳號登錄"
     signup_with_auth_provider: "或者註冊"
-    auth_source_login: 請登入 <em>%{login}</em> 來啟用您的帳號。
+    auth_source_login_html: Please login as <em>%{login}</em> to activate your account.
     omniauth_login: 請登入來啟用您的帳號。
   actionview_instancetag_blank_option: "請選擇"
   activemodel:
@@ -1617,6 +1746,11 @@ zh-TW:
         consented_at: "同意在"
       group:
         identity_url: "身份識別 URL"
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
+      group_detail:
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
       user_preference:
         header_look_and_feel: "介面與外觀"
         header_alerts: "提醒"
@@ -1625,8 +1759,6 @@ zh-TW:
         button_update_user_information: "更新個人資料"
         comments_sorting: "顯示工作套件活動，排序方式為"
         disable_keyboard_shortcuts: "停用鍵盤快速鍵"
-        disable_keyboard_shortcuts_caption_html: |-
-          如果你使用螢幕閱讀器，或想避免不小心觸發快捷鍵操作，你可以選擇停用預設的<a href="%{href}">鍵盤快捷鍵</a>。
         dismissed_enterprise_banners: "隱藏的企業版廣告"
         impaired: "協助工具模式"
         auto_hide_popups: "自動關閉成功通知"
@@ -1647,6 +1779,28 @@ zh-TW:
       users/invitation/form_model:
         principal_type: "邀請函類型"
         id_or_email: "姓名或電子郵件地址"
+      user_non_working_time:
+        start_date: "Start date"
+        end_date: "End date"
+      user_working_hours:
+        valid_from: "Valid from"
+        monday: "Monday"
+        monday_hours: "Monday hours"
+        tuesday: "Tuesday"
+        tuesday_hours: "Tuesday hours"
+        wednesday: "Wednesday"
+        wednesday_hours: "Wednesday hours"
+        thursday: "Thursday"
+        thursday_hours: "Thursday hours"
+        friday: "Friday"
+        friday_hours: "Friday hours"
+        saturday: "Saturday"
+        saturday_hours: "Saturday hours"
+        sunday: "Sunday"
+        sunday_hours: "Sunday hours"
+        availability_factor: "Availability factor"
+        shared_hours: "Work hours"
+        days: "Working days"
       version:
         effective_date: "完成日期"
         sharing: "分享"
@@ -1701,6 +1855,8 @@ zh-TW:
         before: "必須在 %{date} 之前"
         before_or_equal_to: "必須在 %{date} 以前"
         blank: "不可空白"
+        not_before_start_date: "must not be before the start date."
+        overlapping_range: "overlaps with an existing non-working day range."
         blank_nested: "需要設置屬性  '%{property}' "
         cannot_delete_mapping: "必需項，不能刪除"
         is_for_all_cannot_modify: "適用於所有專案，因此無法修改。"
@@ -1737,8 +1893,9 @@ zh-TW:
         less_than_or_equal_to: "必須少於或者等於 %{count}。"
         not_available: "由於系統配置所以不可用"
         not_deletable: "無法刪除"
+        not_editable: "cannot be edited because it is already in effect."
         not_current_user: "不是目前使用者。"
-        only_one_active_sprint_allowed: "每個專案只允許一個活動衝刺。"
+        system_wide_non_working_day_exists: "conflicts with an existing system-wide non-working day for this date."
         not_found: "未找到"
         not_a_date: "不是有效的日期。"
         not_a_datetime: "不是有效的日期時間。"
@@ -1769,6 +1926,10 @@ zh-TW:
           未提供「安全上下文」。使用 HTTPS 或環回地址，例如 localhost。
         wrong_length: "長度錯誤 (應該要有 %{count} 個字元)"
       models:
+        group:
+          attributes:
+            parent_id:
+              circular_dependency: "would create a circular group hierarchy."
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -1878,6 +2039,9 @@ zh-TW:
               project_initiation_request_disabled: "專案啟動請求已被停用。必須啟用它才能建立成品工作套件。"
             types:
               in_use_by_work_packages: "%{types} 仍在被工作套件使用中"
+            identifier:
+              must_start_with_letter: "must start with a letter"
+              no_special_characters: "may only contain uppercase letters, numbers, and underscores"
             enabled_modules:
               dependency_missing: "還需要啓用模塊“%{dependency}”，因為模塊“%{module}”依賴於該模塊。"
               format: "%{message}"
@@ -2082,6 +2246,10 @@ zh-TW:
                 description: "‘確認密碼’ 應該要符合 '新密碼'"
             status:
               invalid_on_create: "不是新用戶的有效狀態"
+        user_working_hours:
+          attributes:
+            days:
+              no_working_day: "At least one day needs to be configured as a working day."
         member:
           principal_blank: "請至少選擇一個使用者或群組。"
           role_blank: "需要被指定"
@@ -2330,8 +2498,8 @@ zh-TW:
         啓用備份將允許具有所需權限和此備份令牌(Token)的任何用戶下載包含此 OpenProject 安裝的所有數據的備份。這包括所有其他用戶的數據。
       info: >
         您將需要產生備份token才能建立備份。 每次您想要請求備份時，您都必須提供此token。 您可以刪除備份token以停用該備份。
-      verification: >
-        輸入 %{word} 以確認您要%{action} 備份令牌(Token)。
+      verification_html: >
+        Enter %{word} to confirm you want to %{action} the backup token.
       verification_word_reset: 重置
       verification_word_create: 建立
       warning: >
@@ -2749,7 +2917,7 @@ zh-TW:
     teaser:
       title:
         other: "%{count} %{trial_plan} 試用令牌所剩天數"
-      description: "您可以存取所有 %{trial_plan} 功能。"
+      description_html: "You have access to all %{trial_plan} features."
     trial:
       not_found: "您已請求試用令牌，但該請求已無效。請再試一次。"
       wait_for_confirmation: "我們已傳送一封電子郵件給您，請確認您的地址以取得試用令牌。"
@@ -2766,10 +2934,8 @@ zh-TW:
       confirmation_subline: >
         請查看您的收件匣並依照指示操作，以開始為期 14 天的免費試用。
       domain_caption: 此令牌將僅對您目前設定的主機名稱有效。
-      receive_newsletter_html: >
-        我想訂閱 OpenProject 的<a target="_blank" href="https://www.openproject.org/newsletter/">電子報</a>。
-      consent_html: >
-        我同意<a target="_blank" href="https://www.openproject.org/terms-of-service/">服務條款</a>及<a target="_blank" href="https://www.openproject.org/data-privacy-and-security/">隱私政策</a>。
+      receive_newsletter: "I want to receive the OpenProject [newsletter](newsletter_url)."
+      consent: "I agree with the [terms of service](tos_url) and the [privacy policy](privacy_url)."
   email_calendar_updates:
     state:
       disabled: "已停用。"
@@ -2857,8 +3023,8 @@ zh-TW:
     work_package_edit: "工作套件已編輯"
     work_package_note: "工作套件註記已新增"
     title:
-      project: "專案: %{name}"
-      subproject: "子專案: %{name}"
+      project_html: "Project: %{name}"
+      subproject_html: "Subproject: %{name}"
   export:
     dialog:
       title: "匯出"
@@ -3109,6 +3275,7 @@ zh-TW:
           隨版本更新自動調整排程模式。
         totals_removed_from_childless_work_packages: >-
           對於帶有<a href="%{href}" target="_blank">版本更新</a>的非父工作套件，工時和進度總計已自動移除。這是一項維護任務，您可放心忽略。
+        sprint_migration: "Version '%{version_name}' has been copied as a sprint."
       total_percent_complete_mode_changed_to_work_weighted_average: >-
         沒有工作內容的子工作套件會被忽略。
       total_percent_complete_mode_changed_to_simple_average: >-
@@ -3116,9 +3283,9 @@ zh-TW:
   links:
     configuration_guide: "設定指南"
     get_in_touch: "如有任何問題，歡迎聯繫我們"
-  instructions_after_registration: "帳號啟用後即可點擊 %{signin} 登入"
-  instructions_after_logout: "您可點擊 %{signin} 再次登入。"
-  instructions_after_error: "你可以試著再按一次 %{signin} 來嘗試登入。如果持續發生錯誤，請向您的管理員尋求幫助。"
+  instructions_after_registration_link: "You can sign in as soon as your account has been activated by clicking [here](signin_url)."
+  instructions_after_logout_link: "You can sign in again by clicking [here](signin_url)."
+  instructions_after_error_link: "You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help."
   menus:
     admin:
       ai: "人工智慧 (AI)"
@@ -3310,6 +3477,8 @@ zh-TW:
   label_calendar_show: "顯示行事曆"
   label_category: "類別"
   label_completed: 已完成
+  label_committed_at_html: "%{committed_revision_link} at %{date}"
+  label_committed_link: "committed revision %{revision_identifier}"
   label_consent_settings: "使用者同意個資意向書"
   label_wiki_menu_item: 維基選單項目
   label_select_main_menu_item: 選擇新的主選單項目
@@ -3476,6 +3645,7 @@ zh-TW:
   label_subject_or_id: "主旨或 id"
   label_calendar_subscriptions: "訂閱行事曆"
   label_identifier: "識別碼"
+  label_project_identifier: "Project identifier"
   label_in: "在"
   label_in_less_than: "少於"
   label_in_more_than: "多於"
@@ -3609,11 +3779,13 @@ zh-TW:
   label_news_view_all: "檢視所有新聞"
   label_next: "下一頁"
   label_next_week: "下一週"
+  label_next_year: "Next year"
   label_no_change_option: "(沒有變動)"
   label_no_data: "沒有資料可顯示"
   label_no_due_date: "無完成日期"
   label_no_start_date: "無開始日期"
   label_no_parent_page: "無上層頁面"
+  label_no_parent_group: "(No parent group)"
   label_notification_center_plural: "通知"
   label_nothing_display: "沒有可以顯示的"
   label_nobody: "沒有人"
@@ -3642,6 +3814,8 @@ zh-TW:
   label_overall_activity: "全部活動"
   label_overview: "概要"
   label_page_title: "網頁標題"
+  label_parent_group_caption: >
+    Setting a parent group will make this group a subgroup of the selected parent group. This will also inherit all memberships, including permissions of the parent group.
   label_part_of: "部份於"
   label_password_lost: "忘記你的密碼?"
   label_password_rule_lowercase: "小寫"
@@ -3668,6 +3842,7 @@ zh-TW:
   label_preview_not_available: "無法提供預覽"
   label_previous: "上一個"
   label_previous_week: "前一週"
+  label_previous_year: "Previous year"
   label_principal_invite_via_email: "或者透過郵件邀請新的使用者"
   label_principal_search: "增加現有使用者或群組"
   label_privacy_policy: "資料隱私與安全性政策"
@@ -3779,6 +3954,7 @@ zh-TW:
   label_start_to_start: "開始到開始"
   label_statistics: "統計"
   label_status: "狀態"
+  label_status_plural: "Statuses"
   label_storage_free_space: "剩餘磁碟空間"
   label_storage_used_space: "已用磁碟空間"
   label_storage_group: "儲存檔案系統 %{identifier}"
@@ -3807,6 +3983,7 @@ zh-TW:
   label_title: "標題"
   label_projects_menu: "專案"
   label_today: "今天"
+  label_today_capitalized: "今天"
   label_token_version: "令牌(Token)版本"
   label_today_as_start_date: "選擇今天為開始日期。"
   label_today_as_due_date: "選擇今天為完成日期。"
@@ -3827,7 +4004,7 @@ zh-TW:
   label_user: "使用者"
   label_user_and_permission: "使用者與權限"
   label_user_named: "用戶名 %{name}"
-  label_user_activity: "%{value} 的活動"
+  label_user_activity_html: "%{value}'s activity"
   label_user_anonymous: "匿名者"
   label_user_menu: "使用者選單"
   label_user_new: "新增使用者"
@@ -3914,6 +4091,12 @@ zh-TW:
     one: "1 個檔案"
     other: "%{count} 檔案"
     zero: "沒有檔案"
+  label_x_days:
+    other: "%{count} days"
+  label_x_working_days:
+    other: "%{count} working days"
+  label_x_working_days_time_off:
+    other: "Time off: %{count} working days"
   label_yesterday: "昨天"
   label_zen_mode: "禪意模式"
   label_role_type: "類型"
@@ -3922,6 +4105,22 @@ zh-TW:
   label_not_changeable: "(不可更改)"
   label_global: "全域設定"
   label_seeded_from_env_warning: 此記錄已透過設定環境變數建立。無法透過 UI 進行編輯。
+  label_schedule_and_availability: "Schedule and availability"
+  label_working_hours: "Work schedule"
+  label_non_working_days: "Availability calendar"
+  label_non_working_days_with_count: "Non-working days (%{count})"
+  label_non_working_days_summary: "Summary"
+  button_add_non_working_time: "Time off"
+  button_edit_non_working_time: "Edit time off"
+  label_continued_from_previous_year: "continued from previous year"
+  label_continues_into_next_year: "continues into next year"
+  label_end_date: "Finish date"
+  label_working_days: "Working days"
+  label_non_working_times_with_count: "%{year} time off (%{count})"
+  label_non_working_times_summary: "%{year} summary"
+  label_total_user_non_working_times: "Personal non-working days"
+  label_total_global_non_working_days: "Global non-working days"
+  label_total_days_off: "Total days off"
   macro_execution_error: "執行巨集 (%{macro_name}) 錯誤"
   macro_unavailable: "巨集 \"%{macro_name}\" 無法顯示"
   macros:
@@ -3956,7 +4155,7 @@ zh-TW:
       center: "顯示通知中心"
       see_in_center: "詳見通知中心留言"
       settings: "更改電子郵件設定"
-    salutation: "%{user} 您好"
+    salutation: "Hello %{user},"
     salutation_full_name: "全名"
     work_packages:
       created_at: "%{user} 在 %{timestamp} 新增"
@@ -3985,7 +4184,7 @@ zh-TW:
       note: "備註： \"%{note}\""
     sharing:
       work_packages:
-        allowed_actions: "您擁有這個工作套件的 %{allowed_actions} 權限. 這些權限將隨著您的角色不同而更改。"
+        allowed_actions_html: "You may %{allowed_actions} this work package. This can change depending on your project role and permissions."
         create_account: "要存取此工作套件，您需要建立一個 %{instance} 帳戶。"
         open_work_package: "開啟工作套件"
         subject: "有個工作套件 #%{id} 與您共同參與"
@@ -4084,8 +4283,9 @@ zh-TW:
       roles: "您擁有以下的角色："
   mail_user_activation_limit_reached:
     subject: 已達到用戶激活限制
-    message: |
-      新用戶(%{email}) 試圖在您管理的 OpenProject 環境 (%{host}) 上創建賬戶。用戶無法激活其賬戶, 因爲已達到用戶限制。
+    message_html: |
+      A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
+      The user cannot activate their account since the user limit has been reached.
     steps:
       label: "要允許用戶登錄，您可以： "
       a: "([在這裏](upgrade_url)) 升級付款計劃" #here turned into a link
@@ -4267,6 +4467,12 @@ zh-TW:
   permission_manage_versions: "管理版本"
   permission_manage_wiki: "管理維基"
   permission_manage_wiki_menu: "管理維基選單"
+  permission_manage_own_working_times: "Manage own working times"
+  permission_manage_own_working_times_explanation: >
+    Allows users to manage their own working times, and personal non-working days.
+  permission_manage_working_times: "Manage working times for all users"
+  permission_manage_working_times_explanation: >
+    Allows users to manage working times for all users, including personal non-working days.
   permission_move_work_packages: "移動工作套件"
   permission_protect_wiki_pages: "專案維基頁面"
   permission_rename_wiki_pages: "重新命名維基頁面"
@@ -4412,10 +4618,10 @@ zh-TW:
       info: "刪除這個版本庫是不可逆的動作"
       info_not_managed: "注意: 這將\"不會\"刪除版本庫的內容，因為他不是由 OpenProject 所託管的"
       managed_path_note: "以下的資料夾將會被刪除: %{path}"
-      repository_verification: "輸入這個專案的識別碼 %{identifier} 以確認刪除它的版本庫"
+      repository_verification_html: "Enter the project's identifier %{identifier} to verify the deletion of its repository."
       subtitle: "你真的想要刪除專案 %{project_name} 的 %{repository_type} 嗎？"
-      subtitle_not_managed: "你真的想要從專案 %{project_name} 移除 %{repository_type} 的連結 %{url} 嗎？"
-      title: "刪除 %{repository_type}"
+      subtitle_not_managed_html: "Do you really want to remove the linked %{repository_type} %{url} from the project %{project_name}?"
+      title_html: "Delete the %{repository_type}"
       title_not_managed: "刪除連結的 %{repository_type}?"
     errors:
       build_failed: "無法用選取的設定建立版本庫。%{reason}"
@@ -4465,7 +4671,7 @@ zh-TW:
     storage:
       not_available: "這個版本庫沒有可用的磁碟消耗資訊"
       update_timeout: "保留 N 分鐘版本庫使用的碟空間資訊。\n計算一個版本庫使用的磁碟空間也許要消耗很多效能，增加這個值來降低效能的影響。"
-      oauth_application_details: "關閉此窗口後，將無法再次訪問客戶端密鑰值。請將這些值複製到 Nextcloud OpenProject 集成設置中："
+      oauth_application_details_html: "The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:"
       oauth_application_details_link_text: "前往設定"
       setup_documentation_details: "如果您在配置新文件存儲方面需要幫助，請查看文檔： "
       setup_documentation_details_link_text: "設定文件儲存區"
@@ -4510,15 +4716,15 @@ zh-TW:
   setting_apiv3_cors_title: "跨原始來源資源共用 (CORS, Cross-Origin Resource Sharing)"
   setting_apiv3_cors_enabled: "啟用 CORS"
   setting_apiv3_cors_origins: "CROSS-ORIGIN RESOURCE SHARING (CORS)"
-  setting_apiv3_cors_origins_text_html: >
-    如果啓用了 CORS ，這些是允許訪問 OpenProject API 的源。<br/>請查看<a href="%{origin_link}" target="_blank">有關“源”標題的文檔</a>，瞭解如何指定預期值。
+  setting_apiv3_cors_origins_instructions_html: >
+    If CORS is enabled, these are the origins that are allowed to access OpenProject API. <br/> Please check the [Documentation on the Origin header](docs_url) on how to specify the expected values.
   setting_apiv3_write_readonly_attributes: "對唯讀屬性的寫入存取權限"
   setting_apiv3_write_readonly_attributes_instructions: >
     如果啟用，API 將允許管理員在建立時寫入靜態唯讀屬性，例如 createdAt 和 author。
   setting_apiv3_write_readonly_attributes_warning: >
     此設定可用於匯入資料，但允許管理員冒充其他使用者建立項目。所有建立請求都會以真正的作者記錄。
-  setting_apiv3_write_readonly_attributes_additional: >
-    有關屬性和支援資源的詳細資訊，請參閱 %{api_documentation_link}。
+  setting_apiv3_write_readonly_attributes_additional_html: >
+    For more information on attributes and supported resources, please see the [API documentation](api_documentation_link).
   setting_apiv3_max_page_size: "API 每頁最大值"
   setting_apiv3_max_page_size_instructions: >
     設定 API 回應的最大頁面大小。將無法執行在單一頁面上回傳更多值的 API 請求。
@@ -4615,7 +4821,7 @@ zh-TW:
   setting_work_package_properties: "工作套件屬性"
   setting_work_package_startdate_is_adddate: "使用目前日期作為新工作套件的開始日期"
   setting_work_packages_projects_export_limit: "工作套件/專案匯出數量限制"
-  setting_journal_aggregation_time_minutes: "合併使用者操作"
+  setting_journal_aggregation_time_minutes: "Aggregation period"
   setting_log_requesting_user: "記錄所有使用者登入、姓名和郵件地址等資料"
   setting_login_required: "需要身份驗證"
   setting_login_required_caption: "當啟用時，所有應用程式請求都必須經過驗證。"
@@ -4696,6 +4902,12 @@ zh-TW:
   setting_welcome_text: "歡迎區塊文字"
   setting_welcome_title: "歡迎區塊標題"
   setting_welcome_on_homescreen: "在主頁面上顯示歡迎區塊"
+  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_numeric_caption: >
+    Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
+  setting_work_packages_identifier_alphanumeric_caption: >
+    Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "預設顯示模式"
   setting_work_package_list_default_highlighted_attributes: "預設顯眼屬性"
   setting_working_days: "工作日"
@@ -4862,10 +5074,12 @@ zh-TW:
       section_work_week: "工作週"
       section_holidays_and_closures: "假日和休息日"
     work_packages:
+      work_package_identifier: "Work package identifier"
       not_allowed_text: "您沒有查看此頁面的必要權限。"
       activities:
         enable_internal_comments: "啟用內部備註"
-        helper_text: "內部留言讓團隊成員能私下互相溝通。僅對擁有相應權限的特定角色可見，且不會公開顯示。%{link}"
+        helper_text_html: >
+          Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. [Click here to learn more](docs_url)
   text_formatting:
     markdown: "Markdown"
     plain: "純文字"
@@ -4987,6 +5201,10 @@ zh-TW:
   text_plugin_assets_writable: "Plugin 資產目錄可寫"
   text_powered_by: "由 %{link} 提供"
   text_project_identifier_info: "僅允許小寫字母(a-z)、數字、破折號(-) 及底線(_)，且必須以小寫字母開頭。"
+  text_project_identifier_description: 'The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".'
+  text_project_identifier_url_description: "The project identifier is included in the URL of the project."
+  text_project_identifier_handle_format: "Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters)."
+  text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
   text_reassign: "重新指派到工作套件："
   text_regexp_multiline: '這個正規表達式套用在多行模式。 e.g., ^---\s+'
   text_repository_usernames_mapping: "選擇或更新與版本庫中的帳號所對應的OpenProject使用者。\n版本庫中與OpenProject的使用者具有相同名稱或email將被自動對應。"
@@ -5093,18 +5311,18 @@ zh-TW:
   version_status_locked: "已停用"
   version_status_open: "開啟"
   note: 注意
-  note_password_login_disabled: "密碼登錄已被 %{configuration} 禁用。"
+  note_password_login_disabled_link: "Password login has been disabled through a [configuration setting](configuration_url)."
   warning: 警告
   warning_attachments_not_saved: "無法儲存 %{count} 檔。"
-  warning_imminent_user_limit: >
-    您邀請的用戶數超過了當前計劃支持的用戶數。受邀用戶可能無法加入您的OpenProject環境。 請<a href="%{upgrade_url}">升級您的計劃</a>或阻止現有用戶，以允許受邀和注冊用戶加入。
+  warning_imminent_user_limit_html: >
+    You invited more users than are supported by your current plan. Invited users may not be able to join your OpenProject environment. Please [upgrade your plan](upgrade_url) or block existing users in order to allow invited and registered users to join.
   warning_registration_token_expired: |
     帳號啟用 email 已經逾期。我們已經寄了一封新的 email 至您的 %{email}。
     請點擊 email 內的連結來啟用您的帳號。
   warning_user_limit_reached: >
     添加額外的用戶將超出當前限制。請聯繫管理員以增加用戶限制，以確保外部用戶能夠訪問此實例。
-  warning_user_limit_reached_admin: >
-    添加額外的用戶將超出當前限制。請<a href="%{upgrade_url}">升級您的計劃</a>，以確保外部用戶能夠訪問此實例。
+  warning_user_limit_reached_admin_html: >
+    Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
     您已達到用戶限制（%{current}/%{max} 活躍用戶）。請聯繫 sales@openproject.com 升級您的企業版計劃以添加額外用戶。
   warning_protocol_mismatch_html: >
@@ -5164,7 +5382,7 @@ zh-TW:
     reminders:
       label_remind_at: "日期"
       note_placeholder: "為什麼要設定這個提醒？"
-      create_success_message: "提醒已成功設定。您將會在此工作套件的 %{reminder_time} 收到通知。"
+      create_success_message_html: "Reminder set successfully. You will receive a notification for this work package %{reminder_time}."
       success_update_message: "提醒成功更新"
       success_deletion_message: "提醒已成功刪除。"
   sharing:
@@ -5195,8 +5413,8 @@ zh-TW:
     text_user_limit_reached_admins: '添加更多用戶將超出當前限制。請<a href="%{upgrade_url}">升級您的計劃</a>，以便添加更多用戶。'
     warning_user_limit_reached: >
       添加其他用戶將超出當前限制。請聯繫管理員增加用戶限制，以確保外部用戶能夠訪問 %{entity}。
-    warning_user_limit_reached_admin: >
-      添加其他用戶將超出當前限制。請<a href="%{upgrade_url}">升級您的計劃</a>，以確保外部用戶能夠訪問 %{entity}。
+    warning_user_limit_reached_admin_html: >
+      Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
     warning_no_selected_user: "請選擇要參與 %{entity} 的用戶"
     warning_locked_user: "使用者 %{user} 已停用，無法參與"
     user_details:
@@ -5316,6 +5534,7 @@ zh-TW:
       project: Undisclosed - 專案因缺乏權限而不見。
       ancestor: 未公開 - 由於缺少權限，上級不可見。
       definingProject: Undisclosed - 專案因缺乏權限而不見。
+      definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "提前授權"

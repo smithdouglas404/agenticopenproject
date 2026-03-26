@@ -57,6 +57,7 @@ Rails.application.routes.draw do
         member do
           put :move
           post :reorder
+          get :move_to_sprint_dialog
         end
       end
     end

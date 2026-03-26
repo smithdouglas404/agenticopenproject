@@ -349,8 +349,6 @@ pl:
     label_collapse_all: "Zwiń wszystko"
     label_collapse_text: "Zwiń tekst"
     label_comment: "Komentarz"
-    label_committed_at: "%{committed_revision_link} w %{date}"
-    label_committed_link: "rewizja przeprowadzona %{revision_identifier}"
     label_contains: "zawiera"
     label_created_on: "utworzono"
     label_edit_comment: "Edytuj komentarz"
@@ -1226,3 +1224,7 @@ pl:
       waiting_subtitle:
         network_off: "Występuje problem z siecią."
         network_on: "Sieć znów działa. Staramy się."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

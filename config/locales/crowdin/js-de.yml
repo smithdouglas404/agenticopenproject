@@ -348,8 +348,6 @@ de:
     label_collapse_all: "Alle zuklappen"
     label_collapse_text: "Text einklappen"
     label_comment: "Kommentar"
-    label_committed_at: "%{committed_revision_link} am %{date}"
-    label_committed_link: "Revisionsnummer %{revision_identifier}"
     label_contains: "enthält"
     label_created_on: "Angelegt"
     label_edit_comment: "Diesen Kommentar bearbeiten"
@@ -1217,3 +1215,7 @@ de:
       waiting_subtitle:
         network_off: "Es gibt ein Netzwerkproblem."
         network_on: "Netzwerk ist wieder da. Wir versuchen es erneut."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

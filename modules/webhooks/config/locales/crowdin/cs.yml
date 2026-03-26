@@ -36,10 +36,8 @@ cs:
         updated: "Aktualizováno"
         comment: "Komentář"
         internal_comment: "Interní komentář"
-      explanation:
-        text: >
-          Při výskytu události, jako je vytvoření pracovního balíčku nebo aktualizace projektu, OpenProject odešle POST požadavek na nakonfigurované webové koncové body. Často je událost odeslána poté, co %{link} prošel.
-        link: konfigurovaná doba agregace
+      explanation_html: >
+        Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
       status:
         enabled: 'webhook je povolen'
         disabled: 'webhook je zakázán'

@@ -5,8 +5,7 @@ mn:
     description: "Listing and status of background jobs."
   job_status_dialog:
     download_starts: 'Татаж авах ажиллагаа автоматаар эхлэх ёстой.'
-    link_to_download: 'Эсвэл, татаж авах бол %{link}.'
-    click_here: 'энд дарна уу'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Суурь ажлын төлөв'
     redirect: 'Таныг дахин чиглүүлж байна.'
     redirect_link: 'Энд дарж үргэлжлүүлнэ үү.'

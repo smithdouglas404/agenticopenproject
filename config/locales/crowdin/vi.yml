@@ -108,7 +108,7 @@ vi:
     jemalloc_allocator: Bộ cấp phát bộ nhớ Jemalloc
     journal_aggregation:
       caption: >
-        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
+        User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
     import:
       title: "Import"
     jira:
@@ -373,11 +373,69 @@ vi:
         project_creation: "Tạo dự án"
         notification_text_default: >
           <p>Xin chào,</p> <p>Một dự án mới đã được tạo: projectValue:name</p> <p>Thank you</p>
+      work_packages_identifier:
+        page_header:
+          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+        banner:
+          existing_identifiers_notice: >
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+        box_header:
+          label_project: Project
+          label_previous_identifier: Previous identifier
+          label_autofixed_suggestion: Future identifier
+          label_example_work_package_id: Example work package ID
+        autofix_preview:
+          error_too_long: Has to be fewer than 5 characters
+          error_special_characters: Special characters not allowed
+          error_in_use: Already in use as another project's active handle
+          error_reserved: Reserved by another project's handle history
+          remaining_projects:
+            other: "... %{count} more projects"
+        button_autofix: Autofix and save
+        dialog:
+          title: Change work package identifiers
+          heading: Enable project-based work package IDs?
+          description: >
+            This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          confirm_button: Change identifiers
+          checkbox_label: I understand that this will permanently change all work package IDs
+        success_banner: Successfully updated work package identifier format.
+        in_progress:
+          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Chuyển tiếp mặc định"
         user_author: "Người dùng là tác giả"
         user_assignee: "Người dùng là người được chuyển nhượng"
+      index:
+        description: "Configure status transitions for each work package type."
+        type_filter:
+          label: "Filter by type name…"
+      status_button: "Status"
+      statuses_dialog:
+        title: "Statuses"
+        label: "Statuses enabled for this type"
+        caption: "Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it."
+      statuses_removal_dialog:
+        title: "Remove statuses"
+        heading:
+          other: "Remove %{count} statuses?"
+        description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
+        confirm: "Remove"
+      leave_confirmation:
+        title: "Save changes before continuing?"
+        description: "You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?"
+        ignore: "Ignore changes"
+        save: "Save changes and continue"
+      role_selector:
+        label: "Role: %{role}"
+        no_role: "Select role"
+      blankslate:
+        title: "No status transitions configured"
+        description: "Add statuses to start configuring workflows for this role"
+    info:
+      database_deprecation_html: >
+        Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases. <br/> We have prepared [upgrade guides for all installation methods](upgrade_guide). You can perform the upgrade ahead of the next release at any time by following the guides.
   authentication:
     login_and_registration: "Đăng nhập và đăng ký"
   announcements:
@@ -601,6 +659,14 @@ vi:
   danger_dialog:
     confirmation_live_message_checked: "Nút để tiếp tục hiện đang hoạt động."
     confirmation_live_message_unchecked: "Nút để tiếp tục hiện không hoạt động. Bạn cần đánh dấu vào hộp kiểm để tiếp tục."
+  pagination:
+    label: "Pagination"
+    prev: "Previous"
+    prev_page: "Previous Page"
+    next: "Next"
+    next_page: "Next Page"
+    page: "Page %{number}"
+    page_with_more: "Page %{number}..."
   mcp_configurations:
     server_url_component:
       caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
@@ -760,6 +826,11 @@ vi:
         description: >
           Dự án sẽ chỉ hiển thị với các thành viên dự án tùy thuộc vào vai trò và quyền liên quan của họ. Các tiểu dự án không bị ảnh hưởng và có cài đặt riêng.
       change_identifier: Thay đổi định danh
+      change_identifier_dialog_title: Change project identifier
+      change_identifier_format_hint_semantic: "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter."
+      change_identifier_format_hint_legacy: "Only lowercase letters (a–z), numbers, dashes or underscores."
+      change_identifier_warning: >
+        This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
       subitems:
         template_section: >
           Chọn các mẫu sẽ được sử dụng khi tạo các mục con mới.
@@ -986,9 +1057,9 @@ vi:
     groups:
       member_in_these_groups: "Người dùng này hiện là thành viên của các nhóm sau:"
       no_results_title_text: Người dùng này hiện không phải là thành viên trong bất kỳ nhóm nào.
-      summary_with_more: Thành viên của %{names} và %{count_link}.
+      summary_with_more_html: Member of %{names} and %{count_link}.
       more: "%{count} thêm"
-      summary: Thành viên của %{names}.
+      summary_html: Member of %{names}.
     memberships:
       no_results_title_text: Người dùng này không phải là thành viên của dự án.
     open_profile: "Mở hồ sơ"
@@ -1043,6 +1114,63 @@ vi:
         user: "Bây giờ người dùng có thể đăng nhập để truy cập %{project}. Trong khi đó, bạn có thể lập kế hoạch với người dùng đó và chỉ định các gói công việc chẳng hạn."
         placeholder_user: "Trình giữ chỗ hiện có thể được sử dụng trong %{project}. Trong khi đó, bạn có thể lập kế hoạch với người dùng đó và chỉ định các gói công việc chẳng hạn."
         group: "Nhóm hiện là một phần của %{project}. Trong khi đó, bạn có thể lập kế hoạch với nhóm đó và phân công các gói công việc chẳng hạn."
+    working_hours:
+      current_schedule:
+        title: "Current schedule"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        availability_subtitle: "Dedicated to project work"
+        effective_hours: "Effective work hours"
+        effective_subtitle: "Per week"
+        not_set: "Not set"
+      future:
+        title: "Future schedules"
+        description: "Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically."
+        add_button: "Add future schedule"
+        blank_title: "No future schedules planned"
+        blank_description: "Create a future schedule to plan changes ahead of time"
+      history:
+        title: "Schedule history"
+        description: "View your past work schedules."
+        blank_title: "No schedule history yet"
+        blank_description: "Past schedule changes will appear here"
+      destroy:
+        confirm: "Are you sure you want to delete this working schedule?"
+      form:
+        title: "Plan a future work schedule"
+        title_current: "Edit current work schedule"
+        start_date: "Start date"
+        start_date_caption: "Select the date from when the new work schedule will be effective."
+        work_days: "Work days"
+        working_hours_label: "Working hours"
+        hours_mode_label: "Hours mode"
+        same_hours_mode: "Same hours per day"
+        individual_hours_mode: "Individual hours per day"
+        work_hours: "Work hours"
+        hours_per_day: "Hours per day"
+        per_day: "per day"
+        per_week: "per week"
+        total_work_hours: "Total work hours"
+        availability_description: "The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities."
+        availability_factor: "Availability factor"
+        availability_factor_caption: "Define the percentage of your working time dedicated to project work."
+        total_available_hours: "Total available work hours"
+        title_availability_factor: "Availability factor"
+        title_days_and_hours: "Days and hours"
+        title_future_dates: "Future dates"
+      table:
+        mobile_title: "Working schedules"
+        start_date: "Start date"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        effective_work_hours: "Effective work hours"
+        work_days_count:
+          other: "%{count} working days"
+  user_preferences:
+    disable_keyboard_shortcuts_caption: >
+      You can choose to disable default [keyboard shortcuts](docs_url) if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
   page:
     text: "văn bản"
   placeholder_users:
@@ -1050,11 +1178,11 @@ vi:
       Bạn không được phép xóa người dùng giữ chỗ. Bạn không có quyền quản lý thành viên cho tất cả các dự án mà người dùng giữ chỗ là thành viên.
     delete_tooltip: "Xóa người dùng giữ chỗ"
     deletion_info:
-      heading: "Xóa người dùng giữ chỗ %{name}"
+      heading_html: "Delete placeholder user %{name}"
       data_consequences: >
         Tất cả các lần xuất hiện của người dùng giữ chỗ (ví dụ: với tư cách là người được chuyển nhượng, người chịu trách nhiệm hoặc giá trị người dùng khác) sẽ được chỉ định lại cho tài khoản có tên "Người dùng đã xóa". Vì dữ liệu của mọi tài khoản đã xóa được gán lại cho tài khoản này nên sẽ không thể phân biệt dữ liệu người dùng đã tạo với dữ liệu của tài khoản đã xóa khác.
       irreversible: "Hành động này không thể thay đổi được"
-      confirmation: "Nhập tên người dùng giữ chỗ %{name} để xác nhận việc xóa."
+      confirmation_html: "Enter the placeholder user name %{name} to confirm the deletion."
   priorities:
     edit:
       priority_color_text: |
@@ -1085,8 +1213,10 @@ vi:
       status_excluded_from_totals_text: |-
         Chọn tùy chọn này để loại trừ các gói công việc có trạng thái này khỏi tổng số Công việc,
         Công việc còn lại và % Hoàn thành theo thứ bậc.
-      status_percent_complete_text: |-
-        Trong <a href="%{href}">chế độ tính toán tiến độ dựa trên trạng thái</a>, phần trăm hoàn thành của gói công việc sẽ được tự động đặt thành giá trị này khi trạng thái này được chọn. Tỷ lệ hoàn thành dựa trên công việc bị bỏ qua trong chế độ dựa trên công việc.
+      status_percent_complete_text_html: |-
+        In [status-based progress calculation mode](setting_url), the % Complete of a work
+        package is automatically set to this value when this status is selected.
+        Ignored in work-based mode.
       status_readonly_html: |
         Chọn tùy chọn này để đánh dấu các gói công việc có trạng thái này là chỉ đọc.
         Không có thuộc tính nào có thể được thay đổi ngoại trừ trạng thái.
@@ -1348,7 +1478,7 @@ vi:
       Đăng ký người dùng bị giới hạn đối với nhà cung cấp dịch vụ đăng nhập một lần '%{name}'. Vui lòng yêu cầu quản trị viên kích hoạt tài khoản cho bạn hoặc thay đổi giới hạn tự đăng ký cho nhà cung cấp này.
     login_with_auth_provider: "hoặc đăng nhập bằng tài khoản hiện tại"
     signup_with_auth_provider: "hoặc sử dụng đăng ký"
-    auth_source_login: Vui lòng đăng nhập với <em>%{login}</em> để kích hoạt tài khoản của bạn.
+    auth_source_login_html: Please login as <em>%{login}</em> to activate your account.
     omniauth_login: Vui lòng đăng nhập để kích hoạt tài khoản của bạn.
   actionview_instancetag_blank_option: "Vui lòng chọn"
   activemodel:
@@ -1619,6 +1749,11 @@ vi:
         consented_at: "Đồng ý tại"
       group:
         identity_url: "URL nhận dạng"
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
+      group_detail:
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
       user_preference:
         header_look_and_feel: "Nhìn và cảm nhận"
         header_alerts: "cảnh báo"
@@ -1627,8 +1762,6 @@ vi:
         button_update_user_information: "Cập nhật hồ sơ"
         comments_sorting: "Hiển thị hoạt động gói công việc được sắp xếp theo"
         disable_keyboard_shortcuts: "Tắt phím tắt"
-        disable_keyboard_shortcuts_caption_html: |-
-          Bạn có thể tắt <a href="%{href}">các phím tắt</a> mặc định nếu bạn sử dụng trình đọc màn hình hoặc muốn tránh vô tình kích hoạt một hành động bằng phím tắt.
         dismissed_enterprise_banners: "Biểu ngữ doanh nghiệp ẩn"
         impaired: "Viet nam"
         auto_hide_popups: "Tự động ẩn biểu ngữ thành công"
@@ -1649,6 +1782,28 @@ vi:
       users/invitation/form_model:
         principal_type: "Loại lời mời"
         id_or_email: "Tên hoặc địa chỉ email"
+      user_non_working_time:
+        start_date: "Start date"
+        end_date: "End date"
+      user_working_hours:
+        valid_from: "Valid from"
+        monday: "Monday"
+        monday_hours: "Monday hours"
+        tuesday: "Tuesday"
+        tuesday_hours: "Tuesday hours"
+        wednesday: "Wednesday"
+        wednesday_hours: "Wednesday hours"
+        thursday: "Thursday"
+        thursday_hours: "Thursday hours"
+        friday: "Friday"
+        friday_hours: "Friday hours"
+        saturday: "Saturday"
+        saturday_hours: "Saturday hours"
+        sunday: "Sunday"
+        sunday_hours: "Sunday hours"
+        availability_factor: "Availability factor"
+        shared_hours: "Work hours"
+        days: "Working days"
       version:
         effective_date: "Ngày hoàn thành"
         sharing: "Chia sẻ"
@@ -1703,6 +1858,8 @@ vi:
         before: "phải trước khi %{date}"
         before_or_equal_to: "phải có trước hay tương đương với %{date}"
         blank: "không được để trống"
+        not_before_start_date: "must not be before the start date."
+        overlapping_range: "overlaps with an existing non-working day range."
         blank_nested: "cần phải đặt thuộc tính '%{property}'."
         cannot_delete_mapping: "được yêu cầu. Không thể xóa được."
         is_for_all_cannot_modify: "dành cho tất cả các dự án và do đó không thể sửa đổi được."
@@ -1739,8 +1896,9 @@ vi:
         less_than_or_equal_to: "phải nhỏ hơn hoặc bằng %{count}"
         not_available: "không khả dụng do cấu hình hệ thống."
         not_deletable: "không thể xóa được."
+        not_editable: "cannot be edited because it is already in effect."
         not_current_user: "không phải là người dùng hiện tại."
-        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
+        system_wide_non_working_day_exists: "conflicts with an existing system-wide non-working day for this date."
         not_found: "không tìm thấy."
         not_a_date: "không phải là ngày hợp lệ"
         not_a_datetime: "không phải là thời gian hợp lệ"
@@ -1771,6 +1929,10 @@ vi:
           không cung cấp "Bối cảnh an toàn". Sử dụng HTTPS hoặc địa chỉ loopback, chẳng hạn như localhost.
         wrong_length: "độ dài không đúng (phải là %{count} ký tự)."
       models:
+        group:
+          attributes:
+            parent_id:
+              circular_dependency: "would create a circular group hierarchy."
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -1880,6 +2042,9 @@ vi:
               project_initiation_request_disabled: "Yêu cầu khởi tạo dự án bị vô hiệu hóa. Nó phải được kích hoạt để tạo gói công việc tạo tác."
             types:
               in_use_by_work_packages: "gói công việc vẫn được sử dụng: %{types}"
+            identifier:
+              must_start_with_letter: "must start with a letter"
+              no_special_characters: "may only contain uppercase letters, numbers, and underscores"
             enabled_modules:
               dependency_missing: "Mô-đun '%{dependency}' cũng cần được bật vì mô-đun '%{module}' phụ thuộc vào mô-đun đó."
               format: "%{message}"
@@ -2084,6 +2249,10 @@ vi:
                 description: "'Xác nhận mật khẩu ' phải trùng với dữ liệu trong mục 'Mật khẩu mới'."
             status:
               invalid_on_create: "không phải là trạng thái hợp lệ cho người dùng mới."
+        user_working_hours:
+          attributes:
+            days:
+              no_working_day: "At least one day needs to be configured as a working day."
         member:
           principal_blank: "Vui lòng chọn ít nhất một người dùng hoặc nhóm."
           role_blank: "cần được chỉ định."
@@ -2332,8 +2501,8 @@ vi:
         Kích hoạt sao lưu sẽ cho phép bất kỳ người dùng nào có quyền và token sao lưu đều có thể tải xuống bản sao lưu có chứa tất cả dữ liệu của trang này. Nó cũng bao gồm dữ liệu của tất cả người dùng khác.
       info: >
         Bạn sẽ cần phải tạo một token sao lưu để có thể tạo bản sao lưu. Mỗi lần bạn muốn yêu cầu sao lưu, bạn sẽ phải cung cấp mã token này. Bạn có thể xóa mã token sao lưu để vô hiệu hóa các bản sao lưu cho người dùng này.
-      verification: >
-        Nhập %{word} để xác nhận bạn muốn %{action} mã token sao lưu.
+      verification_html: >
+        Enter %{word} to confirm you want to %{action} the backup token.
       verification_word_reset: Đặt lại
       verification_word_create: Tạo
       warning: >
@@ -2751,7 +2920,7 @@ vi:
     teaser:
       title:
         other: "%{count} ngày còn lại của %{trial_plan} mã thông báo dùng thử"
-      description: "Bạn có quyền truy cập vào tất cả các tính năng %{trial_plan}."
+      description_html: "You have access to all %{trial_plan} features."
     trial:
       not_found: "Bạn đã yêu cầu mã thông báo dùng thử nhưng yêu cầu đó không còn nữa. Vui lòng thử lại."
       wait_for_confirmation: "Chúng tôi đã gửi cho bạn một email để xác nhận địa chỉ của bạn nhằm lấy mã thông báo dùng thử."
@@ -2768,10 +2937,8 @@ vi:
       confirmation_subline: >
         Vui lòng kiểm tra hộp thư đến của bạn và làm theo các bước để bắt đầu dùng thử miễn phí 14 ngày.
       domain_caption: Mã thông báo sẽ hợp lệ cho tên máy chủ hiện được định cấu hình của bạn.
-      receive_newsletter_html: >
-        Tôi muốn nhận bản tin OpenProject <a target="_blank" href="https://www.openproject.org/newsletter/"></a>.
-      consent_html: >
-        Tôi đồng ý với <a target="_blank" href="https://www.openproject.org/terms-of-service/">điều khoản dịch vụ</a> và <a target="_blank" href="https://www.openproject.org/data-privacy-and-security/">chính sách quyền riêng tư</a>.
+      receive_newsletter: "I want to receive the OpenProject [newsletter](newsletter_url)."
+      consent: "I agree with the [terms of service](tos_url) and the [privacy policy](privacy_url)."
   email_calendar_updates:
     state:
       disabled: "Tàn tật."
@@ -2859,8 +3026,8 @@ vi:
     work_package_edit: "Đã chỉnh sửa work package"
     work_package_note: "Đã thêm ghi chú của work package"
     title:
-      project: "Dự án: %{name}"
-      subproject: "Tiểu dự án: %{name}"
+      project_html: "Project: %{name}"
+      subproject_html: "Subproject: %{name}"
   export:
     dialog:
       title: "xuất khẩu"
@@ -3111,6 +3278,7 @@ vi:
           Chế độ lập lịch tự động điều chỉnh khi cập nhật phiên bản.
         totals_removed_from_childless_work_packages: >-
           Tổng số công việc và tiến độ tự động bị xóa cho các gói công việc không có cha với <a href="%{href}" target="_blank">cập nhật phiên bản</a>. Đây là một nhiệm vụ bảo trì và có thể được bỏ qua một cách an toàn.
+        sprint_migration: "Version '%{version_name}' has been copied as a sprint."
       total_percent_complete_mode_changed_to_work_weighted_average: >-
         Các gói công việc con không có Công việc sẽ bị bỏ qua.
       total_percent_complete_mode_changed_to_simple_average: >-
@@ -3118,9 +3286,9 @@ vi:
   links:
     configuration_guide: "Hướng dẫn cấu hình"
     get_in_touch: "Nếu bạn còn những câu hỏi khác ? Hãy liên lạc với chúng tôi"
-  instructions_after_registration: "Bạn có thể đăng nhập ngay sau khi tài khoản của bạn đã được kích hoạt bằng cách nhấn vào %{signin}."
-  instructions_after_logout: "Bạn có thể đăng nhập một lần nữa bằng cách nhấp vào %{signin}."
-  instructions_after_error: "Bạn có thể thử đăng nhập lại bằng cách nhấn vào %{signin}. Nếu lỗi vẫn còn, yêu cầu quản trị của bạn để được giúp đỡ."
+  instructions_after_registration_link: "You can sign in as soon as your account has been activated by clicking [here](signin_url)."
+  instructions_after_logout_link: "You can sign in again by clicking [here](signin_url)."
+  instructions_after_error_link: "You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help."
   menus:
     admin:
       ai: "Trí tuệ nhân tạo (AI)"
@@ -3312,6 +3480,8 @@ vi:
   label_calendar_show: "Hiển thị Lịch"
   label_category: "thể loại"
   label_completed: Đã hoàn thành
+  label_committed_at_html: "%{committed_revision_link} at %{date}"
+  label_committed_link: "committed revision %{revision_identifier}"
   label_consent_settings: "Sự đồng ý của người dùng"
   label_wiki_menu_item: Khoản mục menu wiki
   label_select_main_menu_item: Chọn mục trình đơn chính mới
@@ -3478,6 +3648,7 @@ vi:
   label_subject_or_id: "Chủ đề hoặc Mã"
   label_calendar_subscriptions: "Đăng ký lịch"
   label_identifier: "định danh"
+  label_project_identifier: "Project identifier"
   label_in: "trong"
   label_in_less_than: "ít hơn"
   label_in_more_than: "nhiều hơn"
@@ -3611,11 +3782,13 @@ vi:
   label_news_view_all: "Xem tất cả tin"
   label_next: "Tiếp"
   label_next_week: "Tuần tới"
+  label_next_year: "Next year"
   label_no_change_option: "(không đổi)"
   label_no_data: "Không có dữ liệu để hiển thị"
   label_no_due_date: "không có ngày kết thúc"
   label_no_start_date: "không có ngày bắt đầu"
   label_no_parent_page: "Không có trang quan hệ"
+  label_no_parent_group: "(No parent group)"
   label_notification_center_plural: "thông báo"
   label_nothing_display: "Không có gì để hiển thị"
   label_nobody: "không ai"
@@ -3644,6 +3817,8 @@ vi:
   label_overall_activity: "Tổng thể hoạt động"
   label_overview: "Tổng quan"
   label_page_title: "Tiêu đề trang"
+  label_parent_group_caption: >
+    Setting a parent group will make this group a subgroup of the selected parent group. This will also inherit all memberships, including permissions of the parent group.
   label_part_of: "một phần của"
   label_password_lost: "Quên Mật Khẩu?"
   label_password_rule_lowercase: "Chữ thường"
@@ -3670,6 +3845,7 @@ vi:
   label_preview_not_available: "Xem trước không có sẵn"
   label_previous: "Trước đó"
   label_previous_week: "Tuần trước"
+  label_previous_year: "Previous year"
   label_principal_invite_via_email: "hoặc mời người dùng mới qua email"
   label_principal_search: "Thêm người dùng hoặc nhóm hiện có"
   label_privacy_policy: "Chính sách bảo mật và quyền riêng tư dữ liệu"
@@ -3781,6 +3957,7 @@ vi:
   label_start_to_start: "bắt đầu đến bắt đầu"
   label_statistics: "Số liệu thống kê"
   label_status: "trạng thái"
+  label_status_plural: "Statuses"
   label_storage_free_space: "Dung lượng đĩa còn lại"
   label_storage_used_space: "Dung lượng đĩa đã sử dụng"
   label_storage_group: "Hệ thống tập tin lưu trữ %{identifier}"
@@ -3809,6 +3986,7 @@ vi:
   label_title: "tiêu đề"
   label_projects_menu: "dự án"
   label_today: "hôm nay"
+  label_today_capitalized: "hôm nay"
   label_token_version: "Phiên bản mã thông báo"
   label_today_as_start_date: "Chọn hôm nay làm ngày bắt đầu."
   label_today_as_due_date: "Chọn hôm nay làm ngày kết thúc."
@@ -3829,7 +4007,7 @@ vi:
   label_user: "Người dùng"
   label_user_and_permission: "Người dùng và quyền"
   label_user_named: "Người dùng %{name}"
-  label_user_activity: "%{value} hoạt động"
+  label_user_activity_html: "%{value}'s activity"
   label_user_anonymous: "vô danh"
   label_user_menu: "Trình đơn người dùng"
   label_user_new: "Người dùng mới"
@@ -3916,6 +4094,12 @@ vi:
     one: "1 tập tin"
     other: "%{count} tệp"
     zero: "không có tập tin"
+  label_x_days:
+    other: "%{count} days"
+  label_x_working_days:
+    other: "%{count} working days"
+  label_x_working_days_time_off:
+    other: "Time off: %{count} working days"
   label_yesterday: "ngày hôm qua"
   label_zen_mode: "Chế độ Zen"
   label_role_type: "loại"
@@ -3924,6 +4108,22 @@ vi:
   label_not_changeable: "(không thể thay đổi)"
   label_global: "toàn cầu"
   label_seeded_from_env_warning: Bản ghi này đã được tạo thông qua một biến môi trường cài đặt. Nó không thể chỉnh sửa thông qua giao diện người dùng.
+  label_schedule_and_availability: "Schedule and availability"
+  label_working_hours: "Work schedule"
+  label_non_working_days: "Availability calendar"
+  label_non_working_days_with_count: "Non-working days (%{count})"
+  label_non_working_days_summary: "Summary"
+  button_add_non_working_time: "Time off"
+  button_edit_non_working_time: "Edit time off"
+  label_continued_from_previous_year: "continued from previous year"
+  label_continues_into_next_year: "continues into next year"
+  label_end_date: "Finish date"
+  label_working_days: "Working days"
+  label_non_working_times_with_count: "%{year} time off (%{count})"
+  label_non_working_times_summary: "%{year} summary"
+  label_total_user_non_working_times: "Personal non-working days"
+  label_total_global_non_working_days: "Global non-working days"
+  label_total_days_off: "Total days off"
   macro_execution_error: "Lỗi khi thực thi macro %{macro_name}"
   macro_unavailable: "Macro %{macro_name} không thể hiển thị."
   macros:
@@ -3958,7 +4158,7 @@ vi:
       center: "Đến trung tâm thông báo"
       see_in_center: "Xem bình luận trong trung tâm thông báo"
       settings: "Thay đổi cài đặt email"
-    salutation: "Xin chào %{user}"
+    salutation: "Hello %{user},"
     salutation_full_name: "Tên đầy đủ"
     work_packages:
       created_at: "Được tạo tại %{timestamp} bởi %{user}"
@@ -3987,7 +4187,7 @@ vi:
       note: "Lưu ý: “%{note}”"
     sharing:
       work_packages:
-        allowed_actions: "Bạn có thể %{allowed_actions} gói công việc này. Điều này có thể thay đổi tùy thuộc vào vai trò và quyền dự án của bạn."
+        allowed_actions_html: "You may %{allowed_actions} this work package. This can change depending on your project role and permissions."
         create_account: "Để truy cập gói công việc này, bạn cần tạo và kích hoạt tài khoản trên %{instance}."
         open_work_package: "Mở gói công việc"
         subject: "Gói công việc #%{id} đã được chia sẻ với bạn"
@@ -4086,9 +4286,9 @@ vi:
       roles: "Bây giờ bạn có các vai trò sau:"
   mail_user_activation_limit_reached:
     subject: Đã đạt đến giới hạn kích hoạt người dùng
-    message: |
-      Một người dùng mới (%{email}) đã cố gắng tạo tài khoản trên môi trường OpenProject mà bạn quản lý (%{host}).
-      Người dùng không thể kích hoạt tài khoản của họ vì đã đạt đến giới hạn người dùng.
+    message_html: |
+      A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
+      The user cannot activate their account since the user limit has been reached.
     steps:
       label: "Để cho phép người dùng đăng nhập, bạn có thể:"
       a: "Nâng cấp gói thanh toán của bạn ([here](upgrade_url))" #here turned into a link
@@ -4271,6 +4471,12 @@ vi:
   permission_manage_versions: "Quản lý phiên bản"
   permission_manage_wiki: "Quản lý wiki"
   permission_manage_wiki_menu: "Quản lý menu wiki"
+  permission_manage_own_working_times: "Manage own working times"
+  permission_manage_own_working_times_explanation: >
+    Allows users to manage their own working times, and personal non-working days.
+  permission_manage_working_times: "Manage working times for all users"
+  permission_manage_working_times_explanation: >
+    Allows users to manage working times for all users, including personal non-working days.
   permission_move_work_packages: "Di chuyển gói công việc"
   permission_protect_wiki_pages: "Bảo vệ các trang wiki"
   permission_rename_wiki_pages: "Đổi tên các trang wiki"
@@ -4416,10 +4622,10 @@ vi:
       info: "Xóa kho lưu trữ là một hành động không thể đảo ngược."
       info_not_managed: "Lưu ý: Thao tác này sẽ KHÔNG xóa nội dung của kho lưu trữ này vì nó không được OpenProject quản lý."
       managed_path_note: "Thư mục sau sẽ bị xóa: %{path}"
-      repository_verification: "Nhập mã định danh của dự án %{identifier} để xác minh việc xóa kho lưu trữ của dự án."
+      repository_verification_html: "Enter the project's identifier %{identifier} to verify the deletion of its repository."
       subtitle: "Bạn có thực sự muốn xóa %{repository_type} của dự án %{project_name} không?"
-      subtitle_not_managed: "Bạn có thực sự muốn xóa %{repository_type} %{url} được liên kết khỏi dự án %{project_name} không?"
-      title: "Xóa %{repository_type}"
+      subtitle_not_managed_html: "Do you really want to remove the linked %{repository_type} %{url} from the project %{project_name}?"
+      title_html: "Delete the %{repository_type}"
       title_not_managed: "Xóa %{repository_type} được liên kết?"
     errors:
       build_failed: "Không thể tạo kho lưu trữ với cấu hình đã chọn. %{reason}"
@@ -4469,7 +4675,7 @@ vi:
     storage:
       not_available: "Mức tiêu thụ dung lượng ổ đĩa không có sẵn cho kho lưu trữ này."
       update_timeout: "Giữ thông tin dung lượng ổ đĩa cần thiết cuối cùng cho kho lưu trữ trong N phút.\nVì việc tính dung lượng đĩa cần thiết của kho lưu trữ có thể tốn kém nên hãy tăng giá trị này để giảm tác động đến hiệu suất."
-      oauth_application_details: "Giá trị bí mật của máy khách sẽ không thể truy cập lại được sau khi bạn đóng cửa sổ này. Vui lòng sao chép các giá trị này vào cài đặt Tích hợp Nextcloud OpenProject:"
+      oauth_application_details_html: "The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:"
       oauth_application_details_link_text: "Đi tới trang cài đặt"
       setup_documentation_details: "Nếu bạn cần trợ giúp định cấu hình bộ lưu trữ tệp mới, vui lòng kiểm tra tài liệu:"
       setup_documentation_details_link_text: "Thiết lập kho lưu trữ tập tin"
@@ -4514,15 +4720,15 @@ vi:
   setting_apiv3_cors_title: "Chia sẻ tài nguyên chéo nguồn gốc (CORS)"
   setting_apiv3_cors_enabled: "Kích hoạt CORS"
   setting_apiv3_cors_origins: "Nguồn gốc được phép chia sẻ tài nguyên chéo nguồn gốc (CORS) của API V3"
-  setting_apiv3_cors_origins_text_html: >
-    Nếu CORS được kích hoạt, đây là các nguồn gốc được phép truy cập API của OpenProject. <br/> Vui lòng kiểm tra <a href="%{origin_link}" target="_blank">Tài liệu về Header Origin</a> để biết cách chỉ định các giá trị mong đợi.
+  setting_apiv3_cors_origins_instructions_html: >
+    If CORS is enabled, these are the origins that are allowed to access OpenProject API. <br/> Please check the [Documentation on the Origin header](docs_url) on how to specify the expected values.
   setting_apiv3_write_readonly_attributes: "Viết quyền truy cập vào các thuộc tính chỉ đọc"
   setting_apiv3_write_readonly_attributes_instructions: >
     Nếu được bật, API sẽ cho phép quản trị viên ghi các thuộc tính tĩnh chỉ đọc trong quá trình tạo, chẳng hạn như createAt và tác giả.
   setting_apiv3_write_readonly_attributes_warning: >
     Cài đặt này có một trường hợp sử dụng chẳng hạn như nhập dữ liệu nhưng cho phép quản trị viên mạo danh việc tạo các mục như những người dùng khác. Tuy nhiên, tất cả các yêu cầu tạo đang được ghi lại với tác giả thực sự.
-  setting_apiv3_write_readonly_attributes_additional: >
-    Để biết thêm thông tin về các thuộc tính và tài nguyên được hỗ trợ, vui lòng xem %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_additional_html: >
+    For more information on attributes and supported resources, please see the [API documentation](api_documentation_link).
   setting_apiv3_max_page_size: "Kích thước trang API tối đa"
   setting_apiv3_max_page_size_instructions: >
     Đặt kích thước trang tối đa mà API sẽ phản hồi. Sẽ không thể thực hiện các yêu cầu API trả về nhiều giá trị hơn trên một trang.
@@ -4619,7 +4825,7 @@ vi:
   setting_work_package_properties: "Thuộc tính gói công việc"
   setting_work_package_startdate_is_adddate: "Sử dụng ngày hiện tại làm ngày bắt đầu cho các gói công việc mới"
   setting_work_packages_projects_export_limit: "Gói công việc / Giới hạn xuất dự án"
-  setting_journal_aggregation_time_minutes: "Hành động của người dùng được tổng hợp trong"
+  setting_journal_aggregation_time_minutes: "Aggregation period"
   setting_log_requesting_user: "Ghi nhật ký thông tin đăng nhập, tên và địa chỉ thư của người dùng cho tất cả các yêu cầu"
   setting_login_required: "Yêu cầu xác thực"
   setting_login_required_caption: "Khi được chọn, tất cả các yêu cầu tới ứng dụng phải được xác thực."
@@ -4700,6 +4906,12 @@ vi:
   setting_welcome_text: "Văn bản chặn chào mừng"
   setting_welcome_title: "Tiêu đề khối chào mừng"
   setting_welcome_on_homescreen: "Hiển thị khối chào mừng trên màn hình chính"
+  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_numeric_caption: >
+    Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
+  setting_work_packages_identifier_alphanumeric_caption: >
+    Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Chế độ đánh dấu mặc định"
   setting_work_package_list_default_highlighted_attributes: "Thuộc tính được đánh dấu nội tuyến mặc định"
   setting_working_days: "Ngày làm việc"
@@ -4866,10 +5078,12 @@ vi:
       section_work_week: "tuần làm việc"
       section_holidays_and_closures: "Ngày lễ và đóng cửa"
     work_packages:
+      work_package_identifier: "Work package identifier"
       not_allowed_text: "Bạn không có quyền cần thiết để xem trang này."
       activities:
         enable_internal_comments: "Bật nhận xét nội bộ"
-        helper_text: "Nhận xét nội bộ cho phép một nhóm nội bộ liên lạc riêng tư với nhau. Những quyền này chỉ hiển thị với những vai trò được chọn có các quyền cần thiết và sẽ không hiển thị công khai. %{link}"
+        helper_text_html: >
+          Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. [Click here to learn more](docs_url)
   text_formatting:
     markdown: "Gạch dưới"
     plain: "Văn bản thuần"
@@ -4991,6 +5205,10 @@ vi:
   text_plugin_assets_writable: "Thư mục nội dung plugin có thể ghi"
   text_powered_by: "Được cung cấp bởi %{link}"
   text_project_identifier_info: "Chỉ cho phép chữ cái viết thường (a-z), số, dấu gạch ngang và dấu gạch dưới, phải bắt đầu bằng chữ cái viết thường."
+  text_project_identifier_description: 'The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".'
+  text_project_identifier_url_description: "The project identifier is included in the URL of the project."
+  text_project_identifier_handle_format: "Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters)."
+  text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
   text_reassign: "Phân công lại cho gói công việc:"
   text_regexp_multiline: 'Biểu thức được áp dụng ở chế độ đa dòng. Ví dụ: ^---\s+'
   text_repository_usernames_mapping: "Chọn hoặc cập nhật người dùng OpenProject được ánh xạ tới từng tên người dùng được tìm thấy trong nhật ký kho lưu trữ.\nNgười dùng có cùng tên người dùng hoặc email của OpenProject và kho lưu trữ sẽ được tự động ánh xạ."
@@ -5097,17 +5315,17 @@ vi:
   version_status_locked: "bị khóa"
   version_status_open: "mở"
   note: Lưu ý
-  note_password_login_disabled: "Đăng nhập bằng mật khẩu đã bị vô hiệu hóa bởi %{configuration}."
+  note_password_login_disabled_link: "Password login has been disabled through a [configuration setting](configuration_url)."
   warning: Cảnh báo
   warning_attachments_not_saved: "%{count} tệp không thể lưu được."
-  warning_imminent_user_limit: >
-    Bạn đã mời nhiều người dùng hơn số lượng được hỗ trợ bởi gói hiện tại của bạn. Những người dùng được mời có thể không thể tham gia vào môi trường OpenProject của bạn. Vui lòng <a href="%{upgrade_url}">nâng cấp gói của bạn</a> hoặc khóa người dùng hiện tại để cho phép người dùng được mời và đã đăng ký tham gia.
+  warning_imminent_user_limit_html: >
+    You invited more users than are supported by your current plan. Invited users may not be able to join your OpenProject environment. Please [upgrade your plan](upgrade_url) or block existing users in order to allow invited and registered users to join.
   warning_registration_token_expired: |
     Mail kích hoạt đã hết hạn. Sẽ gửi mail mới tới %{email}.
   warning_user_limit_reached: >
     Việc thêm người dùng bổ sung sẽ vượt quá giới hạn hiện tại. Vui lòng liên hệ với quản trị viên để tăng giới hạn người dùng nhằm đảm bảo người dùng bên ngoài có thể truy cập phiên bản này.
-  warning_user_limit_reached_admin: >
-    Thêm người dùng bổ sung sẽ vượt quá giới hạn hiện tại. Vui lòng <a href="%{upgrade_url}">nâng cấp gói của bạn</a> để đảm bảo người dùng bên ngoài có thể truy cập vào phiên bản này.
+  warning_user_limit_reached_admin_html: >
+    Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
     Bạn đã đạt đến giới hạn người dùng của mình (%{current}/%{max} người dùng đang hoạt động). Vui lòng liên hệ sales@openproject.com để nâng cấp gói phiên bản Enterprise của bạn và thêm người dùng bổ sung.
   warning_protocol_mismatch_html: >
@@ -5167,7 +5385,7 @@ vi:
     reminders:
       label_remind_at: "ngày"
       note_placeholder: "Tại sao bạn đặt lời nhắc này?"
-      create_success_message: "Đã đặt lời nhắc thành công. Bạn sẽ nhận được thông báo về gói công việc này %{reminder_time}."
+      create_success_message_html: "Reminder set successfully. You will receive a notification for this work package %{reminder_time}."
       success_update_message: "Đã cập nhật lời nhắc thành công."
       success_deletion_message: "Đã xóa lời nhắc thành công."
   sharing:
@@ -5198,8 +5416,8 @@ vi:
     text_user_limit_reached_admins: 'Thêm người dùng bổ sung sẽ vượt quá giới hạn hiện tại. Vui lòng <a href="%{upgrade_url}">nâng cấp gói của bạn</a> để có thể thêm nhiều người dùng hơn.'
     warning_user_limit_reached: >
       Việc thêm người dùng bổ sung sẽ vượt quá giới hạn hiện tại. Vui lòng liên hệ với quản trị viên để tăng giới hạn người dùng nhằm đảm bảo người dùng bên ngoài có thể truy cập %{entity} này.
-    warning_user_limit_reached_admin: >
-      Thêm người dùng bổ sung sẽ vượt quá giới hạn hiện tại. Vui lòng <a href="%{upgrade_url}">nâng cấp gói của bạn</a> để đảm bảo người dùng bên ngoài có thể truy cập vào %{entity} này.
+    warning_user_limit_reached_admin_html: >
+      Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
     warning_no_selected_user: "Vui lòng chọn người dùng để chia sẻ %{entity} này với"
     warning_locked_user: "Người dùng %{user} đã bị khóa và không thể chia sẻ với"
     user_details:
@@ -5319,6 +5537,7 @@ vi:
       project: Không được tiết lộ - Dự án vô hình vì thiếu quyền.
       ancestor: Không được tiết lộ - Tổ tiên là vô hình vì thiếu quyền.
       definingProject: Không được tiết lộ - Dự án vô hình vì thiếu quyền.
+      definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Xác thực"

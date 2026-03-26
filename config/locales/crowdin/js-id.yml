@@ -349,8 +349,6 @@ id:
     label_collapse_all: "Tutup semua"
     label_collapse_text: "Collapse text"
     label_comment: "Komentar"
-    label_committed_at: "%{committed_revision_link} pada %{date}"
-    label_committed_link: "disimpan pada revisi %{revision_identifier}"
     label_contains: "berisi"
     label_created_on: "dibuat pada"
     label_edit_comment: "Edit this comment"
@@ -1214,3 +1212,7 @@ id:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

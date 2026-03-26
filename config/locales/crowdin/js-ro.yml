@@ -348,8 +348,6 @@ ro:
     label_collapse_all: "Restrângere totală"
     label_collapse_text: "Restrânge text"
     label_comment: "Comentariu"
-    label_committed_at: "%{committed_revision_link} la data de %{date}"
-    label_committed_link: "revizia încărcată %{revision_identifier}"
     label_contains: "conţine"
     label_created_on: "creat la data de"
     label_edit_comment: "Editează comentariu"
@@ -1221,3 +1219,7 @@ ro:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

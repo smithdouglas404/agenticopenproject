@@ -36,10 +36,8 @@
         updated: "Oppdatert"
         comment: "Kommentar"
         internal_comment: "Internal comment"
-      explanation:
-        text: >
-          Ved forekomst av en hendelse som oppretting av en arbeidspakke eller en oppdatering fra et prosjekt, vil OpenProject sende en POST-forespørsel til de konfigurerte nettendepunktene. Ofte blir hendelsen sendt etter at %{link} er godkjent.
-        link: konfigurert summeringsperiode
+      explanation_html: >
+        Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
       status:
         enabled: 'Webhook er aktivert'
         disabled: 'Webhook er deaktivert'

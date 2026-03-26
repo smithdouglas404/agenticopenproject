@@ -43,6 +43,10 @@ module Wikis
     validates :url, presence: true, length: { maximum: 255 }
     validate :url_is_https
 
+    class << self
+      def registry_prefix = "xwiki"
+    end
+
     private
 
     def url_is_https

@@ -37,7 +37,7 @@ module Agile::Sprints::Scopes::ForProject
       # it has some extra includes that are not necessary in this case.
       from_work_packages = WorkPackage.where(project:).where.not(sprint_id: nil)
 
-      where(project: project.sprint_source)
+      native_to_sprint_source(project)
         .or(where(id: from_work_packages.select(:sprint_id)))
     end
   end

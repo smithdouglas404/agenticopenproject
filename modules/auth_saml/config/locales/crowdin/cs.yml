@@ -56,7 +56,7 @@ cs:
       label_mapping: Mapování
       label_requested_attribute_for: "Requested attribute for: %{attribute}"
       no_results_table: No SAML identity providers have been defined yet.
-      notice_created: A new SAML identity provider was successfully created.
+      notice_created: Nový zprostředkovatel identit SAML byl úspěšně vytvořen.
       plural: Poskytovatelé SAML identity
       singular: Poskytovatel identity SAML
       requested_attributes: Požadované atributy

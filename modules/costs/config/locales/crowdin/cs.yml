@@ -219,7 +219,7 @@ cs:
   setting_costs_currency_format_suffix: "After the number (e.g. 100 EUR)"
   setting_enforce_tracking_start_and_end_times: "Require start and finish times"
   setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
-  setting_allow_tracking_start_and_end_times_caption: "Enables entering start and finish times when logging time."
+  setting_allow_tracking_start_and_end_times_caption: "Umožní zadávat časy začátku a konce při zaznamenávání času."
   setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
   text_assign_time_and_cost_entries_to_project: "Přiřadit nahlášené hodiny a náklady projektu"
   text_destroy_cost_entries_question: "%{cost_entries} byl nahlášen k pracovním balíčkům, které se chystáte odstranit. Co chcete udělat?"

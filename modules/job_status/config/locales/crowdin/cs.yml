@@ -5,8 +5,7 @@ cs:
     description: "Seznam a stav úkolů na pozadí."
   job_status_dialog:
     download_starts: 'Stahování by mělo začít automaticky.'
-    link_to_download: 'Nebo %{link} ke stažení.'
-    click_here: 'klikněte zde'
+    click_to_download: 'Nebo [klikněte zde](download_url) pro stažení.'
     title: 'Stav úlohy na pozadí'
     redirect: 'Nyní jste přesměrováváni'
     redirect_link: 'Pro pokračování klikněte prosím zde.'

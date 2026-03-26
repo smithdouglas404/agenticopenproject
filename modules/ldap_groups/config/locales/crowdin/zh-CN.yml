@@ -47,7 +47,7 @@ zh-CN:
         title: '移除同步的筛选器 %{name}'
         confirmation: "如果您继续，将移除同步的筛选器 %{name} 和通过该筛选器创建的全部 %{groups_count} 个组。"
         removed_groups: "警告：这将从 OpenProject 中移除以下组并将该筛选器从所有项目中移除！"
-        verification: "输入筛选器名称 %{name} 以验证删除。"
+        verification_html: "Enter the filter name %{name} to verify the deletion."
       form:
         group_name_attribute_text: '输入用于设置 OpenProject 组名称的 LDAP 组的属性。'
         filter_string_text: '输入 RFC4515 LDAP 筛选器，该筛选器将返回 LDAP 中的组以与 OpenProject 同步。'
@@ -59,7 +59,7 @@ zh-CN:
         title: '移除同步组 %{name}'
         confirmation: "如果您继续，将移除同步组 %{name} 和通过该组同步的全部 %{users_count} 个用户。"
         info: "注意：OpenProject 组本身以及在 LDAP 同步之外添加的成员将不会被移除。"
-        verification: "输入组名称 %{name} 以验证删除。"
+        verification_html: "Enter the group's name %{name} to verify the deletion."
       help_text_html: |
         此模块允许您在 LDAP 与 OpenProject 组之间设置同步。
         它要求 LDAP 组使用 <em>groupOfNames / memberOf</em> 属性集才能与 OpenProject 一起使用。

@@ -66,13 +66,15 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
   end
 
   describe "standard items" do
-    it "renders stable ids for the action menu and primary links" do
+    it "renders stable ids for the action menu and primary actions" do
       render_component
 
       expect(page).to have_element(:button, id: /\Astory_#{story.id}_menu-button\z/)
       expect(page).to have_element(:ul, id: /\Astory_#{story.id}_menu-list\z/)
       expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_details\z/)
       expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_fullscreen\z/)
+      expect(page).to have_element(:"clipboard-copy", id: /\Astory_#{story.id}_menu_copy_url_to_clipboard\z/)
+      expect(page).to have_element(:"clipboard-copy", id: /\Astory_#{story.id}_menu_copy_work_package_id\z/)
     end
 
     it "shows Open details link (split view)" do
@@ -97,10 +99,41 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
       )
     end
 
-    it "shows a divider before move options" do
+    it "shows Copy URL to clipboard action" do
+      render_component
+
+      expect(page).to have_octicon(:copy)
+      expect(page).to have_element(
+        :"clipboard-copy",
+        id: "story_#{story.id}_menu_copy_url_to_clipboard",
+        value: /\/work_packages\/#{story.id}\z/,
+        text: I18n.t("backlogs.story_menu_component.action_menu.copy_url_to_clipboard")
+      )
+    end
+
+    it "shows Copy work package ID action" do
+      render_component
+
+      expect(page).to have_octicon(:hash)
+      expect(page).to have_element(
+        :"clipboard-copy",
+        id: "story_#{story.id}_menu_copy_work_package_id",
+        value: story.id.to_s,
+        text: I18n.t("backlogs.story_menu_component.action_menu.copy_work_package_id")
+      )
+    end
+
+    it "shows a divider before the Move submenu" do
       render_component
 
       expect(page).to have_css(".ActionList-sectionDivider")
+    end
+
+    it "shows the Move submenu with incoming-arrow icon" do
+      render_component
+
+      expect(page).to have_selector(:menuitem, text: I18n.t("backlogs.story_menu_component.action_menu.move_menu"))
+      expect(page).to have_octicon(:"op-arrow-in")
     end
   end
 
@@ -188,10 +221,13 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
         expect(page).to have_no_text(I18n.t(:label_sort_lowest))
       end
 
-      it "hides the divider" do
+      it "hides the Move submenu" do
         render_component(position: 1, max_position: 1)
 
-        expect(page).to have_no_css(".ActionList-sectionDivider")
+        expect(page).to have_no_selector(
+          :menuitem,
+          text: I18n.t("backlogs.story_menu_component.action_menu.move_menu")
+        )
       end
     end
   end

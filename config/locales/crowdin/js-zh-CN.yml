@@ -349,8 +349,6 @@ zh-CN:
     label_collapse_all: "全部折叠"
     label_collapse_text: "收起文本"
     label_comment: "评论"
-    label_committed_at: "在 %{date} %{committed_revision_link}"
-    label_committed_link: "上传的修订 %{revision_identifier}"
     label_contains: "包含"
     label_created_on: "创建于"
     label_edit_comment: "编辑此注释"
@@ -1214,3 +1212,7 @@ zh-CN:
       waiting_subtitle:
         network_off: "网络有问题。"
         network_on: "网络已恢复。我们正在努力。"
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

@@ -348,8 +348,6 @@ pt-BR:
     label_collapse_all: "Recolher todos"
     label_collapse_text: "Recolher texto"
     label_comment: "Comentário"
-    label_committed_at: "%{committed_revision_link} em %{date}"
-    label_committed_link: "revisão commitada %{revision_identifier}"
     label_contains: "contém"
     label_created_on: "criado em"
     label_edit_comment: "Editar este comentário"
@@ -1217,3 +1215,7 @@ pt-BR:
       waiting_subtitle:
         network_off: "Ocorreu um problema de rede"
         network_on: "A rede voltou. Estamos tentando."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

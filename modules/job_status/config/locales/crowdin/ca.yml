@@ -5,8 +5,7 @@ ca:
     description: "Listing and status of background jobs."
   job_status_dialog:
     download_starts: 'La descàrrega hauria d''iniciar-se automàticament'
-    link_to_download: 'Or, %{link} to download.'
-    click_here: 'click here'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Estat de l''operació de fons'
     redirect: 'Estàs sent redirigit.'
     redirect_link: 'Si us plau, fes clic aquí per continuar.'

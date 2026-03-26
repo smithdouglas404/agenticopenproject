@@ -36,10 +36,8 @@ ro:
         updated: "Actualizat"
         comment: "Comentariu"
         internal_comment: "Comentariu intern"
-      explanation:
-        text: >
-          La apariția unui eveniment, cum ar fi crearea unui pachet de lucru sau o actualizare a unui proiect, OpenProject va trimite o cerere POST către punctele finale web configurate. De multe ori, evenimentul este trimis după ce a trecut %{link}.
-        link: perioada de agregare configurată
+      explanation_html: >
+        Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
       status:
         enabled: 'Webhook este activat'
         disabled: 'Webhook este dezactivat'

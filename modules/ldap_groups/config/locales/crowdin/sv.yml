@@ -47,7 +47,7 @@ sv:
         title: 'Ta bort synkroniserat filter %{name}'
         confirmation: "Om du fortsätter kommer det synkroniserade filtret %{name} och alla grupper %{groups_count} som skapats genom det att tas bort."
         removed_groups: "Varning: Detta kommer att ta bort följande grupper från OpenProject och ta bort den från alla projekt!"
-        verification: "Ange filternamnet %{name} för att bekräfta raderingen."
+        verification_html: "Enter the filter name %{name} to verify the deletion."
       form:
         group_name_attribute_text: 'Ange attribut för LDAP-gruppen som används för att ange namnet på OpenProject-gruppen.'
         filter_string_text: 'Ange RFC4515 LDAP-filtret som returnerar grupper i din LDAP för att synkronisera med OpenProject.'
@@ -59,7 +59,7 @@ sv:
         title: 'Ta bort synkroniserad grupp %{name}'
         confirmation: "Om du fortsätter kommer den synkroniserade gruppen %{name} och alla %{users_count} användare som synkroniserats genom den att tas bort."
         info: "Obs: OpenProject-gruppen själv och medlemmar som lagts till utanför denna LDAP-synkronisering kommer inte att tas bort."
-        verification: "Ange gruppens namn %{name} för att verifiera raderingen."
+        verification_html: "Enter the group's name %{name} to verify the deletion."
       help_text_html: |
         Modulen låter dig konfigurera en synkronisering mellan LDAP och OpenProject-grupper.
         Det beror på LDAP-grupper måste använda <em>groupOfNames / memberOf</em> attributset för att arbeta med OpenProject.

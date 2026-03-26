@@ -93,13 +93,7 @@ export default class StoryController extends Controller<HTMLElement> implements 
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 
-    if (
-      target.closest('a') ||
-      target.closest('button') ||
-      target.closest('[data-drag-handle]')
-    ) {
-      return;
-    }
+    if (this.shouldIgnoreMouseTarget(target)) return;
 
     if (this.clickTimeout !== null) return;
 
@@ -113,13 +107,7 @@ export default class StoryController extends Controller<HTMLElement> implements 
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 
-    if (
-      target.closest('a') ||
-      target.closest('button') ||
-      target.closest('[data-drag-handle]')
-    ) {
-      return;
-    }
+    if (this.shouldIgnoreMouseTarget(target)) return;
 
     if (this.clickTimeout !== null) {
       clearTimeout(this.clickTimeout);
@@ -135,16 +123,7 @@ export default class StoryController extends Controller<HTMLElement> implements 
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 
-    if (
-      target.closest('a') ||
-      target.closest('button') ||
-      target.closest('input') ||
-      target.closest('textarea') ||
-      target.closest('select') ||
-      target.closest("[contenteditable='true']")
-    ) {
-      return;
-    }
+    if (this.shouldIgnoreKeyboardTarget(target)) return;
 
     event.preventDefault();
     if (event.shiftKey) {
@@ -160,5 +139,23 @@ export default class StoryController extends Controller<HTMLElement> implements 
 
   private openFullPane():void {
     Turbo.visit(this.fullUrlValue, { frame: '_top' });
+  }
+
+  private shouldIgnoreMouseTarget(target:HTMLElement):boolean {
+    return [
+      'a',
+      'button',
+      'clipboard-copy',
+      '[data-drag-handle]',
+    ].some((selector) => target.closest(selector) !== null);
+  }
+
+  private shouldIgnoreKeyboardTarget(target:HTMLElement):boolean {
+    return this.shouldIgnoreMouseTarget(target) || [
+      'input',
+      'textarea',
+      'select',
+      "[contenteditable='true']",
+    ].some((selector) => target.closest(selector) !== null);
   }
 }

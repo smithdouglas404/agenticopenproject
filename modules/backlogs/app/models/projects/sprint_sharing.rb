@@ -55,6 +55,68 @@ module Projects::SprintSharing
     def global_sprint_sharer_relation
       share_sprints_with_all_projects.active.limit(1)
     end
+
+    # Returns the projects that are sharers for the provided projects
+    # Covers three cases:
+    #
+    # 1. Non-receiving allowed projects (sprint_source = self)
+    # 2. The closest share_subprojects ancestor of each receiving allowed project
+    # 3. The global sharer for receiving projects that have no share_subprojects ancestor
+    def sprint_source_for(projects) # rubocop:disable Metrics/AbcSize
+      share_subprojects = Projects::SprintSharing::SHARE_SUBPROJECTS
+
+      receiving_in_allowed = projects.receive_shared_sprints
+      receiving_ids_sql = receiving_in_allowed.select(:id).to_sql
+
+      # Case 1: Non-receiving allowed projects (sprint_source = self)
+      direct = projects
+                 .where("settings->>'sprint_sharing' IS DISTINCT FROM ?",
+                        Projects::SprintSharing::RECEIVE_SHARED)
+                 .select(:id)
+
+      # Case 2: Closest share_subprojects ancestor for each receiving project.
+      # Project S is a source if there EXISTS a receiving project R in projects
+      # such that S is an ancestor of R and no closer share_subprojects ancestor exists.
+      closest_ancestors = Project.share_sprints_with_subprojects.where(<<~SQL.squish).select(:id)
+        EXISTS (
+          SELECT 1 FROM projects receiving
+          WHERE receiving.id IN (#{receiving_ids_sql})
+            AND projects.lft < receiving.lft
+            AND projects.rgt > receiving.rgt
+            AND NOT EXISTS (
+              SELECT 1 FROM projects closer
+              WHERE closer.settings->>'sprint_sharing' = '#{share_subprojects}'
+                AND closer.lft < receiving.lft
+                AND closer.rgt > receiving.rgt
+                AND closer.lft > projects.lft
+            )
+        )
+      SQL
+
+      # Case 3: Global sharer for receiving projects that have no share_subprojects ancestor.
+      # The global sharer is wrapped in WHERE IN to avoid a LIMIT clause inside a UNION member.
+      global_sharer = Project
+                        .where(id: Project.global_sprint_sharer_relation)
+                        .where(<<~SQL.squish).select(:id)
+                          EXISTS (
+                            SELECT 1 FROM projects receiving
+                            WHERE receiving.id IN (#{receiving_ids_sql})
+                              AND NOT EXISTS (
+                                SELECT 1 FROM projects anc
+                                WHERE anc.settings->>'sprint_sharing' = '#{share_subprojects}'
+                                  AND anc.lft < receiving.lft
+                                  AND anc.rgt > receiving.rgt
+                              )
+                          )
+                        SQL
+
+      sharing_union = Arel::Nodes::Union.new(
+        direct.arel,
+        Arel::Nodes::Union.new(closest_ancestors.arel, global_sharer.arel)
+      )
+
+      Project.where(arel_table[:id].in(sharing_union))
+    end
   end
 
   # `default:` cannot be reliably used on the store_attribute declaration,
@@ -86,23 +148,6 @@ module Projects::SprintSharing
   end
 
   def sprint_source
-    # Senders and non-sharing projects only see their own sprints.
-    # Receivers see external sprints from the closest ancestor sharing
-    # subprojects, falling back to the global sharer.
-    if receive_shared_sprints?
-      closest_sharing_ancestor_or_global_sharer
-    else
-      self.class.where(id:)
-    end
-  end
-
-  private
-
-  def closest_sharing_ancestor_or_global_sharer
-    closest_ancestor = ancestors.share_sprints_with_subprojects.reorder(lft: :desc).limit(1)
-
-    self.class
-      .where(id: closest_ancestor).limit(1) # Both sides of `or` must be structurally identical
-      .or(self.class.global_sprint_sharer_relation.where.not(closest_ancestor.arel.exists))
+    self.class.sprint_source_for(Project.where(id:))
   end
 end

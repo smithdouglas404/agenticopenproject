@@ -5,8 +5,7 @@ hu:
     description: "Listing and status of background jobs."
   job_status_dialog:
     download_starts: 'A letöltésnek automatikusan el kellene indulnia'
-    link_to_download: 'Vagy, %{link} letöltéshez.'
-    click_here: 'Kattints ide'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Háttér művelet állapota'
     redirect: 'Átirányítjuk...'
     redirect_link: 'Kattints ide a folytatáshoz'

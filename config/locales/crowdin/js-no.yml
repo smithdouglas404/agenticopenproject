@@ -349,8 +349,6 @@
     label_collapse_all: "Skjul alle"
     label_collapse_text: "Collapse text"
     label_comment: "Kommentar"
-    label_committed_at: "%{committed_revision_link} den %{date}"
-    label_committed_link: "engasjert revisjon %{revision_identifier}"
     label_contains: "inneholder"
     label_created_on: "Opprettet"
     label_edit_comment: "Rediger denne kommentaren"
@@ -1218,3 +1216,7 @@
       waiting_subtitle:
         network_off: "Det er et nettverksproblem."
         network_on: "Nettverket er tilbake. Vi prøver igjen."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

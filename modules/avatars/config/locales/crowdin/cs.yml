@@ -24,8 +24,8 @@ cs:
     text_current_avatar: |
       Následující obrázek zobrazuje aktuální avatar.
     text_upload_instructions: |
-      Nahrajte svůj vlastní avatar o velikosti 128 pixelů. Větší soubory budou změněny a oříznuty tak, aby odpovídaly.
-      Náhled avataru bude zobrazen před odesláním, jakmile jste vybrali obrázek.
+      Nahrajte svůj vlastní avatar o velikosti 128x128 pixelů. Větší soubory budou zmenšeny a oříznuty tak, aby odpovídaly.
+      Náhled avataru bude zobrazen před odesláním, jakmile vyberete obrázek.
     text_change_gravatar_html: 'Chcete-li změnit nebo přidat Gravatar pro vaši e-mailovou adresu, přejděte na %{gravatar_url}.'
     text_your_local_avatar: |
       OpenProject vám umožňuje nahrát vlastní avatar.

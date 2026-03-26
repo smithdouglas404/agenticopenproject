@@ -349,8 +349,6 @@ eo:
     label_collapse_all: "Maletendi ĉion"
     label_collapse_text: "Collapse text"
     label_comment: "Komento"
-    label_committed_at: "%{committed_revision_link} en %{date}"
-    label_committed_link: "reviziita versio %{revision_identifier}"
     label_contains: "enhavas"
     label_created_on: "Kreita la "
     label_edit_comment: "Redakti tiu ĉi komenton"
@@ -1218,3 +1216,7 @@ eo:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

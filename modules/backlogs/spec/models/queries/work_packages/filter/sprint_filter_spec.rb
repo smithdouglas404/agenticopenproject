@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe OpenProject::Backlogs::SprintFilter do
+RSpec.describe Queries::WorkPackages::Filter::SprintFilter, with_flag: { scrum_projects: true } do
   let(:scope_class) do
     Class.new do
       def for_project(_project); end
@@ -48,10 +48,11 @@ RSpec.describe OpenProject::Backlogs::SprintFilter do
 
     let(:visible_scope) { instance_double(scope_class) }
     let(:scope) { instance_double(scope_class) }
+    let(:project_permissions) { [:view_sprints] }
+
+    current_user { build_stubbed(:user) }
 
     before do
-      allow(project).to receive(:module_enabled?).with(:backlogs).and_return(true)
-      allow(OpenProject::FeatureDecisions).to receive(:scrum_projects_active?).and_return(true)
       allow(Agile::Sprint)
         .to receive(:visible)
         .and_return(visible_scope)
@@ -65,29 +66,58 @@ RSpec.describe OpenProject::Backlogs::SprintFilter do
 
       allow(scope).to receive(:pluck).with(:id, :id).and_return([[sprint.id, sprint.id]])
       allow(visible_scope).to receive(:pluck).with(:id, :id).and_return([[sprint.id, sprint.id]])
+
+      mock_permissions_for current_user do |mock|
+        if project
+          mock.allow_in_project(*project_permissions, project:)
+        else
+          # To mock having permissions for the `allowed_in_any_project?` check
+          mock.allow_in_project(*project_permissions, project: build_stubbed(:project))
+        end
+      end
     end
 
     describe "#available?" do
-      context "when scrum projects is active and backlogs is enabled" do
+      context "when in a project, scrum projects is active and user has the permission" do
         it "is true" do
           expect(instance).to be_available
         end
       end
 
-      context "when scrum projects is inactive" do
-        before do
-          allow(OpenProject::FeatureDecisions).to receive(:scrum_projects_active?).and_return(false)
+      context "when in a project, scrum projects is inactive and user has the permission", with_flag: { scrum_projects: false } do
+        it "is false" do
+          expect(instance).not_to be_available
         end
+      end
+
+      context "when in a project, scrum projects is active and user lacks the permission" do
+        let(:project_permissions) { [] }
 
         it "is false" do
           expect(instance).not_to be_available
         end
       end
 
-      context "when backlogs is not enabled" do
-        before do
-          allow(project).to receive(:module_enabled?).with(:backlogs).and_return(false)
+      context "when outside a project, scrum projects is active and user has the permission" do
+        let(:project) { nil }
+
+        it "is true" do
+          expect(instance).to be_available
         end
+      end
+
+      context "when outside a project, scrum projects is inactive and user has the permission",
+              with_flag: { scrum_projects: false } do
+        let(:project) { nil }
+
+        it "is false" do
+          expect(instance).not_to be_available
+        end
+      end
+
+      context "when outside a project, scrum projects is active and user lacks the permission" do
+        let(:project) { nil }
+        let(:project_permissions) { [] }
 
         it "is false" do
           expect(instance).not_to be_available

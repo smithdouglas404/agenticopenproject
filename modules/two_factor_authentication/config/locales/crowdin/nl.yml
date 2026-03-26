@@ -71,8 +71,7 @@ nl:
       error_invalid_settings: "De 2FA strategieën die u hebt geselecteerd zijn ongeldig"
       failed_to_save_settings: "2FA instellingen bijwerken mislukt: %{message}"
     admin:
-      self_edit_path: "Om uw eigen 2FA-apparaten toe te voegen of te wijzigen, gaat u naar %{self_edit_link}"
-      self_edit_link_name: "Twee-factor-authenticatie op uw accountpagina"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "U mag uw eigen 2FA-apparaten niet op dit pad bewerken. Ga in plaats daarvan naar Mijn account> Two-factor-authenticatie."
       no_devices_for_user: "Er is geen 2FA-apparaat geregistreerd voor deze gebruiker."
       all_devices_deleted: "Alle 2FA-apparaten van deze gebruiker zijn verwijderd"
@@ -118,8 +117,8 @@ nl:
       failed_to_delete: "Kan het 2FA-apparaat niet verwijderen."
       is_default_cannot_delete: "Het apparaat is gemarkeerd als standaard en kan niet worden verwijderd vanwege een actief beveiligingsbeleid. Markeer een ander apparaat als standaard voordat u het verwijdert."
       not_existing: "Er is geen 2FA-apparaat geregistreerd voor uw account."
-      2fa_from_input: Voer de code van uw <strong>%{device_name}</strong> om uw identiteit te verifiëren.
-      2fa_from_webauthn: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.

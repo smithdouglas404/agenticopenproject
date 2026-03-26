@@ -21,20 +21,20 @@
 #++
 cs:
   attributes:
-    additions_count: "Number of additions"
-    deletions_count: "Number of deletions"
-    comments_count: "Comments count"
-    github_html_url: "Pull Request URL"
-    github_app_owner_avatar_url: "Owner avatar URL"
-    review_comments_count: "Review comments count"
-    github: "GitHub identifer"
+    additions_count: "Počet přídavků"
+    deletions_count: "Počet výmazů"
+    comments_count: "Počet komentářů"
+    github_html_url: "URL pull requestu"
+    github_app_owner_avatar_url: "URL avataru vlastníka"
+    review_comments_count: "Počet recenzních komentářů"
+    github: "Identifikátor na GitHubu"
     github_avatar_url: "URL avataru"
     github_updated_at: "Aktualizováno"
-    github_login: "GitHub login"
+    github_login: "Přihlášení do GitHubu"
     host: "Hostitel"
     labels: "Štítky"
     repository: "Repozitář"
-    changed_files_count: "Changed files"
+    changed_files_count: "Změněné soubory"
   button_add_deploy_target: Přidání cíle nasazení
   label_deploy_target: Cíl nasazení
   label_deploy_target_new: Nový cíl nasazení
@@ -47,9 +47,9 @@ cs:
     description: "Integruje OpenProject a GitHub pro lepší workflow"
   project_module_github: "GitHub"
   permission_show_github_content: "Zobrazit GitHub obsah"
-  permission_introspection: Read running OpenProject core version and build SHA
+  permission_introspection: Přečíst verzi jádra OpenProject a build SHA
   text_deploy_target_type_info: >
     Zatím podporujeme pouze samotný OpenProject
   text_deploy_target_api_key_info: >
-    An OpenProject [API key](docs_url) belonging to a user who has the global introspection permission.
+    OpenProject [klíč API](docs_url) patřící uživateli, který má globální oprávnění k introspekci obsahu.
   text_pull_request_deployed_to: "%{pr_link} nasazení na adrese %{deploy_target_link}"

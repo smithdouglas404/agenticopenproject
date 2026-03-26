@@ -71,10 +71,15 @@ module Backlogs
           backlogs__story_id_value: work_package.id,
           backlogs__story_split_url_value: details_backlogs_project_backlogs_path(project, work_package),
           backlogs__story_full_url_value: work_package_path(work_package),
-          backlogs__story_selected_class: "Box-row--blue"
+          backlogs__story_selected_class: "Box-row--blue",
+          test_selector: card_test_selector
         },
         tabindex: 0
       }
+    end
+
+    def card_test_selector
+      "work-package-#{work_package.id}"
     end
   end
 end

@@ -31,5 +31,7 @@
 module Queries::Sprints
   ::Queries::Register.register(SprintQuery) do
     filter Filters::ProjectFilter
+
+    order Orders::DefaultOrder
   end
 end

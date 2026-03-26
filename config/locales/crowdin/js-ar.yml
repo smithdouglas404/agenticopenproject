@@ -349,8 +349,6 @@ ar:
     label_collapse_all: "طَيْ الجميع"
     label_collapse_text: "Collapse text"
     label_comment: "تعليق"
-    label_committed_at: "%{committed_revision_link} في %{date}"
-    label_committed_link: "مراجعة ملزمة ل%{revision_identifier}"
     label_contains: "يحتوي على"
     label_created_on: "تم إنشاؤها على"
     label_edit_comment: "تعديل هذا التعليق"
@@ -1234,3 +1232,7 @@ ar:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

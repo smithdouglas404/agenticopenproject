@@ -349,8 +349,6 @@ fa:
     label_collapse_all: "بستن همه"
     label_collapse_text: "Collapse text"
     label_comment: "نظر"
-    label_committed_at: "%{committed_revision_link} در %{date}"
-    label_committed_link: "committed revision %{revision_identifier}"
     label_contains: "contains"
     label_created_on: "ایجاد شده در"
     label_edit_comment: "ویرایش این نظر"
@@ -1218,3 +1216,7 @@ fa:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

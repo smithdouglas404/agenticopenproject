@@ -36,10 +36,8 @@ ca:
         updated: "Actualitzat"
         comment: "Comentari"
         internal_comment: "Internal comment"
-      explanation:
-        text: >
-          En el cas que un esdeveniment com la creació d'un paquet de treball o l'actualització d'un projecte, OpenProject enviarà una sol·licitud POST als punts finals de web configurats. A vegades, l'esdeveniment s'envia després que %{link} ha passat.
-        link: període d'agregació configurat
+      explanation_html: >
+        Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
       status:
         enabled: 'Webhooks habilitats'
         disabled: 'Webhooks deshabilitats'

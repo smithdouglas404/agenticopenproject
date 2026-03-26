@@ -49,9 +49,9 @@ nl:
           non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
-      input_delete_confirmation: Voer de providernaam %{name} in om de verwijdering te bevestigen.
+      input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
       irreversible_notice: Het verwijderen van een SSO provider is een onomkeerbare actie.
-      provider: 'Weet u zeker dat u de SSO provider %{name} wilt verwijderen? Voer de naam van de provider in het onderstaande veld in om deze actie te bevestigen, dit wil:'
+      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
       delete_result_1: Verwijder de provider uit de lijst met beschikbare providers.
       delete_result_user_count:
         zero: Er zijn momenteel geen gebruikers die deze provider gebruiken. Er is geen verdere actie vereist.
