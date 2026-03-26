@@ -76,18 +76,20 @@ class RbSprintsController < RbApplicationController
     respond_with_turbo_streams
   end
 
-  def create # rubocop:disable Metrics/AbcSize
+  def create
     call = Sprints::CreateService
              .new(user: current_user)
              .call(attributes: converted_agile_sprint_params)
 
     if call.success?
-      flash[:notice] = I18n.t(:notice_successful_create)
-      render turbo_stream: turbo_stream.redirect_to(backlog_backlogs_project_backlogs_path(@project))
+      render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_create))
+      close_dialog_via_turbo_stream("##{Backlogs::NewSprintDialogComponent::DIALOG_ID}")
+      append_sprint_to_list_via_turbo_stream(sprint: call.result)
     else
       update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
-      respond_with_turbo_streams
     end
+
+    respond_with_turbo_streams
   end
 
   # Called like this due to `update` being taken by legacy sprints.
@@ -124,8 +126,10 @@ class RbSprintsController < RbApplicationController
     result = finish_sprint
 
     if result.success?
-      flash[:notice] = I18n.t(:notice_successful_finish)
-      render turbo_stream: turbo_stream.redirect_to(backlog_backlogs_project_backlogs_path(@project))
+      render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_finish))
+      close_dialog_via_turbo_stream("##{Backlogs::FinishSprintDialogComponent::DIALOG_ID}")
+      remove_finished_sprint_from_list_via_turbo_stream
+      respond_with_turbo_streams
     elsif result.includes_error?(:base, :unfinished_work_packages)
       show_finish_sprint_dialog
     else
@@ -194,6 +198,20 @@ class RbSprintsController < RbApplicationController
         base_errors:
       ),
       status: :bad_request
+    )
+  end
+
+  def append_sprint_to_list_via_turbo_stream(sprint:)
+    component = Backlogs::SprintComponent.new(sprint:, project: @project)
+    turbo_streams << turbo_stream.append(
+      "sprint_planning_sprint_content",
+      component.render_in(view_context)
+    )
+  end
+
+  def remove_finished_sprint_from_list_via_turbo_stream
+    remove_via_turbo_stream(
+      component: Backlogs::SprintComponent.new(sprint: @sprint, project: @project)
     )
   end
 
