@@ -169,6 +169,9 @@ Rails/ContentTag:
 # dynamic finders cop clashes with capybara ID cop
 Rails/DynamicFindBy:
   Enabled: true
+  AllowedMethods:
+    - find_by_identifier
+    - find_by_identifier!
   Exclude:
     - "spec/features/**/*.rb"
     - "spec/support/**/*.rb"
