@@ -52,13 +52,13 @@ module WorkPackages
         # 1. Assign sequence numbers to WPs that don't have one yet (ordered by id
         #    to keep numbers chronological).
         current_max = WorkPackage.where(project:).maximum(:sequence_number).to_i
-        project.update_columns(wp_sequence_counter: current_max)
 
         WorkPackage.where(project:, sequence_number: nil).order(:id).find_each do |wp|
           current_max += 1
           wp.update_columns(sequence_number: current_max)
-          project.update_columns(wp_sequence_counter: current_max)
         end
+
+        project.update_columns(wp_sequence_counter: current_max)
 
         # 2. Populate registry for every WP in the project.
         WorkPackage.where(project:).find_each do |wp|

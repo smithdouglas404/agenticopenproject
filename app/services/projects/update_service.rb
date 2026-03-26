@@ -57,6 +57,7 @@ module Projects
       ret = super
 
       touch_on_custom_values_update
+      update_semantic_ids_on_identifier_change if Setting::WorkPackageIdentifier.alphanumeric?
       notify_on_identifier_renamed
       send_update_notification
       update_wp_versions_on_parent_change
@@ -69,11 +70,15 @@ module Projects
       model.touch if only_custom_values_updated?
     end
 
-    def notify_on_identifier_renamed
+    def update_semantic_ids_on_identifier_change
       return unless memoized_changes["identifier"]
 
       old_identifier = memoized_changes["identifier"].first
       WorkPackageSemanticId.register_project_rename(model, old_identifier)
+    end
+
+    def notify_on_identifier_renamed
+      return unless memoized_changes["identifier"]
 
       OpenProject::Notifications.send(OpenProject::Events::PROJECT_RENAMED, project: model)
     end

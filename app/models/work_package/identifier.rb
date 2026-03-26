@@ -56,17 +56,17 @@ module WorkPackage::Identifier
     #   - Semantic string ("PROJ-42") → registry lookup, then computed fallback
     #
     # Returns nil on miss.
-    def find_by_identifier(param, user: nil)
-      param = param.to_s.strip
-      return identifier_scope(user).find_by(id: param) if param.match?(/\A\d+\z/)
+    def find_by_identifier(identifier, user: nil)
+      identifier = identifier.to_s.strip
+      return identifier_scope(user).find_by(id: identifier) if identifier.match?(/\A\d+\z/)
 
-      find_by_semantic_identifier(param, user:)
+      find_by_semantic_identifier(identifier, user:)
     end
 
     # Same as find_by_identifier but raises ActiveRecord::RecordNotFound on miss.
-    def find_by_identifier!(param, user: nil)
-      find_by_identifier(param, user:) ||
-        raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{param}")
+    def find_by_identifier!(identifier, user: nil)
+      find_by_identifier(identifier, user:) ||
+        raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{identifier}")
     end
 
     private
@@ -106,7 +106,6 @@ module WorkPackage::Identifier
   private
 
   def register_semantic_id
-    project = self.project
     seq = project.with_lock { project.increment!(:wp_sequence_counter).wp_sequence_counter }
     update_columns(sequence_number: seq)
     WorkPackageSemanticId.create!(identifier: "#{project.identifier}-#{seq}", work_package_id: id, current: true)
