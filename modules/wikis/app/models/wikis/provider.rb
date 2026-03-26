@@ -33,5 +33,15 @@ module Wikis
     self.table_name = "wiki_providers"
 
     has_many :page_links, dependent: :destroy
+
+    scope :enabled, -> { where(enabled: true) }
+
+    class << self
+      def registry_prefix = raise NotImplementedError, "SubclassResponsibility"
+    end
+
+    def resolve(registry_path)
+      Adapters::Registry["#{self.class.registry_prefix}.#{registry_path}"].new(self)
+    end
   end
 end

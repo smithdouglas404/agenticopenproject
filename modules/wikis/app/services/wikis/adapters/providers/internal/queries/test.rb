@@ -23,46 +23,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "dry/container"
+# This query is only intended for demo purposes and can be deleted once we have real queries
+module Wikis::Adapters::Providers::Internal::Queries
+  class Test
+    def initialize(provider)
+      @provider = provider
+    end
 
-module Storages
-  module Adapters
-    class Registry
-      extend Dry::Container::Mixin
-
-      # Extracts the known_providers from the registered keys
-      # @return [Array<String>]
-      def self.known_providers
-        keys.map { it.split(".").first }.uniq
-      end
-
-      class Resolver < Dry::Container::Resolver
-        include TaggedLogging
-
-        def call(container, key)
-          with_tagged_logger("Storages::Adapters::Registry") do
-            info "Resolving #{key}"
-            super
-          end
-        rescue Dry::Container::KeyError
-          error = Errors.registry_error_for(key)
-
-          with_tagged_logger("Storages::Adapters::Registry") { error error.message }
-          raise error
-        end
-      end
-
-      config.resolver = Resolver.new
-
-      # Need to make this dynamic to ease new providers to be registered
-      import Providers::Nextcloud::NextcloudRegistry
-      import Providers::OneDrive::OneDriveRegistry
-      import Providers::Sharepoint::SharepointRegistry
+    def call(*args, **opts)
+      puts "#{args} and #{opts} passed to internal test query for #{@provider}" # rubocop:disable Rails/Output
     end
   end
 end

@@ -23,46 +23,37 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "dry/container"
-
-module Storages
+module Wikis
   module Adapters
-    class Registry
-      extend Dry::Container::Mixin
-
-      # Extracts the known_providers from the registered keys
-      # @return [Array<String>]
-      def self.known_providers
-        keys.map { it.split(".").first }.uniq
-      end
-
-      class Resolver < Dry::Container::Resolver
-        include TaggedLogging
-
-        def call(container, key)
-          with_tagged_logger("Storages::Adapters::Registry") do
-            info "Resolving #{key}"
-            super
+    module Providers
+      module XWiki
+        Registry = Dry::Container::Namespace.new("xwiki") do
+          namespace("authentication") do
+            # ...
           end
-        rescue Dry::Container::KeyError
-          error = Errors.registry_error_for(key)
 
-          with_tagged_logger("Storages::Adapters::Registry") { error error.message }
-          raise error
+          namespace("commands") do
+            # ...
+          end
+
+          namespace("components") do
+            # ...
+          end
+
+          namespace("contracts") do
+            # ...
+          end
+
+          namespace("queries") do
+            register(:test, Queries::Test)
+          end
         end
       end
-
-      config.resolver = Resolver.new
-
-      # Need to make this dynamic to ease new providers to be registered
-      import Providers::Nextcloud::NextcloudRegistry
-      import Providers::OneDrive::OneDriveRegistry
-      import Providers::Sharepoint::SharepointRegistry
     end
   end
 end
