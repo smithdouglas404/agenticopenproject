@@ -43,6 +43,8 @@ See COPYRIGHT and LICENSE files for more details.
             scheme: :default,
             count: story_count,
             round: true,
+            limit: 1_000,
+            hide_if_zero: true,
             aria: {
               label: t(".label_story_count", count: story_count),
               live: "polite"

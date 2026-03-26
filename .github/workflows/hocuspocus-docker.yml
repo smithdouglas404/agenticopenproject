@@ -146,7 +146,7 @@ jobs:
 
       - name: Deploy STAGE
         # make sure to always use the latest release branch here
-        if: github.ref == 'refs/heads/release/17.2' && github.repository == 'opf/openproject'
+        if: github.ref == 'refs/heads/release/17.3' && github.repository == 'opf/openproject'
         uses: benc-uk/workflow-dispatch@7a027648b88c2413826b6ddd6c76114894dc5ec4
         with:
           workflow: stage-deploy-shards.yml

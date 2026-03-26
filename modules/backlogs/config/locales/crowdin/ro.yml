@@ -40,7 +40,7 @@ ro:
       sprint:
         duration: "Sprint duration"
       work_package:
-        backlogs_work_package_type: "Tip restanță"
+        backlogs_work_package_type: "Tipul de restante"
         position: "Poziție"
         sprint: "Sprint"
         story_points: "Puncte"
