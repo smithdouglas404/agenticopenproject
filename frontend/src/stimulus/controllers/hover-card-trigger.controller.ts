@@ -277,9 +277,7 @@ export default class HoverCardTriggerController extends ApplicationController {
     if (!id) { return null; }
 
     const element = document.getElementById(id);
-    if (!element || !(element instanceof HTMLTemplateElement)) {
-      return null;
-    }
+    if (!(element instanceof HTMLTemplateElement)) { return null; }
 
     return element;
   }
