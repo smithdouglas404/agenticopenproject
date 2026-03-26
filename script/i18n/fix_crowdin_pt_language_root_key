@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
 echo "Fixing language root key in pt-BR and pt-PT crowdin files to match the filename"
-
-# Ensure crowdin directories are writable (they may be created with restrictive permissions by the Crowdin action)
-chmod -R u+w config/locales/crowdin/ modules/*/config/locales/crowdin/ 2>/dev/null || true
-
 if [ "$(uname -s)" = "Darwin" ]; then
   sed -i '' 's/^pt:/pt-BR:/' config/locales/crowdin/*pt-BR*.yml modules/*/config/locales/crowdin/*pt-BR*.yml
   sed -i '' 's/^pt:/pt-PT:/' config/locales/crowdin/*pt-PT*.yml modules/*/config/locales/crowdin/*pt-PT*.yml
