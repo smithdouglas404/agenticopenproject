@@ -3626,6 +3626,7 @@ en:
   label_ical_access_key_generation_hint: "Automatically generated when subscribing to a calendar."
   label_ical_access_key_latest: "latest"
   label_ical_access_key_revoke: "Revoke"
+  label_integrations: "Integrations"
   label_add_column: "Add column"
   label_applied_status: "Applied status"
   label_archive_project: "Archive project"

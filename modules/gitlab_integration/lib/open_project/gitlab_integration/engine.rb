@@ -56,8 +56,9 @@ module OpenProject::GitlabIntegration
       ::Redmine::MenuManager.map(:admin_menu) do |menu|
         menu.push :admin_gitlab_integration,
                   { controller: "/gitlab_integration/admin/settings", action: "show" },
+                  parent: :admin_integrations,
                   if: ->(_) { User.current.admin? },
-                  caption: :label_gitlab_integration,
+                  caption: "GitLab",
                   icon: :"op-logo-gitlab"
       end
 
