@@ -3344,7 +3344,7 @@ fr:
   links:
     configuration_guide: "Guide de configuration"
     get_in_touch: "Vous avez des questions ? Contactez-nous."
-  instructions_after_registration_link: "Vous pourrez vous connecter après avoir activé votre compte en cliquant [Ici](%{signin}."
+  instructions_after_registration_link: "Vous pourrez vous connecter après avoir activé votre compte en cliquant [Ici](signin_url)."
   instructions_after_logout_link: "You can sign in again by clicking [here](signin_url)."
   instructions_after_error_link: "You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help."
   menus:

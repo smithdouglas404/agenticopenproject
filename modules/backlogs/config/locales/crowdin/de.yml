@@ -32,9 +32,9 @@ de:
         name: "Sprint-Name"
         sharing: "Teilen"
         statuses:
-          in_planning: "In planning"
-          active: "Active"
-          completed: "Completed"
+          in_planning: "In Planung"
+          active: "Aktiv"
+          completed: "Abgeschlossen"
       project:
         sprint_sharing: "Sprint sharing"
       sprint:
@@ -198,9 +198,9 @@ de:
     story_menu_component:
       label_actions: "Weitere Aktionen"
       action_menu:
-        copy_url_to_clipboard: "Copy URL to clipboard"
-        copy_work_package_id: "Copy work package ID"
-        move_menu: "Move"
+        copy_url_to_clipboard: "URL in die Zwischenablage kopieren"
+        copy_work_package_id: "Arbeitspaket-ID kopieren"
+        move_menu: "Verschieben"
   backlogs_points_burn_direction: "Burnup/-down Punkte"
   backlogs_product_backlog: "Produkt-Backlog"
   backlogs_story: "Story"

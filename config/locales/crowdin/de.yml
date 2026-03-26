@@ -415,32 +415,32 @@ de:
         user_author: "Benutzer ist Autor"
         user_assignee: "Benutzer ist zugewiesen"
       index:
-        description: "Configure status transitions for each work package type."
+        description: "Konfigurieren Sie die Statusübergänge für jeden Arbeitspaket-Typ."
         type_filter:
-          label: "Filter by type name…"
+          label: "Typen nach Name filtern…"
       status_button: "Status"
       statuses_dialog:
-        title: "Statuses"
-        label: "Statuses enabled for this type"
-        caption: "Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it."
+        title: "Status"
+        label: "Für diesen Typ aktivierte Status"
+        caption: "Status hinzufügen oder entfernen, die Sie mit diesem Typ verknüpfen möchten. Das Entfernen eines Status löscht auch den damit verbundenen Workflow."
       statuses_removal_dialog:
-        title: "Remove statuses"
+        title: "Status entfernen"
         heading:
-          one: "Remove 1 status?"
-          other: "Remove %{count} statuses?"
-        description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
-        confirm: "Remove"
+          one: "Diesen Status entfernen?"
+          other: "%{count} Status entfernen?"
+        description: "Wenn Sie diese Status entfernen, stehen sie für diesen Typ nicht mehr zur Verfügung und bestehende Workflows werden gelöscht. Sind Sie sicher, dass Sie fortfahren möchten?"
+        confirm: "Entfernen"
       leave_confirmation:
-        title: "Save changes before continuing?"
-        description: "You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?"
-        ignore: "Ignore changes"
-        save: "Save changes and continue"
+        title: "Änderungen speichern, bevor Sie fortfahren?"
+        description: "Sie sind im Begriff, diese Seite zu verlassen, aber Sie haben noch nicht gespeicherte Änderungen. Möchten Sie diese speichern, bevor Sie fortfahren?"
+        ignore: "Änderungen ignorieren"
+        save: "Änderungen speichern und fortfahren"
       role_selector:
-        label: "Role: %{role}"
-        no_role: "Select role"
+        label: "Rolle: %{role}"
+        no_role: "Rolle auswählen"
       blankslate:
-        title: "No status transitions configured"
-        description: "Add statuses to start configuring workflows for this role"
+        title: "Keine Statusübergänge konfiguriert"
+        description: "Status hinzufügen, um mit der Konfiguration von Arbeitsabläufen für diese Rolle zu beginnen"
     info:
       database_deprecation_html: >
         Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases. <br/> We have prepared [upgrade guides for all installation methods](upgrade_guide). You can perform the upgrade ahead of the next release at any time by following the guides.
