@@ -72,13 +72,13 @@ module OpenProject::Wikis
              Wikis::Provider.enabled.exists? &&
              OpenProject::FeatureDecisions.wiki_enhancements_active?
            }
-    end
 
-    menu :admin_menu,
-         :wiki_providers,
-         { controller: "/wikis/admin/wiki_providers", action: :index },
-         if: ->(_) { OpenProject::FeatureDecisions.wiki_enhancements_active? },
-         caption: :project_module_wiki_platforms,
-         icon: "browser"
+      menu :admin_menu,
+           :wiki_providers,
+           { controller: "/wikis/admin/wiki_providers", action: :index },
+           if: ->(_) { OpenProject::FeatureDecisions.wiki_enhancements_active? },
+           caption: :project_module_wiki_platforms,
+           icon: "browser"
+    end
   end
 end
