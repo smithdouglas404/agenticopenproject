@@ -262,7 +262,7 @@ export default class HoverCardTriggerController extends ApplicationController {
    * When there is no URL or if the URL is invalid, will return an empty string.
    */
   private parseHoverCardUrl(el:HTMLElement) {
-    let url = el.getAttribute('data-hover-card-url');
+    let url = el.dataset.hoverCardUrl;
     if (!url) { return ''; }
 
     url = sanitizeUrl(url);
@@ -273,7 +273,7 @@ export default class HoverCardTriggerController extends ApplicationController {
   }
 
   private getPopoverTemplateFromId(el:HTMLElement):HTMLTemplateElement|null {
-    const id = el.getAttribute('data-hover-card-popover-template-id');
+    const id = el.dataset.hoverCardPopoverTemplateId;
     if (!id) { return null; }
 
     const element = document.getElementById(id);
@@ -335,7 +335,7 @@ export default class HoverCardTriggerController extends ApplicationController {
   private setPopoverAttributes(popover:HTMLElement) {
     popover.classList.add('op-hover-card');
     popover.setAttribute('popover', 'auto');
-    popover.setAttribute('data-hover-card-trigger-target', 'card');
+    popover.dataset.hoverCardTriggerTarget = 'card';
   }
 
   /*
