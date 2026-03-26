@@ -83,8 +83,10 @@ RSpec.describe "SemanticIds registry integration", type: :model do
 
   describe "WP move via UpdateService" do
     let!(:work_package) do
-      create(:work_package, project:, sequence_number: 5).tap do |wp|
-        WorkPackageSemanticId.create!(identifier: "PROJ-5", work_package: wp, current: true)
+      # after_create auto-registers as PROJ-1; rename entry to PROJ-5 to simulate an established WP
+      create(:work_package, project:).tap do |wp|
+        wp.update_columns(sequence_number: 5)
+        wp.semantic_ids.update_all(identifier: "PROJ-5")
         project.update_columns(wp_sequence_counter: 5)
       end
     end
@@ -111,18 +113,9 @@ RSpec.describe "SemanticIds registry integration", type: :model do
   end
 
   describe "Project rename via Projects::UpdateService" do
-    let!(:wp1) do
-      create(:work_package, project:, sequence_number: 1).tap do |wp|
-        WorkPackageSemanticId.create!(identifier: "PROJ-1", work_package: wp, current: true)
-      end
-    end
-    let!(:wp2) do
-      create(:work_package, project:, sequence_number: 2).tap do |wp|
-        WorkPackageSemanticId.create!(identifier: "PROJ-2", work_package: wp, current: true)
-      end
-    end
-
-    before { project.update_columns(wp_sequence_counter: 2) }
+    # after_create auto-registers wp1 as "PROJ-1" (seq=1) and wp2 as "PROJ-2" (seq=2)
+    let!(:wp1) { create(:work_package, project:) }
+    let!(:wp2) { create(:work_package, project:) }
 
     it "creates new current entries with the new prefix" do
       Projects::UpdateService.new(user:, model: project).call(identifier: "RENAMED")

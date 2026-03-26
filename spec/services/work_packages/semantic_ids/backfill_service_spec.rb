@@ -64,8 +64,11 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
     end
 
     context "when WPs have no sequence number" do
-      let!(:wp1) { create(:work_package, project:, sequence_number: nil) }
-      let!(:wp2) { create(:work_package, project:, sequence_number: nil) }
+      # after_create auto-registers; reset to simulate legacy data with no sequence/registry
+      let!(:wp1) { create(:work_package, project:).tap { |wp| wp.semantic_ids.delete_all; wp.update_columns(sequence_number: nil) } }
+      let!(:wp2) { create(:work_package, project:).tap { |wp| wp.semantic_ids.delete_all; wp.update_columns(sequence_number: nil) } }
+
+      before { project.update_columns(wp_sequence_counter: 0) }
 
       it "assigns sequence numbers in id order" do
         described_class.run
@@ -86,8 +89,19 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
     end
 
     context "when WPs are partially sequenced" do
-      let!(:wp_with_seq) { create(:work_package, project:, sequence_number: 3) }
-      let!(:wp_without_seq) { create(:work_package, project:, sequence_number: nil) }
+      # Simulate legacy state: wp_with_seq already registered as PROJ-3, wp_without_seq unregistered
+      let!(:wp_with_seq) do
+        create(:work_package, project:).tap do |wp|
+          wp.update_columns(sequence_number: 3)
+          wp.semantic_ids.update_all(identifier: "PROJ-3")
+        end
+      end
+      let!(:wp_without_seq) do
+        create(:work_package, project:).tap do |wp|
+          wp.semantic_ids.delete_all
+          wp.update_columns(sequence_number: nil)
+        end
+      end
 
       before { project.update_columns(wp_sequence_counter: 3) }
 
