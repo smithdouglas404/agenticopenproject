@@ -54,12 +54,8 @@ RSpec.describe WorkPackages::Identifier::FinderMethods do
       expect(WorkPackage.find(identifier)).to eq(expected_wp)
     end
 
-    it "via .friendly.find" do
-      expect(WorkPackage.friendly.find(identifier)).to eq(expected_wp)
-    end
-
-    it "via .find_by_friendly_id" do
-      expect(WorkPackage.friendly.find_by_friendly_id(identifier)).to eq(expected_wp) # rubocop:disable Rails/DynamicFindBy
+    it "via scoped .find" do
+      expect(WorkPackage.where(nil).find(identifier)).to eq(expected_wp)
     end
 
     it "via .exists?" do
@@ -70,14 +66,6 @@ RSpec.describe WorkPackages::Identifier::FinderMethods do
   shared_examples "raises RecordNotFound" do
     it "via .find" do
       expect { WorkPackage.find(identifier) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
-    it "via .friendly.find" do
-      expect { WorkPackage.friendly.find(identifier) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
-    it "via .find_by_friendly_id" do
-      expect { WorkPackage.friendly.find_by_friendly_id(identifier) }.to raise_error(ActiveRecord::RecordNotFound) # rubocop:disable Rails/DynamicFindBy
     end
 
     it "via .exists?" do

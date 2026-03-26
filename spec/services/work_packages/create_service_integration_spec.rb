@@ -345,7 +345,7 @@ RSpec.describe WorkPackages::CreateService, "integration", type: :model do
       it "makes the work package findable by its identifier" do
         expect(service_result).to be_success
 
-        found = WorkPackage.friendly.find(new_work_package.identifier)
+        found = WorkPackage.find(new_work_package.identifier)
         expect(found).to eq(new_work_package)
       end
     end

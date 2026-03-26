@@ -32,15 +32,11 @@ module WorkPackages::Identifier
   extend ActiveSupport::Concern
 
   included do
-    extend FriendlyId
-
-    # Configures FriendlyId with finders (but not history — no slug writes).
-    # All historical resolution is handled by compute-on-read FinderMethods
-    # which structurally parses identifiers and resolves via project history.
-    friendly_id :identifier, use: :finders do |config|
-      config.finder_methods = WorkPackages::Identifier::FinderMethods
-      FriendlyId::Finders.setup(WorkPackage)
-    end
+    # Wire finder methods into both the model class and its relation class
+    # so that WorkPackage.find("SC-1") and WorkPackage.visible.find("SC-1")
+    # both resolve semantic identifiers structurally.
+    extend WorkPackages::Identifier::FinderMethods
+    relation.class.include(WorkPackages::Identifier::FinderMethods)
 
     scope :identified, -> { where.not(sequence_number: nil).where.not(identifier: nil) }
 

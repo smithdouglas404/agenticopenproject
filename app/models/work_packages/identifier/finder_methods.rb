@@ -30,27 +30,35 @@
 
 # Compute-on-read identifier resolution for work packages.
 #
-# All historical resolution is structural — no slug history table is used
-# for work packages. Instead, identifiers are parsed into prefix + sequence
-# and resolved via Project's own FriendlyId history.
+# Overrides find and exists? to support semantic identifiers ("SC-123").
+# Numeric IDs pass through to ActiveRecord. Identifiers are resolved
+# structurally: parse prefix + sequence → resolve project (via Project's
+# FriendlyId history) → find WP by (project_id, sequence_number).
+#
+# Uses FriendlyId's Object#friendly_id? for dispatch (already available
+# globally via FriendlyId::ObjectUtils, loaded for Project).
 #
 # Resolution chain:
-#   1. Primary column match (via FriendlyId base)
-#   2. Structural resolution: parse prefix + sequence, resolve prefix to
-#      project (via Project FriendlyId history), find WP by sequence_number
-#   3. Move resolution: check work_package_moves for WPs that left a project
+#   1. Structural: parse "PREFIX-SEQ", resolve prefix to project, find WP
+#   2. Move fallback: check work_package_moves for WPs that left a project
+#   3. Numeric fallback: delegate to ActiveRecord (primary key lookup)
 module WorkPackages::Identifier::FinderMethods
-  include FriendlyId::FinderMethods
+  def find(*args)
+    return super if args.length != 1
 
-  def exists_by_friendly_id?(id)
-    super || resolve_identifier(id).present?
+    id = args.first
+    return super unless id.friendly_id?
+
+    resolve_identifier(id) || super
+  end
+
+  def exists?(id = :none, **)
+    return super if id == :none || !id.friendly_id?
+
+    resolve_identifier(id).present? || super
   end
 
   private
-
-  def first_by_friendly_id(id)
-    super || resolve_identifier(id)
-  end
 
   def resolve_identifier(id)
     prefix, seq = id.to_s.match(/\A(.+)-(\d+)\z/)&.captures
@@ -67,10 +75,7 @@ module WorkPackages::Identifier::FinderMethods
 
   # Finds a WP that was moved FROM the given project with the given sequence.
   def find_moved_work_package(source_project_id, sequence_number)
-    move = WorkPackageMove.find_by(
-      source_project_id:,
-      sequence_number:
-    )
+    move = WorkPackageMove.find_by(source_project_id:, sequence_number:)
     find_by(id: move.work_package_id) if move
   end
 end

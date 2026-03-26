@@ -74,8 +74,8 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
     it "makes the old identifier resolvable via move resolution" do
       service.call([work_package])
 
-      expect(WorkPackage.friendly.find("SRC-1")).to eq(work_package)
-      expect(WorkPackage.friendly.find("TGT-1")).to eq(work_package)
+      expect(WorkPackage.find("SRC-1")).to eq(work_package)
+      expect(WorkPackage.find("TGT-1")).to eq(work_package)
     end
 
     it "continues from the target project's existing counter" do

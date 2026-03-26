@@ -453,8 +453,8 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
         it "makes the old identifier resolvable" do
           subject
 
-          expect(WorkPackage.friendly.find("SRC-1")).to eq(work_package)
-          expect(WorkPackage.friendly.find("TGT-1")).to eq(work_package)
+          expect(WorkPackage.find("SRC-1")).to eq(work_package)
+          expect(WorkPackage.find("TGT-1")).to eq(work_package)
         end
 
         it "increments the target project's wp_sequence_counter" do

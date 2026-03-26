@@ -40,46 +40,41 @@ RSpec.describe WorkPackages::Identifier do
     it { is_expected.to have_db_index(:identifier).unique(true) }
   end
 
-  describe "FriendlyId configuration" do
-    it "uses the identifier column as the query field" do
-      config = WorkPackage.friendly_id_config
-      expect(config.query_field).to eq("identifier")
+  describe "FinderMethods wiring" do
+    it "extends the model class with FinderMethods" do
+      expect(WorkPackage.singleton_class.ancestors).to include(WorkPackages::Identifier::FinderMethods)
     end
 
-    it "includes the finders module" do
-      expect(WorkPackage.respond_to?(:friendly)).to be true
+    it "includes FinderMethods in the relation class" do
+      expect(WorkPackage.all.class.ancestors).to include(WorkPackages::Identifier::FinderMethods)
     end
   end
 
   describe "finding by identifier" do
     let!(:work_package) do
       wp = create(:work_package, project:)
-      wp.update!(identifier: "SC-1", sequence_number: 1)
+      wp.update_columns(identifier: "sc-1", sequence_number: 1)
       wp
     end
 
-    it "finds by semantic identifier via .friendly.find" do
-      expect(WorkPackage.friendly.find("SC-1")).to eq(work_package)
-    end
-
-    it "finds by semantic identifier via .find (FriendlyId proxies it)" do
-      expect(WorkPackage.find("SC-1")).to eq(work_package)
+    it "finds by semantic identifier via .find" do
+      expect(WorkPackage.find("sc-1")).to eq(work_package)
     end
 
     it "finds by numeric ID (integer)" do
-      expect(WorkPackage.friendly.find(work_package.id)).to eq(work_package)
+      expect(WorkPackage.find(work_package.id)).to eq(work_package)
     end
 
     it "finds by numeric ID (string)" do
-      expect(WorkPackage.friendly.find(work_package.id.to_s)).to eq(work_package)
+      expect(WorkPackage.find(work_package.id.to_s)).to eq(work_package)
     end
 
     it "raises RecordNotFound for a non-existent identifier" do
-      expect { WorkPackage.friendly.find("NONEXISTENT-999") }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { WorkPackage.find("NONEXISTENT-999") }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "raises RecordNotFound for a non-existent numeric ID" do
-      expect { WorkPackage.friendly.find(0) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { WorkPackage.find(0) }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "still finds a work package without an identifier by its numeric ID" do
@@ -141,7 +136,7 @@ RSpec.describe WorkPackages::Identifier do
       wp.subject = ""
       wp.valid?
 
-      # Identifier should NOT be reverted to nil by FriendlyId
+      # Identifier should remain stable across validation failures
       expect(wp.identifier).to eq("SC-1")
     end
   end

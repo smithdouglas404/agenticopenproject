@@ -75,8 +75,8 @@ RSpec.describe WorkPackages::UpdateIdentifiersOnRenameService do
       service.call
 
       # Old prefix resolves via Project FriendlyId history + structural lookup
-      expect(WorkPackage.friendly.find("SC-1")).to eq(wp1)
-      expect(WorkPackage.friendly.find("SCO-1")).to eq(wp1)
+      expect(WorkPackage.find("SC-1")).to eq(wp1)
+      expect(WorkPackage.find("SCO-1")).to eq(wp1)
     end
   end
 
