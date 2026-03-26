@@ -72,6 +72,9 @@ module Projects
     def notify_on_identifier_renamed
       return unless memoized_changes["identifier"]
 
+      old_identifier = memoized_changes["identifier"].first
+      WorkPackageSemanticId.register_project_rename(model, old_identifier)
+
       OpenProject::Notifications.send(OpenProject::Events::PROJECT_RENAMED, project: model)
     end
 

@@ -102,6 +102,7 @@ class WorkPackages::UpdateService < BaseServices::Update
       delete_relations(moved_work_packages)
       move_time_entries(moved_work_packages, work_package.project_id)
       move_work_package_memberships(moved_work_packages, work_package.project_id)
+      moved_work_packages.each { |wp| WorkPackageSemanticId.register_move(wp) }
     end
     if work_package.saved_change_to_type_id?
       reset_custom_values(work_package)

@@ -28,12 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class WorkPackages::IdentifierAutofix::ApplyHandlesJob < ApplicationJob
-  include GoodJob::ActiveJobExtensions::Concurrency
+require "spec_helper"
 
-  good_job_control_concurrency_with(perform_limit: 1)
-
-  def perform
-    WorkPackages::SemanticIds::BackfillService.run
+RSpec.describe WorkPackages::IdentifierAutofix::ApplyHandlesJob do
+  describe "#perform" do
+    it "delegates to BackfillService" do
+      expect(WorkPackages::SemanticIds::BackfillService).to receive(:run)
+      described_class.new.perform
+    end
   end
 end

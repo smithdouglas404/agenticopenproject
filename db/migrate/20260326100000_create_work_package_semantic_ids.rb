@@ -28,12 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class WorkPackages::IdentifierAutofix::ApplyHandlesJob < ApplicationJob
-  include GoodJob::ActiveJobExtensions::Concurrency
+class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
+  def change
+    # Atomic counter for per-project WP sequence allocation
+    add_column :projects, :wp_sequence_counter, :integer, default: 0, null: false
 
-  good_job_control_concurrency_with(perform_limit: 1)
+    create_table :work_package_semantic_ids do |t|
+      t.string :identifier, null: false
+      t.references :work_package, null: false, foreign_key: true
+      t.boolean :current, null: false, default: false
+    end
 
-  def perform
-    WorkPackages::SemanticIds::BackfillService.run
+    # Unique identifier across all WPs (past and present)
+    add_index :work_package_semantic_ids, :identifier, unique: true
+
+    # Only one current identifier per WP at any time
+    add_index :work_package_semantic_ids, %i[work_package_id current],
+              where: "current = true",
+              unique: true,
+              name: :idx_wp_semantic_ids_current
   end
 end

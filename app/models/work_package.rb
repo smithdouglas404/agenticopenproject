@@ -29,6 +29,7 @@
 #++
 
 class WorkPackage < ApplicationRecord
+  include WorkPackage::Identifier
   include WorkPackage::Validations
   include WorkPackage::SchedulingRules
   include WorkPackage::StatusTransitions
