@@ -3526,6 +3526,8 @@ en:
       label: "Add…"
 
   my_account:
+    notifications_and_email:
+      title: "Notification and email"
     access_tokens:
       description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
       no_results:

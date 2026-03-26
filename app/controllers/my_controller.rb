@@ -50,7 +50,6 @@ class MyController < ApplicationController
                              :change_password,
                              :password_confirmation_dialog,
                              :notifications,
-                             :reminders,
                              :non_working_times,
                              :working_hours
 
@@ -59,7 +58,6 @@ class MyController < ApplicationController
   menu_item :interface, only: [:interface]
   menu_item :password, only: [:password]
   menu_item :notifications, only: [:notifications]
-  menu_item :reminders, only: [:reminders]
   menu_item :working_hours, only: %i[working_hours non_working_times]
 
   def account; end
@@ -93,11 +91,8 @@ class MyController < ApplicationController
     respond_with_dialog My::PasswordConfirmationDialog.new
   end
 
-  # Configure user's in app notifications
+  # Configure user's notifications and email reminders
   def notifications; end
-
-  # Configure user's mail reminders
-  def reminders; end
 
   def working_hours
     render_403 unless OpenProject::FeatureDecisions.user_working_times_active?

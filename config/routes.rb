@@ -1039,7 +1039,6 @@ Rails.application.routes.draw do
     get "/my/locale", action: "locale"
     get "/my/interface", action: "interface"
     get "/my/notifications", action: "notifications"
-    get "/my/reminders", action: "reminders"
 
     get "/my/working_hours", action: "working_hours"
     get "/my/non_working_times", action: "non_working_times"

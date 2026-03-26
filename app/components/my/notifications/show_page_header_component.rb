@@ -23,18 +23,39 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "support/pages/reminders/settings"
+module My
+  module Notifications
+    class ShowPageHeaderComponent < ApplicationComponent
+      def call
+        render(Primer::OpenProject::PageHeader.new) do |header|
+          header.with_title { t("my_account.notifications_and_email.title") }
+          header.with_breadcrumbs(
+            [{ href: helpers.my_account_path, text: t(:label_my_account) },
+             t("my_account.notifications_and_email.title")]
+          )
 
-module Pages
-  module My
-    class Reminders < ::Pages::Reminders::Settings
-      def path
-        my_notifications_path(tab: "reminders")
+          helpers.render_tab_header_nav(header, tabs)
+        end
+      end
+
+      def tabs
+        [
+          {
+            name: "notifications",
+            path: helpers.my_notifications_path(tab: "notifications"),
+            label: I18n.t("js.notifications.settings.title")
+          },
+          {
+            name: "reminders",
+            path: helpers.my_notifications_path(tab: "reminders"),
+            label: I18n.t("js.reminders.settings.title")
+          }
+        ]
       end
     end
   end

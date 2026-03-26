@@ -27,16 +27,12 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% html_title(t(:label_my_account), I18n.t("js.notifications.settings.title")) -%>
+<% html_title(t(:label_my_account), t("my_account.notifications_and_email.title")) -%>
 
-<%=
-  render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { I18n.t("js.notifications.settings.title") }
-    header.with_breadcrumbs(
-      [{ href: my_account_path, text: t(:label_my_account) },
-       I18n.t("js.notifications.settings.title")]
-    )
-  end
-%>
+<%= render(My::Notifications::ShowPageHeaderComponent.new) %>
 
-<%= angular_component_tag "opce-notification-settings" %>
+<% if params[:tab] == "reminders" %>
+  <%= angular_component_tag "opce-reminder-settings" %>
+<% else %>
+  <%= angular_component_tag "opce-notification-settings" %>
+<% end %>
