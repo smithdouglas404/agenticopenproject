@@ -39,7 +39,7 @@ See COPYRIGHT and LICENSE files for more details.
     <div id="sprint_backlogs_container" class="op-sprint-planning-lists">
       <%=
         render(Primer::Beta::Subhead.new(hide_border: true)) do |head|
-          head.with_heading(tag: :h3, font_weight: :bold, size: :medium) { Agile::Sprint.human_model_name.pluralize }
+          head.with_heading(tag: :h3, size: :medium, font_weight: :bold) { Agile::Sprint.human_model_name.pluralize }
 
           if allow_sprint_creation?(@project)
             head.with_actions do

@@ -29,9 +29,16 @@ See COPYRIGHT and LICENSE files for more details.
 <%= component_wrapper(tag: "turbo-frame", refresh: :morph) do %>
   <%=
     render(Primer::Beta::Subhead.new(hide_border: true)) do |head|
-      head.with_heading(tag: :h3, font_weight: :bold, size: :medium) do
+      head.with_heading(
+        tag: :h3,
+        size: :medium,
+        font_weight: :bold,
+        display: :inline_flex,
+        align_items: :center,
+        classes: "gap-2"
+      ) do
         concat t(:label_backlog)
-        concat render(Primer::Beta::Counter.new(count: total, scheme: :default, ml: 1))
+        concat render(Primer::Beta::Counter.new(count: total, scheme: :default))
       end
 
       if allow_sprint_creation?(project)
