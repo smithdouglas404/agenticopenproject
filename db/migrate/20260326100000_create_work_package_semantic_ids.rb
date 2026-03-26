@@ -33,6 +33,9 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
     # Atomic counter for per-project WP sequence allocation
     add_column :projects, :wp_sequence_counter, :integer, default: 0, null: false
 
+    # Per-project sequence number for semantic identifiers (e.g. PROJ-42)
+    add_column :work_packages, :sequence_number, :integer
+
     create_table :work_package_semantic_ids do |t|
       t.string :identifier, null: false
       t.references :work_package, null: false, foreign_key: true

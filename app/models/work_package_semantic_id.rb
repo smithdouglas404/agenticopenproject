@@ -61,7 +61,6 @@ class WorkPackageSemanticId < ApplicationRecord
   # insert_all with unique_by: :identifier skips rows that already exist,
   # making the operation idempotent and safe under concurrency.
   def self.register_project_rename(project, old_identifier)
-    new_prefix = project.identifier
     like_pattern = "#{sanitize_like(old_identifier)}-%"
 
     transaction do
