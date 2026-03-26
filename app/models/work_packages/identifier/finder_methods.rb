@@ -52,10 +52,10 @@ module WorkPackages::Identifier::FinderMethods
     resolve_identifier(id) || super
   end
 
-  def exists?(id = :none, **)
-    return super if id == :none || !id.friendly_id?
+  def exists?(*args)
+    return super unless args.length == 1 && args.first.friendly_id?
 
-    resolve_identifier(id).present? || super
+    resolve_identifier(args.first).present? || super
   end
 
   private
