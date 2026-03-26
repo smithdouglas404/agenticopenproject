@@ -32,8 +32,7 @@ require "spec_helper"
 
 RSpec.describe WorkPackages::SemanticIds::BackfillService do
   before do
-    allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(true)
-    allow(Setting::WorkPackageIdentifier).to receive(:numeric?).and_return(false)
+    allow(Setting::WorkPackageIdentifier).to receive_messages(alphanumeric?: true, numeric?: false)
   end
 
   let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
@@ -59,14 +58,24 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
       it "does not duplicate entries on re-run" do
         described_class.run
         expect { described_class.run }
-          .not_to change { WorkPackageSemanticId.count }
+          .not_to change(WorkPackageSemanticId, :count)
       end
     end
 
     context "when WPs have no sequence number" do
       # after_create auto-registers; reset to simulate legacy data with no sequence/registry
-      let!(:wp1) { create(:work_package, project:).tap { |wp| wp.semantic_ids.delete_all; wp.update_columns(sequence_number: nil) } }
-      let!(:wp2) { create(:work_package, project:).tap { |wp| wp.semantic_ids.delete_all; wp.update_columns(sequence_number: nil) } }
+      let!(:wp1) do
+        create(:work_package, project:).tap do |wp|
+          wp.semantic_ids.delete_all
+          wp.update_columns(sequence_number: nil)
+        end
+      end
+      let!(:wp2) do
+        create(:work_package, project:).tap do |wp|
+          wp.semantic_ids.delete_all
+          wp.update_columns(sequence_number: nil)
+        end
+      end
 
       before { project.update_columns(wp_sequence_counter: 0) }
 
@@ -117,7 +126,7 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
       end
     end
 
-    context "across multiple projects" do
+    context "when processing multiple projects" do
       let(:other_project) { create(:project, identifier: "OTHP", wp_sequence_counter: 0) }
       let!(:wp_proj) { create(:work_package, project:, sequence_number: nil) }
       let!(:wp_other) { create(:work_package, project: other_project, sequence_number: nil) }

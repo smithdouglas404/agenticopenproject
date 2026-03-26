@@ -33,8 +33,9 @@ require "spec_helper"
 RSpec.describe WorkPackages::IdentifierAutofix::ApplyHandlesJob do
   describe "#perform" do
     it "delegates to BackfillService" do
-      expect(WorkPackages::SemanticIds::BackfillService).to receive(:run)
+      allow(WorkPackages::SemanticIds::BackfillService).to receive(:run)
       described_class.new.perform
+      expect(WorkPackages::SemanticIds::BackfillService).to have_received(:run)
     end
   end
 end

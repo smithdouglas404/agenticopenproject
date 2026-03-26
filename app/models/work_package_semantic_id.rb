@@ -75,20 +75,21 @@ class WorkPackageSemanticId < ApplicationRecord
                           .pluck(:work_package_id, :identifier)
                           .to_h
 
-      where(current: true)
-        .where("identifier LIKE ?", like_pattern)
-        .update_all(current: false)
+      where(current: true).where("identifier LIKE ?", like_pattern).update_all(current: false)
 
-      rows = where("identifier LIKE ?", like_pattern)
-               .pluck(:work_package_id, :identifier)
-               .map do |wp_id, id|
-                 { identifier: "#{new_prefix}-#{id.delete_prefix("#{old_identifier}-")}",
-                   work_package_id: wp_id,
-                   current: active_id_by_wp[wp_id] == id }
-               end
-
+      rows = build_rename_rows(project.identifier, old_identifier, like_pattern, active_id_by_wp)
       insert_all(rows, unique_by: :identifier) if rows.any?
     end
+  end
+
+  private_class_method def self.build_rename_rows(new_prefix, old_identifier, like_pattern, active_id_by_wp)
+    where("identifier LIKE ?", like_pattern)
+      .pluck(:work_package_id, :identifier)
+      .map do |wp_id, id|
+        { identifier: "#{new_prefix}-#{id.delete_prefix("#{old_identifier}-")}",
+          work_package_id: wp_id,
+          current: active_id_by_wp[wp_id] == id }
+      end
   end
 
   private_class_method def self.allocate_sequence!(project)

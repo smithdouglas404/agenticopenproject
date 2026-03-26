@@ -30,10 +30,9 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackageSemanticId, "registry" do
+RSpec.describe WorkPackageSemanticId, "registry" do # rubocop:disable RSpec/SpecFilePathFormat
   before do
-    allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(true)
-    allow(Setting::WorkPackageIdentifier).to receive(:numeric?).and_return(false)
+    allow(Setting::WorkPackageIdentifier).to receive_messages(alphanumeric?: true, numeric?: false)
   end
 
   let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
