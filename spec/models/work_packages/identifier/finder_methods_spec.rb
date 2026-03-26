@@ -114,11 +114,7 @@ RSpec.describe WorkPackages::Identifier::FinderMethods do
       include_examples "resolves to the expected work package"
     end
 
-    context "with an old identifier recorded in slug history" do
-      before do
-        FriendlyId::Slug.create!(slug: "sc-1", sluggable: work_package, sluggable_type: "WorkPackage")
-      end
-
+    context "with the original identifier (still resolves via structural lookup)" do
       let(:identifier) { "sc-1" }
       let(:expected_wp) { work_package }
 
@@ -171,6 +167,33 @@ RSpec.describe WorkPackages::Identifier::FinderMethods do
       let(:identifier) { "sc" }
 
       include_examples "raises RecordNotFound"
+    end
+  end
+
+  describe "move resolution" do
+    let(:target_project) { create(:project, identifier: "tgt") }
+
+    let!(:moved_wp) do
+      wp = create(:work_package, project:)
+      wp.update_columns(identifier: "sc-2", sequence_number: 2)
+      # Record move, then reassign to target project with new identifier
+      WorkPackageMove.create!(work_package: wp, source_project_id: project.id, sequence_number: 2)
+      wp.update_columns(project_id: target_project.id, identifier: "tgt-1", sequence_number: 1)
+      wp
+    end
+
+    context "with the old identifier from the source project" do
+      let(:identifier) { "sc-2" }
+      let(:expected_wp) { moved_wp }
+
+      include_examples "resolves to the expected work package"
+    end
+
+    context "with the new identifier in the target project" do
+      let(:identifier) { "tgt-1" }
+      let(:expected_wp) { moved_wp }
+
+      include_examples "resolves to the expected work package"
     end
   end
 

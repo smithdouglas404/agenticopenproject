@@ -28,35 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages::Identifier
-  extend ActiveSupport::Concern
-
-  included do
-    extend FriendlyId
-
-    # Configures FriendlyId with finders (but not history — no slug writes).
-    # All historical resolution is handled by compute-on-read FinderMethods
-    # which structurally parses identifiers and resolves via project history.
-    friendly_id :identifier, use: :finders do |config|
-      config.finder_methods = WorkPackages::Identifier::FinderMethods
-      FriendlyId::Finders.setup(WorkPackage)
-    end
-
-    scope :identified, -> { where.not(sequence_number: nil).where.not(identifier: nil) }
-
-    after_create :allocate_identifier!, if: -> { Setting::WorkPackageIdentifier.alphanumeric? && identifier.blank? }
-  end
-
-  private
-
-  # Allocates a project-scoped sequence number and composes the semantic identifier.
-  # Uses an advisory lock to serialize concurrent allocations on the same project.
-  def allocate_identifier!
-    OpenProject::Mutex.with_advisory_lock_transaction(project, "wp_sequence") do
-      next_seq = project.increment_wp_sequence!
-
-      update_columns(sequence_number: next_seq,
-                     identifier: "#{project.identifier}-#{next_seq}")
-    end
-  end
+# Records cross-project work package moves so that old identifiers
+# remain resolvable via compute-on-read finder methods.
+class WorkPackageMove < ApplicationRecord
+  belongs_to :work_package
 end

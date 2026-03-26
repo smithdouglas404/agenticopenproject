@@ -31,18 +31,18 @@
 require "spec_helper"
 
 RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
-  subject(:service) { described_class.new(target_project:) }
+  subject(:service) { described_class.new(target_project:, source_project_id: source_project.id) }
 
   let(:source_project) { create(:project, identifier: "SRC") }
   let(:target_project) { create(:project, identifier: "TGT") }
 
   # Simulate a WP that was created in source_project (callback allocates "SRC-N")
-  # and then moved to target_project (UpdateService changes project_id first).
-  # sequence_number is nilled out to avoid unique index collisions with the
-  # new allocation — the service is responsible for setting it on target.
+  # and then moved to target_project via UpdateService (which nils sequence_number
+  # to avoid unique index collisions, then saves with the new project_id).
+  # We use update! to preserve dirty tracking so project_id_before_last_save works.
   let(:work_package) do
     create(:work_package, project: source_project).tap do |wp|
-      wp.update_columns(project_id: target_project.id, sequence_number: nil)
+      wp.update!(project: target_project, sequence_number: nil)
     end
   end
 
@@ -62,13 +62,16 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
       expect(target_project.reload.wp_sequence_counter).to eq(1)
     end
 
-    it "records the old identifier in FriendlyId slug history" do
+    it "records the move in work_package_moves" do
       service.call([work_package])
 
-      expect(FriendlyId::Slug.where(slug: "SRC-1", sluggable_type: "WorkPackage")).to exist
+      move = WorkPackageMove.find_by(work_package_id: work_package.id)
+      expect(move).to be_present
+      expect(move.source_project_id).to eq(source_project.id)
+      expect(move.sequence_number).to eq(1)
     end
 
-    it "makes the old identifier resolvable" do
+    it "makes the old identifier resolvable via move resolution" do
       service.call([work_package])
 
       expect(WorkPackage.friendly.find("SRC-1")).to eq(work_package)
@@ -86,7 +89,7 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
 
     it "allocates sequential numbers for multiple work packages" do
       wp2 = create(:work_package, project: source_project).tap do |wp|
-        wp.update_columns(project_id: target_project.id, sequence_number: nil)
+        wp.update!(project: target_project, sequence_number: nil)
       end
 
       service.call([work_package, wp2])
@@ -97,7 +100,8 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
 
     it "skips work packages without identifiers" do
       wp_without_id = create(:work_package, project: source_project)
-      wp_without_id.update_columns(project_id: target_project.id, identifier: nil, sequence_number: nil)
+      wp_without_id.update_columns(identifier: nil, sequence_number: nil)
+      wp_without_id.update!(project: target_project)
 
       expect { service.call([wp_without_id]) }
         .not_to change { target_project.reload.wp_sequence_counter }
@@ -111,7 +115,7 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
 
     let(:work_package) do
       create(:work_package, project: source_project).tap do |wp|
-        wp.update_columns(project_id: target_project.id)
+        wp.update!(project: target_project)
       end
     end
 

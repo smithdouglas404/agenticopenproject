@@ -30,12 +30,10 @@
 
 # Updates work package identifiers when a project is renamed.
 #
-# Uses 2 bulk SQL statements (regardless of work package count):
-#   1. Records old identifiers in FriendlyId slug history (so they remain resolvable)
-#   2. Bulk-updates all identifiers to use the new project identifier prefix
-#
-# Old identifiers are recorded manually because bulk SQL bypasses ActiveRecord
-# callbacks, so FriendlyId's automatic slug history tracking does not fire.
+# Uses a single bulk UPDATE (regardless of work package count).
+# No slug history recording needed — old identifiers are resolved
+# at read time via compute-on-read finder methods that parse the
+# identifier structurally and resolve via Project's FriendlyId history.
 class WorkPackages::UpdateIdentifiersOnRenameService
   attr_reader :project
 
@@ -46,28 +44,8 @@ class WorkPackages::UpdateIdentifiersOnRenameService
   def call
     return unless Setting::WorkPackageIdentifier.alphanumeric?
 
-    wp_data = project.work_packages.identified.pluck(:id, :identifier)
-    return if wp_data.empty?
-
-    record_old_identifiers_in_slug_history(wp_data)
-    bulk_update_identifiers
-  end
-
-  private
-
-  def bulk_update_identifiers
     project.work_packages.identified.update_all(
       ["identifier = ? || '-' || CAST(sequence_number AS text)", project.identifier]
-    )
-  end
-
-  def record_old_identifiers_in_slug_history(wp_data)
-    now = Time.current
-    FriendlyId::Slug.insert_all(
-      wp_data.map do |wp_id, old_id|
-        { sluggable_type: "WorkPackage", sluggable_id: wp_id, slug: old_id, scope: nil, created_at: now }
-      end,
-      unique_by: %i[slug sluggable_type scope]
     )
   end
 end

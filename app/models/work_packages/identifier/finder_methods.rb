@@ -28,37 +28,49 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Extends FriendlyId's history-aware finder with "ghost" identifier resolution.
+# Compute-on-read identifier resolution for work packages.
 #
-# A ghost identifier is one that was never actually assigned to a work package
-# but is intuitively valid — e.g. after renaming project "PROJ" to "BETTER",
-# a new WP gets "BETTER-11", but users may still look up "PROJ-11".
+# All historical resolution is structural — no slug history table is used
+# for work packages. Instead, identifiers are parsed into prefix + sequence
+# and resolved via Project's own FriendlyId history.
 #
 # Resolution chain:
 #   1. Primary column match (via FriendlyId base)
-#   2. Slug history match (via FriendlyId::History)
-#   3. Ghost resolution: parse prefix + sequence, resolve prefix to project
-#      (via Project's own FriendlyId history), find WP by sequence_number
+#   2. Structural resolution: parse prefix + sequence, resolve prefix to
+#      project (via Project FriendlyId history), find WP by sequence_number
+#   3. Move resolution: check work_package_moves for WPs that left a project
 module WorkPackages::Identifier::FinderMethods
-  include FriendlyId::History::FinderMethods
+  include FriendlyId::FinderMethods
 
   def exists_by_friendly_id?(id)
-    super || resolve_ghost_identifier(id).present?
+    super || resolve_identifier(id).present?
   end
 
   private
 
   def first_by_friendly_id(id)
-    super || resolve_ghost_identifier(id)
+    super || resolve_identifier(id)
   end
 
-  def resolve_ghost_identifier(id)
+  def resolve_identifier(id)
     prefix, seq = id.to_s.match(/\A(.+)-(\d+)\z/)&.captures
     return unless prefix && seq
 
+    seq = seq.to_i
     project = Project.friendly.find(prefix)
-    find_by(project_id: project.id, sequence_number: seq.to_i)
+
+    find_by(project_id: project.id, sequence_number: seq) ||
+      find_moved_work_package(project.id, seq)
   rescue ActiveRecord::RecordNotFound
     nil
+  end
+
+  # Finds a WP that was moved FROM the given project with the given sequence.
+  def find_moved_work_package(source_project_id, sequence_number)
+    move = WorkPackageMove.find_by(
+      source_project_id:,
+      sequence_number:
+    )
+    find_by(id: move.work_package_id) if move
   end
 end

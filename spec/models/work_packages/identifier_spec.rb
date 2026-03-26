@@ -41,9 +41,9 @@ RSpec.describe WorkPackages::Identifier do
   end
 
   describe "FriendlyId configuration" do
-    it "uses the identifier column as the FriendlyId slug" do
+    it "uses the identifier column as the query field" do
       config = WorkPackage.friendly_id_config
-      expect(config.slug_column).to eq(:identifier)
+      expect(config.query_field).to eq("identifier")
     end
 
     it "includes the finders module" do
@@ -132,67 +132,7 @@ RSpec.describe WorkPackages::Identifier do
     end
   end
 
-  describe "historical identifier resolution" do
-    let!(:work_package) do
-      wp = create(:work_package, project:)
-      wp.update!(identifier: "SC-1", sequence_number: 1)
-      wp
-    end
-
-    it "records the old identifier in friendly_id_slugs when identifier changes" do
-      work_package.update!(identifier: "INFRA-42")
-
-      expect(FriendlyId::Slug.where(slug: "SC-1", sluggable_type: "WorkPackage")).to exist
-    end
-
-    it "finds a work package by a previous identifier" do
-      work_package.update!(identifier: "INFRA-42")
-
-      expect(WorkPackage.friendly.find("SC-1")).to eq(work_package)
-    end
-
-    it "finds a work package by its current identifier after a change" do
-      work_package.update!(identifier: "INFRA-42")
-
-      expect(WorkPackage.friendly.find("INFRA-42")).to eq(work_package)
-    end
-
-    it "resolves the latest work package when multiple identifiers have been used" do
-      work_package.update!(identifier: "INFRA-42")
-      work_package.update!(identifier: "DEV-7")
-
-      # All three identifiers resolve to the same work package
-      expect(WorkPackage.friendly.find("SC-1")).to eq(work_package)
-      expect(WorkPackage.friendly.find("INFRA-42")).to eq(work_package)
-      expect(WorkPackage.friendly.find("DEV-7")).to eq(work_package)
-    end
-
-    it "accumulates slug history entries for each identifier change" do
-      work_package.update!(identifier: "INFRA-42")
-      work_package.update!(identifier: "DEV-7")
-
-      slugs = FriendlyId::Slug.where(sluggable_id: work_package.id, sluggable_type: "WorkPackage").pluck(:slug)
-      # FriendlyId records a slug for each value (including the current one)
-      expect(slugs).to include("SC-1", "INFRA-42")
-    end
-
-    it "cleans up all slug history when work package is destroyed" do
-      work_package.update!(identifier: "INFRA-42")
-
-      slug_count = FriendlyId::Slug.where(
-        sluggable_id: work_package.id, sluggable_type: "WorkPackage"
-      ).count
-      expect(slug_count).to be >= 1
-
-      expect do
-        work_package.destroy!
-      end.to change {
-        FriendlyId::Slug.where(sluggable_id: work_package.id, sluggable_type: "WorkPackage").count
-      }.to(0)
-    end
-  end
-
-  describe "unset_slug_if_invalid override" do
+  describe "identifier stability on validation failure" do
     it "does not revert the identifier when validation fails" do
       wp = create(:work_package, project:)
       wp.update!(identifier: "SC-1", sequence_number: 1)

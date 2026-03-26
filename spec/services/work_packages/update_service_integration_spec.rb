@@ -441,10 +441,13 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
           expect(work_package.sequence_number).to eq(1)
         end
 
-        it "records the old identifier in FriendlyId slug history" do
+        it "records the move in work_package_moves" do
           subject
 
-          expect(FriendlyId::Slug.where(slug: "SRC-1", sluggable_type: "WorkPackage")).to exist
+          move = WorkPackageMove.find_by(work_package_id: work_package.id)
+          expect(move).to be_present
+          expect(move.source_project_id).to eq(source_project.id)
+          expect(move.sequence_number).to eq(1)
         end
 
         it "makes the old identifier resolvable" do
@@ -497,11 +500,11 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
             expect(child_wp.reload.identifier).to eq("TGT-2")
           end
 
-          it "records old identifiers for all moved work packages" do
+          it "records moves for all moved work packages" do
             subject
 
-            expect(FriendlyId::Slug.where(slug: "SRC-1", sluggable_type: "WorkPackage")).to exist
-            expect(FriendlyId::Slug.where(slug: "SRC-2", sluggable_type: "WorkPackage")).to exist
+            expect(WorkPackageMove.where(source_project_id: source_project.id).pluck(:sequence_number))
+              .to contain_exactly(1, 2)
           end
         end
       end

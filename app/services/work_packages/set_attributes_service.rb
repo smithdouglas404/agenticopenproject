@@ -280,7 +280,7 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
   # reject the save if the target project already has a WP with the same
   # sequence_number. The identifier is intentionally preserved so that
   # ReallocateIdentifiersOnMoveService (which runs post-save) can detect
-  # which WPs need reallocation and record old slugs in FriendlyId history.
+  # which WPs need reallocation and record moves for old identifier resolution.
   def clear_sequence_number_on_move
     return unless Setting::WorkPackageIdentifier.alphanumeric?
 

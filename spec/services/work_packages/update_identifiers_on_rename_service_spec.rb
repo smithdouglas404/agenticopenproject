@@ -63,16 +63,18 @@ RSpec.describe WorkPackages::UpdateIdentifiersOnRenameService do
       expect(wp2.reload.sequence_number).to eq(2)
     end
 
-    it "records old identifiers in FriendlyId slug history" do
-      service.call
-
-      expect(FriendlyId::Slug.where(slug: "SC-1", sluggable_type: "WorkPackage")).to exist
-      expect(FriendlyId::Slug.where(slug: "SC-2", sluggable_type: "WorkPackage")).to exist
+    it "does not write any FriendlyId slugs for work packages" do
+      expect { service.call }
+        .not_to change { FriendlyId::Slug.where(sluggable_type: "WorkPackage").count }
     end
 
-    it "makes old identifiers resolvable via FriendlyId" do
+    it "makes old identifiers resolvable via structural resolution" do
+      # Record the old project identifier in FriendlyId slug history (as Projects::SetAttributesService does)
+      FriendlyId::Slug.create!(slug: "SC", sluggable: project, sluggable_type: "Project")
+
       service.call
 
+      # Old prefix resolves via Project FriendlyId history + structural lookup
       expect(WorkPackage.friendly.find("SC-1")).to eq(wp1)
       expect(WorkPackage.friendly.find("SCO-1")).to eq(wp1)
     end
