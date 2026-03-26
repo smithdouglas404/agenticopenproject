@@ -326,7 +326,7 @@ export default class HoverCardTriggerController extends ApplicationController {
     const popover = document.createElement('div');
     this.setPopoverAttributes(popover);
 
-    const popoverFragment = template.content.cloneNode(true) as DocumentFragment;
+    const popoverFragment = document.importNode(template.content, true);
     popover.appendChild(popoverFragment);
 
     overlay.appendChild(popover);
