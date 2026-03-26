@@ -113,6 +113,16 @@ RSpec.describe WorkPackageSemanticId, "registry" do
         described_class.register_project_rename(project, "PROJ")
         expect(described_class.find_by(identifier: "NEWPROJ-1")).to be_present
       end
+
+      it "uses the sequence number from the old registry row, not the WP's current sequence" do
+        # wp1 has sequence_number=1 in PROJ, but simulate it having moved and now having a
+        # different sequence_number (e.g. 99 in another project)
+        wp1.update_columns(sequence_number: 99)
+        described_class.register_project_rename(project, "PROJ")
+        # NEWPROJ-1 must be created (from "PROJ-1"), not NEWPROJ-99
+        expect(described_class.find_by(identifier: "NEWPROJ-1")).to be_present
+        expect(described_class.find_by(identifier: "NEWPROJ-99")).to be_nil
+      end
     end
   end
 end

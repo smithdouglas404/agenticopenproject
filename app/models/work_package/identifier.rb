@@ -72,12 +72,28 @@ module WorkPackage::Identifier
     private
 
     def find_by_semantic_identifier(identifier, user:)
-      # 1. Registry lookup — resolves current and historic identifiers
+      # 1. Registry lookup — O(1) via the unique index on identifier.
+      #    Covers all identifiers written by the registry write operations:
+      #      - Current identifier ("PROJ-5", "OTHER-42 after a move").
+      #      - Historic identifiers retired on WP move ("PROJ-5" still resolves
+      #        after the WP moved to OTHER, where it became "OTHER-42").
+      #      - Historic identifiers retired on project rename ("PROJ-5" resolves
+      #        after PROJ → PROJ_NEW; "PROJ_NEW-5" written at rename time).
+      #      - Chained rename + move: "PROJ-5" moved to OTHER, then PROJ → PROJ_NEW
+      #        → "PROJ_NEW-5" written at rename time via the old PROJ-5 registry row.
+      #      - Multiple moves: WP moved PROJ → A → B — all three identifiers resolve.
       wp_id = WorkPackageSemanticId.find_by(identifier:)&.work_package_id
       return identifier_scope(user).find_by(id: wp_id) if wp_id
 
-      # 2. Computed fallback — handles registry misses (e.g. before backfill has run,
-      #    or a WP accessed via an old project prefix not yet in the registry)
+      # 2. Computed fallback — derives the WP from project + sequence_number using
+      #    FriendlyId slug history to resolve retired project identifiers.
+      #    Covers cases where no registry row exists for the requested identifier:
+      #      - WPs created before the backfill has run (no registry rows yet).
+      #      - Old prefix after multiple renames (PROJ → A → B → C): a WP created
+      #        after the first rename has no "PROJ-N" row, but slug history lets us
+      #        resolve "PROJ" → the project (now C) → find by sequence_number.
+      #      - Identifier formed from a slug that was current when a link was saved
+      #        but whose registry row is missing for any reason.
       prefix, seq = parse_semantic_identifier(identifier)
       return nil unless prefix && seq
 

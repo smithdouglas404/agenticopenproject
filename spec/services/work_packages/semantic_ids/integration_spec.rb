@@ -144,5 +144,61 @@ RSpec.describe "SemanticIds registry integration", type: :model do
       expect(WorkPackage.find_by_identifier("RENAMED-1")).to eq(wp1)
       expect(WorkPackage.find_by_identifier("RENAMED-2")).to eq(wp2)
     end
+
+    it "old prefix still resolves via compute fallback for WPs with no old-prefix registry row" do
+      # wp3 is created after the rename, so it only gets a RENAMED-3 row, never PROJ-3
+      Projects::UpdateService.new(user:, model: project).call(identifier: "RENAMED")
+      wp3 = create(:work_package, project: project.reload)
+
+      # RENAMED-3 resolves via registry
+      expect(WorkPackage.find_by_identifier("RENAMED-3")).to eq(wp3)
+      # PROJ-3 has no registry row → compute fallback: FriendlyId slug history resolves
+      # "PROJ" to the now-renamed project, then matches by sequence_number
+      expect(WorkPackage.find_by_identifier("PROJ-3")).to eq(wp3)
+    end
+  end
+
+  describe "rename + move combinations" do
+    let!(:wp1) { create(:work_package, project:) } # auto-registers as PROJ-1
+
+    it "move then rename: old WP identifier resolves under new project prefix" do
+      # WP moves to DEST first (retires PROJ-1, creates DEST-1)
+      WorkPackages::UpdateService.new(user:, model: wp1).call(project: target_project)
+      # PROJ is then renamed to RENAMED (bulk-inserts RENAMED-1 from the retired PROJ-1 row)
+      Projects::UpdateService.new(user:, model: project).call(identifier: "RENAMED")
+
+      expect(WorkPackage.find_by_identifier("RENAMED-1")).to eq(wp1)
+    end
+
+    it "rename then move: both old identifiers resolve after the WP moves" do
+      # PROJ renamed to RENAMED (PROJ-1 → current:false, RENAMED-1 → current:true)
+      Projects::UpdateService.new(user:, model: project).call(identifier: "RENAMED")
+      # WP moves to DEST (RENAMED-1 → current:false, DEST-1 → current:true)
+      WorkPackages::UpdateService.new(user:, model: wp1.reload).call(project: target_project)
+
+      expect(WorkPackage.find_by_identifier("PROJ-1")).to eq(wp1)
+      expect(WorkPackage.find_by_identifier("RENAMED-1")).to eq(wp1)
+    end
+  end
+
+  describe "multiple moves" do
+    let(:project_c) { create(:project, identifier: "PROJC", wp_sequence_counter: 0) }
+    let!(:wp1) { create(:work_package, project:) } # auto-registers as PROJ-1
+
+    before do
+      create(:member, principal: user, project: project_c, roles: [role])
+    end
+
+    it "all intermediate identifiers resolve after WP moves PROJ → DEST → PROJC" do
+      WorkPackages::UpdateService.new(user:, model: wp1).call(project: target_project)
+      dest_identifier = WorkPackageSemanticId.find_by!(work_package: wp1.reload, current: true).identifier
+
+      WorkPackages::UpdateService.new(user:, model: wp1.reload).call(project: project_c)
+      projc_identifier = WorkPackageSemanticId.find_by!(work_package: wp1.reload, current: true).identifier
+
+      expect(WorkPackage.find_by_identifier("PROJ-1")).to eq(wp1)
+      expect(WorkPackage.find_by_identifier(dest_identifier)).to eq(wp1)
+      expect(WorkPackage.find_by_identifier(projc_identifier)).to eq(wp1)
+    end
   end
 end

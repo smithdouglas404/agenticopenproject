@@ -42,8 +42,6 @@ class WorkPackageSemanticId < ApplicationRecord
   validates :identifier, presence: true, uniqueness: true
   validates :work_package, presence: true
 
-  # -- Registry write operations -------------------------------------------
-
   # Called after a WP moves to a different project. Retires the current entry
   # and inserts a new one in the target project's namespace.
   def self.register_move(work_package)
@@ -64,22 +62,34 @@ class WorkPackageSemanticId < ApplicationRecord
   # making the operation idempotent and safe under concurrency.
   def self.register_project_rename(project, old_identifier)
     new_prefix = project.identifier
+    like_pattern = "#{sanitize_like(old_identifier)}-%"
 
     transaction do
+      # Capture which specific identifier was active per WP before retiring.
+      # This is the only row that should become current:true under the new prefix;
+      # all other old-prefix rows (e.g. from WPs that have since moved away) become
+      # current:false so they still resolve but don't conflict with the WP's actual
+      # current identifier in its new project.
+      active_id_by_wp = where(current: true)
+                          .where("identifier LIKE ?", like_pattern)
+                          .pluck(:work_package_id, :identifier)
+                          .to_h
+
       where(current: true)
-        .where("identifier LIKE ?", "#{sanitize_like(old_identifier)}-%")
+        .where("identifier LIKE ?", like_pattern)
         .update_all(current: false)
 
-      rows = joins(:work_package)
-               .where("work_package_semantic_ids.identifier LIKE ?", "#{sanitize_like(old_identifier)}-%")
-               .pluck("work_package_semantic_ids.work_package_id", "work_packages.sequence_number")
-               .map { |wp_id, seq| { identifier: "#{new_prefix}-#{seq}", work_package_id: wp_id, current: true } }
+      rows = where("identifier LIKE ?", like_pattern)
+               .pluck(:work_package_id, :identifier)
+               .map do |wp_id, id|
+                 { identifier: "#{new_prefix}-#{id.delete_prefix("#{old_identifier}-")}",
+                   work_package_id: wp_id,
+                   current: active_id_by_wp[wp_id] == id }
+               end
 
       insert_all(rows, unique_by: :identifier) if rows.any?
     end
   end
-
-  # -- Private helpers -----------------------------------------------------
 
   private_class_method def self.allocate_sequence!(project)
     project.with_lock do
