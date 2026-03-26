@@ -34,6 +34,8 @@ module Wikis
 
     has_many :page_links, dependent: :destroy
 
+    scope :enabled, -> { where(enabled: true) }
+
     validates :name, presence: true, uniqueness: true, length: { maximum: 255 }
 
     before_create :generate_universal_identifier
@@ -50,7 +52,6 @@ module Wikis
 
     def generate_universal_identifier
       self.universal_identifier ||= SecureRandom.uuid
-      scope :enabled, -> { where(enabled: true) }
     end
   end
 end
