@@ -70,7 +70,7 @@ module OpenProject::Wikis
            after: :relations,
            if: ->(_project) {
              Wikis::Provider.enabled.exists? &&
-             OpenProject::FeatureDecisions.wiki_enhancements_active?
+               OpenProject::FeatureDecisions.wiki_enhancements_active?
            }
 
       menu :admin_menu,
