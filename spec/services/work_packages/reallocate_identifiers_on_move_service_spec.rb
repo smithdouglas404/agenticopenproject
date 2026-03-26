@@ -95,6 +95,15 @@ RSpec.describe WorkPackages::ReallocateIdentifiersOnMoveService do
       expect(wp2.reload.identifier).to eq("TGT-2")
     end
 
+    it "records the move in work_package_moves" do
+      service.call([work_package])
+
+      move = WorkPackageMove.find_by(work_package_id: work_package.id)
+      expect(move).to be_present
+      expect(move.project_id).to eq(source_project.id)
+      expect(move.sequence_number).to eq(1)
+    end
+
     it "skips work packages without identifiers" do
       wp_without_id = create(:work_package, project: source_project)
       wp_without_id.update_columns(project_id: target_project.id, identifier: nil, sequence_number: nil)

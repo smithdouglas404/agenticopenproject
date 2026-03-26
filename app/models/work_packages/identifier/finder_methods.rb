@@ -57,8 +57,17 @@ module WorkPackages::Identifier::FinderMethods
     return unless prefix && seq
 
     project = Project.friendly.find(prefix)
-    find_by(project_id: project.id, sequence_number: seq.to_i)
+    seq = seq.to_i
+
+    # Direct structural match (WP still in this project)
+    find_by(project_id: project.id, sequence_number: seq) ||
+      # Compute fallback: WP was moved out of this project
+      resolve_moved_identifier(project.id, seq)
   rescue ActiveRecord::RecordNotFound
     nil
+  end
+
+  def resolve_moved_identifier(project_id, sequence_number)
+    WorkPackageMove.find_by(project_id:, sequence_number:)&.work_package
   end
 end

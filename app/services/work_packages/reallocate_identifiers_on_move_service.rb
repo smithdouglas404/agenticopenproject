@@ -50,19 +50,24 @@ class WorkPackages::ReallocateIdentifiersOnMoveService
   def call(moved_work_packages)
     return unless Setting::WorkPackageIdentifier.alphanumeric?
 
-    wp_data = moved_work_packages
-                .select { |wp| wp.identifier.present? }
-                .map { |wp| [wp.id, wp.identifier] }
+    wp_data = extract_wp_data(moved_work_packages)
     return if wp_data.empty?
 
     OpenProject::Mutex.with_advisory_lock_transaction(target_project, "wp_sequence") do
       base_seq = reserve_sequence_block!(wp_data.size)
       record_old_slugs(wp_data)
+      record_moves(wp_data)
       bulk_update_identifiers(wp_data.map(&:first), base_seq)
     end
   end
 
   private
+
+  def extract_wp_data(moved_work_packages)
+    moved_work_packages
+      .select { |wp| wp.identifier.present? }
+      .map { |wp| [wp.id, wp.identifier] }
+  end
 
   def reserve_sequence_block!(count)
     final_seq = connection.select_value(<<~SQL.squish)
@@ -83,6 +88,28 @@ class WorkPackages::ReallocateIdentifiersOnMoveService
       end,
       unique_by: %i[slug sluggable_type scope]
     )
+  end
+
+  # Records structural bindings (project_id + sequence_number) for moved work packages
+  # so that ghost identifier resolution can find WPs that have left a project.
+  #
+  # The old identifier is parsed to extract the source project and sequence number,
+  # avoiding reliance on ActiveRecord dirty-tracking attributes which may not be
+  # available for descendant WPs in a hierarchy move.
+  def record_moves(wp_data)
+    now = Time.current
+    rows = wp_data.filter_map do |wp_id, old_identifier|
+      prefix, seq = old_identifier.match(/\A(.+)-(\d+)\z/)&.captures
+      next unless prefix && seq
+
+      source_project = Project.find_by(identifier: prefix)
+      next unless source_project
+
+      { work_package_id: wp_id, project_id: source_project.id,
+        sequence_number: seq.to_i, created_at: now }
+    end
+
+    WorkPackageMove.insert_all(rows, unique_by: %i[project_id sequence_number]) if rows.any?
   end
 
   # Assigns sequential identifiers to moved work packages in a single SQL statement.

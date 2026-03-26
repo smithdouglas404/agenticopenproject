@@ -154,6 +154,50 @@ RSpec.describe WorkPackages::Identifier::FinderMethods do
     end
   end
 
+  describe "ghost identifier after move and project rename" do
+    let(:target_project) { create(:project, identifier: "straw") }
+
+    before do
+      # Record the move (WP leaves "sc" for "straw")
+      WorkPackageMove.create!(
+        work_package:,
+        project:,
+        sequence_number: work_package.sequence_number
+      )
+      # Record old slug (normally done by ReallocateIdentifiersOnMoveService)
+      FriendlyId::Slug.create!(slug: "sc-1", sluggable: work_package, sluggable_type: "WorkPackage")
+      # Simulate move: WP now in target project with new identifier
+      work_package.update_columns(
+        project_id: target_project.id,
+        identifier: "straw-1",
+        sequence_number: 1
+      )
+      # Rename source project
+      rename_project!("sc", "kiwneu")
+    end
+
+    context "with new project prefix + old sequence (the bug scenario)" do
+      let(:identifier) { "kiwneu-1" }
+      let(:expected_wp) { work_package }
+
+      include_examples "resolves to the expected work package"
+    end
+
+    context "with old identifier (slug history)" do
+      let(:identifier) { "sc-1" }
+      let(:expected_wp) { work_package }
+
+      include_examples "resolves to the expected work package"
+    end
+
+    context "with current identifier in new project" do
+      let(:identifier) { "straw-1" }
+      let(:expected_wp) { work_package }
+
+      include_examples "resolves to the expected work package"
+    end
+  end
+
   describe "invalid identifiers" do
     context "with a non-existent project prefix" do
       let(:identifier) { "nonexistent-1" }
