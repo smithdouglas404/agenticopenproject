@@ -37,6 +37,7 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
       t.string :identifier, null: false
       t.references :work_package, null: false, foreign_key: true
       t.boolean :current, null: false, default: false
+      t.timestamps
     end
 
     # Unique identifier across all WPs (past and present)

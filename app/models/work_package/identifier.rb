@@ -40,7 +40,8 @@ module WorkPackage::Identifier
              inverse_of: :work_package,
              dependent: :destroy
 
-    has_one :current_semantic_id,
+    # Scoped read-only view; destruction is handled by has_many :semantic_ids above.
+    has_one :current_semantic_id, # rubocop:disable Rails/HasManyOrHasOneDependent
             -> { where(current: true) },
             class_name: "WorkPackageSemanticId",
             foreign_key: :work_package_id,

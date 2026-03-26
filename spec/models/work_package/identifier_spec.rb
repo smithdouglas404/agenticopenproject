@@ -31,16 +31,14 @@
 require "spec_helper"
 
 RSpec.describe WorkPackage::Identifier do
-  before do
-    allow(Setting::WorkPackageIdentifier).to receive(:alphanumeric?).and_return(true)
-    allow(Setting::WorkPackageIdentifier).to receive(:numeric?).and_return(false)
-  end
-
   let(:project) { create(:project, identifier: "MYPROJ") }
   # Creating a WP in alphanumeric mode auto-registers it: gets sequence_number 1 and entry "MYPROJ-1".
   let(:work_package) { create(:work_package, project:) }
 
-  before { work_package }
+  before do
+    allow(Setting::WorkPackageIdentifier).to receive_messages(alphanumeric?: true, numeric?: false)
+    work_package
+  end
 
   describe "after_create registration" do
     it "assigns a sequence number" do
