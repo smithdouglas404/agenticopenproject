@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,33 +30,33 @@
 
 module API
   module V3
-    module Meetings
-      class MeetingsAPI < ::API::OpenProjectAPI
-        resources :meetings do
-          get &::API::V3::Utilities::Endpoints::Index.new(model: Meeting).mount
+    module MeetingAgendaItems
+      class AgendaItemsByMeetingAPI < ::API::OpenProjectAPI
+        resources :agenda_items do
+          get do
+            items = @meeting.agenda_items.includes(:author, :presenter, :work_package, :meeting_section)
+            MeetingAgendaItemCollectionRepresenter.new(items,
+                                                       self_link: api_v3_paths.meeting_agenda_items(@meeting.id),
+                                                       current_user:)
+          end
 
-          post &::API::V3::Utilities::Endpoints::Create.new(model: Meeting).mount
+          post(&::API::V3::Utilities::Endpoints::Create
+                 .new(model: MeetingAgendaItem,
+                      params_modifier: ->(params) {
+                        params.except(:meeting, :meeting_id).merge(meeting: @meeting)
+                      })
+                 .mount)
 
-          mount ::API::V3::Meetings::Schemas::MeetingSchemaAPI
-          mount ::API::V3::Meetings::CreateFormAPI
-
-          route_param :id, type: Integer, desc: "Meeting ID" do
+          route_param :agenda_item_id, type: Integer, desc: "Agenda item ID" do
             after_validation do
-              @meeting = Meeting.visible.find(declared_params[:id])
+              @meeting_agenda_item = @meeting.agenda_items.find(declared_params[:agenda_item_id])
             end
 
-            get &::API::V3::Utilities::Endpoints::Show
-              .new(model: ::Meeting)
-              .mount
+            get &::API::V3::Utilities::Endpoints::Show.new(model: MeetingAgendaItem).mount
 
-            patch &::API::V3::Utilities::Endpoints::Update.new(model: Meeting).mount
+            patch &::API::V3::Utilities::Endpoints::Update.new(model: MeetingAgendaItem).mount
 
-            delete &::API::V3::Utilities::Endpoints::Delete.new(model: Meeting).mount
-
-            mount ::API::V3::Meetings::UpdateFormAPI
-            mount ::API::V3::Attachments::AttachmentsByMeetingAPI
-            mount ::API::V3::MeetingAgendaItems::AgendaItemsByMeetingAPI
-            mount ::API::V3::MeetingSections::SectionsByMeetingAPI
+            delete &::API::V3::Utilities::Endpoints::Delete.new(model: MeetingAgendaItem).mount
           end
         end
       end

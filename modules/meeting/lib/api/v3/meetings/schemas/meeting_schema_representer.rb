@@ -81,7 +81,7 @@ module API
           schema_with_allowed_link :project,
                                    has_default: false,
                                    required: true,
-                                   href_callback: ->(*) { nil }
+                                   href_callback: ->(*) {}
 
           schema :lock_version,
                  type: "Integer"

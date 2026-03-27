@@ -63,8 +63,13 @@ en:
         duration_in_minutes: "Duration"
         description: "Notes"
         presenter: "Presenter"
+        item_type: "Type"
+        position: "Position"
+        lock_version: "Lock version"
+        notes: "Notes"
       meeting_section:
         title: "Title"
+        position: "Position"
       recurring_meeting:
         frequency: "Frequency"
         interval: "Interval"

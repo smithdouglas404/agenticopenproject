@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,34 +30,36 @@
 
 module API
   module V3
-    module Meetings
-      class MeetingsAPI < ::API::OpenProjectAPI
-        resources :meetings do
-          get &::API::V3::Utilities::Endpoints::Index.new(model: Meeting).mount
+    module MeetingSections
+      class MeetingSectionRepresenter < ::API::Decorators::Single
+        include API::Decorators::LinkedResource
+        include API::Decorators::DateProperty
+        include ::API::Caching::CachedRepresenter
 
-          post &::API::V3::Utilities::Endpoints::Create.new(model: Meeting).mount
+        self.to_eager_load = [:meeting]
 
-          mount ::API::V3::Meetings::Schemas::MeetingSchemaAPI
-          mount ::API::V3::Meetings::CreateFormAPI
+        self_link id_attribute: ->(*) { [represented.meeting_id, represented.id] },
+                  title_getter: ->(*) { represented.title }
 
-          route_param :id, type: Integer, desc: "Meeting ID" do
-            after_validation do
-              @meeting = Meeting.visible.find(declared_params[:id])
-            end
+        property :id
 
-            get &::API::V3::Utilities::Endpoints::Show
-              .new(model: ::Meeting)
-              .mount
+        property :title
 
-            patch &::API::V3::Utilities::Endpoints::Update.new(model: Meeting).mount
+        property :position
 
-            delete &::API::V3::Utilities::Endpoints::Delete.new(model: Meeting).mount
+        associated_resource :meeting,
+                            link: ->(*) {
+                              {
+                                href: api_v3_paths.meeting(represented.meeting_id),
+                                title: represented.meeting.title
+                              }
+                            }
 
-            mount ::API::V3::Meetings::UpdateFormAPI
-            mount ::API::V3::Attachments::AttachmentsByMeetingAPI
-            mount ::API::V3::MeetingAgendaItems::AgendaItemsByMeetingAPI
-            mount ::API::V3::MeetingSections::SectionsByMeetingAPI
-          end
+        date_time_property :created_at
+        date_time_property :updated_at
+
+        def _type
+          "MeetingSection"
         end
       end
     end

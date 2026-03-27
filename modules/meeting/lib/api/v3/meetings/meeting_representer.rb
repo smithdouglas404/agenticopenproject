@@ -74,6 +74,18 @@ module API
           }
         end
 
+        link :agendaItems do
+          {
+            href: api_v3_paths.meeting_agenda_items(represented.id)
+          }
+        end
+
+        link :sections do
+          {
+            href: api_v3_paths.meeting_sections(represented.id)
+          }
+        end
+
         property :id
         property :title
         property :location

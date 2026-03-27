@@ -231,5 +231,21 @@ module OpenProject::Meeting
     add_api_path :meeting_form do |id|
       "#{root}/meetings/#{id}/form"
     end
+
+    add_api_path :meeting_agenda_items do |meeting_id|
+      "#{meeting(meeting_id)}/agenda_items"
+    end
+
+    add_api_path :meeting_agenda_item do |meeting_id, id|
+      "#{meeting(meeting_id)}/agenda_items/#{id}"
+    end
+
+    add_api_path :meeting_sections do |meeting_id|
+      "#{meeting(meeting_id)}/sections"
+    end
+
+    add_api_path :meeting_section do |meeting_id, id|
+      "#{meeting(meeting_id)}/sections/#{id}"
+    end
   end
 end
