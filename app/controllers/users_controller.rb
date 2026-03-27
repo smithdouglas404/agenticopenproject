@@ -40,6 +40,7 @@ class UsersController < ApplicationController
   before_action :find_user, only: %i[show
                                      edit
                                      update
+                                     update_reminders
                                      update_email_alerts
                                      update_participating
                                      update_non_participating
@@ -127,6 +128,18 @@ class UsersController < ApplicationController
       flash[:error] = I18n.t(:notice_failed_to_save_messages, count: global_setting.errors.count,
                                                               object: global_setting.class.model_name.human)
     end
+    redirect_back_or_to edit_user_path(@user, tab: "reminders")
+  end
+
+  def update_reminders
+    call = ::Users::UpdateService.new(model: @user, user: current_user).call(pref: permitted_params.pref.to_h)
+
+    if call.success?
+      flash[:notice] = I18n.t(:notice_successful_update)
+    else
+      flash[:error] = call.errors.full_messages.join(", ")
+    end
+
     redirect_back_or_to edit_user_path(@user, tab: "reminders")
   end
 

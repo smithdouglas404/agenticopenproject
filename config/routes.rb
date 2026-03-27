@@ -950,6 +950,7 @@ Rails.application.routes.draw do
       get "/change_status/:change_action" => "users#change_status_info", as: "change_status_info"
       post :change_status
       post :resend_invitation
+      patch :update_reminders
       patch :update_email_alerts
       patch :update_participating
       patch :update_non_participating
