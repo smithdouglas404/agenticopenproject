@@ -26,11 +26,11 @@ Take a look at our release video showing the most important features introduced 
 
 ### Improvements to agile planning with sprints and backlogs
 
-OpenProject 17.3 introduces several improvements to agile planning, making it easier to structure work with sprints and backlogs and reducing the need for manual setup. These changes are part of our [ongoing efforts to further strengthen agile workflows in OpenProject](https://www.openproject.org/blog/future-of-agile-work/).
+OpenProject 17.3 introduces several improvements to agile planning, making it easier to structure work with sprints and backlogs and reducing the need for manual setup. These changes are part of our ongoing [ongoing efforts to further strengthen agile workflows in OpenProject](https://www.openproject.org/blog/future-of-agile-work/).
 
 #### Dedicated sprint objects
 
-OpenProject now introduces dedicated sprint objects for agile planning, replacing the previous use of versions as a workaround. Sprints are now a core entity within the Backlogs module, allowing teams to plan, organize, and track their work more intuitively.
+OpenProject introduces dedicated sprint objects for agile planning, replacing the previous use of versions as a workaround. Sprints are now a core entity within the Backlogs module, allowing teams to plan, organize, and track their work more intuitively.
 
 Work packages can be assigned directly to sprints, and sprints include key attributes such as name, status, and dates. This provides a clearer structure for agile workflows and aligns OpenProject more closely with established Scrum practices.
 
@@ -62,37 +62,47 @@ screenshot
 
 ### In-place editing of project attributes on the project overview page
 
-text
+Project attributes on the project overview page can now be edited directly in place, without opening a separate dialog. This allows users to update project information more quickly and with fewer interruptions.
+
+Depending on the attribute type, changes can be applied immediately or confirmed within the field, providing a more streamlined and consistent editing experience.
 
 screenshot
 
-### Sharing of meeting templates
+### Sharing of meeting templates (Enterprise add-on, Basic plan)
 
-text
-
-screenshot
-
-### Improved workflow configuration for admins
-
-text
+Meeting templates, introduced as an Enterprise add-on in OpenProject 17.2, can now be shared across projects, making it easier to reuse standardized agendas and structures. Depending on the configuration, templates can be made available within a project, across subprojects, or throughout the entire instance.
 
 screenshot
 
-### Improved handling of project identifiers 
+### Improved workflow configuration for administrators
 
-text
+Workflow configuration has been improved to make it easier to focus on relevant types, roles, and statuses. A new index page allows workflows to be accessed by type, reducing complexity when navigating and editing configurations.
+
+When editing workflows, only relevant statuses are displayed, and role selection is streamlined. In addition, saving changes is now more reliable, with improved handling of unsaved changes and a fixed save action.
+
+screenshot
+
+### Improved handling of project identifiers
+
+Project identifiers can now be easily changed without invalidating existing links. Previous identifiers remain valid and continue to redirect to the project.
+
+In addition, identifier handling has been improved when creating or copying projects, including automatic suggestions and updated validation. These improvements also apply to API-based project creation.
 
 screenshot
 
 ### Improved work package search when selecting items across the application
 
-text
+Work package search has been continuously improved in recent releases. With OpenProject 17.3, these improvements are now extended to more areas of the application.
+
+When selecting work packages, for example in relations, boards, meetings, time tracking, or filters, it is now possible to search by attributes such as type and status. This aligns the search behavior with the global search and makes it easier to find and select the correct work packages in different workflows.
 
 ## Important technical updates
 
 ### Webhooks now include the user causing a change (actor)
 
-text
+Webhooks now include an  an 'actor' field indicating which user caused a change, for example when creating or updating a work package. This makes it easier to build automations that can react differently depending on who triggered the change.
+
+We want to thank Community member [@cheezzz](https://github.com/cheezzz) for contributing this improvement.
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
