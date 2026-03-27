@@ -56,4 +56,4 @@ rewritten_count = crowdin_yml_files.count do |path|
   end
 end
 
-puts "Rewrote #{rewritten_count} crowdin YAML files"
+puts "Rewrote #{rewritten_count}/#{crowdin_yml_files.count} Crowdin YAML files"
