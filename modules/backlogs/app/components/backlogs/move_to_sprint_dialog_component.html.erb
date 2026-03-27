@@ -52,7 +52,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    d.with_footer(show_divider: true) do
+    d.with_footer do
       component_collection do |buttons|
         buttons.with_component(Primer::Beta::Button.new(data: { close_dialog_id: DIALOG_ID })) do
           t(:button_cancel)
