@@ -26,31 +26,37 @@ Take a look at our release video showing the most important features introduced 
 
 ### Improvements to agile planning with sprints and backlogs
 
-OpenProject now introduces dedicated sprint objects for agile planning, replacing the previous use of versions as a workaround. Sprints are now a core entity within the Backlogs module, allowing teams to plan, organize, and track their work more intuitively.
-
-Work packages can be assigned directly to sprints, and sprints include key attributes such as name, status, and dates. This provides a clearer structure for agile workflows and aligns OpenProject more closely with established Scrum practices.
+OpenProject 17.3 introduces several improvements to agile planning, making it easier to structure work with sprints and backlogs and reducing the need for manual setup. These changes are part of our [ongoing efforts to further strengthen agile workflows in OpenProject](https://www.openproject.org/blog/future-of-agile-work/).
 
 #### Dedicated sprint objects
 
-text
+OpenProject now introduces dedicated sprint objects for agile planning, replacing the previous use of versions as a workaround. Sprints are now a core entity within the Backlogs module, allowing teams to plan, organize, and track their work more intuitively.
+
+Work packages can be assigned directly to sprints, and sprints include key attributes such as name, status, and dates. This provides a clearer structure for agile workflows and aligns OpenProject more closely with established Scrum practices.
 
 screenshot
 
 #### All work packages visible on backlogs
 
-text
+Backlogs now display all work package types within a project, removing previous limitations on which types could be included. This allows teams to manage and prioritize all relevant work in one place without additional configuration.
+
+By making all work packages visible in backlogs and sprint planning, OpenProject provides a more consistent and flexible approach to organizing work across different use cases.
 
 screenshot
 
 #### Automatic board creation when starting a sprint
 
-text
+When starting a sprint, a dedicated board is now created automatically and configured based on the project’s workflows. Teams are directly taken to the board, allowing them to start working without any additional setup.
+
+This reduces manual configuration and ensures that sprint boards are consistently structured across projects.
 
 screenshot
 
 ### Action boards available in the Community edition
 
-text
+With the introduction of improved agile planning features such as sprints and backlogs, boards play a central role in organizing and tracking work. To support this, all action board types are now available in the Community edition.
+
+This extends the existing board functionality in the Community edition and allows teams to use a wider range of board configurations, such as Kanban or parent-child boards, without requiring an Enterprise plan.
 
 screenshot
 
