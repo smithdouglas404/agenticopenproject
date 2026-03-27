@@ -492,7 +492,7 @@ RSpec.describe Project do
     let(:instance) { project }
   end
 
-  it_behaves_like "acts_as_customizable included" do
+  it_behaves_like "acts_as_customizable included", admin_only_allowed: true, comments: true do
     let!(:model_instance) { project }
     let!(:new_model_instance) { build_project }
     let!(:custom_field) { create(:string_project_custom_field) }
@@ -537,6 +537,23 @@ RSpec.describe Project do
           expect(model_instance.validation_context).to eq(%i(saving_custom_fields update))
         end
       end
+    end
+  end
+
+  describe "#custom_values_for_custom_field" do
+    let(:custom_field) { create(:list_project_custom_field, multi_value: true) }
+    # intentionally out of order
+    let!(:cv2) { create(:custom_value, id: 1002, customized: project, custom_field:) }
+    let!(:cv1) { create(:custom_value, id: 1001, customized: project, custom_field:) }
+    let!(:cv3) { create(:custom_value, id: 1003, customized: project, custom_field:) }
+
+    before do
+      allow(project).to receive(:available_custom_fields) { ProjectCustomField.all }
+    end
+
+    it "returns values ordered by id" do
+      values = project.custom_values_for_custom_field(custom_field)
+      expect(values).to eq([cv1, cv2, cv3])
     end
   end
 

@@ -53,7 +53,18 @@ export default class extends Controller {
 
     connect():void {
         useMeta(this, {suffix: false});
+        document.addEventListener('turbo:before-cache', this.clearBeforeCache);
     }
+
+    disconnect():void {
+        document.removeEventListener('turbo:before-cache', this.clearBeforeCache);
+    }
+
+    private clearBeforeCache = ():void => {
+        this.element.querySelectorAll('input').forEach((input:HTMLInputElement) => {
+            input.value = '';
+        });
+    };
 
     disableButtons():void {
         this.buttonTargets.forEach(button => {

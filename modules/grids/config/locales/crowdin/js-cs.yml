@@ -19,7 +19,6 @@ cs:
           title: 'Novinky'
         project_description:
           title: 'Description'
-          no_results: "Zatím nebyl napsán žádný popis. Můžete ho uvést v \"Nastavení projektu\"."
         project_status:
           title: 'Status'
           not_started: 'Nezahájeno'

@@ -39,6 +39,12 @@ ru:
         base_amount: "Базовая стоимость"
       work_package:
         budget_subject: "Название бюджета"
+    errors:
+      models:
+        labor_budget_item:
+          attributes:
+            principal:
+              not_a_member_of_budget_project: "не является участником бюджета проекта"
     models:
       budget: "Бюджет"
       material_budget_item: "Единица"
@@ -67,30 +73,29 @@ ru:
       budget_by_cost_type:
         title: "Бюджет по видам затрат"
         blankslate:
-          heading: "Start project controlling"
-          description: "Get an overview of your budgets and costs to efficiently track the health status of your project"
-        caption:
+          heading: "Начать контроль над проектом"
+          description: "Получите обзор Ваших бюджетов и затрат, чтобы эффективно отслеживать состояние здоровья Вашего проекта"
+        blankslate_zero:
+          heading: "Отсутствуют детали бюджета"
+          description: "Добавьте подробную информацию о планируемом бюджете, чтобы увидеть данные здесь"
+        count_caption:
           zero: "Нет данных о бюджете."
-          one: "Data aggregated from %{count} budget included in %{portfolios}, %{subprograms} and %{subprojects}."
-          other: "Data aggregated from %{count} budgets included in %{portfolios}, %{subprograms} and %{subprojects}."
-        caption_simple:
-          one: "Data aggregated from %{count} budget."
-          few: "Data aggregated from %{count} budgets."
-          many: "Data aggregated from %{count} budgets."
-          other: "Data aggregated from %{count} budgets."
-        portfolio:
-          zero: "no portfolios"
-          one: "1 portfolio"
-          other: "%{count} portfolios"
-        subprogram:
-          zero: "no subprograms"
-          one: "1 subprogram"
-          other: "%{count} subprograms"
-        subproject:
-          zero: "no subprojects"
-          one: "1 subproject"
-          other: "%{count} subprojects"
-        view_details: "View budget details"
+          one: "Данные собраны из %{count} бюджета"
+          other: "Данные собраны из %{count} бюджетов"
+        count_caption_with_subitems:
+          project:
+            zero: "Нет данных о бюджете."
+            one: "Данные, собранные из %{count} бюджета, включены в этот проект и его подпроекты."
+            other: "Данные, собранные из %{count} бюджетов, включены в этот проект и его подпроекты."
+          program:
+            zero: "Нет данных о бюджете."
+            one: "Данные, собранные из %{count} бюджета, включены в эту программу и её подпрограммы."
+            other: "Данные, собранные из %{count} бюджетов, включены в эту программу и её подпрограммы."
+          portfolio:
+            zero: "Нет данных о бюджете."
+            one: "Данные, собранные из %{count} бюджета, включены в этот портфель и его подпункты."
+            other: "Данные, собранные из %{count} бюджетов, включены в этот портфель и его подпункты."
+        view_details: "Посмотреть детали бюджета"
   events:
     budget: "Бюджет изменен"
   help_click_to_edit: "Нажмите здесь, чтобы править."

@@ -95,18 +95,21 @@ module Meetings
 
     def create_from_template_enabled?
       @meeting.onetime_template? &&
-        User.current.allowed_in_project?(:create_meetings, @meeting.project)
+        User.current.allowed_in_project?(:create_meetings, @meeting.project) &&
+        EnterpriseToken.allows_to?(:meeting_templates)
     end
 
     def create_from_template_button_params
       {
         tag: :a,
-        scheme: :primary,
+        scheme: :secondary,
         mobile_label: I18n.t("label_meeting_create_from_template"),
         mobile_icon: :plus,
         size: :medium,
         href: new_dialog_project_meetings_path(@project, template_id: @meeting.id),
-        data: { turbo_stream: true }
+        id: "create-meeting-from-template",
+        data: { turbo_stream: true },
+        aria: { label: I18n.t("label_meeting_create_from_template") }
       }
     end
 

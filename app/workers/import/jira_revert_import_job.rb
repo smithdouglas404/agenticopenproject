@@ -37,7 +37,8 @@ module Import
                       delete_users
                       delete_groups
                       delete_project_roles
-                      delete_references].freeze
+                      delete_references
+                      delete_jira_objects].freeze
 
     def build_enumerator(jira_import_id, cursor:)
       @jira_import = Import::JiraImport.find(jira_import_id)
@@ -78,7 +79,7 @@ module Import
 
     def delete_projects
       Import::JiraOpenProjectReference
-        .where(jira_import_id: @jira_import.id)
+        .where(jira_import_id: @jira_import.id, uses_existing: false)
         .where(op_entity_class: "Project")
         .find_each do |ref|
           op_leg = ref.op_leg
@@ -89,18 +90,17 @@ module Import
 
     def delete_types_statuses_and_issue_priorities
       Import::JiraOpenProjectReference
-        .where(jira_import_id: @jira_import.id)
+        .where(jira_import_id: @jira_import.id, uses_existing: false)
         .where(op_entity_class: ["Type", "IssuePriority", "Status"])
         .find_each do |ref|
           op_leg = ref.op_leg
-          uses_existing = ref.uses_existing
-          op_leg.destroy! unless uses_existing
+          op_leg.destroy!
       end
     end
 
     def delete_users
       Import::JiraOpenProjectReference
-        .where(jira_import_id: @jira_import.id)
+        .where(jira_import_id: @jira_import.id, uses_existing: false)
         .where(op_entity_class: "User")
         .find_each do |ref|
           op_leg = ref.op_leg
@@ -112,7 +112,7 @@ module Import
 
     def delete_groups
       Import::JiraOpenProjectReference
-        .where(jira_import_id: @jira_import.id)
+        .where(jira_import_id: @jira_import.id, uses_existing: false)
         .where(op_entity_class: "Group")
         .find_each do |ref|
           op_leg = ref.op_leg
@@ -123,7 +123,7 @@ module Import
 
     def delete_project_roles
       Import::JiraOpenProjectReference
-        .where(jira_import_id: @jira_import.id)
+        .where(jira_import_id: @jira_import.id, uses_existing: false)
         .where(op_entity_class: "ProjectRole")
         .find_each do |ref|
           op_leg = ref.op_leg
@@ -134,6 +134,10 @@ module Import
 
     def delete_references
       Import::JiraOpenProjectReference.where(jira_import_id: @jira_import.id).delete_all
+    end
+
+    def delete_jira_objects
+      @jira_import.destroy_jira_objects
       @jira_import.transition_to!(:reverted, job_id: job_id)
     end
   end

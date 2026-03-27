@@ -77,6 +77,10 @@ module Import
       get("/rest/api/2/serverInfo")
     end
 
+    def applicationrole
+      get("/rest/api/2/applicationrole")
+    end
+
     def all_cluster_nodes
       get("/rest/api/2/cluster/nodes")
     end
@@ -102,6 +106,16 @@ module Import
 
     def project_types
       get("/rest/api/2/project/type")
+    end
+
+    def project_versions(project_id_or_key:,
+                         start_at: 0,
+                         max_results: 100)
+      get("/rest/api/2/project/#{project_id_or_key}/version",
+          params: {
+            startAt: start_at,
+            maxResults: max_results
+          })
     end
 
     def issue_types
@@ -183,6 +197,10 @@ module Import
 
     def user_by_key(key:)
       get("/rest/api/2/user", params: { key:, expand: "groups" })
+    end
+
+    def user_by_username(username:)
+      get("/rest/api/2/user", params: { username:, expand: "groups" })
     end
 
     def groups(query: "", max_results: 1000)

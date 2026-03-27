@@ -21,6 +21,10 @@ Developers notice a failing spec in CI runs related to the PR they are working o
 
 The failing spec is suspicious as it seems unrelated to the changes introduced by the commits.
 
+Out-of-hours correlation is a lead, not proof of a datetime bug. Evening or weekend failures can still be caused by
+ordinary flakiness, branch-specific regressions, or infrastructure issues. Start by separating build/setup failures from
+actual `Unit tests` or `Feature tests`, then look for recurring spec names before concluding that time-sensitive logic is involved.
+
 To get the failing spec names, use `script/github_pr_errors` and give it the URL of the failing run as argument, for example:
 
 ```bash
@@ -28,6 +32,16 @@ script/github_pr_errors https://github.com/opf/openproject/actions/runs/18215876
 ```
 
 There are options to display images or display advice to reproduce the failures. Use `--help` to know more.
+
+To aggregate recent `Test suite` failures and highlight specs that skew outside 09:00-18:00 Europe/Berlin Monday to Friday,
+use:
+
+```bash
+export GITHUB_TOKEN=...
+script/report_out_of_hours_ci_failures --days 30
+```
+
+The report focuses on `dev` and `release/*` runs by default and excludes failures that never reached the unit or feature test steps.
 
 ## Confirming the spec is flaky
 

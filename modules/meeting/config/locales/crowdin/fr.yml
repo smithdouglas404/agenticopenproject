@@ -42,6 +42,7 @@ fr:
         start_date: "Date"
         start_time: "Heure de début"
         start_time_hour: "Heure de début"
+        sharing: "Partage"
       meeting_agenda_item:
         title: "Titre"
         author: "Auteur"
@@ -126,7 +127,6 @@ fr:
   label_meeting_template_edit: "Éditer le modèle"
   label_meeting_create_from_template: "Créer une réunion à partir d'un modèle"
   label_meeting_new: "Nouvelle réunion"
-  caption_meeting_template_select: "Sélectionnez un modèle et copier automatiquement ses éléments de l'ordre du jour"
   label_meeting_new_dynamic: "Nouvelle réunion ponctuelle"
   label_meeting_new_recurring: "Nouvelle réunion récurrente"
   label_meeting_create: "Créer une réunion"
@@ -195,6 +195,8 @@ fr:
   label_time_zone: "Fuseau horaire"
   label_start_date: "Date de début"
   label_subscribe_icalendar: "S'abonner au calendrier"
+  caption_meeting_template_select: "Sélectionnez un modèle pour copier automatiquement ses points de l'ordre du jour"
+  caption_template_project_select: "Veuillez sélectionner le projet dans lequel vous souhaitez créer ce modèle de réunion"
   meeting:
     participants:
       label:
@@ -214,7 +216,8 @@ fr:
         heading: "Aucun participant"
         description: "Il n'y a pas encore de participants."
     attachments:
-      template: "Ces fichiers joints seront inclus dans toutes les réunions futures de la série."
+      onetime_template: "Ces fichiers joints seront inclus dans toutes les futures réunions de la série."
+      series_template: "Ces fichiers joints seront inclus dans toutes les futures réunions de la série."
       text: "Les fichiers joints sont accessibles à tous les participants à la réunion. Vous pouvez également les glisser-déposer dans les notes relatives aux points de l'ordre du jour."
     copy:
       title: "Copier la réunion : %{title}"
@@ -246,9 +249,9 @@ fr:
         header: "Annulée : Réunion « %{title} »"
         header_occurrence: "Annulée : occurrence de la réunion « %{title} »"
         header_series: "Annulée : série de réunions « %{title} »"
-        summary_occurrence: "Une occurrence de '%{title}' a été annulée par %{actor}, ou vous avez été supprimé en tant que participant"
-        summary_series: "La série de réunions '%{title}' a été annulée par %{actor}, ou vous avez été retiré en tant que participant"
-        summary: "'%{title}' a été annulé par %{actor}, ou vous avez été supprimé en tant que participant"
+        summary_occurrence: "Une occurrence de « %{title} » a été annulée par %{actor}, ou vous avez été supprimé(e) en tant que participant(e)"
+        summary_series: "La série de réunions « %{title} » a été annulée par %{actor}, ou vous avez été supprimé(e) en tant que participant(e)"
+        summary: "« %{title} » a été annulé par %{actor}, ou vous avez été supprimé(e) en tant que participant(e)"
         date_time: "Date/heure prévue"
       participant_added:
         header: "Réunion « %{title} » - Participant ajouté"
@@ -262,7 +265,7 @@ fr:
         summary_series: "%{actor} a supprimé %{participant} de la série de réunions « %{title} »"
       ended:
         header_series: "Terminé : Série de rencontres '%{title}'"
-        summary_series: "La série de réunions '%{title}' a été clôturée par %{actor}"
+        summary_series: "La série de réunions « %{title} » a été clôturée par %{actor}"
       updated:
         header: "La réunion « %{title} » a été mise à jour"
         summary: "La réunion « %{title} » a été mise à jour par %{actor}"
@@ -289,7 +292,9 @@ fr:
           Cette action est irréversible. Veuillez procéder avec prudence.
         template:
           title: "Supprimer le modèle"
-          heading: "Supprimer ce modèle\_?"
+          heading: "Supprimer ce modèle ?"
+          confirmation_message_html: >
+            Cette action n'est pas réversible. Veuillez procéder avec prudence. Les réunions existantes qui ont été créées à l'aide de ce modèle ne seront pas affectées.
       occurrence:
         title: "Annuler l'occurrence de la réunion"
         heading: "Annuler cette occurrence de réunion ?"
@@ -504,7 +509,7 @@ fr:
   text_duration_in_hours: "Durée en heures"
   text_in_hours: "en heures"
   text_meeting_agenda_for_meeting: 'ordre du jour de la réunion «%{meeting} »'
-  text_meeting_template_blank_slate_heading: "Il n'y a pas de modèles à afficher"
+  text_meeting_template_blank_slate_heading: "Il n'y a aucun modèle à afficher"
   text_meeting_template_blank_slate: "Vous pouvez créer un nouveau modèle pour des réunions ponctuelles"
   text_meeting_series_end_early_heading: "Supprimer les futures occurrences ?"
   text_meeting_series_end_early: "La fin de la série supprimera les futures occurrences de réunions ouvertes ou planifiées"
@@ -537,7 +542,7 @@ fr:
   label_agenda_item_add: "Ajouter un point à l'ordre du jour"
   label_agenda_item_remove_from_agenda: "Retirer de l'ordre du jour"
   label_agenda_item_remove_from_backlog: "Retirer du backlog"
-  label_agenda_item_undisclosed_wp: "Paquet de travail #%{id} non visible"
+  label_agenda_item_undisclosed_wp: "Lot de travaux #%{id} non visible"
   label_agenda_item_deleted_wp: "Référence de lot de travaux supprimée"
   label_agenda_item_actions: "Actions des points de l'ordre du jour"
   label_agenda_item_move_to_next_title: "Passer à la prochaine réunion ?"
@@ -612,12 +617,17 @@ fr:
   text_meeting_closed_dropdown_description: "Cette réunion est terminée. Vous ne pouvez plus modifier les points de l'ordre du jour ou les résultats."
   text_meeting_draft_banner: "Vous êtes actuellement en mode brouillon. Cette réunion n'enverra pas de mises à jour de calendrier ni d'invitations, même si vous modifiez les détails de la réunion ou si vous ajoutez/supprimez des participants."
   text_onetime_meeting_template_banner: "Vous êtes en train de modifier un modèle de réunion. Vous pouvez utiliser ce modèle pour créer des réunions ponctuelles avec un ordre du jour prédéfini. Les modifications n'affecteront pas les réunions déjà créées."
-  text_onetime_meeting_template_empty_heading: "Votre modèle de réunion est vide"
-  text_onetime_meeting_template_description: "Vous pouvez ajouter des points de l'ordre du jour, des participants et des pièces jointes à ce modèle."
+  text_onetime_meeting_template_empty_heading: "Ce modèle de réunion est vide"
+  text_onetime_meeting_template_empty_description: "Ajoutez ici les points de l'ordre du jour, les sections et les pièces jointes. Ils seront inclus dans toutes les réunions créées à l'aide de ce modèle."
   text_exit_draft_mode_dialog_title: "Ouvrez cette réunion et envoyez des invitations ?"
   text_exit_draft_mode_dialog_subtitle: "Vous ne pouvez pas revenir au mode brouillon une fois que vous avez planifié une réunion."
   text_exit_draft_mode_dialog_template_title: "Ouvrez la première occurrence de cette série de réunions ?"
   text_exit_draft_mode_dialog_template_subtitle: "Vous ne pouvez plus revenir au mode brouillon après cette opération."
+  label_meeting_template_sharing: "Partage"
+  label_meeting_template_sharing_none: "Seulement ce projet"
+  label_meeting_template_sharing_descendants: "Sous-projets"
+  label_meeting_template_sharing_system: "Tous les projets"
+  text_meeting_template_sharing_description: "Ce modèle peut être partagé avec des sous-projets ou d'autres projets dans cette instance. Seuls les points de l'ordre du jour et les pièces jointes seront copiés."
   text_meeting_not_editable_anymore: "Cette réunion n'est plus modifiable."
   text_meeting_not_present_anymore: "Cette réunion a été supprimée. Veuillez sélectionner une autre réunion."
   label_add_work_package_to_meeting_dialog_title: "Sélectionner la réunion"

@@ -19,7 +19,6 @@ fr:
           title: 'Actualités'
         project_description:
           title: 'Description'
-          no_results: "Aucune description n'a encore été écrite. Vous pouvez en trouver une dans les \"Paramètres du projet\"."
         project_status:
           title: 'Statut'
           not_started: 'Non démarré'
@@ -52,7 +51,7 @@ fr:
           title: 'Tableau des lots de travaux'
         work_packages_graph:
           title: 'Graphique des lots de travaux'
-          summary: "%{chartType} graphique montrant les paquets de travail qui sont %{description}."
+          summary: "%{chartType} graphique montrant les lots de travaux qui sont %{description}."
         work_packages_calendar:
           title: 'Calendrier'
         work_packages_overview:

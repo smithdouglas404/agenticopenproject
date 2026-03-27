@@ -204,12 +204,18 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
     if (Array.isArray(allowedValues)) {
       this.setValues(allowedValues);
     } else if (this.schema.allowedValues) {
-      return this.schema.allowedValues.$load().then((values:CollectionResource) => {
+      return (this.schema.allowedValues.$load() as Promise<CollectionResource>).then((values:CollectionResource) => {
         // The select options of the project shall be sorted
         if (values.count > 0 && (values.elements[0] as any)._type === 'Project') {
           this.setValues(values.elements, true);
         } else {
           this.setValues(values.elements);
+        }
+
+        if (this.requestFocus) {
+          // Focus and open the field once the values are loaded
+          this.ngSelectComponent.focus();
+          this.openAutocompleteSelectField();
         }
       });
     } else {

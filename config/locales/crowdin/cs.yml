@@ -125,7 +125,7 @@ cs:
         new: "New configuration"
       banner:
         title: "Limited import"
-        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Name"
@@ -143,7 +143,7 @@ cs:
         failed: "Connection failed: Unable to retrieve server information"
         error: "An unexpected error occurred while testing the connection"
         connection_error: "Connection error: %{message}"
-        parse_error: "Failed to parse the response from Jira server. The server may not be a valid Jira instance."
+        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
         api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
         token_error: "Invalid API token. Please check your credentials in the configuration."
         missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
@@ -167,7 +167,7 @@ cs:
           title: "No import runs set up yet"
           description: "Create an import run to start importing information from this Jira instance"
         index:
-          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after but not afterwards."
+          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after in review mode but not after finalizing."
           button_import_run: "Import run"
           button_edit_configuration: "Edit configuration"
         status:
@@ -175,6 +175,7 @@ cs:
           instance_meta_fetching: "Fetching meta data"
           instance_meta_error: "Error fetching meta data"
           instance_meta_done: "Meta data fetched"
+          import_scope: "Select scope"
           configuring: "Select scope"
           projects_meta_fetching: "Fetching project data"
           projects_meta_error: "Error fetching project data"
@@ -184,8 +185,12 @@ cs:
           imported: "Review mode"
           reverting: "Reverting"
           revert_error: "Error during revert"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Reverted"
-          completed: "Completed"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Retry"
           parts:
@@ -234,8 +239,8 @@ cs:
             fetch_data:
               title: "Fetch instance meta data"
               caption_done: "Completed"
-              description: "Click the button below to query the host to see what data is available to import."
-              button_fetch: "Check available data from host"
+              description: "Check what data is available for import in the host Jira instance."
+              button_fetch: "Check available data"
               label_progress: "Fetching data from Jira..."
             groups_and_users:
               title: "Groups and Users"
@@ -243,8 +248,8 @@ cs:
               title: "Import scope"
               caption: "Choose what you want to import into OpenProject"
               caption_done: "Completed"
-              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host URL offers for import and what this tools is able to import right now."
-              description: "Select what data you want to import from the available data fetched from the host."
+              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now."
+              description: "Select what data you want to import from the available data fetched from the host Jira instance."
               label_available_data: "Available data"
               label_not_available_data: "Not available for import"
               button_select_projects: "Select projects to import"
@@ -253,14 +258,13 @@ cs:
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
               elements:
                 relations: "Relations between issues"
-                workflows: "Custom workflows"
+                workflows: "Project-level workflows"
                 users: "Users"
                 sprints: "Sprints"
                 schemes: "Schemas"
-                permissions: "Permissions, roles"
+                permissions: "User, group and project permissions"
             confirm_import:
               title: "Import data"
               caption: "Review your import settings and start the import"
@@ -278,13 +282,20 @@ cs:
               label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
-              label_finalizing_progress: "Finalizing import..."
-              label_finalized: "Import finalized."
+              preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Reverting import..."
               label_reverted: "Import reverted."
           select_dialog:
             filter_projects: "Filter by text"
+          import_dialog:
+            title: "Start this import?"
+            confirm_button: "Start import"
+            description: >
+              This importer is an alpha feature. It is not yet able to import all data from Jira and might leave incomplete data on this OpenProject instance. <b>Do not use a production environment and create a backup of your OpenProject data before starting.</b>
+            confirm: "I understand and made the necessary preparations"
           revert_dialog:
             title: "Permanently revert this import?"
             description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
@@ -298,7 +309,7 @@ cs:
             title: "Select projects"
     mcp_configurations:
       index:
-        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance."
+        description: "The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta."
         resources_heading: "Resources"
         resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
         resources_submit: "Update resources"
@@ -609,14 +620,20 @@ cs:
   danger_dialog:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+  mcp_configurations:
+    server_url_component:
+      caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
+      label: "Server URL"
   op_dry_validation:
     or: "nebo"
     errors:
+      unexpected_key: "is not allowed."
       array?: "must be an array."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
       filled?: "musí být vyplněno"
+      format?: "is in invalid format."
       greater_or_equal_zero: "musí být větší nebo rovno 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
@@ -643,7 +660,9 @@ cs:
         parent:
           not_descendant: "musí být potomkem kořenu hierarchie."
       str?: "must be a string."
+      time?: "must be a time."
       type?: "must be %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Zapnuto"
@@ -1386,11 +1405,15 @@ cs:
         dependencies: "Závislosti"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
+      "import/jira":
+        name: "Jira instance name"
+        url: "Jira instance URL"
+        personal_access_token: "Personal access token"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Zobrazit do"
       attachment:
@@ -1505,7 +1528,7 @@ cs:
         enabled_modules: "Povolené moduly"
         identifier: "Identifikátor"
         latest_activity_at: "Poslední aktivita"
-        parent: "Nadřazený projekt"
+        parent: "Podprojekt"
         project_creation_wizard_enabled: "Project initiation request"
         public_value:
           title: "Viditelnost"
@@ -1877,7 +1900,7 @@ cs:
         message:
           cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
         notifications:
-          at_least_one_channel: "Pro odesílání notifikací musí být specifikován alespoň jeden kanál"
+          at_least_one_channel: "Alespoň jeden kanál pro odesílání oznámení musí být specifikován."
           attributes:
             read_ian:
               read_on_creation: "nelze nastavit na pravdivé při vytváření oznámení "
@@ -2178,11 +2201,11 @@ cs:
       member: "Člen"
       news: "Novinky"
       notification:
-        one: "Notifikace"
-        few: "Notifikací"
-        many: "Notifikací"
-        other: "Notifikace"
-      placeholder_user: "Placeholder uživatel"
+        one: "Oznámení"
+        few: "Oznámení"
+        many: "Oznámení"
+        other: "Oznámení"
+      placeholder_user: "placeholder uživatel"
       project:
         one: "Projekt"
         few: "Projekty"
@@ -2786,7 +2809,8 @@ cs:
       edit_attribute_groups: Edit Attribute Groups
       gantt_pdf_export: Gantt PDF export
       ldap_groups: LDAP users and group sync
-      mcp_server: MCP Server
+      mcp_server: Model Context Protocol (MCP)
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
       placeholder_users: Placeholder Users
@@ -2864,7 +2888,9 @@ cs:
         title: "Vlastní akce"
         description: "Vlastní akce jsou zkratky jedním kliknutím na sadu předem definovaných akcí, které můžete zpřístupnit na základě stavu některých pracovních balíčků. role, typ nebo projekt."
       mcp_server:
-        description: "Integrate AI agents with your OpenProject instance through MCP."
+        description: "Bring OpenProject into your AI workflows with a secure MCP server."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Single Sign-On for Nextcloud Storage"
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
@@ -3177,17 +3203,18 @@ cs:
         learn_about: "Learn more about all new features"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Automated project initiation (Enterprise add-on).
-            line_1: "Meetings: add new or existing work packages as outcomes."
-            line_2: "Meetings: show iCal responses in OpenProject."
-            line_3: "Recurring meetings: duplicate agenda items to the next occurrence."
-            line_4: "Release to Community: Attribute highlighting."
-            line_5: Warning before opening external links in user-provided content (Enterprise add-on).
-            line_6: Improved performance and user experience, including the Activity tab and Documents module.
+            line_0: AI workflows with a secure MCP server (Professional plan and higher)
+            line_1: Improved project home page with new widget for budgets and improved accessibility
+            line_2: "Meetings: Meeting templates (Basic plan and higher)"
+            line_3: Better transparency with project attribute comments
+            line_4: PDF export enhancements
+            line_5: Increased security for external links (Premium plan and higher)
+            line_6: UI/UX improvements in the Backlogs module
+            line_7: Harmonized custom field forms
     links:
       upgrade_enterprise_edition: "Upgradovat na Enterprise Edici"
       postgres_migration: "Migrujte vaši instalaci na PostgreSQL"
@@ -3205,6 +3232,7 @@ cs:
   journals:
     changes_retracted: "Změny byly staženy."
     caused_changes:
+      budget_deleted: "Budget has been deleted"
       dates_changed: "Data změněna"
       default_attribute_written: "Zápis atributů pouze pro čtení"
       import: "Imported"
@@ -3220,7 +3248,7 @@ cs:
         field_changed: "%{field} changed from %{old_value} to %{new_value}"
         field_set: "%{field} set to %{value}"
         field_removed: "%{field} removed"
-        field_updated: "%{field}"
+        field_updated: "%{field} updated"
         deleted_with_diff: "%{field} deleted (%{link})"
         changed_with_diff: "%{field} changed (%{link})"
         set_with_diff: "%{field} set (%{link})"
@@ -3230,6 +3258,7 @@ cs:
       work_package_related_changed_times: podle změn na související %{link}
       work_package_duplicate_closed: Stav byl automaticky aktualizován duplicitním pracovním balíčkem %{link}
       unaccessable_work_package_changed: prostřednictvím změn souvisejícího pracovního balíčku
+      budget_deleted: Budget has been deleted
       working_days_changed:
         changed: "podle změn na pracovní dny (%{changes})"
         days:
@@ -3268,7 +3297,7 @@ cs:
       ai: "Artificial Intelligence (AI)"
       aggregation: "Agregace"
       api_and_webhooks: "API & Webhooky"
-      mail_notification: "E-mailové notifikace"
+      mail_notification: "E-mailová upozornění"
       mails_and_notifications: "E-maily a oznámení"
       mcp_configurations: "Model Context Protocol (MCP)"
     quick_add:
@@ -3354,7 +3383,7 @@ cs:
       by_project: "Nepřečteno dle projektu"
       by_reason: "Důvod"
       inbox: "Doručená pošta"
-    send_notifications: "Pro tuto akci odeslat notifikaci"
+    send_notifications: "Odeslat oznámení pro tuto akci"
     work_packages:
       subject:
         created: "Pracovní balíček byl vytvořen."
@@ -3595,7 +3624,6 @@ cs:
   label_float: "Desetinné číslo"
   label_folder: "Složka"
   label_follows: "sleduje"
-  label_force_user_language_to_default: "Nastavte jazyk uživatelů, kteří nemají povolený jazyk na výchozí"
   label_form_configuration: "Konfigurace formuláře"
   label_formula: "Vzorec"
   label_gantt_chart: "Ganttův diagram"
@@ -3799,9 +3827,9 @@ cs:
   label_permissions: "Práva"
   label_permissions_report: "Přehled oprávnění"
   label_personalize_page: "Přizpůsobit tuto stránku"
-  label_placeholder_user: "Placeholder uživatel"
+  label_placeholder_user: "placeholder uživatel"
   label_placeholder_user_new: ""
-  label_placeholder_user_plural: "Placeholder uživatelé"
+  label_placeholder_user_plural: "placeholder uživatelé"
   label_planning: "Plánování"
   label_please_login: "Přihlaste se prosím"
   label_plugins: "Pluginy"
@@ -3825,7 +3853,7 @@ cs:
   label_project_attribute_plural: "Atributy projektu"
   label_project_attribute_manage_link: "Správa atributů produktu"
   label_project_count: "Celkový počet projektů"
-  label_project_copy_notifications: "Během kopírování projektu odeslat notifikace e-mailem"
+  label_project_copy_notifications: "Během kopie projektu odeslat oznámení e-mailem"
   label_project_initiation_export_pdf: "Export PDF for %{project_creation_name}"
   label_project_latest: "Nejnovější projekty"
   label_project_default_type: "Povolit prázdný typ"
@@ -3974,12 +4002,6 @@ cs:
   label_user_named: "Uživatel %{name}"
   label_user_activity: "Aktivita %{value}"
   label_user_anonymous: "Anonymní"
-  label_user_mail_option_all: "Pro všechny události všech mých projektů"
-  label_user_mail_option_none: "Žádné události"
-  label_user_mail_option_only_assigned: "Pouze pro věci, na které jsem přidělen"
-  label_user_mail_option_only_my_events: "Pouze pro věci, které sleduji nebo jsem v nich zapojen"
-  label_user_mail_option_only_owner: "Pouze pro věci, kde jsem majitelem"
-  label_user_mail_option_selected: "Pouze pro každou událost na vybraných projektech"
   label_user_menu: "User menu"
   label_user_new: "Nový uživatel"
   label_user_plural: "Uživatelé"
@@ -3990,7 +4012,7 @@ cs:
   label_version_new: "Nová verze"
   label_version_edit: "Upravit verzi"
   label_version_plural: "Verze"
-  label_version_sharing_descendants: "S podprojekty"
+  label_version_sharing_descendants: "S Podprojekty"
   label_version_sharing_hierarchy: "S hierarchií projektu"
   label_version_sharing_none: "Není sdíleno"
   label_version_sharing_system: "Se všemi projekty"
@@ -4019,7 +4041,6 @@ cs:
   label_wiki_show_index_page_link: "Zobrazit položku podnabídky 'Obsah'"
   label_wiki_show_menu_item: "Zobrazit jako položku nabídky navigaci projektu"
   label_wiki_show_new_page_link: "Zobrazit položku menu \"Vytvořit novou podřízenou stránku\""
-  label_wiki_show_submenu_item: "Zobrazit jako položku podnabídky "
   label_wiki_start: "Úvodní stránka"
   label_work: "Práce"
   label_work_package: "Pracovní balíček"
@@ -4098,28 +4119,28 @@ cs:
     digests:
       including_mention_singular: "včetně zmínky"
       including_mention_plural: "včetně %{number_mentioned} zmínění"
-      unread_notification_singular: "1 nepřečtená notifikace"
-      unread_notification_plural: "%{number_unread} nepřečtených notifikací"
+      unread_notification_singular: "1 nepřečtené oznámení"
+      unread_notification_plural: "%{number_unread} nepřečtených oznámení"
       you_have: "Máte"
     logo_alt_text: "Logo"
     mention:
       subject: "%{user_name} vás zmínil v #%{id} - %{subject}"
     notification:
-      center: "Centrum notifikací"
+      center: "Centrum oznámení"
       see_in_center: "Zobrazit komentář v oznamovacím centru"
       settings: "Změnit nastavení e-mailu"
     salutation: "Ahoj %{user}!"
     salutation_full_name: "Jméno a příjmení"
     work_packages:
       created_at: "Vytvořeno v %{timestamp} uživatelem %{user} "
-      login_to_see_all: "Přihlaste se pro zobrazení všech notifikací."
+      login_to_see_all: "Přihlaste se pro zobrazení všech oznámení."
       mentioned: "Byli jste <b>zmíněni v komentáři</b>"
       mentioned_by: "%{user} vás zmínil v komentáři OpenProject"
       more_to_see:
-        one: "Existuje ještě 1 pracovní balíček s notifikací."
-        few: "Existuje ještě %{count} pracovních balíčků s notifikacema."
-        many: "Existuje ještě %{count} pracovních balíčků s notifikacema."
-        other: "Existuje ještě %{count} pracovních balíčků s notifikacema."
+        one: "Máte ještě 1 pracovní balíček s notifikací."
+        few: "Existuje ještě  %{count}  pracovních balíčků s oznámeními."
+        many: "Máte ještě  %{count}  pracovních balíčků s notifikacemi."
+        other: "Existuje ještě  %{count}  pracovních balíčků s oznámeními."
       open_in_browser: "Otevřít v prohlížeči"
       reason:
         watched: "Sledováno"
@@ -4128,7 +4149,7 @@ cs:
         mentioned: "Zmíněné"
         shared: "Sdílené"
         subscribed: "vše"
-        prefix: "Obdrženo z důvodu nastavení notifikací: %{reason}"
+        prefix: "Obdrženo z důvodu nastavení oznámení: %{reason}"
         date_alert_start_date: "Upozornění na datum"
         date_alert_due_date: "Upozornění na datum"
         reminder: "Připomínka"
@@ -4302,6 +4323,7 @@ cs:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projekt nebyl odstraněn."
   notice_project_not_found: "Projekt nebyl nalezen."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Úspěšné připojení."
   notice_successful_create: "Úspěšné vytvoření."
   notice_successful_delete: "Úspěšné odstranění."
@@ -4428,7 +4450,7 @@ cs:
   permission_move_work_packages: "Přesun pracovních balíčků"
   permission_protect_wiki_pages: "Ochrana stránky wiki"
   permission_rename_wiki_pages: "Přejmenovat stránky wiki"
-  permission_save_queries: "Uložit zobrazení"
+  permission_save_queries: "Uložit pohled"
   permission_search_project: "Hledat projekt"
   permission_select_custom_fields: "Vybrat vlastní pole"
   permission_select_project_custom_fields: "Vyberte atributy projektu"
@@ -4915,7 +4937,7 @@ cs:
       enable_subscriptions_text_html: Umožňuje uživatelům s nezbytnými oprávněními přihlásit se do OpenProject kalendářů a získat přístup k informacím o pracovním balíčku prostřednictvím externího klienta kalendáře. <strong>Poznámka:</strong> Před povolením si prosím přečtěte <a href="%{link}" target="_blank">podrobnosti o odběru</a>.
     language_name_being_default: "%{language_name} (výchozí)"
     notifications:
-      events_explanation: "Určuje, pro kterou událost je odeslán e-mail. Pracovní balíčky jsou z tohoto seznamu vyloučeny, protože notifikace pro ně mohou být nastavena speciálně pro každého uživatele."
+      events_explanation: "Určuje, pro kterou událost je odeslán e-mail. Pracovní balíčky jsou z tohoto seznamu vyloučeny, protože oznámení pro ně mohou být nastavena speciálně pro každého uživatele."
       delay_minutes_explanation: "Odesílání e-mailu může být pozdrženo, aby bylo uživatelům s nakonfigurovaným v oznámení aplikace před odesláním pošty potvrzeno oznámení. Uživatelé, kteří si přečtou oznámení v aplikaci, nedostanou e-mail pro již přečtené oznámení."
     other: "Ostatní"
     passwords: "Hesla"
@@ -5093,10 +5115,10 @@ cs:
   text_default_administrator_account_changed: "Výchozí účet správce změněn"
   text_default_encoding: "Výchozí: UTF-8"
   text_destroy: "Odstranit"
-  text_destroy_with_associated: "Existují další objekty, které jsou přiřazeny k pracovním balíčkům a které mají být odstraněny. Tyto objekty jsou následující typy:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Co chcete udělat?"
   text_diff_truncated: "... Toto rozlišení bylo zkráceno, protože přesahuje maximální velikost, kterou lze zobrazit."
-  text_email_delivery_not_configured: "Doručení e-mailu není nakonfigurováno a notifikace jsou zakázány.\nNakonfigurujte váš SMTP server pro jejich povolení."
+  text_email_delivery_not_configured: "Doručení e-mailu není nakonfigurováno a oznámení jsou zakázána.\nNakonfigurujte váš SMTP server pro jejich povolení."
   text_enumeration_category_reassign_to: "Přiřadit je k této hodnotě:"
   text_enumeration_destroy_question: "%{count} objektů je přiřazeno k této hodnotě."
   text_file_repository_writable: "Do adresáře příloh lze zapisovat"

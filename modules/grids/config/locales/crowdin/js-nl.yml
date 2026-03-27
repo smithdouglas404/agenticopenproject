@@ -19,7 +19,6 @@ nl:
           title: 'Nieuws'
         project_description:
           title: 'Description'
-          no_results: "Er is nog geen beschrijving geschreven. Er kan een vermelding worden verstrekt in de 'Projectinstellingen'."
         project_status:
           title: 'Status'
           not_started: 'Nog niet gestart'

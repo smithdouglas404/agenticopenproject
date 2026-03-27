@@ -201,7 +201,10 @@ id:
   project_module_costs: "Waktu dan biaya"
   setting_allow_tracking_start_and_end_times: "Izinkan waktu mulai dan waktu selesai"
   setting_costs_currency: "Mata Uang"
-  setting_costs_currency_format: "Format mata uang"
+  setting_costs_currency_caption: "This is the unit of currency. It can be a three-letter ISO code like EUR, USD or JPY or a symbol like €, $ or ¥."
+  setting_costs_currency_format: "Currency format"
+  setting_costs_currency_format_prefix: "Before the number (e.g. EUR 100)"
+  setting_costs_currency_format_suffix: "After the number (e.g. 100 EUR)"
   setting_enforce_tracking_start_and_end_times: "Butuh waktu mulai dan selesai"
   setting_enforce_without_allow: "Membutuhkan waktu mulai dan selesai tidak mungkin dilakukan tanpa mengizinkannya"
   setting_allow_tracking_start_and_end_times_caption: "Memungkinkan untuk memasukkan waktu mulai dan selesai saat mencatat waktu."
@@ -228,7 +231,7 @@ id:
         title: "Actual costs by month"
         blankslate:
           heading: "Start tracking your time and costs"
-          description: "Get an overview of your costs and logged time to monitor progress of your project"
+          description: "Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget."
           action: "Log time"
         view_details: "View actual costs details"
   ee:

@@ -201,7 +201,10 @@ zh-CN:
   project_module_costs: "工时和成本"
   setting_allow_tracking_start_and_end_times: "允许开始和完成时间"
   setting_costs_currency: "货币"
+  setting_costs_currency_caption: "这是货币单位。可以是 EUR、USD 或 JPY 等三个字母的 ISO 代码，也可以是 €、$ 或 ¥ 等符号。"
   setting_costs_currency_format: "货币格式"
+  setting_costs_currency_format_prefix: "在数字前（例如 EUR 100）"
+  setting_costs_currency_format_suffix: "在数字后（例如 100 EUR）"
   setting_enforce_tracking_start_and_end_times: "需要开始和完成时间"
   setting_enforce_without_allow: "如果不允许，则无法要求开始和结束时间"
   setting_allow_tracking_start_and_end_times_caption: "启用在记录时间时输入开始和结束时间。"
@@ -225,12 +228,12 @@ zh-CN:
   costs:
     widgets:
       actual_costs:
-        title: "Actual costs by month"
+        title: "实际成本（按月）"
         blankslate:
-          heading: "Start tracking your time and costs"
-          description: "Get an overview of your costs and logged time to monitor progress of your project"
-          action: "Log time"
-        view_details: "View actual costs details"
+          heading: "开始跟踪时间和成本"
+          description: "概括了解成本和记录的时间，以便监控项目进度。确保工作包与正确的预算相关联。"
+          action: "记录时间"
+        view_details: "查看实际成本详细信息"
   ee:
     features:
       time_entry_time_restrictions: 需要准确的时间跟踪

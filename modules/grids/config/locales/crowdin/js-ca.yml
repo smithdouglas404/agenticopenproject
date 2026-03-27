@@ -19,7 +19,6 @@ ca:
           title: 'Notícies'
         project_description:
           title: 'Description'
-          no_results: "No s'ha escrit cap descripció encara. Aquesta pot ser afegida en la configuració del projecte."
         project_status:
           title: 'Status'
           not_started: 'No començat'

@@ -29,10 +29,9 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import * as Turbo from '@hotwired/turbo';
+import { FetchRequest } from '@rails/request.js';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 import dragula, { Drake } from 'dragula';
-import { useMeta } from 'stimulus-use';
 import invariant from 'tiny-invariant';
 
 interface TargetConfig {
@@ -46,19 +45,16 @@ export default class GenericDragAndDropController extends Controller {
 
   containerTargets:HTMLElement[];
 
-  static metaNames = ['csrf-token'];
-  declare readonly csrfToken:string;
-
   static values = { handleSelector: { type: String, default: '.DragHandle' } };
   declare readonly handleSelectorValue:string;
 
   private drake:Drake|null = null;
   private containers:HTMLElement[] = [];
   private targetConfigs:TargetConfig[] = [];
+  private dragOriginSource:Element|null = null;
+  private dragOriginNextSibling:Element|null = null;
 
   connect() {
-    useMeta(this, { suffix: false });
-
     this.drake?.destroy();
     this.initDrake();
   }
@@ -91,8 +87,18 @@ export default class GenericDragAndDropController extends Controller {
     }
   }
 
-  cancel() {
+  cancelDrag() {
     this.drake?.cancel(true);
+  }
+
+  private revertDrop(el:Element) {
+    if (this.dragOriginSource) {
+      if (this.dragOriginNextSibling?.parentNode === this.dragOriginSource) {
+        this.dragOriginSource.insertBefore(el, this.dragOriginNextSibling);
+      } else {
+        this.dragOriginSource.appendChild(el);
+      }
+    }
   }
 
   initDrake() {
@@ -106,7 +112,10 @@ export default class GenericDragAndDropController extends Controller {
         revertOnSpill: true, // enable reverting of elements if they are dropped outside of a valid target
       },
     )
-      .on('drag', (el) => {
+      .on('drag', (el, source) => {
+        this.dragOriginSource = source;
+        this.dragOriginNextSibling = el.nextElementSibling;
+
         const handle = el.querySelector(this.handleSelectorValue)!;
         handle.setAttribute('aria-pressed', 'true');
       })
@@ -151,26 +160,25 @@ export default class GenericDragAndDropController extends Controller {
     const dropUrl = el.getAttribute('data-drop-url');
     const data = this.buildData(el, target);
 
-    if (dropUrl) {
-      const response = await fetch(dropUrl, {
-        method: 'PUT',
-        body: data,
-        headers: {
-          'X-CSRF-Token': this.csrfToken,
-          Accept: 'text/vnd.turbo-stream.html',
-        },
-        credentials: 'same-origin',
-      });
-
-      if (!response.ok) {
-        debugLog('Failed to sort item');
-      } else {
-        const text = await response.text();
-        Turbo.renderStreamMessage(text);
-      }
+    if (!dropUrl) {
+      return;
     }
 
-    this.cancel();
+    try {
+      const request = new FetchRequest('put', dropUrl, { body: data, responseKind: 'turbo-stream' });
+      const response = await request.perform();
+
+      if (!response.ok) {
+        this.revertDrop(el);
+        debugLog(`Failed to sort item: ${response.statusCode}`);
+      }
+    } catch (error) {
+      this.revertDrop(el);
+      debugLog('Failed to sort item due to request error', error);
+    } finally {
+      this.dragOriginSource = null;
+      this.dragOriginNextSibling = null;
+    }
   }
 
   protected buildData(el:Element, target:Element):FormData {

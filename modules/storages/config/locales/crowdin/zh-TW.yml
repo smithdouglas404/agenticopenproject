@@ -370,6 +370,7 @@ zh-TW:
         failure: 部分檢查失敗，系統無法如預期運作。
         success: 所有連線與系統均如預期運作。
         warning: 某些檢查返回警告，可能會引發預期外的行為。
+      synced: 'Last sync: %{datetime}'
       title: 健康狀況報告
     health_email_notifications:
       description_disabled: 當有重要更新時，管理員將不會透過電子郵件收到更新。

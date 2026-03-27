@@ -41,6 +41,7 @@ vi:
         start_date: "ngày"
         start_time: "Thời gian bắt đầu"
         start_time_hour: "Thời gian bắt đầu"
+        sharing: "Sharing"
       meeting_agenda_item:
         title: "tiêu đề"
         author: "tác giả"
@@ -124,7 +125,6 @@ vi:
   label_meeting_template_edit: "Edit template"
   label_meeting_create_from_template: "Create meeting from template"
   label_meeting_new: "Cuộc họp mới"
-  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   label_meeting_new_dynamic: "Cuộc họp một lần mới"
   label_meeting_new_recurring: "Cuộc họp định kỳ mới"
   label_meeting_create: "Tạo cuộc họp"
@@ -190,6 +190,8 @@ vi:
   label_time_zone: "Múi giờ"
   label_start_date: "Ngày bắt đầu"
   label_subscribe_icalendar: "Đăng ký lịch"
+  caption_meeting_template_select: "Select a template to automatically copy its agenda items"
+  caption_template_project_select: "Please select the project in which to create this meeting template"
   meeting:
     participants:
       label:
@@ -209,7 +211,8 @@ vi:
         heading: "Không có người tham gia"
         description: "Chưa có người tham gia."
     attachments:
-      template: "Các tệp đính kèm này sẽ được đưa vào tất cả các cuộc họp trong tương lai trong chuỗi."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Các tệp đính kèm có sẵn cho tất cả những người tham gia cuộc họp. Bạn cũng có thể kéo và thả chúng vào ghi chú mục chương trình nghị sự."
     copy:
       title: "Sao chép cuộc họp: %{title}"
@@ -285,6 +288,8 @@ vi:
         template:
           title: "Delete template"
           heading: "Delete this template?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Hủy cuộc họp diễn ra"
         heading: "Hủy cuộc họp này diễn ra?"
@@ -605,12 +610,17 @@ vi:
   text_meeting_closed_dropdown_description: "Cuộc họp này đã kết thúc. Bạn không thể sửa đổi các mục hoặc kết quả của chương trình nghị sự nữa."
   text_meeting_draft_banner: "Bạn hiện đang ở chế độ nháp. Cuộc họp này sẽ không gửi bất kỳ cập nhật lịch hoặc lời mời nào, ngay cả khi bạn thay đổi chi tiết cuộc họp hoặc thêm/xóa người tham gia."
   text_onetime_meeting_template_banner: "You are currently editing a meeting template. You can use this template to create one-time meetings with a predefined agenda. Changes will not affect already-created meetings."
-  text_onetime_meeting_template_empty_heading: "Your meeting template is empty"
-  text_onetime_meeting_template_description: "You can add agenda items, participants, and attachments to this template."
+  text_onetime_meeting_template_empty_heading: "This meeting template is empty"
+  text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
   text_exit_draft_mode_dialog_title: "Mở cuộc họp này và gửi lời mời?"
   text_exit_draft_mode_dialog_subtitle: "Bạn không thể quay lại chế độ nháp sau khi lên lịch cuộc họp."
   text_exit_draft_mode_dialog_template_title: "Mở lần xuất hiện đầu tiên của chuỗi cuộc họp này?"
   text_exit_draft_mode_dialog_template_subtitle: "Bạn không thể quay lại chế độ nháp sau này."
+  label_meeting_template_sharing: "Sharing"
+  label_meeting_template_sharing_none: "Only this project"
+  label_meeting_template_sharing_descendants: "Subprojects"
+  label_meeting_template_sharing_system: "All projects"
+  text_meeting_template_sharing_description: "This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied."
   text_meeting_not_editable_anymore: "Cuộc họp này không thể chỉnh sửa được nữa."
   text_meeting_not_present_anymore: "Cuộc họp này đã bị xóa. Vui lòng chọn một cuộc họp khác."
   label_add_work_package_to_meeting_dialog_title: "Chọn cuộc họp"

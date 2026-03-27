@@ -36,12 +36,20 @@ module Backlogs
 
     delegate :sprint, :stories, to: :backlog
 
-    def initialize(backlog:, project:, current_user: User.current)
+    def initialize(backlog:, project:, current_user: User.current, **system_arguments)
       super()
 
       @backlog = backlog
       @project = project
       @current_user = current_user
+
+      @system_arguments = system_arguments
+      @system_arguments[:menu_id] = dom_target(backlog, :menu)
+      @system_arguments[:anchor_align] = :end
+      @system_arguments[:classes] = class_names(
+        @system_arguments[:classes],
+        "hide-when-print"
+      )
     end
 
     private

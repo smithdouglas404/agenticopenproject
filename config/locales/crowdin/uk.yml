@@ -83,9 +83,9 @@ uk:
         confirmation: "Справді видалити цей маркер підтримки версії Enterprise?"
       create_dialog:
         title: "Додати маркер Enterprise"
-        type_token_text: "Your Enterprise token text"
+        type_token_text: "Текст вашого маркера Enterprise"
         token_placeholder: "Вставте тут свій маркер підтримки версії Enterprise"
-        token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
+        token_caption: "Щоб дізнатися більше про те, як активувати версію Enterprise, перегляньте [документацію](docs_url)."
       add_token: "Додати маркер підтримки версії Enterprise"
       replace_token: "Замініть поточний маркер підтримки"
       order: "Замовте локальну версію Enterprise"
@@ -111,196 +111,207 @@ uk:
         text: "Окремі дії користувача (напр., оновлення робочого пакета двічі) зводяться в одну дію, якщо відмінність у часі між ними менша за вказаний проміжок часу. Їх буде виведено як окремі дії в межах додатка. Крім того, це призведе до затримки сповіщень на такий самий проміжок часу, що зменшить кількість електронних листів, які надсилатимуться, а також вплине на затримку %{webhook_link}."
         link: "вебгука"
     import:
-      title: "Import"
+      title: "Iмпорт"
     jira:
-      title: "Jira Import"
-      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      title: "Імпорт із Jira"
+      description: "Використовуйте цей інструмент для імпорту даних зі свого екземпляра Jira. Ви можете налаштувати кілька хостів Jira й вибрати, що імпортувати в кожному циклі імпорту."
       errors:
-        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+        cannot_delete_with_imports: "Не вдається видалити хост Jira з наявними процесами імпорту"
       blank:
-        title: "No Jira hosts configured yet"
-        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+        title: "Ще немає налаштованих хостів Jira"
+        description: "Налаштуйте хост Jira, щоб почати імпорт елементів із Jira в цей екземпляр OpenProject."
       configuration:
-        title: "Jira configuration"
-        new: "New configuration"
+        title: "Конфігурація Jira"
+        new: "Нова конфігурація"
       banner:
-        title: "Limited import"
-        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        title: "Обмежений імпорт"
+        description: "Цей інструмент зараз доступний лише як бета-версія і може імпортувати тільки основні дані: проєкти, задачі (назву, заголовок, опис, вкладення), користувачів (ім’я, електронну адресу, дані про участь у проєктах), статуси й типи. Він не може імпортувати робочі процеси, користувацькі поля, зв’язки між задачами чи дозволи. Зараз ми підтримуємо лише версії Jira Server / Data Center 10.x і 11.x. Хмарні екземпляри поки що не підтримуються."
       form:
         fields:
-          name: "Name"
-          url: "Jira Server/Data Center URL"
-          personal_access_token: "Personal Access Token"
-        button_add: "Add configuration"
-        button_save: "Save configuration"
-        button_test: "Test configuration"
-        button_delete_token: "Delete token"
-        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
-        label_testing: "Testing configuration..."
-      token_deleted: "Token was successfully deleted."
+          name: "Назва"
+          url: "URL-адреса Jira Server / Data Center"
+          personal_access_token: "Персональний маркер доступу"
+        button_add: "Додати конфігурацію"
+        button_save: "Зберегти конфігурацію"
+        button_test: "Перевірити конфігурацію"
+        button_delete_token: "Видалити маркер"
+        delete_token_confirm: "Справді видалити маркер? З’єднання з Jira буде розірвано."
+        label_testing: "Перевірка конфігурації…"
+      token_deleted: "Маркер успішно видалено."
       test:
-        success: "Successfully connected to %{server} (version %{version})"
-        failed: "Connection failed: Unable to retrieve server information"
-        error: "An unexpected error occurred while testing the connection"
-        connection_error: "Connection error: %{message}"
-        parse_error: "Failed to parse the response from Jira server. The server may not be a valid Jira instance."
-        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
-        token_error: "Invalid API token. Please check your credentials in the configuration."
-        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
-        invalid_url: "Please provide a valid URL"
+        success: "Встановлено з’єднання із сервером %{server} (версії %{version})"
+        failed: "З’єднання не встановлено: не вдалось отримати інформацію про сервер"
+        error: "Під час перевірки з’єднання сталася неочікувана помилка"
+        connection_error: "Помилка з’єднання: %{message}"
+        parse_error: "Не вдалося проаналізувати відповідь сервера. Можливо, він не є дійсним екземпляром Jira."
+        api_error: "Інтерфейс Jira API повернув статус помилки «%{status}». Перевірте URL-адресу свого екземпляра Jira й маркер API."
+        token_error: "Недійсний маркер API. Перевірте облікові дані, що використовуються в конфігурації."
+        missing_credentials: "Укажіть URL-адресу й персональний маркер доступу для перевірки з’єднання"
+        invalid_url: "Укажіть дійсну URL-адресу"
       client:
-        connection_error: "Failed to connect to Jira server: %{message}"
-        connection_timeout: "Connection to Jira server timed out: %{message}"
-        parse_error: "Failed to parse Jira API response: %{message}"
-        api_error: "Jira API returned error status %{status}"
+        connection_error: "Не вдалося під’єднатися до сервера Jira: %{message}"
+        connection_timeout: "Час очікування на встановлення з’єднання до сервера Jira минув: %{message}"
+        parse_error: "Не вдалося проаналізувати відповідь Jira API: %{message}"
+        api_error: "Інтерфейс Jira API повернув статус помилки «%{status}»"
       columns:
-        projects: "Projects"
-        last_change: "Last change"
-        added: "Added"
-        label_ago: "%{amount} ago"
+        projects: "Проєкти"
+        last_change: "Остання зміна"
+        added: "Додано"
+        label_ago: "%{amount} тому"
       run:
-        title: "Import run"
-        history: "History"
-        remove_error: "A Jira import cannot be removed while it is running"
-        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        title: "Цикл імпорту"
+        history: "Історія"
+        remove_error: "Імпорт Jira не можна видалити, поки він виконується"
+        import_blocked_error: "Зараз виконується або очікує на перевірку ще один цикл імпорту Jira. Завершіть або скасуйте його, якщо потрібно почати новий імпорт."
         blank:
-          title: "No import runs set up yet"
-          description: "Create an import run to start importing information from this Jira instance"
+          title: "Немає налаштованих циклів імпорту"
+          description: "Створіть цикл імпорту, щоб почати переносити інформацію із цього екземпляра Jira"
         index:
-          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after but not afterwards."
-          button_import_run: "Import run"
-          button_edit_configuration: "Edit configuration"
+          description: "Ви можете переносити різні набори даних у різних циклах імпорту. Цикл імпорту можна скасувати відразу після виконання в режимі перевірки, але не після завершення."
+          button_import_run: "Цикл імпорту"
+          button_edit_configuration: "Змінити конфігурацію"
         status:
-          initial: "Start"
-          instance_meta_fetching: "Fetching meta data"
-          instance_meta_error: "Error fetching meta data"
-          instance_meta_done: "Meta data fetched"
-          configuring: "Select scope"
-          projects_meta_fetching: "Fetching project data"
-          projects_meta_error: "Error fetching project data"
-          projects_meta_done: "Data gathered"
-          importing: "In progress"
-          import_error: "Error during import"
-          imported: "Review mode"
-          reverting: "Reverting"
-          revert_error: "Error during revert"
-          reverted: "Reverted"
-          completed: "Completed"
+          initial: "Початок"
+          instance_meta_fetching: "Отримання метаданих"
+          instance_meta_error: "Не вдалось отримати метадані"
+          instance_meta_done: "Метадані отримано"
+          import_scope: "Select scope"
+          configuring: "Вибір обсягу"
+          projects_meta_fetching: "Отримання даних про проєкт"
+          projects_meta_error: "Не вдалось отримати дані про проєкт"
+          projects_meta_done: "Дані зібрано"
+          importing: "Виконання"
+          import_error: "Помилка під час імпорту"
+          imported: "Режим перевірки"
+          reverting: "Скасування внесених змін"
+          revert_error: "Помилка під час скасування внесених змін"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
+          reverted: "Внесені зміни скасовано"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
-          button_retry: "Retry"
+          button_retry: "Повторити спробу"
           parts:
             projects:
-              one: "1 project"
-              few: "%{count} projects"
-              many: "%{count} projects"
-              other: "%{count} projects"
+              one: "1 проєкт"
+              few: "%{count} проєкти"
+              many: "%{count} проєктів"
+              other: "%{count} проєкту"
             issues:
-              one: "1 issue"
-              few: "%{count} issues"
-              many: "%{count} issues"
-              other: "%{count} issues"
+              one: "1 задача"
+              few: "%{count} задачі"
+              many: "%{count} задач"
+              other: "%{count} задачі"
             work_packages:
-              one: "1 work package"
-              few: "%{count} work packages"
-              many: "%{count} work packages"
-              other: "%{count} work packages"
+              one: "1 пакет робіт"
+              few: "%{count} пакети робіт"
+              many: "%{count} пакетів робіт"
+              other: "%{count} пакета робіт"
             types:
-              one: "1 type"
-              few: "%{count} types"
-              many: "%{count} types"
-              other: "%{count} types"
+              one: "1 тип"
+              few: "%{count} типи"
+              many: "%{count} типів"
+              other: "%{count} типу"
             statuses:
-              one: "1 status"
-              few: "%{count} statuses"
-              many: "%{count} statuses"
-              other: "%{count} statuses"
+              one: "1 статус"
+              few: "%{count} статуси"
+              many: "%{count} статусів"
+              other: "%{count} статусу"
             users:
-              one: "1 user"
-              few: "%{count} users"
-              many: "%{count} users"
-              other: "%{count} users"
+              one: "1 користувач"
+              few: "%{count} користувачі"
+              many: "%{count} користувачів"
+              other: "%{count} користувача"
           groups:
             fetch:
-              title: "Get base data"
+              title: "Отримайте базові дані"
             groups_and_users:
-              title: "Groups and Users"
+              title: "Групи й користувачі"
             configuration:
-              title: "Configure import"
+              title: "Налаштуйте імпорт"
             confirming:
-              title: "Confirm and import"
+              title: "Підтвердьте й імпортуйте"
             review:
-              title: "Review import"
+              title: "Перевірте імпорт"
           sections:
             fetch_data:
-              title: "Fetch instance meta data"
-              caption_done: "Completed"
-              description: "Click the button below to query the host to see what data is available to import."
-              button_fetch: "Check available data from host"
-              label_progress: "Fetching data from Jira..."
+              title: "Отримайте метадані екземпляра"
+              caption_done: "Завершено"
+              description: "Перевірте, які дані доступні для імпорту в хост-екземплярі Jira."
+              button_fetch: "Переглянути доступні дані"
+              label_progress: "Отримання даних із Jira…"
             groups_and_users:
-              title: "Groups and Users"
+              title: "Групи й користувачі"
             import_scope:
-              title: "Import scope"
-              caption: "Choose what you want to import into OpenProject"
-              caption_done: "Completed"
-              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host URL offers for import and what this tools is able to import right now."
-              description: "Select what data you want to import from the available data fetched from the host."
-              label_available_data: "Available data"
-              label_not_available_data: "Not available for import"
-              button_select_projects: "Select projects to import"
-              button_continue: "Continue"
-              label_import: "Select which projects you would like to import."
-              button_select: "Select projects"
-              label_selected_data: "Selected data for import"
-              label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
+              title: "Обсяг імпорту"
+              caption: "Виберіть вміст, який потрібно імпортувати в OpenProject"
+              caption_done: "Завершено"
+              label_info: "Зверніть увагу: цей інструмент доступний лише в бета-версії і не може імпортувати всі типи даних. Ось короткий опис вмісту, доступного для імпорту в хост-екземплярі Jira, а також даних, які інструмент може перенести прямо зараз."
+              description: "Виберіть дані, які потрібно імпортувати з доступного вмісту, отриманого з хост-екземпляра Jira."
+              label_available_data: "Доступні дані"
+              label_not_available_data: "Недоступно для імпорту"
+              button_select_projects: "Виберіть проєкти для імпорту"
+              button_continue: "Продовжити"
+              label_import: "Виберіть проєкти, які ви хочете імпортувати."
+              button_select: "Вибрати проєкти"
+              label_selected_data: "Дані, вибрані для імпорту"
+              label_progress: "Отримання даних із Jira…"
               elements:
-                relations: "Relations between issues"
-                workflows: "Custom workflows"
-                users: "Users"
-                sprints: "Sprints"
-                schemes: "Schemas"
-                permissions: "Permissions, roles"
+                relations: "Зв’язки між задачами"
+                workflows: "Робочі процеси на рівні проєктів"
+                users: "Користувачі"
+                sprints: "Спринти"
+                schemes: "Схеми"
+                permissions: "Дозволи для користувачів, груп і проєктів"
             confirm_import:
-              title: "Import data"
-              caption: "Review your import settings and start the import"
-              caption_done: "Completed"
-              label_available_data: "Available data to import"
-              button_start: "Start import"
-              description: "You are about to start an import run with the following settings."
-              label_progress: "Import in progress..."
-              label_import_data: "Currently importing"
+              title: "Імпортуйте дані"
+              caption: "Перегляньте налаштування імпорту й запустіть його"
+              caption_done: "Завершено"
+              label_available_data: "Дані, доступні для імпорту"
+              button_start: "Почати імпорт"
+              description: "Ви збираєтеся запустити імпорт із наведеними далі налаштуваннями."
+              label_progress: "Виконується імпорт…"
+              label_import_data: "Зараз імпортується"
             import_result:
-              title: "Import run results"
-              caption: "Review import run or revert import"
-              info: "Import run successful."
-              label_results: "Imported"
-              label_revert: "Revert import"
-              button_revert: "Revert import"
-              button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
-              label_finalizing_progress: "Finalizing import..."
-              label_finalized: "Import finalized."
-              label_revert_progress: "Reverting import..."
-              label_reverted: "Import reverted."
+              title: "Результати циклу імпорту"
+              caption: "Перегляньте дані про цикл імпорту або скасуйте внесені зміни"
+              info: "Циклу імпорту успішно виконано."
+              label_results: "Імпортовано"
+              label_revert: "Скасувати імпорт"
+              button_revert: "Скасувати імпорт"
+              button_done: "Завершити імпорт"
+              preview_description: 'Імпортовані дані зараз перебувають у режимі перевірки. Натисніть «Завершити імпорт», щоб застосувати зміни, або «Скасувати імпорт», щоб скасувати всі зміни, внесені під час цього циклу.'
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
+              label_revert_progress: "Скасування імпорту…"
+              label_reverted: "Імпорт скасовано."
           select_dialog:
-            filter_projects: "Filter by text"
+            filter_projects: "Фільтрування за текстом"
+          import_dialog:
+            title: "Почати цей імпорт?"
+            confirm_button: "Почати імпорт"
+            description: >
+              Цей модуль імпорту є альфа-функцією. Він ще не може імпортувати всі дані з Jira, тому в результаті в екземплярі OpenProject можуть бути неповні дані. <b>Не використовуйте середовище для експлуатації і створіть резервну копію даних OpenProject, перш ніж починати роботу із цією функцією.</b>
+            confirm: "Я розумію; відповідну підготовку виконано"
           revert_dialog:
-            title: "Permanently revert this import?"
-            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
-            confirm: "I understand that this reversion will delete data permanently"
+            title: "Остаточно скасувати цей імпорт?"
+            description: "Буде видалено всі імпортовані об’єкти (зокрема цілі проєкти), навіть якщо користувачі виконували з ними дії в OpenProject після імпорту."
+            confirm: "Я розумію, що скасування внесених змін призведе до остаточного видалення даних"
           finalize_dialog:
-            title: "Finalize this import?"
-            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
-            confirm: "I understand that this action cannot be undone"
-            confirm_button: "Understood"
+            title: "Завершити цей імпорт?"
+            description: "Якщо ви завершите цей імпорт, то більше не зможете його скасувати. Усі імпортовані дані буде остаточно збережено в системі."
+            confirm: "Я розумію, що цю дію не можна відмінити"
+            confirm_button: "Зрозуміло"
           select_projects:
-            title: "Select projects"
+            title: "Виберіть проєкти"
     mcp_configurations:
       index:
-        description: "Протокол контексту моделі дає змогу агентам ШІ надавати своїм користувачам інструменти й ресурси, доступні в цьому екземплярі OpenProject."
+        description: "Протокол контексту моделі дає змогу агентам ШІ надавати користувачам інструменти й ресурси, доступні в цьому екземплярі OpenProject. Ця функція досі доступна лише в бета-версії."
         resources_heading: "Ресурси"
-        resources_description: "OpenProject implements the following resources. Each can be enabled, renamed and described as you want. For more information, please refer to the [documentation on MCP resources](docs_url)."
+        resources_description: "OpenProject реалізує наведені нижче ресурси. Кожен із них можна ввімкнути, перейменувати й описати як завгодно. Щоб дізнатися більше, ознайомтеся з [документацією щодо ресурсів MCP](docs_url)."
         resources_submit: "Оновити ресурси"
         tools_heading: "Інструменти"
         tools_description: "OpenProject реалізує наведені нижче інструменти. Кожен із них можна ввімкнути, перейменувати й описати як завгодно. Щоб дізнатися більше, ознайомтеся з [документацією щодо інструментів MCP] (docs_url)."
@@ -309,17 +320,17 @@ uk:
         success: "Конфігурації MCP оновлено."
       server_form:
         description_caption: "Опис сервера MCP для інших додатків, які підключаються до нього."
-        title_caption: "A short title shown to applications that connect to the MCP server."
-        tool_response_format: "Tool response format"
-        tool_response_format_content_only_label: "Content only"
+        title_caption: "Короткий заголовок, який відображається для додатків, що підключаються до сервера MCP."
+        tool_response_format: "Формат відповіді інструмента"
+        tool_response_format_content_only_label: "Лише звичайний вміст"
         tool_response_format_content_only_caption: >
-          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
-        tool_response_format_full_label: "Full"
+          Виберіть цей варіант, якщо клієнти MCP, які підключаються до цього екземпляра, не підтримують структурований вміст. У відповідях інструмента буде лише звичайний текстовий вміст, і вони не включатимуть структуровану версію.
+        tool_response_format_full_label: "Увесь вміст"
         tool_response_format_full_caption: >
-          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
-        tool_response_format_structured_only_label: "Structured content only"
+          Цей варіант забезпечує найкращу сумісність. Відповіді інструмента включатимуть як звичайний, так і структурований вміст, що дозволить клієнтам MCP вибирати, який формат читати. Це може збільшити кількість токенів, які має обробити мовна модель, що, імовірно, призведе до зростання витрат і зниження продуктивності.
+        tool_response_format_structured_only_label: "Лише структурований вміст"
         tool_response_format_structured_only_caption: >
-          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
+          Виберіть цей варіант, якщо ви впевнені, що клієнти MCP, які підключаються до цього екземпляра, підтримують структурований вміст. У відповідях інструмента буде лише структурований вміст, і вони не включатимуть його текстове представлення.
       update:
         failure: "Не вдалось оновити конфігурацію MCP."
         success: "Конфігурацію MCP оновлено."
@@ -555,7 +566,7 @@ uk:
     contained_in_type: "Міститься за типом"
     confirm_destroy_option: "Видалення опції призведе до видалення всіх його подій (наприклад, у робочих пакетах). Дійсно видалити його?"
     reorder_alphabetical: "Перевпорядкувати значення за алфавітом"
-    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
+    reorder_confirmation: "Попередження: поточний порядок доступних значень, а також усі незбережені значення буде втрачено. Справді продовжити?"
     placeholder_version_select: "Спочатку потрібно вибрати пакет робіт або проєкт"
     calculated_field_not_editable: "Атрибут не підлягає редагуванню. Його значення обчислюється автоматично."
     no_role_assigment: "Роль не призначено"
@@ -583,13 +594,13 @@ uk:
       formula:
         project: "Додайте числові значення або введіть «/» для пошуку атрибута чи математичного оператора."
       regexp:
-        all: "eg. ^[A-Z0-9]+$"
-        project: "eg. ^[A-Z0-9]+$"
+        all: "наприклад, ^[A-Z0-9]+$"
+        project: "наприклад, ^[A-Z0-9]+$"
       min_max:
-        all: "0 means no restriction"
-        project: "0 means no restriction"
+        all: "0 означає відсутність обмежень"
+        project: "0 означає відсутність обмежень"
       has_comment:
-        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
+        project: "Дає змогу користувачу додати коментар до атрибута проєкту при виборі значення на сторінці «Огляд проєкту»."
     tab:
       no_results_title_text: Наразі немає спеціальних полів.
       no_results_content_text: Створіть нове спеціальне поле
@@ -606,14 +617,20 @@ uk:
   danger_dialog:
     confirmation_live_message_checked: "Кнопка для продовження активна."
     confirmation_live_message_unchecked: "Кнопка для продовження зараз неактивна. Щоб продовжити, поставте прапорець."
+  mcp_configurations:
+    server_url_component:
+      caption: "URL-адреса для доступу до сервера MCP OpenProject. Потрібна для налаштування клієнтів MCP."
+      label: "URL-адреса сервера"
   op_dry_validation:
     or: "або"
     errors:
+      unexpected_key: "is not allowed."
       array?: "має бути масивом."
       decimal?: "має бути десятковим числом."
       defined: "не має визначатися."
       eql?: "має бути «%{left}»."
       filled?: "— слід заповнити."
+      format?: "is in invalid format."
       greater_or_equal_zero: "має бути більше ніж 0 або дорівнювати йому."
       gteq?: "має бути більше ніж %{num} або дорівнювати цьому значенню."
       hash?: "має бути гешом."
@@ -640,7 +657,9 @@ uk:
         parent:
           not_descendant: "має бути нащадком кореня ієрархії."
       str?: "має бути рядком."
+      time?: "must be a time."
       type?: "має бути типом «%{type}»."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Тип копії робочого процесу"
       enabled: "Увімкнено"
@@ -812,7 +831,7 @@ uk:
         is_for_all_blank_slate:
           heading: Для всіх проєктів
           description: Цей атрибут проєкту активовано в усіх проєктах, оскільки встановлено прапорець «Для всіх проєктів». Його не можна деактивувати для окремих проєктів.
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
+        enabled_via_assignee_when_submitted_html: Цей атрибут проєкту не можна вимкнути, оскільки він використовується як <a href=%{pir_submission_url} target="_blank">виконавець на момент подання</a> для запитів на ініціювання проєкту.
       types:
         no_results_title_text: Наразі немає доступних типів.
         form:
@@ -828,8 +847,8 @@ uk:
         new_label: "Новий пріоритет"
       creation_wizard:
         errors:
-          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
-          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
+          no_work_package_type: "Не вдалося ввімкнути запит на ініціювання проєкту, оскільки для цього потрібен принаймні один активний тип пакета робіт, а в цьому проєкті немає жодного. Додайте в нього принаймні один тип пакета робіт."
+          no_status_when_submitted: "Не вдалося ввімкнути запит на ініціювання проєкту, оскільки з типом пакета робіт «%{type}» має бути пов’язано принаймні один статус. Увімкніть для нього принаймні один робочий процес статусу."
         export:
           description_attachment_export: "Створений артефакт буде збережено як вкладення у форматі PDF у пакеті робіт артефакту."
           description_file_link_export: "Пакет робіт артефакту міститиме посилання на файл PDF, що зберігатиметься в зовнішньому сховищі. Знадобиться робоче файлове сховище з папками проєкту з автоматичним керуванням для цього проєкту. Зараз підтримуються лише файлові сховища Nextcloud."
@@ -843,7 +862,7 @@ uk:
         label_request_submission: "Подання запиту"
         project_attributes_description: >
           Виберіть атрибути проєкту, які слід включити в запит на ініціювання проєкту. Цей список містить лише [атрибути проєкту](project_attributes_url), увімкнені для цього проєкту.
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: Атрибут проєкту не можна вимкнути для цього запиту на ініціювання проєкту, оскільки вказано, що він обов’язковий. Це налаштування може змінити адміністратор екземпляра в <a href=%{admin_settings_url} target="_blank">розділі «Адміністрування»</a>.
     status:
       button_edit: Редагувати статус
     wizard:
@@ -1380,11 +1399,15 @@ uk:
         dependencies: "Залежності"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
-        projects: "Projects"
+        projects: "Проєкти"
+      "import/jira":
+        name: "Назва екземпляра Jira"
+        url: "URL-адреса екземпляра Jira"
+        personal_access_token: "Персональний маркер доступу"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Показувати до"
       attachment:
@@ -1430,7 +1453,7 @@ uk:
         regexp: "Регулярний вираз"
         searchable: "Доступно для пошуку"
         admin_only: "Тільки для адміністраторів"
-        has_comment: "Add a comment text field"
+        has_comment: "Додати текстове поле для коментаря"
       custom_value:
         value: "Значення"
       design_color:
@@ -1759,7 +1782,7 @@ uk:
         not_available: "– недоступно через налаштування системи."
         not_deletable: "не можна видалити."
         not_current_user: "не поточний користувач."
-        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
+        only_one_active_sprint_allowed: "дозволяється лише один активний спринт для кожного проєкту."
         not_found: "не знайдено."
         not_a_date: "не є дійсною датою."
         not_a_datetime: "не є дійсним датою."
@@ -1869,7 +1892,7 @@ uk:
         meeting:
           error_conflict: "Не вдалося зберегти, тому що зустріч була оновлена кимось іншим в цей час. Будь ласка, перезавантажте сторінку."
         message:
-          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
+          cannot_move_message_to_forum_of_different_project: "Повідомлення не можна перенести на форум іншого проєкту."
         notifications:
           at_least_one_channel: "Необхідно вказати принаймні один канал для надсилання сповіщень."
           attributes:
@@ -2128,7 +2151,7 @@ uk:
               in_use: "Це ім’я маркера вже використовується; виберіть інше"
               format: "%{message}"
         jira:
-          invalid_protocol: "Please provide a valid protocol (http or https)"
+          invalid_protocol: "Укажіть дійсний протокол (http або https)"
       template:
         body: "Перевірте наступні поля:"
         header:
@@ -2153,7 +2176,7 @@ uk:
       comment: "Коментар"
       custom_action: "Спеціальні дії"
       custom_field: "Користувацьке поле"
-      customized: "Customized"
+      customized: "Персоналізовано"
       "doorkeeper/application": "Програма OAuth"
       enterprise_token:
         one: "Маркер Enterprise"
@@ -2369,7 +2392,7 @@ uk:
     role: "роль"
     roles: "Роль"
     search: "Пошук"
-    sprint: "Sprint"
+    sprint: "Спринт"
     start_date: "Початок"
     status: "Статус"
     state: "Стан"
@@ -2780,7 +2803,8 @@ uk:
       edit_attribute_groups: Редагування груп атрибутів
       gantt_pdf_export: Експорт діаграми Ґантта в PDF
       ldap_groups: Синхронізація користувачів і груп LDAP
-      mcp_server: Сервер MCP
+      mcp_server: Model Context Protocol (MCP)
+      meeting_templates: Шаблони нарад, які можна використовувати повторно
       nextcloud_sso: Єдиний вхід для сховища Nextcloud
       one_drive_sharepoint_file_storage: Сховище файлів OneDrive / SharePoint
       placeholder_users: Прототипи користувачів
@@ -2858,7 +2882,9 @@ uk:
         title: "Користувацькі дії"
         description: "Користувацькі дії – це ярлики набору попередньо визначених дій, які ви можете включати в певні пакети робіт залежно від статусу, ролі, типу або проєкту."
       mcp_server:
-        description: "Інтегруйте ШІ-агентів у свій екземпляр OpenProject за допомогою MCP."
+        description: "Захищений MCP-сервер має змогу інтегрувати OpenProject у робочі процеси на основі ШІ."
+      meeting_templates:
+        description: "Налаштовуйте шаблони нарад з усталеною структурою порядку денного й заощаджуйте час, повторно використовуючи їх для створення нових нарад."
       nextcloud_sso:
         title: "Єдиний вхід для сховища Nextcloud"
         description: "Увімкніть швидку й безпечну автентифікацію для свого сховища Nextcloud завдяки технології єдиного входу. Спростіть керування доступом і покращте взаємодію користувачів зі своїм продуктом."
@@ -3171,17 +3197,18 @@ uk:
         learn_about: "Дізнайтеся більше про всі нові функції"
         missing: "Ще немає виділених функцій."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
-            Цей випуск містить різноманітні нові функції та покращення, такі як:
+            Випуск включає різноманітні нові функції і покращення, такі як:
           new_features_list:
-            line_0: Автоматизований запуск проєктів (надбудова Enterprise).
-            line_1: "Наради: додавайте нові або наявні пакети робіт як підсумки."
-            line_2: "Meetings: show iCal responses in OpenProject."
-            line_3: "Повторювані наради: копіюйте пункти порядку денного в наступну нараду."
-            line_4: "Випуск Community: виділення атрибутів."
-            line_5: Попередження перед відкриттям зовнішніх посилань у контенті, створеному користувачем (надбудова Enterprise).
-            line_6: Покращення продуктивності й взаємодії з користувачем, зокрема на вкладці «Дії» і в модулі «Документи».
+            line_0: Робочі процеси на основі ШІ із захищеним MCP-сервером (починаючи з тарифного плану Professional)
+            line_1: Удосконалена домашня сторінка проєкту з новим віджетом для бюджетів і покращеною доступністю
+            line_2: "Наради: шаблони нарад (починаючи з тарифного плану Basic)"
+            line_3: Більша прозорість завдяки коментарям до атрибутів проєктів
+            line_4: Удосконалена функція експорту у форматі PDF
+            line_5: Кращий захист при роботі із зовнішніми посиланнями (починаючи з тарифного плану Premium)
+            line_6: Покращення UI/UX у модулі беклогів
+            line_7: Уніфіковані форми з користувацькими полями
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -3199,9 +3226,10 @@ uk:
   journals:
     changes_retracted: "Зміни було відхилено."
     caused_changes:
+      budget_deleted: "Бюджет видалено"
       dates_changed: "Дати змінено"
       default_attribute_written: "Атрибути лише для читання записано"
-      import: "Imported"
+      import: "Імпортовано"
       progress_mode_changed_to_status_based: "Обчислення прогресу оновлено"
       status_changed: "Статус «%{status_name}»"
       system_update: "Оновлення системи OpenProject"
@@ -3210,20 +3238,21 @@ uk:
       total_percent_complete_mode_changed_to_simple_average: "Обчислення підсумків атрибута «% завершення» тепер ґрунтується на середньому арифметичному значень лише атрибута «% завершення»."
     cause_descriptions:
       import:
-        header: "changes by %{author}"
-        field_changed: "%{field} changed from %{old_value} to %{new_value}"
-        field_set: "%{field} set to %{value}"
-        field_removed: "%{field} removed"
-        field_updated: "%{field}"
-        deleted_with_diff: "%{field} deleted (%{link})"
-        changed_with_diff: "%{field} changed (%{link})"
-        set_with_diff: "%{field} set (%{link})"
+        header: "зміни вніс (внесла) %{author}"
+        field_changed: "Значення в полі «%{field}» змінено з «%{old_value}» на «%{new_value}»"
+        field_set: "Для поля «%{field}» вибрано значення «%{value}»"
+        field_removed: "Поле «%{field}» видалено"
+        field_updated: "Поле «%{field}» оновлено"
+        deleted_with_diff: "Поле «%{field}» видалено (%{link})"
+        changed_with_diff: "Поле «%{field}» змінено (%{link})"
+        set_with_diff: "Поле «%{field}» налаштовано (%{link})"
       work_package_predecessor_changed_times: внесенням змін у попередній елемент %{link}
       work_package_parent_changed_times: внесенням змін у батькіський елемент %{link}
       work_package_children_changed_times: внесенням змін у дочірній елемент %{link}
       work_package_related_changed_times: внесенням змін у пов’язаний елемент %{link}
       work_package_duplicate_closed: Статус автоматично оновлено на основі дубліката пакета робіт %{link}
       unaccessable_work_package_changed: внесенням змін у пов’язаний пакет робіт
+      budget_deleted: Бюджет видалено
       working_days_changed:
         changed: "внесенням змін у робочі дні (%{changes})"
         days:
@@ -3304,7 +3333,7 @@ uk:
         active_tokens: "Активні маркери"
         blank_description: "Для вас не налаштовано й не активовано доступ до сторонніх додатків."
         blank_title: "Немає маркера додатка OAuth"
-        last_refreshed_at: "Last refreshed at"
+        last_refreshed_at: "Востаннє оновлено о"
         title: "OAuth"
         table_title: "Маркери додатків OAuth"
         text_hint: "Маркери додатків OAuth дають змогу стороннім додаткам обмінюватися даними із цим екземпляром OpenProject."
@@ -3390,7 +3419,7 @@ uk:
   label_always_visible: "Завжди відображається"
   label_announcement: "Оголошення"
   label_angular: "AngularJS"
-  label_app_modules: "%{app_title} modules"
+  label_app_modules: "Модулі %{app_title}"
   label_api_access_key: "Ключ доступу до API"
   label_api_access_key_created_on: "Ключ доступу до API створено %{value} тому"
   label_api_access_key_type: "API"
@@ -3544,7 +3573,7 @@ uk:
   label_duplicates: "Дублікати"
   label_edit: "Редагувати"
   label_edit_x: "Редагувати: %{x}"
-  label_view_x: "View: %{x}"
+  label_view_x: "Переглянути: %{x}"
   label_enable_multi_select: "Перемкнути мультиселекцію"
   label_enabled_project_custom_fields: "Увімкнено спеціальні поля"
   label_enabled_project_modules: "Включені модулі"
@@ -3589,7 +3618,6 @@ uk:
   label_float: "З плаваючою крапкою"
   label_folder: "Папка"
   label_follows: "слідкувати"
-  label_force_user_language_to_default: "Встановити мову користувачів, які мають не підтримувану мову, за умовчанням"
   label_form_configuration: "Конфігурація форми"
   label_formula: "Формула"
   label_gantt_chart: "Діаграма Ґанта"
@@ -3627,7 +3655,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -3649,7 +3677,7 @@ uk:
   label_external_links: "Зовнішні посилання"
   label_locale: "Мова й регіон"
   label_jump_to_a_project: "Перейти до проекту..."
-  label_jira_import: "Jira Import"
+  label_jira_import: "Імпорт із Jira"
   label_keyword_plural: "Ключові слова"
   label_language_based: "На основі мови користувача"
   label_last_activity: "Остання активність"
@@ -3672,7 +3700,7 @@ uk:
   label_lock_user: "Заблокувати користувача"
   label_logged_as: "Ви увійшли як"
   label_login: "Увійти"
-  label_custom_comment: "%{name} comment"
+  label_custom_comment: "Коментар до атрибута «%{name}»"
   label_custom_logo: "Користувацький логотип для ПК"
   label_custom_logo_mobile: "Користувацький логотип для мобільного"
   label_custom_export_logo: "Користувацький логотип експорту"
@@ -3968,12 +3996,6 @@ uk:
   label_user_named: "User %{name}"
   label_user_activity: "Дії користувача %{value}"
   label_user_anonymous: "Невідомий"
-  label_user_mail_option_all: "Для всіх подій у всіх моїх проектах"
-  label_user_mail_option_none: "Ніяких подій"
-  label_user_mail_option_only_assigned: "Тільки за те що я призначений"
-  label_user_mail_option_only_my_events: "Тільки для речей які я дивлюся чи я займаюся"
-  label_user_mail_option_only_owner: "Тільки для речей, за якими я спостерігаю або є власником"
-  label_user_mail_option_selected: "Для будь-якої події на вибраних проектах"
   label_user_menu: "Меню користувача"
   label_user_new: "Новий користувач"
   label_user_plural: "Користувачі"
@@ -4013,7 +4035,6 @@ uk:
   label_wiki_show_index_page_link: "Показати пункт підменю \"Зміст\""
   label_wiki_show_menu_item: "Показати як пункт меню в навігації по проекту"
   label_wiki_show_new_page_link: "Показати елемент підменю \"Створити нову початкову сторінку\""
-  label_wiki_show_submenu_item: "Показати як пункт підменю "
   label_wiki_start: "Початкова сторінка"
   label_work: "Робота"
   label_work_package: "Робочий пакет"
@@ -4296,12 +4317,13 @@ uk:
   notice_parent_item_not_found: "Батьківський об’єкт не знайдено."
   notice_project_not_deleted: "Проект не був видалений."
   notice_project_not_found: "Проєкт не знайдено."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Підключення успішно встановлене."
   notice_successful_create: "Створення успішно завершене."
   notice_successful_delete: "Видалення успішно завершене."
   notice_successful_cancel: "Успішно видалено."
   notice_successful_update: "Успішно оновлено."
-  notice_successful_move: "Successful move from %{from} to %{to}."
+  notice_successful_move: "Успішне перенесення з %{from} у %{to}."
   notice_unsuccessful_create: "Не вдалося створити."
   notice_unsuccessful_create_with_reason: "Не вдалося створити: %{reason}"
   notice_unsuccessful_update: "Не вдалось оновити."
@@ -4464,7 +4486,7 @@ uk:
   permission_edit_project_query: "Редагування запиту проєктів"
   placeholders:
     default: "-"
-    templated_hint: Automatically generated through type %{type}
+    templated_hint: Автоматично згенеровано з використанням типу «%{type}»
   portfolio:
     count:
       zero: "0 портфелів"
@@ -4649,9 +4671,9 @@ uk:
   setting_capture_external_links: "Захоплення зовнішніх посилань"
   setting_capture_external_links_text: >
     Якщо ввімкнено, усі зовнішні посилання у відформатованому тексті переспрямовуватимуть на попереджувальну сторінку перед переходом із додатка. Це допомагає захистити користувачів від потенційно шкідливих зовнішніх вебсайтів.
-  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login: "Вимагати, щоб користувачі входили в систему"
   setting_capture_external_links_require_login_text: >
-    When enabled, users wanting to click on external links need to be logged in before being able to continue.
+    Якщо ввімкнено, користувачі, які переходять за зовнішнім посиланням, мають увійти в систему, інакше не зможуть продовжити.
   setting_after_first_login_redirect_url: "Переспрямування після першого входу"
   setting_after_first_login_redirect_url_text_html: >
     Задайте шлях для переспрямування користувачів після першого входу. Якщо не задано, користувачі переспрямовуються на головну сторінку з ознайомленням. <br/>Наприклад: <code>/my/page</code>
@@ -4696,9 +4718,9 @@ uk:
   setting_smtp_password: "SMTP пароль:"
   setting_smtp_domain: "Домен SMTP HELO"
   setting_activity_days_default: "Кількість днів, відображених в Діях"
-  setting_api_tokens_enabled: "Enable API tokens"
+  setting_api_tokens_enabled: "Увімкнути маркери API"
   setting_api_tokens_enabled_caption: >
-    Decide whether users can create personal API tokens in their account settings. These tokens can be used to access the different APIs of OpenProject, such as APIv3 and MCP.
+    Виберіть, чи дозволяти користувачам створювати персональні маркери API в налаштуваннях їхніх облікових записів. Ці маркери можна використовувати для доступу до різних API OpenProject, наприклад APIv3 й MCP.
   setting_app_subtitle: "Підзаголовок додатку"
   setting_app_title: "Назва додатку"
   setting_attachment_max_size: "Максимальний розмір вкладення"
@@ -5086,7 +5108,7 @@ uk:
   text_default_administrator_account_changed: "Обліковий запис адміністратора за замовчуванням змінений"
   text_default_encoding: "По замовчуванню: UTF-8"
   text_destroy: "Видалити"
-  text_destroy_with_associated: "Існують додаткові об'єкти, асоційовані з робочими пакетами, які потрібно видалити. Ці об'єкти мають наступні типи:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Що ти хочеш зробити?"
   text_diff_truncated: "... Це порівняння (diff) було скорочене, оскільки воно перевищує максимальний розмір, який можна відобразити."
   text_email_delivery_not_configured: "Доставку електронної пошти не налаштовано, і сповіщення вимкнуто.\nНалаштуйте свій SMTP-сервер, щоб увімкнути їх."
@@ -5239,10 +5261,10 @@ uk:
     reset_failed_logins: "Скинути помилки входу"
     status_user_and_brute_force: "%{user} і %{brute_force}"
     status_change: "Зміна стану"
-    text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
+    text_change_disabled_for_provider_login: "Ім’я і електронну адресу вказав ваш постачальник облікових даних, тому їх не можна змінити."
     unlock: "Розблокувати"
     unlock_and_reset_failed_logins: "Розблокувати та скинути помилки входу до системи"
-    error_cannot_delete_user: "User cannot be deleted"
+    error_cannot_delete_user: "Користувача не можна видалити"
   version_status_closed: "закрито"
   version_status_locked: "Заблоковано"
   version_status_open: "відкрити"

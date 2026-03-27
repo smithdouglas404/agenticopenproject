@@ -172,14 +172,10 @@ module Import
               ### WORK PACKAGE
               # required because otherwise project.types does not include type and then wp creation fails.
               project.reload
-              author_name = jira_issue.payload.dig("fields", "creator", "name")
-              author = if author_name.present?
-                         User.find_by!(login: author_name)
-                       end
-              assignee_name = jira_issue.payload.dig("fields", "assignee", "name")
-              assigned_to = if assignee_name.present?
-                              User.find_by!(login: assignee_name)
-                            end
+              author_key = jira_issue.payload.dig("fields", "creator", "key")
+              author = find_user(author_key, jira_import)
+              assignee_key = jira_issue.payload.dig("fields", "assignee", "key")
+              assigned_to = find_user(assignee_key, jira_import)
               members = [author, assigned_to]
               members.uniq!
               members.compact!
@@ -188,7 +184,7 @@ module Import
               end
 
               service_call = WorkPackages::CreateService
-                               .new(user: author || User.system)
+                               .new(user: author || User.system, contract_class: EmptyContract)
                                .call(
                                  project:,
                                  subject: jira_issue.payload["fields"]["summary"],
@@ -218,7 +214,7 @@ module Import
 
                 comments = jira_issue.payload.dig("fields", "comment", "comments") || []
                 comments.each do |comment|
-                  author = User.find_by!(login: comment["author"]["name"])
+                  author = find_user(comment["author"]["key"], jira_import)
                   add_member(project:, project_role:, member: author, user:)
                   journal_service.add_comment(comment:, user: author)
                 end
@@ -227,7 +223,7 @@ module Import
 
                 attachments = jira_issue.payload.dig("fields", "attachment") || []
                 attachments.each do |attachment|
-                  author = User.find_by!(login: attachment["author"]["name"])
+                  author = find_user(attachment["author"]["key"], jira_import)
                   add_member(project:, project_role:, member: author, user:)
                   add_attachment(jira_client:, work_package:, attachment:, author:)
                 end
@@ -245,6 +241,20 @@ module Import
     # rubocop:enable Metrics/AbcSize
 
     private
+
+    def find_user(jira_user_key, jira_import)
+      return if jira_user_key.blank?
+
+      jira_user = Import::JiraUser.find_by(jira_user_key:, jira_import:)
+      if jira_user
+        JiraOpenProjectReference.find_by!(
+          jira_entity_class: "Import::JiraUser",
+          jira_entity_id: jira_user.id
+        ).op_leg
+      else
+        raise "Import::JiraUser with jira_user_key #{jira_user_key} not found!"
+      end
+    end
 
     def convert_rich_text(description)
       return "" if description.blank?
@@ -267,7 +277,7 @@ module Import
         tempfile.define_singleton_method(:content_type) { mime_type }
         tempfile.define_singleton_method(:size) { size }
         call = Attachments::CreateService
-                 .new(user: author)
+                 .new(user: author, contract_class: EmptyContract)
                  .call(container: work_package, filename:, file: tempfile)
 
         call.on_failure do
@@ -279,7 +289,7 @@ module Import
 
     def add_member(project:, project_role:, member:, user:)
       service_call = Members::CreateService
-                       .new(user:)
+                       .new(user:, contract_class: EmptyContract)
                        .call(
                          project:,
                          roles: [project_role],

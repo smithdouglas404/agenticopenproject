@@ -46,6 +46,22 @@ module Admin::Import::Jira::ImportRuns
       }
     end
 
+    def title
+      I18n.t("admin.jira.run.wizard.finalize_dialog.title")
+    end
+
+    def description
+      I18n.t("admin.jira.run.wizard.finalize_dialog.description")
+    end
+
+    def confirm_button_text
+      I18n.t("admin.jira.run.wizard.finalize_dialog.confirm_button")
+    end
+
+    def confirm
+      I18n.t("admin.jira.run.wizard.finalize_dialog.confirm")
+    end
+
     private
 
     def url

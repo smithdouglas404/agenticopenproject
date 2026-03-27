@@ -39,7 +39,7 @@ module Admin::Import::Jira::ImportRuns
         issues_label(available_issues_count),
         statuses_label(available_statuses_count),
         types_label(available_types_count),
-        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.users")
+        users_label(available_users_count)
       ].map { |label| { label:, checked: true } }
     end
 
@@ -82,6 +82,10 @@ module Admin::Import::Jira::ImportRuns
 
     def available_types_count
       model.available["total_issue_types"]
+    end
+
+    def available_users_count
+      model.available["total_users"]
     end
   end
 end

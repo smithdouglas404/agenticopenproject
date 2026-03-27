@@ -38,6 +38,7 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
     render_inline(described_class.new(...))
   end
 
+  let(:reference_time) { Time.zone.local(2025, 2, 1, 12, 0, 0) }
   let(:user) { create(:admin) }
   let(:status_code_a) { "on_track" }
   let(:status_code_b) { "at_risk" }
@@ -51,6 +52,8 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
   end
 
   before do
+    travel_to(reference_time)
+
     create(:program, parent: portfolio, status_code: status_code_a).tap do |program_a|
       create(:project, parent: program_a, status_code: status_code_a).tap do |project_a|
         create(:project, parent: project_a, status_code: status_code_b)
@@ -67,6 +70,10 @@ RSpec.describe Portfolios::DetailsComponent, type: :component do
     portfolio.reload
 
     def portfolio.favorited?; false; end
+  end
+
+  after do
+    travel_back
   end
 
   shared_examples "having a description and last update time" do

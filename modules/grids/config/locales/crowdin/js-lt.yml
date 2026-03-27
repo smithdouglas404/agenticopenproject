@@ -19,7 +19,6 @@ lt:
           title: 'Naujienos'
         project_description:
           title: 'Description'
-          no_results: "Dar neįrašytas aprašymas. Jį galima nurodyti „Projekto nustatymuose“."
         project_status:
           title: 'Status'
           not_started: 'Nepradėta'

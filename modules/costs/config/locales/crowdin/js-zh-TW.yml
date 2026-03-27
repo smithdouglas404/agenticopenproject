@@ -21,12 +21,6 @@
 #++
 zh-TW:
   js:
-    costs:
-      widgets:
-        actual_costs:
-          blankslate:
-            title: "No data for current year"
-            description: "Log spent time and costs for work packages to start tracking actual costs"
     text_are_you_sure: "是否確定？"
     myTimeTracking:
       noSpecificTime: "無指定時間"

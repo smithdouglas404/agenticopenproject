@@ -45,25 +45,6 @@ $op-backlogs-header--points-min-width-narrow: 2rem
 .op-backlogs-header--menu
   margin-left: var(--stack-gap-normal)
 
-.op-backlogs-collapsible
-  display: flex
-  flex-wrap: wrap
-  align-items: center
-  column-gap: var(--stack-gap-normal)
-  row-gap: var(--base-size-4)
-  flex: 1
-
-  &--title-line
-    display: flex
-    align-items: center
-    gap: var(--stack-gap-condensed)
-    flex: 1
-    min-width: fit-content
-
-  &--description
-    display: inline
-    white-space: nowrap
-
 .op-backlogs-story
   display: grid
   grid-template-columns: var(--control-xsmall-size) 1fr minmax($op-backlogs-header--points-min-width, max-content) auto
@@ -105,31 +86,46 @@ $op-backlogs-header--points-min-width-narrow: 2rem
   flex: 1 1 100%
   overflow: hidden
 
+//------------------ Header form responsive styling -----------------------
 // Note: Using hardcoded values because Sass doesn't interpolate variables in
 // @container query conditions.
-// Note: 655px is between $breakpoint-sm and $breakpoint-md. This was found to
-// be a sensible value after initial testing with different viewports.
-@container backlogsListsContainer (min-width: 655px)
+// Note: 1102px is twice the small breakpoint plus the 16px gap. Since we show two boxes next to each other,
+// we thus assure that the form wraps at the small breakpoint.
+@container backlogsListsContainer (min-width: 1102px)
   .op-backlogs-header-form
     .FormControl-spacingWrapper
       flex-direction: row
       column-gap: 0.5rem
+      flex-wrap: wrap
 
       & > :first-child
-        flex: 1 1 auto
-        min-width: 33%
+        flex: 1 1 33%
 
+@container backlogsListsContainer (min-width: 1550px)
+  .op-backlogs-header-form
+    .FormControl-spacingWrapper
+      & > :first-child
+        flex-basis: 25%
+
+//------------------ Header responsive styling -----------------------
+// Note: 1143px is matching the the breakpoint we use within PVC for the container query.
+// Thus the layout switches at the exact same point.
+@container backlogsListsContainer (max-width: 1443px)
+  .op-backlogs-header
+    grid-template-rows: 1fr auto
+    grid-template-areas: "collapsible points menu" "collapsible . . "
+    align-items: baseline
+
+    &--menu
+      align-self: flex-start
+      // Unfortunately, the invisible button style bites us here again.
+      margin-top: -6px
+
+
+//------------------ Mobile responsive styling -----------------------
 @container backlogsListsContainer (max-width: 654px)
   .op-backlogs-header
     grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
-
-  .op-backlogs-collapsible
-    flex-direction: column
-    align-items: flex-start
-
-    &--description
-      [data-collapsed] &
-        display: none
 
   .op-backlogs-points-label
     display: none

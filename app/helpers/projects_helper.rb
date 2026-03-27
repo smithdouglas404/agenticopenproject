@@ -93,4 +93,20 @@ module ProjectsHelper
   def projects_query_params
     safe_query_params(PROJECTS_QUERY_PARAM_NAMES)
   end
+
+  def supported_export_formats
+    ::Exports::Register.list_formats(Project).map(&:to_s)
+  end
+
+  def project_creation_wizard_name(project)
+    I18n.t(project.project_creation_wizard_artifact_name,
+           default: :project_initiation_request,
+           scope: "settings.project_initiation_request.name.options")
+  end
+
+  def portfolio_management_feature_required? = params[:workspace_type].in?(%w[portfolio program])
+
+  def portfolio_management_feature_missing?
+    portfolio_management_feature_required? && !EnterpriseToken.allows_to?(:portfolio_management)
+  end
 end

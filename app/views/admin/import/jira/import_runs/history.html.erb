@@ -31,10 +31,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title do
-      concat(render(Primer::Beta::Text.new(mr: 2)) {
-        "#{I18n.t(:"admin.jira.run.title")} #{@jira_import.id.to_s}"
-      })
-      concat(render(Admin::Import::Jira::ImportRuns::StreamableStatusBadgeComponent.new(@jira_import.current_state)))
+      render(Primer::Beta::Text.new(mr: 2)) { "#{I18n.t(:"admin.jira.run.title")} #{@jira_import.id.to_s}" }
     end
     header.with_breadcrumbs(
       [

@@ -29,6 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 <% html_title t(:label_meeting_templates) %>
 
 <%= render(MeetingTemplates::IndexPageHeaderComponent.new(project: @project)) %>
+<%= render(EnterpriseEdition::BannerComponent.new(:meeting_templates)) %>
 <%= render(MeetingTemplates::IndexSubHeaderComponent.new(project: @project)) %>
 
 <% if @templates.any? %>

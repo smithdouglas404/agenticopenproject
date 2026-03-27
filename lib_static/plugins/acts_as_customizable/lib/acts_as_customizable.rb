@@ -48,7 +48,7 @@ module Redmine
           # N.B. the default for validate should be false, however specs seem to think differently
           has_many :custom_values, -> {
             includes(:custom_field)
-              .order("#{CustomField.table_name}.position")
+              .order("#{CustomField.table_name}.position", "#{CustomValue.table_name}.id")
           }, as: :customized,
              dependent: :delete_all,
              validate: false,
@@ -175,6 +175,8 @@ module Redmine
         # uses ruby finder to avoid  N+1 queries when iterating over multiple custom
         # fields.
         def custom_comment_for(custom_field)
+          return unless can_have_custom_comments?
+
           custom_comments.find { it.custom_field == custom_field }
         end
 
@@ -299,7 +301,7 @@ module Redmine
         def custom_field_changes
           {}.tap do |changes|
             custom_value_changes(into: changes)
-            custom_comment_changes(into: changes) if can_have_custom_comments?
+            custom_comment_changes(into: changes)
           end
         end
 
@@ -328,6 +330,8 @@ module Redmine
         end
 
         def custom_comment_changes(into: {})
+          return into unless can_have_custom_comments?
+
           custom_comments.each_with_object(into) do |comment, changes|
             next unless comment.changed_for_autosave?
 

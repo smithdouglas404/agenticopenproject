@@ -104,20 +104,20 @@ ru:
         create_folder: 'Создание управляемых папок проекта:'
         ensure_root_folder_permissions: 'Установить разрешения для базовых папок:'
         hide_inactive_folders: 'Скрыть неактивные папки:'
-        remote_folders: 'Read contents of the team folder:'
+        remote_folders: 'Чтение содержимого командной папки:'
         remove_user_from_group: 'Удалить пользователя из группы:'
         rename_project_folder: 'Переименовать управляемую папку проекта:'
       one_drive_sync_service:
         create_folder: 'Создание управляемых папок проекта:'
         ensure_root_folder_permissions: 'Установить разрешения для базовых папок:'
         hide_inactive_folders: 'Скрыть неактивные папки:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Чтение содержимого корневой папки диска:'
         rename_project_folder: 'Переименовать управляемую папку проекта:'
       sharepoint_sync_service:
         create_folder: 'Создание управляемых папок проекта:'
         ensure_root_folder_permissions: 'Установить разрешения для базовых папок:'
         hide_inactive_folders: 'Скрыть неактивные папки:'
-        remote_folders: 'Read contents of the drive root folder:'
+        remote_folders: 'Чтение содержимого корневой папки диска:'
         rename_project_folder: 'Переименовать управляемую папку проекта:'
     errors:
       messages:
@@ -140,7 +140,7 @@ ru:
               conflict: Папка %{folder_name} уже существует на %{parent_location}.
               not_found: "%{parent_location} не найден."
             ensure_root_folder_permissions:
-              not_found: "%{group_folder} wasn't found. Please check your Nextcloud Team Folder setup."
+              not_found: "%{group_folder} не найдена. Пожалуйста, проверьте настройки команды в Nextcloud."
               permission_not_set: не удалось установить разрешения на %{group_folder}.
             hide_inactive_folders:
               permission_not_set: не удалось установить разрешения на %{path}.
@@ -230,7 +230,7 @@ ru:
       storage_delete_result_3: Автоматически управляемая папка проекта и все файлы в ней будут удалены
     dependencies:
       nextcloud:
-        group_folders_app: Team Folders
+        group_folders_app: Папки команды
         integration_app: Интеграция OpenProject
     enabled_in_projects:
       setup_incomplete_description: Это хранилище имеет незавершенную настройку. Пожалуйста, завершите настройку, прежде чем включать его в нескольких проектах.
@@ -277,11 +277,11 @@ ru:
           client_folder_creation: Автоматическое создание папки
           client_folder_removal: Автоматическое удаление папок
           drive_contents: Содержимое диска
-          files_request: Fetching team folder files
+          files_request: Получение файлов папки команды
           header: Автоматически управляемые папки проекта
-          team_folder_app: 'Dependency: Team Folders'
-          team_folder_contents: Team folder content
-          team_folder_presence: Team folder exists
+          team_folder_app: 'Зависимость: папки команды'
+          team_folder_contents: Содержимое папки команды
+          team_folder_presence: Папка команды существует
           userless_access: Аутентификация на стороне сервера
         authentication:
           existing_token: Токен пользователя
@@ -326,8 +326,8 @@ ru:
         nc_oauth_request_not_found: Конечная точка для получения данных о текущем подключенном пользователе не найдена. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
         nc_oauth_request_unauthorized: Текущий пользователь не авторизован для доступа к удаленному файловому хранилищу. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
         nc_oauth_token_missing: OpenProject не может протестировать пользовательскую связь с Nextcloud, так как пользователь еще не связал свою учетную запись Nextcloud.
-        nc_team_folder_not_found: The team folder could not be found.
-        nc_unexpected_content: Unexpected content found in the managed team folder.
+        nc_team_folder_not_found: Папка команды не найдена.
+        nc_unexpected_content: Непредвиденное содержимое найдено в папке команды.
         nc_userless_access_denied: Указанный пароль приложения неверен.
         not_configured: Соединение не удалось подтвердить. Пожалуйста, сначала завершите настройку.
         od_client_cant_delete_folder: У клиента возникли проблемы с удалением папок. Пожалуйста, проверьте документацию по конфигурации для вашего хранилища.
@@ -376,6 +376,7 @@ ru:
         failure: Некоторые проверки не удались, и система работает не так, как ожидалось.
         success: Все соединения и системы работают, как и ожидалось.
         warning: Некоторые проверки вернули предупреждение. Это может привести к неожиданному поведению.
+      synced: 'Last sync: %{datetime}'
       title: Отчёт о состоянии хранилища
     health_email_notifications:
       description_disabled: Администраторы не будут получать обновления по электронной почте, когда выходят важные обновления.

@@ -33,7 +33,7 @@ module Import
     private
 
     def create_reference!(op_leg:, jira_leg:, jira_import:, uses_existing:)
-      Import::JiraOpenProjectReference.insert_all(
+      Import::JiraOpenProjectReference.upsert_all(
         [
           { op_entity_id: op_leg.id,
             op_entity_class: op_leg.class.to_s,
@@ -43,7 +43,7 @@ module Import
             jira_id: jira_import.jira.id,
             uses_existing: }
         ],
-        unique_by: %i[op_entity_id op_entity_class]
+        unique_by: %i[op_entity_id op_entity_class jira_id]
       )
     end
   end

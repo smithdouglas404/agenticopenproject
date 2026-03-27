@@ -205,7 +205,10 @@ es:
   project_module_costs: "Tiempo y costos"
   setting_allow_tracking_start_and_end_times: "Permitir horas de inicio y finalización"
   setting_costs_currency: "Moneda"
-  setting_costs_currency_format: "Formato de moneda"
+  setting_costs_currency_caption: "Se refiere a la unidad monetaria. Puede ser un código ISO de tres letras, como EUR, USD o JPY, o un símbolo, como €, $ o ¥."
+  setting_costs_currency_format: "Formato de la moneda"
+  setting_costs_currency_format_prefix: "Antes del importe (por ejemplo, EUR 100)"
+  setting_costs_currency_format_suffix: "Después del importe (por ejemplo, 100 EUR)"
   setting_enforce_tracking_start_and_end_times: "Requerir horas de inicio y finalización"
   setting_enforce_without_allow: "No es posible requerir horas de inicio y finalización sin permitirlas antes"
   setting_allow_tracking_start_and_end_times_caption: "Habilita la introducción de las horas de inicio y finalización cuando se registra tiempo."
@@ -229,12 +232,12 @@ es:
   costs:
     widgets:
       actual_costs:
-        title: "Actual costs by month"
+        title: "Costes reales por mes"
         blankslate:
-          heading: "Start tracking your time and costs"
-          description: "Get an overview of your costs and logged time to monitor progress of your project"
-          action: "Log time"
-        view_details: "View actual costs details"
+          heading: "Empiece a controlar su tiempo y sus costes"
+          description: "Obtenga una visión general de los costes y del tiempo registrado para supervisar el progreso de su proyecto. Asegúrese de que los paquetes de trabajo estén asociados al presupuesto correcto."
+          action: "Tiempo registrado"
+        view_details: "Ver los detalles de los costes reales"
   ee:
     features:
       time_entry_time_restrictions: Requiere un seguimiento del tiempo exacto

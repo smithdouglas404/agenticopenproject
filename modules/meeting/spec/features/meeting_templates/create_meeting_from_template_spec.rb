@@ -46,6 +46,25 @@ RSpec.describe "Create meeting from template", :js do
   before { login_as(admin) }
 
   describe "creating meeting from template using template selector" do
+    context "without enterprise token" do
+      let!(:template) { create(:onetime_template, project:, title: "Standup Template") }
+
+      before { meetings_page.visit! }
+
+      it "does not show template selector in the new meeting dialog" do
+        meetings_page.click_on "add-meeting-button"
+        meetings_page.click_on "One-time"
+
+        expect(page).to have_dialog("New one-time meeting")
+
+        within_dialog "New one-time meeting" do
+          expect(page).to have_no_css('[data-test-selector="template_id"]')
+        end
+      end
+    end
+  end
+
+  describe "creating meeting from template using template selector", with_ee: [:meeting_templates] do
     context "with templates in project" do
       let!(:template) do
         create(:onetime_template, project:, title: "Standup Template").tap do |t|
@@ -181,6 +200,20 @@ RSpec.describe "Create meeting from template", :js do
   end
 
   describe "creating meeting from template using 'Create from template' button" do
+    context "without enterprise token" do
+      let!(:template) { create(:onetime_template, project:, title: "Planning template") }
+
+      let(:template_show_page) { Pages::Meetings::Show.new(template) }
+
+      before { template_show_page.visit! }
+
+      it "does not show '+ Meeting' button" do
+        expect(page).to have_no_link(id: "create-meeting-from-template")
+      end
+    end
+  end
+
+  describe "creating meeting from template using 'Create from template' button", with_ee: [:meeting_templates] do
     let!(:template) do
       create(:onetime_template, project:, title: "Planning template").tap do |t|
         create(:meeting_agenda_item, meeting: t, title: "Goals")
@@ -196,8 +229,8 @@ RSpec.describe "Create meeting from template", :js do
     end
 
     it "can create a meeting from template page with button" do
-      expect(page).to have_link("Create meeting from template")
-      click_link "Create meeting from template"
+      expect(page).to have_link(id: "create-meeting-from-template")
+      click_link(id: "create-meeting-from-template")
 
       expect(page).to have_dialog("New one-time meeting")
 
@@ -241,12 +274,12 @@ RSpec.describe "Create meeting from template", :js do
         visit project_meeting_path(project, template)
       end
 
-      it "does not show 'Create meeting from template' button" do
-        expect(page).to have_no_link("Create meeting from template")
+      it "does not show the '+ Meeting' button" do
+        expect(page).to have_no_link(id: "create-meeting-from-template")
       end
     end
 
-    context "as user with create_meetings permission" do
+    context "as user with create_meetings permission", with_ee: [:meeting_templates] do
       let(:user_with_create) do
         create(:user, member_with_permissions: { project => %i[view_meetings create_meetings] })
       end
@@ -257,8 +290,8 @@ RSpec.describe "Create meeting from template", :js do
         visit project_meeting_path(project, template)
       end
 
-      it "shows 'Create meeting from template' button" do
-        expect(page).to have_link("Create meeting from template")
+      it "shows the '+ Meeting' button" do
+        expect(page).to have_link(id: "create-meeting-from-template")
       end
     end
   end

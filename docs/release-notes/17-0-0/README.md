@@ -105,7 +105,7 @@ See our user guide to [learn how to present a meeting in OpenProject](../../user
 
 Agenda items can now hold **multiple text-based outcomes**: The **+ Outcome** button remains available while the meeting is *In progress* and allows moderators to record more than one result for the same item. The first outcome is labelled "Outcome", additional ones are numbered ("Outcome 1", "Outcome 2", and so on). These outcomes are also supported in the PDF exports of meetings. This feature is a preparation for future improvements, such as [creating work packages as outcomes](https://community.openproject.org/work_packages/62093).
 
-![OpenProject meeting which is in progess, below the first agenda item (a work package) are "Outcome 1" and "Outcome 2" displayed, and the + Outcome button is still available as well](openproject-17-0-meeting-multiple-outcomes.png)
+![OpenProject meeting which is in progress, below the first agenda item (a work package) are "Outcome 1" and "Outcome 2" displayed, and the + Outcome button is still available as well](openproject-17-0-meeting-multiple-outcomes.png)
 
 #### Unified “My meetings” iCal subscription
 
@@ -280,7 +280,7 @@ OpenProject now includes a built-in OAuth application that simplifies authentica
 
 ### Improved perceived performance of the project selector
 
-The project selector has been optimised to feel significantly faster, especially in instances with many projects. Instead of loading the full project tree at once, OpenProject now loads up to 300 projects initially and fetches additional entries dynamically during search. This reduces waiting times and improves responsiveness across the application.
+The project selector has been optimized to feel significantly faster, especially in instances with many projects. Instead of loading the full project tree at once, OpenProject now loads up to 300 projects initially and fetches additional entries dynamically during search. This reduces waiting times and improves responsiveness across the application.
 
 ### Removal of special semver
 
@@ -377,7 +377,7 @@ Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 - Bugfix: Missing notification when a one-time meeting exits draft mode \[[#70109](https://community.openproject.org/wp/70109)\]
 - Bugfix: Missing notification when the title of a one-time meeting is updated \[[#70110](https://community.openproject.org/wp/70110)\]
 - Bugfix: Missing notification when a series is ended \[[#70111](https://community.openproject.org/wp/70111)\]
-- Bugfix: Race condition allows to create resurces with the same name, bypassing our uniqueness validation \[[#70112](https://community.openproject.org/wp/70112)\]
+- Bugfix: Race condition allows to create resources with the same name, bypassing our uniqueness validation \[[#70112](https://community.openproject.org/wp/70112)\]
 - Bugfix: Missing notification when restoring a cancelled occurrence \[[#70113](https://community.openproject.org/wp/70113)\]
 - Bugfix: Inconsistent label for „Status“ and „Project status“ \[[#70142](https://community.openproject.org/wp/70142)\]
 - Bugfix: Newly created project attributes are added as columns to the default project list \[[#70147](https://community.openproject.org/wp/70147)\]
@@ -390,7 +390,7 @@ Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 - Bugfix: There is a recent change in Capabilities API without backward compatibility  \[[#70356](https://community.openproject.org/wp/70356)\]
 - Bugfix: Fix close button accessibility errors found by eslint, ERB Lint \[[#70420](https://community.openproject.org/wp/70420)\]
 - Feature: Have specific role or permission to access templated project, but membership is not instantiated on copy \[[#43571](https://community.openproject.org/wp/43571)\]
-- Feature: Reduce visibility of all users when addings members to a project \[[#55270](https://community.openproject.org/wp/55270)\]
+- Feature: Reduce visibility of all users when adding members to a project \[[#55270](https://community.openproject.org/wp/55270)\]
 - Feature: Add work package type, status and meta status to what the global search is searching on during typeahead  \[[#56831](https://community.openproject.org/wp/56831)\]
 - Feature: Configure project attribute sections to be shown as widgets on the project overview page \[[#61445](https://community.openproject.org/wp/61445)\]
 - Feature: A single &#39;My Meetings&#39; iCal calendar subscription action so users can always have their calendars in sync with the meetings \[[#63463](https://community.openproject.org/wp/63463)\]
@@ -444,7 +444,7 @@ Reference: \[[#67036](https://community.openproject.org/wp/67036)\]
 - Feature: Truncate breadcrumb in PageHeader \[[#68906](https://community.openproject.org/wp/68906)\]
 - Feature: Introduce &quot;Create program&quot; and &quot;Create portfolio&quot; permission \[[#68918](https://community.openproject.org/wp/68918)\]
 - Feature: Sync up last updated at via hocuspocus awareness protocol \[[#68939](https://community.openproject.org/wp/68939)\]
-- Feature: Primerize Administation &gt; Attribute help texts forms \[[#68953](https://community.openproject.org/wp/68953)\]
+- Feature: Primerize Administration &gt; Attribute help texts forms \[[#68953](https://community.openproject.org/wp/68953)\]
 - Feature: Style the rich-link workpackage macro (dark theme) \[[#68978](https://community.openproject.org/wp/68978)\]
 - Feature: Primerize Admin &gt; System Settings forms \[[#69095](https://community.openproject.org/wp/69095)\]
 - Feature: Move &quot;meetings&quot; tab before GitHub and GitLab \[[#69118](https://community.openproject.org/wp/69118)\]

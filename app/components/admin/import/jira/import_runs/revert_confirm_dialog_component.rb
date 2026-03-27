@@ -46,6 +46,18 @@ module Admin::Import::Jira::ImportRuns
       }
     end
 
+    def title
+      I18n.t("admin.jira.run.wizard.revert_dialog.title")
+    end
+
+    def description
+      I18n.t("admin.jira.run.wizard.revert_dialog.description")
+    end
+
+    def confirm
+      I18n.t("admin.jira.run.wizard.revert_dialog.confirm")
+    end
+
     private
 
     def url

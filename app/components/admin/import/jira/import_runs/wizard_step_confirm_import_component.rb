@@ -38,7 +38,8 @@ module Admin::Import::Jira::ImportRuns
         projects_label(selected_projects_count),
         issues_label(selected_issues_count),
         statuses_label(selected_statuses_count),
-        types_label(selected_types_count)
+        types_label(selected_types_count),
+        users_label(available_users_count)
       ].map { |label| { label:, checked: true } }
     end
 
@@ -56,6 +57,10 @@ module Admin::Import::Jira::ImportRuns
 
     def selected_statuses_count
       model.selected["status_ids"]&.count || 0
+    end
+
+    def available_users_count
+      model.available["total_users"]
     end
   end
 end

@@ -30,6 +30,8 @@
 
 class MeetingTemplatesController < ApplicationController
   before_action :load_and_authorize_in_optional_project
+  before_action :require_enterprise_token,
+                except: %i[index]
 
   include Layout
   include OpTurbo::ComponentStream
@@ -38,11 +40,13 @@ class MeetingTemplatesController < ApplicationController
   menu_item :meetings
 
   def index
-    @templates = Meeting.onetime_templates
-                        .visible
-                        .order(:title)
-
-    @templates = @templates.where(project_id: @project.id) if @project
+    @templates = if @project
+                   Meeting.available_onetime_templates.where(project_id: @project.id).order(:title)
+                 else
+                   accessible_ids = Project.allowed_to(User.current, :view_meetings).select(:id)
+                   base = Meeting.available_onetime_templates
+                   base.where(project_id: accessible_ids).or(base.where(sharing: :system)).order(:title)
+                 end
 
     render "meeting_templates/index",
            locals: { menu_name: project_or_global_menu }
@@ -93,6 +97,22 @@ class MeetingTemplatesController < ApplicationController
 
   def require_project
     render_404 unless @project
+  end
+
+  def require_enterprise_token
+    return if EnterpriseToken.allows_to?(:meeting_templates)
+
+    respond_to do |format|
+      format.turbo_stream do
+        render_error_flash_message_via_turbo_stream(message: I18n.t(:notice_not_authorized))
+        response.status = :forbidden
+        respond_with_turbo_streams
+      end
+      format.any do
+        request.format = "html"
+        render_403
+      end
+    end
   end
 
   def create_template_params

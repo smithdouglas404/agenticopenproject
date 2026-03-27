@@ -83,9 +83,9 @@ ru:
         confirmation: "Вы уверены, что хотите удалить этот токен поддержки корпоративной версии?"
       create_dialog:
         title: "Добавить корпоративный токен"
-        type_token_text: "Your Enterprise token text"
+        type_token_text: "Текст вашего корпоративного токена"
         token_placeholder: "Вставьте ваш токен поддержки корпоративной версии здесь"
-        token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
+        token_caption: "Чтобы узнать больше о том, как активировать корпоративную версию, ознакомьтесь с нашей [документацией](docs_url)."
       add_token: "Загрузить токен поддержки корпоративной версии"
       replace_token: "Замените ваш текущий маркер поддержки"
       order: "Закажите корпоративную версию"
@@ -111,194 +111,205 @@ ru:
         text: "Личные действия пользователя (например, обновление пакета работ дважды) агрегируются в одно действие, если их разница во времени не больше указанной. Они будут отображаться как одно действие внутри приложения. Это также задерживает уведомление на такое же количество времени, уменьшая количество отправляемых писем и также повлияет на %{webhook_link} задержки."
         link: "вебхук"
     import:
-      title: "Import"
+      title: "Импорт"
     jira:
-      title: "Jira Import"
-      description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
+      title: "Импорт из Jira"
+      description: "Используйте этот инструмент для импорта данных из Вашего экземпляра Jira. Вы можете настроить несколько узлов Jira и выбрать, что импортировать в каждом запуске импорта."
       errors:
-        cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+        cannot_delete_with_imports: "Невозможно удалить хост Jira с существующими импортами"
       blank:
-        title: "No Jira hosts configured yet"
-        description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."
+        title: "Хосты Jira еще не настроены"
+        description: "Настройте хост Jira, чтобы начать импортировать элементы из Jira в этот экземпляр OpenProject."
       configuration:
-        title: "Jira configuration"
-        new: "New configuration"
+        title: "Конфигурация Jira"
+        new: "Новая конфигурация"
       banner:
-        title: "Limited import"
-        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        title: "Ограниченный импорт"
+        description: "Этот инструмент импорта в настоящее время находится в стадии бета-тестирования и может импортировать только основные данные: проекты, проблемы (имя, название, описание, вложения), пользователей (имя, электронная почта, членство в проекте), статусы и типы. Он не может импортировать рабочие процессы, пользовательские поля, отношения между заданиями или разрешения. В настоящее время мы поддерживаем только Jira Server/Data Center версий 10.x и 11.x. Облачные экземпляры на данный момент не поддерживаются."
       form:
         fields:
-          name: "Name"
-          url: "Jira Server/Data Center URL"
-          personal_access_token: "Personal Access Token"
-        button_add: "Add configuration"
-        button_save: "Save configuration"
-        button_test: "Test configuration"
-        button_delete_token: "Delete token"
-        delete_token_confirm: "Are you sure you want to delete the token? This will disable the Jira connection."
-        label_testing: "Testing configuration..."
-      token_deleted: "Token was successfully deleted."
+          name: "Имя"
+          url: "URL сервера/центра обработки данных Jira"
+          personal_access_token: "Персональный токен доступа"
+        button_add: "Добавить конфигурацию"
+        button_save: "Сохранить конфигурацию"
+        button_test: "Проверить конфигурацию"
+        button_delete_token: "Удалить токен"
+        delete_token_confirm: "Вы уверены, что хотите удалить токен? Это отключит подключение к Jira."
+        label_testing: "Тестирование конфигурации..."
+      token_deleted: "Токен был успешно удален."
       test:
-        success: "Successfully connected to %{server} (version %{version})"
-        failed: "Connection failed: Unable to retrieve server information"
-        error: "An unexpected error occurred while testing the connection"
-        connection_error: "Connection error: %{message}"
-        parse_error: "Failed to parse the response from Jira server. The server may not be a valid Jira instance."
-        api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
-        token_error: "Invalid API token. Please check your credentials in the configuration."
-        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
-        invalid_url: "Please provide a valid URL"
+        success: "Успешное подключение к %{server} (версия %{version})"
+        failed: "Соединение не удалось: Невозможно получить информацию о сервере"
+        error: "Во время тестирования соединения произошла непредвиденная ошибка"
+        connection_error: "Ошибка соединения: %{message}"
+        parse_error: "Не удалось разобрать ответ от сервера. Возможно, сервер не является действующим экземпляром Jira."
+        api_error: "Jira API вернул статус ошибки %{status}. Пожалуйста, проверьте ваш экземпляр Jira URL и API токен."
+        token_error: "Неверный API токен. Пожалуйста, проверьте свои учетные данные в конфигурации."
+        missing_credentials: "Пожалуйста, укажите URL и персональный токен доступа, чтобы проверить соединение"
+        invalid_url: "Укажите корректный URL"
       client:
-        connection_error: "Failed to connect to Jira server: %{message}"
-        connection_timeout: "Connection to Jira server timed out: %{message}"
-        parse_error: "Failed to parse Jira API response: %{message}"
-        api_error: "Jira API returned error status %{status}"
+        connection_error: "Не удалось подключиться к серверу Jira: %{message}"
+        connection_timeout: "Время подключения к серверу Jira истекло: %{message}"
+        parse_error: "Не удалось разобрать ответ Jira API: %{message}"
+        api_error: "Jira API вернул статус ошибки %{status}"
       columns:
-        projects: "Projects"
-        last_change: "Last change"
-        added: "Added"
-        label_ago: "%{amount} ago"
+        projects: "Проекты"
+        last_change: "Последнее изменение"
+        added: "Добавлено"
+        label_ago: "%{amount} назад"
       run:
-        title: "Import run"
-        history: "History"
-        remove_error: "A Jira import cannot be removed while it is running"
-        import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        title: "Выполнение импорта"
+        history: "История"
+        remove_error: "Импорт Jira нельзя удалить во время его выполнения"
+        import_blocked_error: "Другая операция импорта Jira находится в процессе выполнения или ожидает рассмотрения. Пожалуйста, завершите или отмените его, прежде чем начинать новый импорт."
         blank:
-          title: "No import runs set up yet"
-          description: "Create an import run to start importing information from this Jira instance"
+          title: "Импорт еще не настроен"
+          description: "Создайте запуск импорта, чтобы начать импортировать информацию из этого экземпляра Jira"
         index:
-          description: "You can import different sets of data with each import run. It is possible to undo an import run immediately after but not afterwards."
-          button_import_run: "Import run"
-          button_edit_configuration: "Edit configuration"
+          description: "С каждым запуском импорта можно импортировать различные наборы данных. Отмена импорта возможна сразу же после завершения процесса проверки, но не после завершения."
+          button_import_run: "Выполнение импорта"
+          button_edit_configuration: "Изменить конфигурацию"
         status:
-          initial: "Start"
-          instance_meta_fetching: "Fetching meta data"
-          instance_meta_error: "Error fetching meta data"
-          instance_meta_done: "Meta data fetched"
-          configuring: "Select scope"
-          projects_meta_fetching: "Fetching project data"
-          projects_meta_error: "Error fetching project data"
-          projects_meta_done: "Data gathered"
-          importing: "In progress"
-          import_error: "Error during import"
-          imported: "Review mode"
-          reverting: "Reverting"
-          revert_error: "Error during revert"
-          reverted: "Reverted"
-          completed: "Completed"
+          initial: "Начать"
+          instance_meta_fetching: "Получение метаданных"
+          instance_meta_error: "Ошибка при получении метаданных"
+          instance_meta_done: "Метаданные загружены"
+          import_scope: "Выберите область применения"
+          configuring: "Выберите область применения"
+          projects_meta_fetching: "Получение данных о проекте"
+          projects_meta_error: "Ошибка при получении данных о проекте"
+          projects_meta_done: "Данные собраны"
+          importing: "В процессе"
+          import_error: "Ошибка при импорте"
+          imported: "Режим обзора"
+          reverting: "Возврат в исходное состояние"
+          revert_error: "Ошибка при откате"
+          revert_cancelling: "Отмена отката"
+          revert_cancelled: "Откат отменен"
+          reverted: "Возвращено к исходному состоянию"
+          finalizing: "Завершение"
+          finalizing_error: "Ошибка при завершении"
+          finalizing_done: "Завершено"
         wizard:
-          button_retry: "Retry"
+          button_retry: "Повторить"
           parts:
             projects:
-              one: "1 project"
+              one: "1 проект"
               few: "%{count} projects"
               many: "%{count} projects"
-              other: "%{count} projects"
+              other: "%{count} проектов"
             issues:
-              one: "1 issue"
+              one: "1 проблема"
               few: "%{count} issues"
               many: "%{count} issues"
-              other: "%{count} issues"
+              other: "%{count} проблем"
             work_packages:
-              one: "1 work package"
+              one: "1 пакет работ"
               few: "%{count} work packages"
               many: "%{count} work packages"
-              other: "%{count} work packages"
+              other: "%{count} пакетов работ"
             types:
-              one: "1 type"
+              one: "1 тип"
               few: "%{count} types"
               many: "%{count} types"
-              other: "%{count} types"
+              other: "%{count} типов"
             statuses:
-              one: "1 status"
+              one: "1 статус"
               few: "%{count} statuses"
               many: "%{count} statuses"
-              other: "%{count} statuses"
+              other: "%{count} статусов"
             users:
-              one: "1 user"
+              one: "1 пользователь"
               few: "%{count} users"
               many: "%{count} users"
-              other: "%{count} users"
+              other: "%{count} пользователей"
           groups:
             fetch:
-              title: "Get base data"
+              title: "Получить базовые данные"
             groups_and_users:
-              title: "Groups and Users"
+              title: "Группы и пользователи"
             configuration:
-              title: "Configure import"
+              title: "Настроить импорт"
             confirming:
-              title: "Confirm and import"
+              title: "Подтвердить и импортировать"
             review:
-              title: "Review import"
+              title: "Обзор импорта"
           sections:
             fetch_data:
-              title: "Fetch instance meta data"
-              caption_done: "Completed"
-              description: "Click the button below to query the host to see what data is available to import."
-              button_fetch: "Check available data from host"
-              label_progress: "Fetching data from Jira..."
+              title: "Получить мета данные экземпляра"
+              caption_done: "Завершено"
+              description: "Проверьте, какие данные доступны для импорта в экземпляре хоста Jira."
+              button_fetch: "Проверка доступных данных"
+              label_progress: "Получение данных из Jira..."
             groups_and_users:
-              title: "Groups and Users"
+              title: "Группы и пользователи"
             import_scope:
-              title: "Import scope"
-              caption: "Choose what you want to import into OpenProject"
-              caption_done: "Completed"
-              label_info: "Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host URL offers for import and what this tools is able to import right now."
-              description: "Select what data you want to import from the available data fetched from the host."
-              label_available_data: "Available data"
-              label_not_available_data: "Not available for import"
-              button_select_projects: "Select projects to import"
-              button_continue: "Continue"
-              label_import: "Select which projects you would like to import."
-              button_select: "Select projects"
-              label_selected_data: "Selected data for import"
-              label_progress: "Fetching data from Jira..."
-              label_importing: "Currently importing"
+              title: "Объем импорта"
+              caption: "Выберите, что Вы хотите импортировать в OpenProject"
+              caption_done: "Завершено"
+              label_info: "Пожалуйста, обратите внимание, что этот инструмент импорта находится в бета-версии и не может импортировать все типы данных. Вот краткая информация о том, что хост Jira предлагает для импорта, и что этот инструмент может импортировать прямо сейчас."
+              description: "Выберите, какие данные Вы хотите импортировать из доступных, полученных из хоста Jira."
+              label_available_data: "Доступные данные"
+              label_not_available_data: "Недоступно для импорта"
+              button_select_projects: "Выберите проекты для импорта"
+              button_continue: "Продолжить"
+              label_import: "Выберите проекты, которые Вы хотите импортировать."
+              button_select: "Выбрать проекты"
+              label_selected_data: "Выбранные данные для импорта"
+              label_progress: "Получение данных из Jira..."
               elements:
-                relations: "Relations between issues"
-                workflows: "Custom workflows"
-                users: "Users"
-                sprints: "Sprints"
-                schemes: "Schemas"
-                permissions: "Permissions, roles"
+                relations: "Отношения между проблемами"
+                workflows: "Рабочие процессы на уровне проекта"
+                users: "Пользователи"
+                sprints: "Спринты"
+                schemes: "Схемы"
+                permissions: "Разрешения пользователей, групп и проектов"
             confirm_import:
-              title: "Import data"
-              caption: "Review your import settings and start the import"
-              caption_done: "Completed"
-              label_available_data: "Available data to import"
-              button_start: "Start import"
-              description: "You are about to start an import run with the following settings."
-              label_progress: "Import in progress..."
-              label_import_data: "Currently importing"
+              title: "Импорт данных"
+              caption: "Просмотрите настройки импорта и начните импорт"
+              caption_done: "Завершено"
+              label_available_data: "Доступные данные для импорта"
+              button_start: "Начать импорт"
+              description: "Вы собираетесь начать импорт со следующими настройками."
+              label_progress: "Идёт импорт..."
+              label_import_data: "Сейчас импортируется"
             import_result:
-              title: "Import run results"
-              caption: "Review import run or revert import"
-              info: "Import run successful."
-              label_results: "Imported"
-              label_revert: "Revert import"
-              button_revert: "Revert import"
-              button_done: "Finalize import"
-              preview_description: "The imported data is currently in review mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
-              label_finalizing_progress: "Finalizing import..."
-              label_finalized: "Import finalized."
-              label_revert_progress: "Reverting import..."
-              label_reverted: "Import reverted."
+              title: "Результаты запуска импорта"
+              caption: "Просмотрите выполнение импорта или отмените импорт"
+              info: "Импорт успешно запущен."
+              label_results: "Импортировано"
+              label_revert: "Откатить импорт"
+              button_revert: "Откатить импорт"
+              button_done: "Завершить импорт"
+              preview_description: 'В настоящее время импортированные данные находятся в режиме просмотра. Нажмите "Завершить импорт", чтобы сделать импорт постоянным, или "Отменить импорт", чтобы отменить все изменения, сделанные в ходе этого запуска импорта.'
+              label_finalize_import: "Завершить импорт"
+              label_finalizing: "Завершение импорта..."
+              label_finalizing_done: "Импорт завершен."
+              label_revert_progress: "Отмена импорта..."
+              label_reverted: "Импорт отменен."
           select_dialog:
-            filter_projects: "Filter by text"
+            filter_projects: "Фильтр по тексту"
+          import_dialog:
+            title: "Начать импорт?"
+            confirm_button: "Начать импорт"
+            description: >
+              Этот импортер является альфа-версией. Он еще не может импортировать все данные из Jira и может оставить неполные данные в данном экземпляре OpenProject. <b>Не используйте его в производственной среде и создайте резервную копию данных OpenProject перед началом работы.</b>
+            confirm: "Я понял и сделал необходимые приготовления"
           revert_dialog:
-            title: "Permanently revert this import?"
-            description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
-            confirm: "I understand that this reversion will delete data permanently"
+            title: "Отменить этот импорт?"
+            description: "Это удалит все импортированные объекты (включая целые проекты), даже если после импорта на OpenProject в этих проектах была активность пользователей."
+            confirm: "Я понимаю, что при отмене данные будут удалены навсегда"
           finalize_dialog:
-            title: "Finalize this import?"
-            description: "Once finalized, this import can no longer be reverted. All imported data will become permanently imported."
-            confirm: "I understand that this action cannot be undone"
-            confirm_button: "Understood"
+            title: "Завершить импорт?"
+            description: "После завершения импорта его уже нельзя будет отменить. Все импортированные данные будут импортированы навсегда."
+            confirm: "Я понимаю, что это действие не может быть отменено"
+            confirm_button: "Понятно"
           select_projects:
-            title: "Select projects"
+            title: "Выбрать проекты"
     mcp_configurations:
       index:
-        description: "Протокол модели контекста позволяет агентам ИИ предоставлять своим пользователям инструменты и ресурсы, открытые данным экземпляром OpenProject."
+        description: "Протокол контекста модели позволяет агентам ИИ предоставлять своим пользователям инструменты и ресурсы, открытые данным экземпляром OpenProject. Эта функция пока находится в стадии бета-версии."
         resources_heading: "Ресурсы"
         resources_description: "OpenProject реализует следующие ресурсы. Каждый из них может быть включен, переименован и описан по Вашему желанию. Для получения дополнительной информации обратитесь к [документации по ресурсам MCP](docs_url)."
         resources_submit: "Обновить ресурсы"
@@ -310,16 +321,16 @@ ru:
       server_form:
         description_caption: "Как сервер MCP будет описан для других приложений, которые подключатся к нему."
         title_caption: "Краткое название, показываемое приложениям, которые подключаются к серверу MCP."
-        tool_response_format: "Tool response format"
-        tool_response_format_content_only_label: "Content only"
+        tool_response_format: "Формат инструмента ответа"
+        tool_response_format_content_only_label: "Только содержимое"
         tool_response_format_content_only_caption: >
-          Choose this if MCP clients connecting to this instance do not support structured content. Tool responses will only contain plain text content and leave out the structured version.
-        tool_response_format_full_label: "Full"
+          Выберите этот вариант, если клиенты MCP, подключающиеся к этому экземпляру, не поддерживают структурированное содержимое. Ответы инструмента будут содержать только обычный текст и не будут содержать структурированную версию.
+        tool_response_format_full_label: "Полный"
         tool_response_format_full_caption: >
-          The most compatible option. Tool responses will include both regular and structured content, allowing MCP clients to choose which format they want to read. This may increase the number of tokens that the language model has to process, potentially increasing cost and decreasing performance.
-        tool_response_format_structured_only_label: "Structured content only"
+          Наиболее совместимый вариант. Ответы инструмента будут включать как обычное, так и структурированное содержимое, позволяя клиентам MCP выбирать, какой формат они хотят читать. Это может увеличить количество лексем, которые приходится обрабатывать языковой модели, что может привести к увеличению затрат и снижению производительности.
+        tool_response_format_structured_only_label: "Только структурированное содержимое"
         tool_response_format_structured_only_caption: >
-          Choose this if you are certain that MCP clients connecting to this instance support structured content. Tool responses will only include structured content and leave out its text representation.
+          Выберите этот вариант, если Вы уверены, что клиенты MCP, подключающиеся к этому экземпляру, поддерживают структурированное содержимое. Ответы инструмента будут включать только структурированное содержимое и не будут содержать его текстового представления.
       update:
         failure: "Конфигурация MCP не может быть обновлена."
         success: "Конфигурация MCP была успешно обновлена."
@@ -557,7 +568,7 @@ ru:
     contained_in_type: "Содержится в типе"
     confirm_destroy_option: "Удаление опции приведет к удалению всех ее вхождений (например, в пакеты работ). Вы уверены, что вы хотите удалить ее?"
     reorder_alphabetical: "Переупорядочить значения по алфавиту"
-    reorder_confirmation: "Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?"
+    reorder_confirmation: "Предупреждение: Текущий порядок доступных значений, а также все несохраненные значения будут потеряны. Вы уверены, что хотите продолжить?"
     placeholder_version_select: "Сначала необходимо выбрать пакет работ или проект"
     calculated_field_not_editable: "Не редактируемый атрибут. Это значение рассчитывается автоматически."
     no_role_assigment: "Роль не назначена"
@@ -585,13 +596,13 @@ ru:
       formula:
         project: "Добавьте числовые значения или введите / для поиска атрибута или математического оператора."
       regexp:
-        all: "eg. ^[A-Z0-9]+$"
-        project: "eg. ^[A-Z0-9]+$"
+        all: "например: ^[A-Z0-9]+$"
+        project: "например: ^[A-Z0-9]+$"
       min_max:
-        all: "0 means no restriction"
-        project: "0 means no restriction"
+        all: "0 означает отсутствие ограничений"
+        project: "0 означает отсутствие ограничений"
       has_comment:
-        project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
+        project: "Позволяет пользователю добавить комментарий, относящийся к атрибуту проекта, при выборе значения в обзоре проекта."
     tab:
       no_results_title_text: Нет настраиваемых полей.
       no_results_content_text: Создать новое настраиваемое поле
@@ -608,14 +619,20 @@ ru:
   danger_dialog:
     confirmation_live_message_checked: "Кнопка для продолжения активна."
     confirmation_live_message_unchecked: "Кнопка для продолжения неактивна. Чтобы продолжить, поставьте галочку."
+  mcp_configurations:
+    server_url_component:
+      caption: "URL, по которому будет доступен сервер OpenProject MCP. Требуется для настройки клиентов MCP."
+      label: "URL сервера"
   op_dry_validation:
     or: "или"
     errors:
+      unexpected_key: "не разрешено."
       array?: "должно быть массивом."
       decimal?: "должно быть десятичным."
       defined: "не должно быть определено."
       eql?: "должно быть равно %{left}."
       filled?: "должно быть заполнено."
+      format?: "неверный формат."
       greater_or_equal_zero: "должно быть больше или равно 0."
       gteq?: "должно быть больше или равно %{num}."
       hash?: "должно быть хэш."
@@ -642,7 +659,9 @@ ru:
         parent:
           not_descendant: "должно быть потомком корневого уровня иерархии."
       str?: "должно быть строкой."
+      time?: "должно быть единицей времени."
       type?: "должно быть %{type}."
+      uri?: "не является допустимым URI."
     rules:
       copy_workflow_from: "Тип копии рабочего процесса"
       enabled: "Включено"
@@ -830,8 +849,8 @@ ru:
         new_label: "Новый приоритет"
       creation_wizard:
         errors:
-          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
-          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
+          no_work_package_type: "Не удалось включить запрос на инициирование проекта, поскольку для этого требуется хотя бы один активный тип пакета работ, а в данном проекте его нет. Пожалуйста, добавьте хотя бы один тип пакета работ в этот проект."
+          no_status_when_submitted: "Не удалось включить запрос на инициирование проекта, поскольку тип пакета работ %{type} требует наличия хотя бы одного связанного с ним статуса. Пожалуйста, включите хотя бы один рабочий процесс со статусом для этого типа пакета работ."
         export:
           description_attachment_export: "Созданный артефакт будет сохранен в виде PDF-вложения к пакету работ."
           description_file_link_export: "Пакет работ будет содержать ссылку на файл PDF, хранящийся во внешнем файловом хранилище. Требуется рабочее файловое хранилище с автоматически управляемыми папками для данного проекта. На данный момент поддерживаются только файловые хранилища Nextcloud."
@@ -845,7 +864,7 @@ ru:
         label_request_submission: "Подача заявки"
         project_attributes_description: >
           Выберите, какие атрибуты проекта должны быть включены в запрос на инициацию проекта. В этот список входят только [атрибуты проекта](project_attributes_url), включенные для этого проекта.
-        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
+        enabled_because_required_html: Этот атрибут проекта не может быть отключен для данного запроса на инициацию проекта, поскольку он определен как обязательный. Это можно изменить в <a href=%{admin_settings_url} target="_blank">настройках администрирования</a> администратором экземпляра.
     status:
       button_edit: Редактировать статус
     wizard:
@@ -1384,11 +1403,15 @@ ru:
         dependencies: "Связи"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Совместное использование"
-        finish_date: "Дата окончания"
       jira_import:
-        projects: "Projects"
+        projects: "Проекты"
+      "import/jira":
+        name: "Имя экземпляра Jira"
+        url: "URL-адрес экземпляра Jira"
+        personal_access_token: "Персональный токен доступа"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Импорт из Jira"
       announcements:
         show_until: "Отобразить до"
       attachment:
@@ -1434,7 +1457,7 @@ ru:
         regexp: "Регулярное выражение"
         searchable: "Доступно для поиска"
         admin_only: "Только администратор"
-        has_comment: "Add a comment text field"
+        has_comment: "Добавьте комментарий для текстового поля"
       custom_value:
         value: "Значение"
       design_color:
@@ -1873,7 +1896,7 @@ ru:
         meeting:
           error_conflict: "Невозможно сохранить, потому что совещание было обновлено кем-то другим за это время. Пожалуйста, перезагрузите страницу."
         message:
-          cannot_move_message_to_forum_of_different_project: "A message cannot be moved to a forum of a different project."
+          cannot_move_message_to_forum_of_different_project: "Сообщение не может быть перемещено в форум другого проекта."
         notifications:
           at_least_one_channel: "Нужно указать хотя бы один канал для отправки уведомлений."
           attributes:
@@ -2132,7 +2155,7 @@ ru:
               in_use: "Это имя токена уже используется, пожалуйста, выберите другое"
               format: "%{message}"
         jira:
-          invalid_protocol: "Please provide a valid protocol (http or https)"
+          invalid_protocol: "Пожалуйста, укажите корректный протокол (http или https)"
       template:
         body: "Пожалуйста, проверьте следующие поля:"
         header:
@@ -2157,7 +2180,7 @@ ru:
       comment: "Комментарий"
       custom_action: "Пользовательское действие"
       custom_field: "Настраиваемое поле"
-      customized: "Customized"
+      customized: "Настраиваемый"
       "doorkeeper/application": "Приложение OAuth"
       enterprise_token:
         one: "Корпоративный токен"
@@ -2784,12 +2807,13 @@ ru:
       edit_attribute_groups: Редактирование атрибутов групп
       gantt_pdf_export: Экспорт диаграммы Ганта в PDF
       ldap_groups: Синхронизация пользователей LDAP и групп
-      mcp_server: MCP-сервер
+      mcp_server: Протокол контекста модели (MCP)
+      meeting_templates: Многоразовые шаблоны совещаний
       nextcloud_sso: Единый вход для Nextcloud хранения
       one_drive_sharepoint_file_storage: Файловое хранилище OneDrive/SharePoint
       placeholder_users: Пользователи-заполнители
       portfolio_management: Управление портфолио
-      project_creation_wizard: Project initiation request
+      project_creation_wizard: Запрос на инициализацию проекта
       project_list_sharing: Совместное использование списка проектов
       readonly_work_packages: Пакеты работ только для чтения
       scim_api: API сервера SCIM
@@ -2862,7 +2886,9 @@ ru:
         title: "Пользовательские действия"
         description: "Пользовательские действия являются ярлыками к набору заранее определенных действий, которые вы можете сделать доступными для определенных пакетов работ на основе статуса, роли, типа или проекта."
       mcp_server:
-        description: "Интегрируйте агентов искусственного интеллекта в Ваш OpenProject с помощью MCP."
+        description: "Внесите OpenProject в свои рабочие процессы искусственного интеллекта с помощью защищенного сервера MCP."
+      meeting_templates:
+        description: "Определите шаблоны совещаний с заданной структурой повестки дня и экономьте время, повторно используя их при создании новых совещаний."
       nextcloud_sso:
         title: "Единый вход для Nextcloud хранения"
         description: "Включите бесшовную и безопасную аутентификацию для вашего Nextcloud хранилища с помощью Single Sign-On. Упростите управление доступом и сделайте удобным для пользователя."
@@ -2875,7 +2901,7 @@ ru:
       virus_scanning:
         description: "Будьте уверены в том, что загруженные в OpenProject файлы проверены на наличие вирусов, прежде чем они станут доступны другим пользователям."
       project_creation_wizard:
-        description: "Generate a step-by-step wizard to help project managers fill out a project initiation request."
+        description: "Создайте пошаговый мастер, который поможет руководителям проектов заполнить запрос на инициирование проекта."
       placeholder_users:
         title: Пользователи-заполнители
         description: >
@@ -3175,17 +3201,18 @@ ru:
         learn_about: "Узнайте больше о всех новых функциях"
         missing: "Нет выделенных функций."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_1":
+        "17_2":
           new_features_title: >
             Релиз содержит различные новые функции и улучшения, такие как:
           new_features_list:
-            line_0: Автоматическая инициация проекта.
-            line_1: "Совещания: добавление новых или существующих пакетов работ в качестве итогов совещания."
-            line_2: "Meetings: show iCal responses in OpenProject."
-            line_3: "Повторяющиеся совещания: продублируйте пункты повестки дня на следующее совещание."
-            line_4: "Выпуск для сообщества: Выделение атрибутов."
-            line_5: Предупреждение перед открытием внешних ссылок в содержании, предоставленном пользователем (Enterprise add-on).
-            line_6: Улучшена производительность и пользовательский опыт, включая вкладку "Деятельность" и модуль "Документы".
+            line_0: Рабочие процессы AI с защищенным сервером MCP (тарифный план Professional и выше)
+            line_1: Улучшенная главная страница проекта с новым виджетом для бюджетов и улучшенной доступностью
+            line_2: "Совещания: Шаблоны совещаний (Базовый план и выше)"
+            line_3: Повышение прозрачности комментариев к атрибутам проекта
+            line_4: Улучшения экспорта PDF
+            line_5: Повышенная безопасность внешних ссылок (тарифный план Premium и выше)
+            line_6: Улучшение UI/UX в модуле бэклогов
+            line_7: Согласованные формы пользовательских полей
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
@@ -3203,9 +3230,10 @@ ru:
   journals:
     changes_retracted: "Изменения отменены."
     caused_changes:
+      budget_deleted: "Бюджет был удален"
       dates_changed: "Даты изменены"
       default_attribute_written: "Запись атрибутов со свойством \"только для чтения\""
-      import: "Imported"
+      import: "Импортировано"
       progress_mode_changed_to_status_based: "Расчет прогресса обновлен"
       status_changed: "Статус '%{status_name}'"
       system_update: "Обновление системы OpenProject:"
@@ -3214,20 +3242,21 @@ ru:
       total_percent_complete_mode_changed_to_simple_average: "Вычисление общего % завершения теперь осуществляется по среднему арифметическому значений % завершения."
     cause_descriptions:
       import:
-        header: "changes by %{author}"
-        field_changed: "%{field} changed from %{old_value} to %{new_value}"
-        field_set: "%{field} set to %{value}"
-        field_removed: "%{field} removed"
-        field_updated: "%{field}"
-        deleted_with_diff: "%{field} deleted (%{link})"
-        changed_with_diff: "%{field} changed (%{link})"
-        set_with_diff: "%{field} set (%{link})"
+        header: "изменения %{author}"
+        field_changed: "%{field} изменено с %{old_value} на %{new_value}"
+        field_set: "%{field} установлено в %{value}"
+        field_removed: "%{field} удалено"
+        field_updated: "%{field} обновлено"
+        deleted_with_diff: "%{field} удалено (%{link})"
+        changed_with_diff: "%{field} изменено (%{link})"
+        set_with_diff: "%{field} установлено (%{link})"
       work_package_predecessor_changed_times: внесением изменений в предшественника %{link}
       work_package_parent_changed_times: внесением изменений в родительский %{link}
       work_package_children_changed_times: внесением изменений в дочерний элемент %{link}
       work_package_related_changed_times: внесением изменений в связанный элемент %{link}
       work_package_duplicate_closed: Статус был автоматически обновлен дубликатом пакета работ %{link}
       unaccessable_work_package_changed: внесением изменений в связанный пакет работ
+      budget_deleted: Бюджет был удален
       working_days_changed:
         changed: "внесением изменений в рабочие дни (%{changes})"
         days:
@@ -3268,7 +3297,7 @@ ru:
       api_and_webhooks: "API и вебхуки"
       mail_notification: "Уведомления по электронной почте"
       mails_and_notifications: "Письма и уведомления"
-      mcp_configurations: "Model Context Protocol (MCP)"
+      mcp_configurations: "Протокол контекста модели (MCP)"
     quick_add:
       label: "Добавить…"
   my_account:
@@ -3308,7 +3337,7 @@ ru:
         active_tokens: "Активные токены"
         blank_description: "Для Вас не будет настроен и активен доступ к сторонним приложениям."
         blank_title: "Нет токена приложения OAuth"
-        last_refreshed_at: "Last refreshed at"
+        last_refreshed_at: "Последнее обновление"
         title: "OAuth"
         table_title: "Токены приложения OAuth"
         text_hint: "Токены приложений OAuth позволяют сторонним приложениям подключаться к данному экземпляру OpenProject."
@@ -3394,7 +3423,7 @@ ru:
   label_always_visible: "Всегда отображается"
   label_announcement: "Объявление"
   label_angular: "AngularJS"
-  label_app_modules: "%{app_title} modules"
+  label_app_modules: "%{app_title} модули"
   label_api_access_key: "Ключ доступа к API"
   label_api_access_key_created_on: "Ключ доступа к API, созданный %{value} назад"
   label_api_access_key_type: "API"
@@ -3548,7 +3577,7 @@ ru:
   label_duplicates: "Дублирует"
   label_edit: "Правка"
   label_edit_x: "Правка: %{x}"
-  label_view_x: "View: %{x}"
+  label_view_x: "Вид: %{x}"
   label_enable_multi_select: "Разрешен множественный выбор"
   label_enabled_project_custom_fields: "Доступные настраиваемые поля"
   label_enabled_project_modules: "Включенные модули"
@@ -3593,7 +3622,6 @@ ru:
   label_float: "Плавающий"
   label_folder: "Папка"
   label_follows: "Следует"
-  label_force_user_language_to_default: "Язык, который пользователям нельзя установить как действующий по-умолчанию"
   label_form_configuration: "Настройка форм"
   label_formula: "Формула"
   label_gantt_chart: "Диаграмма Ганта"
@@ -3653,7 +3681,7 @@ ru:
   label_external_links: "Внешние ссылки"
   label_locale: "Язык и регион"
   label_jump_to_a_project: "Перейти к проекту..."
-  label_jira_import: "Jira Import"
+  label_jira_import: "Импорт из Jira"
   label_keyword_plural: "Ключевые слова"
   label_language_based: "Основанный на языке пользователя"
   label_last_activity: "Последняя активность"
@@ -3676,7 +3704,7 @@ ru:
   label_lock_user: "Заблокировать пользователя"
   label_logged_as: "Войти в систему как"
   label_login: "Войти"
-  label_custom_comment: "%{name} comment"
+  label_custom_comment: "%{name} комментарий"
   label_custom_logo: "Пользовательский логотип компьютера"
   label_custom_logo_mobile: "Пользовательский логотип мобильного устройства"
   label_custom_export_logo: "Пользовательский логотип экспорта"
@@ -3972,12 +4000,6 @@ ru:
   label_user_named: "Пользователь %{name}"
   label_user_activity: "%{value} деятельности"
   label_user_anonymous: "Анонимно"
-  label_user_mail_option_all: "Для любого события на моих проектах"
-  label_user_mail_option_none: "Нет событий"
-  label_user_mail_option_only_assigned: "Только для тех, которые мне поручены"
-  label_user_mail_option_only_my_events: "Только для тех, в которых я наблюдатель или участник"
-  label_user_mail_option_only_owner: "Только для тех, которыми я владею"
-  label_user_mail_option_selected: "Для любого события, но только для выбранных проектов"
   label_user_menu: "Пользовательское меню"
   label_user_new: "Новый пользователь"
   label_user_plural: "Пользователи"
@@ -4017,7 +4039,6 @@ ru:
   label_wiki_show_index_page_link: "Показать пункт подменю «Содержание»"
   label_wiki_show_menu_item: "Показать как меню в навигации по проекту"
   label_wiki_show_new_page_link: "Показать пункт подменю «Создать новую дочернюю страницу»"
-  label_wiki_show_submenu_item: "Показать как пункт подменю "
   label_wiki_start: "Начальная страница"
   label_work: "Предполагаемое время"
   label_work_package: "Пакет работ"
@@ -4300,6 +4321,7 @@ ru:
   notice_parent_item_not_found: "Родительский элемент не найден."
   notice_project_not_deleted: "Проект удалён не был."
   notice_project_not_found: "Проект не найден."
+  notice_smtp_address_unsafe: "SMTP-адрес %{address} небезопасен. Пожалуйста, добавьте его в список OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Подключение выполнено."
   notice_successful_create: "Создание выполнено."
   notice_successful_delete: "Удаление выполнено."
@@ -5245,7 +5267,7 @@ ru:
     text_change_disabled_for_provider_login: "Это имя и адрес электронной почты заданы вашим поставщиком авторизации, поэтому их нельзя изменить."
     unlock: "Разблокировать"
     unlock_and_reset_failed_logins: "Разблокировать и сбросить неудачные попытки входа"
-    error_cannot_delete_user: "User cannot be deleted"
+    error_cannot_delete_user: "Пользователь не может быть удален"
   version_status_closed: "закрыт"
   version_status_locked: "заблокировано"
   version_status_open: "открыт"

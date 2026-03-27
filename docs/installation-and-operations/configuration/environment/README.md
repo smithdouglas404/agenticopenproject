@@ -381,6 +381,7 @@ OPENPROJECT_SMTP__USER__NAME (default="") SMTP username
 OPENPROJECT_SOFTWARE__NAME (default="OpenProject") Override software application name
 OPENPROJECT_SOFTWARE__URL (default="https://www.openproject.org/") Override software application URL
 OPENPROJECT_SQL__SLOW__QUERY__THRESHOLD (default=2000) Time limit in ms after which queries will be logged as slow queries
+OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST (default="") Connections to certain IP addresses are blocked to prevent SSRF attacks. Use this setting to explicitly allow given IP addresses which would otherwise be blocked. Takes a comma or space separated list of IPv4 and IPv6 addresses (including masks for ranges), e.g. `192.168.255.255/16`.
 OPENPROJECT_START__OF__WEEK (default=nil) Week starts on
 OPENPROJECT_STATSD (default={"host" => nil, "port" => 8125}) enable statsd metrics (currently puma only) by configuring host
 OPENPROJECT_SYS__API__ENABLED (default=false) Enable internal system API for setting up managed repositories

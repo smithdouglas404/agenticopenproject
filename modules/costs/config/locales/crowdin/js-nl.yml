@@ -21,12 +21,6 @@
 #++
 nl:
   js:
-    costs:
-      widgets:
-        actual_costs:
-          blankslate:
-            title: "No data for current year"
-            description: "Log spent time and costs for work packages to start tracking actual costs"
     text_are_you_sure: "Weet u het zeker?"
     myTimeTracking:
       noSpecificTime: "Geen specifieke tijd"

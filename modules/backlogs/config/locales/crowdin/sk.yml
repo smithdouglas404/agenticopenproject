@@ -25,6 +25,14 @@ sk:
     description: "This module adds features enabling agile teams to work with OpenProject in Scrum projects."
   activerecord:
     attributes:
+      agile/sprint:
+        duration: "Duration"
+        finish_date: "Finish date"
+        goal: "Sprint goal"
+        name: "Sprint name"
+        sharing: "Sharing"
+      project:
+        sprint_sharing: "Sprint sharing"
       sprint:
         duration: "Trvanie šprintu"
       work_package:
@@ -33,6 +41,11 @@ sk:
         backlogs_work_package_type: "Typ oneskorenia"
     errors:
       models:
+        project:
+          attributes:
+            sprint_sharing:
+              share_all_projects_already_taken: "cannot be set because project \"%{name}\" is already sharing with all projects."
+              share_all_projects_already_taken_anonymous: "cannot be set because another project is already sharing with all projects."
         work_package:
           attributes:
             blocks_ids:
@@ -42,12 +55,18 @@ sk:
               task_version_must_be_the_same_as_story_version: "musí byť rovnaká ako verzia nadradeného článku."
         sprint:
           cannot_end_before_it_starts: "Šprint nemôže byť ukončený ešte pred jeho spustením."
+    models:
+      sprint: "Sprint"
   attributes:
     task_type: "Typ úlohy"
   backlogs:
     any: "akékoľvek"
     column_width: "Šírka stĺpca"
     definition_of_done: "Definícia pojmu Hotovo"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
+    done_status: "Done status"
+    sharing_description: "This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing)."
+    sharing: "Sharing"
     impediment: "Prekážka"
     label_versions_default_fold_state: "Zobrazenie zložených verzií"
     caption_versions_default_fold_state: "Verzie sa pri prezeraní nevybavených dokumentov nebudú predvolene rozbaľovať. Každú z nich je potrebné rozbaliť manuálne."
@@ -79,12 +98,21 @@ sk:
     backlog_component:
       blankslate_title: "%{name} je prázdne"
       blankslate_description: "Zatiaľ nie sú plánované žiadne položky. Ak chcete pridať položky, potiahnite ich sem."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "Zbaliť/rozšíriť %{name}"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
         other: "%{count} stories in backlog"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "Backlog actions"
       action_menu:
@@ -95,6 +123,14 @@ sk:
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -122,15 +158,41 @@ sk:
   label_backlogs_unconfigured: "You have not configured Backlogs yet. Please go to %{administration} > %{plugins}, then click on the %{configure} link for this plugin. Once you have set the fields, come back to this page to start using the tool."
   label_blocks_ids: "Identifikátory blokovaných pracovných balíkov"
   label_column_in_backlog: "Column in backlog"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "Nadol"
   label_points_burn_up: "Nahor"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Sprint Impediments"
+  label_sprint_new: "New sprint"
   label_task_board: "Task board"
-  permission_view_master_backlog: "View master backlog"
-  permission_view_taskboards: "Zobrazenie tabúľ úloh"
+  permission_create_sprints: "Create sprints"
+  permission_manage_sprint_items: "Manage sprint items"
   permission_select_done_statuses: "Výber stavov hotovo"
-  permission_update_sprints: "Aktualizácia šprinty"
+  permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "Backlogs"
+  projects:
+    settings:
+      backlog_sharing:
+        options:
+          no_sharing:
+            label: "Don't share"
+            caption: "Sprints created in this project will only be available and visible to this project. They will also not be visible to subprojects."
+          receive_shared:
+            label: "Receive shared sprints"
+            caption: "This project can only use sprints shared by other projects."
+            warning: "This project can only use sprints shared by other projects. Unused sprints created in this project in the past, will no longer be visible."
+          share_all_projects:
+            label: "All projects"
+            caption: "Sprints created in this project will be available to all projects in this instance. If you select this option, it will no longer be available to other projects."
+            disabled_caption: "Option not available since project \"%{name}\" is currently sharing with all projects and only one project can do this."
+            disabled_caption_anonymous: "Option not available since another project is currently sharing with all projects and only one project can do this."
+          share_subprojects:
+            label: "Subprojects"
+            caption: "Sprints created in this project will be available to all subprojects of the current project."
+            info: "Sharing a sprint will share the name, status and the start and finish dates in all projects. These cannot be modified in projects that receive and use these sprints."
+        sprint_sharing: Share sprints
   rb_burndown_charts:
     show:
       blankslate_title: "No burndown data available"

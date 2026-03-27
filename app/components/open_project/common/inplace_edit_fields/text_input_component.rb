@@ -49,6 +49,7 @@ module OpenProject
 
         def call
           form.text_field name: attribute,
+                          autofocus: true,
                           data: { controller: "inplace-edit",
                                   inplace_edit_url_value: reset_url,
                                   action: "keydown.esc->inplace-edit#request" },
