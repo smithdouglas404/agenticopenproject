@@ -3,14 +3,14 @@ title: OpenProject 17.3.0
 sidebar_navigation:
     title: 17.3.0
 release_version: 17.3.0
-release_date: 2026-03-26
+release_date: 2026-04-15
 ---
 
  # OpenProject 17.3.0
 
- Release date: 2026-03-26
+ Release date: 2026-04-15
 
- We released OpenProject [OpenProject 17.3.0](https://community.openproject.org/versions/2266).
+ We released [OpenProject 17.3.0](https://community.openproject.org/versions/2266).
  The release contains several bug fixes and we recommend updating to the newest version.
  In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
@@ -20,9 +20,73 @@ release_date: 2026-03-26
 
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+Take a look at our release video showing the most important features introduced in OpenProject 17.3.0:
 
-## Important updates and breaking changes
+![Release video of OpenProject 17.3](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_3_release.mp4)
+
+### Improvements to agile planning with sprints and backlogs
+
+OpenProject now introduces dedicated sprint objects for agile planning, replacing the previous use of versions as a workaround. Sprints are now a core entity within the Backlogs module, allowing teams to plan, organize, and track their work more intuitively.
+
+Work packages can be assigned directly to sprints, and sprints include key attributes such as name, status, and dates. This provides a clearer structure for agile workflows and aligns OpenProject more closely with established Scrum practices.
+
+#### Dedicated sprint objects
+
+text
+
+screenshot
+
+#### All work packages visible on backlogs
+
+text
+
+screenshot
+
+#### Automatic board creation when starting a sprint
+
+text
+
+screenshot
+
+### Action boards available in the Community edition
+
+text
+
+screenshot
+
+### In-place editing of project attributes on the project overview page
+
+text
+
+screenshot
+
+### Sharing of meeting templates
+
+text
+
+screenshot
+
+### Improved workflow configuration for admins
+
+text
+
+screenshot
+
+### Improved handling of project identifiers 
+
+text
+
+screenshot
+
+### Improved work package search when selecting items across the application
+
+text
+
+## Important technical updates
+
+### Webhooks now include the user causing a change (actor)
+
+text
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
