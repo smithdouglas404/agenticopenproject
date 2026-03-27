@@ -84,7 +84,7 @@ class RbSprintsController < RbApplicationController
     if call.success?
       render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_create))
       close_dialog_via_turbo_stream("##{Backlogs::NewSprintDialogComponent::DIALOG_ID}")
-      append_sprint_to_list_via_turbo_stream(sprint: call.result)
+      insert_sprint_into_list_via_turbo_stream(sprint: call.result)
     else
       update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
     end
@@ -201,12 +201,26 @@ class RbSprintsController < RbApplicationController
     )
   end
 
-  def append_sprint_to_list_via_turbo_stream(sprint:)
+  def insert_sprint_into_list_via_turbo_stream(sprint:) # rubocop:disable Metrics/AbcSize
     component = Backlogs::SprintComponent.new(sprint:, project: @project)
-    turbo_streams << turbo_stream.append(
-      "sprint_planning_sprint_content",
-      component.render_in(view_context)
-    )
+
+    # Find the correct position by comparing dates with existing sprints
+    sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
+    sprint_index = sprints.index { |s| s.id == sprint.id }
+
+    action, target = if sprint_index.nil? || sprint_index == sprints.length - 1
+                       # Sprint is last or not found in ordered list, append to end
+                       [:append, "sprint_planning_sprint_content"]
+                     elsif sprint_index.zero?
+                       # Sprint is first, prepend to beginning
+                       [:prepend, "sprint_planning_sprint_content"]
+                     else
+                       # Sprint is in the middle, insert before the next sprint
+                       next_sprint = sprints[sprint_index + 1]
+                       [:before, "backlogs-sprint-component-#{next_sprint.id}"]
+                     end
+
+    turbo_streams << turbo_stream.public_send(action, target, component.render_in(view_context))
   end
 
   def remove_finished_sprint_from_list_via_turbo_stream

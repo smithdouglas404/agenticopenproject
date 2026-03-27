@@ -74,7 +74,6 @@ RSpec.describe RbSprintsController do
         expect(response).to be_successful
         expect(response).to have_http_status :ok
         expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
-        assert_select %(turbo-stream[action="update"][target="backlogs-backlog-header-component-#{sprint.id}"][method="morph"])
         expect(assigns(:project)).to eq(project)
         expect(assigns(:sprint)).to eq(sprint)
         expect(assigns(:backlog)).to be_a(Backlog)
@@ -91,7 +90,6 @@ RSpec.describe RbSprintsController do
         expect(response).to be_successful
         expect(response).to have_http_status :ok
         expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
-        assert_select %(turbo-stream[action="update"][target="backlogs-backlog-header-component-#{sprint.id}"][method="morph"])
         expect(assigns(:project)).to eq(project)
         expect(assigns(:sprint)).to eq(sprint)
         expect(assigns(:backlog)).to be_a(Backlog)
@@ -121,7 +119,6 @@ RSpec.describe RbSprintsController do
           expect(response).to be_successful
           expect(response).to have_http_status :ok
           expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
-          assert_select %(turbo-stream[action="update"][target="backlogs-backlog-header-component-#{sprint.id}"][method="morph"])
           expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
           expect(assigns(:project)).to eq(project)
           expect(assigns(:sprint)).to eq(sprint)
@@ -143,7 +140,6 @@ RSpec.describe RbSprintsController do
           expect(response).not_to be_successful
           expect(response).to have_http_status :unprocessable_entity
           expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
-          assert_select %(turbo-stream[action="update"][target="backlogs-backlog-header-component-#{sprint.id}"][method="morph"])
           expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
           expect(assigns(:project)).to eq(project)
           expect(assigns(:sprint)).to eq(sprint)
@@ -233,16 +229,17 @@ RSpec.describe RbSprintsController do
           }
         end
 
-        it "responds with success, creates a sprint, and redirects to backlogs", :aggregate_failures do
+        it "responds with success, creates a sprint, and adds it to the view", :aggregate_failures do
           post :create, format: :turbo_stream, params: params
 
           expect(response).to be_successful
           expect(response).to have_http_status :ok
-          expect(response.body).to include("turbo-stream")
-          expect(response.body).to include("action=\"redirect_to\"")
-          expect(response.body).to include(backlogs_project_backlogs_path(project))
+
+          expect(response.body).to have_turbo_stream action: "flash"
+          expect(response.body).to have_turbo_stream action: "closeDialog", target: "#new-sprint-dialog"
+          expect(response.body).to have_turbo_stream action: "append", target: "sprint_planning_sprint_content"
+          expect(response.body).to include(I18n.t(:notice_successful_create))
           expect(project.reload.sprints.last.name).to eq("My Sprint")
-          expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
         end
 
         context "without the 'create_sprints' permission" do
@@ -277,7 +274,6 @@ RSpec.describe RbSprintsController do
           expect(response).to have_http_status :ok
           expect(response.body).to have_turbo_stream action: "flash"
           expect(response.body).to have_turbo_stream action: "update", target: "backlogs-sprint-header-component-#{sprint.id}"
-          assert_select %(turbo-stream[action="update"][target="backlogs-sprint-header-component-#{sprint.id}"][method="morph"])
           expect(response.body).to include("Successful update.")
           expect(sprint.reload.name).to eq("Changed sprint name")
         end
@@ -490,16 +486,6 @@ RSpec.describe RbSprintsController do
                    roles: [create(:project_role, permissions: source_permissions)])
           end
 
-          it "finishes the sprint and redirects to the backlog", :aggregate_failures do
-            post :finish, params: request_params
-
-            expect(response).to be_successful
-            expect(response.body).to include("action=\"redirect_to\"")
-            expect(response.body).to include(backlogs_project_backlogs_path(project))
-            expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
-            expect(service).to have_received(:call)
-          end
-
           context "without source-project start permission" do
             let(:source_permissions) { %i[view_sprints] }
 
@@ -513,13 +499,13 @@ RSpec.describe RbSprintsController do
           end
         end
 
-        it "finishes the sprint and redirects to the backlog via turbo stream", :aggregate_failures do
+        it "finishes the sprint and removes it from the view", :aggregate_failures do
           post :finish, format: :turbo_stream, params: request_params
 
           expect(response).to be_successful
-          expect(response.body).to include("action=\"redirect_to\"")
-          expect(response.body).to include(backlogs_project_backlogs_path(project))
-          expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
+          expect(response).to have_turbo_stream action: "flash"
+          expect(response).to have_turbo_stream action: "closeDialog"
+          expect(response).to have_turbo_stream action: "remove", target: "backlogs-sprint-component-#{sprint.id}"
           expect(service).to have_received(:call)
         end
 
@@ -580,7 +566,9 @@ RSpec.describe RbSprintsController do
             post :finish, format: :turbo_stream, params: request_params
 
             expect(response).to be_successful
-            expect(response.body).to include("action=\"redirect_to\"")
+            expect(response).to have_turbo_stream action: "flash"
+            expect(response).to have_turbo_stream action: "closeDialog"
+            expect(response).to have_turbo_stream action: "remove", target: "backlogs-sprint-component-#{sprint.id}"
             expect(service).to have_received(:call)
               .with(hash_including(unfinished_action: "move_to_top_of_backlog"))
           end
@@ -589,11 +577,13 @@ RSpec.describe RbSprintsController do
         context "when moving to the bottom of the backlog" do
           let(:request_params) { { project_id: project.id, id: sprint.id, unfinished_action: "move_to_bottom_of_backlog" } }
 
-          it "passes unfinished_action to the service and redirects via turbo stream", :aggregate_failures do
+          it "passes unfinished_action to the service and removes the sprint component via turbo", :aggregate_failures do
             post :finish, format: :turbo_stream, params: request_params
 
             expect(response).to be_successful
-            expect(response.body).to include("action=\"redirect_to\"")
+            expect(response).to have_turbo_stream action: "flash"
+            expect(response).to have_turbo_stream action: "closeDialog"
+            expect(response).to have_turbo_stream action: "remove", target: "backlogs-sprint-component-#{sprint.id}"
             expect(service).to have_received(:call)
               .with(hash_including(unfinished_action: "move_to_bottom_of_backlog"))
           end
