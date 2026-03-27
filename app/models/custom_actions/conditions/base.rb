@@ -95,7 +95,7 @@ class CustomActions::Conditions::Base
 
   def self.custom_action_scope(items, _user)
     values = Array.wrap(items).map { it.send(key_id) }
-    build_query(values)
+    build_query(values.uniq)
   end
 
   def self.build_query(values)
