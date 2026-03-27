@@ -134,10 +134,10 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
     context "with no stories" do
       let(:stories) { [] }
 
-      it "shows 0 story count" do
+      it "hides the story count counter" do
         render_component
 
-        expect(page).to have_css(".Counter", text: "0")
+        expect(page).to have_css(".Counter", text: "0", visible: :hidden)
       end
 
       it "shows 0 points" do
