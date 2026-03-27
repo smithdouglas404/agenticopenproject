@@ -23,42 +23,28 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module My
-  module Notifications
-    class ShowPageHeaderComponent < ApplicationComponent
-      def call
-        render(Primer::OpenProject::PageHeader.new) do |header|
-          header.with_title { t("my_account.notifications_and_email.title") }
-          header.with_breadcrumbs(
-            [{ href: helpers.my_account_path, text: t(:label_my_account) },
-             t("my_account.notifications_and_email.title")]
-          )
+class My::Notifications::NonParticipatingForm < ApplicationForm
+  def initialize(show_submit: true)
+    super()
+    @show_submit = show_submit
+  end
 
-          helpers.render_tab_header_nav(header, tabs)
-        end
+  form do |f|
+    f.fieldset_group(title: helpers.t("my_account.notifications.non_participating.title"), mt: 4) do |fg|
+      NotificationSetting.non_participating_settings.each do |setting|
+        fg.check_box(
+          name: setting,
+          label: helpers.t("my_account.notifications.non_participating.#{setting}")
+        )
       end
 
-      def tabs
-        [
-          {
-            name: "notifications",
-            path: helpers.my_notifications_path(tab: "notifications"),
-            label: t("my_account.notifications_and_email.tabs.notifications"),
-            data: { turbo: false }
-          },
-          {
-            name: "reminders",
-            path: helpers.my_notifications_path(tab: "reminders"),
-            label: t("my_account.notifications_and_email.tabs.email_reminders"),
-            data: { turbo: false }
-          }
-        ]
-      end
+      fg.submit(name: :submit, label: helpers.t("my_account.notifications.non_participating.submit_button"),
+                scheme: :default) if @show_submit
     end
   end
 end

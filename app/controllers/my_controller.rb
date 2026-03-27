@@ -47,12 +47,20 @@ class MyController < ApplicationController
                              :interface,
                              :update_settings,
                              :update_email_alerts,
+                             :update_participating,
+                             :update_non_participating,
+                             :update_date_alerts,
                              :password,
                              :change_password,
                              :password_confirmation_dialog,
                              :notifications,
                              :non_working_times,
-                             :working_hours
+                             :working_hours,
+                             :new_project_settings,
+                             :create_project_settings,
+                             :edit_project_settings,
+                             :update_project_settings,
+                             :destroy_project_settings
 
   menu_item :account, only: [:account]
   menu_item :locale, only: [:locale]
@@ -74,13 +82,19 @@ class MyController < ApplicationController
   end
 
   def update_email_alerts
-    set_global_notification_setting
-    if @global_notification_setting.update(permitted_params.notification_setting_email_alerts)
-      flash[:notice] = notice_account_updated
-    else
-      flash[:error] = error_account_update_failed(nil)
-    end
-    redirect_back_or_to(my_notifications_path)
+    update_global_notification_setting(permitted_params.notification_setting_email_alerts)
+  end
+
+  def update_participating
+    update_global_notification_setting(permitted_params.notification_setting_participating)
+  end
+
+  def update_non_participating
+    update_global_notification_setting(permitted_params.notification_setting_non_participating)
+  end
+
+  def update_date_alerts
+    update_global_notification_setting(build_date_alerts_params)
   end
 
   def interface; end
@@ -100,6 +114,40 @@ class MyController < ApplicationController
 
   def password_confirmation_dialog
     respond_with_dialog My::PasswordConfirmationDialog.new
+  end
+
+  def new_project_settings
+    respond_with_dialog My::Notifications::ProjectSettingsDialogComponent.new(user: @user)
+  end
+
+  def create_project_settings
+    update_project_notification_setting
+    redirect_back_or_to(my_notifications_path)
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = t(:notice_bad_request)
+    redirect_back_or_to(my_notifications_path)
+  end
+
+  def edit_project_settings
+    setting = @user.notification_settings.find_by!(project_id: params[:project_id])
+    respond_with_dialog My::Notifications::ProjectSettingsDialogComponent.new(user: @user, notification_setting: setting)
+  end
+
+  def update_project_settings
+    update_project_notification_setting(params[:project_id])
+    redirect_back_or_to(my_notifications_path)
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = t(:notice_bad_request)
+    redirect_back_or_to(my_notifications_path)
+  end
+
+  def destroy_project_settings
+    @user.notification_settings.find_by!(project_id: params[:project_id]).destroy!
+    flash[:notice] = notice_account_updated
+    redirect_back_or_to(my_notifications_path)
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = t(:notice_bad_request)
+    redirect_back_or_to(my_notifications_path)
   end
 
   # Configure user's notifications and email reminders
@@ -169,8 +217,47 @@ class MyController < ApplicationController
     permitted_params.my_account_settings.to_h
   end
 
+  def update_global_notification_setting(update_params)
+    set_global_notification_setting
+    persist_notification_setting(@global_notification_setting, update_params)
+    redirect_back_or_to(my_notifications_path)
+  end
+
   def set_global_notification_setting
     @global_notification_setting = @user.notification_settings.find_or_initialize_by(project: nil)
+  end
+
+  def update_project_notification_setting(project_id = params.dig(:notification_setting, :project_id))
+    project = Project.find(project_id)
+    setting = @user.notification_settings.find_or_initialize_by(project:)
+    persist_notification_setting(setting, project_notification_params)
+  end
+
+  def persist_notification_setting(setting, update_params)
+    if setting.update(update_params)
+      flash[:notice] = notice_account_updated
+    else
+      flash[:error] = error_account_update_failed(nil)
+    end
+  end
+
+  def project_notification_params
+    permitted_params.notification_setting_project.except(:project_id).merge(build_date_alerts_params)
+  end
+
+  def build_date_alerts_params
+    ns_params = params.fetch(:notification_setting, {})
+    {
+      start_date: date_alert_value(ns_params, :start_date),
+      due_date: date_alert_value(ns_params, :due_date),
+      overdue: date_alert_value(ns_params, :overdue)
+    }
+  end
+
+  def date_alert_value(ns_params, field)
+    return nil unless ns_params["#{field}_active"] == "1"
+
+    ns_params[field.to_s].presence&.to_i
   end
 
   def notice_account_updated

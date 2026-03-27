@@ -3623,6 +3623,42 @@ en:
         membership_added: "Membership added"
         membership_updated: "Membership updated"
         submit_button: "Update alerts"
+    notifications:
+      participating:
+        title: "Participating"
+        submit_button: "Update preferences"
+        mentioned: "Mentioned"
+        watched: "Watching"
+        assignee: "Assignee"
+        responsible: "Accountable"
+        shared: "Shared with me"
+      date_alerts:
+        title: "Date alerts"
+        submit_button: "Update date alerts"
+        start_date: "Start date"
+        due_date: "Finish date"
+        overdue: "Overdue"
+        times:
+          same_day: "On the same day"
+          one_day_before: "1 day before"
+          three_days_before: "3 days before"
+          seven_days_before: "7 days before"
+          one_day_after: "1 day after"
+          three_days_after: "3 days after"
+          seven_days_after: "7 days after"
+      non_participating:
+        title: "Non-participating"
+        submit_button: "Update preferences"
+        work_package_created: "New work packages"
+        work_package_commented: "All new comments"
+        work_package_processed: "All status changes"
+        work_package_prioritized: "All priority changes"
+        work_package_scheduled: "All date changes"
+      project_specific_settings:
+        title: "Project-specific notification settings"
+        add_button: "Add project-specific notifications"
+        dialog_title: "Add project-specific notifications"
+        list_header: "Projects with specific notifications"
 
   notifications:
     reasons:

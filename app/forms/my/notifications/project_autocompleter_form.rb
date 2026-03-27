@@ -23,42 +23,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module My
-  module Notifications
-    class ShowPageHeaderComponent < ApplicationComponent
-      def call
-        render(Primer::OpenProject::PageHeader.new) do |header|
-          header.with_title { t("my_account.notifications_and_email.title") }
-          header.with_breadcrumbs(
-            [{ href: helpers.my_account_path, text: t(:label_my_account) },
-             t("my_account.notifications_and_email.title")]
-          )
+class My::Notifications::ProjectAutocompleterForm < ApplicationForm
+  def initialize(readonly: false)
+    super()
+    @readonly = readonly
+  end
 
-          helpers.render_tab_header_nav(header, tabs)
-        end
-      end
-
-      def tabs
-        [
-          {
-            name: "notifications",
-            path: helpers.my_notifications_path(tab: "notifications"),
-            label: t("my_account.notifications_and_email.tabs.notifications"),
-            data: { turbo: false }
-          },
-          {
-            name: "reminders",
-            path: helpers.my_notifications_path(tab: "reminders"),
-            label: t("my_account.notifications_and_email.tabs.email_reminders"),
-            data: { turbo: false }
-          }
-        ]
-      end
-    end
+  form do |f|
+    f.project_autocompleter(
+      name: :project_id,
+      label: Project.model_name.human,
+      required: true,
+      autocomplete_options: {
+        appendTo: "##{My::Notifications::ProjectSettingsDialogComponent::DIALOG_ID}",
+        readonly: @readonly
+      }
+    )
   end
 end

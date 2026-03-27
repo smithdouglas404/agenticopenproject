@@ -23,41 +23,40 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
 module My
   module Notifications
-    class ShowPageHeaderComponent < ApplicationComponent
-      def call
-        render(Primer::OpenProject::PageHeader.new) do |header|
-          header.with_title { t("my_account.notifications_and_email.title") }
-          header.with_breadcrumbs(
-            [{ href: helpers.my_account_path, text: t(:label_my_account) },
-             t("my_account.notifications_and_email.title")]
-          )
+    class ShowPageComponent < ApplicationComponent
+      include OpPrimer::FormHelpers
+      include OpPrimer::ComponentHelpers
 
-          helpers.render_tab_header_nav(header, tabs)
-        end
+      attr_reader :global_notification_setting,
+                  :update_participating_url,
+                  :update_non_participating_url,
+                  :update_date_alerts_url,
+                  :project_notification_settings
+
+      def initialize(user:,
+                     global_notification_setting:,
+                     update_participating_url:,
+                     update_non_participating_url:,
+                     update_date_alerts_url:)
+        super
+
+        @user = user
+        @global_notification_setting = global_notification_setting
+        @update_participating_url = update_participating_url
+        @update_non_participating_url = update_non_participating_url
+        @update_date_alerts_url = update_date_alerts_url
+        @project_notification_settings = user.notification_settings.where.not(project: nil).includes(:project)
       end
 
-      def tabs
-        [
-          {
-            name: "notifications",
-            path: helpers.my_notifications_path(tab: "notifications"),
-            label: t("my_account.notifications_and_email.tabs.notifications"),
-            data: { turbo: false }
-          },
-          {
-            name: "reminders",
-            path: helpers.my_notifications_path(tab: "reminders"),
-            label: t("my_account.notifications_and_email.tabs.email_reminders"),
-            data: { turbo: false }
-          }
-        ]
+      def date_alerts_available?
+        EnterpriseToken.allows_to?(:date_alerts)
       end
     end
   end

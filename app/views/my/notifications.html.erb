@@ -41,5 +41,13 @@ See COPYRIGHT and LICENSE files for more details.
         )
       ) %>
 <% else %>
-  <%= angular_component_tag "opce-notification-settings" %>
+  <%= render(
+        My::Notifications::ShowPageComponent.new(
+          user: @user,
+          global_notification_setting: @global_notification_setting,
+          update_participating_url: { action: "update_participating" },
+          update_non_participating_url: { action: "update_non_participating" },
+          update_date_alerts_url: { action: "update_date_alerts" }
+        )
+      ) %>
 <% end %>

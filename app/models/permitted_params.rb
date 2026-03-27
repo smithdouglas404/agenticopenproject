@@ -289,6 +289,22 @@ class PermittedParams
     params.fetch(:notification_setting, {}).permit(*NotificationSetting.email_settings)
   end
 
+  def notification_setting_participating
+    params.fetch(:notification_setting, {}).permit(:assignee, :responsible, :shared)
+  end
+
+  def notification_setting_non_participating
+    params.fetch(:notification_setting, {}).permit(*NotificationSetting.non_participating_settings)
+  end
+
+  def notification_setting_project
+    params.fetch(:notification_setting, {}).permit(
+      :project_id,
+      :assignee, :responsible, :shared,
+      *NotificationSetting.non_participating_settings
+    )
+  end
+
   def project
     whitelist = params.require(:project).permit(:name,
                                                 :description,

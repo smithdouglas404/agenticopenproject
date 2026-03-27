@@ -1047,6 +1047,15 @@ Rails.application.routes.draw do
     patch "/my/account", action: "update_account"
     patch "/my/settings", action: "update_settings"
     patch "/my/email_alerts", action: "update_email_alerts"
+    patch "/my/participating", action: "update_participating"
+    patch "/my/non_participating", action: "update_non_participating"
+    patch "/my/date_alerts", action: "update_date_alerts"
+
+    get "/my/project_notifications/new", action: "new_project_settings", as: "new_my_project_settings"
+    post "/my/project_notifications", action: "create_project_settings", as: "my_project_notifications"
+    get "/my/project_notifications/:project_id/edit", action: "edit_project_settings", as: "edit_my_project_settings"
+    patch "/my/project_notifications/:project_id", action: "update_project_settings", as: "my_project_setting"
+    delete "/my/project_notifications/:project_id", action: "destroy_project_settings"
   end
 
   scope controller: "onboarding" do
