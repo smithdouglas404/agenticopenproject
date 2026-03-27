@@ -143,7 +143,7 @@ Click **+** under the lists' title to add a card: create a new card or choose an
 ![OpenProject-Boards_add-cards](OpenProject-Boards_add-cards.png)
 
 **Add new card**: enter a title and press Enter.
-**Add existing**: enter an existing title or an ID and press Enter.
+**Add existing**: enter a title or an ID of an existing work package and press Enter. You can also use work package type and status to find the correct work package quicker.
 
 ![OpenProject-Boards_create-cards](OpenProject-Boards_create-cards-1568640108117.png)
 
