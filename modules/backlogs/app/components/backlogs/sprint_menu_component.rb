@@ -30,6 +30,7 @@
 
 module Backlogs
   class SprintMenuComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
     include RbCommonHelper
 
     attr_reader :sprint, :project, :current_user, :active_sprint_ids
