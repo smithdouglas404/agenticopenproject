@@ -66,6 +66,7 @@ function parseTurboStreamContent(html:string):string|null {
 export async function fetchConnectionTemplate(
   type:'error'|'recovery',
   targetElement:HTMLElement,
+  options:{ blocking?:boolean } = {},
 ):Promise<void> {
   const documentId = getDocumentIdFromUrl();
   if (!documentId) {
@@ -73,7 +74,8 @@ export async function fetchConnectionTemplate(
     return;
   }
 
-  const url = `/documents/${documentId}/render_connection_${type}`;
+  const url = new URL(`/documents/${documentId}/render_connection_${type}`, window.location.origin);
+  if (options.blocking) url.searchParams.set('blocking', 'true');
 
   try {
     const response = await fetch(url, {

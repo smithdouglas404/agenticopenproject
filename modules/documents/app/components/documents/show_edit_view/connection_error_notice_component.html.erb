@@ -31,13 +31,20 @@
 
 <%=
   component_wrapper do
-    render(Primer::Alpha::Banner.new(icon: :stop, scheme: :danger)) do |banner|
+    render(Primer::Alpha::Banner.new(icon: :stop, scheme: :danger, test_selector: "connection-error-notice")) do |banner|
       banner.with_action_button(
         id: "connection-error-reload-button",
         data: { turbo: false },
         size: :medium
       ) { I18n.t("documents.show_edit_view.connection_error_notice.action") }
-      I18n.t("documents.show_edit_view.connection_error_notice.description")
+      description_key = if blocking
+                          "documents.show_edit_view.connection_error_notice.description_server_unavailable"
+                        elsif readonly
+                          "documents.show_edit_view.connection_error_notice.description_readonly"
+                        else
+                          "documents.show_edit_view.connection_error_notice.description"
+                        end
+      I18n.t(description_key)
     end
   end
 %>

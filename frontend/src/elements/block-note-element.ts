@@ -45,7 +45,7 @@ class BlockNoteElement extends HTMLElement {
   private errorContainer:HTMLDivElement;
   private reactRoot:Root|null = null;
   private stimulusApp:Application|null = null;
-  private renderCallback:((provider?:HocuspocusProvider) => void) | null = null;
+  private renderCallback:((provider:HocuspocusProvider) => void) | null = null;
 
   constructor() {
     super();
@@ -95,6 +95,9 @@ class BlockNoteElement extends HTMLElement {
   }
 
   connectedCallback() {
+    const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
+    if (!collaborationEnabled) return;
+
     // Initialize Stimulus application within shadow DOM
     this.stimulusApp = Application.start(this.stimulusRoot);
     this.stimulusApp.register('flash', FlashController);
@@ -102,19 +105,13 @@ class BlockNoteElement extends HTMLElement {
     // Initialize React application within shadow DOM
     this.reactRoot = createRoot(this.editorMount);
 
-    const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
-
-    this.renderCallback = (provider?:HocuspocusProvider) => {
+    this.renderCallback = (provider:HocuspocusProvider) => {
       this.reactRoot?.render(
         React.createElement(React.StrictMode, null, this.BlockNoteReactContainer(provider))
       );
     };
 
-    if (collaborationEnabled) {
-      LiveCollaborationManager.onReady(this.renderCallback);
-    } else {
-      this.renderCallback();
-    }
+    LiveCollaborationManager.onReady(this.renderCallback);
   }
 
   disconnectedCallback() {
@@ -135,20 +132,19 @@ class BlockNoteElement extends HTMLElement {
     }
   }
 
-  private BlockNoteReactContainer = (hocuspocusProvider?:HocuspocusProvider) => {
+  private BlockNoteReactContainer = (hocuspocusProvider:HocuspocusProvider) => {
     return React.createElement(
       ShadowDomWrapper,
       { target: this.editorMount },
       React.createElement(
         OpBlockNoteContainer,
         {
-          inputField: document.createElement('input'),
           activeUser: this.parseActiveUser()!,
           readOnly: this.getAttribute('read-only') === 'true',
           openProjectUrl: this.getAttribute('open-project-url') ?? '',
           attachmentsUploadUrl: this.getAttribute('attachments-upload-url') ?? '',
           attachmentsCollectionKey: this.getAttribute('attachments-collection-key') ?? '',
-          hocuspocusProvider: hocuspocusProvider,
+          hocuspocusProvider,
           errorContainer: this.errorContainer,
         }
       )
@@ -167,7 +163,6 @@ class BlockNoteElement extends HTMLElement {
     }
     return null;
   }
-
 }
 
 if (!customElements.get('op-block-note')) {
