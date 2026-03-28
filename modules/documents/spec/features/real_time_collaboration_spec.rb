@@ -67,6 +67,28 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
         wait_for { document.reload.content_binary }.to be_present
         expect(document.description).to eq("Hello Hocuspocus\n")
       end
+
+      it "saves offline edits to the server when reconnected" do
+        # Phase 1: type to populate IndexedDB; confirmed once Hocuspocus has saved it
+        visit document_path(document)
+        editor.fill_in("Initial content")
+        wait_for { document.reload.content_binary }.to be_present
+
+        # Phase 2: offline → soft offline (has cache) → replace content
+        Setting.collaborative_editing_hocuspocus_url = "ws://127.0.0.1:9999"
+        visit document_path(document)
+
+        expect(editor.shadow_root).to have_css(
+          "[data-test-selector='connection-error-notice']", wait: 10
+        )
+        editor.fill_in("Offline edit")
+
+        # Phase 3: reconnect → IndexedDB edits forwarded to server
+        Setting.collaborative_editing_hocuspocus_url = "ws://127.0.0.1:1234"
+        visit document_path(document)
+
+        wait_for { document.reload.description }.to eq("Initial content\n\nOffline edit\n")
+      end
     end
 
     context "with readonly permission" do
@@ -90,12 +112,63 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
         expect(document.description).to eq("Hello Hocuspocus\n")
       end
     end
+
+    context "in soft offline mode (after a prior connection)" do
+      # IndexedDB is populated on the first visit (Hocuspocus online), so the
+      # second visit with an unreachable server enters soft offline mode:
+      # the editor stays editable and changes are queued locally.
+
+      context "with write permission" do
+        before { login_as(admin) }
+
+        it "allows editing and shows offline warning" do
+          # Phase 1: populate IndexedDB with confirmed content
+          visit document_path(document)
+          editor.fill_in("Initial content")
+          wait_for { document.reload.content_binary }.to be_present
+
+          Setting.collaborative_editing_hocuspocus_url = "ws://127.0.0.1:9999"
+          visit document_path(document)
+
+          expect(editor.shadow_root).to have_css(
+            "[data-test-selector='connection-error-notice']",
+            text: "You are currently offline. You can continue editing. " \
+                  "Your changes will be synced when the connection is restored.",
+            wait: 10
+          )
+          expect(editor.shadow_root).to have_css("div[role='textbox']")
+        end
+      end
+
+      context "with readonly permission" do
+        it "shows readonly offline warning" do
+          # Phase 1: admin populates IndexedDB (readonly user cannot type)
+          login_as(admin)
+          visit document_path(document)
+          editor.fill_in("Initial content")
+          wait_for { document.reload.content_binary }.to be_present
+
+          # Phase 2: offline visit as readonly user → soft offline
+          login_as(readonly_user)
+          Setting.collaborative_editing_hocuspocus_url = "ws://127.0.0.1:9999"
+          visit document_path(document)
+
+          expect(editor.shadow_root).to have_css(
+            "[data-test-selector='connection-error-notice']",
+            text: "You are currently offline. " \
+                  "Real-time updates will resume once the connection is restored.",
+            wait: 10
+          )
+        end
+      end
+    end
   end
 
   context "when in offline mode (without a connection to the hocuspocus server)" do
     # No Hocuspocus server is started here. On the first visit there is no
-    # local cache, so the editor is blocked entirely to prevent an empty
-    # Y.Doc from being synced as authoritative state on reconnect.
+    # IndexedDB cache, so hasLocalCache is false and the editor is blocked
+    # entirely (blockingOffline = true) to prevent an empty Y.Doc from being
+    # synced as authoritative state on reconnect.
     shared_examples "a blocked offline editor" do
       it "blocks the editor and shows a server-unavailable message" do
         visit document_path(document)

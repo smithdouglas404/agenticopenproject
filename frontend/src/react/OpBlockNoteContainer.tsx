@@ -44,6 +44,7 @@ export interface OpBlockNoteContainerProps {
   attachmentsUploadUrl:string;
   attachmentsCollectionKey:string;
   hocuspocusProvider:HocuspocusProvider;
+  hasCachedDocument?:boolean;
   errorContainer?:HTMLElement;
 }
 
@@ -54,10 +55,11 @@ export default function OpBlockNoteContainer({
   attachmentsUploadUrl,
   attachmentsCollectionKey,
   hocuspocusProvider,
+  hasCachedDocument = false,
   errorContainer,
 }:OpBlockNoteContainerProps) {
   const doc:Y.Doc = hocuspocusProvider.document;
-  const { isLoading, offlineMode } = useCollaboration(hocuspocusProvider);
+  const { isLoading, offlineMode, blockingOffline } = useCollaboration(hocuspocusProvider, hasCachedDocument);
   const hadErrorRef = useRef(false);
 
   // Fetch error/recovery template based on connection state
@@ -66,7 +68,7 @@ export default function OpBlockNoteContainer({
 
     if (offlineMode) {
       hadErrorRef.current = true;
-      void fetchConnectionTemplate('error', errorContainer, { blocking: true });
+      void fetchConnectionTemplate('error', errorContainer, { blocking: blockingOffline });
     } else if (hadErrorRef.current) {
       // Only fetch recovery if we previously had an error (avoid fetching on initial render)
       void fetchConnectionTemplate('recovery', errorContainer);
@@ -77,10 +79,11 @@ export default function OpBlockNoteContainer({
     return <DocumentLoadingSkeleton />;
   }
 
-  // Without IndexedDB offline persistence, all offline is blocking — hide the
-  // editor entirely to prevent a fresh empty Y.Doc from being synced as
-  // authoritative server state on reconnect.
-  if (offlineMode) {
+  // When offline with no local cache, show only the error banner (rendered via
+  // errorContainer) and hide the editor entirely. A fresh empty Y.Doc must not be
+  // editable — it would be synced as authoritative server state on reconnect,
+  // overwriting real document content.
+  if (blockingOffline) {
     return null;
   }
 
