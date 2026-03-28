@@ -74,7 +74,7 @@ fr:
                 other: "There are %{count} work packages that were not completed in this sprint."
               format: "%{message}"
             status:
-              not_active: "is not active so it cannot be closed."
+              not_active: "n'est pas actif et ne peut donc pas être fermé."
         sprint:
           cannot_end_before_it_starts: "Un sprint ne peut pas se terminer avant d'avoir débuté."
     models:
@@ -111,7 +111,7 @@ fr:
     task_color: "Couleur des tâches"
     unassigned: "Non assigné"
     administration_blankslate:
-      title: "Backlog admin settings are evolving"
+      title: "Les paramètres d'administration du backlog évoluent"
       text: "We are currently redesigning the Backlogs module. Admin settings for sprints and backlogs will be visible here in the near future. Project-level settings remain available."
     user_preference:
       header_backlogs: "Module des backlogs"
@@ -129,14 +129,14 @@ fr:
         one: "%{count} histoire dans le backlog"
         other: "%{count} histoires dans le backlog"
     inbox_component:
-      blankslate_title: "Backlog inbox is empty"
-      blankslate_description: "All open work packages in this project will automatically appear here."
-      label_drag_work_package: "Move %{name}"
+      blankslate_title: "La boîte de réception de backlog est vide"
+      blankslate_description: "Tous les lots de travail ouverts dans ce projet apparaîtront automatiquement ici."
+      label_drag_work_package: "Déplacer %{name}"
       show_more:
-        one: "Show 1 more item"
-        other: "Show %{count} more items"
+        one: "Afficher un article supplémentaire"
+        other: "Afficher %{count} articles supplémentaires"
     inbox_item_component:
-      label_drag_work_package: "Move %{name}"
+      label_drag_work_package: "Déplacer %{name}"
     inbox_menu_component:
       label_actions: "Work package actions"
       action_menu:

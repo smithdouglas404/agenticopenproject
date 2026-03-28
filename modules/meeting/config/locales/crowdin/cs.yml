@@ -207,6 +207,8 @@ cs:
   label_subscribe_icalendar: "Přihlásit kalendář k odběru"
   caption_meeting_template_select: "Vyberte šablonu pro automatické zkopírování bodů programu schůzky"
   caption_template_project_select: "Please select the project in which to create this meeting template"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

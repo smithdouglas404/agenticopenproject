@@ -197,6 +197,8 @@ pt-BR:
   label_subscribe_icalendar: "Assinar calendário"
   caption_meeting_template_select: "Selecione um modelo para copiar automaticamente os itens da pauta"
   caption_template_project_select: "Selecione o projeto no qual deseja criar este modelo de reunião"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

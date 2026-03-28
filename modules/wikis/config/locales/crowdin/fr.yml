@@ -6,7 +6,7 @@ fr:
         authentication_method: Méthode d'authentification
         authentication_methods:
           oauth2_sso: Authentification unique via le fournisseur d'identité OpenID Connect
-          two_way_oauth2: Two-way OAuth 2.0 authorization code flow
+          two_way_oauth2: Flux d'autorisation OAuth 2.0 bidirectionnel par code d'autorisation
         token_exchange_scope: XWiki Scope
         url: URL de l'instance
         wiki_audience: Audience de XWiki
