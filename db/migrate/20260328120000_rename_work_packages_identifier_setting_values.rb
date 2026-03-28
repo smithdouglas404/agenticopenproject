@@ -28,27 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require Rails.root.join("db/migrate/migration_utils/utils")
+require Rails.root.join("db/migrate/migration_utils/setting_renamer")
 
-class RenameWorkPackagesIdentifierSettingValues < ActiveRecord::Migration[8.1]
-  include Migration::Utils
+class RenameWorkPackagesIdentifierSettingValues < ActiveRecord::Migration[8.0]
+  SETTING_NAME = "work_packages_identifier"
 
   def up
-    rename_setting_value("numeric", "classic")
-    rename_setting_value("alphanumeric", "semantic")
+    Migration::MigrationUtils::SettingRenamer.rename_value(SETTING_NAME, "numeric", "classic")
+    Migration::MigrationUtils::SettingRenamer.rename_value(SETTING_NAME, "alphanumeric", "semantic")
   end
 
   def down
-    rename_setting_value("classic", "numeric")
-    rename_setting_value("semantic", "alphanumeric")
-  end
-
-  private
-
-  def rename_setting_value(from, to)
-    execute_sql(
-      "UPDATE settings SET value = :to WHERE name = 'work_packages_identifier' AND value = :from",
-      from:, to:
-    )
+    Migration::MigrationUtils::SettingRenamer.rename_value(SETTING_NAME, "classic", "numeric")
+    Migration::MigrationUtils::SettingRenamer.rename_value(SETTING_NAME, "semantic", "alphanumeric")
   end
 end
