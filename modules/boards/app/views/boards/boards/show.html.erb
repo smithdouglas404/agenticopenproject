@@ -28,3 +28,16 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <% html_title(t("boards.label_boards")) -%>
+
+<% if OpenProject::FeatureDecisions.boards_react_active? %>
+  <div
+    id="react-board-root"
+    data-board-id="<%= @board.id %>"
+    data-project-id="<%= @project.identifier %>"
+    data-board-name="<%= @board.name %>"
+    data-board-type="<%= @board.options['type'] || 'free' %>"
+    data-board-action-attribute="<%= @board.options['attribute'] %>"
+    data-board-highlighting-mode="<%= @board.options['highlightingMode'] %>"
+    data-can-manage="<%= User.current.allowed_in_project?(:manage_board_views, @project) %>"
+  ></div>
+<% end %>

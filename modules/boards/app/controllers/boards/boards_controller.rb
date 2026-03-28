@@ -21,7 +21,12 @@ module ::Boards
     end
 
     def show
-      render layout: "angular/angular"
+      if OpenProject::FeatureDecisions.boards_react_active?
+        @board = Boards::Grid.find(params[:id])
+        render layout: "base"
+      else
+        render layout: "angular/angular"
+      end
     end
 
     def new; end
