@@ -41,6 +41,14 @@ module Migration
           SQL
         end
 
+        def rename_value(setting_name, from, to)
+          ActiveRecord::Base.connection.execute <<~SQL.squish
+            UPDATE #{settings_table}
+            SET value = #{quote_value(to)}
+            WHERE name = #{quote_value(setting_name)} AND value = #{quote_value(from)}
+          SQL
+        end
+
         private
 
         def settings_table
