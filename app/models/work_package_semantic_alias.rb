@@ -29,9 +29,10 @@
 #++
 
 # Registry entry mapping a semantic identifier (e.g. "PROJ-42") to a work package.
-# Rows are append-only — historic identifiers are never deleted, enabling resolution
-# of any identifier a WP has ever carried. The current identifier is stored directly
-# on work_packages.semantic_id.
+# Rows are append-only during a WP's lifetime — historic identifiers are never deleted
+# on moves or renames, enabling resolution of any identifier a WP has ever carried.
+# All rows are removed when the work package itself is deleted (cascade via FK).
+# The current identifier is stored directly on work_packages.semantic_id.
 #
 # Class methods provide the write side of the registry:
 #   WorkPackageSemanticAlias.register_move(wp)                       # on WP project change
@@ -47,9 +48,8 @@ class WorkPackageSemanticAlias < ApplicationRecord
   # Called after a WP moves to a different project. Appends a new registry entry
   # in the target project's namespace and updates semantic_id on the work package.
   def self.register_move(work_package)
-    project = work_package.project
-    seq, sid = project.allocate_wp_semantic_identifier!
     transaction do
+      seq, sid = work_package.project.allocate_wp_semantic_identifier!
       work_package.update_columns(sequence_number: seq, semantic_id: sid)
       create!(identifier: sid, work_package_id: work_package.id)
     end

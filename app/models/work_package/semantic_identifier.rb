@@ -122,8 +122,8 @@ module WorkPackage::SemanticIdentifier
   private
 
   def register_semantic_id
-    seq, sid = project.allocate_wp_semantic_identifier!
     WorkPackageSemanticAlias.transaction do
+      seq, sid = project.allocate_wp_semantic_identifier!
       update_columns(sequence_number: seq, semantic_id: sid)
       WorkPackageSemanticAlias.create!(identifier: sid, work_package_id: id)
     end
