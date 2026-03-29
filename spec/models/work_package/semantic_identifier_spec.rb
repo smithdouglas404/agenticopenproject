@@ -123,15 +123,15 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       let(:non_member_user) { create(:user) }
 
       it "returns the WP for a user who can see it" do
-        expect(WorkPackage.find_by_identifier("MYPROJ-1", user: member_user)).to eq(work_package)
+        expect(WorkPackage.visible(member_user).find_by_identifier("MYPROJ-1")).to eq(work_package)
       end
 
       it "returns nil for a user who cannot see it" do
-        expect(WorkPackage.find_by_identifier("MYPROJ-1", user: non_member_user)).to be_nil
+        expect(WorkPackage.visible(non_member_user).find_by_identifier("MYPROJ-1")).to be_nil
       end
 
       it "also scopes numeric lookup" do
-        expect(WorkPackage.find_by_identifier(work_package.id.to_s, user: non_member_user)).to be_nil
+        expect(WorkPackage.visible(non_member_user).find_by_identifier(work_package.id.to_s)).to be_nil
       end
     end
   end

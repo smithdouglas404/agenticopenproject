@@ -61,7 +61,7 @@ class WorkPackageSemanticAlias < ApplicationRecord
   # insert_all with unique_by: :identifier skips rows that already exist,
   # making the operation idempotent and safe under concurrency.
   def self.register_project_rename(project, old_identifier)
-    like_pattern = "#{sanitize_like(old_identifier)}-%"
+    like_pattern = "#{sanitize_sql_like(old_identifier)}-%"
 
     transaction do
       rows = build_rename_rows(project, old_identifier, like_pattern)
@@ -86,8 +86,4 @@ class WorkPackageSemanticAlias < ApplicationRecord
       end
   end
 
-  # Escapes backslash and _ so they are treated as literal characters in a LIKE pattern.
-  private_class_method def self.sanitize_like(str)
-    str.gsub("\\", "\\\\").gsub("_", "\\_")
-  end
 end

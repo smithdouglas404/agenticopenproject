@@ -52,25 +52,24 @@ module WorkPackage::SemanticIdentifier
     #   - Semantic string ("PROJ-42") → registry lookup, then computed fallback
     #
     # Returns nil on miss.
-    def find_by_identifier(identifier, user: nil)
+    def find_by_identifier(identifier)
       identifier = identifier.to_s.strip
-      return identifier_scope(user).find_by(id: identifier) if identifier.match?(/\A\d+\z/)
+      return find_by(id: identifier) if identifier.match?(/\A\d+\z/)
 
-      find_by_semantic_identifier(identifier, user:)
+      find_by_semantic_identifier(identifier)
     end
 
     # Same as find_by_identifier but raises ActiveRecord::RecordNotFound on miss.
-    def find_by_identifier!(identifier, user: nil)
-      find_by_identifier(identifier, user:) ||
-        raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{identifier}")
+    def find_by_identifier!(identifier)
+      find_by_identifier(identifier) || raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{identifier}")
     end
 
     private
 
-    def find_by_semantic_identifier(identifier, user:)
+    def find_by_semantic_identifier(identifier)
       # 1. Direct lookup — O(1) via work_packages.semantic_id index.
       #    Hits the common case (current identifier) without touching the alias table.
-      wp = identifier_scope(user).find_by(semantic_id: identifier)
+      wp = find_by(semantic_id: identifier)
       return wp if wp
 
       # 2. Alias registry lookup — O(1) via the unique index on identifier.
@@ -83,7 +82,7 @@ module WorkPackage::SemanticIdentifier
       #        → "PROJ_NEW-5" written at rename time via the old PROJ-5 registry row.
       #      - Multiple moves: WP moved PROJ → A → B — all three identifiers resolve.
       wp_id = WorkPackageSemanticAlias.find_by(identifier:)&.work_package_id
-      return identifier_scope(user).find_by(id: wp_id) if wp_id
+      return find_by(id: wp_id) if wp_id
 
       # 2. Computed fallback — derives the WP from project + sequence_number using
       #    FriendlyId slug history to resolve retired project identifiers.
@@ -100,7 +99,7 @@ module WorkPackage::SemanticIdentifier
       project = resolve_project_by_prefix(prefix)
       return nil unless project
 
-      identifier_scope(user).find_by(project:, sequence_number: seq)
+      find_by(project:, sequence_number: seq)
     end
 
     def parse_semantic_identifier(identifier)
@@ -114,9 +113,7 @@ module WorkPackage::SemanticIdentifier
       nil
     end
 
-    def identifier_scope(user)
-      user ? visible(user) : all
-    end
+
   end
 
   private

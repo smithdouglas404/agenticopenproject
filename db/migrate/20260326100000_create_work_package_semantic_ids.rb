@@ -48,6 +48,12 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
     # Unique identifier across all WPs (past and present)
     add_index :work_package_semantic_aliases, :identifier, unique: true, if_not_exists: true
 
+    # Fast lookup and uniqueness of the current semantic identifier (partial: excludes pre-backfill NULLs)
+    add_index :work_packages, :semantic_id,
+              unique:        true,
+              where:         "semantic_id IS NOT NULL",
+              if_not_exists: true
+
     # Enforce uniqueness of sequence numbers within a project (partial: excludes pre-backfill NULLs)
     add_index :work_packages, %i[project_id sequence_number],
               unique:       true,

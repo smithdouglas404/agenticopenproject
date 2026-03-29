@@ -243,7 +243,12 @@ class WorkPackagesController < ApplicationController
   def work_package
     return @work_package if defined?(@work_package)
 
-    @work_package = WorkPackage.visible(current_user).find_by(id: params[:id])
+    scope = WorkPackage.visible(current_user)
+    @work_package = if params[:id].match?(/\A\d+\z/)
+                      scope.find(params[:id])
+                    else
+                      scope.find_by_semantic_identifier(params[:id])
+                    end
   end
 
   def journals
