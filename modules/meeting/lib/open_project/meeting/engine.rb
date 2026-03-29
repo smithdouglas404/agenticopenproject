@@ -184,6 +184,7 @@ module OpenProject::Meeting
 
     add_api_endpoint "API::V3::Root" do
       mount ::API::V3::Meetings::MeetingsAPI
+      mount ::API::V3::RecurringMeetings::RecurringMeetingsAPI
     end
 
     config.to_prepare do
@@ -246,6 +247,34 @@ module OpenProject::Meeting
 
     add_api_path :meeting_section do |meeting_id, id|
       "#{meeting(meeting_id)}/sections/#{id}"
+    end
+
+    add_api_path :recurring_meetings do
+      "#{root}/recurring_meetings"
+    end
+
+    add_api_path :recurring_meeting do |id|
+      "#{root}/recurring_meetings/#{id}"
+    end
+
+    add_api_path :recurring_meeting_occurrences_upcoming do |id|
+      "#{recurring_meeting(id)}/occurrences/upcoming"
+    end
+
+    add_api_path :recurring_meeting_occurrences_past do |id|
+      "#{recurring_meeting(id)}/occurrences/past"
+    end
+
+    add_api_path :recurring_meeting_occurrences_cancelled do |id|
+      "#{recurring_meeting(id)}/occurrences/cancelled"
+    end
+
+    add_api_path :recurring_meeting_occurrences_open do |id|
+      "#{recurring_meeting(id)}/occurrences/open"
+    end
+
+    add_api_path :recurring_meeting_occurrence do |id, start_time|
+      "#{recurring_meeting(id)}/occurrences/#{start_time}"
     end
   end
 end

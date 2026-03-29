@@ -86,6 +86,14 @@ module API
           }
         end
 
+        link :recurringMeeting do
+          next unless represented.recurring_meeting_id
+
+          {
+            href: api_v3_paths.recurring_meeting(represented.recurring_meeting_id)
+          }
+        end
+
         property :id
         property :title
         property :location
