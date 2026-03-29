@@ -110,7 +110,7 @@ class WorkPackages::UpdateService < BaseServices::Update
   end
 
   def update_semantic_ids(work_packages)
-    work_packages.each { |wp| WorkPackageSemanticId.register_move(wp) }
+    work_packages.each { |wp| WorkPackageSemanticAlias.register_move(wp) }
   end
 
   def delete_relations(work_packages)

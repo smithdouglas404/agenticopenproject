@@ -39,17 +39,17 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
     # Current semantic identifier stored directly on the work package (e.g. "PROJ-42")
     add_column :work_packages, :semantic_id, :string, if_not_exists: true
 
-    create_table :work_package_semantic_ids, if_not_exists: true do |t|
+    create_table :work_package_semantic_aliases, if_not_exists: true do |t|
       t.string :identifier, null: false
       t.references :work_package, null: false, foreign_key: true
       t.timestamps
     end
 
     # Unique identifier across all WPs (past and present)
-    add_index :work_package_semantic_ids, :identifier, unique: true, if_not_exists: true
+    add_index :work_package_semantic_aliases, :identifier, unique: true, if_not_exists: true
 
     # Remove legacy current flag if the table was created by an older migration
-    remove_index :work_package_semantic_ids, name: :idx_wp_semantic_ids_current, if_exists: true
-    remove_column :work_package_semantic_ids, :current, :boolean, if_exists: true
+    remove_index :work_package_semantic_aliases, name: :idx_wp_semantic_ids_current, if_exists: true
+    remove_column :work_package_semantic_aliases, :current, :boolean, if_exists: true
   end
 end

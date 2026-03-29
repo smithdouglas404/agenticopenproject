@@ -1613,7 +1613,7 @@ en:
 
   activerecord:
     attributes:
-      work_package_semantic_id:
+      work_package_semantic_alias:
         identifier: "Identifier"
         work_package: "Work package"
         current: "Current"

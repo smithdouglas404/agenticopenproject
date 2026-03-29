@@ -79,7 +79,7 @@ RSpec.describe WorkPackage::Identifier do
         end
 
         it "also resolves historic entries" do
-          WorkPackageSemanticId.create!(identifier: "OLDPROJ-1", work_package:)
+          WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
           expect(WorkPackage.find_by_identifier("OLDPROJ-1")).to eq(work_package)
         end
       end

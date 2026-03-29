@@ -35,7 +35,7 @@ module WorkPackage::Identifier
 
   included do
     has_many :all_semantic_ids,
-             class_name: "WorkPackageSemanticId",
+             class_name: "WorkPackageSemanticAlias",
              foreign_key: :work_package_id,
              inverse_of: :work_package,
              dependent: :destroy
@@ -75,7 +75,7 @@ module WorkPackage::Identifier
       #      - Chained rename + move: "PROJ-5" moved to OTHER, then PROJ → PROJ_NEW
       #        → "PROJ_NEW-5" written at rename time via the old PROJ-5 registry row.
       #      - Multiple moves: WP moved PROJ → A → B — all three identifiers resolve.
-      wp_id = WorkPackageSemanticId.find_by(identifier:)&.work_package_id
+      wp_id = WorkPackageSemanticAlias.find_by(identifier:)&.work_package_id
       return identifier_scope(user).find_by(id: wp_id) if wp_id
 
       # 2. Computed fallback — derives the WP from project + sequence_number using
@@ -118,6 +118,6 @@ module WorkPackage::Identifier
     seq = project.with_lock { project.increment!(:wp_sequence_counter).wp_sequence_counter }
     sid = "#{project.identifier}-#{seq}"
     update_columns(sequence_number: seq, semantic_id: sid)
-    WorkPackageSemanticId.create!(identifier: sid, work_package_id: id)
+    WorkPackageSemanticAlias.create!(identifier: sid, work_package_id: id)
   end
 end

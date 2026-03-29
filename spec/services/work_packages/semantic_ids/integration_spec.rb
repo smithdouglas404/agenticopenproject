@@ -69,14 +69,14 @@ RSpec.describe "SemanticIds registry integration", type: :model do
       expect(wp.sequence_number).to eq(1)
       expect(wp.semantic_id).to eq("PROJ-1")
 
-      entry = WorkPackageSemanticId.find_by!(work_package: wp)
+      entry = WorkPackageSemanticAlias.find_by!(work_package: wp)
       expect(entry.identifier).to eq("PROJ-1")
     end
 
     it "increments the counter with each new WP" do
       2.times { WorkPackages::CreateService.new(user:).call(**attributes) }
       expect(project.reload.wp_sequence_counter).to eq(2)
-      expect(WorkPackageSemanticId.where("identifier LIKE 'PROJ-%'").count).to eq(2)
+      expect(WorkPackageSemanticAlias.where("identifier LIKE 'PROJ-%'").count).to eq(2)
     end
   end
 
@@ -93,7 +93,7 @@ RSpec.describe "SemanticIds registry integration", type: :model do
     it "preserves the old identifier and appends a new one in the target project" do
       WorkPackages::UpdateService.new(user:, model: work_package).call(project: target_project)
 
-      expect(WorkPackageSemanticId.find_by(identifier: "PROJ-5")).to be_present
+      expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-5")).to be_present
       expect(work_package.reload.semantic_id).to start_with("DEST-")
     end
 
@@ -116,8 +116,8 @@ RSpec.describe "SemanticIds registry integration", type: :model do
     it "inserts new-prefix registry entries and updates semantic_id on WPs" do
       Projects::UpdateService.new(user:, model: project).call(identifier: "RENAMED")
 
-      expect(WorkPackageSemanticId.find_by(identifier: "RENAMED-1")).to be_present
-      expect(WorkPackageSemanticId.find_by(identifier: "RENAMED-2")).to be_present
+      expect(WorkPackageSemanticAlias.find_by(identifier: "RENAMED-1")).to be_present
+      expect(WorkPackageSemanticAlias.find_by(identifier: "RENAMED-2")).to be_present
       expect(wp1.reload.semantic_id).to eq("RENAMED-1")
       expect(wp2.reload.semantic_id).to eq("RENAMED-2")
     end
@@ -125,8 +125,8 @@ RSpec.describe "SemanticIds registry integration", type: :model do
     it "preserves old-prefix entries for historic resolution" do
       Projects::UpdateService.new(user:, model: project).call(identifier: "RENAMED")
 
-      expect(WorkPackageSemanticId.find_by(identifier: "PROJ-1")).to be_present
-      expect(WorkPackageSemanticId.find_by(identifier: "PROJ-2")).to be_present
+      expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-1")).to be_present
+      expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-2")).to be_present
     end
 
     it "old identifiers still resolve to the correct WPs" do

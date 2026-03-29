@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackageSemanticId do
+RSpec.describe WorkPackageSemanticAlias do
   let(:work_package) { create(:work_package) }
 
   describe "validations" do
@@ -71,8 +71,8 @@ RSpec.describe WorkPackageSemanticId do
       let(:wp) { create(:work_package) }
 
       it "exposes all registry entries" do
-        entry1 = WorkPackageSemanticId.create!(identifier: "PROJ-1", work_package: wp)
-        entry2 = WorkPackageSemanticId.create!(identifier: "OLD-1", work_package: wp)
+        entry1 = WorkPackageSemanticAlias.create!(identifier: "PROJ-1", work_package: wp)
+        entry2 = WorkPackageSemanticAlias.create!(identifier: "OLD-1", work_package: wp)
 
         expect(wp.all_semantic_ids).to contain_exactly(entry1, entry2)
       end

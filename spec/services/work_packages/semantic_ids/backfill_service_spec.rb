@@ -46,8 +46,8 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
 
       it "creates registry entries for each WP" do
         described_class.run
-        expect(WorkPackageSemanticId.find_by!(work_package: wp1).identifier).to eq("PROJ-1")
-        expect(WorkPackageSemanticId.find_by!(work_package: wp2).identifier).to eq("PROJ-2")
+        expect(WorkPackageSemanticAlias.find_by!(work_package: wp1).identifier).to eq("PROJ-1")
+        expect(WorkPackageSemanticAlias.find_by!(work_package: wp2).identifier).to eq("PROJ-2")
       end
 
       it "sets semantic_id on each WP" do
@@ -59,7 +59,7 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
       it "does not duplicate entries on re-run" do
         described_class.run
         expect { described_class.run }
-          .not_to change(WorkPackageSemanticId, :count)
+          .not_to change(WorkPackageSemanticAlias, :count)
       end
     end
 
@@ -93,8 +93,8 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
 
       it "creates registry entries for each WP" do
         described_class.run
-        expect(WorkPackageSemanticId.where(work_package: wp1)).to be_present
-        expect(WorkPackageSemanticId.where(work_package: wp2)).to be_present
+        expect(WorkPackageSemanticAlias.where(work_package: wp1)).to be_present
+        expect(WorkPackageSemanticAlias.where(work_package: wp2)).to be_present
       end
     end
 
@@ -134,8 +134,8 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
 
       it "processes each project independently" do
         described_class.run
-        expect(WorkPackageSemanticId.find_by!(work_package: wp_proj).identifier).to start_with("PROJ-")
-        expect(WorkPackageSemanticId.find_by!(work_package: wp_other).identifier).to start_with("OTHP-")
+        expect(WorkPackageSemanticAlias.find_by!(work_package: wp_proj).identifier).to start_with("PROJ-")
+        expect(WorkPackageSemanticAlias.find_by!(work_package: wp_other).identifier).to start_with("OTHP-")
       end
     end
   end

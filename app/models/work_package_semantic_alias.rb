@@ -34,11 +34,11 @@
 # on work_packages.semantic_id.
 #
 # Class methods provide the write side of the registry:
-#   WorkPackageSemanticId.register_move(wp)                       # on WP project change
-#   WorkPackageSemanticId.register_project_rename(proj, old_id)   # on project identifier change
+#   WorkPackageSemanticAlias.register_move(wp)                       # on WP project change
+#   WorkPackageSemanticAlias.register_project_rename(proj, old_id)   # on project identifier change
 #
 # Initial registration on WP creation is handled by WorkPackage::Identifier#register_semantic_id (after_create).
-class WorkPackageSemanticId < ApplicationRecord
+class WorkPackageSemanticAlias < ApplicationRecord
   belongs_to :work_package, inverse_of: :all_semantic_ids
 
   validates :identifier, presence: true, uniqueness: true

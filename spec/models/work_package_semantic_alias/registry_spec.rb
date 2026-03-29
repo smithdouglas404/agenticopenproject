@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackageSemanticId, "registry" do # rubocop:disable RSpec/SpecFilePathFormat
+RSpec.describe WorkPackageSemanticAlias, "registry" do # rubocop:disable RSpec/SpecFilePathFormat
   before do
     allow(Setting::WorkPackageIdentifier).to receive_messages(alphanumeric?: true, numeric?: false)
   end
