@@ -86,9 +86,8 @@ class WorkPackageSemanticAlias < ApplicationRecord
       end
   end
 
-  # Escapes _ so it is treated as a literal character in a LIKE pattern.
-  # Project identifiers can contain underscores; % and \ cannot appear in them.
+  # Escapes backslash and _ so they are treated as literal characters in a LIKE pattern.
   private_class_method def self.sanitize_like(str)
-    str.gsub("_", "\\_")
+    str.gsub("\\", "\\\\").gsub("_", "\\_")
   end
 end
