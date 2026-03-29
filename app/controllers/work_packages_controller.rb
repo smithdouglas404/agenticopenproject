@@ -245,7 +245,7 @@ class WorkPackagesController < ApplicationController
 
     scope = WorkPackage.visible(current_user)
     @work_package = if params[:id].match?(/\A\d+\z/)
-                      scope.find(params[:id])
+                      scope.find_by(id: params[:id])
                     else
                       scope.find_by_semantic_identifier(params[:id])
                     end
