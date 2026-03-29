@@ -29,7 +29,7 @@
 #++
 
 class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
-  def change
+  def up
     # Atomic counter for per-project WP sequence allocation
     add_column :projects, :wp_sequence_counter, :integer, default: 0, null: false, if_not_exists: true
 
@@ -51,5 +51,12 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
     # Remove legacy current flag if the table was created by an older migration
     remove_index :work_package_semantic_aliases, name: :idx_wp_semantic_ids_current, if_exists: true
     remove_column :work_package_semantic_aliases, :current, :boolean, if_exists: true
+  end
+
+  def down
+    drop_table :work_package_semantic_aliases, if_exists: true
+    remove_column :work_packages, :semantic_id, if_exists: true
+    remove_column :work_packages, :sequence_number, if_exists: true
+    remove_column :projects, :wp_sequence_counter, if_exists: true
   end
 end
