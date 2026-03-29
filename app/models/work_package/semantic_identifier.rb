@@ -32,6 +32,9 @@ module WorkPackage::SemanticIdentifier
   extend ActiveSupport::Concern
 
   SEMANTIC_PATTERN = /\A([A-Za-z][A-Za-z0-9_]*)-(\d+)\z/
+  # Matches both numeric IDs ("12345") and semantic identifiers ("PROJ-42").
+  # Used as a route constraint on work_packages#show.
+  ID_ROUTE_CONSTRAINT = /\A(?:\d+|[A-Z][A-Z0-9_]*-\d+)\z/
 
   included do
     has_many :semantic_aliases,
