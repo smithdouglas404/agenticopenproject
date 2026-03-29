@@ -50,7 +50,7 @@ RSpec.describe WorkPackage::Identifier do
     end
 
     it "creates a registry entry" do
-      entry = work_package.all_semantic_ids.find_by(identifier: "MYPROJ-1")
+      entry = work_package.semantic_aliases.find_by(identifier: "MYPROJ-1")
       expect(entry).to be_present
     end
 
@@ -86,7 +86,7 @@ RSpec.describe WorkPackage::Identifier do
 
       context "when the identifier is not in the registry (computed fallback)" do
         before do
-          work_package.all_semantic_ids.delete_all
+          work_package.semantic_aliases.delete_all
         end
 
         it "resolves via project identifier + sequence_number" do

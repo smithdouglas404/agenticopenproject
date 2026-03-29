@@ -85,7 +85,7 @@ RSpec.describe "SemanticIds registry integration", type: :model do
       # after_create auto-registers as PROJ-1; rename entry to PROJ-5 to simulate an established WP
       create(:work_package, project:).tap do |wp|
         wp.update_columns(sequence_number: 5, semantic_id: "PROJ-5")
-        wp.all_semantic_ids.update_all(identifier: "PROJ-5")
+        wp.semantic_aliases.update_all(identifier: "PROJ-5")
         project.update_columns(wp_sequence_counter: 5)
       end
     end

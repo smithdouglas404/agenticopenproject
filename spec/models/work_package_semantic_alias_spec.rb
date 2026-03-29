@@ -67,14 +67,14 @@ RSpec.describe WorkPackageSemanticAlias do
   end
 
   describe WorkPackage do
-    describe "#all_semantic_ids" do
+    describe "#semantic_aliases" do
       let(:wp) { create(:work_package) }
 
       it "exposes all registry entries" do
         entry1 = WorkPackageSemanticAlias.create!(identifier: "PROJ-1", work_package: wp)
         entry2 = WorkPackageSemanticAlias.create!(identifier: "OLD-1", work_package: wp)
 
-        expect(wp.all_semantic_ids).to contain_exactly(entry1, entry2)
+        expect(wp.semantic_aliases).to contain_exactly(entry1, entry2)
       end
     end
   end

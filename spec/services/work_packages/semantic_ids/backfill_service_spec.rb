@@ -67,13 +67,13 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
       # after_create auto-registers; reset to simulate legacy data with no sequence/registry
       let!(:wp1) do
         create(:work_package, project:).tap do |wp|
-          wp.all_semantic_ids.delete_all
+          wp.semantic_aliases.delete_all
           wp.update_columns(sequence_number: nil)
         end
       end
       let!(:wp2) do
         create(:work_package, project:).tap do |wp|
-          wp.all_semantic_ids.delete_all
+          wp.semantic_aliases.delete_all
           wp.update_columns(sequence_number: nil)
         end
       end
@@ -103,12 +103,12 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
       let!(:wp_with_seq) do
         create(:work_package, project:).tap do |wp|
           wp.update_columns(sequence_number: 3)
-          wp.all_semantic_ids.update_all(identifier: "PROJ-3")
+          wp.semantic_aliases.update_all(identifier: "PROJ-3")
         end
       end
       let!(:wp_without_seq) do
         create(:work_package, project:).tap do |wp|
-          wp.all_semantic_ids.delete_all
+          wp.semantic_aliases.delete_all
           wp.update_columns(sequence_number: nil)
         end
       end

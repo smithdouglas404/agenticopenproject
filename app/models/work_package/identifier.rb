@@ -34,7 +34,7 @@ module WorkPackage::Identifier
   SEMANTIC_PATTERN = /\A([A-Za-z][A-Za-z0-9_]*)-(\d+)\z/
 
   included do
-    has_many :all_semantic_ids,
+    has_many :semantic_aliases,
              class_name: "WorkPackageSemanticAlias",
              foreign_key: :work_package_id,
              inverse_of: :work_package,

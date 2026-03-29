@@ -39,7 +39,7 @@
 #
 # Initial registration on WP creation is handled by WorkPackage::Identifier#register_semantic_id (after_create).
 class WorkPackageSemanticAlias < ApplicationRecord
-  belongs_to :work_package, inverse_of: :all_semantic_ids
+  belongs_to :work_package, inverse_of: :semantic_aliases
 
   validates :identifier, presence: true, uniqueness: true
   validates :work_package, presence: true
