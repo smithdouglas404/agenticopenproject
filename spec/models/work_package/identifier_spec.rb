@@ -45,16 +45,19 @@ RSpec.describe WorkPackage::Identifier do
       expect(work_package.reload.sequence_number).to eq(1)
     end
 
-    it "creates a current registry entry" do
-      entry = work_package.current_semantic_id
-      expect(entry.identifier).to eq("MYPROJ-1")
-      expect(entry.current).to be(true)
+    it "sets semantic_id on the work package" do
+      expect(work_package.reload.semantic_id).to eq("MYPROJ-1")
+    end
+
+    it "creates a registry entry" do
+      entry = work_package.all_semantic_ids.find_by(identifier: "MYPROJ-1")
+      expect(entry).to be_present
     end
 
     it "increments the counter for each successive WP" do
       wp2 = create(:work_package, project:)
       expect(wp2.reload.sequence_number).to eq(2)
-      expect(wp2.current_semantic_id.identifier).to eq("MYPROJ-2")
+      expect(wp2.reload.semantic_id).to eq("MYPROJ-2")
     end
   end
 
@@ -75,16 +78,15 @@ RSpec.describe WorkPackage::Identifier do
           expect(WorkPackage.find_by_identifier("MYPROJ-1")).to eq(work_package)
         end
 
-        it "also resolves historic (current: false) entries" do
-          work_package.semantic_ids.update_all(current: false)
-          WorkPackageSemanticId.create!(identifier: "OLDPROJ-1", work_package:, current: false)
+        it "also resolves historic entries" do
+          WorkPackageSemanticId.create!(identifier: "OLDPROJ-1", work_package:)
           expect(WorkPackage.find_by_identifier("OLDPROJ-1")).to eq(work_package)
         end
       end
 
       context "when the identifier is not in the registry (computed fallback)" do
         before do
-          work_package.semantic_ids.delete_all
+          work_package.all_semantic_ids.delete_all
         end
 
         it "resolves via project identifier + sequence_number" do

@@ -61,16 +61,16 @@ RSpec.describe "SemanticIds registry integration", type: :model do
       }
     end
 
-    it "assigns a sequence number and creates a current registry entry" do
+    it "assigns a sequence number, sets semantic_id, and creates a registry entry" do
       result = WorkPackages::CreateService.new(user:).call(**attributes)
       expect(result).to be_success
 
       wp = result.result
       expect(wp.sequence_number).to eq(1)
+      expect(wp.semantic_id).to eq("PROJ-1")
 
       entry = WorkPackageSemanticId.find_by!(work_package: wp)
       expect(entry.identifier).to eq("PROJ-1")
-      expect(entry.current).to be(true)
     end
 
     it "increments the counter with each new WP" do
@@ -84,19 +84,17 @@ RSpec.describe "SemanticIds registry integration", type: :model do
     let!(:work_package) do
       # after_create auto-registers as PROJ-1; rename entry to PROJ-5 to simulate an established WP
       create(:work_package, project:).tap do |wp|
-        wp.update_columns(sequence_number: 5)
-        wp.semantic_ids.update_all(identifier: "PROJ-5")
+        wp.update_columns(sequence_number: 5, semantic_id: "PROJ-5")
+        wp.all_semantic_ids.update_all(identifier: "PROJ-5")
         project.update_columns(wp_sequence_counter: 5)
       end
     end
 
-    it "retires the old identifier and creates a new one in the target project" do
+    it "preserves the old identifier and appends a new one in the target project" do
       WorkPackages::UpdateService.new(user:, model: work_package).call(project: target_project)
 
-      expect(WorkPackageSemanticId.find_by!(identifier: "PROJ-5").current).to be(false)
-
-      new_entry = WorkPackageSemanticId.find_by!(work_package: work_package.reload, current: true)
-      expect(new_entry.identifier).to start_with("DEST-")
+      expect(WorkPackageSemanticId.find_by(identifier: "PROJ-5")).to be_present
+      expect(work_package.reload.semantic_id).to start_with("DEST-")
     end
 
     it "old identifier still resolves to the WP" do
@@ -106,8 +104,7 @@ RSpec.describe "SemanticIds registry integration", type: :model do
 
     it "new identifier also resolves to the WP" do
       WorkPackages::UpdateService.new(user:, model: work_package).call(project: target_project)
-      new_identifier = WorkPackageSemanticId.find_by!(work_package: work_package.reload, current: true).identifier
-      expect(WorkPackage.find_by_identifier(new_identifier)).to eq(work_package)
+      expect(WorkPackage.find_by_identifier(work_package.reload.semantic_id)).to eq(work_package)
     end
   end
 
@@ -116,18 +113,20 @@ RSpec.describe "SemanticIds registry integration", type: :model do
     let!(:wp1) { create(:work_package, project:) }
     let!(:wp2) { create(:work_package, project:) }
 
-    it "creates new current entries with the new prefix" do
+    it "inserts new-prefix registry entries and updates semantic_id on WPs" do
       Projects::UpdateService.new(user:, model: project).call(identifier: "RENAMED")
 
-      expect(WorkPackageSemanticId.find_by!(identifier: "RENAMED-1").current).to be(true)
-      expect(WorkPackageSemanticId.find_by!(identifier: "RENAMED-2").current).to be(true)
+      expect(WorkPackageSemanticId.find_by(identifier: "RENAMED-1")).to be_present
+      expect(WorkPackageSemanticId.find_by(identifier: "RENAMED-2")).to be_present
+      expect(wp1.reload.semantic_id).to eq("RENAMED-1")
+      expect(wp2.reload.semantic_id).to eq("RENAMED-2")
     end
 
-    it "retires old-prefix entries" do
+    it "preserves old-prefix entries for historic resolution" do
       Projects::UpdateService.new(user:, model: project).call(identifier: "RENAMED")
 
-      expect(WorkPackageSemanticId.find_by!(identifier: "PROJ-1").current).to be(false)
-      expect(WorkPackageSemanticId.find_by!(identifier: "PROJ-2").current).to be(false)
+      expect(WorkPackageSemanticId.find_by(identifier: "PROJ-1")).to be_present
+      expect(WorkPackageSemanticId.find_by(identifier: "PROJ-2")).to be_present
     end
 
     it "old identifiers still resolve to the correct WPs" do
@@ -170,9 +169,9 @@ RSpec.describe "SemanticIds registry integration", type: :model do
     end
 
     it "rename then move: both old identifiers resolve after the WP moves" do
-      # PROJ renamed to RENAMED (PROJ-1 → current:false, RENAMED-1 → current:true)
+      # PROJ renamed to RENAMED (appends RENAMED-1 registry row, updates semantic_id)
       Projects::UpdateService.new(user:, model: project).call(identifier: "RENAMED")
-      # WP moves to DEST (RENAMED-1 → current:false, DEST-1 → current:true)
+      # WP moves to DEST (appends DEST-1 registry row, updates semantic_id)
       WorkPackages::UpdateService.new(user:, model: wp1.reload).call(project: target_project)
 
       expect(WorkPackage.find_by_identifier("PROJ-1")).to eq(wp1)
@@ -190,10 +189,10 @@ RSpec.describe "SemanticIds registry integration", type: :model do
 
     it "all intermediate identifiers resolve after WP moves PROJ → DEST → PROJC" do
       WorkPackages::UpdateService.new(user:, model: wp1).call(project: target_project)
-      dest_identifier = WorkPackageSemanticId.find_by!(work_package: wp1.reload, current: true).identifier
+      dest_identifier = wp1.reload.semantic_id
 
       WorkPackages::UpdateService.new(user:, model: wp1.reload).call(project: project_c)
-      projc_identifier = WorkPackageSemanticId.find_by!(work_package: wp1.reload, current: true).identifier
+      projc_identifier = wp1.reload.semantic_id
 
       expect(WorkPackage.find_by_identifier("PROJ-1")).to eq(wp1)
       expect(WorkPackage.find_by_identifier(dest_identifier)).to eq(wp1)

@@ -35,25 +35,25 @@ RSpec.describe WorkPackageSemanticId do
 
   describe "validations" do
     it "is valid with an identifier and work_package" do
-      record = described_class.new(identifier: "PROJ-1", work_package:, current: true)
+      record = described_class.new(identifier: "PROJ-1", work_package:)
       expect(record).to be_valid
     end
 
     it "requires identifier" do
-      record = described_class.new(work_package:, current: false)
+      record = described_class.new(work_package:)
       expect(record).not_to be_valid
       expect(record.errors[:identifier]).to be_present
     end
 
     it "requires work_package" do
-      record = described_class.new(identifier: "PROJ-1", current: false)
+      record = described_class.new(identifier: "PROJ-1")
       expect(record).not_to be_valid
       expect(record.errors[:work_package]).to be_present
     end
 
     it "enforces identifier uniqueness" do
-      described_class.create!(identifier: "PROJ-1", work_package:, current: true)
-      duplicate = described_class.new(identifier: "PROJ-1", work_package:, current: false)
+      described_class.create!(identifier: "PROJ-1", work_package:)
+      duplicate = described_class.new(identifier: "PROJ-1", work_package:)
       expect(duplicate).not_to be_valid
       expect(duplicate.errors[:identifier]).to be_present
     end
@@ -61,27 +61,20 @@ RSpec.describe WorkPackageSemanticId do
 
   describe "associations" do
     it "belongs to a work_package" do
-      record = described_class.create!(identifier: "PROJ-1", work_package:, current: true)
+      record = described_class.create!(identifier: "PROJ-1", work_package:)
       expect(record.work_package).to eq(work_package)
     end
   end
 
   describe WorkPackage do
-    describe "#semantic_ids / #current_semantic_id" do
+    describe "#all_semantic_ids" do
       let(:wp) { create(:work_package) }
 
       it "exposes all registry entries" do
-        current = WorkPackageSemanticId.create!(identifier: "PROJ-1", work_package: wp, current: true)
-        historic = WorkPackageSemanticId.create!(identifier: "OLD-1", work_package: wp, current: false)
+        entry1 = WorkPackageSemanticId.create!(identifier: "PROJ-1", work_package: wp)
+        entry2 = WorkPackageSemanticId.create!(identifier: "OLD-1", work_package: wp)
 
-        expect(wp.semantic_ids).to contain_exactly(current, historic)
-      end
-
-      it "exposes only the current entry via current_semantic_id" do
-        WorkPackageSemanticId.create!(identifier: "OLD-1", work_package: wp, current: false)
-        current = WorkPackageSemanticId.create!(identifier: "PROJ-1", work_package: wp, current: true)
-
-        expect(wp.current_semantic_id).to eq(current)
+        expect(wp.all_semantic_ids).to contain_exactly(entry1, entry2)
       end
     end
   end

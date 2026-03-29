@@ -117,7 +117,7 @@ class WorkPackagesController < ApplicationController
     send_data(export.content, type: export.mime_type, filename: export.title)
   rescue ::Exports::ExportError => e
     flash[:error] = e.message
-    redirect_back(fallback_location: work_package_path(work_package))
+    redirect_back_or_to(work_package_path(work_package))
   end
 
   def work_package_exporter
@@ -178,7 +178,7 @@ class WorkPackagesController < ApplicationController
     send_data(export.content, type: export.mime_type, filename: export.title)
   rescue ::Exports::ExportError => e
     flash[:error] = e.message
-    redirect_back(fallback_location: work_package_path(work_package))
+    redirect_back_or_to(work_package_path(work_package))
   end
 
   def atom_journals
@@ -220,7 +220,7 @@ class WorkPackagesController < ApplicationController
 
     export_settings = @query.export_settings_for(user_settings[:format])
     export_settings.settings = user_settings
-    export_settings.save
+    export_settings.save!
   end
 
   def authorize_on_work_package

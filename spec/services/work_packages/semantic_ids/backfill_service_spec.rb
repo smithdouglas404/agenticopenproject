@@ -50,9 +50,10 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
         expect(WorkPackageSemanticId.find_by!(work_package: wp2).identifier).to eq("PROJ-2")
       end
 
-      it "marks registry entries as current" do
+      it "sets semantic_id on each WP" do
         described_class.run
-        expect(WorkPackageSemanticId.find_by!(work_package: wp1).current).to be(true)
+        expect(wp1.reload.semantic_id).to eq("PROJ-1")
+        expect(wp2.reload.semantic_id).to eq("PROJ-2")
       end
 
       it "does not duplicate entries on re-run" do
@@ -66,13 +67,13 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
       # after_create auto-registers; reset to simulate legacy data with no sequence/registry
       let!(:wp1) do
         create(:work_package, project:).tap do |wp|
-          wp.semantic_ids.delete_all
+          wp.all_semantic_ids.delete_all
           wp.update_columns(sequence_number: nil)
         end
       end
       let!(:wp2) do
         create(:work_package, project:).tap do |wp|
-          wp.semantic_ids.delete_all
+          wp.all_semantic_ids.delete_all
           wp.update_columns(sequence_number: nil)
         end
       end
@@ -102,12 +103,12 @@ RSpec.describe WorkPackages::SemanticIds::BackfillService do
       let!(:wp_with_seq) do
         create(:work_package, project:).tap do |wp|
           wp.update_columns(sequence_number: 3)
-          wp.semantic_ids.update_all(identifier: "PROJ-3")
+          wp.all_semantic_ids.update_all(identifier: "PROJ-3")
         end
       end
       let!(:wp_without_seq) do
         create(:work_package, project:).tap do |wp|
-          wp.semantic_ids.delete_all
+          wp.all_semantic_ids.delete_all
           wp.update_columns(sequence_number: nil)
         end
       end

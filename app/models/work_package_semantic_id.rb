@@ -29,7 +29,9 @@
 #++
 
 # Registry entry mapping a semantic identifier (e.g. "PROJ-42") to a work package.
-# Rows are never deleted — historic identifiers remain with current: false.
+# Rows are append-only — historic identifiers are never deleted, enabling resolution
+# of any identifier a WP has ever carried. The current identifier is stored directly
+# on work_packages.semantic_id.
 #
 # Class methods provide the write side of the registry:
 #   WorkPackageSemanticId.register_move(wp)                       # on WP project change
@@ -37,57 +39,49 @@
 #
 # Initial registration on WP creation is handled by WorkPackage::Identifier#register_semantic_id (after_create).
 class WorkPackageSemanticId < ApplicationRecord
-  belongs_to :work_package, inverse_of: :semantic_ids
+  belongs_to :work_package, inverse_of: :all_semantic_ids
 
   validates :identifier, presence: true, uniqueness: true
   validates :work_package, presence: true
 
-  # Called after a WP moves to a different project. Retires the current entry
-  # and inserts a new one in the target project's namespace.
+  # Called after a WP moves to a different project. Appends a new registry entry
+  # in the target project's namespace and updates semantic_id on the work package.
   def self.register_move(work_package)
     project = work_package.project
     seq = allocate_sequence!(project)
-    work_package.update_columns(sequence_number: seq)
-
-    transaction do
-      where(work_package_id: work_package.id, current: true).update_all(current: false)
-      create!(identifier: "#{project.identifier}-#{seq}", work_package_id: work_package.id, current: true)
-    end
+    sid = "#{project.identifier}-#{seq}"
+    work_package.update_columns(sequence_number: seq, semantic_id: sid)
+    create!(identifier: sid, work_package_id: work_package.id)
   end
 
-  # Called after a project identifier rename. Retires all current entries that
-  # carry the old prefix and bulk-inserts new current entries for every WP that
-  # ever appeared in this project (including ones that have since moved away).
+  # Called after a project identifier rename. Bulk-inserts new-prefix registry entries
+  # for every WP that ever appeared in this project (including ones that have since moved away),
+  # and updates semantic_id on WPs still resident in the project.
   # insert_all with unique_by: :identifier skips rows that already exist,
   # making the operation idempotent and safe under concurrency.
   def self.register_project_rename(project, old_identifier)
     like_pattern = "#{sanitize_like(old_identifier)}-%"
 
     transaction do
-      # Capture which specific identifier was active per WP before retiring.
-      # This is the only row that should become current:true under the new prefix;
-      # all other old-prefix rows (e.g. from WPs that have since moved away) become
-      # current:false so they still resolve but don't conflict with the WP's actual
-      # current identifier in its new project.
-      active_id_by_wp = where(current: true)
-                          .where("identifier LIKE ?", like_pattern)
-                          .pluck(:work_package_id, :identifier)
-                          .to_h
-
-      where(current: true).where("identifier LIKE ?", like_pattern).update_all(current: false)
-
-      rows = build_rename_rows(project.identifier, old_identifier, like_pattern, active_id_by_wp)
+      rows = build_rename_rows(project.identifier, old_identifier, like_pattern)
       insert_all(rows, unique_by: :identifier) if rows.any?
+
+      # Update semantic_id only on WPs whose current identifier still carries the old prefix
+      # (i.e. they are still resident in the project — WPs that have moved away already
+      # have a different semantic_id and must not be touched here).
+      WorkPackage.where("semantic_id LIKE ?", like_pattern).find_each do |wp|
+        seq = wp.semantic_id.delete_prefix("#{old_identifier}-")
+        wp.update_columns(semantic_id: "#{project.identifier}-#{seq}")
+      end
     end
   end
 
-  private_class_method def self.build_rename_rows(new_prefix, old_identifier, like_pattern, active_id_by_wp)
+  private_class_method def self.build_rename_rows(new_prefix, old_identifier, like_pattern)
     where("identifier LIKE ?", like_pattern)
       .pluck(:work_package_id, :identifier)
       .map do |wp_id, id|
         { identifier: "#{new_prefix}-#{id.delete_prefix("#{old_identifier}-")}",
-          work_package_id: wp_id,
-          current: active_id_by_wp[wp_id] == id }
+          work_package_id: wp_id }
       end
   end
 

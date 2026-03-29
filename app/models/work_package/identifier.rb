@@ -34,18 +34,11 @@ module WorkPackage::Identifier
   SEMANTIC_PATTERN = /\A([A-Za-z][A-Za-z0-9_]*)-(\d+)\z/
 
   included do
-    has_many :semantic_ids,
+    has_many :all_semantic_ids,
              class_name: "WorkPackageSemanticId",
              foreign_key: :work_package_id,
              inverse_of: :work_package,
              dependent: :destroy
-
-    # Scoped read-only view; destruction is handled by has_many :semantic_ids above.
-    has_one :current_semantic_id, # rubocop:disable Rails/HasManyOrHasOneDependent
-            -> { where(current: true) },
-            class_name: "WorkPackageSemanticId",
-            foreign_key: :work_package_id,
-            inverse_of: :work_package
 
     after_create :register_semantic_id, if: -> { Setting::WorkPackageIdentifier.alphanumeric? }
   end
@@ -123,7 +116,8 @@ module WorkPackage::Identifier
 
   def register_semantic_id
     seq = project.with_lock { project.increment!(:wp_sequence_counter).wp_sequence_counter }
-    update_columns(sequence_number: seq)
-    WorkPackageSemanticId.create!(identifier: "#{project.identifier}-#{seq}", work_package_id: id, current: true)
+    sid = "#{project.identifier}-#{seq}"
+    update_columns(sequence_number: seq, semantic_id: sid)
+    WorkPackageSemanticId.create!(identifier: sid, work_package_id: id)
   end
 end

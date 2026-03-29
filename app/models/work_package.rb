@@ -202,7 +202,7 @@ class WorkPackage < ApplicationRecord
 
   associated_to_ask_before_destruction TimeEntry,
                                        ->(work_packages) {
-                                         TimeEntry.on_work_packages(work_packages).count > 0
+                                         TimeEntry.on_work_packages(work_packages).any?
                                        },
                                        method(:cleanup_time_entries_before_destruction_of)
 
@@ -641,7 +641,7 @@ class WorkPackage < ApplicationRecord
 
       unless issue.project.shared_versions.include?(issue.version)
         issue.version = nil
-        issue.save
+        issue.save!
       end
     end
   end

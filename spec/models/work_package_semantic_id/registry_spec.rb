@@ -43,23 +43,18 @@ RSpec.describe WorkPackageSemanticId, "registry" do # rubocop:disable RSpec/Spec
   describe ".register_move" do
     before { work_package } # trigger auto-registration as "PROJ-1"
 
-    it "retires the old current entry" do
-      described_class.register_move(work_package.tap { |wp| wp.update_columns(project_id: target_project.id) })
-      expect(described_class.find_by(identifier: "PROJ-1").current).to be(false)
-    end
-
-    it "creates a new current entry in the target project" do
+    it "appends a new registry entry in the target project" do
       work_package.update_columns(project_id: target_project.id)
       described_class.register_move(work_package)
       new_entry = described_class.find_by!(identifier: "OTHER-1")
       expect(new_entry.work_package).to eq(work_package)
-      expect(new_entry.current).to be(true)
     end
 
-    it "updates sequence_number to the target project's counter" do
+    it "updates sequence_number and semantic_id to the target project's values" do
       work_package.update_columns(project_id: target_project.id)
       described_class.register_move(work_package)
       expect(work_package.reload.sequence_number).to eq(1)
+      expect(work_package.reload.semantic_id).to eq("OTHER-1")
     end
 
     it "preserves the old entry for historic lookups" do
@@ -80,15 +75,16 @@ RSpec.describe WorkPackageSemanticId, "registry" do # rubocop:disable RSpec/Spec
       project.update_columns(identifier: "NEWPROJ")
     end
 
-    it "retires all old-prefix current entries" do
+    it "inserts new-prefix registry entries" do
       described_class.register_project_rename(project, "PROJ")
-      expect(described_class.where(current: true).where("identifier LIKE 'PROJ-%'")).to be_empty
+      expect(described_class.find_by(identifier: "NEWPROJ-1")).to be_present
+      expect(described_class.find_by(identifier: "NEWPROJ-2")).to be_present
     end
 
-    it "inserts new current entries with the new prefix" do
+    it "updates semantic_id on work packages to the new prefix" do
       described_class.register_project_rename(project, "PROJ")
-      expect(described_class.find_by!(identifier: "NEWPROJ-1").current).to be(true)
-      expect(described_class.find_by!(identifier: "NEWPROJ-2").current).to be(true)
+      expect(wp1.reload.semantic_id).to eq("NEWPROJ-1")
+      expect(wp2.reload.semantic_id).to eq("NEWPROJ-2")
     end
 
     it "keeps the old-prefix rows for historic resolution" do
@@ -105,7 +101,8 @@ RSpec.describe WorkPackageSemanticId, "registry" do # rubocop:disable RSpec/Spec
 
     context "when a WP has since moved away from the project" do
       before do
-        described_class.where(identifier: "PROJ-1").update_all(current: false)
+        # Simulate wp1 having moved: its semantic_id now belongs to another project
+        wp1.update_columns(semantic_id: "OTHER-99", sequence_number: 99)
       end
 
       it "still creates a new NEWPROJ entry for that WP because it was in the old registry" do
@@ -114,13 +111,15 @@ RSpec.describe WorkPackageSemanticId, "registry" do # rubocop:disable RSpec/Spec
       end
 
       it "uses the sequence number from the old registry row, not the WP's current sequence" do
-        # wp1 has sequence_number=1 in PROJ, but simulate it having moved and now having a
-        # different sequence_number (e.g. 99 in another project)
-        wp1.update_columns(sequence_number: 99)
         described_class.register_project_rename(project, "PROJ")
         # NEWPROJ-1 must be created (from "PROJ-1"), not NEWPROJ-99
         expect(described_class.find_by(identifier: "NEWPROJ-1")).to be_present
         expect(described_class.find_by(identifier: "NEWPROJ-99")).to be_nil
+      end
+
+      it "does not update semantic_id on the moved-away WP" do
+        described_class.register_project_rename(project, "PROJ")
+        expect(wp1.reload.semantic_id).to eq("OTHER-99")
       end
     end
   end

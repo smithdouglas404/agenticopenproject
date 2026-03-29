@@ -31,25 +31,25 @@
 class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
   def change
     # Atomic counter for per-project WP sequence allocation
-    add_column :projects, :wp_sequence_counter, :integer, default: 0, null: false
+    add_column :projects, :wp_sequence_counter, :integer, default: 0, null: false, if_not_exists: true
 
     # Per-project sequence number for semantic identifiers (e.g. PROJ-42)
-    add_column :work_packages, :sequence_number, :integer
+    add_column :work_packages, :sequence_number, :integer, if_not_exists: true
 
-    create_table :work_package_semantic_ids do |t|
+    # Current semantic identifier stored directly on the work package (e.g. "PROJ-42")
+    add_column :work_packages, :semantic_id, :string, if_not_exists: true
+
+    create_table :work_package_semantic_ids, if_not_exists: true do |t|
       t.string :identifier, null: false
       t.references :work_package, null: false, foreign_key: true
-      t.boolean :current, null: false, default: false
       t.timestamps
     end
 
     # Unique identifier across all WPs (past and present)
-    add_index :work_package_semantic_ids, :identifier, unique: true
+    add_index :work_package_semantic_ids, :identifier, unique: true, if_not_exists: true
 
-    # Only one current identifier per WP at any time
-    add_index :work_package_semantic_ids, %i[work_package_id current],
-              where: "current = true",
-              unique: true,
-              name: :idx_wp_semantic_ids_current
+    # Remove legacy current flag if the table was created by an older migration
+    remove_index :work_package_semantic_ids, name: :idx_wp_semantic_ids_current, if_exists: true
+    remove_column :work_package_semantic_ids, :current, :boolean, if_exists: true
   end
 end

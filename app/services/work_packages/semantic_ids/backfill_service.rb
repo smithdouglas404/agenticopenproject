@@ -60,14 +60,11 @@ module WorkPackages
 
         project.update_columns(wp_sequence_counter: current_max)
 
-        # 2. Populate registry for every WP in the project.
+        # 2. Populate registry and semantic_id for every WP in the project.
         WorkPackage.where(project:).find_each do |wp|
-          WorkPackageSemanticId.find_or_create_by!(
-            identifier: "#{project.identifier}-#{wp.sequence_number}",
-            work_package_id: wp.id
-          ) do |rec|
-            rec.current = true
-          end
+          sid = "#{project.identifier}-#{wp.sequence_number}"
+          WorkPackageSemanticId.find_or_create_by!(identifier: sid, work_package_id: wp.id)
+          wp.update_columns(semantic_id: sid) if wp.semantic_id != sid
         end
       end
     end
