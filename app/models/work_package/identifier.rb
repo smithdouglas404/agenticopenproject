@@ -65,9 +65,13 @@ module WorkPackage::Identifier
     private
 
     def find_by_semantic_identifier(identifier, user:)
-      # 1. Registry lookup — O(1) via the unique index on identifier.
-      #    Covers all identifiers written by the registry write operations:
-      #      - Current identifier ("PROJ-5", "OTHER-42 after a move").
+      # 1. Direct lookup — O(1) via work_packages.semantic_id index.
+      #    Hits the common case (current identifier) without touching the alias table.
+      wp = identifier_scope(user).find_by(semantic_id: identifier)
+      return wp if wp
+
+      # 2. Alias registry lookup — O(1) via the unique index on identifier.
+      #    Covers historic identifiers that are no longer the WP's semantic_id:
       #      - Historic identifiers retired on WP move ("PROJ-5" still resolves
       #        after the WP moved to OTHER, where it became "OTHER-42").
       #      - Historic identifiers retired on project rename ("PROJ-5" resolves

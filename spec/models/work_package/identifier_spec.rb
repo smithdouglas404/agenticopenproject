@@ -73,14 +73,25 @@ RSpec.describe WorkPackage::Identifier do
     end
 
     context "with a semantic param" do
-      context "when the identifier is in the registry" do
-        it "finds via the current registry entry" do
+      context "when the identifier matches work_packages.semantic_id (fast path)" do
+        it "finds directly via semantic_id without hitting the alias table" do
           expect(WorkPackage.find_by_identifier("MYPROJ-1")).to eq(work_package)
         end
 
-        it "also resolves historic entries" do
+        it "returns nil when no WP has that semantic_id and no alias or fallback matches" do
+          expect(WorkPackage.find_by_identifier("MYPROJ-999")).to be_nil
+        end
+      end
+
+      context "when the identifier is a historic alias (alias table path)" do
+        it "resolves historic entries via the alias registry" do
           WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
           expect(WorkPackage.find_by_identifier("OLDPROJ-1")).to eq(work_package)
+        end
+
+        it "resolves when semantic_id differs but an alias row exists" do
+          work_package.update_columns(semantic_id: "OTHER-99")
+          expect(WorkPackage.find_by_identifier("MYPROJ-1")).to eq(work_package)
         end
       end
 
