@@ -29,12 +29,12 @@
 #++
 
 class WorkPackages::IdentifierAutofix::ApplyHandlesJob < ApplicationJob
-  include GoodJob::ActiveJobExtensions::Concurrency
-
-  good_job_control_concurrency_with(perform_limit: 1)
-
+  # FIXME: The admin UI's job_in_progress? query and :change_in_progress state
+  # assume at most one active instance of this job at any given time.
+  # Enforce this with good_job_control_concurrency_with(perform_limit: 1)
+  # when the real migration body is implemented.
   def perform
-    # TODO: convert the project identifiers
-    WorkPackages::SemanticIds::BackfillService.run
+    # FIXME: replace with actual project handle migration
+    sleep 5
   end
 end
