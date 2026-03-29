@@ -200,7 +200,7 @@ ru:
         start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Редактировать спринт"
         add_work_package: "Добавить пакет работ"
-        task_board: "Панель задач"
+        task_board: "Sprint board"
     story_component:
       label_drag_story: "Переместить %{name}"
     story_menu_component:

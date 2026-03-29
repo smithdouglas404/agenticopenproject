@@ -142,17 +142,17 @@ fr:
       action_menu:
         copy_url_to_clipboard: "Copy URL to clipboard"
         copy_work_package_id: "Copy work package ID"
-        move_menu: "Move"
-      label_move_to_sprint: "Move to sprint"
+        move_menu: "Déplacer"
+      label_move_to_sprint: "Déplacer vers le sprint"
     move_to_sprint_dialog_component:
-      title: "Move to sprint"
+      title: "Passer au sprint"
       label_sprint: "Sprint"
     sprint_planning:
       blankslate:
-        title: "No sprints present yet"
-        description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
-        create_sprint_description_text: "To start planning your sprint, create one here."
-        share_sprint_description_html: "To start planning your sprint, go to the %{settings_link} to receive sprints from a different project."
+        title: "Il n'y a pas encore de sprints"
+        description_html: "Pour commencer à planifier votre sprint, créez-en un ici ou allez sur %{settings_link} pour trouver les sprints d'un projet différent."
+        create_sprint_description_text: "Pour commencer à planifier votre sprint, créez-en un ici."
+        share_sprint_description_html: "Pour commencer à planifier votre sprint, allez sur %{settings_link} pour trouver les sprints d'un autre projet."
         no_actions_description_text: "No sprints are available for this project yet."
         receive_shared_description_html: "This project receives sprints from a different project. Manage this in the %{settings_link}."
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
@@ -192,15 +192,15 @@ fr:
         start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Modifier le sprint"
         add_work_package: "Ajouter un lot de travaux"
-        task_board: "Tableau des tâches"
+        task_board: "Sprint board"
     story_component:
       label_drag_story: "Déplacer %{name}"
     story_menu_component:
       label_actions: "Actions de l'histoire"
       action_menu:
-        copy_url_to_clipboard: "Copy URL to clipboard"
-        copy_work_package_id: "Copy work package ID"
-        move_menu: "Move"
+        copy_url_to_clipboard: "Copier l'URL dans le presse-papier"
+        copy_work_package_id: "Copier le lot de travaux"
+        move_menu: "Déplacer"
   backlogs_points_burn_direction: "Les points évoluent vers le haut/bas"
   backlogs_product_backlog: "Backlog de produit"
   backlogs_story: "Histoire"
@@ -221,7 +221,7 @@ fr:
       task_type:
         cannot_be_story_type: "ne peut pas être également un type d'histoire"
   label_backlog: "Backlog"
-  label_inbox: "Inbox"
+  label_inbox: "Boîte de réception"
   label_backlogs: "Backlogs"
   label_backlogs_unconfigured: "Vous n'avez pas encore configuré Backlogs. Veuillez vous rendre dans %{administration} > %{plugins}, puis cliquer sur le lien %{configure} pour ce plugin. Une fois que vous avez défini les champs, revenez sur cette page pour commencer à utiliser l'outil."
   label_blocks_ids: "ID des lots de travaux bloqués"
