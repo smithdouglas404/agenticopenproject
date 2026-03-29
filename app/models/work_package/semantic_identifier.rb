@@ -112,8 +112,6 @@ module WorkPackage::SemanticIdentifier
     rescue ActiveRecord::RecordNotFound
       nil
     end
-
-
   end
 
   private

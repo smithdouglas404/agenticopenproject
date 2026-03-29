@@ -85,5 +85,4 @@ class WorkPackageSemanticAlias < ApplicationRecord
           work_package_id: wp_id }
       end
   end
-
 end
