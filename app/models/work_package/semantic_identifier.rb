@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackage::Identifier
+module WorkPackage::SemanticIdentifier
   extend ActiveSupport::Concern
 
   SEMANTIC_PATTERN = /\A([A-Za-z][A-Za-z0-9_]*)-(\d+)\z/

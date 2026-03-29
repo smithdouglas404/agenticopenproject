@@ -37,7 +37,7 @@
 #   WorkPackageSemanticAlias.register_move(wp)                       # on WP project change
 #   WorkPackageSemanticAlias.register_project_rename(proj, old_id)   # on project identifier change
 #
-# Initial registration on WP creation is handled by WorkPackage::Identifier#register_semantic_id (after_create).
+# Initial registration on WP creation is handled by WorkPackage::SemanticIdentifier#register_semantic_id (after_create).
 class WorkPackageSemanticAlias < ApplicationRecord
   belongs_to :work_package, inverse_of: :semantic_aliases
 

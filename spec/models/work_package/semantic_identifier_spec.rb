@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackage::Identifier do
+RSpec.describe WorkPackage::SemanticIdentifier do
   let(:project) { create(:project, identifier: "MYPROJ") }
   # Creating a WP in alphanumeric mode auto-registers it: gets sequence_number 1 and entry "MYPROJ-1".
   let(:work_package) { create(:work_package, project:) }
