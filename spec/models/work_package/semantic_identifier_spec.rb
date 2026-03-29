@@ -145,4 +145,89 @@ RSpec.describe WorkPackage::SemanticIdentifier do
         .to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
+  describe "WorkPackage.register_move" do
+    let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
+    let(:target_project) { create(:project, identifier: "OTHER", wp_sequence_counter: 0) }
+
+    before do
+      work_package.update_columns(project_id: target_project.id)
+    end
+
+    it "retires the old identifier as a historical alias" do
+      WorkPackage.register_move(work_package)
+      expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-1")).to be_present
+    end
+
+    it "updates sequence_number and semantic_id to the target project's values" do
+      WorkPackage.register_move(work_package)
+      expect(work_package.reload.sequence_number).to eq(1)
+      expect(work_package.reload.semantic_id).to eq("OTHER-1")
+    end
+
+    it "does not add the new identifier to the alias table" do
+      WorkPackage.register_move(work_package)
+      expect(WorkPackageSemanticAlias.find_by(identifier: "OTHER-1")).to be_nil
+    end
+  end
+
+  describe "WorkPackage.register_project_rename" do
+    let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
+    let(:target_project) { create(:project, identifier: "OTHER", wp_sequence_counter: 0) }
+    let(:work_package) { nil } # suppress outer eager instantiation so wp1/wp2 start at sequence 1
+    let(:wp1) { create(:work_package, project:) }
+    let(:wp2) { create(:work_package, project:) }
+
+    before do
+      wp1
+      wp2
+      project.update_columns(identifier: "NEWPROJ")
+    end
+
+    it "inserts pre-rename identifiers as historical aliases for resident WPs" do
+      WorkPackage.register_project_rename(project, "PROJ")
+      expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-1")).to be_present
+      expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-2")).to be_present
+    end
+
+    it "does not add new-prefix entries to the alias table" do
+      WorkPackage.register_project_rename(project, "PROJ")
+      expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-1")).to be_nil
+      expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-2")).to be_nil
+    end
+
+    it "updates semantic_id on resident WPs to the new prefix" do
+      WorkPackage.register_project_rename(project, "PROJ")
+      expect(wp1.reload.semantic_id).to eq("NEWPROJ-1")
+      expect(wp2.reload.semantic_id).to eq("NEWPROJ-2")
+    end
+
+    it "is idempotent (safe to run twice)" do
+      WorkPackage.register_project_rename(project, "PROJ")
+      expect { WorkPackage.register_project_rename(project, "PROJ") }.not_to raise_error
+    end
+
+    context "when a WP has previously moved out of the project" do
+      before do
+        # Move wp1 to OTHER properly so "PROJ-1" ends up as an alias
+        wp1.update_columns(project_id: target_project.id)
+        WorkPackage.register_move(wp1)
+      end
+
+      it "appends a new-prefix alias derived from the old alias row" do
+        WorkPackage.register_project_rename(project, "PROJ")
+        expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-1")).to be_present
+      end
+
+      it "preserves the original old-prefix alias" do
+        WorkPackage.register_project_rename(project, "PROJ")
+        expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-1")).to be_present
+      end
+
+      it "does not update semantic_id on the moved-away WP" do
+        WorkPackage.register_project_rename(project, "PROJ")
+        expect(wp1.reload.semantic_id).to eq("OTHER-1")
+      end
+    end
+  end
 end
