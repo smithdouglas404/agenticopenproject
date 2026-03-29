@@ -49,9 +49,8 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       expect(work_package.reload.semantic_id).to eq("MYPROJ-1")
     end
 
-    it "creates a registry entry" do
-      entry = work_package.semantic_aliases.find_by(identifier: "MYPROJ-1")
-      expect(entry).to be_present
+    it "does not create a registry entry (initial identifier is current, not historical)" do
+      expect(work_package.semantic_aliases).to be_empty
     end
 
     it "increments the counter for each successive WP" do

@@ -64,6 +64,58 @@ module WorkPackage::SemanticIdentifier
       find_by_identifier(identifier) || raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{identifier}")
     end
 
+    # Called after a WP moves to a different project. Retires the current identifier
+    # as a historical alias, allocates a new identifier in the target project, and
+    # updates sequence_number and semantic_id on the work package.
+    def register_move(work_package)
+      WorkPackageSemanticAlias.transaction do
+        old_sid = work_package.semantic_id
+        seq, sid = work_package.project.allocate_wp_semantic_identifier!
+        work_package.update_columns(sequence_number: seq, semantic_id: sid)
+        WorkPackageSemanticAlias.create!(identifier: old_sid, work_package_id: work_package.id) if old_sid
+      end
+    end
+
+    # Called after a project identifier rename.
+    #
+    # Three things happen atomically:
+    #
+    # 1. New-prefix aliases are appended for WPs that previously moved out of this project,
+    #    so both the old and the new prefix resolve.
+    #
+    # 2. The current semantic_id of every resident WP is inserted as a historical alias,
+    #    retiring it before the rename takes effect.
+    #
+    # 3. semantic_id on resident WPs is updated to carry the new prefix.
+    def register_project_rename(project, old_identifier)
+      like_pattern = "#{sanitize_sql_like(old_identifier)}-%"
+      prefix = "#{old_identifier}-"
+      new_prefix = "#{project.identifier}-"
+
+      WorkPackageSemanticAlias.transaction do
+        resident_wp_ids = where("semantic_id LIKE ?", like_pattern).pluck(:id)
+
+        # 1. Append new-prefix aliases for WPs that previously moved out of this project
+        moved_out_rows = WorkPackageSemanticAlias
+          .where("identifier LIKE ?", like_pattern)
+          .where.not(work_package_id: resident_wp_ids)
+          .pluck(:work_package_id, :identifier)
+          .map { |wp_id, id| { identifier: new_prefix + id.delete_prefix(prefix), work_package_id: wp_id } }
+        WorkPackageSemanticAlias.insert_all(moved_out_rows, unique_by: :identifier) if moved_out_rows.any?
+
+        # 2. Insert pre-rename identifiers as historical aliases for resident WPs
+        rows = where(id: resident_wp_ids)
+                 .pluck(:id, :semantic_id)
+                 .map { |wp_id, sid| { identifier: sid, work_package_id: wp_id } }
+        WorkPackageSemanticAlias.insert_all(rows, unique_by: :identifier) if rows.any?
+
+        # 3. Update semantic_id on resident WPs to the new prefix
+        where(id: resident_wp_ids).find_each do |wp|
+          wp.update_columns(semantic_id: new_prefix + wp.semantic_id.delete_prefix(prefix))
+        end
+      end
+    end
+
     private
 
     def find_by_semantic_identifier(identifier)
@@ -84,21 +136,32 @@ module WorkPackage::SemanticIdentifier
       wp_id = WorkPackageSemanticAlias.find_by(identifier:)&.work_package_id
       return find_by(id: wp_id) if wp_id
 
-      # 2. Computed fallback — derives the WP from project + sequence_number using
-      #    FriendlyId slug history to resolve retired project identifiers.
-      #    Covers cases where no registry row exists for the requested identifier:
+      # 3. Computed fallback — resolves pre-rename ghost identifiers by deriving the WP
+      #    from project + sequence_number using FriendlyId slug history.
+      #    Covers identifiers that were never explicitly recorded in the alias table:
+      #      - "Ghost" identifiers: PROJ renamed to PROJ_NEW; a new WP gets PROJ_NEW-2;
+      #        "PROJ-2" was never a real identifier but still resolves via slug history.
       #      - Old prefix after multiple renames (PROJ → A → B → C): a WP created
       #        after the first rename has no "PROJ-N" row, but slug history lets us
       #        resolve "PROJ" → the project (now C) → find by sequence_number.
-      #      - Identifier formed from a slug that was current when a link was saved
-      #        but whose registry row is missing for any reason.
       prefix, seq = parse_semantic_identifier(identifier)
       return nil unless prefix && seq
 
       project = resolve_project_by_prefix(prefix)
       return nil unless project
 
-      find_by(project:, sequence_number: seq)
+      wp = find_by(project:, sequence_number: seq)
+      return wp if wp
+
+      # 4. Pre-rename + move ghost identifiers — the WP held the sequence number in this
+      #    project but has since moved away. Reconstruct the identifier under the current
+      #    project name and look it up in the alias table.
+      #    Example: PROJ → PROJ_NEW (rename), WP gets PROJ_NEW-5, then moves to OTHER.
+      #    "PROJ-5" reaches here: project resolved to PROJ_NEW, sequence_number=5 no longer
+      #    in PROJ_NEW → reconstruct "PROJ_NEW-5" → alias table → WP (now in OTHER).
+      refreshed = "#{project.identifier}-#{seq}"
+      wp_id = WorkPackageSemanticAlias.find_by(identifier: refreshed)&.work_package_id
+      find_by(id: wp_id)
     end
 
     def parse_semantic_identifier(identifier)
@@ -116,10 +179,9 @@ module WorkPackage::SemanticIdentifier
   private
 
   def register_semantic_id
-    WorkPackageSemanticAlias.transaction do
-      seq, sid = project.allocate_wp_semantic_identifier!
-      update_columns(sequence_number: seq, semantic_id: sid)
-      WorkPackageSemanticAlias.create!(identifier: sid, work_package_id: id)
-    end
+    seq, sid = project.allocate_wp_semantic_identifier!
+    update_columns(sequence_number: seq, semantic_id: sid)
+    # No alias row on creation — the initial identifier is current, not historical.
+    # It enters the alias table when the WP moves or the project is renamed.
   end
 end
