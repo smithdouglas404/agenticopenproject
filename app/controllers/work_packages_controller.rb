@@ -247,7 +247,7 @@ class WorkPackagesController < ApplicationController
     @work_package = if params[:id].match?(/\A\d+\z/)
                       scope.find(params[:id])
                     else
-                      scope.find_by_semantic_identifier(params[:id]) # rubocop:disable Rails/DynamicFindBy
+                      scope.find_by_semantic_identifier(params[:id])
                     end
   end
 

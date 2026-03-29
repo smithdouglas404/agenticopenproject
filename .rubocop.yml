@@ -172,6 +172,7 @@ Rails/DynamicFindBy:
   AllowedMethods:
     - find_by_identifier
     - find_by_identifier!
+    - find_by_semantic_identifier
   Exclude:
     - "spec/features/**/*.rb"
     - "spec/support/**/*.rb"

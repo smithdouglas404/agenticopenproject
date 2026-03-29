@@ -87,7 +87,6 @@ module WorkPackage::SemanticIdentifier
       # 2. Computed fallback — derives the WP from project + sequence_number using
       #    FriendlyId slug history to resolve retired project identifiers.
       #    Covers cases where no registry row exists for the requested identifier:
-      #      - WPs created before the backfill has run (no registry rows yet).
       #      - Old prefix after multiple renames (PROJ → A → B → C): a WP created
       #        after the first rename has no "PROJ-N" row, but slug history lets us
       #        resolve "PROJ" → the project (now C) → find by sequence_number.
