@@ -48,8 +48,7 @@ class WorkPackageSemanticAlias < ApplicationRecord
   # in the target project's namespace and updates semantic_id on the work package.
   def self.register_move(work_package)
     project = work_package.project
-    seq = project.allocate_wp_sequence!
-    sid = "#{project.identifier}-#{seq}"
+    seq, sid = project.allocate_wp_semantic_identifier!
     transaction do
       work_package.update_columns(sequence_number: seq, semantic_id: sid)
       create!(identifier: sid, work_package_id: work_package.id)
@@ -65,7 +64,7 @@ class WorkPackageSemanticAlias < ApplicationRecord
     like_pattern = "#{sanitize_like(old_identifier)}-%"
 
     transaction do
-      rows = build_rename_rows(project.identifier, old_identifier, like_pattern)
+      rows = build_rename_rows(project, old_identifier, like_pattern)
       insert_all(rows, unique_by: :identifier) if rows.any?
 
       # Update semantic_id only on WPs whose current identifier still carries the old prefix
@@ -78,11 +77,11 @@ class WorkPackageSemanticAlias < ApplicationRecord
     end
   end
 
-  private_class_method def self.build_rename_rows(new_prefix, old_identifier, like_pattern)
+  private_class_method def self.build_rename_rows(project, old_identifier, like_pattern)
     where("identifier LIKE ?", like_pattern)
       .pluck(:work_package_id, :identifier)
       .map do |wp_id, id|
-        { identifier: "#{new_prefix}-#{id.delete_prefix("#{old_identifier}-")}",
+        { identifier: "#{project.identifier}-#{id.delete_prefix("#{old_identifier}-")}",
           work_package_id: wp_id }
       end
   end
