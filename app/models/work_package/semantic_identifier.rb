@@ -66,7 +66,7 @@ module WorkPackage::SemanticIdentifier
     # Called after a WP moves to a different project. Retires the current identifier
     # as a historical alias, allocates a new identifier in the target project, and
     # updates sequence_number and semantic_id on the work package.
-    def register_move(work_package)
+    def handle_wp_move(work_package)
       WorkPackageSemanticAlias.transaction do
         old_sid = work_package.semantic_id
         seq, sid = work_package.project.allocate_wp_semantic_identifier!
@@ -86,7 +86,7 @@ module WorkPackage::SemanticIdentifier
     #    retiring it before the rename takes effect.
     #
     # 3. semantic_id on resident WPs is updated to carry the new prefix.
-    def register_project_rename(project, old_identifier)
+    def handle_project_rename(project, old_identifier)
       like_pattern = "#{sanitize_sql_like(old_identifier)}-%"
       prefix = "#{old_identifier}-"
       new_prefix = "#{project.identifier}-"
