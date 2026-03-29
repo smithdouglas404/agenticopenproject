@@ -31,17 +31,27 @@ ar:
         goal: "Sprint goal"
         name: "Sprint name"
         sharing: "Sharing"
+        statuses:
+          in_planning: "In planning"
+          active: "Active"
+          completed: "Completed"
       project:
         sprint_sharing: "Sprint sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
-        position: "الموقع"
-        story_points: "نقاط القصة"
         backlogs_work_package_type: "نوع الأعمال المتراكمة غير المنجزة"
+        position: "الموقع"
+        sprint: "Sprint"
+        story_points: "نقاط القصة"
     errors:
+      messages:
+        must_be_in_planning: "must be in planning to start."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
+        dates_required: "Start and finish dates are required in order to start the sprint."
       models:
         project:
+          receiving_sprints: "is receiving shared sprints. Own sprints cannot be created."
           attributes:
             sprint_sharing:
               share_all_projects_already_taken: "cannot be set because project \"%{name}\" is already sharing with all projects."
@@ -53,6 +63,22 @@ ar:
               must_block_at_least_one_work_package: "يجب أن يحتوي على الأقل على الهوية المعرّفة لبطاقة واحدة."
             version_id:
               task_version_must_be_the_same_as_story_version: "يجب أن يكون نفس نسخة القصة الأصلية."
+            sprint:
+              not_shared_with_project: "is not shared with the project the work package is in."
+              not_eligible_for_moving: "is not an active sprint in the project which holds the sprint the work package is moved out of."
+        agile/sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                zero: "There are %{count} work packages that were not completed in this sprint."
+                one: "There is %{count} work package that was not completed in this sprint."
+                two: "There are %{count} work packages that were not completed in this sprint."
+                few: "There are %{count} work packages that were not completed in this sprint."
+                many: "There are %{count} work packages that were not completed in this sprint."
+                other: "There are %{count} work packages that were not completed in this sprint."
+              format: "%{message}"
+            status:
+              not_active: "is not active so it cannot be closed."
         sprint:
           cannot_end_before_it_starts: "لا يمكن أن ينتهي السباق قبل أن يبدأ."
     models:
@@ -96,6 +122,9 @@ ar:
     task: "المهمة"
     task_color: "لون المهمّة"
     unassigned: "غير المعيّنة"
+    administration_blankslate:
+      title: "Backlog admin settings are evolving"
+      text: "We are currently redesigning the Backlogs module. Admin settings for sprints and backlogs will be visible here in the near future. Project-level settings remain available."
     user_preference:
       header_backlogs: ""
       button_update_backlogs: "Update backlogs module"
@@ -111,6 +140,39 @@ ar:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
         other: "%{count} stories in backlog"
+    inbox_component:
+      blankslate_title: "Backlog inbox is empty"
+      blankslate_description: "All open work packages in this project will automatically appear here."
+      label_drag_work_package: "Move %{name}"
+      show_more:
+        zero: "Show %{count} more items"
+        one: "Show 1 more item"
+        two: "Show %{count} more items"
+        few: "Show %{count} more items"
+        many: "Show %{count} more items"
+        other: "Show %{count} more items"
+    inbox_item_component:
+      label_drag_work_package: "Move %{name}"
+    inbox_menu_component:
+      label_actions: "Work package actions"
+      action_menu:
+        copy_url_to_clipboard: "Copy URL to clipboard"
+        copy_work_package_id: "Copy work package ID"
+        move_menu: "Move"
+      label_move_to_sprint: "Move to sprint"
+    move_to_sprint_dialog_component:
+      title: "Move to sprint"
+      label_sprint: "Sprint"
+    sprint_planning:
+      blankslate:
+        title: "No sprints present yet"
+        description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
+        create_sprint_description_text: "To start planning your sprint, create one here."
+        share_sprint_description_html: "To start planning your sprint, go to the %{settings_link} to receive sprints from a different project."
+        no_actions_description_text: "No sprints are available for this project yet."
+        receive_shared_description_html: "This project receives sprints from a different project. Manage this in the %{settings_link}."
+        receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
+        settings_link_text: "project settings"
     sprint_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
@@ -127,18 +189,34 @@ ar:
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
+    finish_sprint_dialog_component:
+      title: "There are work in progress items"
+      body: "%{message} What would you like to do with these?"
+      legend: "Action for unfinished work packages"
+      actions:
+        move_to_top_of_backlog: "Move them to the top of the backlog"
+        move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
+        move_to_sprint: "Move them to another sprint"
+      select_sprint_label: "Select sprint"
+      button_close_sprint: "Close sprint"
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
+        start_sprint: "Start sprint"
+        finish_sprint: "Finish sprint"
+        start_sprint_disabled_description: "Another sprint is already active."
+        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
-        burndown_chart: "Burndown chart"
+        add_work_package: "Add work package"
+        task_board: "Sprint board"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
       label_actions: "Story actions"
+      action_menu:
+        copy_url_to_clipboard: "Copy URL to clipboard"
+        copy_work_package_id: "Copy work package ID"
+        move_menu: "Move"
   backlogs_points_burn_direction: "نقاط الاستهلاك الإيجابي/ السلبي"
   backlogs_product_backlog: "عمل المنتج المتراكم غير المنجز"
   backlogs_story: "القصة"
@@ -158,6 +236,8 @@ ar:
     attributes:
       task_type:
         cannot_be_story_type: "can not also be a story type"
+  label_backlog: "Backlog"
+  label_inbox: "Inbox"
   label_backlogs: "الأعمال المتراكمة غير المنجزة"
   label_backlogs_unconfigured: "لم تقم بإنشاء الأعمال المتراكمة غير المنجزة بعد. من فضلك اذهب إلى %{administration} > %{plugins}، ثم اضغط على رابط %{configure} لهذا البرنامج المساعد. عندما تنتهي من تعيين الحقول، ارجع إلى هذه الصفحة لتبدأ باستخدام الأداة."
   label_blocks_ids: "الهويات المعرِّفة لمجموعات العمل المحظورة"
@@ -168,7 +248,14 @@ ar:
   label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "عوائق السباق"
   label_sprint_new: "New sprint"
+  label_sprint_planning: "Sprint planning"
   label_task_board: "لوحة المهمة"
+  notice_successful_start: "The sprint was started."
+  notice_successful_finish: "The sprint was completed."
+  notice_unsuccessful_start: "The sprint could not be started."
+  notice_unsuccessful_start_with_reason: "The sprint could not be started: %{reason}"
+  notice_unsuccessful_finish: "The sprint could not be completed."
+  notice_unsuccessful_finish_with_reason: "The sprint could not be completed: %{reason}"
   permission_create_sprints: "Create sprints"
   permission_manage_sprint_items: "Manage sprint items"
   permission_select_done_statuses: "حدد حالات الاتمام"

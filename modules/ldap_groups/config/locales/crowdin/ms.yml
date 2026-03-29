@@ -47,7 +47,7 @@ ms:
         title: 'Buang saringan yang diselaraskan %{name}'
         confirmation: "Jika anda teruskan, saringan yang diselaraskan %{name} dan semua kumpulan %{groups_count} yang dicipta melaluinya akan dikeluarkan."
         removed_groups: "Amaran: Ini akan mengeluarkan kumpulan berikut daripada OpenProject dan mengeluarkannya daripada semua projek!"
-        verification: "Masukkan nama penyaring %{name} untuk mengesahkan pembuangan."
+        verification_html: "Enter the filter name %{name} to verify the deletion."
       form:
         group_name_attribute_text: 'Masukkan atribut kumpulan LDAP yang digunakan untuk tetapkan nama kumpulan OpenProject.'
         filter_string_text: 'Masukkan penyaring LDAP RFC4515 yang kembalikan kumpulan dalam LDAP anda untuk diselaraskan dengan OpenProject.'
@@ -59,7 +59,7 @@ ms:
         title: 'Keluarkan kumpulan yang diselaraskan %{name}'
         confirmation: "Jika anda teruskan, kumpulan yang diselaraskan %{name} dan semua %{users_count} pengguna yang diselaraskan melaluinya akan dikeluarkan."
         info: "Perhatian: Kumpulan OpenProject sendiri dan ahli-ahli yang ditambah di luar sinkronisasi LDAP tidak akan dikeluarkan."
-        verification: "Masukkan nama kumpulan %{name} untuk mengesahkan pembuangan."
+        verification_html: "Enter the group's name %{name} to verify the deletion."
       help_text_html: |
         Modul ini membenarkan anda untuk menyediakan sinkronisasi antara LDAP dan kumpulan-kumpulan OpenProject.
         Ia bergantung kepada keperluan kumpulan LDAP untuk menggunakan <em>kumpulanNama / ahliKepada</em><br/> set atribut untuk bekerjasama dengan OpenProject.

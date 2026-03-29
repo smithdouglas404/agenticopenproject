@@ -117,8 +117,8 @@ ja:
   error_notification_with_errors: "通知を送信できませんでした。次の受信者には通知できませんでした: %{recipients}"
   label_meeting: "会議"
   label_meeting_plural: "会議"
-  label_meeting_templates: "Templates"
-  label_meeting_template: "Template"
+  label_meeting_templates: "テンプレート"
+  label_meeting_template: "テンプレート"
   label_meeting_template_new: "New template"
   label_meeting_template_create: "Create template"
   label_meeting_template_delete: "Delete template"
@@ -192,6 +192,8 @@ ja:
   label_subscribe_icalendar: "カレンダーを購読する"
   caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   caption_template_project_select: "Please select the project in which to create this meeting template"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

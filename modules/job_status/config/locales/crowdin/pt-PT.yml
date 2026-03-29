@@ -5,8 +5,7 @@ pt-PT:
     description: "Listagem e estado dos trabalhos em segundo plano."
   job_status_dialog:
     download_starts: 'A transferência deve começar automaticamente.'
-    link_to_download: 'Ou, %{link} para descarregar.'
-    click_here: 'clique aqui'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Estado do trabalho em segundo plano'
     redirect: 'Está a ser redirecionado.'
     redirect_link: 'Clique aqui para continuar.'

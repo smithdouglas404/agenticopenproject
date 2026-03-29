@@ -31,21 +31,31 @@ ru:
         goal: "Цель спринта"
         name: "Название спринта"
         sharing: "Совместное использование"
+        statuses:
+          in_planning: "В планировании"
+          active: "Активный"
+          completed: "Завершён"
       project:
-        sprint_sharing: "Sprint sharing"
+        sprint_sharing: "Совместное использование спринта"
       sprint:
         duration: "Продолжительность спринта"
       work_package:
-        position: "Позиция"
-        story_points: "Стори поинты"
         backlogs_work_package_type: "Тип невыполненной работы"
+        position: "Позиция"
+        sprint: "Спринт"
+        story_points: "Стори поинты"
     errors:
+      messages:
+        must_be_in_planning: "для начала работы необходимо выполнить планирование."
+        only_one_active_sprint_allowed: "для каждого проекта допускается только один активный спринт."
+        dates_required: "Для начала спринта необходимы даты начала и окончания."
       models:
         project:
+          receiving_sprints: "получает общие спринты. Собственные спринты создавать нельзя."
           attributes:
             sprint_sharing:
-              share_all_projects_already_taken: "cannot be set because project \"%{name}\" is already sharing with all projects."
-              share_all_projects_already_taken_anonymous: "cannot be set because another project is already sharing with all projects."
+              share_all_projects_already_taken: "не может быть установлен, потому что проект \"%{name}\" уже совместно используется со всеми проектами."
+              share_all_projects_already_taken_anonymous: "не может быть установлен, потому что другой проект уже совместно используется со всеми проектами."
         work_package:
           attributes:
             blocks_ids:
@@ -53,6 +63,20 @@ ru:
               must_block_at_least_one_work_package: "должен содержаться идентификатор по крайней мере одного билета."
             version_id:
               task_version_must_be_the_same_as_story_version: "должен совпадать с версией родительской истории."
+            sprint:
+              not_shared_with_project: "не передается проекту, в котором находится пакет работ."
+              not_eligible_for_moving: "не является активным спринтом в проекте, в котором проводится спринт, из которого перемещается пакет работ."
+        agile/sprint:
+          attributes:
+            base:
+              unfinished_work_packages:
+                one: "Есть пакет работ %{count}, который не был завершен в этом спринте."
+                few: "There are %{count} work packages that were not completed in this sprint."
+                many: "There are %{count} work packages that were not completed in this sprint."
+                other: "Есть пакеты работ %{count}, которые не были завершены в этом спринте."
+              format: "%{message}"
+            status:
+              not_active: "не активен, поэтому не может быть закрыт."
         sprint:
           cannot_end_before_it_starts: "Спринт не может заканчиваться до того, как начнется."
     models:
@@ -64,9 +88,9 @@ ru:
     column_width: "Ширина столбца"
     definition_of_done: "Определение термина \"Завершено\""
     definition_of_done_caption: "Пакеты работ с такими статусами рассматриваются как завершенные в представлениях бэклога и отчетах."
-    done_status: "Done status"
-    sharing_description: "This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing)."
-    sharing: "Sharing"
+    done_status: "Статус Выполнено"
+    sharing_description: "Этот проект может либо делиться своими спринтами, либо получать общие спринты, либо работать со спринтами самостоятельно (без обмена)."
+    sharing: "Совместное использование"
     impediment: "Препятствие"
     label_versions_default_fold_state: "Показать свернутые версии"
     caption_versions_default_fold_state: "Версии не будут разворачиваться по умолчанию при просмотре бэклогов. Каждая версия должна быть развернута вручную."
@@ -92,6 +116,9 @@ ru:
     task: "Задача"
     task_color: "Цвет задачи"
     unassigned: "Нераспределенные"
+    administration_blankslate:
+      title: "Настройки администрирования бэклога будут в будущем"
+      text: "В настоящее время мы переделываем модуль Backlogs. В ближайшем будущем здесь появятся административные настройки для спринтов и бэклогов. Настройки на уровне проекта остаются доступными."
     user_preference:
       header_backlogs: "Модуль бэклогов"
       button_update_backlogs: "Обновить модуль бэклогов"
@@ -107,6 +134,37 @@ ru:
         zero: "Нет историй в бэклоге"
         one: "%{count} история в бэклоге"
         other: "%{count} историй в бэклоге"
+    inbox_component:
+      blankslate_title: "Папка \"Входящие\" пуста"
+      blankslate_description: "Все открытые пакеты работ в этом проекте автоматически появятся здесь."
+      label_drag_work_package: "Переместить %{name}"
+      show_more:
+        one: "Показать еще 1 элемент"
+        few: "Show %{count} more items"
+        many: "Show %{count} more items"
+        other: "Показать еще %{count} элементов"
+    inbox_item_component:
+      label_drag_work_package: "Переместить %{name}"
+    inbox_menu_component:
+      label_actions: "Действия пакета работ"
+      action_menu:
+        copy_url_to_clipboard: "Скопировать URL в буфер обмена"
+        copy_work_package_id: "Скопировать ID пакета работ"
+        move_menu: "Переместить"
+      label_move_to_sprint: "Переместить в спринт"
+    move_to_sprint_dialog_component:
+      title: "Переместить в спринт"
+      label_sprint: "Спринт"
+    sprint_planning:
+      blankslate:
+        title: "Пока нет спринтов"
+        description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
+        create_sprint_description_text: "To start planning your sprint, create one here."
+        share_sprint_description_html: "To start planning your sprint, go to the %{settings_link} to receive sprints from a different project."
+        no_actions_description_text: "No sprints are available for this project yet."
+        receive_shared_description_html: "This project receives sprints from a different project. Manage this in the %{settings_link}."
+        receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
+        settings_link_text: "project settings"
     sprint_header_component:
       label_toggle_backlog: "Свернуть/Развернуть %{name}"
       label_story_count:
@@ -123,18 +181,34 @@ ru:
         burndown_chart: "Сводная таблица"
         wiki: "Wiki"
         properties: "Свойства"
+    finish_sprint_dialog_component:
+      title: "There are work in progress items"
+      body: "%{message} What would you like to do with these?"
+      legend: "Action for unfinished work packages"
+      actions:
+        move_to_top_of_backlog: "Move them to the top of the backlog"
+        move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
+        move_to_sprint: "Move them to another sprint"
+      select_sprint_label: "Select sprint"
+      button_close_sprint: "Close sprint"
     sprint_menu_component:
       label_actions: "Действия в спринте"
       action_menu:
+        start_sprint: "Начать спринт"
+        finish_sprint: "Завершить спринт"
+        start_sprint_disabled_description: "Другой спринт уже активен."
+        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Редактировать спринт"
-        new_story: "Новая история"
-        stories_tasks: "Истории/задачи"
-        task_board: "Панель задач"
-        burndown_chart: "Сводная таблица"
+        add_work_package: "Добавить пакет работ"
+        task_board: "Sprint board"
     story_component:
       label_drag_story: "Переместить %{name}"
     story_menu_component:
       label_actions: "Действия истории"
+      action_menu:
+        copy_url_to_clipboard: "Copy URL to clipboard"
+        copy_work_package_id: "Copy work package ID"
+        move_menu: "Move"
   backlogs_points_burn_direction: "Точки выгорания вверх/вниз"
   backlogs_product_backlog: "Требования к продукту, с приоритетами"
   backlogs_story: "История"
@@ -154,6 +228,8 @@ ru:
     attributes:
       task_type:
         cannot_be_story_type: "не может также быть типом истории"
+  label_backlog: "Бэклог"
+  label_inbox: "Inbox"
   label_backlogs: "Бэклоги"
   label_backlogs_unconfigured: "Вы еще не настроили Невыполненные работы. Перейдите на страницу %{administration} > %{plugins}, а затем нажмите на ссылку %{configure} для получения этого дополнения. После того как вы настроите поля, возвратитесь на эту страницу, чтобы начать пользоваться инструментом."
   label_blocks_ids: "Идентификаторы заблокированных рабочих пакетов"
@@ -164,7 +240,14 @@ ru:
   label_sprint_edit: "Редактировать спринт"
   label_sprint_impediments: "Препятствия спринта"
   label_sprint_new: "Новый спринт"
+  label_sprint_planning: "Планирование спринта"
   label_task_board: "Панель задач"
+  notice_successful_start: "Спринт запущен."
+  notice_successful_finish: "Спринт завершен."
+  notice_unsuccessful_start: "Спринт не может быть запущен."
+  notice_unsuccessful_start_with_reason: "Спринт не может быть запущен: %{reason}"
+  notice_unsuccessful_finish: "Спринт не может быть завершен."
+  notice_unsuccessful_finish_with_reason: "Спринт не может быть завершён: %{reason}"
   permission_create_sprints: "Создание спринтов"
   permission_manage_sprint_items: "Управление пунктами спринта"
   permission_select_done_statuses: "Выберите завершенные статусы"
@@ -177,22 +260,22 @@ ru:
       backlog_sharing:
         options:
           no_sharing:
-            label: "Don't share"
+            label: "Не делать общий доступ"
             caption: "Спринты, созданные в этом проекте, будут доступны и видны только в этом проекте. Они также не будут видны подпроектам."
           receive_shared:
-            label: "Receive shared sprints"
+            label: "Получить общие спринты"
             caption: "Этот проект может использовать только спринты, совместно используемые другими проектами."
             warning: "Этот проект может использовать только общие спринты других проектов. Неиспользуемые спринты, созданные в этом проекте в прошлом, больше не будут видны."
           share_all_projects:
             label: "Все проекты"
-            caption: "Sprints created in this project will be available to all projects in this instance. If you select this option, it will no longer be available to other projects."
-            disabled_caption: "Option not available since project \"%{name}\" is currently sharing with all projects and only one project can do this."
-            disabled_caption_anonymous: "Option not available since another project is currently sharing with all projects and only one project can do this."
+            caption: "Спринты, созданные в этом проекте, будут доступны для всех проектов в этом экземпляре. Если вы выберете эту опцию, она больше не будет доступна для других проектов."
+            disabled_caption: "Опция недоступна, поскольку проект \"%{name}\" в настоящее время совместно используется со всеми проектами, и только один проект может сделать это."
+            disabled_caption_anonymous: "Опция недоступна, поскольку в настоящее время другой проект совместно используется со всеми проектами, и только один проект может это сделать."
           share_subprojects:
             label: "Подпроекты"
-            caption: "Sprints created in this project will be available to all subprojects of the current project."
-            info: "Sharing a sprint will share the name, status and the start and finish dates in all projects. These cannot be modified in projects that receive and use these sprints."
-        sprint_sharing: Share sprints
+            caption: "Спринты, созданные в этом проекте, будут доступны всем подпроектам текущего проекта."
+            info: "При совместном использовании спринта его название, статус и даты начала и окончания будут доступны всем проектам. Они не могут быть изменены в проектах, которые получают и используют эти спринты."
+        sprint_sharing: Поделиться спринтами
   rb_burndown_charts:
     show:
       blankslate_title: "Нет сводных данных"

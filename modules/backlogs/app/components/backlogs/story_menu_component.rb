@@ -30,6 +30,8 @@
 
 module Backlogs
   class StoryMenuComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
+
     attr_reader :story, :sprint, :project, :max_position, :current_user
 
     def initialize(story:, sprint:, project:, max_position:, current_user: User.current, **system_arguments)
@@ -53,7 +55,12 @@ module Backlogs
     private
 
     def show_move_items?
+      allowed_to_manage_sprint_items? &&
       !(first_item? && last_item?)
+    end
+
+    def allowed_to_manage_sprint_items?
+      current_user.allowed_in_project?(:manage_sprint_items, project)
     end
 
     def build_move_menu(menu)

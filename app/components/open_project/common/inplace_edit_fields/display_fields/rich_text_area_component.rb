@@ -43,8 +43,9 @@ module OpenProject
                                                classes: "op-uc-container op-uc-container_reduced-headings -multiline")) do
                 if field_value.present?
                   if truncated
+                    name = custom_field? ? custom_field.name : attribute.to_s.humanize
                     render OpenProject::Common::AttributeComponent.new("#{attribute}-truncated-display-field",
-                                                                       attribute,
+                                                                       name,
                                                                        field_value,
                                                                        lines: 3)
                   else

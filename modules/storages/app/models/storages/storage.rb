@@ -87,7 +87,7 @@ module Storages
                   .to_h.with_indifferent_access
       end
 
-      def short_provider_name = raise Errors::SubclassResponsibility
+      def short_provider_name = raise SubclassResponsibilityError
 
       def allowed_by_enterprise_token? = true
 
@@ -144,20 +144,20 @@ module Storages
 
     alias automatic_management_enabled automatically_managed
 
-    def available_project_folder_modes = raise Errors::SubclassResponsibility
+    def available_project_folder_modes = raise SubclassResponsibilityError
 
     # Returns a value of an audience, if configured for this storage.
     # The presence of an audience signals that this storage prioritizes
     # remote authentication via Single-Sign-On if possible.
-    def audience = raise Errors::SubclassResponsibility
+    def audience = raise SubclassResponsibilityError
 
-    def authenticate_via_idp? = raise Errors::SubclassResponsibility
+    def authenticate_via_idp? = raise SubclassResponsibilityError
 
-    def authenticate_via_storage? = raise Errors::SubclassResponsibility
+    def authenticate_via_storage? = raise SubclassResponsibilityError
 
     def configured? = configuration_checks.values.all?
 
-    def configuration_checks = raise Errors::SubclassResponsibility
+    def configuration_checks = raise SubclassResponsibilityError
 
     def uri
       return unless host
@@ -174,11 +174,11 @@ module Storages
       ["#{uri.scheme}://#{uri.host}#{port_part}"]
     end
 
-    def oauth_configuration = raise Errors::SubclassResponsibility
+    def oauth_configuration = raise SubclassResponsibilityError
 
-    def automatic_management_new_record? = raise Errors::SubclassResponsibility
+    def automatic_management_new_record? = raise SubclassResponsibilityError
 
-    def provider_fields_defaults = raise Errors::SubclassResponsibility
+    def provider_fields_defaults = raise SubclassResponsibilityError
 
     def non_confidential_configuration
       provider_fields.symbolize_keys

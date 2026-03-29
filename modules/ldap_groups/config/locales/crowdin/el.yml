@@ -47,7 +47,7 @@ el:
         title: 'Αφαίρεση του συγχρονισμένου φίλτρου %{name}'
         confirmation: "Αν συνεχίσετε, το συγχρονισμένο φίλτρο %{name} και όλες οι ομάδες %{groups_count} που δημιουργήθηκαν μέσω αυτού θα αφαιρεθούν."
         removed_groups: "Warning: This will remove the following groups from OpenProject and remove it from all projects!"
-        verification: "Εισάγετε το όνομα φίλτρου %{name} για να επαληθεύσετε τη διαγραφή."
+        verification_html: "Enter the filter name %{name} to verify the deletion."
       form:
         group_name_attribute_text: 'Enter the attribute of the LDAP group used for setting the OpenProject group name.'
         filter_string_text: 'Εισάγετε το φίλτρο RFC4515 LDAP που επιστρέφει τις ομάδες στο LDAP σας για συγχρονισμό με το OpenProject.'
@@ -59,7 +59,7 @@ el:
         title: 'Αφαίρεση της συγχρονισμένης ομάδας %{name}'
         confirmation: "Αν συνεχίσετε, η συγχρονισμένη ομάδα %{name} και οι %{users_count} χρήστες που έχουν συγχρονιστεί μέσω αυτής θα αφαιρεθούν."
         info: "Σημείωση: Η ομάδας OpenProject και τα μέλη που προστέθηκαν εκτός του συγχρονισμού LDAP δεν θα αφαιρεθούν."
-        verification: "Εισάγετε το όνομα της ομάδας %{name} για να επιβεβαιώσετε τη διαγραφή."
+        verification_html: "Enter the group's name %{name} to verify the deletion."
       help_text_html: |
         Αυτή η ενότητα σάς επιτρέπει να ρυθμίσετε συγχρονισμό μεταξύ ομάδων LDAP και OpenProject.
         Εξαρτάται από τις ομάδες LDAP που πρέπει να χρησιμοποιήσουν το σύνολο χαρακτηριστικών <em> groupOfNames / memberOf </em> που θα λειτουργούν με το OpenProject.

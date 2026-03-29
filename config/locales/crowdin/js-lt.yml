@@ -349,8 +349,6 @@ lt:
     label_collapse_all: "Sutraukti visus"
     label_collapse_text: "Collapse text"
     label_comment: "Komentaras"
-    label_committed_at: "%{committed_revision_link} %{date}"
-    label_committed_link: "patvirtinta laida %{revision_identifier}"
     label_contains: "turi"
     label_created_on: "sukurta"
     label_edit_comment: "Keisti šį komentarą"
@@ -1226,3 +1224,7 @@ lt:
       waiting_subtitle:
         network_off: "Yra tinklo problema."
         network_on: "Tinklas grįžo. Mes bandome."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

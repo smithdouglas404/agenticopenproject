@@ -5,8 +5,7 @@ uk:
     description: "Список і статус фонових завдань."
   job_status_dialog:
     download_starts: 'Завантаження має початись автоматично.'
-    link_to_download: 'Або %{link} , щоб завантажити.'
-    click_here: 'натисніть тут'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Статус фонового завдання'
     redirect: 'Вас буде переспрямовано.'
     redirect_link: 'Натисніть тут, щоб продовжити.'

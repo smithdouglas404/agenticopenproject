@@ -203,6 +203,11 @@ vi:
         upload_link_service:
           not_found: Không thể tìm thấy thư mục đích %{folder} trên %{storage_name}.
   storages:
+    admin:
+      side_panel:
+        health_notifications_component:
+          sync_now: Sync now
+          sync_queued: Synchronization queued.
     buttons:
       done_continue: Xong, tiếp tục
       open_storage: Mở kho lưu trữ tập tin
@@ -221,13 +226,13 @@ vi:
     confirm_replace_oauth_application: Hành động này sẽ đặt lại thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập lại thông tin đăng nhập tại nhà cung cấp dịch vụ lưu trữ và tất cả người dùng từ xa sẽ phải ủy quyền lại cho OpenProject. Bạn có chắc chắn muốn tiếp tục không?
     confirm_replace_oauth_client: Hành động này sẽ đặt lại thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập thông tin xác thực mới từ nhà cung cấp bộ nhớ và tất cả người dùng sẽ phải ủy quyền lại cho %{provider_type}. Bạn có chắc chắn muốn tiếp tục không?
     delete_warning:
-      project_storage: Bạn có chắc chắn muốn xóa %{file_storage} khỏi dự án này không?
       project_storage_delete_result_1: Tất cả các liên kết đến các tập tin và thư mục tương ứng sẽ bị xóa
       project_storage_delete_result_2: Thư mục dự án được quản lý tự động và tất cả các tệp trong đó sẽ bị xóa
-      storage: Bạn có chắc chắn muốn xóa %{file_storage} làm nơi lưu trữ tệp bên ngoài không?
+      project_storage_html: Are you sure you want to remove %{file_storage} from this project?
       storage_delete_result_1: Bộ nhớ sẽ bị xóa khỏi tất cả các dự án hiện đang sử dụng nó
       storage_delete_result_2: Tất cả các liên kết đến các tập tin và thư mục tương ứng sẽ bị xóa
       storage_delete_result_3: Thư mục dự án được quản lý tự động và tất cả các tệp trong đó sẽ bị xóa
+      storage_html: Are you sure you want to delete %{file_storage} as an external file storage?
     dependencies:
       nextcloud:
         group_folders_app: Thư mục nhóm
@@ -393,7 +398,7 @@ vi:
       host: Vui lòng thêm địa chỉ máy chủ lưu trữ của bạn bao gồm https://. Nó không được dài hơn 255 ký tự.
       managed_project_folders_application_password_caption: 'Bật các thư mục được quản lý tự động bằng cách sao chép giá trị này từ: %{provider_type_link}.'
       name: Đặt tên cho bộ lưu trữ của bạn để người dùng có thể phân biệt giữa nhiều bộ lưu trữ.
-      new_storage: Đọc tài liệu của chúng tôi về <a target='_blank' href='%{provider_link}'>cài đặt tích hợp lưu trữ tệp %{provider_name}</a> để biết thêm thông tin.
+      new_storage_html: Read our documentation on [setting up a %{provider_name} file storage](docs_url) integration for more information.
       nextcloud:
         application_link_text: ứng dụng “Tích hợp OpenProject”
         integration: Quản trị Nextcloud / OpenProject
@@ -405,8 +410,7 @@ vi:
       no_specific_folder: Theo mặc định, mỗi người dùng sẽ bắt đầu tại thư mục chính của riêng họ khi họ tải tệp lên.
       no_storage_set_up: Chưa có kho lưu trữ tập tin nào được thiết lập.
       not_logged_into_storage: Để chọn thư mục dự án, vui lòng đăng nhập trước
-      oauth_application_details: Giá trị bí mật của máy khách sẽ không thể truy cập lại được sau khi bạn đóng cửa sổ này. Vui lòng sao chép các giá trị này vào %{oauth_application_details_link}.
-      oauth_application_details_link_text: Cài đặt tích hợp Nextcloud OpenProject
+      oauth_application_details_html: The client secret value will not be accessible again after you close this window. Please copy these values into the [Nextcloud OpenProject Integration settings](oauth_application_details_link).
       one_drive:
         application_link_text: Cổng thông tin Azure
         copy_redirect_uri: Sao chép URI chuyển hướng
@@ -514,7 +518,7 @@ vi:
         members_connection_status: Trạng thái kết nối thành viên
         new: Thêm nơi lưu trữ tệp vào dự án này
       project_storage_members:
-        subtitle: Kiểm tra trạng thái kết nối cho bộ lưu trữ %{storage_name_link} của tất cả các thành viên dự án.
+        subtitle_html: Check the connection status for the storage %{storage_name_link} of all project members.
         title: Trạng thái kết nối thành viên
       project_storages:
         delete: Xóa bộ nhớ tệp khỏi dự án?

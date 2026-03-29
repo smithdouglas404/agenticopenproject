@@ -30,6 +30,8 @@
 
 module Sprints
   class BaseContract < ::ModelContract
+    validate :user_authorized
+
     def self.model
       Agile::Sprint
     end
@@ -38,5 +40,15 @@ module Sprints
     attribute :project_id
     attribute :start_date
     attribute :finish_date
+
+    private
+
+    def user_authorized
+      return unless model.project
+
+      unless user.allowed_in_project?(:create_sprints, model.project)
+        errors.add :base, :error_unauthorized
+      end
+    end
   end
 end

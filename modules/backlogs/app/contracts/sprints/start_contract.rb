@@ -32,6 +32,7 @@ module Sprints
   class StartContract < ::BaseContract
     validate :validate_permission
     validate :validate_status_in_planning
+    validate :validate_dates_present
     validate :validate_no_other_active_sprint
 
     def self.can_start_or_finish?(user:, sprint:)
@@ -55,6 +56,13 @@ module Sprints
       return if model.in_planning?
 
       errors.add :status, :must_be_in_planning
+    end
+
+    def validate_dates_present
+      return unless model.in_planning?
+      return if model.start_date? && model.finish_date?
+
+      errors.add :base, :dates_required
     end
 
     def validate_no_other_active_sprint

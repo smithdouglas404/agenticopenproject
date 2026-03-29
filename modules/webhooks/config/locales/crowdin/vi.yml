@@ -36,10 +36,8 @@ vi:
         updated: "đã cập nhật"
         comment: "bình luận"
         internal_comment: "Bình luận nội bộ"
-      explanation:
-        text: >
-          Khi xảy ra một sự kiện như tạo gói công việc hoặc cập nhật dự án, OpenProject sẽ gửi yêu cầu POST đến các điểm cuối web đã định cấu hình. Thông thường, sự kiện được gửi sau khi %{link} trôi qua.
-        link: khoảng thời gian tổng hợp được cấu hình
+      explanation_html: >
+        Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
       status:
         enabled: 'Webhook đã được bật'
         disabled: 'Webhook bị vô hiệu hóa'

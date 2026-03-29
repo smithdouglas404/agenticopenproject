@@ -36,84 +36,73 @@ See COPYRIGHT and LICENSE files for more details.
       tooltip_direction: :se
     )
 
-    if show_start_sprint_action?
-      menu.with_item(
-        label: t(".action_menu.start_sprint"),
-        tag: :button,
-        href: start_project_sprint_path(project, sprint),
-        disabled: disable_start_sprint_action?,
-        form_arguments: {
-          method: :post,
-          data: { turbo: false }
-        }
-      ) do |item|
-        item.with_leading_visual_icon(icon: :play)
-        item.with_description(start_sprint_action_description) if start_sprint_action_description.present?
+    with_item_group(menu) do
+      if show_start_sprint_action?
+        menu.with_item(
+          label: t(".action_menu.start_sprint"),
+          tag: :button,
+          href: start_project_sprint_path(project, sprint),
+          disabled: disable_start_sprint_action?,
+          form_arguments: {
+            method: :post,
+            data: { turbo: false }
+          }
+        ) do |item|
+          item.with_leading_visual_icon(icon: :play)
+          item.with_description(start_sprint_action_description) if start_sprint_action_description.present?
+        end
+      end
+
+      if show_finish_sprint_action?
+        menu.with_item(
+          label: t(".action_menu.finish_sprint"),
+          tag: :button,
+          href: finish_project_sprint_path(project, sprint),
+          form_arguments: { method: :post }
+        ) do |item|
+          item.with_leading_visual_icon(icon: :check)
+        end
+      end
+
+      if user_allowed?(:create_sprints)
+        menu.with_item(
+          id: dom_target(sprint, :menu, :edit_sprint),
+          label: t(".action_menu.edit_sprint"),
+          href: edit_dialog_project_sprint_path(project, sprint),
+          content_arguments: { data: { controller: "async-dialog" } }
+        ) do |item|
+          item.with_leading_visual_icon(icon: :pencil)
+        end
       end
     end
 
-    if show_finish_sprint_action?
-      menu.with_item(
-        label: t(".action_menu.finish_sprint"),
-        tag: :button,
-        href: finish_project_sprint_path(project, sprint),
-        form_arguments: {
-          method: :post,
-          data: { turbo: false }
-        }
-      ) do |item|
-        item.with_leading_visual_icon(icon: :check)
+    with_item_group(menu) do
+      if user_allowed?(:manage_sprint_items)
+        menu.with_item(
+          id: dom_target(sprint, :menu, :new_story),
+          label: t(".action_menu.add_work_package"),
+          href: new_project_work_packages_dialog_path(
+            project,
+            sprint_id: sprint.id,
+            type_id: available_story_types.first
+          ),
+          content_arguments: { data: { turbo_stream: true } }
+        ) do |item|
+          item.with_leading_visual_icon(icon: :plus)
+        end
       end
     end
 
-    if user_allowed?(:create_sprints)
-      menu.with_item(
-        id: dom_target(sprint, :menu, :edit_sprint),
-        label: t(".action_menu.edit_sprint"),
-        href: edit_dialog_project_sprint_path(project, sprint),
-        content_arguments: { data: { controller: "async-dialog" } }
-      ) do |item|
-        item.with_leading_visual_icon(icon: :pencil)
+    with_item_group(menu) do
+      if show_task_board_link?
+        menu.with_item(
+          label: t(".action_menu.task_board"),
+          tag: :a,
+          href: backlogs_project_sprint_taskboard_path(project, sprint)
+        ) do |item|
+          item.with_leading_visual_icon(icon: :"op-view-cards")
+        end
       end
     end
-
-    if user_allowed?(:manage_sprint_items)
-      menu.with_item(
-        id: dom_target(sprint, :menu, :new_story),
-        label: t(".action_menu.add_work_package"),
-        href: new_project_work_packages_dialog_path(
-          project,
-          sprint_id: sprint.id,
-          type_id: available_story_types.first
-        ),
-        content_arguments: { data: { turbo_stream: true } }
-      ) do |item|
-        item.with_leading_visual_icon(icon: :plus)
-      end
-    end
-
-    # if user_allowed?(:create_sprints) || user_allowed?(:add_work_packages)
-    #   menu.with_divider
-    # end
-
-    if show_task_board_link?
-      menu.with_item(
-        label: t(".action_menu.task_board"),
-        tag: :a,
-        href: backlogs_project_sprint_taskboard_path(project, sprint)
-      ) do |item|
-        item.with_leading_visual_icon(icon: :"op-view-cards")
-      end
-    end
-
-    # menu.with_item(
-    #   # TODO: what to do with the burndown chart?
-    #   label: t(".action_menu.burndown_chart"),
-    #   tag: :a,
-    #   href: backlogs_project_sprint_burndown_chart_path(project, sprint),
-    #   disabled: !sprint.has_burndown?
-    # ) do |item|
-    #   item.with_leading_visual_icon(icon: :graph)
-    # end
   end
 %>

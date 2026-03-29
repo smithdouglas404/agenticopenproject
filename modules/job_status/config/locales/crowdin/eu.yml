@@ -5,8 +5,7 @@ eu:
     description: "Listing and status of background jobs."
   job_status_dialog:
     download_starts: 'Deskargak automatikoki hasi beharko luke.'
-    link_to_download: 'Or, %{link} to download.'
-    click_here: 'click here'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Atzeko lanen egoera'
     redirect: 'Berbideratzen ari da.'
     redirect_link: 'Jarraitzeko klikatu hemen, mesedez.'

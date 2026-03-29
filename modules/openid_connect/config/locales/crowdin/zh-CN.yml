@@ -49,9 +49,9 @@ zh-CN:
           non_object_attribute: "未在 %{attribute} 中定义 JSON 对象。"
   provider:
     delete_warning:
-      input_delete_confirmation: 输入占位符名称 %{name} 以确认删除。
+      input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
       irreversible_notice: 删除项目是一个不可逆转的操作。
-      provider: '您确定要删除 SSO 提供商 %{name} 吗？要确认此操作，请在下面的字段中输入提供商的名称：'
+      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
       delete_result_1: 从可用的提供商列表中删除提供商。
       delete_result_user_count:
         zero: 目前没有用户正在使用此提供商。无需采取进一步操作。

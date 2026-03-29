@@ -32,51 +32,66 @@ require "spec_helper"
 
 RSpec.describe Agile::Sprint do
   let(:project) { create(:project) }
+  let(:sprint_status) { "in_planning" }
 
   subject(:sprint) do
     described_class.new(name: "Sprint 1",
                         project:,
                         start_date: Time.zone.today,
-                        finish_date: Time.zone.today + 14.days)
+                        finish_date: Time.zone.today + 14.days,
+                        status: sprint_status)
   end
 
   describe "validations" do
     it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_presence_of(:start_date) }
-    it { is_expected.to validate_presence_of(:finish_date) }
     it { is_expected.to validate_presence_of(:project) }
     it { is_expected.to validate_inclusion_of(:status).in_array(described_class.statuses.keys) }
 
-    it "validates finish_date is after or equal to start_date" do
-      sprint.finish_date = sprint.start_date - 1.day
-      expect(sprint).not_to be_valid
-      expect(sprint.errors[:finish_date]).to include(/must be greater than or equal to/)
-    end
-
-    it "does not validate finish_date comparison when start_date is nil" do
-      sprint.start_date = nil
-      sprint.finish_date = Time.zone.today
-      expect(sprint).not_to be_valid
-      expect(sprint.errors[:start_date]).to be_present
-      expect(sprint.errors[:finish_date]).not_to include(/must be greater than or equal to/)
-    end
-
-    it "still validates finish_date presence even when start_date is nil" do
+    it "allows nil start and finish dates" do
       sprint.start_date = nil
       sprint.finish_date = nil
-      expect(sprint).not_to be_valid
-      expect(sprint.errors[:finish_date]).to be_present
+      expect(sprint).to be_valid
+    end
+
+    it "allows a nil finish date when start date is present" do
+      sprint.start_date = Time.zone.today
+      sprint.finish_date = nil
+      expect(sprint).to be_valid
     end
 
     context "with active sprint validation" do
+      let(:sprint_status) { "active" }
+
+      it { is_expected.to validate_presence_of(:start_date) }
+      it { is_expected.to validate_presence_of(:finish_date) }
+
+      it "validates finish_date is after or equal to start_date" do
+        sprint.finish_date = sprint.start_date - 1.day
+        expect(sprint).not_to be_valid
+        expect(sprint.errors[:finish_date]).to include(/must be greater than or equal to/)
+      end
+
+      it "does not validate finish_date comparison when start_date is nil" do
+        sprint.start_date = nil
+        sprint.finish_date = Time.zone.today
+        expect(sprint).not_to be_valid
+        expect(sprint.errors[:start_date]).to be_present
+        expect(sprint.errors[:finish_date]).not_to include(/must be greater than or equal to/)
+      end
+
+      it "still validates finish_date presence even when start_date is nil" do
+        sprint.start_date = nil
+        sprint.finish_date = nil
+        expect(sprint).not_to be_valid
+        expect(sprint.errors[:finish_date]).to be_present
+      end
+
       it "allows one active sprint per project" do
-        sprint.status = "active"
         expect(sprint).to be_valid
       end
 
       it "prevents multiple active sprints in the same project" do
         create(:agile_sprint, project:, status: "active")
-        sprint.status = "active"
         expect(sprint).not_to be_valid
         expect(sprint.errors[:status]).to include("only one active sprint is allowed per project.")
       end
@@ -84,12 +99,10 @@ RSpec.describe Agile::Sprint do
       it "allows multiple active sprints in different projects" do
         other_project = create(:project)
         create(:agile_sprint, project: other_project, status: "active")
-        sprint.status = "active"
         expect(sprint).to be_valid
       end
 
       it "allows updating an existing active sprint" do
-        sprint.status = "active"
         sprint.save!
         sprint.name = "Updated Sprint"
         expect(sprint).to be_valid

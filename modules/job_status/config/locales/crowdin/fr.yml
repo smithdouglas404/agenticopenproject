@@ -5,8 +5,7 @@ fr:
     description: "Liste et état des tâches d'arrière-plan."
   job_status_dialog:
     download_starts: 'Le téléchargement devrait démarrer automatiquement.'
-    link_to_download: 'Ou %{link} pour télécharger.'
-    click_here: 'cliquez ici'
+    click_to_download: 'Ou, [cliquez ici](download_url) pour télécharger.'
     title: 'Statut de la tâche en arrière-plan'
     redirect: 'Vous allez être redirigé.'
     redirect_link: 'Veuillez cliquer ici pour continuer.'

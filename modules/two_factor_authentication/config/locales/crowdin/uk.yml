@@ -71,8 +71,7 @@ uk:
       error_invalid_settings: "Вибрані стратегії 2FA недійсні"
       failed_to_save_settings: "Не вдалося оновити налаштування 2FA: %{message}"
     admin:
-      self_edit_path: " Щоб додати або змінити власні пристрої 2FA, перейдіть до %{self_edit_link}"
-      self_edit_link_name: "Двофакторна аутентифікація на сторінці облікового запису"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "На цьому шляху не можна редагувати власні пристрої 2FA. Замість цього перейдіть до розділу Мій обліковий запис> Двофакторна автентифікація."
       no_devices_for_user: "Для цього користувача не було зареєстровано жодного пристрою 2FA."
       all_devices_deleted: "Усі пристрої 2FA цього користувача видалено"
@@ -119,8 +118,8 @@ uk:
       failed_to_delete: "Не вдалося видалити пристрій 2FA."
       is_default_cannot_delete: "Пристрій позначено як типовий і його не можна видалити через активну політику безпеки. Перед видаленням позначте інший пристрій як стандартний."
       not_existing: "Для вашого облікового запису не зареєстровано жодного пристрою 2FA."
-      2fa_from_input: Введіть код, що надійшов на пристрій %{device_name}, щоб підтвердити свою особу.
-      2fa_from_webauthn: Укажіть пристрій WebAuthn <strong>%{device_name}</strong>. Якщо це USB-пристрій, переконайтеся, що його підключено, і торкніться його. Потім натисніть кнопку входу.
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: Зареєструйте пристрій FIDO2 (наприклад, YubiKey) або захищений анклав свого мобільного пристрою.

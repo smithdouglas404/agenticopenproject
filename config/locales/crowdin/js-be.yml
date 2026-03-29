@@ -349,8 +349,6 @@ be:
     label_collapse_all: "Згарнуць усё"
     label_collapse_text: "Collapse text"
     label_comment: "Comment"
-    label_committed_at: "%{committed_revision_link} at %{date}"
-    label_committed_link: "committed revision %{revision_identifier}"
     label_contains: "contains"
     label_created_on: "created on"
     label_edit_comment: "Edit this comment"
@@ -1226,3 +1224,7 @@ be:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

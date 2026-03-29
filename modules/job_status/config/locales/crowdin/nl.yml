@@ -5,8 +5,7 @@ nl:
     description: "Listing and status of background jobs."
   job_status_dialog:
     download_starts: 'De download zou automatisch moeten starten.'
-    link_to_download: 'Or, %{link} to download.'
-    click_here: 'click here'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Achtergrond-taak status'
     redirect: 'U wordt omgeleid.'
     redirect_link: 'Klik hier om door te gaan.'

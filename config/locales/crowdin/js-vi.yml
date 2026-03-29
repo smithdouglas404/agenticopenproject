@@ -349,8 +349,6 @@ vi:
     label_collapse_all: "Thu gọn tất cả"
     label_collapse_text: "Thu gọn văn bản"
     label_comment: "bình luận"
-    label_committed_at: "%{committed_revision_link} tại %{date}"
-    label_committed_link: "cam kết sửa đổi %{revision_identifier}"
     label_contains: "bao gồm"
     label_created_on: "được tạo trên"
     label_edit_comment: "Chỉnh sửa nhận xét này"
@@ -1214,3 +1212,7 @@ vi:
       waiting_subtitle:
         network_off: "Có một vấn đề về mạng."
         network_on: "Mạng đã trở lại. Chúng tôi đang cố gắng."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

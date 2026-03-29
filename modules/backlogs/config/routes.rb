@@ -52,6 +52,14 @@ Rails.application.routes.draw do
           end
         end
       end
+
+      resources :inbox, only: [] do
+        member do
+          put :move
+          post :reorder
+          get :move_to_sprint_dialog
+        end
+      end
     end
 
     scope "projects/:project_id", as: "project", module: "projects" do

@@ -108,7 +108,7 @@ ro:
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
       caption: >
-        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
+        User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
     import:
       title: "Import"
     jira:
@@ -385,11 +385,77 @@ ro:
         project_creation: "Crearea proiectului"
         notification_text_default: >
           <p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>
+      work_packages_identifier:
+        page_header:
+          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+        banner:
+          existing_identifiers_notice: >
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+        box_header:
+          label_project: Project
+          label_previous_identifier: Previous identifier
+          label_autofixed_suggestion: Future identifier
+          label_example_work_package_id: Example work package ID
+        autofix_preview:
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_starts_with_number: Cannot start with a number
+          error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
+          error_in_use: Already in use as another project's active handle
+          error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
+          remaining_projects:
+            one: "... 1 more project"
+            few: "... %{count} more projects"
+            other: "... %{count} more projects"
+        button_autofix: Autofix and save
+        dialog:
+          title: Change work package identifiers
+          heading: Enable project-based work package IDs?
+          description: >
+            This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          confirm_button: Change identifiers
+          checkbox_label: I understand that this will permanently change all work package IDs
+        success_banner: Successfully updated work package identifier format.
+        in_progress:
+          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Default transitions"
         user_author: "User is author"
         user_assignee: "User is assignee"
+      index:
+        description: "Configure status transitions for each work package type."
+        type_filter:
+          label: "Filter by type name…"
+      status_button: "Status"
+      statuses_dialog:
+        title: "Statuses"
+        label: "Statuses enabled for this type"
+        caption: "Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it."
+      statuses_removal_dialog:
+        title: "Remove statuses"
+        heading:
+          one: "Remove 1 status?"
+          few: "Remove %{count} statuses?"
+          other: "Remove %{count} statuses?"
+        description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
+        confirm: "Remove"
+      leave_confirmation:
+        title: "Save changes before continuing?"
+        description: "You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?"
+        ignore: "Ignore changes"
+        save: "Save changes and continue"
+      role_selector:
+        label: "Role: %{role}"
+        no_role: "Select role"
+      blankslate:
+        title: "No status transitions configured"
+        description: "Add statuses to start configuring workflows for this role"
+    info:
+      database_deprecation_html: >
+        Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases. <br/> We have prepared [upgrade guides for all installation methods](upgrade_guide). You can perform the upgrade ahead of the next release at any time by following the guides.
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -613,6 +679,14 @@ ro:
   danger_dialog:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+  pagination:
+    label: "Pagination"
+    prev: "Previous"
+    prev_page: "Previous Page"
+    next: "Next"
+    next_page: "Next Page"
+    page: "Page %{number}"
+    page_with_more: "Page %{number}..."
   mcp_configurations:
     server_url_component:
       caption: "The URL at which the OpenProject MCP server will be reachable. Required for setting up MCP clients."
@@ -774,6 +848,11 @@ ro:
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Schimbă identificatorul
+      change_identifier_dialog_title: Change project identifier
+      change_identifier_format_hint_semantic: "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter."
+      change_identifier_format_hint_legacy: "Only lowercase letters (a–z), numbers, dashes or underscores."
+      change_identifier_warning: >
+        This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
       subitems:
         template_section: >
           Selectează șabloanele care vor fi utilizate la crearea de subelemente noi.
@@ -1012,9 +1091,9 @@ ro:
     groups:
       member_in_these_groups: "Acest utilizator este în prezent membru al următoarelor grupuri:"
       no_results_title_text: Acest utilizator nu este în prezent membru în niciun grup.
-      summary_with_more: Member of %{names} and %{count_link}.
+      summary_with_more_html: Member of %{names} and %{count_link}.
       more: "%{count} more"
-      summary: Member of %{names}.
+      summary_html: Member of %{names}.
     memberships:
       no_results_title_text: Acest utilizator nu este în acest moment participant în vreun proiect.
     open_profile: "Open profile"
@@ -1069,6 +1148,65 @@ ro:
         user: "Utilizatorul se poate autentifica acum pentru a accesa %{project}. Între timp, poți deja să planifici cu acel utilizator și să atribui pachete de lucru, de exemplu."
         placeholder_user: "Placeholder-ul poate fi utilizat acum în %{project}. Între timp, poți deja să planifici cu acel utilizator și să atribui pachete de lucru, de exemplu."
         group: "Grupul este acum o parte din %{project}. Între timp, poți deja să planifici cu acest grup și să atribui pachete de lucru, de exemplu."
+    working_hours:
+      current_schedule:
+        title: "Current schedule"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        availability_subtitle: "Dedicated to project work"
+        effective_hours: "Effective work hours"
+        effective_subtitle: "Per week"
+        not_set: "Not set"
+      future:
+        title: "Future schedules"
+        description: "Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically."
+        add_button: "Add future schedule"
+        blank_title: "No future schedules planned"
+        blank_description: "Create a future schedule to plan changes ahead of time"
+      history:
+        title: "Schedule history"
+        description: "View your past work schedules."
+        blank_title: "No schedule history yet"
+        blank_description: "Past schedule changes will appear here"
+      destroy:
+        confirm: "Are you sure you want to delete this working schedule?"
+      form:
+        title: "Plan a future work schedule"
+        title_current: "Edit current work schedule"
+        start_date: "Start date"
+        start_date_caption: "Select the date from when the new work schedule will be effective."
+        work_days: "Work days"
+        working_hours_label: "Working hours"
+        hours_mode_label: "Hours mode"
+        same_hours_mode: "Same hours per day"
+        individual_hours_mode: "Individual hours per day"
+        work_hours: "Work hours"
+        hours_per_day: "Hours per day"
+        per_day: "per day"
+        per_week: "per week"
+        total_work_hours: "Total work hours"
+        availability_description: "The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities."
+        availability_factor: "Availability factor"
+        availability_factor_caption: "Define the percentage of your working time dedicated to project work."
+        total_available_hours: "Total available work hours"
+        title_availability_factor: "Availability factor"
+        title_days_and_hours: "Days and hours"
+        title_future_dates: "Future dates"
+      table:
+        mobile_title: "Working schedules"
+        start_date: "Start date"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        effective_work_hours: "Effective work hours"
+        work_days_count:
+          one: "1 working day"
+          few: "%{count} working days"
+          other: "%{count} working days"
+  user_preferences:
+    disable_keyboard_shortcuts_caption: >
+      You can choose to disable default [keyboard shortcuts](docs_url) if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
   page:
     text: "Text"
   placeholder_users:
@@ -1076,11 +1214,11 @@ ro:
       Nu ai permisiunea să ștergi utilizatorul de tip placeholder. Nu ai dreptul să gestionezi membrii pentru toate proiectele din care face parte utilizatorul de tip placeholder.
     delete_tooltip: "Șterge utilizator placeholder"
     deletion_info:
-      heading: "Ștergeți utilizatorul de tip placeholder %{name}"
+      heading_html: "Delete placeholder user %{name}"
       data_consequences: >
         Toate prezențele utilizatorului de tip "placeholder" (de exemplu, ca destinatar, responsabil sau alte valori de utilizator) vor fi realocate unui cont numit "Utilizator eliminat". Deoarece datele fiecărui cont șters sunt realocate acestui cont, nu va fi posibilă deosebirea datelor create de utilizator de datele unui alt cont șters.
       irreversible: "Această acțiune este ireversibilă"
-      confirmation: "Introdu numele de utilizator de tip placeholder %{name} pentru a confirma ștergerea."
+      confirmation_html: "Enter the placeholder user name %{name} to confirm the deletion."
   priorities:
     edit:
       priority_color_text: |
@@ -1113,8 +1251,8 @@ ro:
       status_excluded_from_totals_text: |-
         Bifează această opțiune pentru a exclude pachetele de lucru cu acest statut din totalurile de lucrări,
         muncă rămasă, și % complet într-o ierarhie.
-      status_percent_complete_text: |-
-        In <a href="%{href}">status-based progress calculation mode</a>, the % Complete of a work
+      status_percent_complete_text_html: |-
+        In [status-based progress calculation mode](setting_url), the % Complete of a work
         package is automatically set to this value when this status is selected.
         Ignored in work-based mode.
       status_readonly_html: |
@@ -1380,7 +1518,7 @@ ro:
       User registration is limited for the Single sign-on provider '%{name}'. Please ask an administrator to activate the account for you or change the self registration limit for this provider.
     login_with_auth_provider: "sau conectaţi-vă cu contul existent"
     signup_with_auth_provider: "sau înregistrează-te folosind"
-    auth_source_login: Autentifică-te ca <em>%{login}</em> pentru a activa contul.
+    auth_source_login_html: Please login as <em>%{login}</em> to activate your account.
     omniauth_login: Autentifică-te pentru activarea contului tău.
   actionview_instancetag_blank_option: "Selectează"
   activemodel:
@@ -1651,6 +1789,11 @@ ro:
         consented_at: "Consimţit la"
       group:
         identity_url: "Identity URL"
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
+      group_detail:
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
       user_preference:
         header_look_and_feel: "Aspect și stil"
         header_alerts: "Alerts"
@@ -1659,8 +1802,6 @@ ro:
         button_update_user_information: "Update profile"
         comments_sorting: "Afișează activitatea pachetelor de lucru sortate după"
         disable_keyboard_shortcuts: "Dezactivează comenzile rapide pentru tastatură"
-        disable_keyboard_shortcuts_caption_html: |-
-          Poți alege să dezactivezi tastatura <a href="%{href}">cu comenzi rapide</a> dacă utilizezi un cititor de ecran sau dorești să eviți din greșeala declanșarea unei acțiuni cu o comandă rapidă.
         dismissed_enterprise_banners: "Hidden enterprise banners"
         impaired: "Mod accesibilitate"
         auto_hide_popups: "Automatically hide success banners"
@@ -1681,6 +1822,28 @@ ro:
       users/invitation/form_model:
         principal_type: "Invitation type"
         id_or_email: "Numele sau adresa e-mail"
+      user_non_working_time:
+        start_date: "Start date"
+        end_date: "End date"
+      user_working_hours:
+        valid_from: "Valid from"
+        monday: "Monday"
+        monday_hours: "Monday hours"
+        tuesday: "Tuesday"
+        tuesday_hours: "Tuesday hours"
+        wednesday: "Wednesday"
+        wednesday_hours: "Wednesday hours"
+        thursday: "Thursday"
+        thursday_hours: "Thursday hours"
+        friday: "Friday"
+        friday_hours: "Friday hours"
+        saturday: "Saturday"
+        saturday_hours: "Saturday hours"
+        sunday: "Sunday"
+        sunday_hours: "Sunday hours"
+        availability_factor: "Availability factor"
+        shared_hours: "Work hours"
+        days: "Working days"
       version:
         effective_date: "Dată finalizare"
         sharing: "Distribuire"
@@ -1735,6 +1898,8 @@ ro:
         before: "trebuie să fie înainte de %{date}."
         before_or_equal_to: "trebuie să fie înainte sau în %{date}."
         blank: "nu poate fi gol."
+        not_before_start_date: "must not be before the start date."
+        overlapping_range: "overlaps with an existing non-working day range."
         blank_nested: "trebuie să aibă setul '%{property}' al proprietății."
         cannot_delete_mapping: "is required. Cannot be deleted."
         is_for_all_cannot_modify: "is for all projects and can therefore not be modified."
@@ -1771,8 +1936,9 @@ ro:
         less_than_or_equal_to: "trebuie să fie mai mic sau egal cu %{count}."
         not_available: "nu este disponibil din cauza unei configurații a sistemului."
         not_deletable: "%s nu poate fi șters."
+        not_editable: "cannot be edited because it is already in effect."
         not_current_user: "nu este utilizatorul curent."
-        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
+        system_wide_non_working_day_exists: "conflicts with an existing system-wide non-working day for this date."
         not_found: "nu a fost găsit."
         not_a_date: "Acest câmp trebuie să conțină o dată validă."
         not_a_datetime: "nu este o dată-ora validă."
@@ -1803,6 +1969,10 @@ ro:
           nu oferă un "Context securizat". Folosește fie HTTPS sau o adresă de tip buclă, cum ar fi localhost.
         wrong_length: "nu are lungimea corectă (ar trebui să fie de %{count} characters)."
       models:
+        group:
+          attributes:
+            parent_id:
+              circular_dependency: "would create a circular group hierarchy."
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -1914,6 +2084,9 @@ ro:
               project_initiation_request_disabled: "Solicitarea de inițiere a proiectului este dezactivată. Aceasta trebuie să fie activată pentru a crea pachetul de lucru artefact."
             types:
               in_use_by_work_packages: "încă în uz în pachetele de lucru: %{types}"
+            identifier:
+              must_start_with_letter: "must start with a letter"
+              no_special_characters: "may only contain uppercase letters, numbers, and underscores"
             enabled_modules:
               dependency_missing: "Modulul \"%{dependency}\" trebuie, de asemenea, să fie activat, deoarece modulul \"%{module}\" depinde de el."
               format: "%{message}"
@@ -2120,6 +2293,10 @@ ro:
                 description: "Valoarea din 'Confirmare parolă' ar trebui să fie identică cu cea introdusă în 'Parolă nouă'."
             status:
               invalid_on_create: "nu este un statut valabil pentru utilizatorii noi."
+        user_working_hours:
+          attributes:
+            days:
+              no_working_day: "At least one day needs to be configured as a working day."
         member:
           principal_blank: "Trebuie să alegeţi cel puţin un utilizator sau grup."
           role_blank: "trebuie să fie atribuite."
@@ -2404,8 +2581,8 @@ ro:
         Activarea copiilor de rezervă va permite oricărui utilizator cu permisiunile necesare și acestui token pentru copii de rezervă să descarce o copie de rezervă care conține toate datele acestei instalări OpenProject. Acestea includ datele tuturor celorlalți utilizatori.
       info: >
         Va trebui să generezi un token pentru copia de rezervă pentru a putea crea o copie de rezervă. De fiecare dată când vrei să soliciți o copie de rezervă va trebui să furnizezi acest token. Poți șterge token-ul pentru copia de rezervă pentru a dezactiva copiile de rezervă ale acestui utilizator.
-      verification: >
-        Introdu %{word} pentru a confirma că vrei să %{action} token-ul pentru copia de rezervă.
+      verification_html: >
+        Enter %{word} to confirm you want to %{action} the backup token.
       verification_word_reset: resetezi
       verification_word_create: creezi
       warning: >
@@ -2865,7 +3042,7 @@ ro:
         one: "One day left of %{trial_plan} trial token"
         few: "%{count} days left of %{trial_plan} trial token"
         other: "%{count} days left of %{trial_plan} trial token"
-      description: "You have access to all %{trial_plan} features."
+      description_html: "You have access to all %{trial_plan} features."
     trial:
       not_found: "You have requested a trial token, but that request is no longer available. Please try again."
       wait_for_confirmation: "We sent you an email to confirm your address in order to retrieve a trial token."
@@ -2882,10 +3059,8 @@ ro:
       confirmation_subline: >
         Please, check your inbox and follow the steps to start your 14-day free trial.
       domain_caption: The token will be valid for your currently configured host name.
-      receive_newsletter_html: >
-        I want to receive the OpenProject <a target="_blank" href="https://www.openproject.org/newsletter/">newsletter</a>.
-      consent_html: >
-        I agree with the <a target="_blank" href="https://www.openproject.org/terms-of-service/">terms of service</a> and the <a target="_blank" href="https://www.openproject.org/data-privacy-and-security/">privacy policy</a>.
+      receive_newsletter: "I want to receive the OpenProject [newsletter](newsletter_url)."
+      consent: "I agree with the [terms of service](tos_url) and the [privacy policy](privacy_url)."
   email_calendar_updates:
     state:
       disabled: "Dezactivat."
@@ -2973,8 +3148,8 @@ ro:
     work_package_edit: "Pachet de lucru editat"
     work_package_note: "Notă adăugată la pachetul de lucru"
     title:
-      project: "Proiect: %{name}"
-      subproject: "Subproiect: %{name}"
+      project_html: "Project: %{name}"
+      subproject_html: "Subproject: %{name}"
   export:
     dialog:
       title: "Exportă"
@@ -3225,6 +3400,7 @@ ro:
           Scheduling mode automatically adjusted with version update.
         totals_removed_from_childless_work_packages: >-
           Work and progress totals automatically removed for non-parent work packages with <a href="%{href}" target="_blank">version update</a>. This is a maintenance task and can be safely ignored.
+        sprint_migration: "Version '%{version_name}' has been copied as a sprint."
       total_percent_complete_mode_changed_to_work_weighted_average: >-
         Child work packages without Work are ignored.
       total_percent_complete_mode_changed_to_simple_average: >-
@@ -3232,9 +3408,9 @@ ro:
   links:
     configuration_guide: "Ghid de configurare"
     get_in_touch: "Aveți întrebări? Luați legătura cu noi."
-  instructions_after_registration: "Vă puteţi autentifica de îndată ce contul a fost activat dând click pe %{signin}."
-  instructions_after_logout: "Te poți autentifica din nou dând click pe %{signin}."
-  instructions_after_error: "Poţi încerca să te autentifici din nou dând click pe %{signin}. Dacă eroarea persistă, cere ajutorul administratorului."
+  instructions_after_registration_link: "You can sign in as soon as your account has been activated by clicking [here](signin_url)."
+  instructions_after_logout_link: "You can sign in again by clicking [here](signin_url)."
+  instructions_after_error_link: "You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help."
   menus:
     admin:
       ai: "Artificial Intelligence (AI)"
@@ -3426,6 +3602,8 @@ ro:
   label_calendar_show: "Afișare calendar"
   label_category: "Categorie"
   label_completed: Finalizat
+  label_committed_at_html: "%{committed_revision_link} at %{date}"
+  label_committed_link: "committed revision %{revision_identifier}"
   label_consent_settings: "Consimțământ utilizator"
   label_wiki_menu_item: Meniu wiki
   label_select_main_menu_item: Selectare meniu wiki nou
@@ -3592,6 +3770,7 @@ ro:
   label_subject_or_id: "Subiect sau ID"
   label_calendar_subscriptions: "Calendar subscriptions"
   label_identifier: "Identificator"
+  label_project_identifier: "Project identifier"
   label_in: "în"
   label_in_less_than: "în mai puțin de"
   label_in_more_than: "în mai mult de"
@@ -3725,11 +3904,13 @@ ro:
   label_news_view_all: "Afișează toate știrile"
   label_next: "Înainte"
   label_next_week: "Săptămâna viitoare"
+  label_next_year: "Next year"
   label_no_change_option: "(Fără modificări)"
   label_no_data: "Nu există date de afișat"
   label_no_due_date: "fără dată finalizare"
   label_no_start_date: "fără dată început"
   label_no_parent_page: "Pagină părinte:"
+  label_no_parent_group: "(No parent group)"
   label_notification_center_plural: "Notificări"
   label_nothing_display: "Nimic de afișat"
   label_nobody: "nimeni"
@@ -3758,6 +3939,8 @@ ro:
   label_overall_activity: "Activitate globală"
   label_overview: "Vedere de ansamblu"
   label_page_title: "Titlu pagină"
+  label_parent_group_caption: >
+    Setting a parent group will make this group a subgroup of the selected parent group. This will also inherit all memberships, including permissions of the parent group.
   label_part_of: "parte a"
   label_password_lost: "V-aţi uitat parola?"
   label_password_rule_lowercase: "Litere mici"
@@ -3784,6 +3967,7 @@ ro:
   label_preview_not_available: "Preview not available"
   label_previous: "Înapoi"
   label_previous_week: "Săptămâna trecută"
+  label_previous_year: "Previous year"
   label_principal_invite_via_email: " sau invită utilizatori folosind email"
   label_principal_search: "Adaugă utilizatori sau grupuri existente"
   label_privacy_policy: "Politica privind confidențialitatea și securitatea datelor"
@@ -3895,6 +4079,7 @@ ro:
   label_start_to_start: "început la început"
   label_statistics: "Statistici"
   label_status: "Stare"
+  label_status_plural: "Statuses"
   label_storage_free_space: "Spațiu disc rămas"
   label_storage_used_space: "Spațiu disc folosit"
   label_storage_group: "Sistem de fișiere pentru stocare %{identifier}"
@@ -3923,6 +4108,7 @@ ro:
   label_title: "Titlu"
   label_projects_menu: "Proiecte"
   label_today: "astăzi"
+  label_today_capitalized: "Azi"
   label_token_version: "Token Version"
   label_today_as_start_date: "Select today as start date."
   label_today_as_due_date: "Select today as finish date."
@@ -3943,7 +4129,7 @@ ro:
   label_user: "Utilizator"
   label_user_and_permission: "Utilizatori și permisiuni"
   label_user_named: "Utilizator %{name}"
-  label_user_activity: "Activitatea lui %{value}"
+  label_user_activity_html: "%{value}'s activity"
   label_user_anonymous: "Anonim"
   label_user_menu: "User menu"
   label_user_new: "Utilizator nou"
@@ -4030,6 +4216,18 @@ ro:
     one: "1 file"
     other: "%{count} files"
     zero: "no files"
+  label_x_days:
+    one: "1 day"
+    few: "%{count} days"
+    other: "%{count} days"
+  label_x_working_days:
+    one: "1 working day"
+    few: "%{count} working days"
+    other: "%{count} working days"
+  label_x_working_days_time_off:
+    one: "Time off: 1 working day"
+    few: "Time off: %{count} working days"
+    other: "Time off: %{count} working days"
   label_yesterday: "ieri"
   label_zen_mode: "Zen mode"
   label_role_type: "Tip"
@@ -4038,6 +4236,22 @@ ro:
   label_not_changeable: "(nu se poate modifica)"
   label_global: "Global"
   label_seeded_from_env_warning: This record has been created through a setting environment variable. It is not editable through UI.
+  label_schedule_and_availability: "Schedule and availability"
+  label_working_hours: "Work schedule"
+  label_non_working_days: "Availability calendar"
+  label_non_working_days_with_count: "Non-working days (%{count})"
+  label_non_working_days_summary: "Summary"
+  button_add_non_working_time: "Time off"
+  button_edit_non_working_time: "Edit time off"
+  label_continued_from_previous_year: "continued from previous year"
+  label_continues_into_next_year: "continues into next year"
+  label_end_date: "Finish date"
+  label_working_days: "Working days"
+  label_non_working_times_with_count: "%{year} time off (%{count})"
+  label_non_working_times_summary: "%{year} summary"
+  label_total_user_non_working_times: "Personal non-working days"
+  label_total_global_non_working_days: "Global non-working days"
+  label_total_days_off: "Total days off"
   macro_execution_error: "Eroare la execuția macro-ului %{macro_name}"
   macro_unavailable: "Macro-ul %{macro_name} nu poate fi afișat."
   macros:
@@ -4072,7 +4286,7 @@ ro:
       center: "Centrul de notificare"
       see_in_center: "Vezi comentariul în centrul de notificări"
       settings: "Modificare setări e-mail"
-    salutation: "Salut %{user}"
+    salutation: "Hello %{user},"
     salutation_full_name: "Numele complet"
     work_packages:
       created_at: "Creat la %{timestamp} de %{user} "
@@ -4103,7 +4317,7 @@ ro:
       note: "Notă: „%{note}”"
     sharing:
       work_packages:
-        allowed_actions: "You may %{allowed_actions} this work package. This can change depending on your project role and permissions."
+        allowed_actions_html: "You may %{allowed_actions} this work package. This can change depending on your project role and permissions."
         create_account: "To access this work package, you will need to create and activate an account on %{instance}."
         open_work_package: "Open work package"
         subject: "Work package #%{id} was shared with you"
@@ -4202,8 +4416,9 @@ ro:
       roles: "Acum ai următoarele roluri:"
   mail_user_activation_limit_reached:
     subject: Limita numărului de utilizatori activi a fost atinsă
-    message: |
-      Un nou utilizator (%{email}) a încercat să creeze un cont pe un server pe care îl gestionați (%{host}). Utilizatorul nu-și poate activa contul deoarece s-a atins limita superioară de utilizatori activi.
+    message_html: |
+      A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
+      The user cannot activate their account since the user limit has been reached.
     steps:
       label: "Pentru a permite utilizatorului să se conecteze, puteți: "
       a: "Actualizați planul de plată ([here](upgrade_url))" #here turned into a link
@@ -4388,6 +4603,12 @@ ro:
   permission_manage_versions: "Gestionare versiuni"
   permission_manage_wiki: "Gestionare wiki"
   permission_manage_wiki_menu: "Gestionare meniu wiki"
+  permission_manage_own_working_times: "Manage own working times"
+  permission_manage_own_working_times_explanation: >
+    Allows users to manage their own working times, and personal non-working days.
+  permission_manage_working_times: "Manage working times for all users"
+  permission_manage_working_times_explanation: >
+    Allows users to manage working times for all users, including personal non-working days.
   permission_move_work_packages: "Mutare pachete de lucru"
   permission_protect_wiki_pages: "Protejare pagini wiki"
   permission_rename_wiki_pages: "Redenumește pagini wiki"
@@ -4533,10 +4754,10 @@ ro:
       info: "Ștergerea repo-ului este o acțiune ireversibilă."
       info_not_managed: "Atenție: Această acțiune NU va șterge conținutul repo-ului, deoarece acesta nu este gestionat de OpenProject."
       managed_path_note: "Urmatorul director va fi şters: %{path}"
-      repository_verification: "Introduceţi identificatorul proiectului %{identifier} pentru a verifica ștergerea sa din repo."
+      repository_verification_html: "Enter the project's identifier %{identifier} to verify the deletion of its repository."
       subtitle: "Ești sigur că vrei să ştergi %{repository_type} din proiectul %{project_name}?"
-      subtitle_not_managed: "Sunteți sigur că doriţi să ştergeţi %{repository_type} %{url} din proiectul %{project_name}?"
-      title: "Ștergere %{repository_type}"
+      subtitle_not_managed_html: "Do you really want to remove the linked %{repository_type} %{url} from the project %{project_name}?"
+      title_html: "Delete the %{repository_type}"
       title_not_managed: "Doriți eliminarea %{repository_type} corespunzător?"
     errors:
       build_failed: "Imposibil de creat repo-ul cu configuraţia selectată. %{reason}"
@@ -4586,7 +4807,7 @@ ro:
     storage:
       not_available: "Consumul de spațiu de stocare nu este disponibil pentru acest repo."
       update_timeout: "Păstrează ultimele informații privind spațiul necesar pe disc pentru un depozit timp de N minute.\nDeoarece numărarea spațiului necesar pe disc al unui depozit poate fi costisitoare, crește această valoare pentru a reduce impactul asupra performanței."
-      oauth_application_details: "Valoarea secretă a clientului nu va mai fi accesibilă după ce închizi această fereastră. Te rog să copiezi aceste valori în setările Nextcloud OpenProject Integration:"
+      oauth_application_details_html: "The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:"
       oauth_application_details_link_text: "Mergi la pagina setări"
       setup_documentation_details: "Dacă ai nevoie de ajutor pentru configurarea unui nou depozit de fișiere, consultă documentația: "
       setup_documentation_details_link_text: "Configurarea stocărilor de fișiere"
@@ -4631,15 +4852,15 @@ ro:
   setting_apiv3_cors_title: "Cross-Origin Resource Sharing (CORS)"
   setting_apiv3_cors_enabled: "Activați CORS"
   setting_apiv3_cors_origins: "API V3 Cross-Origin Resource Sharing (CORS) origini permise"
-  setting_apiv3_cors_origins_text_html: >
-    Dacă CORS este activat, acestea sunt originile cărora li se permite accesul la OpenProject API. <br/> Vă rugăm să consultați <a href="%{origin_link}" target="_blank">documentația privind antetul Origin</a> pentru a specifica valorile așteptate.
+  setting_apiv3_cors_origins_instructions_html: >
+    If CORS is enabled, these are the origins that are allowed to access OpenProject API. <br/> Please check the [Documentation on the Origin header](docs_url) on how to specify the expected values.
   setting_apiv3_write_readonly_attributes: "Write access to read-only attributes"
   setting_apiv3_write_readonly_attributes_instructions: >
     If enabled, the API will allow administrators to write static read-only attributes during creation, such as createdAt and author.
   setting_apiv3_write_readonly_attributes_warning: >
     This setting has a use-case for e.g., importing data, but allows administrators to impersonate the creation of items as other users. All creation requests are being logged however with the true author.
-  setting_apiv3_write_readonly_attributes_additional: >
-    For more information on attributes and supported resources, please see the %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_additional_html: >
+    For more information on attributes and supported resources, please see the [API documentation](api_documentation_link).
   setting_apiv3_max_page_size: "Dimensiunea maximă a paginii API"
   setting_apiv3_max_page_size_instructions: >
     Set the maximum page size the API will respond with. It will not be possible to perform API requests that return more values on a single page.
@@ -4736,7 +4957,7 @@ ro:
   setting_work_package_properties: "Proprietăți pachet de lucru"
   setting_work_package_startdate_is_adddate: "Folosire data curentă ca dată de început pentru pachetele de lucru noi"
   setting_work_packages_projects_export_limit: "Limita de export a pachetelor de lucru / proiectelor"
-  setting_journal_aggregation_time_minutes: "Acțiunile utilizatorilor agregate în cadrul"
+  setting_journal_aggregation_time_minutes: "Aggregation period"
   setting_log_requesting_user: "Auditare utilizator, nume și adresă de email pentru toate cererile"
   setting_login_required: "Autentificare obligatorie"
   setting_login_required_caption: "When checked, all requests to the application have to be authenticated."
@@ -4817,6 +5038,12 @@ ro:
   setting_welcome_text: "Text bloc \"bun venit\""
   setting_welcome_title: "Titlu bloc \"bun venit\""
   setting_welcome_on_homescreen: "Afişare bloc \"bun venit\" pe ecranul de start"
+  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_numeric_caption: >
+    Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
+  setting_work_packages_identifier_alphanumeric_caption: >
+    Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Mod de evidențiere implicit"
   setting_work_package_list_default_highlighted_attributes: "Atributele evidențiate implicit în linie"
   setting_working_days: "Zile lucrătoare"
@@ -4983,10 +5210,12 @@ ro:
       section_work_week: "Săptămână de lucru"
       section_holidays_and_closures: "Holidays and closures"
     work_packages:
+      work_package_identifier: "Work package identifier"
       not_allowed_text: "Nu ai drepturile necesare pentru a vizualiza acest widget."
       activities:
         enable_internal_comments: "Activează comentariile interne"
-        helper_text: "Comentariile interne permit unei echipe interne să comunice între ei în mod privat. Acestea sunt vizibile numai pentru rolurile selectate care au permisiunile necesare și nu vor fi vizibile public. %{link}"
+        helper_text_html: >
+          Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. [Click here to learn more](docs_url)
   text_formatting:
     markdown: "Markdown"
     plain: "Text simplu"
@@ -5108,6 +5337,10 @@ ro:
   text_plugin_assets_writable: "Se poate scrie în directorul de resurse pentru module"
   text_powered_by: "Propulsat de %{link}"
   text_project_identifier_info: "Doar litere mici (a-z), numere, cratime şi linii de subliniere sunt permise, trebuie să înceapă cu o literă mică."
+  text_project_identifier_description: 'The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".'
+  text_project_identifier_url_description: "The project identifier is included in the URL of the project."
+  text_project_identifier_handle_format: "Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters)."
+  text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
   text_reassign: "Reatribuire la pachetul de lucru:"
   text_regexp_multiline: 'Formula regex este aplicată într-un mod multilinie - de exemplu: ^---\s+'
   text_repository_usernames_mapping: "Selectați sau modificați contul OpenProject mapat la fiecare cont din istoricul repo-ului.\nUtilizatorii cu cont sau e-mail identic în OpenProject și repo sunt echivalați automat."
@@ -5216,18 +5449,18 @@ ro:
   version_status_locked: "blocat"
   version_status_open: "deschis"
   note: Notă
-  note_password_login_disabled: "Autentificarea cu parolă a fost dezactivată prin %{configuration}."
+  note_password_login_disabled_link: "Password login has been disabled through a [configuration setting](configuration_url)."
   warning: Avertizare
   warning_attachments_not_saved: "Nu au putut fi salvate %{count} fișiere."
-  warning_imminent_user_limit: >
-    Ați invitat mai mulți utilizatori decât suportă planul dvs. actual. Este posibil ca utilizatorii invitați să nu se poată alătura mediului dumneavoastră OpenProject. Vă rugăm să <a href="%{upgrade_url}">vă actualizați planul</a> sau să blocați utilizatorii existenți pentru a permite utilizatorilor invitați și înregistrați să se alăture.
+  warning_imminent_user_limit_html: >
+    You invited more users than are supported by your current plan. Invited users may not be able to join your OpenProject environment. Please [upgrade your plan](upgrade_url) or block existing users in order to allow invited and registered users to join.
   warning_registration_token_expired: |
     E-mailul de activare a expirat. Ți-am trimis unul nou la %{email}.
     Vă rugăm să faceți clic pe linkul din interiorul acestuia pentru a vă activa contul.
   warning_user_limit_reached: >
     Adding additional users will exceed the current limit. Please contact an administrator to increase the user limit to ensure external users are able to access this instance.
-  warning_user_limit_reached_admin: >
-    Adding additional users will exceed the current limit. Please <a href="%{upgrade_url}">upgrade your plan</a> to be able to ensure external users are able to access this instance.
+  warning_user_limit_reached_admin_html: >
+    Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
     Ai atins limita de utilizatori (%{current}/%{max} utilizatori activi). Te rog să contactezi sales@openproject.com pentru a vă actualiza planul ediției Enterprise și a adăuga utilizatori suplimentari.
   warning_protocol_mismatch_html: >
@@ -5287,7 +5520,7 @@ ro:
     reminders:
       label_remind_at: "Dată"
       note_placeholder: "De ce setezi acest memento?"
-      create_success_message: "Memento setat cu succes. Vei primi o notificare pentru acest pachet de lucru %{reminder_time}."
+      create_success_message_html: "Reminder set successfully. You will receive a notification for this work package %{reminder_time}."
       success_update_message: "Reminder updated successfully."
       success_deletion_message: "Reminder deleted successfully."
   sharing:
@@ -5318,8 +5551,8 @@ ro:
     text_user_limit_reached_admins: 'Adding additional users will exceed the current limit. Please <a href="%{upgrade_url}">upgrade your plan</a> to be able to add more users.'
     warning_user_limit_reached: >
       Adding additional users will exceed the current limit. Please contact an administrator to increase the user limit to ensure external users are able to access this %{entity}.
-    warning_user_limit_reached_admin: >
-      Adding additional users will exceed the current limit. Please <a href="%{upgrade_url}">upgrade your plan</a> to be able to ensure external users are able to access this %{entity}.
+    warning_user_limit_reached_admin_html: >
+      Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
     warning_no_selected_user: "Please select users to share this %{entity} with"
     warning_locked_user: "The user %{user} is locked and cannot be shared with"
     user_details:
@@ -5439,6 +5672,7 @@ ro:
       project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Undisclosed - Strămoșul este invizibil din cauza lipsei de permisiuni.
       definingProject: Undisclosed - The project is invisible because of lacking permissions.
+      definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Autorizare prealabilă"

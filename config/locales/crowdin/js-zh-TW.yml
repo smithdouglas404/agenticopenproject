@@ -348,8 +348,6 @@ zh-TW:
     label_collapse_all: "全部摺疊"
     label_collapse_text: "折疊文字"
     label_comment: "留言"
-    label_committed_at: "在 %{date} %{committed_revision_link}"
-    label_committed_link: "上傳修訂的 %{revision_identifier}"
     label_contains: "包含"
     label_created_on: "建立於"
     label_edit_comment: "編輯此留言"
@@ -1213,3 +1211,7 @@ zh-TW:
       waiting_subtitle:
         network_off: "網路有問題。"
         network_on: "網絡已恢復。我們正在努力。"
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

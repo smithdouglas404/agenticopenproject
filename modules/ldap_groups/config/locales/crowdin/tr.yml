@@ -47,7 +47,7 @@ tr:
         title: '%{name} senkronize filtresini kaldır'
         confirmation: "Devam ederseniz, senkronize edilmiş %{name} filtresi ve bu kanaldan oluşturulan %{groups_count} tüm gruplar kaldırılacak."
         removed_groups: "Uyarı: Bu işlem aşağıdaki grupları OpenProject'ten kaldıracak ve tüm projelerden kaldıracaktır!"
-        verification: "Silme işlemini doğrulamak için %{name} filtre adını girin."
+        verification_html: "Enter the filter name %{name} to verify the deletion."
       form:
         group_name_attribute_text: 'OpenProject grup adını ayarlamak için kullanılan LDAP grubunun niteliğini girin.'
         filter_string_text: 'OpenProject ile senkronize etmek için LDAP''nizdeki grupları döndüren RFC4515 LDAP filtresini girin.'
@@ -59,7 +59,7 @@ tr:
         title: '%{name} adlı senkronize grubu kaldır'
         confirmation: "Devam ederseniz, %{name}} ile senkronize edilmiş grup ve içinden senkronize olan tüm %{users_count} kullanıcısı kaldırılacak."
         info: "Not: OpenProject grubunun kendisi ve bu LDAP senkronizasyonunun dışına eklenen üyeler kaldırılmaz."
-        verification: "Silme işlemini doğrulamak için grubun adını %{name} girin."
+        verification_html: "Enter the group's name %{name} to verify the deletion."
       help_text_html: |
         Bu modül, LDAP ve OpenProject grupları arasında bir senkronizasyon ayarlamanıza izin verir.
         Bu, LDAP gruplarının OpenProject ile çalışmak için ayarlanmış <em> groupOfNames / memberOf </em> özelliğini kullanması gerektiğine bağlıdır.

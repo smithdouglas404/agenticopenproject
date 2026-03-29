@@ -47,7 +47,7 @@ sl:
         title: 'Odstrani sinhronizirani filter %{name}'
         confirmation: "Če nadaljujete, bo sinhronizirani filter %{name} in vse skupine %{groups_count}, ustvarjene prek njega, odstranjene.\n"
         removed_groups: "Opozorilo: S tem odstranite naslednje skupine iz OpenProject-a in ga odstranite iz vseh projektov!"
-        verification: "Vnesite ime filtra %{name}, da preverite izbris."
+        verification_html: "Enter the filter name %{name} to verify the deletion."
       form:
         group_name_attribute_text: "Vnesite atribut skupine LDAP, ki se uporablja za nastavitev imena skupine OpenProject.\n"
         filter_string_text: 'Vnesite filter RFC4515 LDAP, ki vrne skupine v vašem LDAP za sinhronizacijo z OpenProject.'
@@ -59,7 +59,7 @@ sl:
         title: 'Odstrani sinhronizirano skupino %{name}'
         confirmation: "Če nadaljujete, bo sinhronizirana skupina %{name} in vsi %{users_count} uporabniki, ki so bili sinhronizirani prek nje, odstranjeni."
         info: "Opozorilo: Sama skupina OpenProject in člani, dodani zunaj te sinhronizacije LDAP, ne bodo odstranjeni."
-        verification: "Vnesite ime skupine %{name}, da preverite izbris."
+        verification_html: "Enter the group's name %{name} to verify the deletion."
       help_text_html: |
         Ta modul vam omogoča, da nastavite sinhronizacijo med skupinama LDAP in OpenProject.
         Odvisno od tega, ali morajo skupine LDAP uporabiti atribut<em>skupinaOdIme / članOd </em>, ki deluje za OpenProject.

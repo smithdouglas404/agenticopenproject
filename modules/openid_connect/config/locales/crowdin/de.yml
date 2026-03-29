@@ -49,9 +49,9 @@ de:
           non_object_attribute: "definiert kein JSON-Objekt unter %{attribute}."
   provider:
     delete_warning:
-      input_delete_confirmation: Geben Sie den Namen des SSO-Anbieters %{name} ein, um die Löschung zu bestätigen.
+      input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
       irreversible_notice: Das Löschen eines SSO-Anbieters ist eine unwiderrufliche Aktion.
-      provider: 'Sind Sie sicher, dass Sie den SSO-Anbieter %{name} löschen möchten? Um diese Aktion zu bestätigen, geben Sie bitte den Namen des Anbieters in das untenstehende Feld ein. Das hat folgendende Effekte:'
+      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
       delete_result_1: Entfernt diese SSO-Anmeldemöglichkeit aus der Liste der verfügbaren Anbieter.
       delete_result_user_count:
         zero: Derzeit verwenden keine Benutzer diesen SSO-Anbieter. Es sind keine weiteren Maßnahmen erforderlich.

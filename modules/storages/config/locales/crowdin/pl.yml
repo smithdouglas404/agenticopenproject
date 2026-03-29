@@ -203,6 +203,11 @@ pl:
         upload_link_service:
           not_found: Folder docelowy %{folder} nie został znaleziony w magazynie %{storage_name}.
   storages:
+    admin:
+      side_panel:
+        health_notifications_component:
+          sync_now: Sync now
+          sync_queued: Synchronization queued.
     buttons:
       done_continue: Gotowe, kontynuuj
       open_storage: Otwórz magazyn plików
@@ -221,13 +226,13 @@ pl:
     confirm_replace_oauth_application: Ta czynność zresetuje bieżące dane uwierzytelniające OAuth. Po potwierdzeniu będą Państwo musieli ponownie wprowadzić dane uwierzytelniające u dostawcy pamięci masowej, a wszyscy zdalni użytkownicy będą musieli ponownie autoryzować się w OpenProject. Czy na pewno chcą Państwo kontynuować?
     confirm_replace_oauth_client: Ta czynność spowoduje zresetowanie bieżących poświadczeń OAuth. Po potwierdzeniu będą Państwo musieli wprowadzić nowe dane uwierzytelniające od dostawcy pamięci masowej, a wszyscy użytkownicy będą musieli ponownie autoryzować się na stronie %{provider_type} . Czy na pewno chcą Państwo kontynuować?
     delete_warning:
-      project_storage: Czy na pewno chcesz usunąć %{file_storage} z tego projektu?
       project_storage_delete_result_1: Wszystkie linki do odpowiednich plików i folderów zostaną usunięte
       project_storage_delete_result_2: Automatycznie zarządzany folder projektu i wszystkie znajdujące się w nim pliki zostaną usunięte
-      storage: Czy na pewno chcesz usunąć %{file_storage} jako zewnętrzny magazyn plików?
+      project_storage_html: Are you sure you want to remove %{file_storage} from this project?
       storage_delete_result_1: Magazyn zostanie usunięty ze wszystkich projektów, które obecnie z niego korzystają
       storage_delete_result_2: Wszystkie linki do odpowiednich plików i folderów zostaną usunięte
       storage_delete_result_3: Automatycznie zarządzany folder projektu i wszystkie znajdujące się w nim pliki zostaną usunięte
+      storage_html: Are you sure you want to delete %{file_storage} as an external file storage?
     dependencies:
       nextcloud:
         group_folders_app: Foldery zespołu
@@ -399,7 +404,7 @@ pl:
       host: Proszę dodać adres hosta magazynu wraz z https://. Nie powinien być dłuższy niż 255 znaków.
       managed_project_folders_application_password_caption: 'Włącz automatycznie zarządzane foldery, kopiując tę wartość z: %{provider_type_link}.'
       name: Nazwij swój magazyn pamięci, aby użytkownicy mogli je rozróżniać, jeśli występuje ich wiele.
-      new_storage: Aby uzyskać więcej informacji, przeczytaj naszą dokumentację na temat <a target='_blank' href='%{provider_link}'>konfigurowania integracji magazynu plików %{provider_name}</a>.
+      new_storage_html: Read our documentation on [setting up a %{provider_name} file storage](docs_url) integration for more information.
       nextcloud:
         application_link_text: aplikacji „Integration OpenProject”
         integration: Administracja Nextcloud / OpenProject
@@ -411,8 +416,7 @@ pl:
       no_specific_folder: Domyślnie każdy użytkownik rozpocznie we własnym folderze domowym po przesłaniu pliku.
       no_storage_set_up: Nie ma jeszcze skonfigurowanych magazynów plików.
       not_logged_into_storage: Aby wybrać folder projektu, najpierw się zaloguj
-      oauth_application_details: Wartość tajnego klucza klienta nie będzie ponownie dostępna po zamknięciu tego okna. Skopiuj te wartości do %{oauth_application_details_link}.
-      oauth_application_details_link_text: Ustawienia Nextcloud OpenProject Integration
+      oauth_application_details_html: The client secret value will not be accessible again after you close this window. Please copy these values into the [Nextcloud OpenProject Integration settings](oauth_application_details_link).
       one_drive:
         application_link_text: Portal Azure
         copy_redirect_uri: Skopiuj identyfikator URI przekierowania
@@ -519,7 +523,7 @@ pl:
         members_connection_status: Status połączenia członków
         new: Dodaj magazyn plików do tego projektu
       project_storage_members:
-        subtitle: Sprawdź status połączenia magazynu %{storage_name_link} wszystkich członków projektu.
+        subtitle_html: Check the connection status for the storage %{storage_name_link} of all project members.
         title: Status połączenia członków
       project_storages:
         delete: Usunąć magazyn plików z projektu?

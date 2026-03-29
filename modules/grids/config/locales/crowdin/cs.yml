@@ -2,12 +2,12 @@ cs:
   grids:
     label_widget_in_grid: "Widget obsažený v mřížce %{grid_name}"
     widgets:
-      empty: "This widget is currently empty."
-      not_available: "This widget is not available."
+      empty: "Tento widget je v současné době prázdný."
+      not_available: "Tento widget není k dispozici."
       subitems:
         title: "Dílčí položky"
         no_results: "There are no visible children."
-        view_all_subitems: "View all subitems"
+        view_all_subitems: "Zobrazit všechny dílčí položky"
         button_text: "Dílčí položky"
       members:
         title: "Členové"

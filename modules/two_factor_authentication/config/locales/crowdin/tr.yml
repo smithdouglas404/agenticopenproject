@@ -71,8 +71,7 @@ tr:
       error_invalid_settings: "Seçtiğiniz 2FA stratejileri geçersiz"
       failed_to_save_settings: "2FA ayarları güncellenemedi: %{message}"
     admin:
-      self_edit_path: "Kendi 2FA cihazlarınızı eklemek veya değiştirmek için, lütfen %{self_edit_link} adresine gidin."
-      self_edit_link_name: "Hesap sayfanızda iki faktörlü kimlik doğrulama"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "Bu yolda kendi 2FA cihazlarınızı düzenleyemezsiniz. Hesabım> İki faktörlü kimlik doğrulama yerine gidin."
       no_devices_for_user: "Bu kullanıcı için 2FA cihazı kayıtlı değil."
       all_devices_deleted: "Bu kullanıcının tüm 2FA cihazları silindi"
@@ -119,8 +118,8 @@ tr:
       failed_to_delete: "2FA cihazı silinemedi."
       is_default_cannot_delete: "Cihaz varsayılan olarak işaretlenmiştir ve aktif bir güvenlik politikası nedeniyle silinemez. Silmeden önce başka bir cihazı varsayılan olarak işaretleyin."
       not_existing: "Hesabınız için 2FA cihazı kayıtlı değil."
-      2fa_from_input: Kimliğinizi doğrulamak için lütfen <strong>%{device_name}</strong> cihazından kod girin.
-      2fa_from_webauthn: Lütfen WebAuthn cihazını <strong>%{device_name}</strong> sağlayın. USB tabanlı ise cihazınız taktığınızdan ve dokunduğunuzdan emin olun. Ardından oturum açma düğmesine tıklayın.
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: Bir FIDO2 cihazı (YubiKey gibi) ya da mobil cihazınızın güvenli donanım alanını (secure enclave) kaydedin.

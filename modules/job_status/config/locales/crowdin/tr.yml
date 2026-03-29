@@ -5,8 +5,7 @@ tr:
     description: "Arka plan işlerinin durumu listeleniyor."
   job_status_dialog:
     download_starts: 'İndirme işlemi otomatik olarak başlayacaktır.'
-    link_to_download: 'Veya indirmek için %{link}.'
-    click_here: 'buraya tıklayın'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Arka plan iş durumu'
     redirect: 'Yönlendiriliyorsunuz.'
     redirect_link: 'Devam etmek için lütfen buraya tıklayın.'

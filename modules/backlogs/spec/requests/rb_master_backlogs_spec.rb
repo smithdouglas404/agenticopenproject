@@ -111,6 +111,29 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
           expect(response).to have_turbo_frame "backlogs_container"
           expect(response).to have_no_turbo_frame "content-bodyRight"
         end
+
+        context "with no sprints available" do
+          before do
+            allow(Backlog)
+              .to receive(:owner_backlogs)
+              .with(project)
+              .and_return([])
+
+            allow(Agile::Sprint)
+              .to receive(:for_project)
+              .with(project)
+              .and_return(Agile::Sprint.none)
+          end
+
+          it "still renders the sprint planning container for turbo-frame requests" do
+            get "/projects/#{project.identifier}/backlogs/sprint_planning",
+                headers: { "Turbo-Frame" => "backlogs_container" }
+
+            expect(response).to have_http_status(:ok)
+            expect(response.body).to include('id="owner_backlogs_container"')
+            expect(response.body).to include('id="sprint_backlogs_container"')
+          end
+        end
       end
     end
   end

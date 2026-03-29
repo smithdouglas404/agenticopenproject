@@ -348,8 +348,6 @@ da:
     label_collapse_all: "Fold alle sammen"
     label_collapse_text: "Collapse text"
     label_comment: "Kommentér"
-    label_committed_at: "%{committed_revision_link} d. %{date}"
-    label_committed_link: "tilknyttet revision %{revision_identifier}"
     label_contains: "indeholder"
     label_created_on: "oprettet d."
     label_edit_comment: "Rediger denne kommentar"
@@ -1217,3 +1215,7 @@ da:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

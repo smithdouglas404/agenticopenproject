@@ -49,9 +49,9 @@ vi:
           non_object_attribute: "không xác định đối tượng JSON tại %{attribute}."
   provider:
     delete_warning:
-      input_delete_confirmation: Nhập tên nhà cung cấp %{name} để xác nhận xóa.
+      input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
       irreversible_notice: Xóa nhà cung cấp SSO là hành động không thể thay đổi được.
-      provider: 'Bạn có chắc chắn muốn xóa nhà cung cấp SSO %{name} không? Để xác nhận hành động này, vui lòng nhập tên của nhà cung cấp vào trường bên dưới, điều này sẽ:'
+      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
       delete_result_1: Xóa nhà cung cấp khỏi danh sách các nhà cung cấp có sẵn.
       delete_result_user_count:
         zero: Không có người dùng hiện đang sử dụng nhà cung cấp này. Không cần thực hiện thêm hành động nào.

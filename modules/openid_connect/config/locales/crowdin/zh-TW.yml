@@ -49,9 +49,9 @@ zh-TW:
           non_object_attribute: "沒有定義 JSON 物件 %{attribute}。"
   provider:
     delete_warning:
-      input_delete_confirmation: 輸入提供者名稱 %{name} 確認刪除。
+      input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
       irreversible_notice: 刪除 SSO 提供者是不可逆轉的動作。
-      provider: '您確定要刪除 SSO 提供者 %{name}? 要確認此動作，請在下面的欄位中輸入提供者的名稱，這將：'
+      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
       delete_result_1: 從可用提供者清單中移除提供者。
       delete_result_user_count:
         zero: 目前沒有使用者使用此供應商。不需要採取進一步的行動。

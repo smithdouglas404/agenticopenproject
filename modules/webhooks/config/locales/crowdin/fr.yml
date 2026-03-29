@@ -36,10 +36,8 @@ fr:
         updated: "Mis à jour"
         comment: "Commentaire"
         internal_comment: "Commentaire interne"
-      explanation:
-        text: >
-          Lors de l'apparition d'un événement comme la création d'un lot de travaux ou la mise à jour d'un projet, OpenProject enverra une requête POST aux points de terminaison web configurés. Souvent, l'événement est envoyé après que le %{link} est passé.
-        link: période d'agrégation configurée
+      explanation_html: >
+        Lors de l'occurrence d'un événement comme la création d'un lot de travail ou une mise à jour de projet, OpenProject enverra une requête POST aux points de terminaison web configurés. Souvent, l'événement est envoyé après que la [période d'agrégation configurée] (aggregation_path) se soit écoulée.
       status:
         enabled: 'Webhook activé'
         disabled: 'Webhook désactivé'

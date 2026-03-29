@@ -348,8 +348,6 @@ ru:
     label_collapse_all: "Свернуть все"
     label_collapse_text: "Свернуть текст"
     label_comment: "Комментарий"
-    label_committed_at: "%{committed_revision_link} в %{date}"
-    label_committed_link: "завершенная версия %{revision_identifier}"
     label_contains: "содержит"
     label_created_on: "создано на"
     label_edit_comment: "Редактировать этот комментарий"
@@ -1225,3 +1223,7 @@ ru:
       waiting_subtitle:
         network_off: "Проблема с сетью."
         network_on: "Проблема с сетью решена."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

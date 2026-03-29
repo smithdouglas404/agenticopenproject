@@ -49,9 +49,9 @@ ms:
           non_object_attribute: "does not define a JSON object at %{attribute}."
   provider:
     delete_warning:
-      input_delete_confirmation: Masukkan nama pembekal %{name} untuk mengesahkan pemadaman.
+      input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
       irreversible_notice: Memadamkan pembekal SSO ialah tindakan yang tidak boleh diubah.
-      provider: 'Adakah anda pasti mahu memadamkan pembekal SSO %{name}? Untuk mengesahkan tindakan ini sila masukkan nama pembekal dalam medan di bawah, ini akan:'
+      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
       delete_result_1: Alih keluar pembekal daripada senarai pembekal yang tersedia.
       delete_result_user_count:
         zero: Tiada pengguna yang menggunakan penyedia ini pada masa ini. Tiada tindakan lanjut diperlukan.

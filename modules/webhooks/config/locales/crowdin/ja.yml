@@ -36,10 +36,8 @@ ja:
         updated: "更新しました"
         comment: "コメント"
         internal_comment: "内部コメント"
-      explanation:
-        text: >
-          ワークパッケージの作成やプロジェクトの更新などのイベントが発生するとします。 OpenProjectは設定されたWebエンドポイントにPOSTリクエストを送信します。 多くの場合、イベントは %{link} が過ぎた後に送信されます。
-        link: 集計期間を設定する
+      explanation_html: >
+        Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
       status:
         enabled: 'Webhookは有効です'
         disabled: 'Webhookは無効です'

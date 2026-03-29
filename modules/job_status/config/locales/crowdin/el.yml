@@ -5,8 +5,7 @@ el:
     description: "Listing and status of background jobs."
   job_status_dialog:
     download_starts: 'Η λήψη θα πρέπει να ξεκινήσει αυτόματα.'
-    link_to_download: 'Or, %{link} to download.'
-    click_here: 'click here'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Κατάσταση εργασίας παρασκηνίου'
     redirect: 'Ανακατευθύνεστε.'
     redirect_link: 'Παρακαλώ κάντε κλικ εδώ για να συνεχίσετε.'

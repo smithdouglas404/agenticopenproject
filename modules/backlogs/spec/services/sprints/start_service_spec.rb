@@ -97,6 +97,26 @@ RSpec.describe Sprints::StartService do
     end
   end
 
+  context "when the sprint has no start date" do
+    let(:sprint) { create(:agile_sprint, project:, start_date: nil) }
+
+    it "fails contract validation without activating the sprint", :aggregate_failures do
+      expect(result).not_to be_success
+      expect(result.errors.symbols_for(:base)).to include(:dates_required)
+      expect(sprint.reload).to be_in_planning
+    end
+  end
+
+  context "when the sprint has no finish date" do
+    let(:sprint) { create(:agile_sprint, project:, finish_date: nil) }
+
+    it "fails contract validation without activating the sprint", :aggregate_failures do
+      expect(result).not_to be_success
+      expect(result.errors.symbols_for(:base)).to include(:dates_required)
+      expect(sprint.reload).to be_in_planning
+    end
+  end
+
   context "when another active sprint exists in the project" do
     let!(:active_sprint) { create(:agile_sprint, project:, status: "active") }
 

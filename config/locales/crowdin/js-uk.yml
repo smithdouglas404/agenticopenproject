@@ -349,8 +349,6 @@ uk:
     label_collapse_all: "Згорнути все"
     label_collapse_text: "Згорнути текст"
     label_comment: "Коментар"
-    label_committed_at: "%{committed_revision_link}, %{date}"
-    label_committed_link: "зафіксовано редакцію %{revision_identifier}"
     label_contains: "містить"
     label_created_on: "створено"
     label_edit_comment: "Редагувати цей коментар"
@@ -1226,3 +1224,7 @@ uk:
       waiting_subtitle:
         network_off: "Існує проблема з мережею."
         network_on: "З’єднання відновлено. Ми намагаємося."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

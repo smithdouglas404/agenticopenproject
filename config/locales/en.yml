@@ -465,7 +465,7 @@ en:
         no_role: "Select role"
       blankslate:
         title: "No status transitions configured"
-        description: "Add statuses to start configuring workflows for this role"    
+        description: "Add statuses to start configuring workflows for this role"
     info:
       database_deprecation_html: >
         Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject.
@@ -719,6 +719,15 @@ en:
   danger_dialog:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+
+  pagination:
+    label: "Pagination"
+    prev: "Previous"
+    prev_page: "Previous Page"
+    next: "Next"
+    next_page: "Next Page"
+    page: "Page %{number}"
+    page_with_more: "Page %{number}..."
 
   mcp_configurations:
     server_url_component:
@@ -3500,6 +3509,7 @@ en:
         totals_removed_from_childless_work_packages: >-
           Work and progress totals automatically removed for non-parent work packages with <a href="%{href}" target="_blank">version update</a>.
           This is a maintenance task and can be safely ignored.
+        sprint_migration: "Version '%{version_name}' has been copied as a sprint."
       total_percent_complete_mode_changed_to_work_weighted_average: >-
         Child work packages without Work are ignored.
       total_percent_complete_mode_changed_to_simple_average: >-

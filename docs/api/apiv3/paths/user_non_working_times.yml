@@ -1,14 +1,14 @@
 # /api/v3/users/{id}/non_working_times
 ---
 get:
-  summary: List personal non-working days for a user
+  summary: List personal non-working times for a user
   operationId: list_user_non_working_times
   tags:
     - User Working Times
   description: |-
-    Returns all personal non-working days for the given user, ordered by date ascending.
+    Returns all personal non-working times for the given user, ordered by start date ascending.
 
-    Personal non-working days mark specific calendar dates as non-working for a user
+    Personal non-working times mark date ranges as non-working for a user
     (e.g., a local holiday or personal day off not covered by the system-wide non-working days).
 
     **Required permissions:**
@@ -68,9 +68,9 @@ post:
   tags:
     - User Working Times
   description: |-
-    Marks a date as a personal non-working day for the given user.
+    Creates a personal non-working time range for the given user.
 
-    The date must not already be a system-wide non-working day.
+    The date range must not overlap with an existing non-working time record for the same user.
 
     **Required permissions:**
     - Administrators can create non-working days for any user.
@@ -93,7 +93,8 @@ post:
         schema:
           $ref: "../components/schemas/user_non_working_time_model.yml"
         example:
-          date: "2025-06-16"
+          startDate: "2025-06-16"
+          endDate: "2025-06-20"
   responses:
     "201":
       description: Created
@@ -151,5 +152,5 @@ post:
             errorIdentifier: urn:openproject-org:api:v3:errors:PropertyConstraintViolation
             message: Validation failed.
       description: |-
-        Returned if the request body contains invalid parameters, or if the date
-        is already a system-wide non-working day.
+        Returned if the request body contains invalid parameters, or if the date range
+        overlaps with an existing non-working time record for the user.

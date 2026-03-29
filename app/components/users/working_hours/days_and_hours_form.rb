@@ -41,8 +41,10 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
           I18n.t("users.working_hours.form.title_days_and_hours")
         end
       end
+    end
 
-      if model.errors[:days].present?
+    if model.errors[:days].present?
+      form.html_content do
         render(Primer::Alpha::Banner.new(mb: 3, icon: :stop, scheme: :danger)) { model.errors[:days].join("\n") }
       end
     end
@@ -129,7 +131,7 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
   end
 
   def day_enabled?(day)
-    model.public_send(day) > 0
+    model.public_send(day).to_i > 0
   end
 
   def day_hours(day)

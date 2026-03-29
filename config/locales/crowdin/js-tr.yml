@@ -349,8 +349,6 @@ tr:
     label_collapse_all: "Tümünü daralt"
     label_collapse_text: "Metni daralt"
     label_comment: "Yorum"
-    label_committed_at: "%{committed_revision_link} %{date}"
-    label_committed_link: "kaydedilmiş revizyon %{revision_identifier}"
     label_contains: "içerir"
     label_created_on: "oluşturma tarihi"
     label_edit_comment: "Bu yorumu düzenle"
@@ -1218,3 +1216,7 @@ tr:
       waiting_subtitle:
         network_off: "Bir ağ sorunu var."
         network_on: "Ağ geri döndü. Deniyoruz."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

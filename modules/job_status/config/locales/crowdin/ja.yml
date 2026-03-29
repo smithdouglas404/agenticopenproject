@@ -5,8 +5,7 @@ ja:
     description: "バックグラウンドジョブのリストとステータス。"
   job_status_dialog:
     download_starts: 'ダウンロードは自動的に開始されます。'
-    link_to_download: 'Or, %{link} to download.'
-    click_here: 'ここをクリック'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'バックグラウンドジョブの状態'
     redirect: 'リダイレクトされています。'
     redirect_link: '続行するにはここをクリックしてください。'

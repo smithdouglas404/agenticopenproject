@@ -5,8 +5,7 @@ vi:
     description: "Danh sách và trạng thái của các công việc nền."
   job_status_dialog:
     download_starts: 'Quá trình tải xuống sẽ tự động bắt đầu.'
-    link_to_download: 'Hoặc %{link} để tải xuống.'
-    click_here: 'bấm vào đây'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Trạng thái công việc nền'
     redirect: 'Bạn đang bị chuyển hướng.'
     redirect_link: 'Vui lòng nhấp vào đây để tiếp tục.'

@@ -192,6 +192,8 @@ ko:
   label_subscribe_icalendar: "캘린더 구독"
   caption_meeting_template_select: "템플릿을 선택하면 의제 항목이 자동으로 복사됩니다."
   caption_template_project_select: "이 미팅 템플릿을 만들 프로젝트를 선택하세요"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

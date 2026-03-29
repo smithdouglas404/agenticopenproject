@@ -31,13 +31,7 @@
 class RbStoriesController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  NEW_SPRINT_ACTIONS = %i[move].freeze
-  LEGACY_SPRINT_ACTIONS = %i[move_legacy reorder].freeze
-
-  skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS + LEGACY_SPRINT_ACTIONS
-
-  prepend_before_action :load_legacy_project_sprint_and_story, only: LEGACY_SPRINT_ACTIONS
-  prepend_before_action :load_new_project_sprint_and_story, only: NEW_SPRINT_ACTIONS
+  before_action :load_story
 
   # Move a story from a Sprint to another Sprint or an Agile::Sprint.
   def move_legacy
@@ -59,7 +53,7 @@ class RbStoriesController < RbApplicationController
     respond_with_turbo_streams
   end
 
-  # Move a story from an Agile::Sprint to another Agile::Sprint or a Sprint.
+  # Move a story from an Agile::Sprint to another Agile::Sprint, or the Inbox.
   def move
     # The update service reloads the story internally (via #move_after),
     # so we memoize the previous sprint_id before the call.
@@ -70,7 +64,9 @@ class RbStoriesController < RbApplicationController
       return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
-    if target_version?(move_attributes)
+    if target_inbox?(move_attributes)
+      moved_to_inbox
+    elsif target_version?(move_attributes)
       moved_to_version
     elsif target_sprint?(move_attributes) && @story.sprint_id != sprint_id_was
       moved_to_sprint
@@ -130,6 +126,17 @@ class RbStoriesController < RbApplicationController
     end
   end
 
+  def moved_to_inbox
+    render_success_flash_message_via_turbo_stream(
+      message: I18n.t(:notice_successful_move, from: @sprint.name, to: I18n.t(:label_inbox))
+    )
+    inbox_work_packages = Backlog.inbox_for(project: @project)
+    replace_via_turbo_stream(
+      component: Backlogs::InboxComponent.new(work_packages: inbox_work_packages, project: @project),
+      method: :morph
+    )
+  end
+
   def moved_to_version
     moved_to(new_sprint: @story.version.becomes(Sprint))
   end
@@ -163,8 +170,10 @@ class RbStoriesController < RbApplicationController
       else
         { sprint_id: target_id }
       end
+    when "inbox"
+      { sprint_id: nil }
     else
-      raise ArgumentError, "target_type must include one of: version, sprint."
+      raise ArgumentError, "target_type must include one of: version, sprint, inbox."
     end
   end
 
@@ -174,6 +183,11 @@ class RbStoriesController < RbApplicationController
 
   def target_sprint?(move_attributes)
     move_attributes[:sprint_id].present?
+  end
+
+  def target_inbox?(move_attributes)
+    move_attributes.key?(:sprint_id) && move_attributes[:sprint_id].nil? &&
+      !move_attributes.key?(:version_id)
   end
 
   def replace_backlog_component_via_turbo_stream(sprint:)
@@ -189,32 +203,12 @@ class RbStoriesController < RbApplicationController
                              method: :morph)
   end
 
-  def legacy_load_story
-    @story = Story.visible.find(params[:id])
-  end
-
-  def load_legacy_project_sprint_and_story
-    load_project
-    legacy_load_sprint
-    legacy_load_story
-  end
-
-  def load_new_project_sprint_and_story
-    load_project
-    load_sprint
-    load_story
-  end
-
-  def legacy_load_sprint
-    @sprint = Sprint.visible.apply_to(@project).find(params[:sprint_id])
-  end
-
   def load_story
-    @story = WorkPackage.visible.find(params[:id])
-  end
-
-  def load_sprint
-    @sprint = Agile::Sprint.for_project(@project).visible.find(params[:sprint_id])
+    @story = if OpenProject::FeatureDecisions.scrum_projects_active?
+               WorkPackage.visible.find(params[:id])
+             else
+               Story.visible.find(params[:id])
+             end
   end
 
   def move_params

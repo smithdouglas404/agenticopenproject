@@ -34,11 +34,16 @@ module Agile::Sprints::Scopes
 
     class_methods do
       # Returns all sprints the user is allowed to see.
-      # A sprint is visible if the user has the :view_sprints permission
-      # in the project the sprint belongs to.
+      # A sprint is visible if its project is a sprint source for any project
+      # where the user has the :view_sprints permission (accounting for sprint sharing
+      # configuration), or if it has work packages in such a project.
       def visible(user = User.current)
-        joins(:project)
-          .merge(Project.allowed_to(user, :view_sprints))
+        allowed_projects = Project.allowed_to(user, :view_sprints)
+        source_project = Project.sprint_source_for(allowed_projects)
+        from_wps = WorkPackage.where(project: allowed_projects).where.not(sprint_id: nil)
+
+        where(project_id: source_project.select(:id))
+          .or(where(id: from_wps.select(:sprint_id)))
       end
     end
   end

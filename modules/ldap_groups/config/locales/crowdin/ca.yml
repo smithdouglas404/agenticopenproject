@@ -47,7 +47,7 @@ ca:
         title: 'Elimina el filtre de sincronització %{name}'
         confirmation: "Si continues, el filtre de sincronització %{name} i tots els grups %{groups_count} creats seran eliminats."
         removed_groups: "Alerta: Aquest eliminarà els següents grups d'OpenProject i l'eliminarà de tots els projectes!"
-        verification: "Introdueix el nom del filtre %{name} per verificar l'eliminació."
+        verification_html: "Enter the filter name %{name} to verify the deletion."
       form:
         group_name_attribute_text: 'Afegeix l''atribut del grup LDAP utilitzat per a la configuració del nom de grup d''OpenProject.'
         filter_string_text: 'Afegeix el filtre LDAP RFC4515 que retorna els grups en el teu LDAP per sincronitzar amb OpenProject.'
@@ -59,7 +59,7 @@ ca:
         title: 'Elimina el grup de sincronització %{name}'
         confirmation: "Si continues, el grup de sincronització %{name} i tots els %{users_count} usuaris sincronitzats seran eliminats."
         info: "Nota: El grup d'OpenProject i els membres afegits fora d'aquesta sincronització de LDAP no seran eliminats."
-        verification: "Introdueix el nom del grup %{name} per verificar l'eliminació."
+        verification_html: "Enter the group's name %{name} to verify the deletion."
       help_text_html: |
         Aquest mòdul et permet configurar sincronitzacions entre grups de LDAP i OpenProject.
         Depénent dels grups de LDAP s'ha d'utilitzar els atributs <em>groupOfNames / memberOf</em> configurats per poder treballar amb OpenProject.

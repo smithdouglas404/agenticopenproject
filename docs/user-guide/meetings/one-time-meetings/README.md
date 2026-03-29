@@ -184,7 +184,7 @@ Sections will show the sum of all the durations of all containing items (or at l
 
 #### Link a work package to a meeting
 
-If you select the **Work package** option, you can link a work package by entering either a work package ID, or starting to type in a keyword, which will open a list of possible options.
+If you select the **Work package** option, you can link a work package by entering either a work package ID, type, status or starting to type in a keyword, which will open a list of possible options.
 
 ![Add work package](openproject_userguide_meetings_add_work_package.png)
 

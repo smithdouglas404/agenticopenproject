@@ -349,8 +349,6 @@ fil:
     label_collapse_all: "Bumagsak lahat"
     label_collapse_text: "Collapse text"
     label_comment: "Komento"
-    label_committed_at: "%{committed_revision_link} sa %{date}"
-    label_committed_link: "nakatuon rebisyon %{revision_identifier}"
     label_contains: "naglalaman"
     label_created_on: "nilikha sa"
     label_edit_comment: "I-edit ang komentong ito"
@@ -1218,3 +1216,7 @@ fil:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

@@ -124,8 +124,10 @@ class RbSprintsController < RbApplicationController
     result = finish_sprint
 
     if result.success?
-      redirect_to backlogs_project_backlogs_path(@project),
-                  notice: I18n.t(:notice_successful_finish)
+      flash[:notice] = I18n.t(:notice_successful_finish)
+      render turbo_stream: turbo_stream.redirect_to(sprint_planning_backlogs_project_backlogs_path(@project))
+    elsif result.includes_error?(:base, :unfinished_work_packages)
+      show_finish_sprint_dialog
     else
       respond_with_start_finish_failure(message: start_finish_failure_message(:finish, result.message))
     end
@@ -195,6 +197,16 @@ class RbSprintsController < RbApplicationController
     )
   end
 
+  def show_finish_sprint_dialog
+    respond_with_dialog(
+      Backlogs::FinishSprintDialogComponent.new(
+        sprint: @sprint,
+        project: @project,
+        available_sprints: Agile::Sprint.native_to_sprint_source(@project).in_planning.where.not(id: @sprint.id).order_by_date
+      )
+    )
+  end
+
   # Overrides load_sprint_and_project to load the sprint from :id instead of :sprint_id
   def load_sprint_and_project
     load_project
@@ -235,7 +247,11 @@ class RbSprintsController < RbApplicationController
   def finish_sprint
     Sprints::FinishService
       .new(user: current_user, model: @sprint)
-      .call
+      .call(
+        unfinished_action: params[:unfinished_action],
+        move_to_sprint_id: params[:move_to_sprint_id],
+        send_notifications: false
+      )
   end
 
   def respond_with_start_finish_failure(message:)

@@ -70,8 +70,7 @@ ca:
       error_invalid_settings: "Les estratègies de 2FA seleccionades no són vàlides"
       failed_to_save_settings: "Error en carregar la configuració del 2FA: %{message}"
     admin:
-      self_edit_path: "Per afegir o modificar el teu propi dispositiu 2FA, si us plau, ves a %{self_edit_link}"
-      self_edit_link_name: "Autentificació en dos passos a la pàgina del teu compte"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "Pot ser que no puguis editar els teus propis dispositius 2FA en aquest enllaç. En comptes, ves a El meu compte > Factor de doble autentificació."
       no_devices_for_user: "No s'ha registrat cap dispositiu 2FA per aquest usuari."
       all_devices_deleted: "Tots els dispositius 2FA d'aquest usuari s'han eliminat."
@@ -117,8 +116,8 @@ ca:
       failed_to_delete: "Error a l'eliminar dispositiu 2FA."
       is_default_cannot_delete: "Aquest dispositiu està marcat per defecte i no pot ser eliminat degut a una política de seguretat activa. Marca un altre dispositiu per defecte abans d'eliminar aquest."
       not_existing: "No s'ha registrat cap dispositiu 2FA amb el teu compte."
-      2fa_from_input: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.

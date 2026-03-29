@@ -47,7 +47,7 @@ hu:
         title: 'Szinkronizált szűrő eltávolítása %{name}'
         confirmation: "Az összes szinkronizált szűrő%{name} és az összes csoport %{groups_count} amit létrehozott törölve lesz, ha folytatja."
         removed_groups: "Figyelmeztetés: Ez eltávolítja a következő csoportokat az OpenProject -ből, és eltávolítja az összes projektből!\n"
-        verification: "A törlés ellenőrzéséhez adja meg a %{name} szűrőnevet."
+        verification_html: "Enter the filter name %{name} to verify the deletion."
       form:
         group_name_attribute_text: "Adja meg az OpenProject csoportnév beállításához használt LDAP csoport attribútumát.\n"
         filter_string_text: "Adja meg az RFC4515 LDAP szűrőt, amely visszaadja az LDAP csoportjait, hogy szinkronizálja őket az OpenProject szolgáltatással.\n"
@@ -59,7 +59,7 @@ hu:
         title: 'Szinkronizált csoport %{name} visszavonása'
         confirmation: "Az összes szinkronizált csoport%{name} és az összes %{users_count} amit létrehozott törölve lesz, ha folytatja."
         info: "Megjegyzés: Maga az OpenProject csoport és az ezen az LDAP szinkronizáláson kívül hozzáadott tagok nem kerülnek eltávolításra."
-        verification: "Adja meg a csoport nevét %{name} a törlés megerősítéséhez."
+        verification_html: "Enter the group's name %{name} to verify the deletion."
       help_text_html: |
         Ez a modul lehetővé teszi az LDAP és az OpenProject csoportok közötti szinkronizálást.
         Attól függ, hogy az LDAP-csoportoknak az OpenProject használatához a <em> groupOfNames / memberOf </em> attribútumot kell használniuk.

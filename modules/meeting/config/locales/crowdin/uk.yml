@@ -207,6 +207,8 @@ uk:
   label_subscribe_icalendar: "Підписатися на календар"
   caption_meeting_template_select: "Виберіть шаблон, щоб автоматично скопіювати з нього пункти порядку денного"
   caption_template_project_select: "Виберіть проєкт, у якому ви хочете створити цей шаблон наради"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

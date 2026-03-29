@@ -30,6 +30,7 @@
 
 module Backlogs
   class SprintMenuComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
     include RbCommonHelper
 
     attr_reader :sprint, :project, :current_user, :active_sprint_ids
@@ -70,13 +71,17 @@ module Backlogs
     end
 
     def disable_start_sprint_action?
-      sprint.in_planning? && project_has_another_active_sprint?
+      sprint.in_planning? && (!sprint.date_range_set? || project_has_another_active_sprint?)
     end
 
     def start_sprint_action_description
       return unless disable_start_sprint_action?
 
-      t(".action_menu.start_sprint_disabled_description")
+      if sprint.date_range_set?
+        t(".action_menu.start_sprint_disabled_description")
+      else
+        t(".action_menu.start_sprint_missing_dates_description")
+      end
     end
 
     def user_allowed?(permission)

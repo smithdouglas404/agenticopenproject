@@ -70,8 +70,7 @@ zh-TW:
       error_invalid_settings: "您選擇的2FA 策略無效"
       failed_to_save_settings: "未能更新2FA 設置: %{message}"
     admin:
-      self_edit_path: "要添加或修改您自己的2FA 設備, 請連結到 %{self_edit_link}"
-      self_edit_link_name: "雙重驗證於您的帳號頁面"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "無法於此路徑編輯您擁有的2FA設備．請至 我的帳號 > 雙重認證．"
       no_devices_for_user: "沒有為該使用者註冊的 2FA 設備。"
       all_devices_deleted: "此使用者的所有2FA 設備已被刪除"
@@ -117,8 +116,8 @@ zh-TW:
       failed_to_delete: "刪除 2FA 裝置失敗。"
       is_default_cannot_delete: "裝置已標示為預設值，且由於安全政策已啟用，因此無法刪除。在刪除之前，請將其他裝置標記為預設值。"
       not_existing: "您沒有註冊 2FA 設備。"
-      2fa_from_input: 請輸入您的 <strong>%{device_name}</strong> 中的程式碼以驗證您的身分。
-      2fa_from_webauthn: 請提供支援「 WebAuthn」裝置 <strong>%{device_name}</strong>. 如果是USB設備，請確定插入以及觸碰驗證後，再點選登入按鈕。
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: 註冊 FIDO2 裝置（例如 YubiKey）或您行動裝置的安全區域（Secure Enclave）。

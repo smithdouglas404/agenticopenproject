@@ -118,16 +118,24 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
                finish_date: Date.tomorrow,
                status: "active")
       end
-      let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint] }
+      let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint create_sprints manage_sprint_items] }
       let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
-      it "shows Finish sprint and Task board" do
+      it "shows Finish sprint and Sprint board" do
         render_component
 
         expect(menu_items.first).to eq("Finish sprint")
         expect(page).to have_octicon(:check)
-        expect(page).to have_element(:form, action: finish_sprint_path, method: "post", "data-turbo": "false")
-        expect(menu_items).to include("Task board")
+        expect(page).to have_element(:form, action: finish_sprint_path, method: "post")
+        expect(menu_items).to include("Sprint board")
+      end
+
+      it "renders dividers between each menu section" do
+        render_component
+
+        expect(menu_items).to eq(["Finish sprint", "Edit sprint", "Add work package", "Sprint board"])
+        expect(page).to have_list_item position: 3, role: "presentation"
+        expect(page).to have_list_item position: 5, role: "presentation"
       end
     end
 
@@ -139,7 +147,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
 
         expect(menu_items.first).to eq("Start sprint")
         expect(page).to have_octicon(:play)
-        expect(page).to have_no_selector(:menuitem, text: "Task board")
+        expect(page).to have_no_selector(:menuitem, text: "Sprint board")
         expect(page).to have_element(:form, action: start_sprint_path, method: "post", "data-turbo": "false")
       end
 
@@ -174,6 +182,36 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         end
       end
 
+      context "when the sprint has no start date" do
+        let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: nil, finish_date: Date.tomorrow) }
+
+        it "shows Start sprint disabled with a missing dates description" do
+          render_component
+
+          expect(page).to have_selector(:menuitem, text: "Start sprint", disabled: true)
+          expect(page).to have_text(I18n.t(:"backlogs.sprint_menu_component.action_menu.start_sprint_missing_dates_description"))
+        end
+      end
+
+      context "when the sprint has no finish date" do
+        let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: nil) }
+
+        it "shows Start sprint disabled with a missing dates description" do
+          render_component
+
+          expect(page).to have_selector(:menuitem, text: "Start sprint", disabled: true)
+          expect(page).to have_text(I18n.t(:"backlogs.sprint_menu_component.action_menu.start_sprint_missing_dates_description"))
+        end
+      end
+
+      context "when the sprint has both start and finish dates" do
+        it "shows Start sprint enabled" do
+          render_component
+
+          expect(page).to have_selector(:menuitem, text: "Start sprint", disabled: false)
+        end
+      end
+
       context "when the sprint is in planning and the user cannot start it" do
         let(:permissions) { %i[view_sprints view_work_packages] }
 
@@ -181,7 +219,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
           render_component
 
           expect(page).to have_no_selector(:menuitem, text: "Start sprint")
-          expect(page).to have_no_selector(:menuitem, text: "Task board")
+          expect(page).to have_no_selector(:menuitem, text: "Sprint board")
         end
       end
 
@@ -196,10 +234,16 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         end
         let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
-        it "shows Task board" do
+        it "shows Sprint board" do
           render_component
 
-          expect(menu_items).to include("Task board")
+          expect(menu_items).to include("Sprint board")
+        end
+
+        it "does not render a divider when task board is the only visible item" do
+          render_component
+
+          expect(page).not_to have_list_item(role: "presentation")
         end
       end
     end
@@ -232,20 +276,20 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         expect(page).to have_selector(:menuitem, text: "Finish sprint")
       end
 
-      it "does not show Task board for a board in the source project" do
+      it "does not show Sprint board for a board in the source project" do
         create(:board_grid_with_query, project: source_project, linked: sprint)
 
         render_component
 
-        expect(page).to have_no_selector(:menuitem, text: "Task board")
+        expect(page).to have_no_selector(:menuitem, text: "Sprint board")
       end
 
-      it "shows Task board for a board in the rendered project" do
+      it "shows Sprint board for a board in the rendered project" do
         create(:board_grid_with_query, project:, linked: sprint)
 
         render_component
 
-        expect(page).to have_selector(:menuitem, text: "Task board")
+        expect(page).to have_selector(:menuitem, text: "Sprint board")
       end
 
       context "when the sprint is in planning" do

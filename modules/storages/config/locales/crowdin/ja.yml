@@ -203,6 +203,11 @@ ja:
         upload_link_service:
           not_found: 宛先フォルダ %{folder} が %{storage_name}に見つかりませんでした。
   storages:
+    admin:
+      side_panel:
+        health_notifications_component:
+          sync_now: Sync now
+          sync_queued: Synchronization queued.
     buttons:
       done_continue: 完了しました。続ける
       open_storage: ファイルストレージを開く
@@ -221,13 +226,13 @@ ja:
     confirm_replace_oauth_application: この操作で、現在の OAuth 認証情報がリセットされます。確認後、ストレージプロバイダで認証情報を再入力する必要があり、すべてのリモートユーザは OpenProject に対して再度認証する必要があります。本当に進めますか？
     confirm_replace_oauth_client: この操作により、現在のOAuth認証情報がリセットされます。確認後、ストレージプロバイダから新しい認証情報を入力する必要があり、すべてのユーザーは %{provider_type} に対して再度認証する必要があります。本当に進めますか？
     delete_warning:
-      project_storage: Are you sure you want to remove %{file_storage} from this project?
       project_storage_delete_result_1: All links to corresponding files and folders will be removed
       project_storage_delete_result_2: The automatically-managed project folder and all files in it will be deleted
-      storage: Are you sure you want to delete %{file_storage} as an external file storage?
+      project_storage_html: Are you sure you want to remove %{file_storage} from this project?
       storage_delete_result_1: The storage will be removed from all projects currently using it
       storage_delete_result_2: All links to corresponding files and folders will be removed
       storage_delete_result_3: The automatically-managed project folder and all files in it will be deleted
+      storage_html: Are you sure you want to delete %{file_storage} as an external file storage?
     dependencies:
       nextcloud:
         group_folders_app: Team Folders
@@ -393,7 +398,7 @@ ja:
       host: https://を含むストレージのホストアドレスを追加してください。255文字以内にしてください。
       managed_project_folders_application_password_caption: '%{provider_type_link} からこの値をコピーすることで、自動管理フォルダを有効にします。'
       name: ユーザーが複数のストレージを区別できるように、ストレージに名前を付けます。
-      new_storage: 詳しくは、<a target='_blank' href='%{provider_link}'> %{provider_name} ファイルストレージ</a>統合の設定に関するドキュメントをお読みください。
+      new_storage_html: Read our documentation on [setting up a %{provider_name} file storage](docs_url) integration for more information.
       nextcloud:
         application_link_text: アプリケーション "Integration OpenProject"
         integration: Nextcloudの管理 / OpenProject
@@ -405,8 +410,7 @@ ja:
       no_specific_folder: デフォルトでは、各ユーザーはファイルをアップロードしたときに自分のホームフォルダから開始します。
       no_storage_set_up: まだ設定されているファイルストレージがありません。
       not_logged_into_storage: プロジェクトフォルダを選択するには、最初にログインしてください
-      oauth_application_details: クライアントシークレットの値は、このウィンドウを閉じた後は二度とアクセスできなくなります。これらの値を %{oauth_application_details_link}にコピーしてください。
-      oauth_application_details_link_text: Nextcloud OpenProjectインテグレーション設定
+      oauth_application_details_html: The client secret value will not be accessible again after you close this window. Please copy these values into the [Nextcloud OpenProject Integration settings](oauth_application_details_link).
       one_drive:
         application_link_text: Azure Portal
         copy_redirect_uri: リダイレクトURIをコピーする
@@ -514,7 +518,7 @@ ja:
         members_connection_status: 会員の接続状況
         new: このプロジェクトにファイルストレージを追加する
       project_storage_members:
-        subtitle: 全プロジェクトメンバーのストレージ %{storage_name_link} の接続状態を確認する。
+        subtitle_html: Check the connection status for the storage %{storage_name_link} of all project members.
         title: 会員の接続状況
       project_storages:
         delete: Remove file storage from project?

@@ -349,8 +349,6 @@ ko:
     label_collapse_all: "모두 축소"
     label_collapse_text: "텍스트 축소"
     label_comment: "코멘트"
-    label_committed_at: "%{date}에 %{committed_revision_link} "
-    label_committed_link: " %{revision_identifier} 리비전이 커밋됨"
     label_contains: "포함"
     label_created_on: "생성"
     label_edit_comment: "코멘트 편집"
@@ -1214,3 +1212,7 @@ ko:
       waiting_subtitle:
         network_off: "네트워크 문제가 있습니다."
         network_on: "네트워크가 복원되었습니다. 작업 중입니다."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

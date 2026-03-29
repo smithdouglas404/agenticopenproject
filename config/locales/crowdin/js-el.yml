@@ -348,8 +348,6 @@ el:
     label_collapse_all: "Σύμπτυξη όλων"
     label_collapse_text: "Collapse text"
     label_comment: "Σχόλιο"
-    label_committed_at: "%{committed_revision_link} στις %{date}"
-    label_committed_link: "δεσμευμένη αναθεώρηση %{revision_identifier}"
     label_contains: "περιέχει"
     label_created_on: "δημιουργήθηκε στις"
     label_edit_comment: "Επεξεργαστείτε αυτό το σχόλιο"
@@ -1217,3 +1215,7 @@ el:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

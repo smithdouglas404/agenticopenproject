@@ -32,15 +32,8 @@ require "spec_helper"
 require_relative "../../support/pages/sprint_planning"
 
 RSpec.describe "Create", :js do
-  let(:project) { create(:project) }
-  let(:all_permissions) { %i[view_sprints view_work_packages create_sprints] }
-  let(:permissions) { all_permissions }
-  let(:user) do
-    create(:user, member_with_permissions: { project => permissions })
-  end
-  let(:planning_page) { Pages::SprintPlanning.new(project) }
-
-  let!(:initial_sprint) do
+  shared_let(:project) { create(:project) }
+  shared_let(:initial_sprint) do
     create(:agile_sprint,
            project:,
            name: "Initial sprint",
@@ -48,14 +41,16 @@ RSpec.describe "Create", :js do
            finish_date: Date.new(2025, 9, 15))
   end
 
-  before do
-    login_as(user)
+  let(:planning_page) { Pages::SprintPlanning.new(project) }
+  let(:all_permissions) { %i[view_sprints view_work_packages create_sprints] }
+  let(:permissions) { all_permissions }
 
-    planning_page.visit!
-  end
+  current_user { create(:user, member_with_permissions: { project => permissions }) }
 
   context "with the feature flag active", with_flag: { scrum_projects: true } do
     it "shows the correct breadcrumb menu" do
+      planning_page.visit!
+
       within ".PageHeader-breadcrumbs" do
         expect(page).to have_link(href: project_path(project), text: project.name)
         expect(page).to have_link(href: sprint_planning_backlogs_project_backlogs_path(project), text: "Backlogs")
@@ -64,6 +59,8 @@ RSpec.describe "Create", :js do
     end
 
     it "renders the menu" do
+      planning_page.visit!
+
       within "#main-menu" do
         expect(page).to have_css(".selected", text: "Sprint planning")
       end
@@ -76,6 +73,8 @@ RSpec.describe "Create", :js do
       let(:finish_date_fmt) { finish_date.strftime("%Y-%m-%d") }
 
       it "allows creating a new sprint" do
+        planning_page.visit!
+
         planning_page.expect_sprint_names_in_order(initial_sprint.name)
 
         planning_page.open_create_sprint_dialog
@@ -99,6 +98,8 @@ RSpec.describe "Create", :js do
       end
 
       it "previews the sprint duration when changing the dates" do
+        planning_page.visit!
+
         planning_page.open_create_sprint_dialog
 
         within_dialog "New sprint" do
@@ -115,6 +116,8 @@ RSpec.describe "Create", :js do
         let(:too_early_finish_date) { start_date - 1.day }
 
         it "validates required fields are present" do
+          planning_page.visit!
+
           planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
@@ -123,12 +126,14 @@ RSpec.describe "Create", :js do
             click_on "Create"
 
             expect(page).to have_field "Sprint name", validation_error: "can't be blank"
-            expect(page).to have_field "Start date", validation_error: "can't be blank"
-            expect(page).to have_field "Finish date", validation_error: "can't be blank"
+            expect(page).to have_field "Start date", validation_error: false
+            expect(page).to have_field "Finish date", validation_error: false
           end
         end
 
         it "validates finish date is not before start date" do
+          planning_page.visit!
+
           planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
@@ -147,11 +152,12 @@ RSpec.describe "Create", :js do
       end
 
       describe "proposed sprint names" do
-        let!(:initial_sprint) { nil } # override so that initial sprint is not present
+        before do
+          Agile::Sprint.delete_all
+        end
 
         it "prefilled with 'Sprint 1' if there are no previous sprints" do
-          pending "Currently broken since the blankslate renders without any sprint or version present. " +
-                  "Fix at a later time when backlog items are there #72198"
+          planning_page.visit!
 
           planning_page.open_create_sprint_dialog
 
@@ -181,6 +187,19 @@ RSpec.describe "Create", :js do
       let(:permissions) { all_permissions - [:create_sprints] }
 
       it "is missing the 'new sprint' button" do
+        planning_page.visit!
+
+        expect(page).to have_no_button "Create"
+        expect(page).not_to have_test_selector("op-sprints--new-sprint-button")
+      end
+    end
+
+    context "with the project receiving sprints from another project" do
+      let(:project) { create(:project, sprint_sharing: Projects::SprintSharing::RECEIVE_SHARED) }
+
+      it "is missing the 'new sprint' button" do
+        planning_page.visit!
+
         expect(page).to have_no_button "Create"
         expect(page).not_to have_test_selector("op-sprints--new-sprint-button")
       end
@@ -189,6 +208,8 @@ RSpec.describe "Create", :js do
 
   context "with the feature flag inactive" do
     it "is missing the 'new sprint' button" do
+      planning_page.visit!
+
       expect(page).to have_no_button "Create"
       expect(page).not_to have_test_selector("op-sprints--new-sprint-button")
     end

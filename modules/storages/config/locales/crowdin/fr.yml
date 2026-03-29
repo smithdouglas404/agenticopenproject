@@ -203,6 +203,11 @@ fr:
         upload_link_service:
           not_found: Le dossier de destination %{folder} n'a pas été trouvé sur %{storage_name}.
   storages:
+    admin:
+      side_panel:
+        health_notifications_component:
+          sync_now: Synchroniser maintenant
+          sync_queued: Synchronisation en attente.
     buttons:
       done_continue: Terminé, continuer
       open_storage: Ouvrir le stockage de fichiers
@@ -221,13 +226,13 @@ fr:
     confirm_replace_oauth_application: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir de nouvelles informations d'identification auprès du fournisseur de stockage et tous les utilisateurs devront à nouveau s'authentifier sur OpenProject. Êtes-vous sûr de vouloir continuer ?
     confirm_replace_oauth_client: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir de nouvelles informations d'identification auprès du fournisseur de stockage et tous les utilisateurs devront à nouveau s'authentifier auprès de %{provider_type} . Êtes-vous sûr de vouloir continuer ?
     delete_warning:
-      project_storage: Êtes-vous sûr de vouloir retirer %{file_storage} de ce projet ?
       project_storage_delete_result_1: Tous les liens vers les fichiers et dossiers correspondants seront supprimés
       project_storage_delete_result_2: Le dossier du projet géré automatiquement et tous les fichiers qu'il contient seront supprimés
-      storage: Êtes-vous sûr de vouloir supprimer %{file_storage} en tant que stockage de fichiers externes ?
+      project_storage_html: Êtes-vous sûr de vouloir retirer %{file_storage} de ce projet ?
       storage_delete_result_1: Le stockage sera retiré de tous les projets qui l'utilisent actuellement.
       storage_delete_result_2: Tous les liens vers les fichiers et dossiers correspondants seront supprimés
       storage_delete_result_3: Le dossier du projet géré automatiquement et tous les fichiers qu'il contient seront supprimés.
+      storage_html: Êtes-vous sûr de vouloir supprimer %{file_storage} en tant que stockage de fichiers externes ?
     dependencies:
       nextcloud:
         group_folders_app: Dossiers d'équipe
@@ -324,10 +329,10 @@ fr:
         nc_oauth_request_not_found: Le point de terminaison pour récupérer l'utilisateur actuellement connecté n'a pas été trouvé. Veuillez vérifier les journaux du serveur pour obtenir plus d'informations.
         nc_oauth_request_unauthorized: L'utilisateur actuel n'est pas autorisé à accéder à l'espace de stockage de fichiers distant. Veuillez consulter les journaux du serveur pour obtenir plus d'informations.
         nc_oauth_token_missing: OpenProject ne peut pas tester la communication au niveau utilisateur avec Nextcloud, car l'utilisateur n'a pas encore lié son compte Nextcloud.
-        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
+        nc_project_folder_missing: Le dossier de projet précédemment créé pour le projet "%{project}" n'a pas pu être trouvé.
         nc_team_folder_not_found: Le dossier de l'équipe est introuvable.
-        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
-        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
+        nc_unexpected_files: 'Fichiers inattendus trouvés dans le dossier de l''équipe gérée. Par exemple : %{sample}'
+        nc_unlinked_project_folders: Tous les dossiers de projet n'ont pas encore été créés (%{actual} / %{expected}). Cela peut indiquer des erreurs lors de la synchronisation en arrière-plan de l'AMPF.
         nc_userless_access_denied: Le mot de passe de l'application configurée n'est pas valide.
         not_configured: La connexion n'a pas pu être validée. Veuillez d'abord terminer la configuration.
         od_client_cant_delete_folder: Le client rencontre des difficultés pour supprimer des dossiers. Veuillez consulter la documentation d'installation de votre espace de stockage.
@@ -395,7 +400,7 @@ fr:
       host: Veuillez ajouter l'adresse d'hôte de votre stockage, y compris le https://. Il ne doit pas dépasser 255 caractères.
       managed_project_folders_application_password_caption: 'Activez les dossiers gérés automatiquement en copiant cette valeur depuis : %{provider_type_link}.'
       name: Donnez à votre espace de stockage un nom pour permettre aux utilisateurs de le différencier des autres espaces de stockage.
-      new_storage: Lisez notre documentation sur <a target='_blank' href='%{provider_link}'>la configuration d'une intégration avec %{provider_name} pour le stockage de fichiers </a> pour plus d'informations.
+      new_storage_html: Read our documentation on [setting up a %{provider_name} file storage](docs_url) integration for more information.
       nextcloud:
         application_link_text: application « Intégration OpenProject»
         integration: Administration Nextcloud / OpenProject
@@ -407,8 +412,7 @@ fr:
       no_specific_folder: Par défaut, chaque utilisateur démarrera dans son propre dossier d'accueil lorsqu'il téléversera un fichier.
       no_storage_set_up: Aucun espace de stockage de fichiers n'a été configuré pour le moment.
       not_logged_into_storage: Pour sélectionner un dossier de projet, veuillez d'abord vous connecter
-      oauth_application_details: La clé secrète du client ne sera plus accessible après la fermeture de cette fenêtre. Veuillez copier ces valeurs dans %{oauth_application_details_link}.
-      oauth_application_details_link_text: Paramètres d'intégration avec Nextcloud
+      oauth_application_details_html: The client secret value will not be accessible again after you close this window. Please copy these values into the [Nextcloud OpenProject Integration settings](oauth_application_details_link).
       one_drive:
         application_link_text: Portal Azure
         copy_redirect_uri: Copier l'URI de redirection
@@ -515,7 +519,7 @@ fr:
         members_connection_status: Statut de connexion des membres
         new: Ajouter un stockage de fichiers à ce projet
       project_storage_members:
-        subtitle: Vérifiez l'état de la connexion pour l'espace de stockage %{storage_name_link} de tous les membres du projet.
+        subtitle_html: Vérifiez l'état de la connexion pour l'espace de stockage %{storage_name_link} de tous les membres du projet.
         title: Statut de connexion des membres
       project_storages:
         delete: Supprimer le stockage de fichiers d'un projet ?

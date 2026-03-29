@@ -108,7 +108,7 @@ de:
     jemalloc_allocator: Jemalloc Speicher allocator
     journal_aggregation:
       caption: >
-        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
+        User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
     import:
       title: "Import"
     jira:
@@ -379,11 +379,75 @@ de:
         project_creation: "Erstellung von Projekten"
         notification_text_default: >
           <p>Hallo,</p> <p>Ein neues Projekt wurde erstellt: projectValue:name</p> <p>Vielen Dank</p>
+      work_packages_identifier:
+        page_header:
+          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+        banner:
+          existing_identifiers_notice: >
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+        box_header:
+          label_project: Project
+          label_previous_identifier: Previous identifier
+          label_autofixed_suggestion: Future identifier
+          label_example_work_package_id: Example work package ID
+        autofix_preview:
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_starts_with_number: Cannot start with a number
+          error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
+          error_in_use: Already in use as another project's active handle
+          error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
+          remaining_projects:
+            one: "... 1 more project"
+            other: "... %{count} more projects"
+        button_autofix: Autofix and save
+        dialog:
+          title: Change work package identifiers
+          heading: Enable project-based work package IDs?
+          description: >
+            This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          confirm_button: Change identifiers
+          checkbox_label: I understand that this will permanently change all work package IDs
+        success_banner: Successfully updated work package identifier format.
+        in_progress:
+          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Standard-Übergänge"
         user_author: "Benutzer ist Autor"
         user_assignee: "Benutzer ist zugewiesen"
+      index:
+        description: "Konfigurieren Sie die Statusübergänge für jeden Arbeitspaket-Typ."
+        type_filter:
+          label: "Typen nach Name filtern…"
+      status_button: "Status"
+      statuses_dialog:
+        title: "Status"
+        label: "Für diesen Typ aktivierte Status"
+        caption: "Status hinzufügen oder entfernen, die Sie mit diesem Typ verknüpfen möchten. Das Entfernen eines Status löscht auch den damit verbundenen Workflow."
+      statuses_removal_dialog:
+        title: "Status entfernen"
+        heading:
+          one: "Diesen Status entfernen?"
+          other: "%{count} Status entfernen?"
+        description: "Wenn Sie diese Status entfernen, stehen sie für diesen Typ nicht mehr zur Verfügung und bestehende Workflows werden gelöscht. Sind Sie sicher, dass Sie fortfahren möchten?"
+        confirm: "Entfernen"
+      leave_confirmation:
+        title: "Änderungen speichern, bevor Sie fortfahren?"
+        description: "Sie sind im Begriff, diese Seite zu verlassen, aber Sie haben noch nicht gespeicherte Änderungen. Möchten Sie diese speichern, bevor Sie fortfahren?"
+        ignore: "Änderungen ignorieren"
+        save: "Änderungen speichern und fortfahren"
+      role_selector:
+        label: "Rolle: %{role}"
+        no_role: "Rolle auswählen"
+      blankslate:
+        title: "Keine Statusübergänge konfiguriert"
+        description: "Status hinzufügen, um mit der Konfiguration von Arbeitsabläufen für diese Rolle zu beginnen"
+    info:
+      database_deprecation_html: >
+        Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases. <br/> We have prepared [upgrade guides for all installation methods](upgrade_guide). You can perform the upgrade ahead of the next release at any time by following the guides.
   authentication:
     login_and_registration: "Anmeldung und Registrierung"
   announcements:
@@ -604,6 +668,14 @@ de:
   danger_dialog:
     confirmation_live_message_checked: "Die Schaltfläche zum Fortfahren ist nun aktiv."
     confirmation_live_message_unchecked: "Die Schaltfläche zum Fortfahren ist inaktiv. Sie müssen das Kontrollkästchen ankreuzen, um fortzufahren."
+  pagination:
+    label: "Pagination"
+    prev: "Previous"
+    prev_page: "Previous Page"
+    next: "Next"
+    next_page: "Next Page"
+    page: "Page %{number}"
+    page_with_more: "Page %{number}..."
   mcp_configurations:
     server_url_component:
       caption: "Die URL, unter der der OpenProject MCP-Server erreichbar sein wird. Erforderlich für die Einrichtung von MCP-Clients."
@@ -764,6 +836,11 @@ de:
         description: >
           Das Projekt wird nur für Projektmitglieder sichtbar sein, abhängig von ihrer Rolle und den zugehörigen Berechtigungen. Unterprojekte haben ihre eigenen Einstellungen zur Sichtbarkeit und erben nicht diese Einstellung.
       change_identifier: Kennung ändern
+      change_identifier_dialog_title: Change project identifier
+      change_identifier_format_hint_semantic: "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter."
+      change_identifier_format_hint_legacy: "Only lowercase letters (a–z), numbers, dashes or underscores."
+      change_identifier_warning: >
+        This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
       subitems:
         template_section: >
           Wählen Sie Vorlagen aus, die bei der Erstellung neuer Unterelemente verwendet werden sollen.
@@ -996,9 +1073,9 @@ de:
     groups:
       member_in_these_groups: "Dieser Benutzer ist Mitglied der folgenden Gruppen:"
       no_results_title_text: Dieser Benutzer ist derzeit kein Mitglied in einer Gruppe.
-      summary_with_more: Mitglied von %{names} und %{count_link}.
+      summary_with_more_html: Member of %{names} and %{count_link}.
       more: "%{count} weitere"
-      summary: Mitglied von %{names}.
+      summary_html: Member of %{names}.
     memberships:
       no_results_title_text: Dieser Nutzer ist derzeit in keinem Projekt Mitglied.
     open_profile: "Profil öffnen"
@@ -1053,6 +1130,64 @@ de:
         user: "Der Benutzer kann sich jetzt anmelden, um auf %{project} zuzugreifen. In der Zwischenzeit können Sie bereits mit diesem Benutzer planen und beispielsweise Arbeitspakete zuweisen."
         placeholder_user: "Der Platzhalter kann jetzt in %{project} verwendet werden. In der Zwischenzeit können Sie bereits mit diesem Benutzer planen und beispielsweise Arbeitspakete zuweisen."
         group: "Die Gruppe ist nun %{project} zugewiesen. In der Zwischenzeit können Sie bereits mit dieser Gruppe planen und ihr zum Beispiel Arbeitspakete zuweisen."
+    working_hours:
+      current_schedule:
+        title: "Current schedule"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        availability_subtitle: "Dedicated to project work"
+        effective_hours: "Effective work hours"
+        effective_subtitle: "Per week"
+        not_set: "Not set"
+      future:
+        title: "Future schedules"
+        description: "Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically."
+        add_button: "Add future schedule"
+        blank_title: "No future schedules planned"
+        blank_description: "Create a future schedule to plan changes ahead of time"
+      history:
+        title: "Schedule history"
+        description: "View your past work schedules."
+        blank_title: "No schedule history yet"
+        blank_description: "Past schedule changes will appear here"
+      destroy:
+        confirm: "Are you sure you want to delete this working schedule?"
+      form:
+        title: "Plan a future work schedule"
+        title_current: "Edit current work schedule"
+        start_date: "Start date"
+        start_date_caption: "Select the date from when the new work schedule will be effective."
+        work_days: "Work days"
+        working_hours_label: "Working hours"
+        hours_mode_label: "Hours mode"
+        same_hours_mode: "Same hours per day"
+        individual_hours_mode: "Individual hours per day"
+        work_hours: "Work hours"
+        hours_per_day: "Hours per day"
+        per_day: "per day"
+        per_week: "per week"
+        total_work_hours: "Total work hours"
+        availability_description: "The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities."
+        availability_factor: "Availability factor"
+        availability_factor_caption: "Define the percentage of your working time dedicated to project work."
+        total_available_hours: "Total available work hours"
+        title_availability_factor: "Availability factor"
+        title_days_and_hours: "Days and hours"
+        title_future_dates: "Future dates"
+      table:
+        mobile_title: "Working schedules"
+        start_date: "Start date"
+        work_days: "Work days"
+        work_hours: "Work hours"
+        availability_factor: "Availability factor"
+        effective_work_hours: "Effective work hours"
+        work_days_count:
+          one: "1 working day"
+          other: "%{count} working days"
+  user_preferences:
+    disable_keyboard_shortcuts_caption: >
+      You can choose to disable default [keyboard shortcuts](docs_url) if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
   page:
     text: "Text"
   placeholder_users:
@@ -1060,11 +1195,11 @@ de:
       Sie sind nicht berechtigt, diesen Platzhalter zu löschen. Sie haben nicht das Recht, Mitglieder für alle Projekte zu verwalten, in denen der Platzhalter Mitglied ist.
     delete_tooltip: "Platzhalter löschen"
     deletion_info:
-      heading: "Platzhalter-Benutzer %{name} löschen"
+      heading_html: "Delete placeholder user %{name}"
       data_consequences: >
         Alle Vorkommnisse des Platzhalter-Benutzers (z.B. als zugewiesene Person, Verantwortlicher oder andere Benutzerwerte) werden einem Konto mit dem Namen "Gelöschter Benutzer" zugewiesen. Da die Daten jedes gelöschten Kontos diesem Konto zugewiesen werden, wird es nicht möglich sein, die Daten dieses Benutzers von den Daten eines anderen gelöschten Kontos zu unterscheiden.
       irreversible: "Dieser Vorgang kann nicht rückgängig gemacht werden"
-      confirmation: "Geben Sie den Namen des Platzhalter-Benutzers %{name} ein, um die Löschung zu bestätigen."
+      confirmation_html: "Enter the placeholder user name %{name} to confirm the deletion."
   priorities:
     edit:
       priority_color_text: |
@@ -1093,9 +1228,10 @@ de:
         Neue Arbeitspakete werden standardmäßig auf diesen Typ gesetzt. Er kann nicht schreibgeschützt sein.
       status_excluded_from_totals_text: |-
         Aktivieren Sie diese Option, um Arbeitspakete mit diesem Status aus den Summen von Aufwand, Verbleibender Aufwand und % Abgeschlossen in Hierarchien auszuschließen.
-      status_percent_complete_text: |-
-        Im <a href="%{href}">statusbasierten Fortschrittsberechnungsmodus</a> wird der % abgeschlossen Wert eines Arbeitspakets automatisch auf diesen Wert gesetzt, wenn dieser Status ausgewählt wird.
-        Im aufwandsbezogenem Modus hat dieser Wert keine Relevanz.
+      status_percent_complete_text_html: |-
+        In [status-based progress calculation mode](setting_url), the % Complete of a work
+        package is automatically set to this value when this status is selected.
+        Ignored in work-based mode.
       status_readonly_html: |
         Wählen Sie diese Option um Bearbeitung von Arbeitspaketen in diesem Status zu sperren.
         Außer dem Status selbst können dann keine Attribute verändert werden.
@@ -1357,7 +1493,7 @@ de:
       Die Benutzerregistrierung ist für den Single Sign-On Provider '%{name}' eingeschränkt. Bitten Sie einen Administrator, das Konto für Sie zu aktivieren oder die Konfiguration der Selbstregistrierung für diesen Anbieter zu ändern.
     login_with_auth_provider: "oder melden Sie sich mit einem bestehenden Konto an"
     signup_with_auth_provider: "oder authentifizieren Sie sich mit"
-    auth_source_login: Bitte melden Sie sich als <em>%{login}</em> an um Ihr Konto zu aktivieren.
+    auth_source_login_html: Please login as <em>%{login}</em> to activate your account.
     omniauth_login: Bitte loggen Sie sich ein um Ihr Konto zu aktivieren.
   actionview_instancetag_blank_option: "Bitte auswählen"
   activemodel:
@@ -1628,6 +1764,11 @@ de:
         consented_at: "Eingewilligt am"
       group:
         identity_url: "Identity URL"
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
+      group_detail:
+        parent: "Parent group"
+        organizational_unit: "Organizational unit"
       user_preference:
         header_look_and_feel: "Erscheinungsbild und Bedienverhalten"
         header_alerts: "Warnmeldungen"
@@ -1636,8 +1777,6 @@ de:
         button_update_user_information: "Profil aktualisieren"
         comments_sorting: "Arbeits­paket­aktivität anzeigen, sortiert nach"
         disable_keyboard_shortcuts: "Tastaturkürzel deaktivieren"
-        disable_keyboard_shortcuts_caption_html: |-
-          Sie können die standardmäßigen <a href="%{href}">Tastenkombinationen</a> deaktivieren, wenn Sie einen Screenreader verwenden oder unbeabsichtigtes Auslösen einer Aktion durch eine Tastenkombination vermeiden möchten.
         dismissed_enterprise_banners: "Ausgeblendete Unternehmensbanner"
         impaired: "Für die barrierefreie Nutzung optimierte Oberfläche"
         auto_hide_popups: "Erfolgsbannern automatisch ausblenden"
@@ -1658,6 +1797,28 @@ de:
       users/invitation/form_model:
         principal_type: "Art der Einladung"
         id_or_email: "Name oder E-Mail-Adresse"
+      user_non_working_time:
+        start_date: "Start date"
+        end_date: "End date"
+      user_working_hours:
+        valid_from: "Valid from"
+        monday: "Monday"
+        monday_hours: "Monday hours"
+        tuesday: "Tuesday"
+        tuesday_hours: "Tuesday hours"
+        wednesday: "Wednesday"
+        wednesday_hours: "Wednesday hours"
+        thursday: "Thursday"
+        thursday_hours: "Thursday hours"
+        friday: "Friday"
+        friday_hours: "Friday hours"
+        saturday: "Saturday"
+        saturday_hours: "Saturday hours"
+        sunday: "Sunday"
+        sunday_hours: "Sunday hours"
+        availability_factor: "Availability factor"
+        shared_hours: "Work hours"
+        days: "Working days"
       version:
         effective_date: "Endtermin"
         sharing: "Gemeinsame Verwendung"
@@ -1712,6 +1873,8 @@ de:
         before: "muss vor %{date} sein."
         before_or_equal_to: "muss vor oder gleich %{date} sein."
         blank: "muss ausgefüllt werden."
+        not_before_start_date: "must not be before the start date."
+        overlapping_range: "overlaps with an existing non-working day range."
         blank_nested: "muss die Eigenschaft '%{property}' gesetzt haben."
         cannot_delete_mapping: "ist erforderlich. Kann nicht gelöscht werden."
         is_for_all_cannot_modify: "gilt für alle Projekte und kann daher nicht geändert werden."
@@ -1748,8 +1911,9 @@ de:
         less_than_or_equal_to: "muss kleiner oder gleich %{count} sein."
         not_available: "ist aufgrund einer Systemkonfiguration nicht verfügbar."
         not_deletable: "kann nicht entfernt werden."
+        not_editable: "cannot be edited because it is already in effect."
         not_current_user: "ist nicht der aktuelle Benutzer."
-        only_one_active_sprint_allowed: "pro Projekt ist nur ein aktiver Sprint erlaubt."
+        system_wide_non_working_day_exists: "conflicts with an existing system-wide non-working day for this date."
         not_found: "nicht gefunden."
         not_a_date: "ist kein gültiges Datum."
         not_a_datetime: "ist kein gültiges Datum."
@@ -1780,6 +1944,10 @@ de:
           stellt keinen "Secure Context" zur Verfügung: Benutzen Sie entweder HTTPS oder eine Loopback-Adresse, wie z.B. localhost.
         wrong_length: "hat die falsche Länge (muss genau %{count} Zeichen haben)."
       models:
+        group:
+          attributes:
+            parent_id:
+              circular_dependency: "would create a circular group hierarchy."
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -1890,6 +2058,9 @@ de:
               project_initiation_request_disabled: "Die Anfrage zur Projektinitiierung ist deaktiviert. Sie muss aktiviert sein, um das Artefakt-Arbeitspaket zu erstellen."
             types:
               in_use_by_work_packages: "wird noch genutzt von folgenden Arbeitspaketen: %{types}"
+            identifier:
+              must_start_with_letter: "must start with a letter"
+              no_special_characters: "may only contain uppercase letters, numbers, and underscores"
             enabled_modules:
               dependency_missing: "Das Modul \"%{dependency}\" muss ebenfalls aktiviert sein, da das Modul \"%{module}\" dieses benötigt."
               format: "%{message}"
@@ -2095,6 +2266,10 @@ de:
                 description: "\"Kennwortbestätigung\" sollte mit \"Neues Kennwort\" übereinstimmen."
             status:
               invalid_on_create: "ist kein gültiger Status für neue Benutzer."
+        user_working_hours:
+          attributes:
+            days:
+              no_working_day: "At least one day needs to be configured as a working day."
         member:
           principal_blank: "Bitte wählen Sie mindestens einen Benutzer oder eine Gruppe."
           role_blank: "muss zugeordnet werden."
@@ -2361,8 +2536,8 @@ de:
         Das Aktivieren von Backups erlaubt jedem Benutzer mit den erforderlichen Berechtigungen und diesem Backup-Token ein Backup herunterzuladen, das alle Daten dieser OpenProject-Installation enthält. Dies schließt die Daten aller anderen Benutzer ein.
       info: >
         Sie müssen einen Backup-Token generieren, um ein Backup erstellen zu können. Jedes Mal, wenn Sie ein Backup anfordern möchten, müssen Sie diesen Token zur Verfügung stellen. Sie können den Backup-Token löschen, um Backups für diesen Benutzer zu deaktivieren.
-      verification: >
-        Geben Sie %{word} ein, um zu bestätigen, dass Sie den Backup-Token %{action} möchten.
+      verification_html: >
+        Enter %{word} to confirm you want to %{action} the backup token.
       verification_word_reset: zurücksetzen
       verification_word_create: erstellen
       warning: >
@@ -2801,7 +2976,7 @@ de:
       title:
         one: "Ein Tag des %{trial_plan} Test-Token verbleibend"
         other: "%{count} verbleibende Tage des %{trial_plan} Test-Tokens"
-      description: "Sie haben Zugriff auf alle Funktionen von %{trial_plan}."
+      description_html: "You have access to all %{trial_plan} features."
     trial:
       not_found: "Sie haben einen Test-Token angefordert, aber diese Anfrage ist nicht mehr abrufbar. Bitte versuchen Sie es erneut."
       wait_for_confirmation: "Wir haben Ihnen eine E-Mail zur Bestätigung geschickt, um den Token der Testversion abzurufen."
@@ -2818,10 +2993,8 @@ de:
       confirmation_subline: >
         Bitte überprüfen Sie Ihren E-Mail-Posteingang und folgen Sie den Schritten, um Ihre 14-tägige kostenlose Testversion zu starten.
       domain_caption: Das Token wird für den aktuell konfigurierten Hostnamen gültig sein.
-      receive_newsletter_html: >
-        Ich möchte den OpenProject <a target="_blank" href="https://www.openproject.org/newsletter/">Newsletter</a> erhalten.
-      consent_html: >
-        Ich stimme den <a target="_blank" href="https://www.openproject.org/de/rechtliches/nutzungsbedingungen"></a> und den <a target="_blank" href="https://www.openproject.org/de/rechtliches/datenschutz/">Datenschutzrichtlinien</a> zu.
+      receive_newsletter: "I want to receive the OpenProject [newsletter](newsletter_url)."
+      consent: "I agree with the [terms of service](tos_url) and the [privacy policy](privacy_url)."
   email_calendar_updates:
     state:
       disabled: "Deaktiviert."
@@ -2909,8 +3082,8 @@ de:
     work_package_edit: "Arbeitspaket bearbeitet"
     work_package_note: "Arbeitspaket kommentiert"
     title:
-      project: "Projekt: %{name}"
-      subproject: "Unterprojekt: %{name}"
+      project_html: "Project: %{name}"
+      subproject_html: "Subproject: %{name}"
   export:
     dialog:
       title: "Exportieren"
@@ -3161,6 +3334,7 @@ de:
           Planungsmodus wird beim Versionsupdate automatisch angepasst.
         totals_removed_from_childless_work_packages: >-
           Arbeits- und Fortschrittssummen werden bei der <a href="%{href}" target="_blank">Versionsaktualisierung</a> automatisch für nicht übergeordnete Arbeitspakete entfernt. Diese Änderung entstand durch ein Upgrade und kann ignoriert werden.
+        sprint_migration: "Version '%{version_name}' has been copied as a sprint."
       total_percent_complete_mode_changed_to_work_weighted_average: >-
         Unteraufgaben ohne Arbeit werden ignoriert.
       total_percent_complete_mode_changed_to_simple_average: >-
@@ -3168,9 +3342,9 @@ de:
   links:
     configuration_guide: "Konfigurationsanleitung"
     get_in_touch: "Sie haben Fragen? Nehmen Sie Kontakt mit uns auf."
-  instructions_after_registration: "Sie können sich anmelden, sobald Ihr Konto aktiviert wurde, indem Sie auf %{signin} klicken."
-  instructions_after_logout: "Sie können wieder anmelden indem Sie auf %{signin} klicken."
-  instructions_after_error: "Sie können versuchen sich erneut anzumelden indem Sie auf %{signin} klicken. Wenn der Fehler weiterhin auftritt, fragen Sie Ihren Administrator um Hilfe."
+  instructions_after_registration_link: "You can sign in as soon as your account has been activated by clicking [here](signin_url)."
+  instructions_after_logout_link: "You can sign in again by clicking [here](signin_url)."
+  instructions_after_error_link: "You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help."
   menus:
     admin:
       ai: "Künstliche Intelligenz (AI)"
@@ -3362,6 +3536,8 @@ de:
   label_calendar_show: "Kalender anzeigen"
   label_category: "Kategorie"
   label_completed: Abgeschlossen
+  label_committed_at_html: "%{committed_revision_link} at %{date}"
+  label_committed_link: "committed revision %{revision_identifier}"
   label_consent_settings: "Nutzer-Einwilligung"
   label_wiki_menu_item: Wiki Menüpunkt
   label_select_main_menu_item: Neuen Hauptmenüpunkt auwählen
@@ -3528,6 +3704,7 @@ de:
   label_subject_or_id: "Titel oder ID"
   label_calendar_subscriptions: "Kalenderabonnements"
   label_identifier: "Kennung"
+  label_project_identifier: "Project identifier"
   label_in: "an"
   label_in_less_than: "in weniger als"
   label_in_more_than: "in mehr als"
@@ -3661,11 +3838,13 @@ de:
   label_news_view_all: "Alle Neuigkeiten anzeigen"
   label_next: "Weiter"
   label_next_week: "Woche vor"
+  label_next_year: "Next year"
   label_no_change_option: "(Keine Änderung)"
   label_no_data: "Es sind keine Daten vorhanden"
   label_no_due_date: "kein Endtermin"
   label_no_start_date: "kein Startdatum"
   label_no_parent_page: "Keine übergeordnete Seite"
+  label_no_parent_group: "(No parent group)"
   label_notification_center_plural: "Benachrichtigungen"
   label_nothing_display: "Nichts anzuzeigen"
   label_nobody: "Niemand"
@@ -3694,6 +3873,8 @@ de:
   label_overall_activity: "Aktivität aller Projekte anzeigen"
   label_overview: "Übersicht"
   label_page_title: "Seitentitel"
+  label_parent_group_caption: >
+    Setting a parent group will make this group a subgroup of the selected parent group. This will also inherit all memberships, including permissions of the parent group.
   label_part_of: "enthalten in"
   label_password_lost: "Kennwort vergessen?"
   label_password_rule_lowercase: "Kleinbuchstaben"
@@ -3720,6 +3901,7 @@ de:
   label_preview_not_available: "Vorschau nicht verfügbar"
   label_previous: "Zurück"
   label_previous_week: "Woche zurück"
+  label_previous_year: "Previous year"
   label_principal_invite_via_email: " oder Nutzer per E-Mail einladen"
   label_principal_search: "Vorhandene Benutzer / Gruppen hinzufügen"
   label_privacy_policy: "Datenschutz- und Sicherheitsrichtlinien"
@@ -3831,6 +4013,7 @@ de:
   label_start_to_start: "Anfang bis Anfang"
   label_statistics: "Statistiken"
   label_status: "Status"
+  label_status_plural: "Statuses"
   label_storage_free_space: "Verbleibender Speicherplatz"
   label_storage_used_space: "Verwendeter Speicherplatz"
   label_storage_group: "Speicher-Dateisystem %{identifier}"
@@ -3859,6 +4042,7 @@ de:
   label_title: "Titel"
   label_projects_menu: "Projekte"
   label_today: "heute"
+  label_today_capitalized: "Heute"
   label_token_version: "Token-Version"
   label_today_as_start_date: "Heute als Startdatum wählen."
   label_today_as_due_date: "Heute als Enddatum wählen."
@@ -3879,7 +4063,7 @@ de:
   label_user: "Benutzer"
   label_user_and_permission: "Benutzer und Berechtigungen"
   label_user_named: "Benutzer %{name}"
-  label_user_activity: "Aktivität von %{value}"
+  label_user_activity_html: "%{value}'s activity"
   label_user_anonymous: "Anonym"
   label_user_menu: "Benutzermenü"
   label_user_new: "Neuer Benutzer"
@@ -3966,6 +4150,15 @@ de:
     one: "1 Datei"
     other: "%{count} Dateien"
     zero: "keine Dateien"
+  label_x_days:
+    one: "1 day"
+    other: "%{count} days"
+  label_x_working_days:
+    one: "1 working day"
+    other: "%{count} working days"
+  label_x_working_days_time_off:
+    one: "Time off: 1 working day"
+    other: "Time off: %{count} working days"
   label_yesterday: "gestern"
   label_zen_mode: "Zen-Modus"
   label_role_type: "Typ"
@@ -3974,6 +4167,22 @@ de:
   label_not_changeable: "(nicht veränderbar)"
   label_global: "Global"
   label_seeded_from_env_warning: Dieser Datensatz wurde durch eine Umgebungsvariable Konfiguration erstellt. Er kann nicht über die Benutzeroberfläche bearbeitet werden.
+  label_schedule_and_availability: "Schedule and availability"
+  label_working_hours: "Work schedule"
+  label_non_working_days: "Availability calendar"
+  label_non_working_days_with_count: "Non-working days (%{count})"
+  label_non_working_days_summary: "Summary"
+  button_add_non_working_time: "Time off"
+  button_edit_non_working_time: "Edit time off"
+  label_continued_from_previous_year: "continued from previous year"
+  label_continues_into_next_year: "continues into next year"
+  label_end_date: "Finish date"
+  label_working_days: "Working days"
+  label_non_working_times_with_count: "%{year} time off (%{count})"
+  label_non_working_times_summary: "%{year} summary"
+  label_total_user_non_working_times: "Personal non-working days"
+  label_total_global_non_working_days: "Global non-working days"
+  label_total_days_off: "Total days off"
   macro_execution_error: "Fehler beim Ausführen des Makros %{macro_name}"
   macro_unavailable: "Das Makro %{macro_name} kann nicht angezeigt werden."
   macros:
@@ -4008,7 +4217,7 @@ de:
       center: "Zur Benachrichtigungszentrale"
       see_in_center: "Kommentar in Benachrichtigungszentrale öffnen"
       settings: "E-Mail-Einstellungen ändern"
-    salutation: "Hallo %{user}"
+    salutation: "Hello %{user},"
     salutation_full_name: "Vollständiger Name"
     work_packages:
       created_at: "Erstellt %{timestamp} von %{user} "
@@ -4038,7 +4247,7 @@ de:
       note: "Anmerkung: „%{note}“"
     sharing:
       work_packages:
-        allowed_actions: "Sie haben auf diesem Arbeitspakte folgende Berechtigungen: %{allowed_actions}. Dies kann sich je nach Ihrer Projektrolle und Berechtigungen ändern."
+        allowed_actions_html: "You may %{allowed_actions} this work package. This can change depending on your project role and permissions."
         create_account: "Um auf dieses Arbeitspaket zuzugreifen, müssen Sie ein Konto für %{instance} erstellen und aktivieren."
         open_work_package: "Arbeitspaket öffnen"
         subject: "Arbeitspaket #%{id} wurde mit Ihnen geteilt"
@@ -4137,9 +4346,9 @@ de:
       roles: "Sie haben jetzt folgende Rollen:"
   mail_user_activation_limit_reached:
     subject: Nutzer aktivierungs Limit erreicht
-    message: |
-      Ein neuer Nutzer (%{email}) versuchte einen Account auf dem von ihnen Verwalteten OpenProject System (%{host}) zu erstellen.
-      Der Nutzer kann seinen Account aufgrund des Nutzer Limits nicht aktivieren.
+    message_html: |
+      A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
+      The user cannot activate their account since the user limit has been reached.
     steps:
       label: "Folgendes kannst du tuen um dem Nutzer das einloggen zu ermöglichen: "
       a: "Upgraden Sie Ihren Zahlungsplan ([here](upgrade_url))" #here turned into a link
@@ -4323,6 +4532,12 @@ de:
   permission_manage_versions: "Versionen verwalten"
   permission_manage_wiki: "Wiki verwalten"
   permission_manage_wiki_menu: "Wiki-Menü verwalten"
+  permission_manage_own_working_times: "Manage own working times"
+  permission_manage_own_working_times_explanation: >
+    Allows users to manage their own working times, and personal non-working days.
+  permission_manage_working_times: "Manage working times for all users"
+  permission_manage_working_times_explanation: >
+    Allows users to manage working times for all users, including personal non-working days.
   permission_move_work_packages: "Arbeitspakete verschieben"
   permission_protect_wiki_pages: "Wiki-Seiten schützen"
   permission_rename_wiki_pages: "Wiki-Seiten umbenennen"
@@ -4468,10 +4683,10 @@ de:
       info: "Die Löschung des Projektarchivs kann nicht rückgängig gemacht werden."
       info_not_managed: "Hinweis: Der Inhalt des Projektarchivs wird nicht gelöscht, da es sich um ein externes Projektarchiv handelt."
       managed_path_note: "Das folgende Verzeichnis wird gelöscht werden: %{path}"
-      repository_verification: "Geben Sie die Projektkennung %{identifier} ein, um die Löschung des Projektarchivs zu bestätigen."
+      repository_verification_html: "Enter the project's identifier %{identifier} to verify the deletion of its repository."
       subtitle: "Wollen Sie wirklich das %{repository_type} des Projekts %{project_name} löschen?"
-      subtitle_not_managed: "Wollen Sie wirklich die verknüpfte %{repository_type}-%{url} aus dem Projekt %{project_name} entfernen?"
-      title: "%{repository_type} löschen"
+      subtitle_not_managed_html: "Do you really want to remove the linked %{repository_type} %{url} from the project %{project_name}?"
+      title_html: "Delete the %{repository_type}"
       title_not_managed: "Verknüpftes %{repository_type} löschen?"
     errors:
       build_failed: "Projektarchiv mit der gewählten Konfiguration konnte nicht erstellt werden. %{reason}"
@@ -4521,7 +4736,7 @@ de:
     storage:
       not_available: "Genutzter Festplattenspeicher ist nicht für dieses Projektarchiv verfügbar."
       update_timeout: "Speichere die Informationen bzgl. des genutzten Festplattenspeichers eines Projektarchivs für N Minuten.\nErhöhen Sie diesen Wert zur Verbesserung der Performance, da die Erfassung des genutzten Festplattenspeichers Ressourcen-intensiv ist."
-      oauth_application_details: "Der Client Geheimcode wird nach dem Schließen dieses Fensters nicht mehr zugänglich sein. Bitte kopieren Sie diese Werte in die Nextcloud OpenProject Integrationseinstellungen:"
+      oauth_application_details_html: "The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:"
       oauth_application_details_link_text: "Zu den Einstellungen gehen"
       setup_documentation_details: "Wenn Sie Hilfe bei der Konfiguration eines neuen Datei-Speichers benötigen, konsultieren Sie bitte die Dokumentation: "
       setup_documentation_details_link_text: "Dateispeicher einrichten"
@@ -4566,15 +4781,15 @@ de:
   setting_apiv3_cors_title: "Cross-Origin Resource Sharing (CORS)"
   setting_apiv3_cors_enabled: "CORS aktivieren"
   setting_apiv3_cors_origins: "API V3 Cross-Origin Resource Sharing (CORS) erlaubte Origins"
-  setting_apiv3_cors_origins_text_html: >
-    Wenn CORS aktiviert ist, sind dies die Origins, die auf die OpenProject API zugreifen dürfen. <br/> Bitte überprüfen Sie die <a href="%{origin_link}" target="_blank">Dokumentation über den Origin Header</a>, wie die Werte anzugeben sind.
+  setting_apiv3_cors_origins_instructions_html: >
+    If CORS is enabled, these are the origins that are allowed to access OpenProject API. <br/> Please check the [Documentation on the Origin header](docs_url) on how to specify the expected values.
   setting_apiv3_write_readonly_attributes: "Schreibzugriff auf schreibgeschützte Attribute"
   setting_apiv3_write_readonly_attributes_instructions: >
     Wenn diese Option aktiviert ist, erlaubt die API Administratoren, bei der Erstellung statische schreibgeschützte Attribute wie createdAt und author zu schreiben.
   setting_apiv3_write_readonly_attributes_warning: >
     Diese Einstellung ist z.B. für den Import von Daten nützlich, ermöglicht es aber auch Administratoren, sich bei der Erstellung von Artikeln als andere Benutzer auszugeben. Alle Erstellungsanfragen werden jedoch mit dem wahren Autor protokolliert.
-  setting_apiv3_write_readonly_attributes_additional: >
-    Weitere Informationen zu Attributen und unterstützten Ressourcen finden Sie unter %{api_documentation_link}.
+  setting_apiv3_write_readonly_attributes_additional_html: >
+    For more information on attributes and supported resources, please see the [API documentation](api_documentation_link).
   setting_apiv3_max_page_size: "Maximale API-Seitengröße"
   setting_apiv3_max_page_size_instructions: >
     Legen Sie die maximale Anzahl von Ressourcen fest, mit der die API antworten wird. API-Anfragen werden nie mehr Ressourcen auf einer einzigen Seite zurückgeben.
@@ -4671,7 +4886,7 @@ de:
   setting_work_package_properties: "Arbeitspaket-Eigenschaften"
   setting_work_package_startdate_is_adddate: "Neue Arbeitspakete haben \"Heute\" als Anfangsdatum"
   setting_work_packages_projects_export_limit: "Arbeitspakete / Exportlimit für Projekte"
-  setting_journal_aggregation_time_minutes: "Benutzeraktionen aggregiert innerhalb"
+  setting_journal_aggregation_time_minutes: "Aggregation period"
   setting_log_requesting_user: "Logge Benutzer Login, Name und Mailadresse für alle Anfragen"
   setting_login_required: "Authentifizierung erforderlich"
   setting_login_required_caption: "Wenn aktiviert, müssen alle Anfragen an die Anwendung authentifiziert werden."
@@ -4752,6 +4967,12 @@ de:
   setting_welcome_text: "Text für Willkommens-Block"
   setting_welcome_title: "Titel des Willkommens-Block"
   setting_welcome_on_homescreen: "Willkommens-Block auf Startseite anzeigen"
+  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_numeric_caption: >
+    Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
+  setting_work_packages_identifier_alphanumeric_caption: >
+    Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Standard Hervorhebung"
   setting_work_package_list_default_highlighted_attributes: "Voreinstellung Inline Hervorherbung"
   setting_working_days: "Arbeitstage"
@@ -4920,10 +5141,12 @@ de:
       section_work_week: "Arbeitswoche"
       section_holidays_and_closures: "Feiertage und Schließungen"
     work_packages:
+      work_package_identifier: "Work package identifier"
       not_allowed_text: "Sie haben nicht die notwendigen Rechte, um diese Seite zu sehen."
       activities:
         enable_internal_comments: "Interne Kommentare aktivieren"
-        helper_text: "Interne Kommentare erlauben es einem internen Team privat zu kommunizieren. Diese sind nur für bestimmte Projektrollen sichtbar und werden nie öffentlich sichtbar sein. %{link}"
+        helper_text_html: >
+          Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. [Click here to learn more](docs_url)
   text_formatting:
     markdown: "Markdown"
     plain: "Reiner Text"
@@ -5045,6 +5268,10 @@ de:
   text_plugin_assets_writable: "Verzeichnis für Plugin-Assets beschreibbar"
   text_powered_by: "Powered by %{link}"
   text_project_identifier_info: "Kleinbuchstaben (a-z), Ziffern, Binde- und Unterstriche erlaubt. Muss mit einem Kleinbuchstaben beginnen."
+  text_project_identifier_description: 'The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".'
+  text_project_identifier_url_description: "The project identifier is included in the URL of the project."
+  text_project_identifier_handle_format: "Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters)."
+  text_project_identifier_format: "Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed."
   text_reassign: "Zuweisung zu Arbeitspaket:"
   text_regexp_multiline: 'Der reguläre Ausdruck wird in einem mehrzeiligen Modus angewandt, z.B. ^---\s+'
   text_repository_usernames_mapping: "Bitte legen Sie die Zuordnung der OpenProject-Benutzer zu den Benutzernamen der Commit-Log-Meldungen des Projektarchivs fest.\nBenutzer mit identischen OpenProject- und Projektarchiv-Benutzernamen oder -E-Mail-Adressen werden automatisch zugeordnet."
@@ -5152,17 +5379,17 @@ de:
   version_status_locked: "gesperrt"
   version_status_open: "offen"
   note: Hinweis
-  note_password_login_disabled: "Der Passwort-Login wurde per %{configuration} deaktiviert."
+  note_password_login_disabled_link: "Password login has been disabled through a [configuration setting](configuration_url)."
   warning: Warnung
   warning_attachments_not_saved: "%{count} Datei(en) konnten nicht gespeichert werden."
-  warning_imminent_user_limit: >
-    Sie haben mehr Nutzer eingeladen, als Ihr momentaner Plan zulässt. Eingeladene Nutzer können Ihrem OpenProject möglicherweise nicht beitreten. Bitte <a href="%{upgrade_url}">upgraden Sie Ihren Tarif</a> oder blockieren Sie vorhandene Mitglieder, um den eingeladenen und registrierten Nutzern die Möglichkeit zu bieten, Ihrem Projekt beizutreten.
+  warning_imminent_user_limit_html: >
+    You invited more users than are supported by your current plan. Invited users may not be able to join your OpenProject environment. Please [upgrade your plan](upgrade_url) or block existing users in order to allow invited and registered users to join.
   warning_registration_token_expired: |
     E-Mail mit dem Aktivierungslink ist abgelaufen. Wir haben Ihnen ein neues zu %{email} geschickt. Bitte aktivieren Sie Ihr Konto über den Link in dieser E-Mail.
   warning_user_limit_reached: >
     Das Hinzufügen zusätzlicher Benutzer überschreitet das aktuelle Benutzerlimit. Bitte kontaktieren Sie einen Administrator, um sicherzustellen, dass externe Benutzer auf diese Instanz zugreifen können.
-  warning_user_limit_reached_admin: >
-    Das Hinzufügen zusätzlicher Benutzer überschreitet das aktuelle Benutzerlimit. Bitte <a href="%{upgrade_url}">aktualisieren Sie Ihr Abonnement</a> um sicherzustellen, dass externe Benutzer auf diese Instanz zugreifen können.
+  warning_user_limit_reached_admin_html: >
+    Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
     Du hast dein Nutzerlimit erreicht (%{current}/%{max} active users). Bitte kontaktiere sales@openproject.com um deinen Enterprise edition Plan upzugraden und weitere Nutzer hinzuzufügen.
   warning_protocol_mismatch_html: >
@@ -5222,7 +5449,7 @@ de:
     reminders:
       label_remind_at: "Datum"
       note_placeholder: "Warum richten Sie diese Erinnerung ein?"
-      create_success_message: "Erinnerung erfolgreich gesetzt. Sie erhalten eine Benachrichtigung für dieses Arbeitspaket %{reminder_time}."
+      create_success_message_html: "Reminder set successfully. You will receive a notification for this work package %{reminder_time}."
       success_update_message: "Erinnerung aktualisiert erfolgreich."
       success_deletion_message: "Erinnerung erfolgreich gelöscht."
   sharing:
@@ -5253,8 +5480,8 @@ de:
     text_user_limit_reached_admins: 'Das Hinzufügen zusätzlicher Benutzer überschreitet das aktuelle Benutzerlimit. Bitte <a href="%{upgrade_url}">aktualisieren Sie Ihr Abonnement</a> um sicherzustellen, dass externe Benutzer auf diese Instanz zugreifen können.'
     warning_user_limit_reached: >
       Das Hinzufügen zusätzlicher Benutzer überschreitet das aktuelle Benutzerlimit. Bitte kontaktieren Sie einen Administrator, um sicherzustellen, dass externe Benutzer auf dieses %{entity} zugreifen können.
-    warning_user_limit_reached_admin: >
-      Das Hinzufügen zusätzlicher Benutzer überschreitet das aktuelle Benutzerlimit. Bitte <a href="%{upgrade_url}">aktualisieren Sie Ihr Abonnement</a> um sicherzustellen, dass externe Benutzer auf diese %{entity} zugreifen können.
+    warning_user_limit_reached_admin_html: >
+      Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
     warning_no_selected_user: "Bitte wählen Sie Benutzer aus, mit denen diese %{entity} geteilt werden soll"
     warning_locked_user: "Der Benutzer %{user} ist gesperrt und mit ihm kann nicht geteilt werden"
     user_details:
@@ -5374,6 +5601,7 @@ de:
       project: Unbekannt - Das Projekt ist wegen fehlender Berechtigungen nicht sichtbar.
       ancestor: Unbekannt - Das übergeordnete Element ist wegen fehlender Berechtigungen nicht sichtbar.
       definingProject: Unbekannt - Das Projekt ist wegen fehlender Berechtigungen nicht sichtbar.
+      definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
   doorkeeper:
     pre_authorization:
       status: "Vorab-Autorisierung"

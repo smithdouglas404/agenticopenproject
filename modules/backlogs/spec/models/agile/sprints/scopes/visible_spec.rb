@@ -31,51 +31,93 @@
 require "spec_helper"
 
 RSpec.describe Agile::Sprints::Scopes::Visible do
-  shared_let(:project) { create(:project) }
-  shared_let(:other_project) { create(:project) }
-  shared_let(:sprint) { create(:agile_sprint, project:) }
-  shared_let(:sprint_in_other_project) { create(:agile_sprint, project: other_project) }
-  shared_let(:role) { create(:project_role, permissions: [:view_sprints]) }
-  shared_let(:user_with_permission) do
-    create(:user).tap do |u|
-      create(:member, project:, user: u, roles: [role])
+  shared_let(:project_globally_sharing) { create(:project, sprint_sharing: "share_all_projects") }
+  shared_let(:project_receiving) { create(:project, sprint_sharing: "receive_shared") }
+  shared_let(:sprint_in_global_sharer) { create(:agile_sprint, project: project_globally_sharing) }
+
+  shared_let(:project_with_own_sprint) { create(:project) }
+  shared_let(:sprint_own) { create(:agile_sprint, project: project_with_own_sprint) }
+
+  shared_let(:project_with_referenced_by_wp_sprint) { create(:project) }
+  shared_let(:sprint_referenced_by_wp) do
+    create(:agile_sprint, project: create(:project)) do |sprint|
+      create(:work_package, sprint:, project: project_with_referenced_by_wp_sprint)
     end
   end
-  shared_let(:user_with_permission_in_both) do
-    create(:user).tap do |u|
-      create(:member, project:, user: u, roles: [role])
-      create(:member, project: other_project, user: u, roles: [role])
+
+  shared_let(:role) { create(:project_role, permissions: [:view_sprints]) }
+
+  shared_let(:user_with_permission_in_project_with_own_sprint) do
+    create(:user) do |u|
+      create(:member, project: project_with_own_sprint, user: u, roles: [role])
+    end
+  end
+  shared_let(:user_with_permission_in_project_with_sprint_referenced_by_wp) do
+    create(:user) do |u|
+      create(:member, project: project_with_referenced_by_wp_sprint, user: u, roles: [role])
+    end
+  end
+  shared_let(:user_with_permission_in_receiving_project) do
+    create(:user) do |u|
+      create(:member, project: project_receiving, user: u, roles: [role])
+    end
+  end
+  shared_let(:user_with_permission_in_all_projects) do
+    create(:user) do |u|
+      [project_with_own_sprint,
+       project_receiving,
+       project_with_referenced_by_wp_sprint].each do |project|
+        create(:member, project:, user: u, roles: [role])
+      end
     end
   end
   shared_let(:user_without_permission) do
-    create(:user).tap do |u|
-      create(:member,
-             project:,
-             user: u,
-             roles: [create(:project_role, permissions: [:view_work_packages])])
+    create(:user) do |u|
+      [project_with_own_sprint,
+       project_receiving,
+       project_with_referenced_by_wp_sprint].each do |project|
+        create(:member,
+               project:,
+               user: u,
+               roles: [create(:project_role, permissions: [:view_work_packages])])
+      end
     end
   end
   shared_let(:user_without_membership) { create(:user) }
 
   subject { Agile::Sprint.visible(current_user) }
 
-  context "for a user with view_sprints in one project" do
-    current_user { user_with_permission }
+  context "for a user with view_sprints in project with own sprint" do
+    current_user { user_with_permission_in_project_with_own_sprint }
 
-    it "returns the sprint in that project" do
-      expect(subject).to contain_exactly(sprint)
-    end
-
-    it "does not return sprints from projects the user has no permission in" do
-      expect(subject).not_to include(sprint_in_other_project)
+    it "returns all sprints in that project" do
+      expect(subject).to contain_exactly(sprint_own)
     end
   end
 
-  context "for a user with view_sprints in both projects" do
-    current_user { user_with_permission_in_both }
+  context "for a user with view_sprints in project sprint referenced by wp" do
+    current_user { user_with_permission_in_project_with_sprint_referenced_by_wp }
 
-    it "returns sprints from both projects" do
-      expect(subject).to contain_exactly(sprint, sprint_in_other_project)
+    it "returns all sprints in that project" do
+      expect(subject).to contain_exactly(sprint_referenced_by_wp)
+    end
+  end
+
+  context "for a user with view_sprints in project receiving sprints" do
+    current_user { user_with_permission_in_receiving_project }
+
+    it "returns all sprints in that project" do
+      expect(subject).to contain_exactly(sprint_in_global_sharer)
+    end
+  end
+
+  context "for a user with view_sprints in all projects" do
+    current_user { user_with_permission_in_all_projects }
+
+    it "returns sprints from all projects including shared ones" do
+      expect(subject).to contain_exactly(sprint_own,
+                                         sprint_referenced_by_wp,
+                                         sprint_in_global_sharer)
     end
   end
 
@@ -96,10 +138,12 @@ RSpec.describe Agile::Sprints::Scopes::Visible do
   end
 
   context "when called without a user argument" do
-    current_user { user_with_permission }
+    current_user { user_with_permission_in_all_projects }
 
-    it "uses User.current" do
-      expect(Agile::Sprint.visible).to contain_exactly(sprint)
+    it "uses User.current to return sprints from all projects including shared ones" do
+      expect(subject).to contain_exactly(sprint_own,
+                                         sprint_referenced_by_wp,
+                                         sprint_in_global_sharer)
     end
   end
 end

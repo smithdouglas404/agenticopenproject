@@ -5,8 +5,7 @@ de:
     description: "Auflistung und Status der Hintergrundaufträge."
   job_status_dialog:
     download_starts: 'Der Download sollte automatisch starten.'
-    link_to_download: 'Oder %{link} zum Herunterladen.'
-    click_here: 'klicken Sie hier'
+    click_to_download: 'Or, [click here](download_url) to download.'
     title: 'Status des Hintergrundauftrags'
     redirect: 'Sie werden weitergeleitet.'
     redirect_link: 'Bitte klicken Sie hier, um fortzufahren.'

@@ -28,42 +28,58 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Sprints::FinishService < BaseServices::BaseCallable
-  include Shared::ServiceContext
-
-  attr_reader :user, :model
-
+class Sprints::FinishService < BaseServices::BaseContracted
   def initialize(user:, model:)
-    super()
-    @user = user
-    @model = model
+    super(user:)
+    self.model = model
   end
 
-  def perform
-    in_context(model, send_notifications: false) do
-      finish_sprint
+  protected
+
+  def before_perform(service_call)
+    case params[:unfinished_action]
+    when "move_to_sprint"
+      @target_sprint = Agile::Sprint.find_by(id: params[:move_to_sprint_id])
+      move_to_sprint(@target_sprint).each { |result| service_call.add_dependent!(result) }
+    when "move_to_top_of_backlog"
+      move_to_backlog(position: 1).each { |result| service_call.add_dependent!(result) }
+    when "move_to_bottom_of_backlog"
+      move_to_backlog(position: nil).each { |result| service_call.add_dependent!(result) }
     end
+
+    service_call
+  end
+
+  def persist(service_call)
+    model.completed!
+    service_call
+  end
+
+  def default_contract_class
+    Sprints::FinishContract
   end
 
   private
 
-  def finish_sprint
-    return unsuccessful_finish_result unless model.active?
-
-    model.completed!
-
-    ServiceResult.success(result: model)
-  rescue ActiveRecord::RecordInvalid
-    unsuccessful_finish_result
+  def move_to_sprint(target_sprint)
+    model.work_packages.with_status_open.order(position: :desc).map do |wp|
+      WorkPackages::UpdateService
+        .new(user:, model: wp, contract_class: WorkPackages::MoveBetweenSprintsContract)
+        .call(sprint: target_sprint, position: 1)
+    end
   end
 
-  def unsuccessful_finish_result
-    ServiceResult.failure(result: model,
-                          errors: model.errors,
-                          message: unsuccessful_finish_message)
-  end
+  def move_to_backlog(position:)
+    # Process descending for top (each inserted at 1 preserves original order at top),
+    # ascending for bottom (each appended to end preserves original order at bottom).
+    order_direction = position ? :desc : :asc
+    call_args = { sprint: nil }
+    call_args[:position] = position if position
 
-  def unsuccessful_finish_message
-    model.errors.full_messages.to_sentence if model.errors.any?
+    model.work_packages.with_status_open.order(position: order_direction).map do |wp|
+      WorkPackages::UpdateService
+        .new(user:, model: wp, contract_class: WorkPackages::MoveToBacklogContract)
+        .call(**call_args)
+    end
   end
 end

@@ -349,8 +349,6 @@ si:
     label_collapse_all: "සියල්ල කඩා වැටෙන්න"
     label_collapse_text: "Collapse text"
     label_comment: "අදහස් දක්වන්න"
-    label_committed_at: "%{committed_revision_link} දී %{date}"
-    label_committed_link: "කැපවූ සංශෝධනය %{revision_identifier}"
     label_contains: "අඩංගු"
     label_created_on: "මත නිර්මාණය"
     label_edit_comment: "මෙම අදහස සංස්කරණය කරන්න"
@@ -1218,3 +1216,7 @@ si:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

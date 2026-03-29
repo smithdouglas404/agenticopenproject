@@ -129,8 +129,8 @@ export default class WorkingHoursFormController extends Controller {
 
   private updateDisplayMode() {
     const isSame = this.hoursModeValue === 'same';
-    this.sameHoursSectionTarget.hidden = !isSame;
-    this.individualSectionTarget.hidden = isSame;
+    this.sameHoursSectionTarget.classList.toggle('d-none', !isSame);
+    this.individualSectionTarget.classList.toggle('d-none', isSame);
   }
 
   private syncSameHoursToAllDays() {

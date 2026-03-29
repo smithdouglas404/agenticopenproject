@@ -71,8 +71,7 @@ pt-PT:
       error_invalid_settings: "As estratégias 2FA que selecionou são inválidas"
       failed_to_save_settings: "Erro ao atualizar as definições 2FA: %{message}"
     admin:
-      self_edit_path: "Para adicionar ou modificar seus próprios dispositivos 2FA, vá para %{self_edit_link}"
-      self_edit_link_name: "Autenticação de dois fatores na página da sua conta"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "Você não pode editar seus próprios dispositivos 2FA neste caminho. Vá em Minha conta> Autenticação de dois fatores em vez disso."
       no_devices_for_user: "Nenhum dispositivo 2FA foi registrado para este usuário."
       all_devices_deleted: "Todos os dispositivos 2FA deste usuário foram excluídos"
@@ -119,8 +118,8 @@ pt-PT:
       failed_to_delete: "Falha ao excluir o dispositivo 2FA."
       is_default_cannot_delete: "O dispositivo está marcado como padrão e não pode ser excluído devido a uma política de segurança ativa. Marque outro dispositivo como padrão antes de excluir."
       not_existing: "Nenhum dispositivo 2FA foi registrado para sua conta."
-      2fa_from_input: Introduza o código do seu <strong>%{device_name}</strong> para verificar a sua identidade.
-      2fa_from_webauthn: Indique o dispositivo WebAuthn <strong>%{device_name}</strong>. Se for baseado em USB, certifique-se de que o liga e toca nele. Em seguida, clique no botão de início de sessão.
+      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
+      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
         description: Registe um dispositivo FIDO2 (como a YubiKey) ou a codificação segura do seu dispositivo móvel.

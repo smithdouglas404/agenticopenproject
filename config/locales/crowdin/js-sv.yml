@@ -348,8 +348,6 @@ sv:
     label_collapse_all: "Fäll ihop alla"
     label_collapse_text: "Collapse text"
     label_comment: "Kommentar"
-    label_committed_at: "%{committed_revision_link} den %{date}"
-    label_committed_link: "lade till revision %{revision_identifier}"
     label_contains: "innehåller"
     label_created_on: "skapad den"
     label_edit_comment: "Redigera kommentaren"
@@ -1217,3 +1215,7 @@ sv:
       waiting_subtitle:
         network_off: "Det finns ett nätverksproblem."
         network_on: "Nätverket är tillbaka. Vi försöker."
+    projects:
+      identifier_suggestion:
+        loading: "Loading suggestion..."
+        set_name_first: "Please set the name first."

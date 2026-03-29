@@ -33,12 +33,28 @@ module API
     module Queries
       module Schemas
         class SprintFilterDependencyRepresenter < FilterDependencyRepresenter
-          def href_callback; end
+          def json_cache_key
+            super + [filter.project&.id].compact
+          end
+
+          def href_callback
+            query_params = "sortBy=#{to_query [%i(name asc)]}&pageSize=-1"
+
+            if filter.project.nil?
+              "#{api_v3_paths.sprints}?#{query_params}"
+            else
+              "#{api_v3_paths.project_sprints(filter.project.id)}?#{query_params}"
+            end
+          end
 
           private
 
           def type
-            "[]Integer"
+            "[]Sprint"
+          end
+
+          def to_query(param)
+            CGI.escape(::JSON.dump(param))
           end
         end
       end
