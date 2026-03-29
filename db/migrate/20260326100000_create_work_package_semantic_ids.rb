@@ -49,8 +49,10 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
     add_index :work_package_semantic_aliases, :identifier, unique: true, if_not_exists: true
 
     # Enforce uniqueness of sequence numbers within a project (partial: excludes pre-backfill NULLs)
-    add_index :work_packages, %i[project_id sequence_number], unique: true,
-              where: "sequence_number IS NOT NULL", if_not_exists: true
+    add_index :work_packages, %i[project_id sequence_number],
+              unique:       true,
+              where:        "sequence_number IS NOT NULL",
+              if_not_exists: true
 
     # Remove legacy current flag if the table was created by an older migration
     remove_index :work_package_semantic_aliases, name: :idx_wp_semantic_ids_current, if_exists: true
