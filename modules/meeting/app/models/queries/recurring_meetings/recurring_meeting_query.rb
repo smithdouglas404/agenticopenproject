@@ -28,32 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module RecurringMeetings
-      class RecurringMeetingsAPI < ::API::OpenProjectAPI
-        resources :recurring_meetings do
-          get &::API::V3::Utilities::Endpoints::Index.new(model: RecurringMeeting).mount
+module Queries::RecurringMeetings
+  class RecurringMeetingQuery
+    include ::Queries::BaseQuery
+    include ::Queries::UnpersistedQuery
 
-          post(&::API::V3::Utilities::Endpoints::Create
-                 .new(model: RecurringMeeting)
-                 .mount)
+    def self.model
+      RecurringMeeting
+    end
 
-          route_param :id, type: Integer, desc: "Recurring meeting ID" do
-            after_validation do
-              @recurring_meeting = RecurringMeeting.visible.find(declared_params[:id])
-            end
+    def results
+      super
+        .includes(:author)
+    end
 
-            get &::API::V3::Utilities::Endpoints::Show.new(model: RecurringMeeting).mount
-
-            patch &::API::V3::Utilities::Endpoints::Update.new(model: RecurringMeeting).mount
-
-            delete &::API::V3::Utilities::Endpoints::Delete.new(model: RecurringMeeting).mount
-
-            mount ::API::V3::RecurringMeetings::OccurrencesByRecurringMeetingAPI
-          end
-        end
-      end
+    def default_scope
+      RecurringMeeting
+        .visible(user)
+        .unscope(:order)
     end
   end
 end

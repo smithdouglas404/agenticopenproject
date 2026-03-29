@@ -28,32 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module RecurringMeetings
-      class RecurringMeetingsAPI < ::API::OpenProjectAPI
-        resources :recurring_meetings do
-          get &::API::V3::Utilities::Endpoints::Index.new(model: RecurringMeeting).mount
+class Queries::RecurringMeetings::Filters::AuthorFilter <
+  Queries::RecurringMeetings::Filters::RecurringMeetingFilter
+  def type
+    :list_optional
+  end
 
-          post(&::API::V3::Utilities::Endpoints::Create
-                 .new(model: RecurringMeeting)
-                 .mount)
+  def type_strategy
+    @type_strategy ||= ::Queries::Filters::Strategies::IntegerListOptional.new(self)
+  end
 
-          route_param :id, type: Integer, desc: "Recurring meeting ID" do
-            after_validation do
-              @recurring_meeting = RecurringMeeting.visible.find(declared_params[:id])
-            end
+  def self.key
+    :author_id
+  end
 
-            get &::API::V3::Utilities::Endpoints::Show.new(model: RecurringMeeting).mount
-
-            patch &::API::V3::Utilities::Endpoints::Update.new(model: RecurringMeeting).mount
-
-            delete &::API::V3::Utilities::Endpoints::Delete.new(model: RecurringMeeting).mount
-
-            mount ::API::V3::RecurringMeetings::OccurrencesByRecurringMeetingAPI
-          end
-        end
-      end
-    end
+  def available_operators
+    [::Queries::Operators::Equals]
   end
 end

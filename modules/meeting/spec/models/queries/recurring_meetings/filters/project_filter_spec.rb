@@ -28,31 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module RecurringMeetings
-      class RecurringMeetingsAPI < ::API::OpenProjectAPI
-        resources :recurring_meetings do
-          get &::API::V3::Utilities::Endpoints::Index.new(model: RecurringMeeting).mount
+require "spec_helper"
 
-          post(&::API::V3::Utilities::Endpoints::Create
-                 .new(model: RecurringMeeting)
-                 .mount)
+RSpec.describe Queries::RecurringMeetings::Filters::ProjectFilter do
+  it_behaves_like "basic query filter" do
+    let(:type) { :list_optional }
+    let(:class_key) { :project_id }
 
-          route_param :id, type: Integer, desc: "Recurring meeting ID" do
-            after_validation do
-              @recurring_meeting = RecurringMeeting.visible.find(declared_params[:id])
-            end
+    describe "#available?" do
+      it "is true" do
+        expect(instance).to be_available
+      end
+    end
 
-            get &::API::V3::Utilities::Endpoints::Show.new(model: RecurringMeeting).mount
+    describe "#allowed_values" do
+      let(:project) { build_stubbed(:project) }
 
-            patch &::API::V3::Utilities::Endpoints::Update.new(model: RecurringMeeting).mount
+      let(:visible_scope) { instance_double(ActiveRecord::Relation) }
 
-            delete &::API::V3::Utilities::Endpoints::Delete.new(model: RecurringMeeting).mount
+      before do
+        allow(Project).to receive(:visible).and_return(visible_scope)
+        allow(visible_scope).to receive(:pluck).with(:id).and_return([project.id])
+      end
 
-            mount ::API::V3::RecurringMeetings::OccurrencesByRecurringMeetingAPI
-          end
-        end
+      it "returns an array of [id, id_string] pairs for visible projects" do
+        expect(instance.allowed_values).to include([project.id, project.id.to_s])
       end
     end
   end
