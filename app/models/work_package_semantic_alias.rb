@@ -48,10 +48,12 @@ class WorkPackageSemanticAlias < ApplicationRecord
   # in the target project's namespace and updates semantic_id on the work package.
   def self.register_move(work_package)
     project = work_package.project
-    seq = allocate_sequence!(project)
+    seq = project.allocate_wp_sequence!
     sid = "#{project.identifier}-#{seq}"
-    work_package.update_columns(sequence_number: seq, semantic_id: sid)
-    create!(identifier: sid, work_package_id: work_package.id)
+    transaction do
+      work_package.update_columns(sequence_number: seq, semantic_id: sid)
+      create!(identifier: sid, work_package_id: work_package.id)
+    end
   end
 
   # Called after a project identifier rename. Bulk-inserts new-prefix registry entries
@@ -83,13 +85,6 @@ class WorkPackageSemanticAlias < ApplicationRecord
         { identifier: "#{new_prefix}-#{id.delete_prefix("#{old_identifier}-")}",
           work_package_id: wp_id }
       end
-  end
-
-  private_class_method def self.allocate_sequence!(project)
-    project.with_lock do
-      project.increment!(:wp_sequence_counter)
-      project.wp_sequence_counter
-    end
   end
 
   # Escapes _ so it is treated as a literal character in a LIKE pattern.

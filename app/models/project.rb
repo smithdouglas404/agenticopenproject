@@ -308,4 +308,13 @@ class Project < ApplicationRecord
       OpenProject::Events::MODULE_DISABLED, disabled_module:
     )
   end
+
+  # Atomically allocates the next work package sequence number for this project.
+  # Uses a row-level lock to prevent concurrent WP creation from getting the same number.
+  def allocate_wp_sequence!
+    with_lock do
+      increment!(:wp_sequence_counter)
+      wp_sequence_counter
+    end
+  end
 end
