@@ -30,6 +30,7 @@
 
 module Admin::Settings
   class ProjectCustomFieldSectionsController < ::Admin::SettingsController
+    include FlashMessagesOutputSafetyHelper
     include OpTurbo::ComponentStream
     include Admin::Settings::ProjectCustomFields::ComponentStreams
 
@@ -72,7 +73,7 @@ module Admin::Settings
         update_header_via_turbo_stream(allow_custom_field_creation: allow_custom_field_creation?)
         update_sections_via_turbo_stream(project_custom_field_sections: ProjectCustomFieldSection.all)
       else
-        # TODO: show error message
+        render_error_flash_message_via_turbo_stream(message: join_flash_messages(call.errors.full_messages))
       end
 
       respond_with_turbo_streams
@@ -86,7 +87,7 @@ module Admin::Settings
       if call.success?
         update_sections_via_turbo_stream(project_custom_field_sections: ProjectCustomFieldSection.all)
       else
-        # TODO: show error message
+        render_error_flash_message_via_turbo_stream(message: join_flash_messages(call.errors.full_messages))
       end
 
       respond_with_turbo_streams
@@ -101,7 +102,7 @@ module Admin::Settings
         update_header_via_turbo_stream(allow_custom_field_creation: allow_custom_field_creation?)
         update_sections_via_turbo_stream(project_custom_field_sections: ProjectCustomFieldSection.all)
       else
-        # TODO: show error message
+        render_error_flash_message_via_turbo_stream(message: join_flash_messages(call.errors.full_messages))
       end
       respond_with_turbo_streams
     end
