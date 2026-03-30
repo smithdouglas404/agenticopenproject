@@ -562,7 +562,7 @@ RSpec.describe "Projects", "creation",
     end
   end
 
-  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+  context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
     it "auto-suggests an identifier when the name field is blurred" do
       projects_page.create_new_workspace
       click_on "Continue"
