@@ -94,9 +94,11 @@ RSpec.describe WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob do
       let!(:wp) { create(:work_package, project:) }
 
       before do
-        # Simulate a prior identifier so semantic_identifier_aliases returns multiple prefixes.
-        # Use allow_any_instance_of because the job loads a fresh Project instance from DB.
-        allow_any_instance_of(Project).to receive(:semantic_identifier_aliases).and_return(%w[OLD CURR])
+        # Simulate historical identifier by seeding FriendlyId slugs directly,
+        # which is what semantic_identifier_aliases reads from.
+        FriendlyId::Slug.where(sluggable: project).delete_all
+        FriendlyId::Slug.create!(sluggable: project, slug: "OLD")
+        FriendlyId::Slug.create!(sluggable: project, slug: "CURR")
         job.perform(project.id)
       end
 

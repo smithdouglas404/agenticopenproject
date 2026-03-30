@@ -55,7 +55,6 @@ RSpec.describe WorkPackages::ConvertInstanceToSemanticIds,
         enqueued = GoodJob::Job.where(job_class: WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob.name)
         expect(enqueued.count).to eq(2)
       end
-
     end
 
     context "when a project has no work packages needing backfill" do
@@ -72,6 +71,5 @@ RSpec.describe WorkPackages::ConvertInstanceToSemanticIds,
         expect(enqueued_ids).not_to include(project_without_wp.id)
       end
     end
-
   end
 end
