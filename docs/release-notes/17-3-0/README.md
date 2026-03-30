@@ -64,21 +64,25 @@ Project attributes on the project overview page can now be edited directly in pl
 
 Depending on the attribute type, changes can be applied immediately or confirmed within the field, providing a more streamlined and consistent editing experience.
 
-screenshot
+![Overview page in OpenProject 17.3 with in-place editing: Example "PIR controller" with dropdown option to search for a user](17-3-project-overview-edit-highlighted.png)
 
 ### Sharing of meeting templates (Enterprise add-on, Basic plan)
 
-Meeting templates, introduced as an Enterprise add-on in OpenProject 17.2, can now be shared across projects, making it easier to reuse standardized agendas and structures. Depending on the configuration, templates can be made available within a project, across subprojects, or throughout the entire instance.
+[feature: meeting_templates ]
 
-screenshot
+Meeting templates, [introduced as an Enterprise add-on in OpenProject 17.2](../release-notes/17-2-0/#reusable-meeting-templates-enterprise-add-on), can now be shared across projects, making it easier to reuse standardized agendas and structures. Depending on the configuration, templates can be made available within a project, across subprojects, or throughout the entire instance.
+
+![Meeting template in OpenProject 17.3 with the option to share – With only this project, with subprojects or with all projects](17-3-meeting-templates-share-highlighted.png)
 
 ### Improved workflow configuration for administrators
 
 Workflow configuration has been improved to make it easier to focus on relevant types, roles, and statuses. A new index page allows workflows to be accessed by type, reducing complexity when navigating and editing configurations.
 
+![New index page for workflows in OpenProject 17.3, listing all work package types available](17-3-workflows-index-page.png)
+
 When editing workflows, only relevant statuses are displayed, and role selection is streamlined. In addition, saving changes is now more reliable, with improved handling of unsaved changes and a fixed save action.
 
-screenshot
+![Example workflow for work package type task](17-3-workflows.png)
 
 ### Improved handling of project identifiers
 
@@ -86,7 +90,7 @@ Project identifiers can now be easily changed without invalidating existing link
 
 In addition, identifier handling has been improved when creating or copying projects, including automatic suggestions and updated validation. These improvements also apply to API-based project creation.
 
-screenshot
+![OpenProject 17.3 project settings with overlay to change the project identifier, including a note that this is a permanent change but redirects will work](17-3-change-project-identifier.png)
 
 ### Improved work package search when selecting items across the application
 
