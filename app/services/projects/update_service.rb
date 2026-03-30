@@ -74,7 +74,7 @@ module Projects
       return unless memoized_changes["identifier"]
 
       old_identifier = memoized_changes["identifier"].first
-      WorkPackage.handle_project_rename(model, old_identifier)
+      model.handle_semantic_rename(old_identifier)
     end
 
     def notify_on_identifier_renamed

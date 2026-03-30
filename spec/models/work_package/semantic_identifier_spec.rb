@@ -49,8 +49,8 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       expect(work_package.reload.semantic_id).to eq("MYPROJ-1")
     end
 
-    it "does not create a registry entry (initial identifier is current, not historical)" do
-      expect(work_package.semantic_aliases).to be_empty
+    it "creates a registry entry for the initial identifier" do
+      expect(work_package.semantic_aliases.pluck(:identifier)).to contain_exactly("MYPROJ-1")
     end
 
     it "increments the counter for each successive WP" do
@@ -94,22 +94,12 @@ RSpec.describe WorkPackage::SemanticIdentifier do
         end
       end
 
-      context "when the identifier is not in the registry (computed fallback)" do
-        before do
-          work_package.semantic_aliases.delete_all
-        end
+      it "returns nil for unknown sequence" do
+        expect(WorkPackage.find_by_identifier("MYPROJ-999")).to be_nil
+      end
 
-        it "resolves via project identifier + sequence_number" do
-          expect(WorkPackage.find_by_identifier("MYPROJ-1")).to eq(work_package)
-        end
-
-        it "returns nil for unknown sequence" do
-          expect(WorkPackage.find_by_identifier("MYPROJ-999")).to be_nil
-        end
-
-        it "returns nil for unknown project prefix" do
-          expect(WorkPackage.find_by_identifier("NOPE-1")).to be_nil
-        end
+      it "returns nil for unknown project prefix" do
+        expect(WorkPackage.find_by_identifier("NOPE-1")).to be_nil
       end
 
       it "returns nil for an unparseable string" do
@@ -155,19 +145,19 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
 
     it "retires the old identifier as a historical alias" do
-      WorkPackage.handle_wp_move(work_package)
+      work_package.handle_wp_move
       expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-1")).to be_present
     end
 
     it "updates sequence_number and semantic_id to the target project's values" do
-      WorkPackage.handle_wp_move(work_package)
+      work_package.handle_wp_move
       expect(work_package.reload.sequence_number).to eq(1)
       expect(work_package.reload.semantic_id).to eq("OTHER-1")
     end
 
-    it "does not add the new identifier to the alias table" do
-      WorkPackage.handle_wp_move(work_package)
-      expect(WorkPackageSemanticAlias.find_by(identifier: "OTHER-1")).to be_nil
+    it "adds the new identifier to the alias table" do
+      work_package.handle_wp_move
+      expect(WorkPackageSemanticAlias.find_by(identifier: "OTHER-1")).to be_present
     end
   end
 
@@ -184,48 +174,48 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       project.update_columns(identifier: "NEWPROJ")
     end
 
-    it "inserts pre-rename identifiers as historical aliases for resident WPs" do
-      WorkPackage.handle_project_rename(project, "PROJ")
+    it "preserves old-prefix aliases for resident WPs" do
+      project.handle_semantic_rename("PROJ")
       expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-1")).to be_present
       expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-2")).to be_present
     end
 
-    it "does not add new-prefix entries to the alias table" do
-      WorkPackage.handle_project_rename(project, "PROJ")
-      expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-1")).to be_nil
-      expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-2")).to be_nil
+    it "adds new-prefix aliases for resident WPs" do
+      project.handle_semantic_rename("PROJ")
+      expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-1")).to be_present
+      expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-2")).to be_present
     end
 
     it "updates semantic_id on resident WPs to the new prefix" do
-      WorkPackage.handle_project_rename(project, "PROJ")
+      project.handle_semantic_rename("PROJ")
       expect(wp1.reload.semantic_id).to eq("NEWPROJ-1")
       expect(wp2.reload.semantic_id).to eq("NEWPROJ-2")
     end
 
     it "is idempotent (safe to run twice)" do
-      WorkPackage.handle_project_rename(project, "PROJ")
-      expect { WorkPackage.handle_project_rename(project, "PROJ") }.not_to raise_error
+      project.handle_semantic_rename("PROJ")
+      expect { project.handle_semantic_rename("PROJ") }.not_to raise_error
     end
 
     context "when a WP has previously moved out of the project" do
       before do
         # Move wp1 to OTHER properly so "PROJ-1" ends up as an alias
         wp1.update_columns(project_id: target_project.id)
-        WorkPackage.handle_wp_move(wp1)
+        wp1.handle_wp_move
       end
 
       it "appends a new-prefix alias derived from the old alias row" do
-        WorkPackage.handle_project_rename(project, "PROJ")
+        project.handle_semantic_rename("PROJ")
         expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-1")).to be_present
       end
 
       it "preserves the original old-prefix alias" do
-        WorkPackage.handle_project_rename(project, "PROJ")
+        project.handle_semantic_rename("PROJ")
         expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-1")).to be_present
       end
 
       it "does not update semantic_id on the moved-away WP" do
-        WorkPackage.handle_project_rename(project, "PROJ")
+        project.handle_semantic_rename("PROJ")
         expect(wp1.reload.semantic_id).to eq("OTHER-1")
       end
     end
