@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,12 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  namespace "github_integration" do
-    namespace "admin" do
-      resource :settings, only: %i[show update]
+module GithubIntegration
+  module Admin
+    class SettingsController < ApplicationController
+      layout "admin"
+
+      menu_item :admin_github_integration
+
+      before_action :require_admin
+
+      def show
+        settings = plugin_settings
+        user_id = settings[:github_user_id].presence
+        @github_comment_user = user_id ? User.find_by(id: user_id) : nil
+        @webhook_secret = settings[:webhook_secret]
+      end
+
+      def update
+        merged = plugin_settings.merge(permitted_params)
+        Setting.plugin_openproject_github_integration = merged
+        flash[:notice] = I18n.t(:notice_successful_update)
+        redirect_to github_integration_admin_settings_path
+      end
+
+      private
+
+      def permitted_params
+        params.permit(:github_user_id, :webhook_secret).to_h
+      end
+
+      def plugin_settings
+        Hash(Setting.plugin_openproject_github_integration).with_indifferent_access
+      end
     end
   end
-
-  resources :deploy_targets, only: %i[index new create destroy]
 end

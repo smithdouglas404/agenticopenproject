@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,12 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  namespace "github_integration" do
-    namespace "admin" do
-      resource :settings, only: %i[show update]
+module GitlabIntegration
+  module Admin
+    class PageHeaderComponent < ApplicationComponent
+      def breadcrumb_items
+        [
+          { href: admin_index_path, text: t("label_administration") },
+          t(:label_gitlab_integration)
+        ]
+      end
     end
   end
-
-  resources :deploy_targets, only: %i[index new create destroy]
 end

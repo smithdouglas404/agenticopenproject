@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,12 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  namespace "github_integration" do
-    namespace "admin" do
-      resource :settings, only: %i[show update]
+module GithubIntegration
+  module Admin
+    class SettingsForm < ApplicationForm
+      form do |f|
+        f.autocompleter(
+          name: :github_user_id,
+          label: I18n.t(:label_github_comment_user),
+          caption: I18n.t(:text_github_comment_user_info),
+          autocomplete_options: {
+            component: "opce-user-autocompleter",
+            allowEmpty: true,
+            defaultData: false,
+            model: @comment_user_model
+          }
+        )
+
+        f.text_field(
+          name: :webhook_secret,
+          label: I18n.t(:label_github_webhook_secret),
+          caption: I18n.t(:text_github_webhook_secret_info),
+          value: @webhook_secret,
+          input_width: :xxlarge
+        )
+
+        f.submit(
+          name: :submit,
+          label: I18n.t(:button_save),
+          scheme: :primary
+        )
+      end
+
+      def initialize(comment_user: nil, webhook_secret: nil)
+        super()
+        @comment_user_model = comment_user.present? ? { id: comment_user.id, name: comment_user.name } : nil
+        @webhook_secret = webhook_secret
+      end
     end
   end
-
-  resources :deploy_targets, only: %i[index new create destroy]
 end

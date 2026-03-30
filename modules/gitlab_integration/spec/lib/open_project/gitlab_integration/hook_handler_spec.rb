@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,17 +30,15 @@
 
 require_relative "../../../spec_helper"
 
-RSpec.describe OpenProject::GithubIntegration::HookHandler do
+RSpec.describe OpenProject::GitlabIntegration::HookHandler do
   describe "#process" do
     let(:handler) { described_class.new }
     let(:hook) { "fake hook" }
-    let(:raw_body) { '{"fake":"value"}' }
     let(:params) { ActionController::Parameters.new({ payload: { "fake" => "value" } }) }
     let(:environment) do
-      { "HTTP_X_GITHUB_EVENT" => "pull_request",
-        "HTTP_X_GITHUB_DELIVERY" => "veryuniqueid" }
+      { "HTTP_X_GITLAB_EVENT" => "Merge Request Hook" }
     end
-    let(:request) { Struct.new(:env, :raw_post).new(environment, raw_body) }
+    let(:request) { Struct.new(:env).new(env: environment) }
     let(:user) do
       user = instance_double(User)
       allow(user).to receive(:id).and_return(12)
@@ -47,8 +47,7 @@ RSpec.describe OpenProject::GithubIntegration::HookHandler do
 
     context "with an unsupported event" do
       let(:environment) do
-        { "HTTP_X_GITHUB_EVENT" => "X-unspupported",
-          "HTTP_X_GITHUB_DELIVERY" => "veryuniqueid2" }
+        { "HTTP_X_GITLAB_EVENT" => "Unsupported Hook" }
       end
 
       it "returns 404" do
@@ -68,16 +67,14 @@ RSpec.describe OpenProject::GithubIntegration::HookHandler do
 
     context "with webhook secret verification" do
       let(:secret) { "super_secret" }
-      let(:correct_signature) { "sha256=#{OpenSSL::HMAC.hexdigest('SHA256', secret, raw_body)}" }
 
       before { allow(OpenProject::Notifications).to receive(:send) }
 
-      context "when a secret is configured and the signature matches",
-              with_settings: { plugin_openproject_github_integration: { webhook_secret: "super_secret" } } do
+      context "when a secret is configured and the token matches",
+              with_settings: { plugin_openproject_gitlab_integration: { webhook_secret: "super_secret" } } do
         let(:environment) do
-          { "HTTP_X_GITHUB_EVENT" => "pull_request",
-            "HTTP_X_GITHUB_DELIVERY" => "veryuniqueid",
-            "HTTP_X_HUB_SIGNATURE_256" => correct_signature }
+          { "HTTP_X_GITLAB_EVENT" => "Merge Request Hook",
+            "HTTP_X_GITLAB_TOKEN" => secret }
         end
 
         it "returns 200" do
@@ -85,12 +82,11 @@ RSpec.describe OpenProject::GithubIntegration::HookHandler do
         end
       end
 
-      context "when a secret is configured and the signature is wrong",
-              with_settings: { plugin_openproject_github_integration: { webhook_secret: "super_secret" } } do
+      context "when a secret is configured and the token is wrong",
+              with_settings: { plugin_openproject_gitlab_integration: { webhook_secret: "super_secret" } } do
         let(:environment) do
-          { "HTTP_X_GITHUB_EVENT" => "pull_request",
-            "HTTP_X_GITHUB_DELIVERY" => "veryuniqueid",
-            "HTTP_X_HUB_SIGNATURE_256" => "sha256=invalidsignature" }
+          { "HTTP_X_GITLAB_EVENT" => "Merge Request Hook",
+            "HTTP_X_GITLAB_TOKEN" => "wrong_secret" }
         end
 
         it "returns 403" do
@@ -103,8 +99,8 @@ RSpec.describe OpenProject::GithubIntegration::HookHandler do
         end
       end
 
-      context "when a secret is configured and the signature header is missing",
-              with_settings: { plugin_openproject_github_integration: { webhook_secret: "super_secret" } } do
+      context "when a secret is configured and the token header is missing",
+              with_settings: { plugin_openproject_gitlab_integration: { webhook_secret: "super_secret" } } do
         it "returns 403" do
           expect(handler.process(hook, request, params, user)).to eq(403)
         end
@@ -116,8 +112,8 @@ RSpec.describe OpenProject::GithubIntegration::HookHandler do
       end
 
       context "when no secret is configured",
-              with_settings: { plugin_openproject_github_integration: {} } do
-        it "returns 200 without requiring a signature" do
+              with_settings: { plugin_openproject_gitlab_integration: {} } do
+        it "returns 200 without requiring a token" do
           expect(handler.process(hook, request, params, user)).to eq(200)
         end
       end
@@ -128,8 +124,7 @@ RSpec.describe OpenProject::GithubIntegration::HookHandler do
         {
           "fake" => "value",
           "open_project_user_id" => 12,
-          "github_event" => "pull_request",
-          "github_delivery" => "veryuniqueid"
+          "gitlab_event" => "merge_request_hook"
         }
       end
 
@@ -139,7 +134,7 @@ RSpec.describe OpenProject::GithubIntegration::HookHandler do
 
       it "sends a notification with the correct contents" do
         handler.process(hook, request, params, user)
-        expect(OpenProject::Notifications).to have_received(:send).with("github.pull_request", expected_params)
+        expect(OpenProject::Notifications).to have_received(:send).with(:"gitlab.merge_request_hook", expected_params)
       end
 
       it "returns 200" do
@@ -147,21 +142,21 @@ RSpec.describe OpenProject::GithubIntegration::HookHandler do
         expect(result).to eq(200)
       end
 
-      context "when a github_user_id is configured" do
+      context "when a gitlab_user_id is configured" do
         context "and the request user matches the configured user",
-                with_settings: { plugin_openproject_github_integration: { github_user_id: 12 } } do
+                with_settings: { plugin_openproject_gitlab_integration: { gitlab_user_id: 12 } } do
           it "returns 200" do
             expect(handler.process(hook, request, params, user)).to eq(200)
           end
 
           it "sends the notification" do
             handler.process(hook, request, params, user)
-            expect(OpenProject::Notifications).to have_received(:send).with("github.pull_request", expected_params)
+            expect(OpenProject::Notifications).to have_received(:send).with(:"gitlab.merge_request_hook", expected_params)
           end
         end
 
         context "and the request user does not match the configured user",
-                with_settings: { plugin_openproject_github_integration: { github_user_id: 99 } } do
+                with_settings: { plugin_openproject_gitlab_integration: { gitlab_user_id: 99 } } do
           it "returns 403" do
             expect(handler.process(hook, request, params, user)).to eq(403)
           end
@@ -173,8 +168,8 @@ RSpec.describe OpenProject::GithubIntegration::HookHandler do
         end
       end
 
-      context "when no github_user_id is configured",
-              with_settings: { plugin_openproject_github_integration: {} } do
+      context "when no gitlab_user_id is configured",
+              with_settings: { plugin_openproject_gitlab_integration: {} } do
         it "returns 200 regardless of which user authenticates" do
           expect(handler.process(hook, request, params, user)).to eq(200)
         end
