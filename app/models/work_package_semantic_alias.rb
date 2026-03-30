@@ -35,7 +35,7 @@
 # work_packages.semantic_id for faster access.
 #
 # The write side of the registry lives in WorkPackage::SemanticIdentifier:
-#   wp.handle_wp_move                                   # on WP project change
+#   wp.allocate_and_register_semantic_id                  # on WP project change (call post-save)
 #   project.handle_semantic_rename(old_identifier)      # on project identifier change
 class WorkPackageSemanticAlias < ApplicationRecord
   belongs_to :work_package, inverse_of: :semantic_aliases

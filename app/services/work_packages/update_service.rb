@@ -110,7 +110,7 @@ class WorkPackages::UpdateService < BaseServices::Update
   end
 
   def update_semantic_ids(work_packages)
-    work_packages.each(&:handle_wp_move)
+    work_packages.each(&:allocate_and_register_semantic_id)
   end
 
   def delete_relations(work_packages)

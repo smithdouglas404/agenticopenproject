@@ -136,7 +136,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
-  describe "#handle_wp_move" do
+  describe "#allocate_and_register_semantic_id" do
     let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
     let(:target_project) { create(:project, identifier: "OTHER", wp_sequence_counter: 0) }
 
@@ -144,19 +144,19 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       work_package.update_columns(project_id: target_project.id)
     end
 
-    it "retires the old identifier as a historical alias" do
-      work_package.handle_wp_move
+    it "preserves the old identifier as a historical alias (written at creation)" do
+      work_package.allocate_and_register_semantic_id
       expect(WorkPackageSemanticAlias.find_by(identifier: "PROJ-1")).to be_present
     end
 
     it "updates sequence_number and semantic_id to the target project's values" do
-      work_package.handle_wp_move
+      work_package.allocate_and_register_semantic_id
       expect(work_package.reload.sequence_number).to eq(1)
       expect(work_package.reload.semantic_id).to eq("OTHER-1")
     end
 
     it "adds the new identifier to the alias table" do
-      work_package.handle_wp_move
+      work_package.allocate_and_register_semantic_id
       expect(WorkPackageSemanticAlias.find_by(identifier: "OTHER-1")).to be_present
     end
   end
@@ -201,7 +201,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       before do
         # Move wp1 to OTHER properly so "PROJ-1" ends up as an alias
         wp1.update_columns(project_id: target_project.id)
-        wp1.handle_wp_move
+        wp1.allocate_and_register_semantic_id
       end
 
       it "appends a new-prefix alias derived from the old alias row" do
