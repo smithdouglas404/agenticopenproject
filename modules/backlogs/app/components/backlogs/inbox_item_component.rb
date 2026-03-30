@@ -61,7 +61,7 @@ module Backlogs
     def row_options
       {
         id: dom_id(work_package),
-        classes: "Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable",
+        classes: row_classes,
         data: {
           draggable_id: work_package.id,
           draggable_type: "story",
@@ -76,6 +76,11 @@ module Backlogs
         },
         tabindex: 0
       }
+    end
+
+    def row_classes
+      "Box-row--hover-blue Box-row--focus-gray \
+       Box-row--clickable Box-row--draggable #{'DragHandle' if draggable?}"
     end
 
     def card_test_selector

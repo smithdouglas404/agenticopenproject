@@ -86,7 +86,7 @@ module Backlogs
       classes = "Box-row--hover-blue Box-row--focus-gray Box-row--clickable"
 
       if work_package_draggable?
-        classes += " Box-row--draggable"
+        classes += " Box-row--draggable DragHandle"
       end
 
       classes
