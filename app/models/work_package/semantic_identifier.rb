@@ -65,12 +65,19 @@ module WorkPackage::SemanticIdentifier
     private
 
     def find_by_semantic_identifier(identifier)
-      # Single alias table lookup — O(1) via the unique index on identifier.
+      # Fast path: Try direct lookup via the current semantic_id column first.
+      # This uses the unique index on work_packages.semantic_id and resolves
+      # the common case (current identifiers) in a single query.
+      if (wp = find_by(semantic_id: identifier))
+        return wp
+      end
+
+      # Fallback: Single alias table lookup — O(1) via the unique index on identifier.
       # The table holds every identifier a WP has ever been known by:
       #   - Written on creation for the initial identifier and all historical project prefixes.
       #   - Appended on project rename (new-prefix row for every affected WP).
       #   - Appended on WP move (old identifier row for the moved WP).
-      wp_id = WorkPackageSemanticAlias.find_by(identifier:)&.work_package_id
+      wp_id = WorkPackageSemanticAlias.find_by(identifier: identifier)&.work_package_id
       find_by(id: wp_id)
     end
   end
