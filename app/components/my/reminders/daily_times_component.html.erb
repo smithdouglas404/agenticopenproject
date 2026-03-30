@@ -37,7 +37,8 @@ See COPYRIGHT and LICENSE files for more details.
               Primer::Alpha::Select.new(
                 name: field_name,
                 label: t("my_account.email_reminders.daily_reminders.time_slot_label"),
-                visually_hide_label: true
+                visually_hide_label: true,
+                data: { test_selector: "settings-daily-time" }
               )
             ) do |select|
               time_options.each do |label, value|
@@ -52,8 +53,9 @@ See COPYRIGHT and LICENSE files for more details.
                 icon: :x,
                 scheme: :invisible,
                 type: :button,
+                hidden: @times.size <= 1,
                 aria: { label: t("my_account.email_reminders.daily_reminders.remove_time") },
-                data: { action: "my--daily-reminders#removeTime" }
+                data: { action: "my--daily-reminders#removeTime", test_selector: "settings-daily-time--remove" }
               )
             )
           end
@@ -71,7 +73,8 @@ See COPYRIGHT and LICENSE files for more details.
               name: field_name,
               label: t("my_account.email_reminders.daily_reminders.time_slot_label"),
               visually_hide_label: true,
-              id: nil
+              id: nil,
+              data: { test_selector: "settings-daily-time" }
             )
           ) do |select|
             time_options.each do |label, value|
@@ -87,7 +90,7 @@ See COPYRIGHT and LICENSE files for more details.
               scheme: :invisible,
               type: :button,
               aria: { label: t("my_account.email_reminders.daily_reminders.remove_time") },
-              data: { action: "my--daily-reminders#removeTime" }
+              data: { action: "my--daily-reminders#removeTime", test_selector: "settings-daily-time--remove" }
             )
           )
         end

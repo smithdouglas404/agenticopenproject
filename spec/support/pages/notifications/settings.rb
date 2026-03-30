@@ -153,7 +153,7 @@ module Pages
       def expect_no_project_date_alert_setting(label)
         within_test_selector "project-specific-settings-form" do
           expect(page).to have_no_css(
-            "select[data-qa-project-notification-type='op-reminder-settings-#{label.underscore}-alerts']"
+            "select[data-test-selector='op-reminder-settings-#{label.underscore}-alerts']"
           )
         end
       end

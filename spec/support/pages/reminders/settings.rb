@@ -48,25 +48,23 @@ module Pages
         click_button "Add time"
       end
 
-      def set_time(label, time)
-        select time, from: label
+      def set_time(time)
+        el = page.all("[data-test-selector='settings-daily-time']").last
+        el.select time
       end
 
-      def deactivate_time(label)
-        find("[data-test-selector='op-settings-daily-time--active-#{label.split[1]}']").click
+      def remove_time(index)
+        page.all("[data-test-selector='settings-daily-time--remove']")[index].click
       end
 
-      def remove_time(label)
-        find("[data-test-selector='op-settings-daily-time--remove-#{label.split[1]}']").click
+      def expect_no_remove_time
+        expect(page).to have_no_test_selector("settings-daily-time--remove")
       end
 
       def expect_active_daily_times(*times)
-        times.each_with_index do |time, index|
+        times.each do |time|
           expect(page)
-            .to have_css("input[data-test-selector='op-settings-daily-time--active-#{index + 1}']:checked")
-
-          expect(page)
-            .to have_field("Time #{index + 1}", text: time)
+            .to have_css("select[data-test-selector='settings-daily-time']", text: time)
         end
       end
 

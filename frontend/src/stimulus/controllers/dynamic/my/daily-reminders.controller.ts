@@ -34,6 +34,7 @@ export default class DailyRemindersController extends Controller {
   static targets = ['list', 'row', 'rowTemplate'];
 
   declare readonly listTarget:HTMLElement;
+  declare readonly rowTargets:HTMLElement[];
   declare readonly rowTemplateTarget:HTMLTemplateElement;
   declare readonly hasRowTemplateTarget:boolean;
 
@@ -42,6 +43,7 @@ export default class DailyRemindersController extends Controller {
   connect():void {
     this.listTarget.addEventListener('change', this.handleChange);
     this.syncDisabledOptions();
+    this.updateRemoveButtons();
   }
 
   disconnect():void {
@@ -54,12 +56,23 @@ export default class DailyRemindersController extends Controller {
     const clone = this.rowTemplateTarget.content.cloneNode(true) as DocumentFragment;
     this.listTarget.appendChild(clone);
     this.syncDisabledOptions();
+    this.updateRemoveButtons();
   }
 
   removeTime(event:Event):void {
     const button = event.currentTarget as HTMLElement;
     button.closest('[data-my--daily-reminders-target="row"]')?.remove();
     this.syncDisabledOptions();
+    this.updateRemoveButtons();
+  }
+
+  private updateRemoveButtons():void {
+    const rows = this.rowTargets;
+    const showRemove = rows.length > 1;
+    rows.forEach((row) => {
+      const btn = row.querySelector<HTMLElement>('[data-action="my--daily-reminders#removeTime"]');
+      if (btn) btn.hidden = !showRemove;
+    });
   }
 
   private syncDisabledOptions():void {
