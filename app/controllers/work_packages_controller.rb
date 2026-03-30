@@ -244,10 +244,10 @@ class WorkPackagesController < ApplicationController
     return @work_package if defined?(@work_package)
 
     scope = WorkPackage.visible(current_user)
-    @work_package = if params[:id].match?(/\A\d+\z/)
-                      scope.find_by(id: params[:id])
+    @work_package = if WorkPackage.semantic_id?(params[:id])
+                      scope.find_by_id_or_identifier(params[:id])
                     else
-                      scope.find_by_identifier(params[:id])
+                      scope.find_by(id: params[:id])
                     end
   end
 

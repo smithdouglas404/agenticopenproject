@@ -53,12 +53,12 @@ module Projects::Identifier
                 limit: IDENTIFIER_MAX_LENGTH,
                 blacklist: RESERVED_IDENTIFIERS,
                 adapter: OpenProject::ActsAsUrl::Adapter::OpActiveRecord, # use a custom adapter able to handle edge cases
-                skip_if: -> { Setting::WorkPackageIdentifier.alphanumeric? }
+                skip_if: -> { Setting::WorkPackageIdentifier.semantic? }
 
     # Generate semantic identifier (when in the semantic mode)
     before_validation :generate_semantic_identifier,
                       on: :create,
-                      if: -> { Setting::WorkPackageIdentifier.alphanumeric? && identifier.blank? }
+                      if: -> { Setting::WorkPackageIdentifier.semantic? && identifier.blank? }
 
     ### ID validators
     # Shared validators for all identifier formats
@@ -70,11 +70,11 @@ module Projects::Identifier
 
     # Validators for the numeric (legacy) identifier format (e.g. "my-project", "project_one")
     validate :identifier_numeric_format,
-             if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.numeric? }
+             if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.classic? }
 
     # Validators for the semantic (alphanumeric) identifier format (e.g. "PROJ1")
     validate :identifier_alphanumeric_format,
-             if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
+             if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.semantic? }
 
     validate :identifier_not_reserved, if: -> { identifier.present? }
 
@@ -96,7 +96,7 @@ module Projects::Identifier
 
   class_methods do
     def suggest_identifier(name)
-      if Setting::WorkPackageIdentifier.alphanumeric?
+      if Setting::WorkPackageIdentifier.semantic?
         WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator.suggest_identifier(name)
       else # This should closely enough emulate Project models' usage of acts_as_url
         name.to_url.first(IDENTIFIER_MAX_LENGTH).presence || "project"

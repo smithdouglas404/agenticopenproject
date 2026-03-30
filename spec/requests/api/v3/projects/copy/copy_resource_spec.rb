@@ -194,7 +194,7 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
       end
     end
 
-    context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+    context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
       context "when identifier is not provided" do
         let(:params) do
           { name: "My copied project" }

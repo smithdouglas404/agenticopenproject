@@ -31,9 +31,6 @@
 module WorkPackage::SemanticIdentifier
   extend ActiveSupport::Concern
 
-  # Matches both numeric IDs ("12345") and semantic identifiers ("PROJ-42").
-  ID_ROUTE_CONSTRAINT = /(?:\d+|[A-Z][A-Z0-9_]*-\d+)/
-
   included do
     has_many :semantic_aliases,
              class_name: "WorkPackageSemanticAlias",
@@ -41,31 +38,34 @@ module WorkPackage::SemanticIdentifier
              inverse_of: :work_package,
              dependent: :destroy
 
-    after_create :register_semantic_id, if: -> { Setting::WorkPackageIdentifier.alphanumeric? }
+    after_create :allocate_and_register_semantic_id, if: -> { Setting::WorkPackageIdentifier.semantic? }
   end
 
   class_methods do
+    def semantic_id?(identifier)
+      identifier.to_s.to_i.to_s != identifier.to_s
+    end
+
     # Resolves any identifier form to a WorkPackage.
     #   - Numeric string ("12345")    → find by primary key
     #   - Semantic string ("PROJ-42") → lookup via work_packages table and alias table
     #
     # Returns nil on miss.
-    def find_by_identifier(identifier)
-      identifier = identifier.to_s.strip
-      return find_by(id: identifier) if identifier.match?(/\A\d+\z/)
+    def find_by_id_or_identifier(identifier)
+      return find_by(id: identifier) unless semantic_id?(identifier)
 
       find_by_semantic_identifier(identifier)
     end
 
-    # Same as find_by_identifier but raises ActiveRecord::RecordNotFound on miss.
-    def find_by_identifier!(identifier)
-      find_by_identifier(identifier) || raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{identifier}")
+    # Same as find_by_id_or_identifier but raises ActiveRecord::RecordNotFound on miss.
+    def find_by_id_or_identifier!(identifier)
+      find_by_id_or_identifier(identifier) || raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{identifier}")
     end
 
     private
 
     def find_by_semantic_identifier(identifier)
-      wp = find_by(semantic_id: identifier)
+      wp = find_by(identifier:)
       return wp if wp
 
       # Fallback: Single alias table lookup — O(1) via the unique index on identifier.
@@ -73,42 +73,34 @@ module WorkPackage::SemanticIdentifier
       #   - Written on creation for the initial identifier and all historical project prefixes.
       #   - Appended on project rename (new-prefix row for every affected WP).
       #   - Appended on WP move (old identifier row for the moved WP).
-      wp_id = WorkPackageSemanticAlias.find_by(identifier: identifier)&.work_package_id
+      wp_id = WorkPackageSemanticAlias.find_by(identifier:)&.work_package_id
       find_by(id: wp_id)
     end
   end
 
-  # Called after a WP moves to a different project. Allocates a new identifier in
-  # the target project and updates sequence_number and semantic_id on the work package.
+  # Allocates the next semantic identifier in the current project and assigns it to the WP.
+  # Also writes alias rows for every identifier the project has ever used (including "ghost" aliases).
   #
-  # Two alias writes happen atomically:
-  # 1. The old semantic_id is retired (already present from creation/last move;
-  #    unique_by silently skips the duplicate).
-  # 2. The new identifier and every historical prefix of the destination project
-  #    are written, so the WP is immediately findable under all of them.
-  def handle_wp_move
+  # This should generally be run following project_id-mutating operations on WorkPackage records (like create or move).
+  def allocate_and_register_semantic_id
     WorkPackageSemanticAlias.transaction do
-      retire_row = semantic_id ? [{ identifier: semantic_id, work_package_id: id }] : []
-
-      seq, sid = project.allocate_wp_semantic_identifier!
-      update_columns(sequence_number: seq, semantic_id: sid)
-
-      WorkPackageSemanticAlias.insert_all(retire_row + alias_rows_for(seq), unique_by: :identifier)
+      sequence_number, identifier = project.allocate_wp_semantic_identifier!
+      # Re-map the semantic identifier to the new project
+      update_columns(sequence_number:, identifier:)
+      # Insert current, historical + ghost aliases for the new project
+      # Note: In case of WP move, the previous mapping for the old project is assumed
+      #   to be present in the alias table already, ever since its prior create/move operation.
+      semantic_aliases.insert_all(alias_rows_for_sequence_number(sequence_number),
+                                  unique_by: :identifier)
     end
   end
 
   private
 
-  def register_semantic_id
-    seq, sid = project.allocate_wp_semantic_identifier!
-    update_columns(sequence_number: seq, semantic_id: sid)
-    WorkPackageSemanticAlias.insert_all(alias_rows_for(seq), unique_by: :identifier)
-  end
-
-  # Builds alias rows for every identifier this project has ever used at the given sequence.
-  # This also includes "ghost identifiers" -- i.e. those that weren't actually generated, but should work
-  # as a historical alias (e.g. OLDPROJ-42 should work even if WP #42 was created only after rename to NEWPROJ)
-  def alias_rows_for(seq)
+  # Builds alias rows for every identifier this project has ever used at the given sequence (including the current one).
+  # This also includes "ghost identifiers" -- i.e. those that weren't ever actually generated, but should work
+  # as a historical alias (e.g. OLDPROJ-42 should work even if WP #42 was created after rename to NEWPROJ)
+  def alias_rows_for_sequence_number(seq)
     project.semantic_identifier_aliases.map { |prefix| { identifier: "#{prefix}-#{seq}", work_package_id: id } }
   end
 end

@@ -57,7 +57,7 @@ module Projects
       ret = super
 
       touch_on_custom_values_update
-      update_semantic_ids_on_identifier_change if Setting::WorkPackageIdentifier.alphanumeric?
+      update_semantic_ids_on_identifier_change if Setting::WorkPackageIdentifier.semantic?
       notify_on_identifier_renamed
       send_update_notification
       update_wp_versions_on_parent_change

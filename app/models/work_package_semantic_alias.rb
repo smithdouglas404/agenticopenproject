@@ -32,10 +32,10 @@
 # This acts as a registry of all semantic identifiers for a work package,
 # including both the current identifier and any retired ones created by moves
 # or project renames. The current identifier is also stored directly on
-# work_packages.semantic_id for faster access.
+# work_packages.identifier for faster access.
 #
 # The write side of the registry lives in WorkPackage::SemanticIdentifier:
-#   wp.handle_wp_move                                   # on WP project change
+#   wp.allocate_and_register_semantic_id                  # on WP project change (call post-save)
 #   project.handle_semantic_rename(old_identifier)      # on project identifier change
 class WorkPackageSemanticAlias < ApplicationRecord
   belongs_to :work_package, inverse_of: :semantic_aliases

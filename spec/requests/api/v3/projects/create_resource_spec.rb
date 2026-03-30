@@ -445,7 +445,7 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
     end
   end
 
-  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+  context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
     context "when identifier is not provided" do
       let(:body) do
         { name: "Flight Planning Algorithm" }.to_json

@@ -629,6 +629,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_announcement,
             icon: "megaphone"
 
+  menu.push :admin_integrations,
+            { controller: "/github_integration/admin/settings", action: "show" },
+            if: ->(_) { User.current.admin? },
+            icon: :"git-compare",
+            caption: :label_integrations
+
   menu.push :plugins,
             { controller: "/admin", action: "plugins" },
             if: ->(_) { User.current.admin? },
