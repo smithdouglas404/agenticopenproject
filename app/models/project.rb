@@ -39,6 +39,7 @@ class Project < ApplicationRecord
   include Projects::WorkPackageCustomFields
   include Projects::CreationWizard
   include Projects::Identifier
+  include Projects::SemanticIdentifierOperations
 
   include ::Scopes::Scoped
 
@@ -307,16 +308,5 @@ class Project < ApplicationRecord
     OpenProject::Notifications.send(
       OpenProject::Events::MODULE_DISABLED, disabled_module:
     )
-  end
-
-  # Atomically allocates the next sequence number for a work package in this project
-  # and returns it paired with the resulting semantic identifier (e.g. [42, "PROJ-42"]).
-  # Uses a row-level lock to prevent concurrent WP creation from getting the same number.
-  def allocate_wp_semantic_identifier!
-    seq = with_lock do
-      increment!(:wp_sequence_counter)
-      wp_sequence_counter
-    end
-    [seq, "#{identifier}-#{seq}"]
   end
 end

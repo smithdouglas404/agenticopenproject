@@ -28,14 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Maps a retired semantic identifier (e.g. "PROJ-42") to a work package.
-# A row is written here when an identifier is superseded by a move or project rename.
-# All rows are removed when the work package itself is deleted (cascade via FK).
-# The current identifier is stored directly on work_packages.semantic_id.
+# Maps a semantic identifier (e.g. "PROJ-42") to a work package.
+# This acts as a registry of all semantic identifiers for a work package,
+# including both the current identifier and any retired ones created by moves
+# or project renames. The current identifier is also stored directly on
+# work_packages.semantic_id for faster access.
 #
 # The write side of the registry lives in WorkPackage::SemanticIdentifier:
-#   WorkPackage.register_move(wp)                       # on WP project change
-#   WorkPackage.register_project_rename(proj, old_id)   # on project identifier change
+#   wp.handle_wp_move                                   # on WP project change
+#   project.handle_semantic_rename(old_identifier)      # on project identifier change
 class WorkPackageSemanticAlias < ApplicationRecord
   belongs_to :work_package, inverse_of: :semantic_aliases
 
