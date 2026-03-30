@@ -50,16 +50,16 @@ module WorkPackage::SemanticIdentifier
     #   - Semantic string ("PROJ-42") → lookup via work_packages table and alias table
     #
     # Returns nil on miss.
-    def find_by_identifier(identifier)
+    def find_by_id_or_identifier(identifier)
       identifier = identifier.to_s.strip
       return find_by(id: identifier) if identifier.match?(/\A\d+\z/)
 
       find_by_semantic_identifier(identifier)
     end
 
-    # Same as find_by_identifier but raises ActiveRecord::RecordNotFound on miss.
-    def find_by_identifier!(identifier)
-      find_by_identifier(identifier) || raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{identifier}")
+    # Same as find_by_id_or_identifier but raises ActiveRecord::RecordNotFound on miss.
+    def find_by_id_or_identifier!(identifier)
+      find_by_id_or_identifier(identifier) || raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{identifier}")
     end
 
     private

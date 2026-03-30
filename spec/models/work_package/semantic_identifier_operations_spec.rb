@@ -60,50 +60,50 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
-  describe "WorkPackage.find_by_identifier" do
+  describe "WorkPackage.find_by_id_or_identifier" do
     context "with a numeric param" do
       it "finds by primary key" do
-        expect(WorkPackage.find_by_identifier(work_package.id.to_s)).to eq(work_package)
+        expect(WorkPackage.find_by_id_or_identifier(work_package.id.to_s)).to eq(work_package)
       end
 
       it "returns nil for unknown id" do
-        expect(WorkPackage.find_by_identifier("9999999")).to be_nil
+        expect(WorkPackage.find_by_id_or_identifier("9999999")).to be_nil
       end
     end
 
     context "with a semantic param" do
       context "when the identifier matches work_packages.semantic_id (fast path)" do
         it "finds directly via semantic_id without hitting the alias table" do
-          expect(WorkPackage.find_by_identifier("MYPROJ-1")).to eq(work_package)
+          expect(WorkPackage.find_by_id_or_identifier("MYPROJ-1")).to eq(work_package)
         end
 
         it "returns nil when no WP has that semantic_id and no alias or fallback matches" do
-          expect(WorkPackage.find_by_identifier("MYPROJ-999")).to be_nil
+          expect(WorkPackage.find_by_id_or_identifier("MYPROJ-999")).to be_nil
         end
       end
 
       context "when the identifier is a historic alias (alias table path)" do
         it "resolves historic entries via the alias registry" do
           WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
-          expect(WorkPackage.find_by_identifier("OLDPROJ-1")).to eq(work_package)
+          expect(WorkPackage.find_by_id_or_identifier("OLDPROJ-1")).to eq(work_package)
         end
 
         it "resolves when semantic_id differs but an alias row exists" do
           work_package.update_columns(semantic_id: "OTHER-99")
-          expect(WorkPackage.find_by_identifier("MYPROJ-1")).to eq(work_package)
+          expect(WorkPackage.find_by_id_or_identifier("MYPROJ-1")).to eq(work_package)
         end
       end
 
       it "returns nil for unknown sequence" do
-        expect(WorkPackage.find_by_identifier("MYPROJ-999")).to be_nil
+        expect(WorkPackage.find_by_id_or_identifier("MYPROJ-999")).to be_nil
       end
 
       it "returns nil for unknown project prefix" do
-        expect(WorkPackage.find_by_identifier("NOPE-1")).to be_nil
+        expect(WorkPackage.find_by_id_or_identifier("NOPE-1")).to be_nil
       end
 
       it "returns nil for an unparseable string" do
-        expect(WorkPackage.find_by_identifier("not-an-identifier!")).to be_nil
+        expect(WorkPackage.find_by_id_or_identifier("not-an-identifier!")).to be_nil
       end
     end
 
@@ -112,26 +112,26 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       let(:non_member_user) { create(:user) }
 
       it "returns the WP for a user who can see it" do
-        expect(WorkPackage.visible(member_user).find_by_identifier("MYPROJ-1")).to eq(work_package)
+        expect(WorkPackage.visible(member_user).find_by_id_or_identifier("MYPROJ-1")).to eq(work_package)
       end
 
       it "returns nil for a user who cannot see it" do
-        expect(WorkPackage.visible(non_member_user).find_by_identifier("MYPROJ-1")).to be_nil
+        expect(WorkPackage.visible(non_member_user).find_by_id_or_identifier("MYPROJ-1")).to be_nil
       end
 
       it "also scopes numeric lookup" do
-        expect(WorkPackage.visible(non_member_user).find_by_identifier(work_package.id.to_s)).to be_nil
+        expect(WorkPackage.visible(non_member_user).find_by_id_or_identifier(work_package.id.to_s)).to be_nil
       end
     end
   end
 
-  describe "WorkPackage.find_by_identifier!" do
+  describe "WorkPackage.find_by_id_or_identifier!" do
     it "returns the work package when found" do
-      expect(WorkPackage.find_by_identifier!(work_package.id.to_s)).to eq(work_package)
+      expect(WorkPackage.find_by_id_or_identifier!(work_package.id.to_s)).to eq(work_package)
     end
 
     it "raises ActiveRecord::RecordNotFound when not found" do
-      expect { WorkPackage.find_by_identifier!("MYPROJ-999") }
+      expect { WorkPackage.find_by_id_or_identifier!("MYPROJ-999") }
         .to raise_error(ActiveRecord::RecordNotFound)
     end
   end
