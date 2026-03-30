@@ -309,5 +309,4 @@ class Project < ApplicationRecord
       OpenProject::Events::MODULE_DISABLED, disabled_module:
     )
   end
-
 end
