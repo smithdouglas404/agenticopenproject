@@ -23,25 +23,43 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class XWikiProvider < Provider
-    AUTHENTICATION_METHODS = [
-      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
-      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
-    ].freeze
+require "spec_helper"
 
-    store_attribute :options, :url, :string
-    store_attribute :options, :authentication_method, :string, default: "two_way_oauth2"
-    store_attribute :options, :wiki_audience, :string
-    store_attribute :options, :token_exchange_scope, :string
+RSpec.describe Wikis::XWikiProviders::BaseContract do
+  let(:admin) { build(:admin) }
+  let(:user) { build(:user) }
+  let(:wiki_provider) { build(:xwiki_provider) }
 
-    class << self
-      def registry_prefix = "xwiki"
+  subject(:contract) { described_class.new(wiki_provider, current_user) }
+
+  context "when user is an admin" do
+    let(:current_user) { admin }
+
+    it "is valid" do
+      expect(contract).to be_valid
+    end
+  end
+
+  context "when user is not an admin" do
+    let(:current_user) { user }
+
+    it "is invalid" do
+      expect(contract).not_to be_valid
+      expect(contract.errors[:base]).to include(:error_unauthorized)
+    end
+  end
+
+  context "when user is inactive" do
+    let(:current_user) { build(:admin, status: Principal.statuses[:locked]) }
+
+    it "is invalid" do
+      expect(contract).not_to be_valid
+      expect(contract.errors[:base]).to include(:error_unauthorized)
     end
   end
 end

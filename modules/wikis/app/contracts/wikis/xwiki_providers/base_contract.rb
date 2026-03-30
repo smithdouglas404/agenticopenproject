@@ -23,25 +23,34 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
 module Wikis
-  class XWikiProvider < Provider
-    AUTHENTICATION_METHODS = [
-      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
-      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
-    ].freeze
+  module XWikiProviders
+    class BaseContract < ::BaseContract
+      attribute :name
+      attribute :url
+      validates :url, presence: true, length: { maximum: 255 }
+      validate :url_is_https
 
-    store_attribute :options, :url, :string
-    store_attribute :options, :authentication_method, :string, default: "two_way_oauth2"
-    store_attribute :options, :wiki_audience, :string
-    store_attribute :options, :token_exchange_scope, :string
+      validate :validate_user_allowed_to_manage
 
-    class << self
-      def registry_prefix = "xwiki"
+      private
+
+      def url_is_https
+        return if url.blank?
+
+        errors.add(:url, :invalid) unless url.start_with?("https://")
+      end
+
+      def validate_user_allowed_to_manage
+        unless user.admin? && user.active?
+          errors.add :base, :error_unauthorized
+        end
+      end
     end
   end
 end

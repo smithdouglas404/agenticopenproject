@@ -51,21 +51,33 @@ module Wikis
       def edit; end
 
       def create
-        @wiki_provider = Wikis::XWikiProvider.new(wiki_provider_params)
+        service_result = Wikis::XWikiProviders::CreateService
+          .new(user: current_user)
+          .call(wiki_provider_params)
 
-        if @wiki_provider.save
+        @wiki_provider = service_result.result
+
+        service_result.on_success do
           flash[:notice] = I18n.t(:notice_successful_create)
           redirect_to edit_admin_settings_wiki_provider_path(@wiki_provider)
-        else
+        end
+
+        service_result.on_failure do
           render :new, status: :unprocessable_entity
         end
       end
 
       def update
-        if @wiki_provider.update(wiki_provider_params)
+        service_result = Wikis::XWikiProviders::UpdateService
+          .new(user: current_user, model: @wiki_provider)
+          .call(wiki_provider_params)
+
+        service_result.on_success do
           flash[:notice] = I18n.t(:notice_successful_update)
           redirect_to edit_admin_settings_wiki_provider_path(@wiki_provider)
-        else
+        end
+
+        service_result.on_failure do
           render :edit, status: :unprocessable_entity
         end
       end
