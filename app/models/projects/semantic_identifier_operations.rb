@@ -37,20 +37,6 @@ module Projects::SemanticIdentifierOperations
     FriendlyId::Slug.where(sluggable_type: Project.name, sluggable_id: id).pluck(:slug)
   end
 
-  # Called after this project's identifier is renamed. Atomically:
-  # 1. Appends new-prefix aliases for every WP that ever carried an old-prefix alias.
-  # 2. Updates identifier on resident WPs to the new prefix.
-  def handle_semantic_rename(old_identifier)
-    like_pattern = "#{self.class.sanitize_sql_like(old_identifier)}-%"
-    prefix = "#{old_identifier}-"
-    new_prefix = "#{identifier}-"
-
-    WorkPackageSemanticAlias.transaction do
-      rewrite_alias_prefixes(like_pattern, prefix, new_prefix)
-      rewrite_semantic_ids(like_pattern, prefix, new_prefix)
-    end
-  end
-
   # Atomically allocates the next sequence number for a work package in this project
   # and returns it paired with the resulting semantic identifier (e.g. [42, "PROJ-42"]).
   # Uses a row-level lock to prevent concurrent WP creation from getting the same number.
@@ -62,9 +48,23 @@ module Projects::SemanticIdentifierOperations
     [seq, "#{identifier}-#{seq}"]
   end
 
+  # Called after this project's identifier is renamed. Atomically:
+  # 1. Appends new-prefix aliases for every WP that ever carried an old-prefix alias.
+  # 2. Updates identifier on resident WPs to the new prefix.
+  def handle_semantic_rename(old_identifier)
+    like_pattern = "#{self.class.sanitize_sql_like(old_identifier)}-%"
+    prefix = "#{old_identifier}-"
+    new_prefix = "#{identifier}-"
+
+    WorkPackageSemanticAlias.transaction do
+      append_aliases_with_new_prefix(like_pattern, prefix, new_prefix)
+      rewrite_semantic_ids(like_pattern, prefix, new_prefix)
+    end
+  end
+
   private
 
-  def rewrite_alias_prefixes(like_pattern, prefix, new_prefix)
+  def append_aliases_with_new_prefix(like_pattern, prefix, new_prefix)
     WorkPackageSemanticAlias
       .where("identifier LIKE ?", like_pattern)
       .in_batches do |relation|
