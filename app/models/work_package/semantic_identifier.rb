@@ -85,14 +85,18 @@ module WorkPackage::SemanticIdentifier
   def allocate_and_register_semantic_id
     WorkPackageSemanticAlias.transaction do
       seq, sid = project.allocate_wp_semantic_identifier!
+      # Re-map the semantic identifier to the new project
       update_columns(sequence_number: seq, semantic_id: sid)
+      # Insert current, historical + ghost aliases for the new project
+      # Note: The previous mapping for the old project is assumed to be present in the alias table already
+      #   ever since its prior create/move operation.
       semantic_aliases.insert_all(alias_rows_for(seq), unique_by: :identifier)
     end
   end
 
   private
 
-  # Builds alias rows for every identifier this project has ever used at the given sequence.
+  # Builds alias rows for every identifier this project has ever used at the given sequence (including the new one).
   # This also includes "ghost identifiers" -- i.e. those that weren't ever actually generated, but should work
   # as a historical alias (e.g. OLDPROJ-42 should work even if WP #42 was created after rename to NEWPROJ)
   def alias_rows_for(seq)
