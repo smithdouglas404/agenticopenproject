@@ -76,7 +76,7 @@ module WorkPackage::SemanticIdentifier
       #   - Written on creation for the initial identifier and all historical project prefixes.
       #   - Appended on project rename (new-prefix row for every affected WP).
       #   - Appended on WP move (old identifier row for the moved WP).
-      wp_id = WorkPackageSemanticAlias.find_by(identifier: identifier)&.work_package_id
+      wp_id = WorkPackageSemanticAlias.find_by(identifier:)&.work_package_id
       find_by(id: wp_id)
     end
   end
@@ -87,22 +87,23 @@ module WorkPackage::SemanticIdentifier
   # This should generally be run following project_id-mutating operations on WorkPackage records (like create or move).
   def allocate_and_register_semantic_id
     WorkPackageSemanticAlias.transaction do
-      seq, sid = project.allocate_wp_semantic_identifier!
+      sequence_number, identifier = project.allocate_wp_semantic_identifier!
       # Re-map the semantic identifier to the new project
-      update_columns(sequence_number: seq, identifier: sid)
+      update_columns(sequence_number:, identifier:)
       # Insert current, historical + ghost aliases for the new project
-      # Note: The previous mapping for the old project is assumed to be present in the alias table already
-      #   ever since its prior create/move operation.
-      semantic_aliases.insert_all(alias_rows_for(seq), unique_by: :identifier)
+      # Note: In case of WP move, the previous mapping for the old project is assumed
+      #   to be present in the alias table already, ever since its prior create/move operation.
+      semantic_aliases.insert_all(alias_rows_for_sequence_number(sequence_number),
+                                  unique_by: :identifier)
     end
   end
 
   private
 
-  # Builds alias rows for every identifier this project has ever used at the given sequence (including the new one).
+  # Builds alias rows for every identifier this project has ever used at the given sequence (including the current one).
   # This also includes "ghost identifiers" -- i.e. those that weren't ever actually generated, but should work
   # as a historical alias (e.g. OLDPROJ-42 should work even if WP #42 was created after rename to NEWPROJ)
-  def alias_rows_for(seq)
+  def alias_rows_for_sequence_number(seq)
     project.semantic_identifier_aliases.map { |prefix| { identifier: "#{prefix}-#{seq}", work_package_id: id } }
   end
 end
