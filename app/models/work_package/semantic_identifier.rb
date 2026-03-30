@@ -69,7 +69,7 @@ module WorkPackage::SemanticIdentifier
     private
 
     def find_by_semantic_identifier(identifier)
-      wp = find_by(semantic_id: identifier)
+      wp = find_by(identifier:)
       return wp if wp
 
       # Fallback: Single alias table lookup — O(1) via the unique index on identifier.
@@ -90,7 +90,7 @@ module WorkPackage::SemanticIdentifier
     WorkPackageSemanticAlias.transaction do
       seq, sid = project.allocate_wp_semantic_identifier!
       # Re-map the semantic identifier to the new project
-      update_columns(sequence_number: seq, semantic_id: sid)
+      update_columns(sequence_number: seq, identifier: sid)
       # Insert current, historical + ghost aliases for the new project
       # Note: The previous mapping for the old project is assumed to be present in the alias table already
       #   ever since its prior create/move operation.

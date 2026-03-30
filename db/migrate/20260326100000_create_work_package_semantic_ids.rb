@@ -36,7 +36,7 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
     # Per-project sequence number for semantic identifiers (e.g. PROJ-42)
     add_column :work_packages, :sequence_number, :integer, if_not_exists: true
     # Current semantic identifier stored directly on the work package (e.g. "PROJ-42")
-    add_column :work_packages, :semantic_id, :string, if_not_exists: true
+    add_column :work_packages, :identifier, :string, if_not_exists: true
 
     create_table :work_package_semantic_aliases, if_not_exists: true do |t|
       t.string :identifier, null: false
@@ -48,9 +48,9 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
     add_index :work_package_semantic_aliases, :identifier, unique: true, if_not_exists: true
 
     # Fast lookup and uniqueness of the current semantic identifier (partial: excludes pre-backfill NULLs)
-    add_index :work_packages, :semantic_id,
+    add_index :work_packages, :identifier,
               unique: true,
-              where: "semantic_id IS NOT NULL",
+              where: "identifier IS NOT NULL",
               if_not_exists: true
 
     # Enforce uniqueness of sequence numbers within a project (partial: excludes pre-backfill NULLs)
@@ -67,7 +67,7 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
   def down
     drop_table :work_package_semantic_aliases, if_exists: true
     remove_index :work_packages, %i[project_id sequence_number], if_exists: true
-    remove_column :work_packages, :semantic_id, if_exists: true
+    remove_column :work_packages, :identifier, if_exists: true
     remove_column :work_packages, :sequence_number, if_exists: true
     remove_column :projects, :wp_sequence_counter, if_exists: true
   end
