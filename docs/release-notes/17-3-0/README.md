@@ -96,6 +96,10 @@ Work package search has been continuously improved in recent releases. With Open
 
 When selecting work packages, for example in relations, boards, meetings, time tracking, or filters, it is now possible to search by attributes such as type and status. This aligns the search behavior with the global search and makes it easier to find and select the correct work packages in different workflows.
 
+### Nested groups for improved user and permission management
+
+Groups can now be nested, allowing memberships and permissions to be inherited through the group hierarchy. This lays the foundation for further improvements in structuring and managing groups.
+
 ## Important technical updates
 
 ### Webhooks now include the user causing a change (actor)
@@ -241,4 +245,3 @@ Last but not least, we are very grateful for our very engaged translation contri
 - [Liangzdz](https://crowdin.com/profile/Liangzdz), for a great number of translations into Chinese Simplified.
 
 Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
-
