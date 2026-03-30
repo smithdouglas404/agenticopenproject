@@ -32,7 +32,11 @@ class RbBurndownChartsController < RbApplicationController
   helper :burndown_charts
 
   def show
-    @burndown = @sprint.burndown(@project)
+    @burndown = if OpenProject::FeatureDecisions.scrum_projects_active?
+                  Burndown.new(@sprint, @project)
+                else
+                  @sprint.burndown(@project)
+                end
 
     respond_to do |format|
       format.html { render layout: true }

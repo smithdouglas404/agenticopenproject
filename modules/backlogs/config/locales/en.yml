@@ -220,6 +220,7 @@ en:
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
         task_board: "Sprint board"
+        burndown: "Burndown"
 
     story_component:
       label_drag_story: "Move %{name}"

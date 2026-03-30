@@ -52,7 +52,11 @@ class Burndown
   private
 
   def make_date_series(sprint)
-    @days = sprint.days
+    @days = if sprint.is_a?(Agile::Sprint)
+              Day.working.from_range(from: sprint.start_date, to: sprint.finish_date).map(&:date)
+            else
+              sprint.days
+            end
   end
 
   def calculate_series(series_data)
@@ -100,6 +104,7 @@ class Burndown
     Hash[*keys.zip(values).flatten]
   end
 
+  # TODO: Check if this can be removed
   def workday_before(date = Date.today)
     d = date - 1
     # TODO: make weekday configurable

@@ -103,6 +103,15 @@ See COPYRIGHT and LICENSE files for more details.
           item.with_leading_visual_icon(icon: :"op-view-cards")
         end
       end
+
+      menu.with_item(
+        label: t(".action_menu.burndown"),
+        tag: :a,
+        href: backlogs_project_sprint_burndown_chart_path(project, sprint),
+        disabled: !sprint.date_range_set?
+      ) do |item|
+        item.with_leading_visual_icon(icon: :graph)
+      end
     end
   end
 %>

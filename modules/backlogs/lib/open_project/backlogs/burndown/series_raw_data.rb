@@ -76,7 +76,12 @@ module OpenProject::Backlogs::Burndown
 
     def collected_days
       @collected_days ||= begin
-        days = sprint.days(nil)
+        days = if sprint.is_a?(Agile::Sprint)
+                 Day.working.from_range(from: sprint.start_date, to: sprint.finish_date).map(&:date)
+               else
+                 sprint.days(nil)
+               end
+
         days.sort.select { |d| d <= Date.today }
       end
     end
@@ -93,7 +98,7 @@ module OpenProject::Backlogs::Burndown
       JOIN journals AS id_journals
       ON work_package_journals.id = id_journals.data_id
         AND id_journals.data_type = '#{Journal::WorkPackageJournal.name}'
-        AND #{version_query}
+        AND #{container_query}
         AND #{project_id_query}
         AND #{type_id_query}
         #{and_status_query}
@@ -126,7 +131,7 @@ module OpenProject::Backlogs::Burndown
       JOIN
         (
           SELECT
-            CAST(j.created_at AS DATE) AS created_at,
+            CAST(j.updated_at AS DATE) AS updated_at,
             j.journable_id,
             MAX(j.version) as version
           FROM
@@ -140,18 +145,18 @@ module OpenProject::Backlogs::Burndown
                 work_package_journals
               ON work_package_journals.id = journals.data_id
                 AND journals.data_type = '#{Journal::WorkPackageJournal.name}'
-                AND #{version_query}
+                AND #{container_query}
                 AND #{project_id_query}
                 AND #{type_id_query}
                 #{and_status_query})
           GROUP BY
-            CAST(j.created_at AS DATE),
+            CAST(j.updated_at AS DATE),
             j.journable_type,
             j.journable_id
           HAVING j.journable_type = 'WorkPackage'
           ORDER BY j.journable_id, version
         ) as j
-      ON d.date >= j.created_at
+      ON d.date >= j.updated_at
       GROUP BY d.date, j.journable_id
       ORDER BY j.journable_id, d.date, version
       SQL
@@ -181,8 +186,12 @@ module OpenProject::Backlogs::Burndown
       end
     end
 
-    def version_query
-      @version_query ||= "(#{Journal::WorkPackageJournal.table_name}.version_id = #{sprint.id})"
+    def container_query
+      @container_query ||= if sprint.is_a?(Agile::Sprint)
+                             "(#{Journal::WorkPackageJournal.table_name}.sprint_id = #{sprint.id})"
+                           else
+                             "(#{Journal::WorkPackageJournal.table_name}.version_id = #{sprint.id})"
+                           end
     end
 
     def project_id_query
@@ -190,13 +199,21 @@ module OpenProject::Backlogs::Burndown
     end
 
     def type_id_query
-      @type_id_query ||= "(#{Journal::WorkPackageJournal.table_name}.type_id in (#{collected_types.join(',')}))"
+      @type_id_query ||= if sprint.is_a?(Agile::Sprint)
+                           "1 = 1"
+                         else
+                           "(#{Journal::WorkPackageJournal.table_name}.type_id in (#{collected_types.join(',')}))"
+                         end
     end
 
+    # TODO: can this be removed?
+    # does not seem to be called
     def ignore_if_has_parent
       @ignore_if_has_parent ||= "(#{Journal::WorkPackageJournal.table_name}.parent_id IS NOT NULL)"
     end
 
+    # TODO: can this be removed?
+    # does not seem to be called
     def collected_from_children?(key, story)
       key == "remaining_hours" && story_has_children?(story)
     end
