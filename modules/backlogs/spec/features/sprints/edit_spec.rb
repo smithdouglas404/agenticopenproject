@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../../support/pages/sprint_planning"
+require_relative "../../support/pages/backlog_and_sprints"
 
 RSpec.describe "Edit", :js do
   let(:project) { create(:project) }
@@ -42,7 +42,7 @@ RSpec.describe "Edit", :js do
   let(:user) do
     create(:user, member_with_permissions: { project => permissions })
   end
-  let(:planning_page) { Pages::SprintPlanning.new(project) }
+  let(:planning_page) { Pages::BacklogAndSprints.new(project) }
 
   let!(:closed_sprint) do
     create(:agile_sprint,

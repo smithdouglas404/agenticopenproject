@@ -68,7 +68,7 @@ module OpenProject::Backlogs
 
       project_module :backlogs, dependencies: :work_package_tracking do
         permission :view_sprints,
-                   { rb_master_backlogs: %i[index sprint_planning details],
+                   { rb_master_backlogs: %i[index backlog_and_sprints details],
                      rb_sprints: %i[index show show_name],
                      rb_wikis: :show,
                      rb_stories: %i[index show],
@@ -119,17 +119,17 @@ module OpenProject::Backlogs
       # Menu items that are there when feature flag is active
       menu :project_menu,
            :backlogs,
-           { controller: "/rb_master_backlogs", action: :sprint_planning },
+           { controller: "/rb_master_backlogs", action: :backlog_and_sprints },
            if: Proc.new { |project| project.module_enabled?(:backlogs) && OpenProject::FeatureDecisions.scrum_projects_active? },
            caption: :project_module_backlogs,
            after: :work_packages,
            icon: "op-backlogs"
 
       menu :project_menu,
-           :sprint_planning,
-           { controller: "/rb_master_backlogs", action: :sprint_planning },
+           :backlog_and_sprints,
+           { controller: "/rb_master_backlogs", action: :backlog_and_sprints },
            if: Proc.new { |project| project.module_enabled?(:backlogs) && OpenProject::FeatureDecisions.scrum_projects_active? },
-           caption: :label_sprint_planning,
+           caption: :label_backlog_and_sprints,
            parent: :backlogs
 
       # Menu items that are there when feature flag is inactive

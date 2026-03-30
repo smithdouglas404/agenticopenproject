@@ -175,7 +175,7 @@ en:
       title: "Move to sprint"
       label_sprint: "Sprint"
 
-    sprint_planning:
+    backlog_and_sprints:
       blankslate:
         title: "No sprints present yet"
         description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
@@ -271,7 +271,7 @@ en:
   label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Sprint Impediments"
   label_sprint_new: "New sprint"
-  label_sprint_planning: "Sprint planning"
+  label_backlog_and_sprints: "Backlog and Sprints"
   label_task_board: "Task board"
   notice_successful_start: "The sprint was started."
   notice_successful_finish: "The sprint was completed."

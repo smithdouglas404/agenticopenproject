@@ -80,7 +80,7 @@ Rails.application.routes.draw do
               work_package_split_view: true,
               defaults: { tab: :overview }
 
-          get :sprint_planning
+          get :backlog_and_sprints
         end
       end
 

@@ -85,23 +85,23 @@ See COPYRIGHT and LICENSE files for more details.
         <% can_manage_sprint_sharing = current_user.allowed_in_project?(:share_sprint, @project) %>
         <% description_key =
              if @project.receive_shared_sprints?
-               can_manage_sprint_sharing ? "backlogs.sprint_planning.blankslate.receive_shared_description_html" :
-                 "backlogs.sprint_planning.blankslate.receive_shared_no_actions_description_text"
+               can_manage_sprint_sharing ? "backlogs.backlog_and_sprints.blankslate.receive_shared_description_html" :
+                 "backlogs.backlog_and_sprints.blankslate.receive_shared_no_actions_description_text"
              elsif can_create_sprints && can_manage_sprint_sharing
-               "backlogs.sprint_planning.blankslate.description_html"
+               "backlogs.backlog_and_sprints.blankslate.description_html"
              elsif can_create_sprints
-               "backlogs.sprint_planning.blankslate.create_sprint_description_text"
+               "backlogs.backlog_and_sprints.blankslate.create_sprint_description_text"
              elsif can_manage_sprint_sharing
-               "backlogs.sprint_planning.blankslate.share_sprint_description_html"
+               "backlogs.backlog_and_sprints.blankslate.share_sprint_description_html"
              else
-               "backlogs.sprint_planning.blankslate.no_actions_description_text"
+               "backlogs.backlog_and_sprints.blankslate.no_actions_description_text"
              end %>
         <% description_content =
              if can_manage_sprint_sharing
                t(
                  description_key,
                  settings_link: link_to(
-                   t("backlogs.sprint_planning.blankslate.settings_link_text"),
+                   t("backlogs.backlog_and_sprints.blankslate.settings_link_text"),
                    project_settings_backlog_sharing_path(@project)
                  )
                )
@@ -112,7 +112,7 @@ See COPYRIGHT and LICENSE files for more details.
         <%=
           render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
             blankslate.with_visual_icon(icon: :zap)
-            blankslate.with_heading(tag: :h4).with_content(t("backlogs.sprint_planning.blankslate.title"))
+            blankslate.with_heading(tag: :h4).with_content(t("backlogs.backlog_and_sprints.blankslate.title"))
             blankslate.with_description_content(description_content)
           end
         %>

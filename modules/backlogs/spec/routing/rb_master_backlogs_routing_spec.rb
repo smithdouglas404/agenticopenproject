@@ -37,9 +37,9 @@ RSpec.describe RbMasterBacklogsController do
     }
 
     it {
-      route = "/projects/project_42/backlogs/sprint_planning"
+      route = "/projects/project_42/backlogs/backlog_and_sprints"
       expect(get(route)).to route_to(controller: "rb_master_backlogs",
-                                     action: "sprint_planning",
+                                     action: "backlog_and_sprints",
                                      project_id: "project_42")
     }
 

@@ -31,7 +31,7 @@
 require "support/pages/page"
 
 module Pages
-  class SprintPlanning < Page
+  class BacklogAndSprints < Page
     attr_reader :project
 
     def initialize(project)
@@ -148,25 +148,25 @@ module Pages
       end
     end
 
-    def expect_sprint_planning_blankslate
+    def expect_backlog_and_sprints_blankslate
       within_sprint_backlogs do
         expect(page).to have_css("h4", text: "No sprints present yet")
       end
     end
 
-    def expect_sprint_planning_blankslate_description(text)
+    def expect_backlog_and_sprints_blankslate_description(text)
       within_sprint_backlogs do
         expect(page).to have_text(text)
       end
     end
 
-    def expect_no_sprint_planning_blankslate
+    def expect_no_backlog_and_sprints_blankslate
       within_sprint_backlogs do
         expect(page).to have_no_css("h4", text: "No sprints present yet")
       end
     end
 
-    def expect_sprint_planning_settings_link
+    def expect_backlog_and_sprints_settings_link
       within_sprint_backlogs do
         expect(page).to have_link(
           "project settings",
@@ -175,7 +175,7 @@ module Pages
       end
     end
 
-    def expect_no_sprint_planning_settings_link
+    def expect_no_backlog_and_sprints_settings_link
       within_sprint_backlogs do
         expect(page).to have_no_link(
           "project settings",
@@ -330,7 +330,7 @@ module Pages
     end
 
     def path
-      sprint_planning_backlogs_project_backlogs_path(project)
+      backlog_and_sprints_backlogs_project_backlogs_path(project)
     end
 
     def within_story_menu(story, &)

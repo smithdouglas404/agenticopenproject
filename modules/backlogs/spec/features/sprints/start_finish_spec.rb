@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../../support/pages/sprint_planning"
+require_relative "../../support/pages/backlog_and_sprints"
 require_relative "../../../../boards/spec/features/support/board_page"
 
 RSpec.describe "Start and finish sprints",
@@ -49,7 +49,7 @@ RSpec.describe "Start and finish sprints",
   let(:user) do
     create(:user, member_with_permissions: { project => permissions })
   end
-  let(:planning_page) { Pages::SprintPlanning.new(project) }
+  let(:planning_page) { Pages::BacklogAndSprints.new(project) }
   let(:task_statuses) { Type.find(Task.type).statuses }
   let(:story_type) { create(:type_feature) }
   let(:task_type) do

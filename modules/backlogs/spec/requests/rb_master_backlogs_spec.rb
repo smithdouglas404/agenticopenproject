@@ -73,18 +73,18 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
     end
 
     context "with the scrum project feature flag active", with_flag: { scrum_projects: true } do
-      it "redirects to sprint_planning" do
+      it "redirects to backlog_and_sprints" do
         get "/projects/#{project.identifier}/backlogs"
 
-        expect(response).to redirect_to("/projects/#{project.identifier}/backlogs/sprint_planning")
+        expect(response).to redirect_to("/projects/#{project.identifier}/backlogs/backlog_and_sprints")
       end
     end
   end
 
-  describe "GET #sprint_planning" do
+  describe "GET #backlog_and_sprints" do
     context "without the scrum project feature flag" do
       it "is not successful" do
-        get "/projects/#{project.identifier}/backlogs/sprint_planning"
+        get "/projects/#{project.identifier}/backlogs/backlog_and_sprints"
 
         expect(response).to have_http_status(:forbidden)
       end
@@ -92,21 +92,22 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
 
     context "with the scrum project feature flag active", with_flag: { scrum_projects: true } do
       it "is successful" do
-        get "/projects/#{project.identifier}/backlogs/sprint_planning"
+        get "/projects/#{project.identifier}/backlogs/backlog_and_sprints"
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(:sprint_planning)
+        expect(response).to render_template(:backlog_and_sprints)
 
-        expect(response).to have_turbo_frame "backlogs_container", src: "/projects/#{project.identifier}/backlogs/sprint_planning"
+        expect(response).to have_turbo_frame "backlogs_container",
+                                             src: "/projects/#{project.identifier}/backlogs/backlog_and_sprints"
         expect(response).to have_turbo_frame "content-bodyRight"
       end
 
       context "with a Turbo Frame request" do
         it "renders the sprint planning list partial" do
-          get "/projects/#{project.identifier}/backlogs/sprint_planning", headers: { "Turbo-Frame" => "backlogs_container" }
+          get "/projects/#{project.identifier}/backlogs/backlog_and_sprints", headers: { "Turbo-Frame" => "backlogs_container" }
 
           expect(response).to have_http_status(:ok)
-          expect(response).to render_template("rb_master_backlogs/_sprint_planning_list")
+          expect(response).to render_template("rb_master_backlogs/_backlog_and_sprints_list")
 
           expect(response).to have_turbo_frame "backlogs_container"
           expect(response).to have_no_turbo_frame "content-bodyRight"
@@ -126,7 +127,7 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
           end
 
           it "still renders the sprint planning container for turbo-frame requests" do
-            get "/projects/#{project.identifier}/backlogs/sprint_planning",
+            get "/projects/#{project.identifier}/backlogs/backlog_and_sprints",
                 headers: { "Turbo-Frame" => "backlogs_container" }
 
             expect(response).to have_http_status(:ok)
@@ -150,11 +151,11 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
     end
 
     context "with the scrum project feature flag active", with_flag: { scrum_projects: true } do
-      it "is successful and renders sprint_planning" do
+      it "is successful and renders backlog_and_sprints" do
         get "/projects/#{project.identifier}/backlogs/details/#{story.id}"
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(:sprint_planning)
+        expect(response).to render_template(:backlog_and_sprints)
       end
     end
 

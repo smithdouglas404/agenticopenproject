@@ -36,18 +36,18 @@ See COPYRIGHT and LICENSE files for more details.
 <% content_for :content_header do %>
   <%=
     render Primer::OpenProject::PageHeader.new(mb: 0) do |header|
-      header.with_title { t(:label_sprint_planning) }
+      header.with_title { t(:label_backlog_and_sprints) }
       header.with_breadcrumbs(
         [{ href: project_overview_path(@project), text: @project.name },
-         { href: sprint_planning_backlogs_project_backlogs_path(@project), text: t(:label_backlogs) },
-         t(:label_sprint_planning)]
+         { href: backlog_and_sprints_backlogs_project_backlogs_path(@project), text: t(:label_backlogs) },
+         t(:label_backlog_and_sprints)]
       )
     end
   %>
 <% end %>
 
 <% content_for :content_body do %>
-  <%= turbo_frame_tag :backlogs_container, refresh: :morph, src: sprint_planning_backlogs_project_backlogs_path(@project), class: "op-backlogs-page" %>
+  <%= turbo_frame_tag :backlogs_container, refresh: :morph, src: backlog_and_sprints_backlogs_project_backlogs_path(@project), class: "op-backlogs-page" %>
 <% end %>
 
 <% content_for :content_body_right do %>

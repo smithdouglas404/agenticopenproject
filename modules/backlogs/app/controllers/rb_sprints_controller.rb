@@ -83,7 +83,7 @@ class RbSprintsController < RbApplicationController
 
     if call.success?
       flash[:notice] = I18n.t(:notice_successful_create)
-      render turbo_stream: turbo_stream.redirect_to(sprint_planning_backlogs_project_backlogs_path(@project))
+      render turbo_stream: turbo_stream.redirect_to(backlog_and_sprints_backlogs_project_backlogs_path(@project))
     else
       update_new_sprint_form_component_via_turbo_stream(sprint: call.result, base_errors: call.errors[:base])
       respond_with_turbo_streams
@@ -125,7 +125,7 @@ class RbSprintsController < RbApplicationController
 
     if result.success?
       flash[:notice] = I18n.t(:notice_successful_finish)
-      render turbo_stream: turbo_stream.redirect_to(sprint_planning_backlogs_project_backlogs_path(@project))
+      render turbo_stream: turbo_stream.redirect_to(backlog_and_sprints_backlogs_project_backlogs_path(@project))
     elsif result.includes_error?(:base, :unfinished_work_packages)
       show_finish_sprint_dialog
     else
