@@ -41,7 +41,7 @@ module WorkPackage::SemanticIdentifier
              inverse_of: :work_package,
              dependent: :destroy
 
-    after_create :allocate_and_register_semantic_id, if: -> { Setting::WorkPackageIdentifier.alphanumeric? }
+    after_create :allocate_and_register_semantic_id, if: -> { Setting::WorkPackageIdentifier.semantic? }
   end
 
   class_methods do

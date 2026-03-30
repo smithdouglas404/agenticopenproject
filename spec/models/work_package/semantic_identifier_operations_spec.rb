@@ -36,7 +36,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
   let(:work_package) { create(:work_package, project:) }
 
   before do
-    allow(Setting::WorkPackageIdentifier).to receive_messages(alphanumeric?: true, numeric?: false)
+    allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, numeric?: false)
     work_package
   end
 
