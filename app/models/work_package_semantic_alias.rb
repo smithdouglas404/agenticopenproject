@@ -30,7 +30,7 @@
 
 # Maps a retired semantic identifier (e.g. "PROJ-42") to a work package.
 # A row is written here when an identifier is superseded by a move or project rename.
-# All rows are removed when the work package itself is deleted (cascade via FK).
+# All rows are removed when the work package itself is destroyed via ActiveRecord (e.g., through the association's dependent configuration).
 # The current identifier is stored directly on work_packages.semantic_id.
 #
 # The write side of the registry lives in WorkPackage::SemanticIdentifier:
