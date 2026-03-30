@@ -65,7 +65,8 @@ module WorkPackage::SemanticIdentifier
     private
 
     def find_by_semantic_identifier(identifier)
-      return wp if (wp = find_by(semantic_id: identifier))
+      wp = find_by(semantic_id: identifier)
+      return wp if wp
 
       # Fallback: Single alias table lookup — O(1) via the unique index on identifier.
       # The table holds every identifier a WP has ever been known by:
@@ -105,6 +106,8 @@ module WorkPackage::SemanticIdentifier
   end
 
   # Builds alias rows for every identifier this project has ever used at the given sequence.
+  # This also includes "ghost identifiers" -- i.e. those that weren't actually generated, but should work
+  # as a historical alias (e.g. OLDPROJ-42 should work even if WP #42 was created only after rename to NEWPROJ)
   def alias_rows_for(seq)
     project.semantic_identifier_aliases.map { |prefix| { identifier: "#{prefix}-#{seq}", work_package_id: id } }
   end

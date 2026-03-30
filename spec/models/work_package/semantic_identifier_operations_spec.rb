@@ -136,7 +136,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
-  describe "WorkPackage.register_move" do
+  describe "#handle_wp_move" do
     let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
     let(:target_project) { create(:project, identifier: "OTHER", wp_sequence_counter: 0) }
 
@@ -161,7 +161,7 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
-  describe "WorkPackage.register_project_rename" do
+  describe "project.handle_semantic_rename" do
     let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
     let(:target_project) { create(:project, identifier: "OTHER", wp_sequence_counter: 0) }
     let(:work_package) { nil } # suppress outer eager instantiation so wp1/wp2 start at sequence 1

@@ -33,11 +33,10 @@
 # including both the current identifier and any retired ones created by moves
 # or project renames. The current identifier is also stored directly on
 # work_packages.semantic_id for faster access.
-# All rows are removed when the work package itself is deleted (cascade via FK).
 #
 # The write side of the registry lives in WorkPackage::SemanticIdentifier:
-#   WorkPackage.register_move(wp)                       # on WP project change
-#   WorkPackage.register_project_rename(proj, old_id)   # on project identifier change
+#   wp.handle_wp_move                                   # on WP project change
+#   project.handle_semantic_rename(old_identifier)      # on project identifier change
 class WorkPackageSemanticAlias < ApplicationRecord
   belongs_to :work_package, inverse_of: :semantic_aliases
 
