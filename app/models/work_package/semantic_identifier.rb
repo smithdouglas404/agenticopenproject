@@ -47,7 +47,7 @@ module WorkPackage::SemanticIdentifier
   class_methods do
     # Resolves any identifier form to a WorkPackage.
     #   - Numeric string ("12345")    → find by primary key
-    #   - Semantic string ("PROJ-42") → alias table lookup
+    #   - Semantic string ("PROJ-42") → lookup via work_packages table and alias table
     #
     # Returns nil on miss.
     def find_by_identifier(identifier)
@@ -65,12 +65,7 @@ module WorkPackage::SemanticIdentifier
     private
 
     def find_by_semantic_identifier(identifier)
-      # Fast path: Try direct lookup via the current semantic_id column first.
-      # This uses the unique index on work_packages.semantic_id and resolves
-      # the common case (current identifiers) in a single query.
-      if (wp = find_by(semantic_id: identifier))
-        return wp
-      end
+      return wp if (wp = find_by(semantic_id: identifier))
 
       # Fallback: Single alias table lookup — O(1) via the unique index on identifier.
       # The table holds every identifier a WP has ever been known by:

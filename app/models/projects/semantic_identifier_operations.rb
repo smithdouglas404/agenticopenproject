@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects::SemanticIdentifier
+module Projects::SemanticIdentifierOperations
   extend ActiveSupport::Concern
 
   # Returns all identifiers this project has ever used, as recorded by FriendlyId
