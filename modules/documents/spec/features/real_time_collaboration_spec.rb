@@ -107,6 +107,7 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
           wait: 10
         )
         expect(page).to have_no_test_selector("blocknote-document-description", wait: 0)
+        expect(page).to have_test_selector("document-info-line", text: "You are currently offline.")
       end
     end
 
