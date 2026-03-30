@@ -46,15 +46,8 @@ module Projects::SemanticIdentifier
     new_prefix = "#{identifier}-"
 
     WorkPackageSemanticAlias.transaction do
-      rows = WorkPackageSemanticAlias
-               .where("identifier LIKE ?", like_pattern)
-               .pluck(:work_package_id, :identifier)
-               .map { |wp_id, id| { identifier: new_prefix + id.delete_prefix(prefix), work_package_id: wp_id } }
-      WorkPackageSemanticAlias.insert_all(rows, unique_by: :identifier) if rows.any?
-
-      WorkPackage.where("semantic_id LIKE ?", like_pattern).find_each do |wp|
-        wp.update_columns(semantic_id: new_prefix + wp.semantic_id.delete_prefix(prefix))
-      end
+      rewrite_alias_prefixes(like_pattern, prefix, new_prefix)
+      rewrite_semantic_ids(like_pattern, prefix, new_prefix)
     end
   end
 
@@ -67,5 +60,21 @@ module Projects::SemanticIdentifier
       wp_sequence_counter
     end
     [seq, "#{identifier}-#{seq}"]
+  end
+
+  private
+
+  def rewrite_alias_prefixes(like_pattern, prefix, new_prefix)
+    rows = WorkPackageSemanticAlias
+             .where("identifier LIKE ?", like_pattern)
+             .pluck(:work_package_id, :identifier)
+             .map { |wp_id, id| { identifier: new_prefix + id.delete_prefix(prefix), work_package_id: wp_id } }
+    WorkPackageSemanticAlias.insert_all(rows, unique_by: :identifier) if rows.any?
+  end
+
+  def rewrite_semantic_ids(like_pattern, prefix, new_prefix)
+    WorkPackage.where("semantic_id LIKE ?", like_pattern).find_each do |wp|
+      wp.update_columns(semantic_id: new_prefix + wp.semantic_id.delete_prefix(prefix))
+    end
   end
 end
