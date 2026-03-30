@@ -41,7 +41,7 @@ module Projects::SemanticIdentifier
   # 1. Appends new-prefix aliases for every WP that ever carried an old-prefix alias.
   # 2. Updates semantic_id on resident WPs to the new prefix.
   def handle_semantic_rename(old_identifier)
-    like_pattern = "#{sanitize_sql_like(old_identifier)}-%"
+    like_pattern = "#{self.class.sanitize_sql_like(old_identifier)}-%"
     prefix = "#{old_identifier}-"
     new_prefix = "#{identifier}-"
 
