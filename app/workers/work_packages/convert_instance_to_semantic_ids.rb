@@ -28,54 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Settings
-  class WorkPackagesIdentifierController < ::Admin::SettingsController
-    include OpTurbo::ComponentStream
+class WorkPackages::ConvertInstanceToSemanticIds < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
 
-    before_action :check_feature_flag
+  good_job_control_concurrency_with(perform_limit: 1)
 
-    current_menu_item :show do
-      :work_packages_identifier
-    end
+  def perform
+    # Locate Projects with IDs that haven't yet been converted to the uppercase semantic format.
+    problematic_ids = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
 
-    def show
-      @form_state = WorkPackages::IdentifierAutofix.job_in_progress? ? :change_in_progress : :edit
-    end
+    # Locate Projects that have some work packages that haven't yet gone through semantic ID sequencing.
+    # This may include projects that have already had their identifier converted but the WPs haven't finished converting.
+    # This enables idempotent re-runs.
+    needs_backfill = WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
 
-    def update
-      return render_400 unless params[:settings]
+    needs_backfill.merge(problematic_ids)
 
-      if autofix_requested?
-        WorkPackages::ConvertInstanceToSemanticIds.perform_later
-        redirect_to action: "show"
-      else
-        super
+    GoodJob::Batch.enqueue(on_success: WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSettingJob) do
+      needs_backfill.each do |project_id|
+        WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob.perform_later(project_id)
       end
-    end
-
-    def confirm_dialog
-      respond_with_dialog WorkPackages::Admin::Settings::ChangeIdentifiersDialogComponent.new
-    end
-
-    def status
-      if WorkPackages::IdentifierAutofix.job_in_progress?
-        head :no_content
-      else
-        replace_via_turbo_stream(
-          component: WorkPackages::Admin::Settings::IdentifierSettingsFormComponent.new(state: :completed)
-        )
-        respond_with_turbo_streams
-      end
-    end
-
-    private
-
-    def check_feature_flag
-      render_404 unless OpenProject::FeatureDecisions.semantic_work_package_ids_active?
-    end
-
-    def autofix_requested?
-      ActiveRecord::Type::Boolean.new.cast(params[:confirm_dangerous_action])
     end
   end
 end

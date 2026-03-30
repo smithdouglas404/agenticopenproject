@@ -28,54 +28,46 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class WorkPackages::IdentifierAutofix::ApplyHandlesJob < ApplicationJob
-  include GoodJob::ActiveJobExtensions::Concurrency
-
-  good_job_control_concurrency_with(perform_limit: 1)
-
-  def perform
-    detector = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
-    exclusion_set = detector.exclusion_set
-    problematic_ids = detector.scope.ids.to_set
-
-    Project.find_each do |project|
-      fix_project_identifier(project, exclusion_set) if problematic_ids.include?(project.id)
-      backfill_work_packages(project)
-    end
-
-    Setting.work_packages_identifier = Setting::WorkPackageIdentifier::ALPHANUMERIC
+class WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob < ApplicationJob
+  def perform(project_id)
+    project = Project.find(project_id)
+    fix_identifier_if_needed(project)
+    backfill_work_packages(project)
   end
 
   private
 
-  def fix_project_identifier(project, exclusion_set)
-    new_identifier = WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
-                       .suggest_identifier(project.name, exclude: exclusion_set)
+  def fix_identifier_if_needed(project)
+    detector = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
+    # Pure format check — no DB queries. nil means the identifier is fine.
+    return unless detector.format_error_reason(project.identifier)
 
+    # Build the exclusion set fresh from the DB at job-execution time.
+    # Two concurrent jobs may occasionally suggest the same identifier, but the
+    # unique constraint on projects.identifier will reject the second writer, and
+    # the job can be retried.
+    new_identifier = WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
+                       .suggest_identifier(project.name, exclude: detector.exclusion_set)
     project.identifier = new_identifier
     project.save!(validate: false)
-    exclusion_set << new_identifier
   end
 
   def backfill_work_packages(project)
+    # Assign sequence numbers to any WPs that don't have one yet (oldest first).
     WorkPackage.where(project:, sequence_number: nil).order(:id).find_each do |wp|
-      seq, sid = project.allocate_wp_semantic_identifier!
-      wp.update_columns(sequence_number: seq, semantic_id: sid)
-    end
-
-    WorkPackage.where(project:).find_each do |wp|
-      sid = "#{project.identifier}-#{wp.sequence_number}"
-      wp.update_columns(semantic_id: sid) if wp.semantic_id != sid
+      seq, identifier = project.allocate_wp_semantic_identifier!
+      wp.update_columns(sequence_number: seq, identifier:)
     end
 
     seed_alias_table(project)
   end
 
   def seed_alias_table(project)
-    prefixes = project.semantic_identifier_aliases
-    alias_rows = WorkPackage.where(project:).pluck(:id, :sequence_number).flat_map do |wp_id, seq|
-      prefixes.map { |prefix| { identifier: "#{prefix}-#{seq}", work_package_id: wp_id } }
+    # Bulk-insert alias rows for every historical project identifier prefix so that
+    # old-style references (e.g. OLDPROJ-42) continue to resolve after a rename.
+    alias_rows = WorkPackage.where(project:).flat_map do |wp|
+      wp.alias_rows_for_sequence_number(wp.sequence_number)
     end
-    WorkPackageSemanticAlias.insert_all(alias_rows, unique_by: :identifier) if alias_rows.any?
+    WorkPackageSemanticAlias.upsert_rows(alias_rows)
   end
 end

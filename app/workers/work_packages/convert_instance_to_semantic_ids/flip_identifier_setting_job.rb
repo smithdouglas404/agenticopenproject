@@ -28,15 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
-  module IdentifierAutofix
-    def self.job_in_progress?
-      GoodJob::Job
-        .where(job_class: [
-                 WorkPackages::ConvertInstanceToSemanticIds.name,
-                 WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob.name
-               ])
-        .exists?(finished_at: nil)
-    end
+class WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSettingJob < ApplicationJob
+  # Called by GoodJob as an on_success batch callback with (batch, params).
+  # Only fires when every job in the batch succeeded — no conditional needed.
+  def perform(_batch, _params)
+    Setting.work_packages_identifier = Setting::WorkPackageIdentifier::SEMANTIC
   end
 end

@@ -65,6 +65,15 @@ module WorkPackages
 
       delegate :count, to: :scope
 
+      # Returns a symbol classifying why the identifier violates the expected format,
+      # or nil if the identifier is format-valid. Pure in-memory check — no DB queries.
+      def format_error_reason(identifier)
+        FORMAT_RULES.each do |reason, check|
+          return reason if check.call(identifier, max_identifier_length)
+        end
+        nil
+      end
+
       # Returns a symbol classifying why the identifier is problematic.
       # Must handle all identifiers matched by #scope.
       def error_reason(identifier)
@@ -86,13 +95,6 @@ module WorkPackages
       def not_fully_uppercased      = Project.where("identifier != UPPER(identifier)")
 
       def max_identifier_length = ProjectIdentifierSuggestionGenerator::IDENTIFIER_LENGTH[:max]
-
-      def format_error_reason(identifier)
-        FORMAT_RULES.each do |reason, check|
-          return reason if check.call(identifier, max_identifier_length)
-        end
-        nil
-      end
 
       def collision_error_reason(identifier)
         if in_use_identifiers.include?(identifier)

@@ -95,8 +95,6 @@ module WorkPackage::SemanticIdentifier
     end
   end
 
-  private
-
   # Builds alias rows for every identifier this project has ever used at the given sequence (including the current one).
   # This also includes "ghost identifiers" -- i.e. those that weren't ever actually generated, but should work
   # as a historical alias (e.g. OLDPROJ-42 should work even if WP #42 was created after rename to NEWPROJ)

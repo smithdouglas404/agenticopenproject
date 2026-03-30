@@ -28,15 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
-  module IdentifierAutofix
-    def self.job_in_progress?
-      GoodJob::Job
-        .where(job_class: [
-                 WorkPackages::ConvertInstanceToSemanticIds.name,
-                 WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob.name
-               ])
-        .exists?(finished_at: nil)
+require "rails_helper"
+
+RSpec.describe WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSettingJob do
+  subject(:job) { described_class.new }
+
+  describe "#perform" do
+    it "sets work_packages_identifier to semantic" do
+      # GoodJob only calls on_success callbacks when all jobs succeeded,
+      # so no conditional check is needed — just flip unconditionally.
+      job.perform(nil, {})
+      expect(Setting.work_packages_identifier).to eq(Setting::WorkPackageIdentifier::SEMANTIC)
     end
   end
 end

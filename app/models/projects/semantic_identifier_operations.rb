@@ -71,7 +71,7 @@ module Projects::SemanticIdentifierOperations
         rows = relation
                  .pluck(:work_package_id, :identifier)
                  .map { |wp_id, id| { identifier: new_prefix + id.delete_prefix(prefix), work_package_id: wp_id } }
-        WorkPackageSemanticAlias.insert_all(rows, unique_by: :identifier) if rows.any?
+        WorkPackageSemanticAlias.upsert_rows(rows)
       end
   end
 
