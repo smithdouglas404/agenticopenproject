@@ -46,6 +46,7 @@ module Import
         Import::JiraProject.where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids).find_each do |jira_project|
           custom_field_list = import_custom_fields(jira_project)
           project = import_project(jira_project, custom_field_list)
+          update_custom_fields_in_project(project, custom_field_list)
           Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: jira_project.id).find_each do |jira_issue|
             import_issue(jira_issue, project, custom_field_list)
           end
@@ -107,20 +108,44 @@ module Import
       type = import_type(jira_issue, project)
       status = import_status(jira_issue)
       update_workflows(type)
-      update_custom_field_selection(jira_issue, type, custom_field_list)
+      new_custom_fields = new_custom_fields_in_type(jira_issue, type, custom_field_list)
+      update_custom_fields_in_type(type, new_custom_fields) if new_custom_fields.any?
       priority = import_priority(jira_issue)
       import_work_package(jira_issue, project, type, status, priority, custom_field_list)
     end
 
-    def update_custom_field_selection(jira_issue, type, custom_field_list)
+    JIRA_IMPORT_GROUP_KEY = "Jira import"
+
+    def new_custom_fields_in_type(jira_issue, type, custom_field_list)
       existing_cf_ids = type.custom_field_ids
-      new_cfs = custom_field_list
-                  .select { |field| field[:values].any? { |v| v[:issue_id] == jira_issue.id } }
-                  .filter_map { |field| field[:custom_field] }
-                  .reject { |cf| existing_cf_ids.include?(cf.id) }
+      custom_field_list
+        .select { |field| field[:values].any? { |v| v[:issue_id] == jira_issue.id } }
+        .filter_map { |field| field[:custom_field] }
+        .reject { |cf| existing_cf_ids.include?(cf.id) }
+    end
+
+    def update_custom_fields_in_type(type, new_custom_fields)
+      new_cf_keys = new_custom_fields.map(&:attribute_name)
+      groups = type.attribute_groups.map { |g| [g.key, g.is_a?(Type::QueryGroup) ? [g.query_attribute_name] : g.attributes] }
+      jira_group = groups.find { |g| g[0] == JIRA_IMPORT_GROUP_KEY }
+      if jira_group
+        jira_group[1] |= new_cf_keys
+      else
+        jira_group = [JIRA_IMPORT_GROUP_KEY, new_cf_keys]
+        groups << jira_group
+      end
+      type.attribute_groups = groups
+      type.custom_fields << new_custom_fields
+      type.save!
+    end
+
+    def update_custom_fields_in_project(project, custom_field_list)
+      existing_cf_ids = project.work_package_custom_fields.pluck(:id).to_set
+      new_cfs = custom_field_list.filter_map { |field| field[:custom_field] }
+                                 .reject { |cf| existing_cf_ids.include?(cf.id) }
       if new_cfs.any?
-        type.custom_fields << new_cfs
-        type.save!
+        project.work_package_custom_fields << new_cfs
+        project.save!
       end
     end
 
@@ -139,15 +164,8 @@ module Import
         uses_existing = false
       end
 
-      service_call = WorkPackageTypes::UpdateService.new(
-        user: @user,
-        model: type,
-        contract_class: WorkPackageTypes::UpdateProjectsContract
-      ).call(project_ids: (type.project_ids + [project.id]).tap(&:uniq!).map(&:to_s))
-
-      raise service_call.message unless service_call.success?
-
-      type = service_call.result
+      type.projects << project unless type.projects.include?(project)
+      type.save!
       jira_issue_type = Import::JiraIssueType.find_by!(jira_issue_type_id: issue_type["id"], jira_id: @jira_id)
       create_reference!(op_leg: type, jira_leg: jira_issue_type, jira_import: @jira_import, uses_existing:)
       type

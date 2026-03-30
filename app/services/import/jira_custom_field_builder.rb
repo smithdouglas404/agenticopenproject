@@ -64,7 +64,7 @@ module Import
     def custom_field_parameters
       params = {}
       if format == "list"
-        params[:multi_value] = multi
+        params[:multi_value] = jira_field_multi_value?
         options = collect_list_options(values)
         params[:possible_values] = options unless options.empty?
       end
@@ -80,6 +80,11 @@ module Import
     end
 
     private
+
+    def jira_field_multi_value?
+      schema = jira_field.payload["schema"] || {}
+      schema["type"] == "array" && schema["items"] == "option"
+    end
 
     def custom_field_by_name(name)
       WorkPackageCustomField.where("LOWER(name) = LOWER(?)", name).first
