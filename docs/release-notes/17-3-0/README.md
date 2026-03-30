@@ -70,7 +70,7 @@ Depending on the attribute type, changes can be applied immediately or confirmed
 
 [feature: meeting_templates ]
 
-Meeting templates, [introduced as an Enterprise add-on in OpenProject 17.2](../../../release-notes/17-2-0/#reusable-meeting-templates-enterprise-add-on), can now be shared across projects, making it easier to reuse standardized agendas and structures. Depending on the configuration, templates can be made available within a project, across subprojects, or throughout the entire instance.
+Meeting templates, [introduced as an Enterprise add-on in OpenProject 17.2](../../release-notes/17-2-0/#reusable-meeting-templates-enterprise-add-on), can now be shared across projects, making it easier to reuse standardized agendas and structures. Depending on the configuration, templates can be made available within a project, across subprojects, or throughout the entire instance.
 
 ![Meeting template in OpenProject 17.3 with the option to share – With only this project, with subprojects or with all projects](17-3-meeting-templates-share-highlighted.png)
 
