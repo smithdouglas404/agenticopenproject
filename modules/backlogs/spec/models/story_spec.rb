@@ -197,4 +197,30 @@ RSpec.describe Story do
       end
     end
   end
+
+  describe "#task_status" do
+    it "returns zero counts when the story has no tasks" do
+      expect(story1.task_status).to eq(open: 0, closed: 0)
+    end
+
+    it "counts open and closed tasks" do
+      create(:story,
+             version:,
+             project:,
+             parent: story1,
+             status: status1,
+             type: task_type,
+             priority: issue_priority)
+
+      create(:story,
+             version:,
+             project:,
+             parent: story1,
+             status: create(:closed_status),
+             type: task_type,
+             priority: issue_priority)
+
+      expect(story1.task_status).to eq(open: 1, closed: 1)
+    end
+  end
 end
