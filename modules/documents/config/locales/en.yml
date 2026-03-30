@@ -115,6 +115,10 @@ en:
 
     last_updated_at: "Last saved %{time}."
 
+    info_line:
+      currently_offline: "Currently offline"
+      connection_reestablished: "Connection reestablished"
+      
     active_editors: "Active editors"
     active_editors_count:
       one: "1 active editor"
