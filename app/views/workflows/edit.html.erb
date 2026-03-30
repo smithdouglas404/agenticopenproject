@@ -41,7 +41,7 @@ See COPYRIGHT and LICENSE files for more details.
             { action: :update },
             id: "workflow_form",
             method: :patch,
-            data: { turbo_frame: "_top", controller: "admin--workflow-checkbox-state" }
+            data: { turbo_frame: "_top", controller: "admin--workflow-checkbox-state", has_status_changes: ("true" if @has_status_changes) }
           ) do %>
           <%= hidden_field_tag "type_id", @type.id %>
           <%= hidden_field_tag "role_id", @role.id %>

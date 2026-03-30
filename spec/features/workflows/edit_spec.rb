@@ -273,6 +273,29 @@ RSpec.describe "Workflow edit" do
         expect(page).to have_field workflow_checkbox(1, 0), checked: true
       end
     end
+
+    it "shows a confirmation dialog when switching tabs after adding a status" do
+      add_status_via_dialog(statuses[2])
+      expect(page).to have_field workflow_checkbox(0, 2)
+
+      click_link "User is author"
+
+      expect(page).to have_dialog("Save changes before continuing?")
+    end
+
+    it "shows a confirmation dialog when switching tabs after removing a status" do
+      remove_status_via_dialog(statuses[1])
+
+      within_dialog "Remove statuses" do
+        click_button "Remove"
+      end
+
+      expect(page).to have_no_field workflow_checkbox(0, 1)
+
+      click_link "User is author"
+
+      expect(page).to have_dialog("Save changes before continuing?")
+    end
   end
 
   context "when switching roles", :js do
@@ -369,6 +392,31 @@ RSpec.describe "Workflow edit" do
         expect(page).to have_field workflow_checkbox(0, 1)
         expect(page).to have_field workflow_checkbox(1, 0), checked: true
       end
+    end
+
+    it "shows a confirmation dialog when changing roles after adding a status" do
+      add_status_via_dialog(statuses[2])
+      expect(page).to have_no_field workflow_checkbox(0, 2)
+
+      click_button role.name
+      click_button other_role.name
+
+      expect(page).to have_dialog("Save changes before continuing?")
+    end
+
+    it "shows a confirmation dialog when changing roles after removing a status" do
+      remove_status_via_dialog(statuses[1])
+
+      within_dialog "Remove statuses" do
+        click_button "Remove"
+      end
+
+      expect(page).to have_no_field workflow_checkbox(0, 1)
+
+      click_button role.name
+      click_button other_role.name
+
+      expect(page).to have_dialog("Save changes before continuing?")
     end
   end
 
