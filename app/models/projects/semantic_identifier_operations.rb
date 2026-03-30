@@ -65,16 +65,19 @@ module Projects::SemanticIdentifierOperations
   private
 
   def rewrite_alias_prefixes(like_pattern, prefix, new_prefix)
-    rows = WorkPackageSemanticAlias
-             .where("identifier LIKE ?", like_pattern)
-             .pluck(:work_package_id, :identifier)
-             .map { |wp_id, id| { identifier: new_prefix + id.delete_prefix(prefix), work_package_id: wp_id } }
-    WorkPackageSemanticAlias.insert_all(rows, unique_by: :identifier) if rows.any?
+    WorkPackageSemanticAlias
+      .where("identifier LIKE ?", like_pattern)
+      .in_batches do |relation|
+        rows = relation
+                 .pluck(:work_package_id, :identifier)
+                 .map { |wp_id, id| { identifier: new_prefix + id.delete_prefix(prefix), work_package_id: wp_id } }
+        WorkPackageSemanticAlias.insert_all(rows, unique_by: :identifier) if rows.any?
+      end
   end
 
   def rewrite_semantic_ids(like_pattern, prefix, new_prefix)
-    WorkPackage.where("semantic_id LIKE ?", like_pattern).find_each do |wp|
-      wp.update_columns(semantic_id: new_prefix + wp.semantic_id.delete_prefix(prefix))
-    end
+    WorkPackage
+      .where("semantic_id LIKE ?", like_pattern)
+      .update_all(["semantic_id = REPLACE(semantic_id, ?, ?)", prefix, new_prefix])
   end
 end
