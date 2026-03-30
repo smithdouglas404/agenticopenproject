@@ -55,7 +55,6 @@ module WorkPackage::SemanticIdentifier
     #
     # Returns nil on miss.
     def find_by_id_or_identifier(identifier)
-      identifier = identifier.to_s.strip
       return find_by(id: identifier) unless semantic_id?(identifier)
 
       find_by_semantic_identifier(identifier)
