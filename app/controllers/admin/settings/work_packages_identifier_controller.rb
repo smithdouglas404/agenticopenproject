@@ -46,12 +46,8 @@ module Admin::Settings
       return render_400 unless params[:settings]
 
       if autofix_requested?
-        call = update_service.new(user: current_user).call(settings_params)
-        call.on_success do
-          WorkPackages::IdentifierAutofix::ApplyHandlesJob.perform_later
-          redirect_to action: "show"
-        end
-        call.on_failure { failure_callback(call) }
+        WorkPackages::IdentifierAutofix::ApplyHandlesJob.perform_later
+        redirect_to action: "show"
       else
         super
       end
