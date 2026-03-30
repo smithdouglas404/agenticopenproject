@@ -44,7 +44,7 @@ RSpec.describe "SemanticIds registry integration", type: :model do
   let(:target_project) { create(:project, identifier: "DEST", wp_sequence_counter: 0) }
 
   before do
-    allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, numeric?: false)
+    allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, classic?: false)
     create(:member, principal: user, project:, roles: [role])
     create(:member, principal: user, project: target_project, roles: [role])
     login_as(user)
