@@ -26,7 +26,7 @@ Take a look at our release video showing the most important features introduced 
 
 ### Improvements to agile planning with sprints and backlogs
 
-OpenProject 17.3 introduces several improvements to agile planning, making it easier to structure work with sprints and backlogs and reducing the need for manual setup. These changes are part of our ongoing [ongoing efforts to further strengthen agile workflows in OpenProject](https://www.openproject.org/blog/future-of-agile-work/).
+OpenProject 17.3 introduces several improvements to agile planning, making it easier to structure work with sprints and backlogs and reducing the need for manual setup. These changes are part of our [ongoing efforts to further strengthen agile workflows in OpenProject](https://www.openproject.org/blog/future-of-agile-work/).
 
 ![OpenProject Backlogs module in version 17.3: Divided into Backlog and Sprints](17-3-backlogs-sprint-planning.png)
 
@@ -96,7 +96,7 @@ In addition, identifier handling has been improved when creating or copying proj
 
 Work package search has been continuously improved in recent releases. With OpenProject 17.3, these improvements are now extended to more areas of the application.
 
-When selecting work packages, for example in relations, boards, meetings, time tracking, or filters, it is now possible to search by attributes such as type and status. This aligns the search behavior with the global search and makes it easier to find and select the correct work packages in different workflows.
+When selecting work packages in relations, boards, meetings, time tracking, or filters, it is now possible to search by attributes such as type and status. This aligns the search behavior with the global search and makes it easier to find and select the correct work packages in different workflows.
 
 ### Nested groups for improved user and permission management
 
@@ -106,7 +106,7 @@ Groups can now be nested, allowing memberships and permissions to be inherited t
 
 ### Webhooks now include the user causing a change (actor)
 
-Webhooks now include an  an 'actor' field indicating which user caused a change, for example when creating or updating a work package. This makes it easier to build automations that can react differently depending on who triggered the change.
+Webhooks now include an  an `actor` field indicating which user caused a change, for example when creating or updating a work package. This makes it easier to build automations that can react differently depending on who triggered the change.
 
 We want to thank Community member [@cheezzz](https://github.com/cheezzz) for contributing this improvement.
 
