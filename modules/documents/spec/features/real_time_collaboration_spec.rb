@@ -100,14 +100,13 @@ RSpec.describe "Real-time collaboration with Hocuspocus for documents",
       it "blocks the editor and shows a server-unavailable message" do
         visit document_path(document)
 
-        expect(page).to have_test_selector("blocknote-document-description")
-        expect(editor.shadow_root).to have_css(
+        expect(page).to have_css(
           "[data-test-selector='connection-error-notice']",
           text: "Unable to open document because the real-time text collaboration server " \
                 "is unreachable. Please contact the administrator if the problem persists.",
           wait: 10
         )
-        expect(editor.shadow_root).to have_no_css("div[role='textbox']")
+        expect(page).to have_no_test_selector("blocknote-document-description", wait: 0)
       end
     end
 
