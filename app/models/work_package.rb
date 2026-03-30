@@ -50,6 +50,8 @@ class WorkPackage < ApplicationRecord
 
   DONE_RATIO_OPTIONS = %w[field status].freeze
   TOTAL_PERCENT_COMPLETE_MODE_OPTIONS = %w[work_weighted_average simple_average].freeze
+  # Matches both numeric IDs ("12345") and semantic identifiers ("PROJ-42").
+  ID_ROUTE_CONSTRAINT = /(?:\d+|[A-Z][A-Z0-9_]*-\d+)/
 
   belongs_to :project
   belongs_to :type
