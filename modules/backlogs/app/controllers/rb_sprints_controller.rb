@@ -205,7 +205,7 @@ class RbSprintsController < RbApplicationController
     component = Backlogs::SprintComponent.new(sprint:, project: @project)
 
     # Find the correct position by comparing dates with existing sprints
-    sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
+    sprints = Agile::Sprint.displayable_in_project(@project)
     sprint_index = sprints.index { |s| s.id == sprint.id }
 
     action, target = if sprint_index.nil? || sprint_index == sprints.length - 1
