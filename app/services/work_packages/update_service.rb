@@ -110,7 +110,7 @@ class WorkPackages::UpdateService < BaseServices::Update
   end
 
   def update_semantic_ids(work_packages)
-    work_packages.each { |wp| WorkPackageSemanticAlias.register_move(wp) }
+    work_packages.each { |wp| WorkPackage.handle_wp_move(wp) }
   end
 
   def delete_relations(work_packages)
@@ -165,11 +165,11 @@ class WorkPackages::UpdateService < BaseServices::Update
     service_calls
       .group_by { |sc| sc.result.id }
       .map do |(_, same_work_package_calls)|
-      same_work_package_calls.pop.tap do |master|
-        same_work_package_calls.each do |sc|
-          master.result.attributes = sc.result.changes.transform_values(&:last)
+        same_work_package_calls.pop.tap do |master|
+          same_work_package_calls.each do |sc|
+            master.result.attributes = sc.result.changes.transform_values(&:last)
+          end
         end
-      end
     end
   end
 end

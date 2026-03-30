@@ -1625,7 +1625,6 @@ en:
       work_package_semantic_alias:
         identifier: "Identifier"
         work_package: "Work package"
-        current: "Current"
       jira_import:
         projects: "Projects"
       "import/jira":
