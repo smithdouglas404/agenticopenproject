@@ -45,6 +45,10 @@ module WorkPackage::SemanticIdentifier
   end
 
   class_methods do
+    def semantic_id?(identifier)
+      identifier.to_s.to_i.to_s != identifier.to_s
+    end
+
     # Resolves any identifier form to a WorkPackage.
     #   - Numeric string ("12345")    → find by primary key
     #   - Semantic string ("PROJ-42") → lookup via work_packages table and alias table
@@ -52,7 +56,7 @@ module WorkPackage::SemanticIdentifier
     # Returns nil on miss.
     def find_by_id_or_identifier(identifier)
       identifier = identifier.to_s.strip
-      return find_by(id: identifier) if identifier.match?(/\A\d+\z/)
+      return find_by(id: identifier) unless semantic_id?(identifier)
 
       find_by_semantic_identifier(identifier)
     end
