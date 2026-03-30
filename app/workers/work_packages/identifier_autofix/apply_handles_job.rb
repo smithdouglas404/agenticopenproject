@@ -67,5 +67,15 @@ class WorkPackages::IdentifierAutofix::ApplyHandlesJob < ApplicationJob
       sid = "#{project.identifier}-#{wp.sequence_number}"
       wp.update_columns(semantic_id: sid) if wp.semantic_id != sid
     end
+
+    seed_alias_table(project)
+  end
+
+  def seed_alias_table(project)
+    prefixes = project.semantic_identifier_aliases
+    alias_rows = WorkPackage.where(project:).pluck(:id, :sequence_number).flat_map do |wp_id, seq|
+      prefixes.map { |prefix| { identifier: "#{prefix}-#{seq}", work_package_id: wp_id } }
+    end
+    WorkPackageSemanticAlias.insert_all(alias_rows, unique_by: :identifier) if alias_rows.any?
   end
 end
