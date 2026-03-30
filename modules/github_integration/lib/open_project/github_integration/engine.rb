@@ -55,11 +55,6 @@ module OpenProject::GithubIntegration
       settings:
     ) do
       ::Redmine::MenuManager.map(:admin_menu) do |menu|
-        menu.push :admin_integrations,
-                  { controller: "/github_integration/admin/settings", action: "show" },
-                  if: ->(_) { User.current.admin? },
-                  icon: :"git-compare",
-                  caption: :label_integrations
         menu.push :admin_github_integration,
                   { controller: "/github_integration/admin/settings", action: "show" },
                   parent: :admin_integrations,
