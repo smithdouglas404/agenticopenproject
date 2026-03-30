@@ -42,7 +42,7 @@ rewritten_count = crowdin_yml_files.count do |path|
 
   rewritten_content = StringIO.open do |io|
     io.puts comments
-    YAML.dump(data, io)
+    YAML.dump(data, io, line_width: -1)
 
     io.string
   end
