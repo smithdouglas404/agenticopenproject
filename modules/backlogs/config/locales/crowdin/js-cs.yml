@@ -25,5 +25,5 @@ cs:
       properties:
         storyPoints: "Body příběhu"
     burndown:
-      day: "Day"
-      points: "Points"
+      day: "Den"
+      points: "Body"

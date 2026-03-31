@@ -381,10 +381,10 @@ fr:
           <p>Bonjour,</p> <p>Un nouveau projet a été créé : projectValue:name</p> <p>Nous vous remercions de votre attention et vous prions d'agréer nos salutations distinguées.</p>
       work_packages_identifier:
         page_header:
-          description: Vous avez le choix entre des identifiants numériques de base pour les lots de travail et des identifiants spécifiques aux projets qui ajoutent l'identifiant du projet à l'identifiant du lot de travail.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
           existing_identifiers_notice: >
-            Les identifiants existants de %{project_count} projets ne répondent pas aux exigences des identifiants alphanumériques basés sur les projets. OpenProject peut les mettre à jour automatiquement pour qu'ils soient valides, comme dans les exemples ci-dessous. Cliquez sur "Autofixer et sauvegarder" pour mettre à jour les identifiants de tous les projets de cette manière et activer les identifiants alphanumériques basés sur le projet.
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
           label_project: Projet
           label_previous_identifier: Identifiant précédent
@@ -412,7 +412,7 @@ fr:
           checkbox_label: Je comprends que cela changera définitivement tous les identifiants du lot de travaux
         success_banner: Le format de l'identifiant du lot de travaux a été mis à jour.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Transitions par défaut"
@@ -3495,6 +3495,7 @@ fr:
   label_ical_access_key_generation_hint: "Généré automatiquement lors de l'abonnement à un calendrier."
   label_ical_access_key_latest: "Dernier"
   label_ical_access_key_revoke: "Révoquer"
+  label_integrations: "Integrations"
   label_add_column: "Ajouter une colonne"
   label_applied_status: "Statut appliqué"
   label_archive_project: "Archiver le projet"
@@ -4973,11 +4974,11 @@ fr:
   setting_welcome_text: "Bloc de texte de bienvenue"
   setting_welcome_title: "Bloc de titre de bienvenue"
   setting_welcome_on_homescreen: "Afficher le bloc de bienvenue sur l'écran d'accueil"
-  setting_work_packages_identifier_numeric: Séquence numérique à l'échelle de l'instance (par défaut)
-  setting_work_packages_identifier_numeric_caption: >
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
     Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Identifiants alphanumériques basés sur le projet
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Mode de surbrillance par défaut"
   setting_work_package_list_default_highlighted_attributes: "Attributs en ligne mis en surbrillance par défaut"
