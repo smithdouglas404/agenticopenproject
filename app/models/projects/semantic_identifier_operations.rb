@@ -39,12 +39,21 @@ module Projects::SemanticIdentifierOperations
 
   # Atomically allocates the next sequence number for a work package in this project
   # and returns it paired with the resulting semantic identifier (e.g. [42, "PROJ-42"]).
-  # Uses a row-level lock to prevent concurrent WP creation from getting the same number.
+  # Uses an advisory lock scoped to this project to serialize concurrent allocations
+  # without blocking unrelated project row writes.
   def allocate_wp_semantic_identifier!
-    seq = with_lock do
-      increment!(:wp_sequence_counter)
-      wp_sequence_counter
+    seq = OpenProject::Mutex.with_advisory_lock(
+      self.class,
+      "wp_sequence_#{id}"
+    ) do
+      self.class.connection.select_value(<<~SQL.squish)
+        UPDATE projects
+        SET wp_sequence_counter = wp_sequence_counter + 1
+        WHERE id = #{self.class.connection.quote(id)}
+        RETURNING wp_sequence_counter
+      SQL
     end
+
     [seq, "#{identifier}-#{seq}"]
   end
 
