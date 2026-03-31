@@ -322,5 +322,25 @@ RSpec.describe Burndown do
         end
       end
     end
+
+    context "without dates on the sprint" do
+      let(:sprint) { create(:agile_sprint, project:, start_date: nil, finish_date: nil) }
+      let(:story) do
+        build(:story,
+              :created_in_past,
+              subject: "Story 1",
+              project:,
+              sprint:,
+              type: type_feature,
+              status: issue_open,
+              priority: issue_priority,
+              created_at: Time.zone.today - 20.days,
+              updated_at: Time.zone.today - 20.days)
+      end
+
+      it "generates an empty burndown" do
+        expect(burndown.series[:story_points]).to be_empty
+      end
+    end
   end
 end

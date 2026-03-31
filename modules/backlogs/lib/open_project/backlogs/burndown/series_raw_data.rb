@@ -142,6 +142,8 @@ module OpenProject::Backlogs::Burndown
       upper_date = sprint.is_a?(Agile::Sprint) ? sprint.finish_date : sprint.effective_date
       upper_bound = Time.zone.today.clamp(lower_bound, upper_date)
 
+      return Day.none unless upper_bound && lower_bound
+
       Day.working.from_range(from: lower_bound, to: upper_bound)
     end
 
