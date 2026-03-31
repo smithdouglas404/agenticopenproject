@@ -36,7 +36,7 @@ module WorkPackage::SemanticIdentifier
              class_name: "WorkPackageSemanticAlias",
              foreign_key: :work_package_id,
              inverse_of: :work_package,
-             dependent: :destroy
+             dependent: :delete_all
 
     after_create :allocate_and_register_semantic_id, if: -> { Setting::WorkPackageIdentifier.semantic? }
   end
