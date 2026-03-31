@@ -42,6 +42,5 @@ class Workflows::Copies::FromTypeForm < ApplicationForm
         target_list.option(label: other_type.name, value: other_type.id)
       end
     end
-    copy.submit(name: :submit_copy, label: I18n.t(:button_copy), scheme: :primary)
   end
 end

@@ -44,6 +44,7 @@ module Workflows::PageHeaders
 
     def add_action_buttons(header) # rubocop:disable Metrics/AbcSize
       header.with_action_button(
+        data: { controller: "async-dialog" },
         tag: :a,
         mobile_icon: :copy,
         mobile_label: t(:label_copy_workflow_from_type),
@@ -57,6 +58,7 @@ module Workflows::PageHeaders
       end
 
       header.with_action_button(
+        data: { controller: "async-dialog" },
         tag: :a,
         mobile_icon: :copy,
         mobile_label: t(:label_copy_workflow_from_role),

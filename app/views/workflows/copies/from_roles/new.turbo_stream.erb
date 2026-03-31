@@ -27,14 +27,30 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 <% title = t(".title", source_type: @source_type.name) %>
-<% html_title t(:label_administration), t(:label_workflow_plural), title -%>
 
-<%= render Workflows::PageHeaders::CopyComponent.new(title:) %>
-
-<%= settings_primer_form_with(url: workflow_copy_from_type_path(@source_type)) do |f|
-  render(Primer::Alpha::Banner.new(scheme: :warning, m: 4)) do |banner|
-    banner.with_action_content { render OpPrimer::BackButtonLinkComponent.new }
-    t(".warning")
-  end +
-  render(Workflows::Copies::FromTypeForm.new(f, source_type: @source_type, other_types: @other_types))
-end %>
+<% dialog_id = "copy_from_type_dialog" %>
+<%= turbo_stream.dialog do
+  render(Primer::Alpha::Dialog.new(title:, size: :medium_portrait, id: dialog_id)) do |d|
+    d.with_header(variant: :large)
+    d.with_body(classes: "workflow-status-dialog-body") do
+      settings_primer_form_with(url: workflow_copy_from_role_path(@source_type), id: "copy_from_role") do |f|
+        render(Primer::Alpha::Banner.new(scheme: :warning, mb: 4)) do |banner|
+          t(".warning")
+        end +
+        render(Workflows::Copies::FromRoleForm.new(f, source_type: @source_type, source_role: @source_role, all_roles: @all_roles, append_to: "##{dialog_id}"))
+      end
+    end
+    d.with_footer do
+      render(Primer::Beta::Button.new(
+        scheme: :primary,
+        tag: :button,
+        type: :submit,
+        form: "copy_from_role",
+        data: { turbo: true }
+      )) do
+        t(:button_copy)
+      end
+    end
+  end
+end
+%>

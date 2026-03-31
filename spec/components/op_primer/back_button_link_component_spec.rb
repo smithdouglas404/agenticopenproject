@@ -49,7 +49,7 @@ RSpec.describe OpPrimer::BackButtonLinkComponent, type: :component do
     context "with a custom text as model" do
       let(:model) { "Some text…" }
 
-      it "renders a default text" do
+      it "renders the custom text" do
         expect(rendered_component).to have_css(".Button .Button-content .Button-label", text: model)
       end
     end

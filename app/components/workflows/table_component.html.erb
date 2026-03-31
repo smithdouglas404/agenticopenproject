@@ -55,11 +55,13 @@ See COPYRIGHT and LICENSE files for more details.
               end
               menu.with_divider
               menu.with_item(label:t("label_copy_workflow_from_type"),
+                             content_arguments: { data: { controller: "async-dialog" }},
                              tag: :a,
                              href: new_workflow_copy_from_type_path(type)) do |item|
                 item.with_leading_visual_icon(icon: :copy)
               end
               menu.with_item(label:t("label_copy_workflow_from_role"),
+                             content_arguments: { data: { controller: "async-dialog" }},
                              tag: :a,
                              href: new_workflow_copy_from_role_path(type)) do |item|
                 item.with_leading_visual_icon(icon: :copy)

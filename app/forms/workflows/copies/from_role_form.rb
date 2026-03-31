@@ -29,11 +29,12 @@
 #++
 
 class Workflows::Copies::FromRoleForm < ApplicationForm
-  def initialize(source_type:, source_role:, all_roles:)
+  def initialize(source_type:, source_role:, all_roles:, append_to: nil)
     super()
     @source_type = source_type
     @source_role = source_role
     @all_roles = all_roles
+    @append_to = append_to
   end
 
   form do |copy|
@@ -52,6 +53,7 @@ class Workflows::Copies::FromRoleForm < ApplicationForm
         multiple: true,
         decorated: true,
         closeOnSelect: false,
+        appendTo: @append_to,
         data: {
           "test-selector": "target_roles_autocomplete"
         }
@@ -61,6 +63,5 @@ class Workflows::Copies::FromRoleForm < ApplicationForm
         target_list.option(label: role.name, value: role.id)
       end
     end
-    copy.submit(name: :submit_copy, label: helpers.t(:button_copy), scheme: :primary)
   end
 end
