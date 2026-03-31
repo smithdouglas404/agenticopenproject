@@ -24,9 +24,9 @@ Take a look at our release video showing the most important features introduced 
 
 ![Release video of OpenProject 17.3](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_3_release.mp4)
 
-### Improvements to agile planning with sprints and backlogs
+### Improvements to agile planning and execution with sprints and backlogs
 
-OpenProject 17.3 introduces several improvements to agile planning, making it easier to structure work with sprints and backlogs and reducing the need for manual setup. These changes are part of our [ongoing efforts to further strengthen agile workflows in OpenProject](https://www.openproject.org/blog/future-of-agile-work/).
+OpenProject 17.3 introduces several improvements to agile planning and execution, making it easier to structure and manage work with sprints and backlogs and reducing the need for manual setup. These changes are part of our [ongoing efforts to further strengthen agile workflows in OpenProject](https://www.openproject.org/blog/future-of-agile-work/).
 
 ![OpenProject Backlogs module in version 17.3: Divided into Backlog and Sprints](17-3-backlogs-sprint-planning.png)
 
@@ -50,9 +50,15 @@ This reduces manual configuration and ensures that sprint boards are consistentl
 
 ![Sprint board in OpenProject version 17.3](17-3-sprint-planning-boards.png)
 
+#### Closing a sprint and handling remaining work
+
+Active sprints can now be completed directly from the sprint view, making it easier to transition to the next iteration. When closing a sprint, users are guided to handle unfinished work packages in bulk.
+
+Remaining work can be moved to the backlog or reassigned to another sprint, helping teams to continue their work without manual adjustments.
+
 ### Action boards available in the Community edition
 
-With the introduction of improved agile planning features such as sprints and backlogs, boards play a central role in organizing and tracking work. To support this, all action board types are now available in the Community edition.
+With the improvements to agile planning features such as sprints and backlogs, boards play a central role in organizing and tracking work. To support this, all action board types are now available in the Community edition.
 
 This extends the existing board functionality in the Community edition and allows teams to use a wider range of board configurations, such as Kanban or parent-child boards, without requiring an Enterprise plan.
 
