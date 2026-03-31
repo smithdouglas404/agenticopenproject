@@ -41,7 +41,9 @@ module Projects::Identifier
     has_many :identifier_aliases,
              -> { where(sluggable_type: "Project") },
              class_name: "FriendlyId::Slug",
-             foreign_key: :sluggable_id
+             foreign_key: :sluggable_id,
+             inverse_of: false,
+             dependent: :delete_all
 
     normalizes :identifier, with: OpenProject::RemoveAsciiControlCharacters
 
