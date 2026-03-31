@@ -129,6 +129,7 @@ class RbSprintsController < RbApplicationController
       render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_finish))
       close_dialog_via_turbo_stream("##{Backlogs::FinishSprintDialogComponent::DIALOG_ID}")
       remove_finished_sprint_from_list_via_turbo_stream
+      update_target_sprint_component_via_turbo_stream
       respond_with_turbo_streams
     elsif result.includes_error?(:base, :unfinished_work_packages)
       show_finish_sprint_dialog
@@ -226,6 +227,16 @@ class RbSprintsController < RbApplicationController
   def remove_finished_sprint_from_list_via_turbo_stream
     remove_via_turbo_stream(
       component: Backlogs::SprintComponent.new(sprint: @sprint, project: @project)
+    )
+  end
+
+  def update_target_sprint_component_via_turbo_stream
+    return if params[:move_to_sprint_id].blank?
+
+    target_sprint = Agile::Sprint.for_project(@project).visible.find(params[:move_to_sprint_id])
+    replace_via_turbo_stream(
+      component: Backlogs::SprintComponent.new(sprint: target_sprint, project: @project),
+      method: :morph
     )
   end
 
