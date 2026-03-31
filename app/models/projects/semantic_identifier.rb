@@ -54,14 +54,14 @@ module Projects::SemanticIdentifier
   # Called after this project's identifier is renamed. Atomically:
   # 1. Appends new-prefix aliases for every WP that ever carried an old-prefix alias.
   # 2. Updates identifier on resident WPs to the new prefix.
-  def handle_semantic_rename(old_identifier)
+  def handle_semantic_rename(old_identifier, batch_size: 1000)
     like_pattern = "#{self.class.sanitize_sql_like(old_identifier)}-%"
     prefix = "#{old_identifier}-"
     new_prefix = "#{identifier}-"
 
     WorkPackageSemanticAlias.transaction do
-      append_aliases_with_new_prefix(like_pattern, prefix, new_prefix)
-      rewrite_semantic_ids(like_pattern, prefix, new_prefix)
+      append_aliases_with_new_prefix(like_pattern:, prefix:, new_prefix:, batch_size:)
+      rewrite_semantic_ids(like_pattern:, prefix:, new_prefix:, batch_size:)
     end
   end
 
@@ -70,10 +70,10 @@ module Projects::SemanticIdentifier
   # For every alias row whose identifier starts with the old prefix, inserts a
   # corresponding row with the new prefix. This covers WPs still in the project
   # as well as any that have moved out but still carry old-prefix alias rows.
-  def append_aliases_with_new_prefix(like_pattern, prefix, new_prefix)
+  def append_aliases_with_new_prefix(like_pattern:, prefix:, new_prefix:, batch_size:)
     WorkPackageSemanticAlias
       .where("identifier LIKE ?", like_pattern)
-      .in_batches do |relation|
+      .in_batches(of: batch_size) do |relation|
         now = Time.current
         WorkPackageSemanticAlias.connection.execute(
           WorkPackageSemanticAlias.sanitize_sql([<<~SQL.squish, { prefix:, new_prefix:, now: }])
@@ -87,10 +87,10 @@ module Projects::SemanticIdentifier
   end
 
   # Updates the identifier column on all resident WPs to replace the old prefix with the new one.
-  def rewrite_semantic_ids(like_pattern, prefix, new_prefix)
+  def rewrite_semantic_ids(like_pattern:, prefix:, new_prefix:, batch_size:)
     WorkPackage
       .where("identifier LIKE ?", like_pattern)
-      .in_batches do |relation|
+      .in_batches(of: batch_size) do |relation|
         relation.update_all(["identifier = REPLACE(identifier, ?, ?)", prefix, new_prefix])
       end
   end

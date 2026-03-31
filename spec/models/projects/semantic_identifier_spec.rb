@@ -98,6 +98,26 @@ RSpec.describe Projects::SemanticIdentifier do
       expect { project.handle_semantic_rename("PROJ") }.not_to raise_error
     end
 
+    context "when records span multiple batches" do
+      let(:wp3) { create(:work_package, project:) }
+
+      before { wp3 }
+
+      it "processes all aliases across batch boundaries" do
+        project.handle_semantic_rename("PROJ", batch_size: 2)
+        expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-1")).to be_present
+        expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-2")).to be_present
+        expect(WorkPackageSemanticAlias.find_by(identifier: "NEWPROJ-3")).to be_present
+      end
+
+      it "rewrites all WP identifiers across batch boundaries" do
+        project.handle_semantic_rename("PROJ", batch_size: 2)
+        expect(wp1.reload.identifier).to eq("NEWPROJ-1")
+        expect(wp2.reload.identifier).to eq("NEWPROJ-2")
+        expect(wp3.reload.identifier).to eq("NEWPROJ-3")
+      end
+    end
+
     context "when a WP has previously moved out of the project" do
       before do
         # Move wp1 to OTHER properly so "PROJ-1" ends up as an alias
