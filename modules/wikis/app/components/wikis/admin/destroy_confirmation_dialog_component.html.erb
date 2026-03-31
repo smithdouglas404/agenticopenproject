@@ -21,31 +21,21 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%=
-  render(
-    Primer::OpenProject::DangerDialog.new(
-      title: I18n.t("wikis.admin.wiki_providers.delete.title"),
-      form_arguments:,
-      size: :large
-    )
-  ) do |dialog|
-%>
+<%= render(Primer::OpenProject::DangerDialog.new(title: I18n.t("wikis.admin.wiki_providers.delete.title"),
+                                                  form_arguments:,
+                                                  size: :large)) do |dialog| %>
   <% dialog.with_confirmation_message do |message|
        message.with_heading(tag: :h2) { I18n.t("wikis.admin.wiki_providers.delete.title") }
      end %>
   <% dialog.with_additional_details do %>
-    <% render(Primer::OpenProject::FlexLayout.new) do |flex| %>
-      <% flex.with_row do %>
-        <%= t("wikis.admin.wiki_providers.delete.warning_html",
-              wiki_provider: content_tag(:strong, @wiki_provider.name)) %>
-      <% end %>
-    <% end %>
+    <%= t("wikis.admin.wiki_providers.delete.warning_html",
+          wiki_provider: content_tag(:strong, @wiki_provider.name)) %>
   <% end %>
   <% dialog.with_confirmation_check_box_content(I18n.t(:text_permanent_delete_confirmation_checkbox_label)) %>
 <% end %>

@@ -34,7 +34,7 @@ en:
         no_results_title: You don't have any wiki platforms set up yet.
         no_results_description: Add a wiki service to see them here.
         label_edit: Edit XWiki instance
-        name_placeholder: XWiki Knowledgebase
+        name_placeholder: XWiki knowledge base
         name_caption: Give your storage a name so that users can differentiate between multiple wiki platforms.
         url_caption: Please add the host address of your wiki platform including the https://. It should not be longer than 255 characters.
         xwiki_instance: XWiki Instance
