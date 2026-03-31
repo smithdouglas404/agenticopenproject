@@ -30,45 +30,12 @@
 
 require "spec_helper"
 
-RSpec.describe Wikis::XWikiProviders::CreateService do
-  let(:admin) { create(:admin) }
-  let(:user) { create(:user) }
+require "services/base_services/behaves_like_create_service"
 
-  subject(:service) { described_class.new(user: current_user) }
-
-  context "when called by an admin with valid params" do
-    let(:current_user) { admin }
-    let(:params) { { name: "My XWiki", url: "https://xwiki.example.com" } }
-
-    it "creates the provider and returns success" do
-      result = service.call(params)
-      expect(result).to be_success
-      expect(result.result).to be_a(Wikis::XWikiProvider)
-      expect(result.result).to be_persisted
-      expect(result.result.name).to eq("My XWiki")
-      expect(result.result.url).to eq("https://xwiki.example.com")
-    end
-  end
-
-  context "when called by an admin with invalid params" do
-    let(:current_user) { admin }
-    let(:params) { { name: "", url: "https://xwiki.example.com" } }
-
-    it "returns failure with errors" do
-      result = service.call(params)
-      expect(result).to be_failure
-      expect(result.result.errors[:name]).to be_present
-    end
-  end
-
-  context "when called by a non-admin" do
-    let(:current_user) { user }
-    let(:params) { { name: "My XWiki", url: "https://xwiki.example.com" } }
-
-    it "returns failure with authorization error" do
-      result = service.call(params)
-      expect(result).to be_failure
-      expect(result.result.errors[:base]).to include(:error_unauthorized)
-    end
+RSpec.describe Wikis::XWikiProviders::CreateService, type: :model do
+  it_behaves_like "BaseServices create service" do
+    let(:factory) { :xwiki_provider }
+    let(:call_attributes) { { name: "My XWiki", url: "https://xwiki.example.com" } }
+    let!(:model_instance) { build_stubbed(factory, name: "My XWiki", url: "https://xwiki.example.com") }
   end
 end

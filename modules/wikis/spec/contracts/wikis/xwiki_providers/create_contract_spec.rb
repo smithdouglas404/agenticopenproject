@@ -29,13 +29,13 @@
 #++
 
 require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
 
-require "services/base_services/behaves_like_update_service"
+RSpec.describe Wikis::XWikiProviders::CreateContract do
+  include_context "ModelContract shared context"
 
-RSpec.describe Wikis::XWikiProviders::UpdateService, type: :model do
-  it_behaves_like "BaseServices update service" do
-    let(:factory) { :xwiki_provider }
-    let(:call_attributes) { { name: "Updated XWiki" } }
-    let!(:model_instance) { build_stubbed(factory, name: "My XWiki", url: "https://xwiki.example.com") }
-  end
+  let(:wiki_provider) { build_stubbed(:xwiki_provider) }
+  let(:contract) { described_class.new(wiki_provider, current_user) }
+
+  it_behaves_like "contract is valid for active admins and invalid for regular users"
 end

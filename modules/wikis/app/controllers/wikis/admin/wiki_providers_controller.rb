@@ -83,8 +83,18 @@ module Wikis
       end
 
       def destroy
-        @wiki_provider.destroy!
-        flash[:notice] = I18n.t(:notice_successful_delete)
+        service_result = Wikis::XWikiProviders::DeleteService
+          .new(user: current_user, model: @wiki_provider)
+          .call
+
+        service_result.on_failure do
+          flash[:error] = service_result.errors.full_messages
+        end
+
+        service_result.on_success do
+          flash[:notice] = I18n.t(:notice_successful_delete)
+        end
+
         redirect_to admin_settings_wiki_providers_path
       end
 

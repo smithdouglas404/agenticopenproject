@@ -40,6 +40,7 @@ module Wikis
 
       private
 
+      # TODO: add more sophisticated validations
       def url_is_https
         return if url.blank?
 
@@ -47,9 +48,7 @@ module Wikis
       end
 
       def validate_user_allowed_to_manage
-        unless user.admin? && user.active?
-          errors.add :base, :error_unauthorized
-        end
+        errors.add :base, :error_unauthorized unless user.admin? && user.active?
       end
     end
   end

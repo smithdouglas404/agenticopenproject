@@ -30,12 +30,34 @@
 
 require "spec_helper"
 
-require "services/base_services/behaves_like_update_service"
+RSpec.describe Wikis::XWikiProviders::DeleteContract do
+  let(:wiki_provider) { build(:xwiki_provider) }
 
-RSpec.describe Wikis::XWikiProviders::UpdateService, type: :model do
-  it_behaves_like "BaseServices update service" do
-    let(:factory) { :xwiki_provider }
-    let(:call_attributes) { { name: "Updated XWiki" } }
-    let!(:model_instance) { build_stubbed(factory, name: "My XWiki", url: "https://xwiki.example.com") }
+  subject(:contract) { described_class.new(wiki_provider, current_user) }
+
+  context "when user is an admin" do
+    let(:current_user) { build(:admin) }
+
+    it "is valid" do
+      expect(contract).to be_valid
+    end
+  end
+
+  context "when user is not an admin" do
+    let(:current_user) { build(:user) }
+
+    it "is invalid" do
+      expect(contract).not_to be_valid
+      expect(contract.errors[:base]).to include(:error_unauthorized)
+    end
+  end
+
+  context "when user is inactive" do
+    let(:current_user) { build(:admin, status: Principal.statuses[:locked]) }
+
+    it "is invalid" do
+      expect(contract).not_to be_valid
+      expect(contract.errors[:base]).to include(:error_unauthorized)
+    end
   end
 end

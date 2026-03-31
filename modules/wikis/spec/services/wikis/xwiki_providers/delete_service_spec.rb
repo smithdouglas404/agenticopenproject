@@ -30,12 +30,10 @@
 
 require "spec_helper"
 
-require "services/base_services/behaves_like_update_service"
+require "services/base_services/behaves_like_delete_service"
 
-RSpec.describe Wikis::XWikiProviders::UpdateService, type: :model do
-  it_behaves_like "BaseServices update service" do
+RSpec.describe Wikis::XWikiProviders::DeleteService, type: :model do
+  it_behaves_like "BaseServices delete service" do
     let(:factory) { :xwiki_provider }
-    let(:call_attributes) { { name: "Updated XWiki" } }
-    let!(:model_instance) { build_stubbed(factory, name: "My XWiki", url: "https://xwiki.example.com") }
   end
 end
