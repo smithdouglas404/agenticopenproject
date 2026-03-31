@@ -73,8 +73,7 @@ module WorkPackage::SemanticIdentifier
       #   - Written on creation for the initial identifier and all historical project prefixes.
       #   - Appended on project rename (new-prefix row for every affected WP).
       #   - Appended on WP move (old identifier row for the moved WP).
-      wp_id = WorkPackageSemanticAlias.find_by(identifier:)&.work_package_id
-      find_by(id: wp_id)
+      WorkPackageSemanticAlias.find_by(identifier:)&.work_package
     end
   end
 
