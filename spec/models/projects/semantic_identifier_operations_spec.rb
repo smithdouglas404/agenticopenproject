@@ -38,25 +38,18 @@ RSpec.describe Projects::SemanticIdentifierOperations do
   describe "#semantic_identifier_aliases" do
     let(:project) { create(:project, identifier: "PROJ") }
 
-    it "returns an empty array when no FriendlyId slugs are recorded" do
-      expect(project.semantic_identifier_aliases).to be_empty
-    end
-
-    it "returns slugs recorded for this project" do
-      FriendlyId::Slug.create!(slug: "PROJ", sluggable_type: "Project", sluggable_id: project.id)
+    it "returns the current identifier" do
       expect(project.semantic_identifier_aliases).to contain_exactly("PROJ")
     end
 
     it "includes all historical identifiers" do
-      FriendlyId::Slug.create!(slug: "PROJ", sluggable_type: "Project", sluggable_id: project.id)
-      FriendlyId::Slug.create!(slug: "OLDPROJ", sluggable_type: "Project", sluggable_id: project.id)
-      expect(project.semantic_identifier_aliases).to contain_exactly("PROJ", "OLDPROJ")
+      project_with_history = create(:project, identifier: "OLDPROJ")
+      project_with_history.update!(identifier: "PROJ")
+      expect(project_with_history.semantic_identifier_aliases).to contain_exactly("PROJ", "OLDPROJ")
     end
 
     it "does not include slugs belonging to other projects" do
-      other_project = create(:project, identifier: "OTHER")
-      FriendlyId::Slug.create!(slug: "PROJ", sluggable_type: "Project", sluggable_id: project.id)
-      FriendlyId::Slug.create!(slug: "OTHER", sluggable_type: "Project", sluggable_id: other_project.id)
+      create(:project, identifier: "OTHER")
       expect(project.semantic_identifier_aliases).to contain_exactly("PROJ")
     end
   end
