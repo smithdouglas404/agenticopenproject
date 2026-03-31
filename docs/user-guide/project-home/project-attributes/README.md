@@ -24,11 +24,19 @@ Project attributes are always grouped in sections.
 
 ![Project home page showing project attributes on the right side pane in OpenProject](openproject_user_guide_project_overview_project_attributes_section.png)
 
-To edit the value of any visible project attribute, simply click on that value. A modal will be displayed with all the attributes in that section. If the option to add a comment was enabled for this particular attribute, you will also see a comment field, in which you can add more information on the value change.
+------
+
+To edit the value of any visible project attribute, simply click on that value. For most attributes, you can edit the value directly in place.
+
+Depending on the field type, changes are saved differently. For example, text fields can be confirmed with Enter or canceled with Escape, while checkboxes are saved automatically when changed.
+
+![Inline edit of a project attribute on project overview page in OpenProject](openproject_user_guide_project_overview_project_attributes_section_edit_inline.png)
+
+For certain attributes, a modal will be displayed instead. This applies to hierarchy attributes, long text fields shown in the sidebar, or attributes with comments enabled. In this case, you can edit the value in the modal. If the option to add a comment is enabled for this attribute, you will also see a comment field where you can add more information on the value change.
 
 ![Edit a project attribute section on project overview page](openproject_user_guide_project_overview_project_attributes_section_edit_new.png)
 
-Edit the values for each project attribute and click the **Save** button to confirm and save your changes.
+Edit the values for each project attribute and click the **Save** button where applicable to confirm and save your changes.
 
 > [!NOTE]
 > If you are an instance administrator and would like to create, modify or add project attributes, please read our [system administration guide on project attributes](../../../system-admin-guide/projects/project-attributes).
