@@ -54,5 +54,7 @@ RSpec.describe "Show burndown chart", :js, with_flag: { scrum_projects: true } d
       .to have_content(sprint.name)
     expect(page)
       .to have_content "#{format_date(sprint.start_date)} – #{format_date(sprint.finish_date)}"
+    expect(page)
+      .to have_css "opce-burndown-chart"
   end
 end
