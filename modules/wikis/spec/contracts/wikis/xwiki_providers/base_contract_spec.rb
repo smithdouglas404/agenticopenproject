@@ -55,7 +55,7 @@ RSpec.describe Wikis::XWikiProviders::BaseContract do
     end
 
     context "when too long" do
-      let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://#{"x" * 250}.com") }
+      let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://#{'x' * 250}.com") }
 
       include_examples "contract is invalid", url: :too_long
     end
