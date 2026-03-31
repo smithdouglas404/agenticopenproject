@@ -122,14 +122,20 @@ class RbSprintsController < RbApplicationController
     end
   end
 
-  def finish
+  def finish # rubocop:disable Metrics/AbcSize
     result = finish_sprint
 
     if result.success?
       render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_finish))
       close_dialog_via_turbo_stream("##{Backlogs::FinishSprintDialogComponent::DIALOG_ID}")
       remove_finished_sprint_from_list_via_turbo_stream
-      update_target_sprint_component_via_turbo_stream
+
+      if moved_to_backlog?
+        update_inbox_component_via_turbo_stream
+      elsif params[:move_to_sprint_id].present?
+        update_target_sprint_component_via_turbo_stream
+      end
+
       respond_with_turbo_streams
     elsif result.includes_error?(:base, :unfinished_work_packages)
       show_finish_sprint_dialog
@@ -231,13 +237,23 @@ class RbSprintsController < RbApplicationController
   end
 
   def update_target_sprint_component_via_turbo_stream
-    return if params[:move_to_sprint_id].blank?
-
     target_sprint = Agile::Sprint.for_project(@project).visible.find(params[:move_to_sprint_id])
     replace_via_turbo_stream(
       component: Backlogs::SprintComponent.new(sprint: target_sprint, project: @project),
       method: :morph
     )
+  end
+
+  def update_inbox_component_via_turbo_stream
+    inbox_work_packages = Backlog.inbox_for(project: @project)
+    replace_via_turbo_stream(
+      component: Backlogs::InboxComponent.new(work_packages: inbox_work_packages, project: @project),
+      method: :morph
+    )
+  end
+
+  def moved_to_backlog?
+    params[:unfinished_action].in?(%w[move_to_top_of_backlog move_to_bottom_of_backlog])
   end
 
   def show_finish_sprint_dialog
