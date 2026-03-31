@@ -1,7 +1,7 @@
 ---
 sidebar_navigation:
   title: Project templates
-  priority: 600
+  priority: 500
 description: How to create project templates.
 keywords: project templates
 ---

@@ -8,11 +8,6 @@ keywords: meetings, dynamic meetings, agenda, minutes, one-time meeting, draft m
 
 # One-time meetings
 
-> [!NOTE]
-> With OpenProject 13.1 we introduced dynamic meetings alongside classic meetings. 
-> With OpenProject 15.3 dynamic meetings are replaced by [one-time meetings](../one-time-meetings) and [recurring meetings](../recurring-meetings) to further improve meeting management.
-> With OpenProject 16.0 classic meetings were removed from OpenProject. Read more about this change [in this blog article](https://www.openproject.org/blog/end-classic-meetings-may-2025/).
-
 For information on setting up recurring meeting series and templates, please refer to [this page](../recurring-meetings). Note that individual occurrences of a recurring meeting series are one-time meetings and have the same features as described here.
 
 > [!NOTE]
@@ -58,7 +53,7 @@ Click the green **+ Template** button to create a new template. When creating a 
 
 ![Create new meeting template in OpenProject](openproject_userguide_meetings_create_new_template.png)
 
-In the template that opens, enter and save a title. Define the agenda structure and add attachments to the template same way as you would when creating a one-time meeting.
+In the template that opens, enter and save a title. Define the agenda structure and add attachments to the template the same way as you would when creating a one-time meeting. You can also define whether this template should be kept within the project, shared with subprojects, or all other projects in this instance. If the template is to be shared, the agenda items and attachments will be copied to sub- or other projects when the template is used.
 
 ![Name and define a new meeting template in OpenProject](openproject_userguide_meetings_templates_name_save.png)
 

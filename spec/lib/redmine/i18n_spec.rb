@@ -211,6 +211,25 @@ module OpenProject
         expect(links[1][:href]).to eq("/baz")
       end
 
+      context "when the link text contains an apostrophe" do
+        before do
+          allow(::I18n)
+            .to receive(:translate)
+            .with("translation_with_apostrophe", *any_args)
+            .and_return("Here's [what's new](url) to see.")
+        end
+
+        it "does not double-escape the apostrophe in the link text" do
+          translated = link_translate :translation_with_apostrophe,
+                                      links: { url: "https://example.com" },
+                                      external: false
+          fragment = Capybara.string(translated)
+
+          link = fragment.find("a")
+          expect(link.text).to eq("what's new")
+        end
+      end
+
       context "when passing URLs as a list of symbols" do
         let(:urls) do
           { url_1: [:a, :b], url_2: [:a, :c] }

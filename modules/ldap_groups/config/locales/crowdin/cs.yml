@@ -47,7 +47,7 @@ cs:
         title: 'Odstranit synchronizovaný filtr %{name}'
         confirmation: "Pokud budete pokračovat, synchronizovaný filtr %{name} a všechny skupiny %{groups_count} vytvořené prostřednictvím tohoto filtru budou odstraněny."
         removed_groups: "Varování: Toto odstraní následující skupiny z OpenProject a odstraní je ze všech projektů!"
-        verification_html: "Enter the filter name %{name} to verify the deletion."
+        verification_html: "Zadejte název filtru %{name} pro potvrzení odstranění."
       form:
         group_name_attribute_text: 'Zadejte atribut LDAP skupiny použité pro nastavení názvu OpenProject skupiny.'
         filter_string_text: 'Zadejte RFC4515 LDAP, který vrátí skupiny v LDAP pro synchronizaci s OpenProject.'
@@ -59,7 +59,7 @@ cs:
         title: 'Odstranit synchronizovanou skupinu %{name}'
         confirmation: "Pokud budete pokračovat, synchronizovaná skupina %{name} a všichni uživatelé %{users_count} synchronizovaní přes ni budou odstraněni."
         info: "Poznámka: Samotná OpenProject skupina a členové přidaní mimo tuto LDAP synchronizaci nebudou odstraněni."
-        verification_html: "Enter the group's name %{name} to verify the deletion."
+        verification_html: "Zadejte název skupiny %{name} pro potvrzení odstranění."
       help_text_html: |
         Tento modul umožňuje nastavit synchronizaci mezi LDAP a OpenProject skupinami.
         Závisí na LDAP skupinách musí použít atribut <em>groupOfNames / memberOf</em> nastavený pro práci s OpenProject.

@@ -13,6 +13,7 @@
 
   .op-fc-wrapper
     flex-grow: 1
+
 .users-non-working-times-calendar-view
   .op-fc-wrapper
     // Rounded corners for the entire calendar
@@ -21,10 +22,10 @@
 
     // Global non-working days rendered as FullCalendar background events
     .fc-bg-event.non-working-day--global
-      background-color: var(--bgColor-done-muted) !important
-      color: var(--fgColor-sponsors) !important
+      background-color: var(--data-pink-color-muted) !important
+      color: var(--display-pink-scale-9) !important
       opacity: 0.8 !important
-      border: 1px solid var(--display-pink-scale-5) !important
+      border: 1px solid var(--data-pink-color-emphasis) !important
 
     // User non-working day ranges rendered as foreground all-day bars
     .fc-event.non-working-day--user
@@ -41,5 +42,3 @@
         &.fc-day-today
           background-color: var(--bgColor-accent-muted) !important
           color: var(--fgColor-accent) !important
-
-

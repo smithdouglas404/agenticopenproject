@@ -443,7 +443,7 @@ module ApplicationHelper
   # @param [optional, String] content the content of the ROBOTS tag.
   #   defaults to no index, follow, and no archive
   def robot_exclusion_tag(content = "NOINDEX,FOLLOW,NOARCHIVE")
-    content_tag(:meta, name: "ROBOTS", content:)
+    tag(:meta, name: "ROBOTS", content:)
   end
 
   def permitted_params

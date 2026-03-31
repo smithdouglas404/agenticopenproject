@@ -18,7 +18,7 @@ cs:
         group_regexes: Patterns (regular expressions)
         secret: Tajné
         scope: Rozsah
-        sync_groups: Synchronize groups
+        sync_groups: Synchronizovat skupiny
         grant_types_supported: Podporované typy grantů
         limit_self_registration: Omezit vlastní registraci
         authorization_endpoint: Koncový bod autorizace
@@ -55,8 +55,8 @@ cs:
       delete_result_1: Odstranit poskytovatele ze seznamu dostupných poskytovatelů.
       delete_result_user_count:
         zero: Tohoto poskytovatele v současné době nepoužívají žádní uživatelé. Není třeba podnikat žádné další kroky.
-        one: "One user is currently still using this provider. They will need to be re-invited or logging in with another provider."
-        other: "%{count} users are currently still using this provider. They will need to be re-invited or logging in with another provider."
+        one: "Jeden uživatel v současné době stále používá tohoto poskytovatele. Musí být znovu pozván nebo přihlášen přes jiného poskytovatele."
+        other: "%{count} uživatelé v současné době stále používají tohoto poskytovatele. Budou muset být znovu pozváni nebo přihlášeni přes jiného poskytovatele."
       delete_result_direct: This provider is marked as a direct login provider. The setting will be removed and users will no longer be redirected to the provider for login.
   openid_connect:
     menu_title: Poskytovatelé OpenID
@@ -64,14 +64,14 @@ cs:
     group_links_heading: OpenID Connect group links
     groups:
       match_preview_component:
-        title: Extracted group names
-        placeholder_none: No groups currently match the pattern.
+        title: Extrahované názvy skupin
+        placeholder_none: Vzoru v současné době neodpovídá žádná skupina.
       match_preview_dialog_component:
         description: This allows you to test your regular expression pattern against sample data to verify that the group names you want extracted are indeed extracted properly. You can modify your pattern here but the test string and matches themselves will not be saved with the configuration.
-        group_names_label: Test group names
+        group_names_label: Názvy testovacích skupin
         group_names_description: Enter one group name per line as it would appear in the OIDC claim, to see how your regular expression patterns affect them.
-        show_button: Test pattern
-        title: Test regular expressions
+        show_button: Testovací vzor
+        title: Test regulárních výrazů
     instructions:
       endpoint_url: The endpoint URL given to you by the OpenID Connect provider
       group_regexes: One regular expression pattern per line. Please read [the documentation](docs_url) for more information on how to do this.

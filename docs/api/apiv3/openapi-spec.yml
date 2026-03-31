@@ -380,6 +380,8 @@ paths:
     "$ref": "./paths/project_available_assignees.yml"
   "/api/v3/projects/{id}/categories":
     "$ref": "./paths/project_categories.yml"
+  "/api/v3/projects/{id}/sprints":
+    "$ref": "./paths/project_sprints.yml"
   "/api/v3/projects/{id}/types":
     "$ref": "./paths/project_types.yml"
   "/api/v3/projects/{id}/versions":
@@ -436,6 +438,10 @@ paths:
     "$ref": "./paths/roles.yml"
   "/api/v3/roles/{id}":
     "$ref": "./paths/role.yml"
+  "/api/v3/sprints":
+    "$ref": "./paths/sprints.yml"
+  "/api/v3/sprints/{id}":
+    "$ref": "./paths/sprint.yml"
   "/api/v3/statuses":
     "$ref": "./paths/statuses.yml"
   "/api/v3/statuses/{id}":
@@ -653,6 +659,10 @@ components:
       $ref: "./components/examples/relation_response.yml"
     RelationUpdateRequest:
       $ref: "./components/examples/relation_update_request.yml"
+    SprintResponse:
+      $ref: "./components/examples/sprint.yml"
+    SprintCollectionResponse:
+      $ref: "./components/examples/sprint_collection.yml"
     StatusCollection:
       $ref: "./components/examples/status_collection.yml"
     StatusResponse:
@@ -971,6 +981,10 @@ components:
       "$ref": "./components/schemas/schema_for_global_queries_model.yml"
     Schema_For_Workspace_QueriesModel:
       "$ref": "./components/schemas/schema_for_workspace_queries_model.yml"
+    SprintCollectionModel:
+      "$ref": "./components/schemas/sprint_collection_model.yml"
+    SprintModel:
+      "$ref": "./components/schemas/sprint_model.yml"
     Star_QueryModel:
       "$ref": "./components/schemas/star_query_model.yml"
     StatusCollectionModel:
@@ -1127,6 +1141,7 @@ tags:
   - "$ref": "./tags/roles.yml"
   - "$ref": "./tags/root.yml"
   - "$ref": "./tags/schemas.yml"
+  - "$ref": "./tags/sprints.yml"
   - "$ref": "./tags/statuses.yml"
   - "$ref": "./tags/time_entries.yml"
   - "$ref": "./tags/time_entry_activities.yml"

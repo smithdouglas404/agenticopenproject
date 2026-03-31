@@ -119,9 +119,6 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       columns.assume_opened
       columns.remove "Subject"
 
-      # Wait for the column save to complete and the table to re-render
-      wait_for_network_idle
-
       expect(filter_area.area)
         .to have_css(".id", text: type_work_package.id)
 
@@ -132,6 +129,11 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       # As other_type is filtered out
       expect(filter_area.area)
         .to have_no_css(".id", text: other_type_work_package.id)
+
+      # Wait for the column save PATCH to complete after the DOM has confirmed the
+      # Angular state update. Without this ordering, wait_for_network_idle can fire
+      # during the gap before the async PATCH request is initiated.
+      wait_for_network_idle
 
       scroll_to_element(filter_area.area)
       within filter_area.area do
@@ -152,6 +154,16 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       wait_for_network_idle
 
       filter_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(3)")
+
+      # Wait for the widget to load from its persisted state before asserting.
+      # The title comes from the grid API; once visible, the widget is initialized.
+      # A second wait_for_network_idle then catches the subsequent query + results fetches.
+      within filter_area.area do
+        expect(page).to have_field("editable-toolbar-title", with: "My WP Filter", wait: 10)
+      end
+
+      wait_for_network_idle
+
       expect(filter_area.area)
         .to have_css(".id", text: type_work_package.id)
 
@@ -162,10 +174,6 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       # As other_type is filtered out
       expect(filter_area.area)
         .to have_no_css(".id", text: other_type_work_package.id)
-
-      within filter_area.area do
-        expect(page).to have_field("editable-toolbar-title", with: "My WP Filter", wait: 10)
-      end
     end
   end
 

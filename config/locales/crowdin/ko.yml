@@ -375,10 +375,10 @@ ko:
           <p>안녕하세요,</p> <p>새 프로젝트가 생성되었습니다: projectValue:name</p> <p>감사합니다.</p>
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
           label_project: Project
           label_previous_identifier: Previous identifier
@@ -405,7 +405,7 @@ ko:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "기본 전환"
@@ -3437,6 +3437,7 @@ ko:
   label_ical_access_key_generation_hint: "캘린더 구독 시 자동으로 생성됩니다."
   label_ical_access_key_latest: "최신"
   label_ical_access_key_revoke: "취소"
+  label_integrations: "Integrations"
   label_add_column: "열 추가"
   label_applied_status: "적용된 상태"
   label_archive_project: "프로젝트 아카이브하기"
@@ -4907,11 +4908,11 @@ ko:
   setting_welcome_text: "환영 블록 텍스트"
   setting_welcome_title: "환영 블록 제목"
   setting_welcome_on_homescreen: "홈 화면에 환영 블록 표시"
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: >
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
     Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "기본 강조 표시 모드"
   setting_work_package_list_default_highlighted_attributes: "기본 인라인 강조 표시 특성"

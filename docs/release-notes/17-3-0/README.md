@@ -3,14 +3,14 @@ title: OpenProject 17.3.0
 sidebar_navigation:
     title: 17.3.0
 release_version: 17.3.0
-release_date: 2026-03-26
+release_date: 2026-04-15
 ---
 
  # OpenProject 17.3.0
 
- Release date: 2026-03-26
+ Release date: 2026-04-15
 
- We released OpenProject [OpenProject 17.3.0](https://community.openproject.org/versions/2266).
+ We released [OpenProject 17.3.0](https://community.openproject.org/versions/2266).
  The release contains several bug fixes and we recommend updating to the newest version.
  In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
@@ -20,9 +20,101 @@ release_date: 2026-03-26
 
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+Take a look at our release video showing the most important features introduced in OpenProject 17.3.0:
 
-## Important updates and breaking changes
+![Release video of OpenProject 17.3](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_17_3_release.mp4)
+
+### Improvements to agile planning and execution with sprints and backlogs
+
+OpenProject 17.3 introduces several improvements to agile planning and execution, making it easier to structure and manage work with sprints and backlogs and reducing the need for manual setup. These changes are part of our [ongoing efforts to further strengthen agile workflows in OpenProject](https://www.openproject.org/blog/future-of-agile-work/).
+
+![OpenProject Backlogs module in version 17.3: Divided into Backlog and Sprints](17-3-backlogs-sprint-planning.png)
+
+#### Dedicated sprint objects
+
+OpenProject introduces dedicated sprint objects for agile planning, replacing the previous use of versions as a workaround. Sprints are now a core entity within the Backlogs module, allowing teams to plan, organize, and track their work more intuitively.
+
+Work packages can be assigned directly to sprints, and sprints include key attributes such as name, status, and dates. This provides a clearer structure for agile workflows and aligns OpenProject more closely with established Scrum practices.
+
+#### All work packages visible on backlogs
+
+Backlogs now display all work package types within a project, removing previous limitations on which types could be included. This allows teams to manage and prioritize all relevant work in one place without additional configuration.
+
+By making all work packages visible in backlogs and sprint planning, OpenProject provides a more consistent and flexible approach to organizing work across different use cases.
+
+#### Automatic board creation when starting a sprint
+
+When starting a sprint, a dedicated board is now created automatically and configured based on the project’s workflows. Teams are directly taken to the board, allowing them to start working without any additional setup.
+
+This reduces manual configuration and ensures that sprint boards are consistently structured across projects.
+
+![Sprint board in OpenProject version 17.3](17-3-sprint-planning-boards.png)
+
+#### Closing a sprint and handling remaining work
+
+Active sprints can now be completed directly from the sprint view, making it easier to transition to the next iteration. When closing a sprint, users are guided to handle unfinished work packages in bulk.
+
+Remaining work can be moved to the backlog or reassigned to another sprint, helping teams to continue their work without manual adjustments.
+
+### Action boards available in the Community edition
+
+With the improvements to agile planning features such as sprints and backlogs, boards play a central role in organizing and tracking work. To support this, all action board types are now available in the Community edition.
+
+This extends the existing board functionality in the Community edition and allows teams to use a wider range of board configurations, such as Kanban or parent-child boards, without requiring an Enterprise plan.
+
+![OpenProject boards overview - creating a new board and choose from the following types: Basic, Kanban, Assignee, Version, Subproject, Parent-child](17-3-boards-new-Community.png)
+
+### In-place editing of project attributes on the project overview page
+
+Project attributes on the project overview page can now be edited directly in place, without opening a separate dialog. This allows users to update project information more quickly and with fewer interruptions.
+
+Depending on the attribute type, changes can be applied immediately or confirmed within the field, providing a more streamlined and consistent editing experience.
+
+![Overview page in OpenProject 17.3 with in-place editing: Example "PIR controller" with dropdown option to search for a user](17-3-project-overview-edit-highlighted.png)
+
+### Sharing of meeting templates (Enterprise add-on, Basic plan)
+
+[feature: meeting_templates ]
+
+Meeting templates, [introduced as an Enterprise add-on in OpenProject 17.2](../../release-notes/17-2-0/#reusable-meeting-templates-enterprise-add-on), can now be shared across projects, making it easier to reuse standardized agendas and structures. Depending on the configuration, templates can be made available within a project, across subprojects, or throughout the entire instance.
+
+![Meeting template in OpenProject 17.3 with the option to share – With only this project, with subprojects or with all projects](17-3-meeting-templates-share-highlighted.png)
+
+### Improved workflow configuration for administrators
+
+Workflow configuration has been improved to make it easier to focus on relevant types, roles, and statuses. A new index page allows workflows to be accessed by type, reducing complexity when navigating and editing configurations.
+
+![New index page for workflows in OpenProject 17.3, listing all work package types available](17-3-workflows-index-page.png)
+
+When editing workflows, only relevant statuses are displayed, and role selection is streamlined. In addition, saving changes is now more reliable, with improved handling of unsaved changes and a fixed save action.
+
+![Example workflow for work package type task](17-3-workflows.png)
+
+### Improved handling of project identifiers
+
+Project identifiers can now be easily changed without invalidating existing links. Previous identifiers remain valid and continue to redirect to the project.
+
+In addition, identifier handling has been improved when creating or copying projects, including automatic suggestions and updated validation. These improvements also apply to API-based project creation.
+
+![OpenProject 17.3 project settings with overlay to change the project identifier, including a note that this is a permanent change but redirects will work](17-3-change-project-identifier.png)
+
+### Improved work package search when selecting items across the application
+
+Work package search has been continuously improved in recent releases. With OpenProject 17.3, these improvements are now extended to more areas of the application.
+
+When selecting work packages in relations, boards, meetings, time tracking, or filters, it is now possible to search by attributes such as type and status. This aligns the search behavior with the global search and makes it easier to find and select the correct work packages in different workflows.
+
+### Nested groups for improved user and permission management
+
+Groups can now be nested, allowing memberships and permissions to be inherited through the group hierarchy. This lays the foundation for further improvements in structuring and managing groups.
+
+## Important technical updates
+
+### Webhooks now include the user causing a change (actor)
+
+Webhooks now include an  an `actor` field indicating which user caused a change, for example when creating or updating a work package. This makes it easier to build automations that can react differently depending on who triggered the change.
+
+We want to thank Community member [@cheezzz](https://github.com/cheezzz) for contributing this improvement.
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
@@ -152,12 +244,12 @@ release_date: 2026-03-26
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release.
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Walid Ibrahim, Jörg Mollowitz, Александр Татаринцев, Robin Kluth, Natalie Stettner, Gábor Alexovics, Patrick Lenk, Daniel Elkeles.
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Walid Ibrahim, Jörg Mollowitz, Robin Kluth, Natalie Stettner, Gábor Alexovics, Patrick Lenk, and Daniel Elkeles.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings!
-Would you like to help out with translations yourself?
-Then take a look at our translation guide and find out exactly how you can contribute.
-It is very much appreciated!
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
+- [Phi Công Nguyễn Vũ](https://crowdin.com/profile/nguyenvuphicong), for an outstanding number of translations into Vietnamese.
+- [Mehmet Coşkun](https://crowdin.com/profile/mmehmet.ccoskun), for a great number of translations into Turkish.
+- [Liangzdz](https://crowdin.com/profile/Liangzdz), for a great number of translations into Chinese Simplified.
+
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

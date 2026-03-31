@@ -31,7 +31,8 @@ See COPYRIGHT and LICENSE files for more details.
   render(
     Primer::OpenProject::FeedbackDialog.new(
       id: DIALOG_ID,
-      title: t("admin.workflows.leave_confirmation.title")
+      title: t("admin.workflows.leave_confirmation.title"),
+      data: { turbo_temporary: true }
     )
   ) do |dialog|
     dialog.with_feedback_message(icon_arguments: { icon: :none }) do |message|
