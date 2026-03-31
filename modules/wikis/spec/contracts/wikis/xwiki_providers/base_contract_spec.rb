@@ -29,37 +29,35 @@
 #++
 
 require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
 
 RSpec.describe Wikis::XWikiProviders::BaseContract do
-  let(:admin) { build(:admin) }
-  let(:user) { build(:user) }
-  let(:wiki_provider) { build(:xwiki_provider) }
+  include_context "ModelContract shared context"
 
-  subject(:contract) { described_class.new(wiki_provider, current_user) }
+  let(:wiki_provider) { build_stubbed(:xwiki_provider) }
+  let(:contract) { described_class.new(wiki_provider, current_user) }
 
-  context "when user is an admin" do
-    let(:current_user) { admin }
+  it_behaves_like "contract is valid for active admins and invalid for regular users"
 
-    it "is valid" do
-      expect(contract).to be_valid
+  describe "url" do
+    let(:current_user) { build_stubbed(:admin) }
+
+    context "when blank" do
+      let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "") }
+
+      include_examples "contract is invalid", url: :blank
     end
-  end
 
-  context "when user is not an admin" do
-    let(:current_user) { user }
+    context "when not https" do
+      let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "http://xwiki.example.com") }
 
-    it "is invalid" do
-      expect(contract).not_to be_valid
-      expect(contract.errors[:base]).to include(:error_unauthorized)
+      include_examples "contract is invalid", url: :invalid
     end
-  end
 
-  context "when user is inactive" do
-    let(:current_user) { build(:admin, status: Principal.statuses[:locked]) }
+    context "when too long" do
+      let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://#{"x" * 250}.com") }
 
-    it "is invalid" do
-      expect(contract).not_to be_valid
-      expect(contract.errors[:base]).to include(:error_unauthorized)
+      include_examples "contract is invalid", url: :too_long
     end
   end
 end

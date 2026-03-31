@@ -29,35 +29,13 @@
 #++
 
 require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
 
 RSpec.describe Wikis::XWikiProviders::DeleteContract do
-  let(:wiki_provider) { build(:xwiki_provider) }
+  include_context "ModelContract shared context"
 
-  subject(:contract) { described_class.new(wiki_provider, current_user) }
+  let(:wiki_provider) { build_stubbed(:xwiki_provider) }
+  let(:contract) { described_class.new(wiki_provider, current_user) }
 
-  context "when user is an admin" do
-    let(:current_user) { build(:admin) }
-
-    it "is valid" do
-      expect(contract).to be_valid
-    end
-  end
-
-  context "when user is not an admin" do
-    let(:current_user) { build(:user) }
-
-    it "is invalid" do
-      expect(contract).not_to be_valid
-      expect(contract.errors[:base]).to include(:error_unauthorized)
-    end
-  end
-
-  context "when user is inactive" do
-    let(:current_user) { build(:admin, status: Principal.statuses[:locked]) }
-
-    it "is invalid" do
-      expect(contract).not_to be_valid
-      expect(contract.errors[:base]).to include(:error_unauthorized)
-    end
-  end
+  it_behaves_like "contract is valid for active admins and invalid for regular users"
 end
