@@ -39,11 +39,14 @@ module OpenProject::TextFormatting
     #     enabled: (boolean)
     #
     # This filter does not write additional information to the context.
-    class AutolinkCustomProtocolsFilter < HTML::Pipeline::Filter
+    class AutolinkCustomProtocolsFilter < HTMLPipeline::NodeFilter
       include ActionView::Helpers::TagHelper
 
       # Skip text nodes that are within preformatted or linked blocks
-      SKIPPED_BLOCKS = %w(pre code kbd a).to_set
+      SELECTOR = Selma::Selector.new(
+        match_text_within: "*",
+        ignore_text_within: %w[pre code kbd a]
+      )
 
       def self.protocols
         Setting
@@ -56,23 +59,24 @@ module OpenProject::TextFormatting
         %r{((?:#{protocols.join('|')}):/?/?[^\s<\u00A0"]*[^\s<\u00A0",;\.])}i
       end
 
-      def call
-        return doc if Setting.allowed_link_protocols.empty?
-
-        autolink_context = default_autolink_options.merge context.fetch(:autolink, {})
-        return doc if autolink_context[:enabled] == false
-
-        doc.search(".//text()").each do |node|
-          next if has_ancestor?(node, SKIPPED_BLOCKS)
-
-          auto_link_custom_protocols(node, autolink_context)
-        end
-
-        doc
+      def selector
+        SELECTOR
       end
 
-      def auto_link_custom_protocols(node, autolink_context)
-        content = node.to_html
+      def handle_text_chunk(text)
+        return if Setting.allowed_link_protocols.empty?
+
+        autolink_context = default_autolink_options.merge context.fetch(:autolink, {})
+        return if autolink_context[:enabled] == false
+
+        auto_link_custom_protocols(text, autolink_context)
+      end
+
+      def auto_link_custom_protocols(text, autolink_context)
+        content = text.to_s
+
+        # Skip text that already contains HTML (e.g. already auto-linked by AutolinkFilter)
+        return if content.include?("<")
 
         matched = false
         content.gsub!(self.class.regexp) do |href|
@@ -84,7 +88,7 @@ module OpenProject::TextFormatting
                       rel: "noopener noreferrer")
         end
 
-        node.replace(content) if matched
+        text.replace(content, as: :html) if matched
       end
 
       def default_autolink_options

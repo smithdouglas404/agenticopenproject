@@ -30,7 +30,7 @@
 
 module OpenProject::TextFormatting
   module Filters
-    class SettingMacrosFilter < HTML::Pipeline::Filter
+    class SettingMacrosFilter < HTMLPipeline::TextFilter
       ALLOWED_SETTINGS = %w[
         host_name
         base_url
@@ -44,10 +44,10 @@ module OpenProject::TextFormatting
         }x
       end
 
-      def call
-        return html unless applicable?
+      def call(text, context: {}, result: {})
+        return text unless applicable?(text)
 
-        html.gsub(self.class.regexp) do |matched_string|
+        text.gsub(self.class.regexp) do |matched_string|
           variable = ($1.presence || $2.presence).dup
           variable.delete!("\\")
 
@@ -75,8 +75,8 @@ module OpenProject::TextFormatting
 
       ##
       # Faster inclusion check before the regex is being applied
-      def applicable?
-        html.include?("{{opSetting:") || html.include?("%7B%7BopSetting:")
+      def applicable?(text)
+        text.include?("{{opSetting:") || text.include?("%7B%7BopSetting:")
       end
     end
   end

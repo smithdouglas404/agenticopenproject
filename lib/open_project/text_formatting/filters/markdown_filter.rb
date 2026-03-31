@@ -30,14 +30,43 @@
 
 module OpenProject::TextFormatting
   module Filters
-    class MarkdownFilter < HTML::Pipeline::MarkdownFilter
+    class MarkdownFilter < HTMLPipeline::ConvertFilter
+      # Commonmarker (with github_pre_lang: true) places the permalink anchor
+      # BEFORE the heading text and puts the id on the anchor, e.g.:
+      #   <h3><a href="#slug" aria-hidden="true" class="anchor" id="slug"></a>Heading</h3>
+      #
+      # We restructure each heading to match the expected format:
+      #   <h3 id="slug">Heading\n<a href="#slug" aria-hidden="true" class="anchor"></a></h3>
+      # (id moved to heading element, anchor moved to after text, id removed from anchor)
+      HEADING_ANCHOR_RE = /
+        (<h([1-6])>)                             # $1 heading opening, $2 level
+        \s*
+        (<a\s[^>]*\bid="([^"]+)"[^>]*><\/a>)    # $3 anchor element, $4 id value
+        (.*?)                                    # $5 heading text
+        (<\/h\2>)                                # $6 heading closing tag
+      /xm
+
       # Convert Markdown to HTML using CommonMarker
-      def call
-        Commonmarker.to_html(text, options: commonmarker_options, plugins: commonmarker_plugins)
-                    .tap(&:rstrip!)
+      def call(text, context: @context)
+        html = Commonmarker.to_html(text, options: commonmarker_options, plugins: commonmarker_plugins)
+                           .tap(&:rstrip!)
+        restructure_headings(html)
       end
 
       private
+
+      def restructure_headings(html)
+        html.gsub(HEADING_ANCHOR_RE) do
+          level    = $2
+          anchor   = $3
+          id_value = $4
+          text     = $5.strip
+
+          # Remove id attribute from anchor (id moves to heading element)
+          anchor_no_id = anchor.gsub(/\s*\bid="[^"]*"/, "")
+          "<h#{level} id=\"#{id_value}\">#{text}\n#{anchor_no_id}</h#{level}>"
+        end
+      end
 
       ##
       # CommonMarker Options

@@ -30,169 +30,102 @@
 
 module OpenProject::TextFormatting
   module Filters
-    class SanitizationFilter < HTML::Pipeline::SanitizationFilter
+    module SanitizationFilter
       # Prefix for all id and name attributes so they cannot clobber document/window
       # (e.g. id="constructor" becomes id="op-frag-constructor"). Anchors still work
       # because we rewrite fragment links to use the same prefix. Used by
       # TableOfContentsFilter when it assigns heading ids.
       FRAGMENT_ID_PREFIX = "op-frag-"
 
-      def allowlist # rubocop:disable Metrics/AbcSize
-        base = super
-        # Ensure id is allowed (for anchors); we make it safe by prefixing in the transformer.
-        base_attrs = base[:attributes].deep_dup
-        all_attrs = Array(base_attrs[:all])
-        base_attrs[:all] = all_attrs.include?("id") ? all_attrs : all_attrs + ["id"]
+      # Macro-specific data attributes that must survive sanitization.
+      # Selma does not support wildcard data-* matching, so we enumerate known attribute names.
+      MACRO_DATA_ATTRIBUTES = %w[
+        data-type data-classes data-page data-include-parent data-url data-name
+        data-id data-detailed data-macro-name data-project data-wiki-page data-filter
+      ].freeze
 
-        Sanitize::Config.merge(
-          base,
-          elements: base[:elements] + %w[macro mention],
+      # Data attributes added to links by MentionFilter and PatternMatcherFilter.
+      LINK_HOVER_CARD_ATTRIBUTES = %w[data-hover-card-trigger-target data-hover-card-url].freeze
 
-          attributes: base_attrs.deep_merge(
-            # Whitelist class and data-* attributes on all macros
-            "macro" => ["class", :data],
-            # mentions
-            "mention" => %w[data-type data-text data-id class],
-            # add styles to tables
-            "figure" => %w[class style],
-            # allow inline image styles
-            "img" => %w[src alt longdesc style],
-            "table" => ["style"],
-            "th" => ["style"],
-            "tr" => ["style"],
-            "td" => ["style"]
+      # Build a Selma sanitization config for use as HTMLPipeline's sanitization_config.
+      # Must be a method (not a constant) because allowed protocols are read from the DB.
+      def self.config
+        base_elements = HTMLPipeline::SanitizationFilter::DEFAULT_CONFIG[:elements]
+        base_attrs    = HTMLPipeline::SanitizationFilter::DEFAULT_CONFIG[:attributes]
+        base_protocols = HTMLPipeline::SanitizationFilter::DEFAULT_CONFIG[:protocols]
+
+        Selma::Sanitizer::Config.freeze_config({
+          elements: base_elements + %w[
+            input nav macro mention
+            opce-macro-attribute-value opce-macro-attribute-label
+            opce-macro-wp-quickinfo opce-macro-embedded-table
+          ],
+
+          attributes: base_attrs.merge(
+            all: base_attrs[:all] + %w[class style],
+            "a"       => (base_attrs["a"] || []) + LINK_HOVER_CARD_ATTRIBUTES,
+            "macro"   => ["class"] + MACRO_DATA_ATTRIBUTES,
+            "mention" => %w[class data-type data-text data-id],
+            "figure"  => %w[class style],
+            "img"     => (base_attrs["img"] || []) + %w[style],
+            "input"   => %w[type class disabled checked],
+            "nav"     => %w[class],
+            "table"   => (base_attrs["table"] || []) + %w[style],
+            "th"      => (base_attrs["th"]    || []) + %w[style],
+            "tr"      => (base_attrs["tr"]    || []) + %w[style],
+            "td"      => (base_attrs["td"]    || []) + %w[style],
+            "opce-macro-attribute-value" => %w[data-model data-id data-attribute],
+            "opce-macro-attribute-label" => %w[data-model data-id data-attribute],
+            "opce-macro-wp-quickinfo"    => %w[data-id data-detailed],
+            "opce-macro-embedded-table"  => %w[data-query-props],
           ),
 
-          # Add rel attribute to prevent tabnabbing
-          add_attributes: {
-            "a" => { "rel" => "noopener noreferrer" }
-          },
+          protocols: base_protocols.merge(
+            "a" => {
+              "href"                => Setting::AllowedLinkProtocols.all + [:relative],
+              "data-hover-card-url" => ["http", "https", :relative]
+            }
+          ),
 
-          # Add custom transformer logic for more complex modifications
-          transformers: base[:transformers] + transformers,
-
-          # Allow relaxed CSS styles for the given attributes
-          css: ::Sanitize::Config::RELAXED[:css],
-
-          # Allow our protocols, and relative links always
-          protocols: {
-            "a" => { "href" => Setting::AllowedLinkProtocols.all + %i[relative] }
-          }
-        )
+          allow_comments: false,
+          allow_doctype:  false,
+        })
       end
 
-      private
+      # NodeFilter that prefixes all id/name attributes with FRAGMENT_ID_PREFIX so
+      # they cannot clobber document/window properties (e.g. id="constructor").
+      # Also rewrites same-document fragment links so they match the prefixed ids.
+      class FragmentIdPrefixFilter < HTMLPipeline::NodeFilter
+        SELECTOR = Selma::Selector.new(match_element: "*")
 
-      def transformers
-        [
-          fragment_id_prefix_transformer,
-          fragment_link_rewrite_transformer,
-          todo_list_transformer,
-          code_block_transformer
-        ]
-      end
+        def selector
+          SELECTOR
+        end
 
-      # Prefix all id and name attributes so they cannot clobber document/window.
-      # e.g. id="constructor" -> id="op-frag-constructor"; anchors still work.
-      def fragment_id_prefix_transformer
-        prefix = FRAGMENT_ID_PREFIX
-        lambda { |env|
-          node = env[:node]
-          next unless node.element?
+        def handle_element(element)
+          prefix = SanitizationFilter::FRAGMENT_ID_PREFIX
 
+          # Prefix id and name attributes
           %w[id name].each do |attr|
-            val = node[attr]
+            val = element[attr]
             next if val.blank?
             next if val.start_with?(prefix)
 
-            node[attr] = "#{prefix}#{val}"
+            element[attr] = "#{prefix}#{val}"
           end
-        }
-      end
 
-      # Rewrite same-document fragment links to use the same prefix so anchors match.
-      # e.g. <a href="#section"> -> href="#op-frag-section"
-      def fragment_link_rewrite_transformer
-        prefix = FRAGMENT_ID_PREFIX
-        lambda { |env|
-          node = env[:node]
-          next unless node.name == "a"
+          # Rewrite fragment-only href values on <a> tags
+          return unless element.tag_name == "a"
 
-          href = node["href"]
+          href = element["href"]
           return if href.blank?
-
-          # Only rewrite fragment-only links (#foo), not full URLs with fragment
-          next unless href.start_with?("#") && href.length > 1
+          return unless href.start_with?("#") && href.length > 1
 
           fragment = href.slice(1..)
-          next if fragment.empty? || fragment.start_with?(prefix)
+          return if fragment.empty? || fragment.start_with?(prefix)
 
-          node["href"] = "##{prefix}#{fragment}"
-        }
-      end
-
-      # Transformer to fix task lists in sanitization
-      # Replace to do lists in tables with their markdown equivalent
-      def todo_list_transformer # rubocop:disable Metrics/AbcSize,Metrics/PerceivedComplexity
-        lambda { |env|
-          name = env[:node_name]
-          table = env[:node]
-
-          next unless name == "table"
-
-          # Support both the old css ('todo-list__label') as well as the new one
-          # ('op-uc-list_task-list').
-          table.css("label.todo-list__label, .op-uc-list_task-list label").each do |label|
-            # table.css('.op-uc-list_task-list label').each do |label|
-            checkbox = label.css("input[type=checkbox]").first
-            li_node = label.ancestors.detect { |node| node.name == "li" }
-
-            # assign all children of the label to its parent
-            # that might be the LI, or another element (code, link)
-            parent = label.parent
-
-            # CKEditor splits text nodes within task lists so that there are multiple labels
-            # but only the first has a checkbox
-            # e.g., - [ ] Foo [Bar](https://example.com)
-            # both Foo and Bar are contained by labels
-            if checkbox.nil?
-              # In case we don't have a checkbox, add the content of the label
-              # or its parent in case of links directly to the node
-              to_add = li_node == parent ? label.children : parent
-              li_node.add_child to_add
-            else
-              checked = checkbox.attr("checked") == "checked" ? "x" : " "
-              checkbox.unlink
-
-              # Ensure the task list text is be added as first child to the LI
-              li_node.prepend_child " [#{checked}] "
-
-              # Prepend if there is a parent in between
-              if parent == li_node
-                parent.add_child label.children
-              else
-                parent.prepend_child label.children
-              end
-            end
-          end
-        }
-      end
-
-      # Prevent nested pre + code.
-      # In such a case, the code is removed.
-      def code_block_transformer
-        lambda { |env|
-          name = env[:node_name]
-          code = env[:node]
-
-          next unless name == "code"
-
-          parent = code.parent
-
-          if parent&.name == "pre"
-            parent.children = code.children
-          end
-        }
+          element["href"] = "##{prefix}#{fragment}"
+        end
       end
     end
   end

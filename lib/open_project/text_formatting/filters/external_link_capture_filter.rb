@@ -29,21 +29,23 @@
 #++
 module OpenProject::TextFormatting
   module Filters
-    class ExternalLinkCaptureFilter < HTML::Pipeline::Filter
+    class ExternalLinkCaptureFilter < HTMLPipeline::NodeFilter
       include OpenProject::StaticRouting::UrlHelpers
 
-      def call
-        return doc unless applicable?
+      SELECTOR = Selma::Selector.new(match_element: "a[href]")
 
-        doc.css("a[href]").each do |node|
-          url = node["href"]
-          next if internal_link?(url)
+      def selector
+        SELECTOR
+      end
 
-          node["href"] = external_redirect(url:)
-          node["target"] = "_blank"
-        end
+      def handle_element(element)
+        return unless applicable?
 
-        doc
+        url = element["href"]
+        return if internal_link?(url)
+
+        element["href"] = external_redirect(url:)
+        element["target"] = "_blank"
       end
 
       def applicable?

@@ -30,13 +30,13 @@
 
 module OpenProject::TextFormatting
   module Filters
-    class PlainFilter < HTML::Pipeline::TextFilter
+    class PlainFilter < HTMLPipeline::ConvertFilter
       include ERB::Util
       include ActionView::Helpers::TagHelper
       include ActionView::Helpers::TextHelper
       include ActionView::Helpers::UrlHelper
 
-      def call
+      def call(text, context: {})
         linked = auto_link(text, :all)
         simple_format(linked)
       end

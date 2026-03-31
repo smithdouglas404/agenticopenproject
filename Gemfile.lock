@@ -473,8 +473,6 @@ GEM
     date_validator (0.12.0)
       activemodel (>= 3)
       activesupport (>= 3)
-    deckar01-task_list (2.3.4)
-      html-pipeline (~> 2.0)
     declarative (0.0.20)
     dentaku (3.5.7)
       bigdecimal
@@ -695,9 +693,9 @@ GEM
       logger
     highline (3.1.2)
       reline
-    html-pipeline (2.14.3)
-      activesupport (>= 2)
-      nokogiri (>= 1.4)
+    html-pipeline (3.2.4)
+      selma (~> 0.4)
+      zeitwerk (~> 2.5)
     htmlbeautifier (1.4.3)
     htmldiff (0.0.1)
     htmlentities (4.3.4)
@@ -1408,6 +1406,11 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
+    selma (0.4.15-aarch64-linux)
+    selma (0.4.15-arm-linux)
+    selma (0.4.15-arm64-darwin)
+    selma (0.4.15-x86_64-darwin)
+    selma (0.4.15-x86_64-linux)
     semantic (1.6.1)
     shoulda-context (2.0.0)
     shoulda-matchers (7.0.1)
@@ -1608,7 +1611,6 @@ DEPENDENCIES
   daemons
   dalli (~> 5.0.0)
   date_validator (~> 0.12.0)
-  deckar01-task_list (~> 2.3.1)
   dentaku (~> 3.5)
   disposable (~> 0.6.2)
   doorkeeper (~> 5.9.0)
@@ -1635,7 +1637,7 @@ DEPENDENCIES
   grape (~> 3.1.1)
   grape_logging (~> 3.0.0)
   grids!
-  html-pipeline (~> 2.14.0)
+  html-pipeline (~> 3.2.0)
   htmldiff
   httpx (~> 1.7.5)
   i18n-js (~> 4.2.4)
@@ -1885,7 +1887,6 @@ CHECKSUMS
   dalli (5.0.2) sha256=818469227b9acdd9da3fc65ec5ae75d4020115545879e5e8f95634085e9a8749
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   date_validator (0.12.0) sha256=68c9834da240347b9c17441c553a183572508617ebfbe8c020020f3192ce3058
-  deckar01-task_list (2.3.4) sha256=66abdc7e009ea759732bb53867e1ea42de550e2aa03ac30a015cbf42a04c1667
   declarative (0.0.20) sha256=8021dd6cb17ab2b61233c56903d3f5a259c5cf43c80ff332d447d395b17d9ff9
   dentaku (3.5.7) sha256=8d15a4a801ac8e1491dd2842bb76e38dd2794e9c8aa0f6e06f59d7ec62727db0
   descendants_tracker (0.0.4) sha256=e9c41dd4cfbb85829a9301ea7e7c48c2a03b26f09319db230e6479ccdc780897
@@ -1970,7 +1971,7 @@ CHECKSUMS
   hashery (2.1.2) sha256=d239cc2310401903f6b79d458c2bbef5bf74c46f3f974ae9c1061fb74a404862
   hashie (5.1.0) sha256=c266471896f323c446ea8207f8ffac985d2718df0a0ba98651a3057096ca3870
   highline (3.1.2) sha256=67cbd34d19f6ef11a7ee1d82ffab5d36dfd5b3be861f450fc1716c7125f4bb4a
-  html-pipeline (2.14.3) sha256=8a1d4d7128b2141913387cac0f8ba898bb6812557001acc0c2b46910f59413a0
+  html-pipeline (3.2.4) sha256=b6029ddc1e6f8e67e8d0d1b0100f0965a3d807807eab1e1d2b7c5e2d34afb72e
   htmlbeautifier (1.4.3) sha256=b43d08f7e2aa6ae1b5a6f0607b4ed8954c8d4a8e85fd2336f975dda1e4db385b
   htmldiff (0.0.1) sha256=a96d068c8b8ea96cca3154a61785365d83129f47f1df964c6b1666924ce113a1
   htmlentities (4.3.4) sha256=125a73c6c9f2d1b62100b7c3c401e3624441b663762afa7fe428476435a673da
@@ -2256,6 +2257,11 @@ CHECKSUMS
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
   selenium-devtools (0.145.0) sha256=629c4964ebeb140f0e08cd6e88e241b07a995416a0e45d8416ba25cf4a7f0513
   selenium-webdriver (4.41.0) sha256=cdc1173cd55cf186022cea83156cc2d0bec06d337e039b02ad25d94e41bedd22
+  selma (0.4.15-aarch64-linux) sha256=a165d343f2cffcaa1d68ea955a12bcdf3f02541691a25a2ef7dcc2b7c30e6dbd
+  selma (0.4.15-arm-linux) sha256=8ff4c1432c43eb7b2c92ff979f2ae57bcaec36419c8ce8131d4359917d399ba6
+  selma (0.4.15-arm64-darwin) sha256=9bf03a35bbde0ced1e5553ead539b06a8ea2d10db054a192ee06623ddd0fe785
+  selma (0.4.15-x86_64-darwin) sha256=6b74b7ec0ffcf9f388b4459ce685f5a10f4b0fcfd88dc72ecab409edfbec86f8
+  selma (0.4.15-x86_64-linux) sha256=a340309409ff444e7a6e7f9b37ebff580da421970d63c6345f1c8d4319b2038e
   semantic (1.6.1) sha256=3cdbb48f59198ebb782a3fdfb87b559e0822a311610db153bae22777a7d0c163
   shoulda-context (2.0.0) sha256=7adf45342cd800f507d2a053658cb1cce2884b616b26004d39684b912ea32c34
   shoulda-matchers (7.0.1) sha256=b4bfd8744c10e0a36c8ac1a687f921ee7e25ed529e50488d61b79a8688749c77

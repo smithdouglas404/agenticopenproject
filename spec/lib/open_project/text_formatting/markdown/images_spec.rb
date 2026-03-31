@@ -90,7 +90,7 @@ RSpec.describe OpenProject::TextFormatting,
           end
         end
 
-        context "with only_path false" do
+        context "with only_path false", with_settings: { host_name: "localhost:3000" } do
           let(:only_path) { false }
 
           it_behaves_like "format_text produces" do
@@ -150,7 +150,7 @@ RSpec.describe OpenProject::TextFormatting,
               <p class="op-uc-p">
                 <figure class="op-uc-figure">
                   <div class="op-uc-figure--content">
-                    <img class="op-uc-image" src="does-not-exist.jpg" alt="foo">
+                    <img class="op-uc-image" src="./does-not-exist.jpg" alt="foo">
                   </div>
                 </figure>
               </p>
@@ -172,7 +172,7 @@ RSpec.describe OpenProject::TextFormatting,
               <p class="op-uc-p">
                 <figure class="op-uc-figure">
                   <div class="op-uc-figure--content">
-                    <img class="op-uc-image" src="whatever.pdf" alt="">
+                    <img class="op-uc-image" src="./whatever.pdf" alt="">
                   </div>
                 </figure>
               </p>
@@ -264,7 +264,7 @@ RSpec.describe OpenProject::TextFormatting,
         <<~EXPECTED
           <figure class="image op-uc-figure" style="width:50%">
             <div class="op-uc-figure--content">
-              <img src="/api/v3/attachments/1293/content" class="op-uc-image">
+              <img src="/api/v3/attachments/1293/content" class="op-uc-image" />
             </div>
             <figcaption class="op-uc-figure--description">Some caption with meaning</figcaption>
           </figure>

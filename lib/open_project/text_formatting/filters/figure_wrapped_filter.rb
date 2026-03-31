@@ -30,57 +30,50 @@
 
 module OpenProject::TextFormatting
   module Filters
-    class FigureWrappedFilter < HTML::Pipeline::Filter
-      include ActionView::Context
-      include ActionView::Helpers::TagHelper
+    class FigureWrappedFilter < HTMLPipeline::NodeFilter
+      # Wrap img and table elements:
+      #
+      # <figure>
+      #   <div class="op-uc-figure--content">
+      #     <img></img>  (or <table></table>)
+      #   </div>
+      # </figure>
+      #
+      # The figure and img/table elements later get CSS classes applied by BemCssFilter.
+      SELECTOR = Selma::Selector.new(match_element: "img, table, figure > div")
 
-      def call
-        doc.search("table", "img").each do |element|
-          case element.name
-          when "img", "table"
-            wrap_element(element)
-          else
-            # nothing
+      def selector
+        SELECTOR
+      end
+
+      def handle_element(element)
+        # For <div> that is a direct child of <figure>: ensure it carries the
+        # op-uc-figure--content class (added when the <div> is user-authored
+        # and lacks the class).
+        if element.tag_name == "div"
+          existing = element["class"]
+          unless existing&.include?("op-uc-figure--content")
+            element["class"] = [existing.presence, "op-uc-figure--content"].compact.join(" ")
           end
+          return
         end
 
-        doc
-      end
+        ancestors = element.ancestors
+        in_figure = ancestors.include?("figure")
+        in_content_div = ancestors.include?("div")
 
-      private
+        if in_figure
+          # Already inside a user-written <figure>: only add the content <div> wrapper
+          # unless one is already present (avoid double-wrapping).
+          return if in_content_div
 
-      # Wrap img elements like this
-      # <figure>
-      #   <div class="op-uc-figure--content">
-      #     <img></img>
-      #   </div>
-      # <figure>
-      #
-      # and
-      #
-      # <figure>
-      #   <div class="op-uc-figure--content">
-      #     <table></table>
-      #   </div>
-      # <figure>
-
-      # The figure and img/table element later on get css classes applied to them so it does
-      # not have to happen here.
-      def wrap_element(element)
-        wrap_in_div(element)
-        wrap_in_figure(element.parent)
-      end
-
-      def wrap_in_figure(element)
-        element.wrap("<figure>") unless element.parent&.name == "figure"
-      end
-
-      def wrap_in_div(element)
-        element.wrap("<div>") unless element.parent&.name == "div"
-
-        div = element.parent
-
-        div["class"] = "op-uc-figure--content"
+          element.before('<div class="op-uc-figure--content">', as: :html)
+          element.after("</div>", as: :html)
+        else
+          # Not yet wrapped: insert full <figure><div> ... </div></figure> scaffold.
+          element.before('<figure><div class="op-uc-figure--content">', as: :html)
+          element.after("</div></figure>", as: :html)
+        end
       end
     end
   end

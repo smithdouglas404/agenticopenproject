@@ -150,7 +150,8 @@ module OpenProject::TextFormatting
 
         link_to h(wiki_title),
                 url,
-                class: "wiki-page#{wiki_page ? '' : ' new'}"
+                class: "wiki-page#{wiki_page ? '' : ' new'} op-uc-link",
+                target: context.fetch(:target, "_top")
       end
     end
   end

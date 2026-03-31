@@ -30,50 +30,62 @@
 
 module OpenProject::TextFormatting
   module Filters
-    class AttachmentFilter < HTML::Pipeline::Filter
+    class AttachmentFilter < HTMLPipeline::NodeFilter
       include OpenProject::StaticRouting::UrlHelpers
       include OpenProject::ObjectLinking
+
+      SELECTOR = Selma::Selector.new(match_element: "img[src]")
+
+      def selector
+        SELECTOR
+      end
+
+      def after_initialize
+        @attachments = get_attachments
+        @rewriter = ::OpenProject::TextFormatting::Helpers::LinkRewriter.new context
+      end
 
       def matched_filenames_regex
         /(bmp|gif|jpe?g|png|svg)\z/
       end
 
-      def call
-        attachments = get_attachments
+      def handle_element(element)
+        src = element["src"]
 
-        rewriter = ::OpenProject::TextFormatting::Helpers::LinkRewriter.new context
-
-        doc.css("img[src]").each do |node|
-          # Check for relative URLs and replace them if needed
-          if rewriter.applicable? node["src"]
-            node["src"] = rewriter.replace node["src"]
-            next
-          end
-
-          # Don't try to lookup attachments if we don't have any
-          next if attachments.nil?
-
-          # We allow linking to filenames that are replaced with their attachment URL
-          lookup_attachment_by_name node, attachments
+        # Check for relative URLs and replace them if needed
+        if @rewriter.applicable?(src)
+          element["src"] = @rewriter.replace(src)
+          return
         end
 
-        doc
+        # Don't try to lookup attachments if we don't have any
+        return if @attachments.nil?
+
+        # We allow linking to filenames that are replaced with their attachment URL
+        lookup_attachment_by_name(element)
+
+        # Selma's :relative protocol only allows URLs that contain a "/".
+        # Bare filenames (e.g. "image.jpg", "file.pdf") have no slash and would
+        # be stripped by the sanitizer in Pass 3.  Normalise them to "./filename"
+        # so they survive sanitization while remaining valid relative references.
+        src_after = element["src"]
+        element["src"] = "./#{src_after}" if src_after.present? && !src_after.include?("/")
       end
 
       ##
       # Lookup a local attachment name
-      def lookup_attachment_by_name(node, attachments)
-        filename = node["src"].downcase
+      def lookup_attachment_by_name(element)
+        filename = element["src"].downcase
 
         # We only match a specific set of attributes as before
         return unless filename&.match?(matched_filenames_regex)
 
         # Try to find the attachment
-        if (attachment = attachments.detect { |att| att.filename.downcase == filename })
-          node["src"] = url_to_attachment(attachment, only_path: context[:only_path])
+        if (attachment = @attachments.detect { |att| att.filename.downcase == filename })
+          element["src"] = url_to_attachment(attachment, only_path: context[:only_path])
 
           # Replace alt text with description, unless it has one already
-          node["alt"] = node["alt"].presence || attachment.description
+          element["alt"] = element["alt"].presence || attachment.description
         end
       end
 

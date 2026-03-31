@@ -46,7 +46,8 @@ module OpenProject::TextFormatting::Filters::Macros
       context = ChildPagesContext.new(macro, pipeline_context)
       context.check
 
-      macro.replace(render_tree(context.include_parent, context.page))
+      macro.before(render_tree(context.include_parent, context.page), as: :html)
+      macro.remove
     end
 
     def is?(macro)

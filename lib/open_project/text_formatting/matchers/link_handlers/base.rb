@@ -97,6 +97,20 @@ module OpenProject::TextFormatting::Matchers
       end
 
       def controller; end
+
+      private
+
+      ##
+      # Override link_to to automatically inject OpenProject link classes and attributes.
+      # Pattern-matcher links are injected via text.replace and don't pass through
+      # LinkAttributeFilter or the BEM CSS filter, so we add them here.
+      def link_to(name = nil, options = nil, html_options = nil, &block)
+        html_options = (html_options || {}).dup
+        existing_class = html_options[:class].to_s
+        html_options[:class] = [existing_class, "op-uc-link"].reject(&:empty?).join(" ")
+        html_options[:target] ||= context.fetch(:target, "_top")
+        super(name, options, html_options, &block)
+      end
     end
   end
 end

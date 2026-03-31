@@ -32,18 +32,23 @@ module OpenProject::TextFormatting::Formats
   module Plain
     class Formatter < OpenProject::TextFormatting::Formats::BaseFormatter
       def to_html(text)
-        pipeline.to_html(text, context).html_safe
+        result = pipeline.call(text, context:)
+        result[:output].html_safe
       end
 
-      def to_document(text)
-        pipeline.to_document text, context
-      end
-
-      def filters
+      def text_filters
         [
-          OpenProject::TextFormatting::Filters::PlainFilter,
-          OpenProject::TextFormatting::Filters::SettingMacrosFilter,
-          OpenProject::TextFormatting::Filters::PatternMatcherFilter
+          OpenProject::TextFormatting::Filters::SettingMacrosFilter.new
+        ]
+      end
+
+      def convert_filter
+        OpenProject::TextFormatting::Filters::PlainFilter.new
+      end
+
+      def node_filters
+        [
+          OpenProject::TextFormatting::Filters::PatternMatcherFilter.new
         ]
       end
 

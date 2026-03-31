@@ -40,7 +40,7 @@ module OpenProject::TextFormatting::Filters::Macros
     end
 
     def apply(macro, **)
-      macro.name = CUSTOM_ELEMENT
+      macro.tag_name = CUSTOM_ELEMENT
     end
 
     def is?(macro)

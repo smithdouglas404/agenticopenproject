@@ -40,7 +40,7 @@ module OpenProject::TextFormatting::Filters::Macros
     end
 
     def apply(macro, **)
-      macro.name = CUSTOM_ELEMENT
+      macro.tag_name = CUSTOM_ELEMENT
       macro["class"] = macro["class"].gsub("op-uc-placeholder", "").squish
     end
 

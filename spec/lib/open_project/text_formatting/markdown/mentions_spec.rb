@@ -88,6 +88,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                             title: "User #{linked_project_member.name}",
                             class: 'user-mention op-uc-link',
                             target: '_top',
+                            rel: 'noopener noreferrer',
                             data: {
                               hover_card_trigger_target: 'trigger',
                               hover_card_url: "/users/#{linked_project_member.id}/hover_card"
@@ -130,7 +131,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                 <mention class="mention"
                          data-id="#{linked_project_member.id + 5}"
                          data-type="user"
-                         data-text="@Some non existing user">
+                         data-text="@Some none existing user">
                    @Some none existing user
                 </mention>
               RAW
@@ -187,6 +188,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                             title: "User #{linked_project_member.name}",
                             class: 'user-mention op-uc-link',
                             target: '_top',
+                            rel: 'noopener noreferrer',
                             data: {
                               hover_card_trigger_target: 'trigger',
                               hover_card_url: "/users/#{linked_project_member.id}/hover_card"
@@ -215,6 +217,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                             title: "User #{linked_project_member.name}",
                             class: 'user-mention op-uc-link',
                             target: '_top',
+                            rel: 'noopener noreferrer',
                             data: {
                               hover_card_trigger_target: 'trigger',
                               hover_card_url: "/users/#{linked_project_member.id}/hover_card"
@@ -244,6 +247,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                               title: "User #{linked_project_member.name}",
                               class: 'user-mention op-uc-link',
                               target: '_top',
+                              rel: 'noopener noreferrer',
                               data: {
                                 hover_card_trigger_target: 'trigger',
                                 hover_card_url: "/users/#{linked_project_member.id}/hover_card"
@@ -276,6 +280,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                               title: "User #{linked_project_member.name}",
                               class: 'user-mention op-uc-link',
                               target: '_top',
+                              rel: 'noopener noreferrer',
                               data: {
                                 hover_card_trigger_target: 'trigger',
                                 hover_card_url: "/users/#{linked_project_member.id}/hover_card"
@@ -305,6 +310,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                             title: "User #{linked_project_member.name}",
                             class: 'user-mention op-uc-link',
                             target: '_top',
+                            rel: 'noopener noreferrer',
                             data: {
                               hover_card_trigger_target: 'trigger',
                               hover_card_url: "/users/#{linked_project_member.id}/hover_card"
@@ -370,6 +376,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                       <a
                         class="user-mention op-uc-link"
                         target="_top"
+                        rel="noopener noreferrer"
                         data-hover-card-trigger-target="trigger"
                         data-hover-card-url="/users/#{user.id}/hover_card"
                         href="/users/#{user.id}"
@@ -397,6 +404,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                       <a
                         class="user-mention op-uc-link"
                         target="_top"
+                        rel="noopener noreferrer"
                         data-hover-card-trigger-target="trigger"
                         data-hover-card-url="http://openproject.org/users/#{user.id}/hover_card"
                         href="http://openproject.org/users/#{user.id}"
@@ -435,6 +443,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                   Link to
                   <a class="user-mention op-uc-link"
                      target="_top"
+                     rel="noopener noreferrer"
                      href="/groups/#{linked_project_member_group.id}"
                      title="Group #{linked_project_member_group.name}">
                     #{linked_project_member_group.name}
@@ -481,6 +490,7 @@ RSpec.describe OpenProject::TextFormatting, "mentions" do # rubocop:disable RSpe
                 <p class="op-uc-p">
                   <a class="user-mention op-uc-link"
                      target="_top"
+                     rel="noopener noreferrer"
                      href="/groups/#{linked_project_member_group.id}"
                      title="Group #{linked_project_member_group.name}">
                     #{linked_project_member_group.name}
