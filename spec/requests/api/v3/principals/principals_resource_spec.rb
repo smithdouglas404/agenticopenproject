@@ -197,9 +197,9 @@ RSpec.describe "API v3 Principals resource" do
     context "with the permission to `manage_members`" do
       let(:permissions) { [:manage_members] }
 
-      # The user herself, the other user in the project, the group and the placeholder user
-      it_behaves_like "API V3 collection response", 4, 4 do
-        let(:elements) { [placeholder_user, group, other_user, user] }
+      # Sees all users and groups including users from unrelated projects.
+      it_behaves_like "API V3 collection response", 5, 5 do
+        let(:elements) { [placeholder_user, group, user_in_non_member_project, other_user, user] }
       end
     end
 

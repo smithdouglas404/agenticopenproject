@@ -30,15 +30,15 @@
 
 # Only return Principals that are visible to the current user.
 #
-# Either the user has the `manage_members` permission in any project,
-# or all principals in visible projects are returned.
+# Users with global `view_all_principals` or project `manage_members` permissions
+# can see all principals.
 module Principals::Scopes
   module Visible
     extend ActiveSupport::Concern
 
     class_methods do
       def visible(user = ::User.current)
-        if user.allowed_globally?(:view_all_principals)
+        if user.allowed_globally?(:view_all_principals) || user.allowed_in_any_project?(:manage_members)
           all
         else
           in_visible_project_or_me_or_same_groups(user)

@@ -92,7 +92,7 @@ RSpec.describe Principals::Scopes::Visible do
                       member_with_roles: { project => role })
       end
 
-      include_examples "sees principals in same projets and groups"
+      include_examples "sees all principals"
     end
 
     context "when user has no manage_members project permission, and is member of a project" do

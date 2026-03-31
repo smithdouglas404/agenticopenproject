@@ -129,7 +129,7 @@ RSpec.describe MembersController do
       end
     end
 
-    describe "WHEN the user has manage_members but no view_all_users (reduced visibility)" do
+    describe "WHEN the user has manage_members but no view_all_principals" do
       let(:project_permissions) { [:manage_members] }
       let!(:other_project) { create(:project) }
       let!(:other_user) { create(:user, member_with_permissions: { other_project => %i[view_project] }) }
@@ -140,7 +140,7 @@ RSpec.describe MembersController do
       end
 
       context "when the user is not authorized to see email addresses" do
-        it "returns only users visible through shared projects" do
+        it "returns all users" do
           subject
           expect(json_response).to be_an(Array)
           expect(json_response).to include(
@@ -150,7 +150,7 @@ RSpec.describe MembersController do
               "href" => "/api/v3/users/#{other_user.id}"
             }
           )
-          expect(json_response).not_to include(
+          expect(json_response).to include(
             {
               "id" => admin.id,
               "name" => admin.name,
