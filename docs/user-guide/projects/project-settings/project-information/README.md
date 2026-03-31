@@ -67,7 +67,7 @@ You will then see the form to change and save the new project identifier.
 
 > [!WARNING]
 > Keep in mind that once a project identifier is changed, members of the project will have to relocate the project's repositories. 
-> Existing links using previous identifiers will continue to work, but links using incorrect or unrelated identifiers will not resolve.
+> Existing links using previous identifiers will continue to work.
 
 
 
