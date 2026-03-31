@@ -50,7 +50,7 @@ RSpec.describe Projects::Identifier do
     it { is_expected.to normalize(:identifier).from("my\n\x00project\t").to("myproject") }
   end
 
-  describe "url identifier", with_settings: { work_packages_identifier: "numeric" } do
+  describe "url identifier", with_settings: { work_packages_identifier: "classic" } do
     let(:reserved) do
       Rails.application.routes.routes
         .map { |route| route.path.spec.to_s }
@@ -193,7 +193,7 @@ RSpec.describe Projects::Identifier do
   end
 
   describe ".suggest_identifier" do
-    context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+    context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
       it "delegates to ProjectIdentifierSuggestionGenerator" do
         allow(WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
           .to receive(:suggest_identifier).with("My Project").and_return("MP")
@@ -203,7 +203,7 @@ RSpec.describe Projects::Identifier do
       end
     end
 
-    context "with numeric (legacy) identifiers", with_settings: { work_packages_identifier: "numeric" } do
+    context "with classic identifiers", with_settings: { work_packages_identifier: "classic" } do
       it "returns a slugified lowercase identifier" do
         expect(Project.suggest_identifier("My Cool Project")).to eq("my-cool-project")
       end

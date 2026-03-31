@@ -32,7 +32,7 @@ module Projects
   module Concerns
     module IdentifierSuggestion
       def identifier_suggestion_data
-        suggestion_mode = Setting::WorkPackageIdentifier.alphanumeric? ? "semantic" : "legacy"
+        suggestion_mode = Setting::WorkPackageIdentifier.semantic? ? "semantic" : "classic"
 
         {
           controller: "projects--identifier-suggestion",

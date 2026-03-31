@@ -1323,12 +1323,12 @@ module Settings
       },
       work_packages_identifier: {
         description: "Defines how work packages are identified in the UI (e.g. in links and titles). " \
-                     "The 'numeric' option uses the work package numerical ID, " \
-                     "while 'alphanumeric' uses the project identifier and the work package ID separated by a dash " \
+                     "The 'classic' option uses the work package numerical ID, " \
+                     "while 'semantic' uses the project identifier and the work package ID separated by a dash " \
                      "(e.g. 'PROJA-123').",
         format: :string,
         allowed: -> { Setting::WorkPackageIdentifier::ALLOWED_VALUES },
-        default: "numeric"
+        default: "classic"
       },
       work_package_list_default_highlighted_attributes: {
         default: ["status", "priority", "due_date"],
