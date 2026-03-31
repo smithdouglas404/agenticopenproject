@@ -31,6 +31,7 @@
 import { Controller } from '@hotwired/stimulus';
 import { FetchRequest } from '@rails/request.js';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
+import type { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
 import dragula, { Drake } from 'dragula';
 import invariant from 'tiny-invariant';
 
@@ -50,17 +51,21 @@ export default class GenericDragAndDropController extends Controller {
   declare readonly handleSelectorValue:string;
 
   private drake:Drake|null = null;
+  private autoscroll:DomAutoscrollService|null = null;
   private containers:HTMLElement[] = [];
   private targetConfigs:TargetConfig[] = [];
   private dragOriginSource:Element|null = null;
   private dragOriginNextSibling:Element|null = null;
 
   connect() {
+    this.autoscroll?.destroy();
     this.drake?.destroy();
     this.initDrake();
   }
 
   disconnect() {
+    this.autoscroll?.destroy();
+    this.autoscroll = null;
     this.drake?.destroy();
     this.drake = null;
   }
@@ -129,11 +134,13 @@ export default class GenericDragAndDropController extends Controller {
 
     // Setup autoscroll
     void window.OpenProject.getPluginContext().then((pluginContext) => {
+      if (!this.element.isConnected) return;
+
       const scrollTargets:Element[] = this.scrollContainerTargets.length > 0
         ? this.scrollContainerTargets
         : [document.getElementById('content-body')!];
 
-      new pluginContext.classes.DomAutoscrollService(
+      this.autoscroll = new pluginContext.classes.DomAutoscrollService(
         scrollTargets,
         {
           margin: 25,
