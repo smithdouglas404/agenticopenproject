@@ -36,7 +36,7 @@ module WorkPackage::SemanticIdentifier
              class_name: "WorkPackageSemanticAlias",
              foreign_key: :work_package_id,
              inverse_of: :work_package,
-             dependent: :destroy
+             dependent: :delete_all
 
     after_create :allocate_and_register_semantic_id, if: -> { Setting::WorkPackageIdentifier.semantic? }
   end
@@ -68,13 +68,11 @@ module WorkPackage::SemanticIdentifier
       wp = find_by(identifier:)
       return wp if wp
 
-      # Fallback: Single alias table lookup — O(1) via the unique index on identifier.
-      # The table holds every identifier a WP has ever been known by:
-      #   - Written on creation for the initial identifier and all historical project prefixes.
-      #   - Appended on project rename (new-prefix row for every affected WP).
-      #   - Appended on WP move (old identifier row for the moved WP).
-      wp_id = WorkPackageSemanticAlias.find_by(identifier:)&.work_package_id
-      find_by(id: wp_id)
+      # Fallback: alias table lookup. The table holds every identifier a WP has ever been known by:
+      # Done via a single join to:
+      # * Respect any parent scoping (e.g. when called as WorkPackage.visible.find_by_semantic_identifier)
+      # * Reduce lookup to a single DB round trip
+      joins(:semantic_aliases).find_by(work_package_semantic_aliases: { identifier: })
     end
   end
 
@@ -99,6 +97,8 @@ module WorkPackage::SemanticIdentifier
   # This also includes "ghost identifiers" -- i.e. those that weren't ever actually generated, but should work
   # as a historical alias (e.g. OLDPROJ-42 should work even if WP #42 was created after rename to NEWPROJ)
   def alias_rows_for_sequence_number(seq)
-    project.semantic_identifier_aliases.map { |prefix| { identifier: "#{prefix}-#{seq}", work_package_id: id } }
+    project.identifier_aliases
+           .pluck(:slug)
+           .map { |prefix| { identifier: "#{prefix}-#{seq}", work_package_id: id } }
   end
 end

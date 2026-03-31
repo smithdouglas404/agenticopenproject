@@ -48,6 +48,30 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
     subject
   end
 
+  shared_examples_for "checks permissions for private projects" do
+    context "with a private project" do
+      let(:project) { create(:private_project) }
+
+      context "when the user is not a member" do
+        let(:user) { create(:user) }
+
+        it "responds with 404" do
+          expect(response).to have_http_status :not_found
+        end
+      end
+
+      context "when the user is a member with required permissions" do
+        let(:user) do
+          create(:user, member_with_permissions: { project => %i[manage_sprint_items view_sprints view_work_packages] })
+        end
+
+        it "responds successfully" do
+          expect(response).to be_successful
+        end
+      end
+    end
+  end
+
   describe "POST #reorder" do
     subject do
       post :reorder,
@@ -91,6 +115,8 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
         expect(response).to have_http_status :not_found
       end
     end
+
+    it_behaves_like "checks permissions for private projects"
   end
 
   describe "PUT #move" do
@@ -171,6 +197,8 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
         expect(response).to have_http_status :not_found
       end
     end
+
+    it_behaves_like "checks permissions for private projects"
   end
 
   describe "GET #move_to_sprint_dialog" do
@@ -204,5 +232,7 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
         expect(response).to have_http_status :not_found
       end
     end
+
+    it_behaves_like "checks permissions for private projects"
   end
 end

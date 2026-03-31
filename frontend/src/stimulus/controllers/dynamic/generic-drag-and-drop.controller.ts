@@ -31,6 +31,7 @@
 import { Controller } from '@hotwired/stimulus';
 import { FetchRequest } from '@rails/request.js';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
+import type { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
 import dragula, { Drake } from 'dragula';
 import invariant from 'tiny-invariant';
 
@@ -41,25 +42,30 @@ interface TargetConfig {
 }
 
 export default class GenericDragAndDropController extends Controller {
-  static targets = ['container'];
+  static targets = ['container', 'scrollContainer'];
 
   containerTargets:HTMLElement[];
+  scrollContainerTargets:HTMLElement[];
 
   static values = { handleSelector: { type: String, default: '.DragHandle' } };
   declare readonly handleSelectorValue:string;
 
   private drake:Drake|null = null;
+  private autoscroll:DomAutoscrollService|null = null;
   private containers:HTMLElement[] = [];
   private targetConfigs:TargetConfig[] = [];
   private dragOriginSource:Element|null = null;
   private dragOriginNextSibling:Element|null = null;
 
   connect() {
+    this.autoscroll?.destroy();
     this.drake?.destroy();
     this.initDrake();
   }
 
   disconnect() {
+    this.autoscroll?.destroy();
+    this.autoscroll = null;
     this.drake?.destroy();
     this.drake = null;
   }
@@ -128,10 +134,14 @@ export default class GenericDragAndDropController extends Controller {
 
     // Setup autoscroll
     void window.OpenProject.getPluginContext().then((pluginContext) => {
-      new pluginContext.classes.DomAutoscrollService(
-        [
-          document.getElementById('content-body')!,
-        ],
+      if (!this.element.isConnected) return;
+
+      const scrollTargets:Element[] = this.scrollContainerTargets.length > 0
+        ? this.scrollContainerTargets
+        : [document.getElementById('content-body')!];
+
+      this.autoscroll = new pluginContext.classes.DomAutoscrollService(
+        scrollTargets,
         {
           margin: 25,
           maxSpeed: 10,

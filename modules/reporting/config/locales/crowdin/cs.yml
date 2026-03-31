@@ -93,9 +93,9 @@ cs:
       button: "Exportovat výkaz PDF"
       timesheet: "Pracovní výkaz"
       time: "Čas"
-      sums_hours: Sums
-      overview_per_user_total: "Overview: Total hours per user"
-      overview_per_user_day: "Overview: Hours per user per day"
+      sums_hours: Součty
+      overview_per_user_total: "Přehled: Hodiny na uživatele"
+      overview_per_user_day: "Přehled: Hodiny na uživatele za den"
     cost_reports:
       title: "Váš export XLS zprávy o nákladech"
       start_time: "Čas zahájení"
