@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text, CounterLabel } from '@primer/react';
+import { Text, CounterLabel } from '@primer/react';
 import type { Status } from '../api/types';
 
 interface ColumnHeaderProps {
@@ -10,34 +10,32 @@ interface ColumnHeaderProps {
 
 export function ColumnHeader({ title, cardCount, status }: ColumnHeaderProps) {
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 2,
-        px: 3,
-        py: 2,
-        borderBottomWidth: 1,
-        borderBottomStyle: 'solid',
-        borderBottomColor: 'border.default',
+        gap: '8px',
+        padding: '8px 12px',
+        borderBottom: '1px solid var(--borderColor-default, var(--color-border-default))',
         flexShrink: 0,
       }}
     >
       {status?.color && (
-        <Box
-          sx={{
-            width: 12,
-            height: 12,
+        <span
+          style={{
+            width: '12px',
+            height: '12px',
             borderRadius: '50%',
-            bg: status.color,
+            backgroundColor: status.color,
             flexShrink: 0,
+            display: 'inline-block',
           }}
         />
       )}
-      <Text sx={{ fontWeight: 'semibold', fontSize: 1, flexGrow: 1 }}>
+      <Text weight="semibold" size="medium" style={{ flexGrow: 1 }}>
         {title}
       </Text>
       <CounterLabel>{cardCount}</CounterLabel>
-    </Box>
+    </div>
   );
 }

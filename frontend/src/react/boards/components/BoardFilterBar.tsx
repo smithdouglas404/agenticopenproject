@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text } from '@primer/react';
+import { Text } from '@primer/react';
 import type { ApiV3Filter } from '../api/types';
 
 interface BoardFilterBarProps {
@@ -9,19 +9,16 @@ interface BoardFilterBarProps {
 
 export function BoardFilterBar({ filters, onFiltersChange }: BoardFilterBarProps) {
   return (
-    <Box
-      sx={{
-        px: 3,
-        py: 2,
-        bg: 'canvas.inset',
-        borderBottomWidth: 1,
-        borderBottomStyle: 'solid',
-        borderBottomColor: 'border.default',
+    <div
+      style={{
+        padding: '8px 12px',
+        backgroundColor: 'var(--bgColor-inset, var(--color-canvas-inset))',
+        borderBottom: '1px solid var(--borderColor-default, var(--color-border-default))',
       }}
     >
-      <Text sx={{ fontSize: 1, color: 'fg.muted' }}>
+      <Text size="small" className="color-fg-muted">
         Filters — coming soon
       </Text>
-    </Box>
+    </div>
   );
 }

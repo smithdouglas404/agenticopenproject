@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from '@primer/react';
 
 interface DropIndicatorProps {
   edge: 'top' | 'bottom';
@@ -7,14 +6,14 @@ interface DropIndicatorProps {
 
 export function DropIndicator({ edge }: DropIndicatorProps) {
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         position: 'absolute',
         left: 0,
         right: 0,
         height: '2px',
-        bg: 'accent.emphasis',
-        borderRadius: 1,
+        backgroundColor: 'var(--bgColor-accent-emphasis, var(--color-accent-emphasis))',
+        borderRadius: '3px',
         ...(edge === 'top' ? { top: '-1px' } : { bottom: '-1px' }),
       }}
     />

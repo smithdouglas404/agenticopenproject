@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Box, Spinner } from '@primer/react';
+import { Spinner } from '@primer/react';
 import { useColumnWorkPackages } from '../hooks/useColumnWorkPackages';
 import { useStatuses } from '../hooks/useStatuses';
 import { useBoardContext } from '../context/BoardContext';
@@ -61,17 +61,15 @@ export function BoardColumn({ widget, filters }: BoardColumnProps) {
   const canDrop = !!query?._links?.updateOrderedWorkPackages;
 
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         display: 'flex',
         flexDirection: 'column',
         width: '300px',
         minWidth: '300px',
-        bg: 'canvas.inset',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: 'border.default',
-        borderRadius: 2,
+        backgroundColor: 'var(--bgColor-inset, var(--color-canvas-inset))',
+        border: '1px solid var(--borderColor-default, var(--color-border-default))',
+        borderRadius: '6px',
         overflow: 'hidden',
         flexShrink: 0,
       }}
@@ -83,9 +81,9 @@ export function BoardColumn({ widget, filters }: BoardColumnProps) {
       />
 
       {isLoading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '16px 0' }}>
           <Spinner size="medium" />
-        </Box>
+        </div>
       ) : (
         <CardList
           workPackages={workPackages}
@@ -96,6 +94,6 @@ export function BoardColumn({ widget, filters }: BoardColumnProps) {
       )}
 
       <AddCardAction queryId={queryId} />
-    </Box>
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Box, Text, Truncate } from '@primer/react';
+import { Text, Truncate } from '@primer/react';
 import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import type { WorkPackage } from '../api/types';
 
@@ -43,51 +43,45 @@ export function BoardCard({
   const assigneeName = workPackage._links.assignee?.title;
 
   return (
-    <Box
+    <div
       ref={ref}
-      as="div"
       className="op-board-card"
-      sx={{
-        p: 3,
-        bg: 'canvas.default',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: 'border.default',
-        borderRadius: 2,
+      style={{
+        padding: '12px',
+        backgroundColor: 'var(--bgColor-default, var(--color-canvas-default))',
+        border: '1px solid var(--borderColor-default, var(--color-border-default))',
+        borderRadius: '6px',
         cursor: isDragDisabled ? 'default' : 'grab',
         opacity: isDragging ? 0.5 : 1,
-        '&:hover': { borderColor: 'accent.emphasis' },
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-        <Text sx={{ fontSize: 0, color: 'fg.muted' }}>{typeName}</Text>
-        <Text sx={{ fontSize: 0, color: 'fg.muted' }}>#{workPackage.id}</Text>
-      </Box>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '4px' }}>
+        <Text size="small" className="color-fg-muted">{typeName}</Text>
+        <Text size="small" className="color-fg-muted">#{workPackage.id}</Text>
+      </div>
 
-      <Box
-        as="a"
+      <a
         href={wpPath}
-        sx={{
-          color: 'fg.default',
+        style={{
+          color: 'var(--fgColor-default, var(--color-fg-default))',
           textDecoration: 'none',
-          fontWeight: 'semibold',
-          fontSize: 1,
+          fontWeight: 600,
+          fontSize: '14px',
           display: 'block',
-          mb: 2,
-          '&:hover': { textDecoration: 'underline' },
+          marginBottom: '8px',
         }}
       >
         <Truncate title={workPackage.subject} maxWidth="100%">
           {workPackage.subject}
         </Truncate>
-      </Box>
+      </a>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Text sx={{ fontSize: 0, color: 'fg.muted' }}>{statusName}</Text>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text size="small" className="color-fg-muted">{statusName}</Text>
         {assigneeName && (
-          <Text sx={{ fontSize: 0, color: 'fg.muted' }}>{assigneeName}</Text>
+          <Text size="small" className="color-fg-muted">{assigneeName}</Text>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }

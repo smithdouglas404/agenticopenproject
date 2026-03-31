@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button } from '@primer/react';
+import { Button } from '@primer/react';
 import { PlusIcon } from '@primer/octicons-react';
 import { useBoardContext } from '../context/BoardContext';
 
@@ -14,11 +14,11 @@ export function AddColumnAction() {
   };
 
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         display: 'flex',
         alignItems: 'flex-start',
-        pt: 2,
+        paddingTop: '8px',
         flexShrink: 0,
       }}
     >
@@ -29,6 +29,6 @@ export function AddColumnAction() {
       >
         Add list
       </Button>
-    </Box>
+    </div>
   );
 }

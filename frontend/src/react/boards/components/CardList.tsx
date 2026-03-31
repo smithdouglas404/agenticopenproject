@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Box } from '@primer/react';
 import {
   dropTargetForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
@@ -52,20 +51,20 @@ export function CardList({ workPackages, queryId, canDrop, actionFilterValue }: 
   }, [queryId, canDrop, actionFilterValue]);
 
   return (
-    <Box
+    <div
       ref={ref}
-      sx={{
+      style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: 2,
+        gap: '8px',
         minHeight: '100px',
-        p: 2,
+        padding: '8px',
         flexGrow: 1,
         overflowY: 'auto',
       }}
     >
       {workPackages.map((wp, index) => (
-        <Box key={wp.id} sx={{ position: 'relative' }}>
+        <div key={wp.id} style={{ position: 'relative' }}>
           {dropState?.index === index && dropState.edge === 'top' && (
             <DropIndicator edge="top" />
           )}
@@ -78,23 +77,23 @@ export function CardList({ workPackages, queryId, canDrop, actionFilterValue }: 
           {dropState?.index === index && dropState.edge === 'bottom' && (
             <DropIndicator edge="bottom" />
           )}
-        </Box>
+        </div>
       ))}
 
       {workPackages.length === 0 && (
-        <Box
-          sx={{
+        <div
+          style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'fg.muted',
-            fontSize: 1,
-            py: 4,
+            color: 'var(--fgColor-muted, var(--color-fg-muted))',
+            fontSize: '14px',
+            padding: '16px 0',
           }}
         >
           No work packages
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 }

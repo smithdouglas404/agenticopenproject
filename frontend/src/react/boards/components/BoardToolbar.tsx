@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Heading, IconButton } from '@primer/react';
+import { Heading, IconButton } from '@primer/react';
 import { FilterIcon } from '@primer/octicons-react';
 import { BoardFilterBar } from './BoardFilterBar';
 import type { ApiV3Filter } from '../api/types';
@@ -14,20 +14,17 @@ export function BoardToolbar({ boardName, filters, onFiltersChange }: BoardToolb
   const [showFilters, setShowFilters] = useState(false);
 
   return (
-    <Box sx={{ flexShrink: 0 }}>
-      <Box
-        sx={{
+    <div style={{ flexShrink: 0 }}>
+      <div
+        style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 2,
-          px: 3,
-          py: 2,
-          borderBottomWidth: 1,
-          borderBottomStyle: 'solid',
-          borderBottomColor: 'border.default',
+          gap: '8px',
+          padding: '8px 12px',
+          borderBottom: '1px solid var(--borderColor-default, var(--color-border-default))',
         }}
       >
-        <Heading as="h2" sx={{ fontSize: 2, flexGrow: 1 }}>
+        <Heading as="h2" className="f2" style={{ flexGrow: 1 }}>
           {boardName}
         </Heading>
 
@@ -37,11 +34,11 @@ export function BoardToolbar({ boardName, filters, onFiltersChange }: BoardToolb
           variant={showFilters ? 'default' : 'invisible'}
           onClick={() => setShowFilters(!showFilters)}
         />
-      </Box>
+      </div>
 
       {showFilters && (
         <BoardFilterBar filters={filters} onFiltersChange={onFiltersChange} />
       )}
-    </Box>
+    </div>
   );
 }

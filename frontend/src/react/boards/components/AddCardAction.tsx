@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button } from '@primer/react';
+import { Button } from '@primer/react';
 import { PlusIcon } from '@primer/octicons-react';
 
 interface AddCardActionProps {
@@ -12,16 +12,16 @@ export function AddCardAction({ queryId }: AddCardActionProps) {
   };
 
   return (
-    <Box sx={{ p: 2, borderTopWidth: 1, borderTopStyle: 'solid', borderTopColor: 'border.default' }}>
+    <div style={{ padding: '8px', borderTop: '1px solid var(--borderColor-default, var(--color-border-default))' }}>
       <Button
         variant="invisible"
         size="small"
         leadingVisual={PlusIcon}
         onClick={handleClick}
-        sx={{ width: '100%', justifyContent: 'flex-start' }}
+        style={{ width: '100%', justifyContent: 'flex-start' }}
       >
         Add card
       </Button>
-    </Box>
+    </div>
   );
 }

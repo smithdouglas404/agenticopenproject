@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Box } from '@primer/react';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { announce } from '@atlaskit/pragmatic-drag-and-drop-live-region';
 import { useBoardContext } from '../context/BoardContext';
@@ -72,12 +71,12 @@ export function BoardCanvas({ board, filters }: BoardCanvasProps) {
   const widgets = sortedWidgets(board);
 
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         display: 'flex',
-        gap: 3,
+        gap: '12px',
         overflowX: 'auto',
-        p: 3,
+        padding: '12px',
         flexGrow: 1,
         alignItems: 'flex-start',
       }}
@@ -86,6 +85,6 @@ export function BoardCanvas({ board, filters }: BoardCanvasProps) {
         <BoardColumn key={widget.startColumn} widget={widget} filters={filters} />
       ))}
       <AddColumnAction />
-    </Box>
+    </div>
   );
 }
