@@ -76,9 +76,9 @@ module Projects::SemanticIdentifier
       .in_batches do |relation|
         now = Time.current
         WorkPackageSemanticAlias.connection.execute(
-          WorkPackageSemanticAlias.sanitize_sql([<<~SQL, prefix, new_prefix, now, now])
+          WorkPackageSemanticAlias.sanitize_sql([<<~SQL.squish, { prefix:, new_prefix:, now: }])
             INSERT INTO work_package_semantic_aliases (identifier, work_package_id, created_at, updated_at)
-            SELECT REPLACE(identifier, ?, ?), work_package_id, ?, ?
+            SELECT REPLACE(identifier, :prefix, :new_prefix), work_package_id, :now, :now
             FROM (#{relation.to_sql}) AS batch
             ON CONFLICT (identifier) DO NOTHING
           SQL
