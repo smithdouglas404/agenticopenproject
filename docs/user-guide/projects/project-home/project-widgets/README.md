@@ -62,7 +62,7 @@ You can also add files to be displayed or attached to your custom text widget.
 
 The description widget adds the project description to your project home.
 
-The description can be added or changed in the [project settings](../../projects/project-settings).
+The description can be added or changed in the [project settings](../../project-settings/).
 
 ![Description widget displayed on a project home page in OpenProject](openproject_user_guide_project_overview_dashboard_tab_description_widget.png)
 
@@ -78,7 +78,7 @@ You can add a widget which displays all project members and their corresponding 
 
 ![Project members widget in OpenProject](openproject_user_guide_project_overview_project_members_widget.png)
 
-Clicking the **View all members** link will take you to the **[Members](../../members)** module, where you can view and edit the list of project members. Project members can be individuals as well as entire groups.
+Clicking the **View all members** link will take you to the **[Members](../../../members/)** module, where you can view and edit the list of project members. Project members can be individuals as well as entire groups.
 
 ### News widget
 
@@ -92,7 +92,7 @@ The spent time widget lists the **spent time in this project for the last 7 days
 
 ![Spent time widget displayed on a project home page in OpenProject](openproject_user_guide_project_overview_project_spent_time_widget.png)
 
-Time entries link to the respective work package and can be edited or deleted. To have a detailed view on all spent time and costs, go to the [Cost reporting](../../time-and-costs/reporting/) module.
+Time entries link to the respective work package and can be edited or deleted. To have a detailed view on all spent time and costs, go to the [Cost reporting](../../../time-and-costs/reporting/) module.
 
 ### Status widget
 
@@ -126,7 +126,7 @@ The *Subitems* widget under the *Overview* tab allows adding subitems directly w
 
 The widget only links the first subproject hierarchy and not the children of a subproject.
 
-To edit the project hierarchy, go to the [project settings](../../projects/project-settings).
+To edit the project hierarchy, go to the [project settings](../../project-settings/).
 
 ### Work package graph widgets
 
@@ -136,7 +136,7 @@ The work package graph widgets display information about the work packages withi
 
 **Configure the work package graph**
 
-You can filter the work packages to be displayed in the graph according to the [work packages table configuration](../../work-packages/work-package-table-configuration/).
+You can filter the work packages to be displayed in the graph according to the [work packages table configuration](../../../work-packages/work-package-table-configuration/).
 
 To configure the work package graph, click the three dots icon in the top right corner and select **Configure view**.
 
@@ -175,7 +175,7 @@ The widget lists all **open** and all **closed** work packages according to this
 
 ### Work package table widget
 
-The work package table widget includes a work package table to the project home. The work package table can be filtered, grouped, or sorted according to the [work package table configuration](../../work-packages/work-package-table-configuration/), e.g. to display only work packages with the priority "High".
+The work package table widget includes a work package table to the project home. The work package table can be filtered, grouped, or sorted according to the [work package table configuration](../../../work-packages/work-package-table-configuration/), e.g. to display only work packages with the priority "High".
 
 ![Work packages table widget on a project home page in OpenProject](openproject_user_guide_project_home_wp_table_widget.png)
 

@@ -71,7 +71,7 @@ These widgets help teams better understand financial status and trends directly 
 
 ![An example of project budget widget on a project home page in OpenProject](openproject_release_notes_17-2-0_budget_widget.png)
 
-Read more about [budget widgets](../../user-guide/project-home/project-widgets/#budgets-widgets).
+Read more about [budget widgets](../../user-guide/projects/project-home/project-widgets/#budgets-widgets).
 
 #### Editable project description and project status widgets on a Project view tab
 
@@ -95,7 +95,7 @@ Comments are displayed and edited alongside the respective attribute on the Proj
 
 ![Setting to add a comment text field to a project attribute in OpenProject administration](openproject_release_notes_17-2-0_project_attributes_comment.png)
 
-Read more about [project attributes in OpenProject](../../user-guide/project-home/project-attributes/).
+Read more about [project attributes in OpenProject](../../user-guide/projects/project-home/project-attributes/).
 
 ### PDF export improvements
 
