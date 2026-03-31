@@ -64,7 +64,7 @@ module WorkPackages
         def form_id = "wp-identifier-settings-form"
 
         def show_autofix_section?
-          state == :edit && Setting::WorkPackageIdentifier.alphanumeric? && has_problematic_projects?
+          state == :edit && Setting::WorkPackageIdentifier.semantic? && has_problematic_projects?
         end
 
         def change_in_progress? = state == :change_in_progress

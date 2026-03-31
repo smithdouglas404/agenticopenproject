@@ -32,6 +32,7 @@ FactoryBot.define do
   factory :wiki_provider, class: "Wikis::Provider" do
     sequence(:name) { |i| "The Wiki Provider ##{i}" }
     universal_identifier { SecureRandom.uuid }
+    enabled { true }
   end
 
   factory :internal_wiki_provider, class: "Wikis::InternalProvider", parent: :wiki_provider do
