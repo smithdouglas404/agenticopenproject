@@ -46,8 +46,8 @@ module OpenProject::Wikis
                     skip_permissions_check: true,
                     after: :relations,
                     if: ->(_project) {
-                      # TODO: only display if there are wiki providers available
-                      OpenProject::FeatureDecisions.wiki_enhancements_active?
+                      Wikis::Provider.enabled.exists? &&
+                        OpenProject::FeatureDecisions.wiki_enhancements_active?
                     }
              end
 
@@ -64,6 +64,13 @@ module OpenProject::Wikis
           "XWiki#{default_inflect($1, abspath)}"
         end
       end
+    end
+
+    config.to_prepare do
+      API::V3::Configuration::ConfigurationRepresenter.property(
+        :wikisAvailable,
+        getter: ->(*) { ::Wikis::Provider.enabled.exists? }
+      )
     end
 
     replace_principal_references "Wikis::PageLink" => %i[author_id]
