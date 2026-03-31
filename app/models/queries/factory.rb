@@ -42,13 +42,33 @@ class Queries::Factory
 
       return unless query
 
+      static_filters = query.filters.dup
+
       query = duplicate_query(query) if duplicate || params.any?
 
       if params.any?
-        set_query_attributes(query, query_class, params, user)
+        set_query_attributes(query, query_class, with_preserved_static_filters(static_filters, params), user)
       else
         query
       end
+    end
+
+    # When user-provided params include a filters list, preserve any static query
+    # filters (e.g. active=false for the archived query) that aren't explicitly
+    # overridden by the user params.  This prevents the search box from wiping
+    # the archived/active constraint that defines the static query.
+    def with_preserved_static_filters(static_filters, params)
+      return params unless params[:filters]
+
+      user_filter_attributes = params[:filters].map { |f| f[:attribute].to_s }
+
+      filters_to_preserve = static_filters
+        .reject { |f| user_filter_attributes.include?(f.name.to_s) }
+        .map { |f| { attribute: f.name.to_s, operator: f.operator, values: f.values } }
+
+      return params if filters_to_preserve.empty?
+
+      params.merge(filters: filters_to_preserve + params[:filters])
     end
 
     def find_persisted_query_and_set_attributes(id, query_class, params, user, duplicate:)
