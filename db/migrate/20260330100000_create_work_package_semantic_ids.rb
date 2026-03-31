@@ -33,12 +33,10 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
     # Atomic counter for per-project WP sequence allocation
     add_column :projects, :wp_sequence_counter, :integer, default: 0, null: false, if_not_exists: true
 
-    change_table :work_packages, bulk: true do |t|
-      # Per-project sequence number for semantic identifiers (e.g. PROJ-42)
-      t.integer :sequence_number, if_not_exists: true
-      # Current semantic identifier stored directly on the work package (e.g. "PROJ-42")
-      t.string :identifier, if_not_exists: true
-    end
+    # Per-project sequence number for semantic identifiers (e.g. PROJ-42)
+    add_column :work_packages, :sequence_number, :integer, if_not_exists: true
+    # Current semantic identifier stored directly on the work package (e.g. "PROJ-42")
+    add_column :work_packages, :identifier, :string, if_not_exists: true
 
     create_table :work_package_semantic_aliases, if_not_exists: true do |t|
       t.string :identifier, null: false
@@ -65,10 +63,8 @@ class CreateWorkPackageSemanticIds < ActiveRecord::Migration[8.1]
   def down
     drop_table :work_package_semantic_aliases, if_exists: true
     remove_index :work_packages, %i[project_id sequence_number], if_exists: true
-    change_table :work_packages, bulk: true do |t|
-      t.remove :identifier, if_exists: true
-      t.remove :sequence_number, if_exists: true
-    end
+    remove_column :work_packages, :identifier, if_exists: true
+    remove_column :work_packages, :sequence_number, if_exists: true
     remove_column :projects, :wp_sequence_counter, if_exists: true
   end
 end
