@@ -43,7 +43,8 @@ class MeetingAgendaItemsController < ApplicationController
   before_action :set_current_occurrence,
                 :set_presentation_mode,
                 only: %i[new cancel_new edit cancel_edit create update destroy drop move move_to_section_dialog]
-  before_action :check_recurring_meeting_param, only: %i[move_to_next_meeting duplicate_in_next_meeting]
+  before_action :check_recurring_meeting_param,
+                only: %i[move_to_next_meeting duplicate_in_next_meeting duplicate_in_next_meeting_dialog]
   before_action :assign_drop_params, only: %i[drop]
 
   def new
@@ -227,10 +228,14 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def duplicate_in_next_meeting_dialog
+    next_occurrence = init_next_meeting_occurrence
+    return if next_occurrence.nil?
+
     respond_with_dialog MeetingAgendaItems::DuplicateInNextMeetingDialogComponent.new(
       agenda_item: @meeting_agenda_item,
       datetime: params[:datetime],
-      skipped: params[:skipped]
+      skipped: params[:skipped],
+      next_occurrence:
     )
   end
 
@@ -302,7 +307,7 @@ class MeetingAgendaItemsController < ApplicationController
     attributes = attributes.except("author_id", "created_at", "updated_at", "lock_version", "position")
 
     attributes[:meeting_id] = target_meeting.id
-    attributes[:meeting_section_id] = nil
+    attributes[:meeting_section_id] = MeetingSection.find_by(id: params.dig(:meeting_agenda_item, :meeting_section_id))&.id
 
     ::MeetingAgendaItems::CreateService
       .new(user: current_user)

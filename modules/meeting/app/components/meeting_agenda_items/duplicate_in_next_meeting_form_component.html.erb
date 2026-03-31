@@ -28,45 +28,19 @@ See COPYRIGHT and LICENSE files for more details.
 ++# %>
 
 <%=
-  render(
-    Primer::Alpha::Dialog.new(
-      title: title,
-      id: "duplicate-in-next-meeting-dialog",
-      size: :medium_portrait
-    )
-  ) do |dialog|
-    dialog.with_header(variant: :large)
-    dialog.with_body(classes: "Overlay-body_autocomplete_height--lg") do
-      concat(render(Primer::Alpha::Banner.new(mb: 3)) { simple_format(confirmation_message) })
-      concat(
-        render(
-          MeetingAgendaItems::DuplicateInNextMeetingFormComponent.new(
-            agenda_item: @agenda_item,
-            datetime: @datetime,
-            next_occurrence: @next_occurrence
-          )
-        )
+  component_wrapper do
+    primer_form_with(
+      id: "duplicate-in-next-meeting-form",
+      model: @agenda_item,
+      method: :post,
+      url: duplicate_in_next_project_meeting_agenda_item_path(
+        @agenda_item.meeting.project,
+        @agenda_item.meeting,
+        @agenda_item,
+        datetime: @datetime
       )
-    end
-    dialog.with_footer do
-      component_collection do |buttons|
-        buttons.with_component(
-          Primer::Beta::Button.new(
-            data: { "close-dialog-id": "duplicate-in-next-meeting-dialog" }
-          )
-        ) do
-          t("button_cancel")
-        end
-        buttons.with_component(
-          Primer::Beta::Button.new(
-            scheme: :primary,
-            form: "duplicate-in-next-meeting-form",
-            type: :submit
-          )
-        ) do
-          I18n.t(:button_duplicate)
-        end
-      end
+    ) do |f|
+      render(Meeting::AddToSection.new(f, wrapper_id: "duplicate-in-next-meeting-dialog", occurrence: @next_occurrence, move_to_section: false))
     end
   end
 %>

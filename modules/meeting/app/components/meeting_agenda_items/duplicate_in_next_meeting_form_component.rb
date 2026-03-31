@@ -29,40 +29,16 @@
 #++
 
 module MeetingAgendaItems
-  class DuplicateInNextMeetingDialogComponent < ApplicationComponent
-    include ApplicationHelper
+  class DuplicateInNextMeetingFormComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(agenda_item:, datetime:, skipped: nil, next_occurrence: nil)
+    def initialize(agenda_item:, datetime:, next_occurrence: nil)
       super
 
       @agenda_item = agenda_item
       @datetime = datetime
-      @skipped = skipped
       @next_occurrence = next_occurrence
-    end
-
-    private
-
-    def title = I18n.t(:label_agenda_item_duplicate_in_next_title)
-
-    def confirmation_message
-      base_message = I18n.t(
-        :text_agenda_item_duplicate_in_next_meeting,
-        date: format_date(@datetime),
-        time: format_time(@datetime, include_date: false)
-      )
-
-      @skipped.present? ? "#{base_message}\n\n#{skipped_message}" : base_message
-    end
-
-    def skipped_message
-      if @skipped.one?
-        I18n.t(:text_agenda_item_dialog_skipping_cancelled_one, date: format_date(DateTime.iso8601(@skipped.first)))
-      else
-        I18n.t(:text_agenda_item_dialog_skipping_cancelled_many, count: @skipped.size)
-      end
     end
   end
 end
