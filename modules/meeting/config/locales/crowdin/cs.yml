@@ -63,7 +63,7 @@ cs:
         end_date: "Datum ukončení"
         iterations: "Výskyty"
       recurring_meeting_interim_response:
-        start_time: "Start time"
+        start_time: "Čas zahájení"
       meeting_participant:
         invited: "Pozvané"
         attended: "Zúčastnil se"
@@ -119,7 +119,7 @@ cs:
     meeting_agenda_opened: Agenda schůzky otevřena
     meeting_minutes: Zápis ze zasedání byl upraven
     meeting_minutes_created: Zápisy ze zasedání byly vytvořeny
-  error_notification: "Failed to send notification."
+  error_notification: "Nepodařilo se odeslat oznámení."
   error_notification_with_errors: "Odeslání oznámení se nezdařilo. Následující příjemci nelze upozornit: %{recipients}"
   label_meeting: "Schůzka"
   label_meeting_plural: "Schůzky"
@@ -207,16 +207,16 @@ cs:
   label_subscribe_icalendar: "Přihlásit kalendář k odběru"
   caption_meeting_template_select: "Vyberte šablonu pro automatické zkopírování bodů programu schůzky"
   caption_template_project_select: "Please select the project in which to create this meeting template"
-  placeholder_meeting_template_select_project_first: "Select a project first"
-  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
+  placeholder_meeting_template_select_project_first: "Nejprve vyberte projekt"
+  placeholder_meeting_template_no_templates_for_project: "Pro tento projekt nejsou k dispozici žádné šablony"
   meeting:
     participants:
       label:
         participants: "Účastníci"
         attended: "Zúčastnil se"
-        mark_as_attended: "Mark as attended"
-        mark_all_as_attended: "Mark all as attended"
-        remove_participant: "Remove participant"
+        mark_as_attended: "Označit jako zúčastněného"
+        mark_all_as_attended: "Označte všechny jako zúčastněné"
+        remove_participant: "Odstranit účastníka"
         manage_participants: "Spravovat účastníky"
         no_participants: "Nikdo tu není"
         show_all: "Zobrazit vše"
@@ -246,44 +246,44 @@ cs:
         Send an email invitation immediately to the participants selected above. You can also do this manually at any time later.
       send_invitation_emails_structured: "Send an email invitation immediately to all participants. You can also do this manually at any time later."
       open_meeting_link: "Otevřít schůzku"
-      open_my_meetings_link: "Go to My meetings"
+      open_my_meetings_link: "Přejít na Moje schůzky"
       series:
         title: "[%{project_name}] Meeting series '%{title}'"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} vás pozval(a) do nové série schůzek '%{title}'"
       series_updated:
         title: "[%{project_name}] Meeting series '%{title}' has been updated"
         summary: "Řada schůzek '%{title}' byla upravena uživatelem %{actor}"
         old_schedule: "Starý rozvrh"
-        new_schedule: "New schedule"
+        new_schedule: "Nový rozvrh"
       invited:
-        summary: "%{actor} has sent you an invitation for the meeting '%{title}'"
+        summary: "%{actor} vám poslal(a) pozvánku na schůzku %{title}"
       cancelled:
-        header: "Cancelled: Meeting '%{title}'"
-        header_occurrence: "Cancelled: Meeting occurrence '%{title}'"
-        header_series: "Cancelled: Meeting series '%{title}'"
-        summary_occurrence: "An occurrence of '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary_series: "Meeting series '%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        summary: "'%{title}' has been cancelled by %{actor}, or you have been removed as a participant"
-        date_time: "Scheduled date/time"
+        header: "Zrušeno: Schůzka '%{title}'"
+        header_occurrence: "Zrušeno: Schůzka ze série '%{title}'"
+        header_series: "Zrušeno: Série schůzek '%{title}'"
+        summary_occurrence: "Schůzka ze série '%{title}' byla zrušena prostřednictvím %{actor}, nebo jste byli odstraněni jako účastník"
+        summary_series: "Série schůzek '%{title}' byla zrušena prostřednictvím %{actor}, nebo jste byli odstraněni jako účastník"
+        summary: "'%{title}' byla zrušena prostřednictvím %{actor}, nebo jste byli odstraněni jako účastník"
+        date_time: "Plánované datum/čas"
       participant_added:
-        header: "Meeting '%{title}' - Participant added"
-        header_series: "Meeting series '%{title}' - Participant added"
-        summary: "%{actor} added %{participant} to the meeting '%{title}'"
-        summary_series: "%{actor} added %{participant} to the meeting series '%{title}'"
+        header: "Schůzka '%{title}' - Üčastník přidán"
+        header_series: "Série schůzek '%{title}' - Üčastník přidán"
+        summary: "%{actor} přidal(a) %{participant} do schůzky '%{title}'"
+        summary_series: "%{actor} přidal(a) %{participant} do série schůzek '%{title}'"
       participant_removed:
         header: "Schůzka '%{title}' - Účastník byl odebrán"
         header_series: "Řada schůzek '%{title}' - Uživatel byl odebrán"
         summary: "%{actor} odebral uživatele %{participant} ze schůzky '%{title}'"
-        summary_series: "%{actor} removed %{participant} from the meeting series '%{title}'"
+        summary_series: "%{actor} odebral(a) uživatele %{participant} z řady schůzek '%{title}'"
       ended:
-        header_series: "Ended: Meeting series '%{title}'"
-        summary_series: "Meeting series '%{title}' has been ended by %{actor}"
+        header_series: "Ukončeno: Série schůzek '%{title}'"
+        summary_series: "Série schůzek '%{title}' byla upravena uživatelem %{actor}"
       updated:
         header: "Schůzka '%{title}' byla upravena"
         summary: "Schůzka '%{title}' byla upravena uživatelem %{actor}"
         body: "Schůzka '%{title}' byla upravena uživatelem %{actor}."
-        old_title: "Old title"
-        new_title: "New title"
+        old_title: "Starý název"
+        new_title: "Nový název"
         old_date_time: "Staré datum/čas"
         new_date_time: "Nové datum/čas"
         old_location: "Stará lokace"
@@ -301,12 +301,12 @@ cs:
         title: "Odstranit schůzku"
         heading: "Smazat tuto schůzku?"
         confirmation_message_html: >
-          This action is not reversible. Please proceed with caution.
+          Tato akce není vratná. Pokračujte prosím opatrně.
         template:
-          title: "Delete template"
-          heading: "Delete this template?"
+          title: "Smazat šablonu"
+          heading: "Smazat tuto šablonu?"
           confirmation_message_html: >
-            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
+            Tato akce není vratná. Postupujte opatrně. Stávající schůzky, které byly vytvořeny pomocí této šablony, nebudou ovlivněny.
       occurrence:
         title: "Zrušit výskyt schůzky"
         heading: "Zrušit výskyt schůzky"
@@ -314,8 +314,8 @@ cs:
           Veškeré informace o schůzce, které nejsou v šabloně, budou ztraceny. Chcete pokračovat?
         confirm_button: "Zrušit výskyt"
     blankslate:
-      title: "There are no meetings to display"
-      desc: "You can create a new meeting or change filter criteria"
+      title: "Žádné schůzky k zobrazení"
+      desc: "Můžete vytvořit novou schůzku nebo změnit kritéria filtru"
     label_export_pdf: "Exportovat PDF"
     export:
       your_meeting_export: "Schůzka se exportuje"
@@ -335,25 +335,25 @@ cs:
           caption: Výchozí šablona je vhodná pro většinu schůzek a představuje aktuální stav.
         minutes:
           label: Zápisy
-          caption: The minutes template is suitable for closed and archived meetings.
+          caption: Šablona zápisu je vhodná pro uzavřené a archivované schůzky.
       first_page_header_left:
-        label: First page header left
-        caption: This text will appear on the first page at the left of the header.
+        label: Záhlaví první stránky vlevo
+        caption: Tento text se zobrazí na první stránce vlevo v záhlaví.
       author:
         label: Autor
-        caption: The author of the minutes will be displayed in the subtitle.
+        caption: Autor zápisu se zobrazí v titulku.
       include_participants:
         label: Zahrnout seznam účastníků
         caption: A list of participants will be preset above the meeting agenda.
       include_attachments:
         label: Zahrnout seznam příloh
-        caption: A list containing the filenames of attachments will be appended at the end.
+        caption: Na konci bude připojen seznam obsahující názvy souborů příloh.
       include_backlog:
-        label: Include backlog
-        caption: Backlog elements are not normally considered part of a meeting occurrence but you can choose to include them.
+        label: Zahrnout backlog
+        caption: Prvky backlogu se obvykle nepovažují za součást schůzky, ale můžete se rozhodnout je zahrnout.
       include_outcomes:
         label: Zahrnout výsledky programu
-        caption: If your agenda outcomes contain confidential information, you can choose to not include them in the export.
+        caption: Pokud vaše výsledky programu obsahují důvěrné informace, můžete se rozhodnout, že je nezahrnete do exportu.
       footer_text:
         label: Text záhlaví
         caption: Tento text se zobrazí na každé stránce uprostřed zápatí.
@@ -364,19 +364,19 @@ cs:
         description:
           disabled: "Participants will not receive an email informing them of changes."
           enabled: "All participants will receive updated calendar invites via email informing them of changes."
-          change_via_template: "To change this, edit the series template."
+          change_via_template: "Chcete-li provést změnu, upravte šablonu série."
       dialog:
         title:
-          enable: "Enable email calendar updates?"
-          disable: "Disable email calendar updates?"
+          enable: "Povolit e-mailové aktualizace kalendáře?"
+          disable: "Zakázat e-mailové aktualizace kalendáře?"
         message:
           enable: >
-            All participants will receive updated calendar invites via email every time there is a change to the meeting date, time, location or participants. Once enabled, an email will be sent out immediately to all participants.
+            Všichni účastníci obdrží e-mailem aktualizované pozvánky do kalendáře vždy, když dojde ke změně data, času, místa nebo účastníků schůzky. Po aktivaci bude všem účastníkům okamžitě odeslán e-mail.
           disable: >
             Participants will no longer receive updated calendar invites via email when there are changes to the meeting date, time, location or participants. If they already had an invite for this meeting, it might no longer be accurate.
         confirm_label:
-          enable: "Enable email updates"
-          disable: "Disable email updates"
+          enable: "Povolit aktualizací e-mailem"
+          disable: "Zakázat aktualizací e-mailem"
       banner:
         participants:
           enabled: >
@@ -399,15 +399,15 @@ cs:
           disabled: >
             Email calendar updates are disabled for the meeting series. Participants will not receive an email informing them of your changes to this template or to individual occurrences.
     presentation_mode:
-      title: "Presentation Mode"
-      button_present: "Present"
-      exit: "Exit presentation"
-      current_item: "Current item"
-      total_items: "%{current} of %{total}"
-      previous: "Previous"
-      next: "Next"
-      no_items: "No agenda items"
-      no_items_flash: "There are no agenda items to present."
+      title: "Prezentační mód"
+      button_present: "Prezentovat"
+      exit: "Ukončit prezentaci"
+      current_item: "Aktuální položka"
+      total_items: "%{current} z %{total}"
+      previous: "Předchozí"
+      next: "Další"
+      no_items: "Žádné body programu"
+      no_items_flash: "Na programu nejsou žádné body."
     ical_response:
       update_failed: "Could not update participation status."
       meeting_not_found: "Schůzka pro daný UID nebyla nalezena."
@@ -425,9 +425,9 @@ cs:
       unknown: "Neznámá"
   recurring_meeting:
     time_zone_difference_banner:
-      title: "Time zone difference"
+      title: "Rozdíl časových pásem"
       description: >
-        The dates below are referencing the time zone of the meeting series (%{actual_zone}), not your local time zone (%{user_zone}).
+        Níže uvedená data odkazují na časové pásmo série schůzek (%{actual_zone}), nikoli na vaše místní časové pásmo (%{user_zone}).
     ended_blankslate:
       title: "Řada schůzek skončila"
       message: "This meeting series has come to an end. There are no upcoming meetings. "
@@ -435,31 +435,31 @@ cs:
     occurrence:
       infoline: "Tato schůzka je součástí opakované série schůzek."
       error_no_next: "Na této schůzce není žádný další výskyt."
-      first_already_exists: "The first occurrence of this meeting series is already instantiated."
+      first_already_exists: "První výskyt této série schůzek je již vytvořen."
       first_created: >
-        The first meeting has been successfuly created from template. All future meetings will be created automatically at the time of the previous occurrence.
+        První schůzka byla úspěšně vytvořena ze šablony. Všechny budoucí schůzky budou vytvořeny automaticky v čase předchozí události.
     template:
-      button_finalize: "Open first meeting"
+      button_finalize: "Otevřít první schůzku"
       blank_title: "Vaše šablona série schůzek je prázdná"
       description: >
-        This template will be used whenever new meetings in the series get created. You can add agenda items, participants, and attachments to this template.
+        Tato šablona se použije vždy, když se vytvoří nové schůzky v sérii. Do této šablony můžete přidávat položky programu, účastníky a přílohy.
       label_view_template: "Zobrazit šablonu"
       label_edit_template: "Upravit šablonu"
       banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+        Právě upravujete šablonu série schůzek: %{link}. Každý nový výskyt schůzky v sérii bude používat tuto šablonu. Změny nebudou mít vliv na minulé nebo již vytvořené schůzky.
       draft_banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
+        Právě upravujete šablonu série schůzek: %{link}. Každý nový výskyt schůzky v sérii bude používat tuto šablonu. Změny nebudou mít vliv na minulé nebo již vytvořené schůzky. V tomto aktuálním režimu návrhu nebudou odeslány žádné e-mailové pozvánky, dokud neotevřete první schůzku.
     frequency:
       x_daily:
         one: "Každý den"
         few: "Every %{count} days"
         many: "Every %{count} days"
-        other: "Every %{count} days"
+        other: "Každých %{count} dní"
       x_weekly:
         one: "Každý týden"
         few: "Every %{count} weeks"
         many: "Every %{count} weeks"
-        other: "Every %{count} weeks"
+        other: "Každých %{count} týdnů"
       every_weekday: "Každý %{day_of_the_week}"
       working_days: "Každý pracovní den"
     end_after:
@@ -477,7 +477,7 @@ cs:
       full_past: "%{base} at %{time}, ended on %{end_date}"
       never_ending: "%{base} v %{time}"
     open:
-      title: "Agenda opened"
+      title: "Program byl otevřen"
       subtitle: >
         Open meetings have agendas that can be edited and show up in individual users’ ‘My meetings’ section. Changes to the meeting series template do not affect already-open meeting occurrences.
       blankslate:
@@ -509,7 +509,7 @@ cs:
       confirm_button: "Zrušit výskyt"
     end_series_dialog:
       title: "Ukončení série schůzek"
-  notice_successful_notification: "Email calendar update sent to all participants"
+  notice_successful_notification: "E-mailová aktualizace kalendáře zaslaná všem účastníkům"
   notice_meeting_template_created: "Šablona byla úspěšně vytvořena"
   notice_timezone_missing: Není nastaveno žádné časové pásmo a předpokládá se %{zone} . Chcete-li vybrat časové pásmo, klikněte prosím zde.
   notice_meeting_updated: "Tato stránka byla aktualizována někým jiným. Pro zobrazení změn znovu načtena."
@@ -557,14 +557,14 @@ cs:
   label_agenda_items_reordered: "přeřazeno"
   label_agenda_item_add: "Přidat položku programu"
   label_agenda_item_remove_from_agenda: "Odebrat z programu"
-  label_agenda_item_remove_from_backlog: "Remove from backlog"
+  label_agenda_item_remove_from_backlog: "Odebrat z backlogu"
   label_agenda_item_undisclosed_wp: "Pracovní balíček #%{id} není viditelný"
   label_agenda_item_deleted_wp: "Odstraněna reference pracovního balíčku"
   label_agenda_item_actions: "volby pro body schůzky"
-  label_agenda_item_move_to_next_title: "Move to next meeting?"
+  label_agenda_item_move_to_next_title: "Přesunout na příští schůzi?"
   label_agenda_item_move: "Přesunout"
-  label_agenda_item_move_to_next: "Move to next meeting"
-  label_agenda_item_move_to_backlog: "Move to backlog"
+  label_agenda_item_move_to_next: "Přesunout na příští schůzi"
+  label_agenda_item_move_to_backlog: "Přesunout do backlogu"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
   label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "Přesunout nahoru"
@@ -580,30 +580,30 @@ cs:
   label_agenda_item_work_package: "Pracovní balíček k bodu programu"
   label_section_rename: "Přejmenovat sekci"
   label_agenda_outcome: "Výsledek"
-  label_agenda_new_outcome: "New outcome"
+  label_agenda_new_outcome: "Nový výsledek"
   label_agenda_outcome_actions: "Agenda outcome actions"
   label_agenda_outcome_edit: "Upravit výsledek"
   label_agenda_outcome_delete: "Odstranit výsledek"
   label_added_as_outcome: "Added as outcome"
   label_write_outcome: "Write outcome"
-  label_existing_work_package: "Existing work package"
-  text_outcome_not_editable_anymore: "This outcome is not editable anymore."
-  text_outcome_cannot_be_added: "An outcome can no longer be added."
-  label_backlog_clear: "Clear backlog"
+  label_existing_work_package: "Stávající pracovní balíček"
+  text_outcome_not_editable_anymore: "Tento výsledek již nelze upravovat."
+  text_outcome_cannot_be_added: "Výsledek již nelze přidat."
+  label_backlog_clear: "Vyčistit backlog"
   label_backlog_clear_button: "Vymazat vše"
-  text_backlog_clear_error: "One or more errors occurred while trying to clear the backlog."
-  label_agenda_backlog: "Agenda backlog"
+  text_backlog_clear_error: "Při pokusu o vyčistění backlogu došlo k jedné nebo více chybám."
+  label_agenda_backlog: "Backlog programu"
   text_agenda_backlog: >
-    This backlog is unique to this one-time meeting. You can drag items in and out to add or remove them from the meeting agenda.
-  label_agenda_backlog_clear_title: "Clear agenda backlog?"
+    Tento backlog se týká pouze tohoto jednorázového setkání. Položky můžete přetáhnutím přidat či odebrat z programu schůzky.
+  label_agenda_backlog_clear_title: "Vyčistit backlog programu?"
   text_agenda_backlog_clear_description: >
-    Are you sure you want to remove all items currently in the agenda backlog? This action is not reversible.
-  label_series_backlog: "Series backlog"
+    Jste si jisti, že chcete odstranit všechny položky v backlogu programu? Tato akce není vratná.
+  label_series_backlog: "Backlog série schůzek"
   text_series_backlog: >
-    The backlog is shared with all occurrences of this series. You can drag items in and out to add or remove them from a particular meeting.
-  label_series_backlog_clear_title: "Clear series backlog?"
+    Tento backlog je sdílen se všemi událostmi této série schůzek. Položky můžete přetáhnutím přidat či odebrat z programu schůzky.
+  label_series_backlog_clear_title: "Vyčistit backlog série schůzek?"
   text_series_backlog_clear_description: >
-    This will remove all items in the series backlog, which is shared with all meetings in the series. Are you sure you want to continue? This action is not reversible.
+    Tímto odstraníte všechny položky v backlogu, které jsou sdíleny se všemi schůzkami v sérii. Opravdu chcete pokračovat? Tato akce není vratná.
   text_agenda_item_title: 'Bod programu "%{title}"'
   text_agenda_work_package_deleted: "Položka agendy pro odstraněný pracovní balíček"
   text_deleted_agenda_item: "Vymazaný bod programu"
@@ -635,10 +635,10 @@ cs:
   text_onetime_meeting_template_banner: "Právě upravujete šablonu schůzky. Tuto šablonu můžete použít k vytvoření jednorázových schůzek s předdefinovaným programem. Změny neovlivní již vytvořené schůzky."
   text_onetime_meeting_template_empty_heading: "Tato šablona schůzky je prázdná"
   text_onetime_meeting_template_empty_description: "Add agenda items, sections and attachments here. They will be included in every meeting created using this template."
-  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
-  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
-  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
-  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
+  text_exit_draft_mode_dialog_title: "Otevřít tuto schůzku a rozeslat pozvánky?"
+  text_exit_draft_mode_dialog_subtitle: "Po naplánování schůzky se nelze vrátit do režimu návrhu."
+  text_exit_draft_mode_dialog_template_title: "Otevřít první výskyt této série schůzek?"
+  text_exit_draft_mode_dialog_template_subtitle: "Poté se již nelze vrátit do režimu návrhu."
   label_meeting_template_sharing: "Sdílení"
   label_meeting_template_sharing_none: "Pouze tento projekt"
   label_meeting_template_sharing_descendants: "Podprojekty"
@@ -650,14 +650,14 @@ cs:
   label_add_work_package_to_meeting_section_label: "Sekce"
   label_add_work_package_to_meeting_dialog_button: "Přidat do schůzky"
   label_meeting_selection_caption: "Tento pracovní balíček je možné přidat pouze na nadcházející nebo probíhající schůzku."
-  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  label_section_selection_caption: "Vyberte konkrétní část programu nebo ji přidejte do backlogu."
   placeholder_section_select_meeting_first: "Nejprve je nutné provést výběr schůzky"
   text_add_work_package_to_meeting_form: "Pracovní balíček bude přidán do vybrané schůzky nebo backlogu jako položka pořadu jednání."
   text_add_work_package_to_meeting_description: "Pracovní balíček může být přidán na jedno nebo více jednání k diskusi."
   text_agenda_item_no_notes: "Nebyly poskytnuty žádné poznámky"
   text_agenda_item_not_editable_anymore: "Tento bod pořadu jednání již není upravitelný."
-  text_agenda_item_move_next_meeting: "This item will be moved to the next meeting on %{date} at %{time}."
-  text_agenda_item_moved_to_next_meeting: "Agenda item moved to the next meeting, on %{date}"
+  text_agenda_item_move_next_meeting: "Tento bod bude přesunut na příští schůzi v %{date} %{time}."
+  text_agenda_item_moved_to_next_meeting: "Bod programu přesunut na příští schůzi %{date}"
   text_agenda_item_duplicate_in_next_meeting: "Are you sure you want to add a copy of this agenda item to the next meeting, on %{date} at %{time}? Outcomes will not be duplicated."
   text_agenda_item_duplicated_in_next_meeting: "Agenda item duplicated in the next meeting, on %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Tento pracovní balíček ještě není naplánován na nadcházející program schůzky."
@@ -672,11 +672,11 @@ cs:
     access_tokens:
       token/ical_meeting:
         blank_description: "You can create one using the button below."
-        blank_title: "No iCalendar meeting token"
-        title: "iCalendar for meetings"
-        table_title: "iCalendar meeting tokens"
-        text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
-        disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
+        blank_title: "Žádný token schůzky iCalendar"
+        title: "iCalendar pro schůzky"
+        table_title: "Tokeny schůzek iCalendar"
+        text_hint: "Tokeny schůzek iCalendar umožňují uživatelům odebírat všechny své schůzky a zobrazovat aktuální informace o schůzkách externích kalendářových klientech."
+        disabled_text: "Odebírání schůzek iCalendar není povoleno administrátorem. Pro povolení prosím kontaktujte svého systémového správce."
         add_button: "Přihlásit kalendář k odběru"
   my:
     access_token:
