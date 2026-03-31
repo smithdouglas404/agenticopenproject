@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects::SemanticIdentifierOperations
+module Projects::SemanticIdentifier
   extend ActiveSupport::Concern
 
   # Atomically allocates the next sequence number for a work package in this project

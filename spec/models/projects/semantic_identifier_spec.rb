@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Projects::SemanticIdentifierOperations do
+RSpec.describe Projects::SemanticIdentifier do
   before do
     allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, classic?: false)
   end
