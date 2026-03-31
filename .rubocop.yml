@@ -321,6 +321,7 @@ RSpec/SpecFilePathFormat:
   CustomTransform:
     OpenIDConnect: openid_connect
     OAuthClients: oauth_clients
+    XWikiProviders: xwiki_providers
   EnforcedInflector: active_support
   IgnoreMethods: true
 
