@@ -74,10 +74,15 @@ module Projects::SemanticIdentifier
     WorkPackageSemanticAlias
       .where("identifier LIKE ?", like_pattern)
       .in_batches do |relation|
-        rows = relation
-                 .pluck(:work_package_id, :identifier)
-                 .map { |wp_id, id| { identifier: new_prefix + id.delete_prefix(prefix), work_package_id: wp_id } }
-        WorkPackageSemanticAlias.insert_all(rows, unique_by: :identifier) if rows.any?
+        now = Time.current
+        WorkPackageSemanticAlias.connection.execute(
+          WorkPackageSemanticAlias.sanitize_sql([<<~SQL, prefix, new_prefix, now, now])
+            INSERT INTO work_package_semantic_aliases (identifier, work_package_id, created_at, updated_at)
+            SELECT REPLACE(identifier, ?, ?), work_package_id, ?, ?
+            FROM (#{relation.to_sql}) AS batch
+            ON CONFLICT (identifier) DO NOTHING
+          SQL
+        )
       end
   end
 
@@ -85,6 +90,8 @@ module Projects::SemanticIdentifier
   def rewrite_semantic_ids(like_pattern, prefix, new_prefix)
     WorkPackage
       .where("identifier LIKE ?", like_pattern)
-      .update_all(["identifier = REPLACE(identifier, ?, ?)", prefix, new_prefix])
+      .in_batches do |relation|
+        relation.update_all(["identifier = REPLACE(identifier, ?, ?)", prefix, new_prefix])
+      end
   end
 end
