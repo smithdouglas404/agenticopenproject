@@ -154,5 +154,9 @@ $op-backlogs-header--points-min-width-narrow: 2rem
     grid-template-columns: var(--control-xsmall-size) 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
 
   .op-backlogs-container, .op-sprint-planning-container
+    height: unset
+    overflow: auto
     flex-direction: column
 
+  .op-sprint-planning-lists
+    padding-top: 0
