@@ -39,7 +39,7 @@ Once opened, you can configure workflows for this type:
 > If a status has no transitions configured, it will be removed automatically when saving.
 
 4. Configure the allowed status transitions in the workflow table:
-   - The matrix shows the **current status on the Y axis (rows)** and the **new status on the X axis (columns)**.
+   - The matrix shows the **current status in the rows** and the **new status in the columns**.
    - Read transitions from rows to columns, e.g. if the cell at the intersection of **NEW (row)** and **IN PROGRESS (column)** is checked, a transition from **NEW → IN PROGRESS** is allowed.
    - To allow transitions in both directions, ensure both corresponding cells are checked.
 
