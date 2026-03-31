@@ -26,7 +26,7 @@ Click the green **+ Group** button to create a new group.
 
 ![create groups in OpenProject administration](openproject_system_guide_groups.png)
 
-Give your new group a unique name. Optionally, you can assign it to a parent group. This places the group within a hierarchy, where it automatically adopts the members and permissions of the parent group. The default setting is *No parent group*.
+Give your new group a unique name. Optionally, you can assign it to a parent group. This places the group within a hierarchy, where it inherits project memberships and permissions from the parent group. The default setting is *No parent group*.
 
 Click the green **Create** button to finish.
 
