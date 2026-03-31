@@ -7,7 +7,7 @@ cs:
       configure: 'Konfigurovat widget'
       widgets:
         missing_permission: "Nemáte potřebná oprávnění k zobrazení tohoto widgetu."
-        not_available: "This widget is currently unavailable."
+        not_available: "Tento widget je momentálně nedostupný."
         custom_text:
           title: 'Vlastní text'
         documents:
@@ -18,9 +18,9 @@ cs:
         news:
           title: 'Novinky'
         project_description:
-          title: 'Description'
+          title: 'Popis'
         project_status:
-          title: 'Status'
+          title: 'Stav'
           not_started: 'Nezahájeno'
           on_track: 'Dle plánu'
           off_track: 'Mimo plán'

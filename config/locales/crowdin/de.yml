@@ -1457,7 +1457,7 @@ de:
       part_of_description: "Dieses Arbeitspaket enthält das verknüpfte Arbeitspaket, ohne dass dies zusätzliche Auswirkungen hat"
       label_requires_singular: "benötigt"
       label_requires_plural: "benötigt"
-      requires_description: "Markiert dieses Arbeitspaket als Voraussetzung für das verknüpfte Arbeitspaket"
+      requires_description: "Markiert das verknüpfte Arbeitspaket als Voraussetzung für dieses Arbeitspaket"
       label_required_singular: "die benötigt werden von"
       label_required_plural: "die benötigt werden von"
       required_description: "Markiert dieses Arbeitspaket als Voraussetzung für das verknüpfte Arbeitspaket"
