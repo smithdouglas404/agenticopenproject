@@ -25,38 +25,36 @@ export function BoardColumn({ widget, filters }: BoardColumnProps) {
 
   const { data: statuses } = useStatuses();
 
-  const columnStatus = useMemo(() => {
-    if (!isActionBoard || actionAttribute !== 'status' || !statuses || !query) {
-      return undefined;
-    }
-
-    const statusFilter = query.filters?.find(
-      (f) => 'status' in f || 'statusId' in f || 'status_id' in f,
-    );
-    if (!statusFilter) return undefined;
-
-    const filterValue = (statusFilter as Record<string, any>).status
-      ?? (statusFilter as Record<string, any>).statusId
-      ?? (statusFilter as Record<string, any>).status_id;
-    const statusId = filterValue?.values?.[0];
-    if (!statusId) return undefined;
-
-    return statuses.find((s) => String(s.id) === String(statusId));
-  }, [isActionBoard, actionAttribute, statuses, query]);
-
+  // Extract status ID from HAL filter format.
+  // API returns filters as HAL objects with _links.filter.href like
+  // "/api/v3/queries/filters/status" and _links.values[].href like
+  // "/api/v3/statuses/1"
   const actionFilterValue = useMemo(() => {
     if (!isActionBoard || !query?.filters) return undefined;
 
-    for (const filter of query.filters) {
-      const key = Object.keys(filter).find(
-        (k) => k === actionAttribute || k === `${actionAttribute}Id` || k === `${actionAttribute}_id`,
-      );
-      if (key) return filter[key].values?.[0];
-    }
-    return undefined;
+    const actionFilter = query.filters.find((f: any) => {
+      const filterHref = f?._links?.filter?.href ?? '';
+      return filterHref.endsWith(`/filters/${actionAttribute}`);
+    });
+    if (!actionFilter) return undefined;
+
+    const values = (actionFilter as any)?._links?.values;
+    if (!Array.isArray(values) || values.length === 0) return undefined;
+
+    // Extract ID from href like "/api/v3/statuses/1"
+    const href: string = values[0]?.href ?? '';
+    const id = href.split('/').pop();
+    return id;
   }, [isActionBoard, actionAttribute, query]);
 
-  const workPackages = query?.results?._embedded?.elements ?? [];
+  const columnStatus = useMemo(() => {
+    if (!isActionBoard || actionAttribute !== 'status' || !statuses || !actionFilterValue) {
+      return undefined;
+    }
+    return statuses.find((s) => String(s.id) === actionFilterValue);
+  }, [isActionBoard, actionAttribute, statuses, actionFilterValue]);
+
+  const workPackages = query?._embedded?.results?._embedded?.elements ?? [];
   const columnTitle = query?.name ?? 'Loading...';
   const canDrop = !!query?._links?.updateOrderedWorkPackages;
 

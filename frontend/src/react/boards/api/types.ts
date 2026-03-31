@@ -85,7 +85,9 @@ export interface QueryResult extends HalResource {
   name: string;
   filters: ApiV3Filter[];
   columns: QueryColumn[];
-  results: HalCollection<WorkPackage>;
+  _embedded: HalResource['_links'] & {
+    results: HalCollection<WorkPackage>;
+  };
   ordered_work_packages?: Record<string, number>;
   _links: HalResource['_links'] & {
     updateOrderedWorkPackages?: HalLink;
