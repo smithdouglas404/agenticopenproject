@@ -426,7 +426,7 @@ cs:
           checkbox_label: Chápu, že se tím trvale změní všechny identifikátory pracovních balíčků
         success_banner: Úspěšně aktualizován formát identifikátoru pracovního balíčku.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          banner_message: Identifikátory projektů jsou v současné době aktualizovány na alfanumerické projektové identifikátory. To může chvíli trvat.
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -5103,12 +5103,12 @@ cs:
   setting_welcome_text: "Text uvítacího bloku"
   setting_welcome_title: "Název uvítacího bloku"
   setting_welcome_on_homescreen: "Zobrazit uvítací blok na domovské obrazovce"
-  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_classic_caption: >
-    Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
-  setting_work_packages_identifier_semantic_caption: >
-    Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
+  setting_work_packages_identifier_numeric: Číselná posloupnost pro celou instanci (výchozí)
+  setting_work_packages_identifier_numeric_caption: >
+    Každý pracovní balíček dostane pořadové číslo začínající číslem 1 a zvyšující se s každým novým. Čísla jsou v rámci této instance jedinečná, takže zůstávají stejná, i když se pracovní balíčky přesouvají mezi projekty.
+  setting_work_packages_identifier_alphanumeric: Projektové alfanumerické identifikátory
+  setting_work_packages_identifier_alphanumeric_caption: >
+    Každý projekt má jedinečný identifikátor, který je předřazen ID pracovního balíčku. Pokud se pracovní balíček přesune do jiného projektu, vygeneruje se nový identifikátor, ale starý zůstává funkční.
   setting_work_package_list_default_highlighting_mode: "Výchozí režim zvýraznění"
   setting_work_package_list_default_highlighted_attributes: "Výchozí inline zvýrazněné atributy"
   setting_working_days: "Pracovní dny"

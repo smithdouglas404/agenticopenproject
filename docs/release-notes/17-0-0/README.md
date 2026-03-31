@@ -147,7 +147,7 @@ The redesign also introduces a **new widget for Subitems** and improves existing
 
 ![OpenProject Project home showing both the Overview tab and the Dashboard tab](openproject-17-0-home-dashboard-overview.jpg)
 
-[Learn more about the project home page in our user guide](../../user-guide/project-home/).
+[Learn more about the project home page in our user guide](../../user-guide/projects/project-home/).
 
 ### Improved project creation flow with better template selection
 

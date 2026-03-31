@@ -32,7 +32,7 @@ require "spec_helper"
 
 RSpec.describe "Logging time within the work package view", :js, :with_cuprite do
   shared_let(:project) { create(:project) }
-  shared_let(:admin) { create(:admin) }
+  shared_let(:admin) { create(:admin, member_with_permissions: { project => %i[log_time view_time_entries view_work_packages] }) }
   shared_let(:work_package) { create(:work_package, project:) }
   shared_let(:activity) { create(:time_entry_activity, project:) }
 
@@ -132,7 +132,11 @@ RSpec.describe "Logging time within the work package view", :js, :with_cuprite d
     end
 
     context "with a user with non-one unit numbers", with_settings: { available_languages: %w[en ja] } do
-      let(:user) { create(:admin, language: "ja") }
+      let(:user) do
+        create(:admin,
+               language: "ja",
+               member_with_permissions: { project => %i[log_time view_time_entries view_work_packages] })
+      end
 
       before do
         I18n.locale = "ja"

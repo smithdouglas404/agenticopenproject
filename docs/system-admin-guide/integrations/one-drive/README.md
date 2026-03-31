@@ -133,17 +133,14 @@ To edit an existing OneDrive file storage hover over the name of the storage you
 
 ![Select OneDrive file storage in OpenProject system administration](openproject_system_guide_select_onedrive_storage.png)
 
-To update the general storage information, select the **Details** tab, click the **Edit** icon next to the storage provider. To replace the Azure authentication information, click on the **Sync** icon next to the OAuth application. With changing the authentication information the redirect URI will get generated again and thus needs to be copied again. The redirect URI can be copied
-by clicking on the **Copy-to-Clipboard** element next to the information text, or by entering the form by clicking the
-**View** icon.
+To update the general storage information, select the **Details** tab, click the **Edit** icon next to the storage provider. To replace the Azure authentication information, click on the **Sync** icon next to the OAuth application. With changing the authentication information the redirect URI will get generated again and thus needs to be copied again. The redirect URI can be copied by clicking on the **Copy-to-Clipboard** element next to the information text, or by entering the form by clicking the **View** icon.
 
 > [!TIP]
 > If you have selected automatically-managed access and folders you will also see the *Health status* message on the right side. If the file storage set-up is incomplete or faulty, an error message will be displayed in that section. Read more about errors and troubleshooting [here](../../files/external-file-storages/health-status/).
 
 ![Edit OneDrive in OpenProject](openproject_system_guide_edit_icon_onedrive_storage.png)
 
-Here you will be able to edit all the information you have specified when creating the OneDrive connection
-initially.
+Here you will be able to edit all the information you have specified when creating the OneDrive connection  initially.
 
 ## Delete a OneDrive file storage
 
