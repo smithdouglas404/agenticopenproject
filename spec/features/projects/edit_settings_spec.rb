@@ -51,7 +51,7 @@ RSpec.describe "Projects", "editing settings", :js do
   end
 
   describe "identifier edit" do
-    context "with numerical IDs", with_settings: { work_packages_identifier: "numeric" } do
+    context "with classic IDs", with_settings: { work_packages_identifier: "classic" } do
       it "updates the project identifier via dialog" do
         visit project_settings_general_path(project)
 
@@ -71,7 +71,7 @@ RSpec.describe "Projects", "editing settings", :js do
       end
     end
 
-    context "with alphanumeric IDs", with_settings: { work_packages_identifier: "alphanumeric" } do
+    context "with semantic IDs", with_settings: { work_packages_identifier: "semantic" } do
       it "updates the project identifier via dialog" do
         visit project_settings_general_path(project)
 

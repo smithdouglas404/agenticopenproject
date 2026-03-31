@@ -30,6 +30,10 @@
 
 module Wikis
   class InternalProvider < Provider
+    class << self
+      def registry_prefix = "internal"
+    end
+
     def name
       model_name.human
     end
