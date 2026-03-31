@@ -67,6 +67,9 @@ module Projects::SemanticIdentifier
 
   private
 
+  # For every alias row whose identifier starts with the old prefix, inserts a
+  # corresponding row with the new prefix. This covers WPs still in the project
+  # as well as any that have moved out but still carry old-prefix alias rows.
   def append_aliases_with_new_prefix(like_pattern, prefix, new_prefix)
     WorkPackageSemanticAlias
       .where("identifier LIKE ?", like_pattern)
@@ -78,6 +81,7 @@ module Projects::SemanticIdentifier
       end
   end
 
+  # Updates the identifier column on all resident WPs to replace the old prefix with the new one.
   def rewrite_semantic_ids(like_pattern, prefix, new_prefix)
     WorkPackage
       .where("identifier LIKE ?", like_pattern)
