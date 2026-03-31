@@ -99,6 +99,8 @@ module WorkPackage::SemanticIdentifier
   # This also includes "ghost identifiers" -- i.e. those that weren't ever actually generated, but should work
   # as a historical alias (e.g. OLDPROJ-42 should work even if WP #42 was created after rename to NEWPROJ)
   def alias_rows_for_sequence_number(seq)
-    project.semantic_identifier_aliases.map { |prefix| { identifier: "#{prefix}-#{seq}", work_package_id: id } }
+    project.identifier_aliases
+           .pluck(:slug)
+           .map { |prefix| { identifier: "#{prefix}-#{seq}", work_package_id: id } }
   end
 end

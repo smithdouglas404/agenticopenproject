@@ -35,25 +35,6 @@ RSpec.describe Projects::SemanticIdentifierOperations do
     allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, classic?: false)
   end
 
-  describe "#semantic_identifier_aliases" do
-    let(:project) { create(:project, identifier: "PROJ") }
-
-    it "returns the current identifier" do
-      expect(project.semantic_identifier_aliases).to contain_exactly("PROJ")
-    end
-
-    it "includes all historical identifiers" do
-      project_with_history = create(:project, identifier: "OLDPROJ")
-      project_with_history.update!(identifier: "PROJ")
-      expect(project_with_history.semantic_identifier_aliases).to contain_exactly("PROJ", "OLDPROJ")
-    end
-
-    it "does not include slugs belonging to other projects" do
-      create(:project, identifier: "OTHER")
-      expect(project.semantic_identifier_aliases).to contain_exactly("PROJ")
-    end
-  end
-
   describe "#allocate_wp_semantic_identifier!" do
     let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
 

@@ -31,12 +31,6 @@
 module Projects::SemanticIdentifierOperations
   extend ActiveSupport::Concern
 
-  # Returns all identifiers this project has ever used, as recorded by FriendlyId
-  # (includes the current identifier and every historical one).
-  def semantic_identifier_aliases
-    FriendlyId::Slug.where(sluggable_type: Project.name, sluggable_id: id).pluck(:slug)
-  end
-
   # Atomically allocates the next sequence number for a work package in this project
   # and returns it paired with the resulting semantic identifier (e.g. [42, "PROJ-42"]).
   # Uses an advisory lock scoped to this project to serialize concurrent allocations

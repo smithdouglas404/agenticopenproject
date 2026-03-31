@@ -38,6 +38,11 @@ module Projects::Identifier
   included do
     extend FriendlyId
 
+    has_many :identifier_aliases,
+             -> { where(sluggable_type: "Project") },
+             class_name: "FriendlyId::Slug",
+             foreign_key: :sluggable_id
+
     normalizes :identifier, with: OpenProject::RemoveAsciiControlCharacters
 
     ### ID generators
