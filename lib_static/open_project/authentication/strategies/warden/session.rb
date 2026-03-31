@@ -50,19 +50,14 @@ module OpenProject
             return true if request.get?
 
             # For all other requests, to mitigate CSRF vectors,
-            # require frontend headers to be present or browser indication
-            # that this was a same-origin request
-            xml_request_header_set? || same_origin?
+            # require browser indication that this was a same-origin request
+            same_origin?
           end
 
           def authenticate!
             user = user_id ? User.find(user_id) : User.anonymous
 
             success! user
-          end
-
-          def xml_request_header_set?
-            request.env["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"
           end
 
           def same_origin?

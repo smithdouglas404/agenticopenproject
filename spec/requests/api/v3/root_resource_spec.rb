@@ -82,13 +82,6 @@ RSpec.describe "API v3 Root resource" do
         expect(subject).to have_json_path("instanceName")
       end
 
-      context "without the X-requested-with header", :skip_xhr_header do
-        it "returns OK because GET requests are allowed" do
-          expect(response).to have_http_status(:ok)
-          expect(subject).to have_json_path("instanceName")
-        end
-      end
-
       context "with content-type application/hal+json" do
         before do
           header("Content-Type", "application/hal+json")
