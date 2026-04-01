@@ -56,7 +56,7 @@ RSpec.describe OpenProject::TextFormatting,
               <a class="op-uc-link_permalink icon-link op-uc-link"
                  aria-hidden="true"
                  href="#op-frag-the-heading"
-                 rel="noopener noreferrer"></a>
+                 rel="noopener noreferrer nofollow"></a>
             </h#{level}>
             <p class="op-uc-p">more text</p>
           EXPECTED
@@ -123,7 +123,7 @@ RSpec.describe OpenProject::TextFormatting,
               <a class="op-uc-link_permalink icon-link op-uc-link"
                  href="#op-frag-20090209"
                  aria-hidden="true"
-                 rel="noopener noreferrer"></a>
+                 rel="noopener noreferrer nofollow"></a>
             </h1>
           EXPECTED
         end

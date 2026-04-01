@@ -112,7 +112,7 @@ fr:
     import:
       title: "Importation"
     jira:
-      title: "Importation de Jira"
+      title: "Jira Migrator"
       description: "Utilisez cet outil pour importer des données à partir de votre instance Jira. Vous pouvez configurer plusieurs hôtes Jira et choisir les données à importer à chaque cycle d'importation."
       errors:
         cannot_delete_with_imports: "Impossible de supprimer un hôte Jira avec des importations existantes"
@@ -123,8 +123,8 @@ fr:
         title: "Configuration de Jira"
         new: "Nouvelle configuration"
       banner:
-        title: "Importation limitée"
-        description: "Cet outil d'importation est actuellement en version bêta et ne peut importer que des données de base : projets, tickets (nom, titre, description, pièces jointes), utilisateurs (nom, e-mail, appartenance à un projet), statuts et types. Il ne peut pas importer les flux de travail, les champs personnalisés, les relations entre les tickets ou les autorisations. Nous ne prenons actuellement en charge que les versions 10.x et 11.x de Jira Server/Data Center. Les instances cloud ne sont pas prises en charge pour le moment."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Nom"
@@ -160,7 +160,7 @@ fr:
       run:
         title: "Cycle d'importation"
         history: "Historique"
-        remove_error: "Une importation Jira ne peut pas être supprimée lorsqu'elle est en cours d'exécution"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Un autre cycle d'importation Jira est actuellement en cours ou en attente de révision. Veuillez le terminer ou l'annuler avant de commencer une nouvelle importation."
         blank:
           title: "Aucun cycle d'importation n'a encore été configuré"
@@ -1516,7 +1516,7 @@ fr:
         personal_access_token: "Jeton d'accès personnel"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Importation de Jira"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Afficher jusqu'à"
       attachment:
@@ -3746,7 +3746,7 @@ fr:
   label_external_links: "Liens externes"
   label_locale: "Langue et région"
   label_jump_to_a_project: "Aller à un projet…"
-  label_jira_import: "Importation de Jira"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Mots clés"
   label_language_based: "Basé sur la langue de l'utilisateur"
   label_last_activity: "Dernière activité"

@@ -112,7 +112,7 @@ uk:
     import:
       title: "Iмпорт"
     jira:
-      title: "Імпорт із Jira"
+      title: "Jira Migrator"
       description: "Використовуйте цей інструмент для імпорту даних зі свого екземпляра Jira. Ви можете налаштувати кілька хостів Jira й вибрати, що імпортувати в кожному циклі імпорту."
       errors:
         cannot_delete_with_imports: "Не вдається видалити хост Jira з наявними процесами імпорту"
@@ -123,8 +123,8 @@ uk:
         title: "Конфігурація Jira"
         new: "Нова конфігурація"
       banner:
-        title: "Обмежений імпорт"
-        description: "Цей інструмент зараз доступний лише як бета-версія і може імпортувати тільки основні дані: проєкти, задачі (назву, заголовок, опис, вкладення), користувачів (ім’я, електронну адресу, дані про участь у проєктах), статуси й типи. Він не може імпортувати робочі процеси, користувацькі поля, зв’язки між задачами чи дозволи. Зараз ми підтримуємо лише версії Jira Server / Data Center 10.x і 11.x. Хмарні екземпляри поки що не підтримуються."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Назва"
@@ -160,7 +160,7 @@ uk:
       run:
         title: "Цикл імпорту"
         history: "Історія"
-        remove_error: "Імпорт Jira не можна видалити, поки він виконується"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Зараз виконується або очікує на перевірку ще один цикл імпорту Jira. Завершіть або скасуйте його, якщо потрібно почати новий імпорт."
         blank:
           title: "Немає налаштованих циклів імпорту"
@@ -1548,7 +1548,7 @@ uk:
         personal_access_token: "Персональний маркер доступу"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira import"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Показувати до"
       attachment:
@@ -3860,7 +3860,7 @@ uk:
   label_external_links: "Зовнішні посилання"
   label_locale: "Мова й регіон"
   label_jump_to_a_project: "Перейти до проекту..."
-  label_jira_import: "Імпорт із Jira"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Ключові слова"
   label_language_based: "На основі мови користувача"
   label_last_activity: "Остання активність"

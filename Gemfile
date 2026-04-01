@@ -44,7 +44,7 @@ gem "ox"
 gem "rails", "~> 8.1.2"
 gem "responders", "~> 3.2"
 
-gem "ffi", "~> 1.15"
+gem "ffi", "~> 1.17"
 
 gem "connection_pool", "~> 3.0.2"
 

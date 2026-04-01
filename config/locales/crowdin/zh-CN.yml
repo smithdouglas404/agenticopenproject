@@ -112,7 +112,7 @@ zh-CN:
     import:
       title: "导入"
     jira:
-      title: "Jira 导入"
+      title: "Jira Migrator"
       description: "使用此工具从您的 Jira 实例中导入数据。您可以配置多个 Jira 主机，并选择每次导入运行要导入的内容。"
       errors:
         cannot_delete_with_imports: "无法删除具有现有导入的 Jira 主机"
@@ -123,8 +123,8 @@ zh-CN:
         title: "Jira 配置"
         new: "新配置"
       banner:
-        title: "受限导入"
-        description: "此导入工具目前处于测试阶段，只能导入基本数据：项目、问题（名称、标题、描述、附件）、用户（名称、电子邮件地址、项目成员资格）、状态和类型。不能导入工作流、自定义字段、问题关系或权限。我们目前仅支持 Jira Server/Data Center 版本 10.x 和 11.x。目前不支持云实例。"
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "名称"
@@ -160,7 +160,7 @@ zh-CN:
       run:
         title: "导入运行"
         history: "历史记录"
-        remove_error: "无法移除正在运行的 Jira 导入"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "另一个 Jira 导入运行当前正在执行或等待审核。请先完成或撤消当前运行，然后再开始新的导入。"
         blank:
           title: "尚未设置导入运行"
@@ -1496,7 +1496,7 @@ zh-CN:
         personal_access_token: "个人访问令牌"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira 导入"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "显示截止日期"
       attachment:
@@ -3685,7 +3685,7 @@ zh-CN:
   label_external_links: "外部链接"
   label_locale: "语言和地区"
   label_jump_to_a_project: "跳转到一个项目..."
-  label_jira_import: "Jira 导入"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "关键词"
   label_language_based: "基于用户的语言"
   label_last_activity: "最近一次活动"
