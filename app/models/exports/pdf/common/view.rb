@@ -242,6 +242,16 @@ class Exports::PDF::Common::View
         end
         super(shaped, options)
       end
+
+      # Table cells with inline_format: true bypass text/formatted_text methods,
+      # so we must shape the content string before the cell is created.
+      define_method(:make_cell) do |content, options = {}|
+        if content.is_a?(String)
+          super(Exports::PDF::Common::ArabicShaping.process(content), options)
+        else
+          super(content, options)
+        end
+      end
     end
     document.singleton_class.prepend(shaping)
   end
