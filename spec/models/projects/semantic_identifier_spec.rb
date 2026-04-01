@@ -30,11 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Projects::SemanticIdentifier do
-  before do
-    allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, classic?: false)
-  end
-
+RSpec.describe Projects::SemanticIdentifier, with_settings: { work_packages_identifier: "semantic" } do
   describe "#allocate_wp_semantic_identifier!" do
     let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
 
