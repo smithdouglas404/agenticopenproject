@@ -79,49 +79,49 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
 
   context "with the permission to save queries" do
     it "can add the widget and see the work packages of the filtered for types" do
+      # This one always exists by default.
+      # Using it here as a safeguard to govern speed.
+      created_by_me_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(2)")
+      expect(created_by_me_area.area)
+        .to have_css(".subject", text: type_work_package.subject)
+
+      my_page.add_widget(1, 2, :column, "Work packages table")
+
+      # Actually there are two success messages displayed currently. One for the grid getting updated and one
+      # for the query assigned to the new widget being created. A user will not notice it but the automated
+      # browser can get confused. Therefore we wait.
+      sleep(2)
+
+      my_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
+
+      filter_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(3)")
+      filter_area.expect_to_span(1, 3, 2, 4)
+
+      # At the beginning, the default query is displayed
+      expect(filter_area.area)
+        .to have_css(".subject", text: type_work_package.subject)
+
+      expect(filter_area.area)
+        .to have_css(".subject", text: other_type_work_package.subject)
+
+      # User has the ability to modify the query
+
+      filter_area.configure_wp_table
+      modal.switch_to("Filters")
+      filters.expect_filter_count(3)
+      filters.add_filter_by("Type", "is (OR)", type.name)
+      modal.save
+
+      # Wait for the filter save to complete before opening the column configuration,
+      # otherwise the two saves can race and only one change gets persisted.
+      wait_for_network_idle
+
+      filter_area.configure_wp_table
+      modal.switch_to("Columns")
+      columns.assume_opened
+      columns.remove "Subject"
+
       retry_block do
-        # This one always exists by default.
-        # Using it here as a safeguard to govern speed.
-        created_by_me_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(2)")
-        expect(created_by_me_area.area)
-          .to have_css(".subject", text: type_work_package.subject)
-
-        my_page.add_widget(1, 2, :column, "Work packages table")
-
-        # Actually there are two success messages displayed currently. One for the grid getting updated and one
-        # for the query assigned to the new widget being created. A user will not notice it but the automated
-        # browser can get confused. Therefore we wait.
-        sleep(2)
-
-        my_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
-
-        filter_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(3)")
-        filter_area.expect_to_span(1, 3, 2, 4)
-
-        # At the beginning, the default query is displayed
-        expect(filter_area.area)
-          .to have_css(".subject", text: type_work_package.subject)
-
-        expect(filter_area.area)
-          .to have_css(".subject", text: other_type_work_package.subject)
-
-        # User has the ability to modify the query
-
-        filter_area.configure_wp_table
-        modal.switch_to("Filters")
-        filters.expect_filter_count(3)
-        filters.add_filter_by("Type", "is (OR)", type.name)
-        modal.save!
-
-        # Wait for the filter save to complete before opening the column configuration,
-        # otherwise the two saves can race and only one change gets persisted.
-        wait_for_network_idle
-
-        filter_area.configure_wp_table
-        modal.switch_to("Columns")
-        columns.assume_opened
-        columns.remove "Subject"
-
         expect(filter_area.area)
           .to have_css(".id", text: type_work_package.id)
 
@@ -132,32 +132,36 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
         # As other_type is filtered out
         expect(filter_area.area)
           .to have_no_css(".id", text: other_type_work_package.id)
+      end
 
-        # Wait for the column save PATCH to complete after the DOM has confirmed the
-        # Angular state update. Without this ordering, wait_for_network_idle can fire
-        # during the gap before the async PATCH request is initiated.
-        wait_for_network_idle
+      # Wait for the column save PATCH to complete after the DOM has confirmed the
+      # Angular state update. Without this ordering, wait_for_network_idle can fire
+      # during the gap before the async PATCH request is initiated.
+      wait_for_network_idle
 
-        scroll_to_element(filter_area.area)
-        within filter_area.area do
-          input = find(".editable-toolbar-title--input")
-          input.set("My WP Filter")
-          input.native.send_keys(:return)
-        end
+      scroll_to_element(filter_area.area)
+      within filter_area.area do
+        input = find(".editable-toolbar-title--input")
+        input.set("My WP Filter")
+        input.native.send_keys(:return)
+      end
 
+      retry_block do
         my_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
+      end
 
-        wait_for_network_idle
+      wait_for_network_idle
 
-        # The whole of the configuration survives a reload
-        # as it is persisted in the grid
+      # The whole of the configuration survives a reload
+      # as it is persisted in the grid
 
-        visit root_path
-        my_page.visit!
-        wait_for_network_idle
+      visit root_path
+      my_page.visit!
+      wait_for_network_idle
 
-        filter_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(3)")
+      filter_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(3)")
 
+      retry_block do
         # Wait for the widget to load from its persisted state before asserting.
         # The title comes from the grid API; once visible, the widget is initialized.
         # A second wait_for_network_idle then catches the subsequent query + results fetches.
