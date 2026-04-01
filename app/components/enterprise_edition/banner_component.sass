@@ -136,3 +136,25 @@ $op-enterprise-banner-fixed-height-large: 320px
 
   &--dismiss
     margin-left: var(--controlStack-medium-gap-condensed)
+
+.flash-warn,
+.flash-success
+  position: fixed
+  top: 10%
+  z-index: 999
+  left: 50%
+  transform: translateX(-50%)
+  width: 90%
+  max-width: 934px
+  align-items: center
+  border-radius: 6px
+
+  .Banner-visual
+    align-self: center
+
+  #connection-error-retry-button
+    border-radius: 6px
+    background-color: #F6F8FA
+    border: 1px solid #D0D7DE
+    font-size: 14px
+    font-weight: 600

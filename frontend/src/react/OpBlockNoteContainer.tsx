@@ -78,6 +78,14 @@ export default function OpBlockNoteContainer({ inputField,
   const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
   const hadErrorRef = useRef(false);
 
+  // Dispatch a custom DOM event to notify the Stimulus connection-status controller
+  // about the current connection state. This bridges React (BlockNote editor) and
+  // Stimulus, allowing the header indicator to show/hide without direct coupling.
+  useEffect(() => {
+    document.dispatchEvent(new CustomEvent('documents:connection-status-changed', {
+      detail:{ offline:connectionError }
+    }));
+  }, [connectionError]);
   // Fetch error/recovery template based on connection state
   useEffect(() => {
     if (!errorContainer) return;

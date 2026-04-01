@@ -31,7 +31,7 @@
 
 <%=
   component_wrapper do
-    flex_layout(tag: :div, align_items: :center, test_selector: "document-info-line") do |flex|
+    flex_layout(tag: :div, align_items: :center, data: { controller: "documents--connection-status" }, test_selector: "document-info-line") do |flex|
       flex.with_column(hide: :sm, mr: 3) do
         if allowed_to_manage_documents?
           render(Primer::Alpha::ActionMenu.new(select_variant: :single)) do |menu|
@@ -61,6 +61,10 @@
 
       flex.with_column(mr: 3) do
         render(Documents::ShowEditView::PageHeader::LiveUsersComponent.new)
+      end
+
+      flex.with_column(mr: 3) do
+        render(Documents::ShowEditView::PageHeader::LiveConnectionStatusComponent.new)
       end
 
       flex.with_column do
