@@ -51,13 +51,24 @@ module Exports::PDF::Components::Page
   end
 
   def logo_pdf_left(logo_width)
-    case styles.page_logo_align.to_sym
+    align = styles.page_logo_align.to_sym
+    # Mirror logo alignment for RTL locales
+    align = mirror_align(align) if rtl?
+    case align
     when :center
       (pdf.bounds.right - pdf.bounds.left - logo_width) / 2
     when :right
       pdf.bounds.right - logo_width
     else
       0 # :left
+    end
+  end
+
+  def mirror_align(align)
+    case align
+    when :left then :right
+    when :right then :left
+    else align
     end
   end
 
@@ -75,6 +86,7 @@ module Exports::PDF::Components::Page
     pdf.title = heading
     with_margin(styles.page_heading_margins) do
       style = styles.page_heading
+      style = style.merge({ align: :right }) if rtl?
       pdf.formatted_text([style.merge({ text: heading })], style)
     end
   end
@@ -129,8 +141,13 @@ module Exports::PDF::Components::Page
   def draw_footer_on_page
     top = styles.page_footer_offset
     text_style = styles.page_footer
-    right_width = footer_page_nr.present? ? draw_text_right(footer_page_nr, text_style, top) : 0
-    left_width = footer_date.present? ? draw_text_left(footer_date, text_style, top) : 0
+    if rtl?
+      right_width = footer_date.present? ? draw_text_right(footer_date, text_style, top) : 0
+      left_width = footer_page_nr.present? ? draw_text_left(footer_page_nr, text_style, top) : 0
+    else
+      right_width = footer_page_nr.present? ? draw_text_right(footer_page_nr, text_style, top) : 0
+      left_width = footer_date.present? ? draw_text_left(footer_date, text_style, top) : 0
+    end
     draw_footer_title(left_width, right_width, text_style, top) if footer_title.present?
   end
 

@@ -146,6 +146,7 @@ module Exports::PDF::Components::WpTable
     with_margin(styles.wp_table_margins) do
       with_margin(styles.wp_table_group_header_margins) do
         style = styles.wp_table_group_header
+        style = style.merge({ align: :right }) if rtl?
         pdf.formatted_text([style.merge({ text: make_group_label(group) })], style)
       end
       write_table!(work_packages, query, columns, sums)
@@ -158,7 +159,9 @@ module Exports::PDF::Components::WpTable
   end
 
   def wp_table_options
-    { header: true, cell_style: styles.wp_table_cell.merge({ inline_format: true }) }
+    cell_style = styles.wp_table_cell.merge({ inline_format: true })
+    cell_style[:align] = :right if rtl?
+    { header: true, cell_style: }
   end
 
   def build_table_rows(work_packages, query, columns, sums)

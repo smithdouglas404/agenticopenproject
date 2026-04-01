@@ -92,13 +92,15 @@ class WorkPackage::PDFExport::WorkPackageToPdf < Exports::Exporter
     offset = 2
     style = styles.page_heading
     with_margin(styles.page_heading_margins) do
+      text_style = style.dup
+      text_style[:align] = :right if rtl?
       pdf.formatted_text(
         [
           wp_title_formatted_text(work_package, style),
           { text: " " },
           prawn_badge(badge_text, wp_status_prawn_color(work_package), offset:, line_height: style[:size])
         ],
-        style.merge({ draw_text_callback: prawn_badge_draw_text_callback(badge_text, offset) })
+        text_style.merge({ draw_text_callback: prawn_badge_draw_text_callback(badge_text, offset) })
       )
     end
   end
