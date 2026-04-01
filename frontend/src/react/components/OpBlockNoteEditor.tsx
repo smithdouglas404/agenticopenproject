@@ -39,7 +39,7 @@ import {
   initializeOpBlockNoteExtensions,
   openProjectWorkPackageBlockSpec,
   inlineWorkPackageSpec,
-  inlineWorkPackageSlashMenu,
+  workPackageSlashMenu,
 } from 'op-blocknote-extensions';
 import { useCallback, useEffect, useMemo } from 'react';
 import * as Y from 'yjs';
@@ -129,7 +129,7 @@ export function OpBlockNoteEditor({
 
   const getCustomSlashMenuItems = useCallback((editorInstance:typeof editor) => [
     ...getDefaultReactSlashMenuItems(editorInstance),
-    inlineWorkPackageSlashMenu(editorInstance),
+    workPackageSlashMenu(editorInstance),
   ], []);
 
   return (
