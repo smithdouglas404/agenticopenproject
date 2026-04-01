@@ -45,7 +45,7 @@ module Projects::Identifier
              inverse_of: false,
              dependent: :delete_all
 
-    normalizes :identifier, with: OpenProject::RemoveAsciiControlCharacters
+    normalizes :identifier, with: OpenProject::RemoveInvisibleCharacters
 
     ### ID generators
     # There are two supported formats:

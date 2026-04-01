@@ -112,7 +112,7 @@ fil:
     import:
       title: "Import"
     jira:
-      title: "Jira Import"
+      title: "Jira Migrator"
       description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
       errors:
         cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
@@ -123,8 +123,8 @@ fil:
         title: "Jira configuration"
         new: "New configuration"
       banner:
-        title: "Limited import"
-        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Name"
@@ -160,7 +160,7 @@ fil:
       run:
         title: "Import run"
         history: "History"
-        remove_error: "A Jira import cannot be removed while it is running"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
         blank:
           title: "No import runs set up yet"
@@ -1517,7 +1517,7 @@ fil:
         personal_access_token: "Personal access token"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira import"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "I-displey hanggang"
       attachment:
@@ -3747,7 +3747,7 @@ fil:
   label_external_links: "External links"
   label_locale: "Language and region"
   label_jump_to_a_project: "Tumalon sa isang proyekto..."
-  label_jira_import: "Jira Import"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Keywords"
   label_language_based: "Naka-base sa linggwahe ng gumagamit"
   label_last_activity: "Huling aktibidad"

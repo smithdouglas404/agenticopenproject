@@ -112,7 +112,7 @@ it:
     import:
       title: "Importa"
     jira:
-      title: "Importazione di Jira"
+      title: "Jira Migrator"
       description: "Utilizza questo strumento per importare dati dalla tua istanza Jira. Puoi configurare più host Jira e scegliere cosa importare a ogni importazione."
       errors:
         cannot_delete_with_imports: "Impossibile eliminare l'host Jira con importazioni esistenti"
@@ -123,8 +123,8 @@ it:
         title: "Configurazione Jira"
         new: "Nuova configurazione"
       banner:
-        title: "Importazione limitata"
-        description: "Questo strumento di importazione è attualmente in versione beta e può importare solo dati di base: progetti, issue (nome, titolo, descrizione, allegati), utenti (nome, email, appartenenza al progetto), stati e tipi. Non può importare flussi di lavoro, campi personalizzati, relazioni tra issue o autorizzazioni. Al momento supportiamo solo le versioni 10.x e 11.x di Jira Server/Data Center. Le istanze cloud non sono supportate al momento."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Nome"
@@ -160,7 +160,7 @@ it:
       run:
         title: "Importa esecuzione"
         history: "Cronologia"
-        remove_error: "Un'importazione di Jira non può essere rimossa mentre è in esecuzione"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Un'altra importazione Jira è attualmente in corso o in attesa di revisione. Completala o annullala prima di iniziare una nuova importazione."
         blank:
           title: "Nessuna importazione ancora impostata"
@@ -1515,7 +1515,7 @@ it:
         personal_access_token: "Token di accesso personale"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira import"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Visualizza fino a"
       attachment:
@@ -3745,7 +3745,7 @@ it:
   label_external_links: "Link esterni"
   label_locale: "Lingua e paese"
   label_jump_to_a_project: "Salta ad altro progetto..."
-  label_jira_import: "Importazione di Jira"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Parole chiave"
   label_language_based: "Basato sulla lingua dell'utente"
   label_last_activity: "Ultima attività"

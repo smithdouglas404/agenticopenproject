@@ -32,18 +32,18 @@ module MeetingAgendaItems
   class DuplicateInNextMeetingDialogComponent < ApplicationComponent
     include ApplicationHelper
     include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-    def initialize(agenda_item:, datetime:, skipped: nil)
+    def initialize(agenda_item:, datetime:, skipped: nil, next_occurrence: nil)
       super
 
       @agenda_item = agenda_item
       @datetime = datetime
       @skipped = skipped
+      @next_occurrence = next_occurrence
     end
 
     private
-
-    def dialog_id = "duplicate-in-next-meeting-dialog"
 
     def title = I18n.t(:label_agenda_item_duplicate_in_next_title)
 
@@ -54,11 +54,7 @@ module MeetingAgendaItems
         time: format_time(@datetime, include_date: false)
       )
 
-      if @skipped.present?
-        "#{base_message}\n\n#{skipped_message}"
-      else
-        base_message
-      end
+      @skipped.present? ? "#{base_message}\n\n#{skipped_message}" : base_message
     end
 
     def skipped_message

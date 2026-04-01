@@ -112,7 +112,7 @@ ru:
     import:
       title: "Импорт"
     jira:
-      title: "Импорт из Jira"
+      title: "Jira Migrator"
       description: "Используйте этот инструмент для импорта данных из Вашего экземпляра Jira. Вы можете настроить несколько узлов Jira и выбрать, что импортировать в каждом запуске импорта."
       errors:
         cannot_delete_with_imports: "Невозможно удалить хост Jira с существующими импортами"
@@ -123,8 +123,8 @@ ru:
         title: "Конфигурация Jira"
         new: "Новая конфигурация"
       banner:
-        title: "Ограниченный импорт"
-        description: "Этот инструмент импорта в настоящее время находится в стадии бета-тестирования и может импортировать только основные данные: проекты, проблемы (имя, название, описание, вложения), пользователей (имя, электронная почта, членство в проекте), статусы и типы. Он не может импортировать рабочие процессы, пользовательские поля, отношения между заданиями или разрешения. В настоящее время мы поддерживаем только Jira Server/Data Center версий 10.x и 11.x. Облачные экземпляры на данный момент не поддерживаются."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Имя"
@@ -160,7 +160,7 @@ ru:
       run:
         title: "Выполнение импорта"
         history: "История"
-        remove_error: "Импорт Jira нельзя удалить во время его выполнения"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Другая операция импорта Jira находится в процессе выполнения или ожидает рассмотрения. Пожалуйста, завершите или отмените его, прежде чем начинать новый импорт."
         blank:
           title: "Импорт еще не настроен"
@@ -1552,7 +1552,7 @@ ru:
         personal_access_token: "Персональный токен доступа"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Импорт из Jira"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Отобразить до"
       attachment:
@@ -3864,7 +3864,7 @@ ru:
   label_external_links: "Внешние ссылки"
   label_locale: "Язык и регион"
   label_jump_to_a_project: "Перейти к проекту..."
-  label_jira_import: "Импорт из Jira"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Ключевые слова"
   label_language_based: "Основанный на языке пользователя"
   label_last_activity: "Последняя активность"

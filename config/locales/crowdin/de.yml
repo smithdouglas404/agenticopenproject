@@ -112,7 +112,7 @@ de:
     import:
       title: "Import"
     jira:
-      title: "Jira Import"
+      title: "Jira Migrator"
       description: "Verwenden Sie dieses Tool, um Daten aus Ihrer Jira-Instanz zu importieren. Sie können mehrere Jira-Hosts konfigurieren und auswählen, was bei jedem Importlauf importiert werden soll."
       errors:
         cannot_delete_with_imports: "Jira-Hosts mit laufenden Importen können nicht gelöscht werden"
@@ -123,8 +123,8 @@ de:
         title: "Jira-Konfiguration"
         new: "Neue Konfiguration"
       banner:
-        title: "Begrenzter Import"
-        description: "Dieses Importtool befindet sich derzeit in der Betaphase und kann nur grundlegende Daten importieren: Projekte, Tickets (Name, Titel, Beschreibung, Anhänge), Nutzer (Name, E-Mail, Projektmitgliedschaft), Status und Typen. Es kann keine Workflows, benutzerdefinierten Felder, Ticketbeziehungen oder Berechtigungen importieren. Wir unterstützen derzeit nur die Jira Server/Data Center Versionen 10.x und 11.x. Cloud-Instanzen werden derzeit nicht unterstützt."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Name"
@@ -160,7 +160,7 @@ de:
       run:
         title: "Importlauf"
         history: "Historie"
-        remove_error: "Ein Jira-Import kann nicht entfernt werden während er läuft"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Ein anderer Jira-Importlauf wird gerade durchgeführt oder wartet auf die Überprüfung. Bitte schließen Sie ihn ab oder machen Sie ihn rückgängig, bevor Sie einen neuen Import starten."
         blank:
           title: "Noch keine Importläufe eingerichtet"
@@ -1510,7 +1510,7 @@ de:
         personal_access_token: "Persönlicher Zugangs-Token"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira Import"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Anzeigen bis"
       attachment:
@@ -3740,7 +3740,7 @@ de:
   label_external_links: "Externe Links"
   label_locale: "Sprache und Region"
   label_jump_to_a_project: "Zu einem Projekt springen..."
-  label_jira_import: "Jira Import"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Schlüsselwörter"
   label_language_based: "Sprachabhängig"
   label_last_activity: "Letzte Aktivität"

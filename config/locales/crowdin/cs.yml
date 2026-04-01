@@ -112,7 +112,7 @@ cs:
     import:
       title: "Import"
     jira:
-      title: "Jira import"
+      title: "Jira Migrator"
       description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
       errors:
         cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
@@ -123,8 +123,8 @@ cs:
         title: "Jira configuration"
         new: "New configuration"
       banner:
-        title: "Limited import"
-        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Name"
@@ -160,7 +160,7 @@ cs:
       run:
         title: "Import run"
         history: "History"
-        remove_error: "A Jira import cannot be removed while it is running"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
         blank:
           title: "No import runs set up yet"
@@ -426,7 +426,7 @@ cs:
           checkbox_label: Chápu, že se tím trvale změní všechny identifikátory pracovních balíčků
         success_banner: Úspěšně aktualizován formát identifikátoru pracovního balíčku.
         in_progress:
-          banner_message: Identifikátory projektů jsou v současné době aktualizovány na alfanumerické projektové identifikátory. To může chvíli trvat.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Default transitions"
@@ -1553,7 +1553,7 @@ cs:
         personal_access_token: "Personal access token"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira import"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Zobrazit do"
       attachment:
@@ -3388,7 +3388,7 @@ cs:
             line_1: Improved project home page with new widget for budgets and improved accessibility
             line_2: "Meetings: Meeting templates (Basic plan and higher)"
             line_3: Better transparency with project attribute comments
-            line_4: Vylepšení exportu PDF
+            line_4: Vylepšení PDF exportů
             line_5: Increased security for external links (Premium plan and higher)
             line_6: UI/UX vylepšení v modulu backlogů
             line_7: Harmonized custom field forms
@@ -3865,7 +3865,7 @@ cs:
   label_external_links: "Externí odkazy"
   label_locale: "Jazyk a region"
   label_jump_to_a_project: "Přejít na projekt..."
-  label_jira_import: "Jira import"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Klíčová slova"
   label_language_based: "Na základě jazyka uživatele"
   label_last_activity: "Poslední aktivita"
@@ -5103,12 +5103,12 @@ cs:
   setting_welcome_text: "Text uvítacího bloku"
   setting_welcome_title: "Název uvítacího bloku"
   setting_welcome_on_homescreen: "Zobrazit uvítací blok na domovské obrazovce"
-  setting_work_packages_identifier_numeric: Číselná posloupnost pro celou instanci (výchozí)
-  setting_work_packages_identifier_numeric_caption: >
-    Každý pracovní balíček dostane pořadové číslo začínající číslem 1 a zvyšující se s každým novým. Čísla jsou v rámci této instance jedinečná, takže zůstávají stejná, i když se pracovní balíčky přesouvají mezi projekty.
-  setting_work_packages_identifier_alphanumeric: Projektové alfanumerické identifikátory
-  setting_work_packages_identifier_alphanumeric_caption: >
-    Každý projekt má jedinečný identifikátor, který je předřazen ID pracovního balíčku. Pokud se pracovní balíček přesune do jiného projektu, vygeneruje se nový identifikátor, ale starý zůstává funkční.
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
+    Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
+    Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Výchozí režim zvýraznění"
   setting_work_package_list_default_highlighted_attributes: "Výchozí inline zvýrazněné atributy"
   setting_working_days: "Pracovní dny"
