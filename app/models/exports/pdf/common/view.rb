@@ -97,6 +97,7 @@ class Exports::PDF::Common::View
 
       document.set_font document.font(Exports::PDF::Common::View::default_font)
       document.fallback_fonts = fallback_fonts
+      apply_arabic_shaping!(document)
     end
   end
 
@@ -201,6 +202,49 @@ class Exports::PDF::Common::View
   end
 
   private
+
+  # Prepend Arabic text shaping onto the Prawn document instance.
+  # Prawn does not perform OpenType text shaping, so Arabic characters
+  # render as disconnected isolated glyphs. This intercepts all text
+  # methods to convert Arabic to Unicode Presentation Forms before rendering.
+  def apply_arabic_shaping!(document)
+    shaping = Module.new do
+      define_method(:draw_text) do |text, options = {}|
+        super(Exports::PDF::Common::ArabicShaping.process(text.to_s), options)
+      end
+
+      define_method(:text) do |string, options = {}|
+        super(Exports::PDF::Common::ArabicShaping.process(string.to_s), options)
+      end
+
+      define_method(:text_box) do |string, options = {}|
+        super(Exports::PDF::Common::ArabicShaping.process(string.to_s), options)
+      end
+
+      define_method(:formatted_text) do |array, options = {}|
+        shaped = array.map do |fragment|
+          if fragment.is_a?(Hash) && fragment[:text].is_a?(String)
+            fragment.merge(text: Exports::PDF::Common::ArabicShaping.process(fragment[:text]))
+          else
+            fragment
+          end
+        end
+        super(shaped, options)
+      end
+
+      define_method(:formatted_text_box) do |array, options = {}|
+        shaped = array.map do |fragment|
+          if fragment.is_a?(Hash) && fragment[:text].is_a?(String)
+            fragment.merge(text: Exports::PDF::Common::ArabicShaping.process(fragment[:text]))
+          else
+            fragment
+          end
+        end
+        super(shaped, options)
+      end
+    end
+    document.singleton_class.prepend(shaping)
+  end
 
   def font_base_path
     Rails.public_path.join("fonts")
