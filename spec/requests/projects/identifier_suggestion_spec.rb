@@ -71,6 +71,26 @@ RSpec.describe "GET /projects/identifier_suggestion", type: :rails_request do
         expect(response).to have_http_status(:unauthorized).or have_http_status(:redirect)
       end
     end
+
+    context "when user has no permissions" do
+      current_user { create(:user) }
+
+      it "returns forbidden" do
+        get "/projects/identifier_suggestion", params: { name: "Test" }, as: :json
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context "when user has add_subprojects permission on a project" do
+      let(:project) { create(:project, identifier: "PRNT") }
+
+      current_user { create(:user, member_with_permissions: { project => %i[add_subprojects] }) }
+
+      it "returns a suggestion" do
+        get "/projects/identifier_suggestion", params: { name: "Test" }, as: :json
+        expect(response).to have_http_status(:ok)
+      end
+    end
   end
 
   context "with numeric (legacy) identifiers", with_settings: { work_packages_identifier: "numeric" } do
