@@ -254,9 +254,7 @@ class MeetingAgendaItemsController < ApplicationController
     )
 
     if update_call.success?
-      render_success_flash_message_via_turbo_stream(
-        message: message_for_next_meeting_action(:text_agenda_item_moved_to_next_meeting, next_occurrence)
-      )
+      render_next_meeting_flash(:text_agenda_item_moved_to_next_meeting, next_occurrence)
       remove_item_via_turbo_stream(clear_slate: @meeting.agenda_items.empty?)
       update_header_component_via_turbo_stream
       respond_with_turbo_streams
@@ -273,9 +271,7 @@ class MeetingAgendaItemsController < ApplicationController
 
     if duplicate_call.success?
       close_dialog_via_turbo_stream("#duplicate-in-next-meeting-dialog")
-      render_success_flash_message_via_turbo_stream(
-        message: message_for_next_meeting_action(:text_agenda_item_duplicated_in_next_meeting, next_occurrence)
-      )
+      render_next_meeting_flash(:text_agenda_item_duplicated_in_next_meeting, next_occurrence)
       update_header_component_via_turbo_stream
       respond_with_turbo_streams
     else
@@ -406,8 +402,14 @@ class MeetingAgendaItemsController < ApplicationController
     @next_occurrence = next_occurrence&.meeting
   end
 
-  def message_for_next_meeting_action(base_key, next_occurrence)
-    I18n.t(base_key, date: format_date(next_occurrence.start_time))
+  def render_next_meeting_flash(base_key, next_occurrence)
+    flash = OpPrimer::FlashComponent.new(scheme: :success)
+    flash.with_content(I18n.t(base_key, date: format_date(next_occurrence.start_time)))
+    flash.with_action_button(tag: :a, href: project_meeting_path(next_occurrence.project, next_occurrence)) do
+      I18n.t(:label_view_meeting)
+    end
+
+    turbo_streams << flash.render_as_turbo_stream(view_context:, action: :flash)
   end
 
   def assign_drop_params # rubocop:disable Metrics/AbcSize
