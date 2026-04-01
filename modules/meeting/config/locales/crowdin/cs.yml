@@ -180,8 +180,8 @@ cs:
   label_recurring_meeting_series_end_now: "Ukončit sérii nyní"
   label_meeting_more:
     one: "Proběhne ještě jedna schůzka."
-    few: "There are %{count} more meetings."
-    many: "There are %{count} more meetings."
+    few: "Proběhne ještě %{count} dalších schůzek."
+    many: "Proběhne ještě %{count} dalších schůzek."
     other: "Proběhne ještě %{count} dalších schůzek."
   label_my_meetings: "Moje schůzky"
   label_all_meetings: "Všechny schůzky"
