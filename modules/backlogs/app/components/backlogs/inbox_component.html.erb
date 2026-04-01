@@ -83,7 +83,13 @@ See COPYRIGHT and LICENSE files for more details.
     <% if paginate? %>
       <% border_box.with_row(
            id: "inbox-more-row-#{project.id}", scheme: :neutral,
-           classes: "backlogs-inbox-component--show-more-row"
+           classes: "backlogs-inbox-component--show-more-row",
+           # This exists for the edge case of a user dragging a work package just below the fold.
+           # The dragged work package is then placed just after the last work package omitted
+           # by the placeholder.
+           data: {
+             draggable_id: id_of_last_omitted_in_middle
+           }
          ) do %>
         <%=
           render(
