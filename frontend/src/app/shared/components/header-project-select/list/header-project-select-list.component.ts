@@ -142,4 +142,8 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
   optionId(project:IProjectData):string {
     return `op-header-project-select-option-${project.id}`;
   }
+
+  optionLabelId(project:IProjectData):string {
+    return `op-header-project-select-option-label-${project.id}`;
+  }
 }

@@ -300,6 +300,15 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
   }
 
   onSearchFieldKeydown(event:KeyboardEvent, projects:IProjectData[]):void {
+    if (event.key === 'Tab' && !event.shiftKey && this.userIsNavigatingList && this.isCurrentProjectActive()) {
+      const focused = this.focusCurrentProjectRemoveButton();
+
+      if (focused) {
+        event.preventDefault();
+        return;
+      }
+    }
+
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       if (!this.userIsNavigatingList) {
         event.preventDefault();
@@ -317,6 +326,23 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
 
     this.searchableProjectListService.onKeydown(event, projects);
     this.updateSearchInputAccessibility();
+  }
+
+  private isCurrentProjectActive():boolean {
+    return this.activeProjectId !== null && this.currentProject.id === this.activeProjectId.toString();
+  }
+
+  private focusCurrentProjectRemoveButton():boolean {
+    const removeButton = document.querySelector(
+      `.spot-list--item-remove[data-project-id="${this.activeProjectId}"]`,
+    ) as HTMLElement | null;
+
+    if (!removeButton) {
+      return false;
+    }
+
+    removeButton.focus();
+    return true;
   }
 
   private getSearchInput():HTMLInputElement|null {
