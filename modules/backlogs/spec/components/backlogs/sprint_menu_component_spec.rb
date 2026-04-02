@@ -133,7 +133,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
       it "renders dividers between each menu section" do
         render_component
 
-        expect(menu_items).to eq(["Finish sprint", "Edit sprint", "Add work package", "Sprint board"])
+        expect(menu_items).to eq(["Finish sprint", "Edit sprint", "Add work package", "Sprint board", "Burndown chart"])
         expect(page).to have_list_item position: 3, role: "presentation"
         expect(page).to have_list_item position: 5, role: "presentation"
       end

@@ -28,36 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Backlogs
-  class SprintPageHeaderComponent < ApplicationComponent
-    include ApplicationHelper
-    include RbCommonHelper
+require "spec_helper"
+require_relative "../../support/pages/sprint_planning"
 
-    delegate :with_action_button, to: :@page_header
+RSpec.describe "Show burndown chart", :js, with_flag: { scrum_projects: true } do
+  include Redmine::I18n
 
-    def initialize(sprint:, project:)
-      super
+  shared_let(:project) { create(:project, enabled_module_names: %w(backlogs)) }
+  shared_let(:sprint) { create(:agile_sprint, status: "active", project:, start_date: 1.week.ago, finish_date: 1.week.from_now) }
 
-      @sprint  = sprint
-      @project = project
+  let(:planning_page) { Pages::SprintPlanning.new(project) }
+  let(:role) do
+    create(:project_role,
+           permissions: %i[view_work_packages view_sprints])
+  end
 
-      @page_header = Primer::OpenProject::PageHeader.new
-    end
+  current_user { create(:user, member_with_roles: { project => role }) }
 
-    def breadcrumb_items
-      [{ href: project_overview_path(@project), text: @project.name },
-       { href: backlogs_project_backlogs_path(@project), text: t(:label_backlogs) },
-       @sprint.name]
-    end
+  it "lists burndown in the menu by which the user can navigate to the burndown chart" do
+    planning_page.visit!
 
-    private
+    planning_page.click_in_sprint_menu(sprint, "Burndown chart")
 
-    def date_range
-      if @sprint.is_a?(Agile::Sprint)
-        [@sprint.start_date, @sprint.finish_date]
-      else
-        [@sprint.start_date, @sprint.effective_date]
-      end
-    end
+    expect(page)
+      .to have_content(sprint.name)
+    expect(page)
+      .to have_content "#{format_date(sprint.start_date)} – #{format_date(sprint.finish_date)}"
+    expect(page)
+      .to have_css "opce-burndown-chart"
   end
 end

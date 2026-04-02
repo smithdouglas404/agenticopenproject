@@ -74,6 +74,10 @@ module Backlogs
       sprint.in_planning? && (!sprint.date_range_set? || project_has_another_active_sprint?)
     end
 
+    def show_burndown_link?
+      sprint.active?
+    end
+
     def start_sprint_action_description
       return unless disable_start_sprint_action?
 

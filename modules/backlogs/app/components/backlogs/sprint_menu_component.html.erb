@@ -96,11 +96,22 @@ See COPYRIGHT and LICENSE files for more details.
     with_item_group(menu) do
       if show_task_board_link?
         menu.with_item(
-          label: t(".action_menu.task_board"),
+          label: t("backlogs.label_sprint_board"),
           tag: :a,
           href: backlogs_project_sprint_taskboard_path(project, sprint)
         ) do |item|
           item.with_leading_visual_icon(icon: :"op-view-cards")
+        end
+      end
+
+      if show_burndown_link?
+        menu.with_item(
+          label: t("backlogs.label_burndown_chart"),
+          tag: :a,
+          href: backlogs_project_sprint_burndown_chart_path(project, sprint),
+          disabled: !sprint.date_range_set?
+        ) do |item|
+          item.with_leading_visual_icon(icon: :graph)
         end
       end
     end
