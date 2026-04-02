@@ -23,29 +23,25 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  namespace :admin do
-    namespace :settings do
-      resources :wiki_providers, controller: "/wikis/admin/wiki_providers", except: [:show] do
-        member do
-          get :confirm_destroy
-          get :edit_general_info
-        end
-      end
+module Wikis::Admin
+  class DestroyConfirmationDialogComponent < ApplicationComponent
+    include OpTurbo::Streamable
+
+    def initialize(wiki_provider:)
+      super
+      @wiki_provider = wiki_provider
     end
-  end
-  resources :projects, only: %i[] do
-    resources :work_packages, only: %i[] do
-      resources :wikis, only: %i[] do
-        collection do
-          resources :tab, only: %i[index], controller: "work_package_wikis_tab", as: "wikis_tab"
-        end
-      end
+
+    def form_arguments
+      {
+        action: url_helpers.admin_settings_wiki_provider_path(@wiki_provider),
+        method: :delete
+      }
     end
   end
 end

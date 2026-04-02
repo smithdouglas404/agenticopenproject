@@ -23,29 +23,24 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  namespace :admin do
-    namespace :settings do
-      resources :wiki_providers, controller: "/wikis/admin/wiki_providers", except: [:show] do
-        member do
-          get :confirm_destroy
-          get :edit_general_info
-        end
-      end
-    end
-  end
-  resources :projects, only: %i[] do
-    resources :work_packages, only: %i[] do
-      resources :wikis, only: %i[] do
-        collection do
-          resources :tab, only: %i[index], controller: "work_package_wikis_tab", as: "wikis_tab"
-        end
-      end
+module Wikis::Admin
+  class UrlInputForm < ApplicationForm
+    form do |f|
+      f.text_field(
+        name: :url,
+        label: I18n.t("activerecord.attributes.wikis/xwiki_provider.url"),
+        required: true,
+        type: :url,
+        pattern: ".{1,255}",
+        placeholder: "https://xwiki.my-organisation.com",
+        caption: I18n.t("wikis.admin.wiki_providers.url_caption"),
+        input_width: :large
+      )
     end
   end
 end
