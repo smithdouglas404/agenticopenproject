@@ -189,6 +189,7 @@ de:
   label_notify: "Zur Einsicht verschicken"
   label_icalendar: "iCalendar senden"
   label_icalendar_download: "iCalendar-Termin herunterladen"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Terminserie ansehen"
   label_meeting_series: "Terminserien"
   label_version: "Version"

@@ -47,7 +47,7 @@ RSpec.describe Projects::Identifier do
   describe "identifier normalization" do
     subject { Project.new }
 
-    it { is_expected.to normalize(:identifier).from("my\n\x00project\t").to("myproject") }
+    it_behaves_like "strips invisible characters", :identifier
   end
 
   describe "url identifier", with_settings: { work_packages_identifier: "classic" } do

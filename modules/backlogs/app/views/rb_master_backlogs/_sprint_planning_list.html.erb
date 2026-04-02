@@ -29,14 +29,16 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= turbo_frame_tag "backlogs_container", refresh: :morph, class: "op-backlogs-page" do %>
   <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop">
-    <div id="owner_backlogs_container" class="op-sprint-planning-lists">
+    <div id="owner_backlogs_container" class="op-sprint-planning-lists"
+         data-generic-drag-and-drop-target="scrollContainer">
       <%= render Backlogs::InboxComponent.new(
             work_packages: @inbox_work_packages,
             project: @project,
             show_all: params[:all].present?
           ) %>
     </div>
-    <div id="sprint_backlogs_container" class="op-sprint-planning-lists">
+    <div id="sprint_backlogs_container" class="op-sprint-planning-lists"
+         data-generic-drag-and-drop-target="scrollContainer">
       <%=
         render(Primer::Beta::Subhead.new(hide_border: true, pb: 0)) do |head|
           head.with_heading(tag: :h3, size: :medium, font_weight: :bold) { Agile::Sprint.human_model_name.pluralize }

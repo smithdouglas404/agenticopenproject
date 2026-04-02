@@ -76,7 +76,8 @@ module Import
     end
 
     def import_project(jira_project, _custom_field_list)
-      identifier = jira_project.payload.fetch("key").downcase
+      project_key = jira_project.payload.fetch("key")
+      identifier = Setting::WorkPackageIdentifier.semantic? ? project_key.upcase : project_key.downcase
       service_call = Projects::CreateService
                        .new(user: @user, contract_class: EmptyContract)
                        .call(
@@ -100,9 +101,8 @@ module Import
         taken_identifier = error.options[:value]
         project = Project.find_by!(identifier: taken_identifier)
         raise "You are trying to import a project with already used " \
-              "identifier: #{taken_identifier}. Existing project: #{project}."
+                "identifier: #{taken_identifier}. Existing project: #{project}."
       end
-
       raise service_call.message
     end
 

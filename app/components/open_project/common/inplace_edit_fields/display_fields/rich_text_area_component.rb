@@ -49,7 +49,7 @@ module OpenProject
                                                                        field_value,
                                                                        lines: 3)
                   else
-                    format_text(field_value)
+                    format_text(field_value, object: model)
                   end
                 else
                   t("placeholders.default")

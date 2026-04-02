@@ -189,6 +189,7 @@ nl:
   label_notify: "Verzenden voor revisie"
   label_icalendar: "Verstuur iCalendar"
   label_icalendar_download: "Download iCalendar event"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Bekijk vergaderreeksen"
   label_meeting_series: "Vergaderreeksen"
   label_version: "Versie"

@@ -249,7 +249,8 @@ Rails.application.reloader.to_prepare do
                      require: :member
 
       map.permission :add_subprojects,
-                     { projects: %i[new create] },
+                     { projects: %i[new create],
+                       "projects/identifier_suggestion": %i[show] },
                      permissible_on: :project,
                      require: :member
 
