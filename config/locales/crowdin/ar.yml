@@ -26,91 +26,91 @@ ar:
       no_results_title_text: ولم يكن هناك أي نشاط للمشروع ضمن هذا الإطار الزمني.
     work_packages:
       activity_tab:
-        no_results_title_text: No activity to display
-        no_results_description_text: 'Choose "Show everything" to show all activity and comments'
-        label_activity_show_all: "Show everything"
-        label_activity_show_only_comments: "Show comments only"
-        label_activity_show_only_changes: "Show changes only"
-        label_sort_asc: "Newest at the bottom"
-        label_sort_desc: "Newest on top"
+        no_results_title_text: لا يوجد نشاط للعرض
+        no_results_description_text: 'اختر "عرض الكل" لعرض جميع الأنشطة والتعليقات'
+        label_activity_show_all: "عرض الكل"
+        label_activity_show_only_comments: "عرض التعليقات فقط"
+        label_activity_show_only_changes: "عرض التغييرات فقط"
+        label_sort_asc: "الأحدث في الأسفل"
+        label_sort_desc: "الأحدث في الأعلى"
         label_type_to_comment: "أضف تعليقًا. اكتب @ لإشعار الأشخاص."
-        label_submit_comment: "Submit comment"
-        label_who: Who?
-        changed_on: "changed on"
-        created_on: "created this on"
-        changed: "changed"
-        created: "created"
-        commented: "commented"
-        internal_comment: Internal comment
-        internal_journal: Internal comments are visible to a limited group of members.
-        unsaved_changes_confirmation_message: You have unsaved changes. Are you sure you want to close the editor?
+        label_submit_comment: "إرسال تعليق"
+        label_who: من؟
+        changed_on: "تم التغيير في"
+        created_on: "تم الإنشاء في"
+        changed: "تم التغيير"
+        created: "تم الإنشاء"
+        commented: "علّق"
+        internal_comment: تعليق داخلي
+        internal_journal: التعليقات الداخلية مرئية لمجموعة محدودة من الأعضاء.
+        unsaved_changes_confirmation_message: لديك تغييرات غير محفوظة. هل أنت متأكد أنك تريد إغلاق المحرر؟
         internal_comment_confirmation:
-          title: "Make this comment public?"
-          heading: "Make this comment public?"
-          description: "Your comment will be visible to anyone who can access this work package. Are you sure you want to do this?"
-          confirm_button_text: "Make public"
+          title: "هل تريد جعل هذا التعليق عامًا؟"
+          heading: "هل تريد جعل هذا التعليق عامًا؟"
+          description: "سيكون تعليقك مرئيًا لأي شخص يمكنه الوصول إلى حزمة العمل هذه. هل أنت متأكد أنك تريد القيام بذلك؟"
+          confirm_button_text: "جعله عامًا"
   admin:
     plugins:
-      no_results_title_text: There are currently no plugins installed.
-      no_results_content_text: See our integrations and plugins page for more information.
+      no_results_title_text: لا توجد إضافات مثبتة حاليًا.
+      no_results_content_text: راجع صفحة التكاملات والإضافات لمزيد من المعلومات.
     custom_styles:
       color_theme: "لون السمة"
       color_theme_custom: "(تخصيص)"
-      tab_interface: "Interface"
-      tab_branding: "Branding"
-      tab_pdf_export_styles: "PDF export styles"
-      tab_pdf_export_font: "PDF export font"
+      tab_interface: "الواجهة"
+      tab_branding: "العلامة التجارية"
+      tab_pdf_export_styles: "أنماط تصدير PDF"
+      tab_pdf_export_font: "خط تصدير PDF"
       fonts:
-        file_too_large: "is too large (maximum size is %{count} MB)."
-        file_is_invalid: "is not a valid TTF font file."
+        file_too_large: "كبير جدًا (الحجم الأقصى هو %{count} ميجابايت)."
+        file_is_invalid: "ليس ملف خط TTF صالحًا."
       colors:
-        primary-button-color: "Primary button"
-        accent-color: "Accent"
+        primary-button-color: "الزر الرئيسي"
+        accent-color: "اللون المميز"
         header-bg-color: "خلفية الترويسة"
         main-menu-bg-color: "خلفية القائمة الرئيسية"
         main-menu-bg-selected-background: "القائمة الرئيسية عند تحديد"
       custom_colors: "تخصيص الألوان"
       manage_colors: "تعديل خيارات تحديد اللون"
       instructions:
-        primary-button-color: "Strong accent color, used for the most important button on a screen."
-        accent-color: "Color for links and other decently highlighted elements."
+        primary-button-color: "لون مميز قوي، يُستخدم لأهم زر على الشاشة."
+        accent-color: "لون الروابط والعناصر المميزة الأخرى."
         main-menu-bg-color: "لون خلفية القائمة اليسرى "
       theme_warning: Changing the theme will overwrite you custom style. The design will then be lost. Are you sure you want to continue?
     enterprise:
       delete_dialog:
-        title: "Delete enterprise token"
-        heading: "Delete this enterprise token?"
-        confirmation: "Are you sure you want to delete this Enterprise edition support token?"
+        title: "حذف رمز المؤسسة"
+        heading: "هل تريد حذف رمز المؤسسة هذا؟"
+        confirmation: "هل أنت متأكد أنك تريد حذف رمز دعم إصدار المؤسسة؟"
       create_dialog:
-        title: "Add Enterprise token"
-        type_token_text: "Your Enterprise token text"
-        token_placeholder: "Paste your Enterprise edition support token here"
+        title: "إضافة رمز المؤسسة"
+        type_token_text: "نص رمز المؤسسة الخاص بك"
+        token_placeholder: "الصق رمز دعم إصدار المؤسسة هنا"
         token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
-      add_token: "Upload an Enterprise edition support token"
+      add_token: "رفع رمز دعم إصدار المؤسسة"
       replace_token: "استبدال رمز الدعم الحالي الخاص بك"
-      order: "Order Enterprise on-premises edition"
-      paste: "Paste your Enterprise edition support token"
-      required_for_feature: "This add-on is only available with an active Enterprise edition support token."
-      enterprise_link: "For more information, click here."
-      start_trial: "Start free trial"
+      order: "طلب إصدار المؤسسة المحلي"
+      paste: "الصق رمز دعم إصدار المؤسسة"
+      required_for_feature: "هذه الإضافة متاحة فقط مع رمز دعم إصدار المؤسسة النشط."
+      enterprise_link: "لمزيد من المعلومات، انقر هنا."
+      start_trial: "بدء تجربة مجانية"
       book_now: "احجز الآن"
-      get_quote: "Get a quote"
+      get_quote: "احصل على عرض سعر"
       buttons:
         upgrade: "الترقية الآن"
-        contact: "Contact us for a demo"
+        contact: "اتصل بنا للحصول على عرض توضيحي"
       status:
-        expired: "Expired"
-        expiring_soon: "Expiring soon"
-        in_grace_period: "In grace period"
-        invalid_domain: "Invalid domain"
-        not_active: "Not active"
-        trial: "Trial"
+        expired: "منتهي الصلاحية"
+        expiring_soon: "ينتهي قريبًا"
+        in_grace_period: "في فترة السماح"
+        invalid_domain: "نطاق غير صالح"
+        not_active: "غير نشط"
+        trial: "تجريبي"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
       caption: >
         User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
     import:
-      title: "Import"
+      title: "استيراد"
     jira:
       title: "Jira Migrator"
       description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
@@ -127,7 +127,7 @@ ar:
         description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
-          name: "Name"
+          name: "الاسم"
           url: "Jira Server/Data Center URL"
           personal_access_token: "Personal Access Token"
         button_add: "Add configuration"
@@ -153,13 +153,13 @@ ar:
         parse_error: "Failed to parse Jira API response: %{message}"
         api_error: "Jira API returned error status %{status}"
       columns:
-        projects: "Projects"
+        projects: "المشاريع"
         last_change: "Last change"
         added: "Added"
         label_ago: "%{amount} ago"
       run:
         title: "Import run"
-        history: "History"
+        history: "السجل"
         remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
         blank:
@@ -170,7 +170,7 @@ ar:
           button_import_run: "Import run"
           button_edit_configuration: "Edit configuration"
         status:
-          initial: "Start"
+          initial: "بدء"
           instance_meta_fetching: "Fetching meta data"
           instance_meta_error: "Error fetching meta data"
           instance_meta_done: "Meta data fetched"
@@ -179,7 +179,7 @@ ar:
           projects_meta_fetching: "Fetching project data"
           projects_meta_error: "Error fetching project data"
           projects_meta_done: "Data gathered"
-          importing: "In progress"
+          importing: "قيد التنفيذ"
           import_error: "Error during import"
           imported: "Review mode"
           reverting: "Reverting"
@@ -191,7 +191,7 @@ ar:
           finalizing_error: "Error during finalizing"
           finalizing_done: "Completed"
         wizard:
-          button_retry: "Retry"
+          button_retry: "إعادة المحاولة"
           parts:
             projects:
               zero: "%{count} projects"
@@ -264,7 +264,7 @@ ar:
               label_available_data: "Available data"
               label_not_available_data: "Not available for import"
               button_select_projects: "Select projects to import"
-              button_continue: "Continue"
+              button_continue: "متابعة"
               label_import: "Select which projects you would like to import."
               button_select: "Select projects"
               label_selected_data: "Selected data for import"
@@ -272,7 +272,7 @@ ar:
               elements:
                 relations: "Relations between issues"
                 workflows: "Project-level workflows"
-                users: "Users"
+                users: "المستخدمون"
                 sprints: "Sprints"
                 schemes: "Schemas"
                 permissions: "User, group and project permissions"
@@ -357,7 +357,7 @@ ar:
       created_token_dialog_component:
         title: "Token created"
         heading: "A token has been generated"
-        label_token: "Token"
+        label_token: "الرمز"
         one_time_hint: "This is the only time you will see this token. Make sure to copy it now."
       delete_scim_client_dialog_component:
         title: "Delete SCIM client"
@@ -389,7 +389,7 @@ ar:
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
-        label_add_token: "Token"
+        label_add_token: "الرمز"
         label_aria_add_token: "Add token"
       token_table_component:
         blank_slate:
@@ -410,7 +410,7 @@ ar:
           existing_identifiers_notice: >
             Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
-          label_project: Project
+          label_project: المشروع
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
@@ -450,7 +450,7 @@ ar:
         description: "Configure status transitions for each work package type."
         type_filter:
           label: "Filter by type name…"
-      status_button: "Status"
+      status_button: "الحالة"
       statuses_dialog:
         title: "Statuses"
         label: "Statuses enabled for this type"
@@ -465,7 +465,7 @@ ar:
           many: "Remove %{count} statuses?"
           other: "Remove %{count} statuses?"
         description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
-        confirm: "Remove"
+        confirm: "إزالة"
       leave_confirmation:
         title: "Save changes before continuing?"
         description: "You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?"
@@ -587,7 +587,7 @@ ar:
       هل أنت متأكد أنك تريد حذف الألوان التالية؟ لن يتم حذف أنواع استخدام هذا اللون.
   custom_actions:
     actions:
-      name: "Actions"
+      name: "إجراءات"
       add: "إضافة إجراء"
       assigned_to:
         executing_user_value: "(Assign to executing user)"
@@ -705,9 +705,9 @@ ar:
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   pagination:
     label: "Pagination"
-    prev: "Previous"
+    prev: "السابق"
     prev_page: "Previous Page"
-    next: "Next"
+    next: "التالي"
     next_page: "Next Page"
     page: "Page %{number}"
     page_with_more: "Page %{number}..."
@@ -756,10 +756,10 @@ ar:
       uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "مفعّل"
       depth: "Depth"
       item: "Item"
-      label: "Label"
+      label: "التسمية"
       weight: "Weight"
       short: "Short name"
       parent: "الجذر"
@@ -773,7 +773,7 @@ ar:
     overwritten_tabs:
       all: "الجميع"
       messages: "المنتدى"
-      wiki_pages: "Wiki"
+      wiki_pages: "ويكي"
   groups:
     edit:
       synchronized_groups: "Synchronized groups"
@@ -857,7 +857,7 @@ ar:
         text: "This action will not delete any project the list contains. Are you sure you want to delete this project list?"
     settings:
       header_details: Basic details
-      header_status: Status
+      header_status: الحالة
       header_relations: Project relations
       button_update_details: Update details
       button_update_status_description: Update status description
@@ -889,7 +889,7 @@ ar:
         program_template_caption: "Select a template program to be used as the default for new subitems of this type."
         no_template: "No predefined template"
       template:
-        menu_title: "Template"
+        menu_title: "قالب"
         title: "Template settings"
         enable_failed: "Failed to enable template mode."
         members:
@@ -997,7 +997,7 @@ ar:
     invite_by_mail: "Send invite to %{mail}"
     send_invite_to: "Send invite to"
     columns:
-      shared: "Shared"
+      shared: "مشترك"
     filters:
       all_shares: "All shares"
     menu:
@@ -1143,7 +1143,7 @@ ar:
       no_results_title_text: هذا المستخدم حالياً ليس عضواً في المشروع.
     open_profile: "Open profile"
     invite_user_modal:
-      invite: "Invite"
+      invite: "دعوة"
       title:
         invite: "دعوة مستخدم"
         invite_to_project: "Invite %{type} to %{project}"
@@ -1219,7 +1219,7 @@ ar:
       form:
         title: "Plan a future work schedule"
         title_current: "Edit current work schedule"
-        start_date: "Start date"
+        start_date: "تاريخ البدء"
         start_date_caption: "Select the date from when the new work schedule will be effective."
         work_days: "Work days"
         working_hours_label: "Working hours"
@@ -1240,7 +1240,7 @@ ar:
         title_future_dates: "Future dates"
       table:
         mobile_title: "Working schedules"
-        start_date: "Start date"
+        start_date: "تاريخ البدء"
         work_days: "Work days"
         work_hours: "Work hours"
         availability_factor: "Availability factor"
@@ -1585,7 +1585,7 @@ ar:
         identifier: "Identifier"
         work_package: "Work package"
       jira_import:
-        projects: "Projects"
+        projects: "المشاريع"
       "import/jira":
         name: "Jira instance name"
         url: "Jira instance URL"
@@ -1620,7 +1620,7 @@ ar:
       comment:
         commented: "علّق" #an object that this comment belongs to
       custom_action:
-        actions: "Actions"
+        actions: "إجراءات"
       custom_field:
         allow_non_open_versions: "Allow non-open versions"
         default_value: "القيمة الافتراضية"
@@ -1688,9 +1688,9 @@ ar:
         port: "منفذ"
         tls_certificate_string: "LDAP server SSL certificate"
       mcp_configuration:
-        enabled: Enabled
-        title: Title
-        description: Description
+        enabled: مفعّل
+        title: العنوان
+        description: الوصف
       member:
         roles: "دور"
       notification:
@@ -1714,7 +1714,7 @@ ar:
           true: "public"
           false: "private"
         queries: "الاستفسارات"
-        status_code: "Status"
+        status_code: "الحالة"
         status_explanation: "Status description"
         status_codes:
           not_started: "Not started"
@@ -1729,7 +1729,7 @@ ar:
         project_creation_wizard_status_when_submitted: "Status when submitted"
         project_creation_wizard_work_package_comment: "Work package comment"
         project_creation_wizard_work_package_type: "Work package type"
-        template: "Template"
+        template: "قالب"
         templated: "Template project"
         templated_value:
           true: "marked as template"
@@ -1748,7 +1748,7 @@ ar:
         duration: "المدّة"
         start_date: "تاريخ البدء"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "تاريخ الانتهاء"
       project/phase_definition:
         name: "الاسم"
         color: "اللون"
@@ -1775,8 +1775,8 @@ ar:
         highlighting_mode: "Highlight mode"
         display_representation: "Display mode"
         show_hierarchies: "Display mode"
-        starred: "Favorite"
-        hidden: "Hidden"
+        starred: "مفضلة"
+        hidden: "مخفي"
         manual_sorting: "Manual sort order"
         ordered_work_packages: "Work packages order"
         include_subprojects: "Include subprojects"
@@ -1792,7 +1792,7 @@ ar:
         remind_at_date: "التاريخ"
         remind_at_time: "الوقت"
       reminder_notification:
-        notification: "Notification"
+        notification: "إشعار"
       repository:
         url: "الرابط"
       role:
@@ -1826,7 +1826,7 @@ ar:
         patterns: "Patterns"
       remote_identity:
         auth_source: "Auth Source"
-        integration: "Integration"
+        integration: "تكامل"
         user: "المستخدم"
       user:
         admin: "مدير النظام"
@@ -1880,7 +1880,7 @@ ar:
         principal_type: "Invitation type"
         id_or_email: "Name or email address"
       user_non_working_time:
-        start_date: "Start date"
+        start_date: "تاريخ البدء"
         end_date: "End date"
       user_working_hours:
         valid_from: "Valid from"
@@ -1902,7 +1902,7 @@ ar:
         shared_hours: "Work hours"
         days: "Working days"
       version:
-        effective_date: "Finish date"
+        effective_date: "تاريخ الانتهاء"
         sharing: "مشاركة"
       wiki_content:
         text: "النص"
@@ -1918,7 +1918,7 @@ ar:
         derived_done_ratio: "Total % complete"
         derived_remaining_hours: "Total remaining work"
         derived_remaining_time: "Total remaining work"
-        done_ratio: "% Complete"
+        done_ratio: "% مكتمل"
         duration: "المدّة"
         end_insertion: "نهاية الإدراج"
         end_deletion: "نهاية الحذف"
@@ -1933,11 +1933,11 @@ ar:
         parent_issue: "الجذر"
         parent_work_package: "الجذر"
         priority: "الأولوية"
-        progress: "% Complete"
+        progress: "% مكتمل"
         readonly: "Read only"
         remaining_hours: "Remaining work"
         remaining_time: "Remaining work"
-        shared_with_users: "Shared with"
+        shared_with_users: "مشترك مع"
         schedule_manually: "Manual scheduling"
         spent_hours: "الوقت المستهلك"
         spent_time: "الوقت المستهلك"
@@ -2433,12 +2433,12 @@ ar:
       member: "عضو"
       news: "الأخبار"
       notification:
-        zero: "Notifications"
-        one: "Notification"
-        two: "Notifications"
-        few: "Notifications"
-        many: "Notifications"
-        other: "Notifications"
+        zero: "الإشعارات"
+        one: "إشعار"
+        two: "الإشعارات"
+        few: "الإشعارات"
+        many: "الإشعارات"
+        other: "الإشعارات"
       placeholder_user: "Placeholder user"
       project:
         zero: "المشاريع"
@@ -2455,7 +2455,7 @@ ar:
         many: "Project lists"
         other: "Project lists"
       query: "استعلام مخصص"
-      reminder: "Reminder"
+      reminder: "تذكير"
       role:
         zero: "دور"
         one: "الدور"
@@ -2494,7 +2494,7 @@ ar:
         other: "RSS tokens"
       type:
         zero: "Types"
-        one: "Type"
+        one: "النوع"
         two: "Types"
         few: "Types"
         many: "Types"
@@ -2503,7 +2503,7 @@ ar:
       version: "الإصدار"
       workflow: "سير العمل"
       work_package: "مجموعة العمل"
-      wiki: "Wiki"
+      wiki: "ويكي"
       wiki_page: "صفحة وِيكيبيديا"
   errors:
     header_invalid_fields:
@@ -2568,7 +2568,7 @@ ar:
       project_details: "تفاصيل المشروع"
       subproject: "Include subprojects"
       time_entry: "الوقت المستهلك"
-      wiki_edit: "Wiki"
+      wiki_edit: "ويكي"
       work_package: "مجموعات العمل"
     project_phase:
       activated: "activated"
@@ -2613,7 +2613,7 @@ ar:
     direction: "Direction"
     display_sums: "عرض المبالغ"
     domain: "Domain"
-    due_date: "Finish date"
+    due_date: "تاريخ الانتهاء"
     estimated_hours: "Work"
     estimated_time: "Work"
     email: "البريد الإكتروني"
@@ -2634,7 +2634,7 @@ ar:
     journal: "يوميات"
     journal_notes: "تعليق"
     lastname: "الاسم الأخير"
-    login: "Username"
+    login: "اسم المستخدم"
     lock_version: "Lock version"
     mail: "البريد الإكتروني"
     name: "الاسم"
@@ -2663,7 +2663,7 @@ ar:
     subject: "الموضوع"
     slug: "Slug"
     summary: "مُلخّص"
-    template: "Template"
+    template: "قالب"
     time_zone: "المنطقة الزمنية"
     text: "النص"
     title: "العنوان"
@@ -2674,10 +2674,10 @@ ar:
     updated_on: "تم التحديث بتاريخ"
     uploader: "Uploader"
     user: "المستخدم"
-    username: "Username"
+    username: "اسم المستخدم"
     unit: "الوحدة"
     value: "القيمة"
-    values: "Values"
+    values: "القيم"
     version: "الإصدار"
     visible: "مرئي"
     work_package: "مجموعة العمل"
@@ -2710,7 +2710,7 @@ ar:
       token_cooldown: The backup token will be valid in %{hours} hours.
       backup_pending: There is already a backup pending.
       limit_reached: You can only do %{limit} backups per day.
-  button_actions: "Actions"
+  button_actions: "إجراءات"
   button_add: "أَضِفْ"
   button_add_comment: "أضِف تعليقًا"
   button_add_item_above: "Add item above"
@@ -2720,7 +2720,7 @@ ar:
   button_add_watcher: "إضافة مراقب"
   button_annotate: "كتابة تعليق"
   button_apply: "تطبيق"
-  button_apply_changes: "Apply changes"
+  button_apply_changes: "تطبيق التغييرات"
   button_archive: "الأرشيف"
   button_back: "الرجوع للخلف"
   button_cancel: "إلغاء"
@@ -2729,33 +2729,33 @@ ar:
   button_change_password: "تغيير كلمة المرور"
   button_check_all: "اختر الكل"
   button_clear: "إزالة"
-  button_click_to_reveal: "Click to reveal"
+  button_click_to_reveal: "انقر للكشف"
   button_close: "أغلِق"
   button_collapse_all: "طَيْ الجميع"
-  button_confirm: "Confirm"
+  button_confirm: "تأكيد"
   button_configure: "تكوين"
-  button_continue: "Continue"
-  button_complete: "Complete"
+  button_continue: "متابعة"
+  button_complete: "إكمال"
   button_copy: "انسخ"
   button_copy_to_clipboard: "نسخ إلى الحافظة"
-  button_copy_link_to_clipboard: "Copy link to clipboard"
+  button_copy_link_to_clipboard: "نسخ الرابط إلى الحافظة"
   button_create: "إنشاء"
   button_create_and_continue: "إنشاء ومواصلة"
-  button_decline: "Decline"
+  button_decline: "رفض"
   button_delete: "احذف"
-  button_delete_permanently: "Delete permanently"
+  button_delete_permanently: "حذف نهائيًا"
   button_delete_watcher: "حذف المراقب %{name}"
   button_download: "تحميل"
-  button_disable: "Disable"
+  button_disable: "تعطيل"
   button_duplicate: "كرِّر"
-  button_duplicate_and_follow: "Duplicate and follow"
+  button_duplicate_and_follow: "تكرار ومتابعة"
   button_edit: "تعديل"
-  button_enable: "Enable"
+  button_enable: "تفعيل"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "توسيع الجميع"
   button_favorite: "Add to favorites"
   button_filter: "فلترة"
-  button_finish_setup: "Finish setup"
+  button_finish_setup: "إنهاء الإعداد"
   button_generate: "أنتج"
   button_list: "القائمة"
   button_lock: "إغلاق"
@@ -2765,10 +2765,10 @@ ar:
   button_print: "طباعة"
   button_quote: "اقتباس"
   button_remove: إزالة
-  button_remove_permanently: "Remove permanently"
-  button_remove_reminder: "Remove reminder"
+  button_remove_permanently: "إزالة نهائيًا"
+  button_remove_reminder: "إزالة التذكير"
   button_rename: "اعادة التّسمية"
-  button_replace: "Replace"
+  button_replace: "استبدال"
   button_revoke: "Revoke"
   button_reply: "رد"
   button_reset: "إعادة تعيين"
@@ -2776,8 +2776,8 @@ ar:
   button_save: "حفظ"
   button_save_as: "احفظ بشكل"
   button_save_back: "حفظ والعودة"
-  button_select: "Select"
-  button_set_reminder: "Set reminder"
+  button_select: "تحديد"
+  button_set_reminder: "تعيين تذكير"
   button_show: "إظهار"
   button_sort: "فرز"
   button_submit: "إرسال"
@@ -2790,7 +2790,7 @@ ar:
   button_update: "التحديث"
   button_upgrade: "Upgrade"
   button_buy_now: "Buy now"
-  button_upload: "Upload"
+  button_upload: "رفع"
   button_view: "عرض"
   button_watch: "مشاهدة"
   button_manage_menu_entry: "تكوين عنصر القائمة"
@@ -2805,7 +2805,7 @@ ar:
   button_revoke_access: "Revoke access"
   button_revoke_all: "Revoke all"
   button_revoke_only: "Revoke only %{shared_role_name}"
-  button_publish: "Make public"
+  button_publish: "جعله عامًا"
   button_unpublish: "Make private"
   consent:
     checkbox_label: I have noted and do consent to the above.
@@ -3056,7 +3056,7 @@ ar:
         other: "ساعه"
       day:
         zero: "أيام"
-        one: "day"
+        one: "يوم"
         two: "أيام"
         few: "أيام"
         many: "أيام"
@@ -3246,8 +3246,8 @@ ar:
       disabled: "Disabled."
       enabled: "Enabled."
     button:
-      disabled: "Enable"
-      enabled: "Disable"
+      disabled: "تفعيل"
+      enabled: "تعطيل"
   enumeration_activities: "Time tracking activities"
   enumeration_work_package_priorities: "أولويات مجموعة العمل"
   enumeration_reported_project_statuses: "Reported status"
@@ -3355,13 +3355,13 @@ ar:
           label: "PDF export type"
           options:
             table:
-              label: "Table"
+              label: "جدول"
               caption: "Export the work packages list in a table with the desired columns."
             report:
               label: "تقرير"
               caption: "Export the work package on a detailed report of all work packages in the list."
             gantt:
-              label: "Gantt chart"
+              label: "مخطط جانت"
               caption: "Export the work packages list in a Gantt diagram view."
         include_images:
           label: "Include images"
@@ -3437,7 +3437,7 @@ ar:
       title: Generate PDF
       submit: تحميل
       templates:
-        label: "Template"
+        label: "قالب"
         none_enabled: "No template has been enabled for this work package type"
       footer_center:
         label: Footer text
@@ -3468,7 +3468,7 @@ ar:
     filter_mode:
       all: "الجميع"
       label: "Filter mode"
-      selected: "Selected"
+      selected: "محدد"
     include_sub_items: "Include sub-items"
     no_results_text: "No results"
   toggle_switch:
@@ -3621,7 +3621,7 @@ ar:
       token/api:
         blank_description: "There is no API token yet. You can create one using the button below."
         blank_title: "No API token"
-        title: "API"
+        title: "واجهة برمجة التطبيقات"
         table_title: "API tokens"
         text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
         static_token_name: "API token"
@@ -3668,13 +3668,13 @@ ar:
     reasons:
       assigned: "المُسند إليه"
       dateAlert: "Date alert"
-      mentioned: "Mentioned"
+      mentioned: "تم ذكره"
       responsible: "Accountable"
-      shared: "Shared"
+      shared: "مشترك"
       watched: "المشاهد"
-      reminder: "Reminder"
+      reminder: "تذكير"
     facets:
-      unread: "Unread"
+      unread: "غير مقروء"
       unread_title: "Show unread"
       all: "الجميع"
       all_title: "إظهار الجميع"
@@ -3727,7 +3727,7 @@ ar:
   label_app_modules: "%{app_title} modules"
   label_api_access_key: "مفتاح الوصول إلى API"
   label_api_access_key_created_on: "مفتاح الوصول إلى API تم إنشاؤها %{value} قبل ذلك"
-  label_api_access_key_type: "API"
+  label_api_access_key_type: "واجهة برمجة التطبيقات"
   label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
@@ -3735,7 +3735,7 @@ ar:
   label_ical_access_key_generation_hint: "Automatically generated when subscribing to a calendar."
   label_ical_access_key_latest: "latest"
   label_ical_access_key_revoke: "Revoke"
-  label_integrations: "Integrations"
+  label_integrations: "التكاملات"
   label_add_column: "Add column"
   label_applied_status: "الحالة المطبقة"
   label_archive_project: "Archive project"
@@ -3760,7 +3760,7 @@ ar:
   label_available_project_work_package_types: "Available work package types"
   label_available_projects: "Available projects"
   label_api_doc: "توثيق API"
-  label_backup: "Backup"
+  label_backup: "نسخ احتياطي"
   label_backup_code: "Backup code"
   label_basic_details: "Basic details"
   label_between: "بين"
@@ -3869,7 +3869,7 @@ ar:
   label_diff_side_by_side: "جنبًا إلى جنب"
   label_digital_accessibility: "Digital accessibility (DE)"
   label_disabled: "غير مُفعّل"
-  label_disabled_uppercase: "Disabled"
+  label_disabled_uppercase: "معطّل"
   label_display: "عرض"
   label_display_per_page: "في الصفحة الواحدة: %{value}"
   label_display_used_statuses_only: "عرض فقط الحالات التي يستخدمها هذا النوع"
@@ -3911,7 +3911,7 @@ ar:
   label_expanded_click_to_collapse: "Expanded. Click to collapse"
   label_f_hour: "ساعة%{value}"
   label_f_hour_plural: "ساعات%{value}"
-  label_favorite: "Favorite"
+  label_favorite: "مفضلة"
   label_feed_plural: "التدفقات"
   label_feeds_access_key: "مفتاح الوصول ل RSS"
   label_feeds_access_key_created_on: "مفتاح الوصول إلى RSS التي تم إنشاؤها %{value} من قبل"
@@ -3928,7 +3928,7 @@ ar:
   label_follows: "تتبع"
   label_form_configuration: "تشكيل النموذج"
   label_formula: "Formula"
-  label_gantt_chart: "Gantt chart"
+  label_gantt_chart: "مخطط جانت"
   label_gantt_chart_plural: "Gantt charts"
   label_general: "عام"
   label_generate_key: "توليد مفتاح"
@@ -3955,7 +3955,7 @@ ar:
   label_in: "في"
   label_in_less_than: "في أقل من"
   label_in_more_than: "في أكثر من"
-  label_inactive: "Inactive"
+  label_inactive: "غير نشط"
   label_incoming_emails: "رسائل البريد الالكتروني الواردة"
   label_includes: "مشمولة"
   label_incomplete: Incomplete
@@ -3966,7 +3966,7 @@ ar:
   label_information_plural: "معلومات"
   label_installation_guides: "Installation guides"
   label_integer: "عدد صحيح"
-  label_interface: "Interface"
+  label_interface: "الواجهة"
   label_internal: "داخلي"
   label_introduction_video: "Getting started video"
   label_invite_user: "دعوة مستخدم"
@@ -3978,7 +3978,7 @@ ar:
   label_share_work_package: "Share work package"
   label_show_all_registered_users: "Show all registered users"
   label_show_less: "أظهِر أقل"
-  label_show_more: "Show more"
+  label_show_more: "عرض المزيد"
   label_journal: "يوميات"
   label_journal_diff: "مقارنة التوصيف"
   label_language: "اللغة"
@@ -4027,7 +4027,7 @@ ar:
   label_logout: "تسجيل الخروج"
   label_mapping_for: "Mapping for: %{attribute}"
   label_main_menu: "القائمة الثانوية"
-  label_manage: "Manage"
+  label_manage: "إدارة"
   label_manage_groups: "إدارة المجموعات"
   label_managed_repositories_vendor: "إدارة %{vendor} مستودعات البيانات"
   label_mathematical_operators: "Mathematical operators"
@@ -4092,7 +4092,7 @@ ar:
   label_no_start_date: "لا يوجد تاريخ بدء"
   label_no_parent_page: "No parent page"
   label_no_parent_group: "(No parent group)"
-  label_notification_center_plural: "Notifications"
+  label_notification_center_plural: "الإشعارات"
   label_nothing_display: "لا يوجد شيء لعرضه"
   label_nobody: "لا أحد"
   label_not_configured: "Not configured"
@@ -4154,7 +4154,7 @@ ar:
   label_privacy_policy: "Data privacy and security policy"
   label_product_version: "إصدار المنتج"
   label_profile: "الصفحة الشخصية"
-  label_percent_complete: "% Complete"
+  label_percent_complete: "% مكتمل"
   label_progress_tracking: "Progress tracking"
   label_project: "مشروع"
   label_project_activity: "Project activity"
@@ -4277,7 +4277,7 @@ ar:
   label_table_of_contents: "Table of contents"
   label_tag: "إشارة"
   label_team_planner: "Team Planner"
-  label_template: "Template"
+  label_template: "قالب"
   label_templates: "Templates"
   label_text: "نص طويل"
   label_this_month: "هذا الشهر"
@@ -4430,12 +4430,12 @@ ar:
   label_working_hours: "Work schedule"
   label_non_working_days: "Availability calendar"
   label_non_working_days_with_count: "Non-working days (%{count})"
-  label_non_working_days_summary: "Summary"
+  label_non_working_days_summary: "ملخص"
   button_add_non_working_time: "Time off"
   button_edit_non_working_time: "Edit time off"
   label_continued_from_previous_year: "continued from previous year"
   label_continues_into_next_year: "continues into next year"
-  label_end_date: "Finish date"
+  label_end_date: "تاريخ الانتهاء"
   label_working_days: "Working days"
   label_non_working_times_with_count: "%{year} time off (%{count})"
   label_non_working_times_summary: "%{year} summary"
@@ -4462,7 +4462,7 @@ ar:
       link_name: "مجموعة عمل جديدة"
       link_name_type: "New %{type_name}"
   mail:
-    actions: "Actions"
+    actions: "إجراءات"
     digests:
       including_mention_singular: "including a mention"
       including_mention_plural: "including %{number_mentioned} mentions"
@@ -4492,16 +4492,16 @@ ar:
         other: "There are %{count} more work packages with notifications."
       open_in_browser: "فتح في المتصفح"
       reason:
-        watched: "Watched"
-        assigned: "Assigned"
+        watched: "تتم مراقبته"
+        assigned: "تم تعيينه"
         responsible: "Accountable"
-        mentioned: "Mentioned"
-        shared: "Shared"
+        mentioned: "تم ذكره"
+        shared: "مشترك"
         subscribed: "الكل"
         prefix: "Received because of the notification setting: %{reason}"
         date_alert_start_date: "Date alert"
         date_alert_due_date: "Date alert"
-        reminder: "Reminder"
+        reminder: "تذكير"
       see_all: "See all"
       updated_at: "Updated at %{timestamp} by %{user}"
     reminder_notifications:
@@ -4521,7 +4521,7 @@ ar:
     storages:
       health:
         plaintext:
-          storage: "Storage"
+          storage: "التخزين"
           healthy:
             summary: 'Good news! The status of your storage, %{storage_name}, is currently displaying as "Healthy".'
             error-solved-on: "Solved On"
@@ -4902,7 +4902,7 @@ ar:
   project_module_work_package_tracking: "مجموعات العمل"
   project_module_news: "الأخبار"
   project_module_repository: "مستودع البيانات"
-  project_module_wiki: "Wiki"
+  project_module_wiki: "ويكي"
   permission_header_for_project_module_work_package_tracking: "حزم العمل ومخططات Gantt"
   query:
     attribute_and_direction: "%{attribute} (%{direction})"
@@ -5198,7 +5198,7 @@ ar:
     Choose the self-registration mechanism for users. Be careful with the setting you choose, as some options allow users to activate their own accounts to this instance.
   setting_self_registration_warning: >
     The user will be able to activate their own accounts. Please note that this will give them access to all public projects and their content. Please make sure that no sensitive or private data is exposed in public projects.
-  setting_self_registration_disabled: "Disabled"
+  setting_self_registration_disabled: "معطّل"
   setting_self_registration_disabled_caption: >
     No accounts can be registered on their own. Only administrators and users with the global permission to create new users are able to create new accounts.
   setting_self_registration_activation_by_email: "Account activation by email"
@@ -5977,7 +5977,7 @@ ar:
     my_registered_applications: "Registered OAuth applications"
   oauth_client:
     urn_connection_status:
-      connected: "Connected"
+      connected: "متصل"
       error: "خطأ"
       failed_authorization: "Authorization failed"
       not_connected: "Not connected"
