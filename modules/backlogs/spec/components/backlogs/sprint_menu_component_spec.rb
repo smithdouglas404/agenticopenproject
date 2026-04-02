@@ -38,8 +38,6 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
   let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
   let(:user) { create(:user) }
   let(:permissions) { [] }
-  let(:start_sprint_path) { Rails.application.routes.url_helpers.start_project_sprint_path(project, sprint) }
-  let(:finish_sprint_path) { Rails.application.routes.url_helpers.finish_project_sprint_path(project, sprint) }
 
   before do
     allow(Setting)
@@ -53,8 +51,8 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
     login_as(user)
   end
 
-  def render_component(active_sprint_ids: nil)
-    render_inline(described_class.new(sprint:, project:, current_user: user, active_sprint_ids:))
+  def render_component
+    render_inline(described_class.new(sprint:, project:, current_user: user))
   end
 
   def menu_items
@@ -106,10 +104,10 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
     end
   end
 
-  describe "task board actions" do
+  describe "task board link" do
     let(:permissions) { %i[view_sprints view_work_packages] }
 
-    context "when the sprint is active" do
+    context "when the sprint is active and has a task board" do
       let(:sprint) do
         create(:agile_sprint,
                project:,
@@ -118,133 +116,39 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
                finish_date: Date.tomorrow,
                status: "active")
       end
-      let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint create_sprints manage_sprint_items] }
+      let(:permissions) { %i[view_sprints view_work_packages create_sprints manage_sprint_items] }
       let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
-      it "shows Finish sprint and Sprint board" do
+      it "shows Sprint board" do
         render_component
 
-        expect(menu_items.first).to eq("Finish sprint")
-        expect(page).to have_octicon(:check)
-        expect(page).to have_element(:form, action: finish_sprint_path, method: "post")
         expect(menu_items).to include("Sprint board")
       end
 
       it "renders dividers between each menu section" do
         render_component
 
-        expect(menu_items).to eq(["Finish sprint", "Edit sprint", "Add work package", "Sprint board", "Burndown chart"])
-        expect(page).to have_list_item position: 3, role: "presentation"
-        expect(page).to have_list_item position: 5, role: "presentation"
+        expect(menu_items).to eq(["Edit sprint", "Add work package", "Sprint board", "Burndown chart"])
+        expect(page).to have_list_item position: 2, role: "presentation"
+        expect(page).to have_list_item position: 4, role: "presentation"
       end
     end
 
-    context "when the sprint is in planning and the user can start it" do
-      let(:permissions) { %i[view_sprints view_work_packages show_board_views start_complete_sprint] }
+    context "when the sprint is completed and has a task board" do
+      let(:sprint) do
+        create(:agile_sprint,
+               project:,
+               name: "Sprint 1",
+               start_date: Date.yesterday,
+               finish_date: Date.tomorrow,
+               status: "completed")
+      end
+      let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
-      it "shows Start sprint as the first item" do
+      it "shows Sprint board" do
         render_component
 
-        expect(menu_items.first).to eq("Start sprint")
-        expect(page).to have_octicon(:play)
-        expect(page).to have_no_selector(:menuitem, text: "Sprint board")
-        expect(page).to have_element(:form, action: start_sprint_path, method: "post", "data-turbo": "false")
-      end
-
-      context "when another sprint is already active" do
-        let!(:active_sprint) do
-          create(:agile_sprint,
-                 project:,
-                 name: "Sprint 2",
-                 start_date: Date.yesterday,
-                 finish_date: Date.tomorrow,
-                 status: "active")
-        end
-
-        it "shows Start sprint disabled with a description" do
-          render_component
-
-          expect(menu_items.first).to include("Start sprint")
-          expect(page).to have_selector(
-            :menuitem,
-            text: "Start sprint",
-            disabled: true
-          )
-          expect(page).to have_text("Another sprint is already active.")
-        end
-
-        it "uses precomputed active sprint ids when provided" do
-          allow(Agile::Sprint).to receive(:for_project).and_call_original
-
-          render_component(active_sprint_ids: [active_sprint.id])
-
-          expect(Agile::Sprint).not_to have_received(:for_project)
-        end
-      end
-
-      context "when the sprint has no start date" do
-        let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: nil, finish_date: Date.tomorrow) }
-
-        it "shows Start sprint disabled with a missing dates description" do
-          render_component
-
-          expect(page).to have_selector(:menuitem, text: "Start sprint", disabled: true)
-          expect(page).to have_text(I18n.t(:"backlogs.sprint_menu_component.action_menu.start_sprint_missing_dates_description"))
-        end
-      end
-
-      context "when the sprint has no finish date" do
-        let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: nil) }
-
-        it "shows Start sprint disabled with a missing dates description" do
-          render_component
-
-          expect(page).to have_selector(:menuitem, text: "Start sprint", disabled: true)
-          expect(page).to have_text(I18n.t(:"backlogs.sprint_menu_component.action_menu.start_sprint_missing_dates_description"))
-        end
-      end
-
-      context "when the sprint has both start and finish dates" do
-        it "shows Start sprint enabled" do
-          render_component
-
-          expect(page).to have_selector(:menuitem, text: "Start sprint", disabled: false)
-        end
-      end
-
-      context "when the sprint is in planning and the user cannot start it" do
-        let(:permissions) { %i[view_sprints view_work_packages] }
-
-        it "does not show task-board-related items" do
-          render_component
-
-          expect(page).to have_no_selector(:menuitem, text: "Start sprint")
-          expect(page).to have_no_selector(:menuitem, text: "Sprint board")
-        end
-      end
-
-      context "when the sprint is completed" do
-        let(:sprint) do
-          create(:agile_sprint,
-                 project:,
-                 name: "Sprint 1",
-                 start_date: Date.yesterday,
-                 finish_date: Date.tomorrow,
-                 status: "completed")
-        end
-        let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
-
-        it "shows Sprint board" do
-          render_component
-
-          expect(menu_items).to include("Sprint board")
-        end
-
-        it "does not render a divider when task board is the only visible item" do
-          render_component
-
-          expect(page).not_to have_list_item(role: "presentation")
-        end
+        expect(menu_items).to include("Sprint board")
       end
     end
 
@@ -270,12 +174,6 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
                roles: [create(:project_role, permissions: %i[view_sprints start_complete_sprint])])
       end
 
-      it "shows Finish sprint" do
-        render_component
-
-        expect(page).to have_selector(:menuitem, text: "Finish sprint")
-      end
-
       it "does not show Sprint board for a board in the source project" do
         create(:board_grid_with_query, project: source_project, linked: sprint)
 
@@ -290,33 +188,6 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         render_component
 
         expect(page).to have_selector(:menuitem, text: "Sprint board")
-      end
-
-      context "when the sprint is in planning" do
-        let(:sprint) do
-          create(:agile_sprint,
-                 project: source_project,
-                 name: "Shared Sprint",
-                 start_date: Date.yesterday,
-                 finish_date: Date.tomorrow,
-                 status: "in_planning")
-        end
-
-        it "shows Start sprint" do
-          render_component
-
-          expect(page).to have_selector(:menuitem, text: "Start sprint")
-        end
-
-        context "without rendered-project board access" do
-          let(:permissions) { %i[view_sprints view_work_packages create_sprints manage_sprint_items] }
-
-          it "hides Start sprint" do
-            render_component
-
-            expect(page).to have_no_selector(:menuitem, text: "Start sprint")
-          end
-        end
       end
     end
   end

@@ -32,21 +32,38 @@ $op-backlogs-header--points-min-width-narrow: 2rem
 .action-sprint_planning
   @include extended-content--bottom
 
-.op-backlogs-header
+.op-backlogs-header,
+.op-sprint-header
   display: grid
   grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width, max-content) auto
-  grid-template-areas: "collapsible points menu"
   align-items: center
 
-.op-backlogs-header--collapsible
-  margin-left: calc(var(--stack-padding-normal) / 2)
+  &--collapsible
+    margin-left: calc(var(--stack-padding-normal) / 2)
 
-.op-backlogs-header--points
-  margin-left: var(--stack-gap-normal)
-  font-variant-numeric: tabular-nums
+  &--actions
+    margin-left: var(--stack-gap-normal)
 
-.op-backlogs-header--menu
-  margin-left: var(--stack-gap-normal)
+  &--menu
+    margin-left: var(--stack-gap-normal)
+
+.op-backlogs-header
+  grid-template-areas: "collapsible points menu"
+
+  &--points
+    margin-left: var(--stack-gap-normal)
+    font-variant-numeric: tabular-nums
+
+.op-sprint-header
+  grid-template-areas: "collapsible actions menu"
+
+  &--actions,
+  &--menu
+    margin-left: var(--stack-gap-normal)
+    align-self: flex-start
+    // Unfortunately, the invisible button style bites us here again.
+    margin-top: -6px
+
 
 .op-backlogs-story
   display: grid

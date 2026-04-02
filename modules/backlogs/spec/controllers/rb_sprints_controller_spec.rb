@@ -324,9 +324,10 @@ RSpec.describe RbSprintsController do
           end
 
           it "starts the sprint and redirects to the board", :aggregate_failures do
-            post :start, params: request_params
+            post :start, format: :turbo_stream, params: request_params
 
-            expect(response).to redirect_to(project_work_package_board_path(project, board))
+            expect(response).to be_successful
+            expect(response).to have_turbo_stream(action: "redirect_to")
             expect(service).to have_received(:call)
           end
 
@@ -363,9 +364,10 @@ RSpec.describe RbSprintsController do
           end
 
           it "starts the sprint and redirects to the board", :aggregate_failures do
-            post :start, params: request_params
+            post :start, format: :turbo_stream, params: request_params
 
-            expect(response).to redirect_to(project_work_package_board_path(project, existing_board))
+            expect(response).to be_successful
+            expect(response).to have_turbo_stream(action: "redirect_to")
             expect(service).to have_received(:call)
           end
         end
@@ -382,9 +384,11 @@ RSpec.describe RbSprintsController do
           end
 
           it "creates the board, starts the sprint, and redirects to the board", :aggregate_failures do
-            post :start, params: request_params
+            post :start, format: :turbo_stream, params: request_params
 
-            expect(response).to redirect_to(project_work_package_board_path(project, board))
+            expect(response).to be_successful
+            expect(response).to have_turbo_stream(action: "redirect_to")
+            expect(flash[:notice]).to eq(I18n.t(:notice_successful_start))
             expect(service).to have_received(:call)
           end
         end
