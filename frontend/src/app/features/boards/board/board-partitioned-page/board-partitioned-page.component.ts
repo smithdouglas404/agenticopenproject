@@ -38,6 +38,7 @@ import { EMPTY } from 'rxjs';
 import { SubmenuService } from 'core-app/core/main-menu/submenu.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { ApiV3Filter } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 
 export function boardCardViewHandlerFactory(injector:Injector) {
   return new CardViewHandlerRegistry(injector);
@@ -182,10 +183,14 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin implement
       )
       .subscribe((board) => {
         const queryProps = this.state.params.query_props;
+        const baselineFilters = this.normalizeFilters(board.filters);
         this.editable = board.editable;
         this.selectedTitle = board.name;
         this.titleService.setFirstPart(board.name);
-        this.boardFilters.filters.putValue(queryProps ? JSON.parse(queryProps) : board.filters);
+        this.boardFilters.initialize(
+          queryProps ? this.parseQueryProps(queryProps, baselineFilters) : baselineFilters,
+          baselineFilters,
+        );
 
         this.cdRef.detectChanges();
       });
@@ -211,7 +216,7 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin implement
       .pipe(take(1))
       .subscribe((board) => {
         board.name = newName;
-        board.filters = this.boardFilters.current;
+        board.filters = this.boardFilters.persisted;
 
         const params = { isNew: false, query_props: null };
         this.state.go('.', params, { custom: { notify: false } });
@@ -230,6 +235,7 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin implement
               this.cdRef.detectChanges();
             }),
           ).subscribe(() => {
+            this.boardFilters.markPersistedAsSaved();
             this.toastService.addSuccess(this.text.updateSuccessful);
           },
         );
@@ -257,5 +263,18 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin implement
 
   private reloadSidemenu():void {
     this.submenuService.reloadSubmenu(null);
+  }
+
+  private parseQueryProps(queryProps:string, fallback:ApiV3Filter[]):ApiV3Filter[] {
+    try {
+      const parsed = JSON.parse(queryProps) as unknown;
+      return this.normalizeFilters(parsed);
+    } catch {
+      return fallback;
+    }
+  }
+
+  private normalizeFilters(filters:unknown):ApiV3Filter[] {
+    return Array.isArray(filters) ? filters as ApiV3Filter[] : [];
   }
 }
