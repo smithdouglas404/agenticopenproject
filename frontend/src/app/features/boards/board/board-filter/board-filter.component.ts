@@ -193,7 +193,7 @@ export class BoardFilterComponent extends UntilDestroyedMixin implements AfterVi
       this.assigneeOptions = [
         ...assigneeFallback,
         ...assignees
-          .filter((assignee) => assignee.id !== null)
+          .filter((assignee) => this.assigneeOptionAllowed(assignee))
           .map((assignee) => this.resourceFilterOption(assignee)),
       ];
 
@@ -228,6 +228,15 @@ export class BoardFilterComponent extends UntilDestroyedMixin implements AfterVi
   private resourceFilterOption(resource:HalResource):QuickFilterOption {
     const identifier = this.valueIdentifier(resource)!;
     return this.quickFilterOption(`id:${identifier}`, resource.name, '=', [identifier], identifier);
+  }
+
+  private assigneeOptionAllowed(assignee:HalResource):boolean {
+    const assigneeType = (assignee as { _type?:string })._type;
+    if (assignee.id === null || assigneeType !== 'User') {
+      return false;
+    }
+
+    return !!this.valueIdentifier(assignee);
   }
 
   private applyQuickFilterSelection(
