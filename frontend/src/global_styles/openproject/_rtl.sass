@@ -137,30 +137,14 @@
     margin-right: 0
 
   // -------------------- Gantt chart --------------------
-  // Flip the split view: table on the right, timeline on the left
-  .work-packages-split-view--tabletimeline-content
-    flex-direction: row-reverse
-
-  .work-packages-tabletimeline--timeline-side
-    border-left: none
-    border-right: 3px solid var(--borderColor-default)
-
   // The timeline uses absolute left positioning for bars and grid.
-  // Force LTR direction so the JS positioning calculations stay valid,
-  // then use scaleX(-1) to mirror the entire timeline visually.
-  .wp-table-timeline--outer
+  // Force LTR on the scroll container and inner elements so JS
+  // positioning and scrollLeft calculations stay valid.
+  .work-packages-tabletimeline--timeline-side,
+  .wp-table-timeline--outer,
+  .wp-table-timeline--container,
+  .wp-table-timeline--body
     direction: ltr
-
-  .wp-table-timeline--container
-    direction: ltr
-    transform: scaleX(-1)
-
-    // Un-flip text content so it remains readable
-    .wp-timeline--header-element,
-    .timeline-element,
-    .wp-timeline-cell,
-    .wp-table-timeline--body
-      transform: scaleX(-1)
 
   // -------------------- Font features for Arabic ligatures --------------------
   font-feature-settings: "liga" 1, "calt" 1
