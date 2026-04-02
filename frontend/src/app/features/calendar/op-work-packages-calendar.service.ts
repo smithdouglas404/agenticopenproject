@@ -15,9 +15,8 @@ import { ConfigurationService } from 'core-app/core/config/configuration.service
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
-import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
-import { StateService } from '@uirouter/angular';
 import { WorkPackageCollectionResource } from 'core-app/features/hal/resources/wp-collection-resource';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { firstValueFrom, Observable } from 'rxjs';
 import {
@@ -34,7 +33,6 @@ import {
   UrlParamsHelperService,
 } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { UIRouterGlobals } from '@uirouter/core';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import {
   WorkPackagesListChecksumService,
@@ -93,7 +91,6 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     private I18n:I18nService,
     private configuration:ConfigurationService,
     private sanitizer:DomSanitizer,
-    private $state:StateService,
     readonly injector:Injector,
     readonly schemaCache:SchemaCacheService,
     readonly toastService:ToastService,
@@ -104,8 +101,8 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     readonly querySpace:IsolatedQuerySpace,
     readonly apiV3Service:ApiV3Service,
     readonly halResourceService:HalResourceService,
-    readonly uiRouterGlobals:UIRouterGlobals,
     readonly timezoneService:TimezoneService,
+    readonly pathHelper:PathHelperService,
     readonly halEditing:HalResourceEditingService,
     readonly wpTableSelection:WorkPackageViewSelectionService,
     readonly contextMenuService:OPContextMenuService,
@@ -283,23 +280,18 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     this.wpTableSelection.setSelection(id, -1);
 
     // Only open the split view if already open, otherwise only clicking the details opens
-    if (onlyWhenOpen && !this.$state.includes('**.details.*')) {
+    if (onlyWhenOpen && !window.location.pathname.includes('/details/')) {
       return;
     }
 
-    void this.$state.go(
-      `${splitViewRoute(this.$state)}.tabs`,
-      { workPackageId: id, tabIdentifier: 'overview' },
-    );
+    const basePath = window.location.pathname.replace(/\/details\/.*$/, '');
+    const link = `${basePath}/details/${id}${window.location.search}`;
+    Turbo.visit(link, { frame: 'content-bodyRight', action: 'advance' });
   }
 
   public openFullView(id:string):void {
     this.wpTableSelection.setSelection(id, -1);
-
-    void this.$state.go(
-      'work-packages.show',
-      { workPackageId: id },
-    );
+    Turbo.visit(this.pathHelper.workPackagePath(id));
   }
 
   public onCardClicked({ workPackageId, event }:{ workPackageId:string, event:MouseEvent }):void {
@@ -399,8 +391,22 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       && !this.urlParams.query_props;
   }
 
-  public get urlParams() {
-    return this.uiRouterGlobals.params;
+  public get urlParams():{
+    query_id?:string;
+    query_props?:string;
+    cdate?:string;
+    cview?:string;
+  } {
+    const search = new URLSearchParams(window.location.search);
+    // Extract query_id from path-based routing (e.g. /calendars/<id>, /team_planners/<id>).
+    const match = /\/(?:calendars|team_planners)\/([^/]+)/.exec(window.location.pathname);
+    const rawId = match?.[1];
+    return {
+      query_id: rawId === 'new' ? undefined : rawId,
+      query_props: search.get('query_props') ?? undefined,
+      cdate: search.get('cdate') ?? undefined,
+      cview: search.get('cview') ?? undefined,
+    };
   }
 
   private get areFiltersEmpty():boolean {
@@ -417,17 +423,10 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
   }
 
   private updateDateParam(dates:DatesSetArg) {
-    void this.$state.go(
-      '.',
-      {
-        cdate: this.timezoneService.formattedISODate(dates.view.calendar.getDate()),
-        // v6.beta3 fails to have type on the ViewAPI
-        cview: (dates.view as unknown as { type:string }).type,
-      },
-      {
-        custom: { notify: false },
-      },
-    );
+    const url = new URL(window.location.href);
+    url.searchParams.set('cdate', this.timezoneService.formattedISODate(dates.view.calendar.getDate()));
+    url.searchParams.set('cview', (dates.view as unknown as { type:string }).type);
+    window.history.pushState({}, '', url);
   }
 
   updateDates(resizeInfo:EventResizeDoneArg|EventDropArg|EventReceiveArg, dragged?:boolean):ResourceChangeset<WorkPackageResource> {

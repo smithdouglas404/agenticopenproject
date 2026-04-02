@@ -153,6 +153,7 @@ import {
 import {
   BoardEntryComponent,
 } from 'core-app/features/boards/board/board-partitioned-page/board-entry.component';
+import { CalendarEntryComponent } from 'core-app/features/calendar/calendar-entry.component';
 import {
   StorageLoginButtonComponent,
 } from 'core-app/shared/components/storages/storage-login-button/storage-login-button.component';
@@ -402,6 +403,7 @@ export class OpenProjectModule implements DoBootstrap {
     registerCustomElement('opce-notification-center', InAppNotificationCenterComponent, { injector });
     registerCustomElement('opce-wp-split-view', WorkPackageSplitViewEntryComponent, { injector });
     registerCustomElement('opce-board-view', BoardEntryComponent, { injector });
+    registerCustomElement('opce-calendar-view', CalendarEntryComponent, { injector });
     registerCustomElement('opce-wp-full-view', WorkPackageFullViewEntryComponent, { injector });
     registerCustomElement('opce-wp-full-create', WorkPackageFullCreateEntryComponent, { injector });
     registerCustomElement('opce-wp-full-copy', WorkPackageFullCopyEntryComponent, { injector });

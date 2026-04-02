@@ -40,6 +40,7 @@ import {
 import {
   CalendarOptions,
   DateSelectArg,
+  DatesSetArg,
   EventApi,
   EventDropArg,
   EventInput,
@@ -78,6 +79,7 @@ import { WorkPackageViewFiltersService } from 'core-app/features/work-packages/r
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
+import { isClickedWithModifier } from 'core-app/shared/helpers/link-handling/link-handling';
 import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
 import { PrincipalsResourceService } from 'core-app/core/state/principals/principals.service';
 import {
@@ -460,6 +462,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
       .pipe(
         this.untilDestroyed(),
         debounceTime(0),
+        filter(() => !!this.ucCalendar),
       )
       .subscribe(([principals, showAddAssignee]) => {
         const api = this.ucCalendar.getApi();
@@ -511,6 +514,19 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
       .then(() => {
         this.calendarOptions$.next(
           this.workPackagesCalendar.calendarOptions({
+            // Override datesSet to persist cdate/cview via uiRouter instead of pushState,
+            // because uiRouter manages the TeamPlanner URL and would otherwise strip these params.
+            // Remove once uiRouter is removed.
+            datesSet: (dates:DatesSetArg) => {
+              void this.$state.go(
+                '.',
+                {
+                  cdate: this.workPackagesCalendar.timezoneService.formattedISODate(dates.view.calendar.getDate()),
+                  cview: (dates.view as unknown as { type:string }).type,
+                },
+                { custom: { notify: false } },
+              );
+            },
             locales: allLocales,
             locale: this.I18n.locale,
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
@@ -855,6 +871,20 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
     } else {
       this.keepTab.goCurrentShowState(params.workPackageId);
     }
+  }
+
+  onCardClicked({ workPackageId, event }:{ workPackageId:string, event:MouseEvent }):void {
+    if (isClickedWithModifier(event)) {
+      return;
+    }
+
+    // Only switch the split view if it is already open
+    if (!window.location.pathname.includes('/details/')) {
+      return;
+    }
+
+    this.workPackagesCalendar.wpTableSelection.setSelection(workPackageId, -1);
+    this.keepTab.goCurrentDetailsState({ workPackageId });
   }
 
   shouldShowAsGhost(id:string, globalDraggingId:string|undefined):boolean {

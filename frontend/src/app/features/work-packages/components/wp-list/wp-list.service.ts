@@ -261,6 +261,7 @@ export class WorkPackagesListService {
 
         // Reload the query, and then reload the menu
         this.reloadQuery(createdQuery).subscribe(() => {
+          this.navigateToQueryOnNonRouterPage(createdQuery.id);
           this.states.changes.queries.next(createdQuery.id);
           this.reloadSidemenu(createdQuery.id);
         });
@@ -311,7 +312,11 @@ export class WorkPackagesListService {
         this.toastService.addSuccess(this.I18n.t('js.notice_successful_update'));
         const queryAccessibleByUser = query.public || query.user.id === this.currentUser.userId;
         if (queryAccessibleByUser) {
-          void this.$state.go('.', { query_id: query.id, query_props: null }, { reload: true });
+          if (!this.$state.current.name) {
+            this.navigateToQueryOnNonRouterPage(query.id);
+          } else {
+            void this.$state.go('.', { query_id: query.id, query_props: null }, { reload: true });
+          }
           this.states.changes.queries.next(query.id);
           this.reloadSidemenu(query.id);
         } else {
@@ -463,7 +468,27 @@ export class WorkPackagesListService {
     }
   }
 
+  private navigateToQueryOnNonRouterPage(queryId:string|null):void {
+    if (this.$state.current.name) { return; }
+
+    // update the URL path to reflect the saved query ID so subsequent refetches use the correct query_id.
+    const url = new URL(window.location.href);
+    url.pathname = url.pathname.replace(/\/[^/]+$/, `/${queryId}`);
+    url.searchParams.delete('query_id');
+    url.searchParams.delete('query_props');
+    window.history.pushState({}, '', url.toString());
+  }
+
   private reloadSidemenu(selectedQueryId:string|null):void {
-    this.submenuService.reloadSubmenu(selectedQueryId);
+    const sidemenuId = !this.$state.current.name ? this.getNonRouterSidemenuId() : undefined;
+    this.submenuService.reloadSubmenu(selectedQueryId, sidemenuId);
+  }
+
+  private getNonRouterSidemenuId():string|undefined {
+    const { pathname } = window.location;
+    if (pathname.includes('/calendars')) return 'calendar_sidemenu';
+    if (pathname.includes('/team_planners')) return 'team_planner_sidemenu';
+    if (pathname.includes('/ifc_models')) return 'bim_sidemenu';
+    return undefined;
   }
 }
