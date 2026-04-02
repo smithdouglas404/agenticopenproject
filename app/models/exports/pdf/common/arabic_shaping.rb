@@ -185,12 +185,13 @@ module Exports::PDF::Common::ArabicShaping
       lines.map { |line| reorder_rtl_line(line) }.join("\n")
     end
 
-    # Combined shape + reorder for convenience
+    # Shape Arabic text for PDF rendering.
+    # Only converts characters to presentation forms (connected glyphs).
+    # Text direction is handled by Prawn's align: :right for RTL locales.
     def process(text)
       return text if text.nil? || text.empty?
-      return text unless contains_arabic?(text)
 
-      reorder_rtl(shape(text))
+      shape(text)
     end
 
     private
