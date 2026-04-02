@@ -58,13 +58,20 @@ module Pages
     end
 
     def create_board(action: "Basic", title: "#{action} Board", expect_empty: false, via_toolbar: true)
+      new_board_page = NewBoard.new
+      target_path = project ? project_work_package_boards_path(project) : work_package_boards_path
+
+      visit target_path unless page.current_path == target_path
+      wait_for_network_idle if using_cuprite?
+
       if via_toolbar
-        page.find_test_selector("add-board-button").click
+        new_board_page.navigate_by_create_button(path: target_path)
       else
         page.find_test_selector("boards--create-button").click
+        wait_for_reload if using_cuprite?
       end
 
-      new_board_page = NewBoard.new
+      expect(page).to have_field(I18n.t(:label_title), wait: 10)
 
       new_board_page.set_title title
       new_board_page.set_board_type action
@@ -79,13 +86,25 @@ module Pages
         expect(page).to have_css(".boards-list--item", wait: 10)
       end
 
-      ::Pages::Board.new ::Boards::Grid.last
+      board_page = ::Pages::Board.new(::Boards::Grid.last)
+      minimum_lists = board_page.board.contained_queries.exists? ? 1 : 0
+      board_page.wait_for_lists_to_finish_loading(minimum_lists:)
+      board_page
     end
 
     def open_board(board)
+      target_path = if board.project
+                      project_work_package_board_path(board.project, board)
+                    else
+                      work_package_board_path(board)
+                    end
+
       page.find("td.name a", text: board.name).click
-      wait_for_reload
-      ::Pages::Board.new board
+      expect(page).to have_current_path(target_path, wait: 10)
+      board_page = ::Pages::Board.new(board)
+      minimum_lists = board.contained_queries.exists? ? 1 : 0
+      board_page.wait_for_lists_to_finish_loading(minimum_lists:)
+      board_page
     end
   end
 end

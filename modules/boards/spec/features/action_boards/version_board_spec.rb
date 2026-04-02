@@ -264,7 +264,8 @@ RSpec.describe "Version action board",
 
       # Can lock that version
       board_page.click_list_dropdown "Closed version", "Lock version"
-      expect(page).to have_css("#{test_selector('op-version-board-header')}.-locked")
+      board_page.wait_for_lists_to_finish_loading
+      expect(page).to have_css("#{test_selector('op-version-board-header')}.-locked", wait: 20)
 
       closed_version.reload
       expect(closed_version.status).to eq "locked"
