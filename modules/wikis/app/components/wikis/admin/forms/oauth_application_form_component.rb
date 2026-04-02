@@ -28,26 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class XWikiProvider < Provider
-    AUTHENTICATION_METHODS = [
-      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
-      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
-    ].freeze
+module Wikis::Admin::Forms
+  class OAuthApplicationFormComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
 
-    has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
+    def self.wrapper_key = :wiki_provider_oauth_application_section
 
-    store_attribute :options, :url, :string
-    store_attribute :options, :authentication_method, :string, default: "two_way_oauth2"
-    store_attribute :options, :wiki_audience, :string
-    store_attribute :options, :token_exchange_scope, :string
+    alias_method :wiki_provider, :model
 
-    def authenticate_via_two_way_oauth2?
-      authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
-    end
+    delegate :oauth_application, to: :wiki_provider
 
-    class << self
-      def registry_prefix = "xwiki"
+    options in_wizard: false
+
+    def done_button_path
+      if in_wizard
+        url_helpers.new_admin_settings_wiki_provider_path(continue_wizard: wiki_provider.id)
+      else
+        url_helpers.edit_admin_settings_wiki_provider_path(wiki_provider)
+      end
     end
   end
 end

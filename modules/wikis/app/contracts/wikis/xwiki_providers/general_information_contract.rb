@@ -29,25 +29,9 @@
 #++
 
 module Wikis
-  class XWikiProvider < Provider
-    AUTHENTICATION_METHODS = [
-      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
-      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
-    ].freeze
-
-    has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
-
-    store_attribute :options, :url, :string
-    store_attribute :options, :authentication_method, :string, default: "two_way_oauth2"
-    store_attribute :options, :wiki_audience, :string
-    store_attribute :options, :token_exchange_scope, :string
-
-    def authenticate_via_two_way_oauth2?
-      authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
-    end
-
-    class << self
-      def registry_prefix = "xwiki"
+  module XWikiProviders
+    class GeneralInformationContract < BaseContract
+      attribute :authentication_method
     end
   end
 end

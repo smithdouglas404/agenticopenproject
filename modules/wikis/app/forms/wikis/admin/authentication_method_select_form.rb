@@ -28,26 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class XWikiProvider < Provider
-    AUTHENTICATION_METHODS = [
-      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
-      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
-    ].freeze
-
-    has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
-
-    store_attribute :options, :url, :string
-    store_attribute :options, :authentication_method, :string, default: "two_way_oauth2"
-    store_attribute :options, :wiki_audience, :string
-    store_attribute :options, :token_exchange_scope, :string
-
-    def authenticate_via_two_way_oauth2?
-      authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
-    end
-
-    class << self
-      def registry_prefix = "xwiki"
+module Wikis::Admin
+  class AuthenticationMethodSelectForm < ApplicationForm
+    form do |f|
+      f.select_list(
+        name: :authentication_method,
+        label: I18n.t("activerecord.attributes.wikis/xwiki_provider.authentication_method"),
+        required: true
+      ) do |select|
+        Wikis::XWikiProvider::AUTHENTICATION_METHODS.each do |method|
+          select.option(
+            label: I18n.t("activerecord.attributes.wikis/xwiki_provider.authentication_methods.#{method}"),
+            value: method
+          )
+        end
+      end
     end
   end
 end

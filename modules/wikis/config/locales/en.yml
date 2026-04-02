@@ -26,6 +26,7 @@ en:
   wikis:
     buttons:
       save_and_continue: Save and continue
+      done_continue: Done, continue
     admin:
       wiki_providers:
         index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.
@@ -42,11 +43,15 @@ en:
         xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
         new_platform_html: Read our documentation on [setting up an XWiki integration](docs_url) for more information.
         sections:
-          basic_details: Basic details
-          oauth_applications: OAuth applications
+          general_information: Basic details
+          oauth_configuration: OAuth configuration
         oauth:
           openproject_oauth: OpenProject OAuth
-          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
+          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+          application_id: Application ID
+          application_secret: Application secret
+          replace_oauth_application: Replace OpenProject OAuth application
+          confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
           xwiki_oauth: XWiki OAuth
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
         delete:

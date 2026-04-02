@@ -40,6 +40,8 @@ module Wikis
 
     before_create :generate_universal_identifier
 
+    def to_s = self.class.registry_prefix
+
     class << self
       def registry_prefix = raise NotImplementedError, "SubclassResponsibility"
     end

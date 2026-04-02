@@ -57,5 +57,5 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <%= content_tag("turbo-frame", id: "wiki_provider_content") do %>
-  <%= render(Wikis::Admin::WikiProviderViewComponent.new(@wiki_provider)) %>
+  <%= render(Wikis::Admin::WikiProviderViewComponent.new(@wiki_provider, wizard: @wizard)) %>
 <% end %>

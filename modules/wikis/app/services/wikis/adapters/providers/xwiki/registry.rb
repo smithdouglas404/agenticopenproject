@@ -42,11 +42,19 @@ module Wikis
           end
 
           namespace("components") do
-            # ...
+            register(:setup_wizard, Wizard)
+
+            register(:general_information, Wikis::Admin::GeneralInfoComponent)
+            register(:oauth_application, Wikis::Admin::OAuthApplicationInfoComponent)
+
+            namespace("forms") do
+              register(:general_information, Wikis::Admin::Forms::GeneralInfoFormComponent)
+              register(:oauth_application, Wikis::Admin::Forms::OAuthApplicationFormComponent)
+            end
           end
 
           namespace("contracts") do
-            # ...
+            register(:general_information, Wikis::XWikiProviders::GeneralInformationContract)
           end
 
           namespace("queries") do

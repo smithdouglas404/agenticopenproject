@@ -24,6 +24,10 @@
           render(Wikis::Admin::UrlInputForm.new(form))
         end
 
+        general_info_row.with_row(mb: 3) do
+          render(Wikis::Admin::AuthenticationMethodSelectForm.new(form))
+        end
+
         general_info_row.with_row do
           render(Wikis::Admin::SubmitOrCancelForm.new(form, wiki_provider:))
         end
