@@ -234,7 +234,7 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
     end
   end
   let(:expected_details) do
-    result = [
+    [
       "#{type.name} ##{work_package.id} - #{work_package.subject}",
       " ", exporter.prawn_badge_text_stuffing(work_package.status.name.downcase), # badge & padding
       "People",
@@ -259,7 +259,6 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
       "Costs",
       "Spent units", "Labor costs", "Unit costs", "Overall costs", "Budget"
     ]
-    result
   end
 
   def get_column_value(column_name)
@@ -633,7 +632,7 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
       let(:sprint) { create(:agile_sprint, name: "Sprint name for export", project:) }
 
       let(:expected_details) do
-        result = [
+        [
           "#{type.name} ##{work_package.id} - #{work_package.subject}",
           " ", exporter.prawn_badge_text_stuffing(work_package.status.name.downcase), # badge & padding
           "People",
@@ -664,7 +663,6 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
           "Costs",
           "Spent units", "Labor costs", "Unit costs", "Overall costs", "Budget"
         ]
-        result
       end
 
       before do
