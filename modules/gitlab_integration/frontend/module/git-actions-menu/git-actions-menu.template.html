@@ -7,9 +7,9 @@
         <div class="spot-form-field--label">{{ snippet.name }}</div>
         <div class="spot-form-field--input copy-input">
           @if (snippet.multiline) {
-            <textarea class="copy-content op-input" rows="3" readonly>{{ snippet.text() }}</textarea>
+            <textarea class="copy-content op-input" rows="3" readonly (click)="onInputClick($event)">{{ snippet.text() }}</textarea>
           } @else {
-            <input type="text" class="copy-content op-input" readonly [value]="snippet.text()" />
+            <input type="text" class="copy-content op-input" readonly [value]="snippet.text()" (click)="onInputClick($event)" />
           }
           <button
             class="button copy-button"

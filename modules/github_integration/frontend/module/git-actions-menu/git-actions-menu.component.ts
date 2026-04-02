@@ -99,6 +99,10 @@ export class GitActionsMenuComponent extends OPContextMenuComponent {
     this.workPackage = this.locals.workPackage as WorkPackageResource;
   }
 
+  public onInputClick(e: Event):void {
+    (e.target as HTMLInputElement | HTMLTextAreaElement).select();
+  }
+
   public onCopyButtonClick(snippet:ISnippet):void {
     const success = copy(snippet.text());
 
