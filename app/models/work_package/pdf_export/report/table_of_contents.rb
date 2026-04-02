@@ -147,9 +147,15 @@ module WorkPackage::PDFExport::Report::TableOfContents
     part_style, toc_item_style = build_toc_item_styles(toc_item)
     indent = levels_indent_list[toc_item[:level] - 1]
 
-    write_part_float(indent[:level_indent], toc_item[:level_string], part_style)
-    write_part_float(0, toc_item[:page_nr_string], part_style.merge({ align: :right }))
-    write_toc_item_subject!(toc_item, indent[:subject_index], toc_item_style)
+    if rtl?
+      write_part_float(0, toc_item[:level_string], part_style.merge({ align: :right }))
+      write_part_float(0, toc_item[:page_nr_string], part_style.merge({ align: :left }))
+      write_toc_item_subject!(toc_item, indent[:subject_index], toc_item_style)
+    else
+      write_part_float(indent[:level_indent], toc_item[:level_string], part_style)
+      write_part_float(0, toc_item[:page_nr_string], part_style.merge({ align: :right }))
+      write_toc_item_subject!(toc_item, indent[:subject_index], toc_item_style)
+    end
     write_toc_item_link(toc_item, y_start_position)
   end
 

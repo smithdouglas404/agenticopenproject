@@ -59,6 +59,7 @@ module WorkPackage::PDFExport::Wp::Attributes
 
   def write_long_text_custom_field_label(label)
     style = styles.wp_attributes_table_label
+    style = style.merge({ align: :right }) if rtl?
     with_margin(styles.markdown_field_label_margins) do
       pdf.formatted_text([style.merge({ text: label })], style)
     end
@@ -119,10 +120,12 @@ module WorkPackage::PDFExport::Wp::Attributes
     return if rows.empty?
 
     with_margin(styles.wp_attributes_table_margins) do
+      cell_style = styles.wp_attributes_table_cell.merge({ inline_format: true })
+      cell_style[:align] = :right if rtl?
       pdf.table(
         rows,
         column_widths: attributes_table_column_widths,
-        cell_style: styles.wp_attributes_table_cell.merge({ inline_format: true })
+        cell_style:
       )
     end
   end
@@ -180,6 +183,7 @@ module WorkPackage::PDFExport::Wp::Attributes
     write_optional_page_break
     with_margin(styles.wp_attributes_group_label_margins) do
       style = styles.wp_attributes_group_label
+      style = style.merge({ align: :right }) if rtl?
       pdf.formatted_text([style.merge({ text: group.translated_key })], style)
       write_group_title_hr if with_hr
     end

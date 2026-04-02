@@ -146,13 +146,17 @@ module Exports::PDF::Components::Cover
   end
 
   def write_hero_text(top:, width:, text:, text_style:, height:)
+    # formatted_text_box_measured creates Prawn::Text::Formatted::Box directly,
+    # bypassing our document-level shaping hooks — so apply shaping here manually.
+    text = Exports::PDF::Common::ArabicShaping.process(text)
     formatted_text = text_style.merge({ text:, size: nil, leading: nil })
     formatted_text[:color] = cover_text_color if cover_text_color.present?
-    formatted_text_box_measured(
-      [formatted_text],
+    box_options = {
       size: text_style[:size], leading: text_style[:leading],
       at: [0, top], width:, height:, overflow: :shrink_to_fit
-    )
+    }
+    box_options[:align] = :right if rtl?
+    formatted_text_box_measured([formatted_text], box_options)
   end
 
   def write_cover_footer

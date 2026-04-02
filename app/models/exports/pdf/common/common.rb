@@ -35,7 +35,23 @@ module Exports::PDF::Common::Common
   include CustomFieldsHelper
   include OpenProject::TextFormatting
 
+  RTL_LOCALES = %i[ar fa he].freeze
+
   private
+
+  def rtl?
+    RTL_LOCALES.include?(current_language.to_sym)
+  end
+
+  # Returns :right for RTL, :left for LTR
+  def align_start
+    rtl? ? :right : :left
+  end
+
+  # Returns :left for RTL, :right for LTR
+  def align_end
+    rtl? ? :left : :right
+  end
 
   def get_pdf
     ::Exports::PDF::Common::View.new(current_language)

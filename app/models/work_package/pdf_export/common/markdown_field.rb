@@ -44,6 +44,7 @@ module WorkPackage::PDFExport::Common::MarkdownField
 
   def write_markdown_field_label(label)
     style = styles.markdown_field_label
+    style = style.merge({ align: :right }) if rtl?
     with_margin(styles.markdown_field_label_margins) do
       pdf.formatted_text([style.merge({ text: label })], style)
     end

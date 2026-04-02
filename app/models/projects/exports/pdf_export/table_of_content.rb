@@ -151,8 +151,13 @@ module Projects::Exports::PDFExport
       part_style, toc_item_style = build_toc_item_styles(toc_item)
       indent = levels_indent_list[toc_item[:level] - 1]
 
-      write_toc_part_float(indent[:level_indent], toc_item[:level_string], part_style)
-      write_toc_part_float(0, toc_item[:page_nr_string], part_style.merge({ align: :right }))
+      if rtl?
+        write_toc_part_float(0, toc_item[:level_string], part_style.merge({ align: :right }))
+        write_toc_part_float(0, toc_item[:page_nr_string], part_style.merge({ align: :left }))
+      else
+        write_toc_part_float(indent[:level_indent], toc_item[:level_string], part_style)
+        write_toc_part_float(0, toc_item[:page_nr_string], part_style.merge({ align: :right }))
+      end
       write_toc_item_subject(toc_item, indent[:subject_index], toc_item_style)
       write_toc_item_link(toc_item, y_start_position)
     end
