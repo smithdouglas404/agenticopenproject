@@ -83,6 +83,10 @@ module Meetings
       !@meeting.series_template? && User.current.allowed_in_project?(:delete_meetings, @meeting.project)
     end
 
+    def copy_enabled?
+      User.current.allowed_in_project?(:create_meetings, @meeting.project)
+    end
+
     def finish_setup_enabled?
       @meeting.draft? &&
         !@meeting.onetime_template? &&

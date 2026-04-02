@@ -184,6 +184,7 @@ vi:
   label_notify: "Gửi để xem xét"
   label_icalendar: "Gửi iCalendar"
   label_icalendar_download: "Tải xuống sự kiện iCalendar"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Xem chuỗi cuộc họp"
   label_meeting_series: "Chuỗi cuộc họp"
   label_version: "0886055830 "

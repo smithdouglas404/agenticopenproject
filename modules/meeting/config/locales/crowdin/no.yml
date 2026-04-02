@@ -189,6 +189,7 @@
   label_notify: "Send till gjennomgang"
   label_icalendar: "Send til iCalendar"
   label_icalendar_download: "Last ned iCalendar-hendelse"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "View meeting series"
   label_meeting_series: "Meeting series"
   label_version: "Versjon"

@@ -178,10 +178,9 @@ class WorkflowsController < ApplicationController
 
   def statuses_for_form
     @added_status_ids = []
+    @has_status_changes = false
     @statuses = if @type && params[:status_ids].present?
-                  status_ids = params[:status_ids].map(&:to_i)
-                  @added_status_ids = status_ids - statuses_for_role_and_type.pluck(:id)
-                  Status.where(id: status_ids).order(:position)
+                  statuses_from_params
                 elsif @type && @role
                   statuses_for_role_and_type
                 elsif @type
@@ -189,6 +188,14 @@ class WorkflowsController < ApplicationController
                 else
                   Status.all
                 end
+  end
+
+  def statuses_from_params
+    status_ids = params[:status_ids].map(&:to_i)
+    saved_ids = statuses_for_role_and_type.pluck(:id)
+    @added_status_ids = status_ids - saved_ids
+    @has_status_changes = @added_status_ids.any? || (saved_ids - status_ids).any?
+    Status.where(id: status_ids).order(:position)
   end
 
   def statuses_for_role_and_type

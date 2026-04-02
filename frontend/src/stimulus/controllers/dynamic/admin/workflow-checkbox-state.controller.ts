@@ -56,6 +56,7 @@ interface SavedState {
 export default class WorkflowCheckboxStateController extends Controller<HTMLFormElement> {
   private initialCheckboxState:Record<string, boolean> = {};
   private turboRequests:TurboRequestsService;
+  private hasStatusChanges = false;
 
   connect() {
     void window.OpenProject.getPluginContext().then((context) => {
@@ -72,10 +73,15 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
 
     this.element.addEventListener('submit', this.onFormSubmit);
 
+    this.hasStatusChanges = this.element.dataset.hasStatusChanges === 'true';
     this.initialCheckboxState = this.captureState();
     this.element.addEventListener('change', this.onCheckboxChange);
 
     document.addEventListener('click', this.onTabLinkClick, true);
+
+    if (this.hasStatusChanges) {
+      this.updateRoleDirtyParams(true);
+    }
   }
 
   disconnect() {
@@ -97,16 +103,17 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
 
   private onCheckboxChange = () => {
     const current = this.captureState();
-    const dirty = Object.keys(current).some((key) => current[key] !== this.initialCheckboxState[key]);
+    const checkboxesDirty = Object.keys(current).some((key) => current[key] !== this.initialCheckboxState[key]);
+    const dirty = this.hasStatusChanges || checkboxesDirty;
     this.element.dataset.dirty = dirty ? 'true' : 'false';
-    this.updateRoleFormDirtyParam(dirty);
+    this.updateRoleDirtyParams(dirty);
   };
 
   private onTabLinkClick = (event:Event) => {
     const target = (event.target as HTMLElement).closest<HTMLAnchorElement>('[data-workflow-tab-link]');
     if (!target) return;
     if (target.dataset.workflowTabCurrent === 'true') return;
-    if (this.element.dataset.dirty !== 'true') return;
+    if (this.element.dataset.dirty !== 'true' && !this.hasStatusChanges) return;
 
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -117,7 +124,7 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     });
   };
 
-  private updateRoleFormDirtyParam(dirty:boolean):void {
+  private updateRoleDirtyParams(dirty:boolean):void {
     const frame = this.element.closest('turbo-frame');
     frame?.querySelectorAll<HTMLFormElement>('[data-workflow-role-form]').forEach((form) => {
       const url = new URL(form.action);

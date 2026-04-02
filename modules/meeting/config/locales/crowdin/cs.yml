@@ -180,8 +180,8 @@ cs:
   label_recurring_meeting_series_end_now: "Ukončit sérii nyní"
   label_meeting_more:
     one: "Proběhne ještě jedna schůzka."
-    few: "There are %{count} more meetings."
-    many: "There are %{count} more meetings."
+    few: "Proběhne ještě %{count} dalších schůzek."
+    many: "Proběhne ještě %{count} dalších schůzek."
     other: "Proběhne ještě %{count} dalších schůzek."
   label_my_meetings: "Moje schůzky"
   label_all_meetings: "Všechny schůzky"
@@ -199,6 +199,7 @@ cs:
   label_notify: "Odeslat k posouzení"
   label_icalendar: "Odeslat iCalendar"
   label_icalendar_download: "Stáhnout událost iCalendar"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Zobrazit sérii schůzek"
   label_meeting_series: "Řada schůzek"
   label_version: "Verze"

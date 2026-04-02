@@ -41,10 +41,10 @@ gem "activemodel-serializers-xml", "~> 1.0.1"
 gem "activerecord-import", "~> 2.2.0"
 gem "activerecord-session_store", "~> 2.2.0"
 gem "ox"
-gem "rails", "~> 8.1.2"
+gem "rails", "~> 8.1.3"
 gem "responders", "~> 3.2"
 
-gem "ffi", "~> 1.15"
+gem "ffi", "~> 1.17"
 
 gem "connection_pool", "~> 3.0.2"
 
@@ -266,7 +266,7 @@ group :test do
 
   # Test prof provides factories from code
   # and other niceties
-  gem "test-prof", "~> 1.5.0"
+  gem "test-prof", "~> 1.6.0"
   gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
 
   gem "rack_session_access"

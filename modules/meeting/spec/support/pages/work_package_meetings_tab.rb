@@ -104,8 +104,9 @@ module Pages
     def fill_and_submit_meeting_dialog(meeting, notes, counter)
       retry_block do
         fill_in("meeting_agenda_item_meeting_id", with: meeting.title)
-        page.find(".ng-option-marked", text: meeting.title) # wait for selection
-        page.find(".ng-option-marked").click
+        wait_for_turbo_stream do
+          page.find(".ng-option-marked", text: meeting.title).click
+        end
         page.find(".ck-editor__editable").set(notes)
 
         wait_for_turbo_stream { click_on("Save") }

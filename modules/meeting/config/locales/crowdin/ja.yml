@@ -184,6 +184,7 @@ ja:
   label_notify: "レビュー用に送信"
   label_icalendar: "iCalendar を送信"
   label_icalendar_download: "iCalendarイベントをダウンロード"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "一連の会議を表示する"
   label_meeting_series: "定期的な会議"
   label_version: "バージョン"

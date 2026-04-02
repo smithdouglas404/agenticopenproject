@@ -31,7 +31,8 @@ See COPYRIGHT and LICENSE files for more details.
   render(
     OpPrimer::ConditionalLayoutComponent.new(
       condition: sidebar_enabled?,
-      classes: "op-grid-page"
+      classes: "op-grid-page",
+      first_in_source: :main
     )
   ) do |component|
     component.with_sidebar(width: :narrow, col_placement: :end) do

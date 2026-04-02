@@ -70,12 +70,10 @@ zh-CN:
         如果要访问此文档，请联系管理员启用实时文本协作。
     show_edit_view:
       connection_error_notice:
-        description: |-
-          无法打开文档，因为无法访问实时文本协作服务器。
-          如果问题一直存在，请联系管理员。
+        description_server_unavailable: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
         action: 重试
-      connection_recovery_notice:
-        description: "与实时文本协作服务器的连接已恢复。"
       tabs: "“文档”选项卡"
     index_page:
       name: "名称"
@@ -87,6 +85,9 @@ zh-CN:
       types: "类型"
       collaboration_settings: "实时协作"
     last_updated_at: "最后保存时间：%{time}。"
+    info_line:
+      currently_offline: "You are currently offline."
+      connection_restored: "You are now back online."
     active_editors: "有效编辑器"
     active_editors_count:
       other: "%{count} 位活跃编辑者"
