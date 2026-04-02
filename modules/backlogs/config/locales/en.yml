@@ -271,7 +271,7 @@ en:
   label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Sprint Impediments"
   label_sprint_new: "New sprint"
-  label_backlog: "Backlog and Sprints"
+  label_backlog_and_sprints: "Backlog and Sprints"
   label_task_board: "Task board"
   notice_successful_start: "The sprint was started."
   notice_successful_finish: "The sprint was completed."

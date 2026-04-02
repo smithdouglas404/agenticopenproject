@@ -129,7 +129,7 @@ module OpenProject::Backlogs
            :backlog,
            { controller: "/rb_master_backlogs", action: :backlog },
            if: Proc.new { |project| project.module_enabled?(:backlogs) && OpenProject::FeatureDecisions.scrum_projects_active? },
-           caption: :label_backlog,
+           caption: :label_backlog_and_sprints,
            parent: :backlogs
 
       # Menu items that are there when feature flag is inactive
