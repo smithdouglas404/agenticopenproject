@@ -35,10 +35,7 @@ module OpenProject::Backlogs::Hooks
         :render_to_string,
         partial: "shared/view_my_settings",
         locals: {
-          user: context[:user],
-          color: context[:user].backlogs_preference(:task_color),
-          versions_default_fold_state:
-            context[:user].backlogs_preference(:versions_default_fold_state)
+          user: context[:user]
         }
       )
     end

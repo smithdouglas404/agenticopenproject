@@ -179,7 +179,8 @@ module OpenProject::Backlogs
         "definitions/UserPreferences/properties",
         {
           "backlogs_task_color" => {
-            "type" => "string"
+            "type" => "string",
+            "pattern" => "^#[0-9a-fA-F]{6}$"
           },
           "backlogs_versions_default_fold_state" => {
             "type" => "string",
@@ -228,7 +229,6 @@ module OpenProject::Backlogs
 
     config.to_prepare do
       OpenProject::Backlogs::Hooks::LayoutHook
-      OpenProject::Backlogs::Hooks::UserSettingsHook
     end
 
     initializer "openproject_backlogs.event_subscriptions" do
