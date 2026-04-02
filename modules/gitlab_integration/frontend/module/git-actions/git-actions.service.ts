@@ -28,7 +28,7 @@
 //++
 
 import { Injectable } from '@angular/core';
-import { WorkPackageResource } from "core-app/features/hal/resources/work-package-resource";
+import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 
 // probably not providable in root when we want to cache the formatter and set custom templates
 @Injectable({
@@ -72,10 +72,6 @@ export class GitActionsService {
 
   public commitMessage(workPackage:WorkPackageResource):string {
     return this.commitMessageParts(workPackage).join("\n\n");
-  }
-
-  public commitMessageDisplayText(workPackage:WorkPackageResource):string {
-    return this.commitMessageParts(workPackage).join(' ');
   }
 
   public gitCommand(workPackage:WorkPackageResource):string {

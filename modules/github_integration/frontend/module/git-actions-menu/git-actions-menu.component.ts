@@ -68,20 +68,19 @@ export class GitActionsMenuComponent extends OPContextMenuComponent {
     {
       id: 'branch',
       name: this.I18n.t('js.github_integration.tab_header.git_actions.branch_name'),
-      textToDisplay: () => this.gitActions.branchName(this.workPackage),
-      textToCopy: () => this.gitActions.branchName(this.workPackage),
+      text: () => this.gitActions.branchName(this.workPackage),
     },
     {
       id: 'message',
       name: this.I18n.t('js.github_integration.tab_header.git_actions.commit_message'),
-      textToDisplay: () => this.gitActions.commitMessageDisplayText(this.workPackage),
-      textToCopy: () => this.gitActions.commitMessage(this.workPackage),
+      multiline: true,
+      text: () => this.gitActions.commitMessage(this.workPackage),
     },
     {
       id: 'command',
       name: this.I18n.t('js.github_integration.tab_header.git_actions.cmd'),
-      textToDisplay: () => this.gitActions.gitCommand(this.workPackage),
-      textToCopy: () => this.gitActions.gitCommand(this.workPackage),
+      multiline: true,
+      text: () => this.gitActions.gitCommand(this.workPackage),
     },
   ];
 
@@ -91,7 +90,7 @@ export class GitActionsMenuComponent extends OPContextMenuComponent {
   }
 
   public onCopyButtonClick(snippet:ISnippet):void {
-    const success = copy(snippet.textToCopy());
+    const success = copy(snippet.text());
 
     if (success) {
       this.lastCopyResult = this.text.copyResult.success;
