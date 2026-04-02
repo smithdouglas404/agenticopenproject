@@ -1455,7 +1455,7 @@ GEM
     table_print (1.5.7)
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
-    test-prof (1.5.2)
+    test-prof (1.6.0)
     text-hyphen (1.5.0)
     thor (1.5.0)
     thread_safe (0.3.6)
@@ -1771,7 +1771,7 @@ DEPENDENCIES
   svg-graph (~> 2.2.0)
   sys-filesystem (~> 1.5.0)
   table_print (~> 1.5.6)
-  test-prof (~> 1.5.0)
+  test-prof (~> 1.6.0)
   timecop (~> 0.9.0)
   ttfunk (~> 1.7.0)
   turbo-rails (~> 2.0.20)
@@ -2280,7 +2280,7 @@ CHECKSUMS
   sys-filesystem (1.5.5) sha256=6f995890a734b9f0aa55df5e09d99adeb9fd1c288f2c4097269a1f8c95e15033
   table_print (1.5.7) sha256=436664281f93387b882335795e16cfeeb839ad0c785ff7f9110fc0f17c68b5cb
   terminal-table (4.0.0) sha256=f504793203f8251b2ea7c7068333053f0beeea26093ec9962e62ea79f94301d2
-  test-prof (1.5.2) sha256=185839fb7d3745b3770ec48e3e5718eff9e28c327a50a1e18a3a9ef1060f8576
+  test-prof (1.6.0) sha256=b04cee7b9684b9b31e23e258f835ba67ee5b4fd5f6cc7204d076ef695805c335
   text-hyphen (1.5.0) sha256=c44a4533b8a554e7ff7c955e131bcccc78a0b4c56ce1d73f2c8c11f43b075a06
   thor (1.5.0) sha256=e3a9e55fe857e44859ce104a84675ab6e8cd59c650a49106a05f55f136425e73
   thread_safe (0.3.6) sha256=9ed7072821b51c57e8d6b7011a8e282e25aeea3a4065eab326e43f66f063b05a
