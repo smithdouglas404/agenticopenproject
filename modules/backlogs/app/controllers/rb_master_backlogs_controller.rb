@@ -35,23 +35,23 @@ class RbMasterBacklogsController < RbApplicationController
   menu_item :backlogs_legacy
 
   # With the feature flag, we have a proper menu, select the correct sub entry
-  current_menu_item [:backlog_and_sprints] do
-    :backlog_and_sprints
+  current_menu_item [:backlog] do
+    :backlog
   end
 
-  before_action :not_authorized_on_feature_flag_inactive, only: :backlog_and_sprints
-  before_action :load_backlogs, only: %i[index backlog_and_sprints]
+  before_action :not_authorized_on_feature_flag_inactive, only: :backlog
+  before_action :load_backlogs, only: %i[index backlog]
 
-  def backlog_and_sprints
+  def backlog
     if turbo_frame_request?
-      render partial: "backlog_and_sprints_list", layout: false
+      render partial: "backlog_list", layout: false
     else
-      render :backlog_and_sprints
+      render :backlog
     end
   end
 
   def index
-    return redirect_to action: :backlog_and_sprints if OpenProject::FeatureDecisions.scrum_projects_active?
+    return redirect_to action: :backlog if OpenProject::FeatureDecisions.scrum_projects_active?
 
     if turbo_frame_request?
       render partial: "list", layout: false
@@ -67,7 +67,7 @@ class RbMasterBacklogsController < RbApplicationController
       load_backlogs
 
       if OpenProject::FeatureDecisions.scrum_projects_active?
-        render :backlog_and_sprints
+        render :backlog
       else
         render :index
       end
@@ -76,7 +76,7 @@ class RbMasterBacklogsController < RbApplicationController
 
   def split_view_base_route
     if OpenProject::FeatureDecisions.scrum_projects_active?
-      backlog_and_sprints_backlogs_project_backlogs_path(request.query_parameters)
+      backlog_backlogs_project_backlogs_path(request.query_parameters)
     else
       backlogs_project_backlogs_path(request.query_parameters)
     end
