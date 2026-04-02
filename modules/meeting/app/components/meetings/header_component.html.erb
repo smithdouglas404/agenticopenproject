@@ -80,14 +80,16 @@
         end
 
         unless @meeting.template?
-          menu.with_item(
-            label: copy_label,
-            href: copy_project_meeting_path(@project, @meeting),
-            content_arguments: {
-              data: { turbo_stream: true }
-            }
-          ) do |item|
-            item.with_leading_visual_icon(icon: :duplicate)
+          if copy_enabled?
+            menu.with_item(
+              label: copy_label,
+              href: copy_project_meeting_path(@project, @meeting),
+              content_arguments: {
+                data: { turbo_stream: true }
+              }
+            ) do |item|
+              item.with_leading_visual_icon(icon: :duplicate)
+            end
           end
 
           menu.with_item(

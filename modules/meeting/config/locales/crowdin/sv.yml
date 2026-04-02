@@ -189,6 +189,7 @@ sv:
   label_notify: "Skicka för granskning"
   label_icalendar: "Skicka iCalendar"
   label_icalendar_download: "Ladda ner iCalendar-händelse"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Visa mötesserier"
   label_meeting_series: "Mötesserier"
   label_version: "Version"

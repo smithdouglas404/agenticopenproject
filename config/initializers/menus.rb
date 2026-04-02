@@ -167,6 +167,7 @@ Redmine::MenuManager.map :account_menu do |menu|
   menu.push :logout,
             :signout_path,
             icon: :"sign-out",
+            show_divider_before: true,
             scheme: :danger,
             if: ->(_) { User.current.logged? },
             html: {

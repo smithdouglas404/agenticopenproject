@@ -29,6 +29,9 @@
 $op-backlogs-header--points-min-width: 5rem
 $op-backlogs-header--points-min-width-narrow: 2rem
 
+.action-sprint_planning
+  @include extended-content--bottom
+
 .op-backlogs-header
   display: grid
   grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width, max-content) auto
@@ -71,6 +74,7 @@ $op-backlogs-header--points-min-width-narrow: 2rem
 
 .op-backlogs-page
   display: block
+  height: 100%
   container-name: backlogsListsContainer
   container-type: inline-size
 
@@ -78,21 +82,23 @@ $op-backlogs-header--points-min-width-narrow: 2rem
   display: flex
   flex-direction: row
   gap: var(--stack-gap-normal)
+  height: 100%
+  align-items: stretch
+  overflow: hidden
 
-  // Line that separates left side of sprint planning from right side of sprint planning
-  .op-sprint-planning-lists:first-child
-    border-right: 1px solid var(--borderColor-default)
-    padding-right: var(--stack-gap-normal)
 
 .op-backlogs-lists, .op-sprint-planning-lists
   display: flex
   flex-direction: column
   gap: var(--stack-gap-normal)
   flex: 1 1 100%
-  overflow: hidden
+  min-height: 0
+  overflow-y: auto
+  overflow-x: hidden
 
 .op-sprint-planning-lists
-  padding-top: var(--base-size-16)
+  padding-top: var(--stack-padding-normal)
+  padding-bottom: var(--stack-padding-normal)
 
 //------------------ Header form responsive styling -----------------------
 // Note: Using hardcoded values because Sass doesn't interpolate variables in
@@ -130,6 +136,12 @@ $op-backlogs-header--points-min-width-narrow: 2rem
       margin-top: -6px
 
 
+//------------------ Sprint planning divider (side-by-side only) ----
+@container backlogsListsContainer (min-width: 655px)
+  .op-sprint-planning-lists:not(:last-child)
+    border-right: 1px solid var(--borderColor-default)
+    padding-right: var(--stack-gap-normal)
+
 //------------------ Mobile responsive styling -----------------------
 @container backlogsListsContainer (max-width: 654px)
   .op-backlogs-header
@@ -142,4 +154,9 @@ $op-backlogs-header--points-min-width-narrow: 2rem
     grid-template-columns: var(--control-xsmall-size) 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
 
   .op-backlogs-container, .op-sprint-planning-container
+    height: unset
+    overflow: auto
     flex-direction: column
+
+  .op-sprint-planning-lists
+    padding-top: 0
