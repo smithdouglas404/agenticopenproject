@@ -148,6 +148,7 @@ RSpec.describe "Work Package boards spec",
 
     # Go to full view of WP
     full_view = split_view.switch_to_fullscreen
+    full_view.ensure_page_loaded
     full_view.expect_tab "Relations"
 
     # Go back to details view with selected tab
@@ -201,10 +202,12 @@ RSpec.describe "Work Package boards spec",
     split_view.expect_subject
 
     # Go to full view of WP
-    split_view.switch_to_fullscreen
-    wait_for_network_idle
-    find_by_id("action-show-more-dropdown-menu").click
-    click_link(I18n.t("js.button_delete"))
+    full_view = split_view.switch_to_fullscreen
+    full_view.ensure_page_loaded
+
+    retry_block do
+      full_view.select_from_context_menu(I18n.t("js.button_delete"))
+    end
 
     # Delete the WP
     destroy_modal.expect_listed(wp)
