@@ -68,7 +68,8 @@ module Import
 
         Import::JiraProject.where(jira_id:, jira_project_id: project_ids).find_each do |jira_project|
           ### PROJECT
-          identifier = jira_project.payload.fetch("key").downcase
+          project_key = jira_project.payload.fetch("key")
+          identifier = Setting::WorkPackageIdentifier.semantic? ? project_key.upcase : project_key.downcase
           service_call = Projects::CreateService
                            .new(user:, contract_class: EmptyContract)
                            .call(
