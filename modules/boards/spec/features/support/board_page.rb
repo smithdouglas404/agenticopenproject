@@ -86,9 +86,9 @@ module Pages
       end
 
       # Add item in dropdown
-      page.find(".menu-item", text: "Add new card").click
+      page.find(".menu-item", text: "Add new card", wait: 10).click
 
-      subject = page.find_by_id("wp-new-inline-edit--field-subject")
+      subject = page.find_by_id("wp-new-inline-edit--field-subject", wait: 10)
       subject.set card_title
       subject.send_keys :enter
 
