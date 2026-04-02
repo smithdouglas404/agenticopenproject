@@ -41,7 +41,7 @@ module Wikis
     before_create :generate_universal_identifier
 
     class << self
-      def registry_prefix = raise NotImplementedError, "SubclassResponsibility"
+      def registry_prefix = raise SubclassResponsibilityError
     end
 
     def resolve(registry_path)

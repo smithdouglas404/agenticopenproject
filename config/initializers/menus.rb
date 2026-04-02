@@ -167,6 +167,7 @@ Redmine::MenuManager.map :account_menu do |menu|
   menu.push :logout,
             :signout_path,
             icon: :"sign-out",
+            show_divider_before: true,
             scheme: :danger,
             if: ->(_) { User.current.logged? },
             html: {
@@ -628,6 +629,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             if: ->(_) { User.current.admin? },
             caption: :label_announcement,
             icon: "megaphone"
+
+  menu.push :admin_integrations,
+            { controller: "/github_integration/admin/settings", action: "show" },
+            if: ->(_) { User.current.admin? },
+            icon: :"git-compare",
+            caption: :label_integrations
 
   menu.push :plugins,
             { controller: "/admin", action: "plugins" },

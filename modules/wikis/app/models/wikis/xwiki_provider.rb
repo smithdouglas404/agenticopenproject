@@ -40,8 +40,19 @@ module Wikis
     store_attribute :options, :wiki_audience, :string
     store_attribute :options, :token_exchange_scope, :string
 
+    validates :url, presence: true, length: { maximum: 255 }
+    validate :url_is_https
+
     class << self
       def registry_prefix = "xwiki"
+    end
+
+    private
+
+    def url_is_https
+      return if url.blank?
+
+      errors.add(:url, :invalid) unless url.start_with?("https://")
     end
   end
 end

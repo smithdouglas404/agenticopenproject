@@ -189,6 +189,7 @@ sv:
   label_notify: "Skicka för granskning"
   label_icalendar: "Skicka iCalendar"
   label_icalendar_download: "Ladda ner iCalendar-händelse"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Visa mötesserier"
   label_meeting_series: "Mötesserier"
   label_version: "Version"
@@ -197,6 +198,8 @@ sv:
   label_subscribe_icalendar: "Prenumerera på kalender"
   caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   caption_template_project_select: "Please select the project in which to create this meeting template"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

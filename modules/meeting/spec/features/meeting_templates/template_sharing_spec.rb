@@ -156,4 +156,94 @@ RSpec.describe "Template sharing", :js do
       end
     end
   end
+
+  context "with templates shared via :descendants to a user with child-only access", with_ee: [:meeting_templates] do
+    shared_let(:parent_project) { create(:project, enabled_module_names: %i[meetings]) }
+    shared_let(:child_project) { create(:project, enabled_module_names: %i[meetings], parent: parent_project) }
+    shared_let(:user) do
+      create(:user, member_with_permissions: { child_project => %i[view_meetings create_meetings] })
+    end
+    shared_let(:descendants_template) do
+      create(:onetime_template, project: parent_project, title: "Parent template", sharing: :descendants)
+    end
+
+    let(:child_meetings_page) { Pages::Meetings::Index.new(project: child_project) }
+    let(:global_meetings_page) { Pages::Meetings::Index.new(project: nil) }
+
+    before { login_as user }
+
+    it "shows the template when creating a meeting from the child project" do
+      child_meetings_page.visit!
+      child_meetings_page.click_on "add-meeting-button"
+      child_meetings_page.click_on "One-time"
+
+      within_dialog "New one-time meeting" do
+        find('[data-test-selector="template_id"]').click
+        expect(page).to have_text(descendants_template.title)
+      end
+    end
+
+    it "shows the template selector and template when creating from the global index" do
+      global_meetings_page.visit!
+      global_meetings_page.click_on "add-meeting-button"
+      global_meetings_page.click_on "One-time"
+
+      within_dialog "New one-time meeting" do
+        expect(page).to have_css('[data-test-selector="template_id"]', text: "Select a project first")
+      end
+
+      global_meetings_page.set_project(child_project)
+      wait_for_network_idle
+
+      within_dialog "New one-time meeting" do
+        find('[data-test-selector="template_id"]').click
+        expect(page).to have_text(descendants_template.title)
+      end
+    end
+  end
+
+  context "with a :system template from a project the user has no access to", with_ee: [:meeting_templates] do
+    shared_let(:accessible_project) { create(:project, enabled_module_names: %i[meetings]) }
+    shared_let(:inaccessible_project) { create(:project, enabled_module_names: %i[meetings]) }
+    shared_let(:user) do
+      create(:user, member_with_permissions: { accessible_project => %i[view_meetings create_meetings] })
+    end
+    shared_let(:system_template) do
+      create(:onetime_template, project: inaccessible_project, title: "System template", sharing: :system)
+    end
+
+    let(:accessible_meetings_page) { Pages::Meetings::Index.new(project: accessible_project) }
+    let(:global_meetings_page) { Pages::Meetings::Index.new(project: nil) }
+
+    before { login_as user }
+
+    it "shows the system template when creating from an accessible project" do
+      accessible_meetings_page.visit!
+      accessible_meetings_page.click_on "add-meeting-button"
+      accessible_meetings_page.click_on "One-time"
+
+      within_dialog "New one-time meeting" do
+        find('[data-test-selector="template_id"]').click
+        expect(page).to have_text(system_template.title)
+      end
+    end
+
+    it "shows the template selector and system template when creating from the global index" do
+      global_meetings_page.visit!
+      global_meetings_page.click_on "add-meeting-button"
+      global_meetings_page.click_on "One-time"
+
+      within_dialog "New one-time meeting" do
+        expect(page).to have_css('[data-test-selector="template_id"]', text: "Select a project first")
+      end
+
+      global_meetings_page.set_project(accessible_project)
+      wait_for_network_idle
+
+      within_dialog "New one-time meeting" do
+        find('[data-test-selector="template_id"]').click
+        expect(page).to have_text(system_template.title)
+      end
+    end
+  end
 end

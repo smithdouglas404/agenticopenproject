@@ -70,12 +70,10 @@ da:
         Kontakt din administrator for at aktivere tekstsamarbejde i realtid, hvis du vil have adgang til dette dokument.
     show_edit_view:
       connection_error_notice:
-        description: |-
-          Dokumentet kan ikke åbnes, fordi serveren til tekstsamarbejde i realtid ikke kan nås.
-          Kontakt venligst administratoren, hvis problemet fortsætter.
+        description_server_unavailable: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
         action: Forsøg igen
-      connection_recovery_notice:
-        description: "Forbindelsen til realtids-tekstsamarbejdsserveren er blevet genoprettet."
       tabs: "Document tabs"
     index_page:
       name: "Navn"
@@ -87,6 +85,9 @@ da:
       types: "Typer"
       collaboration_settings: "Samarbejde i realtid"
     last_updated_at: "Last saved %{time}."
+    info_line:
+      currently_offline: "You are currently offline."
+      connection_restored: "You are now back online."
     active_editors: "Aktive redaktører"
     active_editors_count:
       one: "1 active editor"

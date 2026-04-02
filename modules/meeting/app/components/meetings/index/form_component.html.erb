@@ -1,27 +1,6 @@
 <%=
   component_wrapper do
-    primer_form_with(
-      scope: :meeting,
-      model: @meeting,
-      method: form_method,
-      data: {
-        turbo: true,
-        controller: [
-          "show-when-value-selected",
-          "show-when-checked",
-          @meeting.is_a?(RecurringMeeting) ? "recurring-meetings--form" : nil
-        ].compact.join(" "),
-        "recurring-meetings--form-persisted-value": @meeting.persisted?
-      },
-      html: {
-        id: "meeting-form"
-      },
-      url: {
-        controller: form_controller,
-        action: form_action,
-        project_id: @project
-      }
-    ) do |f|
+    primer_form_with(**form_options) do |f|
       flex_layout(mb: 3) do |modal_body|
         if @meeting.errors[:base].present?
           modal_body.with_row do
@@ -35,9 +14,9 @@
           end
         end
 
-        if creating_onetime_meeting? && no_preselection? && available_templates.any?
+        if show_template_selector?
           modal_body.with_row(mb: 3) do
-            render(Meeting::TemplateAutocompleter.new(f, project: @project))
+            render(Meeting::TemplateAutocompleter.new(f, project: effective_project, disabled: template_selector_disabled?, placeholder: template_selector_placeholder, selected_id: @copy_from&.id))
           end
         end
 

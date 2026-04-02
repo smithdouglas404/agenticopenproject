@@ -250,6 +250,27 @@ RSpec.describe MembersController do
         expect(ActionMailer::Base.deliveries).to be_empty
       end
     end
+
+    context "when adding by direct user ID a user who is not visible" do
+      let!(:hidden_user) { create(:user) }
+      let(:params) do
+        {
+          project_id: project.id,
+          member: {
+            role_ids: [role.id],
+            user_ids: [hidden_user.id]
+          }
+        }
+      end
+
+      it "does not add the hidden user as a member" do
+        expect { post :create, params: }
+          .to change(Member, :count).by(0)
+
+        hidden_user.reload
+        expect(hidden_user).not_to be_member_of(project)
+      end
+    end
   end
 
   describe "#create" do

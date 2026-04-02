@@ -939,7 +939,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
           projects_page.expect_projects_not_listed(development_project, project)
           projects_page.expect_projects_in_order(public_project)
 
-          projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
+          wait_for_turbo_stream { projects_page.remove_filter("project_finish_gate_#{gate.definition_id}") }
 
           projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -950,7 +950,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
           projects_page.expect_projects_not_listed(development_project, project)
           projects_page.expect_projects_in_order(public_project)
 
-          projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
+          wait_for_turbo_stream { projects_page.remove_filter("project_finish_gate_#{gate.definition_id}") }
 
           projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -962,7 +962,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
           projects_page.expect_projects_not_listed(development_project, project)
           projects_page.expect_projects_in_order(public_project)
 
-          projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
+          wait_for_turbo_stream { projects_page.remove_filter("project_finish_gate_#{gate.definition_id}") }
 
           projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -973,7 +973,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
           projects_page.expect_projects_not_listed(development_project, project)
           projects_page.expect_projects_in_order(public_project)
 
-          projects_page.remove_filter("project_finish_gate_#{gate.definition_id}")
+          wait_for_turbo_stream { projects_page.remove_filter("project_finish_gate_#{gate.definition_id}") }
 
           projects_page.expect_projects_in_order(development_project, project, public_project)
 

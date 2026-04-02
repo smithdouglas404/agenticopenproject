@@ -32,7 +32,7 @@ module ::Avatars
     private
 
     def redirect_path
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
 
     def ensure_enabled

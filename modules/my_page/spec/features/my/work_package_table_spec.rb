@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -119,19 +121,23 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       columns.assume_opened
       columns.remove "Subject"
 
-      # Wait for the column save to complete and the table to re-render
+      retry_block do
+        expect(filter_area.area)
+          .to have_css(".id", text: type_work_package.id)
+
+        # as the Subject column is disabled
+        expect(filter_area.area)
+          .to have_no_css(".subject", text: type_work_package.subject)
+
+        # As other_type is filtered out
+        expect(filter_area.area)
+          .to have_no_css(".id", text: other_type_work_package.id)
+      end
+
+      # Wait for the column save PATCH to complete after the DOM has confirmed the
+      # Angular state update. Without this ordering, wait_for_network_idle can fire
+      # during the gap before the async PATCH request is initiated.
       wait_for_network_idle
-
-      expect(filter_area.area)
-        .to have_css(".id", text: type_work_package.id)
-
-      # as the Subject column is disabled
-      expect(filter_area.area)
-        .to have_no_css(".subject", text: type_work_package.subject)
-
-      # As other_type is filtered out
-      expect(filter_area.area)
-        .to have_no_css(".id", text: other_type_work_package.id)
 
       scroll_to_element(filter_area.area)
       within filter_area.area do
@@ -140,7 +146,9 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
         input.native.send_keys(:return)
       end
 
-      my_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
+      retry_block do
+        my_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
+      end
 
       wait_for_network_idle
 
@@ -152,19 +160,27 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       wait_for_network_idle
 
       filter_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(3)")
-      expect(filter_area.area)
-        .to have_css(".id", text: type_work_package.id)
 
-      # as the Subject column is disabled
-      expect(filter_area.area)
-        .to have_no_css(".subject", text: type_work_package.subject)
+      retry_block do
+        # Wait for the widget to load from its persisted state before asserting.
+        # The title comes from the grid API; once visible, the widget is initialized.
+        # A second wait_for_network_idle then catches the subsequent query + results fetches.
+        within filter_area.area do
+          expect(page).to have_field("editable-toolbar-title", with: "My WP Filter", wait: 10)
+        end
 
-      # As other_type is filtered out
-      expect(filter_area.area)
-        .to have_no_css(".id", text: other_type_work_package.id)
+        wait_for_network_idle
 
-      within filter_area.area do
-        expect(page).to have_field("editable-toolbar-title", with: "My WP Filter", wait: 10)
+        expect(filter_area.area)
+          .to have_css(".id", text: type_work_package.id)
+
+        # as the Subject column is disabled
+        expect(filter_area.area)
+          .to have_no_css(".subject", text: type_work_package.subject)
+
+        # As other_type is filtered out
+        expect(filter_area.area)
+          .to have_no_css(".id", text: other_type_work_package.id)
       end
     end
   end

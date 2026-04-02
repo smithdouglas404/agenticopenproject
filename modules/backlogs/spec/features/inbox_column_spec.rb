@@ -55,7 +55,13 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
   let!(:role) do
     create(:project_role, permissions:)
   end
-  let!(:current_user) { create(:user, member_with_roles: { project => role }) }
+  let(:user_password) { "bob" * 4 }
+  let!(:current_user) do
+    create(:user,
+           member_with_roles: { project => role },
+           password: user_password,
+           password_confirmation: user_password)
+  end
 
   let(:planning_page) { Pages::SprintPlanning.new(project) }
 
@@ -266,7 +272,7 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
           expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
 
           select sprint.name, from: "target_id"
-          click_button "Save"
+          click_button "Move"
         end
 
         planning_page.expect_no_inbox_item(inbox_wp1)
@@ -294,6 +300,27 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
         planning_page.expect_story_in_sprint(inbox_wp1, sprint)
         planning_page.expect_story_in_sprint(inbox_wp2, sprint)
         planning_page.expect_story_in_sprint(inbox_wp3, sprint)
+      end
+
+      context "with real authentication and a private project" do
+        let!(:project) do
+          create(:private_project,
+                 types: [type],
+                 enabled_module_names: %w[work_package_tracking backlogs],
+                 sprint_sharing:)
+        end
+
+        before do
+          logout
+          login_with(current_user.login, user_password)
+          planning_page.visit!
+        end
+
+        it "moves a backlog item to the sprint without an error (Regression#73416)" do
+          planning_page.drag_inbox_item_to_sprint(inbox_wp1, sprint)
+          planning_page.expect_no_inbox_item(inbox_wp1)
+          expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
+        end
       end
     end
 

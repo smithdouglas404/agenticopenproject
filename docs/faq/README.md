@@ -23,7 +23,7 @@ Welcome to the central overview of frequently asked questions for OpenProject.
 
 ### How do I get access to the OpenProject Enterprise add-ons?
 
-We offer the Enterprise add-ons of OpenProject (incl. boards) for two different OpenProject variants:
+We offer the Enterprise add-ons of OpenProject for two different OpenProject variants:
 
 * For the OpenProject Enterprise cloud edition (hosted by us),
 * For the self-hosted (on-premises) OpenProject Enterprise on-premises edition
@@ -33,7 +33,7 @@ Have you already installed the [OpenProject Community edition](https://www.openp
 
 ### Can I have some users with Enterprise add-ons and some without?
 
-As the Enterprise Enterprise add-ons affect the whole instance (e.g. with Agile Boards and project custom fields) it's not possible to upgrade only some users.
+As the Enterprise Enterprise add-ons affect the whole instance (e.g. with project custom fields) it's not possible to upgrade only some users.
 
 ### What are the system requirements?
 

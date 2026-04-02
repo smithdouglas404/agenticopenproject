@@ -87,7 +87,7 @@ See COPYRIGHT and LICENSE files for more details.
 
       menu.with_item(
         id: dom_target(sprint, :menu, :burndown_chart),
-        label: t(".action_menu.burndown_chart"),
+        label: t("backlogs.label_burndown_chart"),
         tag: :a,
         href: backlogs_project_sprint_burndown_chart_path(project, sprint),
         disabled: !sprint.has_burndown?

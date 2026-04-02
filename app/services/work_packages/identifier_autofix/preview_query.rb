@@ -35,54 +35,34 @@ module WorkPackages
       DISPLAY_COUNT = 5
 
       def call
-        total   = problematic_scope.count
-        preview = problematic_scope
-                    .select(:id, :name, :identifier)
-                    .limit(DISPLAY_COUNT)
-                    .to_a
+        analysis = ProblematicIdentifiers.new
+        total_count = analysis.count
+        projects_data = build_projects_data(analysis)
 
-        suggestions = WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator.call(
-          preview,
-          exclude: reserved_identifiers | in_use_identifiers
-        )
-
-        projects_data = suggestions.map do |entry|
-          entry.merge(error_reason: error_reason(entry[:current_identifier]))
-        end
-
-        Result.new(projects_data:, total_count: total)
+        Result.new(projects_data:, total_count:)
       end
 
       private
 
-      def problematic_scope
-        @problematic_scope ||= Project.where(
-          "length(identifier) > ? OR identifier ~ ?",
-          ProjectIdentifierSuggestionGenerator::IDENTIFIER_LENGTH[:max],
-          "[^a-zA-Z0-9_]"
-        )
-      end
-
-      def error_reason(identifier)
-        if identifier.length > ProjectIdentifierSuggestionGenerator::IDENTIFIER_LENGTH[:max]
-          :too_long
-        elsif identifier.match?(/[^a-zA-Z0-9_]/)
-          :special_characters
-        elsif in_use_identifiers.include?(identifier)
-          :in_use
-        elsif reserved_identifiers.include?(identifier)
-          :reserved
+      def build_projects_data(analysis)
+        generate_suggestions(analysis).map do |entry|
+          entry.merge(error_reason: analysis.error_reason(entry[:current_identifier]))
         end
       end
 
-      def in_use_identifiers
-        @in_use_identifiers ||= Project.where.not(id: problematic_scope.select(:id)).pluck(:identifier).to_set
+      def generate_suggestions(analysis)
+        ProjectIdentifierSuggestionGenerator.call(
+          preview_projects(analysis.scope),
+          exclude: analysis.exclusion_set.to_set(&:upcase)
+        )
       end
 
-      def reserved_identifiers
-        # TODO: OldProjectIdentifier.pluck(:identifier).to_set
-        # once the OldProjectIdentifier model and migration are added.
-        Set.new
+      def preview_projects(scope)
+        scope
+          .select(:id, :name, :identifier)
+          .order(:id)
+          .limit(DISPLAY_COUNT)
+          .to_a
       end
     end
   end

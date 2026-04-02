@@ -189,6 +189,7 @@ tr:
   label_notify: "Gözden geçirilmek üzere gönder"
   label_icalendar: "Takvime gönder"
   label_icalendar_download: "iCalender etkinliğini indir "
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Toplantı serisini görüntüle"
   label_meeting_series: "Toplantı serisi"
   label_version: "Sürüm"
@@ -197,6 +198,8 @@ tr:
   label_subscribe_icalendar: "Takvime abone ol"
   caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   caption_template_project_select: "Please select the project in which to create this meeting template"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

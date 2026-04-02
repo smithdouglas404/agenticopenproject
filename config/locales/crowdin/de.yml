@@ -112,7 +112,7 @@ de:
     import:
       title: "Import"
     jira:
-      title: "Jira Import"
+      title: "Jira Migrator"
       description: "Verwenden Sie dieses Tool, um Daten aus Ihrer Jira-Instanz zu importieren. Sie können mehrere Jira-Hosts konfigurieren und auswählen, was bei jedem Importlauf importiert werden soll."
       errors:
         cannot_delete_with_imports: "Jira-Hosts mit laufenden Importen können nicht gelöscht werden"
@@ -123,8 +123,8 @@ de:
         title: "Jira-Konfiguration"
         new: "Neue Konfiguration"
       banner:
-        title: "Begrenzter Import"
-        description: "Dieses Importtool befindet sich derzeit in der Betaphase und kann nur grundlegende Daten importieren: Projekte, Tickets (Name, Titel, Beschreibung, Anhänge), Nutzer (Name, E-Mail, Projektmitgliedschaft), Status und Typen. Es kann keine Workflows, benutzerdefinierten Felder, Ticketbeziehungen oder Berechtigungen importieren. Wir unterstützen derzeit nur die Jira Server/Data Center Versionen 10.x und 11.x. Cloud-Instanzen werden derzeit nicht unterstützt."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Name"
@@ -160,7 +160,7 @@ de:
       run:
         title: "Importlauf"
         history: "Historie"
-        remove_error: "Ein Jira-Import kann nicht entfernt werden während er läuft"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Ein anderer Jira-Importlauf wird gerade durchgeführt oder wartet auf die Überprüfung. Bitte schließen Sie ihn ab oder machen Sie ihn rückgängig, bevor Sie einen neuen Import starten."
         blank:
           title: "Noch keine Importläufe eingerichtet"
@@ -381,20 +381,24 @@ de:
           <p>Hallo,</p> <p>Ein neues Projekt wurde erstellt: projectValue:name</p> <p>Vielen Dank</p>
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
           label_project: Project
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_starts_with_number: Cannot start with a number
           error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
           error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
             other: "... %{count} more projects"
@@ -408,7 +412,7 @@ de:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Standard-Übergänge"
@@ -1457,7 +1461,7 @@ de:
       part_of_description: "Dieses Arbeitspaket enthält das verknüpfte Arbeitspaket, ohne dass dies zusätzliche Auswirkungen hat"
       label_requires_singular: "benötigt"
       label_requires_plural: "benötigt"
-      requires_description: "Markiert dieses Arbeitspaket als Voraussetzung für das verknüpfte Arbeitspaket"
+      requires_description: "Markiert das verknüpfte Arbeitspaket als Voraussetzung für dieses Arbeitspaket"
       label_required_singular: "die benötigt werden von"
       label_required_plural: "die benötigt werden von"
       required_description: "Markiert dieses Arbeitspaket als Voraussetzung für das verknüpfte Arbeitspaket"
@@ -1498,6 +1502,9 @@ de:
         dependencies: "Abhängigkeiten"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Identifier"
+        work_package: "Work package"
       jira_import:
         projects: "Projekte"
       "import/jira":
@@ -1506,7 +1513,7 @@ de:
         personal_access_token: "Persönlicher Zugangs-Token"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira Import"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Anzeigen bis"
       attachment:
@@ -3485,6 +3492,7 @@ de:
   label_ical_access_key_generation_hint: "Wird automatisch generiert, wenn ein Kalender abonniert wird."
   label_ical_access_key_latest: "neueste"
   label_ical_access_key_revoke: "Widerrufen"
+  label_integrations: "Integrations"
   label_add_column: "Spalte hinzufügen"
   label_applied_status: "Zugewiesener Status"
   label_archive_project: "Projekt archivieren"
@@ -3735,7 +3743,7 @@ de:
   label_external_links: "Externe Links"
   label_locale: "Sprache und Region"
   label_jump_to_a_project: "Zu einem Projekt springen..."
-  label_jira_import: "Jira Import"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Schlüsselwörter"
   label_language_based: "Sprachabhängig"
   label_last_activity: "Letzte Aktivität"
@@ -4963,11 +4971,11 @@ de:
   setting_welcome_text: "Text für Willkommens-Block"
   setting_welcome_title: "Titel des Willkommens-Block"
   setting_welcome_on_homescreen: "Willkommens-Block auf Startseite anzeigen"
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: >
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
     Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Standard Hervorhebung"
   setting_work_package_list_default_highlighted_attributes: "Voreinstellung Inline Hervorherbung"
