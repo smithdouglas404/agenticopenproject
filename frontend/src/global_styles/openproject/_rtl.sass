@@ -136,6 +136,15 @@
     margin-left: 0.5rem
     margin-right: 0
 
+  // -------------------- Gantt chart --------------------
+  // The Gantt timeline uses absolute left/right positioning for bars,
+  // milestones, grid lines, and headers. RTL direction breaks this layout.
+  // Force LTR for the timeline while keeping text shaped for Arabic.
+  .wp-table-timeline--outer,
+  .wp-table-timeline--container,
+  .wp-table-timeline--body
+    direction: ltr
+
   // -------------------- Font features for Arabic ligatures --------------------
   font-feature-settings: "liga" 1, "calt" 1
   letter-spacing: normal
