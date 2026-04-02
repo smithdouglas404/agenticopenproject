@@ -33,8 +33,8 @@ module Flash
 
     def expected_flash_css(type)
       scheme = mapped_flash_type(type)
-      case scheme
-      when :default
+
+      if scheme == :default
         %{[data-test-selector="op-primer-flash-message"].Banner}
       else
         %{[data-test-selector="op-primer-flash-message"].Banner--#{scheme}}
@@ -43,11 +43,9 @@ module Flash
 
     def mapped_flash_type(type)
       case type
-      when :error
-        :error # The class is error, but the scheme is danger
-      when :warning
-        :warning
-      when :success, :notice
+      when :error, :warning, :success
+        type
+      when :notice
         :success
       else
         :default
