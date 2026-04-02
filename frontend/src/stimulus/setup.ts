@@ -43,6 +43,7 @@ import OpZenModeController from 'core-stimulus/controllers/zen-mode.controller';
 import CheckAllController from 'core-stimulus/controllers/check-all.controller';
 import CheckableController from 'core-stimulus/controllers/checkable.controller';
 import TruncationController from 'core-stimulus/controllers/truncation.controller';
+import ClipboardFlashController from './controllers/clipboard-flash.controller';
 
 declare global {
   interface Window {
@@ -91,6 +92,7 @@ OpenProjectStimulusApplication.preregister('users--non-working-times-form', NonW
 OpenProjectStimulusApplication.preregister('check-all', CheckAllController);
 OpenProjectStimulusApplication.preregister('checkable', CheckableController);
 OpenProjectStimulusApplication.preregister('truncation', TruncationController);
+OpenProjectStimulusApplication.preregister('clipboard-flash', ClipboardFlashController);
 
 const instance = OpenProjectStimulusApplication.start();
 window.Stimulus = instance;
