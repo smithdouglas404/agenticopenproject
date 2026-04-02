@@ -390,10 +390,20 @@ module Pages
       within(work_package_selector(work_package), &)
     end
 
-    def click_to_finish_sprint(sprint)
-      within_sprint_menu(sprint) do |menu|
-        menu.find(:button, "Finish sprint").click
+    def click_start_sprint_button(sprint)
+      within_sprint(sprint) do
+        click_on("Start")
       end
+    end
+
+    def click_finish_sprint_button(sprint)
+      within_sprint(sprint) do
+        click_on("Finish")
+      end
+    end
+
+    def click_to_finish_sprint(sprint)
+      click_finish_sprint_button(sprint)
     end
 
     def choose_to_move_unfinished_work_packages_to_sprint(sprint_name)
