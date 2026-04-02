@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../../support/pages/backlog_and_sprints"
+require_relative "../../support/pages/backlog"
 
 RSpec.describe "Create", :js do
   shared_let(:project) { create(:project) }
@@ -41,7 +41,7 @@ RSpec.describe "Create", :js do
            finish_date: Date.new(2025, 9, 15))
   end
 
-  let(:planning_page) { Pages::BacklogAndSprints.new(project) }
+  let(:planning_page) { Pages::Backlog.new(project) }
   let(:all_permissions) { %i[view_sprints view_work_packages create_sprints] }
   let(:permissions) { all_permissions }
 
@@ -53,7 +53,7 @@ RSpec.describe "Create", :js do
 
       within ".PageHeader-breadcrumbs" do
         expect(page).to have_link(href: project_path(project), text: project.name)
-        expect(page).to have_link(href: backlog_and_sprints_backlogs_project_backlogs_path(project), text: "Backlogs")
+        expect(page).to have_link(href: backlog_backlogs_project_backlogs_path(project), text: "Backlogs")
         expect(page).to have_text("Backlog and Sprints")
       end
     end
