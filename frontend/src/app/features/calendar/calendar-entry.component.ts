@@ -26,13 +26,23 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Ng2StateDeclaration } from '@uirouter/angular';
+import { ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
+import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
+import {
+  WorkPackageIsolatedQuerySpaceDirective,
+} from 'core-app/features/work-packages/directives/query-space/wp-isolated-query-space.directive';
 
-export const CALENDAR_LAZY_ROUTES:Ng2StateDeclaration[] = [
-  {
-    name: 'calendar.**',
-    parent: 'optional_project',
-    url: '/calendars',
-    loadChildren: () => import('./openproject-calendar.module').then((m) => m.OpenprojectCalendarModule),
-  },
-];
+@Component({
+  hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
+  template: '<op-wp-calendar-page [queryId]="queryId" />',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+export class CalendarEntryComponent {
+  @Input() queryId:string;
+
+  constructor(readonly elementRef:ElementRef) {
+    populateInputsFromDataset(this);
+    document.body.classList.add('router--calendar');
+  }
+}
