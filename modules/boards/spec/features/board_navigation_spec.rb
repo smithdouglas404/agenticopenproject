@@ -123,6 +123,8 @@ RSpec.describe "Work Package boards spec",
     subitem.click
 
     board_page = Pages::Board.new board_view
+    expect(page).to have_current_path(project_work_package_board_path(project, board_view.id))
+    board_page.wait_for_lists_to_finish_loading
     board_page.expect_query "List 1", editable: true
     board_page.add_card "List 1", "Task 1"
   end
