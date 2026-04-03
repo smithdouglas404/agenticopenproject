@@ -141,8 +141,8 @@ RSpec.describe "Start and finish sprints",
     end
     let!(:task_board) { create(:board_grid_with_query, project:, linked: first_sprint) }
 
-    it "finishes the sprint and returns to the backlog" do
-      planning_page.click_finish_sprint_button(first_sprint)
+    it "completes the sprint and returns to the backlog" do
+      planning_page.click_complete_sprint_button(first_sprint)
 
       planning_page.expect_current_path
       expect_and_dismiss_flash type: :success, message: "The sprint was completed."
@@ -200,9 +200,9 @@ RSpec.describe "Start and finish sprints",
       end
 
       it "allows moving unfinished work packages to the next sprint" do
-        planning_page.click_to_finish_sprint(first_sprint)
+        planning_page.click_to_complete_sprint(first_sprint)
 
-        planning_page.expect_sprint_finishing_modal
+        planning_page.expect_sprint_completing_modal
 
         planning_page.expect_sprints_to_choose_for_moving_unfinished_work_packages_to second_sprint
         planning_page.choose_to_move_unfinished_work_packages_to_sprint second_sprint.name
@@ -220,9 +220,9 @@ RSpec.describe "Start and finish sprints",
       end
 
       it "allows moving unfinished work packages to the top of the backlog" do
-        planning_page.click_to_finish_sprint(first_sprint)
+        planning_page.click_to_complete_sprint(first_sprint)
 
-        planning_page.expect_sprint_finishing_modal
+        planning_page.expect_sprint_completing_modal
         planning_page.choose_to_move_unfinished_work_packages_to_top_of_backlog
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
@@ -235,9 +235,9 @@ RSpec.describe "Start and finish sprints",
       end
 
       it "allows moving unfinished work packages to the bottom of the backlog" do
-        planning_page.click_to_finish_sprint(first_sprint)
+        planning_page.click_to_complete_sprint(first_sprint)
 
-        planning_page.expect_sprint_finishing_modal
+        planning_page.expect_sprint_completing_modal
         planning_page.choose_to_move_unfinished_work_packages_to_bottom_of_backlog
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
