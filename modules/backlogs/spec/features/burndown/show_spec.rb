@@ -51,10 +51,10 @@ RSpec.describe "Show burndown chart", :js, with_flag: { scrum_projects: true } d
     planning_page.click_in_sprint_menu(sprint, "Burndown chart")
 
     expect(page)
-      .to have_content(sprint.name)
+      .to have_heading(sprint.name, level: 2)
     expect(page)
-      .to have_content "#{format_date(sprint.start_date)} – #{format_date(sprint.finish_date)}"
+      .to have_content "#{sprint.start_date.strftime('%m/%d/%Y')} – #{sprint.finish_date.strftime('%m/%d/%Y')}"
     expect(page)
-      .to have_css "opce-burndown-chart"
+      .to have_element :"opce-burndown-chart"
   end
 end
