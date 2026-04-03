@@ -55,7 +55,7 @@ RSpec.describe "Logging time within the work package view", :js, :with_cuprite d
     # Update the fields
     time_logging_modal.update_field "activity_id", activity.name
     time_logging_modal.update_field "spent_on", date.strftime("%Y-%m-%d")
-    time_logging_modal.update_field "hours", hours.to_s
+    time_logging_modal.update_field "hours_display", hours.to_s
 
     if log_for_user
       time_logging_modal.update_field "user_id", log_for_user.name
