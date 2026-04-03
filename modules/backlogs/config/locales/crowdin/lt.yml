@@ -93,6 +93,8 @@ lt:
     sharing: "Sharing"
     impediment: "Kliūtis"
     label_versions_default_fold_state: "Rodyti suskleistas versijas"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
     work_package_is_closed: "Darbo paketas baigtas, kai"
     label_is_done_status: "Būsena %{status_name} reiškia atlikta"
@@ -106,7 +108,7 @@ lt:
     rebuild: "Perkurti"
     rebuild_positions: "Perkurti pozicijas"
     remaining_hours: "Liko darbo"
-    show_burndown_chart: "Perdegimo lentelė"
+    show_burndown_chart: "Burndown chart"
     story: "Istorija"
     story_points:
       one: "%{count} story point"
@@ -178,7 +180,6 @@ lt:
         new_story: "New story"
         stories_tasks: "Stories/Tasks"
         task_board: "Task board"
-        burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
     finish_sprint_dialog_component:
@@ -200,7 +201,6 @@ lt:
         start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
-        task_board: "Sprint board"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -233,8 +233,10 @@ lt:
   label_backlogs: "Darbų sąrašai"
   label_backlogs_unconfigured: "Jūs dar nesukonfigūravote Darbų sąrašų. Prašome eiti į  %{administration} > %{plugins}, tada nuspausti ant  %{configure} nuorodos šiam įskiepiui. Kai nustatysite laukus, grįžkite čia ir pradėkite naudoti instrumentą."
   label_blocks_ids: "Blokuotų darbų paketų ID reikšmės"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "Stulpelis darbų sąraše"
   label_used_as_backlog: "Used as backlog"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "Žemyn"
   label_points_burn_up: "Aukštyn"
   label_sprint_edit: "Edit sprint"
