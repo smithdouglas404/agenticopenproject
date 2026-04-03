@@ -46,13 +46,10 @@
         left: auto
         right: 0
 
-  // -------------------- Content area --------------------
-  #content-wrapper
-    margin-left: 0
-    margin-right: var(--main-menu-width)
-
-    &.content-wrapper--with-hidden-sidebar
-      margin-right: var(--main-menu-folded-width)
+  // -------------------- Main menu resizer --------------------
+  .main-menu--resizer
+    left: auto
+    right: calc(var(--main-menu-width) - 0.25rem)
 
   // -------------------- Breadcrumbs --------------------
   .op-breadcrumb
