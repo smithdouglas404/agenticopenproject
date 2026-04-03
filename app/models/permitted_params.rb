@@ -293,6 +293,8 @@ class PermittedParams
                                                 :status_code,
                                                 :status_explanation,
                                                 :lifecycle_stage,
+                                                :portfolio_manager_id,
+                                                :project_manager_id,
                                                 work_package_custom_field_ids: [],
                                                 type_ids: [],
                                                 enabled_module_names: [],

@@ -270,6 +270,67 @@ module API
                            link.from_hash(fragment)
                          }
 
+
+        resource :portfolioManager,
+                 skip_render: ->(*) {
+                   !current_user.allowed_in_project?(:view_project, represented) &&
+                     !current_user.allowed_globally?(:add_project)
+                 },
+                 link_cache_if: current_user_view_allowed_lambda,
+                 getter: ->(*) {
+                           next unless represented.portfolio_manager
+
+                           ::API::V3::Users::UserRepresenter.create(represented.portfolio_manager, current_user:)
+                         },
+                 link: ->(*) {
+                         if represented.portfolio_manager
+                           {
+                             href: api_v3_paths.user(represented.portfolio_manager_id),
+                             title: represented.portfolio_manager.name
+                           }
+                         else
+                           { href: nil }
+                         end
+                       },
+                 setter: ->(fragment:, represented:, **) {
+                           link = ::API::Decorators::LinkObject.new(represented,
+                                                                    path: :user,
+                                                                    property_name: :portfolio_manager,
+                                                                    setter: :"portfolio_manager_id=",
+                                                                    getter: :portfolio_manager_id)
+                           link.from_hash(fragment)
+                         }
+
+        resource :projectManager,
+                 skip_render: ->(*) {
+                   !current_user.allowed_in_project?(:view_project, represented) &&
+                     !current_user.allowed_globally?(:add_project)
+                 },
+                 link_cache_if: current_user_view_allowed_lambda,
+                 getter: ->(*) {
+                           next unless represented.project_manager
+
+                           ::API::V3::Users::UserRepresenter.create(represented.project_manager, current_user:)
+                         },
+                 link: ->(*) {
+                         if represented.project_manager
+                           {
+                             href: api_v3_paths.user(represented.project_manager_id),
+                             title: represented.project_manager.name
+                           }
+                         else
+                           { href: nil }
+                         end
+                       },
+                 setter: ->(fragment:, represented:, **) {
+                           link = ::API::Decorators::LinkObject.new(represented,
+                                                                    path: :user,
+                                                                    property_name: :project_manager,
+                                                                    setter: :"project_manager_id=",
+                                                                    getter: :project_manager_id)
+                           link.from_hash(fragment)
+                         }
+
         def _type
           strategy.type
         end

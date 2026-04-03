@@ -104,6 +104,9 @@ class Project < ApplicationRecord
   has_many :lifecycle_stage_transitions, dependent: :destroy
   has_many :recurring_meetings, dependent: :destroy
 
+  belongs_to :portfolio_manager, class_name: "User", optional: true
+  belongs_to :project_manager, class_name: "User", optional: true
+
   belongs_to :template, class_name: "Project", optional: true
 
   has_many :templated_projects,
@@ -148,6 +151,8 @@ class Project < ApplicationRecord
   register_journal_formatted_fields "status_explanation", "description", formatter_key: :diff
   register_journal_formatted_fields "status_code", formatter_key: :project_status_code
   register_journal_formatted_fields "lifecycle_stage", formatter_key: :plaintext
+  register_journal_formatted_fields "portfolio_manager_id", formatter_key: :named_association
+  register_journal_formatted_fields "project_manager_id", formatter_key: :named_association
   register_journal_formatted_fields "public", formatter_key: :visibility
   register_journal_formatted_fields "parent_id", formatter_key: :subproject_named_association
   register_journal_formatted_fields /\Acustom_fields_\d+\z/, formatter_key: :custom_field

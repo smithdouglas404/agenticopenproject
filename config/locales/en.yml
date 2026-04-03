@@ -880,10 +880,12 @@ en:
       header_details: Basic details
       header_status: Status
       header_lifecycle_stage: Project Stage
+      header_management: Management
       header_relations: Project relations
       button_update_details: Update details
       button_update_status_description: Update status description
       button_update_lifecycle_stage: Update project stage
+      button_update_management: Update management
       button_update_parent_project: Update parent project
       public_warning: >
         This project is public.
@@ -1763,6 +1765,8 @@ en:
           off_track: "Off track"
           finished: "Finished"
           discontinued: "Discontinued"
+        portfolio_manager: "Portfolio Manager"
+        project_manager: "Project Manager"
         lifecycle_stage: "Project Stage"
         lifecycle_stages:
           discovery: "Discovery"
@@ -4114,6 +4118,9 @@ en:
   label_project_plural: "Projects"
   label_project_list_plural: "Project lists"
   label_project_life_cycle: "Project life cycle"
+  label_management: "Management"
+  label_portfolio_manager: "Portfolio Manager"
+  label_project_manager: "Project Manager"
   label_lifecycle_pipeline: "Project Pipeline"
   label_lifecycle_stage: "Project Stage"
   label_lifecycle_stage_filter: "Project Stage"
@@ -4785,6 +4792,8 @@ en:
   permission_view_project_phases: "View project phases"
   permission_view_lifecycle_stage: "View project lifecycle stage"
   permission_edit_lifecycle_stage: "Edit project lifecycle stage"
+  permission_view_project_management: "View project management"
+  permission_edit_project_management: "Edit project management"
   permission_save_bcf_queries: "Save BCF queries"
   permission_manage_public_bcf_queries: "Manage public BCF queries"
   permission_edit_attribute_help_texts: "Edit attribute help texts"

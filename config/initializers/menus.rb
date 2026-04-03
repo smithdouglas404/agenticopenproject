@@ -765,6 +765,7 @@ Redmine::MenuManager.map :project_menu do |menu|
 
   project_menu_items = {
     general: { caption: :label_information_plural },
+    management: { caption: :label_management },
     life_cycle_steps: {
       caption: :label_project_life_cycle,
       action: :index

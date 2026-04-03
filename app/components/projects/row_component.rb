@@ -223,6 +223,19 @@ module Projects
     end
 
 
+
+    def portfolio_manager
+      return nil unless user_can_view_project_attributes?
+
+      project.portfolio_manager&.name
+    end
+
+    def project_manager
+      return nil unless user_can_view_project_attributes?
+
+      project.project_manager&.name
+    end
+
     def lifecycle_stage
       return nil unless user_can_view_project_attributes?
 

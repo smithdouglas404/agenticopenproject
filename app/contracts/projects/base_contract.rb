@@ -52,6 +52,12 @@ module Projects
     attribute :lifecycle_stage do
       validate_lifecycle_stage_included
     end
+    attribute :portfolio_manager_id do
+      validate_manager_is_active_user(:portfolio_manager)
+    end
+    attribute :project_manager_id do
+      validate_manager_is_active_user(:project_manager)
+    end
     attribute :templated do
       validate_templated_set_by_admin
     end
@@ -120,6 +126,15 @@ module Projects
 
     def validate_status_code_included
       errors.add :status, :inclusion if model.status_code && Project.status_codes.keys.exclude?(model.status_code.to_s)
+    end
+
+    def validate_manager_is_active_user(attribute)
+      manager_id = model.send(:"#{attribute}_id")
+      return if manager_id.blank?
+
+      unless User.active.exists?(id: manager_id)
+        errors.add attribute, :invalid
+      end
     end
 
     def validate_lifecycle_stage_included

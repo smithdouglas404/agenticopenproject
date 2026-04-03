@@ -1,0 +1,47 @@
+<%= render Projects::Settings::IndexPageHeaderComponent.new(project: @project) %>
+
+<%= render(Primer::BaseComponent.new(tag: :section, mb: 4)) do %>
+  <%=
+    render(Primer::Beta::Subhead.new) do |component|
+      component.with_heading(tag: :h3, size: :medium) { I18n.t("projects.settings.header_management") }
+    end
+  %>
+  <%=
+    settings_primer_form_with(model: @project, url: project_settings_management_path(@project)) do |f|
+      render(
+        Primer::Forms::FormList.new(
+          Projects::Settings::ManagementForm.new(f),
+          Projects::Settings::Submit.new(f, label: I18n.t("projects.settings.button_update_management"))
+        )
+      )
+    end
+  %>
+<% end %>
+
+<% if @project.portfolio_manager || @project.project_manager %>
+  <%= render(Primer::BaseComponent.new(tag: :section, mb: 4)) do %>
+    <%=
+      render(Primer::Beta::Subhead.new) do |component|
+        component.with_heading(tag: :h3, size: :medium) { I18n.t("label_management") + " Details" }
+      end
+    %>
+    <% if @project.portfolio_manager %>
+      <div class="Box p-3 mb-3">
+        <h4><%= I18n.t("label_portfolio_manager") %></h4>
+        <p><strong><%= @project.portfolio_manager.name %></strong></p>
+        <% if @project.portfolio_manager.mail.present? %>
+          <p><%= mail_to @project.portfolio_manager.mail %></p>
+        <% end %>
+      </div>
+    <% end %>
+    <% if @project.project_manager %>
+      <div class="Box p-3 mb-3">
+        <h4><%= I18n.t("label_project_manager") %></h4>
+        <p><strong><%= @project.project_manager.name %></strong></p>
+        <% if @project.project_manager.mail.present? %>
+          <p><%= mail_to @project.project_manager.mail %></p>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
