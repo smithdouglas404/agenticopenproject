@@ -71,7 +71,7 @@ module Backlogs
     end
 
     def show_finish_sprint_action?
-      sprint.active? && ::Sprints::StartContract.can_start_or_finish?(user: current_user, sprint:)
+      sprint.active? && ::Sprints::StartContract.can_start_or_complete?(user: current_user, sprint:)
     end
 
     def disable_start_sprint_action?
