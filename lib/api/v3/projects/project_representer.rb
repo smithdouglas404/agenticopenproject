@@ -237,6 +237,39 @@ module API
         formattable_property :status_explanation,
                              cache_if: current_user_view_allowed_lambda
 
+        resource :lifecycle_stage,
+                 skip_render: ->(*) {
+                   !current_user.allowed_in_project?(:view_project, represented) &&
+                     !current_user.allowed_globally?(:add_project)
+                 },
+                 link_cache_if: current_user_view_allowed_lambda,
+                 getter: ->(*) {
+                           next unless represented.lifecycle_stage
+
+                           ::API::V3::Projects::LifecycleStages::LifecycleStageRepresenter
+                             .create(represented.lifecycle_stage, current_user:, embed_links:)
+                         },
+                 link: ->(*) {
+                         if represented.lifecycle_stage
+                           {
+                             href: api_v3_paths.project_lifecycle_stage(represented.lifecycle_stage),
+                             title: I18n.t(:"activerecord.attributes.project.lifecycle_stages.#{represented.lifecycle_stage}",
+                                           default: represented.lifecycle_stage.to_s.humanize)
+                           }.compact
+                         else
+                           {
+                             href: nil
+                           }
+                         end
+                       },
+                 setter: ->(fragment:, represented:, **) {
+                           link = ::API::Decorators::LinkObject.new(represented,
+                                                                    path: :project_lifecycle_stage,
+                                                                    property_name: :lifecycle_stage,
+                                                                    setter: :"lifecycle_stage=")
+                           link.from_hash(fragment)
+                         }
+
         def _type
           strategy.type
         end

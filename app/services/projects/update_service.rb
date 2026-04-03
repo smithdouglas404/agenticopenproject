@@ -61,6 +61,7 @@ module Projects
       send_update_notification
       update_wp_versions_on_parent_change
       handle_archiving
+      record_lifecycle_stage_transition
 
       ret
     end
@@ -123,6 +124,18 @@ module Projects
       # already been checked in Projects::UpdateContract
       service = service_class.new(user:, model:, contract_class: EmptyContract)
       service.call
+    end
+
+    def record_lifecycle_stage_transition
+      return unless memoized_changes["lifecycle_stage"]
+
+      from_stage, to_stage = memoized_changes["lifecycle_stage"]
+      LifecycleStageTransition.create!(
+        project: model,
+        user:,
+        from_stage: from_stage.nil? ? nil : Project.lifecycle_stages[from_stage],
+        to_stage: Project.lifecycle_stages[to_stage]
+      )
     end
   end
 end

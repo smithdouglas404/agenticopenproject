@@ -202,6 +202,18 @@ Rails.application.reloader.to_prepare do
                      require: :member,
                      dependencies: :edit_project_phases
 
+      map.permission :view_lifecycle_stage,
+                     {},
+                     permissible_on: :project,
+                     dependencies: :view_project
+
+      map.permission :edit_lifecycle_stage,
+                     {},
+                     permissible_on: :project,
+                     require: :member,
+                     dependencies: :view_lifecycle_stage,
+                     contract_actions: { projects: %i[update] }
+
       map.permission :manage_members,
                      {
                        members: %i[index new create update destroy destroy_by_principal autocomplete_for_member menu],

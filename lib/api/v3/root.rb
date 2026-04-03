@@ -71,6 +71,7 @@ module API
       mount ::API::V3::ProjectPhaseDefinitions::ProjectPhaseDefinitionsAPI
       mount ::API::V3::ProjectPhases::ProjectPhasesAPI
       mount ::API::V3::Projects::Statuses::StatusesAPI
+      mount ::API::V3::Projects::LifecycleStages::LifecycleStagesAPI
       mount ::API::V3::Queries::QueriesAPI
       mount ::API::V3::Render::RenderAPI
       mount ::API::V3::Relations::RelationsAPI

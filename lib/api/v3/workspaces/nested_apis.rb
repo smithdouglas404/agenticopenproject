@@ -39,6 +39,7 @@ module API
         mount API::V3::Versions::VersionsByProjectAPI
         mount API::V3::Queries::QueriesByWorkspaceAPI
         mount API::V3::Favorites::FavoriteActionsAPI, with: { favorite_object_getter: ->(*) { @project } }
+        mount API::V3::LifecycleStageTransitions::LifecycleStageTransitionsByProjectAPI
       end
     end
   end

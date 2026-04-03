@@ -222,6 +222,15 @@ module Projects
       end
     end
 
+
+    def lifecycle_stage
+      return nil unless user_can_view_project_attributes?
+
+      if project.lifecycle_stage.present?
+        render Projects::LifecycleStageBadgeComponent.new(project:)
+      end
+    end
+
     def status_explanation
       return nil unless user_can_view_project_attributes?
 

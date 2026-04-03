@@ -101,6 +101,7 @@ class Project < ApplicationRecord
            class_name: "Project::Phase",
            inverse_of: :project
 
+  has_many :lifecycle_stage_transitions, dependent: :destroy
   has_many :recurring_meetings, dependent: :destroy
 
   belongs_to :template, class_name: "Project", optional: true
@@ -146,6 +147,7 @@ class Project < ApplicationRecord
   register_journal_formatted_fields "identifier", "name", formatter_key: :plaintext
   register_journal_formatted_fields "status_explanation", "description", formatter_key: :diff
   register_journal_formatted_fields "status_code", formatter_key: :project_status_code
+  register_journal_formatted_fields "lifecycle_stage", formatter_key: :plaintext
   register_journal_formatted_fields "public", formatter_key: :visibility
   register_journal_formatted_fields "parent_id", formatter_key: :subproject_named_association
   register_journal_formatted_fields /\Acustom_fields_\d+\z/, formatter_key: :custom_field
@@ -202,6 +204,17 @@ class Project < ApplicationRecord
     finished: 4,
     discontinued: 5
   }
+
+  enum :lifecycle_stage, {
+    discovery: 0,
+    design: 1,
+    build: 2,
+    test: 3,
+    pre_launch: 4,
+    live: 5,
+    support: 6,
+    archived: 7
+  }, prefix: true
 
   def visible?(user = User.current)
     active? && (public? || user.admin? || user.access_to?(self))

@@ -88,6 +88,24 @@ See COPYRIGHT and LICENSE files for more details.
   %>
 <% end %>
 
+<%= render(Primer::BaseComponent.new(tag: :section, mb: 4)) do %>
+  <%=
+    render(Primer::Beta::Subhead.new) do |component|
+      component.with_heading(tag: :h3, size: :medium) { I18n.t("projects.settings.header_lifecycle_stage") }
+    end
+  %>
+  <%=
+    settings_primer_form_with(model: project, url: project_settings_general_path(project)) do |f|
+      render(
+        Primer::Forms::FormList.new(
+          Projects::Settings::LifecycleStageForm.new(f),
+          Projects::Settings::Submit.new(f, label: I18n.t("projects.settings.button_update_lifecycle_stage"))
+        )
+      )
+    end
+  %>
+<% end %>
+
 <% if parent_allowed? %>
   <%= render(Primer::BaseComponent.new(tag: :section, mb: 4)) do %>
     <%=

@@ -292,6 +292,7 @@ class PermittedParams
                                                 :templated,
                                                 :status_code,
                                                 :status_explanation,
+                                                :lifecycle_stage,
                                                 work_package_custom_field_ids: [],
                                                 type_ids: [],
                                                 enabled_module_names: [],
@@ -299,6 +300,7 @@ class PermittedParams
 
     whitelist
       .tap { nilify_params!(it, :status_code) }
+      .tap { nilify_params!(it, :lifecycle_stage) }
       .merge(custom_field_values(:project))
   end
 

@@ -49,6 +49,9 @@ module Projects
       validate_status_code_included
     end
     attribute :status_explanation
+    attribute :lifecycle_stage do
+      validate_lifecycle_stage_included
+    end
     attribute :templated do
       validate_templated_set_by_admin
     end
@@ -73,6 +76,10 @@ module Projects
 
     def assignable_status_codes
       Project.status_codes.keys
+    end
+
+    def assignable_lifecycle_stages
+      Project.lifecycle_stages.keys
     end
 
     protected
@@ -113,6 +120,12 @@ module Projects
 
     def validate_status_code_included
       errors.add :status, :inclusion if model.status_code && Project.status_codes.keys.exclude?(model.status_code.to_s)
+    end
+
+    def validate_lifecycle_stage_included
+      if model.lifecycle_stage && Project.lifecycle_stages.keys.exclude?(model.lifecycle_stage.to_s)
+        errors.add :lifecycle_stage, :inclusion
+      end
     end
 
     def validate_templated_set_by_admin

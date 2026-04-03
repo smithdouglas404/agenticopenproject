@@ -35,12 +35,13 @@ module Projects
     def set_attributes(params)
       super(set_attributes_params(params)).tap do
         set_status_code(params[:status_code]) if status_code_provided?(params)
+        set_lifecycle_stage(params[:lifecycle_stage]) if lifecycle_stage_provided?(params)
       end
     end
 
     def set_attributes_params(params)
       # Remove fields that cannot be directly set
-      filtered = params.except(:status_code)
+      filtered = params.except(:status_code, :lifecycle_stage)
 
       custom_field_value_params = filtered[:custom_field_values]
       return filtered unless custom_field_value_params
@@ -114,6 +115,30 @@ module Projects
 
     def first_not_set_code
       (Project.status_codes.keys - [model.status_code]).first
+    end
+
+
+    def lifecycle_stage_provided?(params)
+      params.key?(:lifecycle_stage)
+    end
+
+    def set_lifecycle_stage(lifecycle_stage)
+      if faulty_lifecycle_stage?(lifecycle_stage)
+        model.lifecycle_stage = first_not_set_lifecycle_stage
+        stage_attributes = model.instance_variable_get(:@attributes)["lifecycle_stage"]
+        stage_attributes.instance_variable_set(:@value_before_type_cast, lifecycle_stage)
+        stage_attributes.instance_variable_set(:@value, lifecycle_stage)
+      else
+        model.lifecycle_stage = lifecycle_stage
+      end
+    end
+
+    def faulty_lifecycle_stage?(lifecycle_stage)
+      lifecycle_stage && Project.lifecycle_stages.keys.exclude?(lifecycle_stage.to_s)
+    end
+
+    def first_not_set_lifecycle_stage
+      (Project.lifecycle_stages.keys - [model.lifecycle_stage]).first
     end
 
     def set_custom_values_to_validate(params)

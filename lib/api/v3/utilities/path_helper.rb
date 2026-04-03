@@ -388,6 +388,7 @@ module API
           end
 
           show :project_status
+          show :project_lifecycle_stage
 
           def self.projects_available_parents(of: nil, workspace_type: nil)
             query = { of:, workspace_type: }.compact_blank.to_query

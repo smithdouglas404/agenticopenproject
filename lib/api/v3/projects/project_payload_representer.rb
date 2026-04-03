@@ -35,7 +35,7 @@ module API
         cached_representer disabled: true
 
         def writable_attributes
-          super + %w[status]
+          super + %w[status lifecycle_stage]
         end
       end
     end
