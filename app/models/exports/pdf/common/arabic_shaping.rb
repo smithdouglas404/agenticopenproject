@@ -41,25 +41,25 @@ module Exports::PDF::Common::ArabicShaping
   # Values are Unicode codepoints for Arabic Presentation Forms-B (U+FE70-U+FEFF)
   ARABIC_FORMS = {
     # Hamza
-    0x0621 => [0xFE80, nil, nil, nil],                   # HAMZA (U)
+    0x0621 => [0xFE80, nil, nil, nil], # HAMZA (U)
     # Alef with Madda, Hamza Above/Below, plain Alef
-    0x0622 => [0xFE81, 0xFE82, nil, nil],                # ALEF WITH MADDA ABOVE (R)
-    0x0623 => [0xFE83, 0xFE84, nil, nil],                # ALEF WITH HAMZA ABOVE (R)
-    0x0624 => [0xFE85, 0xFE86, nil, nil],                # WAW WITH HAMZA ABOVE (R)
-    0x0625 => [0xFE87, 0xFE88, nil, nil],                # ALEF WITH HAMZA BELOW (R)
+    0x0622 => [0xFE81, 0xFE82, nil, nil], # ALEF WITH MADDA ABOVE (R)
+    0x0623 => [0xFE83, 0xFE84, nil, nil], # ALEF WITH HAMZA ABOVE (R)
+    0x0624 => [0xFE85, 0xFE86, nil, nil], # WAW WITH HAMZA ABOVE (R)
+    0x0625 => [0xFE87, 0xFE88, nil, nil], # ALEF WITH HAMZA BELOW (R)
     0x0626 => [0xFE89, 0xFE8A, 0xFE8B, 0xFE8C],         # YEH WITH HAMZA ABOVE (D)
-    0x0627 => [0xFE8D, 0xFE8E, nil, nil],                # ALEF (R)
+    0x0627 => [0xFE8D, 0xFE8E, nil, nil], # ALEF (R)
     0x0628 => [0xFE8F, 0xFE90, 0xFE91, 0xFE92],         # BEH (D)
-    0x0629 => [0xFE93, 0xFE94, nil, nil],                # TEH MARBUTA (R)
+    0x0629 => [0xFE93, 0xFE94, nil, nil], # TEH MARBUTA (R)
     0x062A => [0xFE95, 0xFE96, 0xFE97, 0xFE98],         # TEH (D)
     0x062B => [0xFE99, 0xFE9A, 0xFE9B, 0xFE9C],         # THEH (D)
     0x062C => [0xFE9D, 0xFE9E, 0xFE9F, 0xFEA0],         # JEEM (D)
     0x062D => [0xFEA1, 0xFEA2, 0xFEA3, 0xFEA4],         # HAH (D)
     0x062E => [0xFEA5, 0xFEA6, 0xFEA7, 0xFEA8],         # KHAH (D)
-    0x062F => [0xFEA9, 0xFEAA, nil, nil],                # DAL (R)
-    0x0630 => [0xFEAB, 0xFEAC, nil, nil],                # THAL (R)
-    0x0631 => [0xFEAD, 0xFEAE, nil, nil],                # REH (R)
-    0x0632 => [0xFEAF, 0xFEB0, nil, nil],                # ZAIN (R)
+    0x062F => [0xFEA9, 0xFEAA, nil, nil], # DAL (R)
+    0x0630 => [0xFEAB, 0xFEAC, nil, nil], # THAL (R)
+    0x0631 => [0xFEAD, 0xFEAE, nil, nil], # REH (R)
+    0x0632 => [0xFEAF, 0xFEB0, nil, nil], # ZAIN (R)
     0x0633 => [0xFEB1, 0xFEB2, 0xFEB3, 0xFEB4],         # SEEN (D)
     0x0634 => [0xFEB5, 0xFEB6, 0xFEB7, 0xFEB8],         # SHEEN (D)
     0x0635 => [0xFEB9, 0xFEBA, 0xFEBB, 0xFEBC],         # SAD (D)
@@ -76,12 +76,12 @@ module Exports::PDF::Common::ArabicShaping
     0x0645 => [0xFEE1, 0xFEE2, 0xFEE3, 0xFEE4],         # MEEM (D)
     0x0646 => [0xFEE5, 0xFEE6, 0xFEE7, 0xFEE8],         # NOON (D)
     0x0647 => [0xFEE9, 0xFEEA, 0xFEEB, 0xFEEC],         # HEH (D)
-    0x0648 => [0xFEED, 0xFEEE, nil, nil],                # WAW (R)
-    0x0649 => [0xFEEF, 0xFEF0, nil, nil],                # ALEF MAKSURA (R)
+    0x0648 => [0xFEED, 0xFEEE, nil, nil], # WAW (R)
+    0x0649 => [0xFEEF, 0xFEF0, nil, nil], # ALEF MAKSURA (R)
     0x064A => [0xFEF1, 0xFEF2, 0xFEF3, 0xFEF4],         # YEH (D)
 
     # Additional Arabic characters
-    0x0671 => [0xFB50, 0xFB51, nil, nil],                # ALEF WASLA (R)
+    0x0671 => [0xFB50, 0xFB51, nil, nil], # ALEF WASLA (R)
     0x0679 => [0xFB66, 0xFB67, 0xFB68, 0xFB69],         # TTEH (D)
     0x067A => [0xFB5E, 0xFB5F, 0xFB60, 0xFB61],         # TTEHEH (D)
     0x067B => [0xFB52, 0xFB53, 0xFB54, 0xFB55],         # BEEH (D)
@@ -92,12 +92,12 @@ module Exports::PDF::Common::ArabicShaping
     0x0684 => [0xFB72, 0xFB73, 0xFB74, 0xFB75],         # DYEH (D)
     0x0686 => [0xFB7A, 0xFB7B, 0xFB7C, 0xFB7D],         # TCHEH (D)
     0x0687 => [0xFB7E, 0xFB7F, 0xFB80, 0xFB81],         # TCHEHEH (D)
-    0x0688 => [0xFB88, 0xFB89, nil, nil],                # DDAL (R)
-    0x068C => [0xFB84, 0xFB85, nil, nil],                # DAHAL (R)
-    0x068D => [0xFB82, 0xFB83, nil, nil],                # DDAHAL (R)
-    0x068E => [0xFB86, 0xFB87, nil, nil],                # DUL (R)
-    0x0691 => [0xFB8C, 0xFB8D, nil, nil],                # RREH (R)
-    0x0698 => [0xFB8A, 0xFB8B, nil, nil],                # JEH (R)
+    0x0688 => [0xFB88, 0xFB89, nil, nil], # DDAL (R)
+    0x068C => [0xFB84, 0xFB85, nil, nil], # DAHAL (R)
+    0x068D => [0xFB82, 0xFB83, nil, nil], # DDAHAL (R)
+    0x068E => [0xFB86, 0xFB87, nil, nil], # DUL (R)
+    0x0691 => [0xFB8C, 0xFB8D, nil, nil], # RREH (R)
+    0x0698 => [0xFB8A, 0xFB8B, nil, nil], # JEH (R)
     0x06A4 => [0xFB6A, 0xFB6B, 0xFB6C, 0xFB6D],         # VEH (D)
     0x06A6 => [0xFB6E, 0xFB6F, 0xFB70, 0xFB71],         # PEHEH (D)
     0x06A9 => [0xFB8E, 0xFB8F, 0xFB90, 0xFB91],         # KEHEH (D)
@@ -105,20 +105,20 @@ module Exports::PDF::Common::ArabicShaping
     0x06AF => [0xFB92, 0xFB93, 0xFB94, 0xFB95],         # GAF (D)
     0x06B1 => [0xFB9A, 0xFB9B, 0xFB9C, 0xFB9D],         # NGOEH (D)
     0x06B3 => [0xFB96, 0xFB97, 0xFB98, 0xFB99],         # GUEH (D)
-    0x06BA => [0xFB9E, 0xFB9F, nil, nil],                # NOON GHUNNA (R)
+    0x06BA => [0xFB9E, 0xFB9F, nil, nil], # NOON GHUNNA (R)
     0x06BB => [0xFBA0, 0xFBA1, 0xFBA2, 0xFBA3],         # RNOON (D)
     0x06BE => [0xFBAA, 0xFBAB, 0xFBAC, 0xFBAD],         # HEH DOACHASHMEE (D)
-    0x06C0 => [0xFBA4, 0xFBA5, nil, nil],                # HEH WITH YEH ABOVE (R)
+    0x06C0 => [0xFBA4, 0xFBA5, nil, nil], # HEH WITH YEH ABOVE (R)
     0x06C1 => [0xFBA6, 0xFBA7, 0xFBA8, 0xFBA9],         # HEH GOAL (D)
-    0x06C5 => [0xFBE0, 0xFBE1, nil, nil],                # KIRGHIZ OE (R)
-    0x06C6 => [0xFBD9, 0xFBDA, nil, nil],                # OE (R)
-    0x06C7 => [0xFBD7, 0xFBD8, nil, nil],                # U (R)
-    0x06C8 => [0xFBDB, 0xFBDC, nil, nil],                # YU (R)
-    0x06C9 => [0xFBE2, 0xFBE3, nil, nil],                # KIRGHIZ YU (R)
-    0x06CB => [0xFBDE, 0xFBDF, nil, nil],                # VE (R)
+    0x06C5 => [0xFBE0, 0xFBE1, nil, nil], # KIRGHIZ OE (R)
+    0x06C6 => [0xFBD9, 0xFBDA, nil, nil], # OE (R)
+    0x06C7 => [0xFBD7, 0xFBD8, nil, nil], # U (R)
+    0x06C8 => [0xFBDB, 0xFBDC, nil, nil], # YU (R)
+    0x06C9 => [0xFBE2, 0xFBE3, nil, nil], # KIRGHIZ YU (R)
+    0x06CB => [0xFBDE, 0xFBDF, nil, nil], # VE (R)
     0x06CC => [0xFBFC, 0xFBFD, 0xFBFE, 0xFBFF],         # FARSI YEH (D)
     0x06D0 => [0xFBE4, 0xFBE5, 0xFBE6, 0xFBE7],         # E (D)
-    0x06D2 => [0xFBAE, 0xFBAF, nil, nil],                # YEH BARREE (R)
+    0x06D2 => [0xFBAE, 0xFBAF, nil, nil], # YEH BARREE (R)
     0x06D3 => [0xFBB0, 0xFBB1, nil, nil]                 # YEH BARREE WITH HAMZA ABOVE (R)
   }.freeze
 
@@ -131,13 +131,13 @@ module Exports::PDF::Common::ArabicShaping
   }.freeze
 
   # Arabic diacritical marks (tashkeel) - transparent joining
-  ARABIC_MARKS = (0x064B..0x065F).to_a.concat(
-    [0x0610, 0x0611, 0x0612, 0x0613, 0x0614, 0x0615,
-     0x0616, 0x0617, 0x0618, 0x0619, 0x061A,
-     0x06D6, 0x06D7, 0x06D8, 0x06D9, 0x06DA, 0x06DB,
-     0x06DC, 0x06DF, 0x06E0, 0x06E1, 0x06E2, 0x06E3,
-     0x06E4, 0x06E7, 0x06E8, 0x06EA, 0x06EB, 0x06EC, 0x06ED,
-     0x0670] # Superscript Alef
+  ARABIC_MARKS = (0x064B..0x065F).to_a.push(
+    0x0610, 0x0611, 0x0612, 0x0613, 0x0614, 0x0615,
+    0x0616, 0x0617, 0x0618, 0x0619, 0x061A,
+    0x06D6, 0x06D7, 0x06D8, 0x06D9, 0x06DA, 0x06DB,
+    0x06DC, 0x06DF, 0x06E0, 0x06E1, 0x06E2, 0x06E3,
+    0x06E4, 0x06E7, 0x06E8, 0x06EA, 0x06EB, 0x06EC, 0x06ED,
+    0x0670
   ).freeze
 
   ARABIC_MARKS_SET = ARABIC_MARKS.to_set.freeze
@@ -156,19 +156,12 @@ module Exports::PDF::Common::ArabicShaping
       i = 0
 
       while i < chars.length
-        cp = chars[i]
-
-        if arabic_letter?(cp)
-          # Collect a run of Arabic characters (letters + marks)
-          run_start = i
-          run = []
-          while i < chars.length && (arabic_letter?(chars[i]) || arabic_mark?(chars[i]) || chars[i] == 0x0640)
-            run << chars[i]
-            i += 1
-          end
+        if arabic_letter?(chars[i])
+          run = collect_arabic_run(chars, i)
+          i += run.length
           result.concat(shape_arabic_run(run))
         else
-          result << cp
+          result << chars[i]
           i += 1
         end
       end
@@ -176,59 +169,61 @@ module Exports::PDF::Common::ArabicShaping
       result.pack("U*")
     end
 
-    # Reorder RTL text for Prawn (which only renders LTR)
-    # This does a simplified logical-to-visual reordering
-    def reorder_rtl(text)
-      return text unless contains_arabic?(text)
-
-      lines = text.split("\n")
-      lines.map { |line| reorder_rtl_line(line) }.join("\n")
-    end
-
-    # Combined shape + reorder for convenience
+    # Shape Arabic text for PDF rendering.
+    # Only converts characters to presentation forms (connected glyphs).
+    # Text direction is handled by Prawn's align: :right for RTL locales.
     def process(text)
-      return text if text.nil? || text.empty?
-      return text unless contains_arabic?(text)
+      return text if text.blank?
 
-      reorder_rtl(shape(text))
+      shape(text)
     end
 
     private
 
-    def arabic_letter?(cp)
-      ARABIC_FORMS.key?(cp)
+    def collect_arabic_run(chars, start_index)
+      run = []
+      i = start_index
+      while i < chars.length && (arabic_letter?(chars[i]) || arabic_mark?(chars[i]) || chars[i] == 0x0640)
+        run << chars[i]
+        i += 1
+      end
+      run
     end
 
-    def arabic_mark?(cp)
-      ARABIC_MARKS_SET.include?(cp)
+    def arabic_letter?(codepoint)
+      ARABIC_FORMS.key?(codepoint)
     end
 
-    def dual_joining?(cp)
-      forms = ARABIC_FORMS[cp]
+    def arabic_mark?(codepoint)
+      ARABIC_MARKS_SET.include?(codepoint)
+    end
+
+    def dual_joining?(codepoint)
+      forms = ARABIC_FORMS[codepoint]
       return false if forms.nil?
 
       # Dual-joining if it has initial and medial forms
       forms[2] && forms[3]
     end
 
-    def right_joining?(cp)
-      forms = ARABIC_FORMS[cp]
+    def right_joining?(codepoint)
+      forms = ARABIC_FORMS[codepoint]
       return false if forms.nil?
 
       # Right-joining only: has final form but no initial/medial
       forms[1] && !forms[2]
     end
 
-    def join_causing?(cp)
-      cp == 0x0640 || cp == 0x200D # TATWEEL or ZWJ
+    def join_causing?(codepoint)
+      codepoint == 0x0640 || codepoint == 0x200D # TATWEEL or ZWJ
     end
 
-    def can_join_to_right?(cp)
-      dual_joining?(cp) || right_joining?(cp) || join_causing?(cp)
+    def can_join_to_right?(codepoint)
+      dual_joining?(codepoint) || right_joining?(codepoint) || join_causing?(codepoint)
     end
 
-    def can_join_to_left?(cp)
-      dual_joining?(cp) || join_causing?(cp)
+    def can_join_to_left?(codepoint)
+      dual_joining?(codepoint) || join_causing?(codepoint)
     end
 
     def shape_arabic_run(run)
@@ -259,7 +254,7 @@ module Exports::PDF::Common::ArabicShaping
           result << ligature_cp
         else
           cp = entry
-          forms = ARABIC_FORMS[cp]
+          forms = ARABIC_FORMS[codepoint]
           if forms
             prev_joins = idx > 0 && previous_can_join_left?(shaped_bases, idx)
             next_joins = idx < shaped_bases.length - 1 && next_can_join_right?(shaped_bases, idx)
@@ -357,80 +352,5 @@ module Exports::PDF::Common::ArabicShaping
       end
     end
 
-    def reorder_rtl_line(line)
-      return line if line.empty?
-
-      codepoints = line.codepoints
-      segments = segment_by_direction(codepoints)
-
-      # Reverse the order of segments for RTL base direction,
-      # but keep LTR segments internally in their original order
-      result = []
-      segments.reverse_each do |segment|
-        if segment[:dir] == :rtl
-          # Reverse RTL characters (they were in logical order)
-          result.concat(segment[:cps].reverse)
-        else
-          # LTR text keeps its order
-          result.concat(segment[:cps])
-        end
-      end
-
-      result.pack("U*")
-    end
-
-    def segment_by_direction(codepoints)
-      segments = []
-      current_dir = nil
-      current_cps = []
-
-      codepoints.each do |cp|
-        dir = char_direction(cp)
-
-        if dir == :neutral
-          # Neutrals follow the current direction
-          current_cps << cp
-        elsif dir == current_dir
-          current_cps << cp
-        else
-          if current_cps.any?
-            segments << { dir: current_dir || :ltr, cps: current_cps }
-          end
-          current_dir = dir
-          current_cps = [cp]
-        end
-      end
-
-      segments << { dir: current_dir || :ltr, cps: current_cps } if current_cps.any?
-      segments
-    end
-
-    def char_direction(cp)
-      if rtl_char?(cp)
-        :rtl
-      elsif ltr_char?(cp)
-        :ltr
-      else
-        :neutral
-      end
-    end
-
-    def rtl_char?(cp)
-      # Arabic, Hebrew, and Arabic presentation forms
-      (cp >= 0x0590 && cp <= 0x05FF) || # Hebrew
-        (cp >= 0x0600 && cp <= 0x06FF) || # Arabic
-        (cp >= 0x0750 && cp <= 0x077F) || # Arabic Supplement
-        (cp >= 0xFB50 && cp <= 0xFDFF) || # Arabic Presentation Forms-A
-        (cp >= 0xFE70 && cp <= 0xFEFF) || # Arabic Presentation Forms-B
-        cp == 0x200F                       # RTL mark
-    end
-
-    def ltr_char?(cp)
-      # Basic Latin letters and digits
-      (cp >= 0x0041 && cp <= 0x005A) || # A-Z
-        (cp >= 0x0061 && cp <= 0x007A) || # a-z
-        (cp >= 0x0030 && cp <= 0x0039) || # 0-9
-        cp == 0x200E                       # LTR mark
-    end
   end
 end
