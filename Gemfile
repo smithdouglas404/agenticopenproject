@@ -41,10 +41,10 @@ gem "activemodel-serializers-xml", "~> 1.0.1"
 gem "activerecord-import", "~> 2.2.0"
 gem "activerecord-session_store", "~> 2.2.0"
 gem "ox"
-gem "rails", "~> 8.1.2"
+gem "rails", "~> 8.1.3"
 gem "responders", "~> 3.2"
 
-gem "ffi", "~> 1.15"
+gem "ffi", "~> 1.17"
 
 gem "connection_pool", "~> 3.0.2"
 
@@ -161,7 +161,7 @@ gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
 
-gem "mcp", "~> 0.8.0"
+gem "mcp", "~> 0.9.2"
 
 gem "meta-tags", "~> 2.23.0"
 
@@ -254,7 +254,7 @@ gem "factory_bot_rails", "~> 6.5.0", require: false
 gem "turbo_power", "~> 0.7.0"
 gem "turbo-rails", "~> 2.0.20"
 
-gem "httpx", "~> 1.7.4"
+gem "httpx", "~> 1.7.5"
 
 # Brings actual deep-freezing to most ruby objects
 gem "ice_nine"
@@ -266,7 +266,7 @@ group :test do
 
   # Test prof provides factories from code
   # and other niceties
-  gem "test-prof", "~> 1.5.0"
+  gem "test-prof", "~> 1.6.0"
   gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
 
   gem "rack_session_access"

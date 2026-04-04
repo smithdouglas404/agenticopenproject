@@ -66,7 +66,7 @@ module Exports
     attr_accessor :export, :current_user, :mime_type, :query, :options
 
     def prepare!
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
 
     def list_export?

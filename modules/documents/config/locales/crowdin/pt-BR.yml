@@ -70,12 +70,10 @@ pt-BR:
         Entre em contato com o administrador para ativar a colaboração de texto em tempo real se você quiser acessar este documento.
     show_edit_view:
       connection_error_notice:
-        description: |-
-          Não foi possível abrir o documento porque o servidor de colaboração de texto em tempo real está inacessível.
-          Contate o administrador se o problema persistir.
+        description_server_unavailable: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
         action: Tente novamente
-      connection_recovery_notice:
-        description: "A conexão para o servidor de colaboração de texto em tempo real foi restaurada."
       tabs: "Abas de documento"
     index_page:
       name: "Nome"
@@ -87,6 +85,9 @@ pt-BR:
       types: "Tipos"
       collaboration_settings: "Colaboração em tempo real"
     last_updated_at: "Última gravação %{time}."
+    info_line:
+      currently_offline: "You are currently offline."
+      connection_restored: "You are now back online."
     active_editors: "Editores ativos"
     active_editors_count:
       one: "1 editor ativo"

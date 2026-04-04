@@ -88,7 +88,7 @@ zh-CN:
         token_caption: "要详细了解如何激活企业版，请查阅我们的[文档](docs_url)。"
       add_token: "上传企业版支持令牌"
       replace_token: "替换您当前的支持令牌"
-      order: "订购本地部署版的 Enterprise edition"
+      order: "订购本地部署的 Enterprise edition"
       paste: "粘贴您企业版的支持令牌"
       required_for_feature: "此功能仅限具激活的企业版支持令牌的订阅者使用。"
       enterprise_link: "如需了解详细信息，请单击此处。"
@@ -112,7 +112,7 @@ zh-CN:
     import:
       title: "导入"
     jira:
-      title: "Jira 导入"
+      title: "Jira Migrator"
       description: "使用此工具从您的 Jira 实例中导入数据。您可以配置多个 Jira 主机，并选择每次导入运行要导入的内容。"
       errors:
         cannot_delete_with_imports: "无法删除具有现有导入的 Jira 主机"
@@ -123,8 +123,8 @@ zh-CN:
         title: "Jira 配置"
         new: "新配置"
       banner:
-        title: "受限导入"
-        description: "此导入工具目前处于测试阶段，只能导入基本数据：项目、问题（名称、标题、描述、附件）、用户（名称、电子邮件地址、项目成员资格）、状态和类型。不能导入工作流、自定义字段、问题关系或权限。我们目前仅支持 Jira Server/Data Center 版本 10.x 和 11.x。目前不支持云实例。"
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "名称"
@@ -160,7 +160,7 @@ zh-CN:
       run:
         title: "导入运行"
         history: "历史记录"
-        remove_error: "无法移除正在运行的 Jira 导入"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "另一个 Jira 导入运行当前正在执行或等待审核。请先完成或撤消当前运行，然后再开始新的导入。"
         project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:
@@ -376,20 +376,24 @@ zh-CN:
           <p>您好！</p><p>已创建一个新项目：projectValue:name</p> <p>谢谢</p>
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
           label_project: Project
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_starts_with_number: Cannot start with a number
           error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
           error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
           remaining_projects:
             other: "... %{count} more projects"
         button_autofix: Autofix and save
@@ -402,7 +406,7 @@ zh-CN:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "默认转换"
@@ -1485,6 +1489,9 @@ zh-CN:
         dependencies: "依赖项"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Identifier"
+        work_package: "Work package"
       jira_import:
         projects: "项目"
       "import/jira":
@@ -1493,7 +1500,7 @@ zh-CN:
         personal_access_token: "个人访问令牌"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira 导入"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "显示截止日期"
       attachment:
@@ -1571,7 +1578,7 @@ zh-CN:
         page: "页"
         row_count: "行数"
         column_count: "列数"
-        widgets: "微件"
+        widgets: "小部件"
       journal:
         notes: "备注"
         cause_type: "Cause 类型"
@@ -3430,6 +3437,7 @@ zh-CN:
   label_ical_access_key_generation_hint: "订阅日历时自动生成的。"
   label_ical_access_key_latest: "最近"
   label_ical_access_key_revoke: "撤消"
+  label_integrations: "Integrations"
   label_add_column: "添加列"
   label_applied_status: "应用的状态"
   label_archive_project: "归档项目"
@@ -3680,7 +3688,7 @@ zh-CN:
   label_external_links: "外部链接"
   label_locale: "语言和地区"
   label_jump_to_a_project: "跳转到一个项目..."
-  label_jira_import: "Jira 导入"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "关键词"
   label_language_based: "基于用户的语言"
   label_last_activity: "最近一次活动"
@@ -3919,7 +3927,7 @@ zh-CN:
   label_revision_id: "修订版本 %{value}"
   label_revision_plural: "修订"
   label_roadmap: "路线图"
-  label_roadmap_edit: "编辑路线图%{name}"
+  label_roadmap_edit: "编辑路线图 %{name}"
   label_roadmap_due_in: "%{value} 到期"
   label_roadmap_no_work_packages: "该版本没有工作包。"
   label_roadmap_overdue: "%{value} 超时"
@@ -4667,7 +4675,7 @@ zh-CN:
       managed: "在 OpenProject 中创建新的存储库"
     storage:
       not_available: "磁盘存储开销不可用于此存储库。"
-      update_timeout: "在 N 分钟内保留存储库最后所需的磁盘空间信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
+      update_timeout: "在 N 分钟内保留存储库最后所需磁盘空间的信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
       oauth_application_details_html: "The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:"
       oauth_application_details_link_text: "转到设置页面"
       setup_documentation_details: "如果您在配置新文件存储方面需要帮助，请查看文档："
@@ -4881,7 +4889,7 @@ zh-CN:
   setting_session_ttl_hint: "当设置的值低于5时，其作用类似于禁用。"
   setting_session_ttl_enabled: "会话过期"
   setting_start_of_week: "一周起始日"
-  setting_sys_api_enabled: "启用存储库管理网页服务"
+  setting_sys_api_enabled: "启用版本库管理 web 服务"
   setting_sys_api_description: "存储库管理网页服务提供了集成的，用户授权的存储库访问。"
   setting_time_format: "时间"
   setting_total_percent_complete_mode: "计算 完成% 层次结构总数"
@@ -4899,11 +4907,11 @@ zh-CN:
   setting_welcome_text: "欢迎块文本"
   setting_welcome_title: "欢迎块标题"
   setting_welcome_on_homescreen: "在主屏幕上显示欢迎信息"
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: >
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
     Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "默认突出显示模式"
   setting_work_package_list_default_highlighted_attributes: "默认内联突出显示属性"
@@ -5320,7 +5328,7 @@ zh-CN:
   warning_user_limit_reached_admin_html: >
     Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
-    您已达到用户限制（%{current}/%{max} 活跃用户）。请联系 sales@openproject.com 升级您的企业版计划以添加额外用户。
+    您达到了用户限制（%{current}/%{max}活跃用户）。 请联系sales@openproject.com以升级您的Enterprise edition计划并添加其他用户。
   warning_protocol_mismatch_html: >
 
   warning_bar:

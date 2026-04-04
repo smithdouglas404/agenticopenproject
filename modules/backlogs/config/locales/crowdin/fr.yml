@@ -160,7 +160,10 @@ fr:
         receive_shared_no_actions_description_text: "Ce projet reçoit des sprints partagés d'un autre projet, mais aucun n'est disponible pour le moment."
         settings_link_text: "paramètres de projet"
     sprint_header_component:
-      label_toggle_backlog: "Réduire/développer %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "Aucune story dans le sprint"
         one: "%{count} story dans le sprint"
@@ -187,10 +190,6 @@ fr:
     sprint_menu_component:
       label_actions: "Actions du sprint"
       action_menu:
-        start_sprint: "Démarrer le sprint"
-        complete_sprint: "Complete sprint"
-        start_sprint_disabled_description: "Un autre sprint est déjà actif."
-        start_sprint_missing_dates_description: "Les dates de début et de fin sont nécessaires pour lancer le sprint."
         edit_sprint: "Modifier le sprint"
         add_work_package: "Ajouter un lot de travaux"
     story_component:

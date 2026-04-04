@@ -70,12 +70,10 @@ fr:
         Veuillez contacter votre administrateur pour activer la collaboration textuelle en temps réel si vous souhaitez accéder à ce document.
     show_edit_view:
       connection_error_notice:
-        description: |-
+        description_server_unavailable: |-
           Impossible d'ouvrir le document car le serveur de collaboration textuelle en temps réel est inaccessible.
           Veuillez contacter l'administrateur si le problème persiste.
         action: Réessayer
-      connection_recovery_notice:
-        description: "La connexion au serveur de collaboration textuelle en temps réel a été rétablie."
       tabs: "Onglets du document"
     index_page:
       name: "Nom"
@@ -87,6 +85,9 @@ fr:
       types: "Types"
       collaboration_settings: "Collaboration en temps réel"
     last_updated_at: "Dernier enregistrement %{time}."
+    info_line:
+      currently_offline: "Vous êtes actuellement déconnecté."
+      connection_restored: "Vous êtes à nouveau connecté."
     active_editors: "Éditeurs actifs"
     active_editors_count:
       one: "1 éditeur actif"

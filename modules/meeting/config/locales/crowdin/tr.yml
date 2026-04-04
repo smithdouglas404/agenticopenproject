@@ -189,6 +189,7 @@ tr:
   label_notify: "Gözden geçirilmek üzere gönder"
   label_icalendar: "Takvime gönder"
   label_icalendar_download: "iCalender etkinliğini indir "
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Toplantı serisini görüntüle"
   label_meeting_series: "Toplantı serisi"
   label_version: "Sürüm"

@@ -112,7 +112,7 @@ pt-PT:
     import:
       title: "Importar"
     jira:
-      title: "Importação Jira"
+      title: "Jira Migrator"
       description: "Utilize esta ferramenta para importar dados da sua instância do Jira. Pode configurar vários anfitriões do Jira, e escolher o que importar em cada execução de importação."
       errors:
         cannot_delete_with_imports: "Não é possível eliminar o anfitrião do Jira com importações existentes"
@@ -123,8 +123,8 @@ pt-PT:
         title: "Configuração do Jira"
         new: "Nova configuração"
       banner:
-        title: "Importação limitada"
-        description: "Esta ferramenta de importação está em fase beta, e só consegue importar dados básicos: projetos, problemas (nome, título, descrição, anexos), utilizadores (nome, e-mail, associação ao projeto), estados e tipos. Não pode importar fluxos de trabalho, campos personalizados, relações de problemas ou permissões. Neste momento, só temos suporte para o servidor/centro de dados Jira nas versões 10.x e 11.x. As instâncias na nuvem não são suportadas agora."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Nome"
@@ -160,7 +160,7 @@ pt-PT:
       run:
         title: "Importar execução"
         history: "Histórico"
-        remove_error: "Uma importação do Jira não pode ser removida enquanto está a ser executada"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Está em curso ou a aguardar revisão outra importação do Jira. Conclua-a ou reverta-a antes de iniciar uma nova importação."
         project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:
@@ -382,20 +382,24 @@ pt-PT:
           <p>Olá,</p> <p>Foi criado um novo projeto: projectValue:name</p> <p>Obrigado</p>
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
           label_project: Project
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_starts_with_number: Cannot start with a number
           error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
           error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
             other: "... %{count} more projects"
@@ -409,7 +413,7 @@ pt-PT:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Transições padrão"
@@ -1504,6 +1508,9 @@ pt-PT:
         dependencies: "Dependências"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Identifier"
+        work_package: "Work package"
       jira_import:
         projects: "Projetos"
       "import/jira":
@@ -1512,7 +1519,7 @@ pt-PT:
         personal_access_token: "Token de acesso pessoal"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira import"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Exibir até"
       attachment:
@@ -3490,6 +3497,7 @@ pt-PT:
   label_ical_access_key_generation_hint: "Gerado automaticamente ao subscrever um calendário."
   label_ical_access_key_latest: "recente"
   label_ical_access_key_revoke: "Revogar"
+  label_integrations: "Integrations"
   label_add_column: "Adicionar coluna"
   label_applied_status: "Status aplicado"
   label_archive_project: "Arquivar projeto"
@@ -3740,7 +3748,7 @@ pt-PT:
   label_external_links: "Links externos"
   label_locale: "Idioma e região"
   label_jump_to_a_project: "Saltar para um projeto..."
-  label_jira_import: "Importação Jira"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Palavras-chave"
   label_language_based: "Com base no idioma do utilizador"
   label_last_activity: "Última atividade"
@@ -4965,11 +4973,11 @@ pt-PT:
   setting_welcome_text: "Bloco de texto de boas-vindas"
   setting_welcome_title: "Título de texto de boas-vindas"
   setting_welcome_on_homescreen: "Exibir o bloco de boas-vindas no ecrã inicial"
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: >
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
     Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Modo de destaque padrão"
   setting_work_package_list_default_highlighted_attributes: "Atributos padrão destacados em linha"

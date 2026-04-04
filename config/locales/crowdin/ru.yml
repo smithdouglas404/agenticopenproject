@@ -112,7 +112,7 @@ ru:
     import:
       title: "Импорт"
     jira:
-      title: "Импорт из Jira"
+      title: "Мигратор Jira"
       description: "Используйте этот инструмент для импорта данных из Вашего экземпляра Jira. Вы можете настроить несколько узлов Jira и выбрать, что импортировать в каждом запуске импорта."
       errors:
         cannot_delete_with_imports: "Невозможно удалить хост Jira с существующими импортами"
@@ -123,8 +123,8 @@ ru:
         title: "Конфигурация Jira"
         new: "Новая конфигурация"
       banner:
-        title: "Ограниченный импорт"
-        description: "Этот инструмент импорта в настоящее время находится в стадии бета-тестирования и может импортировать только основные данные: проекты, проблемы (имя, название, описание, вложения), пользователей (имя, электронная почта, членство в проекте), статусы и типы. Он не может импортировать рабочие процессы, пользовательские поля, отношения между заданиями или разрешения. В настоящее время мы поддерживаем только Jira Server/Data Center версий 10.x и 11.x. Облачные экземпляры на данный момент не поддерживаются."
+        title: "Ограниченные возможности импорта"
+        description: "Этот мигратор Jira в настоящее время находится в бета-версии и может импортировать только основные данные: проекты, проблемы (имя, заголовок, описание, вложения), пользователей (имя, электронная почта, членство в проекте), статусы и типы. Он не может импортировать рабочие процессы, пользовательские поля, отношения между заданиями или разрешения. В настоящее время мы поддерживаем только Jira Server/Data Center версий 10.x и 11.x. Облачные экземпляры на данный момент не поддерживаются."
       form:
         fields:
           name: "Имя"
@@ -160,7 +160,7 @@ ru:
       run:
         title: "Выполнение импорта"
         history: "История"
-        remove_error: "Импорт Jira нельзя удалить во время его выполнения"
+        remove_error: "Запуск импорта Jira не может быть удалён, пока он запущен"
         import_blocked_error: "Другая операция импорта Jira находится в процессе выполнения или ожидает рассмотрения. Пожалуйста, завершите или отмените его, прежде чем начинать новый импорт."
         project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:
@@ -394,20 +394,24 @@ ru:
           <p>Здравствуйте,</p> <p>Был создан новый проект: projectValue:name</p> <p>Спасибо</p>
       work_packages_identifier:
         page_header:
-          description: Выберите между базовыми числовыми идентификаторами пакетов работ или специфическими для проекта, которые добавляют идентификатор проекта к идентификатору пакета работ.
+          description: Выберите между классическими числовыми идентификаторами пакета работ или семантическими, специфичными для проекта, которые добавляют идентификатор проекта к ID пакета работ.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+            Существующие идентификаторы для проектов %{project_count} не соответствуют требованиям, предъявляемым к семантическим идентификаторам. OpenProject может автоматически обновить их, чтобы они были действительными, как показано в примерах ниже. Щелкните на 'Исправить и сохранить', чтобы обновить идентификаторы для всех проектов и включить семантические идентификаторы на основе проекта.
         box_header:
           label_project: Проект
           label_previous_identifier: Предыдущий идентификатор
           label_autofixed_suggestion: Следующий идентификатор
           label_example_work_package_id: Пример ID пакета работ
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Должно быть 10 символов или меньше
+          error_numerical: Не может быть чисто числовым
+          error_starts_with_number: Не может начинаться с цифры
           error_special_characters: Специальные символы не допускаются
+          error_not_fully_uppercased: Должно быть заглавными
           error_in_use: Уже используется в другом проекте
           error_reserved: Зарезервировано другим проектом
+          error_unknown: Требуется ручная проверка
           remaining_projects:
             one: "... 1 more project"
             few: "... %{count} more projects"
@@ -423,7 +427,7 @@ ru:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Переходы по умолчанию"
@@ -1541,6 +1545,9 @@ ru:
         dependencies: "Связи"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Identifier"
+        work_package: "Work package"
       jira_import:
         projects: "Проекты"
       "import/jira":
@@ -1549,7 +1556,7 @@ ru:
         personal_access_token: "Персональный токен доступа"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Импорт из Jira"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Отобразить до"
       attachment:
@@ -3609,6 +3616,7 @@ ru:
   label_ical_access_key_generation_hint: "Автоматически генерируется при подписке на календарь."
   label_ical_access_key_latest: "последний"
   label_ical_access_key_revoke: "Отозвать"
+  label_integrations: "Integrations"
   label_add_column: "Добавить столбец"
   label_applied_status: "Прикладной статус"
   label_archive_project: "Архивировать проект"
@@ -3859,7 +3867,7 @@ ru:
   label_external_links: "Внешние ссылки"
   label_locale: "Язык и регион"
   label_jump_to_a_project: "Перейти к проекту..."
-  label_jira_import: "Импорт из Jira"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Ключевые слова"
   label_language_based: "Основанный на языке пользователя"
   label_last_activity: "Последняя активность"
@@ -5095,11 +5103,11 @@ ru:
   setting_welcome_text: "Текст приветствия"
   setting_welcome_title: "Заголовок приветствия"
   setting_welcome_on_homescreen: "Показывать приветствие на домашней странице"
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: >
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
     Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Способ выделения по умолчанию"
   setting_work_package_list_default_highlighted_attributes: "Выделенные встроенные атрибуты по умолчанию"

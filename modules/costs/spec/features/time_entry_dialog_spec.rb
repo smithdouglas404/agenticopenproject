@@ -280,7 +280,7 @@ RSpec.describe "time entry dialog", :js do
         find("opce-time-entry-trigger-actions .icon-edit").click
 
         time_logging_modal.is_visible(true)
-        time_logging_modal.update_field("entity_id", work_package_c.id)
+        time_logging_modal.update_field("entity_id", work_package_c.subject)
         wait_for_network_idle # form refresh is happening here
         time_logging_modal.submit
         wait_for_network_idle
@@ -307,7 +307,7 @@ RSpec.describe "time entry dialog", :js do
 
       expect do
         time_logging_modal.is_visible(true)
-        time_logging_modal.update_field("entity_id", work_package_b.id)
+        time_logging_modal.update_field("entity_id", work_package_b.subject)
         wait_for_network_idle # form refresh is happening here
         time_logging_modal.submit
         wait_for_network_idle
@@ -341,7 +341,7 @@ RSpec.describe "time entry dialog", :js do
         time_logging_modal.is_visible(true)
 
         # ensure the work package autocompleter is filled
-        time_logging_modal.update_field("entity_id", work_package_a.id)
+        time_logging_modal.update_field("entity_id", work_package_a.subject)
 
         # validates the required custom field and prevents update when missing
         time_logging_modal.submit

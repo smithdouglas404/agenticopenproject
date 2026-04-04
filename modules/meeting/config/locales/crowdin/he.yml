@@ -199,6 +199,7 @@ he:
   label_notify: "שלח לבדיקה"
   label_icalendar: "שלח iCalendar"
   label_icalendar_download: "Download iCalendar event"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "View meeting series"
   label_meeting_series: "Meeting series"
   label_version: "גירסה"

@@ -189,6 +189,7 @@ pt-BR:
   label_notify: "Enviar para revisão"
   label_icalendar: "Enviar iCalendar"
   label_icalendar_download: "Baixar evento iCalendar"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Visualizar série de reuniões"
   label_meeting_series: "Séries da reunião"
   label_version: "Versão"
