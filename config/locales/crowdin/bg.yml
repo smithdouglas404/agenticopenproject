@@ -3459,6 +3459,7 @@ bg:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Достъпност"
   label_account: "Акаунт"
+  label_actions: "Действия"
   label_active: "Активен"
   label_activate_user: "Activate user"
   label_active_in_new_projects: "Active in new projects"

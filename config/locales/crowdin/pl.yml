@@ -3573,6 +3573,7 @@ pl:
       invalid_filter: "Nieprawidłowy filtr powiadomień"
   label_accessibility: "Dostępność"
   label_account: "Konto"
+  label_actions: "Działania"
   label_active: "Aktywne"
   label_activate_user: "Aktywuj użytkownika"
   label_active_in_new_projects: "Aktywne w nowych projektach"

@@ -3398,6 +3398,7 @@ ms:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Kebolehcapaian"
   label_account: "Akaun"
+  label_actions: "Tindakan"
   label_active: "Aktif"
   label_activate_user: "Aktifkan pengguna"
   label_active_in_new_projects: "Aktifkan dalam projek baharu"

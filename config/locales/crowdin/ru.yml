@@ -3576,6 +3576,7 @@ ru:
       invalid_filter: "Неверный фильтр уведомлений"
   label_accessibility: "Спец. возможности"
   label_account: "Учетная запись"
+  label_actions: "Действия"
   label_active: "Активен"
   label_activate_user: "Активировать пользователя"
   label_active_in_new_projects: "Активное участие в новых проектах"

@@ -3459,6 +3459,7 @@ sv:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Tillgänglighet"
   label_account: "Konto"
+  label_actions: "Åtgärder"
   label_active: "Aktiv"
   label_activate_user: "Aktivera användare"
   label_active_in_new_projects: "Aktiv i nya projekt"

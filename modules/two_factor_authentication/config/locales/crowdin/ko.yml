@@ -37,18 +37,14 @@ ko:
     error_invalid_backup_code: "잘못된 2FA 백업 코드"
     channel_unavailable: "배달 채널 %{channel}이(가) 사용 가능하지 않습니다."
     no_valid_phone_number: "올바른 전화번호가 없습니다."
-    label_pwd_confirmation: "암호"
-    notice_pwd_confirmation: "이러한 설정 변경 시 암호를 확인해야 합니다."
     label_device_type: "장치 유형"
     label_default_device: "기본 2FA 장치"
     label_device: "2FA 장치"
     label_devices: "2FA 장치"
-    label_one_time_password: "일회용 암호"
     label_2fa_enabled: "2단계 인증이 활성화되었습니다."
     label_2fa_disabled: "2단계 인증이 활성화되지 않았습니다."
     text_otp_delivery_message_sms: "%{app_title}의 일회용 암호는 %{token}입니다."
     text_otp_delivery_message_voice: "%{app_title} 일회용 암호: %{pause} %{token}. %{pause} 반복: %{pause} %{token}"
-    text_enter_2fa: "장치에서 일회용 암호를 입력하세요."
     text_2fa_enabled: "로그인할 때마다 기본 2FA 장치에서 OTP 토큰을 입력하라는 메시지가 표시됩니다."
     text_2fa_disabled: "2단계 인증을 활성화하려면 위의 버튼을 사용하여 새로운 2FA 장치를 등록하세요. 장치가 이미 있는 경우 이 장치를 기본값으로 만들어야 합니다."
     login:
@@ -68,7 +64,6 @@ ko:
       text_remember: |
         사용자가 지정된 기간(일) 동안 2FA 인증을 저장할 수 있게 하려면 이 값을 0보다 크게 설정하세요.
         사용자가 해당 기간 동안에는 이를 다시 입력하라는 요청을 받지 않게 됩니다. 구성에 의해 강제 적용되지 않는 경우에만 설정할 수 있습니다.
-      error_invalid_settings: "선택한 2FA 전략은 유효하지 않습니다."
       failed_to_save_settings: "2FA 설정을 업데이트하지 못함: %{message}"
     admin:
       self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
@@ -81,14 +76,9 @@ ko:
       text_2fa_enabled: "로그인할 때마다 기본 2FA 장치에서 OTP 토큰을 입력하라는 메시지가 이 사용자에게 표시됩니다."
       text_2fa_disabled: "사용자가 '내 계정 페이지'에서 2FA 장치를 설정하지 않았습니다."
       only_sms_allowed: "다른 사용자의 경우 SNS 배달만 설정할 수 있습니다."
-    upsell:
-      title: "2단계 인증"
-      description: "모든 프로젝트 멤버에게 2단계 인증을 제공(또는 적용)하여 OpenProject 인스턴스의 보안을 강화하세요."
     backup_codes:
-      none_found: 이 계정에 대한 백업 코드가 존재하지 않습니다.
       singular: 백업 코드
       plural: 백업 코드
-      your_codes: '- %{app_name} 계정 %{login}'
       overview_description: |
         2단계 장치에 액세스할 수 없는 경우 백업 코드를 사용하여 계정에 다시 액세스할 수 있습니다.
         다음 버튼을 사용하여 새로운 백업 코드 집합을 생성하세요.
@@ -167,19 +157,15 @@ ko:
       clear_cookie: "저장된 모든 2FA 세션을 제거하려면 여기를 클릭하세요."
       cookie_removed: "저장된 모든 2FA 세션이 제거되었습니다."
       dont_ask_again: "%{days}일간 이 클라이언트에서 2FA 인증을 저장하는 쿠키를 만듭니다."
-  field_phone: "휴대폰"
   field_otp: "일회용 암호"
   notice_account_otp_invalid: "일회용 암호가 잘못되었습니다 ."
   notice_account_otp_expired: "입력한 일회용 암호가 만료되었습니다."
   notice_developer_strategy_otp: "개발자 전략에서 다음 일회용 암호를 생성함: %{token}(채널: %{channel})"
   notice_account_otp_send_failed: "일회용 암호를 보낼 수 없습니다."
   notice_account_has_no_phone: "휴대폰 번호가 계정과 연결되지 않았습니다."
-  label_expiration_hint: "%{date} 또는 로그아웃 시"
-  label_actions: "작업"
   label_confirmed: "확인됨"
   button_continue: "계속"
   button_make_default: "기본값으로 표시"
-  label_unverified_phone: "아직 인증되지 않은 휴대폰"
   notice_phone_number_format: "다음과 같은 형식으로 번호를 입력하세요: + XX XXXXXXXX."
   text_otp_not_receive: "기타 확인 방법"
   text_send_otp_again: "다음으로 일회용 암호 다시 보내기:"

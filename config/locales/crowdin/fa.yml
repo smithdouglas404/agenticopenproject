@@ -3459,6 +3459,7 @@ fa:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Accessibility"
   label_account: "حساب کاربری"
+  label_actions: "اقدامات"
   label_active: "Active"
   label_activate_user: "کاربر فعال"
   label_active_in_new_projects: "فعال در پروژه های جدید"

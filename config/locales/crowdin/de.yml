@@ -3452,6 +3452,7 @@ de:
       invalid_filter: "Ungültiger Benachrichtigungsfilter"
   label_accessibility: "Barrierefreiheit"
   label_account: "Konto"
+  label_actions: "Aktionen"
   label_active: "Aktiv"
   label_activate_user: "Benutzer aktivieren"
   label_active_in_new_projects: "Aktiv in neuen Projekten"

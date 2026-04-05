@@ -3459,6 +3459,7 @@ fil:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Aksibilidad"
   label_account: "Akawnt"
+  label_actions: "Mga Aksyon"
   label_active: "Aktibo"
   label_activate_user: "Aktibong gumagamit"
   label_active_in_new_projects: "Aktibo sa bagong proyekto"

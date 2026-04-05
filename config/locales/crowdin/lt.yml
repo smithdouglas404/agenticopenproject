@@ -3574,6 +3574,7 @@ lt:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Prieinamumas"
   label_account: "Paskyra"
+  label_actions: "Veiksmai"
   label_active: "Aktyvus"
   label_activate_user: "Aktyvus vartotojas"
   label_active_in_new_projects: "Aktyvus naujuose projektuose"

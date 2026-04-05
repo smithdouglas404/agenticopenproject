@@ -3400,6 +3400,7 @@ th:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Accessibility"
   label_account: "บัญชี"
+  label_actions: "Actions"
   label_active: "ใช้งานอยู่"
   label_activate_user: "Activate user"
   label_active_in_new_projects: "Active in new projects"

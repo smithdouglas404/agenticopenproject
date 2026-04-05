@@ -3399,6 +3399,7 @@ ja:
       invalid_filter: "無効な通知フィルター"
   label_accessibility: "アクセシビリティ"
   label_account: "アカウント"
+  label_actions: "操作"
   label_active: "アクティブ"
   label_activate_user: "ユーザーのアクティベート"
   label_active_in_new_projects: "新しいプロジェクトでアクティブ"

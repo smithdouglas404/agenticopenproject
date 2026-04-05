@@ -3518,6 +3518,7 @@ lv:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Accessibility"
   label_account: "Konts"
+  label_actions: "Actions"
   label_active: "Aktīvs"
   label_activate_user: "Activate user"
   label_active_in_new_projects: "Active in new projects"

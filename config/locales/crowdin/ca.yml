@@ -3456,6 +3456,7 @@ ca:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Accessibilitat"
   label_account: "Compte"
+  label_actions: "Accions"
   label_active: "Actiu"
   label_activate_user: "Activa usuari"
   label_active_in_new_projects: "Activa a nous projectes"

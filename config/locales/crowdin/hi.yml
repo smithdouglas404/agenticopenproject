@@ -3457,6 +3457,7 @@ hi:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Accessibility"
   label_account: "खाता"
+  label_actions: "क्रियाएँ"
   label_active: "सक्रिय"
   label_activate_user: "Activate user"
   label_active_in_new_projects: "Active in new projects"

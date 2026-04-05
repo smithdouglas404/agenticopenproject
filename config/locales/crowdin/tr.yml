@@ -3460,6 +3460,7 @@ tr:
       invalid_filter: "Geçersiz bildirim filtresi"
   label_accessibility: "Erişilebilirlik"
   label_account: "Hesap"
+  label_actions: "Eylemler"
   label_active: "Aktif"
   label_activate_user: "Aktif kullanıcı"
   label_active_in_new_projects: "Yeni projelerde etkin"

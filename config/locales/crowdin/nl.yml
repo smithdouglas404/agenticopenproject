@@ -3456,6 +3456,7 @@ nl:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Toegankelijkheid"
   label_account: "Account"
+  label_actions: "Acties"
   label_active: "Actief"
   label_activate_user: "Gebruiker activeren"
   label_active_in_new_projects: "Actief in nieuwe projecten"

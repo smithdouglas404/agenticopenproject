@@ -3577,6 +3577,7 @@ sk:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Prístupnosť"
   label_account: "Účet"
+  label_actions: "Akcie"
   label_active: "Aktívny"
   label_activate_user: "Aktívny užívateľ"
   label_active_in_new_projects: "Aktívny v nových projektoch"

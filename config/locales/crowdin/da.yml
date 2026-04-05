@@ -3457,6 +3457,7 @@ da:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Accessibility"
   label_account: "Konto"
+  label_actions: "Handlinger"
   label_active: "Aktiv"
   label_activate_user: "Activate user"
   label_active_in_new_projects: "Active in new projects"

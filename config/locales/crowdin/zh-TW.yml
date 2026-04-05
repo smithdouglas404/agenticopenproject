@@ -3397,6 +3397,7 @@ zh-TW:
       invalid_filter: "無效的通知過濾器"
   label_accessibility: "輔助功能"
   label_account: "帳號"
+  label_actions: "操作"
   label_active: "啟用"
   label_activate_user: "啟動使用者"
   label_active_in_new_projects: "在新專案中啟用"

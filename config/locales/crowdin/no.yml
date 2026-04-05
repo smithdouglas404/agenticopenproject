@@ -3458,6 +3458,7 @@
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Tilgjengelighet"
   label_account: "Konto"
+  label_actions: "Handlinger"
   label_active: "Aktiv"
   label_activate_user: "Aktiver bruker"
   label_active_in_new_projects: "Aktiv i nye prosjekter"

@@ -3458,6 +3458,7 @@ hu:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Kisegítő lehetőségek"
   label_account: "Felhasználói fiók"
+  label_actions: "Műveletek"
   label_active: "aktív"
   label_activate_user: "Felhasználó aktiválása"
   label_active_in_new_projects: "Új projektekben aktív"

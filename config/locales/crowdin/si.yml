@@ -3459,6 +3459,7 @@ si:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "ප්රවේශ්යතාව"
   label_account: "ගිණුම"
+  label_actions: "ක්‍රියාමාර්ග"
   label_active: "ක්රියාකාරී"
   label_activate_user: "පරිශීලකයා සක්රිය කරන්න"
   label_active_in_new_projects: "නව ව්යාපෘතිවල ක්රියාකාරී වේ"

@@ -3518,6 +3518,7 @@ ro:
       invalid_filter: "Filtru de notificare invalid"
   label_accessibility: "Accesibilitate"
   label_account: "Cont"
+  label_actions: "Acțiuni"
   label_active: "Activ"
   label_activate_user: "Activați utilizatorul"
   label_active_in_new_projects: "Activ în proiecte noi"

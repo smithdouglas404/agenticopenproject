@@ -3456,6 +3456,7 @@ es:
       invalid_filter: "Filtro de notificación no válido"
   label_accessibility: "Accesibilidad"
   label_account: "Cuenta"
+  label_actions: "Comportamiento"
   label_active: "Activo"
   label_activate_user: "Activar usuario"
   label_active_in_new_projects: "Activo en nuevos proyectos"

@@ -3576,6 +3576,7 @@ sl:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Dostopnost"
   label_account: "Račun"
+  label_actions: "Akcije"
   label_active: "Aktivno"
   label_activate_user: "Aktivirajte uporabnika"
   label_active_in_new_projects: "Aktivno v novih projektih"

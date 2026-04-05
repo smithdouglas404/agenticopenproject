@@ -3577,6 +3577,7 @@ cs:
       invalid_filter: "Neplatný filtr oznámení"
   label_accessibility: "Přístupnost"
   label_account: "Účet"
+  label_actions: "Akce"
   label_active: "Aktivní"
   label_activate_user: "Aktivovat uživatele"
   label_active_in_new_projects: "Aktivní v nových projektech"

@@ -3400,6 +3400,7 @@ vi:
       invalid_filter: "Bộ lọc thông báo không hợp lệ"
   label_accessibility: "Trợ năng"
   label_account: "tài khoản"
+  label_actions: "hành động"
   label_active: "Đang hoạt động"
   label_activate_user: "Người dùng kích họat"
   label_active_in_new_projects: "Tích cực trong các dự án mới"

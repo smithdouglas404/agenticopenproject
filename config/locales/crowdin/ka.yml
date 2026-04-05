@@ -3459,6 +3459,7 @@ ka:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "წვდომადობა"
   label_account: "ანგარიში"
+  label_actions: "ქმედებები"
   label_active: "აქტიური"
   label_activate_user: "მომხმარებლის გააქტიურება"
   label_active_in_new_projects: "Active in new projects"

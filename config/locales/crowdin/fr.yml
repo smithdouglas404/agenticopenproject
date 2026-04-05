@@ -3458,6 +3458,7 @@ fr:
       invalid_filter: "Filtre de notification invalide"
   label_accessibility: "Accessibilité"
   label_account: "Compte"
+  label_actions: "Actions"
   label_active: "Actif"
   label_activate_user: "Activer l’utilisateur"
   label_active_in_new_projects: "Activer dans de nouveaux projets"

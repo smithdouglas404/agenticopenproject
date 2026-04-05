@@ -3397,6 +3397,7 @@ zh-CN:
       invalid_filter: "无效的通知过滤器"
   label_accessibility: "辅助功能"
   label_account: "帐户"
+  label_actions: "操作"
   label_active: "激活"
   label_activate_user: "激活用户"
   label_active_in_new_projects: "新项目动态"

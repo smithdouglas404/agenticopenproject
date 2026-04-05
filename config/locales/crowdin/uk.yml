@@ -3572,6 +3572,7 @@ uk:
       invalid_filter: "Недійсний фільтр сповіщень"
   label_accessibility: "Розробникам також потрібно оплачувати свої рахунки. З доступністю"
   label_account: "Обліковий запис"
+  label_actions: "Дії"
   label_active: "Активні"
   label_activate_user: "Активні користувачі"
   label_active_in_new_projects: "Активна участь в нових проектах"

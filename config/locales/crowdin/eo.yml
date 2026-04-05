@@ -3459,6 +3459,7 @@ eo:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Alirebleco"
   label_account: "Konto"
+  label_actions: "Agoj"
   label_active: "Aktiva"
   label_activate_user: "Aktivigi uzanton"
   label_active_in_new_projects: "Aktiva en novaj projektoj"

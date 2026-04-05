@@ -3396,6 +3396,7 @@ id:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Kemampuan akses"
   label_account: "Akun"
+  label_actions: "Tindakan"
   label_active: "Aktif"
   label_activate_user: "Pengguna diaktifkan"
   label_active_in_new_projects: "Aktif dalam proyek-proyek baru"

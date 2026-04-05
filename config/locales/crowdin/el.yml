@@ -3455,6 +3455,7 @@ el:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Προσβασιμότητα"
   label_account: "Λογαριασμός"
+  label_actions: "Ενέργειες"
   label_active: "Ενεργό"
   label_activate_user: "Ενεργοποίηση χρήστη"
   label_active_in_new_projects: "Ενεργό σε καινούργια έργα"

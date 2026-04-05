@@ -3457,6 +3457,7 @@ pt-BR:
       invalid_filter: "Filtro de notificação inválido"
   label_accessibility: "Acessibilidade"
   label_account: "Conta"
+  label_actions: "Ações"
   label_active: "Ativo"
   label_activate_user: "Ativar usuário"
   label_active_in_new_projects: "Ativo em novos projetos"
