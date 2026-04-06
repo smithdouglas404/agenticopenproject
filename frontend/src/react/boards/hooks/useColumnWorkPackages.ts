@@ -19,6 +19,5 @@ export function useColumnWorkPackages(
   return useQuery<QueryResult>({
     queryKey: ['column-work-packages', queryId, filtersParam],
     queryFn: () => fetchQuery(queryId, filtersParam),
-    refetchInterval: 10_000,
   });
 }

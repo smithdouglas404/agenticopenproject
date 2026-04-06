@@ -6,6 +6,7 @@ import { useUpdateWorkPackage } from '../hooks/useUpdateWorkPackage';
 import { useReorderWorkPackages } from '../hooks/useReorderWorkPackages';
 import { moveWorkPackage } from '../dnd/move-work-package';
 import { resolveBoardDropTarget } from '../dnd/board-drop';
+import { extractBoardErrorMessage, showBoardError } from '../support/board-error';
 import { BoardColumn } from './BoardColumn';
 import { AddColumnAction } from './AddColumnAction';
 import type { BoardGrid, ApiV3Filter } from '../api/types';
@@ -38,7 +39,12 @@ export function BoardCanvas({ board, filters }:BoardCanvasProps) {
         const target = location.current.dropTargets[0];
         const wpId = source.data.workPackageId as number;
         const fromIndex = source.data.index as number;
-        const sourceQueryId = source.data.sourceQueryId as string;
+        const sourceQueryId =
+          typeof source.data.sourceQueryId === 'string'
+            ? source.data.sourceQueryId
+            : typeof source.data.sourceQueryId === 'number'
+              ? String(source.data.sourceQueryId)
+              : '';
         const sourceOrder = source.data.order as string[];
         const sourcePositions = source.data.positions as Record<string, number>;
         const lockVersion = source.data.lockVersion as number;
@@ -85,8 +91,11 @@ export function BoardCanvas({ board, filters }:BoardCanvasProps) {
           } else {
             announce(`Card #${wpId} moved to a different column.`);
           }
-        }).catch(() => {
-          announce(`Card #${wpId} could not be moved.`);
+        }).catch((error:unknown) => {
+          const message = extractBoardErrorMessage(error, `Card #${wpId} could not be moved.`);
+
+          void showBoardError(error, message);
+          announce(message);
         });
       },
     });

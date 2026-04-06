@@ -6,7 +6,11 @@ import { useBoardContext } from '../context/BoardContext';
 import { ColumnHeader } from './ColumnHeader';
 import { CardList } from './CardList';
 import { AddCardAction } from './AddCardAction';
-import type { GridWidget, ApiV3Filter, QueryFilter } from '../api/types';
+import type { GridWidget, ApiV3Filter } from '../api/types';
+import {
+  resolveActionFilterValue,
+  resolveActionWidgetFilterValue,
+} from '../support/action-filter-value';
 
 interface BoardColumnProps {
   widget:GridWidget;
@@ -15,7 +19,7 @@ interface BoardColumnProps {
 
 export function BoardColumn({ widget, filters }:BoardColumnProps) {
   const { isActionBoard, actionAttribute } = useBoardContext();
-  const queryId = widget.options.queryId ?? '';
+  const queryId = String(widget.options.queryId ?? '');
 
   const { data: query, isLoading } = useColumnWorkPackages(
     queryId,
@@ -25,23 +29,14 @@ export function BoardColumn({ widget, filters }:BoardColumnProps) {
 
   const { data: statuses } = useStatuses();
 
-  // Extract status ID from HAL filter format.
   const actionFilterValue = useMemo(() => {
-    if (!isActionBoard || !query?.filters) return undefined;
+    if (!isActionBoard) {
+      return undefined;
+    }
 
-    const actionFilter = query.filters.find((f:QueryFilter) => {
-      const filterHref = f?._links?.filter?.href ?? '';
-      return filterHref.endsWith(`/filters/${actionAttribute}`);
-    });
-    if (!actionFilter) return undefined;
-
-    const values = actionFilter._links.values;
-    if (!Array.isArray(values) || values.length === 0) return undefined;
-
-    const href:string = values[0]?.href ?? '';
-    const id = href.split('/').pop();
-    return id;
-  }, [isActionBoard, actionAttribute, query]);
+    return resolveActionFilterValue(query?.filters, actionAttribute)
+      ?? resolveActionWidgetFilterValue(widget.options.filters, actionAttribute);
+  }, [isActionBoard, actionAttribute, query, widget.options.filters]);
 
   const columnStatus = useMemo(() => {
     if (!isActionBoard || actionAttribute !== 'status' || !statuses || !actionFilterValue) {
@@ -54,7 +49,8 @@ export function BoardColumn({ widget, filters }:BoardColumnProps) {
   const order = workPackages.map((wp) => String(wp.id));
   const positions = query?.ordered_work_packages ?? {};
   const columnTitle = query?.name ?? 'Loading...';
-  const canDrop = !!query?._links?.updateOrderedWorkPackages;
+  const canDrop = !!query?._links?.updateOrderedWorkPackages
+    && (!isActionBoard || !!actionFilterValue);
 
   return (
     <div

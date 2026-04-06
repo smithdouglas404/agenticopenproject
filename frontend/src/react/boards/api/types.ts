@@ -31,7 +31,7 @@ export interface GridWidget {
   startColumn:number;
   endColumn:number;
   options:{
-    queryId?:string;
+    queryId?:string | number;
     filters?:ApiV3Filter[];
     [key:string]:unknown;
   };

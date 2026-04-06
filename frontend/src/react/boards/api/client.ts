@@ -24,8 +24,9 @@ export async function apiFetch<T>(
   const token = csrfToken();
   const headers:Record<string, string> = {
     Accept: 'application/hal+json',
+    'X-Requested-With': 'XMLHttpRequest',
     ...((options.body != null) && { 'Content-Type': 'application/json' }),
-    ...(token && { 'X-CSRF-Token': token }),
+    ...(token && { 'X-CSRF-TOKEN': token }),
   };
 
   const response = await fetch(`/api/v3${path}`, {

@@ -30,4 +30,13 @@ describe('board drop model', () => {
       index: 2,
     });
   });
+
+  it('coerces numeric query ids from board widget payloads', () => {
+    expect(resolveBoardDropTarget({ ...target, queryId: 12 as unknown as string, index: 1 }, 'bottom')).toEqual({
+      ...target,
+      queryId: '12',
+      actionFilterValue: undefined,
+      index: 2,
+    });
+  });
 });

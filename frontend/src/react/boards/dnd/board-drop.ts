@@ -14,8 +14,15 @@ export function resolveBoardDropTarget(
   data:Partial<BoardDropTarget>,
   edge:Edge | null,
 ):BoardDropTarget | null {
+  const queryId =
+    typeof data.queryId === 'string'
+      ? data.queryId
+      : typeof data.queryId === 'number'
+        ? String(data.queryId)
+        : null;
+
   if (
-    typeof data.queryId !== 'string'
+    queryId === null
     || !Array.isArray(data.order)
     || typeof data.positions !== 'object'
     || data.positions === null
@@ -26,7 +33,7 @@ export function resolveBoardDropTarget(
   const baseIndex = typeof data.index === 'number' ? data.index : 0;
 
   return {
-    queryId: data.queryId,
+    queryId,
     actionFilterValue: data.actionFilterValue,
     order: data.order,
     positions: data.positions,
