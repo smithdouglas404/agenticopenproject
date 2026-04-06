@@ -272,7 +272,7 @@ export abstract class EditForm<T extends HalResource = HalResource> {
     });
 
     // Activate any fields that are not yet visible / open (e.g. required custom fields).
-    const promises:Promise<unknown>[] = erroneousFields.map((fieldName:string) => this.requireVisible(fieldName).then(() => this.activateWhenNeeded(fieldName)));
+    const promises:Promise<unknown>[] = erroneousFields.map((fieldName:string) => this.activateWhenNeeded(fieldName));
 
     Promise.all(promises)
       .then(() => {
