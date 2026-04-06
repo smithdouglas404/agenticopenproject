@@ -3,7 +3,7 @@ pt-BR:
   activerecord:
     attributes:
       wikis/xwiki_provider:
-        name: Name
+        name: Nome
         url: Instance URL
         authentication_method: Authentication method
         authentication_methods:
