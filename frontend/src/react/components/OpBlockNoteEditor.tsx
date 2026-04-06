@@ -40,13 +40,18 @@ import {
   openProjectWorkPackageBlockSpec,
   inlineWorkPackageSpec,
   workPackageSlashMenu,
+  createHashWpMenuComponent,
+  isHashWpQuery,
+  useWorkPackageSearch,
 } from 'op-blocknote-extensions';
-import { useCallback, useEffect, useMemo } from 'react';
+import type { HashMenuItem } from 'op-blocknote-extensions';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import * as Y from 'yjs';
 import { useBlockNoteAttachments } from '../hooks/useBlockNoteAttachments';
 import { useBlockNoteLocale } from '../hooks/useBlockNoteLocale';
 import { useOpTheme } from '../hooks/useOpTheme';
 import { useInlineWpEvents } from '../hooks/useInlineWpEvents';
+import type { WorkPackage } from 'op-blocknote-extensions';
 
 interface CollaborativeUser {
   name: string;
@@ -127,25 +132,59 @@ export function OpBlockNoteEditor({
 
   const theme = useOpTheme();
 
+  // Hash WP search
+  const { searchResults, setSearchQuery } = useWorkPackageSearch();
+  const searchResultsRef = useRef<WorkPackage[]>([]);
+
+  useEffect(() => {
+    searchResultsRef.current = searchResults;
+  }, [searchResults]);
+
+  const getHashItems = useCallback(
+    async (query: string): Promise<HashMenuItem[]> => {
+      if (!isHashWpQuery(query)) return [];
+      setSearchQuery(query);
+
+      const results = searchResultsRef.current;
+      const count = Math.max(results.length, 1);
+      return Array.from({ length: count }, () => ({
+        title: query,
+        onItemClick: () => {},
+      }));
+    },
+    [setSearchQuery]
+  );
+
+  const HashWpMenu = useMemo(
+    () => createHashWpMenuComponent(editor as any, searchResultsRef),
+    [editor]
+  );
+
+  // Slash menu
   const getCustomSlashMenuItems = useCallback((editorInstance:typeof editor) => [
     ...getDefaultReactSlashMenuItems(editorInstance),
     workPackageSlashMenu(editorInstance),
   ], []);
 
   return (
-    <>
-      <BlockNoteView
-        editor={editor}
-        slashMenu={false}
-        theme={theme}
-        editable={!readOnly}
-        className={'block-note-editor-container'}
-      >
-        <SuggestionMenuController
-          triggerCharacter="/"
-          getItems={async (query:string) => Promise.resolve(filterSuggestionItems(getCustomSlashMenuItems(editor), query))}
-        />
-      </BlockNoteView>
-    </>
+    <BlockNoteView
+      editor={editor}
+      slashMenu={false}
+      theme={theme}
+      editable={!readOnly}
+      className={'block-note-editor-container'}
+    >
+      <SuggestionMenuController
+        triggerCharacter="/"
+        getItems={async (query:string) => Promise.resolve(filterSuggestionItems(getCustomSlashMenuItems(editor), query))}
+      />
+
+      <SuggestionMenuController
+        triggerCharacter="#"
+        getItems={getHashItems}
+        suggestionMenuComponent={HashWpMenu}
+        onItemClick={(item) => item.onItemClick()}
+      />
+    </BlockNoteView>
   );
 }
