@@ -90,6 +90,8 @@ vi:
     sharing: "Sharing"
     impediment: "Trở ngại"
     label_versions_default_fold_state: "Hiển thị các phiên bản \n"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "Các phiên bản sẽ không được mở rộng theo mặc định khi xem hồ sơ tồn đọng. Mỗi cái phải được mở rộng bằng tay."
     work_package_is_closed: "Gói công việc được thực hiện, khi"
     label_is_done_status: "Trạng thái %{status_name} nghĩa là đã xong"
@@ -100,7 +102,7 @@ vi:
     rebuild: "Dựng lại"
     rebuild_positions: "Xây dựng lại vị trí"
     remaining_hours: "Công việc còn lại"
-    show_burndown_chart: "Biểu đồ đốt cháy"
+    show_burndown_chart: "Burndown chart"
     story: "Câu chuyện"
     story_points:
       other: "%{count} story points"
@@ -154,7 +156,10 @@ vi:
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
         settings_link_text: "project settings"
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "No stories in sprint"
         one: "%{count} story in sprint"
@@ -166,7 +171,6 @@ vi:
         new_story: "New story"
         stories_tasks: "Stories/Tasks"
         task_board: "Task board"
-        burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
     finish_sprint_dialog_component:
@@ -178,17 +182,12 @@ vi:
         move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
         move_to_sprint: "Move them to another sprint"
       select_sprint_label: "Select sprint"
-      button_close_sprint: "Close sprint"
+      button_complete_sprint: "Complete sprint"
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
-        start_sprint: "Start sprint"
-        finish_sprint: "Finish sprint"
-        start_sprint_disabled_description: "Another sprint is already active."
-        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
-        task_board: "Sprint board"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -221,8 +220,10 @@ vi:
   label_backlogs: "tồn đọng"
   label_backlogs_unconfigured: "Bạn chưa cấu hình Bảng nhiệm vụ tồn đọng. Vui lòng vào %{administration} > %{plugins}, sau đó nhấp vào liên kết %{configure} cho gắn thêm này. Khi bạn đã thiết lập các trường, quay lại trang này để bắt đầu sử dụng công cụ."
   label_blocks_ids: "ID của các work package bị chặn"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "Cột tồn đọng"
   label_used_as_backlog: "Used as backlog"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "Xuống"
   label_points_burn_up: "lên"
   label_sprint_edit: "Edit sprint"

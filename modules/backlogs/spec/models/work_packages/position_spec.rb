@@ -231,7 +231,7 @@ RSpec.describe WorkPackage, "positions", with_flag: { scrum_projects: true } do 
     end
 
     context "when moving inside a sprint with a previous that is the first element" do
-      it "moves the work_package to the top of the sprint" do
+      it "moves the work_package to the second position" do
         sprint1_wp4.move_after(prev_id: sprint1_wp1.id)
 
         expect(wp_of_sprint_by_id_and_position(sprint1))
@@ -285,6 +285,19 @@ RSpec.describe WorkPackage, "positions", with_flag: { scrum_projects: true } do 
     context "when inside a sprint with a previous that does not exist in that sprint" do
       it "moves the work_package to the top of the sprint" do
         sprint1_wp4.move_after(prev_id: sprint2_wp2.id)
+
+        expect(wp_of_sprint_by_id_and_position(sprint1))
+          .to eq(sprint1_wp4.id => 1,
+                 sprint1_wp1.id => 2,
+                 sprint1_wp2.id => 3,
+                 sprint1_wp3.id => 4,
+                 sprint1_wp5.id => 5)
+      end
+    end
+
+    context "when inside a sprint with a previous that is nil" do
+      it "moves the work_package to the top of the sprint" do
+        sprint1_wp4.move_after(prev_id: nil)
 
         expect(wp_of_sprint_by_id_and_position(sprint1))
           .to eq(sprint1_wp4.id => 1,
@@ -350,8 +363,19 @@ RSpec.describe WorkPackage, "positions", with_flag: { scrum_projects: true } do 
       end
     end
 
-    context "when moving outside a sprint with a previous that is the first element" do
+    context "when moving outside a sprint with a previous that is nil" do
       it "moves the work_package to the top of the sprint" do
+        no_sprint_wp3.move_after(prev_id: nil)
+
+        expect(wp_of_sprint_by_id_and_position(nil))
+          .to eq(no_sprint_wp3.id => 1,
+                 no_sprint_wp1.id => 2,
+                 no_sprint_wp2.id => 3)
+      end
+    end
+
+    context "when moving outside a sprint with a previous that is the first element" do
+      it "moves the work_package to the second position" do
         no_sprint_wp3.move_after(prev_id: no_sprint_wp1.id)
 
         expect(wp_of_sprint_by_id_and_position(nil))

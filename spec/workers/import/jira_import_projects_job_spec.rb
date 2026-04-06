@@ -57,8 +57,8 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
 
       it "raises an error with the taken identifier and existing project info" do
         expect { described_class.new.perform(jira_import.id) }
-          .to raise_error("You are trying to import a project with already used " \
-                          "identifier: dyx. Existing project: Existing Project.")
+          .to raise_error("You are trying to import a project with an already used identifier: dyx. " \
+                          "Please update the project identifier in Jira then click on Retry.")
       end
     end
 

@@ -153,6 +153,9 @@ security_badge_documentation:
 shortcuts:
   href: https://www.openproject.org/docs/user-guide/keyboard-shortcuts-access-keys/
   label: homescreen.links.shortcuts
+wiki_docs:
+  xwiki_setup:
+    href: https://www.openproject.org/docs/system-admin-guide/integrations/
 storage_docs:
   health_status:
     href: https://www.openproject.org/docs/system-admin-guide/files/external-file-storages/health-status/

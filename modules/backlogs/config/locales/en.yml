@@ -104,6 +104,8 @@ en:
     sharing: "Sharing"
     impediment: "Impediment"
     label_versions_default_fold_state: "Show versions folded"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
     work_package_is_closed: "Work package is done, when"
     label_is_done_status: "Status %{status_name} means done"
@@ -115,7 +117,7 @@ en:
     rebuild: "Rebuild"
     rebuild_positions: "Rebuild positions"
     remaining_hours: "Remaining work"
-    show_burndown_chart: "Burndown Chart"
+    show_burndown_chart: "Burndown chart"
     story: "Story"
     story_points:
       one: "%{count} story point"
@@ -182,7 +184,10 @@ en:
         settings_link_text: "project settings"
 
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "No stories in sprint"
         one: "%{count} story in sprint"
@@ -195,7 +200,6 @@ en:
         new_story: "New story"
         stories_tasks: "Stories/Tasks"
         task_board: "Task board"
-        burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
 
@@ -208,18 +212,13 @@ en:
         move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
         move_to_sprint: "Move them to another sprint"
       select_sprint_label: "Select sprint"
-      button_close_sprint: "Close sprint"
+      button_complete_sprint: "Complete sprint"
 
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
-        start_sprint: "Start sprint"
-        finish_sprint: "Finish sprint"
-        start_sprint_disabled_description: "Another sprint is already active."
-        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
-        task_board: "Sprint board"
 
     story_component:
       label_drag_story: "Move %{name}"
@@ -259,8 +258,10 @@ en:
   label_backlogs: "Backlogs"
   label_backlogs_unconfigured: "You have not configured Backlogs yet. Please go to %{administration} > %{plugins}, then click on the %{configure} link for this plugin. Once you have set the fields, come back to this page to start using the tool."
   label_blocks_ids: "IDs of blocked work packages"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "Column in backlog"
   label_used_as_backlog: "Used as backlog"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "Down"
   label_points_burn_up: "Up"
   label_sprint_edit: "Edit sprint"

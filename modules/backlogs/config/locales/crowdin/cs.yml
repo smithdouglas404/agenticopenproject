@@ -93,6 +93,8 @@ cs:
     sharing: "Sdílení"
     impediment: "Impediment"
     label_versions_default_fold_state: " Verze zobrazit srolovaně"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "Verze se při prohlížení nevyřízených žádostí ve výchozím nastavení nerozbalují. Každou z nich je třeba rozbalit ručně."
     work_package_is_closed: "Pracovní balíček je hotov, když"
     label_is_done_status: "Stav %{status_name} znamená hotovo"
@@ -106,7 +108,7 @@ cs:
     rebuild: "Znovu vytvořit"
     rebuild_positions: "Znovu sestavit pozice"
     remaining_hours: "Zbývající práce"
-    show_burndown_chart: "Spálovací graf"
+    show_burndown_chart: "Burndown chart"
     story: "Úloha"
     story_points:
       one: "%{count} story point"
@@ -166,7 +168,10 @@ cs:
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
         settings_link_text: "nastavení projektu"
     sprint_header_component:
-      label_toggle_backlog: "Sbalit/rozbalit %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "Žádné úlohy ve sprintu"
         one: "%{count} úloha v backlogu"
@@ -178,7 +183,6 @@ cs:
         new_story: "Nová úloha"
         stories_tasks: "Úlohy/Úkoly"
         task_board: "Tabule úkolů"
-        burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Vlastnosti"
     finish_sprint_dialog_component:
@@ -190,17 +194,12 @@ cs:
         move_to_bottom_of_backlog: "Přesunout je dospod backlogu"
         move_to_sprint: "Přesunout je do jiného sprintu"
       select_sprint_label: "Vyberte sprint"
-      button_close_sprint: "Zavřít sprint"
+      button_complete_sprint: "Complete sprint"
     sprint_menu_component:
       label_actions: "Akce sprintu"
       action_menu:
-        start_sprint: "Zahájit sprint"
-        finish_sprint: "Dokončit sprint"
-        start_sprint_disabled_description: "Jiný sprint je již aktivní."
-        start_sprint_missing_dates_description: "Pro zahájení sprintu je nutné datum zahájení a ukončení."
         edit_sprint: "Upravit sprint"
         add_work_package: "Přidat pracovní balíček"
-        task_board: "Sprint board"
     story_component:
       label_drag_story: "Přesunout %{name}"
     story_menu_component:
@@ -233,8 +232,10 @@ cs:
   label_backlogs: "Nevyřízené položky"
   label_backlogs_unconfigured: "Zatím nemáte nakonfigurované nevyřízené záznamy. Přejděte na %{administration} > %{plugins}a poté klikněte na odkaz %{configure} pro tento plugin. Jakmile nastavíte pole, vraťte se na tuto stránku a začněte používat nástroj."
   label_blocks_ids: "ID blokovaných pracovních balíčků"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "Sloupec v nevyřízené pozici"
   label_used_as_backlog: "Used as backlog"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "Dolů"
   label_points_burn_up: "Nahoru"
   label_sprint_edit: "Upravit sprint"

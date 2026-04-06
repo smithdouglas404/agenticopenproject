@@ -162,6 +162,7 @@ pt-PT:
         history: "Histórico"
         remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Está em curso ou a aguardar revisão outra importação do Jira. Conclua-a ou reverta-a antes de iniciar uma nova importação."
+        project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:
           title: "Ainda não foram feitas importações"
           description: "Crie uma execução de importação para começar a importar informações desta instância do Jira"
@@ -3263,18 +3264,17 @@ pt-PT:
         learn_about: "Mais informações sobre todas as novas funcionalidades"
         missing: "Ainda não há nenhum recurso destacado."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_2":
+        "17_3":
           new_features_title: >
-            A versão contém várias novas funcionalidades e melhorias, como:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Fluxos de trabalho de IA com um servidor MCP seguro (plano Professional e superior)
-            line_1: Página inicial do projeto melhorada com um novo widget para orçamentos e melhor acessibilidade
-            line_2: "Reuniões: Modelos de reunião (Plano básico e superior)"
-            line_3: Maior transparência nos comentários sobre os atributos dos projetos
-            line_4: Melhorias na exportação de PDF
-            line_5: Maior segurança para ligações externas (plano Premium e superior)
-            line_6: Melhorias de UI/UX no módulo Backlogs
-            line_7: Formulários personalizados harmonizados
+            line_0: "Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation."
+            line_1: In-place editing of project attributes on the Project Overview page.
+            line_2: Sharing of meeting templates (Basic plan and higher).
+            line_3: Better search in Time and Costs, Boards, and more.
+            line_4: Option to safely change project identifiers.
+            line_5: Improved workflow configuration for administrators.
+            line_6: Action boards released to Community.
     links:
       upgrade_enterprise_edition: "Aprimorar para a edição Enterprise"
       postgres_migration: "A migrar a sua instalação para PostgreSQL"
@@ -3457,6 +3457,7 @@ pt-PT:
       invalid_filter: "Filtro de notificação inválido"
   label_accessibility: "Accessibilidade"
   label_account: "Conta"
+  label_actions: "Ações"
   label_active: "Ativo"
   label_activate_user: "Ativar utilizador"
   label_active_in_new_projects: "Ativo em novos projetos"

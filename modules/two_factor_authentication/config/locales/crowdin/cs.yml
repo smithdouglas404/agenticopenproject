@@ -37,18 +37,14 @@ cs:
     error_invalid_backup_code: "Neplatný 2FA záložní kód"
     channel_unavailable: "Doručovací kanál %{channel} není k dispozici."
     no_valid_phone_number: "Neexistuje žádné platné telefonní číslo."
-    label_pwd_confirmation: "Heslo"
-    notice_pwd_confirmation: "Pro provádění těchto změn v nastavení je vyžadováno potvrzení hesla."
     label_device_type: "Typ zařízení"
     label_default_device: "Výchozí 2FA zařízení"
     label_device: "2FA zařízení"
     label_devices: "2FA zařízení"
-    label_one_time_password: "Jednorázové heslo"
     label_2fa_enabled: "Dvoufázové ověřování je aktivní"
     label_2fa_disabled: "Dvoufázové ověřování není aktivní"
     text_otp_delivery_message_sms: "Vaše jednorázové heslo pro %{app_title} je %{token}"
     text_otp_delivery_message_voice: "Vaše jednorázové heslo pro %{app_title} je: %{pause} %{token}. %{pause} opakuji: %{pause} %{token}"
-    text_enter_2fa: "Zadejte prosím jednorázové heslo z Vašeho zařízení."
     text_2fa_enabled: "Při každém přihlášení bude vyžadováno zadání jednorázového hesla z Vašeho výchozího 2FA zařízení."
     text_2fa_disabled: "Pro zapnutí dvoufázového ověřování klikněte na tlačítko výše, abyste zaregistrovali nové 2FA zařízení. Pokud již zařízení máte, musíte ho nastavit jako výchozí."
     login:
@@ -67,7 +63,6 @@ cs:
       text_enforced: "Povolte toto nastavení, abyste donutili všechny uživatele registrovat 2FA zařízení při jejich dalším přihlášení. Toto nastavení může být zakázáno pouze, pokud není vynuceno konfigurací."
       text_remember: |
         Nastavte na vyšší než nula, abyste umožnili uživatelům zapamatovat si jejich 2FA ověření na daný počet dní. Uživatelé to po tuto dobu nebudou muset zadávat. Toto nastavení může být zakázáno pouze pokud není vynuceno konfigurací.
-      error_invalid_settings: "Strategie 2FA, které jste zvolili jsou neplatné"
       failed_to_save_settings: "Nepodařilo se aktualizovat nastavení 2FA: %{message}"
     admin:
       self_edit_path_html: "Chcete-li přidat nebo upravit vlastní zařízení 2FA, přejděte na stránku [Dvoufázové ověření na vašem účtu](self_edit_link)"
@@ -80,14 +75,9 @@ cs:
       text_2fa_enabled: "Při každém přihlášení bude tento uživatel požádán, aby zadal jednorázové heslo z jeho výchozího 2FA zařízení."
       text_2fa_disabled: "Uživatel si nenastavil 2FA zařízení prostřednictvím stránky 'Můj účet'"
       only_sms_allowed: "Pro ostatní uživatele lze nastavit pouze doručení SMS."
-    upsell:
-      title: "Dvoufázové ověření"
-      description: "Posilte bezpečnost vaší OpenProject instance tím, že nabízíte (nebo vynucujte) dvoufaktorové ověřování všem členům projektu."
     backup_codes:
-      none_found: Pro tento účet neexistují žádné záložní kódy.
       singular: Záložní kód
       plural: Záložní kódy
-      your_codes: pro Váš %{app_name} účet %{login}
       overview_description: |
         Pokud nejste schopni přihlásit ke svým dvou faktorovým zařízením, můžete použít záložní kód k opětovnému získání přístupu k vašemu účtu.
         Použijte následující tlačítko pro vygenerování nové sady záložních kódů.
@@ -166,19 +156,15 @@ cs:
       clear_cookie: "Kliknutím sem odstraníte všechny zapamatované 2FA relace."
       cookie_removed: "Všechny zapamatované 2FA relace byly odstraněny."
       dont_ask_again: "Vytvořte cookie a zapamatujte si 2FA autentizaci tohoto klienta po dobu %{days} dní."
-  field_phone: "Mobilní telefon"
   field_otp: "Jednorázové heslo"
   notice_account_otp_invalid: "Neplatné jednorázové heslo."
   notice_account_otp_expired: "Zadané jednorázové heslo vypršelo."
   notice_developer_strategy_otp: "Vývojářská strategie vytvořila toto jednorázové heslo: %{token} (kanál: %{channel})"
   notice_account_otp_send_failed: "Vaše jednorázové heslo nelze odeslat."
   notice_account_has_no_phone: "S vaším účtem není přiřazeno žádné telefonní číslo."
-  label_expiration_hint: "%{date} nebo po odhlášení"
-  label_actions: "Akce"
   label_confirmed: "Potvrzený"
   button_continue: "Pokračovat"
   button_make_default: "Označit jako výchozí"
-  label_unverified_phone: "Mobilní telefon ještě nebyl ověřen"
   notice_phone_number_format: "Zadejte číslo v následujícím formátu: +XX XXXXXXXX."
   text_otp_not_receive: "Jiné metody ověřování"
   text_send_otp_again: "Znovu odeslat jednorázové heslo přes:"

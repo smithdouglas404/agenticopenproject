@@ -122,7 +122,7 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
   describe "PUT #move" do
     let(:agile_sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
     let(:target_id) { "sprint:#{agile_sprint.id}" }
-    let(:position) { 1 }
+    let(:prev_id) { 1 }
 
     subject do
       put :move,
@@ -130,7 +130,7 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
             project_id: project.id,
             id: work_package.id,
             target_id:,
-            position:
+            prev_id:
           },
           format: :turbo_stream
     end
@@ -148,7 +148,7 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
 
     context "when reordering within the Inbox" do
       let(:target_id) { "inbox" }
-      let(:position) { 2 }
+      let(:prev_id) { work_packages.first.id }
 
       it "replaces only the inbox component without a flash", :aggregate_failures do
         expect(response).to be_successful
@@ -167,15 +167,17 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
       end
     end
 
-    context "when no position is provided" do
+    context "when no prev_id is provided" do
       let!(:work_packages) { create_list(:work_package, 5, project:, sprint: agile_sprint) }
-      let(:position) { nil }
+      let(:prev_id) { nil }
 
-      it "places the work package at the last position in the sprint" do
+      it "places the work package at the top of the sprint" do
         expect { work_package.reload }
-          .to change(work_package, :position).from(1).to(6)
+          .to not_change(work_package, :position)
         expect { work_packages.each(&:reload) }
-          .not_to change { work_packages.map(&:position) }
+          .to change { work_packages.map(&:position) }
+                .from([1, 2, 3, 4, 5])
+                .to([2, 3, 4, 5, 6])
       end
     end
 

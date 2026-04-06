@@ -102,11 +102,17 @@ class InboxController < RbApplicationController
 
   def move_params
     params.require(%i[target_id])
-    params.permit(:position, :target_id)
+    params.permit(:position, :prev_id, :target_id)
   end
 
   def position_attributes
-    { position: move_params[:position]&.to_i }.compact
+    if move_params.has_key?(:prev_id)
+      { prev_id: move_params[:prev_id].to_i }
+    elsif move_params.has_key?(:position)
+      { position: move_params[:position].to_i }
+    else
+      {}
+    end
   end
 
   def reorder_param

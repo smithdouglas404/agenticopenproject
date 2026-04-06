@@ -81,6 +81,7 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
 
     if (this.hasStatusChanges) {
       this.updateRoleDirtyParams(true);
+      window.OpenProject.pageState = 'edited';
     }
   }
 
@@ -107,6 +108,7 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     const dirty = this.hasStatusChanges || checkboxesDirty;
     this.element.dataset.dirty = dirty ? 'true' : 'false';
     this.updateRoleDirtyParams(dirty);
+    window.OpenProject.pageState = dirty ? 'edited' : 'pristine';
   };
 
   private onTabLinkClick = (event:Event) => {

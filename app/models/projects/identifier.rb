@@ -159,7 +159,7 @@ module Projects::Identifier
                          .where.not(sluggable_id: id)
                          .exists?
 
-    errors.add(:identifier, :taken) if already_existing
+    errors.add(:identifier, :taken, value: identifier) if already_existing
   end
 
   def generate_semantic_identifier

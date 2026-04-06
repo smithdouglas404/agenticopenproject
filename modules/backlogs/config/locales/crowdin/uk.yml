@@ -93,6 +93,8 @@ uk:
     sharing: "Sharing"
     impediment: "Перешкода"
     label_versions_default_fold_state: "Показати складені версії"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "Версії не розгортатимуться за замовчуванням при перегляді невиконаних завдань. Кожну версію потрібно розгортати вручну."
     work_package_is_closed: "Робочий пакет виконується, коли"
     label_is_done_status: "Стан %{status_name} означає виконано"
@@ -106,7 +108,7 @@ uk:
     rebuild: "Перебудувати"
     rebuild_positions: "Перебудувати позиції"
     remaining_hours: "Залишок роботи"
-    show_burndown_chart: "Графік Burndown"
+    show_burndown_chart: "Burndown chart"
     story: "Історія"
     story_points:
       one: "%{count} cторі-поінт"
@@ -166,7 +168,10 @@ uk:
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
         settings_link_text: "project settings"
     sprint_header_component:
-      label_toggle_backlog: "Згорнути/розгорнути %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "У спринті немає історій"
         one: "У спринті %{count} історія"
@@ -178,7 +183,6 @@ uk:
         new_story: "Нова історія"
         stories_tasks: "Історії/завдання"
         task_board: "Дошка завдань"
-        burndown_chart: "Діаграма згорання завдань"
         wiki: "Wiki"
         properties: "Властивості"
     finish_sprint_dialog_component:
@@ -190,17 +194,12 @@ uk:
         move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
         move_to_sprint: "Move them to another sprint"
       select_sprint_label: "Select sprint"
-      button_close_sprint: "Close sprint"
+      button_complete_sprint: "Complete sprint"
     sprint_menu_component:
       label_actions: "Дії спринту"
       action_menu:
-        start_sprint: "Start sprint"
-        finish_sprint: "Finish sprint"
-        start_sprint_disabled_description: "Another sprint is already active."
-        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Редагувати спринт"
         add_work_package: "Add work package"
-        task_board: "Sprint board"
     story_component:
       label_drag_story: "Перемістити історію «%{name}»"
     story_menu_component:
@@ -233,8 +232,10 @@ uk:
   label_backlogs: "Backlogs"
   label_backlogs_unconfigured: "Ви ще не настроїли Backlogs. Перейдіть на %{administration}>%{plugins}, потім натисніть посилання %{configure} для цього плагіна. Після того, як ви встановите поля, поверніться на цю сторінку, щоб розпочати використання інструмента."
   label_blocks_ids: "Ідентифікатори заблокованих робочих пакетів"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "Стовпець у backlog-у"
   label_used_as_backlog: "Використовується як беклог"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "Вниз"
   label_points_burn_up: "Вгору"
   label_sprint_edit: "Редагувати спринт"

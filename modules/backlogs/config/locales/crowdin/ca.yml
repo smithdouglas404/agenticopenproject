@@ -91,6 +91,8 @@ ca:
     sharing: "Sharing"
     impediment: "Impediment"
     label_versions_default_fold_state: "Mostra les versions contretes"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "Les versions no s'expandiran per defecte quan es visualitzin els registres enrere. Cada un ha d'ampliar-se manualment."
     work_package_is_closed: "Paquet de treball completat, quan"
     label_is_done_status: "L'estat %{status_name} significa fet"
@@ -102,7 +104,7 @@ ca:
     rebuild: "Reconstruir"
     rebuild_positions: "Reconstruir posicions"
     remaining_hours: "Treball restant"
-    show_burndown_chart: "Diagrama de progrés"
+    show_burndown_chart: "Burndown chart"
     story: "Història"
     story_points:
       one: "%{count} story point"
@@ -158,7 +160,10 @@ ca:
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
         settings_link_text: "project settings"
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "No stories in sprint"
         one: "%{count} story in sprint"
@@ -170,7 +175,6 @@ ca:
         new_story: "New story"
         stories_tasks: "Stories/Tasks"
         task_board: "Task board"
-        burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
     finish_sprint_dialog_component:
@@ -182,17 +186,12 @@ ca:
         move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
         move_to_sprint: "Move them to another sprint"
       select_sprint_label: "Select sprint"
-      button_close_sprint: "Close sprint"
+      button_complete_sprint: "Complete sprint"
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
-        start_sprint: "Start sprint"
-        finish_sprint: "Finish sprint"
-        start_sprint_disabled_description: "Another sprint is already active."
-        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
-        task_board: "Sprint board"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -225,8 +224,10 @@ ca:
   label_backlogs: "Backlogs"
   label_backlogs_unconfigured: "No has configurat les llistes de pendents encara. Si us plau, ves a %{administration} > %{plugins}, a continuació, fes clic a l'enllaç de %{configure} per a aquest plugin. Una vegada hagis omplert els camps, torna a aquesta pàgina per començar a utilitzar l'eina."
   label_blocks_ids: "Identificadors dels paquets de treball bloquejats"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "Columna al backlog"
   label_used_as_backlog: "Used as backlog"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "A baix"
   label_points_burn_up: "Amunt"
   label_sprint_edit: "Edit sprint"

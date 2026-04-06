@@ -30,10 +30,12 @@
 
 class My::BacklogsForm < ApplicationForm
   form do |f|
-    f.text_field name: :task_color,
-                 label: I18n.t("backlogs.task_color"),
-                 value: @color,
-                 input_width: :xsmall
+    unless OpenProject::FeatureDecisions.scrum_projects_active?
+      f.text_field name: :task_color,
+                   label: I18n.t("backlogs.task_color"),
+                   value: @color,
+                   input_width: :xsmall
+    end
 
     f.check_box name: :versions_default_fold_state,
                 value: DEFAULT_FOLD_STATE,

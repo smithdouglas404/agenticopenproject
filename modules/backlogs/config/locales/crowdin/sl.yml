@@ -93,6 +93,8 @@ sl:
     sharing: "Sharing"
     impediment: "Ovira"
     label_versions_default_fold_state: "Pokaži različice zložene"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
     work_package_is_closed: "Delovni paket je končan, ko"
     label_is_done_status: "Status %{status_name} pomeni zaključeno"
@@ -106,7 +108,7 @@ sl:
     rebuild: "Obnovi"
     rebuild_positions: "Obnovi položaj"
     remaining_hours: "Remaining work"
-    show_burndown_chart: "Graf burndown"
+    show_burndown_chart: "Burndown chart"
     story: "Zgodba"
     story_points:
       one: "%{count} story point"
@@ -166,7 +168,10 @@ sl:
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
         settings_link_text: "project settings"
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "No stories in sprint"
         one: "%{count} story in sprint"
@@ -178,7 +183,6 @@ sl:
         new_story: "New story"
         stories_tasks: "Stories/Tasks"
         task_board: "Task board"
-        burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
     finish_sprint_dialog_component:
@@ -190,17 +194,12 @@ sl:
         move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
         move_to_sprint: "Move them to another sprint"
       select_sprint_label: "Select sprint"
-      button_close_sprint: "Close sprint"
+      button_complete_sprint: "Complete sprint"
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
-        start_sprint: "Start sprint"
-        finish_sprint: "Finish sprint"
-        start_sprint_disabled_description: "Another sprint is already active."
-        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
-        task_board: "Sprint board"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -233,8 +232,10 @@ sl:
   label_backlogs: "Zaostanki"
   label_backlogs_unconfigured: "Zaostankov še niste konfigurirali. Pojdite na  %{administration} > %{plugins}, nato kliknite povezavo %{configure} za ta vtičnik. Ko nastavite polja, se vrnite na to stran, da začnete uporabljati orodje."
   label_blocks_ids: "ID blokiranih delovnih paketov"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "Stolpec v zaostanku"
   label_used_as_backlog: "Used as backlog"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "Navzdol"
   label_points_burn_up: "Navzgor"
   label_sprint_edit: "Edit sprint"

@@ -91,7 +91,7 @@ RSpec.describe "Start and finish sprints",
   end
 
   it "starts the sprint and redirects to the board" do
-    planning_page.click_in_sprint_menu(first_sprint, "Start sprint")
+    planning_page.click_start_sprint_button(first_sprint)
 
     expect_and_dismiss_flash type: :success, message: "The sprint was started."
 
@@ -142,10 +142,7 @@ RSpec.describe "Start and finish sprints",
     let!(:task_board) { create(:board_grid_with_query, project:, linked: first_sprint) }
 
     it "finishes the sprint and returns to the backlog" do
-      planning_page.within_sprint_menu(first_sprint) do |menu|
-        expect(menu).to have_selector :menuitem, "Finish sprint"
-        menu.find(:button, "Finish sprint").click
-      end
+      planning_page.click_finish_sprint_button(first_sprint)
 
       planning_page.expect_current_path
       expect_and_dismiss_flash type: :success, message: "The sprint was completed."
