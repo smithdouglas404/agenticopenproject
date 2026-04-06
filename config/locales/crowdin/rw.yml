@@ -162,6 +162,7 @@ rw:
         history: "History"
         remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
+        project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:
           title: "No import runs set up yet"
           description: "Create an import run to start importing information from this Jira instance"
@@ -3265,18 +3266,17 @@ rw:
         learn_about: "Learn more about all new features"
         missing: "There are no highlighted features yet."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_2":
+        "17_3":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: AI workflows with a secure MCP server (Professional plan and higher)
-            line_1: Improved project home page with new widget for budgets and improved accessibility
-            line_2: "Meetings: Meeting templates (Basic plan and higher)"
-            line_3: Better transparency with project attribute comments
-            line_4: PDF export enhancements
-            line_5: Increased security for external links (Premium plan and higher)
-            line_6: UI/UX improvements in the Backlogs module
-            line_7: Harmonized custom field forms
+            line_0: "Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation."
+            line_1: In-place editing of project attributes on the Project Overview page.
+            line_2: Sharing of meeting templates (Basic plan and higher).
+            line_3: Better search in Time and Costs, Boards, and more.
+            line_4: Option to safely change project identifiers.
+            line_5: Improved workflow configuration for administrators.
+            line_6: Action boards released to Community.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrating your installation to PostgreSQL"
@@ -3459,6 +3459,7 @@ rw:
       invalid_filter: "Invalid notification filter"
   label_accessibility: "Accessibility"
   label_account: "Account"
+  label_actions: "Actions"
   label_active: "Active"
   label_activate_user: "Activate user"
   label_active_in_new_projects: "Active in new projects"

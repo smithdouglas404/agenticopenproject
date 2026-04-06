@@ -28,7 +28,8 @@ See COPYRIGHT and LICENSE files for more details.
 ++# %>
 
 <%= turbo_frame_tag "backlogs_container", refresh: :morph, class: "op-backlogs-page" do %>
-  <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop">
+  <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop"
+       data-generic-drag-and-drop-position-mode-value="prev_id">
     <div id="owner_backlogs_container" class="op-sprint-planning-lists"
          data-generic-drag-and-drop-target="scrollContainer">
       <%= render Backlogs::InboxComponent.new(

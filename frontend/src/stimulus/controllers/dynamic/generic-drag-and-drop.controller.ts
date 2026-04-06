@@ -47,8 +47,13 @@ export default class GenericDragAndDropController extends Controller {
   containerTargets:HTMLElement[];
   scrollContainerTargets:HTMLElement[];
 
-  static values = { handleSelector: { type: String, default: '.DragHandle' } };
+  static values = {
+    handleSelector: { type: String, default: '.DragHandle' },
+    positionMode: { type: String, default: 'index' },
+  };
+
   declare readonly handleSelectorValue:string;
+  declare readonly positionModeValue:string;
 
   private drake:Drake|null = null;
   private autoscroll:DomAutoscrollService|null = null;
@@ -192,17 +197,13 @@ export default class GenericDragAndDropController extends Controller {
   }
 
   protected buildData(el:Element, target:Element):FormData {
-    let targetPosition = Array.from(target.children).indexOf(el);
-    if (target.children.length > 0 && target.children[0].getAttribute('data-empty-list-item') === 'true') {
-      // if the target container is empty, a list item showing an empty message might be shown
-      // this should not be counted as a list item
-      // thus we need to subtract 1 from the target position
-      targetPosition -= 1;
-    }
-
     const data = new FormData();
 
-    data.append('position', (targetPosition + 1).toString());
+    if (this.positionModeValue === 'prev_id') {
+      data.append('prev_id', this.resolveTargetPrevious(el) ?? '');
+    } else {
+      data.append('position', this.resolveTargetPosition(el, target).toString());
+    }
 
     const targetConfig = this.targetConfigs.find((config) => config.container === target);
     const targetId = targetConfig?.targetId as string|undefined;
@@ -224,5 +225,24 @@ export default class GenericDragAndDropController extends Controller {
     const container = target.querySelector<HTMLElement>(accessor);
     invariant(container, `Expected container element matching "${accessor}"`);
     return container;
+  }
+
+  // Returns the data-draggable-id of the element preceding el in its container,
+  // or null if el is the first item (signals "move to top").
+  private resolveTargetPrevious(el:Element):string|null {
+    return el.previousElementSibling?.getAttribute('data-draggable-id') ?? null;
+  }
+
+  private resolveTargetPosition(el:Element, container:Element):number {
+    let targetPosition = Array.from(container.children).indexOf(el);
+
+    if (container.children.length > 0 && container.children[0].getAttribute('data-empty-list-item') === 'true') {
+      // if the target container is empty, a list item showing an empty message might be shown
+      // this should not be counted as a list item
+      // thus we need to subtract 1 from the target position
+      targetPosition -= 1;
+    }
+
+    return targetPosition + 1;
   }
 }

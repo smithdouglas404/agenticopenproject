@@ -162,6 +162,7 @@ ko:
         history: "기록"
         remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "다른 Jira 가져오기 실행이 현재 진행 중이거나 검토를 기다리는 중입니다. 새 가져오기를 시작하기 전에 완료하거나 되돌리세요."
+        project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:
           title: "가져오기 실행이 아직 설정되지 않음"
           description: "가져오기 실행을 만들어서 이 Jira 인스턴스에서 정보 가져오기를 시작하세요"
@@ -3206,18 +3207,17 @@ ko:
         learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         missing: "아직 강조 표시된 기능이 없습니다."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_2":
+        "17_3":
           new_features_title: >
-            이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: 안전한 MCP 서버를 사용하는 AI 워크플로(Professional 플랜 이상)
-            line_1: 새 예산 위젯이 포함되고 접근성이 향상되어 프로젝트 홈 페이지가 개선됨
-            line_2: "미팅: 미팅 템플릿(Basic 플랜 이상)"
-            line_3: 프로젝트 특성 코멘트의 투명성 향상됨
-            line_4: PDF 내보내기 개선 사항
-            line_5: 외부 링크에 대한 보안 강화됨(Premium 플랜 이상)
-            line_6: 백로그 모듈의 UI/UX 개선 사항
-            line_7: 통합 사용자 지정 필드 양식
+            line_0: "Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation."
+            line_1: In-place editing of project attributes on the Project Overview page.
+            line_2: Sharing of meeting templates (Basic plan and higher).
+            line_3: Better search in Time and Costs, Boards, and more.
+            line_4: Option to safely change project identifiers.
+            line_5: Improved workflow configuration for administrators.
+            line_6: Action boards released to Community.
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -3400,6 +3400,7 @@ ko:
       invalid_filter: "잘못된 알림 필터"
   label_accessibility: "접근성"
   label_account: "계정"
+  label_actions: "작업"
   label_active: "활성"
   label_activate_user: "사용자 활성화"
   label_active_in_new_projects: "새로운 프로젝트에서 활성"

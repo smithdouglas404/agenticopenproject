@@ -130,7 +130,7 @@ module AllMeetings
     end
 
     def attendee(event)
-      event.attendee.find { it.value_ical == "mailto:#{user.mail}" }
+      event.attendee.find { it.value_ical.downcase == "mailto:#{user.mail}" }
     end
 
     def partstat(attendee)

@@ -112,7 +112,7 @@ fr:
     import:
       title: "Importation"
     jira:
-      title: "Jira Migrator"
+      title: "Migrateur Jira"
       description: "Utilisez cet outil pour importer des données à partir de votre instance Jira. Vous pouvez configurer plusieurs hôtes Jira et choisir les données à importer à chaque cycle d'importation."
       errors:
         cannot_delete_with_imports: "Impossible de supprimer un hôte Jira avec des importations existantes"
@@ -123,7 +123,7 @@ fr:
         title: "Configuration de Jira"
         new: "Nouvelle configuration"
       banner:
-        title: "Limited import capabilities"
+        title: "Capacités d'importation limitées"
         description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
@@ -160,8 +160,9 @@ fr:
       run:
         title: "Cycle d'importation"
         history: "Historique"
-        remove_error: "A Jira import run cannot be removed while it is running"
+        remove_error: "Une exécution d'importation Jira ne peut pas être supprimée lorsqu'elle est en cours d'exécution"
         import_blocked_error: "Un autre cycle d'importation Jira est actuellement en cours ou en attente de révision. Veuillez le terminer ou l'annuler avant de commencer une nouvelle importation."
+        project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:
           title: "Aucun cycle d'importation n'a encore été configuré"
           description: "Créez un cycle d'importation pour commencer à importer des informations à partir de cette instance Jira"
@@ -1509,8 +1510,8 @@ fr:
   activerecord:
     attributes:
       work_package_semantic_alias:
-        identifier: "Identifier"
-        work_package: "Work package"
+        identifier: "Identifiant"
+        work_package: "Lot de travaux"
       jira_import:
         projects: "Projets"
       "import/jira":
@@ -1519,7 +1520,7 @@ fr:
         personal_access_token: "Jeton d'accès personnel"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira Migrator"
+        jira_import: "Migrateur Jira"
       announcements:
         show_until: "Afficher jusqu'à"
       attachment:
@@ -1827,7 +1828,7 @@ fr:
         sunday_hours: "Horaires du dimanche"
         availability_factor: "Facteur de disponibilité"
         shared_hours: "Heures de travail"
-        days: "Working days"
+        days: "Jours ouvrés"
       version:
         effective_date: "Date de fin"
         sharing: "Partage"
@@ -1956,7 +1957,7 @@ fr:
         group:
           attributes:
             parent_id:
-              circular_dependency: "would create a circular group hierarchy."
+              circular_dependency: "créerait une hiérarchie de groupe circulaire."
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2278,7 +2279,7 @@ fr:
         user_working_hours:
           attributes:
             days:
-              no_working_day: "At least one day needs to be configured as a working day."
+              no_working_day: "Au moins un jour doit être configuré comme jour ouvrable."
         member:
           principal_blank: "Veuillez choisir au moins un utilisateur ou un groupe."
           role_blank: "doit être assigné."
@@ -2546,7 +2547,7 @@ fr:
       info: >
         Vous devrez générer un jeton de sauvegarde pour pouvoir créer une sauvegarde. Vous devrez fournir ce jeton à chaque fois que vous demanderez une sauvegarde. Vous pouvez supprimer le jeton de sauvegarde pour désactiver les sauvegardes pour cet utilisateur.
       verification_html: >
-        Enter %{word} to confirm you want to %{action} the backup token.
+        Entrez %{word} pour confirmer que vous souhaitez %{action} le jeton de sauvegarde.
       verification_word_reset: réinitialiser
       verification_word_create: créer
       warning: >
@@ -2985,7 +2986,7 @@ fr:
       title:
         one: "Un jour restant pour le jeton d'essai %{trial_plan}"
         other: "%{count} jours restants pour le jeton d'essai %{trial_plan}"
-      description_html: "You have access to all %{trial_plan} features."
+      description_html: "Vous avez accès à toutes les fonctionnalités de %{trial_plan}."
     trial:
       not_found: "Vous avez demandé un jeton d'essai, mais cette demande n'est plus disponible. Veuillez réessayer."
       wait_for_confirmation: "Nous vous avons envoyé un e-mail pour confirmer votre adresse afin de récupérer un jeton d'essai."
@@ -3264,18 +3265,17 @@ fr:
         learn_about: "En savoir plus sur les nouvelles fonctionnalités"
         missing: "Il n'y a pas encore de fonctionnalités mises en évidence."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_2":
+        "17_3":
           new_features_title: >
-            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Flux de travail d'IA avec un serveur MCP sécurisé (abonnements Professional et supérieurs)
-            line_1: Amélioration de la page d'accueil du projet avec un nouveau widget pour les budgets et amélioration de l'accessibilité
-            line_2: "Réunions : modèles de réunion (abonnements Basic et supérieurs)"
-            line_3: Meilleure transparence avec les commentaires sur les attributs de projet
-            line_4: Amélioration de l'exportation PDF
-            line_5: Sécurité accrue pour les liens externes (à partir de l'abonnement Premium)
-            line_6: Améliorations UI/UX dans le module Backlogs
-            line_7: Formulaires de champs personnalisés harmonisés
+            line_0: "Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation."
+            line_1: In-place editing of project attributes on the Project Overview page.
+            line_2: Sharing of meeting templates (Basic plan and higher).
+            line_3: Better search in Time and Costs, Boards, and more.
+            line_4: Option to safely change project identifiers.
+            line_5: Improved workflow configuration for administrators.
+            line_6: Action boards released to Community.
     links:
       upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -3343,7 +3343,7 @@ fr:
           Mode de planification automatiquement ajusté avec la mise à jour de version.
         totals_removed_from_childless_work_packages: >-
           Les totaux de travail et de progression sont automatiquement supprimés pour les lots de travaux non parents avec <a href="%{href}" target="_blank">la mise à jour de la version</a>. Il s'agit d'une tâche de maintenance qui peut être ignorée.
-        sprint_migration: "Version '%{version_name}' has been copied as a sprint."
+        sprint_migration: "La version '%{version_name}' a été copiée en tant que sprint."
       total_percent_complete_mode_changed_to_work_weighted_average: >-
         Les lots de travaux enfants sans travail sont ignorés.
       total_percent_complete_mode_changed_to_simple_average: >-
@@ -3458,6 +3458,7 @@ fr:
       invalid_filter: "Filtre de notification invalide"
   label_accessibility: "Accessibilité"
   label_account: "Compte"
+  label_actions: "Actions"
   label_active: "Actif"
   label_activate_user: "Activer l’utilisateur"
   label_active_in_new_projects: "Activer dans de nouveaux projets"
@@ -3498,7 +3499,7 @@ fr:
   label_ical_access_key_generation_hint: "Généré automatiquement lors de l'abonnement à un calendrier."
   label_ical_access_key_latest: "Dernier"
   label_ical_access_key_revoke: "Révoquer"
-  label_integrations: "Integrations"
+  label_integrations: "Intégrations"
   label_add_column: "Ajouter une colonne"
   label_applied_status: "Statut appliqué"
   label_archive_project: "Archiver le projet"
@@ -3546,7 +3547,7 @@ fr:
   label_calendar_show: "Afficher le calendrier"
   label_category: "Catégorie"
   label_completed: Terminé
-  label_committed_at_html: "%{committed_revision_link} at %{date}"
+  label_committed_at_html: "%{committed_revision_link} le %{date}"
   label_committed_link: "committed revision %{revision_identifier}"
   label_consent_settings: "Accord de l'utilisateur"
   label_wiki_menu_item: Élément de menu wiki

@@ -167,7 +167,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "shows no Burndown chart link" do
         render_component
 
-        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
+        expect(page).to have_no_text(I18n.t(:"backlogs.label_burndown_chart"))
       end
     end
 
@@ -288,7 +288,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
       it "shows Burndown chart link" do
         render_component
 
-        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
+        expect(page).to have_css("li", text: I18n.t(:"backlogs.label_burndown_chart"))
       end
 
       context "when sprint has no burndown (no dates)" do
@@ -297,7 +297,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
         it "shows Burndown chart link as disabled" do
           render_component
 
-          burndown_item = page.find("li", text: I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
+          burndown_item = page.find("li", text: I18n.t(:"backlogs.label_burndown_chart"))
           expect(burndown_item[:class]).to include("ActionListItem--disabled")
         end
       end
@@ -306,7 +306,7 @@ RSpec.describe Backlogs::BacklogMenuComponent, type: :component do
         it "shows Burndown chart link as enabled" do
           render_component
 
-          burndown_item = page.find("li", text: I18n.t(:"backlogs.backlog_menu_component.action_menu.burndown_chart"))
+          burndown_item = page.find("li", text: I18n.t(:"backlogs.label_burndown_chart"))
           expect(burndown_item[:class]).not_to include("ActionListItem--disabled")
         end
       end

@@ -90,6 +90,8 @@ zh-TW:
     sharing: "共享"
     impediment: "阻礙"
     label_versions_default_fold_state: "顯示精簡版本"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "檢視待辦清單時，版本預設不會展開，需手動逐一展開。"
     work_package_is_closed: "視為工作套件已完成"
     label_is_done_status: "狀態 %{status_name} 表示完成"
@@ -100,7 +102,7 @@ zh-TW:
     rebuild: "重建"
     rebuild_positions: "重建位置"
     remaining_hours: "剩餘工時"
-    show_burndown_chart: "未完成圖"
+    show_burndown_chart: "Burndown chart"
     story: "使用者需求"
     story_points:
       other: "%{count} 故事點"
@@ -154,7 +156,10 @@ zh-TW:
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
         settings_link_text: "project settings"
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "No stories in sprint"
         one: "%{count} story in sprint"
@@ -166,7 +171,6 @@ zh-TW:
         new_story: "新增故事"
         stories_tasks: "故事/任務"
         task_board: "任務板"
-        burndown_chart: "燃盡圖"
         wiki: "維基"
         properties: "屬性"
     finish_sprint_dialog_component:
@@ -178,17 +182,12 @@ zh-TW:
         move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
         move_to_sprint: "Move them to another sprint"
       select_sprint_label: "Select sprint"
-      button_close_sprint: "Close sprint"
+      button_complete_sprint: "Complete sprint"
     sprint_menu_component:
       label_actions: "衝刺行動"
       action_menu:
-        start_sprint: "Start sprint"
-        finish_sprint: "Finish sprint"
-        start_sprint_disabled_description: "Another sprint is already active."
-        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "編輯衝刺"
         add_work_package: "Add work package"
-        task_board: "Sprint board"
     story_component:
       label_drag_story: "移動 %{name}"
     story_menu_component:
@@ -221,8 +220,10 @@ zh-TW:
   label_backlogs: "待辦事項"
   label_backlogs_unconfigured: "您尚未設定待辦事項。請前往 '%{administration} -> %{plugins}' 然後在 %{configure} 連結上按一下。當你設定欄位後，再返回這個頁面使用這個工具。"
   label_blocks_ids: "被禁止的工作套件 IDs"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "待辦事項的欄位"
   label_used_as_backlog: "Used as backlog"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "減少"
   label_points_burn_up: "增加"
   label_sprint_edit: "Edit sprint"

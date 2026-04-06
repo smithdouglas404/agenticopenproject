@@ -124,7 +124,9 @@ module Pages
                          find(sprint_selector(into))
                        end
 
-      moved_element.native.drag_to(target_element.native, delay: 0.1)
+      wait_for_turbo_stream do
+        moved_element.native.drag_to(target_element.native, delay: 0.1)
+      end
     rescue Capybara::Cuprite::ObsoleteNode
       retry
     end
@@ -388,10 +390,20 @@ module Pages
       within(work_package_selector(work_package), &)
     end
 
-    def click_to_finish_sprint(sprint)
-      within_sprint_menu(sprint) do |menu|
-        menu.find(:button, "Finish sprint").click
+    def click_start_sprint_button(sprint)
+      within_sprint(sprint) do
+        click_on("Start")
       end
+    end
+
+    def click_finish_sprint_button(sprint)
+      within_sprint(sprint) do
+        click_on("Finish")
+      end
+    end
+
+    def click_to_finish_sprint(sprint)
+      click_finish_sprint_button(sprint)
     end
 
     def choose_to_move_unfinished_work_packages_to_sprint(sprint_name)
@@ -399,7 +411,7 @@ module Pages
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_sprint")
         select sprint_name, from: "Select sprint"
 
-        click_button "Close sprint"
+        click_button "Complete sprint"
       end
     end
 
@@ -407,7 +419,7 @@ module Pages
       within sprint_finish_modal_selector do
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_top_of_backlog")
 
-        click_button "Close sprint"
+        click_button "Complete sprint"
       end
     end
 
@@ -415,7 +427,7 @@ module Pages
       within sprint_finish_modal_selector do
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_bottom_of_backlog")
 
-        click_button "Close sprint"
+        click_button "Complete sprint"
       end
     end
 

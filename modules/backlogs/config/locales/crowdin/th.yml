@@ -90,6 +90,8 @@ th:
     sharing: "Sharing"
     impediment: "รายการอุปสรรค"
     label_versions_default_fold_state: "แสดงเวอร์ชันที่พับอยู่"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "เวอร์ชันจะถูกพับไว้เป็นค่าเริ่มต้น กรุณาคลิกเพื่อขยายดูทีละรายการ"
     work_package_is_closed: "งานจะถือว่า เสร็จสิ้น เมื่อ"
     label_is_done_status: "สถานะ %{status_name} หมายถึง เสร็จสิ้น"
@@ -100,7 +102,7 @@ th:
     rebuild: "สร้างใหม่"
     rebuild_positions: "จัดลำดับตำแหน่งใหม่"
     remaining_hours: "งานที่เหลือ"
-    show_burndown_chart: "กราฟติดตามงาน (Burndown)"
+    show_burndown_chart: "Burndown chart"
     story: "สตอรี่"
     story_points:
       other: "%{count} คะแนนสตอรี่"
@@ -154,7 +156,10 @@ th:
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
         settings_link_text: "project settings"
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "No stories in sprint"
         one: "%{count} story in sprint"
@@ -166,7 +171,6 @@ th:
         new_story: "สตอรี่ใหม่"
         stories_tasks: "สตอรี่/งาน"
         task_board: "กระดานงาน"
-        burndown_chart: "กราฟติดตามงาน (Burndown)"
         wiki: "วิกิ"
         properties: "คุณสมบัติ"
     finish_sprint_dialog_component:
@@ -178,17 +182,12 @@ th:
         move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
         move_to_sprint: "Move them to another sprint"
       select_sprint_label: "Select sprint"
-      button_close_sprint: "Close sprint"
+      button_complete_sprint: "Complete sprint"
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
-        start_sprint: "Start sprint"
-        finish_sprint: "Finish sprint"
-        start_sprint_disabled_description: "Another sprint is already active."
-        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
-        task_board: "Sprint board"
     story_component:
       label_drag_story: "ย้าย %{name}"
     story_menu_component:
@@ -221,8 +220,10 @@ th:
   label_backlogs: "รายการงานคงค้าง"
   label_backlogs_unconfigured: "คุณยังไม่ได้ตั้งค่ารายการงานคงค้าง กรุณาไปที่ %{administration} > %{plugins} จากนั้นคลิกที่ลิงก์ %{configure} ของปลั๊กอินนี้ เมื่อคุณตั้งค่าฟิลด์ต่าง ๆ เรียบร้อยแล้ว ให้กลับมาที่หน้านี้เพื่อเริ่มใช้งานเครื่องมือ"
   label_blocks_ids: "Id ของแพคเกจการทำงานที่ถูกบล็อก"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "คอลัมน์ในรายการงานคงค้าง"
   label_used_as_backlog: "Used as backlog"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "ลง"
   label_points_burn_up: "ขึ้น"
   label_sprint_edit: "Edit sprint"

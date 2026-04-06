@@ -37,18 +37,14 @@ sv:
     error_invalid_backup_code: "Ogiltig 2FA reservkod"
     channel_unavailable: "Leveranskanal %{channel} är inte tillgänglig."
     no_valid_phone_number: "Det finns inget giltigt telefonnummer."
-    label_pwd_confirmation: "Lösenord"
-    notice_pwd_confirmation: "Du måste bekräfta ditt lösenord när du gör ändringar till dessa inställningar."
     label_device_type: "Enhetstyp"
     label_default_device: "2FA standardenhet"
     label_device: "2FA enhet"
     label_devices: "2FA enheter"
-    label_one_time_password: "Engångslösenord"
     label_2fa_enabled: "Tvåfaktorsautentisering är aktiv"
     label_2fa_disabled: "Tvåfaktorsautentisering är inaktiverad"
     text_otp_delivery_message_sms: "Engångslösenordet för %{app_title} är %{token}"
     text_otp_delivery_message_voice: "Engångslösenordet för %{app_title} är: %{pause} %{token}. %{pause} jag upprepar: %{pause} %{token}"
-    text_enter_2fa: "Vänligen ange engångslösenordet från din enhet."
     text_2fa_enabled: "Vid varje inloggning, blir du ombedd att ange ett OTP-token från din standard 2FA-enhet."
     text_2fa_disabled: "För att aktivera tvåfaktorsautentisering, använd knappen ovan för att registrera en ny 2FA-enhet. Om du redan har en enhet måste du göra den till standardenhet."
     login:
@@ -67,7 +63,6 @@ sv:
       text_enforced: "Aktivera denna inställning för att tvinga alla användare att registrera en 2FA-enhet vid nästa inloggning. Kan endast inaktiveras när det inte görs genom konfiguration."
       text_remember: |
         Ställ in detta till mer än noll för att tillåta användare att komma ihåg sin 2FA-autentisering för det angivna antalet dagar. De kommer inte att bli ombedda att skriva in den under den perioden. Kan bara ställas in när det inte sker genom konfiguration.
-      error_invalid_settings: "De 2FA strategier du har valt är ogiltiga"
       failed_to_save_settings: "Det gick inte att uppdatera 2FA inställningarna: %{message}"
     admin:
       self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
@@ -80,14 +75,9 @@ sv:
       text_2fa_enabled: "Vid varje inloggning kommer användaren att bli ombedd att ange en OTP-token från sin standard 2FA-enhet."
       text_2fa_disabled: "Användaren konfigurerade inte en 2FA-enhet via deras 'Mitt konto'"
       only_sms_allowed: "Endast SMS-leverans kan ställas in för andra användare."
-    upsell:
-      title: "Tvåfaktorsautentisering"
-      description: "Strenghten säkerheten för din OpenProject instans genom att erbjuda (eller genomdriva) tvåfaktorsautentisering till alla projektmedlemmar."
     backup_codes:
-      none_found: Inga reservkoder finns för detta konto.
       singular: Reservkod
       plural: Reservkoder
-      your_codes: för din %{app_name} konto %{login}
       overview_description: |
         Om det inte går att komma åt dina tvåfaktor-enheter, kan du använda en reservkod för att återfå tillgång till kontot. Använd följande knapp för att generera en ny uppsättning reservkoder.
       generate:
@@ -164,19 +154,15 @@ sv:
       clear_cookie: "Klicka här för att ta bort alla sparade 2FA sessioner."
       cookie_removed: "Alla sparade 2FA sessioner har tagits bort."
       dont_ask_again: "Skapa en cookie för att komma ihåg 2FA autentisering på den här klienten för %{days} dagar."
-  field_phone: "Mobiltelefon"
   field_otp: "Engångslösenord"
   notice_account_otp_invalid: "Ogiltig engångslösenord."
   notice_account_otp_expired: "Engångslösenordet har upphört att gälla."
   notice_developer_strategy_otp: "Utvecklarstrategin genererade följande engångslösenord: %{token} (kanal: %{channel})"
   notice_account_otp_send_failed: "Ditt engångslösenord kunde inte skickas."
   notice_account_has_no_phone: "Ingen mobiltelefonnummer är kopplat till ditt konto."
-  label_expiration_hint: "%{date} eller på utloggning"
-  label_actions: "Åtgärder"
   label_confirmed: "Bekräftad"
   button_continue: "Fortsätt"
   button_make_default: "Markera som standard"
-  label_unverified_phone: "Mobiltelefon som inte ännu verifierats"
   notice_phone_number_format: "Vänligen ange nummer i följande format: + XX XXXXXXXX."
   text_otp_not_receive: "Andra verifieringsmetoder"
   text_send_otp_again: "Skicka åter engångslösenord genom:"

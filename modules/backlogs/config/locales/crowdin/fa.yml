@@ -91,6 +91,8 @@ fa:
     sharing: "Sharing"
     impediment: "Impediment"
     label_versions_default_fold_state: "Show versions folded"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "در هنگام مشاهده backlog ها، نسخه‌ها به صورت پیش‌فرض بازنخواهندشد. هر کدام باید به صورت دستی باز شوند."
     work_package_is_closed: "Work package is done, when"
     label_is_done_status: "Status %{status_name} means done"
@@ -102,7 +104,7 @@ fa:
     rebuild: "Rebuild"
     rebuild_positions: "Rebuild positions"
     remaining_hours: "کار باقی‌مانده"
-    show_burndown_chart: "Burndown Chart"
+    show_burndown_chart: "Burndown chart"
     story: "Story"
     story_points:
       one: "%{count} امتیاز داستان"
@@ -158,7 +160,10 @@ fa:
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
         settings_link_text: "project settings"
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "No stories in sprint"
         one: "%{count} story in sprint"
@@ -170,7 +175,6 @@ fa:
         new_story: "داستان جدید"
         stories_tasks: "داستان ها/وظایف"
         task_board: "تابلوی وظایف"
-        burndown_chart: "نمودار خلاصه"
         wiki: "ویکی"
         properties: "ویژگی ها"
     finish_sprint_dialog_component:
@@ -182,17 +186,12 @@ fa:
         move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
         move_to_sprint: "Move them to another sprint"
       select_sprint_label: "Select sprint"
-      button_close_sprint: "Close sprint"
+      button_complete_sprint: "Complete sprint"
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
-        start_sprint: "Start sprint"
-        finish_sprint: "Finish sprint"
-        start_sprint_disabled_description: "Another sprint is already active."
-        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
-        task_board: "Sprint board"
     story_component:
       label_drag_story: "انتقال %{name}"
     story_menu_component:
@@ -225,8 +224,10 @@ fa:
   label_backlogs: "پس‌افت"
   label_backlogs_unconfigured: "شما هنوز پس‌افت‌ها را پیکربندی نکرده‌اید. لطفاً به %{administration} > %{plugins} بروید، سپس برای این افزونه روی %{configure}  کلیک کنید. وقتی همۀ قسمت‌ها را تکمیل کردید، برای استفاده از این ابزار به همین صفحه برگردید. "
   label_blocks_ids: "شناسه‌های مسدود کاربسته‌ها"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "ستون در پس‌افت"
   label_used_as_backlog: "Used as backlog"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "پایین"
   label_points_burn_up: "بالا"
   label_sprint_edit: "Edit sprint"
