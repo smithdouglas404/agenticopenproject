@@ -3,18 +3,18 @@ import { saveBoard } from '../api/boards';
 import type { GridWidget } from '../api/types';
 
 interface SaveBoardVars {
-  boardId: number;
-  widgets: GridWidget[];
+  boardId:number;
+  widgets:GridWidget[];
 }
 
 export function useSaveBoard() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ boardId, widgets }: SaveBoardVars) =>
+    mutationFn: ({ boardId, widgets }:SaveBoardVars) =>
       saveBoard(boardId, widgets),
     onSuccess: (_data, { boardId }) => {
-      queryClient.invalidateQueries({ queryKey: ['board', boardId] });
+      void queryClient.invalidateQueries({ queryKey: ['board', boardId] });
     },
   });
 }

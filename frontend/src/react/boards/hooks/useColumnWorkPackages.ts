@@ -3,9 +3,9 @@ import { fetchQuery } from '../api/queries';
 import type { ApiV3Filter, QueryResult } from '../api/types';
 
 export function useColumnWorkPackages(
-  queryId: string,
-  boardFilters?: ApiV3Filter[],
-  widgetFilters?: ApiV3Filter[],
+  queryId:string,
+  boardFilters?:ApiV3Filter[],
+  widgetFilters?:ApiV3Filter[],
 ) {
   const mergedFilters = [
     ...(boardFilters ?? []),

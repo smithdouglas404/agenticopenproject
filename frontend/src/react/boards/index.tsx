@@ -1,21 +1,32 @@
 import React from 'react';
-import { createRoot, type Root } from 'react-dom/client';
+import type { Root } from 'react-dom/client';
 import { BoardApp } from './BoardApp';
 import type { BoardPermissions } from './context/BoardContext';
+import { boardRootFactory } from './root-factory';
 
-let root: Root | null = null;
+let root:Root | null = null;
+let mountedContainer:HTMLElement | null = null;
 
-function mount() {
-  const container = document.getElementById('react-board-root');
-  if (!container) return;
+export function mountBoardRoot(doc:Document = document) {
+  const container = doc.getElementById('react-board-root');
+  if (!container) {
+    return;
+  }
+
+  if (root && mountedContainer === container) {
+    return;
+  }
 
   const boardId = Number(container.dataset.boardId);
   const projectId = container.dataset.projectId ?? '';
-  const permissions: BoardPermissions = {
+  const permissions:BoardPermissions = {
     canManage: container.dataset.canManage === 'true',
   };
 
-  root = createRoot(container);
+  unmountBoardRoot();
+
+  mountedContainer = container;
+  root = boardRootFactory.create(container);
   root.render(
     <BoardApp
       boardId={boardId}
@@ -25,18 +36,20 @@ function mount() {
   );
 }
 
-function unmount() {
+export function unmountBoardRoot() {
   if (root) {
     root.unmount();
     root = null;
   }
+
+  mountedContainer = null;
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', mount);
+  document.addEventListener('DOMContentLoaded', () => mountBoardRoot());
 } else {
-  mount();
+  mountBoardRoot();
 }
 
-document.addEventListener('turbo:load', mount);
-document.addEventListener('turbo:before-render', unmount);
+document.addEventListener('turbo:load', () => mountBoardRoot());
+document.addEventListener('turbo:before-render', () => unmountBoardRoot());

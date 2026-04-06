@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <% html_title(t("boards.label_boards")) -%>
 
-<% if OpenProject::FeatureDecisions.boards_react_active? %>
+<% if @render_react_board %>
   <div
     id="react-board-root"
     data-board-id="<%= @board.id %>"

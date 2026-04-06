@@ -3,11 +3,14 @@ import { Text } from '@primer/react';
 import type { ApiV3Filter } from '../api/types';
 
 interface BoardFilterBarProps {
-  filters: ApiV3Filter[];
-  onFiltersChange: (filters: ApiV3Filter[]) => void;
+  filters:ApiV3Filter[];
+  onFiltersChange:(filters:ApiV3Filter[]) => void;
 }
 
-export function BoardFilterBar({ filters, onFiltersChange }: BoardFilterBarProps) {
+export function BoardFilterBar({ filters, onFiltersChange }:BoardFilterBarProps) {
+  void filters;
+  void onFiltersChange;
+
   return (
     <div
       style={{

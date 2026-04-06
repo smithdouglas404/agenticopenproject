@@ -174,9 +174,9 @@ module Pages
 
     def move_card(index, from:, to:)
       source = page.all("#{list_selector(from)} [data-test-selector='op-wp-single-card']")[index]
-      target = page.find list_selector(to)
+      target, offset_y = drop_target_for_list(to)
 
-      drag_n_drop_element(from: source, to: target)
+      drag_n_drop_element(from: source, to: target, offset_y:)
       wait_for_lists_reload
 
       # Wait a little more because the cards sorting order can still be changing
@@ -186,9 +186,9 @@ module Pages
 
     def move_card_by_name(text, from:, to:)
       source = page.find("#{list_selector(from)} [data-test-selector='op-wp-single-card']", text:)
-      target = page.find list_selector(to)
+      target, offset_y = drop_target_for_list(to)
 
-      drag_n_drop_element(from: source, to: target)
+      drag_n_drop_element(from: source, to: target, offset_y:)
       wait_for_lists_reload
 
       # Wait a little more because the cards sorting order can still be changing
@@ -278,6 +278,16 @@ module Pages
 
     def card_for(work_package)
       ::Pages::WorkPackageCard.new work_package
+    end
+
+    def drop_target_for_list(list_name)
+      within_list(list_name) do
+        drop_targets = page.all("[data-drop-target-for-element='true']", minimum: 0)
+        target = drop_targets.last || page.find(list_selector(list_name))
+        offset_y = drop_targets.any? ? target.native.size.height : nil
+
+        [target, offset_y]
+      end
     end
 
     def expect_list_option(name, present: true)

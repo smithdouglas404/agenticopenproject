@@ -1,24 +1,25 @@
 import React, { useEffect } from 'react';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { announce } from '@atlaskit/pragmatic-drag-and-drop-live-region';
-import { useBoardContext } from '../context/BoardContext';
 import { useUpdateWorkPackage } from '../hooks/useUpdateWorkPackage';
 import { useReorderWorkPackages } from '../hooks/useReorderWorkPackages';
+import { moveWorkPackage } from '../dnd/move-work-package';
+import { resolveBoardDropTarget } from '../dnd/board-drop';
 import { BoardColumn } from './BoardColumn';
 import { AddColumnAction } from './AddColumnAction';
 import type { BoardGrid, ApiV3Filter } from '../api/types';
 
 interface BoardCanvasProps {
-  board: BoardGrid;
-  filters: ApiV3Filter[];
+  board:BoardGrid;
+  filters:ApiV3Filter[];
 }
 
-function sortedWidgets(board: BoardGrid) {
+function sortedWidgets(board:BoardGrid) {
   return [...board.widgets].sort((a, b) => a.startColumn - b.startColumn);
 }
 
-export function BoardCanvas({ board, filters }: BoardCanvasProps) {
-  const { actionAttribute } = useBoardContext();
+export function BoardCanvas({ board, filters }:BoardCanvasProps) {
   const updateWp = useUpdateWorkPackage();
   const reorder = useReorderWorkPackages();
 
@@ -26,47 +27,70 @@ export function BoardCanvas({ board, filters }: BoardCanvasProps) {
     return monitorForElements({
       canMonitor: ({ source }) => source.data.type === 'card',
       onDragStart: ({ source }) => {
-        const wpId = source.data.workPackageId;
+        const wpId = Number(source.data.workPackageId);
+        if (!Number.isFinite(wpId)) {
+          return;
+        }
+
         announce(`Picked up card #${wpId}. Use arrow keys to move.`);
       },
       onDrop: ({ source, location }) => {
         const target = location.current.dropTargets[0];
         const wpId = source.data.workPackageId as number;
+        const fromIndex = source.data.index as number;
+        const sourceQueryId = source.data.sourceQueryId as string;
+        const sourceOrder = source.data.order as string[];
+        const sourcePositions = source.data.positions as Record<string, number>;
+        const lockVersion = source.data.lockVersion as number;
 
         if (!target) {
           announce(`Card #${wpId} dropped. No changes made.`);
           return;
         }
 
-        const sourceQueryId = source.data.sourceQueryId as string;
-        const targetQueryId = target.data.queryId as string;
-        const lockVersion = source.data.lockVersion as number;
+        const resolvedTarget = resolveBoardDropTarget(
+          target.data as Record<string, unknown>,
+          extractClosestEdge(target.data),
+        );
 
-        if (!sourceQueryId || !targetQueryId || !wpId) return;
-
-        if (sourceQueryId !== targetQueryId && actionAttribute) {
-          const targetValue = target.data.actionFilterValue as string;
-          if (targetValue) {
-            announce(`Card #${wpId} moved to a different column.`);
-            updateWp.mutate({
-              wpId,
-              lockVersion,
-              attributes: {
-                _links: {
-                  [actionAttribute]: { href: `/api/v3/statuses/${targetValue}` },
-                },
-              },
-              sourceQueryId,
-              targetQueryId,
-            });
-          }
-        } else {
-          announce(`Card #${wpId} reordered.`);
-          reorder.mutate({ queryId: targetQueryId, delta: { [wpId]: 0 } });
+        if (
+          !sourceQueryId
+          || !Array.isArray(sourceOrder)
+          || typeof sourcePositions !== 'object'
+          || sourcePositions === null
+          || !resolvedTarget
+          || typeof fromIndex !== 'number'
+          || !wpId
+        ) {
+          return;
         }
+
+        void moveWorkPackage({
+          reorderWorkPackages: reorder.mutateAsync,
+          updateWorkPackage: updateWp.mutateAsync,
+        }, {
+          board,
+          wpId,
+          lockVersion,
+          source: {
+            queryId: sourceQueryId,
+            order: sourceOrder,
+            positions: sourcePositions,
+          },
+          target: resolvedTarget,
+          fromIndex,
+        }).then(() => {
+          if (sourceQueryId === resolvedTarget.queryId) {
+            announce(`Card #${wpId} reordered.`);
+          } else {
+            announce(`Card #${wpId} moved to a different column.`);
+          }
+        }).catch(() => {
+          announce(`Card #${wpId} could not be moved.`);
+        });
       },
     });
-  }, [actionAttribute, updateWp, reorder]);
+  }, [board, updateWp, reorder]);
 
   const widgets = sortedWidgets(board);
 
@@ -81,8 +105,12 @@ export function BoardCanvas({ board, filters }: BoardCanvasProps) {
         alignItems: 'flex-start',
       }}
     >
-      {widgets.map((widget) => (
-        <BoardColumn key={widget.startColumn} widget={widget} filters={filters} />
+      {widgets.map((widget, index) => (
+        <BoardColumn
+          key={`${widget.options.queryId ?? 'widget'}-${widget.startColumn}-${index}`}
+          widget={widget}
+          filters={filters}
+        />
       ))}
       <AddColumnAction />
     </div>

@@ -22,8 +22,14 @@ module ::Boards
 
     def show
       if OpenProject::FeatureDecisions.boards_react_active?
-        @board = Boards::Grid.find(params[:id])
-        render layout: "base"
+        @board = Boards::Grid.find_by!(id: params[:id], project: @project)
+        @render_react_board = render_react_board?(@board)
+
+        if @render_react_board
+          render layout: "base"
+        else
+          render layout: "angular/angular"
+        end
       else
         render layout: "angular/angular"
       end
@@ -71,6 +77,11 @@ module ::Boards
 
     def find_board_for_deletion
       @board_grid = Boards::Grid.find_by!(id: params[:id], project: @project)
+    end
+
+    def render_react_board?(board)
+      board.present? &&
+        (board.board_type == :free || (board.board_type == :action && board.board_type_attribute == "status"))
     end
 
     def authorize_work_package_permission

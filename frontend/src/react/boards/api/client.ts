@@ -1,7 +1,7 @@
 export class ApiError extends Error {
   constructor(
-    public status: number,
-    public body: unknown,
+    public status:number,
+    public body:unknown,
   ) {
     const message =
       typeof body === 'object' && body !== null && 'message' in body
@@ -12,17 +12,17 @@ export class ApiError extends Error {
   }
 }
 
-function csrfToken(): string | null {
+function csrfToken():string | null {
   const meta = document.querySelector('meta[name="csrf-token"]');
   return meta ? meta.getAttribute('content') : null;
 }
 
 export async function apiFetch<T>(
-  path: string,
-  options: RequestInit = {},
-): Promise<T> {
+  path:string,
+  options:RequestInit = {},
+):Promise<T> {
   const token = csrfToken();
-  const headers: Record<string, string> = {
+  const headers:Record<string, string> = {
     Accept: 'application/hal+json',
     ...((options.body != null) && { 'Content-Type': 'application/json' }),
     ...(token && { 'X-CSRF-Token': token }),
@@ -38,7 +38,7 @@ export async function apiFetch<T>(
   });
 
   if (!response.ok) {
-    const body = await response.json().catch(() => null);
+    const body:unknown = await response.json().catch(() => null);
     throw new ApiError(response.status, body);
   }
 

@@ -94,6 +94,52 @@ RSpec.describe "Status action board",
   end
 
   context "with full boards permissions" do
+    it "renders supported status boards in React",
+       with_flag: { boards_react: true } do
+      board = Boards::StatusBoardCreateService
+        .new(user:)
+        .call(project:, name: "React Status Board", attribute: "status")
+        .result
+
+      [
+        [closed_status, 2],
+        [whatever_status, 3],
+      ].each do |status, start_column|
+        query = build(:public_query, name: status.name, project: project).tap do |q|
+          q.sort_criteria = [[:manual_sorting, "asc"]]
+          q.add_filter(:status_id, "=", [status.id.to_s])
+          q.save!
+        end
+
+        board.widgets << create(:grid_widget,
+                                identifier: "work_package_query",
+                                start_row: 1,
+                                end_row: 2,
+                                start_column: start_column,
+                                end_column: start_column,
+                                options: {
+                                  "queryId" => query.id,
+                                  "filters" => [{ status_id: { operator: "=", values: [status.id.to_s] } }]
+                                })
+      end
+
+      board.save!
+
+      open_query = board.contained_queries.find_by!(name: open_status.name)
+      work_package = create(:work_package, project:, subject: "Task 1", status: open_status)
+      open_query.ordered_work_packages.create!(work_package:, position: 0)
+
+      board_page = Pages::Board.new(board)
+      board_page.visit!
+
+      board_page.expect_list "Open"
+      board_page.expect_list "Closed"
+      board_page.expect_list "Whatever"
+      board_page.expect_card("Open", "Task 1", present: true)
+      board_page.expect_card("Closed", "Task 1", present: false)
+      board_page.expect_card("Whatever", "Task 1", present: false)
+    end
+
     it "can add a case-insensitive list (Regression #35744)" do
       board_index.visit!
 

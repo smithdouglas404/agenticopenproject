@@ -6,14 +6,14 @@ import { useBoardContext } from '../context/BoardContext';
 import { ColumnHeader } from './ColumnHeader';
 import { CardList } from './CardList';
 import { AddCardAction } from './AddCardAction';
-import type { GridWidget, ApiV3Filter } from '../api/types';
+import type { GridWidget, ApiV3Filter, QueryFilter } from '../api/types';
 
 interface BoardColumnProps {
-  widget: GridWidget;
-  filters: ApiV3Filter[];
+  widget:GridWidget;
+  filters:ApiV3Filter[];
 }
 
-export function BoardColumn({ widget, filters }: BoardColumnProps) {
+export function BoardColumn({ widget, filters }:BoardColumnProps) {
   const { isActionBoard, actionAttribute } = useBoardContext();
   const queryId = widget.options.queryId ?? '';
 
@@ -26,23 +26,19 @@ export function BoardColumn({ widget, filters }: BoardColumnProps) {
   const { data: statuses } = useStatuses();
 
   // Extract status ID from HAL filter format.
-  // API returns filters as HAL objects with _links.filter.href like
-  // "/api/v3/queries/filters/status" and _links.values[].href like
-  // "/api/v3/statuses/1"
   const actionFilterValue = useMemo(() => {
     if (!isActionBoard || !query?.filters) return undefined;
 
-    const actionFilter = query.filters.find((f: any) => {
+    const actionFilter = query.filters.find((f:QueryFilter) => {
       const filterHref = f?._links?.filter?.href ?? '';
       return filterHref.endsWith(`/filters/${actionAttribute}`);
     });
     if (!actionFilter) return undefined;
 
-    const values = (actionFilter as any)?._links?.values;
+    const values = actionFilter._links.values;
     if (!Array.isArray(values) || values.length === 0) return undefined;
 
-    // Extract ID from href like "/api/v3/statuses/1"
-    const href: string = values[0]?.href ?? '';
+    const href:string = values[0]?.href ?? '';
     const id = href.split('/').pop();
     return id;
   }, [isActionBoard, actionAttribute, query]);
@@ -55,11 +51,16 @@ export function BoardColumn({ widget, filters }: BoardColumnProps) {
   }, [isActionBoard, actionAttribute, statuses, actionFilterValue]);
 
   const workPackages = query?._embedded?.results?._embedded?.elements ?? [];
+  const order = workPackages.map((wp) => String(wp.id));
+  const positions = query?.ordered_work_packages ?? {};
   const columnTitle = query?.name ?? 'Loading...';
   const canDrop = !!query?._links?.updateOrderedWorkPackages;
 
   return (
     <div
+      className="op-board-list loading-indicator--location"
+      data-test-selector="op-board-list"
+      data-query-name={columnTitle}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -86,6 +87,8 @@ export function BoardColumn({ widget, filters }: BoardColumnProps) {
         <CardList
           workPackages={workPackages}
           queryId={queryId}
+          order={order}
+          positions={positions}
           canDrop={canDrop}
           actionFilterValue={actionFilterValue}
         />

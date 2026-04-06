@@ -5,12 +5,12 @@ import { BoardFilterBar } from './BoardFilterBar';
 import type { ApiV3Filter } from '../api/types';
 
 interface BoardToolbarProps {
-  boardName: string;
-  filters: ApiV3Filter[];
-  onFiltersChange: (filters: ApiV3Filter[]) => void;
+  boardName:string;
+  filters:ApiV3Filter[];
+  onFiltersChange:(filters:ApiV3Filter[]) => void;
 }
 
-export function BoardToolbar({ boardName, filters, onFiltersChange }: BoardToolbarProps) {
+export function BoardToolbar({ boardName, filters, onFiltersChange }:BoardToolbarProps) {
   const [showFilters, setShowFilters] = useState(false);
 
   return (

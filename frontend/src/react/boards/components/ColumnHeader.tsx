@@ -3,14 +3,16 @@ import { Text, CounterLabel } from '@primer/react';
 import type { Status } from '../api/types';
 
 interface ColumnHeaderProps {
-  title: string;
-  cardCount: number;
-  status?: Status;
+  title:string;
+  cardCount:number;
+  status?:Status;
 }
 
-export function ColumnHeader({ title, cardCount, status }: ColumnHeaderProps) {
+export function ColumnHeader({ title, cardCount, status }:ColumnHeaderProps) {
   return (
     <div
+      className="op-board-list--header"
+      data-test-selector="op-board-list--header"
       style={{
         display: 'flex',
         alignItems: 'center',

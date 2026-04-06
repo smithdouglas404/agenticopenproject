@@ -68,7 +68,8 @@ RSpec.describe "Board management spec", :js, :selenium do
       board_view
       board_index.visit!
 
-      board_page = board_index.open_board board_view
+      board_page = Pages::Board.new(board_view)
+      board_page.visit!
 
       board_page.add_list
       board_page.rename_list "Unnamed list", "List 2"
@@ -107,7 +108,8 @@ RSpec.describe "Board management spec", :js, :selenium do
       board_view
       board_index.visit!
 
-      board_page = board_index.open_board board_view
+      board_page = Pages::Board.new(board_view)
+      board_page.visit!
       board_page.expect_query "List 1", editable: true
       board_page.expect_editable_board true
       board_page.expect_editable_list true
@@ -221,7 +223,8 @@ RSpec.describe "Board management spec", :js, :selenium do
       board_view
       board_index.visit!
 
-      board_page = board_index.open_board board_view
+      board_page = Pages::Board.new(board_view)
+      board_page.visit!
       board_page.expect_query "List 1", editable: true
       board_page.expect_editable_board true
       board_page.expect_editable_list true
@@ -232,6 +235,31 @@ RSpec.describe "Board management spec", :js, :selenium do
 
       # I can immediately enter the correct name
       board_page.rename_board "My new name"
+    end
+
+    it "loads persisted filters in React",
+       with_flag: { boards_react: true } do
+      board_view = create(:board_grid_with_queries, project:)
+      board_view.update!(options: { type: "free", filters: [{ search: { operator: "**", values: ["Task"] } }] })
+
+      first = board_view.contained_queries.find_by!(name: "List 1")
+      task = create(:work_package, subject: "Task 1", project:)
+      hidden = create(:work_package, subject: "Bug 1", project:)
+
+      first.ordered_work_packages.create!(work_package: task, position: 0)
+      first.ordered_work_packages.create!(work_package: hidden, position: 16_384)
+
+      board_page = Pages::Board.new(board_view)
+      board_page.visit!
+
+      board_page.expect_list "List 1"
+      board_page.expect_list "List 2"
+      board_page.expect_card("List 1", "Task 1", present: true)
+      board_page.expect_card("List 1", "Bug 1", present: false)
+
+      board_page.visit!
+      board_page.expect_card("List 1", "Bug 1", present: false)
+      board_page.expect_card("List 1", "Task 1", present: true)
     end
   end
 

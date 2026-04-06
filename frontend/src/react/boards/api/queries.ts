@@ -2,9 +2,9 @@ import { apiFetch } from './client';
 import type { QueryResult } from './types';
 
 export async function fetchQuery(
-  queryId: string,
-  filters?: string,
-): Promise<QueryResult> {
+  queryId:string,
+  filters?:string,
+):Promise<QueryResult> {
   const params = new URLSearchParams();
   params.append('columns[]', 'id');
   params.append('columns[]', 'subject');
@@ -19,10 +19,10 @@ export async function fetchQuery(
 }
 
 export async function reorderWorkPackages(
-  queryId: string,
-  delta: Record<string, number>,
-): Promise<{ t: string }> {
-  return apiFetch<{ t: string }>(`/queries/${queryId}/order`, {
+  queryId:string,
+  delta:Record<string, number>,
+):Promise<{ t:string }> {
+  return apiFetch<{ t:string }>(`/queries/${queryId}/order`, {
     method: 'PATCH',
     body: JSON.stringify({ delta }),
   });

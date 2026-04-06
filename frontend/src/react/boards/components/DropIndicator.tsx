@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface DropIndicatorProps {
-  edge: 'top' | 'bottom';
+  edge:'top' | 'bottom';
 }
 
-export function DropIndicator({ edge }: DropIndicatorProps) {
+export function DropIndicator({ edge }:DropIndicatorProps) {
   return (
     <div
       style={{

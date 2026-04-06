@@ -3,10 +3,10 @@ import { Button } from '@primer/react';
 import { PlusIcon } from '@primer/octicons-react';
 
 interface AddCardActionProps {
-  queryId: string;
+  queryId:string;
 }
 
-export function AddCardAction({ queryId }: AddCardActionProps) {
+export function AddCardAction({ queryId:_queryId }:AddCardActionProps) {
   const handleClick = () => {
     window.location.href = '/work_packages/new';
   };
