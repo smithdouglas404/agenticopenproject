@@ -1098,10 +1098,6 @@ Rails.application.routes.draw do
     get "ensure_connection", controller: "oauth_clients", action: :ensure_connection, as: "oauth_clients_ensure_connection"
   end
 
-  scope :flashes do
-    get "clipboard_copied_notice" => "flashes#clipboard_copied_notice", as: "flashes_clipboard_copied_notice"
-  end
-
   namespace :scim_v2 do
     mount Scimitar::Engine, at: "/"
 
