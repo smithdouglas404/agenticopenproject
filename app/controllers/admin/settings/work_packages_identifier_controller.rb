@@ -46,7 +46,7 @@ module Admin::Settings
       return render_400 unless params[:settings]
 
       if autofix_requested?
-        WorkPackages::ConvertInstanceToSemanticIds.perform_later
+        ProjectIdentifiers::ConvertInstanceToSemanticIds.perform_later
         redirect_to action: "show"
       else
         super

@@ -30,10 +30,10 @@
 
 require "rails_helper"
 
-RSpec.describe WorkPackages::ConvertInstanceToSemanticIds,
+RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIds,
                with_good_job_batches: [
-                 WorkPackages::ConvertInstanceToSemanticIds,
-                 WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob
+                 ProjectIdentifiers::ConvertInstanceToSemanticIds,
+                 ProjectIdentifiers::BackfillProjectJob
                ] do
   subject(:job) { described_class.new }
 
@@ -52,21 +52,21 @@ RSpec.describe WorkPackages::ConvertInstanceToSemanticIds,
       before { job.perform }
 
       it "enqueues one BackfillProjectJob per project that needs work" do
-        enqueued = GoodJob::Job.where(job_class: WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob.name)
+        enqueued = GoodJob::Job.where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
         expect(enqueued.count).to eq(2)
       end
     end
 
     context "when a project has no work packages needing backfill" do
-      let!(:project_with_wp)      { create(:project, name: "Has Work") }
-      let!(:project_without_wp)   { create(:project, name: "Empty Project").tap { |p| p.update_columns(identifier: "EMPTY01") } }
-      let!(:wp)                   { create(:work_package, project: project_with_wp) }
+      let!(:project_with_wp)    { create(:project, name: "Has Work") }
+      let!(:project_without_wp) { create(:project, name: "Empty Project").tap { |p| p.update_columns(identifier: "EMPTY01") } }
+      let!(:wp)                 { create(:work_package, project: project_with_wp) }
 
       before { job.perform }
 
       it "does not enqueue a BackfillProjectJob for the empty project" do
         enqueued_ids = GoodJob::Job
-          .where(job_class: WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob.name)
+          .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
           .map { |j| j.serialized_params.dig("arguments", 0) }
         expect(enqueued_ids).not_to include(project_without_wp.id)
       end

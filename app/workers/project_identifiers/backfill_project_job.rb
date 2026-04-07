@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob < ApplicationJob
+class ProjectIdentifiers::BackfillProjectJob < ApplicationJob
   def perform(project_id)
     project = Project.find(project_id)
     fix_identifier_if_needed(project)

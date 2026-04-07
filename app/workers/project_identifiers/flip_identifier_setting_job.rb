@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSettingJob < ApplicationJob
+class ProjectIdentifiers::FlipIdentifierSettingJob < ApplicationJob
   # Maximum number of re-processing passes before giving up and aborting the flip.
   # Prevents an infinite loop if work packages are created faster than they can be processed.
   MAX_ITERATIONS = 3
@@ -47,7 +47,7 @@ class WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSettingJob < App
         on_success_params: { iteration: iteration + 1 }
       ) do
         remaining.each do |project_id|
-          WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob.perform_later(project_id)
+          ProjectIdentifiers::BackfillProjectJob.perform_later(project_id)
         end
       end
     else

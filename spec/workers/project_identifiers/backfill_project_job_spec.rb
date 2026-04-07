@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob do
+RSpec.describe ProjectIdentifiers::BackfillProjectJob do
   subject(:job) { described_class.new }
 
   # Simulate legacy (classic) mode so WPs are created without sequence numbers.

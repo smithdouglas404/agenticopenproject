@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSettingJob do
+RSpec.describe ProjectIdentifiers::FlipIdentifierSettingJob do
   subject(:job) { described_class.new }
 
   # Simulate classic mode — WP after_create hook does not auto-assign sequence numbers.
@@ -48,8 +48,8 @@ RSpec.describe WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSetting
 
     context "when work packages with sequence_number: nil remain",
             with_good_job_batches: [
-              WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSettingJob,
-              WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob
+              described_class,
+              ProjectIdentifiers::BackfillProjectJob
             ] do
       let!(:project) { create(:project) }
       let!(:wp) { create(:work_package, project:) }
@@ -62,7 +62,7 @@ RSpec.describe WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSetting
 
       it "enqueues a BackfillProjectJob for the project with unprocessed work packages" do
         enqueued_ids = GoodJob::Job
-          .where(job_class: WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob.name)
+          .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
           .map { |j| j.serialized_params.dig("arguments", 0) }
         expect(enqueued_ids).to include(project.id)
       end
@@ -70,8 +70,8 @@ RSpec.describe WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSetting
 
     context "when a project has a problematic identifier",
             with_good_job_batches: [
-              WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSettingJob,
-              WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob
+              described_class,
+              ProjectIdentifiers::BackfillProjectJob
             ] do
       let!(:project) { create(:project).tap { |p| p.update_columns(identifier: "has-dashes") } }
       let!(:wp) { create(:work_package, project:) }
@@ -84,7 +84,7 @@ RSpec.describe WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSetting
 
       it "enqueues a BackfillProjectJob for the problematic project" do
         enqueued_ids = GoodJob::Job
-          .where(job_class: WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob.name)
+          .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
           .map { |j| j.serialized_params.dig("arguments", 0) }
         expect(enqueued_ids).to include(project.id)
       end
