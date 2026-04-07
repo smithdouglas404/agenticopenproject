@@ -1,7 +1,7 @@
 ---
 sidebar_navigation:
   title: Project initiation request
-  priority: 850
+  priority: 900
 description: Create new projects using a guided project initiation process in OpenProject.
 keywords: project creation wizard, project initiation, project setup, new project, project template, PIR, pmflex, pm2
 

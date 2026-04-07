@@ -200,7 +200,7 @@ he:
         start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
-        task_board: "Task board"
+        task_board: "Sprint board"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:

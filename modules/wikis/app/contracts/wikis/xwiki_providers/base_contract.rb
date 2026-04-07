@@ -31,12 +31,12 @@
 module Wikis
   module XWikiProviders
     class BaseContract < ::BaseContract
+      include RequiresAdminGuard
+
       attribute :name
       attribute :url
       validates :url, presence: true, length: { maximum: 255 }
       validate :url_is_https
-
-      validate :validate_user_allowed_to_manage
 
       private
 
@@ -45,10 +45,6 @@ module Wikis
         return if url.blank?
 
         errors.add(:url, :invalid) unless url.start_with?("https://")
-      end
-
-      def validate_user_allowed_to_manage
-        errors.add :base, :error_unauthorized unless user.admin? && user.active?
       end
     end
   end

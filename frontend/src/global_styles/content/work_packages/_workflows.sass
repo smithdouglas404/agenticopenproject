@@ -9,7 +9,7 @@
   turbo-frame#workflow-table
     width: 100%
 
-  sub-header.SubHeader
+  #workflows-edit-sub-header-component
     position: sticky
     left: 0
     background: var(--body-background)
@@ -43,6 +43,9 @@
 
     th:first-child
       z-index: 3
+
+    thead th:first-child
+      box-shadow: none
 
     tbody
       span.workflow-table--turned-header

@@ -84,6 +84,10 @@ FactoryBot.define do
       public { true } # Remark: public defaults to true
     end
 
+    factory :private_project do
+      public { false }
+    end
+
     factory :template_project do
       sequence(:name) { |n| "Template project No. #{n}" }
       sequence(:identifier) { |n| "template_no_#{n}" }

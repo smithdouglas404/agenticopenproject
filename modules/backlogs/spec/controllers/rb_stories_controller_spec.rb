@@ -205,7 +205,7 @@ RSpec.describe RbStoriesController do
                      sprint_id: agile_sprint.id,
                      id: story_in_agile_sprint.id,
                      target_id: "sprint:#{other_agile_sprint.id}",
-                     position: 1
+                     prev_id: nil
                    },
                    format: :turbo_stream
 
@@ -232,7 +232,7 @@ RSpec.describe RbStoriesController do
                        sprint_id: agile_sprint.id,
                        id: story_in_agile_sprint.id,
                        target_id: "sprint:#{other_agile_sprint.id}",
-                       position: 1
+                       prev_id: nil
                      },
                      format: :turbo_stream
 
@@ -260,7 +260,7 @@ RSpec.describe RbStoriesController do
                      sprint_id: agile_sprint.id,
                      id: story_in_agile_sprint.id,
                      target_id: "version:#{version_sprint.id}",
-                     position: 1
+                     prev_id: nil
                    },
                    format: :turbo_stream
 
@@ -287,7 +287,7 @@ RSpec.describe RbStoriesController do
                      sprint_id: agile_sprint.id,
                      id: story_in_agile_sprint.id,
                      target_id: "inbox",
-                     position: 2
+                     prev_id: existing_inbox_item.id
                    },
                    format: :turbo_stream
 

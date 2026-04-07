@@ -100,5 +100,7 @@ module Agile
     def visible_to?(project)
       self.class.for_project(project).exists?(id:)
     end
+
+    def to_s = name
   end
 end

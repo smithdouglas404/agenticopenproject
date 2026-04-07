@@ -235,7 +235,7 @@ RSpec.describe "Tasks on taskboard", :js,
     # There is a button to the burndown chart
     expect(page)
       .to have_css("a[href='#{backlogs_project_sprint_burndown_chart_path(project, sprint)}']",
-                   text: "Burndown Chart")
+                   text: "Burndown chart")
 
     # Tasks can get a color per assigned user
     visit my_interface_path

@@ -50,8 +50,9 @@ class MigrateVersionsToSprints < ActiveRecord::Migration[8.0]
     # Load versions used as sprints including work package ids associated with the version.
     # Since the same version can be used as a sprint in one project but not in another,
     # the work package ids are filtered by projects where the version is used as a sprint.
+    display_versions = [VersionSetting::DISPLAY_LEFT, VersionSetting::DISPLAY_RIGHT]
     Version.joins(:version_settings, :work_packages)
-           .where(version_settings: { display: VersionSetting::DISPLAY_LEFT })
+           .where(version_settings: { display: display_versions })
            .where("work_packages.project_id = version_settings.project_id")
            .group("versions.id")
            .select("versions.*, array_agg(DISTINCT work_packages.id) AS wp_ids")

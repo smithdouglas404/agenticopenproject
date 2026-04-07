@@ -43,7 +43,7 @@ module Wikis
     def to_s = self.class.registry_prefix
 
     class << self
-      def registry_prefix = raise NotImplementedError, "SubclassResponsibility"
+      def registry_prefix = raise SubclassResponsibilityError
     end
 
     def resolve(registry_path)

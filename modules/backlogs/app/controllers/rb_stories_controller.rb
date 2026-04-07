@@ -112,10 +112,7 @@ class RbStoriesController < RbApplicationController
   def update_story_with_target_and_position(attributes:)
     Stories::UpdateService
       .new(user: current_user, story: @story)
-      .call(
-        attributes:,
-        position: move_params[:position].to_i
-      )
+      .call(attributes:, **position_attributes)
   end
 
   def replace_typed_component_via_turbo_stream(sprint:)
@@ -212,8 +209,18 @@ class RbStoriesController < RbApplicationController
   end
 
   def move_params
-    params.require(%i[position target_id])
-    params.permit(:position, :target_id)
+    params.require(%i[target_id])
+    params.permit(:position, :prev_id, :target_id)
+  end
+
+  def position_attributes
+    if move_params.has_key?(:prev_id)
+      { prev_id: move_params[:prev_id].to_i }
+    elsif move_params.has_key?(:position)
+      { position: move_params[:position].to_i }
+    else
+      {}
+    end
   end
 
   def reorder_param

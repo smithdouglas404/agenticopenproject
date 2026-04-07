@@ -49,5 +49,13 @@ module Wikis
     class << self
       def registry_prefix = "xwiki"
     end
+
+    private
+
+    def url_is_https
+      return if url.blank?
+
+      errors.add(:url, :invalid) unless url.start_with?("https://")
+    end
   end
 end

@@ -184,6 +184,7 @@ ja:
   label_notify: "レビュー用に送信"
   label_icalendar: "iCalendar を送信"
   label_icalendar_download: "iCalendarイベントをダウンロード"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "一連の会議を表示する"
   label_meeting_series: "定期的な会議"
   label_version: "バージョン"
@@ -192,6 +193,8 @@ ja:
   label_subscribe_icalendar: "カレンダーを購読する"
   caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   caption_template_project_select: "Please select the project in which to create this meeting template"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

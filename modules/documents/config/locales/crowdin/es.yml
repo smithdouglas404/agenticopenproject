@@ -69,11 +69,10 @@ es:
         .
     show_edit_view:
       connection_error_notice:
-        description: |-
-          Activa para abrir el documento porque el servidor rechaza la colaboración en tiempo real,  si el problema continúa contacta al Admin.
+        description_server_unavailable: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
         action: Intentar otra vez
-      connection_recovery_notice:
-        description: "La conexión en tiempo real ha sido restaurada."
       tabs: "Pestañas del documento"
     index_page:
       name: "Nombre"
@@ -85,6 +84,9 @@ es:
       types: "Tipos"
       collaboration_settings: "Colaboración en tiempo real"
     last_updated_at: "Última vez guardado a las %{time}."
+    info_line:
+      currently_offline: "You are currently offline."
+      connection_restored: "You are now back online."
     active_editors: "Activar editores"
     active_editors_count:
       one: "1 editor activo"

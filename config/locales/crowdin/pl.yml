@@ -112,7 +112,7 @@ pl:
     import:
       title: "Import"
     jira:
-      title: "Import Jira"
+      title: "Jira Migrator"
       description: "To narzędzie służy do importowania danych z wystąpienia usługi Jira. Można skonfigurować wiele hostów usługi Jira i wybrać, co ma być importowane w każdym przebiegu importu."
       errors:
         cannot_delete_with_imports: "Nie można usunąć hosta Jira z istniejącym importem"
@@ -123,8 +123,8 @@ pl:
         title: "Konfiguracja usługi Jira"
         new: "Nowa konfiguracja"
       banner:
-        title: "Ograniczony import"
-        description: "To narzędzie importu jest obecnie w wersji beta i może importować tylko podstawowe dane: projekty, zgłoszenia problemów (nazwa, tytuł, opis, załączniki), użytkowników (nazwa, adres e-mail, członkostwo w projekcie), statusy i typy. Nie może importować przepływów pracy, pól niestandardowych, relacji między problemami ani uprawnień. Obecnie obsługujemy tylko serwery / centra danych Jira w wersjach 10.x i 11.x. Wystąpienia w chmurze nie są obecnie obsługiwane."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Nazwa"
@@ -160,7 +160,7 @@ pl:
       run:
         title: "Uruchomienie importu"
         history: "Historia"
-        remove_error: "Importu Jira nie można usunąć, gdy jest uruchomiony"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Inne uruchomienie importu Jira jest obecnie w toku lub oczekuje na sprawdzenie. Przed rozpoczęciem nowego importu zakończ je lub cofnij."
         blank:
           title: "Nie skonfigurowano jeszcze żadnych uruchomień importu"
@@ -393,20 +393,24 @@ pl:
           <p>Witaj,</p> <p>Utworzono nowy projekt: projectValue:name</p> <p>Dziękujemy</p>
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
           label_project: Project
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_starts_with_number: Cannot start with a number
           error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
           error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
             few: "... %{count} more projects"
@@ -422,7 +426,7 @@ pl:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Przejścia domyślne"
@@ -1537,6 +1541,9 @@ pl:
         dependencies: "Zależności"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Identifier"
+        work_package: "Work package"
       jira_import:
         projects: "Projekty"
       "import/jira":
@@ -1545,7 +1552,7 @@ pl:
         personal_access_token: "Osobisty token dostępu"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira import"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Wyświetlaj do"
       attachment:
@@ -3606,6 +3613,7 @@ pl:
   label_ical_access_key_generation_hint: "Automatycznie wygenerowano podczas subskrypcji kalendarza."
   label_ical_access_key_latest: "najnowszy"
   label_ical_access_key_revoke: "Odwołaj"
+  label_integrations: "Integrations"
   label_add_column: "Dodaj kolumnę"
   label_applied_status: "Nadaj status"
   label_archive_project: "Archiwum projektów"
@@ -3856,7 +3864,7 @@ pl:
   label_external_links: "Linki zewnętrzne"
   label_locale: "Język i region"
   label_jump_to_a_project: "Skok do projektu..."
-  label_jira_import: "Import Jira"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Słowa kluczowe"
   label_language_based: "Na podstawie języka użytkownika"
   label_last_activity: "Ostatnia aktywność"
@@ -5092,11 +5100,11 @@ pl:
   setting_welcome_text: "Tekst bloku powitalnego"
   setting_welcome_title: "Tytuł bloku powitalnego"
   setting_welcome_on_homescreen: "Wyświetl wiadomość powitalną na ekranie głównym"
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: >
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
     Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Domyślny tryb wyróżniania"
   setting_work_package_list_default_highlighted_attributes: "Domyślnie wyróżniane atrybuty wyświetlane w treści"
