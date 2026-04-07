@@ -43,15 +43,6 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
     return this.root ? 'op-header-project-select-listbox' : null;
   }
 
-  @HostBinding('attr.aria-label')
-  get ariaLabel():string|null {
-    if (!this.root) {
-      return null;
-    }
-
-    return this.I18n.t('js.button_remove');
-  }
-
   @Output() update = new EventEmitter<string[]>();
 
   @Input() @HostBinding('class.op-header-project-select-list--root') root = false;
@@ -68,8 +59,7 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
 
   public text = {
     does_not_match_search: this.I18n.t('js.include_projects.tooltip.does_not_match_search'),
-    include_all_selected: this.I18n.t('js.include_projects.tooltip.include_all_selected'),
-    remove_button: this.I18n.t('js.label_remove'),
+    include_all_selected: this.I18n.t('js.include_projects.tooltip.include_all_selected')
   };
 
   public portfolioModelsEnabled = this.configuration.activeFeatureFlags.includes('portfolioModels');
