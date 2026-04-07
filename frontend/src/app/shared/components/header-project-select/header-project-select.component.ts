@@ -333,9 +333,9 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
   }
 
   private focusCurrentProjectRemoveButton():boolean {
-    const removeButton = document.querySelector<HTMLElement>(
+    const removeButton = document.querySelector(
       `.spot-list--item-remove[data-project-id="${this.activeProjectId}"]`,
-    );
+    ) as HTMLElement | null;
 
     if (!removeButton) {
       return false;
