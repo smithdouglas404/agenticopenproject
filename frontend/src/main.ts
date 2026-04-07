@@ -10,6 +10,7 @@ import { configureErrorReporter } from 'core-app/core/errors/configure-reporter'
 import { initializeGlobalListeners } from 'core-app/core/setup/globals/global-listeners';
 import { getMetaElement } from 'core-app/core/setup/globals/global-helpers';
 import 'core-elements/block-note-element';
+import 'core-react/boards/index';
 
 import 'core-app/core/setup/init-vendors';
 import 'core-app/core/setup/init-globals';

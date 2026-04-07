@@ -33,16 +33,43 @@ require "spec_helper"
 RSpec.describe Boards::BoardsController do
   let(:project) { create(:project) }
   let(:user) { create(:user, member_with_permissions: { project => permissions }) }
-  let(:permissions) { %i[view_work_packagess show_board_views] }
+  let(:permissions) { %i[view_work_packages show_board_views] }
   let(:board) { create(:board_grid, project: project) }
 
   before do
     allow(User).to receive(:current).and_return(user)
   end
 
+  describe "#show", with_flag: { boards_react: true } do
+    it "scopes the board lookup to the current project" do
+      other_project = create(:project)
+      other_board = create(:board_grid, project: other_project)
+
+      get :show, params: { project_id: project.id, id: other_board.id }
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "renders the base layout for supported React boards" do
+      board.update!(options: { type: "free" })
+
+      get :show, params: { project_id: project.id, id: board.id }
+
+      expect(response).to render_template(layout: "base")
+    end
+
+    it "keeps the Angular layout for unsupported action boards" do
+      board.update!(options: { type: "action", attribute: "version" })
+
+      get :show, params: { project_id: project.id, id: board.id }
+
+      expect(response).to render_template(layout: "angular/angular")
+    end
+  end
+
   describe "#destroy" do
     context "when allowed to delete boards" do
-      let(:permissions) { %i[view_work_packagess show_board_views manage_board_views] }
+      let(:permissions) { %i[view_work_packages show_board_views manage_board_views] }
 
       it "returns 200 ok" do
         delete :destroy, params: { id: board.id, project_id: project.id }
@@ -53,7 +80,7 @@ RSpec.describe Boards::BoardsController do
     end
 
     context "when not allowed to delete boards" do
-      let(:permissions) { %i[view_work_packagess show_board_views] }
+      let(:permissions) { %i[view_work_packages show_board_views] }
 
       it "returns 403 forbidden" do
         delete :destroy, params: { id: board.id, project_id: project.id }
@@ -66,7 +93,7 @@ RSpec.describe Boards::BoardsController do
       let(:other_project) { create(:project) }
       let(:user) do
         create(:user, member_with_permissions: {
-                 project => %i[view_work_packagess show_board_views],
+                 project => %i[view_work_packages show_board_views],
                  other_project => %i[view_work_packages manage_board_views]
                })
       end

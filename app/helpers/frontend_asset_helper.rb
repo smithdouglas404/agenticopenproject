@@ -55,7 +55,9 @@ module FrontendAssetHelper
         concat nonced_javascript_include_tag variable_asset_path(file), skip_pipeline: true, type: "module"
       end
 
-      concat frontend_stylesheet_link_tag("styles.css")
+      %w(styles.css main.css).each do |file|
+        concat frontend_stylesheet_link_tag(file)
+      end
     end
   end
 

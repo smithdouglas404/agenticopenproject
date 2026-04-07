@@ -61,6 +61,9 @@ OpenProject::FeatureDecisions.add :jira_import,
                                   description: "Enables Jira Migration Tool.",
                                   force_active: false
 
+OpenProject::FeatureDecisions.add :boards_react,
+                                  description: "Render boards using the React-based board view instead of the Angular view."
+
 OpenProject::FeatureDecisions.add :scrum_projects,
                                   description: "Enables an overhauled version of the backlogs module to " \
                                                "support Scrum projects with a new sprint planning experience. ",
