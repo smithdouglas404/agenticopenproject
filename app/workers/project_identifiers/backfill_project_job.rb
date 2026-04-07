@@ -63,11 +63,12 @@ class ProjectIdentifiers::BackfillProjectJob < ApplicationJob
   end
 
   def seed_alias_table(project)
-    # Bulk-insert alias rows for every historical project identifier prefix so that
-    # old-style references (e.g. OLDPROJ-42) continue to resolve after a rename.
-    alias_rows = WorkPackage.where(project:).flat_map do |wp|
-      wp.alias_rows_for_sequence_number(wp.sequence_number)
-    end
+    slug_prefixes = project.slugs.pluck(:slug)
+    return if slug_prefixes.empty?
+
+    alias_rows = WorkPackage.where(project:).pluck(:id, :sequence_number)
+                            .product(slug_prefixes)
+                            .map { |(wp_id, seq), prefix| { identifier: "#{prefix}-#{seq}", work_package_id: wp_id } }
     WorkPackageSemanticAlias.upsert_rows(alias_rows)
   end
 end

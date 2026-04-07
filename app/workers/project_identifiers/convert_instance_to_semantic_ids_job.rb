@@ -34,22 +34,23 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
   good_job_control_concurrency_with(perform_limit: 1)
 
   def perform
-    # Locate Projects with IDs that haven't yet been converted to the uppercase semantic format.
-    problematic_ids = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
+    project_ids = self.class.project_ids_needing_backfill
 
-    # Locate Projects that have some work packages that haven't yet gone through semantic ID sequencing.
-    # This may include projects that have already had their identifier converted but the WPs haven't finished converting.
-    # This enables idempotent re-runs.
-    needs_backfill = WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
-
-    needs_backfill.merge(problematic_ids)
-
-    return Setting::WorkPackageIdentifier.enable_semantic! if needs_backfill.empty?
+    return Setting::WorkPackageIdentifier.enable_semantic! if project_ids.empty?
 
     GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FlipIdentifierSettingJob) do
-      needs_backfill.each do |project_id|
+      project_ids.each do |project_id|
         ProjectIdentifiers::BackfillProjectJob.perform_later(project_id)
       end
     end
+  end
+
+  # Returns the set of project IDs that still need processing — either their identifier
+  # violates the semantic format or they have work packages without a sequence number.
+  # Shared with FlipIdentifierSettingJob for the post-batch validation pass.
+  def self.project_ids_needing_backfill
+    problematic_ids = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
+    needs_backfill  = WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
+    needs_backfill | problematic_ids
   end
 end

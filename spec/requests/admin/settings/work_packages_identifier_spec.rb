@@ -42,26 +42,25 @@ RSpec.describe "Work packages identifier settings",
 
   describe "PATCH /admin/settings/work_packages_identifier" do
     context "when confirm_dangerous_action is set (user confirmed the migration dialog)" do
-      it "enqueues a ConvertInstanceToSemanticIdsJob job and redirects" do
-        expect do
-          patch "/admin/settings/work_packages_identifier",
-                params: { settings: {}, confirm_dangerous_action: "1" }
-        end.to change {
-          GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name).count
-        }.by(1)
+      it "enqueues a ConvertInstanceToSemanticIdsJob and redirects" do
+        allow(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to receive(:perform_later)
 
+        patch "/admin/settings/work_packages_identifier",
+              params: { settings: {}, confirm_dangerous_action: "1" }
+
+        expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to have_received(:perform_later)
         expect(response).to redirect_to(admin_settings_work_packages_identifier_path)
       end
     end
 
     context "when confirm_dangerous_action is not set (plain settings save)" do
       it "does not enqueue a migration job" do
-        expect do
-          patch "/admin/settings/work_packages_identifier",
-                params: { settings: { work_packages_identifier: "classic" } }
-        end.not_to change {
-          GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name).count
-        }
+        allow(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to receive(:perform_later)
+
+        patch "/admin/settings/work_packages_identifier",
+              params: { settings: { work_packages_identifier: "classic" } }
+
+        expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to have_received(:perform_later)
       end
     end
   end
