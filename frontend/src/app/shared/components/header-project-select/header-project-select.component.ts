@@ -62,6 +62,10 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
 
   projectSearchField?:ElementRef<HTMLElement>;
 
+  private activeProjectId:number|null = null;
+
+  private readonly listboxId = 'op-header-project-select-listbox';
+
   public dropModalOpen = false;
 
   public textFieldFocused = false;
@@ -156,14 +160,6 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
 
   private displayModeLocalStorageKey = 'openProject-project-select-display-mode';
 
-  private readonly listboxId = 'op-header-project-select-listbox';
-
-  private activeProjectId:number|null = null;
-
-  private userIsNavigatingList = false;
-
-  private onTextInput:Subscription;
-
   constructor(
     readonly pathHelper:PathHelperService,
     readonly configuration:ConfigurationService,
@@ -193,48 +189,61 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
       });
   }
 
+  private onTextInput:Subscription;
+
   ngOnInit():void {
     const stored = window.OpenProject.guardedLocalStorage(this.displayModeLocalStorageKey) as 'all'|'favorited'|undefined;
     this.displayMode = stored ?? 'all';
-
-    this.onTextInput = this.searchableProjectListService.queriedSearchText$.subscribe(() => {
-      this.loading$.next(true);
-      this.userIsNavigatingList = false;
-      this.updateSearchInputAccessibility();
-    });
-  }
-
-  ngAfterViewInit():void {
-    this.initializeSearchInputAccessibility();
-    this.updateSearchInputAccessibility();
-
-    this.searchableProjectListService.selectedItemID$
-      .pipe(this.untilDestroyed())
-      .subscribe((selectedItemID:number|null) => {
-        this.activeProjectId = selectedItemID;
-        this.updateSearchInputAccessibility();
-      });
+    this.onTextInput = this.searchableProjectListService.queriedSearchText$.subscribe(() => this.loading$.next(true));
   }
 
   ngOnDestroy():void {
     this.onTextInput.unsubscribe();
   }
 
+  ngAfterViewInit():void {
+    this.searchableProjectListService.selectedItemID$
+      .pipe(this.untilDestroyed())
+      .subscribe((selectedItemID:number|null) => {
+        this.activeProjectId = selectedItemID;
+        this.syncSearchInputAccessibility();
+      });
+  }
+
+  private syncSearchInputAccessibility():void {
+    requestAnimationFrame(() => {
+      const input = this.projectSearchField?.nativeElement.querySelector('input') as HTMLInputElement | null;
+
+      if (!input) {
+        return;
+      }
+
+      input.setAttribute('role', 'combobox');
+      input.setAttribute('aria-autocomplete', 'list');
+      input.setAttribute('aria-haspopup', 'listbox');
+      input.setAttribute('aria-expanded', String(this.dropModalOpen));
+      input.setAttribute('aria-controls', this.listboxId);
+      input.setAttribute('aria-label', this.searchPlaceHolder());
+
+      if (this.dropModalOpen && this.activeProjectId !== null) {
+        input.setAttribute('aria-activedescendant', `op-header-project-select-option-${this.activeProjectId}`);
+      } else {
+        input.removeAttribute('aria-activedescendant');
+      }
+    });
+  }
+
   toggleDropModal():void {
     this.subscriptionComplete$.pipe(take(1)).subscribe(() => {
       this.dropModalOpen = !this.dropModalOpen;
-
       if (this.dropModalOpen) {
         this.loading$.next(true);
         this.searchableProjectListService.enableLoading();
         this.scrollToCurrent = true;
-        this.userIsNavigatingList = false;
       } else {
         this.searchableProjectListService.disableLoading();
-        this.userIsNavigatingList = false;
       }
-
-      this.updateSearchInputAccessibility();
+      this.syncSearchInputAccessibility();
     });
   }
 
@@ -245,17 +254,13 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
     if (this.currentProject.id) {
       this.searchableProjectListService.selectedItemID$.next(parseInt(this.currentProject.id, 10));
     }
-
-    this.userIsNavigatingList = false;
-    this.updateSearchInputAccessibility();
   }
 
   close():void {
     this.dropModalOpen = false;
     this.searchableProjectListService.disableLoading();
     this.searchableProjectListService.searchText = '';
-    this.userIsNavigatingList = false;
-    this.updateSearchInputAccessibility();
+    this.syncSearchInputAccessibility();
   }
 
   currentProjectName():string {
@@ -287,7 +292,6 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
     if (this.displayMode === 'all') {
       return this.currentText.search_placeholder;
     }
-
     return this.text.search_favorites_placeholder;
   }
 
@@ -295,66 +299,6 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
     if (this.displayMode === 'all') {
       return this.text.no_results;
     }
-
     return this.text.no_favorite_results;
   }
-
-  onSearchFieldKeydown(event:KeyboardEvent, projects:IProjectData[]):void {
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-      if (!this.userIsNavigatingList) {
-        event.preventDefault();
-        this.userIsNavigatingList = true;
-        this.updateSearchInputAccessibility();
-        return;
-      }
-    } else if (
-      event.key.length === 1 ||
-      event.key === 'Backspace' ||
-      event.key === 'Delete'
-    ) {
-      this.userIsNavigatingList = false;
-    }
-
-    this.searchableProjectListService.onKeydown(event, projects);
-    this.updateSearchInputAccessibility();
-  }
-
-  private getSearchInput():HTMLInputElement|null {
-    return this.projectSearchField?.nativeElement.querySelector('input') as HTMLInputElement | null;
-  }
-
-  private initializeSearchInputAccessibility():void {
-    requestAnimationFrame(() => {
-      const input = this.getSearchInput();
-
-      if (!input) {
-        return;
-      }
-
-      input.setAttribute('role', 'combobox');
-      input.setAttribute('aria-autocomplete', 'list');
-      input.setAttribute('aria-haspopup', 'listbox');
-      input.setAttribute('aria-controls', this.listboxId);
-    });
-  }
-
-  private updateSearchInputAccessibility():void {
-    requestAnimationFrame(() => {
-      const input = this.getSearchInput();
-
-      if (!input) {
-        return;
-      }
-
-      input.setAttribute('aria-expanded', String(this.dropModalOpen));
-      input.setAttribute('aria-label', this.searchPlaceHolder());
-
-      if (this.dropModalOpen && this.userIsNavigatingList && this.activeProjectId !== null) {
-        input.setAttribute('aria-activedescendant', `op-header-project-select-option-${this.activeProjectId}`);
-      } else {
-        input.removeAttribute('aria-activedescendant');
-      }
-    });
-  }
 }
-
