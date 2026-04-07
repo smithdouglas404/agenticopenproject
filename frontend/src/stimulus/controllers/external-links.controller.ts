@@ -122,12 +122,11 @@ export default class ExternalLinksController extends ApplicationController {
     });
   }
 
-  private updateBlankLink(link:HTMLAnchorElement) {
-    // Ensure accessibility description
+  protected updateBlankLink(link:HTMLAnchorElement) {
     attributeTokenList(link, 'aria-describedby').add(BLANK_LINK_DESCRIPTION_ID);
   }
 
-  private updateExternalLink(link:HTMLAnchorElement) {
+  protected updateExternalLink(link:HTMLAnchorElement) {
     // Ensure external link behavior
     link.target = '_blank';
     attributeTokenList(link, 'rel').add('noopener', 'noreferrer');

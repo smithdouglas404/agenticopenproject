@@ -31,7 +31,7 @@
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { Application } from '@hotwired/stimulus';
-import ExternalLinksController from 'core-stimulus/controllers/external-links.controller';
+import ProseMirrorExternalLinksController from 'core-stimulus/controllers/prosemirror-external-links.controller';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { ShadowDomWrapper } from 'op-blocknote-extensions';
 import React from 'react';
@@ -95,7 +95,7 @@ class BlockNoteElement extends HTMLElement {
 
     // Initialize Stimulus application within shadow DOM
     this.stimulusApp = Application.start(this.stimulusRoot);
-    this.stimulusApp.register('external-links', ExternalLinksController);
+    this.stimulusApp.register('external-links', ProseMirrorExternalLinksController);
 
     this.reactRoot = createRoot(this.editorMount);
 

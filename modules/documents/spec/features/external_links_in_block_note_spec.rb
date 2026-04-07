@@ -56,22 +56,36 @@ RSpec.describe "External links in BlockNote editor",
   end
 
   it "sets target and rel attributes on external links in the shadow DOM" do
-    paste_link_into_editor(text: "Example Site", url: "https://example.com")
+    editor.paste_links(text: "Example Site", url: "https://example.com")
 
     link = editor.shadow_root.find("a[target='_blank']", text: "Example Site", wait: 5)
     expect(link[:rel]).to include("noopener")
     expect(link[:rel]).to include("noreferrer")
   end
 
-  it "sets aria-describedby on external links for accessibility" do
-    paste_link_into_editor(text: "Accessible Link", url: "https://example.com")
+  it "does not set aria-describedby inside contenteditable to avoid ProseMirror re-render loop" do
+    editor.paste_links(text: "Accessible Link", url: "https://example.com")
 
     link = editor.shadow_root.find("a[target='_blank']", text: "Accessible Link", wait: 5)
-    expect(link[:"aria-describedby"]).to include("open-blank-target-link-description")
+    expect(link[:"aria-describedby"]).to be_nil.or eq("")
+  end
+
+  it "does not freeze when pasting content with multiple external links" do
+    editor.paste_links(
+      { text: "Link One", url: "https://example.com/one" },
+      { text: "Link Two", url: "https://example.org/two" },
+      { text: "Link Three", url: "https://other-site.com/three" },
+      { text: "Link Four", url: "https://fourth-domain.net/four" },
+      { text: "Link Five", url: "https://fifth-place.io/five" }
+    )
+
+    # Verify the editor remains interactive after pasting multiple links
+    editor.fill_in(" Still typing after paste")
+    expect(editor.content).to include("Still typing after paste")
   end
 
   it "does not rewrite internal links" do
-    paste_link_into_editor(text: "Internal Link", url: root_url)
+    editor.paste_links(text: "Internal Link", url: root_url)
 
     link = editor.shadow_root.find("a", text: "Internal Link", wait: 5)
     expect(link.native.property("href")).not_to include("/external_redirect")
@@ -84,34 +98,11 @@ RSpec.describe "External links in BlockNote editor",
             capture_external_links: true
           } do
     it "rewrites external link href to /external_redirect" do
-      paste_link_into_editor(text: "Captured Link", url: "https://example.com/page")
+      editor.paste_links(text: "Captured Link", url: "https://example.com/page")
 
       link = editor.shadow_root.find("a[target='_blank']", text: "Captured Link", wait: 5)
       expect(link.native.property("href")).to include("/external_redirect?url=")
       expect(link.native.property("href")).to include("example.com")
     end
-  end
-
-  private
-
-  # Simulates pasting a link into the BlockNote editor — a common user interaction
-  # (e.g. copying a link from an email or browser and pasting it into a document).
-  #
-  # We use a synthetic ClipboardEvent because the alternative (Ctrl+K) requires the
-  # formatting toolbar to be visible, which only happens when text is selected.
-  # There is no reliable way to programmatically select text inside ProseMirror's
-  # contenteditable in Capybara/Selenium tests. The synthetic event exercises the
-  # same ProseMirror paste handler code path as a real Ctrl+V.
-  def paste_link_into_editor(text:, url:)
-    expect(page).to have_test_selector("blocknote-document-description")
-    editor.element.click
-
-    page.execute_script(<<~JS, url, text)
-      const el = document.querySelector('op-block-note').shadowRoot.querySelector('div[role="textbox"]');
-      const dt = new DataTransfer();
-      dt.setData('text/html', `<a href="${arguments[0]}">${arguments[1]}</a>`);
-      dt.setData('text/plain', arguments[1]);
-      el.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
-    JS
   end
 end
