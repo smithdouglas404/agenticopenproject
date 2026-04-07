@@ -30,9 +30,9 @@
 
 require "rails_helper"
 
-RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIds,
+RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                with_good_job_batches: [
-                 ProjectIdentifiers::ConvertInstanceToSemanticIds,
+                 ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                  ProjectIdentifiers::BackfillProjectJob
                ] do
   subject(:job) { described_class.new }
@@ -45,6 +45,14 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIds,
   end
 
   describe "#perform" do
+    context "when there is nothing to backfill (all projects already have valid identifiers and all WPs have sequence numbers)" do
+      it "flips the setting immediately without creating a batch" do
+        job.perform
+        expect(Setting.work_packages_identifier).to eq(Setting::WorkPackageIdentifier::SEMANTIC)
+        expect(GoodJob::Job.where(job_class: ProjectIdentifiers::BackfillProjectJob.name)).not_to exist
+      end
+    end
+
     context "when projects have legacy (non-semantic) identifiers" do
       let!(:project_a) { create(:project, name: "My Project") }
       let!(:project_b) { create(:project, name: "Another Project") }

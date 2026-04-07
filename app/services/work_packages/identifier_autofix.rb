@@ -33,7 +33,7 @@ module WorkPackages
     def self.job_in_progress?
       GoodJob::Job
         .where(job_class: [
-                 ProjectIdentifiers::ConvertInstanceToSemanticIds.name,
+                 ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
                  ProjectIdentifiers::BackfillProjectJob.name
                ])
         .exists?(finished_at: nil)

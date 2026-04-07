@@ -36,5 +36,6 @@ class Setting
 
     def self.semantic? = Setting[:work_packages_identifier] == SEMANTIC
     def self.classic?  = Setting[:work_packages_identifier] == CLASSIC
+    def self.enable_semantic! = Setting.work_packages_identifier = SEMANTIC
   end
 end

@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ProjectIdentifiers::ConvertInstanceToSemanticIds < ApplicationJob
+class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
 
   good_job_control_concurrency_with(perform_limit: 1)
@@ -43,6 +43,8 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIds < ApplicationJob
     needs_backfill = WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
 
     needs_backfill.merge(problematic_ids)
+
+    return Setting::WorkPackageIdentifier.enable_semantic! if needs_backfill.empty?
 
     GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FlipIdentifierSettingJob) do
       needs_backfill.each do |project_id|

@@ -62,7 +62,7 @@ class ProjectIdentifiers::FlipIdentifierSettingJob < ApplicationJob
   private
 
   def flip_setting!
-    Setting.work_packages_identifier = Setting::WorkPackageIdentifier::SEMANTIC
+    Setting::WorkPackageIdentifier.enable_semantic!
   end
 
   def remaining_project_ids

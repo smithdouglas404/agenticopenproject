@@ -38,11 +38,11 @@ RSpec.describe WorkPackages::IdentifierAutofix do
       it { is_expected.to be false }
     end
 
-    context "when a ConvertInstanceToSemanticIds job is running (finished_at: nil)" do
+    context "when a ConvertInstanceToSemanticIdsJob job is running (finished_at: nil)" do
       before do
         GoodJob::Job.create!(
-          job_class: ProjectIdentifiers::ConvertInstanceToSemanticIds.name,
-          serialized_params: { "job_class" => ProjectIdentifiers::ConvertInstanceToSemanticIds.name },
+          job_class: ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
+          serialized_params: { "job_class" => ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name },
           finished_at: nil
         )
       end
@@ -65,8 +65,8 @@ RSpec.describe WorkPackages::IdentifierAutofix do
     context "when all conversion jobs have finished" do
       before do
         GoodJob::Job.create!(
-          job_class: ProjectIdentifiers::ConvertInstanceToSemanticIds.name,
-          serialized_params: { "job_class" => ProjectIdentifiers::ConvertInstanceToSemanticIds.name },
+          job_class: ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
+          serialized_params: { "job_class" => ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name },
           finished_at: 1.minute.ago
         )
         GoodJob::Job.create!(
