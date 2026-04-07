@@ -30,6 +30,8 @@
 
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
+import { Application } from '@hotwired/stimulus';
+import ExternalLinksController from 'core-stimulus/controllers/external-links.controller';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { ShadowDomWrapper } from 'op-blocknote-extensions';
 import React from 'react';
@@ -38,9 +40,10 @@ import { createRoot } from 'react-dom/client';
 import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
 
 class BlockNoteElement extends HTMLElement {
-  private editorRoot:HTMLDivElement;
+  private stimulusRoot:HTMLDivElement;
   private editorMount:HTMLDivElement;
-  private reactRoot:Root|null = null;
+  private reactRoot:Root | null = null;
+  private stimulusApp:Application | null = null;
   private renderCallback:((provider:HocuspocusProvider) => void) | null = null;
 
   constructor() {
@@ -48,22 +51,26 @@ class BlockNoteElement extends HTMLElement {
 
     const shadowRoot = this.attachShadow({ mode: 'open' });
 
-    this.editorRoot = document.createElement('div');
+    this.stimulusRoot = document.createElement('div');
     const browserSpecificClasses = this.getAttribute('browser-specific-classes')?.split(' ') ?? [];
     if (browserSpecificClasses.length > 0) {
-      this.editorRoot.classList.add(...browserSpecificClasses);
+      this.stimulusRoot.classList.add(...browserSpecificClasses);
     }
     // Clone the blank-target link description into the shadow DOM
     // so aria-describedby references resolve for links inside the editor
     const blankLinkDesc = document.getElementById('open-blank-target-link-description');
     if (blankLinkDesc) {
-      this.editorRoot.appendChild(blankLinkDesc.cloneNode(true));
+      this.stimulusRoot.appendChild(blankLinkDesc.cloneNode(true));
     }
 
     this.editorMount = document.createElement('div');
 
-    this.editorRoot.appendChild(this.editorMount);
-    shadowRoot.appendChild(this.editorRoot);
+    // Copy over definition for external-links handling
+    this.editorMount.dataset.controller = 'external-links';
+    this.editorMount.dataset.externalLinksEnabledValue = document.body.dataset.externalLinksEnabledValue;
+
+    this.stimulusRoot.appendChild(this.editorMount);
+    shadowRoot.appendChild(this.stimulusRoot);
 
     const blockNoteStylesheetUrl = this.getAttribute('blocknote-stylesheet-url');
     if (blockNoteStylesheetUrl) {
@@ -86,6 +93,10 @@ class BlockNoteElement extends HTMLElement {
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
     if (!collaborationEnabled) return;
 
+    // Initialize Stimulus application within shadow DOM
+    this.stimulusApp = Application.start(this.stimulusRoot);
+    this.stimulusApp.register('external-links', ExternalLinksController);
+
     this.reactRoot = createRoot(this.editorMount);
 
     this.renderCallback = (provider:HocuspocusProvider) => {
@@ -107,6 +118,11 @@ class BlockNoteElement extends HTMLElement {
     if (this.reactRoot) {
       this.reactRoot.unmount();
       this.reactRoot = null;
+    }
+
+    if (this.stimulusApp) {
+      this.stimulusApp.stop();
+      this.stimulusApp = null;
     }
   }
 
