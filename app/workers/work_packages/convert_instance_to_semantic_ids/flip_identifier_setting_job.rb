@@ -29,9 +29,45 @@
 #++
 
 class WorkPackages::ConvertInstanceToSemanticIds::FlipIdentifierSettingJob < ApplicationJob
+  # Maximum number of re-processing passes before giving up and aborting the flip.
+  # Prevents an infinite loop if work packages are created faster than they can be processed.
+  MAX_ITERATIONS = 3
+
   # Called by GoodJob as an on_success batch callback with (batch, params).
-  # Only fires when every job in the batch succeeded — no conditional needed.
-  def perform(_batch, _params)
+  # Only fires when every job in the batch succeeded.
+  def perform(_batch, params)
+    remaining = remaining_project_ids
+    iteration = params.to_h.fetch("iteration", 0).to_i
+
+    return flip_setting! if remaining.empty?
+
+    if iteration < MAX_ITERATIONS
+      GoodJob::Batch.enqueue(
+        on_success: self.class,
+        on_success_params: { iteration: iteration + 1 }
+      ) do
+        remaining.each do |project_id|
+          WorkPackages::ConvertInstanceToSemanticIds::BackfillProjectJob.perform_later(project_id)
+        end
+      end
+    else
+      Rails.logger.error(
+        "FlipIdentifierSettingJob: reached max iterations (#{MAX_ITERATIONS}) with " \
+        "#{remaining.size} project(s) still unprocessed — aborting flip, manual intervention required"
+      )
+      # Do NOT flip the setting; leave it for ops to investigate and re-trigger the migration.
+    end
+  end
+
+  private
+
+  def flip_setting!
     Setting.work_packages_identifier = Setting::WorkPackageIdentifier::SEMANTIC
+  end
+
+  def remaining_project_ids
+    problematic_ids = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
+    needs_backfill = WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
+    needs_backfill.merge(problematic_ids)
   end
 end
