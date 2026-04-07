@@ -54,7 +54,7 @@ RSpec.describe "Create", :js do
       within ".PageHeader-breadcrumbs" do
         expect(page).to have_link(href: project_path(project), text: project.name)
         expect(page).to have_link(href: backlog_backlogs_project_backlogs_path(project), text: "Backlogs")
-        expect(page).to have_text("Backlog and Sprints")
+        expect(page).to have_text("Backlog and sprints")
       end
     end
 
@@ -62,7 +62,7 @@ RSpec.describe "Create", :js do
       planning_page.visit!
 
       within "#main-menu" do
-        expect(page).to have_css(".selected", text: "Backlog and Sprints")
+        expect(page).to have_css(".selected", text: "Backlog and sprints")
       end
     end
 
