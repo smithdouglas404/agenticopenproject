@@ -168,10 +168,10 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
         expect(page).to have_octicon(:play)
       end
 
-      it "does not show Finish" do
+      it "does not show Complete" do
         render_component
 
-        expect(page).to have_no_selector(:link_or_button, "Finish")
+        expect(page).to have_no_selector(:link_or_button, "Complete")
       end
 
       context "when another sprint is already active" do
@@ -217,10 +217,10 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
                               start_date:, finish_date:)
       end
 
-      it "shows a Finish button" do
+      it "shows a Complete button" do
         render_component
 
-        expect(page).to have_selector(:link_or_button, "Finish")
+        expect(page).to have_selector(:link_or_button, "Complete")
         expect(page).to have_octicon(:check)
       end
 
@@ -237,11 +237,11 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
                               start_date:, finish_date:)
       end
 
-      it "shows neither Start nor Finish" do
+      it "shows neither Start nor Complete" do
         render_component
 
         expect(page).to have_no_selector(:link_or_button, "Start")
-        expect(page).to have_no_selector(:link_or_button, "Finish")
+        expect(page).to have_no_selector(:link_or_button, "Complete")
       end
     end
 

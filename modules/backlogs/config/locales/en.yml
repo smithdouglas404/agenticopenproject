@@ -185,7 +185,7 @@ en:
 
     sprint_header_component:
       label_start_sprint: "Start"
-      label_finish_sprint: "Finish"
+      label_complete_sprint: "Complete"
       start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
       start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
