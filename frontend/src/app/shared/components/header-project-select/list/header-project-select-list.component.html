@@ -4,7 +4,7 @@
     role="none"
     data-test-selector="op-header-project-select--item"
     [attr.data-list-selector]="projectListItemIdentifier"
-  >
+    >
     @if (!project.disabled) {
       <a
         tabindex="-1"
@@ -12,7 +12,6 @@
         [id]="optionId(project)"
         role="option"
         [attr.aria-selected]="((searchableProjectListService.selectedItemID$ | async) === project.id).toString()"
-        [attr.aria-labelledby]="optionLabelId(project)"
         [ngClass]="{
           'spot-list--item-action_disabled': project.disabled,
           'spot-list--item-action_active': (searchableProjectListService.selectedItemID$ | async) === project.id
@@ -21,37 +20,32 @@
         [attr.data-list-selector]="projectListActionIdentifier"
         [attr.data-project-id]="project.id"
         [attr.data-test-selector]="currentProjectService.id === project.id.toString() ? 'op-header-project-select--active-item' : null"
-      >
+        >
         <span
           class="spot-list--item-title spot-list--item-title_ellipse-text"
           data-test-selector="op-header-project-select--item-title"
-        >
+          >
           <span
-            [id]="optionLabelId(project)"
             [opSearchHighlight]="searchText"
-            [textContent]="project.name">
-          </span>
-
+          [textContent]="project.name"></span>
           @if (favorited?.includes(project.id.toString())) {
             <svg
               star-fill-icon
               class="op-primer--star-icon"
               size="small"
-              aria-hidden="true"
             ></svg>
           }
-
           @if (portfolioModelsEnabled) {
             @switch (project._type) {
               @case ('Portfolio') {
                 <span class="description">
-                  <svg briefcase-icon size="xsmall" aria-hidden="true" />
+                  <svg briefcase-icon size="xsmall" />
                   {{ this.I18n.t('js.include_workspaces.types.portfolio') }}
                 </span>
               }
               @case ('Program') {
                 <span class="description">
-                  <svg versions-icon size="xsmall" aria-hidden="true" />
+                  <svg versions-icon size="xsmall" />
                   {{ this.I18n.t('js.include_workspaces.types.program') }}
                 </span>
               }
@@ -60,7 +54,6 @@
         </span>
         @if (currentProjectService.id === project.id.toString()) {
           <a
-            [attr.data-project-id]="project.id"
             [href]="extendedUrl(null)"
             class="spot-list--item-remove"
             data-test-selector="op-header-project-select--item-remove-icon"
@@ -71,14 +64,12 @@
         }
       </a>
     }
-
     @if (project.disabled) {
       <span
         class="spot-list--item-action spot-list--item-action_disabled"
         [id]="optionId(project)"
         role="option"
         aria-disabled="true"
-        [attr.aria-labelledby]="optionLabelId(project)"
         [attr.aria-selected]="((searchableProjectListService.selectedItemID$ | async) === project.id).toString()"
         [ngClass]="{
           'spot-list--item-action_active': (searchableProjectListService.selectedItemID$ | async) === project.id
@@ -88,19 +79,18 @@
           class="spot-list--item-title spot-list--item-title_ellipse-text"
           data-test-selector="op-header-project-select--item-disabled-title"
         >
-          <span [id]="optionLabelId(project)">{{ project.name }}</span>
-
+          <span>{{ project.name }}</span>
           @if (portfolioModelsEnabled) {
             @switch (project._type) {
               @case ('Portfolio') {
                 <span class="description">
-                  <svg briefcase-icon size="xsmall" aria-hidden="true" />
+                  <svg briefcase-icon size="xsmall" />
                   {{ this.I18n.t('js.include_workspaces.types.portfolio') }}
                 </span>
               }
               @case ('Program') {
                 <span class="description">
-                  <svg versions-icon size="xsmall" aria-hidden="true" />
+                  <svg versions-icon size="xsmall" />
                   {{ this.I18n.t('js.include_workspaces.types.program') }}
                 </span>
               }
@@ -109,7 +99,6 @@
         </span>
       </span>
     }
-
     @if (project.children.length) {
       <ul
         op-header-project-select-list
