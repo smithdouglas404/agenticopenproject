@@ -29,7 +29,7 @@
 # ++
 
 require "spec_helper"
-require_relative "../../support/pages/sprint_planning"
+require_relative "../../support/pages/backlog"
 
 RSpec.describe "Dragging work packages in the inbox",
                :js, with_flag: { scrum_projects: true } do
@@ -56,7 +56,7 @@ RSpec.describe "Dragging work packages in the inbox",
   shared_let(:inbox_wp4) { create(:work_package, sprint: nil, project:, position: 4) }
   shared_let(:inbox_wp5) { create(:work_package, sprint: nil, project:, position: 5) }
 
-  let(:backlogs_page) { Pages::SprintPlanning.new(project) }
+  let(:backlogs_page) { Pages::Backlog.new(project) }
 
   current_user do
     create(:user,
