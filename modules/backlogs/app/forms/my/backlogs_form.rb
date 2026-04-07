@@ -31,14 +31,12 @@
 class My::BacklogsForm < ApplicationForm
   form do |f|
     f.fieldset_group(title: helpers.t("backlogs.user_preference.header_backlogs"), mt: 4) do |fg|
-
       unless OpenProject::FeatureDecisions.scrum_projects_active?
         fg.text_field name: :task_color,
                       label: helpers.t("backlogs.task_color"),
                       value: @color,
                       input_width: :xsmall
       end
-
 
       fg.check_box name: :versions_default_fold_state,
                    value: DEFAULT_FOLD_STATE,
