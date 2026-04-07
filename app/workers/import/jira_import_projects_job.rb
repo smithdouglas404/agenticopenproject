@@ -247,9 +247,7 @@ module Import
             end
           elsif (error = service_call.errors.find { |e| e.attribute == :identifier && e.type == :taken }) && error.present?
             taken_identifier = error.options[:value]
-            project = Project.find_by!(identifier: taken_identifier)
-            raise "You are trying to import a project with already used " \
-                  "identifier: #{taken_identifier}. Existing project: #{project}."
+            raise I18n.t(:"admin.jira.run.project_identifier_taken", taken_identifier:)
           else
             raise service_call.message
           end

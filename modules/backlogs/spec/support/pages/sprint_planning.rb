@@ -392,7 +392,7 @@ module Pages
 
     def click_to_finish_sprint(sprint)
       within_sprint_menu(sprint) do |menu|
-        menu.find(:button, "Finish sprint").click
+        menu.find(:button, "Complete sprint").click
       end
     end
 
@@ -401,7 +401,7 @@ module Pages
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_sprint")
         select sprint_name, from: "Select sprint"
 
-        click_button "Close sprint"
+        click_button "Complete sprint"
       end
     end
 
@@ -409,7 +409,7 @@ module Pages
       within sprint_finish_modal_selector do
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_top_of_backlog")
 
-        click_button "Close sprint"
+        click_button "Complete sprint"
       end
     end
 
@@ -417,7 +417,7 @@ module Pages
       within sprint_finish_modal_selector do
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_bottom_of_backlog")
 
-        click_button "Close sprint"
+        click_button "Complete sprint"
       end
     end
 

@@ -53,9 +53,9 @@ See COPYRIGHT and LICENSE files for more details.
         end
       end
 
-      if show_finish_sprint_action?
+      if show_complete_sprint_action?
         menu.with_item(
-          label: t(".action_menu.finish_sprint"),
+          label: t(".action_menu.complete_sprint"),
           tag: :button,
           href: finish_project_sprint_path(project, sprint),
           form_arguments: { method: :post }

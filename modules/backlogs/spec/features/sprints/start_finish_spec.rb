@@ -143,8 +143,8 @@ RSpec.describe "Start and finish sprints",
 
     it "finishes the sprint and returns to the backlog" do
       planning_page.within_sprint_menu(first_sprint) do |menu|
-        expect(menu).to have_selector :menuitem, "Finish sprint"
-        menu.find(:button, "Finish sprint").click
+        expect(menu).to have_selector :menuitem, "Complete sprint"
+        menu.find(:button, "Complete sprint").click
       end
 
       planning_page.expect_current_path

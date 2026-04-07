@@ -212,13 +212,13 @@ en:
         move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
         move_to_sprint: "Move them to another sprint"
       select_sprint_label: "Select sprint"
-      button_close_sprint: "Close sprint"
+      button_complete_sprint: "Complete sprint"
 
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
         start_sprint: "Start sprint"
-        finish_sprint: "Finish sprint"
+        complete_sprint: "Complete sprint"
         start_sprint_disabled_description: "Another sprint is already active."
         start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"

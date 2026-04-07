@@ -396,6 +396,8 @@ en:
             All participants will receive updated calendar invites via email when you add or remove participants.
           disabled: >
             Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             All participants will receive updated calendar invites via email when you add or remove participants.

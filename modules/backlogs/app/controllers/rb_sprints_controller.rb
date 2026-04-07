@@ -281,6 +281,6 @@ class RbSprintsController < RbApplicationController
 
   def authorize_finish!
     deny_access unless current_user.allowed_in_project?(:view_sprints, @project) &&
-      Sprints::StartContract.can_start_or_finish?(user: current_user, sprint: @sprint)
+      Sprints::StartContract.can_start_or_complete?(user: current_user, sprint: @sprint)
   end
 end

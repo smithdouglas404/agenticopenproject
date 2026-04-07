@@ -45,10 +45,10 @@ RSpec.describe Burndown do
 
   let!(:non_working_days) do
     [
-      create(:non_working_day, date: Date.new(2011, 4, 2)),
-      create(:non_working_day, date: Date.new(2011, 4, 3)),
-      create(:non_working_day, date: Date.new(2011, 4, 9)),
-      create(:non_working_day, date: Date.new(2011, 4, 10))
+      create(:non_working_day, date: Date.new(2011, 4, 2)), # Saturday
+      create(:non_working_day, date: Date.new(2011, 4, 3)), # Sunday
+      create(:non_working_day, date: Date.new(2011, 4, 9)), # Saturday
+      create(:non_working_day, date: Date.new(2011, 4, 10)) # Sunday
     ]
   end
 
@@ -72,9 +72,8 @@ RSpec.describe Burndown do
     end
 
     describe "WITH the today date fixed to April 4th, 2011 and having a 10 (working days) sprint" do
-      before do
-        allow(Time).to receive(:now).and_return(Time.utc(2011, "apr", 4, 20, 15, 1))
-        allow(Date).to receive(:today).and_return(Date.civil(2011, 4, 4))
+      around do |example|
+        travel_to(Time.utc(2011, "apr", 4, 20, 15, 1)) { example.run }
       end
 
       describe "WITH having a version in the future" do
@@ -196,9 +195,8 @@ RSpec.describe Burndown do
     let(:sprint) { create(:agile_sprint, project:) }
 
     describe "WITH the today date fixed to April 4th, 2011 and having a 10 (working days) sprint" do
-      before do
-        allow(Time).to receive(:now).and_return(Time.utc(2011, "apr", 4, 20, 15, 1))
-        allow(Date).to receive(:today).and_return(Date.civil(2011, 4, 4))
+      around do |example|
+        travel_to(Time.utc(2011, "apr", 4, 20, 15, 1)) { example.run }
       end
 
       describe "WITH having a sprint in the future" do

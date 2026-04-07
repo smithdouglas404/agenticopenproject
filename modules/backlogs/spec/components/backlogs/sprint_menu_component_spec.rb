@@ -121,10 +121,10 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
       let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint create_sprints manage_sprint_items] }
       let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
-      it "shows Finish sprint and Sprint board" do
+      it "shows Complete sprint and Sprint board" do
         render_component
 
-        expect(menu_items.first).to eq("Finish sprint")
+        expect(menu_items.first).to eq("Complete sprint")
         expect(page).to have_octicon(:check)
         expect(page).to have_element(:form, action: finish_sprint_path, method: "post")
         expect(menu_items).to include("Sprint board")
@@ -133,7 +133,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
       it "renders dividers between each menu section" do
         render_component
 
-        expect(menu_items).to eq(["Finish sprint", "Edit sprint", "Add work package", "Sprint board", "Burndown chart"])
+        expect(menu_items).to eq(["Complete sprint", "Edit sprint", "Add work package", "Sprint board", "Burndown chart"])
         expect(page).to have_list_item position: 3, role: "presentation"
         expect(page).to have_list_item position: 5, role: "presentation"
       end
@@ -270,10 +270,10 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
                roles: [create(:project_role, permissions: %i[view_sprints start_complete_sprint])])
       end
 
-      it "shows Finish sprint" do
+      it "shows Complete sprint" do
         render_component
 
-        expect(page).to have_selector(:menuitem, text: "Finish sprint")
+        expect(page).to have_selector(:menuitem, text: "Complete sprint")
       end
 
       it "does not show Sprint board for a board in the source project" do

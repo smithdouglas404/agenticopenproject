@@ -162,6 +162,7 @@ ru:
         history: "История"
         remove_error: "Импорт Jira нельзя удалить во время его выполнения"
         import_blocked_error: "Другая операция импорта Jira находится в процессе выполнения или ожидает рассмотрения. Пожалуйста, завершите или отмените его, прежде чем начинать новый импорт."
+        project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:
           title: "Импорт еще не настроен"
           description: "Создайте запуск импорта, чтобы начать импортировать информацию из этого экземпляра Jira"
@@ -404,9 +405,9 @@ ru:
           label_example_work_package_id: Пример ID пакета работ
         autofix_preview:
           error_too_long: Has to be fewer than 5 characters
-          error_special_characters: Special characters not allowed
-          error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
+          error_special_characters: Специальные символы не допускаются
+          error_in_use: Уже используется в другом проекте
+          error_reserved: Зарезервировано другим проектом
           remaining_projects:
             one: "... 1 more project"
             few: "... %{count} more projects"
@@ -3375,18 +3376,17 @@ ru:
         learn_about: "Узнайте больше о всех новых функциях"
         missing: "Нет выделенных функций."
         #We need to include the version to invalidate outdated translations in other locales
-        "17_2":
+        "17_3":
           new_features_title: >
-            Релиз содержит различные новые функции и улучшения, такие как:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Рабочие процессы AI с защищенным сервером MCP (тарифный план Professional и выше)
-            line_1: Улучшенная главная страница проекта с новым виджетом для бюджетов и улучшенной доступностью
-            line_2: "Совещания: Шаблоны совещаний (Базовый план и выше)"
-            line_3: Повышение прозрачности комментариев к атрибутам проекта
-            line_4: Улучшения экспорта PDF
-            line_5: Повышенная безопасность внешних ссылок (тарифный план Premium и выше)
-            line_6: Улучшение UI/UX в модуле бэклогов
-            line_7: Согласованные формы пользовательских полей
+            line_0: "Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation."
+            line_1: In-place editing of project attributes on the Project Overview page.
+            line_2: Sharing of meeting templates (Basic plan and higher).
+            line_3: Better search in Time and Costs, Boards, and more.
+            line_4: Option to safely change project identifiers.
+            line_5: Improved workflow configuration for administrators.
+            line_6: Action boards released to Community.
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
