@@ -285,7 +285,15 @@ module ApplicationHelper
 
   def body_data_attributes(local_assigns)
     {
-      controller: "application auto-theme-switcher hover-card-trigger beforeunload external-links highlight-target-element",
+      controller: <<~CONTROLLERS.squish,
+        application
+        auto-theme-switcher
+        hover-card-trigger
+        clipboard-flash
+        beforeunload
+        external-links
+        highlight-target-element
+      CONTROLLERS
       relative_url_root: root_path,
       overflowing_identifier: ".__overflowing_body",
       external_links_enabled_value: Setting.capture_external_links?,

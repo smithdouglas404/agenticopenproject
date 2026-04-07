@@ -29,77 +29,40 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { renderStreamMessage } from '@hotwired/turbo';
 
 /**
- * The controller listens for the 'clipboard-copy' event which is fired by
- * the @github/clipboard-copy-element when content is successfully copied.
+ * Controller that shows a flash notification when clipboard-copy succeeds.
+ *
+ * This controller should be attached to a high-level element like <body> since
+ * clipboard-copy elements can appear anywhere on the page, including inside
+ * Primer ActionMenu popovers which render in the browser's top layer.
+ *
+ * Events from the top layer bubble through the body element, so listening on
+ * this.element (when attached to body) catches all clipboard-copy events.
  *
  * Usage:
- *   Add data-controller="clipboard-flash" to a container element that contains
- *   `clipboard-copy` elements. When any `clipboard-copy` element within the container
- *   successfully copies content, a flash message will be shown.
- *   Hint: if you have a fitting Rails controller for your use case, use that one to create
- *   a turbo response with a flash message. If not, you can fall back to the FlashesController.
- *
- * Values:
- *   - url: Required URL to fetch via Turbo when clipboard copy succeeds. The response
- *          should be a Turbo Stream that renders a flash message.
- *
- * Example:
- *   <div data-controller="clipboard-flash" data-clipboard-flash-url-value="/flashes/clipboard_copied_notice">
- *     <clipboard-copy value="text to copy">Copy</clipboard-copy>
- *   </div>
+ *   Add data-controller="clipboard-flash" to the <body> tag or another high-level
+ *   container element. All clipboard-copy elements on the page will automatically
+ *   trigger flash notifications when clicked.
  */
 export default class ClipboardFlashController extends Controller {
-  static values = {
-    url: String,
-  };
+  private abortController:AbortController|null = null;
 
-  declare urlValue:string;
-  declare hasUrlValue:boolean;
+  connect():void {
+    this.abortController = new AbortController();
+    const { signal } = this.abortController;
 
-  private documentListener = this.handleClipboardCopy.bind(this);
-
-  connect() {
-    // Listen on document level to catch events from ActionMenu dialogs/popovers
-    // which are rendered outside the controller's element
-    document.addEventListener('clipboard-copy', this.documentListener);
+    this.element.addEventListener('clipboard-copy', () => this.handleClipboardCopy(), { signal });
   }
 
   disconnect() {
-    document.removeEventListener('clipboard-copy', this.documentListener);
+    this.abortController?.abort();
+    this.abortController = null;
   }
 
-  private handleClipboardCopy(event:Event):void {
-    if (!this.hasUrlValue) { return; }
-
-    // Check if this event has already been handled by another controller instance
-    // eslint-disable-next-line no-underscore-dangle
-    const customEvent = event as CustomEvent & { __clipboardFlashHandled?:boolean };
-    if (customEvent.__clipboardFlashHandled) {
-      return;
-    }
-
-    // Mark the event as handled to prevent other controller instances from processing it
-    customEvent.__clipboardFlashHandled = true;
-
-    // If a URL is provided, fetch it via Turbo
-    if (this.hasUrlValue) {
-      void fetch(this.urlValue, {
-        method: 'GET',
-        headers: {
-          Accept: 'text/vnd.turbo-stream.html',
-        },
-      })
-        .then((response) => response.text())
-        .then((html) => {
-          renderStreamMessage(html);
-        })
-        .catch((error) => {
-          console.error('Failed to fetch URL:', error);
-        });
-    }
+  private handleClipboardCopy():void {
+    void window.OpenProject.getPluginContext().then((pluginContext) => {
+      pluginContext.services.notifications.addSuccess(I18n.t('js.clipboard.copied_successful'));
+    });
   }
 }
-
