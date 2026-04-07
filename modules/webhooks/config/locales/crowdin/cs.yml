@@ -28,9 +28,9 @@ cs:
       label_add_new: Přidat nový webhook
       label_edit: Upravit webhook
       label_x_events:
-        one: "1 event"
-        other: "%{count} events"
-        zero: "No events"
+        one: "1 událost"
+        other: "%{count} událostí"
+        zero: "Žádné události"
       events:
         created: "Vytvořeno"
         updated: "Aktualizováno"

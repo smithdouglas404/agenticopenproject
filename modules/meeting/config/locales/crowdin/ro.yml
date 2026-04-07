@@ -194,6 +194,7 @@ ro:
   label_notify: "Trimiteți pentru revizuire"
   label_icalendar: "Trimiteți iCalendar"
   label_icalendar_download: "Download iCalendar event"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Vezi seria de întâlniri"
   label_meeting_series: "Serie şedinţe"
   label_version: "Versiune"
@@ -202,6 +203,8 @@ ro:
   label_subscribe_icalendar: "Subscribe to calendar"
   caption_meeting_template_select: "Select a template to automatically copy its agenda items"
   caption_template_project_select: "Please select the project in which to create this meeting template"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

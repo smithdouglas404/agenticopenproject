@@ -70,12 +70,10 @@ ko:
         이 문서에 액세스하려면 관리자에게 문의하여 실시간 텍스트 공동 작업을 활성화하세요.
     show_edit_view:
       connection_error_notice:
-        description: |-
-          실시간 텍스트 공동 작업 서버에 연결할 수 없으므로 문서를 열 수 없습니다.
-          문제가 지속되면 관리자에게 문의하세요.
+        description_server_unavailable: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
         action: 다시 시도
-      connection_recovery_notice:
-        description: "실시간 텍스트 공동 작업 서버에 대한 연결이 복원되었습니다."
       tabs: "문서 탭"
     index_page:
       name: "이름"
@@ -87,6 +85,9 @@ ko:
       types: "유형"
       collaboration_settings: "실시간 공동 작업"
     last_updated_at: "마지막으로 저장 %{time}."
+    info_line:
+      currently_offline: "You are currently offline."
+      connection_restored: "You are now back online."
     active_editors: "활성 편집자"
     active_editors_count:
       other: "활성 편집자 %{count}명"

@@ -242,6 +242,49 @@ RSpec.describe Meeting do
     end
   end
 
+  describe ".templates_visible_globally" do
+    shared_let(:parent_project) { create(:project) }
+    shared_let(:child_project) { create(:project, parent: parent_project) }
+    shared_let(:unrelated_project) { create(:project) }
+
+    shared_let(:user) { create(:user, member_with_permissions: { child_project => [:view_meetings] }) }
+
+    subject { described_class.templates_visible_globally(user) }
+
+    context "with templates in a project the user has access to" do
+      shared_let(:template_none) { create(:onetime_template, project: child_project, sharing: :none) }
+      shared_let(:template_descendants) { create(:onetime_template, project: child_project, sharing: :descendants) }
+      shared_let(:template_system) { create(:onetime_template, project: child_project, sharing: :system) }
+
+      it { expect(subject).to include(template_none) }
+      it { expect(subject).to include(template_descendants) }
+      it { expect(subject).to include(template_system) }
+    end
+
+    context "with templates in a project the user has no access to" do
+      shared_let(:template_none) { create(:onetime_template, project: unrelated_project, sharing: :none) }
+      shared_let(:template_descendants) { create(:onetime_template, project: unrelated_project, sharing: :descendants) }
+      shared_let(:template_system) { create(:onetime_template, project: unrelated_project, sharing: :system) }
+
+      it { expect(subject).not_to include(template_none) }
+      it { expect(subject).not_to include(template_descendants) }
+      it { expect(subject).to include(template_system) }
+    end
+
+    context "when user has child access only and parent has a :descendants template" do
+      shared_let(:template_descendants) { create(:onetime_template, project: parent_project, sharing: :descendants) }
+      shared_let(:template_none) { create(:onetime_template, project: parent_project, sharing: :none) }
+
+      it "includes the :descendants template" do
+        expect(subject).to include(template_descendants)
+      end
+
+      it "does not include the :none template from the inaccessible parent" do
+        expect(subject).not_to include(template_none)
+      end
+    end
+  end
+
   describe "sharing" do
     context "for a regular meeting" do
       let(:meeting) { build(:meeting, project:, sharing: :none) }

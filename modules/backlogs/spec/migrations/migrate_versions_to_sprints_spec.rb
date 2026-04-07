@@ -45,32 +45,54 @@ RSpec.describe MigrateVersionsToSprints, type: :model do
   let!(:wp1) { create(:work_package, version:, project:) }
 
   def use_version(as:, version: self.version, project: self.project)
-    display = as == :sprint ? VersionSetting::DISPLAY_LEFT : VersionSetting::DISPLAY_RIGHT
+    display = case as
+              when :sprint then VersionSetting::DISPLAY_LEFT
+              when :backlog then VersionSetting::DISPLAY_RIGHT
+              else VersionSetting::DISPLAY_NONE
+              end
     create(:version_setting, version:, project:, display:)
   end
 
   before { use_version(as: version_type) }
 
   describe "qualification criteria" do
-    context "when all criteria are met (used as sprint and work package present)" do
-      let(:start_date)     { Date.new(2026, 1, 1) }
-      let(:effective_date) { Date.new(2026, 1, 14) }
+    let(:start_date)     { Date.new(2026, 1, 1) }
+    let(:effective_date) { Date.new(2026, 1, 14) }
 
-      it "creates one sprint" do
-        expect { migrate }.to change(Agile::Sprint, :count).by(1)
+    context "when all criteria are met (used in the backlog and work package present)" do
+      context "when version is used as a sprint (DISPLAY_LEFT)" do
+        it "creates one sprint" do
+          expect { migrate }.to change(Agile::Sprint, :count).by(1)
+        end
+
+        it "copies name, start_date and finish_date" do
+          migrate
+          sprint = Agile::Sprint.last
+          expect(sprint.name).to eq("Test Sprint")
+          expect(sprint.start_date).to eq(Date.new(2026, 1, 1))
+          expect(sprint.finish_date).to eq(Date.new(2026, 1, 14))
+        end
       end
 
-      it "copies name, start_date and finish_date" do
-        migrate
-        sprint = Agile::Sprint.last
-        expect(sprint.name).to eq("Test Sprint")
-        expect(sprint.start_date).to eq(Date.new(2026, 1, 1))
-        expect(sprint.finish_date).to eq(Date.new(2026, 1, 14))
+      context "when version is used as a backlog (DISPLAY_RIGHT)" do
+        let(:version_type) { :backlog }
+
+        it "creates one sprint" do
+          expect { migrate }.to change(Agile::Sprint, :count).by(1)
+        end
+
+        it "copies name, start_date and finish_date" do
+          migrate
+          sprint = Agile::Sprint.last
+          expect(sprint.name).to eq("Test Sprint")
+          expect(sprint.start_date).to eq(Date.new(2026, 1, 1))
+          expect(sprint.finish_date).to eq(Date.new(2026, 1, 14))
+        end
       end
     end
 
-    context "when version is used as a backlog" do
-      let(:version_type) { :backlog }
+    context "when version is not used in the backlog (DISPLAY_NONE)" do
+      let(:version_type) { :display_none }
 
       it "does not create a sprint" do
         expect { migrate }.not_to change(Agile::Sprint, :count)
@@ -179,11 +201,26 @@ RSpec.describe MigrateVersionsToSprints, type: :model do
       end
     end
 
-    context "when the version is shared with another project that displays it as non-sprint" do
+    context "when the version is shared with another project that displays it as backlog" do
       let(:other_project) { create(:project) }
       let!(:wp_in_other_project) { create(:work_package, version:, project: other_project) }
 
       before { use_version(as: :backlog, project: other_project) }
+
+      it "assigns work packages from both projects" do
+        migrate
+        sprint = Agile::Sprint.last
+        expect(wp1.reload.sprint_id).to eq(sprint.id)
+        expect(wp2.reload.sprint_id).to eq(sprint.id)
+        expect(wp_in_other_project.reload.sprint_id).to eq(sprint.id)
+      end
+    end
+
+    context "when the version is shared with another project where it is not displayed" do
+      let(:other_project) { create(:project) }
+      let!(:wp_in_other_project) { create(:work_package, version:, project: other_project) }
+
+      before { use_version(as: :display_none, project: other_project) }
 
       it "only assigns work packages from the sprint project" do
         migrate
@@ -204,8 +241,20 @@ RSpec.describe MigrateVersionsToSprints, type: :model do
       expect(Backlogs::MigrateVersionSprintJournalsJob).to have_received(:perform_later)
     end
 
-    context "when no sprint-versions exist" do
+    context "when version_type is backlog (DISPLAY_RIGHT)" do
       let(:version_type) { :backlog }
+
+      it "enqueues MigrateVersionSprintJournalsJob" do
+        allow(Backlogs::MigrateVersionSprintJournalsJob).to receive(:perform_later)
+
+        migrate
+
+        expect(Backlogs::MigrateVersionSprintJournalsJob).to have_received(:perform_later)
+      end
+    end
+
+    context "when version type is not displayed (DISPLAY_NONE)" do
+      let(:version_type) { :display_none }
 
       it "does not enqueue MigrateVersionSprintJournalsJob" do
         allow(Backlogs::MigrateVersionSprintJournalsJob).to receive(:perform_later)

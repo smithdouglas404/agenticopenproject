@@ -110,11 +110,9 @@ RSpec.describe "Edit", :js do
       context "when editing a sprint" do
         it "displays all menu entries" do
           planning_page.within_sprint_menu(first_sprint) do |menu|
-            expect(menu).to have_selector :menuitem, count: 3
-            expect(menu).to have_selector :menuitem, "Start sprint"
+            expect(menu).to have_selector :menuitem, count: 2
             expect(menu).to have_selector :menuitem, "Edit sprint"
             expect(menu).to have_selector :menuitem, "Add work package"
-            expect(menu).to have_css "form[action='#{start_project_sprint_path(project, first_sprint)}'][data-turbo='false']"
           end
         end
 
@@ -138,8 +136,7 @@ RSpec.describe "Edit", :js do
 
           it "has no menu entry for creating a new story" do
             planning_page.within_sprint_menu(first_sprint) do |menu|
-              expect(menu).to have_selector :menuitem, count: 2
-              expect(menu).to have_selector :menuitem, "Start sprint"
+              expect(menu).to have_selector :menuitem, count: 1
               expect(menu).to have_selector :menuitem, "Edit sprint"
 
               expect(menu).to have_no_selector :menuitem, "Add work package"
@@ -183,7 +180,6 @@ RSpec.describe "Edit", :js do
       it "has no menu entry for editing a sprint" do
         planning_page.within_sprint_menu(first_sprint) do |menu|
           expect(menu).to have_no_selector :menuitem, "Edit sprint"
-          expect(menu).to have_no_selector :menuitem, "Start sprint"
         end
       end
     end

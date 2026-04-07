@@ -42,6 +42,7 @@ class Meeting::ProjectAutocompleter < ApplicationForm
         dropdownPosition: "bottom",
         appendTo: "#new-meeting-dialog",
         filters: [{ name: "user_action", operator: "=", values: ["meetings/create"] }],
+        hiddenFieldAction: "change->refresh-on-form-changes#triggerTurboStream",
         data: {
           "test-selector": "project_id"
         }

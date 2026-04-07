@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <% if @type && @role %>
-  <%= turbo_frame_tag "workflow-table" do %>
+  <%= turbo_frame_tag "workflow-table", data: { turbo_cache: false } do %>
     <%= render Workflows::EditSubHeaderComponent.new(tab: @current_tab, current_role: @role, type: @type, available_roles: @roles, status_ids: @statuses.pluck(:id)) %>
 
     <% if @statuses.any? %>
@@ -42,7 +42,11 @@ See COPYRIGHT and LICENSE files for more details.
             id: "workflow_form",
             method: :patch,
             autocomplete: "off",
-            data: { controller: "admin--workflow-checkbox-state" }
+            data: {
+              controller: "admin--workflow-checkbox-state",
+              "admin--workflow-checkbox-state-has-status-changes-value": @has_status_changes,
+              turbo_temporary: true
+            }
           ) do %>
           <%= hidden_field_tag "type_id", @type.id %>
           <%= hidden_field_tag "role_id", @role.id %>

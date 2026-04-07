@@ -84,7 +84,7 @@ BIM stands for Building Information Modeling. In OpenProject, we offer a special
 
 ### Board
 
-A board in OpenProject is a view that allows you to see your work packages as cards divided into columns. A board is a typical element in [agile project management](#agile-project-management), supporting methodologies such as Scrum or Kanban. As a [Community user](#community-edition) of OpenProject, you can use a [basic board](../user-guide/agile-boards/#basic-board-community-edition). [Advanced action boards](../user-guide/agile-boards/#action-boards-enterprise-add-on) are part of the [Enterprise add-on](#enterprise-add-on). Use advanced action boards to quickly change attributes of your work package. [Read more about boards for agile project management](../user-guide/agile-boards/).
+A board in OpenProject is a view that allows you to see your work packages as cards divided into columns. A board is a typical element in [agile project management](#agile-project-management), supporting methodologies such as Scrum or Kanban. OpenProject, you can use a [basic board](../user-guide/agile-boards/#basic-boards) or [advanced action boards](../user-guide/agile-boards). Use advanced action boards to quickly change attributes of your work package. [Read more about boards for agile project management](../user-guide/agile-boards/).
 
 **More information on boards in OpenProject**
 
@@ -380,7 +380,7 @@ In the OpenProject application, the project home page is defined as a start page
 
 The default view is the **Overview** – a page that shows the project description, project status, subitems, members and news. While you can edit the content, the widgets themselves are fixed. On a second tab, you can access the **Dashboard**. Here, [widgets](#widget) can be added, edited and removed by a project [admin](#admin).
 
-Open the project home by navigating to "Project home" in the project menu on the left. [Read more about the project home in OpenProject](../user-guide/project-home/#project-overview).
+Open the project home by navigating to "Project home" in the project menu on the left. [Read more about the project home in OpenProject](../user-guide/projects/project-home/#project-overview).
 
 ### Project identifier
 
@@ -525,7 +525,7 @@ In OpenProject, a Weighted item list can be used both as a [custom field](#custo
 
 ### Widget
 
-A widget in OpenProject is defined as a small and customizable element that provides relevant information at a glance. Use widgets on the [My page](#my-page) or on the project dashboard of the [project home page](#project-home). [See all available project overview widgets](../user-guide/project-home/project-widgets/#project-widgets-catalog) and read [how to add a widget to the project overview](../user-guide/project-home/project-widgets/#resize-and-reorder-widgets).
+A widget in OpenProject is defined as a small and customizable element that provides relevant information at a glance. Use widgets on the [My page](#my-page) or on the project dashboard of the [project home page](#project-home). [See all available project overview widgets](../user-guide/projects/project-home/project-widgets/#project-widgets-catalog) and read [how to add a widget to the project overview](../user-guide/projects/project-home/project-widgets/#resize-and-reorder-widgets).
 
 ### Wiki
 

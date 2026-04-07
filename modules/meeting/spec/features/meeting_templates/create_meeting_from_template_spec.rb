@@ -199,6 +199,91 @@ RSpec.describe "Create meeting from template", :js do
     end
   end
 
+  describe "creating meeting from template using template selector from global index", with_ee: [:meeting_templates] do
+    let(:global_meetings_page) { Pages::Meetings::Index.new(project: nil) }
+    let(:template) { create(:onetime_template, project:, title: "Template") }
+
+    before do
+      global_meetings_page.visit!
+    end
+
+    it "shows a template selector when user has access to templates" do
+      template
+
+      global_meetings_page.click_on "add-meeting-button"
+      global_meetings_page.click_on "One-time"
+
+      expect(page).to have_dialog("New one-time meeting")
+
+      # Initially disabled
+      within_dialog "New one-time meeting" do
+        expect(page).to have_css('[data-test-selector="template_id"]', text: "Select a project first")
+      end
+
+      # Disabled when a project with no accessible templates is selected
+      wait_for_turbo_stream do
+        global_meetings_page.set_project(other_project)
+      end
+
+      within_dialog "New one-time meeting" do
+        expect(page).to have_css('[data-test-selector="template_id"]', text: "No templates available for this project")
+      end
+
+      # Enabled when a project with accessible templates is selected
+      wait_for_turbo_stream do
+        global_meetings_page.set_project(project)
+      end
+
+      within_dialog "New one-time meeting" do
+        find('[data-test-selector="template_id"]').click
+        expect(page).to have_text(template.title)
+      end
+    end
+
+    it "shows no template selector when user has access to no templates" do
+      global_meetings_page.click_on "add-meeting-button"
+      global_meetings_page.click_on "One-time"
+
+      expect(page).to have_dialog("New one-time meeting")
+
+      within_dialog "New one-time meeting" do
+        expect(page).to have_no_css('[data-test-selector="template_id"]')
+      end
+    end
+
+    it "keeps the template selector visible with the template preselected on failed submission" do
+      template
+
+      global_meetings_page.click_on "add-meeting-button"
+      global_meetings_page.click_on "One-time"
+
+      expect(page).to have_dialog("New one-time meeting")
+
+      wait_for_turbo_stream do
+        global_meetings_page.set_project(project)
+      end
+
+      within_dialog "New one-time meeting" do
+        select_autocomplete find('[data-test-selector="template_id"]'),
+                            query: template.title,
+                            select_text: template.title,
+                            results_selector: "body"
+
+        # Submit without a title to trigger validation failure
+        wait_for_turbo_stream do
+          click_button "Create"
+        end
+      end
+
+      within_dialog "New one-time meeting" do
+        expect(page).to have_text("Title can't be blank.")
+
+        # Template selector must still be visible with the previously selected template preselected
+        expect(page).to have_css('[data-test-selector="template_id"]', text: template.title)
+      end
+    end
+  end
+
   describe "creating meeting from template using 'Create from template' button" do
     context "without enterprise token" do
       let!(:template) { create(:onetime_template, project:, title: "Planning template") }

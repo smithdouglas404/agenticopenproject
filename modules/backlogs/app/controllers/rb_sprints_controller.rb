@@ -113,8 +113,10 @@ class RbSprintsController < RbApplicationController
 
     if result.success?
       @sprint = result.result
-      redirect_to project_work_package_board_path(@project, @sprint.task_board_for(@project)),
-                  notice: I18n.t(:notice_successful_start)
+      flash[:notice] = I18n.t(:notice_successful_start)
+      render turbo_stream: turbo_stream.redirect_to(
+        project_work_package_board_path(@project, @sprint.task_board_for(@project))
+      )
     else
       respond_with_start_finish_failure(message: start_finish_failure_message(:start, result.message))
     end
@@ -281,6 +283,6 @@ class RbSprintsController < RbApplicationController
 
   def authorize_finish!
     deny_access unless current_user.allowed_in_project?(:view_sprints, @project) &&
-      Sprints::StartContract.can_start_or_finish?(user: current_user, sprint: @sprint)
+      Sprints::StartContract.can_start_or_complete?(user: current_user, sprint: @sprint)
   end
 end

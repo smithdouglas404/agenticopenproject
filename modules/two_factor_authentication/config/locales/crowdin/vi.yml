@@ -37,18 +37,14 @@ vi:
     error_invalid_backup_code: "Mã sao lưu 2FA không hợp lệ"
     channel_unavailable: "Kênh phân phối %{channel} là không có sẵn."
     no_valid_phone_number: "Số điện thoại hợp lệ không tồn tại."
-    label_pwd_confirmation: "Mật khẩu"
-    notice_pwd_confirmation: "Bạn cần phải xác nhận mật khẩu của bạn khi thực hiện thay đổi các thiết đặt này."
     label_device_type: "Kiểu thiết bị"
     label_default_device: "Thiết bị 2FA mặc định"
     label_device: "Thiết bị 2FA"
     label_devices: "Các thiết bị 2FA"
-    label_one_time_password: "Mật khẩu sử dụng một lần"
     label_2fa_enabled: "Xác thực 2 nhân tố đang được sử dụng"
     label_2fa_disabled: "Xác thực 2 yếu tố không hoạt động"
     text_otp_delivery_message_sms: "Mật khẩu một lần cho ứng dụng %{app_title} là %{token}"
     text_otp_delivery_message_voice: "Mật khẩu một lần cho ứng dụng %{app_title} là: %{pause} %{token}. %{pause}. Lặp lại: %{pause} %{token}"
-    text_enter_2fa: "Vui lòng nhập mật khẩu một lần từ diện thoại của bạn."
     text_2fa_enabled: "Sau khi mỗi đăng nhập, bạn sẽ được yêu cầu để nhập một mã thông báo OTP từ thiết bị 2FA mặc định của bạn."
     text_2fa_disabled: "Để kích hoạt xác thực 2 yếu tố, sử dụng các nút ở trên để đăng ký thiết bị 2FA mới. Nếu bạn đã có một thiết bị, bạn cần để làm cho nó một mặc định."
     login:
@@ -68,7 +64,6 @@ vi:
       text_remember: |
         Hãy đặt số ngày ghi nhớ mã F2Alớn hơn 0 để cho phép người sử dụng nhớ mã 2FA của họ.
         Sẽ không yêu cầu nhập mã trong thời giannày. Chỉ có thể đặt nếu không bị thiết lập bắt buộc trong cấu hình.
-      error_invalid_settings: "Phương án mã 2FA bạn lựa chon không hợp lệ"
       failed_to_save_settings: "Không cập nhật được cài đặt 2FA: %{message}"
     admin:
       self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
@@ -81,14 +76,9 @@ vi:
       text_2fa_enabled: "Sau mỗi lần đăng nhập, người dùng này sẽ được yêu cầu nhập mã thông báo OTP từ thiết bị 2FA mặc định của họ."
       text_2fa_disabled: "Người dùng chưa thiết lập thiết bị 2FA thông qua 'Trang tài khoản của tôi'"
       only_sms_allowed: "Chỉ có thể thiết lập gửi SMS cho những người dùng khác."
-    upsell:
-      title: "Xác thực hai yếu tố"
-      description: "Tăng cường tính bảo mật cho phiên bản OpenProject của bạn bằng cách cung cấp (hoặc thực thi) xác thực hai yếu tố cho tất cả thành viên dự án."
     backup_codes:
-      none_found: Không có mã dự phòng nào tồn tại cho tài khoản này.
       singular: Mã sao lưu
       plural: Mã dự phòng
-      your_codes: cho tài khoản %{app_name} của bạn %{login}
       overview_description: |
         Nếu bạn không thể truy cập vào thiết bị hai yếu tố của mình, bạn có thể sử dụng mã dự phòng để lấy lại quyền truy cập vào tài khoản của mình.
         Sử dụng nút sau để tạo bộ mã dự phòng mới.
@@ -167,19 +157,15 @@ vi:
       clear_cookie: "Nhấp vào đây để xóa tất cả các phiên 2FA đã nhớ."
       cookie_removed: "Tất cả các phiên 2FA được ghi nhớ đã bị xóa."
       dont_ask_again: "Tạo cookie để ghi nhớ xác thực 2FA trên ứng dụng khách này trong %{days} ngày."
-  field_phone: "Điện thoại di động"
   field_otp: "Mật khẩu sử dụng một lần"
   notice_account_otp_invalid: "Mật khẩu một lần không hợp lệ."
   notice_account_otp_expired: "Mật khẩu một lần bạn nhập đã hết hạn."
   notice_developer_strategy_otp: "Chiến lược của nhà phát triển đã tạo mật khẩu một lần sau: %{token} (Kênh: %{channel})"
   notice_account_otp_send_failed: "Không thể gửi mật khẩu một lần của bạn."
   notice_account_has_no_phone: "Không có số điện thoại di động nào được liên kết với tài khoản của bạn."
-  label_expiration_hint: "%{date} hoặc khi đăng xuất"
-  label_actions: "hành động"
   label_confirmed: "xác nhận"
   button_continue: "Tiếp tục"
   button_make_default: "Đánh dấu là mặc định"
-  label_unverified_phone: "Điện thoại di động chưa được xác minh"
   notice_phone_number_format: "Vui lòng nhập số theo định dạng sau: +XX XXXXXXXXX."
   text_otp_not_receive: "Các phương pháp xác minh khác"
   text_send_otp_again: "Gửi lại mật khẩu một lần bằng cách:"

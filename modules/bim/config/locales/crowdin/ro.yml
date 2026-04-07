@@ -9,7 +9,7 @@ ro:
     label_bcf: 'BCF'
     label_imported_failed: 'Importuri eșuate de subiecte BCF'
     label_imported_successfully: 'Ați importat cu succes subiectele BCF'
-    label_bcf_issue_associated: "BCF issue associated"
+    label_bcf_issue_associated: "Problemă BCF asociată"
     issues: "Sunt câteva probleme cu produsele din coșul tău. Te rog mergi înapoi la pagina coșului și remediază aceste probleme înainte de finalizarea comenzii."
     recommended: 'recomandat'
     not_recommended: 'Recomandat'
@@ -85,10 +85,10 @@ ro:
         is_default: "Model implicit"
         attachments: "Fișier IFC"
       bim/bcf/issue:
-        bcf_comment: "BCF comment"
-        bim_snippet: "BIM snippet"
-        reference_links: "Reference links"
-        stage: "Stage"
+        bcf_comment: "Comentariu BFC"
+        bim_snippet: "Fragment BIM"
+        reference_links: "Linkuri de referință"
+        stage: "Etapă"
         viewpoint: "Punct de vedere"
     errors:
       models:

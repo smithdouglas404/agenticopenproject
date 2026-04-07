@@ -53,7 +53,7 @@ module OpenProject::Meeting
                    permissible_on: :project
         permission :create_meetings,
                    {
-                     meetings: %i[new create copy new_dialog fetch_timezone],
+                     meetings: %i[new create copy new_dialog fetch_timezone fetch_templates],
                      recurring_meetings: %i[new create copy init template_completed],
                      "recurring_meetings/schedule": %i[update_text],
                      "meetings/menus": %i[show],

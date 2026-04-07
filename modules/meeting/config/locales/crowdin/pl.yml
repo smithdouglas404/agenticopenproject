@@ -199,6 +199,7 @@ pl:
   label_notify: "Wyślij do przeglądu"
   label_icalendar: "Wyślij iCalendar"
   label_icalendar_download: "Pobierz wydarzenie iCalendar"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Wyświetl serię spotkań"
   label_meeting_series: "Seria spotkań"
   label_version: "Wersja"
@@ -207,6 +208,8 @@ pl:
   label_subscribe_icalendar: "Subskrybuj kalendarz"
   caption_meeting_template_select: "Wybierz szablon, aby automatycznie skopiować z niego punkty planu spotkania"
   caption_template_project_select: "Wybierz projekt, w którym ma zostać utworzony ten szablon spotkania"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

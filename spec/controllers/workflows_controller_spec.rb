@@ -259,12 +259,11 @@ RSpec.describe WorkflowsController do
     end
 
     before do
-      post :update, params:
+      post :update, params:, format: :turbo_stream
     end
 
     it "redirects to edit" do
-      expect(response)
-        .to redirect_to edit_workflow_path(type, role_id: role.id, tab: "always")
+      expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
     end
   end
 end

@@ -37,18 +37,14 @@ id:
     error_invalid_backup_code: "Kode cadangan 2FA tidak valid"
     channel_unavailable: "%{channel} saluran pengiriman tidak tersedia."
     no_valid_phone_number: "Nomor telepon tidak ada."
-    label_pwd_confirmation: "Kata Sandi"
-    notice_pwd_confirmation: "Anda perlu mengkonfirmasi password saat melakukan perubahan pada pengaturan ini."
     label_device_type: "Tipe perangkat"
     label_default_device: "Default 2FA perangkat"
     label_device: "Perangkat 2FA"
     label_devices: "Perangkat 2FA"
-    label_one_time_password: "Satu-kali kata sandi"
     label_2fa_enabled: "Dua faktor otentikasi tidak aktif"
     label_2fa_disabled: "Dua faktor otentikasi tidak aktif"
     text_otp_delivery_message_sms: "Kata sandi sekali pakai untuk %{app_title} Anda adalah %{token}"
     text_otp_delivery_message_voice: "Kata sandi sekali pakai untuk %{app_title} Anda adalah: %{pause} %{token}. %{pause} Saya ulangi: %{pause} %{token}"
-    text_enter_2fa: "Silakan masukkan sandi satu kali dari perangkat Anda."
     text_2fa_enabled: "Setelah setiap login, Anda akan diminta untuk memasukkan tanda OTP dari perangkat 2FA default Anda."
     text_2fa_disabled: "Untuk mengaktifkan otentikasi dua faktor, gunakan tombol di atas untuk mendaftar perangkat 2FA baru. Jika Anda sudah memiliki perangkat, Anda perlu untuk membuatnya default."
     login:
@@ -67,7 +63,6 @@ id:
       text_enforced: "Mengaktifkan pengaturan ini untuk memaksa semua pengguna untuk mendaftarkan perangkat 2FA pada login berikutnya mereka. Hanya dapat dinonaktifkan bila tidak pernah ditegakkan oleh konfigurasi."
       text_remember: |
         Set ini untuk lebih besar dari nol untuk memungkinkan pengguna untuk mengingat mereka 2FA otentikasi untuk jumlah hari tertentu. Mereka tidak akan diminta untuk memasukkan kembali selama periode itu. Hanya dapat ditetapkan saat tidak pernah ditegakkan oleh konfigurasi.
-      error_invalid_settings: "Strategi 2FA yang Anda pilih tidak sah"
       failed_to_save_settings: "Gagal untuk memperbarui pengaturan 2FA: %{message}"
     admin:
       self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
@@ -80,14 +75,9 @@ id:
       text_2fa_enabled: "Setiap kali login, pengguna ini akan diminta untuk memasukkan token OTP dari perangkat 2FA default mereka."
       text_2fa_disabled: "Pengguna tidak mengatur perangkat 2FA melalui halaman ‘Akun Saya’ mereka"
       only_sms_allowed: "Pengiriman SMS hanya dapat diatur untuk pengguna lain."
-    upsell:
-      title: "Autentikasi dua faktor"
-      description: "Perkuat keamanan instance OpenProject Anda dengan menawarkan (atau mewajibkan) autentikasi dua faktor kepada semua anggota proyek."
     backup_codes:
-      none_found: Tidak ada cadangan yang ada untuk akun ini.
       singular: Kode cadangan
       plural: Kode kode cadangan
-      your_codes: akun %{login} untuk anda %{app_name}
       overview_description: |
         Jika Anda tidak dapat mengakses perangkat dua faktor, Anda dapat menggunakan kode cadangan untuk mendapatkan kembali akses ke account Anda. Gunakan tombol berikut untuk menghasilkan serangkaian baru kode cadangan.
       generate:
@@ -164,19 +154,15 @@ id:
       clear_cookie: "Klik di sini untuk menghapus semua sesi 2FA yang tersimpan."
       cookie_removed: "Semua sesi 2FA yang tersimpan telah dihapus."
       dont_ask_again: "Membuat cookie untuk mengingat 2FA otentikasi pada klien ini untuk %{days} hari."
-  field_phone: "Ponsel"
   field_otp: "Satu-kali kata sandi"
   notice_account_otp_invalid: "Sandi sekali pakai yang tidak valid."
   notice_account_otp_expired: "Kata sandi satu-kali yang anda masukkan kadaluarsa."
   notice_developer_strategy_otp: "Pengembang strategi dihasilkan one-time password berikut: %{token} (saluran: %{channel})"
   notice_account_otp_send_failed: "Sandi satu kali tidak akan dikirim."
   notice_account_has_no_phone: "Tidak ada nomor ponsel ini dikaitkan dengan akun Anda."
-  label_expiration_hint: "%{date} atau logout"
-  label_actions: "Tindakan"
   label_confirmed: "Dikonfirmasi"
   button_continue: "Lanjutkan"
   button_make_default: "Tandai sebagai default"
-  label_unverified_phone: "Ponsel yang belum diverifikasi"
   notice_phone_number_format: "Masukkan nomor dalam format berikut: + XX XXXXXXXX."
   text_otp_not_receive: "Verifikasi metode lain"
   text_send_otp_again: "Kirim kembali kata sandi satu-kali oleh:"

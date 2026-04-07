@@ -54,10 +54,16 @@ interface SavedState {
  * calling the confirmation dialog from here when dirty
  */
 export default class WorkflowCheckboxStateController extends Controller<HTMLFormElement> {
-  static targets = [  "confirmationDialog", "ignoreButton", "saveButton" ]
+  static targets = [ 'confirmationDialog', 'ignoreButton', 'saveButton' ];
   declare readonly confirmationDialogTarget:HTMLDialogElement;
   declare readonly ignoreButtonTarget:HTMLButtonElement;
   declare readonly saveButtonTarget:HTMLButtonElement;
+
+  static values = {
+    hasStatusChanges: Boolean
+  };
+
+  declare hasStatusChangesValue:boolean;
 
   private initialCheckboxState:Record<string, boolean> = {};
   private confirmationTriggers:NodeListOf<HTMLElement>;
@@ -76,11 +82,15 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     this.initialCheckboxState = this.captureState();
     this.element.addEventListener('change', this.onCheckboxChange);
 
-    this.confirmationTriggers = document.querySelectorAll<HTMLElement>("[data-admin--workflow-checkbox-state-confirmation-trigger]");
+    this.confirmationTriggers = document.querySelectorAll<HTMLElement>('[data-admin--workflow-checkbox-state-confirmation-trigger]');
     this.confirmationTriggers.forEach((watchedElement) => {
-      const watchedTrigger = watchedElement.dataset["admin-WorkflowCheckboxStateConfirmationTrigger"] || "";
+      const watchedTrigger = watchedElement.dataset['admin-WorkflowCheckboxStateConfirmationTrigger'] ?? '';
       watchedElement.addEventListener(watchedTrigger, this.confirmWithDialog, true);
-    })
+    });
+
+    if (this.hasStatusChangesValue) {
+      window.OpenProject.pageState = 'edited';
+    }
   }
 
   disconnect() {
@@ -88,9 +98,9 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     this.element.removeEventListener('submit', this.onFormSubmit);
 
     this.confirmationTriggers.forEach((watchedElement) => {
-      const watchedTrigger = watchedElement.dataset["admin-WorkflowCheckboxStateConfirmationTrigger"] || "";
+      const watchedTrigger = watchedElement.dataset['admin-WorkflowCheckboxStateConfirmationTrigger'] ?? '';
       watchedElement.removeEventListener(watchedTrigger, this.confirmWithDialog, true);
-    })
+    });
     this.element.removeEventListener('change', this.onCheckboxChange);
   }
 
@@ -107,6 +117,8 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
   private onFormSubmit = () => {
     sessionStorage.removeItem(SAVED_STATE_KEY);
     this.element.dataset.dirty = 'false';
+    this.hasStatusChangesValue = false;
+    window.OpenProject.pageState = 'pristine';
   };
 
   private get formKey():string {
@@ -131,7 +143,7 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
   //
 
   private confirmWithDialog = (event:Event) => {
-    if (this.element.dataset.dirty !== 'true') return;
+    if (!this.isDirty) return;
 
     const target = event.target as HTMLElement;
 
@@ -146,61 +158,68 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
       delete target.dataset.confirmed;
       // Let default behaviour behave…
     }
-  }
+  };
 
   private showDialog = (target:HTMLElement, event:Event) => {
     const onIgnoreCallback = this.onIgnoreChanges(target, event);
-    this.ignoreButtonTarget.addEventListener("click", onIgnoreCallback);
+    this.ignoreButtonTarget.addEventListener('click', onIgnoreCallback);
 
     const onSaveCallback = this.onSaveChanges(target, event);
-    this.saveButtonTarget.addEventListener("click", onSaveCallback)
+    this.saveButtonTarget.addEventListener('click', onSaveCallback);
 
-    this.confirmationDialogTarget.addEventListener("close", () => {
-      this.ignoreButtonTarget.removeEventListener("click", onIgnoreCallback);
-      this.saveButtonTarget.removeEventListener("click", onSaveCallback);
-    })
+    this.confirmationDialogTarget.addEventListener('close', () => {
+      this.ignoreButtonTarget.removeEventListener('click', onIgnoreCallback);
+      this.saveButtonTarget.removeEventListener('click', onSaveCallback);
+    });
 
     this.confirmationDialogTarget.showModal();
-  }
+  };
 
   private onIgnoreChanges = (originalTarget:HTMLElement, originalEvent:Event) => {
     return () => {
       this.applyState(this.initialCheckboxState);
+      this.element.dataset.dirty = 'false';
+      window.OpenProject.pageState = 'pristine';
 
       this.closeAndProceed(originalTarget, originalEvent);
-    }
-  }
+    };
+  };
 
   private onSaveChanges = (originalTarget:HTMLElement, originalEvent:Event) => {
     return () => {
       this.element.requestSubmit();
 
       this.closeAndProceed(originalTarget, originalEvent);
-    }
-  }
+    };
+  };
 
   private closeAndProceed = (originalTarget:HTMLElement, originalEvent:Event) => {
     this.confirmationDialogTarget.close();
-    originalTarget.dataset.confirmed = "true";
+    originalTarget.dataset.confirmed = 'true';
 
-    if (originalEvent.type === "click") {
+    if (originalEvent.type === 'click') {
       // Dispatching a click event is not as effective as explicitly clicking
       originalTarget.click();
     }
     else {
-      const forwardedEvent = new Event(originalEvent.type, { bubbles: true })
+      const forwardedEvent = new Event(originalEvent.type, { bubbles: true });
       originalTarget.dispatchEvent(forwardedEvent);
     }
-  }
+  };
 
   //
   // Foundation for state management: save, apply and track dirtiness.
   //
 
+  private get isDirty():boolean {
+    return (this.element.dataset.dirty === 'true') || this.hasStatusChangesValue;
+  }
+
   private onCheckboxChange = () => {
     const current = this.captureState();
     const dirty = Object.keys(current).some((key) => current[key] !== this.initialCheckboxState[key]);
     this.element.dataset.dirty = dirty ? 'true' : 'false';
+    window.OpenProject.pageState = dirty ? 'edited' : 'pristine';
   };
 
   private captureState():Record<string, boolean> {

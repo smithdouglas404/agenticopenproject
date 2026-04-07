@@ -63,9 +63,9 @@ module OpenProject::TextFormatting
             "td" => ["style"]
           ),
 
-          # Add rel attribute to prevent tabnabbing
+          # Add rel attribute to prevent tabnabbing and SEO spam
           add_attributes: {
-            "a" => { "rel" => "noopener noreferrer" }
+            "a" => { "rel" => "noopener noreferrer nofollow" }
           },
 
           # Add custom transformer logic for more complex modifications

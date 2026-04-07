@@ -184,6 +184,7 @@ zh-CN:
   label_notify: "发送待审阅"
   label_icalendar: "发送 iCalendar"
   label_icalendar_download: "下载 iCalendar 事件"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "查看会议系列"
   label_meeting_series: "会议系列"
   label_version: "版本"
@@ -192,6 +193,8 @@ zh-CN:
   label_subscribe_icalendar: "订阅日历"
   caption_meeting_template_select: "选择一个模板，以自动复制其议程条目"
   caption_template_project_select: "请选择要在其中创建此会议模板的项目"
+  placeholder_meeting_template_select_project_first: "Select a project first"
+  placeholder_meeting_template_no_templates_for_project: "No templates available for this project"
   meeting:
     participants:
       label:

@@ -56,7 +56,7 @@ RSpec.describe Backlogs::MoveToSprintDialogComponent, type: :component do
     render_component
 
     expect(page).to have_button(I18n.t(:button_cancel))
-    expect(page).to have_button(I18n.t(:button_save))
+    expect(page).to have_button(I18n.t(:button_move))
   end
 
   context "when in_planning and active sprints exist" do

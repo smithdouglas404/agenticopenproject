@@ -34,13 +34,13 @@ class MeetingsController < ApplicationController
   before_action :determine_date_range, only: %i[history]
   before_action :determine_author, only: %i[history]
   before_action :build_meeting, only: %i[new new_dialog fetch_timezone]
-  before_action :find_meeting, except: %i[index new create new_dialog fetch_timezone]
+  before_action :find_meeting, except: %i[index new create new_dialog fetch_timezone fetch_templates]
   before_action :redirect_to_project, only: %i[show]
   before_action :set_activity, only: %i[history]
   before_action :find_copy_from_meeting, only: %i[create]
   before_action :convert_params, only: %i[create update]
   before_action :prevent_series_template_destruction, only: :destroy
-  before_action :check_for_enterprise_token, only: %i[create new_dialog]
+  before_action :check_for_enterprise_token, only: %i[create new_dialog fetch_templates]
 
   helper :watchers
   include MeetingsHelper
@@ -145,7 +145,8 @@ class MeetingsController < ApplicationController
             component: Meetings::Index::FormComponent.new(
               meeting: @meeting,
               project: @project,
-              copy_from: @copy_from
+              copy_from: @copy_from,
+              template_selected_via_dropdown: params.dig(:meeting, :template_id).present?
             ),
             status: :bad_request
           )
@@ -341,6 +342,17 @@ class MeetingsController < ApplicationController
     add_caption_to_input_element_via_turbo_stream("input[name='meeting[start_time_hour]']",
                                                   caption: @text,
                                                   clean_other_captions: true)
+
+    respond_with_turbo_streams
+  end
+
+  def fetch_templates
+    selected_project = Project.visible.find_by(id: params.dig(:meeting, :project_id))
+    meeting = Meeting.new(project: selected_project)
+
+    update_via_turbo_stream(
+      component: Meetings::Index::FormComponent.new(meeting: meeting, project: nil)
+    )
 
     respond_with_turbo_streams
   end
@@ -583,7 +595,8 @@ class MeetingsController < ApplicationController
     # Check for template selection from form submission
     template_id = params[:meeting][:template_id]
     if template_id.present?
-      @copy_from = Meeting.templates_visible_in_project(@project).find_by(id: template_id)
+      templates = @project ? Meeting.templates_visible_in_project(@project) : Meeting.templates_visible_globally
+      @copy_from = templates.find_by(id: template_id)
       return
     end
 
