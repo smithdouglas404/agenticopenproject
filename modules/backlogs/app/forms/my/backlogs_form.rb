@@ -30,18 +30,22 @@
 
 class My::BacklogsForm < ApplicationForm
   form do |f|
-    f.text_field name: :task_color,
-                 label: I18n.t("backlogs.task_color"),
-                 value: @color,
-                 input_width: :xsmall
+    f.fieldset_group(title: helpers.t("backlogs.user_preference.header_backlogs"), mt: 4) do |fg|
+      unless OpenProject::FeatureDecisions.scrum_projects_active?
+        fg.text_field name: :task_color,
+                      label: helpers.t("backlogs.task_color"),
+                      value: @color,
+                      input_width: :xsmall
+      end
 
-    f.check_box name: :versions_default_fold_state,
-                value: DEFAULT_FOLD_STATE,
-                checked: default_fold_state_checked?,
-                label: I18n.t("backlogs.label_versions_default_fold_state"),
-                caption: I18n.t("backlogs.caption_versions_default_fold_state")
+      fg.check_box name: :versions_default_fold_state,
+                   value: DEFAULT_FOLD_STATE,
+                   checked: default_fold_state_checked?,
+                   label: helpers.t("backlogs.label_versions_default_fold_state"),
+                   caption: helpers.t("backlogs.caption_versions_default_fold_state")
 
-    f.submit(name: :submit, label: I18n.t("backlogs.user_preference.button_update_backlogs"), scheme: :default)
+      fg.submit(name: :submit, label: helpers.t("backlogs.user_preference.button_update_backlogs"), scheme: :default)
+    end
   end
 
   DEFAULT_FOLD_STATE = "closed"

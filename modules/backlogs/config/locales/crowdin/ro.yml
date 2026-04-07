@@ -92,6 +92,8 @@ ro:
     sharing: "Sharing"
     impediment: "Impediment"
     label_versions_default_fold_state: "Afișare versiuni complete"
+    label_burndown_chart: "Burndown chart"
+    label_sprint_board: "Sprint board"
     caption_versions_default_fold_state: "Versiunile nu vor fi extinse în mod implicit la vizualizarea restanțelor. Fiecare versiune trebuie să fie extinsă manual."
     work_package_is_closed: "Pachetul de lucru este finalizat, atunci când"
     label_is_done_status: "Starea %{status_name} înseamnă terminat"
@@ -104,7 +106,7 @@ ro:
     rebuild: "Reconstruiți"
     rebuild_positions: "Reconstruiți"
     remaining_hours: "Muncă rămasă"
-    show_burndown_chart: "Size Chart"
+    show_burndown_chart: "Burndown chart"
     story: "Articol"
     story_points:
       one: "%{count} story point"
@@ -162,7 +164,10 @@ ro:
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
         settings_link_text: "project settings"
     sprint_header_component:
-      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_start_sprint: "Start"
+      label_finish_sprint: "Finish"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "No stories in sprint"
         one: "%{count} story in sprint"
@@ -174,7 +179,6 @@ ro:
         new_story: "New story"
         stories_tasks: "Stories/Tasks"
         task_board: "Task board"
-        burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
     finish_sprint_dialog_component:
@@ -186,17 +190,12 @@ ro:
         move_to_bottom_of_backlog: "Move them to the bottom of the backlog"
         move_to_sprint: "Move them to another sprint"
       select_sprint_label: "Select sprint"
-      button_close_sprint: "Close sprint"
+      button_complete_sprint: "Complete sprint"
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
-        start_sprint: "Start sprint"
-        finish_sprint: "Finish sprint"
-        start_sprint_disabled_description: "Another sprint is already active."
-        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "Edit sprint"
         add_work_package: "Add work package"
-        task_board: "Sprint board"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -229,8 +228,10 @@ ro:
   label_backlogs: "Restanțe"
   label_backlogs_unconfigured: "Nu ai configurat încă Backlogs. Te rog să mergi la %{administration} > %{plugins}, apoi dă clic pe link-ul %{configure} pentru acest plugin. După ce ai configurat câmpurile, revino la această pagină pentru a începe să utilizezi instrumentul."
   label_blocks_ids: "ID-urile pachetelor de lucru blocate"
+  label_burndown_chart: "Burndown chart"
   label_column_in_backlog: "Coloană în backlog"
   label_used_as_backlog: "Used as backlog"
+  label_sprint_board: "Sprint board"
   label_points_burn_down: "Jos"
   label_points_burn_up: "Sus"
   label_sprint_edit: "Edit sprint"

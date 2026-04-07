@@ -199,6 +199,7 @@ pl:
   label_notify: "Wyślij do przeglądu"
   label_icalendar: "Wyślij iCalendar"
   label_icalendar_download: "Pobierz wydarzenie iCalendar"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Wyświetl serię spotkań"
   label_meeting_series: "Seria spotkań"
   label_version: "Wersja"

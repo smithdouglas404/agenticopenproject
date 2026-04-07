@@ -114,11 +114,11 @@ RSpec.describe "my", :js do
         expect(page).to have_select "Idioma", selected: "Português do brasil"
 
         within "#main-menu" do
-          click_on "Configurações de notificação"
+          click_on "Tokens de acesso"
         end
 
-        expect(page).to have_heading "Configurações de notificação"
-        expect(page).to have_heading "Alertas de data"
+        expect(page).to have_heading "Tokens de acesso"
+        expect(page).to have_heading "iCalendar para reuniões"
       end
     end
   end

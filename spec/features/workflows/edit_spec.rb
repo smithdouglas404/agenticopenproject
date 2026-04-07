@@ -420,6 +420,46 @@ RSpec.describe "Workflow edit" do
     end
   end
 
+  context "when reloading the page with unsaved changes", :js do
+    before do
+      visit_workflow_edit(role:)
+    end
+
+    it "shows a browser confirmation when reloading with unsaved checkbox changes" do
+      within "#workflow_form_always" do
+        check workflow_checkbox(1, 0)
+      end
+
+      dismiss_confirm do
+        page.driver.refresh
+      end
+
+      within "#workflow_form_always" do
+        expect(page).to have_field workflow_checkbox(1, 0), checked: true
+      end
+    end
+
+    it "reloads and discards changes when accepting the browser confirmation" do
+      within "#workflow_form_always" do
+        check workflow_checkbox(1, 0)
+      end
+
+      accept_confirm do
+        page.driver.refresh
+      end
+
+      within "#workflow_form_always" do
+        expect(page).to have_field workflow_checkbox(1, 0), checked: false
+      end
+    end
+
+    it "does not show a confirmation when reloading with no unsaved changes" do
+      page.driver.refresh
+
+      expect(page).to have_css("#workflow_form_always")
+    end
+  end
+
   it "allows navigating to Workflow summary page" do
     within ".PageHeader-actions" do
       click_on "Summary"

@@ -343,4 +343,10 @@ RSpec.describe Agile::Sprint do
       end
     end
   end
+
+  describe "#to_s" do
+    it "returns the name" do
+      expect(sprint.to_s).to eq("Sprint 1")
+    end
+  end
 end

@@ -37,18 +37,14 @@ ja:
     error_invalid_backup_code: "2FAバックアップコードが無効です"
     channel_unavailable: "配信チャネル %{channel} は利用できません。"
     no_valid_phone_number: "有効な電話番号が存在しません。"
-    label_pwd_confirmation: "パスワード"
-    notice_pwd_confirmation: "これらの設定を変更するにはパスワードを確認する必要があります。"
     label_device_type: "デバイスタイプ"
     label_default_device: "デフォルトの2FAデバイス"
     label_device: "2FAデバイス"
     label_devices: "2FAデバイス"
-    label_one_time_password: "ワンタイムパスワード"
     label_2fa_enabled: "2要素認証が有効です"
     label_2fa_disabled: "2要素認証が有効ではありません"
     text_otp_delivery_message_sms: "あなたの %{app_title} のワンタイムパスワードは %{token} です"
     text_otp_delivery_message_voice: "あなたの %{app_title} のワンタイムパスワード: %{pause} %{token}。 %{pause} 繰り返します: %{pause} %{token}"
-    text_enter_2fa: "あなたのデバイスからワンタイムパスワードを入力してください。"
     text_2fa_enabled: "ログインごとに、デフォルトの2FAデバイスからOTPトークンを入力するよう要求されます。"
     text_2fa_disabled: "2要素証を有効にするには、上記のボタンを使用して新しい2FAデバイスを登録します。既にデバイスがある場合は、デフォルトにする必要があります。"
     login:
@@ -68,7 +64,6 @@ ja:
       text_remember: |
         0より大きい値に設定すると、ユーザーは指定した日数の2FA認証を記憶させておくことができます。
         その期間中に再入金を要求されることはありません。構成によって強制されない場合にのみ設定できます。
-      error_invalid_settings: "選択した2FA方法は無効です"
       failed_to_save_settings: "2FA設定の更新に失敗しました: %{message}"
     admin:
       self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
@@ -81,14 +76,9 @@ ja:
       text_2fa_enabled: "ログインごとに、このユーザはデフォルトの2FAデバイスからOTPトークンを入力するよう要求されます。"
       text_2fa_disabled: "ユーザーは2FAデバイスを「マイアカウントページ」から設定していません"
       only_sms_allowed: "他のユーザーにはSMS配信のみ設定可能です。"
-    upsell:
-      title: "2要素認証"
-      description: "すべてのプロジェクトメンバーに2要素認証を提供(または強制)することで、OpenProjectサイトのセキュリティを強化します。"
     backup_codes:
-      none_found: このアカウントのバックアップコードはありません。
       singular: バックアップコード
       plural: バックアップコード
-      your_codes: あなたの %{app_name} アカウント %{login}
       overview_description: |
         2要素認証のデバイスにアクセスできない場合は、バックアップコードを使用してアカウントへのアクセスを回復することができます。
         次のボタンを使用して新しいバックアップコードセットを生成してください。
@@ -167,19 +157,15 @@ ja:
       clear_cookie: "記憶されている2FAのセッションをすべて削除するには、ここをクリックしてください。"
       cookie_removed: "記憶されていた2FAのセッションはすべて削除されました。"
       dont_ask_again: "%{days} 日間このクライアントの2FA認証を記憶するためのクッキーを作成します。"
-  field_phone: "携帯電話"
   field_otp: "ワンタイムパスワード"
   notice_account_otp_invalid: "無効なワンタイムパスワードです。"
   notice_account_otp_expired: "入力したワンタイムパスワードは期限切れです。"
   notice_developer_strategy_otp: "開発者方式では、次のワンタイムパスワードが生成されました: %{token} (チャネル: %{channel})"
   notice_account_otp_send_failed: "ワンタイムパスワードを送信できませんでした。"
   notice_account_has_no_phone: "あなたのアカウントには携帯電話番号は関連付けられていません。"
-  label_expiration_hint: "%{date} またはログアウト時"
-  label_actions: "操作"
   label_confirmed: "確認済み"
   button_continue: "続行"
   button_make_default: "デフォルトにする"
-  label_unverified_phone: "携帯電話がまだ検証されていません"
   notice_phone_number_format: "次の形式で番号を入力してください: +XX XXXXXXXX."
   text_otp_not_receive: "その他の確認方法"
   text_send_otp_again: "ワンタイムパスワードを再送信:"

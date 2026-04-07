@@ -37,18 +37,14 @@ fi:
     error_invalid_backup_code: "Virheellinen palautuskoodi"
     channel_unavailable: "Toimituskanava %{channel} ei ole käytettävissä."
     no_valid_phone_number: "Mitään voimassa olevaa puhelinnumeroa ei ole."
-    label_pwd_confirmation: "Salasana"
-    notice_pwd_confirmation: "Sinun on vahvistettava salasanasi tehdessä muutoksia näihin asetuksiin."
     label_device_type: "Laitetyyppi"
     label_default_device: "Oletus tunnistuslaite"
     label_device: "2FA-laite"
     label_devices: "2FA laitteet"
-    label_one_time_password: "Kertakäyttösalasana"
     label_2fa_enabled: "Kaksivaiheinen tunnistautuminen on käytössä"
     label_2fa_disabled: "Kaksivaiheinen tunnistautuminen ei ole käytössä"
     text_otp_delivery_message_sms: "Your %{app_title} one-time password is %{token}"
     text_otp_delivery_message_voice: "Your %{app_title} one-time password is: %{pause} %{token}. %{pause} I repeat: %{pause} %{token}"
-    text_enter_2fa: "Anna salasanasi laitteestasi."
     text_2fa_enabled: "Sisäänkirjautumisen yhteydessä sinun on annettava koodi oletuksesi määritellystä tunnistuslaitteestasi."
     text_2fa_disabled: "Voit ottaa kaksivaiheisen tunnistautumisen käyttöön käyttämällä yllä olevaa painiketta rekisteröidäksesi uuden tunnistuslaitteen. Jos sinulla on jo laite, sinun on määriteltävä se oletukseksi."
     login:
@@ -67,7 +63,6 @@ fi:
       text_enforced: "Aktivoimalla tämän kaikkien käyttäjien tulee rekisteröidä tunnistuslaite seuraavan kirjautumisen yhteydessä. Asetus voidaan poistaa päältä vain jos sitä ei ole pakotettu konfiguraatiossa."
       text_remember: |
         Aseta tämä suuremmaksi kuin nolla mikäli haluat sallia käyttäjien kaksivaiheisen tunnistautumisen muistamisen annettujen päivien verran. Kaksivaiheista tunnistautumista ei vaadita kyseisenä aikana. Voidaan asettaa vain jos tätä ei ole pakotettu konfiguraatiossa.
-      error_invalid_settings: "Valitsemasi kaksivaiheisen tunnistautumisen strategiat eivät kelpää"
       failed_to_save_settings: "Kaksivaiheisen tunnistautumisen asetusten päivitys epäonnistui: %{message}"
     admin:
       self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
@@ -80,14 +75,9 @@ fi:
       text_2fa_enabled: "Upon every login, this user will be requested to enter a OTP token from their default 2FA device."
       text_2fa_disabled: "The user did not set up a 2FA device through their 'My account page'"
       only_sms_allowed: "Only SMS delivery can be set up for other users."
-    upsell:
-      title: "Kaksivaiheinen tunnistautuminen"
-      description: "Strenghten the security of your OpenProject instance by offering (or enforcing) two-factor authentification to all project members."
     backup_codes:
-      none_found: Tälle tilille ei ole palautuskoodeja.
       singular: Palautuskoodi
       plural: Varmistuskoodi
-      your_codes: '%{app_name} tilisi %{login}'
       overview_description: |
         Jos et pysty käyttämään tunnistuslaitettasi, voit käyttää palautuskoodia. Luo palautuskoodit seuraavalla painikkeella.
       generate:
@@ -165,19 +155,15 @@ fi:
       clear_cookie: "Poista kaikki  muistissa olevat kaksivaiheiset tunnistautumiset."
       cookie_removed: "Kaikki muistissa olevat kaksivaiheiset todennusistunnot poistettu."
       dont_ask_again: "Muista tunnistautuminen tällä laitteella seuraavat %{days} päivää."
-  field_phone: "Matkapuhelin"
   field_otp: "Kertakäyttösalasana"
   notice_account_otp_invalid: "Virheellinen kertakäyttösalasana."
   notice_account_otp_expired: "The one-time password you entered expired."
   notice_developer_strategy_otp: "Developer strategy generated the following one-time password: %{token} (Channel: %{channel})"
   notice_account_otp_send_failed: "Your one-time password could not be sent."
   notice_account_has_no_phone: "No cell phone number is associated with your account."
-  label_expiration_hint: "%{date} or on logout"
-  label_actions: "Toiminnot"
   label_confirmed: "Vahvistettu"
   button_continue: "Jatka"
   button_make_default: "Merkitse oletusarvo"
-  label_unverified_phone: "Cell phone not yet verified"
   notice_phone_number_format: "Anna numero esim. +358 40 1234567."
   text_otp_not_receive: "Muut tunnistustavat"
   text_send_otp_again: "Lähetä kertakäyttösalasana uudelleen:"

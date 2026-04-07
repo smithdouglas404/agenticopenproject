@@ -199,6 +199,7 @@ cs:
   label_notify: "Odeslat k posouzení"
   label_icalendar: "Odeslat iCalendar"
   label_icalendar_download: "Stáhnout událost iCalendar"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Zobrazit sérii schůzek"
   label_meeting_series: "Řada schůzek"
   label_version: "Verze"

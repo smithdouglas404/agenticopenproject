@@ -37,18 +37,14 @@ fil:
     error_invalid_backup_code: "Imbalido ang 2FA backup code"
     channel_unavailable: "Ang tagapaghatid na channel %{channel} ay hindi magamit."
     no_valid_phone_number: "Walang balido na numero sa telepono ang umiiral."
-    label_pwd_confirmation: "Ang Password"
-    notice_pwd_confirmation: "Kailangan mong kumpirmahin ang iyong password sa paggawa ng mga pagbabago sa setting na ito."
     label_device_type: "Ang uri ng aparato"
     label_default_device: "I-Default ang 2FA na aparato"
     label_device: "Ang 2FA na aparato"
     label_devices: "Ang 2FA na mga aparato"
-    label_one_time_password: "Ang isang beses na password"
     label_2fa_enabled: "Ang Dalawang-dahilan ng aktibo na pagpapatunay"
     label_2fa_disabled: "Ang Dalawang-dahilan ng hindi aktibo na pagpapatunay"
     text_otp_delivery_message_sms: "Your %{app_title} one-time password is %{token}"
     text_otp_delivery_message_voice: "Your %{app_title} one-time password is: %{pause} %{token}. %{pause} I repeat: %{pause} %{token}"
-    text_enter_2fa: "Pakiusap na ipasok ng isang beses ang pasword mula sa iyong aparato."
     text_2fa_enabled: "Sa bawat pag-login, gagawin mo ang kahilingan na ipasok ang OTP token mula sa na-default na 2FA na aparato."
     text_2fa_disabled: "Upang mapagana ang Dalawang-dahilan sa pagpapatunay, gamitin ang boton par monga magparehistro sa bagong 2FA na aparato, kung ikaw ay may handa ng aparato. kailangan mong gawin ito na-default."
     login:
@@ -68,7 +64,6 @@ fil:
       text_remember: |
         Itakda ito sa mas higit pa sa sero upang pagayagan ang mga gumagamit na maalala ang pagpapatunay sa kanilang 2FA para sa ibinigay na numero sa mga araw.
         Sila ay hindi hihiling na muling ipasok habang ang sa mga panahon na ito. Maaari lamang kung hindi na magpatupad gamit ang kumpigurasyon.
-      error_invalid_settings: "Ang 2FA na mga deskarte na iyong napili ay walang bisa"
       failed_to_save_settings: "Bigo na ma-update ang 2FA na mga setting: %{message}"
     admin:
       self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
@@ -81,14 +76,9 @@ fil:
       text_2fa_enabled: "Upon every login, this user will be requested to enter a OTP token from their default 2FA device."
       text_2fa_disabled: "The user did not set up a 2FA device through their 'My account page'"
       only_sms_allowed: "Only SMS delivery can be set up for other users."
-    upsell:
-      title: "Ang dalwang-Dahilan sa authentication"
-      description: "Strenghten the security of your OpenProject instance by offering (or enforcing) two-factor authentification to all project members."
     backup_codes:
-      none_found: Walang mga backup na umiiral para sa account na ito.
       singular: Ang Backup code
       plural: Ang mga Backup code
-      your_codes: para sa iyong %{app_name} account %{login}
       overview_description: |
         Kung ikaw ay hindi mo ma-access ang iyong Dalawang-dahilan sa mga aparato, maaari kang gumamit ng backup code para mabawi ang na-access sa iyong account.
         Gamitin ang mga sumusunod na buton uang mabuo ang bagong set ng mga backup code.
@@ -167,19 +157,15 @@ fil:
       clear_cookie: "Click here to remove all remembered 2FA sessions."
       cookie_removed: "All remembered 2FA sessions have been removed."
       dont_ask_again: "Lumikha ng coockie upang maalala ang 2FA authentication para sa kleyente na ito %{days} mga araw."
-  field_phone: "Ang Cell phone"
   field_otp: "Ang Isang-beses na password"
   notice_account_otp_invalid: "Imbalido ang isang-beses na password."
   notice_account_otp_expired: "Ang isang-beses na password na iyong ipinasok ay na-expire."
   notice_developer_strategy_otp: "Ang taga-develop ng diskarte sa nabuo na sumusunod na isang beses na password: %{token} (Channel: %{channel}"
   notice_account_otp_send_failed: "Ang iyong isang beses na password ay hindi maipadala."
   notice_account_has_no_phone: "Walang numero sa cellphone ang nauugnay sa iyong account."
-  label_expiration_hint: "%{date} o mag-logout sa"
-  label_actions: "Mga Aksyon"
   label_confirmed: "Kumpirmahin"
   button_continue: "Ipagpatuloy"
   button_make_default: "Markahan bilang default"
-  label_unverified_phone: "Hindi ma-verify ang Cell Phone"
   notice_phone_number_format: "Pakiusap na ipasok ang numero sa sumusunod na pormat: +XX XXXXXXXX."
   text_otp_not_receive: "Iba pang mga pamamaraan sa pagpapatunay"
   text_send_otp_again: "Ipadala muli ang isang beses na password sa:"

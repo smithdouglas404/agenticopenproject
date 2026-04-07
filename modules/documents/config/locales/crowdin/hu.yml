@@ -70,12 +70,10 @@ hu:
         Kérjük, lépjen kapcsolatba a rendszergazdával a valós idejű szöveges együttműködés engedélyezése érdekében, ha hozzá szeretne férni ehhez a dokumentumhoz.
     show_edit_view:
       connection_error_notice:
-        description: |-
-          Nem lehet megnyitni a dokumentumot, mert a valós idejű szöveges együttműködési kiszolgáló nem elérhető.
-          Kérjük, forduljon a rendszergazdához, ha a probléma továbbra is fennáll.
+        description_server_unavailable: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
         action: Próbálja újra
-      connection_recovery_notice:
-        description: "A kapcsolat a valós idejű szöveges együttműködési kiszolgálóval helyreállt."
       tabs: "Document tabs"
     index_page:
       name: "Név"
@@ -87,6 +85,9 @@ hu:
       types: "Típus"
       collaboration_settings: "Valós idejű együttműködés"
     last_updated_at: "Last saved %{time}."
+    info_line:
+      currently_offline: "You are currently offline."
+      connection_restored: "You are now back online."
     active_editors: "Aktív szerkesztők"
     active_editors_count:
       one: "1 active editor"

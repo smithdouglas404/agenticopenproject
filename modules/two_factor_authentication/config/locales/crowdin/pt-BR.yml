@@ -37,18 +37,14 @@ pt-BR:
     error_invalid_backup_code: "Código de backup do 2FA inválido"
     channel_unavailable: "O canal de entrega %{channel} não está disponível."
     no_valid_phone_number: "Nenhum número de telefone válido existente."
-    label_pwd_confirmation: "Senha"
-    notice_pwd_confirmation: "Você precisa confirmar sua senha ao fazer alterações nestas configurações."
     label_device_type: "Tipo de dispositivo"
     label_default_device: "Dispositivo 2FA padrão"
     label_device: "Dispositivo 2FA"
     label_devices: "Dispositivos 2FA"
-    label_one_time_password: "Senha de uso único"
     label_2fa_enabled: "Autenticação de dois fatores está ativa"
     label_2fa_disabled: "Autenticação de dois fatores não ativa"
     text_otp_delivery_message_sms: "Sua senha de uso único de %{app_title} é %{token}"
     text_otp_delivery_message_voice: "Sua senha de uso único de %{app_title} é: %{pause} %{token}. %{pause} repito: %{pause} %{token}"
-    text_enter_2fa: "Por favor digite a senha de uso único do seu dispositivo."
     text_2fa_enabled: "Em cada acesso, será requisitado a você para entrar com seu token OTP do seu dispositivo de 2FA padrão."
     text_2fa_disabled: "Para habilitar o segundo fator de autenticação, use o botão acima para registrar seu novo dispositivo 2FA. Se você já tem um dispositivo cadastrado, você precisa deixá-lo como sendo padrão."
     login:
@@ -68,7 +64,6 @@ pt-BR:
       text_remember: |
         Defina este valor como sendo maior do que zero para permitir que os usuários possam se lembrar do 2FA pelo número de dias definido.
         Não será solicitado a eles para digitar novamente o 2FA durante este período. Só pode ser definido quando a imposição não estiver configurada.
-      error_invalid_settings: "As estratégias de 2FA que você selecionou são inválidas"
       failed_to_save_settings: "Falha ao atualizar as configurações de 2FA: %{message}"
     admin:
       self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
@@ -81,14 +76,9 @@ pt-BR:
       text_2fa_enabled: "A cada login, o usuário deverá inserir um token OTP do dispositivo padrão de A2F."
       text_2fa_disabled: "O usuário não configurou um dispositivo de A2F na página “Minha conta”"
       only_sms_allowed: "Apenas os usuários autorizados podem configurar a entrega de SMS."
-    upsell:
-      title: "Autenticação de dois fatores"
-      description: "Reforce a segurança da sua instância do OpenProject oferecendo (ou exigindo) a autenticação de dois fatores para todos os membros do projeto."
     backup_codes:
-      none_found: Não existem códigos de backup para esta conta.
       singular: Código de backup
       plural: Códigos de backup
-      your_codes: para a sua conta %{login} do %{app_name}
       overview_description: |
         Se você estiver impossibilitado de acessar seu dispositivo com segundo fator, você pode usar o código de backup para recuperar o acesso da sua conta.
         Use o seguindo botão para gerar um novo conjunto de códigos de backup.
@@ -167,19 +157,15 @@ pt-BR:
       clear_cookie: "Clique aqui para remover todas as sessões 2FA lembradas."
       cookie_removed: "Todas as sessões 2FA lembradas foram removidas."
       dont_ask_again: "Crie um cookie para lembrar do 2FA neste cliente por %{days} dias."
-  field_phone: "Celular"
   field_otp: "Senha de uso único"
   notice_account_otp_invalid: "Senha de uso único inválida."
   notice_account_otp_expired: "A senha de acesso único que você digitou espirou."
   notice_developer_strategy_otp: "Estratégia de desenvolvimento gerada para a seguinte senha única: %{token} (Canal: %{channel})"
   notice_account_otp_send_failed: "Não foi possível enviar sua senha de uso único."
   notice_account_has_no_phone: "Nenhum número de celular foi associado com esta conta."
-  label_expiration_hint: "%{date} ou sair"
-  label_actions: "Ações"
   label_confirmed: "Confirmado"
   button_continue: "Continuar"
   button_make_default: "Marque como padrão"
-  label_unverified_phone: "Telefone celular ainda não foi verificado"
   notice_phone_number_format: "Digite o número no seguinte formato: +XX XXXXXXXX."
   text_otp_not_receive: "Outros métodos de verificação"
   text_send_otp_again: "Reenviar a senha de uso único para:"

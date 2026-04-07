@@ -70,12 +70,10 @@ ca:
         Please contact your administrator to enable real-time text collaboration if you want to access this document.
     show_edit_view:
       connection_error_notice:
-        description: |-
+        description_server_unavailable: |-
           Unable to open document because the real-time text collaboration server is unreachable.
           Please contact the administrator if the problem persists.
         action: Try again
-      connection_recovery_notice:
-        description: "The connection to the real-time text collaboration server has been restored."
       tabs: "Document tabs"
     index_page:
       name: "Nom"
@@ -87,6 +85,9 @@ ca:
       types: "Tipus"
       collaboration_settings: "Real-time collaboration"
     last_updated_at: "Last saved %{time}."
+    info_line:
+      currently_offline: "You are currently offline."
+      connection_restored: "You are now back online."
     active_editors: "Active editors"
     active_editors_count:
       one: "1 active editor"
