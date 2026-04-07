@@ -69,12 +69,6 @@ export const OPENPROJECT_ROUTES:Ng2StateDeclaration[] = [
     },
   },
   {
-    name: 'boards.**',
-    parent: 'optional_project',
-    url: '/boards',
-    loadChildren: () => import('../../features/boards/openproject-boards.module').then((m) => m.OpenprojectBoardsModule),
-  },
-  {
     name: 'bim.**',
     parent: 'optional_project',
     url: '/bcf',

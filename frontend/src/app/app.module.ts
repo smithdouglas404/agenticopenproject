@@ -39,6 +39,7 @@ import { OpSharedModule } from 'core-app/shared/shared.module';
 import { OpSpotModule } from 'core-app/spot/spot.module';
 import { OpDragScrollDirective } from 'core-app/shared/directives/op-drag-scroll/op-drag-scroll.directive';
 import { OpenprojectWorkPackagesModule } from 'core-app/features/work-packages/openproject-work-packages.module';
+import { OpenprojectBoardsModule } from 'core-app/features/boards/openproject-boards.module';
 import { OpenprojectAttachmentsModule } from 'core-app/shared/components/attachments/openproject-attachments.module';
 import { OpenprojectEditorModule } from 'core-app/shared/components/editor/openproject-editor.module';
 import { OpenprojectGridsModule } from 'core-app/shared/components/grids/openproject-grids.module';
@@ -143,6 +144,9 @@ import {
 import {
   WorkPackageSplitViewEntryComponent,
 } from 'core-app/features/work-packages/routing/wp-split-view/wp-split-view-entry.component';
+import {
+  BoardEntryComponent,
+} from 'core-app/features/boards/board/board-partitioned-page/board-entry.component';
 import {
   StorageLoginButtonComponent,
 } from 'core-app/shared/components/storages/storage-login-button/storage-login-button.component';
@@ -289,6 +293,9 @@ export function runBootstrap(appRef:ApplicationRef) {
     OpenprojectWorkPackagesModule,
     OpenprojectWorkPackageRoutesModule,
 
+    // Boards
+    OpenprojectBoardsModule,
+
     // Work packages in graph representation
     OpenprojectWorkPackageGraphsModule,
     // Calendar module
@@ -385,6 +392,7 @@ export class OpenProjectModule implements DoBootstrap {
 
     registerCustomElement('opce-notification-center', InAppNotificationCenterComponent, { injector });
     registerCustomElement('opce-wp-split-view', WorkPackageSplitViewEntryComponent, { injector });
+    registerCustomElement('opce-board-view', BoardEntryComponent, { injector });
     registerCustomElement('opce-wp-full-view', WorkPackageFullViewEntryComponent, { injector });
     registerCustomElement('opce-wp-full-create', WorkPackageFullCreateEntryComponent, { injector });
     registerCustomElement('opce-wp-full-copy', WorkPackageFullCopyEntryComponent, { injector });
