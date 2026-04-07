@@ -190,6 +190,9 @@ Rails/FindEach:
     - limit
     - select
     - lock
+  Exclude:
+    - 'spec/**/*'
+    - 'modules/**/spec/**/*'
 
 # The http verbs in Rack::Test do not accept named parameters (params: params)
 Rails/HttpPositionalArguments:
@@ -219,6 +222,9 @@ Rails/RequireDependency:
 # Require save! to prevent saving without validation when saving outside of a condition.
 Rails/SaveBang:
   Enabled: true
+  Exclude:
+    - 'spec/**/*'
+    - 'modules/**/spec/**/*'
 
 # There are valid cases in which to use methods like:
 # * update_all
@@ -474,6 +480,11 @@ Style/Proc:
 
 Style/RaiseArgs:
   Enabled: false
+
+Style/RescueModifier:
+  Exclude:
+    - 'spec/**/*'
+    - 'modules/**/spec/**/*'
 
 Style/RegexpLiteral:
   Enabled: false
