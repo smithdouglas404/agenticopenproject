@@ -4,6 +4,7 @@ import { Idiomorph } from 'idiomorph';
 export function registerDialogStreamAction() {
   StreamActions.closeDialog = function closeDialogStreamAction(this:StreamElement) {
     const dialog = document.querySelector(this.target)!;
+    if (!dialog) { return; }
     const additionalData = JSON.parse(this.getAttribute('additional') || '{}') as unknown;
 
     // dispatching with submitted: true to indicate that the behavior of a successful submission should

@@ -176,6 +176,8 @@ export class TimeEntryTimerService {
 
   private handleTimeEntryDialogClose(event:CustomEvent):void {
     const { detail: { dialog, submitted } } = event as { detail:{ dialog:HTMLDialogElement, submitted:boolean } };
+    if (!dialog) { return; }
+
     const isOngoing = dialog.dataset.ongoing === 'true';
 
     if (dialog.id === 'time-entry-dialog' && submitted && isOngoing) {
