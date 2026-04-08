@@ -39,7 +39,7 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
 
   # Called directly by the controller (no args) for the initial dispatch,
   # or by GoodJob as an on_success batch callback with (batch, params).
-  def perform(batch = nil, params = nil)
+  def perform(_batch = nil, params = nil)
     iteration = params.to_h.fetch("iteration", 0).to_i
     remaining = project_ids_needing_backfill
 
