@@ -21,8 +21,8 @@
 #++
 el:
   plugin_openproject_reporting:
-    name: "OpenProject Reporting"
-    description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
+    name: "Αναφορές OpenProject"
+    description: "Αυτό το πρόσθετο επιτρέπει τη δημιουργία προσαρμοσμένων αναφορών κόστους με φιλτράρισμα και ομαδοποίηση που δημιουργούνται από το πρόσθετο OpenProject Χρόνου και Κόστους."
   button_save_report_as: "Αποθήκευση αναφοράς ως..."
   comments: "Σχόλιο"
   cost_reports_title: "Χρόνος και κόστος"

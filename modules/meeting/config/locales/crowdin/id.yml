@@ -368,6 +368,8 @@ id:
             Seluruh peserta akan menerima undangan kalender yang diperbarui melalui email saat Anda menambahkan atau menghapus peserta.
           disabled: >
             Pembaruan kalender melalui email telah dinonaktifkan. Peserta tidak akan menerima email pemberitahuan ketika Anda menambahkan atau menghapus peserta.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Seluruh peserta akan menerima undangan kalender yang diperbarui melalui email saat Anda menambahkan atau menghapus peserta.

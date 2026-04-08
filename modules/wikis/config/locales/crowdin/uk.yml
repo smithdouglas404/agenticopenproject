@@ -3,10 +3,10 @@ uk:
   activerecord:
     attributes:
       wikis/xwiki_provider:
-        authentication_method: Authentication method
+        authentication_method: Метод автентифікації
         authentication_methods:
-          oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
-          two_way_oauth2: Two-way OAuth 2.0 authorization code flow
+          oauth2_sso: Єдиний вхід через постачальника ідентифікаційних даних OpenID Connect
+          two_way_oauth2: Потік коду двосторонньої авторизації OAuth 2.0
         token_exchange_scope: XWiki Scope
         url: Instance URL
         wiki_audience: XWiki Audience

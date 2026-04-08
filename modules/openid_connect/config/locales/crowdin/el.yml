@@ -1,6 +1,6 @@
 el:
   plugin_openproject_openid_connect:
-    name: "OpenProject OpenID Connect"
+    name: "Σύνδεση OpenProject OpenID"
     description: "Adds OmniAuth OpenID Connect strategy providers to OpenProject."
   logout_warning: >
     Έχετε αποσυνδεθεί. Τα περιεχόμενα οποιασδήποτε φόρμας που υποβάλετε ενδέχεται να χαθούν. Παρακαλούμε [συνδεθείτε].
@@ -84,10 +84,10 @@ el:
       oidc_information: These values are needed to configure the OpenID Connect provider.
       client_id: This is the client ID given to you by your OpenID Connect provider
       client_secret: This is the client secret given to you by your OpenID Connect provider
-      limit_self_registration: If enabled, users can only register using this provider if configuration on the provider's end allows it.
-      display_name: The name of the provider. This will be displayed as the login button and in the list of providers.
+      limit_self_registration: Εάν είναι ενεργοποιημένη, οι χρήστες μπορούν να εγγραφούν μόνο χρησιμοποιώντας αυτόν τον πάροχο, εάν οι ρυθμίσεις στη μεριά του παρόχου το επιτρέπουν.
+      display_name: Το όνομα του παρόχου. Θα εμφανίζεται στο κουμπί σύνδεσης και στη λίστα παρόχων.
       tenant: 'Please replace the default tenant with your own if applicable. See <a href=" https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc#find-your-apps-openid-configuration-document-uri">this</a>.'
-      scope: If you want to request custom scopes, you can add one or multiple scope values separated by spaces here. For more information, see the [OpenID Connect documentation](docs_url).
+      scope: Εάν θέλετε να ζητήσετε προσαρμοσμένα πεδία εφαρμογής, μπορείτε να προσθέσετε μία ή περισσότερες τιμές πεδίου εφαρμογής που χωρίζονται με κενά εδώ. Για περισσότερες πληροφορίες, ανατρέξτε στην [τεκμηρίωση του OpenID Connect](docs_url).
       post_logout_redirect_uri: The URL the OpenID Connect provider should redirect to after a logout request.
       claims: >
         You can request additional claims for the userinfo and id token endpoints. Please see [our OpenID connect documentation](docs_url) for more information.
@@ -131,7 +131,7 @@ el:
       label_configuration_details: Metadata
       label_client_details: Client details
       label_attribute_mapping: Χαρτογράφηση χαρακτηριστικού
-      notice_created: A new OpenID provider was successfully created.
+      notice_created: Δημιουργήθηκε με επιτυχία ένας νέος πάροχος OpenID.
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Δεν έχουν οριστεί πάροχοι ακόμη.
       plural: Πάροχοι OpenID
@@ -152,4 +152,4 @@ el:
           backchannel_logout_url: Backchannel logout URL
     setting_instructions:
       limit_self_registration: >
-        If enabled users can only register using this provider if the self registration setting allows for it.
+        Εάν είναι ενεργοποιημένη, οι χρήστες μπορούν να εγγραφούν μόνο χρησιμοποιώντας αυτόν τον πάροχο, εάν το επιτρέπει η ρύθμιση αυτοεγγραφής.

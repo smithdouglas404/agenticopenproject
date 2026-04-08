@@ -33,7 +33,7 @@ el:
         label_activity_show_only_changes: "Show changes only"
         label_sort_asc: "Newest at the bottom"
         label_sort_desc: "Newest on top"
-        label_type_to_comment: "Add a comment. Type @ to notify people."
+        label_type_to_comment: "Προσθέστε ένα σχόλιο. Πληκτρολογήστε @ για να ειδοποιήσετε άτομα."
         label_submit_comment: "Submit comment"
         label_who: Who?
         changed_on: "changed on"
@@ -86,11 +86,11 @@ el:
         type_token_text: "Your Enterprise token text"
         token_placeholder: "Paste your Enterprise edition support token here"
         token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
-      add_token: "Upload an Enterprise edition support token"
+      add_token: "Ανεβάστε ένα support token της έκδοσης Enterprise"
       replace_token: "Αντικαταστήστε το τρέχον token υποστήριξης"
-      order: "Order Enterprise on-premises edition"
-      paste: "Paste your Enterprise edition support token"
-      required_for_feature: "This add-on is only available with an active Enterprise edition support token."
+      order: "Παραγγελία Enterprise on-premises edition"
+      paste: "Επικολλήστε το support token σας της έκδοσης Enterprise"
+      required_for_feature: "Αυτή η λειτουργία διατίθεται μόνο με ενεργό support token Έκδοσης για Επιχειρήσεις."
       enterprise_link: "Για περισσότερες πληροφορίες, πατήστε εδω."
       start_trial: "Έναρξη δωρεάν δοκιμαστικής περιόδου"
       book_now: "Κάντε κράτηση τώρα"
@@ -112,7 +112,7 @@ el:
     import:
       title: "Import"
     jira:
-      title: "Jira Import"
+      title: "Εισαγωγή από Jira"
       description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
       errors:
         cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
@@ -123,8 +123,8 @@ el:
         title: "Jira configuration"
         new: "New configuration"
       banner:
-        title: "Limited import"
-        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        title: "Περιορισμένη εισαγωγή"
+        description: "Αυτό το εργαλείο εισαγωγής βρίσκεται επί του παρόντος σε beta έκδοση και μπορεί να εισάγει μόνο βασικά δεδομένα: έργα, ζητήματα (όνομα, τίτλος, περιγραφή, συνημμένα), χρήστες (όνομα, email, συμμετοχή σε έργα), καταστάσεις και τύπους. Δεν μπορεί να εισαγάγει ροές εργασίας, προσαρμοσμένα πεδία, σχέσεις ζητημάτων ή δικαιώματα. Προς το παρόν υποστηρίζουμε μόνο τις εκδόσεις 10.x και 11.x του Jira Server/Data Center. Προς το παρόν δεν υποστηρίζονται περιπτώσεις cloud."
       form:
         fields:
           name: "Name"
@@ -142,7 +142,7 @@ el:
         failed: "Connection failed: Unable to retrieve server information"
         error: "An unexpected error occurred while testing the connection"
         connection_error: "Connection error: %{message}"
-        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        parse_error: "Αποτυχία ανάλυσης της απάντησης από το διακομιστή. Ο διακομιστής μπορεί να μην είναι ένα έγκυρο instance Jira."
         api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
         token_error: "Invalid API token. Please check your credentials in the configuration."
         missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
@@ -160,7 +160,7 @@ el:
       run:
         title: "Import run"
         history: "History"
-        remove_error: "A Jira import cannot be removed while it is running"
+        remove_error: "Μια εισαγωγή Jira δεν μπορεί να αφαιρεθεί ενώ εκτελείται"
         import_blocked_error: "Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import."
         project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:

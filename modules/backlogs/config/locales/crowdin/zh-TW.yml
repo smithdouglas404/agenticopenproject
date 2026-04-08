@@ -39,6 +39,9 @@ zh-TW:
         sprint_sharing: "Sprint 共用"
       sprint:
         duration: "衝刺時間"
+      user_preference:
+        backlogs_task_color: "Task color"
+        backlogs_versions_default_fold_state: "Show sprints folded"
       work_package:
         backlogs_work_package_type: "待辦事項類型"
         position: "位置"
@@ -82,6 +85,7 @@ zh-TW:
     task_type: "任務類型"
   backlogs:
     any: "任何"
+    caption_sprints_default_fold_state: "Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded."
     column_width: "欄寬"
     definition_of_done: "定義"
     definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
@@ -92,7 +96,6 @@ zh-TW:
     label_versions_default_fold_state: "顯示精簡版本"
     label_burndown_chart: "Burndown chart"
     label_sprint_board: "Sprint board"
-    caption_versions_default_fold_state: "檢視待辦清單時，版本預設不會展開，需手動逐一展開。"
     work_package_is_closed: "視為工作套件已完成"
     label_is_done_status: "狀態 %{status_name} 表示完成"
     points_label:
@@ -145,7 +148,7 @@ zh-TW:
     move_to_sprint_dialog_component:
       title: "Move to sprint"
       label_sprint: "Sprint"
-    sprint_planning:
+    backlog:
       blankslate:
         title: "No sprints present yet"
         description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
@@ -230,7 +233,7 @@ zh-TW:
   label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "進度阻礙"
   label_sprint_new: "New sprint"
-  label_sprint_planning: "Sprint planning"
+  label_backlog_and_sprints: "Backlog and sprints"
   label_task_board: "任務看板"
   notice_successful_start: "The sprint was started."
   notice_successful_finish: "The sprint was completed."

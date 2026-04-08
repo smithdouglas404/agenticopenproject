@@ -373,6 +373,8 @@ it:
             Tutti i partecipanti riceveranno via e-mail inviti di calendario aggiornati quando aggiungi o rimuovi partecipanti.
           disabled: >
             Gli aggiornamenti del calendario via e-mail sono disattivati. I partecipanti non riceveranno un'e-mail quando aggiungi o rimuovi partecipanti.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Tutti i partecipanti riceveranno via e-mail inviti di calendario aggiornati quando aggiungi o rimuovi partecipanti.

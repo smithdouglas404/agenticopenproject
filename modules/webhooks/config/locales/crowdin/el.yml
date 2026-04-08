@@ -1,7 +1,7 @@
 el:
   plugin_openproject_webhooks:
     name: "OpenProject Webhooks"
-    description: "Provides a plug-in API to support OpenProject webhooks for better 3rd party integration."
+    description: "Παρέχει ένα πρόσθετο API για την υποστήριξη των webhooks του OpenProject για καλύτερη ενσωμάτωση τρίτων εφαρμογών."
   activerecord:
     attributes:
       webhooks/webhook:

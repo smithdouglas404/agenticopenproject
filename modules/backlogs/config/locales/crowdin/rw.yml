@@ -39,6 +39,9 @@ rw:
         sprint_sharing: "Sprint sharing"
       sprint:
         duration: "Sprint duration"
+      user_preference:
+        backlogs_task_color: "Task color"
+        backlogs_versions_default_fold_state: "Show sprints folded"
       work_package:
         backlogs_work_package_type: "Backlog type"
         position: "Position"
@@ -83,6 +86,7 @@ rw:
     task_type: "Task type"
   backlogs:
     any: "any"
+    caption_sprints_default_fold_state: "Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded."
     column_width: "Column width"
     definition_of_done: "Definition of Done"
     definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
@@ -93,7 +97,6 @@ rw:
     label_versions_default_fold_state: "Show versions folded"
     label_burndown_chart: "Burndown chart"
     label_sprint_board: "Sprint board"
-    caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
     work_package_is_closed: "Work package is done, when"
     label_is_done_status: "Status %{status_name} means done"
     points_label:
@@ -149,7 +152,7 @@ rw:
     move_to_sprint_dialog_component:
       title: "Move to sprint"
       label_sprint: "Sprint"
-    sprint_planning:
+    backlog:
       blankslate:
         title: "No sprints present yet"
         description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
@@ -234,7 +237,7 @@ rw:
   label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Sprint Impediments"
   label_sprint_new: "New sprint"
-  label_sprint_planning: "Sprint planning"
+  label_backlog_and_sprints: "Backlog and sprints"
   label_task_board: "Task board"
   notice_successful_start: "The sprint was started."
   notice_successful_finish: "The sprint was completed."

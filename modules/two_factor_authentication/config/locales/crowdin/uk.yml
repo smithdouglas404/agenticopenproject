@@ -119,7 +119,7 @@ uk:
       is_default_cannot_delete: "Пристрій позначено як типовий і його не можна видалити через активну політику безпеки. Перед видаленням позначте інший пристрій як стандартний."
       not_existing: "Для вашого облікового запису не зареєстровано жодного пристрою 2FA."
       2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_webauthn_html: Укажіть пристрій WebAuthn <strong>%{device_name}</strong>. Якщо це USB-пристрій, переконайтеся, що його підключено, і торкніться його. Потім натисніть кнопку входу.
       webauthn:
         title: "WebAuthn"
         description: Зареєструйте пристрій FIDO2 (наприклад, YubiKey) або захищений анклав свого мобільного пристрою.

@@ -368,6 +368,8 @@ zh-CN:
             当您添加或移除参与者时，所有参与者都将通过电子邮件收到更新的日历邀请。
           disabled: >
             电子邮件日历更新已禁用。在您添加或移除参与者时，参与者不会收到电子邮件通知。
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             当您添加或移除参与者时，所有参与者都将通过电子邮件收到更新后的日历邀请。

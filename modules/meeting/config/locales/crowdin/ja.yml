@@ -368,6 +368,8 @@ ja:
             参加者を追加または削除すると、すべての参加者に最新のカレンダー招待メールが送信されます。
           disabled: >
             電子メールによるカレンダーの更新は無効になっています。参加者を追加または削除しても、参加者に通知メールは送信されません。
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             参加者を追加または削除すると、すべての参加者にメールで更新されたカレンダー招待状が届きます。

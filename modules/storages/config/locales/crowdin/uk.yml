@@ -228,11 +228,11 @@ uk:
     delete_warning:
       project_storage_delete_result_1: Буде вилучено всі посилання на відповідні файли й папки
       project_storage_delete_result_2: Буде видалено папку проєкту з автоматичним керуванням і всі файли, що містяться в ній
-      project_storage_html: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_html: Ви справді хочете вилучити %{file_storage} із цього проєкту?
       storage_delete_result_1: Сховище буде видалено з усіх проєктів, які його зараз використовують
       storage_delete_result_2: Буде вилучено всі посилання на відповідні файли й папки
       storage_delete_result_3: Буде видалено папку проєкту з автоматичним керуванням і всі файли, що містяться в ній
-      storage_html: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_html: Ви справді хочете видалити %{file_storage} як зовнішнє файлове сховище?
     dependencies:
       nextcloud:
         group_folders_app: Папки команди
@@ -524,7 +524,7 @@ uk:
         members_connection_status: Стан підключення учасників
         new: Додайте сховище файлів до цього проєкту
       project_storage_members:
-        subtitle_html: Check the connection status for the storage %{storage_name_link} of all project members.
+        subtitle_html: Перевірте стан підключення до сховища %{storage_name_link} для всіх учасників проєкту.
         title: Стан підключення учасників
       project_storages:
         delete: Вилучити файлове сховище з проєкту?

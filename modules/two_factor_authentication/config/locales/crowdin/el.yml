@@ -1,9 +1,9 @@
 #English strings go here for Rails i18n
 el:
   plugin_openproject_two_factor_authentication:
-    name: "OpenProject Two-factor authentication"
+    name: "Έλεγχος ταυτότητας δύο παραγόντων OpenProject"
     description: >-
-      This OpenProject plugin authenticates your users using two-factor authentication by means of one-time password through the TOTP standard (Google Authenticator) or sent to the user's cell phone via SMS or voice call.
+      Αυτό το πρόσθετο του OpenProject πιστοποιεί τους χρήστες σας χρησιμοποιώντας έλεγχο ταυτότητας δύο παραγόντων μέσω κωδικού πρόσβασης μίας χρήσης μέσω του προτύπου TOTP (Google Authenticator) ή αποστέλλεται στο κινητό τηλέφωνο του χρήστη μέσω SMS ή φωνητικής κλήσης.
   activerecord:
     attributes:
       two_factor_authentication/device:
@@ -79,10 +79,10 @@ el:
       button_register_mobile_phone_for_user: "Καταχώρηση κινητού τηλεφώνου"
       text_2fa_enabled: "Upon every login, this user will be requested to enter a OTP token from their default 2FA device."
       text_2fa_disabled: "The user did not set up a 2FA device through their 'My account page'"
-      only_sms_allowed: "Only SMS delivery can be set up for other users."
+      only_sms_allowed: "Μπορούν να ρυθμιστούν μόνο αποστολές SMS για άλλους χρήστες."
     upsell:
       title: "Ταυτοποίηση δύο παραγόντων"
-      description: "Strenghten the security of your OpenProject instance by offering (or enforcing) two-factor authentification to all project members."
+      description: "Strenghten την ασφάλεια του OpenProject σας προσφέροντας (ή επιβάλλοντας) ταυτοποίηση δύο παραγόντων σε όλα τα μέλη του έργου."
     backup_codes:
       none_found: Δεν υπάρχουν κωδικοί αντιγράφων ασφαλείας για αυτό τον λογαριασμό.
       singular: Κωδικός αντιγράφων ασφαλείας
@@ -121,8 +121,8 @@ el:
       2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
       webauthn:
         title: "WebAuthn"
-        description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.
-        further_steps: After you have chosen a name, you can click the Continue button. Your browser will prompt you to present your WebAuthn device. When you have done so, you are done registering the device.
+        description: Καταχωρήστε μια συσκευή FIDO2 (όπως το YubiKey) ή τον ασφαλή θύλακα της κινητής συσκευής σας.
+        further_steps: Αφού επιλέξετε ένα όνομα, μπορείτε να κάνετε κλικ στο κουμπί Συνέχεια. Το πρόγραμμα περιήγησής σας θα σας ζητήσει να παρουσιάσετε τη συσκευή WebAuthn. Όταν το κάνετε αυτό, έχετε ολοκληρώσει την καταχώριση της συσκευής.
       totp:
         title: "App-based authenticator"
         provisioning_uri: "Provisioning URI"

@@ -229,7 +229,7 @@ uk:
         description: "Учасників ще немає."
     attachments:
       onetime_template: "These attached files will be included in all future meetings using this template."
-      series_template: "These attached files will be included in all future meetings in the series."
+      series_template: "Ці прикріплені файли додаватимуться до всіх майбутніх нарад серії."
       text: "Прикріплені файли доступні всім учасникам наради. Ви також можете перетягнути їх у примітки до пунктів порядку денного."
     copy:
       title: "Копіювати нараду: %{title}"
@@ -383,6 +383,8 @@ uk:
             Якщо ви додасте нових учасників чи вилучите наявних, усі учасники отримають електронною поштою оновлені запрошення з календаря.
           disabled: >
             Надсилання електронною поштою оновлень із календаря вимкнено. Якщо ви додасте нових учасників чи вилучите наявних, учасники не отримають листа з інформацією про це.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Усі учасники отримають оновлені запрошення в календарі електронною поштою, коли ви додасте або видалите учасників.

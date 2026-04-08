@@ -5,8 +5,8 @@ el:
         title: 'Ομαδικός συγχρονισμός LDAP'
         description: 'Synchronize LDAP groups with OpenProject groups to manage users, change their permissions and facilitate user management across groups.'
   plugin_openproject_ldap_groups:
-    name: "OpenProject LDAP groups"
-    description: "Synchronization of LDAP group memberships."
+    name: "Ομάδες LDAP OpenProject"
+    description: "Συγχρονισμός των μελών ομάδων LDAP."
   activerecord:
     attributes:
       ldap_groups/synchronized_group:

@@ -49,9 +49,9 @@ uk:
           non_object_attribute: "не визначає об’єкт JSON в атрибуті «%{attribute}»."
   provider:
     delete_warning:
-      input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
+      input_delete_confirmation_html: Введіть ім’я постачальника послуг %{name}, щоб підтвердити видалення.
       irreversible_notice: Видалення постачальника послуг SSO не можна скасувати.
-      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
+      provider_html: 'Справді видалити постачальника послуг SSO %{name}? Щоб підтвердити цю дію, введіть ім’я постачальника в поле нижче. Після цього:'
       delete_result_1: Вилучіть постачальника послуг зі списку доступних постачальників.
       delete_result_user_count:
         zero: Зараз у цього постачальника послуг немає користувачів. Нічого робити не потрібно.

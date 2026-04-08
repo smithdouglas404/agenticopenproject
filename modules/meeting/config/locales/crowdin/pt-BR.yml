@@ -373,6 +373,8 @@ pt-BR:
             Todos os participantes receberão convites de calendário atualizados por e-mail quando você adicionar ou remover participantes.
           disabled: >
             As atualizações de calendário por e-mail estão desativadas. Os participantes não receberão e-mails quando você adicionar ou remover participantes.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Todos os participantes receberão atualização do convite de calendário via e-mail quando você adicionar ou remover participantes.

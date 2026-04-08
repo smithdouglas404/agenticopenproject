@@ -373,6 +373,8 @@ hu:
             Minden résztvevő e-mail meghívót fog kapni az új módosításokkal amikor a résztvevőket módosították.
           disabled: >
             E-mail naptárfrissítések letiltva. A résztvevők nemkapnak e-mailt a résztvevők módisításáról.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             A résztvevők hozzáadásakor vagy eltávolításakor minden résztvevő frissített naptármeghívókat kap e-mailben.
