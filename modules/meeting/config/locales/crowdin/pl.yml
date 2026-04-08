@@ -384,6 +384,8 @@ pl:
             Po dodaniu lub usunięciu uczestników wszyscy uczestnicy otrzymają zaktualizowane zaproszenia do kalendarza za pośrednictwem wiadomości e-mail.
           disabled: >
             Aktualizacje kalendarza pocztą elektroniczną są wyłączone. Uczestnicy nie będą otrzymywać wiadomości e-mail z informacją o dodaniu lub usunięciu uczestników.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Po dodaniu lub usunięciu uczestników wszyscy uczestnicy otrzymają zaktualizowane zaproszenia do kalendarza za pośrednictwem wiadomości e-mail.

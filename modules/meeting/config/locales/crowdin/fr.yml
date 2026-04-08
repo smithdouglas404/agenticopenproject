@@ -374,6 +374,8 @@ fr:
             Tous les participants recevront des invitations de calendrier mises à jour par e-mail lorsque vous ajouterez ou supprimerez des participants.
           disabled: >
             Les mises à jour du calendrier par e-mail sont désactivées. Les participants ne recevront pas d'e-mail les informant de l'ajout ou de la suppression de participants.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Tous les participants recevront des invitations de calendrier mises à jour par e-mail lorsque vous ajouterez ou supprimerez des participants.

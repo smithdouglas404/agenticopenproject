@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,26 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class OpenProject::Backlogs::Hooks::UserSettingsHook < OpenProject::Hook::ViewListener
-  # Updates the backlogs settings before saving the user
-  #
-  # Context:
-  # * params => Request parameters
-  # * permitted_params => whitelisted params
-  # * user => user being altered
-  def service_update_user_before_save(context = {})
-    params = context[:params]
-    user = context[:user]
+require "spec_helper"
+require_relative "../../support/pages/backlog"
 
-    backlogs_params = params.delete(:backlogs)
-    return unless backlogs_params
+RSpec.describe "Sprint list", :js, with_flag: { scrum_projects: true } do
+  shared_let(:project) { create(:project) }
+  shared_let(:other_project) { create(:project) }
+  shared_let(:user) { create(:user, member_with_permissions: { project => %i[view_sprints view_work_packages] }) }
+  shared_let(:sprint) do
+    create(:agile_sprint, project:,
+                          start_date: Date.new(2025, 9, 1),
+                          finish_date: Date.new(2025, 9, 14))
+  end
 
-    versions_default_fold_state = backlogs_params[:versions_default_fold_state] || "open"
-    user.backlogs_preference(:versions_default_fold_state, versions_default_fold_state)
+  let(:backlog_page) { Pages::Backlog.new(project) }
 
-    color = backlogs_params[:task_color] || ""
-    if color == "" || color.match(/^#[A-Fa-f0-9]{6}$/)
-      user.backlogs_preference(:task_color, color)
+  before { login_as(user) }
+
+  describe "sprint header" do
+    shared_let(:wp_in_project) { create(:work_package, project:, sprint:, story_points: 5) }
+    shared_let(:wp_in_project2) { create(:work_package, project:, sprint:, story_points: 3) }
+    shared_let(:wp_in_other_project) { create(:work_package, project: other_project, sprint:, story_points: 10) }
+
+    it "only counts work packages belonging to the viewed project" do
+      backlog_page.visit!
+
+      backlog_page.expect_sprint_story_points(sprint, 8)
+      backlog_page.expect_sprint_story_count(sprint, 2)
     end
   end
 end

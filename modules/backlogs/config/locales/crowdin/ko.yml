@@ -39,6 +39,9 @@ ko:
         sprint_sharing: "Sprint sharing"
       sprint:
         duration: "스프린트 기간"
+      user_preference:
+        backlogs_task_color: "Task color"
+        backlogs_versions_default_fold_state: "Show sprints folded"
       work_package:
         backlogs_work_package_type: "백로그 유형"
         position: "위치"
@@ -82,6 +85,7 @@ ko:
     task_type: "작업 유형"
   backlogs:
     any: "모두"
+    caption_sprints_default_fold_state: "Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded."
     column_width: "열 너비"
     definition_of_done: "완료 정의"
     definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
@@ -92,7 +96,6 @@ ko:
     label_versions_default_fold_state: "접힌 버전 표시"
     label_burndown_chart: "Burndown chart"
     label_sprint_board: "Sprint board"
-    caption_versions_default_fold_state: "백로그를 볼 때 버전은 기본적으로 확장되지 않습니다. 각 버전을 수동으로 확장해야 합니다."
     work_package_is_closed: "다음 경우에 작업 패키지가 완료됩니다."
     label_is_done_status: "%{status_name} 상태는 완료를 의미합니다."
     points_label:
@@ -145,7 +148,7 @@ ko:
     move_to_sprint_dialog_component:
       title: "Move to sprint"
       label_sprint: "Sprint"
-    sprint_planning:
+    backlog:
       blankslate:
         title: "No sprints present yet"
         description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
@@ -229,7 +232,7 @@ ko:
   label_sprint_edit: "스프린트 편집"
   label_sprint_impediments: "스프린트 제한"
   label_sprint_new: "새로운 스프린트"
-  label_sprint_planning: "Sprint planning"
+  label_backlog_and_sprints: "Backlog and sprints"
   label_task_board: "작업 보드"
   notice_successful_start: "The sprint was started."
   notice_successful_finish: "The sprint was completed."

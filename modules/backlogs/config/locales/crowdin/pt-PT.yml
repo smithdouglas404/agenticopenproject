@@ -39,6 +39,9 @@ pt-PT:
         sprint_sharing: "Sprint sharing"
       sprint:
         duration: "Duração do sprint"
+      user_preference:
+        backlogs_task_color: "Task color"
+        backlogs_versions_default_fold_state: "Show sprints folded"
       work_package:
         backlogs_work_package_type: "Tipo de backlog"
         position: "Posição"
@@ -83,6 +86,7 @@ pt-PT:
     task_type: "Tipo de tarefa"
   backlogs:
     any: "qualquer"
+    caption_sprints_default_fold_state: "Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded."
     column_width: "Largura da coluna"
     definition_of_done: "Definição de feito"
     definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
@@ -93,7 +97,6 @@ pt-PT:
     label_versions_default_fold_state: "Mostrar versões dobradas"
     label_burndown_chart: "Burndown chart"
     label_sprint_board: "Sprint board"
-    caption_versions_default_fold_state: "Versões não serão expandidas por predefinição quando visualizar os backlogs. Cada uma tem de ser expandida manualmente."
     work_package_is_closed: "Pacote de trabalho está feito quando"
     label_is_done_status: "O estado %{status_name} significa terminado"
     points_label:
@@ -149,7 +152,7 @@ pt-PT:
     move_to_sprint_dialog_component:
       title: "Move to sprint"
       label_sprint: "Sprint"
-    sprint_planning:
+    backlog:
       blankslate:
         title: "No sprints present yet"
         description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
@@ -233,7 +236,7 @@ pt-PT:
   label_sprint_edit: "Editar sprint"
   label_sprint_impediments: "Impedimentos de Sprint"
   label_sprint_new: "Novo sprint"
-  label_sprint_planning: "Sprint planning"
+  label_backlog_and_sprints: "Backlog and sprints"
   label_task_board: "Quadro de tarefas"
   notice_successful_start: "The sprint was started."
   notice_successful_finish: "The sprint was completed."

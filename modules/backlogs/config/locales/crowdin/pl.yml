@@ -39,6 +39,9 @@ pl:
         sprint_sharing: "Sprint sharing"
       sprint:
         duration: "Czas trwania sprintu"
+      user_preference:
+        backlogs_task_color: "Task color"
+        backlogs_versions_default_fold_state: "Show sprints folded"
       work_package:
         backlogs_work_package_type: "Typ backlogu"
         position: "Pozycja"
@@ -85,6 +88,7 @@ pl:
     task_type: "Typ zadania"
   backlogs:
     any: "którekolwiek"
+    caption_sprints_default_fold_state: "Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded."
     column_width: "Szerokość kolumny"
     definition_of_done: "Definicja Zrobione"
     definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
@@ -95,7 +99,6 @@ pl:
     label_versions_default_fold_state: "Pokaż zwinięte wersje"
     label_burndown_chart: "Burndown chart"
     label_sprint_board: "Sprint board"
-    caption_versions_default_fold_state: "Wersje nie będą domyślnie rozwijane podczas przeglądania backlogów. Każdą z nich należy rozwinąć ręcznie."
     work_package_is_closed: "Zestaw Zadań będzie gotowy, kiedy"
     label_is_done_status: "Status %{status_name} oznacza zrobiony"
     points_label:
@@ -157,7 +160,7 @@ pl:
     move_to_sprint_dialog_component:
       title: "Move to sprint"
       label_sprint: "Sprint"
-    sprint_planning:
+    backlog:
       blankslate:
         title: "No sprints present yet"
         description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
@@ -241,7 +244,7 @@ pl:
   label_sprint_edit: "Edytuj sprint"
   label_sprint_impediments: "Przeszkody sprintu"
   label_sprint_new: "Nowy sprint"
-  label_sprint_planning: "Sprint planning"
+  label_backlog_and_sprints: "Backlog and sprints"
   label_task_board: "Panel zadań"
   notice_successful_start: "The sprint was started."
   notice_successful_finish: "The sprint was completed."

@@ -369,6 +369,8 @@ zh-TW:
             當您新增或移除參與者時，所有參與者都會透過電子郵件收到更新的行事曆邀請。
           disabled: >
             電子郵件行事曆更新已停用。當您新增或移除參與者時，參與者將不會收到通知他們的電子郵件。
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             當您新增或移除參與者時，所有參與者都會透過電子郵件收到更新的行事曆。

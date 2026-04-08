@@ -374,6 +374,8 @@ sv:
             Alla deltagare får uppdaterade kalenderinbjudningar via e-post när du lägger till eller tar bort deltagare.
           disabled: >
             Kalenderuppdateringar via e-post är inaktiverade. Deltagarna kommer inte att få ett e-postmeddelande när du lägger till eller tar bort deltagare.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Alla deltagare får uppdaterade kalenderinbjudningar via e-post när du lägger till eller tar bort deltagare.

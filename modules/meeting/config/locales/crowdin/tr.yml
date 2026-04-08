@@ -374,6 +374,8 @@ tr:
             Katılımcı eklediğinizde veya çıkardığınızda tüm katılımcılar e-posta yoluyla güncellenmiş takvim davetiyeleri alacaktır.
           disabled: >
             E-posta takvim güncellemeleri devre dışı bırakılmıştır. Katılımcılar, katılımcı eklediğinizde veya çıkardığınızda onları bilgilendiren bir e-posta almayacaktır.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Katılımcı eklediğinizde veya çıkardığınızda tüm katılımcılar e-posta yoluyla güncellenmiş takvim davetiyeleri alacaktır.

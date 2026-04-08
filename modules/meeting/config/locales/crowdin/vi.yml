@@ -369,6 +369,8 @@ vi:
             Tất cả người tham gia sẽ nhận được lời mời lịch cập nhật qua email khi bạn thêm hoặc xóa người tham gia.
           disabled: >
             Cập nhật lịch email bị vô hiệu hóa. Người tham gia sẽ không nhận được email thông báo cho họ khi bạn thêm hoặc xóa người tham gia.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Tất cả người tham gia sẽ nhận được lời mời lịch cập nhật qua email khi bạn thêm hoặc xóa người tham gia.

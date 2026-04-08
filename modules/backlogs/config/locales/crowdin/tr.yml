@@ -39,6 +39,9 @@ tr:
         sprint_sharing: "Sprint sharing"
       sprint:
         duration: "Sprint süresi"
+      user_preference:
+        backlogs_task_color: "Task color"
+        backlogs_versions_default_fold_state: "Show sprints folded"
       work_package:
         backlogs_work_package_type: "Bekleme listesi türü"
         position: "Konum"
@@ -83,6 +86,7 @@ tr:
     task_type: "Görev türü"
   backlogs:
     any: "herhangi bir"
+    caption_sprints_default_fold_state: "Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded."
     column_width: "Sütun genişliği"
     definition_of_done: "Bitti Tanımı"
     definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
@@ -93,7 +97,6 @@ tr:
     label_versions_default_fold_state: "Katlanmış sürümleri göster"
     label_burndown_chart: "Burndown chart"
     label_sprint_board: "Sprint board"
-    caption_versions_default_fold_state: "Birikmiş işler görüntülenirken sürümler öntanımlı olarak genişletilmeyecektir. Her birinin ayrı ayrı genişletilmesi gerekir."
     work_package_is_closed: "İş paketi, ne zaman"
     label_is_done_status: "Durum %{status_name} tamamlandı anlamına geliyor"
     points_label:
@@ -149,7 +152,7 @@ tr:
     move_to_sprint_dialog_component:
       title: "Move to sprint"
       label_sprint: "Sprint"
-    sprint_planning:
+    backlog:
       blankslate:
         title: "No sprints present yet"
         description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
@@ -233,7 +236,7 @@ tr:
   label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Sprint Engelleri"
   label_sprint_new: "New sprint"
-  label_sprint_planning: "Sprint planning"
+  label_backlog_and_sprints: "Backlog and sprints"
   label_task_board: "Görev panosu"
   notice_successful_start: "The sprint was started."
   notice_successful_finish: "The sprint was completed."

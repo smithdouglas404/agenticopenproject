@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../../support/pages/sprint_planning"
+require_relative "../../support/pages/backlog"
 
 RSpec.describe "Dragging work packages in and between sprints",
                :js, :settings_reset, with_flag: { scrum_projects: true } do
@@ -66,7 +66,7 @@ RSpec.describe "Dragging work packages in and between sprints",
   let!(:sprint1_other_project_wp2) { create(:work_package, sprint: sprint1, type:, project: project2) }
   let!(:sprint1_other_project_wp3) { create(:work_package, sprint: sprint1, type:, project: project2) }
 
-  let(:backlogs_page) { Pages::SprintPlanning.new(project) }
+  let(:backlogs_page) { Pages::Backlog.new(project) }
 
   current_user do
     create(:user,
@@ -145,7 +145,7 @@ RSpec.describe "Dragging work packages in and between sprints",
   end
 
   context "in a shared sprint" do
-    let(:backlogs_page) { Pages::SprintPlanning.new(project2) }
+    let(:backlogs_page) { Pages::Backlog.new(project2) }
 
     it "displays work packages in correct order and allows dragging them around in a shared sprint" do
       backlogs_page

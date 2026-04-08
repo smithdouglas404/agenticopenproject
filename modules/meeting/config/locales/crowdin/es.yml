@@ -374,6 +374,8 @@ es:
             Todos los participantes recibirán por correo electrónico invitaciones actualizadas del calendario cuando usted añada o elimine participantes.
           disabled: >
             Las actualizaciones de calendario por correo electrónico están deshabilitadas. Los participantes no recibirán un correo electrónico informándoles cuando usted añada o elimine participantes.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Todos los participantes recibirán por correo electrónico invitaciones actualizadas del calendario cuando usted añada o elimine participantes.

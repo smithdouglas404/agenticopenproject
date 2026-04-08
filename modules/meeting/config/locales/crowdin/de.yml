@@ -374,6 +374,8 @@ de:
             Alle Teilnehmer erhalten aktualisierte Kalendereinladungen per E-Mail, wenn Sie Teilnehmer hinzufügen oder entfernen.
           disabled: >
             E-Mail-Kalenderaktualisierungen sind deaktiviert. Die Teilnehmer erhalten keine E-Mails bei Änderungen an der Teilnehmerliste.
+          draft_disabled: >
+            Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Alle Teilnehmer erhalten aktualisierte Kalendereinladungen per E-Mail, wenn Sie Teilnehmer hinzufügen oder entfernen.
