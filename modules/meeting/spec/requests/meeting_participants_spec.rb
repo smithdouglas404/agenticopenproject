@@ -248,10 +248,51 @@ RSpec.describe "MeetingParticipants requests",
   end
 
   describe "GET /meetings/:meeting_id/participants/manage_participants_dialog" do
+    let(:apply_to_upcoming_checkbox) { "meeting_participant[apply_to_upcoming]" }
+
     it "responds with the manage participants dialog" do
       get manage_participants_dialog_project_meeting_participants_path(project, meeting), as: :turbo_stream
 
       expect(response).to have_http_status(:ok)
+    end
+
+    context "for a one-time meeting" do
+      it "does not show the apply to upcoming checkbox" do
+        get manage_participants_dialog_project_meeting_participants_path(project, meeting), as: :turbo_stream
+
+        expect(response.body).not_to include(apply_to_upcoming_checkbox)
+      end
+    end
+
+    context "for a one-time template" do
+      let(:onetime_template) { create(:onetime_template, project:, author: user) }
+
+      it "does not show the apply to upcoming checkbox" do
+        get manage_participants_dialog_project_meeting_participants_path(project, onetime_template), as: :turbo_stream
+
+        expect(response.body).not_to include(apply_to_upcoming_checkbox)
+      end
+    end
+
+    context "for a series template" do
+      let(:recurring_meeting) { create(:recurring_meeting, project:, author: user) }
+
+      it "shows the apply to upcoming checkbox" do
+        get manage_participants_dialog_project_meeting_participants_path(project, recurring_meeting.template), as: :turbo_stream
+
+        expect(response.body).to include(apply_to_upcoming_checkbox)
+      end
+    end
+
+    context "for a series occurrence" do
+      let(:recurring_meeting) { create(:recurring_meeting, project:, author: user) }
+      let(:occurrence) { create(:meeting, project:, author: user, recurring_meeting:) }
+
+      it "does not show the apply to upcoming checkbox" do
+        get manage_participants_dialog_project_meeting_participants_path(project, occurrence), as: :turbo_stream
+
+        expect(response.body).not_to include(apply_to_upcoming_checkbox)
+      end
     end
   end
 
