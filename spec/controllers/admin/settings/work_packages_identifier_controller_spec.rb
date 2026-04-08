@@ -37,25 +37,25 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
   current_user { user }
 
   describe "PATCH #update" do
-    context "when identifier_mode is 'semantic'" do
+    context "when work_packages_identifier is 'semantic'" do
       it "enqueues ProjectIdentifiers::ConvertInstanceToSemanticIdsJob and redirects" do
         expect do
-          patch :update, params: { identifier_mode: "semantic" }
+          patch :update, params: { settings: { work_packages_identifier: "semantic" } }
         end.to have_enqueued_job(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
 
         expect(response).to redirect_to(action: "show")
       end
     end
 
-    context "when identifier_mode is 'classic'" do
+    context "when work_packages_identifier is 'classic'" do
       it "does not enqueue ProjectIdentifiers::ConvertInstanceToSemanticIdsJob" do
         expect do
-          patch :update, params: { identifier_mode: "classic" }
+          patch :update, params: { settings: { work_packages_identifier: "classic" } }
         end.not_to have_enqueued_job(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
       end
     end
 
-    context "when identifier_mode is missing or unknown" do
+    context "when work_packages_identifier is missing or unknown" do
       it "renders 400 without enqueuing a job" do
         expect do
           patch :update, params: {}

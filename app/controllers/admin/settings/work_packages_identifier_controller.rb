@@ -43,7 +43,7 @@ module Admin::Settings
     end
 
     def update
-      case params[:identifier_mode]
+      case params.dig(:settings, :work_packages_identifier)
       when Setting::WorkPackageIdentifier::SEMANTIC
         ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later
         redirect_to action: "show"
