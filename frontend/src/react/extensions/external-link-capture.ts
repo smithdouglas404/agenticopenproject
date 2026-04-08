@@ -59,8 +59,12 @@ export const ExternalLinkCaptureExtension = Extension.create({
               // and cannot be intercepted via JavaScript.
               if (event.button !== 0 && event.button !== 1) return false;
 
-              const link = (event.target as Element)?.closest?.('a');
+              const target = event.target instanceof Element
+                ? event.target
+                : (event.target as Node)?.parentElement;
+              const link = target?.closest('a');
               if (!link) return false;
+              if (!view.dom.contains(link)) return false;
               if (!isExternalLinkCandidate(link)) return false;
               if (!isLinkExternal(link)) return false;
               if (link.dataset.allowExternalLink) return false;
