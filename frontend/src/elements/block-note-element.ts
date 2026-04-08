@@ -30,6 +30,8 @@
 
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
+import { Application } from '@hotwired/stimulus';
+import ProseMirrorExternalLinksController from 'core-stimulus/controllers/prosemirror-external-links.controller';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { ShadowDomWrapper } from 'op-blocknote-extensions';
 import React from 'react';
@@ -41,6 +43,7 @@ class BlockNoteElement extends HTMLElement {
   private editorRoot:HTMLDivElement;
   private editorMount:HTMLDivElement;
   private reactRoot:Root|null = null;
+  private stimulusApp:Application|null = null;
   private renderCallback:((provider:HocuspocusProvider) => void) | null = null;
 
   constructor() {
@@ -61,6 +64,10 @@ class BlockNoteElement extends HTMLElement {
     }
 
     this.editorMount = document.createElement('div');
+
+    // Copy over definition for external-links handling
+    this.editorMount.dataset.controller = 'external-links';
+    this.editorMount.dataset.externalLinksEnabledValue = document.body.dataset.externalLinksEnabledValue;
 
     this.editorRoot.appendChild(this.editorMount);
     shadowRoot.appendChild(this.editorRoot);
@@ -86,6 +93,10 @@ class BlockNoteElement extends HTMLElement {
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
     if (!collaborationEnabled) return;
 
+    // Initialize Stimulus application within shadow DOM
+    this.stimulusApp = Application.start(this.editorRoot);
+    this.stimulusApp.register('external-links', ProseMirrorExternalLinksController);
+
     this.reactRoot = createRoot(this.editorMount);
 
     this.renderCallback = (provider:HocuspocusProvider) => {
@@ -107,6 +118,11 @@ class BlockNoteElement extends HTMLElement {
     if (this.reactRoot) {
       this.reactRoot.unmount();
       this.reactRoot = null;
+    }
+
+    if (this.stimulusApp) {
+      this.stimulusApp.stop();
+      this.stimulusApp = null;
     }
   }
 
