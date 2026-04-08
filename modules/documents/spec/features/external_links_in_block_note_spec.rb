@@ -100,6 +100,8 @@ RSpec.describe "External links in BlockNote editor",
             real_time_text_collaboration_enabled: true,
             capture_external_links: true
           } do
+    # Note: running with DevTools open (non-headless) inflates page.windows count.
+    # This test expects headless mode; run headless if window counts seem off.
     it "intercepts clicks on external links and redirects through /external_redirect" do
       editor.paste_links(text: "Captured Link", url: "https://example.com/page")
 
@@ -110,12 +112,12 @@ RSpec.describe "External links in BlockNote editor",
 
       original_window = page.current_window
       link.click
-      sleep 1
 
-      new_windows = page.windows - [original_window]
-      expect(new_windows.size).to eq(1), "Expected exactly 1 new window, got #{new_windows.size}"
+      # Wait for exactly one new window to open, verifying no double-open from TipTap + our handler
+      wait_for { page.windows.size }.to eq(2)
 
-      within_window new_windows.first do
+      new_window = (page.windows - [original_window]).first
+      within_window new_window do
         expect(page.current_url).to include("/external_redirect")
       end
     ensure
