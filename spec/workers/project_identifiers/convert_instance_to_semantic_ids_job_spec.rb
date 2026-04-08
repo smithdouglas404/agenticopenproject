@@ -128,14 +128,16 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
         let!(:project) { create(:project) }
         let!(:wp)      { create(:work_package, project:) }
 
-        it "does not flip the setting" do
-          job.perform(nil, { iteration: described_class::MAX_ITERATIONS })
+        it "raises and does not flip the setting" do
+          expect { job.perform(nil, { iteration: described_class::MAX_ITERATIONS }) }
+            .to raise_error(RuntimeError, /max iterations/)
           expect(Setting.work_packages_identifier).not_to eq(Setting::WorkPackageIdentifier::SEMANTIC)
         end
 
-        it "logs an error" do
+        it "logs an error before raising" do
           allow(Rails.logger).to receive(:error)
-          job.perform(nil, { iteration: described_class::MAX_ITERATIONS })
+          expect { job.perform(nil, { iteration: described_class::MAX_ITERATIONS }) }
+            .to raise_error(RuntimeError)
           expect(Rails.logger).to have_received(:error).with(a_string_including("max iterations"))
         end
       end
