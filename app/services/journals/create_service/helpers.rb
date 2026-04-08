@@ -39,7 +39,7 @@ class Journals::CreateService
 
     def journable_class_name = journable.class.base_class.name
 
-    def cleanup_predecessor_for(predecessor, notes, cause, table_name, column, referenced_id)
+    def delete_predecessor_for(predecessor, notes, cause, table_name, column, referenced_id)
       return "SELECT 1" unless predecessor
 
       sanitize(<<~SQL.squish, column => predecessor.send(referenced_id))

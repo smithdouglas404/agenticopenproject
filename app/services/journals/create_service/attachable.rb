@@ -34,13 +34,13 @@ class Journals::CreateService
       journable.respond_to?(:attachable?)
     end
 
-    def cleanup_predecessor(predecessor, notes, cause)
-      cleanup_predecessor_for(predecessor,
-                              notes,
-                              cause,
-                              "attachable_journals",
-                              :journal_id,
-                              :id)
+    def delete_predecessor(predecessor, notes, cause)
+      delete_predecessor_for(predecessor,
+                             notes,
+                             cause,
+                             "attachable_journals",
+                             :journal_id,
+                             :id)
     end
 
     def insert_sql
