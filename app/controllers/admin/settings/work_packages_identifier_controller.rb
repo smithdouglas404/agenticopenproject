@@ -44,16 +44,9 @@ module Admin::Settings
 
     def update
       case params.dig(:settings, :work_packages_identifier)
-      when Setting::WorkPackageIdentifier::SEMANTIC
-        ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later
-        redirect_to action: "show"
-      when Setting::WorkPackageIdentifier::CLASSIC
-        call = Settings::UpdateService.new(user: current_user)
-                                      .call(work_packages_identifier: Setting::WorkPackageIdentifier::CLASSIC)
-        call.on_success { redirect_to action: "show" }
-        call.on_failure { render_400 }
-      else
-        render_400
+      when Setting::WorkPackageIdentifier::SEMANTIC  then switch_to_semantic
+      when Setting::WorkPackageIdentifier::CLASSIC   then switch_to_classic
+      else                                                render_400
       end
     end
 
@@ -73,6 +66,18 @@ module Admin::Settings
     end
 
     private
+
+    def switch_to_semantic
+      ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later unless WorkPackages::IdentifierAutofix.job_in_progress?
+      redirect_to action: "show"
+    end
+
+    def switch_to_classic
+      call = Settings::UpdateService.new(user: current_user)
+                                    .call(work_packages_identifier: Setting::WorkPackageIdentifier::CLASSIC)
+      call.on_success { redirect_to action: "show" }
+      call.on_failure { render_400 }
+    end
 
     def check_feature_flag
       render_404 unless OpenProject::FeatureDecisions.semantic_work_package_ids_active?

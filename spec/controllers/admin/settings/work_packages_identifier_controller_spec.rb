@@ -45,6 +45,20 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
         expect(response).to redirect_to(action: "show")
       end
+
+      context "when a migration job is already in progress" do
+        before do
+          allow(WorkPackages::IdentifierAutofix).to receive(:job_in_progress?).and_return(true)
+        end
+
+        it "does not enqueue another job but still redirects" do
+          expect do
+            patch :update, params: { settings: { work_packages_identifier: "semantic" } }
+          end.not_to have_enqueued_job(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
+
+          expect(response).to redirect_to(action: "show")
+        end
+      end
     end
 
     context "when work_packages_identifier is 'classic'" do
