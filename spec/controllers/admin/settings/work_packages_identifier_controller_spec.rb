@@ -37,29 +37,28 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
   current_user { user }
 
   describe "PATCH #update" do
-    context "when autofix is requested" do
+    context "when identifier_mode is 'semantic'" do
       it "enqueues ProjectIdentifiers::ConvertInstanceToSemanticIdsJob and redirects" do
         expect do
-          patch :update, params: { settings: {}, confirm_dangerous_action: "1" }
-          puts "\nResponse status: #{response.status}, body: #{response.body[0..200]}"
+          patch :update, params: { identifier_mode: "semantic" }
         end.to have_enqueued_job(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
 
         expect(response).to redirect_to(action: "show")
       end
     end
 
-    context "when autofix is not requested" do
+    context "when identifier_mode is 'classic'" do
       it "does not enqueue ProjectIdentifiers::ConvertInstanceToSemanticIdsJob" do
         expect do
-          patch :update, params: { settings: {}, confirm_dangerous_action: "0" }
+          patch :update, params: { identifier_mode: "classic" }
         end.not_to have_enqueued_job(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
       end
     end
 
-    context "when settings param is missing" do
+    context "when identifier_mode is missing or unknown" do
       it "renders 400 without enqueuing a job" do
         expect do
-          patch :update, params: { confirm_dangerous_action: "1" }
+          patch :update, params: {}
         end.not_to have_enqueued_job(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
 
         expect(response).to have_http_status(:bad_request)

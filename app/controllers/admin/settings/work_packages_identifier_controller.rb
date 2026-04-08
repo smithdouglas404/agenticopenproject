@@ -43,13 +43,17 @@ module Admin::Settings
     end
 
     def update
-      return render_400 unless params[:settings]
-
-      if autofix_requested?
+      case params[:identifier_mode]
+      when Setting::WorkPackageIdentifier::SEMANTIC
         ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later
         redirect_to action: "show"
+      when Setting::WorkPackageIdentifier::CLASSIC
+        call = Settings::UpdateService.new(user: current_user)
+                                      .call(work_packages_identifier: Setting::WorkPackageIdentifier::CLASSIC)
+        call.on_success { redirect_to action: "show" }
+        call.on_failure { render_400 }
       else
-        super
+        render_400
       end
     end
 
@@ -74,8 +78,5 @@ module Admin::Settings
       render_404 unless OpenProject::FeatureDecisions.semantic_work_package_ids_active?
     end
 
-    def autofix_requested?
-      ActiveRecord::Type::Boolean.new.cast(params[:confirm_dangerous_action])
-    end
   end
 end
