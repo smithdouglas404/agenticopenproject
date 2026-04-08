@@ -80,6 +80,7 @@ module Backlogs
 
     def draggable_item_config(story)
       {
+        generic_drag_and_drop_target: "draggable",
         draggable_id: story.id,
         draggable_type: "story",
         drop_url: move_legacy_backlogs_project_sprint_story_path(project, sprint, story)

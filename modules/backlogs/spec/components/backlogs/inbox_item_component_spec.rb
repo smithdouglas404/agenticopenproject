@@ -77,6 +77,16 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
       expect(row["data-controller"]).to eq("backlogs--story")
     end
 
+    it "marks the row as an explicit generic drag-and-drop draggable target" do
+      expect(row["data-generic-drag-and-drop-target"]).to eq("draggable")
+    end
+
+    it "sets generic drag-and-drop source metadata" do
+      expect(row["data-draggable-id"]).to eq(work_package.id.to_s)
+      expect(row["data-draggable-type"]).to eq("story")
+      expect(row["data-drop-url"]).to end_with(move_project_inbox_path(project, work_package))
+    end
+
     it "sets the split-view and full-view URLs for the story controller" do
       expect(row["data-backlogs--story-split-url-value"])
         .to end_with(details_backlogs_project_backlogs_path(project, work_package))
