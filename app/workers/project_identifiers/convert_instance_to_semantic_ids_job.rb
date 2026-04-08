@@ -69,10 +69,12 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
   end
 
   def abort_with_error(remaining_count)
-    Rails.logger.error(
+    message =
       "#{self.class.name}: reached max iterations (#{MAX_ITERATIONS}) with " \
       "#{remaining_count} project(s) still unprocessed — aborting flip, manual intervention required"
-    )
+
+    Rails.logger.error(message)
+    raise message
   end
 
   def project_ids_needing_backfill
