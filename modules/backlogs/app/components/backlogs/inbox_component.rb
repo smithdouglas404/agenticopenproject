@@ -38,16 +38,15 @@ module Backlogs
     FIRST_PAGE_SIZE = 50
     LAST_PAGE_SIZE = 10
 
-    attr_reader :work_packages, :project, :current_user, :show_all, :open_sprints_exist
+    attr_reader :work_packages, :project, :current_user, :show_all
 
-    def initialize(work_packages:, project:, open_sprints_exist:, show_all: false, current_user: User.current, **system_arguments)
+    def initialize(work_packages:, project:, show_all: false, current_user: User.current, **system_arguments)
       super()
 
       @work_packages = work_packages
       @project = project
       @show_all = show_all
       @current_user = current_user
-      @open_sprints_exist = open_sprints_exist
 
       @system_arguments = system_arguments
       @system_arguments[:id] = inbox_dom_id
@@ -99,10 +98,6 @@ module Backlogs
         target_id: "inbox",
         target_allowed_drag_type: "story"
       }
-    end
-
-    def max_position
-      work_packages.maximum(:position)
     end
   end
 end

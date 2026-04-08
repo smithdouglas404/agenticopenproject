@@ -55,6 +55,7 @@ Rails.application.routes.draw do
 
       resources :inbox, only: [] do
         member do
+          get :menu
           put :move
           post :reorder
           get :move_to_sprint_dialog
@@ -99,6 +100,7 @@ Rails.application.routes.draw do
 
         resources :stories, controller: :rb_stories, only: [] do
           member do
+            get :menu
             put :move_legacy
             post :reorder
           end

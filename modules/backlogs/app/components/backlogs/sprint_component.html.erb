@@ -49,7 +49,7 @@ See COPYRIGHT and LICENSE files for more details.
            data: story_data_attribute(story),
            tabindex: 0
          ) do %>
-        <%= render(Backlogs::StoryComponent.new(story:, sprint:, project:, max_position:)) %>
+        <%= render(Backlogs::StoryComponent.new(story:, sprint:, project:)) %>
       <% end %>
     <% end %>
   <% end %>

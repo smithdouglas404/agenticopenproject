@@ -70,10 +70,9 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
   end
 
   describe "standard items" do
-    it "renders stable ids for the action menu and primary actions" do
+    it "renders stable ids for the list and primary actions" do
       render_component
 
-      expect(page).to have_element(:button, id: /\Awork_package_#{work_package.id}_menu-button\z/)
       expect(page).to have_element(:ul, id: /\Awork_package_#{work_package.id}_menu-list\z/)
       expect(page).to have_element(:a, id: /\Awork_package_#{work_package.id}_menu_open_details\z/)
       expect(page).to have_element(:a, id: /\Awork_package_#{work_package.id}_menu_open_fullscreen\z/)

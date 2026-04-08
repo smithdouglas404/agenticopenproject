@@ -66,10 +66,9 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
   end
 
   describe "standard items" do
-    it "renders stable ids for the action menu and primary actions" do
+    it "renders stable ids for the list and primary actions" do
       render_component
 
-      expect(page).to have_element(:button, id: /\Astory_#{story.id}_menu-button\z/)
       expect(page).to have_element(:ul, id: /\Astory_#{story.id}_menu-list\z/)
       expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_details\z/)
       expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_fullscreen\z/)

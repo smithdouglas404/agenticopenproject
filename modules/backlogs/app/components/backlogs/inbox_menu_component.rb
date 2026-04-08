@@ -29,27 +29,25 @@
 #++
 
 module Backlogs
+  # Renders Primer::Alpha::ActionMenu::List for the deferred menu (InboxController#menu).
+  # +menu_id+ must match the row ActionMenu in InboxItemComponent.
   class InboxMenuComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
     attr_reader :work_package, :project, :max_position, :current_user, :open_sprints_exist
 
-    def initialize(work_package:, project:, max_position:, open_sprints_exist:, current_user: User.current, **system_arguments)
+    def initialize(work_package:, project:, max_position:, open_sprints_exist:, current_user: User.current)
       super()
 
       @work_package = work_package
       @project = project
-      @max_position = max_position
       @current_user = current_user
+      @max_position = max_position
       @open_sprints_exist = open_sprints_exist
+    end
 
-      @system_arguments = system_arguments
-      @system_arguments[:menu_id] = dom_target(work_package, :menu)
-      @system_arguments[:anchor_align] = :end
-      @system_arguments[:classes] = class_names(
-        @system_arguments[:classes],
-        "hide-when-print"
-      )
+    def menu_id
+      dom_target(work_package, :menu)
     end
 
     private
@@ -60,7 +58,7 @@ module Backlogs
 
     def show_move_items?
       allowed_to_manage_sprint_items? &&
-      !(first_item? && last_item?)
+        !(first_item? && last_item?)
     end
 
     def show_move_to_sprint?

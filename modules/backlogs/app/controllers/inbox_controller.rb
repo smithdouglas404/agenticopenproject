@@ -34,6 +34,21 @@ class InboxController < RbApplicationController
   before_action :not_authorized_on_feature_flag_inactive
   before_action :load_work_package
 
+  # Deferred ActionMenu items (Primer include-fragment).
+  def menu
+    max_position = Backlog.inbox_for(project: @project).maximum(:position) || 0
+    open_sprints_exist = Agile::Sprint.for_project(@project).visible.not_completed.exists?
+
+    render(Backlogs::InboxMenuComponent.new(
+             work_package: @work_package,
+             project: @project,
+             max_position:,
+             open_sprints_exist:,
+             current_user:
+           ),
+           layout: false)
+  end
+
   def move_to_sprint_dialog
     respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(
       work_package: @work_package,
@@ -79,8 +94,7 @@ class InboxController < RbApplicationController
     replace_via_turbo_stream(
       component: Backlogs::InboxComponent.new(
         work_packages:,
-        project: @project,
-        open_sprints_exist: true
+        project: @project
       ),
       method: :morph
     )

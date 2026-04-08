@@ -40,14 +40,12 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
 
   let(:work_packages) { WorkPackage.none }
   let(:show_all) { false }
-  let(:open_sprints_exist) { true }
 
   def render_component(**extra)
     render_inline(
       described_class.new(
         work_packages:,
         project:,
-        open_sprints_exist:,
         current_user: user,
         **extra
       )

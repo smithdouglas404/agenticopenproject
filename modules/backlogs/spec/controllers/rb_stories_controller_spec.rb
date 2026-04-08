@@ -334,4 +334,25 @@ RSpec.describe RbStoriesController do
       end
     end
   end
+
+  describe "GET #menu" do
+    subject do
+      get :menu, params: { project_id: project.id, sprint_id: version_sprint.id, id: story.id }, format: :html
+    end
+
+    it "returns deferred action menu list HTML", :aggregate_failures do
+      subject
+      expect(response).to have_http_status :ok
+      expect(response.body).to include(I18n.t(:"js.button_open_details"))
+    end
+
+    context "with a user lacking project permission" do
+      let(:user) { create(:user) }
+
+      it "responds with 404" do
+        subject
+        expect(response).to have_http_status :not_found
+      end
+    end
+  end
 end
