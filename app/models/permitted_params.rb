@@ -199,10 +199,6 @@ class PermittedParams
     params.require(:placeholder_user).permit(*self.class.permitted_attributes[:placeholder_user])
   end
 
-  def my_account_settings
-    user.merge(pref:)
-  end
-
   def user_register_via_omniauth
     permitted_params = params
       .require(:user)
