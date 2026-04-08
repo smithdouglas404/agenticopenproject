@@ -67,7 +67,7 @@ Rails.application.routes.draw do
   get "/wp(/)" => redirect("#{rails_relative_url_root}/work_packages")
   get "/wp/*rest" => redirect { |params, _req|
     "#{rails_relative_url_root}/work_packages/#{URI::RFC2396_Parser.new.escape(params[:rest])}"
-  }
+  }, as: :work_package_short
 
   # Add catch method for Rack OmniAuth to allow route helpers
   # Note: This renders a 404 in rails but is caught by omniauth in Rack before
