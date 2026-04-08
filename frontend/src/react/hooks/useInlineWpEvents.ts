@@ -31,9 +31,8 @@
 import { useEffect } from 'react';
 import type { BlockNoteEditor, InlineContentFromConfig } from '@blocknote/core';
 import { wpBridge, makeInstanceId } from 'op-blocknote-extensions';
-import type { InlineWpSize } from 'op-blocknote-extensions';
+import type { InlineWpSize, BlockWpSize, WpSize } from 'op-blocknote-extensions';
 
-//Uses `any` generics this hook is schema-agnostic by design.
 type AnyEditor = BlockNoteEditor<any, any, any>;
 type AnyInlineNode = InlineContentFromConfig<any, any>;
 
@@ -41,18 +40,17 @@ interface InlineWpNode {
   type:'inlineWorkPackage';
   props:{
     wpid:string;
-    // instanceId MUST be globally unique per document
     instanceId:string;
     size:InlineWpSize;
   };
-  content:unknown[];
+  content: AnyInlineNode[];
 }
 
-// Must match InlineWpSize union update both if sizes change
-const VALID_SIZES:Set<InlineWpSize> = new Set(['xxs', 'xs', 's', 'm']);
+const VALID_INLINE_SIZES:Set<InlineWpSize> = new Set(['xxs', 'xs', 's']);
 
 function isInlineWpNode(node:unknown): node is InlineWpNode {
   if (typeof node !== 'object' || node === null) return false;
+
   const n = node as Record<string, unknown>;
   if (n['type'] !== 'inlineWorkPackage') return false;
 
@@ -63,7 +61,7 @@ function isInlineWpNode(node:unknown): node is InlineWpNode {
   return (
     typeof p['instanceId'] === 'string' &&
     typeof p['wpid'] === 'string' &&
-    typeof p['size'] === 'string' && VALID_SIZES.has(p['size'] as InlineWpSize)
+    VALID_INLINE_SIZES.has(p['size'] as InlineWpSize)
   );
 }
 
@@ -85,9 +83,8 @@ function findInlineChip(editor:AnyEditor, instanceId:string):FoundInlineBlock | 
 
     const content = (block.content ?? []) as AnyInlineNode[];
     const chip = content.find(
-      (node):node is AnyInlineNode & InlineWpNode =>
-        isInlineWpNode(node) && node.props.instanceId === instanceId
-    );
+      (node) => isInlineWpNode(node) && node.props.instanceId === instanceId
+    ) as InlineWpNode | undefined;
 
     if (chip) {
       found = { blockId:block.id, content, chip };
@@ -120,7 +117,7 @@ function updateInlineChip(
     return acc;
   }, []);
 
-  editor.updateBlock(found.blockId, { content:updatedContent } as any);
+  editor.updateBlock(found.blockId, { content:updatedContent });
   return found;
 }
 
@@ -131,7 +128,11 @@ function moveCursorAfter(editor:AnyEditor, blockId:string):void {
 
     const cursor = editor.getTextCursorPosition();
     if (!cursor?.nextBlock && cursor?.block) {
-      editor.insertBlocks([{ type: 'paragraph', content:[] }], cursor.block.id, 'after');
+      editor.insertBlocks(
+        [{ type:'paragraph', content:[] }],
+        cursor.block.id,
+        'after'
+      );
     }
 
     const updated = editor.getTextCursorPosition();
@@ -141,14 +142,17 @@ function moveCursorAfter(editor:AnyEditor, blockId:string):void {
   });
 }
 
-function handleResize(editor:AnyEditor, instanceId:string, size:InlineWpSize):void {
-  if (size === 'm') {
-    handlePromoteToBlock(editor, instanceId);
+function handleResize(editor:AnyEditor, instanceId:string, size:WpSize):void {
+  const isBlockSize = size === 'm' || size === 'l' || size === 'xl';
+
+  if (isBlockSize) {
+    handlePromoteToBlock(editor, instanceId, size as BlockWpSize);
     return;
   }
+
   updateInlineChip(editor, instanceId, (chip) => ({
     ...chip,
-    props:{ ...chip.props, size },
+    props:{ ...chip.props, size:size as InlineWpSize },
   }));
 }
 
@@ -156,7 +160,11 @@ function handleDelete(editor:AnyEditor, instanceId:string):void {
   updateInlineChip(editor, instanceId, () => null);
 }
 
-function handlePromoteToBlock(editor:AnyEditor, instanceId:string):void {
+function handlePromoteToBlock(
+  editor:AnyEditor,
+  instanceId:string,
+  size:BlockWpSize = 'm'
+):void {
   const found = findInlineChip(editor, instanceId);
   if (!found) return;
 
@@ -166,8 +174,13 @@ function handlePromoteToBlock(editor:AnyEditor, instanceId:string):void {
 
   updateInlineChip(editor, instanceId, () => null);
 
+  const block = {
+    type:'openProjectWorkPackage',
+    props:{ wpid, initialized:true, size },
+  } as Parameters<typeof editor.insertBlocks>[0][number];
+
   const [insertedBlock] = editor.insertBlocks(
-    [{ type:'openProjectWorkPackage', props: { wpid, initialized:true } } as any],
+    [block],
     found.blockId,
     'after'
   );
@@ -177,21 +190,29 @@ function handlePromoteToBlock(editor:AnyEditor, instanceId:string):void {
   }
 }
 
-function handleConvertToInline(editor: AnyEditor, wpid: number, size: InlineWpSize, blockId: string): void {
+function handleConvertToInline(
+  editor:AnyEditor,
+  wpid:number,
+  size:InlineWpSize,
+  blockId:string
+):void {
   const block = editor.getBlock(blockId);
   if (!block) return;
 
   const instanceId = makeInstanceId();
 
-  const [insertedParagraph] = editor.insertBlocks(
-    [
+  const paragraph = {
+    type:'paragraph',
+    content:[
       {
-        type: 'paragraph',
-        content: [
-          { type: 'inlineWorkPackage', props: { wpid: String(wpid), instanceId, size } },
-        ],
-      } as any,
+        type:'inlineWorkPackage',
+        props:{ wpid:String(wpid), instanceId, size },
+      },
     ],
+  } as Parameters<typeof editor.insertBlocks>[0][number];
+
+  const [insertedParagraph] = editor.insertBlocks(
+    [paragraph],
     blockId,
     'before'
   );
@@ -208,11 +229,18 @@ function handleConvertToInline(editor: AnyEditor, wpid: number, size: InlineWpSi
 // editor instance is stable for the lifetime of the component re-subscription only on editor replacement
 export function useInlineWpEvents(editor: AnyEditor):void {
   useEffect(() => {
-    const offResize = wpBridge.onResize(({ instanceId, size }) => handleResize(editor, instanceId, size));
-    const offDelete = wpBridge.onDelete(({ instanceId }) => handleDelete(editor, instanceId));
-    const offToInline = wpBridge.onConvertToInline(({ wpid, size, blockId }) => 
-  handleConvertToInline(editor, wpid, size, blockId)
-);
+    const offResize = wpBridge.onResize(({ instanceId, size }) =>
+      handleResize(editor, instanceId, size)
+    );
+
+    const offDelete = wpBridge.onDelete(({ instanceId }) =>
+      handleDelete(editor, instanceId)
+    );
+
+    const offToInline = wpBridge.onConvertToInline(({ wpid, size, blockId }) =>
+      handleConvertToInline(editor, wpid, size, blockId)
+    );
+
     return () => {
       offResize();
       offDelete();
