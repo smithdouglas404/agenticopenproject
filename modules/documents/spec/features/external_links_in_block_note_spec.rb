@@ -78,11 +78,17 @@ RSpec.describe "External links in BlockNote editor",
     expect(link[:rel]).to include("noreferrer")
   end
 
-  it "does not set aria-describedby inside contenteditable to avoid ProseMirror re-render loop" do
+  it "sets aria-describedby on external links for screen reader accessibility" do
     editor.paste_links(text: "Accessible Link", url: "https://example.com")
 
-    link = editor.shadow_root.find("a[target='_blank']", text: "Accessible Link", wait: 5)
-    expect(link[:"aria-describedby"]).to be_nil.or eq("")
+    # ProseMirror inline decorations wrap the text node in a <span> with the
+    # attribute, rather than adding it to the <a> element (which is rendered
+    # by the link mark). The screen reader hint is on the link's text content.
+    editor.shadow_root.find(
+      "a[target='_blank'] [aria-describedby='open-blank-target-link-description']",
+      text: "Accessible Link",
+      wait: 5
+    )
   end
 
   it_behaves_like "does not freeze when pasting multiple external links"

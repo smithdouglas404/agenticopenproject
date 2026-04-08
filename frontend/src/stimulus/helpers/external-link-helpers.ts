@@ -42,18 +42,27 @@ export function isLinkBlank(link:HTMLAnchorElement) {
 }
 
 /**
+ * Returns true when the given href string points to a different origin than
+ * the current page. Works with plain URL strings (e.g. from ProseMirror mark
+ * attrs) where no HTMLAnchorElement is available.
+ */
+export function isHrefExternal(href:string):boolean {
+  try {
+    const linkUrl = new URL(href, window.location.origin);
+    return linkUrl.origin !== window.location.origin;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Returns true when the link points to a different origin than the current page.
  * External links receive special treatment for security (noopener/noreferrer)
  * and, when capture is enabled, are routed through `/external_redirect` for
  * phishing prevention.
  */
 export function isLinkExternal(link:HTMLAnchorElement) {
-  try {
-    const linkUrl = new URL(link.href, window.location.origin);
-    return linkUrl.origin !== window.location.origin;
-  } catch {
-    return false;
-  }
+  return isHrefExternal(link.href);
 }
 
 /**

@@ -29,6 +29,7 @@
  */
 
 import { BlockNoteEditorOptions, BlockNoteSchema } from '@blocknote/core';
+import { ExternalLinkA11yExtension } from '../extensions/external-link-a11y';
 import { ExternalLinkCaptureExtension } from '../extensions/external-link-capture';
 import { User } from '@blocknote/core/comments';
 import { filterSuggestionItems } from '@blocknote/core/extensions';
@@ -104,13 +105,12 @@ export function OpBlockNoteEditor({
       },
       dictionary: localeDictionary,
       ...(attachmentsEnabled && { uploadFile }),
-      // When external link capture is enabled, intercept clicks on external
-      // links via a ProseMirror plugin and route through /external_redirect.
-      ...(captureExternalLinks && {
-        _tiptapOptions: {
-          extensions: [ExternalLinkCaptureExtension],
-        },
-      }),
+      _tiptapOptions: {
+        extensions: [
+          ExternalLinkA11yExtension,
+          ...(captureExternalLinks ? [ExternalLinkCaptureExtension] : []),
+        ],
+      },
     };
   }, [hocuspocusProvider, doc, activeUser, localeDictionary, attachmentsEnabled, uploadFile, captureExternalLinks]);
 
