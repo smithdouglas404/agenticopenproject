@@ -45,10 +45,15 @@ export function isLinkBlank(link:HTMLAnchorElement) {
  * Returns true when the given href string points to a different origin than
  * the current page. Works with plain URL strings (e.g. from ProseMirror mark
  * attrs) where no HTMLAnchorElement is available.
+ *
+ * Only considers http/https URLs — non-web protocols (mailto:, tel:,
+ * javascript:, etc.) return false because they don't navigate to an
+ * external origin.
  */
 export function isHrefExternal(href:string):boolean {
   try {
     const linkUrl = new URL(href, window.location.origin);
+    if (!linkUrl.protocol.startsWith('http')) return false;
     return linkUrl.origin !== window.location.origin;
   } catch {
     return false;
