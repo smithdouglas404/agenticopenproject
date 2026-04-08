@@ -58,12 +58,13 @@ export function isLinkExternal(link:HTMLAnchorElement) {
 
 /**
  * Returns true when the link is eligible for external-link processing.
- * Links with empty hrefs (e.g. anchor-only) and download links are never
- * rewritten or intercepted.
+ * Links with empty hrefs (e.g. anchor-only), download links, and non-web
+ * protocols (mailto:, tel:, javascript:, etc.) are never rewritten or intercepted.
  */
 export function isExternalLinkCandidate(link:HTMLAnchorElement) {
   const href = link.href || '';
   if (href === '' || link.hasAttribute('download')) return false;
+  if (!link.protocol.startsWith('http')) return false;
   return true;
 }
 

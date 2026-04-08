@@ -63,7 +63,7 @@ export const ExternalLinkCaptureExtension = Extension.create({
                 ? event.target
                 : (event.target as Node)?.parentElement;
               const link = target?.closest('a');
-              if (!link) return false;
+              if (!(link instanceof HTMLAnchorElement)) return false;
               if (!view.dom.contains(link)) return false;
               if (!isExternalLinkCandidate(link)) return false;
               if (!isLinkExternal(link)) return false;

@@ -59,16 +59,17 @@ module FormFields
       #     { text: "Two", url: "https://two.com" }
       #   )
       def paste_links(*links)
-        element.click
+        el = element
+        el.click
 
         html = links.map { |l| %(<a href="#{l[:url]}">#{l[:text]}</a>) }.join(" ")
         plain = links.pluck(:text).join(" ")
 
-        page.execute_script(<<~JS, html, plain)
-          const el = document.querySelector('op-block-note').shadowRoot.querySelector('div[role="textbox"]');
+        page.execute_script(<<~JS, el.native, html, plain)
+          const el = arguments[0];
           const dt = new DataTransfer();
-          dt.setData('text/html', arguments[0]);
-          dt.setData('text/plain', arguments[1]);
+          dt.setData('text/html', arguments[1]);
+          dt.setData('text/plain', arguments[2]);
           el.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
         JS
       end
