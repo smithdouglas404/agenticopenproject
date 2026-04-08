@@ -37,8 +37,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                ] do
   subject(:job) { described_class.new }
 
-  # Simulate legacy (classic) mode — the job runs before flipping the switch.
-  # In this mode the WP after_create hook does not auto-assign sequence numbers,
+  # Simulate legacy (classic) mode — the WP after_create hook does not auto-assign sequence numbers,
   # so WPs start with sequence_number: nil and identifier: nil.
   before do
     allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: false, classic?: true)
@@ -77,6 +76,68 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
           .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
           .map { |j| j.serialized_params.dig("arguments", 0) }
         expect(enqueued_ids).not_to include(project_without_wp.id)
+      end
+    end
+
+    # Callback path — invoked by GoodJob as an on_success batch callback after BackfillProjectJobs finish.
+    context "when called as a batch callback (iteration >= 1)" do
+      context "when no projects or work packages remain unprocessed" do
+        it "flips the setting to semantic" do
+          job.perform(nil, {})
+          expect(Setting.work_packages_identifier).to eq(Setting::WorkPackageIdentifier::SEMANTIC)
+        end
+      end
+
+      context "when work packages with sequence_number: nil remain" do
+        let!(:project) { create(:project) }
+        let!(:wp)      { create(:work_package, project:) }
+
+        before { job.perform(nil, {}) }
+
+        it "does not flip the setting" do
+          expect(Setting.work_packages_identifier).not_to eq(Setting::WorkPackageIdentifier::SEMANTIC)
+        end
+
+        it "re-enqueues a BackfillProjectJob for the project with unprocessed work packages" do
+          enqueued_ids = GoodJob::Job
+            .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
+            .map { |j| j.serialized_params.dig("arguments", 0) }
+          expect(enqueued_ids).to include(project.id)
+        end
+      end
+
+      context "when a project has a problematic identifier" do
+        let!(:project) { create(:project).tap { |p| p.update_columns(identifier: "has-dashes") } }
+        let!(:wp)      { create(:work_package, project:) }
+
+        before { job.perform(nil, {}) }
+
+        it "does not flip the setting" do
+          expect(Setting.work_packages_identifier).not_to eq(Setting::WorkPackageIdentifier::SEMANTIC)
+        end
+
+        it "re-enqueues a BackfillProjectJob for the problematic project" do
+          enqueued_ids = GoodJob::Job
+            .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
+            .map { |j| j.serialized_params.dig("arguments", 0) }
+          expect(enqueued_ids).to include(project.id)
+        end
+      end
+
+      context "when remaining items exist but MAX_ITERATIONS has been reached" do
+        let!(:project) { create(:project) }
+        let!(:wp)      { create(:work_package, project:) }
+
+        it "does not flip the setting" do
+          job.perform(nil, { "iteration" => described_class::MAX_ITERATIONS })
+          expect(Setting.work_packages_identifier).not_to eq(Setting::WorkPackageIdentifier::SEMANTIC)
+        end
+
+        it "logs an error" do
+          allow(Rails.logger).to receive(:error)
+          job.perform(nil, { "iteration" => described_class::MAX_ITERATIONS })
+          expect(Rails.logger).to have_received(:error).with(a_string_including("max iterations"))
+        end
       end
     end
   end
