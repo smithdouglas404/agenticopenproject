@@ -213,7 +213,7 @@ class RbSprintsController < RbApplicationController
 
     # Find the correct position by comparing dates with existing sprints
     sprints = Agile::Sprint.displayable_in_project(@project)
-    sprint_index = sprints.index { |s| s.id == sprint.id }
+    sprint_index = sprints.index(sprint)
 
     action, target = if sprint_index.nil? || sprint_index == sprints.length - 1
                        # Sprint is last or not found in ordered list, append to end
