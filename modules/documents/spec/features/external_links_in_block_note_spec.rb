@@ -108,20 +108,15 @@ RSpec.describe "External links in BlockNote editor",
       expect(link.native.property("href")).to include("example.com/page")
       expect(link.native.property("href")).not_to include("/external_redirect")
 
-      # Click opens /external_redirect in a new window
       original_window = page.current_window
       link.click
       sleep 1
 
-      redirect_window = page.windows.find do |w|
-        page.within_window(w) { page.current_url.include?("/external_redirect") }
-      rescue StandardError
-        false
-      end
+      new_windows = page.windows - [original_window]
+      expect(new_windows.size).to eq(1), "Expected exactly 1 new window, got #{new_windows.size}"
 
-      expect(redirect_window).not_to be_nil
-      within_window redirect_window do
-        expect(page.current_url).to include("example.com")
+      within_window new_windows.first do
+        expect(page.current_url).to include("/external_redirect")
       end
     ensure
       (page.windows - [original_window]).each { |w| w.close rescue nil } # rubocop:disable Style/RescueModifier
