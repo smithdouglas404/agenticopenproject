@@ -80,9 +80,9 @@ RSpec.describe "Create", :js do
         planning_page.open_create_sprint_dialog
 
         within_dialog "New sprint" do
-          page.fill_in "Sprint name", with: "Created sprint"
-          page.fill_in "Start date", with: start_date_fmt
-          page.fill_in "Finish date", with: finish_date_fmt
+          fill_in "Sprint name", with: "Created sprint"
+          fill_in "Start date", with: start_date_fmt
+          fill_in "Finish date", with: finish_date_fmt
 
           click_on "Create"
         end
@@ -114,9 +114,9 @@ RSpec.describe "Create", :js do
           planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
-            page.fill_in "Sprint name", with: "Sprint 0 (Earliest)"
-            page.fill_in "Start date", with: "2024-12-01"
-            page.fill_in "Finish date", with: "2024-12-15"
+            fill_in "Sprint name", with: "Sprint 0 (Earliest)"
+            fill_in "Start date", with: "2024-12-01"
+            fill_in "Finish date", with: "2024-12-15"
 
             click_on "Create"
           end
@@ -133,9 +133,9 @@ RSpec.describe "Create", :js do
           planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
-            page.fill_in "Sprint name", with: "Sprint 2 (Middle)"
-            page.fill_in "Start date", with: "2025-02-01"
-            page.fill_in "Finish date", with: "2025-02-15"
+            fill_in "Sprint name", with: "Sprint 2 (Middle)"
+            fill_in "Start date", with: "2025-02-01"
+            fill_in "Finish date", with: "2025-02-15"
 
             click_on "Create"
           end
@@ -152,9 +152,9 @@ RSpec.describe "Create", :js do
           planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
-            page.fill_in "Sprint name", with: "Sprint 4 (Latest)"
-            page.fill_in "Start date", with: "2025-10-01"
-            page.fill_in "Finish date", with: "2025-10-15"
+            fill_in "Sprint name", with: "Sprint 4 (Latest)"
+            fill_in "Start date", with: "2025-10-01"
+            fill_in "Finish date", with: "2025-10-15"
 
             click_on "Create"
           end
@@ -170,9 +170,9 @@ RSpec.describe "Create", :js do
           planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
-            page.fill_in "Sprint name", with: "Sprint 1.5 (Earlier finish)"
-            page.fill_in "Start date", with: "2025-01-01"
-            page.fill_in "Finish date", with: "2025-01-10"
+            fill_in "Sprint name", with: "Sprint 1.5 (Earlier finish)"
+            fill_in "Start date", with: "2025-01-01"
+            fill_in "Finish date", with: "2025-01-10"
 
             click_on "Create"
           end
@@ -191,8 +191,8 @@ RSpec.describe "Create", :js do
         within_dialog "New sprint" do
           expect(page).to have_field "Duration", with: "", readonly: true
 
-          page.fill_in "Start date", with: start_date_fmt
-          page.fill_in "Finish date", with: finish_date_fmt
+          fill_in "Start date", with: start_date_fmt
+          fill_in "Finish date", with: finish_date_fmt
 
           expect(page).to have_field "Duration", with: "16 days", readonly: true
         end
@@ -207,7 +207,7 @@ RSpec.describe "Create", :js do
           planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
-            page.fill_in "Sprint name", with: ""
+            fill_in "Sprint name", with: ""
 
             click_on "Create"
 
@@ -223,8 +223,8 @@ RSpec.describe "Create", :js do
           planning_page.open_create_sprint_dialog
 
           within_dialog "New sprint" do
-            page.fill_in "Start date", with: start_date_fmt
-            page.fill_in "Finish date", with: too_early_finish_date.strftime("%Y-%m-%d")
+            fill_in "Start date", with: start_date_fmt
+            fill_in "Finish date", with: too_early_finish_date.strftime("%Y-%m-%d")
 
             # Shows duration as zero if finish date is before start date:
             expect(page).to have_field "Duration", with: "0 days", readonly: true
