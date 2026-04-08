@@ -129,14 +129,26 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
         let!(:wp)      { create(:work_package, project:) }
 
         it "does not flip the setting" do
-          job.perform(nil, { "iteration" => described_class::MAX_ITERATIONS })
+          job.perform(nil, { iteration: described_class::MAX_ITERATIONS })
           expect(Setting.work_packages_identifier).not_to eq(Setting::WorkPackageIdentifier::SEMANTIC)
         end
 
         it "logs an error" do
           allow(Rails.logger).to receive(:error)
-          job.perform(nil, { "iteration" => described_class::MAX_ITERATIONS })
+          job.perform(nil, { iteration: described_class::MAX_ITERATIONS })
           expect(Rails.logger).to have_received(:error).with(a_string_including("max iterations"))
+        end
+      end
+
+      context "when remaining items exist and iteration is below MAX_ITERATIONS" do
+        let!(:project) { create(:project) }
+        let!(:wp)      { create(:work_package, project:) }
+
+        it "increments iteration by 1 in on_success_params for the next batch" do
+          allow(GoodJob::Batch).to receive(:enqueue).and_call_original
+          job.perform(nil, { iteration: 3 })
+          expect(GoodJob::Batch).to have_received(:enqueue)
+            .with(hash_including(on_success_params: hash_including(iteration: 4)))
         end
       end
     end
