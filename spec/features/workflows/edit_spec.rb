@@ -396,7 +396,7 @@ RSpec.describe "Workflow edit", :js do
 
     it "shows a confirmation dialog when changing roles after adding a status" do
       add_status_via_dialog(statuses[2])
-      expect(page).to have_no_field workflow_checkbox(0, 2)
+      expect(page).to have_field workflow_checkbox(0, 2)
 
       click_button role.name
       click_link other_role.name
@@ -650,11 +650,96 @@ RSpec.describe "Workflow edit", :js do
     end
   end
 
-  it "allows navigating to any Copy page", :js do
-    within ".PageHeader-actions" do
-      click_on "Copy"
+  context "with copy dialog" do
+    it "allows navigating to any Copy page", :js do
+      within ".PageHeader-actions" do
+        click_on "Copy"
+      end
+
+      expect(page).to have_dialog "Copy workflow"
     end
 
-    expect(page).to have_heading "Copy workflow"
+    context "with unsaved checkbox" do
+      it "loses unsaved checkbox changes when clicking on copy and ignoring" do
+        within "#workflow_form_always" do
+          check workflow_checkbox(1, 0)
+        end
+
+        click_link "Copy"
+
+        within_dialog "Save changes before continuing?" do
+          click_button "Ignore changes"
+        end
+
+        within "#workflow_form_always" do
+          expect(page).to have_field workflow_checkbox(1, 0), checked: false
+        end
+        expect(page).to have_dialog "Copy workflow"
+      end
+
+      it "saves changes and switches to the new role when clicking 'Save changes and continue'" do
+        within "#workflow_form_always" do
+          check workflow_checkbox(1, 0)
+        end
+
+        click_link "Copy"
+
+        within_dialog "Save changes before continuing?" do
+          click_button "Save changes and continue"
+        end
+
+        expect_flash(message: "Successful update.")
+
+        expect(Workflow.exists?(role_id: role.id, type_id: type.id,
+                                old_status_id: statuses[1].id, new_status_id: statuses[0].id,
+                                author: false, assignee: false)).to be true
+
+        expect(page).to have_dialog "Copy workflow"
+      end
+
+      it "keeps unsaved changes and stays on the same role when closing the dialog via 'X'" do
+        within "#workflow_form_always" do
+          check workflow_checkbox(1, 0)
+        end
+
+        click_link "Copy"
+
+        within_dialog "Save changes before continuing?" do
+          find(".close-button").click
+        end
+
+        expect(page).to have_no_dialog("Save changes before continuing?")
+
+        within "#workflow_form_always" do
+          expect(page).to have_field workflow_checkbox(1, 0), checked: true
+        end
+
+        expect(page).to have_no_dialog "Copy workflow"
+      end
+    end
+
+    context "with unsaved new status" do
+      it "shows a confirmation dialog when copying after adding a status" do
+        add_status_via_dialog(statuses[2])
+        expect(page).to have_field workflow_checkbox(0, 2)
+
+        click_link "Copy"
+
+        expect(page).to have_dialog("Save changes before continuing?")
+      end
+
+      it "reverts the added status on changes ignored" do
+        add_status_via_dialog(statuses[2])
+        expect(page).to have_field workflow_checkbox(0, 2)
+
+        click_link "Copy"
+
+        within_dialog "Save changes before continuing?" do
+          click_button "Ignore changes"
+        end
+
+        expect(page).to have_no_field workflow_checkbox(0, 2)
+      end
+    end
   end
 end

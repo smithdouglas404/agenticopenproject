@@ -56,10 +56,8 @@ class WorkflowsController < ApplicationController
   end
 
   def update # rubocop:disable Metrics/AbcSize
-    tab = params[:tab] || "always"
-
     call = Workflows::BulkUpdateService
-           .new(role: @role, type: @type, tab:)
+           .new(role: @role, type: @type, tab: current_tab)
            .call(permitted_status_params)
 
     if call.success?
@@ -67,6 +65,18 @@ class WorkflowsController < ApplicationController
         message: I18n.t(:notice_successful_update),
         scheme: :success
       )
+      if statuses_for_form.empty?
+        # Need to replace with the blankslate.
+        update_via_turbo_stream(
+          component: Workflows::MatrixFormComponent.new(
+            tab: current_tab,
+            role: @role,
+            type: @type,
+            statuses: @statuses,
+            has_status_changes: false
+          )
+        )
+      end
     else
       render_flash_message_via_turbo_stream(
         message: I18n.t(:notice_unsuccessful_update),
