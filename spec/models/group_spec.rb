@@ -255,6 +255,14 @@ RSpec.describe Group do
       it "returns empty for a root group" do
         expect(grandparent.ancestors).to be_empty
       end
+
+      it "returns ancestors in root-first order with order: :asc" do
+        expect(grandchild.ancestors(order: :asc).to_a).to eq([grandparent, parent_group, child])
+      end
+
+      it "returns ancestors in closest-first order with order: :desc" do
+        expect(grandchild.ancestors(order: :desc).to_a).to eq([child, parent_group, grandparent])
+      end
     end
 
     describe "#self_and_ancestors" do
