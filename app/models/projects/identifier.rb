@@ -163,6 +163,8 @@ module Projects::Identifier
   end
 
   def generate_semantic_identifier
-    self.identifier = self.class.suggest_identifier(name) if name.present?
+    return unless name.present?
+
+    self.identifier = WorkPackages::IdentifierAutofix::SemanticIdentifierGenerator.generate(name)
   end
 end
