@@ -55,7 +55,9 @@ Agile project management is an iterative and flexible approach to managing proje
 
 ### Artificial intelligence (AI)
 
-In OpenProject, AI refers to the integration of AI systems into project workflows to support tasks such as summarizing information, analyzing dependencies, or assisting in planning and reporting.
+In OpenProject, artificial intelligence (AI) refers to the integration of AI systems into project workflows to support tasks such as summarizing information, analyzing dependencies, or assisting in planning and reporting.
+
+OpenProject approaches AI with a clear focus on control, transparency, and data protection. AI is designed to support users in their work, not to replace human decision-making. Users remain in full control at all times and can decide whether and how AI features are used.
 
 With features such as the [MCP Server](https://www.openproject.org/blog/openproject-17-2-release/), OpenProject enables secure connections between project data and external AI systems. This allows organizations to benefit from AI while maintaining full control over how their data is accessed and used.
 
@@ -270,7 +272,7 @@ OpenProject offers a Meetings [module](#module) that allows project members to o
 
 Migration refers to the process of transferring data, projects, or entire systems from one software or environment to another. In OpenProject, this can include moving from other project management tools, switching between installations, or transitioning between hosting environments.
 
-A common use case is migrating from proprietary tools such as Jira to OpenProject. To support this, OpenProject provides tools such as the [Jira migrator](../../installation-and-operations/jira-migration/) or [excel synchronization](#excel-synchronization).
+A common use case is migrating from proprietary tools such as Jira to OpenProject. To support this, OpenProject provides tools such as the [Jira migrator](../installation-and-operations/jira-migration/) or [excel synchronization](#excel-synchronization).
 
 - [See our blog articles on migrations](https://www.openproject.org/blog/tags/migrations/)
 
