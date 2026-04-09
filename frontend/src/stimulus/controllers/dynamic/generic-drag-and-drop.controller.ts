@@ -76,6 +76,7 @@ export default class GenericDragAndDropController extends Controller {
   // Sibling selected items hidden during a multi-drag. Populated from selectedItems
   // at drag-start; emptied on drop or cancel. Length > 0 signals multi-drag is active.
   private multiDragSiblings:HTMLElement[] = [];
+  private multiDragAllItems:HTMLElement[] = [];
 
   // Multi-selection state — only active when multiSelectValue is true.
   private selectedItems = new Set<HTMLElement>();
@@ -253,12 +254,15 @@ export default class GenericDragAndDropController extends Controller {
         el.querySelector(this.handleSelectorValue)?.setAttribute('aria-pressed', 'true');
 
         if (this.multiSelectValue && this.selectedItems.has(el)) {
-          // Collect other selected items that live in the same source container.
-          this.multiDragSiblings = [...this.selectedItems]
-            .filter((item) => item !== el && item.parentElement === source);
+          // Capture all selected items in original DOM order (including el).
+          this.multiDragAllItems = [...this.selectedItems]
+            .filter((item) => item.parentElement === source)
+            .sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
+          this.multiDragSiblings = this.multiDragAllItems.filter((item) => item !== el);
           this.multiDragSiblings.forEach((item) => { item.style.visibility = 'hidden'; });
         } else {
           this.multiDragSiblings = [];
+          this.multiDragAllItems = [];
         }
       })
       .on('cloned', (clone:HTMLElement, _original:HTMLElement, type:string) => {
@@ -323,21 +327,27 @@ export default class GenericDragAndDropController extends Controller {
   }
 
   private async dropMultiple(el:Element, target:Element):Promise<void> {
-    // Restore visibility and insert siblings immediately after `el` in the target.
-    // multiDragSiblings preserves the source document order from the Set iteration.
-    let insertAfter = el;
-    for (const sibling of this.multiDragSiblings) {
-      sibling.style.visibility = '';
-      insertAfter.insertAdjacentElement('afterend', sibling);
-      insertAfter = sibling;
+    const elIdx = this.multiDragAllItems.indexOf(el as HTMLElement);
+    const before = this.multiDragAllItems.slice(0, elIdx);
+    const after = this.multiDragAllItems.slice(elIdx + 1);
+
+    for (const item of before) {
+      item.style.visibility = '';
+      el.insertAdjacentElement('beforebegin', item);
+    }
+    let insertAfter:Element = el;
+    for (const item of after) {
+      item.style.visibility = '';
+      insertAfter.insertAdjacentElement('afterend', item);
+      insertAfter = item;
     }
 
-    const allMovedItems = [el, ...this.multiDragSiblings];
+    const allMovedItems = this.multiDragAllItems;
     this.multiDragSiblings = [];
+    this.multiDragAllItems = [];
 
     const bulkDropUrl = this.bulkDropUrlValue;
     if (!bulkDropUrl) {
-      // No bulk endpoint configured — fall back to sequential single moves.
       for (const item of allMovedItems) {
         await this.dropSingle(item, target);
       }
@@ -428,6 +438,7 @@ export default class GenericDragAndDropController extends Controller {
   private restoreMultiDragSiblings():void {
     this.multiDragSiblings.forEach((item) => { item.style.visibility = ''; });
     this.multiDragSiblings = [];
+    this.multiDragAllItems = [];
   }
 
   private revertDrop(el:Element) {

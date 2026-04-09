@@ -132,7 +132,7 @@ class RbStoriesController < RbApplicationController
   # Moves all stories inside a single transaction, chaining prev_id so they
   # end up in the correct order. Returns true on success, nil on rollback.
   def bulk_move_in_transaction(stories, target_id)
-    prev_id = bulk_move_params[:prev_id].presence&.to_i
+    prev_id = bulk_move_params[:prev_id].to_i
 
     ApplicationRecord.transaction do
       stories.each do |story|
@@ -157,11 +157,14 @@ class RbStoriesController < RbApplicationController
     ids = bulk_move_params[:story_ids]
     return [] if ids.blank?
 
-    if OpenProject::FeatureDecisions.scrum_projects_active?
-      WorkPackage.visible.where(id: ids).to_a
-    else
-      Story.visible.where(id: ids).to_a
-    end
+    records = if OpenProject::FeatureDecisions.scrum_projects_active?
+                WorkPackage.visible.where(id: ids)
+              else
+                Story.visible.where(id: ids)
+              end
+
+    id_index = ids.map(&:to_i).each_with_index.to_h
+    records.sort_by { |r| id_index[r.id] }
   end
 
   # In the scrum path stories belong to their container via sprint_id (Agile::Sprint).
