@@ -30,7 +30,9 @@ See COPYRIGHT and LICENSE files for more details.
 <%= turbo_frame_tag "backlogs_container", refresh: :morph, class: "op-backlogs-page" do %>
   <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop"
        data-generic-drag-and-drop-position-mode-value="prev_id"
-       data-generic-drag-and-drop-handle-selector-value="[data-draggable-id]">
+       data-generic-drag-and-drop-handle-selector-value="[data-draggable-id]"
+       data-generic-drag-and-drop-multi-select-value="true"
+       data-generic-drag-and-drop-bulk-drop-url-value="<%= bulk_move_project_stories_path(@project) %>">
     <div id="owner_backlogs_container" class="op-sprint-planning-lists"
          data-generic-drag-and-drop-target="scrollContainer">
       <%= render Backlogs::InboxComponent.new(

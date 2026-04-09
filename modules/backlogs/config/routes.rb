@@ -33,6 +33,13 @@ Rails.application.routes.draw do
     # Routes for the new Agile::Sprint
     # Scoped under projects for permissions:
     resources :projects, only: [] do
+      # Project-level bulk actions (no sprint_id in URL; target sprint comes from body params)
+      resources :stories, only: [], controller: :rb_stories do
+        collection do
+          put :bulk_move
+        end
+      end
+
       resources :sprints, controller: :rb_sprints, only: %i[create] do
         collection do
           get :new_dialog

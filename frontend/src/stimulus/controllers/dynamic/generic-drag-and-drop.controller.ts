@@ -50,10 +50,21 @@ export default class GenericDragAndDropController extends Controller {
   static values = {
     handleSelector: { type: String, default: '.DragHandle' },
     positionMode: { type: String, default: 'index' },
+    // URL for bulk-moving multiple selected items in one request.
+    // When empty, multi-drag falls back to sequential single-item moves.
+    bulkDropUrl: { type: String, default: '' },
+    // Enable multi-select interactions (Ctrl+Click, Shift+Click, Escape).
+    multiSelect: { type: Boolean, default: false },
+    // CSS class applied to selected items. Kept as a value so the controller
+    // remains usable outside the backlogs context.
+    selectedClass: { type: String, default: 'Box-row--blue' },
   };
 
   declare readonly handleSelectorValue:string;
   declare readonly positionModeValue:string;
+  declare readonly bulkDropUrlValue:string;
+  declare readonly multiSelectValue:boolean;
+  declare readonly selectedClassValue:string;
 
   private drake:Drake|null = null;
   private autoscroll:DomAutoscrollService|null = null;
@@ -62,10 +73,24 @@ export default class GenericDragAndDropController extends Controller {
   private dragOriginSource:Element|null = null;
   private dragOriginNextSibling:Element|null = null;
 
+  // Sibling selected items hidden during a multi-drag. Populated from selectedItems
+  // at drag-start; emptied on drop or cancel. Length > 0 signals multi-drag is active.
+  private multiDragSiblings:HTMLElement[] = [];
+
+  // Multi-selection state — only active when multiSelectValue is true.
+  private selectedItems = new Set<HTMLElement>();
+  private lastSelectedItem:HTMLElement|null = null;
+
   connect() {
     this.autoscroll?.destroy();
     this.drake?.destroy();
     this.initDrake();
+
+    if (this.multiSelectValue) {
+      // Capture phase so we intercept modifier-key clicks before other controllers can handle it
+      this.element.addEventListener('click', this.onClickCapture, { capture: true });
+      document.addEventListener('keydown', this.onKeydown);
+    }
   }
 
   disconnect() {
@@ -73,6 +98,12 @@ export default class GenericDragAndDropController extends Controller {
     this.autoscroll = null;
     this.drake?.destroy();
     this.drake = null;
+
+    // Always attempt removal — no-op if the listeners were never added.
+    this.element.removeEventListener('click', this.onClickCapture, { capture: true });
+    document.removeEventListener('keydown', this.onKeydown);
+
+    this.clearSelection();
   }
 
   containerTargetConnected(target:HTMLElement) {
@@ -96,25 +127,111 @@ export default class GenericDragAndDropController extends Controller {
       this.containers.splice(index, 1);
       this.targetConfigs.splice(index, 1);
     }
+
+    // Drop stale selections when a container is removed (e.g. after turbo morph).
+    // We delete directly from the Set rather than calling deselectItem() since the
+    // elements are already detached and CSS manipulation would be a no-op anyway.
+    this.selectedItems.forEach((item) => {
+      if (!item.isConnected) this.selectedItems.delete(item);
+    });
+    if (this.lastSelectedItem && !this.lastSelectedItem.isConnected) {
+      this.lastSelectedItem = null;
+    }
   }
 
   cancelDrag() {
     this.drake?.cancel(true);
   }
 
-  private revertDrop(el:Element) {
-    if (this.dragOriginSource) {
-      if (this.dragOriginNextSibling?.parentNode === this.dragOriginSource) {
-        this.dragOriginSource.insertBefore(el, this.dragOriginNextSibling);
-      } else {
-        this.dragOriginSource.appendChild(el);
-      }
+  private onClickCapture = (event:MouseEvent):void => {
+    const target = event.target as HTMLElement;
+    const item = target.closest<HTMLElement>('[data-draggable-id]');
+    if (!item) return;
+
+    if (target.closest('a, button, clipboard-copy')) return;
+
+    if (event.ctrlKey || event.metaKey) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.toggleSelect(item);
+      return;
     }
+
+    if (event.shiftKey) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.rangeSelect(item);
+      return;
+    }
+
+    // Plain click: clear selection but do NOT stop propagation so StoryController
+    // still receives the event and opens the split pane as normal.
+    if (this.selectedItems.size > 0) this.clearSelection();
+  };
+
+  private onKeydown = (event:KeyboardEvent):void => {
+    if (event.target instanceof HTMLElement
+        && event.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+
+    if (event.key === 'Escape' && this.selectedItems.size > 0) this.clearSelection();
+  };
+
+  private toggleSelect(item:HTMLElement):void {
+    if (this.selectedItems.has(item)) {
+      this.deselectItem(item);
+      if (this.lastSelectedItem === item) this.lastSelectedItem = null;
+    } else {
+      this.selectItem(item);
+      this.lastSelectedItem = item;
+    }
+  }
+
+  private rangeSelect(item:HTMLElement):void {
+    const anchor = this.lastSelectedItem ?? item;
+    const container = item.parentElement;
+
+    if (!container || anchor.parentElement !== container) {
+      // Anchor is in a different container — treat as a plain toggle.
+      this.selectItem(item);
+      this.lastSelectedItem = item;
+      return;
+    }
+
+    const children = Array.from(container.children) as HTMLElement[];
+    const fromIdx = children.indexOf(anchor);
+    const toIdx = children.indexOf(item);
+    const [start, end] = fromIdx <= toIdx ? [fromIdx, toIdx] : [toIdx, fromIdx];
+
+    for (let i = start; i <= end; i++) {
+      if (children[i].hasAttribute('data-draggable-id')) this.selectItem(children[i]);
+    }
+    this.lastSelectedItem = item;
+  }
+
+  private selectItem(item:HTMLElement):void {
+    this.selectedItems.add(item);
+    item.setAttribute('aria-selected', 'true');
+    item.classList.add(this.selectedClassValue);
+  }
+
+  private deselectItem(item:HTMLElement):void {
+    this.selectedItems.delete(item);
+    item.removeAttribute('aria-selected');
+    // Preserve the highlight class if the item is also the open split-pane entry.
+    if (item.getAttribute('aria-current') !== 'true') {
+      item.classList.remove(this.selectedClassValue);
+    }
+  }
+
+  private clearSelection():void {
+    this.selectedItems.forEach((item) => this.deselectItem(item));
+    this.selectedItems.clear();
+    this.lastSelectedItem = null;
   }
 
   initDrake() {
     // Note: dragula stores a reference to this.containers, so mutations
-    // from containerTargetConnected/Disconnected automatically propagate
+    // from containerTargetConnected/Disconnected automatically propagate.
     this.drake = dragula(
       this.containers,
       {
@@ -126,18 +243,41 @@ export default class GenericDragAndDropController extends Controller {
           return !!handle.closest(this.handleSelectorValue);
         },
         accepts: (el:Element, target:Element, source:Element, sibling:Element) => this.accepts(el, target, source, sibling),
-        revertOnSpill: true, // enable reverting of elements if they are dropped outside of a valid target
+        revertOnSpill: true,
       },
     )
-      .on('drag', (el, source) => {
+      .on('drag', (el:HTMLElement, source:HTMLElement) => {
         this.dragOriginSource = source;
         this.dragOriginNextSibling = el.nextElementSibling;
 
         el.querySelector(this.handleSelectorValue)?.setAttribute('aria-pressed', 'true');
+
+        if (this.multiSelectValue && this.selectedItems.has(el)) {
+          // Collect other selected items that live in the same source container.
+          this.multiDragSiblings = [...this.selectedItems]
+            .filter((item) => item !== el && item.parentElement === source);
+          this.multiDragSiblings.forEach((item) => { item.style.visibility = 'hidden'; });
+        } else {
+          this.multiDragSiblings = [];
+        }
       })
-      .on('dragend', (el) => {
+      .on('cloned', (clone:HTMLElement, _original:HTMLElement, type:string) => {
+        // Append a count badge to the drag mirror when moving multiple items.
+        if (type === 'mirror' && this.multiDragSiblings.length > 0) {
+          const badge = document.createElement('span');
+          badge.className = 'op-backlogs-drag-count-badge';
+          badge.setAttribute('aria-hidden', 'true');
+          badge.textContent = String(this.multiDragSiblings.length + 1);
+          clone.appendChild(badge);
+        }
+      })
+      .on('dragend', (el:HTMLElement) => {
         el.querySelector(this.handleSelectorValue)?.setAttribute('aria-pressed', 'false');
-       })
+        this.restoreMultiDragSiblings();
+      })
+      .on('cancel', () => {
+        this.restoreMultiDragSiblings();
+      })
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       .on('drop', this.drop.bind(this));
 
@@ -164,7 +304,6 @@ export default class GenericDragAndDropController extends Controller {
   accepts(el:Element, target:Element, _source:Element|null, _sibling:Element|null) {
     const targetConfig = this.targetConfigs.find((config) => config.container === target);
     const acceptedDragType = targetConfig?.allowedDragType as string|undefined;
-
     const draggableType = el.getAttribute('data-draggable-type');
 
     if (draggableType !== acceptedDragType) {
@@ -176,12 +315,63 @@ export default class GenericDragAndDropController extends Controller {
   }
 
   async drop(el:Element, target:Element, _source:Element|null, _sibling:Element|null) {
+    if (this.multiDragSiblings.length > 0) {
+      await this.dropMultiple(el, target);
+    } else {
+      await this.dropSingle(el, target);
+    }
+  }
+
+  private async dropMultiple(el:Element, target:Element):Promise<void> {
+    // Restore visibility and insert siblings immediately after `el` in the target.
+    // multiDragSiblings preserves the source document order from the Set iteration.
+    let insertAfter = el;
+    for (const sibling of this.multiDragSiblings) {
+      sibling.style.visibility = '';
+      insertAfter.insertAdjacentElement('afterend', sibling);
+      insertAfter = sibling;
+    }
+
+    const allMovedItems = [el, ...this.multiDragSiblings];
+    this.multiDragSiblings = [];
+
+    const bulkDropUrl = this.bulkDropUrlValue;
+    if (!bulkDropUrl) {
+      // No bulk endpoint configured — fall back to sequential single moves.
+      for (const item of allMovedItems) {
+        await this.dropSingle(item, target);
+      }
+      this.clearSelection();
+      return;
+    }
+
+    try {
+      const data = this.buildBulkData(allMovedItems, target);
+      const request = new FetchRequest('put', bulkDropUrl, { body: data, responseKind: 'turbo-stream' });
+      const response = await request.perform();
+
+      if (!response.ok) {
+        debugLog(`Failed to bulk-move items: ${response.statusCode}`);
+        allMovedItems.forEach((item) => this.revertDrop(item));
+      }
+    } catch (error) {
+      debugLog('Failed to bulk-move items due to request error', error);
+      allMovedItems.forEach((item) => this.revertDrop(item));
+    } finally {
+      this.dragOriginSource = null;
+      this.dragOriginNextSibling = null;
+      // The turbo-stream morph will replace the DOM elements, so stale references
+      // in selectedItems are cleaned up by containerTargetDisconnected. We also
+      // clear here so the Set is immediately consistent.
+      this.clearSelection();
+    }
+  }
+
+  private async dropSingle(el:Element, target:Element):Promise<void> {
     const dropUrl = el.getAttribute('data-drop-url');
     const data = this.buildData(el, target);
 
-    if (!dropUrl) {
-      return;
-    }
+    if (!dropUrl) return;
 
     try {
       const request = new FetchRequest('put', dropUrl, { body: data, responseKind: 'turbo-stream' });
@@ -211,21 +401,51 @@ export default class GenericDragAndDropController extends Controller {
 
     const targetConfig = this.targetConfigs.find((config) => config.container === target);
     const targetId = targetConfig?.targetId as string|undefined;
-
-    if (targetId) {
-      data.append('target_id', targetId.toString());
-    }
+    if (targetId) data.append('target_id', targetId.toString());
 
     return data;
+  }
+
+  // Always uses prev_id chaining for ordered positioning, regardless of positionModeValue.
+  private buildBulkData(items:Element[], target:Element):FormData {
+    const data = new FormData();
+
+    items.forEach((item) => {
+      const id = item.getAttribute('data-draggable-id');
+      if (id) data.append('story_ids[]', id);
+    });
+
+    // prev_id = draggable-id of whatever now precedes the first moved item in the target
+    const prevId = items[0].previousElementSibling?.getAttribute('data-draggable-id') ?? '';
+    data.append('prev_id', prevId);
+
+    const targetConfig = this.targetConfigs.find((config) => config.container === target);
+    if (targetConfig?.targetId) data.append('target_id', targetConfig.targetId);
+
+    return data;
+  }
+
+  private restoreMultiDragSiblings():void {
+    this.multiDragSiblings.forEach((item) => { item.style.visibility = ''; });
+    this.multiDragSiblings = [];
+  }
+
+  private revertDrop(el:Element) {
+    if (this.dragOriginSource) {
+      if (this.dragOriginNextSibling?.parentNode === this.dragOriginSource) {
+        this.dragOriginSource.insertBefore(el, this.dragOriginNextSibling);
+      } else {
+        this.dragOriginSource.appendChild(el);
+      }
+    }
   }
 
   // if the target has a container accessor, use that as the container instead of the element itself
   // we need this e.g. in Primer's borderbox component as we cannot add required data attributes to the ul element there
   private resolveContainerElement(target:HTMLElement):HTMLElement {
     const accessor = target.getAttribute('data-target-container-accessor');
-    if (!accessor) {
-      return target;
-    }
+    if (!accessor) return target;
+
     const container = target.querySelector<HTMLElement>(accessor);
     invariant(container, `Expected container element matching "${accessor}"`);
     return container;
