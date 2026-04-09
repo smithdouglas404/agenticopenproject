@@ -26,7 +26,7 @@ A **Backlog** is defined as a plugin that allows to use the backlogs feature in 
 
 Please note that this user guide does not represent an introduction into scrum methodology, but merely explains the scrum-related functionalities and user instructions in OpenProject.
 
-
+![backlog_and_sprints](openproject_user_guide_backlogs_sprints.png)
 
 ### **Managing the backlog**
 
@@ -36,11 +36,11 @@ When there are too many items in the Backlog, a **Show more** **items** button i
 
 ![backlog_menu](openproject_user_guide_backlogs_menu_items.png)
 
+
+
 From the backlog menu, you can access more work package actions like the **details view** or **fullscreen view**. These options exist for you to choose how much information (about the backlog item) you'd like to be displayed. The URL can be copied to clipboard as well as the work package ID.
 
-![backlog_open_details](openproject_user_guide_backlog s_open_details_ view.png)
-
-
+![backlog_open_details](openproject_user_guide_backlogs_open_details_view.png)
 
 
 
