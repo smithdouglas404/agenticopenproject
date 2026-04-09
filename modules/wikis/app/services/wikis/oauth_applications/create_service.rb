@@ -43,7 +43,7 @@ module Wikis
           .new(user:)
           .call(
             name: wiki_provider.name,
-            redirect_uri: File.join(wiki_provider.url.chomp("/"), "oidc/authenticator"),
+            redirect_uri: File.join(wiki_provider.url.chomp("/"), "bin/authenticator/callback"),
             scopes: "api_v3",
             confidential: true,
             owner: user,

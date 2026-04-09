@@ -28,33 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        class Wizard < ::Wizard
-          step :general_information,
-               completed_if: ->(provider) { provider.name.present? && provider.url.present? }
-
-          step :oauth_application,
-               section: :oauth_configuration,
-               if: ->(provider) { provider.authenticate_via_oauth2? },
-               completed_if: ->(provider) { provider.oauth_application.present? },
-               preparation: :prepare_oauth_application
-
-          step :oauth_client,
-               section: :oauth_configuration,
-               if: ->(provider) { provider.authenticate_via_oauth2? },
-               completed_if: ->(provider) { provider.oauth_client.present? }
-
-          private
-
-          def prepare_oauth_application(wiki_provider)
-            create_result = ::Wikis::OAuthApplications::CreateService.new(wiki_provider:, user:).call
-            wiki_provider.oauth_application = create_result.result if create_result.success?
-          end
-        end
-      end
+module Wikis::Admin
+  class OAuthClientForm < ApplicationForm
+    form do |oauth_client_form|
+      oauth_client_form.text_field(
+        name: :client_id,
+        label: I18n.t("activerecord.attributes.oauth_client.client_id"),
+        required: true,
+        input_width: :large
+      )
+      oauth_client_form.text_field(
+        name: :client_secret,
+        label: I18n.t("activerecord.attributes.oauth_client.client_secret"),
+        required: true,
+        input_width: :large
+      )
     end
   end
 end

@@ -28,33 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        class Wizard < ::Wizard
-          step :general_information,
-               completed_if: ->(provider) { provider.name.present? && provider.url.present? }
+module Wikis::Admin::Forms
+  class OAuthClientFormComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
 
-          step :oauth_application,
-               section: :oauth_configuration,
-               if: ->(provider) { provider.authenticate_via_oauth2? },
-               completed_if: ->(provider) { provider.oauth_application.present? },
-               preparation: :prepare_oauth_application
+    def self.wrapper_key = :wiki_provider_oauth_client_section
 
-          step :oauth_client,
-               section: :oauth_configuration,
-               if: ->(provider) { provider.authenticate_via_oauth2? },
-               completed_if: ->(provider) { provider.oauth_client.present? }
+    alias_method :wiki_provider, :model
 
-          private
+    options in_wizard: false,
+            oauth_client: nil
 
-          def prepare_oauth_application(wiki_provider)
-            create_result = ::Wikis::OAuthApplications::CreateService.new(wiki_provider:, user:).call
-            wiki_provider.oauth_application = create_result.result if create_result.success?
-          end
-        end
-      end
+    def form_url
+      query = in_wizard ? { continue_wizard: wiki_provider.id } : {}
+      url_helpers.admin_settings_wiki_provider_oauth_client_path(wiki_provider, query)
+    end
+
+    def form_method
+      resolved_oauth_client.persisted? ? :patch : :post
+    end
+
+    def cancel_button_path
+      url_helpers.edit_admin_settings_wiki_provider_path(wiki_provider)
+    end
+
+    def resolved_oauth_client
+      oauth_client || wiki_provider.oauth_client || wiki_provider.build_oauth_client
     end
   end
 end
