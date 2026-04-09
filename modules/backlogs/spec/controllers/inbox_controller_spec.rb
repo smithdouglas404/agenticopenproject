@@ -142,7 +142,9 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
                                               target: "backlogs-inbox-component-#{project.id}"
         expect(response).to have_turbo_stream action: "replace",
                                               target: "backlogs-sprint-component-#{agile_sprint.id}"
-        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+
+        # Flash message is omitted here on purpose (#73600)
+        expect(response).not_to have_turbo_stream action: "flash", target: "op-primer-flash-component"
       end
     end
 
