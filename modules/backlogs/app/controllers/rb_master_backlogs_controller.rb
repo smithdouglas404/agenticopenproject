@@ -32,12 +32,10 @@ class RbMasterBacklogsController < RbApplicationController
   include WorkPackages::WithSplitView
 
   # Without the feature flag, there is only the top level menu item, select it
-  menu_item :backlogs_legacy
+  menu_item :backlogs_legacy, only: :index
 
   # With the feature flag, we have a proper menu, select the correct sub entry
-  current_menu_item do
-    :backlog
-  end
+  menu_item :backlog, only: %i[backlog details]
 
   before_action :not_authorized_on_feature_flag_inactive, only: :backlog
   before_action :load_backlogs, only: %i[index backlog]
