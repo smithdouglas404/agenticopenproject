@@ -34,6 +34,7 @@ class MyController < ApplicationController
   include ActionView::Helpers::TagHelper
   include OpTurbo::ComponentStream
   include FlashMessagesOutputSafetyHelper
+  include Notifications::NotificationSettingsActions
 
   layout "my"
 
@@ -46,20 +47,28 @@ class MyController < ApplicationController
                              :locale,
                              :interface,
                              :update_settings,
+                             :update_workdays,
+                             :update_email_alerts,
+                             :update_participating,
+                             :update_non_participating,
+                             :update_date_alerts,
                              :password,
                              :change_password,
                              :password_confirmation_dialog,
                              :notifications,
-                             :reminders,
                              :non_working_times,
-                             :working_hours
+                             :working_hours,
+                             :new_project_settings,
+                             :create_project_settings,
+                             :edit_project_settings,
+                             :update_project_settings,
+                             :destroy_project_settings
 
   menu_item :account, only: [:account]
   menu_item :locale, only: [:locale]
   menu_item :interface, only: [:interface]
   menu_item :password, only: [:password]
   menu_item :notifications, only: [:notifications]
-  menu_item :reminders, only: [:reminders]
   menu_item :working_hours, only: %i[working_hours non_working_times]
 
   def account; end
@@ -72,6 +81,22 @@ class MyController < ApplicationController
 
   def update_settings
     write_settings
+  end
+
+  def update_email_alerts
+    update_global_notification_setting(permitted_params.notification_setting_email_alerts)
+  end
+
+  def update_participating
+    update_global_notification_setting(permitted_params.notification_setting_participating)
+  end
+
+  def update_non_participating
+    update_global_notification_setting(permitted_params.notification_setting_non_participating)
+  end
+
+  def update_date_alerts
+    update_global_notification_setting(build_date_alerts_params)
   end
 
   def interface; end
@@ -93,11 +118,10 @@ class MyController < ApplicationController
     respond_with_dialog My::PasswordConfirmationDialog.new
   end
 
-  # Configure user's in app notifications
-  def notifications; end
-
-  # Configure user's mail reminders
-  def reminders; end
+  # Configure user's notifications and email reminders
+  def notifications
+    set_global_notification_setting
+  end
 
   def working_hours
     render_403 unless OpenProject::FeatureDecisions.user_working_times_active?
@@ -164,6 +188,24 @@ class MyController < ApplicationController
     permitted_params.user.to_h.merge(params.permit(pref: {}))
   end
 
+  def update_global_notification_setting(update_params)
+    set_global_notification_setting
+    persist_notification_setting(@global_notification_setting, update_params)
+    redirect_back_or_to(my_notifications_path)
+  end
+
+  def set_global_notification_setting
+    @global_notification_setting = @user.notification_settings.find_or_initialize_by(project: nil)
+  end
+
+  def persist_notification_setting(setting, update_params)
+    if setting.update(update_params)
+      flash[:notice] = notice_account_updated
+    else
+      flash[:error] = error_account_update_failed(nil)
+    end
+  end
+
   def notice_account_updated
     OpenProject::LocaleHelper.with_locale_for(current_user) do
       t(:notice_account_updated)
@@ -173,6 +215,22 @@ class MyController < ApplicationController
   def error_account_update_failed(result)
     errors = result ? result.errors.full_messages.join("\n") : ""
     [t(:notice_account_update_failed), errors]
+  end
+
+  def notifications_settings_path
+    my_notifications_path
+  end
+
+  def workdays_redirect_path
+    my_notifications_path
+  end
+
+  def project_notifications_create_url
+    my_project_notifications_path
+  end
+
+  def project_setting_form_url(project_id)
+    my_project_setting_path(project_id:)
   end
 
   def set_current_user

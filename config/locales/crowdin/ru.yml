@@ -112,7 +112,7 @@ ru:
     import:
       title: "Импорт"
     jira:
-      title: "Импорт из Jira"
+      title: "Мигратор Jira"
       description: "Используйте этот инструмент для импорта данных из Вашего экземпляра Jira. Вы можете настроить несколько узлов Jira и выбрать, что импортировать в каждом запуске импорта."
       errors:
         cannot_delete_with_imports: "Невозможно удалить хост Jira с существующими импортами"
@@ -123,8 +123,8 @@ ru:
         title: "Конфигурация Jira"
         new: "Новая конфигурация"
       banner:
-        title: "Ограниченный импорт"
-        description: "Этот инструмент импорта в настоящее время находится в стадии бета-тестирования и может импортировать только основные данные: проекты, проблемы (имя, название, описание, вложения), пользователей (имя, электронная почта, членство в проекте), статусы и типы. Он не может импортировать рабочие процессы, пользовательские поля, отношения между заданиями или разрешения. В настоящее время мы поддерживаем только Jira Server/Data Center версий 10.x и 11.x. Облачные экземпляры на данный момент не поддерживаются."
+        title: "Ограниченные возможности импорта"
+        description: "Этот мигратор Jira в настоящее время находится в бета-версии и может импортировать только основные данные: проекты, проблемы (имя, заголовок, описание, вложения), пользователей (имя, электронная почта, членство в проекте), статусы и типы. Он не может импортировать рабочие процессы, пользовательские поля, отношения между заданиями или разрешения. В настоящее время мы поддерживаем только Jira Server/Data Center версий 10.x и 11.x. Облачные экземпляры на данный момент не поддерживаются."
       form:
         fields:
           name: "Имя"
@@ -160,7 +160,7 @@ ru:
       run:
         title: "Выполнение импорта"
         history: "История"
-        remove_error: "Импорт Jira нельзя удалить во время его выполнения"
+        remove_error: "Запуск импорта Jira не может быть удалён, пока он запущен"
         import_blocked_error: "Другая операция импорта Jira находится в процессе выполнения или ожидает рассмотрения. Пожалуйста, завершите или отмените его, прежде чем начинать новый импорт."
         project_identifier_taken: "Вы пытаетесь импортировать проект с уже использованным идентификатором: %{taken_identifier}. Пожалуйста, обновите идентификатор проекта в Jira, затем нажмите «Повторить»."
         blank:
@@ -394,20 +394,24 @@ ru:
           <p>Здравствуйте,</p> <p>Был создан новый проект: projectValue:name</p> <p>Спасибо</p>
       work_packages_identifier:
         page_header:
-          description: Выберите между базовыми числовыми идентификаторами пакетов работ или специфическими для проекта, которые добавляют идентификатор проекта к идентификатору пакета работ.
+          description: Выберите между классическими числовыми идентификаторами пакета работ или семантическими, специфичными для проекта, которые добавляют идентификатор проекта к ID пакета работ.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+            Существующие идентификаторы для проектов %{project_count} не соответствуют требованиям, предъявляемым к семантическим идентификаторам. OpenProject может автоматически обновить их, чтобы они были действительными, как показано в примерах ниже. Щелкните на 'Исправить и сохранить', чтобы обновить идентификаторы для всех проектов и включить семантические идентификаторы на основе проекта.
         box_header:
           label_project: Проект
           label_previous_identifier: Предыдущий идентификатор
           label_autofixed_suggestion: Следующий идентификатор
           label_example_work_package_id: Пример ID пакета работ
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Должно быть 10 символов или меньше
+          error_numerical: Не может быть чисто числовым
+          error_starts_with_number: Не может начинаться с цифры
           error_special_characters: Специальные символы не допускаются
+          error_not_fully_uppercased: Должно быть заглавными
           error_in_use: Уже используется в другом проекте
           error_reserved: Зарезервировано другим проектом
+          error_unknown: Требуется ручная проверка
           remaining_projects:
             one: "... еще 1 проект"
             few: "... %{count} more projects"
@@ -423,7 +427,7 @@ ru:
           checkbox_label: Я понимаю, что это навсегда изменит все идентификаторы пакета работ
         success_banner: Формат идентификатора пакета работ успешно обновлен.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Идентификаторы проекта в настоящее время обновляются до семантических идентификаторов. Это может занять некоторое время.
     workflows:
       tabs:
         default_transitions: "Переходы по умолчанию"
@@ -1541,6 +1545,9 @@ ru:
         dependencies: "Связи"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Идентификатор"
+        work_package: "Пакет работ"
       jira_import:
         projects: "Проекты"
       "import/jira":
@@ -1549,7 +1556,7 @@ ru:
         personal_access_token: "Персональный токен доступа"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Импорт из Jira"
+        jira_import: "Мигратор Jira"
       announcements:
         show_until: "Отобразить до"
       attachment:
@@ -3476,6 +3483,11 @@ ru:
     quick_add:
       label: "Добавить…"
   my_account:
+    notifications_and_email:
+      title: "Notification and email"
+      tabs:
+        notifications: "Notification settings"
+        email_reminders: "Email reminders"
     access_tokens:
       description: "Провайдерские токены выпускаются OpenProject, позволяя другим приложениям получать к ним доступ. Клиентские токены выпускаются другими приложениями, позволяя OpenProject получить к ним доступ."
       no_results:
@@ -3538,6 +3550,72 @@ ru:
         disabled_text: "Токены RSS не включены администратором. Пожалуйста, обратитесь к администратору, чтобы использовать эту функцию."
       storages:
         unknown_storage: "Неизвестное хранилище"
+    email_reminders:
+      immediate_reminders:
+        title: "Send me an email reminder"
+        mentioned: "Notify me when I am mentioned"
+        personal_reminder: "Notify me for personal reminders"
+      daily_reminders:
+        title: "Send me daily email reminders for unread notifications"
+        caption: "You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC."
+        enabled: "Enable daily email reminders"
+        add_time: "Add time"
+        remove_time: "Remove time"
+        time_slot_label: "Reminder time (UTC)"
+      workdays:
+        title: "Receive email reminders on these days"
+        submit_button: "Update reminder days"
+      pause_reminders:
+        title: "Pause email notifications"
+        enabled: "Temporarily pause daily email reminders"
+        date_range: "Pause period"
+      email_alerts:
+        title: "Email alerts for other items that are not work packages"
+        news_added: "News added"
+        news_commented: "Comment on a news item"
+        document_added: "Document added"
+        forum_messages: "Forum message posted"
+        wiki_page_added: "Wiki page added"
+        wiki_page_updated: "Wiki page updated"
+        membership_added: "Membership added"
+        membership_updated: "Membership updated"
+        submit_button: "Update alerts"
+    notifications:
+      participating:
+        title: "Participating"
+        submit_button: "Update preferences"
+        mentioned: "Mentioned"
+        watched: "Watching"
+        assignee: "Assignee"
+        responsible: "Accountable"
+        shared: "Shared with me"
+      date_alerts:
+        title: "Date alerts"
+        submit_button: "Update date alerts"
+        start_date: "Start date"
+        due_date: "Finish date"
+        overdue: "Overdue"
+        times:
+          same_day: "On the same day"
+          one_day_before: "1 day before"
+          three_days_before: "3 days before"
+          seven_days_before: "7 days before"
+          one_day_after: "1 day after"
+          three_days_after: "3 days after"
+          seven_days_after: "7 days after"
+      non_participating:
+        title: "Non-participating"
+        submit_button: "Update preferences"
+        work_package_created: "New work packages"
+        work_package_commented: "All new comments"
+        work_package_processed: "All status changes"
+        work_package_prioritized: "All priority changes"
+        work_package_scheduled: "All date changes"
+      project_specific_settings:
+        title: "Project-specific notification settings"
+        add_button: "Add project-specific notifications"
+        dialog_title: "Add project-specific notifications"
+        list_header: "Projects with specific notifications"
   notifications:
     reasons:
       assigned: "Исполнитель"
@@ -3569,6 +3647,7 @@ ru:
       invalid_filter: "Неверный фильтр уведомлений"
   label_accessibility: "Спец. возможности"
   label_account: "Учетная запись"
+  label_actions: "Действия"
   label_active: "Активен"
   label_activate_user: "Активировать пользователя"
   label_active_in_new_projects: "Активное участие в новых проектах"
@@ -3609,6 +3688,7 @@ ru:
   label_ical_access_key_generation_hint: "Автоматически генерируется при подписке на календарь."
   label_ical_access_key_latest: "последний"
   label_ical_access_key_revoke: "Отозвать"
+  label_integrations: "Integrations"
   label_add_column: "Добавить столбец"
   label_applied_status: "Прикладной статус"
   label_archive_project: "Архивировать проект"
@@ -3859,7 +3939,7 @@ ru:
   label_external_links: "Внешние ссылки"
   label_locale: "Язык и регион"
   label_jump_to_a_project: "Перейти к проекту..."
-  label_jira_import: "Импорт из Jira"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Ключевые слова"
   label_language_based: "Основанный на языке пользователя"
   label_last_activity: "Последняя активность"
@@ -5094,11 +5174,11 @@ ru:
   setting_welcome_text: "Текст приветствия"
   setting_welcome_title: "Заголовок приветствия"
   setting_welcome_on_homescreen: "Показывать приветствие на домашней странице"
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: >
-    Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_classic: Числовая последовательность для всего экземпляра (по умолчанию)
+  setting_work_packages_identifier_classic_caption: >
+    Каждый пакет работ получает порядковый номер, начинающийся с 1 и увеличивающийся с каждым новым пакетом. Номера уникальны в пределах данного экземпляра, поэтому они остаются неизменными, даже если пакеты работ перемещаются между проектами.
+  setting_work_packages_identifier_semantic: Семантические идентификаторы на основе проекта
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Способ выделения по умолчанию"
   setting_work_package_list_default_highlighted_attributes: "Выделенные встроенные атрибуты по умолчанию"

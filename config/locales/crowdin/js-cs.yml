@@ -590,49 +590,6 @@ cs:
       settings:
         change_notification_settings: 'Můžete změnit nastavení <a target="_blank" href="%{url}">oznámení</a> , abyste se ujistili, že nikdy nezmeškáte důležitou aktualizaci.'
         title: "Nastavení oznámení"
-        notify_me: "Upozornit mě"
-        reminders:
-          no_notification: Žádné oznámení
-          timeframes:
-            normal:
-              PT0S: Týž den
-              P1D: před 1 dnem
-              P3D: 3 dny před
-              P7D: před týdnem
-            overdue:
-              P1D: každý den
-              P3D: Každé 3 dny
-              P7D: každý týden
-        reasons:
-          mentioned:
-            title: "Zmíněné"
-            description: "Dostat upozornění, kdykoli mě někdo kdekoli zmíní"
-          assignee: "Řešitel"
-          responsible: "Odpovědný"
-          shared: "Sdílené"
-          watched: "Sledující"
-          work_package_commented: "Všechny nové komentáře"
-          work_package_created: "Nový pracovní balíček"
-          work_package_processed: "Všechny změny stavu"
-          work_package_prioritized: "Všechny prioritní změny"
-          work_package_scheduled: "Všechny změny data"
-        global:
-          immediately:
-            title: "Participace"
-            description: "Upozornění pro všechny aktivity v pracovních balíčcích, do kterých jste zapojeni (Řešitel, odpovědný nebo sledující)."
-          delayed:
-            title: "Neúčast"
-            description: "Další oznámení pro činnosti ve všech projektech."
-          date_alerts:
-            title: "Upozornění na datum"
-            description: "Automatická oznámení, pokud se blíží důležitá data pro otevřené pracovní balíčky, které jste zapojeni (přiřazený, zodpovědný nebo sledovaný)."
-          overdue: Po termínu
-        project_specific:
-          title: "Nastavení upozornění pro konkrétní projekt\n"
-          description: "Toto specifické nastavení projektu přepíše výchozí nastavení výše."
-          add: "Přidat nastavení pro projekt"
-          already_selected: "Tento projekt je již vybrán"
-          remove: "Odstranit nastavení projektu"
     pagination:
       no_other_page: "Jste na jediné stránce."
       pages_skipped: "Stránky přeskočeny."
@@ -655,38 +612,6 @@ cs:
       not_available: "Project N/A"
       required_outside_context: >
         Vyberte projekt pro vytvoření pracovního balíčku, abyste viděli všechny atributy. Můžete vybrat pouze projekty, které mají výše uvedený typ aktivován.
-    reminders:
-      settings:
-        daily:
-          add_time: "Přidat čas"
-          enable: "Zapnout denní posílání oznámení e-mailem"
-          explanation: "Tyto připomínky obdržíte pouze pro nepřečtená oznámení a pouze v hodinách, které zadáte. %{no_time_zone}"
-          no_time_zone: "Dokud nenastavíte časové pásmo pro svůj účet, budou časy interpretovány v UTC."
-          time_label: "Čas %{counter}:"
-          title: "Posílat mi denní souhrn nepřečtených oznámení e-mailem "
-        workdays:
-          title: "posílat e-mailem v těchto dnech"
-        immediate:
-          title: "Pošlete mi připomenutí e-mailem"
-          mentioned: "V momente  když mě někdo @zmiňuje"
-          personal_reminder: "Okamžitě po osobní připomenutí"
-        alerts:
-          title: "E-mailová upozornění pro ostatní položky (které nejsou pracovní balíčky)"
-          explanation: >
-            Oznámení jsou dnes omezena na pracovní balíčky. Můžete se rozhodnout nadále dostávat e-mailová upozornění pro tyto události, dokud nebudou zahrnuta do oznámení:
-          news_added: "Přidané novinky"
-          news_commented: "Komentář k novince"
-          document_added: "Dokumenty přidány"
-          forum_messages: "Nové zprávy o fóru"
-          wiki_page_added: "Přidána stránka wiki"
-          wiki_page_updated: "Wiki stránka aktualizována"
-          membership_added: "Členství přidáno"
-          membership_updated: "Členství bylo aktualizováno"
-        title: "E-mailová upozornění"
-        pause:
-          label: "Dočasně pozastavit denní připomenutí e-mailem"
-          first_day: "První den"
-          last_day: "Poslední den"
     text_are_you_sure: "Jste si jisti?"
     text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
     breadcrumb: "Navigační lišta"

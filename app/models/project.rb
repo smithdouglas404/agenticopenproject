@@ -39,6 +39,7 @@ class Project < ApplicationRecord
   include Projects::WorkPackageCustomFields
   include Projects::CreationWizard
   include Projects::Identifier
+  include Projects::SemanticIdentifier
 
   include ::Scopes::Scoped
 

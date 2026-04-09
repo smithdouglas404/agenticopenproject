@@ -189,6 +189,7 @@ bg:
   label_notify: "Изпращане за преглед"
   label_icalendar: "Изпращане на iCalendar"
   label_icalendar_download: "Изтегляне на събитие от iCalendar"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "View meeting series"
   label_meeting_series: "Meeting series"
   label_version: "Версия"

@@ -586,49 +586,6 @@ zh-TW:
       settings:
         change_notification_settings: '您可以修改 <a target="_blank" href="%{url}">通知設定</a>，以確保您不會錯過重要更新。'
         title: "通知設定"
-        notify_me: "通知我"
-        reminders:
-          no_notification: 无通知
-          timeframes:
-            normal:
-              PT0S: 當日
-              P1D: 一天前
-              P3D: 3 天前
-              P7D: 1 週前
-            overdue:
-              P1D: 每天
-              P3D: 每 3 天
-              P7D: 每週
-        reasons:
-          mentioned:
-            title: "被提及"
-            description: "每當有人提及我時都收到通知"
-          assignee: "執行者"
-          responsible: "負責人"
-          shared: "參與"
-          watched: "監看者\n"
-          work_package_commented: "有新留言"
-          work_package_created: "新增工作套件"
-          work_package_processed: "所有狀態改變"
-          work_package_prioritized: "優先順序已變更"
-          work_package_scheduled: "所有日期變更"
-        global:
-          immediately:
-            title: "參與中"
-            description: "你參與的工作套件中所有活動的通知（執行者、負責人或監看者）。"
-          delayed:
-            title: "未參與之工作套件"
-            description: "額外通知"
-          date_alerts:
-            title: "日期提醒"
-            description: "當「執行者、負責人或監看者」之開啟的工作套件，其重要日期臨近時，自動發出通知。"
-          overdue: 逾期
-        project_specific:
-          title: "特定專案通知設定"
-          description: "特別專案通知設定將覆蓋上列標準設定。"
-          add: "新增設定"
-          already_selected: "已選取此專案"
-          remove: "移除專案設定"
     pagination:
       no_other_page: "您位於唯一頁面上。"
       pages_skipped: "跳過的頁面。"
@@ -651,38 +608,6 @@ zh-TW:
       not_available: "無專案"
       required_outside_context: >
         請選擇專案以便新增工作套件以及檢視屬性。您只能選擇啟用中的專案。
-    reminders:
-      settings:
-        daily:
-          add_time: "加入時間"
-          enable: "啟用每日電子郵件提醒"
-          explanation: "只有當未讀取通知時，您才會在指定的時間收到這些提醒。%{no_time_zone}"
-          no_time_zone: "除非您為帳戶配置時區，否則將以 UTC 顯示時間。"
-          time_label: "時間 %{counter}:"
-          title: "每日將尚未讀取之通知，寄提醒郵件給我"
-        workdays:
-          title: "在以下日期收到電子郵件提醒"
-        immediate:
-          title: "寄發提醒郵件給我"
-          mentioned: "當有人使用「@帳號」提到我，系統立即發信通知我"
-          personal_reminder: "當我收到個人提醒時立即通知"
-        alerts:
-          title: "其他非工作套件之提醒"
-          explanation: >
-            目前的通知僅限於工作套件。您可以選擇在這些事件納入通知系統之前，繼續透過電子郵件接收提醒：
-          news_added: "有最新消息"
-          news_commented: "最新消息有留言"
-          document_added: "文件已新增"
-          forum_messages: "有新的討論區訊息"
-          wiki_page_added: "新增維基頁面"
-          wiki_page_updated: "維基頁面有更新"
-          membership_added: "成員加入"
-          membership_updated: "成員更新"
-        title: "電子郵件提醒"
-        pause:
-          label: "暫時暫停每日電子郵件提醒"
-          first_day: "第一天"
-          last_day: "最後一天"
     text_are_you_sure: "是否確定？"
     text_are_you_sure_to_cancel: "您在此頁面上有未儲存的變更。您確定要捨棄它們嗎？"
     breadcrumb: "導覽軌跡"

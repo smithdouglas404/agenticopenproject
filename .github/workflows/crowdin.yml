@@ -76,6 +76,7 @@ jobs:
           crowdin_branch_name: ${{ steps.vars.outputs.crowdin_branch }}
           # Dont create a PR for the updated translations
           push_translations: false
+          user: auto
         env:
           OPENPROJECT_CROWDIN_PROJECT: ${{ secrets.OPENPROJECT_CROWDINV2_PROJECT }}
           OPENPROJECT_CROWDIN_API_KEY: ${{ secrets.OPENPROJECT_CROWDINV2_API_KEY }}

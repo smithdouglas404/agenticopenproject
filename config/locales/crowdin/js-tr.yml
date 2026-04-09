@@ -588,49 +588,6 @@ tr:
       settings:
         change_notification_settings: 'Önemli bir güncellemeyi asla kaçırmamak için <a target="_blank" href="%{url}">bildirim ayarlarınızı</a> değiştirebilirsiniz.'
         title: "Bildirim ayarları"
-        notify_me: "Beni dürt"
-        reminders:
-          no_notification: Bildirim yok
-          timeframes:
-            normal:
-              PT0S: aynı gün
-              P1D: 1 gün önce
-              P3D: 3 gün önce
-              P7D: 1 hafta önce
-            overdue:
-              P1D: her gün
-              P3D: Her 3 günde bir
-              P7D: her hafta
-        reasons:
-          mentioned:
-            title: "Bahsedilen"
-            description: "Birisi herhangi bir yerde benden her bahsettiğinde bir bildirim alın"
-          assignee: "Atanan"
-          responsible: "Sorumlu"
-          shared: "Paylaşıldı"
-          watched: "Takip edilen"
-          work_package_commented: "Tüm yeni yorumlar"
-          work_package_created: "Yeni iş paketleri"
-          work_package_processed: "Tüm durum değişiklikleri"
-          work_package_prioritized: "Tüm öncelik değişiklikleri"
-          work_package_scheduled: "Tüm tarih değişiklikleri"
-        global:
-          immediately:
-            title: "Katılım"
-            description: "Dahil olduğunuz (vekil, sorumlu veya gözlemci) iş paketlerindeki tüm faaliyetler için bildirimler."
-          delayed:
-            title: "Katılmayan"
-            description: "Tüm projelerdeki faaliyetler için ek bildirimler."
-          date_alerts:
-            title: "Tarih uyarısı"
-            description: "Dahil olduğunuz (vekil, sorumlu veya gözlemci) açık iş paketleri için önemli tarihler yaklaştığında otomatik bildirimler."
-          overdue: Süresi geçtiğinde
-        project_specific:
-          title: "Projeye özel bildirim ayarları"
-          description: "Bu projeye özgü ayarlar, yukarıdaki varsayılan ayarları geçersiz kılar."
-          add: "Proje için ayar ekle"
-          already_selected: "Bu proje zaten seçildi"
-          remove: "Proje ayarlarını kaldır"
     pagination:
       no_other_page: "Geçerli tek sayfadasınız."
       pages_skipped: "Sayfalar atlandı."
@@ -653,38 +610,6 @@ tr:
       not_available: "Proje mevcut değil"
       required_outside_context: >
         Lütfen tüm özellikleri görmek için çalışma paketini oluşturacak bir proje seçin. Yalnızca yukarıdaki türden etkin olan projeleri seçebilirsiniz.
-    reminders:
-      settings:
-        daily:
-          add_time: "Zaman ekle"
-          enable: "Günlük email hatırlatıcılarını etkinleştir"
-          explanation: "Bu hatırlatıcıları yalnızca okunmamış bildirimler için ve yalnızca sizin belirlediğiniz saatlerde alacaksınız. %{no_time_zone}"
-          no_time_zone: "Hesabınız için bir saat dilimi yapılandırana kadar, saatler UTC olarak yorumlanacaktır."
-          time_label: "Zaman %{counter}:"
-          title: "Okunmamış bildirimler için bana günlük e-posta hatırlatıcıları gönder"
-        workdays:
-          title: "Bu günlerde e-posta hatırlatıcıları alın"
-        immediate:
-          title: "Bana email hatırlatıcısı gönder"
-          mentioned: "Birisi benden @bahsettiğinde hemen"
-          personal_reminder: "Kişisel bir hatırlatma aldığımda hemen"
-        alerts:
-          title: "Diğer öğeler için e-posta uyarıları (iş paketleri olmayanlar)"
-          explanation: >
-            Bildirimler bugün iş paketleri ile sınırlıdır. Bildirimlere eklenene kadar bu etkinlikler için e-posta uyarıları almaya devam etmeyi seçebilirsiniz:
-          news_added: "Haber eklendiğinde"
-          news_commented: "Bir habere yorum yapıldığında"
-          document_added: "Belgeler eklendi"
-          forum_messages: "Yeni forum iletileri yazıldığında"
-          wiki_page_added: "Wiki sayfası eklendiğinde"
-          wiki_page_updated: "Wiki sayfası güncellendiğinde"
-          membership_added: "Üyelik eklendiğinde"
-          membership_updated: "Üyelik güncellendiğinde"
-        title: "Email hatırlatıcıları"
-        pause:
-          label: "Email hatırlatıcılarını geçici olarak durdur"
-          first_day: "İlk gün"
-          last_day: "Son gün"
     text_are_you_sure: "Emin misiniz?"
     text_are_you_sure_to_cancel: "Bu sayfada kaydedilmemiş değişiklikleriniz var. Bunları atmak istediğinizden emin misiniz?"
     breadcrumb: "Gezinti Menüsü"

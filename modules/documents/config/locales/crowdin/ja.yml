@@ -70,12 +70,10 @@ ja:
         この文書にアクセスしたい場合は、管理者に連絡してリアルタイムテキスト連携を有効にしてください。
     show_edit_view:
       connection_error_notice:
-        description: |-
-          リアルタイムテキストコラボレーションサーバーにアクセスできないため、ドキュメントを開くことができません。
-          問題が解決しない場合は、管理者にお問い合わせください。
+        description_server_unavailable: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
         action: もう一度試してください
-      connection_recovery_notice:
-        description: "リアルタイムテキストコラボレーションサーバーへの接続が回復しました。"
       tabs: "ドキュメントタブ"
     index_page:
       name: "名称"
@@ -87,6 +85,9 @@ ja:
       types: "ワークパッケージのタイプ"
       collaboration_settings: "Real-time collaboration"
     last_updated_at: "Last saved %{time}."
+    info_line:
+      currently_offline: "You are currently offline."
+      connection_restored: "You are now back online."
     active_editors: "Active editors"
     active_editors_count:
       other: "%{count} active editors"

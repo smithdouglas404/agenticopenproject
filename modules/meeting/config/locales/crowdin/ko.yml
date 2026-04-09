@@ -184,6 +184,7 @@ ko:
   label_notify: "검토를 위해 보내기"
   label_icalendar: "iCalendar 보내기"
   label_icalendar_download: "iCalendar 이벤트 다운로드"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "미팅 시리즈 보기"
   label_meeting_series: "미팅 시리즈"
   label_version: "버전"

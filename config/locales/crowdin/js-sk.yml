@@ -590,49 +590,6 @@ sk:
       settings:
         change_notification_settings: 'You can modify your <a target="_blank" href="%{url}">notification settings</a> to ensure you never miss an important update.'
         title: "Notification settings"
-        notify_me: "Notify me"
-        reminders:
-          no_notification: No notification
-          timeframes:
-            normal:
-              PT0S: same day
-              P1D: 1 day before
-              P3D: 3 days before
-              P7D: a week before
-            overdue:
-              P1D: every day
-              P3D: every 3 days
-              P7D: every week
-        reasons:
-          mentioned:
-            title: "Mentioned"
-            description: "Receive a notification every time someone mentions me anywhere"
-          assignee: "Priradené"
-          responsible: "Zodpovedný"
-          shared: "Shared"
-          watched: "Pozorovateľ"
-          work_package_commented: "All new comments"
-          work_package_created: "New work packages"
-          work_package_processed: "All status changes"
-          work_package_prioritized: "All priority changes"
-          work_package_scheduled: "All date changes"
-        global:
-          immediately:
-            title: "Participating"
-            description: "Notifications for all activities in work packages you are involved in (assignee, accountable or watcher)."
-          delayed:
-            title: "Non-participating"
-            description: "Additional notifications for activities in all projects."
-          date_alerts:
-            title: "Date alerts"
-            description: "Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher)."
-          overdue: When overdue
-        project_specific:
-          title: "Project-specific notification settings"
-          description: "These project-specific settings override default settings above."
-          add: "Add setting for project"
-          already_selected: "This project is already selected"
-          remove: "Remove project settings"
     pagination:
       no_other_page: "Ste na jedinej stránke."
       pages_skipped: "Pages skipped."
@@ -655,38 +612,6 @@ sk:
       not_available: "Project N/A"
       required_outside_context: >
         Please choose a project to create the work package in to see all attributes. You can only select projects which have the type above activated.
-    reminders:
-      settings:
-        daily:
-          add_time: "Add time"
-          enable: "Enable daily email reminders"
-          explanation: "You will receive these reminders only for unread notifications and only at hours you specify. %{no_time_zone}"
-          no_time_zone: "Until you configure a time zone for your account, the times will be interpreted to be in UTC."
-          time_label: "Time %{counter}:"
-          title: "Send me daily email reminders for unread notifications"
-        workdays:
-          title: "Receive email reminders on these days"
-        immediate:
-          title: "Send me an email reminder"
-          mentioned: "Immediately when someone @mentions me"
-          personal_reminder: "Immediately when I receive a personal reminder"
-        alerts:
-          title: "Email alerts for other items (that are not work packages)"
-          explanation: >
-            Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications:
-          news_added: "Novinky pridané"
-          news_commented: "Comment on a news item"
-          document_added: "Documents added"
-          forum_messages: "New forum messages"
-          wiki_page_added: "Wikistránka bola pridaná"
-          wiki_page_updated: "Wikistránka bola aktualizovaná"
-          membership_added: "Membership added"
-          membership_updated: "Membership updated"
-        title: "Email reminders"
-        pause:
-          label: "Temporarily pause daily email reminders"
-          first_day: "First day"
-          last_day: "Last day"
     text_are_you_sure: "Ste si istí?"
     text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
     breadcrumb: "Breadcrumb"

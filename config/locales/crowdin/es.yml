@@ -112,7 +112,7 @@ es:
     import:
       title: "Importar"
     jira:
-      title: "Importación desde Jira"
+      title: "Jira Migrator"
       description: "Utilice esta herramienta para importar datos desde su instancia de Jira. Puede configurar varios hosts de Jira y elegir qué importar en cada ejecución de importación."
       errors:
         cannot_delete_with_imports: "No se puede eliminar el host de Jira con importaciones existentes"
@@ -123,8 +123,8 @@ es:
         title: "Configuración de Jira"
         new: "Nueva configuración"
       banner:
-        title: "Importación limitada"
-        description: "Esta herramienta de importación se encuentra actualmente en fase beta y solo puede importar datos básicos: proyectos, incidencias (nombre, título, descripción, archivos adjuntos), usuarios (nombre, correo electrónico, pertenencia a proyectos), estados y tipos. No puede importar flujos de trabajo, campos personalizados, relaciones entre incidencias ni permisos. Actualmente solo es compatible con las versiones 10.x y 11.x de Jira Server/Data Center. Por el momento, no es compatible con instancias en la nube."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "Nombre"
@@ -160,7 +160,7 @@ es:
       run:
         title: "Importar ejecución"
         history: "Historial"
-        remove_error: "No se puede eliminar una importación de Jira mientras se está ejecutando"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "Actualmente hay otra importación de Jira en curso o pendiente de revisión. Complétela o revierta antes de iniciar una nueva importación."
         project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:
@@ -382,20 +382,24 @@ es:
           <p>Hola,</p> <p>Se ha creado un nuevo proyecto: projectValue:name</p> <p>Muchas gracias</p>
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
           label_project: Project
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_starts_with_number: Cannot start with a number
           error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
           error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
           remaining_projects:
             one: "... 1 more project"
             other: "... %{count} more projects"
@@ -409,7 +413,7 @@ es:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "Transiciones predeterminadas"
@@ -1329,7 +1333,7 @@ es:
           automatic_with_children: "Fechas determinadas por paquetes de trabajo secundarios."
           automatic_with_predecessor: "La fecha de inicio la fija un predecesor."
           manual_mobile: "Programado manualmente."
-          manually_scheduled: "Programado manualmente. No afectadas por relaciones."
+          manually_scheduled: "Programado manualmente. Fechas no afectadas por relaciones."
       blankslate:
         title: "Sin predecesores"
         description: "Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano."
@@ -1503,6 +1507,9 @@ es:
         dependencies: "Dependencias"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Identifier"
+        work_package: "Work package"
       jira_import:
         projects: "Proyectos"
       "import/jira":
@@ -1511,7 +1518,7 @@ es:
         personal_access_token: "Token de acceso personal"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira import"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "Mostrar hasta"
       attachment:
@@ -3356,6 +3363,11 @@ es:
     quick_add:
       label: "Añadir…"
   my_account:
+    notifications_and_email:
+      title: "Notification and email"
+      tabs:
+        notifications: "Notification settings"
+        email_reminders: "Email reminders"
     access_tokens:
       description: "Los tokens de proveedor son emitidos por OpenProject y permiten a otras aplicaciones acceder a él. Los tokens de cliente son emitidos por otras aplicaciones y permiten a OpenProject acceder a ellos."
       no_results:
@@ -3418,6 +3430,72 @@ es:
         disabled_text: "Los tokens RSS no están habilitados por el administrador. Póngase en contacto con su administrador para utilizar esta función."
       storages:
         unknown_storage: "Almacenamiento desconocido"
+    email_reminders:
+      immediate_reminders:
+        title: "Send me an email reminder"
+        mentioned: "Notify me when I am mentioned"
+        personal_reminder: "Notify me for personal reminders"
+      daily_reminders:
+        title: "Send me daily email reminders for unread notifications"
+        caption: "You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC."
+        enabled: "Enable daily email reminders"
+        add_time: "Add time"
+        remove_time: "Remove time"
+        time_slot_label: "Reminder time (UTC)"
+      workdays:
+        title: "Receive email reminders on these days"
+        submit_button: "Update reminder days"
+      pause_reminders:
+        title: "Pause email notifications"
+        enabled: "Temporarily pause daily email reminders"
+        date_range: "Pause period"
+      email_alerts:
+        title: "Email alerts for other items that are not work packages"
+        news_added: "News added"
+        news_commented: "Comment on a news item"
+        document_added: "Document added"
+        forum_messages: "Forum message posted"
+        wiki_page_added: "Wiki page added"
+        wiki_page_updated: "Wiki page updated"
+        membership_added: "Membership added"
+        membership_updated: "Membership updated"
+        submit_button: "Update alerts"
+    notifications:
+      participating:
+        title: "Participating"
+        submit_button: "Update preferences"
+        mentioned: "Mentioned"
+        watched: "Watching"
+        assignee: "Assignee"
+        responsible: "Accountable"
+        shared: "Shared with me"
+      date_alerts:
+        title: "Date alerts"
+        submit_button: "Update date alerts"
+        start_date: "Start date"
+        due_date: "Finish date"
+        overdue: "Overdue"
+        times:
+          same_day: "On the same day"
+          one_day_before: "1 day before"
+          three_days_before: "3 days before"
+          seven_days_before: "7 days before"
+          one_day_after: "1 day after"
+          three_days_after: "3 days after"
+          seven_days_after: "7 days after"
+      non_participating:
+        title: "Non-participating"
+        submit_button: "Update preferences"
+        work_package_created: "New work packages"
+        work_package_commented: "All new comments"
+        work_package_processed: "All status changes"
+        work_package_prioritized: "All priority changes"
+        work_package_scheduled: "All date changes"
+      project_specific_settings:
+        title: "Project-specific notification settings"
+        add_button: "Add project-specific notifications"
+        dialog_title: "Add project-specific notifications"
+        list_header: "Projects with specific notifications"
   notifications:
     reasons:
       assigned: "Asignado a"
@@ -3449,6 +3527,7 @@ es:
       invalid_filter: "Filtro de notificación no válido"
   label_accessibility: "Accesibilidad"
   label_account: "Cuenta"
+  label_actions: "Comportamiento"
   label_active: "Activo"
   label_activate_user: "Activar usuario"
   label_active_in_new_projects: "Activo en nuevos proyectos"
@@ -3489,6 +3568,7 @@ es:
   label_ical_access_key_generation_hint: "Se genera automáticamente al suscribirse a un calendario."
   label_ical_access_key_latest: "último"
   label_ical_access_key_revoke: "Revocar"
+  label_integrations: "Integrations"
   label_add_column: "Añadir columna"
   label_applied_status: "Estado aplicado"
   label_archive_project: "Archivar proyecto"
@@ -3739,7 +3819,7 @@ es:
   label_external_links: "Enlaces externos"
   label_locale: "Idioma y región"
   label_jump_to_a_project: "Saltar a un proyecto..."
-  label_jira_import: "Importación desde Jira"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Palabras clave"
   label_language_based: "Basado en el idioma del usuario"
   label_last_activity: "Última actividad"
@@ -4966,11 +5046,11 @@ es:
   setting_welcome_text: "Bloque de texto de bienvenida"
   setting_welcome_title: "Título del bloque de bienvenida"
   setting_welcome_on_homescreen: "Mostrar bloque de bienvenida en la pagina de inicio"
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: >
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
     Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Modo de resaltado predeterminado"
   setting_work_package_list_default_highlighted_attributes: "Atributos resaltados en línea predeterminados"

@@ -159,7 +159,10 @@ ko:
         receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
         settings_link_text: "project settings"
     sprint_header_component:
-      label_toggle_backlog: "%{name} 축소/확장"
+      label_start_sprint: "Start"
+      label_complete_sprint: "Complete"
+      start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
+      start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:
         zero: "스프린트의 스토리 없음"
         one: "스프린트의 %{count}개 스토리"
@@ -186,10 +189,6 @@ ko:
     sprint_menu_component:
       label_actions: "스프린트 작업"
       action_menu:
-        start_sprint: "Start sprint"
-        complete_sprint: "Complete sprint"
-        start_sprint_disabled_description: "Another sprint is already active."
-        start_sprint_missing_dates_description: "Start and finish dates are required in order to start the sprint."
         edit_sprint: "스프린트 편집"
         add_work_package: "Add work package"
     story_component:

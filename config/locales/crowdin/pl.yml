@@ -112,7 +112,7 @@ pl:
     import:
       title: "Import"
     jira:
-      title: "Import Jira"
+      title: "Migrator Jira"
       description: "To narzędzie służy do importowania danych z wystąpienia usługi Jira. Można skonfigurować wiele hostów usługi Jira i wybrać, co ma być importowane w każdym przebiegu importu."
       errors:
         cannot_delete_with_imports: "Nie można usunąć hosta Jira z istniejącym importem"
@@ -123,8 +123,8 @@ pl:
         title: "Konfiguracja usługi Jira"
         new: "Nowa konfiguracja"
       banner:
-        title: "Ograniczony import"
-        description: "To narzędzie importu jest obecnie w wersji beta i może importować tylko podstawowe dane: projekty, zgłoszenia problemów (nazwa, tytuł, opis, załączniki), użytkowników (nazwa, adres e-mail, członkostwo w projekcie), statusy i typy. Nie może importować przepływów pracy, pól niestandardowych, relacji między problemami ani uprawnień. Obecnie obsługujemy tylko serwery / centra danych Jira w wersjach 10.x i 11.x. Wystąpienia w chmurze nie są obecnie obsługiwane."
+        title: "Ograniczone możliwości importu"
+        description: "Ten migrator Jira jest obecnie w wersji beta i może importować tylko podstawowe dane: projekty, zgłoszenia problemów (nazwa, tytuł, opis, załączniki), użytkowników (nazwa, adres e-mail, członkostwo w projekcie), statusy i typy. Nie może importować przepływów pracy, pól niestandardowych, relacji między problemami ani uprawnień. Obecnie obsługujemy tylko serwery / centra danych Jira w wersjach 10.x i 11.x. Wystąpienia w chmurze nie są obecnie obsługiwane."
       form:
         fields:
           name: "Nazwa"
@@ -394,20 +394,24 @@ pl:
           <p>Witaj,</p> <p>Utworzono nowy projekt: projectValue:name</p> <p>Dziękujemy</p>
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Wybierz pomiędzy klasycznymi numerycznymi identyfikatorami pakietów roboczych albo semantycznymi identyfikatorami specyficznymi dla projektu, które dodają identyfikator projektu do identyfikatora pakietu roboczego.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+            Istniejące identyfikatory %{project_count} projektów nie spełniają wymagań dotyczących identyfikatorów semantycznych opartych na projektach. OpenProject może automatycznie zaktualizować je tak, aby były prawidłowe, jak w poniższych przykładach. Kliknij przycisk „Automatyczne napraw i zapisz”, aby zaktualizować identyfikatory wszystkich projektów w ten sposób i włączyć identyfikatory semantyczne oparte na projektach.
         box_header:
           label_project: Projekt
           label_previous_identifier: Poprzedni identyfikator
           label_autofixed_suggestion: Przyszły identyfikator
           label_example_work_package_id: Przykładowy identyfikator pakietu roboczego
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Musi składać się z nie więcej niż 10 znaków
+          error_numerical: Nie może być czysto liczbowy
+          error_starts_with_number: Nie może zaczynać się od cyfry
           error_special_characters: Znaki specjalne są niedozwolone
+          error_not_fully_uppercased: Musi być pisany wielkimi literami
           error_in_use: Już używany jako aktywne dojście innego projektu
           error_reserved: Zarezerwowany przez historię dojść innego projektu
+          error_unknown: Wymaga ręcznego sprawdzenia
           remaining_projects:
             one: "...jeszcze 1 projekt"
             few: "...jeszcze %{count} projekty"
@@ -423,7 +427,7 @@ pl:
           checkbox_label: Rozumiem, że spowoduje to trwałą zmianę wszystkich identyfikatorów pakietów roboczych
         success_banner: Pomyślnie zaktualizowano format identyfikatora pakietu roboczego.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Identyfikatory projektów są obecnie zmieniane na identyfikatory semantyczne oparte na projektach. Może to zająć trochę czasu.
     workflows:
       tabs:
         default_transitions: "Przejścia domyślne"
@@ -1537,6 +1541,9 @@ pl:
         dependencies: "Zależności"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Identyfikator"
+        work_package: "Pakiet roboczy"
       jira_import:
         projects: "Projekty"
       "import/jira":
@@ -1545,7 +1552,7 @@ pl:
         personal_access_token: "Osobisty token dostępu"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira import"
+        jira_import: "Migrator Jira"
       announcements:
         show_until: "Wyświetlaj do"
       attachment:
@@ -3472,6 +3479,11 @@ pl:
     quick_add:
       label: "Dodaj…"
   my_account:
+    notifications_and_email:
+      title: "Powiadomienia i wiadomości e-mail"
+      tabs:
+        notifications: "Ustawienia powiadomień"
+        email_reminders: "Przypomnienia e-mail"
     access_tokens:
       description: "Tokeny dostawcy są wydawane przez OpenProject, co umożliwia dostęp do nich innym aplikacjom. Tokeny klienta są wydawane przez inne aplikacje, co umożliwia dostęp do nich oprogramowaniu OpenProject."
       no_results:
@@ -3534,6 +3546,72 @@ pl:
         disabled_text: "Tokeny RSS nie zostały włączone przez administratora. Aby użyć tej funkcji, skontaktuj się z administratorem."
       storages:
         unknown_storage: "Nieznany magazyn"
+    email_reminders:
+      immediate_reminders:
+        title: "Wyślij mi przypomnienie e-mail"
+        mentioned: "Powiadamiaj mnie, gdy ktoś mnie wspomni"
+        personal_reminder: "Powiadamiaj mnie o osobistych przypomnieniach"
+      daily_reminders:
+        title: "Wyślij mi codzienne przypomnienia e-mail dla nieprzeczytanych powiadomień"
+        caption: "Będziesz otrzymywać te przypomnienia tylko w przypadku nieprzeczytanych powiadomień i tylko w określonych przez Ciebie godzinach. Dopóki nie skonfigurujesz strefy czasowej dla swojego konta, godziny będą interpretowane jako UTC."
+        enabled: "Enable daily email reminders"
+        add_time: "Add time"
+        remove_time: "Remove time"
+        time_slot_label: "Reminder time (UTC)"
+      workdays:
+        title: "Receive email reminders on these days"
+        submit_button: "Update reminder days"
+      pause_reminders:
+        title: "Pause email notifications"
+        enabled: "Temporarily pause daily email reminders"
+        date_range: "Pause period"
+      email_alerts:
+        title: "Email alerts for other items that are not work packages"
+        news_added: "News added"
+        news_commented: "Comment on a news item"
+        document_added: "Document added"
+        forum_messages: "Forum message posted"
+        wiki_page_added: "Wiki page added"
+        wiki_page_updated: "Wiki page updated"
+        membership_added: "Membership added"
+        membership_updated: "Membership updated"
+        submit_button: "Update alerts"
+    notifications:
+      participating:
+        title: "Participating"
+        submit_button: "Update preferences"
+        mentioned: "Mentioned"
+        watched: "Watching"
+        assignee: "Assignee"
+        responsible: "Accountable"
+        shared: "Shared with me"
+      date_alerts:
+        title: "Date alerts"
+        submit_button: "Update date alerts"
+        start_date: "Start date"
+        due_date: "Finish date"
+        overdue: "Overdue"
+        times:
+          same_day: "On the same day"
+          one_day_before: "1 day before"
+          three_days_before: "3 days before"
+          seven_days_before: "7 days before"
+          one_day_after: "1 day after"
+          three_days_after: "3 days after"
+          seven_days_after: "7 days after"
+      non_participating:
+        title: "Non-participating"
+        submit_button: "Update preferences"
+        work_package_created: "New work packages"
+        work_package_commented: "All new comments"
+        work_package_processed: "All status changes"
+        work_package_prioritized: "All priority changes"
+        work_package_scheduled: "All date changes"
+      project_specific_settings:
+        title: "Project-specific notification settings"
+        add_button: "Add project-specific notifications"
+        dialog_title: "Add project-specific notifications"
+        list_header: "Projects with specific notifications"
   notifications:
     reasons:
       assigned: "Przypisana osoba"
@@ -3565,6 +3643,7 @@ pl:
       invalid_filter: "Nieprawidłowy filtr powiadomień"
   label_accessibility: "Dostępność"
   label_account: "Konto"
+  label_actions: "Działania"
   label_active: "Aktywne"
   label_activate_user: "Aktywuj użytkownika"
   label_active_in_new_projects: "Aktywne w nowych projektach"
@@ -3605,6 +3684,7 @@ pl:
   label_ical_access_key_generation_hint: "Automatycznie wygenerowano podczas subskrypcji kalendarza."
   label_ical_access_key_latest: "najnowszy"
   label_ical_access_key_revoke: "Odwołaj"
+  label_integrations: "Integrations"
   label_add_column: "Dodaj kolumnę"
   label_applied_status: "Nadaj status"
   label_archive_project: "Archiwum projektów"
@@ -3855,7 +3935,7 @@ pl:
   label_external_links: "Linki zewnętrzne"
   label_locale: "Język i region"
   label_jump_to_a_project: "Skok do projektu..."
-  label_jira_import: "Import Jira"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "Słowa kluczowe"
   label_language_based: "Na podstawie języka użytkownika"
   label_last_activity: "Ostatnia aktywność"
@@ -5091,11 +5171,11 @@ pl:
   setting_welcome_text: "Tekst bloku powitalnego"
   setting_welcome_title: "Tytuł bloku powitalnego"
   setting_welcome_on_homescreen: "Wyświetl wiadomość powitalną na ekranie głównym"
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: >
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
     Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "Domyślny tryb wyróżniania"
   setting_work_package_list_default_highlighted_attributes: "Domyślnie wyróżniane atrybuty wyświetlane w treści"

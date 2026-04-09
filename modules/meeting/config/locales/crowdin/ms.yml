@@ -184,6 +184,7 @@ ms:
   label_notify: "Hantar untuk semakan"
   label_icalendar: "Hantar iCalendar\n"
   label_icalendar_download: "Muat turun peristiwa dalam iCalendar"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Lihat siri mesyuarat"
   label_meeting_series: "Siri mesyuarat"
   label_version: "Versi"

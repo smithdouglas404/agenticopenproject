@@ -194,6 +194,7 @@ ro:
   label_notify: "Trimiteți pentru revizuire"
   label_icalendar: "Trimiteți iCalendar"
   label_icalendar_download: "Download iCalendar event"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Vezi seria de întâlniri"
   label_meeting_series: "Serie şedinţe"
   label_version: "Versiune"

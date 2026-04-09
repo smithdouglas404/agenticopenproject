@@ -37,18 +37,14 @@ ms:
     error_invalid_backup_code: "Kod sandaran 2FA tidak sah"
     channel_unavailable: "Saluran penghantaran %{channel} tidak tersedia."
     no_valid_phone_number: "Tiada nombor telefon yang sah wujud."
-    label_pwd_confirmation: "Kata Laluan"
-    notice_pwd_confirmation: "Anda perlu mengesahkan kata laluan anda semasa membuat perubahan kepada tetapan ini."
     label_device_type: "Jenis peranti"
     label_default_device: "Peranti default 2FA "
     label_device: "Peranti 2FA "
     label_devices: "Peranti 2FA "
-    label_one_time_password: "Kata laluan satu kali"
     label_2fa_enabled: "Pengesahan dua faktor aktif"
     label_2fa_disabled: "Pengesahan dua faktor tidak aktif"
     text_otp_delivery_message_sms: "Kata laluan satu kali %{app_title} anda ialah %{token}"
     text_otp_delivery_message_voice: "Kata laluan satu kali %{app_title} anda ialah: %{pause} %{token}. Saya ulang: %{pause} %{token}"
-    text_enter_2fa: "Sila masukkan kata laluan satu kali daripada peranti anda."
     text_2fa_enabled: "Setiap kali log masuk, anda akan diminta untuk memasukkan token OTP daripada peranti 2FA default anda."
     text_2fa_disabled: "Untuk membenarkan pengesahan dua faktor, gunakan butang di atas untuk mendaftar peranti 2FA yang baharu. Jika anda sudah mempunyai peranti, anda perlu menjadikannya default."
     login:
@@ -68,7 +64,6 @@ ms:
       text_remember: |
         Tetapkan ini kepada lebih daripada kosong untuk membolehkan pengguna untuk mengingat 2FA mereka untuk bilangan hari yang ditetapkan.
         Mereka tidak akan diminta untuk masukkan semula 2FA dalam tempoh tersebut. Ia hanya boleh ditetapkan apabila ia tidak dikuatkuasakan oleh konfigurasi. 
-      error_invalid_settings: "Strategi 2FA yang anda telah memilih adalah tidak sah."
       failed_to_save_settings: "Gagal untuk kemas kini tetapan 2FA: %{message}"
     admin:
       self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
@@ -81,14 +76,9 @@ ms:
       text_2fa_enabled: "Setiap kali log masuk, pengguna ini akan diminta untuk memasukkan token OTP daripada peranti 2FA default mereka."
       text_2fa_disabled: "Pengguna ini tidak menyediakan peranti 2FA melalui 'Laman akaun saya' mereka"
       only_sms_allowed: "Hanya penghantaran SMS boleh disediakan untuk pengguna-pengguna lain."
-    upsell:
-      title: "Pengesahan dua faktor"
-      description: "Ketatkan keselamatan contoh OpenProject anda dengan menawarkan (atau kuatkuasakan) pengesahan dua faktor ke semua ahli projek."
     backup_codes:
-      none_found: Tiada kod sandaran sedia ada bagi akaun ini.
       singular: Kod sandaran
       plural: Kod sandaran
-      your_codes: untuk %{login} akaun %{app_name} anda
       overview_description: |
         Jika anda tidak boleh mengakses peranti dua faktor anda, anda boleh menggunakan kod sandaran untuk mendapatkan semula akses ke akaun anda. 
         Gunakan butang berikutnya untuk menjana set kod sandaran baharu.
@@ -167,19 +157,15 @@ ms:
       clear_cookie: "Klik sini untuk buang semua sesi 2FA yang disimpan."
       cookie_removed: "Semua sesi 2FA yang disimpan telah dipadamkan."
       dont_ask_again: "Ciptakan kuki untuk menyimpan pengesahan 2FA pada pelanggan ini selama %{days} hari."
-  field_phone: "Telefon bimbit"
   field_otp: "Kata laluan satu kali"
   notice_account_otp_invalid: " Kata laluan satu kali tidak sah."
   notice_account_otp_expired: "Kata laluan satu kali yang anda masukkan telah tamat tempoh."
   notice_developer_strategy_otp: "Strategi pembangunan telah janakan kata laluan satu kali yang berikut: %{token} (Saluran: %{channel})"
   notice_account_otp_send_failed: "Kata laluan satu kali anda tidak dapat dihantar."
   notice_account_has_no_phone: "Tiada nombor telefon bimbit yang terpaut dengan akaun anda."
-  label_expiration_hint: "%{date} atau pada log keluar"
-  label_actions: "Tindakan"
   label_confirmed: "Disahkan"
   button_continue: "Teruskan"
   button_make_default: "Tandakan sebagai default"
-  label_unverified_phone: "Telefon bimbit masih belum disahkan "
   notice_phone_number_format: "Sila masukkan nombor dalam format berikut: +XX XXXXXXXX."
   text_otp_not_receive: "Kaedah pengesahan lain"
   text_send_otp_again: "Hantar semula kata laluan satu kali dengan:"

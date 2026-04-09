@@ -104,7 +104,7 @@ vi:
     button_save: "lưu lại"
     button_settings: "cài đặt"
     button_uncheck_all: "Bỏ chọn tất cả"
-    button_update: "cập nhật"
+    button_update: "Cập Nhật"
     button_export-atom: "Tải xuống nguyên tử"
     button_generate_pdf: "Tạo PDF"
     button_create: "Tạo mới"
@@ -587,49 +587,6 @@ vi:
       settings:
         change_notification_settings: 'Bạn có thể thay đổi <a target="_blank" href="%{url}">cài đặt thông báo</a> của mình để đảm bảo không bỏ lỡ cập nhật quan trọng nào.'
         title: "Cài đặt thông báo"
-        notify_me: "Thông báo cho tôi"
-        reminders:
-          no_notification: Không có thông báo
-          timeframes:
-            normal:
-              PT0S: cùng ngày
-              P1D: 1 ngày trước
-              P3D: 3 ngày trước
-              P7D: một tuần trước
-            overdue:
-              P1D: mỗi ngày
-              P3D: cứ sau 3 ngày
-              P7D: mỗi tuần
-        reasons:
-          mentioned:
-            title: "Được đề cập"
-            description: "Nhận thông báo mỗi khi ai đó nhắc đến tôi ở bất cứ đâu"
-          assignee: "Người được chuyển nhượng"
-          responsible: "chịu trách nhiệm"
-          shared: "đã chia sẻ"
-          watched: "người theo dõi"
-          work_package_commented: "Tất cả bình luận mới"
-          work_package_created: "Gói công việc mới"
-          work_package_processed: "Mọi thay đổi trạng thái"
-          work_package_prioritized: "Tất cả các thay đổi ưu tiên"
-          work_package_scheduled: "Tất cả các thay đổi ngày"
-        global:
-          immediately:
-            title: "Tham gia"
-            description: "Thông báo cho tất cả các hoạt động trong gói công việc mà bạn tham gia (người được giao, người chịu trách nhiệm hoặc người theo dõi)."
-          delayed:
-            title: "Không tham gia"
-            description: "Thông báo bổ sung cho các hoạt động trong tất cả các dự án."
-          date_alerts:
-            title: "Thông báo ngày"
-            description: "Thông báo tự động khi các ngày quan trọng đang đến gần đối với các gói công việc đang mở mà bạn tham gia (người được giao, người chịu trách nhiệm hoặc người theo dõi)."
-          overdue: Khi quá hạn
-        project_specific:
-          title: "Cài đặt thông báo dành riêng cho dự án"
-          description: "Các cài đặt dành riêng cho dự án này sẽ ghi đè các cài đặt mặc định ở trên."
-          add: "Thêm cài đặt cho dự án"
-          already_selected: "Dự án này đã được chọn"
-          remove: "Xóa cài đặt dự án"
     pagination:
       no_other_page: "Bạn đang trên trang duy nhất."
       pages_skipped: "Các trang bị bỏ qua."
@@ -652,38 +609,6 @@ vi:
       not_available: "Dự án N/A"
       required_outside_context: >
         Vui lòng chọn một dự án để tạo gói công việc để xem tất cả các thuộc tính. Bạn chỉ có thể chọn các dự án đã kích hoạt loại trên.
-    reminders:
-      settings:
-        daily:
-          add_time: "Thêm thời gian"
-          enable: "Bật lời nhắc email hàng ngày"
-          explanation: "Bạn sẽ chỉ nhận được những lời nhắc này đối với những thông báo chưa đọc và chỉ vào những giờ bạn chỉ định. %{no_time_zone}"
-          no_time_zone: "Cho đến khi bạn định cấu hình múi giờ cho tài khoản của mình, thời gian sẽ được hiểu là theo UTC."
-          time_label: "Thời gian %{counter}:"
-          title: "Gửi cho tôi lời nhắc email hàng ngày về các thông báo chưa đọc"
-        workdays:
-          title: "Nhận lời nhắc qua email vào những ngày này"
-        immediate:
-          title: "Gửi cho tôi lời nhắc qua email"
-          mentioned: "Ngay lập tức khi ai đó @đề cập đến tôi"
-          personal_reminder: "Ngay lập tức khi tôi nhận được lời nhắc cá nhân"
-        alerts:
-          title: "Thông báo qua email cho các mục khác (không phải là gói công việc)"
-          explanation: >
-            Thông báo ngày hôm nay được giới hạn trong các gói công việc. Bạn có thể chọn tiếp tục nhận thông báo qua email cho những sự kiện này cho đến khi chúng được đưa vào thông báo:
-          news_added: "Đã thêm tin tức"
-          news_commented: "Bình luận về một tin tức"
-          document_added: "Đã thêm tài liệu"
-          forum_messages: "Thông báo diễn đàn mới"
-          wiki_page_added: "Đã thêm trang Wiki"
-          wiki_page_updated: "Trang Wiki được cập nhật"
-          membership_added: "Đã thêm thành viên"
-          membership_updated: "Đã cập nhật tư cách thành viên"
-        title: "Lời nhắc qua email"
-        pause:
-          label: "Tạm dừng nhắc nhở email hàng ngày"
-          first_day: "Ngày đầu tiên"
-          last_day: "Ngày cuối cùng"
     text_are_you_sure: "Bạn có chắc không?"
     text_are_you_sure_to_cancel: "Bạn có những thay đổi chưa được lưu trên trang này. Bạn có chắc chắn muốn loại bỏ chúng không?"
     breadcrumb: "vụn bánh mì"

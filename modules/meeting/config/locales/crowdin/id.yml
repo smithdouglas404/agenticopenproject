@@ -184,6 +184,7 @@ id:
   label_notify: "Kirim untuk ulasan"
   label_icalendar: "Kirim iCalendar"
   label_icalendar_download: "Unduh acara iCalendar"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Lihat jajaran rapat"
   label_meeting_series: "Seri rapat"
   label_version: "Versi"

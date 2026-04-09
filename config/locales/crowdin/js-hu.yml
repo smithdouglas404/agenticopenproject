@@ -587,49 +587,6 @@ hu:
       settings:
         change_notification_settings: 'You can modify your <a target="_blank" href="%{url}">notification settings</a> to ensure you never miss an important update.'
         title: "Értesítési beállítások"
-        notify_me: "Értesítést kérek"
-        reminders:
-          no_notification: No notification
-          timeframes:
-            normal:
-              PT0S: same day
-              P1D: 1 day before
-              P3D: 3 days before
-              P7D: a week before
-            overdue:
-              P1D: every day
-              P3D: every 3 days
-              P7D: every week
-        reasons:
-          mentioned:
-            title: "Megemlített"
-            description: "Értesítés fogadása minden alkalommal, amikor bárki bárhol megemlít"
-          assignee: "Megbízott"
-          responsible: "Felelős"
-          shared: "Megosztva"
-          watched: "Megfigyelő"
-          work_package_commented: "Új megjegyzések"
-          work_package_created: "Új munkacsomagok"
-          work_package_processed: "Összes státusz változás"
-          work_package_prioritized: "Összes prioritás változás"
-          work_package_scheduled: "Összes dátum változás"
-        global:
-          immediately:
-            title: "Participating"
-            description: "Notifications for all activities in work packages you are involved in (assignee, accountable or watcher)."
-          delayed:
-            title: "Non-participating"
-            description: "Additional notifications for activities in all projects."
-          date_alerts:
-            title: "Date alerts"
-            description: "Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher)."
-          overdue: When overdue
-        project_specific:
-          title: "Projekt-specifikus értesítések beállításai"
-          description: "These project-specific settings override default settings above."
-          add: "Beállítás hozzáadása a projekthez"
-          already_selected: "A projekt már ki lett választva"
-          remove: "Projekt beállítások eltávolítása"
     pagination:
       no_other_page: "Csak egyetlen oldalon tartózkodik."
       pages_skipped: "Pages skipped."
@@ -652,38 +609,6 @@ hu:
       not_available: "Project N/A"
       required_outside_context: >
         Kérjük, válasszon egy projektet a munkacsomag létrehozásához az összes attribútum megtekintéséhez. Csak olyan projekteket választhat ki, amelyek aktiválták a fenti típust.
-    reminders:
-      settings:
-        daily:
-          add_time: "Idő hozzáadása\n"
-          enable: "Napi e-mail emlékeztetők engedélyezése\n"
-          explanation: "Ezeket az emlékeztetőket csak az olvasatlan értesítésekről kapja, és csak az Ön által megadott órákban. %{no_time_zone}\n"
-          no_time_zone: "Amíg a fiókjához nincs időzóna beállítva, addig az időpontok UTC szerint értendők."
-          time_label: "Idő%{counter}:"
-          title: "Napi e-mail emlékeztető küldése az olvasatlan értesítésekről\n"
-        workdays:
-          title: "Email emlékeztetők fogadása ezeken a napokon"
-        immediate:
-          title: "Kérek email emlékeztetőt!"
-          mentioned: "Amint valaki @megemlít engem"
-          personal_reminder: "Immediately when I receive a personal reminder"
-        alerts:
-          title: "Email alerts for other items (that are not work packages)"
-          explanation: >
-            Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications:
-          news_added: "Hírek hozzáadva"
-          news_commented: "Megjegyzés egy hír elemhez"
-          document_added: "Dokumentum hozzáadva"
-          forum_messages: "Új fórum üzenetek"
-          wiki_page_added: "Wiki oldal hozzáadva"
-          wiki_page_updated: "Wiki oldal frissítve"
-          membership_added: "Felhasználó hozzáadva"
-          membership_updated: "Felhasználó frissítve"
-        title: "E-mail emlékeztetők"
-        pause:
-          label: "Napi email emlékeztetők ideiglenes szüneteltetése"
-          first_day: "Első nap"
-          last_day: "Utolsó nap"
     text_are_you_sure: "Biztos vagy benne?"
     text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
     breadcrumb: "Breadcrumb"

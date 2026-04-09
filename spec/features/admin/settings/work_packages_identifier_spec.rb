@@ -60,11 +60,11 @@ RSpec.describe "Work packages identifier admin settings", :js do
   context "when a project has a problematic identifier" do
     shared_let(:project) { create(:project, identifier: "bad-id", name: "Bad Project") }
 
-    context "when saving with the current numeric setting" do
+    context "when saving with the current classic setting" do
       it "saves without showing the confirmation dialog" do
         visit_settings
 
-        # The autofix section is hidden when numeric is selected
+        # The autofix section is hidden when classic is selected
         expect(page).to have_css(
           "[data-admin--work-packages-identifier-target=autofixSection][hidden]",
           visible: :all
@@ -76,13 +76,13 @@ RSpec.describe "Work packages identifier admin settings", :js do
       end
     end
 
-    context "when switching to alphanumeric" do
+    context "when switching to semantic" do
       before do
         visit_settings
-        choose "Project-based alphanumerical identifiers"
+        choose "Project-based semantic identifiers"
       end
 
-      it "shows the autofix section after selecting alphanumeric" do
+      it "shows the autofix section after selecting semantic" do
         expect(page).to have_css(
           "[data-admin--work-packages-identifier-target=autofixSection]:not([hidden])",
           visible: :visible

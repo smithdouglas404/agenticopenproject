@@ -587,49 +587,6 @@ ko:
       settings:
         change_notification_settings: '중요 업데이트를 놓치지 않도록 <a target="_blank" href="%{url}">알림 설정</a>을 수정할 수 있습니다.'
         title: "알림 설정"
-        notify_me: "알림 받기"
-        reminders:
-          no_notification: 알림 없음
-          timeframes:
-            normal:
-              PT0S: 같은 날
-              P1D: 1일 전
-              P3D: 3일 전
-              P7D: 1주 전
-            overdue:
-              P1D: 매일
-              P3D: 3일마다
-              P7D: 매주
-        reasons:
-          mentioned:
-            title: "멘션됨"
-            description: "어디에서든 누군가가 나를 멘션할 때마다 알림 받기"
-          assignee: "담당자"
-          responsible: "책임자"
-          shared: "공유됨"
-          watched: "주시자"
-          work_package_commented: "모든 새로운 코멘트"
-          work_package_created: "새 작업 패키지"
-          work_package_processed: "모든 상태 변경 사항"
-          work_package_prioritized: "모든 우선 순위 변경 사항"
-          work_package_scheduled: "모든 날짜 변경 사항"
-        global:
-          immediately:
-            title: "참여"
-            description: "귀하가 참여하고 있는 작업 패키지의 모든 활동에 대한 알림(담당자, 책임자 또는 주시자)."
-          delayed:
-            title: "참여하지 않음"
-            description: "모든 프로젝트의 활동에 대한 추가 알림."
-          date_alerts:
-            title: "날짜 경보"
-            description: "귀하가 참여하고 있는 오픈 작업 패키지에 대한 중요 날짜가 다가올 때 자동 알림(담당자, 책임자 또는 주시자)."
-          overdue: 기한이 지난 경우
-        project_specific:
-          title: "프로젝트별 알림 설정"
-          description: "이러한 프로젝트별 설정은 위의 기본 설정을 재정의합니다."
-          add: "프로젝트에 대한 설정 추가"
-          already_selected: "이 프로젝트는 이미 선택되었습니다."
-          remove: "프로젝트 설정 제거"
     pagination:
       no_other_page: "유일한 페이지에 있습니다."
       pages_skipped: "페이지를 건너뛰었습니다."
@@ -652,38 +609,6 @@ ko:
       not_available: "프로젝트 N/A"
       required_outside_context: >
         모든 특성을 보려면 작업 패키지를 만들 프로젝트를 선택하십시오. 위 유형이 활성화된 프로젝트만 선택할 수 있습니다.
-    reminders:
-      settings:
-        daily:
-          add_time: "시간 추가"
-          enable: "일일 이메일 미리 알림 사용"
-          explanation: "읽지 않은 알림에 대해서만 그리고 지정된 시간에만, 이러한 미리 알림이 전송됩니다. %{no_time_zone}"
-          no_time_zone: "계정의 시간대를 구성할 때까지 시간이 UTC로 표시됩니다."
-          time_label: "시간 %{counter}:"
-          title: "읽지 않은 알림에 대해 내게 일일 이메일 미리 알림 보내기"
-        workdays:
-          title: "해당 요일에 이메일 미리 알림 받기"
-        immediate:
-          title: "내게 이메일 미리 알림 보내기"
-          mentioned: "누군가 나를 @멘션할 때 즉시"
-          personal_reminder: "개인 미리 알림을 받는 즉시"
-        alerts:
-          title: "기타 항목에 대한 이메일 알림(작업 패키지 외)"
-          explanation: >
-            오늘 알림은 작업 패키지로 제한됩니다. 알림에 포함될 때까지 이러한 이벤트에 대한 이메일 알림을 계속 받도록 선택할 수 있습니다.
-          news_added: "뉴스 추가됨"
-          news_commented: "뉴스 항목의 코멘트"
-          document_added: "문서 추가됨"
-          forum_messages: "새 포럼 메시지"
-          wiki_page_added: "위키 페이지 추가됨"
-          wiki_page_updated: "위키 페이지 업데이트됨"
-          membership_added: "멤버십 추가됨"
-          membership_updated: "멤버십 업데이트됨"
-        title: "이메일 미리 알림"
-        pause:
-          label: "임시로 일일 이메일 미리 알림 일시 중지"
-          first_day: "첫날"
-          last_day: "마지막 날"
     text_are_you_sure: "계속하시겠습니까?"
     text_are_you_sure_to_cancel: "이 페이지에 저장되지 않은 변경 사항이 있습니다. 변경 사항을 취소하시겠습니까?"
     breadcrumb: "이동 경로"

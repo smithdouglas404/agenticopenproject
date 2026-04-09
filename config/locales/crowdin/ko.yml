@@ -112,7 +112,7 @@ ko:
     import:
       title: "가져오기"
     jira:
-      title: "Jira 가져오기"
+      title: "Jira Migrator"
       description: "이 도구를 사용하여 Jira 인스턴스에서 데이터를 가져옵니다. 여러 Jira 호스트를 구성하고 가져오기 실행 각각에서 가져올 항목을 선택할 수 있습니다."
       errors:
         cannot_delete_with_imports: "기존 가져오기가 있는 Jira 호스트는 삭제할 수 없습니다"
@@ -123,8 +123,8 @@ ko:
         title: "Jira 구성"
         new: "새 구성"
       banner:
-        title: "제한된 가져오기"
-        description: "이 가져오기 도구는 현재 베타 버전이며 프로젝트, 이슈(이름, 제목, 설명, 첨부 파일), 사용자(이름, 이메일, 프로젝트 멤버십), 상태 및 유형과 같은 기본 데이터만 가져올 수 있습니다. 워크플로, 사용자 지정 필드, 이슈 관계 또는 권한은 가져올 수 없습니다. Jira Server/Data Center 버전 10.x 및 11.x만 현재 지원합니다. 클라우드 인스턴스는 현재 지원되지 않습니다."
+        title: "Limited import capabilities"
+        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         fields:
           name: "이름"
@@ -160,7 +160,7 @@ ko:
       run:
         title: "가져오기 실행"
         history: "기록"
-        remove_error: "Jira 가져오기는 실행되는 동안 제거할 수 없습니다"
+        remove_error: "A Jira import run cannot be removed while it is running"
         import_blocked_error: "다른 Jira 가져오기 실행이 현재 진행 중이거나 검토를 기다리는 중입니다. 새 가져오기를 시작하기 전에 완료하거나 되돌리세요."
         project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
         blank:
@@ -376,20 +376,24 @@ ko:
           <p>안녕하세요,</p> <p>새 프로젝트가 생성되었습니다: projectValue:name</p> <p>감사합니다.</p>
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+            Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
         box_header:
           label_project: Project
           label_previous_identifier: Previous identifier
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_starts_with_number: Cannot start with a number
           error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
           error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
           remaining_projects:
             other: "... %{count} more projects"
         button_autofix: Autofix and save
@@ -402,7 +406,7 @@ ko:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: "기본 전환"
@@ -1488,6 +1492,9 @@ ko:
         dependencies: "종속성"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Identifier"
+        work_package: "Work package"
       jira_import:
         projects: "프로젝트"
       "import/jira":
@@ -1496,7 +1503,7 @@ ko:
         personal_access_token: "개인 액세스 토큰"
       "import/jira_open_project_reference":
         jira: "Jira"
-        jira_import: "Jira 가져오기"
+        jira_import: "Jira Migrator"
       announcements:
         show_until: "표시 기한"
       attachment:
@@ -3300,6 +3307,11 @@ ko:
     quick_add:
       label: "추가…"
   my_account:
+    notifications_and_email:
+      title: "Notification and email"
+      tabs:
+        notifications: "Notification settings"
+        email_reminders: "Email reminders"
     access_tokens:
       description: "공급자 토큰은 OpenProject에서 발급하며, 다른 애플리케이션이 액세스하도록 허용합니다. 클라이언트 토큰은 다른 애플리케이션에서 발급하며, OpenProject가 액세스하도록 허용합니다."
       no_results:
@@ -3362,6 +3374,72 @@ ko:
         disabled_text: "관리자가 RSS 토큰을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
       storages:
         unknown_storage: "알 수 없는 저장소"
+    email_reminders:
+      immediate_reminders:
+        title: "Send me an email reminder"
+        mentioned: "Notify me when I am mentioned"
+        personal_reminder: "Notify me for personal reminders"
+      daily_reminders:
+        title: "Send me daily email reminders for unread notifications"
+        caption: "You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC."
+        enabled: "Enable daily email reminders"
+        add_time: "Add time"
+        remove_time: "Remove time"
+        time_slot_label: "Reminder time (UTC)"
+      workdays:
+        title: "Receive email reminders on these days"
+        submit_button: "Update reminder days"
+      pause_reminders:
+        title: "Pause email notifications"
+        enabled: "Temporarily pause daily email reminders"
+        date_range: "Pause period"
+      email_alerts:
+        title: "Email alerts for other items that are not work packages"
+        news_added: "News added"
+        news_commented: "Comment on a news item"
+        document_added: "Document added"
+        forum_messages: "Forum message posted"
+        wiki_page_added: "Wiki page added"
+        wiki_page_updated: "Wiki page updated"
+        membership_added: "Membership added"
+        membership_updated: "Membership updated"
+        submit_button: "Update alerts"
+    notifications:
+      participating:
+        title: "Participating"
+        submit_button: "Update preferences"
+        mentioned: "Mentioned"
+        watched: "Watching"
+        assignee: "Assignee"
+        responsible: "Accountable"
+        shared: "Shared with me"
+      date_alerts:
+        title: "Date alerts"
+        submit_button: "Update date alerts"
+        start_date: "Start date"
+        due_date: "Finish date"
+        overdue: "Overdue"
+        times:
+          same_day: "On the same day"
+          one_day_before: "1 day before"
+          three_days_before: "3 days before"
+          seven_days_before: "7 days before"
+          one_day_after: "1 day after"
+          three_days_after: "3 days after"
+          seven_days_after: "7 days after"
+      non_participating:
+        title: "Non-participating"
+        submit_button: "Update preferences"
+        work_package_created: "New work packages"
+        work_package_commented: "All new comments"
+        work_package_processed: "All status changes"
+        work_package_prioritized: "All priority changes"
+        work_package_scheduled: "All date changes"
+      project_specific_settings:
+        title: "Project-specific notification settings"
+        add_button: "Add project-specific notifications"
+        dialog_title: "Add project-specific notifications"
+        list_header: "Projects with specific notifications"
   notifications:
     reasons:
       assigned: "담당자"
@@ -3393,6 +3471,7 @@ ko:
       invalid_filter: "잘못된 알림 필터"
   label_accessibility: "접근성"
   label_account: "계정"
+  label_actions: "작업"
   label_active: "활성"
   label_activate_user: "사용자 활성화"
   label_active_in_new_projects: "새로운 프로젝트에서 활성"
@@ -3433,6 +3512,7 @@ ko:
   label_ical_access_key_generation_hint: "캘린더 구독 시 자동으로 생성됩니다."
   label_ical_access_key_latest: "최신"
   label_ical_access_key_revoke: "취소"
+  label_integrations: "Integrations"
   label_add_column: "열 추가"
   label_applied_status: "적용된 상태"
   label_archive_project: "프로젝트 아카이브하기"
@@ -3683,7 +3763,7 @@ ko:
   label_external_links: "외부 링크"
   label_locale: "언어 및 지역"
   label_jump_to_a_project: "프로젝트로 이동..."
-  label_jira_import: "Jira 가져오기"
+  label_jira_import: "Jira Migrator"
   label_keyword_plural: "키워드"
   label_language_based: "사용자 언어에 따름"
   label_last_activity: "마지막 활동"
@@ -4903,11 +4983,11 @@ ko:
   setting_welcome_text: "환영 블록 텍스트"
   setting_welcome_title: "환영 블록 제목"
   setting_welcome_on_homescreen: "홈 화면에 환영 블록 표시"
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: >
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: >
     Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: >
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: >
     Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
   setting_work_package_list_default_highlighting_mode: "기본 강조 표시 모드"
   setting_work_package_list_default_highlighted_attributes: "기본 인라인 강조 표시 특성"

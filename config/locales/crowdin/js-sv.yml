@@ -587,49 +587,6 @@ sv:
       settings:
         change_notification_settings: 'Du kan ändra dina <a target="_blank" href="%{url}">aviseringsinställningar</a> för att säkerställa att du aldrig missar en viktig uppdatering.'
         title: "Inställningar för aviseringar"
-        notify_me: "Meddela mig"
-        reminders:
-          no_notification: Ingen avisering
-          timeframes:
-            normal:
-              PT0S: samma dag
-              P1D: 1 dag innan
-              P3D: 3 dagar innan
-              P7D: en vecka innan
-            overdue:
-              P1D: varje dag
-              P3D: var 3:e dag
-              P7D: varje vecka
-        reasons:
-          mentioned:
-            title: "Omnämnd"
-            description: "Få ett meddelande varje gång någon nämner mig var som helst"
-          assignee: "Tilldelad till"
-          responsible: "Huvudansvarig"
-          shared: "Delad"
-          watched: "Bevakare"
-          work_package_commented: "Alla nya kommentarer"
-          work_package_created: "Nya arbetspaket"
-          work_package_processed: "Alla statusändringar"
-          work_package_prioritized: "Alla prioritetsändringar"
-          work_package_scheduled: "Alla datumändringar"
-        global:
-          immediately:
-            title: "Deltar"
-            description: "Aviseringar för alla aktiviteter i arbetspaket som du är involverad i (tilldelad ansvarig, ansvarig eller bevakare)."
-          delayed:
-            title: "Icke-deltagande"
-            description: "Ytterligare aviseringar för aktiviteter i alla projekt."
-          date_alerts:
-            title: "Datumnotiser"
-            description: "Automatiska aviseringar när viktiga datum närmar sig för öppna arbetspaket som du är involverad i (tilldelad ansvarig, ansvarig eller bevakare)."
-          overdue: När försenad
-        project_specific:
-          title: "Projekt-specifika aviseringsinställningar"
-          description: "Dessa projektspecifika inställningar åsidosätter standardinställningarna ovan."
-          add: "Lägg till inställning för projekt"
-          already_selected: "Detta projekt är redan valt"
-          remove: "Ta bort projektinställningar"
     pagination:
       no_other_page: "Du befinner dig på den enda sidan."
       pages_skipped: "Sidor överhoppade."
@@ -652,38 +609,6 @@ sv:
       not_available: "Projekt N/A"
       required_outside_context: >
         Välj ett projekt för att skapa arbetspaketet för att se alla attribut. Du kan bara välja projekt som har typen ovan aktiverad.
-    reminders:
-      settings:
-        daily:
-          add_time: "Lägg till tid"
-          enable: "Aktivera dagliga e-postpåminnelser"
-          explanation: "Du kommer att få dessa påminnelser endast för olästa aviseringar och endast vid timmar du anger. %{no_time_zone}"
-          no_time_zone: "Tills du konfigurerar en tidszon för ditt konto kommer tiderna att tolkas som att vara i UTC."
-          time_label: "Tid %{counter}:"
-          title: "Skicka dagligen e-postpåminnelser för olästa aviseringar"
-        workdays:
-          title: "Få påminnelser via e-post dessa dagar"
-        immediate:
-          title: "Skicka mig en påminnelse via e-post"
-          mentioned: "Omedelbart när någon @nämner mig"
-          personal_reminder: "Omedelbart när jag får en personlig påminnelse"
-        alerts:
-          title: "E-postmeddelanden för andra artiklar (som inte är arbetspaket)"
-          explanation: >
-            Meddelanden i dag är begränsade till arbetspaket. Du kan välja att fortsätta ta emot e-postmeddelanden för dessa händelser tills de ingår i meddelanden:
-          news_added: "Nyheter tillagda"
-          news_commented: "Kommentar till en nyhet"
-          document_added: "Dokument tillagt"
-          forum_messages: "Nya forummeddelanden"
-          wiki_page_added: "Wiki-sidan tillagd"
-          wiki_page_updated: "Wiki-sidan uppdaterad"
-          membership_added: "Medlemskap tillagt"
-          membership_updated: "Medlemskap uppdaterat"
-        title: "E-postpåminnelser"
-        pause:
-          label: "Pausa tillfälligt dagliga e-postpåminnelser"
-          first_day: "Första dagen"
-          last_day: "Senaste dagen"
     text_are_you_sure: "Är du säker?"
     text_are_you_sure_to_cancel: "Du har osparade ändringar på denna sida. Är du säker på att du vill kasta dem?"
     breadcrumb: "Breadcrumb"

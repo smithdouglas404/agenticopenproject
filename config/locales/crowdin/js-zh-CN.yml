@@ -587,49 +587,6 @@ zh-CN:
       settings:
         change_notification_settings: '您可以修改您的<a target="_blank" href="%{url}">通知设置</a>，以确保您不会错过重要的更新。'
         title: "通知设置"
-        notify_me: "通知我"
-        reminders:
-          no_notification: 无通知
-          timeframes:
-            normal:
-              PT0S: 当天
-              P1D: 提前 1 天
-              P3D: 提前 3 天
-              P7D: 提前一周
-            overdue:
-              P1D: 每天
-              P3D: 每 3 天
-              P7D: 每周
-        reasons:
-          mentioned:
-            title: "被提及"
-            description: "每当有人在任何位置提及我时都接收通知"
-          assignee: "受理人"
-          responsible: "负责人"
-          shared: "共享"
-          watched: "关注者"
-          work_package_commented: "所有新评论"
-          work_package_created: "新工作包"
-          work_package_processed: "所有状态更改"
-          work_package_prioritized: "所有优先级更改"
-          work_package_scheduled: "所有日期更改"
-        global:
-          immediately:
-            title: "参与"
-            description: "对于你参与的所有工作包（受理人、负责人或关注者），可以设置通知以接收所有活动的提醒。"
-          delayed:
-            title: "不参与"
-            description: "在所有项目中通知您所有活动。"
-          date_alerts:
-            title: "日期提醒"
-            description: "当你参与的开放工作包（作为受理人、负责人或关注者）的重要日期临近时，自动发送通知。"
-          overdue: 逾期时
-        project_specific:
-          title: "项目特定通知设置"
-          description: "这些特定于项目的设置会覆盖上面的默认设置。\n"
-          add: "为项目添加设置"
-          already_selected: "此项目已经选定"
-          remove: "移除项目设置"
     pagination:
       no_other_page: "您位于唯一页面上。"
       pages_skipped: "跳过的页面。"
@@ -652,38 +609,6 @@ zh-CN:
       not_available: "项目 N/A"
       required_outside_context: >
         请选择要创建工作包的项目以查看所有属性。 您只能选择已激活上述类型的项目。
-    reminders:
-      settings:
-        daily:
-          add_time: "添加时间"
-          enable: "启用每日电子邮件提醒"
-          explanation: "只有存在未读通知时，您才会在指定的时间收到这些提醒。%{no_time_zone}"
-          no_time_zone: "除非您为帐户配置时区，否则将以 UTC 显示时间。"
-          time_label: "时间 %{counter}："
-          title: "向我发送针对未读通知的每日电子邮件提醒"
-        workdays:
-          title: "在如下日期接收电子邮件提醒"
-        immediate:
-          title: "向我发送电子邮件提醒"
-          mentioned: "当有人@提及我时立即提醒"
-          personal_reminder: "收到个人提醒后立即发送"
-        alerts:
-          title: "其他项目（非工作包）的电子邮件提醒"
-          explanation: >
-            今日提醒仅限于工作包。您可以选择继续接收这些事件的电子邮件提醒，直到它们被包含在通知中。
-          news_added: "添加新闻"
-          news_commented: "评论新闻"
-          document_added: "添加文档"
-          forum_messages: "新的论坛消息"
-          wiki_page_added: "添加维基页面"
-          wiki_page_updated: "更新维基页面"
-          membership_added: "添加成员"
-          membership_updated: "更新成员"
-        title: "电子邮件提醒"
-        pause:
-          label: "临时暂停每日电子邮件提醒"
-          first_day: "第一天"
-          last_day: "最后一天"
     text_are_you_sure: "是否确定？"
     text_are_you_sure_to_cancel: "您在此页面上有未保存的更改。您确定要放弃这些更改吗？"
     breadcrumb: "面包屑导航"

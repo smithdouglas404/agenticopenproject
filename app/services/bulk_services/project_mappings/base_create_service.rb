@@ -107,12 +107,12 @@ module BulkServices
 
       # @return [Symbol] the permission required to create the mapping
       def permission
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
       # @return [Symbol] the column name of the mapping
       def model_foreign_key_id
-        raise NotImplementedError
+        raise SubclassResponsibilityError
       end
 
       def attributes_service_class

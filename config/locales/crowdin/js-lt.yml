@@ -590,49 +590,6 @@ lt:
       settings:
         change_notification_settings: 'Jūs galite keisti savo <a target="_blank" href="%{url}">pranešimų nustatymus</a>, kad užtikrintumėte, jog niekada nepraleisite svarbaus atnaujinimo.'
         title: "Pranešimų nustatymai"
-        notify_me: "Pranešti man"
-        reminders:
-          no_notification: Jokio pranešimo
-          timeframes:
-            normal:
-              PT0S: tą pačią dieną
-              P1D: prieš 1 dieną
-              P3D: prieš 3 dienas
-              P7D: prieš savaitę
-            overdue:
-              P1D: kiekvieną dieną
-              P3D: kas 3 dienas
-              P7D: kiekvieną savaitę
-        reasons:
-          mentioned:
-            title: "Paminėtas"
-            description: "Gauti pranešimą kiekvieną kartą, kai kas nors mane bet kur pamini"
-          assignee: "Paskirtas"
-          responsible: "Atsakingas"
-          shared: "Bendrinta"
-          watched: "Stebėtojas"
-          work_package_commented: "Visi nauji komentarai"
-          work_package_created: "Nauji darbų paketai"
-          work_package_processed: "Visi būsenų pakeitimai"
-          work_package_prioritized: "Visi prioritetų pakeitimai"
-          work_package_scheduled: "Visi datų pakeitimai"
-        global:
-          immediately:
-            title: "Dalyvaujate"
-            description: "Pranešimai apie visus veiksmus darbo paketuose, su kuriais jūs susiję (priskirtasis, atsakingas ar stebėtojas)."
-          delayed:
-            title: "Nedalyvaujate"
-            description: "Papildomi pranešimai apie veiksmus visuose projektuose."
-          date_alerts:
-            title: "Datos įspėjimai"
-            description: "Automatiniai pranešimai apie artėjančias svarbias atvirų darbo paketų, su kuriais jūs susiję (paskirtasis, atsakingas ar stebėtojas), datas."
-          overdue: Kai pavėluota
-        project_specific:
-          title: "Konkrečių projektų pranešimų nustatymai"
-          description: "Šie konkrečių projektų nustatymai permuša aukščiau esančius numatytuosius nustatymus."
-          add: "Pridėti nustatymą projektui"
-          already_selected: "Šis projektas jau pažymėtas"
-          remove: "Išimti projekto nustatymus"
     pagination:
       no_other_page: "Jūs esate vieninteliame puslapyje."
       pages_skipped: "Pages skipped."
@@ -655,38 +612,6 @@ lt:
       not_available: "Project N/A"
       required_outside_context: >
         Prašau pasirinkti projektą, kuriame turi būti sukurtas darbo paketas, kad matytumėte visus atributus. Jūs galite pasirinkti tik tuos projektus, kurie turi aukščiau nurodytą tipą.
-    reminders:
-      settings:
-        daily:
-          add_time: "Pridėti laiką"
-          enable: "Įjungti kasdienius el.pašto priminimus"
-          explanation: "Jūs gausite šiuos priminimus tik neskaitytiems pranešimams ir tik jūsų nurodytomis valandomis. %{no_time_zone}"
-          no_time_zone: "Iki jūs sukonfigūruosite jūsų paskyros laiko juostą, šie laikai bus interpretuojami kaip UTC."
-          time_label: "Laikas %{counter}:"
-          title: "Siųskite man kasdienius el.pašto priminimus apie neskaitytus pranešimus"
-        workdays:
-          title: "Gauti e-pašto priminimus šiomis dienomis"
-        immediate:
-          title: "Siųsti man e-pašto priminimą"
-          mentioned: "Iš karto, kai kažkas @pamini mane"
-          personal_reminder: "Immediately when I receive a personal reminder"
-        alerts:
-          title: "E-pašto pranešimai kitiems (ne darbo paketų) elementams"
-          explanation: >
-            Šiandien pranešimai galimi tik darbų paketams. Jūs galite pasirinkti gauti įspėjimus laiškais apie šiuos įvykius, kol jie dar įtraukiami į pranešimus:
-          news_added: "Pridėta naujiena"
-          news_commented: "Komentuoti naujienų elementą"
-          document_added: "Dokumentai pridėti"
-          forum_messages: "Nauji forumo pranešimai"
-          wiki_page_added: "Wiki puslapis pridėtas"
-          wiki_page_updated: "Wiki puslapis atnaujintas"
-          membership_added: "Narystė pridėta"
-          membership_updated: "Narystė atnaujinta"
-        title: "El.pašto priminimai"
-        pause:
-          label: "Laikinai stabdyti kasdieninius e-pašto priminimus"
-          first_day: "Pirma diena"
-          last_day: "Paskutinė diena"
     text_are_you_sure: "Ar esate įsitikinę?"
     text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
     breadcrumb: "Susijusi informacija"

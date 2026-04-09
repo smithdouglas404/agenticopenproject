@@ -199,6 +199,7 @@ lt:
   label_notify: "Siųsti peržiūrai"
   label_icalendar: "Siųsti iCalendar formatu"
   label_icalendar_download: "Atsisiųsti iCalendar įvykį"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "View meeting series"
   label_meeting_series: "Meeting series"
   label_version: "Versija"

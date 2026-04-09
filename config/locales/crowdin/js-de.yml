@@ -138,7 +138,7 @@ de:
     description_available_columns: "Verfügbare Spalten"
     description_current_position: "Sie sind hier: "
     description_select_work_package: "Arbeitspaket #%{id} auswählen"
-    description_subwork_package: "Unteraufgabe von Arbeitspaket #%{id}"
+    description_subwork_package: "Kind von Arbeitspaket #%{id}"
     editor:
       revisions: "Lokale Änderungen anzeigen"
       no_revisions: "Keine lokalen Änderungen gefunden"
@@ -453,7 +453,7 @@ de:
     label_total_progress: "%{percent}% Gesamtfortschritt"
     label_total_amount: "Gesamt: %{amount}"
     label_updated_on: "aktualisiert am"
-    label_value_derived_from_children: "(aggregierter Wert von Unteraufgaben)"
+    label_value_derived_from_children: "(aggregierter Wert von Kindelementen)"
     label_children_derived_duration: "Aggregierte Dauer der Unteraufgaben"
     label_warning: "Warnung"
     label_work_package: "Arbeitspaket"
@@ -587,49 +587,6 @@ de:
       settings:
         change_notification_settings: 'Sie können Ihre <a target="_blank" href="%{url}">Benachrichtigungseinstellungen</a> ändern, um sicherzustellen, dass Sie keine wichtige Aktualisierung verpassen.'
         title: "Benachrichtigungseinstellungen"
-        notify_me: "Benachrichtige mich"
-        reminders:
-          no_notification: Keine Benachrichtigung
-          timeframes:
-            normal:
-              PT0S: am selben Tag
-              P1D: 1 Tag vorher
-              P3D: 3 Tage vorher
-              P7D: eine Woche vorher
-            overdue:
-              P1D: jeden Tag
-              P3D: alle 3 Tage
-              P7D: jede Woche
-        reasons:
-          mentioned:
-            title: "Erwähnt"
-            description: "Jedes Mal eine Benachrichtigung erhalten, wenn ich irgendwo erwähnt werde"
-          assignee: "Zugewiesen an"
-          responsible: "Verantwortlich"
-          shared: "Geteilt"
-          watched: "Beobachter"
-          work_package_commented: "Alle neuen Kommentare"
-          work_package_created: "Neue Arbeitspakete"
-          work_package_processed: "Änderungen am Status"
-          work_package_prioritized: "Änderungen der Priorität"
-          work_package_scheduled: "Alle Datumsänderungen"
-        global:
-          immediately:
-            title: "Beteiligt"
-            description: "Benachrichtigungen für alle Aktivitäten in Arbeitspaketen, an denen Sie beteiligt sind (Zugewiesen an, Verantwortlicher oder Beobachter)."
-          delayed:
-            title: "Nicht beteiligt"
-            description: "Zusätzliche Benachrichtigungen für Aktivitäten in allen Projekten."
-          date_alerts:
-            title: "Datums-Erinnerungen"
-            description: "Automatische Benachrichtigungen, wenn wichtige Termine für offene Arbeitspakete bevorstehen, an denen Sie beteiligt (z. B. zugewiesen, verantwortlich oder Beobachter) sind."
-          overdue: Wenn überfällig
-        project_specific:
-          title: "Projektspezifische Benachrichtigungseinstellungen"
-          description: "Diese projektspezifischen Einstellungen überschreiben die Standardeinstellungen oben"
-          add: "Einstellung für Projekt hinzufügen"
-          already_selected: "Dieses Projekt ist bereits ausgewählt"
-          remove: "Projektspezifische Einstellungen entfernen"
     pagination:
       no_other_page: "Sie befinden sich auf der einzigen Seite."
       pages_skipped: "Seiten übersprungen."
@@ -652,38 +609,6 @@ de:
       not_available: "Projekt N/A"
       required_outside_context: >
         Bitte wählen Sie ein Projekt für das Arbeitspaket, um alle Attribute anzuzeigen. Sie können nur Projekte auswählen, für die der ausgewählte Typ oben aktiviert ist.
-    reminders:
-      settings:
-        daily:
-          add_time: "Zeit hinzufügen"
-          enable: "Tägliche E-Mail-Erinnerungen aktivieren"
-          explanation: "Sie erhalten diese Erinnerungen nur für ungelesene Benachrichtigungen und nur zu Uhrzeiten, die Sie angegeben haben. %{no_time_zone}"
-          no_time_zone: "Bis Sie eine Zeitzone für Ihr Konto konfigurieren, sind diese Zeiten als UTC (GMT+0) zu verstehen."
-          time_label: "Zeit %{counter}:"
-          title: "Tägliche E-Mail-Erinnerungen für ungelesene Benachrichtigungen zusenden"
-        workdays:
-          title: "E-Mail-Erinnerungen an diesen Tagen erhalten"
-        immediate:
-          title: "Eine E-Mail Erinnerung an mich senden"
-          mentioned: "Sofort, wenn mich jemand @erwähnt"
-          personal_reminder: "Sofort, wenn ich eine persönliche Erinnerung erhalte"
-        alerts:
-          title: "E-Mail-Benachrichtigungen für andere Objekte (die keine Arbeitspakete sind)"
-          explanation: >
-            Die Benachrichtigungen sind aktuell auf Arbeitspakete beschränkt. Sie können die E-Mail-Benachrichtigungen für diese Ereignisse so lange erhalten, bis sie in den Benachrichtigungen enthalten sind:
-          news_added: "Neuigkeiten hinzugefügt"
-          news_commented: "Kommentar zu einer Neuigkeit"
-          document_added: "Dokumente hinzugefügt"
-          forum_messages: "Neue Nachrichten im Forum"
-          wiki_page_added: "Wiki-Seite hinzugefügt"
-          wiki_page_updated: "Wiki-Seite aktualisiert"
-          membership_added: "Mitgliedschaft hinzugefügt"
-          membership_updated: "Mitgliedschaft aktualisiert"
-        title: "E-Mail-Erinnerungen"
-        pause:
-          label: "Tägliche E-Mail-Erinnerungen vorübergehend pausieren"
-          first_day: "Erster Tag"
-          last_day: "Letzter Tag"
     text_are_you_sure: "Sind Sie sicher?"
     text_are_you_sure_to_cancel: "Sie haben ungespeicherte Änderungen auf dieser Seite. Sind Sie sicher, dass Sie diese verwerfen möchten?"
     breadcrumb: "Navigationspfad"
@@ -862,7 +787,7 @@ de:
         title: "Neues Arbeitspaket"
         header: "Neu: %{type}"
         header_no_type: "Neues Arbeitspaket (Typ noch nicht gesetzt)"
-        header_with_parent: "Neu: %{type} (Unteraufgabe von %{parent_type} #%{id})"
+        header_with_parent: "Neu: %{type} (Kind von %{parent_type} #%{id})"
         button: "Erstellen"
       duplicate:
         title: "Arbeitspaket duplizieren"
@@ -1059,7 +984,7 @@ de:
         single_text: "Sind Sie sicher, dass Sie das Arbeitspaket löschen möchten?"
         bulk_text: "Sind Sie sicher, dass Sie die folgenden %{label} löschen möchten?"
         has_children: "Dieses Arbeitspaket hat %{childUnits}:"
-        confirm_deletion_children: "Ich bestätige, dass alle Unteraufgaben der hier aufgeführten Arbeitspakete rekursiv entfernt werden."
+        confirm_deletion_children: "Ich bestätige, dass alle untergordneten Elemente der hier aufgeführten Arbeitspakete rekursiv entfernt werden."
         deletes_children: "Alle Unteraufgaben und deren Nachkommen werden auch rekursiv gelöscht."
       destroy_time_entry:
         title: "Löschen der Zeitbuchung bestätigen"

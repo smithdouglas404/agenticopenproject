@@ -588,49 +588,6 @@ fr:
       settings:
         change_notification_settings: 'Vous pouvez modifier vos <a target="_blank" href="%{url}">paramètres de notification</a> pour vous assurer de ne jamais manquer une mise à jour importante.'
         title: "Paramètres de notifications"
-        notify_me: "M'alerter"
-        reminders:
-          no_notification: Aucune notification
-          timeframes:
-            normal:
-              PT0S: le jour même
-              P1D: 1 jour avant
-              P3D: 3 jours avant
-              P7D: une semaine avant
-            overdue:
-              P1D: tous les jours
-              P3D: tous les 3 jours
-              P7D: toutes les semaines
-        reasons:
-          mentioned:
-            title: "Mentionné"
-            description: "Recevoir une notification chaque fois que quelqu'un me mentionne n'importe où"
-          assignee: "Assigné à"
-          responsible: "Responsable"
-          shared: "Partagé"
-          watched: "Observateur"
-          work_package_commented: "Tous les nouveaux commentaires"
-          work_package_created: "Nouveaux lots de travaux"
-          work_package_processed: "Tous les changements de statut"
-          work_package_prioritized: "Tous les changements de priorité"
-          work_package_scheduled: "Tous les changements de date"
-        global:
-          immediately:
-            title: "Participant"
-            description: "Notifications pour toute activité sur les lots de travaux vous concernant (assigné, responsable ou observateur)."
-          delayed:
-            title: "Non participant"
-            description: "Notifications additionnelles lors d'activités sur tous les projets."
-          date_alerts:
-            title: "Alertes de date"
-            description: "Notifications automatiques lorsque des dates importantes approchent pour les lots de travaux ouverts vous concernant (assigné, responsable ou observateur)."
-          overdue: En cas de retard
-        project_specific:
-          title: "Paramètres de notification spécifiques au projet"
-          description: "Ces paramètres spécifiques au projet remplacent les paramètres par défaut ci-dessus."
-          add: "Ajouter un paramètre pour le projet"
-          already_selected: "Ce projet est déjà sélectionné"
-          remove: "Suppression des paramètres de projet"
     pagination:
       no_other_page: "Vous êtes sur la seule page."
       pages_skipped: "Pages ignorées."
@@ -653,38 +610,6 @@ fr:
       not_available: "Projet N/D"
       required_outside_context: >
         Veuillez choisir un projet pour créer le lot de travaux et voir tous les attributs. Vous pouvez seulement sélectionner des projets ayant le type ci-dessus activé.
-    reminders:
-      settings:
-        daily:
-          add_time: "Ajouter une heure"
-          enable: "Activer les rappels quotidiens par e-mail"
-          explanation: "Vous ne recevrez ces rappels que pour les notifications non lues et seulement aux heures que vous spécifiez. %{no_time_zone}"
-          no_time_zone: "Jusqu'à ce que vous configurez un fuseau horaire pour votre compte, les temps seront interprétés en UTC."
-          time_label: "Temps %{counter} :"
-          title: "Envoyez-moi des rappels quotidiens par e-mail pour les notifications non lues"
-        workdays:
-          title: "Recevoir des rappels par e-mail ces jours"
-        immediate:
-          title: "Envoyez-moi un rappel par e-mail"
-          mentioned: "Immédiatement quand quelqu'un me @mentionne"
-          personal_reminder: "Immédiatement lorsque je reçois un rappel personnel"
-        alerts:
-          title: "Alertes par e-mail pour les autres éléments (qui ne sont pas des lots de travaux)"
-          explanation: >
-            Les notifications d'aujourd'hui sont limitées aux lots de travaux. Vous pouvez choisir de continuer à recevoir des alertes par e-mail pour ces événements jusqu'à ce qu'elles soient incluses dans les notifications:
-          news_added: "Actualités ajoutées"
-          news_commented: "Commenter sur une actualité"
-          document_added: "Documents ajoutés"
-          forum_messages: "Nouveaux messages du forum"
-          wiki_page_added: "Page wiki ajoutée"
-          wiki_page_updated: "Page wiki mise à jour"
-          membership_added: "Adhésion ajoutée"
-          membership_updated: "Adhésion mise à jour"
-        title: "Rappels par e-mail"
-        pause:
-          label: "Mettre temporairement en pause les rappels quotidiens par e-mail"
-          first_day: "Premier jour"
-          last_day: "Dernier jour"
     text_are_you_sure: "Êtes-vous sûr ?"
     text_are_you_sure_to_cancel: "Vous avez des modifications non enregistrées sur cette page. Voulez-vous vraiment les supprimer ?"
     breadcrumb: "Fil d'Ariane"

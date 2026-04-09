@@ -199,6 +199,7 @@ uk:
   label_notify: "Надіслати на розгляд"
   label_icalendar: "Надіслати iCalendar"
   label_icalendar_download: "Завантажити подію iCalendar"
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "Переглянути серію нарад"
   label_meeting_series: "Серія нарад"
   label_version: "Версія"

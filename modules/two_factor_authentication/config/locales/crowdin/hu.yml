@@ -37,18 +37,14 @@ hu:
     error_invalid_backup_code: "Érvénytelen 2FA visszaállítási kulcs."
     channel_unavailable: "A kézbesítési csatorna %{channel} nem elérhető.\n"
     no_valid_phone_number: "Nincs érvényes telefonszám."
-    label_pwd_confirmation: "Jelszó"
-    notice_pwd_confirmation: "Meg kell erősítened a jelszavaddal, hogy módosíthasd ezeket a beállításokat."
     label_device_type: "Eszköz típus"
     label_default_device: "Alapértelmezett 2FA eszköz"
     label_device: "2FA eszköz"
     label_devices: "2FA eszközök"
-    label_one_time_password: "Egyszeri jelszó"
     label_2fa_enabled: "Kétlépcsős azonosítás aktív"
     label_2fa_disabled: "Kétlépcsős azonosítás kikapcsolva"
     text_otp_delivery_message_sms: "A %{app_title} egyszeri jelszavad: %{token}"
     text_otp_delivery_message_voice: "A %{app_title} egyszeri jelszavad: %{pause} %{token}. %{pause} Megismétlem: %{pause} %{token}"
-    text_enter_2fa: "Kérlek írd be a készülékeden megjelenő egyszeri jelszót!"
     text_2fa_enabled: "Minden egyes belépésnél szükséged lesz az alapértelmezett 2FA eszközödről beírt OTP tokenre."
     text_2fa_disabled: "A kétlépcsős beléptetés engedélyezéséhez és egy új 2FA eszköz regisztrációjához nyomd meg a fenti gombot. Amennyiben már rendelkezel ilyen eszközzel, alapértelmezettnek kell beállítanod."
     login:
@@ -68,7 +64,6 @@ hu:
       text_remember: |
         Állítsa ezt nullánál nagyobbra, hogy a felhasználók emlékezhessenek a 2FA hitelesítésükre a megadott számú napon keresztül.
         Ebben az időszakban nem kérik fel őket újra. Csak akkor állítható be, ha a konfiguráció nem kényszeríti ki
-      error_invalid_settings: "A kiválasztott 2FA stratégiák érvénytelenek"
       failed_to_save_settings: "Nem sikerült frissíteni a 2FA beállításokat %{message}"
     admin:
       self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
@@ -81,14 +76,9 @@ hu:
       text_2fa_enabled: "Minden egyes belépésnél szüksége lesz az alapértelmezett 2FA eszközről beírt OTP tokenre."
       text_2fa_disabled: "A felhasználó nem állított be 2FA eszközt a „Saját fiókom” oldalon"
       only_sms_allowed: "Only SMS delivery can be set up for other users."
-    upsell:
-      title: "Kétlépcsős hitelesítés"
-      description: "Erősítse meg OpenProject-példányának biztonságát kétlépcsős hitelesítés felajánlásával (vagy kényszerítésével) minden projekttag számára."
     backup_codes:
-      none_found: "Ehhez a fiókhoz nincsenek biztonsági kódok.\n"
       singular: Visszaállítási kulcs
       plural: Visszaállítási kulcsok
-      your_codes: a te %{app_name} fiókod%{login}
       overview_description: |
         Ha nem tudja elérni a két tényezőből álló eszközeit, akkor használjon biztonsági kódot a fiókjához való hozzáférés visszaszerzéséhez.
         Használja a következő gombot új tartalék kódkészlet létrehozásához.
@@ -168,19 +158,15 @@ hu:
       clear_cookie: "Kattintson ide hogy törölje az összes 2FA munkamenetet"
       cookie_removed: "Az összes 2FA kapcsolatot eltávolítottuk"
       dont_ask_again: "Hozzon létre egy cookie -t, hogy emlékezzen a 2FA hitelesítésre ezen az felhasználón%{days} napig."
-  field_phone: "Mobiltelefon:"
   field_otp: "Egyszeri jelszó"
   notice_account_otp_invalid: "Hibás egyszer-használatos jelszó."
   notice_account_otp_expired: "Az egyszeri jelszó lejárt"
   notice_developer_strategy_otp: "A fejlesztői stratégia a következő egyszeri jelszót generálta: %{token} (Csatorna: %{channel})"
   notice_account_otp_send_failed: "Nem lehetséges kiküldeni az egyszer használatos jelszót"
   notice_account_has_no_phone: "A fiókjához nincs mobiltelefonszám társítva."
-  label_expiration_hint: "%{date} vagy kijelentkezéskor"
-  label_actions: "Műveletek"
   label_confirmed: "Megerősítve"
   button_continue: "Folytatás"
   button_make_default: "Megjelölés alapértelmezettként"
-  label_unverified_phone: "A mobiltelefon nem lett hitelesítve"
   notice_phone_number_format: "A következő módon add meg a telefonszámot +XX XXXXXXXXX"
   text_otp_not_receive: "Másik hitelesítési módszer használata"
   text_send_otp_again: "Egyszeri jelszó újra küldése: "

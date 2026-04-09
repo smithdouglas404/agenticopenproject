@@ -61,9 +61,13 @@ class Budget < ApplicationRecord
 
   class << self
     def visible(user = User.current)
-      includes(:project)
-        .references(:projects)
-        .merge(Project.allowed_to(user, :view_budgets))
+      if user.active_admin?
+        all
+      else
+        includes(:project)
+          .references(:projects)
+          .merge(Project.allowed_to(user, :view_budgets))
+      end
     end
 
     # TODO: Extract into copy service

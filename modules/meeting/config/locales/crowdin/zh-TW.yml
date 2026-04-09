@@ -184,6 +184,7 @@ zh-TW:
   label_notify: "送出審閱"
   label_icalendar: "發送 iCalendar"
   label_icalendar_download: "下載 iCalendar "
+  label_view_meeting: "View meeting"
   label_view_meeting_series: "檢視會議"
   label_meeting_series: "會議"
   label_version: "版本"

@@ -588,49 +588,6 @@ nl:
       settings:
         change_notification_settings: 'You can modify your <a target="_blank" href="%{url}">notification settings</a> to ensure you never miss an important update.'
         title: "Instellingen voor meldingen"
-        notify_me: "Waarschuw mij"
-        reminders:
-          no_notification: Geen melding
-          timeframes:
-            normal:
-              PT0S: dezelfde dag
-              P1D: 1 dag ervoor
-              P3D: 3 dagen ervoor
-              P7D: een week ervoor
-            overdue:
-              P1D: elke dag
-              P3D: elke 3 dagen
-              P7D: elke week
-        reasons:
-          mentioned:
-            title: "Genoemd"
-            description: "Ontvang een melding elke keer dat iemand mij ergens noemt"
-          assignee: "Toegewezene"
-          responsible: "Verantwoording afleggen"
-          shared: "Gedeeld"
-          watched: "Kijker"
-          work_package_commented: "Alle nieuwe reacties"
-          work_package_created: "Nieuwe werkpakketten"
-          work_package_processed: "Alle statuswijzigingen"
-          work_package_prioritized: "Alle prioriteitswijzigingen"
-          work_package_scheduled: "Alle datum wijzigingen "
-        global:
-          immediately:
-            title: "Deelnemend"
-            description: "Notifications for all activities in work packages you are involved in (assignee, accountable or watcher)."
-          delayed:
-            title: "Niet-deelnemend"
-            description: "Extra meldingen voor activiteiten in alle projecten."
-          date_alerts:
-            title: "Date alerts"
-            description: "Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher)."
-          overdue: Wanneer achterstallig
-        project_specific:
-          title: "Project-specifieke meldingsinstellingen"
-          description: "These project-specific settings override default settings above."
-          add: "Instelling voor project toevoegen"
-          already_selected: "Dit project is al geselecteerd"
-          remove: "Projectinstellingen verwijderen"
     pagination:
       no_other_page: "U bent op de enige pagina."
       pages_skipped: "Pages skipped."
@@ -653,38 +610,6 @@ nl:
       not_available: "Project N/A"
       required_outside_context: >
         Kies een project om het werkpakket in te creëren om alle attributen te zien. U kunt alleen projecten selecteren waarvan het type hierboven is geactiveerd.
-    reminders:
-      settings:
-        daily:
-          add_time: "Tijd toevoegen"
-          enable: "Dagelijkse e-mailherinneringen inschakelen"
-          explanation: "You will receive these reminders only for unread notifications and only at hours you specify. %{no_time_zone}"
-          no_time_zone: "Until you configure a time zone for your account, the times will be interpreted to be in UTC."
-          time_label: "Tijd %{counter}:"
-          title: "Stuur me dagelijkse herinneringen voor ongelezen meldingen"
-        workdays:
-          title: "Ontvang herinneringen per e-mail op deze dagen"
-        immediate:
-          title: "Stuur me een e-mail herinnering"
-          mentioned: "Onmiddellijk wanneer iemand @vermeldt"
-          personal_reminder: "Immediately when I receive a personal reminder"
-        alerts:
-          title: "E-mail meldingen voor andere items (die geen werkpakketten zijn)"
-          explanation: >
-            Meldingen vandaag zijn beperkt tot werkpakketten. U kunt ervoor kiezen om e-mailmeldingen voor deze gebeurtenissen te blijven ontvangen totdat ze zijn opgenomen in meldingen:
-          news_added: "Nieuws toegevoegd"
-          news_commented: "Reageer op een nieuwsitem"
-          document_added: "Documenten toegevoegd"
-          forum_messages: "Nieuwe forumberichten"
-          wiki_page_added: "Wiki-pagina toegevoegd"
-          wiki_page_updated: "Wiki-pagina bijgewerkt"
-          membership_added: "Lidmaatschap toegevoegd"
-          membership_updated: "Lidmaatschap bijgewerkt"
-        title: "E-mail herinneringen"
-        pause:
-          label: "Temporarily pause daily email reminders"
-          first_day: "Eerste dag"
-          last_day: "Laatste dag"
     text_are_you_sure: "Weet u het zeker?"
     text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
     breadcrumb: "Breadcrumb"
