@@ -118,7 +118,13 @@ export default class GenericDragAndDropController extends Controller {
     this.drake = dragula(
       this.containers,
       {
-        moves: (_el, _source, handle, _sibling) => !!handle && !!handle.closest(this.handleSelectorValue),
+        moves: (_el, _source, handle, _sibling) => {
+          if (!handle) return false;
+          if (handle.closest('.DragHandle')) return true;
+          const interactive = ['a', 'button', 'input', 'select', 'textarea'];
+          if (interactive.some((sel) => handle.closest(sel) !== null)) return false;
+          return !!handle.closest(this.handleSelectorValue);
+        },
         accepts: (el:Element, target:Element, source:Element, sibling:Element) => this.accepts(el, target, source, sibling),
         revertOnSpill: true, // enable reverting of elements if they are dropped outside of a valid target
       },
