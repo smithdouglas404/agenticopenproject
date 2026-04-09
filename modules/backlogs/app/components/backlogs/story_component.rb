@@ -50,8 +50,5 @@ module Backlogs
       story.story_points || 0
     end
 
-    def draggable?
-      current_user.allowed_in_project?(:manage_sprint_items, project)
-    end
   end
 end
