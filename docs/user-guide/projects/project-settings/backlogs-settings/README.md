@@ -17,7 +17,7 @@ Choose the status or statuses which should be treated as "done".
 
 
 
-![Manage backlogs settings under project settings in OpenProject](openproject_user_guide_project_settings_backlogs_definition_of_done.png)
+![definition_of_done](openproject_user_guide_project_settings_backlogs_definition_of_done.png)
 
 Press the **Save** button to apply your changes.
 
@@ -27,7 +27,7 @@ Press the **Save** button to apply your changes.
 
 Sharing is a project-level setting that allows you choose whether sprints should be shared across projects or not.
 
-> !(Note)
+> [!Note]
 >
 > This is not a sprint-level setting which is typical with versions at the moment.
 
