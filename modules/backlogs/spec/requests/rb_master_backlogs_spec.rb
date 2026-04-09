@@ -101,6 +101,14 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
         expect(response).to have_turbo_frame "content-bodyRight"
       end
 
+      it "passes all=true on the backlog turbo frame when requested" do
+        get "/projects/#{project.identifier}/backlogs/backlog", params: { all: "1" }
+
+        expect(response).to have_http_status(:ok)
+        expect(response).to have_turbo_frame "backlogs_container",
+                                             src: "/projects/#{project.identifier}/backlogs/backlog?all=true"
+      end
+
       context "with a Turbo Frame request" do
         it "renders the sprint planning list partial" do
           get "/projects/#{project.identifier}/backlogs/backlog", headers: { "Turbo-Frame" => "backlogs_container" }
