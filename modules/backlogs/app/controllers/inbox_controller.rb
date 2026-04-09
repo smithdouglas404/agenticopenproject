@@ -84,9 +84,6 @@ class InboxController < RbApplicationController
 
   def replace_sprint_component_via_turbo_stream(sprint_id)
     sprint = Agile::Sprint.for_project(@project).visible.find(sprint_id)
-    render_success_flash_message_via_turbo_stream(
-      message: I18n.t(:notice_successful_move, from: I18n.t(:label_inbox), to: sprint.name)
-    )
     replace_via_turbo_stream(
       component: Backlogs::SprintComponent.new(sprint: sprint, project: @project),
       method: :morph
