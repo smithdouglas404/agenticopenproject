@@ -39,24 +39,16 @@ module Admin
 
     # TODO: We will check for users permission here
     before_action :require_admin
-    before_action :find_active_group, only: %i[show edit new_user]
-    before_action :find_group, only: %i[update add_users remove_user create_memberships edit_membership destroy_membership]
+    before_action :find_group,
+                  only: %i[show edit new_user update add_users remove_user create_memberships edit_membership destroy_membership]
 
     def index
       @groups = Group.with_detail.organizational_units.visible.order(:lastname)
     end
 
     def new_user
-      append_via_turbo_stream(
-        component: Admin::Departments::AddUserComponent.new(group: @active_group),
-        target_component: Admin::Departments::DetailComponent.new(group: @active_group)
-      )
-      respond_with_turbo_streams
-    end
-
-    def cancel_add_user
-      remove_via_turbo_stream(component: Admin::Departments::AddUserComponent.new(group: @active_group))
-      respond_with_turbo_streams
+      @child_groups = @group.children
+      @ancestors = @group.ancestors(order: :asc)
     end
 
     def add_user
@@ -162,10 +154,6 @@ module Admin
       return "turbo_rails/frame" if turbo_frame_request?
 
       "admin"
-    end
-
-    def find_active_group
-      @active_group = Group.organizational_units.visible.find(params[:id])
     end
 
     def find_group

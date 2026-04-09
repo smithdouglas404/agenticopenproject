@@ -37,11 +37,21 @@ module Admin
 
       attr_reader :group, :ancestors, :child_groups
 
-      def initialize(group:, ancestors: [], child_groups: [])
+      def initialize(group:, ancestors: [], child_groups: [], add_user: false, add_subgroup: false)
         super(nil)
         @group = group
         @ancestors = ancestors
         @child_groups = child_groups
+        @add_user = add_user
+        @add_subgroup = add_subgroup
+      end
+
+      def add_user?
+        @add_user
+      end
+
+      def add_subgroup?
+        @add_subgroup
       end
 
       def users

@@ -38,10 +38,6 @@ module Admin
           component.with_visual_icon(icon: :people, size: :medium)
           component.with_heading(tag: :h2) { t("departments.detail_blankslate.heading") }
           component.with_description { t("departments.detail_blankslate.description") }
-          component.with_primary_action(href: "#", scheme: :primary) do |button|
-            button.with_leading_visual_icon(icon: :plus)
-            t("departments.detail_blankslate.add_button")
-          end
         end
       end
     end

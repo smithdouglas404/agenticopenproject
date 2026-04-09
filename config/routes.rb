@@ -808,7 +808,6 @@ Rails.application.routes.draw do
       member do
         get :new_user
         post :add_user
-        patch :cancel_add_user
 
         # old routes for old group style management, might remove when new interface
         post "/members" => "departments#add_users", as: "members_of"

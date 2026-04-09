@@ -28,7 +28,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  component_wrapper do
+  component_wrapper(tag: "turbo-frame", target: "_top") do
     render(Primer::Beta::BorderBox.new) do |box|
       box.with_header do
         flex_layout(align_items: :center, justify_content: :space_between) do |header|
@@ -56,11 +56,11 @@ See COPYRIGHT and LICENSE files for more details.
         end
       end
 
-      if show_global_empty_state?
+      if show_global_empty_state? && !add_user?
         box.with_row do
           render(Admin::Departments::BlankslateComponent.new)
         end
-      elsif show_department_empty_state?
+      elsif show_department_empty_state? && !add_user?
         box.with_row do
           render(Admin::Departments::DetailBlankslateComponent.new)
         end
@@ -75,6 +75,12 @@ See COPYRIGHT and LICENSE files for more details.
           box.with_row do
             render(Admin::Departments::UserRowComponent.new(user:))
           end
+        end
+      end
+
+      if add_user?
+        box.with_row do
+          render(Admin::Departments::AddUserComponent.new(group:))
         end
       end
     end
