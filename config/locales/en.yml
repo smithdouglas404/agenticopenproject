@@ -737,6 +737,13 @@ en:
     add_department_form:
       name_label: "Department name"
       name_placeholder: "Enter department name"
+    move_user_dialog:
+      title: "User already in a department"
+      heading: "Move user to this department?"
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: "Move user"
+    errors:
+      move_user_failed: "Failed to move user between departments."
 
   pagination:
     label: "Pagination"

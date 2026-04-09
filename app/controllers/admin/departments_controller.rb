@@ -40,7 +40,8 @@ module Admin
     # TODO: We will check for users permission here
     before_action :require_admin
     before_action :find_group,
-                  only: %i[show edit new_user update add_users remove_user create_memberships edit_membership destroy_membership]
+                  only: %i[show edit new_user add_user update add_users remove_user create_memberships edit_membership
+                           destroy_membership]
 
     def index
       @groups = Group.with_detail.organizational_units.visible.order(:lastname)
@@ -51,8 +52,28 @@ module Admin
       @ancestors = @group.ancestors(order: :asc)
     end
 
-    def add_user
-      # TODO: Implement
+    def add_user # rubocop:disable Metrics/AbcSize
+      result = ::Departments::AddUserService
+        .new(@group, user: current_user)
+        .call(
+          user_id: params[:user_id],
+          remove_from_previous_department: params[:remove_from_previous_department] == "true"
+        )
+
+      if result.success?
+        redirect_to admin_department_path(@group), status: :see_other
+      elsif result.result.is_a?(Group)
+        respond_with_dialog(
+          Admin::Departments::MoveUserDialogComponent.new(
+            user: User.find(params[:user_id]),
+            from_department: result.result,
+            to_department: @group
+          )
+        )
+      else
+        flash[:error] = result.errors.full_messages.join("\n")
+        redirect_to admin_department_path(@group), status: :see_other
+      end
     end
 
     def new_department
@@ -96,9 +117,7 @@ module Admin
       render action: :index
     end
 
-    def edit
-      @group = Group.includes(:members, :users, :group_detail).find(params[:id])
-    end
+    def edit; end
 
     def update
       service_call = ::Groups::UpdateService
@@ -122,8 +141,6 @@ module Admin
     end
 
     def remove_user
-      @group = Group.includes(:group_users).find(params[:id])
-
       service_call = ::Groups::UpdateService
                      .new(user: current_user, model: @group)
                      .call(remove_user_ids: Array(params[:user_id]))
@@ -172,7 +189,7 @@ module Admin
     end
 
     def find_group
-      @group = Group.visible.find(params[:id])
+      @group = Group.visible.organizational_units.includes(:members, :users, :group_detail).find(params[:id])
     end
 
     def respond_membership_altered(service_call)

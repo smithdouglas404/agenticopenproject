@@ -28,38 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :group, parent: :principal, class: "Group" do
-    # groups have lastnames? hmm...
-    sequence(:lastname) { |g| "Group #{g}" }
+module Admin
+  module Departments
+    class MoveUserDialogComponent < ApplicationComponent
+      include ApplicationHelper
+      include OpTurbo::Streamable
 
-    transient do
-      members { [] }
-    end
+      DIALOG_ID = "move-user-department-dialog"
 
-    callback(:after_create) do |group, evaluator|
-      members = Array(evaluator.members)
-      next if members.empty?
+      attr_reader :moved_user, :from_department, :to_department
 
-      User.system.run_given do |system_user|
-        Groups::AddUsersService
-          .new(group, current_user: system_user)
-          .call(ids: members.map(&:id), send_notifications: false)
-          .on_failure { |call| raise call.message }
+      def initialize(user:, from_department:, to_department:)
+        super()
+        @moved_user = user
+        @from_department = from_department
+        @to_department = to_department
       end
-    end
-
-    factory :department do
-      sequence(:lastname) { |n| "Department #{n}" }
-
-      callback(:after_create) do |group|
-        group.detail.update!(organizational_unit: true)
-      end
-    end
-
-    factory :group_marked_for_deletion do
-      lastname { "DeletedGroup" }
-      status { Group.statuses[:deleted] }
     end
   end
 end

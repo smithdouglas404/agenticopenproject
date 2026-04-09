@@ -41,6 +41,20 @@ module Admin
         super()
         @group = group
       end
+
+      def filters
+        filters = [
+          { name: "type", operator: "=", values: %w[User] },
+          { name: "status", operator: "=", values: [Principal.statuses[:active].to_s, Principal.statuses[:invited].to_s] }
+        ]
+
+        existing_user_ids = group.user_ids.map(&:to_s)
+        if existing_user_ids.any?
+          filters << { name: "id", operator: "!", values: existing_user_ids }
+        end
+
+        filters
+      end
     end
   end
 end

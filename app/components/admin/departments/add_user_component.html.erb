@@ -39,6 +39,8 @@ See COPYRIGHT and LICENSE files for more details.
                       helpers.admin_departments_path
                     end
 
+      autocompleter_filters = filters
+
       render_inline_form(f) do |form|
         form.group(layout: :horizontal) do |row|
           row.autocompleter(
@@ -47,8 +49,12 @@ See COPYRIGHT and LICENSE files for more details.
             visually_hide_label: true,
             autocomplete_options: {
               resource: "principals",
+              component: "opce-user-autocompleter",
               url: ::API::V3::Utilities::PathHelper::ApiV3Path.principals,
-              filters: [{ name: "type", operator: "=", values: ["User"] }].to_json,
+              searchKey: "any_name_attribute",
+              focusDirectly: true,
+              multiple: false,
+              filters: autocompleter_filters,
               inputName: "user_id"
             }
           )
