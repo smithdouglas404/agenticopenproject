@@ -31,6 +31,9 @@ import { FrameElement, TurboVisitEvent } from '@hotwired/turbo';
 import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 import { filter, Subscription } from 'rxjs';
 import StoryController from './backlogs/story.controller';
+import { createRoot, Root } from 'react-dom/client';
+import BacklogContainer from '../../../react/backlogs/BacklogContainer';
+import React from 'react';
 
 export default class BacklogsController extends Controller<HTMLElement> {
   static outlets = ['backlogs--story'];
@@ -40,28 +43,39 @@ export default class BacklogsController extends Controller<HTMLElement> {
   private service:HalEventsService|null = null;
   private subscription:Subscription|null = null;
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  async connect() {
-    this.abortController = new AbortController();
-    const { signal } = this.abortController;
+  private reactRoot:Root|null = null;
 
-    document.addEventListener('turbo:visit', this.updateSelection, { signal });
+   
+  connect() {
+    // this.abortController = new AbortController();
+    // const { signal } = this.abortController;
 
-    const { services: { halEvents } } = await window.OpenProject.getPluginContext();
+    //document.addEventListener('turbo:visit', this.updateSelection, { signal });
 
-    this.service = halEvents;
-    this.subscription = this.service.aggregated$('WorkPackage')
-      .pipe(filter((events) => events.some((event) => event.eventType === 'updated')))
-      .subscribe(() => { this.refreshList(); });
+    // const { services: { halEvents } } = await window.OpenProject.getPluginContext();
+
+    // this.service = halEvents;
+    // this.subscription = this.service.aggregated$('WorkPackage')
+    //   .pipe(filter((events) => events.some((event) => event.eventType === 'updated')))
+    //   .subscribe(() => { this.refreshList(); });
+
+    this.reactRoot = createRoot(document.getElementById('backlogs_container')!);
+    this.reactRoot.render(React.createElement(BacklogContainer, {}));
   }
 
   disconnect() {
-    this.subscription?.unsubscribe();
-    this.subscription = null;
-    this.service = null;
 
-    this.abortController?.abort();
-    this.abortController = null;
+    if (this.reactRoot) {
+      this.reactRoot.unmount();
+      this.reactRoot = null;
+    }
+
+    // this.subscription?.unsubscribe();
+    // this.subscription = null;
+    // this.service = null;
+
+    // this.abortController?.abort();
+    // this.abortController = null;
   }
 
   backlogsStoryOutletConnected(outlet:StoryController) {
