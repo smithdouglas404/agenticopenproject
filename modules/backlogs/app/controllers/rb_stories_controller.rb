@@ -95,7 +95,7 @@ class RbStoriesController < RbApplicationController
     return respond_with_turbo_streams(status: :unprocessable_entity) if stories.empty?
 
     target_id = bulk_move_params[:target_id]
-    source_sprints = stories.filter_map(&:sprint).uniq
+    source_sprints = source_sprints_for(stories)
 
     status =
       if bulk_move_in_transaction(stories, target_id)
@@ -161,6 +161,18 @@ class RbStoriesController < RbApplicationController
       WorkPackage.visible.where(id: ids).to_a
     else
       Story.visible.where(id: ids).to_a
+    end
+  end
+
+  # In the scrum path stories belong to their container via sprint_id (Agile::Sprint).
+  # In the legacy path they belong via version_id (Sprint < Version), so story.sprint
+  # (the Agile::Sprint belongs_to) is nil and filter_map would produce an empty array.
+  def source_sprints_for(stories)
+    if OpenProject::FeatureDecisions.scrum_projects_active?
+      stories.filter_map(&:sprint).uniq
+    else
+      version_ids = stories.filter_map(&:version_id).uniq
+      Sprint.visible.apply_to(@project).where(id: version_ids).to_a
     end
   end
 
@@ -276,10 +288,10 @@ class RbStoriesController < RbApplicationController
 
   def load_story
     @story = if OpenProject::FeatureDecisions.scrum_projects_active?
-      WorkPackage.visible.find(params[:id])
-    else
-      Story.visible.find(params[:id])
-    end
+               WorkPackage.visible.find(params[:id])
+             else
+               Story.visible.find(params[:id])
+             end
   end
 
   def move_params
