@@ -26,7 +26,7 @@ A **Backlog** is defined as a plugin that allows to use the backlogs feature in 
 
 Please note that this user guide does not represent an introduction into scrum methodology, but merely explains the scrum-related functionalities and user instructions in OpenProject.
 
-![openproject_user_guide_backlogs_and_sprints](C:\Users\ehass\Documents\GitHub\openproject\docs\user-guide\backlogs-scrum\work-with-backlogs\openproject_user_guide_backlogs_and_sprints.png)
+![](C:\Users\ehass\Documents\GitHub\openproject\docs\user-guide\backlogs-scrum\work-with-backlogs\openproject_user_guide_backlogs_sprints.png)
 
 ### **Managing the backlog**
 
