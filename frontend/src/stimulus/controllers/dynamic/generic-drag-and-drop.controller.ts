@@ -127,12 +127,10 @@ export default class GenericDragAndDropController extends Controller {
         this.dragOriginSource = source;
         this.dragOriginNextSibling = el.nextElementSibling;
 
-        const handle = el.querySelector(this.handleSelectorValue)!;
-        handle.setAttribute('aria-pressed', 'true');
+        el.querySelector(this.handleSelectorValue)?.setAttribute('aria-pressed', 'true');
       })
       .on('dragend', (el) => {
-        const handle = el.querySelector(this.handleSelectorValue)!;
-        handle.setAttribute('aria-pressed', 'false');
+        el.querySelector(this.handleSelectorValue)?.setAttribute('aria-pressed', 'false');
        })
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       .on('drop', this.drop.bind(this));

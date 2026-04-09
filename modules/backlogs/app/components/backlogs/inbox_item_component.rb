@@ -61,11 +61,8 @@ module Backlogs
     def row_options
       {
         id: dom_id(work_package),
-        classes: "Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable",
-        data: {
-          draggable_id: work_package.id,
-          draggable_type: "story",
-          drop_url: move_project_inbox_path(project, work_package),
+        classes: "Box-row--hover-blue Box-row--focus-gray Box-row--clickable#{' Box-row--draggable' if draggable?}",
+        data: draggable_data.merge(
           story: true,
           controller: "backlogs--story",
           backlogs__story_id_value: work_package.id,
@@ -73,9 +70,21 @@ module Backlogs
           backlogs__story_full_url_value: work_package_path(work_package),
           backlogs__story_selected_class: "Box-row--blue",
           test_selector: card_test_selector
-        },
+        ),
         tabindex: 0
       }
+    end
+
+    def draggable_data
+      if draggable?
+        {
+          draggable_id: work_package.id,
+          draggable_type: "story",
+          drop_url: move_project_inbox_path(project, work_package)
+        }
+      else
+        {}
+      end
     end
 
     def card_test_selector
