@@ -47,6 +47,7 @@ interface Collection<T> {
 interface WorkPackage {
   id:number;
   subject:string;
+  storyPoints?:number|null;
   _links:{
     type:{ href:string, title:string },
     status:{ href:string, title:string }
@@ -114,7 +115,7 @@ function BacklogInnerContainer() {
 
 
 
-function WorkPackageCard({ id, subject }:WorkPackage) {
+function WorkPackageCard({ id, subject, storyPoints, _links }:WorkPackage) {
   return (
   <article className="op-backlogs-story">
     <div style={{'gridArea': 'drag_handle'}} className="hide-when-print op-backlogs-story--drag_handle">
@@ -124,15 +125,15 @@ function WorkPackageCard({ id, subject }:WorkPackage) {
     </div>
         <div style={{'gridArea': 'info_line'}} className="op-backlogs-story--info_line">
         <div className="flex-wrap d-flex flex-row">
-            <div className="mr-2"><span className="__hl_inline_type_1 text-small">TASK</span></div>
+            <div className="mr-2"><span className={`__hl_inline_type_${getIdFromHref(_links.type.href)} text-small`}>{_links.type.title}</span></div>
             <div className="mr-2"><a title="new" href="/projects/backlogs-project/work_packages/1619"
-                    className="Link text-small color-fg-muted">#1619</a></div>
-            <div><span className="Label __hl_background_status_1 Label--inline">New</span>
+                    className="Link text-small color-fg-muted">#{id}</a></div>
+            <div><span className={`Label __hl_background_status_${getIdFromHref(_links.status.href)} Label--inline`}>{_links.status.title}</span>
             </div>
         </div>
     </div>
     <div style={{'gridArea': 'points'}} className="op-backlogs-story--points"> <span className="color-fg-subtle">
-            0
+            {storyPoints ?? 0}
             <span className="op-backlogs-points-label"> points</span>
         </span></div>
     <div style={{'gridArea': 'menu'}} className="op-backlogs-story--menu">
@@ -147,21 +148,7 @@ function WorkPackageCard({ id, subject }:WorkPackage) {
                 alert('Item one clicked');
               }}
             >
-              Item one
-            </ActionList.Item>
-            <ActionList.Item
-              onSelect={() => {
-                alert('Item two clicked');
-              }}
-            >
-              Item two
-            </ActionList.Item>
-            <ActionList.Item
-              onSelect={() => {
-                alert('Item three clicked');
-              }}
-            >
-              Item three
+              Delete
             </ActionList.Item>
           </ActionList>
         </ActionMenu.Overlay>
