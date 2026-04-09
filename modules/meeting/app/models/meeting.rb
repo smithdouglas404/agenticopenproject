@@ -306,6 +306,7 @@ class Meeting < ApplicationRecord
   def send_emails?
     return false if onetime_template?
     return false if template? && recurring_meeting.scheduled_meetings.none?
+    return false if closed?
 
     persisted? && notify?
   end
