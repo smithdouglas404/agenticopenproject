@@ -4,16 +4,15 @@ import { getMetaContent, getMetaValue } from 'core-app/core/setup/globals/global
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { GrabberIcon, KebabHorizontalIcon } from '@primer/octicons-react';
-import {
-  ActionList,
-  ActionMenu,
-  BaseStyles,
-  CounterLabel,
-  Heading,
-  IconButton,
-  ThemeProvider,
-} from '@primer/react';
+import { ActionList, ActionMenu, BaseStyles, CounterLabel, Heading, IconButton, ThemeProvider } from '@primer/react';
 import SprintBox from './components/SprintBox';
+import {
+  draggable,
+  dropTargetForElements,
+  monitorForElements,
+} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import invariant from 'tiny-invariant';
+import type { CleanupFn } from '@atlaskit/pragmatic-drag-and-drop/types';
 
 export default function BacklogContainer() {
   return (
@@ -105,10 +104,19 @@ function BacklogInnerContainer() {
   const [sprints, setSprints] = useState<Sprint[]>([]);
 
   useEffect(() => {
+    return monitorForElements({
+      onDrop({ source, location }) {
+        const destination = location.current.dropTargets[0];
+
+        console.log('source', source);
+        console.log('dest', destination);
+      },
+    });
+  }, [workPackages]);
+
+  useEffect(() => {
     if (projectId) {
-      const filters = JSON.stringify([
-        { sprintId: { operator: '!*', values: [] } },
-      ]);
+      const filters = JSON.stringify([{ sprintId: { operator: '!*', values: [] } }]);
 
       void fetch(`/api/v3/projects/${projectId}/work_packages?filters=${encodeURIComponent(filters)}`, {
         method: 'GET',
@@ -156,12 +164,7 @@ function BacklogInnerContainer() {
         <div className="Box Box--condensed">
           <ul className="Box-list">
             {workPackages.map((workPackage) => (
-              <li
-                key={workPackage.id}
-                className="Box-row Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable"
-              >
-                <WorkPackageCard {...workPackage}></WorkPackageCard>
-              </li>
+              <WorkPackageListItem key={workPackage.id} {...workPackage}></WorkPackageListItem>
             ))}
           </ul>
         </div>
@@ -176,9 +179,51 @@ function BacklogInnerContainer() {
   );
 }
 
+export function WorkPackageListItem(workPackage:WorkPackage) {
+  const ref = useRef(null);
+  const [isDraggedOver, setIsDraggedOver] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    invariant(el);
+
+     
+    return dropTargetForElements({
+      element: el,
+      onDragEnter: () => setIsDraggedOver(true),
+      onDragLeave: () => setIsDraggedOver(false),
+      onDrop: () => setIsDraggedOver(false),
+    });
+  }, []);
+
+  return (
+    <li
+      ref={ref}
+      style={{ backgroundColor: isDraggedOver ? 'yellow' : 'transparent' }}
+      className="Box-row Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable"
+    >
+      <WorkPackageCard {...workPackage}></WorkPackageCard>
+    </li>
+  );
+}
+
 export function WorkPackageCard({ id, subject, storyPoints, _links }:WorkPackage) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLElement>(null);
+  const [dragging, setDragging] = useState<boolean>(false); // NEW
+
+  useEffect(() => {
+    const el = ref.current;
+    invariant(el);
+
+     
+    return draggable({
+      element: el,
+      onDragStart: () => setDragging(true),
+      onDrop: () => setDragging(false),
+    });
+  }, []);
 
   const handleContextMenu:MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault();
@@ -186,7 +231,7 @@ export function WorkPackageCard({ id, subject, storyPoints, _links }:WorkPackage
   };
 
   return (
-    <article className="op-backlogs-story" onContextMenu={handleContextMenu}>
+    <article className="op-backlogs-story" onContextMenu={handleContextMenu} ref={ref}>
       <div style={{ gridArea: 'drag_handle' }} className="hide-when-print op-backlogs-story--drag_handle">
         <div
           role="button"
