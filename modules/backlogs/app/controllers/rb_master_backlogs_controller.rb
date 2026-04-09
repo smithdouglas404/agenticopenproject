@@ -35,7 +35,7 @@ class RbMasterBacklogsController < RbApplicationController
   menu_item :backlogs_legacy
 
   # With the feature flag, we have a proper menu, select the correct sub entry
-  current_menu_item [:backlog] do
+  current_menu_item do
     :backlog
   end
 
