@@ -1,57 +1,96 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { getMetaContent, getMetaValue } from 'core-app/core/setup/globals/global-helpers';
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
-import {GrabberIcon, KebabHorizontalIcon} from '@primer/octicons-react';
-import { ActionList, ActionMenu, BaseStyles, Button, IconButton, ThemeProvider } from '@primer/react';
-
-
+import { GrabberIcon, KebabHorizontalIcon } from '@primer/octicons-react';
+import {
+  ActionList,
+  ActionMenu,
+  BaseStyles,
+  CounterLabel,
+  Heading,
+  IconButton,
+  ThemeProvider,
+} from '@primer/react';
+import SprintBox from './components/SprintBox';
 
 export default function BacklogContainer() {
   return (
     <ThemeProvider>
       <BaseStyles>
-      <BacklogInnerContainer /> 
+        <BacklogInnerContainer />
       </BaseStyles>
     </ThemeProvider>
   );
 }
 
-function useMetaContent(name:string) {
+export function useMetaContent(name:string) {
   const [value, setValue] = useState('');
 
-  useEffect(() => { setValue(getMetaContent(name)); }, [name]);
+  useEffect(() => {
+    setValue(getMetaContent(name));
+  }, [name]);
 
   return value;
 }
 
-function useMetaValue(name:string, key:string) {
+export function useMetaValue(name:string, key:string) {
   const [value, setValue] = useState('');
 
-  useEffect(() => { setValue(getMetaValue(name, key)); }, [name, key]);
+  useEffect(() => {
+    setValue(getMetaValue(name, key));
+  }, [name, key]);
 
   return value;
 }
 
-interface Collection<T> {
+export interface Collection<T> {
   _embedded:{
-    elements:T[]
-  }
+    elements:T[];
+  };
 }
 
-interface WorkPackage {
+export interface Sprint {
+  _type:'Sprint';
+  id:number;
+  name:string;
+  startDate:any;
+  finishDate:any;
+  createdAt:string;
+  updatedAt:string;
+  _links:Links;
+}
+
+export interface Links {
+  self:Self;
+  status:Status;
+  definingWorkspace:DefiningWorkspace;
+}
+
+export interface Self {
+  href:string;
+  title:string;
+}
+
+export interface Status {
+  href:string;
+  title:string;
+}
+
+export interface DefiningWorkspace {
+  href:string;
+  title:string;
+}
+
+export interface WorkPackage {
   id:number;
   subject:string;
-  storyPoints?:number|null;
+  storyPoints?:number | null;
   _links:{
-    type:{ href:string, title:string },
-    status:{ href:string, title:string }
-  }
+    type:{ href:string; title:string };
+    status:{ href:string; title:string };
+  };
 }
 
 function getIdFromHref(href:string) {
@@ -63,23 +102,37 @@ function BacklogInnerContainer() {
   const projectId = useMetaValue('current_project', 'projectId');
 
   const [workPackages, setWorkPackages] = useState<WorkPackage[]>([]);
+  const [sprints, setSprints] = useState<Sprint[]>([]);
 
   useEffect(() => {
     if (projectId) {
-       void fetch(`/api/v3/projects/${projectId}/work_packages`, {
-          method: 'GET',
-          headers: {
-              'Accept': 'application/hal+json',
-              'X-CSRF-Token': csrfToken
-          }
-       })
+      const filters = JSON.stringify([
+        { sprintId: { operator: '!*', values: [] } },
+      ]);
+
+      void fetch(`/api/v3/projects/${projectId}/work_packages?filters=${encodeURIComponent(filters)}`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/hal+json',
+          'X-CSRF-Token': csrfToken,
+        },
+      })
         .then((res) => res.json())
         .then((obj:Collection<WorkPackage>) => obj._embedded.elements)
         .then((workPackages) => setWorkPackages(workPackages));
+
+      void fetch(`/api/v3/projects/${projectId}/sprints`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/hal+json',
+          'X-CSRF-Token': csrfToken,
+        },
+      })
+        .then((res) => res.json())
+        .then((obj:Collection<Sprint>) => obj._embedded.elements)
+        .then((sprints) => setSprints(sprints));
     }
   }, [projectId]);
-
-
 
   // const { isPending, error, data } = useQuery({
   //   queryKey: ['repoData'],
@@ -93,27 +146,37 @@ function BacklogInnerContainer() {
 
   // if (error) return 'An error has occurred: ' + error.message;
 
-
   return (
-    <div className='op-sprint-planning-container'>
-      <div id="owner_backlogs_container" className='op-sprint-planning-lists'>
+    <div className="op-sprint-planning-container">
+      <div id="owner_backlogs_container" className="op-sprint-planning-lists">
+        <Heading as="h3">
+          Backlog
+          <CounterLabel>{workPackages.length}</CounterLabel>
+        </Heading>
         <div className="Box Box--condensed">
-          <ul className='Box-list'>
-            {workPackages.map((workPackage) => 
-              <li key={workPackage.id} className='Box-row Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable'>
-                
-                
-                <WorkPackageCard  {...workPackage}></WorkPackageCard>
+          <ul className="Box-list">
+            {workPackages.map((workPackage) => (
+              <li
+                key={workPackage.id}
+                className="Box-row Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable"
+              >
+                <WorkPackageCard {...workPackage}></WorkPackageCard>
               </li>
-            )}
+            ))}
           </ul>
         </div>
+      </div>
+      <div id="sprint_backlogs_container" className="op-sprint-planning-lists">
+        <Heading as="h3">Sprints</Heading>
+        {sprints.map((sprint) => (
+          <SprintBox key={sprint.id} {...sprint} />
+        ))}
       </div>
     </div>
   );
 }
 
-function WorkPackageCard({ id, subject, storyPoints, _links }:WorkPackage) {
+export function WorkPackageCard({ id, subject, storyPoints, _links }:WorkPackage) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
