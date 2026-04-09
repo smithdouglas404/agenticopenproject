@@ -819,6 +819,8 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get :new_department
+        post :add_department
         get :edit_organization_name
         patch :cancel_edit_organization_name
         patch :update_organization_name

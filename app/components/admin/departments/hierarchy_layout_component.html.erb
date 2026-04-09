@@ -36,7 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
         flex_layout do |main|
           main.with_row do
             render(Primer::OpenProject::SubHeader.new) do |subheader|
-              subheader.with_action_menu(leading_icon: :plus, label: I18n.t(:button_add), button_arguments: { scheme: :primary, "aria-label": I18n.t(:button_add) }) do |menu|
+              subheader.with_action_menu(leading_icon: :plus, trailing_icon: :"triangle-down", label: I18n.t(:button_add), button_arguments: { scheme: :primary, "aria-label": I18n.t(:button_add) }) do |menu|
                 if active_group
                   menu.with_item(
                     label: I18n.t("departments.add_user"),
@@ -48,8 +48,8 @@ See COPYRIGHT and LICENSE files for more details.
                 menu.with_item(
                   label: I18n.t("departments.add_department"),
                   tag: :a,
-                  href: "#",
-                  content_arguments: { data: { turbo_stream: true } }
+                  href: new_department_admin_departments_path(parent_id: active_group&.id),
+                  content_arguments: { data: { turbo_frame: Admin::Departments::DetailComponent.wrapper_key } }
                 )
               end
             end

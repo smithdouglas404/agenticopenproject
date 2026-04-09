@@ -30,24 +30,16 @@
 
 module Admin
   module Departments
-    class BlankslateComponent < ApplicationComponent
+    class AddDepartmentComponent < ApplicationComponent
       include ApplicationHelper
+      include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
-      def call
-        render(Primer::Beta::Blankslate.new(border: false)) do |component|
-          component.with_visual_icon(icon: :people, size: :medium)
-          component.with_heading(tag: :h2) { t("departments.blankslate.heading") }
-          component.with_description { t("departments.blankslate.description") }
-          component.with_primary_action(
-            href: new_department_admin_departments_path,
-            scheme: :primary,
-            data: { turbo_frame: Admin::Departments::DetailComponent.wrapper_key }
-          ) do |button|
-            button.with_leading_visual_icon(icon: :plus)
-            t("departments.blankslate.add_button")
-          end
-        end
+      attr_reader :group
+
+      def initialize(group:)
+        super()
+        @group = group
       end
     end
   end

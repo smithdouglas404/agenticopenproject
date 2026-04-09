@@ -56,11 +56,11 @@ See COPYRIGHT and LICENSE files for more details.
         end
       end
 
-      if show_global_empty_state? && !add_user?
+      if show_global_empty_state? && !add_subgroup?
         box.with_row do
           render(Admin::Departments::BlankslateComponent.new)
         end
-      elsif show_department_empty_state? && !add_user?
+      elsif show_department_empty_state? && !add_user? && !add_subgroup?
         box.with_row do
           render(Admin::Departments::DetailBlankslateComponent.new)
         end
@@ -81,6 +81,12 @@ See COPYRIGHT and LICENSE files for more details.
       if add_user?
         box.with_row do
           render(Admin::Departments::AddUserComponent.new(group:))
+        end
+      end
+
+      if add_subgroup?
+        box.with_row do
+          render(Admin::Departments::AddDepartmentComponent.new(group:))
         end
       end
     end

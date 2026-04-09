@@ -55,6 +55,21 @@ module Admin
       # TODO: Implement
     end
 
+    def new_department
+      @group = Group.visible.with_detail.organizational_units.find(params[:parent_id]) if params[:parent_id].present?
+
+      if @group
+        @child_groups = @group.children
+        @ancestors = @group.ancestors(order: :asc)
+      else
+        @child_groups = Group.with_detail.organizational_units.visible.where_detail(parent_id: nil).order(:lastname)
+      end
+    end
+
+    def add_department
+      # TODO: Implement
+    end
+
     def edit_organization_name
       replace_via_turbo_stream(component: Admin::Departments::OrganizationNameFormComponent.new)
       respond_with_turbo_streams

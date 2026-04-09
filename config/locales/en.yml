@@ -734,6 +734,9 @@ en:
       heading: "This department doesn’t have any hierarchy level below"
       description: "Add departments or users to create sub-items inside another one."
       add_button: "Add"
+    add_department_form:
+      name_label: "Department name"
+      name_placeholder: "Enter department name"
 
   pagination:
     label: "Pagination"
