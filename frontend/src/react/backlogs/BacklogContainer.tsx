@@ -5,7 +5,7 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 import { getMetaContent, getMetaValue } from 'core-app/core/setup/globals/global-helpers';
-import { useEffect, useState } from 'react';
+import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import {GrabberIcon, KebabHorizontalIcon} from '@primer/octicons-react';
 import { ActionList, ActionMenu, BaseStyles, Button, IconButton, ThemeProvider } from '@primer/react';
@@ -113,50 +113,83 @@ function BacklogInnerContainer() {
   );
 }
 
-
-
 function WorkPackageCard({ id, subject, storyPoints, _links }:WorkPackage) {
+  const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const handleContextMenu:MouseEventHandler<HTMLElement> = (event) => {
+    event.preventDefault();
+    setOpen(true);
+  };
+
   return (
-  <article className="op-backlogs-story">
-    <div style={{'gridArea': 'drag_handle'}} className="hide-when-print op-backlogs-story--drag_handle">
-        <div role="button" tabIndex={0} aria-label="Move new" className="op-backlogs-story--drag_handle_button DragHandle">
-            <GrabberIcon size={16} />
+    <article className="op-backlogs-story" onContextMenu={handleContextMenu}>
+      <div style={{ gridArea: 'drag_handle' }} className="hide-when-print op-backlogs-story--drag_handle">
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label="Move new"
+          className="op-backlogs-story--drag_handle_button DragHandle"
+        >
+          <GrabberIcon size={16} />
         </div>
-    </div>
-        <div style={{'gridArea': 'info_line'}} className="op-backlogs-story--info_line">
+      </div>
+      <div style={{ gridArea: 'info_line' }} className="op-backlogs-story--info_line">
         <div className="flex-wrap d-flex flex-row">
-            <div className="mr-2"><span className={`__hl_inline_type_${getIdFromHref(_links.type.href)} text-small`}>{_links.type.title}</span></div>
-            <div className="mr-2"><a title="new" href="/projects/backlogs-project/work_packages/1619"
-                    className="Link text-small color-fg-muted">#{id}</a></div>
-            <div><span className={`Label __hl_background_status_${getIdFromHref(_links.status.href)} Label--inline`}>{_links.status.title}</span>
-            </div>
-        </div>
-    </div>
-    <div style={{'gridArea': 'points'}} className="op-backlogs-story--points"> <span className="color-fg-subtle">
-            {storyPoints ?? 0}
-            <span className="op-backlogs-points-label"> points</span>
-        </span></div>
-    <div style={{'gridArea': 'menu'}} className="op-backlogs-story--menu">
-      <ActionMenu>
-        <ActionMenu.Anchor>
-          <IconButton variant='invisible' icon={KebabHorizontalIcon} aria-label="Open menu" />
-        </ActionMenu.Anchor>
-        <ActionMenu.Overlay>
-          <ActionList>
-            <ActionList.Item
-              onSelect={() => {
-                alert('Item one clicked');
-              }}
+          <div className="mr-2">
+            <span className={`__hl_inline_type_${getIdFromHref(_links.type.href)} text-small`}>
+              {_links.type.title}
+            </span>
+          </div>
+          <div className="mr-2">
+            <a
+              title="new"
+              href="/projects/backlogs-project/work_packages/1619"
+              className="Link text-small color-fg-muted"
             >
-              Delete
-            </ActionList.Item>
-          </ActionList>
-        </ActionMenu.Overlay>
-      </ActionMenu>
-    </div>
-    <div style={{'gridArea': 'subject'}} className="op-backlogs-story--subject">
-      <span className="text-semibold">{subject}</span>
-    </div>
-</article>
+              #{id}
+            </a>
+          </div>
+          <div>
+            <span className={`Label __hl_background_status_${getIdFromHref(_links.status.href)} Label--inline`}>
+              {_links.status.title}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div style={{ gridArea: 'points' }} className="op-backlogs-story--points">
+        <span className="color-fg-subtle">
+          {storyPoints ?? 0}
+          <span className="op-backlogs-points-label"> points</span>
+        </span>
+      </div>
+      <div style={{ gridArea: 'menu' }} className="op-backlogs-story--menu">
+        <ActionMenu open={open} onOpenChange={setOpen} anchorRef={triggerRef}>
+          <ActionMenu.Anchor>
+            <IconButton
+              ref={triggerRef}
+              variant="invisible"
+              icon={KebabHorizontalIcon}
+              onClick={handleContextMenu}
+              aria-label="Open menu"
+            />
+          </ActionMenu.Anchor>
+          <ActionMenu.Overlay>
+            <ActionList>
+              <ActionList.Item
+                onSelect={() => {
+                  alert('Item one clicked');
+                }}
+              >
+                Delete
+              </ActionList.Item>
+            </ActionList>
+          </ActionMenu.Overlay>
+        </ActionMenu>
+      </div>
+      <div style={{ gridArea: 'subject' }} className="op-backlogs-story--subject">
+        <span className="text-semibold">{subject}</span>
+      </div>
+    </article>
   );
 }
