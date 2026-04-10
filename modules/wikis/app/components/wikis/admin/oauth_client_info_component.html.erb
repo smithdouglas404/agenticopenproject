@@ -14,21 +14,23 @@
         render(Primer::Beta::Text.new) { I18n.t("wikis.admin.wiki_providers.oauth.xwiki_oauth_description") }
       end
 
-      grid.with_area(:"icon-button", tag: :div, color: :muted) do
-        flex_layout(justify_content: :flex_end) do |icons|
-          icons.with_column do
-            data_options = { turbo_stream: true }
-            data_options[:turbo_confirm] = I18n.t("wikis.admin.wiki_providers.oauth.confirm_replace_oauth_client") if oauth_client.present?
+      if wiki_provider.persisted?
+        grid.with_area(:"icon-button", tag: :div, color: :muted) do
+          flex_layout(justify_content: :flex_end) do |icons|
+            icons.with_column do
+              data_options = { turbo_stream: true }
+              data_options[:turbo_confirm] = I18n.t("wikis.admin.wiki_providers.oauth.confirm_replace_oauth_client") if oauth_client.present?
 
-            icon_button_options = {
-              icon: oauth_client.present? ? :sync : :pencil,
-              scheme: :invisible,
-              tag: :a,
-              href: url_helpers.new_admin_settings_wiki_provider_oauth_client_path(wiki_provider),
-              aria: { label: I18n.t("wikis.admin.wiki_providers.oauth.replace_oauth_client") },
-              data: data_options
-            }
-            render(Primer::Beta::IconButton.new(**icon_button_options))
+              icon_button_options = {
+                icon: oauth_client.present? ? :sync : :pencil,
+                scheme: :invisible,
+                tag: :a,
+                href: url_helpers.new_admin_settings_wiki_provider_oauth_client_path(wiki_provider),
+                aria: { label: I18n.t("wikis.admin.wiki_providers.oauth.replace_oauth_client") },
+                data: data_options
+              }
+              render(Primer::Beta::IconButton.new(**icon_button_options))
+            end
           end
         end
       end

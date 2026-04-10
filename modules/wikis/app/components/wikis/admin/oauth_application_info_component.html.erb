@@ -14,21 +14,23 @@
         render(Primer::Beta::Text.new) { I18n.t("wikis.admin.wiki_providers.oauth.openproject_oauth_description") }
       end
 
-      grid.with_area(:"icon-button", tag: :div, color: :muted) do
-        flex_layout(justify_content: :flex_end) do |icons|
-          icons.with_column do
-            primer_form_with(
-              model: wiki_provider,
-              url: url_helpers.replace_oauth_application_admin_settings_wiki_provider_path(wiki_provider),
-              method: :delete
-            ) do |_form|
-              render(Primer::Beta::IconButton.new(
-                icon: :sync,
-                scheme: :invisible,
-                type: :submit,
-                aria: { label: I18n.t("wikis.admin.wiki_providers.oauth.replace_oauth_application") },
-                data: { turbo_confirm: I18n.t("wikis.admin.wiki_providers.oauth.confirm_replace_oauth_application") }
-              ))
+      if wiki_provider.persisted?
+        grid.with_area(:"icon-button", tag: :div, color: :muted) do
+          flex_layout(justify_content: :flex_end) do |icons|
+            icons.with_column do
+              primer_form_with(
+                model: wiki_provider,
+                url: url_helpers.replace_oauth_application_admin_settings_wiki_provider_path(wiki_provider),
+                method: :delete
+              ) do |_form|
+                render(Primer::Beta::IconButton.new(
+                  icon: :sync,
+                  scheme: :invisible,
+                  type: :submit,
+                  aria: { label: I18n.t("wikis.admin.wiki_providers.oauth.replace_oauth_application") },
+                  data: { turbo_confirm: I18n.t("wikis.admin.wiki_providers.oauth.confirm_replace_oauth_application") }
+                ))
+              end
             end
           end
         end

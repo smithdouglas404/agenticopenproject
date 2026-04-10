@@ -144,13 +144,13 @@ module Wikis
       end
 
       def find_wiki_provider
-        @wiki_provider = Wikis::XWikiProvider.find(params[:id])
+        @wiki_provider = Wikis::XWikiProvider.visible.find(params[:id])
       end
 
       def ensure_valid_wizard_parameters
         return if params[:continue_wizard].blank?
 
-        @wiki_provider = Wikis::XWikiProvider.find(params[:continue_wizard])
+        @wiki_provider = Wikis::XWikiProvider.visible.find(params[:continue_wizard])
       end
 
       def wiki_provider_params

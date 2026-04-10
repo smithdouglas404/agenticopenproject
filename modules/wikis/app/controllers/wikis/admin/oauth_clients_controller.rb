@@ -95,7 +95,7 @@ module Wikis
       end
 
       def find_wiki_provider
-        @wiki_provider = Wikis::XWikiProvider.find(params[:wiki_provider_id])
+        @wiki_provider = Wikis::XWikiProvider.visible.find(params[:wiki_provider_id])
       end
 
       def respond_for_success

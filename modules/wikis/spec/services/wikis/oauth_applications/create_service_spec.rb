@@ -28,28 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module OAuthApplications
-    class CreateService
-      attr_accessor :user, :wiki_provider
+require "spec_helper"
+require_module_spec_helper
 
-      def initialize(wiki_provider:, user:)
-        @wiki_provider = wiki_provider
-        @user = user
-      end
+RSpec.describe Wikis::OAuthApplications::CreateService, type: :model do
+  let(:user) { create(:admin) }
+  let(:wiki_provider) { create(:xwiki_provider, name: "My XWiki", url: "https://xwiki.example.com/") }
+  let(:instance) { described_class.new(user:, wiki_provider:) }
 
-      def call
-        ::OAuth::Applications::CreateService
-          .new(user:)
-          .call(
-            name: wiki_provider.name,
-            redirect_uri: wiki_provider.oidc_redirect_uri,
-            scopes: "api_v3",
-            confidential: true,
-            owner: user,
-            integration: wiki_provider
-          )
-      end
+  describe "#call" do
+    subject { instance.call }
+
+    it "returns a successful ServiceResult with a Doorkeeper::Application" do
+      expect(subject).to be_a(ServiceResult)
+      expect(subject).to be_success
+      expect(subject.result).to be_a(Doorkeeper::Application)
+    end
+
+    it "sets the correct application attributes" do
+      result = subject.result
+      expect(result.name).to eq(wiki_provider.name)
+      expect(result.scopes.to_s).to eq("api_v3")
+      expect(result.confidential).to be_truthy
+      expect(result.owner).to eq(user)
+      expect(result.integration).to eq(wiki_provider)
+    end
+
+    it "sets the redirect_uri to the XWiki OIDC callback path" do
+      expect(subject.result.redirect_uri).to eq(wiki_provider.oidc_redirect_uri)
+    end
+
+    it "does not produce a double slash in the redirect_uri" do
+      expect(subject.result.redirect_uri).not_to include("//oidc")
     end
   end
 end
