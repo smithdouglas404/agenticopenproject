@@ -31,7 +31,7 @@ No messages except for security advisories or security related announcements wil
 
 To unsubscribe, you will find a link at the end of every email.
 
-Any security related information will also be published on our [blog](https://www.openproject.org/blog/) and in the [release notes](../../release-notes/).
+Any security related information will also be published in the [release notes](../../release-notes/) and as [GitHub Security Advisories](https://github.com/opf/openproject/security/advisories).
 
 ### Security advisory list
 
