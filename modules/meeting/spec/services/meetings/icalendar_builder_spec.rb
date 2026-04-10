@@ -403,6 +403,18 @@ RSpec.describe Meetings::IcalendarBuilder,
         end
       end
 
+      it "sets occurrence override SEQUENCE >= series SEQUENCE" do
+        builder.add_series_event(recurring_meeting:)
+
+        master = parsed_calendar.events.find { |e| e.rrule.present? && e.recurrence_id.blank? }
+        overrides = parsed_calendar.events.select { |e| e.recurrence_id.present? }
+
+        expect(master.sequence).to be >= 0
+        overrides.each do |override_event|
+          expect(override_event.sequence).to be >= master.sequence
+        end
+      end
+
       it "sets created and last_modified timestamps correctly for recurring series when accepted" do
         builder.add_series_event(recurring_meeting:)
 

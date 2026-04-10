@@ -167,7 +167,11 @@ module OpenProject
 
     def project_link_name(project, show_icon)
       if show_icon && User.current.member_of?(project)
-        icon_wrapper("icon-context icon-star", I18n.t(:description_my_project).html_safe + "&nbsp;".html_safe) + project.name
+        label = ActiveSupport::SafeBuffer.new
+        label << I18n.t(:description_my_project)
+        label << "&nbsp;".html_safe
+
+        icon_wrapper("icon-context icon-star", label) + project.name
       else
         project.name
       end

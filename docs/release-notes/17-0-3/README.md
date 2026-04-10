@@ -66,7 +66,7 @@ For more information, please see the [GitHub advisory #GHSA-x37c-hcg5-r5m7](http
 
 - Bugfix: Unable to change to earlier finish date for automatically scheduled successor \[[#65130](https://community.openproject.org/wp/65130)\]
 - Bugfix: DPA/AVV cannot be downloaded \[[#67323](https://community.openproject.org/wp/67323)\]
-- Bugfix: hocupocus logs \[onAuthenticate\] fetch failed and connection to collaboration server not possible \[[#70542](https://community.openproject.org/wp/70542)\]
+- Bugfix: hocuspocus logs \[onAuthenticate\] fetch failed and connection to collaboration server not possible \[[#70542](https://community.openproject.org/wp/70542)\]
 - Bugfix: Wrong sidebar sort order in System Admin Guide -&gt; Authentication \[[#70914](https://community.openproject.org/wp/70914)\]
 - Bugfix: &quot;form\_configuration-status=422&quot; Unable to Change Custom fields in Work Packages without Enterprise Plan \[[#71093](https://community.openproject.org/wp/71093)\]
 

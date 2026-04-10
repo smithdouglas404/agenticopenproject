@@ -138,12 +138,6 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
         expect(sprint.status).to eq("in_planning")
       end
 
-      it "sets default sharing to none" do
-        service_call
-
-        expect(sprint.sharing).to eq("none")
-      end
-
       context "when status is already set" do
         let(:sprint) { Agile::Sprint.new(status: "active") }
 
@@ -151,16 +145,6 @@ RSpec.describe Sprints::SetAttributesService, type: :model do
           service_call
 
           expect(sprint.status).to eq("active")
-        end
-      end
-
-      context "when sharing is already set" do
-        let(:sprint) { Agile::Sprint.new(sharing: "descendants") }
-
-        it "does not override the existing sharing" do
-          service_call
-
-          expect(sprint.sharing).to eq("descendants")
         end
       end
     end

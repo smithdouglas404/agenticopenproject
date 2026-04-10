@@ -37,6 +37,8 @@ module Groups
     # hence we need to put "lastname" as an attribute here
     attribute :name
     attribute :lastname
+    attribute :parent_id
+    attribute :organizational_unit
 
     validate :validate_unique_users
 

@@ -68,11 +68,13 @@ module Import
 
         Import::JiraProject.where(jira_id:, jira_project_id: project_ids).find_each do |jira_project|
           ### PROJECT
+          project_key = jira_project.payload.fetch("key")
+          identifier = Setting::WorkPackageIdentifier.semantic? ? project_key.upcase : project_key.downcase
           service_call = Projects::CreateService
-                           .new(user:)
+                           .new(user:, contract_class: EmptyContract)
                            .call(
                              name: jira_project.payload.fetch("name"),
-                             identifier: jira_project.payload.fetch("key").downcase,
+                             identifier:,
                              description: jira_project.payload.fetch("description"),
                              active: true,
                              public: false,
@@ -150,6 +152,19 @@ module Import
                 jira_import:,
                 uses_existing:
               )
+
+              ### Modify workfows for given role and type
+              statuses = Status.all
+              row = statuses.to_h do |status|
+                [status.id.to_s, ["always"]]
+              end
+              status_params = statuses.to_h do |status|
+                [status.id.to_s, row]
+              end
+              call = Workflows::BulkUpdateService
+                       .new(role: project_role, type:, tab: "always")
+                       .call(status_params)
+              raise call.message if call.failure?
 
               ### PRIORITY
               issue_priority = jira_issue.payload["fields"]["priority"]
@@ -231,6 +246,9 @@ module Import
                 raise service_call.message
               end
             end
+          elsif (error = service_call.errors.find { |e| e.attribute == :identifier && e.type == :taken }) && error.present?
+            taken_identifier = error.options[:value]
+            raise I18n.t(:"admin.jira.run.project_identifier_taken", taken_identifier:)
           else
             raise service_call.message
           end

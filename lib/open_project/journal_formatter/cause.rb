@@ -101,6 +101,8 @@ class OpenProject::JournalFormatter::Cause < JournalFormatter::Base
         { href: OpenProject::Static::Links.url_for(:blog_article_progress_changes) }
       when "totals_removed_from_childless_work_packages"
         { href: OpenProject::Static::Links.url_for(:release_notes_14_0_1) }
+      when "sprint_migration"
+        { version_name: ERB::Util.html_escape(cause["version_name"]) }
       else
         {}
       end

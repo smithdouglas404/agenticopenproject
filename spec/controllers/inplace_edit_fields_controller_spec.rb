@@ -67,6 +67,21 @@ RSpec.describe InplaceEditFieldsController do
     end
   end
 
+  describe "GET #dialog" do
+    let(:handler) { double }
+
+    it "returns a turbo stream response with the dialog component" do
+      get :dialog, params: {
+        model: model_param,
+        id: model.id,
+        attribute:
+      }, format: :turbo_stream
+
+      expect(response).to have_http_status(:ok)
+      expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+    end
+  end
+
   describe "PATCH #update" do
     let(:handler) { double(call: success) }
 
@@ -103,6 +118,58 @@ RSpec.describe InplaceEditFieldsController do
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      end
+    end
+
+    context "when successful and system_arguments contain a wrapper_id (dialog context)" do
+      let(:handler) { double(call: true) }
+      let(:wrapper_id) { "#my-inplace-dialog" }
+
+      it "includes a turbo stream to close the dialog" do
+        patch :update, params: {
+          model: model_param,
+          id: model.id,
+          attribute:,
+          project: { name: "New project" },
+          system_arguments_json: { wrapper_id: }.to_json
+        }, format: :turbo_stream
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("my-inplace-dialog")
+      end
+    end
+
+    context "when attribute is a custom field (hash params via fields_for)" do
+      let(:handler) { double(call: true) }
+      let(:custom_field) { create(:project_custom_field) }
+      let(:attribute) { custom_field.attribute_name.to_sym }
+
+      it "accepts custom_field_values hash params and returns ok" do
+        patch :update, params: {
+          model: model_param,
+          id: model.id,
+          attribute:,
+          project: { custom_field_values: { custom_field.id.to_s => "Option A" } }
+        }, format: :turbo_stream
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "when attribute is a custom field (array params from FilterableTreeView)" do
+      let(:handler) { double(call: true) }
+      let(:custom_field) { create(:project_custom_field) }
+      let(:attribute) { custom_field.attribute_name.to_sym }
+
+      it "accepts custom_field_values array params and returns ok" do
+        patch :update, params: {
+          model: model_param,
+          id: model.id,
+          attribute:,
+          project: { custom_field_values: ["{\"value\":\"42\"}", ""] }
+        }, format: :turbo_stream
+
+        expect(response).to have_http_status(:ok)
       end
     end
 

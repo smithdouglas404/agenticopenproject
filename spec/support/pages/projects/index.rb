@@ -107,49 +107,56 @@ module Pages
       end
 
       def expect_current_page_number(number)
-        within ".op-pagination--pages" do
-          expect(page).to have_css(".op-pagination--item_current", text: number)
+        within ".PaginationContainer" do
+          expect(page).to have_css("a.Page", text: number.to_s, aria: { current: "page" })
         end
       end
 
       def expect_total_pages(number)
         within ".op-pagination--pages" do
-          expect(page).to have_css(".op-pagination--item", text: number)
-          expect(page).to have_no_css(".op-pagination--item", text: number + 1)
+          expect(page).to have_css(".Page", text: number)
+          expect(page).to have_no_css(".Page", text: number + 1)
         end
       end
 
       def expect_page_link(text)
         within ".op-pagination--pages" do
-          expect(page).to have_css("a.op-pagination--item-link", text:)
+          expect(page).to have_css("a.Page", text:)
         end
       end
 
       def expect_page_links(model:, current_page: 1)
-        within ".op-pagination--pages" do
-          pagination_links = page.all(".op-pagination--item-link")
+        within ".PaginationContainer" do
+          pagination_links = page.all("a.Page")
           expect(pagination_links.size).to be_positive
 
-          page_number_links = pagination_links.reject { |link| link.text =~ /previous|next/i }
-          page_number_links.each.with_index(1) do |pagination_link, page_number|
+          page_number_links = pagination_links.select { |link| link["aria-label"]&.match?(/\APage \d+\z/) }
+
+          page_number_links.each do |pagination_link|
+            page_number = pagination_link.text.to_i
             uri = URI.parse(pagination_link["href"])
             expect(uri.path).to eq(path(model))
             expect(uri.query).to include("page=#{page_number}")
           end
 
           if current_page > 1
-            expect(page).to have_link("Previous", href: "#{path(model)}?#{{ page: current_page - 1 }.to_query}")
+            previous_link = find("a[rel='prev']", visible: true)
+            previous_uri = URI.parse(previous_link["href"])
+            expect(previous_uri.path).to eq(path(model))
+            expect(previous_uri.query).to include("page=#{current_page - 1}")
           else
-            expect(page).to have_link("Next", href: "#{path(model)}?#{{ page: current_page + 1 }.to_query}")
+            next_link = find("a[rel='next']", visible: true)
+            next_uri = URI.parse(next_link["href"])
+            expect(next_uri.path).to eq(path(model))
+            expect(next_uri.query).to include("page=#{current_page + 1}")
           end
         end
       end
 
       def expect_page_sizes(model:)
         within ".op-pagination--options" do
-          pagination_links = page.all(".op-pagination--item-link")
+          pagination_links = page.all("a.Page")
           expect(pagination_links.size).to be_positive
-          expect(page).to have_css(".op-pagination--item_current")
 
           pagination_links.each do |pagination_link|
             uri = URI.parse(pagination_link["href"])
@@ -443,19 +450,19 @@ module Pages
 
       def set_page_size(size)
         within ".op-pagination--options" do
-          find(".op-pagination--item", text: size).click
+          find("a.Page", text: size.to_s).click
         end
       end
 
       def expect_page_size(size)
         within ".op-pagination--options" do
-          expect(page).to have_css(".op-pagination--item_current", text: size)
+          expect(page).to have_css("a.Page", text: /\A#{size}\z/, aria: { current: "page" })
         end
       end
 
       def go_to_page(page_number)
-        within ".op-pagination--pages" do
-          find(".op-pagination--item-link", text: page_number).click
+        within ".PaginationContainer" do
+          click_link accessible_name: "Page #{page_number}"
         end
       end
 

@@ -61,7 +61,9 @@ RSpec.describe "Favorite projects", :js do
       visit project_path(project)
       expect(page).to have_css "a", accessible_name: "Add to favorites"
 
-      click_link_or_button(accessible_name: "Add to favorites")
+      wait_for_turbo do
+        click_link_or_button(accessible_name: "Add to favorites")
+      end
 
       expect(page).to have_css "a", accessible_name: "Remove from favorites"
 

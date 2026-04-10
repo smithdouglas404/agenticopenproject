@@ -89,6 +89,23 @@
 @mixin widget-box--hover-style
   box-shadow: 0px 1px 20px 0px rgba(0,0,0,0.1)
 
+@mixin banner-styles
+  position: absolute
+  max-width: 650px
+  margin: 0 auto
+  left: 0
+  right: 0
+  // Higher than loading indicator and modal wrapper!
+  z-index: 10000
+  top: 4rem
+
+  @media screen and (max-width: $breakpoint-lg)
+    max-width: 550px
+
+  @media screen and (max-width: $breakpoint-sm)
+    max-width: calc(100% - 2rem)
+    min-width: calc(100% - 2rem)
+
 // These mixins are necessary so that other classes can inherit     the styles.
 // In future Sass versions a doubled inheritance like @extend classA.classB will not work any more.
 // See https://github.com/sass/sass/issues/1599

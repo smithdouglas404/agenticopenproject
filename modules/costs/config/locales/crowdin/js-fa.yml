@@ -19,17 +19,18 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 fa:
   js:
-    text_are_you_sure: "آیا مطمئن هستید؟"
+    text_are_you_sure: آیا مطمئن هستید؟
     myTimeTracking:
-      noSpecificTime: "No specific time"
+      noSpecificTime: No specific time
     work_packages:
       property_groups:
-        costs: "هزینه ها"
+        costs: هزینه ها
       properties:
-        overallCosts: "هزینه‌های کلی"
-        spentUnits: "واحد هزینه‌کرد"
-    button_log_costs: "ثبت هزینه‌های واحد"
-    label_hour: "hour"
-    label_hours: "ساعت"
+        overallCosts: هزینه‌های کلی
+        spentUnits: واحد هزینه‌کرد
+    button_log_costs: ثبت هزینه‌های واحد
+    label_hour: hour
+    label_hours: ساعت

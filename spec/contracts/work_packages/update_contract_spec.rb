@@ -392,18 +392,6 @@ RSpec.describe WorkPackages::UpdateContract do
           .not_to include("subject", "start_date", "description")
       end
     end
-
-    context "for a user having only the manage_sprint_items permission" do
-      let(:permissions) { %i[manage_sprint_items] }
-
-      it "includes version_id only" do
-        expect(subject)
-          .to include("version_id", "version", "lock_version_id", "lock_version")
-
-        expect(subject)
-          .not_to include("subject", "start_date", "description")
-      end
-    end
   end
 
   describe "#assignable_assignees" do
@@ -417,6 +405,72 @@ RSpec.describe WorkPackages::UpdateContract do
     it "returns the users assignable" do
       expect(subject.assignable_responsibles)
         .to contain_exactly(persisted_possible_assignee)
+    end
+  end
+
+  describe ".update_allowed?" do
+    %i[edit_work_packages
+       assign_versions
+       move_work_packages
+       change_work_package_status
+       manage_subtasks].each do |permission|
+      context "with the user having #{permission}" do
+        let(:permissions) { [permission] }
+
+        it "is allowed" do
+          expect(described_class)
+            .to be_update_allowed(user:, work_package:)
+        end
+      end
+    end
+
+    context "with the user having view_work_packages" do
+      let(:permissions) { %i[view_work_packages] }
+
+      it "is not allowed" do
+        expect(described_class)
+          .not_to be_update_allowed(user:, work_package:)
+      end
+    end
+  end
+
+  describe ".update_parent_allowed?" do
+    context "with the user having manage_subtasks" do
+      let(:permissions) { [:manage_subtasks] }
+
+      it "is allowed" do
+        expect(described_class)
+          .to be_update_parent_allowed(user:, work_package:)
+      end
+    end
+
+    context "with the user having the other edit permissions" do
+      let(:permissions) { %i[edit_work_packages assign_versions move_work_packages change_work_package_status] }
+
+      it "is not allowed" do
+        expect(described_class)
+          .not_to be_update_parent_allowed(user:, work_package:)
+      end
+    end
+  end
+
+  describe ".add_comments_allowed?" do
+    context "with the user having add_work_package_comments" do
+      let(:permissions) { [:add_work_package_comments] }
+
+      it "is allowed" do
+        expect(described_class)
+          .to be_add_comments_allowed(user:, work_package:)
+      end
+    end
+
+    context "with the user having the other edit permissions" do
+      let(:permissions) { %i[edit_work_packages assign_versions move_work_packages change_work_package_status] }
+
+      it "is not allowed" do
+        expect(described_class)
+          .not_to be_add_comments_allowed(user:, work_package:)
+      end
     end
   end
 end

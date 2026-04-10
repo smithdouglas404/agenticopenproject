@@ -46,3 +46,19 @@ RSpec::Matchers.define :have_turbo_stream do |action:, target: nil, targets: nil
     assert_select(@selector, count:, &block_arg)
   end
 end
+
+RSpec::Matchers.define :have_turbo_frame do |*ids, **options|
+  description { "contain a `<turbo-frame>` element" }
+
+  match_unless_raises ActiveSupport::TestCase::Assertion do |_|
+    assert_turbo_frame(*ids, **options, &block_arg)
+  end
+end
+
+RSpec::Matchers.define :have_no_turbo_frame do |*ids, **options|
+  description { "does not contain a `<turbo-frame>` element" }
+
+  match_unless_raises ActiveSupport::TestCase::Assertion do |_|
+    assert_no_turbo_frame(*ids, **options, &block_arg)
+  end
+end

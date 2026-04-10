@@ -123,7 +123,7 @@ RSpec.describe OpenProject::TextFormatting,
           <a class="op-uc-link_permalink icon-link op-uc-link"
              href="#op-frag-the-first-h1-heading"
              aria-hidden="true"
-             rel="noopener noreferrer"></a>
+             rel="noopener noreferrer nofollow"></a>
         </h1>
         <p class="op-uc-p">Some text after the first h1 heading</p>
         <h2 class="op-uc-h2" id="op-frag-the-first-h2-heading">
@@ -131,7 +131,7 @@ RSpec.describe OpenProject::TextFormatting,
           <a class="op-uc-link_permalink icon-link op-uc-link"
              href="#op-frag-the-first-h2-heading"
              aria-hidden="true"
-             rel="noopener noreferrer"></a>
+             rel="noopener noreferrer nofollow"></a>
         </h2>
         <p class="op-uc-p">Some text after the first h2 heading</p>
         <h3 class="op-uc-h3" id="op-frag-the-first-h3-heading">
@@ -139,7 +139,7 @@ RSpec.describe OpenProject::TextFormatting,
           <a class="op-uc-link_permalink icon-link op-uc-link"
              href="#op-frag-the-first-h3-heading"
              aria-hidden="true"
-             rel="noopener noreferrer"></a>
+             rel="noopener noreferrer nofollow"></a>
         </h3>
         <p class="op-uc-p">Some text after the first h3 heading</p>
         <h1 class="op-uc-h1" id="op-frag-the-second-h1-heading">
@@ -147,7 +147,7 @@ RSpec.describe OpenProject::TextFormatting,
           <a class="op-uc-link_permalink icon-link op-uc-link"
              href="#op-frag-the-second-h1-heading"
              aria-hidden="true"
-             rel="noopener noreferrer"></a>
+             rel="noopener noreferrer nofollow"></a>
         </h1>
         <p class="op-uc-p">Some text after the second h1 heading</p>
         <h2 class="op-uc-h2" id="op-frag-the-second-h2-heading">
@@ -155,7 +155,7 @@ RSpec.describe OpenProject::TextFormatting,
           <a class="op-uc-link_permalink icon-link op-uc-link"
              href="#op-frag-the-second-h2-heading"
              aria-hidden="true"
-             rel="noopener noreferrer"></a>
+             rel="noopener noreferrer nofollow"></a>
         </h2>
         <p class="op-uc-p">Some text after the second h2 heading</p>
         <h3 class="op-uc-h3" id="op-frag-the-second-h3-heading">
@@ -163,7 +163,7 @@ RSpec.describe OpenProject::TextFormatting,
           <a class="op-uc-link_permalink icon-link op-uc-link"
              href="#op-frag-the-second-h3-heading"
              aria-hidden="true"
-             rel="noopener noreferrer"></a>
+             rel="noopener noreferrer nofollow"></a>
         </h3>
         <p class="op-uc-p">Some text after the second h3 heading</p>
       EXPECTED
@@ -259,7 +259,7 @@ RSpec.describe OpenProject::TextFormatting,
             <a class="op-uc-link_permalink icon-link op-uc-link"
                href="#op-frag-1-the-first-h1-heading"
                aria-hidden="true"
-               rel="noopener noreferrer"></a>
+               rel="noopener noreferrer nofollow"></a>
           </h1>
           <p class="op-uc-p">Some text after the first h1 heading</p>
           <h2 class="op-uc-h2" id="op-frag-11-the-first-h2-heading">
@@ -267,7 +267,7 @@ RSpec.describe OpenProject::TextFormatting,
             <a class="op-uc-link_permalink icon-link op-uc-link"
                href="#op-frag-11-the-first-h2-heading"
                aria-hidden="true"
-               rel="noopener noreferrer"></a>
+               rel="noopener noreferrer nofollow"></a>
           </h2>
           <p class="op-uc-p">Some text after the first h2 heading</p>
           <h3 class="op-uc-h3" id="op-frag-111-the-first-h3-heading">
@@ -275,7 +275,7 @@ RSpec.describe OpenProject::TextFormatting,
             <a class="op-uc-link_permalink icon-link op-uc-link"
                href="#op-frag-111-the-first-h3-heading"
                aria-hidden="true"
-               rel="noopener noreferrer"></a>
+               rel="noopener noreferrer nofollow"></a>
           </h3>
           <p class="op-uc-p">Some text after the first h3 heading</p>
           <h1 class="op-uc-h1" id="op-frag-2-the-second-h1-heading">
@@ -283,7 +283,7 @@ RSpec.describe OpenProject::TextFormatting,
             <a class="op-uc-link_permalink icon-link op-uc-link"
                href="#op-frag-2-the-second-h1-heading"
                aria-hidden="true"
-               rel="noopener noreferrer"></a>
+               rel="noopener noreferrer nofollow"></a>
           </h1>
           <p class="op-uc-p">Some text after the second h1 heading</p>
           <h2 class="op-uc-h2" id="op-frag-21-the-second-h2-heading">
@@ -291,7 +291,7 @@ RSpec.describe OpenProject::TextFormatting,
             <a class="op-uc-link_permalink icon-link op-uc-link"
                href="#op-frag-21-the-second-h2-heading"
                aria-hidden="true"
-               rel="noopener noreferrer"></a>
+               rel="noopener noreferrer nofollow"></a>
           </h2>
           <p class="op-uc-p">Some text after the second h2 heading</p>
           <h3 class="op-uc-h3" id="op-frag-211---the-second-h3-heading">
@@ -299,7 +299,7 @@ RSpec.describe OpenProject::TextFormatting,
             <a class="op-uc-link_permalink icon-link op-uc-link"
                href="#op-frag-211---the-second-h3-heading"
                aria-hidden="true"
-               rel="noopener noreferrer"></a>
+               rel="noopener noreferrer nofollow"></a>
           </h3>
           <p class="op-uc-p">Some text after the second h3 heading</p>
         EXPECTED

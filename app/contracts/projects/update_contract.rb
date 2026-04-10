@@ -31,16 +31,22 @@
 module Projects
   class UpdateContract < BaseContract
     def writable_attributes
-      if allow_project_attributes_only?
-        with_available_custom_fields_only(super)
-      elsif allow_edit_attributes_only?
-        without_custom_fields(super)
-      elsif allow_all_attributes?
-        # When all attributes are updated (API-only case), allow writing to all available custom
-        # fields (including disabled ones) to maintain backward compatibility with the API.
-        with_all_available_custom_fields(super)
-      else
-        []
+      # Permission checks must use the original project id, not a user-modified one.
+      # Without this, changing the id (e.g. via BCF API) causes permission lookups
+      # against the wrong project, corrupting the permission cache and leading to
+      # intermittent 403 responses instead of the expected 422.
+      with_unchanged_id do
+        if allow_project_attributes_only?
+          with_available_custom_fields_only(super)
+        elsif allow_edit_attributes_only?
+          without_custom_fields(super)
+        elsif allow_all_attributes?
+          # When all attributes are updated (API-only case), allow writing to all available custom
+          # fields (including disabled ones) to maintain backward compatibility with the API.
+          with_all_available_custom_fields(super)
+        else
+          []
+        end
       end
     end
 

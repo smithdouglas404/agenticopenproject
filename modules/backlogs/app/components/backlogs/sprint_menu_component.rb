@@ -30,16 +30,25 @@
 
 module Backlogs
   class SprintMenuComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
     include RbCommonHelper
 
     attr_reader :sprint, :project, :current_user
 
-    def initialize(sprint:, project:, current_user: User.current)
+    def initialize(sprint:, project:, current_user: User.current, **system_arguments)
       super()
 
       @sprint = sprint
       @project = project
       @current_user = current_user
+
+      @system_arguments = system_arguments
+      @system_arguments[:menu_id] = dom_target(sprint, :menu)
+      @system_arguments[:anchor_align] = :end
+      @system_arguments[:classes] = class_names(
+        @system_arguments[:classes],
+        "hide-when-print"
+      )
     end
 
     def stories
@@ -47,6 +56,14 @@ module Backlogs
     end
 
     private
+
+    def show_task_board_link?
+      sprint.task_board_for(project).present?
+    end
+
+    def show_burndown_link?
+      sprint.active?
+    end
 
     def user_allowed?(permission)
       current_user.allowed_in_project?(permission, project)

@@ -31,11 +31,133 @@
 require "rails_helper"
 
 RSpec.describe RbSprintsController do
+  describe "inline name actions" do
+    shared_let(:type_feature) { create(:type_feature) }
+    shared_let(:type_task) { create(:type_task) }
+    shared_let(:user) { create(:admin) }
+    current_user { user }
+
+    let(:visible_projects_scope) { instance_double(ActiveRecord::Relation) }
+    let(:visible_sprints_scope) { instance_double(ActiveRecord::Relation) }
+
+    before do
+      allow(Setting)
+        .to receive(:plugin_openproject_backlogs)
+        .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
+
+      allow(Project)
+        .to receive(:visible)
+        .and_return(visible_projects_scope)
+
+      allow(visible_projects_scope)
+        .to receive(:find)
+        .with(project.identifier)
+        .and_return(project)
+
+      allow(Sprint)
+        .to receive(:visible)
+        .and_return(visible_sprints_scope)
+
+      allow(visible_sprints_scope)
+        .to receive(:find)
+        .with(sprint.id.to_s)
+        .and_return(sprint)
+    end
+
+    describe "GET #edit_name" do
+      let(:project) { build_stubbed(:project) }
+      let(:sprint) { build_stubbed(:sprint) }
+
+      it "responds with success", :aggregate_failures do
+        get :edit_name, params: { project_id: project.identifier, id: sprint.id }, format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+        assert_select %(turbo-stream[action="update"][target="backlogs-backlog-header-component-#{sprint.id}"][method="morph"])
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:backlog)).to be_a(Backlog)
+      end
+    end
+
+    describe "GET #show_name" do
+      let(:project) { build_stubbed(:project) }
+      let(:sprint) { build_stubbed(:sprint) }
+
+      it "responds with success", :aggregate_failures do
+        get :show_name, params: { project_id: project.identifier, id: sprint.id }, format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+        assert_select %(turbo-stream[action="update"][target="backlogs-backlog-header-component-#{sprint.id}"][method="morph"])
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(sprint)
+        expect(assigns(:backlog)).to be_a(Backlog)
+      end
+    end
+
+    describe "PATCH #update" do
+      let(:project) { build_stubbed(:project) }
+      let(:sprint) { build_stubbed(:sprint) }
+
+      before do
+        update_service = instance_double(Versions::UpdateService, call: service_result)
+
+        allow(Versions::UpdateService)
+          .to receive(:new)
+          .with(user:, model: sprint)
+          .and_return(update_service)
+      end
+
+      context "when service call succeeds" do
+        let(:service_result) { ServiceResult.success(result: sprint) }
+
+        it "responds with success", :aggregate_failures do
+          patch :update, params: { project_id: project.identifier, id: sprint.id, sprint: { name: "Updated Sprint" } },
+                         format: :turbo_stream
+
+          expect(response).to be_successful
+          expect(response).to have_http_status :ok
+          expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+          assert_select %(turbo-stream[action="update"][target="backlogs-backlog-header-component-#{sprint.id}"][method="morph"])
+          expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+          expect(assigns(:project)).to eq(project)
+          expect(assigns(:sprint)).to eq(sprint)
+          expect(assigns(:backlog)).to be_a(Backlog)
+        end
+      end
+
+      context "when service call fails" do
+        let(:service_result) { ServiceResult.failure(result: sprint) }
+
+        before do
+          project.name = ""
+        end
+
+        it "responds with 422", :aggregate_failures do
+          patch :update, params: { project_id: project.identifier, id: sprint.id, sprint: { name: "" } },
+                         format: :turbo_stream
+
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :unprocessable_entity
+          expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
+          assert_select %(turbo-stream[action="update"][target="backlogs-backlog-header-component-#{sprint.id}"][method="morph"])
+          expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+          expect(assigns(:project)).to eq(project)
+          expect(assigns(:sprint)).to eq(sprint)
+          expect(assigns(:backlog)).to be_a(Backlog)
+        end
+      end
+    end
+  end
+
   describe "new actions" do
     shared_let(:type_feature) { create(:type_feature) }
     shared_let(:type_task) { create(:type_task) }
 
-    let(:all_permissions) { %i[view_sprints view_work_packages create_sprints] }
+    let(:all_permissions) { %i[view_sprints view_work_packages create_sprints start_complete_sprint show_board_views] }
     let(:permissions) { all_permissions }
     let(:user) do
       create(:user, member_with_permissions: { project => permissions })
@@ -52,15 +174,6 @@ RSpec.describe RbSprintsController do
     end
 
     describe "GET #new_dialog" do
-      context "with the feature flag inactive" do
-        it "responds with forbidden" do
-          get :new_dialog, params: { project_id: project.id }, format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-        end
-      end
-
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         it "responds with success", :aggregate_failures do
           get :new_dialog, params: { project_id: project.id }, format: :turbo_stream
@@ -87,15 +200,6 @@ RSpec.describe RbSprintsController do
     describe "GET #edit_dialog" do
       let!(:sprint) { create(:agile_sprint, project:) }
 
-      context "with the feature flag inactive" do
-        it "responds with forbidden" do
-          get :edit_dialog, params: { project_id: project.id, id: sprint.id }, format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-        end
-      end
-
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         it "responds with success", :aggregate_failures do
           get :edit_dialog, params: { project_id: project.id, id: sprint.id }, format: :turbo_stream
@@ -121,15 +225,6 @@ RSpec.describe RbSprintsController do
     end
 
     describe "POST #create" do
-      context "with the feature flag inactive" do
-        it "responds with forbidden" do
-          post :create, params: { project_id: project.id }, format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-        end
-      end
-
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         let(:params) do
           {
@@ -166,15 +261,6 @@ RSpec.describe RbSprintsController do
     describe "PUT #update_agile_sprint" do
       let!(:sprint) { create(:agile_sprint, name: "Original sprint name", project:) }
 
-      context "with the feature flag inactive" do
-        it "responds with forbidden" do
-          put :update_agile_sprint, params: { id: sprint.id, project_id: project.id }, format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-        end
-      end
-
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         let(:params) do
           {
@@ -190,6 +276,8 @@ RSpec.describe RbSprintsController do
           expect(response).to be_successful
           expect(response).to have_http_status :ok
           expect(response.body).to have_turbo_stream action: "flash"
+          expect(response.body).to have_turbo_stream action: "update", target: "backlogs-sprint-header-component-#{sprint.id}"
+          assert_select %(turbo-stream[action="update"][target="backlogs-sprint-header-component-#{sprint.id}"][method="morph"])
           expect(response.body).to include("Successful update.")
           expect(sprint.reload.name).to eq("Changed sprint name")
         end
@@ -207,16 +295,317 @@ RSpec.describe RbSprintsController do
       end
     end
 
-    describe "GET #refresh_form" do
-      context "with the feature flag inactive" do
-        it "responds with forbidden" do
-          get :refresh_form, params: { project_id: project.id }, format: :turbo_stream
+    describe "POST #start" do
+      let!(:sprint) { create(:agile_sprint, project:) }
+      let(:service_result) { ServiceResult.success(result: sprint.tap { it.status = "active" }) }
+      let(:service) { instance_double(Sprints::StartService, call: service_result) }
+      let(:request_params) { { project_id: project.id, id: sprint.id } }
 
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-        end
+      before do
+        allow(Sprints::StartService)
+          .to receive(:new)
+          .with(user:, model: sprint)
+          .and_return(service)
       end
 
+      context "with the feature flag active", with_flag: { scrum_projects: true } do
+        context "when the sprint is rendered in a receiving project" do
+          let(:source_project) { create(:project, sprint_sharing: "share_all_projects") }
+          let(:project) { create(:project, sprint_sharing: "receive_shared") }
+          let!(:sprint) { create(:agile_sprint, project: source_project) }
+          let(:source_permissions) { %i[view_sprints start_complete_sprint] }
+          let!(:board) { create(:board_grid_with_query, project:, linked: sprint) }
+
+          before do
+            create(:member,
+                   project: source_project,
+                   principal: user,
+                   roles: [create(:project_role, permissions: source_permissions)])
+          end
+
+          it "starts the sprint and redirects to the board", :aggregate_failures do
+            post :start, format: :turbo_stream, params: request_params
+
+            expect(response).to be_successful
+            expect(response).to have_turbo_stream(action: "redirect_to")
+            expect(service).to have_received(:call)
+          end
+
+          context "without source-project start permission" do
+            let(:source_permissions) { %i[view_sprints] }
+
+            it "responds with forbidden and does not call the service", :aggregate_failures do
+              post :start, params: request_params
+
+              expect(response).not_to be_successful
+              expect(response).to have_http_status(:forbidden)
+              expect(service).not_to have_received(:call)
+            end
+          end
+
+          context "without rendered-project board access" do
+            let(:permissions) { all_permissions - [:show_board_views] }
+
+            it "responds with forbidden and does not call the service", :aggregate_failures do
+              post :start, params: request_params
+
+              expect(response).not_to be_successful
+              expect(response).to have_http_status(:forbidden)
+              expect(service).not_to have_received(:call)
+            end
+          end
+        end
+
+        context "when a board already exists" do
+          let!(:existing_board) do
+            create(:board_grid_with_query,
+                   project:,
+                   linked: sprint)
+          end
+
+          it "starts the sprint and redirects to the board", :aggregate_failures do
+            post :start, format: :turbo_stream, params: request_params
+
+            expect(response).to be_successful
+            expect(response).to have_turbo_stream(action: "redirect_to")
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "when board creation succeeds" do
+          let(:board) { create(:board_grid_with_query, project:, linked: sprint) }
+          let(:service_result) do
+            started_sprint = sprint.tap { it.status = "active" }
+            allow(started_sprint).to receive(:task_board_for).with(project).and_return(board)
+
+            ServiceResult.success(
+              result: started_sprint
+            )
+          end
+
+          it "creates the board, starts the sprint, and redirects to the board", :aggregate_failures do
+            post :start, format: :turbo_stream, params: request_params
+
+            expect(response).to be_successful
+            expect(response).to have_turbo_stream(action: "redirect_to")
+            expect(flash[:notice]).to eq(I18n.t(:notice_successful_start))
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "when board creation fails" do
+          let(:service_result) { ServiceResult.failure(message: "something went wrong") }
+
+          it "redirects back to the backlog and leaves the sprint in planning", :aggregate_failures do
+            post :start, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(
+              I18n.t(:notice_unsuccessful_start_with_reason, reason: "something went wrong")
+            )
+            expect(sprint.reload).to be_in_planning
+          end
+        end
+
+        context "when sprint start fails without an explicit message" do
+          let(:service_result) { ServiceResult.failure }
+
+          it "redirects back with the default start failure message", :aggregate_failures do
+            post :start, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "when another sprint is already active" do
+          let!(:active_sprint) { create(:agile_sprint, project:, status: "active") }
+          let(:service_result) do
+            ServiceResult.failure(
+              result: sprint,
+              message: sprint.errors.full_messages.to_sentence
+            )
+          end
+
+          it "redirects back to the backlog and leaves the sprint in planning", :aggregate_failures do
+            post :start, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "without the 'start_complete_sprint' permission" do
+          let(:permissions) { all_permissions - [:start_complete_sprint] }
+
+          it "responds with forbidden", :aggregate_failures do
+            post :start, params: request_params
+
+            expect(response).not_to be_successful
+            expect(response).to have_http_status(:forbidden)
+          end
+        end
+
+        context "when the sprint is already active" do
+          let!(:sprint) { create(:agile_sprint, project:, status: "active") }
+          let(:service_result) { ServiceResult.failure }
+
+          it "redirects back with the default start failure message", :aggregate_failures do
+            post :start, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
+            expect(service).to have_received(:call)
+          end
+        end
+      end
+    end
+
+    describe "POST #finish" do
+      let!(:sprint) { create(:agile_sprint, project:, status: "active") }
+      let(:request_params) { { project_id: project.id, id: sprint.id } }
+      let(:service_result) do
+        ServiceResult.success(
+          result: sprint.tap { |finished_sprint| finished_sprint.status = "completed" }
+        )
+      end
+      let(:service) { instance_double(Sprints::FinishService, call: service_result) }
+
+      before do
+        allow(Sprints::FinishService)
+          .to receive(:new)
+          .with(user:, model: sprint)
+          .and_return(service)
+      end
+
+      context "with the feature flag active", with_flag: { scrum_projects: true } do
+        context "when the sprint is rendered in a receiving project" do
+          let(:source_project) { create(:project, sprint_sharing: "share_all_projects") }
+          let(:project) { create(:project, sprint_sharing: "receive_shared") }
+          let!(:sprint) { create(:agile_sprint, project: source_project, status: "active") }
+          let(:source_permissions) { %i[view_sprints start_complete_sprint] }
+
+          before do
+            create(:member,
+                   project: source_project,
+                   principal: user,
+                   roles: [create(:project_role, permissions: source_permissions)])
+          end
+
+          it "finishes the sprint and redirects to the backlog", :aggregate_failures do
+            post :finish, params: request_params
+
+            expect(response).to be_successful
+            expect(response.body).to include("action=\"redirect_to\"")
+            expect(response.body).to include(backlogs_project_backlogs_path(project))
+            expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
+            expect(service).to have_received(:call)
+          end
+
+          context "without source-project start permission" do
+            let(:source_permissions) { %i[view_sprints] }
+
+            it "responds with forbidden and does not call the service", :aggregate_failures do
+              post :finish, params: request_params
+
+              expect(response).not_to be_successful
+              expect(response).to have_http_status(:forbidden)
+              expect(service).not_to have_received(:call)
+            end
+          end
+        end
+
+        it "finishes the sprint and redirects to the backlog via turbo stream", :aggregate_failures do
+          post :finish, format: :turbo_stream, params: request_params
+
+          expect(response).to be_successful
+          expect(response.body).to include("action=\"redirect_to\"")
+          expect(response.body).to include(backlogs_project_backlogs_path(project))
+          expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
+          expect(service).to have_received(:call)
+        end
+
+        context "when finishing fails" do
+          let(:service_result) { ServiceResult.failure(message: "something went wrong") }
+
+          it "redirects back to the backlog", :aggregate_failures do
+            post :finish, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(
+              I18n.t(:notice_unsuccessful_finish_with_reason, reason: "something went wrong")
+            )
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "when finishing fails without an explicit message" do
+          let(:service_result) { ServiceResult.failure }
+
+          it "redirects back with the default finish failure message", :aggregate_failures do
+            post :finish, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_finish))
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "without the 'start_complete_sprint' permission" do
+          let(:permissions) { all_permissions - [:start_complete_sprint] }
+
+          it "responds with forbidden", :aggregate_failures do
+            post :finish, params: request_params
+
+            expect(response).not_to be_successful
+            expect(response).to have_http_status(:forbidden)
+          end
+        end
+
+        context "when the sprint is already completed" do
+          let!(:sprint) { create(:agile_sprint, project:, status: "completed") }
+          let(:service_result) { ServiceResult.failure }
+
+          it "redirects back with the default finish failure message", :aggregate_failures do
+            post :finish, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_finish))
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "when moving to the top of the backlog" do
+          let(:request_params) { { project_id: project.id, id: sprint.id, unfinished_action: "move_to_top_of_backlog" } }
+
+          it "passes unfinished_action to the service and redirects via turbo stream", :aggregate_failures do
+            post :finish, format: :turbo_stream, params: request_params
+
+            expect(response).to be_successful
+            expect(response.body).to include("action=\"redirect_to\"")
+            expect(service).to have_received(:call)
+              .with(hash_including(unfinished_action: "move_to_top_of_backlog"))
+          end
+        end
+
+        context "when moving to the bottom of the backlog" do
+          let(:request_params) { { project_id: project.id, id: sprint.id, unfinished_action: "move_to_bottom_of_backlog" } }
+
+          it "passes unfinished_action to the service and redirects via turbo stream", :aggregate_failures do
+            post :finish, format: :turbo_stream, params: request_params
+
+            expect(response).to be_successful
+            expect(response.body).to include("action=\"redirect_to\"")
+            expect(service).to have_received(:call)
+              .with(hash_including(unfinished_action: "move_to_bottom_of_backlog"))
+          end
+        end
+      end
+    end
+
+    describe "GET #refresh_form" do
       context "with the feature flag active", with_flag: { scrum_projects: true } do
         let(:params) do
           {
@@ -261,126 +650,6 @@ RSpec.describe RbSprintsController do
             expect(response).to have_http_status :ok
             expect(response).to have_turbo_stream action: "update", target: "backlogs-new-sprint-form-component"
           end
-        end
-      end
-    end
-  end
-
-  describe "legacy actions" do
-    shared_let(:type_feature) { create(:type_feature) }
-    shared_let(:type_task) { create(:type_task) }
-    shared_let(:user) { create(:admin) }
-    current_user { user }
-
-    let(:visible_projects_scope) { instance_double(ActiveRecord::Relation) }
-    let(:visible_sprints_scope) { instance_double(ActiveRecord::Relation) }
-
-    before do
-      allow(Setting)
-        .to receive(:plugin_openproject_backlogs)
-              .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
-
-      allow(Project)
-        .to receive(:visible)
-              .and_return(visible_projects_scope)
-
-      allow(visible_projects_scope)
-        .to receive(:find)
-              .with(project.identifier)
-              .and_return(project)
-
-      allow(Sprint)
-        .to receive(:visible)
-              .and_return(visible_sprints_scope)
-
-      allow(visible_sprints_scope)
-        .to receive(:find)
-              .with(sprint.id.to_s)
-              .and_return(sprint)
-    end
-
-    describe "GET #edit_name" do
-      let(:project) { build_stubbed(:project) }
-      let(:sprint) { build_stubbed(:sprint) }
-
-      it "responds with success", :aggregate_failures do
-        get :edit_name, params: { project_id: project.identifier, id: sprint.id }, format: :turbo_stream
-
-        expect(response).to be_successful
-        expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
-        expect(assigns(:project)).to eq(project)
-        expect(assigns(:sprint)).to eq(sprint)
-        expect(assigns(:backlog)).to be_a(Backlog)
-      end
-    end
-
-    describe "GET #show_name" do
-      let(:project) { build_stubbed(:project) }
-      let(:sprint) { build_stubbed(:sprint) }
-
-      it "responds with success", :aggregate_failures do
-        get :show_name, params: { project_id: project.identifier, id: sprint.id }, format: :turbo_stream
-
-        expect(response).to be_successful
-        expect(response).to have_http_status :ok
-        expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
-        expect(assigns(:project)).to eq(project)
-        expect(assigns(:sprint)).to eq(sprint)
-        expect(assigns(:backlog)).to be_a(Backlog)
-      end
-    end
-
-    describe "PATCH #update" do
-      let(:project) { build_stubbed(:project) }
-      let(:sprint) { build_stubbed(:sprint) }
-
-      before do
-        update_service = instance_double(Versions::UpdateService, call: service_result)
-
-        allow(Versions::UpdateService)
-          .to receive(:new)
-                .with(user:, model: sprint)
-                .and_return(update_service)
-      end
-
-      context "when service call succeeds" do
-        let(:service_result) { ServiceResult.success(result: sprint) }
-
-        it "responds with success", :aggregate_failures do
-          patch :update,
-                params: { project_id: project.identifier, id: sprint.id, sprint: { name: "Updated Sprint" } },
-                format: :turbo_stream
-
-          expect(response).to be_successful
-          expect(response).to have_http_status :ok
-          expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
-          expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
-          expect(assigns(:project)).to eq(project)
-          expect(assigns(:sprint)).to eq(sprint)
-          expect(assigns(:backlog)).to be_a(Backlog)
-        end
-      end
-
-      context "when service call fails" do
-        let(:service_result) { ServiceResult.failure(result: sprint) }
-
-        before do
-          project.name = ""
-        end
-
-        it "responds with 422", :aggregate_failures do
-          patch :update,
-                params: { project_id: project.identifier, id: sprint.id, sprint: { name: "" } },
-                format: :turbo_stream
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :unprocessable_entity
-          expect(response).to have_turbo_stream action: "update", target: "backlogs-backlog-header-component-#{sprint.id}"
-          expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
-          expect(assigns(:project)).to eq(project)
-          expect(assigns(:sprint)).to eq(sprint)
-          expect(assigns(:backlog)).to be_a(Backlog)
         end
       end
     end

@@ -121,7 +121,7 @@ RSpec.describe "Project creation wizard",
   end
   let(:wizard_path) { "/projects/#{project.identifier}/creation_wizard" }
   let(:text_field_editor) do
-    Components::WysiwygEditor.new "[data-test-selector='augmented-text-area-#{text_custom_field.id}']"
+    Components::WysiwygEditor.new "[data-test-selector='custom-field-#{text_custom_field.id}']"
   end
 
   current_user { admin }

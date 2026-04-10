@@ -29,10 +29,10 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import * as Turbo from '@hotwired/turbo';
+import { FetchRequest } from '@rails/request.js';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
+import type { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
 import dragula, { Drake } from 'dragula';
-import { useMeta } from 'stimulus-use';
 import invariant from 'tiny-invariant';
 
 interface TargetConfig {
@@ -42,28 +42,35 @@ interface TargetConfig {
 }
 
 export default class GenericDragAndDropController extends Controller {
-  static targets = ['container'];
+  static targets = ['container', 'scrollContainer'];
 
   containerTargets:HTMLElement[];
+  scrollContainerTargets:HTMLElement[];
 
-  static metaNames = ['csrf-token'];
-  declare readonly csrfToken:string;
+  static values = {
+    handleSelector: { type: String, default: '.DragHandle' },
+    positionMode: { type: String, default: 'index' },
+  };
 
-  static values = { handleSelector: { type: String, default: '.DragHandle' } };
   declare readonly handleSelectorValue:string;
+  declare readonly positionModeValue:string;
 
   private drake:Drake|null = null;
+  private autoscroll:DomAutoscrollService|null = null;
   private containers:HTMLElement[] = [];
   private targetConfigs:TargetConfig[] = [];
+  private dragOriginSource:Element|null = null;
+  private dragOriginNextSibling:Element|null = null;
 
   connect() {
-    useMeta(this, { suffix: false });
-
+    this.autoscroll?.destroy();
     this.drake?.destroy();
     this.initDrake();
   }
 
   disconnect() {
+    this.autoscroll?.destroy();
+    this.autoscroll = null;
     this.drake?.destroy();
     this.drake = null;
   }
@@ -91,8 +98,18 @@ export default class GenericDragAndDropController extends Controller {
     }
   }
 
-  cancel() {
+  cancelDrag() {
     this.drake?.cancel(true);
+  }
+
+  private revertDrop(el:Element) {
+    if (this.dragOriginSource) {
+      if (this.dragOriginNextSibling?.parentNode === this.dragOriginSource) {
+        this.dragOriginSource.insertBefore(el, this.dragOriginNextSibling);
+      } else {
+        this.dragOriginSource.appendChild(el);
+      }
+    }
   }
 
   initDrake() {
@@ -106,7 +123,10 @@ export default class GenericDragAndDropController extends Controller {
         revertOnSpill: true, // enable reverting of elements if they are dropped outside of a valid target
       },
     )
-      .on('drag', (el) => {
+      .on('drag', (el, source) => {
+        this.dragOriginSource = source;
+        this.dragOriginNextSibling = el.nextElementSibling;
+
         const handle = el.querySelector(this.handleSelectorValue)!;
         handle.setAttribute('aria-pressed', 'true');
       })
@@ -119,10 +139,14 @@ export default class GenericDragAndDropController extends Controller {
 
     // Setup autoscroll
     void window.OpenProject.getPluginContext().then((pluginContext) => {
-      new pluginContext.classes.DomAutoscrollService(
-        [
-          document.getElementById('content-body')!,
-        ],
+      if (!this.element.isConnected) return;
+
+      const scrollTargets:Element[] = this.scrollContainerTargets.length > 0
+        ? this.scrollContainerTargets
+        : [document.getElementById('content-body')!];
+
+      this.autoscroll = new pluginContext.classes.DomAutoscrollService(
+        scrollTargets,
         {
           margin: 25,
           maxSpeed: 10,
@@ -151,40 +175,35 @@ export default class GenericDragAndDropController extends Controller {
     const dropUrl = el.getAttribute('data-drop-url');
     const data = this.buildData(el, target);
 
-    if (dropUrl) {
-      const response = await fetch(dropUrl, {
-        method: 'PUT',
-        body: data,
-        headers: {
-          'X-CSRF-Token': this.csrfToken,
-          Accept: 'text/vnd.turbo-stream.html',
-        },
-        credentials: 'same-origin',
-      });
-
-      if (!response.ok) {
-        debugLog('Failed to sort item');
-      } else {
-        const text = await response.text();
-        Turbo.renderStreamMessage(text);
-      }
+    if (!dropUrl) {
+      return;
     }
 
-    this.cancel();
+    try {
+      const request = new FetchRequest('put', dropUrl, { body: data, responseKind: 'turbo-stream' });
+      const response = await request.perform();
+
+      if (!response.ok) {
+        this.revertDrop(el);
+        debugLog(`Failed to sort item: ${response.statusCode}`);
+      }
+    } catch (error) {
+      this.revertDrop(el);
+      debugLog('Failed to sort item due to request error', error);
+    } finally {
+      this.dragOriginSource = null;
+      this.dragOriginNextSibling = null;
+    }
   }
 
   protected buildData(el:Element, target:Element):FormData {
-    let targetPosition = Array.from(target.children).indexOf(el);
-    if (target.children.length > 0 && target.children[0].getAttribute('data-empty-list-item') === 'true') {
-      // if the target container is empty, a list item showing an empty message might be shown
-      // this should not be counted as a list item
-      // thus we need to subtract 1 from the target position
-      targetPosition -= 1;
-    }
-
     const data = new FormData();
 
-    data.append('position', (targetPosition + 1).toString());
+    if (this.positionModeValue === 'prev_id') {
+      data.append('prev_id', this.resolveTargetPrevious(el) ?? '');
+    } else {
+      data.append('position', this.resolveTargetPosition(el, target).toString());
+    }
 
     const targetConfig = this.targetConfigs.find((config) => config.container === target);
     const targetId = targetConfig?.targetId as string|undefined;
@@ -206,5 +225,24 @@ export default class GenericDragAndDropController extends Controller {
     const container = target.querySelector<HTMLElement>(accessor);
     invariant(container, `Expected container element matching "${accessor}"`);
     return container;
+  }
+
+  // Returns the data-draggable-id of the element preceding el in its container,
+  // or null if el is the first item (signals "move to top").
+  private resolveTargetPrevious(el:Element):string|null {
+    return el.previousElementSibling?.getAttribute('data-draggable-id') ?? null;
+  }
+
+  private resolveTargetPosition(el:Element, container:Element):number {
+    let targetPosition = Array.from(container.children).indexOf(el);
+
+    if (container.children.length > 0 && container.children[0].getAttribute('data-empty-list-item') === 'true') {
+      // if the target container is empty, a list item showing an empty message might be shown
+      // this should not be counted as a list item
+      // thus we need to subtract 1 from the target position
+      targetPosition -= 1;
+    }
+
+    return targetPosition + 1;
   }
 }

@@ -32,17 +32,33 @@ module OpenProject::Backlogs::Patches::SetAttributesServicePatch
   end
 
   module InstanceMethods
+    private
+
     def set_attributes(attributes)
       super
 
-      if work_package.parent_id_changed? &&
-         work_package.parent_id &&
-         !work_package.version_id_changed? &&
-         work_package.in_backlogs_type?
-
+      if OpenProject::FeatureDecisions.scrum_projects_active? && moved_to_project_that_has_no_access_to_sprint?
+        model.change_by_system do
+          model.sprint = nil
+        end
+      elsif should_inherit_version_from_parent?
         closest = closest_story_or_impediment(work_package.parent_id)
         work_package.version_id = closest.version_id if closest
       end
+    end
+
+    def moved_to_project_that_has_no_access_to_sprint?
+      work_package.project_id &&
+        work_package.project_id_changed? &&
+        work_package.sprint_id &&
+        !work_package.sprint.visible_to?(work_package.project)
+    end
+
+    def should_inherit_version_from_parent?
+      work_package.parent_id_changed? &&
+        work_package.parent_id &&
+        !work_package.version_id_changed? &&
+        work_package.in_backlogs_type?
     end
 
     def closest_story_or_impediment(parent_id)

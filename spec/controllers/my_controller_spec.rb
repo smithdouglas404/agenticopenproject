@@ -45,7 +45,7 @@ RSpec.describe MyController do
 
       it "renders the password template" do
         assert_template "password"
-        assert_response :success
+        expect(response).to have_http_status(:success)
       end
     end
 
@@ -359,6 +359,37 @@ RSpec.describe MyController do
 
     it "does not render 'Change password' menu entry" do
       expect(response.body).to have_no_css("#menu-sidebar li a", text: "Change password")
+    end
+  end
+
+  describe "#working_times" do
+    let!(:user_working_hours) { create(:user_working_hours, valid_from: 1.week.ago, user:) }
+
+    subject { get :working_hours }
+
+    context "with feature enabled", with_flag: { user_working_times: true } do
+      it "responds with success" do
+        subject
+        expect(response).to be_successful
+      end
+
+      it "renders the working_hours template" do
+        subject
+        expect(response).to render_template "working_hours"
+      end
+
+      it "assigns @current_working_hours and @past_working_hours" do
+        subject
+        expect(assigns(:current_working_hours)).to eq(user_working_hours)
+        expect(assigns(:past_working_hours)).to eq([user_working_hours])
+      end
+    end
+
+    context "with feature disabled", with_flag: { user_working_times: false } do
+      it "responds with forbidden" do
+        subject
+        expect(response).to have_http_status(:forbidden)
+      end
     end
   end
 end

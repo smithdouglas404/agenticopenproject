@@ -169,6 +169,10 @@ Rails/ContentTag:
 # dynamic finders cop clashes with capybara ID cop
 Rails/DynamicFindBy:
   Enabled: true
+  AllowedMethods:
+    - find_by_id_or_identifier
+    - find_by_id_or_identifier!
+    - find_by_semantic_identifier
   Exclude:
     - "spec/features/**/*.rb"
     - "spec/support/**/*.rb"
@@ -224,6 +228,10 @@ Rails/SkipsModelValidations:
 
 # Allow number HTTP status codes in specs
 RSpecRails/HttpStatus:
+  Enabled: false
+
+# The block form of `travel_to` is often the tighter and safer option in our Rails specs.
+RSpecRails/TravelAround:
   Enabled: false
 
 # expect not_to change is not working as expected

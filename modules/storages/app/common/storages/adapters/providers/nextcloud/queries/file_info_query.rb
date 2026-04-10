@@ -82,6 +82,7 @@ module Storages
 
             def create_storage_file_info(json) # rubocop:disable Metrics/AbcSize
               data = json.dig(:ocs, :data)
+              error = Results::Error.new(source: self.class, code: :invalid_file_info)
               Results::StorageFileInfo.build(
                 status: data[:status]&.downcase,
                 status_code: data[:statuscode],
@@ -97,7 +98,7 @@ module Storages
                 last_modified_by_id: data[:modifier_id],
                 permissions: data[:dav_permissions],
                 location: location(data[:path])
-              )
+              ).or { Failure(error.with(payload: it.errors.messages)) }
             end
 
             def location(file_path)

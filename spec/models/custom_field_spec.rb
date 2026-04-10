@@ -44,6 +44,8 @@ RSpec.describe CustomField do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_length_of(:name).is_at_most(256) }
 
+    it_behaves_like "strips invisible characters", :name
+
     describe "uniqueness" do
       describe "WHEN value, locale and type are identical" do
         before do

@@ -50,9 +50,9 @@ The Premium support covers everything from the Basic and Professional support. I
 
 Onboarding training in the Premium support plan includes onboarding for a perfect start with OpenProject as well as consulting on special requirements and administrative configurations.
 
-| Service hours                                              | Support channels                            | Support services                                         |
-| ---------------------------------------------------------- | ------------------------------------------- | -------------------------------------------------------- |
-| Mon-Fri, 9:30 - 17:30 CET<br>Mon-Fri, 9:30 am - 5:30 pm ET | - Premium E-Mail support<br>- Phone support | - Documentation and user guides<br>- Tutorial videos<br> |
+| Service hours                                              | Support channels                            | Support services                                             |
+| ---------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------ |
+| Mon-Fri, 9:30 - 17:30 CET<br>Mon-Fri, 9:30 am - 5:30 pm ET | - Premium E-Mail support<br>- Phone support | - Documentation and user guides<br>- Tutorial videos<br>- Remote hands <br/>- Installation support <br/>- Upgrade assistance <br/> |
 
 ### Corporate support (on-premises only)
 

@@ -111,8 +111,10 @@ class AdminController < ApplicationController
     @smtp_addr = ActionMailer::Base.smtp_settings[:address]
     @safe_ip = OpenProject::SsrfProtection.safe_ip?(@smtp_addr)
 
-    if !@safe_ip
-      flash[:error] = I18n.t :notice_smtp_address_unsafe, address: @smtp_addr
+    unless @safe_ip
+      flash[:error] = I18n.t :notice_smtp_address_unsafe_env_hint,
+                             address: @smtp_addr,
+                             env_name: Settings::Definition[:ssrf_protection_ip_allowlist].env_name
 
       redirect_to admin_settings_mail_notifications_path, status: :see_other
     end

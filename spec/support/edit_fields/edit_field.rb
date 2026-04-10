@@ -166,7 +166,7 @@ class EditField
   end
 
   def expect_enabled!
-    expect(@context).to have_no_css "#{@selector} #{input_selector}[disabled]"
+    expect(@context).to have_no_css "#{@selector} #{input_selector}[disabled]", wait: 10
   end
 
   def expect_invalid
@@ -315,6 +315,8 @@ class EditField
       "op-project-autocompleter"
     when :activity
       "activity-autocompleter"
+    when :sprint
+      "sprint-autocompleter"
     else
       "input"
     end

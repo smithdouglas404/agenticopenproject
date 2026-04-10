@@ -147,6 +147,10 @@ export class ConfigurationService {
     return moment.localeData(I18n.locale).firstDayOfWeek();
   }
 
+  public get wikisAvailable():boolean {
+    return this.systemPreference('wikisAvailable');
+  }
+
   public get hostName():string {
     return this.systemPreference('hostName');
   }

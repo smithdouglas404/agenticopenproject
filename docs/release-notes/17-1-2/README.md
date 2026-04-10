@@ -220,7 +220,7 @@ For more information, please see the [GitHub advisory #GHSA-c76v-8735-35hq](http
 
 
 
-### CVE-2026-27827 - Insecure Direct Object Reference in Project Storage Administrition Theft & Pre-Auth Remote Folder Deletion
+### CVE-2026-27827 - Insecure Direct Object Reference in Project Storage Administration Theft & Pre-Auth Remote Folder Deletion
 
 An unscoped loading of Project Storages lead to users with the _Manage Files in Project_ permission in one project, to access project storages in other projects. This would give information about the storage that they were not supposed to see.&nbsp;
 

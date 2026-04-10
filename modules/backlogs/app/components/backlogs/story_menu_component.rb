@@ -30,22 +30,37 @@
 
 module Backlogs
   class StoryMenuComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
+
     attr_reader :story, :sprint, :project, :max_position, :current_user
 
-    def initialize(story:, sprint:, max_position:, current_user: User.current)
+    def initialize(story:, sprint:, project:, max_position:, current_user: User.current, **system_arguments)
       super()
 
       @story = story
       @sprint = sprint
-      @project = sprint.project
+      @project = project
       @max_position = max_position
       @current_user = current_user
+
+      @system_arguments = system_arguments
+      @system_arguments[:menu_id] = dom_target(story, :menu)
+      @system_arguments[:anchor_align] = :end
+      @system_arguments[:classes] = class_names(
+        @system_arguments[:classes],
+        "hide-when-print"
+      )
     end
 
     private
 
     def show_move_items?
+      allowed_to_manage_sprint_items? &&
       !(first_item? && last_item?)
+    end
+
+    def allowed_to_manage_sprint_items?
+      current_user.allowed_in_project?(:manage_sprint_items, project)
     end
 
     def build_move_menu(menu)
@@ -61,6 +76,7 @@ module Backlogs
 
     def build_move_item(menu, label:, direction:, icon:)
       menu.with_item(
+        id: dom_target(story, :menu, direction),
         label:,
         tag: :button,
         href: reorder_backlogs_project_sprint_story_path(project, sprint, story),

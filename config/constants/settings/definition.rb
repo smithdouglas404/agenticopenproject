@@ -1321,6 +1321,15 @@ module Settings
       work_packages_bulk_request_limit: {
         default: 10
       },
+      work_packages_identifier: {
+        description: "Defines how work packages are identified in the UI (e.g. in links and titles). " \
+                     "The 'classic' option uses the work package numerical ID, " \
+                     "while 'semantic' uses the project identifier and the work package ID separated by a dash " \
+                     "(e.g. 'PROJA-123').",
+        format: :string,
+        allowed: -> { Setting::WorkPackageIdentifier::ALLOWED_VALUES },
+        default: "classic"
+      },
       work_package_list_default_highlighted_attributes: {
         default: ["status", "priority", "due_date"],
         allowed: -> {
@@ -1400,6 +1409,14 @@ module Settings
       end
     end
 
+    def env_name
+      self.class.env_name(self)
+    end
+
+    def possible_env_names
+      self.class.possible_env_names(self)
+    end
+
     def derive_default(default)
       @default = default.is_a?(Hash) ? default.deep_stringify_keys : default
       @default.freeze
@@ -1411,6 +1428,10 @@ module Settings
     end
 
     def value
+      unless (override = resolve_value_override).nil?
+        return cast(override)
+      end
+
       cast(@value)
     end
 
@@ -1427,6 +1448,8 @@ module Settings
     end
 
     def writable?
+      return false if value_override?
+
       if writable.respond_to?(:call)
         writable.call
       else
@@ -1550,6 +1573,38 @@ module Settings
         @all ||= {}
       end
 
+      # Registers a value override block for a setting. The block is called
+      # whenever the setting's value or writability is evaluated.
+      #
+      # If the block returns a non-nil value, that value is used as the setting's
+      # value and the setting becomes non-writable. If the block returns nil,
+      # no override is applied.
+      #
+      # To override a setting with nil, return a callable: +-> { nil }+
+      #
+      # @param name [Symbol] The setting name to override.
+      # @yield A block that returns the override value, or nil to skip.
+      #
+      # @example Force a setting to true when a condition is met
+      #   Settings::Definition.add_value_override(:capture_external_links) do
+      #     true if MyPlugin.active?
+      #   end
+      def add_value_override(name, &block)
+        (value_overrides[name.to_sym] ||= []) << block
+      end
+
+      def value_overrides
+        @value_overrides ||= {}
+      end
+
+      def clear_value_overrides(name = nil)
+        if name
+          value_overrides.delete(name.to_sym)
+        else
+          @value_overrides = {}
+        end
+      end
+
       private
 
       def file_config
@@ -1633,8 +1688,8 @@ module Settings
         env_var_hash_part
           .scan(/(?:[a-zA-Z0-9]|__)+/)
           .map do |seg|
-          unescape_underscores(seg.downcase)
-        end
+            unescape_underscores(seg.downcase)
+          end
       end
 
       # takes the path provided and transforms it into a deeply nested hash
@@ -1689,8 +1744,6 @@ module Settings
         ].compact
       end
 
-      public :possible_env_names
-
       def env_name_nested(definition)
         "#{ENV_PREFIX}#{definition.name.upcase.gsub('_', '__')}"
       end
@@ -1708,6 +1761,8 @@ module Settings
 
         definition.env_alias.upcase
       end
+
+      public :possible_env_names, :env_name
 
       ##
       # Extract the configuration value from the given environment variable
@@ -1742,6 +1797,18 @@ module Settings
 
     attr_accessor :serialized,
                   :writable
+
+    def value_override?
+      !resolve_value_override.nil?
+    end
+
+    def resolve_value_override
+      self.class.value_overrides[name.to_sym]&.each do |block|
+        result = block.call
+        return result unless result.nil?
+      end
+      nil
+    end
 
     def cast(value)
       return nil if value.nil?

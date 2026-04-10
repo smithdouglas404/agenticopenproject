@@ -154,8 +154,13 @@ module Components::Autocompleter
       # otherwise use the query
       text = select_text.presence || query
 
-      # click the element to select it
-      target_dropdown.first(".ng-option", text:, wait: 15).click
+      retry_block do
+        # Re-resolve the option on each attempt because ng-select may rerender
+        # the dropdown between find and click in Cuprite.
+        ng_find_dropdown(element, results_selector:)
+          .first(".ng-option", text:, wait: 15)
+          .click
+      end
     end
 
     def expect_current_autocompleter_value(element, value)

@@ -24,7 +24,7 @@ This is for a single server running OpenProject for up to 200 total users. Depen
 
 ## Database
 
-OpenProject officially supports [PostgreSQL version 16](https://www.postgresql.org/) or above since [OpenProject 16.0.0](https://www.openproject.org/docs/release-notes/16-0-0/).
+OpenProject officially supports [PostgreSQL version 16](https://www.postgresql.org/) or above since [OpenProject 16.0.0](../../release-notes/16/16-0-0/).
 
 PostgreSQL versions 13 - 15 are not officially supported, but MAY continue to work, but could result in incompatibilities and degraded performance in the future. If you are using one of these versions currently, we have a [migration guide on how to upgrade to PostgreSQL 17](../misc/migration-to-postgresql17/) and strongly recommend you to upgrade your DBMS, as there are significant performance improvements.
 
@@ -212,9 +212,9 @@ OpenProject supports the latest versions of the major browsers.
 
 #### Nextcloud Server
 
-* [Nextcloud 30](https://nextcloud.com/changelog/#latest30)
 * [Nextcloud 31](https://nextcloud.com/changelog/#latest31)
 * [Nextcloud 32](https://nextcloud.com/changelog/#latest32)
+* [Nextcloud 33](https://nextcloud.com/changelog/#latest33)
 
 > [!TIP]
 >
@@ -229,7 +229,8 @@ OpenProject supports the latest versions of the major browsers.
 
 ##### OpenProject integration
 
-* [OpenProject Integration 2.11.1](https://github.com/nextcloud/integration_openproject/releases/tag/v2.11.1)
+* [OpenProject Integration 3.0.0](https://github.com/nextcloud/integration_openproject/releases/tag/v3.0.0) — Nextcloud 33 or higher
+* [OpenProject Integration 2.11.2](https://github.com/nextcloud/integration_openproject/releases/tag/v2.11.2) — Nextcloud 31, 32
 
 ##### Team folders
 

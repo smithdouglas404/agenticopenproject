@@ -201,6 +201,7 @@ RSpec.describe "Onetime templates CRUD", :js do
 
       wait_for_network_idle
 
+      expect(page).to have_current_path(templates_project_meetings_path(project))
       expect(page).to have_no_text("Template to delete")
       expect(Meeting.exists?(template_to_delete.id)).to be false
     end

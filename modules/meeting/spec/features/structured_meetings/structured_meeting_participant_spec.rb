@@ -61,6 +61,11 @@ RSpec.describe "Meetings participants",
            lastname: "Fourth",
            member_with_permissions: { project => %i[view_work_packages] })
   end
+  shared_let(:invited_user) do
+    create(:invited_user,
+           lastname: "Fifth",
+           member_with_permissions: { project => %i[view_meetings] })
+  end
 
   shared_let(:meeting) do
     create(:meeting,
@@ -127,6 +132,13 @@ RSpec.describe "Meetings participants",
     show_page.open_participant_form
     show_page.in_participant_form do
       show_page.expect_no_participant(member_without_meeting_permission)
+    end
+  end
+
+  it "does not show invited users in the autocompleter (Bug #70127)" do
+    show_page.open_participant_form
+    show_page.in_participant_form do
+      show_page.expect_no_participant(invited_user)
     end
   end
 end

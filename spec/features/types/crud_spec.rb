@@ -69,11 +69,8 @@ RSpec.describe "Types", :js do
 
     # Workflow should be copied over.
     # Workflow routes are not resource-oriented.
-    visit(url_for(controller: :workflows, action: :edit, only_path: true))
-
-    select existing_role.name, from: "Role"
-    select "A new type", from: "Type"
-    click_on "Edit"
+    visit(url_for(controller: :workflows, action: :index, only_path: true))
+    click_on "A new type"
 
     from_id = existing_workflow.old_status_id
     to_id = existing_workflow.new_status_id

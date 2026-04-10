@@ -92,7 +92,8 @@ module Components
 
         sleep(1)
 
-        move_to(drop_area, &:release)
+        # Re-find drop_area to get a fresh native reference after CDK drag has modified the DOM
+        move_to(self.class.of(row * 2, column * 2).area, &:release)
       end
 
       def expect_to_exist

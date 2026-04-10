@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,18 +29,42 @@
 #++
 
 Rails.application.routes.draw do
-  # Routes for the new Agile::Sprint
-  # Scoped under projects for permissions:
-  resources :projects, only: [] do
-    resources :sprints, controller: :rb_sprints, only: %i[create] do
-      collection do
-        get :new_dialog
-        get :refresh_form
+  constraints(Constraints::FeatureDecision.new(:scrum_projects)) do
+    # Routes for the new Agile::Sprint
+    # Scoped under projects for permissions:
+    resources :projects, only: [] do
+      resources :sprints, controller: :rb_sprints, only: %i[create] do
+        collection do
+          get :new_dialog
+          get :refresh_form
+        end
+
+        member do
+          post :start
+          post :finish
+          get :edit_dialog
+          put :update_agile_sprint
+        end
+
+        resources :stories, controller: :rb_stories, only: [] do
+          member do
+            put :move
+          end
+        end
       end
 
-      member do
-        get :edit_dialog
-        put :update_agile_sprint
+      resources :inbox, only: [] do
+        member do
+          put :move
+          post :reorder
+          get :move_to_sprint_dialog
+        end
+      end
+    end
+
+    scope "projects/:project_id", as: "project", module: "projects" do
+      namespace "settings" do
+        resource :backlog_sharing, only: %i[show update]
       end
     end
   end
@@ -53,6 +79,8 @@ Rails.application.routes.draw do
               as: :details,
               work_package_split_view: true,
               defaults: { tab: :overview }
+
+          get :backlog
         end
       end
 
@@ -71,7 +99,7 @@ Rails.application.routes.draw do
 
         resources :stories, controller: :rb_stories, only: [] do
           member do
-            put :move
+            put :move_legacy
             post :reorder
           end
         end

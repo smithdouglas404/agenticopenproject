@@ -155,6 +155,18 @@ class Meeting < ApplicationRecord
       .or(available_onetime_templates.where(sharing: :system))
   end
 
+  def self.templates_visible_globally(user = User.current)
+    accessible = Project.allowed_to(user, :view_meetings).to_a
+    return none if accessible.empty?
+
+    ancestor_ids = accessible.map(&:ancestors).reduce(:or).select(:id)
+
+    available_onetime_templates
+      .where(project_id: accessible.map(&:id))
+      .or(available_onetime_templates.where(sharing: :descendants, project_id: ancestor_ids))
+      .or(available_onetime_templates.where(sharing: :system))
+  end
+
   def recurring?
     recurring_meeting_id.present?
   end

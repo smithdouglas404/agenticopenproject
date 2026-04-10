@@ -30,15 +30,13 @@
 
 module Sprints
   class CreateContract < BaseContract
-    validate :user_allowed_to_create
+    validate :no_receiving_project
 
     private
 
-    def user_allowed_to_create
-      return if model.project.nil?
-
-      unless user.allowed_in_project?(:create_sprints, model.project)
-        errors.add :base, :error_unauthorized
+    def no_receiving_project
+      if model.project&.receive_shared_sprints?
+        errors.add :project, :receiving_sprints
       end
     end
   end

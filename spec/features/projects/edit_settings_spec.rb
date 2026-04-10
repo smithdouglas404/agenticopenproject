@@ -48,36 +48,77 @@ RSpec.describe "Projects", "editing settings", :js do
     visit project_settings_general_path(project.id)
 
     expect(page).to have_no_text :all, "Active"
-    expect(page).to have_no_text :all, "Identifier"
   end
 
   describe "identifier edit" do
-    it "updates the project identifier" do
-      visit projects_path
-      click_on project.name
-      click_on "Project settings"
-      click_on "Change identifier"
+    context "with classic IDs", with_settings: { work_packages_identifier: "classic" } do
+      it "updates the project identifier via dialog" do
+        visit project_settings_general_path(project)
 
-      expect(page).to have_content "Change the project's identifier".upcase
-      expect(page).to have_current_path "/projects/foo-project/identifier"
+        click_on "Change identifier"
 
-      fill_in "project[identifier]", with: "foo-bar"
-      click_on "Update"
+        expect(page).to have_dialog "Change project identifier"
 
-      expect(page).to have_content "Successful update."
-      expect(page)
-        .to have_current_path %r{/projects/foo-bar/settings/general}
-      expect(Project.first.identifier).to eq "foo-bar"
+        within "dialog" do
+          expect(page).to have_text "This will permanently change identifiers and URLs"
+          fill_in "project[identifier]", with: "foo-bar"
+          click_on "Change identifier"
+        end
+
+        expect(page).to have_content "Successful update."
+        expect(page).to have_current_path %r{/projects/foo-bar/settings/general}
+        expect(project.reload.identifier).to eq "foo-bar"
+      end
     end
 
-    it "displays error messages on invalid input" do
-      visit project_identifier_path(project)
+    context "with semantic IDs", with_settings: { work_packages_identifier: "semantic" } do
+      it "updates the project identifier via dialog" do
+        visit project_settings_general_path(project)
 
-      fill_in "project[identifier]", with: "FOOO"
-      click_on "Update"
+        click_on "Change identifier"
 
-      expect(page).to have_content "Identifier is invalid."
-      expect(page).to have_current_path "/projects/foo-project/identifier"
+        expect(page).to have_dialog "Change project identifier"
+
+        within "dialog" do
+          expect(page).to have_text "This will permanently change identifiers and URLs"
+          fill_in "project[identifier]", with: "FOOBAR"
+          click_on "Change identifier"
+        end
+
+        expect(page).to have_content "Successful update."
+        expect(page).to have_current_path %r{/projects/FOOBAR/settings/general}
+        expect(project.reload.identifier).to eq "FOOBAR"
+      end
+
+      it "displays an error when the identifier does not start with a letter" do
+        visit project_settings_general_path(project)
+
+        click_on "Change identifier"
+
+        expect(page).to have_dialog "Change project identifier"
+
+        within "dialog" do
+          fill_in "project[identifier]", with: "123ABC"
+          click_on "Change identifier"
+
+          expect(page).to have_text "Identifier must start with a letter"
+        end
+      end
+
+      it "displays an error when the identifier contains special characters" do
+        visit project_settings_general_path(project)
+
+        click_on "Change identifier"
+
+        expect(page).to have_dialog "Change project identifier"
+
+        within "dialog" do
+          fill_in "project[identifier]", with: "FOO@BAR"
+          click_on "Change identifier"
+
+          expect(page).to have_text "Identifier may only contain uppercase letters, numbers, and underscores"
+        end
+      end
     end
   end
 

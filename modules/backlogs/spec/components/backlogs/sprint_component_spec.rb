@@ -31,6 +31,8 @@
 require "rails_helper"
 
 RSpec.describe Backlogs::SprintComponent, type: :component do
+  include Rails.application.routes.url_helpers
+
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
   shared_let(:default_status) { create(:default_status) }
@@ -50,7 +52,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
   end
 
   def render_component
-    render_inline(described_class.new(sprint:, current_user: user))
+    render_inline(described_class.new(sprint:, project:, current_user: user))
   end
 
   describe "rendering" do
@@ -94,6 +96,12 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         expect(page).to have_css(".Box-header h3", text: "Sprint 1")
       end
 
+      it "renders a stable id on the sprint header" do
+        render_component
+
+        expect(page).to have_element(:div, class: "Box-header", id: /\Aagile_sprint_#{sprint.id}_header\z/)
+      end
+
       it "renders StoryComponent for each story" do
         render_component
 
@@ -106,7 +114,9 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         render_component
 
         box = page.find(".Box")
-        expect(box["data-target-id"]).to eq(sprint.id.to_s)
+        expect(box["data-generic-drag-and-drop-target"]).to eq("container")
+        expect(box["data-target-container-accessor"]).to eq(":scope > ul")
+        expect(box["data-target-id"]).to eq("sprint:#{sprint.id}")
         expect(box["data-target-allowed-drag-type"]).to eq("story")
       end
 
@@ -116,7 +126,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
         expect(story_row["data-draggable-id"]).to eq(story1.id.to_s)
         expect(story_row["data-draggable-type"]).to eq("story")
-        expect(story_row["data-drop-url"]).to include("move")
+        expect(story_row["data-drop-url"]).to end_with(move_project_sprint_story_path(project, sprint, story1))
       end
 
       it "renders story rows with proper classes" do

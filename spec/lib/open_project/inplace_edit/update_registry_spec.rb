@@ -55,4 +55,16 @@ RSpec.describe OpenProject::InplaceEdit::UpdateRegistry do
       expect(registry.registered?(Project)).to be(false)
     end
   end
+
+  describe "#resolve_model_class" do
+    it "returns the model class for a registered param string" do
+      registry.register(Project, handler:, contract:)
+
+      expect(registry.resolve_model_class("project")).to eq(Project)
+    end
+
+    it "returns nil for an unregistered param string" do
+      expect(registry.resolve_model_class("unknown")).to be_nil
+    end
+  end
 end

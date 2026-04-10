@@ -32,6 +32,8 @@ class CustomField < ApplicationRecord
   include CustomField::OrderStatements
   include CustomField::CalculatedValue
 
+  normalizes :name, with: OpenProject::RemoveInvisibleCharacters
+
   has_many :custom_values, dependent: :delete_all
   # WARNING: the inverse_of option is also required in order
   # for the 'touch: true' option on the custom_field association in CustomOption
@@ -86,6 +88,7 @@ class CustomField < ApplicationRecord
   validates :has_comment, absence: true, unless: :can_have_comment?
 
   before_validation :check_searchability
+
   after_destroy :destroy_help_text
 
   # make sure int, float, date, and bool are not searchable
@@ -94,9 +97,15 @@ class CustomField < ApplicationRecord
     true
   end
 
-  def default_value
+  def default_value # rubocop:disable Metrics/AbcSize,Metrics/PerceivedComplexity
     if list?
-      ids = custom_options.where(default_value: true).pluck(:id).map(&:to_s)
+      # Use loaded association data when available to avoid N+1 queries.
+      # .where().pluck() always hits the database, bypassing eager-loaded data.
+      ids = if custom_options.loaded?
+              custom_options.select(&:default_value).map { |o| o.id.to_s }
+            else
+              custom_options.where(default_value: true).pluck(:id).map(&:to_s)
+            end
 
       if multi_value?
         ids
