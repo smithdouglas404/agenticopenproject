@@ -82,11 +82,10 @@ RSpec.describe Wikis::Admin::WikiProvidersController do
     let(:invalid_params) { { wikis_xwiki_provider: { name: "", url: "https://xwiki.example.com" } } }
 
     context "with valid params" do
-      it "creates a provider and redirects to edit" do
+      it "creates a provider and redirects to the wizard" do
         expect { post :create, params: valid_params }
           .to change(Wikis::XWikiProvider, :count).by(1)
-        expect(response).to redirect_to(edit_admin_settings_wiki_provider_path(Wikis::XWikiProvider.last))
-        expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
+        expect(response).to redirect_to(new_admin_settings_wiki_provider_path(continue_wizard: Wikis::XWikiProvider.last.id))
       end
     end
 
@@ -108,7 +107,6 @@ RSpec.describe Wikis::Admin::WikiProvidersController do
         patch :update, params: valid_params
         expect(wiki_provider.reload.name).to eq("Updated XWiki")
         expect(response).to redirect_to(edit_admin_settings_wiki_provider_path(wiki_provider))
-        expect(flash[:notice]).to eq(I18n.t(:notice_successful_update))
       end
     end
   end

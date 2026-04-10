@@ -91,7 +91,7 @@ module Wikis
       end
 
       def oauth_client_params
-        params.require(:oauth_client).permit(:client_id, :client_secret)
+        params.expect(oauth_client: %i[client_id client_secret])
       end
 
       def find_wiki_provider
