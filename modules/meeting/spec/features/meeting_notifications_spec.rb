@@ -294,7 +294,7 @@ RSpec.describe "Meeting notifications", :js do
       wait_for_network_idle
 
       perform_enqueued_jobs
-      expect(ActionMailer::Base.deliveries.size).to eq 1
+      expect(ActionMailer::Base.deliveries.size).to eq 2
       ActionMailer::Base.deliveries.clear
 
       # switch to occurrence and check sidepanel component
@@ -547,8 +547,8 @@ RSpec.describe "Meeting notifications", :js do
     let(:show_page) { Pages::Meetings::Show.new(template_meeting) }
 
     before do
-      create(:scheduled_meeting, recurring_meeting:)
       template_meeting.update!(notify: true)
+      RecurringMeetings::InitNextOccurrenceJob.perform_now(recurring_meeting, recurring_meeting.first_occurrence.to_time)
       create(:meeting_participant, meeting: template_meeting, user: other_user, invited: true)
       third_user
     end
@@ -566,11 +566,18 @@ RSpec.describe "Meeting notifications", :js do
 
       perform_enqueued_jobs
 
-      # 1 to the new user + 2 to the existing participants
-      expect(ActionMailer::Base.deliveries.size).to eq 3
+      # apply_to_upcoming is enabled by default on templates.
+      # 3 mails for template (invite + 2 participant_added) and
+      # 2 mails for the upcoming instantiated occurrence (invite + participant_added).
+      expect(ActionMailer::Base.deliveries.size).to eq 5
 
-      expect(ActionMailer::Base.deliveries.map(&:to).flatten)
-        .to contain_exactly user.mail, other_user.mail, third_user.mail
+      recipients = ActionMailer::Base.deliveries.map(&:to).flatten
+      expect(recipients.tally)
+        .to eq({
+                 user.mail => 2,
+                 other_user.mail => 1,
+                 third_user.mail => 2
+               })
     end
 
     it "notifies all remaining participants when a participant is removed" do

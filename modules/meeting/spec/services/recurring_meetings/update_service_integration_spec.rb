@@ -52,11 +52,12 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
   let(:updated_meeting) { service_result.result }
 
   context "with a cancelled meeting for tomorrow" do
-    let!(:scheduled_meeting) do
-      create(:scheduled_meeting,
-             :cancelled,
+    let!(:cancelled_occurrence) do
+      create(:meeting,
              recurring_meeting: series,
-             start_time: Time.zone.tomorrow + 1.day + 10.hours)
+             start_time: Time.zone.tomorrow + 1.day + 10.hours,
+             recurrence_start_time: Time.zone.tomorrow + 1.day + 10.hours,
+             state: :cancelled)
     end
 
     context "when updating the start_date to the time of the first cancellation" do
@@ -68,7 +69,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
         expect(service_result).to be_success
         expect(updated_meeting.start_time).to eq(Time.zone.tomorrow + 1.day + 10.hours)
 
-        expect { scheduled_meeting.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { cancelled_occurrence.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -80,8 +81,9 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       it "updates the cancelled occurrence" do
         expect(service_result).to be_success
 
-        scheduled_meeting.reload
-        expect(scheduled_meeting.start_time).to eq(Time.zone.tomorrow + 1.day + 9.hours)
+        cancelled_occurrence.reload
+        expect(cancelled_occurrence.recurrence_start_time).to eq(Time.zone.tomorrow + 1.day + 9.hours)
+        expect(cancelled_occurrence.start_time).to eq(Time.zone.tomorrow + 1.day + 9.hours)
       end
     end
 
@@ -94,7 +96,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
         expect(service_result).to be_success
         expect(updated_meeting.start_time).to eq(Time.zone.today + 2.days + 10.hours)
 
-        expect { scheduled_meeting.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { cancelled_occurrence.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
@@ -245,10 +247,8 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
   describe "rescheduling occurrences" do
     let!(:scheduled_meetings) do
       Array.new(3) do |i|
-        create(:scheduled_meeting,
-               :persisted,
-               recurring_meeting: series,
-               start_time: Time.zone.today + (i + 1).days + 10.hours)
+        t = Time.zone.today + (i + 1).days + 10.hours
+        create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
       end
     end
 
@@ -260,9 +260,10 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       it "updates the time while keeping the same dates" do
         expect(service_result).to be_success
 
-        # Verify each scheduled meeting keeps its date but changes time
+        # Verify each occurrence keeps its date but changes time
         scheduled_meetings.each_with_index do |meeting, index|
           meeting.reload
+          expect(meeting.recurrence_start_time).to eq(Time.zone.today + (index + 1).days + 14.hours + 30.minutes)
           expect(meeting.start_time).to eq(Time.zone.today + (index + 1).days + 14.hours + 30.minutes)
         end
       end
@@ -276,22 +277,25 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       it "reschedules all future occurrences to weekly intervals" do
         expect(service_result).to be_success
 
-        # Verify each scheduled meeting is moved to weekly intervals
+        # Verify each occurrence is moved to weekly intervals
         scheduled_meetings.each_with_index do |meeting, index|
           meeting.reload
+          expect(meeting.recurrence_start_time).to eq(Time.zone.tomorrow + (index * 7).days + 10.hours)
           expect(meeting.start_time).to eq(Time.zone.tomorrow + (index * 7).days + 10.hours)
         end
       end
 
-      context "when one of the scheduled meetings is cancelled" do
+      context "when one of the occurrences is cancelled" do
         let!(:cancelled_meeting) do
-          create(:scheduled_meeting,
-                 :cancelled,
+          t = Time.zone.today + 5.days + 10.hours
+          create(:meeting,
                  recurring_meeting: series,
-                 start_time: Time.zone.today + 5.days + 10.hours)
+                 start_time: t,
+                 recurrence_start_time: t,
+                 state: :cancelled)
         end
 
-        it "removes cancelled schedules" do
+        it "removes cancelled occurrences" do
           expect(service_result).to be_success
           expect { cancelled_meeting.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
@@ -302,10 +306,8 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
   describe "updating end conditions" do
     let!(:scheduled_meetings) do
       Array.new(3) do |i|
-        create(:scheduled_meeting,
-               :persisted,
-               recurring_meeting: series,
-               start_time: Time.zone.tomorrow + i.days + 10.hours)
+        t = Time.zone.tomorrow + i.days + 10.hours
+        create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
       end
     end
 
@@ -335,9 +337,10 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       it "succeeds" do
         expect(service_result).to be_success
 
-        # Verify each scheduled meeting is moved to weekly intervals
+        # Verify each occurrence is moved to 2-day intervals
         scheduled_meetings.each_with_index do |meeting, index|
           meeting.reload
+          expect(meeting.recurrence_start_time).to eq(Time.zone.tomorrow + (index * 2).days + 10.hours)
           expect(meeting.start_time).to eq(Time.zone.tomorrow + (index * 2).days + 10.hours)
         end
       end
@@ -375,18 +378,14 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
   end
 
   describe "updating series title" do
-    shared_let(:past_scheduled_meeting) do
-      create(:scheduled_meeting,
-             :persisted,
-             recurring_meeting: series,
-             start_time: Time.zone.yesterday + 10.hours)
+    shared_let(:past_occurrence) do
+      t = Time.zone.yesterday + 10.hours
+      create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
     end
-    shared_let(:scheduled_meetings) do
+    shared_let(:future_occurrences) do
       Array.new(3) do |i|
-        create(:scheduled_meeting,
-               :persisted,
-               recurring_meeting: series,
-               start_time: Time.zone.today + (i + 1).days + 10.hours)
+        t = Time.zone.today + (i + 1).days + 10.hours
+        create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
       end
     end
 
@@ -395,15 +394,15 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
     it "updates open future meeting occurrence titles" do
       expect(service_result).to be_success
 
-      scheduled_meetings.each do |scheduled|
-        expect(scheduled.meeting.reload.title).to eq("Updated series title")
+      future_occurrences.each do |occ|
+        expect(occ.reload.title).to eq("Updated series title")
       end
     end
 
     it "does not update past meeting occurrence titles" do
       expect(service_result).to be_success
 
-      expect(past_scheduled_meeting.meeting.reload.title).not_to eq("Updated series title")
+      expect(past_occurrence.reload.title).not_to eq("Updated series title")
     end
   end
 end

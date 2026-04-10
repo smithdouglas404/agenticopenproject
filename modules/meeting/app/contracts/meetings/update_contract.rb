@@ -53,8 +53,8 @@ module Meetings
         return
       end
 
-      check_before(model.scheduled_meeting.next_occurrence)
-      check_after(model.scheduled_meeting.previous_occurrence)
+      check_before(model.recurring_meeting.next_occurrence(from_time: model.recurrence_start_time))
+      check_after(model.recurring_meeting.previous_occurrence(from_time: model.recurrence_start_time))
       check_after(model.recurring_meeting.first_occurrence)
     end
 
@@ -78,7 +78,7 @@ module Meetings
 
     def check_reschedule?
       model.recurring_meeting_id &&
-        model.scheduled_meeting &&
+        model.recurrence_start_time.present? &&
         model.changed.intersect?(%w[start_time start_date start_time_hour])
     end
   end

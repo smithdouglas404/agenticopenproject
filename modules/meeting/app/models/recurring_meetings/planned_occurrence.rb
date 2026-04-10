@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,30 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :scheduled_meeting, class: "ScheduledMeeting" do
-    recurring_meeting
-    cancelled { false }
-    meeting { nil }
-    start_time { Date.tomorrow + 10.hours }
-
-    trait :scheduled
-
-    trait :cancelled do
-      cancelled { true }
-    end
-
-    trait :persisted do
-      transient do
-        meeting_start_time { nil }
-      end
-
-      after(:build) do |schedule, evaluator|
-        schedule.meeting = build(:meeting,
-                                 recurring_meeting: schedule.recurring_meeting,
-                                 start_time: evaluator.meeting_start_time || schedule.start_time,
-                                 project: schedule.recurring_meeting.project)
-      end
-    end
+module RecurringMeetings
+  ##
+  # A lightweight value object representing a scheduled occurrence that has not yet
+  # been instantiated as a Meeting record. Used purely for rendering purposes in
+  # the recurring meeting show page table.
+  PlannedOccurrence = Data.define(:recurrence_start_time, :recurring_meeting) do
+    def cancelled? = false
+    def meeting = nil
   end
 end

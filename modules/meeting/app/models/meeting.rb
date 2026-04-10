@@ -40,7 +40,6 @@ class Meeting < ApplicationRecord
   belongs_to :author, class_name: "User"
 
   belongs_to :recurring_meeting, optional: true
-  has_one :scheduled_meeting, inverse_of: :meeting
 
   has_many :time_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
 
@@ -63,6 +62,9 @@ class Meeting < ApplicationRecord
 
   scope :not_recurring, -> { where(recurring_meeting_id: nil) }
   scope :recurring, -> { where.not(recurring_meeting_id: nil) }
+
+  # Meetings that represent an occurrence of a recurring series (have a recurrence_start_time)
+  scope :recurring_occurrence, -> { not_templated.where.not(recurrence_start_time: nil) }
 
   scope :from_tomorrow, -> { where(start_time: Date.tomorrow.beginning_of_day..) }
   scope :from_today, -> { where(start_time: Time.zone.today.beginning_of_day..) }
@@ -305,8 +307,8 @@ class Meeting < ApplicationRecord
 
   def send_emails?
     return false if onetime_template?
-    return false if template? && recurring_meeting.scheduled_meetings.none?
-    return false if closed?
+    return false if template? && recurring_meeting.meetings.not_templated.none?
+    return false if closed? || cancelled?
 
     persisted? && notify?
   end

@@ -28,43 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "rails_helper"
-
-RSpec.describe RecurringMeetings::DeleteScheduledDialogComponent, type: :component do
-  include Rails.application.routes.url_helpers
-
-  let(:project) { build_stubbed(:project) }
-  let(:recurring_meeting) { build_stubbed(:recurring_meeting, project:, end_after: :iterations, iterations: 6) }
-  let(:start_time) { 1.day.from_now }
-  let(:meeting_to_cancel) do
-    RecurringMeetings::PlannedOccurrence.new(recurrence_start_time: start_time, recurring_meeting:)
-  end
-  let(:user) { build_stubbed(:user) }
-
-  subject do
-    render_inline(described_class.new(meeting_to_cancel:))
-    page
+class RemoveScheduledMeetings < ActiveRecord::Migration[8.0]
+  def up
+    drop_table :scheduled_meetings
   end
 
-  before do
-    login_as(user)
-  end
+  def down
+    create_table :scheduled_meetings do |t|
+      t.belongs_to :recurring_meeting,
+                   null: false,
+                   foreign_key: { index: true, on_delete: :cascade }
 
-  describe "dialog form" do
-    let(:project) { build_stubbed(:project) }
+      t.belongs_to :meeting,
+                   null: true,
+                   foreign_key: { index: true, unique: true, on_delete: :nullify }
 
-    it "renders the correct form action" do
-      expect(subject).to have_element "form", action: destroy_scheduled_project_recurring_meeting_path(
-        project, recurring_meeting, start_time: start_time.iso8601
-      )
+      t.datetime :start_time, null: false
+      t.boolean :cancelled, default: false, null: false
+
+      t.timestamps
     end
-  end
 
-  it "shows a heading" do
-    expect(subject).to have_text "Cancel this meeting occurrence?"
-  end
-
-  it "shows a warning about potential information loss" do
-    expect(subject).to have_text "Any meeting information not in the template will be lost."
+    execute <<~SQL.squish
+      ALTER TABLE scheduled_meetings
+      ADD CONSTRAINT unique_recurring_meeting_start_time
+      UNIQUE (recurring_meeting_id, start_time) DEFERRABLE INITIALLY DEFERRED;
+    SQL
   end
 end

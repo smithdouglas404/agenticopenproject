@@ -141,10 +141,11 @@ RSpec.describe "Recurring meetings duplicate in next meeting", :js do
       end
 
       let!(:cancelled_occurrence) do
-        create(:scheduled_meeting,
-               :cancelled,
+        create(:meeting,
                recurring_meeting: series,
-               start_time: first_occurrence_time)
+               start_time: first_occurrence_time,
+               recurrence_start_time: first_occurrence_time,
+               state: :cancelled)
       end
 
       let(:target_meeting_page) { Pages::Meetings::Show.new(target_meeting) }
@@ -173,6 +174,18 @@ RSpec.describe "Recurring meetings duplicate in next meeting", :js do
     end
 
     context "with manage_agendas permission, but multiple next occurrences are cancelled" do
+      def cancel_or_create_occurrence(at:)
+        series.meetings.not_templated.find_or_initialize_by(recurrence_start_time: at).tap do |instance|
+          instance.start_time = at
+          instance.state = :cancelled
+          instance.project ||= series.project
+          instance.author ||= series.author
+          instance.title ||= series.template.title
+          instance.duration ||= series.template.duration
+          instance.save!
+        end
+      end
+
       let(:current_user) { user_with_manage_permissions }
       let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
       let(:second_occurrence_time) { series.next_occurrence(from_time: first_occurrence_time) }
@@ -184,16 +197,18 @@ RSpec.describe "Recurring meetings duplicate in next meeting", :js do
       end
 
       let!(:first_cancelled_occurrence) do
-        create(:scheduled_meeting,
-               :cancelled,
+        create(:meeting,
                recurring_meeting: series,
-               start_time: first_occurrence_time)
+               start_time: first_occurrence_time,
+               recurrence_start_time: first_occurrence_time,
+               state: :cancelled)
       end
       let!(:second_cancelled_occurrence) do
-        create(:scheduled_meeting,
-               :cancelled,
+        create(:meeting,
                recurring_meeting: series,
-               start_time: second_occurrence_time)
+               start_time: second_occurrence_time,
+               recurrence_start_time: second_occurrence_time,
+               state: :cancelled)
       end
 
       let(:target_meeting_page) { Pages::Meetings::Show.new(target_meeting) }

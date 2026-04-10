@@ -88,29 +88,33 @@ module RecurringMeetings
     # per day. This ensures we can reschedule them on update.
     def multi_instances_per_day?(recurring_meeting)
       recurring_meeting
-        .scheduled_meetings
-        .group("start_time::date")
+        .meetings
+        .not_templated
+        .where.not(recurrence_start_time: nil)
+        .group("recurrence_start_time::date")
         .having("COUNT(*) > 1")
         .exists?
     end
 
-    def update_time_of_day(recurring_meeting)
-      schedule_meetings = recurring_meeting.scheduled_meetings
-
-      schedule_meetings.each do |scheduled|
-        # Ensure we treat the start_time as a local time of the series
-        start_time = scheduled.start_time.in_time_zone(recurring_meeting.time_zone)
-        # so that we change the correct hour/minute
-        new_time = start_time.change(
+    def update_time_of_day(recurring_meeting) # rubocop:disable Metrics/AbcSize
+      recurring_meeting
+        .meetings
+        .not_templated
+        .where.not(recurrence_start_time: nil)
+        .find_each do |meeting|
+        # Ensure we treat the recurrence_start_time as a local time of the series
+        occurrence_time = meeting.recurrence_start_time.in_time_zone(recurring_meeting.time_zone)
+        # change only the hour/minute component
+        new_time = occurrence_time.change(
           hour: recurring_meeting.start_time.hour,
           min: recurring_meeting.start_time.min
         )
 
         Meeting.transaction do
-          scheduled.update_column(:start_time, new_time)
-          if scheduled.meeting_id.present? && scheduled.meeting.start_time.future?
-            # for past meetings we do not change the time
-            scheduled.meeting.update_column(:start_time, new_time)
+          meeting.update_column(:recurrence_start_time, new_time)
+          # Only update actual start_time for future non-cancelled meetings
+          if !meeting.cancelled? && meeting.start_time.future?
+            meeting.update_column(:start_time, new_time)
           end
         end
       end
@@ -118,43 +122,47 @@ module RecurringMeetings
 
     def remove_cancelled_schedules(recurring_meeting)
       recurring_meeting
-        .scheduled_meetings
+        .meetings
+        .not_templated
         .cancelled
         .delete_all
     end
 
-    def reschedule_all_occurrences(recurring_meeting)
-      # Get all future scheduled meetings that have been instantiated, ordered by start time
+    def reschedule_all_occurrences(recurring_meeting) # rubocop:disable Metrics/AbcSize
+      # Get all future non-cancelled occurrence meetings, ordered by recurrence_start_time
       future_meetings = recurring_meeting
-        .scheduled_instances(upcoming: true)
-        .instantiated
+        .meetings
+        .not_templated
         .not_cancelled
+        .where.not(recurrence_start_time: nil)
+        .where(recurrence_start_time: Time.current..)
+        .order(recurrence_start_time: :asc)
 
       # Get the next occurrences from the schedule matching the number of future meetings
       next_occurrences = recurring_meeting.scheduled_occurrences(limit: future_meetings.count)
 
       # Update each meeting's timing to match the new schedule
-      # Wrap in transaction to allow deferrable unique constraint to work
       Meeting.transaction do
-        future_meetings.each_with_index do |scheduled, index|
+        future_meetings.each_with_index do |meeting, index|
           next_time = next_occurrences[index]&.to_time
 
           if next_time
-            scheduled.update_column(:start_time, next_time)
-            scheduled.meeting.update_column(:start_time, next_time)
+            meeting.update_column(:recurrence_start_time, next_time)
+            meeting.update_column(:start_time, next_time)
           end
         end
       end
     end
 
     def cleanup_cancelled_schedules(recurring_meeting)
-      ScheduledMeeting
-        .where(recurring_meeting:)
+      recurring_meeting
+        .meetings
+        .not_templated
         .cancelled
-        .find_each do |scheduled|
-          occurring = recurring_meeting.schedule.occurs_at?(scheduled.start_time)
-          scheduled.delete unless occurring
-      end
+        .find_each do |meeting|
+          occurring = recurring_meeting.schedule.occurs_at?(meeting.recurrence_start_time)
+          meeting.delete unless occurring
+        end
     end
 
     def update_future_occurrence_titles(recurring_meeting)
@@ -162,11 +170,12 @@ module RecurringMeetings
       return if new_title == @old_title
 
       recurring_meeting
-      .scheduled_instances(upcoming: true)
-      .instantiated
-      .each do |scheduled|
-        scheduled.meeting.update_column(:title, new_title)
-      end
+        .meetings
+        .not_templated
+        .not_cancelled
+        .where.not(recurrence_start_time: nil)
+        .where(recurrence_start_time: Time.current..)
+        .update_all(title: new_title)
     end
 
     def send_updated_mail(recurring_meeting)

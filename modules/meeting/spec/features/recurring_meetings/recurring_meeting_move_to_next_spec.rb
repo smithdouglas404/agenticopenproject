@@ -104,10 +104,11 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
       let(:current_user) { user_with_manage_permissions }
       let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
       let!(:cancelled_occurrence) do
-        create(:scheduled_meeting,
-               :cancelled,
+        create(:meeting,
                recurring_meeting: series,
-               start_time: first_occurrence_time)
+               start_time: first_occurrence_time,
+               recurrence_start_time: first_occurrence_time,
+               state: :cancelled)
       end
 
       it "skips the cancelled occurrence and moves to the next available one" do
@@ -133,16 +134,18 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
       let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
       let(:second_occurrence_time) { series.next_occurrence(from_time: first_occurrence_time) }
       let!(:first_cancelled_occurrence) do
-        create(:scheduled_meeting,
-               :cancelled,
+        create(:meeting,
                recurring_meeting: series,
-               start_time: first_occurrence_time)
+               start_time: first_occurrence_time,
+               recurrence_start_time: first_occurrence_time,
+               state: :cancelled)
       end
       let!(:second_cancelled_occurrence) do
-        create(:scheduled_meeting,
-               :cancelled,
+        create(:meeting,
                recurring_meeting: series,
-               start_time: second_occurrence_time)
+               start_time: second_occurrence_time,
+               recurrence_start_time: second_occurrence_time,
+               state: :cancelled)
       end
 
       it "skips all cancelled occurrences and shows the count in the dialog" do
