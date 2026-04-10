@@ -43,9 +43,18 @@ module OpenProject::Backlogs
     def self.instances(context = nil)
       return [] if context && !context.backlogs_enabled?
       return [] unless OpenProject::FeatureDecisions.scrum_projects_active?
+      return [] unless user_allowed_to_select_sprint?(context)
 
       sprint_selects.map do |name, options|
         new(name, options)
+      end
+    end
+
+    def self.user_allowed_to_select_sprint?(context)
+      if context
+        User.current.allowed_in_project?(:view_sprints, context)
+      else
+        User.current.allowed_in_any_project?(:view_sprints)
       end
     end
   end
