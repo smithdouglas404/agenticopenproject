@@ -184,6 +184,7 @@ vi:
   label_notify: Gửi để xem xét
   label_icalendar: Gửi iCalendar
   label_icalendar_download: Tải xuống sự kiện iCalendar
+  label_view_meeting: View meeting
   label_view_meeting_series: Xem chuỗi cuộc họp
   label_meeting_series: Chuỗi cuộc họp
   label_version: '0886055830 '
@@ -205,7 +206,6 @@ vi:
         manage_participants: Quản lý người tham gia
         no_participants: Không có người tham gia
         show_all: Hiển thị tất cả
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Những người tham gia này sẽ tự động được mời tham gia tất cả các cuộc họp trong tương lai khi chúng được tạo.
         manage_participants: Tìm kiếm và thêm thành viên dự án làm người tham gia cuộc họp này.

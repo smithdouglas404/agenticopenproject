@@ -80,15 +80,15 @@ class AttributeHelpText < ApplicationRecord
   end
 
   def type_caption
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   def self.visible_condition(_user = nil)
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   def self.available_attributes
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 end
 

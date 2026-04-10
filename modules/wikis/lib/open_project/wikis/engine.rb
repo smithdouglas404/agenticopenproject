@@ -38,19 +38,6 @@ module OpenProject::Wikis
 
     include OpenProject::Plugins::ActsAsOpEngine
 
-    register "openproject-wikis",
-             author_url: "https://openproject.org" do
-               menu :work_package_split_view,
-                    :wikis,
-                    { tab: :wikis },
-                    skip_permissions_check: true,
-                    after: :relations,
-                    if: ->(_project) {
-                      # TODO: only display if there are wiki providers available
-                      OpenProject::FeatureDecisions.wiki_enhancements_active?
-                    }
-             end
-
     initializer "openproject_wikis.inflections" do
       ActiveSupport::Inflector.inflections(:en) do |inflect|
         inflect.acronym "XWiki"
@@ -66,6 +53,32 @@ module OpenProject::Wikis
       end
     end
 
+    config.to_prepare do
+      API::V3::Configuration::ConfigurationRepresenter.property(
+        :wikisAvailable,
+        getter: ->(*) { ::Wikis::Provider.enabled.exists? }
+      )
+    end
+
     replace_principal_references "Wikis::PageLink" => %i[author_id]
+
+    register "openproject-wikis", author_url: "https://openproject.org" do
+      menu :work_package_split_view,
+           :wikis,
+           { tab: :wikis },
+           skip_permissions_check: true,
+           after: :relations,
+           if: ->(_project) {
+             Wikis::Provider.enabled.exists? &&
+               OpenProject::FeatureDecisions.wiki_enhancements_active?
+           }
+
+      menu :admin_menu,
+           :wiki_providers,
+           { controller: "/wikis/admin/wiki_providers", action: :index },
+           if: ->(_) { OpenProject::FeatureDecisions.wiki_enhancements_active? },
+           caption: :project_module_wiki_platforms,
+           icon: "browser"
+    end
   end
 end

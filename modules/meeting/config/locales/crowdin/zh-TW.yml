@@ -186,6 +186,7 @@ zh-TW:
   label_notify: 送出審閱
   label_icalendar: 發送 iCalendar
   label_icalendar_download: '下載 iCalendar '
+  label_view_meeting: View meeting
   label_view_meeting_series: 檢視會議
   label_meeting_series: 會議
   label_version: 版本
@@ -207,7 +208,6 @@ zh-TW:
         manage_participants: 管理參與者
         no_participants: 沒有參與者
         show_all: 顯示全部
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: 這些參與者將自動被邀請參加未來所有建立的會議。
         manage_participants: 搜尋並新增專案成員為此會議的參與者。

@@ -189,6 +189,7 @@ it:
   label_notify: Invia per revisione
   label_icalendar: Invia iCalendar
   label_icalendar_download: Scarica l'evento iCalendar
+  label_view_meeting: View meeting
   label_view_meeting_series: Visualizza la serie di riunioni
   label_meeting_series: Serie di riunioni
   label_version: Versione
@@ -210,7 +211,6 @@ it:
         manage_participants: Gestisci partecipanti
         no_participants: Nessun partecipante
         show_all: Mostra tutti
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Questi partecipanti saranno invitati automaticamente a tutte le riunioni future, man mano che vengono create.
         manage_participants: Cerca e aggiungi membri del progetto come partecipanti a questa riunione.

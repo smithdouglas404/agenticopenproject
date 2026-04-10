@@ -189,6 +189,7 @@ ca:
   label_notify: Envia per revisar
   label_icalendar: Envia iCalendar
   label_icalendar_download: Descarregueu esdeveniment d'iCalendar
+  label_view_meeting: View meeting
   label_view_meeting_series: View meeting series
   label_meeting_series: Meeting series
   label_version: Versió
@@ -210,7 +211,6 @@ ca:
         manage_participants: Gestiona els participants
         no_participants: No hi ha participants
         show_all: Mostrar tots
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: These participants will be invited automatically to all future meetings as they are created.
         manage_participants: Search for and add project members as participants to this meeting.

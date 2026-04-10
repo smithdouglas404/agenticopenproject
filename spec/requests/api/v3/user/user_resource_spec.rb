@@ -312,7 +312,7 @@ RSpec.describe "API v3 User resource", content_type: :json do
     context "as locked admin" do
       let(:current_user) { locked_admin }
 
-      it_behaves_like "unauthorized access"
+      it_behaves_like "not found"
     end
 
     context "as non-admin" do

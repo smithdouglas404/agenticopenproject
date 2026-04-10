@@ -45,14 +45,14 @@ module Storages
         include TaggedLogging
 
         def call(container, key)
-          with_tagged_logger("Adapters::Registry") do
+          with_tagged_logger("Storages::Adapters::Registry") do
             info "Resolving #{key}"
             super
           end
         rescue Dry::Container::KeyError
           error = Errors.registry_error_for(key)
 
-          with_tagged_logger("Adapters::Registry") { error error.message }
+          with_tagged_logger("Storages::Adapters::Registry") { error error.message }
           raise error
         end
       end

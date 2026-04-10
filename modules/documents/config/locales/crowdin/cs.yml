@@ -71,12 +71,10 @@ cs:
         Obraťte se na správce pro povolení spolupráce v reálném čase, pokud chcete získat přístup k tomuto dokumentu.
     show_edit_view:
       connection_error_notice:
-        description: |-
-          Nelze otevřít dokument, protože server pro spolupráci v reálném čase není dostupný.
-          Pokud problém přetrvává, obraťte se na správce.
+        description_server_unavailable: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
         action: Zkusit znovu
-      connection_recovery_notice:
-        description: Připojení k serveru pro textovou spolupráci v reálném čase bylo obnoveno.
       tabs: Karty dokumentů
     index_page:
       name: Název
@@ -88,6 +86,9 @@ cs:
       types: Typy
       collaboration_settings: Spolupráce v reálném čase
     last_updated_at: Naposledy uloženo %{time}.
+    info_line:
+      currently_offline: Nyní jste v režimu offline.
+      connection_restored: Nyní jste opět online.
     active_editors: Aktivní editoři
     active_editors_count:
       one: 1 aktivní editor

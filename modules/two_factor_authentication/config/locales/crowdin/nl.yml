@@ -37,18 +37,14 @@ nl:
     error_invalid_backup_code: Ongeldige 2FA back-up code
     channel_unavailable: Het bezorgkanaal %{channel} is niet beschikbaar.
     no_valid_phone_number: Er is geen geldig telefoonnummer.
-    label_pwd_confirmation: Wachtwoord
-    notice_pwd_confirmation: U moet uw wachtwoord bevestigen bij het aanbrengen van wijzigingen in deze instellingen.
     label_device_type: Apparaattype
     label_default_device: Standaard 2FA-apparaat
     label_device: 2FA apparaat
     label_devices: 2FA apparaten
-    label_one_time_password: Eenmalig wachtwoord
     label_2fa_enabled: Twee-factor-authenticatie is actief
     label_2fa_disabled: Twee-factor-authenticatie is niet actief
     text_otp_delivery_message_sms: Uw %{app_title} eenmalig wachtwoord is %{token}
     text_otp_delivery_message_voice: 'Uw %{app_title} eenmalig wachtwoord is: %{pause} %{token}. %{pause} Ik herhaal: %{pause} %{token}'
-    text_enter_2fa: Voer het eenmalige wachtwoord in vanaf uw apparaat.
     text_2fa_enabled: Bij elke aanmelding wordt u gevraagd om een OTP-token in te voeren vanaf uw standaard 2FA-apparaat.
     text_2fa_disabled: Om authenticatie met twee factoren in te schakelen, gebruikt u de knop hierboven om een nieuw 2FA-apparaat te registreren. Als u al een apparaat heeft, moet u dit als standaard instellen.
     login:
@@ -69,7 +65,6 @@ nl:
       text_remember: |
         Stel dit in op meer dan nul om gebruikers hun 2FA authenticatie voor het gegeven aantal dagen te onthouden.
         Ze zullen niet worden verzocht om deze opnieuw in te voeren gedurende die periode. Dit kan alleen worden ingesteld wanneer het niet wordt afgedwongen door configuratie.
-      error_invalid_settings: De 2FA strategieën die u hebt geselecteerd zijn ongeldig
       failed_to_save_settings: '2FA instellingen bijwerken mislukt: %{message}'
     admin:
       self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
@@ -82,14 +77,9 @@ nl:
       text_2fa_enabled: Upon every login, this user will be requested to enter a OTP token from their default 2FA device.
       text_2fa_disabled: The user did not set up a 2FA device through their 'My account page'
       only_sms_allowed: Only SMS delivery can be set up for other users.
-    upsell:
-      title: Twee-staps authenticatie
-      description: Versterk de beveiliging van uw OpenProject door tweestapsauthentificatie aan alle projectdeelnemers aan te bieden (of af te dwingen)
     backup_codes:
-      none_found: Geen 2FA back-upcodes gevonden voor dit account.
       singular: Back-up code
       plural: Back-up codes
-      your_codes: voor uw %{app_name} account %{login}
       overview_description: 'Als u geen toegang hebt tot uw geregistreerde 2FA-apparaten, krijgt u toegang tot uw account door een 2FA-back-upcode in te voeren. Gebruik de volgende knop om een nieuwe back-upcodes te genereren.
 
         '
@@ -173,19 +163,15 @@ nl:
       clear_cookie: Klik hier om alle onthouden 2FA-sessies te verwijderen.
       cookie_removed: Alle onthouden 2FA sessies zijn verwijderd.
       dont_ask_again: Maak een cookie aan om de 2FA-authenticatie op deze client te onthouden gedurende %{days} dagen.
-  field_phone: Mobiele telefoon
   field_otp: Eenmalig wachtwoord
   notice_account_otp_invalid: Ongeldig éénmalig wachtwoord.
   notice_account_otp_expired: Het eenmalige wachtwoord dat je hebt ingevoerd, is verlopen.
   notice_developer_strategy_otp: 'Ontwikkelaarsstrategie heeft het volgende eenmalige wachtwoord gegenereerd: %{token} (kanaal: %{channel})'
   notice_account_otp_send_failed: Uw eenmalige wachtwoord kan niet worden verzonden.
   notice_account_has_no_phone: Er is geen mobiel nummer gekoppeld aan uw account.
-  label_expiration_hint: "%{date} of bij het afmelden"
-  label_actions: Acties
   label_confirmed: Bevestigd
   button_continue: Verdergaan
   button_make_default: Markeren als standaard
-  label_unverified_phone: GSM nog niet geverifieerd
   notice_phone_number_format: 'Voer het nummer alstublieft in de volgende indeling in: + XX XXXXXXXX.'
   text_otp_not_receive: Andere verificatiemethoden
   text_send_otp_again: 'Eenmalig wachtwoord opnieuw verzenden door:'

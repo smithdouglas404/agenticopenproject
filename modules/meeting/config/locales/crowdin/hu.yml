@@ -189,6 +189,7 @@ hu:
   label_notify: Küldés véleményezésre
   label_icalendar: iCalendar küldése
   label_icalendar_download: iCalendar esemény letöltése
+  label_view_meeting: View meeting
   label_view_meeting_series: Ismétlődő megbeszélések megtekintése
   label_meeting_series: Ismétlődő megbeszélések
   label_version: Verzió
@@ -210,7 +211,6 @@ hu:
         manage_participants: Résztvevők kezelése
         no_participants: Nincsenek résztvevők
         show_all: Minden megjelenítése
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Ezek a résztvevők automatikusan meghívást kapnak minden jövőbeli megbeszélésre, amint azok létrejönnek.
         manage_participants: Projekttagok keresés és hozzáadása a megbeszéléshez résztvevőként.

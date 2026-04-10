@@ -201,6 +201,7 @@ cs:
   label_notify: Odeslat k posouzení
   label_icalendar: Odeslat iCalendar
   label_icalendar_download: Stáhnout událost iCalendar
+  label_view_meeting: View meeting
   label_view_meeting_series: Zobrazit sérii schůzek
   label_meeting_series: Řada schůzek
   label_version: Verze
@@ -222,7 +223,6 @@ cs:
         manage_participants: Spravovat účastníky
         no_participants: Nikdo tu není
         show_all: Zobrazit vše
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Tito účastníci budou automaticky pozváni na všechna budoucí zasedání po jejich vytvoření.
         manage_participants: Search for and add project members as participants to this meeting.
@@ -549,7 +549,7 @@ cs:
 
     '
   permission_edit_meetings: Upravit schůzku
-  permission_delete_meetings: Odstranit schůzky
+  permission_delete_meetings: Smazat schůzku
   permission_view_meetings: Zobrazit schůzky
   permission_manage_agendas: Správa zápisů
   permission_manage_agendas_explanation: Allows creating, editing and removing agenda items

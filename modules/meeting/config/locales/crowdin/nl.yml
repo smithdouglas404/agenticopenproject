@@ -189,6 +189,7 @@ nl:
   label_notify: Verzenden voor revisie
   label_icalendar: Verstuur iCalendar
   label_icalendar_download: Download iCalendar event
+  label_view_meeting: View meeting
   label_view_meeting_series: Bekijk vergaderreeksen
   label_meeting_series: Vergaderreeksen
   label_version: Versie
@@ -210,7 +211,6 @@ nl:
         manage_participants: Deelnemers beheren
         no_participants: Geen deelnemers
         show_all: Toon alle
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Deze deelnemers worden automatisch uitgenodigd voor alle toekomstige vergaderingen wanneer deze worden aangemaakt.
         manage_participants: Zoek projectleden en voeg ze toe als deelnemers aan deze vergadering.

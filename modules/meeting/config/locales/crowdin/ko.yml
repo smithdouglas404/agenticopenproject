@@ -184,6 +184,7 @@ ko:
   label_notify: 검토를 위해 보내기
   label_icalendar: iCalendar 보내기
   label_icalendar_download: iCalendar 이벤트 다운로드
+  label_view_meeting: 미팅 보기
   label_view_meeting_series: 미팅 시리즈 보기
   label_meeting_series: 미팅 시리즈
   label_version: 버전
@@ -205,7 +206,6 @@ ko:
         manage_participants: 참가자 관리
         no_participants: 참가자 없음
         show_all: 모두 표시
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: 이러한 참가자는 향후 생성되는 모든 미팅에 자동으로 초대됩니다.
         manage_participants: 프로젝트 멤버를 검색하여 이 미팅에 참가자로 추가하세요.

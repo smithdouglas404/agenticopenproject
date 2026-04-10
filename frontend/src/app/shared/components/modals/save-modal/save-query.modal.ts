@@ -27,7 +27,7 @@
 //++
 
 import {
-  ChangeDetectorRef, Component, ElementRef, Inject, ViewChild,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, ViewChild,
 } from '@angular/core';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { QueryResource } from 'core-app/features/hal/resources/query-resource';
@@ -44,6 +44,10 @@ import { States } from 'core-app/core/states/states.service';
 @Component({
   templateUrl: './save-query.modal.html',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SaveQueryModalComponent extends OpModalComponent {
   public queryName = '';
@@ -94,7 +98,7 @@ export class SaveQueryModalComponent extends OpModalComponent {
     return document.getElementById('work-packages-settings-button')!;
   }
 
-  public saveQueryAs($event:Event):void {
+  public async saveQueryAs($event:Event):Promise<void> {
     $event.preventDefault();
 
     if (this.isBusy || !this.queryName) {
@@ -102,20 +106,23 @@ export class SaveQueryModalComponent extends OpModalComponent {
     }
 
     this.isBusy = true;
+    this.cdRef.markForCheck();
     const query = this.querySpace.query.value!;
     query.public = this.isPublic;
 
-    this.wpListService
-      .create(query, this.queryName)
-      .then((savedQuery:QueryResource):Promise<any> => {
-        if (this.isStarred && !savedQuery.starred) {
-          return this.wpListService.toggleStarred(savedQuery).then(() => this.closeMe($event));
-        }
+    try {
+      const savedQuery:QueryResource = await this.wpListService.create(query, this.queryName);
 
-        this.closeMe($event);
-        return Promise.resolve(true);
-      })
-      .catch((error:any) => this.halNotification.handleRawError(error))
-      .then(() => this.isBusy = false); // Same as .finally()
+      if (this.isStarred && !savedQuery.starred) {
+        await this.wpListService.toggleStarred(savedQuery);
+      }
+
+      this.closeMe($event);
+    } catch (error:unknown) {
+      this.halNotification.handleRawError(error);
+    } finally {
+      this.isBusy = false;
+      this.cdRef.markForCheck();
+    }
   }
 }

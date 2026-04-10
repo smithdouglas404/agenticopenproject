@@ -199,6 +199,7 @@ uk:
   label_notify: Надіслати на розгляд
   label_icalendar: Надіслати iCalendar
   label_icalendar_download: Завантажити подію iCalendar
+  label_view_meeting: View meeting
   label_view_meeting_series: Переглянути серію нарад
   label_meeting_series: Серія нарад
   label_version: Версія
@@ -220,7 +221,6 @@ uk:
         manage_participants: Керувати учасниками
         no_participants: Немає учасників
         show_all: Показати всі
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Ці учасники автоматично отримуватимуть запрошення на всі майбутні наради, які ви створюватимете.
         manage_participants: Знайдіть учасників проєкту й додайте їх у цю нараду в ролі учасників.

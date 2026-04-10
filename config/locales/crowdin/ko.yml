@@ -114,7 +114,7 @@ ko:
     import:
       title: 가져오기
     jira:
-      title: Jira 가져오기
+      title: Jira Migrator
       description: 이 도구를 사용하여 Jira 인스턴스에서 데이터를 가져옵니다. 여러 Jira 호스트를 구성하고 가져오기 실행 각각에서 가져올 항목을 선택할 수 있습니다.
       errors:
         cannot_delete_with_imports: 기존 가져오기가 있는 Jira 호스트는 삭제할 수 없습니다
@@ -125,8 +125,8 @@ ko:
         title: Jira 구성
         new: 새 구성
       banner:
-        title: 제한된 가져오기
-        description: 이 가져오기 도구는 현재 베타 버전이며 프로젝트, 이슈(이름, 제목, 설명, 첨부 파일), 사용자(이름, 이메일, 프로젝트 멤버십), 상태 및 유형과 같은 기본 데이터만 가져올 수 있습니다. 워크플로, 사용자 지정 필드, 이슈 관계 또는 권한은 가져올 수 없습니다. Jira Server/Data Center 버전 10.x 및 11.x만 현재 지원합니다. 클라우드 인스턴스는 현재 지원되지 않습니다.
+        title: 제한된 가져오기 기능
+        description: 이 Jira Migrator는 현재 베타 버전이며 프로젝트, 이슈(이름, 제목, 설명, 첨부 파일), 사용자(이름, 이메일, 프로젝트 멤버십), 상태 및 유형과 같은 기본 데이터만 가져올 수 있습니다. 워크플로, 사용자 지정 필드, 이슈 관계 또는 권한은 가져올 수 없습니다. Jira Server/Data Center 버전 10.x 및 11.x만 현재 지원됩니다. 클라우드 인스턴스는 현재 지원되지 않습니다.
       form:
         fields:
           name: 이름
@@ -162,7 +162,7 @@ ko:
       run:
         title: 가져오기 실행
         history: 기록
-        remove_error: Jira 가져오기는 실행되는 동안 제거할 수 없습니다
+        remove_error: 실행되는 동안에는 Jira 가져오기 실행을 제거할 수 없습니다
         import_blocked_error: 다른 Jira 가져오기 실행이 현재 진행 중이거나 검토를 기다리는 중입니다. 새 가져오기를 시작하기 전에 완료하거나 되돌리세요.
         project_identifier_taken: '이미 사용된 식별자가 있는 프로젝트를 가져오려고 합니다: %{taken_identifier}. Jira에서 프로젝트 식별자를 업데이트한 후에 ''다시 시도''를 클릭하세요.'
         blank:
@@ -381,68 +381,70 @@ ko:
         notification_text_default: "<p>안녕하세요,</p> <p>새 프로젝트가 생성되었습니다: projectValue:name</p> <p>감사합니다.</p>\n"
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: 클래식 숫자 작업 패키지 ID 또는 작업 패키지 ID 앞에 프로젝트 식별자를 붙이는 프로젝트별 시맨틱 ID 중에서 선택합니다.
         banner:
-          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Autofix and save'' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
-
-            '
+          existing_identifiers_notice: "%{project_count}개 프로젝트의 기존 식별자가 프로젝트 기반 시맨틱 식별자에 대한 요구 사항을 충족하지 않습니다. OpenProject는 아래 예와 같이 해당 식별자가 유효하도록 자동으로 업데이트할 수 있습니다. '자동 수정 및 저장'을 클릭하여 이러한 방식으로 모든 프로젝트의 식별자를 업데이트하고 프로젝트 기반 시맨틱 식별자를 활성화하세요.\n"
         box_header:
           label_project: 프로젝트
           label_previous_identifier: 이전 식별자
           label_autofixed_suggestion: 향후 식별자
           label_example_work_package_id: 작업 패키지 ID 예
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: 10자 이하여야 함
+          error_numerical: 완전히 숫자로만 지정할 수 없음
+          error_starts_with_number: 숫자로 시작할 수 없음
           error_special_characters: 특수 문자는 허용되지 않음
+          error_not_fully_uppercased: 대문자여야 함
           error_in_use: 이미 다른 프로젝트의 활성 핸들로 사용 중입니다
           error_reserved: 다른 프로젝트의 핸들 기록에 의해 예약되었습니다
+          error_unknown: 수동 검토가 필요합니다
           remaining_projects:
             other: "... %{count}개의 추가 프로젝트"
         button_autofix: 자동 수정 및 저장
         dialog:
           title: 작업 패키지 식별자 변경
           heading: 프로젝트 기반 작업 패키지 ID를 활성화하시겠습니까?
-          description: '이렇게 하면 해당 인스턴스의 모든 프로젝트에 있는 모든 작업 패키지의 ID가 변경됩니다. 이전 식별자 및 URL은 계속해서 제대로 리디렉션됩니다. 이 변경 사항은 완료되는 데 다소 시간이 걸립니다.
+          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
 
             '
-          confirm_button: 식별자 변경
-          checkbox_label: 이렇게 하면 모든 작업 패키지 ID가 영구적으로 변경됨을 이해합니다
-        success_banner: 작업 패키지 식별자 형식을 업데이트했습니다.
+          confirm_button: Change identifiers
+          checkbox_label: I understand that this will permanently change all work package IDs
+        success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: 기본 전환
         user_author: 사용자가 작성자입니다
         user_assignee: 사용자가 담당자입니다
       index:
-        description: 각 작업 패키지 유형에 대한 상태 전환을 구성합니다.
+        description: Configure status transitions for each work package type.
         type_filter:
-          label: 유형 이름으로 필터링…
-      status_button: 상태
+          label: Filter by type name…
+      status_button: Status
       statuses_dialog:
-        title: 상태
-        label: 이 유형에 대해 활성화된 상태
-        caption: 이 유형과 연결하려는 상태를 추가하거나 제거하세요. 상태를 제거하면 연결된 워크플로도 삭제됩니다.
+        title: Statuses
+        label: Statuses enabled for this type
+        caption: Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it.
       statuses_removal_dialog:
-        title: 상태 제거
+        title: Remove statuses
         heading:
-          other: "%{count}개 상태를 제거하시겠습니까?"
-        description: 이러한 상태를 제거하면 이 유형에서 사용할 수 없게 되고 기존 워크플로가 삭제됩니다. 계속 진행하시겠습니까?
-        confirm: 제거
+          other: Remove %{count} statuses?
+        description: Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?
+        confirm: Remove
       leave_confirmation:
-        title: 변경 사항을 저장한 후에 계속하시겠습니까?
-        description: 이 페이지를 나가려고 하는데, 저장되지 않은 변경 사항이 있습니다. 저장한 후에 계속하시겠습니까?
-        ignore: 변경 사항 무시
-        save: 변경 사항을 저장하고 계속하기
+        title: Save changes before continuing?
+        description: You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?
+        ignore: Ignore changes
+        save: Save changes and continue
       role_selector:
-        label: '역할: %{role}'
-        no_role: 역할 선택
+        label: 'Role: %{role}'
+        no_role: Select role
       blankslate:
-        title: 구성된 상태 전환 없음
-        description: 상태를 추가하여 이 역할에 대한 워크플로 구성을 시작합니다
+        title: No status transitions configured
+        description: Add statuses to start configuring workflows for this role
     info:
-      database_deprecation_html: 'OpenProject 16.0부터, OpenProject를 사용하려면 PostgreSQL 16이 필요합니다. 현재 데이터베이스에서는 해당 설치가 계속 작동되지만, 향후 릴리스에서는 호환되지 않을 수 있습니다. <br/> [모든 설치 방법에 대한 업그레이드 가이드](upgrade_guide)를 준비했습니다. 가이드에 따라 언제든지 다음 릴리스에 앞서 업그레이드를 수행할 수 있습니다.
+      database_deprecation_html: 'Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases. <br/> We have prepared [upgrade guides for all installation methods](upgrade_guide). You can perform the upgrade ahead of the next release at any time by following the guides.
 
         '
   authentication:
@@ -675,13 +677,13 @@ ko:
     confirmation_live_message_checked: 진행 버튼이 이제 활성화되었습니다.
     confirmation_live_message_unchecked: 진행 버튼이 이제 비활성화되었습니다. 계속하려면 확인란을 선택해야 합니다.
   pagination:
-    label: 페이지 매김
-    prev: 이전
-    prev_page: 이전 페이지
-    next: 다음
-    next_page: 다음 페이지
-    page: "%{number}페이지"
-    page_with_more: "%{number}페이지..."
+    label: Pagination
+    prev: Previous
+    prev_page: Previous Page
+    next: Next
+    next_page: Next Page
+    page: Page %{number}
+    page_with_more: Page %{number}...
   mcp_configurations:
     server_url_component:
       caption: OpenProject MCP 서버에 연결할 수 있는 URL입니다. MCP 클라이언트를 설정하는 데 필요합니다.
@@ -844,10 +846,10 @@ ko:
 
           '
       change_identifier: 식별자 변경
-      change_identifier_dialog_title: 프로젝트 식별자 변경
-      change_identifier_format_hint_semantic: 대문자(A-Z), 숫자 또는 밑줄만 사용할 수 있습니다. 최대 10자이고, 문자로 시작해야 합니다.
-      change_identifier_format_hint_legacy: 소문자(a-z), 숫자, 대시 또는 밑줄만 사용할 수 있습니다.
-      change_identifier_warning: '이렇게 하면 이 프로젝트에 있는 모든 작업 패키지의 식별자 및 URL이 영구적으로 변경됩니다. 그렇지만 이전 식별자 및 URL은 계속해서 제대로 리디렉션됩니다.
+      change_identifier_dialog_title: Change project identifier
+      change_identifier_format_hint_semantic: Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter.
+      change_identifier_format_hint_legacy: Only lowercase letters (a–z), numbers, dashes or underscores.
+      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
 
         '
       subitems:
@@ -1079,9 +1081,9 @@ ko:
     groups:
       member_in_these_groups: '이 사용자는 현재 다음 그룹의 멤버입니다:'
       no_results_title_text: 이 사용자는 현재 어떤 그룹의 멤버도 아닙니다.
-      summary_with_more_html: "%{names} 및 %{count_link}의 멤버입니다."
+      summary_with_more_html: Member of %{names} and %{count_link}.
       more: "%{count}개 더 보기"
-      summary_html: "%{names}의 멤버입니다."
+      summary_html: Member of %{names}.
     memberships:
       no_results_title_text: 이 사용자는 프로젝트의 멤버가 아닙니다.
     open_profile: 프로필 열기
@@ -1139,60 +1141,60 @@ ko:
         group: 이제 이 그룹은 %{project}의 일부입니다. 한편 당신은 해당 사용자에 대한 계획을 세우거나 작업 패키지를 할당할 수 있습니다.
     working_hours:
       current_schedule:
-        title: 현재 스케줄
-        work_days: 근무일
-        work_hours: 근무 시간
-        availability_factor: 가용성 요소
-        availability_subtitle: 프로젝트 작업 전용
-        effective_hours: 유효한 근무 시간
-        effective_subtitle: 주별
-        not_set: 설정되지 않음
+        title: Current schedule
+        work_days: Work days
+        work_hours: Work hours
+        availability_factor: Availability factor
+        availability_subtitle: Dedicated to project work
+        effective_hours: Effective work hours
+        effective_subtitle: Per week
+        not_set: Not set
       future:
-        title: 향후 스케줄
-        description: 근무 스케줄 변경 사항을 미리 계획하세요. 해당 날짜가 되면 근무 스케줄이 자동으로 업데이트됩니다.
-        add_button: 향후 스케줄 추가
-        blank_title: 계획된 향후 스케줄 없음
-        blank_description: 향후 스케줄을 만들어 변경 사항을 미리 계획합니다
+        title: Future schedules
+        description: Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically.
+        add_button: Add future schedule
+        blank_title: No future schedules planned
+        blank_description: Create a future schedule to plan changes ahead of time
       history:
-        title: 스케줄 기록
-        description: 이전 근무 스케줄을 봅니다.
-        blank_title: 아직 스케줄 기록 없음
-        blank_description: 이전 스케줄 변경 사항이 여기에 표시됩니다
+        title: Schedule history
+        description: View your past work schedules.
+        blank_title: No schedule history yet
+        blank_description: Past schedule changes will appear here
       destroy:
-        confirm: 이 근무 스케줄을 삭제하시겠습니까?
+        confirm: Are you sure you want to delete this working schedule?
       form:
-        title: 향후 근무 스케줄 계획
-        title_current: 현재 근무 스케줄 편집
-        start_date: 시작 날짜
-        start_date_caption: 새로운 근무 스케줄이 적용되는 날짜를 선택하세요.
-        work_days: 근무일
-        working_hours_label: 근무 시간
-        hours_mode_label: 시간 모드
-        same_hours_mode: 일별 동일한 시간
-        individual_hours_mode: 일별 개별 시간
-        work_hours: 근무 시간
-        hours_per_day: 일별 시간
-        per_day: 일별
-        per_week: 주별
-        total_work_hours: 총 근무 시간
-        availability_description: 가용성 요소는 프로젝트 작업에 투입된 실제 근무 시간 비율을 나타냅니다. 여기에는 미팅, 이메일, 관리 작업 및 프로젝트 이외의 기타 활동이 포함됩니다.
-        availability_factor: 가용성 요소
-        availability_factor_caption: 프로젝트 작업에 투입된 근무 시간 비율을 정의하세요.
-        total_available_hours: 총 사용 가능한 근무 시간
-        title_availability_factor: 가용성 요소
-        title_days_and_hours: 일 및 시간
-        title_future_dates: 향후 날짜
+        title: Plan a future work schedule
+        title_current: Edit current work schedule
+        start_date: Start date
+        start_date_caption: Select the date from when the new work schedule will be effective.
+        work_days: Work days
+        working_hours_label: Working hours
+        hours_mode_label: Hours mode
+        same_hours_mode: Same hours per day
+        individual_hours_mode: Individual hours per day
+        work_hours: Work hours
+        hours_per_day: Hours per day
+        per_day: per day
+        per_week: per week
+        total_work_hours: Total work hours
+        availability_description: The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities.
+        availability_factor: Availability factor
+        availability_factor_caption: Define the percentage of your working time dedicated to project work.
+        total_available_hours: Total available work hours
+        title_availability_factor: Availability factor
+        title_days_and_hours: Days and hours
+        title_future_dates: Future dates
       table:
-        mobile_title: 근무 스케줄
-        start_date: 시작 날짜
-        work_days: 근무일
-        work_hours: 근무 시간
-        availability_factor: 가용성 요소
-        effective_work_hours: 유효한 근무 시간
+        mobile_title: Working schedules
+        start_date: Start date
+        work_days: Work days
+        work_hours: Work hours
+        availability_factor: Availability factor
+        effective_work_hours: Effective work hours
         work_days_count:
-          other: 근무일 %{count}일
+          other: "%{count} working days"
   user_preferences:
-    disable_keyboard_shortcuts_caption: '화면 리더를 사용하는 경우 또는 바로 가기로 실수로 액션을 트리거하지 않게 방지하려는 경우 기본 [키보드 바로 가기](docs_url)를 비활성화하도록 선택할 수 있습니다.
+    disable_keyboard_shortcuts_caption: 'You can choose to disable default [keyboard shortcuts](docs_url) if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
 
       '
   page:
@@ -1203,12 +1205,12 @@ ko:
       '
     delete_tooltip: 플레이스홀더 사용자 삭제
     deletion_info:
-      heading_html: 플레이스홀더 사용자 %{name} 삭제
+      heading_html: Delete placeholder user %{name}
       data_consequences: '플레이스홀더 사용자의 모든 항목(예: 담당자, 책임자, 기타 사용자 값 등)은 "삭제된 사용자"라는 계정에 다시 할당됩니다. 삭제된 모든 계정의 데이터는 이 계정에 다시 할당되기 때문에 사용자가 생성한 데이터와 다른 삭제된 계정의 데이터를 구별할 수 없습니다.
 
         '
       irreversible: 이 작업은 취소할 수 없습니다
-      confirmation_html: 삭제를 확인하려면 플레이스홀더 사용자 이름 %{name}(을)를 입력하세요.
+      confirmation_html: Enter the placeholder user name %{name} to confirm the deletion.
   priorities:
     edit:
       priority_color_text: |
@@ -1239,9 +1241,9 @@ ko:
         계층의 총 작업, 남은 작업 및 완료 %에서 이 상태의 작업 패키지를
         제외하려면 이 옵션을 선택하세요.
       status_percent_complete_text_html: |-
-        [상태 기반 진행률 계산 모드](setting_url)에서, 이 상태를 선택하면 작업
-        패키지의 완료 %가 자동으로 이 값으로 설정됩니다.
-        작업 기반 모드에서는 무시됩니다.
+        In [status-based progress calculation mode](setting_url), the % Complete of a work
+        package is automatically set to this value when this status is selected.
+        Ignored in work-based mode.
       status_readonly_html: |
         이 상태를 읽기 전용으로 작업 패키지에 표시하려면 이 옵션을 선택합니다.
         상태를 제외하고 특성은 변경할 수 없습니다.
@@ -1509,7 +1511,7 @@ ko:
       '
     login_with_auth_provider: 또는 이미 있는 계정으로 로그인
     signup_with_auth_provider: 또는 사용 가입하기
-    auth_source_login_html: "<em>%{login}</em>(으)로 로그인하여 계정을 활성화하세요."
+    auth_source_login_html: Please login as <em>%{login}</em> to activate your account.
     omniauth_login: 계정을 활성화하려면 로그인하시기 바랍니다.
   actionview_instancetag_blank_option: 선택하십시오
   activemodel:
@@ -1518,6 +1520,9 @@ ko:
         dependencies: 종속성
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: Identifier
+        work_package: Work package
       jira_import:
         projects: 프로젝트
       import/jira:
@@ -1526,7 +1531,7 @@ ko:
         personal_access_token: 개인 액세스 토큰
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Jira 가져오기
+        jira_import: Jira Migrator
       announcements:
         show_until: 표시 기한
       attachment:
@@ -1780,11 +1785,11 @@ ko:
         consented_at: '동의함:'
       group:
         identity_url: ID URL
-        parent: 부모 그룹
-        organizational_unit: 조직 단위
+        parent: Parent group
+        organizational_unit: Organizational unit
       group_detail:
-        parent: 부모 그룹
-        organizational_unit: 조직 단위
+        parent: Parent group
+        organizational_unit: Organizational unit
       user_preference:
         header_look_and_feel: 모양 및 느낌
         header_alerts: 알림
@@ -1814,27 +1819,27 @@ ko:
         principal_type: 초대 유형
         id_or_email: 이름 또는 이메일 주소
       user_non_working_time:
-        start_date: 시작 날짜
-        end_date: 종료 날짜
+        start_date: Start date
+        end_date: End date
       user_working_hours:
-        valid_from: 다음부터 유효함
-        monday: 월요일
-        monday_hours: 월요일 시간
-        tuesday: 화요일
-        tuesday_hours: 화요일 시간
-        wednesday: 수요일
-        wednesday_hours: 수요일 시간
-        thursday: 목요일
-        thursday_hours: 목요일 시간
-        friday: 금요일
-        friday_hours: 금요일 시간
-        saturday: 토요일
-        saturday_hours: 토요일 시간
-        sunday: 일요일
-        sunday_hours: 일요일 시간
-        availability_factor: 가용성 요소
-        shared_hours: 근무 시간
-        days: 근무일
+        valid_from: Valid from
+        monday: Monday
+        monday_hours: Monday hours
+        tuesday: Tuesday
+        tuesday_hours: Tuesday hours
+        wednesday: Wednesday
+        wednesday_hours: Wednesday hours
+        thursday: Thursday
+        thursday_hours: Thursday hours
+        friday: Friday
+        friday_hours: Friday hours
+        saturday: Saturday
+        saturday_hours: Saturday hours
+        sunday: Sunday
+        sunday_hours: Sunday hours
+        availability_factor: Availability factor
+        shared_hours: Work hours
+        days: Working days
       version:
         effective_date: 완료 날짜
         sharing: 공유
@@ -1889,8 +1894,8 @@ ko:
         before: 은(는) %{date} 보다 전이어야 합니다.
         before_or_equal_to: 은(는) %{date} 이전이어야 합니다.
         blank: 내용을 입력해주세요
-        not_before_start_date: "- 시작 날짜 전이 아니어야 합니다."
-        overlapping_range: "- 기존 휴무일 범위와 겹칩니다."
+        not_before_start_date: must not be before the start date.
+        overlapping_range: overlaps with an existing non-working day range.
         blank_nested: "- '%{property}' 속성이 설정되어 있어야 합니다."
         cannot_delete_mapping: "- 필수입니다. 삭제할 수 없습니다."
         is_for_all_cannot_modify: "- 모든 프로젝트용므로 수정할 수 없습니다."
@@ -1927,9 +1932,9 @@ ko:
         less_than_or_equal_to: 은(는) %{count} 보다 작거나 같아야 합니다
         not_available: "- 시스템 구성으로 인해 사용 가능하지 않습니다."
         not_deletable: "- 삭제할 수 없습니다."
-        not_editable: "- 이미 적용 중이므로 편집할 수 없습니다."
+        not_editable: cannot be edited because it is already in effect.
         not_current_user: 은(는) 현재 유효한 사용자가 아닙니다.
-        system_wide_non_working_day_exists: "- 이 날짜의 기존 시스템 전체 휴무일과 충돌합니다."
+        system_wide_non_working_day_exists: conflicts with an existing system-wide non-working day for this date.
         not_found: "- 찾을 수 없습니다."
         not_a_date: 은(는) 유효한 날짜가 아닙니다.
         not_a_datetime: 은(는) 유효한 날짜가 아닙니다.
@@ -1964,7 +1969,7 @@ ko:
         group:
           attributes:
             parent_id:
-              circular_dependency: "- 순환 그룹 계층을 생성합니다."
+              circular_dependency: would create a circular group hierarchy.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2075,8 +2080,8 @@ ko:
             types:
               in_use_by_work_packages: '아직 작업 패키지에 사용됨: %{types}'
             identifier:
-              must_start_with_letter: "- 문자로 시작해야 합니다"
-              no_special_characters: "- 대문자, 숫자 및 밑줄만 포함될 수 있습니다"
+              must_start_with_letter: must start with a letter
+              no_special_characters: may only contain uppercase letters, numbers, and underscores
             enabled_modules:
               dependency_missing: "'%{module}' 모듈이 '%{dependency}' 모듈에 의존하므로 해당 모듈도 활성화되어 있어야 합니다."
               format: "%{message}"
@@ -2283,7 +2288,7 @@ ko:
         user_working_hours:
           attributes:
             days:
-              no_working_day: 하루 이상을 근무일로 구성해야 합니다.
+              no_working_day: At least one day needs to be configured as a working day.
         member:
           principal_blank: 하나 이상의 사용자 또는 그룹을 선택 하십시오.
           role_blank: 할당해야 합니다.
@@ -2532,7 +2537,7 @@ ko:
       info: '백업을 생성하려면 백업 토큰을 생성해야 합니다. 백업을 요청할 때마다 토큰을 입력해야 합니다. 백업 토큰을 삭제하면 해당 사용자의 백업을 비활성화할 수 있습니다.
 
         '
-      verification_html: '백업 토큰을 %{action}하려면 %{word}(을)를 입력하여 확인하세요.
+      verification_html: 'Enter %{word} to confirm you want to %{action} the backup token.
 
         '
       verification_word_reset: 초기화
@@ -2972,7 +2977,7 @@ ko:
     teaser:
       title:
         other: "%{trial_plan} 평가판 토큰 %{count}일 남음"
-      description_html: 모든 %{trial_plan} 기능에 액세스할 수 있습니다.
+      description_html: You have access to all %{trial_plan} features.
     trial:
       not_found: 평가판 토큰을 요청했지만 해당 요청은 더 이상 사용할 수 없습니다. 다시 시도해 주세요.
       wait_for_confirmation: 평가판 토큰을 받을 수 있도록 주소를 확인하기 위한 이메일을 보내드렸습니다.
@@ -2992,8 +2997,8 @@ ko:
 
         '
       domain_caption: 토큰은 현재 구성된 호스트 이름에 유효하게 됩니다.
-      receive_newsletter: OpenProject [뉴스레터](newsletter_url)를 받고 싶습니다.
-      consent: 본인은 [서비스 약관](tos_url) 및 [개인정보 취급방침](privacy_url)에 동의합니다.
+      receive_newsletter: I want to receive the OpenProject [newsletter](newsletter_url).
+      consent: I agree with the [terms of service](tos_url) and the [privacy policy](privacy_url).
   email_calendar_updates:
     state:
       disabled: 비활성화되었습니다.
@@ -3082,8 +3087,8 @@ ko:
     work_package_edit: 작업 패키지 편집됨
     work_package_note: 작업 패키지 메모 추가됨
     title:
-      project_html: '프로젝트: %{name}'
-      subproject_html: '하위 프로젝트: %{name}'
+      project_html: 'Project: %{name}'
+      subproject_html: 'Subproject: %{name}'
   export:
     dialog:
       title: 내보내기
@@ -3255,17 +3260,17 @@ ko:
         learn_about: 새로운 모든 기능에 대해 자세히 알아보기
         missing: 아직 강조 표시된 기능이 없습니다.
         '17_3':
-          new_features_title: '이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
+          new_features_title: 'The release contains various new features and improvements, such as:
 
             '
           new_features_list:
-            line_0: '대규모 애자일 업데이트: 전용 스프린트 개체, 백로그에 표시되는 모든 작업 패키지, 자동 스프린트 보드 생성.'
-            line_1: 프로젝트 개요 페이지에서 프로젝트 특성을 바로 편집 가능.
-            line_2: 미팅 템플릿 공유(Basic 플랜 이상).
-            line_3: 시간 및 비용, 보드 등에서 개선된 검색 기능.
-            line_4: 프로젝트 식별자를 안전하게 변경하는 옵션.
-            line_5: 개선된 관리자용 워크플로 구성.
-            line_6: 커뮤니티에 릴리스된 액션 보드.
+            line_0: 'Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation.'
+            line_1: In-place editing of project attributes on the Project Overview page.
+            line_2: Sharing of meeting templates (Basic plan and higher).
+            line_3: Better search in Time and Costs, Boards, and more.
+            line_4: Option to safely change project identifiers.
+            line_5: Improved workflow configuration for administrators.
+            line_6: Action boards released to Community.
     links:
       upgrade_enterprise_edition: Enterprise Edition으로 업그레이드
       postgres_migration: 설치를 PostgreSQL로 마이그레이션
@@ -3330,15 +3335,15 @@ ko:
         progress_calculation_adjusted: 진행률 계산은 자동으로 <a href="%{href}" target="_blank">버전 업데이트에 따라 조정됩니다</a>.
         scheduling_mode_adjusted: 버전 업데이트에 따라 자동으로 조정되는 스케줄링 모드입니다.
         totals_removed_from_childless_work_packages: <a href="%{href}" target="_blank">버전 업데이트</a>를 통해 부모가 아닌 작업 패키지의 작업 및 진행률 합계가 자동으로 제거됩니다. 유지 관리 작업이므로 무시해도 됩니다.
-        sprint_migration: 버전 '%{version_name}'이(가) 스프린트로 복사되었습니다.
+        sprint_migration: Version '%{version_name}' has been copied as a sprint.
       total_percent_complete_mode_changed_to_work_weighted_average: 작업이 없는 자식 작업 패키지는 무시됩니다.
       total_percent_complete_mode_changed_to_simple_average: 자식 작업 패키지의 작업 값은 무시됩니다.
   links:
     configuration_guide: 구성 가이드
     get_in_touch: 질문이 있으신가요? 문의해 주세요.
-  instructions_after_registration_link: "[여기](signin_url)를 클릭하여 계정을 활성화하면 바로 로그인할 수 있습니다."
-  instructions_after_logout_link: "[여기](signin_url)를 클릭하면 다시 로그인할 수 있습니다."
-  instructions_after_error_link: "[여기](signin_url)를 클릭하여 다시 로그인해 볼 수 있습니다. 오류가 계속되면 관리자에게 도움을 요청하세요."
+  instructions_after_registration_link: You can sign in as soon as your account has been activated by clicking [here](signin_url).
+  instructions_after_logout_link: You can sign in again by clicking [here](signin_url).
+  instructions_after_error_link: You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help.
   menus:
     admin:
       ai: 인공 지능(AI)
@@ -3350,6 +3355,11 @@ ko:
     quick_add:
       label: 추가…
   my_account:
+    notifications_and_email:
+      title: Notification and email
+      tabs:
+        notifications: Notification settings
+        email_reminders: Email reminders
     access_tokens:
       description: 공급자 토큰은 OpenProject에서 발급하며, 다른 애플리케이션이 액세스하도록 허용합니다. 클라이언트 토큰은 다른 애플리케이션에서 발급하며, OpenProject가 액세스하도록 허용합니다.
       no_results:
@@ -3412,6 +3422,72 @@ ko:
         disabled_text: 관리자가 RSS 토큰을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요.
       storages:
         unknown_storage: 알 수 없는 저장소
+    email_reminders:
+      immediate_reminders:
+        title: Send me an email reminder
+        mentioned: Notify me when I am mentioned
+        personal_reminder: Notify me for personal reminders
+      daily_reminders:
+        title: Send me daily email reminders for unread notifications
+        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        enabled: Enable daily email reminders
+        add_time: Add time
+        remove_time: Remove time
+        time_slot_label: Reminder time (UTC)
+      workdays:
+        title: Receive email reminders on these days
+        submit_button: Update reminder days
+      pause_reminders:
+        title: Pause email notifications
+        enabled: Temporarily pause daily email reminders
+        date_range: Pause period
+      email_alerts:
+        title: Email alerts for other items that are not work packages
+        news_added: News added
+        news_commented: Comment on a news item
+        document_added: Document added
+        forum_messages: Forum message posted
+        wiki_page_added: Wiki page added
+        wiki_page_updated: Wiki page updated
+        membership_added: Membership added
+        membership_updated: Membership updated
+        submit_button: Update alerts
+    notifications:
+      participating:
+        title: Participating
+        submit_button: Update preferences
+        mentioned: Mentioned
+        watched: Watching
+        assignee: Assignee
+        responsible: Accountable
+        shared: Shared with me
+      date_alerts:
+        title: Date alerts
+        submit_button: Update date alerts
+        start_date: Start date
+        due_date: Finish date
+        overdue: Overdue
+        times:
+          same_day: On the same day
+          one_day_before: 1 day before
+          three_days_before: 3 days before
+          seven_days_before: 7 days before
+          one_day_after: 1 day after
+          three_days_after: 3 days after
+          seven_days_after: 7 days after
+      non_participating:
+        title: Non-participating
+        submit_button: Update preferences
+        work_package_created: New work packages
+        work_package_commented: All new comments
+        work_package_processed: All status changes
+        work_package_prioritized: All priority changes
+        work_package_scheduled: All date changes
+      project_specific_settings:
+        title: Project-specific notification settings
+        add_button: Add project-specific notifications
+        dialog_title: Add project-specific notifications
+        list_header: Projects with specific notifications
   notifications:
     reasons:
       assigned: 담당자
@@ -3443,6 +3519,7 @@ ko:
       invalid_filter: 잘못된 알림 필터
   label_accessibility: 접근성
   label_account: 계정
+  label_actions: 작업
   label_active: 활성
   label_activate_user: 사용자 활성화
   label_active_in_new_projects: 새로운 프로젝트에서 활성
@@ -3483,6 +3560,7 @@ ko:
   label_ical_access_key_generation_hint: 캘린더 구독 시 자동으로 생성됩니다.
   label_ical_access_key_latest: 최신
   label_ical_access_key_revoke: 취소
+  label_integrations: Integrations
   label_add_column: 열 추가
   label_applied_status: 적용된 상태
   label_archive_project: 프로젝트 아카이브하기
@@ -3733,7 +3811,7 @@ ko:
   label_external_links: 외부 링크
   label_locale: 언어 및 지역
   label_jump_to_a_project: 프로젝트로 이동...
-  label_jira_import: Jira 가져오기
+  label_jira_import: Jira Migrator
   label_keyword_plural: 키워드
   label_language_based: 사용자 언어에 따름
   label_last_activity: 마지막 활동
@@ -4979,12 +5057,12 @@ ko:
   setting_welcome_text: 환영 블록 텍스트
   setting_welcome_title: 환영 블록 제목
   setting_welcome_on_homescreen: 홈 화면에 환영 블록 표시
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
 
     '
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
 
     '
   setting_work_package_list_default_highlighting_mode: 기본 강조 표시 모드

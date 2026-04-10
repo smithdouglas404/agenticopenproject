@@ -31,13 +31,26 @@
 require "spec_helper"
 
 RSpec.describe Projects::Identifier do
+  describe "validations" do
+    subject { create(:project) }
+
+    it { is_expected.to validate_uniqueness_of(:identifier).case_insensitive }
+    it { is_expected.to validate_length_of(:identifier).is_at_most(100) }
+  end
+
+  describe "database indexes" do
+    subject { Project.new }
+
+    it { is_expected.to have_db_index("lower((identifier)::text)").unique(true) }
+  end
+
   describe "identifier normalization" do
     subject { Project.new }
 
     it_behaves_like "strips invisible characters", :identifier
   end
 
-  describe "url identifier" do
+  describe "url identifier", with_settings: { work_packages_identifier: "classic" } do
     let(:reserved) do
       Rails.application.routes.routes
         .map { |route| route.path.spec.to_s }
@@ -73,6 +86,14 @@ RSpec.describe Projects::Identifier do
       expect(project.errors[:identifier]).to include("has already been taken.")
     end
 
+    it "is not allowed to clash with another project case-insensitively" do
+      create(:project, identifier: "existing")
+
+      expect do
+        Project.where(id: create(:project).id).update_all(identifier: "EXISTING")
+      end.to raise_error(ActiveRecord::RecordNotUnique)
+    end
+
     it "is not allowed to clash with a former identifier of another project" do
       other_project = create(:project, identifier: "former-id")
       other_project.update!(identifier: "new-id")
@@ -82,12 +103,29 @@ RSpec.describe Projects::Identifier do
       expect(project.errors[:identifier]).to include("has already been taken.")
     end
 
+    it "is not allowed to clash with a former identifier of another project case-insensitively" do
+      other_project = create(:project, identifier: "former-id")
+      other_project.update!(identifier: "new-id")
+
+      # Bypass format validation to test the LOWER() slug check directly
+      project = create(:project)
+      project.identifier = "FORMER-ID"
+      project.valid?
+      expect(project.errors[:identifier]).to include("has already been taken.")
+    end
+
     it "is allowed to be the same as its own former identifier" do
       project = create(:project, identifier: "old-id")
       project.update!(identifier: "new-id")
 
       project.identifier = "old-id"
       expect(project).to be_valid
+    end
+
+    it "rejects reserved identifiers case-insensitively" do
+      project = build(:project, identifier: "NEW")
+      expect(project).not_to be_valid
+      expect(project.errors[:identifier]).to include("is reserved.")
     end
 
     # The acts_as_url plugin defines validation callbacks on :create and it is not automatically
@@ -155,7 +193,7 @@ RSpec.describe Projects::Identifier do
   end
 
   describe ".suggest_identifier" do
-    context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+    context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
       it "delegates to ProjectIdentifierSuggestionGenerator" do
         allow(WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
           .to receive(:suggest_identifier).with("My Project").and_return("MP")
@@ -165,7 +203,7 @@ RSpec.describe Projects::Identifier do
       end
     end
 
-    context "with numeric (legacy) identifiers", with_settings: { work_packages_identifier: "numeric" } do
+    context "with classic identifiers", with_settings: { work_packages_identifier: "classic" } do
       it "returns a slugified lowercase identifier" do
         expect(Project.suggest_identifier("My Cool Project")).to eq("my-cool-project")
       end

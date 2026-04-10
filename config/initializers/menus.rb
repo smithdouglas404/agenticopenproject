@@ -167,6 +167,7 @@ Redmine::MenuManager.map :account_menu do |menu|
   menu.push :logout,
             :signout_path,
             icon: :"sign-out",
+            show_divider_before: true,
             scheme: :danger,
             if: ->(_) { User.current.logged? },
             html: {
@@ -303,12 +304,8 @@ Redmine::MenuManager.map :my_menu do |menu|
             icon: "devices"
   menu.push :notifications,
             { controller: "/my", action: "notifications" },
-            caption: I18n.t("js.notifications.settings.title"),
+            caption: I18n.t("my_account.notifications_and_email.title"),
             icon: "bell"
-  menu.push :reminders,
-            { controller: "/my", action: "reminders" },
-            caption: I18n.t("js.reminders.settings.title"),
-            icon: "unread"
 end
 
 Redmine::MenuManager.map :admin_menu do |menu|
@@ -628,6 +625,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             if: ->(_) { User.current.admin? },
             caption: :label_announcement,
             icon: "megaphone"
+
+  menu.push :admin_integrations,
+            { controller: "/github_integration/admin/settings", action: "show" },
+            if: ->(_) { User.current.admin? },
+            icon: :"git-compare",
+            caption: :label_integrations
 
   menu.push :plugins,
             { controller: "/admin", action: "plugins" },

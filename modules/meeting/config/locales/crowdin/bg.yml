@@ -189,6 +189,7 @@ bg:
   label_notify: Изпращане за преглед
   label_icalendar: Изпращане на iCalendar
   label_icalendar_download: Изтегляне на събитие от iCalendar
+  label_view_meeting: View meeting
   label_view_meeting_series: View meeting series
   label_meeting_series: Meeting series
   label_version: Версия
@@ -210,7 +211,6 @@ bg:
         manage_participants: Управление на участниците
         no_participants: Няма участници
         show_all: Показване на всичко
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: These participants will be invited automatically to all future meetings as they are created.
         manage_participants: Search for and add project members as participants to this meeting.

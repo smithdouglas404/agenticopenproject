@@ -184,6 +184,7 @@ zh-CN:
   label_notify: 发送待审阅
   label_icalendar: 发送 iCalendar
   label_icalendar_download: 下载 iCalendar 事件
+  label_view_meeting: View meeting
   label_view_meeting_series: 查看会议系列
   label_meeting_series: 会议系列
   label_version: 版本
@@ -205,7 +206,6 @@ zh-CN:
         manage_participants: 管理与会者
         no_participants: 无参加者
         show_all: 全部显示
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: 这些与会者将被自动邀请参加之后创建的所有会议。
         manage_participants: 搜索并添加项目成员作为本次会议的参与者。
