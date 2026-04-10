@@ -125,9 +125,23 @@ module RecurringMeetings
         .destroy_all
     end
 
-    def reschedule_all_occurrences(recurring_meeting) # rubocop:disable Metrics/AbcSize
-      # Get all future non-cancelled occurrence meetings, ordered by recurrence_start_time
-      future_meetings = recurring_meeting
+    def reschedule_all_occurrences(recurring_meeting)
+      future_meetings = future_occurrences_to_reschedule(recurring_meeting)
+      next_occurrences = recurring_meeting.scheduled_occurrences(limit: future_meetings.count)
+      pairs = ordered_reschedule_pairs(future_meetings, next_occurrences)
+
+      Meeting.transaction do
+        pairs.each do |meeting, next_time|
+          next unless next_time
+
+          meeting.update_column(:recurrence_start_time, next_time)
+          meeting.update_column(:start_time, next_time)
+        end
+      end
+    end
+
+    def future_occurrences_to_reschedule(recurring_meeting)
+      recurring_meeting
         .meetings
         .not_templated
         .not_cancelled
@@ -135,21 +149,23 @@ module RecurringMeetings
         .where(recurrence_start_time: Time.current..)
         .order(recurrence_start_time: :asc)
         .to_a
+    end
 
-      # Get the next occurrences from the schedule matching the number of future meetings
-      next_occurrences = recurring_meeting.scheduled_occurrences(limit: future_meetings.count)
+    # Pair each existing meeting with its new scheduled time.
+    # Update order is important here: PostgreSQL enforces the unique constraint on recurrence_start_time
+    # after every individual write, not just at the end of the transaction.
+    # If we do not order them here, we would violate the unique constraint.
+    def ordered_reschedule_pairs(future_meetings, next_occurrences)
+      pairs = future_meetings.zip(next_occurrences.map(&:to_time))
+      last_old = future_meetings.last&.recurrence_start_time
+      last_new = next_occurrences.last&.to_time
 
-      # Update each meeting's timing to match the new schedule
-      Meeting.transaction do
-        future_meetings.each_with_index do |meeting, index|
-          next_time = next_occurrences[index]&.to_time
+      # When the schedule expands (the last new slot is later than the last old slot), we process
+      # from last to first so each meeting moves into a slot already vacated by the one after it.
+      # When the schedule ends up tighter, first-to-last is still safe since each newly freed slot is earlier than the next.
+      pairs.reverse! if last_new && last_old && last_new > last_old
 
-          if next_time
-            meeting.update_column(:recurrence_start_time, next_time)
-            meeting.update_column(:start_time, next_time)
-          end
-        end
-      end
+      pairs
     end
 
     def cleanup_cancelled_schedules(recurring_meeting)

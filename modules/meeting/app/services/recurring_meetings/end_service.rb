@@ -49,7 +49,7 @@ module RecurringMeetings
 
       result.on_success do
         send_cancellation_for_future_instantiated_occurrences if recurring_meeting.notify?
-        remove_scheduled_meetings
+        remove_future_meetings
         send_ended_mail if recurring_meeting.notify?
       end
 
@@ -74,7 +74,7 @@ module RecurringMeetings
 
     ##
     # Delete any upcoming occurrence meetings
-    def remove_scheduled_meetings
+    def remove_future_meetings
       recurring_meeting
         .meetings
         .not_templated

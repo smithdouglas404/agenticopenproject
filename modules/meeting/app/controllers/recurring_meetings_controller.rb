@@ -196,18 +196,10 @@ class RecurringMeetingsController < ApplicationController
   end
 
   def destroy_scheduled # rubocop:disable Metrics/AbcSize
-    recurrence_start_time = DateTime.iso8601(params[:start_time])
-    meeting = @recurring_meeting.meetings.not_templated.find_by(recurrence_start_time:)
-
-    success =
-      if meeting
-        meeting.update_column(:state, Meeting.states[:cancelled])
-      else
-        # Create a stub cancelled meeting from the template so the slot stays visible
-        build_cancelled_occurrence(recurrence_start_time).save
-      end
-
-    if success
+    if @meeting_to_cancel.persisted?
+      meeting.update_column(:state, Meeting.states[:cancelled])
+      flash[:notice] = I18n.t(:notice_successful_cancel)
+    elsif @meeting_to_cancel.save
       flash[:notice] = I18n.t(:notice_successful_cancel)
     else
       flash[:error] = I18n.t(:error_failed_to_delete_entry)

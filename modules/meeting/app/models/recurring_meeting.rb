@@ -327,7 +327,9 @@ class RecurringMeeting < ApplicationRecord
   end
 
   def instantiated_meetings
-    meetings.not_templated
+    meetings
+      .not_templated
+      .not_cancelled
   end
 
   private

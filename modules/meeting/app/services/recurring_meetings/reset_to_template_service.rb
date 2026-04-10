@@ -64,7 +64,7 @@ module RecurringMeetings
       meeting.recurring_meeting.template
     end
 
-    def reset_to_template!
+    def reset_to_template! # rubocop:disable Naming/PredicateMethod
       meeting.transaction do
         clear_existing_content
         copy_agenda_from_template
@@ -84,8 +84,8 @@ module RecurringMeetings
       meeting.participants.destroy_all
     end
 
-    def copy_agenda_from_template
-      template.sections.includes(:agenda_items).each do |section|
+    def copy_agenda_from_template # rubocop:disable Metrics/AbcSize
+      template.sections.includes(:agenda_items).find_each do |section|
         new_section = meeting.sections.create!(
           section.attributes.except("id", "meeting_id", "created_at", "updated_at")
         )
@@ -99,13 +99,14 @@ module RecurringMeetings
     end
 
     def copy_participants_from_template
-      participant_attrs = if template.allowed_participants.present?
-                           template.allowed_participants.collect(&:copy_attributes)
-                         elsif !user.builtin?
-                           [{ "user_id" => user.id, "invited" => true }]
-                         else
-                           []
-                         end
+      participant_attrs =
+        if template.allowed_participants.present?
+          template.allowed_participants.collect(&:copy_attributes)
+        elsif !user.builtin?
+          [{ "user_id" => user.id, "invited" => true }]
+        else
+          []
+        end
 
       participant_attrs.each do |attrs|
         meeting.participants.create!(attrs)

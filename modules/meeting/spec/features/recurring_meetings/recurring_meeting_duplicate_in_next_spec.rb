@@ -141,11 +141,9 @@ RSpec.describe "Recurring meetings duplicate in next meeting", :js do
       end
 
       let!(:cancelled_occurrence) do
-        create(:meeting,
-               recurring_meeting: series,
-               start_time: first_occurrence_time,
-               recurrence_start_time: first_occurrence_time,
-               state: :cancelled)
+        series.meetings.not_templated.find_by!(recurrence_start_time: first_occurrence_time).tap do |instance|
+          instance.update!(state: :cancelled)
+        end
       end
 
       let(:target_meeting_page) { Pages::Meetings::Show.new(target_meeting) }
@@ -197,18 +195,10 @@ RSpec.describe "Recurring meetings duplicate in next meeting", :js do
       end
 
       let!(:first_cancelled_occurrence) do
-        create(:meeting,
-               recurring_meeting: series,
-               start_time: first_occurrence_time,
-               recurrence_start_time: first_occurrence_time,
-               state: :cancelled)
+        cancel_or_create_occurrence(at: first_occurrence_time)
       end
       let!(:second_cancelled_occurrence) do
-        create(:meeting,
-               recurring_meeting: series,
-               start_time: second_occurrence_time,
-               recurrence_start_time: second_occurrence_time,
-               state: :cancelled)
+        cancel_or_create_occurrence(at: second_occurrence_time)
       end
 
       let(:target_meeting_page) { Pages::Meetings::Show.new(target_meeting) }

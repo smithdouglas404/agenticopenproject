@@ -156,13 +156,13 @@ RSpec.describe RecurringMeetings::EndService, type: :model do
 
     it "removes upcoming occurrence meetings" do
       expect { service.call }
-        .to change { recurring_meeting.meetings.not_templated.where("recurrence_start_time >= ?", Time.current).count }
+        .to change { recurring_meeting.meetings.not_templated.where(recurrence_start_time: Time.current..).count }
         .from(2).to(0)
     end
 
     it "does not remove past occurrence meetings" do
       expect { service.call }
-        .not_to change { recurring_meeting.meetings.not_templated.where("recurrence_start_time < ?", Time.current).count }
+        .not_to change { recurring_meeting.meetings.not_templated.where(recurrence_start_time: ...Time.current).count }
     end
 
     it "removes both instantiated and cancelled upcoming meetings" do

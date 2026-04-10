@@ -135,7 +135,9 @@ RSpec.describe Meetings::UpdateService, "integration", type: :model do
 
     context "when previous schedule exists tomorrow at 10:00" do
       shared_let(:previous_meeting) do
-        create(:meeting, recurring_meeting:, project:,
+        create(:meeting,
+               recurring_meeting:,
+               project:,
                start_time: Time.zone.tomorrow + 10.hours,
                recurrence_start_time: Time.zone.tomorrow + 10.hours)
       end

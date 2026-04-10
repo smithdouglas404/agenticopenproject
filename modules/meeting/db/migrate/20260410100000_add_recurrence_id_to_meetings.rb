@@ -58,7 +58,6 @@ class AddRecurrenceIdToMeetings < ActiveRecord::Migration[8.0]
               where: "recurrence_start_time IS NOT NULL AND template = false",
               name: "index_meetings_on_recurring_meeting_and_recurrence_start_time"
 
-
     # Create cancelled Meeting stubs for cancelled scheduled_meetings that have no meeting
     # Copy title/duration/location/author/project from the series template
     execute <<~SQL.squish

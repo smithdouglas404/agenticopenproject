@@ -140,7 +140,7 @@ RSpec.describe "Series template participant management",
           end
         end
 
-        expect(open_scheduled.meeting.participants.reload.pluck(:user_id))
+        expect(open_scheduled.participants.reload.pluck(:user_id))
           .to include(participant_a.id, participant_b.id)
       end
     end
