@@ -45,9 +45,13 @@ module API
 
           private
 
+          # Since not all things are equally named between APIv3 and the rails code,
+          # we need to convert some names manually
           def determine_path_method(record)
-            # since not all things are equally named between APIv3 and the rails code,
-            # we need to convert some names manually
+            # Some objects offer a name for the API, use if available:
+            return record.api_resource_link_name if record.respond_to?(:api_resource_link_name)
+
+            # Manual mapping:
             case record
             when Project
               :project
@@ -61,10 +65,6 @@ module API
               :revision
             when ::CustomField::Hierarchy::HierarchyItemAdapter
               :custom_field_item
-            when Agile::Sprint
-              # Strictly speaking, this belongs into the backlogs module, but since we will rename that class
-              # to `Sprint` soon, we will be able to remove this code branch.
-              :sprint
             else
               record.class.model_name.singular
             end

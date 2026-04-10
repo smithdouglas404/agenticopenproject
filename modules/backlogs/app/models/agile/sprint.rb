@@ -106,5 +106,7 @@ module Agile
     end
 
     def to_s = name
+
+    def api_resource_link_name = :sprint
   end
 end
