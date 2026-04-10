@@ -52,7 +52,7 @@ module Wikis
       end
 
       def create
-        call_create_service
+        save_oauth_client
 
         @service_result.on_failure do
           update_via_turbo_stream(
@@ -67,7 +67,7 @@ module Wikis
       end
 
       def update
-        call_create_service
+        save_oauth_client
 
         @service_result.on_failure do
           update_via_turbo_stream(
@@ -82,7 +82,7 @@ module Wikis
 
       private
 
-      def call_create_service
+      def save_oauth_client
         @service_result = ::OAuthClients::CreateService
                             .new(user: current_user)
                             .call(oauth_client_params.merge(integration: @wiki_provider))

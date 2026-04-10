@@ -42,7 +42,7 @@ module Wikis
       menu_item :wiki_providers
 
       def index
-        @wiki_providers = Wikis::Provider.all
+        @wiki_providers = Wikis::Provider.visible
       end
 
       def new
@@ -111,8 +111,6 @@ module Wikis
       end
 
       def replace_oauth_application
-        @wiki_provider.oauth_application&.destroy!
-
         service_result = Wikis::OAuthApplications::CreateService.new(wiki_provider: @wiki_provider, user: current_user).call
 
         if service_result.success?

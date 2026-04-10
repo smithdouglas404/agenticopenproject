@@ -29,13 +29,8 @@
 #++
 
 module Wikis::Admin
-  class OAuthApplicationInfoComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
-
+  class OAuthApplicationInfoComponent < WikiProviderComponent
     def self.wrapper_key = :wiki_provider_oauth_application_section
-
-    alias_method :wiki_provider, :model
 
     delegate :oauth_application, to: :wiki_provider
   end

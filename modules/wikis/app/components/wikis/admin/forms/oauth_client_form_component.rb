@@ -29,13 +29,8 @@
 #++
 
 module Wikis::Admin::Forms
-  class OAuthClientFormComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
-
+  class OAuthClientFormComponent < Wikis::Admin::WikiProviderComponent
     def self.wrapper_key = :wiki_provider_oauth_client_section
-
-    alias_method :wiki_provider, :model
 
     options in_wizard: false,
             oauth_client: nil
