@@ -119,8 +119,11 @@ When we receive vulnerability reports from researchers or through internal ident
 5. A GitHub advisory draft is created and a CVE is requested, if appropriate. Security researchers are invited to collaborate on the draft, if available.
 6. If possible, a patch or fixed version is provided to the reporter for feedback and confirmation.
 7. For critical and high-severity issues, a **pre-release notification** is sent to the security mailing list at least 7 days before the planned release, including the release date and severity (but no vulnerability details).
-8. A patch release is created, published, and distributed for all supported installations. The CVE, advisory, and full details are disclosed **simultaneously** with the release.
-9. The security mailing list is notified of the publication with upgrade guidance.
+    - This information will include the current releases an upgrade will be available for.
+    - For security fixes deemed critical, we will attempt to provide fixes for the newest versions of the last two major releases
+    - Generally, OpenProject only supports the latest major release. Please consult your enterprise contract or our [terms of services](https://www.openproject.org/legal/terms-of-service/) for details.
+9. A patch release is created, published, and distributed for all supported installations. The CVE, advisory, and full details are disclosed **simultaneously** with the release.
+10. The security mailing list is notified of the publication with upgrade guidance.
 
 ### How long does it take to fix a security issue?
 
