@@ -37,56 +37,24 @@
  * replaced event is never fired, the component will stay in a loading state after morph.
  *
  * Replacing each affected `<action-menu>` host forces `connectedCallback` and
- * a correct listener.
- * TODO: This fix should be extended to other deferred primer components, including
- * `turbo:before-frame-morph`, `turbo:morph` (full page morph) events too.
+ * a correct listener. We hook `turbo:morph-element` so this applies to turbo-stream
+ * morph, frame morph, and full-page morph alike.
  */
 
-interface TurboBeforeStreamRenderDetail {
-  newStream:Element;
-  render:(stream:Element) => Promise<void>;
+interface TurboMorphElementDetail {
+  currentElement:HTMLElement;
+  newElement:HTMLElement;
 }
 
-function remountDeferredPrimerActionMenu(root:ParentNode):void {
-  root
-    .querySelectorAll<HTMLElement>('action-menu:has(include-fragment[src])')
-    .forEach((menu) => {
-        const clone = menu.cloneNode(true);
-        menu.replaceWith(clone);
-    });
-}
-
-export function registerActionMenuStreamAction():void {
-  document.addEventListener('turbo:before-stream-render', (event:Event) => {
-    const { detail } = event as CustomEvent<TurboBeforeStreamRenderDetail>;
-    const stream = detail?.newStream as HTMLElement | undefined;
-    if (!stream) {
+export function registerActionMenuMorphRemount():void {
+  document.addEventListener('turbo:morph-element', (event:Event) => {
+    const { detail } = event as CustomEvent<TurboMorphElementDetail>;
+    const currentElement = detail?.currentElement;
+    if (!currentElement?.matches('action-menu:has(include-fragment[src])')) {
       return;
     }
 
-    if (stream.getAttribute('action') !== 'replace' ||
-        stream.getAttribute('method') !== 'morph') {
-      return;
-    }
-
-    const targetId = stream.getAttribute('target');
-    if (!targetId) {
-      return;
-    }
-
-    const targetElement = document.getElementById(targetId);
-    if (!targetElement) {
-      return;
-    }
-
-    if (!targetElement.querySelector('action-menu include-fragment[src]')) {
-      return;
-    }
-
-    const originalRender = detail.render;
-    detail.render = async (streamElement) => {
-      await originalRender(streamElement);
-      remountDeferredPrimerActionMenu(targetElement);
-    };
+    const clone = currentElement.cloneNode(true);
+    currentElement.replaceWith(clone);
   });
 }
