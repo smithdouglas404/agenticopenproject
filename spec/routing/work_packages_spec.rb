@@ -92,6 +92,12 @@ RSpec.describe WorkPackagesController do
                                                 id: "1")
   end
 
+  it "connects GET /work_packages/:id to work_packages#show with semantic identifier" do
+    expect(get("/work_packages/PROJ-42")).to route_to(controller: "work_packages",
+                                                      action: "show",
+                                                      id: "PROJ-42")
+  end
+
   it "connects GET /work_packages/:id/share to work_packages/shares#index" do
     expect(get("/work_packages/1/shares")).to route_to(controller: "shares",
                                                        action: "index",
