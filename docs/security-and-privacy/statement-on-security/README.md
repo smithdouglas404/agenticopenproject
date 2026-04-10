@@ -35,11 +35,11 @@ Any security related information will also be published in the [release notes](.
 
 ### Security advisory list
 
-OpenProject uses GitHub to manage and publish [security advisory listings](https://github.com/opf/openproject/security/advisories). All publicly known security issues on OpenProject are reported as CVEs and can be found through these advisories. All published CVEs will also be listed on [cve.org](https://www.cve.org/CVERecord/SearchResults?query=OpenProject).
+OpenProject uses GitHub to manage and publish [security advisory listings](https://github.com/opf/openproject/security/advisories). All publicly known security issues on OpenProject with at least a medium CVSS score are reported as CVEs and can be found through these advisories. All published CVEs will also be listed on [cve.org](https://www.cve.org/CVERecord/SearchResults?query=OpenProject).
 
 ### Email
 
-For direct communication regarding security matters, please contact [security@openproject.com](mailto:security@openproject.com). This channel is monitored by our security team and is the primary entry point for vulnerability reports.
+Next to GitHub advisories, you may also directly reach out to the security team via email using [security@openproject.com](mailto:security@openproject.com). 
 
 ## Reporting a vulnerability
 
@@ -80,6 +80,7 @@ Please adhere to the following rules when reporting or researching security issu
 
 We appreciate your time in every security report you communicate to us. There are a number of cases that can be viewed as security vulnerabilities, but for which we might either reject or not follow up with a full CVE publication. We still welcome you to reach out and discuss potential mitigations or attack vectors with us. Examples for these cases could be
 
+- Outdated versions of OpenProject. Please ensure you have confirmed the vulnerability against the latest stable version of OpenProject. If you have found new issues as part of the unreleased `dev` branch, of course please also contact us for that.
 - Tab nabbing
 - Content/text injections that do not result in an XSS attack due to other mitigations
 - Denial of service attacks through memory exhaustion, content size, or similar measures
@@ -114,9 +115,9 @@ When we receive vulnerability reports from researchers or through internal ident
 1. A security vulnerability is reported internally, through GitHub advisories, an active bug bounty program, or through [security@openproject.com](mailto:security@openproject.com).
 2. A security engineer receives and validates the report. An internal tracking ticket is created with a checklist template on how to process the report.
 3. The reporter receives a timely response with an acknowledgement of the report, further questions if present, and an estimated timeline and complexity of a potential fix.
-4. The security engineer coordinates with the security and development team to prepare and test a fix in a private branch (using GitHub Security Advisory temporary private forks).
+4. The security engineer coordinates with the security and development team to prepare and test a fix.
 5. A GitHub advisory draft is created and a CVE is requested, if appropriate. Security researchers are invited to collaborate on the draft, if available.
-6. A patch is returned to the reporter and awaited for confirmation, unless the fix is trivial.
+6. If possible, a patch or fixed version is provided to the reporter for feedback and confirmation.
 7. For critical and high-severity issues, a **pre-release notification** is sent to the security mailing list at least 7 days before the planned release, including the release date and severity (but no vulnerability details).
 8. A patch release is created, published, and distributed for all supported installations. The CVE, advisory, and full details are disclosed **simultaneously** with the release.
 9. The security mailing list is notified of the publication with upgrade guidance.
