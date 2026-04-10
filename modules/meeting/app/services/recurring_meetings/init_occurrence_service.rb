@@ -65,9 +65,9 @@ module RecurringMeetings
     end
 
     def restore_cancelled(meeting)
-      ::Meetings::UpdateService
-        .new(user:, model: meeting)
-        .call(state: "open")
+      ::RecurringMeetings::ResetToTemplateService
+        .new(user:, meeting:, params: { state: :open })
+        .call
     end
 
     def copy_from_template(start_time)

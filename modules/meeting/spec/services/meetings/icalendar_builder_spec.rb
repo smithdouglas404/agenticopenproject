@@ -300,7 +300,7 @@ RSpec.describe Meetings::IcalendarBuilder,
       before do
         recurring_meeting.template.participants.find_by(user: user1).update!(participation_status: :needs_action)
         recurring_meeting.meetings.each do |meeting|
-          meeting.participants.find_by(user: user1).update(participation_status: :needs_action)
+          meeting.participants.find_by(user: user1)&.update(participation_status: :needs_action)
         end
         recurring_meeting.template.participants.find_by(user: user2).update!(participation_status: :declined)
       end

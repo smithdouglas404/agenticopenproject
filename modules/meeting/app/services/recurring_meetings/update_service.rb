@@ -112,10 +112,7 @@ module RecurringMeetings
 
         Meeting.transaction do
           meeting.update_column(:recurrence_start_time, new_time)
-          # Only update actual start_time for future non-cancelled meetings
-          if !meeting.cancelled? && meeting.start_time.future?
-            meeting.update_column(:start_time, new_time)
-          end
+          meeting.update_column(:start_time, new_time) if meeting.start_time.future?
         end
       end
     end
@@ -125,7 +122,7 @@ module RecurringMeetings
         .meetings
         .not_templated
         .cancelled
-        .delete_all
+        .destroy_all
     end
 
     def reschedule_all_occurrences(recurring_meeting) # rubocop:disable Metrics/AbcSize
@@ -137,6 +134,7 @@ module RecurringMeetings
         .where.not(recurrence_start_time: nil)
         .where(recurrence_start_time: Time.current..)
         .order(recurrence_start_time: :asc)
+        .to_a
 
       # Get the next occurrences from the schedule matching the number of future meetings
       next_occurrences = recurring_meeting.scheduled_occurrences(limit: future_meetings.count)
