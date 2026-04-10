@@ -61,6 +61,10 @@ module API
               :revision
             when ::CustomField::Hierarchy::HierarchyItemAdapter
               :custom_field_item
+            when Agile::Sprint
+              # Strictly speaking, this belongs into the backlogs module, but since we will rename that class
+              # to `Sprint` soon, we will be able to remove this code branch.
+              :sprint
             else
               record.class.model_name.singular
             end
