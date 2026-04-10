@@ -47,11 +47,7 @@ interface TurboBeforeStreamRenderDetail {
   render:(stream:Element) => Promise<void>;
 }
 
-function remountDeferredPrimerActionMenu(root:ParentNode | null):void {
-  if (!root) {
-    return;
-  }
-
+function remountDeferredPrimerActionMenu(root:ParentNode):void {
   root.querySelectorAll('action-menu').forEach((menu) => {
     if (!menu.querySelector('include-fragment[src]')) {
       return;
@@ -79,10 +75,19 @@ export function registerActionMenuStreamAction():void {
       return;
     }
 
+    const targetElement = document.getElementById(targetId);
+    if (!targetElement) {
+      return;
+    }
+
+    if (!targetElement.querySelector('action-menu include-fragment[src]')) {
+      return;
+    }
+
     const originalRender = detail.render;
     detail.render = async (streamElement) => {
       await originalRender(streamElement);
-      remountDeferredPrimerActionMenu(document.getElementById(targetId));
+      remountDeferredPrimerActionMenu(targetElement);
     };
   });
 }
