@@ -31,6 +31,11 @@
 module WorkPackage::SemanticIdentifier
   extend ActiveSupport::Concern
 
+  # Matches either a numeric ID ("12345") or a semantic identifier ("PROJ-42").
+  # Used in Rails route constraints so both forms are accepted in URLs.
+  # The frontend equivalent lives in WP_ID_URL_PATTERN (work-package-id-pattern.ts).
+  ID_ROUTE_CONSTRAINT = /\d+|[A-Za-z][A-Za-z0-9_]*-\d+/
+
   # Finder methods that work on both the WorkPackage class and ActiveRecord::Relation scopes:
   #   semantic_id?("PROJ-42") → true
   #   semantic_id?(" 456 ")   → false  (stripped, then numeric)
