@@ -110,7 +110,7 @@ describe('WorkPackage', () => {
     });
   });
 
-  describe('id getter', () => {
+  describe('displayId', () => {
     afterEach(() => {
       source = undefined;
     });
@@ -121,8 +121,12 @@ describe('WorkPackage', () => {
         createWorkPackage();
       });
 
-      it('should return the displayId', () => {
-        expect(workPackage.id).toEqual('PROJ-7');
+      it('should return the semantic identifier', () => {
+        expect(workPackage.displayId).toEqual('PROJ-7');
+      });
+
+      it('should not override the numeric id', () => {
+        expect(workPackage.id).toEqual('42');
       });
     });
 
@@ -133,7 +137,7 @@ describe('WorkPackage', () => {
       });
 
       it('should return the numeric displayId as string', () => {
-        expect(workPackage.id).toEqual('42');
+        expect(workPackage.displayId).toEqual('42');
       });
     });
 
@@ -144,8 +148,32 @@ describe('WorkPackage', () => {
       });
 
       it('should fall back to the numeric id', () => {
-        expect(workPackage.id).toEqual('42');
+        expect(workPackage.displayId).toEqual('42');
       });
+    });
+  });
+
+  describe('displayIdWithHash', () => {
+    afterEach(() => {
+      source = undefined;
+    });
+
+    it('should prefix displayId with # in semantic mode', () => {
+      source = { id: 42, displayId: 'PROJ-7' };
+      createWorkPackage();
+      expect(workPackage.displayIdWithHash).toEqual('#PROJ-7');
+    });
+
+    it('should prefix displayId with # in classic mode', () => {
+      source = { id: 42, displayId: '42' };
+      createWorkPackage();
+      expect(workPackage.displayIdWithHash).toEqual('#42');
+    });
+
+    it('should fall back to numeric id when displayId is absent', () => {
+      source = { id: 42 };
+      createWorkPackage();
+      expect(workPackage.displayIdWithHash).toEqual('#42');
     });
   });
 

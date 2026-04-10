@@ -104,7 +104,7 @@ export abstract class WorkPackageRelationQueryBase extends UntilDestroyedMixin {
       return this.queryUrlParamsHelper.buildV3GetQueryFromQueryResource(
         this.query,
         { valid_subset: true },
-        { id: this.workPackage.$source.id!.toString() },
+        { id: this.workPackage.id! },
       );
     }
     return this.query;

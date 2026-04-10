@@ -127,22 +127,27 @@ export class WorkPackageBaseResource extends HalResource {
 
   /**
    * Returns the user-facing work package identifier.
-   *
-   * The API always includes a `displayId` field: either `"PROJ-42"` in semantic
-   * mode or `"123"` in classic mode. This override means every consumer of `wp.id`
-   * (table rows, card views, URLs, cache keys) automatically gets the right value
-   * without per-view conditional logic.
-   *
-   * Note: `$source.id` (the numeric PK) is still available via `$source.id` and
-   * in `_links.self.href`, which always uses the numeric path. Only the
-   * user-facing identifier changes.
+   * "PROJ-42" in semantic mode, "123" in classic mode.
+   * Falls back to numeric id when displayId is not in the API response.
    */
-  public override get id():string|null {
+  public get displayId():string {
     if (this.$source.displayId) {
       return this.$source.displayId.toString();
     }
 
-    return super.id;
+    return this.id?.toString() ?? '';
+  }
+
+  /**
+   * Returns the work package identifier formatted for display in the UI,
+   * always prefixed with `#`: `#123` in classic mode, `#PROJ-42` in
+   * semantic mode.
+   */
+  public get displayIdWithHash():string {
+    const wpId = this.displayId;
+    if (!wpId) return '';
+
+    return `#${wpId}`;
   }
 
   public updatedAt:Date;
@@ -190,7 +195,7 @@ export class WorkPackageBaseResource extends HalResource {
   }
 
   /**
-   * Return "<type name>: <subject> (#<id>)" if type and id are known.
+   * Return "<type name>: <subject> (<displayIdWithHash>)" if type and id are known.
    */
   public subjectWithType(truncateSubject = 40):string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -198,10 +203,10 @@ export class WorkPackageBaseResource extends HalResource {
   }
 
   /**
-   * Return "<subject> (#<id>)" if the id is known.
+   * Return "<subject> (<displayIdWithHash>)" if the id is known.
    */
   public subjectWithId(truncateSubject = 40):string {
-    const id = isNewResource(this) ? '' : ` (#${this.id || ''})`;
+    const id = isNewResource(this) ? '' : ` (${this.displayIdWithHash})`;
 
     return `${this.truncatedSubject(truncateSubject)}${id}`;
   }

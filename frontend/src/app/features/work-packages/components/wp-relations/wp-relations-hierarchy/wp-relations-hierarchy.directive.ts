@@ -86,7 +86,7 @@ export class WorkPackageRelationsHierarchyComponent extends UntilDestroyedMixin 
     this.canAddRelation = !!this.workPackage.addRelation;
 
     this.childrenQueryProps = {
-      filters: JSON.stringify([{ parent: { operator: '=', values: [this.workPackage.$source.id!.toString()] } }]),
+      filters: JSON.stringify([{ parent: { operator: '=', values: [this.workPackage.id] } }]),
       'columns[]': ['id', 'type', 'subject', 'status'],
       showHierarchies: false,
     };
