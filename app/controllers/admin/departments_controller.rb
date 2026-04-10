@@ -88,7 +88,17 @@ module Admin
     end
 
     def add_department
-      # TODO: Implement
+      service_call = ::Groups::CreateService
+        .new(user: current_user)
+        .call(permitted_params.group.merge(organizational_unit: true))
+
+      if service_call.success?
+        department = service_call.result
+        redirect_to admin_department_path(department.parent_id ? department.parent : department), status: :see_other
+      else
+        flash[:error] = service_call.errors.full_messages.join("\n")
+        redirect_back_or_to(admin_departments_path)
+      end
     end
 
     def edit_organization_name
@@ -193,6 +203,5 @@ module Admin
         "global_roles"
       end
     end
-
   end
 end

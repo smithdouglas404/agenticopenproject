@@ -71,22 +71,22 @@ See COPYRIGHT and LICENSE files for more details.
           end
         end
 
+        if add_subgroup?
+          box.with_row do
+            render(Admin::Departments::AddDepartmentComponent.new(group:))
+          end
+        end
+
         users.each do |user|
           box.with_row do
             render(Admin::Departments::UserRowComponent.new(user:))
           end
         end
-      end
 
-      if add_user?
-        box.with_row do
-          render(Admin::Departments::AddUserComponent.new(group:))
-        end
-      end
-
-      if add_subgroup?
-        box.with_row do
-          render(Admin::Departments::AddDepartmentComponent.new(group:))
+        if add_user?
+          box.with_row do
+            render(Admin::Departments::AddUserComponent.new(group:))
+          end
         end
       end
     end

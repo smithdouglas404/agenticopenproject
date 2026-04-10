@@ -31,7 +31,8 @@ See COPYRIGHT and LICENSE files for more details.
   component_wrapper do
     primer_form_with(
       url: add_department_admin_departments_path,
-      method: :post
+      method: :post,
+      scope: :group
     ) do |f|
       cancel_path = if group
                       helpers.admin_department_path(group)
@@ -46,7 +47,7 @@ See COPYRIGHT and LICENSE files for more details.
 
         form.group(layout: :horizontal) do |row|
           row.text_field(
-            name: :name,
+            name: :lastname,
             label: I18n.t("departments.add_department_form.name_label"),
             visually_hide_label: true,
             placeholder: I18n.t("departments.add_department_form.name_placeholder"),
