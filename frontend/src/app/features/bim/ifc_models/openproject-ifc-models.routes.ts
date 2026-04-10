@@ -99,7 +99,7 @@ export const IFC_ROUTES:Ng2StateDeclaration[] = [
   },
   {
     name: 'bim.partitioned.show',
-    url: '/show/{workPackageId:[0-9]+}',
+    url: '/show/{workPackageId:[A-Za-z0-9_-]+}',
     data: {
       baseRoute: 'bim.partitioned.list',
       partition: '-left-only',

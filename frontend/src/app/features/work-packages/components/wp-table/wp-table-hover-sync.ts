@@ -72,8 +72,8 @@ export class WpTableHoverSync {
     this.removeOldAndAddNewHoverClass(parentTableRow, parentTimelineRow);
   }
 
-  private extractWorkPackageId(row:Element):number {
-    return parseInt(row.getAttribute('data-work-package-id')!);
+  private extractWorkPackageId(row:Element):string {
+    return row.getAttribute('data-work-package-id')!;
   }
 
   private removeOldAndAddNewHoverClass(parentTableRow:Element | null, parentTimelineRow:Element | null) {

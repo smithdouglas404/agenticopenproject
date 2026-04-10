@@ -125,6 +125,26 @@ export class WorkPackageBaseResource extends HalResource {
 
   public subject:string;
 
+  /**
+   * Returns the user-facing work package identifier.
+   *
+   * The API always includes a `displayId` field: either `"PROJ-42"` in semantic
+   * mode or `"123"` in classic mode. This override means every consumer of `wp.id`
+   * (table rows, card views, URLs, cache keys) automatically gets the right value
+   * without per-view conditional logic.
+   *
+   * Note: `$source.id` (the numeric PK) is still available via `$source.id` and
+   * in `_links.self.href`, which always uses the numeric path. Only the
+   * user-facing identifier changes.
+   */
+  public override get id():string|null {
+    if (this.$source.displayId) {
+      return this.$source.displayId.toString();
+    }
+
+    return super.id;
+  }
+
   public updatedAt:Date;
 
   public lockVersion:number;

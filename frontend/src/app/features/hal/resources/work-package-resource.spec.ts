@@ -110,6 +110,45 @@ describe('WorkPackage', () => {
     });
   });
 
+  describe('id getter', () => {
+    afterEach(() => {
+      source = undefined;
+    });
+
+    describe('when displayId is present (semantic mode)', () => {
+      beforeEach(() => {
+        source = { id: 42, displayId: 'PROJ-7' };
+        createWorkPackage();
+      });
+
+      it('should return the displayId', () => {
+        expect(workPackage.id).toEqual('PROJ-7');
+      });
+    });
+
+    describe('when displayId is present (classic mode)', () => {
+      beforeEach(() => {
+        source = { id: 42, displayId: '42' };
+        createWorkPackage();
+      });
+
+      it('should return the numeric displayId as string', () => {
+        expect(workPackage.id).toEqual('42');
+      });
+    });
+
+    describe('when displayId is absent (legacy API response)', () => {
+      beforeEach(() => {
+        source = { id: 42 };
+        createWorkPackage();
+      });
+
+      it('should fall back to the numeric id', () => {
+        expect(workPackage.id).toEqual('42');
+      });
+    });
+  });
+
   describe('when retrieving `canAddAttachment`', () => {
     beforeEach(createWorkPackage);
 

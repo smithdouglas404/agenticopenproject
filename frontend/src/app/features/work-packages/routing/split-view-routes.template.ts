@@ -66,7 +66,7 @@ export function makeSplitViewRoutes(baseRoute:string,
   return [
     {
       name: `${routeName}.details`,
-      url: '/details/{workPackageId:[0-9]+}',
+      url: '/details/{workPackageId:[A-Za-z0-9_-]+}',
       redirectTo: (trans) => {
         const params = trans.params('to');
         return {
@@ -102,7 +102,7 @@ export function makeSplitViewRoutes(baseRoute:string,
     // Split create route
     {
       name: `${routeName}.new`,
-      url: '/create_new?{type:[0-9]+}&{parent_id:[0-9]+}',
+      url: '/create_new?{type:[0-9]+}&{parent_id:[A-Za-z0-9_-]+}',
       reloadOnSearch: false,
       params: {
         defaults: {
