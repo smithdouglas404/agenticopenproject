@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, inject } from '@angular/core';
 import {
   WorkPackageIsolatedQuerySpaceDirective,
 } from 'core-app/features/work-packages/directives/query-space/wp-isolated-query-space.directive';
@@ -53,7 +53,9 @@ export class WorkPackageSplitViewEntryComponent {
   @Input() activeTab:string;
   @Input() resizerClass:string;
 
-  constructor(readonly elementRef:ElementRef) {
+  readonly elementRef = inject(ElementRef);
+
+  constructor() {
     populateInputsFromDataset(this);
 
     document.body.classList.add('router--work-packages-partitioned-split-view-details');
