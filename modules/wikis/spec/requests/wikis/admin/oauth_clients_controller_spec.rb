@@ -136,7 +136,7 @@ RSpec.describe "Admin wiki OAuth clients", :skip_csrf, type: :rails_request do
       it_behaves_like "a turbo stream response"
 
       it "updates the oauth client credentials" do
-        expect(oauth_client.reload.client_id).to eq("new-id")
+        expect(wiki_provider.reload.oauth_client.client_id).to eq("new-id")
       end
     end
   end
