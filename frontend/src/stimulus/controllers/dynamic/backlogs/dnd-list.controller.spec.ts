@@ -75,4 +75,26 @@ describe('BacklogsDndListController', () => {
 
     expect(cleanup).toHaveBeenCalled();
   });
+
+  it('re-registers the list drop target after turbo morph on the same element', async () => {
+    fixturesElement.innerHTML = `
+      <ul
+        id="list"
+        data-controller="backlogs--dnd-list"
+        data-backlogs--dnd-list-list-id-value="sprint:1">
+      </ul>
+    `;
+
+    const cleanup = jasmine.createSpy('cleanup');
+    spyOn(pragmaticDnd, 'dropTargetForElements').and.returnValue(cleanup);
+
+    Stimulus = Application.start();
+    Stimulus.register('backlogs--dnd-list', BacklogsDndListController);
+
+    await nextFrame();
+
+    fixturesElement.querySelector<HTMLElement>('#list')!.dispatchEvent(new Event('turbo:morph-element'));
+
+    expect(pragmaticDnd.dropTargetForElements).toHaveBeenCalledTimes(2);
+  });
 });

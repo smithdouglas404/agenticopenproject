@@ -64,8 +64,6 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
   it "rendering renders the Inbox Component", :aggregate_failures do
     # renders the work package subject
     expect(page).to have_text("Inbox Work Package")
-    # renders a drag handle
-    expect(page).to have_octicon(:grabber)
     # renders WorkPackages::InfoLineComponent with type and ID
     expect(page).to have_text("##{work_package.id}")
     # deferred action menu (kebab + include-fragment src)

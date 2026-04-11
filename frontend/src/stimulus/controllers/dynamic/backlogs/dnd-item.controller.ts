@@ -43,13 +43,27 @@ export default class BacklogsDndItemController extends Controller<HTMLElement> {
   declare readonly dropUrlValue:string;
 
   private cleanup:(() => void)|null = null;
+  private abortController:AbortController|null = null;
 
   connect() {
+    this.abortController?.abort();
+    this.abortController = new AbortController();
+    this.element.addEventListener('turbo:morph-element', this.refreshRegistration, { signal: this.abortController.signal });
+    this.registerPragmaticDnd();
+  }
+
+  disconnect() {
+    this.cleanup?.();
+    this.cleanup = null;
+    this.abortController?.abort();
+    this.abortController = null;
+  }
+
+  private registerPragmaticDnd() {
     this.cleanup?.();
     this.cleanup = pragmaticDnd.combine(
       pragmaticDnd.draggable({
         element: this.element,
-        dragHandle: this.handleElement ?? undefined,
         getInitialData: () => ({
           itemId: this.itemIdValue,
           itemType: this.itemTypeValue,
@@ -67,14 +81,13 @@ export default class BacklogsDndItemController extends Controller<HTMLElement> {
     );
   }
 
-  disconnect() {
-    this.cleanup?.();
-    this.cleanup = null;
-  }
+  private refreshRegistration = (event:Event) => {
+    if (event.target !== this.element) {
+      return;
+    }
 
-  private get handleElement() {
-    return this.element.querySelector('.DragHandle');
-  }
+    this.registerPragmaticDnd();
+  };
 
   private closestEdge(clientY:number, element:HTMLElement) {
     const { top, height } = element.getBoundingClientRect();

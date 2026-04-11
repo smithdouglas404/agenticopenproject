@@ -56,9 +56,7 @@ describe('BacklogsDndItemController', () => {
           data-controller="backlogs--dnd-item"
           data-backlogs--dnd-item-item-id-value="1"
           data-backlogs--dnd-item-item-type-value="story"
-          data-backlogs--dnd-item-drop-url-value="/stories/1">
-          <button type="button" class="DragHandle">Drag 1</button>
-        </li>
+          data-backlogs--dnd-item-drop-url-value="/stories/1"></li>
       </ul>
     `;
 
@@ -78,6 +76,9 @@ describe('BacklogsDndItemController', () => {
 
     expect(pragmaticDnd.draggable).toHaveBeenCalled();
     expect(pragmaticDnd.dropTargetForElements).toHaveBeenCalled();
+    expect(pragmaticDnd.draggable).toHaveBeenCalledWith(jasmine.objectContaining({
+      element: fixturesElement.querySelector('#story-1'),
+    }));
 
     const controller = Stimulus.getControllerForElementAndIdentifier(
       fixturesElement.querySelector('#story-1')!,
@@ -97,9 +98,7 @@ describe('BacklogsDndItemController', () => {
           data-controller="backlogs--dnd-item"
           data-backlogs--dnd-item-item-id-value="1"
           data-backlogs--dnd-item-item-type-value="story"
-          data-backlogs--dnd-item-drop-url-value="/stories/1">
-          <button type="button" class="DragHandle">Drag 1</button>
-        </li>
+          data-backlogs--dnd-item-drop-url-value="/stories/1"></li>
       </ul>
     `;
 
@@ -130,5 +129,36 @@ describe('BacklogsDndItemController', () => {
     expect(dropTargetArgs).not.toBeNull();
     expect(dropTargetArgs!.getData({ input: { clientY: 110 }, element }).edge).toBe('before');
     expect(dropTargetArgs!.getData({ input: { clientY: 170 }, element }).edge).toBe('after');
+  });
+
+  it('re-registers the draggable after turbo morph on the same element', async () => {
+    fixturesElement.innerHTML = `
+      <ul>
+        <li
+          id="story-1"
+          data-controller="backlogs--dnd-item"
+          data-backlogs--dnd-item-item-id-value="1"
+          data-backlogs--dnd-item-item-type-value="story"
+          data-backlogs--dnd-item-drop-url-value="/stories/1"></li>
+      </ul>
+    `;
+
+    const noopCleanup = jasmine.createSpy('noopCleanup');
+    spyOn(pragmaticDnd, 'draggable').and.returnValue(noopCleanup);
+    spyOn(pragmaticDnd, 'dropTargetForElements').and.returnValue(noopCleanup);
+    spyOn(pragmaticDnd, 'combine').and.callFake((...cleanups) => () => {
+      cleanups.forEach((cleanup) => cleanup());
+    });
+
+    Stimulus = Application.start();
+    Stimulus.register('backlogs--dnd-item', BacklogsDndItemController);
+
+    await nextFrame();
+
+    const element = fixturesElement.querySelector<HTMLElement>('#story-1')!;
+    element.dispatchEvent(new Event('turbo:morph-element'));
+
+    expect(pragmaticDnd.draggable).toHaveBeenCalledTimes(2);
+    expect(pragmaticDnd.dropTargetForElements).toHaveBeenCalledTimes(2);
   });
 });
