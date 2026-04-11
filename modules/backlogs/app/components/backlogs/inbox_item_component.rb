@@ -60,20 +60,40 @@ module Backlogs
     def row_options
       {
         id: dom_id(work_package),
-        classes: "Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable",
+        classes: row_classes,
         data: {
-          draggable_id: work_package.id,
-          draggable_type: "story",
-          drop_url: move_project_backlogs_inbox_path(project, work_package),
           story: true,
-          controller: "backlogs--story",
+          controller: row_controllers,
           backlogs__story_id_value: work_package.id,
           backlogs__story_split_url_value: project_backlogs_backlog_details_path(project, work_package),
           backlogs__story_full_url_value: work_package_path(work_package),
           backlogs__story_selected_class: "Box-row--blue",
           test_selector: card_test_selector
-        },
+        }.merge(draggable_data_attributes),
         tabindex: 0
+      }
+    end
+
+    def row_classes
+      classes = "Box-row--hover-blue Box-row--focus-gray Box-row--clickable"
+      classes += " Box-row--draggable" if draggable?
+      classes
+    end
+
+    def row_controllers
+      controllers = ["backlogs--story"]
+      controllers.unshift("backlogs--dnd-item") if draggable?
+
+      controllers.join(" ")
+    end
+
+    def draggable_data_attributes
+      return {} unless draggable?
+
+      {
+        backlogs__dnd_item_item_id_value: work_package.id,
+        backlogs__dnd_item_item_type_value: "story",
+        backlogs__dnd_item_drop_url_value: move_project_backlogs_inbox_path(project, work_package)
       }
     end
 

@@ -27,30 +27,12 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<%= component_wrapper(tag: :section) do %>
-  <%= render(Backlogs::ListBoxComponent.new(padding: :condensed, list_arguments: @list_arguments, **@system_arguments)) do |list_box| %>
-    <% list_box.with_header(id: dom_target(sprint, :header)) do %>
-      <%= render(Backlogs::SprintHeaderComponent.new(sprint:, project:, stories:, folded: folded?, active_sprint_ids:)) %>
-    <% end %>
-    <% if stories.empty? %>
-      <% list_box.with_row(data: { empty_list_item: true }) do %>
-        <%=
-          render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
-            blankslate.with_heading(tag: :h4).with_content(t(".blankslate_title", name: sprint.name))
-            blankslate.with_description_content(t(".blankslate_description"))
-          end
-        %>
-      <% end %>
-    <% end %>
-    <% stories.each do |story| %>
-      <% list_box.with_row(
-           id: dom_id(story),
-           classes: story_classes_attribute,
-           data: story_data_attribute(story),
-           tabindex: 0
-         ) do %>
-        <%= render(Backlogs::StoryComponent.new(story:, sprint:, project:)) %>
-      <% end %>
+<%= render(Primer::BaseComponent.new(**@system_arguments)) do %>
+  <%= header if header? %>
+
+  <%= render(Primer::BaseComponent.new(**@list_arguments)) do %>
+    <% rows.each do |row| %>
+      <%= row %>
     <% end %>
   <% end %>
 <% end %>

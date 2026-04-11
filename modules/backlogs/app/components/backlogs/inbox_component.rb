@@ -50,11 +50,14 @@ module Backlogs
 
       @system_arguments = system_arguments
       @system_arguments[:id] = inbox_dom_id
-      @system_arguments[:padding] = :condensed
-      @system_arguments[:data] = merge_data(
-        @system_arguments,
-        { data: drop_target_config }
-      )
+      @list_arguments = {
+        id: "#{inbox_dom_id}-list",
+        data: {
+          controller: "backlogs--dnd-list",
+          backlogs__dnd_list_list_id_value: "inbox",
+          backlogs__dnd_list_accepts_value: "story"
+        }
+      }
     end
 
     def wrapper_uniq_by
@@ -91,13 +94,5 @@ module Backlogs
       total - FIRST_PAGE_SIZE - LAST_PAGE_SIZE
     end
 
-    def drop_target_config
-      {
-        generic_drag_and_drop_target: "container",
-        target_container_accessor: ":scope > ul",
-        target_id: "inbox",
-        target_allowed_drag_type: "story"
-      }
-    end
   end
 end
