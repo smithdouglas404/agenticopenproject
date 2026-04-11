@@ -164,11 +164,11 @@ ul.SegmentedControl,
   &:focus-visible
     background-color: var(--bgColor-accent-muted)
 
-.Box-row--clickable
+.Box-row:is(.Box-row--clickable)
   cursor: pointer
 
 .Box-row:is(.Box-row--draggable)
-  padding-left: 0
+  cursor: grab
 
 // Apply the mobile styles as soon as the banner itself is small
 // Styles are copied from the PVC repo
