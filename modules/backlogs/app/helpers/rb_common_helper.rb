@@ -142,6 +142,10 @@ module RbCommonHelper
       !project.receive_shared_sprints?
   end
 
+  def show_all_backlog
+    ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
+  end
+
   private
 
   def work_package_status_for_id(id)

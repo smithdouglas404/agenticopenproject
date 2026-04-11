@@ -34,6 +34,21 @@ class InboxController < RbApplicationController
   before_action :not_authorized_on_feature_flag_inactive
   before_action :load_work_package
 
+  # Deferred ActionMenu items (Primer include-fragment).
+  def menu
+    max_position = Backlog.inbox_for(project: @project).maximum(:position) || 0
+    open_sprints_exist = Agile::Sprint.for_project(@project).visible.not_completed.exists?
+
+    render(Backlogs::InboxMenuComponent.new(
+             work_package: @work_package,
+             project: @project,
+             max_position:,
+             open_sprints_exist:,
+             current_user:
+           ),
+           layout: false)
+  end
+
   def move_to_sprint_dialog
     respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(
       work_package: @work_package,
@@ -71,22 +86,22 @@ class InboxController < RbApplicationController
   private
 
   def load_work_package
-    @work_package = WorkPackage.visible.find(params[:id])
+    @work_package = WorkPackage.visible.where(project: @project).find(params[:id])
   end
 
   def replace_inbox_component_via_turbo_stream
-    inbox_work_packages = Backlog.inbox_for(project: @project)
+    work_packages = Backlog.inbox_for(project: @project)
     replace_via_turbo_stream(
-      component: Backlogs::InboxComponent.new(work_packages: inbox_work_packages, project: @project),
+      component: Backlogs::InboxComponent.new(
+        work_packages:,
+        project: @project
+      ),
       method: :morph
     )
   end
 
   def replace_sprint_component_via_turbo_stream(sprint_id)
     sprint = Agile::Sprint.for_project(@project).visible.find(sprint_id)
-    render_success_flash_message_via_turbo_stream(
-      message: I18n.t(:notice_successful_move, from: I18n.t(:label_inbox), to: sprint.name)
-    )
     replace_via_turbo_stream(
       component: Backlogs::SprintComponent.new(sprint: sprint, project: @project),
       method: :morph

@@ -118,7 +118,7 @@ RSpec.describe "Backlogs", :js do
       click_on "Create"
     end
 
-    expect_and_dismiss_flash type: :success, message: "New work package created"
+    expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
 
     # velocity should be summed up immediately
     # TODO: removed in OP #57688, to be reimplemented

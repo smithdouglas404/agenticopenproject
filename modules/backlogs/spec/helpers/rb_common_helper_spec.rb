@@ -72,4 +72,42 @@ RSpec.describe RbCommonHelper do
       end
     end
   end
+
+  describe "#show_all_backlog" do
+    before do
+      allow(helper).to receive(:params).and_return(params)
+    end
+
+    context "when the all param is absent" do
+      let(:params) { {} }
+
+      it "is false" do
+        expect(helper.show_all_backlog).to be false
+      end
+    end
+
+    context "when the all param is a Rails boolean truthy string" do
+      let(:params) { { all: "1" } }
+
+      it "is true" do
+        expect(helper.show_all_backlog).to be true
+      end
+    end
+
+    context "when the all param is the string false" do
+      let(:params) { { all: "false" } }
+
+      it "is false" do
+        expect(helper.show_all_backlog).to be false
+      end
+    end
+
+    context "when the all param is the string zero" do
+      let(:params) { { all: "0" } }
+
+      it "is false" do
+        expect(helper.show_all_backlog).to be false
+      end
+    end
+  end
 end

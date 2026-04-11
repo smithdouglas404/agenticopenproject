@@ -37,6 +37,10 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
     it "depends on view_work_packages and show_board_views" do
       expect(subject.dependencies).to contain_exactly(:view_work_packages, :show_board_views)
     end
+
+    it "includes deferred backlog story and inbox menu fragments" do
+      expect(subject.controller_actions).to include("rb_stories/menu", "inbox/menu")
+    end
   end
 
   describe "create_sprints" do

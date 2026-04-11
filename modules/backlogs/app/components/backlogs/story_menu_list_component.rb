@@ -29,12 +29,14 @@
 #++
 
 module Backlogs
-  class StoryMenuComponent < ApplicationComponent
+  # Renders Primer::Alpha::ActionMenu::List for the deferred menu (RbStoriesController#menu).
+  # +menu_id+ must match the row ActionMenu in StoryComponent.
+  class StoryMenuListComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
     attr_reader :story, :sprint, :project, :max_position, :current_user
 
-    def initialize(story:, sprint:, project:, max_position:, current_user: User.current, **system_arguments)
+    def initialize(story:, sprint:, project:, max_position:, current_user: User.current)
       super()
 
       @story = story
@@ -42,21 +44,17 @@ module Backlogs
       @project = project
       @max_position = max_position
       @current_user = current_user
+    end
 
-      @system_arguments = system_arguments
-      @system_arguments[:menu_id] = dom_target(story, :menu)
-      @system_arguments[:anchor_align] = :end
-      @system_arguments[:classes] = class_names(
-        @system_arguments[:classes],
-        "hide-when-print"
-      )
+    def menu_id
+      dom_target(story, :menu)
     end
 
     private
 
     def show_move_items?
       allowed_to_manage_sprint_items? &&
-      !(first_item? && last_item?)
+        !(first_item? && last_item?)
     end
 
     def allowed_to_manage_sprint_items?

@@ -56,16 +56,23 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
            roles: [create(:project_role, permissions:)])
   end
 
-  def render_component(position: 2, max_position: 3)
+  def render_component(position: 2, max_position: 3, open_sprints_exist: true)
     work_package.update!(position:)
-    render_inline(described_class.new(work_package:, project:, max_position:, current_user: user))
+    render_inline(
+      described_class.new(
+        work_package:,
+        project:,
+        max_position:,
+        open_sprints_exist:,
+        current_user: user
+      )
+    )
   end
 
   describe "standard items" do
-    it "renders stable ids for the action menu and primary actions" do
+    it "renders stable ids for the list and primary actions" do
       render_component
 
-      expect(page).to have_element(:button, id: /\Awork_package_#{work_package.id}_menu-button\z/)
       expect(page).to have_element(:ul, id: /\Awork_package_#{work_package.id}_menu-list\z/)
       expect(page).to have_element(:a, id: /\Awork_package_#{work_package.id}_menu_open_details\z/)
       expect(page).to have_element(:a, id: /\Awork_package_#{work_package.id}_menu_open_fullscreen\z/)
@@ -164,13 +171,31 @@ RSpec.describe Backlogs::InboxMenuComponent, type: :component do
         expect(page).to have_no_text(I18n.t(:label_sort_lowest))
       end
 
-      it "hides the Move submenu when there is only one item" do
-        render_component(position: 1, max_position: 1)
+      it "hides the Move submenu when there is only one item and no open sprints" do
+        render_component(position: 1, max_position: 1, open_sprints_exist: false)
 
         expect(page).to have_no_selector(
           :menuitem,
           text: I18n.t("backlogs.inbox_menu_component.action_menu.move_menu")
         )
+      end
+
+      context "when open_sprints_exist is true" do
+        it "shows Move to sprint in the Move submenu" do
+          render_component(open_sprints_exist: true)
+
+          expect(page).to have_link(I18n.t("backlogs.inbox_menu_component.label_move_to_sprint"))
+        end
+      end
+
+      context "when open_sprints_exist is false" do
+        it "hides Move to sprint but keeps reorder actions in the Move submenu" do
+          render_component(open_sprints_exist: false)
+
+          expect(page).to have_no_link(I18n.t("backlogs.inbox_menu_component.label_move_to_sprint"))
+          expect(page).to have_text(I18n.t(:label_sort_higher))
+          expect(page).to have_text(I18n.t(:label_sort_lower))
+        end
       end
     end
 
