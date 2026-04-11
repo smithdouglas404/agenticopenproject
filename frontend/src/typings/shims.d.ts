@@ -37,7 +37,14 @@ declare module '@hotwired/turbo' {
   };
 
   export const config:{
-    drive:{ progressBarDelay:number }
+    drive:{ progressBarDelay:number },
+    forms:{ 
+      confirm?:(
+        message:string, 
+        formElement:HTMLFormElement, 
+        submitter?:HTMLButtonElement|HTMLInputElement
+      ) => Promise<boolean> 
+    }
   };
 
   export const navigator:{

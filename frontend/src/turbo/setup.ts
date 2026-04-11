@@ -11,9 +11,11 @@ import { debugLog, whenDebugging } from 'core-app/shared/helpers/debug_output';
 import { TURBO_EVENTS } from './constants';
 import { StreamActions } from '@hotwired/turbo';
 import { addTurboAngularWrapper } from 'core-turbo/turbo-angular-wrapper';
+import { confirm } from './confirm';
 
 Turbo.session.drive = true;
 Turbo.config.drive.progressBarDelay = 100;
+Turbo.config.forms.confirm = confirm;
 
 // Start turbo
 Turbo.start();
