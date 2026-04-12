@@ -34,112 +34,69 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                with_good_job_batches: [
                  ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                  ProjectIdentifiers::BackfillProjectJob
-               ],
-               with_settings: { work_packages_identifier: "classic" } do
+               ] do
   subject(:job) { described_class.new }
 
+  let(:finder) { instance_double(ProjectIdentifiers::PendingProjectsFinder) }
+
+  before do
+    allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:new).and_return(finder)
+  end
 
   describe "#perform" do
-    context "when there is nothing to backfill (all projects already have valid identifiers and all WPs have sequence numbers)" do
-      it "flips the setting immediately without creating a batch" do
+    context "when there is nothing to backfill" do
+      before { allow(finder).to receive(:project_ids).and_return(Set.new) }
+
+      it "flips the setting to semantic" do
         expect(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
+        job.perform
+      end
+
+      it "does not create a batch" do
+        allow(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
         job.perform
         expect(GoodJob::Job.where(job_class: ProjectIdentifiers::BackfillProjectJob.name)).not_to exist
       end
     end
 
-    context "when projects have legacy (non-semantic) identifiers" do
-      let!(:project_a) { create(:project, name: "My Project") }
-      let!(:project_b) { create(:project, name: "Another Project") }
-
-      before { job.perform }
-
-      it "enqueues one BackfillProjectJob per project that needs work" do
-        enqueued = GoodJob::Job.where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
-        expect(enqueued.count).to eq(2)
+    context "when projects need backfill" do
+      before do
+        allow(finder).to receive(:project_ids).and_return(Set[1, 2])
+        job.perform
       end
-    end
 
-    context "when a project has no work packages needing backfill" do
-      let!(:project_with_wp)    { create(:project, name: "Has Work") }
-      let!(:project_without_wp) { create(:project, name: "Empty Project").tap { |p| p.update_columns(identifier: "EMPTY01") } }
-      let!(:wp)                 { create(:work_package, project: project_with_wp) }
-
-      before { job.perform }
-
-      it "does not enqueue a BackfillProjectJob for the empty project" do
-        enqueued_ids = GoodJob::Job
-          .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
-          .map { |j| j.serialized_params.dig("arguments", 0) }
-        expect(enqueued_ids).not_to include(project_without_wp.id)
-      end
-    end
-
-    context "when work packages have stale identifiers (sequence_number present but identifier doesn't match project prefix)" do
-      let!(:project) do
-        create(:project).tap { |p| p.update_columns(identifier: "MYAPP", wp_sequence_counter: 1) }
-      end
-      # WP has a sequence_number but the identifier still reflects a different project prefix
-      let!(:wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 1, identifier: "OLDPFX-1") } }
-
-      before { job.perform }
-
-      it "enqueues a BackfillProjectJob for the project with stale identifiers" do
-        enqueued_ids = GoodJob::Job
-          .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
-          .map { |j| j.serialized_params.dig("arguments", 0) }
-        expect(enqueued_ids).to include(project.id)
+      it "enqueues one BackfillProjectJob per pending project" do
+        expect(GoodJob::Job.where(job_class: ProjectIdentifiers::BackfillProjectJob.name).count).to eq(2)
       end
     end
 
     # Callback path — invoked by GoodJob as an on_success batch callback after BackfillProjectJobs finish.
     context "when called as a batch callback (iteration >= 1)" do
-      context "when no projects or work packages remain unprocessed" do
+      context "when no projects remain unprocessed" do
+        before { allow(finder).to receive(:project_ids).and_return(Set.new) }
+
         it "flips the setting to semantic" do
           expect(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
           job.perform(nil, {})
         end
       end
 
-      context "when work packages with sequence_number: nil remain" do
-        let!(:project) { create(:project) }
-        let!(:wp)      { create(:work_package, project:) }
-
-        before { job.perform(nil, {}) }
+      context "when projects still remain" do
+        before { allow(finder).to receive(:project_ids).and_return(Set[1]) }
 
         it "does not flip the setting" do
+          job.perform(nil, {})
           expect(Setting.work_packages_identifier).not_to eq(Setting::WorkPackageIdentifier::SEMANTIC)
         end
 
-        it "re-enqueues a BackfillProjectJob for the project with unprocessed work packages" do
-          enqueued_ids = GoodJob::Job
-            .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
-            .map { |j| j.serialized_params.dig("arguments", 0) }
-          expect(enqueued_ids).to include(project.id)
-        end
-      end
-
-      context "when a project has a problematic identifier" do
-        let!(:project) { create(:project).tap { |p| p.update_columns(identifier: "has-dashes") } }
-        let!(:wp)      { create(:work_package, project:) }
-
-        before { job.perform(nil, {}) }
-
-        it "does not flip the setting" do
-          expect(Setting.work_packages_identifier).not_to eq(Setting::WorkPackageIdentifier::SEMANTIC)
-        end
-
-        it "re-enqueues a BackfillProjectJob for the problematic project" do
-          enqueued_ids = GoodJob::Job
-            .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
-            .map { |j| j.serialized_params.dig("arguments", 0) }
-          expect(enqueued_ids).to include(project.id)
+        it "re-enqueues BackfillProjectJobs for the remaining projects" do
+          job.perform(nil, {})
+          expect(GoodJob::Job.where(job_class: ProjectIdentifiers::BackfillProjectJob.name).count).to eq(1)
         end
       end
 
       context "when remaining items exist but MAX_ITERATIONS has been reached" do
-        let!(:project) { create(:project) }
-        let!(:wp)      { create(:work_package, project:) }
+        before { allow(finder).to receive(:project_ids).and_return(Set[1]) }
 
         it "raises and does not flip the setting" do
           expect { job.perform(nil, { iteration: described_class::MAX_ITERATIONS }) }
@@ -156,8 +113,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
       end
 
       context "when remaining items exist and iteration is below MAX_ITERATIONS" do
-        let!(:project) { create(:project) }
-        let!(:wp)      { create(:work_package, project:) }
+        before { allow(finder).to receive(:project_ids).and_return(Set[1]) }
 
         it "increments iteration by 1 in on_success_params for the next batch" do
           allow(GoodJob::Batch).to receive(:enqueue).and_call_original

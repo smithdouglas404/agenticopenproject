@@ -28,18 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "rails_helper"
+module ProjectIdentifiers
+  # Returns the set of project IDs that still need backfilling before the
+  # instance can be switched to semantic identifier mode. Three buckets:
+  #
+  # * projects whose identifier is not in valid semantic format
+  # * projects that have work packages with no sequence_number yet
+  # * projects that have work packages whose identifier doesn't match
+  #   the current project prefix (stale due to renames or cross-project moves)
+  class PendingProjectsFinder
+    def project_ids
+      projects_with_bad_identifier | projects_with_unsequenced_wps | projects_with_stale_wps
+    end
 
-RSpec.describe ProjectIdentifiers::BackfillProjectJob do
-  describe "#perform" do
-    it "delegates to BackfillProjectService" do
-      project = create(:project)
-      service = instance_double(ProjectIdentifiers::BackfillProjectService, call: nil)
-      allow(ProjectIdentifiers::BackfillProjectService).to receive(:new).with(project).and_return(service)
+    private
 
-      described_class.new.perform(project.id)
+    def projects_with_bad_identifier
+      WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
+    end
 
-      expect(service).to have_received(:call)
+    def projects_with_unsequenced_wps
+      WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
+    end
+
+    def projects_with_stale_wps
+      WorkPackage
+        .joins(:project)
+        .where.not(sequence_number: nil)
+        .where("work_packages.identifier IS DISTINCT FROM " \
+               "projects.identifier || '-' || work_packages.sequence_number::text")
+        .distinct.pluck(:project_id).to_set
     end
   end
 end
