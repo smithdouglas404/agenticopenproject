@@ -88,8 +88,6 @@ class ProjectIdentifiers::BackfillProjectJob < ApplicationJob
       .where.not(sequence_number: nil)
       .where("identifier IS DISTINCT FROM ? || '-' || sequence_number::text", project.identifier)
       .find_each do |wp|
-        # Preserve the stale identifier as an alias so existing links still resolve.
-        WorkPackageSemanticAlias.upsert_rows([{ identifier: wp.identifier, work_package_id: wp.id }]) if wp.identifier.present?
         wp.update_columns(identifier: "#{project.identifier}-#{wp.sequence_number}")
       end
   end

@@ -128,10 +128,6 @@ RSpec.describe ProjectIdentifiers::BackfillProjectJob, with_settings: { work_pac
       it "rewrites the identifier to match the current project prefix" do
         expect(wp.reload.identifier).to eq("DEST-1")
       end
-
-      it "preserves the stale identifier as an alias so old links still resolve" do
-        expect(WorkPackageSemanticAlias.exists?(identifier: "SOURCE-1", work_package_id: wp.id)).to be true
-      end
     end
 
     context "when a moved-in WP has a sequence_number higher than the project counter (counter underflow)" do
