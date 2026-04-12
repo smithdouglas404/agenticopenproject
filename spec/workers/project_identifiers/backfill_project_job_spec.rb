@@ -39,6 +39,40 @@ RSpec.describe ProjectIdentifiers::BackfillProjectJob do
   end
 
   describe "#perform" do
+    context "when the project has a prior valid semantic identifier in FriendlyId history" do
+      let!(:project) do
+        create(:project).tap do |p|
+          p.update_columns(identifier: "my-app", wp_sequence_counter: 0)
+          FriendlyId::Slug.create!(sluggable: p, slug: "MYAPP")
+        end
+      end
+
+      before { job.perform(project.id) }
+
+      it "restores the prior semantic identifier instead of generating a new one" do
+        expect(project.reload.identifier).to eq("MYAPP")
+      end
+    end
+
+    context "when the prior semantic identifier is already taken by another project" do
+      let!(:other)   { create(:project).tap { |p| p.update_columns(identifier: "MYAPP") } }
+      let!(:project) do
+        create(:project).tap do |p|
+          p.update_columns(identifier: "my-app", wp_sequence_counter: 0)
+          FriendlyId::Slug.create!(sluggable: p, slug: "MYAPP")
+        end
+      end
+
+      before { job.perform(project.id) }
+
+      it "falls back to a freshly generated semantic identifier" do
+        identifier = project.reload.identifier
+        expect(identifier).not_to eq("my-app")
+        expect(identifier).not_to eq("MYAPP")
+        expect(identifier).to match(/\A[A-Z][A-Z0-9_]{1,9}\z/)
+      end
+    end
+
     context "when the project has a problematic identifier" do
       let!(:project) { create(:project, name: "My Project") }
       let!(:wp)      { create(:work_package, project:) }

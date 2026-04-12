@@ -42,14 +42,28 @@ class ProjectIdentifiers::BackfillProjectJob < ApplicationJob
     # Pure format check — no DB queries. nil means the identifier is fine.
     return unless detector.format_error_reason(project.identifier)
 
-    # Build the exclusion set fresh from the DB at job-execution time.
+    # Prefer restoring the project's last known semantic identifier (from FriendlyId history)
+    # so that existing WP identifiers remain valid and aliases need no update.
+    # Fall back to generating a fresh suggestion if no usable prior slug exists.
     # Two concurrent jobs may occasionally suggest the same identifier, but the
     # unique constraint on projects.identifier will reject the second writer, and
     # the job can be retried.
-    new_identifier = WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
+    new_identifier = last_known_semantic_slug(project, detector) ||
+                     WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
                        .suggest_identifier(project.name, exclude: detector.exclusion_set)
+
     project.identifier = new_identifier
     project.save!(validate: false)
+  end
+
+  def last_known_semantic_slug(project, detector)
+    project.slugs
+           .order(created_at: :desc)
+           .pluck(:slug)
+           .find do |slug|
+             detector.format_error_reason(slug).nil? &&
+               !Project.where.not(id: project.id).exists?(identifier: slug)
+           end
   end
 
   def backfill_work_packages(project)
