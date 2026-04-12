@@ -33,11 +33,11 @@ zh-CN:
         name: 冲刺名称
         sharing: 共享
         statuses:
-          in_planning: In planning
-          active: Active
-          completed: Completed
+          in_planning: 规划中
+          active: 有效
+          completed: 已完成
       project:
-        sprint_sharing: Sprint sharing
+        sprint_sharing: 冲刺共享
       sprint:
         duration: 冲刺持续时间
       user_preference:
@@ -46,19 +46,19 @@ zh-CN:
       work_package:
         backlogs_work_package_type: 待办清单类型
         position: 位置
-        sprint: Sprint
+        sprint: 冲刺
         story_points: 故事点
     errors:
       messages:
-        must_be_in_planning: must be in planning to start.
+        must_be_in_planning: 必须处于规划中状态才能启动。
         only_one_active_sprint_allowed: 每个项目只允许有一个有效冲刺。
-        dates_required: Start and finish dates are required in order to start the sprint.
+        dates_required: 必须设置开始和结束日期才能启动冲刺。
       models:
         project:
-          receiving_sprints: is receiving shared sprints. Own sprints cannot be created.
+          receiving_sprints: 正在接收共享冲刺。无法创建自己的冲刺。
           attributes:
             sprint_sharing:
-              share_all_projects_already_taken: cannot be set because project "%{name}" is already sharing with all projects.
+              share_all_projects_already_taken: 无法设置，因为项目“%{name}”已经与所有项目共享。
               share_all_projects_already_taken_anonymous: cannot be set because another project is already sharing with all projects.
         work_package:
           attributes:
@@ -139,8 +139,8 @@ zh-CN:
         other: Show %{count} more items
     inbox_item_component:
       label_drag_work_package: Move %{name}
-    inbox_menu_component:
       label_actions: Work package actions
+    inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID
@@ -195,8 +195,8 @@ zh-CN:
         add_work_package: Add work package
     story_component:
       label_drag_story: 移动 %{name}
-    story_menu_component:
-      label_actions: 故事操作
+      label_actions: Story actions
+    story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID

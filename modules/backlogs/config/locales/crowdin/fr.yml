@@ -143,8 +143,8 @@ fr:
         other: Afficher %{count} articles supplémentaires
     inbox_item_component:
       label_drag_work_package: Déplacer %{name}
+      label_actions: Work package actions
     inbox_menu_component:
-      label_actions: Actions du lot de travaux
       action_menu:
         copy_url_to_clipboard: Copier l'URL dans le presse-papier
         copy_work_package_id: Copier l'ID du lot de travail
@@ -199,12 +199,12 @@ fr:
         add_work_package: Ajouter un lot de travaux
     story_component:
       label_drag_story: Déplacer %{name}
-    story_menu_component:
-      label_actions: Actions de l'histoire
+      label_actions: Story actions
+    story_menu_list_component:
       action_menu:
-        copy_url_to_clipboard: Copier l'URL dans le presse-papier
-        copy_work_package_id: Copier le lot de travaux
-        move_menu: Déplacer
+        copy_url_to_clipboard: Copy URL to clipboard
+        copy_work_package_id: Copy work package ID
+        move_menu: Move
   backlogs_points_burn_direction: Les points évoluent vers le haut/bas
   backlogs_product_backlog: Backlog de produit
   backlogs_story: Histoire

@@ -151,8 +151,8 @@ uk:
         other: Показати ще %{count} елемента
     inbox_item_component:
       label_drag_work_package: Перемістити історію «%{name}»
+      label_actions: Work package actions
     inbox_menu_component:
-      label_actions: Дії пакета робіт
       action_menu:
         copy_url_to_clipboard: Скопіювати URL-адресу в буфер обміну
         copy_work_package_id: Копіювати ідентифікатор пакета робіт
@@ -207,12 +207,12 @@ uk:
         add_work_package: Додати пакет робіт
     story_component:
       label_drag_story: Перемістити історію «%{name}»
-    story_menu_component:
-      label_actions: Дії історії
+      label_actions: Story actions
+    story_menu_list_component:
       action_menu:
-        copy_url_to_clipboard: Скопіювати URL-адресу в буфер обміну
-        copy_work_package_id: Копіювати ідентифікатор пакета робіт
-        move_menu: Перемістити
+        copy_url_to_clipboard: Copy URL to clipboard
+        copy_work_package_id: Copy work package ID
+        move_menu: Move
   backlogs_points_burn_direction: Бали спалюються вгору/вниз
   backlogs_product_backlog: Backlog продукту
   backlogs_story: Історія
