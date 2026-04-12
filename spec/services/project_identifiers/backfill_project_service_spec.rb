@@ -115,16 +115,16 @@ RSpec.describe ProjectIdentifiers::BackfillProjectService,
       end
     end
 
-    context "when a WP was moved in from another project (has sequence_number but stale identifier)" do
+    context "when a WP was moved in from another project (identifier and seq are stale)" do
       let!(:project) do
         create(:project).tap { |p| p.update_columns(identifier: "DEST", wp_sequence_counter: 1) }
       end
-      let!(:wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 1, identifier: "SOURCE-1") } }
+      let!(:wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 4, identifier: "SOURCE-1") } }
 
       before { described_class.new(project).call }
 
       it "rewrites the identifier to match the current project prefix" do
-        expect(wp.reload.identifier).to eq("DEST-1")
+        expect(wp.reload.identifier).to eq("DEST-2")
       end
     end
 
@@ -137,12 +137,9 @@ RSpec.describe ProjectIdentifiers::BackfillProjectService,
 
       before { described_class.new(project).call }
 
-      it "assigns the new WP a sequence_number above the moved-in WP" do
-        expect(new_wp.reload.sequence_number).to eq(6)
-      end
-
-      it "does not overwrite the moved-in WP's sequence_number" do
-        expect(moved_wp.reload.sequence_number).to eq(5)
+      it "correctly assigns the new sequence numbers" do
+        expect(moved_wp.reload.sequence_number).to eq(1)
+        expect(new_wp.reload.sequence_number).to eq(2)
       end
     end
 

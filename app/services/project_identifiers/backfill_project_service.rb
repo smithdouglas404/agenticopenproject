@@ -44,9 +44,8 @@ module ProjectIdentifiers
 
     def call
       fix_identifier_if_needed
-      sync_sequence_counter
-      fix_stale_identifiers
-      assign_missing_sequence_numbers
+      reset_stale_identifiers
+      backfill_missing_ids
       seed_alias_table
     end
 
@@ -73,24 +72,18 @@ module ProjectIdentifiers
       project.save!(validate: false)
     end
 
-    def sync_sequence_counter
-      max_seq = WorkPackage.where(project:).maximum(:sequence_number) || 0
-      project.update_columns(wp_sequence_counter: max_seq) if max_seq > project.wp_sequence_counter
-    end
 
-    def fix_stale_identifiers
-      # Fix WPs that already have a sequence_number but an identifier that doesn't match
-      # the current project prefix (caused by renames or cross-project moves in classic mode).
+    def reset_stale_identifiers
+      # Fix WPs that contain identifier that doesn't match the current project prefix
+      #   (caused by renames or cross-project moves in classic mode)
       WorkPackage
         .where(project:)
         .where.not(sequence_number: nil)
-        .where("identifier IS DISTINCT FROM ? || '-' || sequence_number::text", project.identifier)
-        .find_each do |wp|
-          wp.update_columns(identifier: "#{project.identifier}-#{wp.sequence_number}")
-        end
+        .where("identifier NOT LIKE ?", "#{project.identifier}-%")
+        .find_each { |wp| wp.update_columns(identifier: nil, sequence_number: nil) }
     end
 
-    def assign_missing_sequence_numbers
+    def backfill_missing_ids
       WorkPackage.where(project:, sequence_number: nil).order(:id).find_each do |wp|
         seq, identifier = project.allocate_wp_semantic_identifier!
         wp.update_columns(sequence_number: seq, identifier:)
