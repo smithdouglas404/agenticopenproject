@@ -51,6 +51,21 @@ module Projects::SemanticIdentifier
     [seq, "#{identifier}-#{seq}"]
   end
 
+  # Returns the most-recent slug from FriendlyId history that is a valid semantic
+  # identifier and is not currently held by another project, or nil if none exists.
+  # Used by the backfill job to restore a prior semantic identifier instead of
+  # generating a fresh one, so existing WP identifiers and aliases remain correct.
+  def previous_semantic_identifier
+    detector = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
+    slugs
+      .order(created_at: :desc)
+      .pluck(:slug)
+      .find do |slug|
+        detector.format_error_reason(slug).nil? &&
+          !self.class.where.not(id:).exists?(identifier: slug)
+      end
+  end
+
   # Called after this project's identifier is renamed. Atomically:
   # 1. Appends new-prefix aliases for every WP that ever carried an old-prefix alias.
   # 2. Updates identifier on resident WPs to the new prefix.

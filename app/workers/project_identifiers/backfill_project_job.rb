@@ -38,7 +38,8 @@ class ProjectIdentifiers::BackfillProjectJob < ApplicationJob
   private
 
   def fix_identifier_if_needed(project)
-    detector = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
+    detector  = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
+    generator = WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
     # Pure format check — no DB queries. nil means the identifier is fine.
     return unless detector.format_error_reason(project.identifier)
 
@@ -48,22 +49,11 @@ class ProjectIdentifiers::BackfillProjectJob < ApplicationJob
     # Two concurrent jobs may occasionally suggest the same identifier, but the
     # unique constraint on projects.identifier will reject the second writer, and
     # the job can be retried.
-    new_identifier = last_known_semantic_slug(project, detector) ||
-                     WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
-                       .suggest_identifier(project.name, exclude: detector.exclusion_set)
+    new_identifier = project.previous_semantic_identifier ||
+                     generator.suggest_identifier(project.name, exclude: detector.exclusion_set)
 
     project.identifier = new_identifier
     project.save!(validate: false)
-  end
-
-  def last_known_semantic_slug(project, detector)
-    project.slugs
-           .order(created_at: :desc)
-           .pluck(:slug)
-           .find do |slug|
-             detector.format_error_reason(slug).nil? &&
-               !Project.where.not(id: project.id).exists?(identifier: slug)
-           end
   end
 
   def backfill_work_packages(project)
