@@ -108,7 +108,7 @@ zh-CN:
         trial: 试用
     jemalloc_allocator: 使用 jemalloc 内存分配器
     journal_aggregation:
-      caption: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
+      caption: '如果用户对工作包执行的操作（更改描述、状态、数值或编写评论）是在此时间段内完成的，则会将这些操作分为一组。此设置还控制着通知和 [webhook](webhook_link) 延迟。
 
         '
     import:
@@ -125,7 +125,7 @@ zh-CN:
         title: Jira 配置
         new: 新配置
       banner:
-        title: Limited import capabilities
+        title: 有限导入功能
         description: Jira Migrator 目前处于测试阶段，只能导入基本数据：项目、问题（名称、标题、描述、附件）、用户（名称、电子邮件地址、项目成员资格）、状态和类型。不能导入工作流、自定义字段、问题关系或权限。我们目前仅支持 Jira Server/Data Center 版本 10.x 和 11.x。目前不支持云实例。
       form:
         fields:
@@ -162,9 +162,9 @@ zh-CN:
       run:
         title: 导入运行
         history: 历史记录
-        remove_error: A Jira import run cannot be removed while it is running
+        remove_error: 无法移除正在运行的 Jira 导入运行
         import_blocked_error: 另一个 Jira 导入运行当前正在执行或等待审核。请先完成或撤消当前运行，然后再开始新的导入。
-        project_identifier_taken: 'You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry.'
+        project_identifier_taken: 您尝试导入的项目所使用的标识符 %{taken_identifier} 已经用过。请在 Jira 中更新项目标识符，然后点击“重试”。
         blank:
           title: 尚未设置导入运行
           description: 创建导入运行，开始从此 Jira 实例中导入信息
@@ -381,23 +381,21 @@ zh-CN:
         notification_text_default: "<p>您好！</p><p>已创建一个新项目：projectValue:name</p> <p>谢谢</p>\n"
       work_packages_identifier:
         page_header:
-          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
+          description: 可以选择经典的数字工作包 ID，或者在工作包 ID 前添加项目标识符的语义化项目特定工作包 ID。
         banner:
-          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Autofix and save'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
-
-            '
+          existing_identifiers_notice: "%{project_count} 项目的现有标识符不符合基于项目的语义标识符要求。OpenProject 可自动更新这些标识符，使其成为如下例中的有效格式。点击“自动修复并保存”按钮，以这种方式更新所有项目的标识符，并启用基于项目的语义标识符。\n"
         box_header:
-          label_project: Project
-          label_previous_identifier: Previous identifier
-          label_autofixed_suggestion: Future identifier
-          label_example_work_package_id: Example work package ID
+          label_project: 项目
+          label_previous_identifier: 上一标识符
+          label_autofixed_suggestion: 未来标识符
+          label_example_work_package_id: 示例工作包 ID
         autofix_preview:
-          error_too_long: Has to be 10 characters or fewer
-          error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
-          error_special_characters: Special characters not allowed
-          error_not_fully_uppercased: Must be uppercase
-          error_in_use: Already in use as another project's active handle
+          error_too_long: 必须为 10 个字符或更少字符
+          error_numerical: 不能只包含数字
+          error_starts_with_number: 不能以数字开头
+          error_special_characters: 不允许使用特殊字符
+          error_not_fully_uppercased: 必须为大写字母
+          error_in_use: 已用作另一项目的活跃句柄
           error_reserved: Reserved by another project's handle history
           error_unknown: Needs manual review
           remaining_projects:
@@ -5042,8 +5040,8 @@ zh-CN:
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
 
     '
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
-  setting_work_packages_identifier_semantic_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
+  setting_work_packages_identifier_semantic: 基于项目的语义标识符
+  setting_work_packages_identifier_semantic_caption: '每个项目的工作包 ID 前面都会附加一个唯一标识符。如果工作包移至另一项目，则会生成新的标识符，但旧标识符仍可继续使用。
 
     '
   setting_work_package_list_default_highlighting_mode: 默认突出显示模式
@@ -5227,11 +5225,11 @@ zh-CN:
       section_work_week: 工作周
       section_holidays_and_closures: 节假日与停业
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: 工作包标识符
       not_allowed_text: 您没有查看此页面的权限。
       activities:
         enable_internal_comments: 启用内部评论
-        helper_text_html: 'Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. [Click here to learn more](docs_url)
+        helper_text_html: '内部评论允许内部团队私下沟通。这些仅对具有必要权限的选定角色可见，并且永远不会公开显示。[点击此处了解更多信息](docs_url)
 
           '
   text_formatting:
@@ -5319,7 +5317,7 @@ zh-CN:
   text_default_administrator_account_changed: 更改默认管理员帐户
   text_default_encoding: 默认值： UTF-8
   text_destroy: 删除
-  text_destroy_with_associated: 'There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:'
+  text_destroy_with_associated: 有额外的对象关联到要删除的工作包。这些对象是以下类型：
   text_destroy_what_to_do: 你想做什么？
   text_diff_truncated: "...这个比较被截断，因为它超出了可显示的最大大小。"
   text_email_delivery_not_configured: |-
@@ -5378,10 +5376,10 @@ zh-CN:
   text_plugin_assets_writable: 插件资产目录可写
   text_powered_by: Powered by %{link}
   text_project_identifier_info: 只有小写字母 (a-z)、 数字、 短划线和下划线被允许，必须以小写字母开头。
-  text_project_identifier_description: The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".
-  text_project_identifier_url_description: The project identifier is included in the URL of the project.
-  text_project_identifier_handle_format: Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters).
-  text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
+  text_project_identifier_description: 项目标识符会附加到所有工作包 ID 的前面。例如，如果项目标识符为“PROJ”，则工作包标识符将为“PROJ-12”或“PROJ-246”。
+  text_project_identifier_url_description: 项目标识符包含在项目的 URL 中。
+  text_project_identifier_handle_format: 必须以字母开头，且仅包含大写字母、数字和下划线（最多 10 个字符）。
+  text_project_identifier_format: 必须以小写字母开头。仅允许使用小写字母 (a-z)、数字、 短划线和下划线。
   text_reassign: '重新分配工作包:'
   text_regexp_multiline: 以多行模式应用正则表达式，如 ^---\s+
   text_repository_usernames_mapping: |-
@@ -5493,10 +5491,10 @@ zh-CN:
   version_status_locked: 锁定
   version_status_open: 打开
   note: 请注意
-  note_password_login_disabled_link: Password login has been disabled through a [configuration setting](configuration_url).
+  note_password_login_disabled_link: 密码登录已通过[配置设置](configuration_url)禁用。
   warning: 警告
   warning_attachments_not_saved: "%{count} 文件不能被保存。"
-  warning_imminent_user_limit_html: 'You invited more users than are supported by your current plan. Invited users may not be able to join your OpenProject environment. Please [upgrade your plan](upgrade_url) or block existing users in order to allow invited and registered users to join.
+  warning_imminent_user_limit_html: '您邀请的用户数超过了当前计划支持的用户数。受邀用户可能无法加入您的 OpenProject 环境。请[升级您的计划](upgrade_url)或阻止现有用户，以允许受邀用户和已注册用户加入。
 
     '
   warning_registration_token_expired: '激活邮件已过期，我们给您发送了一封新邮件到%{email}。请单击内部的链接以激活您的帐户。

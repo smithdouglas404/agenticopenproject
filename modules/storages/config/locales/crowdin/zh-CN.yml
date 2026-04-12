@@ -207,8 +207,8 @@ zh-CN:
     admin:
       side_panel:
         health_notifications_component:
-          sync_now: Sync now
-          sync_queued: Synchronization queued.
+          sync_now: 立即同步
+          sync_queued: 同步已排队。
     buttons:
       done_continue: 完成, 继续
       open_storage: 打开文件存储
@@ -229,11 +229,11 @@ zh-CN:
     delete_warning:
       project_storage_delete_result_1: 相应文件和文件夹的所有链接都将被移除
       project_storage_delete_result_2: 自动管理的项目文件夹及其中的所有文件都将被删除
-      project_storage_html: Are you sure you want to remove %{file_storage} from this project?
+      project_storage_html: 确定要从此项目中移除 %{file_storage} 吗？
       storage_delete_result_1: 该存储空间将从所有当前使用该存储空间的项目中移除
       storage_delete_result_2: 相应文件和文件夹的所有链接都将被移除
       storage_delete_result_3: 自动管理的项目文件夹及其中的所有文件都将被删除
-      storage_html: Are you sure you want to delete %{file_storage} as an external file storage?
+      storage_html: 确定要删除作为外部文件存储空间的 %{file_storage} 吗？
     dependencies:
       nextcloud:
         group_folders_app: 团队文件夹
@@ -285,8 +285,8 @@ zh-CN:
           drive_contents: 驱动器内容
           files_request: 正在获取团队文件夹文件
           header: 自动托管的项目文件夹
-          project_folders_exist: Project folders exist
-          project_folders_linked: Project folders linked
+          project_folders_exist: 项目文件夹已存在
+          project_folders_linked: 项目文件夹已关联
           team_folder_app: 依赖关系：团队文件夹
           team_folder_contents: 团队文件夹内容
           team_folder_presence: 团队文件夹已存在
@@ -328,10 +328,10 @@ zh-CN:
         nc_oauth_request_not_found: 未找到获取当前连接用户的端点。请检查服务器日志以获取更多信息。
         nc_oauth_request_unauthorized: 当前用户无权访问远程文件存储。请检查服务器日志以获取更多信息。
         nc_oauth_token_missing: OpenProject 无法测试用户与 Nextcloud 之间的通信，因为用户尚未链接他们的 Nextcloud 帐户。
-        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
+        nc_project_folder_missing: 无法找到先前为项目“%{project}”创建的项目文件夹。
         nc_team_folder_not_found: 找不到该团队文件夹。
-        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
-        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
+        nc_unexpected_files: 在受管理的团队文件夹中找到非预期文件。例如：%{sample}
+        nc_unlinked_project_folders: 部分项目文件夹尚未创建 (%{actual}/%{expected})。这可能表明 AMPF 后台同步过程中出错。
         nc_userless_access_denied: 已配置的应用密码无效。
         not_configured: 无法验证连接。请先完成配置。
         od_client_cant_delete_folder: 客户端在删除文件夹时遇到问题。请检查您的存储的设置文档。
@@ -380,7 +380,7 @@ zh-CN:
         failure: 有些检查失败，系统无法按预期运行。
         success: 所有连接和系统都按预期运行。
         warning: 某些检查返回了警告。这可能导致异常行为。
-      synced: 'Last sync: %{datetime}'
+      synced: 上次同步时间：%{datetime}
       title: 健康状况报告
     health_email_notifications:
       description_disabled: 当有重要更新时，管理员将不会通过电子邮件收到更新提醒。
@@ -399,7 +399,7 @@ zh-CN:
       host: 请添加存储的主机地址，包括 https://。不应超过 255 个字符。
       managed_project_folders_application_password_caption: 通过从 %{provider_type_link} 复制该值来启用自动管理的文件夹。
       name: 为您的存储命名，以便用户可以区分多个存储。
-      new_storage_html: Read our documentation on [setting up a %{provider_name} file storage](docs_url) integration for more information.
+      new_storage_html: 请阅读我们关于[设置 %{provider_name} 文件存储](docs_url)的文档，以获取更多信息。
       nextcloud:
         application_link_text: 应用“集成OpenProject”
         integration: Nextcloud 管理/OpenProject
@@ -411,7 +411,7 @@ zh-CN:
       no_specific_folder: 默认情况下，每个用户上传文件时将从自己的主文件夹开始。
       no_storage_set_up: 尚未设置文件存储。
       not_logged_into_storage: 要选择一个项目文件夹，请先登录
-      oauth_application_details_html: The client secret value will not be accessible again after you close this window. Please copy these values into the [Nextcloud OpenProject Integration settings](oauth_application_details_link).
+      oauth_application_details_html: 关闭此窗口后，将无法再次访问客户端密钥值。请将这些值复制到 [Nextcloud OpenProject 集成设置](oauth_application_details_link)中。
       one_drive:
         application_link_text: Azure 门户
         copy_redirect_uri: 复制重定向 URI
@@ -517,7 +517,7 @@ zh-CN:
         members_connection_status: 成员连接状态
         new: 将文件存储添加到此项目
       project_storage_members:
-        subtitle_html: Check the connection status for the storage %{storage_name_link} of all project members.
+        subtitle_html: 检查所有项目成员的存储区 %{storage_name_link} 的连接状态。
         title: 成员连接状态
       project_storages:
         delete: 是否从项目中移除文件存储空间？
