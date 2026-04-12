@@ -30,13 +30,9 @@
 
 require "rails_helper"
 
-RSpec.describe ProjectIdentifiers::BackfillProjectJob do
+RSpec.describe ProjectIdentifiers::BackfillProjectJob, with_settings: { work_packages_identifier: "classic" } do
   subject(:job) { described_class.new }
 
-  # Simulate legacy (classic) mode so WPs are created without sequence numbers.
-  before do
-    allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: false, classic?: true)
-  end
 
   describe "#perform" do
     context "when the project has a prior valid semantic identifier in FriendlyId history" do

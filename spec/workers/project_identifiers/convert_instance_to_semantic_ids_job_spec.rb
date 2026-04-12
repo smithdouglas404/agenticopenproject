@@ -34,20 +34,16 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                with_good_job_batches: [
                  ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                  ProjectIdentifiers::BackfillProjectJob
-               ] do
+               ],
+               with_settings: { work_packages_identifier: "classic" } do
   subject(:job) { described_class.new }
 
-  # Simulate legacy (classic) mode — the WP after_create hook does not auto-assign sequence numbers,
-  # so WPs start with sequence_number: nil and identifier: nil.
-  before do
-    allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: false, classic?: true)
-  end
 
   describe "#perform" do
     context "when there is nothing to backfill (all projects already have valid identifiers and all WPs have sequence numbers)" do
       it "flips the setting immediately without creating a batch" do
+        expect(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
         job.perform
-        expect(Setting.work_packages_identifier).to eq(Setting::WorkPackageIdentifier::SEMANTIC)
         expect(GoodJob::Job.where(job_class: ProjectIdentifiers::BackfillProjectJob.name)).not_to exist
       end
     end
@@ -100,8 +96,8 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
     context "when called as a batch callback (iteration >= 1)" do
       context "when no projects or work packages remain unprocessed" do
         it "flips the setting to semantic" do
+          expect(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
           job.perform(nil, {})
-          expect(Setting.work_packages_identifier).to eq(Setting::WorkPackageIdentifier::SEMANTIC)
         end
       end
 
