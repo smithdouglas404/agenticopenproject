@@ -121,6 +121,42 @@ RSpec.describe ProjectIdentifiers::BackfillProjectJob do
       end
     end
 
+    context "when a WP was moved in from another project (has sequence_number but stale identifier)" do
+      let!(:project) do
+        create(:project).tap { |p| p.update_columns(identifier: "DEST", wp_sequence_counter: 1) }
+      end
+      let!(:wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 1, identifier: "SOURCE-1") } }
+
+      before { job.perform(project.id) }
+
+      it "rewrites the identifier to match the current project prefix" do
+        expect(wp.reload.identifier).to eq("DEST-1")
+      end
+
+      it "preserves the stale identifier as an alias so old links still resolve" do
+        expect(WorkPackageSemanticAlias.exists?(identifier: "SOURCE-1", work_package_id: wp.id)).to be true
+      end
+    end
+
+    context "when a moved-in WP has a sequence_number higher than the project counter (counter underflow)" do
+      let!(:project) do
+        create(:project).tap { |p| p.update_columns(identifier: "DEST", wp_sequence_counter: 0) }
+      end
+      # Moved-in WP carries seq=5; counter is 0 — without sync, allocations would eventually collide.
+      let!(:moved_wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 5, identifier: "SOURCE-5") } }
+      let!(:new_wp)   { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: nil, identifier: nil) } }
+
+      before { job.perform(project.id) }
+
+      it "assigns the new WP a sequence_number above the moved-in WP" do
+        expect(new_wp.reload.sequence_number).to eq(6)
+      end
+
+      it "does not overwrite the moved-in WP's sequence_number" do
+        expect(moved_wp.reload.sequence_number).to eq(5)
+      end
+    end
+
     context "when seeding the alias table" do
       let!(:project) do
         create(:project).tap { |p| p.update_columns(identifier: "CURR", wp_sequence_counter: 0) }

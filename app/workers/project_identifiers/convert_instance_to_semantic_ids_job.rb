@@ -80,6 +80,12 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
   def project_ids_needing_backfill
     problematic_ids = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
     needs_backfill  = WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
-    needs_backfill | problematic_ids
+    stale_ids       = WorkPackage
+                        .joins(:project)
+                        .where.not(sequence_number: nil)
+                        .where("work_packages.identifier IS DISTINCT FROM " \
+                               "projects.identifier || '-' || work_packages.sequence_number::text")
+                        .distinct.pluck(:project_id).to_set
+    needs_backfill | problematic_ids | stale_ids
   end
 end

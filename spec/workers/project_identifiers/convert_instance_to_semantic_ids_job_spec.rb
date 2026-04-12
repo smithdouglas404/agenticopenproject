@@ -79,6 +79,23 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
       end
     end
 
+    context "when work packages have stale identifiers (sequence_number present but identifier doesn't match project prefix)" do
+      let!(:project) do
+        create(:project).tap { |p| p.update_columns(identifier: "MYAPP", wp_sequence_counter: 1) }
+      end
+      # WP has a sequence_number but the identifier still reflects a different project prefix
+      let!(:wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 1, identifier: "OLDPFX-1") } }
+
+      before { job.perform }
+
+      it "enqueues a BackfillProjectJob for the project with stale identifiers" do
+        enqueued_ids = GoodJob::Job
+          .where(job_class: ProjectIdentifiers::BackfillProjectJob.name)
+          .map { |j| j.serialized_params.dig("arguments", 0) }
+        expect(enqueued_ids).to include(project.id)
+      end
+    end
+
     # Callback path — invoked by GoodJob as an on_success batch callback after BackfillProjectJobs finish.
     context "when called as a batch callback (iteration >= 1)" do
       context "when no projects or work packages remain unprocessed" do

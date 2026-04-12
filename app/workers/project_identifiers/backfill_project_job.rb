@@ -67,13 +67,41 @@ class ProjectIdentifiers::BackfillProjectJob < ApplicationJob
   end
 
   def backfill_work_packages(project)
-    # Assign sequence numbers to any WPs that don't have one yet (oldest first).
+    # Ensure the counter is at least as high as the highest existing sequence_number.
+    # A WP moved in from another project may carry a sequence_number higher than the
+    # local counter; without this sync, the nil loop would eventually collide with it.
+    sync_sequence_counter(project)
+
+    # Fix WPs that already have a sequence_number but an identifier that doesn't match
+    # the current project prefix (caused by renames or cross-project moves in classic mode).
+    fix_stale_identifiers(project)
+
+    assign_missing_sequence_numbers(project)
+    seed_alias_table(project)
+  end
+
+  def assign_missing_sequence_numbers(project)
     WorkPackage.where(project:, sequence_number: nil).order(:id).find_each do |wp|
       seq, identifier = project.allocate_wp_semantic_identifier!
       wp.update_columns(sequence_number: seq, identifier:)
     end
+  end
 
-    seed_alias_table(project)
+  def sync_sequence_counter(project)
+    max_seq = WorkPackage.where(project:).maximum(:sequence_number) || 0
+    project.update_columns(wp_sequence_counter: max_seq) if max_seq > project.wp_sequence_counter
+  end
+
+  def fix_stale_identifiers(project)
+    WorkPackage
+      .where(project:)
+      .where.not(sequence_number: nil)
+      .where("identifier IS DISTINCT FROM ? || '-' || sequence_number::text", project.identifier)
+      .find_each do |wp|
+        # Preserve the stale identifier as an alias so existing links still resolve.
+        WorkPackageSemanticAlias.upsert_rows([{ identifier: wp.identifier, work_package_id: wp.id }]) if wp.identifier.present?
+        wp.update_columns(identifier: "#{project.identifier}-#{wp.sequence_number}")
+      end
   end
 
   def seed_alias_table(project)
