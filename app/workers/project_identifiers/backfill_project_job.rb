@@ -96,9 +96,11 @@ class ProjectIdentifiers::BackfillProjectJob < ApplicationJob
     slug_prefixes = project.slugs.pluck(:slug)
     return if slug_prefixes.empty?
 
-    alias_rows = WorkPackage.where(project:).pluck(:id, :sequence_number)
-                            .product(slug_prefixes)
-                            .map { |(wp_id, seq), prefix| { identifier: "#{prefix}-#{seq}", work_package_id: wp_id } }
-    WorkPackageSemanticAlias.upsert_rows(alias_rows)
+    WorkPackage.where(project:).where.not(sequence_number: nil).in_batches do |batch|
+      alias_rows = batch.pluck(:id, :sequence_number)
+                        .product(slug_prefixes)
+                        .map { |(wp_id, seq), prefix| { identifier: "#{prefix}-#{seq}", work_package_id: wp_id } }
+      WorkPackageSemanticAlias.upsert_rows(alias_rows)
+    end
   end
 end
