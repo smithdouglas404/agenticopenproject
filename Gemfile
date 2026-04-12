@@ -72,7 +72,7 @@ gem "awesome_nested_set", "~> 3.9.0"
 gem "closure_tree", "~> 9.6.1"
 gem "rubytree", "~> 2.2.0"
 
-gem "addressable", "~> 2.8.9"
+gem "addressable", "~> 2.8.10"
 
 # Remove whitespace from model input
 gem "auto_strip_attributes", "~> 2.5"
