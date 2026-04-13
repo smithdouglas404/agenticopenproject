@@ -194,12 +194,12 @@ RSpec.describe Projects::Identifier do
 
   describe ".suggest_identifier" do
     context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
-      it "delegates to ProjectIdentifierSuggestionGenerator" do
+      it "delegates to ProjectIdentifierSuggestionGenerator with an exclusion set" do
         allow(WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
-          .to receive(:suggest_identifier).with("My Project").and_return("MP")
+          .to receive(:suggest_identifier).and_return("MP")
         expect(Project.suggest_identifier("My Project")).to eq("MP")
         expect(WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
-          .to have_received(:suggest_identifier).with("My Project")
+          .to have_received(:suggest_identifier).with("My Project", exclude: a_kind_of(Set))
       end
     end
 
