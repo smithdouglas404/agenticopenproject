@@ -32,7 +32,7 @@ require "rails_helper"
 
 RSpec.describe ProjectIdentifiers::ConvertProjectToSemanticIdsJob do
   describe "#perform" do
-    it "delegates to BackfillProjectService" do
+    it "delegates to ConvertProjectToSemanticService" do
       project = create(:project)
       service = instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil)
       allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)

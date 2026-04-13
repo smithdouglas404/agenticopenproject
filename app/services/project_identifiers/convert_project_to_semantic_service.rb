@@ -32,11 +32,9 @@ module ProjectIdentifiers
   # Brings a single project fully up to date for semantic identifier mode:
   #
   # 1. Fixes the project identifier if it is not in valid semantic format.
-  # 2. Syncs the sequence counter so it is >= any existing sequence_number
-  #    (guards against counter underflow caused by cross-project WP moves).
-  # 3. Rewrites stale WP identifiers whose prefix no longer matches the project.
-  # 4. Assigns sequence numbers to WPs that have none yet.
-  # 5. Seeds the alias table for all historical project identifier prefixes.
+  # 2. Rewrites stale WP identifiers whose prefix no longer matches the project.
+  # 3. Assigns sequence numbers to WPs that have none yet.
+  # 4. Seeds the alias table for all historical project identifier prefixes.
   class ConvertProjectToSemanticService
     def initialize(project)
       @project = project
@@ -77,17 +75,17 @@ module ProjectIdentifiers
     end
 
     def reset_stale_identifiers
-      # Fix WPs that contain identifier that doesn't match the current project prefix
+      # Fix WPs whose identifier does not exactly match the expected semantic identifier
       #   (caused by renames or cross-project moves in classic mode)
       WorkPackage
         .where(project:)
         .where.not(sequence_number: nil)
-        .where("identifier NOT LIKE ?", "#{project.identifier}-%")
+        .where("identifier IS DISTINCT FROM (? || '-' || sequence_number::text)", project.identifier)
         .update_all(identifier: nil, sequence_number: nil)
     end
 
     def backfill_missing_ids
-      WorkPackage.where(project:, sequence_number: nil).order(:id).find_each do |wp|
+      WorkPackage.where(project:, sequence_number: nil).find_each do |wp|
         seq, identifier = project.allocate_wp_semantic_identifier!
         wp.update_columns(sequence_number: seq, identifier:)
       end
