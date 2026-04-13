@@ -31,7 +31,7 @@
 class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
 
-  good_job_control_concurrency_with(perform_limit: 1)
+  good_job_control_concurrency_with(total_limit: 1)
 
   # Maximum number of re-processing passes before giving up and aborting the flip.
   # Prevents an infinite loop if work packages are created faster than they can be processed.
