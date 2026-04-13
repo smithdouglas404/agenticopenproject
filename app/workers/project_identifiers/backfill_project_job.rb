@@ -29,6 +29,8 @@
 #++
 
 class ProjectIdentifiers::BackfillProjectJob < ApplicationJob
+  discard_on ActiveRecord::RecordNotFound
+
   def perform(project_id)
     project = Project.find(project_id)
     ProjectIdentifiers::BackfillProjectService.new(project).call
