@@ -54,11 +54,14 @@ export class WorkPackageIdDisplayField extends IdDisplayField {
     if (!this.value) {
       return;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+    const routingId:string = this.resource.displayId?.toString() ?? this.value?.toString();
     const link = this.uiStateBuilder.linkToShow(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       this.value,
       displayText,
       displayText,
+      routingId,
     );
 
     element.appendChild(link);

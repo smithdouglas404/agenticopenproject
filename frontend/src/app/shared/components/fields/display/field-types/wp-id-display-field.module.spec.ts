@@ -75,7 +75,19 @@ describe('WorkPackageIdDisplayField', () => {
       expect(link!.textContent).toEqual('PROJ-7');
     });
 
-    it('uses the numeric id for routing (data-work-package-id)', () => {
+    it('uses the semantic displayId in the href for pretty URLs', () => {
+      buildField({ id: '42', displayId: 'PROJ-7' });
+
+      const container = document.createElement('span');
+      field.render(container, 'PROJ-7');
+
+      const link = container.querySelector('a');
+
+      expect(link).toBeTruthy();
+      expect(link!.href).toContain('/work_packages/PROJ-7');
+    });
+
+    it('keeps the numeric id in data-work-package-id for selection', () => {
       buildField({ id: '42', displayId: 'PROJ-7' });
 
       const container = document.createElement('span');

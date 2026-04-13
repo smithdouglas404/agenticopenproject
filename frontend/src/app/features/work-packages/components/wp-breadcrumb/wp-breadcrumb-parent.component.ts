@@ -115,6 +115,7 @@ export class WorkPackageBreadcrumbParentComponent {
   }
 
   public parentLink(parent:WorkPackageResource):string {
-    return this.pathHelper.genericWorkPackagePath(parent.project?.identifier, parent.id!) + window.location.search;
+    const routingId = parent.displayId ?? parent.id!;
+    return this.pathHelper.genericWorkPackagePath(parent.project?.identifier, routingId) + window.location.search;
   }
 }

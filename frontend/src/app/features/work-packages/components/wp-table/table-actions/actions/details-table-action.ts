@@ -24,10 +24,12 @@ export class OpDetailsTableAction extends OpTableAction {
 
   public buildElement() {
     // Append details button
+    const routingId = this.workPackage.displayId ?? this.workPackage.id!;
     const detailsLink = this.uiStatebuilder.linkToDetails(
       this.workPackage.id!,
       this.text.button,
       '',
+      routingId,
     );
 
     detailsLink.classList.add(detailsLinkClassName, contextColumnIcon, 'hidden-for-mobile');

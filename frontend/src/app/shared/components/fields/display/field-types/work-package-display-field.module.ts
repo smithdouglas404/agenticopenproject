@@ -58,6 +58,18 @@ export class WorkPackageDisplayField extends DisplayField {
   }
 
   /**
+   * Returns the semantic identifier for URL routing when available,
+   * falling back to the numeric ID. Used in hrefs for pretty URLs.
+   */
+  public get wpRoutingId():string {
+    if (this.value?.$loaded && this.value.displayId) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call
+      return this.value.displayId.toString();
+    }
+    return this.wpId;
+  }
+
+  /**
    * Returns the work package ID formatted for display.
    * Classic mode: `#123` (hash-prefixed), Semantic mode: `PROJ-42` (no prefix).
    *

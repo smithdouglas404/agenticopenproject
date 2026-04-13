@@ -57,6 +57,7 @@ import { KeepTabService } from 'core-app/features/work-packages/components/wp-si
 import { WorkPackageViewBaselineService } from '../wp-view-base/view-services/wp-view-baseline.service';
 import { combineLatest } from 'rxjs';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { States } from 'core-app/core/states/states.service';
 
 @Component({
   selector: 'wp-list-view',
@@ -85,6 +86,7 @@ export class WorkPackageListViewComponent extends UntilDestroyedMixin implements
   readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly wpTableBaseline = inject(WorkPackageViewBaselineService);
   readonly pathHelper = inject(PathHelperService);
+  readonly states = inject(States);
 
   text = {
     jump_to_pagination: this.I18n.t('js.work_packages.jump_marks.pagination'),
@@ -178,8 +180,9 @@ export class WorkPackageListViewComponent extends UntilDestroyedMixin implements
   }
 
   openStateLink(event:{ workPackageId:string; requestedState:'show'|'split' }) {
+    const routingId = this.resolveRoutingId(event.workPackageId);
     const params = {
-      workPackageId: event.workPackageId,
+      workPackageId: routingId,
       focus: true,
     };
 
@@ -203,7 +206,13 @@ export class WorkPackageListViewComponent extends UntilDestroyedMixin implements
   }
 
   private openInFullView(workPackageId:string) {
+    const routingId = this.resolveRoutingId(workPackageId);
     const projectIdentifier = this.CurrentProject.identifier;
-    window.location.href = this.pathHelper.genericWorkPackagePath(projectIdentifier, workPackageId) + window.location.search;
+    window.location.href = this.pathHelper.genericWorkPackagePath(projectIdentifier, routingId) + window.location.search;
+  }
+
+  private resolveRoutingId(workPackageId:string):string {
+    const wp = this.states.workPackages.get(workPackageId)?.value;
+    return wp?.displayId ?? workPackageId;
   }
 }

@@ -65,7 +65,8 @@ export class WorkPackageBreadcrumbComponent {
   }
 
   public ancestorPath(ancestor:WorkPackageResource):string {
-    return this.pathHelper.genericWorkPackagePath(this.workPackage.project?.identifier, ancestor.id!) + window.location.search;
+    const routingId = ancestor.displayId ?? ancestor.id!;
+    return this.pathHelper.genericWorkPackagePath(this.workPackage.project?.identifier, routingId) + window.location.search;
   }
 
   public updateActiveInput(val:boolean) {

@@ -39,6 +39,7 @@ import {
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { States } from 'core-app/core/states/states.service';
 
 @Component({
   selector: 'board-list-container',
@@ -109,6 +110,7 @@ export class BoardListContainerComponent extends UntilDestroyedMixin implements 
     readonly QueryUpdated:QueryUpdatedService,
     readonly pathHelper:PathHelperService,
     readonly currentProject:CurrentProjectService,
+    readonly wpStates:States,
 ) {
     super();
   }
@@ -134,7 +136,10 @@ export class BoardListContainerComponent extends UntilDestroyedMixin implements 
         filter(() => window.location.pathname.includes('/details/')),
       ).subscribe((selection) => {
         // Update split screen
-        const base = this.pathHelper.boardDetailsPath(this.currentProject.identifier, id, selection.focusedWorkPackage!);
+        const wpId = selection.focusedWorkPackage!;
+        const wp = this.wpStates.workPackages.get(wpId)?.value;
+        const routingId = wp?.displayId ?? wpId;
+        const base = this.pathHelper.boardDetailsPath(this.currentProject.identifier, id, routingId);
         const search = window.location.search;
         Turbo.visit(search ? `${base}${search}` : base, { frame: 'content-bodyRight', action: 'advance' });
       });

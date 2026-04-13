@@ -16,29 +16,28 @@ export class UiStateLinkBuilder {
   ) {
   }
 
-  public linkToDetails(workPackageId:string, title:string, content:string) {
-    return this.build(workPackageId, 'split', title, content);
+  public linkToDetails(workPackageId:string, title:string, content:string, routingId?:string) {
+    return this.build(workPackageId, 'split', title, content, routingId);
   }
 
-  public linkToShow(workPackageId:string, title:string, content:string) {
-    return this.build(workPackageId, 'show', title, content);
+  public linkToShow(workPackageId:string, title:string, content:string, routingId?:string) {
+    return this.build(workPackageId, 'show', title, content, routingId);
   }
 
-  private build(workPackageId:string, state:'show'|'split', title:string, content:string) {
+  private build(workPackageId:string, state:'show'|'split', title:string, content:string, routingId?:string) {
     const a = document.createElement('a');
-    let tabState:string;
-    let tabIdentifier:string;
+    const idForHref = routingId ?? workPackageId;
     let href:string;
 
     if (state === 'show') {
       const projectIdentifier = this.currentProject.identifier;
-      href = this.pathHelper.genericWorkPackagePath(projectIdentifier, workPackageId, this.keepTab.currentShowTab) + window.location.search;
+      href = this.pathHelper.genericWorkPackagePath(projectIdentifier, idForHref, this.keepTab.currentShowTab) + window.location.search;
     } else {
       const tab = this.keepTab.currentDetailsTab;
       href = this.$state.href(
         'work-packages.partitioned.list.details.tabs',
         {
-          workPackageId,
+          workPackageId: idForHref,
           tab,
         },
       );
