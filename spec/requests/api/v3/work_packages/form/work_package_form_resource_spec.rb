@@ -94,7 +94,8 @@ RSpec.describe "API v3 Work package form resource" do
 
         include_context "with post request"
 
-        it_behaves_like "not found"
+        it_behaves_like "not found",
+                        I18n.t("api_v3.errors.not_found.work_package")
       end
 
       context "with existing work package" do
