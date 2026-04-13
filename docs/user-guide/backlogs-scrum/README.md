@@ -8,13 +8,13 @@ keywords: backlogs, scrum
 
 # Backlog and sprints
 
-> [!Note]
+> [!NOTE]
 >
-> The "Backlogs" module is continuously evolving and will undergo further changes in upcoming versions. We will keep updating the documentation over time to reflect these changes.
+> The "Backlogs" module is continuously evolving and will undergo further changes in the upcoming versions. We will keep updating the documentation over time to reflect these changes.
 
 
 
-Working in agile project teams is becoming increasingly important and with OpenProject , it is easier than ever.
+Working in agile project teams is becoming increasingly important and with OpenProject, it is easier than ever.
 
 OpenProject supports your work with the Agile and Scrum methodology by providing a variety of improved functionalities. You can now create and manage sprints, record and prioritize user stories in the sprint and backlog, use sprint boards or burndown-charts, print story cards, and much more. For more information, please refer to the OpenProject [agile and scrum features](https://www.openproject.org/collaboration-software-features/agile-project-management/) page.
 
