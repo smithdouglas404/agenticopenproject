@@ -53,6 +53,7 @@ import {
   uiStateLinkClass,
 } from 'core-app/features/work-packages/components/wp-fast-table/builders/ui-state-link-builder';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
+import { States } from 'core-app/core/states/states.service';
 import {
   WorkPackageViewContextMenu,
 } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-view-context-menu.directive';
@@ -112,6 +113,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     readonly calendarService:OpCalendarService,
     readonly weekdayService:WeekdayService,
     readonly dayService:DayResourceService,
+    readonly states:States,
   ) {
     super();
   }
@@ -287,19 +289,26 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       return;
     }
 
+    const routingId = this.resolveRoutingId(id);
     void this.$state.go(
       `${splitViewRoute(this.$state)}.tabs`,
-      { workPackageId: id, tabIdentifier: 'overview' },
+      { workPackageId: routingId, tabIdentifier: 'overview' },
     );
   }
 
   public openFullView(id:string):void {
     this.wpTableSelection.setSelection(id, -1);
 
+    const routingId = this.resolveRoutingId(id);
     void this.$state.go(
       'work-packages.show',
-      { workPackageId: id },
+      { workPackageId: routingId },
     );
+  }
+
+  private resolveRoutingId(workPackageId:string):string {
+    const wp = this.states.workPackages.get(workPackageId)?.value;
+    return wp?.displayId ?? workPackageId;
   }
 
   public onCardClicked({ workPackageId, event }:{ workPackageId:string, event:MouseEvent }):void {
