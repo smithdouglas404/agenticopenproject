@@ -27,7 +27,7 @@ Press the **Save** button to apply your changes.
 
 Sharing is a project-level setting that allows you choose whether sprints should be shared across projects or not.
 
-> [!Note]
+> [!NOTE]
 >
 > This is not a sprint-level setting which is typical with versions at the moment.
 
