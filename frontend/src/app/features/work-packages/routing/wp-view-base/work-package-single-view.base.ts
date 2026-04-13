@@ -150,6 +150,13 @@ export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
       .requireAndStream()
       .pipe(this.untilDestroyed())
       .subscribe((wp:WorkPackageResource) => {
+        // Normalize semantic route param (e.g. "PROJ-7") to numeric PK
+        // for cache coherence — downstream code uses this.workPackageId
+        // as a cache key, and the canonical key is always numeric.
+        if (this.workPackageId !== wp.id && wp.id) {
+          this.workPackageId = wp.id;
+        }
+
         if (!this.workPackage) {
           this.workPackage = wp;
           this.init();
