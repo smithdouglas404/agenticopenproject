@@ -1,7 +1,6 @@
 # Setup guide
 
-A minimal setup guide for using a local XWiki inside a docker stack. The example compose file is connected to the
-standard setup of the TLS-ready stack with `traefik`.
+A minimal setup guide for using a local XWiki inside a docker stack. The example compose file is connected to the standard setup of the [TLS-ready](https://www.openproject.org/docs/development/development-environment/docker/#tls-support) stack with `traefik`.
 
 ## First steps
 
@@ -33,12 +32,6 @@ After the container starts, go to <https://xwiki.local> — XWiki will detect th
 present an upgrade wizard. Follow it to completion before using XWiki again.
 
 ## Certificates
-
-### Trusting the local CA in your browser
-
-If your browser shows a certificate warning for `https://xwiki.local`, import the step-ca root
-certificate into your browser. This is the same CA used by the rest of the TLS stack, so if
-OpenProject or Nextcloud already work without warnings, no action is needed.
 
 ### Trusting the local CA in XWiki (for outbound HTTPS calls)
 
