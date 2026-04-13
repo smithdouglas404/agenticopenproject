@@ -19,13 +19,14 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 ar:
   js:
     github_integration:
       work_packages:
-        tab_name: "GitHub"
+        tab_name: GitHub
       tab_header:
-        title: "Pull requests"
+        title: Pull requests
         copy_menu:
           label: Git snippets
           description: Copy git snippets to clipboard
@@ -33,22 +34,22 @@ ar:
           branch_name: Branch name
           commit_message: Commit message
           cmd: Create branch with empty commit
-          title: مقتطفات سريعة لأوامر 
+          title: مقتطفات سريعة لأوامر
           copy_success: نسخ
           copy_error: فشل النسخ
       tab_prs:
-        empty: 'There are no pull requests linked yet. Link an existing PR by using the code <code>OP#%{wp_id}</code> in the PR description or create a new PR.'
+        empty: There are no pull requests linked yet. Link an existing PR by using the code <code>OP#%{wp_id}</code> in the PR description or create a new PR.
       github_actions: Actions
       pull_requests:
-        message: "طلب السحب #%{pr_number} %{pr_link} لمستودع %{repository_link} الذي أنشأه %{github_user_link} تم %{pr_state}."
-        merged_message: "طلب السحب #%{pr_number} %{pr_link} لمستودع %{repository_link} تم %{pr_state} من قبل %{github_user_link}."
-        referenced_message: "طلب السحب #%{pr_number} %{pr_link} لمستودع %{repository_link} الذي أنشأه %{github_user_link} أشار إلى حزمة العمل هذه."
+        message: 'طلب السحب #%{pr_number} %{pr_link} لمستودع %{repository_link} الذي أنشأه %{github_user_link} تم %{pr_state}.'
+        merged_message: 'طلب السحب #%{pr_number} %{pr_link} لمستودع %{repository_link} تم %{pr_state} من قبل %{github_user_link}.'
+        referenced_message: 'طلب السحب #%{pr_number} %{pr_link} لمستودع %{repository_link} الذي أنشأه %{github_user_link} أشار إلى حزمة العمل هذه.'
         states:
-          opened: 'مفتوح'
-          closed: 'مغلق'
-          draft: 'تمت صياغته'
-          merged: 'مدمج'
-          ready_for_review: 'تم وضع علامة جاهز للمراجعة'
+          opened: مفتوح
+          closed: مغلق
+          draft: تمت صياغته
+          merged: مدمج
+          ready_for_review: تم وضع علامة جاهز للمراجعة
     work_packages:
       tabs:
-        github: "GitHub"
+        github: GitHub

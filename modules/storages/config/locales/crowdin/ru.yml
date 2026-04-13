@@ -1,3 +1,4 @@
+---
 ru:
   activerecord:
     attributes:
@@ -145,8 +146,8 @@ ru:
             hide_inactive_folders:
               permission_not_set: не удалось установить разрешения на %{path}.
             remote_folders:
-              not_allowed: '%{username} не имеет доступа к папке %{group_folder}. Пожалуйста, проверьте права доступа к папкам на Nextcloud.'
-              not_found: "Папка %{group_folder} не найдена. Пожалуйста, проверьте настройки Nextcloud."
+              not_allowed: "%{username} не имеет доступа к папке %{group_folder}. Пожалуйста, проверьте права доступа к папкам на Nextcloud."
+              not_found: Папка %{group_folder} не найдена. Пожалуйста, проверьте настройки Nextcloud.
             remove_user_from_group:
               conflict: 'Пользователь %{user} не может быть удален из группы %{group} по следующей причине: %{reason}'
               failed_to_remove: 'Пользователь %{user} не может быть удален из группы %{group} по следующей причине: %{reason}'
@@ -166,7 +167,7 @@ ru:
         one_drive_sync_service:
           attributes:
             create_folder:
-              conflict: '%{folder_name} уже существует в %{parent_location}.'
+              conflict: "%{folder_name} уже существует в %{parent_location}."
               not_found: "%{parent_location} не найден."
             hide_inactive_folders:
               permission_not_set: не удалось установить разрешения на %{path}.
@@ -185,7 +186,7 @@ ru:
         sharepoint_sync_service:
           attributes:
             create_folder:
-              conflict: '%{folder_name} уже существует в %{parent_location}.'
+              conflict: "%{folder_name} уже существует в %{parent_location}."
               not_found: "%{parent_location} не найден."
             hide_inactive_folders:
               permission_not_set: не удалось установить разрешения на %{path}.
@@ -514,8 +515,7 @@ ru:
         delete: Удалить хранилище файлов?
         subtitle: Добавьте внешнее хранилище файлов для загрузки, чтобы связывать и управлять файлами в пакетах работ.
       managed_project_folders:
-        subtitle: |-
-          Разрешите OpenProject автоматическое создание папки для каждого проекта. Это гарантирует наличие прав доступа для каждого члена команды.
+        subtitle: Разрешите OpenProject автоматическое создание папки для каждого проекта. Это гарантирует наличие прав доступа для каждого члена команды.
         subtitle_short: Позволить OpenProject создавать папки для каждого проекта автоматически.
         title: Автоматически управляемые папки проекта
       project_settings:
@@ -527,7 +527,7 @@ ru:
         title: Статус подключения участников
       project_storages:
         delete: Удалить хранилище файлов из проекта?
-    permission_header_explanation: 'Разрешения для файлов во внешних хранилищах применяются только к папкам и файлам в автоматически управляемых папках проекта. Обратите внимание, что не все разрешения для файлов поддерживаются всеми поставщиками хранилищ. Для получения дополнительной информации ознакомьтесь с документацией по <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>разрешениям на хранение файлов</a>.'
+    permission_header_explanation: Разрешения для файлов во внешних хранилищах применяются только к папкам и файлам в автоматически управляемых папках проекта. Обратите внимание, что не все разрешения для файлов поддерживаются всеми поставщиками хранилищ. Для получения дополнительной информации ознакомьтесь с документацией по <a target='_blank' href='https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions'>разрешениям на хранение файлов</a>.
     provider_types:
       label: Тип поставщика
       nextcloud:
@@ -563,10 +563,8 @@ ru:
     successful_storage_connection: Хранилище успешно подключено! Не забудьте активировать хранилище на вкладке Проекты для каждого желаемого проекта, чтобы использовать его.
     upsell:
       one_drive:
-        description: |-
-          Интегрируйте Ваш OneDrive как файловое хранилище в OpenProject. Загружайте файлы и связывайте их напрямую с пакетами работ в проекте.
+        description: Интегрируйте Ваш OneDrive как файловое хранилище в OpenProject. Загружайте файлы и связывайте их напрямую с пакетами работ в проекте.
         title: Интеграция с OneDrive
       sharepoint:
-        description: |-
-          Интегрируйте Ваш SharePoint как файловое хранилище в OpenProject. Загружайте файлы и связывайте их напрямую с пакетами работ в проекте.
+        description: Интегрируйте Ваш SharePoint как файловое хранилище в OpenProject. Загружайте файлы и связывайте их напрямую с пакетами работ в проекте.
         title: Интеграция с SharePoint

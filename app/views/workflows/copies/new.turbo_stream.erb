@@ -39,7 +39,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
     d.with_footer do
-      render(Primer::Beta::Button.new(data: { "close-dialog-id": dialog_id })) { "Cancel" } +
+      render(Primer::Beta::Button.new(data: { "close-dialog-id": dialog_id })) { t(:button_cancel) } +
 
       render(Primer::Beta::Button.new(
         hidden: !another_type_at_first,

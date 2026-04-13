@@ -27,7 +27,7 @@
 //++
 
 import {
-  ChangeDetectionStrategy, Component, Input, NgZone, OnInit,
+  ChangeDetectionStrategy, Component, Input, OnInit,
 } from '@angular/core';
 import { UIRouterGlobals } from '@uirouter/core';
 import { States } from 'core-app/core/states/states.service';
@@ -81,8 +81,6 @@ export class BcfListComponent extends WorkPackageListViewComponent implements Un
 
   @InjectField() bcfApi:BcfApiService;
 
-  @InjectField() zone:NgZone;
-
   public wpTableConfiguration = {
     dragAndDropEnabled: false,
   };
@@ -105,9 +103,7 @@ export class BcfListComponent extends WorkPackageListViewComponent implements Un
     if (!this.showViewPointInFlight) {
       this.showViewPointInFlight = true;
 
-      this.zone.runOutsideAngular(() => {
-        setTimeout(() => { this.showViewPointInFlight = false; }, 500);
-      });
+      setTimeout(() => { this.showViewPointInFlight = false; }, 500);
 
       const wp = this.states.workPackages.get(workPackageId).value;
 

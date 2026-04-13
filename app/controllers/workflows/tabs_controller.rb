@@ -48,7 +48,7 @@ class Workflows::TabsController < ApplicationController
     end
   end
 
-  def update # rubocop:disable Metrics/AbcSize
+  def update
     call = Workflows::BulkUpdateService
            .new(role: @role, type: @type, tab: @tab)
            .call(permitted_status_params)

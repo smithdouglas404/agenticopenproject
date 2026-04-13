@@ -65,10 +65,10 @@ class Workflows::Copies::FromTypesController < ApplicationController
   private
 
   def set_source_type
-    @source_type = ::Type.find(params[:workflow_type_id])
+    @source_type = ::Type.find_by(id: params[:workflow_type_id])
   end
 
   def set_target_type
-    @target_type = ::Type.find(params[:target_type_id])
+    @target_type = ::Type.find_by(id: params[:target_type_id])
   end
 end

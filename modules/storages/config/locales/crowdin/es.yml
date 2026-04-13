@@ -1,3 +1,4 @@
+---
 es:
   activerecord:
     attributes:
@@ -138,22 +139,22 @@ es:
               failed_to_add: 'El usuario %{user} no se ha podido añadir al grupo %{group} por la siguiente razón: %{reason}'
             create_folder:
               conflict: La carpeta %{folder_name} ya existe en %{parent_location}.
-              not_found: "No se encontró %{parent_location}."
+              not_found: No se encontró %{parent_location}.
             ensure_root_folder_permissions:
-              not_found: "No se ha encontrado %{group_folder}. Compruebe la configuración de su carpeta de equipo de Nextcloud."
+              not_found: No se ha encontrado %{group_folder}. Compruebe la configuración de su carpeta de equipo de Nextcloud.
               permission_not_set: no se han podido establecer permisos en %{group_folder}.
             hide_inactive_folders:
               permission_not_set: no se han podido establecer permisos en %{path}.
             remote_folders:
               not_allowed: El %{username} no tiene acceso a la carpeta %{group_folder}. Compruebe los permisos de la carpeta en Nextcloud.
-              not_found: "No se ha encontrado la carpeta %{group_folder}. Compruebe su configuración de Nextcloud."
+              not_found: No se ha encontrado la carpeta %{group_folder}. Compruebe su configuración de Nextcloud.
             remove_user_from_group:
               conflict: 'El usuario %{user} no se ha podido eliminar del grupo %{group} por la siguiente razón: %{reason}'
               failed_to_remove: 'El usuario %{user} no se ha podido eliminar del grupo %{group} por la siguiente razón: %{reason}'
             rename_project_folder:
               conflict: OpenProject no ha podido renombrar la carpeta del proyecto en %{current_path} puesto que ya existe una carpeta con el mismo nombre
               forbidden: El usuario de OpenProject no tiene acceso a la carpeta %{current_path}.
-              not_found: "No se encontró %{current_path}."
+              not_found: No se encontró %{current_path}.
             set_folders_permissions:
               permission_not_set: no se han podido establecer permisos en %{path}.
           error: Se ha producido un error inesperado. Asegúrese de que su instancia de Nextcloud es accesible y compruebe los registros de los trabajadores de OpenProject para obtener más información
@@ -167,7 +168,7 @@ es:
           attributes:
             create_folder:
               conflict: La dirección %{folder_name} ya existe en %{parent_location}.
-              not_found: "No se encontró %{parent_location}."
+              not_found: No se encontró %{parent_location}.
             hide_inactive_folders:
               permission_not_set: no se han podido establecer permisos en %{path}.
             remote_folders:
@@ -175,7 +176,7 @@ es:
             rename_project_folder:
               conflict: OpenProject no ha podido renombrar la carpeta %{current_path} a %{project_folder_name} puesto que ya existe una carpeta con el mismo nombre.
               forbidden: OpenProject no tiene acceso a %{current_path} para cambiarle el nombre.
-              not_found: "No se encontró %{current_path}."
+              not_found: No se encontró %{current_path}.
             set_folders_permissions:
               permission_not_set: no se han podido establecer permisos en %{path}.
           error: Se ha producido un error inesperado. Asegúrese de que se puede acceder a OneDrive y compruebe los registros del trabajador de OpenProject para obtener más información.
@@ -186,13 +187,13 @@ es:
           attributes:
             create_folder:
               conflict: La dirección %{folder_name} ya existe en %{parent_location}.
-              not_found: "No se encontró %{parent_location}."
+              not_found: No se encontró %{parent_location}.
             hide_inactive_folders:
               permission_not_set: no se han podido establecer permisos en %{path}.
             rename_project_folder:
               conflict: OpenProject no ha podido renombrar la carpeta %{current_path} a %{project_folder_name} puesto que ya existe una carpeta con el mismo nombre
               forbidden: OpenProject no tiene acceso a %{current_path} para cambiarle el nombre.
-              not_found: "No se encontró %{current_path}."
+              not_found: No se encontró %{current_path}.
             set_folders_permissions:
               permission_not_set: no se han podido establecer permisos en %{path}.
           error: Se ha producido un error inesperado. Asegúrese de que se puede acceder a OneDrive y compruebe los registros del trabajador de OpenProject para obtener más información
@@ -284,8 +285,8 @@ es:
           drive_contents: Contenido de la unidad
           files_request: Obteniendo archivos de carpetas de equipo
           header: Carpetas de proyecto gestionadas automáticamente
-          project_folders_exist: Project folders exist
-          project_folders_linked: Project folders linked
+          project_folders_exist: Hay carpetas de proyectos
+          project_folders_linked: Carpetas de proyectos vinculadas
           team_folder_app: 'Dependencia: Carpetas de equipo'
           team_folder_contents: Contenido de la carpeta de equipo
           team_folder_presence: La carpeta del equipo existe
@@ -329,10 +330,10 @@ es:
         nc_oauth_request_not_found: No se ha encontrado el terminal para obtener el usuario actualmente conectado. Consulte los registros del servidor para obtener más información.
         nc_oauth_request_unauthorized: El usuario actual no está autorizado a acceder al almacenamiento remoto de archivos. Consulte los registros del servidor para obtener más información.
         nc_oauth_token_missing: OpenProject no puede probar la comunicación a nivel de usuario con Nextcloud, ya que el usuario aún no ha vinculado su cuenta de Nextcloud.
-        nc_project_folder_missing: The previously created project folder for project "%{project}" could not be found.
+        nc_project_folder_missing: No se ha encontrado la carpeta del proyecto «%{project}» creada anteriormente.
         nc_team_folder_not_found: No se ha podido encontrar la carpeta del equipo.
-        nc_unexpected_files: 'Unexpected files found in the managed team folder. For example: %{sample}'
-        nc_unlinked_project_folders: Not all project folders have been created yet (%{actual} / %{expected}). This can indicate errors during the AMPF background synchronization.
+        nc_unexpected_files: 'Se han encontrado archivos inesperados en la carpeta del equipo gestionado. Por ejemplo: %{sample}'
+        nc_unlinked_project_folders: Aún no se han creado todas las carpetas de proyecto (%{actual}/%{expected}). Esto puede indicar que se han producido errores durante la sincronización en segundo plano de AMPF.
         nc_userless_access_denied: La contraseña configurada de la aplicación no es válida.
         not_configured: No se ha podido validar la conexión. Por favor, termine primero la configuración.
         od_client_cant_delete_folder: El cliente tiene problemas para eliminar carpetas. Consulte la documentación de configuración de su almacenamiento.
@@ -489,7 +490,7 @@ es:
       cancel_button_label: Lo haré más tarde
       heading: Es necesario iniciar sesión en %{provider_type}
       login_button_aria_label: Iniciar sesión en %{storage}
-      login_button_label: "Inicio de sesión de %{provider_type}"
+      login_button_label: Inicio de sesión de %{provider_type}
       project_settings:
         description: Para obtener acceso a la carpeta del proyecto necesitas iniciar sesión en %{storage}.
       requesting_access_to: Solicitando acceso a %{storage}
@@ -507,11 +508,10 @@ es:
         title: Estamos configurando tus permisos en la carpeta del proyecto.
     page_titles:
       file_storages:
-        delete: '¿Eliminar el almacenamiento de archivos?'
+        delete: "¿Eliminar el almacenamiento de archivos?"
         subtitle: Añadir un archivo de almacenamiento externo para subir, enlazar y gestionar los archivos en los paquetes de trabajo.
       managed_project_folders:
-        subtitle: |-
-          Deja que OpenProject cree carpetas por proyecto automáticamente. Esto es recomendable, ya que garantiza que cada miembro del equipo tenga siempre los permisos de acceso correctos.
+        subtitle: Deja que OpenProject cree carpetas por proyecto automáticamente. Esto es recomendable, ya que garantiza que cada miembro del equipo tenga siempre los permisos de acceso correctos.
         subtitle_short: Permitir que OpenProject cree carpetas por proyecto automáticamente.
         title: Carpetas de proyecto administradas automáticamente
       project_settings:
@@ -522,8 +522,8 @@ es:
         subtitle_html: Check the connection status for the storage %{storage_name_link} of all project members.
         title: Estado de conexión de los miembros
       project_storages:
-        delete: '¿Quitar el almacenamiento de archivos del proyecto?'
-    permission_header_explanation: 'Los permisos de archivos en almacenamientos externos se aplican sólo a carpetas y archivos dentro de carpetas de proyecto gestionadas automáticamente. Tenga en cuenta que no todos los permisos de archivo están soportados por todos los proveedores de almacenamiento. Por favor, compruebe la documentación sobre <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>permisos de almacenamiento de archivos</a> para más información.'
+        delete: "¿Quitar el almacenamiento de archivos del proyecto?"
+    permission_header_explanation: Los permisos de archivos en almacenamientos externos se aplican sólo a carpetas y archivos dentro de carpetas de proyecto gestionadas automáticamente. Tenga en cuenta que no todos los permisos de archivo están soportados por todos los proveedores de almacenamiento. Por favor, compruebe la documentación sobre <a target='_blank' href='https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions'>permisos de almacenamiento de archivos</a> para más información.
     provider_types:
       label: Tipo de proveedor
       nextcloud:
@@ -556,13 +556,11 @@ es:
     storage_list_blank_slate:
       description: Añade un almacenamiento para verlos aquí.
       heading: Aún no tiene ningún almacenamiento.
-    successful_storage_connection: '¡Almacenamiento conectado con éxito! Recuerda activar el almacenamiento en la pestaña Proyectos de cada proyecto deseado para usarlo.'
+    successful_storage_connection: "¡Almacenamiento conectado con éxito! Recuerda activar el almacenamiento en la pestaña Proyectos de cada proyecto deseado para usarlo."
     upsell:
       one_drive:
-        description: |-
-          Integre su unidad de OneDrive como almacenamiento de archivos con OpenProject. Suba archivos y vincúlelos directamente a paquetes de trabajo en un proyecto.
+        description: Integre su unidad de OneDrive como almacenamiento de archivos con OpenProject. Suba archivos y vincúlelos directamente a paquetes de trabajo en un proyecto.
         title: Integración de OneDrive
       sharepoint:
-        description: |-
-          Integre su SharePoint como almacenamiento de archivos con OpenProject. Suba archivos y vincúlelos directamente a paquetes de trabajo en un proyecto.
+        description: Integre su SharePoint como almacenamiento de archivos con OpenProject. Suba archivos y vincúlelos directamente a paquetes de trabajo en un proyecto.
         title: Integración de SharePoint

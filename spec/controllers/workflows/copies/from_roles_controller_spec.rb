@@ -34,8 +34,8 @@ RSpec.describe Workflows::Copies::FromRolesController do
   let!(:source_type) do
     build_stubbed(:type) do |stub|
       allow(Type)
-        .to receive(:find)
-              .with(stub.id.to_s)
+        .to receive(:find_by)
+              .with(id: stub.id.to_s)
               .and_return(stub)
     end
   end
@@ -64,7 +64,7 @@ RSpec.describe Workflows::Copies::FromRolesController do
     let!(:target_roles) do
       all_roles.tap do |stubs|
         allow(eligible_roles)
-          .to receive(:find_by).with(id: target_role_ids)
+          .to receive(:where).with(id: target_role_ids)
             .and_return(stubs)
       end
     end

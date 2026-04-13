@@ -43,7 +43,7 @@ module Import
       firstname, lastname = split_display_name(payload["displayName"])
       {
         login: payload["name"],
-        password: SecureRandom.uuid,
+        password: OpenProject::Passwords::Generator.random_password,
         firstname:,
         lastname:,
         mail: payload["emailAddress"],

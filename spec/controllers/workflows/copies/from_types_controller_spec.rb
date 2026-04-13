@@ -34,8 +34,8 @@ RSpec.describe Workflows::Copies::FromTypesController do
   let!(:source_type) do
     build_stubbed(:type) do |stub|
       allow(Type)
-        .to receive(:find)
-              .with(stub.id.to_s)
+        .to receive(:find_by)
+              .with(id: stub.id.to_s)
               .and_return(stub)
     end
   end
@@ -57,7 +57,7 @@ RSpec.describe Workflows::Copies::FromTypesController do
     let!(:target_type) do
       other_types.last.tap do |stub|
         allow(Type)
-          .to receive(:find).with(stub.id.to_s).and_return(stub)
+          .to receive(:find_by).with(id: stub.id.to_s).and_return(stub)
       end
     end
 

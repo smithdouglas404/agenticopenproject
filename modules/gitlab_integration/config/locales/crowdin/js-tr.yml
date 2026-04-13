@@ -20,15 +20,16 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See docs/COPYRIGHT.rdoc for more details.
 #++
+---
 tr:
   js:
     gitlab_integration:
       work_packages:
-        tab_name: "GitLab"
+        tab_name: GitLab
       tab_header_issue:
-        title: "Sorunlar"
+        title: Sorunlar
       tab_header_mr:
-        title: "Birleştirme istekleri"
+        title: Birleştirme istekleri
         create_mr:
           label: Birleştirme isteği oluştur
           description: Birleştirme İsteği Oluştur
@@ -40,14 +41,14 @@ tr:
           commit_message: İşlem mesajı
           cmd: Boş işlemle dal oluştur
           title: Git için hızlı kod parçaları
-          copy_success: '✅ Kopyalandı!'
-          copy_error: '❌ Kopyalanamadı!'
+          copy_success: "✅ Kopyalandı!"
+          copy_error: "❌ Kopyalanamadı!"
       tab_issue:
-        empty: 'Henüz bağlantılı sorun yok. Sorun başlığında/açıklamasında <code>OP#%{wp_id}</code> (veya özel bağlantılar için <code>PP#%{wp_id}</code>) kodunu kullanarak mevcut bir sorunu bağlayın veya yeni bir sorun oluşturun.'
+        empty: Henüz bağlantılı sorun yok. Sorun başlığında/açıklamasında <code>OP#%{wp_id}</code> (veya özel bağlantılar için <code>PP#%{wp_id}</code>) kodunu kullanarak mevcut bir sorunu bağlayın veya yeni bir sorun oluşturun.
       tab_mrs:
-        empty: 'Henüz bağlanmış bir birleştirme isteği yok. MR başlığında/açıklamasında <code>OP#%{wp_id}</code> (veya özel bağlantılar için <code>PP#%{wp_id}</code>) kodunu kullanarak mevcut bir MR''ı bağlayın veya yeni bir MR oluşturun.'
+        empty: Henüz bağlanmış bir birleştirme isteği yok. MR başlığında/açıklamasında <code>OP#%{wp_id}</code> (veya özel bağlantılar için <code>PP#%{wp_id}</code>) kodunu kullanarak mevcut bir MR'ı bağlayın veya yeni bir MR oluşturun.
       gitlab_pipelines: İş Akışları
       updated_on: Güncelleme tarihi
     work_packages:
       tabs:
-        gitlab: "GitLab"
+        gitlab: GitLab

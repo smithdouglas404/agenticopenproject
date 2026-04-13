@@ -29,7 +29,7 @@
 #++
 
 module WorkflowHelper
-  def workflow_tabs(type, current_role:, current_tab:)
+  def workflow_tabs(type)
     [
       { name: "always", label: I18n.t(:"admin.workflows.tabs.default_transitions") },
       { name: "author", label: I18n.t(:"admin.workflows.tabs.user_author") },

@@ -64,7 +64,7 @@ class Workflows::Copies::FromRolesController < ApplicationController
   private
 
   def set_source_type
-    @source_type = ::Type.find(params[:workflow_type_id])
+    @source_type = ::Type.find_by(id: params[:workflow_type_id])
   end
 
   def set_source_role
@@ -72,7 +72,7 @@ class Workflows::Copies::FromRolesController < ApplicationController
   end
 
   def set_target_roles
-    @target_roles = eligible_roles.find_by(id: params[:target_role_ids])
+    @target_roles = eligible_roles.where(id: params[:target_role_ids])
   end
 
   def eligible_roles

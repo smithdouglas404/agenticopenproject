@@ -11,7 +11,7 @@ nl:
           two_way_oauth2: Two-way OAuth 2.0 authorization code flow
         token_exchange_scope: XWiki Scope
         wiki_audience: XWiki Audience
-    errors: { }
+    errors: {}
     models:
       wikis/inline_page_link:
         one: Inline page link
@@ -50,4 +50,4 @@ nl:
           xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
         delete:
           title: Delete wiki provider
-          warning_html: "You are about to delete %{wiki_provider}. This action is irreversible."
+          warning_html: You are about to delete %{wiki_provider}. This action is irreversible.

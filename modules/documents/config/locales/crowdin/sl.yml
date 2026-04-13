@@ -19,43 +19,44 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 sl:
   plugin_openproject_documents:
-    name: "OpenProject Documents"
-    description: "An OpenProject plugin to allow creation of documents in projects."
+    name: OpenProject Documents
+    description: An OpenProject plugin to allow creation of documents in projects.
   attributes:
-    collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+    collaborative_editing_hocuspocus_url: Hocuspocus server URL
   activerecord:
     errors:
       models:
         document_type:
-          one_or_more_required: "Cannot delete the last document type"
+          one_or_more_required: Cannot delete the last document type
     models:
-      document: "Dokument"
-      documents: "Documents"
+      document: Dokument
+      documents: Documents
     attributes:
       document:
-        content_binary: "Content binary"
-        title: "Naslov"
+        content_binary: Content binary
+        title: Naslov
   activity:
     filter:
-      document: "Dokumenti"
-  default_doc_category_tech: "Tehnična dokumentacija"
-  default_doc_category_user: "Uporabniška dokumentacija"
-  enumeration_doc_categories: "Kategorije dokumentov"
+      document: Dokumenti
+  default_doc_category_tech: Tehnična dokumentacija
+  default_doc_category_user: Uporabniška dokumentacija
+  enumeration_doc_categories: Kategorije dokumentov
   documents:
     page_header:
-      heading: "All documents"
+      heading: All documents
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: Document actions
+        edit_title: Edit title
     subheader:
       filter:
-        label: "Document name filter"
-        placeholder: "Type here to search document names"
+        label: Document name filter
+        placeholder: Type here to search document names
     documents_list_blank_slate:
-      heading: "There are no documents yet"
-      description: "There are no documents in this view. You can click the button below to add one."
+      heading: There are no documents yet
+      description: There are no documents in this view. You can click the button below to add one.
     document_categories_deprecation_notice:
       heading: File categories are now called 'Document types'
       description: |-
@@ -63,7 +64,7 @@ sl:
         All existing documents have also been migrated to these new types.
       primary_action: Configure document types
       secondary_action: Learn more about the Documents module
-    document_type_actions: "Document type actions"
+    document_type_actions: Document type actions
     text_collaboration_disabled_notice:
       description: |-
         Unable to open document because real-time text collaboration is disabled.
@@ -74,39 +75,38 @@ sl:
           Unable to open document because the real-time text collaboration server is unreachable.
           Please contact the administrator if the problem persists.
         action: Try again
-      tabs: "Document tabs"
+      tabs: Document tabs
     index_page:
-      name: "Ime"
-      type: "Vrsta"
-      updated_at: "Last edited"
-      label_legacy: "Legacy"
+      name: Ime
+      type: Vrsta
+      updated_at: Last edited
+      label_legacy: Legacy
     menu:
-      all: "All documents"
-      types: "Tipi"
-      collaboration_settings: "Real-time collaboration"
-    last_updated_at: "Last saved %{time}."
+      all: All documents
+      types: Tipi
+      collaboration_settings: Real-time collaboration
+    last_updated_at: Last saved %{time}.
     info_line:
-      currently_offline: "You are currently offline."
-      connection_restored: "You are now back online."
-    active_editors: "Active editors"
+      currently_offline: You are currently offline.
+      connection_restored: You are now back online.
+    active_editors: Active editors
     active_editors_count:
-      one: "1 active editor"
+      one: 1 active editor
       two: "%{count} active editors"
       few: "%{count} active editors"
       other: "%{count} active editors"
-    label_attachment_author: "Avtor priloge"
-    label_categories: "Categories"
-    new_category: "Nova kategorija"
-    new_type: "New type"
+    label_attachment_author: Avtor priloge
+    label_categories: Categories
+    new_category: Nova kategorija
+    new_type: New type
     delete_dialog:
-      title: "Delete document"
-      heading: "Delete this document?"
-      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
+      title: Delete document
+      heading: Delete this document?
+      confirmation_message_html: This will permanently delete this document and all file attachments. Are you sure you want to do this?
     delete_document_type_dialog:
       title: Delete document type
       heading: Delete this document type?
-      confirmation_message: |-
-        The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
+      confirmation_message: The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
       select_reassign_to_label: Reassign documents to
       reassign_message:
         one: The type "%{type_name}" is currently being used in %{document_count} document. Please select which type to reassign them to.
@@ -127,12 +127,12 @@ sl:
           none_writable: These values are configured via environment variables and cannot be edited here.
           some_unwritable: Some values are configured via environment variables and cannot be edited here.
         hocuspocus_server_url:
-          label: "Hocuspocus server URL"
-          caption: "The WebSocket address of a working Hocuspocus server."
-          invalid_scheme: "Must use a WebSocket protocol (ws:// or wss://)."
+          label: Hocuspocus server URL
+          caption: The WebSocket address of a working Hocuspocus server.
+          invalid_scheme: Must use a WebSocket protocol (ws:// or wss://).
         hocuspocus_server_secret:
-          label: "Client secret"
-          caption: "Paste the secret provided by the Hocuspocus server."
+          label: Client secret
+          caption: Paste the secret provided by the Hocuspocus server.
         hocuspocus_server: Hocuspocus server
       enable_text_collaboration:
         heading: Real-time collaboration is not enabled
@@ -150,14 +150,14 @@ sl:
           real-time collaboration and the BlockNote editor in this instance.
         confirmation_checkbox_message: I understand that I might permanently lose data
         success: Real-time collaboration has been disabled.
-  label_document_added: "Dokument dodan"
-  label_document_new: "Nov dokument"
-  label_document_plural: "Dokumenti"
-  label_documents: "Dokumenti"
-  label_document_title: "Naslov"
-  label_document_description: "Opis"
-  label_document_category: "Kategorija"
-  label_document_type: "Type"
-  permission_manage_documents: "Uredi dokumente"
-  permission_view_documents: "Poglej dokumente"
-  project_module_documents: "Dokumenti"
+  label_document_added: Dokument dodan
+  label_document_new: Nov dokument
+  label_document_plural: Dokumenti
+  label_documents: Dokumenti
+  label_document_title: Naslov
+  label_document_description: Opis
+  label_document_category: Kategorija
+  label_document_type: Type
+  permission_manage_documents: Uredi dokumente
+  permission_view_documents: Poglej dokumente
+  project_module_documents: Dokumenti

@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../../support/pages/sprint_planning"
+require_relative "../../support/pages/backlog"
 
 RSpec.describe "Edit", :js do
   let(:project) { create(:project) }
@@ -42,7 +42,7 @@ RSpec.describe "Edit", :js do
   let(:user) do
     create(:user, member_with_permissions: { project => permissions })
   end
-  let(:planning_page) { Pages::SprintPlanning.new(project) }
+  let(:planning_page) { Pages::Backlog.new(project) }
 
   let!(:closed_sprint) do
     create(:agile_sprint,
@@ -100,7 +100,7 @@ RSpec.describe "Edit", :js do
 
       wait_for_reload
 
-      expect_and_dismiss_flash type: :success, message: "New work package created and added as a child"
+      expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
       created_wp = first_sprint.reload.work_packages.last
       expect(created_wp.subject).to eq("Story created in sprint")
       planning_page.expect_story_in_sprint(created_wp, first_sprint)

@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Backlogs::StoryMenuComponent, type: :component do
+RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
   shared_let(:default_status) { create(:default_status) }
@@ -66,10 +66,9 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
   end
 
   describe "standard items" do
-    it "renders stable ids for the action menu and primary actions" do
+    it "renders stable ids for the list and primary actions" do
       render_component
 
-      expect(page).to have_element(:button, id: /\Astory_#{story.id}_menu-button\z/)
       expect(page).to have_element(:ul, id: /\Astory_#{story.id}_menu-list\z/)
       expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_details\z/)
       expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_fullscreen\z/)
@@ -107,7 +106,7 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
         :"clipboard-copy",
         id: "story_#{story.id}_menu_copy_url_to_clipboard",
         value: /\/work_packages\/#{story.id}\z/,
-        text: I18n.t("backlogs.story_menu_component.action_menu.copy_url_to_clipboard")
+        text: "Copy URL to clipboard"
       )
     end
 
@@ -119,7 +118,7 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
         :"clipboard-copy",
         id: "story_#{story.id}_menu_copy_work_package_id",
         value: story.id.to_s,
-        text: I18n.t("backlogs.story_menu_component.action_menu.copy_work_package_id")
+        text: "Copy work package ID"
       )
     end
 
@@ -132,7 +131,7 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
     it "shows the Move submenu with incoming-arrow icon" do
       render_component
 
-      expect(page).to have_selector(:menuitem, text: I18n.t("backlogs.story_menu_component.action_menu.move_menu"))
+      expect(page).to have_selector(:menuitem, text: "Move")
       expect(page).to have_octicon(:"op-arrow-in")
     end
   end
@@ -226,7 +225,7 @@ RSpec.describe Backlogs::StoryMenuComponent, type: :component do
 
         expect(page).to have_no_selector(
           :menuitem,
-          text: I18n.t("backlogs.story_menu_component.action_menu.move_menu")
+          text: "Move"
         )
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,26 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class OpenProject::Backlogs::Hooks::UserSettingsHook < OpenProject::Hook::ViewListener
-  # Updates the backlogs settings before saving the user
-  #
-  # Context:
-  # * params => Request parameters
-  # * permitted_params => whitelisted params
-  # * user => user being altered
-  def service_update_user_before_save(context = {})
-    params = context[:params]
-    user = context[:user]
+module LdapGroups
+  module SynchronizedFilters
+    class DestroyDialogComponent < ApplicationComponent
+      include OpTurbo::Streamable
 
-    backlogs_params = params.delete(:backlogs)
-    return unless backlogs_params
+      def initialize(filter:)
+        super
+        @filter = filter
+      end
 
-    versions_default_fold_state = backlogs_params[:versions_default_fold_state] || "open"
-    user.backlogs_preference(:versions_default_fold_state, versions_default_fold_state)
-
-    color = backlogs_params[:task_color] || ""
-    if color == "" || color.match(/^#[A-Fa-f0-9]{6}$/)
-      user.backlogs_preference(:task_color, color)
+      def form_arguments
+        {
+          action: ldap_groups_synchronized_filter_path(@filter),
+          method: :delete
+        }
+      end
     end
   end
 end

@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 <% html_title t(:label_administration), t(:label_workflow_plural), @type.name -%>
 
 <% content_for :content_header do %>
-  <%= render Workflows::PageHeaders::EditComponent.new(@type, role: @role, tabs: workflow_tabs(@type, current_role: @role, current_tab: @current_tab)) %>
+  <%= render Workflows::PageHeaders::EditComponent.new(@type, role: @role, tabs: workflow_tabs(@type)) %>
 <% end %>
 
 <% if @type && @role %>

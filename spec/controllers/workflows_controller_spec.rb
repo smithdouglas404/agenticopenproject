@@ -120,11 +120,6 @@ RSpec.describe WorkflowsController do
         expect(assigns[:type])
           .to eq type
       end
-
-      it "assigns roles" do
-        expect(assigns[:roles])
-          .to eq [role]
-      end
     end
 
     context "with role and type params" do
@@ -141,10 +136,6 @@ RSpec.describe WorkflowsController do
           .to eq role
         expect(assigns[:type])
           .to eq type
-        expect(assigns[:roles])
-          .to eq [role]
-        expect(assigns[:statuses])
-          .to eq type.statuses
       end
 
       it "is successful" do
@@ -166,104 +157,6 @@ RSpec.describe WorkflowsController do
         expect(assigns[:type])
           .to eq type
       end
-
-      it "assigns roles" do
-        expect(assigns[:roles])
-          .to eq [role]
-      end
-
-      it "assigns statuses" do
-        expect(assigns[:statuses])
-          .to eq type.statuses
-      end
-    end
-  end
-
-  describe "#confirm_statuses" do
-    before do
-      allow(controller)
-        .to receive(:respond_with_dialog)
-              .and_call_original
-      allow(role_scope)
-        .to receive(:order)
-              .and_return([role])
-    end
-
-    context "when no statuses were removed" do
-      before do
-        post :confirm_statuses,
-             params: {
-               role_id: role.id.to_s,
-               type_id: type.id.to_s,
-               status_ids: ["1", "2"],
-               original_status_ids: ["1", "2"],
-               tab: "always"
-             },
-             as: :turbo_stream
-      end
-
-      it "redirects to the edit page" do
-        expect(response)
-          .to redirect_to(edit_workflow_path(type.id, role_id: role.id.to_s, tab: "always", status_ids: [1, 2]))
-
-        expect(response).to have_http_status(:see_other)
-      end
-    end
-
-    context "when statuses were removed" do
-      before do
-        post :confirm_statuses,
-             params: {
-               role_id: role.id.to_s,
-               type_id: type.id.to_s,
-               status_ids: ["1"],
-               original_status_ids: ["1", "2"],
-               tab: "always"
-             },
-             as: :turbo_stream
-      end
-
-      it "responds with the danger dialog" do
-        expect(controller)
-          .to have_received(:respond_with_dialog)
-                .with(an_instance_of(Workflows::StatusRemovalDangerDialogComponent))
-      end
-    end
-  end
-
-  describe "#update" do
-    let(:status_params) { { "1" => { "2" => ["always"] } } }
-    let(:service) do
-      service = instance_double(Workflows::BulkUpdateService)
-
-      allow(Workflows::BulkUpdateService)
-        .to receive(:new)
-              .with(role: role, type: type, tab: "always")
-              .and_return(service)
-
-      service
-    end
-    let!(:call) do
-      expect(service)
-        .to receive(:call)
-        .with(status_params)
-        .and_return(call_result)
-    end
-    let(:call_result) { ServiceResult.success }
-    let(:params) do
-      {
-        role_id: role.id,
-        type_id: type.id,
-        status: status_params
-      }
-    end
-
-    before do
-      post :update, params:, format: :turbo_stream
-    end
-
-    it "redirects to edit" do
-      expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
     end
   end
 end

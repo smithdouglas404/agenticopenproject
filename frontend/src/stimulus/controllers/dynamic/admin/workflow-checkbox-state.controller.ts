@@ -221,7 +221,7 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     this.confirmationDialogTarget.close();
     originalTarget.dataset.confirmed = 'true';
 
-    // Run on next loop event to allow values’ callback execution right away.
+    // Delay to allow the flash message from the form submission to appear.
     setTimeout(() => {
       if (originalEvent.type === 'click') {
         // Dispatching a click event is not as effective as explicitly clicking.
