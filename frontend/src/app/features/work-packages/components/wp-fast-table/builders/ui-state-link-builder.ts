@@ -24,6 +24,18 @@ export class UiStateLinkBuilder {
     return this.build(workPackageId, 'show', title, content, routingId);
   }
 
+  /**
+   * Build an anchor element that serves two purposes:
+   *
+   * - **href** uses `routingId` (semantic, e.g. "PROJ-7") so the URL bar
+   *   and "open in new tab" show human-readable identifiers.
+   * - **data-work-package-id** always uses the numeric `workPackageId` (PK)
+   *   because the selection, focus, and hover systems are keyed by PK.
+   *
+   * Click handlers (WorkPackageStateLinksHandler) read the data attribute
+   * and call preventDefault() — the href is never followed during normal
+   * in-table clicks. It only matters for right-click / open-in-new-tab.
+   */
   private build(workPackageId:string, state:'show'|'split', title:string, content:string, routingId?:string) {
     const a = document.createElement('a');
     const idForHref = routingId ?? workPackageId;
