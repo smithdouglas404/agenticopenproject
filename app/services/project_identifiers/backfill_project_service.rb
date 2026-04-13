@@ -71,7 +71,7 @@ module ProjectIdentifiers
                        generator.suggest_identifier(project.name, exclude: detector.exclusion_set)
 
       project.identifier = new_identifier
-      project.save!(validate: false)
+      project.save!
     end
 
 
