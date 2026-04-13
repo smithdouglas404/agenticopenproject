@@ -103,7 +103,7 @@ export function makeSplitViewRoutes(baseRoute:string,
     // Split create route
     {
       name: `${routeName}.new`,
-      url: `/create_new?{type:[0-9]+}&{parent_id:${WP_ID_URL_PATTERN}}`,
+      url: '/create_new?{type:[0-9]+}&{parent_id:[0-9]+}',
       reloadOnSearch: false,
       params: {
         defaults: {
