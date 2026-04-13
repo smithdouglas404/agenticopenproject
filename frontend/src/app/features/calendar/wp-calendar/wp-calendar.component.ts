@@ -342,16 +342,15 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
         }
 
         if (evt.event.extendedProps.workPackage) {
-          const wp = evt.event.extendedProps.workPackage as WorkPackageResource;
+          const workPackageId = (evt.event.extendedProps.workPackage as WorkPackageResource).id!;
           // Currently the calendar widget is shown on multiple pages,
           // but only the calendar module itself is a partitioned query space which can deal with a split screen request
           if (this.$state.includes('calendar')) {
-            this.workPackagesCalendar.openSplitView(wp.id!);
+            this.workPackagesCalendar.openSplitView(workPackageId);
           } else {
-            const routingId = wp.displayId ?? wp.id!;
             void this.$state.go(
               'work-packages.show',
-              { workPackageId: routingId },
+              { workPackageId },
             );
           }
         }

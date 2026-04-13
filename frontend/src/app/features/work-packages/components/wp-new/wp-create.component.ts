@@ -130,16 +130,15 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
 
     this.editForm?.cancel(false);
 
-    const routingId = savedResource.displayId ?? savedResource.id!;
     if(this.routedFromAngular && this.successState) {
-      this.$state.go(this.successState, { workPackageId: routingId })
+      this.$state.go(this.successState, { workPackageId: savedResource.id })
         .then(() => {
           this.wpViewFocus.updateFocus(savedResource.id!);
           this.notificationService.showSave(savedResource, isInitial);
         });
     } else {
       window.OpenProject.pageState = 'submitted';
-      Turbo.visit(this.pathHelper.projectWorkPackagePath(savedResource.project.identifier, routingId) + window.location.search);
+      Turbo.visit(this.pathHelper.projectWorkPackagePath(savedResource.project.identifier, savedResource.id!) + window.location.search);
     }
 
   }

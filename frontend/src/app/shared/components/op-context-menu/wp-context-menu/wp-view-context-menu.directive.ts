@@ -137,14 +137,12 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
         void this.turboRequests.requestStream(String(link));
         break;
 
-      case 'relations': {
-        const routingId = this.workPackage.displayId ?? this.workPackageId;
+      case 'relations':
         void this.$state.go(
           `${splitViewRoute(this.$state)}.tabs`,
-          { workPackageId: routingId, tabIdentifier: 'relations' },
+          { workPackageId: this.workPackageId, tabIdentifier: 'relations' },
         );
         break;
-      }
 
       default:
         window.location.href = link!;
