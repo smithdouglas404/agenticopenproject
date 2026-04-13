@@ -189,7 +189,7 @@ it:
   label_notify: Invia per revisione
   label_icalendar: Invia iCalendar
   label_icalendar_download: Scarica l'evento iCalendar
-  label_view_meeting: View meeting
+  label_view_meeting: Visualizza riunione
   label_view_meeting_series: Visualizza la serie di riunioni
   label_meeting_series: Serie di riunioni
   label_version: Versione
@@ -198,8 +198,8 @@ it:
   label_subscribe_icalendar: Iscriviti al calendario
   caption_meeting_template_select: Seleziona un modello per copiare automaticamente i suoi elementi dell'ordine del giorno
   caption_template_project_select: Seleziona il progetto in cui creare questo modello di riunione
-  placeholder_meeting_template_select_project_first: Select a project first
-  placeholder_meeting_template_no_templates_for_project: No templates available for this project
+  placeholder_meeting_template_select_project_first: Seleziona prima un progetto
+  placeholder_meeting_template_no_templates_for_project: Non ci sono modelli disponibili per questo progetto
   meeting:
     participants:
       label:
@@ -211,6 +211,7 @@ it:
         manage_participants: Gestisci partecipanti
         no_participants: Nessun partecipante
         show_all: Mostra tutti
+        apply_to_upcoming_meetings: Applica queste modifiche a tutte le riunioni future di questa serie
       text:
         template: Questi partecipanti saranno invitati automaticamente a tutte le riunioni future, man mano che vengono create.
         manage_participants: Cerca e aggiungi membri del progetto come partecipanti a questa riunione.
@@ -219,8 +220,8 @@ it:
         heading: Nessun partecipante
         description: Non ci sono ancora partecipanti.
     attachments:
-      onetime_template: These attached files will be included in all future meetings using this template.
-      series_template: These attached files will be included in all future meetings in the series.
+      onetime_template: Questi file allegati saranno inclusi in tutte le riunioni future che utilizzano questo modello.
+      series_template: Questi file allegati saranno inclusi in tutte le prossime riunioni della serie.
       text: I file allegati sono disponibili per tutti i partecipanti alla riunione. Puoi anche trascinarli nelle note dei punti all'ordine del giorno.
     copy:
       title: 'Copia riunione: %{title}'
@@ -298,7 +299,7 @@ it:
         template:
           title: Elimina modello
           heading: Eliminare questo modello?
-          confirmation_message_html: 'This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
+          confirmation_message_html: 'Questa azione è irreversibile. Procedi con cautela. Le riunioni già create utilizzando questo modello non saranno influenzate.
 
             '
       occurrence:
@@ -382,7 +383,7 @@ it:
           disabled: 'Gli aggiornamenti del calendario via e-mail sono disattivati. I partecipanti non riceveranno un''e-mail quando aggiungi o rimuovi partecipanti.
 
             '
-          draft_disabled: 'Participants will not receive an email informing them when you add or remove participants.
+          draft_disabled: 'I partecipanti non riceveranno un''e-mail quando aggiungi o rimuovi partecipanti.
 
             '
         onetime:

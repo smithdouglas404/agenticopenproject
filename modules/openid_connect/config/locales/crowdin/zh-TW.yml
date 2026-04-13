@@ -53,7 +53,7 @@ zh-TW:
     delete_warning:
       input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
       irreversible_notice: 刪除 SSO 提供者是不可逆轉的動作。
-      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
+      provider_html: 'Are you sure you want to delete the SSO provider %{name}? Be aware, that this will:'
       delete_result_1: 從可用提供者清單中移除提供者。
       delete_result_user_count:
         zero: 目前沒有使用者使用此供應商。不需要採取進一步的行動。
@@ -63,6 +63,7 @@ zh-TW:
   openid_connect:
     menu_title: OpenID 提供商
     delete_title: 刪除 OpenID Connect 提供者
+    delete_heading: Delete this OpenID Connect provider?
     group_links_heading: OpenID Connect 群組連結
     groups:
       match_preview_component:

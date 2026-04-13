@@ -198,8 +198,8 @@ fr:
   label_subscribe_icalendar: S'abonner au calendrier
   caption_meeting_template_select: Sélectionnez un modèle pour copier automatiquement ses points de l'ordre du jour
   caption_template_project_select: Veuillez sélectionner le projet dans lequel vous souhaitez créer ce modèle de réunion
-  placeholder_meeting_template_select_project_first: Select a project first
-  placeholder_meeting_template_no_templates_for_project: No templates available for this project
+  placeholder_meeting_template_select_project_first: Sélectionnez d'abord un projet
+  placeholder_meeting_template_no_templates_for_project: Aucun modèle n'est disponible pour ce projet
   meeting:
     participants:
       label:
@@ -211,6 +211,7 @@ fr:
         manage_participants: Gérer les participants
         no_participants: Aucun participant
         show_all: Afficher tout
+        apply_to_upcoming_meetings: Appliquez ces changements à toutes les prochaines réunions de cette série
       text:
         template: Ces participants seront automatiquement invités à toutes les réunions futures au fur et à mesure qu'elles seront créées.
         manage_participants: Recherchez et ajoutez des membres du projet en tant que participants à cette réunion.
@@ -382,7 +383,7 @@ fr:
           disabled: 'Les mises à jour du calendrier par e-mail sont désactivées. Les participants ne recevront pas d''e-mail les informant de l''ajout ou de la suppression de participants.
 
             '
-          draft_disabled: 'Participants will not receive an email informing them when you add or remove participants.
+          draft_disabled: 'Les participants ne recevront pas d''e-mail les informant de l''ajout ou de la suppression de participants.
 
             '
         onetime:

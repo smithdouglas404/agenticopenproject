@@ -72,8 +72,8 @@ it:
     show_edit_view:
       connection_error_notice:
         description_server_unavailable: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
+          Impossibile aprire il documento perché il server della collaborazione in tempo reale sul testo non è raggiungibile.
+          Se il problema persiste, contatta l'amministratore.
         action: Riprova
       tabs: Schede dei documenti
     index_page:
@@ -87,8 +87,8 @@ it:
       collaboration_settings: Collaborazione in tempo reale
     last_updated_at: Ultimo salvataggio %{time}.
     info_line:
-      currently_offline: You are currently offline.
-      connection_restored: You are now back online.
+      currently_offline: Sei attualmente offline.
+      connection_restored: Ora sei di nuovo online.
     active_editors: Editor attivi
     active_editors_count:
       one: 1 editor attivo

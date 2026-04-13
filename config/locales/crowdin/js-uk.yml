@@ -1157,5 +1157,5 @@ uk:
         network_on: З’єднання відновлено. Ми намагаємося.
     projects:
       identifier_suggestion:
-        loading: Loading suggestion...
-        set_name_first: Please set the name first.
+        loading: Завантаження пропозиції…
+        set_name_first: Спочатку укажіть ім’я.

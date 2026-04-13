@@ -151,8 +151,8 @@ cs:
         other: Show %{count} more items
     inbox_item_component:
       label_drag_work_package: Přesunout %{name}
+      label_actions: Work package actions
     inbox_menu_component:
-      label_actions: Operace na pracovním balíčku
       action_menu:
         copy_url_to_clipboard: Kopírovat odkaz do schránky
         copy_work_package_id: Kopírovat pracovní balíček
@@ -206,12 +206,12 @@ cs:
         add_work_package: Přidat pracovní balíček
     story_component:
       label_drag_story: Přesunout %{name}
-    story_menu_component:
       label_actions: Story actions
+    story_menu_list_component:
       action_menu:
-        copy_url_to_clipboard: Kopírovat odkaz do schránky
-        copy_work_package_id: Kopírovat ID pracovního balíčku
-        move_menu: Přesunout
+        copy_url_to_clipboard: Copy URL to clipboard
+        copy_work_package_id: Copy work package ID
+        move_menu: Move
   backlogs_points_burn_direction: Body popáleniny nahoru/dolů
   backlogs_product_backlog: Nevyřízené produkty
   backlogs_story: Příběh

@@ -34,13 +34,14 @@ import { HalLink } from 'core-app/features/hal/hal-link/hal-link';
 export class BcfThumbnailDisplayField extends DisplayField {
   @InjectField() bcfPathHelper:BcfPathHelperService;
 
-  public render(element:HTMLElement, displayText:string):void {
-    const viewpoints = this.resource.bcfViewpoints;
+  public render(element:HTMLElement, _displayText:string):void {
+    const viewpoints = this.resource.bcfViewpoints as HalLink[];
     if (viewpoints && viewpoints.length > 0) {
       const viewpoint = viewpoints[0];
-      element.innerHTML = `
-        <img src="${this.bcfPathHelper.snapshotPath(viewpoint as HalLink)}" class="thumbnail" alt="">
-      `;
+      const img = document.createElement('img');
+      img.src = this.bcfPathHelper.snapshotPath(viewpoint);
+      img.classList.add('thumbnail');
+      element.appendChild(img);
     } else {
       element.innerHTML = '';
     }

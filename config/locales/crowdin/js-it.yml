@@ -1149,5 +1149,5 @@ it:
         network_on: La rete è tornata. Stiamo provando.
     projects:
       identifier_suggestion:
-        loading: Loading suggestion...
-        set_name_first: Please set the name first.
+        loading: Caricamento suggerimento...
+        set_name_first: Inserisci prima il nome.

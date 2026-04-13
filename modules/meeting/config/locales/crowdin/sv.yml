@@ -211,6 +211,7 @@ sv:
         manage_participants: Hantera deltagare
         no_participants: Inga deltagare
         show_all: Visa alla
+        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Dessa deltagare kommer automatiskt att bjudas in till alla framtida möten när de skapas.
         manage_participants: Sök efter och lägg till projektmedlemmar som deltagare till detta möte.

@@ -51,9 +51,9 @@ it:
           non_object_attribute: non definisce un oggetto JSON in %{attribute}.
   provider:
     delete_warning:
-      input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
+      input_delete_confirmation_html: Inserisci il nome del fornitore %{name} per confermare l'eliminazione.
       irreversible_notice: L'eliminazione di un fornitore SSO è un'operazione irreversibile.
-      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
+      provider_html: 'Vuoi davvero eliminare il provider SSO %{name}? Tieni presente che questo comporterà:'
       delete_result_1: Rimuovi il fornitore dall'elenco dei fornitori disponibili.
       delete_result_user_count:
         zero: Nessun utente sta attualmente utilizzando questo fornitore. Non sono necessarie ulteriori azioni.
@@ -63,6 +63,7 @@ it:
   openid_connect:
     menu_title: OpenID provider
     delete_title: Elimina fornitore OpenID Connect
+    delete_heading: Eliminare questo provider OpenID Connect?
     group_links_heading: Link di gruppo OpenID Connect
     groups:
       match_preview_component:

@@ -41,8 +41,8 @@ ko:
       sprint:
         duration: 스프린트 기간
       user_preference:
-        backlogs_task_color: Task color
-        backlogs_versions_default_fold_state: Show sprints folded
+        backlogs_task_color: 작업 색상
+        backlogs_versions_default_fold_state: 접힌 스프린트 표시
       work_package:
         backlogs_work_package_type: 백로그 유형
         position: 위치
@@ -86,7 +86,7 @@ ko:
     task_type: 작업 유형
   backlogs:
     any: 모두
-    caption_sprints_default_fold_state: Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded.
+    caption_sprints_default_fold_state: "'백로그 및 스프린트' 페이지를 볼 때 스프린트는 기본적으로 확장되지 않습니다. 각각을 수동으로 확장해야 합니다."
     column_width: 열 너비
     definition_of_done: 완료 정의
     definition_of_done_caption: 이러한 상태의 작업 패키지는 백로그 보기 및 보고에서 완료로 처리됩니다.
@@ -139,8 +139,8 @@ ko:
         other: "%{count}개 항목 더 보기"
     inbox_item_component:
       label_drag_work_package: "%{name} 이동"
+      label_actions: Work package actions
     inbox_menu_component:
-      label_actions: 작업 패키지 액션
       action_menu:
         copy_url_to_clipboard: 클립보드에 URL 복사
         copy_work_package_id: 작업 패키지 ID 복사
@@ -151,14 +151,14 @@ ko:
       label_sprint: 스프린트
     backlog:
       blankslate:
-        title: No sprints present yet
-        description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
-        create_sprint_description_text: To start planning your sprint, create one here.
-        share_sprint_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
-        no_actions_description_text: No sprints are available for this project yet.
-        receive_shared_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
-        receive_shared_no_actions_description_text: This project receives shared sprints from a different project, but none are available right now.
-        settings_link_text: project settings
+        title: 아직 스프린트 없음
+        description_html: 스프린트 계획을 시작하려면 여기에서 스프린트를 만들거나 %{settings_link}(으)로 이동하여 다른 프로젝트의 스프린트를 받아보세요.
+        create_sprint_description_text: 스프린트 계획을 시작하려면 여기에서 스프린트를 생성하세요.
+        share_sprint_description_html: 스프린트 계획을 시작하려면 %{settings_link}(으)로 이동하여 다른 프로젝트의 스프린트를 받아보세요.
+        no_actions_description_text: 아직 이 프로젝트에 사용할 수 있는 스프린트가 없습니다.
+        receive_shared_description_html: 이 프로젝트는 다른 프로젝트에서 스프린트를 받습니다. %{settings_link}에서 관리하세요.
+        receive_shared_no_actions_description_text: 이 프로젝트는 다른 프로젝트에서 공유 스프린트를 받지만, 현재 사용할 수 있는 스프린트가 없습니다.
+        settings_link_text: 프로젝트 설정
     sprint_header_component:
       label_start_sprint: 시작
       label_complete_sprint: 완료
@@ -194,12 +194,12 @@ ko:
         add_work_package: 작업 패키지 추가
     story_component:
       label_drag_story: "%{name} 이동"
-    story_menu_component:
-      label_actions: 스토리 작업
+      label_actions: Story actions
+    story_menu_list_component:
       action_menu:
-        copy_url_to_clipboard: 클립보드에 URL 복사
-        copy_work_package_id: 작업 패키지 ID 복사
-        move_menu: 이동
+        copy_url_to_clipboard: Copy URL to clipboard
+        copy_work_package_id: Copy work package ID
+        move_menu: Move
   backlogs_points_burn_direction: 포인트 번 업/다운
   backlogs_product_backlog: 제품 백로그
   backlogs_story: 스토리
@@ -233,7 +233,7 @@ ko:
   label_sprint_edit: 스프린트 편집
   label_sprint_impediments: 스프린트 제한
   label_sprint_new: 새로운 스프린트
-  label_backlog_and_sprints: Backlog and sprints
+  label_backlog_and_sprints: 백로그 및 스프린트
   label_task_board: 작업 보드
   notice_successful_start: 스프린트가 시작되었습니다.
   notice_successful_finish: 스프린트가 완료되었습니다.

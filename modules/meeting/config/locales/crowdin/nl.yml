@@ -211,6 +211,7 @@ nl:
         manage_participants: Deelnemers beheren
         no_participants: Geen deelnemers
         show_all: Toon alle
+        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Deze deelnemers worden automatisch uitgenodigd voor alle toekomstige vergaderingen wanneer deze worden aangemaakt.
         manage_participants: Zoek projectleden en voeg ze toe als deelnemers aan deze vergadering.

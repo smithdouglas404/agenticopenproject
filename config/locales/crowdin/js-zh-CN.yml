@@ -1145,5 +1145,5 @@ zh-CN:
         network_on: 网络已恢复。我们正在努力。
     projects:
       identifier_suggestion:
-        loading: Loading suggestion...
-        set_name_first: Please set the name first.
+        loading: 正在加载建议...
+        set_name_first: 请先设置名称。

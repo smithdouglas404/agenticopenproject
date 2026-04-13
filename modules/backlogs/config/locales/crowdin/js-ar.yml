@@ -26,5 +26,5 @@ ar:
       properties:
         storyPoints: نقاط القصة
     burndown:
-      day: Day
-      points: Points
+      day: يوم
+      points: نِقَاط

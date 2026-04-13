@@ -206,6 +206,7 @@ ja:
         manage_participants: 参加者の管理
         no_participants: 参加者なし
         show_all: すべて表示
+        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: これらの参加者は、今後作成されるすべての会議に自動的に招待される。
         manage_participants: プロジェクトメンバーを検索し、この会議の参加者として追加する。

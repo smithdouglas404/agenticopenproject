@@ -94,6 +94,7 @@ export class CustomDateActionAdminComponent implements OnInit {
     }
 
     this.updateDbValue();
+    this.cdRef.detectChanges();
   }
 
   private updateDbValue() {

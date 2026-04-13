@@ -208,6 +208,7 @@ ms:
         manage_participants: Urus peserta
         no_participants: Tiada peserta
         show_all: Paparkan semua
+        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Peserta ini akan dijemput secara automatik ke semua mesyuarat akan datang apabila ia dibuat.
         manage_participants: Search for and add project members as participants to this meeting.

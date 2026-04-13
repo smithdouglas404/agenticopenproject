@@ -27,15 +27,15 @@ ar:
   activerecord:
     attributes:
       agile/sprint:
-        duration: Duration
-        finish_date: Finish date
+        duration: المدة
+        finish_date: تاريخ الانتهاء
         goal: Sprint goal
         name: Sprint name
-        sharing: Sharing
+        sharing: المشاركة
         statuses:
-          in_planning: In planning
-          active: Active
-          completed: Completed
+          in_planning: مرحلة التخطيط
+          active: نشط
+          completed: مكتمل
       project:
         sprint_sharing: Sprint sharing
       sprint:
@@ -50,7 +50,7 @@ ar:
         story_points: نقاط القصة
     errors:
       messages:
-        must_be_in_planning: must be in planning to start.
+        must_be_in_planning: يجب أن يكون في مرحلة التخطيط للبدء.
         only_one_active_sprint_allowed: only one active sprint is allowed per project.
         dates_required: Start and finish dates are required in order to start the sprint.
       models:
@@ -82,22 +82,22 @@ ar:
                 other: There are %{count} work packages that were not completed in this sprint.
               format: "%{message}"
             status:
-              not_active: is not active so it cannot be closed.
+              not_active: غير نشِط لذا لا يمكن إغلاقه.
         sprint:
           cannot_end_before_it_starts: لا يمكن أن ينتهي السباق قبل أن يبدأ.
     models:
       sprint: Sprint
   attributes:
-    task_type: Task type
+    task_type: نوع المهمة
   backlogs:
     any: أي
     caption_sprints_default_fold_state: Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded.
-    column_width: Column width
+    column_width: عرض العمود
     definition_of_done: تعريف ما تم
     definition_of_done_caption: Work packages with these statuses are treated as completed in backlog views and reporting.
     done_status: Done status
     sharing_description: This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing).
-    sharing: Sharing
+    sharing: المشاركة
     impediment: عائق
     label_versions_default_fold_state: إظهار الإصدارات مطوية
     label_burndown_chart: Burndown chart
@@ -106,11 +106,11 @@ ar:
     label_is_done_status: الحالة %{status_name} تعني أنها منجزة
     points_label:
       zero: points
-      one: point
+      one: نقطة
       two: points
       few: points
       many: points
-      other: points
+      other: نِقَاط
     positions_could_not_be_rebuilt: تعذَر إعادة بناء المواقع.
     positions_rebuilt_successfully: تم إعادة بناء المواقع بنجاح.
     rebuild: إعِدْ بناء
@@ -135,10 +135,10 @@ ar:
       header_backlogs: ''
       button_update_backlogs: Update backlogs module
     backlog_component:
-      blankslate_title: "%{name} is empty"
+      blankslate_title: "%{name} فارغ"
       blankslate_description: No items planned yet. Drag items here to add them.
     sprint_component:
-      blankslate_title: "%{name} is empty"
+      blankslate_title: "%{name} فارغ"
       blankslate_description: No items planned yet. Drag items here to add them.
     backlog_header_component:
       label_toggle_backlog: Collapse/Expand %{name}
@@ -149,18 +149,18 @@ ar:
     inbox_component:
       blankslate_title: Backlog inbox is empty
       blankslate_description: All open work packages in this project will automatically appear here.
-      label_drag_work_package: Move %{name}
+      label_drag_work_package: نقل %{name}
       show_more:
         zero: Show %{count} more items
-        one: Show 1 more item
+        one: عرض 1 عنصر آخر
         two: Show %{count} more items
         few: Show %{count} more items
         many: Show %{count} more items
-        other: Show %{count} more items
+        other: عرض %{count} عناصر أخرى
     inbox_item_component:
-      label_drag_work_package: Move %{name}
-    inbox_menu_component:
+      label_drag_work_package: نقل %{name}
       label_actions: Work package actions
+    inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID
@@ -180,8 +180,8 @@ ar:
         receive_shared_no_actions_description_text: This project receives shared sprints from a different project, but none are available right now.
         settings_link_text: project settings
     sprint_header_component:
-      label_start_sprint: Start
-      label_complete_sprint: Complete
+      label_start_sprint: ابدأ
+      label_complete_sprint: مكتمل
       start_sprint_disabled_reason_active_sprint: Another sprint is already active.
       start_sprint_disabled_reason_missing_dates: Start and finish dates are required in order to start the sprint.
       label_story_count:
@@ -194,9 +194,9 @@ ar:
         edit_sprint: Edit sprint
         new_story: New story
         stories_tasks: Stories/Tasks
-        task_board: Task board
-        wiki: Wiki
-        properties: Properties
+        task_board: لوحة المهام
+        wiki: الموسوعة
+        properties: الخصائص
     finish_sprint_dialog_component:
       title: There are work in progress items
       body: "%{message} What would you like to do with these?"
@@ -213,9 +213,9 @@ ar:
         edit_sprint: Edit sprint
         add_work_package: Add work package
     story_component:
-      label_drag_story: Move %{name}
-    story_menu_component:
+      label_drag_story: نقل %{name}
       label_actions: Story actions
+    story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID
@@ -227,7 +227,7 @@ ar:
   backlogs_task: المهمة
   backlogs_task_type: نوع المهمة
   backlogs_wiki_template: نموذج لصفحة ويكي wiki الخاصة بالسباق
-  backlogs_empty_title: No versions are defined yet
+  backlogs_empty_title: لم يعَّرَّف أي إصدار بعد
   backlogs_empty_action_text: To start using backlogs, please create a version first
   backlogs_not_configured_title: Backlogs not configured
   backlogs_not_configured_description: Story and task types need to be set before using this module.
@@ -240,7 +240,7 @@ ar:
       task_type:
         cannot_be_story_type: can not also be a story type
   label_backlog: Backlog
-  label_inbox: Inbox
+  label_inbox: الوارد
   label_backlogs: الأعمال المتراكمة غير المنجزة
   label_backlogs_unconfigured: لم تقم بإنشاء الأعمال المتراكمة غير المنجزة بعد. من فضلك اذهب إلى %{administration} > %{plugins}، ثم اضغط على رابط %{configure} لهذا البرنامج المساعد. عندما تنتهي من تعيين الحقول، ارجع إلى هذه الصفحة لتبدأ باستخدام الأداة.
   label_blocks_ids: الهويات المعرِّفة لمجموعات العمل المحظورة
@@ -273,14 +273,14 @@ ar:
       backlog_sharing:
         options:
           no_sharing:
-            label: Don't share
+            label: لا تشارك
             caption: Sprints created in this project will only be available and visible to this project. They will also not be visible to subprojects.
           receive_shared:
             label: Receive shared sprints
             caption: This project can only use sprints shared by other projects.
             warning: This project can only use sprints shared by other projects. Unused sprints created in this project in the past, will no longer be visible.
           share_all_projects:
-            label: All projects
+            label: جميع المشاريع
             caption: Sprints created in this project will be available to all projects in this instance. If you select this option, it will no longer be available to other projects.
             disabled_caption: Option not available since project "%{name}" is currently sharing with all projects and only one project can do this.
             disabled_caption_anonymous: Option not available since another project is currently sharing with all projects and only one project can do this.

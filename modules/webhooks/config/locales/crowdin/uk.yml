@@ -37,7 +37,7 @@ uk:
         updated: Оновлено
         comment: Коментар
         internal_comment: Внутрішній коментар
-      explanation_html: 'Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
+      explanation_html: 'У разі такої події, як створення пакета робіт або оновлення проєкту, OpenProject надсилає POST-запит налаштованим кінцевим точкам мережі. Здебільшого подія надсилається після того, як мине [налаштований період агрегації](aggregation_path).
 
         '
       status:

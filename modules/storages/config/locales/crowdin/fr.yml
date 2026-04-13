@@ -285,8 +285,8 @@ fr:
           drive_contents: Contenu du lecteur
           files_request: Récupération des fichiers du dossier de l'équipe
           header: Dossiers de projets gérés automatiquement
-          project_folders_exist: Project folders exist
-          project_folders_linked: Project folders linked
+          project_folders_exist: Les dossiers de projet existent
+          project_folders_linked: Dossiers de projets liés
           team_folder_app: 'Dépendance : dossiers d''équipe'
           team_folder_contents: Contenu du dossier de l'équipe
           team_folder_presence: Le dossier de l'équipe existe
@@ -401,7 +401,7 @@ fr:
       host: Veuillez ajouter l'adresse d'hôte de votre stockage, y compris le https://. Il ne doit pas dépasser 255 caractères.
       managed_project_folders_application_password_caption: 'Activez les dossiers gérés automatiquement en copiant cette valeur depuis : %{provider_type_link}.'
       name: Donnez à votre espace de stockage un nom pour permettre aux utilisateurs de le différencier des autres espaces de stockage.
-      new_storage_html: Read our documentation on [setting up a %{provider_name} file storage](docs_url) integration for more information.
+      new_storage_html: Lisez notre documentation sur l'intégration de [configuration d'un espace de stockage de fichiers %{provider_name}](docs_url) pour en savoir plus.
       nextcloud:
         application_link_text: application « Intégration OpenProject»
         integration: Administration Nextcloud / OpenProject
@@ -413,7 +413,7 @@ fr:
       no_specific_folder: Par défaut, chaque utilisateur démarrera dans son propre dossier d'accueil lorsqu'il téléversera un fichier.
       no_storage_set_up: Aucun espace de stockage de fichiers n'a été configuré pour le moment.
       not_logged_into_storage: Pour sélectionner un dossier de projet, veuillez d'abord vous connecter
-      oauth_application_details_html: The client secret value will not be accessible again after you close this window. Please copy these values into the [Nextcloud OpenProject Integration settings](oauth_application_details_link).
+      oauth_application_details_html: La clé secrète du client ne sera plus accessible après la fermeture de cette fenêtre. Veuillez copier ces valeurs dans les [paramètres d'intégration Nextcloud OpenProject](oauth_application_details_link).
       one_drive:
         application_link_text: Portal Azure
         copy_redirect_uri: Copier l'URI de redirection

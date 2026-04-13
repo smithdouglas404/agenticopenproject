@@ -44,7 +44,7 @@ module Backlogs
       @project = project
       @current_user = current_user
       @active_sprint_ids = active_sprint_ids
-      @stories = stories || sprint.work_packages_for(project)
+      @stories = stories || sprint.work_packages_for(project).includes(:status, :type)
 
       @system_arguments = system_arguments
       @system_arguments[:id] = dom_id(sprint)
@@ -65,10 +65,6 @@ module Backlogs
 
     def folded?
       current_user.backlogs_preference(:versions_default_fold_state) == "closed"
-    end
-
-    def max_position
-      stories.filter_map(&:position).max
     end
 
     def drop_target_config

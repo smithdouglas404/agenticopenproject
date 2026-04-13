@@ -100,7 +100,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
         click_on "Create"
       end
 
-      expect_and_dismiss_flash type: :success, message: "New work package created"
+      expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
 
       created_work_package = WorkPackage.last
 
@@ -144,7 +144,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
         click_on "Create"
       end
 
-      expect_and_dismiss_flash type: :success, message: "New work package created"
+      expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
 
       created_work_package = WorkPackage.last
 
@@ -166,7 +166,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
         click_on "Create"
       end
 
-      expect_and_dismiss_flash type: :success, message: "New work package created"
+      expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
 
       created_work_package = WorkPackage.last
 

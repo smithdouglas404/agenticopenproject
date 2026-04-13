@@ -151,8 +151,8 @@ ru:
         other: Показать еще %{count} элементов
     inbox_item_component:
       label_drag_work_package: Переместить %{name}
+      label_actions: Work package actions
     inbox_menu_component:
-      label_actions: Действия пакета работ
       action_menu:
         copy_url_to_clipboard: Скопировать URL в буфер обмена
         copy_work_package_id: Скопировать ID пакета работ
@@ -206,12 +206,12 @@ ru:
         add_work_package: Добавить пакет работ
     story_component:
       label_drag_story: Переместить %{name}
-    story_menu_component:
-      label_actions: Действия истории
+      label_actions: Story actions
+    story_menu_list_component:
       action_menu:
-        copy_url_to_clipboard: Скопировать URL в буфер обмена
-        copy_work_package_id: Скопировать ID пакета работ
-        move_menu: Переместить
+        copy_url_to_clipboard: Copy URL to clipboard
+        copy_work_package_id: Copy work package ID
+        move_menu: Move
   backlogs_points_burn_direction: Точки выгорания вверх/вниз
   backlogs_product_backlog: Требования к продукту, с приоритетами
   backlogs_story: История

@@ -184,7 +184,7 @@ zh-CN:
   label_notify: 发送待审阅
   label_icalendar: 发送 iCalendar
   label_icalendar_download: 下载 iCalendar 事件
-  label_view_meeting: View meeting
+  label_view_meeting: 查看会议
   label_view_meeting_series: 查看会议系列
   label_meeting_series: 会议系列
   label_version: 版本
@@ -193,8 +193,8 @@ zh-CN:
   label_subscribe_icalendar: 订阅日历
   caption_meeting_template_select: 选择一个模板，以自动复制其议程条目
   caption_template_project_select: 请选择要在其中创建此会议模板的项目
-  placeholder_meeting_template_select_project_first: Select a project first
-  placeholder_meeting_template_no_templates_for_project: No templates available for this project
+  placeholder_meeting_template_select_project_first: 先选择项目
+  placeholder_meeting_template_no_templates_for_project: 此项目没有可用模板
   meeting:
     participants:
       label:
@@ -206,6 +206,7 @@ zh-CN:
         manage_participants: 管理与会者
         no_participants: 无参加者
         show_all: 全部显示
+        apply_to_upcoming_meetings: 将这些更改应用于此系列中所有即将召开的会议
       text:
         template: 这些与会者将被自动邀请参加之后创建的所有会议。
         manage_participants: 搜索并添加项目成员作为本次会议的参与者。
@@ -377,7 +378,7 @@ zh-CN:
           disabled: '电子邮件日历更新已禁用。在您添加或移除参与者时，参与者不会收到电子邮件通知。
 
             '
-          draft_disabled: 'Participants will not receive an email informing them when you add or remove participants.
+          draft_disabled: '在您添加或移除参与者时，参与者不会收到电子邮件通知。
 
             '
         onetime:

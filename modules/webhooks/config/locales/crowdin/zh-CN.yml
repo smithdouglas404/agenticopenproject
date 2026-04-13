@@ -37,7 +37,7 @@ zh-CN:
         updated: 已更新
         comment: 评论
         internal_comment: 内部评论
-      explanation_html: 'Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the [configured aggregation period](aggregation_path) has passed.
+      explanation_html: '在发生诸如创建工作包或更新项目之类的事件时，OpenProject 将向配置的 Web 端点发送一个 POST 请求。通常，会在[配置的聚合期](aggregation_path)过后发送事件。
 
         '
       status:

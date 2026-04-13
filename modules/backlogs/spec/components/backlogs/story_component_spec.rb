@@ -52,7 +52,6 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
            position: 1,
            version: sprint)
   end
-  let(:max_position) { 3 }
   let(:permissions) { %i[manage_sprint_items] }
 
   before do
@@ -66,7 +65,7 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
   end
 
   def render_component
-    render_inline(described_class.new(story:, sprint:, project:, max_position:, current_user: user))
+    render_inline(described_class.new(story:, sprint:, project:, current_user: user))
   end
 
   it "renders WorkPackages::InfoLineComponent" do
@@ -89,10 +88,12 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
     expect(page).to have_text("5 points", normalize_ws: true)
   end
 
-  it "renders StoryMenuComponent" do
+  it "renders deferred action menu with include-fragment src" do
     render_component
 
     expect(page).to have_css("action-menu")
+    expect(page).to have_css(%(include-fragment[src*="menu"]))
+    expect(page).to have_element(:button, id: /\Astory_#{story.id}_menu-button\z/)
   end
 
   describe "drag handle behaviour" do

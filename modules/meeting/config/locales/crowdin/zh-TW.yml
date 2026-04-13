@@ -208,6 +208,7 @@ zh-TW:
         manage_participants: 管理參與者
         no_participants: 沒有參與者
         show_all: 顯示全部
+        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: 這些參與者將自動被邀請參加未來所有建立的會議。
         manage_participants: 搜尋並新增專案成員為此會議的參與者。

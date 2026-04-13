@@ -33,16 +33,16 @@ uk:
         name: Ім’я спринту
         sharing: Надання доступу
         statuses:
-          in_planning: Планування
-          active: Активні
-          completed: Завершено
+          in_planning: На етапі планування
+          active: Активний
+          completed: Завершений
       project:
         sprint_sharing: Спільний доступ до спринту
       sprint:
         duration: Тривалість спринту
       user_preference:
-        backlogs_task_color: Task color
-        backlogs_versions_default_fold_state: Show sprints folded
+        backlogs_task_color: Колір завдання
+        backlogs_versions_default_fold_state: Показувати спринти згорнутими
       work_package:
         backlogs_work_package_type: Тип Backlog-у
         position: Позиція
@@ -50,12 +50,12 @@ uk:
         story_points: Сторі-поінти
     errors:
       messages:
-        must_be_in_planning: має бути на етапі планування, перш ніж можна буде почати.
+        must_be_in_planning: має бути на етапі планування, перш ніж його можна буде почати.
         only_one_active_sprint_allowed: дозволяється лише один активний спринт для кожного проєкту.
         dates_required: Щоб запустити спринт, необхідно вказати дату початку й завершення.
       models:
         project:
-          receiving_sprints: отримує спільні спринти. Власні спринти створювати не можна.
+          receiving_sprints: використовує спринти, до яких надано доступ. Власні спринти створювати не можна.
           attributes:
             sprint_sharing:
               share_all_projects_already_taken: не можна налаштувати, оскільки проєкт «%{name}» уже надає спільний доступ усім проєктам.
@@ -68,7 +68,7 @@ uk:
             version_id:
               task_version_must_be_the_same_as_story_version: має збігатись із версією батьківської історії.
             sprint:
-              not_shared_with_project: не може спільно використовуватися з проєктом, у якому міститься пакет робіт.
+              not_shared_with_project: не надається проєкту, у якому міститься пакет робіт.
               not_eligible_for_moving: не є активним спринтом у проєкті, який включає спринт, з якого переміщується пакет робіт.
         agile/sprint:
           attributes:
@@ -89,12 +89,12 @@ uk:
     task_type: Тип завдання
   backlogs:
     any: будь-який
-    caption_sprints_default_fold_state: Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded.
+    caption_sprints_default_fold_state: Спринти не розгортатимуться за замовчуванням при перегляді сторінки «Беклог і спринти». Кожен спринт потрібно буде розгортати вручну.
     column_width: Ширина стовпця
     definition_of_done: Визначення завершено
     definition_of_done_caption: Пакети робіт із цими статусами вважаються завершеними в переглядах беклогу й звітності.
     done_status: Статус «Виконано»
-    sharing_description: Цей проєкт може надавати доступ до власних спринтів, отримувати доступ до спринтів, якими з ним поділилися, або працювати зі спринтами самостійно (без спільного доступу).
+    sharing_description: Цей проєкт може надавати доступ до власних спринтів, використовувати спринти, до яких надано доступ, або працювати зі спринтами самостійно (без спільного доступу).
     sharing: Надання доступу
     impediment: Перешкода
     label_versions_default_fold_state: Показати складені версії
@@ -123,7 +123,7 @@ uk:
     task_color: Колір завдання
     unassigned: Не призначено
     administration_blankslate:
-      title: Налаштування адміністратора в модулі беклогів змінюються
+      title: Ми змінюємо налаштування адміністратора в модулі беклогів
       text: Зараз ми переробляємо модуль невиконаних завдань (беклогів). Налаштування адміністратора для спринтів і беклогів з’являться тут найближчим часом. Налаштування на рівні проєктів залишаються доступними.
     user_preference:
       header_backlogs: Модуль невиконаних завдань
@@ -141,18 +141,18 @@ uk:
         one: У беклозі %{count} історія
         other: 'У беклозі стільки історій: %{count}'
     inbox_component:
-      blankslate_title: Backlog inbox is empty
+      blankslate_title: Немає вхідних завдань беклогу
       blankslate_description: Тут автоматично з’являтимуться всі відкриті пакети робіт цього проєкту.
       label_drag_work_package: Перемістити історію «%{name}»
       show_more:
-        one: Показати ще 1 об’єкт
-        few: Показати ще %{count} об’єкти
-        many: Показати ще %{count} об’єктів
-        other: Показати ще %{count} об’єкта
+        one: Показати ще 1 елемент
+        few: Показати ще %{count} елементи
+        many: Показати ще %{count} елементів
+        other: Показати ще %{count} елемента
     inbox_item_component:
       label_drag_work_package: Перемістити історію «%{name}»
+      label_actions: Work package actions
     inbox_menu_component:
-      label_actions: Дії пакета робіт
       action_menu:
         copy_url_to_clipboard: Скопіювати URL-адресу в буфер обміну
         copy_work_package_id: Копіювати ідентифікатор пакета робіт
@@ -163,18 +163,18 @@ uk:
       label_sprint: Спринт
     backlog:
       blankslate:
-        title: No sprints present yet
-        description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
-        create_sprint_description_text: To start planning your sprint, create one here.
-        share_sprint_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
-        no_actions_description_text: No sprints are available for this project yet.
-        receive_shared_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
-        receive_shared_no_actions_description_text: This project receives shared sprints from a different project, but none are available right now.
-        settings_link_text: project settings
+        title: Спринтів ще немає
+        description_html: Щоб почати планувати спринт, створіть його тут або перейдіть на сторінку %{settings_link}, щоб отримати спринти з інших проєктів.
+        create_sprint_description_text: Щоб почати планувати спринт, створіть його тут.
+        share_sprint_description_html: Щоб почати планувати спринт, перейдіть на сторінку %{settings_link}, щоб отримати спринти з інших проєктів.
+        no_actions_description_text: Ще немає спринтів, доступних для цього проєкту.
+        receive_shared_description_html: Цей проєкт може використовувати спринти з іншого проєкту. Щоб змінити параметри, перейдіть на сторінку %{settings_link}.
+        receive_shared_no_actions_description_text: Цей проєкт може використовувати спринти з іншого проєкту, до яких надано доступ. Однак зараз доступних спринтів немає.
+        settings_link_text: налаштування проєкту
     sprint_header_component:
       label_start_sprint: Початок
       label_complete_sprint: Завершити
-      start_sprint_disabled_reason_active_sprint: Інший спринт уже активний.
+      start_sprint_disabled_reason_active_sprint: Інший спринт уже розпочато.
       start_sprint_disabled_reason_missing_dates: Щоб запустити спринт, необхідно вказати дату початку й завершення.
       label_story_count:
         zero: У спринті немає історій
@@ -190,7 +190,7 @@ uk:
         wiki: Wiki
         properties: Властивості
     finish_sprint_dialog_component:
-      title: Є об’єкти, роботу над якими ще не завершено
+      title: Є елементи, роботу над якими ще не завершено
       body: "%{message} Що б ви хотіли з ними зробити?"
       legend: Дія для незавершених пакетів робіт
       actions:
@@ -206,12 +206,12 @@ uk:
         add_work_package: Додати пакет робіт
     story_component:
       label_drag_story: Перемістити історію «%{name}»
-    story_menu_component:
-      label_actions: Дії історії
+      label_actions: Story actions
+    story_menu_list_component:
       action_menu:
-        copy_url_to_clipboard: Скопіювати URL-адресу в буфер обміну
-        copy_work_package_id: Копіювати ідентифікатор пакета робіт
-        move_menu: Перемістити
+        copy_url_to_clipboard: Copy URL to clipboard
+        copy_work_package_id: Copy work package ID
+        move_menu: Move
   backlogs_points_burn_direction: Бали спалюються вгору/вниз
   backlogs_product_backlog: Backlog продукту
   backlogs_story: Історія
@@ -239,20 +239,20 @@ uk:
   label_burndown_chart: Діаграма згорання завдань
   label_column_in_backlog: Стовпець у backlog-у
   label_used_as_backlog: Використовується як беклог
-  label_sprint_board: Sprint board
+  label_sprint_board: Дошка спринту
   label_points_burn_down: Вниз
   label_points_burn_up: Вгору
   label_sprint_edit: Редагувати спринт
   label_sprint_impediments: Перешкоди спринту
   label_sprint_new: Новий спринт
-  label_backlog_and_sprints: Backlog and sprints
+  label_backlog_and_sprints: Беклог і спринти
   label_task_board: Дошка завдань
-  notice_successful_start: The sprint was started.
-  notice_successful_finish: The sprint was completed.
-  notice_unsuccessful_start: The sprint could not be started.
-  notice_unsuccessful_start_with_reason: 'The sprint could not be started: %{reason}'
-  notice_unsuccessful_finish: The sprint could not be completed.
-  notice_unsuccessful_finish_with_reason: 'The sprint could not be completed: %{reason}'
+  notice_successful_start: Спринт розпочато.
+  notice_successful_finish: Спринт завершено.
+  notice_unsuccessful_start: Спринт не вдалося розпочати.
+  notice_unsuccessful_start_with_reason: 'Спринт не вдалося розпочати: %{reason}'
+  notice_unsuccessful_finish: Спринт не вдалося завершити.
+  notice_unsuccessful_finish_with_reason: 'Спринт не вдалося завершити: %{reason}'
   permission_create_sprints: Створення спринтів
   permission_manage_sprint_items: Керування елементами спринтів
   permission_select_done_statuses: Виберіть завершені статуси
@@ -265,22 +265,22 @@ uk:
       backlog_sharing:
         options:
           no_sharing:
-            label: Don't share
-            caption: Sprints created in this project will only be available and visible to this project. They will also not be visible to subprojects.
+            label: Не надавати доступ
+            caption: Спринти, створені в цьому проєкті, будуть доступні й видимі лише для цього проєкту. Вони також не будуть видимі для підпроєктів.
           receive_shared:
-            label: Receive shared sprints
-            caption: This project can only use sprints shared by other projects.
-            warning: This project can only use sprints shared by other projects. Unused sprints created in this project in the past, will no longer be visible.
+            label: Отримувати доступ до спринтів
+            caption: Цей проєкт може використовувати лише спринти, до яких надали доступ інші проєкти.
+            warning: Цей проєкт може використовувати лише спринти, до яких надали доступ інші проєкти. Невикористані спринти, створені в цьому проєкті в минулому, більше не будуть видимими.
           share_all_projects:
             label: Усі проєкти
-            caption: Sprints created in this project will be available to all projects in this instance. If you select this option, it will no longer be available to other projects.
-            disabled_caption: Option not available since project "%{name}" is currently sharing with all projects and only one project can do this.
-            disabled_caption_anonymous: Option not available since another project is currently sharing with all projects and only one project can do this.
+            caption: Спринти, створені в цьому проєкті, будуть доступні для всіх проєктів, наявних у цьому екземплярі. Якщо ви виберете цю опцію, вона більше не буде доступна для інших проєктів.
+            disabled_caption: Опція недоступна, оскільки проєкт «%{name}» зараз надає спільний доступ усім проєктам і це може робити лише один проєкт.
+            disabled_caption_anonymous: Опція недоступна, оскільки інший проєкт зараз надає спільний доступ усім проєктам і це може робити лише один проєкт.
           share_subprojects:
             label: Підпроєкти
-            caption: Sprints created in this project will be available to all subprojects of the current project.
-            info: Sharing a sprint will share the name, status and the start and finish dates in all projects. These cannot be modified in projects that receive and use these sprints.
-        sprint_sharing: Share sprints
+            caption: Спринти, створені в цьому проєкті, будуть доступні для всіх його підпроєктів.
+            info: Надавши спільний доступ до спринту, ви дозволяєте переглядати його назву, статус, а також дати початку й завершення в усіх проєктах. Ці дані не можна змінити в проєктах, які отримують доступ до таких спринтів і використовують їх.
+        sprint_sharing: Надання доступу до спринтів
   rb_burndown_charts:
     show:
       blankslate_title: Немає даних про згорання завдань

@@ -67,7 +67,7 @@ ko:
         사용자가 해당 기간 동안에는 이를 다시 입력하라는 요청을 받지 않게 됩니다. 구성에 의해 강제 적용되지 않는 경우에만 설정할 수 있습니다.
       failed_to_save_settings: '2FA 설정을 업데이트하지 못함: %{message}'
     admin:
-      self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
+      self_edit_path_html: 고유한 2FA 장치를 추가하거나 수정하려면 [계정 페이지의 2단계 인증](self_edit_link)으로 이동하세요
       self_edit_forbidden: 이 경로에서 사용자의 고유한 2FA 장치를 편집하지 못할 수 있습니다. 대신 내 계정 > 2단계 인증으로 이동하세요.
       no_devices_for_user: 2FA 장치가 이 사용자에 대해 등록되지 않았습니다.
       all_devices_deleted: 이 사용자의 모든 2FA 장치가 삭제되었습니다.
@@ -109,8 +109,8 @@ ko:
       failed_to_delete: 2FA 장치를 삭제하지 못했습니다.
       is_default_cannot_delete: 장치가 기본으로 표시되고 활성 보안 정책으로 인해 삭제할 수 없습니다. 삭제하기 전에 다른 장치를 기본으로 표시하세요.
       not_existing: 2FA 장치가 해당 계정에 대해 등록되지 않았습니다.
-      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input_html: "<strong>%{device_name}</strong>의 코드를 입력하여 ID를 인증하세요."
+      2fa_from_webauthn_html: WebAuthn 장치 <strong>%{device_name}</strong> 제공을 해주세요. USB 기반인 경우 이 장치를 연결하고 터치해야 합니다. 그런 다음 로그인 버튼을 클릭하세요.
       webauthn:
         title: WebAuthn
         description: 'FIDO2 장치(예: YubiKey) 또는 모바일 장치의 Secure Enclave를 등록하세요.'

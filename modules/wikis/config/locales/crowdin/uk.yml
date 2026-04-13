@@ -4,54 +4,54 @@ uk:
     attributes:
       wikis/xwiki_provider:
         name: Назва
-        url: Instance URL
+        url: URL-адреса екземпляра
         authentication_method: Метод автентифікації
         authentication_methods:
           oauth2_sso: Єдиний вхід через постачальника ідентифікаційних даних OpenID Connect
           two_way_oauth2: Потік коду двосторонньої авторизації OAuth 2.0
-        token_exchange_scope: XWiki Scope
-        wiki_audience: XWiki Audience
+        token_exchange_scope: Область XWiki
+        wiki_audience: Аудиторія XWiki
     errors: {}
     models:
       wikis/inline_page_link:
-        one: Inline page link
-        few: Inline page links
-        many: Inline page links
-        other: Inline page links
-      wikis/internal_provider: Internal wiki
+        one: Вставлене посилання на сторінку
+        few: Вставлені посилання на сторінку
+        many: Вставлені посилання на сторінку
+        other: Вставлені посилання на сторінку
+      wikis/internal_provider: Внутрішній модуль Wiki
       wikis/relation_page_link:
-        one: Relation page link
-        few: Relation page links
-        many: Relation page links
-        other: Relation page links
-      wikis/xwiki_provider: XWiki provider
-  project_module_wiki_platforms: Wiki providers
+        one: Посилання на пов’язану сторінку
+        few: Посилання на пов’язані сторінки
+        many: Посилання на пов’язані сторінки
+        other: Посилання на пов’язані сторінки
+      wikis/xwiki_provider: Постачальник XWiki
+  project_module_wiki_platforms: Постачальники Wiki
   wikis:
     buttons:
       save_and_continue: Зберегти та продовжити
     admin:
       wiki_providers:
-        index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.
-        label_wiki_platform: Wiki provider
-        label_add_new: Add new wiki provider
-        label_new_xwiki_instance: New XWiki provider
-        no_results_title: You don't have any wiki providers set up yet.
-        no_results_description: Add a wiki provider to see them here.
-        label_edit: Edit XWiki provider
-        name_placeholder: XWiki knowledge base
-        name_caption: Give your storage a name so that users can differentiate between multiple wiki platforms.
-        url_caption: Please add the host address of your wiki platform including the https://. It should not be longer than 255 characters.
-        xwiki_instance: XWiki Instance
-        xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
-        new_provider_html: Read our documentation on [setting up an XWiki integration](docs_url) for more information.
+        index_description: Додайте зовнішній сервіс Wiki, щоб зв’язувати пакети робіт із наявними сторінками Wiki або створювати нові безпосередньо в OpenProject.
+        label_wiki_platform: Постачальник Wiki
+        label_add_new: Додати нового постачальника Wiki
+        label_new_xwiki_instance: Новий постачальник XWiki
+        no_results_title: Ви ще не налаштували жодного постачальника Wiki.
+        no_results_description: Додайте постачальника Wiki, і він з’явиться тут.
+        label_edit: Редагувати постачальника XWiki
+        name_placeholder: База знань XWiki
+        name_caption: Назвіть своє сховище, щоб користувачі могли відрізняти його від інших платформ Wiki.
+        url_caption: Додайте адресу хосту вашої платформи Wiki, не випускаючи https://. Її довжина не може перевищувати 255 символів.
+        xwiki_instance: Екземпляр XWiki
+        xwiki_instance_description: Переконайтеся, що ви маєте права адміністратора у своєму екземплярі XWiki, перш ніж виконувати налаштування.
+        new_provider_html: Щоб дізнатися більше, перегляньте документацію про [налаштування інтеграції з XWiki](docs_url).
         sections:
           basic_details: Основна інформація
           oauth_applications: Програми OAuth
         oauth:
           openproject_oauth: OpenProject OAuth
-          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
-          xwiki_oauth: XWiki OAuth
-          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
+          openproject_oauth_description: Надайте XWiki доступ до даних OpenProject за допомогою OAuth.
+          xwiki_oauth: OAuth для XWiki
+          xwiki_oauth_description: Надайте OpenProject доступ до даних XWiki за допомогою OAuth.
         delete:
-          title: Delete wiki provider
-          warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
+          title: Видалити постачальника Wiki
+          warning_html: Ви збираєтеся видалити %{wiki_provider}. Ця дія є незворотною.

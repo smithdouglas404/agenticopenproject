@@ -276,7 +276,6 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
         end
 
         planning_page.expect_no_inbox_item(inbox_wp1)
-        expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
         planning_page.expect_story_in_sprint(inbox_wp1, sprint)
         planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [sprint_wp, inbox_wp1])
       end
@@ -286,15 +285,12 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
       it "moves multiple items into the sprint one by one" do
         planning_page.drag_inbox_item_to_sprint(inbox_wp1, sprint)
         planning_page.expect_no_inbox_item(inbox_wp1)
-        expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
 
         planning_page.drag_inbox_item_to_sprint(inbox_wp2, sprint)
         planning_page.expect_no_inbox_item(inbox_wp2)
-        expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
 
         planning_page.drag_inbox_item_to_sprint(inbox_wp3, sprint)
         planning_page.expect_no_inbox_item(inbox_wp3)
-        expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
 
         planning_page.expect_inbox_blankslate
         planning_page.expect_story_in_sprint(inbox_wp1, sprint)
@@ -319,7 +315,6 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
         it "moves a backlog item to the sprint without an error (Regression#73416)" do
           planning_page.drag_inbox_item_to_sprint(inbox_wp1, sprint)
           planning_page.expect_no_inbox_item(inbox_wp1)
-          expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
         end
       end
     end

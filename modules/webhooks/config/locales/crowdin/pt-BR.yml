@@ -70,6 +70,6 @@ pt-BR:
         selected_project_ids:
           title: Projetos selecionados
         secret:
-          description: 'Se definido, este valor secreto é usado pelo OpenProject para assinar o payload webhook.
+          description: 'Se definido, esse valor de segredo é usado pelo OpenProject para assinar o payload do webhook.
 
             '

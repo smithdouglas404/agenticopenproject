@@ -67,7 +67,7 @@ pt-BR:
         Não será solicitado a eles para digitar novamente o 2FA durante este período. Só pode ser definido quando a imposição não estiver configurada.
       failed_to_save_settings: 'Falha ao atualizar as configurações de 2FA: %{message}'
     admin:
-      self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
+      self_edit_path_html: Para adicionar ou modificar seus próprios dispositivos de 2FA, acesse a [página de autenticação de dois fatores da sua conta](self_edit_link)
       self_edit_forbidden: Talvez você não tenha editado o seu dispositivo 2FA para este caminho. Vá para Minha Conta > Segundo Favor de Autenticação.
       no_devices_for_user: Nenhum dispositivo 2FA foi registrado para este usuário.
       all_devices_deleted: Todos os dispositivos 2FA deste usuário foram excluídos
@@ -109,8 +109,8 @@ pt-BR:
       failed_to_delete: Falha ao excluir o dispositivo com 2FA.
       is_default_cannot_delete: O arquivo está marcado como padrão e não pode ser deletado devido a política de segurança estar ativa. Marque outro dispositivo como padrão antes de excluí-lo.
       not_existing: Nenhum dispositivo com 2FA foi registrado na sua conta.
-      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input_html: Digite o código do seu <strong>%{device_name}</strong> para verificar sua identidade.
+      2fa_from_webauthn_html: Forneça o dispositivo WebAuthn <strong>%{device_name}</strong>. Se for USB, conecte-o e confirme a ação pressionando o botão ou tocando na chave. Em seguida, clique no botão de login.
       webauthn:
         title: WebAuthn
         description: Registre um dispositivo FIDO2 (como o YubiKey) ou o enclave seguro do seu dispositivo móvel.

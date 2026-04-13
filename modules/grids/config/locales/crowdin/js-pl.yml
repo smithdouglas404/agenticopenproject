@@ -30,7 +30,7 @@ pl:
           finished: Zakończone
           discontinued: Przerwane
         subprojects:
-          title: Podppzycje
+          title: Podpozycje
         project_favorites:
           title: Ulubione projekty
           no_results: Obecnie nie masz żadnych ulubionych projektów. Kliknij ikonę gwiazdki na pulpicie nawigacyjnym projektu, aby dodać go do ulubionych.

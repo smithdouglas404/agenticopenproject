@@ -216,6 +216,7 @@ ro:
         manage_participants: Manage participants
         no_participants: No participants
         show_all: Afișează tot
+        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: These participants will be invited automatically to all future meetings as they are created.
         manage_participants: Search for and add project members as participants to this meeting.

@@ -233,7 +233,7 @@ module MeetingAgendaItems
     def next_meeting_action_item(menu, label:, action:, icon:)
       return unless has_next_occurrence?
 
-      from_time = @meeting.start_time.past? ? Time.current : @meeting.start_time
+      from_time = @meeting.start_time.past? ? Time.current : @meeting.scheduled_meeting.start_time
       result = @series.first_non_cancelled_occurrence(from_time:)
       return if result.nil?
 

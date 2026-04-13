@@ -206,6 +206,7 @@ id:
         manage_participants: Kelola peserta
         no_participants: Tidak ada peserta
         show_all: Tampilkan semua
+        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Para peserta ini akan diundang secara otomatis ke semua pertemuan mendatang yang akan dibuat.
         manage_participants: Cari dan tambahkan anggota proyek sebagai peserta dalam pertemuan ini.

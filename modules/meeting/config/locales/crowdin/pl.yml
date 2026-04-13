@@ -221,6 +221,7 @@ pl:
         manage_participants: Zarządzaj uczestnikami
         no_participants: Brak uczestników
         show_all: Pokaż wszystkie
+        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Uczestnicy ci będą automatycznie zapraszani na wszystkie przyszłe spotkania w miarę ich tworzenia.
         manage_participants: Wyszukaj członków projektu i dodaj ich jako uczestników tego spotkania.

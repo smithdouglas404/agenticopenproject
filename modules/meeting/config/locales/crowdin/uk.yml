@@ -199,7 +199,7 @@ uk:
   label_notify: Надіслати на розгляд
   label_icalendar: Надіслати iCalendar
   label_icalendar_download: Завантажити подію iCalendar
-  label_view_meeting: View meeting
+  label_view_meeting: Переглянути зустріч
   label_view_meeting_series: Переглянути серію нарад
   label_meeting_series: Серія нарад
   label_version: Версія
@@ -208,8 +208,8 @@ uk:
   label_subscribe_icalendar: Підписатися на календар
   caption_meeting_template_select: Виберіть шаблон, щоб автоматично скопіювати з нього пункти порядку денного
   caption_template_project_select: Виберіть проєкт, у якому ви хочете створити цей шаблон наради
-  placeholder_meeting_template_select_project_first: Select a project first
-  placeholder_meeting_template_no_templates_for_project: No templates available for this project
+  placeholder_meeting_template_select_project_first: Спершу виберіть проєкт
+  placeholder_meeting_template_no_templates_for_project: Немає шаблонів, доступних для цього проєкту
   meeting:
     participants:
       label:
@@ -221,6 +221,7 @@ uk:
         manage_participants: Керувати учасниками
         no_participants: Немає учасників
         show_all: Показати всі
+        apply_to_upcoming_meetings: Застосувати ці зміни до всіх майбутніх нарад цієї серії
       text:
         template: Ці учасники автоматично отримуватимуть запрошення на всі майбутні наради, які ви створюватимете.
         manage_participants: Знайдіть учасників проєкту й додайте їх у цю нараду в ролі учасників.
@@ -229,7 +230,7 @@ uk:
         heading: Немає учасників
         description: Учасників ще немає.
     attachments:
-      onetime_template: These attached files will be included in all future meetings using this template.
+      onetime_template: Ці прикріплені файли додаватимуться в усі наради, які буде створено із використанням цього шаблону в майбутньому.
       series_template: Ці прикріплені файли додаватимуться до всіх майбутніх нарад серії.
       text: Прикріплені файли доступні всім учасникам наради. Ви також можете перетягнути їх у примітки до пунктів порядку денного.
     copy:
@@ -308,7 +309,7 @@ uk:
         template:
           title: Видалити шаблон
           heading: Видалити цей шаблон?
-          confirmation_message_html: 'This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
+          confirmation_message_html: 'Зверніть увагу: цю дію не можна відмінити. Вона не вплине на наради, які було створено за допомогою цього шаблону раніше.
 
             '
       occurrence:
@@ -392,7 +393,7 @@ uk:
           disabled: 'Надсилання електронною поштою оновлень із календаря вимкнено. Якщо ви додасте нових учасників чи вилучите наявних, учасники не отримають листа з інформацією про це.
 
             '
-          draft_disabled: 'Participants will not receive an email informing them when you add or remove participants.
+          draft_disabled: 'Учасники не отримають електронного листа з відповідним повідомленням після того, як ви додасте чи вилучите когось із них.
 
             '
         onetime:

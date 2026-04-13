@@ -211,6 +211,7 @@ tr:
         manage_participants: Katılımcıları yönet
         no_participants: Katılımcı yok
         show_all: Tümünü göster
+        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
       text:
         template: Oluşturuldukça bu katılımcılar, gelecekteki tüm toplantılara otomatik olarak davet edilecektir.
         manage_participants: Proje üyelerini arayın ve bu toplantıya katılımcı olarak ekleyin.

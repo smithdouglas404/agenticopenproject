@@ -151,8 +151,8 @@ pl:
         other: Pokaż jeszcze %{count} elementu
     inbox_item_component:
       label_drag_work_package: Przenieś %{name}
+      label_actions: Work package actions
     inbox_menu_component:
-      label_actions: Działania pakietu roboczego
       action_menu:
         copy_url_to_clipboard: Skopiuj adres URL do schowka
         copy_work_package_id: Skopiuj identyfikator pakietu roboczego
@@ -206,12 +206,12 @@ pl:
         add_work_package: Dodaj pakiet roboczy
     story_component:
       label_drag_story: Przenieś %{name}
-    story_menu_component:
-      label_actions: Działania historii
+      label_actions: Story actions
+    story_menu_list_component:
       action_menu:
-        copy_url_to_clipboard: Skopiuj adres URL do schowka
-        copy_work_package_id: Skopiuj identyfikator pakietu roboczego
-        move_menu: Przenieś
+        copy_url_to_clipboard: Copy URL to clipboard
+        copy_work_package_id: Copy work package ID
+        move_menu: Move
   backlogs_points_burn_direction: Punkty burn up/down
   backlogs_product_backlog: Backlog produktu
   backlogs_story: Story

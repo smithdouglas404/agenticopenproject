@@ -76,8 +76,7 @@ See COPYRIGHT and LICENSE files for more details.
     <%= render Backlogs::InboxItemComponent.with_collection(
           paginate? ? first_page : work_packages,
           container: border_box,
-          project:,
-          max_position:
+          project:
         ) %>
 
     <% if paginate? %>
@@ -109,8 +108,7 @@ See COPYRIGHT and LICENSE files for more details.
       <%= render Backlogs::InboxItemComponent.with_collection(
             last_page,
             container: border_box,
-            project:,
-            max_position:
+            project:
           ) %>
     <% end %>
   <% end %>

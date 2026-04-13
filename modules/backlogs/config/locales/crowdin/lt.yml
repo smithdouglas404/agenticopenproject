@@ -151,8 +151,8 @@ lt:
         other: Show %{count} more items
     inbox_item_component:
       label_drag_work_package: Move %{name}
-    inbox_menu_component:
       label_actions: Work package actions
+    inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID
@@ -206,8 +206,8 @@ lt:
         add_work_package: Add work package
     story_component:
       label_drag_story: Move %{name}
-    story_menu_component:
       label_actions: Story actions
+    story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID

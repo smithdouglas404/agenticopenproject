@@ -100,7 +100,7 @@ RSpec.describe "Edit", :js do
 
       wait_for_reload
 
-      expect_and_dismiss_flash type: :success, message: "New work package created and added as a child"
+      expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
       created_wp = first_sprint.reload.work_packages.last
       expect(created_wp.subject).to eq("Story created in sprint")
       planning_page.expect_story_in_sprint(created_wp, first_sprint)
