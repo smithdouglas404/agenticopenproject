@@ -66,12 +66,16 @@ module Backlogs
       sprint.in_planning? && ::Sprints::StartContract.can_start?(user: current_user, sprint:, project:)
     end
 
-    def show_finish_sprint_action?
-      sprint.active? && ::Sprints::StartContract.can_start_or_finish?(user: current_user, sprint:)
+    def show_complete_sprint_action?
+      sprint.active? && ::Sprints::StartContract.can_start_or_complete?(user: current_user, sprint:)
     end
 
     def disable_start_sprint_action?
       sprint.in_planning? && (!sprint.date_range_set? || project_has_another_active_sprint?)
+    end
+
+    def show_burndown_link?
+      sprint.active?
     end
 
     def start_sprint_action_description

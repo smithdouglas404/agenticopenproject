@@ -10,7 +10,7 @@ ja:
         token_exchange_scope: XWiki Scope
         url: Instance URL
         wiki_audience: XWiki Audience
-    errors: { }
+    errors: {}
     models:
       wikis/inline_page_link:
         other: Inline page links
@@ -18,4 +18,4 @@ ja:
       wikis/relation_page_link:
         other: Relation page links
       wikis/xwiki_provider: XWiki provider
-  wikis: { }
+  wikis: {}

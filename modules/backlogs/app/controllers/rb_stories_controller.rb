@@ -33,6 +33,20 @@ class RbStoriesController < RbApplicationController
 
   before_action :load_story
 
+  # Deferred ActionMenu items (Primer include-fragment).
+  def menu
+    max_position = @allowed_stories.maximum(:position) || 0
+
+    render(Backlogs::StoryMenuListComponent.new(
+             story: @story,
+             sprint: @sprint,
+             project: @project,
+             max_position:,
+             current_user:
+           ),
+           layout: false)
+  end
+
   # Move a story from a Sprint to another Sprint or an Agile::Sprint.
   def move_legacy
     # The update service reloads the story internally (via #move_after),
@@ -112,10 +126,7 @@ class RbStoriesController < RbApplicationController
   def update_story_with_target_and_position(attributes:)
     Stories::UpdateService
       .new(user: current_user, story: @story)
-      .call(
-        attributes:,
-        position: move_params[:position].to_i
-      )
+      .call(attributes:, **position_attributes)
   end
 
   def replace_typed_component_via_turbo_stream(sprint:)
@@ -130,9 +141,9 @@ class RbStoriesController < RbApplicationController
     render_success_flash_message_via_turbo_stream(
       message: I18n.t(:notice_successful_move, from: @sprint.name, to: I18n.t(:label_inbox))
     )
-    inbox_work_packages = Backlog.inbox_for(project: @project)
+    work_packages = Backlog.inbox_for(project: @project)
     replace_via_turbo_stream(
-      component: Backlogs::InboxComponent.new(work_packages: inbox_work_packages, project: @project),
+      component: Backlogs::InboxComponent.new(work_packages:, project: @project),
       method: :morph
     )
   end
@@ -204,16 +215,28 @@ class RbStoriesController < RbApplicationController
   end
 
   def load_story
-    @story = if OpenProject::FeatureDecisions.scrum_projects_active?
-               WorkPackage.visible.find(params[:id])
-             else
-               Story.visible.find(params[:id])
-             end
+    @allowed_stories =
+      if OpenProject::FeatureDecisions.scrum_projects_active?
+        WorkPackage.visible.where(sprint: @sprint, project: @project)
+      else
+        Story.visible.where(Story.condition(@project, @sprint))
+      end
+    @story = @allowed_stories.find(params[:id])
   end
 
   def move_params
-    params.require(%i[position target_id])
-    params.permit(:position, :target_id)
+    params.require(%i[target_id])
+    params.permit(:position, :prev_id, :target_id)
+  end
+
+  def position_attributes
+    if move_params.has_key?(:prev_id)
+      { prev_id: move_params[:prev_id].to_i }
+    elsif move_params.has_key?(:position)
+      { position: move_params[:position].to_i }
+    else
+      {}
+    end
   end
 
   def reorder_param

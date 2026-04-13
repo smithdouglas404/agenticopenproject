@@ -19,22 +19,23 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 id:
   attributes:
-    additions_count: "Jumlah penambahan"
-    deletions_count: "Jumlah penghapusan"
-    comments_count: "Jumlah komentar"
-    github_html_url: "URL permintaan pull"
-    github_app_owner_avatar_url: "URL avatar pemilik"
-    review_comments_count: "Jumlah komentar tinjauan"
-    github: "Tanda pengenal GitHub"
-    github_avatar_url: "URL avatar"
-    github_updated_at: "Diperbarui pada"
-    github_login: "Masuk melalui GitHub"
-    host: "Host"
-    labels: "Label"
-    repository: "Repositori"
-    changed_files_count: "File yang diubah"
+    additions_count: Jumlah penambahan
+    deletions_count: Jumlah penghapusan
+    comments_count: Jumlah komentar
+    github_html_url: URL permintaan pull
+    github_app_owner_avatar_url: URL avatar pemilik
+    review_comments_count: Jumlah komentar tinjauan
+    github: Tanda pengenal GitHub
+    github_avatar_url: URL avatar
+    github_updated_at: Diperbarui pada
+    github_login: Masuk melalui GitHub
+    host: Host
+    labels: Label
+    repository: Repositori
+    changed_files_count: File yang diubah
   button_add_deploy_target: Tambahkan target penyebaran
   label_deploy_target: Sebarkan target
   label_deploy_target_new: Target penyebaran baru
@@ -43,13 +44,15 @@ id:
   notice_deploy_target_created: Sebaran target telah dibuat
   notice_deploy_target_destroyed: Sebaran target telah dihapus
   plugin_openproject_github_integration:
-    name: "Integrasi OpenProject dengan GitHub"
-    description: "Mengintegrasikan OpenProject dan GitHub untuk alur kerja yang lebih baik"
-  project_module_github: "GitHub"
-  permission_show_github_content: "Tampilkan konten GitHub"
+    name: Integrasi OpenProject dengan GitHub
+    description: Mengintegrasikan OpenProject dan GitHub untuk alur kerja yang lebih baik
+  project_module_github: GitHub
+  permission_show_github_content: Tampilkan konten GitHub
   permission_introspection: Baca versi inti OpenProject yang sedang berjalan dan bangun SHA
-  text_deploy_target_type_info: >
-    Sampai saat ini, kami hanya mendukung OpenProject saja.
-  text_deploy_target_api_key_info: >
-    Kunci API OpenProject [API key](docs_url) yang dimiliki oleh pengguna yang memiliki izin introspeksi global.
+  text_deploy_target_type_info: 'Sampai saat ini, kami hanya mendukung OpenProject saja.
+
+    '
+  text_deploy_target_api_key_info: 'Kunci API OpenProject [API key](docs_url) yang dimiliki oleh pengguna yang memiliki izin introspeksi global.
+
+    '
   text_pull_request_deployed_to: "%{pr_link} disebarkan ke %{deploy_target_link}"

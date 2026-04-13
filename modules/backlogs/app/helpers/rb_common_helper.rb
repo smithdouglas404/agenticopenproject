@@ -142,6 +142,10 @@ module RbCommonHelper
       !project.receive_shared_sprints?
   end
 
+  def show_all_backlog
+    ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
+  end
+
   private
 
   def work_package_status_for_id(id)
@@ -180,5 +184,9 @@ module RbCommonHelper
 
   def get_backlogs_preference(assignee, attr)
     assignee.is_a?(User) ? assignee.backlogs_preference(attr) : "#24B3E7"
+  end
+
+  def sprint_board_label
+    OpenProject::FeatureDecisions.scrum_projects_active? ? t("backlogs.label_sprint_board") : t(:label_task_board)
   end
 end

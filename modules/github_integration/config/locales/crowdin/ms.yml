@@ -19,22 +19,23 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 ms:
   attributes:
-    additions_count: "Number of additions"
-    deletions_count: "Number of deletions"
-    comments_count: "Comments count"
-    github_html_url: "Pull Request URL"
-    github_app_owner_avatar_url: "Owner avatar URL"
-    review_comments_count: "Review comments count"
-    github: "GitHub identifer"
-    github_avatar_url: "Avatar URL"
-    github_updated_at: "Updated at"
-    github_login: "GitHub login"
-    host: "Hos"
-    labels: "Labels"
-    repository: "Repositori"
-    changed_files_count: "Changed files"
+    additions_count: Number of additions
+    deletions_count: Number of deletions
+    comments_count: Comments count
+    github_html_url: Pull Request URL
+    github_app_owner_avatar_url: Owner avatar URL
+    review_comments_count: Review comments count
+    github: GitHub identifer
+    github_avatar_url: Avatar URL
+    github_updated_at: Updated at
+    github_login: GitHub login
+    host: Hos
+    labels: Labels
+    repository: Repositori
+    changed_files_count: Changed files
   button_add_deploy_target: Tambah sasaran penyerahan
   label_deploy_target: Sasaran penyerahan
   label_deploy_target_new: Sasaran penyerahan baharu
@@ -43,13 +44,13 @@ ms:
   notice_deploy_target_created: Sasaran penyerahan dicipta
   notice_deploy_target_destroyed: Sasaran penyerahan dipadam
   plugin_openproject_github_integration:
-    name: "Integrasi GitHub OpenProject"
-    description: "Mengintegrasikan OpenProject dan GitHub untuk aliran kerja yang lebih baik"
-  project_module_github: "GitHub"
-  permission_show_github_content: "Paparkan kandungan GitHub"
+    name: Integrasi GitHub OpenProject
+    description: Mengintegrasikan OpenProject dan GitHub untuk aliran kerja yang lebih baik
+  project_module_github: GitHub
+  permission_show_github_content: Paparkan kandungan GitHub
   permission_introspection: Baca versi teras OpenProject yang aktif dan bangunkan SHA
-  text_deploy_target_type_info: >
-    Setakat ini kami hanya menyokong OpenProject sahaja.
-  text_deploy_target_api_key_info: >
-    [API key](docs_url) OpenProject yang dimiliki oleh pengguna yang mempunyai kebenaran intipan global.
+  text_deploy_target_type_info: 'Setakat ini kami hanya menyokong OpenProject sahaja.
+
+    '
+  text_deploy_target_api_key_info: "[API key](docs_url) OpenProject yang dimiliki oleh pengguna yang mempunyai kebenaran intipan global.\n"
   text_pull_request_deployed_to: "%{pr_link} dikerahkn ke %{deploy_target_link}"

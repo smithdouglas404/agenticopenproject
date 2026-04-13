@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 <%=
-  settings_primer_form_with(model: user.pref, scope: :backlogs, url: { action: "update_settings" }, data: { turbo: false }) do |form|
-    render(My::BacklogsForm.new(form, color:, versions_default_fold_state:))
+  settings_primer_form_with(model: user.pref, scope: :pref, url: { action: "update_settings" }, data: { turbo: false }) do |form|
+    render(My::BacklogsForm.new(form))
   end
 %>

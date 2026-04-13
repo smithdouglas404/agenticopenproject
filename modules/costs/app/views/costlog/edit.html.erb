@@ -33,8 +33,8 @@ See COPYRIGHT and LICENSE files for more details.
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title { I18n.t(:label_log_costs) }
     header.with_breadcrumbs(
-      [({ href: project_overview_path(@project.id), text: @project.name }),
-       ({ href: project_work_packages_path(@project), text: t(:label_work_package_plural) }),
+      [{ href: project_overview_path(@project.id), text: @project.name },
+       { href: project_work_packages_path(@project), text: t(:label_work_package_plural) },
        I18n.t(:label_log_costs)]
     )
   end
@@ -104,6 +104,8 @@ See COPYRIGHT and LICENSE files for more details.
   <div class="form--field -required">
     <% if @cost_entry.cost_type.nil? %>
       <%= f.text_field :units,
+                       pattern: "^-?[0-9]+ *([.,][0-9]+)?$",
+                       inputmode: :decimal,
                        value: unitless_currency_number(@cost_entry.units),
                        size: 6,
                        required: true,
@@ -111,6 +113,8 @@ See COPYRIGHT and LICENSE files for more details.
     <% else %>
       <% suffix = @cost_entry.units == 1 ? @cost_entry.cost_type.unit : @cost_entry.cost_type.unit_plural %>
       <%= f.text_field :units,
+                       pattern: "^-?[0-9]+ *([.,][0-9]+)?$",
+                       inputmode: :decimal,
                        size: 6,
                        value: unitless_currency_number(@cost_entry.units),
                        required: true,

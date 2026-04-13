@@ -112,21 +112,41 @@ export function useCollaboration(
 ) {
   const [isLoading, setIsLoading] = useState(true);
   const [connectionError, setConnectionError] = useState(false);
+  const disconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearDisconnectTimer = useCallback(() => {
+    if (disconnectTimerRef.current !== null) {
+      clearTimeout(disconnectTimerRef.current);
+      disconnectTimerRef.current = null;
+    }
+  }, []);
 
   const handleSynced = useCallback(() => {
     debugLog('(BlockNote Editor) synced with collaboration server');
+    clearDisconnectTimer();
     setIsLoading(false);
     setConnectionError(false);
-  }, []);
+  }, [clearDisconnectTimer]);
 
   const handleDisconnect = useCallback(() => {
-    debugLog('(BlockNote Editor) Disconnected from collaboration server');
-    setConnectionError(true);
+    debugLog('(BlockNote Editor) Disconnected — starting grace period');
+    // Don't flag a connection error immediately. Start a grace timer so that
+    // transient reconnections (idle heartbeat, token-expiry reconnect) never
+    // surface to the user. If synced fires within the window the timer is
+    // cancelled.
+    disconnectTimerRef.current ??= setTimeout(() => {
+      disconnectTimerRef.current = null;
+      debugLog('(BlockNote Editor) Grace period expired — connection error');
+      setConnectionError(true);
+    }, 5_000);
   }, []);
 
   const hasTimedOut = useConnectionTimeout(provider);
   useCollaborationProvider(provider, handleSynced, handleDisconnect);
   useLocalDocumentSync(doc, inputField, !provider);
+
+  // Clean up the grace timer on unmount and when the provider changes.
+  useEffect(() => clearDisconnectTimer, [provider, clearDisconnectTimer]);
 
   useEffect(() => {
     if (!provider) {
@@ -146,12 +166,14 @@ export function useCollaboration(
     const handleProviderAuthError = (event:Event) => {
       const customEvent = event as CustomEvent<{ kind:ProviderAuthErrorKind; message:string }>;
       debugLog(`(BlockNote Editor) Provider auth error: ${customEvent.detail.kind} - ${customEvent.detail.message}`);
+      // Auth errors are permanent — bypass the grace period.
+      clearDisconnectTimer();
       setConnectionError(true);
     };
 
     document.addEventListener(PROVIDER_AUTH_ERROR_EVENT, handleProviderAuthError);
     return () => document.removeEventListener(PROVIDER_AUTH_ERROR_EVENT, handleProviderAuthError);
-  }, []);
+  }, [clearDisconnectTimer]);
 
   return { isLoading, connectionError } as const;
 }

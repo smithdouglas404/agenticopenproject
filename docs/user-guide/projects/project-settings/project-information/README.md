@@ -17,21 +17,21 @@ Project settings are grouped into three sections:
 
     - **Project name**. The name will be displayed in the project list.
     - Add a project **description**.
+2. **Project identifier**. Here you can [change project identifier](#change-project-identifier).
 
-2. **Project status**. Here you can: 
+3. **Project status**. Here you can: 
 
-   - Set a **project status**. The project status can be displayed in the [project home](../../../project-home). If you want to set additional or different status options you can create and use a [project custom field](../../../../system-admin-guide/custom-fields/custom-fields-projects).
-   - Add a **project status description**. The status description will be shown on the [project home](../../../project-home) page.
+   - Set a **project status**. The project status can be displayed in the [project home](../../project-home/). If you want to set additional or different status options you can create and use a [project custom field](../../../../system-admin-guide/custom-fields/custom-fields-projects).
+   - Add a **project status description**. The status description will be shown on the [project home](../../project-home/) page.
 
-3. **Project relations**, where you can select the **parent project**.
+4. **Project relations**, where you can select the **parent project**.
 
 **Save** your changes by clicking the **Update** button at the bottom of each respective section.
 
 Further, in the top right corner you can: 
 
-4. [Add a subproject](#create-a-subproject) 
+5. [Add a subproject](#create-a-subproject) 
 
-5. [Change project identifier](#change-project-identifier)
 6. Click the **More (three dots)** icon, which opens a dropdown menu with the following options: 
    - [Copy a project](#copy-a-project)
    - [Make a project public](#make-a-project-public)
@@ -54,19 +54,22 @@ Then follow the instructions to [create a new project](../../../../getting-start
 
 ## Change project identifier
 
-A project identifier is the part of the project name shown in the URL, e.g. /demo-project. To change the project identifier navigate to Project settings and click the **Change identifier** button in the top right corner.
+A project identifier is the part of the project name shown in the URL, e.g. /demo-project. To change the project identifier navigate to Project settings and click the **Change identifier** button in the respective section.
 
-![Change project identifier under project settings in OpenProject](openproject_user_guide_project_settings_information_change_identifier_button.png)
+![A form to change the project identifier in OpenProject](openproject_user_guide_project_settings_information_change_identifier_button.png)
 
 You will then see the form to change and save the new project identifier. 
 
-> [!WARNING]
->
-> Keep in mind that once a project identifier is changed, members of the project will have to relocate the project's repositories. 
->
-> Existing project links will no longer work. 
 
-![A form to change the project identifier in OpenProject](openproject_user_guide_project_settings_information_change_identifier_form.png)
+> [!NOTE]
+> When changing a project identifier, previous identifiers will remain valid. Requests to an old identifier will still resolve to the same project.
+> Retired identifiers cannot be used by other projects. A project can, however, revert to a previously used identifier.
+
+> [!WARNING]
+> Keep in mind that once a project identifier is changed, members of the project will have to relocate the project's repositories. 
+> Existing links using previous identifiers will continue to work.
+
+
 
 ## Copy a project
 
@@ -75,7 +78,7 @@ You can copy an existing project by navigating to the *Project settings -> Proje
 ![Copy a project under project settings in OpenProject](openproject_user_guide_project_settings_information_copy_project.png)
 
 Under the **Copy from project** section you can select what additional project data and settings, such as versions, work package categories, attachments, project life cycle and project members should be copied as well. 
-You can copy existing [boards](../../../agile-boards/) (apart from the Subproject board) and the [Project overview](../../../project-home/#project-overview) dashboards along with your project, too. 
+You can copy existing [boards](../../../agile-boards/) (apart from the Subproject board) and the [Project overview](../../project-home/#project-overview) dashboards along with your project, too. 
 
 Select which modules and settings you want to copy and whether or not you want to notify users via email during copying.
 
@@ -91,7 +94,7 @@ If you de-select the **File Storages: Project folders** option, the storage is c
 
 If you de-select the **File Storages** option, no storages are copied to the new project.
 
-Give the new project a name and select a parent project if needed.
+Give the new project a name, identifier and select a parent project if needed.
 
 Click the **Copy** button to proceed.
 
@@ -122,7 +125,7 @@ Once archived, a project can no longer be selected from the project list accessi
 
 ![An archived project shown in projects list in OpenProject](openproject_user_guide_project_settings_information_archived_project_projects_list.png)
 
-You can also archive a project directly on the [project overview page.](../../../project-home/#archive-a-project) 
+You can also archive a project directly on the [project overview page.](../../project-home/#archive-a-project) 
 
 ## Change the project hierarchy
 

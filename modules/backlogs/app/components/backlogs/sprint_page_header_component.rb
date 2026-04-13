@@ -53,7 +53,11 @@ module Backlogs
     private
 
     def date_range
-      [@sprint.start_date, @sprint.effective_date]
+      if @sprint.is_a?(Agile::Sprint)
+        [@sprint.start_date, @sprint.finish_date]
+      else
+        [@sprint.start_date, @sprint.effective_date]
+      end
     end
   end
 end

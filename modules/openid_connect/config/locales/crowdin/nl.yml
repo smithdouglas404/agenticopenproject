@@ -1,9 +1,11 @@
+---
 nl:
   plugin_openproject_openid_connect:
-    name: "OpenProject OpenID Connect"
-    description: "Voegt OmniAuth OpenID Connect strategieproviders toe aan OpenProject."
-  logout_warning: >
-    U bent uitgelogd. De inhoud van uw formulier kan verloren gaan. Alstublieft [log in].
+    name: OpenProject OpenID Connect
+    description: Voegt OmniAuth OpenID Connect strategieproviders toe aan OpenProject.
+  logout_warning: 'U bent uitgelogd. De inhoud van uw formulier kan verloren gaan. Alstublieft [log in].
+
+    '
   activerecord:
     attributes:
       openid_connect/group_link:
@@ -39,14 +41,14 @@ nl:
         openid_connect/provider:
           attributes:
             metadata_url:
-              format: "Discovery endpoint URL %{message}"
+              format: Discovery endpoint URL %{message}
               response_is_not_successful: " reageert met %{status}."
               response_is_not_json: " retourneert geen JSON body."
               response_misses_required_attributes: " geeft niet de vereiste attributen terug. Ontbrekende attributen zijn: %{missing_attributes}."
-          invalid_claims_essential: "does not define a boolean at %{attribute}."
-          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
-          invalid_claims_values: "does not define an array at %{attribute}."
-          non_object_attribute: "does not define a JSON object at %{attribute}."
+          invalid_claims_essential: does not define a boolean at %{attribute}.
+          invalid_claims_location: 'contain unsupported locations: %{invalid}. Supported locations are: %{supported}.'
+          invalid_claims_values: does not define an array at %{attribute}.
+          non_object_attribute: does not define a JSON object at %{attribute}.
   provider:
     delete_warning:
       input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
@@ -55,12 +57,12 @@ nl:
       delete_result_1: Verwijder de provider uit de lijst met beschikbare providers.
       delete_result_user_count:
         zero: Er zijn momenteel geen gebruikers die deze provider gebruiken. Er is geen verdere actie vereist.
-        one: "Eén gebruiker gebruikt momenteel nog deze provider. Zij moeten opnieuw worden uitgenodigd of zich aanmelden bij een andere provider."
+        one: Eén gebruiker gebruikt momenteel nog deze provider. Zij moeten opnieuw worden uitgenodigd of zich aanmelden bij een andere provider.
         other: "%{count} gebruikers maken momenteel nog gebruik van deze provider. Zij moeten opnieuw worden uitgenodigd of inloggen bij een andere provider."
       delete_result_direct: Deze provider is gemarkeerd als een directe aanmeldprovider. De instelling wordt verwijderd en gebruikers worden niet langer omgeleid naar deze provider om in te loggen.
   openid_connect:
     menu_title: OpenID aanbieders
-    delete_title: "OpenID Connect provider verwijderen"
+    delete_title: OpenID Connect provider verwijderen
     group_links_heading: OpenID Connect group links
     groups:
       match_preview_component:
@@ -76,7 +78,7 @@ nl:
       endpoint_url: De endpoint URL die u van de OpenID Connect provider heeft gekregen
       group_regexes: One regular expression pattern per line. Please read [the documentation](docs_url) for more information on how to do this.
       group_regexes_detail: Optionally define patterns using regular expressions to match group names from the groups claim. For example, entering a pattern like <code>^Level1/Level2/([\w/]+)$</code> will extract the group “Groupname/SubGroup” from a response including “Level1/Level2/GroupName/SubGroup”. If no pattern matches, the group is ignored. Leave empty to synchronize all groups using their full group name.
-      group_regexes_testing: "Click on 'Test pattern' to test your regular expression pattern against sample OIDC userinfo."
+      group_regexes_testing: Click on 'Test pattern' to test your regular expression pattern against sample OIDC userinfo.
       group_sync: Automatically extract and synchronise group membership information from the identity provider.
       groups_claim: Specify the name of the claim that's expected to indicate the group names that the user is a member of.
       metadata_none: Ik heb deze informatie niet
@@ -86,30 +88,37 @@ nl:
       client_secret: Dit is de client-ID die u van uw OpenID Connect provider hebt gekregen
       limit_self_registration: If enabled, users can only register using this provider if configuration on the provider's end allows it.
       display_name: The name of the provider. This will be displayed as the login button and in the list of providers.
-      tenant: 'Vervang de standaard tenant door uw eigen tenant, indien van toepassing. Bekijk <a href=" https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc#find-your-apps-openid-configuration-document-uri">dit</a>.'
+      tenant: Vervang de standaard tenant door uw eigen tenant, indien van toepassing. Bekijk <a href=" https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc#find-your-apps-openid-configuration-document-uri">dit</a>.
       scope: If you want to request custom scopes, you can add one or multiple scope values separated by spaces here. For more information, see the [OpenID Connect documentation](docs_url).
       post_logout_redirect_uri: De URL waarnaar de OpenID Connect provider moet doorsturen na een uitlogverzoek.
-      claims: >
-        U kunt extra claims aanvragen voor de eindpunten userinfo en id token. Zie [onze OpenID connect documentatie](docs_url) voor meer informatie.
-      acr_values: >
-        Vraag niet-essentiële claims aan in een eenvoudiger formaat. Zie [onze documentatie over acr_values](docs_url) voor meer informatie.
-      mapping_login: >
-        Zorg voor een aangepaste toewijzing in het userinfo antwoord om te gebruiken voor het aanmeldingskenmerk.
-      mapping_email: >
-        Zorg voor een aangepaste toewijzing in het userinfo antwoord om te gebruiken voor het aanmeldingskenmerk.
-      mapping_first_name: >
-        Zorg voor een aangepaste toewijzing in het userinfo antwoord om te gebruiken voor de voornaam.
-      mapping_last_name: >
-        Zorg voor een aangepaste toewijzing in het userinfo antwoord om te gebruiken voor de achternaam.
-      mapping_admin: >
-        Geef een aangepaste toewijzing in het userinfo antwoord om te gebruiken voor de beheerdersstatus. Er wordt een booleaans attribuut verwacht dat wordt geretourneerd.
+      claims: 'U kunt extra claims aanvragen voor de eindpunten userinfo en id token. Zie [onze OpenID connect documentatie](docs_url) voor meer informatie.
+
+        '
+      acr_values: 'Vraag niet-essentiële claims aan in een eenvoudiger formaat. Zie [onze documentatie over acr_values](docs_url) voor meer informatie.
+
+        '
+      mapping_login: 'Zorg voor een aangepaste toewijzing in het userinfo antwoord om te gebruiken voor het aanmeldingskenmerk.
+
+        '
+      mapping_email: 'Zorg voor een aangepaste toewijzing in het userinfo antwoord om te gebruiken voor het aanmeldingskenmerk.
+
+        '
+      mapping_first_name: 'Zorg voor een aangepaste toewijzing in het userinfo antwoord om te gebruiken voor de voornaam.
+
+        '
+      mapping_last_name: 'Zorg voor een aangepaste toewijzing in het userinfo antwoord om te gebruiken voor de achternaam.
+
+        '
+      mapping_admin: 'Geef een aangepaste toewijzing in het userinfo antwoord om te gebruiken voor de beheerdersstatus. Er wordt een booleaans attribuut verwacht dat wordt geretourneerd.
+
+        '
     settings:
       metadata_none: Ik heb deze informatie niet
       metadata_url: Ik heb een URL voor een zoekeindpunt
       endpoint_url: Eindpunt URL
     providers:
-      label_providers: "Aanbieders"
-      seeded_from_env: "Deze provider is geplaatst vanuit de omgevingsconfiguratie. Deze kan niet worden bewerkt."
+      label_providers: Aanbieders
+      seeded_from_env: Deze provider is geplaatst vanuit de omgevingsconfiguratie. Deze kan niet worden bewerkt.
       google:
         name: Google
       microsoft_entra:
@@ -117,7 +126,7 @@ nl:
       custom:
         name: Aangepast
       upsell:
-        title: "Single Sign-On (SSO) with OpenID connect"
+        title: Single Sign-On (SSO) with OpenID connect
         description: OpenProject verbinden met een OpenID connect identity provider
       label_add_new: Voeg een nieuwe OpenID provider toe
       label_edit: OpenID provider %{name} bewerken
@@ -151,5 +160,6 @@ nl:
         information_component:
           backchannel_logout_url: Backchannel logout URL
     setting_instructions:
-      limit_self_registration: >
-        If enabled users can only register using this provider if the self registration setting allows for it.
+      limit_self_registration: 'If enabled users can only register using this provider if the self registration setting allows for it.
+
+        '

@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../support/pages/sprint_planning"
+require_relative "../support/pages/backlog"
 
 RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_projects: true } do
   let(:sprint_sharing) { nil }
@@ -55,9 +55,15 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
   let!(:role) do
     create(:project_role, permissions:)
   end
-  let!(:current_user) { create(:user, member_with_roles: { project => role }) }
+  let(:user_password) { "bob" * 4 }
+  let!(:current_user) do
+    create(:user,
+           member_with_roles: { project => role },
+           password: user_password,
+           password_confirmation: user_password)
+  end
 
-  let(:planning_page) { Pages::SprintPlanning.new(project) }
+  let(:planning_page) { Pages::Backlog.new(project) }
 
   before do
     login_as current_user
@@ -81,11 +87,11 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
 
       it "shows the sprint blankslate with settings link and sprint button" do
         planning_page.expect_inbox_blankslate
-        planning_page.expect_sprint_planning_blankslate
-        planning_page.expect_sprint_planning_blankslate_description(
+        planning_page.expect_backlog_blankslate
+        planning_page.expect_backlog_blankslate_description(
           "To start planning your sprint, create one here or go to the project settings to receive sprints from a different project."
         )
-        planning_page.expect_sprint_planning_settings_link
+        planning_page.expect_backlog_settings_link
         planning_page.expect_new_sprint_button
       end
     end
@@ -94,9 +100,9 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
       let(:additional_permissions) { %i[create_sprints] }
 
       it "shows the sprint blankslate without the settings link" do
-        planning_page.expect_sprint_planning_blankslate
-        planning_page.expect_no_sprint_planning_settings_link
-        planning_page.expect_sprint_planning_blankslate_description(
+        planning_page.expect_backlog_blankslate
+        planning_page.expect_no_backlog_settings_link
+        planning_page.expect_backlog_blankslate_description(
           "To start planning your sprint, create one here."
         )
         planning_page.expect_new_sprint_button
@@ -107,22 +113,22 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
       let(:additional_permissions) { %i[share_sprint] }
 
       it "shows the sprint blankslate with settings link but no sprint button" do
-        planning_page.expect_sprint_planning_blankslate
-        planning_page.expect_sprint_planning_blankslate_description(
+        planning_page.expect_backlog_blankslate
+        planning_page.expect_backlog_blankslate_description(
           "To start planning your sprint, go to the project settings to receive sprints from a different project."
         )
-        planning_page.expect_sprint_planning_settings_link
+        planning_page.expect_backlog_settings_link
         planning_page.expect_no_new_sprint_button
       end
     end
 
     context "when the user cannot create sprints or manage sprint sharing" do
       it "shows the sprint blankslate without action copy, settings link, or sprint button" do
-        planning_page.expect_sprint_planning_blankslate
-        planning_page.expect_sprint_planning_blankslate_description(
+        planning_page.expect_backlog_blankslate
+        planning_page.expect_backlog_blankslate_description(
           "No sprints are available for this project yet."
         )
-        planning_page.expect_no_sprint_planning_settings_link
+        planning_page.expect_no_backlog_settings_link
         planning_page.expect_no_new_sprint_button
       end
     end
@@ -137,22 +143,22 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
       let(:additional_permissions) { %i[create_sprints share_sprint] }
 
       it "shows the sprint blankslate without a sprint button and keeps the settings link" do
-        planning_page.expect_sprint_planning_blankslate
-        planning_page.expect_sprint_planning_blankslate_description(
+        planning_page.expect_backlog_blankslate
+        planning_page.expect_backlog_blankslate_description(
           "This project receives sprints from a different project. Manage this in the project settings."
         )
-        planning_page.expect_sprint_planning_settings_link
+        planning_page.expect_backlog_settings_link
         planning_page.expect_no_new_sprint_button
       end
     end
 
     context "when the user cannot manage sprint sharing" do
       it "shows the sprint blankslate without settings link or sprint button" do
-        planning_page.expect_sprint_planning_blankslate
-        planning_page.expect_sprint_planning_blankslate_description(
+        planning_page.expect_backlog_blankslate
+        planning_page.expect_backlog_blankslate_description(
           "This project receives shared sprints from a different project, but none are available right now."
         )
-        planning_page.expect_no_sprint_planning_settings_link
+        planning_page.expect_no_backlog_settings_link
         planning_page.expect_no_new_sprint_button
       end
     end
@@ -161,11 +167,11 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
       let(:additional_permissions) { %i[create_sprints] }
 
       it "shows the sprint blankslate without settings link or sprint button" do
-        planning_page.expect_sprint_planning_blankslate
-        planning_page.expect_sprint_planning_blankslate_description(
+        planning_page.expect_backlog_blankslate
+        planning_page.expect_backlog_blankslate_description(
           "This project receives shared sprints from a different project, but none are available right now."
         )
-        planning_page.expect_no_sprint_planning_settings_link
+        planning_page.expect_no_backlog_settings_link
         planning_page.expect_no_new_sprint_button
       end
     end
@@ -182,7 +188,7 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
       before { planning_page.visit! }
 
       it "renders the shared sprint instead of the blankslate" do
-        planning_page.expect_no_sprint_planning_blankslate
+        planning_page.expect_no_backlog_blankslate
         planning_page.expect_sprint_names_in_order("Shared Sprint")
       end
     end
@@ -194,7 +200,7 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
     before { planning_page.visit! }
 
     it "renders the sprint and hides the sprint blankslate" do
-      planning_page.expect_no_sprint_planning_blankslate
+      planning_page.expect_no_backlog_blankslate
       planning_page.expect_sprint_names_in_order("Sprint 1")
     end
   end
@@ -266,11 +272,10 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
           expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
 
           select sprint.name, from: "target_id"
-          click_button "Save"
+          click_button "Move"
         end
 
         planning_page.expect_no_inbox_item(inbox_wp1)
-        expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
         planning_page.expect_story_in_sprint(inbox_wp1, sprint)
         planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [sprint_wp, inbox_wp1])
       end
@@ -280,20 +285,37 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
       it "moves multiple items into the sprint one by one" do
         planning_page.drag_inbox_item_to_sprint(inbox_wp1, sprint)
         planning_page.expect_no_inbox_item(inbox_wp1)
-        expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
 
         planning_page.drag_inbox_item_to_sprint(inbox_wp2, sprint)
         planning_page.expect_no_inbox_item(inbox_wp2)
-        expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
 
         planning_page.drag_inbox_item_to_sprint(inbox_wp3, sprint)
         planning_page.expect_no_inbox_item(inbox_wp3)
-        expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
 
         planning_page.expect_inbox_blankslate
         planning_page.expect_story_in_sprint(inbox_wp1, sprint)
         planning_page.expect_story_in_sprint(inbox_wp2, sprint)
         planning_page.expect_story_in_sprint(inbox_wp3, sprint)
+      end
+
+      context "with real authentication and a private project" do
+        let!(:project) do
+          create(:private_project,
+                 types: [type],
+                 enabled_module_names: %w[work_package_tracking backlogs],
+                 sprint_sharing:)
+        end
+
+        before do
+          logout
+          login_with(current_user.login, user_password)
+          planning_page.visit!
+        end
+
+        it "moves a backlog item to the sprint without an error (Regression#73416)" do
+          planning_page.drag_inbox_item_to_sprint(inbox_wp1, sprint)
+          planning_page.expect_no_inbox_item(inbox_wp1)
+        end
       end
     end
 

@@ -7,17 +7,17 @@ fr:
         authentication_methods:
           oauth2_sso: Authentification unique via le fournisseur d'identité OpenID Connect
           two_way_oauth2: Flux d'autorisation OAuth 2.0 bidirectionnel par code d'autorisation
-        token_exchange_scope: XWiki Scope
+        token_exchange_scope: Portée XWiki
         url: URL de l'instance
         wiki_audience: Audience de XWiki
-    errors: { }
+    errors: {}
     models:
       wikis/inline_page_link:
-        one: Inline page link
-        other: Inline page links
+        one: Lien de page en ligne
+        other: Liens de page en ligne
       wikis/internal_provider: Wiki interne
       wikis/relation_page_link:
-        one: Relation page link
-        other: Relation page links
+        one: Lien de la page de relation
+        other: Liens de la page de relation
       wikis/xwiki_provider: Fournisseur XWiki
-  wikis: { }
+  wikis: {}

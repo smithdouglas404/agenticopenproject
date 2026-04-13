@@ -83,6 +83,10 @@ module Backlogs
       work_packages.last(LAST_PAGE_SIZE)
     end
 
+    def id_of_last_omitted_in_middle
+      work_packages.reverse_order.offset(LAST_PAGE_SIZE).limit(1).pick(:id)
+    end
+
     def middle_count
       total - FIRST_PAGE_SIZE - LAST_PAGE_SIZE
     end
@@ -94,10 +98,6 @@ module Backlogs
         target_id: "inbox",
         target_allowed_drag_type: "story"
       }
-    end
-
-    def max_position
-      work_packages.maximum(:position)
     end
   end
 end

@@ -43,6 +43,7 @@ class Backlog
       .visible
       .with_status_open
       .where(project:, sprint_id: nil)
+      .includes(:type)
       .order(Arel.sql(Story::ORDER))
   end
 

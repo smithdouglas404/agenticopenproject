@@ -66,15 +66,21 @@ module Meetings
     end
 
     def description
-      I18n.t("meeting.notifications.banner.#{type}.#{status}")
+      I18n.t("meeting.notifications.banner.#{type}.#{banner_status}")
     end
 
     def scheme
-      status == "enabled" ? :default : :warning
+      banner_status == "disabled" ? :warning : :default
     end
 
     def icon
-      status == "enabled" ? :info : nil
+      banner_status == "disabled" ? nil : :info
+    end
+
+    def banner_status
+      return "draft_disabled" if type == "participants" && status == "disabled" && @meeting.draft?
+
+      status
     end
   end
 end

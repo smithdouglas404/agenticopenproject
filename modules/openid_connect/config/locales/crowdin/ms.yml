@@ -1,9 +1,11 @@
+---
 ms:
   plugin_openproject_openid_connect:
-    name: "Sambungkan OpenID OpenProject"
-    description: "Tambah penyedia strategi OmniAuth OpenID Connect ke OpenProject."
-  logout_warning: >
-    Anda telah log keluar. Sebarang bentuk kandungan yang anda hantar mungkin hilang. Sila [log masuk].
+    name: Sambungkan OpenID OpenProject
+    description: Tambah penyedia strategi OmniAuth OpenID Connect ke OpenProject.
+  logout_warning: 'Anda telah log keluar. Sebarang bentuk kandungan yang anda hantar mungkin hilang. Sila [log masuk].
+
+    '
   activerecord:
     attributes:
       openid_connect/group_link:
@@ -39,14 +41,14 @@ ms:
         openid_connect/provider:
           attributes:
             metadata_url:
-              format: "URL titik akhir penemuan %{message}"
-              response_is_not_successful: "membalas dengan %{status}."
-              response_is_not_json: "tidak mengembalikan badan JSON."
-              response_misses_required_attributes: "tidak mengembalikan atribut yang diperlukan. Atribut yang tiada ialah: %{missing_attributes}."
-          invalid_claims_essential: "does not define a boolean at %{attribute}."
-          invalid_claims_location: "contain unsupported locations: %{invalid}. Supported locations are: %{supported}."
-          invalid_claims_values: "does not define an array at %{attribute}."
-          non_object_attribute: "does not define a JSON object at %{attribute}."
+              format: URL titik akhir penemuan %{message}
+              response_is_not_successful: membalas dengan %{status}.
+              response_is_not_json: tidak mengembalikan badan JSON.
+              response_misses_required_attributes: 'tidak mengembalikan atribut yang diperlukan. Atribut yang tiada ialah: %{missing_attributes}.'
+          invalid_claims_essential: does not define a boolean at %{attribute}.
+          invalid_claims_location: 'contain unsupported locations: %{invalid}. Supported locations are: %{supported}.'
+          invalid_claims_values: does not define an array at %{attribute}.
+          non_object_attribute: does not define a JSON object at %{attribute}.
   provider:
     delete_warning:
       input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
@@ -55,12 +57,12 @@ ms:
       delete_result_1: Alih keluar pembekal daripada senarai pembekal yang tersedia.
       delete_result_user_count:
         zero: Tiada pengguna yang menggunakan penyedia ini pada masa ini. Tiada tindakan lanjut diperlukan.
-        one: "Seorang pengguna masih menggunakan penyedia ini pada masa ini. Mereka perlu dijemput semula atau log masuk dengan penyedia lain."
+        one: Seorang pengguna masih menggunakan penyedia ini pada masa ini. Mereka perlu dijemput semula atau log masuk dengan penyedia lain.
         other: "%{count} pengguna pada masa ini masih menggunakan penyedia ini. Mereka perlu dijemput semula atau log masuk dengan penyedia lain."
       delete_result_direct: Pembekal ini ditandakan sebagai pembekal log masuk langsung. Tetapan akan dialih keluar dan pengguna tidak lagi akan diubah hala ke pembekal untuk log masuk.
   openid_connect:
     menu_title: Penyedia OpenID
-    delete_title: "Padam pembekal OpenID Connect"
+    delete_title: Padam pembekal OpenID Connect
     group_links_heading: OpenID Connect group links
     groups:
       match_preview_component:
@@ -76,7 +78,7 @@ ms:
       endpoint_url: URL titik akhir yang diberikan kepada anda oleh pembekal OpenID Connect
       group_regexes: One regular expression pattern per line. Please read [the documentation](docs_url) for more information on how to do this.
       group_regexes_detail: Optionally define patterns using regular expressions to match group names from the groups claim. For example, entering a pattern like <code>^Level1/Level2/([\w/]+)$</code> will extract the group “Groupname/SubGroup” from a response including “Level1/Level2/GroupName/SubGroup”. If no pattern matches, the group is ignored. Leave empty to synchronize all groups using their full group name.
-      group_regexes_testing: "Click on 'Test pattern' to test your regular expression pattern against sample OIDC userinfo."
+      group_regexes_testing: Click on 'Test pattern' to test your regular expression pattern against sample OIDC userinfo.
       group_sync: Automatically extract and synchronise group membership information from the identity provider.
       groups_claim: Specify the name of the claim that's expected to indicate the group names that the user is a member of.
       metadata_none: Saya tidak mempunyai maklumat ini
@@ -86,30 +88,37 @@ ms:
       client_secret: Ini ialah rahsia pelanggan yang diberikan kepada anda oleh pembekal OpenID Connect anda
       limit_self_registration: Jika didayakan, pengguna hanya boleh mendaftar menggunakan pembekal ini jika konfigurasi di hujung pembekal membenarkannya.
       display_name: Nama pembekal. Ini akan dipaparkan sebagai butang log masuk dan dalam senarai pembekal.
-      tenant: 'Sila gantikan penyewa lalai dengan penyewa anda sendiri jika berkenaan. Lihat <a href=" https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc#find-your-apps-openid-configuration-document-uri">ini</ a>.'
+      tenant: Sila gantikan penyewa lalai dengan penyewa anda sendiri jika berkenaan. Lihat <a href=" https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc#find-your-apps-openid-configuration-document-uri">ini</ a>.
       scope: Jika anda ingin meminta skop tersuai, anda boleh menambah satu atau berbilang nilai skop yang dipisahkan oleh ruang di sini. Untuk mendapatkan maklumat lanjut, lihat [dokumentasi OpenID Connect](docs_url).
       post_logout_redirect_uri: URL penyedia OpenID Connect harus mengubah hala selepas permintaan log keluar.
-      claims: >
-        Anda boleh meminta tuntutan tambahan untuk maklumat pengguna dan titik akhir token id. Sila lihat [dokumentasi sambungan OpenID kami](docs_url) untuk mendapatkan maklumat lanjut.
-      acr_values: >
-        Minta tuntutan yang tidak penting dalam format yang lebih mudah. Lihat [dokumentasi kami tentang acr_values](docs_url) untuk mendapatkan maklumat lanjut.
-      mapping_login: >
-        Sediakan pemetaan tersuai dalam respons info pengguna untuk digunakan untuk atribut log masuk.
-      mapping_email: >
-        Sediakan pemetaan tersuai dalam respons info pengguna untuk digunakan untuk atribut e-mel.
-      mapping_first_name: >
-        Sediakan pemetaan tersuai dalam respons info pengguna untuk digunakan untuk nama pertama.
-      mapping_last_name: >
-        Sediakan pemetaan tersuai dalam respons info pengguna untuk digunakan untuk nama akhir.
-      mapping_admin: >
-        Sediakan pemetaan tersuai dalam respons info pengguna untuk digunakan untuk status pentadbir. Ia menjangkakan atribut boolean akan dikembalikan.
+      claims: 'Anda boleh meminta tuntutan tambahan untuk maklumat pengguna dan titik akhir token id. Sila lihat [dokumentasi sambungan OpenID kami](docs_url) untuk mendapatkan maklumat lanjut.
+
+        '
+      acr_values: 'Minta tuntutan yang tidak penting dalam format yang lebih mudah. Lihat [dokumentasi kami tentang acr_values](docs_url) untuk mendapatkan maklumat lanjut.
+
+        '
+      mapping_login: 'Sediakan pemetaan tersuai dalam respons info pengguna untuk digunakan untuk atribut log masuk.
+
+        '
+      mapping_email: 'Sediakan pemetaan tersuai dalam respons info pengguna untuk digunakan untuk atribut e-mel.
+
+        '
+      mapping_first_name: 'Sediakan pemetaan tersuai dalam respons info pengguna untuk digunakan untuk nama pertama.
+
+        '
+      mapping_last_name: 'Sediakan pemetaan tersuai dalam respons info pengguna untuk digunakan untuk nama akhir.
+
+        '
+      mapping_admin: 'Sediakan pemetaan tersuai dalam respons info pengguna untuk digunakan untuk status pentadbir. Ia menjangkakan atribut boolean akan dikembalikan.
+
+        '
     settings:
       metadata_none: Saya tidak mempunyai maklumat ini
       metadata_url: Saya mempunyai URL titik akhir penemuan
       endpoint_url: URL titik akhir
     providers:
-      label_providers: "Pembekal"
-      seeded_from_env: "Pembekal ini telah dipilih daripada konfigurasi persekitaran. Ia tidak boleh diedit."
+      label_providers: Pembekal
+      seeded_from_env: Pembekal ini telah dipilih daripada konfigurasi persekitaran. Ia tidak boleh diedit.
       google:
         name: Google
       microsoft_entra:
@@ -117,7 +126,7 @@ ms:
       custom:
         name: Adat
       upsell:
-        title: "Single Sign-On (SSO) with OpenID connect"
+        title: Single Sign-On (SSO) with OpenID connect
         description: Sambungkan OpenProject kepada pembekal identiti sambungan OpenID
       label_add_new: Tambah penyedia OpenID baharu
       label_edit: Edit penyedia OpenID %{name}
@@ -151,5 +160,6 @@ ms:
         information_component:
           backchannel_logout_url: Backchannel logout URL
     setting_instructions:
-      limit_self_registration: >
-        Jika didayakan pengguna hanya boleh mendaftar menggunakan pembekal ini jika tetapan pendaftaran sendiri membenarkannya.
+      limit_self_registration: 'Jika didayakan pengguna hanya boleh mendaftar menggunakan pembekal ini jika tetapan pendaftaran sendiri membenarkannya.
+
+        '

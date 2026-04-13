@@ -51,6 +51,57 @@ RSpec.describe RbStoriesController do
             .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
   end
 
+  describe "load_story" do
+    subject do
+      get :menu,
+          params: { project_id: project.id, sprint_id: requested_sprint.id, id: load_story_id },
+          format: :html
+    end
+
+    context "when scrum_projects flag is inactive", with_flag: { scrum_projects: false } do
+      let(:load_story_id) { story.id }
+      let(:requested_sprint) { version_sprint }
+
+      context "when the story is in the requested sprint" do
+        it "assigns the visible story", :aggregate_failures do
+          subject
+          expect(response).to be_successful
+          expect(response).to have_http_status :ok
+          expect(assigns(:story)).to eq(story)
+        end
+      end
+
+      context "when the story is not in the requested sprint" do
+        let(:requested_sprint) { create(:sprint, name: "Sprint load_story other", project:) }
+
+        it { is_expected.to have_http_status :not_found }
+      end
+    end
+
+    context "when scrum_projects flag is active", with_flag: { scrum_projects: true } do
+      let(:agile_sprint) { create(:agile_sprint, name: "Agile Sprint load_story", project:) }
+      let(:work_package_in_sprint) { create(:work_package, status:, sprint: agile_sprint, project:) }
+      let(:load_story_id) { work_package_in_sprint.id }
+
+      context "when the work package is in the requested sprint" do
+        let(:requested_sprint) { agile_sprint }
+
+        it "assigns the visible work package", :aggregate_failures do
+          subject
+          expect(response).to be_successful
+          expect(response).to have_http_status :ok
+          expect(assigns(:story)).to eq(work_package_in_sprint)
+        end
+      end
+
+      context "when the work package is not in the requested sprint" do
+        let(:requested_sprint) { create(:agile_sprint, name: "Other Sprint load_story", project:) }
+
+        it { is_expected.to have_http_status :not_found }
+      end
+    end
+  end
+
   describe "PUT #move_legacy" do
     context "with a user lacking project permission" do
       let(:user) { create(:user) }
@@ -205,7 +256,7 @@ RSpec.describe RbStoriesController do
                      sprint_id: agile_sprint.id,
                      id: story_in_agile_sprint.id,
                      target_id: "sprint:#{other_agile_sprint.id}",
-                     position: 1
+                     prev_id: nil
                    },
                    format: :turbo_stream
 
@@ -232,7 +283,7 @@ RSpec.describe RbStoriesController do
                        sprint_id: agile_sprint.id,
                        id: story_in_agile_sprint.id,
                        target_id: "sprint:#{other_agile_sprint.id}",
-                       position: 1
+                       prev_id: nil
                      },
                      format: :turbo_stream
 
@@ -260,7 +311,7 @@ RSpec.describe RbStoriesController do
                      sprint_id: agile_sprint.id,
                      id: story_in_agile_sprint.id,
                      target_id: "version:#{version_sprint.id}",
-                     position: 1
+                     prev_id: nil
                    },
                    format: :turbo_stream
 
@@ -287,7 +338,7 @@ RSpec.describe RbStoriesController do
                      sprint_id: agile_sprint.id,
                      id: story_in_agile_sprint.id,
                      target_id: "inbox",
-                     position: 2
+                     prev_id: existing_inbox_item.id
                    },
                    format: :turbo_stream
 
@@ -331,6 +382,27 @@ RSpec.describe RbStoriesController do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
+      end
+    end
+  end
+
+  describe "GET #menu" do
+    subject do
+      get :menu, params: { project_id: project.id, sprint_id: version_sprint.id, id: story.id }, format: :html
+    end
+
+    it "returns deferred action menu list HTML", :aggregate_failures do
+      subject
+      expect(response).to have_http_status :ok
+      expect(response.body).to include(I18n.t(:"js.button_open_details"))
+    end
+
+    context "with a user lacking project permission" do
+      let(:user) { create(:user) }
+
+      it "responds with 404" do
+        subject
+        expect(response).to have_http_status :not_found
       end
     end
   end

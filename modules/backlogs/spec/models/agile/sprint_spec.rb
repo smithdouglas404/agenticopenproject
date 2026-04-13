@@ -128,7 +128,7 @@ RSpec.describe Agile::Sprint do
   end
 
   describe "associations" do
-    it { is_expected.to have_many(:work_packages).dependent(:nullify) }
+    it { is_expected.to have_many(:work_packages).inverse_of(:sprint).dependent(:nullify) }
     it { is_expected.to have_many(:task_boards).dependent(:nullify) }
     it { is_expected.to belong_to(:project) }
   end
@@ -193,6 +193,49 @@ RSpec.describe Agile::Sprint do
       work_package_id = work_package.id
       sprint.destroy!
       expect(WorkPackage.find(work_package_id).sprint_id).to be_nil
+    end
+  end
+
+  describe "#work_packages_for" do
+    let(:sprint) { create(:agile_sprint, project:) }
+    let(:other_project) { create(:project) }
+    let!(:wp1) { create(:work_package, project:, sprint:) }
+    let!(:wp2) { create(:work_package, project:, sprint:) }
+    let!(:wp3_no_position) do
+      create(:work_package, project:, sprint:).tap { |wp| wp.update_columns(position: nil) }
+    end
+    let!(:wp_other) { create(:work_package, project: other_project, sprint:) }
+
+    context "when the association is not preloaded" do
+      it "returns only work packages belonging to the given project with one query" do
+        expect { sprint.work_packages_for(project) }.to have_a_query_limit(1)
+        expect(sprint.work_packages_for(project)).to contain_exactly(wp1, wp2, wp3_no_position)
+      end
+
+      it "excludes work packages from other projects" do
+        expect(sprint.work_packages_for(project)).not_to include(wp_other)
+      end
+
+      it "orders positioned work packages by position, with nil positions last" do
+        expect(sprint.work_packages_for(project).to_a).to eq([wp1, wp2, wp3_no_position])
+      end
+    end
+
+    context "when the association is preloaded" do
+      before { sprint.work_packages.load }
+
+      it "returns only work packages belonging to the given project without querying" do
+        expect { sprint.work_packages_for(project) }.to have_a_query_limit(0)
+        expect(sprint.work_packages_for(project)).to contain_exactly(wp1, wp2, wp3_no_position)
+      end
+
+      it "excludes work packages from other projects" do
+        expect(sprint.work_packages_for(project)).not_to include(wp_other)
+      end
+
+      it "orders positioned work packages by position, with nil positions last" do
+        expect(sprint.work_packages_for(project)).to eq([wp1, wp2, wp3_no_position])
+      end
     end
   end
 
@@ -341,6 +384,12 @@ RSpec.describe Agile::Sprint do
       it "returns true for the owning project" do
         expect(unrelated_sprint.visible_to?(unrelated_project)).to be true
       end
+    end
+  end
+
+  describe "#to_s" do
+    it "returns the name" do
+      expect(sprint.to_s).to eq("Sprint 1")
     end
   end
 end

@@ -19,22 +19,23 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 pt-PT:
   attributes:
-    additions_count: "Número de adições"
-    deletions_count: "Número de eliminações"
-    comments_count: "Número de comentários"
-    github_html_url: "URL do pedido de extração"
-    github_app_owner_avatar_url: "URL do avatar do proprietário"
-    review_comments_count: "Número de comentários revistos"
-    github: "Identificador do GitHub"
-    github_avatar_url: "URL do Avatar"
-    github_updated_at: "Atualizado a"
-    github_login: "Início de sessão no GitHub"
-    host: "Anfitrião"
-    labels: "Etiquetas"
-    repository: "Repositório"
-    changed_files_count: "Ficheiros alterados"
+    additions_count: Número de adições
+    deletions_count: Número de eliminações
+    comments_count: Número de comentários
+    github_html_url: URL do pedido de extração
+    github_app_owner_avatar_url: URL do avatar do proprietário
+    review_comments_count: Número de comentários revistos
+    github: Identificador do GitHub
+    github_avatar_url: URL do Avatar
+    github_updated_at: Atualizado a
+    github_login: Início de sessão no GitHub
+    host: Anfitrião
+    labels: Etiquetas
+    repository: Repositório
+    changed_files_count: Ficheiros alterados
   button_add_deploy_target: Adicione um destino de implementação
   label_deploy_target: Destino de implementação
   label_deploy_target_new: Novo destino de implementação
@@ -43,13 +44,15 @@ pt-PT:
   notice_deploy_target_created: Destino de implementação criado
   notice_deploy_target_destroyed: Destino de implementação eliminado
   plugin_openproject_github_integration:
-    name: "Integração do OpenProject GitHub"
-    description: "Integra o OpenProject e o GitHub para um melhor fluxo de trabalho"
-  project_module_github: "GitHub"
-  permission_show_github_content: "Mostrar conteúdo GitHub"
+    name: Integração do OpenProject GitHub
+    description: Integra o OpenProject e o GitHub para um melhor fluxo de trabalho
+  project_module_github: GitHub
+  permission_show_github_content: Mostrar conteúdo GitHub
   permission_introspection: Leia a versão do núcleo do OpenProject em execução e construa o SHA
-  text_deploy_target_type_info: >
-    Até ao momento, apenas suportamos o próprio OpenProject.
-  text_deploy_target_api_key_info: >
-    Um OpenProject [chave API](docs_url) pertencente a um utilizador que tem a permissão de introspeção global.
+  text_deploy_target_type_info: 'Até ao momento, apenas suportamos o próprio OpenProject.
+
+    '
+  text_deploy_target_api_key_info: 'Um OpenProject [chave API](docs_url) pertencente a um utilizador que tem a permissão de introspeção global.
+
+    '
   text_pull_request_deployed_to: "%{pr_link} implementado em %{deploy_target_link}"

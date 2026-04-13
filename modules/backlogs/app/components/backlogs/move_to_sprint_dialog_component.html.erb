@@ -52,7 +52,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    d.with_footer(show_divider: true) do
+    d.with_footer(mt: 2) do
       component_collection do |buttons|
         buttons.with_component(Primer::Beta::Button.new(data: { close_dialog_id: DIALOG_ID })) do
           t(:button_cancel)
@@ -61,7 +61,7 @@ See COPYRIGHT and LICENSE files for more details.
         buttons.with_component(
           Primer::Beta::Button.new(scheme: :primary, form: FORM_ID, data: { turbo: true }, type: :submit)
         ) do
-          t(:button_save)
+          t(:button_move)
         end
       end
     end

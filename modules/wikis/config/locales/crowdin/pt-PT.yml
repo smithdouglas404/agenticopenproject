@@ -3,21 +3,21 @@ pt-PT:
   activerecord:
     attributes:
       wikis/xwiki_provider:
-        authentication_method: Authentication method
+        authentication_method: Método de autenticação
         authentication_methods:
-          oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
-          two_way_oauth2: Two-way OAuth 2.0 authorization code flow
-        token_exchange_scope: XWiki Scope
-        url: Instance URL
-        wiki_audience: XWiki Audience
-    errors: { }
+          oauth2_sso: Início de sessão único através do fornecedor de identidades OpenID Connect
+          two_way_oauth2: Fluxo de código de autorização bidirecional OAuth 2.0
+        token_exchange_scope: Âmbito de XWiki
+        url: URL da instância
+        wiki_audience: Audiência de XWiki
+    errors: {}
     models:
       wikis/inline_page_link:
-        one: Inline page link
-        other: Inline page links
-      wikis/internal_provider: Internal wiki
+        one: Ligação de página em linha
+        other: Ligações de página em linha
+      wikis/internal_provider: Wiki interna
       wikis/relation_page_link:
-        one: Relation page link
-        other: Relation page links
-      wikis/xwiki_provider: XWiki provider
-  wikis: { }
+        one: Ligação da página de relação
+        other: Ligações da página de relações
+      wikis/xwiki_provider: Fornecedor de XWiki
+  wikis: {}

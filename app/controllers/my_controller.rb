@@ -158,7 +158,10 @@ class MyController < ApplicationController
   end
 
   def user_params
-    permitted_params.my_account_settings.to_h
+    # The Users::UpdateService updates the user's pref using the UserPreferences::UpdateService
+    # which has a contract/schema applied to the values which is why it is ok
+    # to blindly allow all scalar values in pref.
+    permitted_params.user.to_h.merge(params.permit(pref: {}))
   end
 
   def notice_account_updated
