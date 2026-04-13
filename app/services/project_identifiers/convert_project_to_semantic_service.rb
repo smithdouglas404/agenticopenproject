@@ -70,6 +70,8 @@ module ProjectIdentifiers
       new_identifier = project.previous_semantic_identifier ||
                        generator.suggest_identifier(project.name, exclude: detector.exclusion_set)
 
+      raise "Generated identifier is blank for project #{project.id}" if new_identifier.blank?
+
       project.identifier = new_identifier
       project.save!(validate: false)
     end

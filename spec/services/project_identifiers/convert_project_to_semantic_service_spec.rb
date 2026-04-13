@@ -67,6 +67,23 @@ RSpec.describe ProjectIdentifiers::ConvertProjectToSemanticService,
       end
     end
 
+    context "when the generated identifier is blank" do
+      let!(:project) do
+        create(:project).tap { |p| p.update_columns(identifier: "my-app") }
+      end
+
+      before do
+        allow(WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
+          .to receive(:suggest_identifier)
+          .and_return(nil)
+      end
+
+      it "raises a RuntimeError" do
+        expect { described_class.new(project).call }
+          .to raise_error(RuntimeError, /Generated identifier is blank/)
+      end
+    end
+
     context "when the project has a problematic identifier" do
       let!(:project) { create(:project, name: "My Project") }
       let!(:wp)      { create(:work_package, project:) }
