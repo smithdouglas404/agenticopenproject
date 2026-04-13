@@ -48,8 +48,9 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
       before { allow(finder).to receive(:project_ids).and_return(Set.new) }
 
       it "flips the setting to semantic" do
-        expect(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
+        allow(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
         job.perform
+        expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
       end
 
       it "does not create a batch" do
@@ -76,8 +77,9 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
         before { allow(finder).to receive(:project_ids).and_return(Set.new) }
 
         it "flips the setting to semantic" do
-          expect(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
+          allow(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
           job.perform(nil, {})
+          expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
         end
       end
 

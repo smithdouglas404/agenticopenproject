@@ -74,7 +74,6 @@ module ProjectIdentifiers
       project.save!
     end
 
-
     def reset_stale_identifiers
       # Fix WPs that contain identifier that doesn't match the current project prefix
       #   (caused by renames or cross-project moves in classic mode)
