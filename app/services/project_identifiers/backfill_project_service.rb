@@ -82,7 +82,7 @@ module ProjectIdentifiers
         .where(project:)
         .where.not(sequence_number: nil)
         .where("identifier NOT LIKE ?", "#{project.identifier}-%")
-        .find_each { |wp| wp.update_columns(identifier: nil, sequence_number: nil) }
+        .update_all(identifier: nil, sequence_number: nil)
     end
 
     def backfill_missing_ids
