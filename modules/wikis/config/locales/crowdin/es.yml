@@ -3,14 +3,15 @@ es:
   activerecord:
     attributes:
       wikis/xwiki_provider:
+        name: Nombre
+        url: Instance URL
         authentication_method: Authentication method
         authentication_methods:
           oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
           two_way_oauth2: Two-way OAuth 2.0 authorization code flow
         token_exchange_scope: XWiki Scope
-        url: Instance URL
         wiki_audience: XWiki Audience
-    errors: { }
+    errors: {}
     models:
       wikis/inline_page_link:
         one: Inline page link
@@ -20,4 +21,33 @@ es:
         one: Relation page link
         other: Relation page links
       wikis/xwiki_provider: XWiki provider
-  wikis: { }
+  project_module_wiki_platforms: Wiki providers
+  wikis:
+    buttons:
+      save_and_continue: Save and continue
+    admin:
+      wiki_providers:
+        index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.
+        label_wiki_platform: Proveedor Wiki
+        label_add_new: Añadir nuevo proveedor de wiki
+        label_new_xwiki_instance: Nuevo proveedor XWiki
+        no_results_title: Aún no tienes ningún proveedor de wiki configurado.
+        no_results_description: Añade un proveedor wiki para verlos aquí.
+        label_edit: Editar proveedor XWiki
+        name_placeholder: Base de conocimientos XWiki
+        name_caption: Ponle un nombre a tu almacenamiento para que los usuarios puedan distinguir entre las distintas plataformas wiki.
+        url_caption: Por favor, añade la dirección host de tu plataforma wiki, incluyendo el https://. No debe superar los 255 caracteres.
+        xwiki_instance: Instancia XWiki
+        xwiki_instance_description: Asegúrate de tener privilegios de administrador en tu instancia de XWiki antes de realizar la configuración.
+        new_provider_html: Lee nuestra documentación sobre [configuración de una integración XWiki](docs_url) para obtener más información.
+        sections:
+          basic_details: Detalles básicos
+          oauth_applications: Aplicaciones OAuth
+        oauth:
+          openproject_oauth: OpenProject OAuth
+          openproject_oauth_description: Permitir que XWiki acceda a los datos de OpenProject utilizando un OAuth.
+          xwiki_oauth: XWiki OAuth
+          xwiki_oauth_description: Permite que OpenProject acceda a los datos de XWiki mediante OAuth.
+        delete:
+          title: Eliminar proveedor wiki
+          warning_html: Estás a punto de borrar %{wiki_provider}. Esta acción es irreversible.

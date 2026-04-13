@@ -1428,6 +1428,10 @@ module Settings
     end
 
     def value
+      unless (override = resolve_value_override).nil?
+        return cast(override)
+      end
+
       cast(@value)
     end
 
@@ -1444,6 +1448,8 @@ module Settings
     end
 
     def writable?
+      return false if value_override?
+
       if writable.respond_to?(:call)
         writable.call
       else
@@ -1565,6 +1571,38 @@ module Settings
 
       def all
         @all ||= {}
+      end
+
+      # Registers a value override block for a setting. The block is called
+      # whenever the setting's value or writability is evaluated.
+      #
+      # If the block returns a non-nil value, that value is used as the setting's
+      # value and the setting becomes non-writable. If the block returns nil,
+      # no override is applied.
+      #
+      # To override a setting with nil, return a callable: +-> { nil }+
+      #
+      # @param name [Symbol] The setting name to override.
+      # @yield A block that returns the override value, or nil to skip.
+      #
+      # @example Force a setting to true when a condition is met
+      #   Settings::Definition.add_value_override(:capture_external_links) do
+      #     true if MyPlugin.active?
+      #   end
+      def add_value_override(name, &block)
+        (value_overrides[name.to_sym] ||= []) << block
+      end
+
+      def value_overrides
+        @value_overrides ||= {}
+      end
+
+      def clear_value_overrides(name = nil)
+        if name
+          value_overrides.delete(name.to_sym)
+        else
+          @value_overrides = {}
+        end
       end
 
       private
@@ -1759,6 +1797,18 @@ module Settings
 
     attr_accessor :serialized,
                   :writable
+
+    def value_override?
+      !resolve_value_override.nil?
+    end
+
+    def resolve_value_override
+      self.class.value_overrides[name.to_sym]&.each do |block|
+        result = block.call
+        return result unless result.nil?
+      end
+      nil
+    end
 
     def cast(value)
       return nil if value.nil?

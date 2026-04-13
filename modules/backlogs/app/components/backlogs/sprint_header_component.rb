@@ -36,13 +36,14 @@ module Backlogs
     include Redmine::I18n
     include RbCommonHelper
 
-    attr_reader :sprint, :project, :collapsed, :current_user, :active_sprint_ids
+    attr_reader :sprint, :project, :stories, :collapsed, :current_user, :active_sprint_ids
 
     delegate :name, to: :sprint, prefix: :sprint
 
     def initialize(
       sprint:,
       project:,
+      stories: nil,
       folded: false,
       current_user: User.current,
       active_sprint_ids: nil
@@ -51,6 +52,7 @@ module Backlogs
 
       @sprint = sprint
       @project = project
+      @stories = stories || sprint.work_packages_for(project)
       @collapsed = folded
       @current_user = current_user
       @active_sprint_ids = active_sprint_ids
@@ -60,10 +62,6 @@ module Backlogs
       sprint.id
     end
 
-    def stories
-      @sprint.work_packages
-    end
-
     private
 
     def show_start_sprint_action?
@@ -71,7 +69,7 @@ module Backlogs
     end
 
     def show_finish_sprint_action?
-      sprint.active? && ::Sprints::StartContract.can_start_or_finish?(user: current_user, sprint:)
+      sprint.active? && ::Sprints::StartContract.can_start_or_complete?(user: current_user, sprint:)
     end
 
     def disable_start_sprint_action?

@@ -1,3 +1,4 @@
+---
 ms:
   activerecord:
     attributes:
@@ -12,7 +13,7 @@ ms:
       storages/nextcloud_storage:
         authentication_methods:
           oauth2_sso: Daftar-Masuk-Tunggal Melalui OpenID Penyambung Pembekal Identiti
-          oauth2_sso_with_two_way_oauth2_fallback: Daftar-Masuk-Tunggal dengan Dua-Cara OAuth 2.0 sebagai 
+          oauth2_sso_with_two_way_oauth2_fallback: Daftar-Masuk-Tunggal dengan Dua-Cara OAuth 2.0 sebagai
           two_way_oauth2: Two-way OAuth 2.0 authorization code flow
         storage_audience: Penemu Simpanan
         token_exchange_scope: Skop Simpanan
@@ -34,7 +35,7 @@ ms:
         name: Nama
         password: Kata laluan aplikasi
         provider_type: Jenis penyedia
-        tenant: ID Direktori (penyewa) 
+        tenant: ID Direktori (penyewa)
     errors:
       messages:
         invalid_host_url: adalah bukan URL yang sah.
@@ -58,7 +59,7 @@ ms:
             host:
               authorization_header_missing: belum disediakan sepenuhnya. Contoh Nextcloud tidak menerima pengepala "Dibenarkan" yang diperlukan untuk token Bearer berdasarkan kebenaran permintaan API. Sila periksa dua kali server konfigurasi HTTP anda dengan teliti.
               cannot_be_connected_to: tidak dapat dihubungi. Sila pastikan hos boleh dihubungi dan apl penyepaduan OpenProject dipasang.
-              minimal_nextcloud_version_unmet: tidak memenuhi keperluan versi minimum (haruslah Nextcloud 23 atau lebih tinggi) 
+              minimal_nextcloud_version_unmet: tidak memenuhi keperluan versi minimum (haruslah Nextcloud 23 atau lebih tinggi)
               not_nextcloud_server: ialah bukan server Nextcloud
               op_application_not_installed: kelihatan tidak mempunyai aplikasi "Integrasi OpenProject" yang terpasang. Sila pasangkannya terlebih dahulu dan cuba sekali lagi.
             password:
@@ -89,7 +90,7 @@ ms:
       label: Edit folder projek
     open:
       contact_admin: Please contact your administrator to resolve this error.
-      remote_identity_error: Terdapat 
+      remote_identity_error: Terdapat
     project_folder_mode:
       automatic: Dikendalikan secara automatik
       inactive: Tiada folder spesifik
@@ -145,7 +146,7 @@ ms:
             hide_inactive_folders:
               permission_not_set: tidak dapat menetapkan kebenaran pada %{path}.
             remote_folders:
-              not_allowed: '%{username} tidak mempunyai akses kepada folder %{group_folder}. Sila semak kebenaran folder pada Nextcloud.'
+              not_allowed: "%{username} tidak mempunyai akses kepada folder %{group_folder}. Sila semak kebenaran folder pada Nextcloud."
               not_found: "%{group_folder} folder tidak ditemui. Sila semak persediaan Nextcloud anda."
             remove_user_from_group:
               conflict: 'Pengguna %{user} tidak dapat dialih keluar daripada kumpulan %{group} atas sebab berikut: %{reason}'
@@ -166,7 +167,7 @@ ms:
         one_drive_sync_service:
           attributes:
             create_folder:
-              conflict: '%{folder_name} sudah wujud di %{parent_location}.'
+              conflict: "%{folder_name} sudah wujud di %{parent_location}."
               not_found: "%{parent_location} tidak ditemui."
             hide_inactive_folders:
               permission_not_set: tidak dapat menetapkan kebenaran pada %{path}.
@@ -185,7 +186,7 @@ ms:
         sharepoint_sync_service:
           attributes:
             create_folder:
-              conflict: '%{folder_name} sudah wujud di %{parent_location}.'
+              conflict: "%{folder_name} sudah wujud di %{parent_location}."
               not_found: "%{parent_location} tidak ditemui."
             hide_inactive_folders:
               permission_not_set: tidak dapat menetapkan kebenaran pada %{path}.
@@ -419,7 +420,7 @@ ms:
         integration: OneDrive
         missing_client_id_for_redirect_uri: Sila isikan nilai-nilai OAuth untuk menjana URI
         oauth_client_redirect_uri: Sila salin nilai ini ke URI ubah hala Web baharu di bawah Ubah Hala URI.
-        oauth_client_secret: Sekiranya tiada aplikasi rahsia pelanggan di bawah kelayakan Pelanggan, sila cipta yang baharu. 
+        oauth_client_secret: Sekiranya tiada aplikasi rahsia pelanggan di bawah kelayakan Pelanggan, sila cipta yang baharu.
         oauth_configuration: Salin nilai-nilai ini dari aplikasi yang diingini di %{application_link_text}.
         provider_configuration: Sila pastikan anda mempunyai hak pentadbiran dalam %{application_link_text} atau hubungi pentadbir Microsoft anda sebelum membuat penyediaan. Anda juga perlu mendaftar aplikasi Azure atau menggunakan yang sedia ada untuk pengesahan di portal.
         tenant_id: Sila salin ID Direktori (penyewa) dari aplikasi yang diingini dan pendaftaran Aplikasi di %{application_link_text}.
@@ -434,7 +435,7 @@ ms:
         oauth_configuration: Salin nilai-nilai ini dari aplikasi yang diingini di %{application_link_text}.
         provider_configuration: Sila pastikan anda mempunyai hak pentadbiran dalam %{application_link_text} atau hubungi pentadbir Microsoft anda sebelum membuat penyediaan. Anda juga perlu mendaftar aplikasi Azure atau menggunakan yang sedia ada untuk pengesahan di portal.
       type: 'Sila pastikan anda mempunyai hak keistimewaan pentadbir di, contohnya, Nextcloud, dan mempunyai aplikasi berikut dipasangkan sebelum membuat penyediaan:'
-      type_link_text: "\"Integrasi OpenProject\""
+      type_link_text: '"Integrasi OpenProject"'
     label_active: Aktif
     label_add_new_storage: Tambah storan baharu
     label_automatic_folder: Folder baharu dengan kebenaran yang dikendalikan secara automatik
@@ -462,7 +463,7 @@ ms:
     label_openproject_oauth_application_secret: Rahsia Pelanggan OAuth OpenProject
     label_project_folder: Folder projek
     label_provider: Penyedia
-    label_redirect_uri: ' Pengubah hala URI'
+    label_redirect_uri: " Pengubah hala URI"
     label_show_storage_redirect_uri: Paparkan ubah hala URI
     label_status: Status
     label_storage: Penyimpanan
@@ -508,9 +509,7 @@ ms:
         delete: Delete file storage?
         subtitle: Tambah storan fail luaran untuk memuat naik, pautkan dan uruskan fail di pakej kerja.
       managed_project_folders:
-        subtitle: |-
-          Benarkan OpenProject ciptakan folder mengikut projek secara automatik. Ini dicadangkan kerana ia memastikan setiap ahli 
-          pasukan sentiasa mempunyai kebenaran akses yang betul.
+        subtitle: "Benarkan OpenProject ciptakan folder mengikut projek secara automatik. Ini dicadangkan kerana ia memastikan setiap ahli \npasukan sentiasa mempunyai kebenaran akses yang betul."
         subtitle_short: Benarkan OpenProject ciptakan folder mengikut projek secara automatik.
         title: Folder projek yang dikendalikan secara automatik
       project_settings:
@@ -522,7 +521,7 @@ ms:
         title: Status sambungan ahli
       project_storages:
         delete: Remove file storage from project?
-    permission_header_explanation: 'Kebenaran fail di storan luaran hanya digunakan pada folder dan fail dalam folder projek yang dikendalikan secara automatik. Perhatikan bahawa bukan semua kebenaran fail disokong oleh semua penyedia storan. Sila semak dokumentasi di <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>kebenaran storan fail</a>untuk maklumat lanjut.'
+    permission_header_explanation: Kebenaran fail di storan luaran hanya digunakan pada folder dan fail dalam folder projek yang dikendalikan secara automatik. Perhatikan bahawa bukan semua kebenaran fail disokong oleh semua penyedia storan. Sila semak dokumentasi di <a target='_blank' href='https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions'>kebenaran storan fail</a>untuk maklumat lanjut.
     provider_types:
       label: Jenis penyedia
       nextcloud:
@@ -531,13 +530,13 @@ ms:
         name: Nextcloud
         name_placeholder: cth. Nextcloud
       one_drive:
-        label_oauth_client_id: ID Aplikasi (pelanggan) OAuth Azure 
+        label_oauth_client_id: ID Aplikasi (pelanggan) OAuth Azure
         label_oauth_client_secret: Nilai Pelanggan Rahsia OAuth Azure
         name: OneDrive
         name_placeholder: cth. OneDrive
       sharepoint:
         drive_description: OpenProject access-managed document library
-        label_oauth_client_id: ID Aplikasi (pelanggan) OAuth Azure 
+        label_oauth_client_id: ID Aplikasi (pelanggan) OAuth Azure
         label_oauth_client_secret: Nilai Pelanggan Rahsia OAuth Azure
         name: SharePoint
         name_placeholder: e.g. SharePoint

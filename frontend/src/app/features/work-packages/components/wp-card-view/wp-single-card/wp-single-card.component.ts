@@ -35,7 +35,7 @@ import { isClickedWithModifier } from 'core-app/shared/helpers/link-handling/lin
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { StatusResource } from 'core-app/features/hal/resources/status-resource';
-import { combineLatest } from 'rxjs';
+import { EMPTY, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import SpotDropAlignmentOption from 'core-app/spot/drop-alignment-options';
@@ -131,10 +131,13 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
 
   ngOnInit():void {
     // Update selection state
-    combineLatest([
+    // Use merge instead of combineLatest: params$ only emits on uiRouter transitions and
+    // may never emit on pages that don't use uiRouter (e.g. boards). With merge, any
+    // emission from either source triggers re-evaluation of the selection state.
+    merge(
       this.wpTableSelection.live$(),
-      this.uiRouterGlobals.params$,
-    ])
+      this.uiRouterGlobals.params$ ?? EMPTY,
+    )
       .pipe(
         this.untilDestroyed(),
         map(() => {
@@ -145,7 +148,7 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
           return this.wpTableSelection.isSelected(this.workPackage.id!);
         }),
       )
-      .subscribe((selected) => {
+      .subscribe((selected:boolean) => {
         this.selected = selected;
         this.cdRef.detectChanges();
       });

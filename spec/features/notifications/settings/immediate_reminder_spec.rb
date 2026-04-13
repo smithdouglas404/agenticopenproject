@@ -13,23 +13,23 @@ RSpec.describe "Immediate reminder settings", :js do
 
       # By default the immediate reminder is checked
       expect(pref.immediate_reminders[:mentioned]).to be(true)
-      reminders_settings_page.expect_immediate_reminder :mentioned, true
+      reminders_settings_page.expect_immediate_reminder "mentioned", true
 
       # By default the personal reminder is checked
       expect(pref.immediate_reminders[:personal_reminder]).to be(true)
-      reminders_settings_page.expect_immediate_reminder :personalReminder, true
+      reminders_settings_page.expect_immediate_reminder "personal_reminder", true
 
-      reminders_settings_page.set_immediate_reminder :mentioned, false
-      reminders_settings_page.set_immediate_reminder :personalReminder, false
+      reminders_settings_page.set_immediate_reminder "mentioned", false
+      reminders_settings_page.set_immediate_reminder "personal_reminder", false
 
-      reminders_settings_page.save
+      reminders_settings_page.save_immediate_reminders
 
-      reminders_settings_page.expect_and_dismiss_toaster(message: I18n.t("js.notice_successful_update"))
+      reminders_settings_page.expect_and_dismiss_flash
 
       reminders_settings_page.reload!
 
-      reminders_settings_page.expect_immediate_reminder :mentioned, false
-      reminders_settings_page.expect_immediate_reminder :personalReminder, false
+      reminders_settings_page.expect_immediate_reminder "mentioned", false
+      reminders_settings_page.expect_immediate_reminder "personal_reminder", false
 
       expect(pref.reload.immediate_reminders[:mentioned]).to be(false)
       expect(pref.reload.immediate_reminders[:personal_reminder]).to be(false)

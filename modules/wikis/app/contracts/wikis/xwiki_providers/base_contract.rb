@@ -35,17 +35,11 @@ module Wikis
 
       attribute :name
       attribute :url
+
+      validates :name, presence: true, length: { maximum: 255 }
       validates :url, presence: true, length: { maximum: 255 }
-      validate :url_is_https
-
-      private
-
-      # TODO: add more sophisticated validations
-      def url_is_https
-        return if url.blank?
-
-        errors.add(:url, :invalid) unless url.start_with?("https://")
-      end
+      validates :url, url: true, unless: -> { url.blank? || errors.include?(:url) }
+      validates :url, secure_context_uri: true, unless: -> { url.blank? || errors.include?(:url) }
     end
   end
 end

@@ -163,6 +163,47 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
       end
     end
 
+    context "when the occurrence has been rescheduled to an earlier time (Bug #73741)" do
+      let(:current_user) { user_with_manage_permissions }
+      let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
+
+      let!(:rescheduled_occurrence) do
+        call = RecurringMeetings::InitOccurrenceService
+          .new(user: User.system, recurring_meeting: series)
+          .call(start_time: first_occurrence_time)
+        occurrence_meeting = call.result
+
+        # Reschedule to an earlier time
+        # This updates meeting.start_time, but not meeting.scheduled_meeting.start_time
+        occurrence_meeting.update!(start_time: first_occurrence_time - 1.day)
+        occurrence_meeting
+      end
+
+      let(:meeting) { rescheduled_occurrence }
+
+      it "moves the item to the occurrence after the original scheduled time" do
+        meeting_page.expect_agenda_item(title: "Test notes")
+
+        meeting_page.select_action(agenda_item, "Move to next meeting")
+        expect(page).to have_text("Move to next meeting?")
+
+        page.within_modal "Move to next meeting?" do
+          click_on "Move"
+        end
+
+        expect_and_dismiss_flash(message: "Agenda item moved to the next meeting")
+
+        meeting_page.expect_no_agenda_item(title: "Test notes")
+
+        next_meeting = Meeting.find(agenda_item.reload.meeting_id)
+        expect(next_meeting.id).not_to eq(rescheduled_occurrence.id)
+
+        next_meeting_page = Pages::Meetings::Show.new(next_meeting)
+        next_meeting_page.visit!
+        next_meeting_page.expect_agenda_item(title: "Test notes")
+      end
+    end
+
     context "with view permission only" do
       let(:current_user) { user_with_view_permissions }
 

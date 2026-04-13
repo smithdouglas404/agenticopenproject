@@ -49,6 +49,10 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
   end
 
   module ClassMethods
+    def order_by_position
+      order(arel_table[:position].asc.nulls_last)
+    end
+
     def backlogs_types
       return [] if OpenProject::FeatureDecisions.scrum_projects_active?
 

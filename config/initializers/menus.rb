@@ -304,12 +304,8 @@ Redmine::MenuManager.map :my_menu do |menu|
             icon: "devices"
   menu.push :notifications,
             { controller: "/my", action: "notifications" },
-            caption: I18n.t("js.notifications.settings.title"),
+            caption: I18n.t("my_account.notifications_and_email.title"),
             icon: "bell"
-  menu.push :reminders,
-            { controller: "/my", action: "reminders" },
-            caption: I18n.t("js.reminders.settings.title"),
-            icon: "unread"
 end
 
 Redmine::MenuManager.map :admin_menu do |menu|

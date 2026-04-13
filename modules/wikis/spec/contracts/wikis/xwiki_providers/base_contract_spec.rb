@@ -39,6 +39,22 @@ RSpec.describe Wikis::XWikiProviders::BaseContract do
 
   it_behaves_like "contract is valid for active admins and invalid for regular users"
 
+  describe "name" do
+    let(:current_user) { build_stubbed(:admin) }
+
+    context "when blank" do
+      let(:wiki_provider) { build_stubbed(:xwiki_provider, name: "") }
+
+      include_examples "contract is invalid", name: :blank
+    end
+
+    context "when too long" do
+      let(:wiki_provider) { build_stubbed(:xwiki_provider, name: "x" * 256) }
+
+      include_examples "contract is invalid", name: :too_long
+    end
+  end
+
   describe "url" do
     let(:current_user) { build_stubbed(:admin) }
 
@@ -51,7 +67,7 @@ RSpec.describe Wikis::XWikiProviders::BaseContract do
     context "when not https" do
       let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "http://xwiki.example.com") }
 
-      include_examples "contract is invalid", url: :invalid
+      include_examples "contract is invalid", url: :url_not_secure_context
     end
 
     context "when too long" do

@@ -19,17 +19,18 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 de:
   js:
-    text_are_you_sure: "Sind Sie sicher?"
+    text_are_you_sure: Sind Sie sicher?
     myTimeTracking:
-      noSpecificTime: "Keine bestimmte Zeit"
+      noSpecificTime: Keine bestimmte Zeit
     work_packages:
       property_groups:
-        costs: "Kosten"
+        costs: Kosten
       properties:
-        overallCosts: "Gesamtkosten"
-        spentUnits: "Gebuchte Einheiten"
-    button_log_costs: "Stückkosten buchen"
-    label_hour: "Stunde"
-    label_hours: "Stunden"
+        overallCosts: Gesamtkosten
+        spentUnits: Gebuchte Einheiten
+    button_log_costs: Stückkosten buchen
+    label_hour: Stunde
+    label_hours: Stunden

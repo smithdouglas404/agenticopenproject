@@ -135,8 +135,11 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       end
 
       # Wait for the column save PATCH to complete after the DOM has confirmed the
-      # Angular state update. Without this ordering, wait_for_network_idle can fire
-      # during the gap before the async PATCH request is initiated.
+      # Angular state update. The sleep allows Angular's debounced save to queue the
+      # PATCH before wait_for_network_idle checks for network activity; without it,
+      # wait_for_network_idle can fire in the gap before the PATCH is initiated, causing
+      # the column change to race with the subsequent title-rename PATCH.
+      sleep(0.5)
       wait_for_network_idle
 
       scroll_to_element(filter_area.area)

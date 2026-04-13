@@ -39,7 +39,7 @@ module Import
       fetch_and_save_users_data(jira_import)
 
       Journal::NotificationConfiguration.with(false) do
-        import_users(jira_import)
+        jira_import.import_users
         Import::JiraImportProjectsJob.perform_now(jira_import_id)
       end
 
@@ -163,91 +163,5 @@ module Import
         raise "Error fetching user data for user key #{jira_user_key}: #{e.message}"
       end
     end
-
-    def import_users(jira_import)
-      Import::JiraUser.where(jira_import_id: jira_import.id).find_each do |jira_user|
-        import_user(jira_user, jira_import)
-      end
-    end
-
-    # rubocop:disable Metrics/PerceivedComplexity
-    # rubocop:disable Metrics/AbcSize
-    def import_user(jira_user, jira_import)
-      call = Users::CreateService
-               .new(user: User.system, contract_class: EmptyContract)
-               .call(jira_user.to_op_attributes)
-
-      call.on_success do |_result|
-        create_reference!(
-          op_leg: call.result,
-          jira_leg: jira_user,
-          jira_import:,
-          uses_existing: false
-        )
-      end
-      call.on_failure do |_result|
-        if call.errors.find { |error| error.type == :taken }.present?
-          user = jira_user.try_to_find_existing_op_users.first
-          if user.present?
-            create_reference!(
-              op_leg: user,
-              jira_leg: jira_user,
-              jira_import:,
-              uses_existing: true
-            )
-          else
-            raise "Existing User is expected to be found, because there was an email " \
-                  "or login collision. See attributes: #{jira_user.to_op_attributes}"
-          end
-        else
-          raise call.message
-        end
-      end
-
-      jira_user_groups = jira_user.payload["groups"]["items"].pluck("name")
-
-      jira_user_groups.each do |group_name|
-        call = Groups::CreateService
-                 .new(user: User.system, contract_class: EmptyContract)
-                 .call(name: group_name)
-        call.on_success do |result|
-          group = result.result
-          create_reference!(
-            op_leg: group,
-            jira_leg: nil,
-            jira_import:,
-            uses_existing: false
-          )
-        end
-        call.on_failure do |_result|
-          if call.errors.find { |error| error.type == :taken }.present?
-            group = Group.where(name: group_name).first
-            if group.present?
-              create_reference!(
-                op_leg: group,
-                jira_leg: nil,
-                jira_import:,
-                uses_existing: true
-              )
-            else
-              raise "Existing Group is expected to be found. Group name: #{group_name}"
-            end
-          else
-            raise call.message
-          end
-        end
-        member_id = Import::JiraOpenProjectReference.where(
-          jira_import_id: jira_import.id,
-          jira_entity_id: jira_user.id,
-          jira_entity_class: jira_user.class.to_s
-        ).pick(:op_entity_id)
-        group = Group.find_by!(name: group_name)
-        Groups::AddUsersService
-          .new(group, current_user: User.system)
-          .call(ids: [member_id], send_notifications: false)
-      end
-    end
-    # rubocop:enable Metrics/PerceivedComplexity
-    # rubocop:enable Metrics/AbcSize
   end
 end

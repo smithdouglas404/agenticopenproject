@@ -7,7 +7,6 @@ import {
   ElementRef,
   HostListener,
   Input,
-  NgZone,
   OnDestroy,
   ViewChild,
   ViewEncapsulation,
@@ -141,7 +140,6 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     readonly deviceService:DeviceService,
     readonly cdRef:ChangeDetectorRef,
     readonly halNotification:HalResourceNotificationService,
-    readonly ngZone:NgZone,
     readonly recentItemsService:RecentItemsService,
   ) {
     populateInputsFromDataset(this);
