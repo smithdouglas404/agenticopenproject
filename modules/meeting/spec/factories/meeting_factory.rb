@@ -60,8 +60,9 @@ FactoryBot.define do
       template { false }
 
       after(:build) do |meeting, evaluator|
-        meeting.project ||= evaluator.recurring_meeting.project
-        meeting.author ||= evaluator.recurring_meeting.author
+        # Occurrences must inherit the series project/author to keep permissions consistent.
+        meeting.project = evaluator.recurring_meeting.project
+        meeting.author = evaluator.recurring_meeting.author
         meeting.title ||= evaluator.recurring_meeting.template&.title || "Occurrence"
         meeting.duration ||= evaluator.recurring_meeting.template&.duration || 1.0
       end
