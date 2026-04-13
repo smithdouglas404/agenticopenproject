@@ -30,24 +30,25 @@
 
 module OpenProject::Backlogs
   class WorkPackageSprintSelect < Queries::WorkPackages::Selects::WorkPackageSelect
-    class_attribute :sprint_selects
+    SORT_ORDER = %w[visible_sprints.name
+                    visible_sprints.start_date
+                    visible_sprints.finish_date].freeze
 
-    self.sprint_selects = {
-      sprint: {
-        association: "sprint",
-        sortable: %w(name start_date finish_date),
-        groupable: "#{WorkPackage.table_name}.sprint_id"
-      }
-    }
+    def initialize
+      # Cannot use `association` here since that will break our custom GROUP BY
+      super(:sprint,
+            sortable: SORT_ORDER,
+            groupable_join: sprint_join_with_permissions,
+            groupable: group_by_statement,
+            groupable_select: groupable_select)
+    end
 
     def self.instances(context = nil)
       return [] if context && !context.backlogs_enabled?
       return [] unless OpenProject::FeatureDecisions.scrum_projects_active?
       return [] unless user_allowed_to_select_sprint?(context)
 
-      sprint_selects.map do |name, options|
-        new(name, options)
-      end
+      [new]
     end
 
     def self.user_allowed_to_select_sprint?(context)
@@ -56,6 +57,42 @@ module OpenProject::Backlogs
       else
         User.current.allowed_in_any_project?(:view_sprints)
       end
+    end
+
+    def sortable_join_statement(_query)
+      sprint_join_with_permissions
+    end
+
+    def groupable_select
+      group_by_statement
+    end
+
+    def group_by_statement
+      "visible_sprints.id"
+    end
+
+    private
+
+    def sprint_join_with_permissions
+      <<~SQL.squish
+        LEFT OUTER JOIN "projects" ON "projects"."id" = "work_packages"."project_id"
+        LEFT OUTER JOIN (
+          SELECT
+            s.id,
+            s.name,
+            s.start_date,
+            s.finish_date,
+            s.project_id
+          FROM sprints s
+          WHERE s.project_id IN (#{projects_with_view_sprints_permissions.to_sql})
+        ) AS visible_sprints
+        ON visible_sprints.id = work_packages.sprint_id
+          AND visible_sprints.project_id = work_packages.project_id
+      SQL
+    end
+
+    def projects_with_view_sprints_permissions
+      Project.allowed_to(User.current, :view_sprints).select(:id)
     end
   end
 end
