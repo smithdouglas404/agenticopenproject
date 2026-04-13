@@ -45,7 +45,6 @@ module API
         # Title being the identifier is kind of a placeholder until we have actual page names
         self_link(path: :wiki_page_link, title_getter: ->(*) { represented.identifier })
 
-        # Implement Permission Checks
         link :delete, cache_if: ->(*) { user_allowed_to_manage?(represented) } do
           {
             href: api_v3_paths.wiki_page_link(represented.id),
@@ -61,11 +60,12 @@ module API
             title: represented.author.name
           }
         end
-        #
-        # # TODO: Make this truly polymorphic - @mereghost 2026-04-13
-        # associated_resource :linkable,
-        #                     representer: WorkPackages::WorkPackageRepresenter,
-        #                     skip_render: ->(*) { represented.linkable_id.nil? }
+
+        # TODO: Make this truly polymorphic - @mereghost 2026-04-13
+        associated_resource :linkable,
+                            v3_path: :work_package,
+                            representer: ::API::V3::WorkPackages::WorkPackageRepresenter,
+                            skip_render: ->(*) { represented.linkable_id.nil? }
 
         def _type = represented.class.name.demodulize
 

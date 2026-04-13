@@ -65,6 +65,18 @@ module API
             let(:method) { :delete }
 
             it_behaves_like "has an untitled action link"
+
+            context "when there is no associated linkable" do
+              before { represented.linkable = nil }
+
+              it_behaves_like "has no link"
+
+              context "and the current user is creator of the file link" do
+                let(:current_user) { represented.author }
+
+                it { is_expected.to have_json_path("_links/#{link}") }
+              end
+            end
           end
 
           describe "author" do
@@ -80,6 +92,14 @@ module API
               let(:link) { "author" }
               let(:href) { "/api/v3/users/#{represented.author_id}" }
               let(:title) { represented.author.name }
+            end
+          end
+
+          describe "linkable" do
+            it_behaves_like "has a titled link" do
+              let(:link) { "linkable" }
+              let(:href) { "/api/v3/work_packages/#{represented.linkable_id}" }
+              let(:title) { represented.linkable.name }
             end
           end
         end
