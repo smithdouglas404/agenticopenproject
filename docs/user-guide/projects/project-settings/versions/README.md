@@ -11,7 +11,7 @@ Versions are used to track product versions or releases, for example in roadmap 
 
 Versions are also used to enable the Backlogs module, i.e., to create a product backlog and manage sprints in OpenProject.
 
-[Learn how to create a new backlogs version](../../../backlogs-scrum/manage-sprints).
+[Learn how to create a new backlogs version](../../../backlogs-scrum/#create-and-manage-sprints).
 
 ## Create a new version
 
