@@ -62,10 +62,9 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
     end
 
     context "when work_packages_identifier is 'classic'" do
-      it "does not enqueue ProjectIdentifiers::ConvertInstanceToSemanticIdsJob" do
-        expect do
-          patch :update, params: { settings: { work_packages_identifier: "classic" } }
-        end.not_to have_enqueued_job(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
+      it "updates the setting to classic" do
+        patch :update, params: { settings: { work_packages_identifier: "classic" } }
+        expect(Setting.work_packages_identifier).to eq("classic")
       end
     end
 
