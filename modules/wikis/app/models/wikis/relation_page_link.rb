@@ -31,5 +31,7 @@
 module Wikis
   class RelationPageLink < PageLink
     belongs_to :author, class_name: "User"
+
+    def author? = true
   end
 end
