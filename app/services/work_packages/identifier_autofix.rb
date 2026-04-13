@@ -34,7 +34,7 @@ module WorkPackages
       GoodJob::Job
         .where(job_class: [
                  ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
-                 ProjectIdentifiers::BackfillProjectJob.name
+                 ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name
                ])
         .exists?(finished_at: nil)
     end

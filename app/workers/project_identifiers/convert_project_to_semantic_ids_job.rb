@@ -28,11 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ProjectIdentifiers::BackfillProjectJob < ApplicationJob
+class ProjectIdentifiers::ConvertProjectToSemanticIdsJob < ApplicationJob
   discard_on ActiveRecord::RecordNotFound
 
   def perform(project_id)
     project = Project.find(project_id)
-    ProjectIdentifiers::BackfillProjectService.new(project).call
+    ProjectIdentifiers::ConvertProjectToSemanticService.new(project).call
   end
 end

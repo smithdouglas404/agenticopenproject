@@ -33,7 +33,7 @@ require "rails_helper"
 RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                with_good_job_batches: [
                  ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
-                 ProjectIdentifiers::BackfillProjectJob
+                 ProjectIdentifiers::ConvertProjectToSemanticIdsJob
                ] do
   subject(:job) { described_class.new }
 
@@ -56,7 +56,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
       it "does not create a batch" do
         allow(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
         job.perform
-        expect(GoodJob::Job.where(job_class: ProjectIdentifiers::BackfillProjectJob.name)).not_to exist
+        expect(GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name)).not_to exist
       end
     end
 
@@ -67,7 +67,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
       end
 
       it "enqueues one BackfillProjectJob per pending project" do
-        expect(GoodJob::Job.where(job_class: ProjectIdentifiers::BackfillProjectJob.name).count).to eq(2)
+        expect(GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name).count).to eq(2)
       end
     end
 
@@ -93,7 +93,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
 
         it "re-enqueues BackfillProjectJobs for the remaining projects" do
           job.perform(nil, {})
-          expect(GoodJob::Job.where(job_class: ProjectIdentifiers::BackfillProjectJob.name).count).to eq(1)
+          expect(GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name).count).to eq(1)
         end
       end
 

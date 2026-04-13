@@ -30,12 +30,12 @@
 
 require "rails_helper"
 
-RSpec.describe ProjectIdentifiers::BackfillProjectJob do
+RSpec.describe ProjectIdentifiers::ConvertProjectToSemanticIdsJob do
   describe "#perform" do
     it "delegates to BackfillProjectService" do
       project = create(:project)
-      service = instance_double(ProjectIdentifiers::BackfillProjectService, call: nil)
-      allow(ProjectIdentifiers::BackfillProjectService).to receive(:new).with(project).and_return(service)
+      service = instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil)
+      allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
 
       described_class.new.perform(project.id)
 

@@ -37,7 +37,7 @@ module ProjectIdentifiers
   # 3. Rewrites stale WP identifiers whose prefix no longer matches the project.
   # 4. Assigns sequence numbers to WPs that have none yet.
   # 5. Seeds the alias table for all historical project identifier prefixes.
-  class BackfillProjectService
+  class ConvertProjectToSemanticService
     def initialize(project)
       @project = project
     end

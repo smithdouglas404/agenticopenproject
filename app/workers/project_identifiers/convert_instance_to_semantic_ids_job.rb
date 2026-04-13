@@ -64,7 +64,7 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
 
   def enqueue_backfill_batch(project_ids, next_iteration:)
     GoodJob::Batch.enqueue(on_success: self.class, on_success_params: { iteration: next_iteration }) do
-      project_ids.each { |project_id| ProjectIdentifiers::BackfillProjectJob.perform_later(project_id) }
+      project_ids.each { |project_id| ProjectIdentifiers::ConvertProjectToSemanticIdsJob.perform_later(project_id) }
     end
   end
 

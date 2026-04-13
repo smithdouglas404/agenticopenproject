@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe ProjectIdentifiers::BackfillProjectService,
+RSpec.describe ProjectIdentifiers::ConvertProjectToSemanticService,
                with_settings: { work_packages_identifier: "classic" } do
   describe "#call" do
     context "when the project has a prior valid semantic identifier in FriendlyId history" do

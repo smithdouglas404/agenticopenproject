@@ -53,8 +53,8 @@ RSpec.describe WorkPackages::IdentifierAutofix do
     context "when a BackfillProjectJob is running (finished_at: nil)" do
       before do
         GoodJob::Job.create!(
-          job_class: ProjectIdentifiers::BackfillProjectJob.name,
-          serialized_params: { "job_class" => ProjectIdentifiers::BackfillProjectJob.name },
+          job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name,
+          serialized_params: { "job_class" => ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name },
           finished_at: nil
         )
       end
@@ -70,8 +70,8 @@ RSpec.describe WorkPackages::IdentifierAutofix do
           finished_at: 1.minute.ago
         )
         GoodJob::Job.create!(
-          job_class: ProjectIdentifiers::BackfillProjectJob.name,
-          serialized_params: { "job_class" => ProjectIdentifiers::BackfillProjectJob.name },
+          job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name,
+          serialized_params: { "job_class" => ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name },
           finished_at: 1.minute.ago
         )
       end
