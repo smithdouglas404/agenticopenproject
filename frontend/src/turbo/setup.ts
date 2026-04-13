@@ -55,10 +55,3 @@ applyTurboNavigationPatch();
 
 // Register turbo power actions
 TurboPower.initialize(Turbo.StreamActions);
-
-// Error handling when "Content missing" returned
-document.addEventListener('turbo:frame-missing', (event) => {
-  const { detail: { response, visit } } = event;
-  event.preventDefault();
-  void visit(response.url, {});
-});
