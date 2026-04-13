@@ -31,23 +31,14 @@
 require "spec_helper"
 
 RSpec.describe WorkPackage, "custom_actions" do
-  let(:work_package) do
-    build_stubbed(:work_package,
-                  project:)
-  end
-  let(:project) { create(:project) }
-  let(:status) { create(:status) }
+  let(:conditions)   { [CustomActions::Conditions::Status.new([status.id])] }
   let(:other_status) { create(:status) }
-  let(:user) do
-    create(:user,
-           member_with_roles: { work_package.project => role })
-  end
-  let(:role) do
-    create(:project_role)
-  end
-  let(:conditions) do
-    [CustomActions::Conditions::Status.new([status.id])]
-  end
+  let(:project)      { create(:project, types: [type]) }
+  let(:role)         { create(:project_role) }
+  let(:status)       { create(:status) }
+  let(:type)         { create(:type_standard) }
+  let(:user)         { create(:user, member_with_roles: { work_package.project => role }) }
+  let(:work_package) { build(:work_package, project:, type:) }
 
   let!(:custom_action) do
     action = build(:custom_action)
@@ -93,6 +84,42 @@ RSpec.describe WorkPackage, "custom_actions" do
         it "does not return the action" do
           expect(work_package.custom_actions(user))
             .to be_empty
+        end
+      end
+    end
+
+    context "with a custom field restriction" do
+      let!(:custom_value) { custom_field.possible_values.first }
+      let(:custom_field)  { create(:list_wp_custom_field, types: [type], projects: [project]) }
+      let(:conditions) do
+        [CustomActions::Conditions::CustomField.send(:create_subclass, custom_field).new(custom_value.id)]
+      end
+
+      context "with the CF having the same value" do
+        before do
+          work_package.custom_field_values = { custom_field.id => custom_value.id }
+          work_package.save!
+        end
+
+        it "returns the action" do
+          expect(work_package.custom_actions(user))
+            .to contain_exactly(custom_action)
+        end
+      end
+
+      context "with the CF having the different value" do
+        let(:other_custom_value) { custom_field.possible_values.last }
+        let(:conditions) do
+          [CustomActions::Conditions::CustomField.send(:create_subclass, custom_field).new(other_custom_value.id)]
+        end
+
+        before do
+          work_package.custom_field_values = { custom_field.id => custom_value.id }
+          work_package.save!
+        end
+
+        it "does not return the action" do
+          expect(work_package.custom_actions(user)).to be_empty
         end
       end
     end

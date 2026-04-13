@@ -28,14 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomActions::Conditions::Inexistent < CustomActions::Conditions::Base
+module CustomActions::Conditions::Strategies::AssociatedCustomField
   prepend CustomActions::ValuesToInteger
 
-  def self.key
-    :inexistent
-  end
-
-  def validate(errors)
-    errors.add :conditions, :does_not_exist
+  def associated
+    self.class.custom_field
+      .possible_values_options
+      .map { |label, value| [value.empty? ? nil : value.to_i, label] }
   end
 end

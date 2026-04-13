@@ -87,15 +87,21 @@ module Pages
           add_action(name, value)
         end
 
-        def set_condition(name, value)
-          Array(value).each do |val|
-            retry_block do
-              set_condition_value(name, val)
-
-              within "#custom-actions-form--conditions" do
-                expect_selected_option val
-              end
+        def add_condition(name, value)
+          retry_block do
+            select name, from: "Add condition"
+            within "#custom-actions-form--active-conditions" do
+              expect(page).to have_css(".form--label", text: name)
             end
+          end
+          set_condition_value(name, value)
+        end
+
+        def remove_condition(name)
+          within "#custom-actions-form--active-conditions" do
+            find(".form--field", text: name)
+              .find(".icon-close")
+              .click
           end
         end
 
@@ -108,7 +114,7 @@ module Pages
         end
 
         def set_condition_value(name, value)
-          field = find("#custom-actions-form--conditions .form--field", text: name, wait: 5)
+          field = find("#custom-actions-form--active-conditions .form--field", text: name, wait: 5)
 
           set_field_value(field, name, value)
         end

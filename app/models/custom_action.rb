@@ -36,6 +36,9 @@ class CustomAction < ApplicationRecord
   has_and_belongs_to_many :type_conditions, class_name: "Type"
   has_and_belongs_to_many :project_conditions, class_name: "Project"
 
+  has_many :custom_actions_custom_fields, dependent: :destroy
+  has_many :custom_field_conditions, through: :custom_actions_custom_fields, source: :custom_field
+
   after_save :persist_conditions
 
   attribute :conditions
@@ -84,9 +87,7 @@ class CustomAction < ApplicationRecord
     all_of(available_conditions, conditions)
   end
 
-  def available_conditions
-    self.class.available_conditions
-  end
+  delegate :available_conditions, to: :class
 
   def conditions
     @conditions ||= available_conditions.filter_map do |condition_class|
@@ -104,7 +105,7 @@ class CustomAction < ApplicationRecord
   end
 
   def self.available_conditions
-    ::CustomActions::Register.conditions
+    ::CustomActions::Register.conditions.map(&:all).flatten
   end
 
   private
@@ -119,7 +120,7 @@ class CustomAction < ApplicationRecord
 
   def persist_conditions
     available_conditions.map do |condition_class|
-      condition = conditions.detect { |c| c.instance_of?(condition_class) }
+      condition = conditions.detect { it.key == condition_class.key }
 
       condition_class.setter(self, condition)
     end

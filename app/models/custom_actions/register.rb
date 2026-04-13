@@ -50,6 +50,7 @@ module CustomActions::Register
 
     def conditions
       [
+        CustomActions::Conditions::CustomField,
         CustomActions::Conditions::Status,
         CustomActions::Conditions::Role,
         CustomActions::Conditions::Type,

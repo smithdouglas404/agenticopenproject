@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,16 +26,29 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class CustomActions::Conditions::Inexistent < CustomActions::Conditions::Base
-  prepend CustomActions::ValuesToInteger
+module CustomActions
+  class ConditionsComponent < ApplicationComponent
+    include AngularHelper
+    include IconsHelper
+    include OpenProject::FormTagHelper
 
-  def self.key
-    :inexistent
-  end
+    attr_reader :custom_action
 
-  def validate(errors)
-    errors.add :conditions, :does_not_exist
+    def initialize(custom_action:)
+      super
+      @custom_action = custom_action
+    end
+
+    private
+
+    def active_section_keys
+      @active_section_keys ||= @custom_action.conditions.map { "condition_#{it.key}" }
+    end
+
+    def all_conditions
+      @all_conditions ||= custom_action.all_conditions
+    end
   end
 end

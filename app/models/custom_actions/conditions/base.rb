@@ -31,7 +31,6 @@
 class CustomActions::Conditions::Base
   attr_reader :values
 
-  prepend CustomActions::ValuesToInteger
   include CustomActions::ValidateAllowedValue
 
   def initialize(values = nil)
@@ -48,8 +47,8 @@ class CustomActions::Conditions::Base
   end
 
   def value_objects
-    values.map do |value|
-      allowed_values.find { |v| v[:value] == value }
+    values.compact.map do |value|
+      allowed_values.find { it[:value] == value }
     end
   end
 
@@ -62,8 +61,14 @@ class CustomActions::Conditions::Base
     (work_package.respond_to?(:"#{key}_id") && values.include?(work_package.send(:"#{key}_id")))
   end
 
-  def key
-    self.class.key
+  delegate :key, to: :class
+
+  def associated
+    raise NotImplementedError
+  end
+
+  def self.all
+    [self]
   end
 
   def self.key
@@ -88,24 +93,40 @@ class CustomActions::Conditions::Base
     end
   end
 
-  def self.custom_action_scope(work_packages, user)
-    custom_action_scope_has_current(work_packages, user)
-      .or(custom_action_scope_has_no)
+  def self.custom_action_scope(items, _user)
+    values = Array.wrap(items).map { it.send(key_id) }
+    build_query(values.uniq)
   end
 
-  def self.custom_action_scope_has_current(work_packages, _user)
-    CustomAction
-      .includes(association_key)
-      .where(habtm_table => { key_id => Array(work_packages).map { |w| w.send(key_id) }.uniq })
-  end
-  private_class_method :custom_action_scope_has_current
+  def self.build_query(values)
+    return CustomAction.all if values.blank?
 
-  def self.custom_action_scope_has_no
-    CustomAction
-      .includes(association_key)
-      .where(habtm_table => { key_id => nil })
+    matching_sql = CustomAction.send(
+      :sanitize_sql_array,
+      [
+        <<~SQL.squish,
+          EXISTS (
+            SELECT 1
+            FROM #{habtm_table}
+            WHERE #{habtm_table}.custom_action_id = custom_actions.id
+              AND #{habtm_table}.#{key_id} IN (?)
+          )
+        SQL
+        values
+      ]
+    )
+
+    unrestricted_sql = <<~SQL.squish
+      NOT EXISTS (
+        SELECT 1
+        FROM #{habtm_table}
+        WHERE #{habtm_table}.custom_action_id = custom_actions.id
+      )
+    SQL
+
+    CustomAction.where("(#{unrestricted_sql} OR #{matching_sql})")
   end
-  private_class_method :custom_action_scope_has_no
+  private_class_method :build_query
 
   def self.pluralized_key
     key.to_s.pluralize.to_sym

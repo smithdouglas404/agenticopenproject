@@ -28,14 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomActions::Conditions::Inexistent < CustomActions::Conditions::Base
-  prepend CustomActions::ValuesToInteger
-
-  def self.key
-    :inexistent
+class AddCustomActionsCustomFields < ActiveRecord::Migration[7.1]
+  def up
+    create_table :custom_actions_custom_fields, id: :integer do |t| # rubocop:disable Rails/CreateTableWithTimestamps
+      t.belongs_to :custom_action, null: false
+      t.belongs_to :custom_field, null: false
+      t.string :value, null: false
+    end
   end
 
-  def validate(errors)
-    errors.add :conditions, :does_not_exist
+  def down
+    drop_table :custom_actions_custom_fields
   end
 end

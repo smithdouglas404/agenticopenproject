@@ -28,14 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomActions::Conditions::Inexistent < CustomActions::Conditions::Base
-  prepend CustomActions::ValuesToInteger
+require "spec_helper"
 
-  def self.key
-    :inexistent
-  end
-
-  def validate(errors)
-    errors.add :conditions, :does_not_exist
-  end
+RSpec.describe CustomActionsCustomField do
+  it { is_expected.to belong_to(:custom_action).optional(false) }
+  it { is_expected.to belong_to(:custom_field).optional(false) }
+  it { is_expected.to validate_presence_of(:value) }
 end

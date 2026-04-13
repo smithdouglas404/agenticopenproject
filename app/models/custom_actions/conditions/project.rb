@@ -29,6 +29,8 @@
 #++
 
 class CustomActions::Conditions::Project < CustomActions::Conditions::Base
+  prepend CustomActions::ValuesToInteger
+
   def self.key
     :project
   end
@@ -40,6 +42,6 @@ class CustomActions::Conditions::Project < CustomActions::Conditions::Base
       .active
       .select(:id, :name)
       .order(Arel.sql("LOWER(name)"))
-      .map { |u| [u.id, u.name] }
+      .map { [it.id, it.name] }
   end
 end

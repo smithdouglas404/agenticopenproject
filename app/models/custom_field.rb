@@ -53,6 +53,7 @@ class CustomField < ApplicationRecord
 
   attr_readonly :field_format
 
+  has_many :custom_actions_custom_fields, dependent: :delete_all
   has_many :calculated_value_errors, dependent: :delete_all, inverse_of: "custom_field"
   has_many :comments, class_name: "CustomComment", dependent: :delete_all, inverse_of: "custom_field"
 

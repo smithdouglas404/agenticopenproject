@@ -28,14 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomActions::Conditions::Inexistent < CustomActions::Conditions::Base
-  prepend CustomActions::ValuesToInteger
-
-  def self.key
-    :inexistent
-  end
-
-  def validate(errors)
-    errors.add :conditions, :does_not_exist
+module CustomActions::Conditions::Strategies::Boolean
+  def allowed_values
+    [
+      { label: I18n.t(:general_text_yes), value: OpenProject::Database::DB_VALUE_TRUE },
+      { label: I18n.t(:general_text_no), value: OpenProject::Database::DB_VALUE_FALSE }
+    ]
   end
 end

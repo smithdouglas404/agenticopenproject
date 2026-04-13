@@ -46,8 +46,8 @@ class CustomActions::Actions::Base
   end
 
   def value_objects
-    values.map do |value|
-      allowed_values.find { |v| v[:value] == value }
+    values.compact.map do |value|
+      allowed_values.find { it[:value] == value }
     end
   end
 

@@ -28,14 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomActions::Conditions::Inexistent < CustomActions::Conditions::Base
-  prepend CustomActions::ValuesToInteger
+class CustomActionsCustomField < ApplicationRecord
+  belongs_to :custom_action, optional: false
+  belongs_to :custom_field, optional: false
 
-  def self.key
-    :inexistent
-  end
-
-  def validate(errors)
-    errors.add :conditions, :does_not_exist
-  end
+  validates :value, presence: true
 end

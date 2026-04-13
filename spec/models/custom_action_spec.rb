@@ -32,8 +32,8 @@ require "spec_helper"
 
 RSpec.describe CustomAction do
   let(:stubbed_instance) { build_stubbed(:custom_action) }
-  let(:instance) { create(:custom_action, name: "zzzzzzzzz") }
-  let(:other_instance) { create(:custom_action, name: "aaaaa") }
+  let(:instance)         { create(:custom_action, name: "zzzzzzzzz") }
+  let(:other_instance)   { create(:custom_action, name: "aaaaa") }
 
   describe "#name" do
     it "can be set and read" do
@@ -58,21 +58,21 @@ RSpec.describe CustomAction do
       stubbed_instance.name = "a" * 256
 
       expect(stubbed_instance)
-        .to be_invalid
+        .not_to be_valid
     end
 
     it "is invalid with a nil name" do
       stubbed_instance.name = nil
 
       expect(stubbed_instance)
-        .to be_invalid
+        .not_to be_valid
     end
 
     it "is invalid with an empty name" do
       stubbed_instance.name = ""
 
       expect(stubbed_instance)
-        .to be_invalid
+        .not_to be_valid
     end
   end
 
@@ -106,21 +106,21 @@ RSpec.describe CustomAction do
 
       instance.save!
 
-      expect(CustomAction.find(instance.id).actions.map { |a| [a.key, a.values] })
+      expect(described_class.find(instance.id).actions.map { [it.key, it.values] })
         .to contain_exactly([:assigned_to, [1]])
     end
   end
 
   describe ".all_actions" do
     it "returns all available actions with the default value initialized" do
-      expect(stubbed_instance.all_actions.map { |a| [a.key, a.values] })
+      expect(stubbed_instance.all_actions.map { [it.key, it.values] })
         .to include([:assigned_to, []], [:status, []])
     end
 
     it "returns the activated actions with their selected value and all other with the default value" do
       stubbed_instance.actions = [CustomActions::Actions::AssignedTo.new(1)]
 
-      expect(stubbed_instance.all_actions.map { |a| [a.key, a.values] })
+      expect(stubbed_instance.all_actions.map { [it.key, it.values] })
         .to include([:assigned_to, [1]], [:status, []])
     end
 
@@ -139,9 +139,25 @@ RSpec.describe CustomAction do
   end
 
   describe ".conditions" do
-    let(:status) { create(:status) }
-    let(:role) { create(:project_role) }
-    let(:project) { create(:project) }
+    let(:status)        { create(:status) }
+    let(:role)          { create(:project_role) }
+    let(:project)       { create(:project) }
+    let(:custom_option) { create(:custom_option) }
+    let(:custom_field)  { create(:list_wp_custom_field, custom_options: [custom_option]) }
+    let(:conditions_array) do
+      [
+        CustomActions::Conditions::Status.new(status.id),
+        CustomActions::Conditions::CustomField.create_subclass(custom_field).new(custom_option.id),
+        CustomActions::Conditions::Role.new(role.id)
+      ]
+    end
+    let(:expected_array) do
+      [
+        [:"custom_field_#{custom_field.id}", [custom_option.id]],
+        [:status, [status.id]],
+        [:role, [role.id]]
+      ]
+    end
 
     it "is empty initially" do
       expect(stubbed_instance.conditions)
@@ -149,21 +165,19 @@ RSpec.describe CustomAction do
     end
 
     it "can be set and read" do
-      stubbed_instance.conditions = [CustomActions::Conditions::Status.new(status.id),
-                                     CustomActions::Conditions::Role.new(role.id)]
+      stubbed_instance.conditions = conditions_array
 
-      expect(stubbed_instance.conditions.map { |a| [a.key, a.values] })
-        .to contain_exactly([:status, [status.id]], [:role, [role.id]])
+      expect(stubbed_instance.conditions.map { [it.key, it.values] })
+      .to match_array(expected_array)
     end
 
     it "can be persisted" do
-      instance.conditions = [CustomActions::Conditions::Status.new(status.id),
-                             CustomActions::Conditions::Role.new(role.id)]
+      instance.conditions = conditions_array
 
       instance.save!
 
-      expect(CustomAction.find(instance.id).conditions.map { |a| [a.key, a.values] })
-        .to contain_exactly([:status, [status.id]], [:role, [role.id]])
+      expect(described_class.find(instance.id).conditions.map { [it.key, it.values] })
+        .to match_array(expected_array)
     end
 
     it "existing permissions can be removed" do
@@ -175,14 +189,14 @@ RSpec.describe CustomAction do
 
       instance.save!
 
-      expect(CustomAction.find(instance.id).conditions.map { |a| [a.key, a.values] })
+      expect(described_class.find(instance.id).conditions.map { [it.key, it.values] })
         .to be_empty
     end
   end
 
   describe "#conditions_fulfilled?" do
     let(:work_package) { double("work_package") }
-    let(:user) { double("user") }
+    let(:user)         { double("user") }
 
     let(:stubbed_condition1) do
       condition = double("condition1")
@@ -209,26 +223,26 @@ RSpec.describe CustomAction do
         .and_return [stubbed_condition1, stubbed_condition2]
     end
 
-    context "all conditions fulfilled" do
+    context "when all conditions fulfilled" do
       it "is true" do
-        expect(stubbed_instance.conditions_fulfilled?(work_package, user))
-          .to be_truthy
+        expect(stubbed_instance)
+          .to be_conditions_fulfilled(work_package, user)
       end
     end
 
-    context "but one condition not fulfilled" do
+    context "when one condition not fulfilled" do
       let(:condition1_fulfilled) { false }
 
       it "is false" do
-        expect(stubbed_instance.conditions_fulfilled?(work_package, user))
-          .to be_falsey
+        expect(stubbed_instance)
+          .not_to be_conditions_fulfilled(work_package, user)
       end
     end
   end
 
   describe ".all_conditions" do
     it "returns all available conditions with the default value initialized" do
-      expect(stubbed_instance.all_conditions.map { |a| [a.key, a.values] })
+      expect(stubbed_instance.all_conditions.map { [it.key, it.values] })
         .to contain_exactly([:status, []], [:role, []], [:type, []], [:project, []])
     end
   end

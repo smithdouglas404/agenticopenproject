@@ -31,13 +31,18 @@
 module WorkPackage::CustomActioned
   extend ActiveSupport::Concern
 
+  class_methods do
+    def custom_actions(items, user)
+      ::CustomAction.available_conditions
+                    .inject(::CustomAction.all) do |query, condition|
+        query.merge(condition.custom_action_scope(items, user))
+      end
+    end
+  end
+
   included do
     def custom_actions(user)
-      @custom_actions = CustomAction
-                        .available_conditions
-                        .inject(CustomAction.all) do |scope, condition|
-        scope.merge(condition.custom_action_scope(self, user))
-      end
+      self.class.custom_actions(self, user)
     end
   end
 end
