@@ -43,10 +43,12 @@ module ProjectIdentifiers
     end
 
     def call
-      fix_identifier_if_needed
-      reset_stale_identifiers
-      backfill_missing_ids
-      seed_alias_table
+      ApplicationRecord.transaction do
+        fix_identifier_if_needed
+        reset_stale_identifiers
+        backfill_missing_ids
+        seed_alias_table
+      end
     end
 
     private
