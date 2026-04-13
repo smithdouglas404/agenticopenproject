@@ -1,3 +1,4 @@
+---
 vi:
   activerecord:
     attributes:
@@ -145,8 +146,8 @@ vi:
             hide_inactive_folders:
               permission_not_set: không thể đặt quyền trên %{path}.
             remote_folders:
-              not_allowed: '%{username} không có quyền truy cập vào thư mục %{group_folder}. Vui lòng kiểm tra quyền của thư mục trên Nextcloud.'
-              not_found: "Không tìm thấy thư mục %{group_folder}. Vui lòng kiểm tra thiết lập Nextcloud của bạn."
+              not_allowed: "%{username} không có quyền truy cập vào thư mục %{group_folder}. Vui lòng kiểm tra quyền của thư mục trên Nextcloud."
+              not_found: Không tìm thấy thư mục %{group_folder}. Vui lòng kiểm tra thiết lập Nextcloud của bạn.
             remove_user_from_group:
               conflict: 'Không thể xóa người dùng %{user} khỏi nhóm %{group} vì lý do sau: %{reason}'
               failed_to_remove: 'Không thể xóa người dùng %{user} khỏi nhóm %{group} vì lý do sau: %{reason}'
@@ -166,7 +167,7 @@ vi:
         one_drive_sync_service:
           attributes:
             create_folder:
-              conflict: '%{folder_name} đã tồn tại trên %{parent_location}.'
+              conflict: "%{folder_name} đã tồn tại trên %{parent_location}."
               not_found: "%{parent_location} không được tìm thấy."
             hide_inactive_folders:
               permission_not_set: không thể đặt quyền trên %{path}.
@@ -185,7 +186,7 @@ vi:
         sharepoint_sync_service:
           attributes:
             create_folder:
-              conflict: '%{folder_name} đã tồn tại trên %{parent_location}.'
+              conflict: "%{folder_name} đã tồn tại trên %{parent_location}."
               not_found: "%{parent_location} không được tìm thấy."
             hide_inactive_folders:
               permission_not_set: không thể đặt quyền trên %{path}.
@@ -522,7 +523,7 @@ vi:
         title: Trạng thái kết nối thành viên
       project_storages:
         delete: Xóa bộ nhớ tệp khỏi dự án?
-    permission_header_explanation: 'Quyền đối với tệp trên bộ lưu trữ bên ngoài chỉ được áp dụng cho các thư mục và tệp trong thư mục dự án được quản lý tự động. Lưu ý rằng không phải tất cả các quyền đối với tệp đều được tất cả các nhà cung cấp dịch vụ lưu trữ hỗ trợ. Vui lòng kiểm tra tài liệu về <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>quyền lưu trữ tệp</a> để biết thêm thông tin.'
+    permission_header_explanation: Quyền đối với tệp trên bộ lưu trữ bên ngoài chỉ được áp dụng cho các thư mục và tệp trong thư mục dự án được quản lý tự động. Lưu ý rằng không phải tất cả các quyền đối với tệp đều được tất cả các nhà cung cấp dịch vụ lưu trữ hỗ trợ. Vui lòng kiểm tra tài liệu về <a target='_blank' href='https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions'>quyền lưu trữ tệp</a> để biết thêm thông tin.
     provider_types:
       label: Loại nhà cung cấp
       nextcloud:

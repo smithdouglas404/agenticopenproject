@@ -140,8 +140,7 @@ cs:
               item_1:
                 options:
                   name: Začínáme
-                  text: |
-
+                  text: ''
               item_5:
                 options:
                   name: Pracovní balíčky
@@ -368,8 +367,7 @@ cs:
               subject: Vyvinout v2.0
             item_16:
               subject: Vydání v2.0
-          wiki: |
-
+          wiki: ''
       statuses:
         item_0:
           name: Nové

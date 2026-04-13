@@ -19,43 +19,44 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 da:
   plugin_openproject_documents:
-    name: "OpenProject Documents"
-    description: "An OpenProject plugin to allow creation of documents in projects."
+    name: OpenProject Documents
+    description: An OpenProject plugin to allow creation of documents in projects.
   attributes:
-    collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+    collaborative_editing_hocuspocus_url: Hocuspocus server URL
   activerecord:
     errors:
       models:
         document_type:
-          one_or_more_required: "Kan ikke slette den sidste dokumenttype"
+          one_or_more_required: Kan ikke slette den sidste dokumenttype
     models:
-      document: "Dokument"
-      documents: "Dokumenter"
+      document: Dokument
+      documents: Dokumenter
     attributes:
       document:
-        content_binary: "Binært indhold"
-        title: "Titel"
+        content_binary: Binært indhold
+        title: Titel
   activity:
     filter:
-      document: "Dokumenter"
-  default_doc_category_tech: "Teknisk dokumentation"
-  default_doc_category_user: "Brugerdokumentation"
-  enumeration_doc_categories: "Dokumentkategorier"
+      document: Dokumenter
+  default_doc_category_tech: Teknisk dokumentation
+  default_doc_category_user: Brugerdokumentation
+  enumeration_doc_categories: Dokumentkategorier
   documents:
     page_header:
-      heading: "Alle dokumenter"
+      heading: Alle dokumenter
       action_menu:
-        document_actions: "Dokumenthandlinger"
-        edit_title: "Rediger titel"
+        document_actions: Dokumenthandlinger
+        edit_title: Rediger titel
     subheader:
       filter:
-        label: "Filter for dokumentnavn"
-        placeholder: "Skriv her for at søge i dokumentnavne"
+        label: Filter for dokumentnavn
+        placeholder: Skriv her for at søge i dokumentnavne
     documents_list_blank_slate:
-      heading: "Der er ingen dokumenter endnu"
-      description: "Der er ingen dokumenter i denne visning. Du kan klikke på knappen nedenfor for at tilføje et."
+      heading: Der er ingen dokumenter endnu
+      description: Der er ingen dokumenter i denne visning. Du kan klikke på knappen nedenfor for at tilføje et.
     document_categories_deprecation_notice:
       heading: Filkategorier hedder nu 'Dokumenttyper'
       description: |-
@@ -63,7 +64,7 @@ da:
         Alle eksisterende dokumenter er også blevet migreret til disse nye typer.
       primary_action: Konfigurer dokumenttyper
       secondary_action: Få mere at vide om modulet Dokumenter
-    document_type_actions: "Dokumenttype-handlinger"
+    document_type_actions: Dokumenttype-handlinger
     text_collaboration_disabled_notice:
       description: |-
         Det er ikke muligt at åbne dokumentet, fordi tekstsamarbejde i realtid er deaktiveret.
@@ -74,37 +75,36 @@ da:
           Unable to open document because the real-time text collaboration server is unreachable.
           Please contact the administrator if the problem persists.
         action: Forsøg igen
-      tabs: "Document tabs"
+      tabs: Document tabs
     index_page:
-      name: "Navn"
-      type: "Type"
-      updated_at: "Senest redigeret"
-      label_legacy: "Historie"
+      name: Navn
+      type: Type
+      updated_at: Senest redigeret
+      label_legacy: Historie
     menu:
-      all: "Alle dokumenter"
-      types: "Typer"
-      collaboration_settings: "Samarbejde i realtid"
-    last_updated_at: "Last saved %{time}."
+      all: Alle dokumenter
+      types: Typer
+      collaboration_settings: Samarbejde i realtid
+    last_updated_at: Last saved %{time}.
     info_line:
-      currently_offline: "You are currently offline."
-      connection_restored: "You are now back online."
-    active_editors: "Aktive redaktører"
+      currently_offline: You are currently offline.
+      connection_restored: You are now back online.
+    active_editors: Aktive redaktører
     active_editors_count:
-      one: "1 active editor"
+      one: 1 active editor
       other: "%{count} active editors"
-    label_attachment_author: "Bilagsforfatter"
-    label_categories: "Kategorier"
-    new_category: "Ny kategori"
-    new_type: "Ny type"
+    label_attachment_author: Bilagsforfatter
+    label_categories: Kategorier
+    new_category: Ny kategori
+    new_type: Ny type
     delete_dialog:
-      title: "Slet dokument"
-      heading: "Slet dette dokument?"
-      confirmation_message_html: "Dette vil slette dette dokument og alle vedhæftede filer permanent. Er du sikker på, at du vil gøre dette?"
+      title: Slet dokument
+      heading: Slet dette dokument?
+      confirmation_message_html: Dette vil slette dette dokument og alle vedhæftede filer permanent. Er du sikker på, at du vil gøre dette?
     delete_document_type_dialog:
       title: Slet dokumenttype
       heading: Slette denne dokumenttype?
-      confirmation_message: |-
-        Typen "%{type_name}" er i øjeblikket ubrugt. Sletning af denne type vil ikke have nogen effekt på eksisterende dokumenter.
+      confirmation_message: Typen "%{type_name}" er i øjeblikket ubrugt. Sletning af denne type vil ikke have nogen effekt på eksisterende dokumenter.
       select_reassign_to_label: Gentildel dokumenter til
       reassign_message:
         one: Typen "%{type_name}" bruges i øjeblikket i %{document_count} dokument. Vælg venligst hvilken type der skal angives dokumentet.
@@ -123,12 +123,12 @@ da:
           none_writable: Disse værdier konfigureres via miljøvariabler og kan ikke redigeres her.
           some_unwritable: Nogle værdier konfigureres via miljøvariabler og kan ikke redigeres her.
         hocuspocus_server_url:
-          label: "URL til Hocuspocus-server"
-          caption: "The WebSocket address of a working Hocuspocus server."
-          invalid_scheme: "Must use a WebSocket protocol (ws:// or wss://)."
+          label: URL til Hocuspocus-server
+          caption: The WebSocket address of a working Hocuspocus server.
+          invalid_scheme: Must use a WebSocket protocol (ws:// or wss://).
         hocuspocus_server_secret:
-          label: "Klienthemmelighed"
-          caption: "Indsæt den hemmelighed, der er leveret af Hocuspocus-serveren."
+          label: Klienthemmelighed
+          caption: Indsæt den hemmelighed, der er leveret af Hocuspocus-serveren.
         hocuspocus_server: Hokuspokus-server
       enable_text_collaboration:
         heading: Samarbejde i realtid er ikke aktiveret
@@ -146,14 +146,14 @@ da:
           realtidssamarbejde og BlockNote-editoren i denne instans.
         confirmation_checkbox_message: Jeg forstår, at jeg kan miste data permanent
         success: Samarbejde i realtid er deaktiveret.
-  label_document_added: "Dokument tilføjet"
-  label_document_new: "Nyt dokument"
-  label_document_plural: "Dokumenter"
-  label_documents: "Dokumenter"
-  label_document_title: "Titel"
-  label_document_description: "Beskrivelse"
-  label_document_category: "Kategori"
-  label_document_type: "Type"
-  permission_manage_documents: "Håndter dokumenter"
-  permission_view_documents: "Se dokumenter"
-  project_module_documents: "Dokumenter"
+  label_document_added: Dokument tilføjet
+  label_document_new: Nyt dokument
+  label_document_plural: Dokumenter
+  label_documents: Dokumenter
+  label_document_title: Titel
+  label_document_description: Beskrivelse
+  label_document_category: Kategori
+  label_document_type: Type
+  permission_manage_documents: Håndter dokumenter
+  permission_view_documents: Se dokumenter
+  project_module_documents: Dokumenter

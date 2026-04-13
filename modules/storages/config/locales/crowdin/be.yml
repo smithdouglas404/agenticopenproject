@@ -1,3 +1,4 @@
+---
 be:
   activerecord:
     attributes:
@@ -56,7 +57,7 @@ be:
         storages/storage:
           attributes:
             host:
-              authorization_header_missing: не ўсталявана поўнасцю. Сервер Nextcloud не атрымаў "Authorization" загаловак, які неабходны для аўтарызацыі запытаў з дапамогай Bearer токенаў. Калі ласка праверце налады вашага HTTP сервера. 
+              authorization_header_missing: не ўсталявана поўнасцю. Сервер Nextcloud не атрымаў "Authorization" загаловак, які неабходны для аўтарызацыі запытаў з дапамогай Bearer токенаў. Калі ласка праверце налады вашага HTTP сервера.
               cannot_be_connected_to: could not be reached. Please ensure the host is reachable and the OpenProject integration app is installed.
               minimal_nextcloud_version_unmet: не задавальняе мінімальным патрабаванням па версіі (Nextcloud павінен быць 23 ці вышэй)
               not_nextcloud_server: гэта не сервер Nextcloud
@@ -81,7 +82,7 @@ be:
   permission_read_files: 'Automatically managed project folders: Read files'
   permission_share_files: 'Automatically managed project folders: Share files'
   permission_share_files_explanation: This permission is only available for Nextcloud storages
-  permission_view_file_links: Праглядаць спасылкі на файлы 
+  permission_view_file_links: Праглядаць спасылкі на файлы
   permission_write_files: 'Automatically managed project folders: Write files'
   project_module_storages: Files
   project_storages:
@@ -528,7 +529,7 @@ be:
         title: Members connection status
       project_storages:
         delete: Remove file storage from project?
-    permission_header_explanation: 'File permissions on external storages are applied only to folders and files within automatically managed project folders. Note that not all file permissions are supported by all storage providers. Please check the documentation on <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>file storage permissions</a> for more information.'
+    permission_header_explanation: File permissions on external storages are applied only to folders and files within automatically managed project folders. Note that not all file permissions are supported by all storage providers. Please check the documentation on <a target='_blank' href='https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions'>file storage permissions</a> for more information.
     provider_types:
       label: Provider type
       nextcloud:

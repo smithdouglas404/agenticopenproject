@@ -99,9 +99,5 @@ module Backlogs
         target_allowed_drag_type: "story"
       }
     end
-
-    def max_position
-      work_packages.maximum(:position)
-    end
   end
 end

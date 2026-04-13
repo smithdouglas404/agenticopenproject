@@ -79,6 +79,7 @@ RSpec.describe MeetingAgendaItems::ItemComponent::ShowComponent, type: :componen
 
     context "when the meeting is in the future" do
       let(:meeting_start_time) { 1.week.from_now }
+      let!(:scheduled_meeting) { create(:scheduled_meeting, recurring_meeting: series, start_time: meeting_start_time, meeting:) }
 
       it "calculates next occurrence from meeting start time" do
         next_occurrence = series.next_occurrence(from_time: meeting.start_time)
@@ -138,6 +139,7 @@ RSpec.describe MeetingAgendaItems::ItemComponent::ShowComponent, type: :componen
                start_time: 1.week.from_now,
                author: user)
       end
+      let!(:scheduled_meeting) { create(:scheduled_meeting, recurring_meeting: series, start_time: meeting.start_time, meeting:) }
 
       it "shows the duplicate submenu" do
         expect(series.next_occurrence(from_time: meeting.start_time)).to be_present

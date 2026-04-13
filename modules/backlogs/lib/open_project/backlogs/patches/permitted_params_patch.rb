@@ -41,11 +41,6 @@ module OpenProject::Backlogs::Patches::PermittedParamsPatch
       permitted_params
     end
 
-    def my_account_settings
-      backlogs_params = params.fetch(:backlogs, {}).permit(:task_color, :versions_default_fold_state)
-      super.merge(backlogs: backlogs_params)
-    end
-
     def backlogs_admin_settings
       params
         .require(:settings)

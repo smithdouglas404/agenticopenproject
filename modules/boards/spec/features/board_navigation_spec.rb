@@ -82,10 +82,10 @@ RSpec.describe "Work Package boards spec",
 
     # Open the details page with the info icon
     card = board_page.card_for(wp)
-    split_view = card.open_details_view
+    split_view = card.open_details_view(primerized: true)
     split_view.expect_subject
 
-    expect(page).to have_current_path /details\/#{wp.id}\/overview/
+    expect(page).to have_current_path /details\/#{wp.id}/
     card.expect_selected
     split_view.close
 
@@ -101,7 +101,7 @@ RSpec.describe "Work Package boards spec",
 
     # Click on the card again
     card.open_details_view
-    expect(page).to have_current_path /details\/#{wp.id}\/overview/
+    expect(page).to have_current_path /details\/#{wp.id}/
   end
 
   it "navigates correctly the path from overview page to the boards page",
@@ -139,7 +139,7 @@ RSpec.describe "Work Package boards spec",
     expect(wp.subject).to eq "Task 1"
     # Open the details page with the info icon
     card = board_page.card_for(wp)
-    split_view = card.open_details_view
+    split_view = card.open_details_view(primerized: true)
     split_view.expect_subject
     split_view.switch_to_tab tab: :relations
     expect(page).to have_current_path /details\/#{wp.id}\/relations/
@@ -170,7 +170,7 @@ RSpec.describe "Work Package boards spec",
     expect(wp.subject).to eq "Task 1"
     # Open the details page with the info icon
     card = board_page.card_for(wp)
-    split_view = card.open_details_view
+    split_view = card.open_details_view(primerized: true)
     split_view.expect_subject
 
     page.driver.refresh
@@ -195,14 +195,16 @@ RSpec.describe "Work Package boards spec",
 
     # Open the details page with the info icon
     card = board_page.card_for(wp)
-    split_view = card.open_details_view
+    split_view = card.open_details_view(primerized: true)
     split_view.expect_subject
 
     # Go to full view of WP
     split_view.switch_to_fullscreen
-    wait_for_network_idle
-    find_by_id("action-show-more-dropdown-menu").click
-    click_link(I18n.t("js.button_delete"))
+    wait_for_turbo do
+      split_view.wait_for_activity_tab
+      find_by_id("action-show-more-dropdown-menu").click
+      click_link(I18n.t("js.button_delete"))
+    end
 
     # Delete the WP
     destroy_modal.expect_listed(wp)

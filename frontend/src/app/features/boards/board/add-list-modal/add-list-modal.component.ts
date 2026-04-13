@@ -34,7 +34,6 @@ import { OpModalComponent } from 'core-app/shared/components/modal/modal.compone
 import { OpModalLocalsToken } from 'core-app/shared/components/modal/modal.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { Board } from 'core-app/features/boards/board/board';
-import { StateService } from '@uirouter/core';
 import { BoardService } from 'core-app/features/boards/board/board.service';
 import { BoardActionsRegistryService } from 'core-app/features/boards/board/board-actions/board-actions-registry.service';
 import { BoardActionService } from 'core-app/features/boards/board/board-actions/board-action.service';
@@ -42,6 +41,7 @@ import { HalResourceNotificationService } from 'core-app/features/hal/services/h
 import { tap } from 'rxjs/operators';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import {
   firstValueFrom,
   Observable,
@@ -117,11 +117,11 @@ export class AddListModalComponent extends OpModalComponent implements OnInit {
     readonly cdRef:ChangeDetectorRef,
     readonly boardActions:BoardActionsRegistryService,
     readonly halNotification:HalResourceNotificationService,
-    readonly state:StateService,
     readonly boardService:BoardService,
     readonly I18n:I18nService,
     readonly apiV3Service:ApiV3Service,
-    readonly currentProject:CurrentProjectService) {
+    readonly currentProject:CurrentProjectService,
+    readonly pathHelper:PathHelperService) {
     super(locals, cdRef, elementRef);
   }
 
@@ -145,7 +145,7 @@ export class AddListModalComponent extends OpModalComponent implements OnInit {
       .then((board) => {
         this.inFlight = false;
         this.closeMe();
-        void this.state.go('boards.partitioned.show', { board_id: board.id, isNew: true });
+        void Turbo.visit(`${this.pathHelper.boardsPath(this.currentProject.identifier)}/${board.id}`);
       })
       .catch(() => {
         this.inFlight = false;

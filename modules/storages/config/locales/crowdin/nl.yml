@@ -1,3 +1,4 @@
+---
 nl:
   activerecord:
     attributes:
@@ -436,7 +437,7 @@ nl:
         oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
         provider_configuration: Zorg ervoor dat u beheerdersrechten hebt op %{application_link_text} of neem contact op met uw Microsoft-beheerder voordat u de installatie uitvoert. In het portaal moet u ook een Azure toepassing registreren of een bestaande toepassing gebruiken voor verificatie.
       type: 'Zorg ervoor dat u beheerrechten heeft in uw Nextcloud en dat de volgende applicatie geïnstalleerd is voordat u de installatie uitvoert:'
-      type_link_text: "Integratie met OpenProject\""
+      type_link_text: Integratie met OpenProject"
     label_active: Actief
     label_add_new_storage: Add new storage
     label_automatic_folder: Nieuwe map met automatisch beheerde machtigingen
@@ -524,7 +525,7 @@ nl:
         title: Verbindingsstatus leden
       project_storages:
         delete: Remove file storage from project?
-    permission_header_explanation: 'File permissions on external storages are applied only to folders and files within automatically managed project folders. Note that not all file permissions are supported by all storage providers. Please check the documentation on <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>file storage permissions</a> for more information.'
+    permission_header_explanation: File permissions on external storages are applied only to folders and files within automatically managed project folders. Note that not all file permissions are supported by all storage providers. Please check the documentation on <a target='_blank' href='https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions'>file storage permissions</a> for more information.
     provider_types:
       label: Provider type
       nextcloud:

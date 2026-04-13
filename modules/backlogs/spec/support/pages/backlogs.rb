@@ -31,6 +31,7 @@
 require "support/pages/page"
 
 module Pages
+  # This is the legacy backlogs page. It can be removed soon.
   class Backlogs < Page
     attr_reader :project
 
