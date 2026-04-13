@@ -90,8 +90,9 @@ module Import
       params
     end
 
-    def convert_values(_custom_field)
+    def convert_values(custom_field)
       return convert_values_text if format == "text"
+      return convert_values_list(custom_field) if format == "list"
 
       # TODO: convert Jira custom field values to OP custom field values, if needed
       @values
@@ -144,8 +145,27 @@ module Import
       end
     end
 
-    def collect_list_options(_values)
-      [] # TODO: collect_list_options
+    def convert_values_list(custom_field)
+      @values.map do |v|
+        list_value = v[:value]
+        list_items = if list_value.is_a?(Array)
+                       list_value.map { |c_value| custom_field.value_of(c_value["value"]) }
+                     else
+                       custom_field.value_of(list_value["value"])
+                     end
+        v.merge({ value: list_items })
+      end
+    end
+
+    def collect_list_options(list_values)
+      list_values.flat_map do |v|
+        list_value = v[:value]
+        if list_value.is_a?(Array)
+          list_value.map { |c_value| c_value["value"] }
+        else
+          list_value["value"]
+        end
+      end
     end
 
     def populate_hierarchy_items(_custom_field, _values)
