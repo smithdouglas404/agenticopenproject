@@ -268,7 +268,7 @@ zh-CN:
             label: 所有项目
             caption: 在此项目中创建的冲刺将可用于此实例中的所有项目。如果选择此选项，这些冲刺将不再可用于其他项目。
             disabled_caption: 选项不可用，因为项目“%{name}”目前正在与所有项目共享，仅允许一个项目进行此操作。
-            disabled_caption_anonymous: 选项不可用，因为另一个项目“%{name}”目前正在与所有项目共享，仅允许一个项目进行此操作。
+            disabled_caption_anonymous: Option not available since another project is currently sharing with all projects and only one project can do this.
           share_subprojects:
             label: 子项目
             caption: 在此项目中创建的冲刺将对当前项目的所有子项目可用。
