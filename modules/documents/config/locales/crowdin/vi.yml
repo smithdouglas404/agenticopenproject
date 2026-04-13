@@ -71,12 +71,10 @@ vi:
         Vui lòng liên hệ với quản trị viên của bạn để cho phép cộng tác văn bản theo thời gian thực nếu bạn muốn truy cập tài liệu này.
     show_edit_view:
       connection_error_notice:
-        description: |-
-          Không thể mở tài liệu vì không thể truy cập được máy chủ cộng tác văn bản theo thời gian thực.
-          Vui lòng liên hệ với quản trị viên nếu sự cố vẫn tiếp diễn.
+        description_server_unavailable: |-
+          Unable to open document because the real-time text collaboration server is unreachable.
+          Please contact the administrator if the problem persists.
         action: Thử lại
-      connection_recovery_notice:
-        description: Kết nối tới máy chủ cộng tác văn bản thời gian thực đã được khôi phục.
       tabs: Tab tài liệu
     index_page:
       name: tên
@@ -88,6 +86,9 @@ vi:
       types: các loại
       collaboration_settings: Hợp tác thời gian thực
     last_updated_at: Đã lưu lần cuối %{time}.
+    info_line:
+      currently_offline: You are currently offline.
+      connection_restored: You are now back online.
     active_editors: Người chỉnh sửa đang hoạt động
     active_editors_count:
       other: "%{count} biên tập viên đang hoạt động"

@@ -49,6 +49,18 @@ it:
           attributes:
             labels:
               invalid_schema: 'deve essere un array di hash con le chiavi: colore, titolo'
+  label_gitlab_integration: Integrazione GitLab
+  label_gitlab_actor: Attore GitLab
+  label_gitlab_webhook_secret: Webhook secret
+  text_gitlab_actor_info: 'L''utente OpenProject la cui chiave API deve essere utilizzata per autenticare le richieste webhook in ingresso. Se impostato, le richieste autenticate con le credenziali di qualsiasi altro utente verranno rifiutate. Questo utente pubblica anche commenti automatici sulle macro-attività. Se non impostato, viene utilizzato l''utente di sistema.
+
+    '
+  text_gitlab_webhook_secret_info: 'Un token segreto condiviso con GitLab durante la configurazione del webhook. Se impostato, OpenProject verifica l''header X-Gitlab-Token su ogni richiesta in ingresso, rifiutando i payload che non corrispondono. Lascia vuoto per saltare la verifica (non consigliato).
+
+    '
+  text_gitlab_webhook_secret_missing_warning: 'Nessun webhook secret è configurato. Qualsiasi richiesta all''endpoint webhook di GitLab verrà accettata senza verifica, il che potrebbe consentire ad attori non autorizzati di falsificare eventi. Si consiglia vivamente di impostare un secret.
+
+    '
   project_module_gitlab: GitLab
   permission_show_gitlab_content: Mostra il contenuto di GitLab
   gitlab_integration:

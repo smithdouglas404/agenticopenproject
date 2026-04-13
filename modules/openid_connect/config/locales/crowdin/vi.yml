@@ -53,7 +53,7 @@ vi:
     delete_warning:
       input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
       irreversible_notice: Xóa nhà cung cấp SSO là hành động không thể thay đổi được.
-      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
+      provider_html: 'Are you sure you want to delete the SSO provider %{name}? Be aware, that this will:'
       delete_result_1: Xóa nhà cung cấp khỏi danh sách các nhà cung cấp có sẵn.
       delete_result_user_count:
         zero: Không có người dùng hiện đang sử dụng nhà cung cấp này. Không cần thực hiện thêm hành động nào.
@@ -63,6 +63,7 @@ vi:
   openid_connect:
     menu_title: Nhà cung cấp OpenID
     delete_title: Xóa nhà cung cấp OpenID Connect
+    delete_heading: Delete this OpenID Connect provider?
     group_links_heading: Liên kết nhóm OpenID Connect
     groups:
       match_preview_component:

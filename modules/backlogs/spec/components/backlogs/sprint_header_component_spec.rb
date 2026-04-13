@@ -51,8 +51,8 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
       .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
   end
 
-  def render_component(folded: false)
-    render_inline(described_class.new(sprint:, project:, folded:, current_user: user))
+  def render_component(folded: false, active_sprint_ids: nil)
+    render_inline(described_class.new(sprint:, project:, folded:, current_user: user, active_sprint_ids:))
   end
 
   describe "show state (default)" do
@@ -150,10 +150,110 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
     context "when sprint has no dates" do
       let(:sprint) { build_stubbed(:agile_sprint, project:, name: "Sprint 1", start_date: nil, finish_date: nil) }
 
-      it "renders without date range" do
+      it "renders without date range or calendar icon" do
         render_component
 
         expect(page).to have_no_css("time")
+        expect(page).to have_no_octicon(:calendar)
+      end
+    end
+  end
+
+  describe "start and finish actions" do
+    context "when the sprint is in planning and the user can start it" do
+      it "shows a Start button" do
+        render_component
+
+        expect(page).to have_selector(:link_or_button, "Start")
+        expect(page).to have_octicon(:play)
+      end
+
+      it "does not show Complete" do
+        render_component
+
+        expect(page).to have_no_selector(:link_or_button, "Complete")
+      end
+
+      context "when another sprint is already active" do
+        let!(:active_sprint) do
+          create(:agile_sprint, project:, name: "Active Sprint", status: "active",
+                                start_date: Date.yesterday, finish_date: Date.tomorrow)
+        end
+
+        it "shows Start disabled with a reason" do
+          render_component(active_sprint_ids: [active_sprint.id])
+
+          expect(page).to have_selector(:link_or_button, "Start", aria: { disabled: true })
+          expect(page).to have_text("Another sprint is already active.")
+        end
+      end
+
+      context "when the sprint has no start date" do
+        let(:start_date) { nil }
+
+        it "shows Start disabled with a missing dates reason" do
+          render_component
+
+          expect(page).to have_selector(:link_or_button, "Start", aria: { disabled: true })
+          expect(page).to have_text("Start and finish dates are required in order to start the sprint.")
+        end
+      end
+
+      context "when the sprint has no finish date" do
+        let(:finish_date) { nil }
+
+        it "shows Start disabled with a missing dates reason" do
+          render_component
+
+          expect(page).to have_selector(:link_or_button, "Start", aria: { disabled: true })
+          expect(page).to have_text("Start and finish dates are required in order to start the sprint.")
+        end
+      end
+    end
+
+    context "when the sprint is active and the user can finish it" do
+      let(:sprint) do
+        create(:agile_sprint, project:, name: "Sprint 1", status: "active",
+                              start_date:, finish_date:)
+      end
+
+      it "shows a Complete button" do
+        render_component
+
+        expect(page).to have_selector(:link_or_button, "Complete")
+        expect(page).to have_octicon(:check)
+      end
+
+      it "does not show Start" do
+        render_component
+
+        expect(page).to have_no_selector(:link_or_button, "Start")
+      end
+    end
+
+    context "when the sprint is completed" do
+      let(:sprint) do
+        create(:agile_sprint, project:, name: "Sprint 1", status: "completed",
+                              start_date:, finish_date:)
+      end
+
+      it "shows neither Start nor Complete" do
+        render_component
+
+        expect(page).to have_no_selector(:link_or_button, "Start")
+        expect(page).to have_no_selector(:link_or_button, "Complete")
+      end
+    end
+
+    context "when the user lacks the start_complete_sprint permission" do
+      let(:user) do
+        create(:user, member_with_permissions: { project => %i[view_sprints view_work_packages] })
+      end
+
+      it "does not show Start" do
+        render_component
+
+        expect(page).to have_no_selector(:link_or_button, "Start")
       end
     end
   end

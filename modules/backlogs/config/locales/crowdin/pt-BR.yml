@@ -164,7 +164,10 @@ pt-BR:
         receive_shared_no_actions_description_text: Este projeto recebe sprints compartilhadas de outro projeto, mas não há nenhum disponível no momento.
         settings_link_text: configurações do projeto
     sprint_header_component:
-      label_toggle_backlog: Recolher/Expandir %{name}
+      label_start_sprint: Iniciar
+      label_complete_sprint: Concluir
+      start_sprint_disabled_reason_active_sprint: Outra sprint já está ativa.
+      start_sprint_disabled_reason_missing_dates: As datas de início e término são obrigatórias para iniciar a sprint.
       label_story_count:
         zero: Nenhuma história na sprint
         one: "%{count} história na sprint"
@@ -191,10 +194,6 @@ pt-BR:
     sprint_menu_component:
       label_actions: Ações da sprint
       action_menu:
-        start_sprint: Iniciar sprint
-        complete_sprint: Concluir sprint
-        start_sprint_disabled_description: Outra sprint já está ativa.
-        start_sprint_missing_dates_description: As datas de início e término são obrigatórias para iniciar a sprint.
         edit_sprint: Editar sprint
         add_work_package: Adicionar pacote de trabalho
     story_component:

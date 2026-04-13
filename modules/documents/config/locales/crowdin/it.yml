@@ -71,12 +71,10 @@ it:
         Contatta l'amministratore per abilitare la collaborazione in tempo reale se desideri accedere a questo documento.
     show_edit_view:
       connection_error_notice:
-        description: |-
+        description_server_unavailable: |-
           Impossibile aprire il documento perché il server della collaborazione in tempo reale sul testo non è raggiungibile.
           Se il problema persiste, contatta l'amministratore.
         action: Riprova
-      connection_recovery_notice:
-        description: La connessione al server della collaborazione in tempo reale sul testo è stata ripristinata.
       tabs: Schede dei documenti
     index_page:
       name: Nome
@@ -88,6 +86,9 @@ it:
       types: Tipi
       collaboration_settings: Collaborazione in tempo reale
     last_updated_at: Ultimo salvataggio %{time}.
+    info_line:
+      currently_offline: Sei attualmente offline.
+      connection_restored: Ora sei di nuovo online.
     active_editors: Editor attivi
     active_editors_count:
       one: 1 editor attivo

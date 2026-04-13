@@ -98,7 +98,8 @@ module Primer
           def supports_help_texts?(model)
             return @supports_help_texts if defined?(@supports_help_texts)
 
-            @supports_help_texts = model && ::AttributeHelpText.available_types.include?(model.model_name)
+            @supports_help_texts = model.respond_to?(:model_name) &&
+              ::AttributeHelpText.available_types.include?(model.model_name)
           end
         end
       end

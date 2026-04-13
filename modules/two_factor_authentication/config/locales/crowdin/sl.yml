@@ -37,18 +37,14 @@ sl:
     error_invalid_backup_code: Neveljavna rezervna koda 2FA
     channel_unavailable: Kanal za dostavo %{channel} ni na voljo.
     no_valid_phone_number: Ne obstaja veljavna telefonska številka.
-    label_pwd_confirmation: Geslo
-    notice_pwd_confirmation: Ko spremenite te nastavitve, morate potrditi geslo.
     label_device_type: Vrsta naprave
     label_default_device: Privzeta naprava 2FA
     label_device: 2FA naprava
     label_devices: naprave 2FA
-    label_one_time_password: Enkratno geslo
     label_2fa_enabled: Dvofaktorska avtentikacija je aktivna
     label_2fa_disabled: Dvofaktorska avtentikacija ni aktivna
     text_otp_delivery_message_sms: Vaše  %{app_title} enkratno geslo je %{token}
     text_otp_delivery_message_voice: 'Vaše %{app_title} enkratno geslo je: %{pause} %{token}. %{pause} Ponavljam: %{pause} %{token}'
-    text_enter_2fa: Prosimo vnesite enkratno geslo iz vaše naprave.
     text_2fa_enabled: Ob vsaki prijavi boste morali vnesti OTP žeton iz vaše privzete naprave 2FA.
     text_2fa_disabled: Da omogočite dvofaktorsko preverjanje pristnosti uporabite zgornji gumb za registracijo nove 2FA naprave. Če že imate napravo, jo morate nastaviti kot privzeto.
     login:
@@ -69,7 +65,6 @@ sl:
       text_remember: 'To nastavite na več kot nič, da dovolite uporabnikom, da si bodo lahko za poljubno število dni zapomnili njihovo 2FA avtentikacijo. V tem obdobju jih ne bo treba ponovno vnesti. Nastavite ga lahko samo, če ga konfiguracija ne uveljavi.
 
         '
-      error_invalid_settings: Izbrane strategije 2FA so neveljavne
       failed_to_save_settings: 'Posodobitev nastavitev 2FA ni uspela: %{message}'
     admin:
       self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
@@ -82,16 +77,9 @@ sl:
       text_2fa_enabled: Upon every login, this user will be requested to enter a OTP token from their default 2FA device.
       text_2fa_disabled: The user did not set up a 2FA device through their 'My account page'
       only_sms_allowed: Only SMS delivery can be set up for other users.
-    upsell:
-      title: Dvofaktorna avtentikacija
-      description: Strenghten the security of your OpenProject instance by offering (or enforcing) two-factor authentification to all project members.
     backup_codes:
-      none_found: |2-
-
-        Za ta račun ni rezervnih kod.
       singular: Rezervna koda
       plural: Rezervne kode
-      your_codes: za vaš %{app_name} račun %{login}
       overview_description: |
         Če ne morete dostopati do svojih dvo-faktorskih naprav, lahko z rezervno kodo obnovite dostop do svojega računa.
         Uporabite naslednji gumb za generacijo novih rezervnih kod.
@@ -175,19 +163,15 @@ sl:
       clear_cookie: Kliknite tukaj, da odstranite vse spomnjene seje 2FA.
       cookie_removed: Vse spomnjene seje 2FA so bile odstranjene.
       dont_ask_again: Ustvarite piškotek za zapomnitev pristnosti 2FA na tej stranki za %{days} days.
-  field_phone: Mobitel
   field_otp: Enkratno geslo
   notice_account_otp_invalid: Neveljavno enkratno geslo.
   notice_account_otp_expired: To enkratno geslo je poteklo.
   notice_developer_strategy_otp: 'Strategija razvijalcev je generirala sledeče enkratno geslo: %{token} (Kanal: %{channel})'
   notice_account_otp_send_failed: Vašega enkratnega gesla ni bilo mogoče poslati.
   notice_account_has_no_phone: Z vašim računom ni povezana nobena številka mobilnega telefona.
-  label_expiration_hint: "%{date} ali ob odjavi"
-  label_actions: Akcije
   label_confirmed: Potrjeno
   button_continue: Nadaljuj
   button_make_default: Označite kot privzeto
-  label_unverified_phone: Mobilni telefon še ni preverjen
   notice_phone_number_format: 'Vnesite številko v naslednji obliki: + XX XXXXXXXX.'
   text_otp_not_receive: Druge metode preverjanja
   text_send_otp_again: 'Enkratno geslo znova pošljite po:'

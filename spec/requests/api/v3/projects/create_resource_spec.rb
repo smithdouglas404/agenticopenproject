@@ -445,7 +445,7 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
     end
   end
 
-  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+  context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
     context "when identifier is not provided" do
       let(:body) do
         { name: "Flight Planning Algorithm" }.to_json
@@ -479,7 +479,7 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
       let(:body) do
         {
           name: "Flight Planning Algorithm",
-          identifier: "invalid-lowercase"
+          identifier: "1ABC"
         }.to_json
       end
 
@@ -489,8 +489,8 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
 
       it "explains the identifier format error" do
         expect(last_response.body)
-          .to be_json_eql("identifier".to_json)
-          .at_path("_embedded/errors/0/_embedded/details/attribute")
+          .to be_json_eql("Identifier must start with a letter".to_json)
+          .at_path("message")
       end
     end
   end

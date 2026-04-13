@@ -34,9 +34,13 @@ module CustomFields::Scopes
 
     class_methods do
       def visible(user = User.current)
-        known_subclasses
-          .inject(none) do |scope, klass|
-          scope.or(where(type: klass.name).and(klass.visible(user)))
+        if user.active_admin?
+          all
+        else
+          known_subclasses
+            .inject(none) do |scope, klass|
+            scope.or(where(type: klass.name).and(klass.visible(user)))
+          end
         end
       end
 

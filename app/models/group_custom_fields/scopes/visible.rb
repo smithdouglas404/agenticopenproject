@@ -34,7 +34,7 @@ module GroupCustomFields::Scopes
 
     class_methods do
       def visible(user = User.current)
-        if user.admin?
+        if user.active_admin?
           all
         else
           where(admin_only: false)

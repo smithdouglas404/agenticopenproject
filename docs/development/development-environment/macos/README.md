@@ -28,7 +28,7 @@ their homepage.
 Use [rbenv](https://github.com/rbenv/rbenv) and [ruby-build](https://github.com/rbenv/ruby-build#readme) to install
 Ruby. We always require the latest ruby versions, and you can check which version is required
 by [checking the Gemfile](https://github.com/opf/openproject/blob/dev/Gemfile#L31) for the `ruby "~> X.Y"` statement. At
-the time of writing, this version is "4.0.1"
+the time of writing, this version is "4.0.2"
 
 #### Install rbenv and ruby-build
 
@@ -48,18 +48,18 @@ With both installed, we can now install the actual ruby version.
 You can check available ruby versions with `rbenv install --list`.
 
 We suggest you install the version we require in [.ruby-version](https://github.com/opf/openproject/blob/dev/.ruby-version).
-Read the first line e.g. `4.0.1` and install that version.
+Read the first line e.g. `4.0.2` and install that version.
 
 ```shell
 # Install the required version as read from the .ruby-version file
-rbenv install 4.0.1
+rbenv install 4.0.2
 ```
 
 This might take a while depending on whether ruby is built from source. After it is complete, you need to tell rbenv to
 globally activate this version
 
 ```shell
-rbenv global 4.0.1
+rbenv global 4.0.2
 ```
 
 You also need to install [bundler](https://github.com/bundler/bundler/), the ruby gem bundler.
@@ -134,7 +134,7 @@ You should now have an active ruby and node installation. Verify that it works w
 
 ```shell
 $ ruby --version
-ruby 4.0.1 (2026-01-13 revision e04267a14b) +PRISM [arm64-darwin25]
+ruby 4.0.2 (2026-03-17 revision d3da9fec82) +PRISM [arm64-darwin25]
 
 $ bundler --version
 4.0.3
@@ -196,7 +196,7 @@ automatically loaded to the application's environment.
 
 > [!TIP]
 > Instead of using the `gssencmode` flag in `config/database.yml`, you can add `export PGGSSENCMODE="disable"` to your
-> Shell profile (`~/.zprofile` by default). This will prevent Ruby crashes for *all* of your projects.
+> Shell profile (`~/.zprofile` by default). This will prevent Ruby crashes for _all_ of your projects.
 
 Some users report Ruby crashes despite having set this flag to disable. If this is the case for you as well,
 try adding `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=yes` to your Shell profile.
@@ -328,7 +328,7 @@ sudo ln -sfn $(brew --prefix)/opt/openjdk/libexec/openjdk.jdk /Library/Java/Java
 #### Subversion
 
 To test the integration with Subversion repositories, we rely on the `svnadmin` command to be available. If subversion
-is not installed, the tests *will be skipped*. To run the tests, install subversion with
+is not installed, the tests _will be skipped_. To run the tests, install subversion with
 
 ```shell
 brew install subversion

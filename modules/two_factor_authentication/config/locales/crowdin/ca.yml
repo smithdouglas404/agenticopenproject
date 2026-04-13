@@ -37,18 +37,14 @@ ca:
     error_invalid_backup_code: Codi de la còpia de seguretat del 2FA invàlid
     channel_unavailable: El canal d'entrega %{channel} no està disponible.
     no_valid_phone_number: No existeix cap número de telèfon vàlid.
-    label_pwd_confirmation: Contrasenya
-    notice_pwd_confirmation: Has de confirmar la teva contrasenya abans de fer canvis a aquesta configuració.
     label_device_type: Tipus de dispositiu
     label_default_device: Dispositiu de 2FA per defecte
     label_device: Dispositiu de 2FA
     label_devices: Dispositius de 2FA
-    label_one_time_password: Contrasenya d'un sol ús
     label_2fa_enabled: Autenticació de dos passos habilitada
     label_2fa_disabled: Autentificació de dos passos no habilitada
     text_otp_delivery_message_sms: La teva contrasenya d'un sol ús de %{app_title} és %{token}
     text_otp_delivery_message_voice: 'La teva contrasenya d''un sol ús de %{app_title} és: %{pause}%{token}. %{pause} Repeteixo: %{pause} %{token}'
-    text_enter_2fa: Si us plau, entra la contrasenya d'un sol del teu dispositiu.
     text_2fa_enabled: Després de cada inici de sessió, se't demanarà introduir un token OTP del teu dispositiu 2FA per defecte.
     text_2fa_disabled: Per tal d'activar l'autentificació en dos passos utilitza el botó d'aquí a dalt per tal de registrar un dispositiu 2FA nou. En cas que ja tinguis un dispositiu registrat, l'hauràs de configurar com a predeterminat.
     login:
@@ -69,7 +65,6 @@ ca:
       text_remember: 'Especifica aquest valor per sobre de 0 per tal de permetre als usuaris recordar la seva autentificació 2FA per un nombre especificat de dies. No se''ls demanarà reintroduir cap codi 2FA durant aquest període. Aquest paràmetre només pot ser configurat quan s''ha forçat a través de la configuració.
 
         '
-      error_invalid_settings: Les estratègies de 2FA seleccionades no són vàlides
       failed_to_save_settings: 'Error en carregar la configuració del 2FA: %{message}'
     admin:
       self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
@@ -82,14 +77,9 @@ ca:
       text_2fa_enabled: Després de cada inici de sessió, es demanarà a aquest usuari que introdueixi un token OTP del seu dispositiu 2FA per defecte.
       text_2fa_disabled: L'usuari no ha configurat cap dispositiu 2FA a través de la pàgina "El meu compte"
       only_sms_allowed: Only SMS delivery can be set up for other users.
-    upsell:
-      title: Autentificació en dos passos
-      description: Enforteix la seguretat de la teva instància d'OpenProject oferint (o forçant) l'autentificació en dos passos per a tots els membres del projecte.
     backup_codes:
-      none_found: No existeix cap codi de còpies de seguretat per aquest compte.
       singular: Codi de còpia de seguretat
       plural: Codis de còpia de seguretat
-      your_codes: per tu %{app_name} compte %{login}
       overview_description: 'En cas que no puguis accedir als teus dispositius 2FA, sempre pots utilitzar els codis de còpia de seguretat per poder accedir al teu compte. Utilitza el següent botó per generar un nou set de codis de còpia de seguretat.
 
         '
@@ -173,19 +163,15 @@ ca:
       clear_cookie: Fes clic aquí per eliminar totes les sessions 2FA recordades.
       cookie_removed: S'han eliminat totes les sessions 2FA recordades.
       dont_ask_again: Crea una galeta web per tal de recordar l'autentificació 2FA per aquest client per %{days} dies.
-  field_phone: Telèfon mòbil
   field_otp: Contrasenya d'un sol ús
   notice_account_otp_invalid: Contrasenya d'un sol ús invàlida
   notice_account_otp_expired: La contrasenya d'un sol ús entrada ha expirat.
   notice_developer_strategy_otp: 'Estratègia del desenvolupador generada seguint la contrasenya d''un sol ús: %{token} (Canal: %{channel})'
   notice_account_otp_send_failed: La teva contrasenya d'un sol ús no s'ha pogut enviar.
   notice_account_has_no_phone: No hi ha cap número de telèfon mòbil associat al teu compte.
-  label_expiration_hint: "%{date} o en tancar sessió"
-  label_actions: Accions
   label_confirmed: Confirmat
   button_continue: Continua
   button_make_default: Marca per defecte
-  label_unverified_phone: Telèfon mòbil encara no verificat
   notice_phone_number_format: 'Si us plau, entra el número en el següent format: +XX XXXXXXXX.'
   text_otp_not_receive: Altres mètodes de verificació
   text_send_otp_again: 'Reenvia la contrasenya d''un sol ús amb:'

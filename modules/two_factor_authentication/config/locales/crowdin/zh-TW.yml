@@ -37,18 +37,14 @@ zh-TW:
     error_invalid_backup_code: 不正確2FA 備份代碼
     channel_unavailable: 傳遞通道 %{channel} 不可用。
     no_valid_phone_number: 不存在有效電話號碼。
-    label_pwd_confirmation: 密碼
-    notice_pwd_confirmation: 在對這些設置進行更改時, 您需要確認您的密碼。
     label_device_type: 裝置類型
     label_default_device: 預設2FA 設備
     label_device: 2FA 設備
     label_devices: 2FA 設備
-    label_one_time_password: 一次性密碼
     label_2fa_enabled: 雙重驗證已啟用
     label_2fa_disabled: 兩階段驗證已關閉
     text_otp_delivery_message_sms: "%{app_title} 一次性密碼為 %{token}"
     text_otp_delivery_message_voice: '您的 %{app_title} 一次性密碼為: %{pause} %{token}。 %{pause} 重複: %{pause} %{token}'
-    text_enter_2fa: 請從您的設備取得一次性密碼。
     text_2fa_enabled: 於每次登錄, 您都將被要求從預設的2FA 設備中取得 OTP 密碼。
     text_2fa_disabled: 要啟用兩階段驗證, 請使用上面的按鈕註冊新的2FA 設備。如果已有設備, 則需要將其設置為預設值。
     login:
@@ -69,7 +65,6 @@ zh-TW:
       text_remember: '將此值設置為大於零, 以允許使用者在給定的天數內記住其2FA 身份驗證。在那段期間, 他們將不被要求重新進入。只能在配置不強制的情況下設置。
 
         '
-      error_invalid_settings: 您選擇的2FA 策略無效
       failed_to_save_settings: '未能更新2FA 設置: %{message}'
     admin:
       self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
@@ -82,14 +77,9 @@ zh-TW:
       text_2fa_enabled: 每次登入時，該使用者都會被要求從預設的 2FA 裝置輸入 OTP 密碼。
       text_2fa_disabled: 使用者沒有透過「我的帳戶頁面」設定 2FA 裝置
       only_sms_allowed: 只能為其他用戶設置短信發送。
-    upsell:
-      title: 雙因素驗證
-      description: 向所有專案成員提供(或強制執行) 兩階段驗證，以加強 OpenProject 實例的安全性。
     backup_codes:
-      none_found: 這個帳戶沒有存在備份代碼
       singular: 備份代碼
       plural: 備份代碼
-      your_codes: 為您的 %{app_name} 帳戶 %{login}
       overview_description: '如果您無法存取您的2FA設備，您可以使用備份碼來重新存取您的帳戶。 點選按鈕產生一組新的備份碼。
 
         '
@@ -173,19 +163,15 @@ zh-TW:
       clear_cookie: 按一下此處以移除所有已記憶之 2FA 連線。
       cookie_removed: 所有記住的 2FA 連線都已移除。
       dont_ask_again: 產生 cookie， %{days} 天內將記住此用戶端2FA 身份驗證。
-  field_phone: 手機
   field_otp: 一次性密碼
   notice_account_otp_invalid: 一次性密碼無效。
   notice_account_otp_expired: 您輸入的一次性密碼已過期。
   notice_developer_strategy_otp: '開發者策略生成了以下一次性密碼: %{token} (通道: %{channel})'
   notice_account_otp_send_failed: 無法發送您的一次性密碼。
   notice_account_has_no_phone: 沒有與您的帳戶關聯的手機號碼。
-  label_expiration_hint: "%{date} 或登出時"
-  label_actions: 操作
   label_confirmed: 已確認
   button_continue: 繼續
   button_make_default: 標記為預設值
-  label_unverified_phone: 手機尚未驗證
   notice_phone_number_format: '請輸入以下格式的號碼: + XX XXXXXXXX。'
   text_otp_not_receive: 其他驗證方法
   text_send_otp_again: '通過以下操作，重新發送一次性密碼:'

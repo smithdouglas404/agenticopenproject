@@ -53,7 +53,7 @@ cs:
     delete_warning:
       input_delete_confirmation_html: Enter the provider name %{name} to confirm deletion.
       irreversible_notice: Odstranění poskytovatele SSO je nevratná akce.
-      provider_html: 'Are you sure you want to delete the SSO provider %{name}? To confirm this action please enter the name of the provider in the field below, this will:'
+      provider_html: 'Are you sure you want to delete the SSO provider %{name}? Be aware, that this will:'
       delete_result_1: Odstranit poskytovatele ze seznamu dostupných poskytovatelů.
       delete_result_user_count:
         zero: Tohoto poskytovatele v současné době nepoužívají žádní uživatelé. Není třeba podnikat žádné další kroky.
@@ -63,6 +63,7 @@ cs:
   openid_connect:
     menu_title: Poskytovatelé OpenID
     delete_title: Odstranit OpenID Connect poskytovatele
+    delete_heading: Delete this OpenID Connect provider?
     group_links_heading: OpenID Connect group links
     groups:
       match_preview_component:

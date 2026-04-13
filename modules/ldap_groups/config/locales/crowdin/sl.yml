@@ -52,6 +52,7 @@ sl:
         zero: Filter ni našel nobenih skupin
       destroy:
         title: Odstrani sinhronizirani filter %{name}
+        heading: Remove synchronized filter %{name}?
         confirmation: 'Če nadaljujete, bo sinhronizirani filter %{name} in vse skupine %{groups_count}, ustvarjene prek njega, odstranjene.
 
           '
@@ -69,9 +70,9 @@ sl:
       add_new: dodaj sinhronizirano LDAP skupino
       destroy:
         title: Odstrani sinhronizirano skupino %{name}
+        heading: Remove synchronized group %{name}?
         confirmation: Če nadaljujete, bo sinhronizirana skupina %{name} in vsi %{users_count} uporabniki, ki so bili sinhronizirani prek nje, odstranjeni.
-        info: 'Opozorilo: Sama skupina OpenProject in člani, dodani zunaj te sinhronizacije LDAP, ne bodo odstranjeni.'
-        verification_html: Enter the group's name %{name} to verify the deletion.
+        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
         Ta modul vam omogoča, da nastavite sinhronizacijo med skupinama LDAP in OpenProject.
         Odvisno od tega, ali morajo skupine LDAP uporabiti atribut<em>skupinaOdIme / članOd </em>, ki deluje za OpenProject.

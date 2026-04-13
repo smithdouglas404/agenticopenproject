@@ -114,7 +114,7 @@ it:
     import:
       title: Importa
     jira:
-      title: Importazione di Jira
+      title: Jira Migrator
       description: Utilizza questo strumento per importare dati dalla tua istanza Jira. Puoi configurare più host Jira e scegliere cosa importare a ogni importazione.
       errors:
         cannot_delete_with_imports: Impossibile eliminare l'host Jira con importazioni esistenti
@@ -125,8 +125,8 @@ it:
         title: Configurazione Jira
         new: Nuova configurazione
       banner:
-        title: Importazione limitata
-        description: 'Questo strumento di importazione è attualmente in versione beta e può importare solo dati di base: progetti, issue (nome, titolo, descrizione, allegati), utenti (nome, email, appartenenza al progetto), stati e tipi. Non può importare flussi di lavoro, campi personalizzati, relazioni tra issue o autorizzazioni. Al momento supportiamo solo le versioni 10.x e 11.x di Jira Server/Data Center. Le istanze cloud non sono supportate al momento.'
+        title: Funzionalità di importazione limitate
+        description: 'Jira Migrator è attualmente in versione beta e può importare solo dati di base: progetti, issue (nome, titolo, descrizione, allegati), utenti (nome, email, appartenenza al progetto), stati e tipi. Non può importare flussi di lavoro, campi personalizzati, relazioni tra issue o autorizzazioni. Al momento supportiamo solo le versioni 10.x e 11.x di Jira Server/Data Center. Le istanze cloud non sono supportate al momento.'
       form:
         fields:
           name: Nome
@@ -387,9 +387,9 @@ it:
         notification_text_default: "<p>Ciao,</p> <p>È stato creato un nuovo progetto: projectValue:name</p> <p>Grazie</p>\n"
       work_packages_identifier:
         page_header:
-          description: Scegli tra ID numerici di base delle macro-attività oppure ID specifici del progetto che antepongono l'identificatore del progetto all'ID della macro-attività.
+          description: Scegli tra ID numerici classici delle macro-attività oppure ID semantici specifici del progetto che antepongono l'identificatore del progetto all'ID della macro-attività.
         banner:
-          existing_identifiers_notice: 'Gli identificatori esistenti per %{project_count} progetti non soddisfano i requisiti per gli identificatori alfanumerici basati sul progetto. OpenProject può aggiornarli automaticamente per renderli validi, come negli esempi sotto. Fai clic su "Correggi automaticamente e salva" per aggiornare gli identificatori di tutti i progetti in questo modo e abilitare gli identificatori alfanumerici basati sul progetto.
+          existing_identifiers_notice: 'Gli identificatori esistenti per %{project_count} progetti non soddisfano i requisiti per gli identificatori semantici basati sul progetto. OpenProject può aggiornarli automaticamente per renderli validi, come negli esempi sotto. Fai clic su "Correggi automaticamente e salva" per aggiornare gli identificatori di tutti i progetti in questo modo e abilitare gli identificatori semantici basati sul progetto.
 
             '
         box_header:
@@ -398,10 +398,14 @@ it:
           label_autofixed_suggestion: Identificativo futuro
           label_example_work_package_id: Esempio di ID macro-attività
         autofix_preview:
-          error_too_long: Deve contenere meno di 5 caratteri
+          error_too_long: Deve essere di 10 caratteri o meno
+          error_numerical: Non può essere puramente numerico
+          error_starts_with_number: Non può iniziare con un numero
           error_special_characters: I caratteri speciali non sono consentiti
+          error_not_fully_uppercased: Deve essere maiuscolo
           error_in_use: Già in uso come identificatore attivo di un altro progetto
           error_reserved: Riservato dalla cronologia degli identificatori di un altro progetto
+          error_unknown: Necessita di controllo manuale
           remaining_projects:
             one: "... 1 altro progetto"
             other: "... altri %{count} progetti"
@@ -416,7 +420,7 @@ it:
           checkbox_label: Comprendo che questa operazione modificherà in modo permanente tutti gli ID delle macro-attività
         success_banner: Formato degli identificatori delle macro-attività aggiornato correttamente.
         in_progress:
-          banner_message: Gli identificatori dei progetti sono attualmente in fase di aggiornamento agli identificatori alfanumerici basati sul progetto. Questa operazione potrebbe richiedere un po' di tempo.
+          banner_message: Gli identificatori dei progetti sono attualmente in fase di aggiornamento agli identificatori semantici basati sul progetto. Questa operazione potrebbe richiedere un po' di tempo.
     workflows:
       tabs:
         default_transitions: Transizioni predefinite
@@ -1534,6 +1538,9 @@ it:
         dependencies: Dipendenze
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: Identificatore
+        work_package: Macro-attività
       jira_import:
         projects: Progetti
       import/jira:
@@ -1542,7 +1549,7 @@ it:
         personal_access_token: Token di accesso personale
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Importazione di Jira
+        jira_import: Jira Migrator
       announcements:
         show_until: Visualizza fino a
       attachment:
@@ -3391,6 +3398,11 @@ it:
     quick_add:
       label: Aggiungi…
   my_account:
+    notifications_and_email:
+      title: Notifiche ed email
+      tabs:
+        notifications: Impostazioni delle notifiche
+        email_reminders: Promemoria email
     access_tokens:
       description: I token provider vengono emessi da OpenProject, consentendo ad altre applicazioni di accedervi. I token client vengono emessi da altre applicazioni, consentendo a OpenProject di accedervi.
       no_results:
@@ -3453,6 +3465,72 @@ it:
         disabled_text: I token RSS non sono abilitati dall'amministratore. Contatta il tuo amministratore per utilizzare questa funzione.
       storages:
         unknown_storage: Archivio sconosciuto
+    email_reminders:
+      immediate_reminders:
+        title: Inviami un promemoria email
+        mentioned: Avvisami quando qualcuno mi menziona
+        personal_reminder: Notificami i promemoria personali
+      daily_reminders:
+        title: Inviami promemoria email giornalieri per le notifiche non lette
+        caption: Riceverai questi promemoria solo per le notifiche non lette e solo negli orari che specifichi. Finché non configuri un fuso orario per il tuo account, gli orari saranno interpretati come UTC.
+        enabled: Abilita promemoria email giornalieri
+        add_time: Aggiungi orario
+        remove_time: Rimuovi orario
+        time_slot_label: Ora del promemoria (UTC)
+      workdays:
+        title: Ricevi promemoria email in questi giorni
+        submit_button: Aggiorna i giorni di promemoria
+      pause_reminders:
+        title: Sospendi le notifiche email
+        enabled: Sospendi temporaneamente i promemoria email giornalieri
+        date_range: Periodo di sospensione
+      email_alerts:
+        title: Avvisi email per altri elementi che non sono macro-attività
+        news_added: Notizie aggiunte
+        news_commented: Commento su un articolo di notizie
+        document_added: Documento aggiunto
+        forum_messages: Messaggio del forum pubblicato
+        wiki_page_added: Pagina wiki aggiunta
+        wiki_page_updated: Pagina wiki aggiornata
+        membership_added: Iscrizione aggiunta
+        membership_updated: Iscrizione aggiornata
+        submit_button: Aggiorna gli avvisi
+    notifications:
+      participating:
+        title: Partecipazione
+        submit_button: Aggiorna impostazioni
+        mentioned: Menzionato
+        watched: Osservazione
+        assignee: Assegnatario
+        responsible: Responsabile
+        shared: Condivisi con me
+      date_alerts:
+        title: Avvisi sulle date
+        submit_button: Aggiorna gli avvisi sulle date
+        start_date: Data di inizio
+        due_date: Data di fine
+        overdue: In ritardo
+        times:
+          same_day: Lo stesso giorno
+          one_day_before: 1 giorno prima
+          three_days_before: 3 giorni prima
+          seven_days_before: 7 giorni prima
+          one_day_after: 1 giorno dopo
+          three_days_after: 3 giorni dopo
+          seven_days_after: 7 giorni dopo
+      non_participating:
+        title: Non partecipante
+        submit_button: Aggiorna impostazioni
+        work_package_created: Nuove macro-attività
+        work_package_commented: Tutti i nuovi commenti
+        work_package_processed: Tutte le modifiche di stato
+        work_package_prioritized: Tutte le modifiche prioritarie
+        work_package_scheduled: Tutte le modifiche della data
+      project_specific_settings:
+        title: Impostazioni di notifica specifiche del progetto
+        add_button: Aggiungi notifiche specifiche al progetto
+        dialog_title: Aggiungi notifiche specifiche al progetto
+        list_header: Progetti con notifiche specifiche
   notifications:
     reasons:
       assigned: Assegnatario
@@ -3484,6 +3562,7 @@ it:
       invalid_filter: Filtro notifica non valido
   label_accessibility: Accessibilità
   label_account: Account
+  label_actions: Azioni
   label_active: Attivo
   label_activate_user: Attiva utente
   label_active_in_new_projects: Attivo nei nuovi progetti
@@ -3524,6 +3603,7 @@ it:
   label_ical_access_key_generation_hint: Generato automaticamente all'iscrizione a un calendario.
   label_ical_access_key_latest: più recente
   label_ical_access_key_revoke: Revoca
+  label_integrations: Integrazioni
   label_add_column: Aggiungi colonna
   label_applied_status: Stato applicato
   label_archive_project: Archivia progetto
@@ -3774,7 +3854,7 @@ it:
   label_external_links: Link esterni
   label_locale: Lingua e paese
   label_jump_to_a_project: Salta ad altro progetto...
-  label_jira_import: Importazione di Jira
+  label_jira_import: Jira Migrator
   label_keyword_plural: Parole chiave
   label_language_based: Basato sulla lingua dell'utente
   label_last_activity: Ultima attività
@@ -5028,12 +5108,12 @@ it:
   setting_welcome_text: Blocco di testo di benvenuto
   setting_welcome_title: Blocco di testo del titolo
   setting_welcome_on_homescreen: Mostra il blocco testo di benvenuto nella pagina home
-  setting_work_packages_identifier_numeric: Sequenza numerica a livello di istanza (predefinita)
-  setting_work_packages_identifier_numeric_caption: 'Ogni macro-attività riceve un numero sequenziale a partire da 1, incrementato a ogni nuova creazione. I numeri sono univoci all''interno di questa istanza, quindi restano invariati anche se le macro-attività vengono spostate tra progetti.
+  setting_work_packages_identifier_classic: Sequenza numerica a livello di istanza (predefinita)
+  setting_work_packages_identifier_classic_caption: 'Ogni macro-attività riceve un numero sequenziale a partire da 1, incrementato a ogni nuova creazione. I numeri sono univoci all''interno di questa istanza, quindi restano invariati anche se le macro-attività vengono spostate tra progetti.
 
     '
-  setting_work_packages_identifier_alphanumeric: Identificatori alfanumerici basati su progetti
-  setting_work_packages_identifier_alphanumeric_caption: 'Ogni progetto ha un identificatore univoco che viene anteposto all''ID della macro-attività. Se una macro-attività viene spostata in un altro progetto, viene generato un nuovo identificatore, ma quello precedente continua a funzionare.
+  setting_work_packages_identifier_semantic: Identificatori semantici basati su progetti
+  setting_work_packages_identifier_semantic_caption: 'Ogni progetto ha un identificatore univoco che viene anteposto all''ID della macro-attività. Se una macro-attività viene spostata in un altro progetto, viene generato un nuovo identificatore, ma quello precedente continua a funzionare.
 
     '
   setting_work_package_list_default_highlighting_mode: Modalità evidenziazione predefinita

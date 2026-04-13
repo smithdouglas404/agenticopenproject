@@ -37,18 +37,14 @@ lt:
     error_invalid_backup_code: Netinkamas 2FA atsarginis kodas
     channel_unavailable: Pristatymo kanalas %{channel} neprieinamas.
     no_valid_phone_number: Nėra tinkamų telefono numerių.
-    label_pwd_confirmation: Slaptažodis
-    notice_pwd_confirmation: Keičiant šiuos nustatymus jūs turite patvirtinti savo slaptažodį.
     label_device_type: Įrenginio tipas
     label_default_device: Numatytasis 2FA įrenginys
     label_device: 2FA įrenginys
     label_devices: 2FA įrenginiai
-    label_one_time_password: Vienkartinis slaptažodis
     label_2fa_enabled: Dviejų veiksnių autentifikacija aktyvi
     label_2fa_disabled: Dviejų veiksnių autentifikacija neaktyvi
     text_otp_delivery_message_sms: Jūsų %{app_title} vienkartinis slaptažodis yra %{token}
     text_otp_delivery_message_voice: 'Jūsų %{app_title} vienkartinis slaptažodis yra: %{pause} %{token}. %{pause} Aš kartoju: %{pause} %{token}'
-    text_enter_2fa: Prašome įvesti vienkartinį slaptažodį iš jūsų įrenginio.
     text_2fa_enabled: Kiekvieną kartą prisijungiant jūs turėsite įvesti OTP žetoną iš jūsų numatytojo 2FA įrenginio.
     text_2fa_disabled: Norėdami įjungti dviejų veiksnių autentikaciją, naudokite aukščiau esantį mygtuką, kad priregistruotumėte naują 2FA įrenginį. Jei jau turite įrenginį, jums reikia jį padaryti numatytuoju.
     login:
@@ -69,7 +65,6 @@ lt:
       text_remember: |
         Nustatykite teigiamą reikšmę, kad leistumėte naudotojams atsiminti jų 2FA autentikaciją nustatytą kiekį dienų.
         Jų nebus prašoma iš naujo įvesti nurodytą periodą. Gali būti nurodyta tik kai neįgalinta konfigūracijoje.
-      error_invalid_settings: Jūsų parinktos 2FA strategijos yra netinkamos
       failed_to_save_settings: 'Nepavyko atnaujinti 2FA nustatymų: %{message}'
     admin:
       self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
@@ -82,14 +77,9 @@ lt:
       text_2fa_enabled: Kiekvieną kartą prisijungiant, naudotojo bus paprašoma įvesti OTB žetoną iš jo numatytojo 2FA įrenginio.
       text_2fa_disabled: Naudotojas nenustatė savo 2FA įrenginio savo „Mano paskyros puslapyje“
       only_sms_allowed: Kitiems naudotojams galima nustatyti tik SMS pristatymą.
-    upsell:
-      title: Dviejų veiksnių autentifikavimas
-      description: Sustiprinkite savo OpenProject sistemos saugumą pasiūlydami (ar reikalaudami) dviejų faktorių autentifikacijos visiems projekto nariams.
     backup_codes:
-      none_found: Ši paskyra neturi atsarginių kodų.
       singular: Atsarginis kodas
       plural: Atsarginiai kodai
-      your_codes: jūsų %{app_name} paskyrai %{login}
       overview_description: |
         Jei negalite pasiekti jūsų dviejų veiksnių įrenginių, jūs galite naudoti atsarginius kodus, kad atgautumėte prieigą prie savo paskyros.
         Naudokite šį mygtuką, kad sugeneruotumėte naują atsarginių kodų rinkinį.
@@ -173,19 +163,15 @@ lt:
       clear_cookie: Paspauskite čia, kad pašalintumėt visas prisimenamas 2FA sesijas.
       cookie_removed: Visos prisimenamos 2FA sesijos buvo pašalintos.
       dont_ask_again: Kurti slapuką, kad šiame kliente 2FA autentikacija būtų atsiminta %{days} dienų.
-  field_phone: Telefonas
   field_otp: Vienkartinis slaptažodis
   notice_account_otp_invalid: Netinkamas vienkartinis slaptažodis.
   notice_account_otp_expired: Jūsų įvestas vienkartinis slaptažodis nebegalioja.
   notice_developer_strategy_otp: 'Vystytojo strategija sugeneravo šį vienkartinį slaptažodį: %{token} (Channel: %{channel})'
   notice_account_otp_send_failed: Nepavyko išsiųsti jūsų vienkartinio slaptažodžio.
   notice_account_has_no_phone: Su jūsų paskyra nesusietas joks telefono numeris.
-  label_expiration_hint: "%{date} arba atsijungus"
-  label_actions: Veiksmai
   label_confirmed: Patvirtinta
   button_continue: Tęsti
   button_make_default: Pažymėti kaip numatytąjį
-  label_unverified_phone: Telefonas dar nepatikrintas
   notice_phone_number_format: 'Prašome įvesti numerį tokiu formatu: +XX XXXXXXXX.'
   text_otp_not_receive: Kiti patikrinimo būdai
   text_send_otp_again: 'Pakartotinai siųsti vienkartinį slaptažodį taip:'

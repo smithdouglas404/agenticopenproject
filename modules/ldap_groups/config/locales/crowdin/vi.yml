@@ -46,6 +46,7 @@ vi:
         zero: Không có nhóm nào được bộ lọc tìm thấy
       destroy:
         title: Xóa bộ lọc đã đồng bộ hóa %{name}
+        heading: Remove synchronized filter %{name}?
         confirmation: Nếu bạn tiếp tục, bộ lọc đã đồng bộ hóa %{name} và tất cả các nhóm %{groups_count} được tạo thông qua bộ lọc đó sẽ bị xóa.
         removed_groups: 'Cảnh báo: Thao tác này sẽ xóa các nhóm sau khỏi OpenProject và xóa nó khỏi tất cả các dự án!'
         verification_html: Enter the filter name %{name} to verify the deletion.
@@ -59,9 +60,9 @@ vi:
       add_new: Thêm nhóm LDAP được đồng bộ hóa
       destroy:
         title: Xóa nhóm đã đồng bộ hóa %{name}
+        heading: Remove synchronized group %{name}?
         confirmation: Nếu bạn tiếp tục, nhóm được đồng bộ hóa %{name} và tất cả người dùng %{users_count} được đồng bộ hóa thông qua nhóm đó sẽ bị xóa.
-        info: 'Lưu ý: Bản thân nhóm OpenProject và các thành viên được thêm vào bên ngoài quá trình đồng bộ hóa LDAP này sẽ không bị xóa.'
-        verification_html: Enter the group's name %{name} to verify the deletion.
+        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
         Mô-đun này cho phép bạn thiết lập đồng bộ hóa giữa các nhóm LDAP và OpenProject.
         Nó phụ thuộc vào các nhóm LDAP cần sử dụng thuộc tính <em>groupOfNames / memberOf</em> để hoạt động với OpenProject.
