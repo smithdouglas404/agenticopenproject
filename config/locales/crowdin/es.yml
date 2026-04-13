@@ -108,13 +108,13 @@ es:
         trial: Prueba
     jemalloc_allocator: Asignador de memoria Jemalloc
     journal_aggregation:
-      caption: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
+      caption: 'Las acciones del usuario en un paquete de trabajo (cambiar la descripción, el estado, los valores o escribir comentarios) se agrupan si se realizan dentro de este periodo. También controla los plazos de notificación y de [webhook](webhook_link).
 
         '
     import:
       title: Importar
     jira:
-      title: Jira Migrator
+      title: Migrador Jira
       description: Utilice esta herramienta para importar datos desde su instancia de Jira. Puede configurar varios hosts de Jira y elegir qué importar en cada ejecución de importación.
       errors:
         cannot_delete_with_imports: No se puede eliminar el host de Jira con importaciones existentes
@@ -125,8 +125,8 @@ es:
         title: Configuración de Jira
         new: Nueva configuración
       banner:
-        title: Limited import capabilities
-        description: 'This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.'
+        title: Capacidades de importación limitadas
+        description: 'Este Migrador de Jira se encuentra actualmente en fase beta y solo puede importar datos básicos: proyectos, incidencias (nombre, título, descripción, archivos adjuntos), usuarios (nombre, correo electrónico, pertenencia a proyectos), estados y tipos. No puede importar flujos de trabajo, campos personalizados, relaciones entre incidencias ni permisos. Actualmente solo es compatible con las versiones 10.x y 11.x de Jira Server/Data Center. Por el momento, no es compatible con instancias en la nube.'
       form:
         fields:
           name: Nombre
@@ -162,9 +162,9 @@ es:
       run:
         title: Importar ejecución
         history: Historial
-        remove_error: A Jira import run cannot be removed while it is running
+        remove_error: No se puede quitar una importación de Jira mientras se está ejecutando
         import_blocked_error: Actualmente hay otra importación de Jira en curso o pendiente de revisión. Complétela o revierta antes de iniciar una nueva importación.
-        project_identifier_taken: 'You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry.'
+        project_identifier_taken: 'Estás intentando importar un proyecto con un identificador que ya está en uso: %{taken_identifier}. Actualiza el identificador del proyecto en Jira y, a continuación, haz clic en «Reintentar».'
         blank:
           title: Aún no se han configurado ejecuciones de importación
           description: Cree una ejecución de importación para comenzar a importar información de esta instancia de Jira
@@ -273,9 +273,9 @@ es:
               button_revert: Revertir importación
               button_done: Finalizar importación
               preview_description: Los datos importados se encuentran actualmente en modo de revisión. Haga clic en «Finalizar importación» para que la importación sea permanente o en «Revertir importación» para deshacer todos los cambios realizados en esta importación.
-              label_finalize_import: Finalize import
-              label_finalizing: Finalizing import...
-              label_finalizing_done: Import finalized.
+              label_finalize_import: Finalizar importación
+              label_finalizing: Finalizando importación...
+              label_finalizing_done: Importación finalizada.
               label_revert_progress: Revirtiendo importación...
               label_reverted: Importación revertida.
           select_dialog:
@@ -387,74 +387,74 @@ es:
         notification_text_default: "<p>Hola,</p> <p>Se ha creado un nuevo proyecto: projectValue:name</p> <p>Muchas gracias</p>\n"
       work_packages_identifier:
         page_header:
-          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
+          description: Elige entre los ID numéricos clásicos de los paquetes de trabajo o los ID semánticos específicos del proyecto, que añaden el identificador del proyecto al principio del ID del paquete de trabajo.
         banner:
-          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Autofix and save'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
+          existing_identifiers_notice: 'Los identificadores actuales de %{project_count} proyectos no cumplen los requisitos para ser identificadores semánticos basados en proyectos. OpenProject puede actualizarlos automáticamente para que sean válidos, tal y como se muestra en los ejemplos siguientes. Haz clic en «Corregir automáticamente y guardar» para actualizar los identificadores de todos los proyectos de esta manera y habilitar los identificadores semánticos basados en proyectos.
 
             '
         box_header:
-          label_project: Project
-          label_previous_identifier: Previous identifier
-          label_autofixed_suggestion: Future identifier
-          label_example_work_package_id: Example work package ID
+          label_project: Proyecto
+          label_previous_identifier: Identificador anterior
+          label_autofixed_suggestion: Identificador futuro
+          label_example_work_package_id: Ejemplo de ID del paquete de trabajo
         autofix_preview:
-          error_too_long: Has to be 10 characters or fewer
-          error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
-          error_special_characters: Special characters not allowed
-          error_not_fully_uppercased: Must be uppercase
-          error_in_use: Already in use as another project's active handle
-          error_reserved: Reserved by another project's handle history
-          error_unknown: Needs manual review
+          error_too_long: Debe tener 10 caracteres o menos
+          error_numerical: No puede ser puramente numérico
+          error_starts_with_number: No puede comenzar con un número
+          error_special_characters: No se permiten caracteres especiales
+          error_not_fully_uppercased: Debe estar en mayúsculas
+          error_in_use: Ya está en uso como identificador activo de otro proyecto
+          error_reserved: Reservado por el historial de identificadores de otro proyecto
+          error_unknown: Necesita revisión manual
           remaining_projects:
-            one: "... 1 more project"
-            other: "... %{count} more projects"
-        button_autofix: Autofix and save
+            one: "... 1 proyecto más"
+            other: "... %{count} proyectos más"
+        button_autofix: Corregir automáticamente y guardar
         dialog:
-          title: Change work package identifiers
-          heading: Enable project-based work package IDs?
-          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          title: Cambiar los identificadores de los paquetes de trabajo
+          heading: "¿Activar los ID de paquetes de trabajo basados en proyectos?"
+          description: 'Esto cambiará los ID de todos los paquetes de trabajo de todos los proyectos de esta instancia. Los identificadores y las URL anteriores seguirán redirigiendo correctamente. Este cambio tardará un tiempo en completarse.
 
             '
-          confirm_button: Change identifiers
-          checkbox_label: I understand that this will permanently change all work package IDs
-        success_banner: Successfully updated work package identifier format.
+          confirm_button: Cambiar identificadores
+          checkbox_label: Entiendo que esto cambiará de forma permanente todos los ID de los paquetes de trabajo
+        success_banner: Se ha actualizado correctamente el formato del identificador del paquete de trabajo.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          banner_message: Actualmente se están actualizando los identificadores de proyectos para convertirlos en identificadores semánticos basados en proyectos. Esto puede llevar algún tiempo.
     workflows:
       tabs:
         default_transitions: Transiciones predeterminadas
         user_author: Usuario es autor
         user_assignee: Usuario es asignado
       index:
-        description: Configure status transitions for each work package type.
+        description: Configura las transiciones de estado para cada tipo de paquete de trabajo.
         type_filter:
-          label: Filter by type name…
-      status_button: Status
+          label: Filtrar por nombre de tipo…
+      status_button: Estado
       statuses_dialog:
-        title: Statuses
-        label: Statuses enabled for this type
-        caption: Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it.
+        title: Estados
+        label: Estados habilitados para este tipo
+        caption: Añade o elimina los estados que quieras asociar a este tipo. Si eliminas un estado, también se borrará el flujo de trabajo asociado a él.
       statuses_removal_dialog:
-        title: Remove statuses
+        title: Eliminar estados
         heading:
-          one: Remove 1 status?
-          other: Remove %{count} statuses?
-        description: Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?
-        confirm: Remove
+          one: "¿Eliminar 1 estado?"
+          other: "¿Eliminar %{count} estados?"
+        description: Si eliminas estos estados, dejarán de estar disponibles para este tipo y se borrarán los flujos de trabajo existentes. ¿Seguro que quieres continuar?
+        confirm: Eliminar
       leave_confirmation:
-        title: Save changes before continuing?
-        description: You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?
-        ignore: Ignore changes
-        save: Save changes and continue
+        title: "¿Guardar los cambios antes de continuar?"
+        description: Estás a punto de salir de esta página, pero tienes cambios sin guardar. ¿Quieres guardarlos antes de continuar?
+        ignore: Descartar cambios
+        save: Guardar cambios y continuar
       role_selector:
-        label: 'Role: %{role}'
-        no_role: Select role
+        label: 'Rol: %{role}'
+        no_role: Seleccionar rol
       blankslate:
-        title: No status transitions configured
-        description: Add statuses to start configuring workflows for this role
+        title: No hay transiciones de estado configuradas
+        description: Añade estados para empezar a configurar los flujos de trabajo de este rol
     info:
-      database_deprecation_html: 'Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases. <br/> We have prepared [upgrade guides for all installation methods](upgrade_guide). You can perform the upgrade ahead of the next release at any time by following the guides.
+      database_deprecation_html: 'A partir de OpenProject 16.0, se requiere PostgreSQL 16 para utilizar OpenProject. Tu instalación seguirá funcionando con tu base de datos actual, pero ten en cuenta que puede haber incompatibilidades en futuras versiones. <br/> Hemos preparado [guías de actualización para todos los métodos de instalación](upgrade_guide). Puedes realizar la actualización antes del próximo lanzamiento en cualquier momento siguiendo las guías.
 
         '
   authentication:
@@ -684,13 +684,13 @@ es:
     confirmation_live_message_checked: El botón para continuar ya está activo.
     confirmation_live_message_unchecked: El botón para continuar ya está inactivo. Debe marcar la casilla para continuar.
   pagination:
-    label: Pagination
-    prev: Previous
-    prev_page: Previous Page
-    next: Next
-    next_page: Next Page
-    page: Page %{number}
-    page_with_more: Page %{number}...
+    label: Paginación
+    prev: Anterior
+    prev_page: Página anterior
+    next: Siguiente
+    next_page: Página siguiente
+    page: Página %{number}
+    page_with_more: Página %{number}...
   mcp_configurations:
     server_url_component:
       caption: La URL en la que se podrá acceder al servidor OpenProject MCP. Es necesaria para configurar los clientes de MCP.
@@ -854,10 +854,10 @@ es:
 
           '
       change_identifier: Cambiar identificador
-      change_identifier_dialog_title: Change project identifier
-      change_identifier_format_hint_semantic: Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter.
-      change_identifier_format_hint_legacy: Only lowercase letters (a–z), numbers, dashes or underscores.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
+      change_identifier_dialog_title: Cambiar el identificador del proyecto
+      change_identifier_format_hint_semantic: Solo mayúsculas (A–Z), números o guiones bajos. Máximo 10 caracteres. Debe empezar por una letra.
+      change_identifier_format_hint_legacy: Solo letras minúsculas (a–z), números, guiones o guiones bajos.
+      change_identifier_warning: 'Esto cambiará de forma permanente los identificadores y las URL de todos los paquetes de trabajo de este proyecto. No obstante, los identificadores y las URL anteriores seguirán redirigiendo correctamente.
 
         '
       subitems:
@@ -1095,9 +1095,9 @@ es:
     groups:
       member_in_these_groups: 'Este usuario es miembro actualmente de los grupos siguientes:'
       no_results_title_text: Este usuario no es miembro actualmente de ningún grupo.
-      summary_with_more_html: Member of %{names} and %{count_link}.
+      summary_with_more_html: Miembro de %{names} y %{count_link}.
       more: "%{count} más"
-      summary_html: Member of %{names}.
+      summary_html: Miembro de %{names}.
     memberships:
       no_results_title_text: El usuario no es actualmente un miembro del proyecto.
     open_profile: Abrir perfil
@@ -1155,29 +1155,29 @@ es:
         group: El grupo ya forma parte de %{project}. Mientras tanto, puede crear planes con ese grupo y asignar paquetes de trabajo a este.
     working_hours:
       current_schedule:
-        title: Current schedule
-        work_days: Work days
-        work_hours: Work hours
-        availability_factor: Availability factor
-        availability_subtitle: Dedicated to project work
-        effective_hours: Effective work hours
-        effective_subtitle: Per week
-        not_set: Not set
+        title: Planificación actual
+        work_days: Días laborables
+        work_hours: Horas laborales
+        availability_factor: Factor de disponibilidad
+        availability_subtitle: Dedicado al trabajo en proyectos
+        effective_hours: Horas efectivas de trabajo
+        effective_subtitle: A la semana
+        not_set: No establecido
       future:
-        title: Future schedules
-        description: Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically.
-        add_button: Add future schedule
-        blank_title: No future schedules planned
-        blank_description: Create a future schedule to plan changes ahead of time
+        title: Horarios futuros
+        description: Planifica los cambios en los horarios de trabajo con antelación. Cuando llegue la fecha, los horarios se actualizarán automáticamente.
+        add_button: Añadir el horario futuro
+        blank_title: No hay horarios previstos para el futuro
+        blank_description: Crea un horario provisional para planificar los cambios con antelación
       history:
-        title: Schedule history
-        description: View your past work schedules.
-        blank_title: No schedule history yet
-        blank_description: Past schedule changes will appear here
+        title: Historial de horarios
+        description: Consulta tus horarios de trabajo anteriores.
+        blank_title: Aún no hay historial de horarios
+        blank_description: Los cambios de horario anteriores aparecerán aquí
       destroy:
         confirm: Are you sure you want to delete this working schedule?
       form:
-        title: Plan a future work schedule
+        title: Planifica tu programa para el futuro
         title_current: Edit current work schedule
         start_date: Start date
         start_date_caption: Select the date from when the new work schedule will be effective.
@@ -1197,7 +1197,7 @@ es:
         total_available_hours: Total available work hours
         title_availability_factor: Availability factor
         title_days_and_hours: Days and hours
-        title_future_dates: Future dates
+        title_future_dates: Fechas futuras
       table:
         mobile_title: Working schedules
         start_date: Start date
@@ -1220,12 +1220,12 @@ es:
       '
     delete_tooltip: Eliminar usuario de marcador de posición
     deletion_info:
-      heading_html: Delete placeholder user %{name}
+      heading_html: Eliminar usuario de marcador de posición %{name}
       data_consequences: 'Todas las repeticiones del usuario de marcador de posición (por ejemplo, como asignado, responsable u otros valores de usuario) se reasignarán a una cuenta denominada «Usuario eliminado». Como los datos de todas las cuentas eliminadas se reasignarán a esta cuenta, no podrán distinguirse los datos del usuario de los datos creados con cualquier otra cuenta eliminada.
 
         '
       irreversible: Esta acción no se puede deshacer
-      confirmation_html: Enter the placeholder user name %{name} to confirm the deletion.
+      confirmation_html: Escriba el nombre de usuario de marcador de posición %{name} para confirmar la eliminación.
   priorities:
     edit:
       priority_color_text: |
@@ -1526,7 +1526,7 @@ es:
       '
     login_with_auth_provider: o inicie sesión con su cuenta existente
     signup_with_auth_provider: o regístrate usando
-    auth_source_login_html: Please login as <em>%{login}</em> to activate your account.
+    auth_source_login_html: Inicia sesión como <em>%{login}</em> para activar tu cuenta.
     omniauth_login: Por favor inicie sesión para activar su cuenta.
   actionview_instancetag_blank_option: Por favor, elija
   activemodel:
@@ -1546,7 +1546,7 @@ es:
         personal_access_token: Token de acceso personal
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Jira Migrator
+        jira_import: Migrador Jira
       announcements:
         show_until: Mostrar hasta
       attachment:
@@ -1837,24 +1837,24 @@ es:
         start_date: Start date
         end_date: End date
       user_working_hours:
-        valid_from: Valid from
-        monday: Monday
-        monday_hours: Monday hours
-        tuesday: Tuesday
-        tuesday_hours: Tuesday hours
-        wednesday: Wednesday
-        wednesday_hours: Wednesday hours
-        thursday: Thursday
-        thursday_hours: Thursday hours
-        friday: Friday
-        friday_hours: Friday hours
-        saturday: Saturday
-        saturday_hours: Saturday hours
-        sunday: Sunday
-        sunday_hours: Sunday hours
-        availability_factor: Availability factor
-        shared_hours: Work hours
-        days: Working days
+        valid_from: Válido desde
+        monday: Lunes
+        monday_hours: Horario de los lunes
+        tuesday: Martes
+        tuesday_hours: Horario de los martes
+        wednesday: Miércoles
+        wednesday_hours: Horario de los miércoles
+        thursday: Jueves
+        thursday_hours: Horario de los jueves
+        friday: Viernes
+        friday_hours: Horario de los viernes
+        saturday: Sábado
+        saturday_hours: Horario de los sábados
+        sunday: Domingo
+        sunday_hours: Horario de los domingos
+        availability_factor: Factor de disponibilidad
+        shared_hours: Horas laborales
+        days: Días laborables
       version:
         effective_date: Fecha de finalización
         sharing: Compartiendo
@@ -1909,8 +1909,8 @@ es:
         before: debe ser antes de %{date}.
         before_or_equal_to: debe ser antes o igual a %{date}.
         blank: no puede estar en blanco.
-        not_before_start_date: must not be before the start date.
-        overlapping_range: overlaps with an existing non-working day range.
+        not_before_start_date: no debe ser anterior a la fecha de inicio.
+        overlapping_range: se solapa con un intervalo de días no laborables ya existente.
         blank_nested: necesita tener la propiedad '%{property}' definida.
         cannot_delete_mapping: es obligatorio. No se puede eliminar.
         is_for_all_cannot_modify: es para todos los proyectos y, por tanto, no puede modificarse.
@@ -1947,9 +1947,9 @@ es:
         less_than_or_equal_to: debe ser menor o igual a %{count}.
         not_available: no está disponible debido a una configuración del sistema.
         not_deletable: no se puede eliminar.
-        not_editable: cannot be edited because it is already in effect.
+        not_editable: no se puede editar porque ya está en vigor.
         not_current_user: no es el usuario actual.
-        system_wide_non_working_day_exists: conflicts with an existing system-wide non-working day for this date.
+        system_wide_non_working_day_exists: entra en conflicto con un día no laborable ya establecido para todo el sistema en esta fecha.
         not_found: no encontrado.
         not_a_date: no es una fecha válida.
         not_a_datetime: no es una fecha/hora válida.
@@ -2305,7 +2305,7 @@ es:
         user_working_hours:
           attributes:
             days:
-              no_working_day: At least one day needs to be configured as a working day.
+              no_working_day: Hay que configurar al menos un día como día laborable.
         member:
           principal_blank: Por favor seleccione al menos un usuario o grupo.
           role_blank: necesita ser asignado.
@@ -3298,13 +3298,13 @@ es:
 
             '
           new_features_list:
-            line_0: 'Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation.'
-            line_1: In-place editing of project attributes on the Project Overview page.
-            line_2: Sharing of meeting templates (Basic plan and higher).
-            line_3: Better search in Time and Costs, Boards, and more.
-            line_4: Option to safely change project identifiers.
-            line_5: Improved workflow configuration for administrators.
-            line_6: Action boards released to Community.
+            line_0: 'Gran actualización de Agile: objetos de sprint específicos, todos los paquetes de trabajo visibles en los backlogs y creación automática del tablero de sprints.'
+            line_1: Edición directa de los atributos del proyecto en la página «Resumen del proyecto».
+            line_2: Compartir plantillas de reuniones (plan Basic y superiores).
+            line_3: Mejora la búsqueda en «Tiempo y costes», «Tableros» y mucho más.
+            line_4: Opción para cambiar de forma segura los identificadores de proyecto.
+            line_5: Configuración mejorada del flujo de trabajo para los administradores.
+            line_6: Se han publicado los tableros de acciones en la comunidad.
     links:
       upgrade_enterprise_edition: Actualizar a Enterprise
       postgres_migration: Migrando su instalación a PostgreSQL
@@ -3369,15 +3369,15 @@ es:
         progress_calculation_adjusted: Cálculo de progreso automático <a href="%{href}" target="_blank">ajustado con la actualización de versión</a>.
         scheduling_mode_adjusted: El modo de programación se ajusta automáticamente con la actualización de la versión.
         totals_removed_from_childless_work_packages: Los totales de trabajo y progreso se eliminan automáticamente para los paquetes de trabajo no padres con la <a href="%{href}" target="_blank">actualización de la versión</a>. Se trata de una tarea de mantenimiento y puede ignorarse con seguridad.
-        sprint_migration: Version '%{version_name}' has been copied as a sprint.
+        sprint_migration: La versión «%{version_name}» se ha copiado como sprint.
       total_percent_complete_mode_changed_to_work_weighted_average: Los paquetes de trabajo para niños sin Trabajo se ignoran.
       total_percent_complete_mode_changed_to_simple_average: Se ignoran los valores de trabajo de los paquetes de trabajo secundarios.
   links:
     configuration_guide: Guía de configuración
     get_in_touch: "¿Tiene alguna pregunta? Póngase en contacto con nosotros."
-  instructions_after_registration_link: You can sign in as soon as your account has been activated by clicking [here](signin_url).
-  instructions_after_logout_link: You can sign in again by clicking [here](signin_url).
-  instructions_after_error_link: You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help.
+  instructions_after_registration_link: Puedes iniciar sesión en cuanto se haya activado tu cuenta haciendo clic [aquí](signin_url).
+  instructions_after_logout_link: Puedes volver a iniciar sesión haciendo clic [aquí](signin_url).
+  instructions_after_error_link: Puedes intentar iniciar sesión de nuevo haciendo clic [aquí](signin_url). Si el error persiste, pide ayuda a tu administrador.
   menus:
     admin:
       ai: Inteligencia artificial (IA)
@@ -3488,40 +3488,40 @@ es:
         submit_button: Update alerts
     notifications:
       participating:
-        title: Participating
-        submit_button: Update preferences
-        mentioned: Mentioned
-        watched: Watching
-        assignee: Assignee
-        responsible: Accountable
-        shared: Shared with me
+        title: Participando
+        submit_button: Actualizar preferencias
+        mentioned: Mencionado
+        watched: Observando
+        assignee: Asignado
+        responsible: Responsable
+        shared: Compartido conmigo
       date_alerts:
-        title: Date alerts
-        submit_button: Update date alerts
-        start_date: Start date
-        due_date: Finish date
-        overdue: Overdue
+        title: Alertas de fecha
+        submit_button: Alertas de fecha de actualización
+        start_date: Fecha de inicio
+        due_date: Fecha de finalización
+        overdue: Vencido
         times:
-          same_day: On the same day
-          one_day_before: 1 day before
-          three_days_before: 3 days before
-          seven_days_before: 7 days before
-          one_day_after: 1 day after
-          three_days_after: 3 days after
-          seven_days_after: 7 days after
+          same_day: El mismo día
+          one_day_before: 1 día antes
+          three_days_before: 3 días antes
+          seven_days_before: 7 días antes
+          one_day_after: 1 día después
+          three_days_after: 3 días después
+          seven_days_after: 7 días después
       non_participating:
-        title: Non-participating
-        submit_button: Update preferences
-        work_package_created: New work packages
-        work_package_commented: All new comments
-        work_package_processed: All status changes
-        work_package_prioritized: All priority changes
-        work_package_scheduled: All date changes
+        title: No participando
+        submit_button: Actualizar preferencias
+        work_package_created: Nuevos paquetes de trabajo
+        work_package_commented: Todos los nuevos comentarios
+        work_package_processed: Todos los cambios de estado
+        work_package_prioritized: Todos los cambios de prioridad
+        work_package_scheduled: Todos los cambios de fecha
       project_specific_settings:
-        title: Project-specific notification settings
-        add_button: Add project-specific notifications
-        dialog_title: Add project-specific notifications
-        list_header: Projects with specific notifications
+        title: Configuración de notificaciones específicas de proyectos
+        add_button: Añadir notificaciones específicas del proyecto
+        dialog_title: Añadir notificaciones específicas del proyecto
+        list_header: Proyectos con notificaciones específicas
   notifications:
     reasons:
       assigned: Asignado a
@@ -3594,7 +3594,7 @@ es:
   label_ical_access_key_generation_hint: Se genera automáticamente al suscribirse a un calendario.
   label_ical_access_key_latest: último
   label_ical_access_key_revoke: Revocar
-  label_integrations: Integrations
+  label_integrations: Integraciones
   label_add_column: Añadir columna
   label_applied_status: Estado aplicado
   label_archive_project: Archivar proyecto
@@ -3642,8 +3642,8 @@ es:
   label_calendar_show: Mostrar Calendario
   label_category: Categoría
   label_completed: Completado
-  label_committed_at_html: "%{committed_revision_link} at %{date}"
-  label_committed_link: committed revision %{revision_identifier}
+  label_committed_at_html: "%{committed_revision_link} el %{date}"
+  label_committed_link: revisión confirmada %{revision_identifier}
   label_consent_settings: Consentimiento del usuario
   label_wiki_menu_item: Elemento de menú wiki
   label_select_main_menu_item: Seleccione nuevo elemento de menú principal
@@ -3810,7 +3810,7 @@ es:
   label_subject_or_id: Asunto o ID
   label_calendar_subscriptions: Suscripciones al calendario
   label_identifier: Identificador
-  label_project_identifier: Project identifier
+  label_project_identifier: Identificador del proyecto
   label_in: en
   label_in_less_than: en menos de
   label_in_more_than: en más de
@@ -3845,7 +3845,7 @@ es:
   label_external_links: Enlaces externos
   label_locale: Idioma y región
   label_jump_to_a_project: Saltar a un proyecto...
-  label_jira_import: Jira Migrator
+  label_jira_import: Migrador Jira
   label_keyword_plural: Palabras clave
   label_language_based: Basado en el idioma del usuario
   label_last_activity: Última actividad
@@ -3944,13 +3944,13 @@ es:
   label_news_view_all: Ver todas las noticias
   label_next: Siguiente
   label_next_week: La próxima semana
-  label_next_year: Next year
+  label_next_year: Próximo año
   label_no_change_option: "(No hay cambios)"
   label_no_data: No hay datos disponibles
   label_no_due_date: sin fecha de finalización
   label_no_start_date: sin fecha de inicio
   label_no_parent_page: Sin página principal
-  label_no_parent_group: "(No parent group)"
+  label_no_parent_group: "(Sin grupo principal)"
   label_notification_center_plural: Notificaciones
   label_nothing_display: Nada que mostrar
   label_nobody: nadie
@@ -3979,7 +3979,7 @@ es:
   label_overall_activity: Actividad general
   label_overview: Resumen
   label_page_title: Título de la página
-  label_parent_group_caption: 'Setting a parent group will make this group a subgroup of the selected parent group. This will also inherit all memberships, including permissions of the parent group.
+  label_parent_group_caption: 'Si estableces un grupo principal, este grupo se convertirá en un subgrupo del grupo principal seleccionado. Además, heredará todas las pertenencias, incluidos los permisos, del grupo principal.
 
     '
   label_part_of: parte de
@@ -4008,7 +4008,7 @@ es:
   label_preview_not_available: Vista previa no disponible
   label_previous: Anterior
   label_previous_week: Semana anterior
-  label_previous_year: Previous year
+  label_previous_year: Año anterior
   label_principal_invite_via_email: " o invitar nuevos usuarios vía email"
   label_principal_search: Añadir usuarios o grupos existentes
   label_privacy_policy: Política de privacidad y seguridad de datos
@@ -4120,7 +4120,7 @@ es:
   label_start_to_start: iniciar para iniciar
   label_statistics: Estadísticas
   label_status: Estado
-  label_status_plural: Statuses
+  label_status_plural: Estados
   label_storage_free_space: Espacio de disco restante
   label_storage_used_space: Espacio de disco utilizado
   label_storage_group: Sistema de archivos de almacenamiento %{identifier}
@@ -4170,7 +4170,7 @@ es:
   label_user: Usuario
   label_user_and_permission: Usuarios y permisos
   label_user_named: Usuario %{name}
-  label_user_activity_html: "%{value}'s activity"
+  label_user_activity_html: Actividad de %{value}
   label_user_anonymous: Anónimo
   label_user_menu: Menú de usuario
   label_user_new: Nuevo usuario
@@ -4258,14 +4258,14 @@ es:
     other: "%{count} archivos"
     zero: sin archivos
   label_x_days:
-    one: 1 day
-    other: "%{count} days"
+    one: 1 día
+    other: "%{count} días"
   label_x_working_days:
-    one: 1 working day
-    other: "%{count} working days"
+    one: 1 día laborable
+    other: "%{count} días laborables"
   label_x_working_days_time_off:
-    one: 'Time off: 1 working day'
-    other: 'Time off: %{count} working days'
+    one: 'Tiempo libre: 1 día laborable'
+    other: 'Tiempo libre: %{count} días laborables'
   label_yesterday: ayer
   label_zen_mode: Modo zen
   label_role_type: Tipo
@@ -4274,22 +4274,22 @@ es:
   label_not_changeable: "(no modificable)"
   label_global: Global
   label_seeded_from_env_warning: Este registro se ha creado a través de una variable de entorno de configuración. No es editable a través de la interfaz de usuario.
-  label_schedule_and_availability: Schedule and availability
-  label_working_hours: Work schedule
-  label_non_working_days: Availability calendar
-  label_non_working_days_with_count: Non-working days (%{count})
-  label_non_working_days_summary: Summary
+  label_schedule_and_availability: Horario y disponibilidad
+  label_working_hours: Horario de trabajo
+  label_non_working_days: Calendario de disponibilidad
+  label_non_working_days_with_count: Días no laborables (%{count})
+  label_non_working_days_summary: Resumen
   button_add_non_working_time: Time off
   button_edit_non_working_time: Edit time off
-  label_continued_from_previous_year: continued from previous year
-  label_continues_into_next_year: continues into next year
-  label_end_date: Finish date
-  label_working_days: Working days
-  label_non_working_times_with_count: "%{year} time off (%{count})"
-  label_non_working_times_summary: "%{year} summary"
-  label_total_user_non_working_times: Personal non-working days
-  label_total_global_non_working_days: Global non-working days
-  label_total_days_off: Total days off
+  label_continued_from_previous_year: continuación del año anterior
+  label_continues_into_next_year: se prolongará hasta el año que viene
+  label_end_date: Fecha de finalización
+  label_working_days: Días laborables
+  label_non_working_times_with_count: Tiempo libre en %{year} (%{count})
+  label_non_working_times_summary: Resumen de %{year}
+  label_total_user_non_working_times: Días libres por motivos personales
+  label_total_global_non_working_days: Días festivos a nivel mundial
+  label_total_days_off: Total de días libres
   macro_execution_error: Error ejecutando el macro %{macro_name}
   macro_unavailable: Macro  %{macro_name} no puede ser mostrado.
   macros:
@@ -4900,7 +4900,7 @@ es:
   setting_apiv3_cors_title: Intercambio de recursos entre orígenes (CORS)
   setting_apiv3_cors_enabled: Habilitar CORS
   setting_apiv3_cors_origins: Orígenes permitidos de la API de CORS (uso compartido de recursos entre orígenes) V3
-  setting_apiv3_cors_origins_instructions_html: 'If CORS is enabled, these are the origins that are allowed to access OpenProject API. <br/> Please check the [Documentation on the Origin header](docs_url) on how to specify the expected values.
+  setting_apiv3_cors_origins_instructions_html: 'Si CORS está habilitado, estos son los orígenes a los que se les permite acceder a la API de OpenProject. <br/> Consulta la [documentación sobre el encabezado Origin](docs_url) para saber cómo especificar los valores esperados.
 
     '
   setting_apiv3_write_readonly_attributes: Acceso de escritura a atributos de solo lectura
@@ -4910,7 +4910,7 @@ es:
   setting_apiv3_write_readonly_attributes_warning: 'Este ajuste tiene un caso de uso para, por ejemplo, la importación de datos, pero permite a los administradores suplantar la creación de elementos como otros usuarios. Sin embargo, todas las solicitudes de creación se registran con el verdadero autor.
 
     '
-  setting_apiv3_write_readonly_attributes_additional_html: 'For more information on attributes and supported resources, please see the [API documentation](api_documentation_link).
+  setting_apiv3_write_readonly_attributes_additional_html: 'Para obtener más información sobre los atributos y los recursos compatibles, consulta la [documentación de la API](api_documentation_link).
 
     '
   setting_apiv3_max_page_size: Tamaño máximo de página API
@@ -5095,12 +5095,12 @@ es:
   setting_welcome_text: Bloque de texto de bienvenida
   setting_welcome_title: Título del bloque de bienvenida
   setting_welcome_on_homescreen: Mostrar bloque de bienvenida en la pagina de inicio
-  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_classic: Secuencia numérica para toda la instancia (predeterminada)
+  setting_work_packages_identifier_classic_caption: 'Cada paquete de trabajo recibe un número secuencial que empieza por 1 y se incrementa con cada nuevo paquete. Los números son únicos dentro de esta instancia, por lo que siguen siendo los mismos aunque los paquetes de trabajo se trasladen de un proyecto a otro.
 
     '
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers
-  setting_work_packages_identifier_semantic_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
+  setting_work_packages_identifier_semantic: Identificadores semánticos basados en proyectos
+  setting_work_packages_identifier_semantic_caption: 'Cada proyecto tiene un identificador único que se añade al principio del ID del paquete de trabajo. Si un paquete de trabajo se traslada a otro proyecto, se genera un nuevo identificador, pero el antiguo sigue funcionando.
 
     '
   setting_work_package_list_default_highlighting_mode: Modo de resaltado predeterminado
@@ -5433,10 +5433,10 @@ es:
   text_plugin_assets_writable: Directorio de extensiones activos escribible
   text_powered_by: Con tecnología de %{link}
   text_project_identifier_info: Se permiten sólo letras minúsculas (a-z), números, guiones y guiones bajos, debe comenzar con una letra minúscula.
-  text_project_identifier_description: The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".
-  text_project_identifier_url_description: The project identifier is included in the URL of the project.
-  text_project_identifier_handle_format: Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters).
-  text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
+  text_project_identifier_description: El identificador del proyecto se antepone a todos los identificadores de los paquetes de trabajo. Si el identificador es «PROJ», por ejemplo, el identificador del paquete de trabajo será «PROJ-12» o «PROJ-246».
+  text_project_identifier_url_description: El identificador del proyecto aparece en la URL del proyecto.
+  text_project_identifier_handle_format: Debe empezar por una letra y contener solo letras mayúsculas, números y guiones bajos (máximo 10 caracteres).
+  text_project_identifier_format: Debe empezar con una letra minúscula. Solo se permiten letras minúsculas (a-z), números, guiones y guiones bajos.
   text_reassign: 'Reasignar al paquete de trabajo:'
   text_regexp_multiline: La expresión regular se aplica en modo multilínea. Por ejemplo, ^---\s+
   text_repository_usernames_mapping: Seleccione o actualize el usuario de OpenProject asignado a cada nombre en el registro del repositorio. Los usuarios con el mismo nombre o email serán mapeados automáticamente.

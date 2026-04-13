@@ -396,55 +396,63 @@ zh-CN:
           error_special_characters: 不允许使用特殊字符
           error_not_fully_uppercased: 必须为大写字母
           error_in_use: 已用作另一项目的活跃句柄
-          error_reserved: Reserved by another project's handle history
-          error_unknown: Needs manual review
+          error_reserved: 由另一项目的处理历史保留
+          error_unknown: 需要手动检查
           remaining_projects:
-            other: "... %{count} more projects"
-        button_autofix: Autofix and save
+            other: |-
+              One
+              ... 另外 1 个项目
+              Other
+              ... 另外 %{count} 个项目
+        button_autofix: 自动修复并保存
         dialog:
-          title: Change work package identifiers
-          heading: Enable project-based work package IDs?
-          description: 'This will change IDs for all work packages in all projects in this instance. Previous identifiers and URLs will continue to redirect properly. This change will take some time to complete.
+          title: 更改工作包标识符
+          heading: 启用基于项目的工作包 ID？
+          description: '此操作将在此实例中更改所有项目中所有工作包的 ID。之前的标识符和 URL 将继续正确重定向。此更改需要一些时间才能完成。
 
             '
-          confirm_button: Change identifiers
-          checkbox_label: I understand that this will permanently change all work package IDs
-        success_banner: Successfully updated work package identifier format.
+          confirm_button: 更改标识符
+          checkbox_label: 我了解此操作将永久更改所有工作包 ID
+        success_banner: 已成功更新工作包标识符格式。
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          banner_message: 项目标识符目前正在更新为基于项目的语义标识符。此过程可能需要一定的时间。
     workflows:
       tabs:
         default_transitions: 默认转换
         user_author: 用户是作者
         user_assignee: 用户是指派人
       index:
-        description: Configure status transitions for each work package type.
+        description: 为每个工作包类型配置状态过渡。
         type_filter:
-          label: Filter by type name…
-      status_button: Status
+          label: 按类型名称筛选…
+      status_button: 状态
       statuses_dialog:
-        title: Statuses
-        label: Statuses enabled for this type
-        caption: Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it.
+        title: 状态
+        label: 已为此类型启用状态
+        caption: 添加或移除您想要关联到该类型的状态。移除状态也会删除与之关联的工作流。
       statuses_removal_dialog:
-        title: Remove statuses
+        title: 移除状态
         heading:
-          other: Remove %{count} statuses?
-        description: Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?
-        confirm: Remove
+          other: |-
+            One
+            移除 1 种状态？
+            Other
+            移除 %{count} 种状态？
+        description: 删除这些状态将使其无法用于此类型，并会删除现有工作流。确定要继续吗？
+        confirm: 移除
       leave_confirmation:
-        title: Save changes before continuing?
-        description: You are about to leave this page but you have unsaved changes. Would you like to save them before continuing?
-        ignore: Ignore changes
-        save: Save changes and continue
+        title: 保存更改后再继续？
+        description: 您即将离开本页面，但您有未保存的更改。是否要保存更改后再继续？
+        ignore: 忽略更改
+        save: 保存更改并继续
       role_selector:
-        label: 'Role: %{role}'
-        no_role: Select role
+        label: 角色：%{role}
+        no_role: 选择角色
       blankslate:
-        title: No status transitions configured
-        description: Add statuses to start configuring workflows for this role
+        title: 未配置状态过渡
+        description: 添加状态，以开始为该角色配置工作流
     info:
-      database_deprecation_html: 'Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases. <br/> We have prepared [upgrade guides for all installation methods](upgrade_guide). You can perform the upgrade ahead of the next release at any time by following the guides.
+      database_deprecation_html: '自 OpenProject 16.0 起，使用 OpenProject 需搭配 PostgreSQL 16。您的安装仍可使用当前数据库正常使用，但预计未来版本将不会兼容。<br/>我们已准备了[所有安装方式的升级指南](upgrade_guide)。在下一版本发布前，您可以随时按照指南执行升级。
 
         '
   authentication:
@@ -676,13 +684,13 @@ zh-CN:
     confirmation_live_message_checked: 继续按钮现已激活。
     confirmation_live_message_unchecked: 继续按钮现已失效。您需要勾选复选框才能继续。
   pagination:
-    label: Pagination
-    prev: Previous
-    prev_page: Previous Page
-    next: Next
-    next_page: Next Page
-    page: Page %{number}
-    page_with_more: Page %{number}...
+    label: 分页
+    prev: 上一个
+    prev_page: 上一页
+    next: 下一个
+    next_page: 下一页
+    page: 第 %{number} 页
+    page_with_more: 第 %{number} 页...
   mcp_configurations:
     server_url_component:
       caption: 可以访问 OpenProject MCP 服务器的 URL。设置 MCP 客户端时需要使用。
@@ -845,10 +853,10 @@ zh-CN:
 
           '
       change_identifier: 更改标识符
-      change_identifier_dialog_title: Change project identifier
-      change_identifier_format_hint_semantic: Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter.
-      change_identifier_format_hint_legacy: Only lowercase letters (a–z), numbers, dashes or underscores.
-      change_identifier_warning: 'This will permanently change identifiers and URLs of all work packages in this project. The previous identifier and URLs will nevertheless continue to redirect properly.
+      change_identifier_dialog_title: 更改项目标识符
+      change_identifier_format_hint_semantic: 只能使用大写字母 (A-Z)、数字或下划线。最多 10 个字符。必须以字母开头。
+      change_identifier_format_hint_legacy: 只能使用小写字母（a-z）、数字、破折号或下划线。
+      change_identifier_warning: '此操作将永久更改此项目中所有工作包的标识符和 URL。之前的标识符和 URL 将继续正常重定向。
 
         '
       subitems:
@@ -1080,9 +1088,9 @@ zh-CN:
     groups:
       member_in_these_groups: 此用户当前是以下组的成员：
       no_results_title_text: 此用户当前不是任何组的成员。
-      summary_with_more_html: Member of %{names} and %{count_link}.
+      summary_with_more_html: "%{names} 和 %{count_link} 的成员。"
       more: 还有 %{count} 个
-      summary_html: Member of %{names}.
+      summary_html: "%{names} 的成员。"
     memberships:
       no_results_title_text: 该用户当前非项目成员。
     open_profile: 人员详情
@@ -1140,60 +1148,64 @@ zh-CN:
         group: 该组现已加入 %{project}。同时，您已经可以与该组一起制定计划并分配工作包等。
     working_hours:
       current_schedule:
-        title: Current schedule
-        work_days: Work days
-        work_hours: Work hours
-        availability_factor: Availability factor
-        availability_subtitle: Dedicated to project work
-        effective_hours: Effective work hours
-        effective_subtitle: Per week
-        not_set: Not set
+        title: 当前日程表
+        work_days: 工作天数
+        work_hours: 工作时数
+        availability_factor: 可用时间系数
+        availability_subtitle: 投入项目工作的时数
+        effective_hours: 有效工作时数
+        effective_subtitle: 每周
+        not_set: 未设置
       future:
-        title: Future schedules
-        description: Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically.
-        add_button: Add future schedule
-        blank_title: No future schedules planned
-        blank_description: Create a future schedule to plan changes ahead of time
+        title: 未来日程表
+        description: 提前计划工作日程表变更。到达指定日期后，您的工作日程表将自动更新。
+        add_button: 添加未来日程表
+        blank_title: 未规划未来时间表
+        blank_description: 创建未来日程表，以提前规划变更
       history:
-        title: Schedule history
-        description: View your past work schedules.
-        blank_title: No schedule history yet
-        blank_description: Past schedule changes will appear here
+        title: 日程表历史
+        description: 查看您过去的工作日程表。
+        blank_title: 尚无日程表历史
+        blank_description: 过去的日程表变更将出现在此处
       destroy:
-        confirm: Are you sure you want to delete this working schedule?
+        confirm: 确定要删除此工作日程表吗？
       form:
-        title: Plan a future work schedule
-        title_current: Edit current work schedule
-        start_date: Start date
-        start_date_caption: Select the date from when the new work schedule will be effective.
-        work_days: Work days
-        working_hours_label: Working hours
-        hours_mode_label: Hours mode
-        same_hours_mode: Same hours per day
-        individual_hours_mode: Individual hours per day
-        work_hours: Work hours
-        hours_per_day: Hours per day
-        per_day: per day
-        per_week: per week
-        total_work_hours: Total work hours
-        availability_description: The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities.
-        availability_factor: Availability factor
-        availability_factor_caption: Define the percentage of your working time dedicated to project work.
-        total_available_hours: Total available work hours
-        title_availability_factor: Availability factor
-        title_days_and_hours: Days and hours
-        title_future_dates: Future dates
+        title: 规划未来工作日程表
+        title_current: 编辑当前工作日程表
+        start_date: 开始日期
+        start_date_caption: 选择新工作日程表的生效日期。
+        work_days: 工作天数
+        working_hours_label: 工作时数
+        hours_mode_label: 小时模式
+        same_hours_mode: 每天相同时数
+        individual_hours_mode: 每天不同时数
+        work_hours: 工作时数
+        hours_per_day: 每天时数
+        per_day: 每天
+        per_week: 每周
+        total_work_hours: 总工作时数
+        availability_description: 可用时间系数表示您实际投入项目任务的工作时间百分比。该时间会计入会议、电子邮件、管理工作及其他非项目活动的时间。
+        availability_factor: 可用时间系数
+        availability_factor_caption: 定义您投入项目工作的工作时间百分比。
+        total_available_hours: 可用工作时数总计
+        title_availability_factor: 可用时间系数
+        title_days_and_hours: 天数和时数
+        title_future_dates: 未来日期
       table:
-        mobile_title: Working schedules
-        start_date: Start date
-        work_days: Work days
-        work_hours: Work hours
-        availability_factor: Availability factor
-        effective_work_hours: Effective work hours
+        mobile_title: 工作日程表
+        start_date: 开始日期
+        work_days: 工作天数
+        work_hours: 工作时数
+        availability_factor: 可用时间系数
+        effective_work_hours: 有效工作时数
         work_days_count:
-          other: "%{count} working days"
+          other: |-
+            One
+            1 个工作日
+            Other
+            %{count} 个工作日
   user_preferences:
-    disable_keyboard_shortcuts_caption: 'You can choose to disable default [keyboard shortcuts](docs_url) if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
+    disable_keyboard_shortcuts_caption: '如果您使用屏幕阅读器或希望避免意外触发快捷键，您可以选择禁用默认[键盘快捷键](docs_url)。
 
       '
   page:
@@ -1204,12 +1216,12 @@ zh-CN:
       '
     delete_tooltip: 删除占位符用户
     deletion_info:
-      heading_html: Delete placeholder user %{name}
+      heading_html: 删除占位符用户 %{name}
       data_consequences: '出现的所有占位符用户（例如，作为受理人、负责人或其他用户值）将被重新分配给一个名为“已删除用户”的帐户。 由于每个已删除帐户的数据都会被重新分配给此帐户，因此无法将用户创建的数据与另一个已删除帐户的数据区分。
 
         '
       irreversible: 此操作不可逆
-      confirmation_html: Enter the placeholder user name %{name} to confirm the deletion.
+      confirmation_html: 输入占位符用户名 %{name} 以确认删除。
   priorities:
     edit:
       priority_color_text: |
@@ -1240,9 +1252,8 @@ zh-CN:
         选中此选项可将具有此状态的工作包排除在层次结构中的 "工时"、
         "剩余工时 "和 "完成百分比 "总数之外。
       status_percent_complete_text_html: |-
-        In [status-based progress calculation mode](setting_url), the % Complete of a work
-        package is automatically set to this value when this status is selected.
-        Ignored in work-based mode.
+        在[基于状态的进度计算模式](setting_url)下，当选择该状态时，工作包的完成进度百分比会自动设置为该值。
+        在基于工作的模式下忽略。
       status_readonly_html: |
         选中此选项将此状态的工作包标记为只读。
         除了状态外，不能更改其他属性。
@@ -1510,7 +1521,7 @@ zh-CN:
       '
     login_with_auth_provider: 或使用您的现有帐户登录
     signup_with_auth_provider: 或注册使用
-    auth_source_login_html: Please login as <em>%{login}</em> to activate your account.
+    auth_source_login_html: 请以 <em>%{login}</em> 身份登录，以激活您的帐户。
     omniauth_login: 请登录以激活您的帐户。
   actionview_instancetag_blank_option: 请选择
   activemodel:
@@ -1520,8 +1531,8 @@ zh-CN:
   activerecord:
     attributes:
       work_package_semantic_alias:
-        identifier: Identifier
-        work_package: Work package
+        identifier: 标识符
+        work_package: 工作包
       jira_import:
         projects: 项目
       import/jira:
@@ -1784,10 +1795,10 @@ zh-CN:
         consented_at: 同意在
       group:
         identity_url: 身份 URL
-        parent: Parent group
-        organizational_unit: Organizational unit
+        parent: 父级组
+        organizational_unit: 组织单元
       group_detail:
-        parent: Parent group
+        parent: 父级组
         organizational_unit: 组织单元
       user_preference:
         header_look_and_feel: 外观和风格
@@ -1836,7 +1847,7 @@ zh-CN:
         saturday_hours: 星期六工作时数
         sunday: 星期日
         sunday_hours: 星期日工作时数
-        availability_factor: 可用时间因素
+        availability_factor: 可用时间系数
         shared_hours: 工作时数
         days: 工作天数
       version:
@@ -3247,11 +3258,11 @@ zh-CN:
           new_features_list:
             line_0: 重大敏捷更新：专用的冲刺对象、在待办清单上显示所有工作包，以及自动创建冲刺面板。
             line_1: 在“项目概览”页面直接编辑项目属性
-            line_2: Sharing of meeting templates (Basic plan and higher).
-            line_3: Better search in Time and Costs, Boards, and more.
-            line_4: Option to safely change project identifiers.
-            line_5: Improved workflow configuration for administrators.
-            line_6: Action boards released to Community.
+            line_2: 共享会议模板（基本方案及更高版本）。
+            line_3: 提升了“时间和成本”、面板等的搜索性能。
+            line_4: 增加了安全更改项目标识符的选项。
+            line_5: 改进管理员的工作流程配置。
+            line_6: 向社区发布操作面板。
     links:
       upgrade_enterprise_edition: 升级到企业版
       postgres_migration: 将您的安装迁移到 PostgreSQL
@@ -3316,15 +3327,15 @@ zh-CN:
         progress_calculation_adjusted: 进度计算自动<a href="%{href}" target="_blank">设置为基于工时的模式，并随版本更新而调整</a>。
         scheduling_mode_adjusted: 随版本更新自动适配调度模式。
         totals_removed_from_childless_work_packages: 使用 <a href="%{href}" target="_blank">版本更新</a>的非父工作包的工作和进度总计自动移除。 这是一个维护任务，可以安全地被忽略。
-        sprint_migration: Version '%{version_name}' has been copied as a sprint.
+        sprint_migration: 版本“%{version_name}”已作为冲刺复制。
       total_percent_complete_mode_changed_to_work_weighted_average: 无工时的子工作包被忽略。
       total_percent_complete_mode_changed_to_simple_average: 忽略子工作包的工时值。
   links:
     configuration_guide: 配置指南
     get_in_touch: 遇到问题了？与我们联系。
-  instructions_after_registration_link: You can sign in as soon as your account has been activated by clicking [here](signin_url).
-  instructions_after_logout_link: You can sign in again by clicking [here](signin_url).
-  instructions_after_error_link: You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help.
+  instructions_after_registration_link: 您的帐户激活后，可点击[此处](signin_url)登录。
+  instructions_after_logout_link: 您可以点击[此处](signin_url)重新登录。
+  instructions_after_error_link: 您可以点击[此处](signin_url)尝试重新登录。如果错误仍然存在，请向您的管理员寻求帮助。
   menus:
     admin:
       ai: 人工智能 (AI)
@@ -3337,9 +3348,9 @@ zh-CN:
       label: 添加…
   my_account:
     notifications_and_email:
-      title: Notification and email
+      title: 通知和电子邮件
       tabs:
-        notifications: Notification settings
+        notifications: 通知设置
         email_reminders: 电子邮件提醒
     access_tokens:
       description: 提供商令牌由 OpenProject 签发，允许其他应用程序访问。客户端令牌由其他应用程序签发，允许 OpenProject 对其进行访问。

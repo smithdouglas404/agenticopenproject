@@ -67,7 +67,7 @@ es:
         No se les pedirá que lo vuelvan a ingresar durante ese período. Solo se puede configurar cuando no se aplica por configuración.
       failed_to_save_settings: 'Error al actualizar la configuración 2FA: %{message}'
     admin:
-      self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
+      self_edit_path_html: Para añadir o modificar tus propios dispositivos de autenticación de dos factores, ve a la [página de autenticación de dos factores de tu cuenta](self_edit_link)
       self_edit_forbidden: No puede editar sus propios dispositivos 2FA en esta ruta. Vaya a Mi cuenta > Autenticación de dos factores en su lugar.
       no_devices_for_user: No se ha registrado ningún dispositivo 2FA para este usuario.
       all_devices_deleted: Todos los dispositivos 2FA de este usuario han sido eliminados
@@ -109,8 +109,8 @@ es:
       failed_to_delete: Error al eliminar el dispositivo 2FA.
       is_default_cannot_delete: El dispositivo está marcado como predeterminado y no se puede eliminar debido a una política de seguridad activa. Marque otro dispositivo como predeterminado antes de eliminar.
       not_existing: No se ha registrado ningún dispositivo 2FA para su cuenta.
-      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input_html: Ingrese el código de su <strong>%{device_name}</strong> para verificar su identidad.
+      2fa_from_webauthn_html: Indique el dispositivo WebAuthn <strong>%{device_name}</strong>. Si es USB asegúrese de conectarlo y tocarlo. A continuación, haga clic en el botón de inicio de sesión.
       webauthn:
         title: WebAuthn
         description: Registre un dispositivo FIDO2 (como YubiKey) o el enclave seguro de su dispositivo móvil.
