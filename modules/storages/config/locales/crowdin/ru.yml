@@ -285,8 +285,8 @@ ru:
           drive_contents: Содержимое диска
           files_request: Получение файлов папки команды
           header: Автоматически управляемые папки проекта
-          project_folders_exist: Project folders exist
-          project_folders_linked: Project folders linked
+          project_folders_exist: Папки проекта существуют
+          project_folders_linked: Папки проекта связаны
           team_folder_app: 'Зависимость: папки команды'
           team_folder_contents: Содержимое папки команды
           team_folder_presence: Папка команды существует

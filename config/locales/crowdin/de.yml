@@ -4034,10 +4034,10 @@ de:
   label_sort_by: Sortiere nach %{value}
   label_sorted_by: sortiert nach %{value}
   label_sort_descending: Sortiere absteigend
-  label_sort_higher: Eins höher
-  label_sort_highest: An den Anfang
-  label_sort_lower: Eins tiefer
-  label_sort_lowest: Ans Ende
+  label_sort_higher: Nach oben verschieben
+  label_sort_highest: Nach ganz oben verschieben
+  label_sort_lower: Nach unten verschieben
+  label_sort_lowest: Nach ganz unten verschieben
   label_spent_time: Aufgewendete Zeit
   label_start_to_end: Anfang bis Ende
   label_start_to_start: Anfang bis Anfang

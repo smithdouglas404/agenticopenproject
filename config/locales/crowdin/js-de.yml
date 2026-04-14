@@ -439,8 +439,8 @@ de:
     label_show_in_menu: Ansicht im Seitenmenü anzeigen
     label_sort_by: Sortieren nach
     label_sorted_by: sortiert nach
-    label_sort_higher: Nach oben bewegen
-    label_sort_lower: Nach unten bewegen
+    label_sort_higher: Nach oben verschieben
+    label_sort_lower: Nach unten verschieben
     label_sorting: Sortierung
     label_spent_time: Aufgewendete Zeit
     label_star_query: Favorisiert

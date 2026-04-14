@@ -212,12 +212,12 @@ de:
         show_all: Alle anzeigen
         apply_to_upcoming_meetings: Wenden Sie diese Änderungen auf alle kommenden Besprechungen in dieser Terminserie an
       text:
-        template: Diese Teilnehmer werden automatisch zu allen zukünftigen Besprechungen eingeladen, sobald diese erstellt werden.
-        manage_participants: Suchen Sie nach Projektmitgliedern, um sie als Teilnehmer zu dieser Besprechung hinzuzufügen.
+        template: Diese Teilnehmenden werden automatisch zu allen zukünftigen Besprechungen eingeladen, sobald diese erstellt werden.
+        manage_participants: Suchen Sie nach Projektmitgliedern, um sie als Teilnehmende zu dieser Besprechung hinzuzufügen.
         search_for_members: Suche nach Projektmitgliedern
       blankslate:
-        heading: Keine Teilnehmer
-        description: Es gibt noch keine Teilnehmer.
+        heading: Keine Teilnehmenden
+        description: Es gibt noch keine Teilnehmenden.
     attachments:
       onetime_template: Diese angehängten Dateien werden bei allen zukünftigen Besprechungen mit dieser Vorlage berücksichtigt.
       series_template: Die angehängten Dateien werden in alle künftigen Besprechungen dieser Terminserie einbezogen.
@@ -309,7 +309,7 @@ de:
           '
         confirm_button: Besprechung absagen
     blankslate:
-      title: Es gibt keine Besprechungen vorhanden
+      title: Es sind keine Besprechungen vorhanden
       desc: Sie können eine neue Besprechung erstellen oder Filterkriterien ändern
     label_export_pdf: PDF exportieren
     export:
@@ -336,9 +336,9 @@ de:
         caption: Dieser Text erscheint auf der ersten Seite links im Seitenkopf.
       author:
         label: Verfasser:in
-        caption: Der/die Verfasser:in des Protokolls wird im Untertitel angezeigt.
+        caption: Die verfassende Person des Protokolls wird im Untertitel angezeigt.
       include_participants:
-        label: Liste der Teilnehmer einfügen
+        label: Liste der Teilnehmenden einfügen
         caption: Eine Liste der Teilnehmer wird oberhalb der Agenda ausgegeben.
       include_attachments:
         label: Liste der Anhänge einfügen
@@ -376,17 +376,17 @@ de:
           disable: E-Mail-Aktualisierungen deaktivieren
       banner:
         participants:
-          enabled: 'Alle Teilnehmer erhalten aktualisierte Kalendereinladungen per E-Mail, wenn Sie Teilnehmer hinzufügen oder entfernen.
+          enabled: 'Alle Teilnehmenden erhalten aktualisierte Kalendereinladungen per E-Mail, wenn Sie Teilnehmende hinzufügen oder entfernen.
 
             '
-          disabled: 'E-Mail-Kalenderaktualisierungen sind deaktiviert. Die Teilnehmer erhalten keine E-Mails bei Änderungen an der Teilnehmerliste.
+          disabled: 'E-Mail-Benachrichtigungen zu Kalenderänderungen sind deaktiviert. Die Teilnehmenden erhalten keine E-Mail, wenn Sie Teilnehmende hinzufügen oder entfernen.
 
             '
           draft_disabled: 'Die Teilnehmer erhalten keine E-Mail, die sie über Änderungen des Datums, der Uhrzeit oder der Teilnehmer der Besprechung informiert.
 
             '
         onetime:
-          enabled: 'Alle Teilnehmer erhalten aktualisierte Kalendereinladungen per E-Mail, wenn Sie Teilnehmer hinzufügen oder entfernen.
+          enabled: 'Alle Teilnehmenden erhalten aktualisierte Kalendereinladungen per E-Mail, wenn Sie Teilnehmende hinzufügen oder entfernen.
 
             '
           disabled: 'Die Teilnehmer erhalten keine E-Mail, die sie über Änderungen des Datums, der Uhrzeit oder der Teilnehmer der Besprechung informiert.
@@ -641,14 +641,14 @@ de:
   label_meeting_close_action: Besprechung schließen
   label_meeting_in_progress_action: Besprechung starten
   label_meeting_open_action: Besprechung öffnen
-  text_meeting_draft_description: Bereiten Sie Ihre Tagesordnung als Entwurf vor. Besprechungen in diesem Modus versenden keine Kalenderaktualisierungen oder Einladungen, selbst wenn Sie Besprechungsdetails ändern oder Teilnehmer hinzufügen/entfernen.
+  text_meeting_draft_description: Bereiten Sie Ihre Tagesordnung als Entwurf vor. Besprechungen in diesem Modus versenden keine Kalenderaktualisierungen oder Einladungen, selbst wenn Sie Besprechungsdetails ändern oder Teilnehmende hinzufügen/entfernen.
   text_meeting_open_description: Sie können Tagesordnungspunkte hinzufügen oder entfernen und bearbeiten. Sobald die Tagesordnung fertig ist, wechseln Sie auf In Durchführung, um Ergebnisse zu dokumentieren.
   text_meeting_closed_description: Diese Besprechung ist abgeschlossen. Sie können keine Tagesordnungspunkte mehr hinzufügen/entfernen.
   text_meeting_in_progress_description: Sie können die Tagesordnung ändern, die Ergebnisse für jeden Agendapunkt dokumentieren und die Anwesenheit der Teilnehmer verfolgen. Sobald die Besprechung abgeschlossen ist, können Sie sie als geschlossen markieren, um sie zu sperren.
   text_meeting_open_dropdown_description: Alle bestehenden Ergebnisse bleiben bestehen, aber die Benutzer werden nicht in der Lage sein, neue Ergebnisse hinzuzufügen.
   text_meeting_in_progress_dropdown_description: Ergebnisse der Besprechung festhalten, wie z. B. Informationsbedarf oder Entscheidungen, die während der Besprechung getroffen werden.
   text_meeting_closed_dropdown_description: Diese Besprechung ist geschlossen. Sie können keine Tagesordnungspunkte mehr hinzufügen/entfernen.
-  text_meeting_draft_banner: Dieses Meeting ist derzeit ein Entwurf. Diese Besprechung sendet keine Kalenderaktualisierungen oder Einladungen, selbst wenn Sie Besprechungsdetails ändern oder Teilnehmer hinzufügen/entfernen.
+  text_meeting_draft_banner: Dieses Meeting ist derzeit ein Entwurf. Diese Besprechung sendet keine Kalenderaktualisierungen oder Einladungen, selbst wenn Sie Besprechungsdetails ändern oder Teilnehmende hinzufügen/entfernen.
   text_onetime_meeting_template_banner: Sie bearbeiten gerade eine Meeting-Vorlage. Sie können diese Vorlage verwenden, um einmalige Besprechungen mit einer vordefinierten Tagesordnung zu erstellen. Änderungen wirken sich nicht auf bereits erstellte Meetings aus.
   text_onetime_meeting_template_empty_heading: Die Vorlage für Besprechungen ist leer
   text_onetime_meeting_template_empty_description: Fügen Sie hier Tagesordnungspunkte, Abschnitte und Anhänge hinzu. Sie werden in jede mit dieser Vorlage erstellte Besprechung aufgenommen.

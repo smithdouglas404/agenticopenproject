@@ -111,7 +111,7 @@ de:
     show_burndown_chart: Burndown-Diagramm
     story: Story
     story_points:
-      one: "%{count} Story-Point"
+      one: "%{count} Story-Punkte"
       other: "%{count} Story-Points"
     task: Aufgabe
     task_color: Farbe für Aufgaben
@@ -133,7 +133,7 @@ de:
       label_story_count:
         zero: Keine Arbeitspakete im Backlog
         one: "%{count} Arbeitspakete im Backlog"
-        other: "%{count} Geschichten im Backlog"
+        other: "%{count} Stories im Backlog"
     inbox_component:
       blankslate_title: Eingangs-Backlog ist leer
       blankslate_description: Alle offenen Arbeitspakete in diesem Projekt werden automatisch hier angezeigt.

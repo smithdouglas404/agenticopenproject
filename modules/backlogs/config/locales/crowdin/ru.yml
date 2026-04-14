@@ -42,7 +42,7 @@ ru:
         duration: Продолжительность спринта
       user_preference:
         backlogs_task_color: Цвет задачи
-        backlogs_versions_default_fold_state: Show sprints folded
+        backlogs_versions_default_fold_state: Покажите спринты в свернутом виде
       work_package:
         backlogs_work_package_type: Тип невыполненной работы
         position: Позиция
@@ -75,8 +75,8 @@ ru:
             base:
               unfinished_work_packages:
                 one: Есть пакет работ %{count}, который не был завершен в этом спринте.
-                few: There are %{count} work packages that were not completed in this sprint.
-                many: There are %{count} work packages that were not completed in this sprint.
+                few: Есть пакеты работ %{count}, которые не были завершены в этом спринте.
+                many: Есть пакеты работ %{count}, которые не были завершены в этом спринте.
                 other: Есть пакеты работ %{count}, которые не были завершены в этом спринте.
               format: "%{message}"
             status:
@@ -89,7 +89,7 @@ ru:
     task_type: Тип задачи
   backlogs:
     any: любой
-    caption_sprints_default_fold_state: Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded.
+    caption_sprints_default_fold_state: Спринты не будут раскрываться по умолчанию при просмотре страницы 'Бэклог и спринты'. Каждый из них должен быть развернут вручную.
     column_width: Ширина столбца
     definition_of_done: Определение термина "Завершено"
     definition_of_done_caption: Пакеты работ с такими статусами рассматриваются как завершенные в представлениях бэклога и отчетах.
@@ -103,9 +103,9 @@ ru:
     work_package_is_closed: Пакет работ завершен, когда
     label_is_done_status: Статус %{status_name} означает завершение,
     points_label:
-      one: point
-      few: points
-      many: points
+      one: точка
+      few: точки
+      many: точки
       other: точки
     positions_could_not_be_rebuilt: Не удалось восстановить позиции.
     positions_rebuilt_successfully: Позиции успешно восстановлены.
@@ -115,8 +115,8 @@ ru:
     show_burndown_chart: Сводная таблица
     story: История
     story_points:
-      one: "%{count} story point"
-      few: "%{count} story points"
+      one: "%{count} сюжетная точка"
+      few: "%{count} сюжетные точки"
       many: "%{count} сюжетные точки"
       other: "%{count} сюжетные точки"
     task: Задача
@@ -146,8 +146,8 @@ ru:
       label_drag_work_package: Переместить %{name}
       show_more:
         one: Показать еще 1 элемент
-        few: Show %{count} more items
-        many: Show %{count} more items
+        few: Показать еще %{count} элементов
+        many: Показать еще %{count} элементов
         other: Показать еще %{count} элементов
     inbox_item_component:
       label_drag_work_package: Переместить %{name}

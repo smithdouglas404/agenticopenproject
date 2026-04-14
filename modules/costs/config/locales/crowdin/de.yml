@@ -235,7 +235,7 @@ de:
       actual_costs:
         title: Tatsächliche Kosten pro Monat
         blankslate:
-          heading: Erfassen Sie Ihre Zeit und Kosten
+          heading: Erfassen Sie Ihre Zeiten und Kosten
           description: Erhalten Sie einen Überblick über Ihre Kosten und protokollierte Zeit, um den Fortschritt Ihres Projekts zu verfolgen. Stellen Sie sicher, dass Arbeitspakete mit dem richtigen Budget verknüpft sind.
           action: Zeit buchen
         view_details: Details zu den tatsächlichen Kosten anzeigen

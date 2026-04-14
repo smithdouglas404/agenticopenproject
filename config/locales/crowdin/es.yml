@@ -5470,7 +5470,7 @@ es:
   note_password_login_disabled_link: El inicio de sesión con contraseña se ha desactivado a través de un [ajuste de configuración](configuration_url).
   warning: Alerta
   warning_attachments_not_saved: "%{count} archivo(s) no podrán ser salvados."
-  warning_imminent_user_limit_html: 'Has invitado a más usuarios de los que admite tu plan actual. Es posible que los usuarios invitados no puedan unirse a tu entorno de OpenProject. [Actualiza tu plan](upgrade_url) o bloquea a los usuarios existentes para que los usuarios invitados y registrados puedan unirse.
+  warning_imminent_user_limit_html: 'Has invitado a más usuarios de los que admite tu plan actual. Es posible que los usuarios invitados no puedan unirse a tu entorno de OpenProject. [Mejora tu plan](upgrade_url) o bloquea a los usuarios existentes para que los usuarios invitados y registrados puedan unirse.
 
     '
   warning_registration_token_expired: 'El e-mail de activación ha expirado. Le enviaremos uno nuevo a %{email}. Por favor haga click en el enlace incluido en el mismo para activar su cuenta.
@@ -5479,7 +5479,7 @@ es:
   warning_user_limit_reached: 'Añadir usuarios adicionales excederá el límite actual. Póngase en contacto con un administrador para aumentar el límite de usuario para asegurar que los usuarios externos puedan acceder a esta instancia.
 
     '
-  warning_user_limit_reached_admin_html: 'Si añades más usuarios, se superará el límite actual. [Actualiza tu plan](upgrade_url) para garantizar que los usuarios externos puedan acceder a esta instancia.
+  warning_user_limit_reached_admin_html: 'Si añades más usuarios, se superará el límite actual. [Mejora tu plan](upgrade_url) para garantizar que los usuarios externos puedan acceder a esta instancia.
 
     '
   warning_user_limit_reached_instructions: 'Has alcanzado el límite de usuarios (%{current}/%{max} usuarios activos). Por favor, contacta con sales@openproject.com para mejorar tu plan de Enterprise y añadir usuarios adicionales.
@@ -5576,7 +5576,7 @@ es:
     warning_user_limit_reached: 'Añadir usuarios adicionales excederá el límite actual. Póngase en contacto con un administrador para aumentar el límite de usuario para asegurar que los usuarios externos puedan acceder a esta %{entity}.
 
       '
-    warning_user_limit_reached_admin_html: 'Si añades más usuarios, se superará el límite actual. [Actualiza tu plan](upgrade_url) para garantizar que los usuarios externos puedan acceder a esta %{entity}.
+    warning_user_limit_reached_admin_html: 'Si añades más usuarios, se superará el límite actual. [Mejora tu plan](upgrade_url) para garantizar que los usuarios externos puedan acceder a esta %{entity}.
 
       '
     warning_no_selected_user: Por favor, seleccione usuarios para compartir esta %{entity} con
