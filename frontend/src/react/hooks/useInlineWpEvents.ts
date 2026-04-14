@@ -37,7 +37,7 @@ type AnyEditor = BlockNoteEditor<any, any, any>;
 type AnyInlineNode = InlineContentFromConfig<any, any>;
 
 interface InlineWpNode {
-  type:'inlineWorkPackage';
+  type:'openProjectWorkPackageInline';
   props:{
     wpid:string;
     instanceId:string;
@@ -52,7 +52,7 @@ function isInlineWpNode(node:unknown): node is InlineWpNode {
   if (typeof node !== 'object' || node === null) return false;
 
   const n = node as Record<string, unknown>;
-  if (n['type'] !== 'inlineWorkPackage') return false;
+  if (n['type'] !== 'openProjectWorkPackageInline') return false;
 
   const props = n['props'];
   if (typeof props !== 'object' || props === null) return false;
@@ -81,6 +81,8 @@ function findInlineChip(editor:AnyEditor, instanceId:string):FoundInlineBlock | 
   editor.forEachBlock((block) => {
     if (found) return false;
 
+    if (!Array.isArray(block.content)) return true; 
+    
     const content = (block.content ?? []) as AnyInlineNode[];
     const chip = content.find(
       (node) => isInlineWpNode(node) && node.props.instanceId === instanceId
@@ -175,7 +177,7 @@ function handlePromoteToBlock(
   updateInlineChip(editor, instanceId, () => null);
 
   const block = {
-    type:'openProjectWorkPackage',
+    type:'openProjectWorkPackageBlock',
     props:{ wpid, initialized:true, size },
   } as Parameters<typeof editor.insertBlocks>[0][number];
 
@@ -205,7 +207,7 @@ function handleConvertToInline(
     type:'paragraph',
     content:[
       {
-        type:'inlineWorkPackage',
+        type:'openProjectWorkPackageInline',
         props:{ wpid:String(wpid), instanceId, size },
       },
     ],
