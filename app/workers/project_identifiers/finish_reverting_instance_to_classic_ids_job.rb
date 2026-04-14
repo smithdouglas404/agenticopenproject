@@ -46,7 +46,7 @@ class ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob < ApplicationJo
   # on_success batch callback with (batch, params) once all per-project jobs
   # have finished.
   def perform(batch = nil, _event = nil)
-    task_id = batch&.properties&.dig("task_id")
+    task_id = batch&.properties&.dig(:task_id)
     BackgroundTask.find(task_id).complete! if task_id.present?
     Setting::WorkPackageIdentifier.enable_classic!
   end

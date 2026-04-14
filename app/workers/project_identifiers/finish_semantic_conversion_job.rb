@@ -40,8 +40,8 @@ class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
   MAX_ATTEMPTS = 3
 
   def perform(batch = nil, _event = nil)
-    task_id = batch&.properties&.dig("task_id")
-    attempt = batch&.properties&.dig("attempt") || 1
+    task_id = batch&.properties&.dig(:task_id)
+    attempt = batch&.properties&.dig(:attempt) || 1
     remaining = ProjectIdentifiers::PendingProjectsFinder.new.project_ids
 
     if remaining.none?
