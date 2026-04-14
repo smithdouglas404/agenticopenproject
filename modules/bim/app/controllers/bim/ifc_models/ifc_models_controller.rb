@@ -217,7 +217,7 @@ module Bim
       end
 
       def find_ifc_model_object
-        @ifc_model = Bim::IfcModels::IfcModel.find_by(id: params[:id])
+        @ifc_model = @project.ifc_models.find(params[:id])
       end
     end
   end
