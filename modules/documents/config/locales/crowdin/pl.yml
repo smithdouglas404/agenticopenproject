@@ -19,43 +19,44 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 pl:
   plugin_openproject_documents:
-    name: "Dokumenty OpenProject"
-    description: "Wtyczka OpenProject umożliwiająca tworzenie dokumentów w projektach."
+    name: Dokumenty OpenProject
+    description: Wtyczka OpenProject umożliwiająca tworzenie dokumentów w projektach.
   attributes:
-    collaborative_editing_hocuspocus_url: "Adres URL serwera Hocuspocus"
+    collaborative_editing_hocuspocus_url: Adres URL serwera Hocuspocus
   activerecord:
     errors:
       models:
         document_type:
-          one_or_more_required: "Nie można usunąć ostatniego typu dokumentu"
+          one_or_more_required: Nie można usunąć ostatniego typu dokumentu
     models:
-      document: "Dokument"
-      documents: "Dokumenty"
+      document: Dokument
+      documents: Dokumenty
     attributes:
       document:
-        content_binary: "Treść binarna"
-        title: "Tytuł"
+        content_binary: Treść binarna
+        title: Tytuł
   activity:
     filter:
-      document: "Dokumenty"
-  default_doc_category_tech: "Dokumentacja techniczna"
-  default_doc_category_user: "Dokumentacja użytkownika"
-  enumeration_doc_categories: "Kategoria dokumentu"
+      document: Dokumenty
+  default_doc_category_tech: Dokumentacja techniczna
+  default_doc_category_user: Dokumentacja użytkownika
+  enumeration_doc_categories: Kategoria dokumentu
   documents:
     page_header:
-      heading: "Wszystkie dokumenty"
+      heading: Wszystkie dokumenty
       action_menu:
-        document_actions: "Działania związane z dokumentami"
-        edit_title: "Edytuj tytuł"
+        document_actions: Działania związane z dokumentami
+        edit_title: Edytuj tytuł
     subheader:
       filter:
-        label: "Filtr nazwy dokumentu"
-        placeholder: "Wpisz tutaj, aby wyszukać nazwy dokumentów"
+        label: Filtr nazwy dokumentu
+        placeholder: Wpisz tutaj, aby wyszukać nazwy dokumentów
     documents_list_blank_slate:
-      heading: "Dokumentów jeszcze nie ma"
-      description: "W tym widoku nie ma żadnych dokumentów. Możesz kliknąć poniższy przycisk, aby je dodać."
+      heading: Dokumentów jeszcze nie ma
+      description: W tym widoku nie ma żadnych dokumentów. Możesz kliknąć poniższy przycisk, aby je dodać.
     document_categories_deprecation_notice:
       heading: Kategorie plików są teraz nazywane „Typami dokumentów”
       description: |-
@@ -63,7 +64,7 @@ pl:
         Wszystkie istniejące dokumenty zostały również migrowane do tych nowych typów.
       primary_action: Skonfiguruj typy dokumentów
       secondary_action: Dowiedz się więcej o module Dokumenty
-    document_type_actions: "Działania związane z typem dokumentów"
+    document_type_actions: Działania związane z typem dokumentów
     text_collaboration_disabled_notice:
       description: |-
         Nie można otworzyć dokumentu, ponieważ współpraca tekstowa w czasie rzeczywistym jest wyłączona.
@@ -71,42 +72,41 @@ pl:
     show_edit_view:
       connection_error_notice:
         description_server_unavailable: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
+          Nie można otworzyć dokumentu, ponieważ serwer współpracy tekstowej w czasie rzeczywistym jest nieosiągalny.
+          Jeśli problem nie ustępuje, skontaktuj się z administratorem.
         action: Spróbuj ponownie
-      tabs: "Karty dokumentów"
+      tabs: Karty dokumentów
     index_page:
-      name: "Nazwa"
-      type: "Typ"
-      updated_at: "Ostatnio edytowano"
-      label_legacy: "Starsze"
+      name: Nazwa
+      type: Typ
+      updated_at: Ostatnio edytowano
+      label_legacy: Starsze
     menu:
-      all: "Wszystkie dokumenty"
-      types: "Typy"
-      collaboration_settings: "Współpraca w czasie rzeczywistym"
-    last_updated_at: "Ostatnio zapisano %{time}."
+      all: Wszystkie dokumenty
+      types: Typy
+      collaboration_settings: Współpraca w czasie rzeczywistym
+    last_updated_at: Ostatnio zapisano %{time}.
     info_line:
-      currently_offline: "You are currently offline."
-      connection_restored: "You are now back online."
-    active_editors: "Aktywni edytorzy"
+      currently_offline: Jesteś obecnie offline.
+      connection_restored: Znów jesteś online.
+    active_editors: Aktywni edytorzy
     active_editors_count:
-      one: "1 aktywny edytor"
+      one: 1 aktywny edytor
       few: "%{count} aktywnych edytorów"
       many: "%{count} aktywnych edytorów"
       other: "%{count} aktywnego edytora"
-    label_attachment_author: "Autor załącznika"
-    label_categories: "Kategorie"
-    new_category: "Nowa kategoria"
-    new_type: "Nowy typ"
+    label_attachment_author: Autor załącznika
+    label_categories: Kategorie
+    new_category: Nowa kategoria
+    new_type: Nowy typ
     delete_dialog:
-      title: "Usuń dokument"
-      heading: "Usunąć ten dokument?"
-      confirmation_message_html: "Spowoduje to trwałe usunięcie tego dokumentu i wszystkich załączników. Czy na pewno tego chcesz?"
+      title: Usuń dokument
+      heading: Usunąć ten dokument?
+      confirmation_message_html: Spowoduje to trwałe usunięcie tego dokumentu i wszystkich załączników. Czy na pewno tego chcesz?
     delete_document_type_dialog:
       title: Usuń typ dokumentu
       heading: Usunąć ten typ dokumentu?
-      confirmation_message: |-
-        Typ „%{type_name}” jest obecnie nieużywany. Usunięcie tego typu nie będzie miało wpływu na istniejące dokumenty.
+      confirmation_message: Typ „%{type_name}” jest obecnie nieużywany. Usunięcie tego typu nie będzie miało wpływu na istniejące dokumenty.
       select_reassign_to_label: Przypisz ponownie dokumenty do
       reassign_message:
         one: Typ „%{type_name}” jest obecnie używany w %{document_count} dokumencie. Wybierz typ, do którego ma zostać ponownie przypisany.
@@ -127,12 +127,12 @@ pl:
           none_writable: Wartości te są konfigurowane za pomocą zmiennych środowiskowych i nie można ich edytować tutaj.
           some_unwritable: Niektóre wartości są konfigurowane za pomocą zmiennych środowiskowych i nie można ich edytować tutaj.
         hocuspocus_server_url:
-          label: "Adres URL serwera Hocuspocus"
-          caption: "Adres WebSocket działającego serwera Hocuspocus."
-          invalid_scheme: "Musi używać protokołu WebSocket (ws:// lub wss://)."
+          label: Adres URL serwera Hocuspocus
+          caption: Adres WebSocket działającego serwera Hocuspocus.
+          invalid_scheme: Musi używać protokołu WebSocket (ws:// lub wss://).
         hocuspocus_server_secret:
-          label: "Klucz tajny klienta"
-          caption: "Wklej klucz tajny dostarczony przez serwer Hocuspocus."
+          label: Klucz tajny klienta
+          caption: Wklej klucz tajny dostarczony przez serwer Hocuspocus.
         hocuspocus_server: Serwer Hocuspocus
       enable_text_collaboration:
         heading: Współpraca w czasie rzeczywistym nie jest włączona
@@ -144,18 +144,17 @@ pl:
       disable_text_collaboration_dialog:
         title: Wyłącz współpracę w czasie rzeczywistym
         heading: Wyłączyć współpracę w czasie rzeczywistym?
-        confirmation_message: |-
-          Wszystkie istniejące dokumenty mogą stać się niedostępne. Zrób to tylko mając pewność, że chcesz wyłączyć współpracę w czasie rzeczywistym i edytor BlockNote w tym wystąpieniu.
+        confirmation_message: Wszystkie istniejące dokumenty mogą stać się niedostępne. Zrób to tylko mając pewność, że chcesz wyłączyć współpracę w czasie rzeczywistym i edytor BlockNote w tym wystąpieniu.
         confirmation_checkbox_message: Rozumiem, że mogę bezpowrotnie utracić dane
         success: Współpraca w czasie rzeczywistym została wyłączona.
-  label_document_added: "Dodano dokument"
-  label_document_new: "Nowy dokument"
-  label_document_plural: "Dokumenty"
-  label_documents: "Dokumenty"
-  label_document_title: "Tytuł"
-  label_document_description: "Opis"
-  label_document_category: "Kategoria"
-  label_document_type: "Typ"
-  permission_manage_documents: "Zarządzanie dokumentami"
-  permission_view_documents: "Zobacz dokumenty"
-  project_module_documents: "Dokumenty"
+  label_document_added: Dodano dokument
+  label_document_new: Nowy dokument
+  label_document_plural: Dokumenty
+  label_documents: Dokumenty
+  label_document_title: Tytuł
+  label_document_description: Opis
+  label_document_category: Kategoria
+  label_document_type: Typ
+  permission_manage_documents: Zarządzanie dokumentami
+  permission_view_documents: Zobacz dokumenty
+  project_module_documents: Dokumenty

@@ -68,10 +68,11 @@ module OpenProject::Backlogs
 
       project_module :backlogs, dependencies: :work_package_tracking do
         permission :view_sprints,
-                   { rb_master_backlogs: %i[index sprint_planning details],
+                   { rb_master_backlogs: %i[index backlog details],
                      rb_sprints: %i[index show show_name],
                      rb_wikis: :show,
-                     rb_stories: %i[index show],
+                     rb_stories: %i[index show menu],
+                     inbox: :menu,
                      rb_queries: :show,
                      rb_burndown_charts: :show,
                      rb_taskboards: :show,
@@ -119,17 +120,17 @@ module OpenProject::Backlogs
       # Menu items that are there when feature flag is active
       menu :project_menu,
            :backlogs,
-           { controller: "/rb_master_backlogs", action: :sprint_planning },
+           { controller: "/rb_master_backlogs", action: :backlog },
            if: Proc.new { |project| project.module_enabled?(:backlogs) && OpenProject::FeatureDecisions.scrum_projects_active? },
            caption: :project_module_backlogs,
            after: :work_packages,
            icon: "op-backlogs"
 
       menu :project_menu,
-           :sprint_planning,
-           { controller: "/rb_master_backlogs", action: :sprint_planning },
+           :backlog,
+           { controller: "/rb_master_backlogs", action: :backlog },
            if: Proc.new { |project| project.module_enabled?(:backlogs) && OpenProject::FeatureDecisions.scrum_projects_active? },
-           caption: :label_sprint_planning,
+           caption: :label_backlog_and_sprints,
            parent: :backlogs
 
       # Menu items that are there when feature flag is inactive
@@ -179,7 +180,8 @@ module OpenProject::Backlogs
         "definitions/UserPreferences/properties",
         {
           "backlogs_task_color" => {
-            "type" => "string"
+            "type" => "string",
+            "pattern" => "^(#[0-9a-fA-F]{6})|(.{0})$"
           },
           "backlogs_versions_default_fold_state" => {
             "type" => "string",
@@ -228,7 +230,6 @@ module OpenProject::Backlogs
 
     config.to_prepare do
       OpenProject::Backlogs::Hooks::LayoutHook
-      OpenProject::Backlogs::Hooks::UserSettingsHook
     end
 
     initializer "openproject_backlogs.event_subscriptions" do

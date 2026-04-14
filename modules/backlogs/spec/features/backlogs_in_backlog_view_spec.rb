@@ -134,7 +134,7 @@ RSpec.describe "Backlogs in backlog view", :js do
     # The backlogs can be folded by default
     visit my_interface_path
 
-    check "Show versions folded"
+    check "Show sprints folded"
 
     click_button "Update backlogs module"
     expect_and_dismiss_flash(message: "Account was successfully updated.")

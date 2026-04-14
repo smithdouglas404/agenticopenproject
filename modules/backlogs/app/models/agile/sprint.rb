@@ -38,7 +38,7 @@ module Agile
     include ::Scopes::Scoped
 
     belongs_to :project
-    has_many :work_packages, dependent: :nullify
+    has_many :work_packages, inverse_of: :sprint, dependent: :nullify
     has_many :task_boards,
              as: :linked,
              class_name: "Boards::Grid",
@@ -87,6 +87,10 @@ module Agile
 
     def task_board_for(project)
       task_boards.find_by(project:)
+    end
+
+    def work_packages_for(project)
+      work_packages.where(project:).order_by_position
     end
 
     def owned_by?(project)

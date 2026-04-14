@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -51,28 +51,50 @@ module Wikis
       def edit; end
 
       def create
-        @wiki_provider = Wikis::XWikiProvider.new(wiki_provider_params)
+        service_result = Wikis::XWikiProviders::CreateService
+          .new(user: current_user)
+          .call(wiki_provider_params)
 
-        if @wiki_provider.save
+        @wiki_provider = service_result.result
+
+        service_result.on_success do
           flash[:notice] = I18n.t(:notice_successful_create)
           redirect_to edit_admin_settings_wiki_provider_path(@wiki_provider)
-        else
+        end
+
+        service_result.on_failure do
           render :new, status: :unprocessable_entity
         end
       end
 
       def update
-        if @wiki_provider.update(wiki_provider_params)
+        service_result = Wikis::XWikiProviders::UpdateService
+          .new(user: current_user, model: @wiki_provider)
+          .call(wiki_provider_params)
+
+        service_result.on_success do
           flash[:notice] = I18n.t(:notice_successful_update)
           redirect_to edit_admin_settings_wiki_provider_path(@wiki_provider)
-        else
+        end
+
+        service_result.on_failure do
           render :edit, status: :unprocessable_entity
         end
       end
 
       def destroy
-        @wiki_provider.destroy!
-        flash[:notice] = I18n.t(:notice_successful_delete)
+        service_result = Wikis::XWikiProviders::DeleteService
+          .new(user: current_user, model: @wiki_provider)
+          .call
+
+        service_result.on_failure do
+          flash[:error] = service_result.errors.full_messages
+        end
+
+        service_result.on_success do
+          flash[:notice] = I18n.t(:notice_successful_delete)
+        end
+
         redirect_to admin_settings_wiki_providers_path
       end
 

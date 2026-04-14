@@ -20,15 +20,16 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See docs/COPYRIGHT.rdoc for more details.
 #++
+---
 vi:
   js:
     gitlab_integration:
       work_packages:
-        tab_name: "GitLab"
+        tab_name: GitLab
       tab_header_issue:
-        title: "vấn đề"
+        title: vấn đề
       tab_header_mr:
-        title: "Hợp nhất các yêu cầu"
+        title: Hợp nhất các yêu cầu
         create_mr:
           label: Tạo MR
           description: Tạo yêu cầu hợp nhất
@@ -40,14 +41,14 @@ vi:
           commit_message: Thông báo cam kết
           cmd: Tạo nhánh với cam kết trống
           title: Mã nhanh cho Git
-          copy_success: '✅ Sao chép!'
-          copy_error: '❌ Sao chép không thành công!'
+          copy_success: "✅ Sao chép!"
+          copy_error: "❌ Sao chép không thành công!"
       tab_issue:
-        empty: 'Chưa có vấn đề nào được liên kết. Liên kết một vấn đề hiện có bằng cách sử dụng mã <code>OP#%{wp_id}</code> (hoặc <code>PP#%{wp_id}_</code> đối với các liên kết riêng tư) trong tiêu đề/mô tả vấn đề hoặc tạo một vấn đề mới.'
+        empty: Chưa có vấn đề nào được liên kết. Liên kết một vấn đề hiện có bằng cách sử dụng mã <code>OP#%{wp_id}</code> (hoặc <code>PP#%{wp_id}_</code> đối với các liên kết riêng tư) trong tiêu đề/mô tả vấn đề hoặc tạo một vấn đề mới.
       tab_mrs:
-        empty: 'Chưa có yêu cầu hợp nhất nào được liên kết. Liên kết MR hiện có bằng cách sử dụng mã <code>OP#%{wp_id}</code> (hoặc <code>PP#%{wp_id}_</code> cho các liên kết riêng tư) trong tiêu đề/mô tả MR hoặc tạo MR mới.'
+        empty: Chưa có yêu cầu hợp nhất nào được liên kết. Liên kết MR hiện có bằng cách sử dụng mã <code>OP#%{wp_id}</code> (hoặc <code>PP#%{wp_id}_</code> cho các liên kết riêng tư) trong tiêu đề/mô tả MR hoặc tạo MR mới.
       gitlab_pipelines: Đường ống
       updated_on: Đã cập nhật vào
     work_packages:
       tabs:
-        gitlab: "GitLab"
+        gitlab: GitLab

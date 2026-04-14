@@ -19,43 +19,44 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 tr:
   plugin_openproject_documents:
-    name: "OpenProject Belgeler"
-    description: "Projelerde belge oluşturulmasına izin veren bir OpenProject eklentisi."
+    name: OpenProject Belgeler
+    description: Projelerde belge oluşturulmasına izin veren bir OpenProject eklentisi.
   attributes:
-    collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+    collaborative_editing_hocuspocus_url: Hocuspocus server URL
   activerecord:
     errors:
       models:
         document_type:
-          one_or_more_required: "Son belge türü silinemiyor"
+          one_or_more_required: Son belge türü silinemiyor
     models:
-      document: "Belge"
-      documents: "Belgeler"
+      document: Belge
+      documents: Belgeler
     attributes:
       document:
-        content_binary: "Binary içerik"
-        title: "Başlık"
+        content_binary: Binary içerik
+        title: Başlık
   activity:
     filter:
-      document: "Belgeler"
-  default_doc_category_tech: "Teknik belgeler"
-  default_doc_category_user: "Kullanıcı belgeleri"
-  enumeration_doc_categories: "Belge kategorileri"
+      document: Belgeler
+  default_doc_category_tech: Teknik belgeler
+  default_doc_category_user: Kullanıcı belgeleri
+  enumeration_doc_categories: Belge kategorileri
   documents:
     page_header:
-      heading: "Tüm belgeler"
+      heading: Tüm belgeler
       action_menu:
-        document_actions: "Doküman hareketleri"
-        edit_title: "Başlığı düzenle"
+        document_actions: Doküman hareketleri
+        edit_title: Başlığı düzenle
     subheader:
       filter:
-        label: "Proje adı filtresi"
-        placeholder: "Belge adlarını aramak için buraya yazın"
+        label: Proje adı filtresi
+        placeholder: Belge adlarını aramak için buraya yazın
     documents_list_blank_slate:
-      heading: "Henüz belge yok"
-      description: "Bu görünümde herhangi bir belge bulunmamaktadır. Eklemek için aşağıdaki butona tıklayabilirsiniz."
+      heading: Henüz belge yok
+      description: Bu görünümde herhangi bir belge bulunmamaktadır. Eklemek için aşağıdaki butona tıklayabilirsiniz.
     document_categories_deprecation_notice:
       heading: Dosya kategorileri artık 'Belge türleri' olarak adlandırılıyor
       description: |-
@@ -63,7 +64,7 @@ tr:
         Mevcut tüm belgeler de bu yeni türlere taşınmıştır.
       primary_action: Belge türlerini yapılandırma
       secondary_action: Belgeler modülü hakkında daha fazla bilgi edinin
-    document_type_actions: "Belge türü eylemleri"
+    document_type_actions: Belge türü eylemleri
     text_collaboration_disabled_notice:
       description: |-
         Gerçek zamanlı metin işbirliği devre dışı bırakıldığı için belge açılamıyor.
@@ -74,37 +75,36 @@ tr:
           Unable to open document because the real-time text collaboration server is unreachable.
           Please contact the administrator if the problem persists.
         action: Tekrar deneyin
-      tabs: "Belge sekmeleri"
+      tabs: Belge sekmeleri
     index_page:
-      name: "İsim"
-      type: "Tür"
-      updated_at: "Son düzenlenen"
-      label_legacy: "Klasik"
+      name: İsim
+      type: Tür
+      updated_at: Son düzenlenen
+      label_legacy: Klasik
     menu:
-      all: "Tüm belgeler"
-      types: "Türler"
-      collaboration_settings: "Gerçek zamanlı işbirliği"
-    last_updated_at: "Son kaydedilen %{time}."
+      all: Tüm belgeler
+      types: Türler
+      collaboration_settings: Gerçek zamanlı işbirliği
+    last_updated_at: Son kaydedilen %{time}.
     info_line:
-      currently_offline: "You are currently offline."
-      connection_restored: "You are now back online."
-    active_editors: "Etkin düzenleyici"
+      currently_offline: You are currently offline.
+      connection_restored: You are now back online.
+    active_editors: Etkin düzenleyici
     active_editors_count:
-      one: "1 aktif editör"
+      one: 1 aktif editör
       other: "%{count} aktif editör"
-    label_attachment_author: "Ek yazar"
-    label_categories: "Kategoriler"
-    new_category: "Yeni kategori"
-    new_type: "Yeni tür"
+    label_attachment_author: Ek yazar
+    label_categories: Kategoriler
+    new_category: Yeni kategori
+    new_type: Yeni tür
     delete_dialog:
-      title: "Belgeyi sil"
-      heading: "Bu belgeyi silelim mi?"
-      confirmation_message_html: "Bu, bu belgeyi ve tüm dosya eklerini kalıcı olarak silecektir. Bunu yapmak istediğinizden emin misiniz?"
+      title: Belgeyi sil
+      heading: Bu belgeyi silelim mi?
+      confirmation_message_html: Bu, bu belgeyi ve tüm dosya eklerini kalıcı olarak silecektir. Bunu yapmak istediğinizden emin misiniz?
     delete_document_type_dialog:
       title: Belge türünü sil
       heading: Bu belge türünü sileyim mi?
-      confirmation_message: |-
-        "%{type_name}" türü şu anda kullanılmamaktadır. Bu türün silinmesinin mevcut belgeler üzerinde hiçbir etkisi olmayacaktır.
+      confirmation_message: '"%{type_name}" türü şu anda kullanılmamaktadır. Bu türün silinmesinin mevcut belgeler üzerinde hiçbir etkisi olmayacaktır.'
       select_reassign_to_label: Belgeleri yeniden atama
       reassign_message:
         one: '"%{type_name}" türü şu anda %{document_count} belgesinde kullanılmaktadır. Lütfen bunları hangi türe yeniden atayacağınızı seçin.'
@@ -123,12 +123,12 @@ tr:
           none_writable: Bu değerler ortam değişkenleri aracılığıyla yapılandırılır ve burada düzenlenemez.
           some_unwritable: Bazı değerler ortam değişkenleri aracılığıyla yapılandırılır ve burada düzenlenemez.
         hocuspocus_server_url:
-          label: "Hocuspocus sunucu URL'si"
-          caption: "The WebSocket address of a working Hocuspocus server."
-          invalid_scheme: "Must use a WebSocket protocol (ws:// or wss://)."
+          label: Hocuspocus sunucu URL'si
+          caption: The WebSocket address of a working Hocuspocus server.
+          invalid_scheme: Must use a WebSocket protocol (ws:// or wss://).
         hocuspocus_server_secret:
-          label: "İstemci anahtarı"
-          caption: "Hocuspocus sunucusu tarafından sağlanan sırrı yapıştırın."
+          label: İstemci anahtarı
+          caption: Hocuspocus sunucusu tarafından sağlanan sırrı yapıştırın.
         hocuspocus_server: Hocuspocus sunucusu
       enable_text_collaboration:
         heading: Gerçek zamanlı işbirliği etkin değil
@@ -146,14 +146,14 @@ tr:
           gerçek zamanlı işbirliğini ve BlockNote düzenleyicisini bu durumda devre dışı bırakmak istediğinizden eminseniz yapın.
         confirmation_checkbox_message: Verileri kalıcı olarak kaybedebileceğimi anlıyorum
         success: Gerçek zamanlı işbirliği devre dışı bırakıldı.
-  label_document_added: "Belge eklendi"
-  label_document_new: "Yeni belge"
-  label_document_plural: "Belgeler"
-  label_documents: "Belgeler"
-  label_document_title: "Başlık"
-  label_document_description: "Açıklama"
-  label_document_category: "Kategori"
-  label_document_type: "Tür"
-  permission_manage_documents: "Belgeleri yönetme"
-  permission_view_documents: "Belgeleri görüntüleme"
-  project_module_documents: "Belgeler"
+  label_document_added: Belge eklendi
+  label_document_new: Yeni belge
+  label_document_plural: Belgeler
+  label_documents: Belgeler
+  label_document_title: Başlık
+  label_document_description: Açıklama
+  label_document_category: Kategori
+  label_document_type: Tür
+  permission_manage_documents: Belgeleri yönetme
+  permission_view_documents: Belgeleri görüntüleme
+  project_module_documents: Belgeler

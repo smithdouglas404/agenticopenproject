@@ -67,5 +67,15 @@ RSpec.describe RbStoriesController do
         id: "85"
       )
     }
+
+    it {
+      expect(get("/projects/project_42/sprints/21/stories/85/menu")).to route_to(
+        controller: "rb_stories",
+        action: "menu",
+        project_id: "project_42",
+        sprint_id: "21",
+        id: "85"
+      )
+    }
   end
 end

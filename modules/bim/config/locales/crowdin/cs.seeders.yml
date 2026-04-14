@@ -205,7 +205,7 @@ cs:
                   name: Milníky
           work_packages:
             item_0:
-              subject: Projekt kickoff stavební 
+              subject: Projekt kickoff stavební
               description: |-
                 Kickoff projektu inicializuje zahájení projektu ve vaší společnosti. Všichni, kdo jsou součástí tohoto projektu, by měli být pozváni na zahájení na první briefing.
 
@@ -364,8 +364,7 @@ cs:
                     *   ...
                 item_4:
                   subject: Instalace servisních systémů budovy
-                  description: |-
-
+                  description: ''
                 item_5:
                   subject: Závěrečné úpravy
                   description: |-

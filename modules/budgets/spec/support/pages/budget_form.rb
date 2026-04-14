@@ -61,7 +61,11 @@ module Pages
 
       fill_in("#{prefix}_units", with: units, **options) if units.present?
       fill_in("#{prefix}_comments", with: comment, **options) if comment.present?
-      expect(page).to have_css("##{prefix}_costs", text: expected_costs) if expected_costs.present?
+
+      if expected_costs.present?
+        wait_for_network_idle
+        expect(page).to have_css("##{prefix}_costs", text: expected_costs)
+      end
     end
 
     def open_edit_planned_costs!(id, type:)
@@ -102,7 +106,10 @@ module Pages
       select user_name, from: "#{prefix}_user_id" if user_name.present?
       fill_in("#{prefix}_comments", with: comment, **options) if comment.present?
 
-      expect(page).to have_css("##{prefix}_costs", text: expected_costs) if expected_costs.present?
+      if expected_costs.present?
+        wait_for_network_idle
+        expect(page).to have_css("##{prefix}_costs", text: expected_costs)
+      end
     end
 
     def add_unit_costs_row!

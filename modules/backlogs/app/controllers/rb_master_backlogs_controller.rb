@@ -35,23 +35,23 @@ class RbMasterBacklogsController < RbApplicationController
   menu_item :backlogs_legacy
 
   # With the feature flag, we have a proper menu, select the correct sub entry
-  current_menu_item [:sprint_planning] do
-    :sprint_planning
+  current_menu_item [:backlog] do
+    :backlog
   end
 
-  before_action :not_authorized_on_feature_flag_inactive, only: :sprint_planning
-  before_action :load_backlogs, only: %i[index sprint_planning]
+  before_action :not_authorized_on_feature_flag_inactive, only: :backlog
+  before_action :load_backlogs, only: %i[index backlog]
 
-  def sprint_planning
+  def backlog
     if turbo_frame_request?
-      render partial: "sprint_planning_list", layout: false
+      render partial: "backlog_list", layout: false
     else
-      render :sprint_planning
+      render :backlog
     end
   end
 
   def index
-    return redirect_to action: :sprint_planning if OpenProject::FeatureDecisions.scrum_projects_active?
+    return redirect_to action: :backlog if OpenProject::FeatureDecisions.scrum_projects_active?
 
     if turbo_frame_request?
       render partial: "list", layout: false
@@ -67,7 +67,7 @@ class RbMasterBacklogsController < RbApplicationController
       load_backlogs
 
       if OpenProject::FeatureDecisions.scrum_projects_active?
-        render :sprint_planning
+        render :backlog
       else
         render :index
       end
@@ -76,7 +76,7 @@ class RbMasterBacklogsController < RbApplicationController
 
   def split_view_base_route
     if OpenProject::FeatureDecisions.scrum_projects_active?
-      sprint_planning_backlogs_project_backlogs_path(request.query_parameters)
+      backlog_backlogs_project_backlogs_path(request.query_parameters)
     else
       backlogs_project_backlogs_path(request.query_parameters)
     end
@@ -89,6 +89,11 @@ class RbMasterBacklogsController < RbApplicationController
 
     if OpenProject::FeatureDecisions.scrum_projects_active?
       @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
+      @stories_by_sprint_id = WorkPackage
+        .where(sprint: @sprints, project: @project)
+        .includes(:type, :status)
+        .order_by_position
+        .group_by(&:sprint_id)
       @active_sprint_ids = @sprints.select(&:active?).map(&:id)
       @inbox_work_packages = Backlog.inbox_for(project: @project)
     else

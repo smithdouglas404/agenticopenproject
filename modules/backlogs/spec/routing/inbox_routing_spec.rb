@@ -49,5 +49,14 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
         id: "85"
       )
     }
+
+    it {
+      expect(get("/projects/project_42/inbox/85/menu")).to route_to(
+        controller: "inbox",
+        action: "menu",
+        project_id: "project_42",
+        id: "85"
+      )
+    }
   end
 end
