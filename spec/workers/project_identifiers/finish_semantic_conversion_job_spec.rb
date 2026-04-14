@@ -50,8 +50,9 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
       end
 
       it "does not re-run the conversion job" do
-        expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to receive(:new)
+        allow(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to receive(:new)
         job.perform
+        expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to have_received(:new)
       end
     end
 

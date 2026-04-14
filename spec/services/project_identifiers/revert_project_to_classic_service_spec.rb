@@ -62,7 +62,9 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
       end
       let!(:wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 1, identifier: "MYAPP-1") } }
       let!(:other_project) { create(:project).tap { |p| p.update_columns(identifier: "OTHER") } }
-      let!(:other_wp) { create(:work_package, project: other_project).tap { |w| w.update_columns(sequence_number: 1, identifier: "OTHER-1") } }
+      let!(:other_wp) do
+        create(:work_package, project: other_project).tap { |w| w.update_columns(sequence_number: 1, identifier: "OTHER-1") }
+      end
 
       before do
         WorkPackageSemanticAlias.create!(identifier: "MYAPP-1", work_package: wp)
