@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bundle exec:*)",
+      "Read(//Users/shiroginne/**)",
+      "Bash(gh pr:*)"
+    ]
+  }
+}

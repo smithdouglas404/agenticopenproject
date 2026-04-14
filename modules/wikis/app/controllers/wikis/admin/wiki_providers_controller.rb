@@ -60,7 +60,7 @@ module Wikis
 
       def create
         service_result = Wikis::XWikiProviders::CreateService
-          .new(user: current_user)
+          .new(user: current_user, contract_class: current_step_contract)
           .call(wiki_provider_params)
 
         @wiki_provider = service_result.result
@@ -70,19 +70,17 @@ module Wikis
         end
 
         service_result.on_failure do
-          @wizard = wiki_provider_wizard(@wiki_provider)
-          @target_step = @wizard.foresee_next_step
-          render :new, status: :unprocessable_entity
+          render_step_form(@wiki_provider)
         end
       end
 
       def update
         service_result = Wikis::XWikiProviders::UpdateService
-          .new(user: current_user, model: @wiki_provider)
+          .new(user: current_user, model: @wiki_provider, contract_class: current_step_contract)
           .call(wiki_provider_params)
 
         service_result.on_success { update_success }
-        service_result.on_failure { update_failure }
+        service_result.on_failure { render_step_form(@wiki_provider) }
       end
 
       def destroy
@@ -134,11 +132,21 @@ module Wikis
         end
       end
 
-      def update_failure
-        origin_step = params[:origin_component]&.to_sym
-        @wizard = wiki_provider_wizard(@wiki_provider)
-        @target_step = origin_step || @wizard.foresee_next_step
-        render :edit, status: :unprocessable_entity
+      def render_step_form(wiki_provider)
+        step = current_step_name
+        in_wizard = params[:continue_wizard].present?
+        component = Wikis::Adapters::Registry.resolve("#{wiki_provider}.components.forms.#{step}")
+                                             .new(wiki_provider, in_wizard:)
+        update_via_turbo_stream(component:)
+        respond_with_turbo_streams
+      end
+
+      def current_step_contract
+        Wikis::Adapters::Registry.resolve("xwiki.contracts.#{current_step_name}")
+      end
+
+      def current_step_name
+        params[:origin_component].presence || "general_information"
       end
 
       def find_wiki_provider

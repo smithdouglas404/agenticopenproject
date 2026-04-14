@@ -28,13 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module XWikiProviders
-    class GeneralInformationContract < BaseContract
-      attribute :authentication_method
-      validates :authentication_method,
-                inclusion: { in: Wikis::XWikiProvider::AUTHENTICATION_METHODS },
-                allow_nil: false
+require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
+
+RSpec.describe Wikis::XWikiProviders::GeneralInformationContract do
+  include_context "ModelContract shared context"
+
+  let(:wiki_provider) { build_stubbed(:xwiki_provider) }
+  let(:contract) { described_class.new(wiki_provider, current_user) }
+
+  it_behaves_like "contract is valid for active admins and invalid for regular users"
+
+  describe "authentication_method" do
+    let(:current_user) { build_stubbed(:admin) }
+
+    context "when blank" do
+      let(:wiki_provider) { build_stubbed(:xwiki_provider, authentication_method: nil) }
+
+      include_examples "contract is invalid", authentication_method: :blank
+    end
+
+    context "when not a known method" do
+      let(:wiki_provider) { build_stubbed(:xwiki_provider, authentication_method: "unknown") }
+
+      include_examples "contract is invalid", authentication_method: :inclusion
+    end
+
+    Wikis::XWikiProvider::AUTHENTICATION_METHODS.each do |method|
+      context "when #{method}" do
+        let(:wiki_provider) { build_stubbed(:xwiki_provider, authentication_method: method) }
+
+        include_examples "contract is valid"
+      end
     end
   end
 end
