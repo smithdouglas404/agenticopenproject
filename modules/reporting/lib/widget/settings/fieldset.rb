@@ -38,7 +38,7 @@ class Widget::Settings::Fieldset < Widget::Base
 
   def render(&)
     write(
-      render_view_component Primer::OpenProject::CollapsibleSection.new(id: @id, display: :block, mb: 3) do |section|
+      render_view_component(Primer::OpenProject::CollapsibleSection.new(id: @id, display: :block, mb: 3)) do |section|
         section.with_title(tag: :h3) { I18n.t(@label) }
         section.with_collapsible_content(&)
       end
