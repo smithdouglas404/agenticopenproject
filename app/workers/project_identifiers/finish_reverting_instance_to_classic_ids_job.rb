@@ -28,16 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Setting
-  module WorkPackageIdentifier
-    CLASSIC  = "classic"
-    SEMANTIC = "semantic"
-    ALLOWED_VALUES = [CLASSIC, SEMANTIC].freeze
+# Reverts all projects to classic identifier mode by enqueuing a
+# RevertProjectToClassicIdsJob for every project. Triggered either:
+#
+# * Automatically when ConvertInstanceToSemanticIdsJob exhausts MAX_ITERATIONS.
+# * Explicitly when the admin switches the instance back to classic mode via
+#   the admin UI (Admin::Settings::WorkPackagesIdentifierController#switch_to_classic).
+#
+# The global Setting.work_packages_identifier is expected to already be "classic"
+# before this job runs — it is set by the caller in both trigger paths.
+class ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
 
-    def self.semantic? = Setting[:work_packages_identifier] == SEMANTIC
-    def self.classic?  = Setting[:work_packages_identifier] == CLASSIC
-    def self.semantic_mode_active? = semantic? && OpenProject::FeatureDecisions.semantic_work_package_ids_active?
-    def self.enable_semantic! = Setting.work_packages_identifier = SEMANTIC
-    def self.enable_classic! = Setting.work_packages_identifier = CLASSIC
+  good_job_control_concurrency_with(total_limit: 1)
+
+  # Called directly (no args) for the initial dispatch, or by GoodJob as an
+  # on_success batch callback with (batch, params) once all per-project jobs
+  # have finished.
+  def perform(_batch = nil, params = nil)
+    Setting::WorkPackageIdentifier.enable_classic!
   end
 end

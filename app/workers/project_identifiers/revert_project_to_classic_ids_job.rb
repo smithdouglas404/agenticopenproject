@@ -28,16 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Setting
-  module WorkPackageIdentifier
-    CLASSIC  = "classic"
-    SEMANTIC = "semantic"
-    ALLOWED_VALUES = [CLASSIC, SEMANTIC].freeze
+class ProjectIdentifiers::RevertProjectToClassicIdsJob < ApplicationJob
+  discard_on ActiveRecord::RecordNotFound
 
-    def self.semantic? = Setting[:work_packages_identifier] == SEMANTIC
-    def self.classic?  = Setting[:work_packages_identifier] == CLASSIC
-    def self.semantic_mode_active? = semantic? && OpenProject::FeatureDecisions.semantic_work_package_ids_active?
-    def self.enable_semantic! = Setting.work_packages_identifier = SEMANTIC
-    def self.enable_classic! = Setting.work_packages_identifier = CLASSIC
+  def perform(project_id)
+    ProjectIdentifiers::RevertProjectToClassicService.new(Project.find(project_id)).call
   end
 end

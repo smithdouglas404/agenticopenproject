@@ -47,7 +47,7 @@
           if change_in_progress?
             render(Primer::Beta::Text.new(my: 3)) do
               render(Primer::Beta::Spinner.new(size: :small, mr: 2)).to_s +
-                I18n.t("admin.settings.work_packages_identifier.in_progress.banner_message")
+                in_progress_banner_message
             end
           elsif completed?
             render(Primer::Alpha::Banner.new(scheme: :success, dismiss_scheme: :remove, mb: 3)) do
