@@ -28,19 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ProjectIdentifiers::RevertInstanceToClassicIdsJob < ApplicationJob
-  include GoodJob::ActiveJobExtensions::Concurrency
+# GoodJob on_success callback invoked after a ConvertInstanceToSemanticIdsJob
+# batch completes. Performs a sanity check for any projects that were created
+# or missed during the batch run:
+#
+# * No projects remaining → enable semantic mode on the instance.
+# * Projects still pending → synchronously kick off ConvertInstanceToSemanticIdsJob
+#   again (which registers this job as its own on_success callback), then enable
+#   semantic mode so the next callback pass can confirm the clean state.
+class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
+  def perform(*)
+    remaining = ProjectIdentifiers::PendingProjectsFinder.new.project_ids
 
-  good_job_control_concurrency_with(total_limit: 1)
+    ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.new.perform if remaining.any?
 
-  # The BackgroundTask is created by the caller in pending state; this job transitions
-  # it to processing before dispatching the per-project batch.
-  # task_id is passed through to FinishRevertingInstanceToClassicIdsJob via batch properties.
-  def perform(task_id)
-    BackgroundTask.find(task_id).start!
-    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob,
-                           task_id:) do
-      Project.ids.each { |id| ProjectIdentifiers::RevertProjectToClassicIdsJob.perform_later(id) }
-    end
+    Setting::WorkPackageIdentifier.enable_semantic!
   end
 end
