@@ -31,7 +31,7 @@ OpenProject 17.3 introduces several improvements to agile planning and execution
 ![OpenProject Backlogs module in version 17.3: Divided into Backlog and Sprints](17-3-backlogs-sprint-planning.png)
 
 > [!IMPORTANT]
-> If you are already working with the Backlogs module, you will notice updates to the layout and behavior when updating to OpenProject 17.3. All existing data will be preserved, and no manual action is required.
+> If you are already working with the Backlogs module, you will notice updates to the layout and behavior when updating to OpenProject 17.3. All existing data will be preserved, and no manual action is required. To learn more about the reason behind these changes, please see [this blog article by our head of product](https://www.openproject.org/blog/agile-updates/).
 
 #### Dedicated sprint objects
 
