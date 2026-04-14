@@ -59,6 +59,10 @@ Active sprints can now be completed directly from the sprint view, making it eas
 
 Remaining work can be moved to the backlog or reassigned to another sprint, helping teams to continue their work without manual adjustments.
 
+---
+
+[See our documentation to learn more about backlog and sprints with OpenProject](../../user-guide/backlogs-scrum/).
+
 ### Action boards available in the Community edition
 
 With the improvements to agile planning features such as sprints and backlogs, boards play a central role in organizing and tracking work. To support this, [all action board types](../../user-guide/agile-boards/#choose-between-board-types) are now available in the Community edition.
