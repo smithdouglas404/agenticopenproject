@@ -276,5 +276,28 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js do
         end
       end
     end
+
+    context "without being a member in a project at all" do
+      let!(:query) { build(:global_query, user: current_user) }
+      let!(:project_where_user_is_no_member) { create(:project) }
+      let!(:sprint_that_user_cannot_see) { create(:agile_sprint, project: project_where_user_is_no_member) }
+      let!(:work_package_that_user_cannot_see) do
+        create(:work_package, project: project_where_user_is_no_member, sprint: sprint_that_user_cannot_see)
+      end
+
+      context "when grouping" do
+        let(:group_by) { :sprint }
+
+        it "ignores work packages from projects you cannot see" do
+          wp_table.ensure_work_package_not_listed!(work_package_that_user_cannot_see)
+          wp_table.expect_groups({
+                                   other_sprint.name => 1,
+                                   sprint.name => 1,
+                                   sprint_from_other_project.name => 1,
+                                   "-" => 2 # There are 3 work packages here, but the user only sees 2
+                                 })
+        end
+      end
+    end
   end
 end
