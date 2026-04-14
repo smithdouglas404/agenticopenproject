@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,28 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Backlog
-  extend ActiveModel::Naming
+require "spec_helper"
 
-  attr_accessor :sprint, :stories
-
-  delegate :id, to: :sprint, prefix: true
-
-  def self.inbox_for(project:)
-    WorkPackage
-      .visible
-      .with_status_open
-      .where(project:, sprint_id: nil)
-      .includes(:type)
-      .order(WorkPackage.arel_table[:position].asc.nulls_last, WorkPackage.arel_table[:id].asc)
-  end
-
-  def initialize(sprint:, stories:)
-    @sprint = sprint
-    @stories = stories
-  end
-
-  def to_key
-    [sprint_id]
+RSpec.describe OpenProject::Backlogs::Engine do
+  describe ".settings" do
+    it "keeps only the burn direction plugin setting" do
+      expect(described_class.settings).to eq(
+        default: {
+          "points_burn_direction" => "up"
+        },
+        menu_item: :backlogs_settings
+      )
+    end
   end
 end

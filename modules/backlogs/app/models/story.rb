@@ -28,35 +28,4 @@
 
 class Story < WorkPackage
   extend OpenProject::Backlogs::Mixins::PreventIssueSti
-
-  def self.types
-    types = Setting.plugin_openproject_backlogs["story_types"]
-    return [] if types.blank?
-
-    types.map { |type| Integer(type) }
-  end
-
-  def tasks
-    Task.children_of(id).order(:position)
-  end
-
-  def set_points(p)
-    init_journal(User.current)
-
-    if p.blank? || p == "-"
-      update_attribute(:story_points, nil)
-      return
-    end
-
-    if p.downcase == "s"
-      update_attribute(:story_points, 0)
-      return
-    end
-
-    p = Integer(p)
-    if p >= 0
-      update_attribute(:story_points, p)
-      nil
-    end
-  end
 end

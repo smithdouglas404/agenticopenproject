@@ -39,10 +39,7 @@ module OpenProject::Backlogs
     def self.settings
       {
         default: {
-          "story_types" => nil,
-          "task_type" => nil,
-          "points_burn_direction" => "up",
-          "wiki_template" => ""
+          "points_burn_direction" => "up"
         },
         menu_item: :backlogs_settings
       }

@@ -94,9 +94,6 @@ en:
     models:
       sprint: "Sprint"
 
-  attributes:
-    task_type: "Task type"
-
   backlogs:
     caption_sprints_default_fold_state: "Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded."
     definition_of_done: "Definition of Done"
