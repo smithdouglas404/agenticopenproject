@@ -61,6 +61,16 @@ GIT
       parallel_tests (>= 3.3.0, < 5)
       rspec (>= 3.10)
 
+GIT
+  remote: https://github.com/pry/pry.git
+  revision: 135640262879544c6bfecbf3e78511289bfe956c
+  ref: 135640262879544c6bfecbf3e78511289bfe956c
+  specs:
+    pry (0.16.0)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+      reline (>= 0.6.0)
+
 PATH
   remote: modules/auth_plugins
   specs:
@@ -1168,10 +1178,6 @@ GEM
       bigdecimal
       logger
       rb_sys (~> 0.9.124)
-    pry (0.16.0)
-      coderay (~> 1.1)
-      method_source (~> 1.0)
-      reline (>= 0.6.0)
     pry-byebug (3.12.0)
       byebug (~> 13.0)
       pry (>= 0.13, < 0.17)
@@ -1708,6 +1714,7 @@ DEPENDENCIES
   pg (~> 1.6.2)
   plaintext (~> 0.3.7)
   prawn (~> 2.4)
+  pry!
   pry-byebug (~> 3.12.0)
   pry-rails (~> 0.3.6)
   pry-rescue (~> 1.6.0)
@@ -2169,7 +2176,7 @@ CHECKSUMS
   prometheus-client-mmap (1.5.0-x86_64-darwin) sha256=96d360bbffc5603f8322a0b8c3353cf531c06410cf80dbdeda46efbd27a6a5a2
   prometheus-client-mmap (1.5.0-x86_64-linux-gnu) sha256=2f5e7be72ea0b8bddd0e6a123e8f2468d7e2bdfa664a4d355fec4ed4f659d457
   prometheus-client-mmap (1.5.0-x86_64-linux-musl) sha256=4673196ca44feb6db5eb63d5248feea32ffaae851f7861eee25218ccf7057ef4
-  pry (0.16.0) sha256=d76c69065698ed1f85e717bd33d7942c38a50868f6b0673c636192b3d1b6054e
+  pry (0.16.0)
   pry-byebug (3.12.0) sha256=594e094ae8a8390a7ad4c7b36ae36e13304ed02664c67417d108dc5f7213d1b7
   pry-rails (0.3.11) sha256=a69e28e24a34d75d1f60bcf241192a54253f8f7ef8a62cba1e75750a9653593d
   pry-rescue (1.6.0) sha256=985bfd506d9866b587fd86790cf8445266a41b7f92c627fc5b21ec7d92aba6db
