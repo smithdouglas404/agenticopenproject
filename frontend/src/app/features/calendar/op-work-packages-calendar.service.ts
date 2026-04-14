@@ -289,6 +289,12 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     Turbo.visit(link, { frame: 'content-bodyRight', action: 'advance' });
   }
 
+  public openSplitCreate():void {
+    const basePath = window.location.pathname.replace(/\/details\/.*$/, '');
+    const link = `${basePath}/details/new${window.location.search}`;
+    Turbo.visit(link, { frame: 'content-bodyRight', action: 'advance' });
+  }
+
   public openFullView(id:string):void {
     this.wpTableSelection.setSelection(id, -1);
     Turbo.visit(this.pathHelper.workPackagePath(id));

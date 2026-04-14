@@ -28,22 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages::SplitViewHelper
-  def render_work_package_split_view?
-    params[:work_package_split_view].present?
-  end
+class WorkPackages::SplitCreateComponent < ApplicationComponent
+  def initialize(project_identifier:)
+    super
 
-  def render_work_package_split_create?
-    params[:work_package_split_create].present?
-  end
-
-  def split_create_instance
-    WorkPackages::SplitCreateComponent.new(project_identifier: params[:project_id])
-  end
-
-  def split_view_instance
-    WorkPackages::SplitViewComponent.new(id: params[:work_package_id],
-                                         tab: params[:tab],
-                                         base_route: split_view_base_route)
+    @project_identifier = project_identifier
   end
 end

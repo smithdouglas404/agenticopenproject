@@ -36,6 +36,7 @@ module ::Calendar
     before_action :authorize_global, only: %i[index create]
     before_action :authorize_new, only: %i[new]
     authorization_checked! :new
+    authorize_with_permission :add_work_packages, only: %i[split_create]
 
     before_action :find_calendar, only: %i[show split_view destroy]
     menu_item :calendar_view
@@ -59,6 +60,18 @@ module ::Calendar
         format.html do
           if turbo_frame_request?
             render "work_packages/split_view", layout: false
+          else
+            render :show
+          end
+        end
+      end
+    end
+
+    def split_create
+      respond_to do |format|
+        format.html do
+          if turbo_frame_request?
+            render "work_packages/split_create", layout: false
           else
             render :show
           end

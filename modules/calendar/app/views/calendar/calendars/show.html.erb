@@ -36,4 +36,5 @@ See COPYRIGHT and LICENSE files for more details.
 <% content_for :content_body_right do %>
   <%= turbo_stream.set_title(title: page_title(*html_title_parts)) if turbo_frame_request? %>
   <%= render(split_view_instance) if render_work_package_split_view? %>
+  <%= render(split_create_instance) if render_work_package_split_create? %>
 <% end %>
