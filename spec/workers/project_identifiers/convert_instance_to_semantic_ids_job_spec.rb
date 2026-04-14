@@ -38,6 +38,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
   subject(:job) { described_class.new }
 
   let(:finder) { instance_double(ProjectIdentifiers::PendingProjectsFinder) }
+  let(:task) { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_CONVERSION) }
 
   before do
     allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:new).and_return(finder)
@@ -47,15 +48,20 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
     context "when there is nothing to backfill" do
       before { allow(finder).to receive(:project_ids).and_return(Set.new) }
 
+      it "transitions the task from pending to processing" do
+        expect { job.perform(nil, { task_id: task.id }) }
+          .to change { task.reload.status }.from(BackgroundTask::PENDING).to(BackgroundTask::PROCESSING)
+      end
+
       it "flips the setting to semantic" do
         allow(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
-        job.perform
+        job.perform(nil, { task_id: task.id })
         expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
       end
 
       it "does not create a batch" do
         allow(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
-        job.perform
+        job.perform(nil, { task_id: task.id })
         expect(GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name)).not_to exist
       end
     end
@@ -63,7 +69,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
     context "when projects need backfill" do
       before do
         allow(finder).to receive(:project_ids).and_return(Set[1, 2])
-        job.perform
+        job.perform(nil, { task_id: task.id })
       end
 
       it "enqueues one BackfillProjectJob per pending project" do
@@ -73,12 +79,19 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
 
     # Callback path — invoked by GoodJob as an on_success batch callback after BackfillProjectJobs finish.
     context "when called as a batch callback (iteration >= 1)" do
+      before { task.start! }
+
       context "when no projects remain unprocessed" do
         before { allow(finder).to receive(:project_ids).and_return(Set.new) }
 
+        it "does not call start! again (task is already processing)" do
+          expect(task).not_to receive(:start!)
+          job.perform(nil, { task_id: task.id, iteration: 1 })
+        end
+
         it "flips the setting to semantic" do
           allow(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
-          job.perform(nil, {})
+          job.perform(nil, { task_id: task.id, iteration: 1 })
           expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
         end
       end
@@ -87,12 +100,12 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
         before { allow(finder).to receive(:project_ids).and_return(Set[1]) }
 
         it "does not flip the setting" do
-          job.perform(nil, {})
+          job.perform(nil, { task_id: task.id, iteration: 1 })
           expect(Setting.work_packages_identifier).not_to eq(Setting::WorkPackageIdentifier::SEMANTIC)
         end
 
         it "re-enqueues BackfillProjectJobs for the remaining projects" do
-          job.perform(nil, {})
+          job.perform(nil, { task_id: task.id, iteration: 1 })
           expect(GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name).count).to eq(1)
         end
       end
@@ -101,14 +114,19 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
         before { allow(finder).to receive(:project_ids).and_return(Set[1]) }
 
         it "does not flip the setting and triggers a revert" do
-          job.perform(nil, { iteration: described_class::MAX_ITERATIONS })
+          job.perform(nil, { task_id: task.id, iteration: described_class::MAX_ITERATIONS })
           expect(Setting.work_packages_identifier).not_to eq(Setting::WorkPackageIdentifier::SEMANTIC)
           expect(GoodJob::Job.where(job_class: ProjectIdentifiers::RevertInstanceToClassicIdsJob.name)).to exist
         end
 
+        it "creates a SEMANTIC_ID_REVERSION task before triggering the revert" do
+          expect { job.perform(nil, { task_id: task.id, iteration: described_class::MAX_ITERATIONS }) }
+            .to change { BackgroundTask.where(task_type: BackgroundTask::SEMANTIC_ID_REVERSION).count }.by(1)
+        end
+
         it "logs an error before triggering the revert" do
           allow(Rails.logger).to receive(:error)
-          job.perform(nil, { iteration: described_class::MAX_ITERATIONS })
+          job.perform(nil, { task_id: task.id, iteration: described_class::MAX_ITERATIONS })
           expect(Rails.logger).to have_received(:error).with(a_string_including("max iterations"))
         end
       end
@@ -116,11 +134,11 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
       context "when remaining items exist and iteration is below MAX_ITERATIONS" do
         before { allow(finder).to receive(:project_ids).and_return(Set[1]) }
 
-        it "increments iteration by 1 in on_success_params for the next batch" do
+        it "increments iteration by 1 as a flat batch property for the next callback" do
           allow(GoodJob::Batch).to receive(:enqueue).and_call_original
-          job.perform(nil, { iteration: 3 })
+          job.perform(nil, { task_id: task.id, iteration: 3 })
           expect(GoodJob::Batch).to have_received(:enqueue)
-            .with(hash_including(on_success_params: hash_including(iteration: 4)))
+            .with(hash_including(iteration: 4))
         end
       end
     end

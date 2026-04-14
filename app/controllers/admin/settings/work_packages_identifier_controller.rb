@@ -40,6 +40,7 @@ module Admin::Settings
 
     def show
       @form_state = WorkPackages::IdentifierAutofix.job_in_progress? ? :change_in_progress : :edit
+      @conversion_history = BackgroundTask.order(created_at: :desc)
     end
 
     def update
@@ -69,7 +70,8 @@ module Admin::Settings
 
     def switch_to_semantic
       unless WorkPackages::IdentifierAutofix.job_in_progress?
-        ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later
+        task = BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_CONVERSION)
+        ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later(nil, { task_id: task.id })
       end
       redirect_to action: "show"
     end
@@ -79,7 +81,8 @@ module Admin::Settings
                                     .call(work_packages_identifier: Setting::WorkPackageIdentifier::CLASSIC)
       call.on_success do
         unless WorkPackages::IdentifierAutofix.job_in_progress?
-          ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later
+          task = BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_REVERSION)
+          ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later(task.id)
         end
         redirect_to action: "show"
       end
