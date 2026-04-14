@@ -43,17 +43,10 @@ module Admin::Settings
     end
 
     def update
-      return render_400 unless params[:settings]
-
-      if autofix_requested?
-        call = update_service.new(user: current_user).call(settings_params)
-        call.on_success do
-          WorkPackages::IdentifierAutofix::ApplyHandlesJob.perform_later
-          redirect_to action: "show"
-        end
-        call.on_failure { failure_callback(call) }
-      else
-        super
+      case params.dig(:settings, :work_packages_identifier)
+      when Setting::WorkPackageIdentifier::SEMANTIC  then switch_to_semantic
+      when Setting::WorkPackageIdentifier::CLASSIC   then switch_to_classic
+      else                                                render_400
       end
     end
 
@@ -74,12 +67,27 @@ module Admin::Settings
 
     private
 
-    def check_feature_flag
-      render_404 unless OpenProject::FeatureDecisions.semantic_work_package_ids_active?
+    def switch_to_semantic
+      unless WorkPackages::IdentifierAutofix.job_in_progress?
+        ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later
+      end
+      redirect_to action: "show"
     end
 
-    def autofix_requested?
-      ActiveRecord::Type::Boolean.new.cast(params[:confirm_dangerous_action])
+    def switch_to_classic
+      call = Settings::UpdateService.new(user: current_user)
+                                    .call(work_packages_identifier: Setting::WorkPackageIdentifier::CLASSIC)
+      call.on_success do
+        unless WorkPackages::IdentifierAutofix.job_in_progress?
+          ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later
+        end
+        redirect_to action: "show"
+      end
+      call.on_failure { render_400 }
+    end
+
+    def check_feature_flag
+      render_404 unless OpenProject::FeatureDecisions.semantic_work_package_ids_active?
     end
   end
 end
