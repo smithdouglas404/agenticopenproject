@@ -55,7 +55,11 @@ module API
         date_time_property :start_time
         date_time_property :end_time
 
-        property :duration
+        property :duration,
+                 exec_context: :decorator,
+                 getter: ->(*) do
+                   datetime_formatter.format_duration_from_hours(represented.duration)
+                 end
 
         associated_resource :author,
                             v3_path: :user,

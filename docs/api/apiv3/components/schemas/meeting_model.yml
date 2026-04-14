@@ -38,7 +38,8 @@ properties:
     format: date-time
     description: The scheduled meeting start time.
   duration:
-    type: number
+    type: string
+    format: duration
     description: The meeting duration in hours.
   createdAt:
     type: string
