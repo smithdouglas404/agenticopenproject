@@ -38,7 +38,7 @@ import { HocuspocusProvider } from '@hocuspocus/provider';
 import {
   initializeOpBlockNoteExtensions,
   openProjectWorkPackageBlockSpec,
-  inlineWorkPackageSpec,
+  openProjectWorkPackageInlineSpec,
   workPackageSlashMenu,
   useHashWpMenu,
 } from 'op-blocknote-extensions';
@@ -67,10 +67,10 @@ export interface OpBlockNoteEditorProps {
 
 const schema = BlockNoteSchema.create().extend({
   blockSpecs:{
-    openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
+    openProjectWorkPackageBlock: openProjectWorkPackageBlockSpec(),
   },
   inlineContentSpecs:{
-    inlineWorkPackage:inlineWorkPackageSpec,
+    openProjectWorkPackageInline: openProjectWorkPackageInlineSpec,
   },
 });
 
