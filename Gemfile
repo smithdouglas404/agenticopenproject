@@ -123,7 +123,7 @@ gem "sys-filesystem", "~> 1.5.0", require: false
 
 gem "bcrypt", "~> 3.1.22"
 
-gem "multi_json", "~> 1.19.0"
+gem "multi_json", "~> 1.20.0"
 gem "oj", "~> 3.16.16"
 
 gem "daemons"
