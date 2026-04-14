@@ -71,7 +71,7 @@ module Admin::Settings
     def switch_to_semantic
       unless WorkPackages::IdentifierAutofix.job_in_progress?
         task = BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_CONVERSION)
-        ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later(nil, { task_id: task.id })
+        ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later(task.id)
       end
       redirect_to action: "show"
     end

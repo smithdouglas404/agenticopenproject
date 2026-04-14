@@ -28,26 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Enqueues a ConvertProjectToSemanticIdsJob for every project that still needs
-# backfilling. FinishSemanticConversionJob is registered as the on_success
-# callback and decides whether to enable semantic mode or trigger another pass.
+# GoodJob on_success callback invoked after a ConvertInstanceToSemanticIdsJob
+# batch completes. Performs a sanity check for any projects that were created
+# or missed during the batch run:
 #
-# task_id is the BackgroundTask created by the controller before dispatch.
-# This job transitions it from pending to processing on first execution;
-# subsequent synchronous re-runs (from FinishSemanticConversionJob) skip start!
-# because the task is already processing.
-class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
-  include GoodJob::ActiveJobExtensions::Concurrency
+# * Projects still pending → synchronously kick off ConvertInstanceToSemanticIdsJob
+#   again (which registers this job as its own on_success callback).
+# * Always completes the BackgroundTask and enables semantic mode.
+class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
+  def perform(_batch = nil, params = nil)
+    task_id   = params.to_h.with_indifferent_access[:task_id]
+    remaining = ProjectIdentifiers::PendingProjectsFinder.new.project_ids
 
-  good_job_control_concurrency_with(total_limit: 1)
+    ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.new.perform(task_id) if remaining.any?
 
-  def perform(task_id)
-    task = BackgroundTask.find(task_id)
-    task.start! if task.status == BackgroundTask::PENDING
-    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishSemanticConversionJob, task_id:) do
-      ProjectIdentifiers::PendingProjectsFinder.new.project_ids.each do |project_id|
-        ProjectIdentifiers::ConvertProjectToSemanticIdsJob.perform_later(project_id)
-      end
-    end
+    BackgroundTask.find(task_id).complete!
+    Setting::WorkPackageIdentifier.enable_semantic!
   end
 end
