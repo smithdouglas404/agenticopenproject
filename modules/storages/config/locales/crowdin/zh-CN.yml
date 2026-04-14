@@ -328,7 +328,7 @@ zh-CN:
         nc_oauth_request_not_found: 未找到获取当前连接用户的端点。请检查服务器日志以获取更多信息。
         nc_oauth_request_unauthorized: 当前用户无权访问远程文件存储。请检查服务器日志以获取更多信息。
         nc_oauth_token_missing: OpenProject 无法测试用户与 Nextcloud 之间的通信，因为用户尚未链接他们的 Nextcloud 帐户。
-        nc_project_folder_missing: 无法找到先前为项目“%{project}”创建的项目文件夹。
+        nc_project_folder_missing: 找不到先前为项目“%{project}”创建的项目文件夹。
         nc_team_folder_not_found: 找不到该团队文件夹。
         nc_unexpected_files: 在受管理的团队文件夹中找到非预期文件。例如：%{sample}
         nc_unlinked_project_folders: 部分项目文件夹尚未创建 (%{actual}/%{expected})。这可能表明 AMPF 后台同步过程中出错。
@@ -399,7 +399,7 @@ zh-CN:
       host: 请添加存储的主机地址，包括 https://。不应超过 255 个字符。
       managed_project_folders_application_password_caption: 通过从 %{provider_type_link} 复制该值来启用自动管理的文件夹。
       name: 为您的存储命名，以便用户可以区分多个存储。
-      new_storage_html: 请阅读我们关于[设置 %{provider_name} 文件存储](docs_url)的文档，以获取更多信息。
+      new_storage_html: 有关详情，请阅读我们关于[设置 %{provider_name} 文件存储空间](docs_url)的文档。
       nextcloud:
         application_link_text: 应用“集成OpenProject”
         integration: Nextcloud 管理/OpenProject
@@ -517,7 +517,7 @@ zh-CN:
         members_connection_status: 成员连接状态
         new: 将文件存储添加到此项目
       project_storage_members:
-        subtitle_html: 检查所有项目成员的存储区 %{storage_name_link} 的连接状态。
+        subtitle_html: 检查所有项目成员的存储空间 %{storage_name_link} 的连接状态。
         title: 成员连接状态
       project_storages:
         delete: 是否从项目中移除文件存储空间？

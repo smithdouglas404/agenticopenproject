@@ -34,7 +34,7 @@ zh-CN:
         sharing: 共享
         statuses:
           in_planning: 规划中
-          active: 活跃
+          active: 有效
           completed: 已完成
       project:
         sprint_sharing: 冲刺共享
@@ -59,7 +59,7 @@ zh-CN:
           attributes:
             sprint_sharing:
               share_all_projects_already_taken: 无法设置，因为项目“%{name}”已经与所有项目共享。
-              share_all_projects_already_taken_anonymous: 无法设置，因为另一项目已经与所有项目共享。
+              share_all_projects_already_taken_anonymous: 无法设置，因为另一个项目已经与所有项目共享。
         work_package:
           attributes:
             blocks_ids:
@@ -69,15 +69,15 @@ zh-CN:
               task_version_must_be_the_same_as_story_version: 必须与父级故事的版本相同。
             sprint:
               not_shared_with_project: 未与工作包所在的项目共享。
-              not_eligible_for_moving: 该工作包被移出的冲刺所属的项目中，没有处于活跃状态的冲刺。
+              not_eligible_for_moving: 在该工作包被移出的冲刺所属的项目中，没有处于有效状态的冲刺。
         agile/sprint:
           attributes:
             base:
               unfinished_work_packages:
-                other: 此冲刺中，有 %{count} 个未完成的工作包。
+                other: 此冲刺中有 %{count} 个未完成的工作包。
               format: "%{message}"
             status:
-              not_active: 未处于活跃状态，因此无法关闭。
+              not_active: 未处于有效状态，因此无法关闭。
         sprint:
           cannot_end_before_it_starts: 比赛不可以在开始前结束。
     models:
@@ -86,13 +86,13 @@ zh-CN:
     task_type: 任务类型
   backlogs:
     any: 任一
-    caption_sprints_default_fold_state: 查看“待办清单和冲刺”页面时，默认情况下不会展开冲刺。每个冲刺都必须手动展开。
+    caption_sprints_default_fold_state: 查看“积压工作和冲刺”页面时，默认情况下不会展开冲刺。每个冲刺都必须手动展开。
     column_width: 列宽
     definition_of_done: 完成的定义
-    definition_of_done_caption: 具有这些状态的工作包在待办清单视图和报告中会被视为已完成。
+    definition_of_done_caption: 具有这些状态的工作包在积压工作视图和报告中会被视为已完成。
     done_status: 已完成状态
-    sharing_description: 词项目可以共享自己的冲刺、接收共享的冲刺或独立处理冲刺（不共享）。
-    sharing: 共享中
+    sharing_description: 此项目可以共享自己的冲刺、接收共享的冲刺或独立处理冲刺（不共享）。
+    sharing: 共享
     impediment: 障碍
     label_versions_default_fold_state: 显示已折叠的版本
     label_burndown_chart: 燃尽图
@@ -114,8 +114,8 @@ zh-CN:
     task_color: 任务颜色
     unassigned: 未指定
     administration_blankslate:
-      title: 待办清单管理设置正在升级
-      text: 我们目前正在重新设计待办清单模块。冲刺和代办清单的管理设置不久后将显示在此处。项目级设置仍然可用。
+      title: 积压工作管理设置不断演进
+      text: 我们目前正在重新设计积压工作模块。冲刺和积压工作的管理设置不久后将显示在此处。项目级设置仍然可用。
     user_preference:
       header_backlogs: 积压工作模块
       button_update_backlogs: 更新积压工作模块
@@ -132,15 +132,11 @@ zh-CN:
         one: 积压工作中有 %{count} 个故事
         other: 积压工作中有 %{count} 个故事
     inbox_component:
-      blankslate_title: 待办清单收件箱为空
-      blankslate_description: 此项目中所有开放的工作包都会自动出现在此处。
+      blankslate_title: 积压工作收件箱为空
+      blankslate_description: 此项目中所有未完成的工作包都会自动出现在此处。
       label_drag_work_package: 移动 %{name}
       show_more:
-        other: |-
-          One
-          显示另外 1 个项目
-          Other
-          显示另外 %{count} 个项目
+        other: 显示其他 %{count} 个条目
     inbox_item_component:
       label_drag_work_package: 移动 %{name}
       label_actions: 工作包操作
@@ -156,17 +152,17 @@ zh-CN:
     backlog:
       blankslate:
         title: 还不存在冲刺
-        description_html: 要开始计划冲刺，请在此处创建一个冲刺，或转到 %{settings_link} 从其他项目接收冲刺。
+        description_html: 要开始计划冲刺，请在此处创建一个冲刺，或转到%{settings_link}从其他项目接收冲刺。
         create_sprint_description_text: 要开始计划冲刺，请在此处创建一个冲刺。
-        share_sprint_description_html: 要开始计划冲刺，请转到 %{settings_link} 从其他项目接收冲刺。
-        no_actions_description_text: 此项目还没有可用的冲刺。
-        receive_shared_description_html: 此项目从其他项目接收冲刺。请在 %{settings_link} 中管理此设置。
+        share_sprint_description_html: 要开始计划冲刺，请转到%{settings_link}从其他项目接收冲刺。
+        no_actions_description_text: 此项目还没有可用冲刺。
+        receive_shared_description_html: 此项目从其他项目接收冲刺。请在%{settings_link}中管理此设置。
         receive_shared_no_actions_description_text: 此项目从其他项目接收共享冲刺，但目前没有可用冲刺。
         settings_link_text: 项目设置
     sprint_header_component:
       label_start_sprint: 开始
       label_complete_sprint: 完成
-      start_sprint_disabled_reason_active_sprint: 另一个冲刺已处于活跃状态。
+      start_sprint_disabled_reason_active_sprint: 另一个冲刺已处于有效状态。
       start_sprint_disabled_reason_missing_dates: 必须设置开始和结束日期才能开始冲刺。
       label_story_count:
         zero: 冲刺中没有故事
@@ -182,13 +178,13 @@ zh-CN:
         wiki: 维基
         properties: 属性
     finish_sprint_dialog_component:
-      title: 有工作正在进行中的项目
-      body: "%{message} 您想用它们做什么？"
+      title: 有工作正在进行中的条目
+      body: "%{message} 您想对它们做什么？"
       legend: 为未完成的工作包执行的操作
       actions:
-        move_to_top_of_backlog: 将它们移动到待办清单顶部。
-        move_to_bottom_of_backlog: 将它们移动到待办清单底部。
-        move_to_sprint: 将它们移动到另一冲刺
+        move_to_top_of_backlog: 将它们移动到积压工作顶部
+        move_to_bottom_of_backlog: 将它们移动到积压工作底部
+        move_to_sprint: 将它们移动到另一个冲刺
       select_sprint_label: 选择冲刺
       button_complete_sprint: 完成冲刺
     sprint_menu_component:
@@ -223,7 +219,7 @@ zh-CN:
     attributes:
       task_type:
         cannot_be_story_type: 不能同时为故事类型
-  label_backlog: 待办清单
+  label_backlog: 积压工作
   label_inbox: 收件箱
   label_backlogs: 待办清单
   label_backlogs_unconfigured: 您尚未配置待办清单。请转到“%{administration} > %{plugins}”，然后单击此插件的 %{configure} 链接。设置字段后，返回到此页面开始使用工具。
@@ -237,14 +233,14 @@ zh-CN:
   label_sprint_edit: 编辑冲刺
   label_sprint_impediments: 冲刺 (sprint) 障碍
   label_sprint_new: 新冲刺
-  label_backlog_and_sprints: 待办清单和冲刺
+  label_backlog_and_sprints: 积压工作和冲刺
   label_task_board: 任务板
-  notice_successful_start: 冲刺已开始。
-  notice_successful_finish: 冲刺已完成。
-  notice_unsuccessful_start: 无法开始冲刺。
-  notice_unsuccessful_start_with_reason: 无法开始冲刺：%{reason}
-  notice_unsuccessful_finish: 无法完成冲刺。
-  notice_unsuccessful_finish_with_reason: 无法完成冲刺：%{reason}
+  notice_successful_start: 该冲刺已开始。
+  notice_successful_finish: 该冲刺已完成。
+  notice_unsuccessful_start: 无法开始该冲刺。
+  notice_unsuccessful_start_with_reason: 无法开始该冲刺：%{reason}
+  notice_unsuccessful_finish: 无法完成该冲刺。
+  notice_unsuccessful_finish_with_reason: 无法完成该冲刺：%{reason}
   permission_create_sprints: 创建冲刺
   permission_manage_sprint_items: 管理冲刺条目
   permission_select_done_statuses: 选择完成状态
@@ -267,11 +263,11 @@ zh-CN:
             label: 所有项目
             caption: 在此项目中创建的冲刺将可用于此实例中的所有项目。如果选择此选项，这些冲刺将不再可用于其他项目。
             disabled_caption: 选项不可用，因为项目“%{name}”目前正在与所有项目共享，仅允许一个项目进行此操作。
-            disabled_caption_anonymous: Option not available since another project is currently sharing with all projects and only one project can do this.
+            disabled_caption_anonymous: 选项不可用，因为另一个项目目前正在与所有项目共享，仅允许一个项目进行此操作。
           share_subprojects:
             label: 子项目
             caption: 在此项目中创建的冲刺将对当前项目的所有子项目可用。
-            info: 共享冲刺将在所有项目中共享名称、状态，以及开始和结束日期。不能在接收和使用这些冲刺的项目中修改这些内容。
+            info: 共享冲刺将在所有项目中共享名称、状态，以及开始和结束日期。无法在接收和使用这些冲刺的项目中修改这些内容。
         sprint_sharing: 共享冲刺
   rb_burndown_charts:
     show:

@@ -109,7 +109,7 @@ zh-CN:
       failed_to_delete: 删除 2FA 设备失败。
       is_default_cannot_delete: 该设备被标记为默认设备，并且由于活动安全策略而无法删除。在删除之前，请将另一个设备标记为默认设备。
       not_existing: 没有为您的帐户注册过 2FA 设备。
-      2fa_from_input_html: 请通过您的 <strong>%{device_name}</strong> 输入验证码，以验证您的身份。
+      2fa_from_input_html: 请输入您的 <strong>%{device_name}</strong> 中的验证码，以验证您的身份。
       2fa_from_webauthn_html: 请提供 WebAuthn 设备 <strong>%{device_name}</strong>。如果是 USB 设备，请确保将其插入并使用。然后点击“登录”按钮。
       webauthn:
         title: WebAuthn 认证

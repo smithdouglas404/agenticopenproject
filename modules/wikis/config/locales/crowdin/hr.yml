@@ -5,6 +5,7 @@ hr:
       wikis/xwiki_provider:
         name: Name
         url: Instance URL
+        universal_identifier: Universal identifier
         authentication_method: Authentication method
         authentication_methods:
           oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider

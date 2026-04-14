@@ -182,13 +182,13 @@ de:
   label_today_capitalized: Heute
   label_view_mode_switcher: Ansicht ändern
   label_timer_since: Begonnen um %{time}
-  placeholder_activity_select_work_package_first: Zunächst muss ein Arbeitspaket ausgewählt werden
+  placeholder_activity_select_work_package_first: Zuerst ein Arbeitspaket auswählen.
   notice_something_wrong: Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.
   notice_successful_restore: Erfolgreich wiederhergestellt.
   notice_successful_lock: Erfolgreich gesperrt.
   notice_cost_logged_successfully: Stückkosten erfolgreich gebucht.
   notice_different_time_zones: Dieser Benutzer hat eine andere Zeitzone (%{tz}). Die Zeit wird unter Verwendung seiner Zeitzone protokolliert.
-  notice_time_entry_update_failed: 'Fehler beim Aktualisieren des Zeiteintrags. Fehler: %{errors}'
+  notice_time_entry_update_failed: 'Fehler beim Aktualisieren der Zeitbuchung. Fehler: %{errors}'
   notice_time_entry_delete_failed: 'Fehler beim Löschen des Zeiteintrags. Fehler: %{errors}'
   permission_edit_cost_entries: Bearbeiten gebuchter Stückkosten
   permission_edit_own_cost_entries: Bearbeiten eigener gebuchter Stückkosten
@@ -229,7 +229,7 @@ de:
   api_v3:
     errors:
       validation:
-        start_time_different_date: Der Datumsteil von startTime (%{start_time}) muss mit dem Datum von spentOn (%{spent_on}) übereinstimmen.
+        start_time_different_date: Der Datumsteil der Startzeit (%{start_time}) muss mit dem Datum (%{spent_on}) übereinstimmen.
   costs:
     widgets:
       actual_costs:

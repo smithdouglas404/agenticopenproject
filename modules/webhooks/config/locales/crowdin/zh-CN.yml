@@ -6,7 +6,7 @@ zh-CN:
   activerecord:
     attributes:
       webhooks/webhook:
-        url: 有效载荷 URL
+        url: 有效负载 URL
         secret: 签名密钥
         events: 事件
         enabled: 已启用
@@ -43,7 +43,7 @@ zh-CN:
       status:
         enabled: Webhook 已启用
         disabled: Webhook 已禁用
-        enabled_text: Webhook 将为下面的定义事件释放有效载荷。
+        enabled_text: Webhook 将为下面的定义事件释放有效负载。
         disabled_text: 点击“编辑”按钮以激活 Webhook。
       deliveries:
         no_results_table: 在过去几天内，此 Webhook 尚未进行任何传送。
@@ -70,6 +70,6 @@ zh-CN:
         selected_project_ids:
           title: 选定项目
         secret:
-          description: '如果设置，OpenProject 将使用此密钥值对 Webhook 有效载荷进行签名。
+          description: '如果设置，OpenProject 将使用此密钥值对 Webhook 有效负载进行签名。
 
             '

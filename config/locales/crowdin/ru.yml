@@ -1214,7 +1214,7 @@ ru:
         start_date: Дата начала
         start_date_caption: Выберите дату, с которой начнет действовать новый график работы.
         work_days: Рабочие дни
-        working_hours_label: Working hours
+        working_hours_label: Часы работы
         hours_mode_label: Режим часов
         same_hours_mode: Те же часы в день
         individual_hours_mode: Индивидуальные часы в день
@@ -1897,8 +1897,8 @@ ru:
         sunday: Воскресенье
         sunday_hours: Sunday hours
         availability_factor: Availability factor
-        shared_hours: Work hours
-        days: Working days
+        shared_hours: Рабочие часы
+        days: Рабочие дни
       version:
         effective_date: Дата окончания
         sharing: Совместное использование
@@ -1953,8 +1953,8 @@ ru:
         before: должны быть до %{date}.
         before_or_equal_to: должны быть до или ровно %{date}.
         blank: не может быть пустым.
-        not_before_start_date: must not be before the start date.
-        overlapping_range: overlaps with an existing non-working day range.
+        not_before_start_date: должно быть после даты начала.
+        overlapping_range: пересекается с существующим диапазоном нерабочих дней.
         blank_nested: должно быть установлено свойство '%{property}'.
         cannot_delete_mapping: требуется. Невозможно удалить.
         is_for_all_cannot_modify: предназначено для всех проектов и поэтому не может быть изменено.
@@ -1991,9 +1991,9 @@ ru:
         less_than_or_equal_to: должно быть меньше или равно %{count}.
         not_available: недоступно из-за конфигурации системы.
         not_deletable: не может быть удален.
-        not_editable: cannot be edited because it is already in effect.
+        not_editable: не может быть отредактирован, поскольку он уже действует.
         not_current_user: не является текущим пользователем.
-        system_wide_non_working_day_exists: conflicts with an existing system-wide non-working day for this date.
+        system_wide_non_working_day_exists: конфликтует с существующим общесистемным нерабочим днем для этой даты.
         not_found: не найдено.
         not_a_date: не является допустимой датой.
         not_a_datetime: дата и время не являются допустимыми.
@@ -2028,7 +2028,7 @@ ru:
         group:
           attributes:
             parent_id:
-              circular_dependency: would create a circular group hierarchy.
+              circular_dependency: создаст круговую иерархию групп.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2142,8 +2142,8 @@ ru:
             types:
               in_use_by_work_packages: 'всё ещё используются в пакетах работ: %{types}'
             identifier:
-              must_start_with_letter: must start with a letter
-              no_special_characters: may only contain uppercase letters, numbers, and underscores
+              must_start_with_letter: должен начинаться с буквы
+              no_special_characters: может содержать только заглавные буквы, цифры и символы подчеркивания
             enabled_modules:
               dependency_missing: Модуль '%{dependency}' ' должен быть включен, так как модуль '%{module}' зависит от него.
               format: "%{message}"
@@ -2355,7 +2355,7 @@ ru:
         user_working_hours:
           attributes:
             days:
-              no_working_day: At least one day needs to be configured as a working day.
+              no_working_day: По крайней мере, один день должен быть настроен как рабочий.
         member:
           principal_blank: Пожалуйста, выберите по крайней мере одного пользователя или группу.
           role_blank: требуется назначить.
@@ -2660,7 +2660,7 @@ ru:
       info: 'Для создания резервной копии Вам необходимо создать маркер резервного копирования. Каждый раз, когда вы хотите запросить резервную копию, вы должны предоставить этот маркер. Вы можете удалить маркер резервного копирования, чтобы запретить резервное копирование для этого пользователя.
 
         '
-      verification_html: 'Enter %{word} to confirm you want to %{action} the backup token.
+      verification_html: 'Введите %{word}, чтобы подтвердить %{action} маркер резервного копирования.
 
         '
       verification_word_reset: сбросить
@@ -3143,7 +3143,7 @@ ru:
         few: Осталось %{count} дня для пробного токена %{trial_plan}
         many: Осталось %{count} дней для пробного токена %{trial_plan}
         other: Осталось %{count} дней для пробного токена %{trial_plan}
-      description_html: You have access to all %{trial_plan} features.
+      description_html: У вас есть доступ ко всем функциям %{trial_plan}.
     trial:
       not_found: Вы запросили пробный токен, но запрос более недоступен. Пожалуйста, попробуйте еще раз.
       wait_for_confirmation: Мы отправили вам письмо для подтверждения вашего адреса для получения токена пробной версии.
@@ -3163,8 +3163,8 @@ ru:
 
         '
       domain_caption: Токен будет действителен для настроенного в данный момент имени хоста.
-      receive_newsletter: I want to receive the OpenProject [newsletter](newsletter_url).
-      consent: I agree with the [terms of service](tos_url) and the [privacy policy](privacy_url).
+      receive_newsletter: Я хочу получать [информационный бюллетень OpenProject](newsletter_url).
+      consent: Я согласен с [условиями предоставления услуг](tos_url) и [политикой конфиденциальности](privacy_url).
   email_calendar_updates:
     state:
       disabled: Отключено.
@@ -3253,8 +3253,8 @@ ru:
     work_package_edit: Пакет работ отредактирован
     work_package_note: Добавлено примечание к пакету работ
     title:
-      project_html: 'Project: %{name}'
-      subproject_html: 'Subproject: %{name}'
+      project_html: 'Проект: %{name}'
+      subproject_html: 'Подпроект: %{name}'
   export:
     dialog:
       title: Экспорт
@@ -3426,17 +3426,17 @@ ru:
         learn_about: Узнайте больше о всех новых функциях
         missing: Нет выделенных функций.
         '17_3':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: 'Релиз содержит различные новые функции и улучшения, такие как:
 
             '
           new_features_list:
-            line_0: 'Big Agile update: dedicated sprint objects, all work packages visible on Backlogs, and automatic sprint board creation.'
-            line_1: In-place editing of project attributes on the Project Overview page.
+            line_0: 'Большое обновление Agile: выделенные объекты спринта, все рабочие пакеты видны в бэклогах и автоматическое создание доски спринта.'
+            line_1: Редактирование атрибутов проекта на странице Обзор проекта.
             line_2: Sharing of meeting templates (Basic plan and higher).
-            line_3: Better search in Time and Costs, Boards, and more.
-            line_4: Option to safely change project identifiers.
-            line_5: Improved workflow configuration for administrators.
-            line_6: Action boards released to Community.
+            line_3: Улучшенный поиск в разделах "Время и затраты", "Доски" и многое другое.
+            line_4: Возможность безопасного изменения идентификаторов проекта.
+            line_5: Улучшена настройка рабочих процессов для администраторов.
+            line_6: Доски действий доступны в Community Edition.
     links:
       upgrade_enterprise_edition: Обновить до корпоративной версии
       postgres_migration: Перенос вашей установки в PostgreSQL
@@ -3501,15 +3501,15 @@ ru:
         progress_calculation_adjusted: Расчет прогресса автоматически <a href="%{href}" target="_blank">корректируется при обновлении версии</a>.
         scheduling_mode_adjusted: Режим планирования автоматически настраивается с обновлением версии.
         totals_removed_from_childless_work_packages: При <a href="%{href}" target="_blank">обновлении версии</a> автоматически удаляются итоги работы и прогресса для неродительских пакетов работ. Это задача по обслуживанию, и её можно смело игнорировать.
-        sprint_migration: Version '%{version_name}' has been copied as a sprint.
+        sprint_migration: Версия '%{version_name}' была скопирована как спринт.
       total_percent_complete_mode_changed_to_work_weighted_average: Дочерние пакеты работ без Работы игнорируются.
       total_percent_complete_mode_changed_to_simple_average: Значения Работы дочерних пакетов работ игнорируются.
   links:
     configuration_guide: Руководство по конфигурации
     get_in_touch: У вас есть вопросы? Свяжитесь с нами.
-  instructions_after_registration_link: You can sign in as soon as your account has been activated by clicking [here](signin_url).
-  instructions_after_logout_link: You can sign in again by clicking [here](signin_url).
-  instructions_after_error_link: You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help.
+  instructions_after_registration_link: Вы можете войти в систему, как только Ваша учетная запись будет активирована, нажав [здесь](signin_url).
+  instructions_after_logout_link: Вы можете снова войти в систему, нажав [здесь](signin_url).
+  instructions_after_error_link: Вы можете попробовать войти в систему снова, нажав [здесь](signin_url). Если ошибка не исчезает, обратитесь за помощью к своему администратору.
   menus:
     admin:
       ai: Искусственный интеллект (AI)
@@ -3522,7 +3522,7 @@ ru:
       label: Добавить…
   my_account:
     notifications_and_email:
-      title: Notification and email
+      title: Уведомления и email
       tabs:
         notifications: Настройки уведомлений
         email_reminders: Почтовые напоминания
@@ -3647,13 +3647,13 @@ ru:
         work_package_created: Новые пакеты работ
         work_package_commented: Все новые комментарии
         work_package_processed: Все изменения статуса
-        work_package_prioritized: All priority changes
-        work_package_scheduled: All date changes
+        work_package_prioritized: Все изменения приоритетов
+        work_package_scheduled: Все изменения дат
       project_specific_settings:
-        title: Project-specific notification settings
-        add_button: Add project-specific notifications
-        dialog_title: Add project-specific notifications
-        list_header: Projects with specific notifications
+        title: Настройки уведомлений для конкретного проекта
+        add_button: Добавить уведомления по проекту
+        dialog_title: Добавить уведомления по проекту
+        list_header: Проекты с особыми уведомлениями
   notifications:
     reasons:
       assigned: Исполнитель
@@ -3726,7 +3726,7 @@ ru:
   label_ical_access_key_generation_hint: Автоматически генерируется при подписке на календарь.
   label_ical_access_key_latest: последний
   label_ical_access_key_revoke: Отозвать
-  label_integrations: Integrations
+  label_integrations: Интеграции
   label_add_column: Добавить столбец
   label_applied_status: Прикладной статус
   label_archive_project: Архивировать проект
@@ -3942,7 +3942,7 @@ ru:
   label_subject_or_id: Тема или ID
   label_calendar_subscriptions: Подписки на календарь
   label_identifier: Идентификатор
-  label_project_identifier: Project identifier
+  label_project_identifier: Идентификатор проекта
   label_in: в
   label_in_less_than: менее чем
   label_in_more_than: более чем
@@ -3977,7 +3977,7 @@ ru:
   label_external_links: Внешние ссылки
   label_locale: Язык и регион
   label_jump_to_a_project: Перейти к проекту...
-  label_jira_import: Jira Migrator
+  label_jira_import: Мигратор Jira
   label_keyword_plural: Ключевые слова
   label_language_based: Основанный на языке пользователя
   label_last_activity: Последняя активность
@@ -4076,13 +4076,13 @@ ru:
   label_news_view_all: Посмотреть все новости
   label_next: Следующие
   label_next_week: На следующей неделе
-  label_next_year: Next year
+  label_next_year: Следующий год
   label_no_change_option: "(Без изменений)"
   label_no_data: Нет данных для отображения
   label_no_due_date: нет даты окончания
   label_no_start_date: нет даты начала
   label_no_parent_page: Без родительской страницы
-  label_no_parent_group: "(No parent group)"
+  label_no_parent_group: "(Нет родительской группы)"
   label_notification_center_plural: Уведомления
   label_nothing_display: Нет данных для отображения
   label_nobody: никто
@@ -4111,7 +4111,7 @@ ru:
   label_overall_activity: Общая деятельность
   label_overview: Обзор
   label_page_title: Заголовок страницы
-  label_parent_group_caption: 'Setting a parent group will make this group a subgroup of the selected parent group. This will also inherit all memberships, including permissions of the parent group.
+  label_parent_group_caption: 'Установка родительской группы сделает эту группу подгруппой выбранной родительской группы. Это также наследует все членства, включая права доступа родительской группы.
 
     '
   label_part_of: является частью
@@ -4140,7 +4140,7 @@ ru:
   label_preview_not_available: Предварительный просмотр недоступен
   label_previous: Предыдущие
   label_previous_week: Предыдущая неделя
-  label_previous_year: Previous year
+  label_previous_year: Предыдущий год
   label_principal_invite_via_email: " или пригласить новых пользователей по электронной почте"
   label_principal_search: Добавление существующих пользователей или групп
   label_privacy_policy: Политика конфиденциальности данных и безопасности
@@ -4252,7 +4252,7 @@ ru:
   label_start_to_start: Пуск, чтобы начать
   label_statistics: Статистика
   label_status: Статус
-  label_status_plural: Statuses
+  label_status_plural: Статусы
   label_storage_free_space: Свободное дисковое пространство
   label_storage_used_space: Используемое дисковое пространство
   label_storage_group: Файловая система %{identifier}
@@ -4302,7 +4302,7 @@ ru:
   label_user: Пользователь
   label_user_and_permission: Пользователи и права доступа
   label_user_named: Пользователь %{name}
-  label_user_activity_html: "%{value}'s activity"
+  label_user_activity_html: Действия пользователя %{value}
   label_user_anonymous: Анонимно
   label_user_menu: Пользовательское меню
   label_user_new: Новый пользователь
@@ -4393,12 +4393,12 @@ ru:
     one: 1 day
     few: "%{count} days"
     many: "%{count} days"
-    other: "%{count} days"
+    other: "%{count} дней"
   label_x_working_days:
     one: 1 working day
     few: "%{count} working days"
     many: "%{count} working days"
-    other: "%{count} working days"
+    other: "%{count} рабочих дней"
   label_x_working_days_time_off:
     one: 'Time off: 1 working day'
     few: 'Time off: %{count} working days'
@@ -4412,7 +4412,7 @@ ru:
   label_not_changeable: "(неизменяемая)"
   label_global: Глобальная
   label_seeded_from_env_warning: Эта настройка была создана с использованием параметра среды окружения и не может быть отредактирована через пользовательский интерфейс.
-  label_schedule_and_availability: Schedule and availability
+  label_schedule_and_availability: Расписание и доступность
   label_working_hours: График работы
   label_non_working_days: Доступный календарь
   label_non_working_days_with_count: Нерабочие дни (%{count})
@@ -4657,7 +4657,7 @@ ru:
   notice_parent_item_not_found: Родительский элемент не найден.
   notice_project_not_deleted: Проект удалён не был.
   notice_project_not_found: Проект не найден.
-  notice_smtp_address_unsafe_env_hint: SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable.
+  notice_smtp_address_unsafe_env_hint: SMTP-адрес %{address} небезопасен. Пожалуйста, добавьте его в белый список с помощью переменной окружения %{env_name}.
   notice_successful_connection: Подключение выполнено.
   notice_successful_create: Создание выполнено.
   notice_successful_delete: Удаление выполнено.
@@ -5234,7 +5234,7 @@ ru:
 
     '
   setting_work_packages_identifier_semantic: Семантические идентификаторы на основе проекта
-  setting_work_packages_identifier_semantic_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
+  setting_work_packages_identifier_semantic_caption: 'Каждый проект имеет уникальный идентификатор, который является префиксом к идентификатору рабочего пакета. Если рабочий пакет перемещается в другой проект, генерируется новый идентификатор, но старый продолжает функционировать.
 
     '
   setting_work_package_list_default_highlighting_mode: Способ выделения по умолчанию
@@ -5418,11 +5418,11 @@ ru:
       section_work_week: Рабочая неделя
       section_holidays_and_closures: Праздничные и нерабочие дни
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: Идентификатор пакета работ
       not_allowed_text: У вас нет необходимых прав для просмотра этой страницы.
       activities:
         enable_internal_comments: Включить служебные комментарии
-        helper_text_html: 'Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. [Click here to learn more](docs_url)
+        helper_text_html: 'Служебные комментарии позволяют команде общаться между собой в частном порядке. Эти комментарии видны только определённым ролям, которые имеют необходимые права доступа и не будут видны всем. Нажмите [здесь](docs_url), чтобы узнать больше
 
           '
   text_formatting:
@@ -5565,10 +5565,10 @@ ru:
   text_plugin_assets_writable: Папка активов дополнения(plugin) доступна для записи
   text_powered_by: С использованием %{link}
   text_project_identifier_info: Разрешены только строчные буквы (a-z), цифры, тире и знаки подчеркивания, начинать с буквы нижнего регистра.
-  text_project_identifier_description: The project identifier is prepended to all work package IDs. If the identifier is "PROJ" for example, the work package identifier will be "PROJ-12" or "PROJ-246".
-  text_project_identifier_url_description: The project identifier is included in the URL of the project.
-  text_project_identifier_handle_format: Must start with a letter and contain only uppercase letters, numbers, and underscores (max 10 characters).
-  text_project_identifier_format: Must start with a lowercase letter. Only lowercase letters (a-z), numbers, dashes and underscores are allowed.
+  text_project_identifier_description: Идентификатор проекта добавляется ко всем идентификаторам рабочих пакетов. Например, если идентификатор "PROJ", то идентификатор пакета работ будет "PROJ-12" или "PROJ-246".
+  text_project_identifier_url_description: Идентификатор проекта включен в URL проекта.
+  text_project_identifier_handle_format: Должно начинаться с буквы и содержать только заглавные буквы, цифры и символы подчеркивания (не более 10 символов).
+  text_project_identifier_format: Должен начинаться со строчной буквы. Допускаются только строчные буквы (a-z), цифры, тире и подчеркивания.
   text_reassign: 'Переназначить для пакета работ:'
   text_regexp_multiline: 'Регулярное выражение применяется в многострочном режиме. Например: ^---\s+'
   text_repository_usernames_mapping: Выберете или обновите пользователя OpenProject сопоставленного с именами пользователей найдеными в журнале репозитория. Пользователи с одинаковыми именами в OpenProject и в репозитории или почте будут сопоставлены автоматически.
@@ -5681,10 +5681,10 @@ ru:
   version_status_locked: заблокировано
   version_status_open: открыт
   note: Заметка
-  note_password_login_disabled_link: Password login has been disabled through a [configuration setting](configuration_url).
+  note_password_login_disabled_link: Вход по паролю был отключен в [настройках](configuration_url).
   warning: Предупреждение
   warning_attachments_not_saved: "%{count} файл(-ов) не может быть сохранен(-о)."
-  warning_imminent_user_limit_html: 'You invited more users than are supported by your current plan. Invited users may not be able to join your OpenProject environment. Please [upgrade your plan](upgrade_url) or block existing users in order to allow invited and registered users to join.
+  warning_imminent_user_limit_html: 'Вы пригласили больше пользователей, чем предусмотрено Вашим текущим планом. Приглашенные пользователи не смогут присоединиться к Вашей среде OpenProject. Пожалуйста, [обновите Ваш тарифный план](upgrade_url) или заблокируйте существующих пользователей, чтобы приглашенные и зарегистрированные пользователи могли присоединиться.
 
     '
   warning_registration_token_expired: 'Срок ответа на письмо активации истек. Мы отправили вам новое на %{email}. Пожалуйста, нажмите на ссылку внутри него, чтобы активировать вашу учетную запись.
@@ -5693,7 +5693,7 @@ ru:
   warning_user_limit_reached: 'Добавление дополнительных пользователей превысит текущий лимит. Пожалуйста, свяжитесь с администратором для увеличения лимита пользователей для обеспечения доступа к этому экземпляру внешних пользователей.
 
     '
-  warning_user_limit_reached_admin_html: 'Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
+  warning_user_limit_reached_admin_html: 'Добавление дополнительных пользователей превысит текущий лимит. Пожалуйста, [обновите ваш план](upgrade_url), чтобы убедиться, что внешние пользователи имеют доступ к этому экземпляру.
 
     '
   warning_user_limit_reached_instructions: 'Вы достигли вашего пользовательского предела (%{current}/%{max} активных пользователей). Пожалуйста, свяжитесь с sales@openproject.com для обновления своего плана до Корпоративной версии и добавьте дополнительных пользователей.
@@ -5758,7 +5758,7 @@ ru:
     reminders:
       label_remind_at: Дата
       note_placeholder: Причина установки напоминания
-      create_success_message_html: Reminder set successfully. You will receive a notification for this work package %{reminder_time}.
+      create_success_message_html: Напоминание установлено успешно. Вы получите уведомление для этого пакета работ %{reminder_time}.
       success_update_message: Напоминание успешно обновлено.
       success_deletion_message: Напоминание успешно удалено.
   sharing:
@@ -5790,7 +5790,7 @@ ru:
     warning_user_limit_reached: 'Добавление пользователей превысит текущий лимит. Обратитесь к администратору для увеличения лимита, чтобы внешние пользователи могли получить доступ к %{entity}.
 
       '
-    warning_user_limit_reached_admin_html: 'Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
+    warning_user_limit_reached_admin_html: 'Добавление дополнительных пользователей превысит текущий лимит. Пожалуйста, [обновите ваш план](upgrade_url), чтобы убедиться, что внешние пользователи имеют доступ к %{entity}.
 
       '
     warning_no_selected_user: Пожалуйста, выберите пользователей, которыми предоставляется общий доступ для %{entity}.

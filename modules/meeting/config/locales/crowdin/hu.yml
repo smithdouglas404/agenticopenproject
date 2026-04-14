@@ -409,8 +409,8 @@ hu:
             '
     presentation_mode:
       title: Presentation Mode
-      button_present: Prezentáció megkezdése
-      exit: Kilépés a prezentációból
+      button_present: Megbeszélés indítása
+      exit: Megbeszélés befejezése
       current_item: Current item
       total_items: "%{current} of %{total}"
       previous: Előző

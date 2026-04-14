@@ -5,6 +5,7 @@ ko:
       wikis/xwiki_provider:
         name: 이름
         url: 인스턴스 URL
+        universal_identifier: Universal identifier
         authentication_method: 인증 방법
         authentication_methods:
           oauth2_sso: OpenID Connect ID 공급자를 통한 Single-Sign-On

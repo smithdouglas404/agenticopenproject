@@ -5,6 +5,7 @@ uk:
       wikis/xwiki_provider:
         name: Назва
         url: URL-адреса екземпляра
+        universal_identifier: Universal identifier
         authentication_method: Метод автентифікації
         authentication_methods:
           oauth2_sso: Єдиний вхід через постачальника ідентифікаційних даних OpenID Connect

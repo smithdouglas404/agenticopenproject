@@ -1151,5 +1151,5 @@ de:
         network_on: Netzwerk ist wieder da. Wir versuchen es erneut.
     projects:
       identifier_suggestion:
-        loading: Loading suggestion...
-        set_name_first: Please set the name first.
+        loading: Lade Vorschläge...
+        set_name_first: Bitte geben Sie zuerst den Namen ein.

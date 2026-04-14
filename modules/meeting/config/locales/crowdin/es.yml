@@ -211,7 +211,7 @@ es:
         manage_participants: Gestionar participantes
         no_participants: Sin participantes
         show_all: Mostrar todo
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
+        apply_to_upcoming_meetings: Aplicar estos cambios a todas las próximas reuniones de esta serie
       text:
         template: Estos participantes serán invitados automáticamente a todas las reuniones futuras a medida que se vayan creando.
         manage_participants: Busque y añada miembros del proyecto como participantes en esta reunión.
@@ -299,7 +299,7 @@ es:
         template:
           title: Eliminar plantilla
           heading: "¿Eliminar esta plantilla?"
-          confirmation_message_html: 'This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
+          confirmation_message_html: 'Esta acción no es reversible. Proceda con precaución. Las reuniones existentes que se crearon utilizando esta plantilla no se verán afectadas.
 
             '
       occurrence:
@@ -383,7 +383,7 @@ es:
           disabled: 'Las actualizaciones de calendario por correo electrónico están deshabilitadas. Los participantes no recibirán un correo electrónico informándoles cuando usted añada o elimine participantes.
 
             '
-          draft_disabled: 'Participants will not receive an email informing them when you add or remove participants.
+          draft_disabled: 'Los participantes no recibirán un correo electrónico en el que se les informe de que has añadido o eliminado a alguien.
 
             '
         onetime:

@@ -67,7 +67,7 @@ de:
         '
       failed_to_save_settings: 'Fehler beim Aktualisieren der 2FA-Einstellungen: %{message}'
     admin:
-      self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
+      self_edit_path_html: Um deine eigenen 2FA-Geräte hinzuzufügen oder zu modifizieren, gehen Sie bitte zur [Zwei-Faktor-Authentifizierung auf Ihrer Kontoseite](self_edit_link)
       self_edit_forbidden: Sie können ihre eigenen 2FA-Geräte nicht auf diese Weise bearbeiten. Gehen sie hierfür auf die Seite Mein Account > Zwei-Faktor-Authentifizierung.
       no_devices_for_user: Kein 2FA-Gerät für diesen Nutzer registriert.
       all_devices_deleted: Alle 2FA-Geräte dieses Benutzers wurden entfernt
@@ -109,8 +109,8 @@ de:
       failed_to_delete: Fehler beim Entfernen des 2FA-Gerätes.
       is_default_cannot_delete: Dieses 2FA-Gerät ist das aktuelle Standardgerät und kann aufgrund einer aktiven Sicherheitsrichtlinie nicht entfernt werden. Wechseln Sie das Standardgerät, um dieses Gerät löschen zu können.
       not_existing: Kein 2FA-Gerät für Ihren Account registriert.
-      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input_html: Bitte geben Sie den Code von Ihrem <strong>%{device_name}</strong> ein, um Ihre Identität zu bestätigen.
+      2fa_from_webauthn_html: Bitte geben Sie das WebAuthn-Gerät <strong>%{device_name}</strong> an. Wenn es sich um ein USB-Gerät handelt, schließen Sie es bitte an und berühren Sie es. Klicken Sie anschließend auf die Schaltfläche zum Anmelden.
       webauthn:
         title: WebAuthn
         description: Registrieren Sie ein FIDO2-Gerät (wie z. B. YubiKey) oder ein Passkey Ihres mobilen Geräts.

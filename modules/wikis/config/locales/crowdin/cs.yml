@@ -5,6 +5,7 @@ cs:
       wikis/xwiki_provider:
         name: Name
         url: Adresa URL instance
+        universal_identifier: Universal identifier
         authentication_method: Způsob ověření
         authentication_methods:
           oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider

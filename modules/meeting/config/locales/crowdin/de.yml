@@ -189,7 +189,7 @@ de:
   label_notify: Zur Einsicht verschicken
   label_icalendar: iCalendar senden
   label_icalendar_download: iCalendar-Termin herunterladen
-  label_view_meeting: View meeting
+  label_view_meeting: Besprechung anzeigen
   label_view_meeting_series: Terminserie ansehen
   label_meeting_series: Terminserien
   label_version: Version
@@ -198,8 +198,8 @@ de:
   label_subscribe_icalendar: Im Kalender abonnieren
   caption_meeting_template_select: Wählen Sie eine Vorlage, um deren Tagesordnungspunkte automatisch zu kopieren
   caption_template_project_select: Bitte wählen Sie das Projekt aus, in dem Sie diese Besprechungsvorlage erstellen möchten
-  placeholder_meeting_template_select_project_first: Select a project first
-  placeholder_meeting_template_no_templates_for_project: No templates available for this project
+  placeholder_meeting_template_select_project_first: Wählen Sie zuerst ein Projekt aus
+  placeholder_meeting_template_no_templates_for_project: Keine Vorlagen für dieses Projekt verfügbar
   meeting:
     participants:
       label:
@@ -211,7 +211,7 @@ de:
         manage_participants: Teilnehmer verwalten
         no_participants: Keine Teilnehmer
         show_all: Alle anzeigen
-        apply_to_upcoming_meetings: Apply these changes to all upcoming meetings in this series
+        apply_to_upcoming_meetings: Wenden Sie diese Änderungen auf alle kommenden Besprechungen in dieser Terminserie an
       text:
         template: Diese Teilnehmer werden automatisch zu allen zukünftigen Besprechungen eingeladen, sobald diese erstellt werden.
         manage_participants: Suchen Sie nach Projektmitgliedern, um sie als Teilnehmer zu dieser Besprechung hinzuzufügen.
@@ -383,7 +383,7 @@ de:
           disabled: 'E-Mail-Kalenderaktualisierungen sind deaktiviert. Die Teilnehmer erhalten keine E-Mails bei Änderungen an der Teilnehmerliste.
 
             '
-          draft_disabled: 'Participants will not receive an email informing them when you add or remove participants.
+          draft_disabled: 'Die Teilnehmer erhalten keine E-Mail, die sie über Änderungen des Datums, der Uhrzeit oder der Teilnehmer der Besprechung informiert.
 
             '
         onetime:

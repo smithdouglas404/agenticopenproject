@@ -34,7 +34,7 @@ ru:
   saml:
     menu_title: Провайдеры SAML
     delete_title: Удалить провайдера SAML
-    delete_heading: Delete this SAML provider?
+    delete_heading: Удалить этот провайдер SAML?
     info:
       title: Параметры конфигурации протокола SAML
       description: 'Используйте эти параметры для настройки подключения провайдера идентификации.

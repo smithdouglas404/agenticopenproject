@@ -4,30 +4,31 @@ es:
     attributes:
       wikis/xwiki_provider:
         name: Nombre
-        url: Instance URL
-        authentication_method: Authentication method
+        url: URL de instancia
+        universal_identifier: Universal identifier
+        authentication_method: Método de autenticación
         authentication_methods:
-          oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
-          two_way_oauth2: Two-way OAuth 2.0 authorization code flow
-        token_exchange_scope: XWiki Scope
-        wiki_audience: XWiki Audience
+          oauth2_sso: Inicio de sesión único a través del proveedor de identidad OpenID Connect
+          two_way_oauth2: Flujo de código de autorización bidireccional OAuth 2.0
+        token_exchange_scope: Ámbito de XWiki
+        wiki_audience: Público de XWiki
     errors: {}
     models:
       wikis/inline_page_link:
-        one: Inline page link
-        other: Inline page links
-      wikis/internal_provider: Internal wiki
+        one: Enlace a la página integrada
+        other: Enlaces a la página integrada
+      wikis/internal_provider: Wiki interna
       wikis/relation_page_link:
-        one: Relation page link
-        other: Relation page links
-      wikis/xwiki_provider: XWiki provider
-  project_module_wiki_platforms: Wiki providers
+        one: Enlace a la página relacionada
+        other: Enlaces a la página relacionada
+      wikis/xwiki_provider: Proveedor de XWiki
+  project_module_wiki_platforms: Proveedores de Wiki
   wikis:
     buttons:
-      save_and_continue: Save and continue
+      save_and_continue: Guardar y continuar
     admin:
       wiki_providers:
-        index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.
+        index_description: Añade un servicio wiki externo para vincular paquetes de trabajo a páginas wiki existentes o crear otras nuevas directamente desde OpenProject.
         label_wiki_platform: Proveedor Wiki
         label_add_new: Añadir nuevo proveedor de wiki
         label_new_xwiki_instance: Nuevo proveedor XWiki
@@ -36,7 +37,7 @@ es:
         label_edit: Editar proveedor XWiki
         name_placeholder: Base de conocimientos XWiki
         name_caption: Ponle un nombre a tu almacenamiento para que los usuarios puedan distinguir entre las distintas plataformas wiki.
-        url_caption: Por favor, añade la dirección host de tu plataforma wiki, incluyendo el https://. No debe superar los 255 caracteres.
+        url_caption: Añade la dirección host de tu plataforma wiki, incluyendo el https://. No debe superar los 255 caracteres.
         xwiki_instance: Instancia XWiki
         xwiki_instance_description: Asegúrate de tener privilegios de administrador en tu instancia de XWiki antes de realizar la configuración.
         new_provider_html: Lee nuestra documentación sobre [configuración de una integración XWiki](docs_url) para obtener más información.
@@ -50,4 +51,4 @@ es:
           xwiki_oauth_description: Permite que OpenProject acceda a los datos de XWiki mediante OAuth.
         delete:
           title: Eliminar proveedor wiki
-          warning_html: Estás a punto de borrar %{wiki_provider}. Esta acción es irreversible.
+          warning_html: Estás a punto de eliminar %{wiki_provider}. Esta acción es irreversible.

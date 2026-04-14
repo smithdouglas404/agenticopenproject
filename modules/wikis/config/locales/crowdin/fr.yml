@@ -5,6 +5,7 @@ fr:
       wikis/xwiki_provider:
         name: Nom
         url: URL de l'instance
+        universal_identifier: Universal identifier
         authentication_method: Méthode d'authentification
         authentication_methods:
           oauth2_sso: Authentification unique via le fournisseur d'identité OpenID Connect

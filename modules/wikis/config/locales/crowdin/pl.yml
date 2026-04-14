@@ -5,6 +5,7 @@ pl:
       wikis/xwiki_provider:
         name: Nazwa
         url: Adres URL wystąpienia
+        universal_identifier: Universal identifier
         authentication_method: Metoda uwierzytelniania
         authentication_methods:
           oauth2_sso: Logowanie jednokrotne za pośrednictwem dostawcy tożsamości OpenID Connect

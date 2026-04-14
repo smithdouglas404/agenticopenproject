@@ -66,7 +66,9 @@ es:
       secondary_action: Conocer más sobre el módulo de los documentos
     document_type_actions: Acciones al tipo de archivo
     text_collaboration_disabled_notice:
-      description: "."
+      description: |-
+        No se puede abrir el documento porque la colaboración en tiempo real está desactivada.
+        Si quieres acceder a este documento, ponte en contacto con tu administrador para que active la colaboración en tiempo real.
     show_edit_view:
       connection_error_notice:
         description_server_unavailable: |-

@@ -67,7 +67,7 @@ ru:
         В течение этого периода у них не будет запрашиваться повторный ввод. Можно установить только в том случае, если не настроено принудительно в конфигурации.
       failed_to_save_settings: 'Ошибка при обновлении параметров 2ФА: %{message}'
     admin:
-      self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
+      self_edit_path_html: Чтобы добавить или изменить свои 2FA устройства, пожалуйста, перейдите на [Двухфакторную аутентификацию на странице вашей учетной записи](self_edit_link)
       self_edit_forbidden: На этой странице изменять свои устройства 2ФА нельзя. Перейдите в раздел «Моя учетная запись > Двухфакторная аутентификация».
       no_devices_for_user: Для этого пользователя не зарегистрировано ни одного устройства 2ФА.
       all_devices_deleted: Все устройства 2ФА этого пользователя удалены
@@ -109,8 +109,8 @@ ru:
       failed_to_delete: Не удалось удалить устройство 2ФА.
       is_default_cannot_delete: Устройство задано как устройство по умолчанию, поэтому политика безопасности запрещает его удалять. Что удалить его, задайте другое устройство по умолчанию.
       not_existing: Для вашей учетной записи не зарегистрировано ни одного устройства 2ФА.
-      2fa_from_input_html: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn_html: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input_html: Пожалуйста, введите код с Вашего <strong>%{device_name}</strong> чтобы подтвердить свою личность.
+      2fa_from_webauthn_html: Пожалуйста, укажите устройство WebAuthn <strong>%{device_name}</strong>. Если это устройство на базе USB, обязательно подключите его и прикоснитесь к нему. Затем нажмите кнопку входа.
       webauthn:
         title: WebAuthn
         description: Зарегистрируйте устройство FIDO2 (например, YubiKey) или Ваше мобильное устройство.

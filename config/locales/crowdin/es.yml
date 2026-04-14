@@ -162,7 +162,7 @@ es:
       run:
         title: Importar ejecución
         history: Historial
-        remove_error: No se puede quitar una importación de Jira mientras se está ejecutando
+        remove_error: No se puede eliminar una importación de Jira mientras se está ejecutando
         import_blocked_error: Actualmente hay otra importación de Jira en curso o pendiente de revisión. Complétela o revierta antes de iniciar una nueva importación.
         project_identifier_taken: 'Estás intentando importar un proyecto con un identificador que ya está en uso: %{taken_identifier}. Actualiza el identificador del proyecto en Jira y, a continuación, haz clic en «Reintentar».'
         blank:
@@ -177,7 +177,7 @@ es:
           instance_meta_fetching: Obteniendo metadatos
           instance_meta_error: Error al obtener metadatos
           instance_meta_done: Metadatos obtenidos
-          import_scope: Select scope
+          import_scope: Seleccionar ámbito
           configuring: Seleccionar ámbito
           projects_meta_fetching: Obteniendo datos del proyecto
           projects_meta_error: Error al obtener los datos del proyecto
@@ -187,12 +187,12 @@ es:
           imported: Modo de revisión
           reverting: Revirtiendo
           revert_error: Error durante la reversión
-          revert_cancelling: Cancelling revert
-          revert_cancelled: Revert cancelled
+          revert_cancelling: Cancelando la reversión
+          revert_cancelled: Reversión cancelada
           reverted: Revertido
-          finalizing: Finalizing
-          finalizing_error: Error during finalizing
-          finalizing_done: Completed
+          finalizing: Finalizando
+          finalizing_error: Error durante la finalización
+          finalizing_done: Completado
         wizard:
           button_retry: Reintentar
           parts:
@@ -698,13 +698,13 @@ es:
   op_dry_validation:
     or: o
     errors:
-      unexpected_key: is not allowed.
+      unexpected_key: no está permitido.
       array?: debe ser una matriz.
       decimal?: debe ser un número decimal.
       defined: no debe definirse.
       eql?: debe ser igual a %{left}.
       filled?: debe rellenarse.
-      format?: is in invalid format.
+      format?: no tiene un formato válido.
       greater_or_equal_zero: debe ser mayor o igual a 0.
       gteq?: debe ser mayor o igual a %{num}.
       hash?: debe ser un hash.
@@ -731,9 +731,9 @@ es:
         parent:
           not_descendant: debe ser descendiente de la raíz de la jerarquía.
       str?: debe ser una cadena.
-      time?: must be a time.
+      time?: debe de ser una hora.
       type?: debe ser %{type}.
-      uri?: is not a valid URI.
+      uri?: no es una URL válida.
     rules:
       copy_workflow_from: Tipo para la copia del flujo de trabajo
       enabled: Habilitado
@@ -1175,41 +1175,41 @@ es:
         blank_title: Aún no hay historial de horarios
         blank_description: Los cambios de horario anteriores aparecerán aquí
       destroy:
-        confirm: Are you sure you want to delete this working schedule?
+        confirm: "¿Seguro que quieres eliminar este horario de trabajo?"
       form:
         title: Planifica tu programa para el futuro
-        title_current: Edit current work schedule
-        start_date: Start date
-        start_date_caption: Select the date from when the new work schedule will be effective.
-        work_days: Work days
-        working_hours_label: Working hours
-        hours_mode_label: Hours mode
-        same_hours_mode: Same hours per day
-        individual_hours_mode: Individual hours per day
-        work_hours: Work hours
-        hours_per_day: Hours per day
-        per_day: per day
-        per_week: per week
-        total_work_hours: Total work hours
-        availability_description: The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities.
-        availability_factor: Availability factor
-        availability_factor_caption: Define the percentage of your working time dedicated to project work.
-        total_available_hours: Total available work hours
-        title_availability_factor: Availability factor
-        title_days_and_hours: Days and hours
+        title_current: Editar el horario de trabajo actual
+        start_date: Fecha de inicio
+        start_date_caption: Selecciona la fecha a partir de la cual entrará en vigor el nuevo horario de trabajo.
+        work_days: Días laborables
+        working_hours_label: Horas de trabajo
+        hours_mode_label: Modo de horas
+        same_hours_mode: Las mismas horas al día
+        individual_hours_mode: Horas individuales al día
+        work_hours: Horas laborales
+        hours_per_day: Horas al día
+        per_day: al día
+        per_week: a la semana
+        total_work_hours: Total de horas trabajadas
+        availability_description: El factor de disponibilidad representa el porcentaje real de tu tiempo de trabajo dedicado a las tareas del proyecto. Esto incluye reuniones, correos electrónicos, tareas administrativas y otras actividades ajenas al proyecto.
+        availability_factor: Factor de disponibilidad
+        availability_factor_caption: Indica el porcentaje de tu jornada laboral que dedicas al trabajo en proyectos.
+        total_available_hours: Total de horas de trabajo disponibles
+        title_availability_factor: Factor de disponibilidad
+        title_days_and_hours: Días y horas
         title_future_dates: Fechas futuras
       table:
-        mobile_title: Working schedules
-        start_date: Start date
-        work_days: Work days
-        work_hours: Work hours
-        availability_factor: Availability factor
-        effective_work_hours: Effective work hours
+        mobile_title: Horarios de trabajo
+        start_date: Fecha de inicio
+        work_days: Días laborables
+        work_hours: Horas laborales
+        availability_factor: Factor de disponibilidad
+        effective_work_hours: Horas efectivas de trabajo
         work_days_count:
-          one: 1 working day
-          other: "%{count} working days"
+          one: 1 día laborable
+          other: "%{count} días laborables"
   user_preferences:
-    disable_keyboard_shortcuts_caption: 'You can choose to disable default [keyboard shortcuts](docs_url) if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
+    disable_keyboard_shortcuts_caption: 'Puedes desactivar los [atajos de teclado](docs_url) predeterminados si utilizas un lector de pantalla o si quieres evitar activar una acción por error con un atajo.
 
       '
   page:
@@ -1257,9 +1257,9 @@ es:
         Marque esta opción para excluir los paquetes de trabajo con este estado de los totales de Trabajo,
         Trabajo restante y % completado en una jerarquía.
       status_percent_complete_text_html: |-
-        In [status-based progress calculation mode](setting_url), the % Complete of a work
-        package is automatically set to this value when this status is selected.
-        Ignored in work-based mode.
+        En el [modo de cálculo del progreso basado en el estado](setting_url), el % completado de un paquete de trabajo
+        se establece automáticamente en este valor cuando se selecciona este estado.
+        Se ignora en el modo basado en el trabajo.
       status_readonly_html: |
         Seleccione esta opción para marcar los paquetes de trabajo que tengan este estado como de solo lectura.
         Excepto el estado, ningún otro atributo se puede modificar.
@@ -1536,8 +1536,8 @@ es:
   activerecord:
     attributes:
       work_package_semantic_alias:
-        identifier: Identifier
-        work_package: Work package
+        identifier: Identificador
+        work_package: Paquete de trabajo
       jira_import:
         projects: Proyectos
       import/jira:
@@ -1800,11 +1800,11 @@ es:
         consented_at: Consentido en
       group:
         identity_url: URL de identidad
-        parent: Parent group
-        organizational_unit: Organizational unit
+        parent: Grupo principal
+        organizational_unit: Unidad organizativa
       group_detail:
-        parent: Parent group
-        organizational_unit: Organizational unit
+        parent: Grupo principal
+        organizational_unit: Unidad organizativa
       user_preference:
         header_look_and_feel: Apariencia
         header_alerts: Alertas
@@ -1834,8 +1834,8 @@ es:
         principal_type: Tipo de invitación
         id_or_email: Nombre o dirección de correo electrónico
       user_non_working_time:
-        start_date: Start date
-        end_date: End date
+        start_date: Fecha de inicio
+        end_date: Fecha de finalización
       user_working_hours:
         valid_from: Válido desde
         monday: Lunes
@@ -1984,7 +1984,7 @@ es:
         group:
           attributes:
             parent_id:
-              circular_dependency: would create a circular group hierarchy.
+              circular_dependency: crearía una jerarquía de grupos circular.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2096,8 +2096,8 @@ es:
             types:
               in_use_by_work_packages: 'todavia en uso por los paquetes de trabajo: %{types}'
             identifier:
-              must_start_with_letter: must start with a letter
-              no_special_characters: may only contain uppercase letters, numbers, and underscores
+              must_start_with_letter: debe empezar con una letra
+              no_special_characters: solo puede contener letras mayúsculas, números y guiones bajos
             enabled_modules:
               dependency_missing: El módulo «%{dependency}» debe habilitarse también, ya que el módulo «%{module}» depende de este.
               format: "%{message}"
@@ -2572,7 +2572,7 @@ es:
       info: 'Para crear una copia de seguridad, necesita generar un token de copias de seguridad. Cada vez que quiera solicitar una copia de seguridad, tendrá que especificar este token. Puede eliminar el token de copias de seguridad para deshabilitar las copias de seguridad para este usuario.
 
         '
-      verification_html: 'Enter %{word} to confirm you want to %{action} the backup token.
+      verification_html: 'Escribe %{word} para confirmar que quieres %{action} el token de copia de seguridad.
 
         '
       verification_word_reset: restablecer
@@ -3011,7 +3011,7 @@ es:
       title:
         one: Queda un día del token de prueba de %{trial_plan}
         other: Quedan %{count} días del token de prueba de %{trial_plan}
-      description_html: You have access to all %{trial_plan} features.
+      description_html: Tienes acceso a todas las funciones de %{trial_plan}.
     trial:
       not_found: Ha solicitado un token de prueba, pero esa solicitud ya no está disponible. Inténtelo de nuevo.
       wait_for_confirmation: Le hemos enviado un correo electrónico para que confirme su dirección con el fin de recuperar un token de prueba.
@@ -3031,8 +3031,8 @@ es:
 
         '
       domain_caption: El token será válido para su nombre de host configurado actualmente.
-      receive_newsletter: I want to receive the OpenProject [newsletter](newsletter_url).
-      consent: I agree with the [terms of service](tos_url) and the [privacy policy](privacy_url).
+      receive_newsletter: Quiero recibir el boletín de OpenProject [boletín](newsletter_url).
+      consent: Acepto los [términos del servicio](tos_url) y la [política de privacidad](privacy_url).
   email_calendar_updates:
     state:
       disabled: Deshabilitado.
@@ -3121,8 +3121,8 @@ es:
     work_package_edit: Paquete de trabajo editado
     work_package_note: Nota de paquete de trabajo añadido
     title:
-      project_html: 'Project: %{name}'
-      subproject_html: 'Subproject: %{name}'
+      project_html: 'Proyecto: %{name}'
+      subproject_html: 'Subproyecto: %{name}'
   export:
     dialog:
       title: Exportar
@@ -3294,7 +3294,7 @@ es:
         learn_about: Más información sobre todas las nuevas funciones
         missing: Aún no hay funciones destacadas.
         '17_3':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: 'El lanzamiento incluye varias funciones nuevas y mejoras, tales como:
 
             '
           new_features_list:
@@ -3390,10 +3390,10 @@ es:
       label: Añadir…
   my_account:
     notifications_and_email:
-      title: Notification and email
+      title: Notificación y correo electrónico
       tabs:
-        notifications: Notification settings
-        email_reminders: Email reminders
+        notifications: Ajustes de notificación
+        email_reminders: Recordatorios por correo electrónico
     access_tokens:
       description: Los tokens de proveedor son emitidos por OpenProject y permiten a otras aplicaciones acceder a él. Los tokens de cliente son emitidos por otras aplicaciones y permiten a OpenProject acceder a ellos.
       no_results:
@@ -3458,34 +3458,34 @@ es:
         unknown_storage: Almacenamiento desconocido
     email_reminders:
       immediate_reminders:
-        title: Send me an email reminder
-        mentioned: Notify me when I am mentioned
-        personal_reminder: Notify me for personal reminders
+        title: Enviarme un recordatorio por correo electrónico
+        mentioned: Notificarme cuando me mencionen
+        personal_reminder: Notificarme para recibir recordatorios personales
       daily_reminders:
-        title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
-        enabled: Enable daily email reminders
-        add_time: Add time
-        remove_time: Remove time
-        time_slot_label: Reminder time (UTC)
+        title: Enviarme recordatorios por correo electrónico diarios con las notificaciones sin leer
+        caption: Recibirás estos recordatorios solo para las notificaciones no leídas y únicamente a las horas que indiques. Hasta que configures una zona horaria para tu cuenta, se considerará que las horas están en UTC.
+        enabled: Habilitar recordatorios por correo electrónico diarios
+        add_time: Añadir tiempo
+        remove_time: Eliminar el tiempo
+        time_slot_label: Hora del recordatorio (UTC)
       workdays:
-        title: Receive email reminders on these days
-        submit_button: Update reminder days
+        title: Recibir recordatorios por correo electrónico en estos días
+        submit_button: Días de recordatorio de actualización
       pause_reminders:
-        title: Pause email notifications
-        enabled: Temporarily pause daily email reminders
-        date_range: Pause period
+        title: Pausar notificaciones por correo electrónico
+        enabled: Pausar temporalmente los recordatorios por correo electrónico diarios
+        date_range: Período de pausa
       email_alerts:
-        title: Email alerts for other items that are not work packages
-        news_added: News added
-        news_commented: Comment on a news item
-        document_added: Document added
-        forum_messages: Forum message posted
-        wiki_page_added: Wiki page added
-        wiki_page_updated: Wiki page updated
-        membership_added: Membership added
-        membership_updated: Membership updated
-        submit_button: Update alerts
+        title: Alertas por correo electrónico de otros elementos que no sean paquetes de trabajo
+        news_added: Noticias añadidas
+        news_commented: Comentarios en un elemento de noticias
+        document_added: Documento agregado
+        forum_messages: Mensaje publicado en el foro
+        wiki_page_added: Página wiki añadida
+        wiki_page_updated: Página wiki actualizada
+        membership_added: Subscripción añadida
+        membership_updated: Subscripción actualizada
+        submit_button: Actualizar alertas
     notifications:
       participating:
         title: Participando
@@ -4279,8 +4279,8 @@ es:
   label_non_working_days: Calendario de disponibilidad
   label_non_working_days_with_count: Días no laborables (%{count})
   label_non_working_days_summary: Resumen
-  button_add_non_working_time: Time off
-  button_edit_non_working_time: Edit time off
+  button_add_non_working_time: Ausencias
+  button_edit_non_working_time: Editar ausencia
   label_continued_from_previous_year: continuación del año anterior
   label_continues_into_next_year: se prolongará hasta el año que viene
   label_end_date: Fecha de finalización
@@ -4324,7 +4324,7 @@ es:
       center: Al centro de notificaciones
       see_in_center: Ver comentario en el centro de notificaciones
       settings: Cambiar configuración de correo electrónico
-    salutation: Hello %{user},
+    salutation: 'Hola, %{user}:'
     salutation_full_name: Nombre completo
     work_packages:
       created_at: 'Creado a las %{timestamp} por %{user} '
@@ -4354,7 +4354,7 @@ es:
       note: 'Nota: «%{note}»'
     sharing:
       work_packages:
-        allowed_actions_html: You may %{allowed_actions} this work package. This can change depending on your project role and permissions.
+        allowed_actions_html: Puedes %{allowed_actions} en este paquete de trabajo. Esto puede variar en función de tu rol en el proyecto y tus permisos.
         create_account: 'Para acceder a este paquete de trabajo necesitará crear y activar una cuenta en %{instance}. '
         open_work_package: Abrir paquete de trabajo
         subject: 'Paquete de trabajo #%{id} fue compartido contigo'
@@ -4454,8 +4454,8 @@ es:
   mail_user_activation_limit_reached:
     subject: Se ha alcanzado el límite de activaciones del usuario
     message_html: |
-      A new user (%{email}) tried to create an account on an OpenProject environment that you manage (%{host}).
-      The user cannot activate their account since the user limit has been reached.
+      Un nuevo usuario (%{email}) intento crear una cuenta en el ambiente de Proyecto Abierto que usted administra (%{host}).
+      El usuario no puede activar su cuenta debido a que el límite del usuario ha sido alcanzado.
     steps:
       label: 'Para permitir al usuario ingresar, usted puede: '
       a: Mejore su plan de pago ([here](upgrade_url))
@@ -4517,7 +4517,7 @@ es:
   notice_parent_item_not_found: Elemento padre no encontrado.
   notice_project_not_deleted: El proyecto no fue eliminado.
   notice_project_not_found: Proyecto no encontrado.
-  notice_smtp_address_unsafe_env_hint: SMTP address %{address} is not safe. Please add it to the whitelist using the %{env_name} environment variable.
+  notice_smtp_address_unsafe_env_hint: La dirección SMTP %{address} no es segura. Añádela a la lista blanca mediante la variable de entorno %{env_name}.
   notice_successful_connection: Conexión exitosa.
   notice_successful_create: Creación exitosa.
   notice_successful_delete: Eliminado con éxito.
@@ -4642,12 +4642,12 @@ es:
   permission_manage_versions: Administrar versiones
   permission_manage_wiki: Administrar wiki
   permission_manage_wiki_menu: Administrar menú wiki
-  permission_manage_own_working_times: Manage own working times
-  permission_manage_own_working_times_explanation: 'Allows users to manage their own working times, and personal non-working days.
+  permission_manage_own_working_times: Gestiona tu propio horario de trabajo
+  permission_manage_own_working_times_explanation: 'Permite a los usuarios gestionar sus propios horarios de trabajo y sus días libres.
 
     '
-  permission_manage_working_times: Manage working times for all users
-  permission_manage_working_times_explanation: 'Allows users to manage working times for all users, including personal non-working days.
+  permission_manage_working_times: Gestiona los horarios de trabajo de todos los usuarios
+  permission_manage_working_times_explanation: 'Permite gestionar los horarios de trabajo de todos los usuarios, incluidos los días libres personales.
 
     '
   permission_move_work_packages: Mover paquetes de trabajo
@@ -4800,10 +4800,10 @@ es:
       info: La eliminación del repositorio no se puede deshacer.
       info_not_managed: 'Nota: Esto NO borrará el contenido de este repositorio, ya que no es gestionado por OpenProject.'
       managed_path_note: 'Se borrará el directorio siguiente: %{path}'
-      repository_verification_html: Enter the project's identifier %{identifier} to verify the deletion of its repository.
+      repository_verification_html: Introduce el identificador del proyecto %{identifier} para confirmar la eliminación de su repositorio.
       subtitle: "¿Esta seguro de que desea eliminar el tipo %{repository_type} del proyecto %{project_name}?"
-      subtitle_not_managed_html: Do you really want to remove the linked %{repository_type} %{url} from the project %{project_name}?
-      title_html: Delete the %{repository_type}
+      subtitle_not_managed_html: "¿De verdad quieres eliminar el enlace %{repository_type} %{url} del proyecto %{project_name}?"
+      title_html: Eliminar el %{repository_type}
       title_not_managed: Eliminar el %{repository_type} linkado?
     errors:
       build_failed: No se puede crear el repositorio con la configuración seleccionada. %{reason}
@@ -4852,7 +4852,7 @@ es:
     storage:
       not_available: Consumo de almacenamiento de disco no está disponible para este repositorio.
       update_timeout: Mantener la última información de espacio de disco requerida para un repositorio de N minutos. Contar el espacio de disco requerido de un repositorio puede ser costoso, aumente este valor para reducir el impacto en el rendimiento.
-      oauth_application_details_html: 'The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:'
+      oauth_application_details_html: 'No podrás volver a acceder al valor del secreto de cliente una vez que cierres esta ventana. Copia estos valores en la configuración de la integración de Nextcloud con OpenProject:'
       oauth_application_details_link_text: Ir a la página de configuración
       setup_documentation_details: 'Si necesita ayuda para configurar un nuevo almacenamiento de archivos, compruebe la documentación: '
       setup_documentation_details_link_text: Configuración de almacenamiento de archivos
@@ -5012,7 +5012,7 @@ es:
   setting_work_package_properties: Propiedades de paquete de trabajo
   setting_work_package_startdate_is_adddate: Usar fecha actual como fecha de inicio para nuevos paquetes de trabajo
   setting_work_packages_projects_export_limit: Fecha límite para exportar paquete de trabajo o proyectos
-  setting_journal_aggregation_time_minutes: Aggregation period
+  setting_journal_aggregation_time_minutes: Período de agregación
   setting_log_requesting_user: Registrar inicio de sesión de usuario, nombre, y dirección de correo para todas las solicitudes
   setting_login_required: Autentificación requerida
   setting_login_required_caption: Cuando está marcada, todas las solicitudes a la aplicación tienen que autentificarse.
@@ -5284,11 +5284,11 @@ es:
       section_work_week: Semana de trabajo
       section_holidays_and_closures: Vacaciones y cierres
     work_packages:
-      work_package_identifier: Work package identifier
+      work_package_identifier: Identificador del paquete de trabajo
       not_allowed_text: No tiene los permisos necesarios para ver esta página.
       activities:
         enable_internal_comments: Habilitar comentarios internos
-        helper_text_html: 'Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. [Click here to learn more](docs_url)
+        helper_text_html: 'Los comentarios internos permiten a un equipo interno comunicarse entre sí de forma privada. Solo son visibles para los usuarios seleccionados que tengan los permisos necesarios y no se mostrarán públicamente. [Haz clic aquí para obtener más información](docs_url)
 
           '
   text_formatting:
@@ -5376,7 +5376,7 @@ es:
   text_default_administrator_account_changed: Se ha cambiado la cuenta de administrador por defecto
   text_default_encoding: 'Por defecto: UTF-8'
   text_destroy: Borrar
-  text_destroy_with_associated: 'There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:'
+  text_destroy_with_associated: 'Hay otros objetos asociados a los paquetes de trabajo que se eliminarán. Esos objetos son de los siguientes tipos:'
   text_destroy_what_to_do: "¿Qué quieres hacer?"
   text_diff_truncated: "... Esta diferencia se truncó porque excede el tamaño máximo que puede visualizarse."
   text_email_delivery_not_configured: |-
@@ -5547,10 +5547,10 @@ es:
   version_status_locked: bloqueado
   version_status_open: abierto
   note: Nota
-  note_password_login_disabled_link: Password login has been disabled through a [configuration setting](configuration_url).
+  note_password_login_disabled_link: El inicio de sesión con contraseña se ha desactivado a través de un [ajuste de configuración](configuration_url).
   warning: Alerta
   warning_attachments_not_saved: "%{count} archivo(s) no podrán ser salvados."
-  warning_imminent_user_limit_html: 'You invited more users than are supported by your current plan. Invited users may not be able to join your OpenProject environment. Please [upgrade your plan](upgrade_url) or block existing users in order to allow invited and registered users to join.
+  warning_imminent_user_limit_html: 'Has invitado a más usuarios de los que admite tu plan actual. Es posible que los usuarios invitados no puedan unirse a tu entorno de OpenProject. [Actualiza tu plan](upgrade_url) o bloquea a los usuarios existentes para que los usuarios invitados y registrados puedan unirse.
 
     '
   warning_registration_token_expired: 'El e-mail de activación ha expirado. Le enviaremos uno nuevo a %{email}. Por favor haga click en el enlace incluido en el mismo para activar su cuenta.
@@ -5559,7 +5559,7 @@ es:
   warning_user_limit_reached: 'Añadir usuarios adicionales excederá el límite actual. Póngase en contacto con un administrador para aumentar el límite de usuario para asegurar que los usuarios externos puedan acceder a esta instancia.
 
     '
-  warning_user_limit_reached_admin_html: 'Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
+  warning_user_limit_reached_admin_html: 'Si añades más usuarios, se superará el límite actual. [Actualiza tu plan](upgrade_url) para garantizar que los usuarios externos puedan acceder a esta instancia.
 
     '
   warning_user_limit_reached_instructions: 'Has alcanzado el límite de usuarios (%{current}/%{max} usuarios activos). Por favor, contacta con sales@openproject.com para mejorar tu plan de Enterprise y añadir usuarios adicionales.
@@ -5624,7 +5624,7 @@ es:
     reminders:
       label_remind_at: Fecha
       note_placeholder: "¿Por qué establece este recordatorio?"
-      create_success_message_html: Reminder set successfully. You will receive a notification for this work package %{reminder_time}.
+      create_success_message_html: Recordatorio establecido correctamente. Recibirás una notificación para este paquete de trabajo %{reminder_time}.
       success_update_message: Recordatorio actualizado con éxito.
       success_deletion_message: Recordatorio eliminado correctamente.
   sharing:
@@ -5656,7 +5656,7 @@ es:
     warning_user_limit_reached: 'Añadir usuarios adicionales excederá el límite actual. Póngase en contacto con un administrador para aumentar el límite de usuario para asegurar que los usuarios externos puedan acceder a esta %{entity}.
 
       '
-    warning_user_limit_reached_admin_html: 'Adding additional users will exceed the current limit. Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
+    warning_user_limit_reached_admin_html: 'Si añades más usuarios, se superará el límite actual. [Actualiza tu plan](upgrade_url) para garantizar que los usuarios externos puedan acceder a esta %{entity}.
 
       '
     warning_no_selected_user: Por favor, seleccione usuarios para compartir esta %{entity} con
@@ -5780,7 +5780,7 @@ es:
       project: 'Oculto: el proyecto no se muestra porque no tiene los permisos necesarios.'
       ancestor: No revelado - El antepasado es invisible por falta de permisos.
       definingProject: 'Oculto: el proyecto no se muestra porque no tiene los permisos necesarios.'
-      definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      definingWorkspace: 'Oculto: el espacio de trabajo no se muestra porque no tiene los permisos necesarios.'
   doorkeeper:
     pre_authorization:
       status: Pre-autorización

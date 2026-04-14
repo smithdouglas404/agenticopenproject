@@ -1159,5 +1159,5 @@ ru:
         network_on: Проблема с сетью решена.
     projects:
       identifier_suggestion:
-        loading: Loading suggestion...
-        set_name_first: Please set the name first.
+        loading: Загрузка предложений...
+        set_name_first: Пожалуйста, сначала задайте имя.

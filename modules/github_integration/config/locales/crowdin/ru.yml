@@ -44,14 +44,14 @@ ru:
   notice_deploy_target_created: Цель установки создана
   notice_deploy_target_destroyed: Цель установки удалена
   label_github_comment_user: GitHub actor
-  label_github_webhook_secret: Webhook secret
-  text_github_comment_user_info: 'The OpenProject user whose API key must be used to authenticate incoming webhook requests. When set, requests authenticated with any other user''s credentials are rejected. This user also posts automated deploy-status comments on work packages. Defaults to the system user when not set.
+  label_github_webhook_secret: Секрет вебхука
+  text_github_comment_user_info: 'Пользователь OpenProject, чей API-ключ должен использоваться для аутентификации входящих запросов к вебхукам. Если этот параметр установлен, запросы, аутентифицированные с помощью учетных данных любого другого пользователя, будут отклонены. Этот пользователь также публикует автоматические комментарии к рабочим пакетам о статусе развертывания. Если значение не установлено, по умолчанию используется системный пользователь.
 
     '
-  text_github_webhook_secret_missing_warning: 'No webhook secret is configured. Any request to the GitHub webhook endpoint will be accepted without verification, which may allow unauthorized actors to forge events. It is strongly recommended to set a secret.
+  text_github_webhook_secret_missing_warning: 'Секрет вебхука не настроен. Любой запрос к конечной точке GitHub webhook будет принят без проверки, что может позволить неавторизованным участникам подделывать события. Настоятельно рекомендуется установить секрет.
 
     '
-  text_github_webhook_secret_info: 'A secret token shared with GitHub when configuring the webhook. When set, OpenProject verifies the X-Hub-Signature-256 header on every incoming request, rejecting payloads that do not match. Leave blank to skip verification (not recommended).
+  text_github_webhook_secret_info: 'Секретный токен, передаваемый GitHub при настройке вебхука. Если установлено, OpenProject проверяет заголовок X-Hub-Signature-256 в каждом входящем запросе, отклоняя полезную нагрузку, которая не соответствует. Оставьте значение пустым, чтобы пропустить проверку (не рекомендуется).
 
     '
   plugin_openproject_github_integration:

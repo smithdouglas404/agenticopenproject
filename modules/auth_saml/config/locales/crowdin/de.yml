@@ -34,7 +34,7 @@ de:
   saml:
     menu_title: SAML-Anbieter
     delete_title: SAML-Anbieter löschen
-    delete_heading: Delete this SAML provider?
+    delete_heading: Diesen SAML-Anbieter löschen?
     info:
       title: Konfigurationsparameter für das SAML-Protokoll
       description: 'Verwenden Sie diese Parameter, um Ihre Identitätsanbieter-Verbindung zu OpenProject zu konfigurieren.
