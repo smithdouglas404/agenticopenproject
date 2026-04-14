@@ -62,7 +62,7 @@ module Projects::SemanticIdentifier
       .pluck(:slug)
       .find do |slug|
         detector.format_error_reason(slug).nil? &&
-          !self.class.where.not(id:).where("LOWER(identifier) = ?", slug.downcase).exists?
+          !self.class.where.not(id:).exists?(["LOWER(identifier) = ?", slug.downcase])
       end
   end
 
