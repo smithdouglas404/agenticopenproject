@@ -97,5 +97,6 @@ module OpenProject::Wikis
     end
 
     add_api_path(:wiki_page_link) { "#{root}/wiki_page_links/#{it}" }
+    add_api_path(:wiki_provider) { "#{root}/wiki_providers/#{it}" }
   end
 end

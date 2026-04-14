@@ -30,56 +30,18 @@
 
 module API
   module V3
-    module PageLinks
-      class PageLinkRepresenter < Decorators::Single
+    module Providers
+      class ProviderRepresenter < Decorators::Single
         include Decorators::LinkedResource
         include Decorators::DateProperty
-        include Caching::CachedRepresenter
 
         property :id
-        property :identifier
+        property :name
 
         date_time_property :created_at
         date_time_property :updated_at
 
-        # Title being the identifier is kind of a placeholder until we have actual page names
-        self_link(path: :wiki_page_link, title_getter: ->(*) { represented.identifier })
-
-        link :delete, cache_if: ->(*) { user_allowed_to_manage?(represented) } do
-          {
-            href: api_v3_paths.wiki_page_link(represented.id),
-            method: :delete
-          }
-        end
-
-        link :author do
-          next unless represented.author?
-
-          {
-            href: api_v3_paths.user(represented.author_id),
-            title: represented.author.name
-          }
-        end
-
-        associated_resource :provider, v3_path: :wiki_provider
-
-        # TODO: Make this truly polymorphic - @mereghost 2026-04-13
-        associated_resource :linkable,
-                            v3_path: :work_package,
-                            representer: ::API::V3::WorkPackages::WorkPackageRepresenter,
-                            skip_render: ->(*) { represented.linkable_id.nil? }
-
-        def _type = represented.class.name.demodulize
-
-        private
-
-        def user_allowed_to_manage?(model)
-          if model.linkable.present?
-            current_user.allowed_in_project?(:manage_wiki_page_links, model.linkable.project)
-          else
-            current_user == model.author
-          end
-        end
+        self_link(path: :wiki_provider)
       end
     end
   end
