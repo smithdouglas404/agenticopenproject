@@ -33,6 +33,53 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
 
   good_job_control_concurrency_with(total_limit: 1)
 
-  def perform(*)
+  # Maximum number of re-processing passes before giving up and aborting the flip.
+  # Prevents an infinite loop if work packages are created faster than they can be processed.
+  MAX_ITERATIONS = 10
+
+  # Called directly by the controller (no args) for the initial dispatch,
+  # or by GoodJob as an on_success batch callback with (batch, params).
+  def perform(_batch = nil, params = nil)
+    iteration = params.to_h.with_indifferent_access.fetch(:iteration, 0).to_i
+    remaining = project_ids_needing_backfill
+
+    return switch_instance_to_semantic! if remaining.empty?
+
+    convert_identifier_data(remaining, iteration)
+  end
+
+  private
+
+  def switch_instance_to_semantic!
+    Setting::WorkPackageIdentifier.enable_semantic!
+  end
+
+  def convert_identifier_data(remaining, iteration)
+    if iteration < MAX_ITERATIONS
+      enqueue_backfill_batch(remaining, next_iteration: iteration + 1)
+    else
+      abort_with_error(remaining.size)
+    end
+  end
+
+  def enqueue_backfill_batch(project_ids, next_iteration:)
+    GoodJob::Batch.enqueue(on_success: self.class, on_success_params: { iteration: next_iteration }) do
+      project_ids.each { |project_id| ProjectIdentifiers::ConvertProjectToSemanticIdsJob.perform_later(project_id) }
+    end
+  end
+
+  def abort_with_error(remaining_count)
+    message =
+      "#{self.class.name}: reached max iterations (#{MAX_ITERATIONS}) with " \
+      "#{remaining_count} project(s) still unprocessed — aborting flip, reverting data"
+
+    Rails.logger.error(message)
+    # Do not raise: raising would cause GoodJob to retry this job, which would
+    # race with the revert job. The error is surfaced via the log instead.
+    ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later
+  end
+
+  def project_ids_needing_backfill
+    ProjectIdentifiers::PendingProjectsFinder.new.project_ids
   end
 end

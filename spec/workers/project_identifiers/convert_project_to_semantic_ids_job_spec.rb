@@ -28,15 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Setting
-  module WorkPackageIdentifier
-    CLASSIC  = "classic"
-    SEMANTIC = "semantic"
-    ALLOWED_VALUES = [CLASSIC, SEMANTIC].freeze
+require "rails_helper"
 
-    def self.semantic? = Setting[:work_packages_identifier] == SEMANTIC
-    def self.classic?  = Setting[:work_packages_identifier] == CLASSIC
-    def self.semantic_mode_active? = semantic? && OpenProject::FeatureDecisions.semantic_work_package_ids_active?
-    def self.enable_semantic! = Setting.work_packages_identifier = SEMANTIC
+RSpec.describe ProjectIdentifiers::ConvertProjectToSemanticIdsJob do
+  describe "#perform" do
+    it "delegates to ConvertProjectToSemanticService" do
+      project = create(:project)
+      service = instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil)
+      allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
+
+      described_class.new.perform(project.id)
+
+      expect(service).to have_received(:call)
+    end
   end
 end

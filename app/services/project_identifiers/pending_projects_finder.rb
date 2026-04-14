@@ -28,15 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Setting
-  module WorkPackageIdentifier
-    CLASSIC  = "classic"
-    SEMANTIC = "semantic"
-    ALLOWED_VALUES = [CLASSIC, SEMANTIC].freeze
+module ProjectIdentifiers
+  # Returns the set of project IDs that still need backfilling before the
+  # instance can be switched to semantic identifier mode. Three buckets:
+  #
+  # * projects whose identifier is not in valid semantic format
+  # * projects that have work packages with no sequence_number yet
+  # * projects that have work packages whose identifier doesn't match
+  #   the current project prefix (stale due to renames or cross-project moves)
+  class PendingProjectsFinder
+    def project_ids
+      projects_with_bad_identifier | projects_with_unsequenced_wps | projects_with_stale_wps
+    end
 
-    def self.semantic? = Setting[:work_packages_identifier] == SEMANTIC
-    def self.classic?  = Setting[:work_packages_identifier] == CLASSIC
-    def self.semantic_mode_active? = semantic? && OpenProject::FeatureDecisions.semantic_work_package_ids_active?
-    def self.enable_semantic! = Setting.work_packages_identifier = SEMANTIC
+    private
+
+    def projects_with_bad_identifier
+      WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
+    end
+
+    def projects_with_unsequenced_wps
+      WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
+    end
+
+    def projects_with_stale_wps
+      WorkPackage
+        .joins(:project)
+        .where.not(sequence_number: nil)
+        .where("work_packages.identifier IS DISTINCT FROM " \
+               "projects.identifier || '-' || work_packages.sequence_number::text")
+        .distinct.pluck(:project_id).to_set
+    end
   end
 end
