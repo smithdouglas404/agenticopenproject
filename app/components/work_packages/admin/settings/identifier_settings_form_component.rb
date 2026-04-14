@@ -64,7 +64,8 @@ module WorkPackages
         def form_id = "wp-identifier-settings-form"
 
         def in_progress_banner_message
-          key = if Setting::WorkPackageIdentifier.semantic
+          task = BackgroundTask.processing.order(:created_at).last
+          key = if task&.task_type == BackgroundTask::SEMANTIC_ID_REVERSION
                   "admin.settings.work_packages_identifier.in_progress.reverting_banner_message"
                 else
                   "admin.settings.work_packages_identifier.in_progress.converting_banner_message"

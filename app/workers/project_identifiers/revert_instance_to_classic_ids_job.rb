@@ -42,11 +42,13 @@ class ProjectIdentifiers::RevertInstanceToClassicIdsJob < ApplicationJob
 
   good_job_control_concurrency_with(total_limit: 1)
 
-  # Called directly (no args) for the initial dispatch, or by GoodJob as an
-  # on_success batch callback with (batch, params) once all per-project jobs
-  # have finished.
-  def perform(_batch = nil, params = nil)
-    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob) do
+  # The BackgroundTask is created by the caller in pending state; this job transitions
+  # it to processing before dispatching the per-project batch.
+  # task_id is passed through to FinishRevertingInstanceToClassicIdsJob via batch properties.
+  def perform(task_id)
+    BackgroundTask.find(task_id).start!
+    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob,
+                           task_id:) do
       Project.ids.each { |id| ProjectIdentifiers::RevertProjectToClassicIdsJob.perform_later(id) }
     end
   end

@@ -46,3 +46,31 @@
 %>
 
 <%= render(WorkPackages::Admin::Settings::IdentifierSettingsFormComponent.new(state: @form_state)) %>
+
+<% if @conversion_history.any? %>
+  <h3>Conversion history (debug)</h3>
+  <table border="1" cellpadding="4">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Task type</th>
+        <th>Status</th>
+        <th>Started at</th>
+        <th>Completed at</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @conversion_history.each do |c| %>
+        <tr>
+          <td><%= c.id %></td>
+          <td><%= c.task_type %></td>
+          <td><%= c.status %></td>
+          <td><%= c.created_at %></td>
+          <td><%= c.completed_at || "—" %></td>
+          <td><%= c.metadata || "—" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

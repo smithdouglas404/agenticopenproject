@@ -37,46 +37,54 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
   # Prevents an infinite loop if work packages are created faster than they can be processed.
   MAX_ITERATIONS = 10
 
-  # Called directly by the controller (no args) for the initial dispatch,
-  # or by GoodJob as an on_success batch callback with (batch, params).
+  # Called by the controller as perform_later(nil, { task_id: }) for the initial dispatch,
+  # or by GoodJob as an on_success batch callback with (batch, { task_id:, iteration: }).
+  # The BackgroundTask is created by the controller in pending state; this job transitions
+  # it to processing on the first iteration.
   def perform(_batch = nil, params = nil)
-    iteration = params.to_h.with_indifferent_access.fetch(:iteration, 0).to_i
+    p         = params.to_h.with_indifferent_access
+    iteration = p.fetch(:iteration, 0).to_i
+    task      = BackgroundTask.find(p[:task_id])
+    task.start! if iteration.zero?
     remaining = project_ids_needing_backfill
 
-    return switch_instance_to_semantic! if remaining.empty?
+    return switch_instance_to_semantic!(task) if remaining.empty?
 
-    convert_identifier_data(remaining, iteration)
+    convert_identifier_data(remaining, iteration, task)
   end
 
   private
 
-  def switch_instance_to_semantic!
+  def switch_instance_to_semantic!(task)
+    task.complete!
     Setting::WorkPackageIdentifier.enable_semantic!
   end
 
-  def convert_identifier_data(remaining, iteration)
+  def convert_identifier_data(remaining, iteration, task)
     if iteration < MAX_ITERATIONS
-      enqueue_backfill_batch(remaining, next_iteration: iteration + 1)
+      enqueue_backfill_batch(remaining, next_iteration: iteration + 1, task_id: task.id)
     else
-      abort_with_error(remaining.size)
+      abort_with_error(remaining.size, task)
     end
   end
 
-  def enqueue_backfill_batch(project_ids, next_iteration:)
-    GoodJob::Batch.enqueue(on_success: self.class, on_success_params: { iteration: next_iteration }) do
+  def enqueue_backfill_batch(project_ids, next_iteration:, task_id:)
+    GoodJob::Batch.enqueue(on_success: self.class, iteration: next_iteration, task_id:) do
       project_ids.each { |project_id| ProjectIdentifiers::ConvertProjectToSemanticIdsJob.perform_later(project_id) }
     end
   end
 
-  def abort_with_error(remaining_count)
+  def abort_with_error(remaining_count, task)
     message =
       "#{self.class.name}: reached max iterations (#{MAX_ITERATIONS}) with " \
       "#{remaining_count} project(s) still unprocessed — aborting flip, reverting data"
 
     Rails.logger.error(message)
+    task.fail!(remaining_count:)
     # Do not raise: raising would cause GoodJob to retry this job, which would
     # race with the revert job. The error is surfaced via the log instead.
-    ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later
+    revert_task = BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_REVERSION)
+    ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later(revert_task.id)
   end
 
   def project_ids_needing_backfill

@@ -28,26 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Reverts all projects to classic identifier mode by enqueuing a
-# RevertProjectToClassicIdsJob for every project. Triggered either:
-#
-# * Automatically when ConvertInstanceToSemanticIdsJob exhausts MAX_ITERATIONS.
-# * Explicitly when the admin switches the instance back to classic mode via
-#   the admin UI (Admin::Settings::WorkPackagesIdentifierController#switch_to_classic).
-#
-# The global Setting.work_packages_identifier is expected to already be "classic"
-# before this job runs — it is set by the caller in both trigger paths.
-class ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob < ApplicationJob
-  include GoodJob::ActiveJobExtensions::Concurrency
+require "rails_helper"
 
-  good_job_control_concurrency_with(total_limit: 1)
+RSpec.describe WorkPackages::IdentifierAutofix, ".job_in_progress?" do
+  subject { described_class.job_in_progress? }
 
-  # Called directly (no args) for the initial dispatch, or by GoodJob as an
-  # on_success batch callback with (batch, params) once all per-project jobs
-  # have finished.
-  def perform(_batch = nil, params = nil)
-    task_id = params.to_h.with_indifferent_access[:task_id]
-    BackgroundTask.find(task_id).complete! if task_id.present?
-    Setting::WorkPackageIdentifier.enable_classic!
+  context "with no background tasks" do
+    it { is_expected.to be false }
+  end
+
+  context "with a processing SEMANTIC_ID_CONVERSION task" do
+    before { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_CONVERSION).tap(&:start!) }
+
+    it { is_expected.to be true }
+  end
+
+  context "with a processing SEMANTIC_ID_REVERSION task" do
+    before { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_REVERSION).tap(&:start!) }
+
+    it { is_expected.to be true }
+  end
+
+  context "with a completed SEMANTIC_ID_CONVERSION task" do
+    before { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_CONVERSION).tap { |t| t.start!; t.complete! } }
+
+    it { is_expected.to be false }
+  end
+
+  context "with a failed SEMANTIC_ID_CONVERSION task" do
+    before { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_CONVERSION).tap { |t| t.start!; t.fail! } }
+
+    it { is_expected.to be false }
   end
 end
