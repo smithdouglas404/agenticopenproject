@@ -52,7 +52,8 @@ class RbMasterBacklogsController < RbApplicationController
   def index
     return redirect_to action: :backlog if OpenProject::FeatureDecisions.scrum_projects_active?
 
-    if turbo_frame_request?
+    case turbo_frame_request_id
+    when "backlogs_container"
       render partial: "list", layout: false
     else
       render :index
