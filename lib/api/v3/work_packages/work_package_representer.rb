@@ -345,6 +345,11 @@ module API
         property :id,
                  render_nil: true
 
+        property :display_id,
+                 as: :displayId,
+                 render_nil: true,
+                 getter: ->(*) { display_id&.to_s }
+
         property :lock_version,
                  render_nil: true,
                  getter: ->(*) {

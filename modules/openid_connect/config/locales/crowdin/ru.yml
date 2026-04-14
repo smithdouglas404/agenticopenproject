@@ -53,7 +53,7 @@ ru:
     delete_warning:
       input_delete_confirmation_html: Введите имя провайдера %{name} для подтверждения удаления.
       irreversible_notice: Удаление SSO провайдера является необратимым действием.
-      provider_html: 'Are you sure you want to delete the SSO provider %{name}? Be aware, that this will:'
+      provider_html: 'Вы уверены, что хотите удалить провайдера SSO %{name}? Имейте в виду, что это приведет к:'
       delete_result_1: Удалить провайдера из списка доступных провайдеров.
       delete_result_user_count:
         zero: Нет пользователей в настоящее время с этим провайдером. Никаких дальнейших действий не требуется.
@@ -63,7 +63,7 @@ ru:
   openid_connect:
     menu_title: Провайдеры OpenID
     delete_title: Удалить провайдера OpenID Connect
-    delete_heading: Delete this OpenID Connect provider?
+    delete_heading: Удалить этого провайдера OpenID Connect?
     group_links_heading: Ссылки на группу OpenID Connect
     groups:
       match_preview_component:

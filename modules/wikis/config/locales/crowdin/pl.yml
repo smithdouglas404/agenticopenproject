@@ -5,6 +5,7 @@ pl:
       wikis/xwiki_provider:
         name: Nazwa
         url: Adres URL wystąpienia
+        universal_identifier: Universal identifier
         authentication_method: Metoda uwierzytelniania
         authentication_methods:
           oauth2_sso: Logowanie jednokrotne za pośrednictwem dostawcy tożsamości OpenID Connect
@@ -29,6 +30,10 @@ pl:
   wikis:
     buttons:
       save_and_continue: Zapisz i kontynuuj
+    inline_page_links_component:
+      empty_heading: No inline links
+      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
+      heading: Inline page links
     admin:
       wiki_providers:
         index_description: Dodaj zewnętrzną usługę wiki, aby powiązać pakiety robocze z istniejącymi stronami wiki lub utworzyć nowe bezpośrednio z OpenProject.

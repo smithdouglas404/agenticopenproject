@@ -41,8 +41,8 @@ es:
       sprint:
         duration: Duración del sprint
       user_preference:
-        backlogs_task_color: Task color
-        backlogs_versions_default_fold_state: Show sprints folded
+        backlogs_task_color: Color de la tarea
+        backlogs_versions_default_fold_state: Mostrar sprints colapsados
       work_package:
         backlogs_work_package_type: Tipo de Backlog
         position: Posición
@@ -58,8 +58,8 @@ es:
           receiving_sprints: estás recibiendo sprints compartidos. No se pueden crear sprints propios.
           attributes:
             sprint_sharing:
-              share_all_projects_already_taken: no se puede establecer porque el proyecto "%{name}" ya está compartiendo con todos los proyectos.
-              share_all_projects_already_taken_anonymous: no se puede establecer porque otro proyecto ya está compartiendo con todos los proyectos.
+              share_all_projects_already_taken: no se puede configurar porque el proyecto «%{name}» ya se comparte con todos los proyectos.
+              share_all_projects_already_taken_anonymous: no se puede configurar porque otro proyecto ya lo está compartiendo con todos los proyectos.
         work_package:
           attributes:
             blocks_ids:
@@ -68,8 +68,8 @@ es:
             version_id:
               task_version_must_be_the_same_as_story_version: debe coincidir con la versión de la historia principal.
             sprint:
-              not_shared_with_project: no se comparte con el proyecto en el que se encuentra el paquete de trabajo.
-              not_eligible_for_moving: no es un sprint activo en el proyecto que tiene el sprint del que se desplaza el paquete de trabajo.
+              not_shared_with_project: no se comparte con el proyecto al que pertenece el paquete de trabajo.
+              not_eligible_for_moving: no hay ningún sprint activo en el proyecto del que se ha sacado el paquete de trabajo.
         agile/sprint:
           attributes:
             base:
@@ -87,7 +87,7 @@ es:
     task_type: Tipo de tarea
   backlogs:
     any: cualquiera
-    caption_sprints_default_fold_state: Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded.
+    caption_sprints_default_fold_state: Los sprints no se mostrarán expandidos por defecto al ver la página «Backlog y sprints». Hay que expandir cada uno manualmente.
     column_width: Ancho de columna
     definition_of_done: Criterio de Aceptación
     definition_of_done_caption: Los paquetes de trabajo con estos estados se tratan como completados en las vistas de backlog y en los informes.
@@ -155,14 +155,14 @@ es:
       label_sprint: Sprint
     backlog:
       blankslate:
-        title: No sprints present yet
-        description_html: To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project.
-        create_sprint_description_text: To start planning your sprint, create one here.
-        share_sprint_description_html: To start planning your sprint, go to the %{settings_link} to receive sprints from a different project.
-        no_actions_description_text: No sprints are available for this project yet.
-        receive_shared_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
-        receive_shared_no_actions_description_text: This project receives shared sprints from a different project, but none are available right now.
-        settings_link_text: project settings
+        title: Todavía no hay sprints
+        description_html: Para empezar a planificar tu sprint, crea uno aquí o ve a %{settings_link} para recibir sprints de otro proyecto.
+        create_sprint_description_text: Para empezar a planificar tu sprint, crea uno aquí.
+        share_sprint_description_html: Para empezar a planificar tu sprint, ve a %{settings_link} para recibir sprints de otro proyecto.
+        no_actions_description_text: Todavía no hay sprints disponibles para este proyecto.
+        receive_shared_description_html: Este proyecto recibe sprints de otro proyecto. Configúralo en %{settings_link}.
+        receive_shared_no_actions_description_text: Este proyecto recibe sprints compartidos de otro proyecto, pero ahora mismo no hay ninguno disponible.
+        settings_link_text: configuraciones del proyecto
     sprint_header_component:
       label_start_sprint: Iniciar
       label_complete_sprint: Completar

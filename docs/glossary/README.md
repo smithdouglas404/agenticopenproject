@@ -477,7 +477,7 @@ OpenProject offers the possibility to share work packages with external groups o
 
 ### Story points
 
-Story points is a term known in Scrum. They are defined as numbers assigned to a [work package](#work-package) used to estimate (relatively) the size of the work. In OpenProject, you can add story points to work packages. [Read how to work with story points in OpenProject](../user-guide/backlogs-scrum/work-with-backlogs/#working-with-story-points).
+Story points is a term known in Scrum. They are defined as numbers assigned to a [work package](#work-package) used to estimate (relatively) the size of the work. In OpenProject, you can add story points to work packages. [Read how to work with story points in OpenProject](../user-guide/backlogs-scrum/#story-points).
 
 ## T
 

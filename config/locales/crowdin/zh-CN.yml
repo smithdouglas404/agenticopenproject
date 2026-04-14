@@ -108,7 +108,7 @@ zh-CN:
         trial: 试用
     jemalloc_allocator: 使用 jemalloc 内存分配器
     journal_aggregation:
-      caption: '如果用户对工作包执行的操作（更改描述、状态、数值或编写评论）是在此时间段内完成的，则会将这些操作分为一组。此设置还控制着通知和 [webhook](webhook_link) 延迟。
+      caption: '如果用户对工作包执行的操作（更改描述、状态、数值或编写评论）是在此时间段内完成的，则会将这些操作分为一组。此设置还控制通知和[网络钩子](webhook_link)延迟。
 
         '
     import:
@@ -381,12 +381,12 @@ zh-CN:
         notification_text_default: "<p>您好！</p><p>已创建一个新项目：projectValue:name</p> <p>谢谢</p>\n"
       work_packages_identifier:
         page_header:
-          description: 可以选择经典的数字工作包 ID，或者工作包 ID 前面添加了项目标识符的语义化项目特定工作包 ID。
+          description: 可以选择经典的数字工作包 ID，或者将项目标识符作为工作包 ID 前缀的语义化项目特定工作包 ID。
         banner:
-          existing_identifiers_notice: "%{project_count} 项目的现有标识符不符合基于项目的语义标识符要求。OpenProject 可自动更新这些标识符，使其成为如下例中的有效格式。点击“自动修复并保存”按钮，以这种方式更新所有项目的标识符，并启用基于项目的语义标识符。\n"
+          existing_identifiers_notice: "%{project_count} 个项目的现有标识符不符合基于项目的语义标识符要求。OpenProject 可以自动更新这些标识符，使其成为如下例中所示的有效格式。点击“自动修正并保存”按钮，以这种方式更新所有项目的标识符，并启用基于项目的语义标识符。\n"
         box_header:
           label_project: 项目
-          label_previous_identifier: 上一标识符
+          label_previous_identifier: 上一个标识符
           label_autofixed_suggestion: 未来标识符
           label_example_work_package_id: 示例工作包 ID
         autofix_preview:
@@ -395,19 +395,15 @@ zh-CN:
           error_starts_with_number: 不能以数字开头
           error_special_characters: 不允许使用特殊字符
           error_not_fully_uppercased: 必须为大写字母
-          error_in_use: 已用作另一项目的活跃句柄
-          error_reserved: 由另一项目的处理历史保留
+          error_in_use: 已用作另一个项目的有效标识名
+          error_reserved: 由另一个项目的标识名历史保留
           error_unknown: 需要手动检查
           remaining_projects:
-            other: |-
-              One
-              ... 另外 1 个项目
-              Other
-              ... 另外 %{count} 个项目
-        button_autofix: 自动修复并保存
+            other: "…其他 %{count} 个项目"
+        button_autofix: 自动修正并保存
         dialog:
           title: 更改工作包标识符
-          heading: 启用基于项目的工作包 ID？
+          heading: 是否启用基于项目的工作包 ID？
           description: '此操作将在此实例中更改所有项目中所有工作包的 ID。之前的标识符和 URL 将继续正确重定向。此更改需要一些时间才能完成。
 
             '
@@ -415,7 +411,7 @@ zh-CN:
           checkbox_label: 我了解此操作将永久更改所有工作包 ID
         success_banner: 已成功更新工作包标识符格式。
         in_progress:
-          banner_message: 项目标识符目前正在更新为基于项目的语义标识符。此过程可能需要一定的时间。
+          banner_message: 项目标识符目前正在更新为基于项目的语义标识符。此过程可能需要一些时间。
     workflows:
       tabs:
         default_transitions: 默认转换
@@ -429,15 +425,11 @@ zh-CN:
       statuses_dialog:
         title: 状态
         label: 已为此类型启用状态
-        caption: 添加或移除您想要关联到该类型的状态。移除状态也会删除与之关联的工作流。
+        caption: 添加或移除您想要关联到此类型的状态。移除状态也会删除与之关联的工作流。
       statuses_removal_dialog:
         title: 移除状态
         heading:
-          other: |-
-            One
-            移除 1 种状态？
-            Other
-            移除 %{count} 种状态？
+          other: 是否移除 %{count} 种状态？
         description: 删除这些状态将使其无法用于此类型，并会删除现有工作流。确定要继续吗？
         confirm: 移除
       leave_confirmation:
@@ -450,9 +442,9 @@ zh-CN:
         no_role: 选择角色
       blankslate:
         title: 未配置状态过渡
-        description: 添加状态，以开始为该角色配置工作流
+        description: 添加状态，以开始为此角色配置工作流
     info:
-      database_deprecation_html: '自 OpenProject 16.0 起，使用 OpenProject 需搭配 PostgreSQL 16。您的安装仍可使用当前数据库正常使用，但预计未来版本将不会兼容。<br/>我们已准备了[所有安装方式的升级指南](upgrade_guide)。在下一版本发布前，您可以随时按照指南执行升级。
+      database_deprecation_html: '自 OpenProject 16.0 起，使用 OpenProject 需要搭配 PostgreSQL 16。您的安装仍可使用当前数据库正常运行，但预计在未来版本中将不会兼容。<br/>我们已准备[所有安装方式的升级指南](upgrade_guide)。在下一个版本发布前，您可以随时按照指南执行升级。
 
         '
   authentication:
@@ -685,12 +677,12 @@ zh-CN:
     confirmation_live_message_unchecked: 继续按钮现已失效。您需要勾选复选框才能继续。
   pagination:
     label: 分页
-    prev: 上一个
+    prev: 上一页
     prev_page: 上一页
-    next: 下一个
+    next: 下一页
     next_page: 下一页
     page: 第 %{number} 页
-    page_with_more: 第 %{number} 页...
+    page_with_more: 第 %{number} 页…
   mcp_configurations:
     server_url_component:
       caption: 可以访问 OpenProject MCP 服务器的 URL。设置 MCP 客户端时需要使用。
@@ -731,7 +723,7 @@ zh-CN:
         parent:
           not_descendant: 必须是层级根节点的后代。
       str?: 必须是一个字符串。
-      time?: 必须是时间。
+      time?: 必须为时间。
       type?: 必须是 %{type}。
       uri?: 不是有效的 URI。
     rules:
@@ -1088,7 +1080,7 @@ zh-CN:
     groups:
       member_in_these_groups: 此用户当前是以下组的成员：
       no_results_title_text: 此用户当前不是任何组的成员。
-      summary_with_more_html: "%{names} 和 %{count_link} 的成员。"
+      summary_with_more_html: "%{names} 和其他 %{count_link} 个群组的成员。"
       more: 还有 %{count} 个
       summary_html: "%{names} 的成员。"
     memberships:
@@ -1148,33 +1140,33 @@ zh-CN:
         group: 该组现已加入 %{project}。同时，您已经可以与该组一起制定计划并分配工作包等。
     working_hours:
       current_schedule:
-        title: 当前日程表
-        work_days: 工作天数
+        title: 当前时间表
+        work_days: 工作日
         work_hours: 工作时数
-        availability_factor: 可用时间系数
+        availability_factor: 空闲系数
         availability_subtitle: 投入项目工作的时数
         effective_hours: 有效工作时数
         effective_subtitle: 每周
         not_set: 未设置
       future:
-        title: 未来日程表
-        description: 提前计划工作日程表变更。到达指定日期后，您的工作日程表将自动更新。
-        add_button: 添加未来日程表
+        title: 未来时间表
+        description: 提前计划工作时间表更改。到达指定日期后，您的工作时间表将自动更新。
+        add_button: 添加未来时间表
         blank_title: 未规划未来时间表
-        blank_description: 创建未来日程表，以提前规划变更
+        blank_description: 创建未来时间表，以提前规划更改
       history:
-        title: 日程表历史
-        description: 查看您过去的工作日程表。
-        blank_title: 尚无日程表历史
-        blank_description: 过去的日程表变更将出现在此处
+        title: 时间表历史
+        description: 查看您过去的工作时间表。
+        blank_title: 尚无时间表历史
+        blank_description: 过去的时间表更改将出现在此处
       destroy:
-        confirm: 确定要删除此工作日程表吗？
+        confirm: 确定要删除此工作时间表吗？
       form:
-        title: 规划未来工作日程表
-        title_current: 编辑当前工作日程表
+        title: 规划未来工作时间表
+        title_current: 编辑当前工作时间表
         start_date: 开始日期
-        start_date_caption: 选择新工作日程表的生效日期。
-        work_days: 工作天数
+        start_date_caption: 选择新工作时间表的生效日期。
+        work_days: 工作日
         working_hours_label: 工作时数
         hours_mode_label: 小时模式
         same_hours_mode: 每天相同时数
@@ -1184,26 +1176,22 @@ zh-CN:
         per_day: 每天
         per_week: 每周
         total_work_hours: 总工作时数
-        availability_description: 可用时间系数表示您实际投入项目任务的工作时间百分比。该时间会计入会议、电子邮件、管理工作及其他非项目活动的时间。
-        availability_factor: 可用时间系数
+        availability_description: 空闲系数表示您实际投入项目任务的工作时间百分比。这会考虑会议、电子邮件、管理工作和其他非项目活动。
+        availability_factor: 空闲系数
         availability_factor_caption: 定义您投入项目工作的工作时间百分比。
         total_available_hours: 可用工作时数总计
-        title_availability_factor: 可用时间系数
+        title_availability_factor: 空闲系数
         title_days_and_hours: 天数和时数
         title_future_dates: 未来日期
       table:
-        mobile_title: 工作日程表
+        mobile_title: 工作时间表
         start_date: 开始日期
-        work_days: 工作天数
+        work_days: 工作日
         work_hours: 工作时数
-        availability_factor: 可用时间系数
+        availability_factor: 空闲系数
         effective_work_hours: 有效工作时数
         work_days_count:
-          other: |-
-            One
-            1 个工作日
-            Other
-            %{count} 个工作日
+          other: "%{count} 个工作日"
   user_preferences:
     disable_keyboard_shortcuts_caption: '如果您使用屏幕阅读器或希望避免意外触发快捷键，您可以选择禁用默认[键盘快捷键](docs_url)。
 
@@ -1252,7 +1240,7 @@ zh-CN:
         选中此选项可将具有此状态的工作包排除在层次结构中的 "工时"、
         "剩余工时 "和 "完成百分比 "总数之外。
       status_percent_complete_text_html: |-
-        在[基于状态的进度计算模式](setting_url)下，当选择该状态时，工作包的完成进度百分比会自动设置为该值。
+        在[基于状态的进度计算模式](setting_url)下，选择此状态时，工作包的完成进度百分比会自动设置为此值。
         在基于工作的模式下忽略。
       status_readonly_html: |
         选中此选项将此状态的工作包标记为只读。
@@ -1795,10 +1783,10 @@ zh-CN:
         consented_at: 同意在
       group:
         identity_url: 身份 URL
-        parent: 父级组
+        parent: 父群组
         organizational_unit: 组织单元
       group_detail:
-        parent: 父级组
+        parent: 父群组
         organizational_unit: 组织单元
       user_preference:
         header_look_and_feel: 外观和风格
@@ -1847,9 +1835,9 @@ zh-CN:
         saturday_hours: 星期六工作时数
         sunday: 星期日
         sunday_hours: 星期日工作时数
-        availability_factor: 可用时间系数
+        availability_factor: 空闲系数
         shared_hours: 工作时数
-        days: 工作天数
+        days: 工作日
       version:
         effective_date: 完成日期
         sharing: 共享
@@ -1942,9 +1930,9 @@ zh-CN:
         less_than_or_equal_to: 必须小于或等于 %{count}。
         not_available: 因系统配置而不可用。
         not_deletable: 无法删除。
-        not_editable: 不能编辑，因为其已经生效。
+        not_editable: 无法编辑，因为其已经生效。
         not_current_user: 不是当前用户。
-        system_wide_non_working_day_exists: 与该日期现有的系统范围非工作日冲突。
+        system_wide_non_working_day_exists: 与此日期现有的系统范围非工作日冲突。
         not_found: 未找到
         not_a_date: 不是有效的日期。
         not_a_datetime: 不是有效的日期时间。
@@ -1979,7 +1967,7 @@ zh-CN:
         group:
           attributes:
             parent_id:
-              circular_dependency: 将创建循环组层次结构。
+              circular_dependency: 将创建循环群组层次结构。
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -3256,12 +3244,12 @@ zh-CN:
 
             '
           new_features_list:
-            line_0: 重大敏捷更新：专用的冲刺对象、在待办清单上显示所有工作包，以及自动创建冲刺面板。
-            line_1: 在“项目概览”页面直接编辑项目属性
-            line_2: 共享会议模板（基本方案及更高版本）。
-            line_3: 提升了“时间和成本”、面板等的搜索性能。
+            line_0: 重大敏捷更新：专用的冲刺对象、在积压工作上显示所有工作包，以及自动创建冲刺面板。
+            line_1: 在“项目概览”页面上直接编辑项目特性
+            line_2: 共享会议模板（Basic 方案及更高版本）。
+            line_3: 提升了“时间与成本”、面板等功能中的搜索。
             line_4: 增加了安全更改项目标识符的选项。
-            line_5: 改进管理员的工作流程配置。
+            line_5: 改进了管理员的工作流配置。
             line_6: 向社区发布操作面板。
     links:
       upgrade_enterprise_edition: 升级到企业版
@@ -3327,15 +3315,15 @@ zh-CN:
         progress_calculation_adjusted: 进度计算自动<a href="%{href}" target="_blank">设置为基于工时的模式，并随版本更新而调整</a>。
         scheduling_mode_adjusted: 随版本更新自动适配调度模式。
         totals_removed_from_childless_work_packages: 使用 <a href="%{href}" target="_blank">版本更新</a>的非父工作包的工作和进度总计自动移除。 这是一个维护任务，可以安全地被忽略。
-        sprint_migration: 版本“%{version_name}”已作为冲刺复制。
+        sprint_migration: 版本 '%{version_name}' 已复制为冲刺。
       total_percent_complete_mode_changed_to_work_weighted_average: 无工时的子工作包被忽略。
       total_percent_complete_mode_changed_to_simple_average: 忽略子工作包的工时值。
   links:
     configuration_guide: 配置指南
     get_in_touch: 遇到问题了？与我们联系。
-  instructions_after_registration_link: 您的帐户激活后，可点击[此处](signin_url)登录。
+  instructions_after_registration_link: 在您的帐户激活后，您可以点击[此处](signin_url)登录。
   instructions_after_logout_link: 您可以点击[此处](signin_url)重新登录。
-  instructions_after_error_link: 您可以点击[此处](signin_url)尝试重新登录。如果错误仍然存在，请向您的管理员寻求帮助。
+  instructions_after_error_link: 您可以点击[此处](signin_url)尝试重新登录。如果错误一直存在，请向您的管理员寻求帮助。
   menus:
     admin:
       ai: 人工智能 (AI)
@@ -3434,9 +3422,9 @@ zh-CN:
         enabled: 临时暂停每日电子邮件提醒
         date_range: 暂停时间段
       email_alerts:
-        title: 其他项目（非工作包）的电子邮件提醒
+        title: 其他条目（非工作包）的电子邮件提醒
         news_added: 新闻已添加
-        news_commented: 评论新闻项目
+        news_commented: 评论新闻条目
         document_added: 文档已添加
         forum_messages: 论坛消息已发布
         wiki_page_added: Wiki 页面已添加
@@ -3452,7 +3440,7 @@ zh-CN:
         watched: 关注中
         assignee: 受理人
         responsible: 负责人
-        shared: 已与我共享
+        shared: 与我共享
       date_alerts:
         title: 日期提醒
         submit_button: 更新日期提醒
@@ -3600,7 +3588,7 @@ zh-CN:
   label_calendar_show: 显示日历
   label_category: 类别
   label_completed: 已完成
-  label_committed_at_html: 在 %{date} %{committed_revision_link}
+  label_committed_at_html: 在 %{date}%{committed_revision_link}
   label_committed_link: 提交了修订 %{revision_identifier}
   label_consent_settings: 用户同意
   label_wiki_menu_item: 维基菜单项
@@ -3908,7 +3896,7 @@ zh-CN:
   label_no_due_date: 没有完成日期
   label_no_start_date: 没有开始日期
   label_no_parent_page: 无父级页面
-  label_no_parent_group: "（无父级组）"
+  label_no_parent_group: "（无父群组）"
   label_notification_center_plural: 通知
   label_nothing_display: 不显示
   label_nobody: 没人
@@ -3937,7 +3925,7 @@ zh-CN:
   label_overall_activity: 总体活动
   label_overview: 概述
   label_page_title: 页面标题
-  label_parent_group_caption: '设置父级组将使该组成为所选父级组的子组。该组也将继承父级组的所有成员资格，包括权限。
+  label_parent_group_caption: '设置父群组将使此群组成为所选父群组的子群组。此群组也将继承父群组的所有成员资格，包括权限。
 
     '
   label_part_of: 一部分
@@ -4216,23 +4204,11 @@ zh-CN:
     other: "%{count} 个文件"
     zero: 无文件
   label_x_days:
-    other: |-
-      One
-      1 天
-      Other
-      %{count} 天
+    other: "%{count} 天"
   label_x_working_days:
-    other: |-
-      One
-      1 个工作日
-      Other
-      %{count} 个工作日
+    other: "%{count} 个工作日"
   label_x_working_days_time_off:
-    other: |-
-      One
-      休息时间：1 个工作日
-      Other
-      休息时间：%{count} 个工作日
+    other: 休息时间：%{count} 个工作日
   label_yesterday: 昨天
   label_zen_mode: 极简模式
   label_role_type: 类型
@@ -4241,15 +4217,15 @@ zh-CN:
   label_not_changeable: "（不变）"
   label_global: 全局
   label_seeded_from_env_warning: 此记录是通过设置环境变量创建的，无法通过 UI 编辑。
-  label_schedule_and_availability: 日程表和可用时间
-  label_working_hours: 工作日程表
-  label_non_working_days: 可用时间日历
-  label_non_working_days_with_count: 非工作日天数 (%{count})
+  label_schedule_and_availability: 时间表和空闲
+  label_working_hours: 工作时间表
+  label_non_working_days: 空闲日历
+  label_non_working_days_with_count: 非工作日数 (%{count})
   label_non_working_days_summary: 摘要
   button_add_non_working_time: 休息时间
   button_edit_non_working_time: 编辑休息时间
-  label_continued_from_previous_year: 延续去年情况
-  label_continues_into_next_year: 延续到明年
+  label_continued_from_previous_year: 延续自去年
+  label_continues_into_next_year: 继续到明年
   label_end_date: 完成日期
   label_working_days: 工作日
   label_non_working_times_with_count: "%{year} 年休息天数 (%{count})"
@@ -4320,7 +4296,7 @@ zh-CN:
       note: 注："%{note}"
     sharing:
       work_packages:
-        allowed_actions_html: 您可以%{allowed_actions}此工作包。允许的操作可根据您的项目角色和权限而变化。
+        allowed_actions_html: 您可以%{allowed_actions}此工作包。允许的操作根据您的项目角色和权限而变化。
         create_account: 要访问此工作包，您需要创建一个 %{instance} 帐户。
         open_work_package: 打开工作包
         subject: '工作包 #%{id} 已被分享给你'
@@ -4764,9 +4740,9 @@ zh-CN:
       info: 删除存储库是一个不可逆转的操作。
       info_not_managed: '注意: 这不会删除该存储库的内容，它不由 OpenProject 托管。'
       managed_path_note: '以下目录将被删除: %{path}'
-      repository_verification_html: 输入项目的标识符 %{identifier}，以确认删除其存储库。
+      repository_verification_html: 输入项目的标识符 %{identifier}，以确认删除其仓库。
       subtitle: 你确定要删除项目 %{project_name} 的 %{repository_type} 吗?
-      subtitle_not_managed_html: 是否确定要从项目 %{project_name} 删除关联的 %{repository_type} %{url}？
+      subtitle_not_managed_html: 是否确实要从项目 %{project_name} 删除关联的 %{repository_type} %{url}？
       title_html: 删除 %{repository_type}
       title_not_managed: 删除链接的 %{repository_type} 吗?
     errors:
@@ -5060,11 +5036,11 @@ zh-CN:
   setting_welcome_title: 欢迎块标题
   setting_welcome_on_homescreen: 在主屏幕上显示欢迎信息
   setting_work_packages_identifier_classic: 实例范围的数字序列（默认）
-  setting_work_packages_identifier_classic_caption: '每个工作包会获得一个从 1 开始的顺序号，每新增一个工作包，编号会加 1。这些编号在该实例中是唯一的，因此即使工作包在项目之间移动，编号也不会改变。
+  setting_work_packages_identifier_classic_caption: '每个工作包会获得一个从 1 开始的顺序号，每新增一个工作包，编号会加 1。这些编号在此实例中是唯一的，因此即使工作包在项目之间移动，编号也不会改变。
 
     '
   setting_work_packages_identifier_semantic: 基于项目的语义标识符
-  setting_work_packages_identifier_semantic_caption: '每个项目都有一个唯一标识符，该标识符会附加到工作包 ID 前面。如果工作包移至另一项目，则会生成新的标识符，但原标识符仍可继续使用。
+  setting_work_packages_identifier_semantic_caption: '每个项目都有一个唯一标识符，该标识符会附加到工作包 ID 前面。如果工作包移至另一个项目，则会生成新的标识符，但原标识符仍可继续使用。
 
     '
   setting_work_package_list_default_highlighting_mode: 默认突出显示模式
@@ -5252,7 +5228,7 @@ zh-CN:
       not_allowed_text: 您没有查看此页面的权限。
       activities:
         enable_internal_comments: 启用内部评论
-        helper_text_html: '内部评论允许内部团队私下沟通。这些仅对具有必要权限的选定角色可见，并且永远不会公开显示。[点击此处了解更多信息](docs_url)
+        helper_text_html: '内部评论允许内部团队私下沟通。这些仅对具有必要权限的所选角色可见，并且永远不会公开显示。[点击此处了解详情](docs_url)
 
           '
   text_formatting:
@@ -5399,7 +5375,7 @@ zh-CN:
   text_plugin_assets_writable: 插件资产目录可写
   text_powered_by: Powered by %{link}
   text_project_identifier_info: 只有小写字母 (a-z)、 数字、 短划线和下划线被允许，必须以小写字母开头。
-  text_project_identifier_description: 项目标识符会附加到所有工作包 ID 的前面。例如，如果项目标识符为“PROJ”，则工作包标识符将为“PROJ-12”或“PROJ-246”。
+  text_project_identifier_description: 项目标识符将附加到所有工作包 ID 的前面。例如，如果项目标识符为“PROJ”，则工作包标识符将为“PROJ-12”或“PROJ-246”。
   text_project_identifier_url_description: 项目标识符包含在项目的 URL 中。
   text_project_identifier_handle_format: 必须以字母开头，且仅包含大写字母、数字和下划线（最多 10 个字符）。
   text_project_identifier_format: 必须以小写字母开头。仅允许使用小写字母 (a-z)、数字、 短划线和下划线。
@@ -5517,7 +5493,7 @@ zh-CN:
   note_password_login_disabled_link: 密码登录已通过[配置设置](configuration_url)禁用。
   warning: 警告
   warning_attachments_not_saved: "%{count} 文件不能被保存。"
-  warning_imminent_user_limit_html: '您邀请的用户数超过了当前计划支持的用户数。受邀用户可能无法加入您的 OpenProject 环境。请[升级您的方案](upgrade_url)或阻止现有用户，以允许受邀用户和已注册用户加入。
+  warning_imminent_user_limit_html: '您邀请的用户数超过了当前方案支持的用户数。受邀用户可能无法加入您的 OpenProject 环境。请[升级您的方案](upgrade_url)或阻止现有用户，以允许受邀用户和注册用户加入。
 
     '
   warning_registration_token_expired: '激活邮件已过期，我们给您发送了一封新邮件到%{email}。请单击内部的链接以激活您的帐户。
@@ -5526,7 +5502,7 @@ zh-CN:
   warning_user_limit_reached: '添加额外的用户将超出当前限制。请联系管理员以增加用户限制，以确保外部用户能够访问此实例。
 
     '
-  warning_user_limit_reached_admin_html: '添加额外的用户将超出当前限制。请[升级您的方案](upgrade_url)，以确保外部用户能够访问此实例。
+  warning_user_limit_reached_admin_html: '添加额外的用户将超出当前限值。请[升级您的方案](upgrade_url)，以确保外部用户能够访问此实例。
 
     '
   warning_user_limit_reached_instructions: '您达到了用户限制（%{current}/%{max}活跃用户）。 请联系sales@openproject.com以升级您的Enterprise edition计划并添加其他用户。
@@ -5623,7 +5599,7 @@ zh-CN:
     warning_user_limit_reached: '添加其他用户将超出当前限制。请联系管理员增加用户限制，以确保外部用户能够访问 %{entity}。
 
       '
-    warning_user_limit_reached_admin_html: '添加额外的用户将超出当前限制。请[升级您的方案](upgrade_url)，以确保外部用户能够访问此 %{entity}。
+    warning_user_limit_reached_admin_html: '添加额外的用户将超出当前限值。请[升级您的方案](upgrade_url)，以确保外部用户能够访问此%{entity}。
 
       '
     warning_no_selected_user: 请选择要与之共享此 %{entity} 的用户

@@ -34,7 +34,7 @@ zh-CN:
   saml:
     menu_title: SAML 提供商
     delete_title: 删除 SAML 提供商
-    delete_heading: 删除此 SAML 提供程序？
+    delete_heading: 是否删除此 SAML 提供商？
     info:
       title: SAML 协议配置参数
       description: '使用这些参数配置您的身份提供商与 OpenProject 的连接。

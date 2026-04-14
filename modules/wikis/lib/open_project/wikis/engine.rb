@@ -68,6 +68,7 @@ module OpenProject::Wikis
            { tab: :wikis },
            skip_permissions_check: true,
            after: :relations,
+           badge: ->(work_package:, **) { Wikis::PageLinkService.new.count(work_package) },
            if: ->(_project) {
              Wikis::Provider.enabled.exists? &&
                OpenProject::FeatureDecisions.wiki_enhancements_active?

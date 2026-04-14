@@ -46,7 +46,7 @@ ru:
         zero: Группы не были найдены фильтром
       destroy:
         title: Удалить синхронизированный фильтр %{name}
-        heading: Remove synchronized filter %{name}?
+        heading: Удалить синхронизированный фильтр %{name}?
         confirmation: Если вы продолжите, синхронизированный фильтр %{name} и все группы %{groups_count} , созданные через него, будут удалены.
         removed_groups: 'Предупреждение: Это удалит следующие группы из OpenProject и удалит их из всех проектов!'
         verification_html: Введите имя фильтра %{name} для проверки удаления.
@@ -60,9 +60,9 @@ ru:
       add_new: Добавить синхронизированную LDAP-группу
       destroy:
         title: Удалить синхронизированную группу %{name}
-        heading: Remove synchronized group %{name}?
+        heading: Удалить синхронизированную группу %{name}?
         confirmation: Если продолжите, синхронизированная группа %{name} и все %{users_count} пользователи синхронизированые через нее будут удалены.
-        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
+        info: Сама группа OpenProject и участники, добавленные вне этой синхронизации LDAP, не будут удалены.
       help_text_html: |
         Этот модуль позволяет настроить синхронизацию между группами LDAP и OpenProject.
         Для работы с OpenProject в зависимости от групп LDAP необходимо использовать набор атрибутов <em>groupOfNames / memberOf</em>.

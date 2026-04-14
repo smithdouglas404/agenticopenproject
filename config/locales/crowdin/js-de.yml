@@ -439,8 +439,8 @@ de:
     label_show_in_menu: Ansicht im Seitenmenü anzeigen
     label_sort_by: Sortieren nach
     label_sorted_by: sortiert nach
-    label_sort_higher: Nach oben bewegen
-    label_sort_lower: Nach unten bewegen
+    label_sort_higher: Nach oben verschieben
+    label_sort_lower: Nach unten verschieben
     label_sorting: Sortierung
     label_spent_time: Aufgewendete Zeit
     label_star_query: Favorisiert
@@ -1151,5 +1151,5 @@ de:
         network_on: Netzwerk ist wieder da. Wir versuchen es erneut.
     projects:
       identifier_suggestion:
-        loading: Loading suggestion...
-        set_name_first: Please set the name first.
+        loading: Lade Vorschläge...
+        set_name_first: Bitte geben Sie zuerst den Namen ein.

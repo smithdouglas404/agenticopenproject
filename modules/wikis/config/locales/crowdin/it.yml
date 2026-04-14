@@ -5,6 +5,7 @@ it:
       wikis/xwiki_provider:
         name: Nome
         url: URL istanza
+        universal_identifier: Universal identifier
         authentication_method: Metodo di autenticazione
         authentication_methods:
           oauth2_sso: Single-Sign-On tramite OpenID Connect Identity Provider
@@ -25,6 +26,10 @@ it:
   wikis:
     buttons:
       save_and_continue: Salva e continua
+    inline_page_links_component:
+      empty_heading: No inline links
+      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
+      heading: Inline page links
     admin:
       wiki_providers:
         index_description: Aggiungi un servizio wiki esterno per collegare le macro-attività a pagine wiki esistenti o crearne di nuove direttamente da OpenProject.

@@ -5,6 +5,7 @@ ckb-IR:
       wikis/xwiki_provider:
         name: Name
         url: Instance URL
+        universal_identifier: Universal identifier
         authentication_method: Authentication method
         authentication_methods:
           oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
@@ -25,6 +26,10 @@ ckb-IR:
   wikis:
     buttons:
       save_and_continue: Save and continue
+    inline_page_links_component:
+      empty_heading: No inline links
+      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
+      heading: Inline page links
     admin:
       wiki_providers:
         index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.

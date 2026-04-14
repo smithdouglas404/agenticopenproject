@@ -36,5 +36,6 @@ class Setting
 
     def self.semantic? = Setting[:work_packages_identifier] == SEMANTIC
     def self.classic?  = Setting[:work_packages_identifier] == CLASSIC
+    def self.semantic_mode_active? = semantic? && OpenProject::FeatureDecisions.semantic_work_package_ids_active?
   end
 end

@@ -51,14 +51,14 @@ zh-CN:
               invalid_schema: 必须是键为“颜色，标题”的哈希数组
   label_gitlab_integration: GitLab 集成
   label_gitlab_actor: GitLab 执行者
-  label_gitlab_webhook_secret: Webhook 密钥
-  text_gitlab_actor_info: '必须使用其 API 密钥对传入的 Webhook 请求进行身份验证的 OpenProject 用户。如果设置了此用户，则会拒绝使用其他任何用户凭据进行身份验证的请求。该用户还会对工作包发布自动评论。如果未设置此用户，则默认使用系统用户。
+  label_gitlab_webhook_secret: 网络钩子密钥
+  text_gitlab_actor_info: '必须使用其 API 密钥对传入的网络钩子请求进行身份验证的 OpenProject 用户。如果设置，则会拒绝使用其他任何用户凭据进行身份验证的请求。此用户还会对工作包发布自动评论。如果不设置，则默认为系统用户。
 
     '
-  text_gitlab_webhook_secret_info: '配置 webhook 时与 GitLab 共享的密钥令牌。设置后，OpenProject 会验证每个传入请求的 X-Gitlab-Token 标头，拒绝不匹配的有效载荷。留空表示跳过验证（不推荐）。
+  text_gitlab_webhook_secret_info: '配置网络钩子时与 GitLab 共享的秘密令牌。设置后，OpenProject 会验证每个传入请求的 X-Gitlab-Token 标头，拒绝不匹配的有效负载。留空表示跳过验证（不推荐）。
 
     '
-  text_gitlab_webhook_secret_missing_warning: '未配置 webhook 密钥。任何向 GitLab webhook 端点发出的请求都会被接受，无需验证，这可能导致未经授权的执行者伪造事件。强烈建议设置密钥 。
+  text_gitlab_webhook_secret_missing_warning: '未配置网络钩子密钥。任何向 GitLab 网络钩子端点发出的请求都会被接受，无需验证，这可能导致未经授权的执行者伪造事件。强烈建议设置密钥 。
 
     '
   project_module_gitlab: GitLab

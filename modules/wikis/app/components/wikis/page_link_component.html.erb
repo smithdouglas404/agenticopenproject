@@ -1,0 +1,11 @@
+<%=
+  flex_layout(test_selector: "op-custom-fields--hierarchy-item") do |link_container|
+    link_container.with_column(flex_shrink: 0) do
+      render(Primer::Beta::Octicon.new(icon: :"op-file-doc", mr: 2))
+    end
+
+    link_container.with_column(classes: "ellipsis") do
+      render(Primer::Beta::Link.new(href: "#", scheme: :primary)) { page_title_service.read(link) }
+    end
+  end
+%>

@@ -45,13 +45,13 @@ es:
   notice_deploy_target_destroyed: Objetivo de despliegue eliminado
   label_github_comment_user: Usuario de GitHub
   label_github_webhook_secret: Secreto de webhook
-  text_github_comment_user_info: 'The OpenProject user whose API key must be used to authenticate incoming webhook requests. When set, requests authenticated with any other user''s credentials are rejected. This user also posts automated deploy-status comments on work packages. Defaults to the system user when not set.
+  text_github_comment_user_info: 'El usuario de OpenProject cuya clave API debe utilizarse para autenticar las solicitudes de webhook entrantes. Cuando se configura, se rechazan las solicitudes autenticadas con las credenciales de cualquier otro usuario. Este usuario también publica comentarios automáticos sobre el estado de las implementaciones en los paquetes de trabajo. Si no se configura, el valor predeterminado es el usuario del sistema.
 
     '
-  text_github_webhook_secret_missing_warning: 'No webhook secret is configured. Any request to the GitHub webhook endpoint will be accepted without verification, which may allow unauthorized actors to forge events. It is strongly recommended to set a secret.
+  text_github_webhook_secret_missing_warning: 'No hay ningún secreto de webhook configurado. Cualquier solicitud al punto final del webhook de GitHub se aceptará sin verificación, lo que podría permitir que personas no autorizadas falsifiquen eventos. Se recomienda encarecidamente establecer un secreto.
 
     '
-  text_github_webhook_secret_info: 'A secret token shared with GitHub when configuring the webhook. When set, OpenProject verifies the X-Hub-Signature-256 header on every incoming request, rejecting payloads that do not match. Leave blank to skip verification (not recommended).
+  text_github_webhook_secret_info: 'Un token secreto que se comparte con GitHub al configurar el webhook. Cuando se activa, OpenProject verifica el encabezado «X-Hub-Signature-256» en cada solicitud entrante y rechaza las cargas útiles que no coincidan. Déjalo en blanco para omitir la verificación (no recomendado).
 
     '
   plugin_openproject_github_integration:

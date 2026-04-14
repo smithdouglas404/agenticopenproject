@@ -72,7 +72,7 @@ gem "awesome_nested_set", "~> 3.9.0"
 gem "closure_tree", "~> 9.6.1"
 gem "rubytree", "~> 2.2.0"
 
-gem "addressable", "~> 2.8.9"
+gem "addressable", "~> 2.9.0"
 
 # Remove whitespace from model input
 gem "auto_strip_attributes", "~> 2.5"
@@ -87,7 +87,7 @@ gem "htmldiff"
 gem "stringex", "~> 2.8.5"
 
 # CommonMark markdown parser with GFM extension
-gem "commonmarker", "~> 2.7.0"
+gem "commonmarker", "~> 2.8.0"
 
 # HTML pipeline for transformations on text formatter output
 # such as sanitization or additional features
@@ -123,7 +123,7 @@ gem "sys-filesystem", "~> 1.5.0", require: false
 
 gem "bcrypt", "~> 3.1.22"
 
-gem "multi_json", "~> 1.19.0"
+gem "multi_json", "~> 1.20.0"
 gem "oj", "~> 3.16.16"
 
 gem "daemons"
@@ -236,11 +236,11 @@ gem "yabeda-puma-plugin"
 gem "yabeda-rails"
 
 # opentelemetry
-gem "opentelemetry-exporter-otlp", "~> 0.32.0", require: false
+gem "opentelemetry-exporter-otlp", "~> 0.33.0", require: false
 gem "opentelemetry-instrumentation-all", "~> 0.91.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.5.0"
+gem "view_component", "~> 4.6.0"
 # Lookbook
 gem "lookbook", "2.3.14"
 
@@ -356,6 +356,9 @@ group :development, :test do
   # https://github.com/puma/puma/issues/2835#issuecomment-2302133927
   gem "byebug"
 
+  # Unreleased fix of readline dependency of pry: https://github.com/pry/pry/pull/2366
+  # Once this gets released, the specific dev dependency on pry can be removed
+  gem "pry", github: "pry/pry", ref: "135640262879544c6bfecbf3e78511289bfe956c"
   gem "pry-byebug", "~> 3.12.0", platforms: [:mri]
   gem "pry-rails", "~> 0.3.6"
   gem "pry-rescue", "~> 1.6.0"
@@ -387,7 +390,7 @@ end
 gem "bootsnap", "~> 1.23.0", require: false
 
 # API gems
-gem "grape", "~> 3.1.1"
+gem "grape", "~> 3.2.0"
 gem "grape_logging", "~> 3.0.0"
 gem "roar", "~> 1.2.0"
 

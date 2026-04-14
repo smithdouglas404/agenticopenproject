@@ -4,50 +4,55 @@ de:
     attributes:
       wikis/xwiki_provider:
         name: Name
-        url: Instance URL
-        authentication_method: Authentication method
+        url: Instanz-URL
+        universal_identifier: Universal identifier
+        authentication_method: Authentifizierungsmethode
         authentication_methods:
-          oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
-          two_way_oauth2: Two-way OAuth 2.0 authorization code flow
+          oauth2_sso: Single-Sign-On über OpenID Connect Identity Provider
+          two_way_oauth2: Zwei-Wege OAuth 2.0 Authorization-Code-Flow
         token_exchange_scope: XWiki Scope
         wiki_audience: XWiki Audience
     errors: {}
     models:
       wikis/inline_page_link:
-        one: Inline page link
-        other: Inline page links
-      wikis/internal_provider: Internal wiki
+        one: Inline-Seitenlink
+        other: Inline-Seitenlinks
+      wikis/internal_provider: Internes wiki
       wikis/relation_page_link:
-        one: Relation page link
-        other: Relation page links
-      wikis/xwiki_provider: XWiki provider
-  project_module_wiki_platforms: Wiki providers
+        one: Verwandter Seitenlink
+        other: Verwandte Seitenlinks
+      wikis/xwiki_provider: XWiki-Anbieter
+  project_module_wiki_platforms: Wiki-Anbieter
   wikis:
     buttons:
-      save_and_continue: Save and continue
+      save_and_continue: Speichern und fortsetzen
+    inline_page_links_component:
+      empty_heading: No inline links
+      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
+      heading: Inline page links
     admin:
       wiki_providers:
-        index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.
-        label_wiki_platform: Wiki provider
-        label_add_new: Add new wiki provider
-        label_new_xwiki_instance: New XWiki provider
-        no_results_title: You don't have any wiki providers set up yet.
-        no_results_description: Add a wiki provider to see them here.
-        label_edit: Edit XWiki provider
-        name_placeholder: XWiki knowledge base
-        name_caption: Give your storage a name so that users can differentiate between multiple wiki platforms.
-        url_caption: Please add the host address of your wiki platform including the https://. It should not be longer than 255 characters.
-        xwiki_instance: XWiki Instance
-        xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
-        new_provider_html: Read our documentation on [setting up an XWiki integration](docs_url) for more information.
+        index_description: Fügen Sie einen externen Wiki-Dienst hinzu, um Arbeitspakete mit bestehenden Wiki-Seiten zu verknüpfen oder neue Seiten direkt von OpenProject aus zu erstellen.
+        label_wiki_platform: Wiki-Anbieter
+        label_add_new: Neuen Wiki-Anbieter hinzufügen
+        label_new_xwiki_instance: XWiki-Anbieter
+        no_results_title: Sie haben noch keine Wiki-Anbieter eingerichtet.
+        no_results_description: Fügen Sie einen Anbieter hinzu, um sie hier zu sehen.
+        label_edit: XWiki-Anbieter bearbeiten
+        name_placeholder: XWiki Wissensdatenbank
+        name_caption: Geben Sie Ihrem Anbieter einen Namen, damit Benutzer zwischen mehreren Speichern unterscheiden können.
+        url_caption: Bitte ergänzen Sie die Host-Adresse Ihres Wiki-Anbieters (einschließlich https://). Sie sollte nicht länger als 255 Zeichen sein.
+        xwiki_instance: XWiki Instanz
+        xwiki_instance_description: Vergewissern Sie sich, dass Sie über Administratorrechte in Ihrer XWiki-Instanz verfügen, bevor Sie diese Einrichtung starten.
+        new_provider_html: Lesen Sie unsere Dokumentation über das [Einrichten einer XWiki-Integration](docs_url) für weitere Informationen.
         sections:
-          basic_details: Basic details
-          oauth_applications: OAuth applications
+          basic_details: Allgemeine Einstellungen
+          oauth_applications: OAuth-Anwendungen
         oauth:
           openproject_oauth: OpenProject OAuth
-          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
+          openproject_oauth_description: Erlauben Sie XWiki den Zugriff auf OpenProject Daten über OAuth.
           xwiki_oauth: XWiki OAuth
-          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
+          xwiki_oauth_description: Erlauben Sie OpenProject Zugriff auf XWiki Daten über OAuth.
         delete:
-          title: Delete wiki provider
-          warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
+          title: Wiki-Anbieter löschen
+          warning_html: Sie sind dabei, %{wiki_provider} zu löschen. Diese Aktion kann nicht rückgängig gemacht werden.

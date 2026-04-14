@@ -5,6 +5,7 @@ ko:
       wikis/xwiki_provider:
         name: 이름
         url: 인스턴스 URL
+        universal_identifier: Universal identifier
         authentication_method: 인증 방법
         authentication_methods:
           oauth2_sso: OpenID Connect ID 공급자를 통한 Single-Sign-On
@@ -23,6 +24,10 @@ ko:
   wikis:
     buttons:
       save_and_continue: 저장 및 계속
+    inline_page_links_component:
+      empty_heading: No inline links
+      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
+      heading: Inline page links
     admin:
       wiki_providers:
         index_description: 외부 위키 서비스를 추가하여 작업 패키지를 기존 위키 페이지에 링크하거나 OpenProject에서 직접 새로운 위키 페이지를 만듭니다.

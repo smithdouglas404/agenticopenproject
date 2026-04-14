@@ -111,7 +111,7 @@ ru:
       reassign_message:
         one: Тип "%{type_name}" в настоящее время используется в документе %{document_count}. Пожалуйста, выберите, в какой тип его переназначить.
         few: Тип "%{type_name}" в настоящее время используется в документах %{document_count}. Пожалуйста, выберите, в какой тип их переназначить.
-        many: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+        many: Тип "%{type_name}" в настоящее время используется в документах %{document_count}. Пожалуйста, выберите, в какой тип их переназначить.
         other: Тип "%{type_name}" в настоящее время используется в документах %{document_count}. Пожалуйста, выберите, в какой тип их переназначить.
       at_least_one_type_required:
         title: Невозможно удалить тип документа
