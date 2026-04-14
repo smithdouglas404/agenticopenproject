@@ -33,6 +33,5 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
 
   good_job_control_concurrency_with(total_limit: 1)
 
-  def perform(*)
-  end
+  def perform(*); end
 end
