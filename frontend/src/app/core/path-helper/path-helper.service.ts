@@ -247,6 +247,10 @@ export class PathHelperService {
     return `${this.boardsPath(projectIdentifier)}/new`;
   }
 
+  public boardDetailsPath(projectIdentifier:string|null, boardId:string|number, workPackageId:string|number) {
+    return `${this.boardsPath(projectIdentifier)}/${boardId}/details/${workPackageId}`;
+  }
+
   public projectDashboardsPath(projectIdentifier:string) {
     return `${this.projectPath(projectIdentifier)}/dashboards`;
   }

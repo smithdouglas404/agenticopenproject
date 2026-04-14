@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ComponentRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { GridResource } from 'core-app/features/hal/resources/grid-resource';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GridWidgetsService } from 'core-app/shared/components/grids/widgets/widgets.service';
@@ -13,6 +13,7 @@ import { GridRemoveWidgetService } from 'core-app/shared/components/grids/grid/r
 import { WidgetWpGraphComponent } from 'core-app/shared/components/grids/widgets/wp-graph/wp-graph.component';
 import { GridWidgetArea } from 'core-app/shared/components/grids/areas/grid-widget-area';
 import { BrowserDetector } from 'core-app/core/browser/browser-detector.service';
+import { WidgetChangeset } from 'core-app/shared/components/grids/widgets/widget-changeset';
 
 export interface WidgetRegistration {
   identifier:string;
@@ -34,6 +35,10 @@ export const GRID_PROVIDERS = [
   templateUrl: './grid.component.html',
   selector: 'grid',
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class GridComponent implements OnDestroy, OnInit {
   public uiWidgets:ComponentRef<any>[] = [];
@@ -78,10 +83,11 @@ export class GridComponent implements OnDestroy, OnInit {
   }
 
   public addWidget(area:GridWidgetArea|GridArea) {
-    void this
-      .add
-      .widget(area)
-      .then(() => this.cdRef.detectChanges());
+    this.detectChangesAfter(this.add.widget(area));
+  }
+
+  public resizeEnd(area:GridWidgetArea) {
+    this.detectChangesAfter(this.resize.end(area));
   }
 
   public widgetComponent(area:GridWidgetArea) {
@@ -105,8 +111,12 @@ export class GridComponent implements OnDestroy, OnInit {
     return { resource: area.widget };
   }
 
-  public widgetComponentOutput(area:GridWidgetArea) {
-    return { resourceChanged: this.layout.saveWidgetChangeset.bind(this.layout) };
+  public widgetComponentOutput(_area:GridWidgetArea) {
+    return {
+      resourceChanged: (changeset:WidgetChangeset) => {
+        this.detectChangesAfter(this.layout.saveWidgetChangeset(changeset));
+      },
+    };
   }
 
   public get gridColumnStyle() {
@@ -158,5 +168,11 @@ export class GridComponent implements OnDestroy, OnInit {
     style += `${this.GRID_GAP_DIMENSION}`;
 
     return this.sanitization.bypassSecurityTrustStyle(style);
+  }
+
+  private detectChangesAfter<T>(promise:Promise<T>|undefined) {
+    void promise
+      ?.finally(() => this.cdRef.detectChanges())
+      .catch(() => undefined);
   }
 }

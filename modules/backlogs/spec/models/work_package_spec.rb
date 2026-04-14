@@ -29,6 +29,23 @@
 require "spec_helper"
 
 RSpec.describe WorkPackage do
+  describe ".order_by_position" do
+    let(:work_packages) { create_list(:work_package, 3) }
+
+    it "sorts by position ascending and places NULL positions last" do
+      work_packages.each_with_index do |wp, idx|
+        position = idx == 0 ? nil : idx
+        wp.update_columns(position:)
+      end
+
+      ordered_positions = described_class
+                      .where(id: work_packages.map(&:id))
+                      .order_by_position
+                      .pluck(:position)
+      expect(ordered_positions).to eq([1, 2, nil])
+    end
+  end
+
   describe "#backlogs_types" do
     it "returns all the ids of types that are configures to be considered backlogs types" do
       allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ "story_types" => [1], "task_type" => 2 })

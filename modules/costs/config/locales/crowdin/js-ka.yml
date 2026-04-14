@@ -19,17 +19,18 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 ka:
   js:
-    text_are_you_sure: "დარწმუნებული ბრძანდებით?"
+    text_are_you_sure: დარწმუნებული ბრძანდებით?
     myTimeTracking:
-      noSpecificTime: "No specific time"
+      noSpecificTime: No specific time
     work_packages:
       property_groups:
-        costs: "ღირებულებები"
+        costs: ღირებულებები
       properties:
-        overallCosts: "ჯამური ფასი"
-        spentUnits: "დახარჯული ერთეული"
-    button_log_costs: "ერთეულის ფასის ჟურნალი"
-    label_hour: "საათი"
-    label_hours: "საათი"
+        overallCosts: ჯამური ფასი
+        spentUnits: დახარჯული ერთეული
+    button_log_costs: ერთეულის ფასის ჟურნალი
+    label_hour: საათი
+    label_hours: საათი

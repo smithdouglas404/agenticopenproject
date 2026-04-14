@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../../support/pages/sprint_planning"
+require_relative "../../support/pages/backlog"
 
 RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects: true } do
   let!(:project) do
@@ -64,7 +64,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
   let!(:sprint1_wp2) { create(:work_package, sprint: sprint1, type:, project:) }
   let!(:sprint1_other_project_wp1) { create(:work_package, sprint: sprint1, type:, project: project2) }
 
-  let(:backlogs_page) { Pages::SprintPlanning.new(project) }
+  let(:backlogs_page) { Pages::Backlog.new(project) }
 
   current_user do
     create(:user,
@@ -100,7 +100,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
         click_on "Create"
       end
 
-      expect_and_dismiss_flash type: :success, message: "New work package created"
+      expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
 
       created_work_package = WorkPackage.last
 
@@ -144,7 +144,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
         click_on "Create"
       end
 
-      expect_and_dismiss_flash type: :success, message: "New work package created"
+      expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
 
       created_work_package = WorkPackage.last
 
@@ -155,7 +155,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
   end
 
   context "in a shared sprint" do
-    let(:backlogs_page) { Pages::SprintPlanning.new(project2) }
+    let(:backlogs_page) { Pages::Backlog.new(project2) }
 
     it "allows creating a new story" do
       backlogs_page.click_in_sprint_menu(sprint1, "Add work package")
@@ -166,7 +166,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
         click_on "Create"
       end
 
-      expect_and_dismiss_flash type: :success, message: "New work package created"
+      expect_and_dismiss_flash type: :success, exact_message: "Successful creation."
 
       created_work_package = WorkPackage.last
 

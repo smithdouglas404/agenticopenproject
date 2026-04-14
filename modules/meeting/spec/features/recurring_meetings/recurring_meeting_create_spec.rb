@@ -171,6 +171,7 @@ RSpec.describe "Recurring meetings creation",
         template_page.expect_participant(other_user, editable: false)
         template_page.expect_available_participants(count: 2)
 
+        template_page.uncheck_apply_to_upcoming
         template_page.select_participant(third_user)
         template_page.expect_participant(third_user, editable: false)
         template_page.expect_available_participants(count: 3)

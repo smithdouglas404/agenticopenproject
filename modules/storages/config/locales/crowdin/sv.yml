@@ -1,3 +1,4 @@
+---
 sv:
   activerecord:
     attributes:
@@ -524,7 +525,7 @@ sv:
         title: Members connection status
       project_storages:
         delete: Remove file storage from project?
-    permission_header_explanation: 'Filrättigheter på externa lagringsplatser tillämpas endast på mappar och filer inom automatiskt hanterade projektmappar. Observera att inte alla filrättigheter stöds av alla lagringsleverantörer. Kontrollera dokumentationen för <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>fillagringsrättigheter</a> för mer information.'
+    permission_header_explanation: Filrättigheter på externa lagringsplatser tillämpas endast på mappar och filer inom automatiskt hanterade projektmappar. Observera att inte alla filrättigheter stöds av alla lagringsleverantörer. Kontrollera dokumentationen för <a target='_blank' href='https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions'>fillagringsrättigheter</a> för mer information.
     provider_types:
       label: Provider type
       nextcloud:

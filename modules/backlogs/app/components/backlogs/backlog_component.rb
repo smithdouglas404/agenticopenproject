@@ -65,10 +65,6 @@ module Backlogs
       current_user.backlogs_preference(:versions_default_fold_state) == "closed"
     end
 
-    def max_position
-      stories.filter_map(&:position).max
-    end
-
     def drop_target_config
       {
         generic_drag_and_drop_target: "container",

@@ -48,6 +48,7 @@ Rails.application.routes.draw do
 
         resources :stories, controller: :rb_stories, only: [] do
           member do
+            get :menu
             put :move
           end
         end
@@ -55,6 +56,7 @@ Rails.application.routes.draw do
 
       resources :inbox, only: [] do
         member do
+          get :menu
           put :move
           post :reorder
           get :move_to_sprint_dialog
@@ -80,7 +82,7 @@ Rails.application.routes.draw do
               work_package_split_view: true,
               defaults: { tab: :overview }
 
-          get :sprint_planning
+          get :backlog
         end
       end
 
@@ -99,6 +101,7 @@ Rails.application.routes.draw do
 
         resources :stories, controller: :rb_stories, only: [] do
           member do
+            get :menu
             put :move_legacy
             post :reorder
           end

@@ -1,3 +1,4 @@
+---
 lt:
   activerecord:
     attributes:
@@ -514,8 +515,7 @@ lt:
         delete: Delete file storage?
         subtitle: Pridėkite išorinę failų saugyklą, jei norite įkelti, susieti ir valdyti failus darbo paketuose.
       managed_project_folders:
-        subtitle: |-
-          Leisti OpenProject automatiškai kurti projektų aplankus. Tai rekomenduojama, nes užtikrina, kad kiekvienas komandos narys visada turi reikiamas prieigos teises.
+        subtitle: Leisti OpenProject automatiškai kurti projektų aplankus. Tai rekomenduojama, nes užtikrina, kad kiekvienas komandos narys visada turi reikiamas prieigos teises.
         subtitle_short: Leisti OpenProject kurti aplankus projektams automatiškai
         title: Automatiškai valdomi projekto aplankai
       project_settings:
@@ -527,7 +527,7 @@ lt:
         title: Narių jungties būsena
       project_storages:
         delete: Remove file storage from project?
-    permission_header_explanation: 'Išorinių saugyklų failų prieigos teisės taikomos tik automatiškai projektų valdomiems aplankams ir failams. Pastebėtina, kad kai kurios failų prieigos teisės nepalaikomos kai kurių saugyklų. Daugiau informacijos rasite rasite dokumente <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>failų saugyklų teisės</a>.'
+    permission_header_explanation: Išorinių saugyklų failų prieigos teisės taikomos tik automatiškai projektų valdomiems aplankams ir failams. Pastebėtina, kad kai kurios failų prieigos teisės nepalaikomos kai kurių saugyklų. Daugiau informacijos rasite rasite dokumente <a target='_blank' href='https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions'>failų saugyklų teisės</a>.
     provider_types:
       label: Tiekėjo tipas
       nextcloud:

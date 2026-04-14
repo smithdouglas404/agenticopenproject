@@ -52,7 +52,13 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
   let(:work_packages) { WorkPackage.where(id: work_package.id).order(Arel.sql(Story::ORDER)) }
 
   before do
-    render_inline(Backlogs::InboxComponent.new(work_packages:, project:, current_user: user))
+    render_inline(
+      Backlogs::InboxComponent.new(
+        work_packages:,
+        project:,
+        current_user: user
+      )
+    )
   end
 
   it "rendering renders the Inbox Component", :aggregate_failures do
@@ -62,8 +68,10 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
     expect(page).to have_octicon(:grabber)
     # renders WorkPackages::InfoLineComponent with type and ID
     expect(page).to have_text("##{work_package.id}")
-    # renders an InboxMenuComponent action menu
+    # deferred action menu (kebab + include-fragment src)
     expect(page).to have_css("action-menu")
+    expect(page).to have_css(%(include-fragment[src*="menu"]))
+    expect(page).to have_element(:button, id: /\Awork_package_#{work_package.id}_menu-button\z/)
   end
 
   describe "row data attributes" do

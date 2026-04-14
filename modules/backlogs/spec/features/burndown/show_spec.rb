@@ -29,7 +29,7 @@
 # ++
 
 require "spec_helper"
-require_relative "../../support/pages/sprint_planning"
+require_relative "../../support/pages/backlog"
 
 RSpec.describe "Show burndown chart", :js, with_flag: { scrum_projects: true } do
   include Redmine::I18n
@@ -37,7 +37,7 @@ RSpec.describe "Show burndown chart", :js, with_flag: { scrum_projects: true } d
   shared_let(:project) { create(:project, enabled_module_names: %w(backlogs)) }
   shared_let(:sprint) { create(:agile_sprint, status: "active", project:, start_date: 1.week.ago, finish_date: 1.week.from_now) }
 
-  let(:planning_page) { Pages::SprintPlanning.new(project) }
+  let(:planning_page) { Pages::Backlog.new(project) }
   let(:role) do
     create(:project_role,
            permissions: %i[view_work_packages view_sprints])

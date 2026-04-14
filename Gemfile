@@ -204,9 +204,9 @@ gem "carrierwave_direct", "~> 3.0.0"
 gem "ssrf_filter", "~> 1.3"
 gem "fog-aws"
 
-gem "aws-sdk-core", "~> 3.241"
+gem "aws-sdk-core", "~> 3.244"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.213"
+gem "aws-sdk-s3", "~> 1.217"
 
 gem "openproject-token", "~> 8.8.2"
 
@@ -227,7 +227,7 @@ gem "dry-validation"
 gem "store_attribute", "~> 2.0"
 
 # Appsignal integration
-gem "appsignal", "~> 4.7", require: false
+gem "appsignal", "~> 4.8", require: false
 
 # Yabeda integration
 gem "yabeda-activerecord"

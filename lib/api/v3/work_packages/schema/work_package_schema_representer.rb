@@ -385,7 +385,7 @@ module API
           end
 
           def form_config_attribute_representation(group)
-            OpenProject::Cache.fetch(*form_config_attribute_cache_key(group)) do
+            OpenProject::Cache.fetch_request_cached(*form_config_attribute_cache_key(group)) do
               ::JSON::parse(::API::V3::WorkPackages::Schema::FormConfigurations::AttributeRepresenter
                               .new(group, current_user:, project: represented.project, embed_links: true)
                               .to_json)

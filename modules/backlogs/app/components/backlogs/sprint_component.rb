@@ -34,15 +34,17 @@ module Backlogs
     include OpTurbo::Streamable
     include RbCommonHelper
 
-    attr_reader :sprint, :project, :current_user, :active_sprint_ids
+    attr_reader :sprint, :project, :stories, :current_user, :active_sprint_ids
 
-    def initialize(sprint:, project:, current_user: User.current, active_sprint_ids: nil, **system_arguments)
+    def initialize(sprint:, project:, stories: nil, current_user: User.current,
+                   active_sprint_ids: nil, **system_arguments)
       super()
 
       @sprint = sprint
       @project = project
       @current_user = current_user
       @active_sprint_ids = active_sprint_ids
+      @stories = stories || sprint.work_packages_for(project).includes(:status, :type)
 
       @system_arguments = system_arguments
       @system_arguments[:id] = dom_id(sprint)
@@ -55,10 +57,6 @@ module Backlogs
       )
     end
 
-    def stories
-      sprint.work_packages.where(project:).order(:position)
-    end
-
     def wrapper_uniq_by
       sprint.id
     end
@@ -67,10 +65,6 @@ module Backlogs
 
     def folded?
       current_user.backlogs_preference(:versions_default_fold_state) == "closed"
-    end
-
-    def max_position
-      stories.filter_map(&:position).max
     end
 
     def drop_target_config

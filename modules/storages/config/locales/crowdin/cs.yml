@@ -1,3 +1,4 @@
+---
 cs:
   activerecord:
     attributes:
@@ -146,7 +147,7 @@ cs:
               permission_not_set: nelze nastavit oprávnění na %{path}.
             remote_folders:
               not_allowed: The %{username} doesn't have access to the %{group_folder} folder. Please check the folder permissions on Nextcloud.
-              not_found: "Složka %{group_folder} nebyla nalezena. Zkontrolujte prosím nastavení Nextcloudu."
+              not_found: Složka %{group_folder} nebyla nalezena. Zkontrolujte prosím nastavení Nextcloudu.
             remove_user_from_group:
               conflict: 'The user %{user} could not be removed from the %{group} group for the following reason: %{reason}'
               failed_to_remove: 'The user %{user} could not be removed from the %{group} group for the following reason: %{reason}'
@@ -493,7 +494,7 @@ cs:
       cancel_button_label: Udělám to později
       heading: Je vyžadováno přihlášení do %{provider_type}
       login_button_aria_label: Přihlásit se do %{storage}
-      login_button_label: "Přihlášení %{provider_type}"
+      login_button_label: Přihlášení %{provider_type}
       project_settings:
         description: Chcete-li získat přístup ke složce projektu, musíte se přihlásit do %{storage}.
       requesting_access_to: Žádost o přístup na %{storage}
@@ -514,8 +515,7 @@ cs:
         delete: Delete file storage?
         subtitle: Přidejte externí úložiště souborů pro nahrávání, propojení a správu souborů v pracovních balíčcích.
       managed_project_folders:
-        subtitle: |-
-          Nechat OpenProject vytvářet složky pro každý projekt automaticky. To je doporučeno proto, že každý člen týmu má vždy správná přístupová oprávnění.
+        subtitle: Nechat OpenProject vytvářet složky pro každý projekt automaticky. To je doporučeno proto, že každý člen týmu má vždy správná přístupová oprávnění.
         subtitle_short: Nechat OpenProject vytvářet složky pro každý projekt automaticky.
         title: Automaticky spravované projektové složky
       project_settings:
@@ -527,7 +527,7 @@ cs:
         title: Stav připojení členů
       project_storages:
         delete: Remove file storage from project?
-    permission_header_explanation: 'File permissions on external storages are applied only to folders and files within automatically managed project folders. Note that not all file permissions are supported by all storage providers. Please check the documentation on <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>file storage permissions</a> for more information.'
+    permission_header_explanation: File permissions on external storages are applied only to folders and files within automatically managed project folders. Note that not all file permissions are supported by all storage providers. Please check the documentation on <a target='_blank' href='https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions'>file storage permissions</a> for more information.
     provider_types:
       label: Typ poskytovatele
       nextcloud:
@@ -537,13 +537,13 @@ cs:
         name_placeholder: e.g. Nextcloud
       one_drive:
         label_oauth_client_id: Azure OAuth aplikace (klient) ID
-        label_oauth_client_secret: ' utajená Hodnota klienta Azure OAuth'
+        label_oauth_client_secret: " utajená Hodnota klienta Azure OAuth"
         name: OneDrive
         name_placeholder: např. OneDrive
       sharepoint:
         drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuth aplikace (klient) ID
-        label_oauth_client_secret: ' utajená Hodnota klienta Azure OAuth'
+        label_oauth_client_secret: " utajená Hodnota klienta Azure OAuth"
         name: SharePoint
         name_placeholder: e.g. SharePoint
     show_attachments_toggle:
