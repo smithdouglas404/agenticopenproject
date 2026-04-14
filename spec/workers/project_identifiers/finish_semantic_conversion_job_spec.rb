@@ -30,42 +30,43 @@
 
 require "rails_helper"
 
-RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
-               with_good_job_batches: [
-                 ProjectIdentifiers::FinishSemanticConversionJob,
-                 ProjectIdentifiers::ConvertProjectToSemanticIdsJob
-               ] do
+RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
   subject(:job) { described_class.new }
 
   let(:finder) { instance_double(ProjectIdentifiers::PendingProjectsFinder) }
 
   before do
     allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:new).and_return(finder)
+    allow(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
   end
 
   describe "#perform" do
-    context "when there are projects to convert" do
-      before { allow(finder).to receive(:project_ids).and_return(Set[1, 2]) }
+    context "when no projects remain" do
+      before { allow(finder).to receive(:project_ids).and_return(Set.new) }
 
-      it "enqueues one ConvertProjectToSemanticIdsJob per pending project" do
+      it "enables semantic mode" do
         job.perform
-        expect(GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name).count).to eq(2)
+        expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
       end
 
-      it "sets FinishSemanticConversionJob as the on_success callback" do
-        allow(GoodJob::Batch).to receive(:enqueue).and_call_original
+      it "does not re-run the conversion job" do
+        expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to receive(:new)
         job.perform
-        expect(GoodJob::Batch).to have_received(:enqueue)
-          .with(hash_including(on_success: ProjectIdentifiers::FinishSemanticConversionJob))
       end
     end
 
-    context "when there are no projects to convert" do
-      before { allow(finder).to receive(:project_ids).and_return(Set.new) }
+    context "when projects still remain" do
+      before { allow(finder).to receive(:project_ids).and_return(Set[1]) }
 
-      it "does not enqueue any per-project jobs" do
+      it "synchronously re-runs ConvertInstanceToSemanticIdsJob before enabling semantic" do
+        convert_job = instance_double(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
+        allow(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to receive(:new).and_return(convert_job)
+        allow(convert_job).to receive(:perform)
+
         job.perform
-        expect(GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name)).not_to exist
+
+        expect(convert_job).to have_received(:perform)
+        expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
       end
     end
   end

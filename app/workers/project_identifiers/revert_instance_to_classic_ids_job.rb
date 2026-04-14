@@ -28,15 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Reverts all projects to classic identifier mode by enqueuing a
-# RevertProjectToClassicIdsJob for every project. Triggered either:
-#
-# * Automatically when ConvertInstanceToSemanticIdsJob exhausts MAX_ITERATIONS.
-# * Explicitly when the admin switches the instance back to classic mode via
-#   the admin UI (Admin::Settings::WorkPackagesIdentifierController#switch_to_classic).
-#
-# The global Setting.work_packages_identifier is expected to already be "classic"
-# before this job runs — it is set by the caller in both trigger paths.
 class ProjectIdentifiers::RevertInstanceToClassicIdsJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
 
