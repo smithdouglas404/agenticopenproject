@@ -48,9 +48,9 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
     context "when there is nothing to backfill" do
       before { allow(finder).to receive(:project_ids).and_return(Set.new) }
 
-      it "transitions the task from pending to processing" do
+      it "calls start! on the task (sets started_at)" do
         expect { job.perform(nil, { task_id: task.id }) }
-          .to change { task.reload.status }.from(BackgroundTask::PENDING).to(BackgroundTask::PROCESSING)
+          .to change { task.reload.started_at }.from(nil)
       end
 
       it "flips the setting to semantic" do
