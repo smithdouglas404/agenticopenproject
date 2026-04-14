@@ -28,9 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Enqueues a ConvertProjectToSemanticIdsJob for every project that still needs
-# backfilling. FinishSemanticConversionJob is registered as the on_success
-# callback and decides whether to enable semantic mode or trigger another pass.
 class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
 
