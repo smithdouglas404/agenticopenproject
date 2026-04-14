@@ -34,15 +34,6 @@ module OpenProject::Backlogs
                     visible_sprints.start_date
                     visible_sprints.finish_date].freeze
 
-    def initialize
-      # Cannot use `association` here since that will break our custom GROUP BY
-      super(:sprint,
-            sortable: SORT_ORDER,
-            groupable_join: sprint_join_with_permissions,
-            groupable: group_by_statement,
-            groupable_select: groupable_select)
-    end
-
     def self.instances(context = nil)
       return [] if context && !context.backlogs_enabled?
       return [] unless OpenProject::FeatureDecisions.scrum_projects_active?
@@ -59,6 +50,15 @@ module OpenProject::Backlogs
       end
     end
 
+    def initialize
+      # Cannot use `association` here since that will break our custom GROUP BY
+      super(:sprint,
+            sortable: SORT_ORDER,
+            groupable_join: sprint_join_with_permissions,
+            groupable: group_by_statement,
+            groupable_select: groupable_select)
+    end
+
     def sortable_join_statement(_query)
       sprint_join_with_permissions
     end
@@ -73,6 +73,9 @@ module OpenProject::Backlogs
 
     private
 
+    # Custom outer join to ensure that sprints the user cannot show are treated like
+    # they are not there at all. Without this, group counts would not match the listed
+    # work packages.
     def sprint_join_with_permissions
       <<~SQL.squish
         LEFT OUTER JOIN "projects" ON "projects"."id" = "work_packages"."project_id"
