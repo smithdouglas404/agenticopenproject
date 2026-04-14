@@ -356,6 +356,9 @@ group :development, :test do
   # https://github.com/puma/puma/issues/2835#issuecomment-2302133927
   gem "byebug"
 
+  # Unreleased fix of readline dependency of pry: https://github.com/pry/pry/pull/2366
+  # Once this gets released, the specific dev dependency on pry can be removed
+  gem "pry", github: "pry/pry", ref: "135640262879544c6bfecbf3e78511289bfe956c"
   gem "pry-byebug", "~> 3.12.0", platforms: [:mri]
   gem "pry-rails", "~> 0.3.6"
   gem "pry-rescue", "~> 1.6.0"
