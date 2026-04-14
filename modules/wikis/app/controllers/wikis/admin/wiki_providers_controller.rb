@@ -32,6 +32,7 @@ module Wikis
   module Admin
     class WikiProvidersController < ApplicationController
       include OpTurbo::ComponentStream
+      include Concerns::WizardNavigation
 
       layout "admin"
 
@@ -166,10 +167,6 @@ module Wikis
       def wiki_provider_wizard(wiki_provider)
         Wikis::Adapters::Registry.resolve("#{wiki_provider}.components.setup_wizard")
                                  .new(model: wiki_provider, user: current_user)
-      end
-
-      def redirect_to_wizard(wiki_provider)
-        redirect_to new_admin_settings_wiki_provider_path(continue_wizard: wiki_provider.id), status: :see_other
       end
     end
   end

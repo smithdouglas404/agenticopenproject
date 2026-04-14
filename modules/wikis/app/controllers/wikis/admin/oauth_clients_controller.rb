@@ -32,6 +32,7 @@ module Wikis
   module Admin
     class OAuthClientsController < ApplicationController
       include OpTurbo::ComponentStream
+      include Concerns::WizardNavigation
 
       layout "admin"
 
@@ -105,10 +106,6 @@ module Wikis
           update_via_turbo_stream(component: Wikis::Admin::OAuthClientInfoComponent.new(@wiki_provider))
           respond_with_turbo_streams
         end
-      end
-
-      def in_wizard?
-        params[:continue_wizard].present?
       end
     end
   end
