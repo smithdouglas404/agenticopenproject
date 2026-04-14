@@ -5,7 +5,7 @@ zh-CN:
       wikis/xwiki_provider:
         authentication_method: 身份验证方式
         authentication_methods:
-          oauth2_sso: 通过 OpenID Connect 身份提供程序进行单点登录
+          oauth2_sso: 通过 OpenID Connect 身份提供商进行单点登录
           two_way_oauth2: 双向 OAuth 2.0 授权代码流
         token_exchange_scope: XWiki 范围
         url: 实例 URL
@@ -13,17 +13,9 @@ zh-CN:
     errors: {}
     models:
       wikis/inline_page_link:
-        other: |-
-          One
-          内联页面链接
-          Other
-          内联页面链接
-      wikis/internal_provider: 内部 wiki
+        other: 内联页面链接
+      wikis/internal_provider: 内部 Wiki
       wikis/relation_page_link:
-        other: |-
-          One
-          关联页面链接
-          Other
-          关联页面链接
-      wikis/xwiki_provider: XWiki 提供程序
+        other: 关系页面链接
+      wikis/xwiki_provider: XWiki 提供商
   wikis: {}

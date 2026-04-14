@@ -61,7 +61,7 @@ es:
         title: Quitar grupo sincronizado %{name}
         confirmation: Si continúa, se eliminarán el grupo sincronizado %{name} y %{users_count} usuarios sincronizados mediante este.
         info: 'Nota: El grupo de OpenProject en sí y los miembros agregados fuera de esta sincronización de LDAP no se eliminarán.'
-        verification_html: Enter the group's name %{name} to verify the deletion.
+        verification_html: Escriba el nombre del grupo %{name} para verificar la eliminación.
       help_text_html: |
         Este módulo le permite configurar una sincronización entre los grupos LDAP y el proyecto abierto
         Depende de que los grupos LDAP que necesiten usar el <em>groupOfNames / memberOf</em>

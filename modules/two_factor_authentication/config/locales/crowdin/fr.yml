@@ -42,7 +42,7 @@ fr:
     label_device_type: Type d'appareil
     label_default_device: Appareil 2FA par défaut
     label_device: Appareil de 2FA
-    label_devices: Appareils de 2FA
+    label_devices: Appareils 2FA
     label_one_time_password: Mot de passe à usage unique
     label_2fa_enabled: L'authentification à deux facteurs est active
     label_2fa_disabled: Authentification à deux facteurs non active
