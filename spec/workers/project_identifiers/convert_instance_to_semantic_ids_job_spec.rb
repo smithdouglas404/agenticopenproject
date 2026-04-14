@@ -65,11 +65,11 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
           .with(hash_including(on_success: ProjectIdentifiers::FinishSemanticConversionJob))
       end
 
-      it "passes task_id as a flat batch property" do
+      it "passes task_id and attempt as flat batch properties" do
         allow(GoodJob::Batch).to receive(:enqueue).and_call_original
-        job.perform(task.id)
+        job.perform(task.id, attempt: 2)
         expect(GoodJob::Batch).to have_received(:enqueue)
-          .with(hash_including(task_id: task.id))
+          .with(hash_including(task_id: task.id, attempt: 2))
       end
     end
 

@@ -37,11 +37,25 @@
 #   again (which registers this job as its own on_success callback), then enable
 #   semantic mode so the next callback pass can confirm the clean state.
 class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
-  def perform(*)
+  MAX_ATTEMPTS = 3
+
+  def perform(batch = nil, _event = nil)
+    task_id = batch&.properties&.dig("task_id")
+    attempt = batch&.properties&.dig("attempt") || 1
     remaining = ProjectIdentifiers::PendingProjectsFinder.new.project_ids
 
-    ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.new.perform if remaining.any?
-
-    Setting::WorkPackageIdentifier.enable_semantic!
+    if remaining.none?
+      BackgroundTask.find(task_id).complete! if task_id.present?
+      Setting::WorkPackageIdentifier.enable_semantic!
+    elsif attempt >= MAX_ATTEMPTS
+      Rails.logger.error(
+        "#{self.class.name}: #{remaining.size} project(s) still pending after #{attempt} attempts " \
+        "(#{remaining.to_a.join(', ')}) — aborting conversion"
+      )
+      BackgroundTask.find(task_id).fail! if task_id.present?
+      ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later
+    else
+      ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.new.perform(task_id, attempt: attempt + 1)
+    end
   end
 end

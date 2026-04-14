@@ -33,8 +33,14 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
 
   good_job_control_concurrency_with(total_limit: 1)
 
-  def perform
-    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishSemanticConversionJob) do
+  def perform(task_id = nil, attempt: 1)
+    if task_id.present?
+      task = BackgroundTask.find(task_id)
+      task.start! if task.status == BackgroundTask::PENDING
+    end
+
+    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishSemanticConversionJob,
+                           task_id:, attempt:) do
       ProjectIdentifiers::PendingProjectsFinder.new.project_ids.each do |project_id|
         ProjectIdentifiers::ConvertProjectToSemanticIdsJob.perform_later(project_id)
       end

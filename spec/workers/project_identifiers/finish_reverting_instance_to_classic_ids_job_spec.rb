@@ -38,25 +38,17 @@ RSpec.describe ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob do
   end
 
   describe "#perform" do
-    context "when called with a task_id in params" do
+    context "when called with a batch containing task_id in properties" do
       let(:task) { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_REVERSION).tap(&:start!) }
+      let(:batch) { instance_double(GoodJob::Batch, properties: { "task_id" => task.id }) }
 
       it "marks the task as complete" do
-        job.perform(nil, { "task_id" => task.id })
+        job.perform(batch, { event: :success })
         expect(task.reload.status).to eq(BackgroundTask::COMPLETE)
       end
     end
 
-    context "when params contain task_id nested under on_success_params (regression)" do
-      let(:task) { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_REVERSION).tap(&:start!) }
-
-      it "does not mark the task complete (task_id is not found at the top level)" do
-        job.perform(nil, { "on_success_params" => { "task_id" => task.id } })
-        expect(task.reload.status).to eq(BackgroundTask::PROCESSING)
-      end
-    end
-
-    context "when called without params" do
+    context "when called without a batch (direct dispatch)" do
       it "does not raise" do
         expect { job.perform }.not_to raise_error
       end

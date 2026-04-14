@@ -39,6 +39,13 @@ class BackgroundTask < ApplicationRecord
   COMPLETE   = "complete"
   FAILED     = "failed"
 
+  TRANSITIONS = {
+    PENDING => [PROCESSING, FAILED].freeze,
+    PROCESSING => [COMPLETE, FAILED].freeze,
+    COMPLETE => [].freeze,
+    FAILED => [].freeze
+  }.freeze
+
   validates :task_type, presence: true
   validates :status, inclusion: { in: [PENDING, PROCESSING, COMPLETE, FAILED] }
 
@@ -47,14 +54,24 @@ class BackgroundTask < ApplicationRecord
   scope :in_progress, -> { where(status: [PENDING, PROCESSING]) }
 
   def start!
-    update!(status: PROCESSING, started_at: Time.current)
+    transition_to!(PROCESSING) { update!(status: PROCESSING, started_at: Time.current) }
   end
 
   def complete!(metadata = {})
-    update!(status: COMPLETE, completed_at: Time.current, metadata:)
+    transition_to!(COMPLETE) { update!(status: COMPLETE, completed_at: Time.current, metadata:) }
   end
 
   def fail!(metadata = {})
-    update!(status: FAILED, failed_at: Time.current, metadata:)
+    transition_to!(FAILED) { update!(status: FAILED, failed_at: Time.current, metadata:) }
+  end
+
+  private
+
+  def transition_to!(new_status)
+    unless TRANSITIONS[status].include?(new_status)
+      raise ArgumentError, "Invalid transition for #{task_type}: #{status} → #{new_status}"
+    end
+
+    yield
   end
 end
