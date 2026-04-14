@@ -28,6 +28,8 @@
 
 import { Controller } from '@hotwired/stimulus';
 import * as Turbo from '@hotwired/turbo';
+import type { TurboVisitEvent } from '@hotwired/turbo';
+
 
 export default class StoryController extends Controller<HTMLElement> implements EventListenerObject {
   static values = {
@@ -53,6 +55,11 @@ export default class StoryController extends Controller<HTMLElement> implements 
     this.element.addEventListener('click', this, { signal });
     this.element.addEventListener('dblclick', this, { signal });
     this.element.addEventListener('keydown', this, { signal });
+    document.addEventListener('turbo:visit', (event:TurboVisitEvent) => {
+      this.syncSelectionFromUrl(event.detail.url);
+    }, { signal });
+
+    this.syncSelectionFromUrl(window.location.href);
   }
 
   disconnect():void {
@@ -65,12 +72,22 @@ export default class StoryController extends Controller<HTMLElement> implements 
     }
   }
 
-  markAsSelected(_event?:Event) {
+  private syncSelectionFromUrl(locationUrl:string):void {
+    const { pathname } = new URL(locationUrl, window.location.origin);
+    const [, id] = /\/details\/(\d+)/.exec(pathname) ?? [];
+    if (id !== undefined && Number(id) === this.idValue) {
+      this.markAsSelected();
+    } else {
+      this.unmarkAsSelected();
+    }
+  }
+
+  markAsSelected():void {
     this.element.classList.add(this.selectedClass);
     this.element.setAttribute('aria-current', 'true');
   }
 
-  unmarkAsSelected(_event?:Event) {
+  unmarkAsSelected():void {
     this.element.classList.remove(this.selectedClass);
     this.element.removeAttribute('aria-current');
   }
