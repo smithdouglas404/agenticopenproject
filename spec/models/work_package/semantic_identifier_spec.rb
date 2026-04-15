@@ -97,20 +97,26 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
 
     context "with multiple ids" do
-      let(:work_package2) { create(:work_package, project:) }
+      let!(:work_package2) { create(:work_package, project:) }
 
-      it "delegates to standard AR find for numeric ids" do
+      it "finds multiple numeric ids via array" do
         expect(WorkPackage.find([work_package.id, work_package2.id])).to contain_exactly(work_package, work_package2)
       end
 
-      it "raises ArgumentError for multiple semantic ids" do
-        expect { WorkPackage.find("MYPROJ-1", "MYPROJ-2") }
-          .to raise_error(ArgumentError, /multi-argument find are not yet supported/)
+      it "finds multiple semantic ids via splat" do
+        expect(WorkPackage.find("MYPROJ-1", "MYPROJ-2")).to contain_exactly(work_package, work_package2)
       end
 
-      it "raises ArgumentError for mixed numeric and semantic ids" do
-        expect { WorkPackage.find([work_package.id, "MYPROJ-2"]) }
-          .to raise_error(ArgumentError, /multi-argument find are not yet supported/)
+      it "finds multiple semantic ids via array" do
+        expect(WorkPackage.find(["MYPROJ-1", "MYPROJ-2"])).to contain_exactly(work_package, work_package2)
+      end
+
+      it "finds mixed numeric and semantic ids" do
+        expect(WorkPackage.find([work_package.id, "MYPROJ-2"])).to contain_exactly(work_package, work_package2)
+      end
+
+      it "raises RecordNotFound when any semantic id is missing" do
+        expect { WorkPackage.find("MYPROJ-1", "MYPROJ-999") }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 

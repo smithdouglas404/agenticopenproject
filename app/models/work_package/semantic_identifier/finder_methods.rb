@@ -43,17 +43,20 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   def find(*args)
     ids = args.length == 1 && args.first.is_a?(Array) ? args.first : args
 
+    # Single semantic ID — fast path
     if ids.length == 1 && semantic_id?(ids.first)
       return find_by_id_or_identifier!(ids.first)
     end
 
-    if ids.any? { |id| semantic_id?(id) }
-      raise ArgumentError,
-            "Semantic identifiers in multi-argument find are not yet supported. " \
-            "Resolve each identifier individually via find_by(id:) instead."
-    end
+    # Multiple IDs — resolve any semantic IDs to numeric before delegating to AR
+    semantic_ids = ids.select { |id| semantic_id?(id) }
+    return super if semantic_ids.empty?
 
-    super
+    resolved = resolve_semantic_to_numeric(semantic_ids)
+    all_numeric = ids.map { |id| semantic_id?(id) ? resolved.fetch(id) : id }
+
+    # Preserve AR's calling convention: find([a, b]) vs find(a, b)
+    args.length == 1 && args.first.is_a?(Array) ? super(all_numeric) : super(*all_numeric)
   end
 
   # Override find_by to transparently resolve semantic identifiers when called
@@ -115,6 +118,38 @@ module WorkPackage::SemanticIdentifier::FinderMethods
 
     stripped = value.strip
     stripped.to_i.to_s != stripped
+  end
+
+  # Resolves an array of semantic identifiers to a hash of { "PROJ-42" => numeric_id }.
+  # Raises ActiveRecord::RecordNotFound if any identifier cannot be resolved.
+  def resolve_semantic_to_numeric(identifiers)
+    found = resolve_current_identifiers(identifiers)
+    found.merge!(resolve_alias_identifiers(identifiers - found.keys)) if found.size < identifiers.size
+
+    still_missing = identifiers - found.keys
+    raise_not_found_for(still_missing) if still_missing.any?
+
+    found
+  end
+
+  def resolve_current_identifiers(identifiers)
+    where(identifier: identifiers).pluck(:identifier, :id).to_h
+  end
+
+  def resolve_alias_identifiers(identifiers)
+    return {} if identifiers.empty?
+
+    joins(:semantic_aliases)
+      .where(work_package_semantic_aliases: { identifier: identifiers })
+      .pluck(Arel.sql("work_package_semantic_aliases.identifier"), :id)
+      .to_h
+  end
+
+  def raise_not_found_for(identifiers)
+    raise ActiveRecord::RecordNotFound.new(
+      "Couldn't find WorkPackage with identifier=#{identifiers.join(', ')}",
+      "WorkPackage", "identifier", identifiers
+    )
   end
 
   # Looks up by current identifier column first, then falls back to
