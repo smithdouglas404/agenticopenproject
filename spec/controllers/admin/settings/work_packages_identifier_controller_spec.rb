@@ -62,19 +62,48 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
     end
 
     context "when work_packages_identifier is 'classic'" do
-      it "updates the setting to classic" do
-        patch :update, params: { settings: { work_packages_identifier: "classic" } }
+      it "updates the setting to classic, enqueues RevertInstanceToClassicIdsJob, and redirects" do
+        expect do
+          patch :update, params: { settings: { work_packages_identifier: "classic" } }
+        end.to have_enqueued_job(ProjectIdentifiers::RevertInstanceToClassicIdsJob)
+
         expect(Setting.work_packages_identifier).to eq("classic")
+        expect(response).to redirect_to(action: "show")
+      end
+
+      context "when a migration job is already in progress" do
+        before do
+          allow(WorkPackages::IdentifierAutofix).to receive(:job_in_progress?).and_return(true)
+        end
+
+        it "does not enqueue another job but still updates the setting and redirects" do
+          expect do
+            patch :update, params: { settings: { work_packages_identifier: "classic" } }
+          end.not_to have_enqueued_job(ProjectIdentifiers::RevertInstanceToClassicIdsJob)
+
+          expect(Setting.work_packages_identifier).to eq("classic")
+          expect(response).to redirect_to(action: "show")
+        end
       end
     end
 
-    context "when work_packages_identifier is missing or unknown" do
+    context "when work_packages_identifier is missing" do
       it "renders 400 without enqueuing a job" do
-        expect do
-          patch :update, params: {}
-        end.not_to have_enqueued_job(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
+        patch :update, params: {}
 
         expect(response).to have_http_status(:bad_request)
+        expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to have_been_enqueued
+        expect(ProjectIdentifiers::RevertInstanceToClassicIdsJob).not_to have_been_enqueued
+      end
+    end
+
+    context "when work_packages_identifier is an unknown value" do
+      it "renders 400 without enqueuing a job" do
+        patch :update, params: { settings: { work_packages_identifier: "unknown_value" } }
+
+        expect(response).to have_http_status(:bad_request)
+        expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to have_been_enqueued
+        expect(ProjectIdentifiers::RevertInstanceToClassicIdsJob).not_to have_been_enqueued
       end
     end
   end
