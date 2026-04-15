@@ -90,7 +90,14 @@ module ::TeamPlanner
     private
 
     def split_view_base_route
-      project_team_planner_path(@project, @view, request.query_parameters)
+      # Unsaved team planners use the /new collection path (no :id).
+      # In that case @view is nil and we return the /new path as the base route
+      # so that the split view close button navigates back correctly.
+      if @view
+        project_team_planner_path(@project, @view, request.query_parameters)
+      else
+        new_project_team_planners_path(@project, request.query_parameters)
+      end
     end
 
     def create_service_class
@@ -106,6 +113,11 @@ module ::TeamPlanner
     end
 
     def find_plan_view
+      # The split_view action is also reachable via the /new collection path
+      # (e.g. /team_planners/new/details/:wp_id) which carries no :id.
+      # In that case @view remains nil and split_view_base_route handles it.
+      return if params[:id].blank?
+
       @view = Query
         .visible(current_user)
         .find(params[:id])

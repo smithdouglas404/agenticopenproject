@@ -68,10 +68,12 @@ export class WorkPackageNewSplitViewComponent extends WorkPackageCreateComponent
       const dueDate = params.get('dueDate');
       const ignoreNonWorkingDays = params.get('ignoreNonWorkingDays');
       const assigneeHref = params.get('assignee_href');
-      if (startDate || dueDate || ignoreNonWorkingDays || assigneeHref) {
+      const parentId = params.get('parent_id');
+      if (startDate || dueDate || ignoreNonWorkingDays || assigneeHref || parentId) {
         const existingDefaults = this.stateParams?.defaults;
         this.stateParams = {
           ...this.stateParams,
+          ...(parentId ? { parent_id: parentId } : {}),
           defaults: {
             _links: {},
             ...existingDefaults,

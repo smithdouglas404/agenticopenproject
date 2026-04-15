@@ -63,7 +63,7 @@ RSpec.describe "Work package calendars", :js do
            due_date: Time.zone.today.at_beginning_of_month.next_month + 18.days)
   end
   let(:filters) { Components::WorkPackages::Filters.new }
-  let(:current_wp_split_screen) { Pages::SplitWorkPackage.new(current_work_package, project) }
+  let(:current_wp_split_screen) { Pages::PrimerizedSplitWorkPackage.new(current_work_package, project) }
 
   before do
     login_as(user)
@@ -83,10 +83,11 @@ RSpec.describe "Work package calendars", :js do
     find('[data-test-selector="add-calendar-button"]', text: "Calendar").click
 
     loading_indicator_saveguard
+    expect_angular_frontend_initialized
 
     # should open the calendar with the current month displayed
     expect(page)
-      .to have_css ".fc-event-title", text: current_work_package.subject
+      .to have_css ".fc-event-title", text: current_work_package.subject, wait: 20
     expect(page)
       .to have_css ".fc-event-title", text: another_current_work_package.subject
     expect(page)
@@ -172,8 +173,9 @@ RSpec.describe "Work package calendars", :js do
     # go back a month by using the browser back functionality
     page.execute_script("window.history.back()")
 
+    expect_angular_frontend_initialized
     expect(page)
-      .to have_css ".fc-event-title", text: current_work_package.subject
+      .to have_css ".fc-event-title", text: current_work_package.subject, wait: 20
     expect(page)
       .to have_css ".fc-event-title", text: another_current_work_package.subject
     expect(page)
@@ -188,6 +190,7 @@ RSpec.describe "Work package calendars", :js do
     # Going back in browser history will lead us back to the calendar
     # Regression #29664
     page.go_back
+    expect_angular_frontend_initialized
     expect(page)
       .to have_css(".fc-event-title", text: current_work_package.subject, wait: 20)
     current_wp_split_screen.expect_closed

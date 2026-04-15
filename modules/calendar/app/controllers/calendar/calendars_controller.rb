@@ -118,7 +118,14 @@ module ::Calendar
     end
 
     def split_view_base_route
-      project_calendar_path(@project, @view, request.query_parameters)
+      # Unsaved calendars use the /new path (no :id).
+      # In that case @view is nil and we return the /new path as the base route
+      # so that the split view close button navigates back correctly.
+      if @view
+        project_calendar_path(@project, @view, request.query_parameters)
+      else
+        new_project_calendar_path(@project, request.query_parameters)
+      end
     end
 
     def build_calendar_view
@@ -147,6 +154,11 @@ module ::Calendar
     end
 
     def find_calendar
+      # split_view is also reachable via the /new collection path
+      # (e.g. /calendars/new/details/:wp_id) which carries no :id.
+      # In that case @view remains nil and split_view_base_route handles it.
+      return if params[:id].blank?
+
       @view = Query
                 .visible(current_user)
                 .find(params[:id])
