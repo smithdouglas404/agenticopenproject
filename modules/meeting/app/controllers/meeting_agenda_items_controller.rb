@@ -317,10 +317,11 @@ class MeetingAgendaItemsController < ApplicationController
 
     attributes[:meeting_id] = target_meeting.id
     attributes[:meeting_section_id] = MeetingSection.find_by(id: params.dig(:meeting_agenda_item, :meeting_section_id))&.id
+    attributes[:source_meeting_id] = @meeting_agenda_item.meeting_id
 
     ::MeetingAgendaItems::CreateService
       .new(user: current_user)
-      .call(attributes, source_meeting_id: @meeting_agenda_item.meeting_id)
+      .call(attributes)
   end
 
   def init_next_meeting_occurrence
