@@ -1,4 +1,33 @@
-require "fastimage"
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+require "mini_magick"
 
 RSpec.shared_examples "avatar management" do
   let(:image_base_path) { File.expand_path(File.dirname(__FILE__) + "/../fixtures/") }
@@ -73,9 +102,11 @@ RSpec.shared_examples "avatar management" do
 
       # Expect the avatar to be resized
       avatar_path = target_user.local_avatar_attachment.file.path
-      image_data = FastImage.new avatar_path
-      expect(image_data.size).to eq [128, 128]
-      expect(%i(jpeg jpg)).to include image_data.type
+      content_type = OpenProject::ContentTypeDetector.new(avatar_path).detect
+      image = MiniMagick::Image.open(avatar_path)
+
+      expect(image.dimensions).to eq [128, 128]
+      expect(content_type).to eq("image/jpeg")
 
       # Delete the avatar
       accept_alert do
