@@ -60,7 +60,7 @@ class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
     end
 
     message = "[FinishSemanticConversionJob] Giving up after #{MAX_SWEEPS} sweeps — " \
-      "projects still remain pending. The instance may be under active load or there is a bug."
+              "projects still remain pending. The instance may be under active load or there is a bug."
     Rails.logger.warn message
     task.fail!(result: message)
     raise message

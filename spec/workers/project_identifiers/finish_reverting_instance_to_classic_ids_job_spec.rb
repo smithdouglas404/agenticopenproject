@@ -33,29 +33,21 @@ require "rails_helper"
 RSpec.describe ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob do
   subject(:job) { described_class.new }
 
+  let(:task)  { LongRunningTask.create!(task_type: :semantic_id_reversion).tap(&:start!) }
+  let(:batch) { instance_double(GoodJob::Batch, properties: { "task_id" => task.id }) }
+
   before do
     allow(Setting::WorkPackageIdentifier).to receive(:enable_classic!)
   end
 
   describe "#perform" do
-    context "when called with a batch containing task_id in properties" do
-      let(:task) { LongRunningTask.create!(task_type: :semantic_id_reversion).tap(&:start!) }
-      let(:batch) { instance_double(GoodJob::Batch, properties: { "task_id" => task.id }) }
-
-      it "marks the task as complete" do
-        job.perform(batch, { event: :success })
-        expect(task.reload.status).to eq("complete")
-      end
-    end
-
-    context "when called without a batch (direct dispatch)" do
-      it "does not raise" do
-        expect { job.perform }.not_to raise_error
-      end
+    it "marks the task as complete" do
+      job.perform(batch)
+      expect(task.reload.status).to eq("complete")
     end
 
     it "enables classic identifiers" do
-      job.perform
+      job.perform(batch)
       expect(Setting::WorkPackageIdentifier).to have_received(:enable_classic!)
     end
   end

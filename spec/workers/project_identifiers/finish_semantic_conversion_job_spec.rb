@@ -88,7 +88,7 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
 
       it "raises after MAX_SWEEPS sweeps, logging a warning and not enabling semantic mode" do
         allow(Rails.logger).to receive(:warn)
-        give_up_pattern = /Giving up after #{described_class::MAX_SWEEPS} sweeps/
+        give_up_pattern = /Giving up after #{described_class::MAX_SWEEPS} sweeps/o
 
         expect { job.perform(batch) }.to raise_error(RuntimeError, give_up_pattern)
         expect(service).to have_received(:call).exactly(described_class::MAX_SWEEPS).times
