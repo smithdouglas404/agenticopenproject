@@ -30,12 +30,27 @@
 
 module WorkPackages
   module IdentifierAutofix
+    CONVERSION_JOB_CLASSES = [
+      ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
+      ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name,
+      ProjectIdentifiers::FinishSemanticConversionJob.name
+    ].freeze
+
+    REVERSION_JOB_CLASSES = [
+      ProjectIdentifiers::RevertInstanceToClassicIdsJob.name,
+      ProjectIdentifiers::RevertProjectToClassicIdsJob.name,
+      ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob.name
+    ].freeze
+
     def self.job_in_progress?
       GoodJob::Job
-        .where(job_class: [
-                 ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
-                 ProjectIdentifiers::RevertInstanceToClassicIdsJob.name
-               ])
+        .where(job_class: CONVERSION_JOB_CLASSES + REVERSION_JOB_CLASSES)
+        .exists?(finished_at: nil)
+    end
+
+    def self.reversion_in_progress?
+      GoodJob::Job
+        .where(job_class: REVERSION_JOB_CLASSES)
         .exists?(finished_at: nil)
     end
   end
