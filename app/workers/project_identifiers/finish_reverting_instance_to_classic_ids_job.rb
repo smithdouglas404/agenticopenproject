@@ -40,6 +40,6 @@ class ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob < ApplicationJo
   # GoodJob passes (batch, params) when invoked as an on_success callback;
   # both are unused here.
   def perform(_batch = nil, _params = nil)
-    Setting::WorkPackageIdentifier.enable_classic!
+    # Noop, can be used for status tracking later
   end
 end

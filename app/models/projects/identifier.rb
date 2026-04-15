@@ -101,7 +101,8 @@ module Projects::Identifier
         WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
           .suggest_identifier(name, exclude:)
       else # This should closely enough emulate Project models' usage of acts_as_url
-        name.to_url.first(IDENTIFIER_MAX_LENGTH).presence || "project"
+        name.to_url.first(IDENTIFIER_MAX_LENGTH).presence ||
+          "project-#{SecureRandom.alphanumeric(5).downcase}"
       end
     end
   end
