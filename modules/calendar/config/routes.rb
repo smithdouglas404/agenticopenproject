@@ -6,6 +6,13 @@ Rails.application.routes.draw do
               as: :calendars do
       collection do
         get "menu" => "calendar/menus#show"
+        get "new/details/new",
+            action: :split_create,
+            work_package_split_create: true
+        get "new/details/:work_package_id(/:tab)",
+            action: :split_view,
+            defaults: { tab: :overview },
+            work_package_split_view: true
       end
       get "/ical" => "calendar/ical#show", on: :member, as: "ical"
       member do

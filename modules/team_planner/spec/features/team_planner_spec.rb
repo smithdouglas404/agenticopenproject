@@ -46,6 +46,7 @@ RSpec.describe "Team planner",
     expect(page).to have_content "There is currently nothing to display."
     page.find_test_selector("add-team-planner-button").click
 
+    expect_angular_frontend_initialized
     team_planner.expect_title
 
     filters.expect_filter_count("1")

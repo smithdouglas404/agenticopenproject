@@ -15,6 +15,13 @@ Rails.application.routes.draw do
               as: :team_planners do
       collection do
         get "menu" => "team_planner/menus#show"
+        get "new/details/new",
+            action: :split_create,
+            work_package_split_create: true
+        get "new/details/:work_package_id(/:tab)",
+            action: :split_view,
+            defaults: { tab: "overview" },
+            work_package_split_view: true
         get "/new", to: "team_planner/team_planner#show", as: :new
       end
 
@@ -25,7 +32,7 @@ Rails.application.routes.draw do
             work_package_split_create: true
         get "details/:work_package_id(/:tab)",
             action: :split_view,
-            defaults: { tab: :overview },
+            defaults: { tab: "overview" },
             as: :details,
             work_package_split_view: true
         get "(/*state)" => "team_planner/team_planner#show", as: ""

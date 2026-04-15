@@ -284,15 +284,20 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       return;
     }
 
-    const basePath = window.location.pathname.replace(/\/details\/.*$/, '');
-    const link = `${basePath}/details/${id}${window.location.search}`;
-    Turbo.visit(link, { frame: 'content-bodyRight', action: 'advance' });
+    this.visitSplitViewLink(id);
   }
 
-  public openSplitCreate():void {
+  public openSplitCreate(extraParams?:Record<string, string>):void {
+    this.visitSplitViewLink('new', extraParams);
+  }
+
+  private visitSplitViewLink(id:string, extraParams?:Record<string, string>):void {
     const basePath = window.location.pathname.replace(/\/details\/.*$/, '');
-    const link = `${basePath}/details/new${window.location.search}`;
-    Turbo.visit(link, { frame: 'content-bodyRight', action: 'advance' });
+    const params = new URLSearchParams(window.location.search);
+    if (extraParams) {
+      Object.entries(extraParams).forEach(([key, value]) => params.set(key, value));
+    }
+    Turbo.visit(`${basePath}/details/${id}?${params.toString()}`, { frame: 'content-bodyRight', action: 'advance' });
   }
 
   public openFullView(id:string):void {
@@ -430,8 +435,17 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
 
   private updateDateParam(dates:DatesSetArg) {
     const url = new URL(window.location.href);
-    url.searchParams.set('cdate', this.timezoneService.formattedISODate(dates.view.calendar.getDate()));
-    url.searchParams.set('cview', (dates.view as unknown as { type:string }).type);
+    const newDate = this.timezoneService.formattedISODate(dates.view.calendar.getDate());
+    const newView = (dates.view as unknown as { type:string }).type;
+
+    // Skip if the URL already reflects both the date and view (e.g. after gotoDate was called
+    // from a popstate handler to restore the calendar to the history-entry's date and view).
+    if (url.searchParams.get('cdate') === newDate && url.searchParams.get('cview') === newView) {
+      return;
+    }
+
+    url.searchParams.set('cdate', newDate);
+    url.searchParams.set('cview', newView);
     window.history.pushState({}, '', url);
   }
 
