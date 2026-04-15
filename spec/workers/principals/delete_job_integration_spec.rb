@@ -338,6 +338,20 @@ RSpec.describe Principals::DeleteJob, type: :model do
       end
     end
 
+    shared_examples_for "long_running_task handling" do
+      let!(:task) { create(:long_running_task, task_type: :semantic_id_conversion, created_by: principal) }
+
+      before { job }
+
+      it "replaces created_by with the deleted user" do
+        expect(task.reload.created_by).to eq(deleted_user)
+      end
+
+      it "keeps the task record" do
+        expect(LongRunningTask.find_by(id: task.id)).to eq(task)
+      end
+    end
+
     shared_examples_for "public cost_query handling" do
       let!(:query) { create(:public_cost_query, user: principal) }
 
@@ -476,6 +490,7 @@ RSpec.describe Principals::DeleteJob, type: :model do
 
     context "with a user" do
       it_behaves_like "removes the principal"
+      it_behaves_like "long_running_task handling"
       it_behaves_like "work_package handling"
       it_behaves_like "labor_budget_item handling"
       it_behaves_like "cost_entry handling"

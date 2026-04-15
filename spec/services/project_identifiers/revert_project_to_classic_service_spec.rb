@@ -32,56 +32,6 @@ require "rails_helper"
 
 RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
   describe "#call" do
-    context "when the project has work packages with semantic data" do
-      let!(:project) do
-        create(:project).tap { |p| p.update_columns(identifier: "MYAPP", wp_sequence_counter: 5) }
-      end
-      let!(:wp1) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 1, identifier: "MYAPP-1") } }
-      let!(:wp2) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 2, identifier: "MYAPP-2") } }
-
-      before { described_class.new(project).call }
-
-      it "clears sequence_number on all work packages" do
-        expect(wp1.reload.sequence_number).to be_nil
-        expect(wp2.reload.sequence_number).to be_nil
-      end
-
-      it "clears identifier on all work packages" do
-        expect(wp1.reload.identifier).to be_nil
-        expect(wp2.reload.identifier).to be_nil
-      end
-
-      it "resets the wp_sequence_counter to 0" do
-        expect(project.reload.wp_sequence_counter).to eq(0)
-      end
-    end
-
-    context "when the project has WorkPackageSemanticAlias rows" do
-      let!(:project) do
-        create(:project).tap { |p| p.update_columns(identifier: "MYAPP", wp_sequence_counter: 1) }
-      end
-      let!(:wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 1, identifier: "MYAPP-1") } }
-      let!(:other_project) { create(:project).tap { |p| p.update_columns(identifier: "OTHER") } }
-      let!(:other_wp) do
-        create(:work_package, project: other_project).tap { |w| w.update_columns(sequence_number: 1, identifier: "OTHER-1") }
-      end
-
-      before do
-        WorkPackageSemanticAlias.create!(identifier: "MYAPP-1", work_package: wp)
-        WorkPackageSemanticAlias.create!(identifier: "OLD-1", work_package: wp)
-        WorkPackageSemanticAlias.create!(identifier: "OTHER-1", work_package: other_wp)
-        described_class.new(project).call
-      end
-
-      it "deletes alias rows for work packages in the project" do
-        expect(WorkPackageSemanticAlias.where(work_package: wp)).not_to exist
-      end
-
-      it "leaves alias rows for work packages in other projects untouched" do
-        expect(WorkPackageSemanticAlias.where(work_package: other_wp)).to exist
-      end
-    end
-
     context "when the project has a classic identifier in FriendlyId history" do
       let!(:project) do
         create(:project).tap do |p|
@@ -122,10 +72,14 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
         end
       end
 
-      before { described_class.new(project).call }
+      before do
+        allow(Setting::WorkPackageIdentifier).to receive(:classic?).and_return(true)
+        allow(Setting::WorkPackageIdentifier).to receive(:semantic?).and_return(false)
+        described_class.new(project).call
+      end
 
-      it "leaves the identifier unchanged" do
-        expect(project.reload.identifier).to eq("MYAPP")
+      it "generates a classic identifier from the project name" do
+        expect(project.reload.identifier).to eq(project.name.to_url.first(Projects::Identifier::IDENTIFIER_MAX_LENGTH))
       end
     end
   end

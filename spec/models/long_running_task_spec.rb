@@ -30,14 +30,51 @@
 
 require "rails_helper"
 
-RSpec.describe BackgroundTask do
-  let(:task) { described_class.create!(task_type: described_class::SEMANTIC_ID_CONVERSION) }
+RSpec.describe LongRunningTask do
+  let(:task) { described_class.create!(task_type: :semantic_id_conversion) }
+
+  describe "task_type" do
+    it "is required" do
+      expect { described_class.create!(status: :pending) }.to raise_error(ActiveRecord::RecordInvalid, /Task type/)
+    end
+  end
+
+  describe "created_by" do
+    it "is inferred from User.current if not set" do
+      user = create(:user)
+      allow(User).to receive(:current).and_return(user)
+
+      expect(described_class.create!(task_type: :semantic_id_conversion).created_by).to eq(user)
+    end
+
+    it "respects an explicitly provided value" do
+      user = create(:user)
+      other = create(:user)
+      allow(User).to receive(:current).and_return(user)
+
+      task = described_class.create!(task_type: :semantic_id_conversion, created_by: other)
+      expect(task.created_by).to eq(other)
+    end
+
+    it "is nil when User.current is nil" do
+      allow(User).to receive(:current).and_return(nil)
+
+      expect(described_class.create!(task_type: :semantic_id_conversion).created_by).to be_nil
+    end
+  end
+
+  describe "description" do
+    it "can be set on creation" do
+      task = described_class.create!(task_type: :semantic_id_conversion, description: "my task")
+      expect(task.reload.description).to eq("my task")
+    end
+  end
 
   describe "state transitions" do
     describe "#start!" do
       it "transitions from pending to processing" do
         expect { task.start! }.to change { task.reload.status }
-          .from(described_class::PENDING).to(described_class::PROCESSING)
+          .from("pending").to("processing")
       end
 
       it "sets started_at" do
@@ -61,7 +98,7 @@ RSpec.describe BackgroundTask do
 
       it "transitions from processing to complete" do
         expect { task.complete! }.to change { task.reload.status }
-          .from(described_class::PROCESSING).to(described_class::COMPLETE)
+          .from("processing").to("complete")
       end
 
       it "sets completed_at" do
@@ -69,7 +106,7 @@ RSpec.describe BackgroundTask do
       end
 
       it "raises when called from pending" do
-        pending_task = described_class.create!(task_type: described_class::SEMANTIC_ID_CONVERSION)
+        pending_task = described_class.create!(task_type: :semantic_id_conversion)
         expect { pending_task.complete! }.to raise_error(ArgumentError, /pending → complete/)
       end
 
@@ -84,7 +121,7 @@ RSpec.describe BackgroundTask do
 
       it "transitions from processing to failed" do
         expect { task.fail! }.to change { task.reload.status }
-          .from(described_class::PROCESSING).to(described_class::FAILED)
+          .from("processing").to("failed")
       end
 
       it "sets failed_at" do
@@ -92,13 +129,42 @@ RSpec.describe BackgroundTask do
       end
 
       it "raises when called from pending" do
-        pending_task = described_class.create!(task_type: described_class::SEMANTIC_ID_CONVERSION)
+        pending_task = described_class.create!(task_type: :semantic_id_conversion)
         expect { pending_task.fail! }.to raise_error(ArgumentError, /pending → failed/)
       end
 
       it "raises when called after complete" do
         task.complete!
         expect { task.fail! }.to raise_error(ArgumentError)
+      end
+    end
+
+    describe "#abort!" do
+      it "transitions from pending to aborted" do
+        expect { task.abort! }.to change { task.reload.status }
+          .from("pending").to("aborted")
+      end
+
+      it "transitions from processing to aborted" do
+        task.start!
+        expect { task.abort! }.to change { task.reload.status }
+          .from("processing").to("aborted")
+      end
+
+      it "sets aborted_at" do
+        expect { task.abort! }.to change { task.reload.aborted_at }.from(nil)
+      end
+
+      it "raises when called after complete" do
+        task.start!
+        task.complete!
+        expect { task.abort! }.to raise_error(ArgumentError, /complete → aborted/)
+      end
+
+      it "raises when called after failed" do
+        task.start!
+        task.fail!
+        expect { task.abort! }.to raise_error(ArgumentError, /failed → aborted/)
       end
     end
   end

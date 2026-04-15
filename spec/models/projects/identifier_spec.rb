@@ -207,6 +207,11 @@ RSpec.describe Projects::Identifier do
       it "returns a slugified lowercase identifier" do
         expect(Project.suggest_identifier("My Cool Project")).to eq("my-cool-project")
       end
+
+      it "returns a unique project-NNNNN fallback when the name produces no slug" do
+        result = Project.suggest_identifier("!!!")
+        expect(result).to match(/\Aproject-[a-z0-9]{5}\z/)
+      end
     end
   end
 end

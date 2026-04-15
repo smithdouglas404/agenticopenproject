@@ -33,109 +33,73 @@ require "rails_helper"
 RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
   subject(:job) { described_class.new }
 
-  let(:task)   { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_CONVERSION).tap(&:start!) }
   let(:finder) { instance_double(ProjectIdentifiers::PendingProjectsFinder) }
-
-  def batch_double(attempt: 1)
-    instance_double(GoodJob::Batch, properties: { "task_id" => task.id, "attempt" => attempt })
-  end
 
   before do
     allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:new).and_return(finder)
     allow(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
-    allow(ProjectIdentifiers::RevertInstanceToClassicIdsJob).to receive(:perform_later)
   end
 
   describe "#perform" do
-    context "when no projects remain" do
+    context "when no projects remain from the start" do
       before { allow(finder).to receive(:project_ids).and_return(Set.new) }
 
-      it "marks the task as complete" do
-        expect { job.perform(batch_double, { event: :success }) }
-          .to change { task.reload.status }.to(BackgroundTask::COMPLETE)
-      end
-
-      it "enables semantic mode" do
-        job.perform(batch_double, { event: :success })
+      it "enables semantic mode without running any conversion" do
+        allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new)
+        job.perform
+        expect(ProjectIdentifiers::ConvertProjectToSemanticService).not_to have_received(:new)
         expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
       end
+    end
 
-      it "does not re-run the conversion job" do
-        allow(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to receive(:new)
+    context "when projects are cleared after the first sweep" do
+      let(:project) { instance_double(Project) }
+      let(:service) { instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil) }
+
+      before do
+        allow(finder).to receive(:project_ids).and_return(Set[1], Set.new)
+        allow(Project).to receive(:find_by).with(id: 1).and_return(project)
+        allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
+      end
+
+      it "runs one conversion sweep then enables semantic mode" do
         job.perform
-        expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to have_received(:new)
+        expect(service).to have_received(:call).once
+        expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
       end
     end
 
-    context "when projects still remain and attempts are below the limit" do
-      before { allow(finder).to receive(:project_ids).and_return(Set[1]) }
+    context "when projects still remain after all sweeps" do
+      let(:project) { instance_double(Project) }
+      let(:service) { instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil) }
 
-      it "synchronously re-runs ConvertInstanceToSemanticIdsJob with incremented attempt" do
-        convert_job = instance_double(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
-        allow(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to receive(:new).and_return(convert_job)
-        allow(convert_job).to receive(:perform)
-
-        job.perform(batch_double(attempt: 1), { event: :success })
-
-        expect(convert_job).to have_received(:perform).with(task.id, attempt: 2)
+      before do
+        allow(finder).to receive(:project_ids).and_return(Set[1])
+        allow(Project).to receive(:find_by).with(id: 1).and_return(project)
+        allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
       end
 
-      it "does not enable semantic mode" do
-        convert_job = instance_double(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
-        allow(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to receive(:new).and_return(convert_job)
-        allow(convert_job).to receive(:perform)
+      it "raises after MAX_SWEEPS sweeps, logging a warning and not enabling semantic mode" do
+        allow(Rails.logger).to receive(:warn)
+        give_up_pattern = /Giving up after #{described_class::MAX_SWEEPS} sweeps/
 
-        job.perform(batch_double(attempt: 1), { event: :success })
-
+        expect { job.perform }.to raise_error(RuntimeError, give_up_pattern)
+        expect(service).to have_received(:call).exactly(described_class::MAX_SWEEPS).times
+        expect(Rails.logger).to have_received(:warn).with(give_up_pattern)
         expect(Setting::WorkPackageIdentifier).not_to have_received(:enable_semantic!)
       end
-
-      it "does not mark the task as complete" do
-        convert_job = instance_double(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
-        allow(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to receive(:new).and_return(convert_job)
-        allow(convert_job).to receive(:perform)
-
-        job.perform(batch_double(attempt: 1), { event: :success })
-
-        expect(task.reload.status).to eq(BackgroundTask::PROCESSING)
-      end
     end
 
-    context "when projects still remain and MAX_ATTEMPTS is reached" do
-      before { allow(finder).to receive(:project_ids).and_return(Set[1]) }
-
-      let(:max_attempt_batch) { batch_double(attempt: described_class::MAX_ATTEMPTS) }
-
-      it "marks the task as failed" do
-        expect { job.perform(max_attempt_batch, { event: :success }) }
-          .to change { task.reload.status }.to(BackgroundTask::FAILED)
+    context "when a remaining project no longer exists" do
+      before do
+        allow(finder).to receive(:project_ids).and_return(Set[99], Set.new)
+        allow(Project).to receive(:find_by).with(id: 99).and_return(nil)
+        allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new)
       end
 
-      it "triggers a revert to classic mode" do
-        job.perform(max_attempt_batch, { event: :success })
-        expect(ProjectIdentifiers::RevertInstanceToClassicIdsJob).to have_received(:perform_later)
-      end
-
-      it "does not enable semantic mode" do
-        job.perform(max_attempt_batch, { event: :success })
-        expect(Setting::WorkPackageIdentifier).not_to have_received(:enable_semantic!)
-      end
-
-      it "does not re-run the conversion job" do
-        expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to receive(:new)
-        job.perform(max_attempt_batch, { event: :success })
-      end
-    end
-
-    context "when called without a batch (no task tracking)" do
-      before { allow(finder).to receive(:project_ids).and_return(Set.new) }
-
-      it "does not raise" do
-        expect { job.perform }.not_to raise_error
-      end
-
-      it "still enables semantic mode" do
+      it "skips the missing project and still enables semantic mode" do
         job.perform
+        expect(ProjectIdentifiers::ConvertProjectToSemanticService).not_to have_received(:new)
         expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
       end
     end
