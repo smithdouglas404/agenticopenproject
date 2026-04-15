@@ -62,7 +62,7 @@ module ProjectIdentifiers
       project.slugs
              .order(created_at: :desc)
              .pluck(:slug)
-             .find { |slug| slug.match?(/\A(?!\d+\z)[a-z0-9\-_]+\z/) }
+             .find { |slug| slug.match?(Projects::Identifier::CLASSIC_IDENTIFIER_FORMAT) }
     end
   end
 end

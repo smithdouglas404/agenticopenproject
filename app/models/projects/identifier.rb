@@ -34,6 +34,8 @@ module Projects::Identifier
   IDENTIFIER_MAX_LENGTH = 100
   SEMANTIC_IDENTIFIER_MAX_LENGTH = 10
   RESERVED_IDENTIFIERS = %w[new menu queries filters identifier_update_dialog identifier_suggestion].freeze
+  # Classic identifier format: lowercase letters, digits, hyphens, underscores — but not all-numeric.
+  CLASSIC_IDENTIFIER_FORMAT = /\A(?!\d+\z)[a-z0-9\-_]+\z/.freeze
 
   included do
     extend FriendlyId
@@ -130,7 +132,7 @@ module Projects::Identifier
   # Contains only a-z, 0-9, dashes and underscores but cannot consist of numbers only
   # as that would clash with the numeric id.
   def identifier_numeric_format
-    unless identifier.match?(/\A(?!^\d+\z)[a-z0-9\-_]+\z/)
+    unless identifier.match?(CLASSIC_IDENTIFIER_FORMAT)
       errors.add(:identifier, :invalid)
     end
   end
