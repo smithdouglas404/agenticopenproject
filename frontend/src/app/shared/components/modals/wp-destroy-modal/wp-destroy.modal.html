@@ -9,7 +9,7 @@
     @if (singleWorkPackage) {
       <p>
         <span [textContent]="text.single_text"></span>
-        <strong> {{ singleWorkPackage.subject }} {{ singleWorkPackage.displayIdWithHash }}</strong>
+        <strong> {{ singleWorkPackage.subject }} {{ singleWorkPackage.formattedId }}</strong>
         <span>?</span>
       </p>
       @if (singleWorkPackageChildren && singleWorkPackageChildren.length > 0) {
@@ -23,7 +23,7 @@
             @for (child of singleWorkPackageChildren; track child) {
               <li class="spot-list--item">
                 <div class="spot-list--item-title">
-                  <span [textContent]="child.displayIdWithHash"></span>
+                  <span [textContent]="child.formattedId"></span>
                   <span [textContent]="child.subject || ''"></span>
                 </div>
               </li>
@@ -44,7 +44,7 @@
         @for (wp of workPackages; track wp) {
           <li class="spot-list--item">
             <div class="spot-list--item-title">
-              <span [textContent]="wp.displayIdWithHash"></span>
+              <span [textContent]="wp.formattedId"></span>
               <span [textContent]="wp.subject"></span>
               @if (children(wp).length > 0) {
                 <strong>(+ {{ text.childCount(wp) }})</strong>

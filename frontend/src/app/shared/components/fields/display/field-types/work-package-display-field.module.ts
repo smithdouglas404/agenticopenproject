@@ -58,17 +58,18 @@ export class WorkPackageDisplayField extends DisplayField {
   }
 
   /**
-   * Returns the work package ID formatted for display, always prefixed
-   * with `#`: `#123` in classic mode, `#PROJ-42` in semantic mode.
+   * Returns the work package ID formatted for display.
+   * Classic mode: `#123` (hash-prefixed), Semantic mode: `PROJ-42` (no prefix).
    *
-   * This mirrors the logic in `WorkPackageBaseResource.displayIdWithHash`
+   * This mirrors the logic in `WorkPackageBaseResource.formattedId`
    * but cannot delegate to it because the linked resource (`this.value`)
    * may not be loaded — in that case `wpId` falls back to extracting the
    * numeric ID from the self-link href, which won't have a `displayId`.
    */
-  public get wpDisplayIdWithHash():string {
+  public get wpFormattedId():string {
     if (this.value?.$loaded && this.value.displayId) {
-      return `#${this.value.displayId}`;
+      const displayId = this.value.displayId.toString();
+      return /[A-Za-z]/.test(displayId) ? displayId : `#${displayId}`;
     }
 
     const id = this.wpId;
@@ -79,7 +80,7 @@ export class WorkPackageDisplayField extends DisplayField {
 
   public get valueString() {
     // cannot display the type name easily here as it may not be loaded
-    return `${this.wpDisplayIdWithHash} ${this.title}`;
+    return `${this.wpFormattedId} ${this.title}`;
   }
 
   public isEmpty():boolean {

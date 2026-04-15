@@ -75,6 +75,6 @@ export class LinkedWorkPackageDisplayField extends WorkPackageDisplayField {
   }
 
   public get valueString() {
-    return this.wpDisplayIdWithHash;
+    return this.wpFormattedId;
   }
 }
