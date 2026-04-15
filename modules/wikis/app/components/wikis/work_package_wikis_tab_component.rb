@@ -33,5 +33,11 @@ module Wikis
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
+
+    alias_method :work_package, :model
+
+    def providers
+      Wikis::Provider.enabled
+    end
   end
 end

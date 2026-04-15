@@ -194,7 +194,7 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
       end
     end
 
-    context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+    context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
       context "when identifier is not provided" do
         let(:params) do
           { name: "My copied project" }
@@ -211,13 +211,26 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
           expect(project).to be_present
           expect(project.identifier).to eq("MCP")
         end
+
+        context "when the generated identifier is already taken" do
+          let!(:existing_project) { create(:project, identifier: "MCP") }
+
+          it "auto-generates a unique identifier instead" do
+            GoodJob.perform_inline
+
+            project = Project.find_by(name: "My copied project")
+            expect(project).to be_present
+            expect(project.identifier).not_to eq("MCP")
+            expect(project.identifier).to match(/\A[A-Z][A-Z0-9_]*\z/)
+          end
+        end
       end
 
       context "when an invalid identifier is provided" do
         let(:params) do
           {
             name: "My copied project",
-            identifier: "invalid-lowercase"
+            identifier: "1ABC"
           }
         end
 
@@ -227,8 +240,8 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
 
         it "explains the identifier format error" do
           expect(response.body)
-            .to be_json_eql("identifier".to_json)
-            .at_path("_embedded/errors/0/_embedded/details/attribute")
+            .to be_json_eql("Identifier must start with a letter".to_json)
+            .at_path("message")
         end
       end
     end

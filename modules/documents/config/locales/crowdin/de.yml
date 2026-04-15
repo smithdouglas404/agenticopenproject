@@ -69,12 +69,10 @@ de:
         Bitte wenden Sie sich an Ihren Administrator, um die Echtzeit-Kollaboration zu aktivieren, wenn Sie auf dieses Dokument zugreifen möchten.
     show_edit_view:
       connection_error_notice:
-        description: |-
+        description_server_unavailable: |-
           Das Dokument kann nicht geöffnet werden, da der Server für Echtzeit-Kollaboration nicht erreichbar ist.
           Bitte wenden Sie sich an den Administrator, wenn das Problem weiterhin besteht.
         action: Noch einmal versuchen
-      connection_recovery_notice:
-        description: Die Verbindung zum Server für Echtzeit-Kollaboration wurde wiederhergestellt.
       tabs: Dokument-Tabs
     index_page:
       name: Name
@@ -86,6 +84,9 @@ de:
       types: Typen
       collaboration_settings: Echtzeit-Kollaboration
     last_updated_at: Zuletzt gespeichert %{time}.
+    info_line:
+      currently_offline: Sie sind derzeit offline.
+      connection_restored: Sie sind jetzt wieder online.
     active_editors: Aktive Bearbeiter
     active_editors_count:
       one: Ein aktiver Bearbeiter

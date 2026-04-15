@@ -71,12 +71,10 @@ pl:
         Jeśli chcesz uzyskać dostęp do tego dokumentu, skontaktuj się z administratorem, aby włączyć współpracę tekstową w czasie rzeczywistym.
     show_edit_view:
       connection_error_notice:
-        description: |-
+        description_server_unavailable: |-
           Nie można otworzyć dokumentu, ponieważ serwer współpracy tekstowej w czasie rzeczywistym jest nieosiągalny.
           Jeśli problem nie ustępuje, skontaktuj się z administratorem.
         action: Spróbuj ponownie
-      connection_recovery_notice:
-        description: Połączenie z serwerem współpracy tekstowej w czasie rzeczywistym zostało przywrócone.
       tabs: Karty dokumentów
     index_page:
       name: Nazwa
@@ -88,6 +86,9 @@ pl:
       types: Typy
       collaboration_settings: Współpraca w czasie rzeczywistym
     last_updated_at: Ostatnio zapisano %{time}.
+    info_line:
+      currently_offline: Jesteś obecnie offline.
+      connection_restored: Znów jesteś online.
     active_editors: Aktywni edytorzy
     active_editors_count:
       one: 1 aktywny edytor

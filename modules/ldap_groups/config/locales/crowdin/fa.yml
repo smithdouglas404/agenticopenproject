@@ -46,6 +46,7 @@ fa:
         zero: هیچ گروهی با این فیلتر یافت نشد
       destroy:
         title: Remove synchronized filter %{name}
+        heading: Remove synchronized filter %{name}?
         confirmation: If you continue, the synchronized filter %{name} and all groups %{groups_count} created through it will be removed.
         removed_groups: 'Warning: This will remove the following groups from OpenProject and remove it from all projects!'
         verification_html: Enter the filter name %{name} to verify the deletion.
@@ -59,9 +60,9 @@ fa:
       add_new: Add synchronized LDAP group
       destroy:
         title: Remove synchronized group %{name}
+        heading: Remove synchronized group %{name}?
         confirmation: If you continue, the synchronized group %{name} and all %{users_count} users synchronized through it will be removed.
-        info: 'Note: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.'
-        verification_html: Enter the group's name %{name} to verify the deletion.
+        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
         This module allows you to set up a synchronization between LDAP and OpenProject groups.
         It depends on LDAP groups need to use the <em>groupOfNames / memberOf</em> attribute set to be working with OpenProject.

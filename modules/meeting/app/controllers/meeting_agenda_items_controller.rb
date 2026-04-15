@@ -43,7 +43,9 @@ class MeetingAgendaItemsController < ApplicationController
   before_action :set_current_occurrence,
                 :set_presentation_mode,
                 only: %i[new cancel_new edit cancel_edit create update destroy drop move move_to_section_dialog]
-  before_action :check_recurring_meeting_param, only: %i[move_to_next_meeting duplicate_in_next_meeting]
+  before_action :check_recurring_meeting_param,
+                only: %i[move_to_next_meeting move_to_next_meeting_dialog duplicate_in_next_meeting
+                         duplicate_in_next_meeting_dialog]
   before_action :assign_drop_params, only: %i[drop]
 
   def new
@@ -219,18 +221,26 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def move_to_next_meeting_dialog
+    next_occurrence = init_next_meeting_occurrence
+    return if next_occurrence.nil?
+
     respond_with_dialog MeetingAgendaItems::MoveToNextMeetingDialogComponent.new(
       agenda_item: @meeting_agenda_item,
       datetime: params[:datetime],
-      skipped: params[:skipped]
+      skipped: params[:skipped],
+      next_occurrence:
     )
   end
 
   def duplicate_in_next_meeting_dialog
+    next_occurrence = init_next_meeting_occurrence
+    return if next_occurrence.nil?
+
     respond_with_dialog MeetingAgendaItems::DuplicateInNextMeetingDialogComponent.new(
       agenda_item: @meeting_agenda_item,
       datetime: params[:datetime],
-      skipped: params[:skipped]
+      skipped: params[:skipped],
+      next_occurrence:
     )
   end
 
@@ -238,12 +248,13 @@ class MeetingAgendaItemsController < ApplicationController
     next_occurrence = init_next_meeting_occurrence
     return if next_occurrence.nil?
 
-    update_call = update_agenda_item(meeting_id: next_occurrence.id, meeting_section: nil)
+    update_call = update_agenda_item(
+      meeting_id: next_occurrence.id,
+      meeting_section_id: params.dig(:meeting_agenda_item, :meeting_section_id)
+    )
 
     if update_call.success?
-      render_success_flash_message_via_turbo_stream(
-        message: message_for_next_meeting_action(:text_agenda_item_moved_to_next_meeting, next_occurrence)
-      )
+      render_next_meeting_flash(:text_agenda_item_moved_to_next_meeting, next_occurrence)
       remove_item_via_turbo_stream(clear_slate: @meeting.agenda_items.empty?)
       update_header_component_via_turbo_stream
       respond_with_turbo_streams
@@ -260,9 +271,7 @@ class MeetingAgendaItemsController < ApplicationController
 
     if duplicate_call.success?
       close_dialog_via_turbo_stream("#duplicate-in-next-meeting-dialog")
-      render_success_flash_message_via_turbo_stream(
-        message: message_for_next_meeting_action(:text_agenda_item_duplicated_in_next_meeting, next_occurrence)
-      )
+      render_next_meeting_flash(:text_agenda_item_duplicated_in_next_meeting, next_occurrence)
       update_header_component_via_turbo_stream
       respond_with_turbo_streams
     else
@@ -307,11 +316,12 @@ class MeetingAgendaItemsController < ApplicationController
     attributes = attributes.except("author_id", "created_at", "updated_at", "lock_version", "position")
 
     attributes[:meeting_id] = target_meeting.id
-    attributes[:meeting_section_id] = nil
+    attributes[:meeting_section_id] = MeetingSection.find_by(id: params.dig(:meeting_agenda_item, :meeting_section_id))&.id
+    attributes[:source_meeting_id] = @meeting_agenda_item.meeting_id
 
     ::MeetingAgendaItems::CreateService
       .new(user: current_user)
-      .call(attributes, source_meeting_id: @meeting_agenda_item.meeting_id)
+      .call(attributes)
   end
 
   def init_next_meeting_occurrence
@@ -398,8 +408,14 @@ class MeetingAgendaItemsController < ApplicationController
     @next_occurrence = next_occurrence&.meeting
   end
 
-  def message_for_next_meeting_action(base_key, next_occurrence)
-    I18n.t(base_key, date: format_date(next_occurrence.start_time))
+  def render_next_meeting_flash(base_key, next_occurrence)
+    flash = OpPrimer::FlashComponent.new(scheme: :success)
+    flash.with_content(I18n.t(base_key, date: format_date(next_occurrence.start_time)))
+    flash.with_action_button(tag: :a, href: project_meeting_path(next_occurrence.project, next_occurrence)) do
+      I18n.t(:label_view_meeting)
+    end
+
+    turbo_streams << flash.render_as_turbo_stream(view_context:, action: :flash)
   end
 
   def assign_drop_params # rubocop:disable Metrics/AbcSize

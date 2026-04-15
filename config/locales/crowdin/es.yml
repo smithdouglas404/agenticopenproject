@@ -114,7 +114,7 @@ es:
     import:
       title: Importar
     jira:
-      title: Importación desde Jira
+      title: Migrador Jira
       description: Utilice esta herramienta para importar datos desde su instancia de Jira. Puede configurar varios hosts de Jira y elegir qué importar en cada ejecución de importación.
       errors:
         cannot_delete_with_imports: No se puede eliminar el host de Jira con importaciones existentes
@@ -125,8 +125,8 @@ es:
         title: Configuración de Jira
         new: Nueva configuración
       banner:
-        title: Importación limitada
-        description: 'Esta herramienta de importación se encuentra actualmente en fase beta y solo puede importar datos básicos: proyectos, incidencias (nombre, título, descripción, archivos adjuntos), usuarios (nombre, correo electrónico, pertenencia a proyectos), estados y tipos. No puede importar flujos de trabajo, campos personalizados, relaciones entre incidencias ni permisos. Actualmente solo es compatible con las versiones 10.x y 11.x de Jira Server/Data Center. Por el momento, no es compatible con instancias en la nube.'
+        title: Capacidades de importación limitadas
+        description: 'Este Migrador de Jira se encuentra actualmente en fase beta y solo puede importar datos básicos: proyectos, incidencias (nombre, título, descripción, archivos adjuntos), usuarios (nombre, correo electrónico, pertenencia a proyectos), estados y tipos. No puede importar flujos de trabajo, campos personalizados, relaciones entre incidencias ni permisos. Actualmente solo es compatible con las versiones 10.x y 11.x de Jira Server/Data Center. Por el momento, no es compatible con instancias en la nube.'
       form:
         fields:
           name: Nombre
@@ -387,9 +387,9 @@ es:
         notification_text_default: "<p>Hola,</p> <p>Se ha creado un nuevo proyecto: projectValue:name</p> <p>Muchas gracias</p>\n"
       work_packages_identifier:
         page_header:
-          description: Elige entre identificadores numéricos básicos para los paquetes de trabajo o identificadores específicos del proyecto, en los que el identificador del proyecto se antepone al identificador del paquete de trabajo.
+          description: Elige entre los ID numéricos clásicos de los paquetes de trabajo o los ID semánticos específicos del proyecto, que añaden el identificador del proyecto al principio del ID del paquete de trabajo.
         banner:
-          existing_identifiers_notice: 'Los identificadores actuales de %{project_count} proyectos no cumplen los requisitos para ser identificadores alfanuméricos basados en proyectos. OpenProject puede actualizarlos automáticamente para que sean válidos, tal y como se muestra en los ejemplos siguientes. Haz clic en «Corregir automáticamente y guardar» para actualizar los identificadores de todos los proyectos de esta manera y habilitar los identificadores alfanuméricos basados en proyectos.
+          existing_identifiers_notice: 'Los identificadores actuales de %{project_count} proyectos no cumplen los requisitos para ser identificadores semánticos basados en proyectos. OpenProject puede actualizarlos automáticamente para que sean válidos, tal y como se muestra en los ejemplos siguientes. Haz clic en «Corregir automáticamente y guardar» para actualizar los identificadores de todos los proyectos de esta manera y habilitar los identificadores semánticos basados en proyectos.
 
             '
         box_header:
@@ -398,10 +398,14 @@ es:
           label_autofixed_suggestion: Identificador futuro
           label_example_work_package_id: Ejemplo de ID del paquete de trabajo
         autofix_preview:
-          error_too_long: Debe tener menos de 5 caracteres
+          error_too_long: Debe tener 10 caracteres o menos
+          error_numerical: No puede ser puramente numérico
+          error_starts_with_number: No puede comenzar con un número
           error_special_characters: No se permiten caracteres especiales
+          error_not_fully_uppercased: Debe estar en mayúsculas
           error_in_use: Ya está en uso como identificador activo de otro proyecto
           error_reserved: Reservado por el historial de identificadores de otro proyecto
+          error_unknown: Necesita revisión manual
           remaining_projects:
             one: "... 1 proyecto más"
             other: "... %{count} proyectos más"
@@ -416,7 +420,7 @@ es:
           checkbox_label: Entiendo que esto cambiará de forma permanente todos los ID de los paquetes de trabajo
         success_banner: Se ha actualizado correctamente el formato del identificador del paquete de trabajo.
         in_progress:
-          banner_message: Actualmente se están actualizando los identificadores de proyectos para convertirlos en identificadores alfanuméricos basados en proyectos. Esto puede llevar algún tiempo.
+          banner_message: Actualmente se están actualizando los identificadores de proyectos para convertirlos en identificadores semánticos basados en proyectos. Esto puede llevar algún tiempo.
     workflows:
       tabs:
         default_transitions: Transiciones predeterminadas
@@ -1352,7 +1356,7 @@ es:
           automatic_with_children: Fechas determinadas por paquetes de trabajo secundarios.
           automatic_with_predecessor: La fecha de inicio la fija un predecesor.
           manual_mobile: Programado manualmente.
-          manually_scheduled: Programado manualmente. No afectadas por relaciones.
+          manually_scheduled: Programado manualmente. Fechas no afectadas por relaciones.
       blankslate:
         title: Sin predecesores
         description: Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano.
@@ -1531,6 +1535,9 @@ es:
         dependencies: Dependencias
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: Identificador
+        work_package: Paquete de trabajo
       jira_import:
         projects: Proyectos
       import/jira:
@@ -1539,7 +1546,7 @@ es:
         personal_access_token: Token de acceso personal
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Importación desde Jira
+        jira_import: Migrador Jira
       announcements:
         show_until: Mostrar hasta
       attachment:
@@ -3382,6 +3389,11 @@ es:
     quick_add:
       label: Añadir…
   my_account:
+    notifications_and_email:
+      title: Notificación y correo electrónico
+      tabs:
+        notifications: Ajustes de notificación
+        email_reminders: Recordatorios por correo electrónico
     access_tokens:
       description: Los tokens de proveedor son emitidos por OpenProject y permiten a otras aplicaciones acceder a él. Los tokens de cliente son emitidos por otras aplicaciones y permiten a OpenProject acceder a ellos.
       no_results:
@@ -3444,6 +3456,72 @@ es:
         disabled_text: Los tokens RSS no están habilitados por el administrador. Póngase en contacto con su administrador para utilizar esta función.
       storages:
         unknown_storage: Almacenamiento desconocido
+    email_reminders:
+      immediate_reminders:
+        title: Enviarme un recordatorio por correo electrónico
+        mentioned: Notificarme cuando me mencionen
+        personal_reminder: Notificarme para recibir recordatorios personales
+      daily_reminders:
+        title: Enviarme recordatorios por correo electrónico diarios con las notificaciones sin leer
+        caption: Recibirás estos recordatorios solo para las notificaciones no leídas y únicamente a las horas que indiques. Hasta que configures una zona horaria para tu cuenta, se considerará que las horas están en UTC.
+        enabled: Habilitar recordatorios por correo electrónico diarios
+        add_time: Añadir tiempo
+        remove_time: Eliminar el tiempo
+        time_slot_label: Hora del recordatorio (UTC)
+      workdays:
+        title: Recibir recordatorios por correo electrónico en estos días
+        submit_button: Días de recordatorio de actualización
+      pause_reminders:
+        title: Pausar notificaciones por correo electrónico
+        enabled: Pausar temporalmente los recordatorios por correo electrónico diarios
+        date_range: Período de pausa
+      email_alerts:
+        title: Alertas por correo electrónico de otros elementos que no sean paquetes de trabajo
+        news_added: Noticias añadidas
+        news_commented: Comentarios en un elemento de noticias
+        document_added: Documento agregado
+        forum_messages: Mensaje publicado en el foro
+        wiki_page_added: Página wiki añadida
+        wiki_page_updated: Página wiki actualizada
+        membership_added: Subscripción añadida
+        membership_updated: Subscripción actualizada
+        submit_button: Actualizar alertas
+    notifications:
+      participating:
+        title: Participando
+        submit_button: Actualizar preferencias
+        mentioned: Mencionado
+        watched: Observando
+        assignee: Asignado
+        responsible: Responsable
+        shared: Compartido conmigo
+      date_alerts:
+        title: Alertas de fecha
+        submit_button: Alertas de fecha de actualización
+        start_date: Fecha de inicio
+        due_date: Fecha de finalización
+        overdue: Vencido
+        times:
+          same_day: El mismo día
+          one_day_before: 1 día antes
+          three_days_before: 3 días antes
+          seven_days_before: 7 días antes
+          one_day_after: 1 día después
+          three_days_after: 3 días después
+          seven_days_after: 7 días después
+      non_participating:
+        title: No participando
+        submit_button: Actualizar preferencias
+        work_package_created: Nuevos paquetes de trabajo
+        work_package_commented: Todos los nuevos comentarios
+        work_package_processed: Todos los cambios de estado
+        work_package_prioritized: Todos los cambios de prioridad
+        work_package_scheduled: Todos los cambios de fecha
+      project_specific_settings:
+        title: Configuración de notificaciones específicas de proyectos
+        add_button: Añadir notificaciones específicas del proyecto
+        dialog_title: Añadir notificaciones específicas del proyecto
+        list_header: Proyectos con notificaciones específicas
   notifications:
     reasons:
       assigned: Asignado a
@@ -3475,6 +3553,7 @@ es:
       invalid_filter: Filtro de notificación no válido
   label_accessibility: Accesibilidad
   label_account: Cuenta
+  label_actions: Comportamiento
   label_active: Activo
   label_activate_user: Activar usuario
   label_active_in_new_projects: Activo en nuevos proyectos
@@ -3515,6 +3594,7 @@ es:
   label_ical_access_key_generation_hint: Se genera automáticamente al suscribirse a un calendario.
   label_ical_access_key_latest: último
   label_ical_access_key_revoke: Revocar
+  label_integrations: Integraciones
   label_add_column: Añadir columna
   label_applied_status: Estado aplicado
   label_archive_project: Archivar proyecto
@@ -3765,7 +3845,7 @@ es:
   label_external_links: Enlaces externos
   label_locale: Idioma y región
   label_jump_to_a_project: Saltar a un proyecto...
-  label_jira_import: Importación desde Jira
+  label_jira_import: Migrador Jira
   label_keyword_plural: Palabras clave
   label_language_based: Basado en el idioma del usuario
   label_last_activity: Última actividad
@@ -5015,12 +5095,12 @@ es:
   setting_welcome_text: Bloque de texto de bienvenida
   setting_welcome_title: Título del bloque de bienvenida
   setting_welcome_on_homescreen: Mostrar bloque de bienvenida en la pagina de inicio
-  setting_work_packages_identifier_numeric: Secuencia numérica para toda la instancia (predeterminada)
-  setting_work_packages_identifier_numeric_caption: 'Cada paquete de trabajo recibe un número secuencial que empieza por 1 y se incrementa con cada nuevo paquete. Los números son únicos dentro de esta instancia, por lo que siguen siendo los mismos aunque los paquetes de trabajo se trasladen de un proyecto a otro.
+  setting_work_packages_identifier_classic: Secuencia numérica para toda la instancia (predeterminada)
+  setting_work_packages_identifier_classic_caption: 'Cada paquete de trabajo recibe un número secuencial que empieza por 1 y se incrementa con cada nuevo paquete. Los números son únicos dentro de esta instancia, por lo que siguen siendo los mismos aunque los paquetes de trabajo se trasladen de un proyecto a otro.
 
     '
-  setting_work_packages_identifier_alphanumeric: Identificadores alfanuméricos basados en proyectos
-  setting_work_packages_identifier_alphanumeric_caption: 'Cada proyecto tiene un identificador único que se añade al principio del ID del paquete de trabajo. Si un paquete de trabajo se traslada a otro proyecto, se genera un nuevo identificador, pero el antiguo sigue funcionando.
+  setting_work_packages_identifier_semantic: Identificadores semánticos basados en proyectos
+  setting_work_packages_identifier_semantic_caption: 'Cada proyecto tiene un identificador único que se añade al principio del ID del paquete de trabajo. Si un paquete de trabajo se traslada a otro proyecto, se genera un nuevo identificador, pero el antiguo sigue funcionando.
 
     '
   setting_work_package_list_default_highlighting_mode: Modo de resaltado predeterminado

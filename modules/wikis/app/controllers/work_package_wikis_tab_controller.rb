@@ -36,7 +36,7 @@ class WorkPackageWikisTabController < ApplicationController
   before_action :set_work_package
 
   def index
-    render(Wikis::WorkPackageWikisTabComponent.new, layout: false)
+    render(Wikis::WorkPackageWikisTabComponent.new(@work_package), layout: false)
   end
 
   private

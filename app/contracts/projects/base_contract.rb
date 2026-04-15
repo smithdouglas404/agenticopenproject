@@ -122,7 +122,7 @@ module Projects
     end
 
     def manage_permission
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
 
     def with_unchanged_id

@@ -34,6 +34,7 @@ cs:
   saml:
     menu_title: Poskytovatelé SAML
     delete_title: Smazat poskytovatele SAML
+    delete_heading: Delete this SAML provider?
     info:
       title: Parametry konfigurace SAML protokolu
       description: 'Pomocí těchto parametrů nakonfigurujte připojení poskytovatele identit k aplikaci OpenProject.

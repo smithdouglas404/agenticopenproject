@@ -46,6 +46,7 @@ ro:
         zero: Nu au fost găsite grupuri prin filtru
       destroy:
         title: Elimină filtrul sincronizat %{name}
+        heading: Remove synchronized filter %{name}?
         confirmation: Dacă continuați, filtrul sincronizat %{name} și toate grupurile %{groups_count} create prin intermediul acestuia vor fi eliminate.
         removed_groups: 'Avertisment: Acest lucru va elimina următoarele grupuri din OpenProject și le va elimina din toate proiectele!'
         verification_html: Enter the filter name %{name} to verify the deletion.
@@ -59,9 +60,9 @@ ro:
       add_new: Adaugă grup LDAP sincronizat
       destroy:
         title: Îndepărtați grupul sincronizat %{name}
+        heading: Remove synchronized group %{name}?
         confirmation: Dacă, continui, grupul sincronizat %{name} și toți utilizatorii %{users_count} sincronizați prin intermediul acestuia vor fi eliminați.
-        info: 'Notă: Grupul OpenProject în sine și membrii adăugați în afara acestei sincronizări LDAP nu vor fi eliminați.'
-        verification_html: Enter the group's name %{name} to verify the deletion.
+        info: The OpenProject group itself and members added outside this LDAP synchronization will not be removed.
       help_text_html: |
         Acest modul vă permite să configurați o sincronizare între grupurile LDAP și OpenProject.
         Depinde de grupurile LDAP trebuie să utilizeze setul de atribute <em>groupOfNames / memberOf</em> pentru a funcționa cu OpenProject.

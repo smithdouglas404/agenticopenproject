@@ -37,18 +37,14 @@ ka:
     error_invalid_backup_code: Invalid 2FA backup code
     channel_unavailable: The delivery channel %{channel} is unavailable.
     no_valid_phone_number: No valid phone number exists.
-    label_pwd_confirmation: პაროლი
-    notice_pwd_confirmation: You need to confirm your password upon making changes to these settings.
     label_device_type: მოწყობილობის ტიპი
     label_default_device: Default 2FA device
     label_device: 2FA მოწყობილობა
     label_devices: 2FA მოწყობილობა
-    label_one_time_password: One-time password
     label_2fa_enabled: Two-factor authentication is active
     label_2fa_disabled: Two-factor authentication not active
     text_otp_delivery_message_sms: Your %{app_title} one-time password is %{token}
     text_otp_delivery_message_voice: 'Your %{app_title} one-time password is: %{pause} %{token}. %{pause} I repeat: %{pause} %{token}'
-    text_enter_2fa: Please enter the one-time password from your device.
     text_2fa_enabled: Upon every login, you will be requested to enter a OTP token from your default 2FA device.
     text_2fa_disabled: To enable two-factor authentication, use the button above to register a new 2FA device. If you already have a device, you need to make it a default.
     login:
@@ -69,7 +65,6 @@ ka:
       text_remember: |
         Set this to greater than zero to allow users to remember their 2FA authentication for the given number of days.
         They will not be requested to re-enter it during that period. Can only be set when not enforced by configuration.
-      error_invalid_settings: The 2FA strategies you selected are invalid
       failed_to_save_settings: 'Failed to update 2FA settings: %{message}'
     admin:
       self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
@@ -82,14 +77,9 @@ ka:
       text_2fa_enabled: Upon every login, this user will be requested to enter a OTP token from their default 2FA device.
       text_2fa_disabled: The user did not set up a 2FA device through their 'My account page'
       only_sms_allowed: Only SMS delivery can be set up for other users.
-    upsell:
-      title: Two-factor authentication
-      description: Strenghten the security of your OpenProject instance by offering (or enforcing) two-factor authentification to all project members.
     backup_codes:
-      none_found: No backup codes exist for this account.
       singular: მარქაფის კოდი
       plural: მარქაფი კოდები
-      your_codes: for your %{app_name} account %{login}
       overview_description: |
         If you are unable to access your two factor devices, you can use a backup code to regain access to your account.
         Use the following button to generate a new set of backup codes.
@@ -173,19 +163,15 @@ ka:
       clear_cookie: Click here to remove all remembered 2FA sessions.
       cookie_removed: All remembered 2FA sessions have been removed.
       dont_ask_again: Create cookie to remember 2FA authentication on this client for %{days} days.
-  field_phone: მობილური ტელეფონი
   field_otp: One-time password
   notice_account_otp_invalid: Invalid one-time password.
   notice_account_otp_expired: The one-time password you entered expired.
   notice_developer_strategy_otp: 'Developer strategy generated the following one-time password: %{token} (Channel: %{channel})'
   notice_account_otp_send_failed: Your one-time password could not be sent.
   notice_account_has_no_phone: No cell phone number is associated with your account.
-  label_expiration_hint: "%{date} or on logout"
-  label_actions: ქმედებები
   label_confirmed: დადასტურებულია
   button_continue: გაგრძელება
   button_make_default: Mark as default
-  label_unverified_phone: Cell phone not yet verified
   notice_phone_number_format: 'Please enter the number in the following format: +XX XXXXXXXX.'
   text_otp_not_receive: Other verification methods
   text_send_otp_again: 'Resend one-time password by:'

@@ -172,7 +172,10 @@ uk:
         receive_shared_no_actions_description_text: Цей проєкт може використовувати спринти з іншого проєкту, до яких надано доступ. Однак зараз доступних спринтів немає.
         settings_link_text: налаштування проєкту
     sprint_header_component:
-      label_toggle_backlog: Згорнути/розгорнути %{name}
+      label_start_sprint: Початок
+      label_complete_sprint: Завершити
+      start_sprint_disabled_reason_active_sprint: Інший спринт уже розпочато.
+      start_sprint_disabled_reason_missing_dates: Щоб запустити спринт, необхідно вказати дату початку й завершення.
       label_story_count:
         zero: У спринті немає історій
         one: У спринті %{count} історія
@@ -199,10 +202,6 @@ uk:
     sprint_menu_component:
       label_actions: Дії спринту
       action_menu:
-        start_sprint: Почати спринт
-        complete_sprint: Завершити спринт
-        start_sprint_disabled_description: Інший спринт уже розпочато.
-        start_sprint_missing_dates_description: Щоб запустити спринт, необхідно вказати дату початку й завершення.
         edit_sprint: Редагувати спринт
         add_work_package: Додати пакет робіт
     story_component:

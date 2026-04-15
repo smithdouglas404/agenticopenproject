@@ -3,12 +3,14 @@ de:
   activerecord:
     attributes:
       wikis/xwiki_provider:
+        name: Name
+        url: Instanz-URL
+        universal_identifier: Universal identifier
         authentication_method: Authentifizierungsmethode
         authentication_methods:
           oauth2_sso: Single-Sign-On über OpenID Connect Identity Provider
           two_way_oauth2: Zwei-Wege OAuth 2.0 Authorization-Code-Flow
         token_exchange_scope: XWiki Scope
-        url: Instanz-URL
         wiki_audience: XWiki Audience
     errors: {}
     models:
@@ -20,4 +22,37 @@ de:
         one: Verwandter Seitenlink
         other: Verwandte Seitenlinks
       wikis/xwiki_provider: XWiki-Anbieter
-  wikis: {}
+  project_module_wiki_platforms: Wiki-Anbieter
+  wikis:
+    buttons:
+      save_and_continue: Speichern und fortsetzen
+    inline_page_links_component:
+      empty_heading: No inline links
+      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
+      heading: Inline page links
+    admin:
+      wiki_providers:
+        index_description: Fügen Sie einen externen Wiki-Dienst hinzu, um Arbeitspakete mit bestehenden Wiki-Seiten zu verknüpfen oder neue Seiten direkt von OpenProject aus zu erstellen.
+        label_wiki_platform: Wiki-Anbieter
+        label_add_new: Neuen Wiki-Anbieter hinzufügen
+        label_new_xwiki_instance: XWiki-Anbieter
+        no_results_title: Sie haben noch keine Wiki-Anbieter eingerichtet.
+        no_results_description: Fügen Sie einen Anbieter hinzu, um sie hier zu sehen.
+        label_edit: XWiki-Anbieter bearbeiten
+        name_placeholder: XWiki Wissensdatenbank
+        name_caption: Geben Sie Ihrem Anbieter einen Namen, damit Benutzer zwischen mehreren Speichern unterscheiden können.
+        url_caption: Bitte ergänzen Sie die Host-Adresse Ihres Wiki-Anbieters (einschließlich https://). Sie sollte nicht länger als 255 Zeichen sein.
+        xwiki_instance: XWiki Instanz
+        xwiki_instance_description: Vergewissern Sie sich, dass Sie über Administratorrechte in Ihrer XWiki-Instanz verfügen, bevor Sie diese Einrichtung starten.
+        new_provider_html: Lesen Sie unsere Dokumentation über das [Einrichten einer XWiki-Integration](docs_url) für weitere Informationen.
+        sections:
+          basic_details: Allgemeine Einstellungen
+          oauth_applications: OAuth-Anwendungen
+        oauth:
+          openproject_oauth: OpenProject OAuth
+          openproject_oauth_description: Erlauben Sie XWiki den Zugriff auf OpenProject Daten über OAuth.
+          xwiki_oauth: XWiki OAuth
+          xwiki_oauth_description: Erlauben Sie OpenProject Zugriff auf XWiki Daten über OAuth.
+        delete:
+          title: Wiki-Anbieter löschen
+          warning_html: Sie sind dabei, %{wiki_provider} zu löschen. Diese Aktion kann nicht rückgängig gemacht werden.

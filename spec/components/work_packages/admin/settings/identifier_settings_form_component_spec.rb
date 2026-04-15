@@ -55,7 +55,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "renders the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_text("Project identifiers are currently being updated to project-based alphanumerical identifiers.")
+      expect(page).to have_text("Project identifiers are currently being updated to project-based semantic identifiers.")
     end
 
     it "does not render the success banner" do
@@ -66,7 +66,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
     it "renders the radio buttons as disabled" do
       render_component(component)
       expect(page).to have_field("Instance-wide numerical sequence (default)", disabled: true)
-      expect(page).to have_field("Project-based alphanumerical identifiers", disabled: true)
+      expect(page).to have_field("Project-based semantic identifiers", disabled: true)
     end
 
     it "does not render the save or autofix buttons" do
@@ -91,13 +91,13 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_no_text("Project identifiers are currently being updated to project-based alphanumerical identifiers.")
+      expect(page).to have_no_text("Project identifiers are currently being updated to project-based semantic identifiers.")
     end
 
     it "renders the radio buttons as enabled" do
       render_component(component)
       expect(page).to have_field("Instance-wide numerical sequence (default)", disabled: false)
-      expect(page).to have_field("Project-based alphanumerical identifiers", disabled: false)
+      expect(page).to have_field("Project-based semantic identifiers", disabled: false)
     end
 
     it "does not call PreviewQuery" do
@@ -121,12 +121,12 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render in-progress or success content" do
       render_component(component)
-      expect(page).to have_no_text("Project identifiers are currently being updated to project-based alphanumerical identifiers.")
+      expect(page).to have_no_text("Project identifiers are currently being updated to project-based semantic identifiers.")
       expect(page).to have_no_text("Successfully updated work package identifier format.")
     end
 
-    context "with problematic projects and alphanumeric setting",
-            with_settings: { work_packages_identifier: "alphanumeric" } do
+    context "with problematic projects and semantic setting",
+            with_settings: { work_packages_identifier: "semantic" } do
       let(:project) { instance_double(Project, name: "Bad Project", id: 1, to_param: "bad-proj") }
       let(:problematic_result) do
         WorkPackages::IdentifierAutofix::PreviewQuery::Result.new(

@@ -172,7 +172,10 @@ ru:
         receive_shared_no_actions_description_text: Этот проект получает общие спринты из другого проекта, но пока ни один из них не доступен.
         settings_link_text: настройки проекта
     sprint_header_component:
-      label_toggle_backlog: Свернуть/Развернуть %{name}
+      label_start_sprint: Начало
+      label_complete_sprint: Завершено
+      start_sprint_disabled_reason_active_sprint: Другой спринт уже активен.
+      start_sprint_disabled_reason_missing_dates: Для начала спринта необходимы даты начала и окончания.
       label_story_count:
         zero: Нет историй в спринте
         one: "%{count} история в спринте"
@@ -199,10 +202,6 @@ ru:
     sprint_menu_component:
       label_actions: Действия в спринте
       action_menu:
-        start_sprint: Начать спринт
-        complete_sprint: Завершить спринт
-        start_sprint_disabled_description: Другой спринт уже активен.
-        start_sprint_missing_dates_description: Для начала спринта необходимы даты начала и окончания.
         edit_sprint: Редактировать спринт
         add_work_package: Добавить пакет работ
     story_component:

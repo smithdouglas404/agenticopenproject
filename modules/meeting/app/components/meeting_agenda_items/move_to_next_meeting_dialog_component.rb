@@ -32,13 +32,15 @@ module MeetingAgendaItems
   class MoveToNextMeetingDialogComponent < ApplicationComponent
     include ApplicationHelper
     include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-    def initialize(agenda_item:, datetime:, skipped: nil)
+    def initialize(agenda_item:, datetime:, skipped: nil, next_occurrence: nil)
       super
 
       @agenda_item = agenda_item
       @datetime = datetime
       @skipped = skipped
+      @next_occurrence = next_occurrence
     end
 
     private

@@ -160,7 +160,10 @@ zh-CN:
         receive_shared_no_actions_description_text: 此项目从其他项目接收共享冲刺，但目前没有可用冲刺。
         settings_link_text: 项目设置
     sprint_header_component:
-      label_toggle_backlog: 折叠/展开 %{name}
+      label_start_sprint: 开始
+      label_complete_sprint: 完成
+      start_sprint_disabled_reason_active_sprint: 另一个冲刺已处于有效状态。
+      start_sprint_disabled_reason_missing_dates: 必须设置开始和结束日期才能开始冲刺。
       label_story_count:
         zero: 冲刺中没有故事
         one: 冲刺中有 %{count} 个故事
@@ -187,10 +190,6 @@ zh-CN:
     sprint_menu_component:
       label_actions: 冲刺操作
       action_menu:
-        start_sprint: 开始冲刺
-        complete_sprint: 完成冲刺
-        start_sprint_disabled_description: 另一个冲刺已处于有效状态。
-        start_sprint_missing_dates_description: 必须设置开始和结束日期才能开始冲刺。
         edit_sprint: 编辑冲刺
         add_work_package: 添加工作包
     story_component:

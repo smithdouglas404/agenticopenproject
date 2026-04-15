@@ -164,7 +164,10 @@ de:
         receive_shared_no_actions_description_text: Dieses Projekt zeigt geteilte Sprints aus einem anderen Projekt, aber derzeit sind keine vorhanden.
         settings_link_text: Projektkonfiguration
     sprint_header_component:
-      label_toggle_backlog: "%{name} ein-/ausklappen"
+      label_start_sprint: Beginn
+      label_complete_sprint: Fertigstellen
+      start_sprint_disabled_reason_active_sprint: Ein weiterer Sprint ist bereits aktiv.
+      start_sprint_disabled_reason_missing_dates: Start- und Enddatum sind erforderlich, um den Sprint zu starten.
       label_story_count:
         zero: Keine Stories im Sprint
         one: "%{count} Stories im Sprint"
@@ -191,10 +194,6 @@ de:
     sprint_menu_component:
       label_actions: Sprint-Aktionen
       action_menu:
-        start_sprint: Sprint starten
-        complete_sprint: Sprint abschließen
-        start_sprint_disabled_description: Ein weiterer Sprint ist bereits aktiv.
-        start_sprint_missing_dates_description: Start- und Enddatum sind erforderlich, um den Sprint zu starten.
         edit_sprint: Sprint bearbeiten
         add_work_package: Arbeitspaket hinzufügen
     story_component:

@@ -3,12 +3,14 @@ ru:
   activerecord:
     attributes:
       wikis/xwiki_provider:
+        name: Имя
+        url: Адрес сервера
+        universal_identifier: Универсальный идентификатор
         authentication_method: Метод аутентификации
         authentication_methods:
           oauth2_sso: Аутентификация Single-Sign-On посредством поставщика OpenID Connect
           two_way_oauth2: Двусторонняя аутентификация OAuth 2.0
         token_exchange_scope: Область XWiki
-        url: Адрес сервера
         wiki_audience: Аудитория XWiki
     errors: {}
     models:
@@ -24,4 +26,37 @@ ru:
         many: Ссылки на страницу отношения
         other: Ссылки на страницу отношения
       wikis/xwiki_provider: Провайдер XWiki
-  wikis: {}
+  project_module_wiki_platforms: Провайдеры вики
+  wikis:
+    buttons:
+      save_and_continue: Сохранить и продолжить
+    inline_page_links_component:
+      empty_heading: No inline links
+      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
+      heading: Inline page links
+    admin:
+      wiki_providers:
+        index_description: Добавить внешний вики-сервис, чтобы связать рабочие пакеты с существующими вики-страницами или создать новые прямо из OpenProject.
+        label_wiki_platform: Провайдер Wiki
+        label_add_new: Добавить нового вики-провайдера
+        label_new_xwiki_instance: Новый провайдер XWiki
+        no_results_title: У вас пока нет ни одного вики-провайдера.
+        no_results_description: Добавьте провайдера, чтобы увидеть его здесь.
+        label_edit: Редактировать провайдера XWiki
+        name_placeholder: База знаний XWiki
+        name_caption: Дайте своему хранилищу имя, чтобы пользователи могли различать несколько вики-платформ.
+        url_caption: Пожалуйста, добавьте адрес хоста Вашей вики-платформы, включая https://. Его длина не должна превышать 255 символов.
+        xwiki_instance: Экземпляр XWiki
+        xwiki_instance_description: Перед установкой убедитесь, что у вас есть права администрирования на XWiki.
+        new_provider_html: Прочитайте нашу документацию по [настройке интеграции XWiki](docs_url) для получения дополнительной информации.
+        sections:
+          basic_details: Основные детали
+          oauth_applications: OAuth приложения
+        oauth:
+          openproject_oauth: OpenProject OAuth
+          openproject_oauth_description: Разрешить XWiki доступ к данным OpenProject с помощью OAuth.
+          xwiki_oauth: XWiki OAuth
+          xwiki_oauth_description: Разрешить OpenProject доступ к данным XWiki с помощью OAuth.
+        delete:
+          title: Удалить вики-провайдера
+          warning_html: Вы собираетесь удалить %{wiki_provider}. Это действие необратимо.

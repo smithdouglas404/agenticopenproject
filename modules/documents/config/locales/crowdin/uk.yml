@@ -71,12 +71,10 @@ uk:
         Будь ласка, зверніться до адміністратора, щоб увімкнути спільне редагування в реальному часі, якщо ви хочете отримати доступ до цього документа.
     show_edit_view:
       connection_error_notice:
-        description: |-
+        description_server_unavailable: |-
           Неможливо відкрити документ, оскільки сервер спільного редагування в реальному часі недоступний.
           Будь ласка, зверніться до адміністратора якщо проблема не зникне.
         action: Спробуйте знову
-      connection_recovery_notice:
-        description: З’єднання з сервером спільного редагування в реальному часі відновлено.
       tabs: Вкладки документів
     index_page:
       name: Назва
@@ -88,6 +86,9 @@ uk:
       types: Типи
       collaboration_settings: Спільне редагування в реальному часі
     last_updated_at: Востаннє збережено о %{time}.
+    info_line:
+      currently_offline: Ви зараз не в мережі.
+      connection_restored: Ви знову в мережі.
     active_editors: Активні редактори
     active_editors_count:
       one: 1 активний редактор

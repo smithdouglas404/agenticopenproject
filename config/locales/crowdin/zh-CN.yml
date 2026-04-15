@@ -89,7 +89,7 @@ zh-CN:
         token_caption: 要详细了解如何激活企业版，请查阅我们的[文档](docs_url)。
       add_token: 上传企业版支持令牌
       replace_token: 替换您当前的支持令牌
-      order: 订购本地部署版的 Enterprise edition
+      order: 订购本地部署的 Enterprise edition
       paste: 粘贴您企业版的支持令牌
       required_for_feature: 此功能仅限具激活的企业版支持令牌的订阅者使用。
       enterprise_link: 如需了解详细信息，请单击此处。
@@ -114,7 +114,7 @@ zh-CN:
     import:
       title: 导入
     jira:
-      title: Jira 导入
+      title: Jira Migrator
       description: 使用此工具从您的 Jira 实例中导入数据。您可以配置多个 Jira 主机，并选择每次导入运行要导入的内容。
       errors:
         cannot_delete_with_imports: 无法删除具有现有导入的 Jira 主机
@@ -125,8 +125,8 @@ zh-CN:
         title: Jira 配置
         new: 新配置
       banner:
-        title: 受限导入
-        description: 此导入工具目前处于测试阶段，只能导入基本数据：项目、问题（名称、标题、描述、附件）、用户（名称、电子邮件地址、项目成员资格）、状态和类型。不能导入工作流、自定义字段、问题关系或权限。我们目前仅支持 Jira Server/Data Center 版本 10.x 和 11.x。目前不支持云实例。
+        title: 有限导入功能
+        description: Jira Migrator 目前处于测试阶段，只能导入基本数据：项目、问题（名称、标题、描述、附件）、用户（名称、电子邮件地址、项目成员资格）、状态和类型。不能导入工作流、自定义字段、问题关系或权限。我们目前仅支持 Jira Server/Data Center 版本 10.x 和 11.x。目前不支持云实例。
       form:
         fields:
           name: 名称
@@ -162,7 +162,7 @@ zh-CN:
       run:
         title: 导入运行
         history: 历史记录
-        remove_error: 无法移除正在运行的 Jira 导入
+        remove_error: 无法移除正在运行的 Jira 导入运行
         import_blocked_error: 另一个 Jira 导入运行当前正在执行或等待审核。请先完成或撤消当前运行，然后再开始新的导入。
         project_identifier_taken: 您尝试导入的项目所使用的标识符 %{taken_identifier} 已经用过。请在 Jira 中更新项目标识符，然后点击“重试”。
         blank:
@@ -381,19 +381,23 @@ zh-CN:
         notification_text_default: "<p>您好！</p><p>已创建一个新项目：projectValue:name</p> <p>谢谢</p>\n"
       work_packages_identifier:
         page_header:
-          description: 可以选择经典的数字工作包 ID，或者将项目标识符作为工作包 ID 前缀的项目特定工作包 ID。
+          description: 可以选择经典的数字工作包 ID，或者将项目标识符作为工作包 ID 前缀的语义化项目特定工作包 ID。
         banner:
-          existing_identifiers_notice: "%{project_count} 个项目的现有标识符不符合基于项目的字母数字标识符要求。OpenProject 可以自动更新这些标识符，使其成为如下例中所示的有效格式。点击“自动修正并保存”按钮，以这种方式更新所有项目的标识符，并启用基于项目的字母数字标识符。\n"
+          existing_identifiers_notice: "%{project_count} 个项目的现有标识符不符合基于项目的语义标识符要求。OpenProject 可以自动更新这些标识符，使其成为如下例中所示的有效格式。点击“自动修正并保存”按钮，以这种方式更新所有项目的标识符，并启用基于项目的语义标识符。\n"
         box_header:
           label_project: 项目
           label_previous_identifier: 上一个标识符
           label_autofixed_suggestion: 未来标识符
           label_example_work_package_id: 示例工作包 ID
         autofix_preview:
-          error_too_long: 必须少于 5 个字符
+          error_too_long: 必须为 10 个字符或更少字符
+          error_numerical: 不能只包含数字
+          error_starts_with_number: 不能以数字开头
           error_special_characters: 不允许使用特殊字符
+          error_not_fully_uppercased: 必须为大写字母
           error_in_use: 已用作另一个项目的有效标识名
           error_reserved: 由另一个项目的标识名历史保留
+          error_unknown: 需要手动检查
           remaining_projects:
             other: "…其他 %{count} 个项目"
         button_autofix: 自动修正并保存
@@ -407,7 +411,7 @@ zh-CN:
           checkbox_label: 我了解此操作将永久更改所有工作包 ID
         success_banner: 已成功更新工作包标识符格式。
         in_progress:
-          banner_message: 项目标识符目前正在更新为基于项目的字母数字标识符。此过程可能需要一些时间。
+          banner_message: 项目标识符目前正在更新为基于项目的语义标识符。此过程可能需要一些时间。
     workflows:
       tabs:
         default_transitions: 默认转换
@@ -1514,6 +1518,9 @@ zh-CN:
         dependencies: 依赖项
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: 标识符
+        work_package: 工作包
       jira_import:
         projects: 项目
       import/jira:
@@ -1522,7 +1529,7 @@ zh-CN:
         personal_access_token: 个人访问令牌
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Jira 导入
+        jira_import: Jira Migrator
       announcements:
         show_until: 显示截止日期
       attachment:
@@ -1600,7 +1607,7 @@ zh-CN:
         page: 页
         row_count: 行数
         column_count: 列数
-        widgets: 微件
+        widgets: 小部件
       journal:
         notes: 备注
         cause_type: Cause 类型
@@ -3328,6 +3335,11 @@ zh-CN:
     quick_add:
       label: 添加…
   my_account:
+    notifications_and_email:
+      title: 通知和电子邮件
+      tabs:
+        notifications: 通知设置
+        email_reminders: 电子邮件提醒
     access_tokens:
       description: 提供商令牌由 OpenProject 签发，允许其他应用程序访问。客户端令牌由其他应用程序签发，允许 OpenProject 对其进行访问。
       no_results:
@@ -3390,6 +3402,72 @@ zh-CN:
         disabled_text: 管理员未启用 RSS 令牌。请联系管理员以使用此功能。
       storages:
         unknown_storage: 未知存储
+    email_reminders:
+      immediate_reminders:
+        title: 向我发送电子邮件提醒
+        mentioned: 当我被提及时通知我
+        personal_reminder: 有个人提醒时通知我
+      daily_reminders:
+        title: 向我发送针对未读通知的每日电子邮件提醒
+        caption: 您仅会收到针对未读通知的提醒，且仅会在您指定的时间收到提醒。在您为帐户配置时区前，时间将解释为采用 UTC 格式。
+        enabled: 启用每日电子邮件提醒
+        add_time: 添加时间
+        remove_time: 移除时间
+        time_slot_label: 提醒时间 (UTC)
+      workdays:
+        title: 在如下日期接收电子邮件提醒
+        submit_button: 更新提醒日期
+      pause_reminders:
+        title: 暂停电子邮件通知
+        enabled: 临时暂停每日电子邮件提醒
+        date_range: 暂停时间段
+      email_alerts:
+        title: 其他条目（非工作包）的电子邮件提醒
+        news_added: 新闻已添加
+        news_commented: 评论新闻条目
+        document_added: 文档已添加
+        forum_messages: 论坛消息已发布
+        wiki_page_added: Wiki 页面已添加
+        wiki_page_updated: Wiki 页面已更新
+        membership_added: 成员资格已添加
+        membership_updated: 成员资格已更新
+        submit_button: 更新提醒
+    notifications:
+      participating:
+        title: 参与
+        submit_button: 更新偏好设置
+        mentioned: 被提及
+        watched: 关注中
+        assignee: 受理人
+        responsible: 负责人
+        shared: 与我共享
+      date_alerts:
+        title: 日期提醒
+        submit_button: 更新日期提醒
+        start_date: 开始日期
+        due_date: 完成日期
+        overdue: 逾期
+        times:
+          same_day: 当天
+          one_day_before: 提前 1 天
+          three_days_before: 提前 3 天
+          seven_days_before: 提前 7 天
+          one_day_after: 推后 1 天
+          three_days_after: 推后 3 天
+          seven_days_after: 推后 7 天
+      non_participating:
+        title: 不参与
+        submit_button: 更新偏好设置
+        work_package_created: 新工作包
+        work_package_commented: 所有新评论
+        work_package_processed: 所有状态更改
+        work_package_prioritized: 所有优先级更改
+        work_package_scheduled: 所有日期更改
+      project_specific_settings:
+        title: 项目特定通知设置
+        add_button: 添加项目特定通知
+        dialog_title: 添加项目特定通知
+        list_header: 具有特定通知的项目
   notifications:
     reasons:
       assigned: 指定人
@@ -3421,6 +3499,7 @@ zh-CN:
       invalid_filter: 无效的通知过滤器
   label_accessibility: 辅助功能
   label_account: 帐户
+  label_actions: 操作
   label_active: 激活
   label_activate_user: 激活用户
   label_active_in_new_projects: 新项目动态
@@ -3461,6 +3540,7 @@ zh-CN:
   label_ical_access_key_generation_hint: 订阅日历时自动生成的。
   label_ical_access_key_latest: 最近
   label_ical_access_key_revoke: 撤消
+  label_integrations: 集成
   label_add_column: 添加列
   label_applied_status: 应用的状态
   label_archive_project: 归档项目
@@ -3711,7 +3791,7 @@ zh-CN:
   label_external_links: 外部链接
   label_locale: 语言和地区
   label_jump_to_a_project: 跳转到一个项目...
-  label_jira_import: Jira 导入
+  label_jira_import: Jira Migrator
   label_keyword_plural: 关键词
   label_language_based: 基于用户的语言
   label_last_activity: 最近一次活动
@@ -3951,7 +4031,7 @@ zh-CN:
   label_revision_id: 修订版本 %{value}
   label_revision_plural: 修订
   label_roadmap: 路线图
-  label_roadmap_edit: 编辑路线图%{name}
+  label_roadmap_edit: 编辑路线图 %{name}
   label_roadmap_due_in: "%{value} 到期"
   label_roadmap_no_work_packages: 该版本没有工作包。
   label_roadmap_overdue: "%{value} 超时"
@@ -4711,7 +4791,7 @@ zh-CN:
       managed: 在 OpenProject 中创建新的存储库
     storage:
       not_available: 磁盘存储开销不可用于此存储库。
-      update_timeout: 在 N 分钟内保留存储库最后所需的磁盘空间信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。
+      update_timeout: 在 N 分钟内保留存储库最后所需磁盘空间的信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。
       oauth_application_details_html: 关闭此窗口后，将无法再次访问客户端密钥值。请将这些值复制到 Nextcloud OpenProject 集成设置中：
       oauth_application_details_link_text: 转到设置页面
       setup_documentation_details: 如果您在配置新文件存储方面需要帮助，请查看文档：
@@ -4939,7 +5019,7 @@ zh-CN:
   setting_session_ttl_hint: 当设置的值低于5时，其作用类似于禁用。
   setting_session_ttl_enabled: 会话过期
   setting_start_of_week: 一周起始日
-  setting_sys_api_enabled: 启用存储库管理网页服务
+  setting_sys_api_enabled: 启用版本库管理 web 服务
   setting_sys_api_description: 存储库管理网页服务提供了集成的，用户授权的存储库访问。
   setting_time_format: 时间
   setting_total_percent_complete_mode: 计算 完成% 层次结构总数
@@ -4955,12 +5035,12 @@ zh-CN:
   setting_welcome_text: 欢迎块文本
   setting_welcome_title: 欢迎块标题
   setting_welcome_on_homescreen: 在主屏幕上显示欢迎信息
-  setting_work_packages_identifier_numeric: 实例范围的数字序列（默认）
-  setting_work_packages_identifier_numeric_caption: '每个工作包会获得一个从 1 开始的顺序号，每新增一个工作包，编号会加 1。这些编号在此实例中是唯一的，因此即使工作包在项目之间移动，编号也不会改变。
+  setting_work_packages_identifier_classic: 实例范围的数字序列（默认）
+  setting_work_packages_identifier_classic_caption: '每个工作包会获得一个从 1 开始的顺序号，每新增一个工作包，编号会加 1。这些编号在此实例中是唯一的，因此即使工作包在项目之间移动，编号也不会改变。
 
     '
-  setting_work_packages_identifier_alphanumeric: 基于项目的字母数字标识符
-  setting_work_packages_identifier_alphanumeric_caption: '每个项目都有一个唯一标识符，该标识符会附加到工作包 ID 前面。如果工作包移至另一个项目，则会生成新的标识符，但原标识符仍可继续使用。
+  setting_work_packages_identifier_semantic: 基于项目的语义标识符
+  setting_work_packages_identifier_semantic_caption: '每个项目都有一个唯一标识符，该标识符会附加到工作包 ID 前面。如果工作包移至另一个项目，则会生成新的标识符，但原标识符仍可继续使用。
 
     '
   setting_work_package_list_default_highlighting_mode: 默认突出显示模式
@@ -5425,7 +5505,7 @@ zh-CN:
   warning_user_limit_reached_admin_html: '添加额外的用户将超出当前限值。请[升级您的方案](upgrade_url)，以确保外部用户能够访问此实例。
 
     '
-  warning_user_limit_reached_instructions: '您已达到用户限制（%{current}/%{max} 活跃用户）。请联系 sales@openproject.com 升级您的企业版计划以添加额外用户。
+  warning_user_limit_reached_instructions: '您达到了用户限制（%{current}/%{max}活跃用户）。 请联系sales@openproject.com以升级您的Enterprise edition计划并添加其他用户。
 
     '
   warning_protocol_mismatch_html: ''

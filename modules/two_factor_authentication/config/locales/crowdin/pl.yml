@@ -37,18 +37,14 @@ pl:
     error_invalid_backup_code: Nieprawidłowy kod kopii zapasowej 2FA
     channel_unavailable: Kanał dostaw %{channel} jest niedostępny.
     no_valid_phone_number: Brak prawidłowego numeru telefonu.
-    label_pwd_confirmation: Hasło
-    notice_pwd_confirmation: Po wprowadzeniu zmian w tych ustawieniach musisz potwierdzić swoje hasło.
     label_device_type: Rodzaj urządzenia
     label_default_device: Domyślne urządzenie 2FA
     label_device: Urządzenie 2FA
     label_devices: Urządzenie 2FA
-    label_one_time_password: Jednorazowe hasło
     label_2fa_enabled: Uwierzytelnianie dwuskładnikowe jest aktywne
     label_2fa_disabled: Uwierzytelnianie dwuskładnikowe nie jest aktywne
     text_otp_delivery_message_sms: Hasło jednorazowe %{app_title} to %{token}
     text_otp_delivery_message_voice: 'Hasło jednorazowe %{app_title} to: %{pause} %{token}. %{pause} I powtórz: %{pause} %{token}'
-    text_enter_2fa: Wprowadź jednorazowe hasło z urządzenia.
     text_2fa_enabled: Po każdym logowaniu zostaniesz poproszony o wprowadzenie tokena OTP z domyślnego urządzenia 2FA.
     text_2fa_disabled: Aby włączyć uwierzytelnianie dwuskładnikowe, użyj przycisku powyżej, aby zarejestrować nowe urządzenie 2FA. Jeśli masz już urządzenie, musisz ustawić je jako domyślne.
     login:
@@ -69,7 +65,6 @@ pl:
       text_remember: |
         Ustaw tu wartość większą od zera, aby umożliwić użytkownikom zapamiętywanie ich uwierzytelnienia 2FA przez określoną liczbę dni.
         W tym okresie nie będzie od nich żądane jego ponowne wprowadzenie. Ustawienie możliwe tylko wtedy, gdy nie jest wymuszane przez konfigurację.
-      error_invalid_settings: Wybrane strategie uwierzytelniania 2FA są nieprawidłowe
       failed_to_save_settings: 'Nie można zaktualizować ustawień uwierzytelniania 2FA: %{message}'
     admin:
       self_edit_path_html: Aby dodać lub zmodyfikować własne urządzenia do uwierzytelniania 2FA, przejdź do obszaru do [Uwierzytelnianie dwuskładnikowe na stronie konta](self_edit_link)
@@ -82,14 +77,9 @@ pl:
       text_2fa_enabled: Po każdym logowaniu ten użytkownik zostanie poproszony o wprowadzenie tokena OTP z jego domyślnego urządzenia 2FA.
       text_2fa_disabled: Użytkownik nie ustawił urządzenia 2FA na swojej stronie „Moje konto”
       only_sms_allowed: Dla innych użytkowników można skonfigurować tylko dostarczanie wiadomości SMS.
-    upsell:
-      title: Uwierzytelnianie dwuskładnikowe
-      description: Potwierdź bezpieczeństwo twojej instancji OpenProject poprzez zaoferowanie (lub wyegzekwowanie) uwierzytelnienia dwuskładnikowego wszystkim członkom projektu.
     backup_codes:
-      none_found: Na tym koncie nie ma kodów zapasowych.
       singular: Kod zapasowy
       plural: Kody zapasowe
-      your_codes: dla Twojego %{app_name} konta %{login}
       overview_description: |
         Jeśli nie możesz uzyskać dostępu do urządzeń z dwoma elementami, możesz użyć kodu zapasowego, aby odzyskać dostęp do swojego konta.
         Użyj następującego przycisku, aby wygenerować nowy zestaw kodów zapasowych.
@@ -173,19 +163,15 @@ pl:
       clear_cookie: Kliknij tutaj, aby usunąć wszystkie zapamiętane sesje uwierzytelniania 2FA.
       cookie_removed: Wszystkie zapamiętane sesje uwierzytelniania 2FA zostały usunięte.
       dont_ask_again: Utwórz pliki cookie w celu zapamiętania uwierzytelnienia 2FA na tym kliencie na %{days} dni.
-  field_phone: Komórka
   field_otp: Jednorazowe hasło
   notice_account_otp_invalid: Nieprawidłowe hasło jednorazowe.
   notice_account_otp_expired: Wprowadzone hasło jednorazowe wygasło.
   notice_developer_strategy_otp: 'Strategia programisty wygenerowała następujące jednorazowe hasło: %{token} (kanał:%{channel})'
   notice_account_otp_send_failed: Twoje jednorazowe hasło nie mogło zostać wysłane.
   notice_account_has_no_phone: Żaden numer telefonu komórkowego nie jest powiązany z Twoim kontem.
-  label_expiration_hint: "%{date} lub wylogowania"
-  label_actions: Działania
   label_confirmed: Zatwardziały
   button_continue: Dalej
   button_make_default: Oznacz jako domyślny
-  label_unverified_phone: Telefon komórkowy jeszcze niezweryfikowany
   notice_phone_number_format: 'Wprowadź numer w następującym formacie: + XX XXXXXXXX.'
   text_otp_not_receive: Inne metody weryfikacji
   text_send_otp_again: 'Ponownie wyślij hasło jednorazowe:'
