@@ -334,9 +334,6 @@ group :development do
   gem "spring-commands-rubocop"
 
   gem "colored2"
-
-  # git hooks manager
-  gem "lefthook", require: false
 end
 
 group :development, :test do

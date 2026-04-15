@@ -53,6 +53,14 @@ In OpenProject, the person who has administrative rights in an instance is calle
 
 Agile project management is an iterative and flexible approach to managing projects. It focuses on collaboration, adaptability, and self-organizing teams. OpenProject supports agile project management as well as [classic project management](#classic-project-management), and works best for [hybrid project management](#hybrid-project-management).
 
+### Artificial intelligence (AI)
+
+In OpenProject, artificial intelligence (AI) refers to the integration of AI systems into project workflows to support tasks such as summarizing information, analyzing dependencies, or assisting in planning and reporting.
+
+OpenProject approaches AI with a clear focus on control, transparency, and data protection. AI is designed to support users in their work, not to replace human decision-making. Users remain in full control at all times and can decide whether and how AI features are used.
+
+With features such as the [MCP Server](https://www.openproject.org/blog/openproject-17-2-release/), OpenProject enables secure connections between project data and external AI systems. This allows organizations to benefit from AI while maintaining full control over how their data is accessed and used.
+
 ### Attribute help texts
 
 OpenProject offers Attribute help texts that provide additional information for attributes in work packages and projects, incl. custom fields. After setting them up in the Administration they are displayed when users click on the question mark symbol next to this specified attribute for projects and work packages. [Read more about Attribute help texts in OpenProject](../system-admin-guide/attribute-help-texts/).
@@ -72,7 +80,7 @@ In OpenProject, authentication is an important element to guarantee a data prote
 
 ### Backlogs
 
-Backlogs is a [module](#module) in OpenProject that brings features that support the Scrum methodology in OpenProject, such as a product backlog and sprint backlogs, a task board, estimation of story points, a burndown chart and a Scrum wiki. In order to use backlogs in OpenProject, the backlogs module has to be activated in the [project settings](#project-settings) by a project admin. [Read how to work with backlogs in OpenProject](../user-guide/backlogs-scrum).
+Backlogs is a [module](#module) in OpenProject that brings features that support the Scrum methodology in OpenProject, such as a product backlog and sprint backlogs, a sprint board that is automatically created with a sprint start, estimation of story points, a burndown chart and a Scrum wiki. In order to use backlogs in OpenProject, the backlogs module has to be activated in the [project settings](#project-settings) by a project admin. [Read how to work with backlogs in OpenProject](../user-guide/backlogs-scrum).
 
 ### Baseline comparison
 
@@ -84,7 +92,7 @@ BIM stands for Building Information Modeling. In OpenProject, we offer a special
 
 ### Board
 
-A board in OpenProject is a view that allows you to see your work packages as cards divided into columns. A board is a typical element in [agile project management](#agile-project-management), supporting methodologies such as Scrum or Kanban. OpenProject, you can use a [basic board](../user-guide/agile-boards/#basic-boards) or [advanced action boards](../user-guide/agile-boards). Use advanced action boards to quickly change attributes of your work package. [Read more about boards for agile project management](../user-guide/agile-boards/).
+A board in OpenProject is a view that allows you to see your work packages as cards divided into columns. A board is a typical element in [agile project management](#agile-project-management), supporting methodologies such as Scrum or Kanban. OpenProject, you can use a [basic board](../user-guide/agile-boards/#basic-boards) or [advanced Action boards](../user-guide/agile-boards). Use advanced Action boards to quickly change attributes of your work package. [Read more about boards for agile project management](../user-guide/agile-boards/).
 
 **More information on boards in OpenProject**
 
@@ -259,6 +267,14 @@ Macros in OpenProject are dynamic shortcuts that help automate repetitive tasks.
 ### Meetings
 
 OpenProject offers a Meetings [module](#module) that allows project members to organize and facilitate meetings. The module has to be activated in the [project settings](#project-settings) by a project admin in order to be displayed in the side navigation. You can choose between one-time meetings and recurring meetings. [See our user guide for more information on Meeting management in OpenProject](../user-guide/meetings/).
+
+### Migration
+
+Migration refers to the process of transferring data, projects, or entire systems from one software or environment to another. In OpenProject, this can include moving from other project management tools, switching between installations, or transitioning between hosting environments.
+
+A common use case is migrating from proprietary tools such as Jira to OpenProject. To support this, OpenProject provides tools such as the [Jira migrator](../installation-and-operations/jira-migration/) or [excel synchronization](#excel-synchronization).
+
+- [See our blog articles on migrations](https://www.openproject.org/blog/tags/migrations/)
 
 ### Member
 

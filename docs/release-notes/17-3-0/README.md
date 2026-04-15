@@ -30,6 +30,9 @@ OpenProject 17.3 introduces several improvements to agile planning and execution
 
 ![OpenProject Backlogs module in version 17.3: Divided into Backlog and Sprints](17-3-backlogs-sprint-planning.png)
 
+> [!IMPORTANT]
+> If you are already working with the Backlogs module, you will notice updates to the layout and behavior when updating to OpenProject 17.3. All existing data will be preserved, and no manual action is required. To learn more about the reason behind these changes, please see [this blog article](https://www.openproject.org/blog/agile-updates/).
+
 #### Dedicated sprint objects
 
 OpenProject introduces dedicated sprint objects for agile planning, replacing the previous use of versions as a workaround. Sprints are now a core entity within the Backlogs module, allowing teams to plan, organize, and track their work more intuitively.
@@ -56,9 +59,13 @@ Active sprints can now be completed directly from the sprint view, making it eas
 
 Remaining work can be moved to the backlog or reassigned to another sprint, helping teams to continue their work without manual adjustments.
 
+---
+
+[See our documentation to learn more about backlog and sprints with OpenProject](../../user-guide/backlogs-scrum/).
+
 ### Action boards available in the Community edition
 
-With the improvements to agile planning features such as sprints and backlogs, boards play a central role in organizing and tracking work. To support this, all action board types are now available in the Community edition.
+With the improvements to agile planning features such as sprints and backlogs, boards play a central role in organizing and tracking work. To support this, [all action board types](../../user-guide/agile-boards/#choose-between-board-types) are now available in the Community edition.
 
 This extends the existing board functionality in the Community edition and allows teams to use a wider range of board configurations, such as Kanban or parent-child boards, without requiring an Enterprise plan.
 
@@ -66,7 +73,7 @@ This extends the existing board functionality in the Community edition and allow
 
 ### In-place editing of project attributes on the project overview page
 
-Project attributes on the project overview page can now be edited directly in place, without opening a separate dialog. This allows users to update project information more quickly and with fewer interruptions.
+Project attributes on the project overview page ([Project home](../../user-guide/projects/project-home/)) can now be edited directly in place, without opening a separate dialog. This allows users to update project information more quickly and with fewer interruptions.
 
 Depending on the attribute type, changes can be applied immediately or confirmed within the field, providing a more streamlined and consistent editing experience.
 
@@ -80,6 +87,8 @@ Meeting templates, [introduced as an Enterprise add-on in OpenProject 17.2](../.
 
 ![Meeting template in OpenProject 17.3 with the option to share – With only this project, with subprojects or with all projects](17-3-meeting-templates-share-highlighted.png)
 
+For more details, please refer to the [Meetings documentation](../../user-guide/meetings/one-time-meetings/).
+
 ### Improved workflow configuration for administrators
 
 Workflow configuration has been improved to make it easier to focus on relevant types, roles, and statuses. A new index page allows workflows to be accessed by type, reducing complexity when navigating and editing configurations.
@@ -90,9 +99,11 @@ When editing workflows, only relevant statuses are displayed, and role selection
 
 ![Example workflow for work package type task](17-3-workflows.png)
 
+[Read more about workflow management in our system admin guide](../../system-admin-guide/manage-work-packages/work-package-workflows/).
+
 ### Improved handling of project identifiers
 
-Project identifiers can now be easily changed without invalidating existing links. Previous identifiers remain valid and continue to redirect to the project.
+[Project identifiers](../../docs/glossary/#project-identifier) can now be easily changed without invalidating existing links. Previous identifiers remain valid and continue to redirect to the project.
 
 In addition, identifier handling has been improved when creating or copying projects, including automatic suggestions and updated validation. These improvements also apply to API-based project creation.
 
