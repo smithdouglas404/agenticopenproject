@@ -109,10 +109,13 @@ module API
 
         property :duration,
                  exec_context: :decorator,
-                 getter: ->(*) do
-                   datetime_formatter.format_duration_from_hours(represented.duration)
-                 end
-
+                 render_nil: true,
+                 getter: ->(*) {
+                   datetime_formatter.format_duration_from_hours(represented.duration, allow_nil: true)
+                 },
+                 setter: ->(fragment:, **) {
+                   represented.duration = datetime_formatter.parse_duration_to_hours(fragment, "duration", allow_nil: true)
+                 }
         property :state
 
         property :sharing
