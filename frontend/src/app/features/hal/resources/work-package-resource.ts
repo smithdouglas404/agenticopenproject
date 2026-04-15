@@ -139,15 +139,15 @@ export class WorkPackageBaseResource extends HalResource {
   }
 
   /**
-   * Returns the work package identifier formatted for display in the UI,
-   * always prefixed with `#`: `#123` in classic mode, `#PROJ-42` in
-   * semantic mode.
+   * Returns the work package identifier formatted for inline UI display.
+   * Classic mode: `#42` (hash-prefixed numeric ID)
+   * Semantic mode: `PROJ-42` (no prefix — the identifier is self-describing)
    */
-  public get displayIdWithHash():string {
+  public get formattedId():string {
     const wpId = this.displayId;
     if (!wpId) return '';
 
-    return `#${wpId}`;
+    return /[A-Za-z]/.test(wpId) ? wpId : `#${wpId}`;
   }
 
   public updatedAt:Date;
@@ -195,7 +195,7 @@ export class WorkPackageBaseResource extends HalResource {
   }
 
   /**
-   * Return "<type name>: <subject> (<displayIdWithHash>)" if type and id are known.
+   * Return "<type name>: <subject> (<formattedId>)" if type and id are known.
    */
   public subjectWithType(truncateSubject = 40):string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -203,10 +203,10 @@ export class WorkPackageBaseResource extends HalResource {
   }
 
   /**
-   * Return "<subject> (<displayIdWithHash>)" if the id is known.
+   * Return "<subject> (<formattedId>)" if the id is known.
    */
   public subjectWithId(truncateSubject = 40):string {
-    const id = isNewResource(this) ? '' : ` (${this.displayIdWithHash})`;
+    const id = isNewResource(this) ? '' : ` (${this.formattedId})`;
 
     return `${this.truncatedSubject(truncateSubject)}${id}`;
   }
