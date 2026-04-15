@@ -49,7 +49,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
 
     if ids.any? { |id| semantic_id?(id) }
       raise ArgumentError,
-            "Semantic identifiers in multi-argument find are not yet supported. " \
+            "Semantic identifiers in multi-argument find is not yet supported. " \
             "Resolve each identifier individually via find_by(id:) instead."
     end
 

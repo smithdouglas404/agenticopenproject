@@ -105,12 +105,12 @@ RSpec.describe WorkPackage::SemanticIdentifier do
 
       it "raises ArgumentError for multiple semantic ids" do
         expect { WorkPackage.find("MYPROJ-1", "MYPROJ-2") }
-          .to raise_error(ArgumentError, /multi-argument find are not yet supported/)
+          .to raise_error(ArgumentError, /multi-argument find is not yet supported/)
       end
 
       it "raises ArgumentError for mixed numeric and semantic ids" do
         expect { WorkPackage.find([work_package.id, "MYPROJ-2"]) }
-          .to raise_error(ArgumentError, /multi-argument find are not yet supported/)
+          .to raise_error(ArgumentError, /multi-argument find is not yet supported/)
       end
     end
 
