@@ -29,19 +29,37 @@
 #++
 
 # GoodJob on_success callback invoked after a ConvertInstanceToSemanticIdsJob
-# batch completes. Performs a sanity check for any projects that were created
-# or missed during the batch run:
-#
-# * No projects remaining → enable semantic mode on the instance.
-# * Projects still pending → synchronously kick off ConvertInstanceToSemanticIdsJob
-#   again (which registers this job as its own on_success callback), then enable
-#   semantic mode so the next callback pass can confirm the clean state.
+# batch completes. Performs up to MAX_SWEEPS synchronous sweeps to catch any
+# projects created or modified during the batch run, then enables semantic mode.
+# If projects still remain after MAX_SWEEPS sweeps a RuntimeError is raised to
+# abort the job (leaving the setting as classic); the instance is either under
+# active load or there is a code bug.
 class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
+  MAX_SWEEPS = 3
+
   def perform(*)
-    remaining = ProjectIdentifiers::PendingProjectsFinder.new.project_ids
-
-    ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.new.perform if remaining.any?
-
+    corrective_sweep
     Setting::WorkPackageIdentifier.enable_semantic!
+  end
+
+  private
+
+  def corrective_sweep
+    MAX_SWEEPS.times do
+      remaining = ProjectIdentifiers::PendingProjectsFinder.new.project_ids
+      return if remaining.empty?
+
+      remaining.each do |project_id|
+        project = Project.find_by(id: project_id)
+        next unless project
+
+        ProjectIdentifiers::ConvertProjectToSemanticService.new(project).call
+      end
+    end
+
+    message = "[FinishSemanticConversionJob] Giving up after #{MAX_SWEEPS} sweeps — " \
+              "projects still remain pending. The instance may be under active load or there is a bug."
+    Rails.logger.warn message
+    raise message
   end
 end
