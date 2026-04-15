@@ -230,7 +230,7 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
       end
     end
 
-    context "when the occurrence has been rescheduled to an earlier time (Bug #73741)", skip: "Needs more investigating" do
+    context "when the occurrence has been rescheduled to an earlier time (Bug #73741)" do
       let(:current_user) { user_with_manage_permissions }
       let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
 
@@ -240,8 +240,7 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
           .call(start_time: first_occurrence_time)
         occurrence_meeting = call.result
 
-        # Reschedule to an earlier time
-        # This updates meeting.start_time, but not meeting.scheduled_meeting.start_time
+        # Reschedule to an earlier time — recurrence_start_time stays unchanged as the canonical slot
         occurrence_meeting.update!(start_time: first_occurrence_time - 1.day)
         occurrence_meeting
       end
