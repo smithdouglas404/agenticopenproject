@@ -28,8 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Reverts all projects to classic identifier mode by enqueuing a
-# RevertProjectToClassicIdsJob for every project. Triggered explicitly when the
+# Reverts all projects to classic identifier mode. Triggered explicitly when the
 # admin switches the instance back to classic mode via the admin UI
 # (Admin::Settings::WorkPackagesIdentifierController#switch_to_classic).
 #
@@ -40,13 +39,9 @@ class ProjectIdentifiers::RevertInstanceToClassicIdsJob < ApplicationJob
 
   good_job_control_concurrency_with(total_limit: 1)
 
-  # Enqueues a GoodJob batch of per-project revert jobs, with
-  # FinishRevertingInstanceToClassicIdsJob registered as the on_success callback.
   def perform
-    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob) do
-      Project.select(:id).find_each do |project|
-        ProjectIdentifiers::RevertProjectToClassicIdsJob.perform_later(project.id)
-      end
+    Project.find_each do |project|
+      ProjectIdentifiers::RevertProjectToClassicService.new(project).call
     end
   end
 end

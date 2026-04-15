@@ -37,9 +37,7 @@ module WorkPackages
     ].freeze
 
     REVERSION_JOB_CLASSES = [
-      ProjectIdentifiers::RevertInstanceToClassicIdsJob.name,
-      ProjectIdentifiers::RevertProjectToClassicIdsJob.name,
-      ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob.name
+      ProjectIdentifiers::RevertInstanceToClassicIdsJob.name
     ].freeze
 
     def self.job_in_progress?

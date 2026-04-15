@@ -31,32 +31,27 @@
 require "rails_helper"
 
 RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
-  subject(:job) { described_class.new }
-
-  before do
-    allow(GoodJob::Batch).to receive(:enqueue).and_yield
-  end
-
   describe "#perform" do
     context "when there are projects to revert" do
-      before { create_list(:project, 2) }
+      let!(:projects) { create_list(:project, 2) }
 
-      it "enqueues one RevertProjectToClassicIdsJob per project" do
-        expect { job.perform }
-          .to have_enqueued_job(ProjectIdentifiers::RevertProjectToClassicIdsJob).exactly(2).times
-      end
+      it "calls RevertProjectToClassicService for each project" do
+        services = projects.map do |project|
+          instance_double(ProjectIdentifiers::RevertProjectToClassicService, call: nil).tap do |service|
+            allow(ProjectIdentifiers::RevertProjectToClassicService).to receive(:new).with(project).and_return(service)
+          end
+        end
 
-      it "sets FinishRevertingInstanceToClassicIdsJob as the on_success callback" do
-        job.perform
-        expect(GoodJob::Batch).to have_received(:enqueue)
-          .with(hash_including(on_success: ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob))
+        described_class.new.perform
+
+        services.each { |service| expect(service).to have_received(:call) }
       end
     end
 
     context "when there are no projects" do
-      it "does not enqueue any per-project jobs" do
-        expect { job.perform }
-          .not_to have_enqueued_job(ProjectIdentifiers::RevertProjectToClassicIdsJob)
+      it "does not call RevertProjectToClassicService" do
+        expect(ProjectIdentifiers::RevertProjectToClassicService).not_to receive(:new)
+        described_class.new.perform
       end
     end
   end
