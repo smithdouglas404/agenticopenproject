@@ -11,7 +11,7 @@ import {
 
 @Component({
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
-  template: '<op-team-planner-page />',
+  template: '<op-team-planner-page><op-team-planner /></op-team-planner-page>',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })

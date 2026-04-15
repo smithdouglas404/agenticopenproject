@@ -32,7 +32,7 @@ import { OpCalendarService } from 'core-app/features/calendar/op-calendar.servic
 
 @Component({
   selector: 'op-team-planner-page',
-  templateUrl: './team-planner-page.component.html',
+  templateUrl: '../../../work-packages/routing/partitioned-query-space-page/primerized-partitioned-query-space-page.component.html',
   styleUrls: [
     '../../../work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component.sass',
   ],

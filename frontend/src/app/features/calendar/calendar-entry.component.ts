@@ -34,7 +34,7 @@ import {
 
 @Component({
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
-  template: '<op-wp-calendar-page [queryId]="queryId" />',
+  template: '<op-wp-calendar-page [queryId]="queryId"><op-wp-calendar /></op-wp-calendar-page>',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })

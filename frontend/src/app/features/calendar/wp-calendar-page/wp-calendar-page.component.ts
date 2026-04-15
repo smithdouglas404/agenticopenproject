@@ -53,7 +53,7 @@ import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decora
 
 @Component({
   selector: 'op-wp-calendar-page',
-  templateUrl: './wp-calendar-page.component.html',
+  templateUrl: '../../work-packages/routing/partitioned-query-space-page/primerized-partitioned-query-space-page.component.html',
   styleUrls: [
     '../../work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component.sass',
   ],

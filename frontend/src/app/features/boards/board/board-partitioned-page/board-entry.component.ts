@@ -43,7 +43,7 @@ import { QueryUpdatedService } from 'core-app/features/boards/board/query-update
 @Component({
   selector: 'board-entry',
   hostDirectives: [WorkPackageIsolatedQuerySpaceDirective],
-  template: `<board-partitioned-page [boardId]="boardId" />`,
+  template: `<board-partitioned-page [boardId]="boardId"><board-list-container [boardId]="boardId" /></board-partitioned-page>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     BoardConfigurationService,

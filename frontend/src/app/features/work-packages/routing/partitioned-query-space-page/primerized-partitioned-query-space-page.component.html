@@ -14,8 +14,7 @@
           [editable]="titleEditingEnabled" />
       </h2>
       @if (showToolbar) {
-        <ul class="toolbar-items hide-when-print"
-          >
+        <ul class="toolbar-items hide-when-print">
           @for (definition of toolbarButtonComponents; track definition) {
             @if (!definition.show || definition.show()) {
               <li class="toolbar-item"
@@ -42,7 +41,9 @@
   </div>
 
   <div class="work-packages-partitioned-page--content-container">
-    <!-- Board list content -->
-    <board-list-container [boardId]="boardId" />
+    <div class="work-packages-partitioned-page--content-left loading-indicator--location"
+      data-indicator-name="table">
+      <ng-content />
+    </div>
   </div>
 </div>
