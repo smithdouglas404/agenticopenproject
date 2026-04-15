@@ -38,7 +38,7 @@ class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
   MAX_SWEEPS = 3
 
   def perform(batch, _event = nil)
-    task = LongRunningTask.find(batch.properties[:lrt_id])
+    task = LongRunningTask.find(batch.properties["task_id"])
     corrective_sweep(task)
     Setting::WorkPackageIdentifier.enable_semantic!
     task.complete!
