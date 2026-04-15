@@ -51,6 +51,7 @@ en:
       user_preference:
         backlogs_versions_default_fold_state: "Show sprints folded"
       work_package:
+        backlog_bucket: "Backlog Bucket"
         backlogs_work_package_type: "Backlog type"
         position: "Position"
         sprint: "Sprint"

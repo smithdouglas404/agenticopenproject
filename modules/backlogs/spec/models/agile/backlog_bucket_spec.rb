@@ -28,42 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject::Backlogs::Patches::WorkPackagePatch
-  extend ActiveSupport::Concern
+require "rails_helper"
 
-  included do
-    prepend InstanceMethods
-    extend ClassMethods
+RSpec.describe Agile::BacklogBucket do
+  let(:project) { create(:project) }
 
-    register_journal_formatted_fields "story_points", "position", formatter_key: :decimal
-
-    validates_numericality_of :story_points, only_integer: true,
-                                             allow_nil: true,
-                                             greater_than_or_equal_to: 0,
-                                             less_than: 10_000,
-                                             if: -> { backlogs_enabled? }
-
-    belongs_to :backlog_bucket, class_name: "Agile::BacklogBucket", optional: true
-    belongs_to :sprint, class_name: "Agile::Sprint", optional: true
-
-    include OpenProject::Backlogs::List
+  subject(:backlog_bucket) do
+    described_class.new(name: "Bla Bla", project:)
   end
 
-  module ClassMethods
-    def order_by_position
-      order(arel_table[:position].asc.nulls_last)
-    end
+  describe "validations" do
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_presence_of(:project) }
   end
 
-  module InstanceMethods
-    def done?
-      project.done_statuses.to_a.include?(status)
+  describe "associations" do
+    it { is_expected.to have_many(:work_packages).inverse_of(:backlog_bucket).dependent(:nullify) }
+    it { is_expected.to belong_to(:project) }
+  end
+
+  describe "work_package association" do
+    let(:backlog_bucket) { create(:backlog_bucket, project:) }
+    let(:work_package) { create(:work_package, project:, backlog_bucket:) }
+
+    it "can have work packages associated" do
+      expect(backlog_bucket.work_packages).to include(work_package)
     end
 
-    def backlogs_enabled?
-      project&.backlogs_enabled?
+    it "nullifies work_package backlog_bucket_id when destroyed" do
+      work_package_id = work_package.id
+      backlog_bucket.destroy!
+      expect(WorkPackage.find(work_package_id).backlog_bucket_id).to be_nil
     end
   end
 end
-
-WorkPackage.include OpenProject::Backlogs::Patches::WorkPackagePatch
