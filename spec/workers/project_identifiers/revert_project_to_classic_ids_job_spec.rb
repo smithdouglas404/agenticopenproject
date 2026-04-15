@@ -42,8 +42,8 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicIdsJob do
       expect(service).to have_received(:call)
     end
 
-    it "raises RecordNotFound when the project no longer exists (triggering discard_on)" do
-      expect { described_class.new.perform(0) }.to raise_error(ActiveRecord::RecordNotFound)
+    it "is discarded without raising when the project no longer exists" do
+      expect { described_class.perform_now(0) }.not_to raise_error
     end
   end
 end
