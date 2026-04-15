@@ -29,52 +29,40 @@
 #++
 
 module ProjectIdentifiers
-  # Reverts a single project back to classic identifier mode:
+  # Reverts a single project back to classic identifier mode by restoring its
+  # project identifier to the most-recent classic-format slug from FriendlyId
+  # history. If no classic slug exists (e.g. the project was created in semantic
+  # mode), a new classic identifier is generated via Project.suggest_identifier.
   #
-  # 1. Clears WP sequence_number and identifier (undoes backfill).
-  # 2. Restores the project identifier to its most-recent classic-format slug
-  #    from FriendlyId history (undoes fix_identifier_if_needed).
-  #    Projects that always had a valid semantic identifier have no classic slug
-  #    and are left alone.
-  #
-  # WorkPackageSemanticAlias rows and wp_sequence_counter are intentionally left
-  # intact: aliases support historical identifier resolution and the counter
-  # avoids sequence collisions if semantic mode is re-enabled later.
+  # WP sequence_number/identifier, WorkPackageSemanticAlias rows, and
+  # wp_sequence_counter are intentionally left intact so that a back-switch to
+  # semantic mode can resume without data loss.
   class RevertProjectToClassicService
     def initialize(project)
       @project = project
     end
 
     def call
-      ApplicationRecord.transaction do
-        clear_wp_semantic_data
-        restore_classic_identifier
-      end
+      restore_classic_identifier
     end
 
     private
 
     attr_reader :project
 
-    def clear_wp_semantic_data
-      WorkPackage.where(project:).update_all(sequence_number: nil, identifier: nil)
-    end
-
     def restore_classic_identifier
-      classic = previous_classic_identifier
-      return unless classic
-
-      project.update_columns(identifier: classic)
+      classic = previous_classic_identifier.presence || Project.suggest_identifier(project.name)
+      project.update!(identifier: classic)
     end
 
     # Returns the most-recent FriendlyId slug for this project that is in classic
-    # (non-semantic) format, or nil if no such slug exists.
+    # acts_as_url format (lowercase letters, digits, hyphens, underscores; not
+    # all-numeric), or nil if no such slug exists.
     def previous_classic_identifier
-      detector = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
       project.slugs
              .order(created_at: :desc)
              .pluck(:slug)
-             .find { |slug| detector.format_error_reason(slug) }
+             .find { |slug| slug.match?(/\A(?!\d+\z)[a-z0-9\-_]+\z/) }
     end
   end
 end
