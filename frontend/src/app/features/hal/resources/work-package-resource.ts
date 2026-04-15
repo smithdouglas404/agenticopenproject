@@ -127,15 +127,10 @@ export class WorkPackageBaseResource extends HalResource {
 
   /**
    * Returns the user-facing work package identifier.
-   * "PROJ-42" in semantic mode, "123" in classic mode.
-   * Falls back to numeric id when displayId is not in the API response.
+   * "PROJ-42" in semantic mode, "42" in classic mode.
    */
   public get displayId():string {
-    if (this.$source.displayId) {
-      return this.$source.displayId.toString();
-    }
-
-    return this.id?.toString() ?? '';
+    return this.$source.displayId?.toString() ?? this.id?.toString() ?? '';
   }
 
   /**
@@ -145,8 +140,6 @@ export class WorkPackageBaseResource extends HalResource {
    */
   public get formattedId():string {
     const wpId = this.displayId;
-    if (!wpId) return '';
-
     return /[A-Za-z]/.test(wpId) ? wpId : `#${wpId}`;
   }
 

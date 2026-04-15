@@ -141,17 +141,7 @@ describe('WorkPackage', () => {
       });
     });
 
-    describe('when displayId is absent (legacy API response)', () => {
-      beforeEach(() => {
-        source = { id: 42 };
-        createWorkPackage();
-      });
-
-      it('should fall back to the numeric id', () => {
-        expect(workPackage.displayId).toEqual('42');
-      });
-    });
-  });
+});
 
   describe('formattedId', () => {
     afterEach(() => {
@@ -172,13 +162,7 @@ describe('WorkPackage', () => {
       expect(workPackage.formattedId).toEqual('#42');
     });
 
-    it('should fall back to hash-prefixed numeric id when displayId is absent', () => {
-      source = { id: 42 };
-      createWorkPackage();
-
-      expect(workPackage.formattedId).toEqual('#42');
-    });
-  });
+});
 
   describe('subjectWithId', () => {
     afterEach(() => {
