@@ -13,7 +13,7 @@ module WorkPackages
 
         @id = id
         @tab = tab
-        @work_package = WorkPackage.visible.find_by_id_or_identifier(id)
+        @work_package = WorkPackage.visible.find_by(id:)
       end
 
       def wrapper_uniq_by

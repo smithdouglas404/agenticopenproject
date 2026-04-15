@@ -158,50 +158,50 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
-  describe "WorkPackage.find_by_id_or_identifier" do
-    context "with a numeric param" do
-      it "finds by primary key" do
-        expect(WorkPackage.find_by_id_or_identifier(work_package.id.to_s)).to eq(work_package)
+  describe "WorkPackage.find_by" do
+    context "with id: keyword and semantic identifier" do
+      it "resolves via the semantic identifier" do
+        expect(WorkPackage.find_by(id: "MYPROJ-1")).to eq(work_package)
       end
 
-      it "returns nil for unknown id" do
-        expect(WorkPackage.find_by_id_or_identifier("9999999")).to be_nil
+      it "returns nil for unknown semantic id" do
+        expect(WorkPackage.find_by(id: "MYPROJ-999")).to be_nil
+      end
+
+      it "resolves via historic alias" do
+        WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
+        expect(WorkPackage.find_by(id: "OLDPROJ-1")).to eq(work_package)
       end
     end
 
-    context "with a semantic param" do
-      context "when the identifier matches work_packages.identifier (fast path)" do
-        it "finds directly via identifier without hitting the alias table" do
-          expect(WorkPackage.find_by_id_or_identifier("MYPROJ-1")).to eq(work_package)
-        end
-
-        it "returns nil when no WP has that identifier and no alias or fallback matches" do
-          expect(WorkPackage.find_by_id_or_identifier("MYPROJ-999")).to be_nil
-        end
+    context "with id: keyword and numeric string" do
+      it "falls through to standard AR find_by" do
+        expect(WorkPackage.find_by(id: work_package.id.to_s)).to eq(work_package)
       end
+    end
 
-      context "when the identifier is a historic alias (alias table path)" do
-        it "resolves historic entries via the alias registry" do
-          WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
-          expect(WorkPackage.find_by_id_or_identifier("OLDPROJ-1")).to eq(work_package)
-        end
-
-        it "resolves when identifier differs but an alias row exists" do
-          work_package.update_columns(identifier: "OTHER-99")
-          expect(WorkPackage.find_by_id_or_identifier("MYPROJ-1")).to eq(work_package)
-        end
+    context "with non-id keywords" do
+      it "passes through to standard AR find_by" do
+        expect(WorkPackage.find_by(subject: work_package.subject)).to eq(work_package)
       end
+    end
 
-      it "returns nil for unknown sequence" do
-        expect(WorkPackage.find_by_id_or_identifier("MYPROJ-999")).to be_nil
+    context "with multiple keywords including id:" do
+      it "passes through to standard AR find_by" do
+        expect(WorkPackage.find_by(id: work_package.id, project: project)).to eq(work_package)
       end
+    end
 
-      it "returns nil for unknown project prefix" do
-        expect(WorkPackage.find_by_id_or_identifier("NOPE-1")).to be_nil
+    context "with an unparseable semantic string" do
+      it "returns nil" do
+        expect(WorkPackage.find_by(id: "not-an-identifier!")).to be_nil
       end
+    end
 
-      it "returns nil for an unparseable string" do
-        expect(WorkPackage.find_by_id_or_identifier("not-an-identifier!")).to be_nil
+    context "when identifier differs but an alias row exists" do
+      it "resolves via the alias table" do
+        work_package.update_columns(identifier: "OTHER-99")
+        expect(WorkPackage.find_by(id: "MYPROJ-1")).to eq(work_package)
       end
     end
 
@@ -209,30 +209,39 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       let(:member_user) { create(:user, member_with_permissions: { project => [:view_work_packages] }) }
       let(:non_member_user) { create(:user) }
 
-      it "returns the WP for a user who can see it" do
-        expect(WorkPackage.visible(member_user).find_by_id_or_identifier("MYPROJ-1")).to eq(work_package)
+      it "respects the scope for semantic ids" do
+        expect(WorkPackage.visible(member_user).find_by(id: "MYPROJ-1")).to eq(work_package)
       end
 
-      it "returns nil for a user who cannot see it" do
-        expect(WorkPackage.visible(non_member_user).find_by_id_or_identifier("MYPROJ-1")).to be_nil
+      it "returns nil when the user cannot see it" do
+        expect(WorkPackage.visible(non_member_user).find_by(id: "MYPROJ-1")).to be_nil
       end
 
       it "also scopes numeric lookup" do
-        expect(WorkPackage.visible(non_member_user).find_by_id_or_identifier(work_package.id.to_s)).to be_nil
+        expect(WorkPackage.visible(non_member_user).find_by(id: work_package.id.to_s)).to be_nil
       end
     end
   end
 
-  describe "WorkPackage.find_by_id_or_identifier!" do
-    it "returns the work package when found" do
-      expect(WorkPackage.find_by_id_or_identifier!(work_package.id.to_s)).to eq(work_package)
+  # rubocop:disable Rails/FindById -- testing find_by! override specifically, not suggesting find()
+  describe "WorkPackage.find_by!" do
+    context "with id: keyword and semantic identifier" do
+      it "resolves via the semantic identifier" do
+        expect(WorkPackage.find_by!(id: "MYPROJ-1")).to eq(work_package)
+      end
+
+      it "raises RecordNotFound for unknown semantic id" do
+        expect { WorkPackage.find_by!(id: "MYPROJ-999") }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
 
-    it "raises ActiveRecord::RecordNotFound when not found" do
-      expect { WorkPackage.find_by_id_or_identifier!("MYPROJ-999") }
-        .to raise_error(ActiveRecord::RecordNotFound)
+    context "with non-id keywords" do
+      it "passes through to standard AR find_by!" do
+        expect(WorkPackage.find_by!(subject: work_package.subject)).to eq(work_package)
+      end
     end
   end
+  # rubocop:enable Rails/FindById
 
   describe "#display_id" do
     context "when semantic mode is active",

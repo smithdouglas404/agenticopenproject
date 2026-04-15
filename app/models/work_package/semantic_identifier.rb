@@ -48,11 +48,37 @@ module WorkPackage::SemanticIdentifier
       super
     end
 
+    # Override find_by to transparently resolve semantic identifiers when called
+    # with `id:` as the sole keyword (e.g. `find_by(id: "PROJ-42")`).
+    # All other find_by calls pass through to ActiveRecord unchanged.
+    #
+    # AR's find_by signature is find_by(arg, *args) — it doesn't use keyword splat,
+    # so hash kwargs arrive as the positional `arg`. We match on that.
+    def find_by(*args)
+      if args.length == 1 && args.first.is_a?(Hash) && args.first.keys == [:id] && semantic_id?(args.first[:id])
+        find_by_id_or_identifier(args.first[:id])
+      else
+        super
+      end
+    end
+
+    # Mirror of find_by — Rails implements find_by! independently (not via find_by),
+    # so we must override both to keep the pair consistent.
+    def find_by!(*args)
+      if args.length == 1 && args.first.is_a?(Hash) && args.first.keys == [:id] && semantic_id?(args.first[:id])
+        find_by_id_or_identifier!(args.first[:id])
+      else
+        super
+      end
+    end
+
     def exists?(conditions = :none)
       return super unless semantic_id?(conditions)
 
       exists_by_semantic_identifier?(conditions)
     end
+
+    private
 
     # Resolves any identifier form to a WorkPackage.
     #   - Numeric string ("12345")    → find by primary key
@@ -72,8 +98,6 @@ module WorkPackage::SemanticIdentifier
                 "Couldn't find WorkPackage with identifier=#{identifier}", "WorkPackage", "identifier", identifier
               ))
     end
-
-    private
 
     # Returns true when value looks like a semantic work package identifier (e.g. "PROJ-42").
     # Non-string values (Integer, Hash, nil, Array) and numeric strings ("123", " 456 ")
