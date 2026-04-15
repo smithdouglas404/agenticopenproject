@@ -59,7 +59,7 @@ In OpenProject, artificial intelligence (AI) refers to the integration of AI sys
 
 OpenProject approaches AI with a clear focus on control, transparency, and data protection. AI is designed to support users in their work, not to replace human decision-making. Users remain in full control at all times and can decide whether and how AI features are used.
 
-With features such as the [MCP Server](https://www.openproject.org/blog/openproject-17-2-release/), OpenProject enables secure connections between project data and external AI systems. This allows organizations to benefit from AI while maintaining full control over how their data is accessed and used.
+With features such as the [MCP Server](https://www.openproject.org/blog/openproject-17-2-0-release/), OpenProject enables secure connections between project data and external AI systems. This allows organizations to benefit from AI while maintaining full control over how their data is accessed and used.
 
 ### Attribute help texts
 
