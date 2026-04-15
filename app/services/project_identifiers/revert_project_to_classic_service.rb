@@ -32,12 +32,14 @@ module ProjectIdentifiers
   # Reverts a single project back to classic identifier mode:
   #
   # 1. Clears WP sequence_number and identifier (undoes backfill).
-  # 2. Deletes WorkPackageSemanticAlias rows for WPs in this project.
-  # 3. Restores the project identifier to its most-recent classic-format slug
+  # 2. Restores the project identifier to its most-recent classic-format slug
   #    from FriendlyId history (undoes fix_identifier_if_needed).
   #    Projects that always had a valid semantic identifier have no classic slug
   #    and are left alone.
-  # 4. Resets wp_sequence_counter to 0.
+  #
+  # WorkPackageSemanticAlias rows and wp_sequence_counter are intentionally left
+  # intact: aliases support historical identifier resolution and the counter
+  # avoids sequence collisions if semantic mode is re-enabled later.
   class RevertProjectToClassicService
     def initialize(project)
       @project = project
@@ -46,9 +48,7 @@ module ProjectIdentifiers
     def call
       ApplicationRecord.transaction do
         clear_wp_semantic_data
-        clear_alias_rows
         restore_classic_identifier
-        reset_sequence_counter
       end
     end
 
@@ -60,21 +60,11 @@ module ProjectIdentifiers
       WorkPackage.where(project:).update_all(sequence_number: nil, identifier: nil)
     end
 
-    def clear_alias_rows
-      WorkPackageSemanticAlias
-        .where(work_package_id: WorkPackage.where(project:).select(:id))
-        .delete_all
-    end
-
     def restore_classic_identifier
       classic = previous_classic_identifier
       return unless classic
 
       project.update_columns(identifier: classic)
-    end
-
-    def reset_sequence_counter
-      project.update_columns(wp_sequence_counter: 0)
     end
 
     # Returns the most-recent FriendlyId slug for this project that is in classic

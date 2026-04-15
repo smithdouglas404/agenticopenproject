@@ -51,8 +51,8 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
         expect(wp2.reload.identifier).to be_nil
       end
 
-      it "resets the wp_sequence_counter to 0" do
-        expect(project.reload.wp_sequence_counter).to eq(0)
+      it "leaves wp_sequence_counter unchanged" do
+        expect(project.reload.wp_sequence_counter).to eq(5)
       end
     end
 
@@ -61,24 +61,15 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
         create(:project).tap { |p| p.update_columns(identifier: "MYAPP", wp_sequence_counter: 1) }
       end
       let!(:wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 1, identifier: "MYAPP-1") } }
-      let!(:other_project) { create(:project).tap { |p| p.update_columns(identifier: "OTHER") } }
-      let!(:other_wp) do
-        create(:work_package, project: other_project).tap { |w| w.update_columns(sequence_number: 1, identifier: "OTHER-1") }
-      end
 
       before do
         WorkPackageSemanticAlias.create!(identifier: "MYAPP-1", work_package: wp)
         WorkPackageSemanticAlias.create!(identifier: "OLD-1", work_package: wp)
-        WorkPackageSemanticAlias.create!(identifier: "OTHER-1", work_package: other_wp)
         described_class.new(project).call
       end
 
-      it "deletes alias rows for work packages in the project" do
-        expect(WorkPackageSemanticAlias.where(work_package: wp)).not_to exist
-      end
-
-      it "leaves alias rows for work packages in other projects untouched" do
-        expect(WorkPackageSemanticAlias.where(work_package: other_wp)).to exist
+      it "preserves alias rows for historical resolution" do
+        expect(WorkPackageSemanticAlias.where(work_package: wp).count).to eq(2)
       end
     end
 
