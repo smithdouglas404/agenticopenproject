@@ -41,32 +41,65 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
   end
 
   describe "#perform" do
-    context "when no projects remain" do
+    context "when no projects remain from the start" do
       before { allow(finder).to receive(:project_ids).and_return(Set.new) }
 
-      it "enables semantic mode" do
+      it "enables semantic mode without running any conversion" do
+        allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new)
         job.perform
+        expect(ProjectIdentifiers::ConvertProjectToSemanticService).not_to have_received(:new)
         expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
-      end
-
-      it "does not re-run the conversion job" do
-        allow(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to receive(:new)
-        job.perform
-        expect(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).not_to have_received(:new)
       end
     end
 
-    context "when projects still remain" do
-      before { allow(finder).to receive(:project_ids).and_return(Set[1]) }
+    context "when projects are cleared after the first sweep" do
+      let(:project) { instance_double(Project) }
+      let(:service) { instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil) }
 
-      it "synchronously re-runs ConvertInstanceToSemanticIdsJob before enabling semantic" do
-        convert_job = instance_double(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob)
-        allow(ProjectIdentifiers::ConvertInstanceToSemanticIdsJob).to receive(:new).and_return(convert_job)
-        allow(convert_job).to receive(:perform)
+      before do
+        allow(finder).to receive(:project_ids).and_return(Set[1], Set.new)
+        allow(Project).to receive(:find_by).with(id: 1).and_return(project)
+        allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
+      end
 
+      it "runs one conversion sweep then enables semantic mode" do
         job.perform
+        expect(service).to have_received(:call).once
+        expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
+      end
+    end
 
-        expect(convert_job).to have_received(:perform)
+    context "when projects still remain after all sweeps" do
+      let(:project) { instance_double(Project) }
+      let(:service) { instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil) }
+
+      before do
+        allow(finder).to receive(:project_ids).and_return(Set[1])
+        allow(Project).to receive(:find_by).with(id: 1).and_return(project)
+        allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
+      end
+
+      it "raises after MAX_SWEEPS sweeps, logging a warning and not enabling semantic mode" do
+        allow(Rails.logger).to receive(:warn)
+        give_up_pattern = /Giving up after #{described_class::MAX_SWEEPS} sweeps/
+
+        expect { job.perform }.to raise_error(RuntimeError, give_up_pattern)
+        expect(service).to have_received(:call).exactly(described_class::MAX_SWEEPS).times
+        expect(Rails.logger).to have_received(:warn).with(give_up_pattern)
+        expect(Setting::WorkPackageIdentifier).not_to have_received(:enable_semantic!)
+      end
+    end
+
+    context "when a remaining project no longer exists" do
+      before do
+        allow(finder).to receive(:project_ids).and_return(Set[99], Set.new)
+        allow(Project).to receive(:find_by).with(id: 99).and_return(nil)
+        allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new)
+      end
+
+      it "skips the missing project and still enables semantic mode" do
+        job.perform
+        expect(ProjectIdentifiers::ConvertProjectToSemanticService).not_to have_received(:new)
         expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
       end
     end

@@ -83,7 +83,7 @@ module Admin::Settings
         end
         redirect_to action: "show"
       end
-      call.on_failure { render_400 }
+      call.on_failure { failure_callback(call) }
     end
 
     def check_feature_flag
