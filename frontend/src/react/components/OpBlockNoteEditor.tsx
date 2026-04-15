@@ -46,7 +46,7 @@ import * as Y from 'yjs';
 import { useBlockNoteAttachments } from '../hooks/useBlockNoteAttachments';
 import { useBlockNoteLocale } from '../hooks/useBlockNoteLocale';
 import { useOpTheme } from '../hooks/useOpTheme';
-import { useInlineWpEvents } from '../hooks/useInlineWpEvents';
+import { useInlineWpEvents } from 'op-blocknote-extensions';
 
 interface CollaborativeUser {
   name: string;
