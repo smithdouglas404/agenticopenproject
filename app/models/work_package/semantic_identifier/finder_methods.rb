@@ -41,7 +41,17 @@
 #   WorkPackage.exists?("PROJ-42")
 module WorkPackage::SemanticIdentifier::FinderMethods
   def find(*args)
-    return find_by_id_or_identifier!(args.first) if args.length == 1 && semantic_id?(args.first)
+    ids = args.length == 1 && args.first.is_a?(Array) ? args.first : args
+
+    if ids.length == 1 && semantic_id?(ids.first)
+      return find_by_id_or_identifier!(ids.first)
+    end
+
+    if ids.any? { |id| semantic_id?(id) }
+      raise ArgumentError,
+            "Semantic identifiers in multi-argument find are not yet supported. " \
+            "Resolve each identifier individually via find_by(id:) instead."
+    end
 
     super
   end
