@@ -69,7 +69,8 @@ module Admin::Settings
 
     def switch_to_semantic
       unless WorkPackages::IdentifierAutofix.job_in_progress?
-        ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later
+        task = LongRunningTask.create!(task_type: :semantic_id_conversion)
+        ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later(task.id)
       end
       redirect_to action: "show"
     end
@@ -79,7 +80,8 @@ module Admin::Settings
                                     .call(work_packages_identifier: Setting::WorkPackageIdentifier::CLASSIC)
       call.on_success do
         unless WorkPackages::IdentifierAutofix.job_in_progress?
-          ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later
+          task = LongRunningTask.create!(task_type: :semantic_id_reversion)
+          ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later(task.id)
         end
         redirect_to action: "show"
       end

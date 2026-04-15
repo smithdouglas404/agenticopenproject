@@ -73,8 +73,7 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
       end
 
       before do
-        allow(Setting::WorkPackageIdentifier).to receive(:classic?).and_return(true)
-        allow(Setting::WorkPackageIdentifier).to receive(:semantic?).and_return(false)
+        allow(Setting::WorkPackageIdentifier).to receive_messages(classic?: true, semantic?: false)
         described_class.new(project).call
       end
 

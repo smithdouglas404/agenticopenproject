@@ -33,8 +33,10 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
 
   good_job_control_concurrency_with(total_limit: 1)
 
-  def perform
-    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishSemanticConversionJob) do
+  def perform(task_id)
+    LongRunningTask.find(task_id).start!
+    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishSemanticConversionJob,
+                           task_id:) do
       ProjectIdentifiers::PendingProjectsFinder.new.project_ids.each do |project_id|
         ProjectIdentifiers::ConvertProjectToSemanticIdsJob.perform_later(project_id)
       end

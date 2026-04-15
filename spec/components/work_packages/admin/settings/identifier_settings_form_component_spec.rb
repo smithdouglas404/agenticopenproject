@@ -53,7 +53,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
   context "when state is :change_in_progress" do
     let(:state) { :change_in_progress }
 
-    it "renders the in-progress spinner message" do
+    it "renders the converting message when no reversion task is processing" do
       render_component(component)
       expect(page).to have_text("Project identifiers are currently being converted to semantic format.")
     end

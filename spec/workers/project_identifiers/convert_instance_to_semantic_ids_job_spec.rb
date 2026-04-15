@@ -37,6 +37,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                ] do
   subject(:job) { described_class.new }
 
+  let(:task)   { LongRunningTask.create!(task_type: :semantic_id_conversion) }
   let(:finder) { instance_double(ProjectIdentifiers::PendingProjectsFinder) }
 
   before do
@@ -47,16 +48,28 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
     context "when there are projects to convert" do
       before { allow(finder).to receive(:project_ids).and_return(Set[1, 2]) }
 
+      it "transitions the task from pending to processing" do
+        expect { job.perform(task.id) }
+          .to change { task.reload.started_at }.from(nil)
+      end
+
       it "enqueues one ConvertProjectToSemanticIdsJob per pending project" do
-        job.perform
+        job.perform(task.id)
         expect(GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name).count).to eq(2)
       end
 
       it "sets FinishSemanticConversionJob as the on_success callback" do
         allow(GoodJob::Batch).to receive(:enqueue).and_call_original
-        job.perform
+        job.perform(task.id)
         expect(GoodJob::Batch).to have_received(:enqueue)
           .with(hash_including(on_success: ProjectIdentifiers::FinishSemanticConversionJob))
+      end
+
+      it "passes task_id as a flat batch property" do
+        allow(GoodJob::Batch).to receive(:enqueue).and_call_original
+        job.perform(task.id)
+        expect(GoodJob::Batch).to have_received(:enqueue)
+          .with(hash_including(task_id: task.id))
       end
     end
 
@@ -64,7 +77,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
       before { allow(finder).to receive(:project_ids).and_return(Set.new) }
 
       it "does not enqueue any per-project jobs" do
-        job.perform
+        job.perform(task.id)
         expect(GoodJob::Job.where(job_class: ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name)).not_to exist
       end
     end

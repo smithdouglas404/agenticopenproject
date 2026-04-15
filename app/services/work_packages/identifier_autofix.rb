@@ -31,12 +31,7 @@
 module WorkPackages
   module IdentifierAutofix
     def self.job_in_progress?
-      GoodJob::Job
-        .where(job_class: [
-                 ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
-                 ProjectIdentifiers::RevertInstanceToClassicIdsJob.name
-               ])
-        .exists?(finished_at: nil)
+      LongRunningTask.in_progress.exists?(task_type: %i[semantic_id_conversion semantic_id_reversion])
     end
   end
 end

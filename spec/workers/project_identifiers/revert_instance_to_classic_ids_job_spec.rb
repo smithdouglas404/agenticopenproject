@@ -33,6 +33,8 @@ require "rails_helper"
 RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
   subject(:job) { described_class.new }
 
+  let(:task) { LongRunningTask.create!(task_type: :semantic_id_reversion) }
+
   before do
     allow(GoodJob::Batch).to receive(:enqueue).and_yield
   end
@@ -41,21 +43,38 @@ RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
     context "when there are projects to revert" do
       before { create_list(:project, 2) }
 
+      it "transitions the task from pending to processing" do
+        expect { job.perform(task.id) }
+          .to change { task.reload.status }.from("pending").to("processing")
+      end
+
       it "enqueues one RevertProjectToClassicIdsJob per project" do
-        expect { job.perform }
+        expect { job.perform(task.id) }
           .to have_enqueued_job(ProjectIdentifiers::RevertProjectToClassicIdsJob).exactly(2).times
       end
 
       it "sets FinishRevertingInstanceToClassicIdsJob as the on_success callback" do
-        job.perform
+        job.perform(task.id)
         expect(GoodJob::Batch).to have_received(:enqueue)
           .with(hash_including(on_success: ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob))
+      end
+
+      it "passes task_id as a flat batch property so the callback can complete the task" do
+        job.perform(task.id)
+        expect(GoodJob::Batch).to have_received(:enqueue)
+          .with(hash_including(task_id: task.id))
+      end
+
+      it "does not nest task_id under on_success_params" do
+        job.perform(task.id)
+        expect(GoodJob::Batch).not_to have_received(:enqueue)
+          .with(hash_including(on_success_params: anything))
       end
     end
 
     context "when there are no projects" do
       it "does not enqueue any per-project jobs" do
-        expect { job.perform }
+        expect { job.perform(task.id) }
           .not_to have_enqueued_job(ProjectIdentifiers::RevertProjectToClassicIdsJob)
       end
     end

@@ -28,27 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Reverts all projects to classic identifier mode by enqueuing a
-# RevertProjectToClassicIdsJob for every project. Triggered explicitly when the
-# admin switches the instance back to classic mode via the admin UI
-# (Admin::Settings::WorkPackagesIdentifierController#switch_to_classic).
-#
-# The global Setting.work_packages_identifier is expected to already be "classic"
-# before this job runs — it is set by the controller before enqueueing.
-class ProjectIdentifiers::RevertInstanceToClassicIdsJob < ApplicationJob
-  include GoodJob::ActiveJobExtensions::Concurrency
+require "rails_helper"
 
-  good_job_control_concurrency_with(total_limit: 1)
+RSpec.describe WorkPackages::IdentifierAutofix, ".job_in_progress?" do
+  subject { described_class.job_in_progress? }
 
-  # Enqueues a GoodJob batch of per-project revert jobs, with
-  # FinishRevertingInstanceToClassicIdsJob registered as the on_success callback.
-  def perform(task_id)
-    LongRunningTask.find(task_id).start!
-    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob,
-                           task_id:) do
-      Project.select(:id).find_each do |project|
-        ProjectIdentifiers::RevertProjectToClassicIdsJob.perform_later(project.id)
-      end
+  context "with no background tasks" do
+    it { is_expected.to be false }
+  end
+
+  context "with a processing SEMANTIC_ID_CONVERSION task" do
+    before { LongRunningTask.create!(task_type: :semantic_id_conversion).tap(&:start!) }
+
+    it { is_expected.to be true }
+  end
+
+  context "with a processing SEMANTIC_ID_REVERSION task" do
+    before { LongRunningTask.create!(task_type: :semantic_id_reversion).tap(&:start!) }
+
+    it { is_expected.to be true }
+  end
+
+  context "with a completed SEMANTIC_ID_CONVERSION task" do
+    before do
+      LongRunningTask.create!(task_type: :semantic_id_conversion).tap(&:start!).complete!
     end
+
+    it { is_expected.to be false }
+  end
+
+  context "with a failed SEMANTIC_ID_CONVERSION task" do
+    before do
+      LongRunningTask.create!(task_type: :semantic_id_conversion).tap(&:start!).fail!
+    end
+
+    it { is_expected.to be false }
   end
 end

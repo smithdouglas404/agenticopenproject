@@ -30,16 +30,14 @@
 
 # Finalises the revert-to-classic flow once all per-project
 # RevertProjectToClassicIdsJob jobs have completed. Registered as the
-# on_success batch callback by RevertInstanceToClassicIdsJob, but can also
-# be called directly (no args) in tests or one-off recovery scenarios.
+# on_success batch callback by RevertInstanceToClassicIdsJob.
 class ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
 
   good_job_control_concurrency_with(total_limit: 1)
 
-  # GoodJob passes (batch, params) when invoked as an on_success callback;
-  # both are unused here.
-  def perform(_batch = nil, _params = nil)
-    # Noop, can be used for status tracking later
+  def perform(batch, _params)
+    LongRunningTask.find(batch.properties["task_id"]).complete!
+    Setting::WorkPackageIdentifier.enable_classic!
   end
 end

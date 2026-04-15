@@ -37,14 +37,16 @@
 class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
   MAX_SWEEPS = 3
 
-  def perform(*)
-    corrective_sweep
+  def perform(batch, _params)
+    task = LongRunningTask.find(batch.properties["task_id"])
+    corrective_sweep(task)
     Setting::WorkPackageIdentifier.enable_semantic!
+    task.complete!
   end
 
   private
 
-  def corrective_sweep
+  def corrective_sweep(task)
     MAX_SWEEPS.times do
       remaining = ProjectIdentifiers::PendingProjectsFinder.new.project_ids
       return if remaining.empty?
@@ -60,6 +62,7 @@ class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
     message = "[FinishSemanticConversionJob] Giving up after #{MAX_SWEEPS} sweeps — " \
               "projects still remain pending. The instance may be under active load or there is a bug."
     Rails.logger.warn message
+    task.fail!(result: message)
     raise message
   end
 end

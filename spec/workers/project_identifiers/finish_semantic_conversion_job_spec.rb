@@ -33,6 +33,8 @@ require "rails_helper"
 RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
   subject(:job) { described_class.new }
 
+  let(:task)  { create(:long_running_task, task_type: :semantic_id_conversion).tap(&:start!) }
+  let(:batch) { instance_double(GoodJob::Batch, properties: { "task_id" => task.id }) }
   let(:finder) { instance_double(ProjectIdentifiers::PendingProjectsFinder) }
 
   before do
@@ -46,9 +48,14 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
 
       it "enables semantic mode without running any conversion" do
         allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new)
-        job.perform
+        job.perform(batch)
         expect(ProjectIdentifiers::ConvertProjectToSemanticService).not_to have_received(:new)
         expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
+      end
+
+      it "marks the task as complete" do
+        job.perform(batch)
+        expect(task.reload.status).to eq("complete")
       end
     end
 
@@ -63,7 +70,7 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
       end
 
       it "runs one conversion sweep then enables semantic mode" do
-        job.perform
+        job.perform(batch)
         expect(service).to have_received(:call).once
         expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
       end
@@ -81,12 +88,18 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
 
       it "raises after MAX_SWEEPS sweeps, logging a warning and not enabling semantic mode" do
         allow(Rails.logger).to receive(:warn)
-        give_up_pattern = /Giving up after #{described_class::MAX_SWEEPS} sweeps/
+        give_up_pattern = /Giving up after #{described_class::MAX_SWEEPS} sweeps/o
 
-        expect { job.perform }.to raise_error(RuntimeError, give_up_pattern)
+        expect { job.perform(batch) }.to raise_error(RuntimeError, give_up_pattern)
         expect(service).to have_received(:call).exactly(described_class::MAX_SWEEPS).times
         expect(Rails.logger).to have_received(:warn).with(give_up_pattern)
         expect(Setting::WorkPackageIdentifier).not_to have_received(:enable_semantic!)
+      end
+
+      it "marks the task as failed" do
+        allow(Rails.logger).to receive(:warn)
+        expect { job.perform(batch) }.to raise_error(RuntimeError)
+        expect(task.reload.status).to eq("failed")
       end
     end
 
@@ -98,7 +111,7 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
       end
 
       it "skips the missing project and still enables semantic mode" do
-        job.perform
+        job.perform(batch)
         expect(ProjectIdentifiers::ConvertProjectToSemanticService).not_to have_received(:new)
         expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
       end
