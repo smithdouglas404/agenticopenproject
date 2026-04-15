@@ -14,59 +14,6 @@ release_date: 2026-04-15
  The release contains several bug fixes and we recommend updating to the newest version.
  In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
-<!-- BEGIN CVE AUTOMATED SECTION -->
-
-## Security fixes
-
-
-
-### CVE-2026-33667 - 2FA OTP Verification Missing Rate Limiting
-
-The 2FA OTP verification (`confirm_otp` action) has no rate limiting, lockout mechanism, or failed-attempt tracking. An attacker who knows a user&#39;s password can brute-force the 6-digit TOTP code without any protection slowing or blocking the attempts.
-
-
-
-The existing `brute_force_block_after_failed_logins` setting only counts password login failures and does not apply to the 2FA verification stage.
-
-
-
-This vulnerability was reported by GitHub user [Wernerina](https://github.com/Wernerina). Thank you for responsibly disclosing your findings.
-
-
-
-For more information, please see the [GitHub advisory #GHSA-234r-45m2-w6cv](https://github.com/opf/openproject/security/advisories/GHSA-234r-45m2-w6cv)
-
-
-
-### GHSA-hh5p-gwf8-h245 - Cross-Project Meeting Agenda Item Injection via Unscoped Section Lookup
-
-A user with \`manage\_agendas\` permission in any project can inject agenda items into meetings belonging to \*\*any other project\*\* on the instance — even projects they have no access to. No knowledge of the target project, meeting, or victim is required; the attacker can blindly spray items into every meeting on the instance by iterating sequential section IDs.
-
-
-
-This vulnerability was reported through GitHub advisories by user [jeroengui](https://github.com/jeroengui)
-
-
-
-For more information, please see the [GitHub advisory #GHSA-hh5p-gwf8-h245](https://github.com/opf/openproject/security/advisories/GHSA-hh5p-gwf8-h245)
-
-
-
-### GHSA-qr54-686p-j34x - Reminders Leak Work Package Data After Access Revocation
-
-Reminder listing exposes work package IDs, subjects, and user-authored notes were remaining after the user&#39;s project access is revoke
-
-
-
-This vulnerability was reported by GitHub user [DAVIDAROCA27](https://github.com/DAVIDAROCA27)
-
-
-
-For more information, please see the [GitHub advisory #GHSA-qr54-686p-j34x](https://github.com/opf/openproject/security/advisories/GHSA-qr54-686p-j34x)
-
-
-<!-- END CVE AUTOMATED SECTION -->
-
 ## Important feature changes
 
 Take a look at our release video showing the most important features introduced in OpenProject 17.3.0:
@@ -167,6 +114,59 @@ When selecting work packages in relations, boards, meetings, time tracking, or f
 ### Nested groups for improved user and permission management
 
 Groups can now be nested, allowing memberships and permissions to be inherited through the group hierarchy. This lays the foundation for further improvements in structuring and managing groups.
+
+<!-- BEGIN CVE AUTOMATED SECTION -->
+
+## Security fixes
+
+
+
+### CVE-2026-33667 - 2FA OTP Verification Missing Rate Limiting
+
+The 2FA OTP verification (`confirm_otp` action) has no rate limiting, lockout mechanism, or failed-attempt tracking. An attacker who knows a user&#39;s password can brute-force the 6-digit TOTP code without any protection slowing or blocking the attempts.
+
+
+
+The existing `brute_force_block_after_failed_logins` setting only counts password login failures and does not apply to the 2FA verification stage.
+
+
+
+This vulnerability was reported by GitHub user [Wernerina](https://github.com/Wernerina). Thank you for responsibly disclosing your findings.
+
+
+
+For more information, please see the [GitHub advisory #GHSA-234r-45m2-w6cv](https://github.com/opf/openproject/security/advisories/GHSA-234r-45m2-w6cv)
+
+
+
+### GHSA-hh5p-gwf8-h245 - Cross-Project Meeting Agenda Item Injection via Unscoped Section Lookup
+
+A user with \`manage\_agendas\` permission in any project can inject agenda items into meetings belonging to \*\*any other project\*\* on the instance — even projects they have no access to. No knowledge of the target project, meeting, or victim is required; the attacker can blindly spray items into every meeting on the instance by iterating sequential section IDs.
+
+
+
+This vulnerability was reported through GitHub advisories by user [jeroengui](https://github.com/jeroengui)
+
+
+
+For more information, please see the [GitHub advisory #GHSA-hh5p-gwf8-h245](https://github.com/opf/openproject/security/advisories/GHSA-hh5p-gwf8-h245)
+
+
+
+### GHSA-qr54-686p-j34x - Reminders Leak Work Package Data After Access Revocation
+
+Reminder listing exposes work package IDs, subjects, and user-authored notes were remaining after the user&#39;s project access is revoke
+
+
+
+This vulnerability was reported by GitHub user [DAVIDAROCA27](https://github.com/DAVIDAROCA27)
+
+
+
+For more information, please see the [GitHub advisory #GHSA-qr54-686p-j34x](https://github.com/opf/openproject/security/advisories/GHSA-qr54-686p-j34x)
+
+
+<!-- END CVE AUTOMATED SECTION -->
 
 ## Important technical updates
 
