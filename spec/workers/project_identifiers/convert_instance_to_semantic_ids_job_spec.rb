@@ -65,22 +65,11 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
           .with(hash_including(on_success: ProjectIdentifiers::FinishSemanticConversionJob))
       end
 
-      it "passes task_id and attempt as flat batch properties" do
+      it "passes task_id as a flat batch property" do
         allow(GoodJob::Batch).to receive(:enqueue).and_call_original
-        job.perform(task.id, attempt: 2)
+        job.perform(task.id)
         expect(GoodJob::Batch).to have_received(:enqueue)
-          .with(hash_including(task_id: task.id, attempt: 2))
-      end
-    end
-
-    context "when the task is already processing (synchronous re-run)" do
-      before do
-        task.start!
-        allow(finder).to receive(:project_ids).and_return(Set[1])
-      end
-
-      it "does not call start! again" do
-        expect { job.perform(task.id) }.not_to change { task.reload.started_at }
+          .with(hash_including(task_id: task.id))
       end
     end
 

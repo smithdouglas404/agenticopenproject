@@ -40,7 +40,6 @@ module Admin::Settings
 
     def show
       @form_state = WorkPackages::IdentifierAutofix.job_in_progress? ? :change_in_progress : :edit
-      @conversion_history = LongRunningTask.order(created_at: :desc)
     end
 
     def update

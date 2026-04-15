@@ -33,38 +33,13 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
 
   good_job_control_concurrency_with(total_limit: 1)
 
-  def perform(task_id = nil, attempt: 1)
-    if task_id.present?
-      task = LongRunningTask.find(task_id)
-      task.start! if task.pending?
-    end
-
+  def perform(task_id)
+    LongRunningTask.find(task_id).start!
     GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishSemanticConversionJob,
-                           task_id:, attempt:) do
+                           task_id:) do
       ProjectIdentifiers::PendingProjectsFinder.new.project_ids.each do |project_id|
         ProjectIdentifiers::ConvertProjectToSemanticIdsJob.perform_later(project_id)
       end
     end
-  end
-
-  def enqueue_backfill_batch(project_ids, next_iteration:)
-    GoodJob::Batch.enqueue(on_success: self.class, on_success_params: { iteration: next_iteration }) do
-      project_ids.each { |project_id| ProjectIdentifiers::ConvertProjectToSemanticIdsJob.perform_later(project_id) }
-    end
-  end
-
-  def abort_with_error(remaining_count)
-    message =
-      "#{self.class.name}: reached max iterations (#{MAX_ITERATIONS}) with " \
-      "#{remaining_count} project(s) still unprocessed — aborting flip, reverting data"
-
-    Rails.logger.error(message)
-    # Do not raise: raising would cause GoodJob to retry this job, which would
-    # race with the revert job. The error is surfaced via the log instead.
-    ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later
-  end
-
-  def project_ids_needing_backfill
-    ProjectIdentifiers::PendingProjectsFinder.new.project_ids
   end
 end
