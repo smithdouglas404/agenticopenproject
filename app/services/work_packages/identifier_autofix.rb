@@ -31,10 +31,7 @@
 module WorkPackages
   module IdentifierAutofix
     def self.job_in_progress?
-      BackgroundTask
-        .in_progress
-        .where(task_type: [BackgroundTask::SEMANTIC_ID_CONVERSION, BackgroundTask::SEMANTIC_ID_REVERSION])
-        .exists?
+      LongRunningTask.in_progress.exists?(task_type: %i[semantic_id_conversion semantic_id_reversion])
     end
   end
 end

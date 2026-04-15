@@ -33,7 +33,7 @@ require "rails_helper"
 RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
   subject(:job) { described_class.new }
 
-  let(:task) { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_REVERSION) }
+  let(:task) { LongRunningTask.create!(task_type: :semantic_id_reversion) }
 
   before do
     allow(GoodJob::Batch).to receive(:enqueue).and_yield
@@ -45,7 +45,7 @@ RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
 
       it "transitions the task from pending to processing" do
         expect { job.perform(task.id) }
-          .to change { task.reload.status }.from(BackgroundTask::PENDING).to(BackgroundTask::PROCESSING)
+          .to change { task.reload.status }.from("pending").to("processing")
       end
 
       it "enqueues one RevertProjectToClassicIdsJob per project" do

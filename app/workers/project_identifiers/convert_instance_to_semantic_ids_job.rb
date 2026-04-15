@@ -35,8 +35,8 @@ class ProjectIdentifiers::ConvertInstanceToSemanticIdsJob < ApplicationJob
 
   def perform(task_id = nil, attempt: 1)
     if task_id.present?
-      task = BackgroundTask.find(task_id)
-      task.start! if task.status == BackgroundTask::PENDING
+      task = LongRunningTask.find(task_id)
+      task.start! if task.pending?
     end
 
     GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishSemanticConversionJob,

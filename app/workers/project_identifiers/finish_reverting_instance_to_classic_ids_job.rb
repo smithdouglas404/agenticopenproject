@@ -37,10 +37,10 @@ class ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob < ApplicationJo
 
   good_job_control_concurrency_with(total_limit: 1)
 
-  # GoodJob passes (batch, params) when invoked as an on_success callback;
-  # both are unused here.
-  def perform(_batch = nil, _params = nil)
-    lrt_id = batch&.properties&.dig(:lrt_id)
-    LongRunningTask.find(lrt_id).complete!
+  # GoodJob passes (batch, params) when invoked as an on_success callback.
+  def perform(batch = nil, _params = nil)
+    task_id = batch&.properties&.dig("task_id")
+    LongRunningTask.find(task_id).complete! if task_id.present?
+    Setting::WorkPackageIdentifier.enable_classic!
   end
 end

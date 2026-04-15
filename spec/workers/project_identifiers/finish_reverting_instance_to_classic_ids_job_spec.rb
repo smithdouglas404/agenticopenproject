@@ -39,12 +39,12 @@ RSpec.describe ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob do
 
   describe "#perform" do
     context "when called with a batch containing task_id in properties" do
-      let(:task) { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_REVERSION).tap(&:start!) }
+      let(:task) { LongRunningTask.create!(task_type: :semantic_id_reversion).tap(&:start!) }
       let(:batch) { instance_double(GoodJob::Batch, properties: { "task_id" => task.id }) }
 
       it "marks the task as complete" do
         job.perform(batch, { event: :success })
-        expect(task.reload.status).to eq(BackgroundTask::COMPLETE)
+        expect(task.reload.status).to eq("complete")
       end
     end
 

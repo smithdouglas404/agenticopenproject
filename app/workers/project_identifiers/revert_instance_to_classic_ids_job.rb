@@ -42,8 +42,14 @@ class ProjectIdentifiers::RevertInstanceToClassicIdsJob < ApplicationJob
 
   # Enqueues a GoodJob batch of per-project revert jobs, with
   # FinishRevertingInstanceToClassicIdsJob registered as the on_success callback.
-  def perform
-    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob) do
+  def perform(task_id = nil)
+    if task_id.present?
+      task = LongRunningTask.find(task_id)
+      task.start! if task.pending?
+    end
+
+    GoodJob::Batch.enqueue(on_success: ProjectIdentifiers::FinishRevertingInstanceToClassicIdsJob,
+                           task_id:) do
       Project.select(:id).find_each do |project|
         ProjectIdentifiers::RevertProjectToClassicIdsJob.perform_later(project.id)
       end

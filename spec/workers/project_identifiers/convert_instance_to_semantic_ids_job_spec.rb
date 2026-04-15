@@ -37,7 +37,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                ] do
   subject(:job) { described_class.new }
 
-  let(:task)   { BackgroundTask.create!(task_type: BackgroundTask::SEMANTIC_ID_CONVERSION) }
+  let(:task)   { LongRunningTask.create!(task_type: :semantic_id_conversion) }
   let(:finder) { instance_double(ProjectIdentifiers::PendingProjectsFinder) }
 
   before do
