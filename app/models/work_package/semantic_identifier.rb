@@ -34,7 +34,7 @@ module WorkPackage::SemanticIdentifier
   # Matches either a numeric ID ("12345") or a semantic identifier ("PROJ-42").
   # Used in Rails route constraints so both forms are accepted in URLs.
   # The frontend equivalent lives in WP_ID_URL_PATTERN (work-package-id-pattern.ts).
-  ID_ROUTE_CONSTRAINT = /\d+|[A-Za-z][A-Za-z0-9_]*-\d+/
+  ID_ROUTE_CONSTRAINT = /\d+|[A-Z][A-Z0-9_]*-\d+/
 
   included do
     has_many :semantic_aliases,
