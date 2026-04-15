@@ -51,7 +51,7 @@ RSpec.describe WorkPackages::IdentifierAutofix, ".job_in_progress?" do
 
   context "with a completed SEMANTIC_ID_CONVERSION task" do
     before do
-      LongRunningTask.create!(task_type: :semantic_id_conversion).tap { |t| t.start! }.complete!
+      LongRunningTask.create!(task_type: :semantic_id_conversion).tap(&:start!).complete!
     end
 
     it { is_expected.to be false }
@@ -59,7 +59,7 @@ RSpec.describe WorkPackages::IdentifierAutofix, ".job_in_progress?" do
 
   context "with a failed SEMANTIC_ID_CONVERSION task" do
     before do
-      LongRunningTask.create!(task_type: :semantic_id_conversion).tap { |t| t.start! }.fail!
+      LongRunningTask.create!(task_type: :semantic_id_conversion).tap(&:start!).fail!
     end
 
     it { is_expected.to be false }
