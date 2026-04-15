@@ -96,7 +96,7 @@ module OpenProject::Wikis
            icon: "browser"
     end
 
-    add_api_path(:wiki_page_link) { "#{root}/wiki_page_links/#{it}" }
-    add_api_path(:wiki_provider) { "#{root}/wiki_providers/#{it}" }
+    add_api_path(:wiki_page_link) { |page_link_id| "#{root}/wiki_page_links/#{page_link_id}" }
+    add_api_path(:wiki_provider) { |provider_id| "#{root}/wiki_providers/#{provider_id}" }
   end
 end

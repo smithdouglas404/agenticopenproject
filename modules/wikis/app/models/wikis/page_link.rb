@@ -35,6 +35,6 @@ module Wikis
     belongs_to :provider
     belongs_to :linkable, polymorphic: true
 
-    def author? = false
+    def render_author? = false
   end
 end

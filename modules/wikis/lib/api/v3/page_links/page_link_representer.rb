@@ -53,7 +53,7 @@ module API
         end
 
         link :author do
-          next unless represented.author?
+          next unless represented.render_author?
 
           {
             href: api_v3_paths.user(represented.author_id),
@@ -67,7 +67,7 @@ module API
         associated_resource :linkable,
                             v3_path: :work_package,
                             representer: ::API::V3::WorkPackages::WorkPackageRepresenter,
-                            skip_render: ->(*) { represented.linkable_id.nil? }
+                            skip_render: ->(*) { represented.linkable_id.nil? || represented.linkable_type != "WorkPackage" }
 
         def _type = represented.class.name.demodulize
 
