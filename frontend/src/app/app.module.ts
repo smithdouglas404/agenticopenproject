@@ -157,6 +157,8 @@ import {
   BoardEntryComponent,
 } from 'core-app/features/boards/board/board-partitioned-page/board-entry.component';
 import { CalendarEntryComponent } from 'core-app/features/calendar/calendar-entry.component';
+import { TeamPlannerEntryComponent } from 'core-app/features/team-planner/team-planner/team-planner-entry.component';
+import { TeamPlannerModule } from 'core-app/features/team-planner/team-planner/team-planner.module';
 import {
   StorageLoginButtonComponent,
 } from 'core-app/shared/components/storages/storage-login-button/storage-login-button.component';
@@ -310,6 +312,8 @@ export function runBootstrap(appRef:ApplicationRef) {
     OpenprojectWorkPackageGraphsModule,
     // Calendar module
     OpenprojectCalendarModule,
+    // Team Planner module
+    TeamPlannerModule,
 
     // MyPage
     OpenprojectMyPageModule,
@@ -408,6 +412,7 @@ export class OpenProjectModule implements DoBootstrap {
     registerCustomElement('opce-wp-split-create', WorkPackageSplitCreateEntryComponent, { injector });
     registerCustomElement('opce-board-view', BoardEntryComponent, { injector });
     registerCustomElement('opce-calendar-view', CalendarEntryComponent, { injector });
+    registerCustomElement('opce-team-planner-view', TeamPlannerEntryComponent, { injector });
     registerCustomElement('opce-wp-full-view', WorkPackageFullViewEntryComponent, { injector });
     registerCustomElement('opce-wp-full-create', WorkPackageFullCreateEntryComponent, { injector });
     registerCustomElement('opce-wp-full-copy', WorkPackageFullCopyEntryComponent, { injector });

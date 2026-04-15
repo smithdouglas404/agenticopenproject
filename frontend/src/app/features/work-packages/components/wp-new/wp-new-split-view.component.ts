@@ -63,19 +63,27 @@ export class WorkPackageNewSplitViewComponent extends WorkPackageCreateComponent
         );
       }
 
-      // Apply date defaults passed via URL params (e.g. when dragging to create on the calendar).
+      // Apply defaults passed via URL params (e.g. when dragging to create on the calendar/team planner).
       const startDate = params.get('startDate');
       const dueDate = params.get('dueDate');
       const ignoreNonWorkingDays = params.get('ignoreNonWorkingDays');
-      if (startDate || dueDate || ignoreNonWorkingDays) {
+      const assigneeHref = params.get('assignee_href');
+      if (startDate || dueDate || ignoreNonWorkingDays || assigneeHref) {
+        const existingDefaults = this.stateParams?.defaults;
         this.stateParams = {
           ...this.stateParams,
           defaults: {
             _links: {},
-            ...this.stateParams?.defaults,
+            ...existingDefaults,
             ...(startDate ? { startDate } : {}),
             ...(dueDate ? { dueDate } : {}),
             ...(ignoreNonWorkingDays ? { ignoreNonWorkingDays: true } : {}),
+            ...(assigneeHref ? {
+              _links: {
+                ...(existingDefaults?._links || {}),
+                assignee: { href: assigneeHref },
+              },
+            } : {}),
           },
         };
       }

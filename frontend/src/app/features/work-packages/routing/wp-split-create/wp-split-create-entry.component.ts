@@ -62,7 +62,7 @@ export class WorkPackageSplitCreateEntryComponent implements AfterViewInit, OnDe
 
   constructor(readonly elementRef:ElementRef) {
     populateInputsFromDataset(this);
-    document.body.classList.add('\'router--work-packages-partitioned-split-view-new');
+    document.body.classList.add('router--work-packages-partitioned-split-view-new');
   }
 
   ngAfterViewInit():void {
@@ -73,6 +73,6 @@ export class WorkPackageSplitCreateEntryComponent implements AfterViewInit, OnDe
   }
 
   ngOnDestroy():void {
-    document.body.classList.remove('\'router--work-packages-partitioned-split-view-new');
+    document.body.classList.remove('router--work-packages-partitioned-split-view-new');
   }
 }

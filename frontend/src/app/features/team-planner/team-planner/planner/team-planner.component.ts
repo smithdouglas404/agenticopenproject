@@ -40,7 +40,6 @@ import {
 import {
   CalendarOptions,
   DateSelectArg,
-  DatesSetArg,
   EventApi,
   EventDropArg,
   EventInput,
@@ -64,7 +63,6 @@ import {
   take,
   withLatestFrom,
 } from 'rxjs/operators';
-import { StateService } from '@uirouter/angular';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import interactionPlugin, {
   EventDragStartArg,
@@ -78,8 +76,6 @@ import { ConfigurationService } from 'core-app/core/config/configuration.service
 import { WorkPackageViewFiltersService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
-import { isClickedWithModifier } from 'core-app/shared/helpers/link-handling/link-handling';
 import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
 import { PrincipalsResourceService } from 'core-app/core/state/principals/principals.service';
 import {
@@ -98,7 +94,6 @@ import { MAGIC_PAGE_NUMBER } from 'core-app/core/apiv3/helpers/get-paginated-res
 import { CalendarDragDropService } from 'core-app/features/team-planner/team-planner/calendar-drag-drop.service';
 import { StatusResource } from 'core-app/features/hal/resources/status-resource';
 import { ResourceChangeset } from 'core-app/shared/components/fields/changeset/resource-changeset';
-import { KeepTabService } from 'core-app/features/work-packages/components/wp-single-view-tabs/keep-tab/keep-tab.service';
 import { HalError } from 'core-app/features/hal/services/hal-error';
 import { ActionsService } from 'core-app/core/state/actions/actions.service';
 import {
@@ -409,7 +404,6 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
   };
 
   constructor(
-    private $state:StateService,
     private configuration:ConfigurationService,
     private principalsResourceService:PrincipalsResourceService,
     private capabilitiesResourceService:CapabilitiesResourceService,
@@ -425,7 +419,6 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
     readonly schemaCache:SchemaCacheService,
     readonly apiV3Service:ApiV3Service,
     readonly calendarDrag:CalendarDragDropService,
-    readonly keepTab:KeepTabService,
     readonly actions$:ActionsService,
     readonly toastService:ToastService,
     readonly loadingIndicatorService:LoadingIndicatorService,
@@ -514,19 +507,6 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
       .then(() => {
         this.calendarOptions$.next(
           this.workPackagesCalendar.calendarOptions({
-            // Override datesSet to persist cdate/cview via uiRouter instead of pushState,
-            // because uiRouter manages the TeamPlanner URL and would otherwise strip these params.
-            // Remove once uiRouter is removed.
-            datesSet: (dates:DatesSetArg) => {
-              void this.$state.go(
-                '.',
-                {
-                  cdate: this.workPackagesCalendar.timezoneService.formattedISODate(dates.view.calendar.getDate()),
-                  cview: (dates.view as unknown as { type:string }).type,
-                },
-                { custom: { notify: false } },
-              );
-            },
             locales: allLocales,
             locale: this.I18n.locale,
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
@@ -843,48 +823,29 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
     ['$event.detail.start', '$event.detail.end', '$event.detail.assignee'],
   )
   openNewSplitCreate(start:string, end:string, resourceHref:string, nonWorkingDays?:boolean):void {
-    const defaults = {
-      startDate: start,
-      dueDate: end,
-      _links: {
-        assignee: {
-          href: resourceHref,
-        },
-      },
-      ignoreNonWorkingDays: nonWorkingDays,
-    };
-
-    void this.$state.go(
-      splitViewRoute(this.$state, 'new'),
-      {
-        defaults,
-        tabIdentifier: 'overview',
-      },
-    );
+    const basePath = window.location.pathname.replace(/\/details\/.*$/, '');
+    const search = new URLSearchParams(window.location.search);
+    search.set('startDate', start);
+    search.set('dueDate', end);
+    if (resourceHref) {
+      search.set('assignee_href', resourceHref);
+    }
+    if (nonWorkingDays) {
+      search.set('ignoreNonWorkingDays', 'true');
+    }
+    Turbo.visit(`${basePath}/details/new?${search.toString()}`, { frame: 'content-bodyRight', action: 'advance' });
   }
 
   openStateLink(event:{ workPackageId:string; requestedState:string }):void {
-    const params = { workPackageId: event.workPackageId };
-
     if (event.requestedState === 'split') {
-      this.keepTab.goCurrentDetailsState(params);
+      this.workPackagesCalendar.openSplitView(event.workPackageId);
     } else {
-      this.keepTab.goCurrentShowState(params.workPackageId);
+      this.workPackagesCalendar.openFullView(event.workPackageId);
     }
   }
 
   onCardClicked({ workPackageId, event }:{ workPackageId:string, event:MouseEvent }):void {
-    if (isClickedWithModifier(event)) {
-      return;
-    }
-
-    // Only switch the split view if it is already open
-    if (!window.location.pathname.includes('/details/')) {
-      return;
-    }
-
-    this.workPackagesCalendar.wpTableSelection.setSelection(workPackageId, -1);
-    this.keepTab.goCurrentDetailsState({ workPackageId });
+    this.workPackagesCalendar.onCardClicked({ workPackageId, event });
   }
 
   shouldShowAsGhost(id:string, globalDraggingId:string|undefined):boolean {
