@@ -75,7 +75,7 @@ module Admin::Settings
     end
 
     def switch_to_classic
-      call = Settings::UpdateService.new(user: current_user)
+      call = update_service.new(user: current_user)
                                     .call(work_packages_identifier: Setting::WorkPackageIdentifier::CLASSIC)
       call.on_success do
         unless WorkPackages::IdentifierAutofix.job_in_progress?
