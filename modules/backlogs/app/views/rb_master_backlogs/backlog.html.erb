@@ -30,8 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 <% html_title t(:label_backlogs) %>
 
 <% content_controller "backlogs",
-                      "backlogs-list-url-value": backlogs_project_backlogs_path(@project),
-                      "backlogs-backlogs--story-outlet": "li[data-story]" %>
+                      "backlogs-list-url-value": backlogs_project_backlogs_path(@project) %>
 
 <% content_for :content_header do %>
   <%=
@@ -54,5 +53,7 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <% content_for :content_body_right do %>
+  <%# copy of the hack from app/views/notifications/index.html.erb %>
+  <%= turbo_stream.set_title(title: page_title(*html_title_parts)) if turbo_frame_request? %>
   <%= render(split_view_instance) if render_work_package_split_view? %>
 <% end %>

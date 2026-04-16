@@ -5,7 +5,7 @@ pt-BR:
       wikis/xwiki_provider:
         name: Nome
         url: URL da Instância
-        universal_identifier: Universal identifier
+        universal_identifier: Identificador universal
         authentication_method: Método de autenticação
         authentication_methods:
           oauth2_sso: Single-Sign-On por meio de provedor de identidade OpenID Connect
@@ -22,14 +22,23 @@ pt-BR:
         one: Link de página de relação
         other: Links de página de relação
       wikis/xwiki_provider: Provedor XWiki
+  permission_manage_wiki_page_links: Manage Wiki Page Links
+  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: Provedores de wiki
   wikis:
     buttons:
       save_and_continue: Salvar e continuar
+      wiki_page: Wiki page
     inline_page_links_component:
-      empty_heading: No inline links
-      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
-      heading: Inline page links
+      empty_heading: Sem links embutidos
+      empty_text: Links embutidos para páginas wiki na descrição do pacote de trabalho também aparecerão automaticamente aqui.
+      heading: Links de página embutidos
+    page_link_component:
+      remove: Remove page link
+    relation_page_links_component:
+      empty_heading: No related pages
+      empty_text: Manually add links to other related wiki pages.
+      heading: Related pages
     admin:
       wiki_providers:
         index_description: Adicione um serviço de wiki externo para vincular pacotes de trabalho a páginas de wiki existentes ou criar novas diretamente a partir do OpenProject.

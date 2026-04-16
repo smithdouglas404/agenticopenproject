@@ -42,6 +42,9 @@ es:
         start_date: Fecha
         start_time: Hora de inicio
         start_time_hour: Hora de inicio
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Compartiendo
       meeting_agenda_item:
         title: Título
@@ -49,9 +52,15 @@ es:
         duration_in_minutes: Duración
         description: Notas
         presenter: Responsable
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Título
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frecuencia
         interval: Intervalo
         start_date: Empieza el
@@ -60,6 +69,10 @@ es:
         end_after: Fin de la serie de reuniones
         end_date: Fecha de finalización
         iterations: Repeticiones
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Hora de inicio
       meeting_participant:

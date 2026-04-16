@@ -29,8 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <% html_title t(:label_backlogs) %>
 
-<% content_controller "backlogs",
-                      "backlogs-backlogs--story-outlet": "li[data-story]" %>
+<% content_controller "backlogs" %>
 
 <% content_for :content_header do %>
   <%=

@@ -41,6 +41,9 @@ ko:
         start_date: 날짜
         start_time: 시작 시간
         start_time_hour: 시작 시간
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: 공유
       meeting_agenda_item:
         title: 제목
@@ -48,9 +51,15 @@ ko:
         duration_in_minutes: 기간
         description: 메모
         presenter: 발표자
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: 제목
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: 빈도
         interval: 간격
         start_date: '시작:'
@@ -59,6 +68,10 @@ ko:
         end_after: 미팅 시리즈 종료
         end_date: 종료 날짜
         iterations: 항목
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: 시작 시간
       meeting_participant:

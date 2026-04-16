@@ -30,5 +30,6 @@
 
 module Wikis
   class InlinePageLink < PageLink
+    def inline? = true
   end
 end
