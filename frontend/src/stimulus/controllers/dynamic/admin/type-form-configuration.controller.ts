@@ -100,11 +100,8 @@ export default class TypeFormConfigurationController extends Controller {
     this.openRename(section);
   }
 
-  resetToDefault(event:Event) {
+  confirmReset(event:Event) {
     event.preventDefault();
-
-    const confirmed = window.confirm(I18n.t('js.types.attribute_groups.confirm_reset'));
-    if (!confirmed) return;
 
     const form = this.element.closest<HTMLFormElement>('form');
     if (!form) return;

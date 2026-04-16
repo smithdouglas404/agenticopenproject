@@ -77,7 +77,7 @@ See COPYRIGHT and LICENSE files for more details.
             end
           end
 
-          # "Reset to defaults" button
+          # "Reset to defaults" button — opens confirmation dialog
           subheader.with_action_button(
             tag: :button,
             type: :button,
@@ -85,7 +85,7 @@ See COPYRIGHT and LICENSE files for more details.
             leading_icon: :undo,
             label: t("types.edit.form_configuration.reset_to_defaults"),
             "data-test-selector": "type-form-configuration-reset-button",
-            data: { action: "click->admin--type-form-configuration#resetToDefault" }
+            data: { "show-dialog-id": "type-form-configuration-reset-dialog" }
           ) do
             t("types.edit.form_configuration.reset_to_defaults")
           end
@@ -177,6 +177,40 @@ See COPYRIGHT and LICENSE files for more details.
             end
           end
 
+        end
+      end
+
+      # ===== Reset confirmation dialog =====
+      outer.with_row do
+        render(Primer::OpenProject::FeedbackDialog.new(
+          id: "type-form-configuration-reset-dialog",
+          title: t("js.types.attribute_groups.reset_title")
+        )) do |dialog|
+          dialog.with_feedback_message(icon_arguments: { icon: :alert, color: :attention }) do |message|
+            message.with_heading(tag: :h2) { t("js.types.attribute_groups.reset_title") }
+            message.with_description_content(t("js.types.attribute_groups.confirm_reset"))
+          end
+
+          dialog.with_footer do
+            component_collection do |footer|
+              footer.with_component(
+                Primer::Beta::Button.new(
+                  scheme: :secondary,
+                  data: { "close-dialog-id": "type-form-configuration-reset-dialog" }
+                )
+              ) { t("js.button_cancel") }
+
+              footer.with_component(
+                Primer::Beta::Button.new(
+                  scheme: :primary,
+                  data: {
+                    action: "click->admin--type-form-configuration#confirmReset",
+                    "close-dialog-id": "type-form-configuration-reset-dialog"
+                  }
+                )
+              ) { t("js.label_reset") }
+            end
+          end
         end
       end
 
