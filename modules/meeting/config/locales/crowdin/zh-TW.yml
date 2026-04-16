@@ -41,7 +41,7 @@ zh-TW:
         start_date: 日期
         start_time: 開始時間
         start_time_hour: 開始時間
-        sharing: Sharing
+        sharing: 共享
       meeting_agenda_item:
         title: 標題
         author: 會議發起者
@@ -70,7 +70,7 @@ zh-TW:
         meeting_participant:
           user_invalid: 不是有效的參與者。
         meeting_agenda_item:
-          section_not_belong_to_meeting: Section does not belong to the same meeting.
+          section_not_belong_to_meeting: 區段不屬於同一會議。
           user_invalid: 不是有效的參與者。
         recurring_meeting_interim_response:
           not_an_occurrence: is not a valid occurrence time for this recurring meeting
@@ -117,10 +117,10 @@ zh-TW:
   error_notification_with_errors: '傳送通知失敗。以下的收件者將不會被通知到: %{recipients}'
   label_meeting: 會議
   label_meeting_plural: 會議
-  label_meeting_templates: Templates
-  label_meeting_template: Template
-  label_meeting_template_new: New template
-  label_meeting_template_create: Create template
+  label_meeting_templates: 範本
+  label_meeting_template: 範本
+  label_meeting_template_new: 新範本
+  label_meeting_template_create: 建立模板
   label_meeting_template_delete: Delete template
   label_meeting_template_edit: Edit template
   label_meeting_create_from_template: Create meeting from template
