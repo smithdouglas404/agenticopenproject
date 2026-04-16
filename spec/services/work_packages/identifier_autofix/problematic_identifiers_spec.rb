@@ -104,7 +104,7 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProblematicIdentifiers do
     end
 
     it "returns :special_characters when identifier has non-alphanumeric chars" do
-      expect(described_class.format_error_reason("ab-c")).to eq(:special_characters)
+      expect(described_class.format_error_reason("AB-C")).to eq(:special_characters)
     end
 
     it "returns :not_fully_uppercased when identifier is lowercase but otherwise valid" do
