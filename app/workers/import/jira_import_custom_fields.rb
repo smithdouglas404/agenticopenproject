@@ -101,14 +101,16 @@ module Import
       values.presence || collect_option_values_from_issues(jira_field)
     end
 
+    def all_jira_import_project_ids
+      Import::JiraProject
+        .where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids)
+        .pluck(:id)
+    end
+
     def collect_option_values_from_issues(jira_field)
-      field_key = jira_field.jira_field_id
       values = Set.new
-      jira_project_ids = Import::JiraProject
-                           .where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids)
-                           .pluck(:id)
-      Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: jira_project_ids).find_each do |issue|
-        raw = issue.payload["fields"][field_key]
+      Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: all_jira_import_project_ids).find_each do |issue|
+        raw = issue.payload["fields"][jira_field.jira_field_id]
         next unless raw.is_a?(Array)
 
         raw.each { |v| values << v["value"] if v["value"].present? }
