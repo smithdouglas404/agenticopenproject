@@ -33,17 +33,15 @@ require "rails_helper"
 RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
   subject(:job) { described_class.new }
 
-  let(:finder)         { instance_double(ProjectIdentifiers::PendingProjectsFinder) }
   let(:update_service) { instance_double(Settings::UpdateService, call: ServiceResult.new(success: true)) }
 
   before do
-    allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:new).and_return(finder)
     allow(Settings::UpdateService).to receive(:new).with(user: User.system).and_return(update_service)
   end
 
   describe "#perform" do
     context "when no projects remain from the start" do
-      before { allow(finder).to receive(:project_ids).and_return(Set.new) }
+      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set.new) }
 
       it "enables semantic mode without running any conversion" do
         allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new)
@@ -59,7 +57,7 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
       let(:service) { instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil) }
 
       before do
-        allow(finder).to receive(:project_ids).and_return(Set[1], Set.new)
+        allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set[1], Set.new)
         allow(Project).to receive(:find_by).with(id: 1).and_return(project)
         allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
       end
@@ -77,7 +75,7 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
       let(:service) { instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil) }
 
       before do
-        allow(finder).to receive(:project_ids).and_return(Set[1])
+        allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set[1])
         allow(Project).to receive(:find_by).with(id: 1).and_return(project)
         allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
       end
@@ -95,7 +93,7 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
 
     context "when a remaining project no longer exists" do
       before do
-        allow(finder).to receive(:project_ids).and_return(Set[99], Set.new)
+        allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set[99], Set.new)
         allow(Project).to receive(:find_by).with(id: 99).and_return(nil)
         allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new)
       end

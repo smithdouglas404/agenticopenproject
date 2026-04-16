@@ -54,7 +54,7 @@ class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
 
   def corrective_sweep
     MAX_SWEEPS.times do
-      remaining = ProjectIdentifiers::PendingProjectsFinder.new.project_ids
+      remaining = ProjectIdentifiers::PendingProjectsFinder.project_ids
       return if remaining.empty?
 
       remaining.each do |project_id|

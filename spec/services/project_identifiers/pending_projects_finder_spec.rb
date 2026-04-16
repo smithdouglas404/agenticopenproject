@@ -32,12 +32,10 @@ require "rails_helper"
 
 RSpec.describe ProjectIdentifiers::PendingProjectsFinder,
                with_settings: { work_packages_identifier: "classic" } do
-  subject(:finder) { described_class.new }
-
-  describe "#project_ids" do
+  describe ".project_ids" do
     context "when everything is clean" do
       it "returns an empty set" do
-        expect(finder.project_ids).to be_empty
+        expect(described_class.project_ids).to be_empty
       end
     end
 
@@ -45,7 +43,7 @@ RSpec.describe ProjectIdentifiers::PendingProjectsFinder,
       let!(:project) { create(:project, name: "My Project") }
 
       it "includes that project" do
-        expect(finder.project_ids).to include(project.id)
+        expect(described_class.project_ids).to include(project.id)
       end
     end
 
@@ -56,7 +54,7 @@ RSpec.describe ProjectIdentifiers::PendingProjectsFinder,
       let!(:wp) { create(:work_package, project:) }
 
       it "includes that project" do
-        expect(finder.project_ids).to include(project.id)
+        expect(described_class.project_ids).to include(project.id)
       end
     end
 
@@ -67,7 +65,7 @@ RSpec.describe ProjectIdentifiers::PendingProjectsFinder,
       let!(:wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 1, identifier: "VALID1-1") } }
 
       it "does not include that project" do
-        expect(finder.project_ids).not_to include(project.id)
+        expect(described_class.project_ids).not_to include(project.id)
       end
     end
 
@@ -78,7 +76,7 @@ RSpec.describe ProjectIdentifiers::PendingProjectsFinder,
       let!(:wp) { create(:work_package, project:).tap { |w| w.update_columns(sequence_number: 1, identifier: "SOURCE-1") } }
 
       it "includes that project" do
-        expect(finder.project_ids).to include(project.id)
+        expect(described_class.project_ids).to include(project.id)
       end
     end
   end
