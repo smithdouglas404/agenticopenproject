@@ -35,7 +35,7 @@ module Projects::Identifier
   SEMANTIC_IDENTIFIER_MAX_LENGTH = 10
   RESERVED_IDENTIFIERS = %w[new menu queries filters identifier_update_dialog identifier_suggestion].freeze
   # Classic identifier format: lowercase letters, digits, hyphens, underscores — but not all-numeric.
-  CLASSIC_IDENTIFIER_FORMAT = /\A(?!\d+\z)[a-z0-9\-_]+\z/.freeze
+  CLASSIC_IDENTIFIER_FORMAT = /\A(?!\d+\z)[a-z0-9\-_]+\z/
 
   included do
     extend FriendlyId
