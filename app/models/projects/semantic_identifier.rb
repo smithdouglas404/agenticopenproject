@@ -56,12 +56,11 @@ module Projects::SemanticIdentifier
   # Used by the backfill job to restore a prior semantic identifier instead of
   # generating a fresh one, so existing WP identifiers and aliases remain correct.
   def previous_semantic_identifier
-    detector = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
     slugs
       .order(created_at: :desc)
       .pluck(:slug)
       .find do |slug|
-        detector.format_error_reason(slug).nil? &&
+        WorkPackages::IdentifierAutofix::ProblematicIdentifiers.valid_format?(slug) &&
           !self.class.where.not(id:).exists?(["LOWER(identifier) = ?", slug.downcase])
       end
   end

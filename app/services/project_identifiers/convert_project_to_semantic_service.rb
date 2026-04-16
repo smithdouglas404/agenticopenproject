@@ -54,9 +54,8 @@ module ProjectIdentifiers
     attr_reader :project
 
     def fix_identifier_if_needed
-      # Pure format check — no DB queries. nil means the identifier is fine.
-      return unless WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
-                      .format_error_reason(project.identifier)
+      # Pure format check — no DB queries.
+      return if WorkPackages::IdentifierAutofix::ProblematicIdentifiers.valid_format?(project.identifier)
 
       # Serialize all concurrent identifier assignments with a transaction-level
       # advisory lock. The lock is automatically released when the outer
