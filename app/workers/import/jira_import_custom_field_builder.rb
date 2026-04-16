@@ -61,9 +61,10 @@ module Import
 
     attr_reader :jira_field, :context_group
 
-    def initialize(jira_field, context_group: nil)
+    def initialize(jira_field, context_group: nil, option_value: nil)
       @jira_field = jira_field
       @context_group = context_group
+      @option_value = option_value
       @import_name = default_import_name
     end
 
@@ -94,6 +95,7 @@ module Import
     # into the value to assign to the OP custom field attribute.
     def convert_value(raw_value, custom_field)
       case format
+      when "bool" then convert_multicheckbox_bool_value(raw_value)
       when "text" then JiraWikiMarkupConverter.new(raw_value.to_s).convert
       when "list" then convert_list_value(raw_value, custom_field)
       else raw_value
@@ -105,13 +107,17 @@ module Import
     end
 
     def format
-      @format ||= jira_to_op_field_format(jira_field)
+      @format ||= @option_value ? "bool" : jira_to_op_field_format(jira_field)
     end
 
     private
 
     def default_import_name
       base_name = jira_field.payload["name"]
+      # Multicheckbox options produce one boolean CF per option - never append
+      # project keys since the same option should always map to the same CF.
+      return "#{base_name} - #{@option_value}" if @option_value
+
       project_keys = context_group_projects
       return base_name if project_keys.empty?
 
@@ -177,6 +183,12 @@ module Import
       else
         JIRA_CUSTOM_SUFFIX_TO_OP_FORMAT[custom_suffix] || JIRA_TYPE_TO_OP_FORMAT.fetch(type, "string")
       end
+    end
+
+    def convert_multicheckbox_bool_value(raw_value)
+      return false unless raw_value.is_a?(Array)
+
+      raw_value.any? { |v| v["value"] == @option_value }
     end
 
     def convert_list_value(raw_value, custom_field)

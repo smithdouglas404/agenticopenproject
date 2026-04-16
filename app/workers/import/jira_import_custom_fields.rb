@@ -55,7 +55,7 @@ module Import
 
       Import::JiraField
         .where(jira_id: @jira_id, jira_field_id: jira_field_ids)
-        .map { |jira_field| { jira_field:, contexts: build_contexts_for_field(jira_field) } }
+        .flat_map { |jira_field| build_registry_entries_for_field(jira_field) }
     end
 
     def collect_used_jira_field_ids
@@ -71,6 +71,61 @@ module Import
       used_ids.to_a
     end
 
+    def build_registry_entries_for_field(jira_field)
+      if multicheckbox_field?(jira_field)
+        build_multicheckbox_registry_entries(jira_field)
+      else
+        [{ jira_field:, contexts: build_contexts_for_field(jira_field) }]
+      end
+    end
+
+    def multicheckbox_field?(jira_field)
+      schema = jira_field.payload["schema"] || {}
+      schema["custom"].to_s.end_with?(":multicheckboxes")
+    end
+
+    def build_multicheckbox_registry_entries(jira_field)
+      option_values = collect_multicheckbox_option_values(jira_field)
+      option_values.map do |option_value|
+        { jira_field:, contexts: build_multicheckbox_contexts_for_option(jira_field, option_value) }
+      end
+    end
+
+    def collect_multicheckbox_option_values(jira_field)
+      groups = jira_field.payload["contextGroups"]
+      values = if groups.present?
+                 groups.flat_map { |g| Array(g["allowedValues"]).pluck("value") }.compact.uniq.sort
+               else
+                 []
+               end
+      values.presence || collect_option_values_from_issues(jira_field)
+    end
+
+    def collect_option_values_from_issues(jira_field)
+      field_key = jira_field.jira_field_id
+      values = Set.new
+      jira_project_ids = Import::JiraProject
+                           .where(jira_id: @jira_id, jira_project_id: @jira_import.project_ids)
+                           .pluck(:id)
+      Import::JiraIssue.where(jira_id: @jira_id, jira_project_id: jira_project_ids).find_each do |issue|
+        raw = issue.payload["fields"][field_key]
+        next unless raw.is_a?(Array)
+
+        raw.each { |v| values << v["value"] if v["value"].present? }
+      end
+      values.to_a.sort
+    end
+
+    def build_multicheckbox_contexts_for_option(jira_field, option_value)
+      groups = jira_field.payload["contextGroups"]
+      if groups.present?
+        groups.select { |g| Array(g["allowedValues"]).pluck("value").include?(option_value) }
+              .map { |group| build_context_entry(jira_field, group, option_value:) }
+      else
+        [build_context_entry(jira_field, nil, option_value:)]
+      end
+    end
+
     def build_contexts_for_field(jira_field)
       groups = jira_field.payload["contextGroups"]
       if groups.present?
@@ -80,8 +135,8 @@ module Import
       end
     end
 
-    def build_context_entry(jira_field, context_group)
-      builder = Import::JiraImportCustomFieldBuilder.new(jira_field, context_group:)
+    def build_context_entry(jira_field, context_group, option_value: nil)
+      builder = Import::JiraImportCustomFieldBuilder.new(jira_field, context_group:, option_value:)
       custom_field = find_or_create_custom_field(jira_field, builder)
       {
         projects: Array(context_group&.dig("projects")),
