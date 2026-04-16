@@ -132,7 +132,8 @@ class Meeting < ApplicationRecord
   before_save :add_new_participants_as_watcher
 
   after_update :send_updated_mail, if: -> {
-    saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location? || saved_change_to_title?
+    !template? &&
+      (saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location? || saved_change_to_title?)
   }
 
   enum :state, {

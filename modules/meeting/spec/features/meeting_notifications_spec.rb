@@ -294,7 +294,7 @@ RSpec.describe "Meeting notifications", :js do
       wait_for_network_idle
 
       perform_enqueued_jobs
-      expect(ActionMailer::Base.deliveries.size).to eq 2
+      expect(ActionMailer::Base.deliveries.size).to eq 1
       ActionMailer::Base.deliveries.clear
 
       # switch to occurrence and check sidepanel component
@@ -548,6 +548,12 @@ RSpec.describe "Meeting notifications", :js do
 
     before do
       template_meeting.update!(notify: true)
+      # After the scheduled_meetings refactor, InitNextOccurrenceJob creates a real Meeting
+      # occurrence record. Both tests require this occurrence to exist:
+      # send_emails? returns false for a series template that has no
+      # non-cancelled occurrence Meeting records. The "add participant" test additionally relies
+      # on it so that add_to_upcoming_occurrences can propagate the new participant to the occurrence,
+      # which is why that test now expects 5 emails instead of the previous 3.
       RecurringMeetings::InitNextOccurrenceJob.perform_now(recurring_meeting, recurring_meeting.first_occurrence.to_time)
       create(:meeting_participant, meeting: template_meeting, user: other_user, invited: true)
       third_user
