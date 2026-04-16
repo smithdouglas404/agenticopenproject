@@ -28,7 +28,7 @@ Sharing is a **project-level setting** that allows you to choose whether sprints
 > [!NOTE]
 > This is not a sprint-level setting as is currently the case with versions.
 
-Sharing sprints allows teams working across multiple projects to plan and track work in a coordinated way. Instead of managing separate, disconnected sprints in each project, you can define sprints once and reuse them across projects. This is especially useful for cross-team Scrum setups, scaled agile environments, or when multiple teams contribute to the same increment.
+Sharing sprints allows teams working across multiple projects to plan and track work in a coordinated way. Instead of managing separate, disconnected sprints in each project, you can define a sprint once and reuse it across projects. This is especially useful for cross-team Scrum setups, scaled agile environments, or when multiple teams contribute to the same increment.
 
 Depending on the selected option, a project can either provide sprints to others, use shared sprints, or remain independent:
 

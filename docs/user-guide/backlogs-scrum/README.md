@@ -13,7 +13,7 @@ keywords: backlogs, scrum, backlog, agile, sprint, sprint bucket
 
 Working in agile project teams is becoming increasingly important, and with OpenProject, it is easier than ever.
 
-OpenProject supports your work with the Agile and Scrum methodology by providing a variety of improved functionalities. You can now create and manage sprints, record and prioritize user stories in sprints and the backlog, use sprint boards or burndown-charts, print work package cards, and much more. For more information, please refer to the OpenProject [agile and scrum features](https://www.openproject.org/collaboration-software-features/agile-project-management/) page.
+OpenProject supports your work with the Agile and Scrum methodology by providing a variety of improved functionalities. You can now create and manage sprints, record and prioritize work packages in sprints and the backlog, use automated sprint boards or burndown-charts, and much more. For more information, please refer to the OpenProject [agile and scrum features](https://www.openproject.org/collaboration-software-features/agile-project-management/) page.
 
 <div class="glossary">
 
