@@ -228,6 +228,7 @@ en:
         delete_group: "Delete group"
         remove_attribute: "Remove from group"
         reset_to_defaults: "Reset to defaults"
+        drag_to_reorder: "Drag to reorder"
 
       working_days:
         calendar:

@@ -48,15 +48,11 @@ See COPYRIGHT and LICENSE files for more details.
 
         <% no_filter_query = ::API::V3::Queries::QueryParamsRepresenter.new(Query.new_default.tap { |q| q.filters = [] }).to_json %>
         <%= f.hidden_field :attribute_groups, value: "", class: "admin-type-form--hidden-field" %>
-        <%= content_tag(
-              "opce-admin-type-form-configuration",
-              "",
-              data: {
-                "active-groups": form_attributes[:actives],
-                "inactive-attributes": form_attributes[:inactives],
-                "no-filter-query": no_filter_query
-              }
-            ) %>
+        <%= render(WorkPackageTypes::FormConfigurationComponent.new(
+              type: @type,
+              form_attributes:,
+              no_filter_query:
+            )) %>
       </div>
     </div>
   </div>
