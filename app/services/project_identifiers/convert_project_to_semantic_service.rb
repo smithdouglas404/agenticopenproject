@@ -113,7 +113,7 @@ module ProjectIdentifiers
         alias_rows = batch.pluck(:id, :sequence_number)
                           .product(slug_prefixes)
                           .map { |(wp_id, seq), prefix| { identifier: "#{prefix}-#{seq}", work_package_id: wp_id } }
-        WorkPackageSemanticAlias.upsert_rows(alias_rows)
+        WorkPackageSemanticAlias.insert_all(alias_rows, unique_by: :identifier) if alias_rows.any?
       end
     end
   end

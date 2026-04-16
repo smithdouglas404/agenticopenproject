@@ -43,7 +43,4 @@ class WorkPackageSemanticAlias < ApplicationRecord
   validates :identifier, presence: true, uniqueness: true
   validates :work_package, presence: true
 
-  def self.upsert_rows(rows)
-    insert_all(rows, unique_by: :identifier) if rows.any?
-  end
 end
