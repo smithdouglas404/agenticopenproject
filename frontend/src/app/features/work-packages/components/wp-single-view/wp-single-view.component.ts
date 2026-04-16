@@ -203,10 +203,9 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
         throw new Error('work package id is invalid');
       }
 
-      const routingId = this.workPackage.displayId ?? workPackageId;
       this.projectContext = {
         id: project.id,
-        href: this.PathHelper.projectWorkPackagePath(project.id, routingId),
+        href: this.PathHelper.projectWorkPackagePath(project.id, this.workPackage.displayId),
         matches: project.href === this.currentProject.apiv3Path,
       };
     }

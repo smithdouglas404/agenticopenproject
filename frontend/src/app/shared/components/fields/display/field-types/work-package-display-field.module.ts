@@ -27,6 +27,7 @@
 //++
 
 import { DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
+import { formatWorkPackageId } from 'core-app/shared/helpers/work-package-id-pattern';
 
 export class WorkPackageDisplayField extends DisplayField {
   public text = {
@@ -58,8 +59,11 @@ export class WorkPackageDisplayField extends DisplayField {
   }
 
   /**
-   * Returns the semantic identifier for URL routing when available,
-   * falling back to the numeric ID. Used in hrefs for pretty URLs.
+   * Returns the identifier for URL routing when the linked WP is loaded,
+   * falling back to the numeric ID extracted from the href.
+   *
+   * Unlike `WorkPackageBaseResource.displayId`, this handles the case
+   * where the related resource is only a HAL link (not yet fetched).
    */
   public get wpRoutingId():string {
     if (this.value?.$loaded && this.value.displayId) {
@@ -71,23 +75,20 @@ export class WorkPackageDisplayField extends DisplayField {
 
   /**
    * Returns the work package ID formatted for display.
-   * Classic mode: `#123` (hash-prefixed), Semantic mode: `PROJ-42` (no prefix).
    *
-   * This mirrors the logic in `WorkPackageBaseResource.formattedId`
-   * but cannot delegate to it because the linked resource (`this.value`)
-   * may not be loaded — in that case `wpId` falls back to extracting the
-   * numeric ID from the self-link href, which won't have a `displayId`.
+   * Cannot delegate to `WorkPackageBaseResource.formattedId` because
+   * the linked resource (`this.value`) may not be loaded — in that case
+   * we fall back to extracting the numeric ID from the self-link href.
    */
   public get wpFormattedId():string {
     if (this.value?.$loaded && this.value.displayId) {
-      const displayId = this.value.displayId.toString();
-      return /[A-Za-z]/.test(displayId) ? displayId : `#${displayId}`;
+      return formatWorkPackageId(this.value.displayId.toString());
     }
 
     const id = this.wpId;
     if (!id) return '';
 
-    return `#${id}`;
+    return formatWorkPackageId(id);
   }
 
   public get valueString() {

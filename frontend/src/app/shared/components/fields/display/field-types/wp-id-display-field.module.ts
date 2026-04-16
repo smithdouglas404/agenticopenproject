@@ -46,7 +46,7 @@ export class WorkPackageIdDisplayField extends IdDisplayField {
   private uiStateBuilder:UiStateLinkBuilder = new UiStateLinkBuilder(this.$state, this.keepTab, this.currentProject, this.pathHelper);
 
   public get valueString():string {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
     return this.resource.displayId ?? this.value?.toString() ?? '';
   }
 
@@ -54,14 +54,12 @@ export class WorkPackageIdDisplayField extends IdDisplayField {
     if (!this.value) {
       return;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
-    const routingId:string = this.resource.displayId?.toString() ?? this.value?.toString();
     const link = this.uiStateBuilder.linkToShow(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       this.value,
       displayText,
       displayText,
-      routingId,
+      this.valueString,
     );
 
     element.appendChild(link);
