@@ -32,6 +32,7 @@ Rails.application.reloader.to_prepare do
   Principals::ReplaceReferencesService.add_replacements(
     {
       "AuthProvider" => :creator_id,
+      "LongRunningTask" => :created_by_id,
       "Attachment" => :author_id,
       "Budget" => :author_id,
       "Changeset" => :user_id,
