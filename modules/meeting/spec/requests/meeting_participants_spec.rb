@@ -286,7 +286,7 @@ RSpec.describe "MeetingParticipants requests",
 
     context "for a series occurrence" do
       let(:recurring_meeting) { create(:recurring_meeting, project:, author: user) }
-      let(:occurrence) { create(:meeting, project:, author: user, recurring_meeting:) }
+      let(:occurrence) { create(:recurring_meeting_occurrence, project:, author: user, recurring_meeting:) }
 
       it "does not show the apply to upcoming checkbox" do
         get manage_participants_dialog_project_meeting_participants_path(project, occurrence), as: :turbo_stream

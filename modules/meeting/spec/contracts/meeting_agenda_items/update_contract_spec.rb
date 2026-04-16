@@ -81,7 +81,7 @@ RSpec.describe MeetingAgendaItems::UpdateContract do
       context "when the section belongs to a different meeting in the same series" do
         let(:recurring_meeting) { create(:recurring_meeting, project:, author: user) }
         let(:occurrence) do
-          create(:meeting, project:, recurring_meeting:, template: false)
+          create(:recurring_meeting_occurrence, project:, recurring_meeting:, template: false)
         end
         let(:item) { create(:meeting_agenda_item, meeting: recurring_meeting.template) }
         let(:new_section) { create(:meeting_section, meeting: occurrence) }

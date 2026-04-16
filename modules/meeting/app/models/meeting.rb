@@ -126,6 +126,8 @@ class Meeting < ApplicationRecord
 
   validates :title, :project_id, presence: true
   validates :sharing, absence: true, unless: :onetime_template?
+  validates :recurrence_start_time, absence: true, if: :template?
+  validates :recurrence_start_time, presence: true, if: -> { recurring? && !template? }
 
   validates :duration, numericality: { greater_than: 0 }
 

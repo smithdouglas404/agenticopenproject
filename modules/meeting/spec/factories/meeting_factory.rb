@@ -75,6 +75,7 @@ FactoryBot.define do
     factory :meeting_template do |meeting|
       meeting.sequence(:title) { |n| "Meeting template #{n}" }
       template { true }
+      recurrence_start_time { nil }
       recurring_meeting
 
       after(:build) do |template, evaluator|

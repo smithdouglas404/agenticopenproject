@@ -248,7 +248,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
     let!(:scheduled_meetings) do
       Array.new(3) do |i|
         t = Time.zone.today + (i + 1).days + 10.hours
-        create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
+        create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)
       end
     end
 
@@ -307,7 +307,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
     let!(:scheduled_meetings) do
       Array.new(3) do |i|
         t = Time.zone.tomorrow + i.days + 10.hours
-        create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
+        create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)
       end
     end
 
@@ -380,12 +380,12 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
   describe "updating series title" do
     shared_let(:past_occurrence) do
       t = Time.zone.yesterday + 10.hours
-      create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
+      create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)
     end
     shared_let(:future_occurrences) do
       Array.new(3) do |i|
         t = Time.zone.today + (i + 1).days + 10.hours
-        create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
+        create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)
       end
     end
 
@@ -417,7 +417,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       let!(:scheduled_meetings) do
         Array.new(3) do |i|
           t = base_time + i.days
-          create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
+          create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)
         end
       end
 
@@ -442,7 +442,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       let!(:scheduled_meetings) do
         Array.new(4) do |i|
           t = base_time + i.days
-          create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
+          create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)
         end
       end
 
@@ -471,7 +471,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       let!(:scheduled_meetings) do
         Array.new(3) do |i|
           t = base_time + (i * 2).days
-          create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
+          create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)
         end
       end
 
@@ -495,7 +495,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       let!(:scheduled_meetings) do
         Array.new(3) do |i|
           t = base_time + i.days
-          create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
+          create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)
         end
       end
 
@@ -522,7 +522,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       let!(:scheduled_meetings) do
         Array.new(3) do |i|
           t = base_time + (i * 7).days
-          create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
+          create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)
         end
       end
 
@@ -547,7 +547,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       let!(:scheduled_meetings) do
         Array.new(3) do |i|
           t = base_time + i.days
-          create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)
+          create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)
         end
       end
 
@@ -569,7 +569,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
     context "when only a single meeting exists" do
       let!(:scheduled_meetings) do
         t = base_time
-        [create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t)]
+        [create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t)]
       end
 
       let(:params) { { interval: 3 } }
@@ -589,12 +589,15 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       # so the tail remains unchanged while interior meetings move.
       let!(:scheduled_meetings) do
         [
-          create(:meeting, recurring_meeting: series, start_time: base_time, recurrence_start_time: base_time),
+          create(:recurring_meeting_occurrence,
+                 recurring_meeting: series,
+                 start_time: base_time,
+                 recurrence_start_time: base_time),
           create(:meeting,
                  recurring_meeting: series,
                  start_time: base_time + 1.day + 2.hours,
                  recurrence_start_time: base_time + 1.day),
-          create(:meeting, recurring_meeting: series, start_time: base_time + 4.days, recurrence_start_time: base_time + 4.days)
+          create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: base_time + 4.days, recurrence_start_time: base_time + 4.days)
         ]
       end
 
@@ -615,9 +618,9 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
     context "when future instantiated meetings have holes" do
       let!(:scheduled_meetings) do
         [
-          create(:meeting, recurring_meeting: series, start_time: base_time, recurrence_start_time: base_time),
-          create(:meeting, recurring_meeting: series, start_time: base_time + 2.days, recurrence_start_time: base_time + 2.days),
-          create(:meeting, recurring_meeting: series, start_time: base_time + 4.days, recurrence_start_time: base_time + 4.days)
+          create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: base_time, recurrence_start_time: base_time),
+          create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: base_time + 2.days, recurrence_start_time: base_time + 2.days),
+          create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: base_time + 4.days, recurrence_start_time: base_time + 4.days)
         ]
       end
 
@@ -638,16 +641,16 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
     context "when cancelled occurrences exist in the past and future" do
       let!(:past_cancelled) do
         t = Time.zone.yesterday + 10.hours
-        create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t, state: :cancelled)
+        create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t, state: :cancelled)
       end
 
       let!(:future_cancelled) do
         t = base_time + 2.days
-        create(:meeting, recurring_meeting: series, start_time: t, recurrence_start_time: t, state: :cancelled)
+        create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: t, recurrence_start_time: t, state: :cancelled)
       end
 
       let!(:active_future) do
-        create(:meeting, recurring_meeting: series, start_time: base_time, recurrence_start_time: base_time)
+        create(:recurring_meeting_occurrence, recurring_meeting: series, start_time: base_time, recurrence_start_time: base_time)
       end
 
       let(:params) { { interval: 2 } }
