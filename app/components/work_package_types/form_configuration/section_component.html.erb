@@ -1,0 +1,337 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+
+<%=
+  component_wrapper(
+    data: {
+      group_type: @group[:type].to_s,
+      group_key: @group[:key].to_s,
+      group_name: @group[:name],
+      group_query: @group[:query],
+      section_first: first?,
+      section_last: last?
+    }
+  ) do
+    render(border_box_container(mt: 3)) do |box|
+
+      # Section header
+      box.with_header(font_weight: :bold) do
+        flex_layout(justify_content: :space_between, align_items: :center) do |header|
+
+          # Left: drag handle + editable name
+          header.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
+            left.with_column(mr: 2) do
+              render(Primer::OpenProject::DragHandle.new(
+                classes: "section-handle",
+                "aria-label": t("types.edit.form_configuration.drag_to_reorder")
+              ))
+            end
+            left.with_column(flex: 1) do
+              # Display span (clickable to start editing)
+              concat(
+                content_tag(:span, @group[:name],
+                  class: "section-name-display",
+                  style: "cursor:pointer",
+                  data: { action: "click->admin--type-form-configuration#startRenameSection" })
+              )
+              # Edit input (hidden initially)
+              concat(
+                tag.input(
+                  type: "text",
+                  value: @group[:name],
+                  class: "section-name-input",
+                  style: "display:none",
+                  data: {
+                    action: "blur->admin--type-form-configuration#saveRenameSection
+                             keydown.enter->admin--type-form-configuration#saveRenameSection
+                             keydown.escape->admin--type-form-configuration#cancelRenameSection"
+                  }
+                )
+              )
+            end
+          end
+
+          # Right: three-dots action menu
+          header.with_column do
+            render(Primer::Alpha::ActionMenu.new) do |menu|
+              menu.with_show_button(
+                icon: "kebab-horizontal",
+                scheme: :invisible,
+                size: :small,
+                "aria-label": t("types.edit.form_configuration.section_actions")
+              )
+
+              # Rename
+              menu.with_item(
+                label: t("types.edit.form_configuration.rename_section"),
+                tag: :button,
+                value: "",
+                content_arguments: {
+                  data: { action: "click->admin--type-form-configuration#startRenameSection" }
+                }
+              ) do |item|
+                item.with_leading_visual_icon(icon: :pencil)
+              end
+
+              menu.with_divider
+
+              # Move items (position-dependent, hidden via CSS + Stimulus)
+              unless first?
+                menu.with_item(
+                  label: t("label_agenda_item_move_to_top"),
+                  tag: :button,
+                  value: "",
+                  content_arguments: {
+                    data: { action: "click->admin--type-form-configuration#moveSectionTop" }
+                  }
+                ) do |item|
+                  item.with_leading_visual_icon(icon: "move-to-top")
+                end
+
+                menu.with_item(
+                  label: t("label_agenda_item_move_up"),
+                  tag: :button,
+                  value: "",
+                  content_arguments: {
+                    data: { action: "click->admin--type-form-configuration#moveSectionUp" }
+                  }
+                ) do |item|
+                  item.with_leading_visual_icon(icon: "chevron-up")
+                end
+              end
+
+              unless last?
+                menu.with_item(
+                  label: t("label_agenda_item_move_down"),
+                  tag: :button,
+                  value: "",
+                  content_arguments: {
+                    data: { action: "click->admin--type-form-configuration#moveSectionDown" }
+                  }
+                ) do |item|
+                  item.with_leading_visual_icon(icon: "chevron-down")
+                end
+
+                menu.with_item(
+                  label: t("label_agenda_item_move_to_bottom"),
+                  tag: :button,
+                  value: "",
+                  content_arguments: {
+                    data: { action: "click->admin--type-form-configuration#moveSectionBottom" }
+                  }
+                ) do |item|
+                  item.with_leading_visual_icon(icon: "move-to-bottom")
+                end
+              end
+
+              menu.with_divider
+
+              # Delete
+              menu.with_item(
+                label: t("button_delete"),
+                scheme: :danger,
+                tag: :button,
+                value: "",
+                content_arguments: {
+                  data: { action: "click->admin--type-form-configuration#deleteSection" }
+                }
+              ) do |item|
+                item.with_leading_visual_icon(icon: :trash)
+              end
+            end
+          end
+        end
+      end
+
+      # Section rows
+      if query_group?
+        # Query group: single row with "edit query" action
+        box.with_row do
+          flex_layout(justify_content: :space_between, align_items: :center) do |row|
+            row.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
+              left.with_column(mr: 2) do
+                render(Primer::OpenProject::DragHandle.new(
+                  classes: "attribute-handle",
+                  "aria-label": t("types.edit.form_configuration.drag_to_reorder")
+                ))
+              end
+              left.with_column(flex: 1) do
+                render(Primer::Beta::Text.new(color: :subtle)) do
+                  t("types.edit.form_configuration.query_group_label")
+                end
+              end
+            end
+            row.with_column do
+              render(Primer::Alpha::ActionMenu.new) do |menu|
+                menu.with_show_button(
+                  icon: "kebab-horizontal",
+                  scheme: :invisible,
+                  size: :small,
+                  "aria-label": t("types.edit.form_configuration.row_actions")
+                )
+                menu.with_item(
+                  label: t("types.edit.form_configuration.edit_query"),
+                  tag: :button,
+                  value: "",
+                  content_arguments: {
+                    data: { action: "click->admin--type-form-configuration#editQuery" }
+                  }
+                ) do |item|
+                  item.with_leading_visual_icon(icon: :pencil)
+                end
+
+                menu.with_divider
+
+                menu.with_item(
+                  label: t("button_delete"),
+                  scheme: :danger,
+                  tag: :button,
+                  value: "",
+                  content_arguments: {
+                    data: { action: "click->admin--type-form-configuration#deleteSection" }
+                  }
+                ) do |item|
+                  item.with_leading_visual_icon(icon: :trash)
+                end
+              end
+            end
+          end
+        end
+
+      else
+        # Attribute group: rows for each attribute
+        if attributes.empty?
+          box.with_row do
+            render(Primer::Beta::Text.new(color: :subtle, ml: 2)) do
+              t("types.edit.form_configuration.empty_section_hint")
+            end
+          end
+        end
+
+        attributes.each_with_index do |attribute, idx|
+          box.with_row(
+            data: {
+              attr_key: attribute[:key],
+              attr_translation: attribute[:translation],
+              attr_is_cf: attribute[:is_cf],
+              row_first: idx == 0,
+              row_last: idx == attributes.length - 1
+            }
+          ) do
+            flex_layout(justify_content: :space_between, align_items: :center) do |row|
+              row.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
+                left.with_column(mr: 2) do
+                  render(Primer::OpenProject::DragHandle.new(
+                    classes: "attribute-handle",
+                    "aria-label": t("types.edit.form_configuration.drag_to_reorder")
+                  ))
+                end
+                left.with_column(flex: 1) do
+                  render(Primer::Beta::Text.new) { attribute[:translation] }
+                end
+              end
+              row.with_column(classes: "js-row-actions") do
+                render(Primer::Alpha::ActionMenu.new) do |menu|
+                  menu.with_show_button(
+                    icon: "kebab-horizontal",
+                    scheme: :invisible,
+                    size: :small,
+                    "aria-label": t("types.edit.form_configuration.row_actions")
+                  )
+
+                  unless idx == 0
+                    menu.with_item(
+                      label: t("label_agenda_item_move_to_top"),
+                      tag: :button,
+                      value: "",
+                      content_arguments: {
+                        data: { action: "click->admin--type-form-configuration#moveRowTop" }
+                      }
+                    ) do |item|
+                      item.with_leading_visual_icon(icon: "move-to-top")
+                    end
+
+                    menu.with_item(
+                      label: t("label_agenda_item_move_up"),
+                      tag: :button,
+                      value: "",
+                      content_arguments: {
+                        data: { action: "click->admin--type-form-configuration#moveRowUp" }
+                      }
+                    ) do |item|
+                      item.with_leading_visual_icon(icon: "chevron-up")
+                    end
+                  end
+
+                  unless idx == attributes.length - 1
+                    menu.with_item(
+                      label: t("label_agenda_item_move_down"),
+                      tag: :button,
+                      value: "",
+                      content_arguments: {
+                        data: { action: "click->admin--type-form-configuration#moveRowDown" }
+                      }
+                    ) do |item|
+                      item.with_leading_visual_icon(icon: "chevron-down")
+                    end
+
+                    menu.with_item(
+                      label: t("label_agenda_item_move_to_bottom"),
+                      tag: :button,
+                      value: "",
+                      content_arguments: {
+                        data: { action: "click->admin--type-form-configuration#moveRowBottom" }
+                      }
+                    ) do |item|
+                      item.with_leading_visual_icon(icon: "move-to-bottom")
+                    end
+                  end
+
+                  menu.with_divider
+
+                  menu.with_item(
+                    label: t("button_delete"),
+                    scheme: :danger,
+                    tag: :button,
+                    value: "",
+                    content_arguments: {
+                      data: { action: "click->admin--type-form-configuration#deleteRow" }
+                    }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: :trash)
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+%>
