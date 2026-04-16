@@ -97,7 +97,7 @@ export default class TypeFormConfigurationController extends Controller {
     event.preventDefault();
     const section = this.buildSectionElement('query', '');
     this.sectionsContainerTarget.prepend(section);
-    this.openRename(section);
+    this.openQueryEditor(section);
   }
 
   confirmReset(event:Event) {
@@ -277,12 +277,33 @@ export default class TypeFormConfigurationController extends Controller {
 
   // ---- Edit query ----
 
-  editQuery(_event:Event) {
-    // Query editing is handled by the external Angular modal service.
-    // This will be wired up once the query editor is migrated.
+  editQuery(event:Event) {
+    event.preventDefault();
+    const section = this.findSection(event);
+    if (!section) return;
+    this.openQueryEditor(section);
   }
 
   // ---- Private helpers ----
+
+  private openQueryEditor(section:HTMLElement) {
+    const disabledTabs = {
+      'display-settings': I18n.t('js.work_packages.table_configuration.embedded_tab_disabled'),
+      timelines: I18n.t('js.work_packages.table_configuration.embedded_tab_disabled'),
+    };
+
+    void window.OpenProject.getPluginContext().then((ctx) => {
+      if (!this.element.isConnected) return;
+
+      ctx.services.externalRelationQueryConfiguration.show({
+        currentQuery: JSON.parse(section.dataset.groupQuery || this.noFilterQueryValue),
+        callback: (queryProps:unknown) => {
+          section.dataset.groupQuery = JSON.stringify(queryProps);
+        },
+        disabledTabs,
+      });
+    });
+  }
 
   private formSubmitHandler = () => {
     this.serializeToHiddenField();
@@ -316,7 +337,8 @@ export default class TypeFormConfigurationController extends Controller {
       if (isInactive) {
         el.querySelector<HTMLElement>('.js-row-actions')?.remove();
       } else if (!el.querySelector('.js-row-actions')) {
-        el.appendChild(this.buildSimpleDeleteButton());
+        const flexContainer = el.querySelector<HTMLElement>(':scope > div') ?? el as HTMLElement;
+        flexContainer.appendChild(this.buildSimpleDeleteButton());
       }
     });
 
