@@ -148,14 +148,14 @@ RSpec.describe "API v3 Group resource", content_type: :json do
         end
       end
 
-    context "when the user is allowed and the input is invalid" do
-      current_user { admin }
+      context "when the user is allowed and the input is invalid" do
+        current_user { admin }
 
-      let(:body) do
-        {
-          name: ""
-        }.to_json
-      end
+        let(:body) do
+          {
+            name: ""
+          }.to_json
+        end
 
         it "responds with 422 and explains the error" do
           expect(response).to have_http_status(:unprocessable_entity)
@@ -522,6 +522,88 @@ RSpec.describe "API v3 Group resource", content_type: :json do
       let(:permissions) { [] }
 
       it_behaves_like "unauthorized access"
+    end
+  end
+
+  describe "PATCH api/v3/groups/:id (department user validation)" do
+    current_user { admin }
+
+    context "when adding a user who is already in another department" do
+      let(:user_to_add) { create(:user) }
+      let!(:other_department) { create(:department, members: [user_to_add]) }
+      let(:department) { create(:department) }
+
+      let(:body) do
+        {
+          _links: {
+            members: [
+              { href: api_v3_paths.user(user_to_add.id) }
+            ]
+          }
+        }.to_json
+      end
+
+      before do
+        perform_enqueued_jobs do
+          patch api_v3_paths.group(department.id), body
+        end
+      end
+
+      it "responds with 422" do
+        expect(last_response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "includes the error message with user and department ids" do
+        parsed_message = JSON.parse(last_response.body)["message"]
+        expect(parsed_message).to include(user_to_add.id.to_s)
+        expect(parsed_message).to include(other_department.id.to_s)
+      end
+
+      it "does not add the user to the department" do
+        expect(department.reload.users).not_to include(user_to_add)
+      end
+    end
+
+    context "when adding multiple users who are each already in other departments" do
+      let(:user_a) { create(:user) }
+      let(:user_b) { create(:user) }
+      let!(:department_a) { create(:department, members: [user_a]) }
+      let!(:department_b) { create(:department, members: [user_b]) }
+      let(:department) { create(:department) }
+
+      let(:body) do
+        {
+          _links: {
+            members: [
+              { href: api_v3_paths.user(user_a.id) },
+              { href: api_v3_paths.user(user_b.id) }
+            ]
+          }
+        }.to_json
+      end
+
+      before do
+        perform_enqueued_jobs do
+          patch api_v3_paths.group(department.id), body
+        end
+      end
+
+      it "responds with 422" do
+        expect(last_response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns multiple errors" do
+        parsed = JSON.parse(last_response.body)
+        errors = parsed.dig("_embedded", "errors")
+
+        expect(errors.length).to eq(2)
+
+        error_messages = errors.pluck("message")
+        expect(error_messages).to contain_exactly(
+          a_string_including(user_a.id.to_s).and(a_string_including(department_a.id.to_s)),
+          a_string_including(user_b.id.to_s).and(a_string_including(department_b.id.to_s))
+        )
+      end
     end
   end
 
