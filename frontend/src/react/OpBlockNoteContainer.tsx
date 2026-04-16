@@ -35,7 +35,6 @@ import * as Y from 'yjs';
 import { DocumentLoadingSkeleton } from './components/DocumentLoadingSkeleton';
 import { OpBlockNoteEditor } from './components/OpBlockNoteEditor';
 import { useCollaboration } from './hooks/useCollaboration';
-import { ErrorBoundary } from 'op-blocknote-extensions';
 
 export interface OpBlockNoteContainerProps {
   activeUser:User;
@@ -79,7 +78,6 @@ export default function OpBlockNoteContainer({
   }
 
   return (
-    <ErrorBoundary>
       <OpBlockNoteEditor
         activeUser={activeUser}
         readOnly={readOnly}
@@ -89,6 +87,5 @@ export default function OpBlockNoteContainer({
         hocuspocusProvider={hocuspocusProvider}
         doc={doc}
       />
-    </ErrorBoundary>
   );
 }
