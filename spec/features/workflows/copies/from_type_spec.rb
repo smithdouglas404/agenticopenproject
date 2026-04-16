@@ -33,11 +33,10 @@ require "spec_helper"
 RSpec.describe "Workflow copy from type", :js do
   let!(:types) { create_list(:type, 3) }
   let!(:type) { types.first }
-  let(:admin)  { create(:admin) }
+  let(:admin) { create(:admin) }
+  let(:target_types_autocompleter) { FormFields::Primerized::AutocompleteField.new("target_types", selector: "[data-test-selector='target_types_autocomplete']") }
 
   current_user { admin }
-
-  let(:target_types_autocompleter) { FormFields::Primerized::AutocompleteField.new("target_types", selector: "[data-test-selector='target_types_autocomplete']") }
 
   shared_examples "a copy-to-another-type dialog" do |with_source_role:|
     it "permits to select target types" do

@@ -39,7 +39,7 @@ class Workflows::Copies::FromRolesController < ApplicationController
   before_action :set_source_role
   before_action :set_target_roles
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
     if @source_type.nil? || @source_role.nil?
       render_flash_message_via_turbo_stream(
         message: I18n.t(:error_workflow_copy_source),

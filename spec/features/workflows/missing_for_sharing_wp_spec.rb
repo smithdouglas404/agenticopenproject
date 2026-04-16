@@ -79,7 +79,7 @@ RSpec.describe "Configuring the workflow for work package sharing", :js,
 
     # Copying succeeds which results in the edit role having a workflow and the warning disappearing.
     expect(page)
-      .to have_content "Successful update"
+      .to have_content "Successfully copied workflow"
 
     expect(Workflow.where(role_id: work_package_role.id,
                           type_id: type.id,
