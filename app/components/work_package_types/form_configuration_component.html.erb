@@ -1,0 +1,185 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+
+<%=
+  component_wrapper(
+    data: {
+      controller: "admin--type-form-configuration",
+      "admin--type-form-configuration-no-filter-query-value": @no_filter_query,
+      "admin--type-form-configuration-ee-available-value": ee_available?
+    }
+  ) do
+    flex_layout do |outer|
+
+      # ===== Subheader =====
+      outer.with_row(mb: 4) do
+        render(Primer::OpenProject::SubHeader.new) do |subheader|
+
+          # "+ Add" dropdown (EE only)
+          if ee_available?
+            subheader.with_action_menu(
+              leading_icon: :plus,
+              label: t("types.edit.form_configuration.add_section_button"),
+              anchor_align: :end,
+              button_arguments: {
+                scheme: :primary,
+                "aria-label": t("types.edit.form_configuration.add_section_button"),
+                "data-test-selector": "type-form-configuration-add-button"
+              }
+            ) do |menu|
+              menu.with_item(
+                label: t("types.edit.form_configuration.add_attribute_group"),
+                tag: :button,
+                value: "",
+                content_arguments: {
+                  data: { action: "click->admin--type-form-configuration#addAttributeSection" }
+                }
+              ) do |item|
+                item.with_leading_visual_icon(icon: :"rows")
+              end
+
+              menu.with_item(
+                label: t("types.edit.form_configuration.add_query_group"),
+                tag: :button,
+                value: "",
+                content_arguments: {
+                  data: { action: "click->admin--type-form-configuration#addQuerySection" }
+                }
+              ) do |item|
+                item.with_leading_visual_icon(icon: :"table")
+              end
+            end
+          end
+
+          # "Reset to defaults" button
+          subheader.with_action_button(
+            tag: :button,
+            type: :button,
+            scheme: :secondary,
+            leading_icon: :undo,
+            label: t("types.edit.form_configuration.reset_to_defaults"),
+            "data-test-selector": "type-form-configuration-reset-button",
+            data: { action: "click->admin--type-form-configuration#resetToDefault" }
+          ) do
+            t("types.edit.form_configuration.reset_to_defaults")
+          end
+        end
+      end
+
+      # ===== Two-column layout: left (inactive) + right (active sections) =====
+      outer.with_row do
+        flex_layout(align_items: :flex_start) do |columns|
+
+          # ---- Left panel: inactive attributes ----
+          columns.with_column(flex: 1, mr: 4, classes: "type-form-configuration--inactive-panel") do
+            flex_layout do |left|
+
+              # Filter input
+              left.with_row(mb: 2) do
+                render(Primer::Alpha::TextField.new(
+                  name: "inactive-filter",
+                  label: t("types.edit.form_configuration.filter_inactive"),
+                  visually_hide_label: true,
+                  placeholder: t("types.edit.form_configuration.filter_inactive"),
+                  leading_visual: { icon: :search },
+                  size: :medium,
+                  "full-width": true,
+                  data: {
+                    action: "input->admin--type-form-configuration#filterInactives"
+                  }
+                ))
+              end
+
+              # Inactive attributes BorderBox
+              left.with_row do
+                content_tag(:div, data: { "admin--type-form-configuration-target": "inactiveContainer" }) do
+                  render(border_box_container) do |box|
+                    box.with_header(font_weight: :bold) do
+                      render(Primer::Beta::Text.new(font_weight: :bold)) do
+                        t("types.edit.form_configuration.inactive_attributes_heading")
+                      end
+                    end
+
+                    if @inactives.empty?
+                      box.with_row do
+                        render(Primer::Beta::Text.new(color: :subtle)) do
+                          t("types.edit.form_configuration.no_inactive_attributes")
+                        end
+                      end
+                    else
+                      @inactives.each do |attribute|
+                        box.with_row(
+                          data: {
+                            attr_key: attribute[:key],
+                            attr_translation: attribute[:translation],
+                            attr_is_cf: attribute[:is_cf]
+                          }
+                        ) do
+                          flex_layout(align_items: :center) do |row|
+                            row.with_column(mr: 2) do
+                              render(Primer::OpenProject::DragHandle.new(
+                                classes: "attribute-handle",
+                                "aria-label": t("types.edit.form_configuration.drag_to_reorder")
+                              ))
+                            end
+                            row.with_column(flex: 1) do
+                              render(Primer::Beta::Text.new) { attribute[:translation] }
+                            end
+                          end
+                        end
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+
+          # ---- Right panel: active sections ----
+          # Use a plain div so section component_wrappers are direct children (required for sections Dragula)
+          columns.with_column(style: "flex: 2") do
+            content_tag(:div, data: { "admin--type-form-configuration-target": "sectionsContainer" }) do
+              if section_components.empty?
+                render(Primer::Beta::Blankslate.new(test_selector: "type-form-configuration-blankslate")) do |blankslate|
+                  blankslate.with_visual_icon(icon: :"rows")
+                  blankslate.with_heading(tag: :h3) { t("types.edit.form_configuration.blankslate_title") }
+                  blankslate.with_description { t("types.edit.form_configuration.blankslate_description") }
+                end
+              else
+                safe_join(section_components.map { |section| render(section) })
+              end
+            end
+          end
+
+        end
+      end
+
+    end
+  end
+%>
