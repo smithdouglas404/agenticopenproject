@@ -85,6 +85,8 @@ module ProjectIdentifiers
       raise "Generated identifier is blank for project #{project.id}" if new_identifier.blank?
 
       project.identifier = new_identifier
+      # Bypass validation, because we're technically still in classic mode, so the model would be applying
+      # validation for classic identifiers.
       project.save!(validate: false)
     end
 
