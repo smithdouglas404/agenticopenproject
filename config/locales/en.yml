@@ -414,7 +414,7 @@ en:
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
