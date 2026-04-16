@@ -93,11 +93,7 @@ module ProjectIdentifiers
     def reset_stale_identifiers
       # Fix WPs whose identifier does not exactly match the expected semantic identifier
       #   (caused by renames or cross-project moves in classic mode)
-      WorkPackage
-        .where(project:)
-        .where.not(sequence_number: nil)
-        .where("identifier IS DISTINCT FROM (? || '-' || sequence_number::text)", project.identifier)
-        .update_all(identifier: nil, sequence_number: nil)
+      WorkPackage.where(project:).non_semantic(project).update_all(identifier: nil, sequence_number: nil)
     end
 
     def backfill_missing_ids
@@ -111,7 +107,7 @@ module ProjectIdentifiers
       slug_prefixes = project.slugs.pluck(:slug)
       return if slug_prefixes.empty?
 
-      WorkPackage.where(project:).where.not(sequence_number: nil).in_batches do |batch|
+      WorkPackage.where(project:).semantically_sequenced.in_batches do |batch|
         alias_rows = batch.pluck(:id, :sequence_number)
                           .product(slug_prefixes)
                           .map { |(wp_id, seq), prefix| { identifier: "#{prefix}-#{seq}", work_package_id: wp_id } }

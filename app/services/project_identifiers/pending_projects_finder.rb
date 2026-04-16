@@ -54,7 +54,7 @@ module ProjectIdentifiers
     def projects_with_stale_wps
       WorkPackage
         .joins(:project)
-        .where.not(sequence_number: nil)
+        .semantically_sequenced
         .where("work_packages.identifier IS DISTINCT FROM " \
                "projects.identifier || '-' || work_packages.sequence_number::text")
         .distinct.pluck(:project_id).to_set
