@@ -3041,6 +3041,7 @@ en:
       title: "Enterprise add-on"
       plan_title: "Enterprise %{plan} add-on"
       plan_name: "%{plan} enterprise plan"
+      trial_text: "This feature is included in your active Enterprise trial."
       plan_text_html: "Available starting with the %{plan_name}."
       unlimited: "Unlimited"
       already_have_token: >
