@@ -33,7 +33,7 @@ require "rails_helper"
 RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
   subject(:job) { described_class.new }
 
-  let(:update_service) { instance_double(Settings::UpdateService, call: ServiceResult.new(success: true)) }
+  let(:update_service) { instance_double(Settings::UpdateService, call: ServiceResult.success) }
 
   before do
     allow(Settings::UpdateService).to receive(:new).with(user: User.system).and_return(update_service)

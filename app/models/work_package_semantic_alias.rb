@@ -42,5 +42,4 @@ class WorkPackageSemanticAlias < ApplicationRecord
 
   validates :identifier, presence: true, uniqueness: true
   validates :work_package, presence: true
-
 end

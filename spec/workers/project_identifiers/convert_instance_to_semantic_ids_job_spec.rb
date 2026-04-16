@@ -37,7 +37,6 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                ] do
   subject(:job) { described_class.new }
 
-
   describe "#perform" do
     context "when there are projects to convert" do
       before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set[1, 2]) }
