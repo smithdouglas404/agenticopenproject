@@ -44,14 +44,15 @@ RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
 
         described_class.new.perform
 
-        services.each { |service| expect(service).to have_received(:call) }
+        expect(services).to all(have_received(:call))
       end
     end
 
     context "when there are no projects" do
       it "does not call RevertProjectToClassicService" do
-        expect(ProjectIdentifiers::RevertProjectToClassicService).not_to receive(:new)
+        allow(ProjectIdentifiers::RevertProjectToClassicService).to receive(:new)
         described_class.new.perform
+        expect(ProjectIdentifiers::RevertProjectToClassicService).not_to have_received(:new)
       end
     end
   end
