@@ -32,18 +32,17 @@ class RbMasterBacklogsController < RbApplicationController
   include WorkPackages::WithSplitView
 
   # Without the feature flag, there is only the top level menu item, select it
-  menu_item :backlogs_legacy
+  menu_item :backlogs_legacy, only: :index
 
   # With the feature flag, we have a proper menu, select the correct sub entry
-  current_menu_item [:backlog] do
-    :backlog
-  end
+  menu_item :backlog, only: %i[backlog details]
 
   before_action :not_authorized_on_feature_flag_inactive, only: :backlog
   before_action :load_backlogs, only: %i[index backlog]
 
   def backlog
-    if turbo_frame_request?
+    case turbo_frame_request_id
+    when "backlogs_container"
       render partial: "backlog_list", layout: false
     else
       render :backlog
@@ -53,7 +52,8 @@ class RbMasterBacklogsController < RbApplicationController
   def index
     return redirect_to action: :backlog if OpenProject::FeatureDecisions.scrum_projects_active?
 
-    if turbo_frame_request?
+    case turbo_frame_request_id
+    when "backlogs_container"
       render partial: "list", layout: false
     else
       render :index
@@ -74,6 +74,8 @@ class RbMasterBacklogsController < RbApplicationController
     end
   end
 
+  private
+
   def split_view_base_route
     if OpenProject::FeatureDecisions.scrum_projects_active?
       backlog_backlogs_project_backlogs_path(request.query_parameters)
@@ -81,8 +83,6 @@ class RbMasterBacklogsController < RbApplicationController
       backlogs_project_backlogs_path(request.query_parameters)
     end
   end
-
-  private
 
   def load_backlogs
     @owner_backlogs = Backlog.owner_backlogs(@project)

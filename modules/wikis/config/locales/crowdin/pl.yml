@@ -26,14 +26,23 @@ pl:
         many: Linki stron relacji
         other: Linki strony relacji
       wikis/xwiki_provider: Dostawca XWiki
+  permission_manage_wiki_page_links: Manage Wiki Page Links
+  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: Dostawcy wiki
   wikis:
     buttons:
       save_and_continue: Zapisz i kontynuuj
+      wiki_page: Wiki page
     inline_page_links_component:
       empty_heading: No inline links
       empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
       heading: Inline page links
+    page_link_component:
+      remove: Remove page link
+    relation_page_links_component:
+      empty_heading: No related pages
+      empty_text: Manually add links to other related wiki pages.
+      heading: Related pages
     admin:
       wiki_providers:
         index_description: Dodaj zewnętrzną usługę wiki, aby powiązać pakiety robocze z istniejącymi stronami wiki lub utworzyć nowe bezpośrednio z OpenProject.

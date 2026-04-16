@@ -41,6 +41,9 @@ vi:
         start_date: ngày
         start_time: Thời gian bắt đầu
         start_time_hour: Thời gian bắt đầu
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: tiêu đề
@@ -48,9 +51,15 @@ vi:
         duration_in_minutes: thời lượng
         description: Ghi chú
         presenter: Người trình bày
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: tiêu đề
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: tần số
         interval: khoảng thời gian
         start_date: Bắt đầu vào
@@ -59,6 +68,10 @@ vi:
         end_after: Chuỗi cuộc họp kết thúc
         end_date: Ngày kết thúc
         iterations: lần xuất hiện
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:

@@ -127,7 +127,7 @@ gem "multi_json", "~> 1.20.0"
 gem "oj", "~> 3.16.16"
 
 gem "daemons"
-gem "good_job", "~> 4.13.3" # update should be done manually in sync with saas-openproject version.
+gem "good_job", "~> 4.14.2" # update should be done manually in sync with saas-openproject version.
 
 gem "rack-protection", "~> 3.2.0"
 
@@ -161,7 +161,7 @@ gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
 
-gem "mcp", "~> 0.9.2"
+gem "mcp", "~> 0.10.0"
 
 gem "meta-tags", "~> 2.23.0"
 
@@ -334,9 +334,6 @@ group :development do
   gem "spring-commands-rubocop"
 
   gem "colored2"
-
-  # git hooks manager
-  gem "lefthook", require: false
 end
 
 group :development, :test do

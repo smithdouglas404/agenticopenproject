@@ -269,7 +269,7 @@ module Import
         parse_json(response)
       else
         raise ApiError.new(
-          I18n.t("admin.jira.client.api_error", status: response.status),
+          I18n.t("admin.jira.client.#{response.status}_error", status: response.status, default: :"admin.jira.client.api_error"),
           status: response.status,
           response_body: response.body.to_s
         )
