@@ -54,9 +54,8 @@ module ProjectIdentifiers
     attr_reader :project
 
     def fix_identifier_if_needed
-      # Pure format check — no DB queries. nil means the identifier is fine.
-      return unless WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
-                      .format_error_reason(project.identifier)
+      # Pure format check — no DB queries.
+      return if WorkPackages::IdentifierAutofix::ProblematicIdentifiers.valid_format?(project.identifier)
 
       # Serialize all concurrent identifier assignments with a transaction-level
       # advisory lock. The lock is automatically released when the outer
@@ -86,17 +85,15 @@ module ProjectIdentifiers
       raise "Generated identifier is blank for project #{project.id}" if new_identifier.blank?
 
       project.identifier = new_identifier
+      # Bypass validation, because we're technically still in classic mode, so the model would be applying
+      # validation for classic identifiers.
       project.save!(validate: false)
     end
 
     def reset_stale_identifiers
       # Fix WPs whose identifier does not exactly match the expected semantic identifier
       #   (caused by renames or cross-project moves in classic mode)
-      WorkPackage
-        .where(project:)
-        .where.not(sequence_number: nil)
-        .where("identifier IS DISTINCT FROM (? || '-' || sequence_number::text)", project.identifier)
-        .update_all(identifier: nil, sequence_number: nil)
+      WorkPackage.where(project:).non_semantic(project).update_all(identifier: nil, sequence_number: nil)
     end
 
     def backfill_missing_ids
@@ -110,11 +107,11 @@ module ProjectIdentifiers
       slug_prefixes = project.slugs.pluck(:slug)
       return if slug_prefixes.empty?
 
-      WorkPackage.where(project:).where.not(sequence_number: nil).in_batches do |batch|
+      WorkPackage.where(project:).semantically_sequenced.in_batches do |batch|
         alias_rows = batch.pluck(:id, :sequence_number)
                           .product(slug_prefixes)
                           .map { |(wp_id, seq), prefix| { identifier: "#{prefix}-#{seq}", work_package_id: wp_id } }
-        WorkPackageSemanticAlias.upsert_rows(alias_rows)
+        WorkPackageSemanticAlias.insert_all(alias_rows, unique_by: :identifier) if alias_rows.any?
       end
     end
   end

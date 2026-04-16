@@ -33,22 +33,22 @@ require "rails_helper"
 RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
   subject(:job) { described_class.new }
 
-  let(:finder) { instance_double(ProjectIdentifiers::PendingProjectsFinder) }
+  let(:update_service) { instance_double(Settings::UpdateService, call: ServiceResult.success) }
 
   before do
-    allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:new).and_return(finder)
-    allow(Setting::WorkPackageIdentifier).to receive(:enable_semantic!)
+    allow(Settings::UpdateService).to receive(:new).with(user: User.system).and_return(update_service)
   end
 
   describe "#perform" do
     context "when no projects remain from the start" do
-      before { allow(finder).to receive(:project_ids).and_return(Set.new) }
+      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set.new) }
 
       it "enables semantic mode without running any conversion" do
         allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new)
         job.perform
         expect(ProjectIdentifiers::ConvertProjectToSemanticService).not_to have_received(:new)
-        expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
+        expect(update_service).to have_received(:call)
+          .with(work_packages_identifier: Setting::WorkPackageIdentifier::SEMANTIC)
       end
     end
 
@@ -57,7 +57,7 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
       let(:service) { instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil) }
 
       before do
-        allow(finder).to receive(:project_ids).and_return(Set[1], Set.new)
+        allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set[1], Set.new)
         allow(Project).to receive(:find_by).with(id: 1).and_return(project)
         allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
       end
@@ -65,7 +65,8 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
       it "runs one conversion sweep then enables semantic mode" do
         job.perform
         expect(service).to have_received(:call).once
-        expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
+        expect(update_service).to have_received(:call)
+          .with(work_packages_identifier: Setting::WorkPackageIdentifier::SEMANTIC)
       end
     end
 
@@ -74,7 +75,7 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
       let(:service) { instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil) }
 
       before do
-        allow(finder).to receive(:project_ids).and_return(Set[1])
+        allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set[1])
         allow(Project).to receive(:find_by).with(id: 1).and_return(project)
         allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
       end
@@ -86,13 +87,13 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
         expect { job.perform }.to raise_error(RuntimeError, give_up_pattern)
         expect(service).to have_received(:call).exactly(described_class::MAX_SWEEPS).times
         expect(Rails.logger).to have_received(:warn).with(give_up_pattern)
-        expect(Setting::WorkPackageIdentifier).not_to have_received(:enable_semantic!)
+        expect(update_service).not_to have_received(:call)
       end
     end
 
     context "when a remaining project no longer exists" do
       before do
-        allow(finder).to receive(:project_ids).and_return(Set[99], Set.new)
+        allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set[99], Set.new)
         allow(Project).to receive(:find_by).with(id: 99).and_return(nil)
         allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new)
       end
@@ -100,7 +101,8 @@ RSpec.describe ProjectIdentifiers::FinishSemanticConversionJob do
       it "skips the missing project and still enables semantic mode" do
         job.perform
         expect(ProjectIdentifiers::ConvertProjectToSemanticService).not_to have_received(:new)
-        expect(Setting::WorkPackageIdentifier).to have_received(:enable_semantic!)
+        expect(update_service).to have_received(:call)
+          .with(work_packages_identifier: Setting::WorkPackageIdentifier::SEMANTIC)
       end
     end
   end

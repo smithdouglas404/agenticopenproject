@@ -36,28 +36,30 @@ module ProjectIdentifiers
   # * projects that have work packages with no sequence_number yet
   # * projects that have work packages whose identifier doesn't match
   #   the current project prefix (stale due to renames or cross-project moves)
-  class PendingProjectsFinder
-    def project_ids
+  module PendingProjectsFinder
+    def self.project_ids
       projects_with_bad_identifier | projects_with_unsequenced_wps | projects_with_stale_wps
     end
 
-    private
+    class << self
+      private
 
-    def projects_with_bad_identifier
-      WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
-    end
+      def projects_with_bad_identifier
+        WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
+      end
 
-    def projects_with_unsequenced_wps
-      WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
-    end
+      def projects_with_unsequenced_wps
+        WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
+      end
 
-    def projects_with_stale_wps
-      WorkPackage
-        .joins(:project)
-        .where.not(sequence_number: nil)
-        .where("work_packages.identifier IS DISTINCT FROM " \
-               "projects.identifier || '-' || work_packages.sequence_number::text")
-        .distinct.pluck(:project_id).to_set
+      def projects_with_stale_wps
+        WorkPackage
+          .joins(:project)
+          .semantically_sequenced
+          .where("work_packages.identifier IS DISTINCT FROM " \
+                 "projects.identifier || '-' || work_packages.sequence_number::text")
+          .distinct.pluck(:project_id).to_set
+      end
     end
   end
 end

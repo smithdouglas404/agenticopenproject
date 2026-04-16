@@ -38,6 +38,11 @@ module WorkPackage::SemanticIdentifier
              inverse_of: :work_package,
              dependent: :delete_all
 
+    scope :semantically_sequenced, -> { where.not(sequence_number: nil) }
+    scope :non_semantic, ->(project) {
+      semantically_sequenced.where("identifier IS DISTINCT FROM (? || '-' || sequence_number::text)", project.identifier)
+    }
+
     after_create :allocate_and_register_semantic_id, if: -> { Setting::WorkPackageIdentifier.semantic? }
   end
 

@@ -39,14 +39,22 @@ class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
 
   def perform(*)
     corrective_sweep
-    Setting::WorkPackageIdentifier.enable_semantic!
+    set_semantic_mode!
   end
 
   private
 
+  def set_semantic_mode!
+    result = Settings::UpdateService
+               .new(user: User.system)
+               .call(work_packages_identifier: Setting::WorkPackageIdentifier::SEMANTIC)
+
+    raise "[FinishSemanticConversionJob] Failed to enable semantic mode: #{result.message}" unless result.success?
+  end
+
   def corrective_sweep
     MAX_SWEEPS.times do
-      remaining = ProjectIdentifiers::PendingProjectsFinder.new.project_ids
+      remaining = ProjectIdentifiers::PendingProjectsFinder.project_ids
       return if remaining.empty?
 
       remaining.each do |project_id|

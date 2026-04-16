@@ -37,15 +37,9 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
                ] do
   subject(:job) { described_class.new }
 
-  let(:finder) { instance_double(ProjectIdentifiers::PendingProjectsFinder) }
-
-  before do
-    allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:new).and_return(finder)
-  end
-
   describe "#perform" do
     context "when there are projects to convert" do
-      before { allow(finder).to receive(:project_ids).and_return(Set[1, 2]) }
+      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set[1, 2]) }
 
       it "enqueues one ConvertProjectToSemanticIdsJob per pending project" do
         job.perform
@@ -61,7 +55,7 @@ RSpec.describe ProjectIdentifiers::ConvertInstanceToSemanticIdsJob,
     end
 
     context "when there are no projects to convert" do
-      before { allow(finder).to receive(:project_ids).and_return(Set.new) }
+      before { allow(ProjectIdentifiers::PendingProjectsFinder).to receive(:project_ids).and_return(Set.new) }
 
       it "does not enqueue any per-project jobs" do
         job.perform
