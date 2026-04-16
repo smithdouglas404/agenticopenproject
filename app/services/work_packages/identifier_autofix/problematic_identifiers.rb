@@ -58,7 +58,7 @@ module WorkPackages
       FORMAT_RULES = [
         [:too_long, ->(id, max) { id.length > max }],
         [:numerical, ->(id, _) { id.match?(/\A\d+\z/) }],
-        [:does_not_start_with_letter, ->(id, _) { !id.match?(/\A[A-Z]/) }],
+        [:does_not_start_with_letter, ->(id, _) { !id.match?(/\A[A-Za-z]/) }],
         [:special_characters, ->(id, _) { id.match?(/[^a-zA-Z0-9_]/) }],
         [:not_fully_uppercased, ->(id, _) { id != id.upcase }]
       ].freeze
