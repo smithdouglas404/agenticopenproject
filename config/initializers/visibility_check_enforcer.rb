@@ -30,10 +30,9 @@
 
 require "open_project/visibility_check_enforcer"
 
-# Enable the enforcer in development and test so forgotten `.visible(user)` scopes surface
-# immediately. Which tables are enforced is controlled by the `OP_VISIBILITY_ENFORCED_TABLES`
-# env var (comma-separated); with the var unset, the enforcer is installed but a no-op,
-# which keeps the initial rollout safe.
+# Enable the enforcer in development and test so forgotten `.visible(user)`
+# scopes surface immediately. Enforcement applies to every DB table except
+# those listed in `OpenProject::VisibilityCheckEnforcer::EXCLUDED_TABLES`.
 if Rails.env.local?
   OpenProject::VisibilityCheckEnforcer.install!
 end

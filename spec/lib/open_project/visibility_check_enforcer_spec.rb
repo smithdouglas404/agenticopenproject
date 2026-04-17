@@ -31,23 +31,22 @@
 require "spec_helper"
 
 RSpec.describe OpenProject::VisibilityCheckEnforcer do
-  # The enforcer inspects SQL strings and raises when a protected table is queried without
-  # an annotation covering it. We drive it directly with synthetic SQL payloads so the tests
-  # don't depend on which tables are currently enforced in the running app.
+  # Drive the enforcer with synthetic SQL payloads so tests don't depend on the
+  # set of real tables present in the connection. We override `enforced_tables`
+  # to a fixed list per spec.
   def enforce(sql, cached: false, name: "Meeting Load")
     described_class.enforce!(sql: sql, cached: cached, name: name)
   end
 
   around do |example|
-    original = described_class.protected_tables
-    described_class.protected_tables = %w[meetings work_packages]
+    described_class.enforced_tables = %w[meetings work_packages]
     example.run
   ensure
-    described_class.protected_tables = original
+    described_class.enforced_tables = nil
   end
 
   describe ".enforce!" do
-    it "raises when a protected table is referenced without any annotation" do
+    it "raises when an enforced table is referenced without any annotation" do
       expect { enforce(%(SELECT "meetings".* FROM "meetings")) }
         .to raise_error(OpenProject::VisibilityCheckMissing, /meetings/)
     end
@@ -62,7 +61,7 @@ RSpec.describe OpenProject::VisibilityCheckEnforcer do
       expect { enforce(sql) }.not_to raise_error
     end
 
-    it "ignores the query when no protected table is referenced" do
+    it "ignores the query when no enforced table is referenced" do
       expect { enforce(%(SELECT "projects".* FROM "projects")) }.not_to raise_error
     end
 
@@ -78,7 +77,16 @@ RSpec.describe OpenProject::VisibilityCheckEnforcer do
       expect { enforce(%(UPDATE "meetings" SET name='x')) }.not_to raise_error
     end
 
-    context "with joined protected tables" do
+    it "ignores table-like names that don't match a real enforced table (CTEs, aliases)" do
+      # `visible_work_packages` is a CTE name; it's not in enforced_tables, so it must not trigger.
+      sql = <<~SQL.squish
+        WITH "visible_work_packages" AS (SELECT * FROM "meetings" /* visibility_checked:meetings */)
+        SELECT * FROM "visible_work_packages"
+      SQL
+      expect { enforce(sql) }.not_to raise_error
+    end
+
+    context "with joined enforced tables" do
       let(:sql) do
         <<~SQL.squish
           SELECT "work_packages".* FROM "work_packages"
@@ -102,8 +110,8 @@ RSpec.describe OpenProject::VisibilityCheckEnforcer do
       end
     end
 
-    context "with a subquery on a protected table" do
-      it "raises when the inner protected table is not annotated" do
+    context "with a subquery on an enforced table" do
+      it "raises when the inner enforced table is not annotated" do
         sql = <<~SQL.squish
           SELECT "work_packages".* FROM "work_packages"
           WHERE "work_packages"."project_id" IN (SELECT "meetings"."project_id" FROM "meetings")
@@ -122,9 +130,9 @@ RSpec.describe OpenProject::VisibilityCheckEnforcer do
       end
     end
 
-    context "when the enforcer is disabled via protected_tables = []" do
+    context "when the enforcer has no enforced tables" do
       it "is a no-op" do
-        described_class.protected_tables = []
+        described_class.enforced_tables = []
         expect { enforce(%(SELECT "meetings".* FROM "meetings")) }.not_to raise_error
       end
     end
@@ -155,6 +163,19 @@ RSpec.describe OpenProject::VisibilityCheckEnforcer do
     end
   end
 
+  describe "EXCLUDED_TABLES" do
+    it "contains the framework, background-job, and configuration tables" do
+      %w[
+        ar_internal_metadata schema_migrations
+        good_jobs good_job_batches good_job_executions good_job_processes good_job_settings
+        sessions settings enabled_modules
+        paper_trail_audits
+      ].each do |table|
+        expect(described_class::EXCLUDED_TABLES).to include(table)
+      end
+    end
+  end
+
   describe "VisibilityAnnotation helpers" do
     it "adds a visibility_checked annotation via `.visibility_checked`" do
       sql = Meeting.all.visibility_checked.to_sql
@@ -174,25 +195,6 @@ RSpec.describe OpenProject::VisibilityCheckEnforcer do
     it "requires a non-empty reason" do
       expect { Meeting.skip_visibility_check(reason: "") }.to raise_error(ArgumentError)
       expect { Meeting.skip_visibility_check(reason: "   ") }.to raise_error(ArgumentError)
-    end
-  end
-
-  describe "every model that defines a `visible` scope/method" do
-    # This guard fails if a new protected model is added without being noted as a potential
-    # candidate for the `OP_VISIBILITY_ENFORCED_TABLES` list. It doesn't require enforcement —
-    # it requires awareness.
-    it "exists, so developers know where to look" do
-      scope_files = (
-        Rails.root.glob("app/models/**/*.rb") +
-          Rails.root.glob("modules/**/app/models/**/*.rb")
-      ).select do |f|
-        content = File.read(f)
-        content.match?(/^\s*scope\s+:visible\b/) ||
-          content.match?(/^\s*def\s+self\.visible\b/) ||
-          content.match?(/^\s*def\s+visible\b/)
-      end
-
-      expect(scope_files).not_to be_empty
     end
   end
 end
