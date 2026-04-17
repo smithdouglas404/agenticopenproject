@@ -98,7 +98,8 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     return unless args.length == 1 && args.first.is_a?(Hash)
 
     hash = args.first
-    key, value = hash.assoc(:id) || hash.assoc(:identifier)
+    key, value = (hash.assoc(:id) || hash.assoc("id")) ||
+                 (hash.assoc(:identifier) || hash.assoc("identifier"))
     return unless key && semantic_id?(value)
 
     raise ArgumentError,

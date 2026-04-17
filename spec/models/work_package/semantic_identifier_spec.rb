@@ -183,6 +183,18 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       end
     end
 
+    context "with string-keyed hash (AR internal representation)" do
+      it "raises ArgumentError for string 'id' key with semantic value" do
+        expect { WorkPackage.find_by("id" => "MYPROJ-1") }
+          .to raise_error(ArgumentError, /find_by_display_id/)
+      end
+
+      it "raises ArgumentError for string 'identifier' key with semantic value" do
+        expect { WorkPackage.find_by("identifier" => "MYPROJ-1") }
+          .to raise_error(ArgumentError, /find_by_display_id/)
+      end
+    end
+
     context "with id: keyword and numeric string" do
       it "falls through to standard AR find_by" do
         expect(WorkPackage.find_by(id: work_package.id.to_s)).to eq(work_package)

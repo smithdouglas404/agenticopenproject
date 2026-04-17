@@ -50,6 +50,20 @@ RSpec.describe "SemanticIds registry integration", type: :model do
     login_as(user)
   end
 
+  describe "find_by guard rejects semantic identifiers" do
+    let!(:work_package) { create(:work_package, project:) }
+
+    it "raises ArgumentError for find_by(id:) with a semantic string" do
+      expect { WorkPackage.find_by(id: "PROJ-1") }
+        .to raise_error(ArgumentError, /find_by_display_id/)
+    end
+
+    it "raises ArgumentError for find_by(id:) with a semantic string on a relation" do
+      expect { WorkPackage.where(project:).find_by(id: "PROJ-1") }
+        .to raise_error(ArgumentError, /find_by_display_id/)
+    end
+  end
+
   describe "WP creation via CreateService" do
     let(:attributes) do
       {
