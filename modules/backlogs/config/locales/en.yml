@@ -72,6 +72,8 @@ en:
         work_package:
           backlog_bucket_xor_sprint: "cannot be assigned to both a sprint and a backlog bucket."
           attributes:
+            backlog_bucket:
+              backlog_bucket_from_another_project: "must belong to the same project as the work package."
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: "can only contain IDs of work packages in the current sprint."
               must_block_at_least_one_work_package: "must contain the ID of at least one ticket."

@@ -91,6 +91,37 @@ RSpec.describe WorkPackage do
     end
   end
 
+  describe "backlog bucket must belong to the same project" do
+    shared_let(:project) { create(:project) }
+    let(:other_project) { create(:project) }
+    let(:work_package) { build(:work_package, project:, backlog_bucket:) }
+
+    context "when backlog bucket belongs to the same project" do
+      let(:backlog_bucket) { create(:backlog_bucket, project:) }
+
+      it "is valid" do
+        expect(work_package).to be_valid
+      end
+    end
+
+    context "when backlog bucket belongs to a different project" do
+      let(:backlog_bucket) { create(:backlog_bucket, project: other_project) }
+
+      it "is invalid" do
+        expect(work_package).not_to be_valid
+        expect(work_package.errors[:backlog_bucket]).to include(/must belong to the same project/)
+      end
+    end
+
+    context "when backlog bucket is nil" do
+      let(:backlog_bucket) { nil }
+
+      it "is valid" do
+        expect(work_package).to be_valid
+      end
+    end
+  end
+
   describe ".order_by_position" do
     let(:work_packages) { create_list(:work_package, 3) }
 

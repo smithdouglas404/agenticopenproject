@@ -47,6 +47,7 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     belongs_to :sprint, class_name: "Agile::Sprint", optional: true
 
     validate :backlog_bucket_xor_sprint
+    validate :backlog_bucket_belongs_to_project
 
     include OpenProject::Backlogs::List
   end
@@ -72,6 +73,13 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
       return unless backlog_bucket && sprint
 
       errors.add :base, :backlog_bucket_xor_sprint
+    end
+
+    def backlog_bucket_belongs_to_project
+      return unless backlog_bucket
+      return if backlog_bucket.project == project
+
+      errors.add :backlog_bucket, :backlog_bucket_from_another_project
     end
   end
 end
