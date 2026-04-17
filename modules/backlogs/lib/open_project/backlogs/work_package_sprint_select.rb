@@ -39,7 +39,7 @@ module OpenProject::Backlogs
       return [] unless OpenProject::FeatureDecisions.scrum_projects_active?
       return [] unless user_allowed_to_select_sprint?(context)
 
-      [new]
+      [new(context)]
     end
 
     def self.user_allowed_to_select_sprint?(context)
@@ -50,7 +50,9 @@ module OpenProject::Backlogs
       end
     end
 
-    def initialize
+    def initialize(project = nil)
+      @project = project
+
       # Cannot use `association` here since that will break our custom GROUP BY
       super(:sprint,
             sortable: SORT_ORDER,
@@ -73,29 +75,26 @@ module OpenProject::Backlogs
 
     private
 
-    # Custom outer join to ensure that sprints the user cannot show are treated like
+    # Custom outer join to ensure that sprints the user cannot view are treated like
     # they are not there at all. Without this, group counts would not match the listed
     # work packages.
     def sprint_join_with_permissions
       <<~SQL.squish
         LEFT OUTER JOIN "projects" ON "projects"."id" = "work_packages"."project_id"
         LEFT OUTER JOIN (
-          SELECT
-            s.id,
-            s.name,
-            s.start_date,
-            s.finish_date,
-            s.project_id
-          FROM sprints s
-          WHERE s.project_id IN (#{projects_with_view_sprints_permissions.to_sql})
+          #{visible_sprints.to_sql}
         ) AS visible_sprints
         ON visible_sprints.id = work_packages.sprint_id
-          AND visible_sprints.project_id = work_packages.project_id
       SQL
     end
 
-    def projects_with_view_sprints_permissions
-      Project.allowed_to(User.current, :view_sprints).select(:id)
+    def visible_sprints
+      if @project
+        Agile::Sprint.for_project(@project)
+      else
+        Agile::Sprint
+      end
+        .visible
     end
   end
 end
