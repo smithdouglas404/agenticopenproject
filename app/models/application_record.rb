@@ -32,6 +32,8 @@ class ApplicationRecord < ActiveRecord::Base
   include ::OpenProject::Acts::Watchable
   include ::OpenProject::Acts::Favoritable
 
+  extend VisibilityAnnotation
+
   self.abstract_class = true
 
   ##
