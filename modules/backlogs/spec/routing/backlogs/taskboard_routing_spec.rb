@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,34 +26,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Backlogs
-  class SprintPageHeaderComponent < ApplicationComponent
-    include ApplicationHelper
-    include RbCommonHelper
+require "spec_helper"
 
-    delegate :with_action_button, to: :@page_header
+RSpec.describe Backlogs::TaskboardController do
+  describe "routing" do
+    it {
+      expect(get("/projects/project_42/backlogs/sprints/21/taskboard")).to route_to(
+        controller: "backlogs/taskboard",
+        action: "show",
+        project_id: "project_42",
+        sprint_id: "21"
+      )
+    }
+  end
 
-    def initialize(sprint:, project:)
-      super
-
-      @sprint  = sprint
-      @project = project
-
-      @page_header = Primer::OpenProject::PageHeader.new
-    end
-
-    def breadcrumb_items
-      [{ href: project_overview_path(@project), text: @project.name },
-       { href: project_backlogs_backlog_path(@project), text: t(:label_backlogs) },
-       @sprint.name]
-    end
-
-    private
-
-    def date_range
-      [@sprint.start_date, @sprint.finish_date]
-    end
+  describe "named routing" do
+    it {
+      expect(project_backlogs_sprint_taskboard_path("project_42", "21"))
+        .to eq("/projects/project_42/backlogs/sprints/21/taskboard")
+    }
   end
 end

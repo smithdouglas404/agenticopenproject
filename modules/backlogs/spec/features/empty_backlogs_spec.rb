@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,6 +29,7 @@
 #++
 
 require "spec_helper"
+require_relative "../support/pages/backlog"
 
 RSpec.describe "Empty backlogs project",
                :js do
@@ -34,10 +37,11 @@ RSpec.describe "Empty backlogs project",
   shared_let(:task) { create(:type_task) }
   shared_let(:project) { create(:project, types: [story, task], enabled_module_names: %w(backlogs)) }
   shared_let(:status) { create(:status, is_default: true) }
+  let(:planning_page) { Pages::Backlog.new(project) }
 
   before do
     login_as current_user
-    visit backlogs_project_backlogs_path(project)
+    planning_page.visit!
   end
 
   context "as admin" do

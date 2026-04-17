@@ -28,14 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class RbTaskboardsController < RbApplicationController
-  menu_item :backlogs
+module Backlogs
+  class BurndownChartsController < ::RbApplicationController
+    helper :burndown_charts
 
-  def show
-    @board = @sprint.task_board_for(@project)
+    def show
+      @burndown = Burndown.new(@sprint, @project) if @sprint.date_range_set?
 
-    return redirect_to(project_work_package_board_path(@project, @board)) if @board
-
-    render_404
+      respond_to do |format|
+        format.html { render "backlogs/burndown_charts/show", layout: true }
+      end
+    end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,13 +30,24 @@
 
 require "spec_helper"
 
-RSpec.describe RbTaskboardsController do
-  describe "routing" do
-    it {
-      expect(get("/projects/project_42/sprints/21/taskboard")).to route_to(controller: "rb_taskboards",
-                                                                           action: "show",
-                                                                           project_id: "project_42",
-                                                                           sprint_id: "21")
-    }
+RSpec.describe "Backlogs::Sprints", :skip_csrf, type: :rails_request do
+  shared_let(:type_feature) { create(:type_feature) }
+  shared_let(:type_task) { create(:type_task) }
+  shared_let(:user) { create(:admin) }
+  shared_let(:project) { create(:project) }
+  shared_let(:status) { create(:status, name: "status 1", is_default: true) }
+  shared_let(:sprint) { create(:agile_sprint, name: "Original sprint name", project:) }
+
+  current_user { user }
+
+  describe "PUT #update" do
+    it "loads the sprint from sprint_id and updates it", :aggregate_failures do
+      put "/projects/#{project.identifier}/backlogs/sprints/#{sprint.id}",
+          headers: { "ACCEPT" => "text/vnd.turbo-stream.html" },
+          params: { sprint: { name: "Changed sprint name" } }
+
+      expect(response).to be_successful
+      expect(sprint.reload.name).to eq("Changed sprint name")
+    end
   end
 end

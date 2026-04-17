@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe RbTaskboardsController do
+RSpec.describe Backlogs::TaskboardController do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
   let(:user) { create(:user) }
@@ -66,6 +66,7 @@ RSpec.describe RbTaskboardsController do
         it "uses the board for the current project" do
           expect(response).to redirect_to(project_work_package_board_path(project, board))
           expect(response).not_to redirect_to(project_work_package_board_path(other_project, other_board))
+          expect(controller.controller_path).to eq("backlogs/taskboard")
         end
       end
     end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,34 +26,51 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
 module Backlogs
-  class SprintPageHeaderComponent < ApplicationComponent
-    include ApplicationHelper
-    include RbCommonHelper
+  class BacklogController < ::RbApplicationController
+    include WorkPackages::WithSplitView
 
-    delegate :with_action_button, to: :@page_header
-
-    def initialize(sprint:, project:)
-      super
-
-      @sprint  = sprint
-      @project = project
-
-      @page_header = Primer::OpenProject::PageHeader.new
+    current_menu_item %i[show details] do
+      :backlog
     end
 
-    def breadcrumb_items
-      [{ href: project_overview_path(@project), text: @project.name },
-       { href: project_backlogs_backlog_path(@project), text: t(:label_backlogs) },
-       @sprint.name]
+    before_action :load_backlogs, only: :show
+
+    def show
+      case turbo_frame_request_id
+      when "backlogs_container"
+        render partial: "backlogs/backlog/backlog_list", layout: false
+      else
+        render "backlogs/backlog/show"
+      end
+    end
+
+    def details
+      if turbo_frame_request?
+        render "work_packages/split_view", layout: false
+      else
+        load_backlogs
+        render "backlogs/backlog/show"
+      end
     end
 
     private
 
-    def date_range
-      [@sprint.start_date, @sprint.finish_date]
+    def split_view_base_route
+      project_backlogs_backlog_path(@project, request.query_parameters)
+    end
+
+    def load_backlogs
+      @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
+      @stories_by_sprint_id = WorkPackage
+                               .where(sprint: @sprints, project: @project)
+                               .includes(:type, :status)
+                               .order_by_position
+                               .group_by(&:sprint_id)
+      @active_sprint_ids = @sprints.select(&:active?).map(&:id)
+      @inbox_work_packages = Backlog.inbox_for(project: @project)
     end
   end
 end

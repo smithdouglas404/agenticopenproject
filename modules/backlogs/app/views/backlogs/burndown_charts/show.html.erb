@@ -37,7 +37,7 @@ See COPYRIGHT and LICENSE files for more details.
   render(Backlogs::SprintPageHeaderComponent.new(sprint: @sprint, project: @project)) do |header|
     header.with_action_button(
       tag: :a,
-      href: backlogs_project_sprint_taskboard_path(@project, @sprint),
+      href: project_backlogs_sprint_taskboard_path(@project, @sprint),
       mobile_icon: :"op-view-cards",
       mobile_label: t("backlogs.label_sprint_board"),
       aria: { label: t("backlogs.label_sprint_board") }

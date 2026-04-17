@@ -28,51 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class RbMasterBacklogsController < RbApplicationController
-  include WorkPackages::WithSplitView
+require "spec_helper"
 
-  current_menu_item [:backlog, :details] do
-    :backlog
+RSpec.describe Backlogs::BurndownChartsController do
+  describe "routing" do
+    it {
+      expect(get("/projects/project_42/backlogs/sprints/21/burndown_chart")).to route_to(
+        controller: "backlogs/burndown_charts",
+        action: "show",
+        project_id: "project_42",
+        sprint_id: "21"
+      )
+    }
   end
 
-  before_action :load_backlogs, only: %i[index backlog]
-
-  def backlog
-    case turbo_frame_request_id
-    when "backlogs_container"
-      render partial: "backlog_list", layout: false
-    else
-      render :backlog
-    end
-  end
-
-  def index
-    redirect_to action: :backlog
-  end
-
-  def details
-    if turbo_frame_request?
-      render "work_packages/split_view", layout: false
-    else
-      load_backlogs
-      render :backlog
-    end
-  end
-
-  private
-
-  def split_view_base_route
-    backlog_backlogs_project_backlogs_path(request.query_parameters)
-  end
-
-  def load_backlogs
-    @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
-    @stories_by_sprint_id = WorkPackage
-      .where(sprint: @sprints, project: @project)
-      .includes(:type, :status)
-      .order_by_position
-      .group_by(&:sprint_id)
-    @active_sprint_ids = @sprints.select(&:active?).map(&:id)
-    @inbox_work_packages = Backlog.inbox_for(project: @project)
+  describe "named routing" do
+    it {
+      expect(project_backlogs_sprint_burndown_chart_path("project_42", "21"))
+        .to eq("/projects/project_42/backlogs/sprints/21/burndown_chart")
+    }
   end
 end

@@ -38,8 +38,18 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
       expect(subject.dependencies).to contain_exactly(:view_work_packages, :show_board_views)
     end
 
+    it "includes the namespaced backlog page and sprint controller actions" do
+      expect(subject.controller_actions).to include(
+        "backlogs/backlog/show",
+        "backlogs/backlog/details",
+        "backlogs/burndown_charts/show",
+        "backlogs/taskboard/show"
+      )
+      expect(subject.controller_actions).not_to include("backlogs/backlog/index")
+    end
+
     it "includes deferred backlog story and inbox menu fragments" do
-      expect(subject.controller_actions).to include("rb_stories/menu", "inbox/menu")
+      expect(subject.controller_actions).to include("backlogs/stories/menu", "backlogs/inbox/menu")
     end
   end
 
@@ -48,6 +58,16 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
 
     it "depends on view_sprints" do
       expect(subject.dependencies).to contain_exactly(:view_sprints)
+    end
+
+    it "uses the namespaced sprint controller actions" do
+      expect(subject.controller_actions).to include(
+        "backlogs/sprints/new_dialog",
+        "backlogs/sprints/refresh_form",
+        "backlogs/sprints/create",
+        "backlogs/sprints/edit_dialog",
+        "backlogs/sprints/update"
+      )
     end
   end
 
@@ -67,7 +87,7 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
     end
 
     it "covers both start and finish sprint actions" do
-      expect(subject.controller_actions).to include("rb_sprints/start", "rb_sprints/finish")
+      expect(subject.controller_actions).to include("backlogs/sprints/start", "backlogs/sprints/finish")
     end
 
     it { is_expected.to be_visible }
