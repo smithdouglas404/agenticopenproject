@@ -79,9 +79,11 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   #
   # Returns nil on miss.
   def find_by_display_id(identifier)
-    return find_by(id: identifier) unless semantic_id?(identifier)
-
-    find_by_semantic_identifier(identifier)
+    if semantic_id?(identifier)
+      find_by_semantic_identifier(identifier)
+    else
+      where(id: identifier).take # rubocop:disable Rails/FindBy -- avoid find_by, it would rerun semantic_id?
+    end
   end
 
   # Same as find_by_display_id but raises ActiveRecord::RecordNotFound on miss.
