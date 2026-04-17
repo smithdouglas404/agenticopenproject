@@ -28,24 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Backlogs
+  class BurndownChartController < ::RbApplicationController
+    helper :burndown_charts
 
-RSpec.describe Backlogs::BurndownChartsController do
-  describe "routing" do
-    it {
-      expect(get("/projects/project_42/backlogs/sprints/21/burndown_chart")).to route_to(
-        controller: "backlogs/burndown_charts",
-        action: "show",
-        project_id: "project_42",
-        sprint_id: "21"
-      )
-    }
-  end
+    def show
+      @burndown = Burndown.new(@sprint, @project) if @sprint.date_range_set?
 
-  describe "named routing" do
-    it {
-      expect(project_backlogs_sprint_burndown_chart_path("project_42", "21"))
-        .to eq("/projects/project_42/backlogs/sprints/21/burndown_chart")
-    }
+      respond_to do |format|
+        format.html { render "backlogs/burndown_chart/show", layout: true }
+      end
+    end
   end
 end

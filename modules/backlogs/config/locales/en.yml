@@ -201,7 +201,7 @@ en:
         copy_work_package_id: "Copy work package ID"
         move_menu: "Move"
 
-    burndown_charts:
+    burndown_chart:
       show:
         blankslate_title: "No burndown data available"
         blankslate_description: "Set start and end date for the sprint to generate a burndown chart."

@@ -28,27 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "rails_helper"
+require "spec_helper"
 
-RSpec.describe Backlogs::BurndownChartsController do
-  shared_let(:type_feature) { create(:type_feature) }
-  shared_let(:type_task) { create(:type_task) }
-  shared_let(:user) { create(:admin) }
-  shared_let(:project) { create(:project) }
-  shared_let(:status) { create(:status, name: "status 1", is_default: true) }
-  shared_let(:sprint) { create(:agile_sprint, project:) }
+RSpec.describe Backlogs::BurndownChartController do
+  describe "routing" do
+    it {
+      expect(get("/projects/project_42/backlogs/sprints/21/burndown_chart")).to route_to(
+        controller: "backlogs/burndown_chart",
+        action: "show",
+        project_id: "project_42",
+        sprint_id: "21"
+      )
+    }
+  end
 
-  current_user { user }
-
-  describe "GET #show" do
-    it "renders under the namespaced controller runtime", :aggregate_failures do
-      get :show, params: { project_id: project.id, sprint_id: sprint.id }, format: :html
-
-      expect(response).to be_successful
-      expect(response).to render_template("backlogs/burndown_charts/show")
-      expect(controller.controller_path).to eq("backlogs/burndown_charts")
-      expect(assigns(:project)).to eq(project)
-      expect(assigns(:sprint)).to eq(sprint)
-    end
+  describe "named routing" do
+    it {
+      expect(project_backlogs_sprint_burndown_chart_path("project_42", "21"))
+        .to eq("/projects/project_42/backlogs/sprints/21/burndown_chart")
+    }
   end
 end

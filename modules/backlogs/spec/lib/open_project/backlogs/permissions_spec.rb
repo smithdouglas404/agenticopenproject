@@ -42,7 +42,7 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
       expect(subject.controller_actions).to include(
         "backlogs/backlog/show",
         "backlogs/backlog/details",
-        "backlogs/burndown_charts/show",
+        "backlogs/burndown_chart/show",
         "backlogs/taskboard/show"
       )
       expect(subject.controller_actions).not_to include("backlogs/backlog/index")

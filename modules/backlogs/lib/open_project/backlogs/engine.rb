@@ -56,7 +56,7 @@ module OpenProject::Backlogs
                    { "backlogs/backlog": %i[show details],
                      "backlogs/stories": %i[index show menu],
                      "backlogs/inbox": :menu,
-                     "backlogs/burndown_charts": :show,
+                     "backlogs/burndown_chart": :show,
                      "backlogs/taskboard": :show },
                    permissible_on: :project,
                    dependencies: %i[view_work_packages show_board_views]
