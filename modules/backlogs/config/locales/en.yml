@@ -70,6 +70,7 @@ en:
               share_all_projects_already_taken: "cannot be set because project \"%{name}\" is already sharing with all projects."
               share_all_projects_already_taken_anonymous: "cannot be set because another project is already sharing with all projects."
         work_package:
+          backlog_bucket_xor_sprint: "cannot be assigned to both a sprint and a backlog bucket."
           attributes:
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: "can only contain IDs of work packages in the current sprint."
