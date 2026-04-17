@@ -30,66 +30,39 @@
 
 require "spec_helper"
 
-RSpec.describe RbSprintsController do
+RSpec.describe Backlogs::BacklogController do
   describe "routing" do
     it {
-      expect(get("/projects/project_42/sprints/new_dialog")).to route_to(
-        controller: "rb_sprints",
-        action: "new_dialog",
-        project_id: "project_42"
-      )
+      route = "/projects/project_42/backlogs/backlog"
+      expect(get(route)).to route_to(controller: "backlogs/backlog",
+                                     action: "show",
+                                     project_id: "project_42")
     }
 
     it {
-      expect(get("/projects/project_42/sprints/refresh_form")).to route_to(
-        controller: "rb_sprints",
-        action: "refresh_form",
-        project_id: "project_42"
-      )
-    }
-
-    it {
-      expect(post("/projects/project_42/sprints")).to route_to(
-        controller: "rb_sprints",
-        action: "create",
-        project_id: "project_42"
-      )
-    }
-
-    it {
-      expect(get("/projects/project_42/sprints/21/edit_dialog")).to route_to(
-        controller: "rb_sprints",
-        action: "edit_dialog",
+      expect(get("/projects/project_42/backlogs/backlog/details/33")).to route_to(
+        controller: "backlogs/backlog",
+        action: "details",
         project_id: "project_42",
-        id: "21"
+        work_package_id: "33",
+        tab: :overview,
+        work_package_split_view: true
       )
+    }
+  end
+
+  describe "named routing" do
+    it {
+      expect(project_backlogs_path("project_42")).to eq("/projects/project_42/backlogs")
     }
 
     it {
-      expect(put("/projects/project_42/sprints/21/update_agile_sprint")).to route_to(
-        controller: "rb_sprints",
-        action: "update_agile_sprint",
-        project_id: "project_42",
-        id: "21"
-      )
+      expect(project_backlogs_backlog_path("project_42")).to eq("/projects/project_42/backlogs/backlog")
     }
 
     it {
-      expect(post("/projects/project_42/sprints/21/start")).to route_to(
-        controller: "rb_sprints",
-        action: "start",
-        project_id: "project_42",
-        id: "21"
-      )
-    }
-
-    it {
-      expect(post("/projects/project_42/sprints/21/finish")).to route_to(
-        controller: "rb_sprints",
-        action: "finish",
-        project_id: "project_42",
-        id: "21"
-      )
+      expect(project_backlogs_backlog_details_path("project_42", "33"))
+        .to eq("/projects/project_42/backlogs/backlog/details/33")
     }
   end
 end

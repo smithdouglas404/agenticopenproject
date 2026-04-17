@@ -49,7 +49,7 @@ See COPYRIGHT and LICENSE files for more details.
               render Primer::Beta::Button.new(
                 tag: :a,
                 label: Agile::Sprint.human_model_name,
-                href: new_dialog_project_sprints_path(@project),
+                href: new_dialog_project_backlogs_sprints_path(@project),
                 data: {
                   controller: "async-dialog",
                   test_selector: "op-sprints--new-sprint-button"
@@ -69,7 +69,7 @@ See COPYRIGHT and LICENSE files for more details.
               leading_icon: :plus,
               label: Agile::Sprint.human_model_name,
               tag: :a,
-              href: new_dialog_project_sprints_path(@project),
+              href: new_dialog_project_backlogs_sprints_path(@project),
               data: {
                 controller: "async-dialog",
                 test_selector: "op-sprints--new-sprint-button"

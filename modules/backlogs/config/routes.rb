@@ -29,43 +29,10 @@
 #++
 
 Rails.application.routes.draw do
+  rails_relative_url_root = OpenProject::Configuration["rails_relative_url_root"] || ""
+
   scope "admin" do
     resource :backlogs, only: :show, controller: :backlogs_settings, as: "admin_backlogs_settings"
-  end
-
-  # Routes for the new Agile::Sprint
-  # Scoped under projects for permissions:
-  resources :projects, only: [] do
-    resources :sprints, controller: :rb_sprints, only: %i[create] do
-      collection do
-        get :new_dialog
-        get :refresh_form
-      end
-
-      member do
-        post :start
-        post :finish
-        get :edit_dialog
-        put :update_agile_sprint
-      end
-
-      resources :stories, controller: :rb_stories, only: [] do
-        member do
-          get :menu
-          put :move
-          post :reorder
-        end
-      end
-    end
-
-    resources :inbox, only: [] do
-      member do
-        get :menu
-        put :move
-        post :reorder
-        get :move_to_sprint_dialog
-      end
-    end
   end
 
   scope "projects/:project_id", as: "project", module: "projects" do
@@ -74,24 +41,57 @@ Rails.application.routes.draw do
     end
   end
 
-  # Legacy routes
-  scope "", as: "backlogs" do
-    scope "projects/:project_id", as: "project" do
-      resources :backlogs, controller: :rb_master_backlogs, only: :index do
-        collection do
-          get "details/:work_package_id(/:tab)",
-              action: :details,
-              as: :details,
-              work_package_split_view: true,
-              defaults: { tab: :overview }
+  resources :projects, only: [] do
+    get "backlogs",
+        to: redirect { |params, request|
+          query = request.query_string.presence
+          path = "#{rails_relative_url_root}/projects/#{params[:project_id]}/backlogs/backlog"
 
-          get :backlog
+          query ? "#{path}?#{query}" : path
+        },
+        as: :backlogs
+
+    namespace :backlogs do
+      resource :backlog, controller: :backlog, only: :show
+      get "backlog/details/:work_package_id(/:tab)",
+          to: "backlog#details",
+          as: :backlog_details,
+          work_package_split_view: true,
+          defaults: { tab: :overview }
+
+      resources :sprints, param: :sprint_id, only: %i[create update] do
+        collection do
+          get :new_dialog
+          get :refresh_form
+        end
+
+        member do
+          post :start
+          post :finish
+          get :edit_dialog
         end
       end
 
-      resources :sprints, controller: :rb_sprints, only: [] do
-        resource :taskboard,        controller: :rb_taskboards,       only: :show
-        resource :burndown_chart,   controller: :rb_burndown_charts,  only: :show
+      scope "sprints/:sprint_id" do
+        resources :stories, only: [] do
+          member do
+            get :menu
+            put :move
+            post :reorder
+          end
+        end
+
+        get "taskboard", to: "taskboard#show", as: :sprint_taskboard
+        get "burndown_chart", to: "burndown_charts#show", as: :sprint_burndown_chart
+      end
+
+      resources :inbox, only: [] do
+        member do
+          get :menu
+          put :move
+          post :reorder
+          get :move_to_sprint_dialog
+        end
       end
     end
   end

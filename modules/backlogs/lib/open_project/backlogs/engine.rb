@@ -53,12 +53,11 @@ module OpenProject::Backlogs
              settings:) do
       project_module :backlogs, dependencies: :work_package_tracking do
         permission :view_sprints,
-                   { rb_master_backlogs: %i[index backlog details],
-                     rb_sprints: %i[index show],
-                     rb_stories: %i[index show menu],
-                     inbox: :menu,
-                     rb_burndown_charts: :show,
-                     rb_taskboards: :show },
+                   { "backlogs/backlog": %i[show details],
+                     "backlogs/stories": %i[index show menu],
+                     "backlogs/inbox": :menu,
+                     "backlogs/burndown_charts": :show,
+                     "backlogs/taskboard": :show },
                    permissible_on: :project,
                    dependencies: %i[view_work_packages show_board_views]
 
@@ -70,20 +69,20 @@ module OpenProject::Backlogs
                    require: :member
 
         permission :create_sprints,
-                   { rb_sprints: %i[new_dialog refresh_form create edit_dialog update_agile_sprint] },
+                   { "backlogs/sprints": %i[new_dialog refresh_form create edit_dialog update] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
 
         permission :start_complete_sprint,
-                   { rb_sprints: %i[start finish] },
+                   { "backlogs/sprints": %i[start finish] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: %i[view_sprints manage_board_views manage_sprint_items]
 
         permission :manage_sprint_items,
-                   { rb_stories: %i[move reorder],
-                     inbox: %i[move reorder move_to_sprint_dialog] },
+                   { "backlogs/stories": %i[move reorder],
+                     "backlogs/inbox": %i[move reorder move_to_sprint_dialog] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
@@ -97,7 +96,7 @@ module OpenProject::Backlogs
 
       menu :project_menu,
            :backlogs,
-           { controller: "/rb_master_backlogs", action: :backlog },
+           { controller: "/backlogs/backlog", action: :show },
            if: Proc.new { |project| project.module_enabled?(:backlogs) },
            caption: :project_module_backlogs,
            after: :work_packages,
@@ -105,7 +104,7 @@ module OpenProject::Backlogs
 
       menu :project_menu,
            :backlog,
-           { controller: "/rb_master_backlogs", action: :backlog },
+           { controller: "/backlogs/backlog", action: :show },
            if: Proc.new { |project| project.module_enabled?(:backlogs) },
            caption: :label_backlog_and_sprints,
            parent: :backlogs

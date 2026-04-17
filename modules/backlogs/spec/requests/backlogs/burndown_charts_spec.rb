@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,34 +26,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Backlogs
-  class SprintPageHeaderComponent < ApplicationComponent
-    include ApplicationHelper
-    include RbCommonHelper
+require "spec_helper"
 
-    delegate :with_action_button, to: :@page_header
+RSpec.describe "Backlogs::BurndownCharts", :skip_csrf, type: :rails_request do
+  shared_let(:type_feature) { create(:type_feature) }
+  shared_let(:type_task) { create(:type_task) }
+  shared_let(:user) { create(:admin) }
+  shared_let(:project) { create(:project) }
+  shared_let(:status) { create(:status, name: "status 1", is_default: true) }
+  shared_let(:sprint) { create(:agile_sprint, project:) }
 
-    def initialize(sprint:, project:)
-      super
+  current_user { user }
 
-      @sprint  = sprint
-      @project = project
+  describe "GET #show" do
+    it "renders the namespaced burndown chart template" do
+      get "/projects/#{project.identifier}/backlogs/sprints/#{sprint.id}/burndown_chart"
 
-      @page_header = Primer::OpenProject::PageHeader.new
-    end
-
-    def breadcrumb_items
-      [{ href: project_overview_path(@project), text: @project.name },
-       { href: project_backlogs_backlog_path(@project), text: t(:label_backlogs) },
-       @sprint.name]
-    end
-
-    private
-
-    def date_range
-      [@sprint.start_date, @sprint.finish_date]
+      expect(response).to be_successful
+      expect(response).to render_template("backlogs/burndown_charts/show")
     end
   end
 end

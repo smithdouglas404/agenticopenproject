@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
+RSpec.describe "Backlogs::Backlog", :skip_csrf, type: :rails_request do
   include Turbo::TestAssertions
 
   shared_let(:type_feature) { create(:type_feature) }
@@ -64,7 +64,7 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
       get "/projects/#{project.identifier}/backlogs/backlog"
 
       expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:backlog)
+      expect(response).to render_template("backlogs/backlog/show")
       expect(response).to have_turbo_frame "backlogs_container",
                                            src: "/projects/#{project.identifier}/backlogs/backlog?all=false"
       expect(response).to have_turbo_frame "content-bodyRight"
@@ -83,7 +83,7 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
         get "/projects/#{project.identifier}/backlogs/backlog", headers: { "Turbo-Frame" => "backlogs_container" }
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template("rb_master_backlogs/_backlog_list")
+        expect(response).to render_template("backlogs/backlog/_backlog_list")
 
         expect(response).to have_turbo_frame "backlogs_container"
         expect(response).to have_no_turbo_frame "content-bodyRight"
@@ -111,10 +111,10 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
 
   describe "GET #details" do
     it "is successful" do
-      get "/projects/#{project.identifier}/backlogs/details/#{story.id}"
+      get "/projects/#{project.identifier}/backlogs/backlog/details/#{story.id}"
 
       expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:backlog)
+      expect(response).to render_template("backlogs/backlog/show")
 
       expect(response).to have_turbo_frame "backlogs_container",
                                            src: "/projects/#{project.identifier}/backlogs/backlog?all=false"
@@ -123,7 +123,7 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
 
     context "with a Turbo Frame request" do
       it "renders the split view" do
-        get "/projects/#{project.identifier}/backlogs/details/#{story.id}",
+        get "/projects/#{project.identifier}/backlogs/backlog/details/#{story.id}",
             headers: { "Turbo-Frame" => "content-bodyRight" }
 
         expect(response).to have_http_status(:ok)

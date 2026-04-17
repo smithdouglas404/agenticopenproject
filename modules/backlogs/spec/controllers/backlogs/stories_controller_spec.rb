@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe RbStoriesController do
+RSpec.describe Backlogs::StoriesController do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
 

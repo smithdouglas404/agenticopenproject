@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe InboxController do
+RSpec.describe Backlogs::InboxController do
   current_user { user }
 
   let(:user) { create(:admin) }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,13 +30,33 @@
 
 require "spec_helper"
 
-RSpec.describe RbBurndownChartsController do
+RSpec.describe Backlogs::InboxController do
   describe "routing" do
     it {
-      expect(get("/projects/project_42/sprints/21/burndown_chart")).to route_to(controller: "rb_burndown_charts",
-                                                                                action: "show",
-                                                                                project_id: "project_42",
-                                                                                sprint_id: "21")
+      expect(put("/projects/project_42/backlogs/inbox/85/move")).to route_to(
+        controller: "backlogs/inbox",
+        action: "move",
+        project_id: "project_42",
+        id: "85"
+      )
+    }
+
+    it {
+      expect(post("/projects/project_42/backlogs/inbox/85/reorder")).to route_to(
+        controller: "backlogs/inbox",
+        action: "reorder",
+        project_id: "project_42",
+        id: "85"
+      )
+    }
+
+    it {
+      expect(get("/projects/project_42/backlogs/inbox/85/menu")).to route_to(
+        controller: "backlogs/inbox",
+        action: "menu",
+        project_id: "project_42",
+        id: "85"
+      )
     }
   end
 end
