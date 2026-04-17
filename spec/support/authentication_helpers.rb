@@ -37,10 +37,10 @@ module AuthenticationHelpers
 
   def login_as(user)
     if is_a?(RSpec::Rails::FeatureExampleGroup)
-      # If we want to mock having finished the login process
-      # we must set the user_id in rack.session accordingly
-      # Otherwise e.g. calls to Warden will behave unexpectantly
-      # as they will login AnonymousUser
+      # Set the session so the browser sends it with every subsequent request.
+      # User.current is then established through the normal controller auth flow
+      # (ApplicationController#user_setup -> find_current_user -> session[:user_id]).
+      # We intentionally do not stub RequestStore here to use the normal mechanism.
       if using_cuprite? && js_enabled?
         page.driver.set_cookie(
           OpenProject::Configuration["session_cookie_name"],
@@ -49,10 +49,12 @@ module AuthenticationHelpers
       else
         page.set_rack_session(session_value_for(user))
       end
+    else
+      # For non-feature specs (controller/request specs) there is no session to stub
+      # so we stub RequestStore directly on User.current
+      allow(RequestStore).to receive(:[]).and_call_original
+      allow(RequestStore).to receive(:[]).with(:current_user).and_return(user)
     end
-
-    allow(RequestStore).to receive(:[]).and_call_original
-    allow(RequestStore).to receive(:[]).with(:current_user).and_return(user)
   end
 
   def login_with(login, password, autologin: false, visit_signin_path: true)
