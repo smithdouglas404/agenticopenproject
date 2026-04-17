@@ -42,9 +42,10 @@ module AuthenticationHelpers
       # (ApplicationController#user_setup -> find_current_user -> session[:user_id]).
       # We intentionally do not stub RequestStore here to use the normal mechanism.
       if using_cuprite? && js_enabled?
+        session = create(:user_session, user:)
         page.driver.set_cookie(
           OpenProject::Configuration["session_cookie_name"],
-          session_value_for(user).to_s
+          session.session_id
         )
       else
         page.set_rack_session(session_value_for(user))
