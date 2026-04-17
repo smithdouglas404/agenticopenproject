@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Backlogs::BurndownCharts", :skip_csrf, type: :rails_request do
+RSpec.describe "Backlogs::BurndownChart", :skip_csrf, type: :rails_request do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
   shared_let(:user) { create(:admin) }
@@ -45,7 +45,7 @@ RSpec.describe "Backlogs::BurndownCharts", :skip_csrf, type: :rails_request do
       get "/projects/#{project.identifier}/backlogs/sprints/#{sprint.id}/burndown_chart"
 
       expect(response).to be_successful
-      expect(response).to render_template("backlogs/burndown_charts/show")
+      expect(response).to render_template("backlogs/burndown_chart/show")
     end
   end
 end

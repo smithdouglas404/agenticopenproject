@@ -82,7 +82,7 @@ Rails.application.routes.draw do
         end
 
         get "taskboard", to: "taskboard#show", as: :sprint_taskboard
-        get "burndown_chart", to: "burndown_charts#show", as: :sprint_burndown_chart
+        get "burndown_chart", to: "burndown_chart#show", as: :sprint_burndown_chart
       end
 
       resources :inbox, only: [] do
