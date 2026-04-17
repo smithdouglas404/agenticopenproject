@@ -49,8 +49,14 @@ module Wikis
       def registry_prefix = "xwiki"
     end
 
+    delegate :extract_origin_user_id, to: :oauth_configuration
+
     def authenticate_via_oauth2?
       authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
+    end
+
+    def oauth_configuration
+      Wikis::Adapters::Providers::XWiki::OAuthConfiguration.new(self)
     end
 
     def oidc_redirect_uri

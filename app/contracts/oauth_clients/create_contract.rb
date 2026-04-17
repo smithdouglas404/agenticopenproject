@@ -36,7 +36,9 @@ module OAuthClients
     validates :client_id, presence: true, length: { maximum: 255 }
 
     attribute :client_secret, writable: true
-    validates :client_secret, presence: true, length: { maximum: 255 }
+    # client_secret is optional: some providers (e.g. XWiki) only issue a client_id
+    # and register clients as public (token_endpoint_auth_method: none).
+    validates :client_secret, length: { maximum: 255 }, allow_blank: true
 
     attribute :integration_type, writable: true
     validates :integration_type, presence: true

@@ -1,0 +1,6 @@
+<%=
+  render(Primer::Beta::Button.new(tag: :a, href: connect_url, scheme: :default, size: :small)) do |button|
+    button.with_leading_visual_icon(icon: :plug)
+    t(".connect_button", provider: provider.name)
+  end
+%>

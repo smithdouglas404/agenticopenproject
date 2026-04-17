@@ -28,20 +28,27 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Admin
-  class OAuthClientForm < ApplicationForm
-    form do |oauth_client_form|
-      oauth_client_form.text_field(
-        name: :client_id,
-        label: I18n.t("activerecord.attributes.oauth_client.client_id"),
-        required: true,
-        input_width: :large
-      )
-      oauth_client_form.text_field(
-        name: :client_secret,
-        label: I18n.t("activerecord.attributes.oauth_client.client_secret"),
-        required: true,
-        input_width: :large
+module Wikis
+  # Renders a "Connect account" button for a wiki provider that requires OAuth.
+  # Can be included in any template — admin setup, work package tabs, etc.
+  #
+  # Usage:
+  #   render(Wikis::OAuthLoginComponent.new(wiki_provider, destination_url: request.url))
+  class OAuthLoginComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
+
+    alias_method :provider, :model
+
+    def initialize(provider, destination_url: nil, **)
+      @destination_url = destination_url
+      super(provider, **)
+    end
+
+    def connect_url
+      url_helpers.oauth_clients_ensure_connection_url(
+        oauth_client_id: provider.oauth_client.client_id,
+        storage_id: provider.id,
+        destination_url: @destination_url
       )
     end
   end
