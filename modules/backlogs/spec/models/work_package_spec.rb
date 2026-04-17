@@ -31,6 +31,66 @@
 require "spec_helper"
 
 RSpec.describe WorkPackage do
+  describe "can't be both in backlog bucket and sprint" do
+    shared_let(:project) { create(:project) }
+    shared_let(:backlog_bucket) { create(:backlog_bucket, project:) }
+    shared_let(:sprint) { create(:agile_sprint, project:) }
+
+    context "when already in a backlog bucket" do
+      let(:work_package) { create(:work_package, project:, backlog_bucket:) }
+
+      it "fails validation when being added to sprint" do
+        work_package.assign_attributes(sprint:)
+
+        expect(work_package).not_to be_valid
+        expect(work_package.errors[:base]).to include(/cannot be assigned to both a sprint and a backlog bucket/)
+      end
+
+      it "fails being added to sprint" do
+        work_package.assign_attributes(sprint:)
+
+        expect do
+          work_package.save!(validate: false)
+        end.to raise_error(ActiveRecord::CheckViolation)
+      end
+
+      it "allows changing backlog bucket" do
+        work_package.update(backlog_bucket: create(:backlog_bucket, project:))
+      end
+
+      it "allows replacing backlog bucket with sprint" do
+        work_package.update(backlog_bucket: nil, sprint:)
+      end
+    end
+
+    context "when already in a sprint" do
+      let(:work_package) { create(:work_package, project:, sprint:) }
+
+      it "fails validation when being added to backlog bucket" do
+        work_package.assign_attributes(backlog_bucket:)
+
+        expect(work_package).not_to be_valid
+        expect(work_package.errors[:base]).to include(/cannot be assigned to both a sprint and a backlog bucket/)
+      end
+
+      it "fails being added to backlog bucket" do
+        work_package.assign_attributes(backlog_bucket:)
+
+        expect do
+          work_package.save!(validate: false)
+        end.to raise_error(ActiveRecord::CheckViolation)
+      end
+
+      it "allows changing sprint" do
+        work_package.update(sprint: create(:agile_sprint, project:))
+      end
+
+      it "allows replacing sprint with backlog bucket" do
+        work_package.update(backlog_bucket:, sprint: nil)
+      end
+    end
+  end
+
   describe ".order_by_position" do
     let(:work_packages) { create_list(:work_package, 3) }
 
