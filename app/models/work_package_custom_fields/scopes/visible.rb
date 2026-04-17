@@ -34,11 +34,12 @@ module WorkPackageCustomFields::Scopes
 
     class_methods do
       def visible(user = User.current)
-        if user.allowed_in_any_project?(:select_custom_fields)
-          all
-        else
-          on_visible_type_and_project(user)
-        end
+        scope = if user.allowed_in_any_project?(:select_custom_fields)
+                  all
+                else
+                  on_visible_type_and_project(user)
+                end
+        scope.visibility_checked
       end
     end
   end

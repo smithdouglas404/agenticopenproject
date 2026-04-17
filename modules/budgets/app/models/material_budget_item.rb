@@ -39,6 +39,7 @@ class MaterialBudgetItem < ApplicationRecord
     includes(budget: :project)
       .references(:projects)
       .merge(Project.allowed_to(user, :view_cost_rates))
+      .visibility_checked
   end
 
   scope :visible_costs, lambda { |*args|

@@ -47,12 +47,12 @@ module Queries::Scopes
                 .where(project: Project.allowed_to(user, :view_work_packages))
 
         if user.allowed_in_any_project?(:view_work_packages)
-          scope
-            .or(where(project: nil, public: true))
-            .or(where(project: nil, user_id: user.id))
-        else
-          scope
+          scope = scope
+                    .or(where(project: nil, public: true))
+                    .or(where(project: nil, user_id: user.id))
         end
+
+        scope.visibility_checked
       end
     end
   end

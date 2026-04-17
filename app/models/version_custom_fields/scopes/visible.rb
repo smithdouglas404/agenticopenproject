@@ -34,7 +34,7 @@ module VersionCustomFields::Scopes
 
     class_methods do
       def visible(_user = User.current)
-        all
+        all.visibility_checked
       end
     end
   end

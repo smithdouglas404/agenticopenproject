@@ -42,6 +42,7 @@ module Capabilities::Scopes
                 end
 
         scope.where(principal_id: Principal.visible(user).not_builtin.not_locked)
+             .visibility_checked
       end
     end
   end

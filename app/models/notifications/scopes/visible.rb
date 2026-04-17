@@ -41,6 +41,7 @@ module Notifications::Scopes
       def visible(user)
         recipient(user)
           .where(resource_type: "WorkPackage", resource_id: WorkPackage.visible(user).select(:id))
+          .visibility_checked
       end
     end
   end

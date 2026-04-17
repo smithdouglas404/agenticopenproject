@@ -60,6 +60,7 @@ class Document < ApplicationRecord
     includes(:project)
       .references(:projects)
       .merge(Project.allowed_to(user, :view_documents))
+      .visibility_checked
   }
 
   scope :with_attachments, lambda {

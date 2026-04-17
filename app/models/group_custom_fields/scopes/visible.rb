@@ -34,11 +34,12 @@ module GroupCustomFields::Scopes
 
     class_methods do
       def visible(user = User.current)
-        if user.active_admin?
-          all
-        else
-          where(admin_only: false)
-        end
+        scope = if user.active_admin?
+                  all
+                else
+                  where(admin_only: false)
+                end
+        scope.visibility_checked
       end
     end
   end

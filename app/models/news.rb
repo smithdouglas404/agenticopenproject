@@ -62,6 +62,7 @@ class News < ApplicationRecord
     includes(:project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_news))
+      .visibility_checked
   end
 
   def visible?(user = User.current)

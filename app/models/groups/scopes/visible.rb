@@ -40,18 +40,19 @@ module Groups::Scopes
       # - groups that are members of a project the user can view members of
       # - groups that the user themselves is a member of
       def visible(user = User.current)
-        if user.allowed_globally?(:view_all_principals)
-          all
-        else
-          where(
-            Group.arel_table[:id].in(
-              Arel::Nodes::UnionAll.new(
-                Group.unscoped.containing_user(user).select(:id).arel,
-                Group.unscoped.in_visible_project(user).select(:id).arel
-              )
-            )
-          )
-        end
+        scope = if user.allowed_globally?(:view_all_principals)
+                  all
+                else
+                  where(
+                    Group.arel_table[:id].in(
+                      Arel::Nodes::UnionAll.new(
+                        Group.unscoped.containing_user(user).select(:id).arel,
+                        Group.unscoped.in_visible_project(user).select(:id).arel
+                      )
+                    )
+                  )
+                end
+        scope.visibility_checked
       end
     end
   end

@@ -44,6 +44,7 @@ module Agile::Sprints::Scopes
 
         where(project_id: source_project.select(:id))
           .or(where(id: from_wps.select(:sprint_id)))
+          .visibility_checked
       end
     end
   end

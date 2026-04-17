@@ -52,9 +52,11 @@ module Relations::Scopes
         wp_arel = work_package_focus_scope.respond_to?(:arel) ? work_package_focus_scope.arel : work_package_focus_scope
         visible_work_packages = visible_work_packages.where(WorkPackage.arel_table[:id].in(wp_arel)) if wp_arel
 
+        visible_wp_ids = WorkPackage.from("visible_work_packages #{WorkPackage.table_name}").select(:id)
+
         with(visible_work_packages:)
-          .where(from_id: WorkPackage.from("visible_work_packages #{WorkPackage.table_name}").select(:id))
-          .where(to_id: WorkPackage.from("visible_work_packages #{WorkPackage.table_name}").select(:id))
+          .where(from_id: visible_wp_ids, to_id: visible_wp_ids)
+          .visibility_checked
       end
     end
   end

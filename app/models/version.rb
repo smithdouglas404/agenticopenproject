@@ -62,6 +62,7 @@ class Version < ApplicationRecord
       .or(Project.allowed_to(user, :manage_versions))
       .or(Version.systemwide)
       .or(Version.shared_via_work_packages(user))
+      .visibility_checked
   }
 
   scope :systemwide, -> { where(sharing: "system") }
