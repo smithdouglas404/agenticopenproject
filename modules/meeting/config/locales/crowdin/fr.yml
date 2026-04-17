@@ -598,7 +598,7 @@ fr:
   label_agenda_outcome_edit: Modifier le résultat
   label_agenda_outcome_delete: Supprimer le résultat
   label_added_as_outcome: Ajouté comme résultat
-  label_write_outcome: Résultat de l'écriture
+  label_write_outcome: Rédiger un résultat
   label_existing_work_package: Lot de travaux existant
   text_outcome_not_editable_anymore: Ce résultat n'est plus modifiable.
   text_outcome_cannot_be_added: Un résultat ne peut plus être ajouté.
