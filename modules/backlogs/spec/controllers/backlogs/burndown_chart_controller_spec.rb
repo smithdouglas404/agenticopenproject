@@ -28,16 +28,27 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class BurndownChartsController < ::RbApplicationController
-    helper :burndown_charts
+require "rails_helper"
 
-    def show
-      @burndown = Burndown.new(@sprint, @project) if @sprint.date_range_set?
+RSpec.describe Backlogs::BurndownChartController do
+  shared_let(:type_feature) { create(:type_feature) }
+  shared_let(:type_task) { create(:type_task) }
+  shared_let(:user) { create(:admin) }
+  shared_let(:project) { create(:project) }
+  shared_let(:status) { create(:status, name: "status 1", is_default: true) }
+  shared_let(:sprint) { create(:agile_sprint, project:) }
 
-      respond_to do |format|
-        format.html { render "backlogs/burndown_charts/show", layout: true }
-      end
+  current_user { user }
+
+  describe "GET #show" do
+    it "renders under the namespaced controller runtime", :aggregate_failures do
+      get :show, params: { project_id: project.id, sprint_id: sprint.id }, format: :html
+
+      expect(response).to be_successful
+      expect(response).to render_template("backlogs/burndown_chart/show")
+      expect(controller.controller_path).to eq("backlogs/burndown_chart")
+      expect(assigns(:project)).to eq(project)
+      expect(assigns(:sprint)).to eq(sprint)
     end
   end
 end
