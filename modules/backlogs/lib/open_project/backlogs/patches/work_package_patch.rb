@@ -63,6 +63,10 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     def backlogs_enabled?
       project&.backlogs_enabled?
     end
+
+    def assignable_sprints
+      Agile::Sprint.for_project(project).visible.not_completed
+    end
   end
 end
 
