@@ -31,136 +31,196 @@
 import { Controller } from '@hotwired/stimulus';
 import { FetchRequest } from '@rails/request.js';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
-import type { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
-import dragula, { Drake } from 'dragula';
 import invariant from 'tiny-invariant';
+import { DragDropManager, Droppable } from '@dnd-kit/dom';
+import { Sortable } from '@dnd-kit/dom/sortable';
 
 interface TargetConfig {
-  container:Element;
+  container:HTMLElement;
   allowedDragType:string|null;
   targetId:string|null;
 }
 
 export default class GenericDragAndDropController extends Controller {
-  static targets = ['container', 'scrollContainer'];
-
-  containerTargets:HTMLElement[];
-  scrollContainerTargets:HTMLElement[];
+  static targets = ['container', 'scrollContainer', 'item'];
 
   static values = {
     handleSelector: { type: String, default: '.DragHandle' },
     positionMode: { type: String, default: 'index' },
   };
 
+  declare readonly containerTargets:HTMLElement[];
+  declare readonly scrollContainerTargets:HTMLElement[];
+  declare readonly itemTargets:HTMLElement[];
   declare readonly handleSelectorValue:string;
   declare readonly positionModeValue:string;
 
-  private drake:Drake|null = null;
-  private autoscroll:DomAutoscrollService|null = null;
-  private containers:HTMLElement[] = [];
-  private targetConfigs:TargetConfig[] = [];
+  private manager:DragDropManager|null = null;
+  private containerConfigs = new Map<HTMLElement, TargetConfig>();
+  private droppables = new Map<HTMLElement, Droppable>();
+  private sortables = new Map<HTMLElement, Sortable>();
+  private unsubscribers:(() => void)[] = [];
+  private uidCounter = 0;
+
+  // Saved on dragstart, used to revert the DOM on server-side drop failure
+  // (dnd-kit's OptimisticSortingPlugin has already moved the element by then).
   private dragOriginSource:Element|null = null;
   private dragOriginNextSibling:Element|null = null;
+  private draggedElement:HTMLElement|null = null;
 
   connect() {
-    this.autoscroll?.destroy();
-    this.drake?.destroy();
-    this.initDrake();
+    this.createManager();
   }
 
   disconnect() {
-    this.autoscroll?.destroy();
-    this.autoscroll = null;
-    this.drake?.destroy();
-    this.drake = null;
+    this.unsubscribers.forEach((u) => u());
+    this.unsubscribers = [];
+    this.sortables.forEach((s) => s.destroy());
+    this.sortables.clear();
+    this.droppables.forEach((d) => d.destroy());
+    this.droppables.clear();
+    this.containerConfigs.clear();
+    this.manager?.destroy();
+    this.manager = null;
   }
 
   containerTargetConnected(target:HTMLElement) {
+    this.createManager();
+
     const container = this.resolveContainerElement(target);
-    const targetConfig:TargetConfig = {
+    const config:TargetConfig = {
       container,
       allowedDragType: target.getAttribute('data-target-allowed-drag-type'),
       targetId: target.getAttribute('data-target-id'),
     };
+    this.containerConfigs.set(container, config);
 
-    // we need to save the targetConfigs separately as we need to pass the pure container elements to drake
-    // but need the configuration of the targets when dropping elements
-    this.targetConfigs.push(targetConfig);
-    this.containers.push(container);
+    if (this.manager) {
+      const droppable = new Droppable(
+        {
+          id: `container-${this.nextUid()}`,
+          element: container,
+          accept: config.allowedDragType ?? undefined,
+        },
+        this.manager,
+      );
+      this.droppables.set(container, droppable);
+    }
   }
 
   containerTargetDisconnected(target:HTMLElement) {
     const container = this.resolveContainerElement(target);
-    const index = this.containers.indexOf(container);
-    if (index !== -1) {
-      this.containers.splice(index, 1);
-      this.targetConfigs.splice(index, 1);
+    const droppable = this.droppables.get(container);
+    if (droppable) {
+      droppable.destroy();
+      this.droppables.delete(container);
     }
+    this.containerConfigs.delete(container);
+  }
+
+  itemTargetConnected(item:HTMLElement) {
+    this.createManager();
+    if (!this.manager) return;
+
+    const container = this.findContainerFor(item);
+    if (!container) return;
+
+    const config = this.containerConfigs.get(container);
+    if (!config) return;
+
+    const draggableId = item.getAttribute('data-draggable-id');
+    const draggableType = item.getAttribute('data-draggable-type');
+    if (!draggableId) return;
+
+    const handleEl = item.querySelector<HTMLElement>(this.handleSelectorValue);
+    const index = this.itemTargets.indexOf(item);
+
+    const sortable = new Sortable(
+      {
+        id: `sortable-${draggableId}`,
+        element: item,
+        handle: handleEl ?? undefined,
+        group: config.allowedDragType ?? undefined,
+        type: draggableType ?? undefined,
+        accept: config.allowedDragType ?? undefined,
+        index: Math.max(0, index),
+      },
+      this.manager,
+    );
+    this.sortables.set(item, sortable);
+
+    this.reindexItems();
+  }
+
+  itemTargetDisconnected(item:HTMLElement) {
+    const sortable = this.sortables.get(item);
+    if (sortable) {
+      sortable.destroy();
+      this.sortables.delete(item);
+    }
+    this.reindexItems();
   }
 
   cancelDrag() {
-    this.drake?.cancel(true);
-  }
-
-  private revertDrop(el:Element) {
-    if (this.dragOriginSource) {
-      if (this.dragOriginNextSibling?.parentNode === this.dragOriginSource) {
-        this.dragOriginSource.insertBefore(el, this.dragOriginNextSibling);
-      } else {
-        this.dragOriginSource.appendChild(el);
-      }
+    if (this.draggedElement) {
+      this.revertDrop(this.draggedElement);
     }
   }
 
-  initDrake() {
-    // Note: dragula stores a reference to this.containers, so mutations
-    // from containerTargetConnected/Disconnected automatically propagate
-    this.drake = dragula(
-      this.containers,
-      {
-        moves: (_el, _source, handle, _sibling) => !!handle && !!handle.closest(this.handleSelectorValue),
-        accepts: (el:Element, target:Element, source:Element, sibling:Element) => this.accepts(el, target, source, sibling),
-        revertOnSpill: true, // enable reverting of elements if they are dropped outside of a valid target
-      },
-    )
-      .on('drag', (el, source) => {
-        this.dragOriginSource = source;
-        this.dragOriginNextSibling = el.nextElementSibling;
+  private createManager() {
+    if (this.manager) return;
 
-        const handle = el.querySelector(this.handleSelectorValue)!;
-        handle.setAttribute('aria-pressed', 'true');
-      })
-      .on('dragend', (el) => {
-        const handle = el.querySelector(this.handleSelectorValue)!;
-        handle.setAttribute('aria-pressed', 'false');
-       })
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      .on('drop', this.drop.bind(this));
+    // Default preset already includes AutoScroller, Accessibility, Cursor,
+    // Feedback, and PreventSelection plugins.
+    this.manager = new DragDropManager();
 
-    // Setup autoscroll
-    void window.OpenProject.getPluginContext().then((pluginContext) => {
-      if (!this.element.isConnected) return;
-
-      const scrollTargets:Element[] = this.scrollContainerTargets.length > 0
-        ? this.scrollContainerTargets
-        : [document.getElementById('content-body')!];
-
-      this.autoscroll = new pluginContext.classes.DomAutoscrollService(
-        scrollTargets,
-        {
-          margin: 25,
-          maxSpeed: 10,
-          scrollWhenOutside: true,
-          autoScroll: () => this.drake?.dragging,
-        },
-      );
-    });
+    this.unsubscribers.push(
+      this.manager.monitor.addEventListener('dragstart', this.onDragStart),
+      this.manager.monitor.addEventListener('dragend', (event) => {
+        void this.onDragEnd(event);
+      }),
+    );
   }
 
-  accepts(el:Element, target:Element, _source:Element|null, _sibling:Element|null) {
-    const targetConfig = this.targetConfigs.find((config) => config.container === target);
-    const acceptedDragType = targetConfig?.allowedDragType as string|undefined;
+  private onDragStart = ():void => {
+    const el = this.resolveDraggedElement();
+    if (!el) return;
 
+    this.draggedElement = el;
+    this.dragOriginSource = el.parentElement;
+    this.dragOriginNextSibling = el.nextElementSibling;
+
+    const handle = el.querySelector(this.handleSelectorValue);
+    handle?.setAttribute('aria-pressed', 'true');
+  };
+
+  private onDragEnd = async (event:{ canceled:boolean }):Promise<void> => {
+    const el = this.draggedElement ?? this.resolveDraggedElement();
+    if (!el) return;
+
+    const handle = el.querySelector(this.handleSelectorValue);
+    handle?.setAttribute('aria-pressed', 'false');
+
+    try {
+      if (event.canceled) return;
+
+      const target = this.findContainerFor(el);
+      if (!target) return;
+
+      await this.drop(el, target, this.dragOriginSource, this.dragOriginNextSibling);
+    } finally {
+      this.dragOriginSource = null;
+      this.dragOriginNextSibling = null;
+      this.draggedElement = null;
+    }
+  };
+
+  // Subclass hook: meetings/drag-and-drop.controller overrides this to prompt
+  // on unsaved changes, then delegate to super.drop(). Signature preserved
+  // from the Dragula-era implementation.
+  protected accepts(el:Element, target:Element, _source:Element|null, _sibling:Element|null):boolean {
+    const config = this.containerConfigs.get(target as HTMLElement);
+    const acceptedDragType = config?.allowedDragType as string|undefined;
     const draggableType = el.getAttribute('data-draggable-type');
 
     if (draggableType !== acceptedDragType) {
@@ -173,11 +233,9 @@ export default class GenericDragAndDropController extends Controller {
 
   async drop(el:Element, target:Element, _source:Element|null, _sibling:Element|null) {
     const dropUrl = el.getAttribute('data-drop-url');
-    const data = this.buildData(el, target);
+    if (!dropUrl) return;
 
-    if (!dropUrl) {
-      return;
-    }
+    const data = this.buildData(el, target);
 
     try {
       const request = new FetchRequest('put', dropUrl, { body: data, responseKind: 'turbo-stream' });
@@ -190,9 +248,6 @@ export default class GenericDragAndDropController extends Controller {
     } catch (error) {
       this.revertDrop(el);
       debugLog('Failed to sort item due to request error', error);
-    } finally {
-      this.dragOriginSource = null;
-      this.dragOriginNextSibling = null;
     }
   }
 
@@ -205,9 +260,8 @@ export default class GenericDragAndDropController extends Controller {
       data.append('position', this.resolveTargetPosition(el, target).toString());
     }
 
-    const targetConfig = this.targetConfigs.find((config) => config.container === target);
-    const targetId = targetConfig?.targetId as string|undefined;
-
+    const config = this.containerConfigs.get(target as HTMLElement);
+    const targetId = config?.targetId as string|undefined;
     if (targetId) {
       data.append('target_id', targetId.toString());
     }
@@ -215,16 +269,50 @@ export default class GenericDragAndDropController extends Controller {
     return data;
   }
 
-  // if the target has a container accessor, use that as the container instead of the element itself
-  // we need this e.g. in Primer's borderbox component as we cannot add required data attributes to the ul element there
+  private revertDrop(el:Element) {
+    if (!this.dragOriginSource) return;
+
+    if (this.dragOriginNextSibling?.parentNode === this.dragOriginSource) {
+      this.dragOriginSource.insertBefore(el, this.dragOriginNextSibling);
+    } else {
+      this.dragOriginSource.appendChild(el);
+    }
+
+    // After a manual DOM move the dnd-kit Sortable indexes are stale.
+    // Re-sync them to current DOM order so subsequent drags behave correctly.
+    this.reindexItems();
+  }
+
+  private reindexItems() {
+    this.itemTargets.forEach((el, idx) => {
+      const sortable = this.sortables.get(el);
+      if (sortable) sortable.index = idx;
+    });
+  }
+
+  // If the target has a container accessor, use that as the container instead
+  // of the element itself. Needed e.g. in Primer's BorderBox where drag-and-drop
+  // data attributes cannot be placed on the inner ul.
   private resolveContainerElement(target:HTMLElement):HTMLElement {
     const accessor = target.getAttribute('data-target-container-accessor');
-    if (!accessor) {
-      return target;
-    }
+    if (!accessor) return target;
     const container = target.querySelector<HTMLElement>(accessor);
     invariant(container, `Expected container element matching "${accessor}"`);
     return container;
+  }
+
+  private findContainerFor(item:HTMLElement):HTMLElement|null {
+    for (const container of this.containerConfigs.keys()) {
+      if (container.contains(item)) return container;
+    }
+    return null;
+  }
+
+  private resolveDraggedElement():HTMLElement|null {
+    const source = this.manager?.dragOperation?.source;
+    if (!source) return null;
+    const el = (source as unknown as { element?:HTMLElement }).element;
+    return el ?? null;
   }
 
   // Returns the data-draggable-id of the element preceding el in its container,
@@ -234,15 +322,12 @@ export default class GenericDragAndDropController extends Controller {
   }
 
   private resolveTargetPosition(el:Element, container:Element):number {
-    let targetPosition = Array.from(container.children).indexOf(el);
-
-    if (container.children.length > 0 && container.children[0].getAttribute('data-empty-list-item') === 'true') {
-      // if the target container is empty, a list item showing an empty message might be shown
-      // this should not be counted as a list item
-      // thus we need to subtract 1 from the target position
-      targetPosition -= 1;
-    }
-
+    const targetPosition = Array.from(container.children).indexOf(el);
     return targetPosition + 1;
+  }
+
+  private nextUid():string {
+    this.uidCounter += 1;
+    return this.uidCounter.toString();
   }
 }
