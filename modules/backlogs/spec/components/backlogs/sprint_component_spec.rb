@@ -105,11 +105,10 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
       it "has drop target data attributes" do
         render_component
 
-        box = page.find(".Box")
-        expect(box["data-generic-drag-and-drop-target"]).to eq("container")
-        expect(box["data-target-container-accessor"]).to eq(":scope > ul")
-        expect(box["data-target-id"]).to eq("sprint:#{sprint.id}")
-        expect(box["data-target-allowed-drag-type"]).to eq("story")
+        list = page.find(".Box > ul")
+        expect(list["data-generic-drag-and-drop-target"]).to eq("container")
+        expect(list["data-target-id"]).to eq("sprint:#{sprint.id}")
+        expect(list["data-target-allowed-drag-type"]).to eq("story")
       end
 
       it "has draggable data attributes on story rows" do

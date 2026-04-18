@@ -46,8 +46,20 @@ module OpPrimer
       render(OpPrimer::ComponentCollectionComponent.new(**), &)
     end
 
-    def border_box_container(**system_args, &)
-      Primer::Beta::BorderBox.new(position: :relative, **system_args, &)
+    def border_box_container(list_arguments: nil, list_id: nil, **system_args, &)
+      resolved_list_arguments = list_arguments&.dup || {}
+      resolved_list_arguments[:id] ||= list_id if list_id
+
+      if resolved_list_arguments.any?
+        OpPrimer::BorderBoxListComponent.new(
+          position: :relative,
+          list_arguments: resolved_list_arguments,
+          **system_args,
+          &
+        )
+      else
+        Primer::Beta::BorderBox.new(position: :relative, **system_args, &)
+      end
     end
 
     def border_box_row(wrapper_arguments, &)

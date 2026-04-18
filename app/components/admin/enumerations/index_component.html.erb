@@ -17,7 +17,7 @@ component_wrapper do
     end
 
     flex.with_row do
-      render(border_box_container(data: drop_target_config)) do |component|
+      render(border_box_container(list_arguments: { data: drop_target_config })) do |component|
         component.with_header(font_weight: :bold) { enumeration_class.model_name.human(count: :other) }
 
         if enumerations.empty?

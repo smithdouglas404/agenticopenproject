@@ -31,6 +31,7 @@
 module Backlogs
   class InboxComponent < ApplicationComponent
     include Primer::AttributesHelper
+    include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
     include RbCommonHelper
 
@@ -50,11 +51,10 @@ module Backlogs
 
       @system_arguments = system_arguments
       @system_arguments[:id] = inbox_dom_id
+      @system_arguments[:list_arguments] = {
+        data: drop_target_config
+      }
       @system_arguments[:padding] = :condensed
-      @system_arguments[:data] = merge_data(
-        @system_arguments,
-        { data: drop_target_config }
-      )
     end
 
     def wrapper_uniq_by
@@ -94,7 +94,6 @@ module Backlogs
     def drop_target_config
       {
         generic_drag_and_drop_target: "container",
-        target_container_accessor: ":scope > ul",
         target_id: "inbox",
         target_allowed_drag_type: "story"
       }

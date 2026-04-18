@@ -64,6 +64,14 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
     it "renders a Primer::Beta::BorderBox with the inbox DOM id" do
       expect(page).to have_css(".Box#inbox_#{project.id}")
     end
+
+    it "puts the drag target data on the real list container" do
+      list = page.find(".Box > ul")
+
+      expect(list["data-generic-drag-and-drop-target"]).to eq("container")
+      expect(list["data-target-id"]).to eq("inbox")
+      expect(list["data-target-allowed-drag-type"]).to eq("story")
+    end
   end
 
   describe "empty state" do

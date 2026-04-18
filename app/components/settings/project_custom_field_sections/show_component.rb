@@ -57,7 +57,6 @@ module Settings
       def drag_and_drop_target_config
         {
           generic_drag_and_drop_target: "container",
-          "target-container-accessor": ".Box > ul", # the accessor of the container that contains the drag and drop items
           "target-id": @project_custom_field_section.id, # the id of the target
           "target-allowed-drag-type": "custom-field" # the type of dragged items which are allowed to be dropped in this target
         }

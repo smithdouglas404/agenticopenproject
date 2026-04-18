@@ -72,7 +72,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
 
       flex.with_row do
-        render(border_box_container(mb: 3, data: drop_target_config)) do |component|
+        render(border_box_container(mb: 3, list_arguments: { data: drop_target_config })) do |component|
           component.with_header(font_weight: :bold) do
             flex_layout(justify_content: :space_between, align_items: :center) do |header_container|
               header_container.with_column do
