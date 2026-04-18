@@ -65,6 +65,7 @@ module Backlogs
           draggable_id: work_package.id,
           draggable_type: "story",
           drop_url: move_project_backlogs_inbox_path(project, work_package),
+          generic_drag_and_drop_target: "item",
           story: true,
           controller: "backlogs--story",
           backlogs__story_id_value: work_package.id,
