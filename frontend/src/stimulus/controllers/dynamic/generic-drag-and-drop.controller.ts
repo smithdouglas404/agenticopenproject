@@ -33,6 +33,7 @@ import { FetchRequest } from '@rails/request.js';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 import invariant from 'tiny-invariant';
 import { DragDropManager, Droppable } from '@dnd-kit/dom';
+import type { BeforeDragStartEvent } from '@dnd-kit/dom';
 import { Sortable } from '@dnd-kit/dom/sortable';
 
 interface TargetConfig {
@@ -61,6 +62,7 @@ export default class GenericDragAndDropController extends Controller {
   private sortables = new Map<HTMLElement, Sortable>();
   private unsubscribers:(() => void)[] = [];
   private uidCounter = 0;
+  private turboMorphAbort:AbortController|null = null;
 
   // Saved on dragstart, used to revert the DOM on server-side drop failure
   // (dnd-kit's OptimisticSortingPlugin has already moved the element by then).
@@ -70,9 +72,22 @@ export default class GenericDragAndDropController extends Controller {
 
   connect() {
     this.createManager();
+
+    // Turbo morph preserves DOM nodes across refresh when IDs match. Stimulus
+    // does not fire target-connected/disconnected for preserved elements, so
+    // our Sortable/Droppable references go stale (their internal state may
+    // conflict with attributes/children morph mutated in place). Listen for
+    // `turbo:morph-element` and re-register the affected entity. Same shape
+    // as the Pragmatic DnD spike workaround in commit 9ec12351841.
+    this.turboMorphAbort = new AbortController();
+    this.element.addEventListener('turbo:morph-element', this.onTurboMorphElement, {
+      signal: this.turboMorphAbort.signal,
+    });
   }
 
   disconnect() {
+    this.turboMorphAbort?.abort();
+    this.turboMorphAbort = null;
     this.unsubscribers.forEach((u) => u());
     this.unsubscribers = [];
     this.sortables.forEach((s) => s.destroy());
@@ -87,6 +102,8 @@ export default class GenericDragAndDropController extends Controller {
   containerTargetConnected(target:HTMLElement) {
     this.createManager();
 
+    // eslint-disable-next-line no-console
+    console.log('[dnd] containerTargetConnected', target);
     const container = this.resolveContainerElement(target);
     const config:TargetConfig = {
       container,
@@ -120,6 +137,9 @@ export default class GenericDragAndDropController extends Controller {
 
   itemTargetConnected(item:HTMLElement) {
     this.createManager();
+    // eslint-disable-next-line no-console
+    console.log('[dnd] itemTargetConnected', item.getAttribute('data-draggable-id'), item);
+    if (this.isPlaceholderElement(item)) return;
     if (!this.manager) return;
 
     const container = this.findContainerFor(item);
@@ -133,7 +153,7 @@ export default class GenericDragAndDropController extends Controller {
     if (!draggableId) return;
 
     const handleEl = item.querySelector<HTMLElement>(this.handleSelectorValue);
-    const index = this.itemTargets.indexOf(item);
+    const index = this.realItemTargets().indexOf(item);
 
     const sortable = new Sortable(
       {
@@ -153,6 +173,9 @@ export default class GenericDragAndDropController extends Controller {
   }
 
   itemTargetDisconnected(item:HTMLElement) {
+    // eslint-disable-next-line no-console
+    console.log('[dnd] itemTargetDisconnected', item.getAttribute('data-draggable-id'), item);
+    if (this.isPlaceholderElement(item)) return;
     const sortable = this.sortables.get(item);
     if (sortable) {
       sortable.destroy();
@@ -167,14 +190,51 @@ export default class GenericDragAndDropController extends Controller {
     }
   }
 
+  private onTurboMorphElement = (event:Event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    const role = target.getAttribute('data-generic-drag-and-drop-target');
+    if (role !== 'item' && role !== 'container') return;
+
+    // eslint-disable-next-line no-console
+    console.log('[dnd] turbo:morph-element', role, target.getAttribute('data-draggable-id') ?? target.getAttribute('data-target-id'));
+
+    if (role === 'item') {
+      const existing = this.sortables.get(target);
+      if (existing) {
+        existing.destroy();
+        this.sortables.delete(target);
+      }
+      this.itemTargetConnected(target);
+      return;
+    }
+
+    if (role === 'container') {
+      const container = this.resolveContainerElement(target);
+      const existing = this.droppables.get(container);
+      if (existing) {
+        existing.destroy();
+        this.droppables.delete(container);
+      }
+      this.containerConfigs.delete(container);
+      this.containerTargetConnected(target);
+    }
+  };
+
   private createManager() {
     if (this.manager) return;
 
-    // Default preset already includes AutoScroller, Accessibility, Cursor,
-    // Feedback, and PreventSelection plugins.
+    // Default preset includes AutoScroller, Accessibility, Cursor, Feedback,
+    // and PreventSelection. We pin source dimensions in beforedragstart,
+    // before Feedback performs its initial measurement, because the feedback
+    // plugin's CSS var-based width/height feedback-loops to 0 once the <li>
+    // is popover'd (its layout size came from the parent <ul> flex context,
+    // which doesn't follow it into the top layer).
     this.manager = new DragDropManager();
 
     this.unsubscribers.push(
+      this.manager.monitor.addEventListener('beforedragstart', this.onBeforeDragStart),
       this.manager.monitor.addEventListener('dragstart', this.onDragStart),
       this.manager.monitor.addEventListener('dragend', (event) => {
         void this.onDragEnd(event);
@@ -182,9 +242,15 @@ export default class GenericDragAndDropController extends Controller {
     );
   }
 
-  private onDragStart = ():void => {
-    const el = this.resolveDraggedElement();
+  private onBeforeDragStart = (event:BeforeDragStartEvent):void => {
+    const el = this.resolveDragSourceElement(event);
     if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0) {
+      el.style.setProperty('width', `${rect.width}px`, 'important');
+      el.style.setProperty('height', `${rect.height}px`, 'important');
+    }
 
     this.draggedElement = el;
     this.dragOriginSource = el.parentElement;
@@ -194,12 +260,29 @@ export default class GenericDragAndDropController extends Controller {
     handle?.setAttribute('aria-pressed', 'true');
   };
 
+  private onDragStart = ():void => {
+    const el = this.draggedElement ?? this.resolveDraggedElement();
+    // eslint-disable-next-line no-console
+    console.log('[dnd] dragstart', el?.getAttribute('data-draggable-id'), el);
+  };
+
   private onDragEnd = async (event:{ canceled:boolean }):Promise<void> => {
     const el = this.draggedElement ?? this.resolveDraggedElement();
+    // eslint-disable-next-line no-console
+    console.log('[dnd] dragend', {
+      canceled: event.canceled,
+      draggedId: el?.getAttribute('data-draggable-id'),
+      sortableCount: this.sortables.size,
+      droppableCount: this.droppables.size,
+    });
     if (!el) return;
 
     const handle = el.querySelector(this.handleSelectorValue);
     handle?.setAttribute('aria-pressed', 'false');
+
+    // Release the dimension pins applied in onDragStart.
+    el.style.removeProperty('width');
+    el.style.removeProperty('height');
 
     try {
       if (event.canceled) return;
@@ -212,6 +295,8 @@ export default class GenericDragAndDropController extends Controller {
       this.dragOriginSource = null;
       this.dragOriginNextSibling = null;
       this.draggedElement = null;
+      // eslint-disable-next-line no-console
+      console.log('[dnd] dragend cleanup done, sortables=', this.sortables.size);
     }
   };
 
@@ -284,10 +369,18 @@ export default class GenericDragAndDropController extends Controller {
   }
 
   private reindexItems() {
-    this.itemTargets.forEach((el, idx) => {
+    this.realItemTargets().forEach((el, idx) => {
       const sortable = this.sortables.get(el);
       if (sortable) sortable.index = idx;
     });
+  }
+
+  private realItemTargets():HTMLElement[] {
+    return this.itemTargets.filter((el) => !this.isPlaceholderElement(el));
+  }
+
+  private isPlaceholderElement(el:Element):boolean {
+    return el.hasAttribute('data-dnd-placeholder');
   }
 
   // If the target has a container accessor, use that as the container instead
@@ -312,6 +405,12 @@ export default class GenericDragAndDropController extends Controller {
     const source = this.manager?.dragOperation?.source;
     if (!source) return null;
     const el = (source as unknown as { element?:HTMLElement }).element;
+    return el ?? null;
+  }
+
+  private resolveDragSourceElement(event:{ operation?:{ source?:unknown } }):HTMLElement|null {
+    const source = event.operation?.source;
+    const el = (source as { element?:HTMLElement }|undefined)?.element;
     return el ?? null;
   }
 
