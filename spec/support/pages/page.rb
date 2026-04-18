@@ -120,13 +120,6 @@ module Pages
       list = page.all(elements, minimum: [from, to].max + 1)
       source_handler = list[from].find(handler)
       target_handler = list[to].find(handler)
-      controller_root = source_handler.first(
-        :xpath,
-        "./ancestor-or-self::*[contains(concat(' ', normalize-space(@data-controller), ' '), ' generic-drag-and-drop ')]",
-        minimum: 0
-      )
-
-      wait_for_stimulus_controller("generic-drag-and-drop", element: controller_root) if controller_root
 
       # doesn't scroll
       source_handler.native.drag_to(target_handler.native, delay: 0.1)
