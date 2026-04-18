@@ -126,11 +126,56 @@ describe('GenericDragAndDropController', () => {
     expect(firstItem.style.getPropertyPriority('width')).toBe('important');
     expect(firstItem.style.getPropertyValue('height')).toBe('64px');
     expect(firstItem.style.getPropertyPriority('height')).toBe('important');
+    expect(firstItem.hasAttribute('data-generic-dnd-preview-active')).toBeTrue();
     expect(handle.getAttribute('aria-pressed')).toBe('true');
     expect((controller as unknown as { draggedElement:HTMLElement|null }).draggedElement).toBe(firstItem);
     expect((controller as unknown as { dragOriginSource:Element|null }).dragOriginSource).toBe(firstItem.parentElement);
     expect((controller as unknown as { dragOriginNextSibling:Element|null }).dragOriginNextSibling)
       .toBe(document.getElementById('story-2'));
+  });
+
+  it('clears the temporary preview marker after dragend cleanup', async () => {
+    appendTemplate(`
+      <div data-controller="generic-drag-and-drop">
+        <ul
+          data-generic-drag-and-drop-target="container"
+          data-target-allowed-drag-type="story"
+        >
+          <li
+            id="story-1"
+            data-generic-drag-and-drop-target="item"
+            data-draggable-id="1"
+            data-draggable-type="story"
+            data-drop-url="/work_packages/1/move"
+          >
+            <div class="DragHandle" aria-pressed="true"></div>
+          </li>
+        </ul>
+      </div>
+    `);
+    await nextFrame();
+
+    const root = document.querySelector<HTMLElement>('[data-controller="generic-drag-and-drop"]')!;
+    const controller = Stimulus.getControllerForElementAndIdentifier(
+      root,
+      'generic-drag-and-drop',
+    ) as GenericDragAndDropController;
+    const firstItem = document.getElementById('story-1')!;
+
+    firstItem.setAttribute('data-generic-dnd-preview-active', '');
+    firstItem.style.setProperty('width', '320px', 'important');
+    firstItem.style.setProperty('height', '64px', 'important');
+    (controller as unknown as { draggedElement:HTMLElement|null }).draggedElement = firstItem;
+    spyOn(controller, 'drop').and.resolveTo();
+
+    await (controller as unknown as {
+      onDragEnd:(event:{ canceled:boolean }) => Promise<void>;
+    }).onDragEnd({ canceled: false });
+
+    expect(firstItem.hasAttribute('data-generic-dnd-preview-active')).toBeFalse();
+    expect(firstItem.style.getPropertyValue('width')).toBe('');
+    expect(firstItem.style.getPropertyValue('height')).toBe('');
+    expect(firstItem.querySelector('.DragHandle')?.getAttribute('aria-pressed')).toBe('false');
   });
 
   it('ignores dnd-kit placeholder clones when they connect as item targets', async () => {

@@ -42,6 +42,8 @@ interface TargetConfig {
   targetId:string|null;
 }
 
+const ACTIVE_PREVIEW_ATTRIBUTE = 'data-generic-dnd-preview-active';
+
 export default class GenericDragAndDropController extends Controller {
   static targets = ['container', 'scrollContainer', 'item'];
 
@@ -246,6 +248,8 @@ export default class GenericDragAndDropController extends Controller {
     const el = this.resolveDragSourceElement(event);
     if (!el) return;
 
+    el.setAttribute(ACTIVE_PREVIEW_ATTRIBUTE, '');
+
     const rect = el.getBoundingClientRect();
     if (rect.width > 0 && rect.height > 0) {
       el.style.setProperty('width', `${rect.width}px`, 'important');
@@ -280,7 +284,7 @@ export default class GenericDragAndDropController extends Controller {
     const handle = el.querySelector(this.handleSelectorValue);
     handle?.setAttribute('aria-pressed', 'false');
 
-    // Release the dimension pins applied in onDragStart.
+    // Keep the visual preview pinned until the drop/revert work finishes.
     el.style.removeProperty('width');
     el.style.removeProperty('height');
 
@@ -292,6 +296,7 @@ export default class GenericDragAndDropController extends Controller {
 
       await this.drop(el, target, this.dragOriginSource, this.dragOriginNextSibling);
     } finally {
+      el.removeAttribute(ACTIVE_PREVIEW_ATTRIBUTE);
       this.dragOriginSource = null;
       this.dragOriginNextSibling = null;
       this.draggedElement = null;
