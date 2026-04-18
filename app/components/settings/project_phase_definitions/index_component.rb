@@ -55,6 +55,8 @@ module Settings
 
       def draggable_item_config(definition)
         {
+          generic_drag_and_drop_target: "item",
+          "draggable-id": definition.id,
           "draggable-type": "life-cycle-step-definition",
           "drop-url": drop_admin_settings_project_phase_definition_path(definition)
         }

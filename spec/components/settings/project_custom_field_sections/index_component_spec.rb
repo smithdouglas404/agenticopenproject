@@ -28,41 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackageTypes
-  class ExportTemplateListComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
+require "rails_helper"
 
-    def initialize(type:)
-      super
+RSpec.describe Settings::ProjectCustomFieldSections::IndexComponent, type: :component do
+  current_user { create(:admin) }
 
-      @type = type
-    end
+  let!(:first_section) { create(:project_custom_field_section, name: "Basics") }
+  let!(:second_section) { create(:project_custom_field_section, name: "Advanced") }
 
-    def wrapper_data_attributes
-      {
-        controller: "generic-drag-and-drop"
-      }
-    end
+  it "renders section rows as generic drag-and-drop items" do
+    render_inline(described_class.new(project_custom_field_sections: ProjectCustomFieldSection.order(:position)))
 
-    def drag_and_drop_target_config
-      {
-        generic_drag_and_drop_target: "container",
-        "target-container-accessor": ":scope > ul",
-        "target-allowed-drag-type": "template",
-        test_selector: "pdf-export-template-rows"
-      }
-    end
+    row = page.find("[data-draggable-id='#{first_section.id}']")
 
-    def draggable_item_config(template)
-      {
-        generic_drag_and_drop_target: "item",
-        "draggable-id": template.id,
-        "draggable-type": "template",
-        "drop-url": drop_type_pdf_export_template_path(type_id: @type.id, id: template.id),
-        test_selector: "pdf-export-template-row-#{template.id}"
-      }
-    end
+    expect(row["data-generic-drag-and-drop-target"]).to eq("item")
+    expect(row["data-draggable-id"]).to eq(first_section.id.to_s)
+    expect(row["data-draggable-type"]).to eq("section")
+    expect(row["data-drop-url"]).to end_with("/admin/settings/project_custom_field_sections/#{first_section.id}/drop")
   end
 end

@@ -28,41 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackageTypes
-  class ExportTemplateListComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
+require "rails_helper"
 
-    def initialize(type:)
-      super
+RSpec.describe Admin::Enumerations::IndexComponent, type: :component do
+  current_user { create(:admin) }
 
-      @type = type
+  let!(:priority_one) { create(:issue_priority, name: "Critical", position: 1) }
+  let!(:priority_two) { create(:issue_priority, name: "Normal", position: 2) }
+
+  it "renders draggable rows as generic drag-and-drop items" do
+    with_request_url("/admin/settings/work_package_priorities") do
+      render_inline(described_class.new(enumerations: IssuePriority.order(:position)))
     end
 
-    def wrapper_data_attributes
-      {
-        controller: "generic-drag-and-drop"
-      }
-    end
+    row = page.find("[data-test-selector='enumeration-row-#{priority_one.id}']")
 
-    def drag_and_drop_target_config
-      {
-        generic_drag_and_drop_target: "container",
-        "target-container-accessor": ":scope > ul",
-        "target-allowed-drag-type": "template",
-        test_selector: "pdf-export-template-rows"
-      }
-    end
-
-    def draggable_item_config(template)
-      {
-        generic_drag_and_drop_target: "item",
-        "draggable-id": template.id,
-        "draggable-type": "template",
-        "drop-url": drop_type_pdf_export_template_path(type_id: @type.id, id: template.id),
-        test_selector: "pdf-export-template-row-#{template.id}"
-      }
-    end
+    expect(row["data-generic-drag-and-drop-target"]).to eq("item")
+    expect(row["data-draggable-id"]).to eq(priority_one.id.to_s)
+    expect(row["data-draggable-type"]).to eq("enumeration")
+    expect(row["data-drop-url"]).to end_with("/admin/settings/work_package_priorities/#{priority_one.id}/move")
   end
 end
