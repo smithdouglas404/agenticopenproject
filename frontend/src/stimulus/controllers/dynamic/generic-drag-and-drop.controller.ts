@@ -65,6 +65,8 @@ export default class GenericDragAndDropController extends Controller {
   private unsubscribers:(() => void)[] = [];
   private uidCounter = 0;
   private turboMorphAbort:AbortController|null = null;
+  private domObserver:MutationObserver|null = null;
+  private currentDropOperation:{ target?:unknown; shape?:{ current?:{ center?:{ y:number } } }; position?:{ current?:{ y:number } } }|null = null;
 
   // Saved on dragstart, used to revert the DOM on server-side drop failure
   // (dnd-kit's OptimisticSortingPlugin has already moved the element by then).
@@ -85,11 +87,18 @@ export default class GenericDragAndDropController extends Controller {
     this.element.addEventListener('turbo:morph-element', this.onTurboMorphElement, {
       signal: this.turboMorphAbort.signal,
     });
+    this.domObserver = new MutationObserver((mutations) => this.onDomMutations(mutations));
+    this.domObserver.observe(this.element, {
+      childList: true,
+      subtree: true,
+    });
   }
 
   disconnect() {
     this.turboMorphAbort?.abort();
     this.turboMorphAbort = null;
+    this.domObserver?.disconnect();
+    this.domObserver = null;
     this.unsubscribers.forEach((u) => u());
     this.unsubscribers = [];
     this.sortables.forEach((s) => s.destroy());
@@ -155,7 +164,7 @@ export default class GenericDragAndDropController extends Controller {
     if (!draggableId) return;
 
     const handleEl = item.querySelector<HTMLElement>(this.handleSelectorValue);
-    const index = this.realItemTargets().indexOf(item);
+    const index = this.itemsForContainer(container).indexOf(item);
 
     const sortable = new Sortable(
       {
@@ -196,7 +205,7 @@ export default class GenericDragAndDropController extends Controller {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 
-    const role = target.getAttribute('data-generic-drag-and-drop-target');
+    const role = target.getAttribute(this.targetAttributeName());
     if (role !== 'item' && role !== 'container') return;
 
     // eslint-disable-next-line no-console
@@ -223,6 +232,34 @@ export default class GenericDragAndDropController extends Controller {
       this.containerTargetConnected(target);
     }
   };
+
+  private onDomMutations(mutations:MutationRecord[]) {
+    if (this.draggedElement) return;
+
+    const affectedItems = new Set<HTMLElement>();
+    for (const mutation of mutations) {
+      const item = this.closestManagedTarget(mutation.target, 'item');
+      if (item) {
+        affectedItems.add(item);
+      }
+
+      mutation.addedNodes.forEach((node) => {
+        const itemTarget = this.closestManagedTarget(node, 'item');
+        if (itemTarget && !this.nodeIsManagedTarget(node, 'item')) {
+          affectedItems.add(itemTarget);
+        }
+      });
+
+      mutation.removedNodes.forEach((node) => {
+        const itemTarget = this.closestManagedTarget(node, 'item');
+        if (itemTarget && !this.nodeIsManagedTarget(node, 'item')) {
+          affectedItems.add(itemTarget);
+        }
+      });
+    }
+
+    affectedItems.forEach((item) => this.refreshItemTarget(item));
+  }
 
   private createManager() {
     if (this.manager) return;
@@ -270,7 +307,7 @@ export default class GenericDragAndDropController extends Controller {
     console.log('[dnd] dragstart', el?.getAttribute('data-draggable-id'), el);
   };
 
-  private onDragEnd = async (event:{ canceled:boolean }):Promise<void> => {
+  private onDragEnd = async (event:{ canceled:boolean; operation?:{ target?:unknown } }):Promise<void> => {
     const el = this.draggedElement ?? this.resolveDraggedElement();
     // eslint-disable-next-line no-console
     console.log('[dnd] dragend', {
@@ -291,11 +328,14 @@ export default class GenericDragAndDropController extends Controller {
     try {
       if (event.canceled) return;
 
-      const target = this.findContainerFor(el);
+      this.currentDropOperation = event.operation ?? null;
+      const target = this.resolveDropContainer(event, el);
       if (!target) return;
+      this.syncDomToDropTarget(el, target);
 
       await this.drop(el, target, this.dragOriginSource, this.dragOriginNextSibling);
     } finally {
+      this.currentDropOperation = null;
       el.removeAttribute(ACTIVE_PREVIEW_ATTRIBUTE);
       this.dragOriginSource = null;
       this.dragOriginNextSibling = null;
@@ -374,9 +414,11 @@ export default class GenericDragAndDropController extends Controller {
   }
 
   private reindexItems() {
-    this.realItemTargets().forEach((el, idx) => {
-      const sortable = this.sortables.get(el);
-      if (sortable) sortable.index = idx;
+    this.containerConfigs.forEach((_config, container) => {
+      this.itemsForContainer(container).forEach((el, idx) => {
+        const sortable = this.sortables.get(el);
+        if (sortable) sortable.index = idx;
+      });
     });
   }
 
@@ -400,10 +442,16 @@ export default class GenericDragAndDropController extends Controller {
   }
 
   private findContainerFor(item:HTMLElement):HTMLElement|null {
-    for (const container of this.containerConfigs.keys()) {
-      if (container.contains(item)) return container;
+    let current = item.parentElement;
+    while (current) {
+      if (this.containerConfigs.has(current)) return current;
+      current = current.parentElement;
     }
     return null;
+  }
+
+  private itemsForContainer(container:HTMLElement):HTMLElement[] {
+    return this.realItemTargets().filter((item) => this.findContainerFor(item) === container);
   }
 
   private resolveDraggedElement():HTMLElement|null {
@@ -419,6 +467,19 @@ export default class GenericDragAndDropController extends Controller {
     return el ?? null;
   }
 
+  private resolveDropContainer(event:{ operation?:{ target?:unknown } }, draggedElement:HTMLElement):HTMLElement|null {
+    const dropTargetElement = (event.operation?.target as { element?:HTMLElement }|undefined)?.element;
+    const draggableType = draggedElement.getAttribute('data-draggable-type');
+    if (dropTargetElement instanceof HTMLElement) {
+      const matchingContainer = this.resolveMatchingDropContainer(dropTargetElement, draggableType);
+      if (matchingContainer) {
+        return matchingContainer;
+      }
+    }
+
+    return this.findContainerFor(draggedElement);
+  }
+
   // Returns the data-draggable-id of the element preceding el in its container,
   // or null if el is the first item (signals "move to top").
   private resolveTargetPrevious(el:Element):string|null {
@@ -426,12 +487,151 @@ export default class GenericDragAndDropController extends Controller {
   }
 
   private resolveTargetPosition(el:Element, container:Element):number {
-    const targetPosition = Array.from(container.children).indexOf(el);
-    return targetPosition + 1;
+    const targetContainer = container as HTMLElement;
+    const currentItems = this.itemsForContainer(targetContainer);
+    const dropTargetElement = this.resolveDropTargetElement();
+    if (dropTargetElement && targetContainer.contains(dropTargetElement)) {
+      const targetItem = this.resolveDropTargetItem(targetContainer, dropTargetElement);
+      const targetIndex = targetItem ? currentItems.indexOf(targetItem) : -1;
+      if (targetIndex >= 0 && targetItem !== el) {
+        return targetIndex + (this.isDropAfterTarget() ? 2 : 1);
+      }
+    }
+
+    const currentIndex = currentItems.indexOf(el as HTMLElement);
+    if (currentIndex >= 0) {
+      return currentIndex + 1;
+    }
+
+    if (dropTargetElement === targetContainer) {
+      return this.isDropAfterTarget() ? currentItems.length + 1 : 1;
+    }
+
+    return currentItems.length + 1;
+  }
+
+  private syncDomToDropTarget(el:Element, container:Element):void {
+    const targetContainer = container as HTMLElement;
+    const draggedElement = el as HTMLElement;
+    const dropTargetElement = this.resolveDropTargetElement();
+
+    if (dropTargetElement && targetContainer.contains(dropTargetElement)) {
+      const targetItem = this.resolveDropTargetItem(targetContainer, dropTargetElement);
+      if (targetItem && targetItem !== draggedElement) {
+        targetItem.insertAdjacentElement(this.isDropAfterTarget() ? 'afterend' : 'beforebegin', draggedElement);
+        this.reindexItems();
+        return;
+      }
+    }
+
+    if (dropTargetElement === targetContainer) {
+      if (this.isDropAfterTarget()) {
+        targetContainer.appendChild(draggedElement);
+      } else {
+        targetContainer.insertBefore(draggedElement, targetContainer.firstElementChild);
+      }
+      this.reindexItems();
+      return;
+    }
+
+    if (!targetContainer.contains(draggedElement)) {
+      targetContainer.appendChild(draggedElement);
+      this.reindexItems();
+    }
+  }
+
+  private resolveMatchingDropContainer(element:HTMLElement, draggableType:string|null):HTMLElement|null {
+    if (this.matchesDropContainer(element, draggableType)) {
+      return element;
+    }
+
+    const descendantMatch = Array.from(this.containerConfigs.keys()).find((container) =>
+      element.contains(container) && this.matchesDropContainer(container, draggableType));
+    if (descendantMatch) {
+      return descendantMatch;
+    }
+
+    let current = element.parentElement;
+    while (current) {
+      if (this.matchesDropContainer(current, draggableType)) {
+        return current;
+      }
+      current = current.parentElement;
+    }
+
+    return null;
+  }
+
+  private matchesDropContainer(container:HTMLElement, draggableType:string|null):boolean {
+    const config = this.containerConfigs.get(container);
+    return !!config && config.allowedDragType === draggableType;
+  }
+
+  private resolveDropTargetElement():HTMLElement|null {
+    const target = this.currentDropOperation?.target as { element?:HTMLElement }|undefined;
+    return target?.element ?? null;
+  }
+
+  private resolveDropTargetItem(container:HTMLElement, dropTargetElement:HTMLElement):HTMLElement|null {
+    let current:HTMLElement|null = dropTargetElement;
+
+    while (current) {
+      if (this.sortables.has(current) && this.findContainerFor(current) === container) {
+        return current;
+      }
+
+      if (current === container) {
+        return null;
+      }
+
+      current = current.parentElement;
+    }
+
+    return null;
+  }
+
+  private isDropAfterTarget():boolean {
+    const currentCenterY = this.currentDropOperation?.shape?.current?.center?.y ?? this.currentDropOperation?.position?.current?.y;
+    const targetCenterY = (this.currentDropOperation?.target as { shape?:{ center?:{ y:number } } }|undefined)?.shape?.center?.y;
+
+    if (typeof currentCenterY !== 'number' || typeof targetCenterY !== 'number') {
+      return true;
+    }
+
+    return Math.round(currentCenterY) > Math.round(targetCenterY);
   }
 
   private nextUid():string {
     this.uidCounter += 1;
     return this.uidCounter.toString();
+  }
+
+  private targetAttributeName():string {
+    return `data-${this.identifier}-target`;
+  }
+
+  private refreshItemTarget(item:HTMLElement) {
+    if (!this.sortables.has(item)) return;
+
+    const existing = this.sortables.get(item);
+    if (existing) {
+      existing.destroy();
+      this.sortables.delete(item);
+    }
+
+    this.itemTargetConnected(item);
+  }
+
+  private closestManagedTarget(node:Node, role:'item'|'container'):HTMLElement|null {
+    const element = node instanceof HTMLElement ? node : node.parentElement;
+    return element?.closest<HTMLElement>(`[${this.targetAttributeName()}="${role}"]`) ?? null;
+  }
+
+  private isManagedTarget(element:HTMLElement, role:'item'|'container'):boolean {
+    return element.getAttribute(this.targetAttributeName()) === role;
+  }
+
+  private nodeIsManagedTarget(node:Node, role:'item'|'container'):boolean {
+    return node instanceof HTMLElement && this.isManagedTarget(node, role);
   }
 }

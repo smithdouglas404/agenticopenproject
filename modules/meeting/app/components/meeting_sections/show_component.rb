@@ -74,7 +74,7 @@ module MeetingSections
     def render_section_wrapper?
       return false if render_backlog?
 
-      @force_wrapper || !@meeting_section.untitled? || @meeting.sections.count > 1
+      @force_wrapper || !@meeting_section.untitled? || @meeting.sections.many?
     end
 
     def render_new_button_in_section?
@@ -83,6 +83,7 @@ module MeetingSections
 
     def draggable_item_config
       {
+        meetings__drag_and_drop_target: "item",
         "draggable-id": @meeting_section.id,
         "draggable-type": "section",
         "drop-url": drop_project_meeting_section_path(@meeting.project, @meeting, @meeting_section)
