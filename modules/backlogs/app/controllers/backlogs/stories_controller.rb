@@ -55,7 +55,8 @@ module Backlogs
       sprint_id_was = @story.sprint_id
 
       move_attributes = infer_attributes_from_target
-      unless move_story(move_attributes).success?
+      refresh_source = !same_sprint_move?(move_attributes, sprint_id_was:)
+      unless move_story(move_attributes, refresh_source:).success?
         return respond_with_turbo_streams(status: :unprocessable_entity)
       end
 
@@ -87,12 +88,14 @@ module Backlogs
 
     private
 
-    def move_story(move_attributes)
+    def move_story(move_attributes, refresh_source:)
       call = update_story_with_target_and_position(attributes: move_attributes)
 
       if call.success?
-        # Update source component so that the moved story disappears
-        replace_sprint_component_via_turbo_stream(sprint: @sprint)
+        # Same-sprint reorders are already reflected by the optimistic client
+        # move, so avoid morphing the whole sprint component and flashing the
+        # list back through its server-rendered state.
+        replace_sprint_component_via_turbo_stream(sprint: @sprint) if refresh_source
       else
         render_error_flash_message_via_turbo_stream(
           message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
@@ -151,6 +154,10 @@ module Backlogs
 
     def target_inbox?(move_attributes)
       move_attributes.key?(:sprint_id) && move_attributes[:sprint_id].nil?
+    end
+
+    def same_sprint_move?(move_attributes, sprint_id_was:)
+      target_sprint?(move_attributes) && move_attributes[:sprint_id].to_i == sprint_id_was.to_i
     end
 
     def replace_sprint_component_via_turbo_stream(sprint:)
