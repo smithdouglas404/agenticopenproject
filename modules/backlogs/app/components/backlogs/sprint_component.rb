@@ -104,6 +104,7 @@ module Backlogs
       return {} unless work_package_draggable?
 
       {
+        generic_drag_and_drop_target: "item",
         draggable_id: story.id,
         draggable_type: "story",
         drop_url: move_project_sprint_story_path(project, sprint, story)

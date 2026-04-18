@@ -209,6 +209,36 @@ def wait_for_ckeditor(timeout: 20)
   expect(page).to have_css(".ck-content", wait: timeout)
 end
 
+def wait_for_stimulus_controller(identifier, element: nil, timeout: Capybara.default_max_wait_time)
+  deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
+
+  loop do
+    available = page.evaluate_script(<<~JS, element&.native, identifier)
+      ((element, controllerIdentifier) => {
+        const scope = element ?? document;
+
+        if (!window.Stimulus) {
+          return false;
+        }
+
+        if (scope instanceof Element) {
+          return window.Stimulus.getControllerForElementAndIdentifier(scope, controllerIdentifier) !== null;
+        }
+
+        return window.Stimulus.controllers.some((controller) => controller.identifier === controllerIdentifier);
+      })(arguments[0], arguments[1])
+    JS
+
+    return true if available
+
+    if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+      raise "Timed out waiting for Stimulus controller #{identifier.inspect}"
+    end
+
+    sleep 0.05
+  end
+end
+
 def using_cuprite?
   Capybara.javascript_driver == :better_cuprite_en
 end

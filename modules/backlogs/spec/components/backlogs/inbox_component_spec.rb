@@ -92,6 +92,13 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
     let(:wp2) { create_inbox_work_package(subject: "Second item", position: 2) }
     let(:work_packages) { WorkPackage.where(id: [wp1.id, wp2.id]).order(:position) }
 
+    it "renders inbox rows as draggable items" do
+      row = page.find(".Box-row[data-draggable-id='#{wp1.id}']")
+
+      expect(row["data-generic-drag-and-drop-target"]).to eq("item")
+      expect(row["data-draggable-type"]).to eq("story")
+    end
+
     it "renders a row for each work package", :aggregate_failures do
       expect(page).to have_css(".Box-row", count: 2)
 

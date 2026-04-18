@@ -35,6 +35,7 @@ RSpec.describe "Work package priorities", :js do
 
   current_user { create(:admin) }
   let!(:default_priority) { create(:issue_priority, is_default: true, name: "Normal") }
+  let(:page_object) { Pages::Page.new }
 
   def within_enumeration_item(priority, &)
     page.within("#admin-enumerations-item-component-#{priority.id}", &)
@@ -104,5 +105,25 @@ RSpec.describe "Work package priorities", :js do
       expect(page).to have_content("Normal")
       expect(page).to have_no_content("Default")
     end
+  end
+
+  it "reorders priorities by drag and drop" do
+    second_priority = create(:issue_priority, name: "Immediate")
+
+    visit admin_settings_work_package_priorities_path
+
+    page_object.drag_and_drop_list(
+      from: 0,
+      to: 1,
+      elements: "[data-test-selector^='enumeration-row-']",
+      handler: ".DragHandle"
+    )
+    wait_for_network_idle
+
+    expect(IssuePriority.order(:position).pluck(:id)).to eq([second_priority.id, default_priority.id])
+
+    rows = page.all("[data-test-selector^='enumeration-row-']", minimum: 2)
+    expect(rows[0]).to have_text("Immediate")
+    expect(rows[1]).to have_text("Normal")
   end
 end

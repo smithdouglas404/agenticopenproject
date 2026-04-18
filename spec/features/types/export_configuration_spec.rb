@@ -33,6 +33,7 @@ require "spec_helper"
 RSpec.describe "type export configuration tab", :js do
   shared_let(:admin) { create(:admin) }
   let(:type) { create(:type) }
+  let(:page_object) { Pages::Page.new }
 
   let!(:project) { create(:project, types: [type]) }
 
@@ -90,10 +91,13 @@ RSpec.describe "type export configuration tab", :js do
   it "reorders by drag and drop" do
     first_id = type.pdf_export_templates.list_enabled.first.id
     second_id = type.pdf_export_templates.list_enabled[1].id
-    source = page.find("[data-test-selector='pdf-export-template-row-#{first_id}'] .DragHandle")
-    target = page.find("[data-test-selector='pdf-export-template-row-#{second_id}'] .DragHandle")
-    source.native.drag_to(target.native, delay: 0.1)
-    sleep 1
+    page_object.drag_and_drop_list(
+      from: 0,
+      to: 1,
+      elements: "[data-test-selector^='pdf-export-template-row-']",
+      handler: ".DragHandle"
+    )
+    wait_for_network_idle
 
     type.reload
     expect(type.pdf_export_templates.list[1].id).to eq(first_id)
