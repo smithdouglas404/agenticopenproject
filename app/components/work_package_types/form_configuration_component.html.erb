@@ -32,7 +32,8 @@ See COPYRIGHT and LICENSE files for more details.
     data: {
       controller: "admin--type-form-configuration",
       "admin--type-form-configuration-no-filter-query-value": @no_filter_query,
-      "admin--type-form-configuration-ee-available-value": ee_available?
+      "admin--type-form-configuration-ee-available-value": ee_available?,
+      "admin--type-form-configuration-new-section-url-value": new_section_type_form_configuration_path(@type)
     }
   ) do
     flex_layout do |outer|
@@ -61,7 +62,7 @@ See COPYRIGHT and LICENSE files for more details.
                   data: { action: "click->admin--type-form-configuration#addAttributeSection" }
                 }
               ) do |item|
-                item.with_leading_visual_icon(icon: :"rows")
+                item.with_leading_visual_icon(icon: :rows)
               end
 
               menu.with_item(
@@ -72,7 +73,7 @@ See COPYRIGHT and LICENSE files for more details.
                   data: { action: "click->admin--type-form-configuration#addQuerySection" }
                 }
               ) do |item|
-                item.with_leading_visual_icon(icon: :"table")
+                item.with_leading_visual_icon(icon: :table)
               end
             end
           end
@@ -164,10 +165,11 @@ See COPYRIGHT and LICENSE files for more details.
           # ---- Right panel: active sections ----
           # Use a plain div so section component_wrappers are direct children (required for sections Dragula)
           columns.with_column(style: "flex: 2") do
-            content_tag(:div, data: { "admin--type-form-configuration-target": "sectionsContainer" }) do
+            content_tag(:div, id: "type-form-configuration-sections-container",
+                              data: { "admin--type-form-configuration-target": "sectionsContainer" }) do
               if section_components.empty?
                 render(Primer::Beta::Blankslate.new(test_selector: "type-form-configuration-blankslate")) do |blankslate|
-                  blankslate.with_visual_icon(icon: :"rows")
+                  blankslate.with_visual_icon(icon: :rows)
                   blankslate.with_heading(tag: :h3) { t("types.edit.form_configuration.blankslate_title") }
                   blankslate.with_description { t("types.edit.form_configuration.blankslate_description") }
                 end

@@ -35,8 +35,11 @@ See COPYRIGHT and LICENSE files for more details.
       group_name: @group[:name],
       group_query: @group[:query],
       section_first: first?,
-      section_last: last?
-    }
+      section_last: last?,
+      edit_mode: (true if edit_mode?),
+      open_query_editor: (true if edit_mode? && query_group?),
+      cancel_rename_url: (cancel_rename_type_form_configuration_section_path(@type, @group[:key]) if edit_mode? && rename_via_server?)
+    }.compact
   ) do
     render(border_box_container(mt: 3)) do |box|
 
@@ -44,7 +47,7 @@ See COPYRIGHT and LICENSE files for more details.
       box.with_header(font_weight: :bold) do
         flex_layout(justify_content: :space_between, align_items: :center) do |header|
 
-          # Left: drag handle + editable name
+          # Left: drag handle + section name (text or editable field)
           header.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
             left.with_column(mr: 2) do
               render(Primer::OpenProject::DragHandle.new(
@@ -53,116 +56,141 @@ See COPYRIGHT and LICENSE files for more details.
               ))
             end
             left.with_column(flex: 1) do
-              # Display span (clickable to start editing)
-              concat(
-                content_tag(:span, @group[:name],
-                  class: "section-name-display",
-                  style: "cursor:pointer",
-                  data: { action: "click->admin--type-form-configuration#startRenameSection" })
-              )
-              # Edit input (hidden initially)
-              concat(
-                tag.input(
-                  type: "text",
+              if edit_mode?
+                render(Primer::Alpha::TextField.new(
+                  name: "section_name",
+                  label: t("types.edit.form_configuration.section_name_label"),
+                  visually_hide_label: true,
                   value: @group[:name],
-                  class: "section-name-input",
-                  style: "display:none",
+                  autofocus: true,
+                  autocomplete: "off",
+                  "full-width": true,
                   data: {
-                    action: "blur->admin--type-form-configuration#saveRenameSection
-                             keydown.enter->admin--type-form-configuration#saveRenameSection
-                             keydown.escape->admin--type-form-configuration#cancelRenameSection"
+                    action: "keydown.enter->admin--type-form-configuration#saveRenameSection
+                             keydown.esc->admin--type-form-configuration#cancelRenameSection"
                   }
-                )
-              )
+                ))
+              else
+                render(Primer::Beta::Text.new(font_weight: :bold)) { @group[:name] }
+              end
             end
           end
 
-          # Right: three-dots action menu
+          # Right: save/cancel (edit mode) or action menu (view mode)
           header.with_column do
-            render(Primer::Alpha::ActionMenu.new) do |menu|
-              menu.with_show_button(
-                icon: "kebab-horizontal",
-                scheme: :invisible,
-                size: :small,
-                "aria-label": t("types.edit.form_configuration.section_actions")
-              )
+            if edit_mode?
+              safe_join([
+                render(
+                  Primer::Beta::Button.new(
+                    scheme: :primary,
+                    size: :small,
+                    mr: 2,
+                    data: { action: "click->admin--type-form-configuration#saveRenameSection" }
+                  )
+                ) { t("button_save") },
+                render(
+                  Primer::Beta::Button.new(
+                    scheme: :secondary,
+                    size: :small,
+                    data: { action: "click->admin--type-form-configuration#cancelRenameSection" }
+                  )
+                ) { t("button_cancel") }
+              ])
+            else
+              render(Primer::Alpha::ActionMenu.new) do |menu|
+                menu.with_show_button(
+                  icon: "kebab-horizontal",
+                  scheme: :invisible,
+                  size: :small,
+                  "aria-label": t("types.edit.form_configuration.section_actions")
+                )
 
-              # Rename
-              menu.with_item(
-                label: t("types.edit.form_configuration.rename_section"),
-                tag: :button,
-                value: "",
-                content_arguments: {
-                  data: { action: "click->admin--type-form-configuration#startRenameSection" }
-                }
-              ) do |item|
-                item.with_leading_visual_icon(icon: :pencil)
-              end
-
-              menu.with_divider
-
-              # Move items (position-dependent, hidden via CSS + Stimulus)
-              unless first?
-                menu.with_item(
-                  label: t("label_agenda_item_move_to_top"),
-                  tag: :button,
-                  value: "",
-                  content_arguments: {
-                    data: { action: "click->admin--type-form-configuration#moveSectionTop" }
-                  }
-                ) do |item|
-                  item.with_leading_visual_icon(icon: "move-to-top")
+                if rename_via_server?
+                  menu.with_item(
+                    label: t("types.edit.form_configuration.rename_section"),
+                    href: edit_type_form_configuration_section_path(@type, @group[:key]),
+                    content_arguments: {
+                      data: { "turbo-stream": true }
+                    }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: :pencil)
+                  end
+                else
+                  menu.with_item(
+                    label: t("types.edit.form_configuration.rename_section"),
+                    tag: :button,
+                    value: "",
+                    content_arguments: {
+                      data: { action: "click->admin--type-form-configuration#startRenameSection" }
+                    }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: :pencil)
+                  end
                 end
 
-                menu.with_item(
-                  label: t("label_agenda_item_move_up"),
-                  tag: :button,
-                  value: "",
-                  content_arguments: {
-                    data: { action: "click->admin--type-form-configuration#moveSectionUp" }
-                  }
-                ) do |item|
-                  item.with_leading_visual_icon(icon: "chevron-up")
-                end
-              end
+                menu.with_divider
 
-              unless last?
-                menu.with_item(
-                  label: t("label_agenda_item_move_down"),
-                  tag: :button,
-                  value: "",
-                  content_arguments: {
-                    data: { action: "click->admin--type-form-configuration#moveSectionDown" }
-                  }
-                ) do |item|
-                  item.with_leading_visual_icon(icon: "chevron-down")
-                end
+                  unless first?
+                    menu.with_item(
+                      label: t("label_agenda_item_move_to_top"),
+                      tag: :button,
+                      value: "",
+                      content_arguments: {
+                        data: { action: "click->admin--type-form-configuration#moveSectionTop" }
+                      }
+                    ) do |item|
+                      item.with_leading_visual_icon(icon: "move-to-top")
+                    end
 
-                menu.with_item(
-                  label: t("label_agenda_item_move_to_bottom"),
-                  tag: :button,
-                  value: "",
-                  content_arguments: {
-                    data: { action: "click->admin--type-form-configuration#moveSectionBottom" }
-                  }
-                ) do |item|
-                  item.with_leading_visual_icon(icon: "move-to-bottom")
-                end
-              end
+                    menu.with_item(
+                      label: t("label_agenda_item_move_up"),
+                      tag: :button,
+                      value: "",
+                      content_arguments: {
+                        data: { action: "click->admin--type-form-configuration#moveSectionUp" }
+                      }
+                    ) do |item|
+                      item.with_leading_visual_icon(icon: "chevron-up")
+                    end
+                  end
 
-              menu.with_divider
+                  unless last?
+                    menu.with_item(
+                      label: t("label_agenda_item_move_down"),
+                      tag: :button,
+                      value: "",
+                      content_arguments: {
+                        data: { action: "click->admin--type-form-configuration#moveSectionDown" }
+                      }
+                    ) do |item|
+                      item.with_leading_visual_icon(icon: "chevron-down")
+                    end
 
-              # Delete
-              menu.with_item(
-                label: t("button_delete"),
-                scheme: :danger,
-                tag: :button,
-                value: "",
-                content_arguments: {
-                  data: { action: "click->admin--type-form-configuration#deleteSection" }
-                }
-              ) do |item|
-                item.with_leading_visual_icon(icon: :trash)
+                    menu.with_item(
+                      label: t("label_agenda_item_move_to_bottom"),
+                      tag: :button,
+                      value: "",
+                      content_arguments: {
+                        data: { action: "click->admin--type-form-configuration#moveSectionBottom" }
+                      }
+                    ) do |item|
+                      item.with_leading_visual_icon(icon: "move-to-bottom")
+                    end
+                  end
+
+                  menu.with_divider
+
+                  menu.with_item(
+                    label: t("button_delete"),
+                    scheme: :danger,
+                    tag: :button,
+                    value: "",
+                    content_arguments: {
+                      data: { action: "click->admin--type-form-configuration#deleteSection" }
+                    }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: :trash)
+                  end
               end
             end
           end

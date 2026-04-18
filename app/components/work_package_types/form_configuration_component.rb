@@ -49,6 +49,7 @@ module WorkPackageTypes
       @groups.map.with_index do |group, i|
         WorkPackageTypes::FormConfiguration::SectionComponent.new(
           group:,
+          type: @type,
           first: i == 0,
           last: i == @groups.length - 1
         )

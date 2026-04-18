@@ -29,50 +29,44 @@
 #++
 
 module WorkPackageTypes
-  module FormConfiguration
-    class SectionComponent < ApplicationComponent
-      include OpTurbo::Streamable
-      include OpPrimer::ComponentHelpers
+  class FormConfigurationSectionsTabController < BaseTabController
+    include TypesHelper
 
-      def initialize(group:, type: nil, first: false, last: false, edit_mode: false)
-        super(group)
-        @group = group
-        @type = type
-        @first = first
-        @last = last
-        @edit_mode = edit_mode
-        @instance_uid = SecureRandom.hex(4)
-      end
+    def edit
+      group = find_active_group(params[:key])
+      return head :not_found unless group
 
-      def wrapper_uniq_by
-        @group[:key].presence || @instance_uid
-      end
+      render_section_component(group:, edit_mode: true)
+    end
 
-      def edit_mode?
-        @edit_mode
-      end
+    def cancel_rename
+      group = find_active_group(params[:key])
+      return head :not_found unless group
 
-      # True when this section has a persisted key AND we have a type reference,
-      # so server-side turbo-stream paths (edit / cancel_rename) can be generated.
-      def rename_via_server?
-        @type && @group[:key].present?
-      end
+      render_section_component(group:, edit_mode: false)
+    end
 
-      def query_group?
-        @group[:type].to_s == "query"
-      end
+    private
 
-      def attributes
-        @group[:attributes] || []
-      end
+    def find_active_group(key)
+      actives = form_configuration_groups(@type)[:actives]
+      actives.find { |g| g[:key].to_s == key.to_s }
+    end
 
-      def first?
-        @first
-      end
+    def render_section_component(group:, edit_mode:)
+      form_attrs = form_configuration_groups(@type)
+      actives = form_attrs[:actives].reject { |g| g[:key].to_s == "__empty" }
+      idx = actives.index { |g| g[:key].to_s == group[:key].to_s }
 
-      def last?
-        @last
-      end
+      component = WorkPackageTypes::FormConfiguration::SectionComponent.new(
+        group:,
+        type: @type,
+        first: idx == 0,
+        last: idx == actives.length - 1,
+        edit_mode:
+      )
+
+      render turbo_stream: component.render_as_turbo_stream(view_context:, action: :replace)
     end
   end
 end

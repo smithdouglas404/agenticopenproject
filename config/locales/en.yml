@@ -1370,6 +1370,7 @@ en:
         blankslate_description: "Add sections using the button above or drag attributes from the left panel."
         section_actions: "Section actions"
         rename_section: "Rename section"
+        section_name_label: "Section name"
         row_actions: "Row actions"
         query_group_label: "Work packages table"
         empty_section_hint: "Drag attributes here"
