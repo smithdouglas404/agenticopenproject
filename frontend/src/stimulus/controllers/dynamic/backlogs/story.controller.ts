@@ -163,6 +163,7 @@ export default class StoryController extends Controller<HTMLElement> implements 
       'a',
       'button',
       'clipboard-copy',
+      '.DragHandle',
       '[data-drag-handle]',
     ].some((selector) => target.closest(selector) !== null);
   }
