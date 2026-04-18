@@ -134,6 +134,29 @@ RSpec.describe Backlogs::StoriesController do
       end
     end
 
+    context "with the same Agile::Sprint as target" do
+      let!(:other_story_in_agile_sprint) { create(:work_package, status:, sprint: agile_sprint, project:) }
+
+      it "does not replace the sprint component again", :aggregate_failures do
+        put :move, params: {
+                     project_id: project.id,
+                     sprint_id: agile_sprint.id,
+                     id: story_in_agile_sprint.id,
+                     target_id: "sprint:#{agile_sprint.id}",
+                     prev_id: other_story_in_agile_sprint.id
+                   },
+                   format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
+        expect(response).not_to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(assigns(:project)).to eq(project)
+        expect(assigns(:sprint)).to eq(agile_sprint)
+        expect(assigns(:story)).to eq(story_in_agile_sprint)
+      end
+    end
+
     context "with Inbox as target" do
       let!(:existing_inbox_item) { create(:work_package, project:, status:, position: 1) }
 

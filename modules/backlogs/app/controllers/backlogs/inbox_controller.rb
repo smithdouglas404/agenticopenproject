@@ -78,7 +78,9 @@ module Backlogs
 
       return failure_response(call.message) unless call.success?
 
-      replace_inbox_component_via_turbo_stream
+      # Same-inbox reorders are already reflected by the optimistic client
+      # move, so avoid morphing the whole inbox component back over the list.
+      replace_inbox_component_via_turbo_stream unless inbox_move?(target_type)
       replace_sprint_component_via_turbo_stream(sprint_id) if target_type == "sprint"
       respond_with_turbo_streams
     end
@@ -106,6 +108,10 @@ module Backlogs
         component: Backlogs::SprintComponent.new(sprint: sprint, project: @project),
         method: :morph
       )
+    end
+
+    def inbox_move?(target_type)
+      target_type == "inbox"
     end
 
     def failure_response(reason)
