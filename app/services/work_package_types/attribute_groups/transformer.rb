@@ -53,10 +53,19 @@ module WorkPackageTypes
       attr_reader :groups, :user
 
       def transform_attribute_group(group)
-        name = group[:key]&.to_sym || group[:name]
         attributes = group[:attributes].pluck(:key)
 
-        [name, attributes]
+        if group[:key].present?
+          key = group[:key].to_sym
+          default_label = Type.default_groups[key]
+          default_name = default_label ? I18n.t(default_label, default: key.to_s) : key.to_s
+          display_name = group[:name] if group[:name].present? && group[:name] != default_name
+          result = [key, attributes]
+          result << display_name if display_name.present?
+          result
+        else
+          [group[:name], attributes]
+        end
       end
 
       def transform_query_group(group)

@@ -142,11 +142,10 @@ module WorkPackageTypes
           model.update_column(:attribute_groups, [["Original Name", %w[assignee responsible]]])
         end
 
-        it "is invalid" do
+        it "is valid (renaming does not add a new custom group)" do
           model.attribute_groups = [["Renamed Group", %w[assignee responsible]]]
 
-          expect(contract).not_to be_valid
-          expect(contract.errors.details[:base]).to include(action: "Edit Attribute Groups", error: :error_enterprise_only)
+          expect(contract).to be_valid
         end
       end
     end

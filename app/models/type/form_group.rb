@@ -31,12 +31,14 @@
 class Type::FormGroup
   attr_accessor :key,
                 :attributes,
-                :type
+                :type,
+                :display_name
 
-  def initialize(type, key, attributes)
+  def initialize(type, key, attributes, display_name: nil)
     self.key = key
     self.attributes = attributes
     self.type = type
+    self.display_name = display_name
   end
 
   ##
@@ -49,7 +51,9 @@ class Type::FormGroup
   # Translate the given attribute group if its internal
   # (== if it's a symbol)
   def translated_key
-    if internal_key?
+    if display_name.present?
+      display_name
+    elsif internal_key?
       I18n.t(Type.default_groups[key], default: key.to_s)
     else
       key

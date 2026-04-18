@@ -71,7 +71,24 @@ See COPYRIGHT and LICENSE files for more details.
                   }
                 ))
               else
-                render(Primer::Beta::Text.new(font_weight: :bold)) { @group[:name] }
+                text_html = content_tag(:div, data: { rename_display: "" }) do
+                  render(Primer::Beta::Text.new(font_weight: :bold)) { @group[:name] }
+                end
+                field_html = content_tag(:div, hidden: true, data: { rename_edit: "" }) do
+                  render(Primer::Alpha::TextField.new(
+                    name: "section_name",
+                    label: t("types.edit.form_configuration.section_name_label"),
+                    visually_hide_label: true,
+                    value: @group[:name],
+                    autocomplete: "off",
+                    "full-width": true,
+                    data: {
+                      action: "keydown.enter->admin--type-form-configuration#saveRenameSection
+                               keydown.esc->admin--type-form-configuration#cancelRenameSection"
+                    }
+                  ))
+                end
+                safe_join([text_html, field_html])
               end
             end
           end
@@ -97,25 +114,35 @@ See COPYRIGHT and LICENSE files for more details.
                 ) { t("button_cancel") }
               ])
             else
-              render(Primer::Alpha::ActionMenu.new) do |menu|
-                menu.with_show_button(
-                  icon: "kebab-horizontal",
-                  scheme: :invisible,
-                  size: :small,
-                  "aria-label": t("types.edit.form_configuration.section_actions")
-                )
+              rename_buttons_html = content_tag(:div, hidden: true, data: { rename_edit: "" }) do
+                  safe_join([
+                    render(
+                      Primer::Beta::Button.new(
+                        scheme: :primary,
+                        size: :small,
+                        mr: 2,
+                        data: { action: "click->admin--type-form-configuration#saveRenameSection" }
+                      )
+                    ) { t("button_save") },
+                    render(
+                      Primer::Beta::Button.new(
+                        scheme: :secondary,
+                        size: :small,
+                        data: { action: "click->admin--type-form-configuration#cancelRenameSection" }
+                      )
+                    ) { t("button_cancel") }
+                  ])
+                end
 
-                if rename_via_server?
-                  menu.with_item(
-                    label: t("types.edit.form_configuration.rename_section"),
-                    href: edit_type_form_configuration_section_path(@type, @group[:key]),
-                    content_arguments: {
-                      data: { "turbo-stream": true }
-                    }
-                  ) do |item|
-                    item.with_leading_visual_icon(icon: :pencil)
-                  end
-                else
+              menu_html = content_tag(:div, data: { rename_display: "" }) do
+                render(Primer::Alpha::ActionMenu.new) do |menu|
+                  menu.with_show_button(
+                    icon: "kebab-horizontal",
+                    scheme: :invisible,
+                    size: :small,
+                    "aria-label": t("types.edit.form_configuration.section_actions")
+                  )
+
                   menu.with_item(
                     label: t("types.edit.form_configuration.rename_section"),
                     tag: :button,
@@ -126,9 +153,8 @@ See COPYRIGHT and LICENSE files for more details.
                   ) do |item|
                     item.with_leading_visual_icon(icon: :pencil)
                   end
-                end
 
-                menu.with_divider
+                  menu.with_divider
 
                   unless first?
                     menu.with_item(
@@ -191,7 +217,10 @@ See COPYRIGHT and LICENSE files for more details.
                   ) do |item|
                     item.with_leading_visual_icon(icon: :trash)
                   end
+                end
               end
+
+              safe_join([rename_buttons_html, menu_html].compact)
             end
           end
         end
@@ -202,17 +231,9 @@ See COPYRIGHT and LICENSE files for more details.
         # Query group: single row with "edit query" action
         box.with_row do
           flex_layout(justify_content: :space_between, align_items: :center) do |row|
-            row.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
-              left.with_column(mr: 2) do
-                render(Primer::OpenProject::DragHandle.new(
-                  classes: "attribute-handle",
-                  "aria-label": t("types.edit.form_configuration.drag_to_reorder")
-                ))
-              end
-              left.with_column(flex: 1) do
-                render(Primer::Beta::Text.new(color: :subtle)) do
-                  t("types.edit.form_configuration.query_group_label")
-                end
+            row.with_column(flex: 1) do
+              render(Primer::Beta::Text.new(color: :subtle)) do
+                t("types.edit.form_configuration.query_group_label")
               end
             end
             row.with_column do

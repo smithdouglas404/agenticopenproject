@@ -155,6 +155,12 @@ export default class TypeFormConfigurationController extends Controller {
     const cancelUrl = section.dataset.cancelRenameUrl;
     if (cancelUrl) {
       void this.postCancelRename(cancelUrl);
+    } else if (section.dataset.groupName) {
+      // Existing custom section — toggle back to view mode
+      section.querySelectorAll<HTMLElement>('[data-rename-display]').forEach(el => { el.hidden = false; });
+      section.querySelectorAll<HTMLElement>('[data-rename-edit]').forEach(el => { el.hidden = true; });
+      const input = section.querySelector<HTMLInputElement>('input[name="section_name"]');
+      if (input) input.value = section.dataset.groupName;
     } else {
       // New unsaved section — remove it from the DOM
       section.remove();
@@ -427,6 +433,10 @@ export default class TypeFormConfigurationController extends Controller {
   }
 
   private openRename(section:HTMLElement) {
+    // Toggle hidden rename elements (for client-side rename of custom sections)
+    section.querySelectorAll<HTMLElement>('[data-rename-display]').forEach(el => { el.hidden = true; });
+    section.querySelectorAll<HTMLElement>('[data-rename-edit]').forEach(el => { el.hidden = false; });
+
     const input = section.querySelector<HTMLInputElement>('input[name="section_name"]');
     if (!input) return;
     // Defer focus so the ActionMenu finishes closing first;
@@ -475,7 +485,7 @@ export default class TypeFormConfigurationController extends Controller {
       .querySelectorAll<HTMLElement>(':scope > [data-group-type]')
       .forEach((sectionEl) => {
         const type = sectionEl.dataset.groupType as 'attribute'|'query';
-        const key = sectionEl.dataset.groupKey || null;
+        const key = sectionEl.dataset.groupKey || null; // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
         const name = sectionEl.dataset.groupName ?? '';
 
         if (type === 'query') {
