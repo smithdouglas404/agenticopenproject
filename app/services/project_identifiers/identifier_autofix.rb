@@ -34,6 +34,8 @@ module ProjectIdentifiers
       GoodJob::Job
         .where(job_class: [
                  ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
+                 ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name,
+                 ProjectIdentifiers::FinishSemanticConversionJob.name,
                  ProjectIdentifiers::RevertInstanceToClassicIdsJob.name
                ])
         .exists?(finished_at: nil)
