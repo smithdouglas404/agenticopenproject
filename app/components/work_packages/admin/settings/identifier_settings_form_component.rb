@@ -104,10 +104,7 @@ module WorkPackages
               button_options: { disabled: true }
             }
           elsif completed?
-            # The setting may not yet be updated when the status endpoint fires :completed
-            # (FinishSemanticConversionJob runs after ConvertInstanceToSemanticIdsJob finishes),
-            # so we force semantic as selected rather than reading from the setting.
-            { values: identifier_values(checked: Setting::WorkPackageIdentifier::SEMANTIC) }
+            { values: identifier_values(checked: Setting[:work_packages_identifier]) }
           else
             { button_options: { data: { action: "change->admin--work-packages-identifier#handleChange" } } }
           end
