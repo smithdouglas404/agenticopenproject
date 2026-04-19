@@ -154,6 +154,7 @@ uk:
         connection_timeout: 'Час очікування на встановлення з’єднання до сервера Jira минув: %{message}'
         parse_error: 'Не вдалося проаналізувати відповідь Jira API: %{message}'
         api_error: Інтерфейс Jira API повернув статус помилки «%{status}»
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Проєкти
         last_change: Остання зміна
@@ -3044,6 +3045,7 @@ uk:
       title: Доповнення версії Enterprise
       plan_title: Доповнення версії Enterprise %{plan}
       plan_name: Версія Enterprise %{plan}
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: Доступно, починаючи з версії %{plan_name}.
       unlimited: Без обмежень
       already_have_token: 'Уже маєте маркер? Додайте його за допомогою кнопки нижче, щоб перейти на вже замовлений план Enterprise.

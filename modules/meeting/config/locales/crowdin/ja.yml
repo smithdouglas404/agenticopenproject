@@ -428,6 +428,11 @@ ja:
     ical_response:
       update_failed: 参加ステータスを更新できませんでした。
       meeting_not_found: 指定されたUIDの会議が見つからない。
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: タイトルなしセクション
     delete_confirmation: セクションを削除すると、そのすべての議題項目も削除されます。これを実行してもよろしいですか？

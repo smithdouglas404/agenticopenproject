@@ -154,6 +154,7 @@ vi:
         connection_timeout: 'Connection to Jira server timed out: %{message}'
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projects
         last_change: Last change
@@ -2873,6 +2874,7 @@ vi:
       title: Tiện ích bổ sung dành cho doanh nghiệp
       plan_title: Tiện ích bổ sung %{plan} dành cho doanh nghiệp
       plan_name: "%{plan} kế hoạch doanh nghiệp"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: Có sẵn bắt đầu với %{plan_name}.
       unlimited: Không giới hạn
       already_have_token: 'Bạn đã có mã thông báo chưa? Thêm nó bằng nút bên dưới để nâng cấp lên gói Enterprise đã đặt.

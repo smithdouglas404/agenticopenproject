@@ -28,38 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
-  module Admin
-    module Settings
-      class IdentifierAutofixSectionComponent < ApplicationComponent
-        include OpPrimer::ComponentHelpers
-
-        DISPLAY_COUNT = ProjectIdentifiers::IdentifierAutofix::PreviewQuery::DISPLAY_COUNT
-
-        def initialize(projects_data:, total_count: projects_data.size)
-          super()
-          @total_count = total_count
-          @displayed = projects_data.first(DISPLAY_COUNT)
-          @remaining_count = [total_count - @displayed.size, 0].max
-        end
-
-        private
-
-        attr_reader :total_count, :displayed, :remaining_count
-
-        def error_label(error_reason)
-          I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_#{error_reason}",
-                 default: "")
-        end
-
-        # Produces a realistic-looking example work package ID for the preview table.
-        # The sequence number is derived deterministically from the identifier so it looks
-        # varied across projects but is stable across renders. Range: 1–500.
-        def sample_wp_id(identifier)
-          n = (identifier.bytes.sum % 500) + 1
-          "#{identifier}-#{n}"
-        end
-      end
+module ProjectIdentifiers
+  module IdentifierAutofix
+    def self.job_in_progress?
+      GoodJob::Job
+        .where(job_class: [
+                 ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
+                 ProjectIdentifiers::RevertInstanceToClassicIdsJob.name
+               ])
+        .exists?(finished_at: nil)
     end
   end
 end

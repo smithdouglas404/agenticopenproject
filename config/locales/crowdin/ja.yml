@@ -154,6 +154,7 @@ ja:
         connection_timeout: 'Connection to Jira server timed out: %{message}'
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: プロジェクト
         last_change: Last change
@@ -2874,6 +2875,7 @@ ja:
       title: エンタープライズアドオン
       plan_title: エンタープライズ%{plan}アドオン
       plan_name: "%{plan}のエンタープライズプラン"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: "%{plan_name} から利用できます。"
       unlimited: 無制限です
       already_have_token: 'すでにトークンをお持ちですか？予約済みのエンタープライズプランにアップグレードするには、下のボタンを使用して追加してください。

@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
+module ProjectIdentifiers
   module IdentifierAutofix
     # Generates a short uppercase semantic identifier for each project.
     #

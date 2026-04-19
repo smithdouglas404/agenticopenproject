@@ -114,7 +114,7 @@ cs:
     import:
       title: Import
     jira:
-      title: Jira Migrator
+      title: Jira Migrátor
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
@@ -154,6 +154,7 @@ cs:
         connection_timeout: 'Připojení k serveru Jira vypršelo: %{message}'
         parse_error: 'Nepodařilo se zpracovat odpověď z Jira API: %{message}'
         api_error: Jira API returned error status %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projekty
         last_change: Poslední změna
@@ -3047,6 +3048,7 @@ cs:
       title: Doplňky podnikových plánů
       plan_title: Enterprise %{plan} add-on
       plan_name: "%{plan} enterprise plan"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: K dispozici od plánu %{plan_name}.
       unlimited: Bez omezení
       already_have_token: 'Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.

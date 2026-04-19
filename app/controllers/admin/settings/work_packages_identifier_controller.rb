@@ -39,7 +39,7 @@ module Admin::Settings
     end
 
     def show
-      @form_state = WorkPackages::IdentifierAutofix.job_in_progress? ? :change_in_progress : :edit
+      @form_state = ProjectIdentifiers::IdentifierAutofix.job_in_progress? ? :change_in_progress : :edit
     end
 
     def update
@@ -55,7 +55,7 @@ module Admin::Settings
     end
 
     def status
-      if WorkPackages::IdentifierAutofix.job_in_progress?
+      if ProjectIdentifiers::IdentifierAutofix.job_in_progress?
         head :no_content
       else
         replace_via_turbo_stream(
@@ -68,7 +68,7 @@ module Admin::Settings
     private
 
     def switch_to_semantic
-      unless WorkPackages::IdentifierAutofix.job_in_progress?
+      unless ProjectIdentifiers::IdentifierAutofix.job_in_progress?
         ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.perform_later
       end
       redirect_to action: "show"
@@ -78,7 +78,7 @@ module Admin::Settings
       call = update_service.new(user: current_user)
                                     .call(work_packages_identifier: Setting::WorkPackageIdentifier::CLASSIC)
       call.on_success do
-        unless WorkPackages::IdentifierAutofix.job_in_progress?
+        unless ProjectIdentifiers::IdentifierAutofix.job_in_progress?
           ProjectIdentifiers::RevertInstanceToClassicIdsJob.perform_later
         end
         redirect_to action: "show"

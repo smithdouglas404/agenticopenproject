@@ -443,6 +443,11 @@ pl:
     ical_response:
       update_failed: Nie można zaktualizować statusu uczestnictwa.
       meeting_not_found: Nie znaleziono spotkania dla podanego identyfikatora UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Sekcja bez nazwy
     delete_confirmation: Usunięcie sekcji spowoduje również usunięcie wszystkich jej elementów punktów planu spotkania. Czy na pewno chcesz to zrobić?

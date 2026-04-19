@@ -28,38 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
-  module Admin
-    module Settings
-      class IdentifierAutofixSectionComponent < ApplicationComponent
-        include OpPrimer::ComponentHelpers
+require "spec_helper"
 
-        DISPLAY_COUNT = ProjectIdentifiers::IdentifierAutofix::PreviewQuery::DISPLAY_COUNT
+RSpec.describe MetaTagsHelper do
+  describe "#output_title_and_meta_tags" do
+    before do
+      allow(Setting).to receive(:app_title).and_return("OpenProject")
+    end
 
-        def initialize(projects_data:, total_count: projects_data.size)
-          super()
-          @total_count = total_count
-          @displayed = projects_data.first(DISPLAY_COUNT)
-          @remaining_count = [total_count - @displayed.size, 0].max
-        end
+    it "does not truncate titles longer than 70 characters" do
+      long_subject = "A very long work package subject that exceeds seventy characters in total length"
+      helper.html_title(long_subject)
 
-        private
-
-        attr_reader :total_count, :displayed, :remaining_count
-
-        def error_label(error_reason)
-          I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_#{error_reason}",
-                 default: "")
-        end
-
-        # Produces a realistic-looking example work package ID for the preview table.
-        # The sequence number is derived deterministically from the identifier so it looks
-        # varied across projects but is stable across renders. Range: 1–500.
-        def sample_wp_id(identifier)
-          n = (identifier.bytes.sum % 500) + 1
-          "#{identifier}-#{n}"
-        end
-      end
+      expect(helper.output_title_and_meta_tags)
+        .to eq("<title>A very long work package subject that exceeds seventy characters in total length | OpenProject</title>")
     end
   end
 end

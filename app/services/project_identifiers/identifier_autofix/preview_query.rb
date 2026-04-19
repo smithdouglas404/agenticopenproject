@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
+module ProjectIdentifiers
   module IdentifierAutofix
     class PreviewQuery
       Result = Data.define(:projects_data, :total_count)

@@ -28,15 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
-  module IdentifierAutofix
-    def self.job_in_progress?
-      GoodJob::Job
-        .where(job_class: [
-                 ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
-                 ProjectIdentifiers::RevertInstanceToClassicIdsJob.name
-               ])
-        .exists?(finished_at: nil)
-    end
-  end
+MetaTags.configure do |config|
+  config.title_limit = nil
 end
