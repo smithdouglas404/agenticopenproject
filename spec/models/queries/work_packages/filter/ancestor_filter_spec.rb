@@ -109,10 +109,10 @@ RSpec.describe Queries::WorkPackages::Filter::AncestorFilter do
 
       it "returns the work package for the values" do
         allow(WorkPackage)
-          .to receive_message_chain(:visible, :for_projects, :find) # rubocop:disable RSpec/MessageChain
+          .to receive_message_chain(:visible, :for_projects, :where) # rubocop:disable RSpec/MessageChain
           .with(no_args)
           .with(project)
-          .with(instance.values)
+          .with(id: instance.values)
           .and_return([visible_wp])
 
         expect(instance.value_objects)
@@ -122,13 +122,6 @@ RSpec.describe Queries::WorkPackages::Filter::AncestorFilter do
       context "with the 'templated' value" do
         before do
           instance.values = ["templated"]
-
-          allow(WorkPackage)
-            .to receive_message_chain(:visible, :for_projects, :find) # rubocop:disable RSpec/MessageChain
-            .with(no_args)
-            .with(project)
-            .with([])
-            .and_return([])
         end
 
         it "returns a TemplatedValue object" do

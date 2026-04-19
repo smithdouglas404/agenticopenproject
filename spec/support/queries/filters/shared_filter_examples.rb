@@ -564,10 +564,10 @@ RSpec.shared_examples_for "filter by work package id" do
 
       it "returns the work package for the values" do
         allow(WorkPackage)
-          .to receive_message_chain(:visible, :for_projects, :find)
+          .to receive_message_chain(:visible, :for_projects, :where)
           .with(no_args)
           .with(project)
-          .with(instance.values)
+          .with(id: instance.values)
           .and_return([visible_wp])
 
         expect(instance.value_objects)
