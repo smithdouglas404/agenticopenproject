@@ -60,7 +60,7 @@ module Projects::SemanticIdentifier
       .order(created_at: :desc)
       .pluck(:slug)
       .find do |slug|
-        WorkPackages::IdentifierAutofix::ProblematicIdentifiers.valid_format?(slug) &&
+        ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.valid_format?(slug) &&
           !identifier_taken_by_other_project?(slug)
       end
   end

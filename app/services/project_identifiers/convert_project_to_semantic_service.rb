@@ -55,7 +55,7 @@ module ProjectIdentifiers
 
     def fix_identifier_if_needed
       # Pure format check — no DB queries.
-      return if WorkPackages::IdentifierAutofix::ProblematicIdentifiers.valid_format?(project.identifier)
+      return if ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.valid_format?(project.identifier)
 
       # Serialize all concurrent identifier assignments with a transaction-level
       # advisory lock. The lock is automatically released when the outer
@@ -73,8 +73,8 @@ module ProjectIdentifiers
     def assign_semantic_identifier
       # Re-instantiate inside the lock so the exclusion set reflects all
       # identifiers committed since this job started.
-      detector  = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
-      generator = WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
+      detector  = ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.new
+      generator = ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
 
       # Prefer restoring the project's last known semantic identifier (from
       # FriendlyId history) so that existing WP identifiers remain valid and

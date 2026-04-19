@@ -45,7 +45,7 @@ module ProjectIdentifiers
       private
 
       def projects_with_bad_identifier
-        WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
+        ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
       end
 
       def projects_with_unsequenced_wps
