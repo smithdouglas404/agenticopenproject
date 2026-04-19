@@ -154,6 +154,7 @@ zh-TW:
         connection_timeout: 'Connection to Jira server timed out: %{message}'
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projects
         last_change: Last change
@@ -2867,6 +2868,7 @@ zh-TW:
       title: 企業版附加元件
       plan_title: 企業版 %{plan} 外掛
       plan_name: "%{plan} 企業版計畫"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: 需 %{plan_name} 方案以上才可使用。
       unlimited: 不限
       already_have_token: '已經有令牌了嗎？請使用下方按鈕新增，以升級至預約的 Enterprise 方案。

@@ -433,6 +433,11 @@ pt-PT:
     ical_response:
       update_failed: Não foi possível atualizar o estado de participação.
       meeting_not_found: Reunião não encontrada com o UID fornecido.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Secção sem título
     delete_confirmation: A eliminação da secção também irá eliminar os seus pontos da ordem de trabalhos. Tem a certeza de que pretende fazê-lo?

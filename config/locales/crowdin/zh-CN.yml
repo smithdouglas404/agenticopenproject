@@ -154,6 +154,7 @@ zh-CN:
         connection_timeout: 与 Jira 服务器的连接超时：%{message}
         parse_error: 无法解析 Jira API 响应：%{message}
         api_error: Jira API 返回错误状态 %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: 项目
         last_change: 上次更改
@@ -2867,6 +2868,7 @@ zh-CN:
       title: 企业附加组件
       plan_title: 企业 %{plan} 附加组件
       plan_name: "%{plan} 企业计划"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: 从 %{plan_name} 开始可用。
       unlimited: 无限制
       already_have_token: '已经有令牌？使用下方按钮添加以升级到预订的企业版方案。

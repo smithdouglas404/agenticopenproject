@@ -60,8 +60,8 @@ module Projects::SemanticIdentifier
       .order(created_at: :desc)
       .pluck(:slug)
       .find do |slug|
-        WorkPackages::IdentifierAutofix::ProblematicIdentifiers.valid_format?(slug) &&
-          !self.class.where.not(id:).exists?(["LOWER(identifier) = ?", slug.downcase])
+        ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.valid_format?(slug) &&
+          !identifier_taken_by_other_project?(slug)
       end
   end
 
@@ -80,6 +80,10 @@ module Projects::SemanticIdentifier
   end
 
   private
+
+  def identifier_taken_by_other_project?(slug)
+    self.class.where.not(id:).exists?(["LOWER(identifier) = ?", slug.downcase])
+  end
 
   # For every alias row whose identifier starts with the old prefix, inserts a
   # corresponding row with the new prefix. This covers WPs still in the project

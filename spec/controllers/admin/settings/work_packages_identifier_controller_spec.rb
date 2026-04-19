@@ -48,7 +48,7 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
       context "when a migration job is already in progress" do
         before do
-          allow(WorkPackages::IdentifierAutofix).to receive(:job_in_progress?).and_return(true)
+          allow(ProjectIdentifiers::IdentifierAutofix).to receive(:job_in_progress?).and_return(true)
         end
 
         it "does not enqueue another job but still redirects" do
@@ -73,7 +73,7 @@ RSpec.describe Admin::Settings::WorkPackagesIdentifierController,
 
       context "when a migration job is already in progress" do
         before do
-          allow(WorkPackages::IdentifierAutofix).to receive(:job_in_progress?).and_return(true)
+          allow(ProjectIdentifiers::IdentifierAutofix).to receive(:job_in_progress?).and_return(true)
         end
 
         it "does not enqueue another job but still updates the setting and redirects" do

@@ -443,6 +443,11 @@ lt:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Meeting not found for the given UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Bevardė skiltis
     delete_confirmation: Ištrynus skiltį taipogi bus ištrinti ir visi jos plano elementai. Ar tikrai norite tai padaryti?

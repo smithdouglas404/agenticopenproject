@@ -28,38 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ProjectIdentifiers
-  # Returns the set of project IDs that still need backfilling before the
-  # instance can be switched to semantic identifier mode. Three buckets:
-  #
-  # * projects whose identifier is not in valid semantic format
-  # * projects that have work packages with no sequence_number yet
-  # * projects that have work packages whose identifier doesn't match
-  #   the current project prefix (stale due to renames or cross-project moves)
-  module PendingProjectsFinder
-    def self.project_ids
-      projects_with_bad_identifier | projects_with_unsequenced_wps | projects_with_stale_wps
+require "spec_helper"
+
+RSpec.describe MetaTagsHelper do
+  describe "#output_title_and_meta_tags" do
+    before do
+      allow(Setting).to receive(:app_title).and_return("OpenProject")
     end
 
-    class << self
-      private
+    it "does not truncate titles longer than 70 characters" do
+      long_subject = "A very long work package subject that exceeds seventy characters in total length"
+      helper.html_title(long_subject)
 
-      def projects_with_bad_identifier
-        ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
-      end
-
-      def projects_with_unsequenced_wps
-        WorkPackage.where(sequence_number: nil).distinct.pluck(:project_id).to_set
-      end
-
-      def projects_with_stale_wps
-        WorkPackage
-          .joins(:project)
-          .semantically_sequenced
-          .where("work_packages.identifier IS DISTINCT FROM " \
-                 "projects.identifier || '-' || work_packages.sequence_number::text")
-          .distinct.pluck(:project_id).to_set
-      end
+      expect(helper.output_title_and_meta_tags)
+        .to eq("<title>A very long work package subject that exceeds seventy characters in total length | OpenProject</title>")
     end
   end
 end

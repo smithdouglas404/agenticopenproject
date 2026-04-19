@@ -430,6 +430,11 @@ zh-TW:
     ical_response:
       update_failed: 無法更新參與狀態。
       meeting_not_found: 未找到指定 UID 的會議。
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: 無標題章節
     delete_confirmation: 刪除該章節也會刪除其所有的議程項目。您確定要這麼做？

@@ -433,6 +433,11 @@ de:
     ical_response:
       update_failed: Teilnahmestatus konnte nicht aktualisiert werden.
       meeting_not_found: Besprechung für die angegebene UID nicht gefunden.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Unbenannter Abschnitt
     delete_confirmation: Wenn Sie den Abschnitt löschen, werden auch alle zugehörigen Tagesordnungspunkte gelöscht. Möchten Sie fortfahren?

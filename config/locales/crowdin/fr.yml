@@ -154,6 +154,7 @@ fr:
         connection_timeout: 'La connexion au serveur Jira a expiré : %{message}'
         parse_error: 'Échec de l''analyse de la réponse de l''API Jira : %{message}'
         api_error: L'API Jira a renvoyé le statut d'erreur %{status}
+        401_error: L'API Jira a renvoyé une erreur 401. Votre jeton d'authentification peut avoir expiré ou ne pas avoir les autorisations requises. Veuillez vous assurer que le jeton appartient à un administrateur Jira.
       columns:
         projects: Projets
         last_change: Dernière modification
@@ -2922,6 +2923,7 @@ fr:
       title: Module Enterprise
       plan_title: Add-on Enterprise %{plan}
       plan_name: Abonnement Enterprise %{plan}
+      trial_text: Cette fonctionnalité est incluse dans votre essai en cours d'entreprise.
       plan_text_html: Disponible à partir de l'abonnement %{plan_name}.
       unlimited: Illimité
       already_have_token: 'Vous avez déjà un jeton ? Ajoutez-le en utilisant le bouton ci-dessous pour passer à l''abonnement Enterprise réservé.

@@ -428,6 +428,11 @@ zh-CN:
     ical_response:
       update_failed: 无法更新参与状态。
       meeting_not_found: 找不到与给定 UID 匹配的会议。
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: 无标题章节
     delete_confirmation: 删除该属性也会删除其在所有项目中的值。您确定要这样做吗？
