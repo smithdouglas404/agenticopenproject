@@ -99,9 +99,23 @@ module WorkPackages
 
         def radio_button_options
           if change_in_progress?
-            { button_options: { disabled: true } }
+            {
+              values: identifier_values(checked: nil),
+              button_options: { disabled: true }
+            }
+          elsif completed?
+            # The setting may not yet be updated when the status endpoint fires :completed
+            # (FinishSemanticConversionJob runs after ConvertInstanceToSemanticIdsJob finishes),
+            # so we force semantic as selected rather than reading from the setting.
+            { values: identifier_values(checked: Setting::WorkPackageIdentifier::SEMANTIC) }
           else
             { button_options: { data: { action: "change->admin--work-packages-identifier#handleChange" } } }
+          end
+        end
+
+        def identifier_values(checked:)
+          Setting::WorkPackageIdentifier::ALLOWED_VALUES.map do |v|
+            { name: v, value: v, checked: v == checked }
           end
         end
       end
