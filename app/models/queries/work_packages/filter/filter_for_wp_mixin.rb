@@ -38,7 +38,8 @@ module Queries::WorkPackages::Filter::FilterForWpMixin
   end
 
   def value_objects
-    objects = visible_scope.find(no_templated_values)
+    ids = no_templated_values
+    objects = ids.empty? ? [] : visible_scope.where(id: ids).to_a
 
     if has_templated_value?
       objects << ::Queries::Filters::TemplatedValue.new(WorkPackage)
