@@ -29,11 +29,22 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class DndListController extends Controller<HTMLElement> {
+  static targets = [
+    'container',
+    'item',
+  ];
+
   static values = {
     targetId: String,
   };
 
+  declare readonly containerTarget:HTMLElement;
+  declare readonly itemTargets:HTMLElement[];
   declare readonly targetIdValue:string;
+
+  private initialTargetSyncPending = true;
+  private changeEventScheduled = false;
+  private changeEventSequence = 0;
 
   get targetId():string {
     return this.targetIdValue;
@@ -44,20 +55,56 @@ export default class DndListController extends Controller<HTMLElement> {
   }
 
   get itemContainer():HTMLElement {
-    return this.element.querySelector<HTMLElement>(':scope > ul') ?? this.element;
+    return this.containerTarget;
   }
 
   get draggableItems():HTMLElement[] {
-    return Array
-      .from(this.itemContainer.querySelectorAll<HTMLElement>(':scope > li'))
-      .filter((element) => this.isDraggableItem(element));
+    return this.itemTargets.filter((element) => this.isDraggableItem(element));
   }
 
   get isEmpty():boolean {
     return this.draggableItems.length === 0;
   }
 
+  connect():void {
+    this.initialTargetSyncPending = false;
+  }
+
+  disconnect():void {
+    this.initialTargetSyncPending = true;
+    this.changeEventScheduled = false;
+    this.changeEventSequence += 1;
+  }
+
+  itemTargetConnected():void {
+    this.emitChangeIfReady();
+  }
+
+  itemTargetDisconnected():void {
+    this.emitChangeIfReady();
+  }
+
+  private emitChangeIfReady():void {
+    if (this.initialTargetSyncPending) return;
+    if (this.changeEventScheduled) return;
+
+    const sequence = this.changeEventSequence;
+    this.changeEventScheduled = true;
+
+    queueMicrotask(() => {
+      if (sequence !== this.changeEventSequence) return;
+
+      this.changeEventScheduled = false;
+
+      if (this.initialTargetSyncPending) return;
+
+      this.element.dispatchEvent(new CustomEvent('backlogs:dnd-list:changed', {
+        bubbles: true,
+      }));
+    });
+  }
+
   private isDraggableItem(element:HTMLElement):boolean {
-    return element.dataset.controller?.split(' ').includes('backlogs--item') ?? false;
+    return element.hasAttribute('data-draggable-id');
   }
 }

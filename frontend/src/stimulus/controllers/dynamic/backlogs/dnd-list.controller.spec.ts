@@ -42,12 +42,13 @@ describe('Backlogs::DndListController', () => {
       id="inbox-list-shell"
       data-controller="backlogs--dnd-list"
       data-backlogs--dnd-list-target-id-value="inbox"
+      data-backlogs--dnd-list-target="container"
     >
-      <ul id="inbox-list">
-        <li id="work_package_1" data-controller="backlogs--item" data-draggable-id="1"></li>
-        <li id="inbox-empty" data-empty-list-item="true"></li>
-        <li id="inbox-show-more" data-draggable-id="99"></li>
-      </ul>
+      <div id="work_package_1" data-backlogs--dnd-list-target="item" data-draggable-id="1"></div>
+      <div id="work_package_2" data-backlogs--dnd-list-target="item" data-draggable-id="2"></div>
+      <div id="inbox-empty" data-empty-list-item="true"></div>
+      <div id="inbox-show-more" data-backlogs--dnd-list-target="item"></div>
+      <div id="legacy-target" data-controller="backlogs--item" data-draggable-id="99"></div>
     </div>
   `;
 
@@ -56,10 +57,9 @@ describe('Backlogs::DndListController', () => {
       id="empty-list-shell"
       data-controller="backlogs--dnd-list"
       data-backlogs--dnd-list-target-id-value="inbox"
+      data-backlogs--dnd-list-target="container"
     >
-      <ul id="empty-list">
-        <li id="empty-state" data-empty-list-item="true"></li>
-      </ul>
+      <div id="empty-state" data-empty-list-item="true"></div>
     </div>
   `;
 
@@ -68,9 +68,9 @@ describe('Backlogs::DndListController', () => {
       id="collapsed-sprint-shell"
       data-controller="backlogs--dnd-list"
       data-backlogs--dnd-list-target-id-value="sprint:5"
+      data-backlogs--dnd-list-target="container"
     >
       <header id="collapsed-sprint-header" data-collapsed="true"></header>
-      <ul id="collapsed-sprint-list" hidden></ul>
     </section>
   `;
 
@@ -114,7 +114,8 @@ describe('Backlogs::DndListController', () => {
 
     expect(controller.targetId).toBe('inbox');
     expect(controller.dropZoneElement.id).toBe('inbox-list-shell');
-    expect(controller.itemContainer.id).toBe('inbox-list');
+    expect(controller.containerTarget.id).toBe('inbox-list-shell');
+    expect(controller.itemContainer.id).toBe('inbox-list-shell');
   });
 
   it('ignores non-item rows when collecting draggable items', async () => {
@@ -123,7 +124,17 @@ describe('Backlogs::DndListController', () => {
 
     const controller = controllerFor('inbox-list-shell');
 
-    expect(controller.draggableItems.map((element:HTMLElement) => element.id)).toEqual(['work_package_1']);
+    expect(controller.itemTargets.map((element:HTMLElement) => element.id)).toEqual([
+      'work_package_1',
+      'work_package_2',
+      'inbox-show-more',
+    ]);
+
+    expect(controller.draggableItems.map((element:HTMLElement) => element.id)).toEqual([
+      'work_package_1',
+      'work_package_2',
+    ]);
+
     expect(controller.isEmpty).toBeFalse();
   });
 
@@ -134,7 +145,7 @@ describe('Backlogs::DndListController', () => {
     const controller = controllerFor('empty-list-shell');
 
     expect(controller.dropZoneElement.id).toBe('empty-list-shell');
-    expect(controller.itemContainer.id).toBe('empty-list');
+    expect(controller.itemContainer.id).toBe('empty-list-shell');
     expect(controller.draggableItems).toEqual([]);
     expect(controller.isEmpty).toBeTrue();
   });
@@ -147,7 +158,77 @@ describe('Backlogs::DndListController', () => {
 
     expect(controller.targetId).toBe('sprint:5');
     expect(controller.dropZoneElement.id).toBe('collapsed-sprint-shell');
-    expect(controller.itemContainer.id).toBe('collapsed-sprint-list');
+    expect(controller.itemContainer.id).toBe('collapsed-sprint-shell');
     expect(controller.isEmpty).toBeTrue();
+  });
+
+  it('suppresses initial sync on connect and reconnect, then coalesces later churn', async () => {
+    appendTemplate(listTemplate);
+    await nextFrame();
+
+    const controller = controllerFor('inbox-list-shell');
+    const events:Event[] = [];
+
+    fixturesElement.addEventListener('backlogs:dnd-list:changed', (event) => {
+      events.push(event);
+    });
+
+    expect(events.length).toBe(0);
+
+    const shell = controller.element;
+    shell.remove();
+    fixturesElement.appendChild(shell);
+
+    await nextFrame();
+
+    expect(events.length).toBe(0);
+
+    controller.element.insertAdjacentHTML('beforeend', '<div id="reconnected-item" data-backlogs--dnd-list-target="item" data-draggable-id="7"></div>');
+    controller.element.insertAdjacentHTML('beforeend', '<div id="reconnected-item-2" data-backlogs--dnd-list-target="item" data-draggable-id="8"></div>');
+
+    await nextFrame();
+
+    expect(events.length).toBe(1);
+    expect(events[0].target).toBe(controller.element);
+  });
+
+  it('emits a bubbling change event when item targets change in the DOM', async () => {
+    appendTemplate(emptyListTemplate);
+    await nextFrame();
+
+    const controller = controllerFor('empty-list-shell');
+    const events:Event[] = [];
+
+    fixturesElement.addEventListener('backlogs:dnd-list:changed', (event) => {
+      events.push(event);
+    });
+
+    controller.element.insertAdjacentHTML('beforeend', '<div id="new-item" data-backlogs--dnd-list-target="item" data-draggable-id="7"></div>');
+
+    await nextFrame();
+
+    expect(events.length).toBe(1);
+    expect(events[0].target).toBe(controller.element);
+  });
+
+  it('does not rely on controller queries for draggable items', async () => {
+    const template = `
+      <div
+        id="target-only-shell"
+        data-controller="backlogs--dnd-list"
+        data-backlogs--dnd-list-target-id-value="inbox"
+        data-backlogs--dnd-list-target="container"
+      >
+        <div id="target-only-item" data-backlogs--dnd-list-target="item" data-draggable-id="1"></div>
+        <div id="controller-only-item" data-controller="backlogs--item" data-draggable-id="2"></div>
+      </div>
+    `;
+
+    appendTemplate(template);
+    await nextFrame();
+
+    const controller = controllerFor('target-only-shell');
+
+    expect(controller.draggableItems.map((element:HTMLElement) => element.id)).toEqual(['target-only-item']);
   });
 });
