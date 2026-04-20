@@ -30,7 +30,7 @@
 
 module CustomField::OrderStatements
   ORDER_JOIN_METHOD_BY_FIELD_FORMAT = OpenProject::MultiKeyHash.expand(
-    %w[string date bool link] => :join_for_order_by_string_sql,
+    %w[string date datetime bool link] => :join_for_order_by_string_sql,
     "int" => :join_for_order_by_int_sql,
     %w[float calculated_value] => :join_for_order_by_float_sql,
     "list" => :join_for_order_by_list_sql,
@@ -87,7 +87,7 @@ module CustomField::OrderStatements
 
   private
 
-  def can_be_used_for_grouping? = field_format.in?(%w[list date bool int float string link hierarchy])
+  def can_be_used_for_grouping? = field_format.in?(%w[list date datetime bool int float string link hierarchy])
 
   # Template for all the join statements.
   #
