@@ -32,8 +32,6 @@ require "spec_helper"
 
 RSpec.describe Wikis::Adapters::Providers::XWiki::OAuthConfiguration do
   let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.example.com/xwiki") }
-  # client_id is the OP-generated UUID used for routing and as the OAuth identifier.
-  # XWiki is a public client — no client_secret is used.
   let(:oauth_client) { build_stubbed(:oauth_client, client_id: "xwiki-uuid", client_secret: nil, integration: wiki_provider) }
 
   before { allow(wiki_provider).to receive(:oauth_client).and_return(oauth_client) }
