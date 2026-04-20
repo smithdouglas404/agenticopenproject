@@ -141,6 +141,7 @@ describe('Backlogs::DndSurfaceController', () => {
   beforeEach(() => {
     fixturesElement = document.createElement('div');
     document.body.appendChild(fixturesElement);
+    delete window.opBacklogsDndSurfaceDebug;
   });
 
   beforeEach(async () => {
@@ -169,6 +170,72 @@ describe('Backlogs::DndSurfaceController', () => {
     expect(manager).toEqual(jasmine.any(DragDropManager));
     expect(manager?.plugins.some((plugin:unknown) => plugin instanceof Feedback)).toBeTrue();
     expect(manager?.plugins.some((plugin:unknown) => plugin instanceof AutoScroller)).toBeTrue();
+  });
+
+  it('records debug telemetry when registrations sync on connect and mutation', async () => {
+    appendTemplate(surfaceTemplate);
+    await nextFrame();
+
+    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.calls).toBe(1);
+    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.lastReason).toBe('connect');
+
+    document.getElementById('inbox-list')!.insertAdjacentHTML('beforeend', `
+      <li
+        id="work_package_9"
+        data-controller="backlogs--item"
+        data-draggable-id="9"
+        data-draggable-type="story"
+        data-drop-url="/move/9"
+        data-backlogs--item-selected-class="Box-row--blue"
+      ></li>
+    `);
+
+    await nextFrame();
+    await nextFrame();
+
+    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.calls).toBe(2);
+    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.lastReason).toBe('mutation');
+    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.lastItemCount).toBe(4);
+  });
+
+  it('strips default placeholder attributes from the cloned placeholder only', async () => {
+    appendTemplate(surfaceTemplate);
+    await nextFrame();
+
+    const controller = surfaceController() as unknown as SurfaceTestController;
+    const source = document.getElementById('work_package_1')!;
+    const placeholder = source.cloneNode(true) as HTMLElement;
+    placeholder.setAttribute('data-dnd-placeholder', 'hidden');
+
+    controller.onBeforeDragStart(dragEventFor(source, source));
+    source.insertAdjacentElement('afterend', placeholder);
+
+    await nextFrame();
+
+    expect(source.id).toBe('work_package_1');
+    expect(source.getAttribute('data-controller')).toBe('backlogs--item');
+    expect(placeholder.id).toBe('');
+    expect(placeholder.hasAttribute('data-controller')).toBeFalse();
+  });
+
+  it('uses a custom placeholder strip value when provided on the draggable host', async () => {
+    appendTemplate(surfaceTemplate);
+    await nextFrame();
+
+    const controller = surfaceController() as unknown as SurfaceTestController;
+    const source = document.getElementById('work_package_1')!;
+    source.setAttribute('data-backlogs--item-placeholder-strip-attributes-value', 'id data-controller data-drop-url');
+
+    const placeholder = source.cloneNode(true) as HTMLElement;
+    placeholder.setAttribute('data-dnd-placeholder', 'hidden');
+
+    controller.onBeforeDragStart(dragEventFor(source, source));
+    source.insertAdjacentElement('afterend', placeholder);
+
+    await nextFrame();
+
+    expect(source.getAttribute('data-drop-url')).toBe('/move/1');
+    expect(placeholder.hasAttribute('data-drop-url')).toBeFalse();
   });
 
   it('uses a distance threshold for mouse input and a press delay for touch input', async () => {

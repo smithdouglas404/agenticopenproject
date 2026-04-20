@@ -28,6 +28,8 @@
 
 import { Controller } from '@hotwired/stimulus';
 import { FetchRequest } from '@rails/request.js';
+import { debugLog, whenDebugging } from 'core-app/shared/helpers/debug_output';
+import { sanitizeDndPlaceholder } from 'core-app/shared/helpers/drag-and-drop/dnd-placeholder-sanitizer';
 import {
   AutoScroller,
   BeforeDragStartEvent,
@@ -51,6 +53,34 @@ interface ListMetadata {
   targetId:string;
 }
 
+interface SyncRegistrationsStats {
+  calls:number;
+  skippedWhileDragging:number;
+  lastReason:string|null;
+  lastMutationCount:number;
+  lastListCount:number;
+  lastItemCount:number;
+  lastDurationMs:number;
+}
+
+interface SyncRegistrationsDetail {
+  calls:number;
+  durationMs:number;
+  itemCount:number;
+  listCount:number;
+  mutationCount:number;
+  reason:string;
+  skippedWhileDragging:number;
+}
+
+declare global {
+  interface Window {
+    opBacklogsDndSurfaceDebug?:{
+      syncRegistrations:SyncRegistrationsStats;
+    };
+  }
+}
+
 export default class DndSurfaceController extends Controller<HTMLElement> {
   static values = {
     positionMode: String,
@@ -69,7 +99,7 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
   connect():void {
     this.manager = this.createManager();
     this.bindManagerEvents();
-    this.syncRegistrations();
+    this.syncRegistrations({ reason: 'connect' });
     this.observeMutations();
   }
 
@@ -114,22 +144,32 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
   }
 
   private observeMutations():void {
-    this.mutationObserver = new MutationObserver(() => {
-      if (this.activeDragSource) return;
-      this.syncRegistrations();
+    this.mutationObserver = new MutationObserver((mutations) => {
+      if (this.activeDragSource) {
+        sanitizeDndPlaceholder(this.activeDragSource, this.element);
+        this.recordSkippedSync({ reason: 'mutation', mutationCount: mutations.length });
+        return;
+      }
+
+      this.syncRegistrations({ reason: 'mutation', mutationCount: mutations.length });
     });
 
     this.mutationObserver.observe(this.element, { childList: true, subtree: true });
   }
 
-  private syncRegistrations():void {
+  private syncRegistrations({ reason, mutationCount = 0 }:{ reason:string; mutationCount?:number }):void {
+    const startedAt = performance.now();
+
     this.registrationCleanupCallbacks.forEach((cleanup) => cleanup());
     this.registrationCleanupCallbacks = [];
 
     const manager = this.manager;
     if (!manager) return;
 
-    this.listMetadatas().forEach((list) => {
+    const lists = this.listMetadatas();
+    let itemCount = 0;
+
+    lists.forEach((list) => {
       const shell = new Droppable({
         id: list.targetId,
         element: list.element,
@@ -139,7 +179,10 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
 
       this.registrationCleanupCallbacks.push(shell.register() ?? (() => undefined));
 
-      this.draggableItems(list.itemContainer).forEach((item, index) => {
+      const items = this.draggableItems(list.itemContainer);
+      itemCount += items.length;
+
+      items.forEach((item, index) => {
         const sortable = new Sortable({
           id: this.draggableIdFor(item),
           element: item,
@@ -150,6 +193,14 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
 
         this.registrationCleanupCallbacks.push(sortable.register() ?? (() => undefined));
       });
+    });
+
+    this.recordSyncTelemetry({
+      reason,
+      mutationCount,
+      listCount: lists.length,
+      itemCount,
+      durationMs: performance.now() - startedAt,
     });
   }
 
@@ -217,7 +268,7 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
     }
 
     this.clearDragState();
-    queueMicrotask(() => this.syncRegistrations());
+    queueMicrotask(() => this.syncRegistrations({ reason: 'drag-end' }));
   }
 
   private clearDragState():void {
@@ -301,5 +352,60 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
       new PointerActivationConstraints.Delay({ value: 200, tolerance: 10 }),
       new PointerActivationConstraints.Distance({ value: 5 }),
     ];
+  }
+
+  private recordSkippedSync({ reason, mutationCount }:{ reason:string; mutationCount:number }):void {
+    whenDebugging(() => {
+      const syncStats = this.ensureDebugStats();
+      syncStats.skippedWhileDragging += 1;
+      syncStats.lastReason = `${reason}-skipped-during-drag`;
+      syncStats.lastMutationCount = mutationCount;
+
+      debugLog('Backlogs DnD skipped registration sync during active drag', {
+        mutationCount,
+        skippedWhileDragging: syncStats.skippedWhileDragging,
+      });
+    });
+  }
+
+  private recordSyncTelemetry({ reason, mutationCount, listCount, itemCount, durationMs }:Omit<SyncRegistrationsDetail, 'calls'|'skippedWhileDragging'>):void {
+    whenDebugging(() => {
+      const syncStats = this.ensureDebugStats();
+      syncStats.calls += 1;
+      syncStats.lastReason = reason;
+      syncStats.lastMutationCount = mutationCount;
+      syncStats.lastListCount = listCount;
+      syncStats.lastItemCount = itemCount;
+      syncStats.lastDurationMs = durationMs;
+
+      const detail:SyncRegistrationsDetail = {
+        calls: syncStats.calls,
+        durationMs,
+        itemCount,
+        listCount,
+        mutationCount,
+        reason,
+        skippedWhileDragging: syncStats.skippedWhileDragging,
+      };
+
+      debugLog('Backlogs DnD syncRegistrations', detail);
+      document.dispatchEvent(new CustomEvent<SyncRegistrationsDetail>('backlogs:dnd-surface:sync-registrations', { detail }));
+    });
+  }
+
+  private ensureDebugStats():SyncRegistrationsStats {
+    window.opBacklogsDndSurfaceDebug ??= {
+      syncRegistrations: {
+        calls: 0,
+        skippedWhileDragging: 0,
+        lastReason: null,
+        lastMutationCount: 0,
+        lastListCount: 0,
+        lastItemCount: 0,
+        lastDurationMs: 0,
+      },
+    };
+
+    return window.opBacklogsDndSurfaceDebug.syncRegistrations;
   }
 }
