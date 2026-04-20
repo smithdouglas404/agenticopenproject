@@ -154,6 +154,18 @@ module Wikis
         @wiki_provider = Wikis::XWikiProvider.visible.find(params[:id])
       end
 
+      # TODO: temp helper to show "Connect XWiki account" in page header — unblocks work until
+      # a proper per-user connection status is tracked and surfaced via a dedicated component.
+      helper_method def current_user_xwiki_token_missing?
+        oauth_client = @wiki_provider&.oauth_client
+        return false if oauth_client.nil?
+
+        token = OAuthClientToken.find_by(user: current_user, oauth_client:)
+        return true if token.nil?
+
+        token.expires_in.present? && token.updated_at + token.expires_in.seconds < Time.current
+      end
+
       def ensure_valid_wizard_parameters
         return if params[:continue_wizard].blank?
 
