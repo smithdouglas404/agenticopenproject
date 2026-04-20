@@ -54,11 +54,11 @@ RSpec.describe OAuthClientToken do
       end
     end
 
-    context "with refresh_token too short" do
+    context "with refresh_token empty" do
       let(:refresh_token) { "" }
 
-      it "fails with refresh_token too short" do
-        expect(subject).to be_falsey
+      it "succeeds — refresh_token is optional" do
+        expect(subject).to be_truthy
       end
     end
 
@@ -73,8 +73,8 @@ RSpec.describe OAuthClientToken do
     context "without refresh_token" do
       let(:refresh_token) { nil }
 
-      it "fails with refresh_token is nil" do
-        expect(subject).to be_falsey
+      it "succeeds — refresh_token is optional" do
+        expect(subject).to be_truthy
       end
     end
 
