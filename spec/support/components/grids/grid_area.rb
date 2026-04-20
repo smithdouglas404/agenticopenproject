@@ -79,7 +79,6 @@ module Components
 
       def drag_to(row, column)
         handle = drag_handle
-        drop_area = self.class.of(row * 2, column * 2).area
 
         scroll_to_element(handle)
 
@@ -87,12 +86,14 @@ module Components
           action.click_and_hold(handle.native)
         end
 
+        # Re-find drop_area after click_and_hold since CDK drag modifies the DOM
+        drop_area = self.class.of(row * 2, column * 2).area
         scroll_to_element(drop_area)
         drop_area.hover
 
         sleep(1)
 
-        # Re-find drop_area to get a fresh native reference after CDK drag has modified the DOM
+        # Re-find again for the release after hover may have modified the DOM further
         move_to(self.class.of(row * 2, column * 2).area, &:release)
       end
 

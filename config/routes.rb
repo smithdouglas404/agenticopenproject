@@ -821,6 +821,7 @@ Rails.application.routes.draw do
     resource :bulk, controller: "bulk", only: %i[edit update destroy] do
       collection do
         match :reassign, via: %i[get delete]
+        get :delete_dialog
       end
     end
   end

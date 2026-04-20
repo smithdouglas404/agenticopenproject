@@ -1417,6 +1417,20 @@ en:
       no_results_title_text: There are currently no workflows.
 
   work_packages:
+    delete_dialog:
+      title: "Delete work package"
+      heading: "Permanently delete this work package?"
+      description: 'Are you sure you want to delete the work package "%{name}"?'
+      confirm_descendants_deletion: "I acknowledge that ALL descendants of this work package will be recursively removed."
+      cross_project_warning: "Work packages from the following projects will be deleted: %{projects}"
+    bulk_delete_dialog:
+      title: "Delete %{count} work packages"
+      heading: "Permanently delete these %{count} work packages?"
+      description: "The following work packages, including children and all associated data, will permanently be deleted:"
+      description_with_children: "The following work packages, including child work packages, and all associated data will be permanently deleted:"
+      confirm_children_deletion: "I acknowledge that all selected work packages and their children will be permanently deleted."
+      cross_project_warning: "These work packages span multiple projects: %{projects}"
+      children_label: "The following children will also be deleted:"
     datepicker_modal:
       banner:
         description:
