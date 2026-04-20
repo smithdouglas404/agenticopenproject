@@ -107,7 +107,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     key, value = pair
     return unless semantic_id?(value)
 
-    raise ArgumentError,
+    raise WorkPackage::SemanticIdentifier::UnsupportedLookup,
           "find_by(#{key}: #{value.inspect}) does not support semantic identifiers " \
           "because it cannot resolve aliases or match across identifier history. " \
           "Use find(#{value.inspect}) or find_by_display_id(#{value.inspect}) instead."

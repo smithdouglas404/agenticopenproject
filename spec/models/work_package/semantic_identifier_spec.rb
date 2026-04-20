@@ -179,9 +179,13 @@ RSpec.describe WorkPackage::SemanticIdentifier do
 
   describe "WorkPackage.find_by" do
     context "with id: keyword and semantic identifier" do
-      it "raises ArgumentError pointing to find_by_display_id" do
+      it "raises UnsupportedLookup (an ArgumentError subclass) pointing to find_by_display_id" do
         expect { WorkPackage.find_by(id: "MYPROJ-1") }
-          .to raise_error(ArgumentError, /find_by_display_id/)
+          .to raise_error(WorkPackage::SemanticIdentifier::UnsupportedLookup, /find_by_display_id/)
+      end
+
+      it "is rescuable as ArgumentError for backwards compatibility" do
+        expect { WorkPackage.find_by(id: "MYPROJ-1") }.to raise_error(ArgumentError)
       end
     end
 
