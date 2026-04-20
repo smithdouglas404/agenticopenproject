@@ -30,6 +30,6 @@
 
 module MeetingParticipants
   class DeleteContract < ::DeleteContract
-    delete_permission -> { user.allowed_in_project?(:edit_meetings, model.meeting.project) }
+    delete_permission ->(user:, model:) { user.allowed_in_project?(:edit_meetings, model.meeting.project) }
   end
 end

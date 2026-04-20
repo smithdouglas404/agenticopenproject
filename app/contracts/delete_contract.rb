@@ -37,6 +37,21 @@ class DeleteContract < ModelContract
 
       @delete_permission
     end
+
+    def delete_allowed?(user:, scope:)
+      permission = delete_permission
+
+      case permission
+      when :admin
+        user.admin? && user.active?
+      when Proc
+        permission.call(user:, model: scope)
+      when Symbol
+        scope.project && user.allowed_in_project?(permission, scope.project)
+      else
+        raise ArgumentError, "#{self.class} used without delete_permission. Set a  Proc, or project-based permission symbol"
+      end
+    end
   end
 
   validate :user_allowed
@@ -54,17 +69,6 @@ class DeleteContract < ModelContract
   end
 
   def authorized?
-    permission = self.class.delete_permission
-
-    case permission
-    when :admin
-      user.admin? && user.active?
-    when Proc
-      instance_exec(&permission)
-    when Symbol
-      model.project && user.allowed_in_project?(permission, model.project)
-    else
-      raise ArgumentError, "#{self.class} used without delete_permission. Set a  Proc, or project-based permission symbol"
-    end
+    self.class.delete_allowed?(user:, scope: model)
   end
 end

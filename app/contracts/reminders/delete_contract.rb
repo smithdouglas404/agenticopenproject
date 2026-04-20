@@ -30,7 +30,7 @@
 
 module Reminders
   class DeleteContract < ::DeleteContract
-    delete_permission -> {
+    delete_permission ->(user:, model:) {
       # The user can delete the reminder if they created it
       model.creator_id == user.id
     }

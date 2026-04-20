@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,12 +26,27 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-require "grids/base_contract"
+module Meetings
+  class ShowContract < ::BaseContract
+    include OpenProject::ActionAuthorizer::Registrable
 
-module Grids
-  class DeleteContract < ::DeleteContract
-    delete_permission ->(user:, model:) { model.user_deletable? && Grids::Configuration.writable?(model, user) }
+    class << self
+      def show_allowed?(user:, scope:)
+        user.allowed_in_project?(:view_meetings, scope.project)
+      end
+
+      def index_allowed?(user:, scope:)
+        if scope.present?
+          user.allowed_in_project?(:view_meetings, scope)
+        else
+          user.allowed_globally?(:view_meetings)
+        end
+      end
+    end
+
+    register_action_authorization :show, method: :show_allowed?
+    register_action_authorization :index, method: :index_allowed?
   end
 end

@@ -30,7 +30,7 @@
 
 module EmojiReactions
   class DeleteContract < ::DeleteContract
-    delete_permission -> {
+    delete_permission ->(user:, model:) {
       # The user can delete the reaction if they created it
       model.user_id == user.id
     }

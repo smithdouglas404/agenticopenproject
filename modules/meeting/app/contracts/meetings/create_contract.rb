@@ -30,18 +30,44 @@
 
 module Meetings
   class CreateContract < BaseContract
+    include OpenProject::ActionAuthorizer::Registrable
+
     attribute :recurring_meeting_id
     attribute :uid
 
     validate :user_allowed_to_add
     validate :recurring_meeting_visible
 
+    class << self
+      def create_allowed?(user:, scope:)
+        return false if scope.nil?
+
+        user.allowed_in_project?(:create_meetings, scope)
+      end
+
+      def new_allowed?(user:, scope:)
+        if scope.nil?
+          user.allowed_in_any_project?(:create_meetings)
+        else
+          user.allowed_in_project?(:create_meetings, scope)
+        end
+      end
+
+      def copy_allowed?(user:, scope:)
+        create_allowed?(user:, scope: scope.project)
+      end
+    end
+
+    register_action_authorization :new, method: :new_allowed?
+    register_action_authorization :create, method: :create_allowed?
+    register_action_authorization :copy, method: :copy_allowed?
+
     private
 
     def user_allowed_to_add
       return if model.project.nil?
 
-      unless user.allowed_in_project?(:create_meetings, model.project)
+      unless self.class.create_allowed?(user: user, scope: model.project)
         errors.add :base, :error_unauthorized
       end
     end

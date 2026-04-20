@@ -30,6 +30,7 @@
 
 module Meetings
   class UpdateContract < BaseContract
+    include OpenProject::ActionAuthorizer::Registrable
     include Redmine::I18n
 
     validate :user_allowed_to_edit
@@ -41,10 +42,17 @@ module Meetings
       end
     end
 
-    def user_allowed_to_edit
-      unless user.allowed_in_project?(:edit_meetings, model.project)
-        errors.add :base, :error_unauthorized
+    class << self
+      def update_allowed?(user:, scope:)
+        user.allowed_in_project?(:edit_meetings, scope.project)
       end
+    end
+
+    register_action_authorization :update, method: :update_allowed?
+    register_action_authorization :edit, method: :update_allowed?
+
+    def user_allowed_to_edit
+      errors.add(:base, :error_unauthorized) unless self.class.update_allowed?(user:, scope: model)
     end
 
     def valid_rescheduling_date # rubocop:disable Metrics/AbcSize

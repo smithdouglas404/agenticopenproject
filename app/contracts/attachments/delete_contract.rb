@@ -30,7 +30,7 @@
 
 module Attachments
   class DeleteContract < ::DeleteContract
-    delete_permission -> {
+    delete_permission ->(user:, model:) {
       model.deletable?(user)
     }
   end

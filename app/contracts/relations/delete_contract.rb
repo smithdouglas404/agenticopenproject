@@ -30,7 +30,7 @@
 
 module Relations
   class DeleteContract < ::DeleteContract
-    delete_permission -> {
+    delete_permission ->(user:, model:) {
       user.allowed_in_work_package?(:manage_work_package_relations, model.from) &&
         user.allowed_in_work_package?(:manage_work_package_relations, model.to)
     }

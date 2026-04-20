@@ -112,6 +112,12 @@ module Accounts::Authorization
     is_authorized
   end
 
+  def authorization_check(action:, on: nil, scope: nil)
+    return true if OpenProject::ActionAuthorizer.allowed?(action, on:, user: current_user, scope:)
+
+    render_403 and false
+  end
+
   def require_admin
     return unless require_login
 

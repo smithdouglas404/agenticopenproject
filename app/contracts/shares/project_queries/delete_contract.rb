@@ -33,7 +33,7 @@ module Shares
     class DeleteContract < Shares::DeleteContract
       # DeleteContract has its own permission check and does not care about the role class,
       # so we do not need to include the BaseExtension here.
-      delete_permission -> { model.entity.editable? }
+      delete_permission ->(model:, **_kwargs) { model.entity.editable? }
     end
   end
 end
