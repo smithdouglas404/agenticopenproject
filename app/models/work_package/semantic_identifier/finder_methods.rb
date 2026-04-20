@@ -44,9 +44,14 @@ module WorkPackage::SemanticIdentifier::FinderMethods
       return semantic_id?(args.first) ? find_by_display_id!(args.first) : super
     end
 
-    raise ArgumentError,
-          "WorkPackage.find does not support multiple arguments or array arguments. " \
-          "Use find_by_display_id for semantic identifiers or find with a single ID."
+    ids = args.first.is_a?(Array) ? args.first : args
+    if ids.any? { |id| semantic_id?(id) }
+      raise ArgumentError,
+            "Semantic identifiers in multi-argument find are not supported. " \
+            "Resolve each identifier individually via find_by_display_id instead."
+    end
+
+    super
   end
 
   # Guard find_by against semantic identifiers passed via `id:` or `identifier:`.

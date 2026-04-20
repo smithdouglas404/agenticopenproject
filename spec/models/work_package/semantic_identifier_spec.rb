@@ -99,24 +99,27 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     context "with multiple ids" do
       let(:work_package2) { create(:work_package, project:) }
 
-      it "raises ArgumentError for multiple numeric ids" do
-        expect { WorkPackage.find([work_package.id, work_package2.id]) }
-          .to raise_error(ArgumentError, /does not support multiple arguments or array arguments/)
+      it "delegates to standard AR find for an array of numeric ids" do
+        expect(WorkPackage.find([work_package.id, work_package2.id])).to contain_exactly(work_package, work_package2)
+      end
+
+      it "delegates to standard AR find for multiple numeric id arguments" do
+        expect(WorkPackage.find(work_package.id, work_package2.id)).to contain_exactly(work_package, work_package2)
       end
 
       it "raises ArgumentError for a single-element array with a semantic id" do
         expect { WorkPackage.find(["MYPROJ-1"]) }
-          .to raise_error(ArgumentError, /does not support multiple arguments or array arguments/)
+          .to raise_error(ArgumentError, /multi-argument find/)
       end
 
       it "raises ArgumentError for multiple semantic ids" do
         expect { WorkPackage.find("MYPROJ-1", "MYPROJ-2") }
-          .to raise_error(ArgumentError, /does not support multiple arguments or array arguments/)
+          .to raise_error(ArgumentError, /multi-argument find/)
       end
 
       it "raises ArgumentError for mixed numeric and semantic ids" do
         expect { WorkPackage.find([work_package.id, "MYPROJ-2"]) }
-          .to raise_error(ArgumentError, /does not support multiple arguments or array arguments/)
+          .to raise_error(ArgumentError, /multi-argument find/)
       end
     end
 
