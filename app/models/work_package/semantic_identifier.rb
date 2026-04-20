@@ -57,7 +57,11 @@ module WorkPackage::SemanticIdentifier
     include FinderMethods
 
     # Extend every relation built from this model with semantic finder methods,
-    # so that WorkPackage.visible(user).find("PROJ-42") works transparently.
+    # so that WorkPackage.visible(user).find("PROJ-42") and
+    # project.work_packages.find_by_display_id("PROJ-42") both work. Overriding
+    # `relation` is the seam that reaches every scope and association proxy;
+    # including FinderMethods into class_methods alone only covers class-level
+    # calls like WorkPackage.find.
     def relation
       super.extending(FinderMethods)
     end

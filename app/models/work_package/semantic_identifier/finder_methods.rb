@@ -32,9 +32,20 @@
 # identifiers (e.g. "PROJ-42") in addition to numeric IDs.
 #
 # - find("PROJ-42") resolves transparently
-# - find_by(id:)/find_by!(id:) raise ArgumentError for semantic strings
+# - find_by(id:)/find_by!(id:) raise UnsupportedLookup for semantic strings
 # - find_by_display_id("PROJ-42") is the explicit nil-on-miss resolver
 # - exists?("PROJ-42") resolves transparently
+#
+# The asymmetry between find (transparent) and find_by (guarded) is deliberate:
+# controllers and URL-driven callers already pass user input into find, and
+# losing semantic resolution there would break the feature. find_by on the other
+# hand reduces to a raw SQL WHERE id = ? that cannot consult the alias table,
+# so silently matching nothing would be a worse bug than raising.
+#
+# Convention: use find_by_display_id only when the input could legitimately be
+# either numeric or semantic (controllers, view components fed from URL params,
+# macro resolvers). Low-level code (queries, filters, services) should stick to
+# find_by(id:) with primary keys.
 #
 # Included into WorkPackage class methods and extended into every
 # ActiveRecord::Relation via WorkPackage::SemanticIdentifier.
