@@ -1878,6 +1878,7 @@ de:
         duration: Dauer
         end_insertion: Ende der Einfügung
         end_deletion: Ende des Löschvorgangs
+        has_spent_time: Has spent time
         ignore_non_working_days: Nicht-Arbeitstage ignorieren
         include_non_working_days:
           title: Werktage

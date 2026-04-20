@@ -1917,6 +1917,7 @@ lt:
         duration: Trukmė
         end_insertion: Įterpimo pabaigoje
         end_deletion: Ištrynimo pabaigoje
+        has_spent_time: Has spent time
         ignore_non_working_days: Ignoruoti nedarbo dienas
         include_non_working_days:
           title: Darbo dienos

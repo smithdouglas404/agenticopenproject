@@ -1881,6 +1881,7 @@ nl:
         end_insertion: Einde van het invoegen
         end_deletion: Einde van de verwijdering
         ignore_non_working_days: Negeer niet-werkdagen
+        has_spent_time: Has spent time
         include_non_working_days:
           title: Werkdagen
           false: Alleen werkdagen

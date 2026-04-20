@@ -1883,6 +1883,7 @@ tr:
         duration: Süre
         end_insertion: Ekleme işlemi bitti
         end_deletion: Silme işlemi bitti
+        has_spent_time: Has spent time
         ignore_non_working_days: Çalışma dışı günleri yoksay
         include_non_working_days:
           title: İş günleri

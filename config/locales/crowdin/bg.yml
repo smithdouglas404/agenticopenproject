@@ -1882,6 +1882,7 @@ bg:
         duration: Продължителност
         end_insertion: Край на вмъкване
         end_deletion: Края на изтриване
+        has_spent_time: Has spent time
         ignore_non_working_days: Игнориране на неработни дни
         include_non_working_days:
           title: Работни дни

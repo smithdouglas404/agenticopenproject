@@ -1914,6 +1914,7 @@ pl:
         duration: Czas trwania
         end_insertion: Koniec wstawiania
         end_deletion: Koniec usuwania
+        has_spent_time: Has spent time
         ignore_non_working_days: Ignoruj dni wolne od pracy
         include_non_working_days:
           title: Dni robocze

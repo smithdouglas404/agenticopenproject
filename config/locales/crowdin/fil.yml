@@ -1882,6 +1882,7 @@ fil:
         duration: Durasyon
         end_insertion: Katapusan na
         end_deletion: Katapusan ng pagbubura
+        has_spent_time: Has spent time
         ignore_non_working_days: Ignore non working days
         include_non_working_days:
           title: Working days

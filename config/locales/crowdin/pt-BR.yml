@@ -1879,6 +1879,7 @@ pt-BR:
         duration: Duração
         end_insertion: Final da inserção
         end_deletion: Final da exclusão
+        has_spent_time: Has spent time
         ignore_non_working_days: Ignorar dias não-úteis
         include_non_working_days:
           title: Dias úteis

@@ -1900,6 +1900,7 @@ ro:
         duration: Durată
         end_insertion: Sfârșitul inserării
         end_deletion: Sfârșit de ștergere
+        has_spent_time: Has spent time
         ignore_non_working_days: Ignoră zilele nelucrătoare
         include_non_working_days:
           title: Zile lucrătoare
