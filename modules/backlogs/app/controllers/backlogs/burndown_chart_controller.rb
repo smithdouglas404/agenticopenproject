@@ -30,6 +30,8 @@
 
 module Backlogs
   class BurndownChartController < BaseController
+    menu_item :backlogs
+
     helper "backlogs/burndown_chart"
 
     def show
