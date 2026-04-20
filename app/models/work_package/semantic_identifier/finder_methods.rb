@@ -110,19 +110,30 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   def reject_semantic_id_in_find_by!(args)
     return unless args.length == 1 && args.first.is_a?(Hash)
 
-    hash = args.first
-    pair = (hash.assoc(:id) || hash.assoc("id")) ||
-           (hash.assoc(:identifier) || hash.assoc("identifier"))
+    pair = id_or_identifier_pair(args.first)
     return unless pair
 
     key, value = pair
-    offending = value.is_a?(Array) ? value.detect { |v| semantic_id?(v) } : (value if semantic_id?(value))
+    offending = first_semantic_value(value)
     return unless offending
 
     raise WorkPackage::SemanticIdentifier::UnsupportedLookup,
           "find_by(#{key}: #{value.inspect}) does not support semantic identifiers " \
           "because it cannot resolve aliases or match across identifier history. " \
           "Use find(#{offending.inspect}) or find_by_display_id(#{offending.inspect}) instead."
+  end
+
+  def id_or_identifier_pair(hash)
+    (hash.assoc(:id) || hash.assoc("id")) ||
+      (hash.assoc(:identifier) || hash.assoc("identifier"))
+  end
+
+  def first_semantic_value(value)
+    if value.is_a?(Array)
+      value.detect { |v| semantic_id?(v) }
+    elsif semantic_id?(value)
+      value
+    end
   end
 
   # Returns true when value looks like a semantic work package identifier (e.g. "PROJ-42").
