@@ -119,7 +119,8 @@ RSpec.describe "Markdown security (tagfilter-equivalent protections)" do # ruboc
       MD
       html = to_html(markdown)
       expect(html).not_to match(/<plaintext\b/i)
-      # The trailing paragraph must still be present and rendered as normal content.
+      expect(html).to include("safe paragraph before")
+      expect(html).not_to include("everything from here should be hidden")
       expect(html).to include("trailing paragraph")
     end
 
