@@ -12,7 +12,6 @@
 
       grid.with_area(:description, tag: :div, color: :subtle) do
         render(Primer::Beta::Text.new) { I18n.t("wikis.admin.wiki_providers.oauth.xwiki_oauth_description") }
-        concat(render(Wikis::OAuthLoginComponent.new(wiki_provider, destination_url: url_helpers.edit_admin_settings_wiki_provider_url(wiki_provider)))) if oauth_client.present?
       end
 
       if wiki_provider.persisted?
