@@ -40,7 +40,7 @@ import {
   PointerSensor,
   Droppable,
 } from '@dnd-kit/dom';
-import { Sortable } from '@dnd-kit/dom/sortable';
+import { isSortable, Sortable, SortableDraggable } from '@dnd-kit/dom/sortable';
 import DndListController from './dnd-list.controller';
 
 interface DragOrigin {
@@ -54,6 +54,13 @@ interface ListMetadata {
   targetId:string;
   draggableItems:HTMLElement[];
 }
+
+interface ResolvedMoveData {
+  prevId:string|null;
+  targetId:string;
+}
+
+type DragEndSource = DragEndEvent['operation']['source']|{ element?:Element|null }|null;
 
 interface SyncRegistrationsStats {
   calls:number;
@@ -265,18 +272,16 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
       return;
     }
 
-    this.applyListLevelDrop(sourceElement, event.operation.target?.element ?? null);
-
-    const targetList = this.resolveListForElement(sourceElement);
     const dropUrl = sourceElement.getAttribute('data-drop-url');
+    const moveData = this.resolveMoveData(sourceElement, event.operation.source, event.operation.target?.element ?? null);
 
-    if (!targetList || !dropUrl) {
+    if (!moveData || !dropUrl) {
       this.revertMove(sourceElement);
       this.clearDragState();
       return;
     }
 
-    const succeeded = await this.persistMove(dropUrl, this.buildMoveData(sourceElement, targetList.targetId));
+    const succeeded = await this.persistMove(dropUrl, this.buildMoveData(moveData));
 
     if (!succeeded) {
       this.revertMove(sourceElement);
@@ -291,17 +296,6 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
     this.activeDragSource = null;
   }
 
-  private applyListLevelDrop(sourceElement:HTMLElement, targetElement:Element|null):void {
-    if (!(targetElement instanceof HTMLElement)) return;
-
-    const targetList = this.resolveListForElement(targetElement);
-    if (!targetList) return;
-
-    if (sourceElement.parentElement !== targetList.itemContainer) {
-      targetList.itemContainer.appendChild(sourceElement);
-    }
-  }
-
   private resolveListForElement(element:Element):ListMetadata|null {
     const outlet = this.resolveListControllerForElement(element);
     if (!outlet) return null;
@@ -314,11 +308,60 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
     };
   }
 
-  private buildMoveData(sourceElement:HTMLElement, targetId:string):FormData {
+  private buildMoveData({ targetId, prevId }:ResolvedMoveData):FormData {
     const data = new FormData();
     data.append('target_id', targetId);
-    data.append('prev_id', this.previousDraggableId(sourceElement) ?? '');
+    data.append('prev_id', prevId ?? '');
     return data;
+  }
+
+  private resolveMoveData(sourceElement:HTMLElement, operationSource:DragEndSource, targetElement:Element|null):ResolvedMoveData|null {
+    return this.resolveSortableMoveData(sourceElement, operationSource)
+      ?? this.resolveFallbackMoveData(sourceElement, targetElement);
+  }
+
+  private resolveSortableMoveData(sourceElement:HTMLElement, operationSource:DragEndSource):ResolvedMoveData|null {
+    const sortableSource = this.sortableSource(operationSource);
+
+    if (sortableSource?.group == null) {
+      return null;
+    }
+
+    const targetId = String(sortableSource.group);
+    const targetList = this.resolveListForTargetId(targetId);
+
+    if (!targetList) {
+      return null;
+    }
+
+    const destinationIndex = this.clampedDestinationIndex(sortableSource.index, targetList, sourceElement);
+
+    return {
+      prevId: this.previousDraggableIdAtIndex(targetList, sourceElement, destinationIndex),
+      targetId,
+    };
+  }
+
+  private resolveFallbackMoveData(sourceElement:HTMLElement, targetElement:Element|null):ResolvedMoveData|null {
+    const targetList = targetElement instanceof HTMLElement
+      ? this.resolveListForElement(targetElement)
+      : this.resolveListForElement(sourceElement);
+
+    if (!targetList) {
+      return null;
+    }
+
+    if (sourceElement.parentElement !== targetList.itemContainer) {
+      return {
+        prevId: this.lastDraggableId(targetList, sourceElement),
+        targetId: targetList.targetId,
+      };
+    }
+
+    return {
+      prevId: this.previousDraggableId(sourceElement),
+      targetId: targetList.targetId,
+    };
   }
 
   private previousDraggableId(sourceElement:HTMLElement):string|null {
@@ -333,6 +376,29 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
     }
 
     return null;
+  }
+
+  private previousDraggableIdAtIndex(targetList:ListMetadata, sourceElement:HTMLElement, destinationIndex:number):string|null {
+    if (destinationIndex <= 0) {
+      return null;
+    }
+
+    const destinationItems = targetList.draggableItems.filter((item) => item !== sourceElement);
+    const previousItem = destinationItems[destinationIndex - 1];
+
+    return previousItem ? this.draggableIdFor(previousItem) || null : null;
+  }
+
+  private lastDraggableId(targetList:ListMetadata, sourceElement:HTMLElement):string|null {
+    const destinationItems = targetList.draggableItems.filter((item) => item !== sourceElement);
+    const lastItem = destinationItems[destinationItems.length - 1];
+
+    return lastItem ? this.draggableIdFor(lastItem) || null : null;
+  }
+
+  private clampedDestinationIndex(index:number, targetList:ListMetadata, sourceElement:HTMLElement):number {
+    const maxIndex = targetList.draggableItems.filter((item) => item !== sourceElement).length;
+    return Math.max(0, Math.min(index, maxIndex));
   }
 
   private revertMove(sourceElement:HTMLElement):void {
@@ -424,5 +490,25 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
 
   private resolveListControllerForElement(element:Element):DndListController|null {
     return this.backlogsDndListOutlets.find((outlet) => outlet.dropZoneElement.contains(element)) ?? null;
+  }
+
+  private resolveListForTargetId(targetId:string):ListMetadata|null {
+    const outlet = this.backlogsDndListOutlets.find((candidate) => candidate.targetId === targetId);
+    if (!outlet) {
+      return null;
+    }
+
+    return {
+      element: outlet.dropZoneElement,
+      itemContainer: outlet.itemContainer,
+      targetId: outlet.targetId,
+      draggableItems: outlet.draggableItems,
+    };
+  }
+
+  private sortableSource(source:DragEndSource):SortableDraggable<Record<string, never>>|null {
+    return source && isSortable(source as SortableDraggable<Record<string, never>>)
+      ? source as SortableDraggable<Record<string, never>>
+      : null;
   }
 }

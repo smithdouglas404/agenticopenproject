@@ -30,6 +30,7 @@
 
 import { Application } from '@hotwired/stimulus';
 import { AutoScroller, DragDropManager, Feedback } from '@dnd-kit/dom';
+import { SortableDraggable, SortableDroppable } from '@dnd-kit/dom/sortable';
 import DndSurfaceController from './dnd-surface.controller';
 import DndListController from './dnd-list.controller';
 import ItemController from './item.controller';
@@ -44,13 +45,18 @@ interface ConstraintWithValue {
 interface SurfaceTestEvent {
   canceled:boolean;
   operation:{
-    source:{ element:HTMLElement; id:string|undefined };
-    target:{ element:HTMLElement }|null;
+    source:{ element:HTMLElement; id:string|undefined }|SortableDraggable<Record<string, never>>;
+    target:{ element:HTMLElement }|SortableDroppable<Record<string, never>>|null;
   };
 }
 
 interface SurfaceTestController {
-  manager:DragDropManager|null;
+  manager:(DragDropManager & {
+    registry:{
+      draggables:{ get(id:string):SortableDraggable<Record<string, never>>|undefined };
+      droppables:{ get(id:string):SortableDroppable<Record<string, never>>|undefined };
+    };
+  })|null;
   mutationObserver:MutationObserver|null;
   registrationCleanupCallbacks:(() => void)[];
   activationConstraintsFor(event:{ pointerType?:string; target?:EventTarget|null }):ConstraintWithValue[];
@@ -147,6 +153,14 @@ describe('Backlogs::DndSurfaceController', () => {
         target: target ? { element: target } : null,
       },
     };
+  }
+
+  function registeredDraggable(id:string):SortableDraggable<Record<string, never>> {
+    return surfaceTestController().manager!.registry.draggables.get(id)! as SortableDraggable<Record<string, never>>;
+  }
+
+  function registeredDroppable(id:string):SortableDroppable<Record<string, never>> {
+    return surfaceTestController().manager!.registry.droppables.get(id)! as SortableDroppable<Record<string, never>>;
   }
 
   beforeEach(() => {
@@ -379,14 +393,19 @@ describe('Backlogs::DndSurfaceController', () => {
 
     const controller = surfaceTestController();
     const moved = document.getElementById('work_package_2')!;
-    const target = document.getElementById('work_package_1')!;
-
-    target.parentElement!.insertBefore(moved, target);
+    const sortable = registeredDraggable('2');
+    sortable.sortable.index = 0;
 
     const persistMove = spyOn(controller, 'persistMove').and.resolveTo(true);
 
-    controller.onBeforeDragStart(dragEventFor(moved, target));
-    await controller.onDragEnd(dragEventFor(moved, target));
+    controller.onBeforeDragStart(dragEventFor(moved, moved));
+    await controller.onDragEnd({
+      canceled: false,
+      operation: {
+        source: sortable,
+        target: registeredDroppable('2'),
+      },
+    });
 
     expect(persistMove).toHaveBeenCalledOnceWith('/move/2', jasmine.any(FormData));
     expect(formDataToObject(persistMove.calls.mostRecent().args[1])).toEqual({
@@ -401,14 +420,20 @@ describe('Backlogs::DndSurfaceController', () => {
 
     const controller = surfaceTestController();
     const moved = document.getElementById('work_package_1')!;
-    const targetList = document.getElementById('sprint-list')!;
-
-    targetList.appendChild(moved);
+    const sortable = registeredDraggable('1');
+    sortable.sortable.group = 'sprint:5';
+    sortable.sortable.index = 1;
 
     const persistMove = spyOn(controller, 'persistMove').and.resolveTo(true);
 
-    controller.onBeforeDragStart(dragEventFor(moved, targetList));
-    await controller.onDragEnd(dragEventFor(moved, targetList));
+    controller.onBeforeDragStart(dragEventFor(moved, moved));
+    await controller.onDragEnd({
+      canceled: false,
+      operation: {
+        source: sortable,
+        target: registeredDroppable('1'),
+      },
+    });
 
     expect(formDataToObject(persistMove.calls.mostRecent().args[1])).toEqual({
       prev_id: '7',
