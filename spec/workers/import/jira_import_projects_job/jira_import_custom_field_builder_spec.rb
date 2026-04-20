@@ -154,6 +154,17 @@ RSpec.describe Import::JiraImportProjectsJob::JiraImportCustomFieldBuilder do
       it { is_expected.to eq("list") }
     end
 
+    context "with a radiobuttons field" do
+      let(:jira_field) do
+        jira_field_for(name: "CF Radio",
+                       schema: { "type" => "option",
+                                 "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons",
+                                 "customId" => 10290 })
+      end
+
+      it { is_expected.to eq("list") }
+    end
+
     context "with a string-array field (e.g. labels)" do
       let(:jira_field) do
         jira_field_for(name: "CF Labels",
@@ -328,6 +339,34 @@ RSpec.describe Import::JiraImportProjectsJob::JiraImportCustomFieldBuilder do
 
       it "includes the option values as possible_values" do
         expect(params[:possible_values]).to eq(%w[Cat Dog])
+      end
+    end
+
+    context "with a radiobuttons field" do
+      let(:context_group) do
+        {
+          "projects" => ["DYX"],
+          "issuetypes" => ["10100"],
+          "allowedValues" => [
+            { "id" => "10290", "value" => "Option A" },
+            { "id" => "10291", "value" => "Option B" }
+          ]
+        }
+      end
+      let(:jira_field) do
+        jira_field_for(name: "CF Radio",
+                       schema: { "type" => "option",
+                                 "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons" })
+      end
+
+      subject(:params) { described_class.new(jira_field, context_group:).custom_field_parameters }
+
+      it "is not multi_value (single-select)" do
+        expect(params[:multi_value]).to be false
+      end
+
+      it "includes the radio options as possible_values" do
+        expect(params[:possible_values]).to eq(%w[Option\ A Option\ B])
       end
     end
 

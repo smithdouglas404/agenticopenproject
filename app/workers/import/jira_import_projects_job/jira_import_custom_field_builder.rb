@@ -39,6 +39,10 @@ module Import
           "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:select"
         },
         {
+          "type" => "option",
+          "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons"
+        },
+        {
           "type" => "array",
           "items" => "option",
           "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multiselect"

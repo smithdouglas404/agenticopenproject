@@ -639,6 +639,117 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     end
   end
 
+  describe "radiobuttons field (com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons)" do
+    # Jira value: single option object -> stored as a single-select (non-multi) list value.
+    let!(:jira_field) do
+      create(:jira_field, jira:, jira_import:,
+                          jira_field_id: "customfield_10290",
+                          payload: {
+                            "id" => "customfield_10290",
+                            "name" => "CF Radio",
+                            "schema" => {
+                              "type" => "option",
+                              "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons",
+                              "customId" => 10290
+                            },
+                            "contextGroups" => [
+                              global_context.merge(
+                                "allowedValues" => [
+                                  { "id" => "10290", "value" => "Option A" },
+                                  { "id" => "10291", "value" => "Option B" }
+                                ]
+                              )
+                            ]
+                          })
+    end
+    let!(:jira_issue) do
+      create(:jira_issue, jira:, jira_import:,
+                          jira_issue_id: "10200",
+                          jira_project_id: jira_project.id,
+                          payload: issue_payload)
+    end
+
+    before { described_class.new.perform(jira_import.id) }
+
+    it "creates a single-select (non-multi) 'list' custom field" do
+      cf = WorkPackageCustomField.find_by!(name: "CF Radio")
+      expect(cf.field_format).to eq("list")
+      expect(cf.multi_value).to be false
+    end
+
+    it "populates all radio options as possible values" do
+      cf = WorkPackageCustomField.find_by!(name: "CF Radio")
+      expect(cf.custom_options.pluck(:value)).to contain_exactly("Option A", "Option B")
+    end
+
+    it "sets the selected option as the list value on the work package" do
+      expect(cf_value("CF Radio")).to eq("Option A")
+    end
+
+    it "adds the list custom field to the work package type" do
+      type = Type.find_by!(name: "Task")
+      expect(type.custom_fields.pluck(:name)).to include("CF Radio")
+    end
+  end
+
+  describe "radiobuttons with multiple context groups (com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons)" do
+    # Two context groups have different option sets -> one single-select list CF per context group.
+    let!(:jira_field) do
+      create(:jira_field, jira:, jira_import:,
+                          jira_field_id: "customfield_10291",
+                          payload: {
+                            "id" => "customfield_10291",
+                            "name" => "CF Radio Multi-Context",
+                            "schema" => {
+                              "type" => "option",
+                              "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons",
+                              "customId" => 10291
+                            },
+                            "contextGroups" => [
+                              {
+                                "projects" => ["DYX"], "issuetypes" => [],
+                                "allowedValues" => [{ "id" => "10300", "value" => "North" },
+                                                    { "id" => "10301", "value" => "South" }]
+                              },
+                              {
+                                "projects" => ["ZBX"], "issuetypes" => [],
+                                "allowedValues" => [{ "id" => "10302", "value" => "East" },
+                                                    { "id" => "10303", "value" => "West" }]
+                              }
+                            ]
+                          })
+    end
+    let!(:jira_issue) do
+      create(:jira_issue, jira:, jira_import:,
+                          jira_issue_id: "10200",
+                          jira_project_id: jira_project.id,
+                          payload: issue_payload)
+    end
+
+    before { described_class.new.perform(jira_import.id) }
+
+    it "creates one single-select list CF per context group" do
+      cf_dyx = WorkPackageCustomField.find_by!(name: "CF Radio Multi-Context (DYX)")
+      cf_zbx = WorkPackageCustomField.find_by!(name: "CF Radio Multi-Context (ZBX)")
+      expect(cf_dyx.field_format).to eq("list")
+      expect(cf_zbx.field_format).to eq("list")
+      expect(cf_dyx.multi_value).to be false
+      expect(cf_zbx.multi_value).to be false
+    end
+
+    it "populates each CF with its own set of options" do
+      cf_dyx = WorkPackageCustomField.find_by!(name: "CF Radio Multi-Context (DYX)")
+      cf_zbx = WorkPackageCustomField.find_by!(name: "CF Radio Multi-Context (ZBX)")
+      expect(cf_dyx.custom_options.pluck(:value)).to contain_exactly("North", "South")
+      expect(cf_zbx.custom_options.pluck(:value)).to contain_exactly("East", "West")
+    end
+
+    it "sets the value using the issue's matching context CF" do
+      # The issue is from project DYX and has 'North' selected
+      expect(cf_value("CF Radio Multi-Context (DYX)")).to eq("North")
+    end
+  end
+
   describe "string-array list field (com.atlassian.jira.plugin.system.customfieldtypes:labels)" do
     # Jira value: plain string array -> options collected from issues, stored as multi-value list.
     let!(:jira_field) do
@@ -844,6 +955,13 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
                     "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes" },
           context_groups: [global_context.merge(
             "allowedValues" => [{ "id" => "10139", "value" => "Yes" }]
+          )] },
+        { id: "customfield_10290", name: "CF Radio",
+          schema: { "type" => "option",
+                    "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:radiobuttons" },
+          context_groups: [global_context.merge(
+            "allowedValues" => [{ "id" => "10290", "value" => "Option A" },
+                                { "id" => "10291", "value" => "Option B" }]
           )] }
       ].map do |field_def|
         payload = { "id" => field_def[:id], "name" => field_def[:name], "schema" => field_def[:schema] }
@@ -861,9 +979,8 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     end
 
     it "creates the correct number of OpenProject custom fields" do
-      # 5 scalar + 1 user + 1 labels + 1 list-single + 1 list-multi + 1 hierarchy + 1 list(checkbox) + 1 bool = 12
       expect { described_class.new.perform(jira_import.id) }
-        .to change(WorkPackageCustomField, :count).by(12)
+        .to change(WorkPackageCustomField, :count).by(13)
     end
 
     context "on after the import" do
@@ -882,7 +999,8 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
           "CF Multi-List" => "list",
           "CF Cascading" => "hierarchy",
           "CF Booleans" => "list",
-          "CF Boolean" => "bool"
+          "CF Boolean" => "bool",
+          "CF Radio" => "list"
         }
         formats = WorkPackageCustomField.where(name: expected.keys).index_by(&:name).transform_values(&:field_format)
         expect(formats).to eq(expected)
@@ -923,6 +1041,10 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
 
       it "sets multicheckbox selected options as list values correctly" do
         expect(cf_value("CF Booleans")).to contain_exactly("Check 1")
+      end
+
+      it "sets the radiobuttons selected option as the list value correctly" do
+        expect(cf_value("CF Radio")).to eq("Option A")
       end
     end
   end

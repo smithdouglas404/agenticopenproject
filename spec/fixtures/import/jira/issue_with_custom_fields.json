@@ -114,7 +114,17 @@
         "self": "https://jira-software.local/rest/api/2/customFieldOption/10205",
         "value": "Yes"
       }
-    ]
+    ],
+    "customfield_10290": {
+      "id": "10290",
+      "self": "https://jira-software.local/rest/api/2/customFieldOption/10290",
+      "value": "Option A"
+    },
+    "customfield_10291": {
+      "id": "10300",
+      "self": "https://jira-software.local/rest/api/2/customFieldOption/10300",
+      "value": "North"
+    }
   },
   "changelog": {
     "total": 0,

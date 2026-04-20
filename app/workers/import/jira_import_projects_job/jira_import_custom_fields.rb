@@ -100,7 +100,16 @@ module Import
         contexts = if groups.present?
                      groups.map { |g| build_context_entry(jira_field, g.merge("allowedValues" => allowed_values)) }
                    else
-                     [build_context_entry(jira_field, { "projects" => [], "issuetypes" => [], "allowedValues" => allowed_values })]
+                     [
+                       build_context_entry(
+                         jira_field,
+                         {
+                           "projects" => [],
+                           "issuetypes" => [],
+                           "allowedValues" => allowed_values
+                         }
+                       )
+                     ]
                    end
         [{ jira_field:, contexts: }]
       end

@@ -33,7 +33,7 @@ module Import
     module JiraFetchCustomFields
       # Jira custom-field types that carry per-context "Field context" allowedValues and therefore
       # require editmeta resolution to capture project-specific option lists.
-      OPTION_BASED_CUSTOM_SUFFIXES = %w[select multiselect multicheckboxes cascadingselect].freeze
+      OPTION_BASED_CUSTOM_SUFFIXES = %w[select multiselect multicheckboxes radiobuttons cascadingselect].freeze
 
       def sync_custom_fields
         used_custom_field_ids = collect_used_custom_field_ids
