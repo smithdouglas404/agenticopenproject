@@ -51,6 +51,7 @@ import { SubtasksBoardHeaderComponent } from 'core-app/features/boards/board/boa
 import { StatusBoardHeaderComponent } from 'core-app/features/boards/board/board-actions/status/status-board-header.component';
 import { OpenprojectAutocompleterModule } from 'core-app/shared/components/autocompleter/openproject-autocompleter.module';
 import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openproject-enterprise.module';
+import { BoardStatusMappingService } from 'core-app/features/boards/board/status-mapping/board-status-mapping.service';
 
 @NgModule({
   imports: [
@@ -62,6 +63,9 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
 
     // Dynamic Module for actions
     DynamicModule,
+  ],
+  providers: [
+    BoardStatusMappingService,
   ],
   declarations: [
     BoardPartitionedPageComponent,
