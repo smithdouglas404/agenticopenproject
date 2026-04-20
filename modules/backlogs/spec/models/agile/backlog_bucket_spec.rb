@@ -69,4 +69,14 @@ RSpec.describe Agile::BacklogBucket do
       expect(backlog_bucket.work_packages.reload.to_a).to eq([work_package1, work_package2, work_package_nil])
     end
   end
+
+  describe ".order_alphabetically" do
+    it "returns buckets sorted by name" do
+      bucket3 = create(:backlog_bucket, project:, name: "foo")
+      bucket1 = create(:backlog_bucket, project:, name: "bar")
+      bucket2 = create(:backlog_bucket, project:, name: "baz")
+
+      expect(described_class.order_alphabetically).to eq([bucket1, bucket2, bucket3])
+    end
+  end
 end

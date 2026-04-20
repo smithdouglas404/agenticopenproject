@@ -34,5 +34,7 @@ class Agile::BacklogBucket < ApplicationRecord
   belongs_to :project
   has_many :work_packages, -> { order_by_position }, inverse_of: :backlog_bucket, dependent: :nullify
 
+  scope :order_alphabetically, -> { order(:name) }
+
   validates :name, :project, presence: true
 end
