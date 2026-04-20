@@ -85,6 +85,10 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
       expect(row["data-controller"]).to include("backlogs--item")
     end
 
+    it "marks the card as a list item target" do
+      expect(row["data-backlogs--dnd-list-target"]).to eq("item")
+    end
+
     it "sets the split-view and full-view URLs for the item controller" do
       expect(row["data-backlogs--item-split-url-value"])
         .to end_with(project_backlogs_backlog_details_path(project, work_package))

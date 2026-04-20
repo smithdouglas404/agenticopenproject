@@ -30,6 +30,46 @@
 
 require "rails_helper"
 
+class Backlogs::BacklogListProbeComponent < ApplicationComponent
+  def initialize(project:, inbox_work_packages:, sprints:, stories_by_sprint_id:,
+                 active_sprint_ids:, show_all_backlog:, current_user:)
+    super()
+
+    @project = project
+    @inbox_work_packages = inbox_work_packages
+    @sprints = sprints
+    @stories_by_sprint_id = stories_by_sprint_id
+    @active_sprint_ids = active_sprint_ids
+    @show_all_backlog = show_all_backlog
+    @current_user = current_user
+  end
+
+  def call
+    seed_view_context
+    render partial: "backlogs/backlog/backlog_list", layout: false
+  end
+
+  private
+
+  attr_reader :project, :inbox_work_packages, :sprints, :stories_by_sprint_id,
+              :active_sprint_ids, :show_all_backlog, :current_user
+
+  def seed_view_context
+    current_user_value = current_user
+    show_all_backlog_value = show_all_backlog
+
+    view_context.instance_variable_set(:@project, project)
+    view_context.instance_variable_set(:@inbox_work_packages, inbox_work_packages)
+    view_context.instance_variable_set(:@sprints, sprints)
+    view_context.instance_variable_set(:@stories_by_sprint_id, stories_by_sprint_id)
+    view_context.instance_variable_set(:@active_sprint_ids, active_sprint_ids)
+
+    view_context.define_singleton_method(:show_all_backlog) { show_all_backlog_value }
+    view_context.define_singleton_method(:allow_sprint_creation?) { |_project| false }
+    view_context.define_singleton_method(:current_user) { current_user_value }
+  end
+end
+
 RSpec.describe Backlogs::InboxComponent, type: :component do
   include Rails.application.routes.url_helpers
 
@@ -70,6 +110,26 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
 
       expect(box["data-controller"]).to include("backlogs--dnd-list")
       expect(box["data-backlogs--dnd-list-target-id-value"]).to eq("inbox")
+      expect(box["data-backlogs--dnd-list-target"]).to eq("container")
+    end
+  end
+
+  describe "surface contract" do
+    it "keeps the surface outlet contract aligned with the inbox list markup" do
+      render_inline(
+        Backlogs::BacklogListProbeComponent.new(
+          project:,
+          inbox_work_packages: work_packages,
+          sprints: Agile::Sprint.none,
+          stories_by_sprint_id: {},
+          active_sprint_ids: [],
+          show_all_backlog: show_all,
+          current_user: user
+        )
+      )
+
+      expect(page.find(".op-sprint-planning-container")["data-backlogs--dnd-surface-backlogs--dnd-list-outlet"])
+        .to eq("[data-controller~='backlogs--dnd-list']")
     end
   end
 
@@ -97,6 +157,7 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
       # renders the subject of each work package
       expect(page).to have_text("First item")
       expect(page).to have_text("Second item")
+      expect(page).to have_css(".Box-row[data-backlogs--dnd-list-target='item']", count: 2)
 
       # does not show the blankslate
       expect(page).to have_no_css("h4", text: "Backlog inbox is empty")

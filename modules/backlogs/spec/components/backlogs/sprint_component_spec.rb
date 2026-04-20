@@ -108,6 +108,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         box = page.find(".Box")
         expect(box["data-controller"]).to include("backlogs--dnd-list")
         expect(box["data-backlogs--dnd-list-target-id-value"]).to eq("sprint:#{sprint.id}")
+        expect(box["data-backlogs--dnd-list-target"]).to eq("container")
       end
 
       it "has draggable data attributes on story rows" do
@@ -117,8 +118,16 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         expect(story_row["data-controller"]).to include("backlogs--item")
         expect(story_row["data-draggable-id"]).to eq(story1.id.to_s)
         expect(story_row["data-draggable-type"]).to eq("story")
+        expect(story_row["data-backlogs--dnd-list-target"]).to eq("item")
         expected_path = move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story1.id)
         expect(story_row["data-drop-url"]).to end_with(expected_path)
+      end
+
+      it "does not duplicate the item target on the nested story article" do
+        render_component
+
+        expect(page.find(".Box-row[id='work_package_#{story1.id}'] article")["data-backlogs--dnd-list-target"])
+          .to be_nil
       end
 
       it "renders story rows with proper classes" do

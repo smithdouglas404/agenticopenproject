@@ -78,6 +78,12 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
     expect(page).to have_text("Test Story Subject")
   end
 
+  it "does not mark the nested story article as a list item target" do
+    render_component
+
+    expect(page.find("article")["data-backlogs--dnd-list-target"]).to be_nil
+  end
+
   it "shows story points" do
     render_component
 
