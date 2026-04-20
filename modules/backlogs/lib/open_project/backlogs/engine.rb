@@ -54,7 +54,7 @@ module OpenProject::Backlogs
       project_module :backlogs, dependencies: :work_package_tracking do
         permission :view_sprints,
                    { "backlogs/backlog": %i[show details],
-                     "backlogs/stories": %i[index show menu],
+                     "backlogs/work_packages": %i[index show menu],
                      "backlogs/inbox": :menu,
                      "backlogs/burndown_chart": :show,
                      "backlogs/taskboard": :show },
@@ -81,7 +81,7 @@ module OpenProject::Backlogs
                    dependencies: %i[view_sprints manage_board_views manage_sprint_items]
 
         permission :manage_sprint_items,
-                   { "backlogs/stories": %i[move reorder],
+                   { "backlogs/work_packages": %i[move reorder],
                      "backlogs/inbox": %i[move reorder move_to_sprint_dialog] },
                    permissible_on: :project,
                    require: :member,

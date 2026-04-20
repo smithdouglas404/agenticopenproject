@@ -118,7 +118,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
         expect(story_row["data-draggable-id"]).to eq(story1.id.to_s)
         expect(story_row["data-draggable-type"]).to eq("story")
-        expected_path = move_project_backlogs_story_path(project, sprint_id: sprint.id, id: story1.id)
+        expected_path = move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story1.id)
         expect(story_row["data-drop-url"]).to end_with(expected_path)
       end
 

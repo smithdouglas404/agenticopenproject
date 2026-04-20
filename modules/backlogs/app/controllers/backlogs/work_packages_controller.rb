@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class StoriesController < ::RbApplicationController
+  class WorkPackagesController < ::RbApplicationController
     include OpTurbo::ComponentStream
 
     before_action :load_story
@@ -55,7 +55,7 @@ module Backlogs
       sprint_id_was = @story.sprint_id
 
       move_attributes = infer_attributes_from_target
-      unless move_story(move_attributes).success?
+      unless move_work_package(move_attributes).success?
         return respond_with_turbo_streams(status: :unprocessable_entity)
       end
 
@@ -87,7 +87,7 @@ module Backlogs
 
     private
 
-    def move_story(move_attributes)
+    def move_work_package(move_attributes)
       call = update_story_with_target_and_position(attributes: move_attributes)
 
       if call.success?

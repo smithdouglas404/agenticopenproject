@@ -54,7 +54,7 @@ module Backlogs
     end
 
     def menu_src
-      menu_project_backlogs_story_path(project, sprint_id: sprint.id, id: story.id)
+      menu_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)
     end
   end
 end

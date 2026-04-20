@@ -104,7 +104,7 @@ module Backlogs
       {
         draggable_id: story.id,
         draggable_type: "story",
-        drop_url: move_project_backlogs_story_path(project, sprint_id: sprint.id, id: story.id)
+        drop_url: move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)
       }
     end
 

@@ -49,7 +49,7 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
     end
 
     it "includes deferred backlog story and inbox menu fragments" do
-      expect(subject.controller_actions).to include("backlogs/stories/menu", "backlogs/inbox/menu")
+      expect(subject.controller_actions).to include("backlogs/work_packages/menu", "backlogs/inbox/menu")
     end
   end
 

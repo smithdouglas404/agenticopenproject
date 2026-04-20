@@ -73,7 +73,7 @@ Rails.application.routes.draw do
       end
 
       scope "sprints/:sprint_id" do
-        resources :stories, only: [] do
+        resources :work_packages, controller: :work_packages, only: [] do
           member do
             get :menu
             put :move
