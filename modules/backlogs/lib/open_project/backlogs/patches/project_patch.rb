@@ -43,7 +43,7 @@ module OpenProject::Backlogs::Patches::ProjectPatch
   end
 
   def assignable_sprints
-    Agile::Sprint.for_project(self).visible.not_completed
+    @assignable_sprints ||= Agile::Sprint.for_project(self).visible.not_completed
   end
 end
 
