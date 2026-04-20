@@ -35,7 +35,7 @@ module Queries
         include BaseQuery
         include UnpersistedQuery
 
-        def model
+        def self.model
           @model ||= ::Wikis::PageLink
         end
       end
