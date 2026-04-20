@@ -28,24 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module BurndownChartsHelper
-  def xaxis_labels(burndown)
-    # 14 entries (plus the axis label) have come along as the best value for a good optical result.
-    # Thus it is enough space between the entries.
-    entries_displayed = (burndown.days.length / 14.0).ceil
-    burndown.days.enum_for(:each_with_index).map do |d, i|
-      if (i % entries_displayed) == 0
-        ["#{escape_javascript(::I18n.t('date.abbr_day_names')[d.wday % 7])} #{d.strftime('%d/%m')}"]
-      end
-    end
+require "spec_helper"
+
+RSpec.describe Backlogs::SettingsController do
+  describe "routing" do
+    it {
+      expect(get("/admin/backlogs")).to route_to(controller: "backlogs/settings",
+                                                 action: "show")
+    }
   end
 
-  def dataseries(burndown)
-    burndown.series.map do |s|
-      {
-        label: I18n.t("burndown.#{s.first}"),
-        data: s.last.enum_for(:each)
-      }
-    end
+  describe "named routing" do
+    it {
+      expect(admin_backlogs_settings_path).to eq("/admin/backlogs")
+    }
   end
 end

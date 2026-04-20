@@ -94,6 +94,14 @@ module OpenProject::Backlogs
                    dependencies: :create_sprints
       end
 
+      ::Redmine::MenuManager.map(:admin_menu) do |menu|
+        menu.push :admin_backlogs,
+                  { controller: "/backlogs/settings", action: :show },
+                  if: ->(_) { User.current.admin? },
+                  caption: :label_backlogs,
+                  icon: "op-backlogs"
+      end
+
       menu :project_menu,
            :backlogs,
            { controller: "/backlogs/backlog", action: :show },

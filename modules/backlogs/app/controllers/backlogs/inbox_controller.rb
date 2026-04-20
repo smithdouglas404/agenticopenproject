@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class InboxController < ::RbApplicationController
+  class InboxController < BaseController
     include OpTurbo::ComponentStream
 
     before_action :load_work_package

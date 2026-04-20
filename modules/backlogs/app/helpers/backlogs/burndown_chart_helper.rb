@@ -28,38 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-
-RSpec.describe OpenProject::Backlogs::Engine do
-  describe ".settings" do
-    it "keeps only the burn direction plugin setting" do
-      expect(described_class.settings).to eq(
-        default: {
-          "points_burn_direction" => "up"
-        },
-        menu_item: :backlogs_settings
-      )
+module Backlogs
+  module BurndownChartHelper
+    def xaxis_labels(burndown)
+      # 14 entries (plus the axis label) have come along as the best value for a good optical result.
+      # Thus it is enough space between the entries.
+      entries_displayed = (burndown.days.length / 14.0).ceil
+      burndown.days.enum_for(:each_with_index).map do |d, i|
+        if (i % entries_displayed) == 0
+          ["#{::I18n.t('date.abbr_day_names')[d.wday % 7]} #{d.strftime('%d/%m')}"]
+        end
+      end
     end
-  end
 
-  describe "project menu" do
-    it "points the backlog entries at the canonical backlog route" do
-      project = create(:project)
-      menu_items = Redmine::MenuManager.items(:project_menu, project).root.children
-
-      backlogs = menu_items.detect { |item| item.name == :backlogs }
-      backlog = backlogs.children.detect { |item| item.name == :backlog }
-
-      expect(backlogs.url(project)).to eq(controller: "/backlogs/backlog", action: :show)
-      expect(backlog.url(project)).to eq(controller: "/backlogs/backlog", action: :show)
-    end
-  end
-
-  describe "admin menu" do
-    it "registers the Backlogs entry from the engine" do
-      admin_backlogs = Redmine::MenuManager.items(:admin_menu).children.find { |item| item.name == :admin_backlogs }
-
-      expect(admin_backlogs.url).to eq(controller: "/backlogs/settings", action: :show)
+    def dataseries(burndown)
+      burndown.series.map do |s|
+        {
+          label: I18n.t("burndown.#{s.first}"),
+          data: s.last.enum_for(:each)
+        }
+      end
     end
   end
 end

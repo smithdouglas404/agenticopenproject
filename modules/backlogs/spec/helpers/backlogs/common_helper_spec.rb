@@ -28,31 +28,44 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Base class of all controllers in Backlogs
-class RbApplicationController < ApplicationController
-  helper :rb_common
+require "rails_helper"
 
-  before_action :load_sprint_and_project,
-                :authorize
+RSpec.describe Backlogs::CommonHelper do
+  describe "#show_all_backlog" do
+    before do
+      allow(helper).to receive(:params).and_return(params)
+    end
 
-  private
+    context "when the all param is absent" do
+      let(:params) { {} }
 
-  # Loads the project to be used by the authorize filter to determine if
-  # User.current has permission to invoke the method in question.
-  def load_sprint_and_project
-    load_project
+      it "is false" do
+        expect(helper.show_all_backlog).to be false
+      end
+    end
 
-    load_sprint
-  end
+    context "when the all param is a Rails boolean truthy string" do
+      let(:params) { { all: "1" } }
 
-  def load_project
-    @project = Project.visible.find(params[:project_id])
-  end
+      it "is true" do
+        expect(helper.show_all_backlog).to be true
+      end
+    end
 
-  def load_sprint
-    @sprint_id = params.delete(:sprint_id)
-    return unless @sprint_id
+    context "when the all param is the string false" do
+      let(:params) { { all: "false" } }
 
-    @sprint = Agile::Sprint.for_project(@project).visible.find(@sprint_id)
+      it "is false" do
+        expect(helper.show_all_backlog).to be false
+      end
+    end
+
+    context "when the all param is the string zero" do
+      let(:params) { { all: "0" } }
+
+      it "is false" do
+        expect(helper.show_all_backlog).to be false
+      end
+    end
   end
 end

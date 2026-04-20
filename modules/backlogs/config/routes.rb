@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   end
 
   scope "admin" do
-    resource :backlogs, only: :show, controller: :backlogs_settings, as: "admin_backlogs_settings"
+    resource :backlogs, only: :show, controller: "backlogs/settings", as: "admin_backlogs_settings"
   end
 
   scope "projects/:project_id", as: "project", module: "projects" do

@@ -88,7 +88,7 @@ RSpec.describe "backlogs/burndown_chart/show" do
   end
 
   before do
-    view.extend BurndownChartsHelper
+    view.extend Backlogs::BurndownChartHelper
 
     # We directly force the creation of stories,statuses by calling the method
     stories

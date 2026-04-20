@@ -28,26 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Backlogs
+  class SettingsController < ::ApplicationController
+    layout "admin"
+    menu_item :admin_backlogs
 
-RSpec.describe BacklogsSettingsController do
-  let(:user) { create(:admin) }
+    before_action :require_admin
 
-  before { login_as(user) }
-
-  describe "GET show" do
-    it "renders successfully" do
-      get :show
-      expect(response).to have_http_status(:ok)
-    end
-
-    context "when not an admin" do
-      let(:user) { create(:user) }
-
-      it "requires admin" do
-        get :show
-        expect(response).to have_http_status(:forbidden)
-      end
-    end
+    def show; end
   end
 end
