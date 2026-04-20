@@ -51,10 +51,13 @@ interface SurfaceTestEvent {
 
 interface SurfaceTestController {
   manager:DragDropManager|null;
+  mutationObserver:MutationObserver|null;
+  registrationCleanupCallbacks:(() => void)[];
   activationConstraintsFor(event:{ pointerType?:string; target?:EventTarget|null }):ConstraintWithValue[];
   onBeforeDragStart(event:SurfaceTestEvent):void;
   onDragEnd(event:SurfaceTestEvent):Promise<void>;
   persistMove(dropUrl:string, data:FormData):Promise<boolean>;
+  syncRegistrations(args:{ reason:string; mutationCount?:number }):void;
 }
 
 describe('Backlogs::DndSurfaceController', () => {
@@ -66,13 +69,14 @@ describe('Backlogs::DndSurfaceController', () => {
       id="backlogs-surface"
       data-controller="backlogs--dnd-surface"
       data-backlogs--dnd-surface-position-mode-value="prev_id"
+      data-backlogs--dnd-surface-backlogs--dnd-list-outlet="[data-controller~='backlogs--dnd-list']"
     >
       <section
         id="inbox-shell"
         data-controller="backlogs--dnd-list"
         data-backlogs--dnd-list-target-id-value="inbox"
       >
-        <ul id="inbox-list">
+        <ul id="inbox-list" data-backlogs--dnd-list-target="container">
           <li
             id="work_package_1"
             data-controller="backlogs--item"
@@ -80,6 +84,7 @@ describe('Backlogs::DndSurfaceController', () => {
             data-draggable-type="story"
             data-drop-url="/move/1"
             data-backlogs--item-selected-class="Box-row--blue"
+            data-backlogs--dnd-list-target="item"
           ></li>
           <li
             id="work_package_2"
@@ -88,6 +93,7 @@ describe('Backlogs::DndSurfaceController', () => {
             data-draggable-type="story"
             data-drop-url="/move/2"
             data-backlogs--item-selected-class="Box-row--blue"
+            data-backlogs--dnd-list-target="item"
           ></li>
         </ul>
       </section>
@@ -97,7 +103,7 @@ describe('Backlogs::DndSurfaceController', () => {
         data-controller="backlogs--dnd-list"
         data-backlogs--dnd-list-target-id-value="sprint:5"
       >
-        <ul id="sprint-list">
+        <ul id="sprint-list" data-backlogs--dnd-list-target="container">
           <li
             id="work_package_7"
             data-controller="backlogs--item"
@@ -105,6 +111,7 @@ describe('Backlogs::DndSurfaceController', () => {
             data-draggable-type="story"
             data-drop-url="/move/7"
             data-backlogs--item-selected-class="Box-row--blue"
+            data-backlogs--dnd-list-target="item"
           ></li>
         </ul>
       </section>
@@ -122,6 +129,10 @@ describe('Backlogs::DndSurfaceController', () => {
       document.getElementById('backlogs-surface')!,
       'backlogs--dnd-surface',
     ) as DndSurfaceController;
+  }
+
+  function surfaceTestController():SurfaceTestController {
+    return surfaceController() as unknown as SurfaceTestController;
   }
 
   function formDataToObject(data:FormData):Record<string, string> {
@@ -172,37 +183,139 @@ describe('Backlogs::DndSurfaceController', () => {
     expect(manager?.plugins.some((plugin:unknown) => plugin instanceof AutoScroller)).toBeTrue();
   });
 
-  it('records debug telemetry when registrations sync on connect and mutation', async () => {
+  it('records debug telemetry when registrations sync on connect and explicit list change', async () => {
     appendTemplate(surfaceTemplate);
     await nextFrame();
 
     expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.calls).toBe(1);
     expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.lastReason).toBe('connect');
 
-    document.getElementById('inbox-list')!.insertAdjacentHTML('beforeend', `
-      <li
-        id="work_package_9"
-        data-controller="backlogs--item"
-        data-draggable-id="9"
-        data-draggable-type="story"
-        data-drop-url="/move/9"
-        data-backlogs--item-selected-class="Box-row--blue"
-      ></li>
+    document.getElementById('inbox-shell')!.dispatchEvent(new CustomEvent('backlogs:dnd-list:changed', {
+      bubbles: true,
+    }));
+
+    await nextFrame();
+
+    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.calls).toBe(2);
+    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.lastReason).toBe('list-changed');
+    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.lastItemCount).toBe(3);
+  });
+
+  it('rebuilds registrations when a dnd list outlet connects', async () => {
+    appendTemplate(surfaceTemplate);
+    await nextFrame();
+
+    const controller = surfaceTestController();
+    const syncRegistrations = spyOn(controller, 'syncRegistrations').and.callThrough();
+
+    document.getElementById('backlogs-surface')!.insertAdjacentHTML('beforeend', `
+      <section
+        id="later-shell"
+        data-controller="backlogs--dnd-list"
+        data-backlogs--dnd-list-target-id-value="later"
+      >
+        <div id="later-list" data-backlogs--dnd-list-target="container">
+          <div
+            id="work_package_9"
+            data-draggable-id="9"
+            data-drop-url="/move/9"
+            data-backlogs--dnd-list-target="item"
+          ></div>
+        </div>
+      </section>
     `);
 
     await nextFrame();
     await nextFrame();
 
-    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.calls).toBe(2);
-    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.lastReason).toBe('mutation');
-    expect(window.opBacklogsDndSurfaceDebug?.syncRegistrations.lastItemCount).toBe(4);
+    expect(syncRegistrations).toHaveBeenCalledWith({ reason: 'outlet-connected' });
+  });
+
+  it('rebuilds registrations when a dnd list outlet disconnects', async () => {
+    appendTemplate(surfaceTemplate);
+    await nextFrame();
+
+    const controller = surfaceTestController();
+    const syncRegistrations = spyOn(controller, 'syncRegistrations').and.callThrough();
+
+    document.getElementById('sprint-shell')!.remove();
+
+    await nextFrame();
+    await nextFrame();
+
+    expect(syncRegistrations).toHaveBeenCalledWith({ reason: 'outlet-disconnected' });
+  });
+
+  it('rebuilds registrations when a list emits a change signal', async () => {
+    appendTemplate(surfaceTemplate);
+    await nextFrame();
+
+    const controller = surfaceTestController();
+    const syncRegistrations = spyOn(controller, 'syncRegistrations').and.callThrough();
+
+    document.getElementById('inbox-shell')!.dispatchEvent(new CustomEvent('backlogs:dnd-list:changed', {
+      bubbles: true,
+    }));
+
+    await nextFrame();
+
+    expect(syncRegistrations).toHaveBeenCalledWith({ reason: 'list-changed' });
+  });
+
+  it('builds registrations from list outlets and explicit list targets', async () => {
+    const targetDrivenTemplate = `
+      <div
+        id="backlogs-surface"
+        data-controller="backlogs--dnd-surface"
+        data-backlogs--dnd-surface-position-mode-value="prev_id"
+        data-backlogs--dnd-surface-backlogs--dnd-list-outlet="[data-controller~='backlogs--dnd-list']"
+      >
+        <section
+          id="target-only-shell"
+          data-controller="backlogs--dnd-list"
+          data-backlogs--dnd-list-target-id-value="inbox"
+        >
+          <div id="target-only-container" data-backlogs--dnd-list-target="container">
+            <article id="target-only-item-1" data-backlogs--dnd-list-target="item" data-draggable-id="1"></article>
+            <article id="target-only-item-2" data-backlogs--dnd-list-target="item" data-draggable-id="2"></article>
+          </div>
+          <ul id="legacy-descendants">
+            <li id="legacy-query-item" data-draggable-id="99"></li>
+          </ul>
+        </section>
+      </div>
+    `;
+
+    appendTemplate(targetDrivenTemplate);
+    await nextFrame();
+
+    const controller = surfaceTestController();
+
+    expect(controller.registrationCleanupCallbacks.length).toBe(3);
+  });
+
+  it('does not keep a broad mutation observer for structural discovery', async () => {
+    appendTemplate(surfaceTemplate);
+    await nextFrame();
+
+    const controller = surfaceTestController();
+    const syncRegistrations = spyOn(controller, 'syncRegistrations').and.callThrough();
+
+    expect(controller.mutationObserver).toBeNull();
+
+    document.getElementById('backlogs-surface')!.insertAdjacentHTML('beforeend', '<div id="non-structural-noise"></div>');
+
+    await nextFrame();
+    await nextFrame();
+
+    expect(syncRegistrations).not.toHaveBeenCalled();
   });
 
   it('strips default placeholder attributes from the cloned placeholder only', async () => {
     appendTemplate(surfaceTemplate);
     await nextFrame();
 
-    const controller = surfaceController() as unknown as SurfaceTestController;
+    const controller = surfaceTestController();
     const source = document.getElementById('work_package_1')!;
     const placeholder = source.cloneNode(true) as HTMLElement;
     placeholder.setAttribute('data-dnd-placeholder', 'hidden');
@@ -222,7 +335,7 @@ describe('Backlogs::DndSurfaceController', () => {
     appendTemplate(surfaceTemplate);
     await nextFrame();
 
-    const controller = surfaceController() as unknown as SurfaceTestController;
+    const controller = surfaceTestController();
     const source = document.getElementById('work_package_1')!;
     source.setAttribute('data-backlogs--item-placeholder-strip-attributes-value', 'id data-controller data-drop-url');
 
@@ -242,7 +355,7 @@ describe('Backlogs::DndSurfaceController', () => {
     appendTemplate(surfaceTemplate);
     await nextFrame();
 
-    const controller = surfaceController() as unknown as SurfaceTestController;
+    const controller = surfaceTestController();
 
     const mouseConstraints = controller.activationConstraintsFor({
       pointerType: 'mouse',
@@ -264,7 +377,7 @@ describe('Backlogs::DndSurfaceController', () => {
     appendTemplate(surfaceTemplate);
     await nextFrame();
 
-    const controller = surfaceController() as unknown as SurfaceTestController;
+    const controller = surfaceTestController();
     const moved = document.getElementById('work_package_2')!;
     const target = document.getElementById('work_package_1')!;
 
@@ -286,7 +399,7 @@ describe('Backlogs::DndSurfaceController', () => {
     appendTemplate(surfaceTemplate);
     await nextFrame();
 
-    const controller = surfaceController() as unknown as SurfaceTestController;
+    const controller = surfaceTestController();
     const moved = document.getElementById('work_package_1')!;
     const targetList = document.getElementById('sprint-list')!;
 
@@ -307,7 +420,7 @@ describe('Backlogs::DndSurfaceController', () => {
     appendTemplate(surfaceTemplate);
     await nextFrame();
 
-    const controller = surfaceController() as unknown as SurfaceTestController;
+    const controller = surfaceTestController();
     const moved = document.getElementById('work_package_1')!;
     const inboxList = document.getElementById('inbox-list')!;
     const sprintList = document.getElementById('sprint-list')!;

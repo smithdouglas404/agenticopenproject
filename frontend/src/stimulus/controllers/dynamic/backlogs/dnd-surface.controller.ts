@@ -41,6 +41,7 @@ import {
   Droppable,
 } from '@dnd-kit/dom';
 import { Sortable } from '@dnd-kit/dom/sortable';
+import DndListController from './dnd-list.controller';
 
 interface DragOrigin {
   parent:HTMLElement;
@@ -51,6 +52,7 @@ interface ListMetadata {
   element:HTMLElement;
   itemContainer:HTMLElement;
   targetId:string;
+  draggableItems:HTMLElement[];
 }
 
 interface SyncRegistrationsStats {
@@ -82,38 +84,66 @@ declare global {
 }
 
 export default class DndSurfaceController extends Controller<HTMLElement> {
+  static outlets = ['backlogs--dnd-list'];
+
   static values = {
     positionMode: String,
   };
 
+  declare readonly backlogsDndListOutlets:DndListController[];
   declare readonly positionModeValue:string;
 
   manager:DragDropManager|null = null;
+  readonly mutationObserver:MutationObserver|null = null;
+  outletSyncsEnabled = false;
 
   private managerCleanupCallbacks:(() => void)[] = [];
   private registrationCleanupCallbacks:(() => void)[] = [];
-  private mutationObserver:MutationObserver|null = null;
   private dragOrigin:DragOrigin|null = null;
   private activeDragSource:HTMLElement|null = null;
+  private readonly onListChanged = (event:Event):void => {
+    if (!(event.target instanceof Element)) return;
+    if (!this.resolveListControllerForElement(event.target)) return;
+
+    this.syncRegistrations({ reason: 'list-changed' });
+  };
 
   connect():void {
+    this.outletSyncsEnabled = false;
     this.manager = this.createManager();
     this.bindManagerEvents();
+    this.element.addEventListener('backlogs:dnd-list:changed', this.onListChanged);
     this.syncRegistrations({ reason: 'connect' });
-    this.observeMutations();
+    queueMicrotask(() => {
+      this.outletSyncsEnabled = this.manager !== null;
+    });
   }
 
   disconnect():void {
+    this.outletSyncsEnabled = false;
+    this.element.removeEventListener('backlogs:dnd-list:changed', this.onListChanged);
     this.managerCleanupCallbacks.forEach((cleanup) => cleanup());
     this.managerCleanupCallbacks = [];
     this.registrationCleanupCallbacks.forEach((cleanup) => cleanup());
     this.registrationCleanupCallbacks = [];
-    this.mutationObserver?.disconnect();
-    this.mutationObserver = null;
     this.manager?.destroy();
     this.manager = null;
     this.dragOrigin = null;
     this.activeDragSource = null;
+  }
+
+  backlogsDndListOutletConnected():void {
+    if (!this.manager) return;
+    if (!this.outletSyncsEnabled) return;
+
+    this.syncRegistrations({ reason: 'outlet-connected' });
+  }
+
+  backlogsDndListOutletDisconnected():void {
+    if (!this.manager) return;
+    if (!this.outletSyncsEnabled) return;
+
+    this.syncRegistrations({ reason: 'outlet-disconnected' });
   }
 
   private createManager():DragDropManager {
@@ -143,21 +173,13 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
     );
   }
 
-  private observeMutations():void {
-    this.mutationObserver = new MutationObserver((mutations) => {
-      if (this.activeDragSource) {
-        sanitizeDndPlaceholder(this.activeDragSource, this.element);
-        this.recordSkippedSync({ reason: 'mutation', mutationCount: mutations.length });
-        return;
-      }
-
-      this.syncRegistrations({ reason: 'mutation', mutationCount: mutations.length });
-    });
-
-    this.mutationObserver.observe(this.element, { childList: true, subtree: true });
-  }
-
   private syncRegistrations({ reason, mutationCount = 0 }:{ reason:string; mutationCount?:number }):void {
+    if (this.activeDragSource && reason !== 'drag-end') {
+      sanitizeDndPlaceholder(this.activeDragSource, this.element);
+      this.recordSkippedSync({ reason, mutationCount });
+      return;
+    }
+
     const startedAt = performance.now();
 
     this.registrationCleanupCallbacks.forEach((cleanup) => cleanup());
@@ -179,10 +201,9 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
 
       this.registrationCleanupCallbacks.push(shell.register() ?? (() => undefined));
 
-      const items = this.draggableItems(list.itemContainer);
-      itemCount += items.length;
+      itemCount += list.draggableItems.length;
 
-      items.forEach((item, index) => {
+      list.draggableItems.forEach((item, index) => {
         const sortable = new Sortable({
           id: this.draggableIdFor(item),
           element: item,
@@ -205,20 +226,14 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
   }
 
   private listMetadatas():ListMetadata[] {
-    return Array
-      .from(this.element.querySelectorAll<HTMLElement>('[data-controller~="backlogs--dnd-list"]'))
-      .map((element) => ({
-        element,
-        itemContainer: element.querySelector<HTMLElement>(':scope > ul') ?? element,
-        targetId: element.getAttribute('data-backlogs--dnd-list-target-id-value') ?? '',
+    return this.backlogsDndListOutlets
+      .map((outlet) => ({
+        element: outlet.dropZoneElement,
+        itemContainer: outlet.itemContainer,
+        targetId: outlet.targetId,
+        draggableItems: outlet.draggableItems,
       }))
       .filter((list) => list.targetId.length > 0);
-  }
-
-  private draggableItems(container:HTMLElement):HTMLElement[] {
-    return Array
-      .from(container.querySelectorAll<HTMLElement>(':scope > li[data-controller~="backlogs--item"]'))
-      .filter((element) => element.hasAttribute('data-draggable-id'));
   }
 
   private draggableIdFor(element:HTMLElement):string {
@@ -288,16 +303,14 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
   }
 
   private resolveListForElement(element:Element):ListMetadata|null {
-    const listShell = element.closest<HTMLElement>('[data-controller~="backlogs--dnd-list"]');
-    if (!listShell) return null;
-
-    const targetId = listShell.getAttribute('data-backlogs--dnd-list-target-id-value');
-    if (!targetId) return null;
+    const outlet = this.resolveListControllerForElement(element);
+    if (!outlet) return null;
 
     return {
-      element: listShell,
-      itemContainer: listShell.querySelector<HTMLElement>(':scope > ul') ?? listShell,
-      targetId,
+      element: outlet.dropZoneElement,
+      itemContainer: outlet.itemContainer,
+      targetId: outlet.targetId,
+      draggableItems: outlet.draggableItems,
     };
   }
 
@@ -313,7 +326,7 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
 
     while (sibling instanceof HTMLElement) {
       const draggableId = sibling.getAttribute('data-draggable-id');
-      if (draggableId && sibling.matches('[data-controller~="backlogs--item"]')) {
+      if (draggableId) {
         return draggableId;
       }
       sibling = sibling.previousElementSibling;
@@ -407,5 +420,9 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
     };
 
     return window.opBacklogsDndSurfaceDebug.syncRegistrations;
+  }
+
+  private resolveListControllerForElement(element:Element):DndListController|null {
+    return this.backlogsDndListOutlets.find((outlet) => outlet.dropZoneElement.contains(element)) ?? null;
   }
 }
