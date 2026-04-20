@@ -903,15 +903,15 @@ GEM
       validate_email
       validate_url
       webfinger (~> 2.0)
-    openproject-octicons (19.32.1)
-    openproject-octicons_helper (19.32.1)
+    openproject-octicons (19.34.0)
+    openproject-octicons_helper (19.34.0)
       actionview
-      openproject-octicons (= 19.32.1)
+      openproject-octicons (= 19.34.0)
       railties
-    openproject-primer_view_components (0.84.1)
+    openproject-primer_view_components (0.84.4)
       actionview (>= 7.2.0)
       activesupport (>= 7.2.0)
-      openproject-octicons (>= 19.30.1)
+      openproject-octicons (>= 19.34.0)
       view_component (>= 3.1, < 5.0)
     openproject-token (8.8.2)
       activemodel
@@ -1685,10 +1685,10 @@ DEPENDENCIES
   openproject-job_status!
   openproject-ldap_groups!
   openproject-meeting!
-  openproject-octicons (~> 19.32.0)
-  openproject-octicons_helper (~> 19.32.0)
+  openproject-octicons (~> 19.34.0)
+  openproject-octicons_helper (~> 19.34.0)
   openproject-openid_connect!
-  openproject-primer_view_components (~> 0.84.1)
+  openproject-primer_view_components (~> 0.84.4)
   openproject-recaptcha!
   openproject-reporting!
   openproject-storages!
@@ -2067,10 +2067,10 @@ CHECKSUMS
   openproject-job_status (1.0.0)
   openproject-ldap_groups (1.0.0)
   openproject-meeting (1.0.0)
-  openproject-octicons (19.32.1) sha256=32253f3256ad4e1aec36442558ce140623c01e5241d9b90f6eb6d317f462781e
-  openproject-octicons_helper (19.32.1) sha256=7676059927ae940170fb13d62f88b885985a3f0d483e1bb246475afcffd90f8f
+  openproject-octicons (19.34.0) sha256=4efe8a58a2d8051b79c94b37e9a7f04fd242a4da12b50f027c3c7f441a042adc
+  openproject-octicons_helper (19.34.0) sha256=12eb7af2214e21631369c76464ebaa30de788e1074c4b3bd0fcef7e74cb9edb4
   openproject-openid_connect (1.0.0)
-  openproject-primer_view_components (0.84.1) sha256=ea0a8da1bc45c8f0ddc13ab279535297ca63f974da72449fbb3a9e4b4e9753d7
+  openproject-primer_view_components (0.84.4) sha256=712b6dcfd64771d0f8e1f8a73a32238b0798b9971a569257086c4823642571e2
   openproject-recaptcha (1.0.0)
   openproject-reporting (1.0.0)
   openproject-storages (1.0.0)
