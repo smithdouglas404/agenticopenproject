@@ -321,8 +321,7 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js, wit
       create(:work_package,
              project: project_sharing,
              sprint: shared_sprint,
-             subject: "wp with shared sprint",
-             author: current_user)
+             subject: "wp with shared sprint")
     end
 
     before do
@@ -343,9 +342,8 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js, wit
       end
     end
 
-    context "when the user lacks permission in the receiving and giving project" do
+    context "when the user lacks permission in the sharer project" do
       let(:sharer_project_permissions) { all_permissions - [:view_sprints] }
-      let(:shared_project_permissions) { all_permissions - [:view_sprints] }
 
       it "hides the sprint" do
         wp_table.expect_work_package_with_attributes(wp_with_shared_sprint, { sprint: "" })
@@ -354,7 +352,8 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js, wit
       context "when sorting by sprint ASC" do
         let(:sort_criteria) { [%w[sprint asc]] }
 
-        it "sorts work packages from projects you don't have permission to like work packages without a sprint" do
+        it "sorts work packages with the hidden sprint like work packages without a sprint" do
+          wp_table.expect_work_package_with_attributes(wp_with_shared_sprint, { sprint: "" })
           wp_table.expect_work_package_order(other_wp, work_package, wp_with_sprint_from_another_project,
                                              wp_with_shared_sprint, wp_from_another_project, wp_without_sprint)
         end
@@ -363,7 +362,7 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js, wit
       context "when grouping" do
         let(:group_by) { :sprint }
 
-        it "ignores work packages from projects you cannot see" do
+        it "groups work packages with the hidden sprint together with no-sprint work packages" do
           wp_table.expect_groups({
                                    other_sprint.name => 1,
                                    sprint.name => 1,
@@ -372,6 +371,41 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js, wit
                                  })
 
           wp_table.expect_work_package_with_attributes(wp_with_shared_sprint, { sprint: "" })
+        end
+      end
+    end
+
+    context "when the user lacks permission in the receiving project" do
+      let(:shared_project_permissions) { all_permissions - [:view_sprints] }
+
+      it "still shows the sprint (permission check is on the sprint's source project, not the receiver)" do
+        wp_table.expect_work_package_with_attributes(wp_with_shared_sprint, { sprint: shared_sprint.name })
+      end
+
+      context "when sorting by sprint ASC" do
+        let(:sort_criteria) { [%w[sprint asc]] }
+
+        it "sorts the shared sprint together with other visible sprints" do
+          wp_table.expect_work_package_with_attributes(wp_with_shared_sprint, { sprint: shared_sprint.name })
+          wp_table.expect_work_package_order(other_wp, wp_with_shared_sprint, work_package,
+                                             wp_with_sprint_from_another_project,
+                                             wp_from_another_project, wp_without_sprint)
+        end
+      end
+
+      context "when grouping" do
+        let(:group_by) { :sprint }
+
+        it "groups the shared sprint with the other visible sprints" do
+          wp_table.expect_groups({
+                                   other_sprint.name => 1,
+                                   shared_sprint.name => 1,
+                                   sprint.name => 1,
+                                   sprint_from_other_project.name => 1,
+                                   "-" => 2
+                                 })
+
+          wp_table.expect_work_package_with_attributes(wp_with_shared_sprint, { sprint: shared_sprint.name })
         end
       end
     end

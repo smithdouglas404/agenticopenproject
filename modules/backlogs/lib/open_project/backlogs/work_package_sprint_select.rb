@@ -78,6 +78,14 @@ module OpenProject::Backlogs
     # Custom outer join to ensure that sprints the user cannot view are treated like
     # they are not there at all. Without this, group counts would not match the listed
     # work packages.
+    #
+    # Two conditions gate the join:
+    # 1. The sprint must be in the `visible_sprints` subquery (permission-filtered).
+    # 2. The work package's own project must be one where the user has :view_sprints
+    #    directly. Without this second condition, a sprint that is shared *to*
+    #    project_receiving could leak into the sort/group for work packages that live in
+    #    the sharer project itself, because `sprint_source_for` transitively includes the
+    #    sharer when the user only has permission in the receiver.
     def sprint_join_with_permissions
       <<~SQL.squish
         LEFT OUTER JOIN "projects" ON "projects"."id" = "work_packages"."project_id"
@@ -85,6 +93,7 @@ module OpenProject::Backlogs
           #{visible_sprints.to_sql}
         ) AS visible_sprints
         ON visible_sprints.id = work_packages.sprint_id
+        AND "projects"."id" IN (#{projects_with_view_sprints.select(:id).to_sql})
       SQL
     end
 
@@ -95,6 +104,14 @@ module OpenProject::Backlogs
         Agile::Sprint
       end
         .visible
+    end
+
+    def projects_with_view_sprints
+      if @project
+        Project.where(id: @project)
+      else
+        Project.allowed_to(User.current, :view_sprints)
+      end
     end
   end
 end
