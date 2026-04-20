@@ -56,6 +56,7 @@ import { BooleanEditFieldModule } from 'core-app/shared/components/fields/edit/f
 import { IntegerEditFieldModule } from 'core-app/shared/components/fields/edit/field-types/integer-edit-field/integer-edit-field.module';
 import { TextEditFieldModule } from 'core-app/shared/components/fields/edit/field-types/text-edit-field/text-edit-field.module';
 import { DateEditFieldModule } from 'core-app/shared/components/fields/edit/field-types/date-edit-field/date-edit-field.module';
+import { DatetimeEditFieldModule } from 'core-app/shared/components/fields/edit/field-types/datetime-edit-field/datetime-edit-field.module';
 import { SelectEditFieldModule } from 'core-app/shared/components/fields/edit/field-types/select-edit-field/select-edit-field.module';
 import { FormattableEditFieldModule } from 'core-app/shared/components/fields/edit/field-types/formattable-edit-field/formattable-edit-field.module';
 import { EditFieldControlsModule } from 'core-app/shared/components/fields/edit/field-controls/edit-field-controls.module';
@@ -86,6 +87,7 @@ import { FormsModule } from '@angular/forms';
     IntegerEditFieldModule,
     TextEditFieldModule,
     DateEditFieldModule,
+    DatetimeEditFieldModule,
     SelectEditFieldModule,
     FormattableEditFieldModule,
     EditFieldControlsModule,
