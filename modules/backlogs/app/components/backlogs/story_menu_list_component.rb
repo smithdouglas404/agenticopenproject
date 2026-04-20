@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  # Renders Primer::Alpha::ActionMenu::List for the deferred menu (RbStoriesController#menu).
+  # Renders Primer::Alpha::ActionMenu::List for the deferred menu (Backlogs::WorkPackagesController#menu).
   # +menu_id+ must match the row ActionMenu in StoryComponent.
   class StoryMenuListComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
@@ -77,7 +77,7 @@ module Backlogs
         id: dom_target(story, :menu, direction),
         label:,
         tag: :button,
-        href: reorder_backlogs_project_sprint_story_path(project, sprint, story),
+        href: reorder_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id),
         form_arguments: { method: :post, inputs: [{ name: "direction", value: direction }] }
       ) do |item|
         item.with_leading_visual_icon(icon:)

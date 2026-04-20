@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Projects::Settings::BacklogSharingsController, with_flag: { scrum_projects: true } do
+RSpec.describe Projects::Settings::BacklogSharingsController do
   shared_let(:user) { create(:admin) }
 
   current_user { user }

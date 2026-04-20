@@ -42,11 +42,7 @@ class Projects::Settings::BacklogsController < Projects::SettingsController
   end
 
   def rebuild_positions
-    if OpenProject::FeatureDecisions.scrum_projects_active?
-      WorkPackages::RebuildPositionsService.new(project: @project).call
-    else
-      @project.rebuild_positions
-    end
+    WorkPackages::RebuildPositionsService.new(project: @project).call
     flash[:notice] = I18n.t("backlogs.positions_rebuilt_successfully")
 
     redirect_to_backlogs_settings

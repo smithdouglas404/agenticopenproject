@@ -75,7 +75,7 @@ RSpec.describe "Reset form configuration",
       SeleniumHubWaiter.wait
 
       expect(page).to have_no_css(".group-head", text: "NEW GROUP")
-      expect(page).to have_no_css(".group-head", text: "OTHER")
+      expect(page).to have_css(".group-head", text: "OTHER")
       type.reload
 
       expect(type.custom_field_ids).to be_empty
@@ -84,7 +84,8 @@ RSpec.describe "Reset form configuration",
       expect(new_group).not_to be_present
 
       other_group = type.attribute_groups.detect { |g| g.key == :other }
-      expect(other_group).not_to be_present
+      expect(other_group).to be_present
+      expect(other_group.attributes).to eq(%w[position])
     end
   end
 end

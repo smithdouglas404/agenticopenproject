@@ -32,10 +32,7 @@ require "spec_helper"
 require_relative "../../support/pages/backlog"
 require_relative "../../../../boards/spec/features/support/board_page"
 
-RSpec.describe "Start and finish sprints",
-               :js,
-               with_ee: %i[board_view],
-               with_flag: { scrum_projects: true } do
+RSpec.describe "Start and finish sprints", :js do
   shared_let(:project) do
     create(:project, enabled_module_names: %i[backlogs work_package_tracking board_view])
   end
@@ -50,7 +47,6 @@ RSpec.describe "Start and finish sprints",
     create(:user, member_with_permissions: { project => permissions })
   end
   let(:planning_page) { Pages::Backlog.new(project) }
-  let(:task_statuses) { Type.find(Task.type).statuses }
   let(:story_type) { create(:type_feature) }
   let(:task_type) do
     type = create(:type_task)
@@ -58,6 +54,7 @@ RSpec.describe "Start and finish sprints",
 
     type
   end
+  let(:task_statuses) { task_type.statuses }
   let!(:first_sprint) do
     create(:agile_sprint,
            project:,
@@ -80,10 +77,6 @@ RSpec.describe "Start and finish sprints",
 
   before do
     login_as(user)
-
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [story_type.id.to_s], "task_type" => task_type.id.to_s)
 
     create(:workflow, type: task_type, old_status: default_status, new_status: default_status, role: create(:project_role))
 

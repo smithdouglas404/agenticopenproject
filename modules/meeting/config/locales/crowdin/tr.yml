@@ -42,6 +42,9 @@ tr:
         start_date: Tarih
         start_time: Başlama tarihi
         start_time_hour: Başlama saati
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: Başlık
@@ -49,9 +52,15 @@ tr:
         duration_in_minutes: Süre
         description: Notlar
         presenter: Sunucu
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Başlık
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Sıklık
         interval: Zaman aralığı
         start_date: Başlama zamanı
@@ -60,6 +69,10 @@ tr:
         end_after: Toplantı serisi bitişi
         end_date: Bitiş tarihi
         iterations: Yineleme sayısı
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Başlama tarihi
       meeting_participant:
@@ -418,6 +431,11 @@ tr:
     ical_response:
       update_failed: Katılım durumu güncellenemedi.
       meeting_not_found: Verilen UID için toplantı bulunamadı.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: İsimsiz bölüm
     delete_confirmation: Bölümün silinmesi tüm gündem maddelerini de silecektir. Bunu yapmak istediğinizden emin misiniz?

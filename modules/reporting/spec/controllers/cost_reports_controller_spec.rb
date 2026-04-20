@@ -105,4 +105,69 @@ RSpec.describe CostReportsController do
       end
     end
   end
+
+  describe "POST rename" do
+    let(:owner) { build(:user) }
+    let(:cost_query) { create(:public_cost_query, user: owner, project:, name: "Original name") }
+
+    context "with only :view_cost_entries permission" do
+      before do
+        is_member project, user, [:view_cost_entries]
+      end
+
+      it "returns 403 Forbidden" do
+        post :rename, params: { id: cost_query.id, project_id: project.identifier, query_name: "my update" }
+
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      it "does not rename the report" do
+        post :rename, params: { id: cost_query.id, project_id: project.identifier, query_name: "my update" }
+
+        expect(cost_query.reload.name).to eq("Original name")
+      end
+    end
+
+    context "with :save_cost_reports permission" do
+      before do
+        is_member project, user, %i[view_cost_entries save_cost_reports]
+      end
+
+      it "renames the report" do
+        post :rename, params: { id: cost_query.id, project_id: project.identifier, query_name: "my update" }
+
+        expect(response).to have_http_status(:redirect)
+        expect(cost_query.reload.name).to eq("my update")
+      end
+    end
+  end
+
+  describe "POST update" do
+    let(:owner) { build(:user) }
+    let(:cost_query) { create(:public_cost_query, user: owner, project:) }
+
+    context "with only :view_cost_entries permission" do
+      before do
+        is_member project, user, [:view_cost_entries]
+      end
+
+      it "returns 403 Forbidden" do
+        post :update, params: { id: cost_query.id, project_id: project.identifier, save_query: 1, set_filter: 1 }
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context "with :save_cost_reports permission" do
+      before do
+        is_member project, user, %i[view_cost_entries save_cost_reports]
+      end
+
+      it "updates the report and redirects to show" do
+        post :update, params: { id: cost_query.id, project_id: project.identifier, save_query: 1, set_filter: 1 }
+
+        expect(response).to redirect_to(action: "show", id: cost_query.id)
+      end
+    end
+  end
 end

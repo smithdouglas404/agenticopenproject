@@ -35,7 +35,7 @@ module Queries::WorkPackages::Filter
     end
 
     def available?
-      scrum_projects_active? && allowed?
+      allowed?
     end
 
     def type
@@ -69,10 +69,6 @@ module Queries::WorkPackages::Filter
       else
         User.current.allowed_in_any_project?(:view_sprints)
       end
-    end
-
-    def scrum_projects_active?
-      OpenProject::FeatureDecisions.scrum_projects_active?
     end
 
     def sprints

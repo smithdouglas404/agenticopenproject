@@ -276,6 +276,22 @@ RSpec.describe API::V3::Users::UsersAPI do
 
     it_behaves_like "update flow"
 
+    describe "activation when the user limit is reached" do
+      let(:parameters) { { status: "active" } }
+
+      before do
+        user.locked!
+        allow(OpenProject::Enterprise).to receive(:user_limit_reached?).and_return(true)
+      end
+
+      it "returns an error and does not activate the user" do
+        send_request
+
+        expect(last_response).to have_http_status(:unprocessable_entity)
+        expect(user.reload).to be_locked
+      end
+    end
+
     describe "password update" do
       let(:password) { "my!new!password123" }
       let(:parameters) { { password: } }

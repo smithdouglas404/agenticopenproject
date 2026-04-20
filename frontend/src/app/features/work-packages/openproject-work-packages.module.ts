@@ -272,7 +272,6 @@ import {
 import { QuerySharingModalComponent } from 'core-app/shared/components/modals/share-modal/query-sharing.modal';
 import { SaveQueryModalComponent } from 'core-app/shared/components/modals/save-modal/save-query.modal';
 import { QuerySharingFormComponent } from 'core-app/shared/components/modals/share-modal/query-sharing-form.component';
-import { WpDestroyModalComponent } from 'core-app/shared/components/modals/wp-destroy-modal/wp-destroy.modal';
 import {
   WorkPackageTypeStatusComponent,
 } from 'core-app/features/work-packages/components/wp-type-status/wp-type-status.component';
@@ -617,7 +616,6 @@ import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packag
     QuerySharingFormComponent,
     QuerySharingModalComponent,
     SaveQueryModalComponent,
-    WpDestroyModalComponent,
     WorkPackageShareModalComponent,
     WorkPackageReminderModalComponent,
 

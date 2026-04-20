@@ -40,5 +40,19 @@ module Wikis
                      .where(linkable:)
                      .count
     end
+
+    def relation_page_links_for(provider:, linkable:)
+      provider.page_links
+              .merge(RelationPageLink.all)
+              .where(linkable:)
+              .order(created_at: :desc)
+    end
+
+    def inline_page_links_for(provider:, linkable:)
+      provider.page_links
+              .merge(InlinePageLink.all)
+              .where(linkable:)
+              .order(created_at: :desc)
+    end
   end
 end

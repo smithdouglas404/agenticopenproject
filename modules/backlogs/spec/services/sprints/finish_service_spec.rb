@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
+RSpec.describe Sprints::FinishService do
   create_shared_association_defaults_for_work_package_factory
 
   shared_let(:project) { create(:project, enabled_module_names: %w[backlogs work_package_tracking]) }

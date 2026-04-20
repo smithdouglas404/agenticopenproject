@@ -97,8 +97,8 @@ module Projects::Identifier
   class_methods do
     def suggest_identifier(name)
       if Setting::WorkPackageIdentifier.semantic?
-        exclude = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.reserved_identifiers
-        WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
+        exclude = ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.reserved_identifiers
+        ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
           .suggest_identifier(name, exclude:)
       else # This should closely enough emulate Project models' usage of acts_as_url
         name.to_url.first(IDENTIFIER_MAX_LENGTH).presence || "project"

@@ -33,7 +33,7 @@ require "rails_helper"
 RSpec.describe Backlogs::MoveToSprintDialogComponent, type: :component do
   let(:project) { create(:project) }
   let(:work_package) { create(:work_package, project:) }
-  let(:move_path) { Rails.application.routes.url_helpers.move_project_inbox_path(project, work_package) }
+  let(:move_path) { Rails.application.routes.url_helpers.move_project_backlogs_inbox_path(project, work_package) }
 
   def render_component
     render_inline(described_class.new(work_package:, project:))

@@ -357,7 +357,7 @@ RSpec.describe DemoData::WorkPackageSeeder do
 
     it "creates link to the sprint with the right id" do
       expect(WorkPackage.last.description)
-        .to eq("The [sprint](/projects/#{project.identifier}/sprints/#{sprint.id}/taskboard) of id #{sprint.id}.")
+        .to eq("The [sprint](/projects/#{project.identifier}/backlogs/sprints/#{sprint.id}/taskboard) of id #{sprint.id}.")
     end
   end
 

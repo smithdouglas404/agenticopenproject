@@ -85,7 +85,7 @@ module Backlogs
       if disable_start_sprint_action?
         args.merge(tag: :button, inactive: true, aria: { disabled: true })
       else
-        args.merge(tag: :a, href: start_project_sprint_path(project, sprint), data: { turbo_method: :post })
+        args.merge(tag: :a, href: start_project_backlogs_sprint_path(project, sprint), data: { turbo_method: :post })
       end
     end
 
@@ -94,7 +94,7 @@ module Backlogs
         id: dom_target(sprint, :finish_button),
         scheme: :invisible,
         tag: :a,
-        href: finish_project_sprint_path(project, sprint),
+        href: finish_project_backlogs_sprint_path(project, sprint),
         data: { turbo_method: :post }
       }
     end

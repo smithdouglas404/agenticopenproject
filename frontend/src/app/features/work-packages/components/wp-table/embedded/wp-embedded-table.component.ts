@@ -26,6 +26,7 @@ import {
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { firstValueFrom } from 'rxjs';
 import { QueryRequestParams } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
+import { PortalOutletTarget } from 'core-app/shared/components/modal/portal-outlet-target.enum';
 
 @Component({
   selector: 'wp-embedded-table',
@@ -110,8 +111,9 @@ export class WorkPackageEmbeddedTableComponent extends WorkPackageEmbeddedBaseCo
   public async openConfigurationModal(onUpdated:() => void):Promise<void> {
     await this.querySpace.query.valuesPromise();
 
+    const target = document.querySelector('opce-custom-modal-overlay') ? PortalOutletTarget.Custom : PortalOutletTarget.Default;
     this.opModalService
-      .show(WpTableConfigurationModalComponent, this.injector)
+      .show(WpTableConfigurationModalComponent, this.injector, {}, false, false, target)
       // Detach this component when the modal closes and pass along the query data
       .subscribe((modal) => modal.onDataUpdated.subscribe(onUpdated));
   }

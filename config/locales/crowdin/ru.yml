@@ -154,6 +154,7 @@ ru:
         connection_timeout: 'Время подключения к серверу Jira истекло: %{message}'
         parse_error: 'Не удалось разобрать ответ Jira API: %{message}'
         api_error: Jira API вернул статус ошибки %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Проекты
         last_change: Последнее изменение
@@ -3050,6 +3051,7 @@ ru:
       title: Корпоративное дополнение
       plan_title: Дополнение корпоративной версии %{plan}
       plan_name: Корпоративная версия %{plan}
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: Доступно начиная с %{plan_name}.
       unlimited: Без ограничений
       already_have_token: 'Уже есть токен? Добавьте его с помощью кнопки ниже, чтобы перейти на корпоративную лицензию.

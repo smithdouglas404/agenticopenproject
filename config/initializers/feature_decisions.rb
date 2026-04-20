@@ -61,16 +61,14 @@ OpenProject::FeatureDecisions.add :jira_import,
                                   description: "Enables Jira Migration Tool.",
                                   force_active: false
 
-OpenProject::FeatureDecisions.add :scrum_projects,
-                                  description: "Enables an overhauled version of the backlogs module to " \
-                                               "support Scrum projects with a new sprint planning experience. ",
-                                  force_active: true
-
 OpenProject::FeatureDecisions.add :user_working_times,
                                   description: "Enables tracking of user working hours and non-working days."
 
 OpenProject::FeatureDecisions.add :wiki_enhancements,
                                   description: "Enables Wiki enhancements, such as the Wikis tab and XWiki integration."
+
+OpenProject::FeatureDecisions.add :departments,
+                                  description: "Enables the management of departments within the organization."
 
 OpenProject::FeatureDecisions.add :semantic_work_package_ids,
                                   description: "Enables the use of semantic work package IDs, " \

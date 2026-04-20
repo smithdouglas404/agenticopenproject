@@ -20,14 +20,23 @@ zh-CN:
       wikis/relation_page_link:
         other: 关系页面链接
       wikis/xwiki_provider: XWiki 提供商
+  permission_manage_wiki_page_links: Manage Wiki Page Links
+  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: Wiki 提供商
   wikis:
     buttons:
       save_and_continue: 保存并继续
+      wiki_page: Wiki page
     inline_page_links_component:
       empty_heading: No inline links
       empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
       heading: Inline page links
+    page_link_component:
+      remove: Remove page link
+    relation_page_links_component:
+      empty_heading: No related pages
+      empty_text: Manually add links to other related wiki pages.
+      heading: Related pages
     admin:
       wiki_providers:
         index_description: 添加外部 Wiki 服务，以将工作包链接到现有 Wiki 页面，或直接从 OpenProject 创建新页面。
