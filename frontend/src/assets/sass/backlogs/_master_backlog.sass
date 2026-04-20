@@ -71,6 +71,14 @@ $op-backlogs-header--points-min-width-narrow: 2rem
   margin-top: calc(-1 * var(--base-size-4))
   margin-bottom: var(--base-size-4)
 
+.Box-row[data-dnd-dragging]
+  background-color: var(--bgColor-default)
+  border: 1px solid var(--borderColor-default)
+  border-radius: var(--borderRadius-medium)
+  box-shadow: var(--shadow-floating-medium)
+  cursor: grabbing
+  opacity: 1
+
 .op-backlogs-story--points
   margin-left: var(--stack-gap-normal)
   font-variant-numeric: tabular-nums
