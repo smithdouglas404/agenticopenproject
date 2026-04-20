@@ -30,13 +30,6 @@
 
 module Backlogs
   module CommonHelper
-    def format_date_range(dates)
-      return nil if dates.all?(&:nil?)
-
-      from, to = dates.map { |date| tag.time(datetime: date.iso8601) { format_date(date) } if date }
-      safe_join([from, "–", to], " ") # &ndash; and &nbsp;
-    end
-
     def allow_sprint_creation?(project)
       current_user.allowed_in_project?(:create_sprints, project) &&
         !project.receive_shared_sprints?
