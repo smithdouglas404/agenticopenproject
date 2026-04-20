@@ -67,6 +67,9 @@ OpenProject::FeatureDecisions.add :user_working_times,
 OpenProject::FeatureDecisions.add :wiki_enhancements,
                                   description: "Enables Wiki enhancements, such as the Wikis tab and XWiki integration."
 
+OpenProject::FeatureDecisions.add :departments,
+                                  description: "Enables the management of departments within the organization."
+
 OpenProject::FeatureDecisions.add :semantic_work_package_ids,
                                   description: "Enables the use of semantic work package IDs, " \
                                                "in the schema <project identifier>-<sequence number>. " \
