@@ -35,85 +35,7 @@ RSpec.describe OpenProject::Backlogs::WorkPackageSprintSelect do # rubocop:disab
   let(:instance) { described_class.new(:sprint) }
 
   describe ".instances" do
-    context "when scrum projects feature flag is active", with_flag: { scrum_projects: true } do
-      context "when user has permission to view sprints in a project" do
-        let(:project) { build_stubbed(:project, enabled_module_names: %w[backlogs]) }
-
-        current_user { build_stubbed(:user) }
-
-        before do
-          mock_permissions_for current_user do |mock|
-            mock.allow_in_project(:view_sprints, project:)
-          end
-        end
-
-        it "returns sprint select instances" do
-          instances = described_class.instances(project)
-
-          expect(instances).to be_an(Array)
-          expect(instances.size).to eq(1)
-          expect(instances.first.name).to eq(:sprint)
-        end
-      end
-
-      context "when user has permission to view sprints in any project" do
-        current_user { build_stubbed(:user) }
-
-        before do
-          mock_permissions_for current_user do |mock|
-            mock.allow_in_project(:view_sprints, project: build_stubbed(:project))
-          end
-        end
-
-        it "returns sprint select instances when no context provided" do
-          instances = described_class.instances
-
-          expect(instances).to be_an(Array)
-          expect(instances.size).to eq(1)
-          expect(instances.first.name).to eq(:sprint)
-        end
-      end
-
-      context "when user lacks permission to view sprints in a(ny) project" do
-        let(:project) { build_stubbed(:project, enabled_module_names: %w[backlogs]) }
-
-        current_user { build_stubbed(:user) }
-
-        before do
-          mock_permissions_for current_user do |mock|
-            # No permissions granted
-          end
-        end
-
-        it "returns an empty array" do
-          # Lacking permission in a project
-          expect(described_class.instances(project)).to eq([])
-
-          # Lacking permission in any project
-          expect(described_class.instances).to eq([])
-        end
-      end
-
-      context "when backlogs module is not enabled for the project" do
-        let(:project) { build_stubbed(:project, enabled_module_names: []) }
-
-        current_user { build_stubbed(:user) }
-
-        before do
-          mock_permissions_for current_user do |mock|
-            mock.allow_in_project(:view_sprints, project:)
-          end
-        end
-
-        it "returns an empty array" do
-          instances = described_class.instances(project)
-
-          expect(instances).to eq([])
-        end
-      end
-    end
-
-    context "when scrum projects feature flag is inactive", with_flag: { scrum_projects: false } do
+    context "when user has permission to view sprints in a project" do
       let(:project) { build_stubbed(:project, enabled_module_names: %w[backlogs]) }
 
       current_user { build_stubbed(:user) }
@@ -124,9 +46,68 @@ RSpec.describe OpenProject::Backlogs::WorkPackageSprintSelect do # rubocop:disab
         end
       end
 
+      it "returns sprint select instances" do
+        instances = described_class.instances(project)
+
+        expect(instances).to be_an(Array)
+        expect(instances.size).to eq(1)
+        expect(instances.first.name).to eq(:sprint)
+      end
+    end
+
+    context "when user has permission to view sprints in any project" do
+      current_user { build_stubbed(:user) }
+
+      before do
+        mock_permissions_for current_user do |mock|
+          mock.allow_in_project(:view_sprints, project: build_stubbed(:project))
+        end
+      end
+
+      it "returns sprint select instances when no context provided" do
+        instances = described_class.instances
+
+        expect(instances).to be_an(Array)
+        expect(instances.size).to eq(1)
+        expect(instances.first.name).to eq(:sprint)
+      end
+    end
+
+    context "when user lacks permission to view sprints in a(ny) project" do
+      let(:project) { build_stubbed(:project, enabled_module_names: %w[backlogs]) }
+
+      current_user { build_stubbed(:user) }
+
+      before do
+        mock_permissions_for current_user do |mock|
+          # No permissions granted
+        end
+      end
+
       it "returns an empty array" do
+        # Lacking permission in a project
         expect(described_class.instances(project)).to eq([])
+
+        # Lacking permission in any project
         expect(described_class.instances).to eq([])
+      end
+    end
+
+    context "when backlogs module is not enabled for the project" do
+      let(:project) { build_stubbed(:project, enabled_module_names: []) }
+
+      current_user { build_stubbed(:user) }
+
+      before do
+        mock_permissions_for current_user do |mock|
+          mock.allow_in_project(:view_sprints, project:)
+        end
+      end
+
+      it "returns an empty array" do
+        instances = described_class.instances(project)
+
+        expect(instances).to eq([])
       end
     end
   end

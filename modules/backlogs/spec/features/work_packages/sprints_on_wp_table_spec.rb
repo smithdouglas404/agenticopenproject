@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Sprint displayed and selectable on work package table", :js, with_flag: { scrum_projects: true } do
+RSpec.describe "Sprint displayed and selectable on work package table", :js do
   let(:enabled_module_names) { %i[backlogs work_package_tracking] }
   let(:start_date) { Date.new(2025, 10, 5) }
   let(:finish_date) { Date.new(2025, 10, 25) }
