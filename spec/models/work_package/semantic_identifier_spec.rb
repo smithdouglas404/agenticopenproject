@@ -175,6 +175,25 @@ RSpec.describe WorkPackage::SemanticIdentifier do
         expect(WorkPackage.exists?(subject: work_package.subject)).to be true
       end
     end
+
+    context "with visibility scoping" do
+      let(:member_user) { create(:user, member_with_permissions: { project => [:view_work_packages] }) }
+      let(:non_member_user) { create(:user) }
+
+      it "respects the scope for semantic ids" do
+        expect(WorkPackage.visible(member_user).exists?("MYPROJ-1")).to be true
+      end
+
+      it "returns false when the user cannot see it" do
+        expect(WorkPackage.visible(non_member_user).exists?("MYPROJ-1")).to be false
+      end
+
+      it "respects the scope for historical aliases" do
+        WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
+        expect(WorkPackage.visible(member_user).exists?("OLDPROJ-1")).to be true
+        expect(WorkPackage.visible(non_member_user).exists?("OLDPROJ-1")).to be false
+      end
+    end
   end
 
   describe "WorkPackage.find_by" do
