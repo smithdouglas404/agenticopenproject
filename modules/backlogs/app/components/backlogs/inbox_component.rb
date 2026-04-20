@@ -53,7 +53,7 @@ module Backlogs
       @system_arguments[:padding] = :condensed
       @system_arguments[:data] = merge_data(
         @system_arguments,
-        { data: drop_target_config }
+        { data: list_controller_data }
       )
     end
 
@@ -91,12 +91,10 @@ module Backlogs
       total - FIRST_PAGE_SIZE - LAST_PAGE_SIZE
     end
 
-    def drop_target_config
+    def list_controller_data
       {
-        generic_drag_and_drop_target: "container",
-        target_container_accessor: ":scope > ul",
-        target_id: "inbox",
-        target_allowed_drag_type: "story"
+        controller: "backlogs--dnd-list",
+        backlogs__dnd_list_target_id_value: "inbox"
       }
     end
   end

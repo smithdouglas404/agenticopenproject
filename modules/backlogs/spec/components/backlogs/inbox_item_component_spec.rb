@@ -64,8 +64,8 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
   it "rendering renders the Inbox Component", :aggregate_failures do
     # renders the work package subject
     expect(page).to have_text("Inbox Work Package")
-    # renders a drag handle
-    expect(page).to have_octicon(:grabber)
+    # does not render a dedicated drag handle
+    expect(page).to have_no_css(".DragHandle")
     # renders WorkPackages::InfoLineComponent with type and ID
     expect(page).to have_text("##{work_package.id}")
     # deferred action menu (kebab + include-fragment src)
@@ -81,20 +81,25 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
       expect(page).to have_css(".Box-row#work_package_#{work_package.id}")
     end
 
-    it "sets the backlogs--story Stimulus controller" do
-      expect(row["data-controller"]).to eq("backlogs--story")
+    it "sets the backlogs--item Stimulus controller" do
+      expect(row["data-controller"]).to include("backlogs--item")
     end
 
-    it "sets the split-view and full-view URLs for the story controller" do
-      expect(row["data-backlogs--story-split-url-value"])
+    it "sets the split-view and full-view URLs for the item controller" do
+      expect(row["data-backlogs--item-split-url-value"])
         .to end_with(project_backlogs_backlog_details_path(project, work_package))
-      expect(row["data-backlogs--story-full-url-value"])
+      expect(row["data-backlogs--item-full-url-value"])
         .to end_with(work_package_path(work_package))
     end
 
     it "applies the correct row CSS classes" do
       expect(row[:class]).to include("Box-row--hover-blue", "Box-row--focus-gray",
                                      "Box-row--clickable", "Box-row--draggable")
+    end
+
+    it "keeps the draggable metadata on the whole card" do
+      expect(row["data-draggable-id"]).to eq(work_package.id.to_s)
+      expect(row["data-drop-url"]).to end_with(move_project_backlogs_inbox_path(project, work_package))
     end
   end
 end

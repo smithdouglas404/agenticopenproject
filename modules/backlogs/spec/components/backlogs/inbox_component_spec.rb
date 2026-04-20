@@ -64,6 +64,13 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
     it "renders a Primer::Beta::BorderBox with the inbox DOM id" do
       expect(page).to have_css(".Box#inbox_#{project.id}")
     end
+
+    it "mounts the Backlogs list controller with inbox metadata" do
+      box = page.find(".Box#inbox_#{project.id}")
+
+      expect(box["data-controller"]).to include("backlogs--dnd-list")
+      expect(box["data-backlogs--dnd-list-target-id-value"]).to eq("inbox")
+    end
   end
 
   describe "empty state" do
