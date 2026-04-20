@@ -125,6 +125,7 @@ en:
       description: "Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run."
       errors:
         cannot_delete_with_imports: "Cannot delete Jira host with existing imports"
+        custom_field_creation_failed: "Failed to create custom field '%{name}': %{message}"
       blank:
         title: "No Jira hosts configured yet"
         description: "Configure a Jira host to start importing items from Jira to this OpenProject instance."

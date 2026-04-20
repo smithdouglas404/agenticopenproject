@@ -127,6 +127,15 @@ module Import
         "user" => "user"
       }.freeze
 
+      def self.supported?(jira_field)
+        schema = jira_field.payload["schema"] || {}
+        JIRA_SUPPORTED_FIELDS.any? do |entry|
+          schema["type"] == entry["type"] &&
+            (entry["items"].nil? || schema["items"] == entry["items"]) &&
+            (entry["custom"].nil? || schema["custom"] == entry["custom"])
+        end
+      end
+
       attr_reader :jira_field, :context_group
 
       def initialize(jira_field, context_group: nil, option_value: nil, jira_import: nil)

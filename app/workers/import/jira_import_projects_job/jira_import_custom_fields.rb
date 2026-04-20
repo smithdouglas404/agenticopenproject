@@ -73,6 +73,8 @@ module Import
       end
 
       def build_registry_entries_for_field(jira_field)
+        return [] unless supported_field?(jira_field)
+
         if multicheckbox_field?(jira_field)
           build_multicheckbox_registry_entries(jira_field)
         elsif string_array_field?(jira_field)
@@ -80,6 +82,10 @@ module Import
         else
           [{ jira_field:, contexts: build_contexts_for_field(jira_field) }]
         end
+      end
+
+      def supported_field?(jira_field)
+        JiraImportCustomFieldBuilder.supported?(jira_field)
       end
 
       def multicheckbox_field?(jira_field)
@@ -218,7 +224,13 @@ module Import
           **builder.custom_field_parameters
         }
         service_call = CustomFields::CreateService.new(user: @user).call(**params)
-        raise "Failed to create custom field '#{jira_field.payload['name']}': #{service_call.message}" unless service_call.success?
+        unless service_call.success?
+          raise I18n.t(
+            "admin.jira.errors.custom_field_creation_failed",
+            name: jira_field.payload["name"],
+            message: service_call.message
+          )
+        end
 
         custom_field = service_call.result
         create_reference!(op_leg: custom_field, jira_leg: jira_field, jira_import: @jira_import, uses_existing: false)
