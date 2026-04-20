@@ -52,6 +52,7 @@ describe('Backlogs::ItemController', () => {
       data-backlogs--item-split-url-value="/projects/demo/backlogs/backlog/details/42"
       data-backlogs--item-full-url-value="/work_packages/42"
       data-backlogs--item-selected-class="Box-row--blue"
+      data-action="click->backlogs--item#onClick dblclick->backlogs--item#onDoubleClick keydown->backlogs--item#onKeydown pointerdown->backlogs--item#onPointerDown pointermove->backlogs--item#onPointerMove pointerup->backlogs--item#onPointerEnd pointercancel->backlogs--item#onPointerEnd"
     >
       <button id="menu-button" type="button">Menu</button>
       <a id="subject-link" href="/work_packages/42">Subject</a>

@@ -89,6 +89,17 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
       expect(row["data-backlogs--dnd-list-target"]).to eq("item")
     end
 
+    it "wires the item controller actions on the row" do
+      expect(row["data-action"]).to eq(
+        "click->backlogs--item#onClick dblclick->backlogs--item#onDoubleClick " \
+        "keydown->backlogs--item#onKeydown " \
+        "pointerdown->backlogs--item#onPointerDown " \
+        "pointermove->backlogs--item#onPointerMove " \
+        "pointerup->backlogs--item#onPointerEnd " \
+        "pointercancel->backlogs--item#onPointerEnd"
+      )
+    end
+
     it "sets the split-view and full-view URLs for the item controller" do
       expect(row["data-backlogs--item-split-url-value"])
         .to end_with(project_backlogs_backlog_details_path(project, work_package))

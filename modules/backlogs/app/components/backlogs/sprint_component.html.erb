@@ -49,7 +49,15 @@ See COPYRIGHT and LICENSE files for more details.
       <% border_box.with_row(
            id: dom_id(story),
            classes: story_classes_attribute,
-           data: story_data_attribute(story).merge(backlogs__dnd_list_target: "item"),
+           data: story_data_attribute(story).merge(
+             action: "click->backlogs--item#onClick dblclick->backlogs--item#onDoubleClick " \
+                     "keydown->backlogs--item#onKeydown " \
+                     "pointerdown->backlogs--item#onPointerDown " \
+                     "pointermove->backlogs--item#onPointerMove " \
+                     "pointerup->backlogs--item#onPointerEnd " \
+                     "pointercancel->backlogs--item#onPointerEnd",
+             backlogs__dnd_list_target: "item"
+           ),
            tabindex: 0
          ) do %>
         <%= render(Backlogs::StoryComponent.new(story:, sprint:, project:)) %>

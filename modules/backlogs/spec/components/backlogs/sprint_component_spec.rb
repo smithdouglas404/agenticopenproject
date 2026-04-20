@@ -116,6 +116,14 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
 
         story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
         expect(story_row["data-controller"]).to include("backlogs--item")
+        expect(story_row["data-action"]).to eq(
+          "click->backlogs--item#onClick dblclick->backlogs--item#onDoubleClick " \
+          "keydown->backlogs--item#onKeydown " \
+          "pointerdown->backlogs--item#onPointerDown " \
+          "pointermove->backlogs--item#onPointerMove " \
+          "pointerup->backlogs--item#onPointerEnd " \
+          "pointercancel->backlogs--item#onPointerEnd"
+        )
         expect(story_row["data-draggable-id"]).to eq(story1.id.to_s)
         expect(story_row["data-draggable-type"]).to eq("story")
         expect(story_row["data-backlogs--dnd-list-target"]).to eq("item")

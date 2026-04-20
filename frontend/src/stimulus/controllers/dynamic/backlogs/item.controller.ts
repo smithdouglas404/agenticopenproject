@@ -32,7 +32,7 @@ import type { TurboVisitEvent } from '@hotwired/turbo';
 
 const DRAG_MOVEMENT_THRESHOLD = 5;
 
-export default class ItemController extends Controller<HTMLElement> implements EventListenerObject {
+export default class ItemController extends Controller<HTMLElement> {
   static values = {
     id: Number,
     splitUrl: String,
@@ -56,13 +56,6 @@ export default class ItemController extends Controller<HTMLElement> implements E
     this.abortController = new AbortController();
     const { signal } = this.abortController;
 
-    this.element.addEventListener('click', this, { signal });
-    this.element.addEventListener('dblclick', this, { signal });
-    this.element.addEventListener('keydown', this, { signal });
-    this.element.addEventListener('pointerdown', this, { signal });
-    this.element.addEventListener('pointermove', this, { signal });
-    this.element.addEventListener('pointerup', this, { signal });
-    this.element.addEventListener('pointercancel', this, { signal });
     document.addEventListener('turbo:visit', ((event:TurboVisitEvent) => {
       this.syncSelectionFromUrl(event.detail.url);
     }) as EventListener, { signal });
@@ -81,30 +74,6 @@ export default class ItemController extends Controller<HTMLElement> implements E
 
     this.resetPointerState();
     this.suppressNextClick = false;
-  }
-
-  handleEvent(event:Event):void {
-    switch (event.type) {
-      case 'click':
-        this.onClick(event as MouseEvent);
-        break;
-      case 'dblclick':
-        this.onDoubleClick(event as MouseEvent);
-        break;
-      case 'keydown':
-        this.onKeydown(event as KeyboardEvent);
-        break;
-      case 'pointerdown':
-        this.onPointerDown(event as PointerEvent);
-        break;
-      case 'pointermove':
-        this.onPointerMove(event as PointerEvent);
-        break;
-      case 'pointerup':
-      case 'pointercancel':
-        this.onPointerEnd(event as PointerEvent);
-        break;
-    }
   }
 
   markAsSelected():void {
