@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -38,9 +40,7 @@ RSpec.describe "rb_burndown_charts/show" do
   let(:role_forbidden) { create(:project_role) }
   # We need to create these as some view helpers access the database
   let(:statuses) do
-    [create(:status),
-     create(:status),
-     create(:status)]
+    create_list(:status, 3)
   end
 
   let(:type_task) { create(:type_task) }
@@ -54,32 +54,32 @@ RSpec.describe "rb_burndown_charts/show" do
   end
 
   let(:story_a) do
-    create(:story, status: statuses[0],
-                   project:,
-                   type: type_feature,
-                   version: sprint,
-                   priority: issue_priority)
+    create(:work_package, status: statuses[0],
+                          project:,
+                          type: type_feature,
+                          sprint: sprint,
+                          priority: issue_priority)
   end
   let(:story_b) do
-    create(:story, status: statuses[1],
-                   project:,
-                   type: type_feature,
-                   version: sprint,
-                   priority: issue_priority)
+    create(:work_package, status: statuses[1],
+                          project:,
+                          type: type_feature,
+                          sprint: sprint,
+                          priority: issue_priority)
   end
   let(:story_c) do
-    create(:story, status: statuses[2],
-                   project:,
-                   type: type_feature,
-                   version: sprint,
-                   priority: issue_priority)
+    create(:work_package, status: statuses[2],
+                          project:,
+                          type: type_feature,
+                          sprint: sprint,
+                          priority: issue_priority)
   end
   let(:stories) { [story_a, story_b, story_c] }
   let(:sprint) do
-    create(:sprint, project:, start_date: Date.today - 1.week, effective_date: Date.today + 1.week)
+    create(:agile_sprint, project:, start_date: Time.zone.today - 1.week, finish_date: Time.zone.today + 1.week)
   end
   let(:task) do
-    task = create(:task, project:, status: statuses[0], version: sprint, type: type_task)
+    task = create(:task, project:, status: statuses[0], sprint: sprint, type: type_task)
     # This is necessary as for some unknown reason passing the parent directly
     # leads to the task searching for the parent with 'root_id' is NULL, which
     # is not the case as the story has its own id as root_id
@@ -88,8 +88,6 @@ RSpec.describe "rb_burndown_charts/show" do
   end
 
   before do
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return({ "story_types" => [type_feature.id],
-                                                                         "task_type" => type_task.id })
     view.extend BurndownChartsHelper
 
     # We directly force the creation of stories,statuses by calling the method
@@ -97,22 +95,22 @@ RSpec.describe "rb_burndown_charts/show" do
   end
 
   describe "burndown chart" do
-    it "renders a version with dates" do
+    it "renders a sprint with dates" do
       assign(:sprint, sprint)
       assign(:project, project)
-      assign(:burndown, sprint.burndown(project))
+      assign(:burndown, Burndown.new(sprint, project))
       render
 
       expect(view).to render_template(partial: "_burndown", count: 1)
     end
 
-    it "renders a version without dates" do
+    it "renders a sprint without dates" do
       sprint.start_date = nil
-      sprint.effective_date = nil
+      sprint.finish_date = nil
       sprint.save
       assign(:sprint, sprint)
       assign(:project, project)
-      assign(:burndown, sprint.burndown(project))
+      assign(:burndown, nil)
 
       render
 

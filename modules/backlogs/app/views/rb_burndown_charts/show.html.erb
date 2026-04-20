@@ -39,11 +39,11 @@ See COPYRIGHT and LICENSE files for more details.
       tag: :a,
       href: backlogs_project_sprint_taskboard_path(@project, @sprint),
       mobile_icon: :"op-view-cards",
-      mobile_label: sprint_board_label,
-      aria: { label: sprint_board_label }
+      mobile_label: t("backlogs.label_sprint_board"),
+      aria: { label: t("backlogs.label_sprint_board") }
     ) do |button|
       button.with_leading_visual_icon(icon: :"op-view-cards")
-      sprint_board_label
+      t("backlogs.label_sprint_board")
     end
   end
 %>

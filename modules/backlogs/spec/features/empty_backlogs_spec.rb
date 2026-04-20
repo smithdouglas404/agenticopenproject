@@ -37,11 +37,6 @@ RSpec.describe "Empty backlogs project",
 
   before do
     login_as current_user
-    allow(Setting)
-        .to receive(:plugin_openproject_backlogs)
-                .and_return("story_types" => [story.id.to_s],
-                            "task_type" => task.id.to_s)
-
     visit backlogs_project_backlogs_path(project)
   end
 
@@ -49,9 +44,15 @@ RSpec.describe "Empty backlogs project",
     let(:current_user) { create(:admin) }
 
     it "shows blankslate with description" do
-      within ".blankslate" do
-        expect(page).to have_heading(I18n.t(:backlogs_empty_title))
-        expect(page).to have_text(I18n.t(:backlogs_empty_action_text))
+      within "#owner_backlogs_container .blankslate" do
+        expect(page).to have_heading(I18n.t(:"backlogs.inbox_component.blankslate_title"))
+        expect(page).to have_text(I18n.t(:"backlogs.inbox_component.blankslate_description"))
+      end
+
+      within "#sprint_backlogs_container .blankslate" do
+        expect(page).to have_heading(I18n.t(:"backlogs.backlog.blankslate.title"))
+        expect(page).to have_text(I18n.t(:"backlogs.backlog.blankslate.description_html",
+                                         settings_link: "project settings"))
       end
     end
   end
@@ -61,9 +62,14 @@ RSpec.describe "Empty backlogs project",
     let(:current_user) { create(:user, member_with_roles: { project => role }) }
 
     it "shows a blankslate without description" do
-      within ".blankslate" do
-        expect(page).to have_heading(I18n.t(:backlogs_empty_title))
-        expect(page).to have_no_text(I18n.t(:backlogs_empty_action_text))
+      within "#owner_backlogs_container .blankslate" do
+        expect(page).to have_heading(I18n.t(:"backlogs.inbox_component.blankslate_title"))
+        expect(page).to have_text(I18n.t(:"backlogs.inbox_component.blankslate_description"))
+      end
+
+      within "#sprint_backlogs_container .blankslate" do
+        expect(page).to have_heading(I18n.t(:"backlogs.backlog.blankslate.title"))
+        expect(page).to have_text(I18n.t(:"backlogs.backlog.blankslate.no_actions_description_text"))
       end
     end
   end

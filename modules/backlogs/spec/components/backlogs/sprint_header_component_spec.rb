@@ -45,12 +45,6 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
   let(:state) { :show }
   let(:folded) { false }
 
-  before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
-  end
-
   def render_component(folded: false, active_sprint_ids: nil)
     render_inline(described_class.new(sprint:, project:, folded:, current_user: user, active_sprint_ids:))
   end
@@ -118,7 +112,7 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
         expect(page).to have_octicon(:"chevron-down", visible: :all)
       end
 
-      it "renders BacklogMenuComponent" do
+      it "renders SprintMenuComponent" do
         render_component
 
         expect(page).to have_css("action-menu")

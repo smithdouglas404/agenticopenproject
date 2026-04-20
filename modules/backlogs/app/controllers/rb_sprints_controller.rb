@@ -135,52 +135,7 @@ class RbSprintsController < RbApplicationController
     end
   end
 
-  def edit_name
-    update_header_component_via_turbo_stream(state: :edit)
-    respond_with_turbo_streams
-  end
-
-  def show_name
-    update_header_component_via_turbo_stream(state: :show)
-    respond_with_turbo_streams
-  end
-
-  def update
-    call = Versions::UpdateService
-      .new(user: current_user, model: @sprint)
-      .call(attributes: sprint_params)
-
-    if call.success?
-      status = 200
-      state = :show
-      @sprint = call.result
-      render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_update))
-    else
-      status = 422
-      state = :edit
-      render_error_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      )
-    end
-
-    update_header_component_via_turbo_stream(state:)
-    respond_with_turbo_streams(status:)
-  end
-
   private
-
-  def update_header_component_via_turbo_stream(state: :show)
-    @backlog = Backlog.for(sprint: @sprint, project: @project)
-
-    update_via_turbo_stream(
-      component: Backlogs::BacklogHeaderComponent.new(
-        backlog: @backlog,
-        project: @project,
-        state:
-      ),
-      method: :morph
-    )
-  end
 
   def update_sprint_header_component_via_turbo_stream(sprint:)
     update_via_turbo_stream(
@@ -213,15 +168,7 @@ class RbSprintsController < RbApplicationController
   def load_sprint_and_project
     load_project
 
-    @sprint = if (NEW_SPRINT_ACTIONS + SPRINT_STATE_ACTIONS).include?(action_name.to_sym)
-                Agile::Sprint.for_project(@project).visible.find(params[:id])
-              else
-                Sprint.visible.find(params[:id])
-              end
-  end
-
-  def sprint_params
-    params.expect(sprint: %i[name start_date effective_date])
+    @sprint = Agile::Sprint.for_project(@project).visible.find(params[:id])
   end
 
   def agile_sprint_params

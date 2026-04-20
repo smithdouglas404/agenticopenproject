@@ -33,6 +33,16 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
 
   @HostBinding('class.op-header-project-select-list') className = true;
 
+  @HostBinding('attr.role')
+  get roleAttribute():string {
+    return this.root ? 'listbox' : 'group';
+  }
+
+  @HostBinding('attr.id')
+  get idAttribute():string|null {
+    return this.root ? 'op-header-project-select-listbox' : null;
+  }
+
   @Output() update = new EventEmitter<string[]>();
 
   @Input() @HostBinding('class.op-header-project-select-list--root') root = false;
@@ -49,7 +59,7 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
 
   public text = {
     does_not_match_search: this.I18n.t('js.include_projects.tooltip.does_not_match_search'),
-    include_all_selected: this.I18n.t('js.include_projects.tooltip.include_all_selected'),
+    include_all_selected: this.I18n.t('js.include_projects.tooltip.include_all_selected')
   };
 
   public portfolioModelsEnabled = this.configuration.activeFeatureFlags.includes('portfolioModels');
@@ -117,5 +127,9 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
     }
 
     return `${url}?jump=${encodeURIComponent(currentMenuItem)}`;
+  }
+
+  optionId(project:IProjectData):string {
+    return `op-header-project-select-option-${project.id}`;
   }
 }

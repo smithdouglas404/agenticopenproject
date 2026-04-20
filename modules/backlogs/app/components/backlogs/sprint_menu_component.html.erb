@@ -56,8 +56,7 @@ See COPYRIGHT and LICENSE files for more details.
           label: t(".action_menu.add_work_package"),
           href: new_project_work_packages_dialog_path(
             project,
-            sprint_id: sprint.id,
-            type_id: available_story_types.first
+            sprint_id: sprint.id
           ),
           content_arguments: { data: { turbo_stream: true } }
         ) do |item|

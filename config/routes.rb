@@ -801,6 +801,32 @@ Rails.application.routes.draw do
         post :delete_token
       end
     end
+
+    resources :departments,
+              only: %i[index show edit update destroy],
+              constraints: lambda { |_request| OpenProject::FeatureDecisions.departments_active? } do
+      member do
+        get :new_user
+        post :add_user
+        delete "remove_user/:user_id" => "departments#remove_user", as: :remove_user
+        get :change_parent, action: :change_parent_dialog
+        post :change_parent
+
+        # old routes for old group style management, might remove when new interface
+        patch "/memberships:membership_id" => "departments#edit_membership", as: "membership_of"
+        put "/memberships:membership_id" => "departments#edit_membership"
+        delete "/memberships:membership_id" => "departments#destroy_membership"
+        post "/memberships" => "departments#create_memberships", as: "memberships_of"
+      end
+
+      collection do
+        get :new_department
+        post :add_department
+        get :edit_organization_name
+        patch :cancel_edit_organization_name
+        patch :update_organization_name
+      end
+    end
   end
 
   resources :workflows, only: %i[index edit update], param: :type_id do
@@ -821,6 +847,7 @@ Rails.application.routes.draw do
     resource :bulk, controller: "bulk", only: %i[edit update destroy] do
       collection do
         match :reassign, via: %i[get delete]
+        get :delete_dialog
       end
     end
   end

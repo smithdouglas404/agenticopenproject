@@ -52,12 +52,10 @@ class Burndown
   private
 
   def make_date_series(sprint)
-    @days = if sprint.is_a?(Agile::Sprint) && sprint.start_date && sprint.finish_date
+    @days = if sprint.start_date && sprint.finish_date
               Day.working.from_range(from: sprint.start_date, to: sprint.finish_date).map(&:date)
-            elsif sprint.is_a?(Agile::Sprint)
-              []
             else
-              sprint.days
+              []
             end
   end
 
@@ -100,9 +98,5 @@ class Burndown
       points: @available_series.values.select { |s| s.unit == :points }.flatten.compact.reject(&:nan?).max || 0.0,
       hours: @available_series.values.select { |s| s.unit == :hours }.flatten.compact.reject(&:nan?).max || 0.0
     }
-  end
-
-  def to_h(keys, values)
-    Hash[*keys.zip(values).flatten]
   end
 end

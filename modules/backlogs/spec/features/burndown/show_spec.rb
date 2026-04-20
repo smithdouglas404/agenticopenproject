@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../../support/pages/backlog"
 
-RSpec.describe "Show burndown chart", :js, with_flag: { scrum_projects: true } do
+RSpec.describe "Show burndown chart", :js do
   include Redmine::I18n
 
   shared_let(:project) { create(:project, enabled_module_names: %w(backlogs)) }

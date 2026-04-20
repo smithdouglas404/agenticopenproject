@@ -64,7 +64,7 @@ module Backlogs
     private
 
     def folded?
-      current_user.backlogs_preference(:versions_default_fold_state) == "closed"
+      current_user.pref[:backlogs_versions_default_fold_state] == "closed"
     end
 
     def drop_target_config

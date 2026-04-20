@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,84 +31,22 @@
 require "spec_helper"
 
 RSpec.describe BacklogsSettingsController do
-  current_user { build_stubbed(:admin) }
+  let(:user) { create(:admin) }
+
+  before { login_as(user) }
 
   describe "GET show" do
-    it "performs that request" do
+    it "renders successfully" do
       get :show
-      expect(response).to be_successful
-      expect(response).to render_template :show
+      expect(response).to have_http_status(:ok)
     end
 
-    context "as regular user" do
-      current_user { build_stubbed(:user) }
+    context "when not an admin" do
+      let(:user) { create(:user) }
 
-      it "fails" do
+      it "requires admin" do
         get :show
-        expect(response).to have_http_status :forbidden
-      end
-    end
-  end
-
-  describe "PUT update" do
-    before do
-      allow(Setting).to receive(:plugin_openproject_backlogs=)
-    end
-
-    subject do
-      put :update,
-          params: {
-            settings: {
-              task_type:,
-              story_types:
-            }
-          }
-    end
-
-    context "with invalid settings (Regression test #35157)" do
-      let(:task_type) { "1234" }
-      let(:story_types) { ["1234"] }
-
-      it "does not update the settings" do
-        subject
-
-        expect(response).to render_template "show"
-        expect(flash[:error]).to start_with I18n.t(:notice_unsuccessful_update_with_reason, reason: "")
-
-        expect(Setting).not_to have_received(:plugin_openproject_backlogs=).with(any_args)
-      end
-    end
-
-    context "with valid settings" do
-      let(:task_type) { "1234" }
-      let(:story_types) { ["5555"] }
-
-      it "does update the settings" do
-        subject
-
-        expect(response).to redirect_to action: :show
-        expect(flash[:notice]).to include I18n.t(:notice_successful_update)
-        expect(flash[:error]).to be_nil
-
-        expect(Setting).to have_received(:plugin_openproject_backlogs=).with(
-          points_burn_direction: nil,
-          story_types: [5555],
-          task_type: 1234,
-          wiki_template: nil
-        )
-      end
-
-      context "with a non-admin" do
-        current_user { build_stubbed(:user) }
-
-        it "does not update the settings" do
-          subject
-
-          expect(response).not_to be_successful
-          expect(response).to have_http_status :forbidden
-
-          expect(Setting).not_to have_received(:plugin_openproject_backlogs=).with(any_args)
-        end
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

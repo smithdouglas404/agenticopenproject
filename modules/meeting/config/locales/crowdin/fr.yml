@@ -42,6 +42,9 @@ fr:
         start_date: Date
         start_time: Heure de début
         start_time_hour: Heure de début
+        end_time: Heure de fin
+        template: Modèle
+        notify: Envoyer les notifications
         sharing: Partage
       meeting_agenda_item:
         title: Titre
@@ -49,9 +52,15 @@ fr:
         duration_in_minutes: Durée
         description: Notes
         presenter: Responsable
+        item_type: Type
+        position: Position
+        lock_version: Verrouiller la version
+        notes: Notes
       meeting_section:
         title: Titre
+        position: Position
       recurring_meeting:
+        title: Titre
         frequency: Fréquence
         interval: Intervalle
         start_date: Commence le
@@ -60,6 +69,10 @@ fr:
         end_after: La série de réunions se termine
         end_date: Échéance
         iterations: Occurrences
+        time_zone: Fuseau horaire
+        location: Emplacement
+        duration: Durée
+        notify: Envoyer les notifications
       recurring_meeting_interim_response:
         start_time: Heure de début
       meeting_participant:
@@ -420,6 +433,11 @@ fr:
     ical_response:
       update_failed: Impossible de mettre à jour le statut de participation.
       meeting_not_found: Réunion non trouvée pour l'UID donné.
+    widgets:
+      blankslate:
+        heading: Aucune réunion à venir
+        description: Les prochaines réunions où vous êtes l'organisateur ou un participant apparaîtront ici.
+      view_details: Voir toutes les réunions
   meeting_section:
     untitled_title: Section sans titre
     delete_confirmation: Supprimer la section supprimera également tous les éléments de l'ordre du jour qui s'y rapportent. Voulez-vous vraiment continuer ?
@@ -599,7 +617,7 @@ fr:
   label_agenda_outcome_edit: Modifier le résultat
   label_agenda_outcome_delete: Supprimer le résultat
   label_added_as_outcome: Ajouté comme résultat
-  label_write_outcome: Résultat de l'écriture
+  label_write_outcome: Rédiger un résultat
   label_existing_work_package: Lot de travaux existant
   text_outcome_not_editable_anymore: Ce résultat n'est plus modifiable.
   text_outcome_cannot_be_added: Un résultat ne peut plus être ajouté.

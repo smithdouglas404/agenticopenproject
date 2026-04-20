@@ -12,18 +12,17 @@ import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op
 import {
   PERMITTED_CONTEXT_MENU_ACTIONS,
 } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-static-context-menu-actions';
-import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { CopyToClipboardService } from 'core-app/shared/components/copy-to-clipboard/copy-to-clipboard.service';
 import {
   WorkPackageAction,
 } from 'core-app/features/work-packages/components/wp-table/context-menu-helper/wp-context-menu-helper.service';
-import { WpDestroyModalComponent } from 'core-app/shared/components/modals/wp-destroy-modal/wp-destroy.modal';
 import { WorkPackageAuthorization } from 'core-app/features/work-packages/services/work-package-authorization.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { TimeEntryTimerService } from 'core-app/shared/components/time_entries/services/time-entry-timer.service';
 import { TimeEntryResource } from 'core-app/features/hal/resources/time-entry-resource';
 import { DeviceService } from 'core-app/core/browser/device.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
@@ -41,10 +40,10 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
   readonly injector = inject(Injector);
   readonly PathHelper = inject(PathHelperService);
   readonly elementRef = inject(ElementRef);
-  readonly opModalService = inject(OpModalService);
   readonly turboRequests = inject(TurboRequestsService);
   readonly apiV3Service = inject(ApiV3Service);
   readonly authorisationService = inject(AuthorisationService);
+  readonly currentProject = inject(CurrentProjectService);
   readonly timeEntryService = inject(TimeEntryTimerService);
   protected copyToClipboardService = inject(CopyToClipboardService);
   protected deviceService = inject(DeviceService);
@@ -96,9 +95,18 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
           window.location.href = `${this.PathHelper.workPackageCopyPath(this.workPackage.project.identifier, this.workPackage.id)}`;
         }
         break;
-      case 'delete':
-        this.opModalService.show(WpDestroyModalComponent, this.injector, { workPackages: [this.workPackage] });
+      case 'delete': {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const currentBaseRoute = this.$state.current.data?.baseRoute as string | undefined;
+        const backUrl = currentBaseRoute
+          ? this.$state.href(currentBaseRoute)
+          : this.PathHelper.workPackagesPath(this.currentProject.identifier ?? null);
+        void this.turboRequests.request(
+          this.PathHelper.workPackagesBulkDeleteDialogPath([this.workPackage.id!], backUrl),
+          { method: 'GET' },
+        );
         break;
+      }
       case 'log_time':
         void this.turboRequests.request(this.PathHelper.timeEntryWorkPackageDialog(this.workPackage.id!), { method: 'GET' });
         break;

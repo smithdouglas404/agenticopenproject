@@ -44,7 +44,7 @@ module Pages
         attributes.each do |key, value|
           details_view
             .edit_field(key.to_s.camelize(:lower))
-            .update(value) # rubocop:disable Rails/SaveBang
+            .update(value)
 
           details_view.expect_and_dismiss_toaster message: "Successful update."
         end
@@ -460,10 +460,6 @@ module Pages
 
     def sprint_selector(sprint)
       test_selector("sprint-#{sprint.id}")
-    end
-
-    def backlog_selector(backlog)
-      "#backlog_#{backlog.id}"
     end
 
     def story_selector(story)

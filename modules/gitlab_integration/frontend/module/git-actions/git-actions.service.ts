@@ -59,7 +59,7 @@ export class GitActionsService {
   }
 
   private sanitizeShellInput(str:string):string {
-    return `${str.replace(/'/g, '\\\'')}`;
+    return str.replace(/'/g, "'\\''");
   }
 
   public branchName(workPackage:WorkPackageResource):string {
@@ -67,23 +67,23 @@ export class GitActionsService {
     return `${this.sanitizeBranchString(type)}/${id}-${this.sanitizeBranchString(title)}`.toLocaleLowerCase();
   }
 
-  public commitMessage(workPackage:WorkPackageResource):string {
+  private commitMessageParts(workPackage:WorkPackageResource):string[] {
     const { title, id, description, url } = this.formattingInput(workPackage);
-    return `OP#${id} ${title}
+    return [`OP#${id} ${title}`, description, url].filter(Boolean);
+  }
 
-${description}
-
-${url}
-`.replace(/\n\n+/g, '\n\n');
+  public commitMessage(workPackage:WorkPackageResource):string {
+    return this.commitMessageParts(workPackage).join("\n\n");
   }
 
   public commitMessageDisplayText(workPackage:WorkPackageResource):string {
-    return this.commitMessage(workPackage).replace(/\n\n/g, ' ');
+    return this.commitMessageParts(workPackage).join(' ');
   }
 
   public gitCommand(workPackage:WorkPackageResource):string {
     const branch = this.branchName(workPackage);
-    const commit = this.commitMessage(workPackage);
-    return `git checkout -b '${this.sanitizeShellInput(branch)}' && git commit --allow-empty -m '${this.sanitizeShellInput(commit)}'`;
+    const messageParts = this.commitMessageParts(workPackage);
+    const messages = messageParts.map((part) => `-m '${this.sanitizeShellInput(part)}'`).join(' ');
+    return `git checkout -b '${this.sanitizeShellInput(branch)}' && git commit --allow-empty ${messages}`;
   }
 }

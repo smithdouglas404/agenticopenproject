@@ -70,13 +70,7 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
       expect(subject.controller_actions).to include("rb_sprints/start", "rb_sprints/finish")
     end
 
-    context "when scrum_projects feature flag is active", with_flag: { scrum_projects: true } do
-      it { is_expected.to be_visible }
-    end
-
-    context "when scrum_projects feature flag is inactive", with_flag: { scrum_projects: false } do
-      it { is_expected.to be_hidden }
-    end
+    it { is_expected.to be_visible }
   end
 
   describe "share_sprint" do
@@ -86,12 +80,6 @@ RSpec.describe OpenProject::AccessControl, "Backlogs module permissions" do # ru
       expect(subject.dependencies).to contain_exactly(:create_sprints)
     end
 
-    context "when scrum_projects feature flag is active", with_flag: { scrum_projects: true } do
-      it { is_expected.to be_visible }
-    end
-
-    context "when scrum_projects feature flag is inactive", with_flag: { scrum_projects: false } do
-      it { is_expected.to be_hidden }
-    end
+    it { is_expected.to be_visible }
   end
 end

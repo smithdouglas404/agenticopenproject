@@ -41,15 +41,16 @@
         >
         @if (displayMode !== 'favorited' || (favorites$ | async)?.length > 0) {
           <spot-text-field
+            #projectSearchField
             [placeholder]="searchPlaceHolder()"
             [(ngModel)]="searchableProjectListService.searchText"
             [ngModelOptions]="{standalone: true}"
             data-test-selector="op-header-project-select--search"
             data-modal-focus-catcher-container="true"
             (keydown)="searchableProjectListService.onKeydown($event, projects)"
-            (inputFocus)="textFieldFocused = true"
+            (inputFocus)="textFieldFocused = true; syncSearchInputAccessibility()"
             (inputBlur)="textFieldFocused = false"
-            >
+          >
             <svg search-icon slot="before" size="small" class="op-header-project-select--search-icon"/>
           </spot-text-field>
         }

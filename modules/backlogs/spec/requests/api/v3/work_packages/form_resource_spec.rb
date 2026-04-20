@@ -38,10 +38,6 @@ RSpec.describe "API v3 Work package form resource" do
   let(:authorized_user) { create(:user, member_with_permissions: { project => %i[view_work_packages edit_work_packages] }) }
   let(:unauthorized_user) { create(:user) }
 
-  before do
-    allow(Story).to receive(:types).and_return([work_package.type_id])
-  end
-
   describe "#post" do
     shared_examples_for "valid payload" do
       subject { response.body }

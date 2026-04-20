@@ -38,43 +38,21 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
   shared_let(:user) { create(:admin) }
   shared_let(:project) { create(:project) }
   shared_let(:status)  { create(:status, name: "status 1", is_default: true) }
-  shared_let(:sprint)  { create(:sprint, project:) }
-  shared_let(:story) { create(:story, status:, version: sprint, project:) }
+  shared_let(:sprint)  { create(:agile_sprint, project:) }
+  shared_let(:story) { create(:work_package, status:, sprint:, project:) }
 
   current_user { user }
 
-  before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
-  end
-
   describe "GET #index" do
-    it "is successful" do
+    it "redirects to backlog" do
       get "/projects/#{project.identifier}/backlogs"
 
-      expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:index)
-
-      expect(response).to have_turbo_frame "backlogs_container", src: "/projects/#{project.identifier}/backlogs"
-      expect(response).to have_turbo_frame "content-bodyRight"
+      expect(response).to redirect_to("/projects/#{project.identifier}/backlogs/backlog")
     end
 
     context "with a Turbo Frame request" do
-      it "renders the list partial" do
-        get "/projects/#{project.identifier}/backlogs", headers: { "Turbo-Frame" => "backlogs_container" }
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template("rb_master_backlogs/_list")
-
-        expect(response).to have_turbo_frame "backlogs_container"
-        expect(response).to have_no_turbo_frame "content-bodyRight"
-      end
-    end
-
-    context "with the scrum project feature flag active", with_flag: { scrum_projects: true } do
       it "redirects to backlog" do
-        get "/projects/#{project.identifier}/backlogs"
+        get "/projects/#{project.identifier}/backlogs", headers: { "Turbo-Frame" => "backlogs_container" }
 
         expect(response).to redirect_to("/projects/#{project.identifier}/backlogs/backlog")
       end
@@ -82,65 +60,50 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
   end
 
   describe "GET #backlog" do
-    context "without the scrum project feature flag" do
-      it "is not successful" do
-        get "/projects/#{project.identifier}/backlogs/backlog"
+    it "is successful" do
+      get "/projects/#{project.identifier}/backlogs/backlog"
 
-        expect(response).to have_http_status(:forbidden)
-      end
+      expect(response).to have_http_status(:ok)
+      expect(response).to render_template(:backlog)
+      expect(response).to have_turbo_frame "backlogs_container",
+                                           src: "/projects/#{project.identifier}/backlogs/backlog?all=false"
+      expect(response).to have_turbo_frame "content-bodyRight"
     end
 
-    context "with the scrum project feature flag active", with_flag: { scrum_projects: true } do
-      it "is successful" do
-        get "/projects/#{project.identifier}/backlogs/backlog"
+    it "passes all=true on the backlog turbo frame when requested" do
+      get "/projects/#{project.identifier}/backlogs/backlog", params: { all: "1" }
+
+      expect(response).to have_http_status(:ok)
+      expect(response).to have_turbo_frame "backlogs_container",
+                                           src: "/projects/#{project.identifier}/backlogs/backlog?all=true"
+    end
+
+    context "with a Turbo Frame request" do
+      it "renders the sprint planning list partial" do
+        get "/projects/#{project.identifier}/backlogs/backlog", headers: { "Turbo-Frame" => "backlogs_container" }
 
         expect(response).to have_http_status(:ok)
-        expect(response).to render_template(:backlog)
-        expect(response).to have_turbo_frame "backlogs_container",
-                                             src: "/projects/#{project.identifier}/backlogs/backlog?all=false"
-        expect(response).to have_turbo_frame "content-bodyRight"
+        expect(response).to render_template("rb_master_backlogs/_backlog_list")
+
+        expect(response).to have_turbo_frame "backlogs_container"
+        expect(response).to have_no_turbo_frame "content-bodyRight"
       end
 
-      it "passes all=true on the backlog turbo frame when requested" do
-        get "/projects/#{project.identifier}/backlogs/backlog", params: { all: "1" }
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to have_turbo_frame "backlogs_container",
-                                             src: "/projects/#{project.identifier}/backlogs/backlog?all=true"
-      end
-
-      context "with a Turbo Frame request" do
-        it "renders the sprint planning list partial" do
-          get "/projects/#{project.identifier}/backlogs/backlog", headers: { "Turbo-Frame" => "backlogs_container" }
-
-          expect(response).to have_http_status(:ok)
-          expect(response).to render_template("rb_master_backlogs/_backlog_list")
-
-          expect(response).to have_turbo_frame "backlogs_container"
-          expect(response).to have_no_turbo_frame "content-bodyRight"
+      context "with no sprints available" do
+        before do
+          allow(Agile::Sprint)
+            .to receive(:for_project)
+            .with(project)
+            .and_return(Agile::Sprint.none)
         end
 
-        context "with no sprints available" do
-          before do
-            allow(Backlog)
-              .to receive(:owner_backlogs)
-              .with(project)
-              .and_return([])
+        it "still renders the sprint planning container for turbo-frame requests" do
+          get "/projects/#{project.identifier}/backlogs/backlog",
+              headers: { "Turbo-Frame" => "backlogs_container" }
 
-            allow(Agile::Sprint)
-              .to receive(:for_project)
-              .with(project)
-              .and_return(Agile::Sprint.none)
-          end
-
-          it "still renders the sprint planning container for turbo-frame requests" do
-            get "/projects/#{project.identifier}/backlogs/backlog",
-                headers: { "Turbo-Frame" => "backlogs_container" }
-
-            expect(response).to have_http_status(:ok)
-            expect(response.body).to include('id="owner_backlogs_container"')
-            expect(response.body).to include('id="sprint_backlogs_container"')
-          end
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to include('id="owner_backlogs_container"')
+          expect(response.body).to include('id="sprint_backlogs_container"')
         end
       end
     end
@@ -151,19 +114,11 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
       get "/projects/#{project.identifier}/backlogs/details/#{story.id}"
 
       expect(response).to have_http_status(:ok)
-      expect(response).to render_template(:index)
+      expect(response).to render_template(:backlog)
 
-      expect(response).to have_turbo_frame "backlogs_container", src: "/projects/#{project.identifier}/backlogs"
+      expect(response).to have_turbo_frame "backlogs_container",
+                                           src: "/projects/#{project.identifier}/backlogs/backlog?all=false"
       expect(response).to have_turbo_frame "content-bodyRight"
-    end
-
-    context "with the scrum project feature flag active", with_flag: { scrum_projects: true } do
-      it "is successful and renders backlog" do
-        get "/projects/#{project.identifier}/backlogs/details/#{story.id}"
-
-        expect(response).to have_http_status(:ok)
-        expect(response).to render_template(:backlog)
-      end
     end
 
     context "with a Turbo Frame request" do

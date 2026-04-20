@@ -43,6 +43,9 @@ ro:
         start_date: Dată
         start_time: Dată început
         start_time_hour: Dată început
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: Titlu
@@ -50,9 +53,15 @@ ro:
         duration_in_minutes: Durată
         description: Mențiuni
         presenter: Prezentator
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Titlu
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frecvență
         interval: Interval
         start_date: Începe pe
@@ -61,6 +70,10 @@ ro:
         end_after: Seria de întâlniri se încheie
         end_date: Dată sfârșit
         iterations: Apariţii
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -425,6 +438,11 @@ ro:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Meeting not found for the given UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Untitled section
     delete_confirmation: Deleting the section will also delete all of its agenda items. Are you sure you want to do this?

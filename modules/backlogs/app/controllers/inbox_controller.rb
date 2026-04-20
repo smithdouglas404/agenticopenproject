@@ -31,7 +31,6 @@
 class InboxController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  before_action :not_authorized_on_feature_flag_inactive
   before_action :load_work_package
 
   # Deferred ActionMenu items (Primer include-fragment).

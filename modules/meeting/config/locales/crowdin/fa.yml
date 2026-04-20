@@ -42,6 +42,9 @@ fa:
         start_date: تاریخ
         start_time: زمان شروع
         start_time_hour: زمان شروع
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: عنوان
@@ -49,9 +52,15 @@ fa:
         duration_in_minutes: Duration
         description: یادداشت ها
         presenter: Presenter
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: عنوان
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frequency
         interval: Interval
         start_date: Starts on
@@ -60,6 +69,10 @@ fa:
         end_after: Meeting series ends
         end_date: End date
         iterations: Occurrences
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -420,6 +433,11 @@ fa:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Meeting not found for the given UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Untitled section
     delete_confirmation: Deleting the section will also delete all of its agenda items. Are you sure you want to do this?

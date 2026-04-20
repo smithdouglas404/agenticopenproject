@@ -42,5 +42,7 @@ module Wikis
     def href
       "#"
     end
+
+    def render_author? = false
   end
 end

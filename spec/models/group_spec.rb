@@ -255,6 +255,14 @@ RSpec.describe Group do
       it "returns empty for a root group" do
         expect(grandparent.ancestors).to be_empty
       end
+
+      it "returns ancestors in root-first order with order: :asc" do
+        expect(grandchild.ancestors(order: :asc).to_a).to eq([grandparent, parent_group, child])
+      end
+
+      it "returns ancestors in closest-first order with order: :desc" do
+        expect(grandchild.ancestors(order: :desc).to_a).to eq([child, parent_group, grandparent])
+      end
     end
 
     describe "#self_and_ancestors" do
@@ -353,6 +361,35 @@ RSpec.describe Group do
       it "is valid when clearing the parent" do
         child.parent_id = nil
         expect(child).to be_valid
+      end
+    end
+
+    describe "organizational unit mismatch prevention" do
+      let(:department) { create(:department) }
+      let(:regular_group) { create(:group) }
+
+      it "is invalid when assigning organizational unit as parent to regular group" do
+        regular_group.parent_id = department.id
+        expect(regular_group).not_to be_valid
+        expect(regular_group.errors[:parent_id]).to be_present
+      end
+
+      it "is invalid when assigning regular group as parent to organizational unit" do
+        department.parent_id = regular_group.id
+        expect(department).not_to be_valid
+        expect(department.errors[:parent_id]).to be_present
+      end
+
+      it "is valid when both are organizational units" do
+        child_department = create(:department)
+        child_department.parent_id = department.id
+        expect(child_department).to be_valid
+      end
+
+      it "is valid when both are regular groups" do
+        child_group = create(:group)
+        child_group.parent_id = regular_group.id
+        expect(child_group).to be_valid
       end
     end
   end

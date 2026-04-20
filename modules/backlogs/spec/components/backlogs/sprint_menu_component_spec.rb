@@ -40,10 +40,6 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
   let(:permissions) { [] }
 
   before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
-
     create(:member,
            project:,
            principal: user,
@@ -64,10 +60,11 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
       let(:permissions) { %i[view_sprints manage_sprint_items] }
 
       it "shows Add new work package item with plus icon" do
-        render_component
+        rendered_component = render_component
 
         expect(page).to have_text(I18n.t(:"backlogs.sprint_menu_component.action_menu.add_work_package"))
         expect(page).to have_octicon(:plus)
+        expect(rendered_component.to_s).to include("sprint_id=#{sprint.id}")
       end
     end
 

@@ -33,7 +33,6 @@ class RbApplicationController < ApplicationController
   helper :rb_common
 
   before_action :load_sprint_and_project,
-                :check_if_plugin_is_configured,
                 :authorize
 
   private
@@ -54,25 +53,6 @@ class RbApplicationController < ApplicationController
     @sprint_id = params.delete(:sprint_id)
     return unless @sprint_id
 
-    @sprint = if OpenProject::FeatureDecisions.scrum_projects_active?
-                Agile::Sprint.for_project(@project).visible.find(@sprint_id)
-              else
-                Sprint.visible.apply_to(@project).find(@sprint_id)
-              end
-  end
-
-  def check_if_plugin_is_configured
-    return if OpenProject::FeatureDecisions.scrum_projects_active?
-
-    settings = Setting.plugin_openproject_backlogs
-    if settings["story_types"].blank? || settings["task_type"].blank?
-      respond_to do |format|
-        format.html { render template: "shared/not_configured" }
-      end
-    end
-  end
-
-  def not_authorized_on_feature_flag_inactive
-    render_403 unless OpenProject::FeatureDecisions.scrum_projects_active?
+    @sprint = Agile::Sprint.for_project(@project).visible.find(@sprint_id)
   end
 end

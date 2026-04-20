@@ -49,7 +49,7 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
            priority: default_priority,
            position: 1)
   end
-  let(:work_packages) { WorkPackage.where(id: work_package.id).order(Arel.sql(Story::ORDER)) }
+  let(:work_packages) { WorkPackage.where(id: work_package.id).order(:position, :id) }
 
   before do
     render_inline(

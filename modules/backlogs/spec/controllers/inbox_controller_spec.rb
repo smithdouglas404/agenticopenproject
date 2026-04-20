@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
+RSpec.describe InboxController do
   current_user { user }
 
   let(:user) { create(:admin) }

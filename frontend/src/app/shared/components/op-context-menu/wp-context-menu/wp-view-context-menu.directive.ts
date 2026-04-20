@@ -20,12 +20,10 @@ import {
 import {
   PERMITTED_CONTEXT_MENU_ACTIONS,
 } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-static-context-menu-actions';
-import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { StateService } from '@uirouter/core';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { CopyToClipboardService } from 'core-app/shared/components/copy-to-clipboard/copy-to-clipboard.service';
 import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
-import { WpDestroyModalComponent } from 'core-app/shared/components/modals/wp-destroy-modal/wp-destroy.modal';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
@@ -39,8 +37,6 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
   @InjectField() protected states!:States;
 
   @InjectField() protected wpRelationsHierarchyService:WorkPackageRelationsHierarchyService;
-
-  @InjectField() protected opModalService:OpModalService;
 
   @InjectField() protected $state!:StateService;
 
@@ -152,7 +148,9 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
 
   private deleteSelectedWorkPackages() {
     const selected = this.getSelectedWorkPackages();
-    this.opModalService.show(WpDestroyModalComponent, this.injector, { workPackages: selected });
+    const ids = selected.map((wp) => wp.id).filter((id) => id !== null);
+    const backUrl = this.$state.href(this.baseRoute as string) || this.pathHelper.workPackagesPath(this.currentProject.identifier ?? null);
+    void this.turboRequests.request(this.pathHelper.workPackagesBulkDeleteDialogPath(ids, backUrl), { method: 'GET' });
   }
 
   private editSelectedWorkPackages(link:any) {

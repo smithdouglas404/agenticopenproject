@@ -42,6 +42,9 @@ it:
         start_date: Data
         start_time: Ora di inizio
         start_time_hour: Ora di inizio
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Condivisione
       meeting_agenda_item:
         title: Titolo
@@ -49,9 +52,15 @@ it:
         duration_in_minutes: Durata
         description: Note
         presenter: Presentatore
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Titolo
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frequenza
         interval: Intervallo
         start_date: Inizio il
@@ -60,6 +69,10 @@ it:
         end_after: Termine della serie di riunioni
         end_date: Data di scadenza
         iterations: Ricorrenze
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Ora di inizio
       meeting_participant:
@@ -420,6 +433,11 @@ it:
     ical_response:
       update_failed: Impossibile aggiornare lo stato di partecipazione.
       meeting_not_found: Riunione non trovata per l'UID indicato.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Sezione senza titolo
     delete_confirmation: L'eliminazione della sezione eliminerà anche tutti i suoi elementi dell'ordine del giorno. Continuare?
