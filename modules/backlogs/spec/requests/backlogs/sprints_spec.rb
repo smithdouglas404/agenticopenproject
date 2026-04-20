@@ -28,51 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class RbMasterBacklogsController < RbApplicationController
-  include WorkPackages::WithSplitView
+require "spec_helper"
 
-  current_menu_item [:backlog, :details] do
-    :backlog
-  end
+RSpec.describe "Backlogs::Sprints", :skip_csrf, type: :rails_request do
+  shared_let(:type_feature) { create(:type_feature) }
+  shared_let(:type_task) { create(:type_task) }
+  shared_let(:user) { create(:admin) }
+  shared_let(:project) { create(:project) }
+  shared_let(:status) { create(:status, name: "status 1", is_default: true) }
+  shared_let(:sprint) { create(:agile_sprint, name: "Original sprint name", project:) }
 
-  before_action :load_backlogs, only: %i[index backlog]
+  current_user { user }
 
-  def backlog
-    case turbo_frame_request_id
-    when "backlogs_container"
-      render partial: "backlog_list", layout: false
-    else
-      render :backlog
+  describe "PUT #update" do
+    it "loads the sprint from sprint_id and updates it", :aggregate_failures do
+      put "/projects/#{project.identifier}/backlogs/sprints/#{sprint.id}",
+          headers: { "ACCEPT" => "text/vnd.turbo-stream.html" },
+          params: { sprint: { name: "Changed sprint name" } }
+
+      expect(response).to be_successful
+      expect(sprint.reload.name).to eq("Changed sprint name")
     end
-  end
-
-  def index
-    redirect_to action: :backlog
-  end
-
-  def details
-    if turbo_frame_request?
-      render "work_packages/split_view", layout: false
-    else
-      load_backlogs
-      render :backlog
-    end
-  end
-
-  private
-
-  def split_view_base_route
-    backlog_backlogs_project_backlogs_path(request.query_parameters)
-  end
-
-  def load_backlogs
-    @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
-    @stories_by_sprint_id = WorkPackage
-      .where(sprint: @sprints, project: @project)
-      .includes(:type, :status)
-      .order_by_position
-      .group_by(&:sprint_id)
-    @active_sprint_ids = @sprints.select(&:active?).map(&:id)
-    @inbox_work_packages = Backlog.inbox_for(project: @project)
   end
 end

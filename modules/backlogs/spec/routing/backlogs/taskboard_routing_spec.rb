@@ -28,33 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class StoryComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
+require "spec_helper"
 
-    attr_reader :story, :sprint, :project, :current_user
+RSpec.describe Backlogs::TaskboardController do
+  describe "routing" do
+    it {
+      expect(get("/projects/project_42/backlogs/sprints/21/taskboard")).to route_to(
+        controller: "backlogs/taskboard",
+        action: "show",
+        project_id: "project_42",
+        sprint_id: "21"
+      )
+    }
+  end
 
-    def initialize(story:, sprint:, project:, current_user: User.current)
-      super()
-
-      @story = story
-      @sprint = sprint
-      @project = project
-      @current_user = current_user
-    end
-
-    private
-
-    def story_points
-      story.story_points || 0
-    end
-
-    def draggable?
-      current_user.allowed_in_project?(:manage_sprint_items, project)
-    end
-
-    def menu_src
-      menu_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)
-    end
+  describe "named routing" do
+    it {
+      expect(project_backlogs_sprint_taskboard_path("project_42", "21"))
+        .to eq("/projects/project_42/backlogs/sprints/21/taskboard")
+    }
   end
 end

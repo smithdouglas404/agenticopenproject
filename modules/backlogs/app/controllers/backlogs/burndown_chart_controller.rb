@@ -28,35 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Backlogs
+  class BurndownChartController < ::RbApplicationController
+    helper :burndown_charts
 
-RSpec.describe InboxController do
-  describe "routing" do
-    it {
-      expect(put("/projects/project_42/inbox/85/move")).to route_to(
-        controller: "inbox",
-        action: "move",
-        project_id: "project_42",
-        id: "85"
-      )
-    }
+    def show
+      @burndown = Burndown.new(@sprint, @project) if @sprint.date_range_set?
 
-    it {
-      expect(post("/projects/project_42/inbox/85/reorder")).to route_to(
-        controller: "inbox",
-        action: "reorder",
-        project_id: "project_42",
-        id: "85"
-      )
-    }
-
-    it {
-      expect(get("/projects/project_42/inbox/85/menu")).to route_to(
-        controller: "inbox",
-        action: "menu",
-        project_id: "project_42",
-        id: "85"
-      )
-    }
+      respond_to do |format|
+        format.html { render "backlogs/burndown_chart/show", layout: true }
+      end
+    end
   end
 end

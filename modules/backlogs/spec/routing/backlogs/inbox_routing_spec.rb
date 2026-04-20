@@ -30,34 +30,31 @@
 
 require "spec_helper"
 
-RSpec.describe RbStoriesController do
+RSpec.describe Backlogs::InboxController do
   describe "routing" do
     it {
-      expect(put("/projects/project_42/sprints/21/stories/85/move")).to route_to(
-        controller: "rb_stories",
+      expect(put("/projects/project_42/backlogs/inbox/85/move")).to route_to(
+        controller: "backlogs/inbox",
         action: "move",
         project_id: "project_42",
-        sprint_id: "21",
         id: "85"
       )
     }
 
     it {
-      expect(post("/projects/project_42/sprints/21/stories/85/reorder")).to route_to(
-        controller: "rb_stories",
+      expect(post("/projects/project_42/backlogs/inbox/85/reorder")).to route_to(
+        controller: "backlogs/inbox",
         action: "reorder",
         project_id: "project_42",
-        sprint_id: "21",
         id: "85"
       )
     }
 
     it {
-      expect(get("/projects/project_42/sprints/21/stories/85/menu")).to route_to(
-        controller: "rb_stories",
+      expect(get("/projects/project_42/backlogs/inbox/85/menu")).to route_to(
+        controller: "backlogs/inbox",
         action: "menu",
         project_id: "project_42",
-        sprint_id: "21",
         id: "85"
       )
     }

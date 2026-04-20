@@ -29,32 +29,48 @@
 #++
 
 module Backlogs
-  class StoryComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
+  class BacklogController < ::RbApplicationController
+    include WorkPackages::WithSplitView
 
-    attr_reader :story, :sprint, :project, :current_user
+    current_menu_item %i[show details] do
+      :backlog
+    end
 
-    def initialize(story:, sprint:, project:, current_user: User.current)
-      super()
+    before_action :load_backlogs, only: :show
 
-      @story = story
-      @sprint = sprint
-      @project = project
-      @current_user = current_user
+    def show
+      case turbo_frame_request_id
+      when "backlogs_container"
+        render partial: "backlogs/backlog/backlog_list", layout: false
+      else
+        render "backlogs/backlog/show"
+      end
+    end
+
+    def details
+      if turbo_frame_request?
+        render "work_packages/split_view", layout: false
+      else
+        load_backlogs
+        render "backlogs/backlog/show"
+      end
     end
 
     private
 
-    def story_points
-      story.story_points || 0
+    def split_view_base_route
+      project_backlogs_backlog_path(@project, request.query_parameters)
     end
 
-    def draggable?
-      current_user.allowed_in_project?(:manage_sprint_items, project)
-    end
-
-    def menu_src
-      menu_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)
+    def load_backlogs
+      @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
+      @stories_by_sprint_id = WorkPackage
+                               .where(sprint: @sprints, project: @project)
+                               .includes(:type, :status)
+                               .order_by_position
+                               .group_by(&:sprint_id)
+      @active_sprint_ids = @sprints.select(&:active?).map(&:id)
+      @inbox_work_packages = Backlog.inbox_for(project: @project)
     end
   end
 end

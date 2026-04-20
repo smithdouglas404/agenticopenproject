@@ -41,4 +41,17 @@ RSpec.describe OpenProject::Backlogs::Engine do
       )
     end
   end
+
+  describe "project menu" do
+    it "points the backlog entries at the canonical backlog route" do
+      project = create(:project)
+      menu_items = Redmine::MenuManager.items(:project_menu, project).root.children
+
+      backlogs = menu_items.detect { |item| item.name == :backlogs }
+      backlog = backlogs.children.detect { |item| item.name == :backlog }
+
+      expect(backlogs.url(project)).to eq(controller: "/backlogs/backlog", action: :show)
+      expect(backlog.url(project)).to eq(controller: "/backlogs/backlog", action: :show)
+    end
+  end
 end

@@ -28,14 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class RbTaskboardsController < RbApplicationController
-  menu_item :backlogs
+require "spec_helper"
 
-  def show
-    @board = @sprint.task_board_for(@project)
+RSpec.describe "Backlogs::Taskboard", type: :rails_request do
+  shared_let(:project) { create(:project) }
+  shared_let(:sprint) { create(:agile_sprint, project:) }
 
-    return redirect_to(project_work_package_board_path(@project, @board)) if @board
+  describe "legacy (version 17.3) sprint taskboard route" do
+    it "redirects to the namespaced taskboard route" do
+      get "/projects/#{project.identifier}/sprints/#{sprint.id}/taskboard"
 
-    render_404
+      expect(response).to redirect_to("/projects/#{project.identifier}/backlogs/sprints/#{sprint.id}/taskboard")
+    end
+
+    it "preserves the query string" do
+      get "/projects/#{project.identifier}/sprints/#{sprint.id}/taskboard", params: { foo: "bar" }
+
+      expect(response).to redirect_to("/projects/#{project.identifier}/backlogs/sprints/#{sprint.id}/taskboard?foo=bar")
+    end
   end
 end

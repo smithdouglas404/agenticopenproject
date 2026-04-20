@@ -28,33 +28,27 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class StoryComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
+require "rails_helper"
 
-    attr_reader :story, :sprint, :project, :current_user
+RSpec.describe Backlogs::BurndownChartController do
+  shared_let(:type_feature) { create(:type_feature) }
+  shared_let(:type_task) { create(:type_task) }
+  shared_let(:user) { create(:admin) }
+  shared_let(:project) { create(:project) }
+  shared_let(:status) { create(:status, name: "status 1", is_default: true) }
+  shared_let(:sprint) { create(:agile_sprint, project:) }
 
-    def initialize(story:, sprint:, project:, current_user: User.current)
-      super()
+  current_user { user }
 
-      @story = story
-      @sprint = sprint
-      @project = project
-      @current_user = current_user
-    end
+  describe "GET #show" do
+    it "renders under the namespaced controller runtime", :aggregate_failures do
+      get :show, params: { project_id: project.id, sprint_id: sprint.id }, format: :html
 
-    private
-
-    def story_points
-      story.story_points || 0
-    end
-
-    def draggable?
-      current_user.allowed_in_project?(:manage_sprint_items, project)
-    end
-
-    def menu_src
-      menu_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)
+      expect(response).to be_successful
+      expect(response).to render_template("backlogs/burndown_chart/show")
+      expect(controller.controller_path).to eq("backlogs/burndown_chart")
+      expect(assigns(:project)).to eq(project)
+      expect(assigns(:sprint)).to eq(sprint)
     end
   end
 end

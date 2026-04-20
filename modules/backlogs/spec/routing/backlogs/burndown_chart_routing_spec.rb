@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,13 +30,22 @@
 
 require "spec_helper"
 
-RSpec.describe RbTaskboardsController do
+RSpec.describe Backlogs::BurndownChartController do
   describe "routing" do
     it {
-      expect(get("/projects/project_42/sprints/21/taskboard")).to route_to(controller: "rb_taskboards",
-                                                                           action: "show",
-                                                                           project_id: "project_42",
-                                                                           sprint_id: "21")
+      expect(get("/projects/project_42/backlogs/sprints/21/burndown_chart")).to route_to(
+        controller: "backlogs/burndown_chart",
+        action: "show",
+        project_id: "project_42",
+        sprint_id: "21"
+      )
+    }
+  end
+
+  describe "named routing" do
+    it {
+      expect(project_backlogs_sprint_burndown_chart_path("project_42", "21"))
+        .to eq("/projects/project_42/backlogs/sprints/21/burndown_chart")
     }
   end
 end

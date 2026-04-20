@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe RbSprintsController do
+RSpec.describe Backlogs::SprintsController do
   describe "new actions" do
     shared_let(:type_feature) { create(:type_feature) }
     shared_let(:type_task) { create(:type_task) }
@@ -70,7 +70,7 @@ RSpec.describe RbSprintsController do
       let!(:sprint) { create(:agile_sprint, project:) }
 
       it "responds with success", :aggregate_failures do
-        get :edit_dialog, params: { project_id: project.id, id: sprint.id }, format: :turbo_stream
+        get :edit_dialog, params: { project_id: project.id, sprint_id: sprint.id }, format: :turbo_stream
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
@@ -83,7 +83,7 @@ RSpec.describe RbSprintsController do
         let(:permissions) { all_permissions - [:create_sprints] }
 
         it "responds with forbidden", :aggregate_failures do
-          get :edit_dialog, params: { project_id: project.id, id: sprint.id }, format: :turbo_stream
+          get :edit_dialog, params: { project_id: project.id, sprint_id: sprint.id }, format: :turbo_stream
 
           expect(response).not_to be_successful
           expect(response).to have_http_status :forbidden
@@ -106,7 +106,7 @@ RSpec.describe RbSprintsController do
         expect(response).to have_http_status :ok
         expect(response.body).to include("turbo-stream")
         expect(response.body).to include("action=\"redirect_to\"")
-        expect(response.body).to include(backlogs_project_backlogs_path(project))
+        expect(response.body).to include(project_backlogs_backlog_path(project))
         expect(project.reload.sprints.last.name).to eq("My Sprint")
         expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
       end
@@ -123,19 +123,19 @@ RSpec.describe RbSprintsController do
       end
     end
 
-    describe "PUT #update_agile_sprint" do
+    describe "PUT #update" do
       let!(:sprint) { create(:agile_sprint, name: "Original sprint name", project:) }
 
       let(:params) do
         {
-          id: sprint.id,
           project_id: project.id,
+          sprint_id: sprint.id,
           sprint: { name: "Changed sprint name" }
         }
       end
 
-      it "responds with success", :aggregate_failures do
-        put :update_agile_sprint, format: :turbo_stream, params: params
+      it "responds with success via the namespaced update action", :aggregate_failures do
+        put :update, format: :turbo_stream, params: params
 
         expect(response).to be_successful
         expect(response).to have_http_status :ok
@@ -144,13 +144,15 @@ RSpec.describe RbSprintsController do
         assert_select %(turbo-stream[action="update"][target="backlogs-sprint-header-component-#{sprint.id}"][method="morph"])
         expect(response.body).to include("Successful update.")
         expect(sprint.reload.name).to eq("Changed sprint name")
+        expect(controller.controller_path).to eq("backlogs/sprints")
+        expect(controller.action_name).to eq("update")
       end
 
       context "without the 'create_sprints' permission" do
         let(:permissions) { all_permissions - [:create_sprints] }
 
         it "responds with forbidden", :aggregate_failures do
-          put :update_agile_sprint, format: :turbo_stream, params: params
+          put :update, format: :turbo_stream, params: params
 
           expect(response).not_to be_successful
           expect(response).to have_http_status :forbidden
@@ -162,7 +164,7 @@ RSpec.describe RbSprintsController do
       let!(:sprint) { create(:agile_sprint, project:) }
       let(:service_result) { ServiceResult.success(result: sprint.tap { it.status = "active" }) }
       let(:service) { instance_double(Sprints::StartService, call: service_result) }
-      let(:request_params) { { project_id: project.id, id: sprint.id } }
+      let(:request_params) { { project_id: project.id, sprint_id: sprint.id } }
 
       before do
         allow(Sprints::StartService)
@@ -261,7 +263,7 @@ RSpec.describe RbSprintsController do
         it "redirects back to the backlog and leaves the sprint in planning", :aggregate_failures do
           post :start, params: request_params
 
-          expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+          expect(response).to redirect_to(project_backlogs_backlog_path(project))
           expect(flash[:alert]).to eq(
             I18n.t(:notice_unsuccessful_start_with_reason, reason: "something went wrong")
           )
@@ -275,7 +277,7 @@ RSpec.describe RbSprintsController do
         it "redirects back with the default start failure message", :aggregate_failures do
           post :start, params: request_params
 
-          expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+          expect(response).to redirect_to(project_backlogs_backlog_path(project))
           expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
           expect(service).to have_received(:call)
         end
@@ -293,7 +295,7 @@ RSpec.describe RbSprintsController do
         it "redirects back to the backlog and leaves the sprint in planning", :aggregate_failures do
           post :start, params: request_params
 
-          expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+          expect(response).to redirect_to(project_backlogs_backlog_path(project))
           expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
           expect(service).to have_received(:call)
         end
@@ -317,7 +319,7 @@ RSpec.describe RbSprintsController do
         it "redirects back with the default start failure message", :aggregate_failures do
           post :start, params: request_params
 
-          expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+          expect(response).to redirect_to(project_backlogs_backlog_path(project))
           expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
           expect(service).to have_received(:call)
         end
@@ -326,7 +328,7 @@ RSpec.describe RbSprintsController do
 
     describe "POST #finish" do
       let!(:sprint) { create(:agile_sprint, project:, status: "active") }
-      let(:request_params) { { project_id: project.id, id: sprint.id } }
+      let(:request_params) { { project_id: project.id, sprint_id: sprint.id } }
       let(:service_result) do
         ServiceResult.success(
           result: sprint.tap { |finished_sprint| finished_sprint.status = "completed" }
@@ -359,7 +361,7 @@ RSpec.describe RbSprintsController do
 
           expect(response).to be_successful
           expect(response.body).to include("action=\"redirect_to\"")
-          expect(response.body).to include(backlogs_project_backlogs_path(project))
+          expect(response.body).to include(project_backlogs_backlog_path(project))
           expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
           expect(service).to have_received(:call)
         end
@@ -382,7 +384,7 @@ RSpec.describe RbSprintsController do
 
         expect(response).to be_successful
         expect(response.body).to include("action=\"redirect_to\"")
-        expect(response.body).to include(backlogs_project_backlogs_path(project))
+        expect(response.body).to include(project_backlogs_backlog_path(project))
         expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
         expect(service).to have_received(:call)
       end
@@ -393,7 +395,7 @@ RSpec.describe RbSprintsController do
         it "redirects back to the backlog", :aggregate_failures do
           post :finish, params: request_params
 
-          expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+          expect(response).to redirect_to(project_backlogs_backlog_path(project))
           expect(flash[:alert]).to eq(
             I18n.t(:notice_unsuccessful_finish_with_reason, reason: "something went wrong")
           )
@@ -407,7 +409,7 @@ RSpec.describe RbSprintsController do
         it "redirects back with the default finish failure message", :aggregate_failures do
           post :finish, params: request_params
 
-          expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+          expect(response).to redirect_to(project_backlogs_backlog_path(project))
           expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_finish))
           expect(service).to have_received(:call)
         end
@@ -431,14 +433,14 @@ RSpec.describe RbSprintsController do
         it "redirects back with the default finish failure message", :aggregate_failures do
           post :finish, params: request_params
 
-          expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+          expect(response).to redirect_to(project_backlogs_backlog_path(project))
           expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_finish))
           expect(service).to have_received(:call)
         end
       end
 
       context "when moving to the top of the backlog" do
-        let(:request_params) { { project_id: project.id, id: sprint.id, unfinished_action: "move_to_top_of_backlog" } }
+        let(:request_params) { { project_id: project.id, sprint_id: sprint.id, unfinished_action: "move_to_top_of_backlog" } }
 
         it "passes unfinished_action to the service and redirects via turbo stream", :aggregate_failures do
           post :finish, format: :turbo_stream, params: request_params
@@ -451,7 +453,7 @@ RSpec.describe RbSprintsController do
       end
 
       context "when moving to the bottom of the backlog" do
-        let(:request_params) { { project_id: project.id, id: sprint.id, unfinished_action: "move_to_bottom_of_backlog" } }
+        let(:request_params) { { project_id: project.id, sprint_id: sprint.id, unfinished_action: "move_to_bottom_of_backlog" } }
 
         it "passes unfinished_action to the service and redirects via turbo stream", :aggregate_failures do
           post :finish, format: :turbo_stream, params: request_params

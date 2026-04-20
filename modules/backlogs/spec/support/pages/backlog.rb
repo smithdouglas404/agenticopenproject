@@ -334,8 +334,17 @@ module Pages
       click_on "Cancel"
     end
 
+    def visit!
+      super
+
+      expect(page).to have_css("turbo-frame#backlogs_container", wait: 10)
+      expect(page).to have_css("#owner_backlogs_container", wait: 10)
+      expect(page).to have_css("#sprint_backlogs_container", wait: 10)
+      wait_for_network_idle
+    end
+
     def path
-      backlog_backlogs_project_backlogs_path(project)
+      project_backlogs_backlog_path(project)
     end
 
     def within_story_menu(story, &)
@@ -356,7 +365,7 @@ module Pages
       details_view.expect_tab :overview
       details_view.expect_subject
 
-      expect(page).to have_current_path details_backlogs_project_backlogs_path(story.project, story)
+      expect(page).to have_current_path project_backlogs_backlog_details_path(story.project, story)
       wait_for_network_idle
 
       details_view

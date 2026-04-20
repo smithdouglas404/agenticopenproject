@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,15 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+require "rails_helper"
 
-RSpec.describe RbBurndownChartsController do
-  describe "routing" do
-    it {
-      expect(get("/projects/project_42/sprints/21/burndown_chart")).to route_to(controller: "rb_burndown_charts",
-                                                                                action: "show",
-                                                                                project_id: "project_42",
-                                                                                sprint_id: "21")
-    }
+RSpec.describe Backlogs::BacklogController do
+  shared_let(:type_feature) { create(:type_feature) }
+  shared_let(:type_task) { create(:type_task) }
+  shared_let(:user) { create(:admin) }
+  shared_let(:project) { create(:project) }
+  shared_let(:status) { create(:status, name: "status 1", is_default: true) }
+  shared_let(:sprint) { create(:agile_sprint, project:) }
+
+  current_user { user }
+
+  describe "GET #show" do
+    it "loads the backlog page and preserves the backlog menu item", :aggregate_failures do
+      get :show, params: { project_id: project.id }, format: :html
+
+      expect(response).to be_successful
+      expect(response).to render_template("backlogs/backlog/show")
+      expect(assigns(:project)).to eq(project)
+      expect(assigns(:sprints)).to be_present
+      expect(controller.controller_path).to eq("backlogs/backlog")
+      expect(controller.action_name).to eq("show")
+      expect(controller.current_menu_item).to eq(:backlog)
+    end
   end
 end

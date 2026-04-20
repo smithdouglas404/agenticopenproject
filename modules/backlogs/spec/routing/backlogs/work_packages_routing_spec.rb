@@ -28,14 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class RbBurndownChartsController < RbApplicationController
-  helper :burndown_charts
+require "spec_helper"
 
-  def show
-    @burndown = Burndown.new(@sprint, @project) if @sprint.date_range_set?
+RSpec.describe Backlogs::WorkPackagesController do
+  describe "routing" do
+    it {
+      expect(put("/projects/project_42/backlogs/sprints/21/work_packages/85/move")).to route_to(
+        controller: "backlogs/work_packages",
+        action: "move",
+        project_id: "project_42",
+        sprint_id: "21",
+        id: "85"
+      )
+    }
 
-    respond_to do |format|
-      format.html { render layout: true }
-    end
+    it {
+      expect(post("/projects/project_42/backlogs/sprints/21/work_packages/85/reorder")).to route_to(
+        controller: "backlogs/work_packages",
+        action: "reorder",
+        project_id: "project_42",
+        sprint_id: "21",
+        id: "85"
+      )
+    }
+
+    it {
+      expect(get("/projects/project_42/backlogs/sprints/21/work_packages/85/menu")).to route_to(
+        controller: "backlogs/work_packages",
+        action: "menu",
+        project_id: "project_42",
+        sprint_id: "21",
+        id: "85"
+      )
+    }
   end
 end
