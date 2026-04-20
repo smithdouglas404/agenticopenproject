@@ -35,6 +35,8 @@
 # abort the job (leaving the setting as classic); the instance is either under
 # active load or there is a code bug.
 class ProjectIdentifiers::FinishSemanticConversionJob < ApplicationJob
+  queue_with_priority :high
+
   MAX_SWEEPS = 3
 
   def perform(*)
