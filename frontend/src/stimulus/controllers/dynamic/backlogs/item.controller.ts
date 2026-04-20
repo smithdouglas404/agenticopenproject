@@ -30,23 +30,27 @@ import { Controller } from '@hotwired/stimulus';
 import * as Turbo from '@hotwired/turbo';
 import type { TurboVisitEvent } from '@hotwired/turbo';
 
+const DRAG_MOVEMENT_THRESHOLD = 5;
 
-export default class StoryController extends Controller<HTMLElement> implements EventListenerObject {
+export default class ItemController extends Controller<HTMLElement> implements EventListenerObject {
   static values = {
     id: Number,
     splitUrl: String,
     fullUrl: String,
   };
 
+  static classes = ['selected'];
+
   declare idValue:number;
   declare splitUrlValue:string;
   declare fullUrlValue:string;
-
-  static classes = ['selected'];
   declare readonly selectedClass:string;
 
   private abortController:AbortController|null = null;
   private clickTimeout:number|null = null;
+  private activePointerId:number|null = null;
+  private pointerOrigin:{ x:number; y:number }|null = null;
+  private suppressNextClick = false;
 
   connect():void {
     this.abortController = new AbortController();
@@ -55,9 +59,13 @@ export default class StoryController extends Controller<HTMLElement> implements 
     this.element.addEventListener('click', this, { signal });
     this.element.addEventListener('dblclick', this, { signal });
     this.element.addEventListener('keydown', this, { signal });
-    document.addEventListener('turbo:visit', (event:TurboVisitEvent) => {
+    this.element.addEventListener('pointerdown', this, { signal });
+    this.element.addEventListener('pointermove', this, { signal });
+    this.element.addEventListener('pointerup', this, { signal });
+    this.element.addEventListener('pointercancel', this, { signal });
+    document.addEventListener('turbo:visit', ((event:TurboVisitEvent) => {
       this.syncSelectionFromUrl(event.detail.url);
-    }, { signal });
+    }) as EventListener, { signal });
 
     this.syncSelectionFromUrl(window.location.href);
   }
@@ -70,15 +78,32 @@ export default class StoryController extends Controller<HTMLElement> implements 
       clearTimeout(this.clickTimeout);
       this.clickTimeout = null;
     }
+
+    this.resetPointerState();
+    this.suppressNextClick = false;
   }
 
-  private syncSelectionFromUrl(locationUrl:string):void {
-    const { pathname } = new URL(locationUrl, window.location.origin);
-    const [, id] = /\/details\/(\d+)/.exec(pathname) ?? [];
-    if (id !== undefined && Number(id) === this.idValue) {
-      this.markAsSelected();
-    } else {
-      this.unmarkAsSelected();
+  handleEvent(event:Event):void {
+    switch (event.type) {
+      case 'click':
+        this.onClick(event as MouseEvent);
+        break;
+      case 'dblclick':
+        this.onDoubleClick(event as MouseEvent);
+        break;
+      case 'keydown':
+        this.onKeydown(event as KeyboardEvent);
+        break;
+      case 'pointerdown':
+        this.onPointerDown(event as PointerEvent);
+        break;
+      case 'pointermove':
+        this.onPointerMove(event as PointerEvent);
+        break;
+      case 'pointerup':
+      case 'pointercancel':
+        this.onPointerEnd(event as PointerEvent);
+        break;
     }
   }
 
@@ -92,17 +117,14 @@ export default class StoryController extends Controller<HTMLElement> implements 
     this.element.removeAttribute('aria-current');
   }
 
-  handleEvent(event:Event):void {
-    switch (event.type) {
-      case 'click':
-        this.onClick(event as MouseEvent);
-        break;
-      case 'dblclick':
-        this.onDblClick(event as MouseEvent);
-        break;
-      case 'keydown':
-        this.onKeydown(event as KeyboardEvent);
-        break;
+  private syncSelectionFromUrl(locationUrl:string):void {
+    const { pathname } = new URL(locationUrl, window.location.origin);
+    const [, id] = /\/details\/(\d+)/.exec(pathname) ?? [];
+
+    if (id !== undefined && Number(id) === this.idValue) {
+      this.markAsSelected();
+    } else {
+      this.unmarkAsSelected();
     }
   }
 
@@ -110,8 +132,12 @@ export default class StoryController extends Controller<HTMLElement> implements 
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 
-    if (this.shouldIgnoreMouseTarget(target)) return;
+    if (this.suppressNextClick) {
+      this.suppressNextClick = false;
+      return;
+    }
 
+    if (this.shouldIgnoreMouseTarget(target)) return;
     if (this.clickTimeout !== null) return;
 
     this.clickTimeout = window.setTimeout(() => {
@@ -120,10 +146,9 @@ export default class StoryController extends Controller<HTMLElement> implements 
     }, 250);
   }
 
-  private onDblClick(event:MouseEvent):void {
+  private onDoubleClick(event:MouseEvent):void {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
-
     if (this.shouldIgnoreMouseTarget(target)) return;
 
     if (this.clickTimeout !== null) {
@@ -139,7 +164,6 @@ export default class StoryController extends Controller<HTMLElement> implements 
 
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
-
     if (this.shouldIgnoreKeyboardTarget(target)) return;
 
     event.preventDefault();
@@ -148,6 +172,39 @@ export default class StoryController extends Controller<HTMLElement> implements 
     } else {
       this.openSplitPane();
     }
+  }
+
+  private onPointerDown(event:PointerEvent):void {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (this.shouldIgnoreMouseTarget(target)) return;
+
+    this.activePointerId = event.pointerId;
+    this.pointerOrigin = { x: event.clientX, y: event.clientY };
+    this.suppressNextClick = false;
+  }
+
+  private onPointerMove(event:PointerEvent):void {
+    if (this.activePointerId !== event.pointerId || this.pointerOrigin === null) return;
+    if (this.suppressNextClick) return;
+
+    const deltaX = event.clientX - this.pointerOrigin.x;
+    const deltaY = event.clientY - this.pointerOrigin.y;
+
+    if (Math.hypot(deltaX, deltaY) >= DRAG_MOVEMENT_THRESHOLD) {
+      this.suppressNextClick = true;
+    }
+  }
+
+  private onPointerEnd(event:PointerEvent):void {
+    if (this.activePointerId !== event.pointerId) return;
+
+    this.resetPointerState();
+  }
+
+  private resetPointerState():void {
+    this.activePointerId = null;
+    this.pointerOrigin = null;
   }
 
   private openSplitPane():void {
@@ -163,16 +220,14 @@ export default class StoryController extends Controller<HTMLElement> implements 
       'a',
       'button',
       'clipboard-copy',
-      '[data-drag-handle]',
-    ].some((selector) => target.closest(selector) !== null);
-  }
-
-  private shouldIgnoreKeyboardTarget(target:HTMLElement):boolean {
-    return this.shouldIgnoreMouseTarget(target) || [
       'input',
       'textarea',
       'select',
       "[contenteditable='true']",
     ].some((selector) => target.closest(selector) !== null);
+  }
+
+  private shouldIgnoreKeyboardTarget(target:HTMLElement):boolean {
+    return this.shouldIgnoreMouseTarget(target);
   }
 }
