@@ -106,13 +106,5 @@ module Agile
     end
 
     def to_s = name
-
-    def api_resource_link_name
-      # This is necessary to make the API resource links match the sprint property name.
-      # E.g., when grouping by a sprint in the WP table.
-      # Since the property is called `sprint`, but the model_name is `agile_sprint`, there would
-      # otherwise be a mismatch. Avoid that:
-      :sprint
-    end
   end
 end

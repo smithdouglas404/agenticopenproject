@@ -392,10 +392,4 @@ RSpec.describe Agile::Sprint do
       expect(sprint.to_s).to eq("Sprint 1")
     end
   end
-
-  describe "#api_resource_link_name" do
-    it "returns the resource link name" do
-      expect(sprint.api_resource_link_name).to eq(:sprint)
-    end
-  end
 end

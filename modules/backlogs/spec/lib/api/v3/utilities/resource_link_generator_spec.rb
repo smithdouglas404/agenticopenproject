@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,47 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module Utilities
-      module ResourceLinkGenerator
-        class << self
-          include ::API::V3::Utilities::PathHelper
+require "spec_helper"
 
-          def make_link(record)
-            if record.respond_to?(:id)
-              path_method = determine_path_method(record)
-              record_identifier = record.id
-              api_v3_paths.send(path_method, record_identifier)
-            end
-          rescue NoMethodError
-            nil
-          end
+RSpec.describe API::V3::Utilities::ResourceLinkGenerator do
+  include API::V3::Utilities::PathHelper
 
-          private
-
-          def determine_path_method(record)
-            # Since not all things are equally named between APIv3 and the rails code,
-            # we need to convert some names manually
-            case record
-            when Project
-              :project
-            when IssuePriority
-              :priority
-            when AnonymousUser, DeletedUser, SystemUser
-              :user
-            when Journal
-              :activity
-            when Changeset
-              :revision
-            when ::CustomField::Hierarchy::HierarchyItemAdapter
-              :custom_field_item
-            else
-              record.class.model_name.singular
-            end
-          end
-        end
-      end
+  describe ".make_link" do
+    it "resolves an Agile::Sprint to the sprint API path" do
+      sprint = build_stubbed(:agile_sprint)
+      expect(described_class.make_link(sprint)).to eql api_v3_paths.sprint(sprint.id)
     end
   end
 end

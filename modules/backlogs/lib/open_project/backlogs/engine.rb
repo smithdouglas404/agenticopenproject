@@ -131,6 +131,7 @@ module OpenProject::Backlogs
     patch_with_namespace :WorkPackages, :BaseContract
     patch_with_namespace :WorkPackages, :UpdateContract
     patch_with_namespace :API, :V3, :WorkPackages, :EagerLoading, :Checksum
+    patch_with_namespace :API, :V3, :Utilities, :ResourceLinkGenerator
 
     config.to_prepare do
       next if Versions::BaseContract.include?(OpenProject::Backlogs::Patches::Versions::BaseContractPatch)

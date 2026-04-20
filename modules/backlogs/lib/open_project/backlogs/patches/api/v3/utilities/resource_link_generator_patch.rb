@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,47 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module API
-  module V3
-    module Utilities
-      module ResourceLinkGenerator
-        class << self
-          include ::API::V3::Utilities::PathHelper
+module OpenProject::Backlogs::Patches::API::V3::Utilities::ResourceLinkGeneratorPatch
+  extend ActiveSupport::Concern
 
-          def make_link(record)
-            if record.respond_to?(:id)
-              path_method = determine_path_method(record)
-              record_identifier = record.id
-              api_v3_paths.send(path_method, record_identifier)
-            end
-          rescue NoMethodError
-            nil
-          end
+  included do
+    singleton_class.prepend(ClassMethods)
+  end
 
-          private
+  module ClassMethods
+    private
 
-          def determine_path_method(record)
-            # Since not all things are equally named between APIv3 and the rails code,
-            # we need to convert some names manually
-            case record
-            when Project
-              :project
-            when IssuePriority
-              :priority
-            when AnonymousUser, DeletedUser, SystemUser
-              :user
-            when Journal
-              :activity
-            when Changeset
-              :revision
-            when ::CustomField::Hierarchy::HierarchyItemAdapter
-              :custom_field_item
-            else
-              record.class.model_name.singular
-            end
-          end
-        end
-      end
+    def determine_path_method(record)
+      return :sprint if record.is_a?(Agile::Sprint)
+
+      super
     end
   end
 end
