@@ -152,11 +152,9 @@ RSpec.describe Backlogs::InboxController do
       let(:target_id) { "inbox" }
       let(:prev_id) { work_packages.first.id }
 
-      it "replaces only the inbox component without a flash", :aggregate_failures do
-        expect(response).to be_successful
-        expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-inbox-component-#{project.id}"
-        expect(response).not_to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+      it "responds with 204 and no turbo stream body", :aggregate_failures do
+        expect(response).to have_http_status :no_content
+        expect(response.body).to be_blank
       end
 
       it "moves the work package to position 2" do

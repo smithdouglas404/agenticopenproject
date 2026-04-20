@@ -108,6 +108,25 @@ RSpec.describe Backlogs::WorkPackagesController do
   describe "PUT #move" do
     let(:story_in_agile_sprint) { create(:work_package, status:, sprint: agile_sprint, project:) }
 
+    context "when reordering within the same sprint" do
+      let!(:preceding_story) { create(:work_package, status:, sprint: agile_sprint, project:, position: 1) }
+
+      it "responds with 204 and no turbo stream body", :aggregate_failures do
+        put :move, params: {
+                     project_id: project.id,
+                     sprint_id: agile_sprint.id,
+                     id: story_in_agile_sprint.id,
+                     target_id: "sprint:#{agile_sprint.id}",
+                     prev_id: preceding_story.id
+                   },
+                   format: :turbo_stream
+
+        expect(response).to have_http_status :no_content
+        expect(response.body).to be_blank
+        expect(story_in_agile_sprint.reload.position).to eq(2)
+      end
+    end
+
     context "with another Agile::Sprint as target" do
       let(:other_agile_sprint) { create(:agile_sprint, name: "Agile Sprint 2", project:) }
 

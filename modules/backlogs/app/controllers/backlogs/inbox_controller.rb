@@ -78,6 +78,8 @@ module Backlogs
 
       return failure_response(call.message) unless call.success?
 
+      return head :no_content if target_type == "inbox"
+
       replace_inbox_component_via_turbo_stream
       replace_sprint_component_via_turbo_stream(sprint_id) if target_type == "sprint"
       respond_with_turbo_streams
