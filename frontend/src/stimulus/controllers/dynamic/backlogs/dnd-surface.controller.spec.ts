@@ -59,7 +59,7 @@ interface SurfaceTestController {
   })|null;
   mutationObserver:MutationObserver|null;
   registrationCleanupCallbacks:(() => void)[];
-  activationConstraintsFor(event:{ pointerType?:string; target?:EventTarget|null }):ConstraintWithValue[];
+  activationConstraintsFor(event:{ pointerType?:string; target?:EventTarget|null }, sourceElement?:Element|null):ConstraintWithValue[];
   onBeforeDragStart(event:SurfaceTestEvent):void;
   onDragEnd(event:SurfaceTestEvent):Promise<void>;
   persistMove(dropUrl:string, data:FormData):Promise<boolean>;
@@ -365,24 +365,33 @@ describe('Backlogs::DndSurfaceController', () => {
     expect(placeholder.hasAttribute('data-drop-url')).toBeFalse();
   });
 
-  it('uses a distance threshold for mouse input and a press delay for touch input', async () => {
+  it('uses distance-only for direct mouse targets, delay and distance for descendant mouse targets, and a press delay for touch input', async () => {
     appendTemplate(surfaceTemplate);
     await nextFrame();
 
     const controller = surfaceTestController();
+    const source = document.getElementById('work_package_1')!;
+    const descendant = document.createElement('span');
+    source.appendChild(descendant);
 
-    const mouseConstraints = controller.activationConstraintsFor({
+    const directMouseConstraints = controller.activationConstraintsFor({
       pointerType: 'mouse',
-      target: document.getElementById('work_package_1'),
-    });
+      target: source,
+    }, source);
+    const descendantMouseConstraints = controller.activationConstraintsFor({
+      pointerType: 'mouse',
+      target: descendant,
+    }, source);
     const touchConstraints = controller.activationConstraintsFor({
       pointerType: 'touch',
-      target: document.getElementById('work_package_1'),
-    });
+      target: source,
+    }, source);
 
-    expect(mouseConstraints.map((constraint) => constraint.constructor.name)).toEqual(['DelayConstraint', 'DistanceConstraint']);
-    expect(mouseConstraints[0].options.value).toBe(200);
-    expect(mouseConstraints[1].options.value).toBe(5);
+    expect(directMouseConstraints.map((constraint) => constraint.constructor.name)).toEqual(['DistanceConstraint']);
+    expect(directMouseConstraints[0].options.value).toBe(5);
+    expect(descendantMouseConstraints.map((constraint) => constraint.constructor.name)).toEqual(['DelayConstraint', 'DistanceConstraint']);
+    expect(descendantMouseConstraints[0].options.value).toBe(200);
+    expect(descendantMouseConstraints[1].options.value).toBe(5);
     expect(touchConstraints.map((constraint) => constraint.constructor.name)).toEqual(['DelayConstraint']);
     expect(touchConstraints[0].options.value).toBe(250);
   });

@@ -117,4 +117,21 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
       expect(row["data-drop-url"]).to end_with(move_project_backlogs_inbox_path(project, work_package))
     end
   end
+
+  context "when the current user lacks permission to manage sprint items" do
+    let(:user) do
+      create(:user,
+             member_with_roles: {
+               project => create(:project_role, permissions: %i[view_work_packages edit_work_packages])
+             })
+    end
+
+    subject(:row) { page.find(".Box-row#work_package_#{work_package.id}") }
+
+    it "does not mark the row as draggable" do
+      expect(row[:class]).not_to include("Box-row--draggable")
+      expect(row["data-draggable-id"]).to be_nil
+      expect(row["data-drop-url"]).to be_nil
+    end
+  end
 end

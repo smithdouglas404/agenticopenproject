@@ -60,20 +60,38 @@ module Backlogs
     def row_options
       {
         id: dom_id(work_package),
-        classes: "Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable",
-        data: {
-          draggable_id: work_package.id,
-          draggable_type: "story",
-          drop_url: move_project_backlogs_inbox_path(project, work_package),
-          story: true,
-          controller: "backlogs--item",
-          backlogs__item_id_value: work_package.id,
-          backlogs__item_split_url_value: project_backlogs_backlog_details_path(project, work_package),
-          backlogs__item_full_url_value: work_package_path(work_package),
-          backlogs__item_selected_class: "Box-row--blue",
-          test_selector: card_test_selector
-        },
+        classes: classes_attribute,
+        data: data_attribute,
         tabindex: 0
+      }
+    end
+
+    def classes_attribute
+      classes = "Box-row--hover-blue Box-row--focus-gray Box-row--clickable"
+      classes += " Box-row--draggable" if draggable?
+
+      classes
+    end
+
+    def data_attribute
+      draggable_item_config.merge(
+        story: true,
+        controller: "backlogs--item",
+        backlogs__item_id_value: work_package.id,
+        backlogs__item_split_url_value: project_backlogs_backlog_details_path(project, work_package),
+        backlogs__item_full_url_value: work_package_path(work_package),
+        backlogs__item_selected_class: "Box-row--blue",
+        test_selector: card_test_selector
+      )
+    end
+
+    def draggable_item_config
+      return {} unless draggable?
+
+      {
+        draggable_id: work_package.id,
+        draggable_type: "story",
+        drop_url: move_project_backlogs_inbox_path(project, work_package)
       }
     end
 

@@ -115,7 +115,7 @@ module Pages
     end
 
     def drag_work_package(moved, before: nil, into: nil)
-      raise ArgumentError, "You must specify a either before or into" unless before || into || (before && into)
+      raise ArgumentError, "You must specify either before or into" unless before.present? ^ into.present?
 
       moved_element = find(draggable_work_package_selector(moved))
       target_element, offset_y = if before
