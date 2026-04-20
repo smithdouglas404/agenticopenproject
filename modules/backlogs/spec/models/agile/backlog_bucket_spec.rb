@@ -31,7 +31,7 @@
 require "rails_helper"
 
 RSpec.describe Agile::BacklogBucket do
-  let(:project) { create(:project) }
+  shared_let(:project) { create(:project) }
 
   subject(:backlog_bucket) do
     described_class.new(name: "Bla Bla", project:)
@@ -77,6 +77,60 @@ RSpec.describe Agile::BacklogBucket do
       bucket2 = create(:backlog_bucket, project:, name: "baz")
 
       expect(described_class.order_alphabetically).to eq([bucket1, bucket2, bucket3])
+    end
+  end
+
+  describe ".for_project" do
+    shared_let(:other_project) { create(:project) }
+
+    shared_let(:bucket2) { create(:backlog_bucket, project:, name: "2") }
+    shared_let(:bucket1) { create(:backlog_bucket, project:, name: "1") }
+    shared_let(:other_bucket) { create(:backlog_bucket, project: other_project) }
+
+    shared_let(:wp_nil_in_bucket1) do
+      create(:work_package, project:, backlog_bucket: bucket1).tap { it.update_columns(position: nil) }
+    end
+    shared_let(:wp2_in_bucket1) { create(:work_package, project:, backlog_bucket: bucket1, position: 2) }
+    shared_let(:wp1_in_bucket1_first) { create(:work_package, project:, backlog_bucket: bucket1, position: 1) }
+
+    shared_let(:wp_in_bucket2) { create(:work_package, project:, backlog_bucket: bucket2) }
+
+    shared_let(:wp_unbucketed_nil) do
+      create(:work_package, project:, backlog_bucket: nil).tap { it.update_columns(position: nil) }
+    end
+    shared_let(:wp_unbucketed2) { create(:work_package, project:, backlog_bucket: nil, position: 2) }
+    shared_let(:wp_unbucketed1) { create(:work_package, project:, backlog_bucket: nil, position: 1) }
+
+    shared_let(:wp_other_project) { create(:work_package, project: other_project, backlog_bucket: other_bucket) }
+    shared_let(:wp_other_project_unbucketed) { create(:work_package, project: other_project, backlog_bucket: nil) }
+
+    subject(:result) { described_class.for_project(project) }
+
+    it "returns the project buckets followed by the inbox" do
+      expect(result).to match([bucket1, bucket2, be_a(described_class).and(be_new_record)])
+    end
+
+    it "does not include buckets from other projects" do
+      expect(result).not_to include(other_bucket)
+    end
+
+    it "appends an unsaved inbox bucket at the end" do
+      inbox = result.last
+      expect(inbox).to be_a(described_class)
+      expect(inbox).to be_new_record
+      expect(inbox).to have_attributes(name: I18n.t("label_inbox"))
+    end
+
+    it "inbox contains only unbucketed work packages from the project" do
+      expect(result.last.work_packages).to contain_exactly(wp_unbucketed2, wp_unbucketed1, wp_unbucketed_nil)
+    end
+
+    it "orders work packages within a bucket by position, with nil position last" do
+      expect(bucket1.work_packages.reload).to eq([wp1_in_bucket1_first, wp2_in_bucket1, wp_nil_in_bucket1])
+    end
+
+    it "orders inbox work packages by position, with nil position last" do
+      expect(result.last.work_packages.to_a).to eq([wp_unbucketed1, wp_unbucketed2, wp_unbucketed_nil])
     end
   end
 end
