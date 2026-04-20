@@ -110,7 +110,7 @@ module OAuthClients
             access_token: rack_access_token.access_token,
             token_type: rack_access_token.token_type, # :bearer
             refresh_token: rack_access_token.refresh_token,
-            expires_in: rack_access_token.raw_attributes[:expires_in],
+            expires_in: rack_access_token.raw_attributes[:expires_in] || @config.try(:default_expires_in),
             scope: rack_access_token.scope
           )
           oauth_client_token.save!
@@ -215,7 +215,7 @@ module OAuthClients
       success = oauth_client_token.update(
         access_token: rack_oauth2_access_token.access_token,
         refresh_token: rack_oauth2_access_token.refresh_token,
-        expires_in: rack_oauth2_access_token.expires_in
+        expires_in: rack_oauth2_access_token.expires_in || @config.try(:default_expires_in)
       )
 
       if success

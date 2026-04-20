@@ -29,40 +29,45 @@
 #++
 
 module Wikis
-  class XWikiProvider < Provider
-    AUTHENTICATION_METHODS = [
-      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
-      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
-    ].freeze
+  module Adapters
+    module Providers
+      module XWiki
+        module Queries
+          class UserQuery
+            include Dry::Monads[:result]
 
-    OIDC_CALLBACK_PATH = "oidc/authenticator/callback"
+            def initialize(wiki_provider)
+              @wiki_provider = wiki_provider
+            end
 
-    has_one :oauth_client, as: :integration, dependent: :destroy
-    has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
+            def call(access_token:)
+              response = get_userinfo(access_token)
+              return Failure("XWiki userinfo request failed (#{response.code})") unless response.is_a?(Net::HTTPSuccess)
 
-    store_attribute :options, :url, :string
-    store_attribute :options, :authentication_method, :string, default: "two_way_oauth2"
-    store_attribute :options, :wiki_audience, :string
-    store_attribute :options, :token_exchange_scope, :string
+              body = JSON.parse(response.body)
+              return Failure("XWiki userinfo response missing sub claim") if body["sub"].blank?
 
-    class << self
-      def registry_prefix = "xwiki"
-    end
+              Success(body["sub"])
+            rescue StandardError => e
+              Failure(e.message)
+            end
 
-    def extract_origin_user_id(token)
-      Wikis::Adapters::Providers::XWiki::Queries::UserQuery.new(self).call(access_token: token.access_token)
-    end
+            private
 
-    def authenticate_via_oauth2?
-      authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
-    end
+            def get_userinfo(access_token)
+              uri = URI.parse("#{@wiki_provider.url.chomp('/')}/oidc/userinfo")
+              http = Net::HTTP.new(uri.host, uri.port)
+              http.use_ssl = uri.scheme == "https"
 
-    def oauth_configuration
-      Wikis::Adapters::Providers::XWiki::OAuthConfiguration.new(self)
-    end
+              request = Net::HTTP::Get.new(uri.request_uri)
+              request["Authorization"] = "Bearer #{access_token}"
+              request["Accept"] = "application/json"
 
-    def oidc_redirect_uri
-      URI.join("#{url.chomp('/')}/", OIDC_CALLBACK_PATH).to_s
+              http.request(request)
+            end
+          end
+        end
+      end
     end
   end
 end

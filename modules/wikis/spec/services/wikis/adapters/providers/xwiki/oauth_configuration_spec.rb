@@ -84,60 +84,6 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::OAuthConfiguration do
     end
   end
 
-  describe "#extract_origin_user_id", :webmock do
-    let(:token) { instance_double(OAuthClientToken, access_token: "test-access-token") }
-    let(:userinfo_url) { "https://xwiki.example.com/xwiki/oidc/userinfo" }
-
-    context "when the userinfo endpoint returns a valid sub claim" do
-      before do
-        stub_request(:get, userinfo_url)
-          .with(headers: { "Authorization" => "Bearer test-access-token" })
-          .to_return(status: 200, body: { sub: "XWiki.jsmith" }.to_json, headers: { "Content-Type" => "application/json" })
-      end
-
-      it "returns Success with the sub claim" do
-        expect(config.extract_origin_user_id(token)).to eq(Dry::Monads::Success("XWiki.jsmith"))
-      end
-    end
-
-    context "when the userinfo endpoint returns an error" do
-      before do
-        stub_request(:get, userinfo_url).to_return(status: 401, body: "Unauthorized")
-      end
-
-      it "returns Failure with the status code" do
-        result = config.extract_origin_user_id(token)
-        expect(result).to be_failure
-        expect(result.failure).to include("401")
-      end
-    end
-
-    context "when the userinfo response is missing the sub claim" do
-      before do
-        stub_request(:get, userinfo_url)
-          .to_return(status: 200, body: { name: "John" }.to_json, headers: { "Content-Type" => "application/json" })
-      end
-
-      it "returns Failure" do
-        result = config.extract_origin_user_id(token)
-        expect(result).to be_failure
-        expect(result.failure).to include("sub claim")
-      end
-    end
-
-    context "when a network error occurs" do
-      before do
-        stub_request(:get, userinfo_url).to_raise(SocketError, "connection refused")
-      end
-
-      it "returns Failure" do
-        result = config.extract_origin_user_id(token)
-        expect(result).to be_failure
-        expect(result.failure).to include("connection refused")
-      end
-    end
-  end
-
   describe "#basic_rack_oauth_client" do
     subject(:rack_client) { config.basic_rack_oauth_client }
 
