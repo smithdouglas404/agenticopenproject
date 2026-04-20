@@ -92,7 +92,7 @@ module OpenProject::Backlogs
           #{visible_sprints.to_sql}
         ) AS visible_sprints
         ON visible_sprints.id = work_packages.sprint_id
-        AND "projects"."id" IN (#{projects_with_view_sprints.select(:id).to_sql})
+        AND work_packages.project_id IN (#{projects_with_view_sprints.select(:id).to_sql})
       SQL
     end
 
