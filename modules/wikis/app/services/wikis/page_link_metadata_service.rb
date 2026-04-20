@@ -37,7 +37,7 @@ module Wikis
 
     def call
       metadata = @page_links.group_by(&:provider).filter_map do |provider, pages|
-        result = provider.resolve("queries.pages").call(provider:, page_identifiers: pages.map(&:identifiers))
+        result = provider.resolve("queries.pages").call(page_identifiers: pages.map(&:identifier))
         result.value_or { add_wiki_error(it) and next }
       end
 
@@ -60,7 +60,7 @@ module Wikis
     end
 
     def result_scope(ids, join_expression)
-      PageLink.where(id: ids).order(:id).joins(join_expression).select("page_links.*, metadata.tile as title")
+      PageLink.where(id: ids).order(:id).joins(join_expression).select("wiki_page_links.*, metadata.title as title")
     end
 
     def metadata_join_sql(variable_placeholders, identifier_title_map)
@@ -70,8 +70,8 @@ module Wikis
     def build_placeholders(amount)
       variable_placeholders = Array.new(amount, "(?,?)").join(",")
       <<~SQL.squish
-        LEFT JOIN (VALUES #{variable_placeholders}) AS metadata (identifier, title)
-          ON metadata.tile = page_links.identifier
+        LEFT JOIN (VALUES #{variable_placeholders}) AS metadata(identifier, title)
+          ON metadata.identifier = wiki_page_links.identifier
       SQL
     end
   end
