@@ -90,7 +90,7 @@ export default class DndSurfaceController extends Controller<HTMLElement> {
     return new DragDropManager({
       plugins: (defaults) => [
         ...defaults,
-        Feedback.configure({ feedback: 'clone' }),
+        Feedback.configure({ feedback: 'default', dropAnimation: null }),
         AutoScroller.configure({ acceleration: 25, threshold: 0.2 }),
       ],
       sensors: [
