@@ -32,7 +32,7 @@ class Agile::BacklogBucket < ApplicationRecord
   self.table_name = "backlog_buckets"
 
   belongs_to :project
-  has_many :work_packages, inverse_of: :backlog_bucket, dependent: :nullify
+  has_many :work_packages, -> { order_by_position }, inverse_of: :backlog_bucket, dependent: :nullify
 
   validates :name, :project, presence: true
 end

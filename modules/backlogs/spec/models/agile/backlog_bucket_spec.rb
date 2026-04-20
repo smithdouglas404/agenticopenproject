@@ -60,5 +60,13 @@ RSpec.describe Agile::BacklogBucket do
       backlog_bucket.destroy!
       expect(WorkPackage.find(work_package_id).backlog_bucket_id).to be_nil
     end
+
+    it "orders work packages by position" do
+      work_package_nil = create(:work_package, project:, backlog_bucket:).tap { it.update_columns(position: nil) }
+      work_package2 = create(:work_package, project:, backlog_bucket:, position: 2)
+      work_package1 = create(:work_package, project:, backlog_bucket:, position: 1)
+
+      expect(backlog_bucket.work_packages.reload.to_a).to eq([work_package1, work_package2, work_package_nil])
+    end
   end
 end
