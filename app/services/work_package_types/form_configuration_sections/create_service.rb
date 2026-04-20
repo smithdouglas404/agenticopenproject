@@ -28,45 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Type::FormGroup
-  attr_accessor :key,
-                :attributes,
-                :type,
-                :display_name
+module WorkPackageTypes
+  module FormConfigurationSections
+    class CreateService < ::WorkPackageTypes::FormConfiguration::BaseService
+      def perform
+        group_type = params[:group_type]
+        query_props = params[:query_props]
+        groups = active_groups
+        key = SecureRandom.uuid
 
-  def initialize(type, key, attributes, display_name: nil)
-    self.key = key
-    self.attributes = attributes
-    self.type = type
-    self.display_name = display_name
-  end
+        section = if group_type.to_s == "query"
+                    query_call = build_query(query_props, name: "Embedded table: #{key}")
+                    return query_call if query_call.failure?
 
-  ##
-  # Returns the symbol key, if it is not translated
-  def internal_key?
-    key.is_a?(Symbol)
-  end
+                    ::Type::QueryGroup.new(type, key, query_call.result)
+                  else
+                    ::Type::AttributeGroup.new(type, key, [])
+                  end
 
-  ##
-  # Translate the given attribute group if its internal
-  # (== if it's a symbol)
-  def translated_key
-    if display_name.present?
-      display_name
-    elsif internal_key?
-      I18n.t(Type.default_groups[key], default: key.to_s)
-    elsif key.present?
-      key
-    else
-      I18n.t("types.edit.form_configuration.untitled_section")
+        groups << section
+
+        persist_groups(groups).tap do |call|
+          call.result = section if call.success?
+        end
+      end
     end
-  end
-
-  def members
-    raise SubclassResponsibilityError
-  end
-
-  def active_members(_project)
-    raise SubclassResponsibilityError
   end
 end

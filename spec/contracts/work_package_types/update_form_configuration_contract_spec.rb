@@ -218,6 +218,16 @@ module WorkPackageTypes
               .to include(hash_including(error: :query_invalid, group: "query_group"))
           end
         end
+
+        context "with a persisted embedded query owned by another user" do
+          let(:query) { create(:query, user: create(:user), name: "Existing embedded query") }
+
+          it "is valid" do
+            model.attribute_groups = [["query_group", [query]]]
+
+            expect(contract).to be_valid
+          end
+        end
       end
     end
   end

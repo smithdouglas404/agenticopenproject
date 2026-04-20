@@ -32,203 +32,142 @@ See COPYRIGHT and LICENSE files for more details.
     data: {
       group_type: @group[:type].to_s,
       group_key: @group[:key].to_s,
-      group_name: @group[:name],
       group_query: @group[:query],
-      section_first: first?,
-      section_last: last?,
-      edit_mode: (true if edit_mode?),
-      open_query_editor: (true if edit_mode? && query_group?),
-      cancel_rename_url: (cancel_rename_type_form_configuration_section_path(@type, @group[:key]) if edit_mode? && rename_via_server?)
-    }.compact
+      edit_mode: (true if edit_mode?)
+    }.compact.merge(draggable_item_config)
   ) do
-    render(border_box_container(mt: 3)) do |box|
-
-      # Section header
+    render(border_box_container(mt: 3, data: row_drop_target_config)) do |box|
       box.with_header(font_weight: :bold) do
-        flex_layout(justify_content: :space_between, align_items: :center) do |header|
-
-          # Left: drag handle + section name (text or editable field)
-          header.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
-            left.with_column(mr: 2) do
-              render(Primer::OpenProject::DragHandle.new(
-                classes: "section-handle",
-                "aria-label": t("types.edit.form_configuration.drag_to_reorder")
-              ))
-            end
-            left.with_column(flex: 1) do
-              if edit_mode?
+        if edit_mode?
+          primer_form_with(
+            scope: :section,
+            method: :patch,
+            url: update_path,
+            data: { turbo_stream: true }
+          ) do
+            flex_layout(align_items: :center) do |header|
+              header.with_column(flex: 1, mr: 2) do
                 render(Primer::Alpha::TextField.new(
-                  name: "section_name",
+                  name: "section[name]",
                   label: t("types.edit.form_configuration.section_name_label"),
                   visually_hide_label: true,
-                  value: @group[:name],
+                  value: section_name,
                   autofocus: true,
                   autocomplete: "off",
-                  "full-width": true,
-                  data: {
-                    action: "keydown.enter->admin--type-form-configuration#saveRenameSection
-                             keydown.esc->admin--type-form-configuration#cancelRenameSection"
-                  }
+                  "full-width": true
                 ))
-              else
-                text_html = content_tag(:div, data: { rename_display: "" }) do
-                  render(Primer::Beta::Text.new(font_weight: :bold)) { @group[:name] }
-                end
-                field_html = content_tag(:div, hidden: true, data: { rename_edit: "" }) do
-                  render(Primer::Alpha::TextField.new(
-                    name: "section_name",
-                    label: t("types.edit.form_configuration.section_name_label"),
-                    visually_hide_label: true,
-                    value: @group[:name],
-                    autocomplete: "off",
-                    "full-width": true,
-                    data: {
-                      action: "keydown.enter->admin--type-form-configuration#saveRenameSection
-                               keydown.esc->admin--type-form-configuration#cancelRenameSection"
-                    }
-                  ))
-                end
-                safe_join([text_html, field_html])
               end
-            end
-          end
 
-          # Right: save/cancel (edit mode) or action menu (view mode)
-          header.with_column do
-            if edit_mode?
-              safe_join([
-                render(
-                  Primer::Beta::Button.new(
-                    scheme: :primary,
-                    size: :small,
-                    mr: 2,
-                    data: { action: "click->admin--type-form-configuration#saveRenameSection" }
-                  )
-                ) { t("button_save") },
+              header.with_column(mr: 2) do
+                render(Primer::Beta::Button.new(scheme: :primary, type: :submit)) { t("button_save") }
+              end
+
+              header.with_column do
                 render(
                   Primer::Beta::Button.new(
                     scheme: :secondary,
-                    size: :small,
-                    data: { action: "click->admin--type-form-configuration#cancelRenameSection" }
+                    tag: :a,
+                    href: cancel_edit_path,
+                    data: { turbo_method: :post, turbo_stream: true }
                   )
                 ) { t("button_cancel") }
-              ])
-            else
-              rename_buttons_html = content_tag(:div, hidden: true, data: { rename_edit: "" }) do
-                  safe_join([
-                    render(
-                      Primer::Beta::Button.new(
-                        scheme: :primary,
-                        size: :small,
-                        mr: 2,
-                        data: { action: "click->admin--type-form-configuration#saveRenameSection" }
-                      )
-                    ) { t("button_save") },
-                    render(
-                      Primer::Beta::Button.new(
-                        scheme: :secondary,
-                        size: :small,
-                        data: { action: "click->admin--type-form-configuration#cancelRenameSection" }
-                      )
-                    ) { t("button_cancel") }
-                  ])
+              end
+            end
+          end
+        else
+          flex_layout(justify_content: :space_between, align_items: :center) do |header|
+            header.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
+              left.with_column(mr: 2, classes: "hide-when-print") do
+                render(Primer::OpenProject::DragHandle.new(
+                  classes: "section-handle",
+                  "aria-label": t("types.edit.form_configuration.drag_to_reorder")
+                ))
+              end
+              left.with_column(flex: 1) do
+                render(Primer::Beta::Text.new(font_weight: :bold)) { @group[:name] }
+              end
+            end
+
+            header.with_column(classes: "hide-when-print") do
+              render(Primer::Alpha::ActionMenu.new) do |menu|
+                menu.with_show_button(
+                  icon: "kebab-horizontal",
+                  scheme: :invisible,
+                  size: :small,
+                  "aria-label": t("types.edit.form_configuration.section_actions")
+                )
+
+                menu.with_item(
+                  label: t("types.edit.form_configuration.rename_section"),
+                  tag: :a,
+                  href: edit_path,
+                  content_arguments: { data: { turbo_stream: true } }
+                ) do |item|
+                  item.with_leading_visual_icon(icon: :pencil)
                 end
 
-              menu_html = content_tag(:div, data: { rename_display: "" }) do
-                render(Primer::Alpha::ActionMenu.new) do |menu|
-                  menu.with_show_button(
-                    icon: "kebab-horizontal",
-                    scheme: :invisible,
-                    size: :small,
-                    "aria-label": t("types.edit.form_configuration.section_actions")
-                  )
+                unless first? && last?
+                  menu.with_divider
+                end
+
+                unless first?
+                  menu.with_item(
+                    label: t("label_agenda_item_move_to_top"),
+                    tag: :a,
+                    href: move_path(:highest),
+                    content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: "move-to-top")
+                  end
 
                   menu.with_item(
-                    label: t("types.edit.form_configuration.rename_section"),
-                    tag: :button,
-                    value: "",
-                    content_arguments: {
-                      data: { action: "click->admin--type-form-configuration#startRenameSection" }
-                    }
+                    label: t("label_agenda_item_move_up"),
+                    tag: :a,
+                    href: move_path(:higher),
+                    content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
                   ) do |item|
-                    item.with_leading_visual_icon(icon: :pencil)
+                    item.with_leading_visual_icon(icon: "chevron-up")
                   end
+                end
 
-                  menu.with_divider
-
-                  unless first?
-                    menu.with_item(
-                      label: t("label_agenda_item_move_to_top"),
-                      tag: :button,
-                      value: "",
-                      content_arguments: {
-                        data: { action: "click->admin--type-form-configuration#moveSectionTop" }
-                      }
-                    ) do |item|
-                      item.with_leading_visual_icon(icon: "move-to-top")
-                    end
-
-                    menu.with_item(
-                      label: t("label_agenda_item_move_up"),
-                      tag: :button,
-                      value: "",
-                      content_arguments: {
-                        data: { action: "click->admin--type-form-configuration#moveSectionUp" }
-                      }
-                    ) do |item|
-                      item.with_leading_visual_icon(icon: "chevron-up")
-                    end
+                unless last?
+                  menu.with_item(
+                    label: t("label_agenda_item_move_down"),
+                    tag: :a,
+                    href: move_path(:lower),
+                    content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: "chevron-down")
                   end
-
-                  unless last?
-                    menu.with_item(
-                      label: t("label_agenda_item_move_down"),
-                      tag: :button,
-                      value: "",
-                      content_arguments: {
-                        data: { action: "click->admin--type-form-configuration#moveSectionDown" }
-                      }
-                    ) do |item|
-                      item.with_leading_visual_icon(icon: "chevron-down")
-                    end
-
-                    menu.with_item(
-                      label: t("label_agenda_item_move_to_bottom"),
-                      tag: :button,
-                      value: "",
-                      content_arguments: {
-                        data: { action: "click->admin--type-form-configuration#moveSectionBottom" }
-                      }
-                    ) do |item|
-                      item.with_leading_visual_icon(icon: "move-to-bottom")
-                    end
-                  end
-
-                  menu.with_divider
 
                   menu.with_item(
-                    label: t("button_delete"),
-                    scheme: :danger,
-                    tag: :button,
-                    value: "",
-                    content_arguments: {
-                      data: { action: "click->admin--type-form-configuration#deleteSection" }
-                    }
+                    label: t("label_agenda_item_move_to_bottom"),
+                    tag: :a,
+                    href: move_path(:lowest),
+                    content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
                   ) do |item|
-                    item.with_leading_visual_icon(icon: :trash)
+                    item.with_leading_visual_icon(icon: "move-to-bottom")
                   end
+                end
+
+                menu.with_divider
+
+                menu.with_item(
+                  label: t("button_delete"),
+                  scheme: :danger,
+                  tag: :a,
+                  href: destroy_path,
+                  content_arguments: { data: { turbo_method: :delete, turbo_stream: true } }
+                ) do |item|
+                  item.with_leading_visual_icon(icon: :trash)
                 end
               end
-
-              safe_join([rename_buttons_html, menu_html].compact)
             end
           end
         end
       end
 
-      # Section rows
       if query_group?
-        # Query group: single row with "edit query" action
         box.with_row do
           flex_layout(justify_content: :space_between, align_items: :center) do |row|
             row.with_column(flex: 1) do
@@ -236,7 +175,8 @@ See COPYRIGHT and LICENSE files for more details.
                 t("types.edit.form_configuration.query_group_label")
               end
             end
-            row.with_column do
+
+            row.with_column(classes: "hide-when-print") do
               render(Primer::Alpha::ActionMenu.new) do |menu|
                 menu.with_show_button(
                   icon: "kebab-horizontal",
@@ -244,6 +184,7 @@ See COPYRIGHT and LICENSE files for more details.
                   size: :small,
                   "aria-label": t("types.edit.form_configuration.row_actions")
                 )
+
                 menu.with_item(
                   label: t("types.edit.form_configuration.edit_query"),
                   tag: :button,
@@ -255,16 +196,58 @@ See COPYRIGHT and LICENSE files for more details.
                   item.with_leading_visual_icon(icon: :pencil)
                 end
 
+                unless first? && last?
+                  menu.with_divider
+                end
+
+                unless first?
+                  menu.with_item(
+                    label: t("label_agenda_item_move_to_top"),
+                    tag: :a,
+                    href: move_path(:highest),
+                    content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: "move-to-top")
+                  end
+
+                  menu.with_item(
+                    label: t("label_agenda_item_move_up"),
+                    tag: :a,
+                    href: move_path(:higher),
+                    content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: "chevron-up")
+                  end
+                end
+
+                unless last?
+                  menu.with_item(
+                    label: t("label_agenda_item_move_down"),
+                    tag: :a,
+                    href: move_path(:lower),
+                    content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: "chevron-down")
+                  end
+
+                  menu.with_item(
+                    label: t("label_agenda_item_move_to_bottom"),
+                    tag: :a,
+                    href: move_path(:lowest),
+                    content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: "move-to-bottom")
+                  end
+                end
+
                 menu.with_divider
 
                 menu.with_item(
                   label: t("button_delete"),
                   scheme: :danger,
-                  tag: :button,
-                  value: "",
-                  content_arguments: {
-                    data: { action: "click->admin--type-form-configuration#deleteSection" }
-                  }
+                  tag: :a,
+                  href: destroy_path,
+                  content_arguments: { data: { turbo_method: :delete, turbo_stream: true } }
                 ) do |item|
                   item.with_leading_visual_icon(icon: :trash)
                 end
@@ -272,30 +255,29 @@ See COPYRIGHT and LICENSE files for more details.
             end
           end
         end
-
       else
-        # Attribute group: rows for each attribute
         if attributes.empty?
-          box.with_row do
+          box.with_row(data: { "empty-list-item": true }) do
             render(Primer::Beta::Text.new(color: :subtle, ml: 2)) do
               t("types.edit.form_configuration.empty_section_hint")
             end
           end
         end
 
-        attributes.each_with_index do |attribute, idx|
+        attributes.each_with_index do |attribute, index|
           box.with_row(
             data: {
               attr_key: attribute[:key],
               attr_translation: attribute[:translation],
               attr_is_cf: attribute[:is_cf],
-              row_first: idx == 0,
-              row_last: idx == attributes.length - 1
+              "draggable-id": attribute[:key],
+              "draggable-type": "attribute",
+              "drop-url": row_drop_path(attribute)
             }
           ) do
             flex_layout(justify_content: :space_between, align_items: :center) do |row|
               row.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
-                left.with_column(mr: 2) do
+                left.with_column(mr: 2, classes: "hide-when-print") do
                   render(Primer::OpenProject::DragHandle.new(
                     classes: "attribute-handle",
                     "aria-label": t("types.edit.form_configuration.drag_to_reorder")
@@ -305,7 +287,8 @@ See COPYRIGHT and LICENSE files for more details.
                   render(Primer::Beta::Text.new) { attribute[:translation] }
                 end
               end
-              row.with_column(classes: "js-row-actions") do
+
+              row.with_column(classes: "hide-when-print") do
                 render(Primer::Alpha::ActionMenu.new) do |menu|
                   menu.with_show_button(
                     icon: "kebab-horizontal",
@@ -314,49 +297,41 @@ See COPYRIGHT and LICENSE files for more details.
                     "aria-label": t("types.edit.form_configuration.row_actions")
                   )
 
-                  unless idx == 0
+                  unless index.zero?
                     menu.with_item(
                       label: t("label_agenda_item_move_to_top"),
-                      tag: :button,
-                      value: "",
-                      content_arguments: {
-                        data: { action: "click->admin--type-form-configuration#moveRowTop" }
-                      }
+                      tag: :a,
+                      href: row_move_path(attribute, :highest),
+                      content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
                     ) do |item|
                       item.with_leading_visual_icon(icon: "move-to-top")
                     end
 
                     menu.with_item(
                       label: t("label_agenda_item_move_up"),
-                      tag: :button,
-                      value: "",
-                      content_arguments: {
-                        data: { action: "click->admin--type-form-configuration#moveRowUp" }
-                      }
+                      tag: :a,
+                      href: row_move_path(attribute, :higher),
+                      content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
                     ) do |item|
                       item.with_leading_visual_icon(icon: "chevron-up")
                     end
                   end
 
-                  unless idx == attributes.length - 1
+                  unless index == attributes.length - 1
                     menu.with_item(
                       label: t("label_agenda_item_move_down"),
-                      tag: :button,
-                      value: "",
-                      content_arguments: {
-                        data: { action: "click->admin--type-form-configuration#moveRowDown" }
-                      }
+                      tag: :a,
+                      href: row_move_path(attribute, :lower),
+                      content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
                     ) do |item|
                       item.with_leading_visual_icon(icon: "chevron-down")
                     end
 
                     menu.with_item(
                       label: t("label_agenda_item_move_to_bottom"),
-                      tag: :button,
-                      value: "",
-                      content_arguments: {
-                        data: { action: "click->admin--type-form-configuration#moveRowBottom" }
-                      }
+                      tag: :a,
+                      href: row_move_path(attribute, :lowest),
+                      content_arguments: { data: { turbo_method: :put, turbo_stream: true } }
                     ) do |item|
                       item.with_leading_visual_icon(icon: "move-to-bottom")
                     end
@@ -367,11 +342,9 @@ See COPYRIGHT and LICENSE files for more details.
                   menu.with_item(
                     label: t("button_delete"),
                     scheme: :danger,
-                    tag: :button,
-                    value: "",
-                    content_arguments: {
-                      data: { action: "click->admin--type-form-configuration#deleteRow" }
-                    }
+                    tag: :a,
+                    href: row_destroy_path(attribute),
+                    content_arguments: { data: { turbo_method: :delete, turbo_stream: true } }
                   ) do |item|
                     item.with_leading_visual_icon(icon: :trash)
                   end

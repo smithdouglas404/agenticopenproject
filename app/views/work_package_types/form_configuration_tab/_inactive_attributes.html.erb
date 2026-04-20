@@ -1,0 +1,69 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+
+<%= render(border_box_container) do |box| %>
+  <% box.with_header(font_weight: :bold) do %>
+    <%= render(Primer::Beta::Text.new(font_weight: :bold)) do %>
+      <%= t("types.edit.form_configuration.inactive_attributes_heading") %>
+    <% end %>
+  <% end %>
+
+  <% if inactives.empty? %>
+    <% box.with_row(data: { "empty-list-item": true }) do %>
+      <%= render(Primer::Beta::Text.new(color: :subtle)) do %>
+        <%= t("types.edit.form_configuration.no_inactive_attributes") %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <% inactives.each do |attribute| %>
+      <% box.with_row(
+           data: {
+             attr_key: attribute[:key],
+             attr_translation: attribute[:translation],
+             attr_is_cf: attribute[:is_cf],
+             "draggable-id": attribute[:key],
+             "draggable-type": "attribute",
+             "drop-url": drop_type_form_configuration_row_path(type, attribute[:key])
+           }
+         ) do %>
+        <%= flex_layout(align_items: :center) do |row| %>
+          <% row.with_column(mr: 2) do %>
+            <%= render(Primer::OpenProject::DragHandle.new(
+                  classes: "attribute-handle",
+                  "aria-label": t("types.edit.form_configuration.drag_to_reorder")
+                )) %>
+          <% end %>
+          <% row.with_column(flex: 1) do %>
+            <%= render(Primer::Beta::Text.new) { attribute[:translation] } %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

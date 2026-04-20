@@ -70,20 +70,13 @@ module WorkPackageTypes
 
       def transform_query_group(group)
         name = group[:name]
-        props = JSON.parse(group[:query])
+        result = ::WorkPackageTypes::FormConfiguration::EmbeddedQueryBuilder.build(
+          query_props: group[:query],
+          name: "Embedded table: #{name}",
+          user:
+        )
 
-        query = Query.new_default(name: "Embedded table: #{name}")
-        query.extend(OpenProject::ChangedBySystem)
-        query.change_by_system { query.user = User.system }
-
-        result = ::API::V3::UpdateQueryFromV3ParamsService
-          .new(query, user)
-          .call(props.with_indifferent_access)
-
-        if result.success?
-          query.show_hierarchies = false
-          [name, [query]]
-        end
+        [name, [result.result]] if result.success?
       end
     end
   end

@@ -31,42 +31,156 @@
 module WorkPackageTypes
   class FormConfigurationSectionsTabController < BaseTabController
     include TypesHelper
+    include OpTurbo::ComponentStream
+    include WorkPackageTypes::FormConfigurationComponentStreams
 
-    def edit
-      group = find_active_group(params[:key])
-      return head :not_found unless group
+    def create
+      call = ::WorkPackageTypes::FormConfigurationSections::CreateService
+        .new(user: current_user, type: @type)
+        .call(group_type: params[:group_type], query_props: params[:query])
 
-      render_section_component(group:, edit_mode: true)
+      if call.success?
+        update_sections_via_turbo_stream(editing_section_key: call.result.key)
+      else
+        render_form_configuration_error(call)
+      end
+
+      respond_with_turbo_streams(status: turbo_status_for(call))
+    rescue StandardError => e
+      Rails.logger.error("[form_configuration_sections.create] #{e.class}: #{e.message}\n#{e.backtrace&.first(20)&.join("\n")}")
+
+      if Rails.env.development?
+        render_error_flash_message_via_turbo_stream(message: "#{e.class}: #{e.message}")
+        respond_with_turbo_streams(status: :internal_server_error)
+      else
+        raise
+      end
     end
 
-    def cancel_rename
-      group = find_active_group(params[:key])
-      return head :not_found unless group
+    def edit
+      replace_section_via_turbo_stream(key: section_key_param, edit_mode: true)
 
-      render_section_component(group:, edit_mode: false)
+      respond_with_turbo_streams
+    end
+
+    def cancel_edit
+      section = find_section(section_key_param)
+      return head :not_found if section.nil?
+
+      if implicit_section?(section)
+        call = ::WorkPackageTypes::FormConfigurationSections::DeleteService
+          .new(user: current_user, type: @type, section_key: section_key_param)
+          .call
+
+        if call.success?
+          update_form_configuration_via_turbo_stream
+        else
+          render_form_configuration_error(call)
+        end
+
+        respond_with_turbo_streams(status: turbo_status_for(call))
+      else
+        replace_section_via_turbo_stream(key: params[:key], edit_mode: false)
+        respond_with_turbo_streams
+      end
+    end
+
+    def update
+      call = ::WorkPackageTypes::FormConfigurationSections::UpdateService
+        .new(user: current_user, type: @type, section_key: section_key_param)
+        .call(name: section_params[:name])
+
+      if call.success?
+        update_form_configuration_via_turbo_stream
+      else
+        render_form_configuration_error(call)
+      end
+
+      respond_with_turbo_streams(status: turbo_status_for(call))
+    end
+
+    def destroy
+      call = ::WorkPackageTypes::FormConfigurationSections::DeleteService
+        .new(user: current_user, type: @type, section_key: section_key_param)
+        .call
+
+      if call.success?
+        update_form_configuration_via_turbo_stream
+      else
+        render_form_configuration_error(call)
+      end
+
+      respond_with_turbo_streams(status: turbo_status_for(call))
+    end
+
+    def drop
+      call = ::WorkPackageTypes::FormConfigurationSections::UpdateService
+        .new(user: current_user, type: @type, section_key: section_key_param)
+        .call(position: params[:position])
+
+      if call.success?
+        update_sections_via_turbo_stream
+      else
+        render_form_configuration_error(call)
+      end
+
+      respond_with_turbo_streams(status: turbo_status_for(call))
+    end
+
+    def move
+      call = ::WorkPackageTypes::FormConfigurationSections::UpdateService
+        .new(user: current_user, type: @type, section_key: section_key_param)
+        .call(move_to: params[:move_to])
+
+      if call.success?
+        update_sections_via_turbo_stream
+      else
+        render_form_configuration_error(call)
+      end
+
+      respond_with_turbo_streams(status: turbo_status_for(call))
+    end
+
+    def update_query
+      call = ::WorkPackageTypes::FormConfigurationSections::UpdateService
+        .new(user: current_user, type: @type, section_key: section_key_param)
+        .call(query_props: params[:query])
+
+      if call.success?
+        head :ok
+      else
+        render_form_configuration_error(call)
+        respond_with_turbo_streams(status: turbo_status_for(call))
+      end
     end
 
     private
 
-    def find_active_group(key)
-      actives = form_configuration_groups(@type)[:actives]
-      actives.find { |g| g[:key].to_s == key.to_s }
+    def section_params
+      params.expect(section: [:name])
     end
 
-    def render_section_component(group:, edit_mode:)
-      form_attrs = form_configuration_groups(@type)
-      actives = form_attrs[:actives].reject { |g| g[:key].to_s == "__empty" }
-      idx = actives.index { |g| g[:key].to_s == group[:key].to_s }
+    def find_section(key)
+    
+      @type.attribute_groups.find do |group|
+        [
+          group.key,
+          group.display_name,
+          group.translated_key
+        ].compact.map(&:to_s).include?(key.to_s)
+      end
+    end
 
-      component = WorkPackageTypes::FormConfiguration::SectionComponent.new(
-        group:,
-        type: @type,
-        first: idx == 0,
-        last: idx == actives.length - 1,
-        edit_mode:
-      )
+    def section_key_param
+      params[:key] || params[:id]
+    end
 
-      render turbo_stream: component.render_as_turbo_stream(view_context:, action: :replace)
+    def implicit_section?(section)
+      section.key.to_s.match?(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX)
+    end
+
+    def turbo_status_for(call)
+      call.success? ? :ok : :unprocessable_entity
     end
   end
 end

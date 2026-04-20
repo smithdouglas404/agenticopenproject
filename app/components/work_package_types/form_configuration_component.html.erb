@@ -30,10 +30,11 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   component_wrapper(
     data: {
-      controller: "admin--type-form-configuration",
+      controller: "admin--type-form-configuration admin--type-form-configuration-rows-drag-and-drop",
       "admin--type-form-configuration-no-filter-query-value": @no_filter_query,
-      "admin--type-form-configuration-ee-available-value": ee_available?,
-      "admin--type-form-configuration-new-section-url-value": new_section_type_form_configuration_path(@type)
+      "admin--type-form-configuration-sections-url-value": type_form_configuration_sections_path(@type),
+      "admin--type-form-configuration-update-url-value": type_form_configuration_path(@type),
+      "admin--type-form-configuration-rows-drag-and-drop-handle-selector-value": ".attribute-handle"
     }
   ) do
     flex_layout do |outer|
@@ -119,54 +120,29 @@ See COPYRIGHT and LICENSE files for more details.
 
               # Inactive attributes BorderBox
               left.with_row do
-                content_tag(:div, data: { "admin--type-form-configuration-target": "inactiveContainer" }) do
-                  render(border_box_container) do |box|
-                    box.with_header(font_weight: :bold) do
-                      render(Primer::Beta::Text.new(font_weight: :bold)) do
-                        t("types.edit.form_configuration.inactive_attributes_heading")
-                      end
-                    end
-
-                    if @inactives.empty?
-                      box.with_row do
-                        render(Primer::Beta::Text.new(color: :subtle)) do
-                          t("types.edit.form_configuration.no_inactive_attributes")
-                        end
-                      end
-                    else
-                      @inactives.each do |attribute|
-                        box.with_row(
-                          data: {
-                            attr_key: attribute[:key],
-                            attr_translation: attribute[:translation],
-                            attr_is_cf: attribute[:is_cf]
-                          }
-                        ) do
-                          flex_layout(align_items: :center) do |row|
-                            row.with_column(mr: 2) do
-                              render(Primer::OpenProject::DragHandle.new(
-                                classes: "attribute-handle",
-                                "aria-label": t("types.edit.form_configuration.drag_to_reorder")
-                              ))
-                            end
-                            row.with_column(flex: 1) do
-                              render(Primer::Beta::Text.new) { attribute[:translation] }
-                            end
-                          end
-                        end
-                      end
-                    end
-                  end
-                end
+                render(
+                  partial: "work_package_types/form_configuration_tab/inactive_attributes_container",
+                  locals: { inactives: @inactives, type: @type }
+                )
               end
             end
           end
 
           # ---- Right panel: active sections ----
           # Use a plain div so section component_wrappers are direct children (required for sections Dragula)
-          columns.with_column(style: "flex: 2") do
+          columns.with_column(
+            style: "flex: 2",
+            data: {
+              controller: "admin--type-form-configuration-sections-drag-and-drop",
+              "admin--type-form-configuration-sections-drag-and-drop-handle-selector-value": ".section-handle"
+            }
+          ) do
             content_tag(:div, id: "type-form-configuration-sections-container",
-                              data: { "admin--type-form-configuration-target": "sectionsContainer" }) do
+                              data: {
+                                "admin--type-form-configuration-target": "sectionsContainer",
+                                "admin--type-form-configuration-sections-drag-and-drop-target": "container",
+                                "target-allowed-drag-type": "section"
+                              }) do
               if section_components.empty?
                 render(Primer::Beta::Blankslate.new(test_selector: "type-form-configuration-blankslate")) do |blankslate|
                   blankslate.with_visual_icon(icon: :rows)

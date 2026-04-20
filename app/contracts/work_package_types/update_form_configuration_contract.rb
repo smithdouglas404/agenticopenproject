@@ -65,13 +65,16 @@ module WorkPackageTypes
     end
 
     def validate_query_group(group)
-      query = group.query
+      query_call = ::WorkPackageTypes::FormConfiguration::EmbeddedQueryBuilder.rebuild(query: group.query, user:)
+      unless query_call.success?
+        errors.add(:attribute_groups, :query_invalid, group: group.key, details: query_call.errors.full_messages.to_sentence)
+        return
+      end
 
-      contract_class = query.persisted? ? Queries::UpdateContract : Queries::CreateContract
-      contract = contract_class.new(query, user)
+      contract = Queries::CreateContract.new(query_call.result, user)
 
       unless contract.validate
-        errors.add(:attribute_groups, :query_invalid, group: group.key, details: contract.errors.full_messages.join)
+        errors.add(:attribute_groups, :query_invalid, group: group.key, details: contract.errors.full_messages.to_sentence)
       end
     end
 

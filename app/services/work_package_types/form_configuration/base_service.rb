@@ -1,0 +1,150 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+module WorkPackageTypes
+  module FormConfiguration
+    class BaseService < ::BaseServices::BaseCallable
+      UUID_REGEX = /\A[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\z/i
+
+      def initialize(user:, type:)
+        super()
+        @user = user
+        @type = type
+      end
+
+      private
+
+      attr_reader :type,
+                  :user
+
+      def active_groups
+        type.attribute_groups.reject { |group| group.key.to_s == "__empty" }
+      end
+
+      def find_section(section_key)
+        active_groups.find { |group| group_identifier_match?(group, section_key) }
+      end
+
+      def find_attribute_section(section_key)
+        result = type.attribute_groups.find do |group|
+          group.group_type == :attribute && group_identifier_match?(group, section_key)
+        end
+        result
+      end
+
+      def find_row(row_key)
+        active_groups
+          .select { |group| group.group_type == :attribute }
+          .each do |group|
+            index = group.attributes.index { |attribute| attribute_identifier_match?(attribute, row_key) }
+            return { group:, index: } if index
+          end
+
+        nil
+      end
+
+      def implicit_section?(section)
+        section.key.to_s.match?(UUID_REGEX)
+      end
+
+      def group_identifier_match?(group, identifier)
+        expected = identifier.to_s.strip
+
+        [
+          group.key,
+          group.display_name,
+          group.translated_key
+        ].compact.map { |value| value.to_s.strip }.include?(expected)
+      end
+
+      def attribute_identifier_match?(attribute, identifier)
+        attribute.to_s.strip == identifier.to_s.strip
+      end
+
+      def persist_groups(groups)
+        type.attribute_groups_will_change!
+        type.attribute_groups_objects = normalized_groups(groups)
+        sync_active_custom_fields!
+
+        contract = ::WorkPackageTypes::UpdateFormConfigurationContract.new(type, user, options: {})
+        return ServiceResult.failure(result: type, errors: contract.errors) unless contract.validate
+
+        if type.save
+          ServiceResult.success(result: type)
+        else
+          ServiceResult.failure(result: type, errors: type.errors)
+        end
+      end
+
+      def failure_with_message(message)
+        type.errors.clear
+        type.errors.add(:base, message)
+
+        ServiceResult.failure(result: type, errors: type.errors)
+      end
+
+      def build_query(query_props, name:)
+        ::WorkPackageTypes::FormConfiguration::EmbeddedQueryBuilder.build(query_props:, name:, user:)
+      end
+
+      def normalized_groups(groups)
+        groups = groups
+                 .reject { |group| group.key.to_s == "__empty" }
+                 .map { |group| normalize_group(group) }
+
+        if groups.empty?
+          [::Type::AttributeGroup.new(type, :__empty, [])]
+        else
+          groups
+        end
+      end
+
+      def normalize_group(group)
+        return group if group.key.present?
+
+        group.key = SecureRandom.uuid
+        group.display_name = I18n.t("types.edit.form_configuration.untitled_section") if group.display_name.blank?
+        group
+      end
+
+      def sync_active_custom_fields!
+        type.custom_field_ids = active_groups
+                                .select { |group| group.group_type == :attribute }
+                                .flat_map(&:members)
+                                .filter_map do |attribute|
+                                  next unless CustomField.custom_field_attribute?(attribute)
+
+                                  attribute.delete_prefix("custom_field_").to_i
+                                end
+                                .uniq
+      end
+    end
+  end
+end

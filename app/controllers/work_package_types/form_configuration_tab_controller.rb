@@ -31,6 +31,8 @@
 module WorkPackageTypes
   class FormConfigurationTabController < BaseTabController
     include TypesHelper
+    include OpTurbo::ComponentStream
+    include WorkPackageTypes::FormConfigurationComponentStreams
 
     layout "admin"
 
@@ -39,31 +41,6 @@ module WorkPackageTypes
     end
 
     def edit; end
-
-    def new_section
-      group_type = params.fetch(:group_type, "attribute")
-      no_filter_query = ::API::V3::Queries::QueryParamsRepresenter
-        .new(Query.new_default.tap { |q| q.filters = [] })
-        .to_json
-
-      group = {
-        type: group_type.to_sym,
-        key: nil,
-        name: "",
-        attributes: group_type == "query" ? nil : [],
-        query: group_type == "query" ? no_filter_query : nil
-      }
-
-      section = WorkPackageTypes::FormConfiguration::SectionComponent.new(
-        group:,
-        type: @type,
-        first: false,
-        last: false,
-        edit_mode: true
-      )
-
-      render(turbo_stream: turbo_stream.prepend("type-form-configuration-sections-container", section))
-    end
 
     def update
       result = WorkPackageTypes::UpdateService
@@ -82,7 +59,10 @@ module WorkPackageTypes
     def respond_to_update_success
       respond_to do |format|
         format.html { redirect_to edit_type_form_configuration_path(@type), notice: t(:notice_successful_update) }
-        format.turbo_stream { render_sections_turbo_stream }
+        format.turbo_stream do
+          update_form_configuration_via_turbo_stream
+          respond_with_turbo_streams
+        end
       end
     end
 
@@ -94,24 +74,6 @@ module WorkPackageTypes
         end
         format.turbo_stream { head :unprocessable_entity }
       end
-    end
-
-    def render_sections_turbo_stream
-      form_attrs = form_configuration_groups(@type)
-      actives = form_attrs[:actives].reject { |g| g[:key].to_s == "__empty" }
-      sections = actives.map.with_index do |group, idx|
-        WorkPackageTypes::FormConfiguration::SectionComponent.new(
-          group:,
-          type: @type,
-          first: idx == 0,
-          last: idx == actives.length - 1
-        )
-      end
-      render turbo_stream: turbo_stream.update(
-        "type-form-configuration-sections-container",
-        partial: "sections",
-        locals: { section_components: sections }
-      )
     end
 
     def find_type

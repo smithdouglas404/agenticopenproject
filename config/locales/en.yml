@@ -1374,6 +1374,9 @@ en:
         row_actions: "Row actions"
         query_group_label: "Work packages table"
         empty_section_hint: "Drag attributes here"
+        invalid_query: "The embedded query configuration is invalid."
+        not_found: "The requested form configuration item could not be found."
+        untitled_section: "Untitled section"
       projects:
         tab: Projects
         enable_all: Enable for all projects

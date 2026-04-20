@@ -150,11 +150,18 @@ Rails.application.routes.draw do
 
   resources :types, module: "work_package_types", except: [:update] do
     resource :form_configuration, only: %i[edit update], controller: "form_configuration_tab" do
-      post :new_section, on: :member
-      resources :sections, only: [], controller: "form_configuration_sections_tab", param: :key do
+      resources :sections, only: %i[create edit update destroy], controller: "form_configuration_sections_tab", param: :key do
         member do
-          get :edit
-          post :cancel_rename
+          post :cancel_edit
+          put :drop
+          put :move
+          patch :update_query
+        end
+      end
+      resources :rows, only: %i[destroy], controller: "form_configuration_rows_tab", param: :row_key do
+        member do
+          put :drop
+          put :move
         end
       end
     end

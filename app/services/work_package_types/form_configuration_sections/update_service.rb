@@ -1,0 +1,106 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+module WorkPackageTypes
+  module FormConfigurationSections
+    class UpdateService < ::WorkPackageTypes::FormConfiguration::BaseService
+      def initialize(user:, type:, section_key:)
+        super(user:, type:)
+        @section_key = section_key
+      end
+
+      def perform
+        name = params[:name]
+        move_to = params[:move_to]
+        position = params[:position]
+        query_props = params[:query_props]
+
+        section = find_section(@section_key)
+        return failure_with_message(I18n.t("types.edit.form_configuration.not_found")) unless section
+
+        groups = active_groups
+
+        if move_to.present? || position.present?
+          move_section(groups, move_to:, position:)
+        elsif query_props.present?
+          query_call = build_query(query_props, name: section.query&.name || "Embedded table: #{@section_key}")
+          return query_call if query_call.failure?
+
+          section.attributes = query_call.result
+        else
+          rename_section(section, name.to_s.strip)
+        end
+
+        persist_groups(groups).tap do |call|
+          call.result = section if call.success?
+        end
+      end
+
+      private
+
+      def move_section(groups, move_to:, position:)
+        current_index = groups.index { |group| group.key.to_s == @section_key.to_s }
+        return if current_index.nil?
+
+        new_index = if position.present?
+                      [[position.to_i - 1, 0].max, groups.length - 1].min
+                    else
+                      case move_to&.to_sym
+                      when :highest
+                        0
+                      when :higher
+                        [current_index - 1, 0].max
+                      when :lower
+                        [current_index + 1, groups.length - 1].min
+                      when :lowest
+                        groups.length - 1
+                      else
+                        current_index
+                      end
+                    end
+
+        groups.insert(new_index, groups.delete_at(current_index)) if new_index != current_index
+      end
+
+      def rename_section(section, name)
+        if section.internal_key?
+          section.display_name = name.presence == default_name_for(section) ? nil : name.presence
+        else
+          section.key = name
+          section.display_name = nil
+        end
+      end
+
+      def default_name_for(section)
+        I18n.t(Type.default_groups[section.key], default: section.key.to_s)
+      end
+    end
+  end
+end

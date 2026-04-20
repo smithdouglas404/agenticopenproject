@@ -52,12 +52,6 @@ module WorkPackageTypes
         @edit_mode
       end
 
-      # True when this section has a persisted key AND we have a type reference,
-      # so server-side turbo-stream paths (edit / cancel_rename) can be generated.
-      def rename_via_server?
-        @type && @group[:key].present?
-      end
-
       def query_group?
         @group[:type].to_s == "query"
       end
@@ -72,6 +66,71 @@ module WorkPackageTypes
 
       def last?
         @last
+      end
+
+      private
+
+      def implicit_section?
+        @group[:key].to_s.match?(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX)
+      end
+
+      def section_name
+        return "" if edit_mode? && implicit_section?
+
+        @group[:name]
+      end
+
+      def draggable_item_config
+        return {} unless @group[:key].present?
+
+        {
+          "draggable-id": @group[:key],
+          "draggable-type": "section",
+          "drop-url": drop_type_form_configuration_section_path(@type, @group[:key])
+        }
+      end
+
+      def row_drop_target_config
+        return {} if query_group? || @group[:key].blank?
+
+        {
+          "admin--type-form-configuration-rows-drag-and-drop-target": "container",
+          "target-container-accessor": ".Box > ul",
+          "target-id": @group[:key],
+          "target-allowed-drag-type": "attribute"
+        }
+      end
+
+      def edit_path
+        edit_type_form_configuration_section_path(@type, @group[:key])
+      end
+
+      def update_path
+        type_form_configuration_section_path(@type, @group[:key])
+      end
+
+      def cancel_edit_path
+        cancel_edit_type_form_configuration_section_path(@type, @group[:key])
+      end
+
+      def move_path(move_to)
+        move_type_form_configuration_section_path(@type, @group[:key], move_to:)
+      end
+
+      def destroy_path
+        type_form_configuration_section_path(@type, @group[:key])
+      end
+
+      def row_move_path(attribute, move_to)
+        move_type_form_configuration_row_path(@type, attribute[:key], move_to:)
+      end
+
+      def row_drop_path(attribute)
+        drop_type_form_configuration_row_path(@type, attribute[:key])
+      end
+
+      def row_destroy_path(attribute)
+        type_form_configuration_row_path(@type, attribute[:key])
       end
     end
   end

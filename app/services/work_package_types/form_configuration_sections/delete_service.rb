@@ -28,45 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Type::FormGroup
-  attr_accessor :key,
-                :attributes,
-                :type,
-                :display_name
+module WorkPackageTypes
+  module FormConfigurationSections
+    class DeleteService < ::WorkPackageTypes::FormConfiguration::BaseService
+      def initialize(user:, type:, section_key:)
+        super(user:, type:)
+        @section_key = section_key
+      end
 
-  def initialize(type, key, attributes, display_name: nil)
-    self.key = key
-    self.attributes = attributes
-    self.type = type
-    self.display_name = display_name
-  end
+      def perform
+        section = find_section(@section_key)
+        return failure_with_message(I18n.t("types.edit.form_configuration.not_found")) unless section
 
-  ##
-  # Returns the symbol key, if it is not translated
-  def internal_key?
-    key.is_a?(Symbol)
-  end
+        groups = active_groups.reject { |group| group.key.to_s == @section_key.to_s }
 
-  ##
-  # Translate the given attribute group if its internal
-  # (== if it's a symbol)
-  def translated_key
-    if display_name.present?
-      display_name
-    elsif internal_key?
-      I18n.t(Type.default_groups[key], default: key.to_s)
-    elsif key.present?
-      key
-    else
-      I18n.t("types.edit.form_configuration.untitled_section")
+        persist_groups(groups).tap do |call|
+          call.result = section if call.success?
+        end
+      end
     end
-  end
-
-  def members
-    raise SubclassResponsibilityError
-  end
-
-  def active_members(_project)
-    raise SubclassResponsibilityError
   end
 end
