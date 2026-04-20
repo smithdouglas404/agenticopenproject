@@ -34,7 +34,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
   let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.example.com/xwiki") }
   let(:userinfo_url) { "https://xwiki.example.com/xwiki/oidc/userinfo" }
 
-  subject(:query) { described_class.new(wiki_provider) }
+  subject(:result) { described_class.call(wiki_provider:, access_token: "test-token") }
 
   context "when the userinfo endpoint returns a valid sub claim" do
     before do
@@ -44,7 +44,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
     end
 
     it "returns Success with the sub claim" do
-      expect(query.call(access_token: "test-token")).to eq(Dry::Monads::Success("XWiki.jsmith"))
+      expect(result).to eq(Dry::Monads::Success("XWiki.jsmith"))
     end
   end
 
@@ -52,7 +52,6 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
     before { stub_request(:get, userinfo_url).to_return(status: 401, body: "Unauthorized") }
 
     it "returns Failure with the status code" do
-      result = query.call(access_token: "test-token")
       expect(result).to be_failure
       expect(result.failure).to include("401")
     end
@@ -65,17 +64,15 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
     end
 
     it "returns Failure" do
-      result = query.call(access_token: "test-token")
       expect(result).to be_failure
       expect(result.failure).to include("sub claim")
     end
   end
 
   context "when a network error occurs" do
-    before { stub_request(:get, userinfo_url).to_raise(SocketError, "connection refused") }
+    before { stub_request(:get, userinfo_url).to_raise(StandardError, "connection refused") }
 
     it "returns Failure" do
-      result = query.call(access_token: "test-token")
       expect(result).to be_failure
       expect(result.failure).to include("connection refused")
     end

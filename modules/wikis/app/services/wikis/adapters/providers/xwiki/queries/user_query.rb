@@ -36,34 +36,35 @@ module Wikis
           class UserQuery
             include Dry::Monads[:result]
 
+            def self.call(wiki_provider:, access_token:)
+              new(wiki_provider).call(access_token:)
+            end
+
             def initialize(wiki_provider)
               @wiki_provider = wiki_provider
             end
 
             def call(access_token:)
-              response = get_userinfo(access_token)
-              return Failure("XWiki userinfo request failed (#{response.code})") unless response.is_a?(Net::HTTPSuccess)
-
-              body = JSON.parse(response.body)
-              return Failure("XWiki userinfo response missing sub claim") if body["sub"].blank?
-
-              Success(body["sub"])
+              url = "#{@wiki_provider.url.chomp('/')}/oidc/userinfo"
+              handle_response(OpenProject.httpx.bearer_auth(access_token).get(url))
             rescue StandardError => e
               Failure(e.message)
             end
 
             private
 
-            def get_userinfo(access_token)
-              uri = URI.parse("#{@wiki_provider.url.chomp('/')}/oidc/userinfo")
-              http = Net::HTTP.new(uri.host, uri.port)
-              http.use_ssl = uri.scheme == "https"
+            def handle_response(response)
+              case response
+              in { status: 200..299 }
+                handle_success_response(response)
+              else
+                Failure("XWiki userinfo request failed (#{response.status})")
+              end
+            end
 
-              request = Net::HTTP::Get.new(uri.request_uri)
-              request["Authorization"] = "Bearer #{access_token}"
-              request["Accept"] = "application/json"
-
-              http.request(request)
+            def handle_success_response(response)
+              sub = response.json["sub"]
+              sub.present? ? Success(sub) : Failure("XWiki userinfo response missing sub claim")
             end
           end
         end

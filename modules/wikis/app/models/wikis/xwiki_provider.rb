@@ -31,8 +31,8 @@
 module Wikis
   class XWikiProvider < Provider
     AUTHENTICATION_METHODS = [
-      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2",
-      AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso"
+      AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "two_way_oauth2"
+      # AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso" # not yet implemented
     ].freeze
 
     OIDC_CALLBACK_PATH = "oidc/authenticator/callback"
@@ -50,7 +50,7 @@ module Wikis
     end
 
     def extract_origin_user_id(token)
-      Wikis::Adapters::Providers::XWiki::Queries::UserQuery.new(self).call(access_token: token.access_token)
+      resolve("queries.user").call(access_token: token.access_token)
     end
 
     def authenticate_via_oauth2?
