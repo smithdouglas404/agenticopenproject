@@ -28,25 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries
-  module Wikis
+module API
+  module V3
     module PageLinks
-      module Filter
-        class ProviderFilter < Filters::Base
-          self.model = ::Wikis::PageLink
+      class WorkPackageWikiPageLinksAPI < OpenProjectAPI
+        def self.enrich_models_with_wiki_metadata(relation)
+          Wikis::PageLinkMetadataService.new(relation).call
+        end
 
-          def type = :list
+        resources :wiki_page_links do
+          get do
+            query = ParamsToQueryService.new(
+              ::Wikis::PageLink,
+              current_user,
+              query_class: ::Queries::Wikis::PageLinks::PageLinkQuery
+            ).call(params)
 
-          def human_name
-            ::Wikis::PageLink.human_attribute_name(name)
-          end
+            unless query.valid?
+              message = I18n.t("api_v3.errors.missing_or_malformed_parameter", parameter: "filters")
+              raise ::API::Errors::InvalidQuery.new(message)
+            end
 
-          def allowed_values
-            ::Wikis::Provider.pluck(:id).map { |id| [id, id.to_s] }
-          end
+            relation = if current_user.allowed_in_project?(:view_wiki_page_links, @work_package.project)
+                         query.results.where(linkable: @work_package)
+                       else
+                         []
+                       end
 
-          def where
-            operator_strategy.sql_for_field(values, ::Wikis::PageLink.table_name, "provider_id")
+            PageLinkCollectionRepresenter.new(
+              relation,
+              per_page: params[:pageSize],
+              self_link: api_v3_paths.work_package_page_links(@work_package.id),
+              current_user:
+            )
           end
         end
       end
