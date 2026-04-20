@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Sprint displayed and selectable on work package table", :js do
+RSpec.describe "Sprint displayed and selectable on work package table", :js, with_flag: { scrum_projects: true } do
   let(:enabled_module_names) { %i[backlogs work_package_tracking] }
   let(:start_date) { Date.new(2025, 10, 5) }
   let(:finish_date) { Date.new(2025, 10, 25) }
@@ -47,6 +47,13 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js do
   end
   let(:sprint_from_other_project) { create(:agile_sprint, project: another_project, name: "Sprint from other project") }
   let(:project) { create(:project, name: "Project", enabled_module_names:) }
+  let(:project_sharing) do
+    create(:project,
+           name: "Global sharer project",
+           sprint_sharing: "share_all_projects",
+           enabled_module_names:)
+  end
+  let(:project_receiving) { create(:project, name: "Receiving project", sprint_sharing: "receive_shared", enabled_module_names:) }
   let(:another_project) { create(:project, name: "Another project", enabled_module_names:) }
   let(:all_permissions) do
     %i[
@@ -100,11 +107,15 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js do
     create(:user,
            member_with_permissions: {
              project => project_permissions,
-             another_project => another_project_permissions
+             another_project => another_project_permissions,
+             project_receiving => shared_project_permissions,
+             project_sharing => sharer_project_permissions
            })
   end
   let(:project_permissions) { all_permissions }
   let(:another_project_permissions) { all_permissions }
+  let(:shared_project_permissions) { all_permissions }
+  let(:sharer_project_permissions) { all_permissions }
   let!(:query) do
     build(:public_query, user: current_user, project: work_package.project)
   end
@@ -113,7 +124,7 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js do
 
   current_user { user }
 
-  before do
+  def visit_page!
     query.column_names  = query_columns
     query.sort_criteria = sort_criteria if sort_criteria
     query.group_by      = group_by if group_by
@@ -133,126 +144,211 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js do
     wait_for_network_idle
   end
 
-  context "when the feature flag is on", with_flag: { scrum_projects: true } do
-    context "when viewing sprints" do
-      it "shows the sprint column with the correct sprint for the work package" do
-        wp_table.expect_work_package_with_attributes(work_package, { sprint: sprint.name })
-        wp_table.expect_work_package_with_attributes(other_wp, { sprint: other_sprint.name })
-        wp_table.expect_work_package_with_attributes(wp_without_sprint, { sprint: "-" })
+  before do
+    visit_page!
+  end
+
+  context "when viewing sprints" do
+    it "shows the sprint column with the correct sprint for the work package" do
+      wp_table.expect_work_package_with_attributes(work_package, { sprint: sprint.name })
+      wp_table.expect_work_package_with_attributes(other_wp, { sprint: other_sprint.name })
+      wp_table.expect_work_package_with_attributes(wp_without_sprint, { sprint: "-" })
+    end
+
+    describe "filtering" do
+      let(:query_filters) do
+        [{ name: "sprint_id", operator:, values: }]
       end
 
-      describe "filtering" do
-        let(:query_filters) do
-          [{ name: "sprint_id", operator:, values: }]
-        end
+      context "when filtering to include a sprint" do
+        let(:operator) { "=" }
+        let(:values) { [sprint.id.to_s] }
 
-        context "when filtering to include a sprint" do
-          let(:operator) { "=" }
-          let(:values) { [sprint.id.to_s] }
-
-          it "only shows work packages with this sprint" do
-            wp_table.expect_work_package_listed(work_package)
-            wp_table.ensure_work_package_not_listed!(other_wp, wp_without_sprint)
-          end
-        end
-
-        context "when filtering to include multiple sprints" do
-          let(:operator) { "=" }
-          let(:values) { [sprint.id.to_s, other_sprint.id.to_s] }
-
-          it "only shows work packages with these sprints" do
-            wp_table.expect_work_package_listed(work_package, other_wp)
-            wp_table.ensure_work_package_not_listed!(wp_without_sprint)
-          end
-        end
-
-        context "when filtering to exclude a sprint" do
-          let(:operator) { "!" }
-          let(:values) { [other_sprint.id.to_s] }
-
-          it "shows work packages with other sprints or without a sprint" do
-            wp_table.expect_work_package_listed(wp_without_sprint, work_package)
-            wp_table.ensure_work_package_not_listed!(other_wp)
-          end
-        end
-
-        context "when filtering to have a sprint" do
-          let(:operator) { "*" }
-          let(:values) { nil }
-
-          it "shows work packages with a sprint" do
-            wp_table.expect_work_package_listed(work_package, other_wp)
-            wp_table.ensure_work_package_not_listed!(wp_without_sprint)
-          end
-        end
-
-        context "when filtering to not have a sprint" do
-          let(:operator) { "!*" }
-          let(:values) { nil }
-
-          it "shows work packages without a sprint" do
-            wp_table.expect_work_package_listed(wp_without_sprint)
-            wp_table.ensure_work_package_not_listed!(work_package, other_wp)
-          end
+        it "only shows work packages with this sprint" do
+          wp_table.expect_work_package_listed(work_package)
+          wp_table.ensure_work_package_not_listed!(other_wp, wp_without_sprint)
         end
       end
 
-      context "when sorting by sprint ASC" do
-        let(:sort_criteria) { [%w[sprint asc]] }
+      context "when filtering to include multiple sprints" do
+        let(:operator) { "=" }
+        let(:values) { [sprint.id.to_s, other_sprint.id.to_s] }
 
-        it "sorts ASC by sprint name" do
-          wp_table.expect_work_package_order(other_wp, work_package, wp_without_sprint)
-        end
-
-        context "when sorting via name and dates" do
-          # Name is identical to the first sprint now, so the dates are used as second sorting criterion:
-          let(:other_sprint_name) { sprint.name }
-
-          it "sorts ASC by name and then start date and finish date" do
-            wp_table.expect_work_package_order(work_package, other_wp, wp_without_sprint)
-          end
+        it "only shows work packages with these sprints" do
+          wp_table.expect_work_package_listed(work_package, other_wp)
+          wp_table.ensure_work_package_not_listed!(wp_without_sprint)
         end
       end
 
-      context "when sorting by sprint DESC" do
-        let(:sort_criteria) { [%w[sprint desc]] }
+      context "when filtering to exclude a sprint" do
+        let(:operator) { "!" }
+        let(:values) { [other_sprint.id.to_s] }
 
-        it "sorts DESC by sprint name" do
-          wp_table.expect_work_package_order(wp_without_sprint, work_package, other_wp)
+        it "shows work packages with other sprints or without a sprint" do
+          wp_table.expect_work_package_listed(wp_without_sprint, work_package)
+          wp_table.ensure_work_package_not_listed!(other_wp)
         end
       end
 
-      context "when editing the value of a sprint cell" do
-        it "changes the value" do
-          wp_table.update_work_package_attributes(wp_without_sprint, sprint: sprint)
-          wp_table.expect_work_package_with_attributes(wp_without_sprint, { sprint: sprint.name })
+      context "when filtering to have a sprint" do
+        let(:operator) { "*" }
+        let(:values) { nil }
+
+        it "shows work packages with a sprint" do
+          wp_table.expect_work_package_listed(work_package, other_wp)
+          wp_table.ensure_work_package_not_listed!(wp_without_sprint)
         end
       end
 
-      context "when grouping by sprint" do
-        let(:group_by) { :sprint }
+      context "when filtering to not have a sprint" do
+        let(:operator) { "!*" }
+        let(:values) { nil }
 
-        it "groups by sprint" do
-          wp_table.expect_groups({
-                                   sprint.name => 1,
-                                   other_sprint.name => 1,
-                                   "-" => 1
-                                 })
+        it "shows work packages without a sprint" do
+          wp_table.expect_work_package_listed(wp_without_sprint)
+          wp_table.ensure_work_package_not_listed!(work_package, other_wp)
         end
       end
     end
 
-    context "without the necessary permissions to view sprints in some other projects" do
-      let!(:query) { build(:global_query, user: current_user) }
-      let(:another_project_permissions) { all_permissions - [:view_sprints] }
+    context "when sorting by sprint ASC" do
+      let(:sort_criteria) { [%w[sprint asc]] }
 
-      it "does not render sprints you don't have permission for" do
-        # permission given, sprint visible:
-        wp_table.expect_work_package_with_attributes(work_package, { sprint: sprint.name })
+      it "sorts ASC by sprint name" do
+        wp_table.expect_work_package_order(other_wp, work_package, wp_without_sprint)
+      end
 
-        # permission missing, sprint invisible:
-        wp_table.expect_work_package_with_attributes(wp_from_another_project, { sprint: "" })
-        wp_table.expect_work_package_with_attributes(wp_with_sprint_from_another_project, { sprint: "" })
+      context "when sorting via name and dates" do
+        # Name is identical to the first sprint now, so the dates are used as second sorting criterion:
+        let(:other_sprint_name) { sprint.name }
+
+        it "sorts ASC by name and then start date and finish date" do
+          wp_table.expect_work_package_order(work_package, other_wp, wp_without_sprint)
+        end
+      end
+    end
+
+    context "when sorting by sprint DESC" do
+      let(:sort_criteria) { [%w[sprint desc]] }
+
+      it "sorts DESC by sprint name" do
+        wp_table.expect_work_package_order(wp_without_sprint, work_package, other_wp)
+      end
+    end
+
+    context "when editing the value of a sprint cell" do
+      it "changes the value" do
+        wp_table.update_work_package_attributes(wp_without_sprint, sprint: sprint)
+        wp_table.expect_work_package_with_attributes(wp_without_sprint, { sprint: sprint.name })
+      end
+    end
+
+    context "when grouping by sprint" do
+      let(:group_by) { :sprint }
+
+      it "groups by sprint" do
+        wp_table.expect_groups({
+                                 sprint.name => 1,
+                                 other_sprint.name => 1,
+                                 "-" => 1
+                               })
+      end
+    end
+  end
+
+  context "without the necessary permissions to view sprints in some other projects" do
+    let!(:query) { build(:global_query, user: current_user) }
+    let(:another_project_permissions) { all_permissions - [:view_sprints] }
+
+    it "does not render sprints you don't have permission for" do
+      # permission given, sprint visible:
+      wp_table.expect_work_package_with_attributes(work_package, { sprint: sprint.name })
+
+      # permission missing, sprint invisible:
+      wp_table.expect_work_package_with_attributes(wp_from_another_project, { sprint: "" })
+      wp_table.expect_work_package_with_attributes(wp_with_sprint_from_another_project, { sprint: "" })
+    end
+
+    context "when sorting by sprint ASC" do
+      let(:sort_criteria) { [%w[sprint asc]] }
+
+      it "sorts work packages from projects you don't have permission to like work packages without a sprint" do
+        wp_table.expect_work_package_order(other_wp, work_package, wp_with_sprint_from_another_project,
+                                           wp_from_another_project, wp_without_sprint)
+      end
+    end
+
+    context "when grouping" do
+      let(:group_by) { :sprint }
+
+      it "groups work packages from projects you don't have permission to like work packages without a sprint" do
+        wp_table.expect_groups({
+                                 other_sprint.name => 1,
+                                 sprint.name => 1,
+                                 "-" => 3
+                               })
+      end
+    end
+  end
+
+  context "without being a member in a project at all" do
+    let!(:query) { build(:global_query, user: current_user) }
+    let!(:project_where_user_is_no_member) { create(:project) }
+    let!(:sprint_that_user_cannot_see) { create(:agile_sprint, project: project_where_user_is_no_member) }
+    let!(:work_package_that_user_cannot_see) do
+      create(:work_package, project: project_where_user_is_no_member, sprint: sprint_that_user_cannot_see)
+    end
+
+    context "when grouping" do
+      let(:group_by) { :sprint }
+
+      it "ignores work packages from projects you cannot see" do
+        wp_table.ensure_work_package_not_listed!(work_package_that_user_cannot_see)
+        wp_table.expect_groups({
+                                 other_sprint.name => 1,
+                                 sprint.name => 1,
+                                 sprint_from_other_project.name => 1,
+                                 "-" => 2 # There are 3 work packages here, but the user only sees 2
+                               })
+      end
+    end
+  end
+
+  context "when a sprint is shared" do
+    let(:shared_sprint) { create(:agile_sprint, project: project_sharing, name: "Shared sprint") }
+    let!(:query) { build(:global_query, user: current_user) }
+    let!(:wp_with_shared_sprint) do
+      create(:work_package,
+             project: project_sharing,
+             sprint: shared_sprint,
+             subject: "wp with shared sprint",
+             author: current_user)
+    end
+
+    before do
+      visit_page!
+    end
+
+    it "can be queried" do
+      wp_table.expect_work_package_with_attributes(wp_with_shared_sprint, { sprint: shared_sprint.name })
+    end
+
+    context "when sorting by sprint ASC" do
+      let(:sort_criteria) { [%w[sprint asc]] }
+
+      it "can be sorted" do
+        wp_table.expect_work_package_order(other_wp, wp_with_shared_sprint, work_package,
+                                           wp_with_sprint_from_another_project,
+                                           wp_from_another_project, wp_without_sprint)
+      end
+    end
+
+    context "when the user lacks permission in the receiving and giving project" do
+      let(:sharer_project_permissions) { all_permissions - [:view_sprints] }
+      let(:shared_project_permissions) { all_permissions - [:view_sprints] }
+
+      it "hides the sprint" do
+        wp_table.expect_work_package_with_attributes(wp_with_shared_sprint, { sprint: "" })
       end
 
       context "when sorting by sprint ASC" do
@@ -260,42 +356,22 @@ RSpec.describe "Sprint displayed and selectable on work package table", :js do
 
         it "sorts work packages from projects you don't have permission to like work packages without a sprint" do
           wp_table.expect_work_package_order(other_wp, work_package, wp_with_sprint_from_another_project,
-                                             wp_from_another_project, wp_without_sprint)
+                                             wp_with_shared_sprint, wp_from_another_project, wp_without_sprint)
         end
-      end
-
-      context "when grouping" do
-        let(:group_by) { :sprint }
-
-        it "groups work packages from projects you don't have permission to like work packages without a sprint" do
-          wp_table.expect_groups({
-                                   other_sprint.name => 1,
-                                   sprint.name => 1,
-                                   "-" => 3
-                                 })
-        end
-      end
-    end
-
-    context "without being a member in a project at all" do
-      let!(:query) { build(:global_query, user: current_user) }
-      let!(:project_where_user_is_no_member) { create(:project) }
-      let!(:sprint_that_user_cannot_see) { create(:agile_sprint, project: project_where_user_is_no_member) }
-      let!(:work_package_that_user_cannot_see) do
-        create(:work_package, project: project_where_user_is_no_member, sprint: sprint_that_user_cannot_see)
       end
 
       context "when grouping" do
         let(:group_by) { :sprint }
 
         it "ignores work packages from projects you cannot see" do
-          wp_table.ensure_work_package_not_listed!(work_package_that_user_cannot_see)
           wp_table.expect_groups({
                                    other_sprint.name => 1,
                                    sprint.name => 1,
                                    sprint_from_other_project.name => 1,
-                                   "-" => 2 # There are 3 work packages here, but the user only sees 2
+                                   "-" => 3
                                  })
+
+          wp_table.expect_work_package_with_attributes(wp_with_shared_sprint, { sprint: "" })
         end
       end
     end
