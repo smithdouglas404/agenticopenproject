@@ -29,7 +29,6 @@
 #++
 
 require "spec_helper"
-require Rails.root.join("spec/models/queries/work_packages/selects/shared_query_select_specs").to_s
 
 RSpec.describe OpenProject::Backlogs::WorkPackageSprintSelect do # rubocop:disable RSpec/SpecFilePathFormat
   let(:instance) { described_class.new(:sprint) }
