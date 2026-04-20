@@ -149,7 +149,7 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
                           jira_field_id: "customfield_10275",
                           payload: {
                             "id" => "customfield_10275",
-                            "name" => "CF text",
+                            "name" => "CF Text",
                             "schema" => {
                               "type" => "string",
                               "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:textarea",
@@ -167,11 +167,11 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     before { described_class.new.perform(jira_import.id) }
 
     it "creates a 'text' custom field" do
-      expect(WorkPackageCustomField.find_by!(name: "CF text").field_format).to eq("text")
+      expect(WorkPackageCustomField.find_by!(name: "CF Text").field_format).to eq("text")
     end
 
     it "converts Jira wiki markup to OP markdown (bold *x* -> **x**)" do
-      expect(cf_value("CF text")).to include("**bold**")
+      expect(cf_value("CF Text")).to include("**bold**")
     end
   end
 
@@ -367,8 +367,73 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
   end
 
   describe "multicheckboxes field (com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes)" do
-    # Each checkbox option becomes a separate boolean custom field.
-    # Jira value: array of selected options -> true/false per option CF.
+    # Multiple checkbox options produce a single multi-value list custom field.
+    # Jira value: array of selected options -> list option values on the CF.
+    let(:multicheckboxes_field_payload) do
+      {
+        "id" => "customfield_10260",
+        "name" => "CF Booleans",
+        "schema" => {
+          "type" => "array",
+          "items" => "option",
+          "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes",
+          "customId" => 10260
+        },
+        "contextGroups" => [
+          global_context.merge(
+            "allowedValues" => [
+              { "id" => "10137",
+                "self" => "https://jira-software.local/rest/api/2/customFieldOption/10137",
+                "value" => "Check 1",
+                "disabled" => false },
+              { "id" => "10138",
+                "self" => "https://jira-software.local/rest/api/2/customFieldOption/10138",
+                "value" => "Check 2",
+                "disabled" => false }
+            ]
+          )
+        ]
+      }
+    end
+
+    let!(:jira_field) do
+      create(:jira_field, jira:, jira_import:,
+                          jira_field_id: "customfield_10260",
+                          payload: multicheckboxes_field_payload)
+    end
+    let!(:jira_issue) do
+      create(:jira_issue, jira:, jira_import:,
+                          jira_issue_id: "10200",
+                          jira_project_id: jira_project.id,
+                          payload: issue_payload)
+    end
+
+    before { described_class.new.perform(jira_import.id) }
+
+    it "creates one multi-value list custom field" do
+      cf = WorkPackageCustomField.find_by!(name: "CF Booleans")
+      expect(cf.field_format).to eq("list")
+      expect(cf.multi_value).to be true
+    end
+
+    it "populates all checkbox options as possible values" do
+      cf = WorkPackageCustomField.find_by!(name: "CF Booleans")
+      expect(cf.custom_options.pluck(:value)).to contain_exactly("Check 1", "Check 2")
+    end
+
+    it "sets the selected options as list values on the work package" do
+      # The fixture has only 'Check 1' selected
+      expect(cf_value("CF Booleans")).to contain_exactly("Check 1")
+    end
+
+    it "adds the list custom field to the work package type" do
+      type = Type.find_by!(name: "Task")
+      expect(type.custom_fields.pluck(:name)).to include("CF Booleans")
+    end
+  end
+
+  describe "multicheckboxes field with a single option (com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes)" do
+    # A single checkbox option produces one boolean custom field.
     let!(:jira_field) do
       create(:jira_field, jira:, jira_import:,
                           jira_field_id: "customfield_10260",
@@ -387,10 +452,6 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
                                   { "id" => "10137",
                                     "self" => "https://jira-software.local/rest/api/2/customFieldOption/10137",
                                     "value" => "Check 1",
-                                    "disabled" => false },
-                                  { "id" => "10138",
-                                    "self" => "https://jira-software.local/rest/api/2/customFieldOption/10138",
-                                    "value" => "Check 2",
                                     "disabled" => false }
                                 ]
                               )
@@ -406,26 +467,175 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
 
     before { described_class.new.perform(jira_import.id) }
 
-    it "creates one boolean custom field per checkbox option" do
-      cf1 = WorkPackageCustomField.find_by!(name: "CF Booleans - Check 1")
-      cf2 = WorkPackageCustomField.find_by!(name: "CF Booleans - Check 2")
-      expect(cf1.field_format).to eq("bool")
-      expect(cf2.field_format).to eq("bool")
+    it "creates one boolean custom field named after the Jira field" do
+      cf = WorkPackageCustomField.find_by!(name: "CF Booleans")
+      expect(cf.field_format).to eq("bool")
     end
 
-    it "sets the checked option to true on the work package" do
-      # The fixture has only 'Check 1' selected
-      expect(cf_value("CF Booleans - Check 1")).to be true
+    it "sets the value to true when the option is selected" do
+      # The fixture has 'Check 1' selected
+      expect(cf_value("CF Booleans")).to be true
+    end
+  end
+
+  describe "multicheckboxes with multiple context groups and different multi-option sets per context" do
+    # Two context groups each have 2+ options (different sets) -> one list CF per context group.
+    let!(:jira_field) do
+      create(:jira_field, jira:, jira_import:,
+                          jira_field_id: "customfield_10285",
+                          payload: {
+                            "id" => "customfield_10285",
+                            "name" => "CF Multi-Context Checks",
+                            "schema" => {
+                              "type" => "array",
+                              "items" => "option",
+                              "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes",
+                              "customId" => 10285
+                            },
+                            "contextGroups" => [
+                              {
+                                "projects" => ["DYX"], "issuetypes" => [],
+                                "allowedValues" => [{ "id" => "10200", "value" => "Alpha" },
+                                                    { "id" => "10201", "value" => "Beta" }]
+                              },
+                              {
+                                "projects" => ["ZBX"], "issuetypes" => [],
+                                "allowedValues" => [{ "id" => "10202", "value" => "Gamma" },
+                                                    { "id" => "10203", "value" => "Delta" }]
+                              }
+                            ]
+                          })
+    end
+    let!(:jira_issue) do
+      create(:jira_issue, jira:, jira_import:,
+                          jira_issue_id: "10200",
+                          jira_project_id: jira_project.id,
+                          payload: issue_payload)
     end
 
-    it "sets the unchecked option to false on the work package" do
-      expect(cf_value("CF Booleans - Check 2")).to be false
+    before { described_class.new.perform(jira_import.id) }
+
+    it "creates one multi-value list CF per context group" do
+      cf_dyx = WorkPackageCustomField.find_by!(name: "CF Multi-Context Checks (DYX)")
+      cf_zbx = WorkPackageCustomField.find_by!(name: "CF Multi-Context Checks (ZBX)")
+      expect(cf_dyx.field_format).to eq("list")
+      expect(cf_zbx.field_format).to eq("list")
+      expect(cf_dyx.multi_value).to be true
+      expect(cf_zbx.multi_value).to be true
     end
 
-    it "adds both boolean custom fields to the work package type" do
-      type = Type.find_by!(name: "Task")
-      cf_names = type.custom_fields.pluck(:name)
-      expect(cf_names).to include("CF Booleans - Check 1", "CF Booleans - Check 2")
+    it "populates each CF with its own set of options" do
+      cf_dyx = WorkPackageCustomField.find_by!(name: "CF Multi-Context Checks (DYX)")
+      cf_zbx = WorkPackageCustomField.find_by!(name: "CF Multi-Context Checks (ZBX)")
+      expect(cf_dyx.custom_options.pluck(:value)).to contain_exactly("Alpha", "Beta")
+      expect(cf_zbx.custom_options.pluck(:value)).to contain_exactly("Gamma", "Delta")
+    end
+
+    it "sets the value using the issue's matching context CF" do
+      # The issue is from project DYX and has 'Alpha' selected
+      expect(cf_value("CF Multi-Context Checks (DYX)")).to contain_exactly("Alpha")
+    end
+  end
+
+  describe "multicheckboxes with multiple context groups sharing the same single option" do
+    # Both context groups have the same single option -> one bool CF shared across contexts.
+    let!(:jira_field) do
+      create(:jira_field, jira:, jira_import:,
+                          jira_field_id: "customfield_10286",
+                          payload: {
+                            "id" => "customfield_10286",
+                            "name" => "CF Single-Option Checks",
+                            "schema" => {
+                              "type" => "array",
+                              "items" => "option",
+                              "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes",
+                              "customId" => 10286
+                            },
+                            "contextGroups" => [
+                              {
+                                "projects" => ["DYX"], "issuetypes" => [],
+                                "allowedValues" => [{ "id" => "10204", "value" => "Active" }]
+                              },
+                              {
+                                "projects" => ["ZBX"], "issuetypes" => [],
+                                "allowedValues" => [{ "id" => "10204", "value" => "Active" }]
+                              }
+                            ]
+                          })
+    end
+    let!(:jira_issue) do
+      create(:jira_issue, jira:, jira_import:,
+                          jira_issue_id: "10200",
+                          jira_project_id: jira_project.id,
+                          payload: issue_payload)
+    end
+
+    before { described_class.new.perform(jira_import.id) }
+
+    it "creates exactly one bool CF shared across all contexts" do
+      cfs = WorkPackageCustomField.where(name: "CF Single-Option Checks")
+      expect(cfs.count).to eq(1)
+      expect(cfs.first.field_format).to eq("bool")
+    end
+
+    it "sets the value to true when the option is present in the issue" do
+      # The fixture has 'Active' selected for this field
+      expect(cf_value("CF Single-Option Checks")).to be true
+    end
+  end
+
+  describe "multicheckboxes with multiple context groups each having a different single option" do
+    # Each context group has a different single option -> total unique > 1, so one list CF per group.
+    let!(:jira_field) do
+      create(:jira_field, jira:, jira_import:,
+                          jira_field_id: "customfield_10287",
+                          payload: {
+                            "id" => "customfield_10287",
+                            "name" => "CF Different-Single Checks",
+                            "schema" => {
+                              "type" => "array",
+                              "items" => "option",
+                              "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes",
+                              "customId" => 10287
+                            },
+                            "contextGroups" => [
+                              {
+                                "projects" => ["DYX"], "issuetypes" => [],
+                                "allowedValues" => [{ "id" => "10205", "value" => "Yes" }]
+                              },
+                              {
+                                "projects" => ["ZBX"], "issuetypes" => [],
+                                "allowedValues" => [{ "id" => "10206", "value" => "No" }]
+                              }
+                            ]
+                          })
+    end
+    let!(:jira_issue) do
+      create(:jira_issue, jira:, jira_import:,
+                          jira_issue_id: "10200",
+                          jira_project_id: jira_project.id,
+                          payload: issue_payload)
+    end
+
+    before { described_class.new.perform(jira_import.id) }
+
+    it "creates one list CF per context group" do
+      cf_dyx = WorkPackageCustomField.find_by!(name: "CF Different-Single Checks (DYX)")
+      cf_zbx = WorkPackageCustomField.find_by!(name: "CF Different-Single Checks (ZBX)")
+      expect(cf_dyx.field_format).to eq("list")
+      expect(cf_zbx.field_format).to eq("list")
+    end
+
+    it "populates each CF with its single option" do
+      cf_dyx = WorkPackageCustomField.find_by!(name: "CF Different-Single Checks (DYX)")
+      cf_zbx = WorkPackageCustomField.find_by!(name: "CF Different-Single Checks (ZBX)")
+      expect(cf_dyx.custom_options.pluck(:value)).to eq(["Yes"])
+      expect(cf_zbx.custom_options.pluck(:value)).to eq(["No"])
+    end
+
+    it "sets the value from the issue's matching context" do
+      # The issue is from project DYX and has 'Yes' selected
+      expect(cf_value("CF Different-Single Checks (DYX)")).to contain_exactly("Yes")
     end
   end
 
@@ -573,13 +783,12 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
   describe "all custom field types in a single import run", with_ee: [:custom_field_hierarchies] do
     # Registers all field types at once and verifies the correct number of
     # OP custom fields are created:
-    # 5 scalar + 1 user + 1 labels + 1 list-single + 1 list-multi + 1 hierarchy + 2 bool = 12
     let!(:jira_fields) do
       [
         { id: "customfield_10255", name: "CF String",
           schema: { "type" => "string",
                     "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:textfield" } },
-        { id: "customfield_10275", name: "CF text",
+        { id: "customfield_10275", name: "CF Text",
           schema: { "type" => "string",
                     "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:textarea" } },
         { id: "customfield_10254", name: "CF Number",
@@ -629,6 +838,12 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
           context_groups: [global_context.merge(
             "allowedValues" => [{ "id" => "10137", "value" => "Check 1" },
                                 { "id" => "10138", "value" => "Check 2" }]
+          )] },
+        { id: "customfield_10270", name: "CF Boolean",
+          schema: { "type" => "array", "items" => "option",
+                    "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes" },
+          context_groups: [global_context.merge(
+            "allowedValues" => [{ "id" => "10139", "value" => "Yes" }]
           )] }
       ].map do |field_def|
         payload = { "id" => field_def[:id], "name" => field_def[:name], "schema" => field_def[:schema] }
@@ -646,7 +861,7 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     end
 
     it "creates the correct number of OpenProject custom fields" do
-      # 5 scalar + 1 user + 1 labels + 1 list-single + 1 list-multi + 1 hierarchy + 2 bool = 12
+      # 5 scalar + 1 user + 1 labels + 1 list-single + 1 list-multi + 1 hierarchy + 1 list(checkbox) + 1 bool = 12
       expect { described_class.new.perform(jira_import.id) }
         .to change(WorkPackageCustomField, :count).by(12)
     end
@@ -657,7 +872,7 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
       it "creates custom fields with the right formats" do
         expected = {
           "CF String" => "string",
-          "CF text" => "text",
+          "CF Text" => "text",
           "CF Number" => "float",
           "CF Date" => "date",
           "CF URL" => "link",
@@ -666,8 +881,8 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
           "CF List" => "list",
           "CF Multi-List" => "list",
           "CF Cascading" => "hierarchy",
-          "CF Booleans - Check 1" => "bool",
-          "CF Booleans - Check 2" => "bool"
+          "CF Booleans" => "list",
+          "CF Boolean" => "bool"
         }
         formats = WorkPackageCustomField.where(name: expected.keys).index_by(&:name).transform_values(&:field_format)
         expect(formats).to eq(expected)
@@ -679,7 +894,7 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
           expect(cf_value("CF Number").to_f).to eq(42.5)
           expect(cf_value("CF Date")).to eq(Date.parse("2024-06-15"))
           expect(cf_value("CF URL")).to eq("https://example.com")
-          expect(cf_value("CF text")).to include("**bold**")
+          expect(cf_value("CF Text")).to include("**bold**")
         end
       end
 
@@ -706,11 +921,8 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
         expect(value.label).to eq("Security")
       end
 
-      it "sets multicheckbox boolean values correctly" do
-        aggregate_failures do
-          expect(cf_value("CF Booleans - Check 1")).to be true
-          expect(cf_value("CF Booleans - Check 2")).to be false
-        end
+      it "sets multicheckbox selected options as list values correctly" do
+        expect(cf_value("CF Booleans")).to contain_exactly("Check 1")
       end
     end
   end

@@ -292,11 +292,12 @@ RSpec.describe Import::JiraImportProjectsJob::JiraImportCustomFieldBuilder do
                                  "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes" })
       end
 
-      it "produces 'FieldName - OptionValue' without project key suffix" do
+      it "uses the base field name without option suffix or project key suffix" do
         name, fmt = described_class.new(jira_field, context_group:, option_value: "Check 1").custom_field_settings
-        expect(name).to eq("CF Booleans - Check 1")
+        expect(name).to eq("CF Booleans")
         expect(fmt).to eq("bool")
         expect(name).not_to include("ZB")
+        expect(name).not_to include("Check 1")
       end
     end
   end
@@ -513,7 +514,7 @@ RSpec.describe Import::JiraImportProjectsJob::JiraImportCustomFieldBuilder do
       end
     end
 
-    context "with a multicheckboxes field (bool per option)" do
+    context "with a multicheckboxes field converted to bool (single option, option_value set)" do
       let(:jira_field) do
         jira_field_for(name: "CF Booleans",
                        schema: { "type" => "array",

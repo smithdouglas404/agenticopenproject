@@ -119,8 +119,12 @@ module Import
 
       def build_multicheckbox_registry_entries(jira_field)
         option_values = collect_multicheckbox_option_values(jira_field)
-        option_values.map do |option_value|
-          { jira_field:, contexts: build_multicheckbox_contexts_for_option(jira_field, option_value) }
+        return [] if option_values.empty?
+
+        if option_values.size == 1
+          [{ jira_field:, contexts: build_multicheckbox_contexts_for_option(jira_field, option_values.first) }]
+        else
+          [{ jira_field:, contexts: build_contexts_for_field(jira_field) }]
         end
       end
 

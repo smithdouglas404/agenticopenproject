@@ -31,6 +31,10 @@
 module Import
   class JiraFetchProjectsJob
     module JiraFetchCustomFields
+      # Jira custom-field types that carry per-context "Field context" allowedValues and therefore
+      # require editmeta resolution to capture project-specific option lists.
+      OPTION_BASED_CUSTOM_SUFFIXES = %w[select multiselect multicheckboxes cascadingselect].freeze
+
       def sync_custom_fields
         used_custom_field_ids = collect_used_custom_field_ids
         return unless used_custom_field_ids.any?
@@ -182,6 +186,11 @@ module Import
 
       def option_based_field?(jira_field)
         schema = jira_field.payload["schema"] || {}
+        custom_suffix = schema["custom"].to_s.split(":").last
+        return true if OPTION_BASED_CUSTOM_SUFFIXES.include?(custom_suffix)
+
+        # Fallback: catch option-typed fields from third-party plugins whose
+        # custom suffix is not in the list above.
         type = schema["type"]
         %w[option option-with-child].include?(type) || (type == "array" && schema["items"] == "option")
       end

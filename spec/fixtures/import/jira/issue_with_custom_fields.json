@@ -86,6 +86,34 @@
         "self": "https://jira-software.local/rest/api/2/customFieldOption/10137",
         "value": "Check 1"
       }
+    ],
+    "customfield_10270": [
+      {
+        "id": "10139",
+        "self": "https://jira-software.local/rest/api/2/customFieldOption/10139",
+        "value": "Yes"
+      }
+    ],
+    "customfield_10285": [
+      {
+        "id": "10200",
+        "self": "https://jira-software.local/rest/api/2/customFieldOption/10200",
+        "value": "Alpha"
+      }
+    ],
+    "customfield_10286": [
+      {
+        "id": "10204",
+        "self": "https://jira-software.local/rest/api/2/customFieldOption/10204",
+        "value": "Active"
+      }
+    ],
+    "customfield_10287": [
+      {
+        "id": "10205",
+        "self": "https://jira-software.local/rest/api/2/customFieldOption/10205",
+        "value": "Yes"
+      }
     ]
   },
   "changelog": {

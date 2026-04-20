@@ -130,7 +130,7 @@ module Import
         @context_group = context_group
         @option_value = option_value
         @jira_import = jira_import
-        @import_name = default_import_name
+        @import_name = default_cf_name
       end
 
       def find_existing_custom_field
@@ -179,11 +179,9 @@ module Import
 
       private
 
-      def default_import_name
+      def default_cf_name
         base_name = jira_field.payload["name"]
-        # Multicheckbox options produce one boolean CF per option - never append
-        # project keys since the same option should always map to the same CF.
-        return "#{base_name} - #{@option_value}" if @option_value
+        return base_name if @option_value
 
         project_keys = context_group_projects
         return base_name if project_keys.empty?
