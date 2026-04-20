@@ -302,7 +302,15 @@ export abstract class EditForm<T extends HalResource = HalResource> {
       .getForm()
       .then(() => {
         // Look up whether we're actually editable
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const fieldSchema = this.change.schema.ofProperty(fieldName);
+
+        // If the type changed while we tried to activate the form
+        // silently close the field as it will no longer be writable
+        if (!fieldSchema) {
+          this.closeEditFields([fieldName]);
+        }
+
         if (!fieldSchema.writable && !noWarnings) {
           this.halNotification.showEditingBlockedError(fieldSchema.name || fieldName);
           this.closeEditFields([fieldName]);
