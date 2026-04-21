@@ -50,6 +50,7 @@ module WorkPackageTypes
         WorkPackageTypes::FormConfiguration::SectionComponent.new(
           group:,
           type: @type,
+          ee_available: ee_available?,
           first: i == 0,
           last: i == @groups.length - 1
         )

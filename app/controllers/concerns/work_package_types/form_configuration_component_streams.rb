@@ -50,6 +50,7 @@ module WorkPackageTypes
         WorkPackageTypes::FormConfiguration::SectionComponent.new(
           group:,
           type: @type,
+          ee_available: EnterpriseToken.allows_to?(:edit_attribute_groups),
           first: index.zero?,
           last: index == groups.length - 1,
           edit_mode: editing_section_key.present? && group[:key].to_s == editing_section_key.to_s
@@ -82,6 +83,7 @@ module WorkPackageTypes
         component: WorkPackageTypes::FormConfiguration::SectionComponent.new(
           group: prepared_group(group, editing_section_key: edit_mode ? key : nil),
           type: @type,
+          ee_available: EnterpriseToken.allows_to?(:edit_attribute_groups),
           first: index.zero?,
           last: index == groups.length - 1,
           edit_mode:

@@ -54,10 +54,13 @@ See COPYRIGHT and LICENSE files for more details.
          ) do %>
         <%= flex_layout(align_items: :center) do |row| %>
           <% row.with_column(mr: 2) do %>
-            <%= render(Primer::OpenProject::DragHandle.new(
-                  classes: "attribute-handle",
-                  "aria-label": t("types.edit.form_configuration.drag_to_reorder")
-                )) %>
+            <%= render(
+                  Primer::OpenProject::DragHandle.new(
+                    classes: "attribute-handle",
+                    "aria-label": t("types.edit.form_configuration.drag_to_reorder"),
+                    data: { "test-selector": "type-form-configuration-attribute-handle-#{attribute[:key]}" }
+                  )
+                ) %>
           <% end %>
           <% row.with_column(flex: 1) do %>
             <%= render(Primer::Beta::Text.new) { attribute[:translation] } %>

@@ -139,6 +139,7 @@ See COPYRIGHT and LICENSE files for more details.
           ) do
             content_tag(:div, id: "type-form-configuration-sections-container",
                               data: {
+                                "test-selector": "type-form-configuration-sections-container",
                                 "admin--type-form-configuration-target": "sectionsContainer",
                                 "admin--type-form-configuration-sections-drag-and-drop-target": "container",
                                 "target-allowed-drag-type": "section"
@@ -162,7 +163,8 @@ See COPYRIGHT and LICENSE files for more details.
       outer.with_row do
         render(Primer::OpenProject::FeedbackDialog.new(
           id: "type-form-configuration-reset-dialog",
-          title: t("js.types.attribute_groups.reset_title")
+          title: t("js.types.attribute_groups.reset_title"),
+          data: { "test-selector": "type-form-configuration-reset-dialog" }
         )) do |dialog|
           dialog.with_feedback_message(icon_arguments: { icon: :alert, color: :attention }) do |message|
             message.with_heading(tag: :h2) { t("js.types.attribute_groups.reset_title") }

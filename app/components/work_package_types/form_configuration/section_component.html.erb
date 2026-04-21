@@ -43,23 +43,35 @@ See COPYRIGHT and LICENSE files for more details.
             scope: :section,
             method: :patch,
             url: update_path,
-            data: { turbo_stream: true }
+            data: {
+              turbo_stream: true,
+              "test-selector": "type-form-configuration-section-edit-form"
+            }
           ) do
             flex_layout(align_items: :center) do |header|
               header.with_column(flex: 1, mr: 2) do
-                render(Primer::Alpha::TextField.new(
-                  name: "section[name]",
-                  label: t("types.edit.form_configuration.section_name_label"),
-                  visually_hide_label: true,
-                  value: section_name,
-                  autofocus: true,
-                  autocomplete: "off",
-                  "full-width": true
-                ))
+                render(
+                  Primer::Alpha::TextField.new(
+                    name: "section[name]",
+                    label: t("types.edit.form_configuration.section_name_label"),
+                    visually_hide_label: true,
+                    value: section_name,
+                    autofocus: true,
+                    autocomplete: "off",
+                    "full-width": true,
+                    data: { "test-selector": "type-form-configuration-section-name-input" }
+                  )
+                )
               end
 
               header.with_column(mr: 2) do
-                render(Primer::Beta::Button.new(scheme: :primary, type: :submit)) { t("button_save") }
+                render(
+                  Primer::Beta::Button.new(
+                    scheme: :primary,
+                    type: :submit,
+                    data: { "test-selector": "type-form-configuration-section-save" }
+                  )
+                ) { t("button_save") }
               end
 
               header.with_column do
@@ -68,7 +80,11 @@ See COPYRIGHT and LICENSE files for more details.
                     scheme: :secondary,
                     tag: :a,
                     href: cancel_edit_path,
-                    data: { turbo_method: :post, turbo_stream: true }
+                    data: {
+                      turbo_method: :post,
+                      turbo_stream: true,
+                      "test-selector": "type-form-configuration-section-cancel"
+                    }
                   )
                 ) { t("button_cancel") }
               end
@@ -78,10 +94,13 @@ See COPYRIGHT and LICENSE files for more details.
           flex_layout(justify_content: :space_between, align_items: :center) do |header|
             header.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
               left.with_column(mr: 2, classes: "hide-when-print") do
-                render(Primer::OpenProject::DragHandle.new(
-                  classes: "section-handle",
-                  "aria-label": t("types.edit.form_configuration.drag_to_reorder")
-                ))
+                render(
+                  Primer::OpenProject::DragHandle.new(
+                    classes: "section-handle",
+                    "aria-label": t("types.edit.form_configuration.drag_to_reorder"),
+                    data: { "test-selector": "type-form-configuration-section-handle-#{@group[:key]}" }
+                  )
+                )
               end
               left.with_column(flex: 1) do
                 render(Primer::Beta::Text.new(font_weight: :bold)) { @group[:name] }
@@ -94,19 +113,23 @@ See COPYRIGHT and LICENSE files for more details.
                   icon: "kebab-horizontal",
                   scheme: :invisible,
                   size: :small,
-                  "aria-label": t("types.edit.form_configuration.section_actions")
+                  "aria-label": t("types.edit.form_configuration.section_actions"),
+                  data: { "test-selector": "type-form-configuration-section-actions-#{@group[:key]}" }
                 )
 
-                menu.with_item(
-                  label: t("types.edit.form_configuration.rename_section"),
-                  tag: :a,
-                  href: edit_path,
-                  content_arguments: { data: { turbo_stream: true } }
-                ) do |item|
-                  item.with_leading_visual_icon(icon: :pencil)
+                if ee_available?
+                  menu.with_item(
+                    label: t("types.edit.form_configuration.rename_section"),
+                    test_selector: "type-form-configuration-section-rename-#{@group[:key]}",
+                    tag: :a,
+                    href: edit_path,
+                    content_arguments: { data: { turbo_stream: true } }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: :pencil)
+                  end
                 end
 
-                unless first? && last?
+                unless (first? && last?) || !ee_available?
                   menu.with_divider
                 end
 
@@ -182,11 +205,13 @@ See COPYRIGHT and LICENSE files for more details.
                   icon: "kebab-horizontal",
                   scheme: :invisible,
                   size: :small,
-                  "aria-label": t("types.edit.form_configuration.row_actions")
+                  "aria-label": t("types.edit.form_configuration.row_actions"),
+                  data: { "test-selector": "type-form-configuration-query-actions-#{@group[:key]}" }
                 )
 
                 menu.with_item(
                   label: t("types.edit.form_configuration.edit_query"),
+                  test_selector: "type-form-configuration-edit-query-#{@group[:key]}",
                   tag: :button,
                   value: "",
                   content_arguments: {
@@ -278,10 +303,13 @@ See COPYRIGHT and LICENSE files for more details.
             flex_layout(justify_content: :space_between, align_items: :center) do |row|
               row.with_column(flex_layout: true, align_items: :center, flex: 1) do |left|
                 left.with_column(mr: 2, classes: "hide-when-print") do
-                  render(Primer::OpenProject::DragHandle.new(
-                    classes: "attribute-handle",
-                    "aria-label": t("types.edit.form_configuration.drag_to_reorder")
-                  ))
+                  render(
+                    Primer::OpenProject::DragHandle.new(
+                      classes: "attribute-handle",
+                      "aria-label": t("types.edit.form_configuration.drag_to_reorder"),
+                      data: { "test-selector": "type-form-configuration-attribute-handle-#{attribute[:key]}" }
+                    )
+                  )
                 end
                 left.with_column(flex: 1) do
                   render(Primer::Beta::Text.new) { attribute[:translation] }
@@ -294,7 +322,8 @@ See COPYRIGHT and LICENSE files for more details.
                     icon: "kebab-horizontal",
                     scheme: :invisible,
                     size: :small,
-                    "aria-label": t("types.edit.form_configuration.row_actions")
+                    "aria-label": t("types.edit.form_configuration.row_actions"),
+                    data: { "test-selector": "type-form-configuration-attribute-actions-#{attribute[:key]}" }
                   )
 
                   unless index.zero?
@@ -341,6 +370,7 @@ See COPYRIGHT and LICENSE files for more details.
 
                   menu.with_item(
                     label: t("button_delete"),
+                    test_selector: "type-form-configuration-delete-attribute-#{attribute[:key]}",
                     scheme: :danger,
                     tag: :a,
                     href: row_destroy_path(attribute),

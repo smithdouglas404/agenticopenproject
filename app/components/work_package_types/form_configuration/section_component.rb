@@ -34,10 +34,11 @@ module WorkPackageTypes
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
-      def initialize(group:, type: nil, first: false, last: false, edit_mode: false)
+      def initialize(group:, type: nil, ee_available: false, first: false, last: false, edit_mode: false)
         super(group)
         @group = group
         @type = type
+        @ee_available = ee_available
         @first = first
         @last = last
         @edit_mode = edit_mode
@@ -66,6 +67,10 @@ module WorkPackageTypes
 
       def last?
         @last
+      end
+
+      def ee_available?
+        @ee_available
       end
 
       private

@@ -46,15 +46,6 @@ module WorkPackageTypes
       end
 
       respond_with_turbo_streams(status: turbo_status_for(call))
-    rescue StandardError => e
-      Rails.logger.error("[form_configuration_sections.create] #{e.class}: #{e.message}\n#{e.backtrace&.first(20)&.join("\n")}")
-
-      if Rails.env.development?
-        render_error_flash_message_via_turbo_stream(message: "#{e.class}: #{e.message}")
-        respond_with_turbo_streams(status: :internal_server_error)
-      else
-        raise
-      end
     end
 
     def edit
@@ -161,7 +152,6 @@ module WorkPackageTypes
     end
 
     def find_section(key)
-    
       @type.attribute_groups.find do |group|
         [
           group.key,
