@@ -51,12 +51,17 @@ export class ExternalQueryConfigurationComponent implements OnInit, AfterViewIni
     // to avoid nesting components in the view initialization.
     setTimeout(() => {
       this.embeddedTable.openConfigurationModal(() => {
-        this.service.detach();
-        if (this.locals.urlParams) {
-          this.locals.callback(this.embeddedTable.buildUrlParams());
-        } else {
-          this.locals.callback(this.embeddedTable.buildQueryProps());
-        }
+        // The modal emits onDataUpdated immediately after tab onSave hooks run.
+        // Defer reading query props by a tick so the embedded query space reflects
+        // the latest filter/column changes before we persist them in form configuration.
+        setTimeout(() => {
+          this.service.detach();
+          if (this.locals.urlParams) {
+            this.locals.callback(this.embeddedTable.buildUrlParams());
+          } else {
+            this.locals.callback(this.embeddedTable.buildQueryProps());
+          }
+        });
       });
       this.cdRef.detectChanges();
     });

@@ -44,7 +44,7 @@ module Pages
     end
 
     def table_container
-      container.find(".work-package-table")
+      container.find(".work-package-table, wp-table", match: :first, wait: 10)
     end
 
     def click_reference_inline_create

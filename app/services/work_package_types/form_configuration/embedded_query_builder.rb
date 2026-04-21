@@ -60,9 +60,12 @@ module WorkPackageTypes
 
       def query_parameters(query_props)
         return {} if query_props.blank?
-        return JSON.parse(query_props) if query_props.is_a?(String)
+        if query_props.is_a?(String)
+          return JSON.parse(query_props).deep_symbolize_keys
+        end
 
-        query_props.respond_to?(:to_unsafe_h) ? query_props.to_unsafe_h : query_props
+        params = query_props.respond_to?(:to_unsafe_h) ? query_props.to_unsafe_h : query_props
+        params.deep_symbolize_keys
       end
 
       def assign_system_user(query)
