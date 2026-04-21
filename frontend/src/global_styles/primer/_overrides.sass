@@ -170,6 +170,10 @@ ul.SegmentedControl,
 .Box-row:is(.Box-row--draggable)
   cursor: grab
 
+.is-dnd-busy
+  .Box-row:is(.Box-row--draggable)
+    cursor: progress
+
 // Apply the mobile styles as soon as the banner itself is small
 // Styles are copied from the PVC repo
 .op-primer-flash

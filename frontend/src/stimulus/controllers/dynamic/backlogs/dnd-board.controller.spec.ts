@@ -45,7 +45,12 @@ interface DropDestination {
 interface TestableBoardController {
   disconnect():void;
   handleMonitorDrop(args:{
-    source:{ element:HTMLElement };
+    source:{
+      element:HTMLElement;
+      data?:{
+        itemType?:string;
+      };
+    };
     location:{ current:{ dropTargets:DropDestination[] } };
   }):Promise<void>;
 }
@@ -166,7 +171,7 @@ describe('BacklogsDndBoardController', () => {
     });
 
     await board.handleMonitorDrop({
-      source: { element: story2 },
+      source: { element: story2, data: { itemType: 'story' } },
       location: {
         current: {
           dropTargets: [
@@ -214,7 +219,7 @@ describe('BacklogsDndBoardController', () => {
     });
 
     await board.handleMonitorDrop({
-      source: { element: story2 },
+      source: { element: story2, data: { itemType: 'story' } },
       location: {
         current: {
           dropTargets: [
@@ -261,7 +266,7 @@ describe('BacklogsDndBoardController', () => {
     });
 
     await board.handleMonitorDrop({
-      source: { element: story1 },
+      source: { element: story1, data: { itemType: 'story' } },
       location: {
         current: {
           dropTargets: [
@@ -300,7 +305,7 @@ describe('BacklogsDndBoardController', () => {
     } as unknown as FetchResponse);
 
     await board.handleMonitorDrop({
-      source: { element: story2 },
+      source: { element: story2, data: { itemType: 'story' } },
       location: {
         current: {
           dropTargets: [
@@ -323,6 +328,155 @@ describe('BacklogsDndBoardController', () => {
     ]);
   });
 
+  it('uses the placeholder prev-id sentinel when the previous sibling is not a draggable item', async () => {
+    await startWithFixture();
+
+    const board = findBoardController();
+    const backlog = fixturesElement.querySelector<HTMLElement>('#backlog-1')!;
+    const story1 = fixturesElement.querySelector<HTMLElement>('#story-1')!;
+    const story3 = fixturesElement.querySelector<HTMLElement>('#story-3')!;
+    const placeholder = document.createElement('li');
+    placeholder.id = 'show-more';
+    placeholder.setAttribute('data-backlogs--dnd-prev-id-value', '99');
+    backlog.insertBefore(placeholder, story3.nextSibling);
+
+    spyOn(FetchRequest.prototype, 'perform').and.resolveTo({
+      ok: true,
+      statusCode: 200,
+    } as unknown as FetchResponse);
+    (FetchRequest.prototype.perform as jasmine.Spy).and.callFake(function(this:{ options:{ body:FormData } }) {
+      capturedRequestBody = this.options.body;
+
+      return Promise.resolve({
+        ok: true,
+        statusCode: 200,
+      } as FetchResponse);
+    });
+
+    await board.handleMonitorDrop({
+      source: { element: story1, data: { itemType: 'story' } },
+      location: {
+        current: {
+          dropTargets: [
+            {
+              element: backlog,
+              data: {
+                kind: 'list',
+                listId: 'version:1',
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    expect(capturedRequestBody?.get('prev_id')).toBe('99');
+  });
+
+  it('short-circuits drop-on-self without sending a request', async () => {
+    await startWithFixture();
+
+    const board = findBoardController();
+    const sprint = fixturesElement.querySelector<HTMLElement>('#sprint-1')!;
+    const story1 = fixturesElement.querySelector<HTMLElement>('#story-1')!;
+    const performSpy = spyOn(FetchRequest.prototype, 'perform');
+
+    await board.handleMonitorDrop({
+      source: { element: story1, data: { itemType: 'story' } },
+      location: {
+        current: {
+          dropTargets: [
+            {
+              element: story1,
+              data: {
+                kind: 'item',
+                listId: 'sprint:1',
+                edge: 'before',
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    expect(performSpy).not.toHaveBeenCalled();
+    expect(Array.from(sprint.children).map((element) => (element as HTMLElement).id)).toEqual([
+      'story-1',
+      'story-2',
+    ]);
+  });
+
+  it('marks the board busy and ignores additional drops while a request is in flight', async () => {
+    await startWithFixture();
+
+    const boardElement = fixturesElement.querySelector<HTMLElement>('[data-controller~="backlogs--dnd-board"]')!;
+    const board = findBoardController();
+    const backlog = fixturesElement.querySelector<HTMLElement>('#backlog-1')!;
+    const sprint = fixturesElement.querySelector<HTMLElement>('#sprint-1')!;
+    const story1 = fixturesElement.querySelector<HTMLElement>('#story-1')!;
+    const story2 = fixturesElement.querySelector<HTMLElement>('#story-2')!;
+    const story3 = fixturesElement.querySelector<HTMLElement>('#story-3')!;
+
+    let resolveRequest:(value:FetchResponse) => void = () => undefined;
+    const performSpy = spyOn(FetchRequest.prototype, 'perform').and.callFake(() => {
+      return new Promise<FetchResponse>((resolve) => {
+        resolveRequest = resolve;
+      });
+    });
+
+    const firstDrop = board.handleMonitorDrop({
+      source: { element: story2, data: { itemType: 'story' } },
+      location: {
+        current: {
+          dropTargets: [
+            {
+              element: story3,
+              data: {
+                kind: 'item',
+                listId: 'version:1',
+                edge: 'after',
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    expect(boardElement.classList.contains('is-dnd-busy')).toBe(true);
+    expect(boardElement.getAttribute('aria-busy')).toBe('true');
+
+    await board.handleMonitorDrop({
+      source: { element: story1, data: { itemType: 'story' } },
+      location: {
+        current: {
+          dropTargets: [
+            {
+              element: backlog,
+              data: {
+                kind: 'list',
+                listId: 'version:1',
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    expect(performSpy).toHaveBeenCalledTimes(1);
+    expect(Array.from(sprint.children).map((element) => (element as HTMLElement).id)).toEqual([
+      'story-1',
+    ]);
+
+    resolveRequest({
+      ok: true,
+      statusCode: 200,
+    } as FetchResponse);
+    await firstDrop;
+
+    expect(boardElement.classList.contains('is-dnd-busy')).toBe(false);
+    expect(boardElement.getAttribute('aria-busy')).toBe('false');
+  });
+
   it('registers a pragmatic monitor on connect and cleans it up on disconnect', async () => {
     const cleanup = jasmine.createSpy('cleanup');
     spyOn(pragmaticDnd, 'monitorForElements').and.returnValue(cleanup);
@@ -334,5 +488,39 @@ describe('BacklogsDndBoardController', () => {
     findBoardController().disconnect();
 
     expect(cleanup).toHaveBeenCalled();
+  });
+
+  it('filters the global monitor to backlog story drags', async () => {
+    let monitorArgs:{ canMonitor:(args:{ source:{ data:{ itemType?:string } } }) => boolean }|null = null;
+    const cleanup = jasmine.createSpy('cleanup');
+    spyOn(pragmaticDnd, 'monitorForElements').and.callFake((args) => {
+      monitorArgs = args as typeof monitorArgs;
+
+      return cleanup;
+    });
+
+    await startWithFixture();
+
+    expect(monitorArgs).not.toBeNull();
+    expect(monitorArgs!.canMonitor({ source: { data: { itemType: 'story' } } })).toBe(true);
+    expect(monitorArgs!.canMonitor({ source: { data: { itemType: 'task' } } })).toBe(false);
+    expect(monitorArgs!.canMonitor({ source: { data: {} } })).toBe(false);
+  });
+
+  it('resolves item and list controllers from outlet-backed maps', async () => {
+    await startWithFixture();
+
+    const board = findBoardController() as TestableBoardController & {
+      itemControllerFor(element:HTMLElement):BacklogsDndItemController|null;
+      listControllerFor(element:HTMLElement):BacklogsDndListController|null;
+    };
+    const story1 = fixturesElement.querySelector<HTMLElement>('#story-1')!;
+    const sprint = fixturesElement.querySelector<HTMLElement>('#sprint-1')!;
+    spyOn(Application.prototype, 'getControllerForElementAndIdentifier').and.returnValue(null);
+
+    expect(board.itemControllerFor(story1)).not.toBeNull();
+    expect(board.itemControllerFor(story1)?.itemIdValue).toBe('1');
+    expect(board.listControllerFor(sprint)).not.toBeNull();
+    expect(board.listControllerFor(sprint)?.listIdValue).toBe('sprint:1');
   });
 });

@@ -71,7 +71,7 @@ export default class BacklogsDndItemController extends Controller<HTMLElement> {
       }),
       pragmaticDnd.dropTargetForElements({
         element: this.element,
-        canDrop: () => true,
+        canDrop: ({ source }) => source.data.itemType === this.itemTypeValue,
         getData: ({ input, element }) => ({
           kind: 'item',
           itemId: this.itemIdValue,

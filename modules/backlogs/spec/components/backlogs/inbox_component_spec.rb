@@ -139,7 +139,7 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
         # shows a 'show more' link with the count of hidden items
         expect(page).to have_css("#inbox-more-row-#{project.id}")
         expect(page).to have_text("Show #{middle_count} more items")
-        expect(page.find("#inbox-more-row-#{project.id}")["data-backlogs--dnd-item-item-id-value"]).to be_present
+        expect(page.find("#inbox-more-row-#{project.id}")["data-backlogs--dnd-prev-id-value"]).to be_present
       end
     end
 

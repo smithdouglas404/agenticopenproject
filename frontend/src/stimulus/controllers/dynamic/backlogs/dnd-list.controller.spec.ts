@@ -97,4 +97,33 @@ describe('BacklogsDndListController', () => {
 
     expect(pragmaticDnd.dropTargetForElements).toHaveBeenCalledTimes(2);
   });
+
+  it('only accepts drags that match acceptsValue', async () => {
+    fixturesElement.innerHTML = `
+      <ul
+        id="list"
+        data-controller="backlogs--dnd-list"
+        data-backlogs--dnd-list-list-id-value="sprint:1"
+        data-backlogs--dnd-list-accepts-value="story">
+      </ul>
+    `;
+
+    let dropTargetArgs:{ canDrop:(args:{ source:{ data:{ itemType?:string } } }) => boolean }|null = null;
+    const cleanup = jasmine.createSpy('cleanup');
+    spyOn(pragmaticDnd, 'dropTargetForElements').and.callFake((args) => {
+      dropTargetArgs = args as typeof dropTargetArgs;
+
+      return cleanup;
+    });
+
+    Stimulus = Application.start();
+    Stimulus.register('backlogs--dnd-list', BacklogsDndListController);
+
+    await nextFrame();
+
+    expect(dropTargetArgs).not.toBeNull();
+    expect(dropTargetArgs!.canDrop({ source: { data: { itemType: 'story' } } })).toBe(true);
+    expect(dropTargetArgs!.canDrop({ source: { data: { itemType: 'task' } } })).toBe(false);
+    expect(dropTargetArgs!.canDrop({ source: { data: {} } })).toBe(false);
+  });
 });

@@ -47,7 +47,12 @@ interface DropDestination {
 }
 
 interface MonitorDropArgs {
-  source:{ element:HTMLElement };
+  source:{
+    element:HTMLElement;
+    data:{
+      itemType?:string;
+    };
+  };
   location:{ current:{ dropTargets:DropDestination[] } };
 }
 
@@ -55,10 +60,14 @@ export default class BacklogsDndBoardController extends Controller<HTMLElement> 
   static outlets = ['backlogs--dnd-list', 'backlogs--dnd-item'];
 
   private monitorCleanup:(() => void)|null = null;
+  private requestInFlight = false;
+  private itemControllersByElement = new Map<HTMLElement, BacklogsDndItemController>();
+  private listControllersByElement = new Map<HTMLElement, BacklogsDndListController>();
 
   connect() {
     this.monitorCleanup?.();
     this.monitorCleanup = pragmaticDnd.monitorForElements({
+      canMonitor: ({ source }) => source.data.itemType === 'story',
       onDrop: (args) => {
         void this.handleMonitorDrop(args as MonitorDropArgs);
       },
@@ -70,12 +79,36 @@ export default class BacklogsDndBoardController extends Controller<HTMLElement> 
     this.monitorCleanup = null;
   }
 
+  backlogsDndItemOutletConnected(outlet:BacklogsDndItemController, element:HTMLElement) {
+    this.itemControllersByElement.set(element, outlet);
+  }
+
+  backlogsDndItemOutletDisconnected(_outlet:BacklogsDndItemController, element:HTMLElement) {
+    this.itemControllersByElement.delete(element);
+  }
+
+  backlogsDndListOutletConnected(outlet:BacklogsDndListController, element:HTMLElement) {
+    this.listControllersByElement.set(element, outlet);
+  }
+
+  backlogsDndListOutletDisconnected(_outlet:BacklogsDndListController, element:HTMLElement) {
+    this.listControllersByElement.delete(element);
+  }
+
   async handleMonitorDrop({ source, location }:MonitorDropArgs) {
+    if (this.requestInFlight) {
+      return;
+    }
+
     const sourceElement = source.element;
     const sourceItem = this.itemControllerFor(sourceElement);
     const destination = location.current.dropTargets[0];
 
     if (!sourceItem || !destination) {
+      return;
+    }
+
+    if (destination.element === sourceElement) {
       return;
     }
 
@@ -93,6 +126,8 @@ export default class BacklogsDndBoardController extends Controller<HTMLElement> 
     data.append('target_id', destinationList.listIdValue);
     data.append('prev_id', this.previousItemId(sourceElement));
 
+    this.setBusy(true);
+
     try {
       const request = new FetchRequest('put', sourceItem.dropUrlValue, { body: data, responseKind: 'turbo-stream' });
       const response = await request.perform();
@@ -102,6 +137,8 @@ export default class BacklogsDndBoardController extends Controller<HTMLElement> 
       }
     } catch {
       this.revertMove(sourceElement, originalParent, originalNextSibling);
+    } finally {
+      this.setBusy(false);
     }
   }
 
@@ -150,25 +187,36 @@ export default class BacklogsDndBoardController extends Controller<HTMLElement> 
   }
 
   private itemControllerFor(element:HTMLElement):BacklogsDndItemController|null {
-    return this.application.getControllerForElementAndIdentifier(element, 'backlogs--dnd-item') as BacklogsDndItemController|null;
+    return this.itemControllersByElement.get(element) ?? null;
   }
 
   private listControllerFor(element:HTMLElement):BacklogsDndListController|null {
-    return this.application.getControllerForElementAndIdentifier(element, 'backlogs--dnd-list') as BacklogsDndListController|null;
+    return this.listControllersByElement.get(element) ?? null;
   }
 
   private previousItemId(element:HTMLElement):string {
     let sibling = element.previousElementSibling;
 
     while (sibling instanceof HTMLElement) {
-      const itemId = sibling.getAttribute('data-backlogs--dnd-item-item-id-value');
-      if (itemId) {
-        return itemId;
+      const siblingController = this.itemControllerFor(sibling);
+      if (siblingController) {
+        return siblingController.itemIdValue;
+      }
+
+      const previousItemId = sibling.getAttribute('data-backlogs--dnd-prev-id-value');
+      if (previousItemId) {
+        return previousItemId;
       }
 
       sibling = sibling.previousElementSibling;
     }
 
     return '';
+  }
+
+  private setBusy(isBusy:boolean) {
+    this.requestInFlight = isBusy;
+    this.element.classList.toggle('is-dnd-busy', isBusy);
+    this.element.setAttribute('aria-busy', String(isBusy));
   }
 }

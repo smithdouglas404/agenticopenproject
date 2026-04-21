@@ -74,14 +74,16 @@ describe('BacklogsDndItemController', () => {
 
     await nextFrame();
 
+    const storyElement = fixturesElement.querySelector<HTMLElement>('#story-1')!;
+
     expect(pragmaticDnd.draggable).toHaveBeenCalled();
     expect(pragmaticDnd.dropTargetForElements).toHaveBeenCalled();
     expect(pragmaticDnd.draggable).toHaveBeenCalledWith(jasmine.objectContaining({
-      element: fixturesElement.querySelector('#story-1'),
+      element: storyElement,
     }));
 
     const controller = Stimulus.getControllerForElementAndIdentifier(
-      fixturesElement.querySelector('#story-1')!,
+      storyElement,
       'backlogs--dnd-item',
     ) as BacklogsDndItemController;
     controller.disconnect();
@@ -160,5 +162,41 @@ describe('BacklogsDndItemController', () => {
 
     expect(pragmaticDnd.draggable).toHaveBeenCalledTimes(2);
     expect(pragmaticDnd.dropTargetForElements).toHaveBeenCalledTimes(2);
+  });
+
+  it('only accepts drags that match its own itemType', async () => {
+    fixturesElement.innerHTML = `
+      <ul>
+        <li
+          id="story-1"
+          data-controller="backlogs--dnd-item"
+          data-backlogs--dnd-item-item-id-value="1"
+          data-backlogs--dnd-item-item-type-value="story"
+          data-backlogs--dnd-item-drop-url-value="/stories/1"></li>
+      </ul>
+    `;
+
+    let dropTargetArgs:{ canDrop:(args:{ source:{ data:{ itemType?:string } } }) => boolean }|null = null;
+    const noopCleanup = jasmine.createSpy('noopCleanup');
+
+    spyOn(pragmaticDnd, 'draggable').and.returnValue(noopCleanup);
+    spyOn(pragmaticDnd, 'dropTargetForElements').and.callFake((args) => {
+      dropTargetArgs = args as typeof dropTargetArgs;
+
+      return noopCleanup;
+    });
+    spyOn(pragmaticDnd, 'combine').and.callFake((...cleanups) => () => {
+      cleanups.forEach((cleanup) => cleanup());
+    });
+
+    Stimulus = Application.start();
+    Stimulus.register('backlogs--dnd-item', BacklogsDndItemController);
+
+    await nextFrame();
+
+    expect(dropTargetArgs).not.toBeNull();
+    expect(dropTargetArgs!.canDrop({ source: { data: { itemType: 'story' } } })).toBe(true);
+    expect(dropTargetArgs!.canDrop({ source: { data: { itemType: 'task' } } })).toBe(false);
+    expect(dropTargetArgs!.canDrop({ source: { data: {} } })).toBe(false);
   });
 });

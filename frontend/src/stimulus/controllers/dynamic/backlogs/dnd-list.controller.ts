@@ -61,7 +61,7 @@ export default class BacklogsDndListController extends Controller<HTMLElement> {
     this.cleanup?.();
     this.cleanup = pragmaticDnd.dropTargetForElements({
       element: this.element,
-      canDrop: () => true,
+      canDrop: ({ source }) => source.data.itemType === this.acceptsValue,
       getData: () => ({
         kind: 'list',
         listId: this.listIdValue,
