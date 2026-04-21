@@ -90,39 +90,21 @@ class AddRecurrenceIdToMeetings < ActiveRecord::Migration[8.0]
   def down
     remove_index :meetings, name: "index_meetings_on_recurring_meeting_and_recurrence_start_time"
 
-    # Restore cancelled scheduled_meetings from the stub meetings we created in `up`
+    # Restore scheduled_meetings for all occurrence meetings (cancelled or not)
     execute <<~SQL.squish
       INSERT INTO scheduled_meetings
         (recurring_meeting_id, meeting_id, start_time, cancelled, created_at, updated_at)
       SELECT
         m.recurring_meeting_id,
-        NULL,
+        CASE WHEN m.state = 4 THEN NULL ELSE m.id END,
         m.recurrence_start_time,
-        true,
-        m.created_at,
-        m.updated_at
-      FROM meetings m
-      WHERE m.state = 4
-        AND m.recurrence_start_time IS NOT NULL
-        AND m.template = false
-    SQL
-
-    # Restore scheduled_meetings for all non-cancelled occurrence meetings
-    execute <<~SQL.squish
-      INSERT INTO scheduled_meetings
-        (recurring_meeting_id, meeting_id, start_time, cancelled, created_at, updated_at)
-      SELECT
-        m.recurring_meeting_id,
-        m.id,
-        m.recurrence_start_time,
-        false,
+        (m.state = 4),
         m.created_at,
         m.updated_at
       FROM meetings m
       WHERE m.recurring_meeting_id IS NOT NULL
         AND m.recurrence_start_time IS NOT NULL
         AND m.template = false
-        AND m.state != 4
     SQL
 
     # Remove the stub cancelled meetings that were created from scheduled_meetings
