@@ -50,9 +50,9 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
   end
 
   describe "show state (default)" do
-    context "with stories" do
-      let!(:story1) do
-        create(:story,
+    context "with work_packages" do
+      let!(:work_package1) do
+        create(:work_package,
                project:,
                type: type_feature,
                status: default_status,
@@ -60,8 +60,8 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
                story_points: 5,
                sprint:)
       end
-      let!(:story2) do
-        create(:story,
+      let!(:work_package2) do
+        create(:work_package,
                project:,
                type: type_feature,
                status: default_status,
@@ -69,8 +69,8 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
                story_points: 3,
                sprint:)
       end
-      let!(:story_with_nil_points) do
-        create(:story,
+      let!(:work_package_with_nil_points) do
+        create(:work_package,
                project:,
                type: type_feature,
                status: default_status,
@@ -85,7 +85,7 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
         expect(page).to have_css("h3", text: "Sprint 1")
       end
 
-      it "shows story count via Primer::Beta::Counter" do
+      it "shows work_package count via Primer::Beta::Counter" do
         render_component
 
         expect(page).to have_css(".Counter", text: "3")
@@ -128,7 +128,7 @@ RSpec.describe Backlogs::SprintHeaderComponent, type: :component do
     context "with no stories" do
       let(:stories) { [] }
 
-      it "hides the story count counter" do
+      it "hides the work_package count counter" do
         render_component
 
         expect(page).to have_css(".Counter", text: "0", visible: :hidden)
