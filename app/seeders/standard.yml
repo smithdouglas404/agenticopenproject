@@ -92,6 +92,9 @@ projects:
       - team_planner_view
       - meetings
       - documents
+      - costs
+      - budgets
+      - calendars
     news:
       - t_title: Welcome to your demo project
         t_summary: |
@@ -391,6 +394,7 @@ projects:
       - gantt
       - board_view
       - documents
+      - meetings
     news:
       - t_title: Welcome to your Scrum demo project
         t_summary: |
