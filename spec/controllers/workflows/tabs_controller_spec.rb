@@ -66,6 +66,38 @@ RSpec.describe Workflows::TabsController do
 
   current_user { build_stubbed(:admin) }
 
+  describe "#edit" do
+    context "when not a turbo frame request" do
+      it "redirects to the parent workflow edit path" do
+        get :edit,
+            params: {
+              role_id: role.id.to_s,
+              workflow_type_id: type.id.to_s,
+              tab: "always"
+            }
+
+        expect(response).to redirect_to(
+          edit_workflow_path(type, role_id: role.id.to_s, tab: "always")
+        )
+      end
+
+      it "does not forward status_ids to the redirect" do
+        get :edit,
+            params: {
+              role_id: role.id.to_s,
+              workflow_type_id: type.id.to_s,
+              tab: "always",
+              status_ids: ["1", "2"]
+            }
+
+        expect(response).to redirect_to(
+          edit_workflow_path(type, role_id: role.id.to_s, tab: "always")
+        )
+        expect(response.location).not_to include("status_ids")
+      end
+    end
+  end
+
   describe "#confirm_statuses" do
     before do
       allow(controller)

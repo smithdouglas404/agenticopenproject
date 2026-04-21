@@ -214,15 +214,21 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
 
   private closeAndProceed = (originalTarget:HTMLElement, originalEvent:Event) => {
     this.confirmationDialogTarget.close();
-    originalTarget.dataset.confirmed = 'true';
 
     // Delay to allow the flash message from the form submission to appear.
     setTimeout(() => {
       if (originalEvent.type === 'click') {
-        // Dispatching a click event is not as effective as explicitly clicking.
-        originalTarget.click();
+        // originalTarget may be detached by the time this fires (e.g. the
+        // EditComponent was replaced by a turbo-stream). Look for a live
+        // element with the same href before falling back to the original.
+        const liveTarget = document.querySelector<HTMLElement>(
+          `[href="${originalTarget.getAttribute('href')}"][${CONFIRMATION_TRIGGER_ATTR}]`
+        ) ?? originalTarget;
+        liveTarget.dataset.confirmed = 'true';
+        liveTarget.click();
       }
       else {
+        originalTarget.dataset.confirmed = 'true';
         const forwardedEvent = new Event(originalEvent.type, { bubbles: true });
         originalTarget.dispatchEvent(forwardedEvent);
       }
