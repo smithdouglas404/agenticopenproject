@@ -40,6 +40,7 @@ RSpec.describe "API v3 Work package resource",
   shared_let(:status) { create(:status, is_default: true) }
   shared_let(:priority) { create(:priority, is_default: true) }
   shared_let(:sprint) { create(:agile_sprint, project:) }
+  shared_let(:completed_sprint) { create(:agile_sprint, project:, status: :completed) }
   shared_let(:outside_sprint) { create(:agile_sprint, project: create(:project)) }
 
   let(:role) { create(:project_role, permissions:) }
@@ -98,6 +99,30 @@ RSpec.describe "API v3 Work package resource",
 
     context "when the user does not have permission to view sprints" do
       let(:permissions) { %i[add_work_packages view_work_packages manage_sprint_items] }
+
+      it_behaves_like "constraint violation" do
+        let(:message) { "Sprint is not set to one of the allowed values." }
+      end
+    end
+
+    context "when attempting to create the work package on a completed sprint" do
+      let(:parameters) do
+        {
+          subject: "new work packages",
+          storyPoints: 5,
+          _links: {
+            type: {
+              href: api_v3_paths.type(type.id)
+            },
+            project: {
+              href: api_v3_paths.project(project.id)
+            },
+            sprint: {
+              href: api_v3_paths.sprint(completed_sprint.id)
+            }
+          }
+        }
+      end
 
       it_behaves_like "constraint violation" do
         let(:message) { "Sprint is not set to one of the allowed values." }

@@ -41,6 +41,7 @@ RSpec.describe "API v3 Work package resource",
   shared_let(:status) { create(:status, is_default: true) }
   shared_let(:priority) { create(:priority, is_default: true) }
   shared_let(:sprint) { create(:agile_sprint, project:) }
+  shared_let(:completed_sprint) { create(:agile_sprint, project:, status: :completed) }
   shared_let(:outside_sprint) { create(:agile_sprint, project: other_project) }
   shared_let(:work_package) { create(:work_package, project:, type:, status:, priority:) }
 
@@ -136,6 +137,24 @@ RSpec.describe "API v3 Work package resource",
       end
 
       it_behaves_like "read-only violation", "subject", WorkPackage
+    end
+
+    context "when attempting to assign the work package to a completed sprint" do
+      let(:parameters) do
+        {
+          storyPoints: 5,
+          lockVersion: work_package.lock_version,
+          _links: {
+            sprint: {
+              href: api_v3_paths.sprint(completed_sprint.id)
+            }
+          }
+        }
+      end
+
+      it_behaves_like "constraint violation" do
+        let(:message) { "Sprint is not set to one of the allowed values." }
+      end
     end
 
     context "when attempting to assign the work package to a non valid sprint" do
