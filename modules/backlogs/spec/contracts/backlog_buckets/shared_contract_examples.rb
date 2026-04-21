@@ -68,19 +68,18 @@ RSpec.shared_context "as backlog bucket contract" do
       let(:permissions) { [] }
 
       it_behaves_like "contract is invalid", base: :error_unauthorized
+
+      context "when user is admin" do
+        let(:user) { build_stubbed(:admin) }
+
+        it_behaves_like "contract is valid"
+      end
     end
 
     context "when name is blank" do
       let(:name) { "" }
 
       it_behaves_like "contract is invalid", name: :blank
-    end
-
-    context "when user is admin without project permission" do
-      let(:user) { build_stubbed(:admin) }
-      let(:permissions) { [] }
-
-      it_behaves_like "contract is valid"
     end
   end
 end
