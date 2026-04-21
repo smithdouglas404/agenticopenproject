@@ -34,112 +34,99 @@ module Components
       include Capybara::DSL
       include Capybara::RSpecMatchers
       include RSpec::Matchers
+      include Rails.application.routes.url_helpers
 
       def add_button_dropdown
-        page.find ".form-configuration--add-group", text: "Group"
-      end
-
-      def add_attribute_group_button
-        page.find "button", text: I18n.t("js.admin.type_form.add_group")
-      end
-
-      def add_table_button
-        page.find "button", text: I18n.t("js.admin.type_form.add_table")
+        page.find_test_selector("type-form-configuration-add-button")
       end
 
       def reset_button
-        page.find ".form-configuration--reset"
+        page.find_test_selector("type-form-configuration-reset-button")
       end
 
       def inactive_group
-        page.find_by_id "type-form-conf-inactive-group"
+        page.find_test_selector("type-form-configuration-inactive-container")
       end
 
       def inactive_drop
-        page.find "#type-form-conf-inactive-group .attributes"
+        inactive_group.find(".Box ul")
       end
 
       def expect_empty
-        expect(page).to have_no_css("#draggable-groups .group-head")
+        expect(page).to have_no_css('[data-group-key]')
       end
 
       def find_group(name)
-        head = page.find(".group-head", text: name.upcase)
-
-        # Return the parent of the group-head
-        head.find(:xpath, "..")
-      end
-
-      def checkbox_selector(attribute)
-        ".type-form-conf-attribute[data-key='#{attribute}'] .attribute-visibility input"
+        title = page.find(".Box-header span.text-bold", text: /\A#{Regexp.escape(name)}\z/, match: :first)
+        title.find(:xpath, "./ancestor::*[@data-group-key][1]")
       end
 
       def attribute_selector(attribute)
-        ".type-form-conf-attribute[data-key='#{attribute}']"
+        %[li[data-attr-key="#{attribute}"]]
       end
 
       def find_group_handle(label)
-        find_group(label).find(".group-handle")
+        group_key = find_group(label)["data-group-key"]
+        page.find_test_selector("type-form-configuration-section-handle-#{group_key}", visible: :all)
       end
 
       def find_attribute_handle(attribute)
-        page.find("#{attribute_selector(attribute)} .attribute-handle")
+        page.find_test_selector("type-form-configuration-attribute-handle-#{attribute}", visible: :all)
       end
 
       def expect_attribute(key:, translation: nil)
         attribute = page.find(attribute_selector(key))
-
-        unless translation.nil?
-          expect(attribute).to have_css(".attribute-name", text: translation)
-        end
+        expect(attribute).to have_text(translation) if translation
       end
 
       def move_to(attribute, group_label)
-        handle = find_attribute_handle(attribute)
-        group = find_group(group_label)
-        drag_and_drop(handle, group)
+        drag_and_drop(find_attribute_handle(attribute), find_group(group_label))
         expect_group(group_label, group_label, key: attribute)
       end
 
       def remove_attribute(attribute)
-        attribute = page.find(attribute_selector(attribute))
-        attribute.find(".delete-attribute").click
+        row = page.find(attribute_selector(attribute))
+
+        within row do
+          page.find_test_selector("type-form-configuration-attribute-actions-#{attribute}").click
+        end
+
+        page.find_test_selector("type-form-configuration-delete-attribute-#{attribute}", visible: :all).click
+
+        page.within_test_selector("type-form-configuration-sections-container") do
+          expect(page).to have_no_css(attribute_selector(attribute))
+        end
       end
 
-      def drag_and_drop(handle, group)
-        target = group.find(".attributes")
+      def drag_and_drop(handle, target)
+        target_container = target.find(".Box ul")
 
-        scroll_to_element(group)
-        page
-          .driver
-          .browser
-          .action
-          .move_to(handle.native)
-          .click_and_hold(handle.native)
-          .perform
+        scroll_to_element(target_container)
 
-        scroll_to_element(group)
-        page
-          .driver
-          .browser
-          .action
-          .move_to(target.native)
-          .release
-          .perform
+        page.driver.browser.action
+            .move_to(handle.native)
+            .click_and_hold(handle.native)
+            .perform
+
+        scroll_to_element(target_container)
+
+        page.driver.browser.action
+            .move_to(target_container.native)
+            .release
+            .perform
       end
 
       def add_query_group(name, relation_filter, expect: true)
         SeleniumHubWaiter.wait unless using_cuprite?
 
         add_button_dropdown.click
-        add_table_button.click
+        click_on I18n.t("types.edit.form_configuration.add_query_group")
 
         modal = ::Components::WorkPackages::TableConfigurationModal.new
 
         within ".relation-filter-selector" do
-          select I18n.t("js.relation_labels.#{relation_filter}")
+          page.find_test_selector("wp-table-configuration-relation-filter").select(I18n.t("js.relation_labels.#{relation_filter}"))
 
-          # While we are here, let's check that all relation filters are present.
           option_labels = %w[
             children
             precedes
@@ -159,72 +146,69 @@ module Components
             expect(page).to have_text(label)
           end
         end
-        yield modal if block_given?
-        modal.save
 
-        input = find(".group-edit-in-place--input")
-        input.set(name)
+        yield modal if block_given?
+        modal.save if modal.open?
+
+        fill_section_name(name)
+        save_section
 
         expect_group(name, name) if expect
       end
 
       def edit_query_group(name)
-        if using_cuprite?
-          wait_for_reload
-        else
-          SeleniumHubWaiter.wait
-        end
+        wait_for_turbo
 
-        group = find_group(name)
-        group.find(".type-form-query-group--edit-button").click
-        # Wait for the modal to appear.
+        group_key = find_group(name)["data-group-key"]
+        page.find_test_selector("type-form-configuration-query-actions-#{group_key}").click
+        page.find_test_selector("type-form-configuration-edit-query-#{group_key}", visible: :all).click
         expect(page).to have_css(".wp-table--configuration-modal")
       end
 
       def add_attribute_group(name, expect: true)
         add_button_dropdown.click
-        add_attribute_group_button.click
+        click_on I18n.t("types.edit.form_configuration.add_attribute_group")
 
-        input = find(".group-edit-in-place--input")
-        input.set(name)
-        input.send_keys(:return)
+        fill_section_name(name)
+        save_section
 
         expect_group(name, name) if expect
       end
 
       def save_changes
-        # Save configuration
-        # click_button doesn't seem to work when the button is out of view!?
-        scroll_to_and_click find(".form-configuration--save")
+        wait_for_turbo
       end
 
       def rename_group(from, to)
-        find(".group-edit-handler", text: from.upcase).click
+        menu_id = open_group_menu(from)
+        within "##{menu_id}" do
+          first("a.ActionListContent", minimum: 1, visible: :all).click
+        end
 
-        input = find(".group-edit-in-place--input")
-        input.click
-        input.set(to)
-        input.send_keys(:return)
+        fill_section_name(to)
+        save_section
 
-        expect(page).to have_css(".group-edit-handler", text: to.upcase)
+        expect_group(to, to)
       end
 
       def remove_group(name)
-        container = find(".group-head", text: name.upcase)
+        menu_id = open_group_menu(name)
+        within "##{menu_id}" do
+          click_link I18n.t("button_delete")
+        end
 
-        container.find(".delete-group").click
-
-        expect(page).to have_no_css(".group-head", text: name.upcase)
+        expect(page).to have_no_css('[data-group-key]', text: /\b#{Regexp.escape(name)}\b/)
       end
 
       def expect_no_attribute(attribute, group)
-        expect(find_group(group)).to have_no_selector(attribute_selector(attribute).to_s)
+        expect(find_group(group)).to have_no_css(attribute_selector(attribute))
       end
 
       def expect_group(_label, translation, *attributes)
-        expect(find_group(translation)).to have_css(".group-edit-handler", text: translation.upcase)
+        group = find_group(translation)
+        expect(group).to have_text(translation)
 
-        within find_group(translation) do
+        within group do
           attributes.each do |attribute|
             expect_attribute(**attribute)
           end
@@ -232,7 +216,39 @@ module Components
       end
 
       def expect_inactive(attribute)
-        expect(inactive_drop).to have_css(".type-form-conf-attribute[data-key='#{attribute}']")
+        expect(inactive_drop).to have_css(attribute_selector(attribute))
+      end
+
+      private
+
+      def fill_section_name(name)
+        input = page.find_test_selector("type-form-configuration-section-name-input", wait: 10)
+        input.set(name)
+      end
+
+      def open_group_menu(name)
+        menu_button = menu_button_for(name)
+        menu_id = menu_button[:'aria-controls']
+        menu_button.click
+        menu_id
+      end
+
+      def menu_button_for(name)
+        group_key = find_group(name)["data-group-key"]
+        page.find_test_selector("type-form-configuration-section-actions-#{group_key}")
+      end
+
+      def save_section
+        page.find_test_selector("type-form-configuration-section-save", wait: 10).click
+        expect(page).to have_no_selector(page.test_selector("type-form-configuration-section-name-input"))
+      end
+
+      def wait_for_turbo
+        if using_cuprite?
+          wait_for_reload
+        else
+          SeleniumHubWaiter.wait
+        end
       end
     end
   end

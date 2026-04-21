@@ -38,8 +38,6 @@ RSpec.describe "Reset form configuration",
 
   let(:project) { create(:project, types: [type]) }
   let(:form) { Components::Admin::TypeConfigurationForm.new }
-  let(:dialog) { Components::ConfirmationDialog.new }
-
   describe "with EE token and CFs", with_ee: %i[edit_attribute_groups] do
     let(:custom_fields) { [custom_field] }
     let(:custom_field) { create(:issue_custom_field, :integer, is_required: true, name: "MyNumber") }
@@ -63,19 +61,18 @@ RSpec.describe "Reset form configuration",
       form.move_to(cf_identifier, "New Group")
       form.expect_attribute(key: cf_identifier)
 
-      form.save_changes
-      expect_flash(message: "Successful update.")
-
       SeleniumHubWaiter.wait
       form.reset_button.click
-      dialog.expect_open
-      dialog.confirm
+      expect(page).to have_test_selector("type-form-configuration-reset-dialog")
+      page.within_test_selector "type-form-configuration-reset-dialog" do
+        click_button I18n.t("js.label_reset")
+      end
 
       # Wait for page reload
       SeleniumHubWaiter.wait
 
-      expect(page).to have_no_css(".group-head", text: "NEW GROUP")
-      expect(page).to have_no_css(".group-head", text: "OTHER")
+      expect(page).to have_no_css('[data-group-key]', text: /\bNew Group\b/)
+      expect(page).to have_no_css('[data-group-key]', text: /\bOther\b/i)
       type.reload
 
       expect(type.custom_field_ids).to be_empty

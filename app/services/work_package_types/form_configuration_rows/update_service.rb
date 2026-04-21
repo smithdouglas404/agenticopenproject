@@ -42,7 +42,7 @@ module WorkPackageTypes
         move_to = params[:move_to]
         target_id = params[:target_id]
         position = params[:position]
-        
+
         if move_to.present?
           move_row(move_to.to_sym)
         elsif target_id.present?
@@ -56,9 +56,7 @@ module WorkPackageTypes
 
       def move_row(move_to)
         row = find_row(@row_key)
-        unless row
-          return failure_with_message(not_found_message(action: :move, move_to:))
-        end
+        return failure_with_message(I18n.t("types.edit.form_configuration.not_found")) unless row
 
         attributes = row[:group].attributes.dup
         current_index = row[:index]
@@ -102,10 +100,7 @@ module WorkPackageTypes
 
         # For active target, add to target group (regardless of where it came from)
         target_group = find_attribute_section(target_id)
-        Rails.logger.debug("drop_row: target_id=#{target_id.inspect}, found_group=#{target_group.present?}, active_groups=#{active_groups.map { |g| { key: g.key, display_name: g.display_name } }}")
-        unless target_group
-          return failure_with_message(I18n.t("types.edit.form_configuration.not_found"))
-        end
+        return failure_with_message(I18n.t("types.edit.form_configuration.not_found")) unless target_group
 
         # Remove from source if it was in a group
         if row
@@ -125,31 +120,6 @@ module WorkPackageTypes
         persist_groups(active_groups).tap do |call|
           call.result = target_group if call.success?
         end
-      end
-
-      def not_found_message(action:, **details)
-        #binding.pry
-        base_message = I18n.t("types.edit.form_configuration.not_found")
-        context = diagnostic_context(action:, **details)
-
-        Rails.logger.warn("[form_configuration_rows.update_service] not_found #{context}")
-
-        return base_message unless Rails.env.development?
-
-        "#{base_message} #{context}"
-      end
-
-      def diagnostic_context(action:, **details)
-        "type_id=#{type.id} row_key=#{@row_key.inspect} action=#{action} details=#{details.inspect} " \
-          "active_groups=#{active_groups.map { |group|
-            {
-              key: group.key,
-              display_name: group.display_name,
-              translated_key: group.translated_key,
-              group_type: group.group_type,
-              attributes: (group.attributes if group.group_type == :attribute)
-            }
-          }.inspect}"
       end
     end
   end

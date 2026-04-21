@@ -48,13 +48,25 @@ module WorkPackageTypes
     def default_contract_class = UpdateSettingsContract
 
     def set_attribute_groups(params)
-      if params[:attribute_groups].empty?
+      attribute_groups = normalize_attribute_groups_param(params[:attribute_groups])
+
+      if attribute_groups.empty?
         model.reset_attribute_groups
       else
         # FIXME: We lost the ability to react to errors on the transformation. Might not be a big issue on day to day, but still
         #   a regression - 2025-08-07 noted by @mereghost
-        model.attribute_groups = AttributeGroups::Transformer.new(groups: params[:attribute_groups], user: user).call
-        params.delete(:attribute_groups)
+        model.attribute_groups = AttributeGroups::Transformer.new(groups: attribute_groups, user: user).call
+      end
+
+      params.delete(:attribute_groups)
+    end
+
+    def normalize_attribute_groups_param(attribute_groups)
+      case attribute_groups
+      when String
+        JSON.parse(attribute_groups)
+      else
+        attribute_groups
       end
     end
 

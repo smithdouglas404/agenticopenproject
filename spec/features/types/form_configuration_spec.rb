@@ -62,10 +62,12 @@ RSpec.describe "form configuration", :js, :selenium do
 
         # Reset and cancel
         form.reset_button.click
-        dialog.expect_open
-        dialog.cancel
+        expect(page).to have_test_selector("type-form-configuration-reset-dialog")
+        page.within_test_selector "type-form-configuration-reset-dialog" do
+          click_button I18n.t("js.button_cancel")
+        end
 
-        expect(page).to have_css(".group-edit-handler", text: "WHATEVER")
+        form.expect_group("Whatever", "Whatever")
 
         # Click the dialog again after some time
         # Otherwise this may cause issues due to the animation,
@@ -74,13 +76,15 @@ RSpec.describe "form configuration", :js, :selenium do
 
         # Reset and confirm
         form.reset_button.click
-        dialog.expect_open
-        dialog.confirm
+        expect(page).to have_test_selector("type-form-configuration-reset-dialog")
+        page.within_test_selector "type-form-configuration-reset-dialog" do
+          click_button I18n.t("js.label_reset")
+        end
 
         # Wait for page reload
         sleep 1
 
-        expect(page).to have_no_css(".group-head", text: "WHATEVER")
+        expect(page).to have_no_css('[data-group-key]', text: /\bWhatever\b/)
         form.expect_group("details", "Details")
         form.expect_attribute(key: :assignee)
       end
@@ -90,10 +94,6 @@ RSpec.describe "form configuration", :js, :selenium do
         form.remove_group "Estimates and progress"
         form.remove_group "People"
         form.remove_group "Costs"
-
-        # Save configuration
-        form.save_changes
-        expect_flash(message: "Successful update.")
 
         form.expect_empty
 
@@ -157,12 +157,15 @@ RSpec.describe "form configuration", :js, :selenium do
         form.rename_group("People", "Cool Stuff")
 
         # Start renaming, but cancel
-        find(".group-edit-handler", text: "COOL STUFF").click
-        input = find(".group-edit-in-place--input")
+        menu_id = form.send(:open_group_menu, "Cool Stuff")
+        within "##{menu_id}" do
+          first("a.ActionListContent", minimum: 1, visible: :all).click
+        end
+        input = find_test_selector("type-form-configuration-section-name-input", wait: 10)
         input.set("FOOBAR")
-        input.send_keys(:escape)
-        expect(page).to have_css(".group-edit-handler", text: "COOL STUFF")
-        expect(page).to have_no_css(".group-edit-handler", text: "FOOBAR")
+        page.find_test_selector("type-form-configuration-section-cancel", wait: 10).click
+        form.expect_group("Cool Stuff", "Cool Stuff")
+        expect(page).to have_no_css('[data-group-key]', text: /\bFOOBAR\b/)
 
         # Create new group
         form.add_attribute_group("New Group")
@@ -170,10 +173,6 @@ RSpec.describe "form configuration", :js, :selenium do
 
         # Delete attribute from group
         form.remove_attribute("assignee")
-
-        # Save configuration
-        form.save_changes
-        expect_flash(message: "Successful update.")
 
         # Expect configuration to be correct now
         form.expect_no_attribute("assignee", "Cool Stuff")
@@ -202,7 +201,9 @@ RSpec.describe "form configuration", :js, :selenium do
         # Test the actual type backend
         type.reload
         expect(type.attribute_groups.map(&:key))
-          .to include("Cool Stuff", :estimates_and_progress, "Whatever", "New Group")
+          .to include(:people, :estimates_and_progress, :details, "New Group")
+        expect(type.attribute_groups.detect { |g| g.key == :people }&.display_name).to eq("Cool Stuff")
+        expect(type.attribute_groups.detect { |g| g.key == :details }&.display_name).to eq("Whatever")
 
         # Visit work package with that type
         wp_page.visit!
@@ -270,8 +271,6 @@ RSpec.describe "form configuration", :js, :selenium do
         form.move_to(cf_identifier, "New Group")
         form.expect_attribute(key: cf_identifier)
 
-        form.save_changes
-        expect_flash(message: "Successful update.")
       end
     end
 
@@ -300,8 +299,6 @@ RSpec.describe "form configuration", :js, :selenium do
         # Make visible
         form.expect_attribute(key: cf_identifier)
 
-        form.save_changes
-        expect_flash(message: "Successful update.")
       end
 
       context "if inactive in project" do
@@ -321,7 +318,7 @@ RSpec.describe "form configuration", :js, :selenium do
           expect(page).to have_css(".custom-field-#{custom_field.id} td", text: "MyNumber")
           expect(page).to have_css(".custom-field-#{custom_field.id} td", text: type.name)
 
-          id_checkbox = find("#project_work_package_custom_field_ids_#{custom_field.id}")
+          id_checkbox = find("input[name='project[work_package_custom_field_ids][]'][value='#{custom_field.id}']")
           expect(id_checkbox).not_to be_checked
           id_checkbox.set(true)
 
@@ -361,32 +358,33 @@ RSpec.describe "form configuration", :js, :selenium do
           project_cf_settings_page.visit!
           expect(page).to have_css(".custom-field-#{custom_field.id} td", text: "MyNumber")
           expect(page).to have_css(".custom-field-#{custom_field.id} td", text: type.name)
-          expect(page).to have_css("#project_work_package_custom_field_ids_#{custom_field.id}[checked]")
+          expect(page).to have_css("input[name='project[work_package_custom_field_ids][]'][value='#{custom_field.id}'][checked]")
         end
       end
     end
   end
 
   describe "without EE token", with_ee: false do
-    let(:dialog) { Components::ConfirmationDialog.new }
+      let(:dialog) { Components::ConfirmationDialog.new }
 
-    it "must disable adding and renaming groups" do
-      login_as(admin)
-      visit edit_type_form_configuration_path(type)
+      it "must disable adding and renaming groups" do
+        login_as(admin)
+        visit edit_type_form_configuration_path(type)
 
-      find(".group-edit-handler", text: "DETAILS").click
-      dialog.expect_open
-    end
+        within form.find_group("Details") do
+          find('.Box-header button[aria-haspopup="true"]').click
+        end
+        expect(page).to have_no_text(I18n.t("types.edit.form_configuration.rename_section"))
+      end
   end
 
   describe "form submission", :js, with_ee: %i[edit_attribute_groups] do
-    # Regression test for double form submission happening on the form configuration page
-    it "only submits the form once (Regression#70297)" do
+    it "only creates one section per add action" do
       call_count = 0
       subscription =
         ActiveSupport::Notifications.subscribe("process_action.action_controller") do |*, payload|
           payload => { controller:, action: }
-          if controller == "WorkPackageTypes::FormConfigurationTabController" && action == "update"
+          if controller == "WorkPackageTypes::FormConfigurationSectionsTabController" && action == "create"
             call_count += 1
           end
         end
@@ -394,24 +392,11 @@ RSpec.describe "form configuration", :js, :selenium do
       login_as(admin)
       visit edit_type_form_configuration_path(type)
 
-      # Wait for form to load
       form.expect_group("details", "Details")
-
-      # Simulate native mousedown -> mouseup -> click sequence
-      # Including some sleep time to simulate the user actually
-      # holding the mouse button for > 50ms then releasing it.
-      save_button = find(".form-configuration--save")
-
-      save_button.execute_script("this.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))")
-      sleep 0.1
-      save_button.execute_script("this.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))")
-      sleep 0.1
-      save_button.execute_script("this.dispatchEvent(new MouseEvent('click', { bubbles: true }))")
-
-      expect_flash(message: "Successful update.")
+      form.add_attribute_group("New Group")
 
       ActiveSupport::Notifications.unsubscribe(subscription)
-      expect(call_count).to eq(1), "Expected 1 form submission but got #{call_count}"
+      expect(call_count).to eq(1), "Expected 1 section creation but got #{call_count}"
     end
   end
 end
