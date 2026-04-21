@@ -29,6 +29,7 @@
  */
 
 import { Application } from '@hotwired/stimulus';
+import { attachClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { FetchRequest, FetchResponse } from '@rails/request.js';
 import BacklogsDndBoardController from './dnd-board.controller';
 import BacklogsDndListController from './dnd-list.controller';
@@ -116,6 +117,31 @@ describe('BacklogsDndBoardController', () => {
     `;
   }
 
+  function itemDropData(element:HTMLElement, edge:'top'|'bottom') {
+    return attachClosestEdge(
+      {
+        kind: 'item',
+        itemId: element.getAttribute('data-backlogs--dnd-item-item-id-value'),
+      },
+      {
+        element,
+        input: {
+          altKey: false,
+          button: 0,
+          buttons: 1,
+          clientX: 0,
+          clientY: edge === 'top' ? 0 : Number.MAX_SAFE_INTEGER,
+          ctrlKey: false,
+          metaKey: false,
+          pageX: 0,
+          pageY: edge === 'top' ? 0 : Number.MAX_SAFE_INTEGER,
+          shiftKey: false,
+        },
+        allowedEdges: ['top', 'bottom'],
+      },
+    );
+  }
+
   function findBoardController():TestableBoardController {
     return Stimulus.getControllerForElementAndIdentifier(
       fixturesElement.querySelector('[data-controller~="backlogs--dnd-board"]')!,
@@ -177,11 +203,7 @@ describe('BacklogsDndBoardController', () => {
           dropTargets: [
             {
               element: story1,
-              data: {
-                kind: 'item',
-                listId: 'sprint:1',
-                edge: 'before',
-              },
+              data: itemDropData(story1, 'top'),
             },
           ],
         },
@@ -225,11 +247,7 @@ describe('BacklogsDndBoardController', () => {
           dropTargets: [
             {
               element: story3,
-              data: {
-                kind: 'item',
-                listId: 'version:1',
-                edge: 'after',
-              },
+              data: itemDropData(story3, 'bottom'),
             },
           ],
         },
@@ -311,11 +329,7 @@ describe('BacklogsDndBoardController', () => {
           dropTargets: [
             {
               element: story3,
-              data: {
-                kind: 'item',
-                listId: 'version:1',
-                edge: 'before',
-              },
+              data: itemDropData(story3, 'top'),
             },
           ],
         },
@@ -388,11 +402,7 @@ describe('BacklogsDndBoardController', () => {
           dropTargets: [
             {
               element: story1,
-              data: {
-                kind: 'item',
-                listId: 'sprint:1',
-                edge: 'before',
-              },
+              data: itemDropData(story1, 'top'),
             },
           ],
         },
@@ -431,11 +441,7 @@ describe('BacklogsDndBoardController', () => {
           dropTargets: [
             {
               element: story3,
-              data: {
-                kind: 'item',
-                listId: 'version:1',
-                edge: 'after',
-              },
+              data: itemDropData(story3, 'bottom'),
             },
           ],
         },

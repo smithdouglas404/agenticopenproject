@@ -117,11 +117,11 @@ module Pages
     def drag_work_package(moved, before: nil, into: nil)
       raise ArgumentError, "You must specify a either before or into" unless before || into || (before && into)
 
-      moved_element = find("#{work_package_selector(moved)} .DragHandle")
+      moved_element = find(drag_source_selector(moved))
       target_element = if before
                          find(work_package_selector(before))
                        else
-                         find(sprint_selector(into))
+                         find(sprint_list_selector(into))
                        end
 
       wait_for_turbo_stream do
@@ -133,7 +133,7 @@ module Pages
 
     def expect_work_package_not_draggable(work_package)
       expect(page)
-        .to have_no_css("#{work_package_selector(work_package)} .DragHandle")
+        .to have_no_css("#{work_package_selector(work_package)}[draggable='true']")
     end
 
     def expect_inbox_blankslate
@@ -270,16 +270,16 @@ module Pages
     end
 
     def drag_inbox_item_to_sprint(work_package, sprint)
-      moved_element = find("#{inbox_item_selector(work_package)} .DragHandle")
-      target_element = find(sprint_selector(sprint))
+      moved_element = find(drag_source_selector(work_package))
+      target_element = find(sprint_list_selector(sprint))
       moved_element.native.drag_to(target_element.native, delay: 0.1)
     rescue Capybara::Cuprite::ObsoleteNode
       retry
     end
 
     def drag_sprint_item_to_inbox(work_package)
-      moved_element = find("#{work_package_selector(work_package)} .DragHandle")
-      target_element = find("#inbox_#{project.id}")
+      moved_element = find(drag_source_selector(work_package))
+      target_element = find(inbox_list_selector)
       moved_element.native.drag_to(target_element.native, delay: 0.1)
     rescue Capybara::Cuprite::ObsoleteNode
       retry
@@ -471,6 +471,10 @@ module Pages
       test_selector("sprint-#{sprint.id}")
     end
 
+    def sprint_list_selector(sprint)
+      "#{sprint_selector(sprint)} ul[data-controller~='backlogs--dnd-list']"
+    end
+
     def story_selector(story)
       "#story_#{story.id}"
     end
@@ -479,12 +483,20 @@ module Pages
       test_selector("work-package-#{work_package.id}")
     end
 
+    def drag_source_selector(work_package)
+      "#{work_package_selector(work_package)} article.op-backlogs-story"
+    end
+
     def sprint_complete_modal_selector
       "##{::Backlogs::FinishSprintDialogComponent::DIALOG_ID}"
     end
 
     def inbox_item_selector(work_package)
       "#work_package_#{work_package.id}"
+    end
+
+    def inbox_list_selector
+      "#inbox_#{project.id}-list"
     end
 
     def open_controlled_menu(button)

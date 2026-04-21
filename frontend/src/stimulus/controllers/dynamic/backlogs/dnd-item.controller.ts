@@ -29,7 +29,10 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
+import { attachClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { pragmaticDnd } from './pragmatic-dnd';
+
+const RECENT_DRAG_SUPPRESSION_MS = 250;
 
 export default class BacklogsDndItemController extends Controller<HTMLElement> {
   static values = {
@@ -46,8 +49,10 @@ export default class BacklogsDndItemController extends Controller<HTMLElement> {
   private abortController:AbortController|null = null;
 
   connect() {
-    this.abortController?.abort();
     this.abortController = new AbortController();
+    // Turbo morph preserves the row element but can reconcile away Pragmatic
+    // DnD's imperative native drag state, so refresh the registration when the
+    // preserved element is morphed in place.
     this.element.addEventListener('turbo:morph-element', this.refreshRegistration, { signal: this.abortController.signal });
     this.registerPragmaticDnd();
   }
@@ -68,15 +73,23 @@ export default class BacklogsDndItemController extends Controller<HTMLElement> {
           itemId: this.itemIdValue,
           itemType: this.itemTypeValue,
         }),
+        onDragStart: () => this.markDragActive(),
+        onDrop: () => this.markRecentDrag(),
       }),
       pragmaticDnd.dropTargetForElements({
         element: this.element,
         canDrop: ({ source }) => source.data.itemType === this.itemTypeValue,
-        getData: ({ input, element }) => ({
-          kind: 'item',
-          itemId: this.itemIdValue,
-          edge: this.closestEdge(input.clientY, element as HTMLElement),
-        }),
+        getData: ({ input, element }) => attachClosestEdge(
+          {
+            kind: 'item',
+            itemId: this.itemIdValue,
+          },
+          {
+            element,
+            input,
+            allowedEdges: ['top', 'bottom'],
+          },
+        ),
       }),
     );
   }
@@ -89,10 +102,12 @@ export default class BacklogsDndItemController extends Controller<HTMLElement> {
     this.registerPragmaticDnd();
   };
 
-  private closestEdge(clientY:number, element:HTMLElement) {
-    const { top, height } = element.getBoundingClientRect();
-    const midpoint = top + (height / 2);
+  private markDragActive() {
+    document.body.dataset.backlogsDragging = 'true';
+  }
 
-    return clientY < midpoint ? 'before' : 'after';
+  private markRecentDrag() {
+    delete document.body.dataset.backlogsDragging;
+    document.body.dataset.backlogsSuppressClickUntil = String(Date.now() + RECENT_DRAG_SUPPRESSION_MS);
   }
 }

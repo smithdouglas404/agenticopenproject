@@ -29,20 +29,19 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
+import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { FetchRequest } from '@rails/request.js';
 import BacklogsDndItemController from './dnd-item.controller';
 import BacklogsDndListController from './dnd-list.controller';
 import { pragmaticDnd } from './pragmatic-dnd';
 
 type DropKind = 'item'|'list';
-type DropEdge = 'before'|'after';
-
+const EMPTY_LIST_ITEM_SELECTOR = '[data-empty-list-item]';
 interface DropDestination {
   element:Element;
   data:{
     kind?:DropKind;
     listId?:string;
-    edge?:DropEdge;
   };
 }
 
@@ -159,12 +158,12 @@ export default class BacklogsDndBoardController extends Controller<HTMLElement> 
 
   private moveElement(sourceElement:HTMLElement, destination:DropDestination, destinationList:HTMLElement) {
     if (destination.data.kind === 'item' && destination.element instanceof HTMLElement) {
-      const insertionPoint = destination.data.edge === 'after' ? destination.element.nextElementSibling : destination.element;
+      const insertionPoint = this.closestEdge(destination) === 'after' ? destination.element.nextElementSibling : destination.element;
       destinationList.insertBefore(sourceElement, insertionPoint);
       return;
     }
 
-    const emptyListPlaceholder = destinationList.querySelector<HTMLElement>('[data-empty-list-item]');
+    const emptyListPlaceholder = destinationList.querySelector<HTMLElement>(EMPTY_LIST_ITEM_SELECTOR);
     if (emptyListPlaceholder) {
       destinationList.insertBefore(sourceElement, emptyListPlaceholder);
       return;
@@ -218,5 +217,9 @@ export default class BacklogsDndBoardController extends Controller<HTMLElement> 
     this.requestInFlight = isBusy;
     this.element.classList.toggle('is-dnd-busy', isBusy);
     this.element.setAttribute('aria-busy', String(isBusy));
+  }
+
+  private closestEdge(destination:DropDestination) {
+    return extractClosestEdge(destination.data) === 'bottom' ? 'after' : 'before';
   }
 }

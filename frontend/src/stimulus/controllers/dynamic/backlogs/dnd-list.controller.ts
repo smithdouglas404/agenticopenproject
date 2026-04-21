@@ -44,8 +44,9 @@ export default class BacklogsDndListController extends Controller<HTMLElement> {
   private abortController:AbortController|null = null;
 
   connect() {
-    this.abortController?.abort();
     this.abortController = new AbortController();
+    // Turbo morph can preserve the list element while replacing imperative
+    // Pragmatic DnD wiring on that preserved node, so refresh in place.
     this.element.addEventListener('turbo:morph-element', this.refreshRegistration, { signal: this.abortController.signal });
     this.registerPragmaticDnd();
   }

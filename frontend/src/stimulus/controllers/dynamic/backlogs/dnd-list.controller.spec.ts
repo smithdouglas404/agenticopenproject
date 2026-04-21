@@ -76,7 +76,7 @@ describe('BacklogsDndListController', () => {
     expect(cleanup).toHaveBeenCalled();
   });
 
-  it('re-registers the list drop target after turbo morph on the same element', async () => {
+  it('re-registers the list drop target after turbo morph refreshes a preserved list element', async () => {
     fixturesElement.innerHTML = `
       <ul
         id="list"
