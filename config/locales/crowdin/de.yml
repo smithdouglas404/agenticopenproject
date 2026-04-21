@@ -154,6 +154,7 @@ de:
         connection_timeout: 'Die Verbindung zum Jira-Server wurde unterbrochen: %{message}'
         parse_error: 'Die Jira API-Antwort konnte nicht gelesen werden: %{message}'
         api_error: Jira API hat den Fehlerstatus %{status} zurückgegeben
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projekte
         last_change: Letzte Änderung
@@ -2923,6 +2924,7 @@ de:
       title: Enterprise Add-on
       plan_title: Enterprise %{plan} Add-on
       plan_name: "%{plan} Enterprise Plan"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: Beginnend mit dem %{plan_name} verfügbar.
       unlimited: Unbegrenzt
       already_have_token: 'Haben Sie bereits ein Token? Fügen Sie es über den Button unten hinzu, um zum gebuchten Enterprise-Plan zu wechseln.

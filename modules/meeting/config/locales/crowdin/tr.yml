@@ -431,6 +431,11 @@ tr:
     ical_response:
       update_failed: Katılım durumu güncellenemedi.
       meeting_not_found: Verilen UID için toplantı bulunamadı.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: İsimsiz bölüm
     delete_confirmation: Bölümün silinmesi tüm gündem maddelerini de silecektir. Bunu yapmak istediğinizden emin misiniz?

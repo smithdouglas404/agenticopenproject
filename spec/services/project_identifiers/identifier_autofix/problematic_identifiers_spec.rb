@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackages::IdentifierAutofix::ProblematicIdentifiers do
+RSpec.describe ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers do
   subject(:analysis) { described_class.new }
 
   # Bypasses model validations to set an exact identifier in the database,

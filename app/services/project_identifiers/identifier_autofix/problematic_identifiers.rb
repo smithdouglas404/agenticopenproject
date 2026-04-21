@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
+module ProjectIdentifiers
   module IdentifierAutofix
     # Identifies projects whose identifiers violate the semantic identifier format
     # and provides classification and exclusion sets for suggestion generation.

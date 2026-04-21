@@ -22,23 +22,23 @@ fr:
         one: Lien de la page de relation
         other: Liens de la page de relation
       wikis/xwiki_provider: Fournisseur XWiki
-  permission_manage_wiki_page_links: Manage Wiki Page Links
-  permission_view_wiki_page_links: View Wiki Page Links
+  permission_manage_wiki_page_links: Gérer les liens de la page Wiki
+  permission_view_wiki_page_links: Gérer les liens de la page Wiki
   project_module_wiki_platforms: Fournisseurs de wiki
   wikis:
     buttons:
       save_and_continue: Enregistrer et continuer
-      wiki_page: Wiki page
+      wiki_page: Page wiki
     inline_page_links_component:
       empty_heading: Aucun lien intégré dans la page
       empty_text: Les liens vers les pages wiki dans la description du lot de travaux apparaîtront automatiquement ici.
       heading: Liens intégrés dans la page
     page_link_component:
-      remove: Remove page link
+      remove: Supprimer le lien de la page
     relation_page_links_component:
-      empty_heading: No related pages
-      empty_text: Manually add links to other related wiki pages.
-      heading: Related pages
+      empty_heading: Pas de pages liées
+      empty_text: Ajouter manuellement des liens vers d'autres pages wiki liées.
+      heading: Pages liées
     admin:
       wiki_providers:
         index_description: Ajoutez un service wiki externe pour lier les lots de travaux à des pages wiki existantes ou en créer de nouvelles directement à partir d'OpenProject.

@@ -28,28 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
-  module IdentifierAutofix
-    CONVERSION_JOB_CLASSES = [
-      ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
-      ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name,
-      ProjectIdentifiers::FinishSemanticConversionJob.name
-    ].freeze
-
-    REVERSION_JOB_CLASSES = [
-      ProjectIdentifiers::RevertInstanceToClassicIdsJob.name
-    ].freeze
-
-    def self.job_in_progress?
-      GoodJob::Job
-        .where(job_class: CONVERSION_JOB_CLASSES + REVERSION_JOB_CLASSES)
-        .exists?(finished_at: nil)
-    end
-
-    def self.reversion_in_progress?
-      GoodJob::Job
-        .where(job_class: REVERSION_JOB_CLASSES)
-        .exists?(finished_at: nil)
-    end
-  end
+MetaTags.configure do |config|
+  config.title_limit = nil
 end

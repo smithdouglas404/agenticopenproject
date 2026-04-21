@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackages::IdentifierAutofix::PreviewQuery do
+RSpec.describe ProjectIdentifiers::IdentifierAutofix::PreviewQuery do
   subject(:result) { described_class.new.call }
 
   let(:display_count) { described_class::DISPLAY_COUNT }
@@ -166,10 +166,10 @@ RSpec.describe WorkPackages::IdentifierAutofix::PreviewQuery do
 
       # Simulate a new scope condition that catches a project
       # not covered by any error_reason branch (drift scenario).
-      analysis = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
+      analysis = ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.new
       forced_scope = Project.where(id: project.id)
       allow(analysis).to receive(:scope).and_return(forced_scope)
-      allow(WorkPackages::IdentifierAutofix::ProblematicIdentifiers).to receive(:new).and_return(analysis)
+      allow(ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers).to receive(:new).and_return(analysis)
 
       expect(result.projects_data.first[:error_reason]).to eq(:unknown)
     end

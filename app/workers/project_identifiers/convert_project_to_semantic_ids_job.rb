@@ -29,6 +29,10 @@
 #++
 
 class ProjectIdentifiers::ConvertProjectToSemanticIdsJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
+
+  good_job_control_concurrency_with(perform_limit: 5)
+  queue_with_priority :above_normal
   discard_on ActiveRecord::RecordNotFound
 
   def perform(project_id)
