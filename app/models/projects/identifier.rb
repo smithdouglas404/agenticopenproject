@@ -104,7 +104,7 @@ module Projects::Identifier
     def suggest_identifier(name)
       if Setting::WorkPackageIdentifier.semantic?
         exclude = ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.reserved_identifiers
-        ProjectIdentifiers::SemanticIdentifierSuggestionGenerator
+        ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
           .suggest_identifier(name, exclude:)
       else
         ProjectIdentifiers::ClassicIdentifierSuggestionGenerator.new.suggest_identifier(name)
