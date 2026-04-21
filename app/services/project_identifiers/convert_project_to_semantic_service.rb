@@ -97,9 +97,10 @@ module ProjectIdentifiers
     end
 
     def backfill_missing_ids
-      WorkPackage.where(project:).unsequenced.find_each do |wp|
-        seq, identifier = project.allocate_wp_semantic_identifier!
-        wp.update_columns(sequence_number: seq, identifier:)
+      WorkPackage.where(project:)
+                 .unsequenced
+                 .in_batches(order: :asc) do |batch|
+        project.reserve_semantic_id_block!(batch.pluck(:id), insert_aliases: false)
       end
     end
 
