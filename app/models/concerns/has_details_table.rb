@@ -43,6 +43,8 @@ module HasDetailsTable
     #
     # +foreign_key+ defaults to the Rails convention (<model_name>_id).
     # Override for STI or other cases where the FK doesn't match.
+    # STI subclasses of PersistedQuery MUST pass foreign_key: "persisted_query_id"
+    # explicitly — the default resolves to the subclass name, not the base table name.
     #
     # Example:
     #   has_details_table do
