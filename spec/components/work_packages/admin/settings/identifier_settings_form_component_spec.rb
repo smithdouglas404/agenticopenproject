@@ -55,7 +55,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "renders the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_text("Project identifiers are currently being updated to project-based semantic identifiers.")
+      expect(page).to have_text("Project identifiers are currently being converted to semantic format.")
     end
 
     it "does not render the success banner" do
@@ -91,7 +91,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render the in-progress spinner message" do
       render_component(component)
-      expect(page).to have_no_text("Project identifiers are currently being updated to project-based semantic identifiers.")
+      expect(page).to have_no_text("Project identifiers are currently being converted to semantic format.")
     end
 
     it "renders the radio buttons as enabled" do
@@ -137,7 +137,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not render in-progress or success content" do
       render_component(component)
-      expect(page).to have_no_text("Project identifiers are currently being updated to project-based semantic identifiers.")
+      expect(page).to have_no_text("Project identifiers are currently being converted to semantic format.")
       expect(page).to have_no_text("Successfully updated work package identifier format.")
     end
 

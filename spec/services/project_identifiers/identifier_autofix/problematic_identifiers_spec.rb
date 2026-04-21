@@ -55,8 +55,13 @@ RSpec.describe ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers do
       expect(analysis.scope).to include(Project.find(project.id))
     end
 
-    it "includes projects with identifiers starting with a digit" do
+    it "includes projects with identifiers not starting with a letter" do
       project = create_project_with_raw_identifier(name: "Test", identifier: "1abc")
+      expect(analysis.scope).to include(Project.find(project.id))
+    end
+
+    it "includes projects with identifiers starting with an underscore" do
+      project = create_project_with_raw_identifier(name: "Test", identifier: "_FOO")
       expect(analysis.scope).to include(Project.find(project.id))
     end
 
@@ -90,12 +95,16 @@ RSpec.describe ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers do
       expect(described_class.format_error_reason("12345")).to eq(:numerical)
     end
 
-    it "returns :starts_with_number when identifier begins with a digit" do
-      expect(described_class.format_error_reason("1abc")).to eq(:starts_with_number)
+    it "returns :does_not_start_with_letter when identifier begins with a digit" do
+      expect(described_class.format_error_reason("1abc")).to eq(:does_not_start_with_letter)
+    end
+
+    it "returns :does_not_start_with_letter when identifier begins with an underscore" do
+      expect(described_class.format_error_reason("_FOO")).to eq(:does_not_start_with_letter)
     end
 
     it "returns :special_characters when identifier has non-alphanumeric chars" do
-      expect(described_class.format_error_reason("ab-c")).to eq(:special_characters)
+      expect(described_class.format_error_reason("AB-C")).to eq(:special_characters)
     end
 
     it "returns :not_fully_uppercased when identifier is lowercase but otherwise valid" do
@@ -138,7 +147,11 @@ RSpec.describe ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers do
       expect(analysis.error_reason("VALID")).to eq(:unknown)
     end
 
-    it "delegates format checks to .format_error_reason" do
+    it "delegates format checks to .format_error_reason for leading non-letter" do
+      expect(analysis.error_reason("_FOO")).to eq(:does_not_start_with_letter)
+    end
+
+    it "delegates format checks to .format_error_reason for special characters" do
       expect(analysis.error_reason("ab-c")).to eq(:special_characters)
     end
   end
