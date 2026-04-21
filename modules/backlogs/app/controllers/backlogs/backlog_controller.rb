@@ -64,6 +64,12 @@ module Backlogs
     end
 
     def load_backlogs
+      if OpenProject::FeatureDecisions.backlog_buckets_active?
+        @backlog_buckets = Agile::BacklogBucket.for_project(@project)
+      else
+        @inbox_work_packages = Backlog.inbox_for(project: @project)
+      end
+
       @sprints = Agile::Sprint.for_project(@project)
                               .not_completed
                               .order_by_date
@@ -75,7 +81,6 @@ module Backlogs
                                .order_by_position
                                .group_by(&:sprint_id)
       @active_sprint_ids = @sprints.select(&:active?).map(&:id)
-      @inbox_work_packages = Backlog.inbox_for(project: @project)
     end
   end
 end
