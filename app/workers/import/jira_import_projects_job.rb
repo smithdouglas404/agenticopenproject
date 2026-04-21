@@ -296,10 +296,11 @@ module Import
                .new(user: author, contract_class: EmptyContract)
                .call(container: work_package, filename:, file: tempfile)
 
-      File.unlink(tempfile)
       call.on_failure do
         raise call.message
       end
+    ensure
+      File.unlink(tempfile) if tempfile
     end
     # rubocop:enable Metrics/AbcSize
 

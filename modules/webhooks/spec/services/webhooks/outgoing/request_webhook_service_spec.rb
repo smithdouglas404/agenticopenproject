@@ -78,7 +78,7 @@ RSpec.describe Webhooks::Outgoing::RequestWebhookService, :webmock, type: :model
         subject
 
         expect(http_start_args[:host]).to eq("example.net")
-        expect(http_start_args[:options]).to include(ipaddr: WithSsrfWebhookStubsMixin::SSRF_TEST_IP)
+        expect(http_start_args[:options]).to include(ipaddr: WithSsrfStubsMixin::SSRF_TEST_IP)
       end
     end
 
