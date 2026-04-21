@@ -137,6 +137,22 @@ module WorkPackageTypes
       def row_destroy_path(attribute)
         type_form_configuration_row_path(@type, attribute[:key])
       end
+
+      def multiple_attributes?
+        attributes.many?
+      end
+
+      def attribute_can_move_up?(index)
+        multiple_attributes? && !index.zero?
+      end
+
+      def attribute_can_move_down?(index)
+        multiple_attributes? && index != attributes.length - 1
+      end
+
+      def show_attribute_delete_divider?(index)
+        attribute_can_move_up?(index) || attribute_can_move_down?(index)
+      end
     end
   end
 end
