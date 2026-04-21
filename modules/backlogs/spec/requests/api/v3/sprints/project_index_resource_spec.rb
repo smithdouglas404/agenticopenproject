@@ -52,7 +52,7 @@ RSpec.describe "API v3 Sprint resource on project", content_type: :json do
            })
   end
 
-  describe "GET /api/v3/projects/:id/sprints", with_flag: :scrum_projects do
+  describe "GET /api/v3/projects/:id/sprints" do
     let(:get_path) { api_v3_paths.project_sprints(project.id) }
 
     before do
@@ -69,10 +69,6 @@ RSpec.describe "API v3 Sprint resource on project", content_type: :json do
       let(:permissions) { [] }
 
       it_behaves_like "unauthorized access"
-    end
-
-    context "when the feature flag is turned off", with_flag: { scrum_projects: false } do
-      it_behaves_like "not found"
     end
   end
 end

@@ -32,7 +32,7 @@ module Backlogs
   class SprintComponent < ApplicationComponent
     include Primer::AttributesHelper
     include OpTurbo::Streamable
-    include RbCommonHelper
+    include Backlogs::CommonHelper
 
     attr_reader :sprint, :project, :stories, :current_user, :active_sprint_ids
 
@@ -64,7 +64,7 @@ module Backlogs
     private
 
     def folded?
-      current_user.backlogs_preference(:versions_default_fold_state) == "closed"
+      current_user.pref[:backlogs_versions_default_fold_state] == "closed"
     end
 
     def drop_target_config
@@ -91,7 +91,7 @@ module Backlogs
         story: true,
         controller: "backlogs--story",
         backlogs__story_id_value: story.id,
-        backlogs__story_split_url_value: details_backlogs_project_backlogs_path(project, story),
+        backlogs__story_split_url_value: project_backlogs_backlog_details_path(project, story),
         backlogs__story_full_url_value: work_package_path(story),
         backlogs__story_selected_class: "Box-row--blue",
         test_selector: card_test_selector(story)
@@ -104,7 +104,7 @@ module Backlogs
       {
         draggable_id: story.id,
         draggable_type: "story",
-        drop_url: move_project_sprint_story_path(project, sprint, story)
+        drop_url: move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)
       }
     end
 

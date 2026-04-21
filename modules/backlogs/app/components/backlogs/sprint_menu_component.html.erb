@@ -41,7 +41,7 @@ See COPYRIGHT and LICENSE files for more details.
         menu.with_item(
           id: dom_target(sprint, :menu, :edit_sprint),
           label: t(".action_menu.edit_sprint"),
-          href: edit_dialog_project_sprint_path(project, sprint),
+          href: edit_dialog_project_backlogs_sprint_path(project, sprint),
           content_arguments: { data: { controller: "async-dialog" } }
         ) do |item|
           item.with_leading_visual_icon(icon: :pencil)
@@ -56,8 +56,7 @@ See COPYRIGHT and LICENSE files for more details.
           label: t(".action_menu.add_work_package"),
           href: new_project_work_packages_dialog_path(
             project,
-            sprint_id: sprint.id,
-            type_id: available_story_types.first
+            sprint_id: sprint.id
           ),
           content_arguments: { data: { turbo_stream: true } }
         ) do |item|
@@ -71,7 +70,7 @@ See COPYRIGHT and LICENSE files for more details.
         menu.with_item(
           label: t("backlogs.label_sprint_board"),
           tag: :a,
-          href: backlogs_project_sprint_taskboard_path(project, sprint)
+          href: project_backlogs_sprint_taskboard_path(project, sprint)
         ) do |item|
           item.with_leading_visual_icon(icon: :"op-view-cards")
         end
@@ -81,7 +80,7 @@ See COPYRIGHT and LICENSE files for more details.
         menu.with_item(
           label: t("backlogs.label_burndown_chart"),
           tag: :a,
-          href: backlogs_project_sprint_burndown_chart_path(project, sprint),
+          href: project_backlogs_sprint_burndown_chart_path(project, sprint),
           disabled: !sprint.date_range_set?
         ) do |item|
           item.with_leading_visual_icon(icon: :graph)

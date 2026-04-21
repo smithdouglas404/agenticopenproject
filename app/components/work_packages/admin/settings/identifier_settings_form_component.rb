@@ -46,7 +46,7 @@ module WorkPackages
           super()
           @state = state
           if state == :edit
-            result         = WorkPackages::IdentifierAutofix::PreviewQuery.new.call
+            result         = ProjectIdentifiers::IdentifierAutofix::PreviewQuery.new.call
             @projects_data = result.projects_data
             @total_count   = result.total_count
           else

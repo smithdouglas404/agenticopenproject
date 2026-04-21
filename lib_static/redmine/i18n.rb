@@ -94,6 +94,22 @@ module Redmine
       format.present? ? ::I18n.l(local, format:) : ::I18n.l(local)
     end
 
+    # Formats the given date pair as an HTML date range with each date
+    # wrapped in a <time> element. Dates are joined by a non-breaking
+    # space, an en-dash, and a non-breaking space.
+    #
+    # @param dates [Array<Date, nil>] A two-element array +[from, to]+;
+    #   either element may be nil.
+    # @return [ActiveSupport::SafeBuffer, nil] The formatted range, or nil
+    #   when both dates are nil.
+    def format_date_range(dates)
+      return nil if dates.all?(&:nil?)
+
+      helpers = ApplicationController.helpers
+      from, to = dates.map { |date| helpers.tag.time(datetime: date.iso8601) { format_date(date) } if date }
+      helpers.safe_join([from, "–", to], " ") # &ndash; and &nbsp;
+    end
+
     ##
     # Gives a translation and inserts links into designated spots within it
     # in the style of markdown links. Instead of the actual URL only names for

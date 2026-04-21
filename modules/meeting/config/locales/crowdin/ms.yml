@@ -41,6 +41,9 @@ ms:
         start_date: Tarikh
         start_time: Masa mula
         start_time_hour: Masa mula
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: Tajuk
@@ -48,9 +51,15 @@ ms:
         duration_in_minutes: Tempoh
         description: Nota
         presenter: Penyampai
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Tajuk
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frekuensi
         interval: Selang waktu
         start_date: Bermula pada
@@ -59,6 +68,10 @@ ms:
         end_after: Meeting series ends
         end_date: End date
         iterations: Kejadian
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -417,6 +430,11 @@ ms:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Meeting not found for the given UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Bahagian tanpa tajuk
     delete_confirmation: Memadam bahagian ini akan memadam setiap item agenda juga. Adakah anda pasti anda ingin berbuat demikian?
@@ -653,9 +671,9 @@ ms:
   text_exit_draft_mode_dialog_template_title: Open the first occurrence of this meeting series?
   text_exit_draft_mode_dialog_template_subtitle: You cannot return to draft mode after this.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: Mesyuarat ini tidak boleh diedit lagi.
   text_meeting_not_present_anymore: Mesyuarat ini telah dipadamkan. Sila pilih mesyuarat lain.

@@ -44,6 +44,9 @@ cs:
         start_date: Datum
         start_time: Čas zahájení
         start_time_hour: Čas zahájení
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sdílení
       meeting_agenda_item:
         title: Název
@@ -51,9 +54,15 @@ cs:
         duration_in_minutes: Doba trvání
         description: Poznámky
         presenter: Přednášející
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Název
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frekvence
         interval: Interval
         start_date: Začíná v
@@ -62,6 +71,10 @@ cs:
         end_after: Řada schůzek končí
         end_date: Datum ukončení
         iterations: Výskyty
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Čas zahájení
       meeting_participant:
@@ -432,6 +445,11 @@ cs:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Schůzka pro daný UID nebyla nalezena.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Sekce bez názvu
     delete_confirmation: Smazáním sekce také smažete všechny body agendy. Opravdu to chcete udělat?
@@ -678,9 +696,9 @@ cs:
   text_exit_draft_mode_dialog_template_title: Otevřít první výskyt této série schůzek?
   text_exit_draft_mode_dialog_template_subtitle: Poté se již nelze vrátit do režimu návrhu.
   label_meeting_template_sharing: Sdílení
-  label_meeting_template_sharing_none: Pouze tento projekt
-  label_meeting_template_sharing_descendants: Podprojekty
-  label_meeting_template_sharing_system: Všechny projekty
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Tuto šablonu lze sdílet s podprojekty nebo jinými projekty v této instanci. Budou zkopírovány pouze body a přílohy pořadu jednání.
   text_meeting_not_editable_anymore: Tato schůzka již není upravitelná.
   text_meeting_not_present_anymore: Tato schůzka byla odstraněna. Vyberte prosím jinou schůzku.

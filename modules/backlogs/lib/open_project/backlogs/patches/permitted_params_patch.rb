@@ -40,12 +40,6 @@ module OpenProject::Backlogs::Patches::PermittedParamsPatch
 
       permitted_params
     end
-
-    def backlogs_admin_settings
-      params
-        .require(:settings)
-        .permit(:task_type, :points_burn_direction, :wiki_template, story_types: [])
-    end
   end
 end
 PermittedParams.include OpenProject::Backlogs::Patches::PermittedParamsPatch

@@ -121,7 +121,7 @@ RSpec.describe MeetingAgendaItems::CreateContract do
   context "when creating an agenda item for a recurring meeting occurrence using the template's backlog (Regression #73170)" do
     let(:recurring_meeting) { create(:recurring_meeting, project:) }
     let(:occurrence) do
-      create(:meeting, recurring_meeting:, project:, template: false)
+      create(:recurring_meeting_occurrence, recurring_meeting:, project:, template: false)
     end
     let(:backlog_section) { recurring_meeting.template.backlog }
     let(:user) do

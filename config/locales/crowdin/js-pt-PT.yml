@@ -515,12 +515,6 @@ pt-PT:
         sidebar_arrow: Use a seta de retorno no canto superior esquerdo para voltar ao <b>menu principal</b> do projeto.
         welcome: Faça uma visita guiada de 3 minutos para conhecer as <b>funcionalidades mais importantes</b>.<br> Recomendamos que conclua as etapas até ao final. Pode reiniciar a visita a qualquer momento.
         wiki: Na <b>wiki</b> pode documentar e partilhar conhecimento com a sua equipa.
-        backlogs:
-          overview: Faça a gestão do seu trabalho na vista de <b>backlogs</b>.
-          sprints: À direita tem o backlog do produto e o backlog do bug, à esquerda tem os sprints respectivos. Aqui pode criar <b>épicos, histórias de utilizadores e bugs</b>, definir a prioridade arrastando e soltando, e adicioná-los a um sprint.
-          task_board_arrow: Para ver o seu <b>quadro de tarefas</b>, abra o menu suspenso de sprint...
-          task_board_select: "...e selecione a entrada <b>quadro de tarefas</b>."
-          task_board: O painel de tarefas visualiza o progresso <b>deste sprint</b>. Clique no ícone mais (+) ao lado de um histórico de utilizador para adicionar novas tarefas ou impedimentos. <br> O estado pode ser atualizado ao arrastar e soltar.
         boards:
           overview: Selecione <b>quadros</b> para mudar a vista e gerir o seu projeto através da vista de painéis ágeis.
           lists_kanban: Aqui pode criar múltiplas listas (colunas) dentro do seu quadro. Este recurso permite que crie um <b>Painel Kanban</b>, por exemplo.
@@ -987,13 +981,6 @@ pt-PT:
       form_submit:
         title: Confirmar para continuar
         text: Tem a certeza que pretende realizar esta ação?
-      destroy_work_package:
-        title: Confirmar exclusão do %{label}
-        single_text: Tem a certeza de que deseja eliminar o pacote de trabalho?
-        bulk_text: Tem a certeza de que deseja apagar a seguinte %{label}?
-        has_children: 'O pacote de trabalho tem %{childUnits}:'
-        confirm_deletion_children: Reconheço que todos os descendentes dos pacotes de trabalho listados serão recursivamente removidos.
-        deletes_children: Todos os pacotes de trabalho filhos e seus descendentes serão também recursivamente apagados.
       destroy_time_entry:
         title: Confirmar a eliminação da entrada de tempo
         text: Pretende remover a seguinte entrada de tempo?

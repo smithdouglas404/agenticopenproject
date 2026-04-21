@@ -34,7 +34,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
   subject(:component) { described_class.new(state:) }
 
   let(:empty_result) do
-    WorkPackages::IdentifierAutofix::PreviewQuery::Result.new(projects_data: [], total_count: 0)
+    ProjectIdentifiers::IdentifierAutofix::PreviewQuery::Result.new(projects_data: [], total_count: 0)
   end
 
   def render_component(component)
@@ -46,8 +46,8 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
   end
 
   before do
-    preview_stub = instance_double(WorkPackages::IdentifierAutofix::PreviewQuery, call: empty_result)
-    allow(WorkPackages::IdentifierAutofix::PreviewQuery).to receive(:new).and_return(preview_stub)
+    preview_stub = instance_double(ProjectIdentifiers::IdentifierAutofix::PreviewQuery, call: empty_result)
+    allow(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).to receive(:new).and_return(preview_stub)
   end
 
   context "when state is :change_in_progress" do
@@ -77,7 +77,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not call PreviewQuery" do
       render_component(component)
-      expect(WorkPackages::IdentifierAutofix::PreviewQuery).not_to have_received(:new)
+      expect(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).not_to have_received(:new)
     end
   end
 
@@ -102,7 +102,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "does not call PreviewQuery" do
       render_component(component)
-      expect(WorkPackages::IdentifierAutofix::PreviewQuery).not_to have_received(:new)
+      expect(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).not_to have_received(:new)
     end
   end
 
@@ -111,7 +111,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
 
     it "calls PreviewQuery" do
       render_component(component)
-      expect(WorkPackages::IdentifierAutofix::PreviewQuery).to have_received(:new).once
+      expect(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).to have_received(:new).once
     end
 
     it "renders the save button" do
@@ -129,7 +129,7 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
             with_settings: { work_packages_identifier: "semantic" } do
       let(:project) { instance_double(Project, name: "Bad Project", id: 1, to_param: "bad-proj") }
       let(:problematic_result) do
-        WorkPackages::IdentifierAutofix::PreviewQuery::Result.new(
+        ProjectIdentifiers::IdentifierAutofix::PreviewQuery::Result.new(
           projects_data: [
             { project:, current_identifier: "bad-proj", suggested_identifier: "BP", error_reason: :special_characters }
           ],
@@ -138,8 +138,8 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
       end
 
       before do
-        stub = instance_double(WorkPackages::IdentifierAutofix::PreviewQuery, call: problematic_result)
-        allow(WorkPackages::IdentifierAutofix::PreviewQuery).to receive(:new).and_return(stub)
+        stub = instance_double(ProjectIdentifiers::IdentifierAutofix::PreviewQuery, call: problematic_result)
+        allow(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).to receive(:new).and_return(stub)
       end
 
       it "hides the plain save button" do

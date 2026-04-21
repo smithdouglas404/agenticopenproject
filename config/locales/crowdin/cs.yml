@@ -114,7 +114,7 @@ cs:
     import:
       title: Import
     jira:
-      title: Jira Migrator
+      title: Jira Migrátor
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
@@ -154,6 +154,7 @@ cs:
         connection_timeout: 'Připojení k serveru Jira vypršelo: %{message}'
         parse_error: 'Nepodařilo se zpracovat odpověď z Jira API: %{message}'
         api_error: Jira API returned error status %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projekty
         last_change: Poslední změna
@@ -702,6 +703,37 @@ cs:
   danger_dialog:
     confirmation_live_message_checked: The button to proceed is now active.
     confirmation_live_message_unchecked: The button to proceed is now inactive. You need to tick the checkbox to continue.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Stránkování
     prev: Předchozí
@@ -1379,6 +1411,20 @@ cs:
     index:
       no_results_title_text: V současné době neexistují žádné pracovní postupy.
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1845,6 +1891,7 @@ cs:
         identity_url: Adresa URL identity
         parent: Parent group
         organizational_unit: Organizational unit
+        group_users: Group users
       group_detail:
         parent: Parent group
         organizational_unit: Organizational unit
@@ -1962,6 +2009,7 @@ cs:
         confirmation: neshoduje se s %{attribute}.
         could_not_be_copied: "%{dependency} nemůže být (zcela) zkopírován."
         does_not_exist: neexistuje.
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: není přístupný.
         error_readonly: se pokusil být napsán, ale není zapisovatelný.
@@ -2028,6 +2076,7 @@ cs:
           attributes:
             parent_id:
               circular_dependency: by vytvořil kruhovou hierarchii skupin.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2550,7 +2599,6 @@ cs:
     avatar: Avatar
     base: 'Obecná chyba:'
     body: Body
-    blocks_ids: ID blokovaných pracovních balíčků
     category: Kategorie
     comment: Komentář
     comments: Komentář
@@ -3047,6 +3095,7 @@ cs:
       title: Doplňky podnikových plánů
       plan_title: Enterprise %{plan} add-on
       plan_name: "%{plan} enterprise plan"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: K dispozici od plánu %{plan_name}.
       unlimited: Bez omezení
       already_have_token: 'Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
@@ -4012,6 +4061,10 @@ cs:
   label_custom_pdf_export_settings: Vlastní nastavení exportu PDF
   label_custom_favicon: Vlastní favicon
   label_custom_touch_icon: Vlastní ikona dotyku
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: Odhlásit se
   label_mapping_for: 'Mapování pro: %{attribute}'
   label_main_menu: Boční Menu
@@ -5094,6 +5147,7 @@ cs:
     '
   setting_app_subtitle: Podtitulek aplikace
   setting_app_title: Název aplikace
+  setting_organization_name: Organization name
   setting_attachment_max_size: Maximální velikost příloh
   setting_show_work_package_attachments: Ve výchozím nastavení zobrazit přílohy na kartě souborů
   setting_antivirus_scan_mode: Režim skenování

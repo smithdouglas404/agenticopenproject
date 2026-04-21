@@ -118,6 +118,8 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
 
       let(:attachment_content) { Rails.root.join("spec/fixtures/files/image.png").binread }
 
+      include_context "with ssrf stubs"
+
       before do
         stub_request(:get, "https://jira-software.local/secure/attachment/10000/solid-color-image.png")
           .to_return(status: 200, body: attachment_content, headers: { "Content-Type" => "image/png" })

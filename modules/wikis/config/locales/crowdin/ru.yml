@@ -26,14 +26,23 @@ ru:
         many: Ссылки на страницу отношения
         other: Ссылки на страницу отношения
       wikis/xwiki_provider: Провайдер XWiki
+  permission_manage_wiki_page_links: Управление ссылками Вики-страницы
+  permission_view_wiki_page_links: Просмотр ссылок на вики-страницы
   project_module_wiki_platforms: Провайдеры вики
   wikis:
     buttons:
       save_and_continue: Сохранить и продолжить
+      wiki_page: Wiki-страница
     inline_page_links_component:
-      empty_heading: No inline links
-      empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
+      empty_heading: Нет встроенных ссылок
+      empty_text: Встроенные ссылки на вики-страницы в описании пакета работ также будут автоматически отображаться здесь.
       heading: Inline page links
+    page_link_component:
+      remove: Удалить ссылку на страницу
+    relation_page_links_component:
+      empty_heading: Нет связанных страниц
+      empty_text: Добавьте ссылки вручную на другие связанные вики-страницы.
+      heading: Связанные страницы
     admin:
       wiki_providers:
         index_description: Добавить внешний вики-сервис, чтобы связать рабочие пакеты с существующими вики-страницами или создать новые прямо из OpenProject.

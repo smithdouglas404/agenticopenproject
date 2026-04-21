@@ -44,6 +44,9 @@ ru:
         start_date: Дата
         start_time: Время начала
         start_time_hour: Время начала
+        end_time: Время завершения
+        template: Шаблон
+        notify: Отправлять уведомления
         sharing: Совместное использование
       meeting_agenda_item:
         title: Заголовок
@@ -51,9 +54,15 @@ ru:
         duration_in_minutes: Продолжительность
         description: Примечания
         presenter: Ведущий
+        item_type: Тип
+        position: Позиция
+        lock_version: Lock version
+        notes: Примечания
       meeting_section:
         title: Заголовок
+        position: Позиция
       recurring_meeting:
+        title: Заголовок
         frequency: Частота
         interval: Промежуток
         start_date: Начинается
@@ -62,6 +71,10 @@ ru:
         end_after: Серия совещаний заканчивается
         end_date: Дате окончания
         iterations: События
+        time_zone: Часовой пояс
+        location: Местоположение
+        duration: Продолжительность
+        notify: Отправлять уведомления
       recurring_meeting_interim_response:
         start_time: Время начала
       meeting_participant:
@@ -430,6 +443,11 @@ ru:
     ical_response:
       update_failed: Не удалось обновить статус участия.
       meeting_not_found: Совещание для данного UID не найдено.
+    widgets:
+      blankslate:
+        heading: Нет предстоящих встреч
+        description: Здесь будут отображаться предстоящие встречи, в которых Вы являетесь организатором или участником.
+      view_details: Просмотреть все встречи
   meeting_section:
     untitled_title: Раздел без названия
     delete_confirmation: Удаление раздела также удалит все пункты его повестки дня. Вы уверены, что хотите это сделать?
@@ -672,9 +690,9 @@ ru:
   text_exit_draft_mode_dialog_template_title: Открыть первое совещание из этой серии?
   text_exit_draft_mode_dialog_template_subtitle: После этого Вы не сможете вернуться в режим черновика.
   label_meeting_template_sharing: Совместное использование
-  label_meeting_template_sharing_none: Только этот проект
-  label_meeting_template_sharing_descendants: Подпроекты
-  label_meeting_template_sharing_system: Все проекты
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Этот шаблон можно использовать совместно с подпроектами или другими проектами. Будут скопированы только пункты повестки дня и вложения.
   text_meeting_not_editable_anymore: Это совещание больше нельзя редактировать.
   text_meeting_not_present_anymore: Это совещание было удалено. Пожалуйста, выберите другое.

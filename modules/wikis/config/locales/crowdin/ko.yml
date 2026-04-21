@@ -20,14 +20,23 @@ ko:
       wikis/relation_page_link:
         other: 관련 페이지 링크
       wikis/xwiki_provider: XWiki 공급자
+  permission_manage_wiki_page_links: Manage Wiki Page Links
+  permission_view_wiki_page_links: View Wiki Page Links
   project_module_wiki_platforms: 위키 공급자
   wikis:
     buttons:
       save_and_continue: 저장 및 계속
+      wiki_page: Wiki page
     inline_page_links_component:
       empty_heading: No inline links
       empty_text: Inline links to wiki pages in the work package description will automatically also show up here.
       heading: Inline page links
+    page_link_component:
+      remove: Remove page link
+    relation_page_links_component:
+      empty_heading: No related pages
+      empty_text: Manually add links to other related wiki pages.
+      heading: Related pages
     admin:
       wiki_providers:
         index_description: 외부 위키 서비스를 추가하여 작업 패키지를 기존 위키 페이지에 링크하거나 OpenProject에서 직접 새로운 위키 페이지를 만듭니다.

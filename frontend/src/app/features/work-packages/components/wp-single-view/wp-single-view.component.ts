@@ -294,7 +294,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
    * Returns the work package label
    */
   public get idLabel():string {
-    return `#${this.workPackage.id || ''}`;
+    return this.workPackage.formattedId;
   }
 
   public showSwitchToProjectBanner():boolean {

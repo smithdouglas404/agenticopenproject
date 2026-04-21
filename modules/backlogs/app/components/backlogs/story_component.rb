@@ -52,5 +52,9 @@ module Backlogs
     def draggable?
       current_user.allowed_in_project?(:manage_sprint_items, project)
     end
+
+    def menu_src
+      menu_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)
+    end
   end
 end

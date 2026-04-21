@@ -78,7 +78,7 @@ module API
 
         property :displayId,
                  representation: ->(*) {
-                   Setting::WorkPackageIdentifier.semantic_mode_active? ? "identifier" : "id::text"
+                   Setting::WorkPackageIdentifier.semantic_mode_active? ? "COALESCE(identifier, id::text)" : "id::text"
                  }
 
         property :subject

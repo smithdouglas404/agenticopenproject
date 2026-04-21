@@ -362,6 +362,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_group_plural,
             parent: :users_and_permissions
 
+  menu.push :departments,
+            { controller: "/admin/departments" },
+            if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.departments_active? },
+            caption: :label_departments,
+            parent: :users_and_permissions
+
   menu.push :roles,
             { controller: "/roles" },
             if: ->(_) { User.current.admin? },
@@ -670,12 +676,6 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_enterprise_edition,
             icon: "op-enterprise-addons",
             if: proc { User.current.admin? && OpenProject::Configuration.ee_manager_visible? }
-
-  menu.push :admin_backlogs,
-            { controller: "/backlogs_settings", action: :show },
-            if: ->(_) { User.current.admin? },
-            caption: :label_backlogs,
-            icon: "op-backlogs"
 
   menu.push :import,
             { controller: "/admin/import/jira/instances", action: :index },

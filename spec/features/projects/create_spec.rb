@@ -479,9 +479,7 @@ RSpec.describe "Projects", "creation",
 
             fill_in "Text for Admins only", with: "foo"
 
-            wait_for_turbo do
-              click_on "Complete"
-            end
+            click_on "Complete"
 
             expect_and_dismiss_flash type: :success, message: "Successful creation."
 

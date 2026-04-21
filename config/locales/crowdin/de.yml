@@ -154,6 +154,7 @@ de:
         connection_timeout: 'Die Verbindung zum Jira-Server wurde unterbrochen: %{message}'
         parse_error: 'Die Jira API-Antwort konnte nicht gelesen werden: %{message}'
         api_error: Jira API hat den Fehlerstatus %{status} zurückgegeben
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projekte
         last_change: Letzte Änderung
@@ -444,7 +445,7 @@ de:
         confirm: Entfernen
       leave_confirmation:
         title: Änderungen speichern, bevor Sie fortfahren?
-        description: Sie sind im Begriff, diese Seite zu verlassen, aber Sie haben noch nicht gespeicherte Änderungen. Möchten Sie diese speichern, bevor Sie fortfahren?
+        description: Sie sind dabei, diese Seite zu verlassen, haben aber noch nicht gespeicherte Änderungen. Möchten Sie diese vor dem Fortfahren speichern?
         ignore: Änderungen ignorieren
         save: Änderungen speichern und fortfahren
       role_selector:
@@ -586,13 +587,13 @@ de:
         blankslate:
           root:
             title: Ihre Liste der Elemente ist leer
-            description: Beginnen Sie mit dem Hinzufügen von Elementen in das benutzerdefinierte Feld der Typ-Hierarchie. Jedes Element kann verwendet werden, um eine Hierarchie darunter zu erstellen. Um Unterelemente innerhalb einer Hierarchie zu navigieren und zu erstellen, klicken Sie auf das erstellte Element.
+            description: Beginnen Sie mit dem Hinzufügen von Elementen in das selbstdefinierte Feld der Typ-Hierarchie. Jedes Element kann verwendet werden, um eine Hierarchie darunter zu erstellen. Um Unterelemente innerhalb einer Hierarchie zu navigieren und zu erstellen, klicken Sie auf das erstellte Element.
           item:
             title: Dieses Element hat keine untergeordnete Hierarchieebene
             description: Füge Elemente zu dieser Liste hinzu, um Unterelemente innerhalb eines anderen zu erstellen
         delete_dialog:
-          title: Benutzerdefiniertes Feldelement löschen
-          heading: Benutzerdefiniertes Feldelement löschen?
+          title: Selbstdefiniertes Feldelement löschen
+          heading: Slebstdefiniertes Feldelement löschen?
           description: Mit dieser Aktion werden das Element und alle seine Unterelemente unwiderruflich entfernt. Alle zugewiesenen Werte werden endgültig gelöscht. Wenn dieses Feld erforderlich ist, kann das Entfernen von Elementen dazu führen, dass bestehende Arbeitspakete ungültig werden.
         placeholder:
           label: Elementbezeichnung
@@ -639,11 +640,11 @@ de:
     no_role_assigment: Keine Rollenzuweisung
     instructions:
       is_required:
-        all: Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Ressourcen obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt.
+        all: Markieren Sie das selbstdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Ressourcen obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt.
         project: Erforderliche Attribute müssen vom Benutzer bei der Projekterstellung ausgefüllt werden, wenn das Feld aktiv ist ("Für alle Projekte" aktiviert oder beim Kopieren eines Projekts/Templates, in dem das Feld aktiv ist). Vorhandene Projekte benötigen keinen Wert, wenn sie aktualisiert werden.
       is_for_all:
-        all: Markiert das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten.
-        project: Markiert das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten.
+        all: Markiert das selbstdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten.
+        project: Markiert das selbstdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten.
       multi_select:
         all: Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen.
         project: Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen.
@@ -656,7 +657,7 @@ de:
         all: Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten.
         project: Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten.
       is_filter:
-        all: 'Erlaubt das benutzerdefinierte Feld in einem Filter in der Arbeitspaket-Ansicht zu verwenden. Beachten Sie, dass, nur wenn "Für alle Projekte" ausgewählt ist, das benutzerdefinierte Feld in globalen Ansichten angezeigt wird.
+        all: 'Erlaubt das selbstdefinierte Feld in einem Filter in der Arbeitspaket-Ansicht zu verwenden. Beachten Sie, dass, nur wenn "Für alle Projekte" ausgewählt ist, das selbstdefinierte Feld in globalen Ansichten angezeigt wird.
 
           '
       formula:
@@ -685,6 +686,37 @@ de:
   danger_dialog:
     confirmation_live_message_checked: Die Schaltfläche zum Fortfahren ist nun aktiv.
     confirmation_live_message_unchecked: Die Schaltfläche zum Fortfahren ist inaktiv. Sie müssen das Kontrollkästchen ankreuzen, um fortzufahren.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Paginierung
     prev: Zurück
@@ -1343,6 +1375,20 @@ de:
     index:
       no_results_title_text: Derzeit gibt es keine Workflows.
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1803,6 +1849,7 @@ de:
         identity_url: Identity URL
         parent: Übergeordnete Gruppe
         organizational_unit: Organisationseinheit
+        group_users: Group users
       group_detail:
         parent: Übergeordnete Gruppe
         organizational_unit: Organisationseinheit
@@ -1920,6 +1967,7 @@ de:
         confirmation: stimmt nicht mit %{attribute} überein.
         could_not_be_copied: "%{dependency} konnte nicht (vollständig) kopiert werden."
         does_not_exist: existiert nicht.
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} ist nur in der OpenProject Enterprise Edition verfügbar."
         error_unauthorized: kann nicht zugegriffen werden.
         error_readonly: wurde versucht zu beschreiben, ist aber nicht beschreibbar.
@@ -1986,6 +2034,7 @@ de:
           attributes:
             parent_id:
               circular_dependency: würde eine zirkuläre Gruppenhierarchie erstellen.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2466,7 +2515,6 @@ de:
     avatar: Profilfoto
     base: 'Allgemeiner Fehler:'
     body: Body
-    blocks_ids: IDs der blockierten Arbeitspakete
     category: Kategorie
     comment: Kommentar
     comments: Kommentar
@@ -2923,6 +2971,7 @@ de:
       title: Enterprise Add-on
       plan_title: Enterprise %{plan} Add-on
       plan_name: "%{plan} Enterprise Plan"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: Beginnend mit dem %{plan_name} verfügbar.
       unlimited: Unbegrenzt
       already_have_token: 'Haben Sie bereits ein Token? Fügen Sie es über den Button unten hinzu, um zum gebuchten Enterprise-Plan zu wechseln.
@@ -3886,6 +3935,10 @@ de:
   label_custom_pdf_export_settings: Benutzerdefinierte PDF-Export-Einstellungen
   label_custom_favicon: Benutzerdefiniertes Favicon
   label_custom_touch_icon: Benutzerdefiniertes Touch-Icon
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: Abmelden
   label_mapping_for: 'Zuordnung für: %{attribute}'
   label_main_menu: Nebenmenü
@@ -4960,6 +5013,7 @@ de:
     '
   setting_app_subtitle: Applikations-Untertitel
   setting_app_title: Applikations-Titel
+  setting_organization_name: Organization name
   setting_attachment_max_size: Max. Dateigröße
   setting_show_work_package_attachments: Anhänge standardmäßig auf dem Tab Dateien anzeigen
   setting_antivirus_scan_mode: Scanmodus

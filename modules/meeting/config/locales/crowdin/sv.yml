@@ -42,6 +42,9 @@ sv:
         start_date: Datum
         start_time: Starttid
         start_time_hour: Starttid
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: Titel
@@ -49,9 +52,15 @@ sv:
         duration_in_minutes: Varaktighet
         description: Anteckningar
         presenter: Presentatör
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Titel
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frekvens
         interval: Intervall
         start_date: Börjar på
@@ -60,6 +69,10 @@ sv:
         end_after: Mötesserien slutar
         end_date: Slutdatum
         iterations: Förekomster
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -420,6 +433,11 @@ sv:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Meeting not found for the given UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Namnlös sektion
     delete_confirmation: Om du tar bort avsnittet tas även alla dess agendapunkter bort. Är du säker på att du vill göra det här?
@@ -658,9 +676,9 @@ sv:
   text_exit_draft_mode_dialog_template_title: Öppna den första förekomsten av denna mötesserie?
   text_exit_draft_mode_dialog_template_subtitle: Du kan inte återgå till utkastläget efter detta.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: Detta möte är inte längre redigerbart.
   text_meeting_not_present_anymore: Detta möte har tagits bort. Vänligen välj ett annat möte.

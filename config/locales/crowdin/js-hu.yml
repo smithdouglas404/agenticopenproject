@@ -527,16 +527,6 @@ hu:
         sidebar_arrow: Használja a vissza nyilat bal felül hogy visszatérjen a projektekhez <b>main menu</b>..
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: A <b>Wiki</b> modulban tudását dokumentálhatja és megoszthatja a csapatával.
-        backlogs:
-          overview: Munka kezelése a <b>backlogs</b>  nézetben
-          sprints: 'Jobbra a termék- és a hibatár, balra pedig a megfelelő sprintek. Itt létrehozhatsz <b>képeket, felhasználói történeteket és hibákat</b>, drag & drop segítségével priorizálhatsz, és hozzáadhatod őket egy sprinthez.
-
-            '
-          task_board_arrow: A <b>Feladatlap</b> megjelenítéséhez nyissa meg a Sprint legördülő listát...
-          task_board_select: "... és válassza ki a <b>Feladatlap</b> bejegyzést."
-          task_board: 'A feladattábla megjeleníti <b> a sprint haladását </b>. Új feladatok vagy akadályok hozzáadásához kattintson a felhasználói történet melletti plusz (+) ikonra. <br> Az állapot húzással frissíthető.
-
-            '
         boards:
           overview: 'Válassza a <b>táblák</b> lehetőséget a nézetváltáshoz, és kezelje projektjét az agilis táblák nézetben.
 
@@ -1029,15 +1019,6 @@ hu:
       form_submit:
         title: Megerősítés a folytatáshoz
         text: Biztosan végre szeretné hajtani ezt a műveletet?
-      destroy_work_package:
-        title: Jóváhagyja %{label} törlését
-        single_text: Are you sure you want to delete the work package
-        bulk_text: Are you sure you want to delete the following %{label}?
-        has_children: 'A feladatcsoportnak van %{childUnits}:'
-        confirm_deletion_children: 'Tudomásul veszem, hogy a felsorolt munkacsomagok MINDEN leszármazottja rekurzív módon eltávolításra kerül.
-
-          '
-        deletes_children: Minden al feladatcsoportot és leszármazottait is rekurzívan törli.
       destroy_time_entry:
         title: Időbejegyzés törlésének jóváhagyása
         text: Biztosan törölni akarja a következő időbejegyzést?

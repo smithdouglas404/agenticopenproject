@@ -137,4 +137,65 @@ RSpec.describe Projects::SemanticIdentifier, with_settings: { work_packages_iden
       end
     end
   end
+
+  describe "relation-scoped finder methods" do
+    let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
+    let(:other_project) { create(:project, identifier: "OTHER", wp_sequence_counter: 0) }
+    let!(:wp1) { create(:work_package, project:) }
+    let!(:wp2) { create(:work_package, project: other_project) }
+
+    describe "project.work_packages.find" do
+      it "resolves a semantic identifier scoped to the project" do
+        expect(project.work_packages.find("PROJ-1")).to eq(wp1)
+      end
+
+      it "raises RecordNotFound for a WP belonging to another project" do
+        expect { project.work_packages.find("OTHER-1") }
+          .to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "raises RecordNotFound for unknown semantic id" do
+        expect { project.work_packages.find("PROJ-999") }
+          .to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "resolves via historic alias" do
+        WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package: wp1)
+        expect(project.work_packages.find("OLDPROJ-1")).to eq(wp1)
+      end
+    end
+
+    describe "project.work_packages.exists?" do
+      it "returns true for a semantic identifier within the project" do
+        expect(project.work_packages.exists?("PROJ-1")).to be true
+      end
+
+      it "returns false for a WP belonging to another project" do
+        expect(project.work_packages.exists?("OTHER-1")).to be false
+      end
+
+      it "returns false for unknown semantic id" do
+        expect(project.work_packages.exists?("PROJ-999")).to be false
+      end
+
+      it "checks the alias table for historical identifiers" do
+        WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package: wp1)
+        expect(project.work_packages.exists?("OLDPROJ-1")).to be true
+      end
+    end
+
+    describe "project.work_packages.find_by_display_id" do
+      it "resolves a semantic identifier scoped to the project" do
+        expect(project.work_packages.find_by_display_id("PROJ-1")).to eq(wp1)
+      end
+
+      it "returns nil for a WP belonging to another project" do
+        expect(project.work_packages.find_by_display_id("OTHER-1")).to be_nil
+      end
+
+      it "returns nil for unknown semantic id" do
+        expect(project.work_packages.find_by_display_id("PROJ-999")).to be_nil
+      end
+    end
+  end
 end

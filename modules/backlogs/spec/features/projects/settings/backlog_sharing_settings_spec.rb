@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe "Backlogs project settings sprint sharing", :js, with_flag: { scrum_projects: true } do
+RSpec.describe "Backlogs project settings sprint sharing", :js do
   let(:project) { create(:project) }
   let(:permissions) { %i[create_sprints share_sprint select_done_statuses] }
 
@@ -139,15 +139,6 @@ RSpec.describe "Backlogs project settings sprint sharing", :js, with_flag: { scr
       visit project_settings_backlog_sharing_path(project)
 
       expect(page).to have_text(I18n.t(:notice_not_authorized))
-    end
-  end
-
-  context "when scrum_projects feature flag is inactive", with_flag: { scrum_projects: false } do
-    it "does not show the sharing tab" do
-      visit project_settings_backlogs_path(project)
-
-      expect(page).to have_heading(I18n.t(:label_backlogs))
-      expect(page).to have_no_link(I18n.t("backlogs.sharing"))
     end
   end
 end

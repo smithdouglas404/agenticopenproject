@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  # Renders Primer::Alpha::ActionMenu::List for the deferred menu (InboxController#menu).
+  # Renders Primer::Alpha::ActionMenu::List for the deferred menu (Backlogs::InboxController#menu).
   # +menu_id+ must match the row ActionMenu in InboxItemComponent.
   class InboxMenuComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
@@ -85,7 +85,7 @@ module Backlogs
         id: dom_target(work_package, :menu, direction),
         label:,
         tag: :button,
-        href: reorder_project_inbox_path(project, work_package),
+        href: reorder_project_backlogs_inbox_path(project, work_package),
         form_arguments: { method: :post, inputs: [{ name: "direction", value: direction }] }
       ) do |item|
         item.with_leading_visual_icon(icon:)

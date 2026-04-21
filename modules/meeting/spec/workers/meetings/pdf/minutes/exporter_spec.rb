@@ -128,7 +128,12 @@ RSpec.describe Meetings::PDF::Minutes::Exporter do
 
   context "with an empty recurring meeting" do
     let!(:meeting) do
-      create(:meeting, :author_participates, recurring_meeting:, project:, title: "Minutes meeting!", location: "Moon Base")
+      create(:recurring_meeting_occurrence,
+             :author_participates,
+             recurring_meeting:,
+             project:,
+             title: "Minutes meeting!",
+             location: "Moon Base")
     end
 
     it "renders the expected document" do

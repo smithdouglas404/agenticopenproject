@@ -94,6 +94,7 @@ RSpec.describe "form configuration", :js, :selenium do
         form.remove_group "Estimates and progress"
         form.remove_group "People"
         form.remove_group "Costs"
+        form.remove_group "Other"
 
         form.expect_empty
 

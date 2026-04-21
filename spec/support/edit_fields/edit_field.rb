@@ -227,7 +227,17 @@ class EditField
 
     if autocompleter_field?
       if multi
-        page.find(".ng-value-label", visible: :all, text: content).sibling(".ng-value-icon").click
+        remove_icon = field_container
+                        .find(".ng-value-label", visible: :all, text: content)
+                        .sibling(".ng-value-icon")
+
+        begin
+          scroll_to_element(remove_icon, block: :nearest)
+          remove_icon.click
+        rescue Capybara::Cuprite::MouseEventFailed
+          # Cuprite-only: bypass Chrome's overlap check when the chip icon is obscured.
+          remove_icon.trigger("click")
+        end
       else
         ng_select_clear(field_container)
       end

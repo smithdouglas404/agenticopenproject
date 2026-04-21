@@ -15,7 +15,7 @@ module Flash
     def expect_and_dismiss_flash(message: nil, exact_message: nil, type: :success, wait: 20)
       expect_flash(type:, message:, exact_message:, wait:)
       dismiss_flash!
-      expect_no_flash(type:, message:, exact_message:, wait: 0.1)
+      expect_no_flash(type:, message:, exact_message:, wait: 5)
     end
 
     def dismiss_flash!
