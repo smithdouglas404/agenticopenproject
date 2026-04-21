@@ -60,7 +60,7 @@ RSpec.describe WorkPackageTypes::AttributeGroups::Transformer do
       end
 
       it "returns transformed group with symbolized key and attribute keys" do
-        expect(transformer.call).to eq([[:custom, ["custom_field_1", "custom_field_2"]]])
+        expect(transformer.call).to eq([[:custom, ["custom_field_1", "custom_field_2"], "Custom"]])
       end
     end
 
