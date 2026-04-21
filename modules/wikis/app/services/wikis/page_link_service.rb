@@ -30,46 +30,47 @@
 
 module Wikis
   class PageLinkService
+    include Dry::Monads[:result]
+
     def count(linkable)
       # Incomplete implementation until connection to Wikis API is done to fetch relation wiki page links
       # from external providers.
       # TODO: Replace with complete implementation
 
-      Wikis::PageLink.joins(:provider)
-                     .merge(Wikis::Provider.enabled)
+      PageLink.joins(:provider)
+                     .merge(Provider.enabled)
                      .where(linkable:)
                      .count
     end
 
-    def relation_page_links_for(provider:, linkable:)
+    def relation_page_link_infos_for(provider:, linkable:)
       provider.page_links
               .merge(RelationPageLink.all)
               .where(linkable:)
               .order(created_at: :desc)
-              .map { PageLinkViewModel.from_page_link(page_link: it, title_service: page_title_service) }
+              .map { provider.resolve("queries.page_info").call(identifier: it.identifier) }
     end
 
-    def inline_page_links_for(linkable:)
+    def inline_page_link_infos_for(linkable:)
       InlinePageLink.where(linkable:)
                     .order(created_at: :desc)
-                    .map { PageLinkViewModel.from_page_link(page_link: it, title_service: page_title_service) }
+                    .map { it.provider.resolve("queries.page_info").call(identifier: it.identifier) }
     end
 
-    def referencing_wiki_pages_for(linkable:)
+    def referencing_wiki_page_infos_for(linkable:)
       # TODO: iterate over all providers and fetch mentions of this linkable
 
+      referenced_in = []
+
+      # Show a random internal wiki page as a referencing wiki page for work packages with even ids
       if linkable.id % 2 == 0
-        return [
-          PageLinkViewModel.new(
-            page_identifier: "42",
-            provider: XWikiProvider.enabled.first,
-            title: "I come from the wiki down under",
-            href: "#"
-          )
-        ]
+        InternalProvider.enabled.each do |provider|
+          random_wiki_page = WikiPage.order("RANDOM()").limit(1).first
+          referenced_in << provider.resolve("queries.page_info").call(identifier: random_wiki_page.id.to_s)
+        end
       end
 
-      []
+      referenced_in
     end
 
     private

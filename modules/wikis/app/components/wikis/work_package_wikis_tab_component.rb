@@ -45,11 +45,11 @@ module Wikis
     end
 
     def inline_page_links
-      @inline_page_links ||= page_link_service.inline_page_links_for(linkable: work_package)
+      @inline_page_links ||= page_link_service.inline_page_link_infos_for(linkable: work_package)
     end
 
     def referencing_wiki_pages
-      @referencing_wiki_pages ||= page_link_service.referencing_wiki_pages_for(linkable: work_package)
+      @referencing_wiki_pages ||= page_link_service.referencing_wiki_page_infos_for(linkable: work_package)
     end
 
     private

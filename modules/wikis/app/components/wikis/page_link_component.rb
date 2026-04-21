@@ -33,7 +33,15 @@ module Wikis
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
 
-    alias_method :page, :model
+    alias_method :page_info_result, :model
+
+    attr_reader :actions
+
+    def initialize(model = nil, actions: [], **)
+      @actions = actions
+
+      super(model, **)
+    end
 
     def page_title
       # TODO: Define behaviour for errors
@@ -46,13 +54,7 @@ module Wikis
     end
 
     def show_action_menu?
-      true
-    end
-
-    private
-
-    def page_info_result
-      @page_info_result ||= link.provider.resolve("queries.page_info").call(identifier: link.identifier)
+      actions.any?
     end
   end
 end

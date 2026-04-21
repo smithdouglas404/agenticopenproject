@@ -28,27 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters::Providers::XWiki::Queries
-  class PageInfo < Wikis::Adapters::BaseQuery
-    class << self
-      def call_contract
-        Wikis::Adapters::Input::PageInfoCallContract
+module Wikis
+  module Adapters
+    module Providers
+      module XWiki
+        module Queries
+          class PageInfo < BaseQuery
+            class << self
+              def call_contract
+                Input::PageInfoCallContract
+              end
+            end
+
+            def handle_query(identifier:)
+              title = [
+                "What makes XWiki special?",
+                "API documentation",
+                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
+              ].sample
+
+              success(
+                Results::PageInfo.new(
+                  identifier:,
+                  provider: XWikiProvider.first,
+                  title:,
+                  href: "#"
+                )
+              )
+            end
+          end
+        end
       end
-    end
-
-    def handle_query(identifier:) # rubocop:disable Lint/UnusedMethodArgument
-      title = [
-        "What makes XWiki special?",
-        "API documentation",
-        "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
-      ].sample
-
-      success(
-        Wikis::Adapters::Results::PageInfo.new(
-          title:,
-          href: "#"
-        )
-      )
     end
   end
 end
