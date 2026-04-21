@@ -70,7 +70,7 @@ module MeetingAgendaItems
 
     def skipped_cancelled_part
       if @skipped_cancelled.one?
-        I18n.t(:text_agenda_item_dialog_skipping_cancelled_one, date: format_date(DateTime.iso8601(@skipped_cancelled.first)))
+        I18n.t(:text_agenda_item_dialog_skipping_cancelled_one, date: format_date(@skipped_cancelled.first))
       else
         I18n.t(:text_agenda_item_dialog_skipping_cancelled_many, count: @skipped_cancelled.size)
       end
@@ -78,7 +78,7 @@ module MeetingAgendaItems
 
     def skipped_closed_part
       if @skipped_closed.one?
-        I18n.t(:text_agenda_item_dialog_skipping_closed_one, date: format_date(DateTime.iso8601(@skipped_closed.first)))
+        I18n.t(:text_agenda_item_dialog_skipping_closed_one, date: format_date(@skipped_closed.first))
       else
         I18n.t(:text_agenda_item_dialog_skipping_closed_many, count: @skipped_closed.size)
       end
