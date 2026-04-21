@@ -107,6 +107,24 @@ class AddRecurrenceIdToMeetings < ActiveRecord::Migration[8.0]
         AND m.template = false
     SQL
 
+    # Restore scheduled_meetings for all non-cancelled occurrence meetings
+    execute <<~SQL.squish
+      INSERT INTO scheduled_meetings
+        (recurring_meeting_id, meeting_id, start_time, cancelled, created_at, updated_at)
+      SELECT
+        m.recurring_meeting_id,
+        m.id,
+        m.recurrence_start_time,
+        false,
+        m.created_at,
+        m.updated_at
+      FROM meetings m
+      WHERE m.recurring_meeting_id IS NOT NULL
+        AND m.recurrence_start_time IS NOT NULL
+        AND m.template = false
+        AND m.state != 4
+    SQL
+
     # Remove the stub cancelled meetings that were created from scheduled_meetings
     execute <<~SQL.squish
       DELETE FROM meetings
