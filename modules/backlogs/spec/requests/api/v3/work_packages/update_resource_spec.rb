@@ -90,7 +90,15 @@ RSpec.describe "API v3 Work package resource",
       it_behaves_like "read-only violation", "sprint", WorkPackage
     end
 
-    context "when the user has only the permission to manage sprint items and changes only the sprint" do
+    context "when the user does not have permission to view sprints" do
+      let(:permissions) { %i[edit_work_packages view_work_packages manage_sprint_items] }
+
+      it_behaves_like "constraint violation" do
+        let(:message) { "Sprint is not set to one of the allowed values." }
+      end
+    end
+
+    context "when the user has only the permission to manage sprint items/view sprints and changes only the sprint" do
       let(:permissions) { %i[view_work_packages manage_sprint_items view_sprints] }
 
       let(:parameters) do
@@ -112,7 +120,7 @@ RSpec.describe "API v3 Work package resource",
       end
     end
 
-    context "when the user has only the permission to manage sprint items and changes more than the sprint" do
+    context "when the user has only the permission to manage sprint items/view sprints and changes more than the sprint" do
       let(:permissions) { %i[view_work_packages manage_sprint_items view_sprints] }
 
       let(:parameters) do
