@@ -396,7 +396,7 @@ class MeetingAgendaItemsController < ApplicationController
   def find_existing_occurrence
     next_occurrence = @series.meetings.not_templated.find_by(recurrence_start_time: @next_meeting_time)
 
-    if next_occurrence&.cancelled? || next_occurrence&.meeting&.closed?
+    if next_occurrence&.cancelled? || next_occurrence&.closed?
       result = @series.first_available_occurrence(from_time: @next_meeting_time)
 
       if result.nil?

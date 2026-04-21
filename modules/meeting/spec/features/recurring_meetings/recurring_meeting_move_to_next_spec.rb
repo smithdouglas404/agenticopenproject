@@ -199,8 +199,8 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
       let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
       let(:second_occurrence_time) { series.next_occurrence(from_time: first_occurrence_time) }
       let!(:cancelled_occurrence) do
-        create(:scheduled_meeting,
-               :cancelled,
+        create(:recurring_meeting_occurrence,
+               state: :cancelled,
                recurring_meeting: series,
                start_time: first_occurrence_time)
       end
