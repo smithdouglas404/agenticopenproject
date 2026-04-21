@@ -58,7 +58,7 @@ module ProjectIdentifiers
       FORMAT_RULES = [
         [:too_long, ->(id, max) { id.length > max }],
         [:numerical, ->(id, _) { id.match?(/\A\d+\z/) }],
-        [:starts_with_number, ->(id, _) { id.match?(/\A\d/) }],
+        [:does_not_start_with_letter, ->(id, _) { !id.match?(/\A[A-Za-z]/) }],
         [:special_characters, ->(id, _) { id.match?(/[^a-zA-Z0-9_]/) }],
         [:not_fully_uppercased, ->(id, _) { id != id.upcase }]
       ].freeze
@@ -83,7 +83,7 @@ module ProjectIdentifiers
       def scope
         @scope ||= exceeds_max_length
                       .or(contains_non_alphanumeric)
-                      .or(starts_with_digit)
+                      .or(does_not_start_with_letter)
                       .or(not_fully_uppercased)
       end
 
@@ -114,7 +114,7 @@ module ProjectIdentifiers
 
       def exceeds_max_length        = Project.where("length(identifier) > ?", self.class.max_identifier_length)
       def contains_non_alphanumeric = Project.where("identifier ~ ?", "[^a-zA-Z0-9_]")
-      def starts_with_digit         = Project.where("identifier ~ ?", "^[0-9]")
+      def does_not_start_with_letter  = Project.where("identifier ~ ?", "^[^A-Za-z]") # rubocop:disable Naming/PredicatePrefix
       def not_fully_uppercased      = Project.where("identifier != UPPER(identifier)")
 
       def collision_error_reason(identifier)
