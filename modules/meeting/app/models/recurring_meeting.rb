@@ -256,16 +256,21 @@ class RecurringMeeting < ApplicationRecord
     schedule.next_occurrence(from_time)&.to_time
   end
 
-  def first_non_cancelled_occurrence(from_time: Time.current)
-    skipped = []
+  def first_available_occurrence(from_time: Time.current)
+    skipped_cancelled = []
+    skipped_closed = []
     time = from_time
 
     while (occurrence = next_occurrence(from_time: time))
-      if scheduled_meetings.cancelled.exists?(start_time: occurrence)
-        skipped << occurrence
+      scheduled = scheduled_meetings.find_by(start_time: occurrence)
+      if scheduled&.cancelled?
+        skipped_cancelled << occurrence
+        time = occurrence
+      elsif scheduled&.meeting&.closed?
+        skipped_closed << occurrence
         time = occurrence
       else
-        return { occurrence:, skipped: }
+        return { occurrence:, skipped_cancelled:, skipped_closed: }
       end
     end
 

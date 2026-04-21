@@ -227,7 +227,8 @@ class MeetingAgendaItemsController < ApplicationController
     respond_with_dialog MeetingAgendaItems::MoveToNextMeetingDialogComponent.new(
       agenda_item: @meeting_agenda_item,
       datetime: params[:datetime],
-      skipped: params[:skipped],
+      skipped_cancelled: params[:skipped_cancelled],
+      skipped_closed: params[:skipped_closed],
       next_occurrence:
     )
   end
@@ -239,7 +240,8 @@ class MeetingAgendaItemsController < ApplicationController
     respond_with_dialog MeetingAgendaItems::DuplicateInNextMeetingDialogComponent.new(
       agenda_item: @meeting_agenda_item,
       datetime: params[:datetime],
-      skipped: params[:skipped],
+      skipped_cancelled: params[:skipped_cancelled],
+      skipped_closed: params[:skipped_closed],
       next_occurrence:
     )
   end
@@ -394,8 +396,8 @@ class MeetingAgendaItemsController < ApplicationController
   def find_existing_occurrence
     next_occurrence = @series.scheduled_meetings.find_by(start_time: @next_meeting_time)
 
-    if next_occurrence&.cancelled?
-      result = @series.first_non_cancelled_occurrence(from_time: @next_meeting_time)
+    if next_occurrence&.cancelled? || next_occurrence&.meeting&.closed?
+      result = @series.first_available_occurrence(from_time: @next_meeting_time)
 
       if result.nil?
         return respond_with_flash_error(message: I18n.t(:text_agenda_item_no_available_occurrence))
