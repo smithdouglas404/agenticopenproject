@@ -29,7 +29,7 @@
 #++
 
 module Wikis::Admin
-  class AuthenticationMethodSelectForm < ApplicationForm
+  class XWikiAuthenticationMethodSelectForm < ApplicationForm
     form do |f|
       f.select_list(
         name: :authentication_method,

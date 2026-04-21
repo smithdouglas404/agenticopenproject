@@ -49,7 +49,7 @@ module Wikis
       def registry_prefix = "xwiki"
     end
 
-    def authenticate_via_oauth2?
+    def authenticate_via_two_way_oauth2?
       authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
     end
 

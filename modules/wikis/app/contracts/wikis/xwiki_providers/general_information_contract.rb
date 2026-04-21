@@ -32,10 +32,8 @@ module Wikis
   module XWikiProviders
     class GeneralInformationContract < BaseContract
       attribute :authentication_method
-      validates :authentication_method, presence: true
-      validates :authentication_method,
-                inclusion: { in: Wikis::XWikiProvider::AUTHENTICATION_METHODS },
-                allow_blank: true
+      validates :authentication_method, presence: true,
+                                        inclusion: { in: Wikis::XWikiProvider::AUTHENTICATION_METHODS }
     end
   end
 end
