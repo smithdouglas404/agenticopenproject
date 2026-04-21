@@ -57,7 +57,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
 
     ids = args.first.is_a?(Array) ? args.first : args
     if ids.any? { |id| semantic_id?(id) }
-      raise ArgumentError,
+      raise WorkPackage::SemanticIdentifier::UnsupportedLookup,
             "Semantic identifiers in multi-argument find are not supported. " \
             "Use primary keys for multi-argument lookup, or resolve each identifier " \
             "individually via find_by_display_id! (raises) or find_by_display_id (nil on miss)."
