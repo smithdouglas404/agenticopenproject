@@ -115,7 +115,7 @@ de:
       collaboration_settings:
         page_header:
           description: |-
-            Wenn die Echtzeit-Kollaboration aktiviert ist, können mehrere Benutzer ein Dokument zur gleichen Zeit bearbeiten.
+            Wenn die Echtzeit-Kollaboration aktiviert ist, können mehrere Personen ein Dokument zur gleichen Zeit bearbeiten.
             Sie erfordert einen funktionierenden %{hocuspocus_server_link}, um zu funktionieren.
         banner:
           none_writable: Diese Werte werden über Umgebungsvariablen konfiguriert und können hier nicht bearbeitet werden.
@@ -131,7 +131,7 @@ de:
       enable_text_collaboration:
         heading: Echtzeit-Kollaboration ist nicht aktiv
         description: |-
-          Sobald diese Funktion aktiviert ist, können mehrere Benutzer gleichzeitig an einem Dokument arbeiten.
+          Sobald diese Funktion aktiviert ist, können mehrere Personen gleichzeitig an einem Dokument arbeiten.
           Alle neuen Dokumente basieren auf einem neuen Editor (BlockNote) und erfordern eine funktionierende Verbindung zu einem Hocuspocus-Server.
         primary_action: Echtzeit-Kollaboration aktivieren
         success: Echtzeit-Kollaboration wurde aktiviert.

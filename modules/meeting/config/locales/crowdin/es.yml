@@ -674,9 +674,9 @@ es:
   text_exit_draft_mode_dialog_template_title: "¿Abrir la primera repetición de esta serie de reuniones?"
   text_exit_draft_mode_dialog_template_subtitle: No podrás volver al modo Borrador después de esto.
   label_meeting_template_sharing: Compartiendo
-  label_meeting_template_sharing_none: Solo este proyecto
-  label_meeting_template_sharing_descendants: Subproyectos
-  label_meeting_template_sharing_system: Todos los proyectos
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Esta plantilla se puede compartir con subproyectos u otros proyectos en esta instancia. Solo se copiarán los elementos del orden del día y los archivos adjuntos.
   text_meeting_not_editable_anymore: Esta reunión ya no es editable.
   text_meeting_not_present_anymore: Esta reunión ha sido eliminada. Por favor, seleccione otra reunión.

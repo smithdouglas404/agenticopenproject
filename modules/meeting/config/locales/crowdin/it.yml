@@ -676,9 +676,9 @@ it:
   text_exit_draft_mode_dialog_template_title: Aprire la prima occorrenza di questa serie di riunioni?
   text_exit_draft_mode_dialog_template_subtitle: Non puoi tornare alla modalità bozza dopo averlo fatto.
   label_meeting_template_sharing: Condivisione
-  label_meeting_template_sharing_none: Solo questo progetto
-  label_meeting_template_sharing_descendants: Sottoprogetti
-  label_meeting_template_sharing_system: Tutti i progetti
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: In questa istanza, questo modello può essere condiviso con sottoprogetti o altri progetti. Verranno copiati solo gli elementi dell'ordine del giorno e gli allegati.
   text_meeting_not_editable_anymore: Questa riunione non è più modificabile.
   text_meeting_not_present_anymore: Questa riunione è stata eliminata. Seleziona un'altra riunione.

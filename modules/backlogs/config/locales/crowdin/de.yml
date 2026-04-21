@@ -41,7 +41,6 @@ de:
       sprint:
         duration: Sprint-Dauer
       user_preference:
-        backlogs_task_color: Aufgabenfarbe
         backlogs_versions_default_fold_state: Zeige Versionen eingeklappt
       work_package:
         backlogs_work_package_type: Backlog Typ
@@ -83,19 +82,13 @@ de:
           cannot_end_before_it_starts: Sprint kann nicht enden, bevor er begonnen hat.
     models:
       sprint: Sprint
-  attributes:
-    task_type: Aufgaben-Typ
   backlogs:
-    any: beliebig
     caption_sprints_default_fold_state: Versionen werden beim Anzeigen des Backlogs standardmäßig nicht aufgeklappt. Sie müssen manuell geöffnet werden.
-    column_width: Spaltenbreite
     definition_of_done: Definition of Done
     definition_of_done_caption: Arbeitspakete mit diesen Status werden in Backlog-Ansichten und Berichten als abgeschlossen behandelt.
     done_status: Erledigt Status
     sharing_description: Dieses Projekt kann entweder seine eigenen Sprints teilen, geteilte Sprints empfangen oder Sprints unabhängig bearbeiten (kein Teilen).
     sharing: Teilen
-    impediment: Hindernis
-    label_versions_default_fold_state: Versionen eingeklappt anzeigen
     label_burndown_chart: Burndown-Diagramm
     label_sprint_board: Sprint-Board
     work_package_is_closed: Arbeitspaket ist abgeschlossen, wenn
@@ -109,31 +102,19 @@ de:
     rebuild_positions: Positionen neu berechnen
     remaining_hours: Verbleibender Aufwand
     show_burndown_chart: Burndown-Diagramm
-    story: Story
     story_points:
       one: "%{count} Story-Punkte"
       other: "%{count} Story-Points"
-    task: Aufgabe
-    task_color: Farbe für Aufgaben
     unassigned: Nicht zugewiesen
-    administration_blankslate:
-      title: Die Einstellungen des Backlogs-Moduls sind derzeit in der Entwicklung
-      text: Wir gestalten gerade das Backlogs-Modul neu. Die Einstellungen für Sprints und Backlogs werden in naher Zukunft hier sichtbar sein. Einstellungen auf Projektebene bleiben weiterhin verfügbar.
     user_preference:
       header_backlogs: Backlog-Modul
       button_update_backlogs: Backlog-Modul aktualisieren
-    backlog_component:
-      blankslate_title: "%{name} ist leer"
-      blankslate_description: Noch keine Arbeitspakete geplant. Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
+    administration_blankslate:
+      title: Die Einstellungen des Backlogs-Moduls sind derzeit in der Entwicklung
+      text: Wir gestalten gerade das Backlogs-Modul neu. Die Einstellungen für Sprints und Backlogs werden in naher Zukunft hier sichtbar sein. Einstellungen auf Projektebene bleiben weiterhin verfügbar.
     sprint_component:
       blankslate_title: "%{name} ist leer"
       blankslate_description: Noch keine Arbeitspakete geplant. Ziehen Sie Arbeitspakete hierher, um sie hinzuzufügen.
-    backlog_header_component:
-      label_toggle_backlog: "%{name} ein-/ausklappen"
-      label_story_count:
-        zero: Keine Arbeitspakete im Backlog
-        one: "%{count} Arbeitspakete im Backlog"
-        other: "%{count} Stories im Backlog"
     inbox_component:
       blankslate_title: Eingangs-Backlog ist leer
       blankslate_description: Alle offenen Arbeitspakete in diesem Projekt werden automatisch hier angezeigt.
@@ -172,15 +153,6 @@ de:
         zero: Keine Stories im Sprint
         one: "%{count} Stories im Sprint"
         other: "%{count} Stories im Sprint"
-    backlog_menu_component:
-      label_actions: Backlog-Aktionen
-      action_menu:
-        edit_sprint: Sprint bearbeiten
-        new_story: Neues Arbeitspaket
-        stories_tasks: Stories/Aufgaben
-        task_board: Aufgaben-Board
-        wiki: Wiki
-        properties: Eigenschaften
     finish_sprint_dialog_component:
       title: Der Sprint enthält nicht abgeschlossene Arbeitspakete
       body: "%{message} Was würden Sie gerne damit machen?"
@@ -204,38 +176,21 @@ de:
         copy_url_to_clipboard: URL in die Zwischenablage kopieren
         copy_work_package_id: Arbeitspaket-ID kopieren
         move_menu: Verschieben
-  backlogs_points_burn_direction: Burnup/-down Punkte
-  backlogs_product_backlog: Produkt-Backlog
-  backlogs_story: Story
-  backlogs_story_type: Story-Typ
-  backlogs_task: Aufgabe
-  backlogs_task_type: Aufgaben-Typ
-  backlogs_wiki_template: Vorlage für das Sprint-Wiki
-  backlogs_empty_title: Es sind noch keine Versionen definiert
-  backlogs_empty_action_text: Um mit der Verwendung von Backlogs zu beginnen, erstellen Sie bitte zunächst eine Version
-  backlogs_not_configured_title: Backlogs nicht konfiguriert
-  backlogs_not_configured_description: Die Story- und Aufgabentypen müssen vor der Verwendung dieses Moduls festgelegt werden.
-  backlogs_not_configured_action_text: Backlogs konfigurieren
+    burndown_chart:
+      show:
+        blankslate_title: No burndown data available
+        blankslate_description: Set start and end date for the sprint to generate a burndown chart.
   burndown:
     story_points: Story-Points
     story_points_ideal: Story-Points (ideal)
-  errors:
-    attributes:
-      task_type:
-        cannot_be_story_type: kann nicht auch ein Story-Typ sein
   label_backlog: Backlog
-  label_inbox: Eingang
+  label_inbox: Posteingang
   label_backlogs: Backlogs
-  label_backlogs_unconfigured: Sie haben noch keine Backlogs konfiguriert. Bitte gehen Sie auf %{administration} > %{plugins}, klicken Sie dann auf den %{configure} Link für dieses Plugin. Kommen Sie hierher zurück, sobald sie die Felder konfiguriert haben.
-  label_blocks_ids: IDs der blockierten Arbeitspakete
   label_burndown_chart: Burndown-Diagramm
-  label_column_in_backlog: Spalte im Backlog
-  label_used_as_backlog: Als Backlog verwendet
   label_sprint_board: Sprint-Board
   label_points_burn_down: Runter
   label_points_burn_up: Hoch
   label_sprint_edit: Sprint bearbeiten
-  label_sprint_impediments: Sprint Hindernisse
   label_sprint_new: Neuer Sprint
   label_backlog_and_sprints: Backlog und Sprints
   label_task_board: Taskboard
@@ -273,18 +228,4 @@ de:
             caption: In diesem Projekt erstellte Sprints sind für alle Unterprojekte verfügbar.
             info: Wenn Sie einen Sprint teilen, werden der Name, der Status sowie das Start- und Enddatum für alle Projekte freigegeben. Diese können in Projekten, die diese Sprints empfangen und verwenden, nicht geändert werden.
         sprint_sharing: Sprints teilen
-  rb_burndown_charts:
-    show:
-      blankslate_title: Keine Burndown-Daten verfügbar
-      blankslate_description: Legen Sie Start- und Enddatum für den Sprint fest, um ein Burndown-Diagramm zu erstellen.
   remaining_hours: verbleibender Aufwand
-  version_settings_display_label: Spalte im Backlog
-  version_settings_display_option_left: links
-  version_settings_display_option_none: keine
-  version_settings_display_option_right: rechts
-  setting_plugin_openproject_backlogs_story_types_caption: 'Typen, die wie Backlog Stories behandelt werden (z.B. Feature, User Story). Muss sich vom Aufgabentyp unterscheiden.
-
-    '
-  setting_plugin_openproject_backlogs_task_type_caption: 'Typ, der für Story-Aufgaben verwendet wird. Muss sich von den Story-Typen unterscheiden.
-
-    '

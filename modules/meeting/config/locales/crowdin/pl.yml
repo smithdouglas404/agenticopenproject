@@ -690,9 +690,9 @@ pl:
   text_exit_draft_mode_dialog_template_title: Otworzyć pierwsze wystąpienie z tej serii spotkań?
   text_exit_draft_mode_dialog_template_subtitle: Po tym nie możesz powrócić do trybu wersji roboczej.
   label_meeting_template_sharing: Udostępnianie
-  label_meeting_template_sharing_none: Tylko ten projekt
-  label_meeting_template_sharing_descendants: Podprojekty
-  label_meeting_template_sharing_system: Wszystkie projekty
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Ten szablon można udostępniać podprojektom lub innym projektom w tym wystąpieniu. Skopiowane zostaną tylko pozycje planu spotkania i załączniki.
   text_meeting_not_editable_anymore: Tego spotkania nie można już edytować.
   text_meeting_not_present_anymore: To spotkanie zostało usunięte. Wybierz inne spotkanie.

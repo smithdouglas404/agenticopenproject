@@ -676,9 +676,9 @@ fr:
   text_exit_draft_mode_dialog_template_title: Ouvrez la première occurrence de cette série de réunions ?
   text_exit_draft_mode_dialog_template_subtitle: Vous ne pouvez plus revenir au mode brouillon après cette opération.
   label_meeting_template_sharing: Partage
-  label_meeting_template_sharing_none: Seulement ce projet
-  label_meeting_template_sharing_descendants: Sous-projets
-  label_meeting_template_sharing_system: Tous les projets
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Ce modèle peut être partagé avec des sous-projets ou d'autres projets dans cette instance. Seuls les points de l'ordre du jour et les pièces jointes seront copiés.
   text_meeting_not_editable_anymore: Cette réunion n'est plus modifiable.
   text_meeting_not_present_anymore: Cette réunion a été supprimée. Veuillez sélectionner une autre réunion.

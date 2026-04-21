@@ -669,9 +669,9 @@ id:
   text_exit_draft_mode_dialog_template_title: Buka acara yang pertama dalam seri rapat ini?
   text_exit_draft_mode_dialog_template_subtitle: Anda tidak dapat kembali ke mode draf setelah ini.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: Rapat ini tidak dapat disunting kembali.
   text_meeting_not_present_anymore: Rapat ini telah dihapus. Silakan pilih rapat yang lain.

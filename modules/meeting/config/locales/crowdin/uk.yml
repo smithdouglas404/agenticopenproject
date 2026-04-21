@@ -690,9 +690,9 @@ uk:
   text_exit_draft_mode_dialog_template_title: Відкрити першу нараду цієї серії?
   text_exit_draft_mode_dialog_template_subtitle: Після цього не можна буде повернутися в режим чернетки.
   label_meeting_template_sharing: Надання доступу
-  label_meeting_template_sharing_none: Лише цей проєкт
-  label_meeting_template_sharing_descendants: Підпроєкти
-  label_meeting_template_sharing_system: Усі проєкти
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Цим шаблоном можна поділитися з підпроєктами або іншими проєктами цього екземпляра. Буде скопійовано лише пункти порядку денного й вкладення.
   text_meeting_not_editable_anymore: Цю нараду більше не можна редагувати.
   text_meeting_not_present_anymore: Цю нараду видалено. Виберіть іншу нараду.
