@@ -77,13 +77,12 @@ module Backlogs
     end
 
     def story_classes_attribute
-      classes = "Box-row--hover-blue Box-row--focus-gray Box-row--clickable"
-
-      if work_package_draggable?
-        classes += " Box-row--draggable"
-      end
-
-      classes
+      class_names(
+        "Box-row--hover-blue",
+        "Box-row--focus-gray",
+        "Box-row--clickable",
+        "Box-row--draggable": work_package_draggable?
+      )
     end
 
     def story_data_attribute(story)

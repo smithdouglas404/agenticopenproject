@@ -133,13 +133,11 @@ en:
     inbox_component:
       blankslate_title: "Backlog inbox is empty"
       blankslate_description: "All open work packages in this project will automatically appear here."
-      label_drag_work_package: "Move %{name}"
       show_more:
         one: "Show 1 more item"
         other: "Show %{count} more items"
 
     inbox_item_component:
-      label_drag_work_package: "Move %{name}"
       label_actions: "Work package actions"
 
     inbox_menu_component:
@@ -192,7 +190,6 @@ en:
         add_work_package: "Add work package"
 
     story_component:
-      label_drag_story: "Move %{name}"
       label_actions: "Story actions"
 
     story_menu_list_component:

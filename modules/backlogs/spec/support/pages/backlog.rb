@@ -117,7 +117,7 @@ module Pages
     def drag_work_package(moved, before: nil, into: nil)
       raise ArgumentError, "You must specify a either before or into" unless before || into || (before && into)
 
-      moved_element = find("#{work_package_selector(moved)} .DragHandle")
+      moved_element = find(draggable_work_package_selector(moved))
       target_element = if before
                          find(work_package_selector(before))
                        else
@@ -133,7 +133,7 @@ module Pages
 
     def expect_work_package_not_draggable(work_package)
       expect(page)
-        .to have_no_css("#{work_package_selector(work_package)} .DragHandle")
+        .to have_no_css(draggable_work_package_selector(work_package))
     end
 
     def expect_inbox_blankslate
@@ -270,7 +270,7 @@ module Pages
     end
 
     def drag_inbox_item_to_sprint(work_package, sprint)
-      moved_element = find("#{inbox_item_selector(work_package)} .DragHandle")
+      moved_element = find(draggable_work_package_selector(work_package))
       target_element = find(sprint_selector(sprint))
       moved_element.native.drag_to(target_element.native, delay: 0.1)
     rescue Capybara::Cuprite::ObsoleteNode
@@ -278,7 +278,7 @@ module Pages
     end
 
     def drag_sprint_item_to_inbox(work_package)
-      moved_element = find("#{work_package_selector(work_package)} .DragHandle")
+      moved_element = find(draggable_work_package_selector(work_package))
       target_element = find("#inbox_#{project.id}")
       moved_element.native.drag_to(target_element.native, delay: 0.1)
     rescue Capybara::Cuprite::ObsoleteNode
@@ -477,6 +477,10 @@ module Pages
 
     def work_package_selector(work_package)
       test_selector("work-package-#{work_package.id}")
+    end
+
+    def draggable_work_package_selector(work_package)
+      "#{work_package_selector(work_package)}[data-draggable-id]"
     end
 
     def sprint_complete_modal_selector

@@ -167,8 +167,8 @@ ul.SegmentedControl,
 .Box-row--clickable
   cursor: pointer
 
-.Box-row:is(.Box-row--draggable)
-  padding-left: 0
+.Box-row--draggable:not(.Box-row--clickable)
+  cursor: grab
 
 // Apply the mobile styles as soon as the banner itself is small
 // Styles are copied from the PVC repo

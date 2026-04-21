@@ -92,35 +92,6 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
     expect(page).to have_element(:button, id: /\Awork_package_#{story.id}_menu-button\z/)
   end
 
-  describe "drag handle behaviour" do
-    it "renders Primer::OpenProject::DragHandle" do
-      render_component
-
-      # DragHandle renders with grabber icon
-      expect(page).to have_octicon(:grabber)
-    end
-
-    it "renders a drag handle compatible with GenericDragAndDropController" do
-      render_component
-
-      expect(page).to have_css(".DragHandle[role='button'][tabindex='0']")
-      expect(page).to have_css(".DragHandle[aria-label='Move Test Story Subject']")
-    end
-
-    context "when user is not allowed to drag" do
-      let(:permissions) { [] }
-
-      it "does not render a drag handle" do
-        render_component
-
-        # DragHandle renders with grabber icon
-        expect(page).not_to have_octicon(:grabber)
-
-        expect(page).to have_no_css(".DragHandle")
-      end
-    end
-  end
-
   describe "story points handling" do
     context "when story_points is nil" do
       let(:story_points) { nil }

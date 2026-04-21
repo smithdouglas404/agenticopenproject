@@ -132,6 +132,33 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
       end
     end
 
+    context "when the user lacks the manage_sprint_items permission" do
+      let(:role) { create(:project_role, permissions: %i[view_sprints view_work_packages]) }
+      let(:user) { create(:user, member_with_roles: { project => role }) }
+      let!(:story1) do
+        create(:work_package,
+               project:,
+               type: type_feature,
+               status: default_status,
+               priority: default_priority,
+               story_points: 5,
+               position: 1,
+               sprint: sprint)
+      end
+
+      it "does not mark story rows as draggable" do
+        render_component
+
+        story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
+        expect(story_row[:class]).to include("Box-row--hover-blue", "Box-row--focus-gray",
+                                             "Box-row--clickable")
+        expect(story_row[:class]).not_to include("Box-row--draggable")
+        expect(story_row["data-draggable-id"]).to be_nil
+        expect(story_row["data-draggable-type"]).to be_nil
+        expect(story_row["data-drop-url"]).to be_nil
+      end
+    end
+
     context "without stories" do
       let(:rendered_component) { render_component }
 
