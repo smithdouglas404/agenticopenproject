@@ -164,8 +164,7 @@ module Wikis
       end
 
       def wiki_provider_wizard(wiki_provider)
-        Wikis::Adapters::Registry.resolve("#{wiki_provider}.components.setup_wizard")
-                                 .new(model: wiki_provider, user: current_user)
+        wiki_provider.resolve("components.setup_wizard", user: current_user)
       end
     end
   end
