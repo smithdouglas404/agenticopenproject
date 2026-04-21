@@ -53,7 +53,7 @@ module ProjectQueries::Scopes
                  end
 
           with(ctes).where(<<~SQL.squish)
-            project_queries.id IN (
+            #{quoted_table_name}.id IN (
               SELECT id FROM public_queries
               UNION
               SELECT id FROM user_owned_queries

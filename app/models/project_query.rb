@@ -28,22 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ProjectQuery < ApplicationRecord
-  include Queries::BaseQuery
-  include Queries::Serialization::Hash
+class ProjectQuery < PersistedQuery
   include HasMembers
   include ::Scopes::Scoped
-
-  belongs_to :user
-
-  acts_as_favoritable
-
-  serialize :filters, coder: Queries::Serialization::Filters.new(self)
-  serialize :orders, coder: Queries::Serialization::Orders.new(self)
-  serialize :selects, coder: Queries::Serialization::Selects.new(self)
-
-  scope :public_lists, -> { where(public: true) }
-  scope :private_lists, ->(user: User.current) { where(public: false, user:) }
 
   scope :visible, ->(user = User.current) {
                     allowed_to(user, :view_project_query)
@@ -84,9 +71,6 @@ class ProjectQuery < ApplicationRecord
   end
 
   def advanced_filters
-    filters.reject do |filter|
-      # Skip the name filter as we have it present as a permanent filter with a text input.
-      filter.is_a?(Queries::Projects::Filters::NameAndIdentifierFilter)
-    end
+    filters.grep_v(Queries::Projects::Filters::NameAndIdentifierFilter)
   end
 end
