@@ -6,12 +6,12 @@
         if oauth_application.present?
           concat(render(Primer::Beta::Label.new(scheme: :success)) { t(:label_completed) })
         else
-          concat(render(Primer::Beta::Label.new(scheme: :secondary)) { t("wikis.admin.label_pending") })
+          concat(render(Primer::Beta::Label.new(scheme: :secondary)) { t(".label_pending") })
         end
       end
 
       grid.with_area(:description, tag: :div, color: :subtle) do
-        render(Primer::Beta::Text.new) { t("wikis.admin.wiki_providers.oauth.openproject_oauth_description") }
+        render(Primer::Beta::Text.new) { t("wikis.admin.wiki_providers.#{wiki_provider}.oauth.openproject_oauth_description") }
       end
 
       if wiki_provider.persisted?

@@ -43,11 +43,12 @@ en:
     oauth_login_component:
       connect_button: Connect %{provider} account
     admin:
-      label_pending: Pending
       oauth_application_info_component:
+        label_pending: Pending
         replace_oauth_application: Replace OpenProject OAuth application
         confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
       oauth_client_info_component:
+        label_pending: Pending
         replace_oauth_client: Replace XWiki OAuth application
         confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
       wiki_provider_list_component:
@@ -81,6 +82,8 @@ en:
           oauth_configuration: OAuth configuration
         oauth:
           openproject_oauth: OpenProject OAuth
-          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
-          xwiki_oauth: XWiki OAuth
-          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth application. Enter the client credentials from your XWiki OAuth application.
+        xwiki:
+          oauth:
+            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+            provider_oauth: XWiki OAuth
+            provider_oauth_description: Allow OpenProject to access XWiki data using an OAuth application. Enter the client credentials from your XWiki OAuth application.

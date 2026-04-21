@@ -6,7 +6,7 @@
       end
 
       credentials_row.with_row(mb: 3) do
-        render(Primer::Beta::Text.new) { t("wikis.admin.wiki_providers.oauth.openproject_oauth_description") }
+        render(Primer::Beta::Text.new) { t("wikis.admin.wiki_providers.#{wiki_provider}.oauth.openproject_oauth_description") }
       end
 
       credentials_row.with_row(mb: 3) do
