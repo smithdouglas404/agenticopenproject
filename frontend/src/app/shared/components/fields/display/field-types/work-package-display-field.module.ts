@@ -27,6 +27,7 @@
 //++
 
 import { DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
+import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 
 export class WorkPackageDisplayField extends DisplayField {
   public text = {
@@ -61,18 +62,17 @@ export class WorkPackageDisplayField extends DisplayField {
    * Returns the work package ID formatted for display.
    * Classic mode: `#123` (hash-prefixed), Semantic mode: `PROJ-42` (no prefix).
    *
-   * This mirrors the logic in `WorkPackageBaseResource.formattedId`
-   * but cannot delegate to it because the linked resource (`this.value`)
-   * may not be loaded — in that case `wpId` falls back to extracting the
-   * numeric ID from the self-link href, which won't have a `displayId`.
+   * Delegates to `WorkPackageResource#formattedId` when the linked resource
+   * is loaded. When unloaded, falls back to the numeric ID extracted from
+   * the self-link href (which has no `displayId` available).
    */
   public get wpFormattedId():string {
-    if (this.value?.$loaded && this.value.displayId) {
-      const displayId = this.value.displayId.toString();
-      return /[A-Za-z]/.test(displayId) ? displayId : `#${displayId}`;
+    const linkedWp = this.value as WorkPackageResource | undefined;
+    if (linkedWp?.$loaded) {
+      return linkedWp.formattedId;
     }
 
-    const id = this.wpId;
+    const id = this.wpId as string | number | null;
     if (!id) return '';
 
     return `#${id}`;
