@@ -28,17 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ProjectIdentifiers
-  module IdentifierAutofix
-    def self.job_in_progress?
-      GoodJob::Job
-        .where(job_class: [
-                 ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
-                 ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name,
-                 ProjectIdentifiers::FinishSemanticConversionJob.name,
-                 ProjectIdentifiers::RevertInstanceToClassicIdsJob.name
-               ])
-        .exists?(finished_at: nil)
+require "rails_helper"
+
+RSpec.describe ProjectIdentifiers::ConvertProjectToSemanticIdsJob do
+  describe "#perform" do
+    it "delegates to ConvertProjectToSemanticService" do
+      project = create(:project)
+      service = instance_double(ProjectIdentifiers::ConvertProjectToSemanticService, call: nil)
+      allow(ProjectIdentifiers::ConvertProjectToSemanticService).to receive(:new).with(project).and_return(service)
+
+      described_class.new.perform(project.id)
+
+      expect(service).to have_received(:call)
     end
   end
 end

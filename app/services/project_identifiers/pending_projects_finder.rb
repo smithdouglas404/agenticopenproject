@@ -29,16 +29,32 @@
 #++
 
 module ProjectIdentifiers
-  module IdentifierAutofix
-    def self.job_in_progress?
-      GoodJob::Job
-        .where(job_class: [
-                 ProjectIdentifiers::ConvertInstanceToSemanticIdsJob.name,
-                 ProjectIdentifiers::ConvertProjectToSemanticIdsJob.name,
-                 ProjectIdentifiers::FinishSemanticConversionJob.name,
-                 ProjectIdentifiers::RevertInstanceToClassicIdsJob.name
-               ])
-        .exists?(finished_at: nil)
+  # Returns the set of project IDs that still need backfilling before the
+  # instance can be switched to semantic identifier mode. Three buckets:
+  #
+  # * projects whose identifier is not in valid semantic format
+  # * projects that have work packages with no sequence_number yet
+  # * projects that have work packages whose identifier doesn't match
+  #   the current project prefix (stale due to renames or cross-project moves)
+  module PendingProjectsFinder
+    def self.project_ids
+      projects_with_bad_identifier | projects_with_unsequenced_wps | projects_with_stale_wps
+    end
+
+    class << self
+      private
+
+      def projects_with_bad_identifier
+        ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.new.scope.ids.to_set
+      end
+
+      def projects_with_unsequenced_wps
+        WorkPackage.unsequenced.distinct.pluck(:project_id).to_set
+      end
+
+      def projects_with_stale_wps
+        WorkPackage.non_semantic.distinct.pluck(:project_id).to_set
+      end
     end
   end
 end

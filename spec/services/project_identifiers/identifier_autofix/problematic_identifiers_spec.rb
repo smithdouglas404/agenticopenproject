@@ -81,31 +81,47 @@ RSpec.describe ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers do
     end
   end
 
-  describe "#error_reason" do
+  describe ".format_error_reason" do
     it "returns :too_long when identifier exceeds max length" do
-      expect(analysis.error_reason("averylongidentifier")).to eq(:too_long)
+      expect(described_class.format_error_reason("averylongidentifier")).to eq(:too_long)
     end
 
     it "returns :numerical when identifier is purely numeric" do
-      expect(analysis.error_reason("12345")).to eq(:numerical)
+      expect(described_class.format_error_reason("12345")).to eq(:numerical)
     end
 
     it "returns :starts_with_number when identifier begins with a digit" do
-      expect(analysis.error_reason("1abc")).to eq(:starts_with_number)
+      expect(described_class.format_error_reason("1abc")).to eq(:starts_with_number)
     end
 
     it "returns :special_characters when identifier has non-alphanumeric chars" do
-      expect(analysis.error_reason("ab-c")).to eq(:special_characters)
+      expect(described_class.format_error_reason("ab-c")).to eq(:special_characters)
     end
 
     it "returns :not_fully_uppercased when identifier is lowercase but otherwise valid" do
-      expect(analysis.error_reason("proj")).to eq(:not_fully_uppercased)
+      expect(described_class.format_error_reason("proj")).to eq(:not_fully_uppercased)
     end
 
     it "returns :too_long with priority over :special_characters" do
-      expect(analysis.error_reason("my-very-long-identifier")).to eq(:too_long)
+      expect(described_class.format_error_reason("my-very-long-identifier")).to eq(:too_long)
     end
 
+    it "returns nil for a valid identifier" do
+      expect(described_class.format_error_reason("VALID")).to be_nil
+    end
+  end
+
+  describe ".valid_format?" do
+    it "returns true for a valid identifier" do
+      expect(described_class.valid_format?("VALID")).to be(true)
+    end
+
+    it "returns false for an identifier with format errors" do
+      expect(described_class.valid_format?("ab-c")).to be(false)
+    end
+  end
+
+  describe "#error_reason" do
     it "returns :in_use when identifier belongs to a non-problematic project" do
       create_project_with_raw_identifier(name: "Taken", identifier: "TAKEN")
       expect(analysis.error_reason("TAKEN")).to eq(:in_use)
@@ -120,6 +136,10 @@ RSpec.describe ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers do
 
     it "returns :unknown when no classification matches" do
       expect(analysis.error_reason("VALID")).to eq(:unknown)
+    end
+
+    it "delegates format checks to .format_error_reason" do
+      expect(analysis.error_reason("ab-c")).to eq(:special_characters)
     end
   end
 

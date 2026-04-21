@@ -104,6 +104,22 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierSettingsFormComponent, t
       render_component(component)
       expect(ProjectIdentifiers::IdentifierAutofix::PreviewQuery).not_to have_received(:new)
     end
+
+    context "with semantic setting", with_settings: { work_packages_identifier: "semantic" } do
+      it "shows semantic as selected" do
+        render_component(component)
+        expect(page).to have_field("Project-based semantic identifiers", checked: true)
+        expect(page).to have_field("Instance-wide numerical sequence (default)", checked: false)
+      end
+    end
+
+    context "with classic setting", with_settings: { work_packages_identifier: "classic" } do
+      it "shows classic as selected" do
+        render_component(component)
+        expect(page).to have_field("Instance-wide numerical sequence (default)", checked: true)
+        expect(page).to have_field("Project-based semantic identifiers", checked: false)
+      end
+    end
   end
 
   context "when state is :edit" do

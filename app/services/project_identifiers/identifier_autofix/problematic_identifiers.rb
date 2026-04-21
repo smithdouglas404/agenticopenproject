@@ -63,6 +63,23 @@ module ProjectIdentifiers
         [:not_fully_uppercased, ->(id, _) { id != id.upcase }]
       ].freeze
 
+      # Returns a symbol classifying why the identifier violates the expected format,
+      # or nil if the identifier is format-valid. Pure in-memory check — no DB queries.
+      def self.format_error_reason(identifier)
+        FORMAT_RULES.each do |reason, check|
+          return reason if check.call(identifier, max_identifier_length)
+        end
+        nil
+      end
+
+      def self.valid_format?(identifier)
+        format_error_reason(identifier).nil?
+      end
+
+      def self.max_identifier_length
+        ProjectIdentifierSuggestionGenerator::IDENTIFIER_LENGTH[:max]
+      end
+
       def scope
         @scope ||= exceeds_max_length
                       .or(contains_non_alphanumeric)
@@ -75,7 +92,7 @@ module ProjectIdentifiers
       # Returns a symbol classifying why the identifier is problematic.
       # Must handle all identifiers matched by #scope.
       def error_reason(identifier)
-        format_error_reason(identifier) || collision_error_reason(identifier) || :unknown
+        self.class.format_error_reason(identifier) || collision_error_reason(identifier) || :unknown
       end
 
       # Returns a Set of identifiers that must not be suggested for new assignments.
@@ -95,19 +112,10 @@ module ProjectIdentifiers
                                     .to_set
       end
 
-      def exceeds_max_length        = Project.where("length(identifier) > ?", max_identifier_length)
+      def exceeds_max_length        = Project.where("length(identifier) > ?", self.class.max_identifier_length)
       def contains_non_alphanumeric = Project.where("identifier ~ ?", "[^a-zA-Z0-9_]")
       def starts_with_digit         = Project.where("identifier ~ ?", "^[0-9]")
       def not_fully_uppercased      = Project.where("identifier != UPPER(identifier)")
-
-      def max_identifier_length = ProjectIdentifierSuggestionGenerator::IDENTIFIER_LENGTH[:max]
-
-      def format_error_reason(identifier)
-        FORMAT_RULES.each do |reason, check|
-          return reason if check.call(identifier, max_identifier_length)
-        end
-        nil
-      end
 
       def collision_error_reason(identifier)
         if in_use_identifiers.include?(identifier)

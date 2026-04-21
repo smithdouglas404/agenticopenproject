@@ -40,6 +40,35 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     work_package
   end
 
+  describe ".semantically_sequenced" do
+    it "includes work packages with a sequence number" do
+      expect(WorkPackage.semantically_sequenced).to include(work_package)
+    end
+
+    it "excludes work packages without a sequence number" do
+      wp = create(:work_package, project:)
+      wp.update_columns(sequence_number: nil)
+      expect(WorkPackage.semantically_sequenced).not_to include(wp)
+    end
+  end
+
+  describe ".non_semantic_of" do
+    it "excludes work packages whose identifier matches the expected semantic format" do
+      expect(WorkPackage.non_semantic_of(project)).not_to include(work_package)
+    end
+
+    it "includes work packages with a stale identifier" do
+      work_package.update_columns(identifier: "OLDPROJ-1")
+      expect(WorkPackage.non_semantic_of(project)).to include(work_package)
+    end
+
+    it "excludes work packages without a sequence number" do
+      wp = create(:work_package, project:)
+      wp.update_columns(sequence_number: nil, identifier: nil)
+      expect(WorkPackage.non_semantic_of(project)).not_to include(wp)
+    end
+  end
+
   describe "after_create registration" do
     it "assigns a sequence number" do
       expect(work_package.reload.sequence_number).to eq(1)

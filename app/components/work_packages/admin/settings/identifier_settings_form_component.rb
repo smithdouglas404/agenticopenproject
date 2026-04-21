@@ -99,9 +99,20 @@ module WorkPackages
 
         def radio_button_options
           if change_in_progress?
-            { button_options: { disabled: true } }
+            {
+              values: identifier_values(checked: nil),
+              button_options: { disabled: true }
+            }
+          elsif completed?
+            { values: identifier_values(checked: Setting[:work_packages_identifier]) }
           else
             { button_options: { data: { action: "change->admin--work-packages-identifier#handleChange" } } }
+          end
+        end
+
+        def identifier_values(checked:)
+          Setting::WorkPackageIdentifier::ALLOWED_VALUES.map do |v|
+            { name: v, value: v, checked: v == checked }
           end
         end
       end
