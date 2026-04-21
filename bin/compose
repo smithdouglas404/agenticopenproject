@@ -13,6 +13,10 @@ fi
 
 COMPOSE_FILE=docker-compose.yml
 
+if [ -f docker-compose.override.yml ]; then
+  COMPOSE_FILE="$COMPOSE_FILE -f docker-compose.override.yml"
+fi
+
 if [ $# -eq 0 ]; then
   echo "Usage: bin/compose <command> [args*]"
   echo
