@@ -28,20 +28,35 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Queries::Users::UserQuery
-  include Queries::BaseQuery
-  include Queries::UnpersistedQuery
-
+class UserQuery < PersistedQuery
   def self.model
     User
   end
 
   def default_scope
-    # This seemingly duplication is necessary because of the builtin classes
-    # * SystemUser
-    # * DeletedUser
-    # * AnonymousUser
-    # inheriting from user. Without it, instances of those classes would show up.
-    User.user
+    # Merging User.user explicitly excludes builtin types (SystemUser,
+    # DeletedUser, AnonymousUser) that inherit from User.
+    super.merge(User.user)
   end
+
+  def visible?(user = User.current)
+    public? || user == self.user || user.admin?
+  end
+
+  def editable?(user = User.current)
+    user == self.user || (public? && user.admin?)
+  end
+end
+
+Queries::Register.register(UserQuery) do
+  filter Queries::Users::Filters::NameFilter
+  filter Queries::Users::Filters::AnyNameAttributeFilter
+  filter Queries::Users::Filters::GroupFilter
+  filter Queries::Users::Filters::StatusFilter
+  filter Queries::Users::Filters::LoginFilter
+  filter Queries::Users::Filters::BlockedFilter
+
+  order Queries::Users::Orders::DefaultOrder
+  order Queries::Users::Orders::NameOrder
+  order Queries::Users::Orders::GroupOrder
 end

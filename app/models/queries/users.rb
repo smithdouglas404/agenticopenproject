@@ -29,16 +29,4 @@
 #++
 
 module Queries::Users
-  ::Queries::Register.register(UserQuery) do
-    filter Filters::NameFilter
-    filter Filters::AnyNameAttributeFilter
-    filter Filters::GroupFilter
-    filter Filters::StatusFilter
-    filter Filters::LoginFilter
-    filter Filters::BlockedFilter
-
-    order Orders::DefaultOrder
-    order Orders::NameOrder
-    order Orders::GroupOrder
-  end
 end

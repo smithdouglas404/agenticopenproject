@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,17 +26,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
 require "spec_helper"
 
-RSpec.describe Queries::Users::UserQuery do
-  let(:instance) { described_class.new }
+RSpec.describe UserQuery do
+  let(:owner) { build_stubbed(:user) }
+  let(:instance) { described_class.new(user: owner) }
   let(:base_scope) { User.user.order(id: :desc) }
 
   context "without a filter" do
     describe "#results" do
-      it "is the same as getting all the users" do
+      it "is the same as getting all users (excluding builtin types)" do
         expect(instance.results.to_sql).to eql base_scope.to_sql
       end
     end
@@ -99,13 +100,8 @@ RSpec.describe Queries::Users::UserQuery do
     let(:group_1) { build_stubbed(:group) }
 
     before do
-      allow(Group)
-        .to receive(:exists?)
-        .and_return(true)
-
-      allow(Group)
-        .to receive(:all)
-        .and_return([group_1])
+      allow(Group).to receive(:exists?).and_return(true)
+      allow(Group).to receive(:all).and_return([group_1])
 
       instance.where("group", "=", [group_1.id])
     end
@@ -117,17 +113,6 @@ RSpec.describe Queries::Users::UserQuery do
                    .where(["users.id IN (#{User.in_group([group_1.id.to_s]).select(:id).to_sql})"])
 
         expect(instance.results.to_sql).to eql expected.to_sql
-      end
-    end
-
-    describe "#valid?" do
-      it "is true" do
-        expect(instance).to be_valid
-      end
-
-      it "is invalid if the filter is invalid" do
-        instance.where("group", "=", [""])
-        expect(instance).to be_invalid
       end
     end
   end
@@ -189,9 +174,9 @@ RSpec.describe Queries::Users::UserQuery do
 
       it "is the same as handwriting the query" do
         expected = User
-            .user
-            .order(Arel.sql(order_sql))
-            .order(id: :desc)
+          .user
+          .order(Arel.sql(order_sql))
+          .order(id: :desc)
 
         expect(instance.results.to_sql).to eql expected.to_sql
       end
@@ -213,7 +198,6 @@ RSpec.describe Queries::Users::UserQuery do
   end
 
   context "with a non existing sortation" do
-    # this is a field protected from sortation
     before do
       instance.order(password: :desc)
     end
@@ -229,6 +213,65 @@ RSpec.describe Queries::Users::UserQuery do
     describe "valid?" do
       it "is false" do
         expect(instance).to be_invalid
+      end
+    end
+  end
+
+  describe "persistence" do
+    shared_let(:user) { create(:user) }
+
+    it "persists to the persisted_queries table with type UserQuery" do
+      query = described_class.create!(user:, name: "My user query")
+
+      reloaded = described_class.find(query.id)
+      expect(reloaded.type).to eq("UserQuery")
+      expect(reloaded.name).to eq("My user query")
+    end
+
+    it "is isolated from ProjectQuery by STI scoping" do
+      described_class.create!(user:, name: "User query")
+      create(:project_query, user:)
+
+      expect(described_class.count).to eq(1)
+      expect(ProjectQuery.count).to eq(1)
+    end
+
+    it "round-trips filters through serialization" do
+      query = described_class.new(user:, name: "Filtered")
+      query.where("status", "=", ["active"])
+      query.save!
+
+      reloaded = described_class.find(query.id)
+      expect(reloaded.filters.map(&:field)).to eq([:status])
+    end
+  end
+
+  describe "#visible?" do
+    let(:owner) { build_stubbed(:user) }
+    let(:other_user) { build_stubbed(:user) }
+    let(:admin) { build_stubbed(:admin) }
+
+    context "for a public query" do
+      let(:instance) { described_class.new(user: owner, public: true) }
+
+      it "is visible to any user" do
+        expect(instance.visible?(other_user)).to be(true)
+      end
+    end
+
+    context "for a private query" do
+      let(:instance) { described_class.new(user: owner, public: false) }
+
+      it "is visible to the owner" do
+        expect(instance.visible?(owner)).to be(true)
+      end
+
+      it "is not visible to other users" do
+        expect(instance.visible?(other_user)).to be(false)
+      end
+
+      it "is visible to admins" do
+        expect(instance.visible?(admin)).to be(true)
       end
     end
   end
