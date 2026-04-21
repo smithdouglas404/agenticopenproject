@@ -47,6 +47,8 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
     belongs_to :sprint, optional: true
 
     include OpenProject::Backlogs::List
+
+    scopes :backlogs_inbox_for
   end
 
   module ClassMethods

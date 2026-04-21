@@ -125,7 +125,7 @@ module Backlogs
       render_success_flash_message_via_turbo_stream(
         message: I18n.t(:notice_successful_move, from: @sprint.name, to: I18n.t(:label_inbox))
       )
-      inbox_work_packages = Backlog.inbox_for(project: @project)
+      inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
       backlog_buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
                           Agile::BacklogBucket.for_project(@project)
                         end

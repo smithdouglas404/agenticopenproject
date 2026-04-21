@@ -40,7 +40,7 @@ module Backlogs
       backlog_items_scope = if OpenProject::FeatureDecisions.backlog_buckets_active? && @work_package.backlog_bucket_id
                               @work_package.backlog_bucket.work_packages
                             else
-                              Backlog.inbox_for(project: @project)
+                              WorkPackage.backlogs_inbox_for(project: @project)
                             end
 
       max_position = backlog_items_scope.maximum(:position) || 0
@@ -99,7 +99,7 @@ module Backlogs
     end
 
     def replace_inbox_component_via_turbo_stream
-      inbox_work_packages = Backlog.inbox_for(project: @project)
+      inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
       backlog_buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
                           Agile::BacklogBucket.for_project(@project)
                         end

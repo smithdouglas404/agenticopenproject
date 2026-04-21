@@ -79,7 +79,7 @@ module Backlogs
                                .order_by_position
                                .group_by(&:sprint_id)
       @active_sprint_ids = @sprints.select(&:active?).map(&:id)
-      @inbox_work_packages = Backlog.inbox_for(project: @project)
+      @inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
     end
   end
 end
