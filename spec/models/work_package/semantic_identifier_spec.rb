@@ -60,50 +60,70 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
-  describe "WorkPackage.find_by_id_or_identifier" do
-    context "with a numeric param" do
+  describe "WorkPackage.find" do
+    context "with a numeric id" do
       it "finds by primary key" do
-        expect(WorkPackage.find_by_id_or_identifier(work_package.id.to_s)).to eq(work_package)
+        expect(WorkPackage.find(work_package.id)).to eq(work_package)
       end
 
-      it "returns nil for unknown id" do
-        expect(WorkPackage.find_by_id_or_identifier("9999999")).to be_nil
+      it "raises RecordNotFound for unknown numeric id" do
+        expect { WorkPackage.find(9_999_999) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
-    context "with a semantic param" do
-      context "when the identifier matches work_packages.identifier (fast path)" do
-        it "finds directly via identifier without hitting the alias table" do
-          expect(WorkPackage.find_by_id_or_identifier("MYPROJ-1")).to eq(work_package)
-        end
-
-        it "returns nil when no WP has that identifier and no alias or fallback matches" do
-          expect(WorkPackage.find_by_id_or_identifier("MYPROJ-999")).to be_nil
-        end
+    context "with a numeric string" do
+      it "falls through to standard AR find" do
+        expect(WorkPackage.find(work_package.id.to_s)).to eq(work_package)
       end
 
-      context "when the identifier is a historic alias (alias table path)" do
-        it "resolves historic entries via the alias registry" do
-          WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
-          expect(WorkPackage.find_by_id_or_identifier("OLDPROJ-1")).to eq(work_package)
-        end
+      it "strips whitespace before dispatching" do
+        expect(WorkPackage.find(" #{work_package.id} ")).to eq(work_package)
+      end
+    end
 
-        it "resolves when identifier differs but an alias row exists" do
-          work_package.update_columns(identifier: "OTHER-99")
-          expect(WorkPackage.find_by_id_or_identifier("MYPROJ-1")).to eq(work_package)
-        end
+    context "with a semantic identifier string" do
+      it "resolves via the semantic identifier" do
+        expect(WorkPackage.find("MYPROJ-1")).to eq(work_package)
       end
 
-      it "returns nil for unknown sequence" do
-        expect(WorkPackage.find_by_id_or_identifier("MYPROJ-999")).to be_nil
+      it "raises RecordNotFound for unknown semantic id" do
+        expect { WorkPackage.find("MYPROJ-999") }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
-      it "returns nil for unknown project prefix" do
-        expect(WorkPackage.find_by_id_or_identifier("NOPE-1")).to be_nil
+      it "resolves via historic alias" do
+        WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
+        expect(WorkPackage.find("OLDPROJ-1")).to eq(work_package)
+      end
+    end
+
+    context "with multiple ids" do
+      let(:work_package2) { create(:work_package, project:) }
+
+      it "delegates to standard AR find for an array of numeric ids" do
+        expect(WorkPackage.find([work_package.id, work_package2.id])).to contain_exactly(work_package, work_package2)
       end
 
-      it "returns nil for an unparseable string" do
-        expect(WorkPackage.find_by_id_or_identifier("not-an-identifier!")).to be_nil
+      it "delegates to standard AR find for multiple numeric id arguments" do
+        expect(WorkPackage.find(work_package.id, work_package2.id)).to contain_exactly(work_package, work_package2)
+      end
+
+      it "raises UnsupportedLookup for a single-element array with a semantic id" do
+        expect { WorkPackage.find(["MYPROJ-1"]) }
+          .to raise_error(WorkPackage::SemanticIdentifier::UnsupportedLookup, /primary keys for multi-argument/)
+      end
+
+      it "raises UnsupportedLookup for multiple semantic ids" do
+        expect { WorkPackage.find("MYPROJ-1", "MYPROJ-2") }
+          .to raise_error(WorkPackage::SemanticIdentifier::UnsupportedLookup, /primary keys for multi-argument/)
+      end
+
+      it "raises UnsupportedLookup for mixed numeric and semantic ids" do
+        expect { WorkPackage.find([work_package.id, "MYPROJ-2"]) }
+          .to raise_error(WorkPackage::SemanticIdentifier::UnsupportedLookup, /primary keys for multi-argument/)
+      end
+
+      it "is rescuable as ArgumentError for backwards compatibility" do
+        expect { WorkPackage.find("MYPROJ-1", "MYPROJ-2") }.to raise_error(ArgumentError)
       end
     end
 
@@ -111,28 +131,231 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       let(:member_user) { create(:user, member_with_permissions: { project => [:view_work_packages] }) }
       let(:non_member_user) { create(:user) }
 
-      it "returns the WP for a user who can see it" do
-        expect(WorkPackage.visible(member_user).find_by_id_or_identifier("MYPROJ-1")).to eq(work_package)
+      it "respects the scope for semantic ids" do
+        expect(WorkPackage.visible(member_user).find("MYPROJ-1")).to eq(work_package)
       end
 
-      it "returns nil for a user who cannot see it" do
-        expect(WorkPackage.visible(non_member_user).find_by_id_or_identifier("MYPROJ-1")).to be_nil
-      end
-
-      it "also scopes numeric lookup" do
-        expect(WorkPackage.visible(non_member_user).find_by_id_or_identifier(work_package.id.to_s)).to be_nil
+      it "raises RecordNotFound when the user cannot see it" do
+        expect { WorkPackage.visible(non_member_user).find("MYPROJ-1") }
+          .to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
 
-  describe "WorkPackage.find_by_id_or_identifier!" do
-    it "returns the work package when found" do
-      expect(WorkPackage.find_by_id_or_identifier!(work_package.id.to_s)).to eq(work_package)
+  describe "WorkPackage.exists?" do
+    context "with a numeric id" do
+      it "returns true for existing record" do
+        expect(WorkPackage.exists?(work_package.id)).to be true
+      end
+
+      it "returns false for non-existing record" do
+        expect(WorkPackage.exists?(9_999_999)).to be false
+      end
     end
 
-    it "raises ActiveRecord::RecordNotFound when not found" do
-      expect { WorkPackage.find_by_id_or_identifier!("MYPROJ-999") }
-        .to raise_error(ActiveRecord::RecordNotFound)
+    context "with a numeric string" do
+      it "falls through to standard AR exists?" do
+        expect(WorkPackage.exists?(work_package.id.to_s)).to be true
+      end
+    end
+
+    context "with a semantic identifier string" do
+      it "checks the identifier column" do
+        expect(WorkPackage.exists?("MYPROJ-1")).to be true
+      end
+
+      it "returns false for unknown semantic id" do
+        expect(WorkPackage.exists?("MYPROJ-999")).to be false
+      end
+
+      it "checks the alias table for historical identifiers" do
+        WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
+        expect(WorkPackage.exists?("OLDPROJ-1")).to be true
+      end
+    end
+
+    context "with hash conditions" do
+      it "passes through to standard AR exists?" do
+        expect(WorkPackage.exists?(subject: work_package.subject)).to be true
+      end
+    end
+
+    context "with visibility scoping" do
+      let(:member_user) { create(:user, member_with_permissions: { project => [:view_work_packages] }) }
+      let(:non_member_user) { create(:user) }
+
+      it "respects the scope for semantic ids" do
+        expect(WorkPackage.visible(member_user).exists?("MYPROJ-1")).to be true
+      end
+
+      it "returns false when the user cannot see it" do
+        expect(WorkPackage.visible(non_member_user).exists?("MYPROJ-1")).to be false
+      end
+
+      it "respects the scope for historical aliases" do
+        WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
+        expect(WorkPackage.visible(member_user).exists?("OLDPROJ-1")).to be true
+        expect(WorkPackage.visible(non_member_user).exists?("OLDPROJ-1")).to be false
+      end
+    end
+  end
+
+  describe "WorkPackage.find_by" do
+    context "with id: keyword and semantic identifier" do
+      it "raises UnsupportedLookup (an ArgumentError subclass) pointing to find_by_display_id" do
+        expect { WorkPackage.find_by(id: "MYPROJ-1") }
+          .to raise_error(WorkPackage::SemanticIdentifier::UnsupportedLookup, /find_by_display_id/)
+      end
+
+      it "is rescuable as ArgumentError for backwards compatibility" do
+        expect { WorkPackage.find_by(id: "MYPROJ-1") }.to raise_error(ArgumentError)
+      end
+    end
+
+    context "with identifier: keyword and semantic identifier" do
+      it "raises ArgumentError pointing to find_by_display_id" do
+        expect { WorkPackage.find_by(identifier: "MYPROJ-1") }
+          .to raise_error(ArgumentError, /find_by_display_id/)
+      end
+    end
+
+    context "with string-keyed hash (AR internal representation)" do
+      it "raises ArgumentError for string 'id' key with semantic value" do
+        expect { WorkPackage.find_by("id" => "MYPROJ-1") }
+          .to raise_error(ArgumentError, /find_by_display_id/)
+      end
+
+      it "raises ArgumentError for string 'identifier' key with semantic value" do
+        expect { WorkPackage.find_by("identifier" => "MYPROJ-1") }
+          .to raise_error(ArgumentError, /find_by_display_id/)
+      end
+    end
+
+    context "with id: keyword and numeric string" do
+      it "falls through to standard AR find_by" do
+        expect(WorkPackage.find_by(id: work_package.id.to_s)).to eq(work_package)
+      end
+    end
+
+    context "with id: keyword and an array" do
+      let(:work_package2) { create(:work_package, project:) }
+
+      it "falls through to standard AR find_by for an all-numeric array" do
+        expect(WorkPackage.find_by(id: [work_package.id, work_package2.id])).to eq(work_package)
+      end
+
+      it "raises UnsupportedLookup when the array contains a semantic identifier" do
+        expect { WorkPackage.find_by(id: [work_package.id, "MYPROJ-2"]) }
+          .to raise_error(WorkPackage::SemanticIdentifier::UnsupportedLookup, /does not support semantic identifiers/)
+      end
+    end
+
+    context "with non-id keywords" do
+      it "passes through to standard AR find_by" do
+        expect(WorkPackage.find_by(subject: work_package.subject)).to eq(work_package)
+      end
+    end
+
+    context "with multiple keywords including id:" do
+      it "passes through to standard AR find_by" do
+        expect(WorkPackage.find_by(id: work_package.id, project:)).to eq(work_package)
+      end
+
+      it "raises UnsupportedLookup when id: is semantic even among other keywords" do
+        expect { WorkPackage.find_by(subject: "anything", id: "MYPROJ-1") }
+          .to raise_error(WorkPackage::SemanticIdentifier::UnsupportedLookup)
+      end
+    end
+
+    context "with an unparseable semantic string" do
+      it "raises ArgumentError" do
+        expect { WorkPackage.find_by(id: "not-an-identifier!") }
+          .to raise_error(ArgumentError, /find_by_display_id/)
+      end
+    end
+  end
+
+  # rubocop:disable Rails/FindById -- testing find_by! override specifically, not suggesting find()
+  describe "WorkPackage.find_by!" do
+    context "with id: keyword and semantic identifier" do
+      it "raises ArgumentError pointing to find_by_display_id" do
+        expect { WorkPackage.find_by!(id: "MYPROJ-1") }
+          .to raise_error(ArgumentError, /find_by_display_id/)
+      end
+    end
+
+    context "with non-id keywords" do
+      it "passes through to standard AR find_by!" do
+        expect(WorkPackage.find_by!(subject: work_package.subject)).to eq(work_package)
+      end
+    end
+  end
+  # rubocop:enable Rails/FindById
+
+  describe "WorkPackage.find_by_display_id" do
+    context "with a semantic identifier" do
+      it "resolves via the semantic identifier" do
+        expect(WorkPackage.find_by_display_id("MYPROJ-1")).to eq(work_package)
+      end
+
+      it "returns nil for unknown semantic id" do
+        expect(WorkPackage.find_by_display_id("MYPROJ-999")).to be_nil
+      end
+
+      it "resolves via historic alias" do
+        WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
+        expect(WorkPackage.find_by_display_id("OLDPROJ-1")).to eq(work_package)
+      end
+
+      it "resolves when identifier column differs but alias row exists" do
+        work_package.update_columns(identifier: "OTHER-99")
+        expect(WorkPackage.find_by_display_id("MYPROJ-1")).to eq(work_package)
+      end
+    end
+
+    context "with a numeric string" do
+      it "falls through to standard AR find_by" do
+        expect(WorkPackage.find_by_display_id(work_package.id.to_s)).to eq(work_package)
+      end
+
+      it "returns nil for unknown numeric id" do
+        expect(WorkPackage.find_by_display_id("9999999")).to be_nil
+      end
+    end
+
+    context "with visibility scoping" do
+      let(:member_user) { create(:user, member_with_permissions: { project => [:view_work_packages] }) }
+      let(:non_member_user) { create(:user) }
+
+      it "respects the scope for semantic ids" do
+        expect(WorkPackage.visible(member_user).find_by_display_id("MYPROJ-1")).to eq(work_package)
+      end
+
+      it "returns nil when the user cannot see it" do
+        expect(WorkPackage.visible(non_member_user).find_by_display_id("MYPROJ-1")).to be_nil
+      end
+
+      it "also scopes numeric lookup" do
+        expect(WorkPackage.visible(non_member_user).find_by_display_id(work_package.id.to_s)).to be_nil
+      end
+    end
+  end
+
+  describe "WorkPackage.find_by_display_id!" do
+    context "with a semantic identifier" do
+      it "resolves via the semantic identifier" do
+        expect(WorkPackage.find_by_display_id!("MYPROJ-1")).to eq(work_package)
+      end
+
+      it "raises RecordNotFound for unknown semantic id" do
+        expect { WorkPackage.find_by_display_id!("MYPROJ-999") }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context "with a numeric string" do
+      it "falls through to standard AR find" do
+        expect(WorkPackage.find_by_display_id!(work_package.id.to_s)).to eq(work_package)
+      end
     end
   end
 
@@ -142,6 +365,16 @@ RSpec.describe WorkPackage::SemanticIdentifier do
             with_settings: { work_packages_identifier: "semantic" } do
       it "returns the semantic identifier" do
         expect(work_package.display_id).to eq("MYPROJ-1")
+      end
+    end
+
+    context "when semantic mode is active but identifier is nil",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      before { work_package.update_columns(identifier: nil) }
+
+      it "falls back to the numeric id" do
+        expect(work_package.display_id).to eq(work_package.id)
       end
     end
 

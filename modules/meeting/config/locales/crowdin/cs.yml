@@ -696,9 +696,9 @@ cs:
   text_exit_draft_mode_dialog_template_title: Otevřít první výskyt této série schůzek?
   text_exit_draft_mode_dialog_template_subtitle: Poté se již nelze vrátit do režimu návrhu.
   label_meeting_template_sharing: Sdílení
-  label_meeting_template_sharing_none: Pouze tento projekt
-  label_meeting_template_sharing_descendants: Podprojekty
-  label_meeting_template_sharing_system: Všechny projekty
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Tuto šablonu lze sdílet s podprojekty nebo jinými projekty v této instanci. Budou zkopírovány pouze body a přílohy pořadu jednání.
   text_meeting_not_editable_anymore: Tato schůzka již není upravitelná.
   text_meeting_not_present_anymore: Tato schůzka byla odstraněna. Vyberte prosím jinou schůzku.

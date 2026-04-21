@@ -94,6 +94,14 @@ module OpenProject::Backlogs
                    dependencies: :create_sprints
       end
 
+      ::Redmine::MenuManager.map(:admin_menu) do |menu|
+        menu.push :admin_backlogs,
+                  { controller: "/backlogs/settings", action: :show },
+                  if: ->(_) { User.current.admin? },
+                  caption: :label_backlogs,
+                  icon: "op-backlogs"
+      end
+
       menu :project_menu,
            :backlogs,
            { controller: "/backlogs/backlog", action: :show },
@@ -130,6 +138,7 @@ module OpenProject::Backlogs
     patch_with_namespace :WorkPackages, :BaseContract
     patch_with_namespace :WorkPackages, :UpdateContract
     patch_with_namespace :API, :V3, :WorkPackages, :EagerLoading, :Checksum
+    patch_with_namespace :API, :V3, :Utilities, :ResourceLinkGenerator
 
     config.to_prepare do
       next if Versions::BaseContract.include?(OpenProject::Backlogs::Patches::Versions::BaseContractPatch)
@@ -220,6 +229,7 @@ module OpenProject::Backlogs
         filter Queries::WorkPackages::Filter::SprintFilter
 
         select OpenProject::Backlogs::QueryBacklogsSelect
+        select OpenProject::Backlogs::WorkPackageSprintSelect
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,20 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module RbCommonHelper
-  def format_date_range(dates)
-    return nil if dates.all?(&:nil?)
+module Backlogs
+  # Base class of all controllers in Backlogs
+  class BaseController < ::ApplicationController
+    helper "backlogs/common"
 
-    from, to = dates.map { |date| tag.time(datetime: date.iso8601) { format_date(date) } if date }
-    safe_join([from, "–", to], " ") # &ndash; and &nbsp;
-  end
+    before_action :load_sprint_and_project,
+                  :authorize
 
-  def allow_sprint_creation?(project)
-    current_user.allowed_in_project?(:create_sprints, project) &&
-      !project.receive_shared_sprints?
-  end
+    private
 
-  def show_all_backlog
-    ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
+    # Loads the project to be used by the authorize filter to determine if
+    # User.current has permission to invoke the method in question.
+    def load_sprint_and_project
+      load_project
+
+      load_sprint
+    end
+
+    def load_project
+      @project = Project.visible.find(params[:project_id])
+    end
+
+    def load_sprint
+      @sprint_id = params.delete(:sprint_id)
+      return unless @sprint_id
+
+      @sprint = Agile::Sprint.for_project(@project).visible.find(@sprint_id)
+    end
   end
 end

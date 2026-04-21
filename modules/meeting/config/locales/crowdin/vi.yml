@@ -669,9 +669,9 @@ vi:
   text_exit_draft_mode_dialog_template_title: Mở lần xuất hiện đầu tiên của chuỗi cuộc họp này?
   text_exit_draft_mode_dialog_template_subtitle: Bạn không thể quay lại chế độ nháp sau này.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: Cuộc họp này không thể chỉnh sửa được nữa.
   text_meeting_not_present_anymore: Cuộc họp này đã bị xóa. Vui lòng chọn một cuộc họp khác.

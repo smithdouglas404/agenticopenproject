@@ -32,7 +32,7 @@ module Backlogs
   class SprintComponent < ApplicationComponent
     include Primer::AttributesHelper
     include OpTurbo::Streamable
-    include RbCommonHelper
+    include Backlogs::CommonHelper
 
     attr_reader :sprint, :project, :stories, :current_user, :active_sprint_ids
 

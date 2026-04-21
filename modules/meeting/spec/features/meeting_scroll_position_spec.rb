@@ -141,15 +141,11 @@ RSpec.describe "Meeting scroll position",
 
     before do
       25.times do |i|
-        meeting = create(:meeting,
+        meeting = create(:recurring_meeting_occurrence,
                          project:,
                          author: user,
                          recurring_meeting:,
                          start_time: (i + 4).weeks.from_now + 10.hours)
-        create(:scheduled_meeting,
-               meeting:,
-               recurring_meeting:,
-               start_time: meeting.start_time)
       end
     end
 

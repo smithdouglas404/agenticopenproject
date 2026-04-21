@@ -28,31 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Base class of all controllers in Backlogs
-class RbApplicationController < ApplicationController
-  helper :rb_common
-
-  before_action :load_sprint_and_project,
-                :authorize
-
-  private
-
-  # Loads the project to be used by the authorize filter to determine if
-  # User.current has permission to invoke the method in question.
-  def load_sprint_and_project
-    load_project
-
-    load_sprint
-  end
-
-  def load_project
-    @project = Project.visible.find(params[:project_id])
-  end
-
-  def load_sprint
-    @sprint_id = params.delete(:sprint_id)
-    return unless @sprint_id
-
-    @sprint = Agile::Sprint.for_project(@project).visible.find(@sprint_id)
+module RecurringMeetings
+  ##
+  # A lightweight value object representing a scheduled occurrence that has not yet
+  # been instantiated as a Meeting record. Used purely for rendering purposes in
+  # the recurring meeting show page table.
+  PlannedOccurrence = Data.define(:recurrence_start_time, :recurring_meeting) do
+    def cancelled? = false
+    def meeting = nil
   end
 end

@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class WorkPackagesController < ::RbApplicationController
+  class WorkPackagesController < BaseController
     include OpTurbo::ComponentStream
 
     before_action :load_story

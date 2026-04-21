@@ -515,12 +515,6 @@ it:
         sidebar_arrow: Utilizza la freccia di ritorno nell'angolo in alto a sinistra per tornare al <b>menu principale</b> del progetto.
         welcome: Fai un tour introduttivo di tre minuti per apprendere le <b>funzioni importanti</b>. <br> Consigliamo di completare i passaggi fino alla fine. Puoi riavviare il tour in qualsiasi momento.
         wiki: Nella <b>wiki</b> puoi documentare e condividere la conoscenza con il tuo team.
-        backlogs:
-          overview: Gestisci il tuo lavoro nella vista <b>backlog</b>.
-          sprints: A destra hai il product backlog e il bug backlog, a sinistra i rispettivi sprint. Qui puoi creare <b>epics, storie utente e bug</b>, assegnare priorità tramite trascinamento e aggiungerli a uno sprint.
-          task_board_arrow: Per vedere il tuo <b>pannello delle attività</b>, apri il menu a cascata Sprint...
-          task_board_select: "...e seleziona la voce <b>pannello delle attività</b>."
-          task_board: Il pannello delle attività visualizza l'<b>avanzamento dello sprint</b>. Fai clic sull'icona più (+) accanto a una storia utente per aggiungere nuove attività o impedimenti. <br> Lo stato può essere aggiornato trascinandolo.
         boards:
           overview: Seleziona <b>board</b> per cambiare visualizzazione e gestire il tuo progetto utilizzando la visualizzazione agile delle schede.
           lists_kanban: Qui puoi creare più liste  (colonne) all'interno della tua board. Questa funzione ti consente di creare una <b>board Kanban</b>, ad esempio.
@@ -987,13 +981,6 @@ it:
       form_submit:
         title: Conferma per continuare
         text: Eseguire questa azione?
-      destroy_work_package:
-        title: Conferma l'eliminazione di %{label}
-        single_text: Vuoi davvero eliminare questa macro-attività?
-        bulk_text: Eliminare il seguente %{label}?
-        has_children: 'Questa macro-attività ha %{childUnits}:'
-        confirm_deletion_children: Prendo atto che TUTTI i discendenti delle macro-attività elencate verranno eliminati in modo ricorsivo.
-        deletes_children: Tutte le macro-attività ed i relativi discendenti verranno eliminati ricorsivamente.
       destroy_time_entry:
         title: Conferma l'eliminazione della voce temporale
         text: Eliminare la seguente voce temporale?

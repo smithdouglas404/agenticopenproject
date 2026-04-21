@@ -669,9 +669,9 @@ zh-CN:
   text_exit_draft_mode_dialog_template_title: 是否打开此会议系列的第一个会议？
   text_exit_draft_mode_dialog_template_subtitle: 在此之后，您将无法返回到草稿模式。
   label_meeting_template_sharing: 共享中
-  label_meeting_template_sharing_none: 仅此项目
-  label_meeting_template_sharing_descendants: 子项目
-  label_meeting_template_sharing_system: 所有项目
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: 此模板可以与此实例中的子项目或其他项目共享。仅复制议程条目和附件。
   text_meeting_not_editable_anymore: 本次会议已不可编辑。
   text_meeting_not_present_anymore: 此次会议已被删除。请选择另一次会议。

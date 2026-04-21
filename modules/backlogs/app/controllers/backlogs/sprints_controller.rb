@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class SprintsController < ::RbApplicationController
+  class SprintsController < BaseController
     include OpTurbo::ComponentStream
 
     NEW_SPRINT_ACTIONS = %i[new_dialog
@@ -50,7 +50,7 @@ module Backlogs
         user: current_user,
         model: Agile::Sprint.new,
         contract_class: ::EmptyContract
-      ).call(attributes: converted_agile_sprint_params)
+      ).call(attributes: converted_sprint_params)
 
       respond_with_dialog Backlogs::NewSprintDialogComponent.new(sprint: call.result)
     end
@@ -62,14 +62,14 @@ module Backlogs
     end
 
     def refresh_form
-      id = edit_agile_sprint_params.dig(:sprint, :id)
+      id = edit_sprint_params.dig(:sprint, :id)
       sprint = id.present? ? Agile::Sprint.for_project(@project).visible.find(id) : Agile::Sprint.new
 
       call = ::Sprints::SetAttributesService.new(
         user: current_user,
         model: sprint,
         contract_class: ::EmptyContract
-      ).call(attributes: converted_agile_sprint_params)
+      ).call(attributes: converted_sprint_params)
 
       update_via_turbo_stream(component: Backlogs::NewSprintFormComponent.new(sprint: call.result))
 
@@ -79,7 +79,7 @@ module Backlogs
     def create # rubocop:disable Metrics/AbcSize
       call = ::Sprints::CreateService
                .new(user: current_user)
-               .call(attributes: converted_agile_sprint_params)
+               .call(attributes: converted_sprint_params)
 
       if call.success?
         flash[:notice] = I18n.t(:notice_successful_create)
@@ -93,7 +93,7 @@ module Backlogs
     def update
       call = ::Sprints::UpdateService
                .new(user: current_user, model: @sprint)
-               .call(attributes: agile_sprint_params[:sprint])
+               .call(attributes: sprint_params[:sprint])
 
       if call.success?
         render_success_flash_message_via_turbo_stream(message: I18n.t(:notice_successful_update))
@@ -168,19 +168,19 @@ module Backlogs
       @sprint = Agile::Sprint.for_project(@project).visible.find(sprint_id) if sprint_id
     end
 
-    def agile_sprint_params
+    def sprint_params
       params.permit(sprint: %i[name start_date finish_date])
     end
 
-    def edit_agile_sprint_params
+    def edit_sprint_params
       params.permit(sprint: %i[id name start_date finish_date])
     end
 
-    def converted_agile_sprint_params
-      converted_sprint_params = agile_sprint_params[:sprint].to_h
-      converted_sprint_params[:project] = @project
+    def converted_sprint_params
+      converted_params = sprint_params[:sprint].to_h
+      converted_params[:project] = @project
 
-      converted_sprint_params
+      converted_params
     end
 
     def start_sprint

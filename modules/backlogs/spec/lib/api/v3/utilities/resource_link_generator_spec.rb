@@ -30,24 +30,13 @@
 
 require "spec_helper"
 
-RSpec.describe BacklogsSettingsController do
-  let(:user) { create(:admin) }
+RSpec.describe API::V3::Utilities::ResourceLinkGenerator do
+  include API::V3::Utilities::PathHelper
 
-  before { login_as(user) }
-
-  describe "GET show" do
-    it "renders successfully" do
-      get :show
-      expect(response).to have_http_status(:ok)
-    end
-
-    context "when not an admin" do
-      let(:user) { create(:user) }
-
-      it "requires admin" do
-        get :show
-        expect(response).to have_http_status(:forbidden)
-      end
+  describe ".make_link" do
+    it "resolves an Agile::Sprint to the sprint API path" do
+      sprint = build_stubbed(:agile_sprint)
+      expect(described_class.make_link(sprint)).to eql api_v3_paths.sprint(sprint.id)
     end
   end
 end

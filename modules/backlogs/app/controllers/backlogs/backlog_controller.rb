@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class BacklogController < ::RbApplicationController
+  class BacklogController < BaseController
     include WorkPackages::WithSplitView
 
     current_menu_item %i[show details] do

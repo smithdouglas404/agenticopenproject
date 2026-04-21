@@ -702,6 +702,37 @@ pl:
   danger_dialog:
     confirmation_live_message_checked: Przycisk kontynuowania jest już aktywny.
     confirmation_live_message_unchecked: Przycisk kontynuowania jest teraz nieaktywny. Aby kontynuować, zaznacz pole wyboru.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Paginacja
     prev: Wstecz
@@ -1378,6 +1409,20 @@ pl:
     index:
       no_results_title_text: Nie ma jeszcze żadnego obiegu pracy.
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1840,6 +1885,7 @@ pl:
         identity_url: Adres URL tożsamości
         parent: Grupa nadrzędna
         organizational_unit: Jednostka organizacyjna
+        group_users: Group users
       group_detail:
         parent: Grupa nadrzędna
         organizational_unit: Jednostka organizacyjna
@@ -1957,6 +2003,7 @@ pl:
         confirmation: nie pasuje do %{attribute}.
         could_not_be_copied: Nie można było (w pełni) skopiować %{dependency}.
         does_not_exist: nie istnieje.
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} – dostępne tylko w OpenProject Enterprise edition."
         error_unauthorized: "— nie można uzyskac dostępu."
         error_readonly: "— podjęto próbę zapisu, ale nie jest zapisywalny."
@@ -2023,6 +2070,7 @@ pl:
           attributes:
             parent_id:
               circular_dependency: spowodowałoby utworzenie cyklicznej hierarchii grup.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2543,7 +2591,6 @@ pl:
     avatar: Awatar
     base: 'Błąd ogólny:'
     body: Treść
-    blocks_ids: Identyfikatory zablokowanych pakietów roboczych
     category: Kategoria
     comment: Typ kosztu
     comments: Komentarz
@@ -4004,6 +4051,10 @@ pl:
   label_custom_pdf_export_settings: Niestandardowe ustawienia eksportu w formacie PDF
   label_custom_favicon: Własny favicon
   label_custom_touch_icon: Własny touch icon
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: Wyloguj
   label_mapping_for: 'Mapowanie dla: %{attribute}'
   label_main_menu: Menu boczne
@@ -5078,6 +5129,7 @@ pl:
     '
   setting_app_subtitle: Podtytuł
   setting_app_title: Tytuł
+  setting_organization_name: Organization name
   setting_attachment_max_size: Maks. rozmiar załącznika
   setting_show_work_package_attachments: Domyślnie pokazuj załączniki na karcie plików
   setting_antivirus_scan_mode: Tryb skanowania

@@ -28,11 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class BacklogsSettingsController < ApplicationController
-  layout "admin"
-  menu_item :admin_backlogs
+module Backlogs
+  module CommonHelper
+    def allow_sprint_creation?(project)
+      current_user.allowed_in_project?(:create_sprints, project) &&
+        !project.receive_shared_sprints?
+    end
 
-  before_action :require_admin
-
-  def show; end
+    def show_all_backlog
+      ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
+    end
+  end
 end

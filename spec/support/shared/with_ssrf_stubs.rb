@@ -26,7 +26,7 @@
 #
 #  See COPYRIGHT and LICENSE files for more details.
 
-module WithSsrfWebhookStubsMixin
+module WithSsrfStubsMixin
   ##
   # A safe public IP returned by the stubbed resolver for any hostname.
   # It is not in SsrfFilter's private-address blocklist, so SSRF validation passes.
@@ -39,11 +39,11 @@ module WithSsrfWebhookStubsMixin
   end
 end
 
-RSpec.shared_context "with ssrf webhook stubs" do
-  include WithSsrfWebhookStubsMixin
+RSpec.shared_context "with ssrf stubs" do
+  include WithSsrfStubsMixin
 
   before do
-    safe_ip = IPAddr.new(WithSsrfWebhookStubsMixin::SSRF_TEST_IP)
+    safe_ip = IPAddr.new(WithSsrfStubsMixin::SSRF_TEST_IP)
     allow(OpenProject::SsrfProtection).to receive(:resolver).and_return(
       ->(hostname) { ip_address?(hostname) ? [IPAddr.new(hostname)] : [safe_ip] }
     )

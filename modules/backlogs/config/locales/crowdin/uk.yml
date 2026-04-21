@@ -41,7 +41,6 @@ uk:
       sprint:
         duration: Тривалість спринту
       user_preference:
-        backlogs_task_color: Колір завдання
         backlogs_versions_default_fold_state: Показувати спринти згорнутими
       work_package:
         backlogs_work_package_type: Тип Backlog-у
@@ -85,19 +84,13 @@ uk:
           cannot_end_before_it_starts: Спринт не може закінчитися, перш ніж він почне працювати.
     models:
       sprint: Спринт
-  attributes:
-    task_type: Тип завдання
   backlogs:
-    any: будь-який
     caption_sprints_default_fold_state: Спринти не розгортатимуться за замовчуванням при перегляді сторінки «Беклог і спринти». Кожен спринт потрібно буде розгортати вручну.
-    column_width: Ширина стовпця
     definition_of_done: Визначення завершено
     definition_of_done_caption: Пакети робіт із цими статусами вважаються завершеними в переглядах беклогу й звітності.
     done_status: Статус «Виконано»
     sharing_description: Цей проєкт може надавати доступ до власних спринтів, використовувати спринти, до яких надано доступ, або працювати зі спринтами самостійно (без спільного доступу).
     sharing: Надання доступу
-    impediment: Перешкода
-    label_versions_default_fold_state: Показати складені версії
     label_burndown_chart: Діаграма згорання завдань
     label_sprint_board: Дошка спринту
     work_package_is_closed: Робочий пакет виконується, коли
@@ -113,33 +106,21 @@ uk:
     rebuild_positions: Перебудувати позиції
     remaining_hours: Залишок роботи
     show_burndown_chart: Діаграма згорання завдань
-    story: Історія
     story_points:
       one: "%{count} cторі-поінт"
       few: "%{count} сторі-поінти"
       many: "%{count} сторі-поінтів"
       other: "%{count} сторі-поінта"
-    task: Завдання
-    task_color: Колір завдання
     unassigned: Не призначено
-    administration_blankslate:
-      title: Ми змінюємо налаштування адміністратора в модулі беклогів
-      text: Зараз ми переробляємо модуль невиконаних завдань (беклогів). Налаштування адміністратора для спринтів і беклогів з’являться тут найближчим часом. Налаштування на рівні проєктів залишаються доступними.
     user_preference:
       header_backlogs: Модуль невиконаних завдань
       button_update_backlogs: Оновити модуль невиконаних завдань
-    backlog_component:
-      blankslate_title: "%{name} нічого не містить"
-      blankslate_description: Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх.
+    administration_blankslate:
+      title: Ми змінюємо налаштування адміністратора в модулі беклогів
+      text: Зараз ми переробляємо модуль невиконаних завдань (беклогів). Налаштування адміністратора для спринтів і беклогів з’являться тут найближчим часом. Налаштування на рівні проєктів залишаються доступними.
     sprint_component:
       blankslate_title: "%{name} нічого не містить"
       blankslate_description: Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх.
-    backlog_header_component:
-      label_toggle_backlog: Згорнути/розгорнути %{name}
-      label_story_count:
-        zero: У беклозі немає історій
-        one: У беклозі %{count} історія
-        other: 'У беклозі стільки історій: %{count}'
     inbox_component:
       blankslate_title: Немає вхідних завдань беклогу
       blankslate_description: Тут автоматично з’являтимуться всі відкриті пакети робіт цього проєкту.
@@ -180,15 +161,6 @@ uk:
         zero: У спринті немає історій
         one: У спринті %{count} історія
         other: 'У спринті стільки історій: %{count}'
-    backlog_menu_component:
-      label_actions: Дії беклогу
-      action_menu:
-        edit_sprint: Редагувати спринт
-        new_story: Нова історія
-        stories_tasks: Історії/завдання
-        task_board: Дошка завдань
-        wiki: Wiki
-        properties: Властивості
     finish_sprint_dialog_component:
       title: Є елементи, роботу над якими ще не завершено
       body: "%{message} Що б ви хотіли з ними зробити?"
@@ -212,38 +184,21 @@ uk:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID
         move_menu: Move
-  backlogs_points_burn_direction: Бали спалюються вгору/вниз
-  backlogs_product_backlog: Backlog продукту
-  backlogs_story: Історія
-  backlogs_story_type: Тип історії
-  backlogs_task: Завдання
-  backlogs_task_type: Тип завдання
-  backlogs_wiki_template: Шаблон для спринтерської вікі-сторінки
-  backlogs_empty_title: Версії ще не визначено
-  backlogs_empty_action_text: Щоб почати користуватися беклогами, спочатку створіть версію
-  backlogs_not_configured_title: Беклоги не налаштовано
-  backlogs_not_configured_description: Перш ніж використовувати цей модуль, необхідно визначити типи історій і завдань.
-  backlogs_not_configured_action_text: Налаштувати беклоги
+    burndown_chart:
+      show:
+        blankslate_title: No burndown data available
+        blankslate_description: Set start and end date for the sprint to generate a burndown chart.
   burndown:
     story_points: Сторі-поінти
     story_points_ideal: Сторі-поінти (ідеально)
-  errors:
-    attributes:
-      task_type:
-        cannot_be_story_type: не може також бути типом історії
   label_backlog: Backlog
   label_inbox: Вхідні
   label_backlogs: Backlogs
-  label_backlogs_unconfigured: Ви ще не настроїли Backlogs. Перейдіть на %{administration}>%{plugins}, потім натисніть посилання %{configure} для цього плагіна. Після того, як ви встановите поля, поверніться на цю сторінку, щоб розпочати використання інструмента.
-  label_blocks_ids: Ідентифікатори заблокованих робочих пакетів
   label_burndown_chart: Діаграма згорання завдань
-  label_column_in_backlog: Стовпець у backlog-у
-  label_used_as_backlog: Використовується як беклог
   label_sprint_board: Дошка спринту
   label_points_burn_down: Вниз
   label_points_burn_up: Вгору
   label_sprint_edit: Редагувати спринт
-  label_sprint_impediments: Перешкоди спринту
   label_sprint_new: Новий спринт
   label_backlog_and_sprints: Беклог і спринти
   label_task_board: Дошка завдань
@@ -281,18 +236,4 @@ uk:
             caption: Спринти, створені в цьому проєкті, будуть доступні для всіх його підпроєктів.
             info: Надавши спільний доступ до спринту, ви дозволяєте переглядати його назву, статус, а також дати початку й завершення в усіх проєктах. Ці дані не можна змінити в проєктах, які отримують доступ до таких спринтів і використовують їх.
         sprint_sharing: Надання доступу до спринтів
-  rb_burndown_charts:
-    show:
-      blankslate_title: Немає даних про згорання завдань
-      blankslate_description: Визначте дату початку й завершення спринту, щоб згенерувати діаграму згорання завдань.
   remaining_hours: залишок роботи
-  version_settings_display_label: Стовпець у backlog-у
-  version_settings_display_option_left: зліва
-  version_settings_display_option_none: нічого
-  version_settings_display_option_right: праворуч
-  setting_plugin_openproject_backlogs_story_types_caption: 'Типи, що вважаються історіями беклогу (такі як функція, історія користувача). Мають відрізнятися від типу завдання.
-
-    '
-  setting_plugin_openproject_backlogs_task_type_caption: 'Тип, що використовується для завдань історії. Має відрізнятися від типів історії.
-
-    '

@@ -678,9 +678,9 @@ pt-BR:
   text_exit_draft_mode_dialog_template_title: Abrir a primeira ocorrência desta série de reuniões?
   text_exit_draft_mode_dialog_template_subtitle: Você não pode retornar ao modo rascunho após isto.
   label_meeting_template_sharing: Compartilhamento
-  label_meeting_template_sharing_none: Apenas neste projeto
-  label_meeting_template_sharing_descendants: Subprojetos
-  label_meeting_template_sharing_system: Todos os projetos
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Este modelo pode ser compartilhado com subprojetos ou outros projetos nesta instância. Apenas os itens de pauta e os anexos serão copiados.
   text_meeting_not_editable_anymore: A reunião não pode mais ser editada.
   text_meeting_not_present_anymore: Esta reunião foi excluída. Selecione outra reunião.

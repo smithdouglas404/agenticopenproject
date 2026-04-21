@@ -671,9 +671,9 @@ zh-TW:
   text_exit_draft_mode_dialog_template_title: 要開啟此會議系列的第一場會議嗎？
   text_exit_draft_mode_dialog_template_subtitle: 之後您就無法回到草稿模式。
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: 本次會議已不可編輯。
   text_meeting_not_present_anymore: 此次會議已被刪除。請選擇另一場會議。

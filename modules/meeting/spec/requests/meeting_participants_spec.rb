@@ -286,7 +286,7 @@ RSpec.describe "MeetingParticipants requests",
 
     context "for a series occurrence" do
       let(:recurring_meeting) { create(:recurring_meeting, project:, author: user) }
-      let(:occurrence) { create(:meeting, project:, author: user, recurring_meeting:) }
+      let(:occurrence) { create(:recurring_meeting_occurrence, project:, author: user, recurring_meeting:) }
 
       it "does not show the apply to upcoming checkbox" do
         get manage_participants_dialog_project_meeting_participants_path(project, occurrence), as: :turbo_stream
@@ -300,11 +300,11 @@ RSpec.describe "MeetingParticipants requests",
     let!(:recurring_meeting) { create(:recurring_meeting, project:, author: user) }
     let!(:template) { recurring_meeting.template }
 
-    let!(:open_scheduled) { create(:scheduled_meeting, :persisted, recurring_meeting:, start_time: 1.day.from_now) }
-    let!(:open_occurrence) { open_scheduled.meeting }
+    let!(:open_occurrence) { create(:recurring_meeting_occurrence, recurring_meeting:, start_time: 1.day.from_now) }
 
-    let!(:closed_scheduled) { create(:scheduled_meeting, :persisted, recurring_meeting:, start_time: 2.days.from_now) }
-    let!(:closed_occurrence) { closed_scheduled.meeting.tap { |m| m.update!(state: :closed) } }
+    let!(:closed_occurrence) do
+      create(:recurring_meeting_occurrence, state: :closed, recurring_meeting:, start_time: 2.days.from_now)
+    end
 
     before { ActionMailer::Base.deliveries.clear }
 
@@ -348,20 +348,25 @@ RSpec.describe "MeetingParticipants requests",
         end
 
         it "does not add participant to past instantiated occurrences" do
-          past_scheduled = create(:scheduled_meeting, :persisted, recurring_meeting:, start_time: 1.week.ago)
+          past_scheduled = create(:recurring_meeting_occurrence, recurring_meeting:, start_time: 1.week.ago)
 
           post project_meeting_participants_path(project, template), params:, as: :turbo_stream
 
-          expect(past_scheduled.meeting.participants.reload.pluck(:user_id))
+          expect(past_scheduled.participants.reload.pluck(:user_id))
             .not_to include(user_with_meeting_permissions.id)
         end
 
         it "does not automatically instantiate future unscheduled occurrences" do
-          future_uninstantiated = create(:scheduled_meeting, recurring_meeting:, start_time: 2.weeks.from_now)
+          future_occurrence_time = recurring_meeting.scheduled_occurrences(limit: 10).detect do |time|
+            recurring_meeting.meetings.not_templated.find_by(recurrence_start_time: time).nil?
+          end
+
+          expect(future_occurrence_time).to be_present
+          expect(recurring_meeting.meetings.not_templated.find_by(recurrence_start_time: future_occurrence_time)).to be_nil
 
           post project_meeting_participants_path(project, template), params:, as: :turbo_stream
 
-          expect(future_uninstantiated.reload.meeting).to be_nil
+          expect(recurring_meeting.meetings.not_templated.find_by(recurrence_start_time: future_occurrence_time)).to be_nil
         end
 
         it "sends emails for series and open occurrences, but not closed" do
@@ -419,23 +424,28 @@ RSpec.describe "MeetingParticipants requests",
         end
 
         it "does not remove participant from past instantiated occurrences" do
-          past_scheduled = create(:scheduled_meeting, :persisted, recurring_meeting:, start_time: 1.week.ago)
-          create(:meeting_participant, meeting: past_scheduled.meeting, user: user_with_meeting_permissions, invited: true)
+          past_scheduled = create(:recurring_meeting_occurrence, recurring_meeting:, start_time: 1.week.ago)
+          create(:meeting_participant, meeting: past_scheduled, user: user_with_meeting_permissions, invited: true)
 
           delete project_meeting_participant_path(project, template, template_participant),
                  params: delete_params, as: :turbo_stream
 
-          expect(past_scheduled.meeting.participants.reload.pluck(:user_id))
+          expect(past_scheduled.participants.reload.pluck(:user_id))
             .to include(user_with_meeting_permissions.id)
         end
 
         it "does not automatically instantiate future unscheduled occurrences" do
-          future_uninstantiated = create(:scheduled_meeting, recurring_meeting:, start_time: 2.weeks.from_now)
+          future_occurrence_time = recurring_meeting.scheduled_occurrences(limit: 10).detect do |time|
+            recurring_meeting.meetings.not_templated.find_by(recurrence_start_time: time).nil?
+          end
+
+          expect(future_occurrence_time).to be_present
+          expect(recurring_meeting.meetings.not_templated.find_by(recurrence_start_time: future_occurrence_time)).to be_nil
 
           delete project_meeting_participant_path(project, template, template_participant),
                  params: delete_params, as: :turbo_stream
 
-          expect(future_uninstantiated.reload.meeting).to be_nil
+          expect(recurring_meeting.meetings.not_templated.find_by(recurrence_start_time: future_occurrence_time)).to be_nil
         end
 
         it "sends cancellation emails for template and open occurrences, but not closed" do

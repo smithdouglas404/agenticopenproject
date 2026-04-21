@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,29 +28,44 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :scheduled_meeting, class: "ScheduledMeeting" do
-    recurring_meeting
-    cancelled { false }
-    meeting { nil }
-    start_time { Date.tomorrow + 10.hours }
+module OpenProject
+  module SCM
+    module LocalPathValidator
+      module_function
 
-    trait :scheduled
+      def points_to_openproject_directory?(value)
+        path = local_path(value)
+        return false if path.blank?
 
-    trait :cancelled do
-      cancelled { true }
-    end
-
-    trait :persisted do
-      transient do
-        meeting_start_time { nil }
+        forbidden_roots.any? { |root| path_within_root?(path, root) }
       end
 
-      after(:build) do |schedule, evaluator|
-        schedule.meeting = build(:meeting,
-                                 recurring_meeting: schedule.recurring_meeting,
-                                 start_time: evaluator.meeting_start_time || schedule.start_time,
-                                 project: schedule.recurring_meeting.project)
+      def local_path(value)
+        return if value.blank?
+
+        parsed = URI.parse(value)
+
+        if parsed.scheme == "file"
+          return File.expand_path(parsed.path)
+        end
+
+        return File.expand_path(value) if parsed.scheme.nil? && value.start_with?("/")
+      rescue URI::Error
+        return
+      end
+
+      def forbidden_roots
+        roots = [
+          OpenProject::Configuration.scm_local_checkout_path,
+          Repository::Git.managed_root,
+          Repository::Subversion.managed_root
+        ]
+
+        roots.compact_blank.map { |root| File.expand_path(root) }.uniq
+      end
+
+      def path_within_root?(path, root)
+        path == root || path.start_with?("#{root}/")
       end
     end
   end
