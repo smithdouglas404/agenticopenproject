@@ -109,6 +109,16 @@ RSpec.describe "SemanticIds registry integration", type: :model do
       expect(work_package.reload.identifier).to start_with("DEST-")
     end
 
+    it "allocates sequence numbers in a single batch when moving a WP with descendants" do
+      children = create_list(:work_package, 4, project:, parent: work_package)
+
+      WorkPackages::UpdateService.new(user:, model: work_package).call(project: target_project)
+
+      moved = [work_package, *children].map { |wp| wp.reload.identifier }
+      expect(moved).to all(start_with("DEST-"))
+      expect(moved.map { |id| id.split("-").last.to_i }).to match_array(1..5)
+    end
+
     it "old identifier still resolves to the WP" do
       WorkPackages::UpdateService.new(user:, model: work_package).call(project: target_project)
       expect(WorkPackage.find_by_display_id("PROJ-5")).to eq(work_package)

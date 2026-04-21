@@ -110,7 +110,9 @@ class WorkPackages::UpdateService < BaseServices::Update
   end
 
   def update_semantic_ids(work_packages)
-    work_packages.each(&:allocate_and_register_semantic_id)
+    return if work_packages.empty?
+
+    work_packages.first.project.reserve_semantic_id_block!(work_packages.map(&:id))
   end
 
   def delete_relations(work_packages)
