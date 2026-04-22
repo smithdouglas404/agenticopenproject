@@ -30,9 +30,9 @@
 
 require "rails_helper"
 
-# BacklogBucketItemComponent renders into a Primer::Beta::BorderBox container slot,
-# so it is tested through BacklogBucketComponent which provides the container.
-RSpec.describe Backlogs::BacklogBucketItemComponent, type: :component do
+# BucketItemComponent renders into a Primer::Beta::BorderBox container slot,
+# so it is tested through BucketComponent which provides the container.
+RSpec.describe Backlogs::BucketItemComponent, type: :component do
   include Rails.application.routes.url_helpers
 
   shared_let(:default_status) { create(:default_status) }
@@ -55,7 +55,7 @@ RSpec.describe Backlogs::BacklogBucketItemComponent, type: :component do
   before do
     work_package
     render_inline(
-      Backlogs::BacklogBucketComponent.new(
+      Backlogs::BucketComponent.new(
         backlog_bucket:,
         project:,
         current_user: user

@@ -29,18 +29,33 @@
 #++
 
 module Backlogs
-  module BacklogBuckets
-    class DetailsForm < ApplicationForm
-      form do |f|
-        f.hidden(name: :id)
+  class NewBucketFormComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-        f.text_field(
-          label: attribute_name(:name),
-          name: :name,
-          required: true,
-          autofocus: true,
-          w: :full
-        )
+    FORM_ID = NewBucketDialogComponent::FORM_ID
+
+    attr_reader :backlog_bucket
+
+    def initialize(backlog_bucket:, base_errors: nil)
+      super
+
+      @backlog_bucket = backlog_bucket
+      @base_errors = base_errors
+    end
+
+    private
+
+    def http_verb
+      @backlog_bucket.new_record? ? :post : :put
+    end
+
+    def form_url
+      if @backlog_bucket.new_record?
+        project_backlogs_backlog_buckets_path(@backlog_bucket.project)
+      else
+        project_backlogs_backlog_bucket_path(@backlog_bucket.project, @backlog_bucket)
       end
     end
   end

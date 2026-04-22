@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class BacklogBucketMenuComponent < ApplicationComponent
+  class BucketMenuComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
     attr_reader :backlog_bucket, :project, :current_user

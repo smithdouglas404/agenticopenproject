@@ -150,7 +150,7 @@ RSpec.describe Backlogs::WorkPackagesController do
         expect(response).to be_successful
         expect(response).to have_http_status :ok
         expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-bucket-component-#{bucket.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-bucket-component-#{bucket.id}"
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-inbox-component-#{project.id}"
         story_in_agile_sprint.reload

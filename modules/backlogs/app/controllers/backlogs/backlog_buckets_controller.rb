@@ -38,11 +38,11 @@ module Backlogs
     def new_dialog
       backlog_bucket = Agile::BacklogBucket.new(project: @project)
 
-      respond_with_dialog Backlogs::NewBacklogBucketDialogComponent.new(backlog_bucket:)
+      respond_with_dialog Backlogs::NewBucketDialogComponent.new(backlog_bucket:)
     end
 
     def edit_dialog
-      respond_with_dialog Backlogs::NewBacklogBucketDialogComponent.new(backlog_bucket: @backlog_bucket, state: :edit)
+      respond_with_dialog Backlogs::NewBucketDialogComponent.new(backlog_bucket: @backlog_bucket, state: :edit)
     end
 
     def create # rubocop:disable Metrics/AbcSize
@@ -91,7 +91,7 @@ module Backlogs
 
     def update_new_backlog_bucket_form_component_via_turbo_stream(backlog_bucket:, base_errors: nil)
       update_via_turbo_stream(
-        component: Backlogs::NewBacklogBucketFormComponent.new(
+        component: Backlogs::NewBucketFormComponent.new(
           backlog_bucket:,
           base_errors:
         ),

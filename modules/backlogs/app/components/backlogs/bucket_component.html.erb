@@ -1,4 +1,4 @@
-<%#-- copyright
+<%# -- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,45 +25,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++#%>
+++# %>
 
-<%=
-  render(
-    Primer::Alpha::Dialog.new(
-      title:,
-      size: :large,
-      id: DIALOG_ID
-    )
-  ) do |d|
-    d.with_header(variant: :large)
-
-    d.with_body do
-      render(Backlogs::NewBacklogBucketFormComponent.new(backlog_bucket:))
-    end
-
-    d.with_footer do
-      component_collection do |buttons|
-        buttons.with_component(
-          Primer::Beta::Button.new(
-            data: {
-              close_dialog_id: DIALOG_ID
-            }
-          )
-        ) do
-          t("button_cancel")
-        end
-
-        buttons.with_component(
-          Primer::Beta::Button.new(
-            scheme: :primary,
-            form: FORM_ID,
-            data: { turbo: true },
-            type: :submit
-          )
-        ) do
-          button_caption
-        end
-      end
-    end
-  end
-%>
+<%= component_wrapper(tag: :section) do %>
+  <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
+    <% border_box.with_header(id: dom_target(backlog_bucket, :header)) do %>
+      <%= render(Backlogs::BucketHeaderComponent.new(backlog_bucket:, project:, work_packages:, folded: folded?)) %>
+    <% end %>
+    <% if work_packages.empty? %>
+      <% border_box.with_row(data: { empty_list_item: true }) do %>
+        <!-- TODO: separate inbox component also to have different blankslate titles? -->
+        <%=
+          render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
+            blankslate.with_heading(tag: :h4).with_content(t(".blankslate_title"))
+            blankslate.with_description_content(t(".blankslate_description"))
+          end
+        %>
+      <% end %>
+    <% end %>
+    <%= render Backlogs::BucketItemComponent.with_collection(work_packages, container: border_box, project:) %>
+  <% end %>
+<% end %>

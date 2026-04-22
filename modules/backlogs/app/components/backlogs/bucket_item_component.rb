@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class BacklogBucketItemComponent < ApplicationComponent
+  class BucketItemComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
     with_collection_parameter :work_package

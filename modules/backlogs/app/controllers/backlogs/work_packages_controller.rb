@@ -143,7 +143,7 @@ module Backlogs
         message: I18n.t(:notice_successful_move, from: @sprint.name, to: bucket.name)
       )
       replace_via_turbo_stream(
-        component: Backlogs::BacklogBucketComponent.new(backlog_bucket: bucket, project: @project),
+        component: Backlogs::BucketComponent.new(backlog_bucket: bucket, project: @project),
         method: :morph
       )
     end

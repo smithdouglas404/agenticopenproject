@@ -124,7 +124,7 @@ module Backlogs
       return unless bucket
 
       replace_via_turbo_stream(
-        component: Backlogs::BacklogBucketComponent.new(backlog_bucket: bucket, project: @project),
+        component: Backlogs::BucketComponent.new(backlog_bucket: bucket, project: @project),
         method: :morph
       )
     end

@@ -75,7 +75,7 @@ See COPYRIGHT and LICENSE files for more details.
           end
         %>
         <% @backlog_buckets.each do |backlog_bucket| %>
-          <%= render Backlogs::BacklogBucketComponent.new(backlog_bucket:, project: @project) %>
+          <%= render Backlogs::BucketComponent.new(backlog_bucket:, project: @project) %>
         <% end %>
       <% else %>
         <%=

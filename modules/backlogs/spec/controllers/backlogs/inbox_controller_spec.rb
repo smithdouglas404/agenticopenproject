@@ -177,7 +177,7 @@ RSpec.describe Backlogs::InboxController do
         expect(response).to have_turbo_stream action: "replace",
                                               target: "backlogs-inbox-component-#{project.id}"
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-backlog-bucket-component-#{bucket.id}"
+                                              target: "backlogs-bucket-component-#{bucket.id}"
       end
     end
 
@@ -191,7 +191,7 @@ RSpec.describe Backlogs::InboxController do
         expect(response).to have_turbo_stream action: "replace",
                                               target: "backlogs-inbox-component-#{project.id}"
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-backlog-bucket-component-#{bucket.id}"
+                                              target: "backlogs-bucket-component-#{bucket.id}"
       end
     end
 
@@ -204,9 +204,9 @@ RSpec.describe Backlogs::InboxController do
       it "replaces both affected bucket components", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-backlog-bucket-component-#{source_bucket.id}"
+                                              target: "backlogs-bucket-component-#{source_bucket.id}"
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-backlog-bucket-component-#{target_bucket.id}"
+                                              target: "backlogs-bucket-component-#{target_bucket.id}"
       end
     end
 
