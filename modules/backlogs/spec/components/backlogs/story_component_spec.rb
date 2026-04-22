@@ -92,6 +92,17 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
     expect(page).to have_element(:button, id: /\Awork_package_#{story.id}_menu-button\z/)
   end
 
+  context "when params[:all] is true" do
+    before { vc_test_controller.params.merge!(all: "1") }
+
+    it "includes the all param on the deferred menu src" do
+      render_component
+
+      src = page.find("include-fragment", visible: :all)["src"]
+      expect(src).to match(/all=1/)
+    end
+  end
+
   describe "story points handling" do
     context "when story_points is nil" do
       let(:story_points) { nil }

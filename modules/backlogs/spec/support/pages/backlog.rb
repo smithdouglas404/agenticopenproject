@@ -204,19 +204,47 @@ module Pages
 
     def expect_inbox_item(work_package)
       within_inbox do
-        expect(page).to have_css(inbox_item_selector(work_package))
+        expect(page).to have_css(work_package_selector(work_package))
       end
     end
 
     def expect_no_inbox_item(work_package)
       within_inbox do
-        expect(page).to have_no_css(inbox_item_selector(work_package))
+        expect(page).to have_no_css(work_package_selector(work_package))
       end
+    end
+
+    def expect_inbox_show_more
+      within_inbox do
+        expect(page).to have_css("#inbox-more-row-#{project.id}")
+      end
+    end
+
+    def expect_no_inbox_show_more
+      wait_for_network_idle
+      within_inbox do
+        expect(page).to have_no_css("#inbox-more-row-#{project.id}")
+      end
+    end
+
+    def click_inbox_show_more
+      within_inbox do
+        find("#inbox-more-row-#{project.id} a").click
+      end
+      wait_for_network_idle
+    end
+
+    def open_sprint_story_details(story)
+      within(work_package_selector(story)) do
+        button = find(:button, accessible_name: "Story actions")
+        open_controlled_menu(button).find(:menuitem, text: I18n.t(:"js.button_open_details")).click
+      end
+      expect_details_view(story)
     end
 
     def expect_inbox_items_in_order(*work_packages)
       within_inbox do
-        selectors = work_packages.map { |wp| inbox_item_selector(wp) }
+        selectors = work_packages.map { |wp| work_package_selector(wp) }
         expect(page).to have_css(selectors.join(" + "))
       end
 
@@ -224,11 +252,12 @@ module Pages
     end
 
     def within_inbox_menu(work_package, &)
-      within(inbox_item_selector(work_package)) do
+      within(work_package_selector(work_package)) do
         button = find(:button, accessible_name: "Work package actions")
         within(open_controlled_menu(button), &)
       end
-      dismiss_menu
+
+      dismiss_menu(work_package)
     end
 
     def click_in_inbox_menu(work_package, item_name)
@@ -238,7 +267,7 @@ module Pages
     end
 
     def click_in_inbox_move_menu(work_package, item_name)
-      button = within(inbox_item_selector(work_package)) do
+      button = within(work_package_selector(work_package)) do
         find(:button, accessible_name: "Work package actions")
       end
       menu = open_controlled_menu(button)
@@ -251,7 +280,8 @@ module Pages
         button = find(:button, accessible_name: "Story actions")
         within(open_controlled_menu(button), &)
       end
-      dismiss_menu
+
+      dismiss_menu(story)
     end
 
     def click_in_sprint_story_menu(story, item_name)
@@ -272,7 +302,9 @@ module Pages
     def drag_inbox_item_to_sprint(work_package, sprint)
       moved_element = find(draggable_work_package_selector(work_package))
       target_element = find(sprint_selector(sprint))
-      moved_element.native.drag_to(target_element.native, delay: 0.1)
+      wait_for_turbo_stream do
+        moved_element.native.drag_to(target_element.native, delay: 0.1)
+      end
     rescue Capybara::Cuprite::ObsoleteNode
       retry
     end
@@ -365,7 +397,8 @@ module Pages
       details_view.expect_tab :overview
       details_view.expect_subject
 
-      expect(page).to have_current_path project_backlogs_backlog_details_path(story.project, story)
+      expect(page).to have_current_path project_backlogs_backlog_details_path(story.project, story),
+                                        ignore_query: true
       wait_for_network_idle
 
       details_view
@@ -487,10 +520,6 @@ module Pages
       "##{::Backlogs::FinishSprintDialogComponent::DIALOG_ID}"
     end
 
-    def inbox_item_selector(work_package)
-      "#work_package_#{work_package.id}"
-    end
-
     def open_controlled_menu(button)
       button.click
       page.find(:menu, id: button[:controls] || button["aria-controls"])
@@ -502,8 +531,8 @@ module Pages
       page.find(:menu, id: move_item["aria-controls"])
     end
 
-    def dismiss_menu
-      page.find("body").click
+    def dismiss_menu(work_package)
+      find("#work_package_#{work_package.id}_menu-overlay").click
     end
   end
 end

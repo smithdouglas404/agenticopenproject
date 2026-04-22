@@ -86,7 +86,7 @@ module Backlogs
         id: dom_target(story, :menu, direction),
         label:,
         tag: :button,
-        href: reorder_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id),
+        href: move_href,
         form_arguments: { method: :post, inputs: [{ name: "direction", value: direction }] }
       ) do |item|
         item.with_leading_visual_icon(icon:)
@@ -99,6 +99,10 @@ module Backlogs
 
     def last_item?
       story.position == max_position
+    end
+
+    def move_href
+      reorder_project_backlogs_work_package_path(project, sprint, story, **helpers.all_backlogs_params)
     end
   end
 end

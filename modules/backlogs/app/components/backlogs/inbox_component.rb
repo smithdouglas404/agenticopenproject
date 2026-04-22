@@ -38,14 +38,13 @@ module Backlogs
     FIRST_PAGE_SIZE = 50
     LAST_PAGE_SIZE = 10
 
-    attr_reader :work_packages, :project, :current_user, :show_all
+    attr_reader :work_packages, :project, :current_user
 
-    def initialize(work_packages:, project:, show_all: false, current_user: User.current, **system_arguments)
+    def initialize(work_packages:, project:, current_user: User.current, **system_arguments)
       super()
 
       @work_packages = work_packages
       @project = project
-      @show_all = show_all
       @current_user = current_user
 
       @system_arguments = system_arguments
@@ -72,7 +71,7 @@ module Backlogs
     end
 
     def paginate?
-      !show_all && total > PAGINATION_THRESHOLD
+      !show_all_backlog && total > PAGINATION_THRESHOLD
     end
 
     def first_page

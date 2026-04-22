@@ -54,7 +54,9 @@ module Backlogs
       respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(
         work_package: @work_package,
         project: @project,
-        move_action: move_project_backlogs_inbox_path(@project, @work_package)
+        move_action: move_project_backlogs_inbox_path(
+          @project, @work_package, **helpers.all_backlogs_params
+        )
       )
     end
 
@@ -104,7 +106,7 @@ module Backlogs
     def replace_sprint_component_via_turbo_stream(sprint_id)
       sprint = Agile::Sprint.for_project(@project).visible.find(sprint_id)
       replace_via_turbo_stream(
-        component: Backlogs::SprintComponent.new(sprint: sprint, project: @project),
+        component: Backlogs::SprintComponent.new(sprint:, project: @project),
         method: :morph
       )
     end

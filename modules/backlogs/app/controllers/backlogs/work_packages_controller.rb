@@ -76,7 +76,7 @@ module Backlogs
         work_package: @story,
         project: @project,
         move_action: move_project_backlogs_work_package_path(
-          @project, sprint_id: @sprint.id, id: @story.id
+          @project, @sprint, @story, **helpers.all_backlogs_params
         )
       )
     end
@@ -154,8 +154,10 @@ module Backlogs
     end
 
     def replace_sprint_component_via_turbo_stream(sprint:)
-      replace_via_turbo_stream(component: Backlogs::SprintComponent.new(sprint: sprint, project: @project),
-                               method: :morph)
+      replace_via_turbo_stream(
+        component: Backlogs::SprintComponent.new(sprint:, project: @project),
+        method: :morph
+      )
     end
 
     def load_story

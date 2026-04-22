@@ -42,5 +42,10 @@ module Backlogs
     def show_all_backlog
       ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
     end
+
+    # Optional query params for backlog URLs when showing all items (`?all=1`).
+    def all_backlogs_params
+      show_all_backlog ? { all: 1 } : {}
+    end
   end
 end
