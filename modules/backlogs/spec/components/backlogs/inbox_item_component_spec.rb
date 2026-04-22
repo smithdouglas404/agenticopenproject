@@ -64,8 +64,6 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
   it "rendering renders the Inbox Component", :aggregate_failures do
     # renders the work package subject
     expect(page).to have_text("Inbox Work Package")
-    # renders a drag handle
-    expect(page).to have_octicon(:grabber)
     # renders WorkPackages::InfoLineComponent with type and ID
     expect(page).to have_text("##{work_package.id}")
     # deferred action menu (kebab + include-fragment src)
@@ -82,7 +80,8 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
     end
 
     it "sets the backlogs--story Stimulus controller" do
-      expect(row["data-controller"]).to eq("backlogs--story")
+      expect(row["data-controller"]).to include("backlogs--story")
+      expect(row["data-controller"]).to include("backlogs--dnd-item")
     end
 
     it "sets the split-view and full-view URLs for the story controller" do
@@ -95,6 +94,12 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
     it "applies the correct row CSS classes" do
       expect(row[:class]).to include("Box-row--hover-blue", "Box-row--focus-gray",
                                      "Box-row--clickable", "Box-row--draggable")
+    end
+
+    it "sets the dnd item metadata for pragmatic drag and drop" do
+      expect(row["data-backlogs--dnd-item-item-id-value"]).to eq(work_package.id.to_s)
+      expect(row["data-backlogs--dnd-item-item-type-value"]).to eq("story")
+      expect(row["data-backlogs--dnd-item-drop-url-value"]).to end_with(move_project_inbox_path(project, work_package))
     end
   end
 end

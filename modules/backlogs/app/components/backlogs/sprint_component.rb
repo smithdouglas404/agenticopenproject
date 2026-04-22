@@ -48,13 +48,19 @@ module Backlogs
 
       @system_arguments = system_arguments
       @system_arguments[:id] = dom_id(sprint)
-      @system_arguments[:list_id] = "#{@system_arguments[:id]}-list"
-      @system_arguments[:padding] = :condensed
       @system_arguments[:data] = merge_data(
         @system_arguments,
-        { data: drop_target_config },
         { data: { test_selector: "sprint-#{sprint.id}" } }
       )
+
+      @list_arguments = {
+        id: "#{@system_arguments[:id]}-list",
+        data: {
+          controller: "backlogs--dnd-list",
+          backlogs__dnd_list_list_id_value: "sprint:#{sprint.id}",
+          backlogs__dnd_list_accepts_value: "story"
+        }
+      }
     end
 
     def wrapper_uniq_by
@@ -65,15 +71,6 @@ module Backlogs
 
     def folded?
       current_user.pref[:backlogs_versions_default_fold_state] == "closed"
-    end
-
-    def drop_target_config
-      {
-        generic_drag_and_drop_target: "container",
-        target_container_accessor: ":scope > ul",
-        target_id: "sprint:#{sprint.id}",
-        target_allowed_drag_type: "story"
-      }
     end
 
     def story_classes_attribute
@@ -87,25 +84,32 @@ module Backlogs
     end
 
     def story_data_attribute(story)
-      draggable_item_config(story).merge(
+      {
         story: true,
-        controller: "backlogs--story",
+        controller: story_controller_attribute(story),
         backlogs__story_id_value: story.id,
         backlogs__story_split_url_value: project_backlogs_backlog_details_path(project, story),
         backlogs__story_full_url_value: work_package_path(story),
         backlogs__story_selected_class: "Box-row--blue",
         test_selector: card_test_selector(story)
-      )
+      }.merge(draggable_item_config(story))
     end
 
     def draggable_item_config(story)
       return {} unless work_package_draggable?
 
       {
-        draggable_id: story.id,
-        draggable_type: "story",
-        drop_url: move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)
+        backlogs__dnd_item_item_id_value: story.id,
+        backlogs__dnd_item_item_type_value: "story",
+        backlogs__dnd_item_drop_url_value: move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)
       }
+    end
+
+    def story_controller_attribute(story)
+      controllers = ["backlogs--story"]
+      controllers.unshift("backlogs--dnd-item") if work_package_draggable?
+
+      controllers.join(" ")
     end
 
     def card_test_selector(story)

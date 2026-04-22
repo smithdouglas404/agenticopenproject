@@ -102,24 +102,24 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         expect(page).to have_text(story2.subject)
       end
 
-      it "has drop target data attributes" do
+      it "has list drop target data attributes" do
         render_component
 
-        box = page.find(".Box")
-        expect(box["data-generic-drag-and-drop-target"]).to eq("container")
-        expect(box["data-target-container-accessor"]).to eq(":scope > ul")
-        expect(box["data-target-id"]).to eq("sprint:#{sprint.id}")
-        expect(box["data-target-allowed-drag-type"]).to eq("story")
+        list = page.find("ul#agile_sprint_#{sprint.id}-list")
+        expect(list["data-controller"]).to eq("backlogs--dnd-list")
+        expect(list["data-backlogs--dnd-list-list-id-value"]).to eq("sprint:#{sprint.id}")
+        expect(list["data-backlogs--dnd-list-accepts-value"]).to eq("story")
       end
 
       it "has draggable data attributes on story rows" do
         render_component
 
         story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
-        expect(story_row["data-draggable-id"]).to eq(story1.id.to_s)
-        expect(story_row["data-draggable-type"]).to eq("story")
+        expect(story_row["data-controller"]).to include("backlogs--dnd-item")
+        expect(story_row["data-backlogs--dnd-item-item-id-value"]).to eq(story1.id.to_s)
+        expect(story_row["data-backlogs--dnd-item-item-type-value"]).to eq("story")
         expected_path = move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story1.id)
-        expect(story_row["data-drop-url"]).to end_with(expected_path)
+        expect(story_row["data-backlogs--dnd-item-drop-url-value"]).to end_with(expected_path)
       end
 
       it "renders story rows with proper classes" do

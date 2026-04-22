@@ -29,16 +29,6 @@ See COPYRIGHT and LICENSE files for more details.
 
 <% container.with_row(**row_options) do %>
   <%= grid_layout("op-backlogs-story", tag: :article) do |grid| %>
-    <% grid.with_area(:drag_handle, classes: "hide-when-print") do %>
-      <%= if draggable?
-            render(
-              Primer::OpenProject::DragHandle.new(
-                classes: "op-backlogs-story--drag_handle_button",
-                label: t(".label_drag_work_package", name: work_package.subject)
-              )
-            )
-          end %>
-    <% end %>
     <% grid.with_area(:info_line) do %>
       <%= render(WorkPackages::InfoLineComponent.new(work_package:)) %>
     <% end %>

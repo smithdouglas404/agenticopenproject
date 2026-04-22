@@ -60,9 +60,9 @@ See COPYRIGHT and LICENSE files for more details.
     end
   %>
 
-  <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
+  <%= render(Backlogs::ListBoxComponent.new(padding: :condensed, list_arguments: @list_arguments, **@system_arguments)) do |list_box| %>
     <% if work_packages.empty? %>
-      <% border_box.with_row(data: { empty_list_item: true }) do %>
+      <% list_box.with_row(data: { empty_list_item: true }) do %>
         <%=
           render Primer::Beta::Blankslate.new(spacious: true, role: "status", aria: { live: "polite" }) do |blankslate|
             blankslate.with_visual_icon(icon: :"op-backlogs")
@@ -75,19 +75,19 @@ See COPYRIGHT and LICENSE files for more details.
 
     <%= render Backlogs::InboxItemComponent.with_collection(
           paginate? ? first_page : work_packages,
-          container: border_box,
+          container: list_box,
           project:
         ) %>
 
     <% if paginate? %>
-      <% border_box.with_row(
+      <% list_box.with_row(
            id: "inbox-more-row-#{project.id}", scheme: :neutral,
            classes: "backlogs-inbox-component--show-more-row",
            # This exists for the edge case of a user dragging a work package just below the fold.
            # The dragged work package is then placed just after the last work package omitted
            # by the placeholder.
            data: {
-             draggable_id: id_of_last_omitted_in_middle
+             backlogs__dnd_prev_id_value: id_of_last_omitted_in_middle
            }
          ) do %>
         <%=
@@ -107,7 +107,7 @@ See COPYRIGHT and LICENSE files for more details.
 
       <%= render Backlogs::InboxItemComponent.with_collection(
             last_page,
-            container: border_box,
+            container: list_box,
             project:
           ) %>
     <% end %>

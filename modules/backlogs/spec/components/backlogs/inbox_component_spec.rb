@@ -61,8 +61,16 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
   end
 
   describe "container" do
-    it "renders a Primer::Beta::BorderBox with the inbox DOM id" do
+    it "renders a list box with the inbox DOM id" do
       expect(page).to have_css(".Box#inbox_#{project.id}")
+    end
+
+    it "renders an explicit dnd list on the inbox ul" do
+      list = page.find("ul#inbox_#{project.id}-list")
+
+      expect(list["data-controller"]).to eq("backlogs--dnd-list")
+      expect(list["data-backlogs--dnd-list-list-id-value"]).to eq("inbox")
+      expect(list["data-backlogs--dnd-list-accepts-value"]).to eq("story")
     end
   end
 
@@ -131,6 +139,7 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
         # shows a 'show more' link with the count of hidden items
         expect(page).to have_css("#inbox-more-row-#{project.id}")
         expect(page).to have_text("Show #{middle_count} more items")
+        expect(page.find("#inbox-more-row-#{project.id}")["data-backlogs--dnd-prev-id-value"]).to be_present
       end
     end
 
