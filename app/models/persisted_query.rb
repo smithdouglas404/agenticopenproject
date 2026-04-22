@@ -58,4 +58,14 @@ class PersistedQuery < ApplicationRecord
   def self.register_query(&)
     Queries::Register.register(self, &)
   end
+
+  # Returns the query results, bypassing filters and orders when the query has
+  # manually-added entities — in that case they are returned in the order
+  # stored on the join records.
+  def results
+    return super if ordered_entities.empty?
+
+    entity_ids = ordered_entities.pluck(:entity_id)
+    self.class.model.where(id: entity_ids).in_order_of(:id, entity_ids)
+  end
 end
