@@ -127,11 +127,11 @@ RSpec.describe Meeting do
       end
     end
 
-    context "default zone" do
+    context "with default zone" do
       it_behaves_like "uses that zone", "UTC"
     end
 
-    context "other timezone set" do
+    context "with other timezone set" do
       current_user { build_stubbed(:user, preferences: { time_zone: "EST" }) }
 
       it_behaves_like "uses that zone", "EST"
@@ -309,6 +309,48 @@ RSpec.describe Meeting do
       let(:meeting) { build(:onetime_template, project:, sharing: :none) }
 
       it "is valid" do
+        expect(meeting).to be_valid
+      end
+    end
+  end
+
+  describe "recurrence_start_time" do
+    let(:recurring_meeting) { create(:recurring_meeting, project:) }
+
+    context "for a series template" do
+      subject(:template) { build(:meeting_template, recurring_meeting:) }
+
+      it "is valid without one" do
+        expect(template).to be_valid
+      end
+
+      it "is invalid when present" do
+        template.recurrence_start_time = Time.current
+        expect(template).not_to be_valid
+        expect(template.errors[:recurrence_start_time]).to be_present
+      end
+    end
+
+    context "for a recurring occurrence" do
+      subject(:occurrence) do
+        build(:recurring_meeting_occurrence,
+              recurring_meeting:,
+              recurrence_start_time: 1.week.from_now)
+      end
+
+      it "is valid when present" do
+        expect(occurrence).to be_valid
+      end
+
+      it "is invalid without one" do
+        occurrence.recurrence_start_time = nil
+        expect(occurrence).not_to be_valid
+        expect(occurrence.errors[:recurrence_start_time]).to be_present
+      end
+    end
+
+    context "for a regular meeting" do
+      it "imposes no constraint" do
         expect(meeting).to be_valid
       end
     end

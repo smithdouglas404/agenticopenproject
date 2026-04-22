@@ -49,7 +49,7 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
            priority: default_priority,
            position: 1)
   end
-  let(:work_packages) { WorkPackage.where(id: work_package.id).order(Arel.sql(Story::ORDER)) }
+  let(:work_packages) { WorkPackage.where(id: work_package.id).order(:position, :id) }
 
   before do
     render_inline(
@@ -87,7 +87,7 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
 
     it "sets the split-view and full-view URLs for the story controller" do
       expect(row["data-backlogs--story-split-url-value"])
-        .to end_with(details_backlogs_project_backlogs_path(project, work_package))
+        .to end_with(project_backlogs_backlog_details_path(project, work_package))
       expect(row["data-backlogs--story-full-url-value"])
         .to end_with(work_package_path(work_package))
     end

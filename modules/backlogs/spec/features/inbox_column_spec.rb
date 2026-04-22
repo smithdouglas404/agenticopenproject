@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../support/pages/backlog"
 
-RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_projects: true } do
+RSpec.describe "Inbox column in sprint planning view", :js do
   let(:sprint_sharing) { nil }
   let!(:project) do
     create(:project,

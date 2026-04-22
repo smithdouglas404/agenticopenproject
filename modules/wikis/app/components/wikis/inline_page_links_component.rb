@@ -41,10 +41,13 @@ module Wikis
     end
 
     def page_links
-      @page_links ||= provider.page_links
-                              .merge(InlinePageLink.all)
-                              .where(linkable: @work_package)
-                              .order(created_at: :desc)
+      @page_links ||= page_link_service.inline_page_links_for(provider:, linkable: @work_package)
+    end
+
+    private
+
+    def page_link_service
+      @page_link_service ||= PageLinkService.new
     end
   end
 end

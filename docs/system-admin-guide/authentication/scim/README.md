@@ -16,7 +16,7 @@ OpenProject supports automated user synchronization via SCIM API, enabling  seam
 
 To activate and configure SCIM user and group provisioning in OpenProject, navigate to *Administration* -> *Authentication* and select *SCIM clients* from the left-hand menu.
 
-## Configure a new SCIM client.
+## Configure a new SCIM client
 
 SCIM client is a system (e.g. Keycloak with [SCIM plugin](https://github.com/mitodl/keycloak-scim)) that uses SCIM protocol to provision user and group identities in an automated and standardized way.
 
@@ -31,21 +31,22 @@ To add a new SCIM client, click the **+ SCIM client** button in the upper right 
 
 A configuration form for your SCIM client will open, in which you can adjust the SCIM client details.
 
-### Step 1. Enter the **Name** of your SCIM client.
+### Step 1. Enter the Name of your SCIM client
 
 ![A SCIM client creation form in OpenProject administration, with the Name field highlighted and filled out](add_scim_2.png)
 
-### Step 2. Choose an **Authentication provider**.
-   This is the service that users added by the SCIM provider will use to authenticate in OpenProject.
-   It must have been configured before creating the SCIM client. It can be an [OIDC provider](../openid-providers/) or a [SAML provider](../saml/).
+### Step 2. Choose an Authentication provider
 
-   ![A SCIM client creation form in OpenProject administration, with the "Authentication provider" field highlighted and filled out](add_scim_3.png)
+This is the service that users added by the SCIM provider will use to authenticate in OpenProject.
+It must have been configured before creating the SCIM client. It can be an [OIDC provider](../openid-providers/) or a [SAML provider](../saml/).
 
-### Step 3. Choose an **Authentication method**.
+![A SCIM client creation form in OpenProject administration, with the "Authentication provider" field highlighted and filled out](add_scim_3.png)
+
+### Step 3. Choose an Authentication method.
 
 There are three *Authentication method* options you can choose from:
 
-####  a. **Static access token**
+#### a. Static access token
 
 > [!IMPORTANT]
 > Static access tokens are valid for period of 1 year. After that, they expire and must be replaced.
@@ -82,7 +83,7 @@ Here is an example of a configuration form in Keycloak, if you use it with [SCIM
 6. Enable user and group propagation. Enable import during sync.
 7. **Save** the configuration.
 
-#### b. **OAuth 2.0 client credentials**
+#### b. OAuth 2.0 client credentials
 
 If in [Step 3](#step-3-choose-an-authentication-method) you selected **OAuth 2.0 client credentials**, after clicking **Create** you will get client credentials of newly created [OpenProject OAuth Application](../oauth-applications/#oauth-applications). These credentials should be entered into the SCIM client configuration on the other end. The SCIM client is supposed to use the provided client credentials to obtain an access token with the `scim_v2` scope from OpenProject and then use the access token in SCIM API requests.
 
@@ -92,7 +93,7 @@ Once you click **Create**, client credentials (client ID and secret) will be gen
 
 ![A confirmation message that a SCIM client was created, showing client credentials to be copied in OpenProject administration](add_scim_8.png)
 
-#### c. **JWT from identity provider**
+#### c. JWT from identity provider
 
 If in [Step 3](#step-3-choose-an-authentication-method) you selected **JWT from identity provider**, you will have to specify **Subject claim** contained in the authentication JWT.
 

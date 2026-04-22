@@ -478,7 +478,7 @@ module Pages::Meetings
     end
 
     def edit_agenda_item(item, save: true, wait_for_reference_update: false, &)
-      select_action item, "Edit"
+      wait_for_turbo_stream { select_action item, "Edit" }
       expect_item_edit_form(item)
       reference_value = meeting_reference_value
       page.within("#meeting-agenda-items-form-component-#{item.id}") do

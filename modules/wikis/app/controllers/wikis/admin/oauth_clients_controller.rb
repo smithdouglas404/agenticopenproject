@@ -88,7 +88,7 @@ module Wikis
                             .new(user: current_user)
                             .call(oauth_client_params.merge(integration: @wiki_provider))
         @oauth_client = @service_result.result
-        @wiki_provider = @wiki_provider.reload
+        @wiki_provider.reload
       end
 
       def oauth_client_params
@@ -100,7 +100,7 @@ module Wikis
       end
 
       def find_wiki_provider
-        @wiki_provider = Wikis::XWikiProvider.visible.find(params[:wiki_provider_id])
+        @wiki_provider = Wikis::Provider.visible.find(params[:wiki_provider_id])
       end
 
       def respond_for_success

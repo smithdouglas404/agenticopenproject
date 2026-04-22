@@ -154,6 +154,7 @@ hu:
         connection_timeout: 'Connection to Jira server timed out: %{message}'
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projects
         last_change: Last change
@@ -688,6 +689,37 @@ hu:
   danger_dialog:
     confirmation_live_message_checked: The button to proceed is now active.
     confirmation_live_message_unchecked: The button to proceed is now inactive. You need to tick the checkbox to continue.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Pagination
     prev: Previous
@@ -1365,6 +1397,20 @@ hu:
     index:
       no_results_title_text: Jelenleg nincsenek munkafolyamatok.
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1479,10 +1525,10 @@ hu:
       follows_description: A kapcsolódó munkacsomagnak feltétlenül be kell fejeződnie, mielőtt ez a munkacsomag elkezdődhet
       label_child_singular: child
       label_child_plural: children
-      new_child: Új gyermek kapcsolat hozzáadása
+      new_child: Új gyermek munkacsomag létrehozása
       new_child_description: Új kapcsolódó munkacsomagot hoz létre az aktuális munkacsomag (szülő) alelemeként
-      child: Child
-      child_description: Makes the related work package a sub-item of the current (parent) work package
+      child: Gyermek
+      child_description: Meglévő munkacsomag csatolása az aktuális munkacsomag (szülő) alelemeként
       parent: Szülő
       parent_description: A kapcsolódó munkacsomagot az aktuális munkacsomag (gyermek) szülőjévé teszi
       label_closest: Closest
@@ -1829,6 +1875,7 @@ hu:
         identity_url: Identity URL
         parent: Parent group
         organizational_unit: Organizational unit
+        group_users: Group users
       group_detail:
         parent: Parent group
         organizational_unit: Organizational unit
@@ -1950,6 +1997,7 @@ hu:
         confirmation: "%{attribute} nem egyezik."
         could_not_be_copied: A (z) %{dependency} nem másolható (teljesen).
         does_not_exist: nem létezik.
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: lehet, hogy nem érhető el.
         error_readonly: írása megkísérelve, de nem írható.
@@ -2020,6 +2068,7 @@ hu:
           attributes:
             parent_id:
               circular_dependency: would create a circular group hierarchy.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2524,7 +2573,6 @@ hu:
     avatar: Profilkép
     base: 'Általános hiba:'
     body: Body
-    blocks_ids: Lezárt munkacsomagok azonosítója
     category: Kategória
     comment: Komment
     comments: Vélemény
@@ -2983,6 +3031,7 @@ hu:
       title: Enterprise add-on
       plan_title: Enterprise %{plan} add-on
       plan_name: "%{plan} enterprise plan"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: Available starting with the %{plan_name}.
       unlimited: Korlátlan
       already_have_token: 'Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
@@ -3956,6 +4005,10 @@ hu:
   label_custom_pdf_export_settings: Custom PDF export settings
   label_custom_favicon: Egyedi favicon
   label_custom_touch_icon: Egyedi "touch-icon"
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: Kijelentkezés
   label_mapping_for: 'Mapping for: %{attribute}'
   label_main_menu: Oldalsó menü
@@ -5050,6 +5103,7 @@ hu:
     '
   setting_app_subtitle: Alkalmazás felirat
   setting_app_title: Alkalmazás címe
+  setting_organization_name: Organization name
   setting_attachment_max_size: Melléklet max. méret
   setting_show_work_package_attachments: Show attachments in the files tab by default
   setting_antivirus_scan_mode: Scan mode

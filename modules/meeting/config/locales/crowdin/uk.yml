@@ -44,6 +44,9 @@ uk:
         start_date: Дата
         start_time: Час початку
         start_time_hour: Час початку
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Надання доступу
       meeting_agenda_item:
         title: 'Назва '
@@ -51,9 +54,15 @@ uk:
         duration_in_minutes: Тривалість
         description: Примітки
         presenter: Доповідач
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: 'Назва '
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Частота
         interval: Інтервал
         start_date: Починається
@@ -62,6 +71,10 @@ uk:
         end_after: Серія нарад завершується
         end_date: Дата завершення
         iterations: Повторення
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Час початку
       meeting_participant:
@@ -430,6 +443,11 @@ uk:
     ical_response:
       update_failed: Не вдалось оновити статус участі.
       meeting_not_found: Нараду для UID не знайдено.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Розділ без назви
     delete_confirmation: Видалення цього розділу також призведе до видалення його елементів порядку денного. Ви впевнені?
@@ -672,9 +690,9 @@ uk:
   text_exit_draft_mode_dialog_template_title: Відкрити першу нараду цієї серії?
   text_exit_draft_mode_dialog_template_subtitle: Після цього не можна буде повернутися в режим чернетки.
   label_meeting_template_sharing: Надання доступу
-  label_meeting_template_sharing_none: Лише цей проєкт
-  label_meeting_template_sharing_descendants: Підпроєкти
-  label_meeting_template_sharing_system: Усі проєкти
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Цим шаблоном можна поділитися з підпроєктами або іншими проєктами цього екземпляра. Буде скопійовано лише пункти порядку денного й вкладення.
   text_meeting_not_editable_anymore: Цю нараду більше не можна редагувати.
   text_meeting_not_present_anymore: Цю нараду видалено. Виберіть іншу нараду.

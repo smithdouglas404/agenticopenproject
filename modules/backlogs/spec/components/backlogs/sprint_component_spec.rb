@@ -43,14 +43,6 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
   let(:project) { create(:project, types: [type_feature, type_task]) }
   let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
 
-  before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
-
-    allow(user).to receive(:backlogs_preference).with(:versions_default_fold_state).and_return("open")
-  end
-
   def render_component
     render_inline(described_class.new(sprint:, project:, current_user: user))
   end
@@ -90,7 +82,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         expect(page).to have_css(".Box#agile_sprint_#{sprint.id}")
       end
 
-      it "renders BacklogHeaderComponent in header" do
+      it "renders SprintHeaderComponent in header" do
         render_component
 
         expect(page).to have_css(".Box-header h3", text: "Sprint 1")
@@ -126,7 +118,8 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
         expect(story_row["data-draggable-id"]).to eq(story1.id.to_s)
         expect(story_row["data-draggable-type"]).to eq("story")
-        expect(story_row["data-drop-url"]).to end_with(move_project_sprint_story_path(project, sprint, story1))
+        expected_path = move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story1.id)
+        expect(story_row["data-drop-url"]).to end_with(expected_path)
       end
 
       it "renders story rows with proper classes" do

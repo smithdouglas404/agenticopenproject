@@ -45,7 +45,7 @@ RSpec.describe Wikis::XWikiProviders::GeneralInformationContract do
     context "when blank" do
       let(:wiki_provider) { build_stubbed(:xwiki_provider, authentication_method: nil) }
 
-      include_examples "contract is invalid", authentication_method: :blank
+      include_examples "contract is invalid", authentication_method: %i[blank inclusion]
     end
 
     context "when not a known method" do

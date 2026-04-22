@@ -170,8 +170,8 @@ Rails/ContentTag:
 Rails/DynamicFindBy:
   Enabled: true
   AllowedMethods:
-    - find_by_id_or_identifier
-    - find_by_id_or_identifier!
+    - find_by_display_id
+    - find_by_display_id!
     - find_by_semantic_identifier
   Exclude:
     - "spec/features/**/*.rb"

@@ -54,8 +54,7 @@ module OpenProject::Backlogs
                                      required: false,
                                      show_if: ->(*) {
                                        current_user.allowed_in_project?(:view_sprints, represented.project) &&
-                                         backlogs_constraint_passed?(:sprint) &&
-                                         OpenProject::FeatureDecisions.scrum_projects_active?
+                                         backlogs_constraint_passed?(:sprint)
                                      },
                                      href_callback: ->(*) {
                                        api_v3_paths.project_sprints(represented.project_id)

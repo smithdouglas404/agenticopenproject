@@ -53,7 +53,7 @@ module Wikis
       resolve("queries.user").call(access_token: token.access_token)
     end
 
-    def authenticate_via_oauth2?
+    def authenticate_via_two_way_oauth2?
       authentication_method == AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
     end
 

@@ -31,6 +31,18 @@
 module WorkPackage::SemanticIdentifier
   extend ActiveSupport::Concern
 
+  # Matches either a numeric ID ("12345") or a semantic identifier ("PROJ-42").
+  # Used in Rails route constraints so both forms are accepted in URLs.
+  # The frontend equivalent lives in WP_ID_URL_PATTERN (work-package-id-pattern.ts).
+  ID_ROUTE_CONSTRAINT = /\d+|[A-Z][A-Z0-9_]*-\d+/
+
+  # Raised when a finder is invoked in a way that cannot resolve a semantic
+  # identifier — e.g. find_by(id: "PROJ-42") which reduces to a raw SQL
+  # WHERE clause that cannot consult the alias table. Subclasses ArgumentError
+  # so callers that rescue ArgumentError still catch it, but it can be rescued
+  # specifically when needed.
+  class UnsupportedLookup < ArgumentError; end
+
   included do
     has_many :semantic_aliases,
              class_name: "WorkPackageSemanticAlias",
@@ -42,37 +54,16 @@ module WorkPackage::SemanticIdentifier
   end
 
   class_methods do
-    def semantic_id?(identifier)
-      identifier.to_s.to_i.to_s != identifier.to_s
-    end
+    include FinderMethods
 
-    # Resolves any identifier form to a WorkPackage.
-    #   - Numeric string ("12345")    → find by primary key
-    #   - Semantic string ("PROJ-42") → lookup via work_packages table and alias table
-    #
-    # Returns nil on miss.
-    def find_by_id_or_identifier(identifier)
-      return find_by(id: identifier) unless semantic_id?(identifier)
-
-      find_by_semantic_identifier(identifier)
-    end
-
-    # Same as find_by_id_or_identifier but raises ActiveRecord::RecordNotFound on miss.
-    def find_by_id_or_identifier!(identifier)
-      find_by_id_or_identifier(identifier) || raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{identifier}")
-    end
-
-    private
-
-    def find_by_semantic_identifier(identifier)
-      wp = find_by(identifier:)
-      return wp if wp
-
-      # Fallback: alias table lookup. The table holds every identifier a WP has ever been known by:
-      # Done via a single join to:
-      # * Respect any parent scoping (e.g. when called as WorkPackage.visible.find_by_semantic_identifier)
-      # * Reduce lookup to a single DB round trip
-      joins(:semantic_aliases).find_by(work_package_semantic_aliases: { identifier: })
+    # Extend every relation built from this model with semantic finder methods,
+    # so that WorkPackage.visible(user).find("PROJ-42") and
+    # project.work_packages.find_by_display_id("PROJ-42") both work. Overriding
+    # `relation` is the seam that reaches every scope and association proxy;
+    # including FinderMethods into class_methods alone only covers class-level
+    # calls like WorkPackage.find.
+    def relation
+      super.extending(FinderMethods)
     end
   end
 
@@ -80,7 +71,9 @@ module WorkPackage::SemanticIdentifier
   # In semantic mode: the project-based identifier (e.g. "PROJ-42")
   # In classic mode: the numeric database ID
   def display_id
-    Setting::WorkPackageIdentifier.semantic_mode_active? ? identifier : id
+    return id unless Setting::WorkPackageIdentifier.semantic_mode_active?
+
+    identifier.presence || id
   end
 
   # Allocates the next semantic identifier in the current project and assigns it to the WP.

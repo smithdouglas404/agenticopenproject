@@ -515,12 +515,6 @@ ro:
         sidebar_arrow: Folosește săgeata de întoarcere din colțul din stânga sus pentru a te întoarce în meniul <b>al proiectului</b>.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: În cadrul <b>Wiki</b> puteți documenta și împărtăși cunoștințe împreună cu echipa dumneavoastră.
-        backlogs:
-          overview: Gestionează-ți munca în vizualizarea <b>backlogs</b>.
-          sprints: În dreapta aveți lista de rezultate și erorile restante, în stânga aveți sprintele respective. Aici poți crea <b>epicuri, povestiri pentru utilizatori și erori</b>, prioritizează prin drag & drop și adaugă-le la un sprint.
-          task_board_arrow: Pentru a vedea <b>panoul de sarcini</b>, deschideți meniul Sprint...
-          task_board_select: "... și selectați intrarea <b>Task board</b>."
-          task_board: Grupul de lucru vizualizează progresul <b>pentru această iterație</b>. Dă click pe pictograma plus (+) de lângă o cerință de utilizator pentru a adăuga sarcini noi sau impedimente. <br> Starea poate fi actualizată cu glisare și plasare.
         boards:
           overview: Selectează secțiunile <b></b> pentru a schimba vizualizarea și administrarea proiectului tău folosind vizualizarea secțiunilor agile.
           lists_kanban: Aici puteţi crea mai multe liste (coloane) în cadrul secţiunii. Această funcţie vă permite să creaţi o <b>tabelă Kanban</b>, de exemplu.
@@ -988,13 +982,6 @@ ro:
       form_submit:
         title: Confirmă pentru a continua
         text: Ești sigur că vrei să realizezi această acțiune?
-      destroy_work_package:
-        title: Confirmă ștergerea %{label}
-        single_text: Ești sigur că vrei să ștergi pachetul de lucru
-        bulk_text: Ești sigur că vrei să ștergi următoarele %{label}?
-        has_children: 'Pachetul de lucru conține %{childUnits}:'
-        confirm_deletion_children: Recunosc că TOȚI descendenții pachetelor de lucru enumerate vor fi eliminați în mod recursiv.
-        deletes_children: De asemenea, toate pachetele de lucru minore și descendenții acestora vor fi șterse în mod recursiv.
       destroy_time_entry:
         title: Confirmarea ștergerii înregistrării timpului
         text: Ești sigur că vrei să ștergi următoarea înregistrare a timpului?

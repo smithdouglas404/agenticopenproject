@@ -40,12 +40,12 @@ RSpec.describe Wikis::Admin::OAuthClientInfoComponent, type: :component do
 
     it "renders the pending label" do
       render_inline(described_class.new(wiki_provider))
-      expect(page).to have_text(I18n.t("wikis.admin.wiki_providers.oauth.label_pending"))
+      expect(page).to have_text(I18n.t("wikis.admin.oauth_client_info_component.label_pending"))
     end
 
     it "renders the description" do
       render_inline(described_class.new(wiki_provider))
-      expect(page).to have_text(I18n.t("wikis.admin.wiki_providers.oauth.xwiki_oauth_description"))
+      expect(page).to have_text(I18n.t("wikis.admin.wiki_providers.xwiki.oauth.provider_oauth_description"))
     end
 
     it "renders a pencil icon button without a confirm dialog" do
@@ -65,14 +65,14 @@ RSpec.describe Wikis::Admin::OAuthClientInfoComponent, type: :component do
 
     it "renders the description" do
       render_inline(described_class.new(wiki_provider))
-      expect(page).to have_text(I18n.t("wikis.admin.wiki_providers.oauth.xwiki_oauth_description"))
+      expect(page).to have_text(I18n.t("wikis.admin.wiki_providers.xwiki.oauth.provider_oauth_description"))
     end
 
     it "renders a sync icon button with a confirm dialog" do
       render_inline(described_class.new(wiki_provider))
       button = page.find("a[href$='oauth_client/new']")
       expect(button["data-turbo-confirm"]).to eq(
-        I18n.t("wikis.admin.wiki_providers.oauth.confirm_replace_oauth_client")
+        I18n.t("wikis.admin.oauth_client_info_component.confirm_replace_oauth_client")
       )
     end
   end

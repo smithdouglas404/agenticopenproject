@@ -63,6 +63,20 @@ module OpenProject::Wikis
     replace_principal_references "Wikis::PageLink" => %i[author_id]
 
     register "openproject-wikis", author_url: "https://openproject.org" do
+      project_module :work_package_tracking do
+        permission :view_wiki_page_links,
+                   {},
+                   permissible_on: :project,
+                   dependencies: %i[view_work_packages],
+                   contract_actions: { wiki_page_links: %i[view] }
+
+        permission :manage_wiki_page_links,
+                   {},
+                   permissible_on: :project,
+                   dependencies: %i[view_work_packages],
+                   contract_actions: { wiki_page_links: %i[manage] }
+      end
+
       menu :work_package_split_view,
            :wikis,
            { tab: :wikis },
@@ -81,5 +95,8 @@ module OpenProject::Wikis
            caption: :project_module_wiki_platforms,
            icon: "browser"
     end
+
+    add_api_path(:wiki_page_link) { |page_link_id| "#{root}/wiki_page_links/#{page_link_id}" }
+    add_api_path(:wiki_provider) { |provider_id| "#{root}/wiki_providers/#{provider_id}" }
   end
 end

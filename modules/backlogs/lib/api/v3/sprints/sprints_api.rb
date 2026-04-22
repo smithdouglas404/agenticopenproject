@@ -33,10 +33,6 @@ module API
     module Sprints
       class SprintsAPI < ::API::OpenProjectAPI
         resources :sprints do
-          before do
-            guard_feature_flag(:scrum_projects)
-          end
-
           get &::API::V3::Utilities::Endpoints::Index
                  .new(model: Agile::Sprint)
                  .mount

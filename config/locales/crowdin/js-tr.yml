@@ -515,12 +515,6 @@ tr:
         sidebar_arrow: Projenin <b>ana menüsüne</b> dönmek için sol üst köşedeki dönüş okunu kullanın.
         welcome: En <b>önemli özellikleri</b> öğrenmek için üç dakikalık bir tanıtım gezintisine çıkın. <br> Tüm adımları tamamlamanızı öneririz. Turu istediğiniz zaman yeniden başlatabilirsiniz.
         wiki: "<b>wiki</b> içinde belgeleyebilir ve ekibinizle birlikte bilgi paylaşabilirsiniz."
-        backlogs:
-          overview: İşinizi <b>birikimler</b> görünümünde yönetin.
-          sprints: Sağ tarafta ürün biriktirme listesi ve hata biriktirme listesi var, solda da ilgili sprintler var. Burada <b>epikler, kullanıcı hikayeleri ve buglar</b> oluşturabilir, sürükleyip bırakarak öncelik sırasına koyabilir ve bunları bir sprint'e ekleyebilirsiniz.
-          task_board_arrow: "<b>Görev pano</b>nuzu görmek için Sprint açılır menüsünde açın..."
-          task_board_select: "... ve <b>görev panosu</b> kaydını seçin."
-          task_board: Görev panosu, <b>bu sprint için ilerlemeyi</b> görselleştirir. Yeni görevler veya engeller eklemek için bir kullanıcı hikayesinin yanındaki artı (+) simgesine tıklayın. <br> Sürükle bırak ile durum güncellenebilir.
         boards:
           overview: Görünümü değiştirmek ve çevik panolar görünümünü kullanarak projenizi yönetmek için <b>panolar</b>'ı seçin.
           lists_kanban: Burada panonuzda birden çok liste (sütun) oluşturabilirsiniz. Bu özellik, örneğin bir <b>Kanban panosu</b> oluşturmanıza olanak tanır.
@@ -987,13 +981,6 @@ tr:
       form_submit:
         title: Devam etmek için onaylayın
         text: Bu işlemi gerçekleştirmek istediğinizden emin misiniz?
-      destroy_work_package:
-        title: "%{label} için silme işlimini onaylayın"
-        single_text: Bu iş paketini silmek istediğinize emin misiniz?
-        bulk_text: Aşağıdaki %{label}'i silmek istediğinizden emin misiniz?
-        has_children: 'İş paketi %{childUnits} alt paketlerine sahip:'
-        confirm_deletion_children: Listelenen iş paketlerinin TÜM soylarının tekrar tekrar kaldırılacağını kabul ediyorum.
-        deletes_children: Tüm çocuk iş paketleri ve torunları da tekrar tekrar silinir.
       destroy_time_entry:
         title: Zaman girişinin silinmesini onaylayın
         text: Aşağıdaki zaman girişini silmek istediğinizden emin misiniz?

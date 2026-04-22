@@ -154,6 +154,7 @@ pt-PT:
         connection_timeout: 'O tempo de ligação ao servidor Jira expirou: %{message}'
         parse_error: 'Falha na análise da resposta da API do Jira: %{message}'
         api_error: A API do Jira devolveu o estado de erro %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projetos
         last_change: Última alteração
@@ -685,6 +686,37 @@ pt-PT:
   danger_dialog:
     confirmation_live_message_checked: O botão para prosseguir está agora ativo.
     confirmation_live_message_unchecked: O botão para prosseguir está agora inativo. Tem de assinalar a caixa de verificação para continuar.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Paginação
     prev: Anterior
@@ -1343,6 +1375,20 @@ pt-PT:
     index:
       no_results_title_text: Atualmente, não existem ritmos de trabalho.
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1805,6 +1851,7 @@ pt-PT:
         identity_url: URL de identidade
         parent: Grupo principal
         organizational_unit: Unidade organizacional
+        group_users: Group users
       group_detail:
         parent: Grupo principal
         organizational_unit: Unidade organizacional
@@ -1922,6 +1969,7 @@ pt-PT:
         confirmation: não coincide %{attribute}.
         could_not_be_copied: "%{dependency} não pode ser copiado (completamente)."
         does_not_exist: não existe.
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} só está disponível na edição OpenProject Enterprise."
         error_unauthorized: não pode ser acedido.
         error_readonly: tentou escrever, mas não é gravável.
@@ -1988,6 +2036,7 @@ pt-PT:
           attributes:
             parent_id:
               circular_dependency: criaria uma hierarquia circular de grupos.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2470,7 +2519,6 @@ pt-PT:
     avatar: Avatar
     base: 'Erro geral:'
     body: Corpo
-    blocks_ids: Identificações de pacotes de trabalho bloqueados
     category: Categoria
     comment: Comentário
     comments: Comentario
@@ -2927,6 +2975,7 @@ pt-PT:
       title: Complemento Enterprise
       plan_title: Complemento %{plan} Enterprise
       plan_name: Plano Enterprise %{plan}
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: Disponível a partir do %{plan_name}.
       unlimited: Ilimitado
       already_have_token: 'Já tem um token? Adicione-o com o botão abaixo para atualizar para o plano Enterprise reservado.
@@ -3890,6 +3939,10 @@ pt-PT:
   label_custom_pdf_export_settings: Configurações de exportação de PDF personalizadas
   label_custom_favicon: Favicon personalizado
   label_custom_touch_icon: Ícone de toque personalizado
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: Terminar Sessão
   label_mapping_for: 'Mapeamento para: %{attribute}'
   label_main_menu: Menu lateral
@@ -4947,6 +5000,7 @@ pt-PT:
     '
   setting_app_subtitle: Subtítulo da aplicação
   setting_app_title: Título da aplicação
+  setting_organization_name: Organization name
   setting_attachment_max_size: Tamanho máx. do anexo
   setting_show_work_package_attachments: Mostrar anexos no separador dos ficheiros por padrão
   setting_antivirus_scan_mode: Modo de digitalização

@@ -41,6 +41,9 @@ ko:
         start_date: 날짜
         start_time: 시작 시간
         start_time_hour: 시작 시간
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: 공유
       meeting_agenda_item:
         title: 제목
@@ -48,9 +51,15 @@ ko:
         duration_in_minutes: 기간
         description: 메모
         presenter: 발표자
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: 제목
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: 빈도
         interval: 간격
         start_date: '시작:'
@@ -59,6 +68,10 @@ ko:
         end_after: 미팅 시리즈 종료
         end_date: 종료 날짜
         iterations: 항목
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: 시작 시간
       meeting_participant:
@@ -415,6 +428,11 @@ ko:
     ical_response:
       update_failed: 참여 상태를 업데이트할 수 없습니다.
       meeting_not_found: 지정된 UID에 대한 미팅을 찾을 수 없습니다.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: 제목 없는 섹션
     delete_confirmation: 이 섹션을 삭제하면 모든 의제 항목도 삭제됩니다. 계속하시겠습니까?
@@ -647,9 +665,9 @@ ko:
   text_exit_draft_mode_dialog_template_title: 이 미팅 시리즈의 첫 번째 항목을 열어보시겠습니까?
   text_exit_draft_mode_dialog_template_subtitle: 이후에는 초안 모드로 돌아갈 수 없습니다.
   label_meeting_template_sharing: 공유
-  label_meeting_template_sharing_none: 이 프로젝트만
-  label_meeting_template_sharing_descendants: 하위 프로젝트
-  label_meeting_template_sharing_system: 모든 프로젝트
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: 이 템플릿은 해당 인스턴스의 하위 프로젝트 또는 다른 프로젝트와 공유할 수 있습니다. 의제 항목과 첨부 파일만 복사됩니다.
   text_meeting_not_editable_anymore: 이 미팅은 더 이상 편집할 수 없습니다.
   text_meeting_not_present_anymore: 이 미팅은 삭제되었습니다. 다른 미팅을 선택해 주세요.

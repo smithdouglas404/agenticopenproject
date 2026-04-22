@@ -34,8 +34,6 @@ module API
       class SprintsByProjectAPI < ::API::OpenProjectAPI
         resources :sprints do
           after_validation do
-            guard_feature_flag(:scrum_projects)
-
             authorize_in_project(:view_sprints, project: @project)
           end
 

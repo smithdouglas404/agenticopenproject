@@ -25,7 +25,7 @@ zh-TW:
     name: OpenProject 文件
     description: 一個允許在 OpenProject 專案中建立文件的外掛。
   attributes:
-    collaborative_editing_hocuspocus_url: Hocuspocus server URL
+    collaborative_editing_hocuspocus_url: Hocuspocus 伺服器 URL
   activerecord:
     errors:
       models:
@@ -72,8 +72,8 @@ zh-TW:
     show_edit_view:
       connection_error_notice:
         description_server_unavailable: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
+          由於即時文字協作伺服器無法連線，因此無法開啟文件。
+          如果問題仍然存在，請聯絡管理員。
         action: 再試一次
       tabs: 文件標籤
     index_page:
@@ -87,8 +87,8 @@ zh-TW:
       collaboration_settings: 即時協作
     last_updated_at: 最後儲存 %{time}。
     info_line:
-      currently_offline: You are currently offline.
-      connection_restored: You are now back online.
+      currently_offline: 你目前狀態為離線。
+      connection_restored: 您現在已經重新上線。
     active_editors: 活躍的編輯者
     active_editors_count:
       other: "%{count} 活躍的編輯"
@@ -122,8 +122,8 @@ zh-TW:
           some_unwritable: 某些值透過環境變數設定，無法在此編輯。
         hocuspocus_server_url:
           label: Hocuspocus 伺服器 URL
-          caption: The WebSocket address of a working Hocuspocus server.
-          invalid_scheme: Must use a WebSocket protocol (ws:// or wss://).
+          caption: 工作中的 Hocuspocus 伺服器的 WebSocket 位址。
+          invalid_scheme: 必須使用 WebSocket 通訊協定 (ws:// 或 wss://)。
         hocuspocus_server_secret:
           label: 用戶端密碼
           caption: 貼上 Hocuspocus 伺服器提供的秘碼。

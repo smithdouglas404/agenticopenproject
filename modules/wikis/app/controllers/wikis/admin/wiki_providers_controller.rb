@@ -38,7 +38,6 @@ module Wikis
 
       before_action :require_admin
       before_action :find_wiki_provider, only: %i[edit update destroy confirm_destroy edit_general_info replace_oauth_application]
-      before_action :ensure_valid_wizard_parameters, only: [:new]
 
       menu_item :wiki_providers
 
@@ -47,7 +46,7 @@ module Wikis
       end
 
       def new
-        @wiki_provider = Wikis::XWikiProvider.new if @wiki_provider.blank?
+        @wiki_provider = continue_from_wizard_params || Wikis::XWikiProvider.new
 
         @wizard = wiki_provider_wizard(@wiki_provider)
         @target_step = @wizard.prepare_next_step
@@ -169,7 +168,7 @@ module Wikis
       def ensure_valid_wizard_parameters
         return if params[:continue_wizard].blank?
 
-        @wiki_provider = Wikis::XWikiProvider.visible.find(params[:continue_wizard])
+        Wikis::Provider.visible.find(params[:continue_wizard])
       end
 
       def wiki_provider_params
@@ -177,8 +176,7 @@ module Wikis
       end
 
       def wiki_provider_wizard(wiki_provider)
-        Wikis::Adapters::Registry.resolve("#{wiki_provider}.components.setup_wizard")
-                                 .new(model: wiki_provider, user: current_user)
+        wiki_provider.resolve("components.setup_wizard", user: current_user)
       end
     end
   end

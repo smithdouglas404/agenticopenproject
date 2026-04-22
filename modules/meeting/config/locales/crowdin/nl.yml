@@ -42,6 +42,9 @@ nl:
         start_date: Datum
         start_time: Starttijd
         start_time_hour: Starttijd
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: Titel
@@ -49,9 +52,15 @@ nl:
         duration_in_minutes: Duur
         description: Notities
         presenter: Presentator
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Titel
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frequentie
         interval: Interval
         start_date: Begint op
@@ -60,6 +69,10 @@ nl:
         end_after: Vergaderreeks eindigt
         end_date: Einddatum
         iterations: Gebeurtenissen
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -420,6 +433,11 @@ nl:
     ical_response:
       update_failed: Could not update participation status.
       meeting_not_found: Meeting not found for the given UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Naamloze sectie
     delete_confirmation: Deleting the section will also delete all of its agenda items. Are you sure you want to do this?
@@ -658,9 +676,9 @@ nl:
   text_exit_draft_mode_dialog_template_title: Open the first occurrence of this meeting series?
   text_exit_draft_mode_dialog_template_subtitle: You cannot return to draft mode after this.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: Deze vergadering kan niet meer bewerkt worden.
   text_meeting_not_present_anymore: Deze vergadering is verwijderd. Selecteer een andere vergadering.

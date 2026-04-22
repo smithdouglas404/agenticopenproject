@@ -39,10 +39,10 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
   current_user { user }
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
-  let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, effective_date: Date.tomorrow) }
+  let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
   let(:story_points) { 5 }
   let(:story) do
-    create(:story,
+    create(:work_package,
            subject: "Test Story Subject",
            project:,
            type: type_feature,
@@ -50,15 +50,11 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
            priority: default_priority,
            story_points:,
            position: 1,
-           version: sprint)
+           sprint: sprint)
   end
   let(:permissions) { %i[manage_sprint_items] }
 
   before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
-
     mock_permissions_for(current_user) do |mock|
       mock.allow_in_project(*permissions, project:)
     end
@@ -93,7 +89,7 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
 
     expect(page).to have_css("action-menu")
     expect(page).to have_css(%(include-fragment[src*="menu"]))
-    expect(page).to have_element(:button, id: /\Astory_#{story.id}_menu-button\z/)
+    expect(page).to have_element(:button, id: /\Awork_package_#{story.id}_menu-button\z/)
   end
 
   describe "drag handle behaviour" do

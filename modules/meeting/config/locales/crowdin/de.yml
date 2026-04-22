@@ -24,7 +24,7 @@
 de:
   plugin_openproject_meeting:
     name: OpenProject Besprechungen
-    description: Dieses Modul fügt Funktionen zur Unterstützung von Besprechungen zu OpenProject hinzu. Sie können Besprechungen planen und dabei Teilnehmer aus demselben Projekt auswählen, die an der Besprechung teilnehmen sollen. Es kann eine Tagesordnung erstellt und an die Eingeladenen gesendet werden. Nach der Besprechung können die Teilnehmer ausgewählt und Protokolle auf der Grundlage der Tagesordnung erstellt werden. Schließlich kann das Protokoll an alle Teilnehmer und Eingeladenen gesendet werden.
+    description: Dieses Modul fügt Funktionen zur Unterstützung von Besprechungen zu OpenProject hinzu. Sie können Besprechungen planen und dabei Teilnehmende aus demselben Projekt auswählen, die an der Besprechung teilnehmen sollen. Es kann eine Tagesordnung erstellt und an die Eingeladenen gesendet werden. Nach der Besprechung können die Teilnehmenden ausgewählt und Protokolle auf der Grundlage der Tagesordnung erstellt werden. Schließlich kann das Protokoll an alle Teilnehmenden und Eingeladenen gesendet werden.
   activerecord:
     attributes:
       meeting:
@@ -42,6 +42,9 @@ de:
         start_date: Datum
         start_time: Startzeit
         start_time_hour: Startzeit
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Teilen
       meeting_agenda_item:
         title: Titel
@@ -49,9 +52,15 @@ de:
         duration_in_minutes: Dauer
         description: Anmerkungen
         presenter: Referent
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Titel
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Häufigkeit
         interval: Intervall
         start_date: Startet am
@@ -60,6 +69,10 @@ de:
         end_after: Ende der Terminserie
         end_date: Enddatum
         iterations: Ereignisse
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Startzeit
       meeting_participant:
@@ -203,13 +216,13 @@ de:
   meeting:
     participants:
       label:
-        participants: Teilnehmer
+        participants: Teilnehmende
         attended: Teilgenommen
         mark_as_attended: Als teilgenommen markieren
         mark_all_as_attended: Alle als teilgenommen markieren
-        remove_participant: Teilnehmer entfernen
-        manage_participants: Teilnehmer verwalten
-        no_participants: Keine Teilnehmer
+        remove_participant: Teilnehmende entfernen
+        manage_participants: Teilnehmende verwalten
+        no_participants: Keine Teilnehmende
         show_all: Alle anzeigen
         apply_to_upcoming_meetings: Wenden Sie diese Änderungen auf alle kommenden Besprechungen in dieser Terminserie an
       text:
@@ -358,7 +371,7 @@ de:
       sidepanel:
         title: E-Mail-Kalender-Aktualisierungen
         description:
-          disabled: Die Teilnehmer erhalten keine E-Mail bei Änderungen an der Besprechung.
+          disabled: Teilnehmende erhalten keine E-Mail bei Änderungen an der Besprechung.
           enabled: Alle Teilnehmenden erhalten aktualisierte Kalendereinladungen per E-Mail bei wesentlichen Änderungen der Besprechung.
           change_via_template: Bearbeiten Sie die Vorlage der Terminserie, um diese Einstellung zu ändern.
       dialog:
@@ -369,7 +382,7 @@ de:
           enable: 'Alle Teilnehmenden erhalten aktualisierte Kalendereinladungen per E-Mail, wenn sich das Datum, die Uhrzeit, der Ort oder die Teilnehmenden der Besprechung geändert haben. Sobald die Funktion aktiviert ist, wird sofort eine E-Mail an alle Teilnehmenden gesendet.
 
             '
-          disable: 'Die Teilnehmer erhalten keine aktualisierten Kalendereinladungen mehr per E-Mail, wenn sich das Datum, die Uhrzeit, der Ort oder die Teilnehmer der Besprechung geändert haben. Wenn sie bereits eine Einladung für diese Besprechung hatten, wird diese nicht mehr aktualisiert und könnte veraltete Informationen anzeigen.
+          disable: 'Teilnehmende erhalten keine aktualisierten Kalendereinladungen mehr per E-Mail, wenn sich Datum, Uhrzeit, Ort oder Teilnehmende der Besprechung ändern. Wenn sie bereits eine Einladung für diese Besprechung erhalten haben, wird diese nicht mehr aktualisiert und könnte veraltete Informationen enthalten.
 
             '
         confirm_label:
@@ -390,7 +403,7 @@ de:
           enabled: 'Alle Teilnehmenden erhalten aktualisierte Kalendereinladungen per E-Mail, wenn Sie Teilnehmende hinzufügen oder entfernen.
 
             '
-          disabled: 'Die Teilnehmer erhalten keine E-Mail, die sie über Änderungen des Datums, der Uhrzeit oder der Teilnehmer der Besprechung informiert.
+          disabled: 'Die Teilnehmended erhalten keine E-Mail, die sie über Änderungen des Datums, der Uhrzeit oder der Teilnehmer der Besprechung informiert.
 
             '
         occurrence:
@@ -420,6 +433,11 @@ de:
     ical_response:
       update_failed: Teilnahmestatus konnte nicht aktualisiert werden.
       meeting_not_found: Besprechung für die angegebene UID nicht gefunden.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Unbenannter Abschnitt
     delete_confirmation: Wenn Sie den Abschnitt löschen, werden auch alle zugehörigen Tagesordnungspunkte gelöscht. Möchten Sie fortfahren?
@@ -645,7 +663,7 @@ de:
   text_meeting_draft_description: Bereiten Sie Ihre Tagesordnung als Entwurf vor. Besprechungen in diesem Modus versenden keine Kalenderaktualisierungen oder Einladungen, selbst wenn Sie Besprechungsdetails ändern oder Teilnehmende hinzufügen/entfernen.
   text_meeting_open_description: Sie können Tagesordnungspunkte hinzufügen oder entfernen und bearbeiten. Sobald die Tagesordnung fertig ist, wechseln Sie auf In Durchführung, um Ergebnisse zu dokumentieren.
   text_meeting_closed_description: Diese Besprechung ist abgeschlossen. Sie können keine Tagesordnungspunkte mehr hinzufügen/entfernen.
-  text_meeting_in_progress_description: Sie können die Tagesordnung ändern, die Ergebnisse für jeden Agendapunkt dokumentieren und die Anwesenheit der Teilnehmer verfolgen. Sobald die Besprechung abgeschlossen ist, können Sie sie als geschlossen markieren, um sie zu sperren.
+  text_meeting_in_progress_description: Sie können die Tagesordnung ändern, die Ergebnisse für jeden Agendapunkt dokumentieren und die Anwesenheit der Teilnehmenden verfolgen. Sobald die Besprechung abgeschlossen ist, können Sie sie als geschlossen markieren, um sie zu sperren.
   text_meeting_open_dropdown_description: Alle bestehenden Ergebnisse bleiben bestehen, aber die Benutzer werden nicht in der Lage sein, neue Ergebnisse hinzuzufügen.
   text_meeting_in_progress_dropdown_description: Ergebnisse der Besprechung festhalten, wie z. B. Informationsbedarf oder Entscheidungen, die während der Besprechung getroffen werden.
   text_meeting_closed_dropdown_description: Diese Besprechung ist geschlossen. Sie können keine Tagesordnungspunkte mehr hinzufügen/entfernen.
@@ -658,9 +676,9 @@ de:
   text_exit_draft_mode_dialog_template_title: Das erste Vorkommen dieser Terminserie öffnen?
   text_exit_draft_mode_dialog_template_subtitle: Sie können danach nicht mehr in den Entwurfsmodus zurückkehren.
   label_meeting_template_sharing: Teilen
-  label_meeting_template_sharing_none: Nur dieses Projekt
-  label_meeting_template_sharing_descendants: Unterprojekte
-  label_meeting_template_sharing_system: Alle Projekte
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Diese Vorlage kann mit Unterprojekten oder anderen Projekten geteilt werden. Es werden nur die Tagesordnungspunkte und Anhänge kopiert.
   text_meeting_not_editable_anymore: Diese Besprechung ist nicht mehr bearbeitbar.
   text_meeting_not_present_anymore: Dieses Meeting wurde gelöscht. Bitte wählen Sie eine andere Besprechung.
@@ -684,7 +702,7 @@ de:
   text_agenda_item_dialog_skipping_cancelled_many: 'Hinweis: Überspringe %{count} abgesagte Besprechungen.'
   text_work_package_add_to_meeting_hint: Über den Button "Zur Besprechung hinzufügen" können Sie dieses Arbeitspaket zu einer zukünftigen Besprechung hinzuzufügen.
   text_work_package_has_no_past_meeting_agenda_items: Dieses Arbeitspaket wurde in einer früheren Besprechung nicht als Tagesordnungspunkt hinzugefügt.
-  text_email_updates_muted: E-Mail-Kalenderaktualisierungen sind deaktiviert. Die Teilnehmer erhalten keine aktualisierten Einladungen per E-Mail, wenn Sie Änderungen vornehmen.
+  text_email_updates_muted: E-Mail-Kalenderaktualisierungen sind deaktiviert. Teilnehmende erhalten keine aktualisierten Einladungen per E-Mail, wenn Sie Änderungen vornehmen.
   text_email_updates_enabled: E-Mail-Kalenderaktualisierungen sind aktiviert. Alle Teilnehmenden erhalten aktualisierte Einladungen per E-Mail, wenn Sie Änderungen vornehmen.
   my_account:
     access_tokens:
@@ -694,7 +712,7 @@ de:
         title: iCalendar für Besprechungen
         table_title: iCalendar-Besprechungs-Token
         text_hint: iCalendar Besprechungs-Token ermöglichen es Benutzern, ihre Besprechungen zu abonnieren und aktuelle Informationen in externen Kalendern anzuzeigen.
-        disabled_text: iCalendar Besprechungs-Abonnements wurden nicht vom Administrator aktiviert. Bitte wenden Sie sich an Ihren Administrator, um diese Funktion zu nutzen.
+        disabled_text: iCalendar Besprechungs-Abonnements wurden nicht von Administratoren aktiviert. Bitte wenden Sie sich an Ihre Administratoren, um diese Funktion zu nutzen.
         add_button: Im Kalender abonnieren
   my:
     access_token:

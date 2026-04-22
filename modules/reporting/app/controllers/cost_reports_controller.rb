@@ -164,6 +164,8 @@ class CostReportsController < ApplicationController
   # specified record or renders the updated table on XHR
   def update
     if save_query? # save
+      return deny_access unless allowed_in_report?(:save, @query)
+
       old_query = @query
       prepare_query
       if old_query
@@ -197,6 +199,8 @@ class CostReportsController < ApplicationController
   # Rename a record and update its publicity. Redirects to the updated record or
   # renders the updated name on XHR
   def rename
+    return deny_access unless allowed_in_report?(:rename, @query)
+
     @query.name = params[:query_name]
     @query.public! if make_query_public?
     @query.save!

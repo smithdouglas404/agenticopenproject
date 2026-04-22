@@ -32,7 +32,7 @@ See COPYRIGHT and LICENSE files for more details.
     component_wrapper do
       flex_layout(test_selector: "op-work-package-wikis-tab-container") do |flex|
         providers.each do |provider|
-          flex.with_row do
+          flex.with_row(mb: 3) do
             render(Wikis::ProviderLinkGroupComponent.new(provider, work_package:))
           end
         end

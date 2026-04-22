@@ -110,6 +110,87 @@ describe('WorkPackage', () => {
     });
   });
 
+  describe('displayId', () => {
+    afterEach(() => {
+      source = undefined;
+    });
+
+    describe('when displayId is present (semantic mode)', () => {
+      beforeEach(() => {
+        source = { id: 42, displayId: 'PROJ-7' };
+        createWorkPackage();
+      });
+
+      it('should return the semantic identifier', () => {
+        expect(workPackage.displayId).toEqual('PROJ-7');
+      });
+
+      it('should not override the numeric id', () => {
+        expect(workPackage.id).toEqual('42');
+      });
+    });
+
+    describe('when displayId is present (classic mode)', () => {
+      beforeEach(() => {
+        source = { id: 42, displayId: '42' };
+        createWorkPackage();
+      });
+
+      it('should return the numeric displayId as string', () => {
+        expect(workPackage.displayId).toEqual('42');
+      });
+    });
+
+});
+
+  describe('formattedId', () => {
+    afterEach(() => {
+      source = undefined;
+    });
+
+    it('should return semantic identifier without hash prefix', () => {
+      source = { id: 42, displayId: 'PROJ-7' };
+      createWorkPackage();
+
+      expect(workPackage.formattedId).toEqual('PROJ-7');
+    });
+
+    it('should prefix numeric id with # in classic mode', () => {
+      source = { id: 42, displayId: '42' };
+      createWorkPackage();
+
+      expect(workPackage.formattedId).toEqual('#42');
+    });
+
+});
+
+  describe('subjectWithId', () => {
+    afterEach(() => {
+      source = undefined;
+    });
+
+    it('should include semantic displayId without hash in parentheses', () => {
+      source = { id: 42, displayId: 'PROJ-7', subject: 'Fix the bug' };
+      createWorkPackage();
+
+      expect(workPackage.subjectWithId()).toEqual('Fix the bug (PROJ-7)');
+    });
+
+    it('should include hash-prefixed numeric id in classic mode', () => {
+      source = { id: 42, displayId: '42', subject: 'Fix the bug' };
+      createWorkPackage();
+
+      expect(workPackage.subjectWithId()).toEqual('Fix the bug (#42)');
+    });
+
+    it('should omit id suffix for new resources', () => {
+      source = { subject: 'New task' };
+      createWorkPackage();
+
+      expect(workPackage.subjectWithId()).toEqual('New task');
+    });
+  });
+
   describe('when retrieving `canAddAttachment`', () => {
     beforeEach(createWorkPackage);
 

@@ -35,7 +35,13 @@ module Wikis
     has_many :page_links, dependent: :destroy
 
     scope :enabled, -> { where(enabled: true) }
-    scope :visible, ->(user = User.current) { user.admin? ? all : none }
+    scope :visible, lambda { |user = User.current|
+      if user.admin? || user.allowed_in_any_project?(:view_wiki_page_links)
+        all
+      else
+        none
+      end
+    }
 
     validates :name, presence: true, uniqueness: true, length: { maximum: 255 }
 
@@ -47,8 +53,8 @@ module Wikis
       def registry_prefix = raise SubclassResponsibilityError
     end
 
-    def resolve(registry_path)
-      Adapters::Registry["#{self.class.registry_prefix}.#{registry_path}"].new(self)
+    def resolve(registry_path, **init_options)
+      Adapters::Registry["#{self.class.registry_prefix}.#{registry_path}"].new(model: self, **init_options)
     end
 
     private

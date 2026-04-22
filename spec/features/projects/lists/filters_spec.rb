@@ -868,7 +868,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project, public_project)
         projects_page.expect_projects_in_order(project)
 
-        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+        wait_for_turbo_frame { projects_page.remove_filter("project_phase_#{stage.definition_id}") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -879,7 +879,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project, public_project)
         projects_page.expect_projects_in_order(project)
 
-        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+        wait_for_turbo_frame { projects_page.remove_filter("project_phase_#{stage.definition_id}") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -891,7 +891,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project, public_project)
         projects_page.expect_projects_in_order(project)
 
-        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+        wait_for_turbo_frame { projects_page.remove_filter("project_phase_#{stage.definition_id}") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 
@@ -902,7 +902,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
         projects_page.expect_projects_not_listed(development_project, public_project)
         projects_page.expect_projects_in_order(project)
 
-        projects_page.remove_filter("project_phase_#{stage.definition_id}")
+        wait_for_turbo_frame { projects_page.remove_filter("project_phase_#{stage.definition_id}") }
 
         projects_page.expect_projects_in_order(development_project, project, public_project)
 

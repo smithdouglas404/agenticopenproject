@@ -154,6 +154,7 @@ zh-CN:
         connection_timeout: 与 Jira 服务器的连接超时：%{message}
         parse_error: 无法解析 Jira API 响应：%{message}
         api_error: Jira API 返回错误状态 %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: 项目
         last_change: 上次更改
@@ -675,6 +676,37 @@ zh-CN:
   danger_dialog:
     confirmation_live_message_checked: 继续按钮现已激活。
     confirmation_live_message_unchecked: 继续按钮现已失效。您需要勾选复选框才能继续。
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: 分页
     prev: 上一页
@@ -1324,6 +1356,20 @@ zh-CN:
     index:
       no_results_title_text: 目前没有工作流。
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1785,6 +1831,7 @@ zh-CN:
         identity_url: 身份 URL
         parent: 父群组
         organizational_unit: 组织单元
+        group_users: Group users
       group_detail:
         parent: 父群组
         organizational_unit: 组织单元
@@ -1902,6 +1949,7 @@ zh-CN:
         confirmation: 不匹配 %{attribute}。
         could_not_be_copied: 无法（完全）复制 %{dependency}。
         does_not_exist: 不存在。
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action}仅在 OpenProject 企业版中可用。"
         error_unauthorized: 无法访问。
         error_readonly: 曾尝试被写入，但不可写。
@@ -1968,6 +2016,7 @@ zh-CN:
           attributes:
             parent_id:
               circular_dependency: 将创建循环群组层次结构。
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2430,7 +2479,6 @@ zh-CN:
     avatar: 头像
     base: 一般错误：
     body: 正文
-    blocks_ids: 被工作包阻止的IDs
     category: 类别
     comment: 注释
     comments: 评论
@@ -2867,6 +2915,7 @@ zh-CN:
       title: 企业附加组件
       plan_title: 企业 %{plan} 附加组件
       plan_name: "%{plan} 企业计划"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: 从 %{plan_name} 开始可用。
       unlimited: 无限制
       already_have_token: '已经有令牌？使用下方按钮添加以升级到预订的企业版方案。
@@ -3829,6 +3878,10 @@ zh-CN:
   label_custom_pdf_export_settings: 自定义 PDF 导出设置
   label_custom_favicon: 自定义图标
   label_custom_touch_icon: 自定义触摸图标
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: 注销
   label_mapping_for: 映射： %{attribute}
   label_main_menu: 侧边菜单
@@ -4889,6 +4942,7 @@ zh-CN:
     '
   setting_app_subtitle: 应用副标题
   setting_app_title: 应用程序标题
+  setting_organization_name: Organization name
   setting_attachment_max_size: 最大的附件大小
   setting_show_work_package_attachments: 默认在文件选项卡中显示附件
   setting_antivirus_scan_mode: 扫描模式

@@ -39,11 +39,11 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
   current_user { user }
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
-  let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, effective_date: Date.tomorrow) }
+  let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
   let(:position) { 2 }
   let(:max_position) { 3 }
   let(:story) do
-    create(:story,
+    create(:work_package,
            subject: "Test Story",
            project:,
            type: type_feature,
@@ -51,13 +51,7 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
            priority: default_priority,
            story_points: 5,
            position:,
-           version: sprint)
-  end
-
-  before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
+           sprint: sprint)
   end
 
   def render_component(position: 2, max_position: 3)
@@ -69,11 +63,11 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
     it "renders stable ids for the list and primary actions" do
       render_component
 
-      expect(page).to have_element(:ul, id: /\Astory_#{story.id}_menu-list\z/)
-      expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_details\z/)
-      expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_fullscreen\z/)
-      expect(page).to have_element(:"clipboard-copy", id: /\Astory_#{story.id}_menu_copy_url_to_clipboard\z/)
-      expect(page).to have_element(:"clipboard-copy", id: /\Astory_#{story.id}_menu_copy_work_package_id\z/)
+      expect(page).to have_element(:ul, id: /\Awork_package_#{story.id}_menu-list\z/)
+      expect(page).to have_element(:a, id: /\Awork_package_#{story.id}_menu_open_details\z/)
+      expect(page).to have_element(:a, id: /\Awork_package_#{story.id}_menu_open_fullscreen\z/)
+      expect(page).to have_element(:"clipboard-copy", id: /\Awork_package_#{story.id}_menu_copy_url_to_clipboard\z/)
+      expect(page).to have_element(:"clipboard-copy", id: /\Awork_package_#{story.id}_menu_copy_work_package_id\z/)
     end
 
     it "shows Open details link (split view)" do
@@ -104,7 +98,7 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
       expect(page).to have_octicon(:copy)
       expect(page).to have_element(
         :"clipboard-copy",
-        id: "story_#{story.id}_menu_copy_url_to_clipboard",
+        id: "work_package_#{story.id}_menu_copy_url_to_clipboard",
         value: /\/work_packages\/#{story.id}\z/,
         text: "Copy URL to clipboard"
       )
@@ -116,7 +110,7 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
       expect(page).to have_octicon(:hash)
       expect(page).to have_element(
         :"clipboard-copy",
-        id: "story_#{story.id}_menu_copy_work_package_id",
+        id: "work_package_#{story.id}_menu_copy_work_package_id",
         value: story.id.to_s,
         text: "Copy work package ID"
       )

@@ -42,6 +42,9 @@ hu:
         start_date: dátum
         start_time: Kezdés
         start_time_hour: Kezdés
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: Cím
@@ -49,9 +52,15 @@ hu:
         duration_in_minutes: Időtartam
         description: Jegyzet
         presenter: Bemutató
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Cím
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Gyakoriság
         interval: Időköz
         start_date: Kezdés ideje
@@ -60,6 +69,10 @@ hu:
         end_after: Az ismétlődő megbeszélés véget ér
         end_date: Záró dátuma
         iterations: Előfordulások
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Start time
       meeting_participant:
@@ -420,6 +433,11 @@ hu:
     ical_response:
       update_failed: Nem sikerült frissíteni a részvételi státuszt.
       meeting_not_found: Meeting not found for the given UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Untitled section
     delete_confirmation: Deleting the section will also delete all of its agenda items. Are you sure you want to do this?
@@ -658,9 +676,9 @@ hu:
   text_exit_draft_mode_dialog_template_title: Open the first occurrence of this meeting series?
   text_exit_draft_mode_dialog_template_subtitle: You cannot return to draft mode after this.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: Ez a megbeszélés már nem szerkeszthető.
   text_meeting_not_present_anymore: Ez a megbeszélés törlésre került. Kérjük, válasszon ki egy másik megbeszélést.

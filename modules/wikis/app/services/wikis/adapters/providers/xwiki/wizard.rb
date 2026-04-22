@@ -38,13 +38,13 @@ module Wikis
 
           step :oauth_application,
                section: :oauth_configuration,
-               if: ->(provider) { provider.authenticate_via_oauth2? },
+               if: ->(provider) { provider.authenticate_via_two_way_oauth2? },
                completed_if: ->(provider) { provider.oauth_application.present? },
                preparation: :prepare_oauth_application
 
           step :oauth_client,
                section: :oauth_configuration,
-               if: ->(provider) { provider.authenticate_via_oauth2? },
+               if: ->(provider) { provider.authenticate_via_two_way_oauth2? },
                completed_if: ->(provider) { provider.oauth_client.present? }
 
           private

@@ -547,8 +547,14 @@ RSpec.describe "Meeting notifications", :js do
     let(:show_page) { Pages::Meetings::Show.new(template_meeting) }
 
     before do
-      create(:scheduled_meeting, recurring_meeting:)
       template_meeting.update!(notify: true)
+      # After the scheduled_meetings refactor, InitNextOccurrenceJob creates a real Meeting
+      # occurrence record. Both tests require this occurrence to exist:
+      # send_emails? returns false for a series template that has no
+      # non-cancelled occurrence Meeting records. The "add participant" test additionally relies
+      # on it so that add_to_upcoming_occurrences can propagate the new participant to the occurrence,
+      # which is why that test now expects 5 emails instead of the previous 3.
+      RecurringMeetings::InitNextOccurrenceJob.perform_now(recurring_meeting, recurring_meeting.first_occurrence.to_time)
       create(:meeting_participant, meeting: template_meeting, user: other_user, invited: true)
       third_user
     end
@@ -566,11 +572,18 @@ RSpec.describe "Meeting notifications", :js do
 
       perform_enqueued_jobs
 
-      # 1 to the new user + 2 to the existing participants
-      expect(ActionMailer::Base.deliveries.size).to eq 3
+      # apply_to_upcoming is enabled by default on templates.
+      # 3 mails for template (invite + 2 participant_added) and
+      # 2 mails for the upcoming instantiated occurrence (invite + participant_added).
+      expect(ActionMailer::Base.deliveries.size).to eq 5
 
-      expect(ActionMailer::Base.deliveries.map(&:to).flatten)
-        .to contain_exactly user.mail, other_user.mail, third_user.mail
+      recipients = ActionMailer::Base.deliveries.map(&:to).flatten
+      expect(recipients.tally)
+        .to eq({
+                 user.mail => 2,
+                 other_user.mail => 1,
+                 third_user.mail => 2
+               })
     end
 
     it "notifies all remaining participants when a participant is removed" do

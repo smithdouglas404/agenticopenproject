@@ -42,6 +42,9 @@ es:
         start_date: Fecha
         start_time: Hora de inicio
         start_time_hour: Hora de inicio
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Compartiendo
       meeting_agenda_item:
         title: Título
@@ -49,9 +52,15 @@ es:
         duration_in_minutes: Duración
         description: Notas
         presenter: Responsable
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Título
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frecuencia
         interval: Intervalo
         start_date: Empieza el
@@ -60,6 +69,10 @@ es:
         end_after: Fin de la serie de reuniones
         end_date: Fecha de finalización
         iterations: Repeticiones
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Hora de inicio
       meeting_participant:
@@ -420,6 +433,11 @@ es:
     ical_response:
       update_failed: No se ha podido actualizar el estado de participación.
       meeting_not_found: No se ha encontrado ninguna reunión con el UID proporcionado.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Sección sin título
     delete_confirmation: Al eliminar esta sección también se eliminarán todos sus puntos de agenda. ¿Seguro que desea hacerlo?
@@ -656,9 +674,9 @@ es:
   text_exit_draft_mode_dialog_template_title: "¿Abrir la primera repetición de esta serie de reuniones?"
   text_exit_draft_mode_dialog_template_subtitle: No podrás volver al modo Borrador después de esto.
   label_meeting_template_sharing: Compartiendo
-  label_meeting_template_sharing_none: Solo este proyecto
-  label_meeting_template_sharing_descendants: Subproyectos
-  label_meeting_template_sharing_system: Todos los proyectos
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Esta plantilla se puede compartir con subproyectos u otros proyectos en esta instancia. Solo se copiarán los elementos del orden del día y los archivos adjuntos.
   text_meeting_not_editable_anymore: Esta reunión ya no es editable.
   text_meeting_not_present_anymore: Esta reunión ha sido eliminada. Por favor, seleccione otra reunión.

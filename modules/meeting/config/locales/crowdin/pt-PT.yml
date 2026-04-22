@@ -42,6 +42,9 @@ pt-PT:
         start_date: Data
         start_time: Hora de início
         start_time_hour: Hora de início
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Partilhar
       meeting_agenda_item:
         title: Título
@@ -49,9 +52,15 @@ pt-PT:
         duration_in_minutes: Duração
         description: Notas
         presenter: Apresentador
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Título
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Frequência
         interval: Intervalo
         start_date: Inicia em
@@ -60,6 +69,10 @@ pt-PT:
         end_after: Fim da série de reuniões
         end_date: Data de fim
         iterations: Ocorrências
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Hora de início
       meeting_participant:
@@ -420,6 +433,11 @@ pt-PT:
     ical_response:
       update_failed: Não foi possível atualizar o estado de participação.
       meeting_not_found: Reunião não encontrada com o UID fornecido.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Secção sem título
     delete_confirmation: A eliminação da secção também irá eliminar os seus pontos da ordem de trabalhos. Tem a certeza de que pretende fazê-lo?
@@ -658,9 +676,9 @@ pt-PT:
   text_exit_draft_mode_dialog_template_title: Abrir a primeira ocorrência desta série de reuniões?
   text_exit_draft_mode_dialog_template_subtitle: Depois disso, não pode voltar ao modo de rascunho.
   label_meeting_template_sharing: Partilhar
-  label_meeting_template_sharing_none: Apenas este projeto
-  label_meeting_template_sharing_descendants: Sub-projetos
-  label_meeting_template_sharing_system: Todos os projetos
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Este modelo pode ser partilhado com sub-projetos ou outros projetos nesta instância. Só os elementos da agenda e os anexos serão copiados.
   text_meeting_not_editable_anymore: Esta reunião não é mais editável.
   text_meeting_not_present_anymore: Esta reunião foi excluída. Por favor, selecione outra reunião.
