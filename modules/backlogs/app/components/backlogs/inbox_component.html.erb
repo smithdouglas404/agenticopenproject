@@ -60,7 +60,10 @@ See COPYRIGHT and LICENSE files for more details.
     end
   %>
 
-  <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
+  <% border_box_arguments = @system_arguments.deep_dup %>
+  <% border_box_arguments[:data] = (border_box_arguments[:data] || {}).merge(backlogs__dnd_list_target: "container") %>
+
+  <%= render(Primer::Beta::BorderBox.new(**border_box_arguments)) do |border_box| %>
     <% if work_packages.empty? %>
       <% border_box.with_row(data: { empty_list_item: true }) do %>
         <%=

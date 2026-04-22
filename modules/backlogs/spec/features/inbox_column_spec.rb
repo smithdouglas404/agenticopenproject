@@ -281,7 +281,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       end
     end
 
-    describe "moving backlog items to a sprint via drag-and-drop" do
+    describe "moving backlog items to a sprint via drag-and-drop", :selenium do
       it "moves multiple items into the sprint one by one" do
         planning_page.drag_inbox_item_to_sprint(inbox_wp1, sprint)
         planning_page.expect_no_inbox_item(inbox_wp1)
@@ -369,7 +369,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       end
     end
 
-    describe "moving sprint items back to the inbox via drag-and-drop" do
+    describe "moving sprint items back to the inbox via drag-and-drop", :selenium do
       let!(:sprint_wp1) { create(:work_package, project:, sprint:) }
       let!(:sprint_wp2) { create(:work_package, project:, sprint:) }
 

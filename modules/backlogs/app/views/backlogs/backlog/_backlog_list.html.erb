@@ -28,18 +28,18 @@ See COPYRIGHT and LICENSE files for more details.
 ++# %>
 
 <%= turbo_frame_tag "backlogs_container", refresh: :morph, class: "op-backlogs-page" do %>
-  <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop"
-       data-generic-drag-and-drop-position-mode-value="prev_id">
-    <div id="owner_backlogs_container" class="op-sprint-planning-lists"
-         data-generic-drag-and-drop-target="scrollContainer">
+  <div class="op-sprint-planning-container"
+       data-controller="backlogs--dnd-surface"
+       data-backlogs--dnd-surface-position-mode-value="prev_id"
+       data-backlogs--dnd-surface-backlogs--dnd-list-outlet="[data-controller~='backlogs--dnd-list']">
+    <div id="owner_backlogs_container" class="op-sprint-planning-lists">
       <%= render Backlogs::InboxComponent.new(
             work_packages: @inbox_work_packages,
             project: @project,
             show_all: show_all_backlog
           ) %>
     </div>
-    <div id="sprint_backlogs_container" class="op-sprint-planning-lists"
-         data-generic-drag-and-drop-target="scrollContainer">
+    <div id="sprint_backlogs_container" class="op-sprint-planning-lists">
       <%=
         render(Primer::Beta::Subhead.new(hide_border: true, pb: 0)) do |head|
           head.with_heading(tag: :h3, size: :medium, font_weight: :bold) { Agile::Sprint.human_model_name.pluralize }

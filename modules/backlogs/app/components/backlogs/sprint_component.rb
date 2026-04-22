@@ -52,7 +52,7 @@ module Backlogs
       @system_arguments[:padding] = :condensed
       @system_arguments[:data] = merge_data(
         @system_arguments,
-        { data: drop_target_config },
+        { data: list_controller_data },
         { data: { test_selector: "sprint-#{sprint.id}" } }
       )
     end
@@ -67,12 +67,10 @@ module Backlogs
       current_user.pref[:backlogs_versions_default_fold_state] == "closed"
     end
 
-    def drop_target_config
+    def list_controller_data
       {
-        generic_drag_and_drop_target: "container",
-        target_container_accessor: ":scope > ul",
-        target_id: "sprint:#{sprint.id}",
-        target_allowed_drag_type: "story"
+        controller: "backlogs--dnd-list",
+        backlogs__dnd_list_target_id_value: "sprint:#{sprint.id}"
       }
     end
 
@@ -89,11 +87,11 @@ module Backlogs
     def story_data_attribute(story)
       draggable_item_config(story).merge(
         story: true,
-        controller: "backlogs--story",
-        backlogs__story_id_value: story.id,
-        backlogs__story_split_url_value: project_backlogs_backlog_details_path(project, story),
-        backlogs__story_full_url_value: work_package_path(story),
-        backlogs__story_selected_class: "Box-row--blue",
+        controller: "backlogs--item",
+        backlogs__item_id_value: story.id,
+        backlogs__item_split_url_value: project_backlogs_backlog_details_path(project, story),
+        backlogs__item_full_url_value: work_package_path(story),
+        backlogs__item_selected_class: "Box-row--blue",
         test_selector: card_test_selector(story)
       )
     end

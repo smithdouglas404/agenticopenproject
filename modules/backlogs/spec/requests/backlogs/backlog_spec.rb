@@ -89,6 +89,16 @@ RSpec.describe "Backlogs::Backlog", :skip_csrf, type: :rails_request do
         expect(response).to have_no_turbo_frame "content-bodyRight"
       end
 
+      it "mounts the Backlogs drag surface controller" do
+        get "/projects/#{project.identifier}/backlogs/backlog", headers: { "Turbo-Frame" => "backlogs_container" }
+
+        fragment = Capybara.string(response.body)
+        surface = fragment.find(".op-sprint-planning-container")
+
+        expect(surface["data-controller"]).to include("backlogs--dnd-surface")
+        expect(surface["data-controller"]).not_to include("generic-drag-and-drop")
+      end
+
       context "with no sprints available" do
         before do
           allow(Agile::Sprint)

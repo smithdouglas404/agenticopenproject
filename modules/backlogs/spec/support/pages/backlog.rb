@@ -115,17 +115,17 @@ module Pages
     end
 
     def drag_work_package(moved, before: nil, into: nil)
-      raise ArgumentError, "You must specify a either before or into" unless before || into || (before && into)
+      raise ArgumentError, "You must specify either before or into" unless before.present? ^ into.present?
 
-      moved_element = find("#{work_package_selector(moved)} .DragHandle")
-      target_element = if before
-                         find(work_package_selector(before))
-                       else
-                         find(sprint_selector(into))
-                       end
+      moved_element = find(draggable_work_package_selector(moved))
+      target_element, offset_y = if before
+                                   selenium_before_drop_target(moved_element:, before:)
+                                 else
+                                   [find("#{sprint_selector(into)} ul"), 30]
+                                 end
 
       wait_for_turbo_stream do
-        moved_element.native.drag_to(target_element.native, delay: 0.1)
+        drag_work_package_element(from: moved_element, to: target_element, offset_y:)
       end
     rescue Capybara::Cuprite::ObsoleteNode
       retry
@@ -133,7 +133,7 @@ module Pages
 
     def expect_work_package_not_draggable(work_package)
       expect(page)
-        .to have_no_css("#{work_package_selector(work_package)} .DragHandle")
+        .to have_no_css(draggable_work_package_selector(work_package))
     end
 
     def expect_inbox_blankslate
@@ -270,17 +270,23 @@ module Pages
     end
 
     def drag_inbox_item_to_sprint(work_package, sprint)
-      moved_element = find("#{inbox_item_selector(work_package)} .DragHandle")
-      target_element = find(sprint_selector(sprint))
-      moved_element.native.drag_to(target_element.native, delay: 0.1)
+      moved_element = find(draggable_work_package_selector(work_package))
+      target_element, offset_y = list_drop_target("#{sprint_selector(sprint)} ul")
+
+      wait_for_turbo_stream do
+        drag_work_package_element(from: moved_element, to: target_element, offset_y:)
+      end
     rescue Capybara::Cuprite::ObsoleteNode
       retry
     end
 
     def drag_sprint_item_to_inbox(work_package)
-      moved_element = find("#{work_package_selector(work_package)} .DragHandle")
-      target_element = find("#inbox_#{project.id}")
-      moved_element.native.drag_to(target_element.native, delay: 0.1)
+      moved_element = find(draggable_work_package_selector(work_package))
+      target_element, offset_y = list_drop_target("#inbox_#{project.id} ul")
+
+      wait_for_turbo_stream do
+        drag_work_package_element(from: moved_element, to: target_element, offset_y:)
+      end
     rescue Capybara::Cuprite::ObsoleteNode
       retry
     end
@@ -479,8 +485,72 @@ module Pages
       test_selector("work-package-#{work_package.id}")
     end
 
+    def draggable_work_package_selector(work_package)
+      "#{work_package_selector(work_package)}[data-draggable-id]"
+    end
+
+    def drag_work_package_element(from:, to:, offset_y:)
+      if selenium_driver?
+        scroll_to_element(from, block: :center)
+        scroll_to_element(to, block: :center)
+        target_offset_y = selenium_target_offset_y(to, requested_offset_y: offset_y)
+
+        page
+          .driver
+          .browser
+          .action
+          .move_to(from.native)
+          .click_and_hold
+          .pause(duration: 0.25)
+          .move_by(8, 8)
+          .move_to(to.native, 0, target_offset_y)
+          .release
+          .perform
+      else
+        drag_n_drop_element from:, to:, offset_x: 0, offset_y:
+      end
+    end
+
     def sprint_complete_modal_selector
       "##{::Backlogs::FinishSprintDialogComponent::DIALOG_ID}"
+    end
+
+    def selenium_target_offset_y(element, requested_offset_y:)
+      height = page.evaluate_script("arguments[0].getBoundingClientRect().height", element)
+      edge_padding = [(height / 2.0) - 5, 5].max
+
+      requested_offset_y.negative? ? -edge_padding : edge_padding
+    end
+
+    def list_drop_target(list_selector)
+      list = find(list_selector)
+      items = list.all(:css, ":scope > li[data-draggable-id]", minimum: 0)
+      return [items.last, 5] if items.any?
+
+      [list, 30]
+    end
+
+    def selenium_before_drop_target(moved_element:, before:)
+      target_element = find(work_package_selector(before))
+      return [target_element, -5] unless selenium_driver?
+      return [target_element, -5] if inbox_drop_target?(target_element)
+
+      moved_top = page.evaluate_script("arguments[0].getBoundingClientRect().top", moved_element)
+      target_top = page.evaluate_script("arguments[0].getBoundingClientRect().top", target_element)
+
+      return [target_element, -5] if moved_top > target_top
+
+      previous_draggable = target_element.first(:xpath, "preceding-sibling::li[@data-draggable-id][1]", minimum: 0)
+      return [previous_draggable, 5] if previous_draggable
+
+      [target_element, -5]
+    end
+
+    def inbox_drop_target?(target_element)
+      page.evaluate_script(
+        "arguments[0].closest('[data-backlogs--dnd-list-target-id-value=\"inbox\"]') !== null",
+        target_element
+      )
     end
 
     def inbox_item_selector(work_package)
