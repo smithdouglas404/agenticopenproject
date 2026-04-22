@@ -12,6 +12,7 @@ import OpShowWhenCheckedController from './controllers/show-when-checked.control
 import OpShowWhenValueSelectedController from './controllers/show-when-value-selected.controller';
 import FlashController from './controllers/flash.controller';
 import RequirePasswordConfirmationController from './controllers/require-password-confirmation.controller';
+import PasswordRequirementsController from './controllers/password-requirements.controller';
 import PreviewController from './controllers/dynamic/work-packages/date-picker/preview.controller';
 import KeepScrollPositionController from './controllers/keep-scroll-position.controller';
 import PatternInputController from './controllers/pattern-input.controller';
@@ -58,6 +59,7 @@ OpenProjectStimulusApplication.preregister('disable-when-clicked', DisableWhenCl
 OpenProjectStimulusApplication.preregister('flash', FlashController);
 OpenProjectStimulusApplication.preregister('menus--main', MainMenuController);
 OpenProjectStimulusApplication.preregister('require-password-confirmation', RequirePasswordConfirmationController);
+OpenProjectStimulusApplication.preregister('password-requirements', PasswordRequirementsController);
 OpenProjectStimulusApplication.preregister('poll-for-changes', PollForChangesController);
 OpenProjectStimulusApplication.preregister('print', PrintController);
 OpenProjectStimulusApplication.preregister('refresh-on-form-changes', RefreshOnFormChangesController);

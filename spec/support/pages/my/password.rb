@@ -53,7 +53,7 @@ module Pages
 
       def expect_password_weak_error_message
         expect_flash(type: :error,
-                     message: "Password Must contain characters of the following classes (at least 2 of 3): lowercase (e.g. 'a'), uppercase (e.g. 'A'), numeric (e.g. '1')")
+                     message: "Password Must include characters of the following types")
       end
 
       def expect_password_updated_message
