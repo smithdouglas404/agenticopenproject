@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,22 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Queries::Meetings::Filters::AuthorFilter < Queries::Meetings::Filters::MeetingFilter
-  include ::Queries::Filters::Shared::VisiblePrincipalFilter
+module Queries::Filters::Shared::VisiblePrincipalFilter
+  def values
+    raw = super
+    return raw if raw.empty?
 
-  def type
-    :list_optional
-  end
-
-  def type_strategy
-    @type_strategy ||= ::Queries::Filters::Strategies::IntegerListOptional.new(self)
-  end
-
-  def self.key
-    :author_id
-  end
-
-  def available_operators
-    [::Queries::Operators::Equals]
+    ::Principal.visible.where(id: raw).pluck(:id).map(&:to_s)
   end
 end
