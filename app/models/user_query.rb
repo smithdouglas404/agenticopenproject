@@ -28,17 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Users
-  ::Queries::Register.register(UserQuery) do
-    filter Filters::NameFilter
-    filter Filters::AnyNameAttributeFilter
-    filter Filters::GroupFilter
-    filter Filters::StatusFilter
-    filter Filters::LoginFilter
-    filter Filters::BlockedFilter
+class UserQuery < PersistedQuery
+  def self.model
+    User
+  end
 
-    order Orders::DefaultOrder
-    order Orders::NameOrder
-    order Orders::GroupOrder
+  def default_scope
+    # Excludes the SystemUser, DeletedUser, AnonymousUser STI descendants of User.
+    User.user
+  end
+
+  register_query do
+    filter Queries::Users::Filters::NameFilter
+    filter Queries::Users::Filters::AnyNameAttributeFilter
+    filter Queries::Users::Filters::GroupFilter
+    filter Queries::Users::Filters::StatusFilter
+    filter Queries::Users::Filters::LoginFilter
+    filter Queries::Users::Filters::BlockedFilter
+
+    order Queries::Users::Orders::DefaultOrder
+    order Queries::Users::Orders::NameOrder
+    order Queries::Users::Orders::GroupOrder
   end
 end

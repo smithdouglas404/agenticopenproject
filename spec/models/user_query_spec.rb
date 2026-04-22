@@ -30,8 +30,8 @@
 
 require "spec_helper"
 
-RSpec.describe Queries::Users::UserQuery do
-  let(:instance) { described_class.new }
+RSpec.describe UserQuery do
+  let(:instance) { described_class.new(name: "Users") }
   let(:base_scope) { User.user.order(id: :desc) }
 
   context "without a filter" do
@@ -230,6 +230,59 @@ RSpec.describe Queries::Users::UserQuery do
       it "is false" do
         expect(instance).to be_invalid
       end
+    end
+  end
+
+  describe "persistence" do
+    it "saves successfully with just a name" do
+      uq = described_class.create!(name: "Named")
+      expect(uq.reload.name).to eq("Named")
+    end
+
+    it "stores the subclass name in the type column" do
+      uq = described_class.create!(name: "Named")
+      expect(uq.reload.type).to eq("UserQuery")
+      expect(PersistedQuery.find(uq.id)).to be_a(UserQuery)
+    end
+
+    it "round-trips filters through serialization" do
+      uq = described_class.new(name: "With filter")
+      uq.where("status", "=", ["active"])
+      uq.save!
+
+      reloaded = described_class.find(uq.id)
+      expect(reloaded.filters.size).to eq(1)
+      expect(reloaded.filters.first).to be_a(Queries::Users::Filters::StatusFilter)
+      expect(reloaded.filters.first.values).to eq(["active"])
+    end
+
+    it "round-trips orders through serialization" do
+      uq = described_class.new(name: "With order")
+      uq.order(name: :desc)
+      uq.save!
+
+      reloaded = described_class.find(uq.id)
+      expect(reloaded.orders.size).to eq(1)
+      expect(reloaded.orders.first).to be_a(Queries::Users::Orders::NameOrder)
+      expect(reloaded.orders.first.direction).to eq(:desc)
+    end
+  end
+
+  describe "registration" do
+    it "registers filters as a side-effect of loading the class" do
+      expect(Queries::Register.filters[described_class]).to include(
+        Queries::Users::Filters::NameFilter,
+        Queries::Users::Filters::StatusFilter,
+        Queries::Users::Filters::GroupFilter
+      )
+    end
+
+    it "registers orders as a side-effect of loading the class" do
+      expect(Queries::Register.orders[described_class]).to include(
+        Queries::Users::Orders::DefaultOrder,
+        Queries::Users::Orders::NameOrder,
+        Queries::Users::Orders::GroupOrder
+      )
     end
   end
 end

@@ -28,20 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Queries::Users::UserQuery
-  include Queries::BaseQuery
-  include Queries::UnpersistedQuery
-
-  def self.model
-    User
-  end
-
-  def default_scope
-    # This seemingly duplication is necessary because of the builtin classes
-    # * SystemUser
-    # * DeletedUser
-    # * AnonymousUser
-    # inheriting from user. Without it, instances of those classes would show up.
-    User.user
+FactoryBot.define do
+  factory :user_query do
+    sequence(:name) { |n| "User query #{n}" }
   end
 end
