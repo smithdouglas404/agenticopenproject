@@ -63,7 +63,11 @@ module Backlogs
     end
 
     def load_backlogs
-      @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
+      @sprints = Agile::Sprint.for_project(@project)
+                              .not_completed
+                              .order_by_date
+                              .includes(:project, :task_boards)
+
       @stories_by_sprint_id = WorkPackage
                                .where(sprint: @sprints, project: @project)
                                .includes(:type, :status)
