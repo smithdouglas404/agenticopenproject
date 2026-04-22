@@ -53,7 +53,7 @@ module Projects::Exports
         .with_required_storage
         .with_latest_activity
         .includes(:custom_values, :custom_comments)
-        .merge(Project.allowed_to(User.current, :export_projects))
+        .where(id: Project.allowed_to(User.current, :export_projects))
     end
 
     private
