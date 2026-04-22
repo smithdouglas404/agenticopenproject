@@ -68,12 +68,25 @@ RSpec.describe "Reset form configuration",
         click_button I18n.t("js.label_reset")
       end
 
-      # Wait for page reload
-      SeleniumHubWaiter.wait
+      wait_for do
+        type.reload.attribute_groups.reject { |group| group.key == :__empty }.map(&:translated_key)
+      end.to eq([
+                  "People",
+                  "Estimates and progress",
+                  "Details",
+                  "Other",
+                  "Costs"
+                ])
 
-      expect(page).to have_no_css('[data-group-key]', text: /\bNew Group\b/)
-      expect(page).to have_no_css('[data-group-key]', text: /\bOther\b/i)
-      type.reload
+      visit edit_type_form_configuration_path(type)
+
+      expect(form.section_order).to eq([
+                                         "People",
+                                         "Estimates and progress",
+                                         "Details",
+                                         "Other",
+                                         "Costs"
+                                       ])
 
       expect(type.custom_field_ids).to be_empty
 

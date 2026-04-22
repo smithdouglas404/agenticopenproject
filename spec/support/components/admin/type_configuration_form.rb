@@ -123,27 +123,34 @@ module Components
         click_on I18n.t("types.edit.form_configuration.add_query_group")
 
         modal = ::Components::WorkPackages::TableConfigurationModal.new
+        expect(page).to have_css(".wp-table--configuration-modal", wait: 10)
 
-        within ".relation-filter-selector" do
-          page.find_test_selector("wp-table-configuration-relation-filter").select(I18n.t("js.relation_labels.#{relation_filter}"))
+        unless relation_filter.to_sym == :children
+          within ".relation-filter-selector" do
+            option_label = displayed_relation_filter_label(relation_filter)
+            expect(page).to have_css(".relation-filter-selector option", text: option_label, wait: 10)
 
-          option_labels = %w[
-            children
-            precedes
-            follows
-            relates
-            duplicates
-            duplicated
-            blocks
-            blocked
-            partof
-            includes
-            requires
-            required
-          ].map { |filter_name| I18n.t("js.relation_labels.#{filter_name}") }
+            relation_select = page.find_test_selector("wp-table-configuration-relation-filter", visible: :all)
+            relation_select.find(:option, option_label, wait: 10).select_option
 
-          option_labels.each do |label|
-            expect(page).to have_text(label)
+            option_labels = %w[
+              children
+              precedes
+              follows
+              relates
+              duplicates
+              duplicated
+              blocks
+              blocked
+              partof
+              includes
+              requires
+              required
+            ].map { |filter_name| I18n.t("js.relation_labels.#{filter_name}") }
+
+            option_labels.each do |label|
+              expect(page).to have_text(label)
+            end
           end
         end
 
@@ -219,7 +226,57 @@ module Components
         expect(inactive_drop).to have_css(attribute_selector(attribute))
       end
 
+      def section_order
+        page.within_test_selector("type-form-configuration-sections-container") do
+          all(":scope > [data-group-key]", visible: true).map do |group|
+            group.find(".Box-header span.text-bold").text
+          end
+        end
+      end
+
+      def attribute_order(group_name)
+        find_group(group_name).find("ul").all(":scope > li[data-attr-key]", visible: true).pluck("data-attr-key")
+      end
+
+      def open_attribute_menu(attribute)
+        open_menu("type-form-configuration-attribute-actions-#{attribute}")
+      end
+
+      def open_query_menu(name)
+        group_key = find_group(name)["data-group-key"]
+        open_menu("type-form-configuration-query-actions-#{group_key}")
+      end
+
+      def invoke_section_action(name, label)
+        click_menu_action(-> { open_group_menu(name) }, label)
+        wait_for_turbo
+      end
+
+      def invoke_attribute_action(attribute, label)
+        click_menu_action(-> { open_attribute_menu(attribute) }, label)
+        wait_for_turbo
+      end
+
       private
+
+      def displayed_relation_filter_label(relation_filter)
+        label_key = {
+          children: :children,
+          precedes: :follows,
+          follows: :precedes,
+          relates: :relates,
+          duplicates: :duplicated,
+          duplicated: :duplicates,
+          blocks: :blocked,
+          blocked: :blocks,
+          partof: :includes,
+          includes: :partof,
+          requires: :required,
+          required: :requires
+        }.fetch(relation_filter.to_sym)
+
+        I18n.t("js.relation_labels.#{label_key}")
+      end
 
       def fill_section_name(name)
         input = page.find_test_selector("type-form-configuration-section-name-input", wait: 10)
@@ -227,15 +284,48 @@ module Components
       end
 
       def open_group_menu(name)
-        menu_button = menu_button_for(name)
-        menu_id = menu_button[:'aria-controls']
-        menu_button.click
-        menu_id
+        menu_id = nil
+
+        3.times do
+          menu_button = menu_button_for(name)
+          menu_id = menu_button[:"aria-controls"]
+          menu_button.click
+
+          return menu_id if page.has_css?("##{menu_id}", visible: :all, wait: 2)
+        rescue Selenium::WebDriver::Error::StaleElementReferenceError, Capybara::ElementNotFound
+          next
+        end
+
+        raise Capybara::ElementNotFound, "Unable to open menu #{menu_id.inspect}"
       end
 
       def menu_button_for(name)
         group_key = find_group(name)["data-group-key"]
         page.find_test_selector("type-form-configuration-section-actions-#{group_key}")
+      end
+
+      def open_menu(button_selector)
+        menu_id = nil
+
+        3.times do
+          menu_button = page.find_test_selector(button_selector)
+          menu_id = menu_button[:"aria-controls"]
+          menu_button.click
+
+          return menu_id if page.has_css?("##{menu_id}", visible: :all, wait: 2)
+        rescue Selenium::WebDriver::Error::StaleElementReferenceError, Capybara::ElementNotFound
+          next
+        end
+
+        raise Capybara::ElementNotFound, "Unable to open menu #{menu_id.inspect}"
+      end
+
+      def click_menu_action(open_menu_callback, label)
+        retry_block(args: { tries: 3 }) do
+          menu_id = open_menu_callback.call
+          menu = page.find("##{menu_id}", visible: :all)
+          menu.first("[role='menuitem']", text: /\A#{Regexp.escape(label)}\z/, visible: :all).click
+        end
       end
 
       def save_section

@@ -56,14 +56,22 @@ RSpec.describe "form configuration", :js, :selenium do
         visit edit_type_form_configuration_path(type)
       end
 
+      def persisted_section_order(type)
+        type.reload.attribute_groups.reject { |group| group.key == :__empty }.map(&:translated_key)
+      end
+
+      def persisted_attribute_order(type, section_key)
+        type.reload.attribute_groups.find { |group| group.key.to_s == section_key.to_s }&.attributes
+      end
+
       it "resets the form properly after changes" do
         form.rename_group("Details", "Whatever")
         form.expect_attribute(key: :assignee)
 
         # Reset and cancel
         form.reset_button.click
-        expect(page).to have_test_selector("type-form-configuration-reset-dialog")
-        page.within_test_selector "type-form-configuration-reset-dialog" do
+        dialog = find_test_selector("type-form-configuration-reset-dialog", visible: :all)
+        within(dialog) do
           click_button I18n.t("js.button_cancel")
         end
 
@@ -76,8 +84,8 @@ RSpec.describe "form configuration", :js, :selenium do
 
         # Reset and confirm
         form.reset_button.click
-        expect(page).to have_test_selector("type-form-configuration-reset-dialog")
-        page.within_test_selector "type-form-configuration-reset-dialog" do
+        dialog = find_test_selector("type-form-configuration-reset-dialog", visible: :all)
+        within(dialog) do
           click_button I18n.t("js.label_reset")
         end
 
@@ -246,6 +254,158 @@ RSpec.describe "form configuration", :js, :selenium do
         find_by_id("work-packages--edit-actions-cancel").click
         expect(wp_page).not_to have_alert_dialog
         loading_indicator_saveguard
+      end
+
+      it "shows only the edit action for query rows" do
+        form.add_query_group("Subtasks", :children)
+
+        menu_id = form.open_query_menu("Subtasks")
+        menu_selector = "##{menu_id}"
+
+        expect(page).to have_selector(menu_selector, text: I18n.t("types.edit.form_configuration.edit_query"))
+        expect(page).to have_no_selector("#{menu_selector} [role='menuitem']", text: I18n.t("label_agenda_item_move_to_top"))
+        expect(page).to have_no_selector("#{menu_selector} [role='menuitem']", text: I18n.t("label_agenda_item_move_up"))
+        expect(page).to have_no_selector("#{menu_selector} [role='menuitem']", text: I18n.t("label_agenda_item_move_down"))
+        expect(page).to have_no_selector("#{menu_selector} [role='menuitem']", text: I18n.t("label_agenda_item_move_to_bottom"))
+        expect(page).to have_no_selector("#{menu_selector} [role='menuitem']", text: I18n.t("button_delete"))
+      end
+
+      it "shows only delete for a single attribute row" do
+        form.add_attribute_group("New Group")
+        form.move_to(:category, "New Group")
+
+        menu_id = form.open_attribute_menu(:category)
+        menu_selector = "##{menu_id}"
+
+        expect(page).to have_selector(menu_selector, text: I18n.t("button_delete"))
+        expect(page).to have_no_selector("#{menu_selector} [role='menuitem']", text: I18n.t("label_agenda_item_move_to_top"))
+        expect(page).to have_no_selector("#{menu_selector} [role='menuitem']", text: I18n.t("label_agenda_item_move_up"))
+        expect(page).to have_no_selector("#{menu_selector} [role='menuitem']", text: I18n.t("label_agenda_item_move_down"))
+        expect(page).to have_no_selector("#{menu_selector} [role='menuitem']", text: I18n.t("label_agenda_item_move_to_bottom"))
+      end
+
+      it "shows move actions only where valid for multi-row sections" do
+        details_order = form.attribute_order("Details")
+
+        first_row_menu_id = form.open_attribute_menu(details_order.first)
+
+        within "##{first_row_menu_id}" do
+          expect(page).to have_text(I18n.t("label_agenda_item_move_down"))
+          expect(page).to have_text(I18n.t("label_agenda_item_move_to_bottom"))
+          expect(page).to have_no_text(I18n.t("label_agenda_item_move_to_top"))
+          expect(page).to have_no_text(I18n.t("label_agenda_item_move_up"))
+          expect(page).to have_text(I18n.t("button_delete"))
+        end
+
+        find("body").click
+
+        last_row_menu_id = form.open_attribute_menu(details_order.last)
+
+        within "##{last_row_menu_id}" do
+          expect(page).to have_text(I18n.t("label_agenda_item_move_to_top"))
+          expect(page).to have_text(I18n.t("label_agenda_item_move_up"))
+          expect(page).to have_no_text(I18n.t("label_agenda_item_move_down"))
+          expect(page).to have_no_text(I18n.t("label_agenda_item_move_to_bottom"))
+          expect(page).to have_text(I18n.t("button_delete"))
+        end
+      end
+
+      it "opens the query editor from the query row action" do
+        form.add_query_group("Subtasks", :children)
+
+        menu_id = form.open_query_menu("Subtasks")
+
+        within "##{menu_id}" do
+          click_button I18n.t("types.edit.form_configuration.edit_query")
+        end
+
+        expect(page).to have_css(".wp-table--configuration-modal")
+      end
+
+      it "reorders and deletes sections via section actions" do
+        expected_order = persisted_section_order(type)
+        moving_section = expected_order.second
+        initial_updated_at = type.updated_at
+
+        form.invoke_section_action(moving_section, I18n.t("label_agenda_item_move_up"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        index = expected_order.index(moving_section)
+        expected_order[index], expected_order[index - 1] = expected_order[index - 1], expected_order[index]
+        expect(persisted_section_order(type)).to eq(expected_order)
+
+        initial_updated_at = type.updated_at
+        form.invoke_section_action(moving_section, I18n.t("label_agenda_item_move_to_bottom"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        expected_order.delete(moving_section)
+        expected_order << moving_section
+        expect(persisted_section_order(type)).to eq(expected_order)
+
+        initial_updated_at = type.updated_at
+        form.invoke_section_action(moving_section, I18n.t("label_agenda_item_move_up"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        index = expected_order.index(moving_section)
+        expected_order[index], expected_order[index - 1] = expected_order[index - 1], expected_order[index]
+        expect(persisted_section_order(type)).to eq(expected_order)
+
+        initial_updated_at = type.updated_at
+        form.invoke_section_action(moving_section, I18n.t("label_agenda_item_move_to_top"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        expected_order.delete(moving_section)
+        expected_order.unshift(moving_section)
+        expect(persisted_section_order(type)).to eq(expected_order)
+
+        deleted_section = expected_order.last
+        initial_updated_at = type.updated_at
+        form.invoke_section_action(deleted_section, I18n.t("button_delete"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        expected_order.delete(deleted_section)
+        expect(persisted_section_order(type)).to eq(expected_order)
+      end
+
+      it "reorders and deletes attribute rows via row actions" do
+        expected_order = persisted_attribute_order(type, :details)
+        moving_attribute = expected_order.second
+        initial_updated_at = type.updated_at
+
+        form.invoke_attribute_action(moving_attribute, I18n.t("label_agenda_item_move_up"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        index = expected_order.index(moving_attribute)
+        expected_order[index], expected_order[index - 1] = expected_order[index - 1], expected_order[index]
+        expect(persisted_attribute_order(type, :details)).to eq(expected_order)
+
+        initial_updated_at = type.updated_at
+        form.invoke_attribute_action(moving_attribute, I18n.t("label_agenda_item_move_down"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        index = expected_order.index(moving_attribute)
+        expected_order[index], expected_order[index + 1] = expected_order[index + 1], expected_order[index]
+        expect(persisted_attribute_order(type, :details)).to eq(expected_order)
+
+        initial_updated_at = type.updated_at
+        form.invoke_attribute_action(moving_attribute, I18n.t("label_agenda_item_move_to_bottom"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        expected_order.delete(moving_attribute)
+        expected_order << moving_attribute
+        expect(persisted_attribute_order(type, :details)).to eq(expected_order)
+
+        initial_updated_at = type.updated_at
+        form.invoke_attribute_action(moving_attribute, I18n.t("label_agenda_item_move_up"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        index = expected_order.index(moving_attribute)
+        expected_order[index], expected_order[index - 1] = expected_order[index - 1], expected_order[index]
+        expect(persisted_attribute_order(type, :details)).to eq(expected_order)
+
+        initial_updated_at = type.updated_at
+        form.invoke_attribute_action(moving_attribute, I18n.t("label_agenda_item_move_to_top"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        expected_order.delete(moving_attribute)
+        expected_order.unshift(moving_attribute)
+        expect(persisted_attribute_order(type, :details)).to eq(expected_order)
+
+        initial_updated_at = type.updated_at
+        form.invoke_attribute_action(moving_attribute, I18n.t("button_delete"))
+        wait_for { type.reload.updated_at }.not_to eq(initial_updated_at)
+        expected_order.delete(moving_attribute)
+        expect(persisted_attribute_order(type, :details)).to eq(expected_order)
       end
     end
 
