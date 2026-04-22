@@ -12,7 +12,7 @@ class AddParticipationStatusForMeetingParticipant < ActiveRecord::Migration[8.0]
         SQL
       end
     end
-    change_column_default :meeting_participants, :participation_status, "needs-action"
+    change_column_default :meeting_participants, :participation_status, from: nil, to: "needs-action"
     change_column_null :meeting_participants, :participation_status, false
   end
 end

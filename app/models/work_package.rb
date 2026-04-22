@@ -29,6 +29,7 @@
 #++
 
 class WorkPackage < ApplicationRecord
+  include WorkPackage::SemanticIdentifier
   include WorkPackage::Validations
   include WorkPackage::SchedulingRules
   include WorkPackage::StatusTransitions
@@ -72,6 +73,7 @@ class WorkPackage < ApplicationRecord
   has_and_belongs_to_many :github_pull_requests # rubocop:disable Rails/HasAndBelongsToMany
 
   has_many :meeting_agenda_items, dependent: :nullify
+  has_many :meeting_outcomes, dependent: :nullify
   # The MeetingAgendaItem has a default order, but the ordered field is not part of the select
   # that retrieves the meetings, hence we need to remove the order.
   has_many :meetings, -> { unscope(:order).distinct }, through: :meeting_agenda_items, source: :meeting
@@ -317,11 +319,7 @@ class WorkPackage < ApplicationRecord
   end
 
   def hide_attachments?
-    if project&.deactivate_work_package_attachments.nil?
-      !Setting.show_work_package_attachments
-    else
-      project&.deactivate_work_package_attachments?
-    end
+    project&.deactivate_work_package_attachments?
   end
 
   def estimated_hours=(hours)

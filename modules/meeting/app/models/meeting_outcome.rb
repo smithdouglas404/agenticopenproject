@@ -45,4 +45,16 @@ class MeetingOutcome < ApplicationRecord
   def editable?
     meeting_agenda_item.meeting.in_progress?
   end
+
+  def linked_work_package?
+    work_package_kind? && work_package.present?
+  end
+
+  def visible_work_package?
+    linked_work_package? && work_package.visible?(User.current)
+  end
+
+  def deleted_work_package?
+    persisted? && work_package_kind? && work_package_id_was.nil?
+  end
 end

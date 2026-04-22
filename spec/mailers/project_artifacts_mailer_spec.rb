@@ -40,6 +40,7 @@ RSpec.describe ProjectArtifactsMailer do
 
     before do
       allow(project).to receive(:project_creation_wizard_notification_text).and_return("Custom notification text")
+      allow(work_package).to receive(:visible?).and_return(true)
     end
 
     it "has the correct subject" do

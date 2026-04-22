@@ -34,16 +34,16 @@ import invariant from 'tiny-invariant';
 
 export function post(url:string|URL, options?:Options) {
   const request = new FetchRequest('post', url, options);
-  return withAjaxIndicator(request.perform());
+  return withLoadingIndicator(request.perform());
 }
 
-function withAjaxIndicator(request:Promise<FetchResponse>) {
-  const ajaxIndicator = document.querySelector<HTMLElement>('#ajax-indicator');
-  invariant(ajaxIndicator, 'Expected an Element with id ajax-indicator to be present');
-  showElement(ajaxIndicator);
+function withLoadingIndicator(request:Promise<FetchResponse>) {
+  const loadingIndicator = document.querySelector<HTMLElement>('#global-loading-indicator');
+  invariant(loadingIndicator, 'Expected an Element with id global-loading-indicator to be present');
+  showElement(loadingIndicator);
 
   return request.then((response) => {
-    hideElement(ajaxIndicator);
+    hideElement(loadingIndicator);
     return response;
   });
 }

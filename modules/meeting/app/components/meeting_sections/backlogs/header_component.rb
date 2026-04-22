@@ -34,12 +34,11 @@ module MeetingSections
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(backlog:, collapsed:, current_occurrence:, box: nil)
+    def initialize(backlog:, collapsed:, current_occurrence:)
       super
 
       @backlog = backlog
       @meeting = backlog.meeting
-      @box = box
       @current_occurrence = current_occurrence
 
       # When a specific collapsed state is needed, collapsed is passed in as either true or false
@@ -70,7 +69,9 @@ module MeetingSections
     def clear_action_item(menu)
       menu.with_item(
         label: I18n.t(:label_backlog_clear),
-        href: clear_backlog_dialog_meeting_sections_path(@meeting, current_occurrence: @current_occurrence),
+        href: clear_backlog_dialog_project_meeting_sections_path(@meeting.project,
+                                                                 @meeting,
+                                                                 current_occurrence: @current_occurrence),
         scheme: :danger,
         tag: :a,
         content_arguments: {
@@ -84,8 +85,11 @@ module MeetingSections
     def add_agenda_item_action(menu)
       menu.with_item(
         label: t("label_agenda_item_add", count: 1),
-        href: new_meeting_agenda_item_path(@meeting, type: "simple", meeting_section_id: @backlog.id,
-                                                     current_occurrence: @current_occurrence),
+        href: new_project_meeting_agenda_item_path(@meeting.project,
+                                                   @meeting,
+                                                   type: "simple",
+                                                   meeting_section_id: @backlog.id,
+                                                   current_occurrence: @current_occurrence),
         content_arguments: {
           data: { "turbo-stream": true, "test-selector": "meeting-backlog-add-agenda-item-from-menu" }
         }
@@ -97,8 +101,11 @@ module MeetingSections
     def add_work_package_action(menu)
       menu.with_item(
         label: t("label_agenda_item_work_package_add", count: 1),
-        href: new_meeting_agenda_item_path(@meeting, type: "work_package", meeting_section_id: @backlog.id,
-                                                     current_occurrence: @current_occurrence),
+        href: new_project_meeting_agenda_item_path(@meeting.project,
+                                                   @meeting,
+                                                   type: "work_package",
+                                                   meeting_section_id: @backlog.id,
+                                                   current_occurrence: @current_occurrence),
         content_arguments: {
           data: { "turbo-stream": true, "test-selector": "meeting-backlog-add-work-package-from-menu" }
         }

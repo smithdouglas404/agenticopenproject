@@ -32,14 +32,12 @@ require "spec_helper"
 
 require_relative "../../support/pages/meetings/show"
 
-RSpec.describe "Meeting Presentation Mode",
-               :js,
-               with_flag: { meetings_presentation_mode: true } do
+RSpec.describe "Meeting Presentation Mode", :js do
   shared_let(:project) { create(:project, enabled_module_names: %w[meetings]) }
   shared_let(:user) do
     create :user,
            preferences: { time_zone: "Etc/UTC" },
-           member_with_permissions: { project => %i[view_meetings manage_agendas manage_outcomes] }
+           member_with_permissions: { project => %i[view_meetings edit_meetings manage_agendas manage_outcomes] }
   end
   shared_let(:meeting) do
     create :meeting,
@@ -175,17 +173,18 @@ RSpec.describe "Meeting Presentation Mode",
     # 2. Edit an agenda item (add notes)
     item = MeetingAgendaItem.find(first_agenda_item.id)
 
-    # Find and click the edit action for notes
+    # Find and click the edit action for notes and add a body (was empty before)
     show_page.select_action(item, "Edit")
     editor.set_markdown "# Hello there"
+
     show_page.in_edit_form(item) do
       click_link_or_button "Save"
     end
 
     # Wait for the edit form to close and the notes to be visible
     within_test_selector("meeting-presentation-agenda-item") do
+      expect(page).to have_text("First Item")
       expect(page).to have_text("Hello there")
-      expect(page).to have_no_text("First Item")
     end
 
     # 3. Manage outcomes: add, edit, and delete
@@ -212,7 +211,9 @@ RSpec.describe "Meeting Presentation Mode",
     # Delete the outcome
     show_page.in_outcome_component(item) do
       show_page.expect_outcome "Updated outcome"
-      show_page.select_outcome_action "Remove outcome"
+      accept_confirm(I18n.t(:text_are_you_sure)) do
+        show_page.select_outcome_action "Remove outcome"
+      end
 
       show_page.expect_no_outcome "Updated outcome"
     end

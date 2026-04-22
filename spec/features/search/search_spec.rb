@@ -173,6 +173,18 @@ RSpec.describe "Search", :js, :selenium, with_settings: { per_page_options: "5" 
       expect(current_url).to include("filter=work_packages")
       expect(current_url).to include("scope=all")
     end
+
+    it "announces the number of items via aria-live" do
+      input = page.find(".top-menu-search--input")
+      input.set "Subject"
+
+      live_region = page.find(
+        "live-region",
+        visible: :all
+      )
+
+      expect(live_region).to have_text(/\d+ items available/, wait: 5)
+    end
   end
 
   describe "search for work packages" do

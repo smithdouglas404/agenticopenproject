@@ -79,7 +79,7 @@ When you create a new team planner, it will be empty, like so:
 
 ![An example of a newly-created empty team planner in OpenProject](openproject_user_guide_teamplanner_new_unnamed_empty.png)
 
-The first step in setting up your team planning calendar is to add team members. To do so, click on the **+ Assignee** button then search for the team member you would like to add from the the drop-down list (1). This will add a new row to the calendar view for that team member.
+The first step in setting up your team planning calendar is to add team members. To do so, click on the **+ Assignee** button then search for the team member you would like to add from the the dropdown list (1). This will add a new row to the calendar view for that team member.
 
 Repeat this step until all relevant team members are added and then save it using the floppy disk icon in the top header (2).
 

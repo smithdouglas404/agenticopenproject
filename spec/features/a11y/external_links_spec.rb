@@ -54,10 +54,7 @@ RSpec.describe "External links", :js do
       document.body.appendChild(link);
     JS
 
-    # Wait for mutation observer to detect and update the link
-    expect(page).to have_link("External Example", href: "https://example.com", target: "_blank")
-
-    link = find_link("External Example", href: "https://example.com", match: :first)
+    link = page.find_link("External Example", href: "https://example.com", match: :first)
 
     # Verify accessibility and security attributes
     expect(link[:target]).to eq("_blank")

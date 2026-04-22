@@ -100,6 +100,7 @@ export function initializeCoreEditFields(editFieldService:EditFieldService, sele
         'Version',
         'TimeEntriesActivity',
         'Category',
+        'Sprint',
         'CustomOption',
         'CustomField::Hierarchy::Item',
       ])
@@ -135,6 +136,8 @@ export function initializeCoreEditFields(editFieldService:EditFieldService, sele
         ['estimatedTime', 'remainingTime', 'percentageDone'],
       )
       .addSpecificFieldType('Project', ProjectStatusEditFieldComponent, 'status', ['status'])
+      .addSpecificFieldType('Portfolio', ProjectStatusEditFieldComponent, 'status', ['status'])
+      .addSpecificFieldType('Program', ProjectStatusEditFieldComponent, 'status', ['status'])
       .addSpecificFieldType('TimeEntry', PlainFormattableEditFieldComponent, 'comment', ['comment'])
       .addSpecificFieldType('TimeEntry', HoursDurationEditFieldComponent, 'hours', ['hours']);
 

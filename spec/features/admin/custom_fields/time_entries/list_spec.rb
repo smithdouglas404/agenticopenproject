@@ -34,13 +34,13 @@ require_relative "../shared_custom_field_expectations"
 RSpec.describe "List custom fields edit", :js do
   shared_let(:admin) { create(:admin) }
 
-  let(:index_cf_page) { Pages::CustomFields::IndexPage.new }
-  let(:new_cf_page) { Pages::CustomFields::NewPage.new }
+  let(:index_cf_page) { Pages::CustomFields::Index.new }
+  let(:new_cf_page) { Pages::CustomFields::New.new }
 
   current_user { admin }
 
   before do
-    index_cf_page.visit_tab("Spent time")
+    index_cf_page.visit_page("Spent time")
   end
 
   it "can create and edit list custom fields (#37654)" do
@@ -50,12 +50,17 @@ RSpec.describe "List custom fields edit", :js do
 
     fill_in "custom_field_name", with: "My List CF"
 
+    click_on "Save"
+
+    index_cf_page.expect_flash(message: "Successful creation.")
+
+    click_link "Items"
+
     expect(page).to have_field("custom_field_custom_options_attributes_0_value")
     fill_in "custom_field_custom_options_attributes_0_value", with: "A"
 
     click_on "Save"
-
-    index_cf_page.expect_and_dismiss_flash(message: "Successful creation.")
+    wait_for_network_idle
 
     # Expect correct values
     cf = CustomField.last
@@ -63,12 +68,11 @@ RSpec.describe "List custom fields edit", :js do
     expect(cf.possible_values.map(&:value)).to eq %w(A)
 
     # Edit again
-    find("a", text: "My List CF").click
-
     expect(page).to have_field("custom_field_custom_options_attributes_0_value")
     fill_in "custom_field_custom_options_attributes_0_value", with: "B"
 
     click_on "Save"
+    wait_for_network_idle
 
     index_cf_page.expect_and_dismiss_flash(message: "Successful update.")
 

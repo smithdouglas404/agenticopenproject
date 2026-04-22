@@ -19,41 +19,44 @@
 #Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #See COPYRIGHT and LICENSE files for more details.
 #++
+---
 it:
   plugin_openproject_documents:
-    name: "Documenti OpenProject"
-    description: "Un plugin OpenProject per consentire la creazione di documenti nei progetti."
+    name: Documenti OpenProject
+    description: Un plugin OpenProject per consentire la creazione di documenti nei progetti.
+  attributes:
+    collaborative_editing_hocuspocus_url: URL del server Hocuspocus
   activerecord:
     errors:
       models:
         document_type:
-          one_or_more_required: "Non è possibile eliminare l'ultimo tipo di documento"
+          one_or_more_required: Non è possibile eliminare l'ultimo tipo di documento
     models:
-      document: "Documento"
-      documents: "Documenti"
+      document: Documento
+      documents: Documenti
     attributes:
       document:
-        content_binary: "Contenuto binario"
-        title: "Titolo"
+        content_binary: Contenuto binario
+        title: Titolo
   activity:
     filter:
-      document: "Documenti"
-  default_doc_category_tech: "Documentazione tecnica"
-  default_doc_category_user: "Documentazione utente"
-  enumeration_doc_categories: "Categorie di documenti"
+      document: Documenti
+  default_doc_category_tech: Documentazione tecnica
+  default_doc_category_user: Documentazione utente
+  enumeration_doc_categories: Categorie di documenti
   documents:
     page_header:
-      heading: "Tutti i documenti"
+      heading: Tutti i documenti
       action_menu:
-        document_actions: "Azioni sul documento"
-        edit_title: "Modifica titolo"
+        document_actions: Azioni sul documento
+        edit_title: Modifica titolo
     subheader:
       filter:
-        label: "Filtro per nome documento"
-        placeholder: "Digita qui per cercare i nomi dei documenti"
+        label: Filtro per nome documento
+        placeholder: Digita qui per cercare i nomi dei documenti
     documents_list_blank_slate:
-      heading: "Non ci sono ancora documenti"
-      description: "Non ci sono documenti in questa vista. Puoi cliccare sul pulsante qui sotto per aggiungerne uno."
+      heading: Non ci sono ancora documenti
+      description: Non ci sono documenti in questa vista. Puoi cliccare sul pulsante qui sotto per aggiungerne uno.
     document_categories_deprecation_notice:
       heading: Le categorie di file sono ora chiamate 'Tipi di documento'
       description: |-
@@ -61,94 +64,93 @@ it:
         Tutti i documenti esistenti sono stati migrati verso questi nuovi tipi.
       primary_action: Configura tipi di documento
       secondary_action: Scopri di più sul modulo Documenti
-    document_type_actions: "Azioni sul tipo di documento"
+    document_type_actions: Azioni sul tipo di documento
     text_collaboration_disabled_notice:
       description: |-
-        Unable to open document because real-time text collaboration is disabled.
-        Please contact your administrator to enable real-time text collaboration if you want to access this document.
+        Impossibile aprire il documento perché la collaborazione in tempo reale sul testo è disattivata.
+        Contatta l'amministratore per abilitare la collaborazione in tempo reale se desideri accedere a questo documento.
     show_edit_view:
       connection_error_notice:
-        description: |-
-          Unable to open document because the real-time text collaboration server is unreachable.
-          Please contact the administrator if the problem persists.
-        action: Try again
-      connection_recovery_notice:
-        description: "The connection to the real-time text collaboration server has been restored."
+        description_server_unavailable: |-
+          Impossibile aprire il documento perché il server della collaborazione in tempo reale sul testo non è raggiungibile.
+          Se il problema persiste, contatta l'amministratore.
+        action: Riprova
+      tabs: Schede dei documenti
     index_page:
-      name: "Nome"
-      type: "Tipo"
-      updated_at: "Ultima modifica"
-      label_legacy: "Legacy"
+      name: Nome
+      type: Tipo
+      updated_at: Ultima modifica
+      label_legacy: Legacy
     menu:
-      all: "Tutti i documenti"
-      types: "Tipi"
-      collaboration_settings: "Real-time collaboration"
-    last_updated_at: "Last saved %{time}."
-    active_editors: "Active editors"
+      all: Tutti i documenti
+      types: Tipi
+      collaboration_settings: Collaborazione in tempo reale
+    last_updated_at: Ultimo salvataggio %{time}.
+    info_line:
+      currently_offline: Sei attualmente offline.
+      connection_restored: Ora sei di nuovo online.
+    active_editors: Editor attivi
     active_editors_count:
-      one: "1 active editor"
-      other: "%{count} active editors"
-    label_attachment_author: "Autore allegato"
-    label_categories: "Categorie"
-    new_category: "Nuova categoria"
-    new_type: "New type"
+      one: 1 editor attivo
+      other: "%{count} editor attivi"
+    label_attachment_author: Autore allegato
+    label_categories: Categorie
+    new_category: Nuova categoria
+    new_type: Nuovo tipo
     delete_dialog:
-      title: "Delete document"
-      heading: "Delete this document?"
-      confirmation_message_html: "This will permanently delete this document and all file attachments. Are you sure you want to do this?"
+      title: Elimina documento
+      heading: Eliminare questo documento?
+      confirmation_message_html: Questa operazione eliminerà definitivamente il documento e tutti gli allegati. Vuoi davvero procedere?
     delete_document_type_dialog:
-      title: Delete document type
-      heading: Delete this document type?
-      confirmation_message: |-
-        The type "%{type_name}" is currently unused. Deleting this type will have no effect on existing documents.
-      select_reassign_to_label: Reassign documents to
+      title: Elimina tipo di documento
+      heading: Eliminare questo tipo di documento?
+      confirmation_message: Il tipo "%{type_name}" non è attualmente utilizzato. L'eliminazione di questo tipo non avrà alcun effetto sui documenti esistenti.
+      select_reassign_to_label: Riassegna i documenti a
       reassign_message:
-        one: The type "%{type_name}" is currently being used in %{document_count} document. Please select which type to reassign them to.
-        other: The type "%{type_name}" is currently being used in %{document_count} documents. Please select which type to reassign them to.
+        one: Il tipo "%{type_name}" è attualmente utilizzato in %{document_count} documento. Seleziona il tipo a cui riassegnarli.
+        other: Il tipo "%{type_name}" è attualmente utilizzato in %{document_count} documenti. Seleziona il tipo a cui riassegnarli.
       at_least_one_type_required:
-        title: Cannot delete document type
-        heading: Cannot delete the last document type
-        message: There must always be at least one document type configured. Create another one first if you want to delete this one.
+        title: Non è possibile eliminare il tipo di documento
+        heading: Non è possibile eliminare l'ultimo tipo di documento
+        message: Deve essere sempre configurato almeno un tipo di documento. Creane prima un altro se vuoi eliminare questo.
     admin:
       collaboration_settings:
         page_header:
           description: |-
-            When enabled, real-time collaboration allows multiple users to edit a document at the same time.
-            It requires a working %{hocuspocus_server_link} to function.
+            Quando è attiva, la collaborazione in tempo reale consente a più utenti di modificare un documento contemporaneamente.
+            Per funzionare è necessario un %{hocuspocus_server_link} operativo.
         banner:
-          none_writable: These values are configured via environment variables and cannot be edited here.
-          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+          none_writable: Questi valori sono configurati tramite variabili di ambiente e non possono essere modificati qui.
+          some_unwritable: Alcuni valori sono configurati tramite variabili di ambiente e non possono essere modificati qui.
         hocuspocus_server_url:
-          label: "Hocuspocus server URL"
-          caption: "The address of the working Hocuspocus server."
+          label: URL del server Hocuspocus
+          caption: L'indirizzo WebSocket di un server Hocuspocus funzionante.
+          invalid_scheme: Deve usare un protocollo WebSocket (ws:// o wss://).
         hocuspocus_server_secret:
-          label: "Client secret"
-          caption: "Paste the secret provided by the Hocuspocus server."
-        hocuspocus_server: Hocuspocus server
+          label: Segreto client
+          caption: Incolla il segreto fornito dal server Hocuspocus.
+        hocuspocus_server: Server Hocuspocus
       enable_text_collaboration:
-        heading: Real-time collaboration is not enabled
+        heading: La collaborazione in tempo reale non è abilitata
         description: |-
-          Once enabled, multiple users will be able to work together on a document at the same time.
-          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
-          Hocuspocus server.
-        primary_action: Enable real-time collaboration
-        success: Real-time collaboration has been enabled.
+          Una volta attivata, più utenti potranno lavorare contemporaneamente sullo stesso documento.
+          Tutti i nuovi documenti utilizzeranno un nuovo editor, BlockNote, e richiederanno una connessione funzionante a un server Hocuspocus.
+        primary_action: Abilita collaborazione in tempo reale
+        success: La collaborazione in tempo reale è stata attivata.
       disable_text_collaboration_dialog:
-        title: Disable real-time collaboration
-        heading: Disable real-time collaboration?
-        confirmation_message: |-
-          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
-          real-time collaboration and the BlockNote editor in this instance.
-        confirmation_checkbox_message: I understand that I might permanently lose data
-        success: Real-time collaboration has been disabled.
-  label_document_added: "Documento aggiunto"
-  label_document_new: "Nuovo Documento"
-  label_document_plural: "Documenti"
-  label_documents: "Documenti"
-  label_document_title: "Titolo"
-  label_document_description: "Descrizione"
-  label_document_category: "Categoria"
-  label_document_type: "Type"
-  permission_manage_documents: "Gestione documenti"
-  permission_view_documents: "Visualizzare i documenti"
-  project_module_documents: "Documenti"
+        title: Disabilita la collaborazione in tempo reale
+        heading: Disabilitare la collaborazione in tempo reale?
+        confirmation_message: Tutti i documenti esistenti potrebbero diventare inaccessibili. Procedi solo se hai certezza di voler disattivare la collaborazione in tempo reale e l'editor BlockNote in questa istanza.
+        confirmation_checkbox_message: Sono consapevole che potrei perdere dati in modo permanente
+        success: La collaborazione in tempo reale è stata disattivata.
+  label_document_added: Documento aggiunto
+  label_document_new: Nuovo Documento
+  label_document_plural: Documenti
+  label_documents: Documenti
+  label_document_title: Titolo
+  label_document_description: Descrizione
+  label_document_category: Categoria
+  label_document_type: Tipo
+  permission_manage_documents: Gestione documenti
+  permission_view_documents: Visualizzare i documenti
+  project_module_documents: Documenti

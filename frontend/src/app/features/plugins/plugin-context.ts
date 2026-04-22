@@ -1,4 +1,4 @@
-import { ApplicationRef, Injector, NgZone } from '@angular/core';
+import { ApplicationRef, Injector } from '@angular/core';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import {
@@ -31,6 +31,7 @@ import { HttpClient } from '@angular/common/http';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { HalEventsService } from '../hal/services/hal-events.service';
 /**
  * Plugin context bridge for plugins outside the CLI compiler context
  * in order to access services and parts of the core application
@@ -48,6 +49,7 @@ export class OpenProjectPluginContext {
     confirmDialog: this.injector.get<ConfirmDialogService>(ConfirmDialogService),
     externalQueryConfiguration: this.injector.get<ExternalQueryConfigurationService>(ExternalQueryConfigurationService),
     externalRelationQueryConfiguration: this.injector.get<ExternalRelationQueryConfigurationService>(ExternalRelationQueryConfigurationService),
+    halEvents: this.injector.get<HalEventsService>(HalEventsService),
     halResource: this.injector.get<HalResourceService>(HalResourceService),
     hooks: this.injector.get<HookService>(HookService),
     i18n: this.injector.get<I18nService>(I18nService),
@@ -87,8 +89,13 @@ export class OpenProjectPluginContext {
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   public readonly hooks:Record<string, (callback:(...args:any[]) => unknown) => void> = {};
 
-  // Angular zone reference
-  @InjectField() public readonly zone:NgZone;
+  /**
+   * @deprecated Noop shim — the app is zoneless. Remove usages.
+   */
+  public readonly zone = {
+    run: <T>(cb:() => T):T => cb(),
+    runOutsideAngular: <T>(cb:() => T):T => cb(),
+  };
 
   // Angular application reference
   @InjectField() public readonly appRef:ApplicationRef;
@@ -103,12 +110,10 @@ export class OpenProjectPluginContext {
   }
 
   /**
-   * Run the given callback in the angular zone,
-   * resulting in triggered change detection that would otherwise not occur.
-   *
-   * @param cb
+   * @deprecated This method is a no-op since the app is zoneless.
+   * Replace calls with direct invocation of the callback.
    */
   public runInZone(cb:() => void) {
-    this.zone.run(cb);
+    cb();
   }
 }

@@ -75,17 +75,19 @@ $content-padding: 10px
       color: var(--fgColor-muted)
 
   td.name
-    @include text-shortener
-    a
-      white-space: nowrap
+    > .projects-table--name
+        display: flex
+        gap: var(--base-size-8, 8px)
 
-    .description
-      @extend %autocomplete-description
+        > .projects-table--name-text
+            @include text-shortener
+            white-space: nowrap
+
+        > .projects-table--name-description
+            @extend %autocomplete-description
 
   td.project--hierarchy
     white-space: nowrap
-    display: flex
-    gap: var(--base-size-8, 8px)
 
   @for $i from 1 through 9
     tr.idnt-#{$i} td.project--hierarchy

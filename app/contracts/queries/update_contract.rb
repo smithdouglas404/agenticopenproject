@@ -64,14 +64,6 @@ module Queries
       user.allowed_in_any_work_package?(:edit_work_packages, in_project: model.project)
     end
 
-    def user_allowed_to_save_queries?
-      if model.project
-        user.allowed_in_project?(:save_queries, model.project)
-      else
-        user.allowed_in_any_project?(:save_queries)
-      end
-    end
-
     def user_allowed_to_change_query_to_private
       if model.user.is_a? DeletedUser
         errors.add :base, :error_unauthorized

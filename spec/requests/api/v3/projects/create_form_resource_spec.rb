@@ -220,7 +220,8 @@ RSpec.describe API::V3::Projects::CreateFormAPI, content_type: :json do
         shared_let(:required_custom_field) do
           create(:text_project_custom_field,
                  name: "Department",
-                 is_required: true)
+                 is_required: true,
+                 is_for_all: true)
         end
 
         context "when no custom field value is provided" do
@@ -380,7 +381,7 @@ RSpec.describe API::V3::Projects::CreateFormAPI, content_type: :json do
 
           context "and when the custom field is required" do
             let(:admin_only_custom_field) do
-              create(:text_project_custom_field, admin_only: true, is_required: true)
+              create(:text_project_custom_field, admin_only: true, is_required: true, is_for_all: true)
             end
             let(:params) do
               {

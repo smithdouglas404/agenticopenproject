@@ -16,12 +16,13 @@
     <p>
       <strong>{{ text.tracking_time }}: {{ elapsed$ | async }}</strong>
       <br/>
+      <!-- eslint-disable-next-line @angular-eslint/template/interactive-supports-focus -->
       <a
         uiSref="work-packages.show"
         [uiParams]="{ workPackageId: active.entity.id }"
         (click)="closeMe()"
       >
-        #{{ active.workPackage.id }}: {{ active.workPackage.name }}
+        {{ active.workPackage.formattedId }}: {{ active.workPackage.name }}
       </a>
     </p>
 

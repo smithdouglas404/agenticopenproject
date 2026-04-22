@@ -226,14 +226,14 @@ RSpec.describe Primer::OpenProject::Forms::Dsl::InputMethods, type: :forms do
     end
 
     describe "#single_date_picker" do
-      let(:field_group) { form_dsl.single_date_picker(name:, label:, datepicker_options: {}, **options) }
+      let(:field_group) { form_dsl.single_date_picker(name:, label:, **options) }
 
       include_examples "input class", Primer::OpenProject::Forms::Dsl::SingleDatePickerInput
       it_behaves_like "supporting help texts"
     end
 
     describe "#range_date_picker" do
-      let(:field_group) { form_dsl.range_date_picker(name:, label:, datepicker_options: {}, **options) }
+      let(:field_group) { form_dsl.range_date_picker(name:, label:, **options) }
 
       include_examples "input class", Primer::OpenProject::Forms::Dsl::RangeDatePickerInput
       it_behaves_like "supporting help texts"
@@ -269,6 +269,13 @@ RSpec.describe Primer::OpenProject::Forms::Dsl::InputMethods, type: :forms do
       let(:field_group) { form_dsl.work_package_autocompleter(name:, label:, autocomplete_options: {}, **options) }
 
       include_examples "input class", Primer::OpenProject::Forms::Dsl::WorkPackageAutocompleterInput
+      it_behaves_like "supporting help texts"
+    end
+
+    describe "#select_panel" do
+      let(:field_group) { form_dsl.select_panel(name:, label:, **options) }
+
+      include_examples "input class", Primer::OpenProject::Forms::Dsl::SelectPanelInput
       it_behaves_like "supporting help texts"
     end
   end

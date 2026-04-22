@@ -89,7 +89,7 @@ RSpec.describe Projects::StatusButtonComponent, type: :component do
 
     context "when status code is not set" do
       it "renders an enabled button" do
-        expect(subject).to have_button "Not set", disabled: false, aria: { label: "Edit project status" }
+        expect(subject).to have_button "Not set", disabled: false, aria: { label: "Edit status" }
       end
 
       it "renders a Primer ActionMenu (single variant)" do
@@ -97,7 +97,7 @@ RSpec.describe Projects::StatusButtonComponent, type: :component do
         expect(subject).to have_element "action-menu", class: "op-status-button"
       end
 
-      it "renders project status options" do
+      it "renders status options" do
         subject
 
         expect(page).to have_menu do
@@ -134,7 +134,7 @@ RSpec.describe Projects::StatusButtonComponent, type: :component do
       let(:status_code) { :on_track }
 
       it "renders an enabled button" do
-        expect(subject).to have_button "On track", disabled: false, aria: { label: "Edit project status" }
+        expect(subject).to have_button "On track", disabled: false, aria: { label: "Edit status" }
       end
 
       it "renders a Primer ActionMenu (single variant)" do
@@ -142,7 +142,7 @@ RSpec.describe Projects::StatusButtonComponent, type: :component do
         expect(subject).to have_element "action-menu", class: "op-status-button"
       end
 
-      it "renders project status options" do
+      it "renders status options" do
         subject
 
         expect(page).to have_menu do

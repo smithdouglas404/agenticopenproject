@@ -73,6 +73,55 @@ RSpec.describe "Projects", "creation",
     expect(page).to have_content "Foo bar"
   end
 
+  it "redirects to the parent project page when users cancels while creating subproject" do
+    # Go to parent project page
+    visit project_overview_path(project.id)
+
+    # Start creating a subproject from parent context
+    page.find_test_selector("quick-add-menu-button").click
+    page.find_test_selector("quick-add-menu-item", text: "Project", wait: 5).click
+
+    expect(page).to have_heading "New project"
+
+    click_on "Cancel"
+
+    expect(page).to have_current_path project_overview_path(project.id)
+  end
+
+  it "redirects to projects#index when users cancels" do
+    visit new_project_path
+
+    expect(page).to have_heading "New project"
+
+    click_on "Cancel"
+    expect(page).to have_current_path projects_path
+  end
+
+  it "redirects to the parent project page when users press the close icon while creating subproject" do
+    # Go to parent project page
+    visit project_overview_path(project.id)
+
+    # Start creating a subproject from parent context
+    page.find_test_selector("quick-add-menu-button").click
+    page.find_test_selector("quick-add-menu-item", text: "Project", wait: 5).click
+
+    expect(page).to have_heading "New project"
+
+    # Click the close (X) icon in the header
+    find_test_selector("new_project_form_close_icon").click
+
+    expect(page).to have_current_path project_overview_path(project.id)
+  end
+
+  it "redirects to projects#index when users click on close icon" do
+    visit new_project_path
+
+    expect(page).to have_heading "New project"
+
+    find_test_selector("new_project_form_close_icon").click
+    expect(page).to have_current_path projects_path
+  end
+
   it "does not create a project with an already existing identifier" do
     projects_page.create_new_workspace
 
@@ -123,7 +172,7 @@ RSpec.describe "Projects", "creation",
     let(:list_field) do
       FormFields::SelectFormField.new(
         list_custom_field,
-        selector: "[data-qa-field-name='#{list_custom_field.attribute_name(:kebab_case)}'"
+        selector: "[data-test-selector='#{list_custom_field.attribute_name(:kebab_case)}'"
       )
     end
 
@@ -186,7 +235,7 @@ RSpec.describe "Projects", "creation",
     let(:version_field) do
       FormFields::SelectFormField.new(
         version_custom_field,
-        selector: "[data-qa-field-name='#{version_custom_field.attribute_name(:kebab_case)}'"
+        selector: "[data-test-selector='#{version_custom_field.attribute_name(:kebab_case)}'"
       )
     end
 
@@ -267,6 +316,14 @@ RSpec.describe "Projects", "creation",
                project_custom_field_section:)
       end
 
+      shared_let(:required_inactive_custom_field_with_default_value) do
+        create(:text_project_custom_field,
+               name: "Required inactive with default value",
+               is_required: true,
+               default_value: "foo",
+               project_custom_field_section:)
+      end
+
       it "renders activated required custom fields for new" do
         visit new_project_path
 
@@ -290,6 +347,7 @@ RSpec.describe "Projects", "creation",
 
         # Inactive fields, even if required, should not be shown
         expect(page).to have_no_field "Required Inactive *"
+        expect(page).to have_no_field "Required Inactive with default value *"
       end
     end
 
@@ -459,6 +517,88 @@ RSpec.describe "Projects", "creation",
           end
         end
       end
+    end
+  end
+
+  context "with a required custom field that is not for all projects" do
+    shared_let(:required_not_for_all_custom_field) do
+      create(:project_custom_field, name: "Required not for all",
+                                    field_format: "string",
+                                    is_required: true,
+                                    is_for_all: false,
+                                    project_custom_field_section:)
+    end
+
+    it "does not show the project attributes step" do
+      projects_page.create_new_workspace
+
+      expect(page).to have_heading "New project"
+
+      # Step 1: Select workspace type (blank project)
+      click_on "Continue"
+
+      # Step 2: Fill in project details
+      # Should show "2 of 2" because the required field is not for all projects
+      # The bug causes this to show "2 of 3" incorrectly
+      expect(page).to have_text("2 of 2")
+      fill_in "Name", with: "Project without step 3"
+
+      # Should have Complete button (not Continue) since this is the last step
+      expect(page).to have_button("Complete")
+      expect(page).to have_no_button("Continue")
+
+      click_on "Complete"
+
+      expect_and_dismiss_flash type: :success, message: "Successful creation."
+
+      expect(page).to have_current_path %r{/projects/project-without-step-3/?}
+      expect(page).to have_content "Project without step 3"
+
+      # The required_not_for_all field should NOT be activated for the new project
+      new_project = Project.find_by(name: "Project without step 3")
+      expect(new_project.project_custom_field_ids).not_to include(required_not_for_all_custom_field.id)
+    end
+  end
+
+  context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
+    it "auto-suggests an identifier when the name field is blurred" do
+      projects_page.create_new_workspace
+      click_on "Continue"
+
+      fill_in "Name", with: "Flight Planning Algorithm"
+      find("body").click # blur the name field
+
+      expect(page).to have_field "Identifier", with: "FPA"
+    end
+
+    it "allows overriding the auto-suggested identifier" do
+      projects_page.create_new_workspace
+      click_on "Continue"
+
+      fill_in "Name", with: "Flight Planning Algorithm"
+      find("body").click
+      expect(page).to have_field "Identifier", with: "FPA"
+
+      fill_in "Identifier", with: "MYIDENT"
+      click_on "Complete"
+
+      expect_and_dismiss_flash type: :success, message: "Successful creation."
+      expect(page).to have_current_path %r{/projects/MYIDENT/?}
+    end
+
+    it "shows a validation error for identifiers not starting with a letter" do
+      projects_page.create_new_workspace
+      click_on "Continue"
+
+      fill_in "Name", with: "Flight Planning Algorithm"
+      find("body").click
+      expect(page).to have_field "Identifier", with: "FPA"
+
+      expect(page).to have_field "Identifier", with: "FPA"
+      fill_in "Identifier", with: "3INVALID"
+      click_on "Complete"
+
+      expect(page).to have_text "Identifier must start with a letter"
     end
   end
 

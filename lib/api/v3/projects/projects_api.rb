@@ -71,6 +71,7 @@ module API
             end
 
             mount API::V3::Projects::Copy::CopyAPI
+            mount API::V3::Projects::Configuration::ProjectConfigurationAPI
 
             mount ::API::V3::Workspaces::InstanceApis
             mount ::API::V3::Workspaces::NestedApis

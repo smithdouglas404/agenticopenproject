@@ -39,6 +39,7 @@ import { OpSharedModule } from 'core-app/shared/shared.module';
 import { OpSpotModule } from 'core-app/spot/spot.module';
 import { OpDragScrollDirective } from 'core-app/shared/directives/op-drag-scroll/op-drag-scroll.directive';
 import { OpenprojectWorkPackagesModule } from 'core-app/features/work-packages/openproject-work-packages.module';
+import { OpenprojectBoardsModule } from 'core-app/features/boards/openproject-boards.module';
 import { OpenprojectAttachmentsModule } from 'core-app/shared/components/attachments/openproject-attachments.module';
 import { OpenprojectEditorModule } from 'core-app/shared/components/editor/openproject-editor.module';
 import { OpenprojectGridsModule } from 'core-app/shared/components/grids/openproject-grids.module';
@@ -67,9 +68,6 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
 import { ConfirmDialogService } from 'core-app/shared/components/modals/confirm-dialog/confirm-dialog.service';
 import { ConfirmDialogModalComponent } from 'core-app/shared/components/modals/confirm-dialog/confirm-dialog.modal';
 import { DynamicContentModalComponent } from 'core-app/shared/components/modals/modal-wrapper/dynamic-content.modal';
-import {
-  PasswordConfirmationModalComponent,
-} from 'core-app/shared/components/modals/request-for-confirmation/password-confirmation.modal';
 import {
   OpHeaderProjectSelectComponent,
 } from 'core-app/shared/components/header-project-select/header-project-select.component';
@@ -138,12 +136,6 @@ import {
 } from 'core-app/shared/components/autocompleter/draggable-autocomplete/draggable-autocomplete.component';
 import { OpExclusionInfoComponent } from 'core-app/shared/components/fields/display/info/op-exclusion-info.component';
 import { OpenProjectJobStatusModule } from 'core-app/features/job-status/openproject-job-status.module';
-import {
-  NotificationsSettingsPageComponent,
-} from 'core-app/features/user-preferences/notifications-settings/page/notifications-settings-page.component';
-import {
-  ReminderSettingsPageComponent,
-} from 'core-app/features/user-preferences/reminder-settings/page/reminder-settings-page.component';
 import { OpenProjectMyAccountModule } from 'core-app/features/user-preferences/user-preferences.module';
 import { OpAttachmentsComponent } from 'core-app/shared/components/attachments/attachments.component';
 import {
@@ -152,6 +144,9 @@ import {
 import {
   WorkPackageSplitViewEntryComponent,
 } from 'core-app/features/work-packages/routing/wp-split-view/wp-split-view-entry.component';
+import {
+  BoardEntryComponent,
+} from 'core-app/features/boards/board/board-partitioned-page/board-entry.component';
 import {
   StorageLoginButtonComponent,
 } from 'core-app/shared/components/storages/storage-login-button/storage-login-button.component';
@@ -209,6 +204,9 @@ import { WorkPackageFullCreateEntryComponent } from 'core-app/features/work-pack
 import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packages/routing/wp-full-view/wp-full-view-entry.component';
 import { MyPageComponent } from './features/my-page/my-page.component';
 import { DashboardComponent } from './features/overview/dashboard.component';
+import { BurndownChartComponent } from './features/backlogs/burndown-chart.component';
+import { BudgetByCostTypeComponent } from './shared/components/budget-graphs/overview/budget-by-cost-type.component';
+import { ActualCostsComponent } from './shared/components/budget-graphs/overview/actual-costs.component';
 
 export function initializeServices(injector:Injector) {
   return () => {
@@ -256,7 +254,6 @@ export function runBootstrap(appRef:ApplicationRef) {
     // Modals
     ConfirmDialogModalComponent,
     DynamicContentModalComponent,
-    PasswordConfirmationModalComponent,
 
     // Main menu
     MainMenuResizerComponent,
@@ -295,6 +292,9 @@ export function runBootstrap(appRef:ApplicationRef) {
     // Work packages and their routes
     OpenprojectWorkPackagesModule,
     OpenprojectWorkPackageRoutesModule,
+
+    // Boards
+    OpenprojectBoardsModule,
 
     // Work packages in graph representation
     OpenprojectWorkPackageGraphsModule,
@@ -390,11 +390,9 @@ export class OpenProjectModule implements DoBootstrap {
     registerCustomElement('opce-storage-login-button', StorageLoginButtonComponent, { injector });
     registerCustomElement('opce-custom-modal-overlay', OpCustomModalOverlayComponent, { injector });
 
-    // TODO: These elements are now registered custom elements, but are actually single-use components. They should be removed when we move these pages to Rails.
-    registerCustomElement('opce-notification-settings', NotificationsSettingsPageComponent, { injector });
-    registerCustomElement('opce-reminder-settings', ReminderSettingsPageComponent, { injector });
     registerCustomElement('opce-notification-center', InAppNotificationCenterComponent, { injector });
     registerCustomElement('opce-wp-split-view', WorkPackageSplitViewEntryComponent, { injector });
+    registerCustomElement('opce-board-view', BoardEntryComponent, { injector });
     registerCustomElement('opce-wp-full-view', WorkPackageFullViewEntryComponent, { injector });
     registerCustomElement('opce-wp-full-create', WorkPackageFullCreateEntryComponent, { injector });
     registerCustomElement('opce-wp-full-copy', WorkPackageFullCopyEntryComponent, { injector });
@@ -423,5 +421,8 @@ export class OpenProjectModule implements DoBootstrap {
 
     registerCustomElement('opce-my-page', MyPageComponent, { injector });
     registerCustomElement('opce-dashboard', DashboardComponent, { injector });
+    registerCustomElement('opce-burndown-chart', BurndownChartComponent, { injector });
+    registerCustomElement('opce-budget-by-cost-type', BudgetByCostTypeComponent, { injector });
+    registerCustomElement('opce-actual-costs', ActualCostsComponent, { injector });
   }
 }

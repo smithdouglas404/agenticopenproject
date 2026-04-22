@@ -33,7 +33,7 @@ class MeetingPresentationController < ApplicationController
   include Meetings::AgendaComponentStreams
   include Meetings::PresentationComponentStreams
 
-  before_action :check_feature_flag
+  load_and_authorize_with_permission_in_project :view_meetings
 
   before_action :find_meeting
   before_action :check_presentable
@@ -41,12 +41,10 @@ class MeetingPresentationController < ApplicationController
   before_action :set_started_at
   before_action :find_agenda_item, only: [:check_for_updates]
 
-  load_and_authorize_with_permission_in_optional_project :view_meetings
-
   layout "meetings/presentation"
 
   def start
-    @meeting.update(state: :in_progress) if @meeting.open?
+    @meeting.update(state: :in_progress) if @meeting.open? && User.current.allowed_in_project?(:edit_meetings, @meeting.project)
     redirect_to action: :show
   end
 
@@ -66,18 +64,11 @@ class MeetingPresentationController < ApplicationController
   private
 
   def find_meeting
-    @meeting = Meeting.find(params[:meeting_id])
-    @project = @meeting.project
+    @meeting = @project.meetings.visible.find(params[:meeting_id])
   end
 
   def find_agenda_item
     @meeting_agenda_item = @meeting.agenda_items.find(params[:meeting_agenda_item_id])
-  end
-
-  def check_feature_flag
-    unless OpenProject::FeatureDecisions.meetings_presentation_mode_active?
-      render_404
-    end
   end
 
   def set_started_at

@@ -133,6 +133,10 @@ db/*.sql
 lefthook-local.yml
 .rubocop-local.yml
 
+# Local AI coding agent instruction overrides
+AGENTS.local.md
+CLAUDE.local.md
+
 /.lefthook-local/
 
 frontend/package-lock.json

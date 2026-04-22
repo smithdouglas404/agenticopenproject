@@ -60,8 +60,15 @@ See COPYRIGHT and LICENSE files for more details.
       <% section.with_additional_information do %>
         <%=
           check_all_links section_id do |links|
-            links.with_check_all_button.with_tooltip(text: t(".matrix_check_all_label", module: module_title))
-            links.with_uncheck_all_button.with_tooltip(text: t(".matrix_uncheck_all_label", module: module_title))
+            links.with_check_all_button do |button|
+              button.with_tooltip(text: t(".matrix_check_all_label", module: module_title))
+              t(:button_check_all)
+            end
+
+            links.with_uncheck_all_button do |button|
+              button.with_tooltip(text: t(".matrix_uncheck_all_label", module: module_title))
+              t(:button_uncheck_all)
+            end
           end
         %>
       <% end %>

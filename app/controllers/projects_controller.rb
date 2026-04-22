@@ -34,10 +34,11 @@ class ProjectsController < ApplicationController
   menu_item :overview
   menu_item :roadmap, only: :roadmap
 
-  before_action :find_project, except: %i[index new create export_list_modal]
-  before_action :load_query_or_deny_access, only: %i[index export_list_modal]
+  before_action :find_project, except: %i[index new create destroy destroy_info]
+  before_action :find_project_including_archived, only: %i[destroy destroy_info]
+  before_action :load_query_or_deny_access, only: %i[index]
   before_action :authorize,
-                only: %i[copy_form copy deactivate_work_package_attachments export_list_modal export_project_initiation_pdf]
+                only: %i[copy_form copy deactivate_work_package_attachments export_project_initiation_pdf]
   before_action :authorize_global, only: %i[new create]
   before_action :require_admin, only: %i[destroy destroy_info]
   before_action :find_optional_parent, only: :new
@@ -172,10 +173,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def export_list_modal
-    respond_with_dialog Projects::ExportListModalComponent.new(query: @query)
-  end
-
   def export_project_initiation_pdf
     export = Project::PDFExport::ProjectInitiation.new(@project).export!
     send_data(export.content, type: export.mime_type, filename: export.title)
@@ -184,6 +181,12 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def find_project_including_archived
+    # The actions that use this method are only accessible to admins, so we can show them archived projects as well and
+    # can skip the visible scope here.
+    @project = Project.find(params[:id])
+  end
 
   def from_template? = @template.present?
 
@@ -342,13 +345,4 @@ class ProjectsController < ApplicationController
   def login_back_url_params
     params.permit(:parent_id, :template_id, :step, :next_section)
   end
-
-  def portfolio_management_feature_required? = params[:workspace_type].in?(%w[portfolio program])
-
-  def portfolio_management_feature_missing?
-    portfolio_management_feature_required? && !EnterpriseToken.allows_to?(:portfolio_management)
-  end
-
-  helper_method :supported_export_formats,
-                :portfolio_management_feature_missing?
 end

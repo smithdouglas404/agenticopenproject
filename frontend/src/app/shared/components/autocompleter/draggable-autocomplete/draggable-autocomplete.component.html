@@ -28,7 +28,7 @@
 
   <div class="FormControl-spacingWrapper">
     <div class="FormControl width-full">
-      <span class="FormControl-label" [textContent]="dragAreaLabel"></span>
+      <span class="FormControl-label" [textContent]="dragAreaLabel" [tabIndex]="0" role="region"></span>
 
       <div
         class="op-draggable-autocomplete--selected"
@@ -42,10 +42,13 @@
               [textContent]="item.name"
             ></span>
             @if (isRemovable(item)) {
-              <a
+              <div
+                tabindex="0"
                 (click)="remove(item)"
+                (keydown.enter)="remove(item)"
+                (keydown.space)="remove(item)"
                 class="op-draggable-autocomplete--remove-item icon-remove"
-              ></a>
+              ></div>
             }
           </div>
         }

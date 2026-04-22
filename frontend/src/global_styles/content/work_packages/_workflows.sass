@@ -1,12 +1,18 @@
 .controller-workflows
   #content-body
-    display: grid
-    grid-area: auto
-    padding-top: 0
     overflow-x: scroll
 
-    .workflows-page-header
-      padding-top: 1rem
+  &.action-edit
+    #content-body
+      margin-bottom: 72px // 16px (mt: 3) + 32px (button) + 24px (mb: 4)
+
+  turbo-frame#workflow-table
+    width: 100%
+
+  #workflows-edit-sub-header-component
+    position: sticky
+    left: 0
+    background: var(--body-background)
 
 #workflow_form
   .generic-table--results-container
@@ -38,12 +44,15 @@
     th:first-child
       z-index: 3
 
+    thead th:first-child
+      box-shadow: none
+
     tbody
       span.workflow-table--turned-header
         white-space: nowrap
-        transform: rotate(270deg)
+        transform: rotate(270deg) translateX(-50%)
         position: absolute
-        top: 235px
+        top: 50%
         left: 0px
         transform-origin: 0 0
         text-transform: uppercase
@@ -66,6 +75,13 @@
   th:first-child
     z-index: 3
 
-#work-flow-save-button
-  position: sticky
-  left: 0
+.workflow-save-bar
+  position: fixed
+  bottom: 0
+  left: var(--main-menu-width)
+  right: 0
+  background: var(--body-background)
+  z-index: 100
+
+.workflow-status-dialog-body
+  min-height: 480px

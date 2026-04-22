@@ -33,7 +33,7 @@ module Overviews
     extend Dry::Initializer
 
     include ApplicationHelper
-    include ProjectHelper
+    include ProjectsHelper
     include Redmine::I18n
 
     option :project
@@ -42,18 +42,23 @@ module Overviews
     private
 
     def breadcrumb_items
-      [
-        { href: project_path(project), text: project.name, skip_for_mobile: true },
-        page_title
-      ]
+      items =
+        project.ancestors.visible.map do |ancestor|
+          {
+            href: project_path(ancestor),
+            text: ancestor.name,
+            skip_for_mobile: true
+          }
+        end
+
+      return nil if items.empty?
+
+      items << page_title
+      items
     end
 
     def page_title
-      if OpenProject::FeatureDecisions.new_project_overview_active?
-        project.name
-      else
-        I18n.t("overviews.label_overview")
-      end
+      project.name
     end
 
     def favorited?
@@ -69,8 +74,7 @@ module Overviews
     end
 
     def allowed_to_export_project_initiation_pdf?
-      OpenProject::FeatureDecisions.project_initiation_active? &&
-        project.project_creation_wizard_enabled &&
+      project.project_creation_wizard_enabled &&
         current_user.allowed_in_project?(:export_projects, project)
     end
   end

@@ -134,6 +134,10 @@ export class PathHelperService {
     return `${this.staticBase}/my/notifications`;
   }
 
+  public myPasswordConfirmationDialogPath() {
+    return `${this.staticBase}/my/password_confirmation_dialog`;
+  }
+
   public newsPath(newsId:string) {
     return `${this.staticBase}/news/${newsId}`;
   }
@@ -241,6 +245,10 @@ export class PathHelperService {
 
   public newBoardsPath(projectIdentifier:string|null) {
     return `${this.boardsPath(projectIdentifier)}/new`;
+  }
+
+  public boardDetailsPath(projectIdentifier:string|null, boardId:string|number, workPackageId:string|number) {
+    return `${this.boardsPath(projectIdentifier)}/${boardId}/details/${workPackageId}`;
   }
 
   public projectDashboardsPath(projectIdentifier:string) {
@@ -403,6 +411,16 @@ export class PathHelperService {
     return `${this.workPackagesPath(null)}/bulk`;
   }
 
+  public workPackagesBulkDeleteDialogPath(ids:string[], backUrl?:string) {
+    const params = ids.map((id) => `ids[]=${encodeURIComponent(id)}`).join('&');
+    const backParam = backUrl ? `&back_url=${encodeURIComponent(backUrl)}` : '';
+    return `${this.workPackagesPath(null)}/bulk/delete_dialog?${params}${backParam}`;
+  }
+
+  public workPackagesBulkReassignmentPath() {
+    return `${this.workPackagesPath(null)}/bulk/reassign`;
+  }
+
   public textFormattingHelp() {
     return `${this.staticBase}/help/text_formatting`;
   }
@@ -449,5 +467,9 @@ export class PathHelperService {
 
   public homePath() {
     return `${this.staticBase}/`;
+  }
+
+  public externalRedirectPath(url:string) {
+    return `${this.staticBase}/external_redirect?url=${encodeURIComponent(url)}`;
   }
 }

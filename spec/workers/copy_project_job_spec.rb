@@ -38,12 +38,25 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
 
   before { allow(mail_double).to receive(:deliver_later) }
 
-  describe "copy project succeeds with errors" do
-    let(:source_project) { create(:project, types: [type]) }
+  describe "with a source project having invalid work packages" do
+    shared_let(:type) { create(:type_bug) }
+    shared_let(:source_project) { create(:project, types: [type]) }
 
-    let!(:work_package) { create(:work_package, :skip_validations, done_ratio: 101, project: source_project, type:) }
+    shared_let(:work_package_with_model_errors) do
+      # done ratio must be between 0 and 100, this is a model validation
+      create(:work_package, :skip_validations,
+             project: source_project, type:,
+             subject: "wp with invalid done_ratio",
+             done_ratio: 101)
+    end
+    shared_let(:work_package_with_contract_errors) do
+      # remaining work must be less than or equal to work, this is a WorkPackages::BaseContract validation
+      create(:work_package, :skip_validations,
+             project: source_project, type:,
+             subject: "wp with invalid work and remaining work",
+             remaining_hours: 10, estimated_hours: 2)
+    end
 
-    let(:type) { create(:type_bug) }
     let(:job_args) do
       {
         target_project_params: params,
@@ -52,13 +65,8 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
     end
 
     let(:params) { { name: "Copy", identifier: "copy", type_ids: [type.id] } }
-    let(:expected_error_message) do
-      "#{WorkPackage.model_name.human} '#{work_package.type.name} ##{work_package.id}: " \
-        "#{work_package.subject}': % Complete " \
-        "#{I18n.t('activerecord.errors.models.work_package.attributes.done_ratio.inclusion')}"
-    end
 
-    it "copies the project", :aggregate_failures do
+    it "copies the project and invalid work packages without reporting any errors", :aggregate_failures do
       copy_job = nil
       batch = GoodJob::Batch.enqueue(user: admin, source_project:) do
         copy_job = described_class.perform_later(**job_args)
@@ -67,9 +75,12 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
       batch.reload
 
       copied_project = Project.find_by(identifier: params[:identifier])
-
       expect(copied_project).to eq(batch.properties[:target_project])
-      expect(batch.properties[:errors].first).to eq(expected_error_message)
+
+      # all work packages were copied, even if they are invalid
+      expect(copied_project.work_packages.count).to eq(source_project.work_packages.count)
+      # no errors reported
+      expect(batch.properties[:errors]).to be_empty
 
       # expect to create a status
       expect(copy_job.job_status).to be_present
@@ -80,15 +91,30 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
       expect(copy_job.job_status[:payload]["_links"]["project"]).to eq(expected_link)
     end
 
-    it "ensures that error messages are correctly localized" do
-      batch = GoodJob::Batch.enqueue(user: user_de, source_project:) do
-        described_class.perform_later(**job_args)
+    context "when the source project has automatically generated subjects" do
+      before do
+        type.update(patterns: { subject: { blueprint: "wp {{id}} in project {{project_id}}", enabled: true } })
       end
-      GoodJob.perform_inline
-      batch.reload
 
-      msg = /Arbeitspaket 'Bug #\d+: WorkPackage No. \d+': % abgeschlossen muss zwischen 0 und 100 liegen\./
-      expect(batch.properties[:errors].first).to match(msg)
+      it "copies the project without reporting any errors and generates subjects different from source project" do
+        batch = GoodJob::Batch.enqueue(user: admin, source_project:) do
+          described_class.perform_later(**job_args)
+        end
+        GoodJob.perform_inline
+        batch.reload
+
+        copied_project = Project.find_by(identifier: params[:identifier])
+
+        # all work packages were copied, even if they are invalid
+        expect(copied_project.work_packages.count).to eq(source_project.work_packages.count)
+        # no errors reported
+        expect(batch.properties[:errors]).to be_empty
+
+        # generated subjects are different from source project
+        copied_project.work_packages.each do |work_package|
+          expect(work_package.subject).to eq("wp #{work_package.id} in project #{copied_project.id}")
+        end
+      end
     end
   end
 

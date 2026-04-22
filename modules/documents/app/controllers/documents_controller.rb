@@ -35,11 +35,9 @@ class DocumentsController < ApplicationController
   include OpTurbo::ComponentStream
 
   default_search_scope :documents
-  model_object Document
 
   before_action :find_project_by_project_id, only: %i[index search new create]
-  before_action :find_model_object, except: %i[index search new create]
-  before_action :find_project_from_association, except: %i[index search new create]
+  before_action :find_document, except: %i[index search new create]
   before_action :authorize
 
   def index
@@ -61,15 +59,14 @@ class DocumentsController < ApplicationController
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
 
     if @document.collaborative? && Setting.real_time_text_collaboration_enabled?
-      generate_encrypted_oauth_token
-      derive_readonly_from_permissions
+      setup_collaboration_context
       derive_show_edit_state_from_params
     end
   end
 
   def render_avatars
     user_ids = params[:user_ids]
-    @users = User.where(id: user_ids)
+    @users = User.visible.where(id: user_ids)
     update_via_turbo_stream(component: Documents::ShowEditView::PageHeader::LiveUsersComponent.new(users: @users))
 
     respond_with_turbo_streams
@@ -77,21 +74,6 @@ class DocumentsController < ApplicationController
 
   def render_last_saved_at
     update_via_turbo_stream(component: Documents::ShowEditView::PageHeader::LiveSavedAtComponent.new(@document))
-
-    respond_with_turbo_streams
-  end
-
-  def render_connection_error
-    update_via_turbo_stream(component: Documents::ShowEditView::ConnectionErrorNoticeComponent.new)
-
-    respond_with_turbo_streams
-  end
-
-  def render_connection_recovery
-    render_success_flash_message_via_turbo_stream(
-      message: I18n.t("documents.show_edit_view.connection_recovery_notice.description"),
-      unique_key: "document-connection-recovery-notice-#{@document.id}"
-    )
 
     respond_with_turbo_streams
   end
@@ -189,6 +171,11 @@ class DocumentsController < ApplicationController
 
   private
 
+  def find_document
+    @document = Document.visible.find(params[:id])
+    @project = @document.project
+  end
+
   def document_params
     params.fetch(:document, {}).permit("type_id", "title", "description", "content_binary", "kind")
   end
@@ -222,33 +209,23 @@ class DocumentsController < ApplicationController
     redirect_to document_path(call.result, state: :edit)
   end
 
-  # rubocop:disable Metrics/AbcSize
-  def generate_encrypted_oauth_token
-    if !current_user.allowed_in_project?(:view_documents, @project)
-      return
-    end
+  def setup_collaboration_context # rubocop:disable Metrics/AbcSize
+    return unless current_user.allowed_in_project?(:view_documents, @project)
 
-    result = Documents::OAuth::GenerateTokenService
-      .new(user: current_user)
+    token_result = Documents::OAuth::TokenWithMetadataService
+      .new(user: current_user, document: @document, project: @project)
       .call
 
-    if result.failure?
-      Rails.logger.error("Failed to generate OAuth token for document #{@document.id}: #{result.errors}")
+    if token_result.failure?
+      Rails.logger.error("Failed to generate token payload for document #{@document.id}: #{token_result.errors}")
       return
     end
 
-    result = Documents::OAuth::EncryptTokenService
-      .new(token: result.result.plaintext_token)
-      .call
-
-    if result.failure?
-      Rails.logger.error("Failed to encrypt OAuth token for document #{@document.id}: #{result.errors}")
-      return
-    end
-
-    @oauth_token = result.result
+    @token_payload = token_result.result[:encrypted_token]
+    @resource_url = token_result.result[:resource_url]
+    @readonly = token_result.result[:readonly]
+    @token_expires_in_seconds = token_result.result[:expires_in_seconds]
   end
-  # rubocop:enable Metrics/AbcSize
 
   def update_header_component_via_turbo_stream(state: :show)
     update_via_turbo_stream(
@@ -258,10 +235,5 @@ class DocumentsController < ApplicationController
 
   def derive_show_edit_state_from_params
     @state = params[:state] == "edit" ? :edit : :show
-  end
-
-  def derive_readonly_from_permissions
-    @readonly = current_user.allowed_in_project?(:view_documents, @project) &&
-      !current_user.allowed_in_project?(:manage_documents, @project)
   end
 end

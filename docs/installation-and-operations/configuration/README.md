@@ -151,6 +151,38 @@ docker run -d --env-file path/to/file ...
 
 Configuring OpenProject through environment variables is described in detail [in the environment variables guide](environment/).
 
+#### Real-time collaboration
+
+The AIO (all-in-one) container comes bundled with the [hocuspocus](https://github.com/opf/openproject/tree/dev/extensions/op-blocknote-hocuspocus) server needed
+for the real-time collaboration feature for documents.
+
+This is controlled via the following two environment variables, shown with their default values.
+
+```bash
+OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL=auto
+OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET=
+```
+
+This will automatically generate a secret, start hocuspocus and configure it with OpenProject to enable real-time collaboration
+in documents.
+
+If you want to use an external hocuspocus server instead, you have two options.
+
+**Option 1**
+
+Set the URL and secret using the environment variables above.
+
+**Option 2**
+
+Set the URL and secret using the UI. For that to work, you need to unset the URL in the environment,
+so that the option becomes available in the UI.
+
+You can unset it, for example, by adding the following option to the run command.
+
+```bash
+-e OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL=
+```
+
 ## Seeding through environment
 
 OpenProject allows some resources to be seeded/created initially through configuration variables.

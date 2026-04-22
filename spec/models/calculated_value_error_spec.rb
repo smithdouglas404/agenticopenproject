@@ -36,7 +36,7 @@ RSpec.describe CalculatedValueError do
 
   describe "validations" do
     it { is_expected.to validate_presence_of(:customized) }
-    it { is_expected.to validate_presence_of(:custom_field_id) }
+    it { is_expected.to validate_presence_of(:custom_field) }
 
     it "validates uniqueness of customized scoped to custom_field_id and error_code" do
       # Create an initial record

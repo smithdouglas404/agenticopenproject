@@ -1,24 +1,61 @@
+//-- copyright
+// OpenProject is an open source project management software.
+// Copyright (C) the OpenProject GmbH
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License version 3.
+//
+// OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+// Copyright (C) 2006-2013 Jean-Philippe Lang
+// Copyright (C) 2010-2013 the ChiliProject Team
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+//
+// See COPYRIGHT and LICENSE files for more details.
+//++
+
 import { Controller } from '@hotwired/stimulus';
+import { FrameElement } from '@hotwired/turbo';
+import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
+import { filter, Subscription } from 'rxjs';
 
-import 'jquery.flot';
-import 'jquery.flot/excanvas';
+export default class BacklogsController extends Controller<HTMLElement> {
+  private service:HalEventsService|null = null;
+  private subscription:Subscription|null = null;
 
-import 'core-vendor/jquery.jeditable.mini';
-import 'core-vendor/jquery.colorcontrast';
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  async connect() {
+    const { services: { halEvents } } = await window.OpenProject.getPluginContext();
 
-import './backlogs/common';
-import './backlogs/master_backlog';
-import './backlogs/backlog';
-import './backlogs/burndown';
-import './backlogs/model';
-import './backlogs/editable_inplace';
-import './backlogs/sprint';
-import './backlogs/work_package';
-import './backlogs/story';
-import './backlogs/task';
-import './backlogs/impediment';
-import './backlogs/taskboard';
-import './backlogs/show_main';
+    this.service = halEvents;
+    this.subscription = this.service.aggregated$('WorkPackage')
+      .pipe(filter((events) => events.some((event) => event.eventType === 'updated')))
+      .subscribe(() => { this.refreshList(); });
+  }
 
-export default class BacklogsController extends Controller {
+  disconnect() {
+    this.subscription?.unsubscribe();
+    this.subscription = null;
+    this.service = null;
+  }
+
+  private refreshList() {
+    void this.listElement.reload();
+  }
+
+  private get listElement() {
+    return this.element.querySelector<FrameElement>('#backlogs_container')!;
+  }
 }

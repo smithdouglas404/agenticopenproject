@@ -100,7 +100,6 @@ See COPYRIGHT and LICENSE files for more details.
 
           if can_manage_subprojects?
             component.with_primary_action(
-              tag: :a,
               href: new_project_path(parent_id: project.id),
               test_selector: "subitems-widget-add-button",
               scheme: :secondary

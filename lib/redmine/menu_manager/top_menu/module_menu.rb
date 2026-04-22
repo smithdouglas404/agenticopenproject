@@ -29,7 +29,7 @@
 #++
 
 module Redmine::MenuManager::TopMenu::ModuleMenu
-  def render_module_top_menu_node(item_groups = module_top_menu_item_groups)
+  def render_module_top_menu_node(item_groups = module_top_menu_item_groups) # rubocop:disable Metrics/AbcSize
     unless item_groups.empty?
       render Primer::Alpha::Dialog.new(classes: "op-app-menu--item",
                                        title: I18n.t("label_global_modules"),
@@ -46,8 +46,14 @@ module Redmine::MenuManager::TopMenu::ModuleMenu
           render_waffle_menu_logo_icon if show_waffle_icon?
         end
 
-        item_groups.each do |item_group|
-          render_dialog_item_group(dialog, item_group)
+        dialog.with_body do
+          concat call_hook(:module_menu_dialog_content_before)
+
+          item_groups.each do |item_group|
+            concat render_dialog_item_group(item_group)
+          end
+
+          concat call_hook(:module_menu_dialog_content_after)
         end
       end
     end
@@ -55,32 +61,31 @@ module Redmine::MenuManager::TopMenu::ModuleMenu
 
   private
 
-  def render_dialog_item_group(dialog, item_group)
-    dialog.with_body do
-      render Primer::Alpha::ActionList.new(
-        classes: "op-app-menu--items",
-        id: "op-app-header--modules-menu-list"
-      ) do |list|
-        list.with_heading(title: item_group[:title], align_items: :flex_start) if item_group[:title]
+  def render_dialog_item_group(item_group)
+    render Primer::Alpha::ActionList.new(
+      classes: "op-app-menu--items",
+      id: "op-app-header--modules-menu-list"
+    ) do |list|
+      list.with_heading(title: item_group[:title], align_items: :flex_start) if item_group[:title]
 
-        my_items, remaining_items = item_group[:items].partition { |item| item.context == :my }
+      my_items, remaining_items = item_group[:items].partition { |item| item.context == :my }
 
-        render_action_list_items(list, my_items)
+      render_action_list_items(list, my_items)
 
-        list.with_divider if my_items.any? && remaining_items.any?
+      list.with_divider if my_items.any? && remaining_items.any?
 
-        render_action_list_items(list, remaining_items)
-      end
+      render_action_list_items(list, remaining_items)
     end
   end
 
   def render_action_list_items(list, items)
     items.each do |item|
-      label = if item.enterprise_feature_missing?
-                h(item.caption) + upsell_icon
-              else
-                item.caption
-              end
+      label =
+        if item.enterprise_feature_missing?
+          h(item.caption) + upsell_icon
+        else
+          item.caption
+        end
 
       list.with_item(
         href: url_for(item.url),
@@ -102,7 +107,7 @@ module Redmine::MenuManager::TopMenu::ModuleMenu
 
     # add untitled group, if no heading is present
     unless items.first.heading?
-      item_groups = [{ title: nil, items: [] }]
+      item_groups = [default_module_menu_group]
     end
 
     # create item groups
@@ -115,6 +120,10 @@ module Redmine::MenuManager::TopMenu::ModuleMenu
 
       groups
     end
+  end
+
+  def default_module_menu_group
+    { title: nil, items: [] }
   end
 
   # Menu items for the modules top menu

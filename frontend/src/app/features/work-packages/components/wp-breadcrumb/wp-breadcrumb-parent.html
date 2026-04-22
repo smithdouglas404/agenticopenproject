@@ -2,10 +2,11 @@
   @if (parent) {
     <a
       [attr.title]="parent.name"
-      (click)="switchToFullscreenForWp(parent)"
-      class="op-wp-breadcrumb-parent nocut"
-      data-test-selector="op-wp-breadcrumb-parent">
-      <span [textContent]="parent.name"></span>
+      [href]="parentLink(parent)"
+      class="op-wp-breadcrumb-parent"
+      data-test-selector="op-wp-breadcrumb-parent"
+      data-turbo="false"
+      [textContent]="parent.name">
     </a>
   }
   @if (canModifyParent()) {

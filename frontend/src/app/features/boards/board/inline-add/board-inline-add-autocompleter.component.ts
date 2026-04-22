@@ -28,6 +28,7 @@
 
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -59,6 +60,10 @@ import { HalResourceService } from 'core-app/features/hal/services/hal-resource.
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./board-inline-add-autocompleter.sass'],
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BoardInlineAddAutocompleterComponent implements AfterViewInit {
   readonly text = {
@@ -74,7 +79,7 @@ export class BoardInlineAddAutocompleterComponent implements AfterViewInit {
     const filters:ApiV3FilterBuilder = new ApiV3FilterBuilder();
     const results = this.querySpace.results.value;
 
-    filters.add('subjectOrId', '**', [searchString]);
+    filters.add('typeahead', '**', [searchString]);
 
     if (results && results.elements.length > 0) {
       filters.add('id', '!', results.elements.map((wp:WorkPackageResource) => wp.id!));
@@ -90,7 +95,7 @@ export class BoardInlineAddAutocompleterComponent implements AfterViewInit {
       .apiV3Service
       .withOptionalProject(this.CurrentProject.id)
       .work_packages
-      .filtered(filters)
+      .filtered(filters, { sortBy: '[["updatedAt","desc"]]' })
       .get()
       .pipe(
         map((collection) => collection.elements),

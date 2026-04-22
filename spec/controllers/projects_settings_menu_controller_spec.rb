@@ -31,7 +31,7 @@
 require "spec_helper"
 
 RSpec.describe Projects::Settings::ModulesController, "menu" do
-  let(:current_user) { build_stubbed(:user) }
+  let(:current_user) { create(:admin) }
 
   let(:project) do
     # project contains wiki by default
@@ -41,7 +41,6 @@ RSpec.describe Projects::Settings::ModulesController, "menu" do
   let(:params) { { project_id: project.id } }
 
   before do
-    mock_permissions_for(current_user, &:allow_everything)
     login_as(current_user)
   end
 
@@ -106,8 +105,6 @@ RSpec.describe Projects::Settings::ModulesController, "menu" do
         it_behaves_like "renders the modules show page"
 
         it_behaves_like "has selector", "#main-menu a.wiki-example-menu-item"
-
-        it_behaves_like "has selector", "#main-menu a.wiki-sub-menu-item"
       end
     end
 

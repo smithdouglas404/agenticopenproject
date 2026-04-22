@@ -34,8 +34,8 @@ module Members::Scopes
 
     class_methods do
       # Find all members visible to the inquiring user
-      def visible(user)
-        if user.admin?
+      def visible(user = User.current)
+        if user.active_admin?
           visible_for_admins
         else
           visible_for_non_admins(user)

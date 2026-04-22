@@ -65,6 +65,8 @@ RSpec.describe "Cost report showing my own times", :js do
       visit cost_report_path(report.id, project_id: project.identifier)
       expect(page).to have_css(".report", text: "15.00")
 
+      # Refresh the user_autocompleter value to avoid cuprite issues in case the internal nodeID changes (stale element)
+      user_autocompleter = find("opce-user-autocompleter##{filter_selector}")
       expect_current_autocompleter_value(user_autocompleter, "me")
     end
   end

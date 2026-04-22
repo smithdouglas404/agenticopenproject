@@ -30,6 +30,11 @@
 
 module WorkPackageTypes
   class UpdateFormConfigurationContract < BaseContract
+    include RequiresEnterpriseGuard
+
+    self.enterprise_action = :edit_attribute_groups
+    self.enterprise_condition = ->(*) { custom_groups_modified? }
+
     attribute :attribute_groups
 
     validate :validate_attribute_group_names
@@ -82,6 +87,15 @@ module WorkPackageTypes
           )
         end
       end
+    end
+
+    def custom_groups_modified?
+      return false unless model.attribute_groups_changed?
+
+      old_keys = model.attribute_groups_was.map(&:first)
+      new_keys = model.attribute_groups.map(&:key)
+
+      (new_keys - old_keys - Type.default_groups.keys).any?
     end
   end
 end

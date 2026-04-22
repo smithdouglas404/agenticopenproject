@@ -61,7 +61,7 @@ module Settings
       },
       apiv3_docs_enabled: {
         description: "Enable interactive APIv3 documentation as part of the application",
-        default: true
+        default: false
       },
       apiv3_enable_basic_auth: {
         description: "Enable API token or global basic authentication for APIv3 requests",
@@ -77,6 +77,9 @@ module Settings
       },
       app_title: {
         default: "OpenProject"
+      },
+      organization_name: {
+        default: "My Organization"
       },
       attachment_max_size: {
         default: 5120
@@ -125,6 +128,13 @@ module Settings
         format: :symbol,
         default: :quarantine,
         allowed: %i[quarantine delete]
+      },
+      api_tokens_enabled: {
+        default: true,
+        description: "Decide whether users can create personal API tokens in their account settings",
+        # Keeping old name only for backwards-compatibility, can be removed in OpenProject 18.0
+        env_alias: "OPENPROJECT_REST__API__ENABLED",
+        format: :boolean
       },
       auth_source_sso: {
         description: "Configuration for Header-based Single Sign-On",
@@ -346,7 +356,14 @@ module Settings
         allowed: -> { Redmine::I18n.all_languages }
       },
       default_projects_modules: {
-        default: %w[calendar board_view work_package_tracking gantt news costs wiki],
+        default: -> {
+          base_modules = %w[calendar board_view work_package_tracking gantt news costs wiki]
+          if Setting.real_time_text_collaboration_enabled?
+            base_modules + %w[documents]
+          else
+            base_modules
+          end
+        },
         allowed: -> { OpenProject::AccessControl.available_project_modules.map(&:to_s) }
       },
       default_projects_public: {
@@ -561,6 +578,14 @@ module Settings
         format: :string,
         default: nil
       },
+      hashed_token_pepper: {
+        description: "Pepper used for HMAC-SHA256 hashing of hashed tokens (e.g. API tokens). " \
+                     "Auto-initialized on first use. " \
+                     "Changing this invalidates all existing hashed tokens.",
+        format: :string,
+        default: -> { SecureRandom.hex(32) },
+        persist_on_first_read: true
+      },
       host_name: {
         format: :string,
         default: -> { "#{ENV.fetch('HOST', 'localhost')}:#{ENV.fetch('PORT', 3000)}" },
@@ -575,7 +600,10 @@ module Settings
       },
       real_time_text_collaboration_enabled: {
         description: "Enable real-time collaborative editing of text fields using BlockNoteJS and Hocuspocus server.",
-        default: true
+        default: -> {
+          Setting.collaborative_editing_hocuspocus_url.present? &&
+            Setting.collaborative_editing_hocuspocus_secret.present?
+        }
       },
       collaborative_editing_hocuspocus_url: {
         format: :string,
@@ -639,7 +667,11 @@ module Settings
       },
       installation_uuid: {
         format: :string,
-        default: nil
+        default: -> { SecureRandom.uuid },
+        persist_on_first_read: true,
+        default_by_env: {
+          test: "test_uuid"
+        }
       },
       internal_password_confirmation: {
         description: "Require password confirmations for certain administrative actions",
@@ -727,6 +759,12 @@ module Settings
         writable: false,
         allowed: %w[danish dutch english finnish french german hungarian
                     italian norwegian portuguese romanian russian simple spanish swedish turkish]
+      },
+      mcp_tool_response_format: {
+        default: :full,
+        format: :symbol,
+        allowed: -> { McpTools::Base::RESPONSE_FORMATS },
+        description: "How to format responses for MCP tools. Using values other than full may improve language model performance."
       },
       migration_check_on_exceptions: {
         description: "Check for missing migrations in internal errors",
@@ -947,9 +985,6 @@ module Settings
       repository_truncate_at: {
         default: 500
       },
-      rest_api_enabled: {
-        default: true
-      },
       scm: {
         format: :hash,
         default: {},
@@ -1147,6 +1182,52 @@ module Settings
         default: 2000,
         writable: false
       },
+      ssrf_protection_ip_allowlist: {
+        description: "
+          Connections to certain IP addresses (such as private ranges) are blocked to prevent SSRF attacks.
+          Use this setting to explicitly allow given IP addresses which would otherwise be blocked.
+          Takes a comma or space separated list of IPv4 and IPv6 addresses (including masks for ranges),
+          e.g. `192.168.255.255/16`.
+
+          Here is a list of blocked IP ranges as defined by the ssrf_filter gem used.
+          See [1] for the latest state in case this has changed.
+
+            0.0.0.0/8          # Current network (only valid as source address)
+            10.0.0.0/8         # Private network
+            100.64.0.0/10      # Shared Address Space
+            127.0.0.0/8        # Loopback
+            169.254.0.0/16     # Link-local
+            172.16.0.0/12      # Private network
+            192.0.0.0/24       # IETF Protocol Assignments
+            192.0.2.0/24       # TEST-NET-1, documentation and examples
+            192.88.99.0/24     # IPv6 to IPv4 relay (includes 2002::/16)
+            192.168.0.0/16     # Private network
+            198.18.0.0/15      # Network benchmark tests
+            198.51.100.0/24    # TEST-NET-2, documentation and examples
+            203.0.113.0/24     # TEST-NET-3, documentation and examples
+            224.0.0.0/4        # IP multicast (former Class D network)
+            240.0.0.0/4        # Reserved (former Class E network)
+            255.255.255.255    # Broadcast
+
+            ::1/128            # Loopback
+            64:ff9b::/96       # IPv4/IPv6 translation (RFC 6052)
+            100::/64           # Discard prefix (RFC 6666)
+            2001::/32          # Teredo tunneling
+            2001:10::/28       # Deprecated (previously ORCHID)
+            2001:20::/28       # ORCHIDv2
+            2001:db8::/32      # Addresses used in documentation and example source code
+            2002::/16          # 6to4
+            fc00::/7           # Unique local address
+            fe80::/10          # Link-local address
+            ff00::/8           # Multicast
+
+          [1] https://github.com/arkadiyt/ssrf_filter/blob/main/lib/ssrf_filter/ssrf_filter.rb#L28-L58
+        ".squish,
+        format: :string,
+        default: "",
+        env_alias: "SSRF_PROTECTION_IP_ALLOWLIST",
+        writable: false
+      },
       start_of_week: {
         default: nil,
         format: :integer,
@@ -1243,6 +1324,15 @@ module Settings
       work_packages_bulk_request_limit: {
         default: 10
       },
+      work_packages_identifier: {
+        description: "Defines how work packages are identified in the UI (e.g. in links and titles). " \
+                     "The 'classic' option uses the work package numerical ID, " \
+                     "while 'semantic' uses the project identifier and the work package ID separated by a dash " \
+                     "(e.g. 'PROJA-123').",
+        format: :string,
+        allowed: -> { Setting::WorkPackageIdentifier::ALLOWED_VALUES },
+        default: "classic"
+      },
       work_package_list_default_highlighted_attributes: {
         default: ["status", "priority", "due_date"],
         allowed: -> {
@@ -1251,9 +1341,8 @@ module Settings
       },
       work_package_list_default_highlighting_mode: {
         format: :string,
-        default: -> { EnterpriseToken.allows_to?(:conditional_highlighting) ? "inline" : "none" },
-        allowed: -> { Query::QUERY_HIGHLIGHTING_MODES.map(&:to_s) },
-        writable: -> { EnterpriseToken.allows_to?(:conditional_highlighting) }
+        default: -> { "inline" },
+        allowed: -> { Query::QUERY_HIGHLIGHTING_MODES.map(&:to_s) }
       },
       work_package_list_default_columns: {
         default: %w[id subject type status assigned_to priority],
@@ -1271,13 +1360,24 @@ module Settings
       youtube_channel: {
         description: "Link to YouTube channel in help menu",
         default: "https://www.youtube.com/c/OpenProjectCommunity"
+      },
+      capture_external_links: {
+        description: "Redirect external links through a warning page before leaving the application",
+        default: false,
+        writable: -> { EnterpriseToken.allows_to?(:capture_external_links) }
+      },
+      capture_external_links_require_login: {
+        description: "Require users to be logged in before being able to navigate to external links",
+        default: false,
+        writable: -> { EnterpriseToken.allows_to?(:capture_external_links) }
       }
     }.freeze
 
     attr_accessor :name,
                   :format,
                   :env_alias,
-                  :string_values
+                  :string_values,
+                  :persist_on_first_read
 
     attr_writer :value,
                 :description,
@@ -1291,7 +1391,8 @@ module Settings
                    writable: true,
                    allowed: nil,
                    env_alias: nil,
-                   string_values: false)
+                   string_values: false,
+                   persist_on_first_read: false)
       self.name = name.to_s
       self.value = derive_default default_by_env.fetch(Rails.env.to_sym, default)
       self.format = format ? format.to_sym : deduce_format(value)
@@ -1300,6 +1401,23 @@ module Settings
       self.env_alias = env_alias
       self.description = description.presence || :"setting_#{name}"
       self.string_values = string_values
+      self.persist_on_first_read = persist_on_first_read
+
+      if persist_on_first_read && !writable
+        raise ArgumentError, "Settings using persist_on_first_read need to be writable"
+      end
+
+      if persist_on_first_read && default.nil?
+        raise ArgumentError, "Settings using persist_on_first_read need to have a default value"
+      end
+    end
+
+    def env_name
+      self.class.env_name(self)
+    end
+
+    def possible_env_names
+      self.class.possible_env_names(self)
     end
 
     def derive_default(default)
@@ -1313,6 +1431,10 @@ module Settings
     end
 
     def value
+      unless (override = resolve_value_override).nil?
+        return cast(override)
+      end
+
       cast(@value)
     end
 
@@ -1329,11 +1451,17 @@ module Settings
     end
 
     def writable?
+      return false if value_override?
+
       if writable.respond_to?(:call)
         writable.call
       else
         !!writable
       end
+    end
+
+    def persist_on_first_read?
+      persist_on_first_read
     end
 
     def unprefixed_env_var_name_allowed?
@@ -1405,6 +1533,7 @@ module Settings
               allowed: nil,
               env_alias: nil,
               string_values: false,
+              persist_on_first_read: false,
               disallow_override: false)
         name = name.to_sym
         return if exists?(name)
@@ -1417,7 +1546,8 @@ module Settings
                          writable:,
                          allowed:,
                          env_alias:,
-                         string_values:)
+                         string_values:,
+                         persist_on_first_read:)
         override_value(definition) unless disallow_override
         all[name] = definition
       end
@@ -1444,6 +1574,38 @@ module Settings
 
       def all
         @all ||= {}
+      end
+
+      # Registers a value override block for a setting. The block is called
+      # whenever the setting's value or writability is evaluated.
+      #
+      # If the block returns a non-nil value, that value is used as the setting's
+      # value and the setting becomes non-writable. If the block returns nil,
+      # no override is applied.
+      #
+      # To override a setting with nil, return a callable: +-> { nil }+
+      #
+      # @param name [Symbol] The setting name to override.
+      # @yield A block that returns the override value, or nil to skip.
+      #
+      # @example Force a setting to true when a condition is met
+      #   Settings::Definition.add_value_override(:capture_external_links) do
+      #     true if MyPlugin.active?
+      #   end
+      def add_value_override(name, &block)
+        (value_overrides[name.to_sym] ||= []) << block
+      end
+
+      def value_overrides
+        @value_overrides ||= {}
+      end
+
+      def clear_value_overrides(name = nil)
+        if name
+          value_overrides.delete(name.to_sym)
+        else
+          @value_overrides = {}
+        end
       end
 
       private
@@ -1529,8 +1691,8 @@ module Settings
         env_var_hash_part
           .scan(/(?:[a-zA-Z0-9]|__)+/)
           .map do |seg|
-          unescape_underscores(seg.downcase)
-        end
+            unescape_underscores(seg.downcase)
+          end
       end
 
       # takes the path provided and transforms it into a deeply nested hash
@@ -1585,8 +1747,6 @@ module Settings
         ].compact
       end
 
-      public :possible_env_names
-
       def env_name_nested(definition)
         "#{ENV_PREFIX}#{definition.name.upcase.gsub('_', '__')}"
       end
@@ -1604,6 +1764,8 @@ module Settings
 
         definition.env_alias.upcase
       end
+
+      public :possible_env_names, :env_name
 
       ##
       # Extract the configuration value from the given environment variable
@@ -1638,6 +1800,18 @@ module Settings
 
     attr_accessor :serialized,
                   :writable
+
+    def value_override?
+      !resolve_value_override.nil?
+    end
+
+    def resolve_value_override
+      self.class.value_overrides[name.to_sym]&.each do |block|
+        result = block.call
+        return result unless result.nil?
+      end
+      nil
+    end
 
     def cast(value)
       return nil if value.nil?

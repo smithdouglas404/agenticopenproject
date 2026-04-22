@@ -17,10 +17,11 @@ describe('AttributeHelpTextComponent', () => {
   let modalServiceStub:jasmine.SpyObj<AttributeHelpTextModalService>;
   const i18nStub = { t: (_scope:string|string[], _options?:Record<string, any>) => 'Show help text' };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     modalServiceStub = jasmine.createSpyObj('AttributeHelpTextModalService', ['show']);
+    modalServiceStub.show.and.resolveTo();
 
-    void TestBed
+    await TestBed
       .configureTestingModule({
         declarations: [
           AttributeHelpTextComponent,
@@ -96,7 +97,7 @@ describe('AttributeHelpTextComponent', () => {
     expect(button.nativeElement.dataset.qaHelpTextFor).toEqual('subject');
   });
 
-  it('should call modalService on click', () => {
+  it('should call modalService on click', async () => {
     const button = element.query(By.css("[role='button']"));
     button.nativeElement.click();
 
@@ -104,13 +105,16 @@ describe('AttributeHelpTextComponent', () => {
 
     expect(button.nativeElement.ariaDisabled).toEqual('true');
 
-    void fixture.whenStable().then(() => {
-      expect(modalServiceStub.show).toHaveBeenCalledOnceWith('1');
-      expect(button.nativeElement.ariaDisabled).toEqual('false');
-    });
+    await Promise.resolve();
+    await modalServiceStub.show.calls.mostRecent().returnValue;
+    await new Promise(resolve => setTimeout(resolve, 0));
+    fixture.detectChanges();
+
+    expect(modalServiceStub.show).toHaveBeenCalledOnceWith('1');
+    expect(button.nativeElement.ariaDisabled).toEqual('false');
   });
 
-  it('should call modalService only once', () => {
+  it('should call modalService only once', async () => {
     const button = element.query(By.css("[role='button']"));
     button.nativeElement.click();
 
@@ -123,9 +127,12 @@ describe('AttributeHelpTextComponent', () => {
     button.triggerEventHandler('keydown.space');
 
     fixture.detectChanges();
-    void fixture.whenStable().then(() => {
-      expect(modalServiceStub.show).toHaveBeenCalledOnceWith('1');
-      expect(button.nativeElement.ariaDisabled).toEqual('false');
-    });
+    await Promise.resolve();
+    await modalServiceStub.show.calls.mostRecent().returnValue;
+    await new Promise(resolve => setTimeout(resolve, 0));
+    fixture.detectChanges();
+
+    expect(modalServiceStub.show).toHaveBeenCalledOnceWith('1');
+    expect(button.nativeElement.ariaDisabled).toEqual('false');
   });
 });

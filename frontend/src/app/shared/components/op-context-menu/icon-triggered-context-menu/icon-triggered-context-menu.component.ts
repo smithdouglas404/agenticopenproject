@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectorRef, Component, ElementRef, Injector, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Injector, Input } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import {
   OpContextMenuTrigger,
@@ -40,6 +40,10 @@ import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op
   templateUrl: './icon-triggered-context-menu.component.html',
   styleUrls: ['./icon-triggered-context-menu.component.sass'],
   standalone: false,
+  // TODO: This component has been partially migrated to be zoneless-compatible.
+  // After testing, this should be updated to ChangeDetectionStrategy.OnPush.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class IconTriggeredContextMenuComponent extends OpContextMenuTrigger {
   override readonly placement = 'bottom-end';
@@ -56,9 +60,15 @@ export class IconTriggeredContextMenuComponent extends OpContextMenuTrigger {
   }
 
   @Input() menuItemsFactory:() => Promise<OpContextMenuItem[]>;
+  @Input() customAriaLabel:string = this.I18n.t('js.label_open_menu');
 
-  protected async open(evt:Event) {
+  protected open(evt:Event):void {
+    void this.openContextMenu(evt);
+  }
+
+  private async openContextMenu(evt:Event):Promise<void> {
     this.items = await this.buildItems();
+    this.cdRef.markForCheck();
     this.opContextMenu.show(this, evt);
   }
 

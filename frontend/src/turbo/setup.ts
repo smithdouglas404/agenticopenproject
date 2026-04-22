@@ -11,10 +11,10 @@ import { debugLog, whenDebugging } from 'core-app/shared/helpers/debug_output';
 import { TURBO_EVENTS } from './constants';
 import { StreamActions } from '@hotwired/turbo';
 import { addTurboAngularWrapper } from 'core-turbo/turbo-angular-wrapper';
-import { TurboStreamElement } from 'core-typings/turbo';
+import { registerActionMenuMorphRemount } from './action-menu-morph-remount';
 
 Turbo.session.drive = true;
-Turbo.setProgressBarDelay(100);
+Turbo.config.drive.progressBarDelay = 100;
 
 // Start turbo
 Turbo.start();
@@ -30,7 +30,7 @@ whenDebugging(() => {
   });
 
   document.addEventListener('turbo:before-stream-render', (event) => {
-    const stream:TurboStreamElement = (event.detail as { newStream:TurboStreamElement }).newStream;
+    const { detail: { newStream:stream } } = event;
     debugLog(`[TURBO EVENT turbo-before-stream-render] ${stream.action.toUpperCase()} target=${stream.target} %O`, event);
   });
 });
@@ -38,6 +38,7 @@ whenDebugging(() => {
 // Register our own actions
 addTurboEventListeners();
 addTurboGlobalListeners();
+registerActionMenuMorphRemount();
 registerDialogStreamAction();
 registerFlashStreamAction();
 registerLiveRegionStreamAction();
@@ -56,10 +57,8 @@ applyTurboNavigationPatch();
 TurboPower.initialize(Turbo.StreamActions);
 
 // Error handling when "Content missing" returned
-document.addEventListener('turbo:frame-missing', (event:CustomEvent) => {
-  const {
-    detail: { response, visit },
-  } = event as { detail:{ response:Response; visit:(url:string) => void } };
+document.addEventListener('turbo:frame-missing', (event) => {
+  const { detail: { response, visit } } = event;
   event.preventDefault();
-  visit(response.url);
+  void visit(response.url, {});
 });

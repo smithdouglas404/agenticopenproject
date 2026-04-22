@@ -10,13 +10,16 @@ We try to adhere to the [Ruby community style guide](https://github.com/bbatsov/
 
 Due to the age of our codebase, a lot of our code might not yet adhere to these style guides, but we want all new code to adhere to it. You do not have to improve existing code when making changes, but we encourage it. If you do, please do all improvements in a separate commit from the actual change, so the improvements do not hide your actual code changes in a diff.
 
-Before committing, please run your new code through [Rubocop](https://github.com/bbatsov/rubocop). It detects deviations from a lot of things in the style guide and things that are bad practice in general. You obviously do not have to fix issues with existing code. There is a [list of editor plugins](https://docs.rubocop.org/rubocop/1.31/integration_with_other_tools.html#editor-integration) in the Rubocop docs. You can also use `bin/dirty-rubocop` to test them. Pull requests are being linted automatically through a GitHub action.
+Before committing, please run your new code through [Rubocop](https://github.com/bbatsov/rubocop). It detects deviations from a lot of things in the style guide and things that are bad practice in general. You obviously do not have to fix issues with existing code. There is a [list of editor plugins](https://docs.rubocop.org/rubocop/integration_with_other_tools.html#editor-integration) in the Rubocop docs. You can also use `bin/dirty-rubocop` to test them. Pull requests are being linted automatically through a GitHub action.
 
 The same is true for eslint. Your editor will likely have support for eslint checks, and allows you to correct them before committing.
 
 **Lefthook**
 
-For automatically linting your files on committing them, please have a look at [Lefthook](https://github.com/evilmartians/lefthook). You can install these rules by using `bundle exec lefthook install`.
+For automatically linting your files on committing them, please have a look
+at [Lefthook](https://github.com/evilmartians/lefthook). You can install these rules by using `lefthook install`. There
+are several options on how to install `lefthook` on your system, including using `brew`, `apt`, `bundle`, or `npm`. For
+example, one can add a `Gemfile.local` and thus the `lefthook` to the bundle.
 
 ### Structure of commit messages
 

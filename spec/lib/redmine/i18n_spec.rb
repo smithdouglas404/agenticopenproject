@@ -69,6 +69,48 @@ module OpenProject
       end
     end
 
+    describe "#format_date_range" do
+      let(:from) { Date.new(2025, 1, 6) }
+      let(:to) { Date.new(2025, 1, 17) }
+
+      context "with an Array" do
+        it "renders both dates separated by an en-dash" do
+          expected =
+            "<time datetime=\"2025-01-06\">#{helper.format_date(from)}</time>" \
+            "\u00A0\u2013\u00A0" \
+            "<time datetime=\"2025-01-17\">#{helper.format_date(to)}</time>"
+
+          expect(helper.format_date_range([from, to])).to be_html_eql(expected)
+        end
+      end
+
+      context "when both dates are nil" do
+        it "returns nil" do
+          expect(helper.format_date_range([nil, nil])).to be_nil
+        end
+      end
+
+      context "when only the start date is present" do
+        it "renders the start date with an en-dash" do
+          expected =
+            "<time datetime=\"2025-01-06\">#{helper.format_date(from)}</time>" \
+            "\u00A0\u2013\u00A0"
+
+          expect(helper.format_date_range([from, nil])).to be_html_eql(expected)
+        end
+      end
+
+      context "when only the end date is present" do
+        it "renders the end date with an en-dash" do
+          expected =
+            "\u00A0\u2013\u00A0" \
+            "<time datetime=\"2025-01-17\">#{helper.format_date(to)}</time>"
+
+          expect(helper.format_date_range([nil, to])).to be_html_eql(expected)
+        end
+      end
+    end
+
     describe "all_languages" do
       # Those are the two languages we support
       it "includes en" do
@@ -192,18 +234,42 @@ module OpenProject
 
       before do
         allow(::I18n)
-          .to receive(:t)
-          .with("translation_with_a_link")
+          .to receive(:translate)
+          .with("translation_with_a_link", *any_args)
           .and_return("There is a [link](url_1) in this translation! Maybe even [two](url_2)?")
       end
 
       it "allows to insert links into translations" do
         translated = link_translate :translation_with_a_link, links: urls, external: false
+        fragment = Capybara.string(translated)
 
-        expect(translated).to eq(
-          'There is a <a href="http://openproject.com/foo" data-view-component="true" class="Link Link--underline">link</a>' +
-          ' in this translation! Maybe even <a href="/baz" data-view-component="true" class="Link Link--underline">two</a>?'
-        )
+        links = fragment.all("a")
+        expect(links.size).to eq(2)
+
+        expect(links[0].text).to eq("link")
+        expect(links[0][:href]).to eq("http://openproject.com/foo")
+
+        expect(links[1].text).to eq("two")
+        expect(links[1][:href]).to eq("/baz")
+      end
+
+      context "when the link text contains an apostrophe" do
+        before do
+          allow(::I18n)
+            .to receive(:translate)
+            .with("translation_with_apostrophe", *any_args)
+            .and_return("Here's [what's new](url) to see.")
+        end
+
+        it "does not double-escape the apostrophe in the link text" do
+          translated = link_translate :translation_with_apostrophe,
+                                      links: { url: "https://example.com" },
+                                      external: false
+          fragment = Capybara.string(translated)
+
+          link = fragment.find("a")
+          expect(link.text).to eq("what's new")
+        end
       end
 
       context "when passing URLs as a list of symbols" do
@@ -219,11 +285,16 @@ module OpenProject
 
         it "resolves the links from static links" do
           translated = link_translate :translation_with_a_link, links: urls, external: false
+          fragment = Capybara.string(translated)
 
-          expect(translated).to eq(
-            'There is a <a href="https://example.com/a-b" data-view-component="true" class="Link Link--underline">link</a>' +
-            ' in this translation! Maybe even <a href="/a-c" data-view-component="true" class="Link Link--underline">two</a>?'
-          )
+          links = fragment.all("a")
+          expect(links.size).to eq(2)
+
+          expect(links[0].text).to eq("link")
+          expect(links[0][:href]).to eq("https://example.com/a-b")
+
+          expect(links[1].text).to eq("two")
+          expect(links[1][:href]).to eq("/a-c")
         end
       end
     end

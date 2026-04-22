@@ -30,14 +30,26 @@
 
 require "spec_helper"
 
-RSpec.describe "Document collaboration settings admin", :js, :settings_reset do
+RSpec.describe "Document collaboration settings admin",
+               :js,
+               :settings_reset do
   include Flash::Expectations
 
   current_user { create(:admin) }
 
   context "when first time setup" do
-    it "can configure hocuspocus url and secret" do
+    it "can configure hocuspocus url and secret", without_env: ["OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET"] do
       visit admin_settings_document_collaboration_settings_path
+
+      within_test_selector("collaboration-settings-disabled-notice") do
+        expect(page).to have_heading("Real-time collaboration is not enabled")
+        expect(page).to have_content("Once enabled, multiple users will be able to work together on a " \
+                                     "document at the same time. All new documents will be based on a new " \
+                                     "editor (BlockNote) and will require a working connection to a Hocuspocus server.")
+        click_on "Enable real-time collaboration"
+      end
+
+      expect_and_dismiss_flash(message: "Real-time collaboration has been enabled.")
 
       expect(page).to have_field("Hocuspocus server URL", with: "")
       expect(page).to have_field("Client secret", with: "")
@@ -72,22 +84,33 @@ RSpec.describe "Document collaboration settings admin", :js, :settings_reset do
       end
 
       expect_and_dismiss_flash(message: "Real-time collaboration has been disabled.")
+    end
+  end
 
-      within_test_selector("collaboration-settings-disabled-notice") do
-        expect(page).to have_heading("Real-time collaboration is not enabled")
-        expect(page).to have_content("Once enabled, multiple users will be able to work together on a " \
-                                     "document at the same time. All new documents will be based on a new " \
-                                     "editor (BlockNote) and will require a working connection to a Hocuspocus server.")
-        click_on "Enable real-time collaboration"
-      end
+  context "when submitting an invalid URL scheme",
+          with_settings: {
+            real_time_text_collaboration_enabled: true,
+            collaborative_editing_hocuspocus_url: "wss://hocuspocus.example.com",
+            collaborative_editing_hocuspocus_secret: "secret1234"
+          } do
+    it "rejects https:// URLs and shows inline validation error" do
+      visit admin_settings_document_collaboration_settings_path
 
-      expect_and_dismiss_flash(message: "Real-time collaboration has been enabled.")
-      expect(Setting.real_time_text_collaboration_enabled?).to be(true)
+      fill_in "Hocuspocus server URL", with: "https://hocuspocus.example.com"
+      click_on("Save")
+
+      # Inline validation shown on the field
+      expect(page).to have_content("Must use a WebSocket protocol (ws:// or wss://).")
+
+      # Setting unchanged
+      expect(Setting.collaborative_editing_hocuspocus_url).to eq("wss://hocuspocus.example.com")
     end
   end
 
   context "with hocuspocus url set via environment variable",
-          with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_URL" => "wss://env-hocuspocus.example.com" } do
+          with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_URL" => "wss://env-hocuspocus.example.com" },
+          with_settings: { collaborative_editing_hocuspocus_secret: "secret1234" },
+          without_env: ["OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET"] do
     before do
       reset(:collaborative_editing_hocuspocus_url)
       visit admin_settings_document_collaboration_settings_path
@@ -99,11 +122,32 @@ RSpec.describe "Document collaboration settings admin", :js, :settings_reset do
       expect(page).to have_field("Hocuspocus server URL",
                                  with: "wss://env-hocuspocus.example.com",
                                  disabled: true)
+
+      expect(page).to have_field("Client secret",
+                                 with: "",
+                                 disabled: false)
+    end
+  end
+
+  context "with an invalid URL scheme set via environment variable",
+          with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_URL" => "https://env-hocuspocus.example.com" },
+          with_settings: { collaborative_editing_hocuspocus_secret: "secret1234" } do
+    before do
+      reset(:collaborative_editing_hocuspocus_url)
+      visit admin_settings_document_collaboration_settings_path
+    end
+
+    it "shows an inline validation error on the URL field" do
+      expect(page).to have_field("Hocuspocus server URL",
+                                 with: "https://env-hocuspocus.example.com",
+                                 disabled: true)
+      expect(page).to have_content("Must use a WebSocket protocol")
     end
   end
 
   context "with secret set via environment variable",
-          with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_SECRET" => "envsupersecret" } do
+          with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_SECRET" => "envsupersecret" },
+          with_settings: { collaborative_editing_hocuspocus_url: "wss://env-hocuspocus.example.com" } do
     before do
       reset(:collaborative_editing_hocuspocus_secret)
       visit admin_settings_document_collaboration_settings_path
@@ -112,6 +156,9 @@ RSpec.describe "Document collaboration settings admin", :js, :settings_reset do
     it "shows the secret as read-only" do
       expect(page).to have_content("Some values are configured via environment variables and cannot be edited here.")
 
+      expect(page).to have_field("Hocuspocus server URL",
+                                 with: "wss://env-hocuspocus.example.com",
+                                 disabled: false)
       expect(page).to have_field("Client secret",
                                  with: "",
                                  disabled: true)

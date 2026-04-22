@@ -60,5 +60,12 @@ RSpec.describe "" do
         end
       end
     end
+
+    it "includes X-Content-Type-Options nosniff header to prevent content type sniffing" do
+      get "/"
+
+      expect(last_response).to have_http_status(200)
+      expect(last_response.headers["X-Content-Type-Options"]).to eq "nosniff"
+    end
   end
 end

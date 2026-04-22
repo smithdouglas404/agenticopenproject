@@ -31,6 +31,8 @@
 require "spec_helper"
 
 RSpec.describe "Project custom field attribute help text", :js do
+  include Flash::Expectations
+
   shared_let(:admin) { create(:admin) }
   shared_let(:project_custom_field_section) { create(:project_custom_field_section) }
   shared_let(:project_custom_field) do
@@ -52,7 +54,7 @@ RSpec.describe "Project custom field attribute help text", :js do
       visit edit_admin_settings_project_custom_field_path(project_custom_field)
 
       # Navigate to attribute help text tab
-      click_on AttributeHelpText.human_plural_model_name
+      click_on AttributeHelpText.human_attribute_name(:help_text)
 
       expect(page).to have_current_path(
         attribute_help_text_admin_settings_project_custom_field_path(project_custom_field)
@@ -176,7 +178,7 @@ RSpec.describe "Project custom field attribute help text", :js do
       visit edit_admin_settings_project_custom_field_path(project_custom_field)
 
       # Navigate to attribute help text tab
-      click_on AttributeHelpText.human_plural_model_name
+      click_on AttributeHelpText.human_attribute_name(:help_text)
 
       expect(page).to have_current_path(
         attribute_help_text_admin_settings_project_custom_field_path(project_custom_field)
@@ -190,7 +192,7 @@ RSpec.describe "Project custom field attribute help text", :js do
       )
 
       # Navigate back to attribute help text tab
-      click_on AttributeHelpText.human_plural_model_name
+      click_on AttributeHelpText.human_attribute_name(:help_text)
 
       expect(page).to have_current_path(
         attribute_help_text_admin_settings_project_custom_field_path(project_custom_field)
@@ -201,9 +203,9 @@ RSpec.describe "Project custom field attribute help text", :js do
   describe "help text display uniqueness" do
     it "creates separate help texts for different custom fields" do
       other_custom_field = create(:project_custom_field,
-                                   name: "Project Priority",
-                                   field_format: "text",
-                                   project_custom_field_section:)
+                                  name: "Project Priority",
+                                  field_format: "text",
+                                  project_custom_field_section:)
 
       # Create help text for first custom field
       visit attribute_help_text_admin_settings_project_custom_field_path(project_custom_field)
@@ -211,11 +213,15 @@ RSpec.describe "Project custom field attribute help text", :js do
       editor.set_markdown("Help for rating")
       click_button "Save"
 
+      expect_and_dismiss_flash(message: "Successful update")
+
       # Create help text for second custom field
       visit attribute_help_text_admin_settings_project_custom_field_path(other_custom_field)
       fill_in "Caption", with: "Priority help"
       editor.set_markdown("Help for priority")
       click_button "Save"
+
+      expect_and_dismiss_flash(message: "Successful update")
 
       # Verify both help texts exist and are different
       rating_help = AttributeHelpText::Project.find_by(

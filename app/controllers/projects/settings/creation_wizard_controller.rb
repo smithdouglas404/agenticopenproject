@@ -33,7 +33,8 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
 
   menu_item :settings_creation_wizard
 
-  before_action :check_feature_flag
+  before_action :check_enterprise_plan, only: :toggle
+  before_action :check_activation_conditions, only: :toggle
 
   def show; end
 
@@ -71,11 +72,10 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
   end
 
   def toggle_project_custom_field
-    mapping = ProjectCustomFieldProjectMapping.find_by(
-      project_id: permitted_params.project_custom_field_project_mapping[:project_id],
-      custom_field_id: permitted_params.project_custom_field_project_mapping[:custom_field_id]
-    )
-    if mapping&.update(creation_wizard: !mapping.creation_wizard)
+    cf = ProjectCustomField.find(permitted_params.project_custom_field_project_mapping[:custom_field_id])
+    mapping = cf.project_custom_field_project_mappings.find_by(project: @project)
+
+    if custom_field_toggleable?(cf) && toggle_mapping(mapping)
       render json: {}, status: :ok
     else
       render json: {}, status: :unprocessable_entity
@@ -92,20 +92,63 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
 
   private
 
+  def check_enterprise_plan
+    # Allow disabling even without enterprise plan
+    return if @project.project_creation_wizard_enabled
+
+    unless EnterpriseToken.allows_to?(:project_creation_wizard)
+      flash[:error] = I18n.t(:notice_requires_enterprise_token)
+      redirect_to project_settings_creation_wizard_path(@project, tab: "attributes"), status: :see_other
+    end
+  end
+
+  def check_activation_conditions
+    # Allow disabling even without activation conditions met
+    return if @project.project_creation_wizard_enabled
+
+    error = if @project.project_creation_wizard_default_work_package_type.nil?
+              I18n.t("projects.settings.creation_wizard.errors.no_work_package_type")
+            elsif @project.project_creation_wizard_default_status_when_submitted.nil?
+              type = @project.project_creation_wizard_default_work_package_type.name
+              I18n.t("projects.settings.creation_wizard.errors.no_status_when_submitted", type:)
+            end
+
+    if error
+      flash[:error] = error
+      redirect_to project_settings_creation_wizard_path(@project, tab: params[:tab]), status: :see_other
+    end
+  end
+
   def update_section_mappings(value)
     section_id = permitted_params.project_custom_field_project_mapping[:custom_field_section_id]
-    project_id = permitted_params.project_custom_field_project_mapping[:project_id]
 
-    custom_field_ids = ProjectCustomField
-                         .where(custom_field_section_id: section_id)
-                         .where(is_required: false)
-                         .pluck(:id)
+    cf_ids_to_toggle, force_enabled_cf_ids = ProjectCustomField.toggleable_ids_in_creation_wizard_settings(@project, section_id)
 
     ProjectCustomFieldProjectMapping
-      .where(project_id:, custom_field_id: custom_field_ids)
+      .where(project_id: @project.id, custom_field_id: cf_ids_to_toggle)
       .update_all(creation_wizard: value)
 
+    enable_creation_wizard!(force_enabled_cf_ids)
+
     redirect_to project_settings_creation_wizard_path(@project, tab: "attributes"), status: :see_other
+  end
+
+  def enable_creation_wizard!(custom_field_ids)
+    ProjectCustomFieldProjectMapping
+      .where(project_id: @project.id, custom_field_id: custom_field_ids)
+      .update_all(creation_wizard: true)
+  end
+
+  def custom_field_toggleable?(custom_field)
+    toggleable_ids = ProjectCustomField
+                       .toggleable_ids_in_creation_wizard_settings(@project, custom_field.custom_field_section_id)
+                       .first
+
+    toggleable_ids.include?(custom_field.id)
+  end
+
+  def toggle_mapping(mapping)
+    mapping&.update(creation_wizard: !mapping.creation_wizard)
   end
 
   def check_feature_flag

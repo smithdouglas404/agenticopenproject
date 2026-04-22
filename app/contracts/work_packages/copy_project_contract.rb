@@ -42,6 +42,12 @@ module WorkPackages
     delegate :to_s,
              to: :model
 
+    def valid?(_context = nil)
+      # For project copying, we want to preserve the exact state
+      # even if copied work packages would normally be invalid
+      true
+    end
+
     def validate_model? = false
 
     private

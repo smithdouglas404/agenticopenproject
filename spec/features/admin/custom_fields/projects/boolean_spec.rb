@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,7 +26,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
 require "spec_helper"
 require_relative "shared_context"
@@ -41,7 +41,5 @@ RSpec.describe "Edit project custom fields", :js do
   it_behaves_like "shows checkboxes for configuration" do
     let(:required_supported) { false }
   end
-  it_behaves_like "editing the field" do
-    let(:using_primer) { true }
-  end
+  it_behaves_like "editing the field"
 end

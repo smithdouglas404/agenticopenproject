@@ -51,18 +51,18 @@ RSpec.describe API::V3::Queries::QueryRepresenter do
 
     allow(QueryPolicy)
       .to receive(:new)
-      .with(current_user)
-      .and_return(policy_stub)
+            .with(current_user)
+            .and_return(policy_stub)
 
     allow(policy_stub)
       .to receive(:allowed?)
-      .and_return(false)
+            .and_return(false)
 
     permissions.each do |permission|
       allow(policy_stub)
         .to receive(:allowed?)
-        .with(query, permission)
-        .and_return(true)
+              .with(query, permission)
+              .and_return(true)
     end
   end
 
@@ -395,7 +395,7 @@ RSpec.describe API::V3::Queries::QueryRepresenter do
       it "has an empty columns array" do
         expect(subject)
           .to be_json_eql([].to_json)
-          .at_path("_links/columns")
+                .at_path("_links/columns")
       end
     end
 
@@ -426,7 +426,7 @@ RSpec.describe API::V3::Queries::QueryRepresenter do
 
         expect(subject)
           .to be_json_eql(expected.to_json)
-          .at_path("_links/columns")
+                .at_path("_links/columns")
       end
     end
 
@@ -458,7 +458,7 @@ RSpec.describe API::V3::Queries::QueryRepresenter do
       it "has an empty sortBy array" do
         expect(subject)
           .to be_json_eql([].to_json)
-          .at_path("_links/sortBy")
+                .at_path("_links/sortBy")
       end
     end
 
@@ -482,7 +482,7 @@ RSpec.describe API::V3::Queries::QueryRepresenter do
 
         expect(subject)
           .to be_json_eql(expected.to_json)
-          .at_path("_links/sortBy")
+                .at_path("_links/sortBy")
       end
     end
 
@@ -492,7 +492,7 @@ RSpec.describe API::V3::Queries::QueryRepresenter do
       before do
         allow(query)
           .to receive(:starred)
-          .and_return(false)
+                .and_return(false)
       end
 
       it_behaves_like "has an untitled link" do
@@ -521,7 +521,7 @@ RSpec.describe API::V3::Queries::QueryRepresenter do
       before do
         allow(query)
           .to receive(:starred)
-          .and_return(true)
+                .and_return(true)
       end
 
       it_behaves_like "has an untitled link" do
@@ -638,85 +638,69 @@ RSpec.describe API::V3::Queries::QueryRepresenter do
     end
 
     describe "highlighting" do
-      context "with EE", with_ee: %i[conditional_highlighting] do
-        let :status do
-          {
-            href: "/api/v3/queries/columns/status",
-            title: "Status"
-          }
-        end
-
-        let :type do
-          {
-            href: "/api/v3/queries/columns/type",
-            title: "Type"
-          }
-        end
-
-        let :priority do
-          {
-            href: "/api/v3/queries/columns/priority",
-            title: "Priority"
-          }
-        end
-
-        let :due_date do
-          {
-            href: "/api/v3/queries/columns/dueDate",
-            title: "Finish date"
-          }
-        end
-
-        let(:query) do
-          query = build_stubbed(:query, project: workspace)
-
-          query.highlighted_attributes = %w[status type priority due_date]
-
-          query
-        end
-
-        let(:highlighted_attributes) do
-          [status, priority, due_date]
-        end
-
-        it "renders when the value is set" do
-          query.highlighting_mode = "status"
-
-          expect(subject).to be_json_eql("status".to_json).at_path("highlightingMode")
-        end
-
-        it "renders the default" do
-          query.highlighting_mode = nil
-          query.highlighted_attributes = nil
-          expect(subject).to be_json_eql("inline".to_json).at_path("highlightingMode")
-          expect(subject).not_to have_json_path("highlightedAttributes")
-        end
-
-        it "links an array of highlighted attributes" do
-          expect(subject)
-            .to be_json_eql(highlighted_attributes.to_json).at_path("_links/highlightedAttributes")
-        end
-
-        it "embeds selected inline attributes" do
-          query.highlighted_attributes[0..0].each_with_index do |attr, index|
-            expect(subject)
-              .to be_json_eql("/api/v3/queries/columns/#{attr}".to_json)
-              .at_path("_embedded/highlightedAttributes/#{index}/_links/self/href")
-          end
-        end
+      let :status do
+        {
+          href: "/api/v3/queries/columns/status",
+          title: "Status"
+        }
       end
 
-      context "without EE" do
-        it "renders when the value is set" do
-          query.highlighting_mode = "status"
+      let :type do
+        {
+          href: "/api/v3/queries/columns/type",
+          title: "Type"
+        }
+      end
 
-          expect(subject).to be_json_eql("none".to_json).at_path("highlightingMode")
-        end
+      let :priority do
+        {
+          href: "/api/v3/queries/columns/priority",
+          title: "Priority"
+        }
+      end
 
-        it "renders none when not set" do
-          query.highlighting_mode = nil
+      let :due_date do
+        {
+          href: "/api/v3/queries/columns/dueDate",
+          title: "Finish date"
+        }
+      end
 
-          expect(subject).to be_json_eql("none".to_json).at_path("highlightingMode")
+      let(:query) do
+        query = build_stubbed(:query, project: workspace)
+
+        query.highlighted_attributes = %w[status type priority due_date]
+
+        query
+      end
+
+      let(:highlighted_attributes) do
+        [status, priority, due_date]
+      end
+
+      it "renders when the value is set" do
+        query.highlighting_mode = "status"
+
+        expect(subject).to be_json_eql("status".to_json).at_path("highlightingMode")
+      end
+
+      it "renders the default" do
+        query.highlighting_mode = nil
+        query.highlighted_attributes = nil
+        expect(subject).to be_json_eql("inline".to_json).at_path("highlightingMode")
+        expect(subject).not_to have_json_path("highlightedAttributes")
+      end
+
+      it "links an array of highlighted attributes" do
+        expect(subject)
+          .to be_json_eql(highlighted_attributes.to_json).at_path("_links/highlightedAttributes")
+      end
+
+      it "embeds selected inline attributes" do
+        query.highlighted_attributes[0..0].each_with_index do |attr, index|
+          expect(subject)
+            .to be_json_eql("/api/v3/queries/columns/#{attr}".to_json)
+                  .at_path("_embedded/highlightedAttributes/#{index}/_links/self/href")
         end
       end
     end
@@ -741,11 +725,11 @@ RSpec.describe API::V3::Queries::QueryRepresenter do
         query.add_filter("status_id", "=", [filter_status.id.to_s])
         allow(query.filters.last)
           .to receive(:value_objects)
-          .and_return([filter_status])
+                .and_return([filter_status])
         query.add_filter("assigned_to_id", "!", [filter_user.id.to_s])
         allow(query.filters.last)
           .to receive(:value_objects)
-          .and_return([filter_user])
+                .and_return([filter_user])
         query
       end
 
@@ -895,7 +879,7 @@ RSpec.describe API::V3::Queries::QueryRepresenter do
         it "embeds the results" do
           expect(subject)
             .to be_json_eql("BogusResultType".to_json)
-            .at_path("_embedded/results/_type")
+                  .at_path("_embedded/results/_type")
         end
       end
 

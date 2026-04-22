@@ -85,6 +85,10 @@ Doorkeeper.configure do
   #
   base_controller "::OAuth::AuthBaseController"
 
+  # Require non-confidential clients to use PKCE when using an authorization code
+  # to obtain an access_token (disabled by default)
+  force_pkce
+
   # Enable hashing and bcrypt-hashing of token secrets
   # and application secrets, respectively.
   hash_token_secrets
@@ -129,7 +133,7 @@ Doorkeeper.configure do
   #
   default_scopes :api_v3
 
-  optional_scopes :scim_v2
+  optional_scopes :scim_v2, :mcp
 
   # Change the way client credentials are retrieved from the request object.
   # By default it retrieves first from the `HTTP_AUTHORIZATION` header, then

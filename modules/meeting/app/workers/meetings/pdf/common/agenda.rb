@@ -81,17 +81,53 @@ module Meetings::PDF::Common::Agenda
   end
 
   def write_outcomes(agenda_item)
-    outcomes = agenda_item
-                 .outcomes
-                 .all
-                 .reject { |outcome| outcome.notes.blank? }
+    outcomes = agenda_item.outcomes.to_a
     outcomes.each_with_index do |outcome, index|
       pdf.indent(styles.outcome_indent) do
         write_optional_page_break
         write_outcome_title(index, outcomes.size > 1)
-        write_outcome_notes(outcome.notes)
+        if outcome.work_package_kind?
+          write_work_package_outcome(outcome)
+        elsif outcome.notes.present?
+          write_outcome_notes(outcome.notes)
+        end
       end
     end
+  end
+
+  def write_work_package_outcome(outcome)
+    with_vertical_margin(styles.outcome_work_package_margin) do
+      if outcome.visible_work_package?
+        write_visible_work_package_outcome(outcome.work_package)
+      elsif outcome.linked_work_package?
+        write_undisclosed_work_package_outcome(outcome.work_package_id)
+      elsif outcome.deleted_work_package?
+        write_deleted_work_package_outcome
+      end
+    end
+  end
+
+  def write_visible_work_package_outcome(work_package)
+    href = url_helpers.work_package_url(work_package)
+    link_text = "#{work_package.type.name} ##{work_package.id} #{work_package.subject}"
+    status_text = " (#{work_package.status.name})"
+    base_style = styles.outcome_work_package
+    pdf.formatted_text([
+                         base_style.merge({ text: link_text, link: href, styles: [:underline] }),
+                         base_style.merge({ text: status_text })
+                       ])
+  end
+
+  def write_undisclosed_work_package_outcome(work_package_id)
+    pdf.formatted_text([
+                         { text: I18n.t(:label_agenda_item_undisclosed_wp, id: work_package_id) }
+                       ], styles.outcome_work_package)
+  end
+
+  def write_deleted_work_package_outcome
+    pdf.formatted_text([
+                         { text: I18n.t(:label_agenda_item_deleted_wp) }
+                       ], styles.outcome_work_package)
   end
 
   def write_outcome_title(index, multiple_outcomes)

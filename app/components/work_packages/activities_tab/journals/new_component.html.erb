@@ -78,10 +78,8 @@
                     data: { "#{internal_comment_stimulus_controller}-target": "learnMoreLink" },
                     pb: 1
                   ) do
-                    render(Primer::Beta::Link.new(href: learn_more_static_link_url, target: "_blank")) do |link|
-                      link.with_trailing_visual_icon(icon: "link-external", size: :small)
-                      I18n.t("label_learn_more")
-                    end
+                    helpers.static_link_to(:enterprise_features, :internal_comments,
+                                           label: I18n.t(:label_learn_more))
                   end
                 end
               end

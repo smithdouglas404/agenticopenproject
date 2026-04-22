@@ -33,9 +33,9 @@ require_relative "../shared_custom_field_expectations"
 
 RSpec.describe "work package custom fields of type hierarchy", :js do
   shared_let(:admin) { create(:admin) }
-  let(:custom_field_index_page) { Pages::CustomFields::IndexPage.new }
-  let(:new_custom_field_page) { Pages::CustomFields::NewPage.new }
-  let(:hierarchy_page) { Pages::CustomFields::HierarchyPage.new }
+  let(:custom_field_index_page) { Pages::CustomFields::Index.new }
+  let(:new_custom_field_page) { Pages::CustomFields::New.new }
+  let(:hierarchy_page) { Pages::CustomFields::Hierarchy.new }
 
   current_user { admin }
 
@@ -240,4 +240,8 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
   end
 
   it_behaves_like "hierarchy custom fields on index page", "Work packages"
+
+  context "with enterprise token", with_ee: [:custom_field_hierarchies] do
+    it_behaves_like "expected fields for the custom field's format", "Work packages", "Hierarchy"
+  end
 end

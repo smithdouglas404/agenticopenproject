@@ -189,7 +189,7 @@ on the command line:
 occ config:system:set user_oidc --type boolean --value="true" oidc_provider_bearer_validation
 ```
 
-General information about running OCC commands [can be found in the Nextcloud documentation](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/occ_command.html).
+General information about running OCC commands [can be found in the Nextcloud documentation](https://docs.nextcloud.com/server/latest/admin_manual/occ_command.html).
 
 This wraps up the configuration of this authentication method using Nextcloud Hub. For details on the next step continue with the [general setup instructions](../#4-automatically-managed-project-folders).
 

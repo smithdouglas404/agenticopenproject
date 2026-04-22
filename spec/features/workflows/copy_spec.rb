@@ -68,7 +68,7 @@ RSpec.describe "Workflow copy" do
     end
 
     expect(page).to have_heading "Workflow"
-    expect(page).to have_current_path(edit_workflows_path)
+    expect(page).to have_current_path(workflows_path)
   end
 
   it "allows navigating to Workflow summary page" do
@@ -77,6 +77,6 @@ RSpec.describe "Workflow copy" do
     end
 
     expect(page).to have_heading "Summary"
-    expect(page).to have_current_path(workflows_path)
+    expect(page).to have_current_path(summarized_workflows_path)
   end
 end

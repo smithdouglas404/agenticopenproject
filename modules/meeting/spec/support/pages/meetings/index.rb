@@ -162,7 +162,7 @@ module Pages::Meetings
 
     def expect_meetings_listed_in_order(*meetings)
       retry_block do
-        listed_meeting_titles = all("li div.title").map(&:text)
+        listed_meeting_titles = all(:role, :rowheader).map(&:text)
         expect(listed_meeting_titles).to eq(meetings.map(&:title))
       end
     end
@@ -170,14 +170,14 @@ module Pages::Meetings
     def expect_meetings_listed_in_table(*meetings)
       within "[data-test-selector='Meetings::TableComponent']" do
         meetings.each do |meeting|
-          expect(page).to have_css("div.title", text: meeting.title)
+          expect(page).to have_role(:rowheader, text: meeting.title)
         end
       end
     end
 
     def expect_meeting_listed_in_group(meeting, key: meeting_group_key(meeting))
       within "[data-test-selector='meetings-table-#{key}']" do
-        expect(page).to have_css("div.title", text: meeting.title)
+        expect(page).to have_role(:rowheader, text: meeting.title)
       end
     end
 
@@ -198,15 +198,14 @@ module Pages::Meetings
 
     def expect_meetings_listed(*meetings)
       meetings.each do |meeting|
-        expect(page).to have_css("div.title", text: meeting.title)
+        expect(page).to have_role(:rowheader, text: meeting.title)
       end
     end
 
     def expect_meetings_not_listed(*meetings)
       within "#content-wrapper" do
         meetings.each do |meeting|
-          expect(page).to have_no_css("div.title",
-                                      text: meeting.title)
+          expect(page).to have_no_role(:rowheader, text: meeting.title)
         end
       end
     end
@@ -261,7 +260,7 @@ module Pages::Meetings
     private
 
     def row_for(meeting)
-      find("div.title", text: meeting.title).ancestor("li")
+      find(:role, :rowheader, text: meeting.title).ancestor(:row)
     end
 
     def more_menu(meeting)

@@ -37,11 +37,11 @@ module OpenProject
                   :description,
                   :lines,
                   :background_reference_id,
-                  :formatted
+                  :format
 
       PARAGRAPH_CSS_CLASS = "op-uc-p"
 
-      def initialize(id, name, description, lines: 1, background_reference_id: "content", formatted: false, **args)
+      def initialize(id, name, description, lines: 1, background_reference_id: "content", format: true, **args)
         super()
         @id = id
         @name = name
@@ -49,7 +49,7 @@ module OpenProject
         @system_arguments = args
         @lines = lines
         @background_reference_id = background_reference_id
-        @formatted = formatted
+        @format = format
       end
 
       def short_text
@@ -61,7 +61,7 @@ module OpenProject
       end
 
       def full_text
-        @full_text ||= formatted ? description : helpers.format_text(description)
+        @full_text ||= format ? helpers.format_text(description) : description
       end
 
       def display_expand_button_value
@@ -78,24 +78,20 @@ module OpenProject
 
       private
 
-      def first_paragraph_content
-        return unless first_paragraph_ast
-
-        first_paragraph_ast
-          .inner_html
-          .html_safe # rubocop:disable Rails/OutputSafety
-      end
-
+      # rubocop:disable Rails/OutputSafety
+      # OG: html_safe double-checked and expected here,
+      # output is coming from format_text which we output elsewhere, too.
       def first_paragraph
         @first_paragraph ||= if body_children.any?
                                body_children
                                  .first
                                  .inner_html
-                                 .html_safe # rubocop:disable Rails/OutputSafety
+                                 .html_safe
                              else
                                ""
                              end
       end
+      # rubocop:enable Rails/OutputSafety
 
       def first_paragraph_ast
         @first_paragraph_ast ||= text_ast

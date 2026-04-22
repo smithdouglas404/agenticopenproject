@@ -64,7 +64,7 @@ module Storages
 
     # rubocop:disable Metrics/AbcSize
     def prepare_remote_folders
-      info "Preparing the remote group folder #{group_folder}"
+      info "Preparing the remote team folder #{group_folder}"
 
       remote_root_folder_map.bind do |remote_folders|
         info "Found #{remote_folders.count} remote folders"
@@ -101,16 +101,14 @@ module Storages
       @project_storages.includes(:project).find_each do |project_storage|
         folder_id = project_storage.project_folder_id
 
-        result = case id_folder_map[folder_id]
-                 when nil
-                   create_remote_folder(project_storage)
-                 when project_storage.managed_project_folder_path.chop
-                   Success()
-                 else
-                   rename_folder(folder_id, project_storage.managed_project_folder_name)
-                 end
-
-        result.or { return Failure() }
+        case id_folder_map[folder_id]
+        when nil
+          create_remote_folder(project_storage)
+        when project_storage.managed_project_folder_path.chop
+          Success()
+        else
+          rename_folder(folder_id, project_storage.managed_project_folder_name)
+        end
       end
 
       Success(:setup_folders)
@@ -160,7 +158,7 @@ module Storages
     end
 
     def ensure_root_folder_permissions(root_folder_id)
-      info "Setting needed permissions for user #{username} and group #{group} on the root group folder."
+      info "Setting needed permissions for user #{username} and group #{group} on the root team folder."
       permissions = [
         { user_id: username, permissions: FILE_PERMISSIONS },
         { group_id: group, permissions: [:read_files] }

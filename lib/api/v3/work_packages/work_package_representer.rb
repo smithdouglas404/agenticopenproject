@@ -345,6 +345,11 @@ module API
         property :id,
                  render_nil: true
 
+        property :display_id,
+                 as: :displayId,
+                 render_nil: true,
+                 getter: ->(*) { display_id&.to_s }
+
         property :lock_version,
                  render_nil: true,
                  getter: ->(*) {
@@ -501,8 +506,7 @@ module API
                      }
                    else
                      {
-                       href: nil,
-                       title: nil
+                       href: nil
                      }
                    end
                  },
@@ -535,8 +539,7 @@ module API
             }
           else
             {
-              href: nil,
-              title: nil
+              href: nil
             }
           end
         end
@@ -598,7 +601,7 @@ module API
                                               expected_version: "3",
                                               expected_namespace: "work_packages"
 
-                                  WorkPackage.find_by(id:) ||
+                                  WorkPackage.visible.find_by(id:) ||
                                     ::WorkPackage::InexistentWorkPackage.new(id:)
                                 end
 
@@ -656,10 +659,8 @@ module API
         def current_user_update_allowed?
           return @current_user_update_allowed if defined?(@current_user_update_allowed)
 
-          @current_user_update_allowed =
-            current_user.allowed_in_work_package?(:edit_work_packages, represented) ||
-              current_user.allowed_in_project?(:change_work_package_status, represented.project) ||
-              current_user.allowed_in_project?(:assign_versions, represented.project)
+          @current_user_update_allowed = ::WorkPackages::UpdateContract.update_allowed?(user: current_user,
+                                                                                        work_package: represented)
         end
 
         def view_time_entries_allowed?

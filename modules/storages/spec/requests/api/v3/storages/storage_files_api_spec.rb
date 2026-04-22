@@ -159,7 +159,7 @@ RSpec.describe "API v3 storage files", :storage_server_helpers, :webmock, conten
 
     context "with successful response" do
       let(:response) do
-        Storages::StorageFileInfo.new(
+        Storages::Adapters::Results::StorageFileInfo.new(
           status: "OK",
           status_code: 200,
           id: file_id,

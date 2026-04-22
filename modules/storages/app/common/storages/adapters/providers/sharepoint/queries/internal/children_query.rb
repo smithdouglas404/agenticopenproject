@@ -43,7 +43,7 @@ module Storages
 
               def initialize(storage)
                 super
-                @transformer = StorageFileTransformer.new(site_name)
+                @transformer = StorageFileTransformer.new(host_uri)
               end
 
               def call(http:, drive_id:, location:)
@@ -134,7 +134,7 @@ module Storages
               end
 
               def build_ancestors(parent_reference, web_url)
-                drive_name = CGI.unescape(web_url.gsub(/.*#{site_name}\//, "").split("/").first)
+                drive_name = CGI.unescape(web_url.delete_prefix(@storage.host).split("/").first)
                 list = parent_reference[:path].gsub(/.*root:/, "").split("/")[0..-2] # Last item is the parent
                 forge_ancestors(list, drive_name)
               end

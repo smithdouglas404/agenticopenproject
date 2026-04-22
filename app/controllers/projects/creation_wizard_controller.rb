@@ -31,8 +31,7 @@
 class Projects::CreationWizardController < ApplicationController
   include OpTurbo::ComponentStream
 
-  before_action :find_project_by_project_id
-  load_and_authorize_with_permission_in_optional_project :edit_project_attributes
+  load_and_authorize_with_permission_in_project :edit_project_attributes
   before_action :load_sections_and_fields, only: %i[show update]
   before_action :find_current_section, only: %i[show update]
 
@@ -75,8 +74,8 @@ class Projects::CreationWizardController < ApplicationController
 
   def create_work_package_artifact # rubocop:disable Metrics/AbcSize
     creation_call = User.execute_as_admin(current_user) do
-      Projects::CreationWizard::CreateArtifactWorkPackageService
-        .new(user: current_user, model: @project)
+      Projects::CreationWizard::SubmitArtifactService
+        .new(user: current_user, project: @project)
         .call
     end
 

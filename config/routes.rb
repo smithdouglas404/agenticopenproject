@@ -45,6 +45,8 @@ Rails.application.routes.draw do
 
   get "/api/docs" => "api_docs#index"
 
+  mount API::Mcp => "/mcp"
+
   # Redirect deprecated issue links to new work packages uris
   get "/issues(/)" => redirect("#{rails_relative_url_root}/work_packages")
   # The URI.escape doesn't escape / unless you ask it to.
@@ -122,6 +124,8 @@ Rails.application.routes.draw do
     get "/account/decline_consent", action: "decline_consent", as: "account_decline_consent"
     post "/account/confirm_consent", action: "confirm_consent", as: "account_confirm_consent"
   end
+
+  get "/external_redirect", to: "external_link_warning#show", as: "external_redirect"
 
   resources :attribute_help_texts, only: [] do
     member do
@@ -214,6 +218,8 @@ Rails.application.routes.draw do
 
       get :attribute_help_text
       put :update_attribute_help_text
+
+      get :list_items
     end
 
     scope module: :admin do
@@ -277,6 +283,7 @@ Rails.application.routes.draw do
   namespace :projects do
     resource :menu, only: %i[show]
     resource :filters, only: %i[show]
+    resource :identifier_suggestion, only: %i[show], controller: "identifier_suggestion"
   end
 
   %w[portfolio project program].each do |workspace_type|
@@ -348,7 +355,9 @@ Rails.application.routes.draw do
           get :dialog
         end
       end
-      resource :identifier, only: %i[show update], controller: "identifier"
+      resource :identifier, only: %i[show update], controller: "identifier" do
+        get :identifier_update_dialog, on: :member, defaults: { format: :turbo_stream }
+      end
       resource :status, only: %i[update destroy], controller: "status"
       resource :creation_wizard, only: %i[show update], controller: "creation_wizard" do
         get :help_text, on: :member
@@ -370,10 +379,6 @@ Rails.application.routes.draw do
       post :deactivate_work_package_attachments
     end
 
-    collection do
-      get :export_list_modal
-    end
-
     resources :versions, only: %i[new create] do
       collection do
         put :close_completed
@@ -385,7 +390,9 @@ Rails.application.routes.draw do
     # this could probably be rewritten with a resource as: 'roadmap'
     get "/roadmap" => "versions#index"
 
-    resources :news, only: %i[index new create]
+    resources :news do
+      resources :comments, controller: "news/comments", only: %i[create destroy]
+    end
 
     # Match everything to be the ID of the wiki page except the part that
     # is reserved for the format. This assumes that we have only two formats:
@@ -435,7 +442,7 @@ Rails.application.routes.draw do
       get "/new" => "work_packages#new", on: :collection, as: "new"
 
       get "(/:tab)" => "work_packages#show", on: :member, as: "",
-          constraints: { id: /\d+/, state: /(?!(shares|copy|dialog)).+/ }
+          constraints: { id: WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT, state: /(?!(shares|copy|dialog)).+/ }
 
       # states managed by client-side routing on work_package#index
       get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog|new)).+/ }
@@ -456,6 +463,13 @@ Rails.application.routes.draw do
     end
 
     resources :forums do
+      resources :topics, controller: "messages", except: [:index] do
+        member do
+          get :quote
+          post :reply, as: "reply_to"
+        end
+      end
+
       member do
         get :confirm_destroy
         get :move
@@ -465,16 +479,13 @@ Rails.application.routes.draw do
 
     resources :categories, except: %i[index show], shallow: true
 
-    resources :members, only: %i[index create update], shallow: true do
+    resources :members, only: %i[index create update] do
       collection do
         delete "by_principal/:principal_id", action: :destroy_by_principal
 
         get :autocomplete_for_member
+        get :menu, to: "members/menus#show"
       end
-    end
-
-    namespace :members do
-      resource :menu, only: %[show]
     end
 
     resource :repository, controller: "repositories", except: [:new] do
@@ -612,6 +623,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :mcp_configurations, only: %i[index update], controller: "admin/mcp_configurations" do
+      collection do
+        post :multi_update
+      end
+    end
+
     resources :custom_actions, except: :show
 
     namespace :oauth do
@@ -627,6 +644,7 @@ Rails.application.routes.draw do
     namespace :settings do
       resource :general, controller: "/admin/settings/general_settings", only: %i[show update]
       resource :languages, controller: "/admin/settings/languages_settings", only: %i[show update]
+      resource :external_links, controller: "/admin/settings/external_links_settings", only: %i[show update]
       resource :repositories, controller: "/admin/settings/repositories_settings", only: %i[show update]
       resource :experimental, controller: "/admin/settings/experimental_settings", only: %i[show update]
 
@@ -645,6 +663,10 @@ Rails.application.routes.draw do
       # It is important to have this named something else than "work_packages".
       # Otherwise the angular ui-router will also recognize that as a WorkPackage page and apply according classes.
       resource :work_packages_general, controller: "/admin/settings/work_packages_general", only: %i[show update]
+      resource :work_packages_identifier, controller: "/admin/settings/work_packages_identifier", only: %i[show update] do
+        get :status, on: :member
+        get :confirm_dialog, on: :member, defaults: { format: :turbo_stream }
+      end
       resources :work_package_priorities, except: [:show] do
         member do
           put :move
@@ -681,6 +703,8 @@ Rails.application.routes.draw do
 
           get :attribute_help_text
           put :update_attribute_help_text
+
+          get :list_items
         end
 
         resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do
@@ -719,6 +743,40 @@ Rails.application.routes.draw do
       post "plugin/:id", action: :update_plugin
     end
 
+    namespace :import, constraints: lambda { |_request| OpenProject::FeatureDecisions.jira_import_active? } do
+      get "/", to: redirect("/admin/import/jira")
+      resources :jira, controller: "/admin/import/jira/instances" do
+        collection do
+          post :test
+        end
+        member do
+          delete :delete_token
+        end
+        resources :run, controller: "/admin/import/jira/import_runs", module: :jiras do
+          member do
+            get :continue
+            post :continue
+            delete :remove
+
+            get :import_modal
+            get :revert_modal
+            get :finalize_modal
+            get :history
+          end
+
+          resource :select_projects,
+                   controller: "/admin/import/jira/import_runs/select_projects",
+                   only: %i[show update] do
+            post :filter
+            get :switch_page
+            get :check_all
+            get :uncheck_all
+            get :toggle
+          end
+        end
+      end
+    end
+
     resources :quarantined_attachments,
               controller: "/admin/attachments/quarantined_attachments",
               only: %i[index destroy]
@@ -743,12 +801,42 @@ Rails.application.routes.draw do
         post :delete_token
       end
     end
+
+    resources :departments,
+              only: %i[index show edit update destroy],
+              constraints: lambda { |_request| OpenProject::FeatureDecisions.departments_active? } do
+      member do
+        get :new_user
+        post :add_user
+        delete "remove_user/:user_id" => "departments#remove_user", as: :remove_user
+        get :change_parent, action: :change_parent_dialog
+        post :change_parent
+
+        # old routes for old group style management, might remove when new interface
+        patch "/memberships:membership_id" => "departments#edit_membership", as: "membership_of"
+        put "/memberships:membership_id" => "departments#edit_membership"
+        delete "/memberships:membership_id" => "departments#destroy_membership"
+        post "/memberships" => "departments#create_memberships", as: "memberships_of"
+      end
+
+      collection do
+        get :new_department
+        post :add_department
+        get :edit_organization_name
+        patch :cancel_edit_organization_name
+        patch :update_organization_name
+      end
+    end
   end
 
-  resource :workflows, only: %i[edit update show] do
-    member do
+  resources :workflows, only: %i[index edit update], param: :type_id do
+    collection do
       # We should fix this crappy routing (split up and rename controller methods)
       match "copy", action: "copy", via: %i[get post]
+      get "summarized"
+      get :status_dialog
+      post :confirm_statuses
+      post :confirmation_dialog
     end
   end
 
@@ -756,10 +844,12 @@ Rails.application.routes.draw do
     get "menu" => "menus#show"
 
     match "auto_complete" => "auto_completes#index", via: %i[get post]
-    resource :bulk, controller: "bulk", only: %i[edit update destroy]
-    # FIXME: this is kind of evil!! We need to remove this soonest and
-    # cover the functionality. Route is being used in work-package-service.js:331
-    get "/bulk" => "bulk#destroy"
+    resource :bulk, controller: "bulk", only: %i[edit update destroy] do
+      collection do
+        match :reassign, via: %i[get delete]
+        get :delete_dialog
+      end
+    end
   end
 
   resources :work_packages, only: %i[index show new] do
@@ -845,7 +935,8 @@ Rails.application.routes.draw do
         on: :member
 
     get "/copy" => "work_packages#copy", on: :member, as: "copy"
-    get "(/:tab)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|new|copy)).+/ }
+    get "(/:tab)" => "work_packages#show", on: :member, as: "",
+        constraints: { id: WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT, state: /(?!(shares|new|copy)).+/ }
 
     # states managed by client-side (angular) routing on work_package#show
     get "/" => "work_packages#index", on: :collection, as: "index"
@@ -869,6 +960,12 @@ Rails.application.routes.draw do
 
   resources :users, constraints: { id: /(\d+|me)/ }, except: :edit do
     resources :memberships, controller: "users/memberships", only: %i[update create destroy]
+    resources :working_hours, controller: "users/working_hours", except: [:index]
+    resources :non_working_times, controller: "users/non_working_times", except: [:index] do
+      collection do
+        get :working_days_preview
+      end
+    end
 
     collection do
       get "/invite" => "users/invite#start_dialog"
@@ -881,6 +978,17 @@ Rails.application.routes.draw do
       get "/change_status/:change_action" => "users#change_status_info", as: "change_status_info"
       post :change_status
       post :resend_invitation
+      patch :update_reminders
+      patch :update_workdays
+      patch :update_email_alerts
+      patch :update_participating
+      patch :update_non_participating
+      patch :update_date_alerts
+      get "project_notifications/new" => "users#new_project_settings", as: "new_project_settings"
+      post "project_notifications" => "users#create_project_settings", as: "project_notifications"
+      get "project_notifications/:project_id/edit" => "users#edit_project_settings", as: "edit_project_settings"
+      patch "project_notifications/:project_id" => "users#update_project_settings", as: "project_setting"
+      delete "project_notifications/:project_id" => "users#destroy_project_settings"
       get :deletion_info
     end
   end
@@ -897,18 +1005,7 @@ Rails.application.routes.draw do
   # The show page of groups is public and thus moved out of the admin scope
   resources :groups, only: %i[show], as: :show_group
 
-  resources :forums, only: [] do
-    resources :topics, controller: "messages", except: [:index], shallow: true do
-      member do
-        get :quote
-        post :reply, as: "reply_to"
-      end
-    end
-  end
-
-  resources :news, only: %i[index destroy update edit show] do
-    resources :comments, controller: "news/comments", only: %i[create destroy], shallow: true
-  end
+  resources :news, only: %i[index show]
 
   # redirect for backwards compatibility
   scope "attachments",
@@ -948,7 +1045,7 @@ Rails.application.routes.draw do
     get "/deletion_info" => "users#deletion_info", as: "delete_my_account_info"
     post "/oauth/revoke_application/:application_id" => "oauth/grants#revoke_application", as: "revoke_my_oauth_application"
 
-    resources :sessions, controller: "my/sessions", as: "my_sessions", only: %i[index show destroy]
+    resources :sessions, controller: "my/sessions", as: "my_sessions", only: %i[index destroy]
     resources :auto_login_tokens, controller: "my/auto_login_tokens", as: "my_auto_login_tokens", only: %i[destroy]
 
     get "/banner" => "my/enterprise_banners#show", as: "show_enterprise_banner"
@@ -965,25 +1062,39 @@ Rails.application.routes.draw do
         post :generate_api_key
       end
 
+      delete :remove_oauth_client_token
       delete :revoke_api_key
       delete :revoke_ical_token
-      delete :revoke_storage_token
       delete :revoke_ical_meeting_token
     end
   end
 
   scope controller: "my" do
     get "/my/password", action: "password"
+    get "/my/password_confirmation_dialog", action: "password_confirmation_dialog"
     post "/my/change_password", action: "change_password"
 
     get "/my/account", action: "account"
     get "/my/locale", action: "locale"
     get "/my/interface", action: "interface"
     get "/my/notifications", action: "notifications"
-    get "/my/reminders", action: "reminders"
+
+    get "/my/working_hours", action: "working_hours"
+    get "/my/non_working_times", action: "non_working_times"
 
     patch "/my/account", action: "update_account"
     patch "/my/settings", action: "update_settings"
+    patch "/my/workdays", action: "update_workdays"
+    patch "/my/email_alerts", action: "update_email_alerts"
+    patch "/my/participating", action: "update_participating"
+    patch "/my/non_participating", action: "update_non_participating"
+    patch "/my/date_alerts", action: "update_date_alerts"
+
+    get "/my/project_notifications/new", action: "new_project_settings", as: "new_my_project_settings"
+    post "/my/project_notifications", action: "create_project_settings", as: "my_project_notifications"
+    get "/my/project_notifications/:project_id/edit", action: "edit_project_settings", as: "edit_my_project_settings"
+    patch "/my/project_notifications/:project_id", action: "update_project_settings", as: "my_project_setting"
+    delete "/my/project_notifications/:project_id", action: "destroy_project_settings"
   end
 
   scope controller: "onboarding" do
@@ -1052,6 +1163,14 @@ Rails.application.routes.draw do
     put    "Groups/:id", to: "groups#replace"
     patch  "Groups/:id", to: "groups#update"
     delete "Groups/:id", to: "groups#destroy"
+  end
+
+  scope "inplace_edit_fields/:model/:id/:attribute", as: "inplace_edit_field" do
+    post :update, controller: "inplace_edit_fields", action: :update
+    patch :update, controller: "inplace_edit_fields", action: :update
+    get :reset, controller: "inplace_edit_fields", action: :reset
+    get :edit, controller: "inplace_edit_fields", action: :edit
+    get :dialog, controller: "inplace_edit_fields", action: :dialog
   end
 
   if OpenProject::Configuration.lookbook_enabled?

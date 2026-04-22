@@ -33,10 +33,10 @@ module Grids
   class WidgetBoxComponent < ApplicationComponent
     attr_reader :title, :content_padding
 
-    renders_one :header, lambda { |title:, **system_arguments|
+    renders_one :header, lambda { |title:, attribute_label: nil, **system_arguments|
       system_arguments[:id] = @header_id
 
-      Header.new(title:, **system_arguments)
+      Header.new(title:, attribute_label:, **system_arguments)
     }
 
     renders_one :body, Body
@@ -54,12 +54,16 @@ module Grids
       turbo_enabled: true,
       content_padding: Body::DEFAULT_PADDING,
       full_width: false,
+      half_width: false,
+      border: true,
+      attribute_label: nil,
       **system_arguments
     )
       super()
 
       @key = key
       @title = title
+      @attribute_label = attribute_label
       @content_padding = content_padding
       @header_id = "#{key}-header"
 
@@ -68,7 +72,9 @@ module Grids
       @system_arguments[:classes] = class_names(
         @system_arguments[:classes],
         "widget-box",
-        "widget-box_full-width" => full_width
+        "widget-box_full-width" => full_width,
+        "widget-box_half-width" => half_width,
+        "-no-border" => !border
       )
       @system_arguments[:id] ||= "#{key}-box"
 
@@ -86,7 +92,7 @@ module Grids
     end
 
     def default_header
-      Header.new(title:, id: @header_id)
+      Header.new(title:, id: @header_id, attribute_label: @attribute_label)
     end
 
     def default_body

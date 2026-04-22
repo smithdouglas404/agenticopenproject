@@ -30,6 +30,7 @@
 
 class GroupsController < ApplicationController
   include GroupsHelper
+
   layout "admin"
 
   before_action :require_admin, except: %i[show]
@@ -39,7 +40,7 @@ class GroupsController < ApplicationController
                                       edit_membership add_users]
 
   def index
-    @groups = Group.order(Arel.sql("lastname ASC"))
+    @groups = Group.with_detail.not_organizational_units.in_tree_order
   end
 
   def show
@@ -149,7 +150,7 @@ class GroupsController < ApplicationController
   protected
 
   def find_group
-    @group = Group.find(params[:id])
+    @group = Group.visible.find(params[:id])
   end
 
   def group_members
@@ -163,7 +164,7 @@ class GroupsController < ApplicationController
   def visible_group_members?
     current_user.admin? ||
       current_user.allowed_in_any_project?(:manage_members) ||
-      Group.in_project(Project.allowed_to(current_user, :view_members)).exists?
+      @group.projects.exists?(id: Project.allowed_to(current_user, :view_members))
   end
 
   def respond_membership_altered(service_call)

@@ -81,7 +81,7 @@ module Pages
 
     def wait_for_page_to_reload
       wait_for_network_idle
-      expect(page).to have_no_css("#ajax-indicator")
+      expect(page).to have_no_css("#global-loading-indicator")
     end
 
     def path

@@ -8,11 +8,6 @@ keywords: meetings, dynamic meetings, agenda, minutes, one-time meeting, draft m
 
 # One-time meetings
 
-> [!NOTE]
-> With OpenProject 13.1 we introduced dynamic meetings alongside classic meetings. 
-> With OpenProject 15.3 dynamic meetings are replaced by [one-time meetings](../one-time-meetings) and [recurring meetings](../recurring-meetings) to further improve meeting management.
-> With OpenProject 16.0 classic meetings were removed from OpenProject. Read more about this change [in this blog article](https://www.openproject.org/blog/end-classic-meetings-may-2025/).
-
 For information on setting up recurring meeting series and templates, please refer to [this page](../recurring-meetings). Note that individual occurrences of a recurring meeting series are one-time meetings and have the same features as described here.
 
 > [!NOTE]
@@ -21,6 +16,7 @@ For information on setting up recurring meeting series and templates, please ref
 | Topic                                                        | Content                                                    |
 | ------------------------------------------------------------ | ---------------------------------------------------------- |
 | [Create a new meeting](#create-a-new-meeting)                | How to create a new meeting in OpenProject.                |
+| [Meeting templates](#meeting-templates-enterprise-add-on)    | How to use meeting templates (Enterprise add-on).          |
 | [Meetings draft mode](#meeting-draft-mode)                   | How to prepare a new meeting behind the scenes.            |
 | [Edit a meeting](#edit-a-meeting)                            | How to edit an existing meeting.                           |
 | [Add a work package to the agenda](#add-a-work-package-to-the-agenda) | How to add a work package to a meeting agenda.             |
@@ -39,6 +35,44 @@ For information on setting up recurring meeting series and templates, please ref
 
 ## Create and edit one-time meetings
 
+### Meeting templates (Enterprise add-on)
+
+[feature: meeting_templates ]
+
+Meeting templates allow you to reuse a predefined meeting structure when creating one-time meetings. They make it easy to start meetings with a proven structure instead of creating the agenda from scratch each time. 
+
+Meeting templates are always associated with a specific project, but they can be created either from within a project or from the global **Meetings** page. To access them, open the **Meetings** module and select **Templates** from the left-hand menu. In the **Templates** view you can see all templates you have access to. When viewing templates globally, an additional **Project** column indicates which project each template belongs to. 
+
+![Reusable meeting templates in OpenProject](openproject_userguide_meetings_templates.png)
+
+Use the **More** menu (⋯) next to a template to edit or delete the template. 
+
+![Edit or delete a meeting template in OpenProject](openproject_userguide_meetings_templates_edit_delete.png)
+
+Click the green **+ Template** button to create a new template. When creating a template from the global view, you first need to select the project the template should belong to. Click the **Create template** button to proceed.
+
+![Create new meeting template in OpenProject](openproject_userguide_meetings_create_new_template.png)
+
+In the template that opens, enter and save a title. Define the agenda structure and add attachments to the template the same way as you would when creating a one-time meeting. You can also define whether this template should be kept within the project, shared with subprojects, or all other projects in this instance. If the template is to be shared, the agenda items and attachments will be copied to sub- or other projects when the template is used.
+
+![Name and define a new meeting template in OpenProject](openproject_userguide_meetings_templates_name_save.png)
+
+You can edit, delete, or view the history through the **More (three dots)** menu in the top right corner and selecting the respective option.
+
+![Edit, delete or view a meeting template history](openproject_userguide_meetings_templates_edit_delete_history.png)
+
+When creating a new **one-time meeting**, you can optionally select a **Meeting template**. The template field is empty by default. After selecting a template, the agenda and attachments are copied to the new meeting.
+
+![Select a template when creating a new one-time meeting in OpenProject](openproject_userguide_meetings_templates_new_meeting.png)
+
+> [!NOTE]
+> Changes made to the template later will not affect meetings that were already created from it.
+
+You can also open a template and click the **+ Meeting** button to create a new meeting in the same project.
+
+![Create a new one-time meeting from a meeting template view in OpenProject meeting template](openproject_userguide_meetings_templates_create_new_meeting.png)
+
+
 ### Create a new meeting
 
 You can either create a meeting from within a project or from the global **Meetings** module.
@@ -52,6 +86,8 @@ For steps on setting up recurring meetings please consult [this page](../recurri
 If you choose the **one-time** option, enter your meeting's title, location, start date and time, and duration. 
 
 If you are creating a meeting from a global module you will first need to select a project to which the meeting is attributed. 
+
+If you are using (reusable meeting templates)(#meeting-templates-enterprise-add-on), you can also select a template. 
 
 ![Create a new one-time meeting in OpenProject](openproject_userguide_meetings_new_onetime_meeting_form.png)
 
@@ -143,7 +179,7 @@ Sections will show the sum of all the durations of all containing items (or at l
 
 #### Link a work package to a meeting
 
-If you select the **Work package** option, you can link a work package by entering either a work package ID, or starting to type in a keyword, which will open a list of possible options.
+If you select the **Work package** option, you can link a work package by entering either a work package ID, type, status or starting to type in a keyword, which will open a list of possible options.
 
 ![Add work package](openproject_userguide_meetings_add_work_package.png)
 
@@ -239,7 +275,13 @@ The participants list will show everyone invited to the meeting so far. Initiall
 
 ![A form showing invited and attending meeting participants in OpenProject](openproject_userguide_meetings_add_new_participants_form.png)
 
-To remove a participant, click the *x* icon on the far right of their name.
+To remove a participant, click the *x* icon on the far right of their name. 
+
+Once participants are added, their **participation status** is shown in the meeting view.
+
+If participants are subscribed to meetings via an external calendar, they can respond to the meeting invitation directly from their calendar (Accepted, Tentative, or Declined). Their response is synchronized back to OpenProject and visible to meeting organizers and other participants.
+
+![Meeting participants with their status highlighted in an OpenProject meeting](openproject_userguide_meetings_participants_status.png)
 
 Once the meeting has started (status set to *In progress*), you can record attendance by selecting the **Mark as attended** button.
 
@@ -247,7 +289,9 @@ Once the meeting has started (status set to *In progress*), you can record atten
 
 ### Send email to all participants
 
-You can send an email reminder to all the meeting participants. Select the dropdown by clicking on the **More** (three dots) icon in the top right corner and select **Email calendar invite to all participants**. An email reminder with the meeting details (including a link to the meeting) is immediately sent to all invitees and attendees.
+You can send an email reminder to all the meeting participants. Select the dropdown by clicking on the **More** (three dots) icon in the top right corner and select **Send email invite to participants**. An email reminder with the meeting details (including a link to the meeting) is immediately sent to all invitees and attendees.
+
+![Option to send email invite to meeting participants in an OpenProject meeting](openproject_userguide_meetings_send_email_invite.png)
 
 ### Email calendar updates
 
@@ -263,41 +307,84 @@ You can always re-activate it by clicking the **Enable** icon.
 
 ![Icon to enable calendar updates for meeting changes in OpenProject one-time meetings](openproject_userguide_meetings_enable_calendar_updates.png)
 
+> [!NOTE]
+> Enabling or disabling email calendar updates does not affect calendar subscriptions. 
+> If you are unsure whether a meeting change will trigger an email or update your calendar subscription, see the [Meetings FAQ](../meetings-faq/#what-is-the-difference-between-calendar-subscriptions-and-email-notifications-in-openproject-meetings).
+
 ## Meeting outcomes
+
+Meeting outcomes help you document what was discussed and decided during a meeting. You can capture outcomes as written notes (e.g. decisions or summaries) or as work packages to create follow-up tasks that stay connected to the meeting agenda.
+
 ### Add agenda item outcomes
 
-During a meeting, stakeholders will often take certain decisions, add useful information or note down follow-up points. In OpenProject, these can be added as outcomes to each agenda item. To note outcomes, the meeting status has to first be set to [in progress](#mark-meeting-in-progress). Once in progress, there will be a **+ Outcome** button at the end of each agenda item. To add an outcome, simply click this button.
+During a meeting, stakeholders will often make relevant decisions, add useful information, or specify follow-up steps. In OpenProject, these can be added as outcomes to each agenda item. To note outcomes, the meeting status has to first be set to [in progress](#mark-meeting-in-progress). 
 
 > [!TIP]
->
 > To be able to add *Agenda meeting outcomes*, **Manage outcomes** permission needs to be granted under [Roles and permissions](../../../system-admin-guide/users-permissions/roles-permissions/) in system administration.
+
+Once a meeting is in progress, there will be a **+ Outcome** button at the end of each agenda item. Click **+ Outcome** and choose one of the following options:
+
+- [Write outcome](#write-outcome)
+- [Existing work package](#existing-work-package)
+- [New work package](#new-work-package)
 
 ![Button to add an agenda outcome in OpenProject meetings](openproject_userguide_meetings_agenda_outcome_button.png)
 
-An editor will appear, allowing you to enter and format text, similar to editing an agenda item. 
+#### Write outcome
+
+Use this option to add a written outcome, such as a decision, a short summary, or meeting notes.
+
+An editor will appear, allowing you to enter and format text, similar to editing an agenda item.
 
 ![Editor to enter or edit agenda item outcomes in OpenProject meetings](openproject_userguide_meetings_agenda_outcome_form.png)
 
-Click **Save** to add the outcome agenda.
+Click **Save** to add the agenda item outcome.
 
 > [!TIP]
 >
 > You can save multiple outcomes per agenda item in OpenProject.
 
-After saving an agenda item outcome, you can still edit it. Click the **More** (three dots) menu on the right edge of each outcome item and select *Edit outcome*.
+After saving a written outcome, you can still edit it. Click the **More** (three dots) menu on the right edge of each outcome item and select *Edit outcome*.
 
 ![Edit an agenda item outcome in OpenProject meetings](openproject_userguide_meetings_agenda_outcome_more_menu.png)
 
-This menu also allows you  to *Copy link to clipboard* and to *Remove the outcome*.
+This menu also allows you to *Copy link to clipboard* and to *Remove the outcome*.
+
+#### Existing work package
+
+Use this option to add an already existing work package as a meeting outcome. This is helpful if the follow-up task already exists and you want to document that it was discussed during the meeting.
+
+You can use the search bar to search for a work package name or ID.
+
+![Add an existing work package as a meeting agenda item outcome in OpenProject](openproject_userguide_meetings_agenda_outcome_existing_wp_form.png)
+
+Once added, the work package will appear as an outcome under the agenda item. Work package outcomes can be removed again if needed. From the **More** (three dots) menu, you can copy the work package URL or remove the outcome.
+
+![Copy link or remove a work package outcome from an OpenProject meeting](openproject_userguide_meetings_agenda_outcome_existing_wp_edit.png)
+
+#### New work package
+
+Use this option to create a new work package directly from the meeting and add it as an outcome. This is useful for quickly creating follow-up tasks during the meeting while keeping them linked to the agenda item and meeting minutes.
+
+When you select **New work package**, a work package creation dialog will open. 
+
+![Form to create a new work package as an agenda outcome in an OpenProject meeting](openproject_userguide_meetings_agenda_outcome_new_wp_form.png)
+
+After creating it, the new work package will be shown as an outcome under the agenda item.
 
 > [!TIP]
-> Outcomes are also displayed in the Meetings tab of a work package in a read-only format.
+> Creating work packages as meeting outcomes requires users to have both **Manage outcomes** and **Create work packages** permissions.
+
+### Agenda outcomes in work packages
+
+Meeting agenda outcomes are also displayed in the **Meetings** tab of the linked work package in a read-only format. They are marked with an **Added as outcome** label so that it is clear how the work package is connected to the meeting.
 
 ![Agenda item outcomes displayed in Meetings tab in a work package in OpenProject](openproject_userguide_meetings_agenda_outcome_in_work_package.png)
 
+
 ## Meeting attachments
 
-You can add attachments in the meetings in the **Attachments** section in the right bottom corner. You can either user the **+Attach files** link to select files from your computer or drag and drop them.
+You can add attachments in the meetings in the **Attachments** section in the bottom right corner. You can either use the **+Attach files** link to select files from your computer or drag and drop them.
 
 Added attachments can be added to the Notes section of agenda packages by dragging and dropping them from the Attachments section.
 
@@ -316,11 +403,16 @@ This will display meeting history details.
 
 ## Download a meeting as an iCalendar event
 
-You can download a meeting as an iCalendar event. Select the dropdown by clicking on the **More** (three dots) menu in the top right corner and select the **Download iCalendar event**.
+You can download a meeting as an iCalendar event. Select the dropdown by clicking on the **More** (three dots) menu in the top right corner and select the **Download iCalendar event**. 
 
 Read more about [subscribing to a calendar](../../calendar/#subscribe-to-a-calendar).
 
-![An icon to download a meeting as an iCalendar event in OpenProject meetings moduel](openproject_userguide_meetings_download_ical.png)
+![An icon to download a meeting as an iCalendar event in OpenProject meetings module](openproject_userguide_meetings_download_ical.png)
+
+Please keep in mind that downloading a meeting as an iCalendar event adds it to your calendar, but it does not keep the meeting synchronized automatically.
+
+> [!TIP]
+> If you want to respond to meeting invitations directly from your calendar and have your participation status synchronized back to OpenProject, you can [subscribe to meetings](../#subscribe-to-meetings) instead of downloading individual iCal events.
 
 ## Change meeting status
 You can change the status of a meeting depending on whether you are preparing it, running it, or finalizing it.
@@ -432,7 +524,7 @@ You can also specify the **Footer text**, which will appear on the bottom of eve
 
 ![A dialogue to specify the PDF export of a meeting in OpenProject](openproject_userguide_meetings_pdf_export_dialogue.png)
 
-Click the **Download** button to generated a PDF. First page of the PDF is the title page. The generated PDF will include all the meeting details and agenda. Meeting participants, agenda outcomes, a list of attachments and backlog items will only be included if selected for the export. 
+Click the **Download** button to generate a PDF. First page of the PDF is the title page. The generated PDF will include all the meeting details and agenda. Meeting participants, agenda outcomes, a list of attachments and backlog items will only be included if selected for the export. 
 
 > [!NOTE]
 > Macros from the editor macros dropdown are not supported in the PDF.

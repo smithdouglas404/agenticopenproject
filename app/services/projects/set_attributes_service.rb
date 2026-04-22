@@ -30,7 +30,6 @@
 
 module Projects
   class SetAttributesService < ::BaseServices::SetAttributes
-
     private
 
     def set_attributes(params)
@@ -64,6 +63,7 @@ module Projects
       set_default_module_names(attribute_keys.include?("enabled_module_names"))
       set_default_types(attribute_keys.include?("types") || attribute_keys.include?("type_ids"))
       set_default_active_work_package_custom_fields(attribute_keys.include?("work_package_custom_fields"))
+      set_default_show_work_package_attachments(attribute_keys.include?("deactivate_work_package_attachments"))
     end
 
     def set_default_public(provided)
@@ -72,6 +72,10 @@ module Projects
 
     def set_default_module_names(provided)
       model.enabled_module_names = Setting.default_projects_modules if !provided && model.enabled_module_names.empty?
+    end
+
+    def set_default_show_work_package_attachments(provided)
+      model.deactivate_work_package_attachments = !Setting.show_work_package_attachments? unless provided
     end
 
     def set_default_types(provided)
@@ -110,6 +114,16 @@ module Projects
 
     def first_not_set_code
       (Project.status_codes.keys - [model.status_code]).first
+    end
+
+    def set_custom_values_to_validate(params)
+      # In case of new records, validate custom fields that are enabled for all projects
+      # and also required.
+      if model.new_record? && !contract_options[:skip_custom_field_validation]
+        set_custom_field_ids_to_validate(model.available_custom_fields.for_all.required.pluck(:id))
+      else
+        super
+      end
     end
   end
 end

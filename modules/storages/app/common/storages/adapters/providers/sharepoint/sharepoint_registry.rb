@@ -45,6 +45,7 @@ module Storages
             register(:create_list, Commands::CreateListCommand)
             register(:set_permissions, Commands::SetPermissionsCommand)
             register(:copy_template_folder, Commands::CopyTemplateFolderCommand)
+            register(:upload_file, Commands::UploadFileCommand)
           end
 
           namespace("components") do

@@ -53,19 +53,47 @@ module Token
 
     class << self
       def create_and_return_value(user)
-        create(user:).plain_value
+        create!(user:).plain_value
       end
 
       ##
       # Find a token from the token value
       def find_by_plaintext_value(input)
-        find_by(value: hash_function(input))
+        find_by(value: hash_function(input)) || find_and_upgrade_legacy_token(input)
       end
 
-      def find_by_plaintext_value!(input)
-        find_by!(value: hash_function(input))
+      def hash_function(input)
+        # Use HMAC-SHA256 with a pepper stored in the database.
+        # This protects low-entropy inputs (like backup codes) and allows
+        # the pepper to survive secret_key_base changes.
+        digest = OpenSSL::Digest.new("SHA256")
+        OpenSSL::HMAC.hexdigest(digest, Setting.hashed_token_pepper, input)
+      end
+
+      ##
+      # The previous hashing function used for tokens used the secret_key_base
+      # as a fixed salt. This is fine to use, but results in tokens being invalidated
+      # when we e.g., switch between on-premises and cloud instances, or move between servers.
+      def legacy_hash_function(input)
+        # Use a pepper for hashing token values.
+        # We still want to be able to index the hash value for fast lookups,
+        # so we need to determine the hash without knowing the associated user (and thus its salt) first.
+        Digest::SHA256.hexdigest(input + Rails.application.secret_key_base)
+      end
+
+      private
+
+      ##
+      # When the token is hashed with the legacy hash function
+      # upgrade it to the new token.
+      def find_and_upgrade_legacy_token(input)
+        find_by(value: legacy_hash_function(input))
+          &.tap { it.update_column(:value, hash_function(input)) }
       end
     end
+
+    delegate :hash_function, to: :class
+    delegate :legacy_hash_function, to: :class
 
     def display_value
       plain_value.presence || I18n.t("token.hashed_token.display_value_placeholder")
@@ -74,21 +102,22 @@ module Token
     ##
     # Validate the user input on the token
     # 1. The token is still valid
-    # 2. The plain text matches the hash
+    # 2. The plain text matches either the new HMAC hash or the legacy hash
     def valid_plaintext?(input)
-      hashed_input = hash_function(input)
-      ActiveSupport::SecurityUtils.secure_compare hashed_input, value
+      valid_hash?(input) || valid_legacy_hash?(input)
     end
-
-    def self.hash_function(input)
-      # Use a fixed salt for hashing token values.
-      # We still want to be able to index the hash value for fast lookups,
-      # so we need to determine the hash without knowing the associated user (and thus its salt) first.
-      Digest::SHA256.hexdigest(input + Rails.application.secret_key_base)
-    end
-    delegate :hash_function, to: :class
 
     private
+
+    def valid_hash?(input)
+      hashed_input = hash_function(input)
+      ActiveSupport::SecurityUtils.secure_compare(hashed_input, value)
+    end
+
+    def valid_legacy_hash?(input)
+      legacy_hashed_input = legacy_hash_function(input)
+      ActiveSupport::SecurityUtils.secure_compare(legacy_hashed_input, value)
+    end
 
     def initialize_values
       if new_record? && value.blank?

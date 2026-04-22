@@ -4,9 +4,11 @@
 
 ## Anatomy
 
-**Note:** The BorderBoxTable is based on the `Primer::Beta::BorderBox` with a CSS grid applied inside to align the individual rows and make it look like a table. Please note, that it is technically not a table and has therefore none of the benefits a normal HTML table would have (e.g  automatic column width adjustments or accessibility short cuts).
+**Note:** The BorderBoxTable is based on the `Primer::Beta::BorderBox` with a CSS grid applied inside to align individual rows and make it look like a table.
 
-If you want or need that, please use the [TableComponent docs](./tables)
+It [implements WAI-ARIA table semantics](https://www.w3.org/WAI/ARIA/apg/patterns/table/examples/table/) to provide basic support for users of Assistive Technologies (AT). However, since it doesn't use a native HTML table element, there may be usability limitations (e.g., automatic column width adjustment) that developers should consider.
+
+For full table functionality without these limitations, please use the [TableComponent docs](./tables)
 
 ## Best practices
 

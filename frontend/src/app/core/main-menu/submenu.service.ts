@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-import { TurboElement } from 'core-typings/turbo';
+import { type FrameElement } from '@hotwired/turbo';
 import { StateService } from '@uirouter/core';
 
 @Injectable({ providedIn: 'root' })
 export class SubmenuService {
   constructor(protected $state:StateService) {}
 
-  reloadSubmenu(selectedQueryId:string|null):void {
+  reloadSubmenu(selectedQueryId:string|null, sidemenuId?:string):void {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-    const menuIdentifier:string|undefined = this.$state.current.data.sideMenuOptions?.sidemenuId;
+    const menuIdentifier:string|undefined = sidemenuId ?? this.$state.current.data?.sideMenuOptions?.sidemenuId;
 
     if (menuIdentifier) {
-      const menu = (document.getElementById(menuIdentifier) as HTMLElement&TurboElement);
+      const menu = document.getElementById(menuIdentifier) as FrameElement;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const sideMenuOptions = this.$state.$current.data?.sideMenuOptions as { hardReloadOnBaseRoute?:boolean, defaultQuery?:string };
       const currentSrc = menu.getAttribute('src');
 
       if (currentSrc && menu) {
         const frameUrl = new URL(currentSrc, window.location.origin);
-        const defaultQuery = sideMenuOptions.defaultQuery;
+        const defaultQuery = sideMenuOptions?.defaultQuery;
 
         if (selectedQueryId) {
           // If there is a default query passed in the route definition, it means that id passed as argument and not as parameter,

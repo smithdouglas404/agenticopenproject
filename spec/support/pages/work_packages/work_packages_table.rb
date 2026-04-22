@@ -83,8 +83,12 @@ module Pages
     def expect_work_package_with_attributes(work_package, attr_value_hash)
       within(table_container) do
         attr_value_hash.each do |column, value|
+          # Use exact_text when value is empty so Capybara actually asserts the cell
+          # is empty. With text: "", Capybara treats the constraint as absent and
+          # will happily match cells that contain text.
+          text_options = value.to_s.empty? ? { exact_text: "" } : { text: value.to_s }
           expect(page).to have_css(
-            ".wp-row-#{work_package.id} td.#{column}", text: value.to_s, wait: 20
+            ".wp-row-#{work_package.id} td.#{column}", **text_options, wait: 20
           )
         end
       end
@@ -369,7 +373,7 @@ module Pages
     end
 
     def progress_popover(work_package)
-      Components::WorkPackages::ProgressPopover.new(container: work_package_container(work_package))
+      Components::WorkPackages::ProgressPopover.new(container: -> { work_package_container(work_package) })
     end
 
     def expect_no_column_add_option(column_name)

@@ -31,6 +31,12 @@
 
 require "capybara/cuprite"
 
+module CupriteCdpLogger
+  class << self
+    attr_accessor :logger
+  end
+end
+
 def headful_mode?
   ActiveRecord::Type::Boolean.new.cast(ENV.fetch("OPENPROJECT_TESTING_NO_HEADLESS", nil))
 end
@@ -80,6 +86,9 @@ def register_better_cuprite(language, name: :"better_cuprite_#{language}")
 
     options = configure_remote_chrome(options)
 
+    CupriteCdpLogger.logger = StringIO.new
+    options = options.merge(logger: CupriteCdpLogger.logger)
+
     browser_options = {
       "disable-dev-shm-usage": nil,
       "disable-gpu": nil,
@@ -97,7 +106,15 @@ def register_better_cuprite(language, name: :"better_cuprite_#{language}")
       "disable-backgrounding-occluded-windows": nil,
       # This disables non-foreground tabs from getting a lower process priority.
       # Useful for parallel test runs.
-      "disable-renderer-backgrounding": nil
+      "disable-renderer-backgrounding": nil,
+      # Software GPU to avoid the dreaded "[ERROR] [Canvas '__0']: Failed to get a
+      # WebGL context" error for tests using xeokit. The automatic fallback to SwiftShader
+      # was disabled in January 2026, so that we now have to enable the fallback manually in
+      # the test environment.
+      # See https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/swiftshader.md
+      "use-gl": "angle",
+      "use-angle": "swiftshader-webgl",
+      "enable-unsafe-swiftshader": true
     }
 
     if ENV["OPENPROJECT_TESTING_AUTO_DEVTOOLS"].present?

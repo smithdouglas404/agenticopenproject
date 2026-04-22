@@ -274,7 +274,11 @@ RSpec.describe PlaceholderUsersController do
     end
 
     describe "GET show" do
-      it_behaves_like "renders the show template"
+      before do
+        get :show, params: { id: placeholder_user.id }
+      end
+
+      it { expect(response).to have_http_status :not_found }
     end
 
     describe "GET edit" do

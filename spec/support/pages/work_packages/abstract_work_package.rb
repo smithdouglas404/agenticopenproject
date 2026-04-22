@@ -93,7 +93,7 @@ module Pages
     end
 
     def container
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
 
     def wait_for_activity_tab
@@ -213,9 +213,10 @@ module Pages
       end
     end
 
-    def update_attributes(save: !create_page?, **key_value_map)
+    def fill_in_attributes(save: !create_page?, **key_value_map)
       set_attributes(key_value_map, save:)
     end
+    alias :update_attributes :fill_in_attributes
 
     def set_attributes(key_value_map, save: !create_page?)
       key_value_map.each_with_index.map do |(key, value), index|
@@ -363,7 +364,7 @@ module Pages
     private
 
     def create_page(_args)
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
 
     def ensure_no_conflicting_modifications

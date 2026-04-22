@@ -84,6 +84,7 @@ class WorkPackages::UpdateAncestorsService < BaseServices::BaseCallable
   def save_updated_work_packages(updated_work_packages)
     updated_initiators, updated_ancestors = updated_work_packages.partition { initiator?(it) }
 
+    # TODO: Can we do better and not save if not changed?
     # Send notifications for initiator updates
     success = updated_initiators.all? { |wp| wp.save(validate: false) }
     # Do not send notifications for parent updates

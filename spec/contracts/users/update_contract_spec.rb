@@ -80,6 +80,30 @@ RSpec.describe Users::UpdateContract do
           it_behaves_like "contract is invalid", base: :one_must_be_active
         end
       end
+
+      context "when updated user authenticates through LDAP and basic attributes are changed" do
+        let(:attributes) { super().merge(ldap_auth_source_id: create(:ldap_auth_source).id) }
+
+        before do
+          user.firstname = "Changed firstname"
+          user.lastname = "Changed lastname"
+          user.mail = "changed@example.com"
+        end
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when updated user authenticates through external provider and basic attributes are changed" do
+        before do
+          allow(user).to receive(:uses_external_authentication?).and_return(true)
+
+          user.firstname = "Changed firstname"
+          user.lastname = "Changed lastname"
+          user.mail = "changed@example.com"
+        end
+
+        it_behaves_like "contract is valid"
+      end
     end
 
     context "when user is an admin" do
@@ -97,6 +121,54 @@ RSpec.describe Users::UpdateContract do
         before do
           user.password = "newpassword"
           user.password_confirmation = "newpassword"
+        end
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when user limit is reached" do
+        before do
+          allow(OpenProject::Enterprise).to receive(:user_limit_reached?).and_return(true)
+        end
+
+        context "when activating a previously inactive user" do
+          let(:attributes) { super().merge(status: Principal.statuses[:locked]) }
+
+          before do
+            user.status = Principal.statuses[:active]
+          end
+
+          it_behaves_like "contract is invalid", base: :user_limit_reached
+        end
+
+        context "when updating an already active user" do
+          before do
+            user.mail = "a.new@email.address"
+          end
+
+          it_behaves_like "contract is valid"
+        end
+      end
+
+      context "when updated user authenticates through LDAP and basic attributes are changed" do
+        let(:attributes) { super().merge(ldap_auth_source_id: create(:ldap_auth_source).id) }
+
+        before do
+          user.firstname = "Changed firstname"
+          user.lastname = "Changed lastname"
+          user.mail = "changed@example.com"
+        end
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when updated user authenticates through external provider and basic attributes are changed" do
+        before do
+          allow(user).to receive(:uses_external_authentication?).and_return(true)
+
+          user.firstname = "Changed firstname"
+          user.lastname = "Changed lastname"
+          user.mail = "changed@example.com"
         end
 
         it_behaves_like "contract is valid"
@@ -127,6 +199,28 @@ RSpec.describe Users::UpdateContract do
 
         it_behaves_like "contract is invalid", mail: :error_readonly
       end
+
+      context "when updated user authenticates through LDAP and basic attributes are changed" do
+        let(:attributes) { super().merge(ldap_auth_source_id: create(:ldap_auth_source).id) }
+
+        before do
+          user.firstname = "Changed firstname"
+          user.lastname = "Changed lastname"
+        end
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when updated user authenticates through external provider and basic attributes are changed" do
+        before do
+          allow(user).to receive(:uses_external_authentication?).and_return(true)
+
+          user.firstname = "Changed firstname"
+          user.lastname = "Changed lastname"
+        end
+
+        it_behaves_like "contract is valid"
+      end
     end
 
     context "when updated user is current user" do
@@ -149,6 +243,30 @@ RSpec.describe Users::UpdateContract do
         end
 
         it_behaves_like "contract is valid"
+      end
+
+      context "when updated user authenticates through LDAP and basic attributes are changed" do
+        let(:attributes) { super().merge(ldap_auth_source_id: create(:ldap_auth_source).id) }
+
+        before do
+          user.firstname = "Changed firstname"
+          user.lastname = "Changed lastname"
+          user.mail = "changed@example.com"
+        end
+
+        it_behaves_like "contract is invalid", firstname: :error_readonly, lastname: :error_readonly, mail: :error_readonly
+      end
+
+      context "when updated user authenticates through external provider and basic attributes are changed" do
+        before do
+          allow(user).to receive(:uses_external_authentication?).and_return(true)
+
+          user.firstname = "Changed firstname"
+          user.lastname = "Changed lastname"
+          user.mail = "changed@example.com"
+        end
+
+        it_behaves_like "contract is invalid", firstname: :error_readonly, lastname: :error_readonly, mail: :error_readonly
       end
     end
   end

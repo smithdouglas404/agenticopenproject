@@ -47,7 +47,7 @@ RSpec.describe "Create Document",
 
   current_user { manager }
 
-  context "for collaborative documents" do
+  context "for collaborative documents", with_settings: { real_time_text_collaboration_enabled: true } do
     it "creates a new document via +Document buttons" do
       index_page.visit!
 

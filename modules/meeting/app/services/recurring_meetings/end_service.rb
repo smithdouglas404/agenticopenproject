@@ -48,8 +48,9 @@ module RecurringMeetings
         .call(end_after: "specific_date", end_date: Time.zone.yesterday)
 
       result.on_success do
-        remove_scheduled_meetings
-        remove_future_occurrences
+        send_cancellation_for_future_instantiated_occurrences if recurring_meeting.notify?
+        remove_future_meetings
+        send_ended_mail if recurring_meeting.notify?
       end
 
       result
@@ -57,17 +58,49 @@ module RecurringMeetings
 
     private
 
-    ##
-    # Remove any upcoming scheduled meetings (e.g., those that are instantiated or cancelled)
-    def remove_scheduled_meetings
-      recurring_meeting.scheduled_meetings.upcoming.destroy_all
+    def send_cancellation_for_future_instantiated_occurrences
+      upcoming_non_cancelled_meetings.find_each do |meeting|
+        meeting.participants.where(invited: true).find_each do |participant|
+          MeetingMailer
+            .cancelled(meeting, participant.user, current_user)
+            .deliver_now
+        rescue StandardError => e
+          Rails.logger.error do
+            "Failed to deliver cancellation for meeting #{meeting.id} to #{participant.user.mail}: #{e.message}"
+          end
+        end
+      end
     end
 
     ##
-    # Remove all actual future occurrences of the meeting that remained.
-    # We do not use the DeleteService as that would send out notifications
-    def remove_future_occurrences
-      recurring_meeting.scheduled_instances.destroy_all
+    # Delete any upcoming occurrence meetings
+    def remove_future_meetings
+      recurring_meeting
+        .meetings
+        .not_templated
+        .where(recurrence_start_time: Time.current..)
+        .destroy_all
+    end
+
+    def upcoming_non_cancelled_meetings
+      recurring_meeting
+        .meetings
+        .not_templated
+        .not_cancelled
+        .where.not(recurrence_start_time: nil)
+        .where(recurrence_start_time: Time.current..)
+    end
+
+    def send_ended_mail # rubocop:disable Metrics/AbcSize
+      recurring_meeting.template.participants.where(invited: true).find_each do |participant|
+        MeetingMailer
+          .ended_series(recurring_meeting, participant.user, User.current)
+          .deliver_now
+      rescue StandardError => e
+        Rails.logger.error do
+          "Failed to deliver series ended notification for #{recurring_meeting.id} to #{participant.user.mail}: #{e.message}"
+        end
+      end
     end
   end
 end

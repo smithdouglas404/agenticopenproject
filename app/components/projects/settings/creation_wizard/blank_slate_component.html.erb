@@ -33,28 +33,12 @@ See COPYRIGHT and LICENSE files for more details.
       render(Primer::Beta::Blankslate.new) do |component|
         component.with_visual_icon(icon: :"project-template")
         component.with_heading(tag: :h2).with_content(title)
-        component.with_description do
-          flex_layout do |flex|
-            flex.with_row(mb: 2) do
-              render(Primer::Beta::Text.new(color: :subtle)) { description }
-            end
-
-            flex.with_row(mt: 4) do
-              render(
-                Primer::Beta::Button.new(
-                  scheme: :primary,
-                  mobile_icon: nil,
-                  mobile_label: label,
-                  aria: { label: },
-                  tag: :a,
-                  href: helpers.toggle_project_settings_creation_wizard_path(@project),
-                  data: { turbo_method: :post }
-                )
-              ) do
-                label
-              end
-            end
-          end
+        component.with_description_content(description)
+        component.with_primary_action(
+          href: helpers.toggle_project_settings_creation_wizard_path(@project),
+          data: { turbo_method: :post }
+        ) do
+          label
         end
       end
     end

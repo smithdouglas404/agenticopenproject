@@ -42,11 +42,11 @@
       concat(
         flex_layout do |flex_container|
           flex_container.with_column do
-            render Primer::Beta::AvatarStack.new(
+            render Primer::OpenProject::AvatarStack.new(
               data: { "documents--live-events-target": "users" }
             ) do |component|
               users.map do |user|
-                component.with_avatar(src: avatar_url(user), alt: user.name)
+                component.with_avatar_with_fallback(**avatar_options_for(user))
               end
             end
           end
@@ -67,14 +67,16 @@
           component.with_body(caret: :top_left) do
             flex_layout do |container|
               users.each do |user|
-                container.with_row do
-                  render Users::AvatarComponent.new(
-                    user: user,
-                    show_name: true,
-                    link: false,
-                    hover_card: { active: false },
-                    size: :mini
-                  )
+                container.with_row(mb: 2) do
+                  flex_layout(align_items: :center) do |user_row|
+                    user_row.with_column do
+                      render Primer::OpenProject::AvatarWithFallback.new(**avatar_options_for(user))
+                    end
+
+                    user_row.with_column(ml: 2) do
+                      render(Primer::Beta::Text.new(color: :subtle)) { user.name }
+                    end
+                  end
                 end
               end
             end

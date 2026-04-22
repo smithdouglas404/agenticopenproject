@@ -72,11 +72,11 @@ RSpec.describe "List project custom fields", :js do
 
       # Now there are no sections left, so we cannot add project attributes:
       # Turbo stream updated the component properly:
-      cf_index_page.expect_no_add_project_attribute_submenu(close_dialog: false)
+      cf_index_page.expect_no_add_project_attribute_submenu(close: false)
 
       # Revisiting the page again should not change anything:
       cf_index_page.visit!
-      cf_index_page.expect_no_add_project_attribute_submenu(close_dialog: false)
+      cf_index_page.expect_no_add_project_attribute_submenu(close: false)
     end
 
     it "shows all sections in the correct order and allows reordering via menu or drag and drop" do

@@ -56,10 +56,6 @@ module CustomFields
     def after_perform(call)
       cf = call.result
 
-      if cf.is_a?(ProjectCustomField)
-        add_cf_to_visible_columns(cf)
-      end
-
       if cf.field_format_calculated_value? && cf.is_required?
         enqueue_recalculate_values(cf)
       end
@@ -72,10 +68,6 @@ module CustomFields
     end
 
     private
-
-    def add_cf_to_visible_columns(custom_field)
-      Setting.enabled_projects_columns |= [custom_field.column_name]
-    end
 
     def enqueue_recalculate_values(custom_field)
       CustomFields::RecalculateValuesJob.perform_later(

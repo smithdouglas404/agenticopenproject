@@ -38,16 +38,8 @@ module Documents
         end
 
         def hocuspocus_server_link
-          render(
-            Primer::Beta::Link.new(
-              href: OpenProject::Static::Links.url_for(:hocuspocus_server_docs),
-              target: "_blank",
-              underline: true
-            )
-          ) do |link|
-            link.with_trailing_visual_icon(icon: :"link-external")
-            I18n.t("documents.admin.collaboration_settings.hocuspocus_server")
-          end
+          helpers.static_link_to(:hocuspocus_server_docs,
+                                 label: I18n.t("documents.admin.collaboration_settings.hocuspocus_server"))
         end
       end
     end

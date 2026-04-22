@@ -36,13 +36,7 @@ module Overviews
       ::Redmine::MenuManager.map(:project_menu) do |menu|
         menu.push(:overview,
                   { controller: "/overviews/overviews", action: "show" },
-                  caption: ->(project) {
-                    if OpenProject::FeatureDecisions.new_project_overview_active?
-                      I18n.t("overviews.label_home", workspace_type: project.workspace_label)
-                    else
-                      I18n.t("overviews.label_overview")
-                    end
-                  },
+                  caption: ->(project) { I18n.t("overviews.label_home", workspace_type: project.workspace_label) },
                   first: true,
                   icon: "info")
       end
@@ -60,6 +54,7 @@ module Overviews
         OpenProject::AccessControl.permission(:view_project_attributes)
           .controller_actions
           .push(
+            "overviews/project_custom_fields/show",
             "overviews/overviews/project_custom_fields_sidebar"
           )
 
@@ -92,12 +87,8 @@ module Overviews
 
         OpenProject::AccessControl.map do |ac_map|
           ac_map.project_module nil do |map|
-            map.permission :manage_overview,
-                           { "overviews/overviews": %i[show] },
-                           permissible_on: :project,
-                           require: :member
             map.permission :manage_dashboards,
-                           { "overviews/overviews": %i[dashboard] },
+                           { "overviews/overviews": %i[show dashboard] },
                            permissible_on: :project,
                            require: :member
           end

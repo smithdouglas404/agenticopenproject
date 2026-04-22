@@ -83,6 +83,15 @@ RSpec.describe "Portfolios",
       expect(portfolio.parent).to be_nil
     end
 
+    it "redirects to portfolios#index when users cancels", with_flag: { portfolio_models: true } do
+      visit new_portfolio_path
+
+      expect(page).to have_heading "New portfolio"
+
+      click_on "Cancel"
+      expect(page).to have_current_path portfolios_path
+    end
+
     context "without the necessary permissions to create portfolios", with_flag: { portfolio_models: true } do
       current_user { create(:user) }
 

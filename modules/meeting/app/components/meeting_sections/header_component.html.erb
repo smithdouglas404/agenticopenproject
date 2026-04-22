@@ -44,10 +44,14 @@
       primer_form_with(
         model: @meeting_section,
         method: :put,
-        url: meeting_section_path(@meeting_section.meeting, @meeting_section),
+        url: project_meeting_section_path(@meeting_section.meeting.project, @meeting_section.meeting, @meeting_section),
         data: {
           controller: "meetings--section-form scroll-into-view",
-          "meetings--section-form-cancel-url-value": cancel_edit_meeting_section_path(@meeting_section.meeting, @meeting_section)
+          "meetings--section-form-cancel-url-value": cancel_edit_project_meeting_section_path(
+            @meeting_section.meeting.project,
+            @meeting_section.meeting,
+            @meeting_section
+          )
         }
       ) do |f|
         flex_layout do |editable_title_form|
@@ -66,7 +70,11 @@
                 tag: :button,
                 data: {
                   action: "click->meetings--submit#intercept",
-                  href: cancel_edit_meeting_section_path(@meeting_section.meeting, @meeting_section),
+                  href: cancel_edit_project_meeting_section_path(
+                    @meeting_section.meeting.project,
+                    @meeting_section.meeting,
+                    @meeting_section
+                  ),
                   method: "POST"
                 }
               )

@@ -30,31 +30,17 @@
 
 class My::BacklogsForm < ApplicationForm
   form do |f|
-    f.text_field name: :task_color,
-                 label: I18n.t("backlogs.task_color"),
-                 value: @color,
-                 input_width: :xsmall
+    f.fieldset_group(title: helpers.t("backlogs.user_preference.header_backlogs"), mt: 4) do |fg|
+      fg.check_box name: :backlogs_versions_default_fold_state,
+                   value: DEFAULT_FOLD_STATE,
+                   unchecked_value: DEFAULT_EXPAND_STATE,
+                   label: I18n.t("activerecord.attributes.user_preference.backlogs_versions_default_fold_state"),
+                   caption: I18n.t("backlogs.caption_sprints_default_fold_state")
 
-    f.check_box name: :versions_default_fold_state,
-                value: DEFAULT_FOLD_STATE,
-                checked: default_fold_state_checked?,
-                label: I18n.t("backlogs.label_versions_default_fold_state"),
-                caption: I18n.t("backlogs.caption_versions_default_fold_state")
-
-    f.submit(name: :submit, label: I18n.t("backlogs.user_preference.button_update_backlogs"), scheme: :default)
+      fg.submit(name: :submit, label: helpers.t("backlogs.user_preference.button_update_backlogs"), scheme: :default)
+    end
   end
 
   DEFAULT_FOLD_STATE = "closed"
-
-  def initialize(color:, versions_default_fold_state:)
-    super()
-    @color = color
-    @versions_default_fold_state = versions_default_fold_state
-  end
-
-  private
-
-  def default_fold_state_checked?
-    @versions_default_fold_state == DEFAULT_FOLD_STATE
-  end
+  DEFAULT_EXPAND_STATE = "open"
 end

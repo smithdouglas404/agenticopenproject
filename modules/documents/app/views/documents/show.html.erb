@@ -29,12 +29,20 @@
   ++#
 %>
 
+<% html_title(t(:label_document_plural), @document.title) %>
+
 <% if @document.collaborative? %>
   <% if Setting.real_time_text_collaboration_enabled? %>
     <%=
       render(
         Documents::ShowEditView::BlockNoteEditorComponent.new(
-          @document, project: @project, oauth_token: @oauth_token, state: @state, readonly: @readonly
+          @document,
+          project: @project,
+          token_payload: @token_payload,
+          state: @state,
+          resource_url: @resource_url,
+          token_expires_in_seconds: @token_expires_in_seconds,
+          readonly: @readonly
         )
       )
     %>

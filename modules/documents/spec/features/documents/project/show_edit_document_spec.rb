@@ -34,6 +34,8 @@ require_module_spec_helper
 RSpec.describe "Show/Edit Document View",
                :js,
                :selenium do
+  include_context "with hocuspocus"
+
   shared_let(:project) { create(:project) }
   shared_let(:member_role) { create(:existing_project_role, permissions: %i[view_documents manage_documents]) }
   shared_let(:member) { create(:user, member_with_roles: { project => member_role }) }
@@ -41,18 +43,14 @@ RSpec.describe "Show/Edit Document View",
   let(:document_types) do
     %w[Specification Report].map { create(:document_type, name: it) }
   end
-  let(:document) { create(:document, project:, title: "Collaborative document", type: document_types.first) }
+  let(:document) do
+    create(:document, :collaborative, project:, title: "Collaborative document", type: document_types.first)
+  end
 
   current_user { member }
 
-  before do
-    # This is here while we don't have a setting defined for enabling/disabling collaboration
-    # rubocop:disable RSpec/AnyInstance
-    allow_any_instance_of(Primer::OpenProject::Forms::BlockNoteEditor).to receive(:collaboration_enabled).and_return(false)
-    # rubocop:enable RSpec/AnyInstance
-  end
-
-  it "renders a collaborative document" do
+  it "renders a collaborative document",
+     with_settings: { real_time_text_collaboration_enabled: true } do
     visit document_path(document)
 
     expect(page).to have_content("Collaborative document")
@@ -97,9 +95,9 @@ RSpec.describe "Show/Edit Document View",
 
     aggregate_failures "can edit document content" do
       editor = FormFields::Primerized::BlockNoteEditorInput.new
-      editor.fill_in_with_content("This is the new **content**.")
+      editor.fill_in("This is the new **content**.")
 
-      expect(editor.text).to include("This is the new **content**.")
+      expect(editor.element).to have_content("This is the new content.") # bold is applied
     end
   end
 
@@ -119,9 +117,9 @@ RSpec.describe "Show/Edit Document View",
 
     current_user { user }
 
-    it "renders a not authorized message" do
+    it "renders a not found message" do
       visit document_path(document)
-      expect(page).to have_text("[Error 403] You are not authorized to access this page.")
+      expect(page).to have_text("[Error 404] The page you were trying to access doesn't exist or has been removed.")
     end
   end
 end

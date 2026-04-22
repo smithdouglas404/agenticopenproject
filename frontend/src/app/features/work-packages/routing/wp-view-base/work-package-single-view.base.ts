@@ -157,8 +157,10 @@ export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
           this.workPackage = wp;
         }
 
-        // Push the current title
-        this.titleService.setFirstPart(this.workPackage.subjectWithType(-1));
+        if (this.routedFromAngular) {
+          // Push the current title
+          this.titleService.setFirstPart(this.workPackage.subjectWithType(-1));
+        }
 
         this.cdRef.detectChanges();
       }, (error) => {

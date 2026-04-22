@@ -17,8 +17,10 @@ keywords: SharePoint, file storage, integration
 | [Edit a SharePoint file storage](#edit-a-sharepoint-file-storage) | Edit a SharePoint file storage                               |
 | [Delete an SharePoint file storage](#delete-a-sharepoint-file-storage) | Delete a SharePoint file storage                             |
 
+[feature: one_drive_sharepoint_file_storage]
+
 > [!NOTE]
-> SharePoint integration is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide/) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
+> This feature includes using both OneDrive and SharePoint integrations.
 
 OpenProject offers an integration with SharePoint to allow users to:
 
@@ -74,8 +76,22 @@ You will see the following message confirming the successful setup on top of the
 
 ![System message on successful SharePoint file storages setup in OpenProject](openproject_system_guide_new_sharepoint_message_successful_setup.png)
 
+You can now configure user access management. Click the *edit* icon next to the relevant section. 
+
+![Configure folder and user access settings for SharePoint file storage in OpenProject administration](openproject_system_guide_new_sharepoint_folder_access_setup.png)
+
+OpenProject can automatically create and manage project folders when a file storage is added. This helps keep folder structures organized and ensures correct access for all project members. You can choose between the following options:
+
+- **Enable automatically-managed access and folders** 
+  Projects can decide whether to use automatic or manual folder and access management when adding the storage.
+- **Only allow manually-managed access and folders** 
+  Projects must manage folders and access manually. Automatic management is not available.
+
+![Folder and access management settings for SharePoint integration in OpenProject administration](openproject_system_guide_new_sharepoint_message_folder_setup.png)
+
 > [!IMPORTANT]
-> In SharePoint you can add (custom) columns in addition to the ones shown by default (*Modified* and *Modified by*). Please keep in mind if these custom columns are added, OpenProject integration can no longer copy the automatically managed project folders. The columns will have to be de-activated, or ideally not be created in the first place.
+> In SharePoint you can add (custom) columns in addition to the ones shown by default (*Modified* and *Modified by*). Please keep in mind if these custom columns are added, OpenProject integration can no longer copy the automatically-managed project folders. The columns will have to be de-activated, or ideally not be created in the first place.
+
 
 
 ## Enable SharePoint file storage in projects
@@ -89,18 +105,25 @@ To add a SharePoint storage to one or multiple projects on an instance level, cl
 
 ![Add SharePoint file storage to projects in OpenProject administration](openproject_system_guide_file_storages_add_projects_button_sharepoint.png)
 
-You can you use the search bar to select either one or multiple projects and have an option of including sub-projects. Select the type of project folders for file uploads and click **Add**.
+You can use the search bar to select one or multiple projects and optionally include subprojects. Select the type of project folder for file uploads. Depending on whether automatically-managed access and folders are enabled, the available folder options may vary. Options include:
+
+- **No specific folder**: By default, each user will start in their own home folder when uploading a file or when browsing for existent files to create file links in the file picker.
+- **New folder with automatically-managed permissions** (only visible if automatically-managed access and folders are enabled): A root folder is automatically created for the project, and access permissions are managed for each project member.
+- **Existing folder with manually-managed permissions**: You can designate an existing folder as the root folder for the project. Permissions are not managed automatically; the administrator must ensure that relevant users have access. The selected folder can be used by multiple projects.
+
+Click **Add** to save your changes.
+
 
 ![Select projects to activate SharePoint storage in OpenProject administration](openproject_system_guide_sharepoint_add_multiple_projects.png)
 
 
-You can always remove file storages from projects by selecting the respective option. 
+You can always edit or remove file storages from projects by clicking the **More (three dots)** icon next to the file storage name and selecting the respective option. 
 
 ![Remove SharePoint file storage from a project in OpenProject administration](openproject_system_guide_sharepoint_storage_remove_projects.png)
 
 ## Using the integration
 
-Once the [file storage is added and enabled for projects](../../../user-guide/projects/project-settings/files/), your users are able to take full advantage of the integration between SharePoint and OpenProject. For more information on how to link SharePoint files to work packages in OpenProject, please refer to the [SharePoint integration user guide](../../../user-guide/file-management/one-drive-integration).
+Once the [file storage is added and enabled for projects](../../../user-guide/projects/project-settings/files/), your instance users are able to take full advantage of the integration between SharePoint and OpenProject. For more information on how to link SharePoint files to work packages in OpenProject, please refer to the [SharePoint integration user guide](../../../user-guide/file-management/sharepoint-integration).
 
 ## Edit a SharePoint file storage
 
@@ -112,7 +135,7 @@ To update the general storage information, select the **Details** tab, click the
 
 
 > [!TIP]
-> If you have selected automatically managed access and folders you will also see the *Health status* message on the
+> If you have selected automatically-managed access and folders you will also see the *Health status* message on the
 > right side. If the file storage set-up is incomplete or faulty, an error message will be displayed in that section. Read
 > more about errors and troubleshooting [here](../../files/external-file-storages/health-status/).
 
@@ -129,7 +152,10 @@ Deleting a file storage at a project level simply makes it unavailable to that p
 
 ![Delete a SharePoint storage from an OpenProject project](openproject_system_guide_delete_sharepoint_storage_in_a_project.png)
 
-Deleting a file storage at an instance level deletes the SharePoint integration completely, making it inaccessible to all projects in that instance. Should an instance administrator nevertheless want to do so, they can navigate to *Administration -> File storages*, hover over the name of the file storage they want to remove and click it to enter the next page. Then they need to click the **Delete** button in the top right corner.
+>  [!WARNING]
+> Deleting a file storage at an instance level deletes the SharePoint integration completely, making it inaccessible to all projects in that instance. 
+
+Should an instance administrator nevertheless want to do so, they can navigate to *Administration -> File storages*, hover over the name of the file storage they want to remove and click it to enter the next page. Then they need to click the **Delete** button in the top right corner.
 
 
 ![Delete icon for SharePoint integration in OpenProject system settings](openproject_system_guide_delete_icon_sharepoint_storage.png)

@@ -22,8 +22,7 @@ x-op-build: &build
     DEV_UID: $DEV_UID
     DEV_GID: $DEV_GID
 x-op-image: &image
-  image:
-    openproject/dev:latest
+  image: openproject/dev:latest
 x-op-frontend-build: &frontend-build
   context: .
   dockerfile: ./docker/dev/frontend/Dockerfile
@@ -31,6 +30,8 @@ x-op-frontend-build: &frontend-build
     DEV_UID: $DEV_UID
     DEV_GID: $DEV_GID
 x-op-backend: &backend
+  tty: true
+  stdin_open: true
   build:
     <<: *build
     target: develop
@@ -60,8 +61,6 @@ x-op-backend: &backend
 services:
   backend:
     <<: *backend
-    tty: true
-    stdin_open: true
     command: run-app
     depends_on:
       - db
@@ -87,7 +86,7 @@ services:
     networks:
       - network
     environment:
-      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "openproject-assets.local"
+      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "openproject-assets.${OPENPROJECT_DOCKER_DEV_TLD:-local}"
     ports:
       - "${FE_PORT:-4200}:4200"
 
@@ -110,7 +109,7 @@ services:
     networks:
       - network
 
-######### Testing stuff below ############
+  ######### Testing stuff below ############
 
   db-test:
     image: postgres:17
@@ -121,6 +120,13 @@ services:
       POSTGRES_DB: openproject
       POSTGRES_USER: openproject
       POSTGRES_PASSWORD: openproject
+    networks:
+      - testing
+
+  hocuspocus-test:
+    image: openproject/hocuspocus:latest
+    environment:
+      SECRET: secret12345
     networks:
       - testing
 
@@ -158,15 +164,18 @@ services:
         condition: service_healthy
       cuprite-chrome:
         condition: service_started
+      hocuspocus-test:
+        condition: service_started
     environment:
       RAILS_ENV: test
+      OPENPROJECT_TESTING_WITH_DOCKER: "true"
       OPENPROJECT_RAILS__RELATIVE__URL__ROOT: "${OPENPROJECT_RAILS__RELATIVE__URL__ROOT:-}"
       DATABASE_URL: postgresql://openproject:openproject@db-test/openproject
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
       SELENIUM_GRID_URL: http://selenium-hub:4444/wd/hub
       CHROME_WS_URL: ws://cuprite-chrome:3000/chrome
       CAPYBARA_SERVER_PORT: 3000
-      CAPYBARA_DYNAMIC_BIND_IP: 1
+      CAPYBARA_BIND_ADDRESS: "0.0.0.0"
       CAPYBARA_APP_HOSTNAME: backend-test
       OPENPROJECT_EMAIL__DELIVERY__METHOD: test
       OPENPROJECT_CLI_PROXY: http://frontend-test:4200

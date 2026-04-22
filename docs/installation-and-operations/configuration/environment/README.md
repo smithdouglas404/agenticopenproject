@@ -220,7 +220,6 @@ OPENPROJECT_ENFORCE__TRACKING__START__AND__END__TIMES (default=false) Require st
 OPENPROJECT_ENTERPRISE__CHARGEBEE__SITE (default="openproject-enterprise") Site name for EE trial service
 OPENPROJECT_ENTERPRISE__PLAN (default="enterprise-on-premises---basic---euro---1-year") Default EE selected plan
 OPENPROJECT_ENTERPRISE__TRIAL__CREATION__HOST (default="https://start.openproject.com") Host for EE trial service
-OPENPROJECT_FEATURE__BETA__WIDGETS__ACTIVE (default=false) Enables BETA versions of widgets.
 OPENPROJECT_FEATURE__BLOCK__NOTE__EDITOR__ACTIVE (default=false) Enables the block note editor for rich text fields where available.
 OPENPROJECT_FEATURE__BUILT__IN__OAUTH__APPLICATIONS__ACTIVE (default=false) Allows the display and use of built-in OAuth applications.
 OPENPROJECT_FEATURE__CALCULATED__VALUE__PROJECT__ATTRIBUTE__ACTIVE (default=true) Allows the use of calculated values as a project attribute.
@@ -382,6 +381,7 @@ OPENPROJECT_SMTP__USER__NAME (default="") SMTP username
 OPENPROJECT_SOFTWARE__NAME (default="OpenProject") Override software application name
 OPENPROJECT_SOFTWARE__URL (default="https://www.openproject.org/") Override software application URL
 OPENPROJECT_SQL__SLOW__QUERY__THRESHOLD (default=2000) Time limit in ms after which queries will be logged as slow queries
+OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST (default="") Connections to certain IP addresses are blocked to prevent SSRF attacks. Use this setting to explicitly allow given IP addresses which would otherwise be blocked. Takes a comma or space separated list of IPv4 and IPv6 addresses (including masks for ranges), e.g. `192.168.255.255/16`.
 OPENPROJECT_START__OF__WEEK (default=nil) Week starts on
 OPENPROJECT_STATSD (default={"host" => nil, "port" => 8125}) enable statsd metrics (currently puma only) by configuring host
 OPENPROJECT_SYS__API__ENABLED (default=false) Enable internal system API for setting up managed repositories

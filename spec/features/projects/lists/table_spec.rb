@@ -169,7 +169,7 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
           expect(page)
             .to have_no_text(
               development_project.custom_values_for_custom_field(
-                id: custom_field.id,
+                custom_field,
                 all: true
               ).first.value
             )
@@ -370,6 +370,7 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
 
   context "with valid Enterprise token" do
     shared_let(:long_text_custom_field) { create(:text_project_custom_field) }
+
     specify "CF columns and filters are not visible by default" do
       load_and_open_filters admin
 
@@ -388,7 +389,7 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
 
       # Admins shall be the only ones to see invisible CFs
       expect(page).to have_text(invisible_custom_field.name.upcase)
-      expect(page).to have_select("add_filter_select", with_options: [invisible_custom_field.name])
+      projects_page.expect_filter_available(invisible_custom_field.name)
     end
 
     specify "long-text fields are truncated" do

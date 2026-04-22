@@ -35,7 +35,8 @@ class Queries::Capabilities::Filters::IdFilter < Queries::Capabilities::Filters:
 
   def split_values
     values.map do |value|
-      if (matches = value.match(/\A(\w+\/\w+)\/([wg])(\d*)-(\d+)\z/))
+      # @deprecated Remove the context `p` for projects for 17.2
+      if (matches = value.match(/\A(\w+\/\w+)\/([gwp])(\d*)-(\d+)\z/))
         {
           action: matches[1],
           context_key: matches[2],

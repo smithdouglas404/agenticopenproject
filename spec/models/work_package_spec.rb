@@ -185,20 +185,14 @@ RSpec.describe WorkPackage do
       context "when project#deactivate_work_package_attachments is false" do
         before { work_package.project.deactivate_work_package_attachments = false }
 
-        it { is_expected.to be_falsy }
+        it { is_expected.to be_falsey }
       end
     end
 
     context "when project is absent" do
       before { work_package.project = nil }
 
-      context "if Setting.show_work_package_attachments is true", with_settings: { show_work_package_attachments: true } do
-        it { is_expected.to be_falsy }
-      end
-
-      context "if Setting.show_work_package_attachments is false", with_settings: { show_work_package_attachments: false } do
-        it { is_expected.to be_truthy }
-      end
+      it { is_expected.to be_falsey }
     end
   end
 
@@ -591,8 +585,7 @@ RSpec.describe WorkPackage do
 
     before do
       without_timestamping do
-        work_package1.updated_at = 1.minute.ago
-        work_package1.save!
+        work_package1.update_column(:updated_at, 1.minute.ago)
       end
     end
 

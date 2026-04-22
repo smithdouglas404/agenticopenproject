@@ -372,6 +372,51 @@ RSpec.describe "Meeting notifications", :js do
       perform_enqueued_jobs
       expect(ActionMailer::Base.deliveries.size).to eq 0
     end
+
+    it "sends out an invite notification when enabling notifications on a series template (Bug #70178)" do
+      template_page.visit!
+
+      template_page.open_first_meeting
+      wait_for_network_idle
+
+      # check for initial invitation mail
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.size).to eq 1
+      ActionMailer::Base.deliveries.clear
+
+      template_page.visit!
+      expect(meeting.template.reload.notify).to be true
+
+      page.within("[data-test-selector='email-updates-mode-selector']") do
+        click_on "Disable"
+      end
+
+      template_page.expect_modal "Disable email calendar updates?"
+      template_page.within_modal "Disable email calendar updates?" do
+        click_on "Disable email updates"
+      end
+
+      wait_for_network_idle
+      expect(meeting.template.reload.notify).to be false
+
+      page.within("[data-test-selector='email-updates-mode-selector']") do
+        click_on "Enable"
+      end
+
+      template_page.expect_modal "Enable email calendar updates?"
+      template_page.within_modal "Enable email calendar updates?" do
+        click_on "Enable email updates"
+      end
+
+      wait_for_network_idle
+
+      expect_flash(message: "Email calendar update sent to all participants")
+      expect(meeting.template.reload.notify).to be true
+
+      # check for invitation mail on re-enabling notifications
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.size).to eq 1
+    end
   end
 
   context "when a meeting is closed" do
@@ -416,6 +461,151 @@ RSpec.describe "Meeting notifications", :js do
       show_page.visit!
 
       expect(page).to have_no_css("[data-test-selector='email-updates-mode-selector']")
+    end
+  end
+
+  context "when managing participants" do
+    let(:current_user) { user }
+    let(:other_user) do
+      create(:user,
+             lastname: "Second",
+             member_with_permissions: { project => %i[view_meetings] })
+    end
+    let(:third_user) do
+      create(:user,
+             lastname: "Third",
+             member_with_permissions: { project => %i[view_meetings] })
+    end
+    let(:meeting) do
+      create(:meeting, project:, author: user, notify: true, state: :in_progress).tap do |m|
+        create(:meeting_participant, meeting: m, user:, invited: true)
+        create(:meeting_participant, meeting: m, user: other_user, invited: true)
+      end
+    end
+    let(:show_page) { Pages::Meetings::Show.new(meeting) }
+
+    before do
+      third_user
+    end
+
+    it "notifies all existing participants when a new participant is added" do
+      show_page.visit!
+
+      show_page.open_participant_form
+      show_page.in_participant_form do
+        show_page.select_participant(third_user)
+        wait_for_network_idle
+        show_page.expect_participant(third_user)
+      end
+
+      perform_enqueued_jobs
+
+      # 1 to the invited user + 2 to the existing participants
+      expect(ActionMailer::Base.deliveries.size).to eq 3
+
+      expect(ActionMailer::Base.deliveries.map(&:to).flatten)
+        .to contain_exactly user.mail, other_user.mail, third_user.mail
+    end
+
+    it "notifies all remaining participants when a participant is removed" do
+      create(:meeting_participant, meeting:, user: third_user, invited: true)
+
+      show_page.visit!
+      ActionMailer::Base.deliveries.clear
+
+      show_page.open_participant_form
+      show_page.in_participant_form do
+        show_page.remove_participant(third_user)
+      end
+
+      wait_for_network_idle
+
+      perform_enqueued_jobs
+
+      # 1 to the removed user + 2 to the existing participants
+      expect(ActionMailer::Base.deliveries.size).to eq 3
+
+      expect(ActionMailer::Base.deliveries.map(&:to).flatten)
+        .to contain_exactly user.mail, other_user.mail, third_user.mail
+    end
+  end
+
+  context "when managing participants for a meeting series template" do
+    let(:current_user) { user }
+    let(:other_user) do
+      create(:user,
+             lastname: "Second",
+             member_with_permissions: { project => %i[view_meetings] })
+    end
+    let(:third_user) do
+      create(:user,
+             lastname: "Third",
+             member_with_permissions: { project => %i[view_meetings] })
+    end
+    let(:recurring_meeting) { create(:recurring_meeting, project:, author: user) }
+    let(:template_meeting) { recurring_meeting.template }
+    let(:show_page) { Pages::Meetings::Show.new(template_meeting) }
+
+    before do
+      template_meeting.update!(notify: true)
+      # After the scheduled_meetings refactor, InitNextOccurrenceJob creates a real Meeting
+      # occurrence record. Both tests require this occurrence to exist:
+      # send_emails? returns false for a series template that has no
+      # non-cancelled occurrence Meeting records. The "add participant" test additionally relies
+      # on it so that add_to_upcoming_occurrences can propagate the new participant to the occurrence,
+      # which is why that test now expects 5 emails instead of the previous 3.
+      RecurringMeetings::InitNextOccurrenceJob.perform_now(recurring_meeting, recurring_meeting.first_occurrence.to_time)
+      create(:meeting_participant, meeting: template_meeting, user: other_user, invited: true)
+      third_user
+    end
+
+    it "notifies all existing participants when a new participant is added" do
+      show_page.visit!
+      ActionMailer::Base.deliveries.clear
+
+      show_page.open_participant_form
+      show_page.in_participant_form do
+        show_page.select_participant(third_user)
+        wait_for_network_idle
+        show_page.expect_participant(third_user, editable: false)
+      end
+
+      perform_enqueued_jobs
+
+      # apply_to_upcoming is enabled by default on templates.
+      # 3 mails for template (invite + 2 participant_added) and
+      # 2 mails for the upcoming instantiated occurrence (invite + participant_added).
+      expect(ActionMailer::Base.deliveries.size).to eq 5
+
+      recipients = ActionMailer::Base.deliveries.map(&:to).flatten
+      expect(recipients.tally)
+        .to eq({
+                 user.mail => 2,
+                 other_user.mail => 1,
+                 third_user.mail => 2
+               })
+    end
+
+    it "notifies all remaining participants when a participant is removed" do
+      create(:meeting_participant, meeting: template_meeting, user: third_user, invited: true)
+
+      show_page.visit!
+      ActionMailer::Base.deliveries.clear
+
+      show_page.open_participant_form
+      show_page.in_participant_form do
+        show_page.remove_participant(third_user)
+      end
+
+      wait_for_network_idle
+
+      perform_enqueued_jobs
+
+      # 1 to the removed user + 2 to the existing participants
+      expect(ActionMailer::Base.deliveries.size).to eq 3
+
+      expect(ActionMailer::Base.deliveries.map(&:to).flatten)
+        .to contain_exactly user.mail, other_user.mail, third_user.mail
     end
   end
 end

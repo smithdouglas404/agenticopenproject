@@ -83,8 +83,6 @@ module Users
         end
       end
 
-      private
-
       def button_links
         [delete_button]
       end
@@ -93,24 +91,28 @@ module Users
         "session-row"
       end
 
+      private
+
       def delete_button
         return if current?
 
         render(
-          Primer::Beta::IconButton.new(
-            icon: :x,
-            scheme: :invisible,
+          Primer::Beta::Button.new(
+            scheme: :danger,
             test_selector: "session-revoke-button",
             tag: :a,
             href: revoke_path,
-            "aria-label": I18n.t(:button_revoke),
             data: {
               turbo_method: :delete,
               turbo_confirm: I18n.t("users.sessions.deletion_warning"),
               turbo_submits_with: I18n.t(:label_loading)
             }
           )
-        )
+        ) do |button|
+          button.with_leading_visual_icon(icon: :"sign-out")
+
+          I18n.t(:button_revoke)
+        end
       end
 
       def revoke_path

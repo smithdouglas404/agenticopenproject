@@ -79,12 +79,12 @@ module Costs
                    permissible_on: :project
 
         permission :edit_own_hourly_rate,
-                   { hourly_rates: %i[set_rate edit update] },
+                   { hourly_rates: %i[edit update] },
                    permissible_on: :project,
                    require: :member
 
         permission :edit_hourly_rates,
-                   { hourly_rates: %i[set_rate edit update] },
+                   { hourly_rates: %i[edit update] },
                    permissible_on: :project,
                    require: :member
         permission :view_cost_rates, # cost item values
@@ -166,8 +166,8 @@ module Costs
     end
 
     initializer "costs.settings" do
-      ::Settings::Definition.add "costs_currency", default: "EUR", format: :string
-      ::Settings::Definition.add "costs_currency_format", default: "%n %u", format: :string
+      ::Settings::Definition.add "costs_currency", default: "€", format: :string
+      ::Settings::Definition.add "costs_currency_format", default: "%n %u", format: :string, allowed: ["%u %n", "%n %u"]
       ::Settings::Definition.add "allow_tracking_start_and_end_times", default: false, format: :boolean
       ::Settings::Definition.add "enforce_tracking_start_and_end_times", default: false, format: :boolean
     end

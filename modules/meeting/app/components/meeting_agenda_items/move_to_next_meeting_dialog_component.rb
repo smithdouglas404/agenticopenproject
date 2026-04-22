@@ -32,12 +32,16 @@ module MeetingAgendaItems
   class MoveToNextMeetingDialogComponent < ApplicationComponent
     include ApplicationHelper
     include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-    def initialize(agenda_item:, datetime:)
+    def initialize(agenda_item:, datetime:, skipped_cancelled: nil, skipped_closed: nil, next_occurrence: nil)
       super
 
       @agenda_item = agenda_item
       @datetime = datetime
+      @skipped_cancelled = skipped_cancelled
+      @skipped_closed = skipped_closed
+      @next_occurrence = next_occurrence
     end
 
     private
@@ -45,11 +49,39 @@ module MeetingAgendaItems
     def title = I18n.t(:label_agenda_item_move_to_next_title)
 
     def confirmation_message
-      I18n.t(
+      base_message = I18n.t(
         :text_agenda_item_move_next_meeting,
         date: format_date(@datetime),
         time: format_time(@datetime, include_date: false)
       )
+
+      note = skipped_note
+      note.present? ? "#{base_message}\n\n#{note}" : base_message
+    end
+
+    def skipped_note
+      parts = []
+      parts << skipped_cancelled_part if @skipped_cancelled.present?
+      parts << skipped_closed_part if @skipped_closed.present?
+      return if parts.empty?
+
+      I18n.t(:text_agenda_item_dialog_skipping_note, details: parts.to_sentence)
+    end
+
+    def skipped_cancelled_part
+      if @skipped_cancelled.one?
+        I18n.t(:text_agenda_item_dialog_skipping_cancelled_one, date: format_date(@skipped_cancelled.first))
+      else
+        I18n.t(:text_agenda_item_dialog_skipping_cancelled_many, count: @skipped_cancelled.size)
+      end
+    end
+
+    def skipped_closed_part
+      if @skipped_closed.one?
+        I18n.t(:text_agenda_item_dialog_skipping_closed_one, date: format_date(@skipped_closed.first))
+      else
+        I18n.t(:text_agenda_item_dialog_skipping_closed_many, count: @skipped_closed.size)
+      end
     end
   end
 end

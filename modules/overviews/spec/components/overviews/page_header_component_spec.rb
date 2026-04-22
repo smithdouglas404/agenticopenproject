@@ -54,18 +54,13 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       expect(rendered_component).to have_css ".PageHeader-contextBar"
     end
 
-    it "renders current page without breadcrumbs", with_flag: { new_project_overview: true } do
+    it "renders current page without breadcrumbs" do
       expect(rendered_component).to have_text project.name
-      expect(rendered_component).to have_css ".PageHeader--noBreadcrumb"
-    end
-
-    it "renders current page without breadcrumbs", with_flag: { new_project_overview: false } do
-      expect(rendered_component).to have_text "Overview"
       expect(rendered_component).to have_css ".PageHeader--noBreadcrumb"
     end
   end
 
-  context "with the feature flag enabled", with_flag: { new_project_overview: true } do
+  context "with the feature flag enabled" do
     it "renders a Page Header (with tab nav)" do
       expect(rendered_component).to have_element "page-header", class: "PageHeader--withTabNav"
     end
@@ -74,7 +69,6 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       it "renders title" do
         expect(rendered_component).to have_heading project.name, class: "PageHeader-title"
       end
-
     end
 
     context "with Portfolio" do
@@ -83,7 +77,6 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       it "renders title" do
         expect(rendered_component).to have_heading project.name, class: "PageHeader-title"
       end
-
     end
 
     context "with Program" do
@@ -92,16 +85,6 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       it "renders title" do
         expect(rendered_component).to have_heading project.name, class: "PageHeader-title"
       end
-    end
-  end
-
-  context "with the feature flag disabled", with_flag: { new_project_overview: false } do
-    it "renders a Page Header" do
-      expect(rendered_component).to have_element "page-header"
-    end
-
-    it "renders title" do
-      expect(rendered_component).to have_heading "Overview", class: "PageHeader-title"
     end
   end
 
@@ -120,7 +103,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       expect(rendered_component).to have_element "action-menu", "data-select-variant": "none"
     end
 
-    context "without manage project permissions", with_flag: { project_initiation_active: true } do
+    context "without manage project permissions" do
       let(:user) do
         create(:user,
                member_with_permissions: { project => %i[view_project export_projects] })
@@ -135,7 +118,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       end
     end
 
-    context "without export project permissions", with_flag: { project_initiation_active: true } do
+    context "without export project permissions" do
       let(:user) do
         create(:user,
                member_with_permissions: { project => %i[view_project select_project_custom_fields] })
@@ -150,7 +133,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       end
     end
 
-    context "without manage and export project permissions", with_flag: { project_initiation_active: true } do
+    context "without manage and export project permissions" do
       let(:user) { create(:user) }
 
       it "renders action menu items", :aggregate_failures do
@@ -161,7 +144,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       end
     end
 
-    context "with project project creation wizard disabled", with_flag: { project_initiation: true } do
+    context "with project project creation wizard disabled" do
       let(:project) { build_stubbed(:project, name: "Too big to fail", workspace_type:, project_creation_wizard_enabled: false) }
 
       it "renders action menu items", :aggregate_failures do
@@ -174,21 +157,22 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       end
     end
 
-    context "with manage permissions", with_flag: { project_initiation: false } do
+    context "with manage permissions" do
       let(:user) { build_stubbed(:admin) }
 
       it "renders action menu items", :aggregate_failures do
         expect(rendered_component).to have_menu do |menu|
-          expect(menu).to have_selector :menuitem, count: 3
+          expect(menu).to have_selector :menuitem, count: 4
           expect(menu).to have_selector :menuitem, text: "Add to favorites"
           expect(menu).to have_selector :menuitem, text: "Manage project attributes"
+          expect(menu).to have_selector :menuitem, text: "Export PDF for Project creation wizard"
           expect(menu).to have_selector :menuitem, text: "Archive project"
         end
       end
     end
   end
 
-  describe "tab bar", with_flag: { new_project_overview: true } do
+  describe "tab bar" do
     context "when user has permission to view project" do
       let(:user) { build_stubbed(:admin) }
 
@@ -223,6 +207,38 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       it "renders only the Overview tab", :aggregate_failures do
         expect(rendered_component).to have_link "Overview"
         expect(rendered_component).to have_no_link "Dashboard"
+      end
+    end
+  end
+
+  describe "breadcrumbs" do
+    context "when the project has no parent" do
+      before do
+        allow(project)
+          .to receive_message_chain(:ancestors, :visible) # rubocop:disable RSpec/MessageChain
+          .and_return([])
+      end
+
+      it "does not render breadcrumbs" do
+        expect(rendered_component).to have_css ".PageHeader--noBreadcrumb"
+      end
+    end
+
+    context "when the project has ancestors" do
+      let(:grandparent) { build_stubbed(:project) }
+      let(:parent) { build_stubbed(:project) }
+
+      before do
+        allow(project)
+          .to receive_message_chain(:ancestors, :visible) # rubocop:disable RSpec/MessageChain
+          .and_return([grandparent, parent])
+      end
+
+      it "renders the full hierarchy breadcrumb path and ends with the current project name", :aggregate_failures do
+        expect(rendered_component).to have_css ".PageHeader"
+        expect(rendered_component).to have_link grandparent.name
+        expect(rendered_component).to have_link parent.name
+        expect(rendered_component).to have_heading page.title, class: "PageHeader-title"
       end
     end
   end

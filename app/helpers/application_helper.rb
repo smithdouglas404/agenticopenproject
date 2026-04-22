@@ -124,38 +124,14 @@ module ApplicationHelper
     Project.project_tree(projects, &)
   end
 
-  def project_nested_ul(projects, &)
-    s = +""
-    if projects.any?
-      ancestors = []
-      Project.project_tree(projects) do |project, _level|
-        if ancestors.empty? || project.is_descendant_of?(ancestors.last)
-          s << "<ul>\n"
-        else
-          ancestors.pop
-          s << "</li>"
-          while ancestors.any? && !project.is_descendant_of?(ancestors.last)
-            ancestors.pop
-            s << "</ul></li>\n"
-          end
-        end
-        s << "<li>"
-        s << yield(project).to_s
-        ancestors << project
-      end
-      s << ("</li></ul>\n" * ancestors.size)
-    end
-    s.html_safe
-  end
-
   def principals_check_box_tags(name, principals)
     labeled_check_box_tags(name, principals,
                            title: :user_status_i18n,
                            class: :user_status_class)
   end
 
-  def labeled_check_box_tags(name, collection, options = {})
-    collection.sort.map do |object|
+  def labeled_check_box_tags(name, collection, options = {}) # rubocop:disable Metrics/AbcSize
+    fields = collection.sort.map do |object|
       id = name.gsub(/[\[\]]+/, "_") + object.id.to_s
 
       object_options = options.inject({}) do |h, (k, v)|
@@ -170,30 +146,30 @@ module ApplicationHelper
           styled_check_box_tag(name, object.id, false, id:) + object.to_s
         end
       end
-    end.join.html_safe
-  end
-
-  def html_safe_gsub(string, *gsub_args, &)
-    html_safe = string.html_safe?
-    result = string.gsub(*gsub_args, &)
-
-    # We only mark the string as safe if the previous string was already safe
-    if html_safe
-      result.html_safe # rubocop:disable Rails/OutputSafety
-    else
-      result
     end
+
+    safe_join(fields)
   end
 
   def authoring(created, author, options = {})
     label = options[:label] || :label_added_time_by
-    I18n.t(label, author: link_to_user(author), age: time_tag(created)).html_safe
+    # Ensure we pass inputs here to html_escape
+    # which will respect html_safe?
+    author = ERB::Util.html_escape link_to_user(author)
+    age = ERB::Util.html_escape time_tag(created)
+
+    # OG: html_safe is used here with explicitly escaped inputs except for the translation file
+    I18n.t(label, author:, age:).html_safe
   end
 
   def authoring_at(creation_date, author)
     return if author.nil?
 
-    I18n.t(:label_added_by_on, author: link_to_user(author), date: creation_date).html_safe
+    author = ERB::Util.html_escape link_to_user(author)
+    date = ERB::Util.html_escape creation_date
+
+    # OG: html_safe is used here to avoid having to change this reusable key
+    I18n.t(:label_added_by_on, author:, date:).html_safe
   end
 
   def time_tag(time)
@@ -232,7 +208,8 @@ module ApplicationHelper
     formats = capture(Redmine::Views::OtherFormatsBuilder.new(self), &)
     unless formats.nil? || formats.strip.empty?
       content_tag "p", class: "other-formats" do
-        (I18n.t(:label_export_to) + formats).html_safe
+        concat I18n.t(:label_export_to)
+        concat formats
       end
     end
   end
@@ -265,9 +242,9 @@ module ApplicationHelper
 
   # Same as Rails' simple_format helper without using paragraphs
   def simple_format_without_paragraph(text)
-    html_safe_gsub(text.to_s, /\r\n?/, "\n")
-      .then { |res| html_safe_gsub(res, /\n\n+/, "<br /><br />") }
-      .then { |res| html_safe_gsub(res, /([^\n]\n)(?=[^\n])/, '\1<br />') }
+    text.to_s.html_safe_gsub(/\r\n?/, "\n")
+      .then { it.html_safe_gsub(/\n\n+/, "<br /><br />") }
+      .then { it.html_safe_gsub(/([^\n]\n)(?=[^\n])/, '\1<br />') }
   end
 
   def lang_options_for_select(blank = true)
@@ -287,6 +264,12 @@ module ApplicationHelper
       .sort_by(&:first)
   end
 
+  def blank_select_option
+    content_tag(:option,
+                "--- #{t(:actionview_instancetag_blank_option)} ---",
+                disabled: true)
+  end
+
   def theme_options_for_select
     [
       [I18n.t("themes.light"), "light"],
@@ -302,9 +285,11 @@ module ApplicationHelper
 
   def body_data_attributes(local_assigns)
     {
-      controller: "application auto-theme-switcher hover-card-trigger beforeunload external-links highlight-target-element",
+      controller: ["application auto-theme-switcher hover-card-trigger beforeunload external-links highlight-target-element",
+                   stimulus_body_controller].compact.join(" "),
       relative_url_root: root_path,
       overflowing_identifier: ".__overflowing_body",
+      external_links_enabled_value: Setting.capture_external_links?,
       rendered_at: Time.zone.now.iso8601,
       turbo: local_assigns[:turbo_opt_out] ? "false" : nil
     }.merge(user_theme_data_attributes)
@@ -459,7 +444,7 @@ module ApplicationHelper
   # @param [optional, String] content the content of the ROBOTS tag.
   #   defaults to no index, follow, and no archive
   def robot_exclusion_tag(content = "NOINDEX,FOLLOW,NOARCHIVE")
-    "<meta name='ROBOTS' content='#{h(content)}' />".html_safe
+    tag(:meta, name: "ROBOTS", content:)
   end
 
   def permitted_params

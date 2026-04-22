@@ -46,7 +46,7 @@ RSpec.describe "my access tokens", :js do
   end
 
   describe "API tokens" do
-    context "when API access is disabled via global settings", with_settings: { rest_api_enabled: false } do
+    context "when API tokens are disabled via global setting", with_settings: { api_tokens_enabled: false } do
       it "shows notice about disabled token" do
         visit my_access_tokens_path
 
@@ -57,14 +57,14 @@ RSpec.describe "my access tokens", :js do
       end
     end
 
-    context "when API access is enabled via global settings", with_settings: { rest_api_enabled: true } do
+    context "when API tokens are enabled via global setting", with_settings: { api_tokens_enabled: true } do
       it "API tokens can be generated and revoked" do
         visit my_access_tokens_path
 
         expect(page).to have_no_content("API tokens are not enabled by the administrator.")
 
         within "#api-token-component" do
-          expect(page).to have_test_selector("api-token-add", text: "API Token")
+          expect(page).to have_test_selector("api-token-add", text: "API token")
           find_test_selector("api-token-add").click
         end
 
@@ -86,7 +86,7 @@ RSpec.describe "my access tokens", :js do
 
         # multiple API tokens can be created
         within "#api-token-component" do
-          expect(page).to have_test_selector("api-token-add", text: "API Token")
+          expect(page).to have_test_selector("api-token-add", text: "API token")
         end
 
         # revoke API token
@@ -106,7 +106,7 @@ RSpec.describe "my access tokens", :js do
           expect(page).to have_no_content("Testing Token")
 
           # API token can be created again
-          expect(page).to have_test_selector("api-token-add", text: "API Token")
+          expect(page).to have_test_selector("api-token-add", text: "API token")
         end
       end
     end
@@ -117,7 +117,7 @@ RSpec.describe "my access tokens", :js do
       it "shows notice about disabled token" do
         visit my_access_tokens_path
 
-        within "#rss-token-section" do
+        within "#rss-token-component" do
           expect(page).to have_content("RSS tokens are not enabled by the administrator.")
           expect(page).not_to have_test_selector("rss-token-add", text: "RSS token")
         end
@@ -125,30 +125,30 @@ RSpec.describe "my access tokens", :js do
     end
 
     context "when RSS access is enabled via global settings", with_settings: { feeds_enabled: true } do
-      it "in Access Tokens they can generate and revoke their RSS key" do
+      it "in Access tokens they can generate and revoke their RSS key" do
         visit my_access_tokens_path
 
         expect(page).to have_no_content("RSS tokens are not enabled by the administrator.")
 
-        within "#rss-token-section" do
+        within "#rss-token-component" do
           expect(page).to have_test_selector("rss-token-add", text: "RSS token")
           find_test_selector("rss-token-add").click
         end
 
-        expect(page).to have_content "A new RSS token has been generated. Your access token is"
+        expect(page).to have_content "The RSS token has been generated"
 
         User.current.reload
         visit my_access_tokens_path
 
         # only one RSS token can be created
-        within "#rss-token-section" do
+        within "#rss-token-component" do
           expect(page).not_to have_test_selector("rss-token-add", text: "RSS token")
         end
 
         # revoke RSS token
-        within "#rss-token-section" do
+        within "#rss-token-component" do
           accept_confirm do
-            find_test_selector("rss-token-revoke").click
+            find_test_selector("api-token-revoke").click
           end
         end
 
@@ -158,7 +158,7 @@ RSpec.describe "my access tokens", :js do
         visit my_access_tokens_path
 
         # RSS token can be created again
-        within "#rss-token-section" do
+        within "#rss-token-component" do
           expect(page).to have_test_selector("rss-token-add", text: "RSS token")
         end
       end
@@ -209,9 +209,9 @@ RSpec.describe "my access tokens", :js do
               token_name = ical_token.ical_token_query_assignment.name
               query = ical_token.ical_token_query_assignment.query
 
-              expect(page).to have_test_selector("ical-token-row-#{ical_token.id}-name", text: token_name)
-              expect(page).to have_test_selector("ical-token-row-#{ical_token.id}-query-name", text: query.name)
-              expect(page).to have_test_selector("ical-token-row-#{ical_token.id}-project-name",
+              expect(page).to have_test_selector("ical-token-#{ical_token.id}-name", text: token_name)
+              expect(page).to have_test_selector("ical-token-#{ical_token.id}-query-name", text: query.name)
+              expect(page).to have_test_selector("ical-token-#{ical_token.id}-project-name",
                                                  text: query.project.name)
             end
           end
@@ -222,7 +222,7 @@ RSpec.describe "my access tokens", :js do
 
           within "#icalendar-token-section" do
             accept_confirm do
-              find_test_selector("ical-token-row-#{ical_token_for_query.id}-revoke").click
+              find_test_selector("ical-token-#{ical_token_for_query.id}-revoke").click
             end
           end
 
@@ -232,7 +232,7 @@ RSpec.describe "my access tokens", :js do
           visit my_access_tokens_path
 
           within "#icalendar-token-section" do
-            expect(page).not_to have_test_selector("ical-token-row-#{ical_token_for_query.id}-revoke")
+            expect(page).not_to have_test_selector("ical-token-#{ical_token_for_query.id}-revoke")
           end
         end
       end
@@ -313,7 +313,7 @@ RSpec.describe "my access tokens", :js do
       it "shows notice about no existing tokens" do
         visit my_access_tokens_path
 
-        within "#oauth-token-section" do
+        within "#oauth-application-token-section" do
           expect(page).to have_content("There is no third-party application access configured and active for you")
         end
       end
@@ -347,9 +347,9 @@ RSpec.describe "my access tokens", :js do
           visit my_access_tokens_path
 
           [app, second_app].each do |app|
-            within "#oauth-token-section" do
-              expect(page).to have_test_selector("oauth-token-row-#{app.id}-name", text: app.name)
-              expect(page).to have_test_selector("oauth-token-row-#{app.id}-name", text: "(one active token)")
+            within "#oauth-application-token-section" do
+              expect(page).to have_test_selector("oauth-application-#{app.id}-name", text: app.name)
+              expect(page).to have_test_selector("oauth-application-#{app.id}-active-tokens", text: "1")
             end
           end
         end
@@ -358,7 +358,7 @@ RSpec.describe "my access tokens", :js do
           visit my_access_tokens_path
 
           [app, second_app].each do |app|
-            within "#oauth-token-section" do
+            within "#oauth-application-token-section" do
               accept_confirm do
                 find_test_selector("oauth-token-row-#{app.id}-revoke").click
               end
@@ -370,7 +370,7 @@ RSpec.describe "my access tokens", :js do
           visit my_access_tokens_path
 
           [app, second_app].each do |app|
-            within "#oauth-token-section" do
+            within "#oauth-application-token-section" do
               expect(page).not_to have_test_selector("oauth-token-row-#{app.id}-revoke")
             end
           end
@@ -393,9 +393,9 @@ RSpec.describe "my access tokens", :js do
           visit my_access_tokens_path
 
           [app, second_app].each do |app|
-            within "#oauth-token-section" do
-              expect(page).to have_test_selector("oauth-token-row-#{app.id}-name", text: app.name)
-              expect(page).to have_test_selector("oauth-token-row-#{app.id}-name", text: "(2 active token)")
+            within "#oauth-application-token-section" do
+              expect(page).to have_test_selector("oauth-application-#{app.id}-name", text: app.name)
+              expect(page).to have_test_selector("oauth-application-#{app.id}-active-tokens", text: "2")
             end
           end
         end
@@ -403,7 +403,7 @@ RSpec.describe "my access tokens", :js do
         it "can revoke mutliple tokens per app" do
           visit my_access_tokens_path
 
-          within "#oauth-token-section" do
+          within "#oauth-application-token-section" do
             accept_confirm do
               find_test_selector("oauth-token-row-#{app.id}-revoke").click
             end
@@ -412,7 +412,7 @@ RSpec.describe "my access tokens", :js do
           User.current.reload
           visit my_access_tokens_path
 
-          within "#oauth-token-section" do
+          within "#oauth-application-token-section" do
             expect(page).not_to have_test_selector("oauth-token-row-#{app.id}-revoke")
           end
         end

@@ -31,4 +31,6 @@
 class NonWorkingDay < ApplicationRecord
   validates :name, :date, presence: true
   validates :date, uniqueness: true
+
+  scope :for_year, ->(year) { where(date: Date.new(year, 1, 1)..Date.new(year, 12, 31)) }
 end

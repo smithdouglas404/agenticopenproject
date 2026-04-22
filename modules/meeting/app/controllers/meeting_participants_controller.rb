@@ -33,7 +33,8 @@ class MeetingParticipantsController < ApplicationController
   include OpTurbo::FlashStreamHelper
   include Meetings::AgendaComponentStreams
 
-  before_action :authorize
+  load_and_authorize_with_permission_in_project :edit_meetings
+
   before_action :set_meeting
   before_action :set_participant, only: %i[toggle_attendance destroy]
 
@@ -72,13 +73,24 @@ class MeetingParticipantsController < ApplicationController
   end
 
   def destroy
-    if @participant.destroy!
+    user_id = @participant.user_id
+    call = MeetingParticipants::DeleteService
+      .new(user: User.current, model: @participant)
+      .call
+
+    if call.success?
+      if @meeting.series_template? && params[:apply_to_upcoming] == "1"
+        remove_from_upcoming_occurrences(user_id)
+      end
+
       update_add_user_form_component_via_turbo_stream
       update_list_component_via_turbo_stream
       update_sidebar_participants_component_via_turbo_stream(meeting: @meeting)
-
-      respond_with_turbo_streams
+    else
+      render_error_flash_message_via_turbo_stream(message: join_flash_messages(call.errors))
     end
+
+    respond_with_turbo_streams
   end
 
   def manage_participants_dialog
@@ -88,19 +100,46 @@ class MeetingParticipantsController < ApplicationController
   private
 
   def set_meeting
-    @meeting = Meeting.find(params[:meeting_id])
+    @meeting = @project.meetings.visible.find(params[:meeting_id])
   end
 
   def set_participant
-    @participant = MeetingParticipant.find(params[:id])
+    @participant = @meeting.participants.find(params[:id])
   end
 
   def create_new_participants(user_ids)
     user_ids.each { |user_id| create_new_participant(user_id) }
 
+    if @meeting.series_template? && params.dig(:meeting_participant, :apply_to_upcoming) == "1"
+      add_to_upcoming_occurrences(user_ids)
+    end
+
     update_list_component_via_turbo_stream
     update_add_user_form_component_via_turbo_stream
     update_sidebar_participants_component_via_turbo_stream(meeting: @meeting)
+  end
+
+  def remove_from_upcoming_occurrences(user_id)
+    @meeting.recurring_meeting.instantiated_meetings.upcoming.each do |meeting|
+      participant = meeting.participants.find_by(user_id:)
+      next unless participant
+
+      MeetingParticipants::DeleteService
+        .new(user: User.current, model: participant)
+        .call
+    end
+  end
+
+  def add_to_upcoming_occurrences(user_ids)
+    @meeting.recurring_meeting.instantiated_meetings.upcoming.each do |meeting|
+      user_ids.each do |user_id|
+        next if meeting.participants.exists?(user_id:)
+
+        MeetingParticipants::CreateService
+          .new(user: User.current)
+          .call(meeting:, user_id:, invited: true, attended: false)
+      end
+    end
   end
 
   def create_new_participant(user_id)
@@ -108,9 +147,9 @@ class MeetingParticipantsController < ApplicationController
       .new(user: User.current)
       .call(meeting: @meeting, user_id: user_id, invited: true, attended: false)
       .on_failure do |call|
-      call.errors.full_messages.each do |msg|
-        @meeting.errors.add(:base, msg)
-      end
+        call.errors.full_messages.each do |msg|
+          @meeting.errors.add(:base, msg)
+        end
     end
   end
 end

@@ -7,14 +7,14 @@ ko:
     common:
       document_types:
         item_0:
-          name: Note
+          name: 메모
         item_1:
-          name: Idea
+          name: 아이디어
         item_2:
-          name: Proposal
+          name: 제안서
         item_3:
-          name: Specification
+          name: 사양
         item_4:
-          name: Report
+          name: 보고서
         item_5:
-          name: Documentation
+          name: 문서

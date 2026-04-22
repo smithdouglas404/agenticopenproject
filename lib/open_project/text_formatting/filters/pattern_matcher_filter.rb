@@ -34,12 +34,14 @@ module OpenProject::TextFormatting
       # Skip text nodes that are within preformatted blocks
       PREFORMATTED_BLOCKS = %w(pre code).to_set
 
-      def self.matchers
-        [
-          OpenProject::TextFormatting::Matchers::ResourceLinksMatcher,
-          OpenProject::TextFormatting::Matchers::WikiLinksMatcher,
-          OpenProject::TextFormatting::Matchers::AttributeMacros
-        ]
+      class << self
+        def append_matcher(matcher)
+          matchers << matcher
+        end
+
+        def matchers
+          @matchers ||= []
+        end
       end
 
       def call

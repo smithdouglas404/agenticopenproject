@@ -6,6 +6,7 @@ $blocknote-max-width: 800px
 
 .block-note-editor-container
   align-items: center
+  position: relative
   display: flex
   flex-direction: column-reverse
   gap: 10px
@@ -22,6 +23,9 @@ $blocknote-max-width: 800px
     background-color: transparent
     padding-top: 10px // Small padding to display cursor label when at the very top
     padding-inline: 0 // No inline padding necessary given transparent background
+    font-size: var(--body-font-size)
+  > .bn-default-styles
+    font-family: var(--body-font-family)
 
   :focus-visible
     outline: none !important // Remove default focus outline to use custom styles

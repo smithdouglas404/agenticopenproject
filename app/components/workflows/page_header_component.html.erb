@@ -30,6 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render Primer::OpenProject::PageHeader.new(classes: "workflows-page-header") do |header|
     header.with_title { title }
+    header.with_description { description }
     header.with_breadcrumbs(breadcrumb_items)
 
     if @state != :copy
@@ -47,13 +48,13 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    if @state != :edit
+    unless @state.in?(%i[index edit])
       header.with_action_button(
         tag: :a,
         mobile_icon: :pencil,
         mobile_label: t(:button_edit),
         size: :medium,
-        href: edit_workflows_path,
+        href: workflows_path,
         aria: { label: I18n.t(:button_edit) },
         title: I18n.t(:button_edit)
       ) do |button|
@@ -62,13 +63,13 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    if @state != :show
+    if @state != :summarized
       header.with_action_button(
         tag: :a,
         mobile_icon: :info,
         mobile_label: t(:label_workflow_summary),
         size: :medium,
-        href: workflows_path,
+        href: summarized_workflows_path,
         aria: { label: I18n.t(:label_workflow_summary) },
         title: I18n.t(:label_workflow_summary)
       ) do |button|

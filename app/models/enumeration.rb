@@ -40,11 +40,10 @@ class Enumeration < ApplicationRecord
   before_save :ensure_activated, if: -> { self.class.can_have_default_value? && is_default? }
   before_destroy :check_integrity
 
-  validates :name, presence: true
   validates :name,
-            uniqueness: { scope: %i(type project_id),
-                          case_sensitive: false }
-  validates :name, length: { maximum: 256 }
+            presence: true,
+            length: { maximum: 256 },
+            uniqueness: { scope: %i(type project_id), case_sensitive: false }
 
   scope :shared, -> { where(project_id: nil) }
   scope :active, -> { where(active: true) }

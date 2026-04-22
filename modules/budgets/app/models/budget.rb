@@ -60,10 +60,14 @@ class Budget < ApplicationRecord
   validates :subject, length: { minimum: 1, maximum: 255 }
 
   class << self
-    def visible(user)
-      includes(:project)
-        .references(:projects)
-        .merge(Project.allowed_to(user, :view_budgets))
+    def visible(user = User.current)
+      if user.active_admin?
+        all
+      else
+        includes(:project)
+          .references(:projects)
+          .merge(Project.allowed_to(user, :view_budgets))
+      end
     end
 
     # TODO: Extract into copy service

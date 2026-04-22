@@ -7,7 +7,7 @@ keywords: OAuth application settings
 ---
 # OAuth applications
 
-To configure OpenProject to act as a server to an OAuth client applications, please navigate to *Administration* -> *Authentication* -> *OAuth applications*.
+To configure OpenProject to act as a server to an OAuth client application, please navigate to *Administration* -> *Authentication* -> *OAuth applications*.
 
 ## Add a new authentication application for OAuth
 
@@ -53,7 +53,9 @@ The authentication endpoints of OpenProject OAuth2 server are:
 * Access Token URL: `https://example.com/oauth/token`
 
 ## Obtaining OAuth2 access token
-### *Authorization code flow* example
+
+### Authorization code flow example
+
 #### Request authorization code
 
 Request an authorization code. Please adopt the following URL replacing:
@@ -116,7 +118,8 @@ The response will look like this:
 The response contains the bearer token ("access_token") and a refresh token that you will need when working with the API.
 Please copy the tokens for reference.
 
-### *Client credentials flow* example
+### Client credentials flow example
+
 #### Request OAuth access token
 
 With client credentials you can request an API token directly from `/oauth/token` endpoint.
@@ -181,7 +184,7 @@ and you will have to click on "Request Token" again. Otherwise your
 API request will return an error message.
 
 ## Performing a request to the OpenProject API with OAuth2 access token
-  
+
 With the token that you obtained above you can now make API calls to the OpenProject instance on behalf of the current user.
 
 For example, the following cURL command fetches all projects from the API V3. Please replace:

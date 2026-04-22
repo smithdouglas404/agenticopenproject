@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Project attribute help texts", :js, with_flag: { new_project_overview: true } do
+RSpec.describe "Project attribute help texts", :js do
   let!(:project) { create(:project) }
 
   let!(:name_help_text) do
@@ -61,7 +61,7 @@ RSpec.describe "Project attribute help texts", :js, with_flag: { new_project_ove
     grid = create(:grid)
     grid.widgets << create(:grid_widget,
                            identifier: "project_status",
-                           options: { "name" => "Project status" },
+                           options: { "name" => "Status" },
                            start_row: 1,
                            end_row: 2,
                            start_column: 1,

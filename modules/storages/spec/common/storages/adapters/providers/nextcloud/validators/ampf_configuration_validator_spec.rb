@@ -45,8 +45,14 @@ module Storages
 
             let(:files_response) do
               Success(Results::StorageFileCollection.new(
-                        files: [StorageFile.new(id: project_folder_id, name: project_storage.managed_project_folder_name)],
-                        parent: StorageFile.new(id: "root", name: "root"),
+                        files: [
+                          Results::StorageFile.new(
+                            id: project_folder_id,
+                            name: project_storage.managed_project_folder_name,
+                            mime_type: "application/x-op-directory"
+                          )
+                        ],
+                        parent: Results::StorageFile.new(id: "root", name: "root", mime_type: "application/x-op-directory"),
                         ancestors: []
                       ))
             end
@@ -58,9 +64,9 @@ module Storages
             let(:capabilities_response) do
               ProviderResults::Capabilities.build(
                 app_enabled: true,
-                app_version: SemanticVersion.parse(required_versions.dig("group_folders_app", "min_version")),
+                app_version: SemanticVersion.parse(required_versions.dig("integration_app", "min_version")),
                 group_folder_enabled: true,
-                group_folder_version: SemanticVersion.parse(required_versions.dig("group_folders_app", "min_version"))
+                group_folder_version: SemanticVersion.parse(required_versions.dig("team_folders_app", "min_version"))
               )
             end
 
@@ -75,28 +81,28 @@ module Storages
               expect(validator.call).to be_success
             end
 
-            describe "group_folders_app checks" do
+            describe "team_folders_app checks" do
               before do
                 Registry.unstub
                 Registry.stub("nextcloud.queries.files", ->(*) { files_response })
               end
 
-              it "group_folders_app version mismatch", vcr: "nextcloud/capabilities_success" do
-                absurd_version = { dependencies: { group_folders_app: { min_version: "2099.10.138" } } }.deep_stringify_keys
+              it "team_folders_app version mismatch", vcr: "nextcloud/capabilities_success" do
+                absurd_version = { dependencies: { team_folders_app: { min_version: "2099.10.138" } } }.deep_stringify_keys
                 allow(subject).to receive(:nextcloud_dependencies).and_return(absurd_version)
 
                 results = validator.call
-                expect(results[:group_folder_app]).to be_a_failure
-                expect(results[:group_folder_app].code).to eq(:nc_dependency_version_mismatch)
-                expect(results[:group_folder_app].context[:dependency]).to eq("Group Folders")
+                expect(results[:team_folder_app]).to be_a_warning
+                expect(results[:team_folder_app].code).to eq(:nc_dependency_version_mismatch)
+                expect(results[:team_folder_app].context[:dependency]).to eq("Team Folders")
               end
 
-              it "integration app disabled / missing", vcr: "nextcloud/capabilities_success_group_folder_disabled" do
+              it "integration app disabled / missing", vcr: "nextcloud/capabilities_success_team_folders_disabled" do
                 results = validator.call
 
-                expect(results[:group_folder_app]).to be_a_failure
-                expect(results[:group_folder_app].code).to eq(:nc_dependency_missing)
-                expect(results[:group_folder_app].context[:dependency]).to eq("Group Folders")
+                expect(results[:team_folder_app]).to be_a_failure
+                expect(results[:team_folder_app].code).to eq(:nc_dependency_missing)
+                expect(results[:team_folder_app].context[:dependency]).to eq("Team Folders")
               end
             end
 
@@ -107,7 +113,7 @@ module Storages
                 results = validator.call
 
                 states = results.tally
-                expect(states).to eq({ success: 2, failure: 1, skipped: 2 })
+                expect(states).to eq({ success: 2, failure: 1, skipped: 4 })
                 expect(results[:userless_access]).to be_failure
                 expect(results[:userless_access].code).to eq(:nc_userless_access_denied)
               end
@@ -119,8 +125,8 @@ module Storages
               it "fails the check" do
                 results = validator.call
 
-                expect(results[:group_folder_presence]).to be_failure
-                expect(results[:group_folder_presence].code).to eq(:nc_group_folder_not_found)
+                expect(results[:team_folder_presence]).to be_failure
+                expect(results[:team_folder_presence].code).to eq(:nc_team_folder_not_found)
               end
             end
 
@@ -143,10 +149,14 @@ module Storages
               let(:files_response) do
                 Success(Results::StorageFileCollection.new(
                           files: [
-                            StorageFile.new(id: project_folder_id, name: "I am your father"),
-                            StorageFile.new(id: "noooooooooo", name: "testimony_of_luke_skywalker.md")
+                            Results::StorageFile.new(
+                              id: project_folder_id,
+                              name: "I am your father",
+                              mime_type: "application/x-op-directory"
+                            ),
+                            Results::StorageFile.new(id: "noooooooooo", name: "testimony_of_luke_skywalker.md")
                           ],
-                          parent: StorageFile.new(id: "root", name: "root"),
+                          parent: Results::StorageFile.new(id: "root", name: "root", mime_type: "application/x-op-directory"),
                           ancestors: []
                         ))
               end
@@ -154,8 +164,44 @@ module Storages
               it "warns the user about extraneous folders" do
                 results = validator.call
 
-                expect(results[:group_folder_contents]).to be_a_warning
-                expect(results[:group_folder_contents].code).to eq(:nc_unexpected_content)
+                expect(results[:team_folder_contents]).to be_a_warning
+                expect(results[:team_folder_contents].code).to eq(:nc_unexpected_files)
+              end
+            end
+
+            context "if the files request does not return a project folder" do
+              let(:files_response) do
+                Success(Results::StorageFileCollection.new(
+                          files: [
+                            Results::StorageFile.new(
+                              id: "13#{project_folder_id}37",
+                              name: project_storage.managed_project_folder_name, # name matches, but ID is different
+                              mime_type: "application/x-op-directory"
+                            )
+                          ],
+                          parent: Results::StorageFile.new(id: "root", name: "root", mime_type: "application/x-op-directory"),
+                          ancestors: []
+                        ))
+              end
+
+              it "shows a failure about a missing project folder" do
+                results = validator.call
+
+                expect(results[:project_folders_exist]).to be_a_failure
+                expect(results[:project_folders_exist].code).to eq(:nc_project_folder_missing)
+              end
+            end
+
+            context "when an AMPF project storage has no project folder yet" do
+              let!(:project_storage_two) do
+                create(:project_storage, :as_automatically_managed, project_folder_id: "", storage:, project: create(:project))
+              end
+
+              it "warns the user about a missing project folder link" do
+                results = validator.call
+
+                expect(results[:project_folders_linked]).to be_a_warning
+                expect(results[:project_folders_linked].code).to eq(:nc_unlinked_project_folders)
               end
             end
 

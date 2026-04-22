@@ -32,8 +32,7 @@ require_relative "support/board_page"
 
 RSpec.describe "Board reference work package spec",
                :js,
-               :selenium,
-               with_ee: %i[board_view] do
+               :selenium do
   let(:user) do
     create(:user,
            member_with_roles: { project => role })
@@ -53,6 +52,7 @@ RSpec.describe "Board reference work package spec",
       view_work_packages
       edit_work_packages
       manage_public_queries
+      save_queries
       assign_versions
     ]
   end

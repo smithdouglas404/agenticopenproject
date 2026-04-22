@@ -57,18 +57,18 @@ RSpec.describe "Wiki menu items",
   end
 
   before do
-    allow(User).to receive(:current).and_return user
+    login_as(user)
   end
 
   context "with identical names" do
     # Create two items with identical slugs (one with space, which is removed)
     let(:item1) do
       MenuItems::WikiMenuItem.new(navigatable_id: wiki.id,
-                                  parent: parent_menu, title: "Item 1", name: "slug")
+                                  parent: nil, title: "Item 1", name: "slug ")
     end
     let(:item2) do
       MenuItems::WikiMenuItem.new(navigatable_id: wiki.id,
-                                  parent: parent_menu, title: "Item 2", name: "slug ")
+                                  parent: nil, title: "Item 2", name: "slug")
     end
 
     it "one is invalid and deleted during visit" do
@@ -114,38 +114,27 @@ RSpec.describe "Wiki menu items",
     expect(page)
       .to have_current_path(project_wiki_path(project, wiki_page))
 
-    # modifying the menu item to a different name and to be a subpage
+    # modifying the menu item to a different name
 
     page.find_test_selector("wiki-more-dropdown-menu").click
     page.find_test_selector("wiki-configure-menu-action-menu-item").click
     wait_for_network_idle
 
     fill_in "Name of menu item", with: "Custom page name"
-    choose "Show as submenu item of"
-
-    select other_wiki_page.slug, from: "parent_wiki_menu_item"
 
     click_link_or_button "Save"
     wait_for_network_idle
 
-    # the other page is now the main heading
+    # the custom name is used as the main heading
     expect(page)
-      .to have_css(".main-menu--children-menu-header", text: other_wiki_page.title)
+      .to have_css(".main-menu--children-menu-header", text: "Custom page name")
 
-    expect(page)
-      .to have_css(".wiki-menu--sub-item", text: "Custom page name")
-
-    find(".wiki-menu--sub-item", text: "Custom page name").click
-    wait_for_network_idle
-
-    expect(page)
-      .to have_current_path(project_wiki_path(project, wiki_page))
-
-    # the submenu item is not visible on top level
+    # the item is visible on top level
+    visit(project_wiki_path(project, wiki_page))
     find(".main-menu--arrow-left-to-project").click
 
     expect(page)
-      .to have_no_css(".main-item-wrapper", text: "Custom page name")
+      .to have_css(".main-item-wrapper", text: "Custom page name")
 
     # deleting the page will remove the menu item
     visit project_wiki_path(project, wiki_page)
@@ -171,15 +160,16 @@ RSpec.describe "Wiki menu items",
 
     click_link_or_button "Save"
 
+    wait_for_network_idle
+
     # Because it is the last wiki menu item, the user is prompted to select another menu item
     select another_wiki_page.title, from: "main-menu-item-select"
 
     click_link_or_button "Save"
 
-    expect(page)
-      .to have_no_css(".main-menu--children-menu-header", text: other_wiki_page.title)
+    wait_for_network_idle
 
-    expect(page)
-      .to have_css(".main-menu--children-menu-header", text: another_wiki_page.title)
+    expect(page).to have_css(".main-menu--children-menu-header", text: another_wiki_page.title, visible: :all)
+    expect(page).to have_no_css(".main-menu--children-menu-header", text: other_wiki_page.title, visible: :all)
   end
 end

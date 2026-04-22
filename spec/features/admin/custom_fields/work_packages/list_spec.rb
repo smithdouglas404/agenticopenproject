@@ -29,11 +29,10 @@
 # ++
 
 require "spec_helper"
-require "support/pages/custom_fields/index_page"
 
 RSpec.describe "work package list custom fields", :js do
   let(:user) { create(:admin) }
-  let(:cf_page) { Pages::CustomFields::IndexPage.new }
+  let(:cf_page) { Pages::CustomFields::Index.new }
 
   before do
     login_as user
@@ -53,6 +52,9 @@ RSpec.describe "work package list custom fields", :js do
       wait_for_reload
 
       click_on custom_field.name
+      wait_for_reload
+
+      click_link "Items"
       wait_for_reload
     end
 
@@ -98,17 +100,15 @@ RSpec.describe "work package list custom fields", :js do
 
       fill_in("custom_field_custom_options_attributes_1_value", with: "")
       fill_in("custom_field_custom_options_attributes_1_value", with: "Sega")
-      check("custom_field_multi_value")
       check("custom_field_custom_options_attributes_0_default_value")
       check("custom_field_custom_options_attributes_2_default_value")
       within first(".custom-option-row") do
-        click_on "Move to bottom"
+        click_link accessible_name: "Move to bottom"
       end
       click_on "Save"
 
       expect(page).to have_text("Successful update")
       expect(page).to have_text("Platform")
-      expect(page).to have_field("custom_field_multi_value", checked: true)
 
       %w[Sega Nintendo PC Playstation].each_with_index do |value, i|
         expect(page).to have_field("custom_field_custom_options_attributes_#{i}_value", with: value)
@@ -117,7 +117,7 @@ RSpec.describe "work package list custom fields", :js do
       expect(page).to have_field("custom_field_custom_options_attributes_0_default_value", checked: false)
       expect(page).to have_field("custom_field_custom_options_attributes_1_default_value", checked: true)
       expect(page).to have_field("custom_field_custom_options_attributes_2_default_value", checked: false)
-      expect(page).to have_field("custom_field_custom_options_attributes_3_default_value", checked: true)
+      expect(page).to have_field("custom_field_custom_options_attributes_3_default_value", checked: false)
     end
 
     it "shows the correct breadcrumbs" do

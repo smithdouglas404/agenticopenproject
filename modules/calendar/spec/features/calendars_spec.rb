@@ -192,9 +192,13 @@ RSpec.describe "Work package calendars", :js do
       .to have_css(".fc-event-title", text: current_work_package.subject, wait: 20)
     current_wp_split_screen.expect_closed
 
-    # click goes to work package split screen page again
-    page.find(".fc-event-title", text: current_work_package.subject).click
-    current_wp_split_screen.expect_open
+    # After go_back, the app may not be fully initialized even though the
+    # calendar events are visible. Clicking too early can cause an "not
+    # authorized" error on the split screen API call. Retry to handle this.
+    retry_block do
+      page.find(".fc-event-title", text: current_work_package.subject).click
+      current_wp_split_screen.expect_open
+    end
 
     # click back goes back to calendar
     current_wp_split_screen.close

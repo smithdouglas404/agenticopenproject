@@ -31,10 +31,6 @@ require "spec_helper"
 RSpec.describe "Work packages having story points", :js do
   before do
     login_as current_user
-    allow(Setting).to receive(:plugin_openproject_backlogs).and_return("points_burn_direction" => "down",
-                                                                       "wiki_template" => "",
-                                                                       "story_types" => [story_type.id.to_s],
-                                                                       "task_type" => task_type.id.to_s)
   end
 
   let(:current_user) { create(:admin) }

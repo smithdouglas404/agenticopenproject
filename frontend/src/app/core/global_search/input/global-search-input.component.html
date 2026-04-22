@@ -1,5 +1,4 @@
 <div role="search" class="top-menu-search" [attr.aria-label]="placeholder">
-
   @if (expanded) {
     <button
       type="button"
@@ -21,6 +20,7 @@
     [attr.aria-label]="text.search"
     [class.-input-focused]="expanded"
     (click)="handleClick($event)"
+    tabindex="-1"
     >
     <op-icon icon-classes="icon5 icon-search ellipsis" />
   </button>
@@ -30,14 +30,17 @@
     [name]="'global-search-input'"
     [id]="'global-search-input'"
     [accesskey]="4"
+    [markFirst]="false"
     class="global-search"
     [placeholder]="effectivePlaceholder"
     [ariaLabel]="effectivePlaceholder"
+    [appendTo]="'#global-search-input'"
     [dropdownPosition]="'bottom'"
     [classes]="{'top-menu-search--input': true, '-markable': markable, '-expanded': expanded, 'ng-select--primerized': true }"
     [inputAttrs]="{ 'class': 'global-search--input', 'name': 'global-search--input', autocomplete: 'off'}"
     [openOnEnter]="true"
     [labelRequired]="false"
+    [clearAllText]="text.close_search"
     [focusDirectly]="isFocusedDirectly"
     [model]="selectedItem"
     [searchFn]="customSearchFn"
@@ -63,14 +66,18 @@
     <ng-template op-autocompleter-option-tmp let-item let-index="index" let-search="searchTerm">
       @if (!item.id) {
         <div>
-          <div tabindex="-1" class="global-search--option" (click)="followItem(item)">
+          <a tabindex="0"
+             href="#"
+             class="global-search--option"
+             (click)="$event.preventDefault(); followItem(item)"
+             (keydown.enter)="$event.preventDefault(); followItem(item)"
+             (keydown.space)="$event.preventDefault(); followItem(item)">
             <div class="global-search--search-term">{{ currentValue }}</div>
             <div class="global-search--project-scope" title="{{ item.projectScope }}">{{ item.text }} ↵</div>
-          </div>
+          </a>
         </div>
       } @else {
         <a
-          tabindex="-1"
           class="global-search--option"
           [href]="wpPath(item.id)"
           (click)="redirectToWp(item.id, $event)"

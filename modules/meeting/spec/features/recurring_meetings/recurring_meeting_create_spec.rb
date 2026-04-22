@@ -74,6 +74,10 @@ RSpec.describe "Recurring meetings creation",
     travel_to(Date.new(2024, 12, 1))
   end
 
+  after do
+    travel_back
+  end
+
   context "with a user with permissions" do
     it "can create a recurring meeting" do
       login_as current_user
@@ -128,6 +132,12 @@ RSpec.describe "Recurring meetings creation",
       show_page.visit!
       expect(page).to have_current_path(project_meeting_path(project, meeting.template))
 
+      # Series can still be deleted without opening the first meeting
+      page.find_test_selector("op-meetings-header-action-trigger").click
+      page.within(".Overlay") do
+        expect(page).to have_css(".ActionListItem-label", text: "Delete meeting series")
+      end
+
       expect(page).to have_css("#meetings-side-panel-state-component")
 
       template_page.open_first_meeting
@@ -161,6 +171,7 @@ RSpec.describe "Recurring meetings creation",
         template_page.expect_participant(other_user, editable: false)
         template_page.expect_available_participants(count: 2)
 
+        template_page.uncheck_apply_to_upcoming
         template_page.select_participant(third_user)
         template_page.expect_participant(third_user, editable: false)
         template_page.expect_available_participants(count: 3)
@@ -172,7 +183,7 @@ RSpec.describe "Recurring meetings creation",
       expect(page).to have_css("#meetings-side-panel-participants-component", text: 3)
 
       perform_enqueued_jobs
-      expect(ActionMailer::Base.deliveries.size).to eq 1
+      expect(ActionMailer::Base.deliveries.size).to eq 3
       expect(ActionMailer::Base.deliveries.first.to).to contain_exactly(third_user.mail)
     end
   end

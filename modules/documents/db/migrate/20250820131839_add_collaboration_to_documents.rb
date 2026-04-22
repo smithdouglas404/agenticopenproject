@@ -39,7 +39,7 @@ class AddCollaborationToDocuments < ActiveRecord::Migration[8.0]
       end
     end
 
-    change_column_default :documents, :kind, "collaborative"
+    change_column_default :documents, :kind, from: nil, to: "collaborative"
   end
 
   private
