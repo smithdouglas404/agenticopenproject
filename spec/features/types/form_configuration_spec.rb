@@ -256,6 +256,39 @@ RSpec.describe "form configuration", :js, :selenium do
         loading_indicator_saveguard
       end
 
+      it "removes a newly added unsaved custom section when canceling edit" do
+        initial_order = form.section_order
+
+        form.add_button_dropdown.click
+        click_on I18n.t("types.edit.form_configuration.add_attribute_group")
+
+        expect(page.find_test_selector("type-form-configuration-section-name-input", wait: 10).value).to eq("")
+
+        page.find_test_selector("type-form-configuration-section-cancel", wait: 10).click
+
+        expect(form.section_order).to eq(initial_order)
+      end
+
+      it "keeps a saved custom section when canceling rename" do
+        form.add_attribute_group("Saved custom section")
+
+        visit edit_type_form_configuration_path(type)
+
+        menu_id = form.send(:open_group_menu, "Saved custom section")
+        within "##{menu_id}" do
+          first("a.ActionListContent", minimum: 1, visible: :all).click
+        end
+
+        input = page.find_test_selector("type-form-configuration-section-name-input", wait: 10)
+        expect(input.value).to eq("Saved custom section")
+
+        input.set("Renamed section")
+        page.find_test_selector("type-form-configuration-section-cancel", wait: 10).click
+
+        form.expect_group("Saved custom section", "Saved custom section")
+        expect(page).to have_no_css("[data-group-key]", text: /\bRenamed section\b/)
+      end
+
       it "shows only the edit action for query rows" do
         form.add_query_group("Subtasks", :children)
 
