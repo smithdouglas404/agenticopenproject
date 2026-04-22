@@ -31,6 +31,7 @@
 module Backlogs
   class SprintComponent < ApplicationComponent
     include Primer::AttributesHelper
+    include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
     include Backlogs::CommonHelper
 
@@ -48,11 +49,13 @@ module Backlogs
 
       @system_arguments = system_arguments
       @system_arguments[:id] = dom_id(sprint)
-      @system_arguments[:list_id] = "#{@system_arguments[:id]}-list"
+      @system_arguments[:list_arguments] = {
+        id: "#{@system_arguments[:id]}-list",
+        data: drop_target_config
+      }
       @system_arguments[:padding] = :condensed
       @system_arguments[:data] = merge_data(
         @system_arguments,
-        { data: drop_target_config },
         { data: { test_selector: "sprint-#{sprint.id}" } }
       )
     end
@@ -70,7 +73,6 @@ module Backlogs
     def drop_target_config
       {
         generic_drag_and_drop_target: "container",
-        target_container_accessor: ":scope > ul",
         target_id: "sprint:#{sprint.id}",
         target_allowed_drag_type: "story"
       }
@@ -102,6 +104,7 @@ module Backlogs
       return {} unless work_package_draggable?
 
       {
+        generic_drag_and_drop_target: "item",
         draggable_id: story.id,
         draggable_type: "story",
         drop_url: move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)

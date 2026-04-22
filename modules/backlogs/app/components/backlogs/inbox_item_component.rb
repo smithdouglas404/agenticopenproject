@@ -62,6 +62,7 @@ module Backlogs
         id: dom_id(work_package),
         classes: "Box-row--hover-blue Box-row--focus-gray Box-row--clickable Box-row--draggable",
         data: {
+          generic_drag_and_drop_target: "item",
           draggable_id: work_package.id,
           draggable_type: "story",
           drop_url: move_project_backlogs_inbox_path(project, work_package),

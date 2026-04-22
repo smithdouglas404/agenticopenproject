@@ -52,13 +52,13 @@ module Admin
       def drop_target_config
         {
           generic_drag_and_drop_target: "container",
-          "target-container-accessor": ":scope > ul",
           "target-allowed-drag-type": "enumeration"
         }
       end
 
       def draggable_item_config(enumeration)
         {
+          generic_drag_and_drop_target: "item",
           "draggable-id": enumeration.id,
           "draggable-type": "enumeration",
           "drop-url": helpers.url_for(action: :move, id: enumeration.id)
