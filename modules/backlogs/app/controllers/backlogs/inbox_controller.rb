@@ -97,6 +97,7 @@ module Backlogs
       replace_via_turbo_stream(
         component: Backlogs::InboxComponent.new(
           work_packages:,
+          backlog_buckets: Agile::BacklogBucket.for_project(@project),
           project: @project
         ),
         method: :morph

@@ -127,7 +127,7 @@ module Backlogs
       )
       work_packages = Backlog.inbox_for(project: @project)
       replace_via_turbo_stream(
-        component: Backlogs::InboxComponent.new(work_packages:, project: @project),
+        component: Backlogs::InboxComponent.new(work_packages:, backlog_buckets: Agile::BacklogBucket.for_project(@project), project: @project),
         method: :morph
       )
     end

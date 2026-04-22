@@ -60,6 +60,12 @@ See COPYRIGHT and LICENSE files for more details.
     end
   %>
 
+  <% if OpenProject::FeatureDecisions.backlog_buckets_active? %>
+    <% backlog_buckets.each do |backlog_bucket| %>
+      <%= render Backlogs::BacklogBucketComponent.new(backlog_bucket:, project: @project) %>
+    <% end %>
+  <% end %>
+
   <%= render(Primer::Beta::BorderBox.new(**@system_arguments)) do |border_box| %>
     <% if work_packages.empty? %>
       <% border_box.with_row(data: { empty_list_item: true }) do %>

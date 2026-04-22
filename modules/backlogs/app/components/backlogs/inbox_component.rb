@@ -38,12 +38,13 @@ module Backlogs
     FIRST_PAGE_SIZE = 50
     LAST_PAGE_SIZE = 10
 
-    attr_reader :work_packages, :project, :current_user
+    attr_reader :work_packages, :backlog_buckets, :project, :current_user
 
-    def initialize(work_packages:, project:, current_user: User.current, **system_arguments)
+    def initialize(work_packages:, backlog_buckets:, project:, current_user: User.current, **system_arguments)
       super()
 
       @work_packages = work_packages
+      @backlog_buckets = backlog_buckets
       @project = project
       @current_user = current_user
 

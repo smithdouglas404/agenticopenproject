@@ -41,11 +41,11 @@ class Agile::BacklogBucket < ApplicationRecord
   def self.for_project(project)
     buckets = where(project:).order_alphabetically.includes(:work_packages)
 
-    inbox = new(
-      name: I18n.t("label_inbox"),
-      work_packages: WorkPackage.where(project:, sprint: nil, backlog_bucket: nil).order_by_position
-    )
+    #inbox = new(
+    #  name: I18n.t("label_inbox"),
+    #  work_packages: WorkPackage.where(project:, sprint: nil, backlog_bucket: nil).order_by_position
+    #)
 
-    buckets + [inbox]
+    buckets #+ [inbox]
   end
 end
