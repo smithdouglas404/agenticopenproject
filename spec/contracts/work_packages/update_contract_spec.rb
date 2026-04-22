@@ -312,7 +312,7 @@ RSpec.describe WorkPackages::UpdateContract do
     end
 
     describe "parent_id" do
-      shared_let(:parent) { create(:work_package) }
+      shared_let(:parent) { create(:work_package, project: persisted_project) }
 
       let(:parent_visible) { true }
 
@@ -360,6 +360,26 @@ RSpec.describe WorkPackages::UpdateContract do
         let(:parent_visible) { false }
 
         it_behaves_like "contract is invalid", parent_id: %i[error_unauthorized]
+      end
+
+      context "when assigning a parent from another project", with_settings: { cross_project_work_package_relations: true } do
+        let(:parent) { create(:work_package, project: persisted_other_project) }
+        let(:permissions) { %i[view_work_packages manage_subtasks] }
+
+        context "when the user has manage_subtasks in the parent project as well" do
+          it_behaves_like "contract is valid"
+        end
+
+        context "when the user lacks manage_subtasks in the parent project" do
+          before do
+            mock_permissions_for(user) do |mock|
+              mock.allow_in_project :view_work_packages, :manage_subtasks, project: persisted_project
+              mock.allow_in_project :view_work_packages, project: persisted_other_project
+            end
+          end
+
+          it_behaves_like "contract is invalid", parent_id: %i[error_unauthorized]
+        end
       end
     end
 
