@@ -30,6 +30,7 @@ en:
       connect_account: Connect %{provider} account
       done_continue: Done, continue
       save_and_continue: Save and continue
+      done_continue: Done, continue
       wiki_page: Wiki page
     inline_page_links_component:
       empty_heading: No inline links
@@ -41,6 +42,8 @@ en:
       empty_heading: No related pages
       empty_text: Manually add links to other related wiki pages.
       heading: Related pages
+    oauth_login_component:
+      connect_button: Connect %{provider} account
     admin:
       destroy_confirmation_dialog_component:
         title: Delete wiki provider
@@ -88,3 +91,11 @@ en:
             openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
             provider_oauth: XWiki OAuth
             provider_oauth_description: Allow OpenProject to access XWiki data using OAuth. A client ID is automatically generated to identify OpenProject to XWiki — no manual configuration is needed on the XWiki side.
+          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
+          xwiki_oauth: XWiki OAuth
+          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
+        delete:
+          title: Delete wiki provider
+          warning_html: "You are about to delete %{wiki_provider}. This action is irreversible."
+    macro:
+      page_not_found: Linked wiki page no longer available

@@ -401,7 +401,7 @@ fr:
         autofix_preview:
           error_too_long: Doit être composé de 10 caractères ou moins
           error_numerical: Ne peut être purement numérique
-          error_starts_with_number: Ne peut pas commencer par un chiffre
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Caractères spéciaux non autorisés
           error_not_fully_uppercased: Doit être en majuscules
           error_in_use: Déjà utilisé comme alias actif d'un autre projet
@@ -421,7 +421,8 @@ fr:
           checkbox_label: Je comprends que cela changera définitivement tous les identifiants du lot de travaux
         success_banner: Le format de l'identifiant du lot de travaux a été mis à jour.
         in_progress:
-          banner_message: Les identifiants de projet sont actuellement mis à jour pour devenir des identifiants sémantiques basés sur les projets. Cela peut prendre un certain temps.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Transitions par défaut
@@ -688,36 +689,36 @@ fr:
     confirmation_live_message_checked: Le bouton pour continuer est maintenant actif.
     confirmation_live_message_unchecked: Le bouton pour continuer est maintenant inactif. Vous devez cocher la case pour continuer.
   departments:
-    edit: Edit department
-    add_user: Add user
-    add_department: Add department
+    edit: Modifier le service
+    add_user: Ajouter un utilisateur
+    add_department: Ajouter un service
     blankslate:
-      heading: Your organization has no departments
-      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+      heading: Votre organisation n'a pas de services
+      description: 'Commencez par ajouter des départements ou des utilisateurs à l''organisation. Chaque service peut être utilisé pour créer une hiérarchie au-dessous, pour naviguer et créer un sous-service à l''intérieur d''une hiérarchie, cliquez sur l''élément créé.
 
         '
-      add_button: Add
+      add_button: Ajouter
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
-      description: Add departments or users to create sub-items inside another one.
-      add_button: Add
+      heading: Ce service n'a pas de niveau de hiérarchie ci-dessous
+      description: Ajouter des départements ou des utilisateurs pour créer des sous-éléments à l'intérieur d'un autre.
+      add_button: Ajouter
     add_department_form:
-      name_label: Department name
-      name_placeholder: Enter department name
+      name_label: Nom du service
+      name_placeholder: Entrez le nom du service
     move_user_dialog:
-      title: User already in a department
-      heading: Move user to this department?
-      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
-      confirm: Move user
+      title: Utilisateur déjà dans un service
+      heading: Déplacer l'utilisateur vers ce service ?
+      description: "%{user} est actuellement membre de %{from_department}. Le déplacer le retirera de ce service."
+      confirm: Déplacer l'utilisateur
     context_menu:
-      add_sub_department: Add sub-department
-      add_user: Add user
+      add_sub_department: Ajouter un sous-service
+      add_user: Ajouter un utilisateur
     flash:
-      user_added: User was successfully added to the department.
-      user_removed: User was successfully removed from the department.
-      department_created: Department was successfully created.
+      user_added: L'utilisateur a été ajouté au service avec succès.
+      user_removed: L'utilisateur a été supprimé du service avec succès.
+      department_created: Le service a été créé avec succès.
     errors:
-      move_user_failed: Failed to move user between departments.
+      move_user_failed: Impossible de déplacer l'utilisateur entre les services.
   pagination:
     label: Pagination
     prev: Précédent
@@ -1371,19 +1372,19 @@ fr:
       no_results_title_text: Il n'y a actuellement aucun flux de travail.
   work_packages:
     delete_dialog:
-      title: Delete work package
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      title: Supprimer le lot de travaux
+      heading: Supprimer définitivement ce lot de travaux ?
+      description: Êtes-vous sûr de vouloir supprimer le lot de travaux "%{name} " ?
+      confirm_descendants_deletion: Je reconnais que TOUS les descendants de ce lot de travaux seront supprimés récursivement.
+      cross_project_warning: 'Les lots de travaux des projets suivants seront supprimés : %{projects}'
     bulk_delete_dialog:
-      title: Delete %{count} work packages
-      heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
-      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
-      cross_project_warning: 'These work packages span multiple projects: %{projects}'
-      children_label: 'The following children will also be deleted:'
+      title: Supprimer les lots de travaux %{count}
+      heading: Supprimer définitivement ces lots de travaux %{count}?
+      description: 'Les lots de travaux suivants, y compris les enfants et toutes les données associées, seront définitivement supprimés :'
+      description_with_children: 'Les lots de travaux suivants, y compris les lots de travaux enfants, et toutes les données associées seront définitivement supprimés :'
+      confirm_children_deletion: Je reconnais que tous les lots de travaux sélectionnés et leurs enfants seront définitivement supprimés.
+      cross_project_warning: 'Ces lots de travaux s''étendent sur plusieurs projets : %{projects}'
+      children_label: 'Les enfants suivants seront également supprimés :'
     datepicker_modal:
       banner:
         description:
@@ -1846,7 +1847,7 @@ fr:
         identity_url: URL d'identité
         parent: Groupe parent
         organizational_unit: Unité organisationnelle
-        group_users: Group users
+        group_users: Groupes d'utilisateurs
       group_detail:
         parent: Groupe parent
         organizational_unit: Unité organisationnelle
@@ -1964,7 +1965,7 @@ fr:
         confirmation: ne correspond pas à %{attribute}.
         could_not_be_copied: "%{dependency} n'a pas pu être copié (entièrement)."
         does_not_exist: n'existe pas.
-        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
+        user_already_in_department: L'utilisateur %{user_id} est déjà membre du service %{department_id}.
         error_enterprise_only: "%{action} n'est disponible que dans l'édition Enterprise d'OpenProject."
         error_unauthorized: est interdit d'accès.
         error_readonly: a tenté d'être écrit mais n'est pas accessible en écriture.
@@ -2031,7 +2032,7 @@ fr:
           attributes:
             parent_id:
               circular_dependency: créerait une hiérarchie de groupe circulaire.
-              organizational_unit_mismatch: must have the same organizational unit setting as the group.
+              organizational_unit_mismatch: doit avoir le même paramètre d'unité organisationnelle que le groupe.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2218,6 +2219,7 @@ fr:
           not_whitelisted: n'est pas autorisé par la configuration.
           invalid_url: n'est pas une URL ou un chemin de dépôt valide.
           must_not_be_ssh: ne doit pas être une url SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: n'est pas un répertoire.
         role:
           attributes:
@@ -3934,8 +3936,8 @@ fr:
   label_custom_pdf_export_settings: Paramètres d'exportation PDF personnalisés
   label_custom_favicon: Favicon personnalisé
   label_custom_touch_icon: Icône de contact personnalisé
-  label_departments: Organization
-  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+  label_departments: Organisation
+  label_departments_description_html: 'Définissez la structure de votre entreprise en créant des départements et des sous-départements de manière hiérarchique. Cela vous permet de refléter les lignes de rapport et de maintenir une vue d''ensemble claire et structurée de votre organisation au sein d''OpenProject. Vous pouvez également importer une structure d''organisation existante via [Synchronisation de groupe LDAP](ldap_docs_article).
 
     '
   label_logout: Déconnexion
@@ -5008,7 +5010,7 @@ fr:
     '
   setting_app_subtitle: Sous-titre de l'Application
   setting_app_title: Titre de l'Application
-  setting_organization_name: Organization name
+  setting_organization_name: Nom de l'organisation
   setting_attachment_max_size: Taille maximale de la pièce jointe
   setting_show_work_package_attachments: Afficher les pièces jointes dans l'onglet des fichiers par défaut
   setting_antivirus_scan_mode: Mode analyse

@@ -62,6 +62,7 @@ module Wikis
           namespace("queries") do
             register(:test, Queries::Test)
             register(:user, Queries::UserQuery)
+            register(:page_info, Queries::PageInfo)
           end
         end
       end

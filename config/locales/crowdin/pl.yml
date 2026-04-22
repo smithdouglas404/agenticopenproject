@@ -413,7 +413,7 @@ pl:
         autofix_preview:
           error_too_long: Musi składać się z nie więcej niż 10 znaków
           error_numerical: Nie może być czysto liczbowy
-          error_starts_with_number: Nie może zaczynać się od cyfry
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Znaki specjalne są niedozwolone
           error_not_fully_uppercased: Musi być pisany wielkimi literami
           error_in_use: Już używany jako aktywne dojście innego projektu
@@ -435,7 +435,8 @@ pl:
           checkbox_label: Rozumiem, że spowoduje to trwałą zmianę wszystkich identyfikatorów pakietów roboczych
         success_banner: Pomyślnie zaktualizowano format identyfikatora pakietu roboczego.
         in_progress:
-          banner_message: Identyfikatory projektów są obecnie zmieniane na identyfikatory semantyczne oparte na projektach. Może to zająć trochę czasu.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Przejścia domyślne
@@ -2259,6 +2260,7 @@ pl:
           not_whitelisted: nie jest dozwolone w tej konfiguracji.
           invalid_url: nie jest prawidłowym adresem URL ani ścieżką.
           must_not_be_ssh: nie może być adresem SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: nie jest katalogiem.
         role:
           attributes:

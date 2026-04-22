@@ -395,7 +395,7 @@ zh-TW:
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
@@ -414,7 +414,8 @@ zh-TW:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: 預設轉換
@@ -2202,6 +2203,7 @@ zh-TW:
           not_whitelisted: 不被設定所允許
           invalid_url: 是一個無效的儲存庫 Url 或路徑
           must_not_be_ssh: 不可以是一個 SSH url
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: 不是一個資料夾
         role:
           attributes:

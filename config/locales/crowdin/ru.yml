@@ -413,7 +413,7 @@ ru:
         autofix_preview:
           error_too_long: Должно быть 10 символов или меньше
           error_numerical: Не может быть чисто числовым
-          error_starts_with_number: Не может начинаться с цифры
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Специальные символы не допускаются
           error_not_fully_uppercased: Должно быть заглавными
           error_in_use: Уже используется в другом проекте
@@ -435,7 +435,8 @@ ru:
           checkbox_label: Я понимаю, что это навсегда изменит все идентификаторы пакета работ
         success_banner: Формат идентификатора пакета работ успешно обновлен.
         in_progress:
-          banner_message: Идентификаторы проекта в настоящее время обновляются до семантических идентификаторов. Это может занять некоторое время.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Переходы по умолчанию
@@ -2266,6 +2267,7 @@ ru:
           not_whitelisted: не допускается конфигурацией.
           invalid_url: не допустимый URL или путь к репозиторию.
           must_not_be_ssh: не должно быть URL-адресом SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: не является каталогом.
         role:
           attributes:

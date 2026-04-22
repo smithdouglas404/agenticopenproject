@@ -393,7 +393,7 @@ zh-CN:
         autofix_preview:
           error_too_long: 必须为 10 个字符或更少字符
           error_numerical: 不能只包含数字
-          error_starts_with_number: 不能以数字开头
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: 不允许使用特殊字符
           error_not_fully_uppercased: 必须为大写字母
           error_in_use: 已用作另一个项目的有效标识名
@@ -412,7 +412,8 @@ zh-CN:
           checkbox_label: 我了解此操作将永久更改所有工作包 ID
         success_banner: 已成功更新工作包标识符格式。
         in_progress:
-          banner_message: 项目标识符目前正在更新为基于项目的语义标识符。此过程可能需要一些时间。
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: 默认转换
@@ -2202,6 +2203,7 @@ zh-CN:
           not_whitelisted: 配置所不允许的。
           invalid_url: 不是有效的存储库 URL 或路径。
           must_not_be_ssh: 不能是 SSH url。
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: 不是一个目录。
         role:
           attributes:

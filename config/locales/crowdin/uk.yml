@@ -413,7 +413,7 @@ uk:
         autofix_preview:
           error_too_long: Має містити щонайбільше 10 символів
           error_numerical: Не може містити лише числа
-          error_starts_with_number: Не може починатись із числа
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Не дозволяється використовувати спеціальні символи
           error_not_fully_uppercased: Літери мають бути великими
           error_in_use: Уже використовується як активний дескриптор іншого проєкту
@@ -435,7 +435,8 @@ uk:
           checkbox_label: Я розумію, що ця дія назавжди змінить усі ідентифікатори пакетів робіт
         success_banner: Формат ідентифікаторів пакетів робіт успішно оновлено.
         in_progress:
-          banner_message: Ідентифікатори проєктів зараз замінюються на семантичні ідентифікатори із зазначенням проєктів. Це може зайняти деякий час.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Стандартні переходи
@@ -2262,6 +2263,7 @@ uk:
           not_whitelisted: не дозволяється конфігурацією.
           invalid_url: не є дійсним URL-адресою або контуром сховища.
           must_not_be_ssh: не повинна бути URL-адресою SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: не є каталогом.
         role:
           attributes:
