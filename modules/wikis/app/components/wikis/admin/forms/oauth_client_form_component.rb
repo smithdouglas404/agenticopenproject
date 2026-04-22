@@ -49,7 +49,9 @@ module Wikis::Admin::Forms
     end
 
     def resolved_oauth_client
-      oauth_client || wiki_provider.oauth_client || wiki_provider.build_oauth_client
+      oauth_client ||
+        wiki_provider.oauth_client ||
+        wiki_provider.build_oauth_client(client_id: SecureRandom.uuid)
     end
   end
 end
