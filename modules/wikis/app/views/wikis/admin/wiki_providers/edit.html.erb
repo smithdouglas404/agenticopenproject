@@ -46,7 +46,7 @@ See COPYRIGHT and LICENSE files for more details.
       tag: :a,
       scheme: :default,
       mobile_icon: :plug,
-      mobile_label: t("wikis.oauth_login_component.connect_button", provider: @wiki_provider.name),
+      mobile_label: t("wikis.buttons.connect_account", provider: @wiki_provider.name),
       size: :medium,
       href: oauth_clients_ensure_connection_url(
         oauth_client_id: @wiki_provider.oauth_client.client_id,
@@ -55,7 +55,7 @@ See COPYRIGHT and LICENSE files for more details.
       )
     ) do |button|
       button.with_leading_visual_icon(icon: :plug)
-      t("wikis.oauth_login_component.connect_button", provider: @wiki_provider.name)
+      t("wikis.buttons.connect_account", provider: @wiki_provider.name)
     end %>
   <% end %>
 

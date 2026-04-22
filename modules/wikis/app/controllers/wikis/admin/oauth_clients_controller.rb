@@ -96,7 +96,7 @@ module Wikis
       end
 
       def generate_xwiki_routing_id
-        "xwiki-#{SecureRandom.urlsafe_base64(32)}"
+        SecureRandom.uuid
       end
 
       def find_wiki_provider

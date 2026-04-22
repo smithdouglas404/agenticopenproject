@@ -38,7 +38,7 @@ module Wikis
         # - Public client: no client_secret; token_endpoint_auth_method is :none.
         # - No pre-registration: XWiki accepts any client_id/redirect_uri; consent is stored on first auth.
         # - No refresh tokens: tokens are long-lived; re-auth via ensure_connection if revoked.
-        # - No expires_in in token response: we default to 1 year via default_expires_in.
+        # - No expires_in: tokens do not expire; expires_in is stored as nil.
         #
         # TODO: add code_challenge (RFC 7636) when XWiki advertises code_challenge_methods_supported.
         # TODO: replace hardcoded endpoint paths with discovery from /oidc/.well-known/openid-configuration.
@@ -59,10 +59,6 @@ module Wikis
           # XWiki does not issue refresh tokens. Callers should redirect to
           # ensure_connection rather than attempting a silent token refresh.
           def refresh_token_supported? = false
-
-          # XWiki omits expires_in from token responses. Return 1 year (in seconds)
-          # so ConnectionManager stores a bounded expiration instead of nil.
-          def default_expires_in = 1.year.to_i
 
           def scope = %w[openid]
 
