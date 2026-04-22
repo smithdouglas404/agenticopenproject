@@ -92,7 +92,7 @@ RSpec.describe "form configuration", :js, :selenium do
         # Wait for page reload
         sleep 1
 
-        expect(page).to have_no_css('[data-group-key]', text: /\bWhatever\b/)
+        expect(page).to have_no_css("[data-group-key]", text: /\bWhatever\b/)
         form.expect_group("details", "Details")
         form.expect_attribute(key: :assignee)
       end
@@ -174,7 +174,7 @@ RSpec.describe "form configuration", :js, :selenium do
         input.set("FOOBAR")
         page.find_test_selector("type-form-configuration-section-cancel", wait: 10).click
         form.expect_group("Cool Stuff", "Cool Stuff")
-        expect(page).to have_no_css('[data-group-key]', text: /\bFOOBAR\b/)
+        expect(page).to have_no_css("[data-group-key]", text: /\bFOOBAR\b/)
 
         # Create new group
         form.add_attribute_group("New Group")
@@ -526,7 +526,7 @@ RSpec.describe "form configuration", :js, :selenium do
   end
 
   describe "without EE token", with_ee: false do
-      let(:dialog) { Components::ConfirmationDialog.new }
+    let(:dialog) { Components::ConfirmationDialog.new }
 
       it "must disable adding and renaming groups" do
         login_as(admin)

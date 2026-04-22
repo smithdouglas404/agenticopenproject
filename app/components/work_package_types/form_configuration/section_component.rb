@@ -86,7 +86,7 @@ module WorkPackageTypes
       end
 
       def draggable_item_config
-        return {} unless @group[:key].present?
+        return {} if @group[:key].blank?
 
         {
           "draggable-id": @group[:key],

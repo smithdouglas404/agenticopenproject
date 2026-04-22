@@ -70,7 +70,7 @@ module WorkPackageTypes
         return if current_index.nil?
 
         new_index = if position.present?
-                      [[position.to_i - 1, 0].max, groups.length - 1].min
+                      (position.to_i - 1).clamp(0, groups.length - 1)
                     else
                       case move_to&.to_sym
                       when :highest

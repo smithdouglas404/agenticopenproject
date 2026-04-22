@@ -96,7 +96,7 @@ module WorkPackageTypes
     end
 
     def prepared_group(group, editing_section_key:)
-      return group unless editing_section_key.present?
+      return group if editing_section_key.blank?
       return group unless group[:key].to_s == editing_section_key.to_s
       return group unless group[:key].to_s.match?(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX)
 

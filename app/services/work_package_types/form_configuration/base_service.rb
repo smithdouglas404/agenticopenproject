@@ -53,10 +53,9 @@ module WorkPackageTypes
       end
 
       def find_attribute_section(section_key)
-        result = type.attribute_groups.find do |group|
+        type.attribute_groups.find do |group|
           group.group_type == :attribute && group_identifier_match?(group, section_key)
         end
-        result
       end
 
       def find_row(row_key)

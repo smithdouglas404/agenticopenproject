@@ -53,11 +53,11 @@ module Components
       end
 
       def expect_empty
-        expect(page).to have_no_css('[data-group-key]')
+        expect(page).to have_no_css("[data-group-key]")
       end
 
       def find_group(name)
-        title = page.find(".Box-header span.text-bold", text: /\A#{Regexp.escape(name)}\z/, match: :first)
+        title = page.first(".Box-header span.text-bold", text: /\A#{Regexp.escape(name)}\z/)
         title.find(:xpath, "./ancestor::*[@data-group-key][1]")
       end
 
@@ -204,7 +204,7 @@ module Components
           click_link I18n.t("button_delete")
         end
 
-        expect(page).to have_no_css('[data-group-key]', text: /\b#{Regexp.escape(name)}\b/)
+        expect(page).to have_no_css("[data-group-key]", text: /\b#{Regexp.escape(name)}\b/)
       end
 
       def expect_no_attribute(attribute, group)
@@ -260,22 +260,7 @@ module Components
       private
 
       def displayed_relation_filter_label(relation_filter)
-        label_key = {
-          children: :children,
-          precedes: :follows,
-          follows: :precedes,
-          relates: :relates,
-          duplicates: :duplicated,
-          duplicated: :duplicates,
-          blocks: :blocked,
-          blocked: :blocks,
-          partof: :includes,
-          includes: :partof,
-          requires: :required,
-          required: :requires
-        }.fetch(relation_filter.to_sym)
-
-        I18n.t("js.relation_labels.#{label_key}")
+        I18n.t("js.relation_labels.#{relation_filter}")
       end
 
       def fill_section_name(name)

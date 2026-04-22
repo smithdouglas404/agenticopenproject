@@ -34,6 +34,12 @@ module WorkPackageTypes
     include OpTurbo::ComponentStream
     include WorkPackageTypes::FormConfigurationComponentStreams
 
+    def edit
+      replace_section_via_turbo_stream(key: section_key_param, edit_mode: true)
+
+      respond_with_turbo_streams
+    end
+
     def create
       call = ::WorkPackageTypes::FormConfigurationSections::CreateService
         .new(user: current_user, type: @type)
@@ -46,12 +52,6 @@ module WorkPackageTypes
       end
 
       respond_with_turbo_streams(status: turbo_status_for(call))
-    end
-
-    def edit
-      replace_section_via_turbo_stream(key: section_key_param, edit_mode: true)
-
-      respond_with_turbo_streams
     end
 
     def cancel_edit
