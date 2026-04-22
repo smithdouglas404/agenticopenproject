@@ -284,6 +284,28 @@ RSpec.describe "Inbox column in sprint planning view", :js do
         planning_page.expect_story_in_sprint(inbox_wp1, sprint)
         planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [sprint_wp, inbox_wp1])
       end
+
+      context "when the target sprint is completed (race condition #73750)" do
+        it "shows an error and does not move the item" do
+          planning_page.click_in_inbox_move_menu(inbox_wp1, "Move to sprint")
+
+          within("#move-to-sprint-dialog") do
+            expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
+            select sprint.name, from: "target_id"
+
+            # Before saving the selection, simulate that another user completed the sprint
+            sprint.completed!
+
+            click_button "Move"
+          end
+
+          planning_page.expect_and_dismiss_error("Update failed: Sprint is not set to one of the allowed values.")
+
+          # Item was *not* moved:
+          planning_page.expect_inbox_item(inbox_wp1)
+          planning_page.expect_story_not_in_sprint(inbox_wp1, sprint)
+        end
+      end
     end
 
     describe "moving backlog items to a sprint via drag-and-drop" do

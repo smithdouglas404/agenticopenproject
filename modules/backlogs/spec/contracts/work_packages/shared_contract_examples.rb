@@ -125,6 +125,21 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
       it_behaves_like "contract is invalid", sprint: :not_shared_with_project
     end
 
+    context "when sprint is completed (shared with project but not assignable)" do
+      let(:completed_sprint) { build_stubbed(:agile_sprint, status: :completed) }
+      let(:work_package_sprint) { completed_sprint }
+
+      before do
+        # The sprint is still shared with the project (the outer before mock makes
+        # `Agile::Sprint.for_project.exists?` return true), so `sprint_shared_with_project`
+        # passes. We stub assignable_sprints to exclude it, simulating the `.not_completed`
+        # scope, so only `validate_sprint_is_assignable` fires.
+        allow(work_package_project).to receive(:assignable_sprints).and_return([])
+      end
+
+      it_behaves_like "contract is invalid", sprint_id: :inclusion
+    end
+
     context "when sprint is set while the user lacks the :manage_sprint_items permission" do
       let(:effective_permissions) { permissions - [:manage_sprint_items] }
 
