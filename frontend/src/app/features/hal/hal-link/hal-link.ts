@@ -42,6 +42,7 @@ export interface HalLinkInterface {
   payload?:any;
   type?:string;
   identifier?:string;
+  displayId?:string;
 }
 
 export interface HalLinkSource {
@@ -62,7 +63,8 @@ export class HalLink implements HalLinkInterface {
     public templated = false,
     public payload?:any,
     public type = 'application/json',
-    public identifier?:string) {
+    public identifier?:string,
+    public displayId?:string) {
   }
 
   /**
@@ -78,6 +80,7 @@ export class HalLink implements HalLinkInterface {
       link.payload,
       link.type,
       link.identifier,
+      link.displayId,
     );
   }
 
@@ -114,6 +117,7 @@ export class HalLink implements HalLinkInterface {
       this.payload,
       this.type,
       this.identifier,
+      this.displayId,
     ).$callable();
   }
 
@@ -134,6 +138,7 @@ export class HalLink implements HalLinkInterface {
       payload: this.payload,
       type: this.type,
       identifier: this.identifier,
+      displayId: this.displayId,
     });
 
     return linkFunc;

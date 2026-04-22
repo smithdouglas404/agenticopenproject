@@ -160,6 +160,33 @@ describe('WorkPackage', () => {
       });
     });
 
+    describe('when built from a parent work package _links.ancestors array', () => {
+      // Mirrors the real HAL pipeline: the parent exposes an ancestors link
+      // array; each entry carries displayId alongside href/title; the builder
+      // creates an ancestor WorkPackageResource through HalLink, which must
+      // preserve displayId end-to-end.
+      beforeEach(() => {
+        source = {
+          _links: {
+            self: { href: '/api/v3/work_packages/42' },
+            ancestors: [
+              {
+                href: '/api/v3/work_packages/11099',
+                title: 'subj child',
+                displayId: 'ACSMT-15',
+              },
+            ],
+          },
+        };
+        createWorkPackage();
+      });
+
+      it('surfaces the semantic displayId on each ancestor resource', () => {
+        const ancestor = (workPackage as any).ancestors[0] as WorkPackageResource;
+        expect(ancestor.displayId).toEqual('ACSMT-15');
+      });
+    });
+
 });
 
   describe('formattedId', () => {
