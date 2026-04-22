@@ -169,6 +169,10 @@ Rails/ContentTag:
 # dynamic finders cop clashes with capybara ID cop
 Rails/DynamicFindBy:
   Enabled: true
+  AllowedMethods:
+    - find_by_display_id
+    - find_by_display_id!
+    - find_by_semantic_identifier
   Exclude:
     - "spec/features/**/*.rb"
     - "spec/support/**/*.rb"
@@ -186,6 +190,9 @@ Rails/FindEach:
     - limit
     - select
     - lock
+  Exclude:
+    - "spec/**/*"
+    - "modules/**/spec/**/*"
 
 # The http verbs in Rack::Test do not accept named parameters (params: params)
 Rails/HttpPositionalArguments:
@@ -197,11 +204,13 @@ Rails/I18nLocaleAssignment:
   Enabled: true
   Exclude:
     - "spec/**/*.rb"
+    - "modules/*/spec/**/*.rb"
 
 Rails/I18nLocaleTexts:
   Enabled: true
   Exclude:
     - "spec/**/*.rb"
+    - "modules/*/spec/**/*.rb"
 
 # We have config.active_record.belongs_to_required_by_default = false ,
 # which means, we do have to declare presence validators on belongs_to relations.
@@ -215,6 +224,9 @@ Rails/RequireDependency:
 # Require save! to prevent saving without validation when saving outside of a condition.
 Rails/SaveBang:
   Enabled: true
+  Exclude:
+    - "spec/**/*"
+    - "modules/**/spec/**/*"
 
 # There are valid cases in which to use methods like:
 # * update_all
@@ -321,6 +333,7 @@ RSpec/SpecFilePathFormat:
   CustomTransform:
     OpenIDConnect: openid_connect
     OAuthClients: oauth_clients
+    XWikiProviders: xwiki_providers
   EnforcedInflector: active_support
   IgnoreMethods: true
 
@@ -470,6 +483,11 @@ Style/Proc:
 
 Style/RaiseArgs:
   Enabled: false
+
+Style/RescueModifier:
+  Exclude:
+    - "spec/**/*"
+    - "modules/**/spec/**/*"
 
 Style/RegexpLiteral:
   Enabled: false

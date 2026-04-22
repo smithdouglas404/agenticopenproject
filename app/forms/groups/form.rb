@@ -40,6 +40,19 @@ module Groups
         autocomplete: "off"
       )
 
+      f.select_list(
+        name: :parent_id,
+        label: Group.human_attribute_name(:parent),
+        include_blank: I18n.t(:label_no_parent_group),
+        caption: I18n.t(:label_parent_group_caption),
+        input_width: :medium
+      ) do |list|
+        parent_candidates.each do |group|
+          prefix = "\u00A0\u00A0" * (group.hierarchy_depth || 0)
+          list.option(label: "#{prefix}#{group.name}", value: group.id, selected: model.parent_id == group.id)
+        end
+      end
+
       render_custom_fields(form: f)
 
       f.submit(
@@ -60,6 +73,19 @@ module Groups
 
     def custom_fields
       model.available_custom_fields
+    end
+
+    def parent_candidates
+      @parent_candidates ||= begin
+        scope = if model.organizational_unit
+                  Group.organizational_units
+                else
+                  Group.not_organizational_units
+                end
+
+        excluded_ids = model.self_and_descendants.pluck(:id).to_set
+        scope.in_tree_order.reject { |group| excluded_ids.include?(group.id) }
+      end
     end
   end
 end

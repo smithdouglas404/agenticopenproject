@@ -691,7 +691,7 @@ RSpec.describe CostlogController do
       before do
         grant_current_user_permissions user, %i[view_project view_work_packages view_cost_entries edit_cost_entries]
 
-        params["cost_entry"]["entity_id"] = "this-id-does-not-exist"
+        params["cost_entry"]["entity_id"] = "999999999"
       end
 
       it_behaves_like "invalid update"

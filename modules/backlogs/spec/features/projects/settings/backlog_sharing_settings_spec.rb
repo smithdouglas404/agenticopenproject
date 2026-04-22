@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe "Backlogs project settings sprint sharing", :js, with_flag: { scrum_projects: true } do
+RSpec.describe "Backlogs project settings sprint sharing", :js do
   let(:project) { create(:project) }
   let(:permissions) { %i[create_sprints share_sprint select_done_statuses] }
 
@@ -72,7 +72,7 @@ RSpec.describe "Backlogs project settings sprint sharing", :js, with_flag: { scr
       expect(page).to have_no_text(I18n.t("projects.settings.backlog_sharing.options.share_subprojects.info"))
 
       # persists receive_shared
-      click_button I18n.t("button_save")
+      click_button "Save"
 
       expect_and_dismiss_flash(type: :success, message: I18n.t(:notice_successful_update))
       expect(page).to have_checked_field("Receive shared sprints")
@@ -88,7 +88,7 @@ RSpec.describe "Backlogs project settings sprint sharing", :js, with_flag: { scr
       expect(page).to have_no_text(I18n.t("projects.settings.backlog_sharing.options.receive_shared.warning"))
 
       # persists no_sharing
-      click_button I18n.t("button_save")
+      click_button "Save"
 
       expect_and_dismiss_flash(type: :success, message: I18n.t(:notice_successful_update))
       expect(page).to have_checked_field("Don't share")
@@ -139,19 +139,6 @@ RSpec.describe "Backlogs project settings sprint sharing", :js, with_flag: { scr
       visit project_settings_backlog_sharing_path(project)
 
       expect(page).to have_text(I18n.t(:notice_not_authorized))
-    end
-  end
-
-  context "when scrum_projects feature flag is inactive", with_flag: { scrum_projects: false } do
-    it "does not show the sharing tab and returns 404 on direct access" do
-      visit project_settings_backlogs_path(project)
-
-      expect(page).to have_heading(I18n.t(:label_backlogs))
-      expect(page).to have_no_link(I18n.t("backlogs.sharing"))
-
-      visit project_settings_backlog_sharing_path(project)
-
-      expect(page).to have_text(I18n.t(:notice_file_not_found))
     end
   end
 end

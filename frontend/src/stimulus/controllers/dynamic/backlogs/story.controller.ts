@@ -28,6 +28,8 @@
 
 import { Controller } from '@hotwired/stimulus';
 import * as Turbo from '@hotwired/turbo';
+import type { TurboVisitEvent } from '@hotwired/turbo';
+
 
 export default class StoryController extends Controller<HTMLElement> implements EventListenerObject {
   static values = {
@@ -53,6 +55,11 @@ export default class StoryController extends Controller<HTMLElement> implements 
     this.element.addEventListener('click', this, { signal });
     this.element.addEventListener('dblclick', this, { signal });
     this.element.addEventListener('keydown', this, { signal });
+    document.addEventListener('turbo:visit', (event:TurboVisitEvent) => {
+      this.syncSelectionFromUrl(event.detail.url);
+    }, { signal });
+
+    this.syncSelectionFromUrl(window.location.href);
   }
 
   disconnect():void {
@@ -65,12 +72,22 @@ export default class StoryController extends Controller<HTMLElement> implements 
     }
   }
 
-  markAsSelected(_event?:Event) {
+  private syncSelectionFromUrl(locationUrl:string):void {
+    const { pathname } = new URL(locationUrl, window.location.origin);
+    const [, id] = /\/details\/(\d+)/.exec(pathname) ?? [];
+    if (id !== undefined && Number(id) === this.idValue) {
+      this.markAsSelected();
+    } else {
+      this.unmarkAsSelected();
+    }
+  }
+
+  markAsSelected():void {
     this.element.classList.add(this.selectedClass);
     this.element.setAttribute('aria-current', 'true');
   }
 
-  unmarkAsSelected(_event?:Event) {
+  unmarkAsSelected():void {
     this.element.classList.remove(this.selectedClass);
     this.element.removeAttribute('aria-current');
   }
@@ -93,13 +110,7 @@ export default class StoryController extends Controller<HTMLElement> implements 
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 
-    if (
-      target.closest('a') ||
-      target.closest('button') ||
-      target.closest('[data-drag-handle]')
-    ) {
-      return;
-    }
+    if (this.shouldIgnoreMouseTarget(target)) return;
 
     if (this.clickTimeout !== null) return;
 
@@ -113,13 +124,7 @@ export default class StoryController extends Controller<HTMLElement> implements 
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 
-    if (
-      target.closest('a') ||
-      target.closest('button') ||
-      target.closest('[data-drag-handle]')
-    ) {
-      return;
-    }
+    if (this.shouldIgnoreMouseTarget(target)) return;
 
     if (this.clickTimeout !== null) {
       clearTimeout(this.clickTimeout);
@@ -135,16 +140,7 @@ export default class StoryController extends Controller<HTMLElement> implements 
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 
-    if (
-      target.closest('a') ||
-      target.closest('button') ||
-      target.closest('input') ||
-      target.closest('textarea') ||
-      target.closest('select') ||
-      target.closest("[contenteditable='true']")
-    ) {
-      return;
-    }
+    if (this.shouldIgnoreKeyboardTarget(target)) return;
 
     event.preventDefault();
     if (event.shiftKey) {
@@ -160,5 +156,23 @@ export default class StoryController extends Controller<HTMLElement> implements 
 
   private openFullPane():void {
     Turbo.visit(this.fullUrlValue, { frame: '_top' });
+  }
+
+  private shouldIgnoreMouseTarget(target:HTMLElement):boolean {
+    return [
+      'a',
+      'button',
+      'clipboard-copy',
+      '[data-drag-handle]',
+    ].some((selector) => target.closest(selector) !== null);
+  }
+
+  private shouldIgnoreKeyboardTarget(target:HTMLElement):boolean {
+    return this.shouldIgnoreMouseTarget(target) || [
+      'input',
+      'textarea',
+      'select',
+      "[contenteditable='true']",
+    ].some((selector) => target.closest(selector) !== null);
   }
 }

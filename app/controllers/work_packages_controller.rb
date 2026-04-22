@@ -243,7 +243,7 @@ class WorkPackagesController < ApplicationController
   def work_package
     return @work_package if defined?(@work_package)
 
-    @work_package = WorkPackage.visible(current_user).find_by(id: params[:id])
+    @work_package = WorkPackage.visible(current_user).find_by_display_id(params[:id])
   end
 
   def journals

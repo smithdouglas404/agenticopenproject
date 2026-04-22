@@ -18,7 +18,7 @@
         class="op-ian-item--work-package-id-link spot-link"
         [class.spot-link_inactive]="isMobile()"
         [attr.title]="workPackage.subject"
-        [textContent]="'#' + workPackage.id"
+        [textContent]="workPackage.formattedId"
         [attr.href]="fullScreenLink()"
         (click)="onLinkClick($event)"
         >

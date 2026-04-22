@@ -3,7 +3,9 @@
 require "spec_helper"
 
 RSpec.describe Projects::SprintSharing do
-  let(:project) { create(:project) }
+  let(:sprint_sharing) { "no_sharing" }
+  let(:active) { true }
+  let!(:project) { create(:project, sprint_sharing:, active:) }
 
   describe "SPRINT_SHARING_MODES" do
     it "defines all supported sprint sharing options" do
@@ -18,6 +20,8 @@ RSpec.describe Projects::SprintSharing do
   end
 
   describe "#sprint_sharing" do
+    let(:sprint_sharing) { nil }
+
     it "defaults to no_sharing" do
       expect(project.sprint_sharing).to eq("no_sharing")
     end
@@ -58,15 +62,41 @@ RSpec.describe Projects::SprintSharing do
     end
   end
 
+  describe "#not_sharing_sprints!" do
+    context "when the project is already set to no_sharing" do
+      let(:sprint_sharing) { "no_sharing" }
+
+      it "does not update the database" do
+        allow(project).to receive(:update_column)
+
+        subject
+
+        expect(project).not_to have_received(:update_column)
+      end
+    end
+
+    context "when the project has an active sharing mode" do
+      let(:sprint_sharing) { "share_all_projects" }
+
+      it "resets sprint_sharing to no_sharing" do
+        project.not_sharing_sprints!
+
+        expect(project.reload.sprint_sharing).to eq("no_sharing")
+      end
+    end
+  end
+
   describe ".global_sprint_sharer" do
     context "when no project shares with all projects" do
+      let(:sprint_sharing) { "no_sharing" }
+
       it "returns nil" do
         expect(Project.global_sprint_sharer).to be_nil
       end
     end
 
     context "when a project shares with all projects" do
-      before { project.update!(sprint_sharing: "share_all_projects") }
+      let(:sprint_sharing) { "share_all_projects" }
 
       it "returns that project" do
         expect(Project.global_sprint_sharer).to eq(project)
@@ -74,7 +104,8 @@ RSpec.describe Projects::SprintSharing do
     end
 
     context "when the sharing project is archived" do
-      before { project.update!(sprint_sharing: "share_all_projects", active: false) }
+      let(:sprint_sharing) { "share_all_projects" }
+      let(:active) { false }
 
       it "returns nil" do
         expect(Project.global_sprint_sharer).to be_nil

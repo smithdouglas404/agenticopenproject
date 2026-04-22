@@ -47,7 +47,7 @@ When creating a new one-time meeting, users can choose from the available templa
 
 For more details, please refer to the [Meetings documentation](../../user-guide/meetings/one-time-meetings/).
 
-###  Allow requiring to be logged in to open external links (Enterprise add-on)
+### Allow requiring to be logged in to open external links (Enterprise add-on)
 
 [feature: capture_external_links ]
 
@@ -71,7 +71,7 @@ These widgets help teams better understand financial status and trends directly 
 
 ![An example of project budget widget on a project home page in OpenProject](openproject_release_notes_17-2-0_budget_widget.png)
 
-Read more about [budget widgets](../../user-guide/project-home/project-widgets/#budgets-widgets).
+Read more about [budget widgets](../../user-guide/projects/project-home/project-widgets/#budgets-widgets).
 
 #### Editable project description and project status widgets on a Project view tab
 
@@ -95,7 +95,7 @@ Comments are displayed and edited alongside the respective attribute on the Proj
 
 ![Setting to add a comment text field to a project attribute in OpenProject administration](openproject_release_notes_17-2-0_project_attributes_comment.png)
 
-Read more about [project attributes in OpenProject](../../user-guide/project-home/project-attributes/).
+Read more about [project attributes in OpenProject](../../user-guide/projects/project-home/project-attributes/).
 
 ### PDF export improvements
 
@@ -128,12 +128,12 @@ Administrative interfaces for Custom Fields, Versions, and Groups have been furt
 
 In particular, custom field forms are now consistently styled across all field types. Previously, the appearance varied depending on the type of custom field. This has been unified to provide a clearer and more predictable configuration experience for administrators.
 
-###  Jira importer (feature flag)
+### Jira importer (feature flag)
 
-We are working on a new Jira import wizard designed to help teams migrate core project data from Jira into OpenProject more easily. The importer focuses on bringing over essential user-generated content such as issues, comments, attachments, and project structures, reducing the need for manual recreation or fragile third-party workarounds. 
+We are working on a new Jira import wizard (Jira Migrator) designed to help teams migrate core project data from Jira into OpenProject more easily. The importer focuses on bringing over essential user-generated content such as issues, comments, attachments, and project structures, reducing the need for manual recreation or fragile third-party workarounds. 
 
 > [!IMPORTANT]
-> This functionality is still under active development and currently available only behind a feature flag for early testing. We’re sharing this preview to start the conversation with teams considering a move from Jira. More capabilities will follow in upcoming releases.
+> The Jira Migrator is still under active development and currently available only behind a feature flag for early testing. We’re sharing this preview to start the conversation with teams considering a move from Jira. More capabilities will follow in upcoming releases.
 
 ![Add a new configuration to Jira importer under OpenProject administration](openproject_release_notes_17-2-0_jira_migrator.png)
 

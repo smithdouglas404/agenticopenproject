@@ -36,16 +36,10 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
   let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
-  let(:stories) { [] }
   let(:user) { create(:user) }
   let(:permissions) { [] }
 
   before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
-
-    # Set up user with specific permissions
     create(:member,
            project:,
            principal: user,
@@ -57,25 +51,30 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
     render_inline(described_class.new(sprint:, project:, current_user: user))
   end
 
+  def menu_items
+    page.all(:role, :menuitem).map { it.text.squish }
+  end
+
   describe "permission-based items" do
     context "with :manage_sprint_items permission" do
       let(:permissions) { %i[view_sprints manage_sprint_items] }
 
-      it "shows Add new story item with compose icon" do
-        render_component
+      it "shows Add new work package item with plus icon" do
+        rendered_component = render_component
 
-        expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
-        expect(page).to have_octicon(:compose)
+        expect(page).to have_text(I18n.t(:"backlogs.sprint_menu_component.action_menu.add_work_package"))
+        expect(page).to have_octicon(:plus)
+        expect(rendered_component.to_s).to include("sprint_id=#{sprint.id}")
       end
     end
 
     context "without :manage_sprint_items permission" do
       let(:permissions) { [:view_sprints] }
 
-      it "does not show Add new story item" do
+      it "does not show Add work package item" do
         render_component
 
-        expect(page).to have_no_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.new_story"))
+        expect(page).to have_no_text(I18n.t(:"backlogs.sprint_menu_component.action_menu.add_work_package"))
       end
     end
 
@@ -86,7 +85,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         render_component
 
         expect(page).to have_css("action-menu")
-        expect(page).to have_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
+        expect(page).to have_text(I18n.t("backlogs.sprint_menu_component.action_menu.edit_sprint"))
         expect(page).to have_octicon(:pencil)
       end
     end
@@ -97,26 +96,96 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
       it "does not show Edit item" do
         render_component
 
-        expect(page).to have_no_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
+        expect(page).to have_no_text(I18n.t("backlogs.sprint_menu_component.action_menu.edit_sprint"))
       end
     end
   end
 
-  describe "always-visible items" do
-    let(:permissions) { [:view_sprints] }
+  describe "task board link" do
+    let(:permissions) { %i[view_sprints view_work_packages] }
 
-    it "renders stable ids on the action menu and stories/tasks item" do
-      render_component
+    context "when the sprint is active and has a task board" do
+      let(:sprint) do
+        create(:agile_sprint,
+               project:,
+               name: "Sprint 1",
+               start_date: Date.yesterday,
+               finish_date: Date.tomorrow,
+               status: "active")
+      end
+      let(:permissions) { %i[view_sprints view_work_packages create_sprints manage_sprint_items] }
+      let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
-      expect(page).to have_element(:button, id: /\Aagile_sprint_#{sprint.id}_menu-button\z/)
-      expect(page).to have_element(:ul, id: /\Aagile_sprint_#{sprint.id}_menu-list\z/)
-      expect(page).to have_element(:a, id: /\Aagile_sprint_#{sprint.id}_menu_stories_tasks\z/)
+      it "shows Sprint board" do
+        render_component
+
+        expect(menu_items).to include("Sprint board")
+      end
+
+      it "renders dividers between each menu section" do
+        render_component
+
+        expect(menu_items).to eq(["Edit sprint", "Add work package", "Sprint board", "Burndown chart"])
+        expect(page).to have_list_item position: 2, role: "presentation"
+        expect(page).to have_list_item position: 4, role: "presentation"
+      end
     end
 
-    it "shows Stories/Tasks link" do
-      render_component
+    context "when the sprint is completed and has a task board" do
+      let(:sprint) do
+        create(:agile_sprint,
+               project:,
+               name: "Sprint 1",
+               start_date: Date.yesterday,
+               finish_date: Date.tomorrow,
+               status: "completed")
+      end
+      let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
-      expect(page).to have_text(I18n.t(:"backlogs.backlog_menu_component.action_menu.stories_tasks"))
+      it "shows Sprint board" do
+        render_component
+
+        expect(menu_items).to include("Sprint board")
+      end
+    end
+
+    context "when the sprint is rendered in a receiving project" do
+      let(:source_project) { create(:project, sprint_sharing: "share_all_projects", types: [type_feature, type_task]) }
+      let(:project) { create(:project, sprint_sharing: "receive_shared", types: [type_feature, type_task]) }
+      let(:sprint) do
+        create(:agile_sprint,
+               project: source_project,
+               name: "Shared Sprint",
+               start_date: Date.yesterday,
+               finish_date: Date.tomorrow,
+               status: "active")
+      end
+      let(:permissions) do
+        %i[view_sprints view_work_packages show_board_views create_sprints manage_sprint_items start_complete_sprint]
+      end
+
+      before do
+        create(:member,
+               project: source_project,
+               principal: user,
+               roles: [create(:project_role, permissions: %i[view_sprints start_complete_sprint])])
+      end
+
+      it "does not show Sprint board for a board in the source project" do
+        create(:board_grid_with_query, project: source_project, linked: sprint)
+
+        render_component
+
+        expect(page).to have_no_selector(:menuitem, text: "Sprint board")
+      end
+
+      it "shows Sprint board for a board in the rendered project" do
+        create(:board_grid_with_query, project:, linked: sprint)
+
+        render_component
+
+        expect(page).to have_selector(:menuitem, text: "Sprint board")
+      end
     end
   end
 end

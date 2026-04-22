@@ -34,33 +34,56 @@ class Meeting::TemplateAutocompleter < ApplicationForm
       name: :template_id,
       label: I18n.t(:label_meeting_template),
       caption: I18n.t(:caption_meeting_template_select),
-      autocomplete_options: {
-        decorated: true,
-        defaultData: false,
-        multiple: false,
-        appendTo: "#new-meeting-dialog",
-        data: {
-          "test-selector": "template_id"
-        }
-      }
+      autocomplete_options:
     ) do |select|
       templates.each do |template|
         select.option(
           value: template.id,
-          label: template.title
+          label: label(template),
+          selected: template.id == @selected_id
         )
       end
     end
   end
 
-  def initialize(project:)
+  def initialize(project:, disabled: false, placeholder: nil, selected_id: nil)
     super()
     @project = project
+    @disabled = disabled
+    @placeholder = placeholder
+    @selected_id = selected_id
   end
 
   private
 
+  def autocomplete_options
+    opts = {
+      decorated: true,
+      defaultData: false,
+      multiple: false,
+      disabled: @disabled,
+      appendTo: "#new-meeting-dialog",
+      data: {
+        "test-selector": "template_id"
+      }
+    }
+    opts[:placeholder] = @placeholder if @placeholder
+    opts
+  end
+
   def templates
-    Meeting.templates_visible_in_project(@project).order(:title)
+    return [] if @disabled
+
+    Meeting.templates_visible_in_project(@project)
+           .includes(:project)
+           .order("projects.name ASC, meetings.title ASC")
+  end
+
+  def label(template)
+    if template.project_id == @project.id
+      template.title
+    else
+      "#{template.project.name}: #{template.title}"
+    end
   end
 end

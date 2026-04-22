@@ -49,16 +49,8 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
   end
 
   module ClassMethods
-    def backlogs_types
-      # Unfortunately, this is not cachable so the following line would be wrong
-      # @backlogs_types ||= Story.types << Task.type
-      # Caching like in the line above would prevent the types selected
-      # for backlogs to be changed without restarting all app server.
-      (Story.types << Task.type).compact
-    end
-
-    def children_of(ids)
-      where(parent_id: ids)
+    def order_by_position
+      order(arel_table[:position].asc.nulls_last)
     end
   end
 
@@ -67,57 +59,8 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
       project.done_statuses.to_a.include?(status)
     end
 
-    def to_story
-      Story.find(id) if is_story?
-    end
-
-    def is_story?
-      backlogs_enabled? && Story.types.include?(type_id)
-    end
-
-    def to_task
-      Task.find(id) if is_task?
-    end
-
-    def is_task?
-      backlogs_enabled? && (parent_id && type_id == Task.type && Task.type.present?)
-    end
-
-    def is_impediment?
-      backlogs_enabled? && (parent_id.nil? && type_id == Task.type && Task.type.present?)
-    end
-
-    def types
-      if is_story?
-        Story.types
-      elsif is_task?
-        Task.types
-      else
-        []
-      end
-    end
-
-    def story
-      if is_story?
-        Story.find(id)
-      elsif is_task?
-        ancestors.where(type_id: Story.types).first
-      end
-    end
-
-    def blocks
-      # return work_packages that I block that aren't closed
-      return [] if closed?
-
-      blocks_relations.includes(:to).merge(WorkPackage.with_status_open).map(&:to)
-    end
-
     def backlogs_enabled?
-      !!project.try(:module_enabled?, "backlogs")
-    end
-
-    def in_backlogs_type?
-      backlogs_enabled? && WorkPackage.backlogs_types.include?(type.try(:id))
+      project&.backlogs_enabled?
     end
   end
 end

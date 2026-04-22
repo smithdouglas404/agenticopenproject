@@ -29,7 +29,7 @@
 require "spec_helper"
 
 RSpec.describe TimeEntryWebhookJob, :webmock, type: :job do
-  include_context "with ssrf webhook stubs"
+  include_context "with ssrf stubs"
 
   shared_let(:user) { create(:admin) }
   shared_let(:request_url) { "http://example.net/test/42" }
@@ -43,7 +43,7 @@ RSpec.describe TimeEntryWebhookJob, :webmock, type: :job do
     let(:stubbed_url) { request_url }
 
     let(:request_headers) do
-      { content_type: "application/json", accept: "application/json" }
+      { "Content-Type": "application/json", Accept: "application/json" }
     end
 
     let(:response_code) { 200 }

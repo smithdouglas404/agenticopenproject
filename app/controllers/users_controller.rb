@@ -30,19 +30,34 @@
 
 class UsersController < ApplicationController
   include OpTurbo::ComponentStream
+  include WorkingTimesAuthorization
+  include Notifications::NotificationSettingsActions
 
   layout "admin"
 
   before_action :authorize_global, except: %i[show deletion_info destroy]
 
+  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :find_user, only: %i[show
                                      edit
                                      update
+                                     update_reminders
+                                     update_workdays
+                                     update_email_alerts
+                                     update_participating
+                                     update_non_participating
+                                     update_date_alerts
+                                     new_project_settings
+                                     create_project_settings
+                                     edit_project_settings
+                                     update_project_settings
+                                     destroy_project_settings
                                      change_status_info
                                      change_status
                                      destroy
                                      deletion_info
                                      resend_invitation]
+  # rubocop:enable Rails/LexicallyScopedActionFilter
   # should also contain destroy but post data can not be redirected
   before_action :require_login, only: [:deletion_info]
   before_action :authorize_for_user, only: [:destroy]
@@ -66,7 +81,7 @@ class UsersController < ApplicationController
   include PaginationHelper
 
   def index
-    @groups = Group.all.sort
+    @groups = Group.visible.sort
     @status = Users::UserFilterComponent.status_param params
     @users = Users::UserFilterComponent.filter params
   end
@@ -88,6 +103,8 @@ class UsersController < ApplicationController
     @membership ||= Member.new
     @individual_principal = @user
     @contract = Users::UpdateContract.new(@user, current_user)
+
+    prepare_views_for_tab
   end
 
   def create # rubocop:disable Metrics/AbcSize
@@ -104,6 +121,30 @@ class UsersController < ApplicationController
       @contract = Users::CreateContract.new(@user, current_user)
       render action: :new, status: :unprocessable_entity
     end
+  end
+
+  def update_email_alerts
+    global_setting = @user.notification_settings.find_or_initialize_by(project: nil)
+    persist_notification_setting(global_setting, permitted_params.notification_setting_email_alerts)
+    redirect_back_or_to edit_user_path(@user, tab: "reminders")
+  end
+
+  def update_reminders
+    call = ::Users::UpdateService.new(model: @user, user: current_user).call(pref: permitted_params.pref.to_h)
+    flash[call.success? ? :notice : :error] = update_service_flash_message(call)
+    redirect_back_or_to edit_user_path(@user, tab: "reminders")
+  end
+
+  def update_participating
+    update_user_notification_setting(permitted_params.notification_setting_participating)
+  end
+
+  def update_non_participating
+    update_user_notification_setting(permitted_params.notification_setting_non_participating)
+  end
+
+  def update_date_alerts
+    update_user_notification_setting(build_date_alerts_params)
   end
 
   def update # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
@@ -258,6 +299,28 @@ class UsersController < ApplicationController
 
   private
 
+  def update_user_notification_setting(update_params)
+    global_setting = @user.notification_settings.find_or_initialize_by(project: nil)
+    persist_notification_setting(global_setting, update_params)
+    redirect_back_or_to edit_user_path(@user, tab: "notifications")
+  end
+
+  def notifications_settings_path
+    edit_user_path(@user, tab: "notifications")
+  end
+
+  def workdays_redirect_path
+    edit_user_path(@user, tab: "reminders")
+  end
+
+  def project_notifications_create_url
+    project_notifications_user_path(@user)
+  end
+
+  def project_setting_form_url(project_id)
+    project_setting_user_path(@user, project_id:)
+  end
+
   def can_show_user?
     return true if can_manage_or_create_users?
     return true if @user == User.current
@@ -352,5 +415,28 @@ class UsersController < ApplicationController
       .merge(admin: params[:user][:admin] || false,
              login: params[:user][:login] || params[:user][:mail],
              status: User.statuses[:invited])
+  end
+
+  def prepare_views_for_tab # rubocop:disable Metrics/AbcSize
+    if params[:tab] == "non_working_times"
+      authorize_manage_working_times
+      check_working_times_feature_flag_is_active
+
+      @year = (params[:year].presence || Date.current.year).to_i
+      @non_working_times = @user.non_working_time_entities_for_year(@year)
+    elsif params[:tab] == "working_hours"
+      authorize_manage_working_times
+      check_working_times_feature_flag_is_active
+
+      @current_working_hours = @user.working_hours.current
+
+      @future_working_hours = @user.working_hours.upcoming(Date.current + 1)
+
+      @past_working_hours = if @current_working_hours
+                              @user.working_hours.history_for(@current_working_hours)
+                            else
+                              UserWorkingHours.none
+                            end
+    end
   end
 end

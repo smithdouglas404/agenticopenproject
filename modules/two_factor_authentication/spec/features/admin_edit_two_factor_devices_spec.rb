@@ -23,7 +23,8 @@ RSpec.describe "Admin 2FA management", :js, :selenium, with_settings: {
     expect(page).to have_css(".on-off-status.-disabled")
 
     expect(page).to have_no_css(".generic-table--empty-row", wait: 1)
-    page.find(".admin--edit-section a").click
+
+    click_link "Two-factor authentication on your account page"
 
     expect(page).to have_css(".generic-table--empty-row")
     expect(page).to have_current_path my_2fa_devices_path

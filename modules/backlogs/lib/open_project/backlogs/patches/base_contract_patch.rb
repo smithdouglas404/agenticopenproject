@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,7 +32,21 @@ module OpenProject::Backlogs::Patches::BaseContractPatch
   extend ActiveSupport::Concern
 
   included do
-    attribute :story_points
-    attribute :position
+    attribute :story_points,
+              writable: -> { model.backlogs_enabled? }
+    attribute :sprint,
+              # This also covers the check for backlogs being active
+              permission: :manage_sprint_items
+
+    validate :sprint_shared_with_project
+
+    private
+
+    def sprint_shared_with_project
+      return if model.sprint.nil? ||
+                Agile::Sprint.for_project(model.project).exists?(id: model.sprint_id)
+
+      errors.add :sprint, :not_shared_with_project
+    end
   end
 end

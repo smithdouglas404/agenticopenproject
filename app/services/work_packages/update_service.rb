@@ -102,10 +102,17 @@ class WorkPackages::UpdateService < BaseServices::Update
       delete_relations(moved_work_packages)
       move_time_entries(moved_work_packages, work_package.project_id)
       move_work_package_memberships(moved_work_packages, work_package.project_id)
+      update_semantic_ids(moved_work_packages) if Setting::WorkPackageIdentifier.semantic?
     end
     if work_package.saved_change_to_type_id?
       reset_custom_values(work_package)
     end
+  end
+
+  def update_semantic_ids(work_packages)
+    return if work_packages.empty?
+
+    work_packages.first.project.reserve_semantic_id_block!(work_packages.map(&:id))
   end
 
   def delete_relations(work_packages)

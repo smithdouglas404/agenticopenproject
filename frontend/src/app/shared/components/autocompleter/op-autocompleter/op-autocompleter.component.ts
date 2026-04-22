@@ -12,7 +12,6 @@ import {
   HostBinding,
   Injector,
   Input,
-  NgZone,
   OnChanges,
   OnInit,
   Output,
@@ -306,7 +305,6 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
     readonly http:HttpClient,
     readonly apiV3Service:ApiV3Service,
     readonly cdRef:ChangeDetectorRef,
-    readonly ngZone:NgZone,
     readonly vcRef:ViewContainerRef,
     readonly I18n:I18nService,
     readonly halResourceService:HalResourceService,
@@ -412,11 +410,9 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
   }
 
   public focusSelect():void {
-    this.ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.ngSelectInstance.focus();
-      }, 25);
-    });
+    setTimeout(() => {
+      this.ngSelectInstance.focus();
+    }, 25);
   }
 
   public closed():void {
@@ -515,7 +511,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
   }
 
   private get debounceTimeForCurrentEnvironment():number {
-    return (window.OpenProject.environment === 'test') ? 0 : this.debounceTimeMs;
+    return (window.OpenProject?.environment === 'test') ? 0 : this.debounceTimeMs;
   }
 
   writeValue(value:T|T[]|null):void {

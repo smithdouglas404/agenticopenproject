@@ -143,7 +143,7 @@ RSpec.describe AdminController do
 
       it "redirects back, showing an error" do
         expect(response).to redirect_to admin_settings_mail_notifications_path
-        expect(flash[:error]).to match /OPENPROJECT_SSRF_PROTECTION_ALLOWLIST/
+        expect(flash[:error]).to match /OPENPROJECT_SSRF_PROTECTION_IP_ALLOWLIST/
       end
     end
 

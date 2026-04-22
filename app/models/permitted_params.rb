@@ -199,10 +199,6 @@ class PermittedParams
     params.require(:placeholder_user).permit(*self.class.permitted_attributes[:placeholder_user])
   end
 
-  def my_account_settings
-    user.merge(pref:)
-  end
-
   def user_register_via_omniauth
     permitted_params = params
       .require(:user)
@@ -278,7 +274,31 @@ class PermittedParams
                                    :comments_sorting,
                                    :disable_keyboard_shortcuts,
                                    :warn_on_leaving_unsaved,
-                                   :auto_hide_popups)
+                                   :auto_hide_popups,
+                                   immediate_reminders: %i[mentioned personal_reminder],
+                                   daily_reminders: [:enabled, { times: [] }],
+                                   workdays: [],
+                                   pause_reminders: %i[enabled date_range])
+  end
+
+  def notification_setting_email_alerts
+    params.fetch(:notification_setting, {}).permit(*NotificationSetting.email_settings)
+  end
+
+  def notification_setting_participating
+    params.fetch(:notification_setting, {}).permit(:assignee, :responsible, :shared)
+  end
+
+  def notification_setting_non_participating
+    params.fetch(:notification_setting, {}).permit(*NotificationSetting.non_participating_settings)
+  end
+
+  def notification_setting_project
+    params.fetch(:notification_setting, {}).permit(
+      :project_id,
+      :assignee, :responsible, :shared,
+      *NotificationSetting.non_participating_settings
+    )
   end
 
   def project
@@ -304,12 +324,12 @@ class PermittedParams
 
   def new_project
     params
-      .expect(project: %i[name description parent_id workspace_type] + [{ custom_comments: {} }])
+      .expect(project: %i[name description parent_id workspace_type identifier] + [{ custom_comments: {} }])
       .merge(custom_field_values(:project))
   end
 
   def copy_project_options
-    copy_options_params = params.expect(copy_options: [[dependencies: []], :send_notifications])
+    copy_options_params = params.expect(copy_options: [[{ dependencies: [] }], :send_notifications])
     copy_options_params[:dependencies].compact_blank!
     copy_options_params
   end
@@ -339,9 +359,6 @@ class PermittedParams
   end
 
   def version
-    # `version_settings_attributes` is from a plugin. Unfortunately as it stands
-    # now it is less work to do it this way than have the plugin override this
-    # method. We hopefully will change this in the future.
     permitted_params = params.fetch(:version, {}).permit(:name,
                                                          :description,
                                                          :effective_date,
@@ -349,8 +366,7 @@ class PermittedParams
                                                          :start_date,
                                                          :wiki_page_title,
                                                          :status,
-                                                         :sharing,
-                                                         version_settings_attributes: %i(id display project_id))
+                                                         :sharing)
 
     permitted_params.merge(custom_field_values(:version, required: false))
   end
@@ -526,8 +542,9 @@ class PermittedParams
           name
           reassign_to_id
         ),
-        group: [
-          :lastname
+        group: %i[
+          lastname
+          parent_id
         ],
         membership: [
           :project_id,
@@ -541,7 +558,7 @@ class PermittedParams
           ] }
         ],
         member: [
-          role_ids: []
+          { role_ids: [] }
         ],
         new_work_package: [
           :assigned_to_id,

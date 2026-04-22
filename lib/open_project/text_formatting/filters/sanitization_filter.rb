@@ -47,6 +47,9 @@ module OpenProject::TextFormatting
         Sanitize::Config.merge(
           base,
           elements: base[:elements] + %w[macro mention],
+          # Strip SVG entirely (tag + all nested content). SVG is not on the allowlist, but
+          # without remove_contents Sanitize would keep SVG child nodes as orphaned content.
+          remove_contents: Array(base[:remove_contents]) | %w[svg style],
 
           attributes: base_attrs.deep_merge(
             # Whitelist class and data-* attributes on all macros
@@ -63,9 +66,9 @@ module OpenProject::TextFormatting
             "td" => ["style"]
           ),
 
-          # Add rel attribute to prevent tabnabbing
+          # Add rel attribute to prevent tabnabbing and SEO spam
           add_attributes: {
-            "a" => { "rel" => "noopener noreferrer" }
+            "a" => { "rel" => "noopener noreferrer nofollow" }
           },
 
           # Add custom transformer logic for more complex modifications

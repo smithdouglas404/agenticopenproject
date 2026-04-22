@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -590,6 +592,22 @@ module API
 
           def self.user_preferences(id)
             "#{user(id)}/preferences"
+          end
+
+          def self.user_working_hours(user_id)
+            "#{user(user_id)}/working_hours"
+          end
+
+          def self.user_working_hours_record(user_id, id)
+            "#{user_working_hours(user_id)}/#{id}"
+          end
+
+          def self.user_non_working_times(user_id)
+            "#{user(user_id)}/non_working_times"
+          end
+
+          def self.user_non_working_time(user_id, non_working_time_id)
+            "#{user_non_working_times(user_id)}/#{non_working_time_id}"
           end
 
           def self.my_preferences

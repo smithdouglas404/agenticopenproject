@@ -151,7 +151,7 @@ Use **[parent–child boards](../../user-guide/agile-boards/)** to visualize Obj
 
 ### Overview and statistics
 
-Open the **[Project home](../../user-guide/project-home/)** page to see an aggregated summary of OKR Initiatives, Objectives, Key Results and Tasks. 
+Open the **[Project home](../../user-guide/projects/project-home/)** page to see an aggregated summary of OKR Initiatives, Objectives, Key Results and Tasks. 
 
 Combine this with saved filters to create a simple management dashboard.
 

@@ -208,7 +208,7 @@ The **Backlog** and **Kanban** are key tools in a scaled agile environment, not 
 
 ### Backlog
 
-The [Backlog module](../../user-guide/backlogs-scrum/work-with-backlogs/) displays all versions available to a particular project or ART in a two-column format. For each version (representing a Product increment, Iteration or a Feature or Story backlog), the module displays:
+The [Backlog module](../../user-guide/backlogs-scrum/) displays all versions available to a particular project or ART in a two-column format. For each version (representing a Product increment, Iteration or a Feature or Story backlog), the module displays:
 
 - Version name
 - Start and end dates

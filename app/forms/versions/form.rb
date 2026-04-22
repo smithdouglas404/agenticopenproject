@@ -110,59 +110,6 @@ module Versions
         end
       end
 
-      if backlogs_enabled?
-        setting = version_setting_for_project
-
-        if OpenProject::FeatureDecisions.scrum_projects_active?
-          # We originally planned to render a check_box here. But since this changes the way Rails will submit the parameters,
-          # this would require changing the controller or services, too. With a feature flag in place, this adds quite a
-          # lot of complexity.
-          # To circumvent this, we will use a select list with two options for now. This will not require any changes to
-          # controllers or services. We can fix this once the feature flag has been removed.
-          f.select_list(
-            name: "version[version_settings_attributes][][display]",
-            scope_name_to_model: false,
-            label: I18n.t(:label_used_as_backlog),
-            input_width: :small
-          ) do |list|
-            # Maintain the current setting for the sake of migrating sprints to versions later on
-            current_display_setting = setting.display
-            value_for_no = if current_display_setting == VersionSetting::DISPLAY_RIGHT || current_display_setting.nil?
-                             VersionSetting::DISPLAY_NONE
-                           else
-                             current_display_setting
-                           end
-
-            list.option(label: I18n.t(:general_text_no),
-                        value: value_for_no,
-                        selected: setting.display != VersionSetting::DISPLAY_RIGHT)
-
-            list.option(label: I18n.t(:general_text_yes),
-                        value: VersionSetting::DISPLAY_RIGHT,
-                        selected: setting.display == VersionSetting::DISPLAY_RIGHT)
-          end
-        else
-          f.select_list(
-            name: "version[version_settings_attributes][][display]",
-            scope_name_to_model: false,
-            label: I18n.t(:label_column_in_backlog),
-            input_width: :small
-          ) do |list|
-            position_display_options.each do |label, value|
-              list.option(label:, value:, selected: setting.display == value)
-            end
-          end
-        end
-
-        if setting.persisted?
-          f.hidden(
-            name: "version[version_settings_attributes][][id]",
-            value: setting.id,
-            scope_name_to_model: false
-          )
-        end
-      end
-
       render_custom_fields(form: f)
 
       f.submit(
@@ -200,36 +147,6 @@ module Versions
 
     def wiki_pages_disabled?
       contract.assignable_wiki_pages.none?
-    end
-
-    def backlogs_enabled?
-      resolved_project.backlogs_enabled?
-    end
-
-    def resolved_project
-      @project || version.project
-    end
-
-    def version_setting_for_project
-      setting = version.version_settings.detect { |vs| vs.project_id == resolved_project.id || vs.project_id.nil? }
-      setting || version.version_settings.new(display: VersionSetting::DISPLAY_LEFT, project: resolved_project)
-    end
-
-    def position_display_options
-      [VersionSetting::DISPLAY_NONE,
-       VersionSetting::DISPLAY_LEFT,
-       VersionSetting::DISPLAY_RIGHT].map { |s| [humanize_display_option(s), s] }
-    end
-
-    def humanize_display_option(option)
-      case option
-      when VersionSetting::DISPLAY_NONE
-        I18n.t("version_settings_display_option_none")
-      when VersionSetting::DISPLAY_LEFT
-        I18n.t("version_settings_display_option_left")
-      when VersionSetting::DISPLAY_RIGHT
-        I18n.t("version_settings_display_option_right")
-      end
     end
   end
 end

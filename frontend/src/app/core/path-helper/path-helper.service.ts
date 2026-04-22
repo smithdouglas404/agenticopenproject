@@ -247,6 +247,10 @@ export class PathHelperService {
     return `${this.boardsPath(projectIdentifier)}/new`;
   }
 
+  public boardDetailsPath(projectIdentifier:string|null, boardId:string|number, workPackageId:string|number) {
+    return `${this.boardsPath(projectIdentifier)}/${boardId}/details/${workPackageId}`;
+  }
+
   public projectDashboardsPath(projectIdentifier:string) {
     return `${this.projectPath(projectIdentifier)}/dashboards`;
   }
@@ -405,6 +409,12 @@ export class PathHelperService {
 
   public workPackagesBulkDeletePath() {
     return `${this.workPackagesPath(null)}/bulk`;
+  }
+
+  public workPackagesBulkDeleteDialogPath(ids:string[], backUrl?:string) {
+    const params = ids.map((id) => `ids[]=${encodeURIComponent(id)}`).join('&');
+    const backParam = backUrl ? `&back_url=${encodeURIComponent(backUrl)}` : '';
+    return `${this.workPackagesPath(null)}/bulk/delete_dialog?${params}${backParam}`;
   }
 
   public workPackagesBulkReassignmentPath() {

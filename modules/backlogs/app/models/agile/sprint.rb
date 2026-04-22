@@ -38,12 +38,19 @@ module Agile
     include ::Scopes::Scoped
 
     belongs_to :project
-    has_many :work_packages, dependent: :nullify
+    has_many :work_packages, inverse_of: :sprint, dependent: :nullify
+    has_many :task_boards,
+             as: :linked,
+             class_name: "Boards::Grid",
+             inverse_of: :linked,
+             dependent: :nullify
 
     scopes :for_project,
            :not_completed,
            :order_by_date,
-           :visible
+           :receiving_projects,
+           :visible,
+           :native_to_sprint_source
 
     enum :status,
          {
@@ -54,15 +61,19 @@ module Agile
          default: "in_planning",
          validate: true
 
-    validates :name, presence: true
-    validates :project, presence: true
-    validates :start_date, presence: true
-    validates :finish_date, presence: true
+    validates :name, :project, presence: true
+    validates :start_date, :finish_date, presence: true, if: :active?
     validates :finish_date,
               comparison: { greater_than_or_equal_to: :start_date },
-              if: :start_date?
+              if: :date_range_set?
 
-    validate :validate_only_one_active_sprint_per_project
+    validates :status,
+              uniqueness: {
+                scope: :project_id,
+                conditions: -> { active },
+                message: :only_one_active_sprint_allowed
+              },
+              if: :active?
 
     def date_range_set?
       start_date? && finish_date?
@@ -74,22 +85,26 @@ module Agile
       Day.working.from_range(from: start_date, to: finish_date).count
     end
 
-    private
-
-    # TODO: consider moving this validation to the database level to ensure data integrity.
-    # Doing this in Rails can lead to race conditions. Revisit this topic once the sharing
-    # logic has been fully specified.
-    def validate_only_one_active_sprint_per_project
-      return if !active? || project_id.blank?
-
-      existing_active_sprint = self.class
-                                   .where(project_id:, status: "active")
-                                   .where.not(id:)
-                                   .exists?
-
-      if existing_active_sprint
-        errors.add(:status, :only_one_active_sprint_allowed)
-      end
+    def task_board_for(project)
+      task_boards.find_by(project:)
     end
+
+    def work_packages_for(project)
+      work_packages.where(project:).order_by_position
+    end
+
+    def owned_by?(project)
+      project_id == project.id
+    end
+
+    def shared_with?(project)
+      self.class.for_project(project).exists?(id:) && !owned_by?(project)
+    end
+
+    def visible_to?(project)
+      self.class.for_project(project).exists?(id:)
+    end
+
+    def to_s = name
   end
 end

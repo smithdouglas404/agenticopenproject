@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
 import { Injector } from '@angular/core';
 import { States } from 'core-app/core/states/states.service';
@@ -68,9 +68,8 @@ describe('WorkPackage', () => {
     loadWeekdays: () => of(true),
   };
 
-  beforeEach(waitForAsync(() => {
-    // noinspection JSIgnoredPromiseFromCall
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
     imports: [OpenprojectHalModule],
     providers: [
         HalResourceService,
@@ -91,16 +90,13 @@ describe('WorkPackage', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
     ]
-})
-      .compileComponents()
-      .then(() => {
-        halResourceService = TestBed.inject(HalResourceService);
-        injector = TestBed.inject(Injector);
-        halResourceNotification = injector.get(HalResourceNotificationService);
+}).compileComponents();
+    halResourceService = TestBed.inject(HalResourceService);
+    injector = TestBed.inject(Injector);
+    halResourceNotification = injector.get(HalResourceNotificationService);
 
-        halResourceService.registerResource('WorkPackage', { cls: WorkPackageResource });
-      });
-  }));
+    halResourceService.registerResource('WorkPackage', { cls: WorkPackageResource });
+  });
 
   describe('when creating an empty work package', () => {
     beforeEach(createWorkPackage);
@@ -111,6 +107,87 @@ describe('WorkPackage', () => {
 
     it('should return true for `isNewResource`', () => {
       expect(isNewResource(workPackage)).toBeTruthy();
+    });
+  });
+
+  describe('displayId', () => {
+    afterEach(() => {
+      source = undefined;
+    });
+
+    describe('when displayId is present (semantic mode)', () => {
+      beforeEach(() => {
+        source = { id: 42, displayId: 'PROJ-7' };
+        createWorkPackage();
+      });
+
+      it('should return the semantic identifier', () => {
+        expect(workPackage.displayId).toEqual('PROJ-7');
+      });
+
+      it('should not override the numeric id', () => {
+        expect(workPackage.id).toEqual('42');
+      });
+    });
+
+    describe('when displayId is present (classic mode)', () => {
+      beforeEach(() => {
+        source = { id: 42, displayId: '42' };
+        createWorkPackage();
+      });
+
+      it('should return the numeric displayId as string', () => {
+        expect(workPackage.displayId).toEqual('42');
+      });
+    });
+
+});
+
+  describe('formattedId', () => {
+    afterEach(() => {
+      source = undefined;
+    });
+
+    it('should return semantic identifier without hash prefix', () => {
+      source = { id: 42, displayId: 'PROJ-7' };
+      createWorkPackage();
+
+      expect(workPackage.formattedId).toEqual('PROJ-7');
+    });
+
+    it('should prefix numeric id with # in classic mode', () => {
+      source = { id: 42, displayId: '42' };
+      createWorkPackage();
+
+      expect(workPackage.formattedId).toEqual('#42');
+    });
+
+});
+
+  describe('subjectWithId', () => {
+    afterEach(() => {
+      source = undefined;
+    });
+
+    it('should include semantic displayId without hash in parentheses', () => {
+      source = { id: 42, displayId: 'PROJ-7', subject: 'Fix the bug' };
+      createWorkPackage();
+
+      expect(workPackage.subjectWithId()).toEqual('Fix the bug (PROJ-7)');
+    });
+
+    it('should include hash-prefixed numeric id in classic mode', () => {
+      source = { id: 42, displayId: '42', subject: 'Fix the bug' };
+      createWorkPackage();
+
+      expect(workPackage.subjectWithId()).toEqual('Fix the bug (#42)');
+    });
+
+    it('should omit id suffix for new resources', () => {
+      source = { subject: 'New task' };
+      createWorkPackage();
+
+      expect(workPackage.subjectWithId()).toEqual('New task');
     });
   });
 

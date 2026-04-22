@@ -46,9 +46,8 @@ module WorkPackages
     attribute :type_id
     attribute :priority_id
     attribute :category_id
-    # TODO: manage_sprint_items can be removed once the sprint_id is in place.
     attribute :version_id,
-              permission: %i(assign_versions manage_sprint_items) do
+              permission: :assign_versions do
       validate_version_is_assignable
     end
 
@@ -136,9 +135,6 @@ module WorkPackages
               presence: true,
               unless: -> { model.type&.replacement_pattern_defined_for?(:subject) }
     validates :subject, length: { maximum: 255 }
-
-    # TODO: add validation, check permission (#71253)
-    attribute :sprint_id
 
     validates :due_date,
               date: { after_or_equal_to: :start_date,

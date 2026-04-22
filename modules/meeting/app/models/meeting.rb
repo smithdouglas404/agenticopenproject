@@ -40,7 +40,6 @@ class Meeting < ApplicationRecord
   belongs_to :author, class_name: "User"
 
   belongs_to :recurring_meeting, optional: true
-  has_one :scheduled_meeting, inverse_of: :meeting
 
   has_many :time_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
 
@@ -64,6 +63,9 @@ class Meeting < ApplicationRecord
   scope :not_recurring, -> { where(recurring_meeting_id: nil) }
   scope :recurring, -> { where.not(recurring_meeting_id: nil) }
 
+  # Meetings that represent an occurrence of a recurring series
+  scope :recurring_occurrence, -> { not_templated.recurring }
+
   scope :from_tomorrow, -> { where(start_time: Date.tomorrow.beginning_of_day..) }
   scope :from_today, -> { where(start_time: Time.zone.today.beginning_of_day..) }
 
@@ -76,7 +78,8 @@ class Meeting < ApplicationRecord
   }
 
   scope :visible, ->(*args) {
-    includes(:project)
+    not_cancelled
+      .includes(:project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_meetings))
   }
@@ -123,13 +126,16 @@ class Meeting < ApplicationRecord
 
   validates :title, :project_id, presence: true
   validates :sharing, absence: true, unless: :onetime_template?
+  validates :recurrence_start_time, absence: true, if: :template?
+  validates :recurrence_start_time, presence: true, if: -> { recurring? && !template? }
 
   validates :duration, numericality: { greater_than: 0 }
 
   before_save :add_new_participants_as_watcher
 
   after_update :send_updated_mail, if: -> {
-    saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location? || saved_change_to_title?
+    !template? &&
+      (saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location? || saved_change_to_title?)
   }
 
   enum :state, {
@@ -152,6 +158,18 @@ class Meeting < ApplicationRecord
     available_onetime_templates
       .where(project_id: project.id).where(project_id: accessible_ids)
       .or(available_onetime_templates.where(sharing: :descendants, project_id: project.ancestors.select(:id)))
+      .or(available_onetime_templates.where(sharing: :system))
+  end
+
+  def self.templates_visible_globally(user = User.current)
+    accessible = Project.allowed_to(user, :view_meetings).to_a
+    return none if accessible.empty?
+
+    ancestor_ids = accessible.map(&:ancestors).reduce(:or).select(:id)
+
+    available_onetime_templates
+      .where(project_id: accessible.map(&:id))
+      .or(available_onetime_templates.where(sharing: :descendants, project_id: ancestor_ids))
       .or(available_onetime_templates.where(sharing: :system))
   end
 
@@ -293,7 +311,8 @@ class Meeting < ApplicationRecord
 
   def send_emails?
     return false if onetime_template?
-    return false if template? && recurring_meeting.scheduled_meetings.none?
+    return false if template? && recurring_meeting.meetings.not_templated.not_cancelled.none?
+    return false if closed? || cancelled?
 
     persisted? && notify?
   end

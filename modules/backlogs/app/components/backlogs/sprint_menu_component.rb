@@ -30,7 +30,7 @@
 
 module Backlogs
   class SprintMenuComponent < ApplicationComponent
-    include RbCommonHelper
+    include OpPrimer::ComponentHelpers
 
     attr_reader :sprint, :project, :current_user
 
@@ -50,18 +50,18 @@ module Backlogs
       )
     end
 
-    def stories
-      @sprint.work_packages
+    private
+
+    def show_task_board_link?
+      sprint.task_board_for(project).present?
     end
 
-    private
+    def show_burndown_link?
+      sprint.active?
+    end
 
     def user_allowed?(permission)
       current_user.allowed_in_project?(permission, project)
-    end
-
-    def available_story_types
-      @available_story_types ||= story_types & project.types
     end
   end
 end

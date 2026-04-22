@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Projects::Settings::BacklogSharingsController, with_flag: { scrum_projects: true } do
+RSpec.describe Projects::Settings::BacklogSharingsController do
   shared_let(:user) { create(:admin) }
 
   current_user { user }
@@ -48,22 +48,6 @@ RSpec.describe Projects::Settings::BacklogSharingsController, with_flag: { scrum
         expect(response).to render_template("projects/settings/backlog_sharings/show")
         expect(flash[:error]).to eq I18n.t(:notice_unsuccessful_update_with_reason, reason: "invalid setting")
       end
-    end
-  end
-
-  context "when scrum_projects feature flag is inactive", with_flag: { scrum_projects: false } do
-    let(:project) { build_stubbed(:project) }
-
-    it "returns 404 for show" do
-      get :show, params: { project_id: project.identifier }
-
-      expect(response).to have_http_status(:not_found)
-    end
-
-    it "returns 404 for update" do
-      patch :update, params: { project_id: project.identifier, project: { sprint_sharing: "no_sharing" } }
-
-      expect(response).to have_http_status(:not_found)
     end
   end
 end

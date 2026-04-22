@@ -31,13 +31,11 @@
 require "spec_helper"
 
 RSpec.describe "version edit", :js do
-  let(:user) do
-    create(:user,
-           member_with_permissions: { version.project => %i[manage_versions view_work_packages] })
-  end
-  let(:version) { create(:version) }
-  let(:project) { version.project }
+  let(:project) { create(:project, enabled_module_names: %w[backlogs work_package_tracking]) }
+  let(:version) { create(:version, project:, sharing: "descendants") }
   let(:new_version_name) { "A new version name" }
+  let(:permissions) { { project => %i[manage_versions view_work_packages] } }
+  let(:user) { create(:user, member_with_permissions: permissions) }
 
   before do
     login_as(user)

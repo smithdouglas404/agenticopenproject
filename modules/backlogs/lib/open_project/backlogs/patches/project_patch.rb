@@ -37,13 +37,6 @@ module OpenProject::Backlogs::Patches::ProjectPatch
     has_many :sprints, class_name: "Agile::Sprint", dependent: :destroy
   end
 
-  def rebuild_positions
-    return unless backlogs_enabled?
-
-    shared_versions.each { |v| v.rebuild_story_positions(self) }
-    nil
-  end
-
   def backlogs_enabled?
     module_enabled? "backlogs"
   end

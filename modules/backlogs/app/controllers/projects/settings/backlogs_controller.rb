@@ -42,7 +42,7 @@ class Projects::Settings::BacklogsController < Projects::SettingsController
   end
 
   def rebuild_positions
-    @project.rebuild_positions
+    WorkPackages::RebuildPositionsService.new(project: @project).call
     flash[:notice] = I18n.t("backlogs.positions_rebuilt_successfully")
 
     redirect_to_backlogs_settings
