@@ -121,5 +121,41 @@ RSpec.describe Projects::Exports::QueryExporter do
         expect(subject).to be_empty
       end
     end
+
+    context "with archived projects" do
+      shared_let(:archived_project) do
+        create(:project, name: "Archived project", active: false)
+      end
+
+      context "as an admin" do
+        shared_let(:admin_user) { create(:admin) }
+
+        before do
+          login_as(admin_user)
+        end
+
+        let(:query) { ProjectQuery.new(user: admin_user).select(:name) }
+
+        it "includes archived projects in the export" do
+          expect(subject).to include(archived_project)
+        end
+
+        context "with an active filter set to false" do
+          before do
+            query.where("active", "=", [OpenProject::Database::DB_VALUE_FALSE])
+          end
+
+          it "returns only the archived project" do
+            expect(subject).to contain_exactly(archived_project)
+          end
+        end
+      end
+
+      context "as a non-admin user" do
+        it "does not include archived projects in the export" do
+          expect(subject).not_to include(archived_project)
+        end
+      end
+    end
   end
 end
