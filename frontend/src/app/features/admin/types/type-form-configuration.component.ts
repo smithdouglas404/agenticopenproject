@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import {
   ExternalRelationQueryConfigurationService,
@@ -39,7 +32,6 @@ export const emptyTypeGroup = '__empty';
 
 @Component({
   selector: 'opce-admin-type-form-configuration',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './type-form-configuration.html',
   providers: [
     TypeBannerService,
@@ -48,6 +40,10 @@ export const emptyTypeGroup = '__empty';
   standalone: false,
 })
 export class TypeFormConfigurationComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit, OnDestroy {
+  @Input() focusedKey:string|null = null;
+
+  private submitted = false;
+
   public text = {
     drag_to_activate: this.I18n.t('js.admin.type_form.drag_to_activate'),
     reset: this.I18n.t('js.admin.type_form.reset_to_defaults'),
@@ -78,9 +74,19 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   private no_filter_query:string;
 
   private eventListeners = {
+    memoizeSubmit: () => {
+      this.submitted = true;
+    },
+    submitOnMouseDown: () => {
+      setTimeout(() => {
+        if (!this.submitted) {
+          this.form.requestSubmit();
+        }
+      }, 50);
+    },
     typeFormUpdater: () => {
       this.updateHiddenFields();
-    }
+    },
   };
 
   constructor(
@@ -107,6 +113,15 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
     this.no_filter_query = this.element.dataset.noFilterQuery!;
     this.form = this.element.closest('form')!;
     this.submit = this.form.querySelector('.form-configuration--save')!;
+
+    // In the following we are triggering the form submit ourselves to work around
+    // a firefox shortcoming. But to avoid double submits which are sometimes not canceled fast
+    // enough, we need to memoize whether we have already submitted.
+    this.submitted = false;
+    this.form.addEventListener('submit', this.eventListeners.memoizeSubmit);
+
+    // Capture mousedown on button because firefox breaks blur on click
+    this.submit.addEventListener('mousedown', this.eventListeners.submitOnMouseDown);
 
     // Capture regular form submit
     this.form.addEventListener('submit', this.eventListeners.typeFormUpdater);
@@ -159,6 +174,9 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   }
 
   ngOnDestroy():void {
+    this.form?.removeEventListener('submit', this.eventListeners.memoizeSubmit);
+    this.form?.removeEventListener('submit', this.eventListeners.typeFormUpdater);
+    this.submit?.removeEventListener('mousedown', this.eventListeners.submitOnMouseDown);
     this.dragula.destroy('groups');
     this.dragula.destroy('attributes');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call

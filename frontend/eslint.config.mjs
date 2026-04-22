@@ -4,6 +4,7 @@ import tseslint from 'typescript-eslint';
 import jasmine from 'eslint-plugin-jasmine';
 import angular from 'angular-eslint';
 import stylistic from '@stylistic/eslint-plugin';
+import htmleslint from '@html-eslint/eslint-plugin';
 
 import { defineConfig, globalIgnores } from 'eslint/config';
 
@@ -141,6 +142,7 @@ export default defineConfig([
   },
   {
     files: ['**/*.html'],
+    plugins: { '@html-eslint': htmleslint },
     extends: [
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
@@ -154,7 +156,9 @@ export default defineConfig([
         'error',
         { 'allowList': ['textContent'] }
       ],
-      '@angular-eslint/template/prefer-control-flow': 'error'
+      '@angular-eslint/template/prefer-control-flow': 'error',
+      '@angular-eslint/template/attributes-order': ['error', { alphabetical: false }],
+      '@html-eslint/sort-attrs': ['error', { priority: ['id', 'type', 'class', 'style'] }]
     }
   },
   {
