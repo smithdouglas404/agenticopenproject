@@ -413,7 +413,7 @@ cs:
         autofix_preview:
           error_too_long: Musí obsahovat maximálně 10 znaků
           error_numerical: Nemůže být čistě číselný
-          error_starts_with_number: Nemůže začínat číslem
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Speciální znaky nejsou povoleny
           error_not_fully_uppercased: Musí být napsán velkými písmeny
           error_in_use: Již se používá jako identifikátor jiného projektu
@@ -435,7 +435,8 @@ cs:
           checkbox_label: Chápu, že se tím trvale změní všechny identifikátory pracovních balíčků
         success_banner: Úspěšně aktualizován formát identifikátoru pracovního balíčku.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions
@@ -2265,6 +2266,7 @@ cs:
           not_whitelisted: není povoleno konfigurací.
           invalid_url: není platná URL nebo cesta k úložišti.
           must_not_be_ssh: nesmí být SSH url.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: není adresář.
         role:
           attributes:

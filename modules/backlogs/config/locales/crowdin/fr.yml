@@ -178,8 +178,8 @@ fr:
         move_menu: Déplacer
     burndown_chart:
       show:
-        blankslate_title: No burndown data available
-        blankslate_description: Set start and end date for the sprint to generate a burndown chart.
+        blankslate_title: Aucune donnée de gravure disponible
+        blankslate_description: Définissez les dates de début et de fin du sprint afin de générer un graphique burndown.
   burndown:
     story_points: Story points
     story_points_ideal: Story points (idéal)

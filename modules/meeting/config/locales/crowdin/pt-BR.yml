@@ -32,6 +32,7 @@ pt-BR:
         location: Local
         duration: Duração
         notes: Anotações
+        recurrence_start_time: Scheduled start time
         participants: Participantes
         participant:
           one: 1 participante
@@ -699,9 +700,12 @@ pt-BR:
   text_agenda_item_duplicate_in_next_meeting: Tem certeza de que deseja adicionar uma cópia deste item da pauta à próxima reunião, em %{date} às %{time}? Os resultados não serão duplicados.
   text_agenda_item_duplicated_in_next_meeting: Item da pauta duplicado na próxima reunião, em %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Este pacote de trabalho ainda não está programado na agenda de uma reunião futura.
-  text_agenda_item_no_available_occurrence: Todas as ocorrências futuras foram canceladas.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Observação: Ignorar a ocorrência cancelada em %{date}.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Observação: Ignorar %{count} ocorrências canceladas.'
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: Use o botão "Adicionar à reunião" para adicionar este pacote de trabalho a uma próxima reunião.
   text_work_package_has_no_past_meeting_agenda_items: Este pacote de trabalho não foi adicionado como item da pauta em uma reunião anterior.
   text_email_updates_muted: As atualizações de calendário por e-mail estão silenciadas. Os participantes não receberão convites atualizados por e-mail quando você fizer alterações.

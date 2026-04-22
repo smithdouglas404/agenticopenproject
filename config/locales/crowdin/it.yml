@@ -401,7 +401,7 @@ it:
         autofix_preview:
           error_too_long: Deve essere di 10 caratteri o meno
           error_numerical: Non può essere puramente numerico
-          error_starts_with_number: Non può iniziare con un numero
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: I caratteri speciali non sono consentiti
           error_not_fully_uppercased: Deve essere maiuscolo
           error_in_use: Già in uso come identificatore attivo di un altro progetto
@@ -421,7 +421,8 @@ it:
           checkbox_label: Comprendo che questa operazione modificherà in modo permanente tutti gli ID delle macro-attività
         success_banner: Formato degli identificatori delle macro-attività aggiornato correttamente.
         in_progress:
-          banner_message: Gli identificatori dei progetti sono attualmente in fase di aggiornamento agli identificatori semantici basati sul progetto. Questa operazione potrebbe richiedere un po' di tempo.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Transizioni predefinite
@@ -2223,6 +2224,7 @@ it:
           not_whitelisted: non è consentito dalla configurazione.
           invalid_url: non è un percorso o un URL di repository valido.
           must_not_be_ssh: non deve essere un URL SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: non è una directory.
         role:
           attributes:

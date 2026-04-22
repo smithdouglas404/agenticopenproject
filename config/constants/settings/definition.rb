@@ -815,6 +815,9 @@ module Settings
       },
       password_active_rules: {
         default: %w[lowercase uppercase numeric special],
+        default_by_env: {
+          test: []
+        },
         allowed: %w[lowercase uppercase numeric special]
       },
       password_count_former_banned: {
@@ -825,9 +828,6 @@ module Settings
       },
       password_min_length: {
         default: 10
-      },
-      password_min_adhered_rules: {
-        default: 0
       },
       # TODO: turn into array of ints
       # Requires a migration to be written

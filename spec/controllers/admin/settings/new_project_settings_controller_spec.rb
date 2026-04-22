@@ -166,7 +166,6 @@ RSpec.describe Admin::Settings::NewProjectSettingsController do
         {
           password_min_length: 42,
           password_active_rules: %w(uppercase lowercase),
-          password_min_adhered_rules: 7,
           password_days_valid: 13,
           password_count_former_banned: 80,
           lost_password: false
@@ -177,7 +176,6 @@ RSpec.describe Admin::Settings::NewProjectSettingsController do
         old_settings = {
           password_min_length: 10,
           password_active_rules: [],
-          password_min_adhered_rules: 0,
           password_days_valid: 365,
           password_count_former_banned: 2,
           lost_password: true
@@ -205,10 +203,6 @@ RSpec.describe Admin::Settings::NewProjectSettingsController do
 
         it "sets the active character classes to lowercase and uppercase" do
           expect(Setting[:password_active_rules]).to eq %w[uppercase lowercase]
-        end
-
-        it "sets the required number of classes to 7" do
-          expect(Setting[:password_min_adhered_rules]).to eq 7
         end
 
         it "sets passwords to expire after 13 days" do
@@ -241,10 +235,6 @@ RSpec.describe Admin::Settings::NewProjectSettingsController do
 
         it "does not set the active character classes to lowercase and uppercase" do
           expect(Setting[:password_active_rules]).to eq []
-        end
-
-        it "does not set the required number of classes to 7" do
-          expect(Setting[:password_min_adhered_rules]).to eq 0
         end
 
         it "does not set passwords to expire after 13 days" do
