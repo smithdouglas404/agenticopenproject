@@ -33,5 +33,9 @@ module Wikis::Admin
     include OpPrimer::ComponentHelpers
 
     alias_method :wiki_providers, :model
+
+    def provider_url(wiki_provider)
+      wiki_provider.url.presence
+    end
   end
 end
