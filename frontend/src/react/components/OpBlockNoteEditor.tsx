@@ -92,12 +92,21 @@ export function OpBlockNoteEditor({
       } as unknown as CollaborativeUser,
     };
 
+    const safeProvider = hocuspocusProvider
+      ? {
+          awareness:
+            hocuspocusProvider.awareness ?? undefined,
+        }
+      : undefined;
+
     return {
       schema,
       collaboration: {
         ...baseCollaboration,
-        provider: hocuspocusProvider ?? null,
-        ...(hocuspocusProvider && { showCursorLabels: 'activity' as const }),
+        ...(safeProvider && { provider: safeProvider }),
+        ...(safeProvider && {
+          showCursorLabels: 'activity' as const,
+        }),
       },
       dictionary: localeDictionary,
       ...(attachmentsEnabled && { uploadFile }),

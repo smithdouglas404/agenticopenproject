@@ -78,14 +78,14 @@ export default function OpBlockNoteContainer({
   }
 
   return (
-    <OpBlockNoteEditor
-      activeUser={activeUser}
-      readOnly={readOnly}
-      openProjectUrl={openProjectUrl}
-      attachmentsUploadUrl={attachmentsUploadUrl}
-      attachmentsCollectionKey={attachmentsCollectionKey}
-      hocuspocusProvider={hocuspocusProvider}
-      doc={doc}
-    />
+      <OpBlockNoteEditor
+        activeUser={activeUser}
+        readOnly={readOnly}
+        openProjectUrl={openProjectUrl}
+        attachmentsUploadUrl={attachmentsUploadUrl}
+        attachmentsCollectionKey={attachmentsCollectionKey}
+        hocuspocusProvider={hocuspocusProvider}
+        doc={doc}
+      />
   );
 }
