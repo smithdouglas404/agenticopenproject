@@ -51,7 +51,8 @@ module Backlogs
              layout: false)
     end
 
-    # Move a story from an Agile::Sprint to another Agile::Sprint, or the Inbox.
+    # Move a story from an Agile::Sprint to another Agile::Sprint, the Inbox,
+    # or an Agile::BacklogBucket.
     def move
       # The update service reloads the story internally (via #move_after),
       # so we memoize the previous sprint_id before the call.
@@ -62,7 +63,9 @@ module Backlogs
         return respond_with_turbo_streams(status: :unprocessable_entity)
       end
 
-      if target_inbox?(move_attributes)
+      if target_bucket?(move_attributes)
+        moved_to_bucket(move_attributes[:backlog_bucket_id])
+      elsif target_inbox?(move_attributes)
         moved_to_inbox
       elsif target_sprint?(move_attributes) && @story.sprint_id != sprint_id_was
         moved_to_sprint
@@ -132,6 +135,19 @@ module Backlogs
       )
     end
 
+    def moved_to_bucket(bucket_id)
+      bucket = Agile::BacklogBucket.where(project: @project).find_by(id: bucket_id)
+      return unless bucket
+
+      render_success_flash_message_via_turbo_stream(
+        message: I18n.t(:notice_successful_move, from: @sprint.name, to: bucket.name)
+      )
+      replace_via_turbo_stream(
+        component: Backlogs::BacklogBucketComponent.new(backlog_bucket: bucket, project: @project),
+        method: :morph
+      )
+    end
+
     def moved_to_sprint
       moved_to(new_sprint: @story.sprint)
     end
@@ -149,8 +165,14 @@ module Backlogs
       move_attributes[:sprint_id].present?
     end
 
+    def target_bucket?(move_attributes)
+      move_attributes[:backlog_bucket_id].present?
+    end
+
     def target_inbox?(move_attributes)
-      move_attributes.key?(:sprint_id) && move_attributes[:sprint_id].nil?
+      move_attributes.key?(:sprint_id) &&
+        move_attributes[:sprint_id].nil? &&
+        move_attributes[:backlog_bucket_id].nil?
     end
 
     def replace_sprint_component_via_turbo_stream(sprint:)

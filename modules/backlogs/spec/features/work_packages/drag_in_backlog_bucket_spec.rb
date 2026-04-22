@@ -125,7 +125,7 @@ RSpec.describe "Dragging work packages in backlog buckets",
     backlogs_page.visit!
     backlogs_page.expect_no_backlog_bucket_blankslate(bucket_gamma)
 
-    backlogs_page.drag_work_package_to_backlog_bucket(gamma_wp1, backlogs_page.inbox_backlog_bucket)
+    backlogs_page.drag_work_package_to_backlog_inbox(gamma_wp1)
 
     backlogs_page.expect_backlog_bucket_blankslate(bucket_gamma)
   end

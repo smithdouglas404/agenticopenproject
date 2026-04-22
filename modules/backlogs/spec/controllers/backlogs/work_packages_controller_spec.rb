@@ -134,6 +134,31 @@ RSpec.describe Backlogs::WorkPackagesController do
       end
     end
 
+    context "with an Agile::BacklogBucket as target" do
+      let(:bucket) { create(:backlog_bucket, project:, name: "Target bucket") }
+
+      it "responds with success and moves story to the bucket", :aggregate_failures do
+        put :move, params: {
+                     project_id: project.id,
+                     sprint_id: agile_sprint.id,
+                     id: story_in_agile_sprint.id,
+                     target_id: "backlog_bucket:#{bucket.id}",
+                     prev_id: nil
+                   },
+                   format: :turbo_stream
+
+        expect(response).to be_successful
+        expect(response).to have_http_status :ok
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-bucket-component-#{bucket.id}"
+        expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-inbox-component-#{project.id}"
+        story_in_agile_sprint.reload
+        expect(story_in_agile_sprint.backlog_bucket_id).to eq(bucket.id)
+        expect(story_in_agile_sprint.sprint_id).to be_nil
+      end
+    end
+
     context "with Inbox as target" do
       let!(:existing_inbox_item) { create(:work_package, project:, status:, position: 1) }
 
