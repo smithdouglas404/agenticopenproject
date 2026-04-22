@@ -33,10 +33,11 @@ class Member < ApplicationRecord
 
   ALLOWED_ENTITIES = [
     "WorkPackage",
-    "ProjectQuery"
+    "PersistedQuery"
   ].freeze
 
   extend DeprecatedAlias
+
   belongs_to :principal, foreign_key: "user_id", inverse_of: "members", optional: false
   belongs_to :entity, polymorphic: true, optional: true
   belongs_to :project, optional: true
