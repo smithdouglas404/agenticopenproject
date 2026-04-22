@@ -34,16 +34,26 @@ module Users::PermissionChecks
   included do
     # Some Ruby magic. Create methods for each entity we can have memberships on automatically
     # i.e. allowed_in_work_package? and allowed_in_any_work_package?
-    Member::ALLOWED_ENTITIES.each do |entity_model_name|
-      entity_class = entity_model_name.constantize
-      entity_name_underscored = entity_class.model_name.element
-
-      define_method :"allowed_in_#{entity_name_underscored}?" do |permission, entity|
-        allowed_in_entity?(permission, entity, entity_class)
+    Member::ALLOWED_ENTITIES.each do |entity_model_name_or_array|
+      if entity_model_name_or_array.is_a?(Array)
+        entity_model_name = entity_model_name_or_array.first
+        additional_model_names = entity_model_name_or_array[1..]
+      else
+        entity_model_name = entity_model_name_or_array
+        additional_model_names = []
       end
 
-      define_method :"allowed_in_any_#{entity_name_underscored}?" do |permission, in_project: nil|
-        allowed_in_any_entity?(permission, entity_class, in_project:)
+      entity_class = entity_model_name.constantize
+      method_names = [entity_class.model_name.element] + additional_model_names.map { |name| name.constantize.model_name.element }
+
+      method_names.each do |entity_name_underscored|
+        define_method :"allowed_in_#{entity_name_underscored}?" do |permission, entity|
+          allowed_in_entity?(permission, entity, entity_class)
+        end
+
+        define_method :"allowed_in_any_#{entity_name_underscored}?" do |permission, in_project: nil|
+          allowed_in_any_entity?(permission, entity_class, in_project:)
+        end
       end
     end
   end
