@@ -47,7 +47,7 @@ See COPYRIGHT and LICENSE files for more details.
               concat render(
                 Primer::Beta::Counter.new(
                   scheme: :default,
-                  count: 1 / 0.0,
+                  count: @backlog_buckets.sum { it.work_packages.length },
                   round: true,
                   limit: 1_000,
                   hide_if_zero: true
