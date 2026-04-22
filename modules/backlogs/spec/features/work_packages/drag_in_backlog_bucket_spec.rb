@@ -42,10 +42,12 @@ RSpec.describe "Dragging work packages in backlog buckets",
 
   shared_let(:bucket_alpha) { create(:backlog_bucket, project:, name: "Alpha bucket") }
   shared_let(:bucket_beta)  { create(:backlog_bucket, project:, name: "Beta bucket") }
+  shared_let(:bucket_gamma) { create(:backlog_bucket, project:, name: "Gamma bucket") }
 
   shared_let(:alpha_wp1) { create(:work_package, project:, backlog_bucket: bucket_alpha, position: 1) }
   shared_let(:alpha_wp2) { create(:work_package, project:, backlog_bucket: bucket_alpha, position: 2) }
   shared_let(:alpha_wp3) { create(:work_package, project:, backlog_bucket: bucket_alpha, position: 3) }
+  shared_let(:gamma_wp1) { create(:work_package, project:, backlog_bucket: bucket_gamma, position: 1) }
   shared_let(:inbox_wp1) { create(:work_package, project:, backlog_bucket: nil, sprint: nil, position: 1) }
 
   let(:backlogs_page) { Pages::Backlog.new(project) }
@@ -108,6 +110,24 @@ RSpec.describe "Dragging work packages in backlog buckets",
     )
 
     expect(inbox_wp1.reload.backlog_bucket_id).to eq(bucket_beta.id)
+  end
+
+  it "hides the blankslate when dropping into a previously-empty bucket" do
+    backlogs_page.visit!
+    backlogs_page.expect_backlog_bucket_blankslate(bucket_beta)
+
+    backlogs_page.drag_work_package_to_backlog_bucket(alpha_wp1, bucket_beta)
+
+    backlogs_page.expect_no_backlog_bucket_blankslate(bucket_beta)
+  end
+
+  it "shows the blankslate after dragging the last work package out of a bucket" do
+    backlogs_page.visit!
+    backlogs_page.expect_no_backlog_bucket_blankslate(bucket_gamma)
+
+    backlogs_page.drag_work_package_to_backlog_bucket(gamma_wp1, backlogs_page.inbox_backlog_bucket)
+
+    backlogs_page.expect_backlog_bucket_blankslate(bucket_gamma)
   end
 
   context "without the :manage_sprint_items permission" do

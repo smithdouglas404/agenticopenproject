@@ -168,6 +168,48 @@ RSpec.describe Backlogs::InboxController do
       end
     end
 
+    context "when moving to an Agile::BacklogBucket" do
+      let!(:bucket) { create(:backlog_bucket, project:) }
+      let(:target_id) { "backlog_bucket:#{bucket.id}" }
+
+      it "replaces both the inbox and target bucket components", :aggregate_failures do
+        expect(response).to be_successful
+        expect(response).to have_turbo_stream action: "replace",
+                                              target: "backlogs-inbox-component-#{project.id}"
+        expect(response).to have_turbo_stream action: "replace",
+                                              target: "backlogs-backlog-bucket-component-#{bucket.id}"
+      end
+    end
+
+    context "when moving out of a bucket into the Inbox" do
+      let!(:bucket) { create(:backlog_bucket, project:) }
+      let(:work_package) { create(:work_package, project:, backlog_bucket: bucket) }
+      let(:target_id) { "inbox" }
+
+      it "replaces both the inbox and source bucket components", :aggregate_failures do
+        expect(response).to be_successful
+        expect(response).to have_turbo_stream action: "replace",
+                                              target: "backlogs-inbox-component-#{project.id}"
+        expect(response).to have_turbo_stream action: "replace",
+                                              target: "backlogs-backlog-bucket-component-#{bucket.id}"
+      end
+    end
+
+    context "when moving between two buckets" do
+      let!(:source_bucket) { create(:backlog_bucket, project:, name: "Source") }
+      let!(:target_bucket) { create(:backlog_bucket, project:, name: "Target") }
+      let(:work_package) { create(:work_package, project:, backlog_bucket: source_bucket) }
+      let(:target_id) { "backlog_bucket:#{target_bucket.id}" }
+
+      it "replaces both affected bucket components", :aggregate_failures do
+        expect(response).to be_successful
+        expect(response).to have_turbo_stream action: "replace",
+                                              target: "backlogs-backlog-bucket-component-#{source_bucket.id}"
+        expect(response).to have_turbo_stream action: "replace",
+                                              target: "backlogs-backlog-bucket-component-#{target_bucket.id}"
+      end
+    end
+
     context "when reordering within the Inbox" do
       let(:target_id) { "inbox" }
       let(:prev_id) { work_packages.first.id }

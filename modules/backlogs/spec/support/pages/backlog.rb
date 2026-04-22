@@ -407,6 +407,18 @@ module Pages
       end
     end
 
+    def expect_backlog_bucket_blankslate(bucket)
+      within_backlog_bucket(bucket) do
+        expect(page).to have_selector(:heading, level: 4, text: "Backlog bucket is empty")
+      end
+    end
+
+    def expect_no_backlog_bucket_blankslate(bucket)
+      within_backlog_bucket(bucket) do
+        expect(page).to have_no_selector(:heading, level: 4, text: "Backlog bucket is empty")
+      end
+    end
+
     def drag_work_package_to_backlog_bucket(work_package, bucket)
       moved_element = find(draggable_work_package_selector(work_package))
       target_element = find(bucket_selector(bucket))

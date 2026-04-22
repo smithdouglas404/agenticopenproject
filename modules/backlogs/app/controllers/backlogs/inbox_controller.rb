@@ -73,6 +73,7 @@ module Backlogs
 
     # Move a work package from the Inbox to a Sprint, or reorder it within the Inbox.
     def move
+      previous_bucket_id = @work_package.backlog_bucket_id
       attributes = move_attributes_from_target
 
       call = Stories::UpdateService
@@ -81,8 +82,7 @@ module Backlogs
 
       return failure_response(call.message) unless call.success?
 
-      replace_inbox_component_via_turbo_stream
-      replace_sprint_component_via_turbo_stream(attributes[:sprint_id]) if attributes[:sprint_id]
+      replace_components_after_move(attributes:, previous_bucket_id:)
       respond_with_turbo_streams
     end
 
@@ -90,6 +90,14 @@ module Backlogs
 
     def load_work_package
       @work_package = WorkPackage.visible.where(project: @project).find(params[:id])
+    end
+
+    def replace_components_after_move(attributes:, previous_bucket_id:)
+      replace_inbox_component_via_turbo_stream
+      replace_sprint_component_via_turbo_stream(attributes[:sprint_id]) if attributes[:sprint_id]
+      [attributes[:backlog_bucket_id], previous_bucket_id].compact.map(&:to_s).uniq.each do |bucket_id|
+        replace_bucket_component_via_turbo_stream(bucket_id)
+      end
     end
 
     def replace_inbox_component_via_turbo_stream
@@ -107,6 +115,16 @@ module Backlogs
       sprint = Agile::Sprint.for_project(@project).visible.find(sprint_id)
       replace_via_turbo_stream(
         component: Backlogs::SprintComponent.new(sprint:, project: @project),
+        method: :morph
+      )
+    end
+
+    def replace_bucket_component_via_turbo_stream(bucket_id)
+      bucket = Agile::BacklogBucket.where(project: @project).find_by(id: bucket_id)
+      return unless bucket
+
+      replace_via_turbo_stream(
+        component: Backlogs::BacklogBucketComponent.new(backlog_bucket: bucket, project: @project),
         method: :morph
       )
     end
