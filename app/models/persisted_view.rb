@@ -30,7 +30,7 @@
 
 class PersistedView < ApplicationRecord
   belongs_to :project, optional: true
-  belongs_to :principal, optional: true
+  belongs_to :principal, optional: true, inverse_of: :persisted_views
   belongs_to :query, polymorphic: true, optional: true
 
   belongs_to :parent, class_name: "PersistedView", optional: true
@@ -43,8 +43,23 @@ class PersistedView < ApplicationRecord
   scope :public_views, -> { where(public: true) }
   scope :private_views, ->(principal: User.current) { where(public: false, principal:) }
 
+  after_destroy :destroy_query_if_orphaned
+
   # Returns the query of this view or, if not set, the query of the parent view.
   def effective_query
     query || parent&.effective_query
+  end
+
+  private
+
+  # When this view is destroyed, also destroy its query unless another public
+  # view still references it. Views belonging to the same owner that are also
+  # going away (e.g. during user deletion) do not count as "still referencing"
+  # since only public views keep a query alive.
+  def destroy_query_if_orphaned
+    return if query.nil?
+    return if PersistedView.exists?(query:, public: true)
+
+    query.destroy!
   end
 end

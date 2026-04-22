@@ -34,7 +34,7 @@ class PersistedQuery < ApplicationRecord
   include ::Scopes::Scoped
 
   belongs_to :project, optional: true
-  belongs_to :principal, optional: true
+  belongs_to :principal, optional: true, inverse_of: :persisted_queries
 
   has_many :views, class_name: "PersistedView",
                    as: :query,
