@@ -431,7 +431,6 @@ RSpec.describe "form configuration", :js, :selenium do
         form.add_attribute_group("New Group")
         form.move_to(cf_identifier, "New Group")
         form.expect_attribute(key: cf_identifier)
-
       end
     end
 
@@ -459,7 +458,6 @@ RSpec.describe "form configuration", :js, :selenium do
 
         # Make visible
         form.expect_attribute(key: cf_identifier)
-
       end
 
       context "if inactive in project" do
@@ -528,15 +526,15 @@ RSpec.describe "form configuration", :js, :selenium do
   describe "without EE token", with_ee: false do
     let(:dialog) { Components::ConfirmationDialog.new }
 
-      it "must disable adding and renaming groups" do
-        login_as(admin)
-        visit edit_type_form_configuration_path(type)
+    it "must disable adding and renaming groups" do
+      login_as(admin)
+      visit edit_type_form_configuration_path(type)
 
-        within form.find_group("Details") do
-          find('.Box-header button[aria-haspopup="true"]').click
-        end
-        expect(page).to have_no_text(I18n.t("types.edit.form_configuration.rename_section"))
+      within form.find_group("Details") do
+        find(".Box-header button[aria-haspopup=\"true\"]").click
       end
+      expect(page).to have_no_text(I18n.t("types.edit.form_configuration.rename_section"))
+    end
   end
 
   describe "form submission", :js, with_ee: %i[edit_attribute_groups] do

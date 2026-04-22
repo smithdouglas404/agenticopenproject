@@ -29,18 +29,26 @@
  */
 
 import TypeFormConfigurationDragAndDropController from './type-form-configuration-drag-and-drop.controller';
+import type { Drake } from 'dragula';
+import type { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
+
+interface ReconnectableDragAndDropController {
+  drake:Drake|null;
+  autoscroll:DomAutoscrollService|null;
+  connect:() => void;
+}
 
 export default class TypeFormConfigurationRowsDragAndDropController extends TypeFormConfigurationDragAndDropController {
   static targets = ['container', 'scrollContainer'];
 
-  async drop(el: Element, target: Element, source: Element | null, sibling: Element | null) {
+  async drop(el:Element, target:Element, source:Element|null, sibling:Element|null) {
     await super.drop(el, target, source, sibling);
-    
+
     // After drop completes and DOM updates, reinitialize dragula
     setTimeout(() => {
       if (!this.element.isConnected) return;
-      
-      const parent = this as any;
+
+      const parent = this as unknown as ReconnectableDragAndDropController;
       if (parent.drake) {
         parent.drake.destroy();
         parent.drake = null;

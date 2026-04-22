@@ -59,6 +59,7 @@ module WorkPackageTypes
           key = group[:key].to_sym
           default_label = Type.default_groups[key]
           default_name = default_label ? I18n.t(default_label, default: key.to_s) : key.to_s
+          display_name = nil
           display_name = group[:name] if group[:name].present? && group[:name] != default_name
           result = [key, attributes]
           result << display_name if display_name.present?
