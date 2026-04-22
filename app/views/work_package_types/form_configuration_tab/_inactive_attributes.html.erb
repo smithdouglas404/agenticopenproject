@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render(border_box_container) do |box| %>
+<%= render(border_box_container(padding: :condensed)) do |box| %>
   <% box.with_header(font_weight: :bold) do %>
     <%= render(Primer::Beta::Text.new(font_weight: :bold)) do %>
       <%= t("types.edit.form_configuration.inactive_attributes_heading") %>

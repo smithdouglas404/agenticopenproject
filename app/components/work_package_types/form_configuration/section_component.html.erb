@@ -36,7 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
       edit_mode: (true if edit_mode?)
     }.compact.merge(draggable_item_config)
   ) do
-    render(border_box_container(mt: 3, data: row_drop_target_config)) do |box|
+    render(border_box_container(mt: 3, padding: :condensed, data: row_drop_target_config)) do |box|
       box.with_header(font_weight: :bold) do
         if edit_mode?
           primer_form_with(
