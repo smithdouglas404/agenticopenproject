@@ -55,7 +55,8 @@ RSpec.describe Wikis::OAuthApplications::CreateService, type: :model do
     end
 
     it "sets the redirect_uri to the XWiki OIDC callback path" do
-      expect(subject.result.redirect_uri).to eq(wiki_provider.oidc_redirect_uri)
+      expected = "#{wiki_provider.url.chomp('/')}/#{described_class::OIDC_CALLBACK_PATH}"
+      expect(subject.result.redirect_uri).to eq(expected)
     end
 
     it "does not produce a double slash in the redirect_uri" do

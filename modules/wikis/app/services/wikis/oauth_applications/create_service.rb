@@ -31,6 +31,8 @@
 module Wikis
   module OAuthApplications
     class CreateService
+      OIDC_CALLBACK_PATH = "oidc/authenticator/callback"
+
       attr_accessor :user, :wiki_provider
 
       def initialize(wiki_provider:, user:)
@@ -46,7 +48,7 @@ module Wikis
                      .new(user:)
                      .call(
                        name: wiki_provider.name,
-                       redirect_uri: wiki_provider.oidc_redirect_uri,
+                       redirect_uri: oidc_redirect_uri,
                        scopes: "api_v3",
                        confidential: true,
                        owner: user,
@@ -55,6 +57,12 @@ module Wikis
           raise ActiveRecord::Rollback unless result.success?
         end
         result
+      end
+
+      private
+
+      def oidc_redirect_uri
+        URI.join("#{wiki_provider.url.chomp('/')}/", OIDC_CALLBACK_PATH).to_s
       end
     end
   end

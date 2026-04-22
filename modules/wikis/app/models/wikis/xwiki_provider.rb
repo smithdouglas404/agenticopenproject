@@ -35,8 +35,6 @@ module Wikis
       # AUTHENTICATION_METHOD_OAUTH2_SSO = "oauth2_sso" # not yet implemented
     ].freeze
 
-    OIDC_CALLBACK_PATH = "oidc/authenticator/callback"
-
     has_one :oauth_client, as: :integration, dependent: :destroy
     has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
 
@@ -59,10 +57,6 @@ module Wikis
 
     def oauth_configuration
       Wikis::Adapters::Providers::XWiki::OAuthConfiguration.new(self)
-    end
-
-    def oidc_redirect_uri
-      URI.join("#{url.chomp('/')}/", OIDC_CALLBACK_PATH).to_s
     end
   end
 end

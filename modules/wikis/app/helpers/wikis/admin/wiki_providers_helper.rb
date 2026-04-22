@@ -29,46 +29,18 @@
 #++
 
 module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class UserQuery
-            include Dry::Monads[:result]
+  module Admin
+    module WikiProvidersHelper
+      # TODO: temp helper — unblocks work until a proper per-user connection status
+      # is tracked and surfaced via a dedicated component.
+      def current_user_xwiki_token_missing?(wiki_provider)
+        oauth_client = wiki_provider.oauth_client
+        return false if oauth_client.nil?
 
-            def self.call(wiki_provider:, access_token:)
-              new(model: wiki_provider).call(access_token:)
-            end
+        token = OAuthClientToken.find_by(user: current_user, oauth_client:)
+        return true if token.nil?
 
-            def initialize(model:)
-              @wiki_provider = model
-            end
-
-            def call(access_token:)
-              url = "#{@wiki_provider.url.chomp('/')}/oidc/userinfo"
-
-              handle_response(OpenProject.httpx.bearer_auth(access_token).get(url))
-            end
-
-            private
-
-            def handle_response(response)
-              return Failure(response.error.message) if response.is_a?(HTTPX::ErrorResponse)
-
-              case response
-              in { status: 200..299 }
-                handle_success_response(response)
-              else
-                Failure("XWiki userinfo request failed (#{response.status})")
-              end
-            end
-
-            def handle_success_response(response)
-              sub = response.json["sub"]
-              sub.present? ? Success(sub) : Failure("XWiki userinfo response missing sub claim")
-            end
-          end
-        end
+        token.expires_in.present? && token.updated_at + token.expires_in.seconds < Time.current
       end
     end
   end
