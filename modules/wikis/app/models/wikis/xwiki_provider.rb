@@ -45,6 +45,7 @@ module Wikis
 
     class << self
       def registry_prefix = "xwiki"
+      def generate_client_id = SecureRandom.uuid
     end
 
     def extract_origin_user_id(token)
