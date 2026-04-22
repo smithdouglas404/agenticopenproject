@@ -96,8 +96,8 @@ RSpec.describe WorkPackages::UpdateContract do
       context "when the user has only :manage_sprint_items permission but lacks :edit_work_packages" do
         let(:permissions) { %i[view_work_packages manage_sprint_items] }
 
-        it "includes sprints and lock_version", :aggregate_failures do
-          expect(contract.writable_attributes).to include("sprint", "lock_version")
+        it "includes sprint, backlog_bucket and lock_version", :aggregate_failures do
+          expect(contract.writable_attributes).to include("backlog_bucket", "sprint", "lock_version")
           expect(contract.writable_attributes).not_to include("story_points", "position")
         end
       end

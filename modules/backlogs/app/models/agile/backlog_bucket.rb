@@ -28,42 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject::Backlogs::Patches::WorkPackagePatch
-  extend ActiveSupport::Concern
+class Agile::BacklogBucket < ApplicationRecord
+  self.table_name = "backlog_buckets"
 
-  included do
-    prepend InstanceMethods
-    extend ClassMethods
+  belongs_to :project
+  has_many :work_packages, -> { order_by_position }, inverse_of: :backlog_bucket, dependent: :nullify
 
-    register_journal_formatted_fields "story_points", "position", formatter_key: :decimal
+  scope :order_alphabetically, -> { order(:name) }
 
-    validates_numericality_of :story_points, only_integer: true,
-                                             allow_nil: true,
-                                             greater_than_or_equal_to: 0,
-                                             less_than: 10_000,
-                                             if: -> { backlogs_enabled? }
+  validates :name, :project, presence: true
 
-    belongs_to :backlog_bucket, class_name: "Agile::BacklogBucket", optional: true
-    belongs_to :sprint, class_name: "Agile::Sprint", optional: true
+  def self.for_project(project)
+    buckets = where(project:).order_alphabetically.includes(:work_packages)
 
-    include OpenProject::Backlogs::List
-  end
+    inbox = new(
+      name: I18n.t("label_inbox"),
+      work_packages: WorkPackage.where(project:, sprint: nil, backlog_bucket: nil).order_by_position
+    )
 
-  module ClassMethods
-    def order_by_position
-      order(arel_table[:position].asc.nulls_last)
-    end
-  end
-
-  module InstanceMethods
-    def done?
-      project.done_statuses.to_a.include?(status)
-    end
-
-    def backlogs_enabled?
-      project&.backlogs_enabled?
-    end
+    buckets + [inbox]
   end
 end
-
-WorkPackage.include OpenProject::Backlogs::Patches::WorkPackagePatch

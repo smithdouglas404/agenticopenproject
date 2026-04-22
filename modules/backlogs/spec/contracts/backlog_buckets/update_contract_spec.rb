@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,44 +26,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module OpenProject::Backlogs::Patches::WorkPackagePatch
-  extend ActiveSupport::Concern
+require "spec_helper"
+require_relative "shared_contract_examples"
 
-  included do
-    prepend InstanceMethods
-    extend ClassMethods
+RSpec.describe BacklogBuckets::UpdateContract do
+  include_context "as backlog bucket contract"
 
-    register_journal_formatted_fields "story_points", "position", formatter_key: :decimal
-
-    validates_numericality_of :story_points, only_integer: true,
-                                             allow_nil: true,
-                                             greater_than_or_equal_to: 0,
-                                             less_than: 10_000,
-                                             if: -> { backlogs_enabled? }
-
-    belongs_to :backlog_bucket, class_name: "Agile::BacklogBucket", optional: true
-    belongs_to :sprint, class_name: "Agile::Sprint", optional: true
-
-    include OpenProject::Backlogs::List
+  let(:backlog_bucket) do
+    build_stubbed(:backlog_bucket, name:, project:)
   end
 
-  module ClassMethods
-    def order_by_position
-      order(arel_table[:position].asc.nulls_last)
+  context "when trying to update project id" do
+    before do
+      backlog_bucket.project_id = build_stubbed(:project).id
     end
+
+    it_behaves_like "contract is invalid", project_id: :error_readonly
   end
 
-  module InstanceMethods
-    def done?
-      project.done_statuses.to_a.include?(status)
+  context "when trying to update project" do
+    before do
+      backlog_bucket.project = build_stubbed(:project)
     end
 
-    def backlogs_enabled?
-      project&.backlogs_enabled?
-    end
+    it_behaves_like "contract is invalid", project_id: :error_readonly
   end
 end
-
-WorkPackage.include OpenProject::Backlogs::Patches::WorkPackagePatch

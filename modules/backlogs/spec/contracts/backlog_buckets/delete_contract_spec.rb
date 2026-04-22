@@ -28,42 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject::Backlogs::Patches::WorkPackagePatch
-  extend ActiveSupport::Concern
+require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
 
-  included do
-    prepend InstanceMethods
-    extend ClassMethods
+RSpec.describe BacklogBuckets::DeleteContract do
+  include_context "ModelContract shared context"
 
-    register_journal_formatted_fields "story_points", "position", formatter_key: :decimal
+  let(:project) { build_stubbed(:project) }
+  let(:backlog_bucket) { build_stubbed(:backlog_bucket, project:) }
+  let(:user) { build_stubbed(:user) }
+  let(:permissions) { [:create_sprints] }
 
-    validates_numericality_of :story_points, only_integer: true,
-                                             allow_nil: true,
-                                             greater_than_or_equal_to: 0,
-                                             less_than: 10_000,
-                                             if: -> { backlogs_enabled? }
+  let(:contract) { described_class.new(backlog_bucket, user) }
 
-    belongs_to :backlog_bucket, class_name: "Agile::BacklogBucket", optional: true
-    belongs_to :sprint, class_name: "Agile::Sprint", optional: true
-
-    include OpenProject::Backlogs::List
-  end
-
-  module ClassMethods
-    def order_by_position
-      order(arel_table[:position].asc.nulls_last)
+  before do
+    mock_permissions_for(user) do |mock|
+      mock.allow_in_project(*permissions, project:)
     end
   end
 
-  module InstanceMethods
-    def done?
-      project.done_statuses.to_a.include?(status)
-    end
-
-    def backlogs_enabled?
-      project&.backlogs_enabled?
-    end
+  context "when user has create_sprints permission" do
+    it_behaves_like "contract is valid"
   end
+
+  context "when user does not have create_sprints permission" do
+    let(:permissions) { [] }
+
+    it_behaves_like "contract is invalid", base: :error_unauthorized
+  end
+
+  context "when user has an unrelated permission" do
+    let(:permissions) { [:view_work_packages] }
+
+    it_behaves_like "contract is invalid", base: :error_unauthorized
+  end
+
+  include_examples "contract reuses the model errors"
 end
-
-WorkPackage.include OpenProject::Backlogs::Patches::WorkPackagePatch

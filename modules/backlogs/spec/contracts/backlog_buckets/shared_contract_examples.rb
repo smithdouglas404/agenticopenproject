@@ -30,23 +30,20 @@
 
 require "contracts/shared/model_contract_shared_context"
 
-RSpec.shared_context "as sprint contract" do
+RSpec.shared_context "as backlog bucket contract" do
   include_context "ModelContract shared context"
 
   let(:user) { build_stubbed(:user) }
 
-  let(:sprint_project) { build_stubbed(:project) }
-  let(:sprint_name) { "Sprint 1" }
-  let(:sprint_start_date) { Time.zone.today }
-  let(:sprint_finish_date) { Time.zone.today + 14.days }
-  let(:sprint_status) { "in_planning" }
+  let(:project) { build_stubbed(:project) }
+  let(:name) { "Backlog Bucket 1" }
   let(:permissions) { [:create_sprints] }
 
-  subject(:contract) { described_class.new(sprint, user) }
+  subject(:contract) { described_class.new(backlog_bucket, user) }
 
   before do
     mock_permissions_for(user) do |mock|
-      mock.allow_in_project(*permissions, project: sprint_project) if sprint_project
+      mock.allow_in_project(*permissions, project:) if project
     end
   end
 
@@ -56,7 +53,7 @@ RSpec.shared_context "as sprint contract" do
     end
 
     context "when project is nil" do
-      let(:sprint_project) { nil }
+      let(:project) { nil }
 
       it_behaves_like "contract is invalid", project: :blank
     end
@@ -80,53 +77,9 @@ RSpec.shared_context "as sprint contract" do
     end
 
     context "when name is blank" do
-      let(:sprint_name) { "" }
+      let(:name) { "" }
 
       it_behaves_like "contract is invalid", name: :blank
-    end
-
-    context "when finish_date is before start_date" do
-      let(:sprint_start_date) { Time.zone.today }
-      let(:sprint_finish_date) { Time.zone.today - 1.day }
-
-      it_behaves_like "contract is invalid", finish_date: :greater_than_or_equal_to
-    end
-
-    context "when finish_date is same as start_date" do
-      let(:sprint_start_date) { Time.zone.today }
-      let(:sprint_finish_date) { sprint_start_date }
-
-      it_behaves_like "contract is valid"
-    end
-
-    context "when the sprint is active" do
-      let(:sprint_status) { "active" }
-
-      context "when start_date is blank" do
-        let(:sprint_start_date) { nil }
-
-        it_behaves_like "contract is invalid", start_date: :blank
-      end
-
-      context "when finish_date is blank" do
-        let(:sprint_finish_date) { nil }
-
-        it_behaves_like "contract is invalid", finish_date: :blank
-      end
-    end
-
-    context "when the sprint is in_planning" do
-      context "when start_date is blank" do
-        let(:sprint_start_date) { nil }
-
-        it_behaves_like "contract is valid"
-      end
-
-      context "when finish_date is blank" do
-        let(:sprint_finish_date) { nil }
-
-        it_behaves_like "contract is valid"
-      end
     end
   end
 end
