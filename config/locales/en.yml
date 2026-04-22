@@ -3657,7 +3657,7 @@ en:
         personal_reminder: "Notify me for personal reminders"
       daily_reminders:
         title: "Send me daily email reminders for unread notifications"
-        caption: "You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC."
+        description: "You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC."
         enabled: "Enable daily email reminders"
         add_time: "Add time"
         remove_time: "Remove time"
@@ -3671,6 +3671,7 @@ en:
         date_range: "Pause period"
       email_alerts:
         title: "Email alerts for other items that are not work packages"
+        description: "Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications."
         news_added: "News added"
         news_commented: "Comment on a news item"
         document_added: "Document added"
@@ -3683,6 +3684,7 @@ en:
     notifications:
       participating:
         title: "Participating"
+        description: "Notifications for all activities in work packages you are involved in (assignee, accountable or watcher)."
         submit_button: "Update preferences"
         mentioned: "Mentioned"
         watched: "Watching"
@@ -3691,6 +3693,7 @@ en:
         shared: "Shared with me"
       date_alerts:
         title: "Date alerts"
+        description: "Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher)."
         submit_button: "Update date alerts"
         start_date: "Start date"
         due_date: "Finish date"
@@ -3705,6 +3708,7 @@ en:
           seven_days_after: "7 days after"
       non_participating:
         title: "Non-participating"
+        description: "Additional notifications for activities in all projects."
         submit_button: "Update preferences"
         work_package_created: "New work packages"
         work_package_commented: "All new comments"
@@ -3713,6 +3717,7 @@ en:
         work_package_scheduled: "All date changes"
       project_specific_settings:
         title: "Project-specific notification settings"
+        description: "These project-specific settings override default settings above."
         add_button: "Add project-specific notifications"
         dialog_title: "Add project-specific notifications"
         list_header: "Projects with specific notifications"
