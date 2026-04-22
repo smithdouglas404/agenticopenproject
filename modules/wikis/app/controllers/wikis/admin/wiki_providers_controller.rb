@@ -165,7 +165,7 @@ module Wikis
         token.expires_in.present? && token.updated_at + token.expires_in.seconds < Time.current
       end
 
-      def ensure_valid_wizard_parameters
+      def continue_from_wizard_params
         return if params[:continue_wizard].blank?
 
         Wikis::Provider.visible.find(params[:continue_wizard])

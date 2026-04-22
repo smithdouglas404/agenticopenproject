@@ -42,7 +42,7 @@ module Wikis
       menu_item :wiki_providers
 
       def new
-        oauth_client = OAuthClient.new(client_id: generate_xwiki_routing_id)
+        oauth_client = OAuthClient.new(client_id: SecureRandom.uuid)
 
         update_via_turbo_stream(
           component: Wikis::Admin::Forms::OAuthClientFormComponent.new(@wiki_provider,
@@ -93,10 +93,6 @@ module Wikis
 
       def oauth_client_params
         params.expect(oauth_client: [:client_id])
-      end
-
-      def generate_xwiki_routing_id
-        SecureRandom.uuid
       end
 
       def find_wiki_provider
