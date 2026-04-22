@@ -78,7 +78,6 @@ RSpec.describe "Projects autocomplete page", :js do
       create(:project, name:, identifier:, members: { user => role })
     end
   end
-  
   shared_let(:non_member_project) { create(:project) }
   shared_let(:public_project) { create(:public_project) }
 
@@ -115,6 +114,7 @@ RSpec.describe "Projects autocomplete page", :js do
     top_menu.search "Plain pr"
     top_menu.expect_result "Plain project"
     top_menu.expect_result "Plain other project"
+    top_menu.expect_no_result "Project with different name and identifier"
 
     # Expect search to match names only and not the identifier
     top_menu.clear_search
