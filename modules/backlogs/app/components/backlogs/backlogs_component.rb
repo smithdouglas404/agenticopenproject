@@ -28,17 +28,45 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Agile::BacklogBucket < ApplicationRecord
-  self.table_name = "backlog_buckets"
+module Backlogs
+  class BacklogsComponent < ApplicationComponent
+    include Primer::AttributesHelper
+    include OpTurbo::Streamable
+    include Backlogs::CommonHelper
 
-  belongs_to :project
-  has_many :work_packages, -> { order_by_position }, inverse_of: :backlog_bucket, dependent: :nullify
+    attr_reader :inbox_work_packages, :backlog_buckets, :project, :current_user, :show_all
 
-  scope :order_alphabetically, -> { order(:name) }
+    def initialize(inbox_work_packages:,
+                   backlog_buckets:,
+                   project:,
+                   show_all: false,
+                   current_user: User.current,
+                   **system_arguments)
+      super()
 
-  validates :name, :project, presence: true
+      @inbox_work_packages = inbox_work_packages
+      @backlog_buckets = backlog_buckets
+      @project = project
+      @show_all = show_all
+      @current_user = current_user
 
-  def self.for_project(project)
-    where(project:).order_alphabetically.includes(:work_packages)
+      @system_arguments = system_arguments
+      @system_arguments[:id] = dom_id
+      @system_arguments[:padding] = :condensed
+    end
+
+    def wrapper_uniq_by
+      project
+    end
+
+    private
+
+    def dom_id
+      "backlogs_#{project.id}"
+    end
+
+    def total
+      @total ||= inbox_work_packages.count + (backlog_buckets&.sum { it.work_packages.size } || 0)
+    end
   end
 end
