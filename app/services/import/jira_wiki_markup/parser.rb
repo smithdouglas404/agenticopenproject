@@ -50,7 +50,7 @@ module Import
         # and invalid byte sequences are dropped so downstream regex/StringScanner
         # operations cannot raise ArgumentError on malformed input.
         @text = text.to_s.dup
-        @text.scrub!("") unless @text.valid_encoding?
+        @text.scrub!("?") unless @text.valid_encoding?
       end
 
       def parse
