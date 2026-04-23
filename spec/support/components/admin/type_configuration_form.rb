@@ -100,8 +100,10 @@ module Components
 
       def drag_and_drop(handle, target)
         target_container = target.find(".Box ul")
+        source_row = handle.find(:xpath, "./ancestor::li[1]")
 
         scroll_to_element(target_container)
+        source_row.hover
 
         page.driver.browser.action
             .move_to(handle.native)
@@ -109,6 +111,12 @@ module Components
             .perform
 
         scroll_to_element(target_container)
+
+        target_container.all(":scope > li", visible: true).each do |item|
+          page.driver.browser.action
+              .move_to(item.native)
+              .perform
+        end
 
         page.driver.browser.action
             .move_to(target_container.native)
@@ -228,9 +236,7 @@ module Components
 
       def section_order
         page.within_test_selector("type-form-configuration-sections-container") do
-          all(":scope > [data-group-key]", visible: true).map do |group|
-            group.find(".Box-header span.text-bold").text
-          end
+          all(":scope > [data-group-key] .Box-header span.text-bold", visible: true).map(&:text)
         end
       end
 

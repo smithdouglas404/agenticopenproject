@@ -95,11 +95,10 @@ module WorkPackageTypes
     def custom_groups_modified?
       return false unless model.attribute_groups_changed?
 
-      default_keys = Type.default_groups.keys
-      old_custom_count = model.attribute_groups_was.map(&:first).count { |k| default_keys.exclude?(k) }
-      new_custom_count = model.attribute_groups.map(&:key).count { |k| default_keys.exclude?(k) }
+      old_keys = model.attribute_groups_was.map(&:first)
+      new_keys = model.attribute_groups.map(&:key)
 
-      new_custom_count > old_custom_count
+      (new_keys - old_keys - Type.default_groups.keys).any?
     end
   end
 end
