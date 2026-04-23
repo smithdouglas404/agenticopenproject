@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,45 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class DeployTargetsController < ApplicationController
-  layout "admin"
+require_relative "../spec_helper"
 
-  menu_item :admin_github_integration
+RSpec.describe "LDAP synchronized filters", :skip_csrf, type: :rails_request do
+  let(:admin) { create(:admin) }
+  let(:filter) { create(:ldap_synchronized_filter) }
 
-  before_action :require_admin
-
-  def index
-    @deploy_targets = DeployTarget.all
+  before do
+    login_as(admin)
   end
 
-  def new
-    @deploy_target = DeployTarget.new type: "OpenProject"
-  end
-
-  def create
-    args = params
-      .permit("deploy_target" => ["host", "type", "api_key"])[:deploy_target]
-      .to_h
-      .merge(type: "OpenProject")
-
-    @deploy_target = DeployTarget.create **args
-
-    if @deploy_target.persisted?
-      flash[:success] = I18n.t(:notice_deploy_target_created)
-
-      redirect_to deploy_targets_path
-    else
-      render "new"
+  describe "DELETE /ldap_groups/synchronized_filters/:ldap_filter_id" do
+    it "redirects with 303 See Other" do
+      delete ldap_groups_synchronized_filter_path(ldap_filter_id: filter.id)
+      expect(response).to have_http_status(:see_other)
+      expect(response).to redirect_to(ldap_groups_synchronized_groups_path)
     end
-  end
-
-  def destroy
-    deploy_target = DeployTarget.find params[:id]
-
-    deploy_target.destroy!
-
-    flash[:success] = I18n.t(:notice_deploy_target_destroyed)
-
-    redirect_to deploy_targets_path, status: :see_other
   end
 end

@@ -88,9 +88,9 @@ class CostlogController < ApplicationController
     flash[:notice] = t(:notice_successful_delete)
 
     if request.referer.include?("cost_reports")
-      redirect_to controller: "/cost_reports", action: :index
+      redirect_to controller: "/cost_reports", action: :index, status: :see_other
     else
-      redirect_back_or_to(polymorphic_path(@cost_entry.entity))
+      redirect_back_or_to(polymorphic_path(@cost_entry.entity), status: :see_other)
     end
   end
 
