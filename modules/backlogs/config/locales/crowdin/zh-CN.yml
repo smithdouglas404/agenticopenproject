@@ -43,6 +43,7 @@ zh-CN:
       user_preference:
         backlogs_versions_default_fold_state: 以折叠形式显示冲刺
       work_package:
+        backlog_bucket: Backlog Bucket
         backlogs_work_package_type: 待办清单类型
         position: 位置
         sprint: 冲刺
@@ -60,7 +61,10 @@ zh-CN:
               share_all_projects_already_taken: 无法设置，因为项目“%{name}”已经与所有项目共享。
               share_all_projects_already_taken_anonymous: 无法设置，因为另一个项目已经与所有项目共享。
         work_package:
+          backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
+            backlog_bucket:
+              backlog_bucket_from_another_project: must belong to the same project as the work package.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: 只可以包含当前冲刺 (sprint) 中的工作包 ID。
               must_block_at_least_one_work_package: 必须包含至少一个票证的 ID。
@@ -109,17 +113,20 @@ zh-CN:
     administration_blankslate:
       title: 积压工作管理设置不断演进
       text: 我们目前正在重新设计积压工作模块。冲刺和积压工作的管理设置不久后将显示在此处。项目级设置仍然可用。
+    backlog_bucket_component:
+      blankslate_title: Backlog bucket is empty
+      blankslate_description: Drag items here to add them.
+    backlog_bucket_item_component:
+      label_actions: Work package actions
     sprint_component:
       blankslate_title: "%{name} 为空"
       blankslate_description: 尚未计划条目。请将条目拖到此处以添加。
     inbox_component:
       blankslate_title: 积压工作收件箱为空
       blankslate_description: 此项目中所有未完成的工作包都会自动出现在此处。
-      label_drag_work_package: 移动 %{name}
       show_more:
         other: 显示其他 %{count} 个条目
     inbox_item_component:
-      label_drag_work_package: 移动 %{name}
       label_actions: 工作包操作
     inbox_menu_component:
       action_menu:
@@ -140,6 +147,16 @@ zh-CN:
         receive_shared_description_html: 此项目从其他项目接收冲刺。请在%{settings_link}中管理此设置。
         receive_shared_no_actions_description_text: 此项目从其他项目接收共享冲刺，但目前没有可用冲刺。
         settings_link_text: 项目设置
+    backlog_bucket_menu_component:
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_header_component:
+      label_work_package_count:
+        zero: No stories in backlog bucket
+        one: "%{count} story in backlog bucket"
+        other: "%{count} stories in backlog bucket"
     sprint_header_component:
       label_start_sprint: 开始
       label_complete_sprint: 完成
@@ -165,13 +182,13 @@ zh-CN:
         edit_sprint: 编辑冲刺
         add_work_package: 添加工作包
     story_component:
-      label_drag_story: 移动 %{name}
       label_actions: 故事操作
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: 将 URL 复制到剪贴板
         copy_work_package_id: 复制工作包 ID
         move_menu: 移动
+        move_to_sprint: Move to sprint
     burndown_chart:
       show:
         blankslate_title: No burndown data available
@@ -180,6 +197,8 @@ zh-CN:
     story_points: 故事点
     story_points_ideal: 故事点（理想）
   label_backlog: 积压工作
+  label_backlog_bucket_edit: Edit backlog bucket
+  label_backlog_bucket_new: New backlog bucket
   label_inbox: 收件箱
   label_backlogs: 待办清单
   label_burndown_chart: 燃尽图

@@ -61,6 +61,8 @@ module WorkPackage::SemanticIdentifier
     }
 
     after_create :allocate_and_register_semantic_id, if: -> { Setting::WorkPackageIdentifier.semantic? }
+
+    validate :semantic_identifier_fields_consistent
   end
 
   class_methods do
@@ -104,6 +106,14 @@ module WorkPackage::SemanticIdentifier
   end
 
   private
+
+  # Ensures identifier and sequence_number are always written together.
+  # One field set without the other indicates a partial write and is never valid.
+  def semantic_identifier_fields_consistent
+    return unless identifier.present? ^ sequence_number.present?
+
+    errors.add(:identifier, :semantic_identifier_incomplete)
+  end
 
   # Builds alias rows for every identifier this project has ever used at the given sequence (including the current one).
   # This also includes "ghost identifiers" -- i.e. those that weren't ever actually generated, but should work

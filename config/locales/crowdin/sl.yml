@@ -120,6 +120,7 @@ sl:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -415,7 +416,7 @@ sl:
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
@@ -437,16 +438,13 @@ sl:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -1399,6 +1397,37 @@ sl:
     index:
       no_results_content_text: Dodaj novo stran
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            two: Successfully copied workflow to %{count} roles.
+            few: Successfully copied workflow to %{count} roles.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            two: Successfully copied workflow to %{count} types.
+            few: Successfully copied workflow to %{count} types.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1408,6 +1437,12 @@ sl:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Trenutno ni poslovnih procesov
@@ -1965,6 +2000,7 @@ sl:
         duration: Trajanje
         end_insertion: Konec vstavitve
         end_deletion: Konec izbrisa
+        identifier: Identifier
         ignore_non_working_days: Ignore non working days
         include_non_working_days:
           title: Working days
@@ -1980,6 +2016,7 @@ sl:
         readonly: Read only
         remaining_hours: Remaining work
         remaining_time: Remaining work
+        sequence_number: Sequence number
         shared_with_users: Shared with
         schedule_manually: Ročno razvrščanje.
         spent_hours: Porabljen čas
@@ -2032,6 +2069,7 @@ sl:
         inclusion: ni nastavljeno na eno od dovoljenih vrednosti.
         inclusion_nested: ni nastavljena na eno od dovoljenih vrednosti na poti '%{path}'.
         invalid: ni pravo.
+        invalid_uri: must be a valid URI.
         invalid_url: 'ni veljaven URL. '
         invalid_url_scheme: ni podprt protokol (dovoljeno:%{allowed_schemes}).
         less_than_or_equal_to: 'mora biti manjše ali enako %{count}. '
@@ -2045,6 +2083,7 @@ sl:
         not_a_datetime: ni veljaven datum.
         not_a_number: ni število.
         not_allowed: 'ni veljavno, saj manjka dovoljenje. '
+        host_not_allowed: is not an allowed host.
         not_json: is not parseable as JSON.
         not_json_object: is not a JSON object.
         not_an_integer: 'ni celo število. '
@@ -2266,6 +2305,7 @@ sl:
           not_whitelisted: konfiguracija ne dovoljuje
           invalid_url: ni veljaven URL ali pot.
           must_not_be_ssh: ne sme biti SSH url
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: ni imenik.
         role:
           attributes:
@@ -2316,6 +2356,8 @@ sl:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Cannot add child because you don't have permissions to edit the selected work package.
               blank: ID can't be blank.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2386,7 +2428,7 @@ sl:
               confirmation: Password confirmation does not match password.
               format: "%{message}"
             password:
-              weak: 'Must contain characters of the following classes (at least %{min_count} of %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: mala črka (npr. "a")
               uppercase: velika črka (npr. "A")
               numeric: številke (npr. '1')
@@ -3865,6 +3907,7 @@ sl:
   label_commits_per_month: Storitve na mesec
   label_confirmation: Potrditev
   label_contains: vsebuje
+  label_starts_with: starts with
   label_content: Vsebina
   label_color_plural: Barve
   label_copied: Kopirano
@@ -3872,6 +3915,8 @@ sl:
   label_copy_source: Vir
   label_copy_target: Cilj
   label_copy_workflow_from: Kopiraj potek dela iz
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Kopiraj projekt
   label_core_version: Osnovna različica
   label_core_build: Core build
@@ -4179,6 +4224,10 @@ sl:
   label_password_rule_numeric: Številčni znaki
   label_password_rule_special: Posebni znaki
   label_password_rule_uppercase: Velika črka
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Kodiranje poti
   label_per_page: 'Na stran:'
   label_people: Ljudje
@@ -5242,11 +5291,10 @@ sl:
   setting_new_project_user_role_id: Vloga, dodeljena neadministratorskemu uporabniku, ki je ustvaril projekt
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: Aktivni razredi znakov
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Število nazadnje uporabljenih gesel, prepovedanih za ponovno uporabo
   setting_password_days_valid: Število dni, po katerih se zahteva sprememba gesla
   setting_password_min_length: Minimalna dolžina
-  setting_password_min_adhered_rules: Minimalno število potrebnih razredov
   setting_per_page_options: Možnosti predmetov na stran
   setting_percent_complete_on_status_closed: "% Complete when status is closed"
   setting_percent_complete_on_status_closed_no_change: No change

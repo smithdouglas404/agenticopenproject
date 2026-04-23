@@ -34,11 +34,16 @@ module OpenProject::Backlogs::Patches::ProjectPatch
 
   included do
     has_and_belongs_to_many :done_statuses, join_table: :done_statuses_for_project, class_name: "::Status"
+    has_many :backlog_buckets, class_name: "Agile::BacklogBucket", dependent: :destroy
     has_many :sprints, class_name: "Agile::Sprint", dependent: :destroy
   end
 
   def backlogs_enabled?
     module_enabled? "backlogs"
+  end
+
+  def assignable_sprints
+    @assignable_sprints ||= Agile::Sprint.for_project(self).visible.not_completed
   end
 end
 

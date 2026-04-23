@@ -110,10 +110,11 @@ RSpec.describe "Projects autocomplete page", :js do
       expect(page).to have_no_css("strong")
     end
 
-    # Expect fuzzy matches for plain
+    # Expect fuzzy matches for multiple substrings
     top_menu.search "Plain pr"
     top_menu.expect_result "Plain project"
-    top_menu.expect_no_result "Plain other project"
+    top_menu.expect_result "Plain other project"
+    top_menu.expect_no_result "Project with different name and identifier"
 
     # Expect search to match names only and not the identifier
     top_menu.clear_search

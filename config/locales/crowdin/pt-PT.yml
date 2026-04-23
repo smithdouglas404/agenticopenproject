@@ -118,6 +118,7 @@ pt-PT:
       description: Utilize esta ferramenta para importar dados da sua instância do Jira. Pode configurar vários anfitriões do Jira, e escolher o que importar em cada execução de importação.
       errors:
         cannot_delete_with_imports: Não é possível eliminar o anfitrião do Jira com importações existentes
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: Ainda não há anfitriões do Jira configurados
         description: Configure um anfitrião do Jira para começar a importar elementos do Jira para esta instância do OpenProject.
@@ -401,7 +402,7 @@ pt-PT:
         autofix_preview:
           error_too_long: Tem de ter 10 caracteres ou menos
           error_numerical: Não pode ser puramente numérico
-          error_starts_with_number: Não pode começar com um número
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Caracteres especiais não são permitidos
           error_not_fully_uppercased: Deve estar em maiúsculas
           error_in_use: Já está a ser utilizado como identificador ativo de outro projeto
@@ -421,16 +422,13 @@ pt-PT:
           checkbox_label: Compreendo que isto irá alterar permanentemente todos os IDs dos pacotes de trabalho
         success_banner: Formato de identificador de pacote de trabalho atualizado com sucesso.
         in_progress:
-          banner_message: Os identificadores de projetos estão a ser atualizados para identificadores semânticos baseados em projetos. Este processo pode demorar algum tempo.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Transições padrão
         user_author: O utilizador é o autor
         user_assignee: O utilizador é encarregado
-      index:
-        description: Configurar transições de estado para cada tipo de pacote de trabalho.
-        type_filter:
-          label: Filtrar por tipo de nome…
       status_button: Estado
       statuses_dialog:
         title: Estados
@@ -1362,6 +1360,33 @@ pt-PT:
     index:
       no_results_content_text: Adicione uma nova página da wiki
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Matriz de fluxo de trabalho
       matrix_caption_assignee: Matriz de fluxo de trabalho para o encarregado
@@ -1371,6 +1396,12 @@ pt-PT:
       matrix_uncheck_all_label: Proibir todas as transições
       matrix_check_uncheck_all_in_row_label_html: Alternar as transições de <em>%{old_status}</em> para todos os novos estatutos
       matrix_check_uncheck_all_in_col_label_html: Alternar as transições de todos os estados antigos para <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Atualmente, não existem ritmos de trabalho.
@@ -1926,6 +1957,7 @@ pt-PT:
         duration: Duração
         end_insertion: Final da inserção
         end_deletion: Final da exclusão
+        identifier: Identifier
         ignore_non_working_days: Ignorar dias não úteis
         include_non_working_days:
           title: Dias úteis
@@ -1941,6 +1973,7 @@ pt-PT:
         readonly: Só de leitura
         remaining_hours: Trabalho restante
         remaining_time: Trabalho restante
+        sequence_number: Sequence number
         shared_with_users: Partilhado com
         schedule_manually: Programação manual
         spent_hours: Tempo usado
@@ -1993,6 +2026,7 @@ pt-PT:
         inclusion: não está definido como um dos valores permitidos.
         inclusion_nested: não está definido como um dos valores permitidos no caminho '%{path}'.
         invalid: é inválido.
+        invalid_uri: must be a valid URI.
         invalid_url: não é um URL válido.
         invalid_url_scheme: 'não é um protocolo suportado (permitido: %{allowed_schemes}).'
         less_than_or_equal_to: deve ser menor ou igual a %{count}.
@@ -2006,6 +2040,7 @@ pt-PT:
         not_a_datetime: não é uma data/hora válida.
         not_a_number: não é um número.
         not_allowed: é inválido devido a permissões em falta.
+        host_not_allowed: is not an allowed host.
         not_json: não é analisável como JSON.
         not_json_object: não é um objeto JSON.
         not_an_integer: não é um número inteiro.
@@ -2223,6 +2258,7 @@ pt-PT:
           not_whitelisted: não é permitido pela configuração.
           invalid_url: não é um caminho ou URL válido do repositório.
           must_not_be_ssh: não pode ser um url SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: não é um diretório.
         role:
           attributes:
@@ -2273,6 +2309,8 @@ pt-PT:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Não é possível adicionar elemento secundário porque não tem permissão para editar o pacote de trabalho selecionado.
               blank: O ID não pode ficar em branco.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2341,7 +2379,7 @@ pt-PT:
               confirmation: A confirmação da palavra-passe não coincide com a palavra-passe.
               format: "%{message}"
             password:
-              weak: 'Tem de conter caracteres das seguintes classes (pelo menos, %{min_count} de %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: minúsculas (exemplo, 'a')
               uppercase: maiúsculas (exemplo, 'A')
               numeric: numérico (exemplo, '1')
@@ -3734,6 +3772,7 @@ pt-PT:
   label_commits_per_month: Commits por mês
   label_confirmation: Confirmação
   label_contains: contém
+  label_starts_with: starts with
   label_content: Conteúdo
   label_color_plural: Cores
   label_copied: copiado
@@ -3741,6 +3780,8 @@ pt-PT:
   label_copy_source: Origem
   label_copy_target: Destino
   label_copy_workflow_from: Copiar Fluxo de Trabalho de
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Copiar projeto
   label_core_version: Versão do núcleo
   label_core_build: Construção principal
@@ -4048,6 +4089,10 @@ pt-PT:
   label_password_rule_numeric: Carateres Numéricos
   label_password_rule_special: Carateres Especiais
   label_password_rule_uppercase: Maiúsculas
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Codificação do caminho
   label_per_page: 'Por página:'
   label_people: Pessoas
@@ -5078,11 +5123,10 @@ pt-PT:
   setting_new_project_user_role_id: Função atribuída a um utilizador não-administrador que cria um projeto
   setting_new_project_send_confirmation_email: Enviar notificação ao autor ao criar um novo projeto
   setting_new_project_notification_text: Texto da notificação
-  setting_password_active_rules: Ativar classes de caráter
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Número de senhas utilizadas recentemente banidas para reutilização
   setting_password_days_valid: Número de dias, após o qual é obrigatório uma alteração de senha
   setting_password_min_length: Tamanho mínimo
-  setting_password_min_adhered_rules: Número mínimo de classes obrigatórias
   setting_per_page_options: Opções de objetos por página
   setting_percent_complete_on_status_closed: "% de conclusão quando o estado é encerrado"
   setting_percent_complete_on_status_closed_no_change: Sem alterações

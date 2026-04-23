@@ -99,7 +99,11 @@ See COPYRIGHT and LICENSE files for more details.
               block: true,
               align_content: :start,
               underline: true,
-              href: project_backlogs_backlog_path(project, all: 1)
+              href: project_backlogs_backlog_path(project, all: 1),
+              # Replace the full backlog frame. Nested inbox turbo-frame would otherwise
+              # scope navigation to inbox only; sprint rows would stay stale without +all+
+              # on their URLs.
+              data: { turbo_frame: "backlogs_container", turbo_action: :advance }
             )
           ) { t(".show_more", count: middle_count) }
         %>

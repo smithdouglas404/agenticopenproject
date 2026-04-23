@@ -50,7 +50,7 @@ module Wikis
           end
 
           namespace("queries") do
-            register(:test, Queries::Test)
+            register(:page_info, Queries::PageInfo)
           end
         end
       end

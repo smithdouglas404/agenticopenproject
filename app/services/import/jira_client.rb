@@ -81,6 +81,10 @@ module Import
       get("/rest/api/2/cluster/nodes")
     end
 
+    def issue(issue_id, fields: "*all", expand: nil)
+      get("/rest/api/2/issue/#{issue_id}", params: { fields:, expand: }.compact)
+    end
+
     def issues(jql: nil, start_at: 0, max_results: 100, fields: "*all", expand: "changelog")
       get("/rest/api/2/search", params:
         {
@@ -178,6 +182,18 @@ module Import
 
     def fields
       get("/rest/api/2/field")
+    end
+
+    def issue_createmeta(project_keys: nil, project_ids: nil, issuetype_ids: nil, expand: "projects.issuetypes.fields")
+      params = { expand: }
+      params[:projectKeys] = Array(project_keys).join(",") if project_keys.present?
+      params[:projectIds] = Array(project_ids).join(",") if project_ids.present?
+      params[:issuetypeIds] = Array(issuetype_ids).join(",") if issuetype_ids.present?
+      get("/rest/api/2/issue/createmeta", params:)
+    end
+
+    def issue_editmeta(issue_id_or_key)
+      get("/rest/api/2/issue/#{issue_id_or_key}/editmeta")
     end
 
     def users_search(username: ".", start_at: 0, max_results: 50)

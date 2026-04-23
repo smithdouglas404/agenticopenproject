@@ -35,12 +35,26 @@ module Wikis
 
     alias_method :link, :model
 
-    def page_title_service
-      @page_title_service ||= PageTitleService.new
+    def page_title
+      # TODO: Define behaviour for errors
+      page_info_result.either(->(pi) { pi.title }, ->(_) { "Nothing to see here" })
+    end
+
+    def page_href
+      # TODO: Define behaviour for errors
+      page_info_result.either(->(pi) { pi.href }, ->(_) { "#" })
     end
 
     def show_action_menu?
       link.relation?
+    end
+
+    private
+
+    def page_info_result
+      @page_info_result ||= Wikis::Adapters::Input::PageInfo.build(identifier: link.identifier).bind do |input|
+        link.provider.resolve("queries.page_info").call(input)
+      end
     end
   end
 end

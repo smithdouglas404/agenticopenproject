@@ -415,6 +415,40 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
+  describe "semantic_identifier_fields_consistent validation" do
+    subject(:wp) { build(:work_package, project:, sequence_number: nil, identifier: nil) }
+
+    it "is valid when both are nil" do
+      expect(wp).to be_valid
+    end
+
+    it "is valid when both are set" do
+      wp.sequence_number = 1
+      wp.identifier = "MYPROJ-1"
+      expect(wp).to be_valid
+    end
+
+    it "is invalid when identifier is set but sequence_number is nil" do
+      wp.identifier = "MYPROJ-1"
+      expect(wp).not_to be_valid
+      expect(wp.errors[:identifier]).to include(a_string_matching(/sequence_number/))
+    end
+
+    it "is invalid when sequence_number is set but identifier is nil" do
+      wp.sequence_number = 1
+      expect(wp).not_to be_valid
+      expect(wp.errors[:identifier]).to include(a_string_matching(/sequence_number/))
+    end
+
+    context "when classic mode is active", with_settings: { work_packages_identifier: "classic" } do
+      it "still enforces consistency" do
+        wp.identifier = "MYPROJ-1"
+        expect(wp).not_to be_valid
+        expect(wp.errors[:identifier]).to include(a_string_matching(/sequence_number/))
+      end
+    end
+  end
+
   describe "#allocate_and_register_semantic_id" do
     let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
     let(:target_project) { create(:project, identifier: "OTHER", wp_sequence_counter: 0) }

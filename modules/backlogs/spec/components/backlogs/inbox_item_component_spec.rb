@@ -50,8 +50,10 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
            position: 1)
   end
   let(:work_packages) { WorkPackage.where(id: work_package.id).order(:position, :id) }
+  let(:show_all_backlog) { false }
 
   before do
+    vc_test_controller.params[:all] = "1" if show_all_backlog
     render_inline(
       Backlogs::InboxComponent.new(
         work_packages:,
@@ -64,8 +66,6 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
   it "rendering renders the Inbox Component", :aggregate_failures do
     # renders the work package subject
     expect(page).to have_text("Inbox Work Package")
-    # renders a drag handle
-    expect(page).to have_octicon(:grabber)
     # renders WorkPackages::InfoLineComponent with type and ID
     expect(page).to have_text("##{work_package.id}")
     # deferred action menu (kebab + include-fragment src)
@@ -95,6 +95,41 @@ RSpec.describe Backlogs::InboxItemComponent, type: :component do
     it "applies the correct row CSS classes" do
       expect(row[:class]).to include("Box-row--hover-blue", "Box-row--focus-gray",
                                      "Box-row--clickable", "Box-row--draggable")
+    end
+
+    it "sets draggable data attributes when the user can manage sprint items" do
+      expect(row["data-draggable-id"]).to eq(work_package.id.to_s)
+      expect(row["data-draggable-type"]).to eq("story")
+      expect(row["data-drop-url"])
+        .to end_with(move_project_backlogs_inbox_path(project, work_package))
+    end
+  end
+
+  context "when the user lacks the manage_sprint_items permission" do
+    let(:role) { create(:project_role, permissions: %i[view_sprints view_work_packages]) }
+    let(:user) { create(:user, member_with_roles: { project => role }) }
+
+    subject(:row) { page.find(".Box-row#work_package_#{work_package.id}") }
+
+    it "does not mark the row as draggable" do
+      expect(row[:class]).to include("Box-row--hover-blue", "Box-row--focus-gray",
+                                     "Box-row--clickable")
+      expect(row[:class]).not_to include("Box-row--draggable")
+      expect(row["data-draggable-id"]).to be_nil
+      expect(row["data-draggable-type"]).to be_nil
+      expect(row["data-drop-url"]).to be_nil
+    end
+  end
+
+  describe "with show_all_backlog true" do
+    let(:show_all_backlog) { true }
+
+    it "adds the all query to drag, split view, and menu fragment URLs", :aggregate_failures do
+      row = page.find(".Box-row#work_package_#{work_package.id}")
+      expect(row["data-drop-url"]).to match(/all=1/)
+      expect(row["data-backlogs--story-split-url-value"]).to match(/all=1/)
+      src = page.find("include-fragment", visible: :all)["src"]
+      expect(src).to match(/all=1/)
     end
   end
 end

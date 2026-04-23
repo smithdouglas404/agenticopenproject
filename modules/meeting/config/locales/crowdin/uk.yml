@@ -32,6 +32,7 @@ uk:
         location: Місцезнаходження
         duration: Тривалість
         notes: Примітки
+        recurrence_start_time: Scheduled start time
         participants: Учасники
         participant:
           one: 1 учасник
@@ -711,9 +712,12 @@ uk:
   text_agenda_item_duplicate_in_next_meeting: Справді додати копію цього пункту порядку денного в наступну нараду, що відбудеться %{date} о %{time}? Результати не дублюватимуться.
   text_agenda_item_duplicated_in_next_meeting: Пункт порядку денного продубльовано в нову нараду, що відбудеться %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Цей пакет робіт ще не заплановано в порядку денному майбутньої наради.
-  text_agenda_item_no_available_occurrence: Усі наступні наради скасовано.
-  text_agenda_item_dialog_skipping_cancelled_one: Примітка. Пропуск скасованої наради %{date}.
-  text_agenda_item_dialog_skipping_cancelled_many: Примітка. Пропуск скасованих нарад (%{count}).
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: Натисніть кнопку «Додати до наради», щоб додати цей пакет робіт до майбутньої наради.
   text_work_package_has_no_past_meeting_agenda_items: Цей пакет робіт не було додано як пункт порядку денного в минулу нараду.
   text_email_updates_muted: Надсилання електронною поштою оновлень із календаря тимчасово вимкнено. Учасники не отримають листи з оновленими запрошеннями після того, як ви внесете зміни.

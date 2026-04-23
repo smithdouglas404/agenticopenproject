@@ -118,6 +118,7 @@ cs:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -413,7 +414,7 @@ cs:
         autofix_preview:
           error_too_long: Musí obsahovat maximálně 10 znaků
           error_numerical: Nemůže být čistě číselný
-          error_starts_with_number: Nemůže začínat číslem
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Speciální znaky nejsou povoleny
           error_not_fully_uppercased: Musí být napsán velkými písmeny
           error_in_use: Již se používá jako identifikátor jiného projektu
@@ -435,16 +436,13 @@ cs:
           checkbox_label: Chápu, že se tím trvale změní všechny identifikátory pracovních balíčků
         success_banner: Úspěšně aktualizován formát identifikátoru pracovního balíčku.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions
         user_author: Uživatel je autorem
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Stav
       statuses_dialog:
         title: Stavy
@@ -1398,6 +1396,37 @@ cs:
     index:
       no_results_content_text: Přidat novou wiki stránku
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            few: Successfully copied workflow to %{count} roles.
+            many: Successfully copied workflow to %{count} roles.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            few: Successfully copied workflow to %{count} types.
+            many: Successfully copied workflow to %{count} types.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1407,6 +1436,12 @@ cs:
       matrix_uncheck_all_label: Zakázat všechny přechody
       matrix_check_uncheck_all_in_row_label_html: Přepnout přechody z <em>%{old_status}</em> na všechny nové stavy
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: V současné době neexistují žádné pracovní postupy.
@@ -1966,6 +2001,7 @@ cs:
         duration: Doba trvání
         end_insertion: Konec vložení
         end_deletion: Konec odstranění
+        identifier: Identifier
         ignore_non_working_days: Ignorovat nepracovní dny
         include_non_working_days:
           title: Pracovní dny
@@ -1981,6 +2017,7 @@ cs:
         readonly: Pouze pro čtení
         remaining_hours: Zbývající práce
         remaining_time: Zbývající práce
+        sequence_number: Sequence number
         shared_with_users: Sdíleno s
         schedule_manually: Manuální plánování
         spent_hours: Strávený čas
@@ -2033,6 +2070,7 @@ cs:
         inclusion: není nastavena na jednu z povolených hodnot.
         inclusion_nested: není nastavena na jednu z povolených hodnot na cestě '%{path}'.
         invalid: je neplatné.
+        invalid_uri: must be a valid URI.
         invalid_url: není platná adresa URL.
         invalid_url_scheme: 'není podporovaný protokol (povoleny: %{allowed_schemes}).'
         less_than_or_equal_to: musí být menší než nebo rovno %{count}.
@@ -2046,6 +2084,7 @@ cs:
         not_a_datetime: není platný čas.
         not_a_number: není číslo.
         not_allowed: je neplatný z důvodu chybějících oprávnění.
+        host_not_allowed: is not an allowed host.
         not_json: nelze přečíst jako JSON.
         not_json_object: není platným JSON objektem.
         not_an_integer: není celé číslo.
@@ -2265,6 +2304,7 @@ cs:
           not_whitelisted: není povoleno konfigurací.
           invalid_url: není platná URL nebo cesta k úložišti.
           must_not_be_ssh: nesmí být SSH url.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: není adresář.
         role:
           attributes:
@@ -2315,6 +2355,8 @@ cs:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Cannot add child because you don't have permissions to edit the selected work package.
               blank: ID nemůže být prázdné.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2383,7 +2425,7 @@ cs:
               confirmation: Hesla se neshodují!
               format: "%{message}"
             password:
-              weak: 'Musí obsahovat znaky z následujících tříd (alespoň %{min_count} z %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: malá písmena (například 'a')
               uppercase: velká písmena (například ' A')
               numeric: číselné (např. 1)
@@ -3856,6 +3898,7 @@ cs:
   label_commits_per_month: Commitů za měsíc
   label_confirmation: Potvrzení
   label_contains: obsahuje
+  label_starts_with: starts with
   label_content: Obsah
   label_color_plural: Barvy
   label_copied: zkopírováno
@@ -3863,6 +3906,8 @@ cs:
   label_copy_source: Zdroj
   label_copy_target: Cíl
   label_copy_workflow_from: Kopírovat pracovní postup z
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Kopírovat projekt
   label_core_version: Verze jádra
   label_core_build: Build jádra
@@ -4170,6 +4215,10 @@ cs:
   label_password_rule_numeric: Numerické znaky
   label_password_rule_special: Speciální znaky
   label_password_rule_uppercase: Velká písmena
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Kódování trasy
   label_per_page: 'Počet položek na stránku:'
   label_people: Lidé
@@ -5225,11 +5274,10 @@ cs:
   setting_new_project_user_role_id: Role přiřazená uživateli bez práv administrátora, který projekt vytvořil
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Text notifikace
-  setting_password_active_rules: Aktivní třídy znaků
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Počet naposledy použitých hesel zakázaných pro opakované použití
   setting_password_days_valid: Počet dní, po kterých bude možné vynutit změnu hesla
   setting_password_min_length: Minimální délka
-  setting_password_min_adhered_rules: Minimální počet požadovaných tříd
   setting_per_page_options: Objektů na stránku
   setting_percent_complete_on_status_closed: "% Dokončeno, když je stav uzavřen"
   setting_percent_complete_on_status_closed_no_change: Žádná změna

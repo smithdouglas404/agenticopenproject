@@ -74,3 +74,6 @@ OpenProject::FeatureDecisions.add :semantic_work_package_ids,
                                   description: "Enables the use of semantic work package IDs, " \
                                                "in the schema <project identifier>-<sequence number>. " \
                                                "See #41855 for details."
+
+OpenProject::FeatureDecisions.add :backlog_buckets,
+                                  description: "Enables backlog buckets."

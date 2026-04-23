@@ -86,7 +86,7 @@ module Agile
     end
 
     def task_board_for(project)
-      task_boards.find_by(project:)
+      task_boards.find { it.project_id == project.id }
     end
 
     def work_packages_for(project)

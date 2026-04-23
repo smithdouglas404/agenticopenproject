@@ -35,8 +35,8 @@ import { isClickedWithModifier } from 'core-app/shared/helpers/link-handling/lin
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { StatusResource } from 'core-app/features/hal/resources/status-resource';
-import { EMPTY, merge } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { EMPTY, fromEvent, merge } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import SpotDropAlignmentOption from 'core-app/spot/drop-alignment-options';
 import { BaselineMode, getBaselineState } from 'core-app/features/work-packages/components/wp-baseline/baseline-helpers';
@@ -134,22 +134,37 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
     // Use merge instead of combineLatest: params$ only emits on uiRouter transitions and
     // may never emit on pages that don't use uiRouter (e.g. boards). With merge, any
     // emission from either source triggers re-evaluation of the selection state.
+    // turbo:frame-load is included so that URL-based detection updates when the split
+    // view opens or closes via Turbo frame navigation.
     merge(
       this.wpTableSelection.live$(),
       this.uiRouterGlobals.params$ ?? EMPTY,
+      fromEvent(document, 'turbo:frame-load'),
     )
       .pipe(
         this.untilDestroyed(),
         map(() => {
           if (this.selectedWhenOpen) {
-            // Route param may be semantic ("PROJ-7") or numeric ("42").
-            // Compare against both id and displayId to handle both modes.
-            const routeWpId = this.uiRouterGlobals.params.workPackageId as string;
-            return routeWpId === this.workPackage.id || routeWpId === this.workPackage.displayId;
+            // In uiRouter views, use the route param directly.
+            // Route param may be numeric ("42") or semantic ("PROJ-7"), so compare both.
+            const wpIdFromRoute = this.uiRouterGlobals.params.workPackageId as string|undefined;
+            if (wpIdFromRoute) {
+              return wpIdFromRoute === this.workPackage.id
+                || wpIdFromRoute === this.workPackage.displayId;
+            }
+
+            // In non-router views (e.g. Team Planner, Calendar):
+            // Use URL-based detection so that closing the split view (which changes the URL
+            // but does not clear the selection service) correctly deselects the card.
+            // Matches either numeric or semantic identifier segments.
+            const urlMatch = /\/details\/([^/?#]+)/.exec(window.location.pathname);
+            return urlMatch?.[1] === this.workPackage.id
+              || urlMatch?.[1] === this.workPackage.displayId;
           }
 
           return this.wpTableSelection.isSelected(this.workPackage.id!);
         }),
+        distinctUntilChanged(),
       )
       .subscribe((selected:boolean) => {
         this.selected = selected;

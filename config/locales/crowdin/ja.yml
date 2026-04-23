@@ -118,6 +118,7 @@ ja:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -395,7 +396,7 @@ ja:
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
@@ -414,16 +415,13 @@ ja:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -1348,6 +1346,31 @@ ja:
     index:
       no_results_content_text: 新しいWikiページを追加
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1357,6 +1380,12 @@ ja:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: 現在、ワークフローはありません。
@@ -1913,6 +1942,7 @@ ja:
         duration: 期間
         end_insertion: 挿入の終わり
         end_deletion: 削除の終わり
+        identifier: Identifier
         ignore_non_working_days: 非営業日を無視
         include_non_working_days:
           title: 営業時間
@@ -1928,6 +1958,7 @@ ja:
         readonly: 読み取り専用
         remaining_hours: 残時間
         remaining_time: 残時間
+        sequence_number: Sequence number
         shared_with_users: 共有先
         schedule_manually: 手動スケジュール
         spent_hours: 作業時間の記録
@@ -1980,6 +2011,7 @@ ja:
         inclusion: は許可されている値ではありません。
         inclusion_nested: はパス '%{path}' で許可されている値のいずれかに設定されていません。
         invalid: は不正な値です。
+        invalid_uri: must be a valid URI.
         invalid_url: は有効な URL ではありません。
         invalid_url_scheme: 'はサポートされたプロトコルではありません (可能: %{allowed_schemes})。'
         less_than_or_equal_to: は%{count}以下の値にしてください。
@@ -1993,6 +2025,7 @@ ja:
         not_a_datetime: は有効な日時ではありません。
         not_a_number: は数値にしてください。
         not_allowed: 権限がないため無効です。
+        host_not_allowed: is not an allowed host.
         not_json: is not parseable as JSON.
         not_json_object: is not a JSON object.
         not_an_integer: は整数にしてください。
@@ -2209,6 +2242,7 @@ ja:
           not_whitelisted: は設定で許可されていません。
           invalid_url: 有効なリポジトリ URL またはパスはありません。
           must_not_be_ssh: SSH url ではありません。
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: はファルダーではありません。
         role:
           attributes:
@@ -2259,6 +2293,8 @@ ja:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: 選択したワークパッケージを編集する権限がないため、子タスクを追加できません。
               blank: IDは空白にできません。
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2327,7 +2363,7 @@ ja:
               confirmation: パスワードの確認がパスワードと一致しません。
               format: "%{message}"
             password:
-              weak: 次の文字の種類を含まれるようにしてください。（%{all_count})つのうちに%{min_count}つ以上：%{rules}）
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: 'アルファベット小文字 (例: ''a'')'
               uppercase: 'アルファベット大文字 (例: '' A'')'
               numeric: '数値 (例: ''1'')'
@@ -3680,6 +3716,7 @@ ja:
   label_commits_per_month: 月別のコミット
   label_confirmation: 確認のため再入力
   label_contains: 含む
+  label_starts_with: starts with
   label_content: 内容
   label_color_plural: 色
   label_copied: コピー
@@ -3687,6 +3724,8 @@ ja:
   label_copy_source: コピー元
   label_copy_target: コピー先
   label_copy_workflow_from: ワークフローをここからコピー
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: プロジェクトをコピー
   label_core_version: メインのバージョン
   label_core_build: コアビルド
@@ -3994,6 +4033,10 @@ ja:
   label_password_rule_numeric: 数値文字
   label_password_rule_special: 特殊文字
   label_password_rule_uppercase: 大文字
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: パスのエンコード
   label_per_page: 'ページあたり:'
   label_people: 人
@@ -5028,11 +5071,10 @@ ja:
   setting_new_project_user_role_id: システム管理者以外のプロジェクト作成者に設定するロール
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: 有効な文字の種類
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: 再利用を禁止される最近使用済みパスワードの数
   setting_password_days_valid: パスワードを強制変更させる経過日数
   setting_password_min_length: 最短長
-  setting_password_min_adhered_rules: 最小限の必要な文字の種類
   setting_per_page_options: オプションページごとの項目数
   setting_percent_complete_on_status_closed: ワークパッケージが終了したときの処理
   setting_percent_complete_on_status_closed_no_change: 変更なし

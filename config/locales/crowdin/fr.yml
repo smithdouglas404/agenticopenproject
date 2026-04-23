@@ -118,6 +118,7 @@ fr:
       description: Utilisez cet outil pour importer des données à partir de votre instance Jira. Vous pouvez configurer plusieurs hôtes Jira et choisir les données à importer à chaque cycle d'importation.
       errors:
         cannot_delete_with_imports: Impossible de supprimer un hôte Jira avec des importations existantes
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: Aucun hôte Jira n'est encore configuré
         description: Configurez un hôte Jira pour commencer à importer des éléments de Jira vers cette instance d'OpenProject.
@@ -401,7 +402,7 @@ fr:
         autofix_preview:
           error_too_long: Doit être composé de 10 caractères ou moins
           error_numerical: Ne peut être purement numérique
-          error_starts_with_number: Ne peut pas commencer par un chiffre
+          error_does_not_start_with_letter: Doit commencer par une lettre majuscule
           error_special_characters: Caractères spéciaux non autorisés
           error_not_fully_uppercased: Doit être en majuscules
           error_in_use: Déjà utilisé comme alias actif d'un autre projet
@@ -421,16 +422,13 @@ fr:
           checkbox_label: Je comprends que cela changera définitivement tous les identifiants du lot de travaux
         success_banner: Le format de l'identifiant du lot de travaux a été mis à jour.
         in_progress:
-          banner_message: Les identifiants de projet sont actuellement mis à jour pour devenir des identifiants sémantiques basés sur les projets. Cela peut prendre un certain temps.
+          converting_banner_message: Les identifiants de projets sont actuellement convertis en format sémantique. Cela peut prendre un certain temps.
+          reverting_banner_message: Les identifiants du projet sont en cours de retour au format classique. Cela peut prendre un certain temps.
     workflows:
       tabs:
         default_transitions: Transitions par défaut
         user_author: L'utilisateur est l'auteur
         user_assignee: L'utilisateur est la personne assignée
-      index:
-        description: Configurez les transitions d'état pour chaque type de lot de travail.
-        type_filter:
-          label: Filtrer par nom de type…
       status_button: Statut
       statuses_dialog:
         title: Statuts
@@ -688,36 +686,36 @@ fr:
     confirmation_live_message_checked: Le bouton pour continuer est maintenant actif.
     confirmation_live_message_unchecked: Le bouton pour continuer est maintenant inactif. Vous devez cocher la case pour continuer.
   departments:
-    edit: Edit department
-    add_user: Add user
-    add_department: Add department
+    edit: Modifier le service
+    add_user: Ajouter un utilisateur
+    add_department: Ajouter un service
     blankslate:
-      heading: Your organization has no departments
-      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+      heading: Votre organisation n'a pas de services
+      description: 'Commencez par ajouter des départements ou des utilisateurs à l''organisation. Chaque service peut être utilisé pour créer une hiérarchie au-dessous, pour naviguer et créer un sous-service à l''intérieur d''une hiérarchie, cliquez sur l''élément créé.
 
         '
-      add_button: Add
+      add_button: Ajouter
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
-      description: Add departments or users to create sub-items inside another one.
-      add_button: Add
+      heading: Ce service n'a pas de niveau de hiérarchie ci-dessous
+      description: Ajouter des départements ou des utilisateurs pour créer des sous-éléments à l'intérieur d'un autre.
+      add_button: Ajouter
     add_department_form:
-      name_label: Department name
-      name_placeholder: Enter department name
+      name_label: Nom du service
+      name_placeholder: Entrez le nom du service
     move_user_dialog:
-      title: User already in a department
-      heading: Move user to this department?
-      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
-      confirm: Move user
+      title: Utilisateur déjà dans un service
+      heading: Déplacer l'utilisateur vers ce service ?
+      description: "%{user} est actuellement membre de %{from_department}. Le déplacer le retirera de ce service."
+      confirm: Déplacer l'utilisateur
     context_menu:
-      add_sub_department: Add sub-department
-      add_user: Add user
+      add_sub_department: Ajouter un sous-service
+      add_user: Ajouter un utilisateur
     flash:
-      user_added: User was successfully added to the department.
-      user_removed: User was successfully removed from the department.
-      department_created: Department was successfully created.
+      user_added: L'utilisateur a été ajouté au service avec succès.
+      user_removed: L'utilisateur a été supprimé du service avec succès.
+      department_created: Le service a été créé avec succès.
     errors:
-      move_user_failed: Failed to move user between departments.
+      move_user_failed: Impossible de déplacer l'utilisateur entre les services.
   pagination:
     label: Pagination
     prev: Précédent
@@ -1357,6 +1355,33 @@ fr:
     index:
       no_results_content_text: Ajouter une nouvelle page wiki
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Matrice de flux de travail
       matrix_caption_assignee: Matrice de flux de travail pour le responsable
@@ -1366,24 +1391,30 @@ fr:
       matrix_uncheck_all_label: Interdire toutes les transitions
       matrix_check_uncheck_all_in_row_label_html: Activer/désactiver les transitions de <em>%{old_status}</em> à tous les nouveaux statuts
       matrix_check_uncheck_all_in_col_label_html: Activer/désactiver les transitions de tous les anciens statuts vers <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Il n'y a actuellement aucun flux de travail.
   work_packages:
     delete_dialog:
-      title: Delete work package
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      title: Supprimer le lot de travaux
+      heading: Supprimer définitivement ce lot de travaux ?
+      description: Êtes-vous sûr de vouloir supprimer le lot de travaux "%{name} " ?
+      confirm_descendants_deletion: Je reconnais que TOUS les descendants de ce lot de travaux seront supprimés récursivement.
+      cross_project_warning: 'Les lots de travaux des projets suivants seront supprimés : %{projects}'
     bulk_delete_dialog:
-      title: Delete %{count} work packages
-      heading: Permanently delete these %{count} work packages?
-      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
-      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
-      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
-      cross_project_warning: 'These work packages span multiple projects: %{projects}'
-      children_label: 'The following children will also be deleted:'
+      title: Supprimer les lots de travaux %{count}
+      heading: Supprimer définitivement ces lots de travaux %{count}?
+      description: 'Les lots de travaux suivants, y compris les enfants et toutes les données associées, seront définitivement supprimés :'
+      description_with_children: 'Les lots de travaux suivants, y compris les lots de travaux enfants, et toutes les données associées seront définitivement supprimés :'
+      confirm_children_deletion: Je reconnais que tous les lots de travaux sélectionnés et leurs enfants seront définitivement supprimés.
+      cross_project_warning: 'Ces lots de travaux s''étendent sur plusieurs projets : %{projects}'
+      children_label: 'Les enfants suivants seront également supprimés :'
     datepicker_modal:
       banner:
         description:
@@ -1846,7 +1877,7 @@ fr:
         identity_url: URL d'identité
         parent: Groupe parent
         organizational_unit: Unité organisationnelle
-        group_users: Group users
+        group_users: Groupes d'utilisateurs
       group_detail:
         parent: Groupe parent
         organizational_unit: Unité organisationnelle
@@ -1921,6 +1952,7 @@ fr:
         duration: Durée
         end_insertion: Fin de l’insertion
         end_deletion: Fin de la suppression
+        identifier: Identifier
         ignore_non_working_days: Ignorer les jours non ouvrables
         include_non_working_days:
           title: Jours ouvrés
@@ -1936,6 +1968,7 @@ fr:
         readonly: Lecture seule
         remaining_hours: Travail restant
         remaining_time: Travail restant
+        sequence_number: Sequence number
         shared_with_users: Partagé avec
         schedule_manually: Planification manuelle
         spent_hours: Temps passé
@@ -1964,7 +1997,7 @@ fr:
         confirmation: ne correspond pas à %{attribute}.
         could_not_be_copied: "%{dependency} n'a pas pu être copié (entièrement)."
         does_not_exist: n'existe pas.
-        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
+        user_already_in_department: L'utilisateur %{user_id} est déjà membre du service %{department_id}.
         error_enterprise_only: "%{action} n'est disponible que dans l'édition Enterprise d'OpenProject."
         error_unauthorized: est interdit d'accès.
         error_readonly: a tenté d'être écrit mais n'est pas accessible en écriture.
@@ -1988,6 +2021,7 @@ fr:
         inclusion: ne correspond à aucune des valeurs autorisées.
         inclusion_nested: ne correspond à aucune des valeurs autorisées dans le chemin « %{path} ».
         invalid: est invalide.
+        invalid_uri: must be a valid URI.
         invalid_url: n’est pas une URL valide.
         invalid_url_scheme: 'n’est pas un protocole pris en charge (autorisés : %{allowed_schemes}).'
         less_than_or_equal_to: doit être inférieur ou égal à %{count}.
@@ -2001,6 +2035,7 @@ fr:
         not_a_datetime: n'est pas une heure valide.
         not_a_number: n'est pas un nombre.
         not_allowed: est invalide en raison d’autorisations insuffisantes.
+        host_not_allowed: is not an allowed host.
         not_json: ne peut pas être analysé en tant que JSON.
         not_json_object: n'est pas un objet JSON.
         not_an_integer: n'est pas un entier.
@@ -2031,7 +2066,7 @@ fr:
           attributes:
             parent_id:
               circular_dependency: créerait une hiérarchie de groupe circulaire.
-              organizational_unit_mismatch: must have the same organizational unit setting as the group.
+              organizational_unit_mismatch: doit avoir le même paramètre d'unité organisationnelle que le groupe.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2218,6 +2253,7 @@ fr:
           not_whitelisted: n'est pas autorisé par la configuration.
           invalid_url: n'est pas une URL ou un chemin de dépôt valide.
           must_not_be_ssh: ne doit pas être une url SSH.
+          must_not_point_to_openproject_directory: ne doit pas pointer vers un répertoire de dépôt géré par OpenProject.
           no_directory: n'est pas un répertoire.
         role:
           attributes:
@@ -2268,6 +2304,8 @@ fr:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Impossible d'ajouter un enfant, car vous n'avez pas les permissions pour modifier le lot de travaux sélectionné.
               blank: L'ID ne peut pas être vide.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2336,7 +2374,7 @@ fr:
               confirmation: La confirmation du mot de passe ne correspond pas au mot de passe.
               format: "%{message}"
             password:
-              weak: 'Doit contenir des caractères des classes suivantes (au moins %{min_count} de %{all_count}) : %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: minuscules (par exemple, « a »)
               uppercase: majuscule (e.g. « A »)
               numeric: numérique (e.g. « 1 »)
@@ -3729,6 +3767,7 @@ fr:
   label_commits_per_month: Actions par mois
   label_confirmation: Confirmation
   label_contains: contenus
+  label_starts_with: starts with
   label_content: Contenu
   label_color_plural: Couleurs
   label_copied: copié
@@ -3736,6 +3775,8 @@ fr:
   label_copy_source: Source
   label_copy_target: Cible
   label_copy_workflow_from: Copier flux de travail à partir de
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Copie du projet
   label_core_version: Version du cœur
   label_core_build: Construction de base
@@ -3934,8 +3975,8 @@ fr:
   label_custom_pdf_export_settings: Paramètres d'exportation PDF personnalisés
   label_custom_favicon: Favicon personnalisé
   label_custom_touch_icon: Icône de contact personnalisé
-  label_departments: Organization
-  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+  label_departments: Organisation
+  label_departments_description_html: 'Définissez la structure de votre entreprise en créant des départements et des sous-départements de manière hiérarchique. Cela vous permet de refléter les lignes de rapport et de maintenir une vue d''ensemble claire et structurée de votre organisation au sein d''OpenProject. Vous pouvez également importer une structure d''organisation existante via [Synchronisation de groupe LDAP](ldap_docs_article).
 
     '
   label_logout: Déconnexion
@@ -4043,6 +4084,10 @@ fr:
   label_password_rule_numeric: Caractères numériques
   label_password_rule_special: Caractères spéciaux
   label_password_rule_uppercase: Majuscules
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Encodage du chemin d'accès
   label_per_page: 'Par page :'
   label_people: Participants
@@ -5008,7 +5053,7 @@ fr:
     '
   setting_app_subtitle: Sous-titre de l'Application
   setting_app_title: Titre de l'Application
-  setting_organization_name: Organization name
+  setting_organization_name: Nom de l'organisation
   setting_attachment_max_size: Taille maximale de la pièce jointe
   setting_show_work_package_attachments: Afficher les pièces jointes dans l'onglet des fichiers par défaut
   setting_antivirus_scan_mode: Mode analyse
@@ -5086,11 +5131,10 @@ fr:
   setting_new_project_user_role_id: Rôle donné à un utilisateur non administrateur qui crée un projet
   setting_new_project_send_confirmation_email: Envoyer une notification à l'auteur lors de la création d'un nouveau projet
   setting_new_project_notification_text: Texte de la notification
-  setting_password_active_rules: Classes de caractères actives
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Nombre de mots de passe récents interdits de réutilisation
   setting_password_days_valid: Nombre de jours après lequel le changement de mot de passe est obligatoire
   setting_password_min_length: Longueur minimale
-  setting_password_min_adhered_rules: Nombre minimal de classes de caractères requises
   setting_per_page_options: Options des objets par page
   setting_percent_complete_on_status_closed: "% d'achèvement lorsque le statut est fermé"
   setting_percent_complete_on_status_closed_no_change: Aucun changement

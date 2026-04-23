@@ -35,30 +35,27 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
 
   shared_let(:project) { create(:project) }
   shared_let(:user) { create(:admin) }
+  let(:work_packages) { [] }
+  let(:wp_scope) { WorkPackage.where(id: work_packages.map(&:id)).order(:position) }
+  let(:show_all_backlog) { false }
 
   current_user { user }
 
-  let(:work_packages) { WorkPackage.none }
-  let(:show_all) { false }
-
-  def render_component(**extra)
-    render_inline(
-      described_class.new(
-        work_packages:,
-        project:,
-        current_user: user,
-        **extra
-      )
+  subject(:component) do
+    described_class.new(
+      work_packages: wp_scope,
+      project:,
+      current_user: user
     )
   end
 
-  def create_inbox_work_package(subject: "WP", position: nil)
-    create(:work_package, subject:, project:, position:)
+  def render_component
+    vc_test_controller.params[:all] = "1" if show_all_backlog
+
+    render_inline component
   end
 
-  before do
-    render_component(show_all:)
-  end
+  before { render_component }
 
   describe "container" do
     it "renders a Primer::Beta::BorderBox with the inbox DOM id" do
@@ -67,7 +64,7 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
   end
 
   describe "empty state" do
-    let(:work_packages) { WorkPackage.none }
+    let(:work_packages) { [] }
 
     it "shows the blankslate heading and description" do
       expect(page).to have_css("h4", text: "Backlog inbox is empty")
@@ -80,9 +77,12 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
   end
 
   describe "with work packages" do
-    let(:wp1) { create_inbox_work_package(subject: "First item", position: 1) }
-    let(:wp2) { create_inbox_work_package(subject: "Second item", position: 2) }
-    let(:work_packages) { WorkPackage.where(id: [wp1.id, wp2.id]).order(:position) }
+    let(:work_packages) do
+      [
+        create(:work_package, subject: "First item", project:, position: 1),
+        create(:work_package, subject: "Second item", project:, position: 2)
+      ]
+    end
 
     it "renders a row for each work package", :aggregate_failures do
       expect(page).to have_css(".Box-row", count: 2)
@@ -106,10 +106,7 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
     let(:last_page_size) { described_class::LAST_PAGE_SIZE }
 
     context "when work packages do not exceed the threshold" do
-      let(:work_packages) do
-        wps = create_list(:work_package, threshold, project:)
-        WorkPackage.where(id: wps.map(&:id))
-      end
+      let(:work_packages) { create_list(:work_package, threshold, project:) }
 
       it "renders all items without pagination" do
         expect(page).to have_css(".Box-row", count: threshold)
@@ -121,10 +118,7 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
     context "when work packages exceed the threshold" do
       let(:total) { threshold + 8 }
       let(:middle_count) { total - first_page_size - last_page_size }
-      let(:work_packages) do
-        wps = create_list(:work_package, total, project:)
-        WorkPackage.where(id: wps.map(&:id)).order(:id)
-      end
+      let(:work_packages) { create_list(:work_package, total, project:) }
 
       it "renders only the first page and last page items (not all)" do
         expect(page).to have_css(".Box-row", count: first_page_size + last_page_size + 1) # +1 for "show more" row
@@ -132,15 +126,18 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
         expect(page).to have_css("#inbox-more-row-#{project.id}")
         expect(page).to have_text("Show #{middle_count} more items")
       end
+
+      it "renders show-more targeting the full backlog turbo frame with all=1" do
+        show_link = page.find("#inbox-more-row-#{project.id} a")
+        expect(show_link[:href]).to include("all=1")
+        expect(show_link["data-turbo-frame"]).to eq("backlogs_container")
+      end
     end
 
-    context "when show_all: true and work packages exceed threshold" do
-      let(:show_all) { true }
+    context "when show_all_backlog is true and work packages exceed threshold" do
+      let(:show_all_backlog) { true }
       let(:total) { threshold + 3 }
-      let(:work_packages) do
-        wps = create_list(:work_package, total, project:)
-        WorkPackage.where(id: wps.map(&:id))
-      end
+      let(:work_packages) { create_list(:work_package, total, project:) }
 
       it "renders all items without pagination" do
         expect(page).to have_css(".Box-row", count: total)

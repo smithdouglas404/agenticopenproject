@@ -63,6 +63,15 @@ module WorkPackages
 
         def form_id = "wp-identifier-settings-form"
 
+        def in_progress_banner_message
+          key = if ProjectIdentifiers::IdentifierAutofix.reversion_in_progress?
+                  "admin.settings.work_packages_identifier.in_progress.reverting_banner_message"
+                else
+                  "admin.settings.work_packages_identifier.in_progress.converting_banner_message"
+                end
+          I18n.t(key)
+        end
+
         def show_autofix_section?
           state == :edit && Setting::WorkPackageIdentifier.semantic? && has_problematic_projects?
         end

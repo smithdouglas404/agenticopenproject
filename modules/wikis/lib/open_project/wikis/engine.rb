@@ -58,6 +58,8 @@ module OpenProject::Wikis
         :wikisAvailable,
         getter: ->(*) { ::Wikis::Provider.enabled.exists? }
       )
+
+      OpenProject::TextFormatting::Filters::PatternMatcherFilter.append_matcher ::Wikis::TextFormatting::WikiLinkMatcher
     end
 
     replace_principal_references "Wikis::PageLink" => %i[author_id]
