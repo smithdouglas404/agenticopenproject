@@ -162,7 +162,7 @@ module Projects::Identifier
     return if errors.any? { |error| error.attribute == :identifier && error.type == :taken }
 
     already_existing = FriendlyId::Slug
-                         .where("LOWER(slug) = LOWER(?)", identifier)
+                         .where(identifier:)
                          .where(sluggable_type: self.class.to_s)
                          .where.not(sluggable_id: id)
                          .exists?
