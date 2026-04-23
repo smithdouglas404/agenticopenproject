@@ -80,9 +80,9 @@ RSpec.describe Backlogs::InboxController do
     end
 
     context "when service call succeeds" do
-      it "replaces the inbox component and responds with turbo streams", :aggregate_failures do
+      it "replaces the backlogs component and responds with turbo streams", :aggregate_failures do
         expect(response).to be_successful
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-inbox-component-#{project.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlogs-component-#{project.id}"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:work_package)).to eq(work_package)
       end
@@ -124,7 +124,7 @@ RSpec.describe Backlogs::InboxController do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace",
-                                                  target: "backlogs-inbox-component-#{project.id}"
+                                                  target: "backlogs-backlogs-component-#{project.id}"
       end
     end
 
@@ -159,7 +159,7 @@ RSpec.describe Backlogs::InboxController do
       it "replaces both the inbox and target sprint components", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-inbox-component-#{project.id}"
+                                              target: "backlogs-backlogs-component-#{project.id}"
         expect(response).to have_turbo_stream action: "replace",
                                               target: "backlogs-sprint-component-#{agile_sprint.id}"
 
@@ -175,7 +175,7 @@ RSpec.describe Backlogs::InboxController do
       it "replaces only the inbox component without a flash", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-inbox-component-#{project.id}"
+                                              target: "backlogs-backlogs-component-#{project.id}"
         expect(response).not_to have_turbo_stream action: "flash", target: "op-primer-flash-component"
       end
 
@@ -237,7 +237,7 @@ RSpec.describe Backlogs::InboxController do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace",
-                                                  target: "backlogs-inbox-component-#{project.id}"
+                                                  target: "backlogs-backlogs-component-#{project.id}"
       end
     end
 
