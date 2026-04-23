@@ -49,12 +49,12 @@ See COPYRIGHT and LICENSE files for more details.
                )
       end
 
-      if allow_backlog_bucket_creation?(@project) && OpenProject::FeatureDecisions.backlog_buckets_active?
+      if allow_backlog_bucket_creation?(project) && OpenProject::FeatureDecisions.backlog_buckets_active?
         head.with_actions do
           render Primer::Beta::Button.new(
             tag: :a,
             label: Agile::BacklogBucket.human_model_name,
-            href: new_dialog_project_backlogs_backlog_buckets_path(@project),
+            href: new_dialog_project_backlogs_backlog_buckets_path(project),
             data: {
               controller: "async-dialog",
               test_selector: "op-backlog-buckets--new-backlog-bucket-button"
