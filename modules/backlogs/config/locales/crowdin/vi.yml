@@ -43,6 +43,7 @@ vi:
       user_preference:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
+        backlog_bucket: Backlog Bucket
         backlogs_work_package_type: Loại Backlog
         position: Vị trí
         sprint: Sprint
@@ -60,7 +61,10 @@ vi:
               share_all_projects_already_taken: cannot be set because project "%{name}" is already sharing with all projects.
               share_all_projects_already_taken_anonymous: cannot be set because another project is already sharing with all projects.
         work_package:
+          backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
+            backlog_bucket:
+              backlog_bucket_from_another_project: must belong to the same project as the work package.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: 'chỉ có thể chứa ID của các gói công việc trong sprint hiện tại.
 
@@ -111,17 +115,20 @@ vi:
     administration_blankslate:
       title: Backlog admin settings are evolving
       text: We are currently redesigning the Backlogs module. Admin settings for sprints and backlogs will be visible here in the near future. Project-level settings remain available.
+    backlog_bucket_component:
+      blankslate_title: Backlog bucket is empty
+      blankslate_description: Drag items here to add them.
+    backlog_bucket_item_component:
+      label_actions: Work package actions
     sprint_component:
       blankslate_title: "%{name} is empty"
       blankslate_description: No items planned yet. Drag items here to add them.
     inbox_component:
       blankslate_title: Backlog inbox is empty
       blankslate_description: All open work packages in this project will automatically appear here.
-      label_drag_work_package: Move %{name}
       show_more:
         other: Show %{count} more items
     inbox_item_component:
-      label_drag_work_package: Move %{name}
       label_actions: Work package actions
     inbox_menu_component:
       action_menu:
@@ -142,6 +149,16 @@ vi:
         receive_shared_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
         receive_shared_no_actions_description_text: This project receives shared sprints from a different project, but none are available right now.
         settings_link_text: project settings
+    backlog_bucket_menu_component:
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_header_component:
+      label_work_package_count:
+        zero: No stories in backlog bucket
+        one: "%{count} story in backlog bucket"
+        other: "%{count} stories in backlog bucket"
     sprint_header_component:
       label_start_sprint: Start
       label_complete_sprint: Complete
@@ -167,13 +184,13 @@ vi:
         edit_sprint: Edit sprint
         add_work_package: Add work package
     story_component:
-      label_drag_story: Move %{name}
       label_actions: Story actions
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID
         move_menu: Move
+        move_to_sprint: Move to sprint
     burndown_chart:
       show:
         blankslate_title: No burndown data available
@@ -182,6 +199,8 @@ vi:
     story_points: Story points
     story_points_ideal: Story points (ideal)
   label_backlog: Backlog
+  label_backlog_bucket_edit: Edit backlog bucket
+  label_backlog_bucket_new: New backlog bucket
   label_inbox: Inbox
   label_backlogs: tồn đọng
   label_burndown_chart: Burndown chart

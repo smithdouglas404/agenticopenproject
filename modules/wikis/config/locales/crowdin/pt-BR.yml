@@ -28,6 +28,7 @@ pt-BR:
   wikis:
     buttons:
       save_and_continue: Salvar e continuar
+      done_continue: Done, continue
       wiki_page: Wiki page
     inline_page_links_component:
       empty_heading: Sem links embutidos
@@ -39,29 +40,58 @@ pt-BR:
       empty_heading: No related pages
       empty_text: Manually add links to other related wiki pages.
       heading: Related pages
+    oauth_login_component:
+      connect_button: Connect %{provider} account
     admin:
+      oauth_application_info_component:
+        label_pending: Pending
+        replace_oauth_application: Replace OpenProject OAuth application
+        confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials in your XWiki instance and all users will have to reauthorize. Are you sure you want to proceed?
+      oauth_client_info_component:
+        label_pending: Pending
+        replace_oauth_client: Replace XWiki OAuth application
+        confirm_replace_oauth_client: This action will reset the current XWiki OAuth credentials. All users will need to reauthorize against XWiki. Are you sure you want to proceed?
+      wiki_provider_list_component:
+        label_name: Name
+        label_provider: Provider
+        label_creation_time: Created
+        no_results_title: You don't have any wiki providers set up yet.
+        no_results_description: Add a wiki provider to see them here.
+      destroy_confirmation_dialog_component:
+        title: Delete wiki provider
+        warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
+      forms:
+        oauth_application_form_component:
+          application_id: Application ID
+          application_secret: Application secret
+        general_info_form_component:
+          xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
       wiki_providers:
         index_description: Adicione um serviço de wiki externo para vincular pacotes de trabalho a páginas de wiki existentes ou criar novas diretamente a partir do OpenProject.
         label_wiki_platform: Provedor de wiki
         label_add_new: Adicionar novo provedor de wiki
         label_new_xwiki_instance: Novo provedor XWiki
-        no_results_title: Você ainda não tem nenhum provedor de wiki configurado.
-        no_results_description: Adicione um provedor de wiki para visualizá-los aqui.
         label_edit: Editar provedor XWiki
         name_placeholder: Base de conhecimento XWiki
         name_caption: Dê um nome ao seu armazenamento para que os usuários possam diferenciar entre múltiplas plataformas de wiki.
         url_caption: Informe o endereço do host da sua plataforma de wiki, incluindo o https://. O endereço não deve ter mais de 255 caracteres.
         xwiki_instance: Instância XWiki
-        xwiki_instance_description: Certifique-se de que você tem privilégios de administração na sua instância XWiki antes de realizar a configuração.
         new_provider_html: Leia nossa documentação sobre [configuração de uma integração com o XWiki](docs_url) para mais informações.
         sections:
-          basic_details: Detalhes básicos
-          oauth_applications: Aplicações OAuth
+          general_information: Basic details
+          oauth_configuration: OAuth configuration
         oauth:
           openproject_oauth: OAuth do OpenProject
-          openproject_oauth_description: Permitir que o XWiki acesse dados do OpenProject usando OAuth.
-          xwiki_oauth: OAuth do XWiki
-          xwiki_oauth_description: Permitir que o OpenProject acesse dados do XWiki usando OAuth.
+        xwiki:
+          oauth:
+            openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
+            provider_oauth: XWiki OAuth
+            provider_oauth_description: Allow OpenProject to access XWiki data using an OAuth application. Enter the client credentials from your XWiki OAuth application.
+          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
+          xwiki_oauth: XWiki OAuth
+          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
         delete:
           title: Excluir provedor wiki
           warning_html: Você está prestes a excluir %{wiki_provider}. Esta ação é irreversível.
+    macro:
+      page_not_found: Linked wiki page no longer available
