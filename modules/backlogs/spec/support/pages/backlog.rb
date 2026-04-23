@@ -334,6 +334,101 @@ module Pages
       expect(sprint_names_in_order).to eq(sprint_names)
     end
 
+    def bucket_names_in_order
+      page.find_all("#owner_backlogs_container > section .CollapsibleHeader-title").map(&:text)
+    end
+
+    def expect_bucket_names_in_order(*bucket_names)
+      expect(bucket_names_in_order).to eq(bucket_names)
+    end
+
+    def expect_no_backlog_bucket(bucket)
+      expect(page).to have_no_css(bucket_selector(bucket))
+    end
+
+    def expect_backlog_bucket_work_package_count(bucket, count)
+      within_backlog_bucket(bucket) do
+        label = count == 1 ? "1 story in backlog bucket" : "#{count} stories in backlog bucket"
+        expect(page).to have_css(".Counter", accessible_name: label)
+      end
+    end
+
+    def expect_work_packages_in_backlog_bucket_in_order(bucket, work_packages: [])
+      within_backlog_bucket(bucket) do
+        expect_work_packages_in_order(work_packages:)
+      end
+    end
+
+    def expect_work_packages_in_backlog_inbox_in_order(work_packages: [])
+      within_backlog_inbox do
+        expect_work_packages_in_order(work_packages:)
+      end
+    end
+
+    def open_create_backlog_bucket_dialog
+      within_owner_backlogs do
+        click_on accessible_name: Agile::BacklogBucket.human_model_name
+      end
+    end
+
+    def expect_new_backlog_bucket_button
+      within_owner_backlogs do
+        expect(page).to have_link(Agile::BacklogBucket.human_model_name, exact: true)
+      end
+    end
+
+    def expect_no_new_backlog_bucket_button
+      within_owner_backlogs do
+        expect(page).to have_no_link(Agile::BacklogBucket.human_model_name, exact: true)
+      end
+    end
+
+    def expect_backlog_bucket_dialog
+      expect(page).to have_dialog(I18n.t(:label_backlog_bucket_new))
+    end
+
+    def within_backlog_bucket_menu(bucket, &)
+      within_backlog_bucket(bucket) do
+        button = find(:button, accessible_name: "Backlog bucket actions")
+        within(open_controlled_menu(button), &)
+      end
+      dismiss_menu(bucket)
+    end
+
+    def click_in_backlog_bucket_menu(bucket, item_name)
+      within_backlog_bucket_menu(bucket) do |menu|
+        menu.find(:menuitem, text: item_name).click
+      end
+    end
+
+    def expect_no_backlog_bucket_menu(bucket)
+      within_backlog_bucket(bucket) do
+        expect(page).to have_no_button(accessible_name: "Backlog bucket actions")
+      end
+    end
+
+    def drag_work_package_to_backlog_bucket(work_package, bucket)
+      moved_element = find(draggable_work_package_selector(work_package))
+      target_element = find(bucket_selector(bucket))
+
+      wait_for_turbo_stream do
+        moved_element.native.drag_to(target_element.native, delay: 0.1)
+      end
+    rescue Capybara::Cuprite::ObsoleteNode
+      retry
+    end
+
+    def drag_work_package_to_backlog_inbox(work_package)
+      moved_element = find(draggable_work_package_selector(work_package))
+      target_element = find(backlog_inbox_selector)
+
+      wait_for_turbo_stream do
+        moved_element.native.drag_to(target_element.native, delay: 0.1)
+      end
+    rescue Capybara::Cuprite::ObsoleteNode
+      retry
+    end
+
     def expect_story_in_sprint(story, sprint)
       within_sprint(sprint) do
         expect(page)
@@ -496,12 +591,34 @@ module Pages
       within("#inbox_#{project.id}", &)
     end
 
+    def within_backlog_bucket(bucket, &)
+      within(bucket_selector(bucket), &)
+    end
+
+    def within_backlog_inbox(&)
+      within(backlog_inbox_selector, &)
+    end
+
+    def within_owner_backlogs(&)
+      within("#owner_backlogs_container", &)
+    end
+
     def within_sprint_backlogs(&)
       within("#sprint_backlogs_container", &)
     end
 
     def sprint_selector(sprint)
       test_selector("sprint-#{sprint.id}")
+    end
+
+    def bucket_selector(bucket)
+      raise ArgumentError, "bucket must be persisted" unless bucket.persisted?
+
+      test_selector("backlog-bucket-#{bucket.id}")
+    end
+
+    def backlog_inbox_selector
+      "#new_agile_backlog_bucket"
     end
 
     def story_selector(story)
@@ -531,8 +648,13 @@ module Pages
       page.find(:menu, id: move_item["aria-controls"])
     end
 
-    def dismiss_menu(work_package)
-      find("#work_package_#{work_package.id}_menu-overlay").click
+    def dismiss_menu(menu_owner)
+      overlay_id = "#{ActionView::RecordIdentifier.dom_target(menu_owner, :menu)}-overlay"
+      selector = "##{overlay_id}"
+
+      return unless page.has_css?(selector, visible: true, wait: 0)
+
+      find(selector).click
     end
   end
 end
