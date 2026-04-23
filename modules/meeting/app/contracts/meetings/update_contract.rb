@@ -35,6 +35,7 @@ module Meetings
 
     validate :user_allowed_to_edit_in_source_project
     validate :user_allowed_to_edit_in_destination_project
+    validate :meeting_is_editable
     validate :valid_rescheduling_date, if: -> { check_reschedule? }
 
     attribute :lock_version do
@@ -55,6 +56,12 @@ module Meetings
       unless user.allowed_in_project?(:edit_meetings, model.project)
         errors.add :base, :error_unauthorized
       end
+    end
+
+    def meeting_is_editable
+      return unless user.allowed_in_project?(:edit_meetings, model.project)
+
+      errors.add :base, I18n.t(:text_meeting_not_editable_anymore) unless model.editable?(user)
     end
 
     def valid_rescheduling_date # rubocop:disable Metrics/AbcSize

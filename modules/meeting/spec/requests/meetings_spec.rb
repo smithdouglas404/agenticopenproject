@@ -65,6 +65,38 @@ RSpec.describe "Meeting requests",
     end
   end
 
+  describe "update_details" do
+    let(:details_params) do
+      {
+        project_id: project.id,
+        id: meeting.id,
+        meeting: {
+          title: "Modified title",
+          start_date: Date.current.to_s,
+          duration: "1h",
+          location: "Modified location",
+          lock_version: meeting.lock_version
+        }
+      }
+    end
+
+    context "when meeting is closed" do
+      before do
+        meeting.update_column(:state, :closed)
+      end
+
+      it "rejects the update" do
+        expect do
+          put update_details_project_meeting_path(project, meeting),
+              params: details_params,
+              as: :turbo_stream
+        end.not_to change { meeting.reload.attributes.slice("title", "start_time", "duration", "location") }
+
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+  end
+
   describe "copy" do
     let(:base_params) do
       {
