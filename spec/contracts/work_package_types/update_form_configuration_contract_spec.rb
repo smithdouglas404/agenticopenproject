@@ -149,6 +149,24 @@ module WorkPackageTypes
           expect(contract.errors.details[:base]).to include(action: "Edit Attribute Groups", error: :error_enterprise_only)
         end
       end
+
+      context "when normalizing an unnamed legacy group" do
+        before do
+          model.update_column(:attribute_groups, [
+                                ["", ["assignee"]],
+                                [:details, ["priority"]]
+                              ])
+        end
+
+        it "is valid" do
+          model.attribute_groups = [
+            [SecureRandom.uuid, ["assignee"], I18n.t("types.edit.form_configuration.untitled_section")],
+            [:details, ["priority"]]
+          ]
+
+          expect(contract).to be_valid
+        end
+      end
     end
 
     context "with enterprise features enabled", with_ee: %i[edit_attribute_groups] do

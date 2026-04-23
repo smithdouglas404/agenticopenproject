@@ -95,10 +95,26 @@ module WorkPackageTypes
     def custom_groups_modified?
       return false unless model.attribute_groups_changed?
 
-      old_keys = model.attribute_groups_was.map(&:first)
+      old_keys = model.attribute_groups_was.map(&:first).reject(&:blank?)
       new_keys = model.attribute_groups.map(&:key)
+      ignored_keys = normalized_legacy_group_keys_to_ignore
 
-      (new_keys - old_keys - Type.default_groups.keys).any?
+      (new_keys - old_keys - Type.default_groups.keys - ignored_keys).any?
+    end
+
+    def normalized_legacy_group_keys_to_ignore
+      old_blank_group_count = model.attribute_groups_was.count { |group| group.first.blank? }
+      return [] if old_blank_group_count.zero?
+
+      model.attribute_groups
+           .select { |group| normalized_legacy_group?(group) }
+           .first(old_blank_group_count)
+           .map(&:key)
+    end
+
+    def normalized_legacy_group?(group)
+      group.key.to_s.match?(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX) &&
+        group.display_name == I18n.t("types.edit.form_configuration.untitled_section")
     end
   end
 end
