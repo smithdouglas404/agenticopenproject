@@ -28,57 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserFilterComponent < IndividualPrincipalBaseFilterComponent
-  options :groups, :status, :roles, :clear_url, :project
+class PersistedView < ApplicationRecord
+  belongs_to :project, optional: true
+  belongs_to :principal, optional: true, inverse_of: :persisted_views
+  belongs_to :query, polymorphic: true, optional: true
 
-  class << self
-    ##
-    # Returns the selected status from the parameters
-    # or the default status to be filtered by (all)
-    # if no status is given.
-    def status_param(params)
-      params[:status].presence || "all"
-    end
+  belongs_to :parent, class_name: "PersistedView", optional: true
+  has_many :children, class_name: "PersistedView", foreign_key: "parent_id", dependent: :destroy, inverse_of: :parent
 
-    def filter_status(query, status)
-      return unless status && status != "all"
+  acts_as_favoritable
 
-      case status
-      when "blocked"
-        query.where(:blocked, "=", :blocked)
-      when "active"
-        query.where(:status, "=", status.to_sym)
-        query.where(:blocked, "!", :blocked)
-      else
-        query.where(:status, "=", status.to_sym)
-      end
-    end
+  validates :name, presence: true, length: { maximum: 255 }
 
-    def base_query
-      UserQuery
-    end
+  scope :public_views, -> { where(public: true) }
+  scope :private_views, ->(principal: User.current) { where(public: false, principal:) }
 
-    protected
+  after_destroy :destroy_query_if_orphaned
 
-    def apply_filters(params, query)
-      super
-      filter_status query, status_param(params)
-
-      query
-    end
+  # Returns the query of this view or, if not set, the query of the parent view.
+  def effective_query
+    query || parent&.effective_query
   end
 
-  # INSTANCE METHODS:
+  private
 
-  def filter_path
-    users_path
-  end
+  # When this view is destroyed, also destroy its query unless another public
+  # view still references it. Views belonging to the same owner that are also
+  # going away (e.g. during user deletion) do not count as "still referencing"
+  # since only public views keep a query alive.
+  def destroy_query_if_orphaned
+    return if query.nil?
+    return if PersistedView.exists?(query:, public: true)
 
-  def user_status_options
-    helpers.users_status_options_for_select status, extra: extra_user_status_options
-  end
-
-  def extra_user_status_options
-    {}
+    query.destroy!
   end
 end

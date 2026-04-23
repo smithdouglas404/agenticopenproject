@@ -28,57 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserFilterComponent < IndividualPrincipalBaseFilterComponent
-  options :groups, :status, :roles, :clear_url, :project
+class CreateOrderedPersistedQueryEntities < ActiveRecord::Migration[8.1]
+  def change
+    create_table :ordered_persisted_query_entities do |t| # rubocop:disable Rails/CreateTableWithTimestamps
+      t.integer :position, null: false
+      t.references :persisted_query,
+                   null: false,
+                   foreign_key: { on_delete: :cascade }
+      t.references :entity, polymorphic: true, null: false
 
-  class << self
-    ##
-    # Returns the selected status from the parameters
-    # or the default status to be filtered by (all)
-    # if no status is given.
-    def status_param(params)
-      params[:status].presence || "all"
+      t.index %i[persisted_query_id entity_type entity_id],
+              unique: true,
+              name: "index_ordered_pq_entities_on_query_and_entity"
+      t.index %i[persisted_query_id position],
+              name: "index_ordered_pq_entities_on_query_and_position"
     end
-
-    def filter_status(query, status)
-      return unless status && status != "all"
-
-      case status
-      when "blocked"
-        query.where(:blocked, "=", :blocked)
-      when "active"
-        query.where(:status, "=", status.to_sym)
-        query.where(:blocked, "!", :blocked)
-      else
-        query.where(:status, "=", status.to_sym)
-      end
-    end
-
-    def base_query
-      UserQuery
-    end
-
-    protected
-
-    def apply_filters(params, query)
-      super
-      filter_status query, status_param(params)
-
-      query
-    end
-  end
-
-  # INSTANCE METHODS:
-
-  def filter_path
-    users_path
-  end
-
-  def user_status_options
-    helpers.users_status_options_for_select status, extra: extra_user_status_options
-  end
-
-  def extra_user_status_options
-    {}
   end
 end

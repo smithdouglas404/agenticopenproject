@@ -28,57 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserFilterComponent < IndividualPrincipalBaseFilterComponent
-  options :groups, :status, :roles, :clear_url, :project
-
-  class << self
-    ##
-    # Returns the selected status from the parameters
-    # or the default status to be filtered by (all)
-    # if no status is given.
-    def status_param(params)
-      params[:status].presence || "all"
-    end
-
-    def filter_status(query, status)
-      return unless status && status != "all"
-
-      case status
-      when "blocked"
-        query.where(:blocked, "=", :blocked)
-      when "active"
-        query.where(:status, "=", status.to_sym)
-        query.where(:blocked, "!", :blocked)
-      else
-        query.where(:status, "=", status.to_sym)
-      end
-    end
-
-    def base_query
-      UserQuery
-    end
-
-    protected
-
-    def apply_filters(params, query)
-      super
-      filter_status query, status_param(params)
-
-      query
-    end
+class UserQuery < PersistedQuery
+  def self.model
+    User
   end
 
-  # INSTANCE METHODS:
-
-  def filter_path
-    users_path
+  def default_scope
+    # Excludes the SystemUser, DeletedUser, AnonymousUser STI descendants of User.
+    User.user
   end
 
-  def user_status_options
-    helpers.users_status_options_for_select status, extra: extra_user_status_options
-  end
+  register_query do
+    filter Queries::Users::Filters::NameFilter
+    filter Queries::Users::Filters::AnyNameAttributeFilter
+    filter Queries::Users::Filters::GroupFilter
+    filter Queries::Users::Filters::StatusFilter
+    filter Queries::Users::Filters::LoginFilter
+    filter Queries::Users::Filters::BlockedFilter
 
-  def extra_user_status_options
-    {}
+    order Queries::Users::Orders::DefaultOrder
+    order Queries::Users::Orders::NameOrder
+    order Queries::Users::Orders::GroupOrder
   end
 end

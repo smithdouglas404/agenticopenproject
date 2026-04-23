@@ -28,20 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Queries::Users::UserQuery
-  include Queries::BaseQuery
-  include Queries::UnpersistedQuery
+class CreatePersistedQueries < ActiveRecord::Migration[8.1]
+  def change
+    create_table :persisted_queries do |t|
+      t.string :type
+      t.string :name, null: true
+      t.references :project, foreign_key: true, null: true
+      t.references :principal, foreign_key: { to_table: :users }, null: true
+      t.jsonb :filters, default: []
+      t.jsonb :selects, default: []
+      t.jsonb :orders,  default: []
 
-  def self.model
-    User
-  end
+      t.timestamps
 
-  def default_scope
-    # This seemingly duplication is necessary because of the builtin classes
-    # * SystemUser
-    # * DeletedUser
-    # * AnonymousUser
-    # inheriting from user. Without it, instances of those classes would show up.
-    User.user
+      t.index :type
+    end
   end
 end

@@ -28,17 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Users
-  ::Queries::Register.register(UserQuery) do
-    filter Filters::NameFilter
-    filter Filters::AnyNameAttributeFilter
-    filter Filters::GroupFilter
-    filter Filters::StatusFilter
-    filter Filters::LoginFilter
-    filter Filters::BlockedFilter
-
-    order Orders::DefaultOrder
-    order Orders::NameOrder
-    order Orders::GroupOrder
+FactoryBot.define do
+  factory :user_query do
+    sequence(:name) { |n| "User query #{n}" }
   end
 end

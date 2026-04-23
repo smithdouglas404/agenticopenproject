@@ -28,57 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserFilterComponent < IndividualPrincipalBaseFilterComponent
-  options :groups, :status, :roles, :clear_url, :project
+class CreatePersistedViews < ActiveRecord::Migration[8.1]
+  def change
+    create_table :persisted_views do |t|
+      t.string :type
+      t.string :name
+      t.references :project, foreign_key: true, null: true
+      t.references :principal, foreign_key: { to_table: :users }, null: true
+      t.references :query, polymorphic: true, null: true
+      t.references :parent, foreign_key: { to_table: :persisted_views }, null: true
+      t.jsonb :options, default: {}, null: false
+      t.boolean :public, default: false, null: false
 
-  class << self
-    ##
-    # Returns the selected status from the parameters
-    # or the default status to be filtered by (all)
-    # if no status is given.
-    def status_param(params)
-      params[:status].presence || "all"
+      t.timestamps
+
+      t.index :type
     end
-
-    def filter_status(query, status)
-      return unless status && status != "all"
-
-      case status
-      when "blocked"
-        query.where(:blocked, "=", :blocked)
-      when "active"
-        query.where(:status, "=", status.to_sym)
-        query.where(:blocked, "!", :blocked)
-      else
-        query.where(:status, "=", status.to_sym)
-      end
-    end
-
-    def base_query
-      UserQuery
-    end
-
-    protected
-
-    def apply_filters(params, query)
-      super
-      filter_status query, status_param(params)
-
-      query
-    end
-  end
-
-  # INSTANCE METHODS:
-
-  def filter_path
-    users_path
-  end
-
-  def user_status_options
-    helpers.users_status_options_for_select status, extra: extra_user_status_options
-  end
-
-  def extra_user_status_options
-    {}
   end
 end
