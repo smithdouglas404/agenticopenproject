@@ -28,32 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class PageInfo < BaseQuery
-            def call(input_data)
-              titles = [
-                "What makes XWiki special?",
-                "API documentation",
-                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
-              ].sample
-              title = titles[Random.new(input_data.identifier.hash).rand(titles.size)]
+module OpenProject::Wikis::Patches::CreateServicePatch
+  def self.included(base)
+    base.prepend InstanceMethods
+    base.include Wikis::Concerns::UpdateInlineWikiPageLinks
+  end
 
-              success(
-                Results::PageInfo.new(
-                  identifier: input_data.identifier,
-                  provider:,
-                  title:,
-                  href: "#"
-                )
-              )
-            end
-          end
-        end
-      end
+  module InstanceMethods
+    def create(_attributes, work_package)
+      result = super
+      update_inline_wiki_page_links(work_package, work_package.description) if result.success?
+
+      result
     end
   end
 end

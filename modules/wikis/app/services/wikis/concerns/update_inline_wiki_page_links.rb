@@ -28,32 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class PageInfo < BaseQuery
-            def call(input_data)
-              titles = [
-                "What makes XWiki special?",
-                "API documentation",
-                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
-              ].sample
-              title = titles[Random.new(input_data.identifier.hash).rand(titles.size)]
+module Wikis::Concerns
+  module UpdateInlineWikiPageLinks
+    extend ActiveSupport::Concern
 
-              success(
-                Results::PageInfo.new(
-                  identifier: input_data.identifier,
-                  provider:,
-                  title:,
-                  href: "#"
-                )
-              )
-            end
-          end
+    def update_inline_wiki_page_links(linkable, *texts)
+      Wikis::InlinePageLink.where(linkable:).delete_all
+      texts.each do |text|
+        find_wiki_links(text).each do |provider_id, identifier|
+          provider = Wikis::Provider.find_by(id: provider_id)
+          next if provider.nil?
+
+          Wikis::InlinePageLink.create!(linkable:, provider:, identifier:)
         end
       end
+    end
+
+    private
+
+    def find_wiki_links(text)
+      return [] if text.blank?
+
+      # The text is markdown that escapes literal [ and ] characters. We unescape them first.
+      text = text.gsub("\\[", "[").gsub("\\]", "]")
+      text.scan(Wikis::TextFormatting::WikiLinkMatcher.regexp)
     end
   end
 end
