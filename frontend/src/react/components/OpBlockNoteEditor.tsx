@@ -28,7 +28,7 @@
  * ++
  */
 
-import { BlockNoteEditorOptions, BlockNoteSchema } from '@blocknote/core';
+import { BlockNoteEditorOptions, BlockNoteSchema, selectedFragmentToHTML } from '@blocknote/core';
 import { User } from '@blocknote/core/comments';
 import { filterSuggestionItems } from '@blocknote/core/extensions';
 import { BlockNoteView } from '@blocknote/mantine';
@@ -107,6 +107,41 @@ export function OpBlockNoteEditor({
   const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
   const theme = useOpTheme();
+
+  useEffect(() => {
+    const view = editor._tiptapEditor.view;
+
+    const handleCopy = (event: ClipboardEvent) => {
+      if (editor.prosemirrorState.selection.empty) return;
+
+      const { clipboardHTML, externalHTML, markdown } = selectedFragmentToHTML(view, editor);
+      event.clipboardData?.setData('blocknote/html', clipboardHTML);
+      event.clipboardData?.setData('text/html', externalHTML);
+      event.clipboardData?.setData('text/plain', markdown);
+      event.preventDefault();
+    };
+
+    const handleCut = (event: ClipboardEvent) => {
+      if (editor.prosemirrorState.selection.empty) return;
+
+      const { clipboardHTML, externalHTML, markdown } = selectedFragmentToHTML(view, editor);
+      event.clipboardData?.setData('blocknote/html', clipboardHTML);
+      event.clipboardData?.setData('text/html', externalHTML);
+      event.clipboardData?.setData('text/plain', markdown);
+      event.preventDefault();
+
+      if (view.editable) {
+        view.dispatch(view.state.tr.deleteSelection());
+      }
+    };
+
+    view.dom.addEventListener('copy', handleCopy);
+    view.dom.addEventListener('cut', handleCut);
+    return () => {
+      view.dom.removeEventListener('copy', handleCopy);
+      view.dom.removeEventListener('cut', handleCut);
+    };
+  }, [editor]);
 
   const getCustomSlashMenuItems = useCallback((editorInstance:EditorType) => [
     ...getDefaultReactSlashMenuItems(editorInstance),
