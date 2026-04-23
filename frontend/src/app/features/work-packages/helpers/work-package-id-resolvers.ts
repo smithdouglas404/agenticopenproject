@@ -1,4 +1,5 @@
 import { States } from 'core-app/core/states/states.service';
+import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 
 /**
  * Resolve a work package identifier to its semantic routing ID (e.g. "PROJ-42").
@@ -33,4 +34,21 @@ export function resolveRoutingId(states:States, workPackageId:string):string {
 export function resolveNumericId(states:States, routeParam:string):string | null {
   const wp = states.workPackages.get(routeParam)?.value;
   return wp?.id ?? null;
+}
+
+/**
+ * Whether the given string identifies the given work package in a routing
+ * context, matching either its numeric ID or its semantic displayId.
+ *
+ * Pairs with {@link resolveRoutingId}: that function constructs the
+ * canonical form for a URL, this one tests whether an incoming string
+ * (URL segment, route param, regex capture) targets a specific WP,
+ * without the caller having to know which form it is in.
+ */
+export function matchesRoutingId(
+  wp:WorkPackageResource,
+  candidate:string|null|undefined,
+):boolean {
+  if (!candidate) return false;
+  return candidate === wp.id || candidate === wp.displayId;
 }

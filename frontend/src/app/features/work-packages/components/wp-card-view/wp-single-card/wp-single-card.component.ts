@@ -47,6 +47,7 @@ import {
   KeepTabService
 } from 'core-app/features/work-packages/components/wp-single-view-tabs/keep-tab/keep-tab.service';
 import { WP_ID_URL_PATTERN } from 'core-app/shared/helpers/work-package-id-pattern';
+import { matchesRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 
 const DETAILS_URL_PATTERN = new RegExp(`/details/(${WP_ID_URL_PATTERN})(?:/|$)`);
 
@@ -149,20 +150,16 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
         map(() => {
           if (this.selectedWhenOpen) {
             // In uiRouter views, use the route param directly.
-            // Route param may be numeric ("42") or semantic ("PROJ-7"), so compare both.
             const wpIdFromRoute = this.uiRouterGlobals.params.workPackageId as string|undefined;
             if (wpIdFromRoute) {
-              return wpIdFromRoute === this.workPackage.id
-                || wpIdFromRoute === this.workPackage.displayId;
+              return matchesRoutingId(this.workPackage, wpIdFromRoute);
             }
 
             // In non-router views (e.g. Team Planner, Calendar):
             // Use URL-based detection so that closing the split view (which changes the URL
             // but does not clear the selection service) correctly deselects the card.
-            // Matches either numeric or semantic identifier segments via the shared pattern.
             const urlMatch = DETAILS_URL_PATTERN.exec(window.location.pathname);
-            return urlMatch?.[1] === this.workPackage.id
-              || urlMatch?.[1] === this.workPackage.displayId;
+            return matchesRoutingId(this.workPackage, urlMatch?.[1]);
           }
 
           return this.wpTableSelection.isSelected(this.workPackage.id!);
