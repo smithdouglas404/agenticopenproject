@@ -53,7 +53,7 @@ RSpec.describe RootSeeder,
 
     it "creates the demo data" do # rubocop:disable RSpec/MultipleExpectations
       expect(Project.count).to eq 2
-      expect(EnabledModule.count).to eq 15
+      expect(EnabledModule.count).to eq 19
       expect(WorkPackage.count).to eq 36
       expect(Wiki.count).to eq 2
       expect(Query.having_views.count).to eq 8

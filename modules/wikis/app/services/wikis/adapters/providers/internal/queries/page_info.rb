@@ -34,12 +34,6 @@ module Wikis
       module Internal
         module Queries
           class PageInfo < BaseQuery
-            class << self
-              def call_contract
-                Input::PageInfoCallContract
-              end
-            end
-
             def handle_query(identifier:)
               # TODO: should we accept implicit User.current or do we want to pass in a user explicitly?
               wiki_page = WikiPage.visible.find_by(id: identifier)

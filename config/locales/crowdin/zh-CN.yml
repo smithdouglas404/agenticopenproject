@@ -118,6 +118,7 @@ zh-CN:
       description: 使用此工具从您的 Jira 实例中导入数据。您可以配置多个 Jira 主机，并选择每次导入运行要导入的内容。
       errors:
         cannot_delete_with_imports: 无法删除具有现有导入的 Jira 主机
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: 尚未配置 Jira 主机
         description: 配置 Jira 主机，以开始将 Jira 中的条目导入此 OpenProject 实例。
@@ -393,7 +394,7 @@ zh-CN:
         autofix_preview:
           error_too_long: 必须为 10 个字符或更少字符
           error_numerical: 不能只包含数字
-          error_starts_with_number: 不能以数字开头
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: 不允许使用特殊字符
           error_not_fully_uppercased: 必须为大写字母
           error_in_use: 已用作另一个项目的有效标识名
@@ -412,16 +413,13 @@ zh-CN:
           checkbox_label: 我了解此操作将永久更改所有工作包 ID
         success_banner: 已成功更新工作包标识符格式。
         in_progress:
-          banner_message: 项目标识符目前正在更新为基于项目的语义标识符。此过程可能需要一些时间。
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: 默认转换
         user_author: 用户是作者
         user_assignee: 用户是指派人
-      index:
-        description: 为每个工作包类型配置状态过渡。
-        type_filter:
-          label: 按类型名称筛选…
       status_button: 状态
       statuses_dialog:
         title: 状态
@@ -1343,6 +1341,31 @@ zh-CN:
     index:
       no_results_content_text: 添加一个新的维基页面
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: 工作流矩阵
       matrix_caption_assignee: 受理人的工作流矩阵
@@ -1352,6 +1375,12 @@ zh-CN:
       matrix_uncheck_all_label: 禁止所有转换
       matrix_check_uncheck_all_in_row_label_html: 切换从“%{old_status}”<em></em>到所有新状态的转换
       matrix_check_uncheck_all_in_col_label_html: 切换从所有旧状态到“%{new_status}”<em></em>的转换
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: 目前没有工作流。
@@ -1906,6 +1935,7 @@ zh-CN:
         duration: 持续时间
         end_insertion: 结束插入
         end_deletion: 结束删除
+        identifier: Identifier
         ignore_non_working_days: 忽略非工作日
         include_non_working_days:
           title: 工作日
@@ -1921,6 +1951,7 @@ zh-CN:
         readonly: 只读
         remaining_hours: 剩余工时
         remaining_time: 剩余工时
+        sequence_number: Sequence number
         shared_with_users: 共享对象
         schedule_manually: 手动计划
         spent_hours: 已耗工时
@@ -1973,6 +2004,7 @@ zh-CN:
         inclusion: 未设置为允许的值之一。
         inclusion_nested: 未设置为路径“%{path}”中允许的值之一。
         invalid: 是无效的。
+        invalid_uri: must be a valid URI.
         invalid_url: 不是有效的 URL。
         invalid_url_scheme: 不是受支持的协议（允许：%{allowed_schemes}）。
         less_than_or_equal_to: 必须小于或等于 %{count}。
@@ -1986,6 +2018,7 @@ zh-CN:
         not_a_datetime: 不是有效的日期时间。
         not_a_number: 不是一个数字。
         not_allowed: 没有权限使用。
+        host_not_allowed: is not an allowed host.
         not_json: 无法解析为 JSON。
         not_json_object: 不是 JSON 对象。
         not_an_integer: 不是一个整数。
@@ -2202,6 +2235,7 @@ zh-CN:
           not_whitelisted: 配置所不允许的。
           invalid_url: 不是有效的存储库 URL 或路径。
           must_not_be_ssh: 不能是 SSH url。
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: 不是一个目录。
         role:
           attributes:
@@ -2252,6 +2286,8 @@ zh-CN:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: 无法添加子项目，因为您没有权限编辑选定的工作包。
               blank: ID不能为空。
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2320,7 +2356,7 @@ zh-CN:
               confirmation: 确认密码与密码不一致。
               format: "%{message}"
             password:
-              weak: 必须包含以下字符 (至少 %{all_count} 中的 %{min_count} 个)：%{rules}。
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: 小写字母 （如 'a')
               uppercase: 大写字母 (如 'A')
               numeric: 数值 （例如 ' 1')
@@ -3673,6 +3709,7 @@ zh-CN:
   label_commits_per_month: 每月提交
   label_confirmation: 确认
   label_contains: 包含
+  label_starts_with: starts with
   label_content: 内容
   label_color_plural: 颜色
   label_copied: 已复制
@@ -3680,6 +3717,8 @@ zh-CN:
   label_copy_source: 源
   label_copy_target: 目标
   label_copy_workflow_from: 复制工作流自
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: 复制项目
   label_core_version: 核心版本
   label_core_build: 核心构建
@@ -3987,6 +4026,10 @@ zh-CN:
   label_password_rule_numeric: 数字
   label_password_rule_special: 特殊字符
   label_password_rule_uppercase: 大写字母
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: 路径编码
   label_per_page: 每页：
   label_people: 人员
@@ -5020,11 +5063,10 @@ zh-CN:
   setting_new_project_user_role_id: 给创建项目的非管理员用户的角色
   setting_new_project_send_confirmation_email: 创建新项目时向作者发送通知
   setting_new_project_notification_text: 通知文本
-  setting_password_active_rules: 基本字符类型
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: 禁止重复使用最近使用密码的数量
   setting_password_days_valid: 强制更改密码的天数
   setting_password_min_length: 最小长度
-  setting_password_min_adhered_rules: 所需的最少类型数量
   setting_per_page_options: 每页对象选项
   setting_percent_complete_on_status_closed: 状态关闭时"完成%"的值
   setting_percent_complete_on_status_closed_no_change: 无变化

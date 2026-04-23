@@ -34,12 +34,6 @@ module Wikis
       module XWiki
         module Queries
           class PageInfo < BaseQuery
-            class << self
-              def call_contract
-                Input::PageInfoCallContract
-              end
-            end
-
             def handle_query(identifier:)
               title = [
                 "What makes XWiki special?",

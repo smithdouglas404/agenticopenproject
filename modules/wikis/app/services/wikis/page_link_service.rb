@@ -38,9 +38,9 @@ module Wikis
       # TODO: Replace with complete implementation
 
       PageLink.joins(:provider)
-                     .merge(Provider.enabled)
-                     .where(linkable:)
-                     .count
+              .merge(Provider.enabled)
+              .where(linkable:)
+              .count
     end
 
     def relation_page_link_infos_for(provider:, linkable:)
@@ -48,13 +48,13 @@ module Wikis
               .merge(RelationPageLink.all)
               .where(linkable:)
               .order(created_at: :desc)
-              .map { provider.resolve("queries.page_info").call(identifier: it.identifier) }
+              .map { page_info(provider:, identifier: it.identifier) }
     end
 
     def inline_page_link_infos_for(linkable:)
       InlinePageLink.where(linkable:)
                     .order(created_at: :desc)
-                    .map { it.provider.resolve("queries.page_info").call(identifier: it.identifier) }
+                    .map { page_info(provider: it.provider, identifier: it.identifier) }
     end
 
     def referencing_wiki_page_infos_for(linkable:)
@@ -66,7 +66,7 @@ module Wikis
       if linkable.id % 2 == 0
         InternalProvider.enabled.each do |provider|
           random_wiki_page = WikiPage.order("RANDOM()").limit(1).first
-          referenced_in << provider.resolve("queries.page_info").call(identifier: random_wiki_page.id.to_s)
+          referenced_in << page_info(provider: , identifier: random_wiki_page.id.to_s)
         end
       end
 
@@ -74,6 +74,10 @@ module Wikis
     end
 
     private
+
+    def page_info(provider:, identifier:)
+      Adapters::Input::PageInfo.build(identifier:).bind { provider.resolve("queries.page_info").call(it) }
+    end
 
     def page_title_service
       @page_title_service ||= PageTitleService.new

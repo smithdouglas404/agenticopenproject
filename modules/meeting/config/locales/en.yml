@@ -43,6 +43,7 @@ en:
         location: "Location"
         duration: "Duration"
         notes: "Notes"
+        recurrence_start_time: "Scheduled start time"
         participants: "Participants"
         participant:
           one: "1 Participant"

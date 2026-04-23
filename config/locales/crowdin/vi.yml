@@ -118,6 +118,7 @@ vi:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -395,7 +396,7 @@ vi:
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
@@ -414,16 +415,13 @@ vi:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Chuyển tiếp mặc định
         user_author: Người dùng là tác giả
         user_assignee: Người dùng là người được chuyển nhượng
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -1349,6 +1347,31 @@ vi:
     index:
       no_results_content_text: Thêm một trang wiki mới
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Ma trận quy trình công việc
       matrix_caption_assignee: Ma trận quy trình công việc cho người được giao
@@ -1358,6 +1381,12 @@ vi:
       matrix_uncheck_all_label: Không cho phép tất cả các chuyển đổi
       matrix_check_uncheck_all_in_row_label_html: Chuyển đổi các chuyển đổi từ <em>%{old_status}</em> sang tất cả các trạng thái mới
       matrix_check_uncheck_all_in_col_label_html: Chuyển đổi trạng thái từ tất cả các trạng thái cũ sang <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Hiện tại không có quy trình làm việc nào.
@@ -1912,6 +1941,7 @@ vi:
         duration: thời lượng
         end_insertion: Kết thúc chèn
         end_deletion: Kết thúc quá trình xóa
+        identifier: Identifier
         ignore_non_working_days: Bỏ qua những ngày không làm việc
         include_non_working_days:
           title: Ngày làm việc
@@ -1927,6 +1957,7 @@ vi:
         readonly: Chỉ đọc
         remaining_hours: Công việc còn lại
         remaining_time: Công việc còn lại
+        sequence_number: Sequence number
         shared_with_users: Được chia sẻ với
         schedule_manually: Lên lịch thủ công
         spent_hours: dành thời gian
@@ -1979,6 +2010,7 @@ vi:
         inclusion: không nằm trong các giá trị cho phép
         inclusion_nested: không được đặt thành một trong các giá trị được phép tại đường dẫn '%{path}'.
         invalid: không hợp lệ
+        invalid_uri: must be a valid URI.
         invalid_url: không phải là một URL hợp lệ.
         invalid_url_scheme: 'không phải là giao thức được hỗ trợ  (được phép: %{allowed_schemes}).'
         less_than_or_equal_to: phải nhỏ hơn hoặc bằng %{count}
@@ -1992,6 +2024,7 @@ vi:
         not_a_datetime: không phải là thời gian hợp lệ
         not_a_number: không phải là số
         not_allowed: không hợp lệ vì thiếu quyền.
+        host_not_allowed: is not an allowed host.
         not_json: không thể phân tích cú pháp dưới dạng JSON.
         not_json_object: không phải là một đối tượng JSON.
         not_an_integer: không phải là một số nguyên
@@ -2208,6 +2241,7 @@ vi:
           not_whitelisted: không được cấu hình cho phép.
           invalid_url: không phải là đường dẫn hoặc URL kho lưu trữ hợp lệ.
           must_not_be_ssh: không được là đường dẫn SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: không phải là một thư mục.
         role:
           attributes:
@@ -2258,6 +2292,8 @@ vi:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Không thể thêm con vì bạn không có quyền chỉnh sửa gói công việc đã chọn.
               blank: ID không được để trống.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2326,7 +2362,7 @@ vi:
               confirmation: Xác nhận mật khẩu không khớp với mật khẩu.
               format: "%{message}"
             password:
-              weak: 'Phải chứa các ký tự thuộc các lớp sau (ít nhất %{min_count} trong số %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: chữ thường (ví dụ như 'a')
               uppercase: chữ hoa (ví dụ như ' A')
               numeric: số (ví dụ như ' 1')
@@ -3679,6 +3715,7 @@ vi:
   label_commits_per_month: Commits mỗi tháng
   label_confirmation: xác nhận
   label_contains: bao gồm
+  label_starts_with: starts with
   label_content: Nội dung
   label_color_plural: Màu sắc
   label_copied: đã sao chép
@@ -3686,6 +3723,8 @@ vi:
   label_copy_source: Nguồn
   label_copy_target: Mục tiêu
   label_copy_workflow_from: Sao chép quy trình từ
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Sao chép dự án
   label_core_version: Phiên bản lõi
   label_core_build: Xây dựng cốt lõi
@@ -3993,6 +4032,10 @@ vi:
   label_password_rule_numeric: Kiểu số
   label_password_rule_special: Ký tự đặc biệt
   label_password_rule_uppercase: Chữ hoa
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Mã hóa đường dẫn
   label_per_page: 'Mỗi trang:'
   label_people: mọi người
@@ -5041,11 +5084,10 @@ vi:
   setting_new_project_user_role_id: Vai trò được cấp cho người dùng không phải quản trị viên tạo dự án
   setting_new_project_send_confirmation_email: Gửi thông báo cho tác giả khi tạo dự án mới
   setting_new_project_notification_text: Văn bản thông báo
-  setting_password_active_rules: Lớp nhân vật hoạt động
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Số lượng mật khẩu được sử dụng gần đây nhất bị cấm sử dụng lại
   setting_password_days_valid: Số ngày thực hiện thay đổi mật khẩu sau đó
   setting_password_min_length: Chiều dài tối thiểu
-  setting_password_min_adhered_rules: Số lượng lớp học yêu cầu tối thiểu
   setting_per_page_options: Tùy chọn đối tượng trên mỗi trang
   setting_percent_complete_on_status_closed: "% Hoàn thành khi trạng thái đóng"
   setting_percent_complete_on_status_closed_no_change: Không thay đổi

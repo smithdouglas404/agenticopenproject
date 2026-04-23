@@ -7,12 +7,12 @@
     ) do |form|
       flex_layout do |general_info_row|
         general_info_row.with_row(mb: 3) do
-          render(Primer::Beta::Text.new(font_weight: :bold)) { I18n.t("wikis.admin.wiki_providers.xwiki_instance") }
+          render(Primer::Beta::Text.new(font_weight: :bold)) { t("wikis.admin.wiki_providers.xwiki_instance") }
         end
 
         general_info_row.with_row(mb: 3) do
           render(Primer::Beta::Text.new(test_selector: "wiki-provider-configuration-instructions")) do
-            I18n.t("wikis.admin.wiki_providers.xwiki_instance_description")
+            t(".xwiki_instance_description")
           end
         end
 
@@ -22,6 +22,10 @@
 
         general_info_row.with_row(mb: 3) do
           render(Wikis::Admin::UrlInputForm.new(form))
+        end
+
+        general_info_row.with_row(mb: 3) do
+          render(Wikis::Admin::XWikiAuthenticationMethodSelectForm.new(form))
         end
 
         general_info_row.with_row do

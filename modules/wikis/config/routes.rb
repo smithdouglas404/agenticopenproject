@@ -35,6 +35,10 @@ Rails.application.routes.draw do
         member do
           get :confirm_destroy
           get :edit_general_info
+          delete :replace_oauth_application
+        end
+        resource :oauth_client, controller: "/wikis/admin/oauth_clients", only: %i[new create] do
+          patch :update, on: :member
         end
       end
     end

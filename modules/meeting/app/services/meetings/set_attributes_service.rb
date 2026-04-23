@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -48,6 +49,7 @@ module Meetings
         model.state = "draft" if !model.recurring? || model.template?
         model.notify = false
         model.sharing = "none" if model.onetime_template?
+        model.recurrence_start_time ||= model.start_time if model.recurring? && !model.template?
       end
     end
 

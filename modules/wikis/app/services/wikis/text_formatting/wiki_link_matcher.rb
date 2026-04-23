@@ -31,6 +31,8 @@
 module Wikis
   module TextFormatting
     class WikiLinkMatcher < OpenProject::TextFormatting::Matchers::RegexMatcher
+      include Dry::Monads[:result]
+
       class << self
         def applicable?(*)
           super && OpenProject::FeatureDecisions.wiki_enhancements_active?
@@ -59,28 +61,33 @@ module Wikis
 
       def process
         provider = Wikis::Provider.find_by(id: @provider_id)
-        title, href = resolve_page(provider, @identifier)
-
         view_context = ApplicationController.new.view_context
         OpPrimer::InlineMacroComponent.new.render_in(view_context) do |component|
           component.with_leading_visual_icon(icon: :"op-file-doc")
 
-          if title.nil? || href.nil?
-            Primer::Beta::Text.new(color: :muted).render_in(view_context) { I18n.t("wikis.macro.page_not_found") }
-          else
-            Primer::Beta::Link.new(href:).render_in(view_context) { title }
-          end
+          resolve_page(provider, @identifier).either(
+            ->(page_info) { render_page_info_macro(view_context, page_info) },
+            ->(error) { render_error_macro(view_context, error) }
+          )
         end
       end
 
       private
 
       def resolve_page(provider, identifier)
-        return nil if provider.nil?
+        return Failure() if provider.nil?
 
-        page_info = provider.resolve("queries.page_info").call(identifier:).value_or { return nil }
+        Wikis::Adapters::Input::PageInfo.build(identifier:).bind do |input|
+          provider.resolve("queries.page_info").call(input)
+        end
+      end
 
-        [page_info.title, page_info.href]
+      def render_page_info_macro(view_context, page_info)
+        Primer::Beta::Link.new(href: page_info.href).render_in(view_context) { page_info.title }
+      end
+
+      def render_error_macro(view_context, _error)
+        Primer::Beta::Text.new(color: :muted).render_in(view_context) { I18n.t("wikis.macro.page_not_found") }
       end
     end
   end

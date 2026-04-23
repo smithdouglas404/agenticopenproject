@@ -37,6 +37,12 @@ module OpenProject::Backlogs::Patches::SetAttributesServicePatch
     def set_attributes(attributes)
       super
 
+      if moved_to_another_project? && model.backlog_bucket_id
+        model.change_by_system do
+          model.backlog_bucket = nil
+        end
+      end
+
       if moved_to_project_that_has_no_access_to_sprint?
         model.change_by_system do
           model.sprint = nil
@@ -44,10 +50,12 @@ module OpenProject::Backlogs::Patches::SetAttributesServicePatch
       end
     end
 
+    def moved_to_another_project?
+      work_package.persisted? && work_package.project_id_changed?
+    end
+
     def moved_to_project_that_has_no_access_to_sprint?
-      !work_package.new_record? &&
-        work_package.project_id &&
-        work_package.project_id_changed? &&
+      moved_to_another_project? &&
         work_package.sprint_id &&
         !work_package.sprint.visible_to?(work_package.project)
     end

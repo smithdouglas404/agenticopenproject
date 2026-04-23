@@ -51,7 +51,13 @@ RSpec.describe WorkPackages::CreateContract do
       view_work_packages
       add_work_packages
       manage_sprint_items
+      view_sprints
     ]
+  end
+
+  before do
+    allow(work_package_project).to receive(:assignable_sprints)
+                                     .and_return(shared_sprints)
   end
 
   it_behaves_like "work package contract with backlogs extensions"

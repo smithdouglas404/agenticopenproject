@@ -394,9 +394,9 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def find_existing_occurrence
-    next_occurrence = @series.scheduled_meetings.find_by(start_time: @next_meeting_time)
+    next_occurrence = @series.meetings.not_templated.find_by(recurrence_start_time: @next_meeting_time)
 
-    if next_occurrence&.cancelled? || next_occurrence&.meeting&.closed?
+    if next_occurrence&.cancelled? || next_occurrence&.closed?
       result = @series.first_available_occurrence(from_time: @next_meeting_time)
 
       if result.nil?
@@ -404,10 +404,10 @@ class MeetingAgendaItemsController < ApplicationController
       end
 
       @next_meeting_time = result[:occurrence]
-      next_occurrence = @series.scheduled_meetings.find_by(start_time: @next_meeting_time)
+      next_occurrence = @series.meetings.not_templated.find_by(recurrence_start_time: @next_meeting_time)
     end
 
-    @next_occurrence = next_occurrence&.meeting
+    @next_occurrence = next_occurrence&.cancelled? ? nil : next_occurrence
   end
 
   def render_next_meeting_flash(base_key, next_occurrence)

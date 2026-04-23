@@ -118,6 +118,7 @@ pl:
       description: To narzędzie służy do importowania danych z wystąpienia usługi Jira. Można skonfigurować wiele hostów usługi Jira i wybrać, co ma być importowane w każdym przebiegu importu.
       errors:
         cannot_delete_with_imports: Nie można usunąć hosta Jira z istniejącym importem
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: Nie skonfigurowano jeszcze hostów Jira
         description: Skonfiguruj host usługi Jira, aby rozpocząć importowanie elementów z Jira do tego wystąpienia OpenProject.
@@ -413,7 +414,7 @@ pl:
         autofix_preview:
           error_too_long: Musi składać się z nie więcej niż 10 znaków
           error_numerical: Nie może być czysto liczbowy
-          error_starts_with_number: Nie może zaczynać się od cyfry
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Znaki specjalne są niedozwolone
           error_not_fully_uppercased: Musi być pisany wielkimi literami
           error_in_use: Już używany jako aktywne dojście innego projektu
@@ -435,16 +436,13 @@ pl:
           checkbox_label: Rozumiem, że spowoduje to trwałą zmianę wszystkich identyfikatorów pakietów roboczych
         success_banner: Pomyślnie zaktualizowano format identyfikatora pakietu roboczego.
         in_progress:
-          banner_message: Identyfikatory projektów są obecnie zmieniane na identyfikatory semantyczne oparte na projektach. Może to zająć trochę czasu.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Przejścia domyślne
         user_author: Użytkownik jest autorem
         user_assignee: Użytkownik jest przypisaną osobą
-      index:
-        description: Skonfiguruj przejścia statusów dla każdego typu pakietu roboczego.
-        type_filter:
-          label: Filtruj według nazwy typu…
       status_button: Status
       statuses_dialog:
         title: Statusy
@@ -1396,6 +1394,37 @@ pl:
     index:
       no_results_content_text: Dodaj nową stronę Wiki
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            few: Successfully copied workflow to %{count} roles.
+            many: Successfully copied workflow to %{count} roles.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            few: Successfully copied workflow to %{count} types.
+            many: Successfully copied workflow to %{count} types.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Macierz przepływu pracy
       matrix_caption_assignee: Macierz przepływu pracy osoby przypisanej
@@ -1405,6 +1434,12 @@ pl:
       matrix_uncheck_all_label: Nie zezwalaj na żadne przejścia
       matrix_check_uncheck_all_in_row_label_html: Przełącz przejścia z <em>%{old_status}</em> na wszystkie nowe statusy
       matrix_check_uncheck_all_in_col_label_html: Przełącz przejścia ze wszystkich starych statusów na <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Nie ma jeszcze żadnego obiegu pracy.
@@ -1960,6 +1995,7 @@ pl:
         duration: Czas trwania
         end_insertion: Koniec wstawiania
         end_deletion: Koniec usuwania
+        identifier: Identifier
         ignore_non_working_days: Ignoruj dni wolne od pracy
         include_non_working_days:
           title: Dni robocze
@@ -1975,6 +2011,7 @@ pl:
         readonly: Tylko do odczytu
         remaining_hours: Pozostała praca
         remaining_time: Pozostała praca
+        sequence_number: Sequence number
         shared_with_users: 'Udostępniono użytkownikom '
         schedule_manually: Planowanie ręczne
         spent_hours: Czas pracy
@@ -2027,6 +2064,7 @@ pl:
         inclusion: jest niezgodne z jednym z dozwolonych wartości.
         inclusion_nested: nie jest ustawione na jedną z dozwolonych wartości na ścieżce '%{path}'.
         invalid: jest nieprawidłowe.
+        invalid_uri: must be a valid URI.
         invalid_url: nie jest poprawnym adresem URL.
         invalid_url_scheme: 'nie jest obsługiwanym protokołem (dozwolone: %{allowed_schemes}).'
         less_than_or_equal_to: musi być mniejsze niż lub równe %{count}.
@@ -2040,6 +2078,7 @@ pl:
         not_a_datetime: nie jest poprawną datą i czasem.
         not_a_number: nie jest liczbą.
         not_allowed: jest nieprawidłowy ze względu na brak uprawnień.
+        host_not_allowed: is not an allowed host.
         not_json: nie może być analizowany jako kod JSON.
         not_json_object: nie jest obiektem JSON.
         not_an_integer: nie jest liczbą całkowitą.
@@ -2259,6 +2298,7 @@ pl:
           not_whitelisted: nie jest dozwolone w tej konfiguracji.
           invalid_url: nie jest prawidłowym adresem URL ani ścieżką.
           must_not_be_ssh: nie może być adresem SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: nie jest katalogiem.
         role:
           attributes:
@@ -2309,6 +2349,8 @@ pl:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Nie można dodać elementu podrzędnego, ponieważ nie masz uprawnień do edycji wybranego pakietu roboczego.
               blank: Identyfikator nie może być pusty.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2377,7 +2419,7 @@ pl:
               confirmation: Powtórzone hasło różni się od wprowadzonego hasła!
               format: "%{message}"
             password:
-              weak: 'Musi zawierać znaki z następujących klas (co najmniej %{min_count} z %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: małe litery (np. 'a')
               uppercase: wielkie litery (np. 'A')
               numeric: liczbowe (np. 1)
@@ -3846,6 +3888,7 @@ pl:
   label_commits_per_month: Commits per month
   label_confirmation: Potwierdzenie
   label_contains: zawiera
+  label_starts_with: starts with
   label_content: Zawartość
   label_color_plural: Kolory
   label_copied: skopiowane
@@ -3853,6 +3896,8 @@ pl:
   label_copy_source: Źródło
   label_copy_target: Cel
   label_copy_workflow_from: Kopiowanie pracy z
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Kopiuj projekt
   label_core_version: Wersja bazowa
   label_core_build: Kompilacja bazowa
@@ -4160,6 +4205,10 @@ pl:
   label_password_rule_numeric: Znaki numeryczne
   label_password_rule_special: Znaki specjalne
   label_password_rule_uppercase: Wielkie litery
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Path encoding
   label_per_page: 'Na stronie:'
   label_people: Ludzie
@@ -5207,11 +5256,10 @@ pl:
   setting_new_project_user_role_id: Rola dla użytkownika bez uprawnień administratora, który tworzy projekt
   setting_new_project_send_confirmation_email: Wyślij powiadomienie do autora podczas tworzenia nowego projektu
   setting_new_project_notification_text: Tekst powiadomienia
-  setting_password_active_rules: Aktywne klasy znaków
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Liczba ostatnio używanych haseł zakazane do ponownego wykorzystania
   setting_password_days_valid: Liczba dni, po których konieczna będzie zmiana hasła
   setting_password_min_length: Minimalna długość
-  setting_password_min_adhered_rules: Minimalna liczba wymaganych klas
   setting_per_page_options: Obiektów na stronie
   setting_percent_complete_on_status_closed: "% Ukończenia, gdy status jest zamknięty"
   setting_percent_complete_on_status_closed_no_change: Bez zmian

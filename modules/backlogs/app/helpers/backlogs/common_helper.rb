@@ -30,13 +30,22 @@
 
 module Backlogs
   module CommonHelper
+    def allow_backlog_bucket_creation?(project)
+      current_user.allowed_in_project?(:create_sprints, project)
+    end
+
     def allow_sprint_creation?(project)
-      current_user.allowed_in_project?(:create_sprints, project) &&
+      allow_backlog_bucket_creation?(project) &&
         !project.receive_shared_sprints?
     end
 
     def show_all_backlog
       ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
+    end
+
+    # Optional query params for backlog URLs when showing all items (`?all=1`).
+    def all_backlogs_params
+      show_all_backlog ? { all: 1 } : {}
     end
   end
 end

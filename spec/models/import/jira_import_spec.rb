@@ -136,8 +136,7 @@ RSpec.describe Import::JiraImport do
 
   describe "#import_users", with_settings: {
     password_active_rules: %w(lowercase uppercase numeric special),
-    password_min_length: 4,
-    password_min_adhered_rules: 4
+    password_min_length: 4
   } do
     def jira_user_payload(name:, display_name:, email:, groups: [], key: "JIRAUSER10000", active: true)
       {

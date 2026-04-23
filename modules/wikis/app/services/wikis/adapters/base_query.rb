@@ -32,23 +32,13 @@ module Wikis::Adapters
   class BaseQuery
     include Dry::Monads[:result]
 
-    class << self
-      def call_contract
-        raise SubclassResponsibilityError
-      end
-    end
-
     attr_reader :provider
 
     def initialize(provider)
       @provider = provider
     end
 
-    def call(**)
-      self.class.call_contract.new.call(**).to_monad.bind { handle_query(**it.to_h) }
-    end
-
-    def handle_query(**)
+    def call(_input_data)
       raise SubclassResponsibilityError
     end
 

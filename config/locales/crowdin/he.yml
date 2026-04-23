@@ -118,6 +118,7 @@ he:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -413,7 +414,7 @@ he:
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
@@ -435,16 +436,13 @@ he:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -1398,6 +1396,37 @@ he:
     index:
       no_results_content_text: הוסף דף wiki חדש
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            two: Successfully copied workflow to %{count} roles.
+            many: Successfully copied workflow to %{count} roles.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            two: Successfully copied workflow to %{count} types.
+            many: Successfully copied workflow to %{count} types.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1407,6 +1436,12 @@ he:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: There are currently no workflows.
@@ -1964,6 +1999,7 @@ he:
         duration: משך זמן
         end_insertion: End of the insertion
         end_deletion: End of the deletion
+        identifier: Identifier
         ignore_non_working_days: Ignore non working days
         include_non_working_days:
           title: Working days
@@ -1979,6 +2015,7 @@ he:
         readonly: Read only
         remaining_hours: Remaining work
         remaining_time: Remaining work
+        sequence_number: Sequence number
         shared_with_users: Shared with
         schedule_manually: Manual scheduling
         spent_hours: זמן שבוזבז
@@ -2031,6 +2068,7 @@ he:
         inclusion: is not set to one of the allowed values.
         inclusion_nested: is not set to one of the allowed values at path '%{path}'.
         invalid: is invalid.
+        invalid_uri: must be a valid URI.
         invalid_url: is not a valid URL.
         invalid_url_scheme: 'is not a supported protocol (allowed: %{allowed_schemes}).'
         less_than_or_equal_to: must be less than or equal to %{count}.
@@ -2044,6 +2082,7 @@ he:
         not_a_datetime: is not a valid date time.
         not_a_number: is not a number.
         not_allowed: is invalid because of missing permissions.
+        host_not_allowed: is not an allowed host.
         not_json: is not parseable as JSON.
         not_json_object: is not a JSON object.
         not_an_integer: is not an integer.
@@ -2263,6 +2302,7 @@ he:
           not_whitelisted: is not allowed by the configuration.
           invalid_url: is not a valid repository URL or path.
           must_not_be_ssh: must not be an SSH url.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: is not a directory.
         role:
           attributes:
@@ -2313,6 +2353,8 @@ he:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Cannot add child because you don't have permissions to edit the selected work package.
               blank: ID can't be blank.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2381,7 +2423,7 @@ he:
               confirmation: Password confirmation does not match password.
               format: "%{message}"
             password:
-              weak: 'חייב להכיל תווים של המחלקות הבאות (לפחות %{min_count} מתוך %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: אותיות קטנות (למשל 'a')
               uppercase: אותיות רישיות (למשל ' A')
               numeric: מספריים (למשל ' 1')
@@ -3854,6 +3896,7 @@ he:
   label_commits_per_month: מבצע לחודש
   label_confirmation: אימות
   label_contains: מכיל
+  label_starts_with: starts with
   label_content: תוכן
   label_color_plural: צבעים
   label_copied: הועתק
@@ -3861,6 +3904,8 @@ he:
   label_copy_source: מקור
   label_copy_target: יעד
   label_copy_workflow_from: העתק זרימת עבודה זו מתוך
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: העתק פרוייקט
   label_core_version: גרסת ליבה
   label_core_build: Core build
@@ -4168,6 +4213,10 @@ he:
   label_password_rule_numeric: Numeric Characters
   label_password_rule_special: Special Characters
   label_password_rule_uppercase: Uppercase
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Path encoding
   label_per_page: 'לכל עמוד:'
   label_people: אנשים
@@ -5223,11 +5272,10 @@ he:
   setting_new_project_user_role_id: Role given to a non-admin user who creates a project
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: Active character classes
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Number of most recently used passwords banned for reuse
   setting_password_days_valid: Number of days, after which to enforce a password change
   setting_password_min_length: אורך מינימלי
-  setting_password_min_adhered_rules: Minimum number of required classes
   setting_per_page_options: Objects per page options
   setting_percent_complete_on_status_closed: "% Complete when status is closed"
   setting_percent_complete_on_status_closed_no_change: No change

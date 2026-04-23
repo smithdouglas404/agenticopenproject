@@ -118,6 +118,7 @@ uk:
       description: Використовуйте цей інструмент для імпорту даних зі свого екземпляра Jira. Ви можете налаштувати кілька хостів Jira й вибрати, що імпортувати в кожному циклі імпорту.
       errors:
         cannot_delete_with_imports: Не вдається видалити хост Jira з наявними процесами імпорту
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: Ще немає налаштованих хостів Jira
         description: Налаштуйте хост Jira, щоб почати імпорт елементів із Jira в цей екземпляр OpenProject.
@@ -413,7 +414,7 @@ uk:
         autofix_preview:
           error_too_long: Має містити щонайбільше 10 символів
           error_numerical: Не може містити лише числа
-          error_starts_with_number: Не може починатись із числа
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Не дозволяється використовувати спеціальні символи
           error_not_fully_uppercased: Літери мають бути великими
           error_in_use: Уже використовується як активний дескриптор іншого проєкту
@@ -435,16 +436,13 @@ uk:
           checkbox_label: Я розумію, що ця дія назавжди змінить усі ідентифікатори пакетів робіт
         success_banner: Формат ідентифікаторів пакетів робіт успішно оновлено.
         in_progress:
-          banner_message: Ідентифікатори проєктів зараз замінюються на семантичні ідентифікатори із зазначенням проєктів. Це може зайняти деякий час.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Стандартні переходи
         user_author: Користувач є автором
         user_assignee: Користувач є призначеною особою
-      index:
-        description: Налаштуйте переходи статусів для кожного типу пакета робіт.
-        type_filter:
-          label: Фільтрувати за назвою типу…
       status_button: Статус
       statuses_dialog:
         title: Статуси
@@ -1395,6 +1393,37 @@ uk:
     index:
       no_results_content_text: Додати нову wiki-сторінку
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            few: Successfully copied workflow to %{count} roles.
+            many: Successfully copied workflow to %{count} roles.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            few: Successfully copied workflow to %{count} types.
+            many: Successfully copied workflow to %{count} types.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Матриця робочого процесу
       matrix_caption_assignee: Матриця робочого процесу для виконавця
@@ -1404,6 +1433,12 @@ uk:
       matrix_uncheck_all_label: Заборонити всі зміни
       matrix_check_uncheck_all_in_row_label_html: Перемикач зміни статусу <em>%{old_status}</em> на всі нові статуси
       matrix_check_uncheck_all_in_col_label_html: Перемикач зміни всіх старих статусів на статус <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Наразі немає робочих процесів.
@@ -1959,6 +1994,7 @@ uk:
         duration: Тривалість
         end_insertion: Кінець вставки
         end_deletion: Кінець видалення
+        identifier: Identifier
         ignore_non_working_days: Ігнорувати неробочі дні
         include_non_working_days:
           title: Робочі дні
@@ -1974,6 +2010,7 @@ uk:
         readonly: Лише читання
         remaining_hours: Залишок роботи
         remaining_time: Залишок роботи
+        sequence_number: Sequence number
         shared_with_users: Доступ мають
         schedule_manually: Ручне планування
         spent_hours: Витрачений час
@@ -2026,6 +2063,7 @@ uk:
         inclusion: не встановлено в одному з допустимих значень
         inclusion_nested: "– не призначено одне з дозволених значень за шляхом «%{path}»."
         invalid: зазначено невірно
+        invalid_uri: must be a valid URI.
         invalid_url: не є дійсною URL-адресою.
         invalid_url_scheme: 'не є підтримуваним протоколом (дозволено: %{allowed_schemes}).'
         less_than_or_equal_to: має бути меншим або рівним %{count}
@@ -2039,6 +2077,7 @@ uk:
         not_a_datetime: не є дійсним датою.
         not_a_number: не є числом
         not_allowed: недійсний через відсутність дозволів.
+        host_not_allowed: is not an allowed host.
         not_json: не аналізується як JSON.
         not_json_object: не є об’єктом JSON.
         not_an_integer: не є цілим числом
@@ -2262,6 +2301,7 @@ uk:
           not_whitelisted: не дозволяється конфігурацією.
           invalid_url: не є дійсним URL-адресою або контуром сховища.
           must_not_be_ssh: не повинна бути URL-адресою SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: не є каталогом.
         role:
           attributes:
@@ -2312,6 +2352,8 @@ uk:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Не вдалося додати дочірній елемент, оскільки у вас немає дозволів для редагування вибраного пакета робіт.
               blank: Поле «ID» не може бути порожнє.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2380,7 +2422,7 @@ uk:
               confirmation: Підтвердження пароля та пароль не збігаються.
               format: "%{message}"
             password:
-              weak: 'Має містити символи таких класів (принаймні %{min_count} з %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: нижній реєстр шрифту (наприклад, 'a')
               uppercase: верхній реєстр шрифту (наприклад, 'А')
               numeric: числовий (наприклад, '1')
@@ -3853,6 +3895,7 @@ uk:
   label_commits_per_month: Комітів на місяць
   label_confirmation: Підтвердження
   label_contains: містить
+  label_starts_with: starts with
   label_content: Контент
   label_color_plural: Кольори
   label_copied: скопійовано
@@ -3860,6 +3903,8 @@ uk:
   label_copy_source: Джерело
   label_copy_target: Ціль
   label_copy_workflow_from: Копіювати робочий процес з
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Копіювати проект
   label_core_version: Версія ядра
   label_core_build: Збірка ядра
@@ -4167,6 +4212,10 @@ uk:
   label_password_rule_numeric: Цифрові символи
   label_password_rule_special: Спеціальні символи
   label_password_rule_uppercase: Верхній регістр
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Кодування шляху
   label_per_page: 'К-сть на сторінку:'
   label_people: Люди
@@ -5221,11 +5270,10 @@ uk:
   setting_new_project_user_role_id: Роль, що призначається користувачу, створившому проект
   setting_new_project_send_confirmation_email: Надсилати сповіщення автору при створенні нового проєкту
   setting_new_project_notification_text: Текст сповіщення
-  setting_password_active_rules: Активні класи символів
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Кількість останніх використаних паролів, заборонених для повторного використання
   setting_password_days_valid: Кількість днів, після чого змінюється пароль
   setting_password_min_length: Мінімальна довжина
-  setting_password_min_adhered_rules: Мінімальна кількість необхідних класів
   setting_per_page_options: Кількість записів на сторінку
   setting_percent_complete_on_status_closed: "% Завершення, коли статус закрито"
   setting_percent_complete_on_status_closed_no_change: Без змін

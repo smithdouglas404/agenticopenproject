@@ -118,6 +118,7 @@ da:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -401,7 +402,7 @@ da:
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical
-          error_starts_with_number: Cannot start with a number
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
@@ -421,16 +422,13 @@ da:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -1363,6 +1361,33 @@ da:
     index:
       no_results_content_text: Add a new wiki page
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1372,6 +1397,12 @@ da:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: There are currently no workflows.
@@ -1927,6 +1958,7 @@ da:
         duration: Varighed
         end_insertion: End of the insertion
         end_deletion: End of the deletion
+        identifier: Identifier
         ignore_non_working_days: Ignore non working days
         include_non_working_days:
           title: Working days
@@ -1942,6 +1974,7 @@ da:
         readonly: Read only
         remaining_hours: Resterende arbejde
         remaining_time: Resterende arbejde
+        sequence_number: Sequence number
         shared_with_users: Shared with
         schedule_manually: Manual scheduling
         spent_hours: Anvendt tid
@@ -1994,6 +2027,7 @@ da:
         inclusion: er ikke sat til en tilladt værdi.
         inclusion_nested: is not set to one of the allowed values at path '%{path}'.
         invalid: er ugyldig.
+        invalid_uri: must be a valid URI.
         invalid_url: is not a valid URL.
         invalid_url_scheme: 'is not a supported protocol (allowed: %{allowed_schemes}).'
         less_than_or_equal_to: skal være mindre end eller lig med %{count}.
@@ -2007,6 +2041,7 @@ da:
         not_a_datetime: is not a valid date time.
         not_a_number: er ikke et tal.
         not_allowed: is invalid because of missing permissions.
+        host_not_allowed: is not an allowed host.
         not_json: is not parseable as JSON.
         not_json_object: is not a JSON object.
         not_an_integer: er ikke et heltal.
@@ -2224,6 +2259,7 @@ da:
           not_whitelisted: tillades ikke af opsætningen.
           invalid_url: is not a valid repository URL or path.
           must_not_be_ssh: must not be an SSH url.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: er ikke et katalog.
         role:
           attributes:
@@ -2274,6 +2310,8 @@ da:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Cannot add child because you don't have permissions to edit the selected work package.
               blank: ID can't be blank.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2342,7 +2380,7 @@ da:
               confirmation: Password confirmation does not match password.
               format: "%{message}"
             password:
-              weak: 'Skal indeholde tegn fra følgende klasser (minimum %{min_count} af %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: små bogstaver (f.eks. "a")
               uppercase: store bogstaver (f.eks. "A")
               numeric: tal (fx "1")
@@ -3735,6 +3773,7 @@ da:
   label_commits_per_month: Bidrag efter måned
   label_confirmation: Bekræftelse
   label_contains: indeholder
+  label_starts_with: starts with
   label_content: Indhold
   label_color_plural: Farver
   label_copied: kopieret
@@ -3742,6 +3781,8 @@ da:
   label_copy_source: Kilde
   label_copy_target: Mål
   label_copy_workflow_from: Kopier arbejdsgang fra
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Kopier projekt
   label_core_version: Kerneversion
   label_core_build: Core build
@@ -4049,6 +4090,10 @@ da:
   label_password_rule_numeric: Tal
   label_password_rule_special: Specialtegn
   label_password_rule_uppercase: Store bogstaver
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Indkod sti for arkivering
   label_per_page: 'Per side:'
   label_people: Personer
@@ -5088,11 +5133,10 @@ da:
   setting_new_project_user_role_id: Rolle givet til bruger der opretter projekt uden at være administrator
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: Aktive typer af tegn
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Antal af senest anvendte adgangskoder, der ikke må genbruges
   setting_password_days_valid: Antal dage, inden tvungen ændring af adgangskode
   setting_password_min_length: Mindste længde
-  setting_password_min_adhered_rules: Mindste antal krævede typer
   setting_per_page_options: Mulige objekter per side
   setting_percent_complete_on_status_closed: "% Complete when status is closed"
   setting_percent_complete_on_status_closed_no_change: No change

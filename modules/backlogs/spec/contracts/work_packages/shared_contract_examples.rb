@@ -125,10 +125,36 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
       it_behaves_like "contract is invalid", sprint: :not_shared_with_project
     end
 
+    context "when sprint is completed (shared with project but not assignable)" do
+      let(:completed_sprint) { build_stubbed(:agile_sprint, status: :completed) }
+      let(:work_package_sprint) { completed_sprint }
+
+      before do
+        # The sprint is still shared with the project (the outer before mock makes
+        # `Agile::Sprint.for_project.exists?` return true), so `sprint_shared_with_project`
+        # passes. We stub assignable_sprints to exclude it, simulating the `.not_completed`
+        # scope, so only `validate_sprint_is_assignable` fires.
+        allow(work_package_project).to receive(:assignable_sprints).and_return([])
+      end
+
+      it_behaves_like "contract is invalid", sprint_id: :inclusion
+    end
+
     context "when sprint is set while the user lacks the :manage_sprint_items permission" do
       let(:effective_permissions) { permissions - [:manage_sprint_items] }
 
       it_behaves_like "contract is invalid", sprint_id: :error_readonly
+    end
+
+    context "when backlog_bucket is set while the user lacks the :manage_sprint_items permission" do
+      let(:effective_permissions) { permissions - [:manage_sprint_items] }
+
+      before do
+        work_package.sprint = nil
+        work_package.backlog_bucket = build_stubbed(:backlog_bucket, project: work_package_project)
+      end
+
+      it_behaves_like "contract is invalid", backlog_bucket_id: :error_readonly
     end
 
     context "when position is written by the user" do
@@ -138,20 +164,46 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
 
       it_behaves_like "contract is invalid", position: :error_readonly
     end
+
+    describe "when attaching to a backlog bucket" do
+      before do
+        work_package.backlog_bucket = backlog_bucket
+      end
+
+      context "when only backlog bucket is set" do
+        let(:work_package_sprint) { nil }
+        let(:backlog_bucket) { build_stubbed(:backlog_bucket, project: work_package_project) }
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when both sprint and backlog bucket are set" do
+        let(:backlog_bucket) { build_stubbed(:backlog_bucket, project: work_package_project) }
+
+        it_behaves_like "contract is invalid", base: :backlog_bucket_xor_sprint
+      end
+
+      context "when backlog bucket belongs to a different project" do
+        let(:work_package_sprint) { nil }
+        let(:backlog_bucket) { build_stubbed(:backlog_bucket, project: build_stubbed(:project)) }
+
+        it_behaves_like "contract is invalid", backlog_bucket: :backlog_bucket_from_another_project
+      end
+    end
   end
 
   describe "writable_attributes" do
-    it "includes sprint and story_points", :aggregate_failures do
-      expect(contract.writable_attributes).to include("story_points", "sprint")
+    it "includes sprint, backlog_bucket and story_points", :aggregate_failures do
+      expect(contract.writable_attributes).to include("story_points", "backlog_bucket", "sprint")
       expect(contract.writable_attributes).not_to include("position")
     end
 
     context "when the user lacks the :manage_sprint_items permission" do
       let(:effective_permissions) { permissions - [:manage_sprint_items] }
 
-      it "includes story_points but lacks sprint", :aggregate_failures do
+      it "includes story_points but lacks sprint and backlog_bucket", :aggregate_failures do
         expect(contract.writable_attributes).to include("story_points")
-        expect(contract.writable_attributes).not_to include("sprint", "position")
+        expect(contract.writable_attributes).not_to include("backlog_bucket", "sprint", "position")
       end
     end
 
@@ -162,7 +214,7 @@ RSpec.shared_examples "work package contract with backlogs extensions" do
       let(:effective_permissions) { permissions - [:manage_sprint_items] }
 
       it "includes none of the backlogs attributes", :aggregate_failures do
-        expect(contract.writable_attributes).not_to include("story_points", "sprint", "position")
+        expect(contract.writable_attributes).not_to include("story_points", "backlog_bucket", "sprint", "position")
       end
     end
   end
