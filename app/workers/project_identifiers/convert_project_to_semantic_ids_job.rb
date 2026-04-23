@@ -31,7 +31,7 @@
 class ProjectIdentifiers::ConvertProjectToSemanticIdsJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
 
-  good_job_control_concurrency_with(perform_limit: 5)
+  good_job_control_concurrency_with(perform_limit: -> { Rails.application.config.good_job.max_threads })
   queue_with_priority :above_normal
   retry_on StandardError, wait: :polynomially_longer, attempts: 8
   discard_on ActiveRecord::RecordNotFound
