@@ -46,7 +46,7 @@ module WorkPackageTypes
                     ::Type::AttributeGroup.new(type, key, [])
                   end
 
-        groups << section
+        groups.unshift(section)
 
         persist_groups(groups).tap do |call|
           call.result = section if call.success?

@@ -53,7 +53,7 @@ module WorkPackageTypes
         expect(result).to be_success
         expect(result.result).to be_a(Type::AttributeGroup)
         expect(result.result.key).to match(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX)
-        expect(type.reload.attribute_groups.map(&:key)).to include(result.result.key)
+        expect(type.reload.attribute_groups.first.key).to eq(result.result.key)
       end
 
       it "creates a query section from service params" do
@@ -62,6 +62,7 @@ module WorkPackageTypes
         expect(result).to be_success
         expect(result.result).to be_a(Type::QueryGroup)
         expect(result.result.attributes).to be_a(Query)
+        expect(type.reload.attribute_groups.first.key).to eq(result.result.key)
       end
     end
   end
