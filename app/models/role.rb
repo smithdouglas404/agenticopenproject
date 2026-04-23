@@ -51,7 +51,7 @@ class Role < ApplicationRecord
   }
 
   # Work Package Roles are intentionally visually hidden from users temporarily
-  scope :visible, -> { where.not(type: HIDDEN_ROLE_TYPES) }
+  scope :visible, -> { where.not(type: HIDDEN_ROLE_TYPES).visibility_checked }
   scope :ordered_by_builtin_and_position, -> { order(Arel.sql("builtin, position")) }
 
   before_destroy(prepend: true) do

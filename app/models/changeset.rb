@@ -66,6 +66,7 @@ class Changeset < ApplicationRecord
     includes(repository: :project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_changesets))
+      .visibility_checked
   }
 
   def revision=(r)

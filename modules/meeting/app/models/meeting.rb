@@ -82,6 +82,7 @@ class Meeting < ApplicationRecord
       .includes(:project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_meetings))
+      .visibility_checked
   }
 
   scope :allowed_to, ->(user, permission) {

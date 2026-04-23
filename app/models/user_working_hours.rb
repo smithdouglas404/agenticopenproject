@@ -61,11 +61,12 @@ class UserWorkingHours < ApplicationRecord
   end
 
   scope :visible, ->(user = User.current) do
-    if user.allowed_globally?(:manage_working_times)
-      all
-    else
-      where(user:)
-    end
+    scope = if user.allowed_globally?(:manage_working_times)
+              all
+            else
+              where(user:)
+            end
+    scope.visibility_checked
   end
 
   DAYS.each do |day|

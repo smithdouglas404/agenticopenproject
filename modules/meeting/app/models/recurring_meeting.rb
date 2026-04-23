@@ -97,6 +97,7 @@ class RecurringMeeting < ApplicationRecord
     includes(:project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_meetings))
+      .visibility_checked
   }
 
   scope :participated_by, ->(user) {

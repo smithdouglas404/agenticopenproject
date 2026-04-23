@@ -76,6 +76,7 @@ class Message < ApplicationRecord
     includes(forum: :project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_messages))
+      .visibility_checked
   }
 
   def visible?(user = User.current)

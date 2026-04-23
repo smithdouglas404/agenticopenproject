@@ -34,13 +34,14 @@ module ProjectCustomFields::Scopes
 
     class_methods do
       def visible(user = User.current, project: nil)
-        if user.active_admin?
-          all
-        elsif user.allowed_in_any_project?(:select_project_custom_fields) || user.allowed_globally?(:add_project)
-          where(admin_only: false)
-        else
-          where(admin_only: false).where(mappings_with_view_project_attributes_permission(user, project).exists)
-        end
+        scope = if user.active_admin?
+                  all
+                elsif user.allowed_in_any_project?(:select_project_custom_fields) || user.allowed_globally?(:add_project)
+                  where(admin_only: false)
+                else
+                  where(admin_only: false).where(mappings_with_view_project_attributes_permission(user, project).exists)
+                end
+        scope.visibility_checked
       end
     end
   end

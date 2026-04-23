@@ -63,7 +63,7 @@ class AttributeHelpText < ApplicationRecord
       scope = scope.or(subclass.visible_condition(user))
     end
 
-    scope
+    scope.visibility_checked
   end
 
   normalizes :attribute_name, with: -> { it.delete_suffix("_id") }

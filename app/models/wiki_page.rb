@@ -83,6 +83,7 @@ class WikiPage < ApplicationRecord
     includes(:project)
       .references(:project)
       .merge(Project.allowed_to(user, :view_wiki_pages))
+      .visibility_checked
   }
 
   after_destroy :delete_wiki_menu_item

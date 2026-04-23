@@ -49,7 +49,9 @@ class Status < ApplicationRecord
 
   after_save :unmark_old_default_value, if: :is_default?
 
-  scope :visible, ->(user = User.current) { user.allowed_in_any_project?(:view_work_packages) ? all : none }
+  scope :visible, ->(user = User.current) {
+    (user.allowed_in_any_project?(:view_work_packages) ? all : none).visibility_checked
+  }
 
   def unmark_old_default_value
     Status.where.not(id:).update_all(is_default: false)

@@ -45,6 +45,7 @@ module LaborBudgetItems::Scopes
 
         view_scope
           .or(view_own_scope)
+          .visibility_checked
       end
     end
   end

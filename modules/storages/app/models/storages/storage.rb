@@ -57,11 +57,12 @@ module Storages
     validates :name, uniqueness: { case_sensitive: false }
 
     scope :visible, lambda { |user = User.current|
-      if user.admin? || user.allowed_in_any_project?(:manage_files_in_project)
-        all
-      else
-        where(project_storages: ProjectStorage.where(project: Project.allowed_to(user, :view_file_links)))
-      end
+      scope = if user.admin? || user.allowed_in_any_project?(:manage_files_in_project)
+                all
+              else
+                where(project_storages: ProjectStorage.where(project: Project.allowed_to(user, :view_file_links)))
+              end
+      scope.visibility_checked
     }
 
     scope :not_enabled_for_project, ->(project) { where.not(id: project.project_storages.pluck(:storage_id)) }

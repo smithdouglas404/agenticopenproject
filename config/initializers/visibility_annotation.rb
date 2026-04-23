@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,16 +26,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module VersionCustomFields::Scopes
-  module Visible
-    extend ActiveSupport::Concern
-
-    class_methods do
-      def visible(_user = User.current)
-        all.visibility_checked
-      end
-    end
-  end
+# Expose `visibility_checked`, `skip_visibility_check`, and `skip_visibility_check_for` on any
+# `ActiveRecord::Relation` so they can be used in chains (`.visible(user)`, `merge(...)`, etc.).
+# ApplicationRecord extends the same module directly for class-level calls.
+Rails.application.config.to_prepare do
+  ActiveRecord::Relation.include(VisibilityAnnotation)
 end

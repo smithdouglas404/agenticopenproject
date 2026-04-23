@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,16 +26,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module VersionCustomFields::Scopes
-  module Visible
-    extend ActiveSupport::Concern
+require "open_project/visibility_check_enforcer"
 
-    class_methods do
-      def visible(_user = User.current)
-        all.visibility_checked
-      end
-    end
-  end
+# Enable the enforcer in development and test so forgotten `.visible(user)`
+# scopes surface immediately. Enforcement applies to every DB table except
+# those listed in `OpenProject::VisibilityCheckEnforcer::EXCLUDED_TABLES`.
+if Rails.env.local?
+  OpenProject::VisibilityCheckEnforcer.install!
 end

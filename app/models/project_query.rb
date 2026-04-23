@@ -46,7 +46,7 @@ class ProjectQuery < ApplicationRecord
   scope :private_lists, ->(user: User.current) { where(public: false, user:) }
 
   scope :visible, ->(user = User.current) {
-                    allowed_to(user, :view_project_query)
+                    allowed_to(user, :view_project_query).visibility_checked
                   }
 
   scopes :allowed_to
