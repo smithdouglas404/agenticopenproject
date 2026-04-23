@@ -77,7 +77,7 @@ class OAuthClientsController < ApplicationController
     storage_id = params.fetch(:storage_id)
     oauth_client = OAuthClient.find_by(client_id:, integration_id: storage_id)
 
-    handle_absent_oauth_client unless oauth_client
+    return handle_absent_oauth_client unless oauth_client
 
     integration = oauth_client.integration
     destination_url = destination_url(params.fetch(:destination_url, ""))
