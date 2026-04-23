@@ -111,8 +111,11 @@ RSpec.describe "Role creation", :js do
       click_link type.name
     end
 
+    new_role = Role.find_by!(name: "New role name")
     click_button existing_role.name
-    click_link "New role name"
+    find("[data-item-id='#{new_role.id}']").click
+    find("[data-item-id='#{existing_role.id}']").click
+    page.send_keys :escape
 
     old_status = existing_workflow.old_status.name
     new_status = existing_workflow.new_status.name

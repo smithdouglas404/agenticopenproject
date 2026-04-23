@@ -53,10 +53,17 @@ RSpec.describe "Workflow edit", :js do
   end
 
   def visit_workflow_edit(role: nil, tab: nil)
-    params = { controller: "/workflows", action: :edit, type_id: type.id }
-    params[:role_id] = role.id if role
+    params = {}
+    params[:role_ids] = [role.id] if role
     params[:tab] = tab if tab
-    visit url_for(params)
+    visit edit_workflow_path(type, **params)
+  end
+
+  def switch_role_via_panel(from_role, to_role)
+    click_button from_role.name
+    find("[data-item-id='#{to_role.id}']").click
+    find("[data-item-id='#{from_role.id}']").click
+    page.send_keys :escape
   end
 
   def add_status_via_dialog(status)
@@ -322,8 +329,7 @@ RSpec.describe "Workflow edit", :js do
     end
 
     it "loads the matrix for a different role after switching" do
-      click_button role.name
-      click_link other_role.name
+      switch_role_via_panel(role, other_role)
 
       within "#workflow_form_always" do
         expect(page).to have_field workflow_checkbox(1, 2)
@@ -336,8 +342,7 @@ RSpec.describe "Workflow edit", :js do
         check workflow_checkbox(1, 0)
       end
 
-      click_button role.name
-      click_link other_role.name
+      switch_role_via_panel(role, other_role)
 
       within_dialog "Save changes before continuing?" do
         click_button "Ignore changes"
@@ -347,8 +352,7 @@ RSpec.describe "Workflow edit", :js do
         expect(page).to have_field workflow_checkbox(1, 2)
       end
 
-      click_button other_role.name
-      click_link role.name
+      switch_role_via_panel(other_role, role)
 
       within "#workflow_form_always" do
         expect(page).to have_field workflow_checkbox(1, 0), checked: false
@@ -360,8 +364,7 @@ RSpec.describe "Workflow edit", :js do
         check workflow_checkbox(1, 0)
       end
 
-      click_button role.name
-      click_link other_role.name
+      switch_role_via_panel(role, other_role)
 
       within_dialog "Save changes before continuing?" do
         click_button "Save changes and continue"
@@ -383,8 +386,7 @@ RSpec.describe "Workflow edit", :js do
         check workflow_checkbox(1, 0)
       end
 
-      click_button role.name
-      click_link other_role.name
+      switch_role_via_panel(role, other_role)
 
       within_dialog "Save changes before continuing?" do
         find(".close-button").click
@@ -402,8 +404,7 @@ RSpec.describe "Workflow edit", :js do
       add_status_via_dialog(statuses[2])
       expect(page).to have_field workflow_checkbox(0, 2)
 
-      click_button role.name
-      click_link other_role.name
+      switch_role_via_panel(role, other_role)
 
       expect(page).to have_dialog("Save changes before continuing?")
     end
@@ -417,8 +418,7 @@ RSpec.describe "Workflow edit", :js do
 
       expect(page).to have_no_field workflow_checkbox(0, 1)
 
-      click_button role.name
-      click_link other_role.name
+      switch_role_via_panel(role, other_role)
 
       expect(page).to have_dialog("Save changes before continuing?")
     end
