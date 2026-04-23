@@ -37,16 +37,32 @@
 class ProjectIdentifiers::RevertInstanceToClassicIdsJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
 
+  # Raised when a pass completes but some projects were skipped due to transient
+  # identifier conflicts. Retried immediately so the next pass can resolve them.
+  IdConflictsRemain = Class.new(StandardError)
+
   good_job_control_concurrency_with(total_limit: 1)
+  retry_on IdConflictsRemain, wait: 0, attempts: 10
   retry_on StandardError, wait: :polynomially_longer, attempts: 8
 
   def perform
     raise "expected Setting.work_packages_identifier to be classic" unless Setting::WorkPackageIdentifier.classic?
 
+    had_conflicts = false
+
     Project.find_each do |project|
       next if Project.classic_identifier_format?(project.identifier)
 
-      ProjectIdentifiers::RevertProjectToClassicService.new(project).call
+      begin
+        ProjectIdentifiers::RevertProjectToClassicService.new(project).call
+      rescue ActiveRecord::RecordNotUnique
+        # Another project's semantic identifier shadows this classic slug via the
+        # LOWER() unique index. Skip for now; the pass below will retry immediately
+        # once all blockers in this pass have been cleared.
+        had_conflicts = true
+      end
     end
+
+    raise IdConflictsRemain if had_conflicts
   end
 end
