@@ -16,7 +16,7 @@
           font_size: @font_size,
           color: :muted
         )
-      ) { "##{@work_package.id}" }
+      ) { @work_package.formatted_id }
     end
 
     if @show_status
