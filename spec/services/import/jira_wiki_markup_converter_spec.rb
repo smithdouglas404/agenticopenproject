@@ -304,6 +304,38 @@ RSpec.describe Import::JiraWikiMarkupConverter do
         expect(described_class.new("*éé* and _öü_").convert)
           .to eq("**éé** and *öü*")
       end
+
+      it "handles Arabic inside bold" do
+        expect(described_class.new("*مرحبا*").convert).to eq("**مرحبا**")
+      end
+
+      it "handles Chinese inside bold" do
+        expect(described_class.new("*你好*").convert).to eq("**你好**")
+      end
+
+      it "handles Japanese inside italic" do
+        expect(described_class.new("_日本語_").convert).to eq("*日本語*")
+      end
+
+      it "handles Cyrillic inside bold" do
+        expect(described_class.new("*Привет*").convert).to eq("**Привет**")
+      end
+
+      it "handles Hebrew inside bold" do
+        expect(described_class.new("*שלום*").convert).to eq("**שלום**")
+      end
+
+      it "handles 4-byte emoji inside bold" do
+        expect(described_class.new("*🎉*").convert).to eq("**🎉**")
+      end
+
+      it "handles subscript after a macro preceded by a multi-byte character" do
+        # Regression: scanner.string[0...scanner.pos] mixed byte-pos with char-slicing,
+        # causing "é*x*~2~" to spuriously "see" the closing ~ in the already-scanned
+        # prefix and skip subscript parsing.
+        expect(described_class.new("é*x*~2~").convert).to eq("é**x**<sub>2</sub>")
+        expect(described_class.new("🎉*x*~2~").convert).to eq("🎉**x**<sub>2</sub>")
+      end
     end
   end
 

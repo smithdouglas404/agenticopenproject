@@ -535,7 +535,7 @@ module Import
       def scan_subscript(scanner, buffer, nodes)
         return unless scanner.rest[0] == "~"
 
-        scanned = scanner.string[0...scanner.pos]
+        scanned = scanner.string.byteslice(0, scanner.pos)
         return if (scanned + buffer).end_with?("~")
 
         inner = extract_subscript_content(scanner)
