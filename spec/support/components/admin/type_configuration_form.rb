@@ -57,7 +57,7 @@ module Components
       end
 
       def find_group(name)
-        title = page.first(".Box-header span.text-bold", text: /\A#{Regexp.escape(name)}\z/)
+        title = page.first(".Box-header span.text-bold", text: name)
         title.find(:xpath, "./ancestor::*[@data-group-key][1]")
       end
 

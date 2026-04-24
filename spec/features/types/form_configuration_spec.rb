@@ -182,6 +182,7 @@ RSpec.describe "form configuration", :js, :selenium do
 
         # Delete attribute from group
         form.remove_attribute("assignee")
+        sleep 1
 
         # Expect configuration to be correct now
         form.expect_no_attribute("assignee", "Cool Stuff")

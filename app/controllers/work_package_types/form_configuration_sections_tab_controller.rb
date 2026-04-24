@@ -34,6 +34,8 @@ module WorkPackageTypes
     include OpTurbo::ComponentStream
     include WorkPackageTypes::FormConfigurationComponentStreams
 
+    TEMPORARY_SECTION_KEY = "__new_form_configuration_section__"
+
     def edit
       replace_section_via_turbo_stream(key: section_key_param, edit_mode: true)
 
@@ -41,45 +43,42 @@ module WorkPackageTypes
     end
 
     def create
-      call = ::WorkPackageTypes::FormConfigurationSections::CreateService
-        .new(user: current_user, type: @type)
-        .call(group_type: params[:group_type], query_props: params[:query])
+      update_sections_via_turbo_stream(
+        editing_section_key: TEMPORARY_SECTION_KEY,
+        temporary_group: temporary_group(group_type: params[:group_type], query: params[:query])
+      )
 
-      if call.success?
-        update_sections_via_turbo_stream(editing_section_key: call.result.key)
-      else
-        render_form_configuration_error(call)
-      end
-
-      respond_with_turbo_streams(status: turbo_status_for(call))
+      respond_with_turbo_streams
     end
 
     def cancel_edit
+      if temporary_section_key?(section_key_param)
+        update_form_configuration_via_turbo_stream
+        respond_with_turbo_streams
+        return
+      end
+
       section = find_section(section_key_param)
       return head :not_found if section.nil?
 
-      if implicit_section?(section)
-        call = ::WorkPackageTypes::FormConfigurationSections::DeleteService
-          .new(user: current_user, type: @type, section_key: section_key_param)
-          .call
-
-        if call.success?
-          update_form_configuration_via_turbo_stream
-        else
-          render_form_configuration_error(call)
-        end
-
-        respond_with_turbo_streams(status: turbo_status_for(call))
-      else
-        replace_section_via_turbo_stream(key: params[:key], edit_mode: false)
-        respond_with_turbo_streams
-      end
+      replace_section_via_turbo_stream(key: section_key_param, edit_mode: false)
+      respond_with_turbo_streams
     end
 
     def update
-      call = ::WorkPackageTypes::FormConfigurationSections::UpdateService
-        .new(user: current_user, type: @type, section_key: section_key_param)
-        .call(name: section_params[:name])
+      call = if temporary_section_key?(section_key_param)
+               ::WorkPackageTypes::FormConfigurationSections::CreateService
+                 .new(user: current_user, type: @type)
+                 .call(
+                   group_type: section_params[:group_type],
+                   name: section_params[:name],
+                   query_props: section_params[:query]
+                 )
+             else
+               ::WorkPackageTypes::FormConfigurationSections::UpdateService
+                 .new(user: current_user, type: @type, section_key: section_key_param)
+                 .call(name: section_params[:name])
+             end
 
       if call.success?
         update_form_configuration_via_turbo_stream
@@ -148,7 +147,7 @@ module WorkPackageTypes
     private
 
     def section_params
-      params.expect(section: [:name])
+      params.expect(section: %i[name group_type query])
     end
 
     def find_section(key)
@@ -165,8 +164,19 @@ module WorkPackageTypes
       params[:key] || params[:id]
     end
 
-    def implicit_section?(section)
-      section.key.to_s.match?(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX)
+    def temporary_section_key?(key)
+      key.to_s == TEMPORARY_SECTION_KEY
+    end
+
+    def temporary_group(group_type:, query:)
+      {
+        key: TEMPORARY_SECTION_KEY,
+        type: group_type.to_s,
+        name: "",
+        attributes: [],
+        query: query,
+        temporary: true
+      }
     end
 
     def turbo_status_for(call)

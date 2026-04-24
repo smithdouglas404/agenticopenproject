@@ -33,19 +33,53 @@ require "spec_helper"
 RSpec.describe WorkPackageTypes::FormConfigurationSectionsTabController do
   let(:type) { create(:type) }
   let(:user) { create(:admin) }
+  let(:temporary_section_key) { described_class::TEMPORARY_SECTION_KEY }
 
   before do
     allow(User).to receive(:current).and_return(user)
   end
 
   describe "POST #create", with_ee: %i[edit_attribute_groups] do
-    it "creates a new attribute section from group_type params" do
+    it "renders a temporary attribute section from group_type params" do
       expect do
         post :create, params: { type_id: type.id, group_type: "attribute" }, format: :turbo_stream
+      end.not_to change { type.reload.attribute_groups.count }
+
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe "PATCH #update", with_ee: %i[edit_attribute_groups] do
+    it "persists a temporary section when saving it" do
+      expect do
+        patch :update,
+              params: {
+                type_id: type.id,
+                key: temporary_section_key,
+                section: { group_type: "attribute", name: "New Group" }
+              },
+              format: :turbo_stream
       end.to change { type.reload.attribute_groups.count }.by(1)
 
       expect(response).to have_http_status(:ok)
-      expect(type.attribute_groups.last).to be_a(Type::AttributeGroup)
+      expect(type.reload.attribute_groups.first.key).to eq("New Group")
+    end
+  end
+
+  describe "PUT #drop", with_ee: %i[edit_attribute_groups] do
+    it "reorders sections using the requested position" do
+      type.update_column(:attribute_groups, [
+                           [:details, %w[priority]],
+                           ["Custom group", %w[version]],
+                           [:people, %w[assignee]]
+                         ])
+
+      put :drop,
+          params: { type_id: type.id, key: "Custom group", position: 1 },
+          format: :turbo_stream
+
+      expect(response).to have_http_status(:ok)
+      expect(type.reload.attribute_groups.map(&:key)).to eq(["Custom group", :details, :people])
     end
   end
 end

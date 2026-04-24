@@ -48,19 +48,20 @@ module WorkPackageTypes
       subject(:service) { described_class.new(user:, type:) }
 
       it "creates an attribute section from service params" do
-        result = service.call(group_type: "attribute")
+        result = service.call(group_type: "attribute", name: "New Group")
 
         expect(result).to be_success
         expect(result.result).to be_a(Type::AttributeGroup)
-        expect(result.result.key).to match(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX)
+        expect(result.result.key).to eq("New Group")
         expect(type.reload.attribute_groups.first.key).to eq(result.result.key)
       end
 
       it "creates a query section from service params" do
-        result = service.call(group_type: "query", query_props: relation_query_props)
+        result = service.call(group_type: "query", name: "Related work", query_props: relation_query_props)
 
         expect(result).to be_success
         expect(result.result).to be_a(Type::QueryGroup)
+        expect(result.result.key).to eq("Related work")
         expect(result.result.attributes).to be_a(Query)
         expect(type.reload.attribute_groups.first.key).to eq(result.result.key)
       end

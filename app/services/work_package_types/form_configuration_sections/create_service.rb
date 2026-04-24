@@ -33,17 +33,17 @@ module WorkPackageTypes
     class CreateService < ::WorkPackageTypes::FormConfiguration::BaseService
       def perform
         group_type = params[:group_type]
+        name = params[:name].to_s.strip
         query_props = params[:query_props]
         groups = active_groups
-        key = SecureRandom.uuid
 
         section = if group_type.to_s == "query"
-                    query_call = build_query(query_props, name: "Embedded table: #{key}")
+                    query_call = build_query(query_props, name: "Embedded table: #{name}")
                     return query_call if query_call.failure?
 
-                    ::Type::QueryGroup.new(type, key, query_call.result)
+                    ::Type::QueryGroup.new(type, name, query_call.result)
                   else
-                    ::Type::AttributeGroup.new(type, key, [])
+                    ::Type::AttributeGroup.new(type, name, [])
                   end
 
         groups.unshift(section)

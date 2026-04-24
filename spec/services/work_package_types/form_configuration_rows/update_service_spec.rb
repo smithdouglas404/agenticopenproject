@@ -32,7 +32,7 @@ require "spec_helper"
 
 module WorkPackageTypes
   module FormConfigurationRows
-    RSpec.describe UpdateService, type: :service do
+    RSpec.describe UpdateService, type: :service, with_ee: %i[edit_attribute_groups] do
       let(:user) { create(:admin) }
       let(:type) { create(:type, name: "Legacy type") }
 
@@ -51,11 +51,11 @@ module WorkPackageTypes
         expect(result).to be_success
 
         normalized_group = type.reload.attribute_groups.find do |group|
-          group.display_name == I18n.t("types.edit.form_configuration.untitled_section")
+          group.translated_key == I18n.t("types.edit.form_configuration.untitled_section")
         end
 
         expect(normalized_group).to be_present
-        expect(normalized_group.key).to match(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX)
+        expect(normalized_group.key).to eq(I18n.t("types.edit.form_configuration.untitled_section"))
       end
 
       it "finds legacy symbol attribute keys when moving rows" do

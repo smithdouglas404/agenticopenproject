@@ -75,18 +75,16 @@ module WorkPackageTypes
 
       private
 
-      def implicit_section?
-        @group[:key].to_s.match?(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX)
-      end
-
       def section_name
-        return "" if edit_mode? && implicit_section?
-
         @group[:name]
       end
 
+      def temporary_group?
+        @group[:temporary]
+      end
+
       def draggable_item_config
-        return {} if @group[:key].blank?
+        return {} if @group[:key].blank? || temporary_group?
 
         {
           "draggable-id": @group[:key],
@@ -96,7 +94,7 @@ module WorkPackageTypes
       end
 
       def row_drop_target_config
-        return {} if query_group? || @group[:key].blank?
+        return {} if query_group? || @group[:key].blank? || temporary_group?
 
         {
           "admin--type-form-configuration-rows-drag-and-drop-target": "container",

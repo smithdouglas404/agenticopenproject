@@ -39,12 +39,10 @@ module WorkPackageTypes
       update_inactive_attributes_via_turbo_stream
     end
 
-    def update_sections_via_turbo_stream(editing_section_key: nil)
+    def update_sections_via_turbo_stream(editing_section_key: nil, temporary_group: nil)
       groups = form_configuration_groups(@type)[:actives]
                  .reject { |group| group[:key].to_s == "__empty" }
-                 .map do |group|
-                   prepared_group(group, editing_section_key:)
-                 end
+      groups.unshift(temporary_group) if temporary_group.present?
 
       section_components = groups.map.with_index do |group, index|
         WorkPackageTypes::FormConfiguration::SectionComponent.new(
@@ -81,7 +79,7 @@ module WorkPackageTypes
 
       replace_via_turbo_stream(
         component: WorkPackageTypes::FormConfiguration::SectionComponent.new(
-          group: prepared_group(group, editing_section_key: edit_mode ? key : nil),
+          group:,
           type: @type,
           ee_available: EnterpriseToken.allows_to?(:edit_attribute_groups),
           first: index.zero?,
@@ -93,14 +91,6 @@ module WorkPackageTypes
 
     def render_form_configuration_error(call)
       render_error_flash_message_via_turbo_stream(message: call.errors.full_messages.to_sentence)
-    end
-
-    def prepared_group(group, editing_section_key:)
-      return group if editing_section_key.blank?
-      return group unless group[:key].to_s == editing_section_key.to_s
-      return group unless group[:key].to_s.match?(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX)
-
-      group.merge(name: "")
     end
   end
 end

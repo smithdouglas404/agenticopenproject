@@ -31,8 +31,6 @@
 module WorkPackageTypes
   module FormConfiguration
     class BaseService < ::BaseServices::BaseCallable
-      UUID_REGEX = /\A[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\z/i
-
       def initialize(user:, type:)
         super()
         @user = user
@@ -67,10 +65,6 @@ module WorkPackageTypes
           end
 
         nil
-      end
-
-      def implicit_section?(section)
-        section.key.to_s.match?(UUID_REGEX)
       end
 
       def group_identifier_match?(group, identifier)
@@ -116,7 +110,8 @@ module WorkPackageTypes
       def normalized_groups(groups)
         groups = groups
                  .reject { |group| group.key.to_s == "__empty" }
-                 .map { |group| normalize_group(group) }
+        seen_keys = groups.filter_map(&:key).compact_blank.map(&:to_s)
+        groups = groups.map { |group| normalize_group(group, seen_keys:) }
 
         if groups.empty?
           [::Type::AttributeGroup.new(type, :__empty, [])]
@@ -125,12 +120,25 @@ module WorkPackageTypes
         end
       end
 
-      def normalize_group(group)
+      def normalize_group(group, seen_keys:)
         return group if group.key.present?
 
-        group.key = SecureRandom.uuid
-        group.display_name = I18n.t("types.edit.form_configuration.untitled_section") if group.display_name.blank?
+        group.key = next_untitled_section_name(seen_keys)
         group
+      end
+
+      def next_untitled_section_name(seen_keys)
+        base_name = I18n.t("types.edit.form_configuration.untitled_section")
+        candidate = base_name
+        suffix = 2
+
+        while seen_keys.include?(candidate)
+          candidate = "#{base_name} #{suffix}"
+          suffix += 1
+        end
+
+        seen_keys << candidate
+        candidate
       end
 
       def sync_active_custom_fields!

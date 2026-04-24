@@ -95,26 +95,34 @@ module WorkPackageTypes
     def custom_groups_modified?
       return false unless model.attribute_groups_changed?
 
-      old_keys = model.attribute_groups_was.map(&:first).reject(&:blank?)
+      old_keys = normalized_old_keys
       new_keys = model.attribute_groups.map(&:key)
-      ignored_keys = normalized_legacy_group_keys_to_ignore
 
-      (new_keys - old_keys - Type.default_groups.keys - ignored_keys).any?
+      (new_keys - old_keys - Type.default_groups.keys).any?
     end
 
-    def normalized_legacy_group_keys_to_ignore
-      old_blank_group_count = model.attribute_groups_was.count { |group| group.first.blank? }
-      return [] if old_blank_group_count.zero?
+    def normalized_old_keys
+      seen_keys = model.attribute_groups_was.filter_map(&:first).compact_blank.map(&:to_s)
 
-      model.attribute_groups
-           .select { |group| normalized_legacy_group?(group) }
-           .first(old_blank_group_count)
-           .map(&:key)
+      model.attribute_groups_was.filter_map do |group|
+        next group.first if group.first.present?
+
+        normalized_legacy_group_key(seen_keys)
+      end
     end
 
-    def normalized_legacy_group?(group)
-      group.key.to_s.match?(::WorkPackageTypes::FormConfiguration::BaseService::UUID_REGEX) &&
-        group.display_name == I18n.t("types.edit.form_configuration.untitled_section")
+    def normalized_legacy_group_key(seen_keys)
+      base_name = I18n.t("types.edit.form_configuration.untitled_section")
+      candidate = base_name
+      suffix = 2
+
+      while seen_keys.include?(candidate)
+        candidate = "#{base_name} #{suffix}"
+        suffix += 1
+      end
+
+      seen_keys << candidate
+      candidate
     end
   end
 end

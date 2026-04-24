@@ -48,5 +48,21 @@ RSpec.describe WorkPackageTypes::FormConfigurationRowsTabController do
       expect(response).to have_http_status(:ok)
       expect(type.reload.attribute_groups.flat_map(&:members)).not_to include("priority")
     end
+
+    it "moves the row into another active section at the requested position" do
+      type.update_column(:attribute_groups, [
+                           [:details, %w[priority]],
+                           ["Custom group", %w[version]]
+                         ])
+
+      put :drop,
+          params: { type_id: type.id, row_key: "priority", target_id: "Custom group", position: 1 },
+          format: :turbo_stream
+
+      expect(response).to have_http_status(:ok)
+
+      target_group = type.reload.attribute_groups.find { |group| group.key == "Custom group" }
+      expect(target_group.members).to eq(%w[priority version])
+    end
   end
 end
