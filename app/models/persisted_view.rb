@@ -38,10 +38,20 @@ class PersistedView < ApplicationRecord
 
   acts_as_favoritable
 
+  enum :category, {
+    work_package: "work_package",
+    project: "project",
+    resource_management: "resource_management"
+  }, validate: { allow_nil: true }
+
   validates :name, presence: true, length: { maximum: 255 }
 
   scope :public_views, -> { where(public: true) }
   scope :private_views, ->(principal: User.current) { where(public: false, principal:) }
+
+  scope :visible, (lambda do |principal: User.current|
+    public_views.or(private_views(principal:))
+  end)
 
   after_destroy :destroy_query_if_orphaned
 

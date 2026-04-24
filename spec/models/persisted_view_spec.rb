@@ -73,6 +73,59 @@ RSpec.describe PersistedView do
         expect(described_class.private_views).to contain_exactly(own_private_view)
       end
     end
+
+    describe ".visible" do
+      it "returns public views and the principal's own private views" do
+        expect(described_class.visible(principal: user)).to contain_exactly(public_view, own_private_view)
+      end
+
+      it "excludes other principals' private views" do
+        expect(described_class.visible(principal: user)).not_to include(other_private_view)
+      end
+
+      it "defaults to User.current when no principal is given" do
+        login_as(user)
+        expect(described_class.visible).to contain_exactly(public_view, own_private_view)
+      end
+    end
+  end
+
+  describe "category enum" do
+    it "allows the defined category values" do
+      %w[work_package project resource_management].each do |value|
+        view = described_class.new(name: "V", category: value)
+        expect(view).to be_valid
+        expect(view.category).to eq(value)
+      end
+    end
+
+    it "allows nil as a category" do
+      persisted_view.category = nil
+      expect(persisted_view).to be_valid
+    end
+
+    it "rejects unknown category values" do
+      persisted_view.category = "unknown"
+      expect(persisted_view).not_to be_valid
+      expect(persisted_view.errors[:category]).to be_present
+    end
+
+    it "exposes predicate methods for each category" do
+      view = described_class.new(name: "V", category: "work_package")
+      expect(view).to be_work_package
+      expect(view).not_to be_project
+      expect(view).not_to be_resource_management
+    end
+
+    it "exposes scopes for each category" do
+      wp_view = described_class.create!(name: "WP", category: "work_package")
+      project_view = described_class.create!(name: "P", category: "project")
+      rm_view = described_class.create!(name: "RM", category: "resource_management")
+
+      expect(described_class.work_package).to contain_exactly(wp_view)
+      expect(described_class.project).to contain_exactly(project_view)
+      expect(described_class.resource_management).to contain_exactly(rm_view)
+    end
   end
 
   describe "#effective_query" do
