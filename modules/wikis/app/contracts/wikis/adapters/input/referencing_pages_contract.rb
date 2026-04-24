@@ -30,29 +30,10 @@
 
 module Wikis
   module Adapters
-    module Providers
-      module Internal
-        Registry = Dry::Container::Namespace.new("internal") do
-          namespace("authentication") do
-            # ...
-          end
-
-          namespace("commands") do
-            # ...
-          end
-
-          namespace("components") do
-            # ...
-          end
-
-          namespace("contracts") do
-            # ...
-          end
-
-          namespace("queries") do
-            register(:page_info, Queries::PageInfo)
-            register(:referencing_pages, Queries::ReferencingPages)
-          end
+    module Input
+      class ReferencingPagesContract < DryApplicationContract
+        params do
+          required(:linkable).filled(type?: WorkPackage)
         end
       end
     end

@@ -32,26 +32,13 @@ module Wikis
   module Adapters
     module Providers
       module Internal
-        Registry = Dry::Container::Namespace.new("internal") do
-          namespace("authentication") do
-            # ...
-          end
+        module Queries
+          class ReferencingPages < BaseQuery
+            def call(_input_data)
+              # noop
 
-          namespace("commands") do
-            # ...
-          end
-
-          namespace("components") do
-            # ...
-          end
-
-          namespace("contracts") do
-            # ...
-          end
-
-          namespace("queries") do
-            register(:page_info, Queries::PageInfo)
-            register(:referencing_pages, Queries::ReferencingPages)
+              success([])
+            end
           end
         end
       end

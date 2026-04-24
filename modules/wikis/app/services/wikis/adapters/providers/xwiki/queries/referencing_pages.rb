@@ -31,27 +31,35 @@
 module Wikis
   module Adapters
     module Providers
-      module Internal
-        Registry = Dry::Container::Namespace.new("internal") do
-          namespace("authentication") do
-            # ...
-          end
+      module XWiki
+        module Queries
+          class ReferencingPages < BaseQuery
+            def call(_input_data)
+              # TODO: use real API endpoints once available
 
-          namespace("commands") do
-            # ...
-          end
+              title = [
+                "What makes XWiki special?",
+                "API documentation",
+                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
+              ]
 
-          namespace("components") do
-            # ...
-          end
-
-          namespace("contracts") do
-            # ...
-          end
-
-          namespace("queries") do
-            register(:page_info, Queries::PageInfo)
-            register(:referencing_pages, Queries::ReferencingPages)
+              success(
+                [
+                  Results::PageInfo.new(
+                    identifier: "1337",
+                    provider:,
+                    title: title.sample,
+                    href: "#"
+                  ),
+                  Results::PageInfo.new(
+                    identifier: "1338",
+                    provider:,
+                    title: title.sample,
+                    href: "#"
+                  )
+                ]
+              )
+            end
           end
         end
       end
