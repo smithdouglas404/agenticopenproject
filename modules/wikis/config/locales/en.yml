@@ -30,7 +30,6 @@ en:
       connect_account: Connect %{provider} account
       done_continue: Done, continue
       save_and_continue: Save and continue
-      done_continue: Done, continue
       wiki_page: Wiki page
     work_package_wikis_tab_component:
       inline_page_links: Inline page links
