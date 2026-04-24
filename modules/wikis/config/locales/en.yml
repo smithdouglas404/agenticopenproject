@@ -38,6 +38,9 @@ en:
     relation_page_links_component:
       empty_heading: No related pages
       empty_text: Manually add links to other related wiki pages.
+      not_connected_heading: Not logged in %{provider} account
+      not_connected_text: Log in to %{provider} to view and manage related wiki pages.
+      login_button: Connect %{provider} account
     oauth_login_component:
       connect_button: Connect %{provider} account
     admin:

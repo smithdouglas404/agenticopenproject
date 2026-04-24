@@ -34,6 +34,8 @@ module Wikis
       include OpTurbo::ComponentStream
       include Concerns::WizardNavigation
 
+      helper Wikis::Admin::WikiProvidersHelper
+
       layout "admin"
 
       before_action :require_admin
