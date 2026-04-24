@@ -53,7 +53,7 @@ module Wikis
             raise ArgumentError, "XWikiProvider must have a configured OAuth client" if wiki_provider.oauth_client.blank?
 
             @wiki_provider = wiki_provider
-            @oauth_client  = wiki_provider.oauth_client.freeze
+            @oauth_client  = wiki_provider.oauth_client
           end
 
           # XWiki does not issue refresh tokens. Callers should redirect to
