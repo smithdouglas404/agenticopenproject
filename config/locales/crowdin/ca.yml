@@ -118,6 +118,7 @@ ca:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -261,6 +262,7 @@ ca:
               caption: Review your import settings and start the import
               caption_done: Completed
               label_available_data: Available data to import
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -428,10 +430,6 @@ ca:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -1364,6 +1362,33 @@ ca:
     index:
       no_results_content_text: Afegiu una nova pàgina wiki
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1373,6 +1398,12 @@ ca:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Actualment no hi ha cap flux de treball.
@@ -1928,6 +1959,7 @@ ca:
         duration: Duració
         end_insertion: Final de la inserció
         end_deletion: Final de la supressió
+        identifier: Identifier
         ignore_non_working_days: Ignora dies no laborals
         include_non_working_days:
           title: Dies laborals
@@ -1943,6 +1975,7 @@ ca:
         readonly: Només lectura
         remaining_hours: Treball restant
         remaining_time: Treball restant
+        sequence_number: Sequence number
         shared_with_users: Compartit amb
         schedule_manually: Planificació manual
         spent_hours: Temps invertit
@@ -1952,6 +1985,29 @@ ca:
         type: Classe
         version: Versió
         watcher: Observador
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: hauran de ser acceptats.
@@ -1995,6 +2051,7 @@ ca:
         inclusion: no està establert a un dels valors permesos.
         inclusion_nested: no correspon a un dels valors permesos a la ruta '%{path}'.
         invalid: no és vàlid.
+        invalid_uri: must be a valid URI.
         invalid_url: no és una URL vàlida.
         invalid_url_scheme: 'no és un protocal suportat (permès: %{allowed_schemes}).'
         less_than_or_equal_to: ha de ser menor o igual a %{count}.
@@ -2008,6 +2065,7 @@ ca:
         not_a_datetime: no és una data-i-hora vàlida.
         not_a_number: no és un número.
         not_allowed: és invàlid perquè falten permisos.
+        host_not_allowed: is not an allowed host.
         not_json: is not parseable as JSON.
         not_json_object: is not a JSON object.
         not_an_integer: no és un enter.
@@ -2276,6 +2334,8 @@ ca:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Cannot add child because you don't have permissions to edit the selected work package.
               blank: ID can't be blank.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2344,7 +2404,7 @@ ca:
               confirmation: La confirmació de la contrasenya no coincideix.
               format: "%{message}"
             password:
-              weak: 'Ha de contenir caràcters de les següents classes (com a mínim %{min_count} de %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: minúscules (ex. "a")
               uppercase: majúscules (p. ex. ' A')
               numeric: numèric (p. ex. "1")
@@ -3520,7 +3580,7 @@ ca:
         personal_reminder: Notify me for personal reminders
       daily_reminders:
         title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
         add_time: Add time
         remove_time: Remove time
@@ -3534,6 +3594,7 @@ ca:
         date_range: Pause period
       email_alerts:
         title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3546,6 +3607,7 @@ ca:
     notifications:
       participating:
         title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3554,6 +3616,7 @@ ca:
         shared: Shared with me
       date_alerts:
         title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3568,6 +3631,7 @@ ca:
           seven_days_after: 7 days after
       non_participating:
         title: Non-participating
+        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3576,6 +3640,7 @@ ca:
         work_package_scheduled: All date changes
       project_specific_settings:
         title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -3735,6 +3800,7 @@ ca:
   label_commits_per_month: Publicacions per mes
   label_confirmation: Confirmació
   label_contains: conté
+  label_starts_with: starts with
   label_content: Contingut
   label_color_plural: Colors
   label_copied: copiat
@@ -3742,6 +3808,8 @@ ca:
   label_copy_source: Origen
   label_copy_target: Destí
   label_copy_workflow_from: Copia el flux de treball des de
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Copiar projecte
   label_core_version: Versió base
   label_core_build: Core build
@@ -4049,6 +4117,10 @@ ca:
   label_password_rule_numeric: Caràcters numèrics
   label_password_rule_special: Caràcters especials
   label_password_rule_uppercase: Majúscules
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Codificació de les rutes
   label_per_page: 'Per pàgina:'
   label_people: Persones
@@ -5084,11 +5156,10 @@ ca:
   setting_new_project_user_role_id: Rol donat per un usuari no-admin que crea un projecte
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: Classes de caràcters actius
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Nombre de contrasenyes utilitzades més recentment prohibides per a la reutilització
   setting_password_days_valid: Nombre de dies, després dels que exigir un canvi de contrasenya
   setting_password_min_length: Longitud mínima
-  setting_password_min_adhered_rules: Nombre mínim de classes exigides
   setting_per_page_options: Opcions d'objectes per pàgina
   setting_percent_complete_on_status_closed: "% Complete when status is closed"
   setting_percent_complete_on_status_closed_no_change: No change

@@ -118,6 +118,7 @@ ms:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -255,6 +256,7 @@ ms:
               caption: Review your import settings and start the import
               caption_done: Completed
               label_available_data: Available data to import
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -421,10 +423,6 @@ ms:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -1346,6 +1344,31 @@ ms:
     index:
       no_results_content_text: Tambah halaman wiki baharu
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1355,6 +1378,12 @@ ms:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Tiada aliran kerja buat masa ini.
@@ -1911,6 +1940,7 @@ ms:
         duration: Tempoh
         end_insertion: Pengakhiran kemasukan
         end_deletion: Pengakhiran pemadaman
+        identifier: Identifier
         ignore_non_working_days: Abaikan hari tidak bekerja
         include_non_working_days:
           title: Hari bekerja
@@ -1926,6 +1956,7 @@ ms:
         readonly: Baca sahaja
         remaining_hours: Kerja yang berbaki
         remaining_time: Kerja yang berbaki
+        sequence_number: Sequence number
         shared_with_users: Dikongsi dengan
         schedule_manually: Penjadualan secara manual
         spent_hours: Masa yang dihabiskan
@@ -1935,6 +1966,29 @@ ms:
         type: Jenis
         version: Versi
         watcher: Pemerhati
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: mesti diterima.
@@ -1978,6 +2032,7 @@ ms:
         inclusion: tidak ditetapkan pada salah satu nilai yang dibenarkan.
         inclusion_nested: tidak ditetapkan pada salah satu nilai yang dibenarkan pada laluan '%{path}'.
         invalid: adalah tidak sah.
+        invalid_uri: must be a valid URI.
         invalid_url: bukan URL yang sah.
         invalid_url_scheme: 'adalah bukan protokol yang disokong (dibenarkan: %{allowed_schemes}).'
         less_than_or_equal_to: perlu kurang daripada atau sama dengan %{count}.
@@ -1991,6 +2046,7 @@ ms:
         not_a_datetime: bukan tarikh masa yang sah.
         not_a_number: bukan nombor.
         not_allowed: adalah tidak sah kerana kekurangan kebenaran.
+        host_not_allowed: is not an allowed host.
         not_json: is not parseable as JSON.
         not_json_object: is not a JSON object.
         not_an_integer: bukan sebuah integer.
@@ -2258,6 +2314,8 @@ ms:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Cannot add child because you don't have permissions to edit the selected work package.
               blank: ID can't be blank.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2326,7 +2384,7 @@ ms:
               confirmation: Pengesahan kata laluan tidak sepadan dengan kata laluan.
               format: "%{message}"
             password:
-              weak: 'Mesti mengandungi aksara kelas berikut (sekurang-kurangnya %{min_count} daripada %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: huruf kecil (cth. 'a')
               uppercase: huruf besar (cth. 'A')
               numeric: angka (cth. '1')
@@ -3472,7 +3530,7 @@ ms:
         personal_reminder: Notify me for personal reminders
       daily_reminders:
         title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
         add_time: Add time
         remove_time: Remove time
@@ -3486,6 +3544,7 @@ ms:
         date_range: Pause period
       email_alerts:
         title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3498,6 +3557,7 @@ ms:
     notifications:
       participating:
         title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3506,6 +3566,7 @@ ms:
         shared: Shared with me
       date_alerts:
         title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3520,6 +3581,7 @@ ms:
           seven_days_after: 7 days after
       non_participating:
         title: Non-participating
+        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3528,6 +3590,7 @@ ms:
         work_package_scheduled: All date changes
       project_specific_settings:
         title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -3687,6 +3750,7 @@ ms:
   label_commits_per_month: Komit setiap bulan
   label_confirmation: Pengesahan
   label_contains: mengandungi
+  label_starts_with: starts with
   label_content: Kandungan
   label_color_plural: Warna
   label_copied: disalin
@@ -3694,6 +3758,8 @@ ms:
   label_copy_source: Sumber
   label_copy_target: Sasaran
   label_copy_workflow_from: Salin aliran kerja dari
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Salin projek
   label_core_version: Versi teras
   label_core_build: Binaan teras
@@ -4003,6 +4069,10 @@ ms:
   label_password_rule_numeric: Aksara Nombor
   label_password_rule_special: Aksara Khas
   label_password_rule_uppercase: Huruf Besar
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Laluan pengekodan
   label_per_page: 'Setiap halaman:'
   label_people: Orang
@@ -5043,11 +5113,10 @@ ms:
   setting_new_project_user_role_id: Peranan yang diberikan kepada pengguna bukan pentadbir yang mencipta projek
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: Kelas-kelas karakter yang aktif
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Jumlah kebanyakkan kata laluan buat masa ini yang telah digunakan yang disekat untuk penggunaan semula
   setting_password_days_valid: Jumlah hari, selepas untuk menguatkuasakan pertukaran kata laluan
   setting_password_min_length: Panjang minimum
-  setting_password_min_adhered_rules: Bilangan minimum kelas yang diperlukan
   setting_per_page_options: Pilihan objek setiap halaman
   setting_percent_complete_on_status_closed: "% Lengkap apabila status ditutup"
   setting_percent_complete_on_status_closed_no_change: Tiada perubahan

@@ -59,7 +59,7 @@ ro:
       label_mapping: Mapping
       label_requested_attribute_for: 'Requested attribute for: %{attribute}'
       no_results_table: No SAML identity providers have been defined yet.
-      notice_created: A new SAML identity provider was successfully created.
+      notice_created: Un nou furnizor de identitate SAML a fost creat cu succes.
       plural: SAML identity providers
       singular: SAML identity provider
       requested_attributes: Requested attributes

@@ -88,6 +88,14 @@ module WorkPackage::SemanticIdentifier
     identifier.presence || id
   end
 
+  # Returns the identifier formatted for inline UI display.
+  # Semantic mode: "PROJ-42" (no prefix — self-describing)
+  # Classic mode: "#42" (hash-prefixed)
+  def formatted_id
+    did = display_id
+    did.is_a?(String) && did.match?(/[A-Za-z]/) ? did : "##{did}"
+  end
+
   # Allocates the next semantic identifier in the current project and assigns it to the WP.
   # Also writes alias rows for every identifier the project has ever used (including "ghost" aliases).
   #

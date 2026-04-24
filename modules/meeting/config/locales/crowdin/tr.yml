@@ -694,8 +694,8 @@ tr:
   text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
   text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
   text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
-  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
-  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
+  text_agenda_item_dialog_skipping_closed_one: "%{date} adresinde kapalı toplantı"
+  text_agenda_item_dialog_skipping_closed_many: "%{count} kapalı toplantılar"
   text_work_package_add_to_meeting_hint: Bu iş paketini yaklaşan bir toplantıya eklemek için "Toplantıya ekle" düğmesini kullanın.
   text_work_package_has_no_past_meeting_agenda_items: Bu çalışma paketi geçmiş bir toplantıda gündem maddesi olarak eklenmemiştir.
   text_email_updates_muted: E-posta takvim güncellemeleri kapatılmıştır. Değişiklik yaptığınızda katılımcılar e-posta yoluyla güncellenmiş davetler almayacaktır.

@@ -29,14 +29,17 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= turbo_frame_tag "backlogs_container", refresh: :morph, class: "op-backlogs-page" do %>
   <div class="op-sprint-planning-container" data-controller="generic-drag-and-drop"
-       data-generic-drag-and-drop-position-mode-value="prev_id">
+       data-generic-drag-and-drop-position-mode-value="prev_id"
+       data-generic-drag-and-drop-handle-value="false">
     <div id="owner_backlogs_container" class="op-sprint-planning-lists"
          data-generic-drag-and-drop-target="scrollContainer">
-      <%= render Backlogs::InboxComponent.new(
-            work_packages: @inbox_work_packages,
-            project: @project,
-            show_all: show_all_backlog
-          ) %>
+      <%=
+        render Backlogs::BacklogsComponent.new(
+          inbox_work_packages: @inbox_work_packages,
+          backlog_buckets: @backlog_buckets,
+          project: @project
+        )
+      %>
     </div>
     <div id="sprint_backlogs_container" class="op-sprint-planning-lists"
          data-generic-drag-and-drop-target="scrollContainer">

@@ -118,6 +118,7 @@ pt-PT:
       description: Utilize esta ferramenta para importar dados da sua instância do Jira. Pode configurar vários anfitriões do Jira, e escolher o que importar em cada execução de importação.
       errors:
         cannot_delete_with_imports: Não é possível eliminar o anfitrião do Jira com importações existentes
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: Ainda não há anfitriões do Jira configurados
         description: Configure um anfitrião do Jira para começar a importar elementos do Jira para esta instância do OpenProject.
@@ -261,6 +262,7 @@ pt-PT:
               caption: Analise as suas definições de importação e inicie a importação
               caption_done: Concluído
               label_available_data: Dados disponíveis para importação
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Iniciar importação
               description: Está prestes a iniciar uma execução de importação com as seguintes definições.
               label_progress: Importação em curso...
@@ -428,10 +430,6 @@ pt-PT:
         default_transitions: Transições padrão
         user_author: O utilizador é o autor
         user_assignee: O utilizador é encarregado
-      index:
-        description: Configurar transições de estado para cada tipo de pacote de trabalho.
-        type_filter:
-          label: Filtrar por tipo de nome…
       status_button: Estado
       statuses_dialog:
         title: Estados
@@ -1363,6 +1361,33 @@ pt-PT:
     index:
       no_results_content_text: Adicione uma nova página da wiki
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Matriz de fluxo de trabalho
       matrix_caption_assignee: Matriz de fluxo de trabalho para o encarregado
@@ -1372,6 +1397,12 @@ pt-PT:
       matrix_uncheck_all_label: Proibir todas as transições
       matrix_check_uncheck_all_in_row_label_html: Alternar as transições de <em>%{old_status}</em> para todos os novos estatutos
       matrix_check_uncheck_all_in_col_label_html: Alternar as transições de todos os estados antigos para <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Atualmente, não existem ritmos de trabalho.
@@ -1927,6 +1958,7 @@ pt-PT:
         duration: Duração
         end_insertion: Final da inserção
         end_deletion: Final da exclusão
+        identifier: Identifier
         ignore_non_working_days: Ignorar dias não úteis
         include_non_working_days:
           title: Dias úteis
@@ -1942,6 +1974,7 @@ pt-PT:
         readonly: Só de leitura
         remaining_hours: Trabalho restante
         remaining_time: Trabalho restante
+        sequence_number: Sequence number
         shared_with_users: Partilhado com
         schedule_manually: Programação manual
         spent_hours: Tempo usado
@@ -1951,6 +1984,29 @@ pt-PT:
         type: Tipo
         version: Versão
         watcher: Monitor
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: deve ser aceite.
@@ -1994,6 +2050,7 @@ pt-PT:
         inclusion: não está definido como um dos valores permitidos.
         inclusion_nested: não está definido como um dos valores permitidos no caminho '%{path}'.
         invalid: é inválido.
+        invalid_uri: must be a valid URI.
         invalid_url: não é um URL válido.
         invalid_url_scheme: 'não é um protocolo suportado (permitido: %{allowed_schemes}).'
         less_than_or_equal_to: deve ser menor ou igual a %{count}.
@@ -2007,6 +2064,7 @@ pt-PT:
         not_a_datetime: não é uma data/hora válida.
         not_a_number: não é um número.
         not_allowed: é inválido devido a permissões em falta.
+        host_not_allowed: is not an allowed host.
         not_json: não é analisável como JSON.
         not_json_object: não é um objeto JSON.
         not_an_integer: não é um número inteiro.
@@ -2275,6 +2333,8 @@ pt-PT:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Não é possível adicionar elemento secundário porque não tem permissão para editar o pacote de trabalho selecionado.
               blank: O ID não pode ficar em branco.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2343,7 +2403,7 @@ pt-PT:
               confirmation: A confirmação da palavra-passe não coincide com a palavra-passe.
               format: "%{message}"
             password:
-              weak: 'Tem de conter caracteres das seguintes classes (pelo menos, %{min_count} de %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: minúsculas (exemplo, 'a')
               uppercase: maiúsculas (exemplo, 'A')
               numeric: numérico (exemplo, '1')
@@ -3521,7 +3581,7 @@ pt-PT:
         personal_reminder: Notificar-me para receber lembretes pessoais
       daily_reminders:
         title: Enviar-me lembretes diários de e-mail para notificações não lidas
-        caption: Receberá estes lembretes apenas para notificações não lidas e apenas nas horas que especificar. Até configurar um fuso horário para a sua conta, as horas serão interpretadas em UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Ativar lembretes diários por e-mail
         add_time: Adicionar hora
         remove_time: Remover hora
@@ -3535,6 +3595,7 @@ pt-PT:
         date_range: Período de pausa
       email_alerts:
         title: Alertas de e-mail para outros elementos que não pacotes de trabalho
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: Notícia adicionada
         news_commented: Comentar numa notícia
         document_added: Documento adicionado
@@ -3547,6 +3608,7 @@ pt-PT:
     notifications:
       participating:
         title: Participante
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Atualizar preferências
         mentioned: Mencionou
         watched: A ver
@@ -3555,6 +3617,7 @@ pt-PT:
         shared: Partilhado comigo
       date_alerts:
         title: Alertas de data
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Atualizar alertas de data
         start_date: Data de início
         due_date: Data de término
@@ -3569,6 +3632,7 @@ pt-PT:
           seven_days_after: 7 dias depois
       non_participating:
         title: Não participante
+        description: Additional notifications for activities in all projects.
         submit_button: Atualizar preferências
         work_package_created: Novos pacotes de trabalho
         work_package_commented: Todos os novos comentários
@@ -3577,6 +3641,7 @@ pt-PT:
         work_package_scheduled: Todas as alterações de datas
       project_specific_settings:
         title: Definições de notificação específicas do projeto
+        description: These project-specific settings override default settings above.
         add_button: Adicionar notificações específicas do projeto
         dialog_title: Adicionar notificações específicas do projeto
         list_header: Projetos com notificações específicas
@@ -3736,6 +3801,7 @@ pt-PT:
   label_commits_per_month: Commits por mês
   label_confirmation: Confirmação
   label_contains: contém
+  label_starts_with: starts with
   label_content: Conteúdo
   label_color_plural: Cores
   label_copied: copiado
@@ -3743,6 +3809,8 @@ pt-PT:
   label_copy_source: Origem
   label_copy_target: Destino
   label_copy_workflow_from: Copiar Fluxo de Trabalho de
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Copiar projeto
   label_core_version: Versão do núcleo
   label_core_build: Construção principal
@@ -4050,6 +4118,10 @@ pt-PT:
   label_password_rule_numeric: Carateres Numéricos
   label_password_rule_special: Carateres Especiais
   label_password_rule_uppercase: Maiúsculas
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Codificação do caminho
   label_per_page: 'Por página:'
   label_people: Pessoas
@@ -5080,11 +5152,10 @@ pt-PT:
   setting_new_project_user_role_id: Função atribuída a um utilizador não-administrador que cria um projeto
   setting_new_project_send_confirmation_email: Enviar notificação ao autor ao criar um novo projeto
   setting_new_project_notification_text: Texto da notificação
-  setting_password_active_rules: Ativar classes de caráter
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Número de senhas utilizadas recentemente banidas para reutilização
   setting_password_days_valid: Número de dias, após o qual é obrigatório uma alteração de senha
   setting_password_min_length: Tamanho mínimo
-  setting_password_min_adhered_rules: Número mínimo de classes obrigatórias
   setting_per_page_options: Opções de objetos por página
   setting_percent_complete_on_status_closed: "% de conclusão quando o estado é encerrado"
   setting_percent_complete_on_status_closed_no_change: Sem alterações

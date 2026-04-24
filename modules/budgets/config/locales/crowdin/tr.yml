@@ -77,8 +77,8 @@ tr:
           heading: Proje kontrolüne başlayın
           description: Projenizin sağlık durumunu verimli bir şekilde takip etmek için bütçelerinize ve maliyetlerinize genel bir bakış elde edin
         blankslate_zero:
-          heading: Budget details missing
-          description: Add details about your planned budget to see data here
+          heading: Bütçe detayları eksik
+          description: Verileri burada görmek için planladığınız bütçeyle ilgili ayrıntıları ekleyin
         count_caption:
           zero: No budget data.
           one: Data aggregated from %{count} budget

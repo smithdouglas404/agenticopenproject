@@ -84,9 +84,9 @@ tr:
         confirmation: Bu Enterprise sürümü destek belirtecini silmek istediğinizden emin misiniz?
       create_dialog:
         title: Kurumsal belirteç ekleme
-        type_token_text: Your Enterprise token text
+        type_token_text: Enterprise token metniniz
         token_placeholder: Enterprise sürümü destek anahtarınızı buraya yapıştırın
-        token_caption: To learn more about how to activate Enterprise edition check our [documentation](docs_url).
+        token_caption: Enterprise sürümünün nasıl etkinleştirileceği hakkında daha fazla bilgi edinmek için [belgeler](docs_url) adresimize bakın.
       add_token: Bir Enterprise sürümü destek belirteci yükleyin
       replace_token: Geçerli destek anahtarını değiştirin
       order: Kurumsal on-premises sürümü sipariş edin
@@ -108,57 +108,58 @@ tr:
         trial: Deneme
     jemalloc_allocator: Jemalloc bellek ayırıcı
     journal_aggregation:
-      caption: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
+      caption: 'Bir iş paketi üzerindeki kullanıcı eylemleri (açıklama, durum, değer değiştirme veya yorum yazma) bu süre içinde gerçekleştirilirse gruplandırılır. Ayrıca bildirim ve [webhook](webhook_link) gecikmelerini de kontrol eder.
 
         '
     import:
-      title: Import
+      title: İçeri Aktar
     jira:
       title: Jira Migrator
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
-        cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        cannot_delete_with_imports: Mevcut içe aktarmalarla Jira ana bilgisayarı silinemiyor
+        custom_field_creation_failed: "'%{name}' özel alanı oluşturulamadı: %{message}"
       blank:
-        title: No Jira hosts configured yet
+        title: Henüz yapılandırılmış Jira ana bilgisayarı yok
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
       configuration:
-        title: Jira configuration
-        new: New configuration
+        title: Jira yapılandırması
+        new: Yeni yapılandırma
       banner:
-        title: Limited import capabilities
+        title: Sınırlı içe aktarma özellikleri
         description: 'This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.'
       form:
         fields:
-          name: Name
-          url: Jira Server/Data Center URL
-          personal_access_token: Personal Access Token
-        button_add: Add configuration
-        button_save: Save configuration
-        button_test: Test configuration
-        button_delete_token: Delete token
-        delete_token_confirm: Are you sure you want to delete the token? This will disable the Jira connection.
-        label_testing: Testing configuration...
-      token_deleted: Token was successfully deleted.
+          name: İsim
+          url: Jira Sunucusu/Veri Merkezi URL'si
+          personal_access_token: Kişisel Erişim Anahtarı
+        button_add: Yapılandırma ekle
+        button_save: Yapılandırmayı kaydet
+        button_test: Yapılandırmayı test et
+        button_delete_token: Anahtarı sil
+        delete_token_confirm: Anahtarı silmek istediğinizden emin misiniz? Bu, Jira bağlantısını devre dışı bırakacaktır.
+        label_testing: Yapılandırma test ediliyor...
+      token_deleted: Anahtar başarıyla silindi.
       test:
-        success: Successfully connected to %{server} (version %{version})
-        failed: 'Connection failed: Unable to retrieve server information'
-        error: An unexpected error occurred while testing the connection
-        connection_error: 'Connection error: %{message}'
+        success: "%{server} adresine başarıyla bağlandı (sürüm %{version})"
+        failed: 'Bağlantı başarısız oldu: Sunucu bilgileri alınamıyor'
+        error: Bağlantı test edilirken beklenmeyen bir hata oluştu
+        connection_error: 'Bağlantı hatası: %{message}'
         parse_error: Failed to parse the response from the server. The server may not be a valid Jira instance.
         api_error: Jira API returned error status %{status}. Please check your Jira instance URL and API token.
         token_error: Invalid API token. Please check your credentials in the configuration.
         missing_credentials: Please provide both URL and Personal Access Token to test the connection
-        invalid_url: Please provide a valid URL
+        invalid_url: Lütfen geçerli bir URL giriniz
       client:
-        connection_error: 'Failed to connect to Jira server: %{message}'
-        connection_timeout: 'Connection to Jira server timed out: %{message}'
-        parse_error: 'Failed to parse Jira API response: %{message}'
-        api_error: Jira API returned error status %{status}
+        connection_error: 'Jira sunucusuna bağlanılamadı: %{message}'
+        connection_timeout: 'Jira sunucusuna bağlantı zaman aşımına uğradı: %{message}'
+        parse_error: 'Jira API yanıtı ayrıştırılamadı: %{message}'
+        api_error: Jira API hata durumu döndürdü %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
-        projects: Projects
-        last_change: Last change
-        added: Added
+        projects: Projeler
+        last_change: Son değişiklik
+        added: Eklendi
         label_ago: "%{amount} ago"
       run:
         title: Import run
@@ -241,46 +242,47 @@ tr:
               caption_done: Completed
               label_info: Please note that this import tool is in beta and cannot import all types of data. Here is a summary of what the host Jira instance offers for import and what this tool is able to import right now.
               description: Select what data you want to import from the available data fetched from the host Jira instance.
-              label_available_data: Available data
-              label_not_available_data: Not available for import
-              button_select_projects: Select projects to import
-              button_continue: Continue
-              label_import: Select which projects you would like to import.
-              button_select: Select projects
-              label_selected_data: Selected data for import
-              label_progress: Fetching data from Jira...
+              label_available_data: Mevcut veriler
+              label_not_available_data: İçe aktarma için mevcut değil
+              button_select_projects: İçe aktarılacak projeleri seçin
+              button_continue: Devam et
+              label_import: Hangi projeleri içe aktarmak istediğinizi seçin.
+              button_select: Projeleri seçin
+              label_selected_data: İçe aktarım için seçilen veriler
+              label_progress: Jira'dan veri getiriliyor...
               elements:
                 relations: Relations between issues
                 workflows: Project-level workflows
-                users: Users
-                sprints: Sprints
-                schemes: Schemas
+                users: Kullanıcılar
+                sprints: Sprintler
+                schemes: Şemalar
                 permissions: User, group and project permissions
             confirm_import:
-              title: Import data
-              caption: Review your import settings and start the import
-              caption_done: Completed
-              label_available_data: Available data to import
-              button_start: Start import
-              description: You are about to start an import run with the following settings.
-              label_progress: Import in progress...
-              label_import_data: Currently importing
+              title: Veriyi içe aktar
+              caption: İçe aktarma ayarlarınızı gözden geçirin ve içe aktarmayı başlatın
+              caption_done: Tamamlandı
+              label_available_data: İçe aktarılacak mevcut veriler
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
+              button_start: İçe aktarmayı başlat
+              description: Aşağıdaki ayarlarla bir içe aktarma çalışması başlatmak üzeresiniz.
+              label_progress: İçe aktarma devam ediyor...
+              label_import_data: Şu anda içe aktarılıyor
             import_result:
-              title: Import run results
-              caption: Review import run or revert import
-              info: Import run successful.
-              label_results: Imported
-              label_revert: Revert import
-              button_revert: Revert import
-              button_done: Finalize import
-              preview_description: The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.
+              title: Çalışma sonuçlarını içe aktarma
+              caption: İçe aktarma çalışmasını gözden geçirin veya içe aktarmayı geri alın
+              info: İçe aktarma işlemi başarılı.
+              label_results: İçe Aktarıldı
+              label_revert: İçe aktarımı geri döndür
+              button_revert: İçe aktarımı geri döndür
+              button_done: İçe aktarmayı sonlandır
+              preview_description: İçe aktarılan veriler şu anda inceleme modundadır. İçe aktarımı kalıcı hale getirmek için "İçe aktarımı sonlandır" veya bu içe aktarım çalışmasında yapılan tüm değişiklikleri geri almak için "İçe aktarımı geri al" seçeneğine tıklayın.
               label_finalize_import: Finalize import
               label_finalizing: Finalizing import...
               label_finalizing_done: Import finalized.
-              label_revert_progress: Reverting import...
-              label_reverted: Import reverted.
+              label_revert_progress: İçe aktarma geri alınıyor...
+              label_reverted: İçe aktarma geri alındı.
           select_dialog:
-            filter_projects: Filter by text
+            filter_projects: Metne göre filtrele
           import_dialog:
             title: Start this import?
             confirm_button: Start import
@@ -289,16 +291,16 @@ tr:
               '
             confirm: I understand and made the necessary preparations
           revert_dialog:
-            title: Permanently revert this import?
-            description: This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject.
-            confirm: I understand that this reversion will delete data permanently
+            title: Bu aktarım kalıcı olarak geri alınsın mı?
+            description: Bu, OpenProject'te içe aktarma işleminden sonra bu projelerde kullanıcı etkinliği olsa bile içe aktarılan tüm nesneleri (tüm projeler dahil) silecektir.
+            confirm: Bu geri dönüşün verileri kalıcı olarak sileceğini anlıyorum
           finalize_dialog:
-            title: Finalize this import?
-            description: Once finalized, this import can no longer be reverted. All imported data will become permanently imported.
-            confirm: I understand that this action cannot be undone
-            confirm_button: Understood
+            title: Bu içe aktarma sonlandırılsın mı?
+            description: Bu içe aktarma işlemi tamamlandıktan sonra artık geri döndürülemez. İçe aktarılan tüm veriler kalıcı olarak içe aktarılmış olacaktır.
+            confirm: Bu eylemin geri alınamayacağını anlıyorum
+            confirm_button: Anlaşıldı
           select_projects:
-            title: Select projects
+            title: Projeleri seçin
     mcp_configurations:
       index:
         description: The model context protocol allows AI agents to provide its users with tools and resources exposed by this OpenProject instance. This feature is still in beta.
@@ -384,8 +386,8 @@ tr:
         title: Erişim anahtarı tablosu
     settings:
       new_project:
-        project_creation: Project creation
-        notification_text_default: "<p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>\n"
+        project_creation: Proje oluşturma
+        notification_text_default: "<p>Merhaba,</p> <p>Yeni bir proje oluşturuldu: projectValue:name</p> <p>Teşekkür ederim.</p>\n"
       work_packages_identifier:
         page_header:
           description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
@@ -394,13 +396,13 @@ tr:
 
             '
         box_header:
-          label_project: Project
-          label_previous_identifier: Previous identifier
-          label_autofixed_suggestion: Future identifier
-          label_example_work_package_id: Example work package ID
+          label_project: Proje
+          label_previous_identifier: Önceki tanımlayıcı
+          label_autofixed_suggestion: Gelecek tanımlayıcı
+          label_example_work_package_id: Örnek iş paketi kimliği
         autofix_preview:
-          error_too_long: Has to be 10 characters or fewer
-          error_numerical: Cannot be purely numerical
+          error_too_long: 10 karakter veya daha az olmalıdır
+          error_numerical: Tamamen sayısal olamaz
           error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: Special characters not allowed
           error_not_fully_uppercased: Must be uppercase
@@ -428,10 +430,6 @@ tr:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -618,17 +616,17 @@ tr:
         review_hint: 'There are %{user_count} who are already assigned to this project attribute in various projects. They might get additional permissions and be added to projects they did not previously have access to.
 
           '
-        review_button: Review users and permissions
+        review_button: Kullanıcıları ve izinleri gözden geçir
         dialog:
-          title: Overview of users and permissions
-          change: Change
+          title: Kullanıcılara ve izinlere genel bakış
+          change: Değiştir
           changes:
-            new_member: Will be added as a member
-            remove_member: Will be removed as a member
-            gain_and_lose_role: Will lose role ‘%{old_role}’ and gain role ‘%{new_role}’
-            gain_role: Will gain role ‘%{new_role}’
-            lose_role: Will lose role ‘%{old_role}’
-            no_change: No changes
+            new_member: Üye olarak eklenecek
+            remove_member: Üye olarak çıkarılacak
+            gain_and_lose_role: "'%{old_role}' rolünü kaybedecek ve '%{new_role}' rolünü kazanacaktır"
+            gain_role: "'%{new_role}' rolünü kazanacak"
+            lose_role: "'%{old_role}' rolünü kaybedecek"
+            no_change: Değişiklik yok
     text_add_new_custom_field: 'Bir projeye yeni özel alanlar eklemeden önce onları oluşturmalısınız.
 
       '
@@ -637,82 +635,82 @@ tr:
     contained_in_type: Kullanıldığı tipler
     confirm_destroy_option: Bir seçeneğin silinmesi, kullanıldığı her yerden (örneğin iş paketleri) silinmesine neden olur. Silmek istediğinizden emin misiniz?
     reorder_alphabetical: Değerleri alfabetik olarak yeniden sıralayın
-    reorder_confirmation: 'Warning: The current order of available values as well as all unsaved values will be lost. Are you sure you want to continue?'
+    reorder_confirmation: 'Uyarı: Mevcut değerlerin mevcut sırası ve kaydedilmemiş tüm değerler kaybolacaktır. Devam etmek istediğinizden emin misiniz?'
     placeholder_version_select: Öncelikle iş paketi veya proje seçimi gereklidir
-    calculated_field_not_editable: Non-editable attribute. This value is calculated automatically.
-    no_role_assigment: No role assignment
+    calculated_field_not_editable: Düzenlenemez öznitelik. Bu değer otomatik olarak hesaplanır.
+    no_role_assigment: Rol ataması yok
     instructions:
       is_required:
-        all: Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated.
+        all: Özel alanı gerekli olarak işaretleyin. Bu, yeni kaynaklar oluştururken alanın doldurulmasını zorunlu hale getirecektir. Mevcut kaynaklar güncellenirken bir değer gerektirmeyecektir.
         project: Alan etkin olduğu durumda, zorunlu alanlar yalnızca proje oluşturulurken doldurulmak zorundadır(‘Tüm projeler için’ ayarı yapılmışsa veya alanın etkin olduğu bir proje/şablondan kopyalama yapılıyorsa). Mevcut projeler güncellenirken bu alanlar için değer girilmesi gerekmez.
       is_for_all:
-        all: Mark the custom field as available in all existing and new projects.
-        project: Mark the attribute as available in all existing and new projects.
+        all: Özel alanı tüm mevcut ve yeni projelerde kullanılabilir olarak işaretleyin.
+        project: Özelliği tüm mevcut ve yeni projelerde kullanılabilir olarak işaretleyin.
       multi_select:
-        all: Allows the user to assign multiple values to this custom field.
-        project: Allows the user to assign multiple values to this attribute.
+        all: Kullanıcının bu özel alana birden fazla değer atamasına izin verir.
+        project: Kullanıcının bu özniteliğe birden fazla değer atamasına izin verir.
       searchable:
-        all: Include the field values when using the global search functionality.
-        project: Check to make this attribute available as a filter in project lists.
+        all: Genel arama işlevini kullanırken alan değerlerini ekleyin.
+        project: Bu niteliği proje listelerinde filtre olarak kullanmak için işaretleyin.
       editable:
-        all: Allow the field to be editable by users themselves.
+        all: Alanın kullanıcılar tarafından düzenlenebilir olmasına izin verin.
       admin_only:
-        all: Check to make this custom field only visible to administrators. Users without admin rights will not be able to view or edit it.
-        project: Check to make this attribute only visible to administrators. Users without admin rights will not be able to view or edit it.
+        all: Bu özel alanın yalnızca yöneticiler tarafından görülebilmesi için işaretleyin. Yönetici hakları olmayan kullanıcılar bu alanı görüntüleyemez veya düzenleyemez.
+        project: Bu niteliğin yalnızca yöneticilere görünür kılmak için işaretleyin. Yönetici hakları olmayan kullanıcılar bunu görüntüleyemez veya düzenleyemez.
       is_filter:
-        all: 'Allow the custom field to be used in a filter in work package views. Note that only with ''For all projects'' selected, the custom field will show up in global views.
+        all: 'Özel alanın iş paketi görünümlerinde bir filtrede kullanılmasına izin verin. Yalnızca ''Tüm projeler için'' seçildiğinde, özel alanın genel görünümlerde görüneceğini unutmayın.
 
           '
       formula:
-        project: Add numeric values or type / to search for an attribute or a mathematical operator.
+        project: Sayısal değerler ekleyin veya bir niteliği ya da matematiksel bir operatörü aramak için / yazın.
       regexp:
-        all: eg. ^[A-Z0-9]+$
-        project: eg. ^[A-Z0-9]+$
+        all: ör. ^[A-Z0-9]+$
+        project: ör. ^[A-Z0-9]+$
       min_max:
-        all: 0 means no restriction
-        project: 0 means no restriction
+        all: 0 sınırlama yok demektir
+        project: 0 sınırlama yok demektir
       has_comment:
-        project: Allows the user to add a comment related to the project attribute when selecting the value in the project overview.
+        project: Kullanıcının, projeye genel bakışta değeri seçerken proje niteliğiyle ilgili bir yorum eklemesine olanak tanır.
     tab:
       no_results_title_text: Şu anda özel bir alan bulunmamakta.
       no_results_content_text: Yeni bir özel alan oluştur
   calculated_values:
     error_dialog:
-      title: Error with Calculated value
+      title: Hesaplanan değerde hata
     errors:
-      unknown: An unknown error occurred. Please review the formula for this Calculated value.
-      mathematical: The mathematical formula leads to an error. Please review the project calculation attribute and try again.
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
+      unknown: Bilinmeyen bir hata oluştu. Lütfen bu Hesaplanan değerin formülünü gözden geçirin.
+      mathematical: Matematiksel formül bir hataya yol açıyor. Lütfen proje hesaplama özelliğini gözden geçirin ve tekrar deneyin.
+      missing_value: '"%{custom_field_name}" özniteliği bu Hesaplanan değer için gereklidir, ancak boştur.'
+      disabled_value: '"%{custom_field_name}" özniteliği bu Hesaplanan değer için gereklidir, ancak proje için devre dışı bırakılmıştır.'
   concatenation:
     single: ya da
   danger_dialog:
     confirmation_live_message_checked: Devam etmek için düğme artık aktif.
     confirmation_live_message_unchecked: Devam etmek için düğme artık aktif değil. Devam etmek için işratlemeniz gerekli.
   departments:
-    edit: Edit department
-    add_user: Add user
-    add_department: Add department
+    edit: Departmanı düzenle
+    add_user: Kullanıcı ekle
+    add_department: Departman ekle
     blankslate:
-      heading: Your organization has no departments
+      heading: Kuruluşunuzun departmanı yok
       description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
 
         '
-      add_button: Add
+      add_button: Ekle
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
-      description: Add departments or users to create sub-items inside another one.
-      add_button: Add
+      heading: Bu departmanın altında herhangi bir hiyerarşi seviyesi yoktur
+      description: Başka bir öğenin içinde alt öğeler oluşturmak için departmanlar veya kullanıcılar ekleyin.
+      add_button: Ekle
     add_department_form:
-      name_label: Department name
-      name_placeholder: Enter department name
+      name_label: Departman adı
+      name_placeholder: Departman adını girin
     move_user_dialog:
-      title: User already in a department
-      heading: Move user to this department?
+      title: Kullanıcı zaten bir departmanda
+      heading: Kullanıcıyı bu bölüme taşıyalım mı?
       description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
-      confirm: Move user
+      confirm: Kullanıcıyı taşı
     context_menu:
-      add_sub_department: Add sub-department
+      add_sub_department: Alt departman ekle
       add_user: Add user
     flash:
       user_added: User was successfully added to the department.
@@ -1126,15 +1124,15 @@ tr:
       browser_session: "(Browser session)"
       current: Mevcut (bu cihaz)
       title: Oturum yönetimi
-      instructions: You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control.
+      instructions: Hesabınıza aşağıdaki cihazlar üzerinden giriş yaptınız. Tanımadığınız veya kontrol etmediğiniz cihazlardan yapılan oturumları iptal edin.
       may_not_delete_current: Şuanki oturumunuzu silemezsiniz.
       deletion_warning: Bu oturumu iptal etmek istediğinizden emin misiniz? Bu cihazda oturumunuz kapatılacaktır.
     groups:
       member_in_these_groups: 'Bu kullanıcı şu anda aşağıdaki grupların bir üyesidir:'
       no_results_title_text: Bu kullanıcı şu anda hiçbir gruba üye değil.
-      summary_with_more_html: Member of %{names} and %{count_link}.
+      summary_with_more_html: "%{names} ve %{count_link} üyesi."
       more: "%{count} tane daha"
-      summary_html: Member of %{names}.
+      summary_html: "%{names} üyesi."
     memberships:
       no_results_title_text: Bu kullanıcı şuan için bir proje üyesi değil.
     open_profile: Profili aç
@@ -1153,13 +1151,13 @@ tr:
       type:
         required: Lütfen davet edilecek türü seçin
         user:
-          title: Invite user to %{project_name}
+          title: Kullanıcıyı %{project_name} adresine davet edin
           description: Seçilen projede atanan role dayalı izinler
         group:
-          title: Invite group to %{project_name}
+          title: Grubu %{project_name} adresine davet edin
           description: Seçilen projede atanan role dayalı izinler
         placeholder_user:
-          title: Add placeholder user to %{project_name}
+          title: "%{project_name} adresine yer tutucu kullanıcı ekleyin"
           title_no_ee: Yer tutucu kullanıcı (yalnızca Enterprise sürümü eklentisi)
           description: Projeye erişimi yoktur ve e-posta gönderilmez.
         already_member_message: Zaten %{project} üyesi
@@ -1169,7 +1167,7 @@ tr:
         no_results_placeholder: Hiçbir yer bulunamadı.
         create_new_placeholder: 'Yeni yer tutucu oluşturun:'
         no_results_group: Hiç grup bulunamadı.
-        invite_to_project: Invite to %{project_name}
+        invite_to_project: "%{project_name} adresine davet edin"
         required:
           user: Lütfen bir kullanıcı seçin
           placeholder: Lütfen bir yer tutucu seçin
@@ -1177,7 +1175,7 @@ tr:
       role:
         label: rol %{project}
         no_roles_found: Hiç rol bulunamadı.
-        description: 'This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        description: 'Bu, kullanıcının projenize katıldığında alacağı roldür. Rol, hangi eylemleri gerçekleştirebileceklerini ve hangi bilgileri görebileceklerini tanımlar. [Roller ve izinler hakkında daha fazla bilgi edinin](docs_url)
 
           '
         required: Lütfen bir rol seçin.
@@ -1192,53 +1190,53 @@ tr:
         group: Grup artık %{project} 'nin bir parçası. Bu arada, bu grupla zaten plan yapabilir ve örneğin iş paketleri atayabilirsiniz.
     working_hours:
       current_schedule:
-        title: Current schedule
-        work_days: Work days
-        work_hours: Work hours
-        availability_factor: Availability factor
-        availability_subtitle: Dedicated to project work
-        effective_hours: Effective work hours
-        effective_subtitle: Per week
-        not_set: Not set
+        title: Güncel program
+        work_days: Çalışma günleri
+        work_hours: Çalışma saatleri
+        availability_factor: Kullanılabilirlik faktörü
+        availability_subtitle: Proje çalışmalarına adanmış
+        effective_hours: Etkin çalışma saatleri
+        effective_subtitle: Haftalık
+        not_set: Ayarlanmadı
       future:
-        title: Future schedules
-        description: Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically.
-        add_button: Add future schedule
-        blank_title: No future schedules planned
-        blank_description: Create a future schedule to plan changes ahead of time
+        title: Gelecek programlar
+        description: Çalışma programı değişikliklerini önceden planlayın. Tarih geldiğinde çalışma programlarınız otomatik olarak güncellenecektir.
+        add_button: Gelecek program ekle
+        blank_title: Gelecekte planlanan bir program yok
+        blank_description: Değişiklikleri önceden planlamak için bir gelecek programı oluşturun
       history:
-        title: Schedule history
-        description: View your past work schedules.
-        blank_title: No schedule history yet
-        blank_description: Past schedule changes will appear here
+        title: Program geçmişi
+        description: Geçmiş çalışma programlarınızı görüntüleyin.
+        blank_title: Henüz program geçmişi yok
+        blank_description: Geçmiş program değişiklikleri burada görünecektir
       destroy:
-        confirm: Are you sure you want to delete this working schedule?
+        confirm: Bu çalışma programını silmek istediğinizden emin misiniz?
       form:
-        title: Plan a future work schedule
-        title_current: Edit current work schedule
-        start_date: Start date
-        start_date_caption: Select the date from when the new work schedule will be effective.
-        work_days: Work days
-        working_hours_label: Working hours
-        hours_mode_label: Hours mode
-        same_hours_mode: Same hours per day
-        individual_hours_mode: Individual hours per day
-        work_hours: Work hours
-        hours_per_day: Hours per day
-        per_day: per day
-        per_week: per week
-        total_work_hours: Total work hours
-        availability_description: The availability factor represents the actual percentage of your working time dedicated to project tasks. This accounts for meetings, emails, administrative work, and other non-project activities.
-        availability_factor: Availability factor
-        availability_factor_caption: Define the percentage of your working time dedicated to project work.
-        total_available_hours: Total available work hours
-        title_availability_factor: Availability factor
-        title_days_and_hours: Days and hours
-        title_future_dates: Future dates
+        title: Gelecekteki çalışma programını planlayın
+        title_current: Geçerli çalışma programını düzenleme
+        start_date: Başlangıç tarihi
+        start_date_caption: Yeni çalışma programının geçerli olacağı tarihi seçin.
+        work_days: Çalışma günleri
+        working_hours_label: Çalışma saatleri
+        hours_mode_label: Saat modu
+        same_hours_mode: Her gün aynı saatler
+        individual_hours_mode: Günlük bireysel saatler
+        work_hours: Çalışma saatleri
+        hours_per_day: Gün başına saat
+        per_day: günlük
+        per_week: haftalık
+        total_work_hours: Toplam çalışma saati
+        availability_description: Kullanılabilirlik faktörü, çalışma zamanınızın proje görevlerine ayrılan gerçek yüzdesini temsil eder. Bu, toplantıları, e-postaları, idari işleri ve diğer proje dışı faaliyetleri hesaba katar.
+        availability_factor: Kullanılabilirlik faktörü
+        availability_factor_caption: Çalışma zamanınızın yüzde kaçını proje çalışmalarına ayıracağınızı belirleyin.
+        total_available_hours: Toplam kullanılabilir çalışma saati
+        title_availability_factor: Kullanılabilirlik faktörü
+        title_days_and_hours: Gün ve saat
+        title_future_dates: Gelecek tarihler
       table:
-        mobile_title: Working schedules
-        start_date: Start date
-        work_days: Work days
+        mobile_title: Çalışma programları
+        start_date: Başlangıç tarihi
+        work_days: Çalışma günleri
         work_hours: Work hours
         availability_factor: Availability factor
         effective_work_hours: Effective work hours
@@ -1366,6 +1364,33 @@ tr:
     index:
       no_results_content_text: Yeni wiki sayfası Ekle
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1375,6 +1400,12 @@ tr:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: Sitemizde şuan iş akışı yok.
@@ -1579,7 +1610,7 @@ tr:
       '
     login_with_auth_provider: veya varolan hesabınızı kullanarak oturum açın
     signup_with_auth_provider: veya kullanarak kaydolun
-    auth_source_login_html: Please login as <em>%{login}</em> to activate your account.
+    auth_source_login_html: Hesabınızı aktifleştirmek için lütfen <em>%{login}</em> olarak giriş yapın.
     omniauth_login: Hesabınızı aktifleştirmek için lütfen giriş yapın.
   actionview_instancetag_blank_option: Lütfen seçin
   activemodel:
@@ -1589,10 +1620,10 @@ tr:
   activerecord:
     attributes:
       work_package_semantic_alias:
-        identifier: Identifier
-        work_package: Work package
+        identifier: Tanımlayıcı
+        work_package: İş paketi
       jira_import:
-        projects: Projects
+        projects: Projeler
       import/jira:
         name: Jira instance name
         url: Jira instance URL
@@ -1645,7 +1676,7 @@ tr:
         regexp: Düzenli ifade
         searchable: Aranabilir
         admin_only: Yalnızca yönetici
-        has_comment: Add a comment text field
+        has_comment: Bir yorum metin alanı ekleyin
       custom_value:
         value: Değer
       design_color:
@@ -1854,11 +1885,11 @@ tr:
       group:
         identity_url: Kimlik URL'si
         parent: Parent group
-        organizational_unit: Organizational unit
-        group_users: Group users
+        organizational_unit: Organizasyonel birim
+        group_users: Grup kullanıcıları
       group_detail:
         parent: Parent group
-        organizational_unit: Organizational unit
+        organizational_unit: Organizasyonel birim
       user_preference:
         header_look_and_feel: Görünüm ve his
         header_alerts: Uyarılar
@@ -1888,27 +1919,27 @@ tr:
         principal_type: Davet Türü
         id_or_email: İsim veya e-posta adresi
       user_non_working_time:
-        start_date: Start date
-        end_date: End date
+        start_date: Başlangıç tarihi
+        end_date: Bitiş tarihi
       user_working_hours:
         valid_from: Valid from
-        monday: Monday
-        monday_hours: Monday hours
-        tuesday: Tuesday
-        tuesday_hours: Tuesday hours
-        wednesday: Wednesday
-        wednesday_hours: Wednesday hours
-        thursday: Thursday
-        thursday_hours: Thursday hours
-        friday: Friday
-        friday_hours: Friday hours
-        saturday: Saturday
-        saturday_hours: Saturday hours
-        sunday: Sunday
-        sunday_hours: Sunday hours
-        availability_factor: Availability factor
-        shared_hours: Work hours
-        days: Working days
+        monday: Pazartesi
+        monday_hours: Pazartesi saatleri
+        tuesday: Salı
+        tuesday_hours: Salı saatleri
+        wednesday: Çarşamba
+        wednesday_hours: Çarşamba saatleri
+        thursday: Perşembe
+        thursday_hours: Perşembe saatleri
+        friday: Cuma
+        friday_hours: Cuma saatleri
+        saturday: Cumartesi
+        saturday_hours: Cumartesi saatleri
+        sunday: Pazar
+        sunday_hours: Pazar saatleri
+        availability_factor: Kullanılabilirlik faktörü
+        shared_hours: Çalışma saatleri
+        days: Çalışma Günleri
       version:
         effective_date: Bitiş tarihi
         sharing: Paylaşım
@@ -1930,6 +1961,7 @@ tr:
         duration: Süre
         end_insertion: Ekleme işlemi bitti
         end_deletion: Silme işlemi bitti
+        identifier: Tanımlayıcı
         ignore_non_working_days: Çalışma dışı günleri yoksay
         include_non_working_days:
           title: İş günleri
@@ -1945,6 +1977,7 @@ tr:
         readonly: Salt okunur
         remaining_hours: Kalan çalışma
         remaining_time: Kalan çalışma
+        sequence_number: Sıra numarası
         shared_with_users: Şununla paylaşıldı
         schedule_manually: Manuel zamanlamayı etkinleştir
         spent_hours: Harcanan zaman
@@ -1954,6 +1987,29 @@ tr:
         type: Tür
         version: Sürüm
         watcher: Takip eden
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: kabul edilmelidir.
@@ -1963,8 +2019,8 @@ tr:
         before: "%{date}'dan daha önce olması gerekir."
         before_or_equal_to: "%{date}} tarihinden önce veya ona eşit olmalıdır."
         blank: boş bırakılamaz.
-        not_before_start_date: must not be before the start date.
-        overlapping_range: overlaps with an existing non-working day range.
+        not_before_start_date: başlangıç tarihinden önce olmamalıdır.
+        overlapping_range: mevcut bir çalışma dışı gün aralığı ile çakışır.
         blank_nested: "'%{property}' özelliğinin ayarlanmış olması gerekir."
         cannot_delete_mapping: zorunlu. Silinemez.
         is_for_all_cannot_modify: tüm projeler içindir ve bu nedenle değiştirilemez.
@@ -1973,8 +2029,8 @@ tr:
         confirmation: "%{attribute} eşleşmiyor."
         could_not_be_copied: "%{dependency} (tam olarak) kopyalanamadı."
         does_not_exist: mevcut değil.
-        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
+        user_already_in_department: Kullanıcı %{user_id} zaten %{department_id} departmanının bir üyesidir.
+        error_enterprise_only: "%{action} yalnızca OpenProject Enterprise sürümünde mevcuttur."
         error_unauthorized: erişilemez.
         error_readonly: yazılmaya çalışıldı fakat yazılabilir değil.
         error_conflict: Bu arada, bilgi en az bir başka kullanıcı tarafından güncellendi.
@@ -1999,6 +2055,7 @@ tr:
         inclusion: izin verilen değerlerden birine ayarlanmamış.
         inclusion_nested: "'%{path}' yolunda izin verilen değerlerden birine ayarlanmamış."
         invalid: geçersizdir.
+        invalid_uri: must be a valid URI.
         invalid_url: geçerli bir adres değil.
         invalid_url_scheme: 'bu protokol desteklenmiyor (izin: %{allowed_schemes}).'
         less_than_or_equal_to: "%{count} 'ten küçük veya bu değere eşit olmalıdır."
@@ -2014,6 +2071,7 @@ tr:
         not_a_datetime: geçerli bir zaman değil.
         not_a_number: bir sayı değil.
         not_allowed: Eksik izinler nedeniyle geçersiz.
+        host_not_allowed: is not an allowed host.
         not_json: JSON olarak ayrıştırılamaz.
         not_json_object: geçerli bir JSON nesnesi değildir.
         not_an_integer: bir tamsayı değil.
@@ -2282,6 +2340,8 @@ tr:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Seçili iş paketini düzenleme izniniz olmadığı için alt eklenemiyor.
               blank: Kimlik boş olamaz.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2350,7 +2410,7 @@ tr:
               confirmation: Parola onayı parolayla eşleşmiyor.
               format: "%{message}"
             password:
-              weak: 'Aşağıdaki sınıflardan karakterler içermelidir (%{all_count} taneden en az %{min_count} tane): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: küçük harf (örneğin 'a')
               uppercase: büyük harf (örneğin 'A')
               numeric: rakam (örneğin '1')
@@ -3528,7 +3588,7 @@ tr:
         personal_reminder: Notify me for personal reminders
       daily_reminders:
         title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
         add_time: Add time
         remove_time: Remove time
@@ -3542,6 +3602,7 @@ tr:
         date_range: Pause period
       email_alerts:
         title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3554,6 +3615,7 @@ tr:
     notifications:
       participating:
         title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3562,6 +3624,7 @@ tr:
         shared: Shared with me
       date_alerts:
         title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3576,6 +3639,7 @@ tr:
           seven_days_after: 7 days after
       non_participating:
         title: Non-participating
+        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3584,6 +3648,7 @@ tr:
         work_package_scheduled: All date changes
       project_specific_settings:
         title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -3743,6 +3808,7 @@ tr:
   label_commits_per_month: Ay başı katkı
   label_confirmation: Onay
   label_contains: içerir
+  label_starts_with: starts with
   label_content: İçerik
   label_color_plural: Renkler
   label_copied: kopyalandı
@@ -3750,6 +3816,8 @@ tr:
   label_copy_source: Kaynak
   label_copy_target: Hedef
   label_copy_workflow_from: İş akışı kopyala
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Projeyi kopyala
   label_core_version: Çekirdek sürümü
   label_core_build: Çekirdek yapı
@@ -4057,6 +4125,10 @@ tr:
   label_password_rule_numeric: Sayısal karakterler
   label_password_rule_special: Özel karakterler
   label_password_rule_uppercase: Büyük harf
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Yol kodlaması
   label_per_page: 'Sayfa başına:'
   label_people: Kişiler
@@ -5099,11 +5171,10 @@ tr:
   setting_new_project_user_role_id: Bir proje oluşturan yönetici olmayan bir kullanıcıya verilen rolü
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: Aktif karakter sınıfları
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Yeniden kullanımı yasaklanan en son kullanılan parola sayısı
   setting_password_days_valid: Ardından, bir şifre değişikliğinin uygulanması için gereken gün sayısı
   setting_password_min_length: Minimum uzunluk
-  setting_password_min_adhered_rules: Gerekli minimum sınıf sayısı
   setting_per_page_options: Sayfa başı nesne seçenekleri
   setting_percent_complete_on_status_closed: Durum kapatıldığında tamamlanma yüzdesi
   setting_percent_complete_on_status_closed_no_change: Değişiklik yok

@@ -150,15 +150,37 @@ RSpec.describe Backlogs::WorkPackagesController do
         expect(response).to be_successful
         expect(response).to have_http_status :ok
         expect(response).to have_turbo_stream action: "replace", target: "backlogs-sprint-component-#{agile_sprint.id}"
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-inbox-component-#{project.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlogs-component-#{project.id}"
         assert_select %(turbo-stream[action="replace"][target="backlogs-sprint-component-#{agile_sprint.id}"])
-        assert_select %(turbo-stream[action="replace"][target="backlogs-inbox-component-#{project.id}"][method="morph"])
+        assert_select %(turbo-stream[action="replace"][target="backlogs-backlogs-component-#{project.id}"][method="morph"])
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:sprint)).to eq(agile_sprint)
         expect(assigns(:story)).to eq(story_in_agile_sprint)
         expect(story_in_agile_sprint.reload.sprint).to be_nil
         expect(story_in_agile_sprint.reload.position).to eq(2)
+      end
+
+      context "when all=1 with an inbox over the pagination threshold" do
+        before do
+          stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
+          create_list(:work_package, 4, project:, status:)
+        end
+
+        it "replaces the inbox without a show-more row in the stream" do
+          put :move, params: {
+                       project_id: project.id,
+                       sprint_id: agile_sprint.id,
+                       id: story_in_agile_sprint.id,
+                       target_id: "inbox",
+                       prev_id: existing_inbox_item.id,
+                       all: "1"
+                     },
+                     format: :turbo_stream
+
+          expect(response).to be_successful
+          expect(response.body).not_to include("inbox-more-row-#{project.id}")
+        end
       end
     end
 
@@ -200,6 +222,92 @@ RSpec.describe Backlogs::WorkPackagesController do
       subject
       expect(response).to have_http_status :ok
       expect(response.body).to include(I18n.t(:"js.button_open_details"))
+    end
+
+    context "when all=1 is in params" do
+      subject do
+        get :menu,
+            params: { project_id: project.id, sprint_id: agile_sprint.id, id: story.id, all: "1" },
+            format: :html
+      end
+
+      it "embeds the all query in deferred action URLs" do
+        subject
+        expect(response.body).to match(/all=1/)
+      end
+    end
+
+    context "when another open sprint exists" do
+      let!(:other_open_sprint) { create(:agile_sprint, name: "Sprint 2", project:) }
+
+      before { allow(Backlogs::StoryMenuListComponent).to receive(:new).and_call_original }
+
+      it "passes open_sprints_exist: true to the menu component" do
+        subject
+
+        expect(Backlogs::StoryMenuListComponent)
+          .to have_received(:new)
+          .with(hash_including(open_sprints_exist: true))
+      end
+    end
+
+    context "when no other open sprints exist" do
+      before { allow(Backlogs::StoryMenuListComponent).to receive(:new).and_call_original }
+
+      it "passes open_sprints_exist: false to the menu component" do
+        subject
+
+        expect(Backlogs::StoryMenuListComponent)
+          .to have_received(:new)
+          .with(hash_including(open_sprints_exist: false))
+      end
+    end
+
+    context "with a user lacking project permission" do
+      let(:user) { create(:user) }
+
+      it "responds with 404" do
+        subject
+        expect(response).to have_http_status :not_found
+      end
+    end
+  end
+
+  describe "GET #move_to_sprint_dialog" do
+    subject do
+      get :move_to_sprint_dialog,
+          params: { project_id: project.id, sprint_id: agile_sprint.id, id: story.id },
+          format: :turbo_stream
+    end
+
+    context "when user has manage_sprint_items permission" do
+      it "responds with a dialog turbo stream", :aggregate_failures do
+        subject
+        expect(response).to be_successful
+        expect(response).to have_turbo_stream action: "dialog"
+      end
+    end
+
+    context "when all=1 is in params" do
+      subject do
+        get :move_to_sprint_dialog,
+            params: { project_id: project.id, sprint_id: agile_sprint.id, id: story.id, all: "1" },
+            format: :turbo_stream
+      end
+
+      it "embeds the all query in the dialog form action URL" do
+        subject
+        expect(response.body).to match(/all=1/)
+      end
+    end
+
+    context "with a user lacking manage_sprint_items permission" do
+      let(:user) { create(:user, member_with_permissions: { project => %i[view_sprints view_work_packages] }) }
+
+      it "responds with 403" do
+        subject
+        expect(response).to have_http_status :forbidden
+      end
     end
 
     context "with a user lacking project permission" do

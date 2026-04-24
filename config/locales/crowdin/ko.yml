@@ -118,6 +118,7 @@ ko:
       description: 이 도구를 사용하여 Jira 인스턴스에서 데이터를 가져옵니다. 여러 Jira 호스트를 구성하고 가져오기 실행 각각에서 가져올 항목을 선택할 수 있습니다.
       errors:
         cannot_delete_with_imports: 기존 가져오기가 있는 Jira 호스트는 삭제할 수 없습니다
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: 아직 구성된 Jira 호스트 없음
         description: Jira에서 이 OpenProject 인스턴스로 항목 가져오기를 시작하려면 Jira 호스트를 구성합니다.
@@ -255,6 +256,7 @@ ko:
               caption: 가져오기 설정을 검토하고 가져오기를 시작합니다
               caption_done: 완료됨
               label_available_data: 가져올 수 있는 데이터
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: 가져오기 시작
               description: 다음 설정으로 가져오기 실행을 시작하려고 합니다.
               label_progress: 가져오기 진행 중...
@@ -419,10 +421,6 @@ ko:
         default_transitions: 기본 전환
         user_author: 사용자가 작성자입니다
         user_assignee: 사용자가 담당자입니다
-      index:
-        description: 각 작업 패키지 유형에 대한 상태 전환을 구성합니다.
-        type_filter:
-          label: 유형 이름으로 필터링…
       status_button: 상태
       statuses_dialog:
         title: 상태
@@ -1346,6 +1344,31 @@ ko:
     index:
       no_results_content_text: 위키 페이지 추가
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: 워크플로 매트릭스
       matrix_caption_assignee: 담당자에 대한 워크플로 매트릭스
@@ -1355,6 +1378,12 @@ ko:
       matrix_uncheck_all_label: 모든 전환 허용 안 함
       matrix_check_uncheck_all_in_row_label_html: "<em>%{old_status}</em>에서 모든 새로운 상태로 전환 토글"
       matrix_check_uncheck_all_in_col_label_html: 모든 이전 상태에서 <em>%{new_status}</em>(으)로 전환 토글
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: 작업 흐름이 없습니다.
@@ -1909,6 +1938,7 @@ ko:
         duration: 기간
         end_insertion: 삽입 끝
         end_deletion: 삭제 끝
+        identifier: Identifier
         ignore_non_working_days: 휴무일 무시
         include_non_working_days:
           title: 근무일
@@ -1924,6 +1954,7 @@ ko:
         readonly: 읽기 전용
         remaining_hours: 남은 작업
         remaining_time: 남은 작업
+        sequence_number: Sequence number
         shared_with_users: 공유 대상
         schedule_manually: 수동 스케줄링
         spent_hours: 소비한 시간
@@ -1933,6 +1964,29 @@ ko:
         type: 타입
         version: 버전
         watcher: 주시자
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: 허용 되어야 합니다.
@@ -1976,6 +2030,7 @@ ko:
         inclusion: 은(는) 허용되는 값이 아닙니다.
         inclusion_nested: "- 경로 '%{path}'에서 허용되는 값 중 하나로 설정되지 않았습니다."
         invalid: 은(는) 올바르지 않은 값입니다
+        invalid_uri: must be a valid URI.
         invalid_url: 은(는) 올바른 URL이 아닙니다.
         invalid_url_scheme: '은(는) 지원되는 프로토콜(허용: %{allowed_schemes})이 아닙니다.'
         less_than_or_equal_to: 은(는) %{count} 보다 작거나 같아야 합니다
@@ -1989,6 +2044,7 @@ ko:
         not_a_datetime: 은(는) 유효한 날짜가 아닙니다.
         not_a_number: 은(는) 숫자가 아닙니다.
         not_allowed: "- 사용 권한이 없어 유효하지 않습니다."
+        host_not_allowed: is not an allowed host.
         not_json: "- JSON으로 구문 분석할 수 없습니다."
         not_json_object: "- JSON 개체가 아닙니다."
         not_an_integer: 은(는) 정수가 아닙니다.
@@ -2256,6 +2312,8 @@ ko:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: 선택한 작업 패키지를 편집할 권한이 없으므로 자식을 추가할 수 없습니다.
               blank: ID는 비워둘 수 없습니다.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2324,7 +2382,7 @@ ko:
               confirmation: 비밀번호와 비밀번호 확인이 일치하지 않습니다.
               format: "%{message}"
             password:
-              weak: '다음과 같은 클래스의 문자를 포함해야 합니다(최소 %{min_count} / %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: '소문자(예: ''a'')'
               uppercase: '대문자(예: ''A'')'
               numeric: '숫자 (예: '' 1'')'
@@ -3480,7 +3538,7 @@ ko:
         personal_reminder: 개인 미리 알림 보내기
       daily_reminders:
         title: 읽지 않은 알림에 대한 일일 이메일 미리 알림 보내기
-        caption: 읽지 않은 알림에 대해서만 그리고 사용자가 지정한 시간에만 이러한 미리 알림이 전송됩니다. 계정의 표준 시간대를 구성할 때까지, 시간은 UTC로 적용됩니다.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: 일일 이메일 미리 알림 활성화
         add_time: 시간 추가
         remove_time: 시간 제거
@@ -3494,6 +3552,7 @@ ko:
         date_range: 일시 중지 기간
       email_alerts:
         title: 작업 패키지가 아닌 기타 항목에 대한 이메일 알림
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: 뉴스 추가됨
         news_commented: 뉴스 항목의 코멘트
         document_added: 문서 추가됨
@@ -3506,6 +3565,7 @@ ko:
     notifications:
       participating:
         title: 참여
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: 기본 설정 업데이트
         mentioned: 멘션됨
         watched: 지켜보는 중
@@ -3514,6 +3574,7 @@ ko:
         shared: 나와 공유됨
       date_alerts:
         title: 날짜 알림
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: 날짜 알림 업데이트
         start_date: 시작 날짜
         due_date: 완료 날짜
@@ -3528,6 +3589,7 @@ ko:
           seven_days_after: 7일 후
       non_participating:
         title: 참여하지 않음
+        description: Additional notifications for activities in all projects.
         submit_button: 기본 설정 업데이트
         work_package_created: 새 작업 패키지
         work_package_commented: 모든 새로운 코멘트
@@ -3536,6 +3598,7 @@ ko:
         work_package_scheduled: 모든 날짜 변경 사항
       project_specific_settings:
         title: 프로젝트별 알림 설정
+        description: These project-specific settings override default settings above.
         add_button: 프로젝트별 알림 추가
         dialog_title: 프로젝트별 알림 추가
         list_header: 특정 알림이 있는 프로젝트
@@ -3695,6 +3758,7 @@ ko:
   label_commits_per_month: 월별 커밋
   label_confirmation: 확인
   label_contains: 포함
+  label_starts_with: starts with
   label_content: 내용
   label_color_plural: 색상
   label_copied: 복사됨
@@ -3702,6 +3766,8 @@ ko:
   label_copy_source: 소스
   label_copy_target: 대상
   label_copy_workflow_from: 다음에서 워크플로 복사
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: 프로젝트 복사
   label_core_version: 코어 버전
   label_core_build: 코어 빌드
@@ -4009,6 +4075,10 @@ ko:
   label_password_rule_numeric: 숫자 문자
   label_password_rule_special: 특수 문자
   label_password_rule_uppercase: 대문자
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: 경로 인코딩
   label_per_page: '페이지당:'
   label_people: 사용자
@@ -5044,11 +5114,10 @@ ko:
   setting_new_project_user_role_id: 프로젝트를 만드는 비관리자 사용자에게 지정된 역할
   setting_new_project_send_confirmation_email: 새 프로젝트 생성 시 작성자에게 알림 보내기
   setting_new_project_notification_text: 알림 텍스트
-  setting_password_active_rules: 활성 문자 클래스
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: 재사용 금지된 최근에 사용한 암호 수
   setting_password_days_valid: 암호 변경을 적용할 경과 일 수
   setting_password_min_length: 최소 길이
-  setting_password_min_adhered_rules: 최소 필수 클래스 수
   setting_per_page_options: 페이지당 개체 옵션
   setting_percent_complete_on_status_closed: 상태가 닫힘인 경우 완료 %
   setting_percent_complete_on_status_closed_no_change: 변경 없음

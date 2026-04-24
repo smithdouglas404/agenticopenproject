@@ -43,6 +43,7 @@ pt-BR:
       user_preference:
         backlogs_versions_default_fold_state: Exibir sprints recolhidas
       work_package:
+        backlog_bucket: Backlog Bucket
         backlogs_work_package_type: Tipo de backlog
         position: Posição
         sprint: Sprint
@@ -60,7 +61,10 @@ pt-BR:
               share_all_projects_already_taken: não pode ser definido, pois o projeto “%{name}” já está compartilhando com todos os projetos.
               share_all_projects_already_taken_anonymous: não pode ser definido, pois outro projeto já está compartilhando com todos os projetos.
         work_package:
+          backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
+            backlog_bucket:
+              backlog_bucket_from_another_project: must belong to the same project as the work package.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: pode conter apenas IDs de pacotes de trabalho na sprint atual.
               must_block_at_least_one_work_package: deve conter o ID de pelo menos um tíquete.
@@ -112,18 +116,21 @@ pt-BR:
     administration_blankslate:
       title: As configurações administrativas do Backlog estão em evolução
       text: Estamos reformulando o módulo de Backlogs. Em breve, você poderá ver aqui as configurações de administração de sprints e backlogs. As configurações do projeto continuam disponíveis normalmente.
+    backlog_bucket_component:
+      blankslate_title: Backlog bucket is empty
+      blankslate_description: Drag items here to add them.
+    backlog_bucket_item_component:
+      label_actions: Work package actions
     sprint_component:
       blankslate_title: "%{name} está vazio"
       blankslate_description: Ainda não há itens planejados. Arraste os itens para este espaço para adicioná-los.
     inbox_component:
       blankslate_title: A caixa de entrada de pendências está vazia
       blankslate_description: Todos os pacotes de trabalho em aberto neste projeto aparecerão automaticamente aqui.
-      label_drag_work_package: Mover %{name}
       show_more:
         one: Mostrar mais 1 item
         other: Mostrar mais %{count} itens
     inbox_item_component:
-      label_drag_work_package: Mover %{name}
       label_actions: Ações do pacote de trabalho
     inbox_menu_component:
       action_menu:
@@ -144,6 +151,16 @@ pt-BR:
         receive_shared_description_html: Este projeto recebe sprints de outro projeto. Gerencie isso em %{settings_link}.
         receive_shared_no_actions_description_text: Este projeto recebe sprints compartilhadas de outro projeto, mas não há nenhum disponível no momento.
         settings_link_text: configurações do projeto
+    backlog_bucket_menu_component:
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_header_component:
+      label_work_package_count:
+        zero: No stories in backlog bucket
+        one: "%{count} story in backlog bucket"
+        other: "%{count} stories in backlog bucket"
     sprint_header_component:
       label_start_sprint: Iniciar
       label_complete_sprint: Concluir
@@ -169,13 +186,13 @@ pt-BR:
         edit_sprint: Editar sprint
         add_work_package: Adicionar pacote de trabalho
     story_component:
-      label_drag_story: Mover %{name}
       label_actions: Ações da história
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copiar URL para a área de transferência
         copy_work_package_id: Copiar o ID do pacote de trabalho
         move_menu: Mover
+        move_to_sprint: Move to sprint
     burndown_chart:
       show:
         blankslate_title: No burndown data available
@@ -184,6 +201,8 @@ pt-BR:
     story_points: Pontos de história
     story_points_ideal: Pontos de história (ideal)
   label_backlog: Backlog
+  label_backlog_bucket_edit: Edit backlog bucket
+  label_backlog_bucket_new: New backlog bucket
   label_inbox: Caixa de entrada
   label_backlogs: Backlogs
   label_burndown_chart: Gráfico de burndown

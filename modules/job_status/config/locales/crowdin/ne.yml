@@ -6,7 +6,7 @@ ne:
     description: Listing and status of background jobs.
   job_status_dialog:
     download_starts: The download should start automatically.
-    click_to_download: Or, [click here](download_url) to download.
+    click_to_download: Or [click here](download_url) to download.
     title: Background job status
     redirect: You are being redirected.
     redirect_link: Please click here to continue.

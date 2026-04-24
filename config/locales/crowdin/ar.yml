@@ -118,6 +118,7 @@ ar:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -285,6 +286,7 @@ ar:
               caption: Review your import settings and start the import
               caption_done: Completed
               label_available_data: Available data to import
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -456,10 +458,6 @@ ar:
         default_transitions: Default transitions
         user_author: User is author
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -1433,6 +1431,41 @@ ar:
     index:
       no_results_content_text: إضافة صفحة ويكي جديدة
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            zero: Successfully copied workflow to %{count} roles.
+            one: Successfully copied workflow to '%{role_name}' role.
+            two: Successfully copied workflow to %{count} roles.
+            few: Successfully copied workflow to %{count} roles.
+            many: Successfully copied workflow to %{count} roles.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            zero: Successfully copied workflow to %{count} types.
+            one: Successfully copied workflow to '%{type_name}' type.
+            two: Successfully copied workflow to %{count} types.
+            few: Successfully copied workflow to %{count} types.
+            many: Successfully copied workflow to %{count} types.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1442,6 +1475,12 @@ ar:
       matrix_uncheck_all_label: Disallow all transitions
       matrix_check_uncheck_all_in_row_label_html: Toggle transitions from <em>%{old_status}</em> to all new statuses
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: لا يوجد حالياً أي سير عمل.
@@ -2001,6 +2040,7 @@ ar:
         duration: المدّة
         end_insertion: نهاية الإدراج
         end_deletion: نهاية الحذف
+        identifier: Identifier
         ignore_non_working_days: Ignore non working days
         include_non_working_days:
           title: Working days
@@ -2016,6 +2056,7 @@ ar:
         readonly: Read only
         remaining_hours: Remaining work
         remaining_time: Remaining work
+        sequence_number: Sequence number
         shared_with_users: Shared with
         schedule_manually: Manual scheduling
         spent_hours: الوقت المستهلك
@@ -2025,6 +2066,29 @@ ar:
         type: النّوع
         version: الإصدار
         watcher: المشاهد
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: يجب أن تقبل.
@@ -2068,6 +2132,7 @@ ar:
         inclusion: لم يتم تعيين إلى واحدة من القيم المسموح بها.
         inclusion_nested: is not set to one of the allowed values at path '%{path}'.
         invalid: غير صالح.
+        invalid_uri: must be a valid URI.
         invalid_url: is not a valid URL.
         invalid_url_scheme: 'is not a supported protocol (allowed: %{allowed_schemes}).'
         less_than_or_equal_to: يجب أن يكون أقل من أو يساوي %{count}.
@@ -2081,6 +2146,7 @@ ar:
         not_a_datetime: is not a valid date time.
         not_a_number: ليس رقماً.
         not_allowed: is invalid because of missing permissions.
+        host_not_allowed: is not an allowed host.
         not_json: is not parseable as JSON.
         not_json_object: is not a JSON object.
         not_an_integer: ليس عدداً صحيحاً.
@@ -2353,6 +2419,8 @@ ar:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Cannot add child because you don't have permissions to edit the selected work package.
               blank: ID can't be blank.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2421,7 +2489,7 @@ ar:
               confirmation: Password confirmation does not match password.
               format: "%{message}"
             password:
-              weak: 'يجب أن تحتوي على أحرف الفئات التالية (على الأقل %{min_count} من %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: أحرف صغيرة (مثل 'a')
               uppercase: أحرف كبيرة (على سبيل المثال، 'A')
               numeric: رقمية (على سبيل المثال، '1')
@@ -3757,7 +3825,7 @@ ar:
         personal_reminder: Notify me for personal reminders
       daily_reminders:
         title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
         add_time: Add time
         remove_time: Remove time
@@ -3771,6 +3839,7 @@ ar:
         date_range: Pause period
       email_alerts:
         title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3783,6 +3852,7 @@ ar:
     notifications:
       participating:
         title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3791,6 +3861,7 @@ ar:
         shared: Shared with me
       date_alerts:
         title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3805,6 +3876,7 @@ ar:
           seven_days_after: 7 days after
       non_participating:
         title: Non-participating
+        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3813,6 +3885,7 @@ ar:
         work_package_scheduled: All date changes
       project_specific_settings:
         title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -3972,6 +4045,7 @@ ar:
   label_commits_per_month: الالزامات في الشهر
   label_confirmation: تأكيد
   label_contains: يحتوي على
+  label_starts_with: starts with
   label_content: المحتوى
   label_color_plural: الألوان
   label_copied: تم النسخ
@@ -3979,6 +4053,8 @@ ar:
   label_copy_source: المصدر
   label_copy_target: الهدف
   label_copy_workflow_from: نسخ تدفق العمل من
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: نسخ المشروع
   label_core_version: النسخة الأساسية
   label_core_build: Core build
@@ -4286,6 +4362,10 @@ ar:
   label_password_rule_numeric: أحرف رقمية
   label_password_rule_special: أحرف خاصة
   label_password_rule_uppercase: أحرف كبيرة
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: ترميز المسار
   label_per_page: 'لكل صفحة:'
   label_people: الناس
@@ -5343,11 +5423,10 @@ ar:
   setting_new_project_user_role_id: الدور الممنوح لمستخدم غير مسؤول الذي يقوم بإنشاء مشروع
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Notification text
-  setting_password_active_rules: صفوف المحارف النشطة
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: عدد كلمات المرور المستخدمة مؤخرا محظورة بالنسبة لإعادة الاستخدام
   setting_password_days_valid: عدد الأيام بعد ذلك لفرض تغيير كلمة مرور
   setting_password_min_length: الطول الأدنى
-  setting_password_min_adhered_rules: الحد الأدنى لعدد من الفئات المطلوبة
   setting_per_page_options: الكائنات لكل خيارات الصفحة
   setting_percent_complete_on_status_closed: "% Complete when status is closed"
   setting_percent_complete_on_status_closed_no_change: No change

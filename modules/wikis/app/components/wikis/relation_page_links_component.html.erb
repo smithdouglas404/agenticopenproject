@@ -28,11 +28,13 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  flex_layout do |container|
-    container.with_row(mb: 2) do
-      flex_layout(justify_content: :space_between, align_items: :center) do |header|
-        header.with_column { render(Primer::Beta::Text.new(font_weight: :bold)) { t(".heading") } }
-
+  render(Primer::Beta::BorderBox.new(padding: :condensed)) do |box|
+    box.with_header do
+      flex_layout(align_items: :center, justify_content: :space_between) do |header|
+        header.with_column do
+          concat(render(Primer::Beta::Text.new(font_weight: :bold, mr: 2)) { provider.name })
+          concat(render(Primer::Beta::Counter.new(count: page_link_infos.count, round: true, scheme: :primary)))
+        end
         header.with_column do
           render(Primer::Alpha::ActionMenu.new) do |menu|
             menu.with_show_button(disabled: true) do |button|
@@ -48,8 +50,8 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    if page_links.empty?
-      container.with_row do
+    if page_link_infos.empty?
+      box.with_row do
         render(Primer::Beta::Blankslate.new(border: false)) do |blankslate|
           blankslate.with_heading(tag: :h2).with_content(t(".empty_heading"))
           blankslate.with_description { t(".empty_text") }
@@ -57,8 +59,8 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    page_links.each do |page_link|
-      container.with_row(mt: 3) { render(Wikis::PageLinkComponent.new(page_link)) }
+    page_link_infos.each do |info|
+      box.with_row { render(Wikis::PageLinkComponent.new(info, actions: [:remove])) }
     end
   end
 %>

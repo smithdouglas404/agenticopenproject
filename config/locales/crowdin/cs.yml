@@ -118,6 +118,7 @@ cs:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -273,6 +274,7 @@ cs:
               caption: Review your import settings and start the import
               caption_done: Completed
               label_available_data: Available data to import
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -442,10 +444,6 @@ cs:
         default_transitions: Default transitions
         user_author: Uživatel je autorem
         user_assignee: User is assignee
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Stav
       statuses_dialog:
         title: Stavy
@@ -1399,6 +1397,37 @@ cs:
     index:
       no_results_content_text: Přidat novou wiki stránku
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            few: Successfully copied workflow to %{count} roles.
+            many: Successfully copied workflow to %{count} roles.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            few: Successfully copied workflow to %{count} types.
+            many: Successfully copied workflow to %{count} types.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Workflow matrix
       matrix_caption_assignee: Workflow matrix for assignee
@@ -1408,6 +1437,12 @@ cs:
       matrix_uncheck_all_label: Zakázat všechny přechody
       matrix_check_uncheck_all_in_row_label_html: Přepnout přechody z <em>%{old_status}</em> na všechny nové stavy
       matrix_check_uncheck_all_in_col_label_html: Toggle transitions from all old statuses to <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: V současné době neexistují žádné pracovní postupy.
@@ -1751,7 +1786,7 @@ cs:
         enabled_modules: Povolené moduly
         identifier: Identifikátor
         latest_activity_at: Poslední aktivita
-        parent: Podprojekt
+        parent: Nadřazený projekt
         project_creation_wizard_enabled: Project initiation request
         public_value:
           title: Viditelnost
@@ -1967,6 +2002,7 @@ cs:
         duration: Doba trvání
         end_insertion: Konec vložení
         end_deletion: Konec odstranění
+        identifier: Identifier
         ignore_non_working_days: Ignorovat nepracovní dny
         include_non_working_days:
           title: Pracovní dny
@@ -1982,6 +2018,7 @@ cs:
         readonly: Pouze pro čtení
         remaining_hours: Zbývající práce
         remaining_time: Zbývající práce
+        sequence_number: Sequence number
         shared_with_users: Sdíleno s
         schedule_manually: Manuální plánování
         spent_hours: Strávený čas
@@ -1991,6 +2028,29 @@ cs:
         type: Typ
         version: Verze
         watcher: Sledující
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: musí být přijato.
@@ -2034,6 +2094,7 @@ cs:
         inclusion: není nastavena na jednu z povolených hodnot.
         inclusion_nested: není nastavena na jednu z povolených hodnot na cestě '%{path}'.
         invalid: je neplatné.
+        invalid_uri: must be a valid URI.
         invalid_url: není platná adresa URL.
         invalid_url_scheme: 'není podporovaný protokol (povoleny: %{allowed_schemes}).'
         less_than_or_equal_to: musí být menší než nebo rovno %{count}.
@@ -2047,6 +2108,7 @@ cs:
         not_a_datetime: není platný čas.
         not_a_number: není číslo.
         not_allowed: je neplatný z důvodu chybějících oprávnění.
+        host_not_allowed: is not an allowed host.
         not_json: nelze přečíst jako JSON.
         not_json_object: není platným JSON objektem.
         not_an_integer: není celé číslo.
@@ -2159,7 +2221,7 @@ cs:
         message:
           cannot_move_message_to_forum_of_different_project: A message cannot be moved to a forum of a different project.
         notifications:
-          at_least_one_channel: Alespoň jeden kanál pro odesílání oznámení musí být specifikován.
+          at_least_one_channel: Pro odesílání notifikací musí být specifikován alespoň jeden kanál
           attributes:
             read_ian:
               read_on_creation: 'nelze nastavit na pravdivé při vytváření oznámení '
@@ -2317,6 +2379,8 @@ cs:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Cannot add child because you don't have permissions to edit the selected work package.
               blank: ID nemůže být prázdné.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2385,7 +2449,7 @@ cs:
               confirmation: Hesla se neshodují!
               format: "%{message}"
             password:
-              weak: 'Musí obsahovat znaky z následujících tříd (alespoň %{min_count} z %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: malá písmena (například 'a')
               uppercase: velká písmena (například ' A')
               numeric: číselné (např. 1)
@@ -2467,11 +2531,11 @@ cs:
       member: Člen
       news: Novinky
       notification:
-        one: Oznámení
-        few: Oznámení
-        many: Oznámení
-        other: Oznámení
-      placeholder_user: placeholder uživatel
+        one: Notifikace
+        few: Notifikací
+        many: Notifikací
+        other: Notifikace
+      placeholder_user: Placeholder uživatel
       project:
         one: Projekt
         few: Projekty
@@ -3563,7 +3627,7 @@ cs:
       ai: Umělá Inteligence (AI)
       aggregation: Agregace
       api_and_webhooks: API & Webhooky
-      mail_notification: E-mailová upozornění
+      mail_notification: E-mailové notifikace
       mails_and_notifications: E-maily a oznámení
       mcp_configurations: Protokol MCP (Model Context Protocol)
     quick_add:
@@ -3643,7 +3707,7 @@ cs:
         personal_reminder: Notify me for personal reminders
       daily_reminders:
         title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
         add_time: Add time
         remove_time: Remove time
@@ -3657,6 +3721,7 @@ cs:
         date_range: Pause period
       email_alerts:
         title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3669,6 +3734,7 @@ cs:
     notifications:
       participating:
         title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3677,6 +3743,7 @@ cs:
         shared: Shared with me
       date_alerts:
         title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3691,6 +3758,7 @@ cs:
           seven_days_after: 7 days after
       non_participating:
         title: Non-participating
+        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3699,6 +3767,7 @@ cs:
         work_package_scheduled: All date changes
       project_specific_settings:
         title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -3720,7 +3789,7 @@ cs:
       by_project: Nepřečteno dle projektu
       by_reason: Důvod
       inbox: Doručená pošta
-    send_notifications: Odeslat oznámení pro tuto akci
+    send_notifications: Pro tuto akci odeslat notifikaci
     work_packages:
       subject:
         created: Pracovní balíček byl vytvořen.
@@ -3858,6 +3927,7 @@ cs:
   label_commits_per_month: Commitů za měsíc
   label_confirmation: Potvrzení
   label_contains: obsahuje
+  label_starts_with: starts with
   label_content: Obsah
   label_color_plural: Barvy
   label_copied: zkopírováno
@@ -3865,6 +3935,8 @@ cs:
   label_copy_source: Zdroj
   label_copy_target: Cíl
   label_copy_workflow_from: Kopírovat pracovní postup z
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Kopírovat projekt
   label_core_version: Verze jádra
   label_core_build: Build jádra
@@ -4172,15 +4244,19 @@ cs:
   label_password_rule_numeric: Numerické znaky
   label_password_rule_special: Speciální znaky
   label_password_rule_uppercase: Velká písmena
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Kódování trasy
   label_per_page: 'Počet položek na stránku:'
   label_people: Lidé
   label_permissions: Práva
   label_permissions_report: Přehled oprávnění
   label_personalize_page: Přizpůsobit tuto stránku
-  label_placeholder_user: placeholder uživatel
+  label_placeholder_user: Placeholder uživatel
   label_placeholder_user_new: ''
-  label_placeholder_user_plural: placeholder uživatelé
+  label_placeholder_user_plural: Placeholder uživatelé
   label_planning: Plánování
   label_please_login: Přihlaste se prosím
   label_plugins: Pluginy
@@ -4205,7 +4281,7 @@ cs:
   label_project_attribute_plural: Atributy projektu
   label_project_attribute_manage_link: Správa atributů produktu
   label_project_count: Celkový počet projektů
-  label_project_copy_notifications: Během kopie projektu odeslat oznámení e-mailem
+  label_project_copy_notifications: Během kopírování projektu odeslat notifikace e-mailem
   label_project_initiation_export_pdf: Export PDF for %{project_creation_name}
   label_project_latest: Nejnovější projekty
   label_project_default_type: Povolit prázdný typ
@@ -4366,7 +4442,7 @@ cs:
   label_version_new: Nová verze
   label_version_edit: Upravit verzi
   label_version_plural: Verze
-  label_version_sharing_descendants: S Podprojekty
+  label_version_sharing_descendants: S podprojekty
   label_version_sharing_hierarchy: S hierarchií projektu
   label_version_sharing_none: Není sdíleno
   label_version_sharing_system: Se všemi projekty
@@ -4504,28 +4580,28 @@ cs:
     digests:
       including_mention_singular: včetně zmínky
       including_mention_plural: včetně %{number_mentioned} zmínění
-      unread_notification_singular: 1 nepřečtené oznámení
-      unread_notification_plural: "%{number_unread} nepřečtených oznámení"
+      unread_notification_singular: 1 nepřečtená notifikace
+      unread_notification_plural: "%{number_unread} nepřečtených notifikací"
       you_have: Máte
     logo_alt_text: Logo
     mention:
       subject: "%{user_name} vás zmínil v #%{id} - %{subject}"
     notification:
-      center: Centrum oznámení
+      center: Centrum notifikací
       see_in_center: Zobrazit komentář v oznamovacím centru
       settings: Změnit nastavení e-mailu
     salutation: Dobrý den, %{user},
     salutation_full_name: Jméno a příjmení
     work_packages:
       created_at: 'Vytvořeno v %{timestamp} uživatelem %{user} '
-      login_to_see_all: Přihlaste se pro zobrazení všech oznámení.
+      login_to_see_all: Přihlaste se pro zobrazení všech notifikací.
       mentioned: Byli jste <b>zmíněni v komentáři</b>
       mentioned_by: "%{user} vás zmínil v komentáři OpenProject"
       more_to_see:
-        one: Máte ještě 1 pracovní balíček s notifikací.
-        few: Existuje ještě  %{count}  pracovních balíčků s oznámeními.
-        many: Máte ještě  %{count}  pracovních balíčků s notifikacemi.
-        other: Existuje ještě  %{count}  pracovních balíčků s oznámeními.
+        one: Existuje ještě 1 pracovní balíček s notifikací.
+        few: Existuje ještě %{count} pracovních balíčků s notifikacema.
+        many: Existuje ještě %{count} pracovních balíčků s notifikacema.
+        other: Existuje ještě %{count} pracovních balíčků s notifikacema.
       open_in_browser: Otevřít v prohlížeči
       reason:
         watched: Sledováno
@@ -4534,7 +4610,7 @@ cs:
         mentioned: Zmíněné
         shared: Sdílené
         subscribed: vše
-        prefix: 'Obdrženo z důvodu nastavení oznámení: %{reason}'
+        prefix: 'Obdrženo z důvodu nastavení notifikací: %{reason}'
         date_alert_start_date: Upozornění na datum
         date_alert_due_date: Upozornění na datum
         reminder: Připomínka
@@ -4847,7 +4923,7 @@ cs:
   permission_move_work_packages: Přesun pracovních balíčků
   permission_protect_wiki_pages: Ochrana stránky wiki
   permission_rename_wiki_pages: Přejmenovat stránky wiki
-  permission_save_queries: Uložit pohled
+  permission_save_queries: Uložit zobrazení
   permission_search_project: Hledat projekt
   permission_select_custom_fields: Vybrat vlastní pole
   permission_select_project_custom_fields: Vyberte atributy projektu
@@ -5227,11 +5303,10 @@ cs:
   setting_new_project_user_role_id: Role přiřazená uživateli bez práv administrátora, který projekt vytvořil
   setting_new_project_send_confirmation_email: Send notification to author when creating a new project
   setting_new_project_notification_text: Text notifikace
-  setting_password_active_rules: Aktivní třídy znaků
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Počet naposledy použitých hesel zakázaných pro opakované použití
   setting_password_days_valid: Počet dní, po kterých bude možné vynutit změnu hesla
   setting_password_min_length: Minimální délka
-  setting_password_min_adhered_rules: Minimální počet požadovaných tříd
   setting_per_page_options: Objektů na stránku
   setting_percent_complete_on_status_closed: "% Dokončeno, když je stav uzavřen"
   setting_percent_complete_on_status_closed_no_change: Žádná změna
@@ -5376,7 +5451,7 @@ cs:
       enable_subscriptions_text_html: Umožňuje uživatelům s nezbytnými oprávněními přihlásit se do OpenProject kalendářů a získat přístup k informacím o pracovním balíčku prostřednictvím externího klienta kalendáře. <strong>Poznámka:</strong> Před povolením si prosím přečtěte <a href="%{link}" target="_blank">podrobnosti o odběru</a>.
     language_name_being_default: "%{language_name} (výchozí)"
     notifications:
-      events_explanation: Určuje, pro kterou událost je odeslán e-mail. Pracovní balíčky jsou z tohoto seznamu vyloučeny, protože oznámení pro ně mohou být nastavena speciálně pro každého uživatele.
+      events_explanation: Určuje, pro kterou událost je odeslán e-mail. Pracovní balíčky jsou z tohoto seznamu vyloučeny, protože notifikace pro ně mohou být nastavena speciálně pro každého uživatele.
       delay_minutes_explanation: Odesílání e-mailu může být pozdrženo, aby bylo uživatelům s nakonfigurovaným v oznámení aplikace před odesláním pošty potvrzeno oznámení. Uživatelé, kteří si přečtou oznámení v aplikaci, nedostanou e-mail pro již přečtené oznámení.
     other: Ostatní
     passwords: Hesla
@@ -5581,7 +5656,7 @@ cs:
   text_destroy_what_to_do: Co chcete udělat?
   text_diff_truncated: "... Toto rozlišení bylo zkráceno, protože přesahuje maximální velikost, kterou lze zobrazit."
   text_email_delivery_not_configured: |-
-    Doručení e-mailu není nakonfigurováno a oznámení jsou zakázána.
+    Doručení e-mailu není nakonfigurováno a notifikace jsou zakázány.
     Nakonfigurujte váš SMTP server pro jejich povolení.
   text_enumeration_category_reassign_to: 'Přiřadit je k této hodnotě:'
   text_enumeration_destroy_question: "%{count} objektů je přiřazeno k této hodnotě."

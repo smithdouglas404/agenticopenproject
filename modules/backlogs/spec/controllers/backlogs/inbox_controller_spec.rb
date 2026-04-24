@@ -80,9 +80,9 @@ RSpec.describe Backlogs::InboxController do
     end
 
     context "when service call succeeds" do
-      it "replaces the inbox component and responds with turbo streams", :aggregate_failures do
+      it "replaces the backlogs component and responds with turbo streams", :aggregate_failures do
         expect(response).to be_successful
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-inbox-component-#{project.id}"
+        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlogs-component-#{project.id}"
         expect(assigns(:project)).to eq(project)
         expect(assigns(:work_package)).to eq(work_package)
       end
@@ -97,6 +97,26 @@ RSpec.describe Backlogs::InboxController do
       end
     end
 
+    context "when all=1 with an inbox over the pagination threshold" do
+      before do
+        stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
+      end
+
+      let!(:work_packages) { create_list(:work_package, 5, project:) }
+      let(:work_package) { work_packages.first }
+
+      subject do
+        post :reorder,
+             params: { project_id: project.id, id: work_package.id, direction: "lower", all: "1" },
+             format: :turbo_stream
+      end
+
+      it "replaces the inbox without a show-more row in the stream" do
+        expect(response).to be_successful
+        expect(response.body).not_to include("inbox-more-row-#{project.id}")
+      end
+    end
+
     context "when service call fails" do
       let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
 
@@ -104,7 +124,7 @@ RSpec.describe Backlogs::InboxController do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace",
-                                                  target: "backlogs-inbox-component-#{project.id}"
+                                                  target: "backlogs-backlogs-component-#{project.id}"
       end
     end
 
@@ -139,7 +159,7 @@ RSpec.describe Backlogs::InboxController do
       it "replaces both the inbox and target sprint components", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-inbox-component-#{project.id}"
+                                              target: "backlogs-backlogs-component-#{project.id}"
         expect(response).to have_turbo_stream action: "replace",
                                               target: "backlogs-sprint-component-#{agile_sprint.id}"
 
@@ -155,7 +175,7 @@ RSpec.describe Backlogs::InboxController do
       it "replaces only the inbox component without a flash", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "replace",
-                                              target: "backlogs-inbox-component-#{project.id}"
+                                              target: "backlogs-backlogs-component-#{project.id}"
         expect(response).not_to have_turbo_stream action: "flash", target: "op-primer-flash-component"
       end
 
@@ -183,6 +203,33 @@ RSpec.describe Backlogs::InboxController do
       end
     end
 
+    context "when all=1 with an inbox over the pagination threshold" do
+      before do
+        stub_const("Backlogs::InboxComponent::PAGINATION_THRESHOLD", 3)
+      end
+
+      let!(:work_packages) { create_list(:work_package, 5, project:) }
+      let(:target_id) { "inbox" }
+      let(:prev_id) { work_packages.first.id }
+
+      subject do
+        put :move,
+            params: {
+              project_id: project.id,
+              id: work_package.id,
+              target_id:,
+              prev_id:,
+              all: "1"
+            },
+            format: :turbo_stream
+      end
+
+      it "replaces the inbox without a show-more row in the stream" do
+        expect(response).to be_successful
+        expect(response.body).not_to include("inbox-more-row-#{project.id}")
+      end
+    end
+
     context "when service call fails" do
       let(:service_result) { ServiceResult.failure(message: "Move failed") }
 
@@ -190,7 +237,7 @@ RSpec.describe Backlogs::InboxController do
         expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         expect(response).not_to have_turbo_stream action: "replace",
-                                                  target: "backlogs-inbox-component-#{project.id}"
+                                                  target: "backlogs-backlogs-component-#{project.id}"
       end
     end
 
@@ -214,6 +261,17 @@ RSpec.describe Backlogs::InboxController do
       subject
       expect(response).to have_http_status :ok
       expect(response.body).to include(I18n.t(:"js.button_open_details"))
+    end
+
+    context "when all=1 is in params" do
+      subject do
+        get :menu, params: { project_id: project.id, id: work_package.id, all: "1" }, format: :html
+      end
+
+      it "embeds the all query in deferred action URLs" do
+        subject
+        expect(response.body).to match(/all=1/)
+      end
     end
 
     context "when the work package belongs to another project" do
@@ -250,6 +308,19 @@ RSpec.describe Backlogs::InboxController do
       it "responds with a dialog turbo stream", :aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_turbo_stream action: "dialog"
+      end
+    end
+
+    context "when all=1 is in params" do
+      subject do
+        get :move_to_sprint_dialog,
+            params: { project_id: project.id, id: work_package.id, all: "1" },
+            format: :turbo_stream
+      end
+
+      it "embeds the all query in the dialog form action URL" do
+        subject
+        expect(response.body).to match(/all=1/)
       end
     end
 

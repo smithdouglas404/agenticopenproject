@@ -66,6 +66,16 @@ Rails.application.routes.draw do
           work_package_split_view: true,
           defaults: { tab: :overview }
 
+      resources :backlog_buckets, only: %i[create update destroy] do
+        collection do
+          get :new_dialog
+        end
+
+        member do
+          get :edit_dialog
+        end
+      end
+
       resources :sprints, param: :sprint_id, only: %i[create update] do
         collection do
           get :new_dialog
@@ -85,6 +95,7 @@ Rails.application.routes.draw do
             get :menu
             put :move
             post :reorder
+            get :move_to_sprint_dialog
           end
         end
 

@@ -48,10 +48,14 @@ RSpec.describe WorkPackages::UpdateContract do
       view_work_packages
       edit_work_packages
       manage_sprint_items
+      view_sprints
     ]
   end
 
   before do
+    allow(work_package_project).to receive(:assignable_sprints)
+                        .and_return(shared_sprints)
+
     visible_scope = instance_double(ActiveRecord::Relation)
 
     allow(WorkPackage)
@@ -68,7 +72,7 @@ RSpec.describe WorkPackages::UpdateContract do
     describe "validations" do
       context "when setting sprint and lock_version " \
               "and only having the manage_sprint_items permission but lacking edit_work_packages" do
-        let(:permissions) { %i[view_work_packages manage_sprint_items] }
+        let(:permissions) { %i[view_work_packages manage_sprint_items view_sprints] }
 
         before do
           # Reverting the change done in the setup
@@ -80,7 +84,7 @@ RSpec.describe WorkPackages::UpdateContract do
 
       context "when setting the sprint and another property " \
               "and only having the manage_sprint_items permission but lacking edit_work_packages" do
-        let(:permissions) { %i[view_work_packages manage_sprint_items] }
+        let(:permissions) { %i[view_work_packages manage_sprint_items view_sprints] }
 
         before do
           work_package.subject = "Some other subject"
@@ -94,7 +98,7 @@ RSpec.describe WorkPackages::UpdateContract do
 
     describe "writable_attributes" do
       context "when the user has only :manage_sprint_items permission but lacks :edit_work_packages" do
-        let(:permissions) { %i[view_work_packages manage_sprint_items] }
+        let(:permissions) { %i[view_work_packages manage_sprint_items view_sprints] }
 
         it "includes sprint, backlog_bucket and lock_version", :aggregate_failures do
           expect(contract.writable_attributes).to include("backlog_bucket", "sprint", "lock_version")

@@ -28,31 +28,41 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters::Providers::Internal::Queries
-  class PageInfo < Wikis::Adapters::BaseQuery
-    def call(input_data)
-      # TODO: should we accept implicit User.current or do we want to pass in a user explicitly?
-      wiki_page = WikiPage.visible.find_by(id: input_data.identifier)
-      return failure(code: :not_found) if wiki_page.nil?
+module Wikis
+  module Adapters
+    module Providers
+      module Internal
+        module Queries
+          class PageInfo < BaseQuery
+            def call(input_data)
+              # TODO: should we accept implicit User.current or do we want to pass in a user explicitly?
+              wiki_page = WikiPage.visible.find_by(id: input_data.identifier)
+              return failure(code: :not_found) if wiki_page.nil?
 
-      success(
-        Wikis::Adapters::Results::PageInfo.new(
-          title: wiki_page.title,
-          href: url_for(only_path: true,
-                        controller: "/wiki",
-                        action: "show",
-                        project_id: wiki_page.project.identifier,
-                        id: wiki_page.slug)
-        )
-      )
-    end
+              success(
+                Results::PageInfo.new(
+                  identifier: input_data.identifier,
+                  provider:,
+                  title: wiki_page.title,
+                  href: url_for(only_path: true,
+                                controller: "/wiki",
+                                action: "show",
+                                project_id: wiki_page.project.identifier,
+                                id: wiki_page.slug)
+                )
+              )
+            end
 
-    private
+            private
 
-    delegate :url_for, to: :url_helpers
+            delegate :url_for, to: :url_helpers
 
-    def url_helpers
-      OpenProject::StaticRouting::StaticRouter.new.url_helpers
+            def url_helpers
+              OpenProject::StaticRouting::StaticRouter.new.url_helpers
+            end
+          end
+        end
+      end
     end
   end
 end

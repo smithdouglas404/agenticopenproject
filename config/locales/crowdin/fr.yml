@@ -118,6 +118,7 @@ fr:
       description: Utilisez cet outil pour importer des données à partir de votre instance Jira. Vous pouvez configurer plusieurs hôtes Jira et choisir les données à importer à chaque cycle d'importation.
       errors:
         cannot_delete_with_imports: Impossible de supprimer un hôte Jira avec des importations existantes
+        custom_field_creation_failed: 'Échec de la création du champ personnalisé "%{name}" : %{message}'
       blank:
         title: Aucun hôte Jira n'est encore configuré
         description: Configurez un hôte Jira pour commencer à importer des éléments de Jira vers cette instance d'OpenProject.
@@ -261,6 +262,7 @@ fr:
               caption: Vérifiez vos paramètres d'importation et démarrez l'importation
               caption_done: Terminé
               label_available_data: Données disponibles pour l'importation
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Démarrer l'importation
               description: Vous êtes sur le point de lancer un cycle d'importation avec les paramètres suivants.
               label_progress: Importation en cours...
@@ -401,7 +403,7 @@ fr:
         autofix_preview:
           error_too_long: Doit être composé de 10 caractères ou moins
           error_numerical: Ne peut être purement numérique
-          error_does_not_start_with_letter: Must start with an uppercase letter
+          error_does_not_start_with_letter: Doit commencer par une lettre majuscule
           error_special_characters: Caractères spéciaux non autorisés
           error_not_fully_uppercased: Doit être en majuscules
           error_in_use: Déjà utilisé comme alias actif d'un autre projet
@@ -421,17 +423,13 @@ fr:
           checkbox_label: Je comprends que cela changera définitivement tous les identifiants du lot de travaux
         success_banner: Le format de l'identifiant du lot de travaux a été mis à jour.
         in_progress:
-          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
-          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
+          converting_banner_message: Les identifiants de projets sont actuellement convertis en format sémantique. Cela peut prendre un certain temps.
+          reverting_banner_message: Les identifiants du projet sont en cours de retour au format classique. Cela peut prendre un certain temps.
     workflows:
       tabs:
         default_transitions: Transitions par défaut
         user_author: L'utilisateur est l'auteur
         user_assignee: L'utilisateur est la personne assignée
-      index:
-        description: Configurez les transitions d'état pour chaque type de lot de travail.
-        type_filter:
-          label: Filtrer par nom de type…
       status_button: Statut
       statuses_dialog:
         title: Statuts
@@ -1358,6 +1356,33 @@ fr:
     index:
       no_results_content_text: Ajouter une nouvelle page wiki
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Rôle source
+        target_role_ids:
+          label: Rôles cibles
+        target_type_ids:
+          label: Types de cibles
+        mode:
+          from_role:
+            label: Copier vers d'autres rôles
+            caption: Copiez le workflow actuel vers un ou plusieurs rôles dans le même type de lot de travaux. Si le rôle sélectionné a déjà un workflow, celui-ci sera remplacé.
+          from_type:
+            label: Copier vers un autre type
+            caption: Copiez le workflow actuel vers un autre type de lots de travaux. Si le type sélectionné a déjà un workflow, celui-ci sera remplacé. Cela affecte tous les rôles.
+      from_roles:
+        create:
+          notice:
+            one: Copie réussie du flux de travail dans le rôle '%{role_name}'.
+            other: Copie réussie du flux de travail vers les %{count} rôles.
+      from_types:
+        create:
+          notice:
+            one: Le workflow a été copié avec succès vers le type '%{type_name}'.
+            other: Le workflow a été copié avec succès vers les %{count} types.
+      new:
+        title: Copier le workflow de "%{source_type}"
     form:
       matrix_caption: Matrice de flux de travail
       matrix_caption_assignee: Matrice de flux de travail pour le responsable
@@ -1367,6 +1392,12 @@ fr:
       matrix_uncheck_all_label: Interdire toutes les transitions
       matrix_check_uncheck_all_in_row_label_html: Activer/désactiver les transitions de <em>%{old_status}</em> à tous les nouveaux statuts
       matrix_check_uncheck_all_in_col_label_html: Activer/désactiver les transitions de tous les anciens statuts vers <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filtrer par nom de type…
+    page_headers:
+      index_component:
+        description: Configurer les transitions de statut pour chaque type de lot de travaux.
   work_flows:
     index:
       no_results_title_text: Il n'y a actuellement aucun flux de travail.
@@ -1922,6 +1953,7 @@ fr:
         duration: Durée
         end_insertion: Fin de l’insertion
         end_deletion: Fin de la suppression
+        identifier: Identifiant
         ignore_non_working_days: Ignorer les jours non ouvrables
         include_non_working_days:
           title: Jours ouvrés
@@ -1937,6 +1969,7 @@ fr:
         readonly: Lecture seule
         remaining_hours: Travail restant
         remaining_time: Travail restant
+        sequence_number: Numéro de séquence
         shared_with_users: Partagé avec
         schedule_manually: Planification manuelle
         spent_hours: Temps passé
@@ -1946,6 +1979,29 @@ fr:
         type: Type
         version: Version
         watcher: Observateur
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: doi(ven)t être accepté(e)(s).
@@ -1989,6 +2045,7 @@ fr:
         inclusion: ne correspond à aucune des valeurs autorisées.
         inclusion_nested: ne correspond à aucune des valeurs autorisées dans le chemin « %{path} ».
         invalid: est invalide.
+        invalid_uri: doit être une URI valide.
         invalid_url: n’est pas une URL valide.
         invalid_url_scheme: 'n’est pas un protocole pris en charge (autorisés : %{allowed_schemes}).'
         less_than_or_equal_to: doit être inférieur ou égal à %{count}.
@@ -2002,6 +2059,7 @@ fr:
         not_a_datetime: n'est pas une heure valide.
         not_a_number: n'est pas un nombre.
         not_allowed: est invalide en raison d’autorisations insuffisantes.
+        host_not_allowed: n'est pas un hôte autorisé.
         not_json: ne peut pas être analysé en tant que JSON.
         not_json_object: n'est pas un objet JSON.
         not_an_integer: n'est pas un entier.
@@ -2219,7 +2277,7 @@ fr:
           not_whitelisted: n'est pas autorisé par la configuration.
           invalid_url: n'est pas une URL ou un chemin de dépôt valide.
           must_not_be_ssh: ne doit pas être une url SSH.
-          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
+          must_not_point_to_openproject_directory: ne doit pas pointer vers un répertoire de dépôt géré par OpenProject.
           no_directory: n'est pas un répertoire.
         role:
           attributes:
@@ -2270,6 +2328,8 @@ fr:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Impossible d'ajouter un enfant, car vous n'avez pas les permissions pour modifier le lot de travaux sélectionné.
               blank: L'ID ne peut pas être vide.
+            identifier:
+              semantic_identifier_incomplete: et le numéro de séquence doivent être définis en même temps.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2338,7 +2398,7 @@ fr:
               confirmation: La confirmation du mot de passe ne correspond pas au mot de passe.
               format: "%{message}"
             password:
-              weak: 'Doit contenir des caractères des classes suivantes (au moins %{min_count} de %{all_count}) : %{rules}'
+              requirements_not_met: 'Doit comprendre des caractères des types suivants : %{rules}'
               lowercase: minuscules (par exemple, « a »)
               uppercase: majuscule (e.g. « A »)
               numeric: numérique (e.g. « 1 »)
@@ -3516,7 +3576,7 @@ fr:
         personal_reminder: M'avertir pour les rappels personnels
       daily_reminders:
         title: M'envoyer des rappels quotidiens par e-mail pour les notifications non lues
-        caption: Vous ne recevrez ces rappels que pour les notifications non lues et seulement aux heures que vous aurez spécifiées. Tant que vous n'aurez pas configuré un fuseau horaire pour votre compte, les heures seront interprétées comme étant en UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Activer les rappels quotidiens par e-mail
         add_time: Ajouter une heure
         remove_time: Supprimer l'heure
@@ -3530,6 +3590,7 @@ fr:
         date_range: Période de pause
       email_alerts:
         title: Alertes par e-mail pour les autres éléments qui ne sont pas des lots de travaux
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: Actualités ajoutées
         news_commented: Commenter un article d'actualité
         document_added: Document ajouté
@@ -3542,6 +3603,7 @@ fr:
     notifications:
       participating:
         title: Participant
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Mettre à jour les préférences
         mentioned: Mentionné
         watched: En cours
@@ -3550,6 +3612,7 @@ fr:
         shared: Partagé avec moi
       date_alerts:
         title: Alertes de date
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Mettre à jour les alertes de date
         start_date: Date de début
         due_date: Date de fin
@@ -3564,6 +3627,7 @@ fr:
           seven_days_after: 7 jours après
       non_participating:
         title: Non participant
+        description: Additional notifications for activities in all projects.
         submit_button: Mettre à jour les préférences
         work_package_created: Nouveaux lots de travaux
         work_package_commented: Tous les nouveaux commentaires
@@ -3572,6 +3636,7 @@ fr:
         work_package_scheduled: Tous les changements de date
       project_specific_settings:
         title: Paramètres de notification spécifiques au projet
+        description: These project-specific settings override default settings above.
         add_button: Ajouter des notifications spécifiques au projet
         dialog_title: Ajouter des notifications spécifiques au projet
         list_header: Projets avec notifications spécifiques
@@ -3731,6 +3796,7 @@ fr:
   label_commits_per_month: Actions par mois
   label_confirmation: Confirmation
   label_contains: contenus
+  label_starts_with: commence par
   label_content: Contenu
   label_color_plural: Couleurs
   label_copied: copié
@@ -3738,6 +3804,8 @@ fr:
   label_copy_source: Source
   label_copy_target: Cible
   label_copy_workflow_from: Copier flux de travail à partir de
+  label_copy_workflow_from_type: Copier vers un autre type
+  label_copy_workflow_from_role: Copier vers d'autres rôles
   label_copy_project: Copie du projet
   label_core_version: Version du cœur
   label_core_build: Construction de base
@@ -4045,6 +4113,10 @@ fr:
   label_password_rule_numeric: Caractères numériques
   label_password_rule_special: Caractères spéciaux
   label_password_rule_uppercase: Majuscules
+  label_password_requirement_lowercase: Doit contenir au moins un caractère minuscule.
+  label_password_requirement_numeric: Doit contenir au moins un caractère numérique.
+  label_password_requirement_special: Doit contenir au moins un caractère spécial.
+  label_password_requirement_uppercase: Doit contenir au moins une majuscule.
   label_path_encoding: Encodage du chemin d'accès
   label_per_page: 'Par page :'
   label_people: Participants
@@ -5088,11 +5160,10 @@ fr:
   setting_new_project_user_role_id: Rôle donné à un utilisateur non administrateur qui crée un projet
   setting_new_project_send_confirmation_email: Envoyer une notification à l'auteur lors de la création d'un nouveau projet
   setting_new_project_notification_text: Texte de la notification
-  setting_password_active_rules: Classes de caractères actives
+  setting_password_active_rules: Exigences relatives au mot de passe
   setting_password_count_former_banned: Nombre de mots de passe récents interdits de réutilisation
   setting_password_days_valid: Nombre de jours après lequel le changement de mot de passe est obligatoire
   setting_password_min_length: Longueur minimale
-  setting_password_min_adhered_rules: Nombre minimal de classes de caractères requises
   setting_per_page_options: Options des objets par page
   setting_percent_complete_on_status_closed: "% d'achèvement lorsque le statut est fermé"
   setting_percent_complete_on_status_closed_no_change: Aucun changement

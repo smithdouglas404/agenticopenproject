@@ -28,6 +28,7 @@
 
 import { DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
+import { formatWorkPackageId } from 'core-app/shared/helpers/work-package-id-pattern';
 
 export class WorkPackageDisplayField extends DisplayField {
   public text = {
@@ -59,12 +60,29 @@ export class WorkPackageDisplayField extends DisplayField {
   }
 
   /**
+   * Returns the identifier for URL routing when the linked WP is loaded,
+   * falling back to the numeric ID extracted from the href.
+   *
+   * Unlike `WorkPackageBaseResource.displayId`, this handles the case
+   * where the related resource is only a HAL link (not yet fetched).
+   */
+  public get wpRoutingId():string {
+    const linkedWp = this.value as WorkPackageResource | undefined;
+    if (linkedWp?.$loaded) {
+      return linkedWp.displayId;
+    }
+    return this.wpId as string;
+  }
+
+  /**
    * Returns the work package ID formatted for display.
    * Classic mode: `#123` (hash-prefixed), Semantic mode: `PROJ-42` (no prefix).
    *
    * Delegates to `WorkPackageResource#formattedId` when the linked resource
    * is loaded. When unloaded, falls back to the numeric ID extracted from
-   * the self-link href (which has no `displayId` available).
+   * the self-link href — an unloaded HAL link carries only the href, not
+   * the resource's properties (the API always populates `displayId`, but
+   * we can't reach it until the link is fetched).
    */
   public get wpFormattedId():string {
     const linkedWp = this.value as WorkPackageResource | undefined;
@@ -75,7 +93,7 @@ export class WorkPackageDisplayField extends DisplayField {
     const id = this.wpId as string | number | null;
     if (!id) return '';
 
-    return `#${id}`;
+    return formatWorkPackageId(String(id));
   }
 
   public get valueString() {

@@ -56,7 +56,7 @@ module LdapGroups
         flash[:error] = I18n.t(:error_can_not_delete_entry)
       end
 
-      redirect_to ldap_groups_synchronized_groups_path
+      redirect_to ldap_groups_synchronized_groups_path, status: :see_other
     end
 
     def synchronize

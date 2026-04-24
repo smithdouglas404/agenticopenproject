@@ -34,8 +34,8 @@ module Wikis::Adapters
 
     attr_reader :provider
 
-    def initialize(provider)
-      @provider = provider
+    def initialize(model:)
+      @provider = model
     end
 
     def call(_input_data)

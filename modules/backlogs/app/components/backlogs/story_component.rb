@@ -49,12 +49,8 @@ module Backlogs
       story.story_points || 0
     end
 
-    def draggable?
-      current_user.allowed_in_project?(:manage_sprint_items, project)
-    end
-
     def menu_src
-      menu_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story.id)
+      menu_project_backlogs_work_package_path(project, sprint, story, **helpers.all_backlogs_params)
     end
   end
 end

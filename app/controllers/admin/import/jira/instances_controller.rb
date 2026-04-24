@@ -70,7 +70,7 @@ module Admin::Import::Jira
         @jira.destroy!
         flash[:notice] = t(:notice_successful_delete)
       end
-      redirect_to action: :index
+      redirect_to action: :index, status: :see_other
     end
 
     def delete_token

@@ -38,19 +38,19 @@ module Backlogs
     FIRST_PAGE_SIZE = 50
     LAST_PAGE_SIZE = 10
 
-    attr_reader :work_packages, :project, :current_user, :show_all
+    attr_reader :work_packages, :project, :current_user
 
-    def initialize(work_packages:, project:, show_all: false, current_user: User.current, **system_arguments)
+    def initialize(work_packages:, project:, current_user: User.current, **system_arguments)
       super()
 
       @work_packages = work_packages
       @project = project
-      @show_all = show_all
       @current_user = current_user
 
       @system_arguments = system_arguments
       @system_arguments[:id] = inbox_dom_id
       @system_arguments[:padding] = :condensed
+      @system_arguments[:test_selector] = test_selector
       @system_arguments[:data] = merge_data(
         @system_arguments,
         { data: drop_target_config }
@@ -67,12 +67,16 @@ module Backlogs
       @total ||= work_packages.count
     end
 
+    def test_selector
+      "backlog-inbox"
+    end
+
     def inbox_dom_id
       "inbox_#{project.id}"
     end
 
     def paginate?
-      !show_all && total > PAGINATION_THRESHOLD
+      !show_all_backlog && total > PAGINATION_THRESHOLD
     end
 
     def first_page
@@ -93,7 +97,7 @@ module Backlogs
 
     def drop_target_config
       {
-        generic_drag_and_drop_target: "container",
+        generic_drag_and_drop_target: "container mirrorContainer",
         target_container_accessor: ":scope > ul",
         target_id: "inbox",
         target_allowed_drag_type: "story"

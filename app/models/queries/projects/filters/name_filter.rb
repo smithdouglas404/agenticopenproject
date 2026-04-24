@@ -39,8 +39,12 @@ class Queries::Projects::Filters::NameFilter < Queries::Projects::Filters::Base
       ["LOWER(projects.name) IN (?)", sql_value]
     when "!"
       ["LOWER(projects.name) NOT IN (?)", sql_value]
-    when "~", "**"
+    when "~"
       ["LOWER(projects.name) LIKE ?", "%#{sql_value}%"]
+    when "**"
+      terms = values.first.downcase.split
+      conditions = Array.new(terms.size, "LOWER(projects.name) LIKE ?").join(" AND ")
+      [conditions, *terms.map { |t| "%#{t}%" }]
     when "!~"
       ["LOWER(projects.name) NOT LIKE ?", "%#{sql_value}%"]
     end

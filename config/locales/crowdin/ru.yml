@@ -118,6 +118,7 @@ ru:
       description: Используйте этот инструмент для импорта данных из Вашего экземпляра Jira. Вы можете настроить несколько узлов Jira и выбрать, что импортировать в каждом запуске импорта.
       errors:
         cannot_delete_with_imports: Невозможно удалить хост Jira с существующими импортами
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: Хосты Jira еще не настроены
         description: Настройте хост Jira, чтобы начать импортировать элементы из Jira в этот экземпляр OpenProject.
@@ -273,6 +274,7 @@ ru:
               caption: Просмотрите настройки импорта и начните импорт
               caption_done: Завершено
               label_available_data: Доступные данные для импорта
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Начать импорт
               description: Вы собираетесь начать импорт со следующими настройками.
               label_progress: Идёт импорт...
@@ -442,10 +444,6 @@ ru:
         default_transitions: Переходы по умолчанию
         user_author: Пользователь является автором
         user_assignee: Пользователь является назначенным
-      index:
-        description: Настройте переходы статуса для каждого типа пакета работ.
-        type_filter:
-          label: Фильтр по имени типа…
       status_button: Статус
       statuses_dialog:
         title: Статусы
@@ -1400,6 +1398,37 @@ ru:
     index:
       no_results_content_text: Добавить новую wiki-страницу
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{role_name}' role.
+            few: Successfully copied workflow to %{count} roles.
+            many: Successfully copied workflow to %{count} roles.
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            one: Successfully copied workflow to '%{type_name}' type.
+            few: Successfully copied workflow to %{count} types.
+            many: Successfully copied workflow to %{count} types.
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: Матрица рабочего процесса
       matrix_caption_assignee: Матрица рабочего процесса для назначенного
@@ -1409,6 +1438,12 @@ ru:
       matrix_uncheck_all_label: Запретить все переходы
       matrix_check_uncheck_all_in_row_label_html: Переключить переходы от <em>%{old_status}</em> ко всем новым статусам
       matrix_check_uncheck_all_in_col_label_html: Переключить переходы от всех старых статусов к <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: В данный момент рабочих потоков нет.
@@ -1968,6 +2003,7 @@ ru:
         duration: Продолжительность
         end_insertion: Завершение вставки
         end_deletion: Завершение удаления
+        identifier: Identifier
         ignore_non_working_days: Игнорировать нерабочие дни
         include_non_working_days:
           title: Рабочие дни
@@ -1983,6 +2019,7 @@ ru:
         readonly: Только для чтения
         remaining_hours: Оставшиеся часы
         remaining_time: Оставшиеся часы
+        sequence_number: Sequence number
         shared_with_users: В общем доступе с
         schedule_manually: Ручное планирование
         spent_hours: Затраченное время
@@ -1992,6 +2029,29 @@ ru:
         type: Тип
         version: Этапы
         watcher: Наблюдатель
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: нужно подтвердить.
@@ -2035,6 +2095,7 @@ ru:
         inclusion: не задано ни одно из допустимых значений.
         inclusion_nested: не задано одно из допустимых значений в пути '%{path}'.
         invalid: неверно.
+        invalid_uri: must be a valid URI.
         invalid_url: не является допустимым URL-адресом.
         invalid_url_scheme: 'не является поддерживаемым протоколом (разрешены следующие: %{allowed_schemes}).'
         less_than_or_equal_to: должно быть меньше или равно %{count}.
@@ -2048,6 +2109,7 @@ ru:
         not_a_datetime: дата и время не являются допустимыми.
         not_a_number: не является числом.
         not_allowed: неверно, ввиду отсутствия прав.
+        host_not_allowed: is not an allowed host.
         not_json: не может быть разобран как JSON.
         not_json_object: не является объектом JSON.
         not_an_integer: не является целым числом.
@@ -2318,6 +2380,8 @@ ru:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: Не удается добавить дочерний пакет, потому что вы не имеете разрешения на редактирование выбранного пакета работ.
               blank: ID не может быть пустым.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2386,9 +2450,7 @@ ru:
               confirmation: Подтверждение пароля не совпадает с паролем.
               format: "%{message}"
             password:
-              weak: |-
-                Должен содержать символы следующих классов (как минимум %{min_count}
-                из %{all_count}): %{rules}
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: нижний регистр (например «а»)
               uppercase: прописные буквы (например, "A")
               numeric: цифры (например "1")
@@ -3646,7 +3708,7 @@ ru:
         personal_reminder: Уведомлять меня о личных напоминаниях
       daily_reminders:
         title: Отправлять мне ежедневные напоминания по электронной почте о непрочитанных уведомлениях
-        caption: Вы будете получать эти напоминания только для непрочитанных уведомлений и только в указанные Вами часы. Пока Вы не настроите часовой пояс для своей учетной записи, время будет интерпретироваться как UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Включить ежедневные напоминания по электронной почте
         add_time: Добавить время
         remove_time: Удалить время
@@ -3660,6 +3722,7 @@ ru:
         date_range: Период приостановки
       email_alerts:
         title: Уведомления по электронной почте для других элементов (которые не являются пакетами работ)
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: Новость добавлена
         news_commented: Комментарий к новости
         document_added: Документ добавлен
@@ -3672,6 +3735,7 @@ ru:
     notifications:
       participating:
         title: Участие
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Обновить настройки
         mentioned: Упомянутый
         watched: Отслеживает
@@ -3680,6 +3744,7 @@ ru:
         shared: Доступные мне
       date_alerts:
         title: Дата оповещения
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Обновить дату оповещения
         start_date: Дата начала
         due_date: Дата окончания
@@ -3694,6 +3759,7 @@ ru:
           seven_days_after: Через 7 дней после
       non_participating:
         title: Неучастие
+        description: Additional notifications for activities in all projects.
         submit_button: Обновить настройки
         work_package_created: Новые пакеты работ
         work_package_commented: Все новые комментарии
@@ -3702,6 +3768,7 @@ ru:
         work_package_scheduled: Все изменения дат
       project_specific_settings:
         title: Настройки уведомлений для конкретного проекта
+        description: These project-specific settings override default settings above.
         add_button: Добавить уведомления по проекту
         dialog_title: Добавить уведомления по проекту
         list_header: Проекты с особыми уведомлениями
@@ -3861,6 +3928,7 @@ ru:
   label_commits_per_month: Зафиксировано в месяц
   label_confirmation: Подтверждение
   label_contains: содержит
+  label_starts_with: starts with
   label_content: Содержание
   label_color_plural: Цвета
   label_copied: Скопировано
@@ -3868,6 +3936,8 @@ ru:
   label_copy_source: Источник
   label_copy_target: Цель
   label_copy_workflow_from: Копировать рабочий поток из
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: Копировать проект
   label_core_version: Текущая версия
   label_core_build: Сборка ядра
@@ -4175,6 +4245,10 @@ ru:
   label_password_rule_numeric: Числовые символы
   label_password_rule_special: Специальные символы
   label_password_rule_uppercase: Верхний регистр
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: Кодирование пути
   label_per_page: 'На странице:'
   label_people: Люди
@@ -5216,11 +5290,10 @@ ru:
   setting_new_project_user_role_id: Роль, назначаемая пользователю-создателю проекта, не являющемуся администратором
   setting_new_project_send_confirmation_email: Отправить уведомление автору при создании нового проекта
   setting_new_project_notification_text: Текст уведомления
-  setting_password_active_rules: Активные классы символов
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: Количество паролей, запрещенных для повторного использования
   setting_password_days_valid: Количество дней, после которого требуется смена пароля
   setting_password_min_length: Минимальная длина
-  setting_password_min_adhered_rules: Минимальное количество необходимых классов
   setting_per_page_options: Количество объектов на страницу
   setting_percent_complete_on_status_closed: "% завершения, когда статус Закрыто"
   setting_percent_complete_on_status_closed_no_change: Без изменений

@@ -22,7 +22,7 @@
 ---
 zh-TW:
   plugin_openproject_backlogs:
-    name: OpenProject代辦事項
+    name: OpenProject待辦事項
     description: 此模組新增了讓敏捷團隊能夠在 Scrum 專案中使用 OpenProject 的功能。
   activerecord:
     attributes:
@@ -43,6 +43,7 @@ zh-TW:
       user_preference:
         backlogs_versions_default_fold_state: Show sprints folded
       work_package:
+        backlog_bucket: Backlog Bucket
         backlogs_work_package_type: 待辦事項類型
         position: 位置
         sprint: 衝刺
@@ -60,7 +61,10 @@ zh-TW:
               share_all_projects_already_taken: 無法設定，因為專案 "%{name}" 已經與所有專案共用。
               share_all_projects_already_taken_anonymous: 無法設定，因為另一個專案已經與所有專案共用。
         work_package:
+          backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
+            backlog_bucket:
+              backlog_bucket_from_another_project: must belong to the same project as the work package.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: 只能包含當前衝刺（Sprint）中的工作套件 ID。
               must_block_at_least_one_work_package: 必須包含至少一個項目的 ID
@@ -109,17 +113,20 @@ zh-TW:
     administration_blankslate:
       title: Backlog 管理設定不斷演進
       text: 我們目前正在重新設計 Backlogs 模組。在不久的將來，Sprint 和 Backlogs 的管理設定將在此處顯示。專案層級的設定仍然可用。
+    backlog_bucket_component:
+      blankslate_title: Backlog bucket is empty
+      blankslate_description: Drag items here to add them.
+    backlog_bucket_item_component:
+      label_actions: Work package actions
     sprint_component:
       blankslate_title: "%{name} 為空"
       blankslate_description: 尚未規劃任何項目。將項目拖曳至此即可新增。
     inbox_component:
       blankslate_title: 積壓收件匣為空
       blankslate_description: 此專案中所有開啟的工作任務都會自動出現在這裡。
-      label_drag_work_package: 移動 %{name}
       show_more:
         other: 再顯示 %{count} 項
     inbox_item_component:
-      label_drag_work_package: 移動 %{name}
       label_actions: 工作項目追蹤
     inbox_menu_component:
       action_menu:
@@ -140,6 +147,16 @@ zh-TW:
         receive_shared_description_html: This project receives sprints from a different project. Manage this in the %{settings_link}.
         receive_shared_no_actions_description_text: This project receives shared sprints from a different project, but none are available right now.
         settings_link_text: project settings
+    backlog_bucket_menu_component:
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_header_component:
+      label_work_package_count:
+        zero: No stories in backlog bucket
+        one: "%{count} story in backlog bucket"
+        other: "%{count} stories in backlog bucket"
     sprint_header_component:
       label_start_sprint: 開始
       label_complete_sprint: 完成
@@ -165,13 +182,13 @@ zh-TW:
         edit_sprint: 編輯衝刺
         add_work_package: 新增工作項目
     story_component:
-      label_drag_story: 移動 %{name}
       label_actions: 故事相關操作
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: 複製網址到剪貼簿
         copy_work_package_id: 複製工作項目 ID
         move_menu: 移動
+        move_to_sprint: Move to sprint
     burndown_chart:
       show:
         blankslate_title: No burndown data available
@@ -180,6 +197,8 @@ zh-TW:
     story_points: 故事點
     story_points_ideal: 理想估算故事點數
   label_backlog: Backlog
+  label_backlog_bucket_edit: Edit backlog bucket
+  label_backlog_bucket_new: New backlog bucket
   label_inbox: Inbox
   label_backlogs: 待辦事項
   label_burndown_chart: Burndown chart

@@ -1121,6 +1121,12 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
               .to eq(intermediate.subject)
             expect(work_package).to have_received(:visible_ancestors)
           end
+
+          it "exposes displayId on each ancestor link" do
+            links = parse_json(subject)["_links"]["ancestors"]
+            expect(links[0]["displayId"]).to eq(root.display_id.to_s)
+            expect(links[1]["displayId"]).to eq(intermediate.display_id.to_s)
+          end
         end
 
         context "when ancestors are invisible" do
@@ -1158,6 +1164,10 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
 
           it do
             expect(parse_json(subject)["_links"]["children"][0]["title"]).to eq(child.subject)
+          end
+
+          it "exposes displayId on each child link" do
+            expect(parse_json(subject)["_links"]["children"][0]["displayId"]).to eq(child.display_id.to_s)
           end
         end
       end

@@ -31,6 +31,7 @@
 module Backlogs
   class InboxController < BaseController
     include OpTurbo::ComponentStream
+    include Backlogs::Move
 
     before_action :load_work_package
 
@@ -52,7 +53,10 @@ module Backlogs
     def move_to_sprint_dialog
       respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(
         work_package: @work_package,
-        project: @project
+        project: @project,
+        move_action: move_project_backlogs_inbox_path(
+          @project, @work_package, **helpers.all_backlogs_params
+        )
       )
     end
 
@@ -69,8 +73,7 @@ module Backlogs
 
     # Move a work package from the Inbox to a Sprint, or reorder it within the Inbox.
     def move
-      target_type, sprint_id = move_params[:target_id].split(":", 2)
-      attributes = target_type == "sprint" ? { sprint_id: } : {}
+      attributes = move_attributes_from_target
 
       call = Stories::UpdateService
         .new(user: current_user, story: @work_package)
@@ -79,7 +82,7 @@ module Backlogs
       return failure_response(call.message) unless call.success?
 
       replace_inbox_component_via_turbo_stream
-      replace_sprint_component_via_turbo_stream(sprint_id) if target_type == "sprint"
+      replace_sprint_component_via_turbo_stream(attributes[:sprint_id]) if attributes[:sprint_id]
       respond_with_turbo_streams
     end
 
@@ -90,10 +93,15 @@ module Backlogs
     end
 
     def replace_inbox_component_via_turbo_stream
-      work_packages = Backlog.inbox_for(project: @project)
+      inbox_work_packages = Backlog.inbox_for(project: @project)
+      backlog_buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
+                          Agile::BacklogBucket.for_project(@project)
+                        end
+
       replace_via_turbo_stream(
-        component: Backlogs::InboxComponent.new(
-          work_packages:,
+        component: Backlogs::BacklogsComponent.new(
+          inbox_work_packages:,
+          backlog_buckets:,
           project: @project
         ),
         method: :morph
@@ -103,7 +111,7 @@ module Backlogs
     def replace_sprint_component_via_turbo_stream(sprint_id)
       sprint = Agile::Sprint.for_project(@project).visible.find(sprint_id)
       replace_via_turbo_stream(
-        component: Backlogs::SprintComponent.new(sprint: sprint, project: @project),
+        component: Backlogs::SprintComponent.new(sprint:, project: @project),
         method: :morph
       )
     end

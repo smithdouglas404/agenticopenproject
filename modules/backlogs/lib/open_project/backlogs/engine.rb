@@ -69,7 +69,8 @@ module OpenProject::Backlogs
                    require: :member
 
         permission :create_sprints,
-                   { "backlogs/sprints": %i[new_dialog refresh_form create edit_dialog update] },
+                   { "backlogs/backlog_buckets": %i[new_dialog create edit_dialog update destroy],
+                     "backlogs/sprints": %i[new_dialog refresh_form create edit_dialog update] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
@@ -81,7 +82,7 @@ module OpenProject::Backlogs
                    dependencies: %i[view_sprints manage_board_views manage_sprint_items]
 
         permission :manage_sprint_items,
-                   { "backlogs/work_packages": %i[move reorder],
+                   { "backlogs/work_packages": %i[move reorder move_to_sprint_dialog],
                      "backlogs/inbox": %i[move reorder move_to_sprint_dialog] },
                    permissible_on: :project,
                    require: :member,
@@ -138,6 +139,7 @@ module OpenProject::Backlogs
     patch_with_namespace :WorkPackages, :BaseContract
     patch_with_namespace :WorkPackages, :UpdateContract
     patch_with_namespace :API, :V3, :WorkPackages, :EagerLoading, :Checksum
+    patch_with_namespace :API, :V3, :WorkPackages, :Schema, :SpecificWorkPackageSchema
     patch_with_namespace :API, :V3, :Utilities, :ResourceLinkGenerator
 
     config.to_prepare do

@@ -106,31 +106,16 @@ RSpec.describe Agile::BacklogBucket do
 
     subject(:result) { described_class.for_project(project) }
 
-    it "returns the project buckets followed by the inbox" do
-      expect(result).to match([bucket1, bucket2, be_a(described_class).and(be_new_record)])
+    it "returns the project buckets" do
+      expect(result).to match([bucket1, bucket2])
     end
 
     it "does not include buckets from other projects" do
       expect(result).not_to include(other_bucket)
     end
 
-    it "appends an unsaved inbox bucket at the end" do
-      inbox = result.last
-      expect(inbox).to be_a(described_class)
-      expect(inbox).to be_new_record
-      expect(inbox).to have_attributes(name: I18n.t("label_inbox"))
-    end
-
-    it "inbox contains only unbucketed work packages from the project" do
-      expect(result.last.work_packages).to contain_exactly(wp_unbucketed2, wp_unbucketed1, wp_unbucketed_nil)
-    end
-
     it "orders work packages within a bucket by position, with nil position last" do
       expect(bucket1.work_packages.reload).to eq([wp1_in_bucket1_first, wp2_in_bucket1, wp_nil_in_bucket1])
-    end
-
-    it "orders inbox work packages by position, with nil position last" do
-      expect(result.last.work_packages.to_a).to eq([wp_unbucketed1, wp_unbucketed2, wp_unbucketed_nil])
     end
   end
 end

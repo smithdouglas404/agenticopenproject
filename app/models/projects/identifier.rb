@@ -106,9 +106,8 @@ module Projects::Identifier
         exclude = ProjectIdentifiers::IdentifierAutofix::ProblematicIdentifiers.reserved_identifiers
         ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator
           .suggest_identifier(name, exclude:)
-      else # This should closely enough emulate Project models' usage of acts_as_url
-        name.to_url.first(IDENTIFIER_MAX_LENGTH).presence ||
-          "project-#{SecureRandom.alphanumeric(5).downcase}"
+      else
+        ProjectIdentifiers::ClassicIdentifierSuggestionGenerator.new.suggest_identifier(name)
       end
     end
   end

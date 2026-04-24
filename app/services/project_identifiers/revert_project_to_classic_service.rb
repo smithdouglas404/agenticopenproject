@@ -51,18 +51,9 @@ module ProjectIdentifiers
     attr_reader :project
 
     def restore_classic_identifier
-      classic = previous_classic_identifier.presence || Project.suggest_identifier(project.name)
+      generator = ProjectIdentifiers::ClassicIdentifierSuggestionGenerator.new
+      classic = generator.restore_identifier(project) || generator.suggest_identifier(project.name)
       project.update!(identifier: classic)
-    end
-
-    # Returns the most-recent FriendlyId slug for this project that is in classic
-    # acts_as_url format (lowercase letters, digits, hyphens, underscores; not
-    # all-numeric), or nil if no such slug exists.
-    def previous_classic_identifier
-      project.slugs
-             .order(created_at: :desc)
-             .pluck(:slug)
-             .find { |slug| Project.classic_identifier_format?(slug) }
     end
   end
 end

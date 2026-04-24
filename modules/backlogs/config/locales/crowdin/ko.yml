@@ -43,6 +43,7 @@ ko:
       user_preference:
         backlogs_versions_default_fold_state: 접힌 스프린트 표시
       work_package:
+        backlog_bucket: Backlog Bucket
         backlogs_work_package_type: 백로그 유형
         position: 위치
         sprint: 스프린트
@@ -60,7 +61,10 @@ ko:
               share_all_projects_already_taken: '- 프로젝트 "%{name}"이(가) 이미 모든 프로젝트와 공유 중이므로 설정할 수 없습니다.'
               share_all_projects_already_taken_anonymous: "- 다른 프로젝트가 이미 모든 프로젝트와 공유 중이므로 설정할 수 없습니다."
         work_package:
+          backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
+            backlog_bucket:
+              backlog_bucket_from_another_project: must belong to the same project as the work package.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: 은(는) 현재 스프린트에서 작업 패키지의 ID만 포함할 수 있습니다.
               must_block_at_least_one_work_package: 은(는) 티켓 하나 이상의 ID를 포함해야 합니다.
@@ -109,17 +113,20 @@ ko:
     administration_blankslate:
       title: 백로그 관리자 설정을 개선하는 중입니다
       text: 백로그 모듈을 현재 재설계하는 중입니다. 스프린트 및 백로그에 대한 관리자 설정이 조만간 여기에 표시될 예정입니다. 프로젝트 수준 설정은 계속 사용할 수 있습니다.
+    backlog_bucket_component:
+      blankslate_title: Backlog bucket is empty
+      blankslate_description: Drag items here to add them.
+    backlog_bucket_item_component:
+      label_actions: Work package actions
     sprint_component:
       blankslate_title: "%{name}이(가) 비어 있습니다"
       blankslate_description: 아직 계획된 항목이 없습니다. 항목을 추가하려면 여기로 드래그하세요.
     inbox_component:
       blankslate_title: 백로그 받은 편지함이 비어 있습니다
       blankslate_description: 이 프로젝트에서 열려 있는 모든 작업 패키지가 자동으로 여기에 표시됩니다.
-      label_drag_work_package: "%{name} 이동"
       show_more:
         other: "%{count}개 항목 더 보기"
     inbox_item_component:
-      label_drag_work_package: "%{name} 이동"
       label_actions: Work package actions
     inbox_menu_component:
       action_menu:
@@ -140,6 +147,16 @@ ko:
         receive_shared_description_html: 이 프로젝트는 다른 프로젝트에서 스프린트를 받습니다. %{settings_link}에서 관리하세요.
         receive_shared_no_actions_description_text: 이 프로젝트는 다른 프로젝트에서 공유 스프린트를 받지만, 현재 사용할 수 있는 스프린트가 없습니다.
         settings_link_text: 프로젝트 설정
+    backlog_bucket_menu_component:
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_header_component:
+      label_work_package_count:
+        zero: No stories in backlog bucket
+        one: "%{count} story in backlog bucket"
+        other: "%{count} stories in backlog bucket"
     sprint_header_component:
       label_start_sprint: 시작
       label_complete_sprint: 완료
@@ -165,13 +182,13 @@ ko:
         edit_sprint: 스프린트 편집
         add_work_package: 작업 패키지 추가
     story_component:
-      label_drag_story: "%{name} 이동"
       label_actions: Story actions
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Copy URL to clipboard
         copy_work_package_id: Copy work package ID
         move_menu: Move
+        move_to_sprint: Move to sprint
     burndown_chart:
       show:
         blankslate_title: No burndown data available
@@ -180,6 +197,8 @@ ko:
     story_points: 스토리 포인트
     story_points_ideal: 스토리 포인트(적합함)
   label_backlog: 백로그
+  label_backlog_bucket_edit: Edit backlog bucket
+  label_backlog_bucket_new: New backlog bucket
   label_inbox: 받은 편지함
   label_backlogs: 백로그
   label_burndown_chart: 번다운 차트

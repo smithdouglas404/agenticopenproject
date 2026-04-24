@@ -118,6 +118,7 @@ zh-TW:
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -255,6 +256,7 @@ zh-TW:
               caption: Review your import settings and start the import
               caption_done: Completed
               label_available_data: Available data to import
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: Start import
               description: You are about to start an import run with the following settings.
               label_progress: Import in progress...
@@ -421,10 +423,6 @@ zh-TW:
         default_transitions: 預設轉換
         user_author: 使用者為作者
         user_assignee: 使用者為執行者
-      index:
-        description: Configure status transitions for each work package type.
-        type_filter:
-          label: Filter by type name…
       status_button: Status
       statuses_dialog:
         title: Statuses
@@ -1346,6 +1344,31 @@ zh-TW:
     index:
       no_results_content_text: 新增一個 wiki 頁面
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: 工作流程矩陣
       matrix_caption_assignee: 指派對象的工作流程矩陣
@@ -1355,6 +1378,12 @@ zh-TW:
       matrix_uncheck_all_label: 禁止所有轉換
       matrix_check_uncheck_all_in_row_label_html: 切換從 <em>%{old_status}</em>到所有新狀態
       matrix_check_uncheck_all_in_col_label_html: 從所有舊狀態切換轉換到 <em>%{new_status}</em>
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: 目前沒有工作流程
@@ -1907,6 +1936,7 @@ zh-TW:
         duration: 時長
         end_insertion: 結束插入
         end_deletion: 結束刪除
+        identifier: Identifier
         ignore_non_working_days: 忽略非工作日
         include_non_working_days:
           title: 工作日
@@ -1922,6 +1952,7 @@ zh-TW:
         readonly: 唯讀
         remaining_hours: 剩餘工作
         remaining_time: 剩餘工作
+        sequence_number: Sequence number
         shared_with_users: 參與
         schedule_manually: 手動排程
         spent_hours: 耗時
@@ -1931,6 +1962,29 @@ zh-TW:
         type: 類型
         version: 版本
         watcher: 監看者
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
+      user_card_view:
+        secondary_info: Secondary info
+        show_status_badge: Show status badge
+        show_email: Show email
+        tag_source: Tag source
+        tag_limit: Tag limit
+        card_size: Card size
+        columns_per_row: Columns per row
     errors:
       messages:
         accepted: 必須被接受
@@ -1974,6 +2028,7 @@ zh-TW:
         inclusion: 沒有被設置為一個允許的值。
         inclusion_nested: 未設置為路徑“%{path}”中允許的值之一
         invalid: 不正確。
+        invalid_uri: must be a valid URI.
         invalid_url: 不是有效的 URL。
         invalid_url_scheme: '不是受支援的協定 (允許的協定: %{allowed_schemes})。'
         less_than_or_equal_to: 必須少於或者等於 %{count}。
@@ -1987,6 +2042,7 @@ zh-TW:
         not_a_datetime: 不是有效的日期時間。
         not_a_number: 不是數字
         not_allowed: 是無效的因為缺少權限
+        host_not_allowed: is not an allowed host.
         not_json: 無法解析為 JSON。
         not_json_object: 不是 JSON 物件。
         not_an_integer: 不是整數
@@ -2254,6 +2310,8 @@ zh-TW:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: 無法新增子項，因為您沒有所選工作套件的編輯權限。
               blank: ID 不能空白。
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2322,7 +2380,7 @@ zh-TW:
               confirmation: 密碼不符
               format: "%{message}"
             password:
-              weak: '必須包含以下的字元 (至少 %{all_count} 個中的 %{min_count} 個): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: 小寫（例如：「a」）
               uppercase: 大寫（例如：「Ａ」）
               numeric: 數字（例如：「1」）
@@ -3458,7 +3516,7 @@ zh-TW:
         personal_reminder: Notify me for personal reminders
       daily_reminders:
         title: Send me daily email reminders for unread notifications
-        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
         add_time: Add time
         remove_time: Remove time
@@ -3472,6 +3530,7 @@ zh-TW:
         date_range: Pause period
       email_alerts:
         title: Email alerts for other items that are not work packages
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
         news_added: News added
         news_commented: Comment on a news item
         document_added: Document added
@@ -3484,6 +3543,7 @@ zh-TW:
     notifications:
       participating:
         title: Participating
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3492,6 +3552,7 @@ zh-TW:
         shared: Shared with me
       date_alerts:
         title: Date alerts
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3506,6 +3567,7 @@ zh-TW:
           seven_days_after: 7 days after
       non_participating:
         title: Non-participating
+        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3514,6 +3576,7 @@ zh-TW:
         work_package_scheduled: All date changes
       project_specific_settings:
         title: Project-specific notification settings
+        description: These project-specific settings override default settings above.
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -3673,6 +3736,7 @@ zh-TW:
   label_commits_per_month: 每個月的Commits
   label_confirmation: 確認
   label_contains: 包含
+  label_starts_with: starts with
   label_content: 內容
   label_color_plural: 顏色
   label_copied: 已複製
@@ -3680,6 +3744,8 @@ zh-TW:
   label_copy_source: 來源
   label_copy_target: 目標
   label_copy_workflow_from: 工作流程來自於
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: 複製專案
   label_core_version: 核心版本
   label_core_build: 核心編譯
@@ -3775,7 +3841,7 @@ zh-TW:
   label_filter_add: 新增條件
   label_filter_by: 篩選條件：
   label_filter_any_name_attribute: 名稱屬性
-  label_filter_plural: 篩選器
+  label_filter_plural: 篩選條件
   label_filters_toggle: 顯示/隱藏篩選條件
   label_float: 浮點數
   label_folder: 資料夾
@@ -3789,8 +3855,8 @@ zh-TW:
   label_global_modules: 全域模組
   label_global_roles: 全域角色
   label_git_path: ".git 目錄的路徑"
-  label_greater_or_equal: ">="
-  label_group_by: 分組依據
+  label_greater_or_equal: 之前
+  label_group_by: 分類
   label_group_new: 新增群組
   label_group: 群組
   label_group_named: 群組名稱 %{name}
@@ -3802,7 +3868,7 @@ zh-TW:
   label_hierarchy: 階層
   label_hierarchy_leaf: 頁面結構頁
   label_home: Home
-  label_subject_or_id: 主旨或 id
+  label_subject_or_id: 名稱或 id
   label_calendar_subscriptions: 訂閱行事曆
   label_identifier: 識別碼
   label_project_identifier: Project identifier
@@ -3854,7 +3920,7 @@ zh-TW:
   label_latest_revision_plural: 最新版本
   label_ldap_authentication: LDAP 認證
   label_learn_more: 了解更多
-  label_less_or_equal: "<="
+  label_less_or_equal: 之後
   label_less_than_ago: 幾天內
   label_link_url: 連結(URL)
   label_list: 清單
@@ -3987,6 +4053,10 @@ zh-TW:
   label_password_rule_numeric: 數字字元
   label_password_rule_special: 特殊字元
   label_password_rule_uppercase: 大寫
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: 路徑編碼
   label_per_page: 每頁：
   label_people: 人員
@@ -5028,11 +5098,10 @@ zh-TW:
   setting_new_project_user_role_id: 非管理員用户新建專案時將被赋予的（在該專案中的）角色
   setting_new_project_send_confirmation_email: 建立新專案時傳送通知給作者
   setting_new_project_notification_text: 通知文字
-  setting_password_active_rules: 啟用字元類別
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: 禁止重複使用最近被使用的密碼次數
   setting_password_days_valid: 在經過多少天後強制執行密碼變更
   setting_password_min_length: 最小長度
-  setting_password_min_adhered_rules: 必要類別的最小數目
   setting_per_page_options: 設置每頁顯示個數
   setting_percent_complete_on_status_closed: 狀態結束時之完成百分比
   setting_percent_complete_on_status_closed_no_change: 未變更
