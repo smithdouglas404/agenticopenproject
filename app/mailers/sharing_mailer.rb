@@ -40,8 +40,6 @@ class SharingMailer < ApplicationMailer
     @work_package = membership.entity
 
     role = membership.roles.first
-    @role_rights = derive_role_rights(role)
-    @allowed_work_package_actions = derive_allowed_work_package_actions(role)
     @url = optionally_activated_url(work_package_url(@work_package.id), @invitation_token)
     @notification_url = optionally_activated_url(details_notifications_url(@work_package.id, tab: :activity), @invitation_token)
 
@@ -49,6 +47,8 @@ class SharingMailer < ApplicationMailer
     message_id(membership, sharer)
 
     send_localized_mail(@shared_with_user) do
+      @role_rights = derive_role_rights(role)
+      @allowed_work_package_actions = derive_allowed_work_package_actions(role)
       I18n.t("mail.sharing.work_packages.subject", id: @work_package.id)
     end
   end
