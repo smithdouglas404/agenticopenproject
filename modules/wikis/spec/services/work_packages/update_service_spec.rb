@@ -71,6 +71,23 @@ RSpec.describe WorkPackages::UpdateService do
     expect(Wikis::InlinePageLink.pluck(:identifier)).to contain_exactly("abc", "def")
   end
 
+  context "when the same reference is made twice" do
+    let(:attributes) do
+      {
+        description: <<~TXT
+          * [[[#{provider.id}:abc]]]
+          * [[[#{provider.id}:abc]]]
+        TXT
+      }
+    end
+
+    it "creates the link once" do
+      subject
+
+      expect(Wikis::InlinePageLink.pluck(:identifier)).to contain_exactly("abc")
+    end
+  end
+
   context "when other page links already exist" do
     before do
       create(:inline_wiki_page_link, provider:, linkable: work_package, identifier: "123")

@@ -34,13 +34,11 @@ module Wikis::Concerns
 
     def update_inline_wiki_page_links(linkable, *texts)
       Wikis::InlinePageLink.where(linkable:).delete_all
-      texts.each do |text|
-        find_wiki_links(text).each do |provider_id, identifier|
-          provider = Wikis::Provider.find_by(id: provider_id)
-          next if provider.nil?
+      texts.flat_map { |text| find_wiki_links(text) }.uniq.each do |provider_id, identifier|
+        provider = Wikis::Provider.find_by(id: provider_id)
+        next if provider.nil?
 
-          Wikis::InlinePageLink.create!(linkable:, provider:, identifier:)
-        end
+        Wikis::InlinePageLink.create!(linkable:, provider:, identifier:)
       end
     end
 

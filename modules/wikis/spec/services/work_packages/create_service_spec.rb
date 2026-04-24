@@ -43,14 +43,18 @@ RSpec.describe WorkPackages::CreateService do
       project:,
       status: default_status,
       priority:,
-      description: <<~TXT
-        The work package description contains inline links to wiki pages (e.g. [[[#{provider.id}:abc]]]).
-        It also contains links in a list:
-
-        * [[[#{provider.id}:def]]]
-        * [[[#{provider.id + 100}:ghi]]]
-      TXT
+      description:
     }
+  end
+
+  let(:description) do
+    <<~TXT
+      The work package description contains inline links to wiki pages (e.g. [[[#{provider.id}:abc]]]).
+      It also contains links in a list:
+
+      * [[[#{provider.id}:def]]]
+      * [[[#{provider.id + 100}:ghi]]]
+    TXT
   end
 
   subject { instance.call(**attributes) }
@@ -81,5 +85,20 @@ RSpec.describe WorkPackages::CreateService do
     subject
 
     expect(Wikis::InlinePageLink.pluck(:identifier)).to contain_exactly("abc", "def")
+  end
+
+  context "when the same reference is made twice" do
+    let(:description) do
+      <<~TXT
+        * [[[#{provider.id}:abc]]]
+        * [[[#{provider.id}:abc]]]
+      TXT
+    end
+
+    it "creates the link once" do
+      subject
+
+      expect(Wikis::InlinePageLink.pluck(:identifier)).to contain_exactly("abc")
+    end
   end
 end
