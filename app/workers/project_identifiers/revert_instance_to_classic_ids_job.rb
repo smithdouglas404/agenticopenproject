@@ -39,7 +39,7 @@ class ProjectIdentifiers::RevertInstanceToClassicIdsJob < ApplicationJob
 
   # Raised when a pass completes but some projects were skipped due to transient
   # identifier conflicts. Retried immediately so the next pass can resolve them.
-  IdConflictsRemain = Class.new(StandardError)
+  class IdConflictsRemain < StandardError; end
 
   good_job_control_concurrency_with(total_limit: 1)
   retry_on StandardError, wait: :polynomially_longer, attempts: 8
