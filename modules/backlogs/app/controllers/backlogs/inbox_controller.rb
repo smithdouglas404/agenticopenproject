@@ -61,7 +61,7 @@ module Backlogs
         work_package: @work_package,
         project: @project,
         move_action: move_project_backlogs_inbox_path(
-          @project, @work_package, **helpers.all_backlogs_params
+          @project, @work_package, helpers.all_backlogs_params
         )
       )
     end

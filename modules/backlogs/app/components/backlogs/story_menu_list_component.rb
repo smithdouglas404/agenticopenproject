@@ -102,7 +102,7 @@ module Backlogs
     end
 
     def move_href
-      reorder_project_backlogs_work_package_path(project, sprint, story, **helpers.all_backlogs_params)
+      reorder_project_backlogs_work_package_path(project, sprint, story, helpers.all_backlogs_params)
     end
   end
 end

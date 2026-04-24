@@ -50,7 +50,7 @@ module Backlogs
     end
 
     def menu_src
-      menu_project_backlogs_work_package_path(project, sprint, story, **helpers.all_backlogs_params)
+      menu_project_backlogs_work_package_path(project, sprint, story, helpers.all_backlogs_params)
     end
   end
 end

@@ -98,11 +98,11 @@ module Backlogs
     end
 
     def drop_url
-      move_project_backlogs_inbox_path(project, work_package, **helpers.all_backlogs_params)
+      move_project_backlogs_inbox_path(project, work_package, helpers.all_backlogs_params)
     end
 
     def split_url
-      project_backlogs_backlog_details_path(project, work_package, **helpers.all_backlogs_params)
+      project_backlogs_backlog_details_path(project, work_package, helpers.all_backlogs_params)
     end
 
     def full_url
