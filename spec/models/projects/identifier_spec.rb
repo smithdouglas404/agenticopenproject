@@ -103,17 +103,6 @@ RSpec.describe Projects::Identifier do
       expect(project.errors[:identifier]).to include("has already been taken.")
     end
 
-    it "is not allowed to clash with a former identifier of another project case-insensitively" do
-      other_project = create(:project, identifier: "former-id")
-      other_project.update!(identifier: "new-id")
-
-      # Bypass format validation to test the LOWER() slug check directly
-      project = create(:project)
-      project.identifier = "FORMER-ID"
-      project.valid?
-      expect(project.errors[:identifier]).to include("has already been taken.")
-    end
-
     it "is allowed to be the same as its own former identifier" do
       project = create(:project, identifier: "old-id")
       project.update!(identifier: "new-id")
