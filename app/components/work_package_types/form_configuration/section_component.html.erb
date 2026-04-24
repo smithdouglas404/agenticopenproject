@@ -132,6 +132,18 @@ See COPYRIGHT and LICENSE files for more details.
                   ) do |item|
                     item.with_leading_visual_icon(icon: :pencil)
                   end
+                else
+                  menu.with_item(
+                    label: t("types.edit.form_configuration.rename_section"),
+                    tag: :button,
+                    value: "",
+                    content_arguments: enterprise_upsell_action_arguments(
+                      "type-form-configuration-section-rename-#{@group[:key]}"
+                    )
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: :pencil)
+                    item.with_trailing_visual_icon(icon: :"op-enterprise-addons", classes: "upsell-colored")
+                  end
                 end
 
                 unless (first? && last?) || !ee_available?
@@ -180,14 +192,27 @@ See COPYRIGHT and LICENSE files for more details.
 
                 menu.with_divider
 
-                menu.with_item(
-                  label: t("button_delete"),
-                  scheme: :danger,
-                  tag: :a,
-                  href: destroy_path,
-                  content_arguments: { data: { turbo_method: :delete, turbo_stream: true } }
-                ) do |item|
-                  item.with_leading_visual_icon(icon: :trash)
+                if ee_available?
+                  menu.with_item(
+                    label: t("button_delete"),
+                    scheme: :danger,
+                    tag: :a,
+                    href: destroy_path,
+                    content_arguments: { data: { turbo_method: :delete, turbo_stream: true } }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: :trash)
+                  end
+                else
+                  menu.with_item(
+                    label: t("button_delete"),
+                    scheme: :danger,
+                    tag: :button,
+                    value: "",
+                    content_arguments: enterprise_upsell_action_arguments
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: :trash)
+                    item.with_trailing_visual_icon(icon: :"op-enterprise-addons", classes: "upsell-colored")
+                  end
                 end
               end
             end
@@ -214,16 +239,30 @@ See COPYRIGHT and LICENSE files for more details.
                   data: { "test-selector": "type-form-configuration-query-actions-#{@group[:key]}" }
                 )
 
-                menu.with_item(
-                  label: t("types.edit.form_configuration.edit_query"),
-                  test_selector: "type-form-configuration-edit-query-#{@group[:key]}",
-                  tag: :button,
-                  value: "",
-                  content_arguments: {
-                    data: { action: "click->admin--type-form-configuration#editQuery" }
-                  }
-                ) do |item|
-                  item.with_leading_visual_icon(icon: :pencil)
+                if ee_available?
+                  menu.with_item(
+                    label: t("types.edit.form_configuration.edit_query"),
+                    test_selector: "type-form-configuration-edit-query-#{@group[:key]}",
+                    tag: :button,
+                    value: "",
+                    content_arguments: {
+                      data: { action: "click->admin--type-form-configuration#editQuery" }
+                    }
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: :pencil)
+                  end
+                else
+                  menu.with_item(
+                    label: t("types.edit.form_configuration.edit_query"),
+                    tag: :button,
+                    value: "",
+                    content_arguments: enterprise_upsell_action_arguments(
+                      "type-form-configuration-edit-query-#{@group[:key]}"
+                    )
+                  ) do |item|
+                    item.with_leading_visual_icon(icon: :pencil)
+                    item.with_trailing_visual_icon(icon: :"op-enterprise-addons", classes: "upsell-colored")
+                  end
                 end
               end
             end

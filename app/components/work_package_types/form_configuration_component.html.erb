@@ -195,6 +195,42 @@ See COPYRIGHT and LICENSE files for more details.
           end
         end
       end
+
+      unless ee_available?
+        outer.with_row do
+          render(
+            Primer::OpenProject::FeedbackDialog.new(
+              id: enterprise_dialog_id,
+              title: t("js.types.attribute_groups.upgrade_to_ee"),
+              data: { "test-selector": enterprise_dialog_id }
+            )
+          ) do |dialog|
+            dialog.with_feedback_message(icon_arguments: { icon: :alert, color: :attention }) do |message|
+              message.with_heading(tag: :h2) { t("js.types.attribute_groups.upgrade_to_ee") }
+              message.with_description_content(t("js.types.attribute_groups.upgrade_to_ee_text"))
+            end
+
+            dialog.with_footer do
+              component_collection do |footer|
+                footer.with_component(
+                  Primer::Beta::Button.new(
+                    scheme: :secondary,
+                    data: { "close-dialog-id": enterprise_dialog_id }
+                  )
+                ) { t("js.types.attribute_groups.nevermind") }
+
+                footer.with_component(
+                  Primer::Beta::Button.new(
+                    scheme: :primary,
+                    tag: :a,
+                    href: enterprise_information_url
+                  )
+                ) { t("js.types.attribute_groups.more_information") }
+              end
+            end
+          end
+        end
+      end
     end
   end
 %>

@@ -151,6 +151,17 @@ module WorkPackageTypes
       def show_attribute_delete_divider?(index)
         attribute_can_move_up?(index) || attribute_can_move_down?(index)
       end
+
+      def enterprise_upsell_dialog_id
+        WorkPackageTypes::FormConfigurationComponent::ENTERPRISE_DIALOG_ID
+      end
+
+      def enterprise_upsell_action_arguments(test_selector = nil)
+        {
+          "data-show-dialog-id": enterprise_upsell_dialog_id,
+          "data-test-selector": test_selector
+        }.compact
+      end
     end
   end
 end
