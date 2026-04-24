@@ -37,11 +37,11 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
   let(:provider) { create(:xwiki_provider) }
   let(:oauth_client) { create(:oauth_client, integration: provider) }
 
+  let(:page_link_service) { instance_double(Wikis::PageLinkService, relation_page_link_infos_for: []) }
+
   before do
     login_as(user)
-    allow_any_instance_of(Wikis::PageLinkService)
-      .to receive(:relation_page_link_infos_for)
-      .and_return([])
+    allow(Wikis::PageLinkService).to receive(:new).and_return(page_link_service)
   end
 
   context "when the provider has no oauth client configured" do
@@ -55,7 +55,7 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
     it "does not render a login button" do
       render_inline(described_class.new(provider, work_package:))
       expect(page).to have_no_link(I18n.t("wikis.relation_page_links_component.login_button",
-                                           provider: provider.name))
+                                          provider: provider.name))
     end
   end
 
@@ -65,7 +65,7 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
     it "renders the not connected heading" do
       render_inline(described_class.new(provider, work_package:))
       expect(page).to have_text(I18n.t("wikis.relation_page_links_component.not_connected_heading",
-                                        provider: provider.name))
+                                       provider: provider.name))
     end
 
     it "renders a login button linking to ensure_connection" do
@@ -91,7 +91,7 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
     it "does not render a login button" do
       render_inline(described_class.new(provider, work_package:))
       expect(page).to have_no_link(I18n.t("wikis.relation_page_links_component.login_button",
-                                           provider: provider.name))
+                                          provider: provider.name))
     end
   end
 end
