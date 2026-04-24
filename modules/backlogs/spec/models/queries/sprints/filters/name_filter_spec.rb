@@ -28,12 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Queries::Sprints
-  ::Queries::Register.register(SprintQuery) do
-    filter Filters::ProjectFilter
-    filter Filters::NameFilter
-    filter Filters::TypeaheadFilter
+require "spec_helper"
 
-    order Orders::DefaultOrder
+RSpec.describe Queries::Sprints::Filters::NameFilter do
+  it_behaves_like "basic query filter" do
+    let(:class_key) { :name }
+    let(:human_name) { I18n.t(:label_name) }
+    let(:type) { :string }
+    let(:model) { Agile::Sprint }
+
+    describe "#allowed_values" do
+      it "is nil" do
+        expect(instance.allowed_values).to be_nil
+      end
+    end
   end
 end

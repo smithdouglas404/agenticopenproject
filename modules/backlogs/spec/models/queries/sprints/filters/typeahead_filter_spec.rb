@@ -28,12 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Queries::Sprints
-  ::Queries::Register.register(SprintQuery) do
-    filter Filters::ProjectFilter
-    filter Filters::NameFilter
-    filter Filters::TypeaheadFilter
+require "spec_helper"
 
-    order Orders::DefaultOrder
+RSpec.describe Queries::Sprints::Filters::TypeaheadFilter do
+  it_behaves_like "basic query filter" do
+    let(:class_key) { :typeahead }
+    let(:human_name) { I18n.t(:label_search) }
+    let(:type) { :search }
+    let(:model) { Agile::Sprint }
   end
 end

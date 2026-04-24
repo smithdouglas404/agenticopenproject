@@ -28,12 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Queries::Sprints
-  ::Queries::Register.register(SprintQuery) do
-    filter Filters::ProjectFilter
-    filter Filters::NameFilter
-    filter Filters::TypeaheadFilter
+class Queries::Sprints::Filters::NameFilter < Queries::Sprints::Filters::SprintFilter
+  def self.key
+    :name
+  end
 
-    order Orders::DefaultOrder
+  def type
+    :string
+  end
+
+  def human_name
+    I18n.t(:label_name)
+  end
+
+  def where
+    case operator
+    when "="
+      ["LOWER(sprints.name) IN (?)", sql_value]
+    when "!"
+      ["LOWER(sprints.name) NOT IN (?)", sql_value]
+    when "~", "**"
+      ["LOWER(sprints.name) LIKE ?", sql_value]
+    when "!~"
+      ["LOWER(sprints.name) NOT LIKE ?", sql_value]
+    end
+  end
+
+  private
+
+  def sql_value
+    case operator
+    when "=", "!"
+      values.map(&:downcase)
+    when "**", "~", "!~"
+      "%#{values.first.downcase}%"
+    end
   end
 end

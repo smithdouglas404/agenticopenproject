@@ -28,12 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Queries::Sprints
-  ::Queries::Register.register(SprintQuery) do
-    filter Filters::ProjectFilter
-    filter Filters::NameFilter
-    filter Filters::TypeaheadFilter
+class Queries::Sprints::Filters::TypeaheadFilter < Queries::Sprints::Filters::NameFilter
+  def self.key
+    :typeahead
+  end
 
-    order Orders::DefaultOrder
+  def type
+    :search
+  end
+
+  def human_name
+    I18n.t(:label_search)
   end
 end
