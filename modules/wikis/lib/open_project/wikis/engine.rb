@@ -98,6 +98,8 @@ module OpenProject::Wikis
            icon: "browser"
     end
 
+    patch_with_namespace :WikiPages, :CreateService
+    patch_with_namespace :WikiPages, :UpdateService
     patch_with_namespace :WorkPackages, :CreateService
     patch_with_namespace :WorkPackages, :UpdateService
 

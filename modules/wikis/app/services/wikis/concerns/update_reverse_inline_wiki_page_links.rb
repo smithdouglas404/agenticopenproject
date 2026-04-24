@@ -28,23 +28,32 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :wiki_page_link, class: "Wikis::PageLink" do
-    linkable factory: :work_package
-    provider factory: :internal_wiki_provider
+module Wikis::Concerns
+  module UpdateReverseInlineWikiPageLinks
+    extend ActiveSupport::Concern
 
-    sequence(:identifier) { |i| "/path/#{i}" }
-  end
+    def update_reverse_inline_wiki_page_links(wiki_page)
+      provider = Wikis::InternalProvider.enabled.first
+      return if provider.nil?
 
-  factory :inline_wiki_page_link, class: "Wikis::InlinePageLink", parent: :wiki_page_link do
-    # ...
-  end
+      Wikis::ReverseInlinePageLink.where(provider:, identifier: wiki_page.id).delete_all
 
-  factory :reverse_inline_wiki_page_link, class: "Wikis::ReverseInlinePageLink", parent: :wiki_page_link do
-    # ...
-  end
+      find_wp_links(wiki_page.text).uniq.each do |wp_id|
+        wp = WorkPackage.find_by(id: wp_id)
+        next if wp.nil?
 
-  factory :relation_wiki_page_link, class: "Wikis::RelationPageLink", parent: :wiki_page_link do
-    author factory: :user
+        Wikis::ReverseInlinePageLink.create!(linkable: wp, provider:, identifier: wiki_page.id)
+      end
+    end
+
+    private
+
+    def find_wp_links(text)
+      return [] if text.blank?
+
+      # extracted prefix from lib/open_project/text_formatting/matchers/resource_links_matcher.rb
+      # adding # as additional prefix
+      text.scan(/(?:[[:space:],~>#\(\[\-]|^)#([0-9]+)/) # rubocop:disable Style/RedundantRegexpEscape
+    end
   end
 end

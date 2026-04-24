@@ -28,23 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :wiki_page_link, class: "Wikis::PageLink" do
-    linkable factory: :work_package
-    provider factory: :internal_wiki_provider
-
-    sequence(:identifier) { |i| "/path/#{i}" }
+module OpenProject::Wikis::Patches::WorkPackages::CreateServicePatch
+  def self.included(base)
+    base.prepend InstanceMethods
+    base.include Wikis::Concerns::UpdateInlineWikiPageLinks
   end
 
-  factory :inline_wiki_page_link, class: "Wikis::InlinePageLink", parent: :wiki_page_link do
-    # ...
-  end
+  module InstanceMethods
+    def create(_attributes, work_package)
+      result = super
+      update_inline_wiki_page_links(work_package, work_package.description) if result.success?
 
-  factory :reverse_inline_wiki_page_link, class: "Wikis::ReverseInlinePageLink", parent: :wiki_page_link do
-    # ...
-  end
-
-  factory :relation_wiki_page_link, class: "Wikis::RelationPageLink", parent: :wiki_page_link do
-    author factory: :user
+      result
+    end
   end
 end

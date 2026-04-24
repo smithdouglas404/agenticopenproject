@@ -28,24 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject::Wikis::Patches::UpdateServicePatch
-  def self.included(base)
-    base.prepend InstanceMethods
-    base.include Wikis::Concerns::UpdateInlineWikiPageLinks
-  end
-
-  module InstanceMethods
-    private
-
-    def after_perform(_)
-      service_call = super
-
-      work_package = service_call.result
-      if service_call.success? && work_package.changed_attribute_keys_before_last_save.include?(:description)
-        update_inline_wiki_page_links(work_package, work_package.description)
-      end
-
-      service_call
-    end
+module Wikis
+  # Like an InlinePageLink, but it's not the linkable that's referencing the wiki page,
+  # but the wiki page that's referencing the linkable.
+  # Not persisted for all wiki providers.
+  class ReverseInlinePageLink < PageLink
+    def inline? = true
   end
 end
