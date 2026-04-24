@@ -29,14 +29,17 @@
 #++
 
 module Wikis
-  class ProviderLinkGroupComponent < ApplicationComponent
+  class CollapsiblePageLinksComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
 
-    alias_method :provider, :model
+    attr_reader :heading
 
-    def initialize(model = nil, work_package: nil, **)
-      @work_package = work_package
+    alias_method :page_links, :model
+
+    def initialize(model = nil, heading:, **)
+      @heading = heading
+
       super(model, **)
     end
   end

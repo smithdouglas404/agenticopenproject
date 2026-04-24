@@ -28,21 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis::Adapters::Providers::XWiki::Queries
-  class PageInfo < Wikis::Adapters::BaseQuery
-    def call(_input_data)
-      title = [
-        "What makes XWiki special?",
-        "API documentation",
-        "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
-      ].sample
+module Wikis
+  module Adapters
+    module Providers
+      module XWiki
+        module Queries
+          class PageInfo < BaseQuery
+            def call(input_data)
+              title = [
+                "What makes XWiki special?",
+                "API documentation",
+                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
+              ].sample
 
-      success(
-        Wikis::Adapters::Results::PageInfo.new(
-          title:,
-          href: "#"
-        )
-      )
+              success(
+                Results::PageInfo.new(
+                  identifier: input_data.identifier,
+                  provider:,
+                  title:,
+                  href: "#"
+                )
+              )
+            end
+          end
+        end
+      end
     end
   end
 end
