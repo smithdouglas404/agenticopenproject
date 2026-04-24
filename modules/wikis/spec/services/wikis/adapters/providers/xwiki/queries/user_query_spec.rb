@@ -33,43 +33,42 @@ require_module_spec_helper
 
 RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock do
   let(:wiki_provider) { build_stubbed(:xwiki_provider, url: "https://xwiki.local/") }
-  let(:userinfo_url) { "https://xwiki.local/oidc/userinfo" }
+  let(:rest_url) { "https://xwiki.local/rest/" }
 
   it "is registered" do
     expect(Wikis::Adapters::Registry.resolve("xwiki.queries.user")).to eq(described_class)
   end
 
   describe ".call" do
-    context "when the request succeeds with a sub claim" do
+    context "when the request succeeds with xwiki-user header" do
       before do
-        stub_request(:get, userinfo_url)
-          .to_return(status: 200, body: { sub: "xwiki:XWiki.admin" }.to_json,
-                     headers: { "Content-Type" => "application/json" })
+        stub_request(:get, rest_url)
+          .to_return(status: 200, body: "", headers: { "xwiki-user" => "XWiki.admin" })
       end
 
-      it "returns Success with the sub claim" do
+      it "returns Success with the xwiki-user header value" do
         result = described_class.call(wiki_provider:, access_token: "some-token")
         expect(result).to be_success
-        expect(result.value!).to eq("xwiki:XWiki.admin")
+        expect(result.value!).to eq("XWiki.admin")
       end
     end
 
-    context "when the response is missing the sub claim" do
+    context "when the token is absent or invalid (XWiki returns 200 without xwiki-user header)" do
       before do
-        stub_request(:get, userinfo_url)
-          .to_return(status: 200, body: {}.to_json, headers: { "Content-Type" => "application/json" })
+        stub_request(:get, rest_url)
+          .to_return(status: 200, body: "", headers: {})
       end
 
-      it "returns Failure mentioning the sub claim" do
-        result = described_class.call(wiki_provider:, access_token: "some-token")
+      it "returns Failure mentioning the xwiki-user header" do
+        result = described_class.call(wiki_provider:, access_token: "invalid-token")
         expect(result).to be_failure
-        expect(result.failure).to include("sub claim")
+        expect(result.failure).to include("xwiki-user header")
       end
     end
 
     context "when XWiki returns a non-2xx status" do
       before do
-        stub_request(:get, userinfo_url).to_return(status: 500, body: "Internal Server Error")
+        stub_request(:get, rest_url).to_return(status: 500, body: "Internal Server Error")
       end
 
       it "returns Failure with the status code" do
@@ -80,7 +79,7 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::Queries::UserQuery, :webmock d
     end
 
     context "when a network error occurs" do
-      before { stub_request(:get, userinfo_url).to_timeout }
+      before { stub_request(:get, rest_url).to_timeout }
 
       it "returns Failure" do
         result = described_class.call(wiki_provider:, access_token: "some-token")

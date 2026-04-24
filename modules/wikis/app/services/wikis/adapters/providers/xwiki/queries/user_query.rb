@@ -45,7 +45,7 @@ module Wikis
             end
 
             def call(access_token:)
-              url = "#{@wiki_provider.url.chomp('/')}/oidc/userinfo"
+              url = "#{@wiki_provider.url.chomp('/')}/rest/"
 
               handle_response(OpenProject.httpx.bearer_auth(access_token).get(url))
             end
@@ -59,13 +59,13 @@ module Wikis
               in { status: 200..299 }
                 handle_success_response(response)
               else
-                Failure("XWiki userinfo request failed (#{response.status})")
+                Failure("XWiki REST API request failed (#{response.status})")
               end
             end
 
             def handle_success_response(response)
-              sub = response.json["sub"]
-              sub.present? ? Success(sub) : Failure("XWiki userinfo response missing sub claim")
+              xwiki_user = response.headers["xwiki-user"]
+              xwiki_user.present? ? Success(xwiki_user) : Failure("XWiki REST API response missing xwiki-user header")
             end
           end
         end
