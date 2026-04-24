@@ -43,7 +43,7 @@ class ProjectIdentifiers::RevertInstanceToClassicIdsJob < ApplicationJob
 
   good_job_control_concurrency_with(total_limit: 1)
   retry_on StandardError, wait: :polynomially_longer, attempts: 8
-  retry_on IdConflictsRemain, wait: 0, attempts: 30
+  retry_on IdConflictsRemain, wait: 0, attempts: 10
 
   def perform
     raise "expected Setting.work_packages_identifier to be classic" unless Setting::WorkPackageIdentifier.classic?
