@@ -72,6 +72,17 @@ module MailLayoutHelper
     content_tag("td", "&nbsp;".html_safe, style:)
   end
 
+  def safe_to_sentence(array)
+    case array.size
+    when 0 then ActiveSupport::SafeBuffer.new
+    when 1 then array.first
+    when 2 then safe_join(array, t(:"support.array.two_words_connector"))
+    else
+      safe_join([safe_join(array[0..-2], t(:"support.array.words_connector")), array.last],
+                t(:"support.array.last_word_connector"))
+    end
+  end
+
   def user_salutation(user)
     case Setting.emails_salutation
     when :name
