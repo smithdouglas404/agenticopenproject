@@ -43,7 +43,7 @@ module Wikis
                 "Syntax overview",
                 "Getting help",
                 "Enterprise support"
-              ].sample
+              ]
               title = titles[Random.new(input_data.identifier.hash).rand(titles.size)]
 
               success(

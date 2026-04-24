@@ -31,7 +31,7 @@
 require "spec_helper"
 
 RSpec.describe Wikis::Adapters::Providers::Internal::Queries::PageInfo do
-  subject { described_class.new(provider).call(input_data) }
+  subject { described_class.new(model: provider).call(input_data) }
 
   let(:provider) { create(:internal_wiki_provider) }
   let(:input_data) { Wikis::Adapters::Input::PageInfo.build(identifier:).value! }
