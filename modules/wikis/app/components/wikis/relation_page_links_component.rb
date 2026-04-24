@@ -54,7 +54,7 @@ module Wikis
       oauth_clients_ensure_connection_url(
         oauth_client_id: provider.oauth_client.client_id,
         storage_id: provider.id,
-        destination_url: work_package_url(@work_package)
+        destination_url: work_package_url(@work_package, tab: :wikis)
       )
     end
 

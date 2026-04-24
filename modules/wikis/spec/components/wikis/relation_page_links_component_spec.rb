@@ -72,6 +72,7 @@ RSpec.describe Wikis::RelationPageLinksComponent, type: :component do
       render_inline(described_class.new(provider, work_package:))
       link = page.find_link(I18n.t("wikis.relation_page_links_component.login_button", provider: provider.name))
       expect(link[:href]).to match(/ensure_connection/)
+      expect(link[:href]).to match(/destination_url=.*wikis/)
       expect(link[:"data-turbo-frame"]).to eq("_top")
     end
   end
