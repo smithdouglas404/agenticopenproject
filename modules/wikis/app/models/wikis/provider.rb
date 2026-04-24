@@ -48,6 +48,7 @@ module Wikis
     before_create :generate_universal_identifier
 
     def to_s = self.class.registry_prefix
+    def skip_client_secret_validation? = false
 
     class << self
       def registry_prefix = raise SubclassResponsibilityError

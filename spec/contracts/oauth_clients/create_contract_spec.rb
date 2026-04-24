@@ -78,7 +78,9 @@ RSpec.describe OAuthClients::CreateContract do
       include_examples "contract is invalid", client_secret: :too_long
     end
 
-    context "when client_secret is absent" do
+    context "when client_secret is absent and the integration skips secret validation (e.g. XWiki)" do
+      let(:integration) { build_stubbed(:xwiki_provider) }
+
       context "as it is empty" do
         let(:client_secret) { "" }
 
