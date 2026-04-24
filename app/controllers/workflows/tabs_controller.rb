@@ -57,9 +57,12 @@ class Workflows::TabsController < ApplicationController
     success = false
     Workflow.transaction do
       success = true
+      base_params = permitted_status_params
+      indeterminate = permitted_indeterminate_params
       @roles.each do |role|
+        role_params = indeterminate.empty? ? base_params : role_specific_params(base_params, indeterminate, role)
         result = Workflows::BulkUpdateService.new(role:, type: @type, tab: @tab)
-                                             .call(permitted_status_params)
+                                             .call(role_params)
         success = false unless result.success?
       end
       raise ActiveRecord::Rollback unless success
@@ -200,10 +203,40 @@ class Workflows::TabsController < ApplicationController
   end
 
   def permitted_status_params
-    return {} if params["status"].blank?
+    status_params("status")
+  end
 
-    params["status"]
+  def permitted_indeterminate_params
+    status_params("indeterminate_status")
+  end
+
+  def status_params(key)
+    return {} if params[key].blank?
+
+    params[key]
       .to_unsafe_h
-      .select { |key, value| /\A\d+\z/.match?(key) && value.keys.all? { /\A\d+\z/.match?(it) } }
+      .select { |k, value| /\A\d+\z/.match?(k) && value.keys.all? { /\A\d+\z/.match?(it) } }
+  end
+
+  def role_specific_params(base_params, indeterminate, role)
+    params = base_params.deep_dup
+    indeterminate.each do |old_id, new_ids|
+      new_ids.each_key do |new_id|
+        # Restore from DB so that it isn't overwritten by indeterminate state (unchecked)
+        had_transition = Workflow.exists?(
+          role_id: role.id,
+          type_id: @type.id,
+          old_status_id: old_id.to_i,
+          new_status_id: new_id.to_i,
+          author: @tab == "author",
+          assignee: @tab == "assignee"
+        )
+        if had_transition
+          params[old_id] ||= {}
+          params[old_id][new_id] = "1"
+        end
+      end
+    end
+    params
   end
 end

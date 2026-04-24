@@ -82,7 +82,7 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     if (statusCheckboxes) {
       this.applyState(statusCheckboxes);
       // Recompute dirty flag: the restored state may differ from DB pristine.
-      this.onCheckboxChange();
+      this.recomputeDirtyFlag();
     } else {
       // Apply indeterminate checkboxes only on fresh server rendered content.
       this.initIndeterminateCheckboxes();
@@ -264,12 +264,24 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     window.OpenProject.pageState = hasChanges ? 'edited' : 'pristine';
   }
 
-  private onCheckboxChange = () => {
+  private onCheckboxChange = (event:Event) => {
+    this.removeIndeterminateMarker(event.target as HTMLInputElement);
+    this.recomputeDirtyFlag();
+  };
+
+  private recomputeDirtyFlag() {
     const current = this.captureState();
     const hasChanges = Object.keys(current).some((key) => current[key] !== this.initialCheckboxState[key]);
 
     this.hasCheckboxChangesValue = hasChanges;
-  };
+  }
+
+  private removeIndeterminateMarker(checkbox:HTMLInputElement):void {
+    const { oldStatus, newStatus } = checkbox.dataset;
+    this.element.querySelector<HTMLInputElement>(
+      `input[name="indeterminate_status[${oldStatus}][${newStatus}]"]`,
+    )?.remove();
+  }
 
   private captureState():Record<string, boolean> {
     const checkboxes:Record<string, boolean> = {};
