@@ -60,12 +60,14 @@ RSpec.describe "Start and finish sprints",
   end
   let!(:first_sprint) do
     create(:agile_sprint,
+           name: "First sprint",
            project:,
            start_date: Date.new(2025, 9, 5),
            finish_date: Date.new(2025, 9, 15))
   end
   let!(:second_sprint) do
     create(:agile_sprint,
+           name: "Second sprint",
            project:,
            start_date: Date.new(2025, 9, 16),
            finish_date: Date.new(2025, 9, 26))
@@ -86,11 +88,10 @@ RSpec.describe "Start and finish sprints",
       .and_return("story_types" => [story_type.id.to_s], "task_type" => task_type.id.to_s)
 
     create(:workflow, type: task_type, old_status: default_status, new_status: default_status, role: create(:project_role))
-
-    planning_page.visit!
   end
 
   it "starts the sprint and redirects to the board" do
+    planning_page.visit!
     planning_page.click_in_sprint_menu(first_sprint, "Start sprint")
 
     expect_and_dismiss_flash type: :success, message: "The sprint was started."
@@ -134,6 +135,7 @@ RSpec.describe "Start and finish sprints",
   context "when the sprint is active" do
     let!(:first_sprint) do
       create(:agile_sprint,
+             name: "First sprint",
              project:,
              status: "active",
              start_date: Date.new(2025, 9, 5),
@@ -142,6 +144,7 @@ RSpec.describe "Start and finish sprints",
     let!(:task_board) { create(:board_grid_with_query, project:, linked: first_sprint) }
 
     it "finishes the sprint and returns to the backlog" do
+      planning_page.visit!
       planning_page.within_sprint_menu(first_sprint) do |menu|
         expect(menu).to have_selector :menuitem, "Complete sprint"
         menu.find(:button, "Complete sprint").click
@@ -192,6 +195,7 @@ RSpec.describe "Start and finish sprints",
       # work packages to.
       let!(:sprint_from_other_project) do
         create(:agile_sprint,
+               name: "Sprint from other project",
                project: create(:project),
                start_date: Date.new(2025, 9, 5),
                finish_date: Date.new(2025, 9, 15)) do |sprint|
@@ -203,12 +207,18 @@ RSpec.describe "Start and finish sprints",
       end
 
       it "allows moving unfinished work packages to the next sprint" do
+        planning_page.visit!
+
+        planning_page.expect_sprint_names_in_order(first_sprint.name, sprint_from_other_project.name, second_sprint.name)
         planning_page.click_to_finish_sprint(first_sprint)
 
         planning_page.expect_sprint_finishing_modal
 
         planning_page.expect_sprints_to_choose_for_moving_unfinished_work_packages_to second_sprint
-        planning_page.choose_to_move_unfinished_work_packages_to_sprint second_sprint.name
+
+        wait_for_turbo_stream do
+          planning_page.choose_to_move_unfinished_work_packages_to_sprint second_sprint.name
+        end
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
 
@@ -223,10 +233,15 @@ RSpec.describe "Start and finish sprints",
       end
 
       it "allows moving unfinished work packages to the top of the backlog" do
+        planning_page.visit!
+
+        planning_page.expect_sprint_names_in_order(first_sprint.name, sprint_from_other_project.name, second_sprint.name)
         planning_page.click_to_finish_sprint(first_sprint)
 
         planning_page.expect_sprint_finishing_modal
-        planning_page.choose_to_move_unfinished_work_packages_to_top_of_backlog
+        wait_for_turbo_stream do
+          planning_page.choose_to_move_unfinished_work_packages_to_top_of_backlog
+        end
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
 
@@ -238,10 +253,15 @@ RSpec.describe "Start and finish sprints",
       end
 
       it "allows moving unfinished work packages to the bottom of the backlog" do
+        planning_page.visit!
+
+        planning_page.expect_sprint_names_in_order(first_sprint.name, sprint_from_other_project.name, second_sprint.name)
         planning_page.click_to_finish_sprint(first_sprint)
 
         planning_page.expect_sprint_finishing_modal
-        planning_page.choose_to_move_unfinished_work_packages_to_bottom_of_backlog
+        wait_for_turbo_stream do
+          planning_page.choose_to_move_unfinished_work_packages_to_bottom_of_backlog
+        end
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
 

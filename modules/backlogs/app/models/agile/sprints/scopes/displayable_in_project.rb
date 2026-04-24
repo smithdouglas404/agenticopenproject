@@ -28,22 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class MoveToSprintDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module Agile::Sprints::Scopes
+  module DisplayableInProject
+    extend ActiveSupport::Concern
 
-    DIALOG_ID = "move-to-sprint-dialog"
-    FORM_ID = "move-to-sprint-dialog-form"
-
-    attr_reader :work_package, :project, :sprints
-
-    def initialize(work_package:, project:)
-      super()
-
-      @work_package = work_package
-      @project = project
-      @sprints = Agile::Sprint.displayable_in_project(@project)
+    class_methods do
+      # Returns all non-completed sprints for a project, ordered by date.
+      # Used in most views to display relevant sprints.
+      def displayable_in_project(project)
+        for_project(project)
+          .not_completed
+          .order_by_date
+      end
     end
   end
 end

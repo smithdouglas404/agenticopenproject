@@ -50,7 +50,8 @@ module Agile
            :order_by_date,
            :receiving_projects,
            :visible,
-           :native_to_sprint_source
+           :native_to_sprint_source,
+           :displayable_in_project
 
     enum :status,
          {
