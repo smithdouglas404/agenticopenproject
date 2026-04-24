@@ -144,6 +144,7 @@ module Filter
     def autocomplete_options
       {
         component: "opce-autocompleter",
+        appendTo: "#filters-dialog",
         bindValue: "id",
         bindLabel: "name",
         hideSelected: true
@@ -153,6 +154,7 @@ module Filter
     def project_autocomplete_options
       {
         component: "opce-project-autocompleter",
+        appendTo: "#filters-dialog",
         resource: "projects",
         filters: [
           { name: "active", operator: "=", values: ["t"] }
@@ -163,6 +165,7 @@ module Filter
     def user_autocomplete_options
       {
         component: "opce-user-autocompleter",
+        appendTo: "#filters-dialog",
         hideSelected: true,
         defaultData: false,
         placeholder: I18n.t(:label_user_search),

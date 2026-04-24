@@ -49,6 +49,7 @@ module Meetings
         {
           autocomplete_options: {
             component: "opce-user-autocompleter",
+            appendTo: "#filters-dialog",
             resource: "principals"
           }
         }

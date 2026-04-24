@@ -191,14 +191,14 @@ export default class FiltersFormController extends Controller {
   }
 
   showDisplayFilters() {
-    this.displayFiltersValue = true;
+    this.filterFormTarget.showModal();
   }
 
   displayFiltersValueChanged() {
-    if (this.hasFilterFormToggleTarget){
-      this.toggleButtonActive();
-      this.toggleFilterFormVisible();
-    }
+    // if (this.hasFilterFormToggleTarget){
+    //   this.toggleButtonActive();
+    //   this.toggleFilterFormVisible();
+    // }
   }
 
   toggleButtonActive() {
@@ -212,6 +212,12 @@ export default class FiltersFormController extends Controller {
   toggleFilterFormVisible() {
     if (this.hasFilterFormTarget) {
       this.filterFormTarget.classList.toggle('-expanded', this.displayFiltersValue);
+      if (this.displayFiltersValue) {
+        this.filterFormTarget.showModal();
+      }
+      else {
+        this.filterFormTarget.close();
+      }
     }
   }
 

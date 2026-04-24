@@ -75,7 +75,7 @@ module Meetings
     end
 
     def filters_expanded?
-      params[:filters].present?
+      true
     end
   end
 end

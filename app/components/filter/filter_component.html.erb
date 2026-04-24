@@ -1,9 +1,6 @@
 <%=
-  helpers.content_tag :div,
-                      class: filter_classes,
-                      data: {
-                        "filter--filters-form-target": "filterForm"
-                      } do
+  render(Primer::Alpha::Dialog.new(title: "Filters", id: "filters-dialog", size: :xlarge, classes: filter_classes, data: { "filter--filters-form-target": "filterForm" })) do |d|
+    d.with_body do
 %>
 
   <% if lazy_loaded? %>
@@ -34,18 +31,6 @@
             }
           ) do %>
         <fieldset class="advanced-filters--container">
-          <%=
-            render(
-              Primer::Beta::IconButton.new(
-                icon: :x,
-                scheme: :invisible,
-                classes: "advanced-filters--close",
-                tooltip_direction: :se,
-                aria: { label: t("js.close_form_title") },
-                data: { action: "filter--filters-form#toggleDisplayFilters" }
-              )
-            )
-          %>
           <legend><%= t(:label_filter_plural) %></legend>
           <ul class="advanced-filters--filters">
             <% each_filter do |filter, filter_active, additional_options| %>
@@ -156,5 +141,6 @@
         </fieldset>
       <% end %>
     <% end %>
+  <% end %>
   <% end %>
 <% end %>
