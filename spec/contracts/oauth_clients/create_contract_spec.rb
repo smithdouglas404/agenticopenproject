@@ -72,13 +72,13 @@ RSpec.describe OAuthClients::CreateContract do
       end
     end
 
-    context "when client_secret is invalid" do
-      context "as it is too long" do
-        let(:client_secret) { "X" * 257 }
+    context "when client_secret is too long" do
+      let(:client_secret) { "X" * 257 }
 
-        include_examples "contract is invalid", client_secret: :too_long
-      end
+      include_examples "contract is invalid", client_secret: :too_long
+    end
 
+    context "when client_secret is absent" do
       context "as it is empty" do
         let(:client_secret) { "" }
 

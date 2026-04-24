@@ -87,20 +87,13 @@ RSpec.describe Wikis::Adapters::Providers::XWiki::OAuthConfiguration do
   describe "#basic_rack_oauth_client" do
     subject(:rack_client) { config.basic_rack_oauth_client }
 
-    it "uses the oauth_client.client_id as identifier" do
-      expect(rack_client.identifier).to eq("xwiki-uuid")
-    end
-
-    it "does not set a secret — XWiki uses public clients" do
-      expect(rack_client.secret).to be_nil
-    end
-
-    it "points the token endpoint at XWiki's OIDC token path" do
-      expect(rack_client.token_endpoint).to eq("/xwiki/oidc/token")
-    end
-
-    it "points the authorization endpoint at XWiki's OIDC authorization path" do
-      expect(rack_client.authorization_endpoint).to eq("/xwiki/oidc/authorization")
+    it "configures the rack client with correct attributes" do
+      expect(rack_client).to have_attributes(
+        identifier: "xwiki-uuid",
+        secret: nil,
+        token_endpoint: "/xwiki/oidc/token",
+        authorization_endpoint: "/xwiki/oidc/authorization"
+      )
     end
 
     context "when the provider URL has a trailing slash" do
