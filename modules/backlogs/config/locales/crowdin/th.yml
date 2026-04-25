@@ -31,13 +31,13 @@ th:
         finish_date: วันที่เสร็จสิ้น
         goal: เป้าหมายสปริ๊นต์
         name: ชื่อสปรินต์
-        sharing: Sharing
+        sharing: การแชร์
         statuses:
           in_planning: In planning
           active: Active
-          completed: Completed
+          completed: สำเร็จ!
       project:
-        sprint_sharing: Sprint sharing
+        sprint_sharing: การแชร์สปรินต์
       sprint:
         duration: ระยะเวลาการสปรินต์
       user_preference:
@@ -46,7 +46,7 @@ th:
         backlog_bucket: Backlog Bucket
         backlogs_work_package_type: ประเภทงานค้าง
         position: ตำแหน่ง
-        sprint: Sprint
+        sprint: สปรินท์
         story_points: ''
     errors:
       messages:
