@@ -48,10 +48,13 @@ if Rails.env.local?
                        utility_connections
 
   if ActiveRecord::Base.connection_pool.size < required_pool_size
-    Rails.logger.warn { "DB pool (#{ActiveRecord::Base.connection_pool.size}) too small — need at least #{required_pool_size} " \
-                        "(web_max_threads #{OpenProject::Configuration.web_max_threads} + " \
-                        "good_job_max_threads #{OpenProject::Configuration.good_job_max_threads} + " \
-                        "#{utility_connections} utility). " \
-                        "Please adjust the pool parameter in database.yml or \"?pool=N\" parameter in DATABASE_URL." }
+    Rails.logger.warn do
+      "DB pool size of #{ActiveRecord::Base.connection_pool.size} is too small and could cause problems. " \
+        "The recommended sizing is at least #{required_pool_size} " \
+        "(#{OpenProject::Configuration.web_max_threads} for web_max_threads + " \
+        "#{OpenProject::Configuration.good_job_max_threads} for web_max_threads + " \
+        "#{utility_connections} for GoodJob utility connections). " \
+        "Please adjust the pool parameter in database.yml or \"?pool=N\" parameter in DATABASE_URL."
+    end
   end
 end
