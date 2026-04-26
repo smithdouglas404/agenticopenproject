@@ -40,13 +40,9 @@ if Rails.env.production?
   end
 end
 
-# Per GoodJob's own recommendation (README "Database connections"), the pool must
-# cover web threads, job threads, and GoodJob utility connections: 1 for the
-# Notifier (LISTEN/NOTIFY) plus GoodJob::SharedExecutor::MAX_THREADS for cron/executor.
-# The pool size is a ceiling — Rails creates connections lazily — so setting it
-# to a large constant like 100 is the simplest safe choice (https://island94.org/2024/09/secret-to-rails-database-connection-pool-size).
+# Raise if we encounter an under-provisioned dev setup
 if Rails.env.local?
-  utility_connections = 1 + GoodJob::SharedExecutor::MAX_THREADS
+  utility_connections = 1 + GoodJob::SharedExecutor::MAX_THREADS # based on GoodJob documentation
   required_pool_size = OpenProject::Configuration.web_max_threads +
                        OpenProject::Configuration.good_job_max_threads +
                        utility_connections
@@ -56,6 +52,6 @@ if Rails.env.local?
           "(web_max_threads #{OpenProject::Configuration.web_max_threads} + " \
           "good_job_max_threads #{OpenProject::Configuration.good_job_max_threads} + " \
           "#{utility_connections} utility). " \
-          "Set pool: 100 in database.yml or ?pool=100 in DATABASE_URL."
+          "Please adjust the pool parameter in database.yml or \"?pool=N\" parameter in DATABASE_URL."
   end
 end
