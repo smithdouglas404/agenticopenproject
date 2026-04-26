@@ -28,12 +28,34 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-config = Rails.env.production? && Rails.application.config.database_configuration[Rails.env]
-pool_size = config && [OpenProject::Configuration.web_max_threads + 1, config["pool"].to_i].max
+if Rails.env.production?
+  config = Rails.application.config.database_configuration[Rails.env]
+  pool_size = config && [OpenProject::Configuration.web_max_threads + 1, config["pool"].to_i].max
 
-# make sure we have enough connections in the pool for each thread and then some
-if pool_size && pool_size > ActiveRecord::Base.connection_pool.size
-  Rails.logger.info { "Increasing database pool size to #{pool_size} to match max threads" }
+  # make sure we have enough connections in the pool for each thread and then some
+  if pool_size && pool_size > ActiveRecord::Base.connection_pool.size
+    Rails.logger.info { "Increasing database pool size to #{pool_size} to match max threads" }
 
-  ActiveRecord::Base.establish_connection config.merge(pool: pool_size)
+    ActiveRecord::Base.establish_connection config.merge(pool: pool_size)
+  end
+end
+
+# Per GoodJob's own recommendation (README "Database connections"), the pool must
+# cover web threads, job threads, and GoodJob utility connections: 1 for the
+# Notifier (LISTEN/NOTIFY) plus GoodJob::SharedExecutor::MAX_THREADS for cron/executor.
+# The pool size is a ceiling — Rails creates connections lazily — so setting it
+# to a large constant like 100 is the simplest safe choice (https://island94.org/2024/09/secret-to-rails-database-connection-pool-size).
+if Rails.env.local?
+  utility_connections = 1 + GoodJob::SharedExecutor::MAX_THREADS
+  required_pool_size = OpenProject::Configuration.web_max_threads +
+                       OpenProject::Configuration.good_job_max_threads +
+                       utility_connections
+
+  if ActiveRecord::Base.connection_pool.size < required_pool_size
+    raise "DB pool (#{ActiveRecord::Base.connection_pool.size}) too small — need at least #{required_pool_size} " \
+          "(web_max_threads #{OpenProject::Configuration.web_max_threads} + " \
+          "good_job_max_threads #{OpenProject::Configuration.good_job_max_threads} + " \
+          "#{utility_connections} utility). " \
+          "Set pool: 100 in database.yml or ?pool=100 in DATABASE_URL."
+  end
 end
