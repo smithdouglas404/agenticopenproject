@@ -83,7 +83,7 @@ module Projects::Identifier
     def unset_slug_if_invalid; end
   end
 
-  # Domain-named scopes for the FriendlyId::Slug relation returned by Project.historical_slugs.
+  # Domain-named scopes for the FriendlyId::Slug relation returned by Project.historical_identifiers.
   # Lets callers compose against verbs like .truly_historical / .matching / .upcased_values
   # instead of raw SQL fragments — keeping FriendlyId::Slug column knowledge in one place.
   module HistoricalIdentifierScopes
@@ -106,7 +106,7 @@ module Projects::Identifier
       str.match?(CLASSIC_IDENTIFIER_FORMAT)
     end
 
-    def historical_slugs
+    def historical_identifiers
       FriendlyId::Slug.where(sluggable_type: name).extending(HistoricalIdentifierScopes)
     end
 
@@ -189,7 +189,7 @@ module Projects::Identifier
   end
 
   def identifier_used_by_other_project_in_past?
-    self.class.historical_slugs
+    self.class.historical_identifiers
               .matching(identifier)
               .where.not(sluggable_id: id)
               .exists?

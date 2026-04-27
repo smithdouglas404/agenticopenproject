@@ -318,7 +318,7 @@ RSpec.describe Projects::Identifier do
     end
   end
 
-  describe ".historical_slugs scopes" do
+  describe ".historical_identifiers scopes" do
     let!(:active_project) { create(:project, identifier: "active-id") }
     let!(:renamed_project) { create(:project, identifier: "current-id") }
 
@@ -331,27 +331,27 @@ RSpec.describe Projects::Identifier do
 
     describe "#truly_historical" do
       it "returns slugs whose lowercase value isn't any active project's identifier" do
-        slugs = Project.historical_slugs.truly_historical.pluck(:slug)
+        slugs = Project.historical_identifiers.truly_historical.pluck(:slug)
         expect(slugs).to contain_exactly("old-slug")
       end
     end
 
     describe "#matching" do
       it "returns slugs whose lowercase equals the lowercased input" do
-        match = Project.historical_slugs.matching("OLD-SLUG")
+        match = Project.historical_identifiers.matching("OLD-SLUG")
         expect(match.pluck(:slug)).to contain_exactly("old-slug")
       end
 
       it "matches case-insensitively when stored slug differs in case" do
         FriendlyId::Slug.create!(sluggable: renamed_project, slug: "MixedCase")
-        match = Project.historical_slugs.matching("mixedcase")
+        match = Project.historical_identifiers.matching("mixedcase")
         expect(match.pluck(:slug)).to contain_exactly("MixedCase")
       end
     end
 
     describe "#upcased_values" do
       it "returns uppercased slugs as a plain array" do
-        values = Project.historical_slugs.upcased_values
+        values = Project.historical_identifiers.upcased_values
         expect(values).to contain_exactly("ACTIVE-ID", "CURRENT-ID", "OLD-SLUG")
       end
     end
@@ -359,13 +359,13 @@ RSpec.describe Projects::Identifier do
     describe "#downcased_values" do
       it "returns downcased slugs as a plain array" do
         FriendlyId::Slug.create!(sluggable: renamed_project, slug: "MixedCase")
-        values = Project.historical_slugs.downcased_values
+        values = Project.historical_identifiers.downcased_values
         expect(values).to include("active-id", "current-id", "old-slug", "mixedcase")
       end
     end
 
     it "composes scopes (truly_historical + upcased_values)" do
-      values = Project.historical_slugs.truly_historical.upcased_values
+      values = Project.historical_identifiers.truly_historical.upcased_values
       expect(values).to contain_exactly("OLD-SLUG")
     end
   end
