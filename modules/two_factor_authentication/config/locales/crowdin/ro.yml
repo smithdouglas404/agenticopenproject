@@ -37,18 +37,14 @@ ro:
     error_invalid_backup_code: Cod de rezervă 2FA invalid
     channel_unavailable: Canalul de livrare %{channel} nu este disponibil.
     no_valid_phone_number: Nu există un număr de telefon valabil.
-    label_pwd_confirmation: Parola
-    notice_pwd_confirmation: Trebuie să vă confirmați parola atunci când faceți modificări la aceste setări.
     label_device_type: Tipul de dispozitiv
     label_default_device: Dispozitiv 2FA implicit
     label_device: Dispozitiv 2FA
     label_devices: Dispozitive 2FA
-    label_one_time_password: Parolă unică
     label_2fa_enabled: Autentificarea doi factori este activă
     label_2fa_disabled: Autentificare doi factori
     text_otp_delivery_message_sms: Parola unică %{app_title} este %{token}
     text_otp_delivery_message_voice: 'Parola unică %{app_title} este: %{pause} %{token}. %{pause} Repet: %{pause} %{token}'
-    text_enter_2fa: Te rog să introduci parola unică de pe dispozitiv.
     text_2fa_enabled: La fiecare autentificare, ți se va cere să introduci un token OTP de pe dispozitivul 2FA implicit.
     text_2fa_disabled: Pentru a activa autentificarea doi factori, utilizează butonul de mai sus pentru a înregistra un nou dispozitiv 2FA. Dacă ai deja un dispozitiv, trebuie să îl faci implicit.
     login:
@@ -69,7 +65,6 @@ ro:
       text_remember: |
         Setează această valoare mai mare decât zero pentru a permite utilizatorilor să își amintească autentificarea 2FA pentru numărul de zile dat.
         Nu li se va cere să o introducă din nou în această perioadă. Poate fi setat numai atunci când nu este impus prin configurare.
-      error_invalid_settings: Strategiile 2FA pe care le-ați selectat nu sunt valide
       failed_to_save_settings: 'Nu s-a reușit actualizarea setărilor 2FA: %{message}'
     admin:
       self_edit_path_html: To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)
@@ -82,14 +77,9 @@ ro:
       text_2fa_enabled: La fiecare autentificare, acest utilizator va fi rugat să introducă un token OTP de pe dispozitivul său 2FA implicit.
       text_2fa_disabled: Utilizatorul nu a configurat un dispozitiv 2FA prin intermediul paginii "Contul meu"
       only_sms_allowed: Only SMS delivery can be set up for other users.
-    upsell:
-      title: Autentificare doi factori
-      description: Consolidarea securității instanței OpenProject prin oferirea (sau impunerea) autentificării doi factori pentru toți membrii proiectului.
     backup_codes:
-      none_found: Nu există coduri de rezervă pentru acest cont.
       singular: Cod de rezervă
       plural: Coduri de rezervă
-      your_codes: pentru contul tău %{app_name} %{login}
       overview_description: |
         Dacă nu poți accesa dispozitivele doi factori, poți utiliza un cod de rezervă pentru a recăpăta accesul la cont.
         Utilizează următorul buton pentru a genera un nou set de coduri de rezervă.
@@ -173,19 +163,15 @@ ro:
       clear_cookie: Clic aici pentru a elimina toate sesiunile 2FA reținute.
       cookie_removed: Toate sesiunile 2FA memorate au fost eliminate.
       dont_ask_again: Creați un modul cookie pentru a reține autentificarea 2FA pe acest client timp de %{days} zile.
-  field_phone: Telefon mobil
   field_otp: Parolă unică
   notice_account_otp_invalid: Parolă unică invalidă.
   notice_account_otp_expired: Parola unică pe care ați introdus-o a expirat.
   notice_developer_strategy_otp: 'Strategia dezvoltatorului a generat următoarea parolă unică: %{token} (Canal: %{channel})'
   notice_account_otp_send_failed: Parola dvs. unică nu a putut fi trimisă.
   notice_account_has_no_phone: Nici un număr de telefon mobil nu este asociat contului dvs.
-  label_expiration_hint: "%{date} sau la deconectare"
-  label_actions: Acțiuni
   label_confirmed: Confirmat
   button_continue: Continuă
   button_make_default: Marcați ca implicit
-  label_unverified_phone: Telefonul mobil nu a fost încă verificat
   notice_phone_number_format: 'Te rog să introduci numărul în următorul format: +XX XXXXXXXX.'
   text_otp_not_receive: Alte metode de verificare
   text_send_otp_again: 'Retrimite parola unică prin:'

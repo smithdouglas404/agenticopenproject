@@ -147,7 +147,7 @@ module ::TwoFactorAuthentication
     end
 
     def index_path
-      raise NotImplementedError
+      raise SubclassResponsibilityError
     end
 
     helper_method :index_path

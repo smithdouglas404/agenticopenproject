@@ -104,10 +104,11 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
       let(:current_user) { user_with_manage_permissions }
       let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
       let!(:cancelled_occurrence) do
-        create(:scheduled_meeting,
-               :cancelled,
+        create(:meeting,
                recurring_meeting: series,
-               start_time: first_occurrence_time)
+               start_time: first_occurrence_time,
+               recurrence_start_time: first_occurrence_time,
+               state: :cancelled)
       end
 
       it "skips the cancelled occurrence and moves to the next available one" do
@@ -117,7 +118,7 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
         meeting_page.select_action(agenda_item, "Move to next meeting")
 
         expect(page).to have_text("Move to next meeting?")
-        expect(page).to have_text("Note: Skipping cancelled occurrence")
+        expect(page).to have_text("Note: Skipping cancelled meeting")
 
         page.within_modal "Move to next meeting?" do
           click_on "Move"
@@ -133,16 +134,18 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
       let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
       let(:second_occurrence_time) { series.next_occurrence(from_time: first_occurrence_time) }
       let!(:first_cancelled_occurrence) do
-        create(:scheduled_meeting,
-               :cancelled,
+        create(:meeting,
                recurring_meeting: series,
-               start_time: first_occurrence_time)
+               start_time: first_occurrence_time,
+               recurrence_start_time: first_occurrence_time,
+               state: :cancelled)
       end
       let!(:second_cancelled_occurrence) do
-        create(:scheduled_meeting,
-               :cancelled,
+        create(:meeting,
                recurring_meeting: series,
-               start_time: second_occurrence_time)
+               start_time: second_occurrence_time,
+               recurrence_start_time: second_occurrence_time,
+               state: :cancelled)
       end
 
       it "skips all cancelled occurrences and shows the count in the dialog" do
@@ -152,7 +155,7 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
         meeting_page.select_action(agenda_item, "Move to next meeting")
 
         expect(page).to have_text("Move to next meeting?")
-        expect(page).to have_text("Note: Skipping 2 cancelled occurrences")
+        expect(page).to have_text("Note: Skipping 2 cancelled meetings")
 
         page.within_modal "Move to next meeting?" do
           click_on "Move"
@@ -163,7 +166,71 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
       end
     end
 
-    context "when the occurrence has been rescheduled to an earlier time (Bug #73741)", skip: "Needs more investigating" do
+    context "with manage_agendas permission, but next occurrence is closed" do
+      let(:current_user) { user_with_manage_permissions }
+      let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
+      let!(:closed_occurrence) do
+        RecurringMeetings::InitNextOccurrenceJob.perform_now(series, first_occurrence_time)
+        occurrence = series.meetings.not_templated.find_by(start_time: first_occurrence_time)
+        occurrence.update!(state: :closed)
+        occurrence
+      end
+
+      it "skips the closed occurrence and moves to the next available one" do
+        meeting_page.visit!
+        meeting_page.expect_agenda_item(title: "Test notes")
+
+        meeting_page.select_action(agenda_item, "Move to next meeting")
+
+        expect(page).to have_text("Move to next meeting?")
+        expect(page).to have_text("Note: Skipping closed meeting")
+
+        page.within_modal "Move to next meeting?" do
+          click_on "Move"
+        end
+
+        expect_and_dismiss_flash(message: "Agenda item moved to the next meeting")
+        meeting_page.expect_no_agenda_item(title: "Test notes")
+      end
+    end
+
+    context "with manage_agendas permission, but next occurrence is cancelled and the one after is closed" do
+      let(:current_user) { user_with_manage_permissions }
+      let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
+      let(:second_occurrence_time) { series.next_occurrence(from_time: first_occurrence_time) }
+      let!(:cancelled_occurrence) do
+        create(:recurring_meeting_occurrence,
+               state: :cancelled,
+               recurring_meeting: series,
+               start_time: first_occurrence_time)
+      end
+      let!(:closed_occurrence) do
+        RecurringMeetings::InitNextOccurrenceJob.perform_now(series, second_occurrence_time)
+        occurrence = series.meetings.not_templated.find_by(start_time: second_occurrence_time)
+        occurrence.update!(state: :closed)
+        occurrence
+      end
+
+      it "skips both and shows both notes in the dialog" do
+        meeting_page.visit!
+        meeting_page.expect_agenda_item(title: "Test notes")
+
+        meeting_page.select_action(agenda_item, "Move to next meeting")
+
+        expect(page).to have_text("Move to next meeting?")
+        expect(page).to have_text("Note: Skipping cancelled meeting")
+        expect(page).to have_text("and closed meeting")
+
+        page.within_modal "Move to next meeting?" do
+          click_on "Move"
+        end
+
+        expect_and_dismiss_flash(message: "Agenda item moved to the next meeting")
+        meeting_page.expect_no_agenda_item(title: "Test notes")
+      end
+    end
+
+    context "when the occurrence has been rescheduled to an earlier time (Bug #73741)" do
       let(:current_user) { user_with_manage_permissions }
       let(:first_occurrence_time) { series.next_occurrence(from_time: Time.current) }
 
@@ -173,8 +240,7 @@ RSpec.describe "Recurring meetings move to next meeting", :js do
           .call(start_time: first_occurrence_time)
         occurrence_meeting = call.result
 
-        # Reschedule to an earlier time
-        # This updates meeting.start_time, but not meeting.scheduled_meeting.start_time
+        # Reschedule to an earlier time — recurrence_start_time stays unchanged as the canonical slot
         occurrence_meeting.update!(start_time: first_occurrence_time - 1.day)
         occurrence_meeting
       end

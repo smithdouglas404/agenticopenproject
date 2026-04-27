@@ -28,11 +28,6 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Primer::Beta::Subhead.new(mt: 3)) do |component|
-    component.with_heading(tag: :h3, size: :medium) { I18n.t("backlogs.user_preference.header_backlogs") }
-  end
-%>
-<%=
   settings_primer_form_with(model: user.pref, scope: :pref, url: { action: "update_settings" }, data: { turbo: false }) do |form|
     render(My::BacklogsForm.new(form))
   end

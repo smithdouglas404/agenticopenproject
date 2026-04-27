@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackage, "positions", with_flag: { scrum_projects: true } do # rubocop:disable RSpec/SpecFilePathFormat
+RSpec.describe WorkPackage, "positions" do # rubocop:disable RSpec/SpecFilePathFormat
   def create_work_package(options)
     create(:work_package, options.reverse_merge(project:, type_id: type.id))
   end
@@ -40,7 +40,6 @@ RSpec.describe WorkPackage, "positions", with_flag: { scrum_projects: true } do 
   shared_let(:sprint1) { create(:agile_sprint, project:, name: "Sprint 1") }
   shared_let(:sprint2) { create(:agile_sprint, project:, name: "Sprint 2") }
 
-  # Once the feature flag is removed, those can be changed into shared_let
   let!(:sprint1_wp1) { create_work_package(subject: "Sprint 1 WorkPackage 1", sprint: sprint1) }
   let!(:sprint1_wp2) { create_work_package(subject: "Sprint 1 WorkPackage 2", sprint: sprint1) }
   let!(:sprint1_wp3) { create_work_package(subject: "Sprint 1 WorkPackage 3", sprint: sprint1) }

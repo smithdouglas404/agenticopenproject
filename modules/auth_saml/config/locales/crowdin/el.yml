@@ -34,6 +34,7 @@ el:
   saml:
     menu_title: Πάροχοι SAML
     delete_title: Διαγραφή παρόχου SAML
+    delete_heading: Delete this SAML provider?
     info:
       title: Παράμετροι Διαμόρφωσης Πρωτοκόλλου SAML
       description: 'Χρησιμοποιήστε αυτές τις παραμέτρους για να ρυθμίσετε τη σύνδεση του παρόχου ταυτότητας με το OpenProject.

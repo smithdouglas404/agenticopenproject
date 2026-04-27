@@ -324,7 +324,7 @@ module Exports::PDF::Common::Common
   end
 
   def export_datetime
-    @export_datetime ||= Time.zone.now
+    @export_datetime ||= Time.current.in_time_zone(User.current.time_zone)
   end
 
   def title_datetime

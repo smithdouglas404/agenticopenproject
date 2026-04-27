@@ -50,7 +50,11 @@ module Admin::Import::Jira::ImportRuns
       return nil if imported_projects.none?
 
       ids = imported_projects.pluck(:op_entity_id).map(&:to_s)
-      helpers.projects_path(filters: [{ id: { operator: "=", values: ids } }].to_json)
+      if ids.length == 1
+        helpers.project_path(id: ids[0])
+      else
+        helpers.projects_path(filters: [{ id: { operator: "=", values: ids } }].to_json)
+      end
     end
 
     def imported_work_packages
@@ -61,8 +65,13 @@ module Admin::Import::Jira::ImportRuns
     def imported_work_packages_url
       return nil if imported_work_packages.none?
 
-      project_ids = imported_projects.pluck(:op_entity_id).map(&:to_s)
-      helpers.work_packages_path(query_props: { f: [{ n: "project", o: "=", v: project_ids }] }.to_json)
+      wp_ids = imported_work_packages.pluck(:op_entity_id).map(&:to_s)
+      if wp_ids.length == 1
+        helpers.work_package_path(id: wp_ids[0])
+      else
+        project_ids = imported_projects.pluck(:op_entity_id).map(&:to_s)
+        helpers.work_packages_path(query_props: { f: [{ n: "project", o: "=", v: project_ids }] }.to_json)
+      end
     end
 
     def imported_users

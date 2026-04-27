@@ -39,11 +39,11 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
   current_user { user }
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
-  let(:sprint) { create(:sprint, project:, name: "Sprint 1", start_date: Date.yesterday, effective_date: Date.tomorrow) }
+  let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
   let(:position) { 2 }
   let(:max_position) { 3 }
   let(:story) do
-    create(:story,
+    create(:work_package,
            subject: "Test Story",
            project:,
            type: type_feature,
@@ -51,29 +51,28 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
            priority: default_priority,
            story_points: 5,
            position:,
-           version: sprint)
+           sprint: sprint)
   end
 
-  before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
-  end
-
-  def render_component(position: 2, max_position: 3)
+  def render_component(position: 2, max_position: 3, open_sprints_exist: true)
     story.update!(position:)
-    render_inline(described_class.new(story:, sprint:, project:, max_position:, current_user: user))
+    render_inline(described_class.new(story:,
+                                      sprint:,
+                                      project:,
+                                      max_position:,
+                                      open_sprints_exist:,
+                                      current_user: user))
   end
 
   describe "standard items" do
     it "renders stable ids for the list and primary actions" do
       render_component
 
-      expect(page).to have_element(:ul, id: /\Astory_#{story.id}_menu-list\z/)
-      expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_details\z/)
-      expect(page).to have_element(:a, id: /\Astory_#{story.id}_menu_open_fullscreen\z/)
-      expect(page).to have_element(:"clipboard-copy", id: /\Astory_#{story.id}_menu_copy_url_to_clipboard\z/)
-      expect(page).to have_element(:"clipboard-copy", id: /\Astory_#{story.id}_menu_copy_work_package_id\z/)
+      expect(page).to have_element(:ul, id: /\Awork_package_#{story.id}_menu-list\z/)
+      expect(page).to have_element(:a, id: /\Awork_package_#{story.id}_menu_open_details\z/)
+      expect(page).to have_element(:a, id: /\Awork_package_#{story.id}_menu_open_fullscreen\z/)
+      expect(page).to have_element(:"clipboard-copy", id: /\Awork_package_#{story.id}_menu_copy_url_to_clipboard\z/)
+      expect(page).to have_element(:"clipboard-copy", id: /\Awork_package_#{story.id}_menu_copy_work_package_id\z/)
     end
 
     it "shows Open details link (split view)" do
@@ -85,6 +84,17 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
         "a[data-turbo-frame='content-bodyRight'][data-turbo-action='advance']",
         text: I18n.t(:"js.button_open_details")
       )
+    end
+
+    context "when params[:all] is true" do
+      before { vc_test_controller.params.merge!(all: "1") }
+
+      it "adds the all param to the open details href" do
+        render_component
+
+        href = page.find("#work_package_#{story.id}_menu_open_details")[:href]
+        expect(href).to match(/all=1/)
+      end
     end
 
     it "shows Open fullscreen link (full page)" do
@@ -104,7 +114,7 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
       expect(page).to have_octicon(:copy)
       expect(page).to have_element(
         :"clipboard-copy",
-        id: "story_#{story.id}_menu_copy_url_to_clipboard",
+        id: "work_package_#{story.id}_menu_copy_url_to_clipboard",
         value: /\/work_packages\/#{story.id}\z/,
         text: "Copy URL to clipboard"
       )
@@ -116,7 +126,7 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
       expect(page).to have_octicon(:hash)
       expect(page).to have_element(
         :"clipboard-copy",
-        id: "story_#{story.id}_menu_copy_work_package_id",
+        id: "work_package_#{story.id}_menu_copy_work_package_id",
         value: story.id.to_s,
         text: "Copy work package ID"
       )
@@ -220,13 +230,40 @@ RSpec.describe Backlogs::StoryMenuListComponent, type: :component do
         expect(page).to have_no_text(I18n.t(:label_sort_lowest))
       end
 
-      it "hides the Move submenu" do
-        render_component(position: 1, max_position: 1)
+      it "hides the Move submenu when no other open sprints exist" do
+        render_component(position: 1, max_position: 1, open_sprints_exist: false)
 
         expect(page).to have_no_selector(
           :menuitem,
           text: "Move"
         )
+      end
+    end
+  end
+
+  describe "Move to sprint item" do
+    it "is shown when other open sprints exist and the user can manage sprint items" do
+      render_component(open_sprints_exist: true)
+
+      expect(page).to have_element(:a, id: /\Awork_package_#{story.id}_menu_move_to_sprint\z/)
+      expect(page).to have_octicon(:zap)
+      expect(page).to have_text(I18n.t(:"backlogs.story_menu_list_component.action_menu.move_to_sprint"))
+    end
+
+    it "is hidden when no other open sprints exist" do
+      render_component(open_sprints_exist: false)
+
+      expect(page).to have_no_element(:a, id: /\Awork_package_#{story.id}_menu_move_to_sprint\z/)
+    end
+
+    context "when params[:all] is true" do
+      before { vc_test_controller.params.merge!(all: "1") }
+
+      it "adds the all param to the move to sprint href" do
+        render_component(open_sprints_exist: true)
+
+        href = page.find("#work_package_#{story.id}_menu_move_to_sprint")[:href]
+        expect(href).to match(/all=1/)
       end
     end
   end

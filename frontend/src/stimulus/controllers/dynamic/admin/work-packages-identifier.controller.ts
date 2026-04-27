@@ -52,17 +52,17 @@ export default class WorkPackagesIdentifierController extends Controller {
   }
 
   private updateVisibility() {
-    const showAutofix = this.isAlphanumericSelected() && this.hasProblematicProjectsValue;
+    const showAutofix = this.isSemanticSelected() && this.hasProblematicProjectsValue;
 
     this.autofixSectionTarget.hidden = !showAutofix;
     this.saveButtonTarget.hidden     =  showAutofix;
     this.autofixButtonTarget.hidden  = !showAutofix;
   }
 
-  private isAlphanumericSelected():boolean {
+  private isSemanticSelected():boolean {
     const checked = this.element.querySelector<HTMLInputElement>(
       'input[name="settings[work_packages_identifier]"]:checked',
     );
-    return checked?.value === 'alphanumeric';
+    return checked?.value === 'semantic';
   }
 }

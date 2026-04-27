@@ -102,8 +102,6 @@ module Import
     end
 
     def collect_markup_mentions(text, mention_usernames)
-      return if text.blank?
-
       ast = JiraWikiMarkup::Parser.new(text).parse
       collect_mentions_from_node(ast, mention_usernames)
     end

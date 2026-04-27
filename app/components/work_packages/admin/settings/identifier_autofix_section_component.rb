@@ -34,7 +34,7 @@ module WorkPackages
       class IdentifierAutofixSectionComponent < ApplicationComponent
         include OpPrimer::ComponentHelpers
 
-        DISPLAY_COUNT = WorkPackages::IdentifierAutofix::PreviewQuery::DISPLAY_COUNT
+        DISPLAY_COUNT = ProjectIdentifiers::IdentifierAutofix::PreviewQuery::DISPLAY_COUNT
 
         def initialize(projects_data:, total_count: projects_data.size)
           super()

@@ -13,7 +13,7 @@
     [href]="workPackageLink"
     [attr.data-work-package-id]="workPackage.id"
     [attr.data-hover-card-url]="workPackageHoverCardUrl">
-    #{{workPackage.id}}:
+    {{workPackage.formattedId}}:
   </a>
   <display-field [resource]="workPackage"
     [displayFieldOptions]="{ writable: false }"

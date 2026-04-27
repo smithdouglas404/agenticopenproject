@@ -34,6 +34,7 @@ pt-BR:
   saml:
     menu_title: Provedores SAML
     delete_title: Excluir provedor SAML
+    delete_heading: Deseja excluir este provedor SAML?
     info:
       title: Parâmetros de configuração do protocolo SAML
       description: 'Use esses parâmetros para configurar a conexão do seu provedor de identidade ao OpenProject.

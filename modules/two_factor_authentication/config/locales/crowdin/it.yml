@@ -37,18 +37,14 @@ it:
     error_invalid_backup_code: Codice di backup 2FA non valido
     channel_unavailable: Il canale di consegna %{channel} non è disponibile.
     no_valid_phone_number: Non esiste nessun numero di telefono valido.
-    label_pwd_confirmation: Password
-    notice_pwd_confirmation: Devi confermare la tua password per poter effettuare delle modifiche a queste impostazioni.
     label_device_type: Tipo di dispositivo
     label_default_device: Dispositivo 2FA predefinito
     label_device: Dispositivo 2FA
     label_devices: Dispositivi 2FA
-    label_one_time_password: Password monouso
     label_2fa_enabled: L' autenticazione a due fattori è attiva
     label_2fa_disabled: L'autenticazione a due fattori non è attiva
     text_otp_delivery_message_sms: La tua password monouso per %{app_title} è %{token}
     text_otp_delivery_message_voice: 'La tua password monouso per %{app_title} è: %{pause} %{token}. %{pause} Ripeto: %{pause} %{token}'
-    text_enter_2fa: Inserisci la password monouso dal tuo dispositivo.
     text_2fa_enabled: Ad ogni accesso, ti sarà chiesto di inserire un token OTP dal tuo dispositivo 2FA predefinito.
     text_2fa_disabled: Per abilitare l'autenticazione a due fattori, usa il pulsante qui sopra per registrare un nuovo dispositivo 2FA. Se hai già un dispositivo, devi renderlo predefinito.
     login:
@@ -69,7 +65,6 @@ it:
       text_remember: |
         Imposta questo valore maggiore di zero per consentire agli utenti di ricordare la loro autenticazione 2FA per il numero specificato di giorni.
         Non gli sarà richiesto di autenticarsi nuovamente in quel periodo. L’impostazione può essere modificata solo quando non applicata dalla configurazione.
-      error_invalid_settings: Le strategie 2FA selezionate non sono valide
       failed_to_save_settings: 'Impossibile aggiornare le impostazioni 2FA: %{message}'
     admin:
       self_edit_path_html: Per aggiungere o modificare i tuoi dispositivi 2FA, vai alla [pagina Autenticazione a due fattori del tuo account](self_edit_link)
@@ -82,14 +77,9 @@ it:
       text_2fa_enabled: A ogni accesso, questo utente dovrà inserire un token OTP dal proprio dispositivo predefinito A2F.
       text_2fa_disabled: L'utente non ha configurato un dispositivo A2F tramite la propria 'pagina Il Mio profilo'
       only_sms_allowed: Per altri utenti è possibile impostare solo l'invio di SMS.
-    upsell:
-      title: Autenticazione a due fattori
-      description: Rafforza la sicurezza della tua istanza OpenProject offrendo (o implementando) l'autenticazione a due fattori a tutti i membri del progetto.
     backup_codes:
-      none_found: Non esistono codici di backup per questo account.
       singular: Codice di backup
       plural: Codici di backup
-      your_codes: per il tuo account %{app_name} %{login}
       overview_description: |
         Se non sei in grado di accedere ai tuoi dispositivi di autenticazione a due fattori, puoi usare un codice di backup per recuperare l'accesso al tuo account.
         Usa il seguente pulsante per generare un nuovo elenco di codici di backup.
@@ -173,19 +163,15 @@ it:
       clear_cookie: Fai clic qui per rimuovere tutte le sessioni 2FA memorizzate.
       cookie_removed: Tutte le sessioni 2FA memorizzate sono state rimosse.
       dont_ask_again: Crea un cookie per memorizzare l'autenticazione 2FA su questo client per %{days} giorni.
-  field_phone: Cellulare
   field_otp: Password monouso
   notice_account_otp_invalid: Password monouso non valida.
   notice_account_otp_expired: La password monouso che hai inserito è scaduta.
   notice_developer_strategy_otp: 'La strategia dello sviluppatore ha generato la seguente password monouso: %{token} (Canale: %{channel})'
   notice_account_otp_send_failed: La tua password monouso non può essere inviata.
   notice_account_has_no_phone: Nessun numero di cellulare è associato al tuo account.
-  label_expiration_hint: "%{date} o il logout"
-  label_actions: Azioni
   label_confirmed: Confermato
   button_continue: Continua
   button_make_default: Segna come predefinito
-  label_unverified_phone: Cellulare non ancora verificato
   notice_phone_number_format: 'Inserisci il numero nel formato seguente: + XX XXXXXXXX.'
   text_otp_not_receive: Altri metodi di verifica
   text_send_otp_again: 'Reinvia la password monouso per:'

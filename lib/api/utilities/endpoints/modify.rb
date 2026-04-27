@@ -39,7 +39,7 @@ module API
         private
 
         def present_success(_request, _call)
-          raise NotImplementedError
+          raise SubclassResponsibilityError
         end
 
         def present_error(call)

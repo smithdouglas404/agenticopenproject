@@ -54,7 +54,7 @@ module Queries
         private
 
         def visibility_checked_sql(_operator, _values, _visible_sql)
-          raise NotImplementedError
+          raise SubclassResponsibilityError
         end
       end
     end

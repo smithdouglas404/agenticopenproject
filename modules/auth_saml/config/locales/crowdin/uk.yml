@@ -34,6 +34,7 @@ uk:
   saml:
     menu_title: Постачальники SAML
     delete_title: Видалити постачальника SAML
+    delete_heading: Delete this SAML provider?
     info:
       title: Параметри конфігурації протоколу SAML
       description: 'Використовуйте ці параметри, щоб налаштувати підключення свого постачальника ідентифікаційних даних в OpenProject.

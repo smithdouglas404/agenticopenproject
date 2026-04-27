@@ -32,6 +32,7 @@ pl:
         location: Lokalizacja
         duration: Czas trwania
         notes: Notatki
+        recurrence_start_time: Scheduled start time
         participants: Uczestnicy
         participant:
           one: 1 uczestnik
@@ -44,6 +45,9 @@ pl:
         start_date: Data
         start_time: Data rozpoczęcia
         start_time_hour: Godzina rozpoczęcia
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Udostępnianie
       meeting_agenda_item:
         title: Tytuł
@@ -51,9 +55,15 @@ pl:
         duration_in_minutes: Czas trwania
         description: Notatki
         presenter: Prezenter
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Tytuł
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Częstotliwość
         interval: Interwał
         start_date: Rozpoczyna się
@@ -62,6 +72,10 @@ pl:
         end_after: Seria spotkań kończy się
         end_date: Data zakończenia
         iterations: Wystąpienia
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Czas rozpoczęcia
       meeting_participant:
@@ -199,6 +213,7 @@ pl:
   label_notify: Wyślij do przeglądu
   label_icalendar: Wyślij iCalendar
   label_icalendar_download: Pobierz wydarzenie iCalendar
+  label_view_meeting: Wyświetl spotkanie
   label_view_meeting_series: Wyświetl serię spotkań
   label_meeting_series: Seria spotkań
   label_version: Wersja
@@ -429,6 +444,11 @@ pl:
     ical_response:
       update_failed: Nie można zaktualizować statusu uczestnictwa.
       meeting_not_found: Nie znaleziono spotkania dla podanego identyfikatora UID.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Sekcja bez nazwy
     delete_confirmation: Usunięcie sekcji spowoduje również usunięcie wszystkich jej elementów punktów planu spotkania. Czy na pewno chcesz to zrobić?
@@ -671,9 +691,9 @@ pl:
   text_exit_draft_mode_dialog_template_title: Otworzyć pierwsze wystąpienie z tej serii spotkań?
   text_exit_draft_mode_dialog_template_subtitle: Po tym nie możesz powrócić do trybu wersji roboczej.
   label_meeting_template_sharing: Udostępnianie
-  label_meeting_template_sharing_none: Tylko ten projekt
-  label_meeting_template_sharing_descendants: Podprojekty
-  label_meeting_template_sharing_system: Wszystkie projekty
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: Ten szablon można udostępniać podprojektom lub innym projektom w tym wystąpieniu. Skopiowane zostaną tylko pozycje planu spotkania i załączniki.
   text_meeting_not_editable_anymore: Tego spotkania nie można już edytować.
   text_meeting_not_present_anymore: To spotkanie zostało usunięte. Wybierz inne spotkanie.
@@ -692,9 +712,12 @@ pl:
   text_agenda_item_duplicate_in_next_meeting: Czy na pewno chcesz dodać kopię tego punktu planu spotkania do następnego spotkania w dniu %{date} o godzinie %{time}? Wyniki nie będą duplikowane.
   text_agenda_item_duplicated_in_next_meeting: Pozycję planu spotkania zduplikowano w następnym spotkaniu w dniu %{date}
   text_work_package_has_no_upcoming_meeting_agenda_items: Ten pakiet roboczy nie został jeszcze zaplanowany w planie nadchodzącego spotkania.
-  text_agenda_item_no_available_occurrence: Wszystkie nadchodzące wystąpienia zostały anulowane.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Uwaga: pomijanie anulowanego wystąpienia w dniu %{date}.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Uwaga: pomijanie %{count} anulowanych wystąpień.'
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: closed meeting on %{date}
+  text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: Użyj przycisku „Dodaj do spotkania”, aby dodać ten pakiet roboczy do nadchodzącego spotkania.
   text_work_package_has_no_past_meeting_agenda_items: Ten pakiet roboczy nie został dodany jako pozycja planu spotkania w poprzednim spotkaniu.
   text_email_updates_muted: Wysyłanie aktualizacji kalendarza pocztą elektroniczną jest wyciszone. Po wprowadzeniu zmian uczestnicy nie będą otrzymywać zaktualizowanych zaproszeń pocztą elektroniczną.

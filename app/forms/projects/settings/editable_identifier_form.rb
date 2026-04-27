@@ -31,7 +31,7 @@ module Projects
   module Settings
     class EditableIdentifierForm < ApplicationForm
       form do |f|
-        if Setting::WorkPackageIdentifier.alphanumeric?
+        if Setting::WorkPackageIdentifier.semantic?
           f.text_field(
             name: :identifier,
             label: attribute_name(:identifier),

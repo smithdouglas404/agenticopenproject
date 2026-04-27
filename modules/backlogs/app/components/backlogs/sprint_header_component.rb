@@ -34,7 +34,7 @@ module Backlogs
     include OpTurbo::Streamable
     include Primer::FetchOrFallbackHelper
     include Redmine::I18n
-    include RbCommonHelper
+    include Backlogs::CommonHelper
 
     attr_reader :sprint, :project, :stories, :collapsed, :current_user, :active_sprint_ids
 
@@ -64,6 +64,41 @@ module Backlogs
 
     private
 
+    def show_start_sprint_action?
+      sprint.in_planning? && ::Sprints::StartContract.can_start?(user: current_user, sprint:, project:)
+    end
+
+    def show_finish_sprint_action?
+      sprint.active? && ::Sprints::StartContract.can_start_or_complete?(user: current_user, sprint:)
+    end
+
+    def disable_start_sprint_action?
+      sprint.in_planning? && (!sprint.date_range_set? || project_has_another_active_sprint?)
+    end
+
+    def start_sprint_button_arguments
+      args = {
+        id: dom_target(sprint, :start_button),
+        scheme: :invisible
+      }
+
+      if disable_start_sprint_action?
+        args.merge(tag: :button, inactive: true, aria: { disabled: true })
+      else
+        args.merge(tag: :a, href: start_project_backlogs_sprint_path(project, sprint), data: { turbo_method: :post })
+      end
+    end
+
+    def finish_sprint_button_arguments
+      {
+        id: dom_target(sprint, :finish_button),
+        scheme: :invisible,
+        tag: :a,
+        href: finish_project_backlogs_sprint_path(project, sprint),
+        data: { turbo_method: :post }
+      }
+    end
+
     def story_points
       @story_points ||= stories.sum { |story| story.story_points || 0 }
     end
@@ -72,8 +107,22 @@ module Backlogs
       @story_count ||= stories.size
     end
 
-    def date_range
-      [sprint.start_date, sprint.finish_date]
+    def project_has_another_active_sprint?
+      (resolved_active_sprint_ids - [sprint.id]).any?
+    end
+
+    def start_sprint_disabled_reason
+      return unless disable_start_sprint_action?
+
+      if sprint.date_range_set?
+        t(".start_sprint_disabled_reason_active_sprint")
+      else
+        t(".start_sprint_disabled_reason_missing_dates")
+      end
+    end
+
+    def resolved_active_sprint_ids
+      active_sprint_ids || Agile::Sprint.for_project(sprint.project).active.pluck(:id)
     end
   end
 end

@@ -42,6 +42,11 @@ module Admin
         )
 
         sf.text_field(
+          name: :organization_name,
+          input_width: :medium
+        )
+
+        sf.text_field(
           name: :per_page_options,
           input_width: :medium
         )

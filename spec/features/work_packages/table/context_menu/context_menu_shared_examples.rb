@@ -96,5 +96,33 @@ RSpec.shared_examples_for "provides a single WP context menu" do
       wp = WorkPackage.last
       expect(wp.parent).to eq work_package
     end
+
+    context "with semantic identifiers enabled",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      it "uses numeric parent_id in the URL and sets the parent correctly" do
+        # Ensure the WP has a semantic identifier so we can verify the URL uses numeric PK
+        work_package.allocate_and_register_semantic_id if work_package.identifier.blank?
+
+        open_context_menu.call
+        menu.choose("Create new child")
+        expect(page).to have_css(".inline-edit--container.subject input")
+
+        expect(current_url).to match(/parent_id=#{work_package.id}/)
+        expect(current_url).not_to match(/parent_id=#{Regexp.escape(work_package.identifier)}/)
+
+        split_view = Pages::SplitWorkPackageCreate.new project: work_package.project
+        subject = split_view.edit_field(:subject)
+        subject.set_value "Semantic child"
+        expect(page).to have_field("wp-new-inline-edit--field-subject", with: "Semantic child", wait: 10)
+        subject.submit_by_enter
+
+        split_view.expect_and_dismiss_toaster message: "Successful creation."
+        expect(page).to have_test_selector("op-wp-breadcrumb", text: "Parent:\n#{work_package.subject}")
+
+        child = WorkPackage.last
+        expect(child.parent).to eq work_package
+      end
+    end
   end
 end

@@ -25,7 +25,7 @@ tr:
     name: OpenProject Belgeler
     description: Projelerde belge oluşturulmasına izin veren bir OpenProject eklentisi.
   attributes:
-    collaborative_editing_hocuspocus_url: Hocuspocus server URL
+    collaborative_editing_hocuspocus_url: Hocuspocus sunucu URL'si
   activerecord:
     errors:
       models:
@@ -71,12 +71,10 @@ tr:
         Bu belgeye erişmek istiyorsanız gerçek zamanlı metin işbirliğini etkinleştirmek için lütfen yöneticinize başvurun.
     show_edit_view:
       connection_error_notice:
-        description: |-
+        description_server_unavailable: |-
           Gerçek zamanlı metin işbirliği sunucusuna erişilemediği için belge açılamıyor.
           Sorun devam ederse lütfen yöneticiyle iletişime geçin.
         action: Tekrar deneyin
-      connection_recovery_notice:
-        description: Gerçek zamanlı metin işbirliği sunucusuna bağlantı yeniden sağlandı.
       tabs: Belge sekmeleri
     index_page:
       name: İsim
@@ -88,6 +86,9 @@ tr:
       types: Türler
       collaboration_settings: Gerçek zamanlı işbirliği
     last_updated_at: Son kaydedilen %{time}.
+    info_line:
+      currently_offline: Şu anda çevrimdışısınız.
+      connection_restored: You are now back online.
     active_editors: Etkin düzenleyici
     active_editors_count:
       one: 1 aktif editör

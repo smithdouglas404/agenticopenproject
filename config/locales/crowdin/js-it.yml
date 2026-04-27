@@ -515,12 +515,6 @@ it:
         sidebar_arrow: Utilizza la freccia di ritorno nell'angolo in alto a sinistra per tornare al <b>menu principale</b> del progetto.
         welcome: Fai un tour introduttivo di tre minuti per apprendere le <b>funzioni importanti</b>. <br> Consigliamo di completare i passaggi fino alla fine. Puoi riavviare il tour in qualsiasi momento.
         wiki: Nella <b>wiki</b> puoi documentare e condividere la conoscenza con il tuo team.
-        backlogs:
-          overview: Gestisci il tuo lavoro nella vista <b>backlog</b>.
-          sprints: A destra hai il product backlog e il bug backlog, a sinistra i rispettivi sprint. Qui puoi creare <b>epics, storie utente e bug</b>, assegnare priorità tramite trascinamento e aggiungerli a uno sprint.
-          task_board_arrow: Per vedere il tuo <b>pannello delle attività</b>, apri il menu a cascata Sprint...
-          task_board_select: "...e seleziona la voce <b>pannello delle attività</b>."
-          task_board: Il pannello delle attività visualizza l'<b>avanzamento dello sprint</b>. Fai clic sull'icona più (+) accanto a una storia utente per aggiungere nuove attività o impedimenti. <br> Lo stato può essere aggiornato trascinandolo.
         boards:
           overview: Seleziona <b>board</b> per cambiare visualizzazione e gestire il tuo progetto utilizzando la visualizzazione agile delle schede.
           lists_kanban: Qui puoi creare più liste  (colonne) all'interno della tua board. Questa funzione ti consente di creare una <b>board Kanban</b>, ad esempio.
@@ -592,49 +586,6 @@ it:
       settings:
         change_notification_settings: Puoi modificare le tue <a target="_blank" href="%{url}">impostazioni di notifica</a> per assicurarti di non perderti mai un aggiornamento importante.
         title: Impostazioni notifiche
-        notify_me: Avvisami
-        reminders:
-          no_notification: Nessuna notifica
-          timeframes:
-            normal:
-              PT0S: stesso giorno
-              P1D: 1 giorno prima
-              P3D: 3 giorni prima
-              P7D: una settimana prima
-            overdue:
-              P1D: ogni giorno
-              P3D: ogni 3 giorni
-              P7D: ogni settimana
-        reasons:
-          mentioned:
-            title: Menzionato
-            description: Ricevi una notifica ogni volta che qualcuno ti menziona ovunque
-          assignee: Assegnatario
-          responsible: Responsabile
-          shared: Condiviso
-          watched: Osservatore
-          work_package_commented: Tutti i nuovi commenti
-          work_package_created: Nuove macro-attività
-          work_package_processed: Tutte le modifiche di stato
-          work_package_prioritized: Tutte le modifiche prioritarie
-          work_package_scheduled: Tutte le modifiche della data
-        global:
-          immediately:
-            title: Partecipazione
-            description: Notifiche per tutte le attività nelle macro-attività in cui sei coinvolto (assegnatario, responsabile od osservatore)
-          delayed:
-            title: Non partecipante
-            description: Notifiche aggiuntive sulle attività in tutti i progetti
-          date_alerts:
-            title: Avvisi data
-            description: Notifiche automatiche quando si avvicinano date importanti per le macro-attività aperte in cui sei coinvolto (assegnatario, responsabile od osservatore)
-          overdue: Alla scadenza
-        project_specific:
-          title: Impostazioni di notifica specifiche del progetto
-          description: Queste impostazioni specifiche del progetto sostituiscono le impostazioni predefinite sopra.
-          add: Aggiungi impostazione per il progetto
-          already_selected: Questo progetto è già selezionato
-          remove: Rimuovi impostazioni progetto
     pagination:
       no_other_page: Sei nella pagina unica.
       pages_skipped: Pagine saltate.
@@ -658,39 +609,6 @@ it:
       required_outside_context: 'Scegli un progetto per creare una macro-attività e vederne tutti gli attributi. Puoi selezionare solo progetti che hanno il tipo sopra indicato attivato.
 
         '
-    reminders:
-      settings:
-        daily:
-          add_time: Aggiungi tempo
-          enable: Abilita promemoria email giornalieri
-          explanation: Riceverai questi promemoria solo per le notifiche non lette e solo nelle ore specificate. %{no_time_zone}
-          no_time_zone: Fino a quando non configuri un fuso orario per il tuo account, gli orari verranno interpretati in UTC.
-          time_label: 'Tempo %{counter}:'
-          title: Inviami promemoria email giornalieri per le notifiche non lette
-        workdays:
-          title: Ricevi promemoria email in questi giorni
-        immediate:
-          title: Inviami un promemoria email
-          mentioned: Subito quando qualcuno mi @menziona
-          personal_reminder: Immediatamente quando ricevo un promemoria personale
-        alerts:
-          title: Avvisi email per altri elementi (che non sono macro-attività)
-          explanation: 'Le notifiche oggi sono limitate ai pacchetti di lavoro. Puoi scegliere di continuare a ricevere avvisi email per questi eventi finché non vengono inclusi nelle notifiche:
-
-            '
-          news_added: Notizie aggiunte
-          news_commented: Commento su un articolo di notizie
-          document_added: Documenti aggiunti
-          forum_messages: Nuovi messaggi del forum
-          wiki_page_added: Pagina wiki aggiunta
-          wiki_page_updated: Pagina wiki aggiornata
-          membership_added: Iscrizione aggiunta
-          membership_updated: Iscrizione aggiornata
-        title: Promemoria email
-        pause:
-          label: Sospendi temporaneamente i promemoria email giornalieri
-          first_day: 'Primo giorno '
-          last_day: Ultimo giorno
     text_are_you_sure: Sei sicuro/a?
     text_are_you_sure_to_cancel: Ci sono modifiche non salvate in questa pagina. Vuoi davvero eliminarle?
     breadcrumb: Percorso di navigazione
@@ -1063,13 +981,6 @@ it:
       form_submit:
         title: Conferma per continuare
         text: Eseguire questa azione?
-      destroy_work_package:
-        title: Conferma l'eliminazione di %{label}
-        single_text: Vuoi davvero eliminare questa macro-attività?
-        bulk_text: Eliminare il seguente %{label}?
-        has_children: 'Questa macro-attività ha %{childUnits}:'
-        confirm_deletion_children: Prendo atto che TUTTI i discendenti delle macro-attività elencate verranno eliminati in modo ricorsivo.
-        deletes_children: Tutte le macro-attività ed i relativi discendenti verranno eliminati ricorsivamente.
       destroy_time_entry:
         title: Conferma l'eliminazione della voce temporale
         text: Eliminare la seguente voce temporale?

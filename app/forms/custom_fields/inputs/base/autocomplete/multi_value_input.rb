@@ -49,7 +49,7 @@ class CustomFields::Inputs::Base::Autocomplete::MultiValueInput < CustomFields::
   end
 
   def decorated?
-    raise NotImplementedError
+    raise SubclassResponsibilityError
   end
 
   def custom_values

@@ -43,14 +43,6 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
   let(:project) { create(:project, types: [type_feature, type_task]) }
   let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
 
-  before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
-
-    allow(user).to receive(:backlogs_preference).with(:versions_default_fold_state).and_return("open")
-  end
-
   def render_component
     render_inline(described_class.new(sprint:, project:, current_user: user))
   end
@@ -90,7 +82,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         expect(page).to have_css(".Box#agile_sprint_#{sprint.id}")
       end
 
-      it "renders BacklogHeaderComponent in header" do
+      it "renders SprintHeaderComponent in header" do
         render_component
 
         expect(page).to have_css(".Box-header h3", text: "Sprint 1")
@@ -126,7 +118,19 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
         expect(story_row["data-draggable-id"]).to eq(story1.id.to_s)
         expect(story_row["data-draggable-type"]).to eq("story")
-        expect(story_row["data-drop-url"]).to end_with(move_project_sprint_story_path(project, sprint, story1))
+        expected_path = move_project_backlogs_work_package_path(project, sprint_id: sprint.id, id: story1.id)
+        expect(story_row["data-drop-url"]).to end_with(expected_path)
+      end
+
+      context "when params[:all] is true" do
+        before { vc_test_controller.params.merge!(all: "1") }
+
+        it "includes the all param on story drop URLs" do
+          render_component
+
+          story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
+          expect(story_row["data-drop-url"]).to match(/all=1/)
+        end
       end
 
       it "renders story rows with proper classes" do
@@ -136,6 +140,33 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         expect(story_row[:class]).to include("Box-row--hover-blue")
         expect(story_row[:class]).to include("Box-row--focus-gray")
         expect(story_row[:class]).to include("Box-row--clickable")
+      end
+    end
+
+    context "when the user lacks the manage_sprint_items permission" do
+      let(:role) { create(:project_role, permissions: %i[view_sprints view_work_packages]) }
+      let(:user) { create(:user, member_with_roles: { project => role }) }
+      let!(:story1) do
+        create(:work_package,
+               project:,
+               type: type_feature,
+               status: default_status,
+               priority: default_priority,
+               story_points: 5,
+               position: 1,
+               sprint: sprint)
+      end
+
+      it "does not mark story rows as draggable" do
+        render_component
+
+        story_row = page.find(".Box-row[id='work_package_#{story1.id}']")
+        expect(story_row[:class]).to include("Box-row--hover-blue", "Box-row--focus-gray",
+                                             "Box-row--clickable")
+        expect(story_row[:class]).not_to include("Box-row--draggable")
+        expect(story_row["data-draggable-id"]).to be_nil
+        expect(story_row["data-draggable-type"]).to be_nil
+        expect(story_row["data-drop-url"]).to be_nil
       end
     end
 

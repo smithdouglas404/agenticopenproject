@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
       id: DIALOG_ID,
       title: t("admin.workflows.statuses_removal_dialog.title"),
       confirm_button_text: t("admin.workflows.statuses_removal_dialog.confirm"),
-      form_arguments: { action: helpers.edit_workflow_path(@type), method: :get, data: { turbo_frame: "workflow-table" } }
+      form_arguments: { action: helpers.edit_workflow_tab_path(@type, @tab), method: :get, data: { turbo_frame: "workflow-table" } }
     )
   ) do |dialog|
     dialog.with_confirmation_message do |message|
@@ -47,7 +47,6 @@ See COPYRIGHT and LICENSE files for more details.
     # strip url params
     dialog.with_additional_details do
       concat(hidden_field_tag(:role_id, @role.id))
-      concat(hidden_field_tag(:tab, @tab))
       @status_ids.each { |id| concat(hidden_field_tag("status_ids[]", id)) }
     end
   end

@@ -33,6 +33,7 @@ en:
   saml:
     menu_title: SAML providers
     delete_title: Delete SAML provider
+    delete_heading: Delete this SAML provider?
     info:
       title: "SAML Protocol Configuration Parameters"
       description: >

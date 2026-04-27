@@ -28,7 +28,6 @@
 
 import { GitActionsService } from './git-actions.service';
 import { WorkPackageResource } from "core-app/features/hal/resources/work-package-resource";
-import { TestBed, waitForAsync } from '@angular/core/testing';
 import { PathHelperService } from "core-app/core/path-helper/path-helper.service";
 
 describe('GitActionsService', function() {
@@ -37,9 +36,9 @@ describe('GitActionsService', function() {
   const createWorkPackage = (overrides = {}) => {
     const defaults = {
       id: '42',
-      subject: 'Find the question',
+      subject: "Find the question, or don't",
       description: {
-        raw: 'I recently found the answer is 42. We need to compute the correct question.'
+        raw: "I recently found the answer is 42. We'd need to compute the correct question."
       },
       type: { name: 'User Story' },
       pathHelper: new PathHelperService()
@@ -48,17 +47,6 @@ describe('GitActionsService', function() {
     return(workPackage as WorkPackageResource);
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        GitActionsService
-      ]
-    }).compileComponents()
-      .then(() => {
-        service = TestBed.inject(GitActionsService);
-      });
-  }));
-
   beforeEach(() => {
     service = new GitActionsService();
   });
@@ -66,22 +54,21 @@ describe('GitActionsService', function() {
 
   it('produces a branch name, commit message, and a git command', () => {
     const wp = createWorkPackage();
-    expect(service.branchName(wp)).toEqual('user-story/42-find-the-question');
-    expect(service.commitMessage(wp)).toEqual(`[#42] Find the question
+    expect(service.branchName(wp)).toEqual('user-story/42-find-the-question-or-don-t');
+    expect(service.commitMessage(wp)).toEqual(
+      `[#42] Find the question, or don't
 
-http://localhost:9876/wp/42
-`);
-    expect(service.gitCommand(wp)).toEqual(`git checkout -b 'user-story/42-find-the-question' && git commit --allow-empty -m '[#42] Find the question
-
-http://localhost:9876/wp/42
-'`);
+http://localhost:9876/wp/42`
+    );
+    expect(service.gitCommand(wp)).toEqual(
+      `git checkout -b 'user-story/42-find-the-question-or-don-t' && git commit --allow-empty -m '[#42] Find the question, or don'\\''t' -m 'http://localhost:9876/wp/42'`
+    );
   });
 
   it('shell-escapes output for the git-command', () => {
     const wp = createWorkPackage({ subject: "' && rm -rf / #" });
-    expect(service.gitCommand(wp)).toEqual(`git checkout -b 'user-story/42-and-and-rm-rf' && git commit --allow-empty -m '[#42] \\' && rm -rf / #
-
-http://localhost:9876/wp/42
-'`);
+    expect(service.gitCommand(wp)).toEqual(
+      `git checkout -b 'user-story/42-and-and-rm-rf' && git commit --allow-empty -m '[#42] '\\'' && rm -rf / #' -m 'http://localhost:9876/wp/42'`
+    );
   });
 });

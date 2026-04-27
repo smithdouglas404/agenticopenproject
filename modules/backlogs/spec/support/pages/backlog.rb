@@ -44,7 +44,7 @@ module Pages
         attributes.each do |key, value|
           details_view
             .edit_field(key.to_s.camelize(:lower))
-            .update(value) # rubocop:disable Rails/SaveBang
+            .update(value)
 
           details_view.expect_and_dismiss_toaster message: "Successful update."
         end
@@ -115,9 +115,9 @@ module Pages
     end
 
     def drag_work_package(moved, before: nil, into: nil)
-      raise ArgumentError, "You must specify a either before or into" unless before || into || (before && into)
+      raise ArgumentError, "You must specify either before or into" unless before.present? ^ into.present?
 
-      moved_element = find("#{work_package_selector(moved)} .DragHandle")
+      moved_element = find(draggable_work_package_selector(moved))
       target_element = if before
                          find(work_package_selector(before))
                        else
@@ -133,7 +133,7 @@ module Pages
 
     def expect_work_package_not_draggable(work_package)
       expect(page)
-        .to have_no_css("#{work_package_selector(work_package)} .DragHandle")
+        .to have_no_css(draggable_work_package_selector(work_package))
     end
 
     def expect_inbox_blankslate
@@ -204,19 +204,47 @@ module Pages
 
     def expect_inbox_item(work_package)
       within_inbox do
-        expect(page).to have_css(inbox_item_selector(work_package))
+        expect(page).to have_css(work_package_selector(work_package))
       end
     end
 
     def expect_no_inbox_item(work_package)
       within_inbox do
-        expect(page).to have_no_css(inbox_item_selector(work_package))
+        expect(page).to have_no_css(work_package_selector(work_package))
       end
+    end
+
+    def expect_inbox_show_more
+      within_inbox do
+        expect(page).to have_css("#inbox-more-row-#{project.id}")
+      end
+    end
+
+    def expect_no_inbox_show_more
+      wait_for_network_idle
+      within_inbox do
+        expect(page).to have_no_css("#inbox-more-row-#{project.id}")
+      end
+    end
+
+    def click_inbox_show_more
+      within_inbox do
+        find("#inbox-more-row-#{project.id} a").click
+      end
+      wait_for_network_idle
+    end
+
+    def open_sprint_story_details(story)
+      within(work_package_selector(story)) do
+        button = find(:button, accessible_name: "Story actions")
+        open_controlled_menu(button).find(:menuitem, text: I18n.t(:"js.button_open_details")).click
+      end
+      expect_details_view(story)
     end
 
     def expect_inbox_items_in_order(*work_packages)
       within_inbox do
-        selectors = work_packages.map { |wp| inbox_item_selector(wp) }
+        selectors = work_packages.map { |wp| work_package_selector(wp) }
         expect(page).to have_css(selectors.join(" + "))
       end
 
@@ -224,11 +252,12 @@ module Pages
     end
 
     def within_inbox_menu(work_package, &)
-      within(inbox_item_selector(work_package)) do
+      within(work_package_selector(work_package)) do
         button = find(:button, accessible_name: "Work package actions")
         within(open_controlled_menu(button), &)
       end
-      dismiss_menu
+
+      dismiss_menu(work_package)
     end
 
     def click_in_inbox_menu(work_package, item_name)
@@ -238,7 +267,7 @@ module Pages
     end
 
     def click_in_inbox_move_menu(work_package, item_name)
-      button = within(inbox_item_selector(work_package)) do
+      button = within(work_package_selector(work_package)) do
         find(:button, accessible_name: "Work package actions")
       end
       menu = open_controlled_menu(button)
@@ -251,7 +280,8 @@ module Pages
         button = find(:button, accessible_name: "Story actions")
         within(open_controlled_menu(button), &)
       end
-      dismiss_menu
+
+      dismiss_menu(story)
     end
 
     def click_in_sprint_story_menu(story, item_name)
@@ -270,15 +300,17 @@ module Pages
     end
 
     def drag_inbox_item_to_sprint(work_package, sprint)
-      moved_element = find("#{inbox_item_selector(work_package)} .DragHandle")
+      moved_element = find(draggable_work_package_selector(work_package))
       target_element = find(sprint_selector(sprint))
-      moved_element.native.drag_to(target_element.native, delay: 0.1)
+      wait_for_turbo_stream do
+        moved_element.native.drag_to(target_element.native, delay: 0.1)
+      end
     rescue Capybara::Cuprite::ObsoleteNode
       retry
     end
 
     def drag_sprint_item_to_inbox(work_package)
-      moved_element = find("#{work_package_selector(work_package)} .DragHandle")
+      moved_element = find(draggable_work_package_selector(work_package))
       target_element = find("#inbox_#{project.id}")
       moved_element.native.drag_to(target_element.native, delay: 0.1)
     rescue Capybara::Cuprite::ObsoleteNode
@@ -300,6 +332,113 @@ module Pages
 
     def expect_sprint_names_in_order(*sprint_names)
       expect(sprint_names_in_order).to eq(sprint_names)
+    end
+
+    def bucket_names_in_order
+      page.find_all("#owner_backlogs_container section .CollapsibleHeader-title").map(&:text)
+    end
+
+    def expect_bucket_names_in_order(*bucket_names)
+      expect(bucket_names_in_order).to eq(bucket_names)
+    end
+
+    def expect_no_backlog_bucket(bucket)
+      expect(page).to have_no_css(bucket_selector(bucket))
+    end
+
+    def expect_backlog_bucket_work_package_count(bucket, count)
+      within_backlog_bucket(bucket) do
+        label = count == 1 ? "1 story in backlog bucket" : "#{count} stories in backlog bucket"
+        expect(page).to have_css(".Counter", accessible_name: label)
+      end
+    end
+
+    def expect_work_packages_in_backlog_bucket_in_order(bucket, work_packages: [])
+      within_backlog_bucket(bucket) do
+        expect_work_packages_in_order(work_packages:)
+      end
+    end
+
+    def expect_work_packages_in_backlog_inbox_in_order(work_packages: [])
+      within_backlog_inbox do
+        expect_work_packages_in_order(work_packages:)
+      end
+    end
+
+    def open_create_backlog_bucket_dialog
+      within_owner_backlogs do
+        click_on accessible_name: Agile::BacklogBucket.human_model_name
+      end
+    end
+
+    def expect_new_backlog_bucket_button
+      within_owner_backlogs do
+        expect(page).to have_link(Agile::BacklogBucket.human_model_name, exact: true)
+      end
+    end
+
+    def expect_no_new_backlog_bucket_button
+      within_owner_backlogs do
+        expect(page).to have_no_link(Agile::BacklogBucket.human_model_name, exact: true)
+      end
+    end
+
+    def expect_backlog_bucket_dialog
+      expect(page).to have_dialog(I18n.t(:label_backlog_bucket_new))
+    end
+
+    def within_backlog_bucket_menu(bucket, &)
+      within_backlog_bucket(bucket) do
+        button = find(:button, accessible_name: "Backlog bucket actions")
+        within(open_controlled_menu(button), &)
+      end
+      dismiss_menu(bucket)
+    end
+
+    def click_in_backlog_bucket_menu(bucket, item_name)
+      within_backlog_bucket_menu(bucket) do |menu|
+        menu.find(:menuitem, text: item_name).click
+      end
+    end
+
+    def expect_no_backlog_bucket_menu(bucket)
+      within_backlog_bucket(bucket) do
+        expect(page).to have_no_button(accessible_name: "Backlog bucket actions")
+      end
+    end
+
+    def expect_backlog_bucket_blankslate(bucket)
+      within_backlog_bucket(bucket) do
+        expect(page).to have_selector(:heading, level: 4, text: "Backlog bucket is empty")
+      end
+    end
+
+    def expect_no_backlog_bucket_blankslate(bucket)
+      within_backlog_bucket(bucket) do
+        expect(page).to have_no_selector(:heading, level: 4, text: "Backlog bucket is empty")
+      end
+    end
+
+    def drag_work_package_to_backlog_bucket(work_package, bucket)
+      moved_element = find(draggable_work_package_selector(work_package))
+      target_element = find(bucket_selector(bucket))
+
+      wait_for_turbo_stream do
+        moved_element.native.drag_to(target_element.native, delay: 0.1)
+      end
+    rescue Capybara::Cuprite::ObsoleteNode
+      retry
+    end
+
+    def drag_work_package_to_backlog_inbox(work_package)
+      moved_element = find(draggable_work_package_selector(work_package))
+      target_element = find(backlog_inbox_selector)
+
+      wait_for_turbo_stream do
+        moved_element.native.drag_to(target_element.native, delay: 0.1)
+      end
+    rescue Capybara::Cuprite::ObsoleteNode
+      retry
     end
 
     def expect_story_in_sprint(story, sprint)
@@ -334,8 +473,17 @@ module Pages
       click_on "Cancel"
     end
 
+    def visit!
+      super
+
+      expect(page).to have_css("turbo-frame#backlogs_container", wait: 10)
+      expect(page).to have_css("#owner_backlogs_container", wait: 10)
+      expect(page).to have_css("#sprint_backlogs_container", wait: 10)
+      wait_for_network_idle
+    end
+
     def path
-      backlog_backlogs_project_backlogs_path(project)
+      project_backlogs_backlog_path(project)
     end
 
     def within_story_menu(story, &)
@@ -356,7 +504,8 @@ module Pages
       details_view.expect_tab :overview
       details_view.expect_subject
 
-      expect(page).to have_current_path details_backlogs_project_backlogs_path(story.project, story)
+      expect(page).to have_current_path project_backlogs_backlog_details_path(story.project, story),
+                                        ignore_query: true
       wait_for_network_idle
 
       details_view
@@ -374,12 +523,12 @@ module Pages
       expect(page).to have_css("#create-work-package-dialog")
     end
 
-    def expect_sprint_finishing_modal
-      expect(page).to have_css sprint_finish_modal_selector
+    def expect_sprint_completing_modal
+      expect(page).to have_css sprint_complete_modal_selector
     end
 
     def expect_sprints_to_choose_for_moving_unfinished_work_packages_to(*sprints)
-      within sprint_finish_modal_selector do
+      within sprint_complete_modal_selector do
         expect(page).to have_select("Select sprint", options: sprints.map(&:name))
       end
     end
@@ -395,14 +544,24 @@ module Pages
       within(work_package_selector(work_package), &)
     end
 
-    def click_to_finish_sprint(sprint)
-      within_sprint_menu(sprint) do |menu|
-        menu.find(:button, "Complete sprint").click
+    def click_start_sprint_button(sprint)
+      within_sprint(sprint) do
+        click_on("Start")
       end
     end
 
+    def click_complete_sprint_button(sprint)
+      within_sprint(sprint) do
+        click_on("Complete")
+      end
+    end
+
+    def click_to_complete_sprint(sprint)
+      click_complete_sprint_button(sprint)
+    end
+
     def choose_to_move_unfinished_work_packages_to_sprint(sprint_name)
-      within sprint_finish_modal_selector do
+      within sprint_complete_modal_selector do
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_sprint")
         select sprint_name, from: "Select sprint"
 
@@ -411,7 +570,7 @@ module Pages
     end
 
     def choose_to_move_unfinished_work_packages_to_top_of_backlog
-      within sprint_finish_modal_selector do
+      within sprint_complete_modal_selector do
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_top_of_backlog")
 
         click_button "Complete sprint"
@@ -419,7 +578,7 @@ module Pages
     end
 
     def choose_to_move_unfinished_work_packages_to_bottom_of_backlog
-      within sprint_finish_modal_selector do
+      within sprint_complete_modal_selector do
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_bottom_of_backlog")
 
         click_button "Complete sprint"
@@ -444,6 +603,18 @@ module Pages
       within("#inbox_#{project.id}", &)
     end
 
+    def within_backlog_bucket(bucket, &)
+      within(bucket_selector(bucket), &)
+    end
+
+    def within_backlog_inbox(&)
+      within(backlog_inbox_selector, &)
+    end
+
+    def within_owner_backlogs(&)
+      within("#owner_backlogs_container", &)
+    end
+
     def within_sprint_backlogs(&)
       within("#sprint_backlogs_container", &)
     end
@@ -452,8 +623,14 @@ module Pages
       test_selector("sprint-#{sprint.id}")
     end
 
-    def backlog_selector(backlog)
-      "#backlog_#{backlog.id}"
+    def bucket_selector(bucket)
+      raise ArgumentError, "bucket must be persisted" unless bucket.persisted?
+
+      test_selector("backlog-bucket-#{bucket.id}")
+    end
+
+    def backlog_inbox_selector
+      test_selector("backlog-inbox")
     end
 
     def story_selector(story)
@@ -464,12 +641,12 @@ module Pages
       test_selector("work-package-#{work_package.id}")
     end
 
-    def sprint_finish_modal_selector
-      "##{::Backlogs::FinishSprintDialogComponent::DIALOG_ID}"
+    def draggable_work_package_selector(work_package)
+      "#{work_package_selector(work_package)}[data-draggable-id]"
     end
 
-    def inbox_item_selector(work_package)
-      "#work_package_#{work_package.id}"
+    def sprint_complete_modal_selector
+      "##{::Backlogs::FinishSprintDialogComponent::DIALOG_ID}"
     end
 
     def open_controlled_menu(button)
@@ -483,8 +660,13 @@ module Pages
       page.find(:menu, id: move_item["aria-controls"])
     end
 
-    def dismiss_menu
-      page.find("body").click
+    def dismiss_menu(menu_owner)
+      overlay_id = "#{ActionView::RecordIdentifier.dom_target(menu_owner, :menu)}-overlay"
+      selector = "##{overlay_id}"
+
+      return unless page.has_css?(selector, visible: true, wait: 0)
+
+      find(selector).click
     end
   end
 end

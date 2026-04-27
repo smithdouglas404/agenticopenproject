@@ -185,9 +185,9 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
     this.resource.isNewWidget = false;
 
     // Set initial selection if split view open
-    if (this.state.includes(`${this.state.current.data.baseRoute}.details`)) {
-      const wpId = this.state.params.workPackageId;
-      this.wpViewSelectionService.initializeSelection([wpId]);
+    const detailsMatch = window.location.pathname.match(/\/details\/(\d+)/);
+    if (detailsMatch) {
+      this.wpViewSelectionService.initializeSelection([detailsMatch[1]]);
     }
 
     // If this query space changes its focused or selected
@@ -495,13 +495,18 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
   }
 
   openStateLink(event:{ workPackageId:string; requestedState:string }) {
-    const params = { workPackageId: event.workPackageId };
-
     if (event.requestedState === 'split') {
-      this.keepTab.goCurrentDetailsState(params);
+      this.goToSplitView(event.workPackageId);
     } else {
-      this.keepTab.goCurrentShowState(params.workPackageId);
+      this.keepTab.goCurrentShowState(event.workPackageId);
     }
+  }
+
+  private goToSplitView(workPackageId:string):void {
+    const base = this.pathHelper.boardDetailsPath(this.currentProject.identifier, this.board.id!, workPackageId);
+    const search = window.location.search;
+    const link = search ? `${base}${search}` : base;
+    Turbo.visit(link, { frame: 'content-bodyRight', action: 'advance' });
   }
 
   private schema(workPackage:WorkPackageResource) {

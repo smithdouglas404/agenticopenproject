@@ -38,19 +38,6 @@ module OpenProject::Wikis
 
     include OpenProject::Plugins::ActsAsOpEngine
 
-    register "openproject-wikis",
-             author_url: "https://openproject.org" do
-               menu :work_package_split_view,
-                    :wikis,
-                    { tab: :wikis },
-                    skip_permissions_check: true,
-                    after: :relations,
-                    if: ->(_project) {
-                      # TODO: only display if there are wiki providers available
-                      OpenProject::FeatureDecisions.wiki_enhancements_active?
-                    }
-             end
-
     initializer "openproject_wikis.inflections" do
       ActiveSupport::Inflector.inflections(:en) do |inflect|
         inflect.acronym "XWiki"
@@ -66,6 +53,52 @@ module OpenProject::Wikis
       end
     end
 
+    config.to_prepare do
+      API::V3::Configuration::ConfigurationRepresenter.property(
+        :wikisAvailable,
+        getter: ->(*) { ::Wikis::Provider.enabled.exists? }
+      )
+
+      OpenProject::TextFormatting::Filters::PatternMatcherFilter.append_matcher ::Wikis::TextFormatting::WikiLinkMatcher
+    end
+
     replace_principal_references "Wikis::PageLink" => %i[author_id]
+
+    register "openproject-wikis", author_url: "https://openproject.org" do
+      project_module :work_package_tracking do
+        permission :view_wiki_page_links,
+                   {},
+                   permissible_on: :project,
+                   dependencies: %i[view_work_packages],
+                   contract_actions: { wiki_page_links: %i[view] }
+
+        permission :manage_wiki_page_links,
+                   {},
+                   permissible_on: :project,
+                   dependencies: %i[view_work_packages],
+                   contract_actions: { wiki_page_links: %i[manage] }
+      end
+
+      menu :work_package_split_view,
+           :wikis,
+           { tab: :wikis },
+           skip_permissions_check: true,
+           after: :relations,
+           badge: ->(work_package:, **) { Wikis::PageLinkService.new.count(work_package) },
+           if: ->(_project) {
+             Wikis::Provider.enabled.exists? &&
+               OpenProject::FeatureDecisions.wiki_enhancements_active?
+           }
+
+      menu :admin_menu,
+           :wiki_providers,
+           { controller: "/wikis/admin/wiki_providers", action: :index },
+           if: ->(_) { OpenProject::FeatureDecisions.wiki_enhancements_active? },
+           caption: :project_module_wiki_platforms,
+           icon: "browser"
+    end
+
+    add_api_path(:wiki_page_link) { |page_link_id| "#{root}/wiki_page_links/#{page_link_id}" }
+    add_api_path(:wiki_provider) { |provider_id| "#{root}/wiki_providers/#{provider_id}" }
   end
 end

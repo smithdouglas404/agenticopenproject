@@ -114,10 +114,11 @@ ko:
     import:
       title: 가져오기
     jira:
-      title: Jira 가져오기
+      title: Jira Migrator
       description: 이 도구를 사용하여 Jira 인스턴스에서 데이터를 가져옵니다. 여러 Jira 호스트를 구성하고 가져오기 실행 각각에서 가져올 항목을 선택할 수 있습니다.
       errors:
         cannot_delete_with_imports: 기존 가져오기가 있는 Jira 호스트는 삭제할 수 없습니다
+        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
       blank:
         title: 아직 구성된 Jira 호스트 없음
         description: Jira에서 이 OpenProject 인스턴스로 항목 가져오기를 시작하려면 Jira 호스트를 구성합니다.
@@ -125,8 +126,8 @@ ko:
         title: Jira 구성
         new: 새 구성
       banner:
-        title: 제한된 가져오기
-        description: 이 가져오기 도구는 현재 베타 버전이며 프로젝트, 이슈(이름, 제목, 설명, 첨부 파일), 사용자(이름, 이메일, 프로젝트 멤버십), 상태 및 유형과 같은 기본 데이터만 가져올 수 있습니다. 워크플로, 사용자 지정 필드, 이슈 관계 또는 권한은 가져올 수 없습니다. Jira Server/Data Center 버전 10.x 및 11.x만 현재 지원합니다. 클라우드 인스턴스는 현재 지원되지 않습니다.
+        title: 제한된 가져오기 기능
+        description: 이 Jira Migrator는 현재 베타 버전이며 프로젝트, 이슈(이름, 제목, 설명, 첨부 파일), 사용자(이름, 이메일, 프로젝트 멤버십), 상태 및 유형과 같은 기본 데이터만 가져올 수 있습니다. 워크플로, 사용자 지정 필드, 이슈 관계 또는 권한은 가져올 수 없습니다. Jira Server/Data Center 버전 10.x 및 11.x만 현재 지원됩니다. 클라우드 인스턴스는 현재 지원되지 않습니다.
       form:
         fields:
           name: 이름
@@ -154,6 +155,7 @@ ko:
         connection_timeout: 'Jira 서버에 연결이 시간 초과되었습니다: %{message}'
         parse_error: 'Jira API 응답을 구문 분석하지 못했습니다: %{message}'
         api_error: Jira API가 오류 상태 %{status}을(를) 반환했습니다
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: 프로젝트
         last_change: 마지막 변경
@@ -162,7 +164,7 @@ ko:
       run:
         title: 가져오기 실행
         history: 기록
-        remove_error: Jira 가져오기는 실행되는 동안 제거할 수 없습니다
+        remove_error: 실행되는 동안에는 Jira 가져오기 실행을 제거할 수 없습니다
         import_blocked_error: 다른 Jira 가져오기 실행이 현재 진행 중이거나 검토를 기다리는 중입니다. 새 가져오기를 시작하기 전에 완료하거나 되돌리세요.
         project_identifier_taken: '이미 사용된 식별자가 있는 프로젝트를 가져오려고 합니다: %{taken_identifier}. Jira에서 프로젝트 식별자를 업데이트한 후에 ''다시 시도''를 클릭하세요.'
         blank:
@@ -254,6 +256,7 @@ ko:
               caption: 가져오기 설정을 검토하고 가져오기를 시작합니다
               caption_done: 완료됨
               label_available_data: 가져올 수 있는 데이터
+              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
               button_start: 가져오기 시작
               description: 다음 설정으로 가져오기 실행을 시작하려고 합니다.
               label_progress: 가져오기 진행 중...
@@ -381,19 +384,23 @@ ko:
         notification_text_default: "<p>안녕하세요,</p> <p>새 프로젝트가 생성되었습니다: projectValue:name</p> <p>감사합니다.</p>\n"
       work_packages_identifier:
         page_header:
-          description: 기본 숫자 작업 패키지 ID 또는 작업 패키지 ID 앞에 프로젝트 식별자를 붙이는 프로젝트별 ID 중에서 선택합니다.
+          description: 클래식 숫자 작업 패키지 ID 또는 작업 패키지 ID 앞에 프로젝트 식별자를 붙이는 프로젝트별 시맨틱 ID 중에서 선택합니다.
         banner:
-          existing_identifiers_notice: "%{project_count}개 프로젝트의 기존 식별자가 프로젝트 기반 영숫자 식별자에 대한 요구 사항을 충족하지 않습니다. OpenProject는 아래 예와 같이 해당 식별자가 유효하도록 자동으로 업데이트할 수 있습니다. '자동 수정 및 저장'을 클릭하여 이러한 방식으로 모든 프로젝트의 식별자를 업데이트하고 프로젝트 기반 영숫자 식별자를 활성화하세요.\n"
+          existing_identifiers_notice: "%{project_count}개 프로젝트의 기존 식별자가 프로젝트 기반 시맨틱 식별자에 대한 요구 사항을 충족하지 않습니다. OpenProject는 아래 예와 같이 해당 식별자가 유효하도록 자동으로 업데이트할 수 있습니다. '자동 수정 및 저장'을 클릭하여 이러한 방식으로 모든 프로젝트의 식별자를 업데이트하고 프로젝트 기반 시맨틱 식별자를 활성화하세요.\n"
         box_header:
           label_project: 프로젝트
           label_previous_identifier: 이전 식별자
           label_autofixed_suggestion: 향후 식별자
           label_example_work_package_id: 작업 패키지 ID 예
         autofix_preview:
-          error_too_long: 5자 미만이어야 합니다
+          error_too_long: 10자 이하여야 함
+          error_numerical: 완전히 숫자로만 지정할 수 없음
+          error_does_not_start_with_letter: Must start with an uppercase letter
           error_special_characters: 특수 문자는 허용되지 않음
+          error_not_fully_uppercased: 대문자여야 함
           error_in_use: 이미 다른 프로젝트의 활성 핸들로 사용 중입니다
           error_reserved: 다른 프로젝트의 핸들 기록에 의해 예약되었습니다
+          error_unknown: 수동 검토가 필요합니다
           remaining_projects:
             other: "... %{count}개의 추가 프로젝트"
         button_autofix: 자동 수정 및 저장
@@ -407,16 +414,13 @@ ko:
           checkbox_label: 이렇게 하면 모든 작업 패키지 ID가 영구적으로 변경됨을 이해합니다
         success_banner: 작업 패키지 식별자 형식을 업데이트했습니다.
         in_progress:
-          banner_message: 프로젝트 기반 영숫자 식별자로 프로젝트 식별자를 현재 업데이트하는 중입니다. 시간이 다소 걸릴 수 있습니다.
+          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
         default_transitions: 기본 전환
         user_author: 사용자가 작성자입니다
         user_assignee: 사용자가 담당자입니다
-      index:
-        description: 각 작업 패키지 유형에 대한 상태 전환을 구성합니다.
-        type_filter:
-          label: 유형 이름으로 필터링…
       status_button: 상태
       statuses_dialog:
         title: 상태
@@ -672,6 +676,37 @@ ko:
   danger_dialog:
     confirmation_live_message_checked: 진행 버튼이 이제 활성화되었습니다.
     confirmation_live_message_unchecked: 진행 버튼이 이제 비활성화되었습니다. 계속하려면 확인란을 선택해야 합니다.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: 페이지 매김
     prev: 이전
@@ -1309,6 +1344,31 @@ ko:
     index:
       no_results_content_text: 위키 페이지 추가
   workflows:
+    copies:
+      form:
+        source_role_id:
+          label: Source role
+        target_role_ids:
+          label: Target roles
+        target_type_ids:
+          label: Target types
+        mode:
+          from_role:
+            label: Copy to other roles
+            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+          from_type:
+            label: Copy to another type
+            caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
+      from_roles:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} roles.
+      from_types:
+        create:
+          notice:
+            other: Successfully copied workflow to %{count} types.
+      new:
+        title: Copy workflow of "%{source_type}"
     form:
       matrix_caption: 워크플로 매트릭스
       matrix_caption_assignee: 담당자에 대한 워크플로 매트릭스
@@ -1318,10 +1378,30 @@ ko:
       matrix_uncheck_all_label: 모든 전환 허용 안 함
       matrix_check_uncheck_all_in_row_label_html: "<em>%{old_status}</em>에서 모든 새로운 상태로 전환 토글"
       matrix_check_uncheck_all_in_col_label_html: 모든 이전 상태에서 <em>%{new_status}</em>(으)로 전환 토글
+    index:
+      type_filter:
+        label: Filter by type name…
+    page_headers:
+      index_component:
+        description: Configure status transitions for each work package type.
   work_flows:
     index:
       no_results_title_text: 작업 흐름이 없습니다.
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1516,6 +1596,9 @@ ko:
         dependencies: 종속성
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: 식별자
+        work_package: 작업 패키지
       jira_import:
         projects: 프로젝트
       import/jira:
@@ -1524,7 +1607,7 @@ ko:
         personal_access_token: 개인 액세스 토큰
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Jira 가져오기
+        jira_import: Jira Migrator
       announcements:
         show_until: 표시 기한
       attachment:
@@ -1780,6 +1863,7 @@ ko:
         identity_url: ID URL
         parent: 부모 그룹
         organizational_unit: 조직 단위
+        group_users: Group users
       group_detail:
         parent: 부모 그룹
         organizational_unit: 조직 단위
@@ -1854,6 +1938,7 @@ ko:
         duration: 기간
         end_insertion: 삽입 끝
         end_deletion: 삭제 끝
+        identifier: Identifier
         ignore_non_working_days: 휴무일 무시
         include_non_working_days:
           title: 근무일
@@ -1869,6 +1954,7 @@ ko:
         readonly: 읽기 전용
         remaining_hours: 남은 작업
         remaining_time: 남은 작업
+        sequence_number: Sequence number
         shared_with_users: 공유 대상
         schedule_manually: 수동 스케줄링
         spent_hours: 소비한 시간
@@ -1897,6 +1983,7 @@ ko:
         confirmation: "%{attribute} 속성에 부합하지 않습니다."
         could_not_be_copied: "%{dependency}을(를) (완전히) 복사할 수 없습니다."
         does_not_exist: 존재하지 않음
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action}은(는) OpenProject Enterprise Edition에서만 사용할 수 있습니다."
         error_unauthorized: 액세스하지 못할 수 있습니다.
         error_readonly: "- 쓰려고 했지만 쓸 수 없습니다."
@@ -1920,6 +2007,7 @@ ko:
         inclusion: 은(는) 허용되는 값이 아닙니다.
         inclusion_nested: "- 경로 '%{path}'에서 허용되는 값 중 하나로 설정되지 않았습니다."
         invalid: 은(는) 올바르지 않은 값입니다
+        invalid_uri: must be a valid URI.
         invalid_url: 은(는) 올바른 URL이 아닙니다.
         invalid_url_scheme: '은(는) 지원되는 프로토콜(허용: %{allowed_schemes})이 아닙니다.'
         less_than_or_equal_to: 은(는) %{count} 보다 작거나 같아야 합니다
@@ -1933,6 +2021,7 @@ ko:
         not_a_datetime: 은(는) 유효한 날짜가 아닙니다.
         not_a_number: 은(는) 숫자가 아닙니다.
         not_allowed: "- 사용 권한이 없어 유효하지 않습니다."
+        host_not_allowed: is not an allowed host.
         not_json: "- JSON으로 구문 분석할 수 없습니다."
         not_json_object: "- JSON 개체가 아닙니다."
         not_an_integer: 은(는) 정수가 아닙니다.
@@ -1963,6 +2052,7 @@ ko:
           attributes:
             parent_id:
               circular_dependency: "- 순환 그룹 계층을 생성합니다."
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2199,6 +2289,8 @@ ko:
               format: "%{message}"
               cannot_add_child_because_of_lack_of_permission: 선택한 작업 패키지를 편집할 권한이 없으므로 자식을 추가할 수 없습니다.
               blank: ID는 비워둘 수 없습니다.
+            identifier:
+              semantic_identifier_incomplete: and sequence_number must both be set at the same time.
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -2267,7 +2359,7 @@ ko:
               confirmation: 비밀번호와 비밀번호 확인이 일치하지 않습니다.
               format: "%{message}"
             password:
-              weak: '다음과 같은 클래스의 문자를 포함해야 합니다(최소 %{min_count} / %{all_count}): %{rules}'
+              requirements_not_met: 'Must include characters of the following types: %{rules}'
               lowercase: '소문자(예: ''a'')'
               uppercase: '대문자(예: ''A'')'
               numeric: '숫자 (예: '' 1'')'
@@ -2424,7 +2516,6 @@ ko:
     avatar: 아바타
     base: '일반 오류:'
     body: 본문
-    blocks_ids: 차단 된 작업 패키지의 ID
     category: 카테고리
     comment: 코멘트
     comments: 코멘트
@@ -2881,6 +2972,7 @@ ko:
       title: Enterprise 추가 기능
       plan_title: Enterprise %{plan} 추가 기능
       plan_name: "%{plan} Enterprise 플랜"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: "%{plan_name}부터 사용 가능합니다."
       unlimited: 무제한
       already_have_token: '이미 토큰이 있으신가요? 아래 버튼을 사용하여 토큰을 추가하고 예약한 Enterprise 플랜으로 업그레이드하세요.
@@ -3349,6 +3441,11 @@ ko:
     quick_add:
       label: 추가…
   my_account:
+    notifications_and_email:
+      title: 알림 및 이메일
+      tabs:
+        notifications: 알림 설정
+        email_reminders: 이메일 미리 알림
     access_tokens:
       description: 공급자 토큰은 OpenProject에서 발급하며, 다른 애플리케이션이 액세스하도록 허용합니다. 클라이언트 토큰은 다른 애플리케이션에서 발급하며, OpenProject가 액세스하도록 허용합니다.
       no_results:
@@ -3411,6 +3508,77 @@ ko:
         disabled_text: 관리자가 RSS 토큰을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요.
       storages:
         unknown_storage: 알 수 없는 저장소
+    email_reminders:
+      immediate_reminders:
+        title: 이메일 미리 알림 보내기
+        mentioned: 내가 멘션되면 알림 보내기
+        personal_reminder: 개인 미리 알림 보내기
+      daily_reminders:
+        title: 읽지 않은 알림에 대한 일일 이메일 미리 알림 보내기
+        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        enabled: 일일 이메일 미리 알림 활성화
+        add_time: 시간 추가
+        remove_time: 시간 제거
+        time_slot_label: 미리 알림 시간(UTC)
+      workdays:
+        title: 해당 요일에 이메일 미리 알림 받기
+        submit_button: 미리 알림 요일 업데이트
+      pause_reminders:
+        title: 이메일 알림 일시 중지
+        enabled: 임시로 일일 이메일 미리 알림 일시 중지
+        date_range: 일시 중지 기간
+      email_alerts:
+        title: 작업 패키지가 아닌 기타 항목에 대한 이메일 알림
+        description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
+        news_added: 뉴스 추가됨
+        news_commented: 뉴스 항목의 코멘트
+        document_added: 문서 추가됨
+        forum_messages: 포럼 메시지 게시됨
+        wiki_page_added: 위키 페이지 추가됨
+        wiki_page_updated: 위키 페이지 업데이트됨
+        membership_added: 멤버십 추가됨
+        membership_updated: 멤버십 업데이트됨
+        submit_button: 알림 업데이트
+    notifications:
+      participating:
+        title: 참여
+        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
+        submit_button: 기본 설정 업데이트
+        mentioned: 멘션됨
+        watched: 지켜보는 중
+        assignee: 담당자
+        responsible: 담당
+        shared: 나와 공유됨
+      date_alerts:
+        title: 날짜 알림
+        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
+        submit_button: 날짜 알림 업데이트
+        start_date: 시작 날짜
+        due_date: 완료 날짜
+        overdue: 기한 지남
+        times:
+          same_day: 같은 날
+          one_day_before: 1일 전
+          three_days_before: 3일 전
+          seven_days_before: 7일 전
+          one_day_after: 1일 후
+          three_days_after: 3일 후
+          seven_days_after: 7일 후
+      non_participating:
+        title: 참여하지 않음
+        description: Additional notifications for activities in all projects.
+        submit_button: 기본 설정 업데이트
+        work_package_created: 새 작업 패키지
+        work_package_commented: 모든 새로운 코멘트
+        work_package_processed: 모든 상태 변경 사항
+        work_package_prioritized: 모든 우선 순위 변경 사항
+        work_package_scheduled: 모든 날짜 변경 사항
+      project_specific_settings:
+        title: 프로젝트별 알림 설정
+        description: These project-specific settings override default settings above.
+        add_button: 프로젝트별 알림 추가
+        dialog_title: 프로젝트별 알림 추가
+        list_header: 특정 알림이 있는 프로젝트
   notifications:
     reasons:
       assigned: 담당자
@@ -3442,6 +3610,7 @@ ko:
       invalid_filter: 잘못된 알림 필터
   label_accessibility: 접근성
   label_account: 계정
+  label_actions: 작업
   label_active: 활성
   label_activate_user: 사용자 활성화
   label_active_in_new_projects: 새로운 프로젝트에서 활성
@@ -3482,6 +3651,7 @@ ko:
   label_ical_access_key_generation_hint: 캘린더 구독 시 자동으로 생성됩니다.
   label_ical_access_key_latest: 최신
   label_ical_access_key_revoke: 취소
+  label_integrations: 통합
   label_add_column: 열 추가
   label_applied_status: 적용된 상태
   label_archive_project: 프로젝트 아카이브하기
@@ -3565,6 +3735,7 @@ ko:
   label_commits_per_month: 월별 커밋
   label_confirmation: 확인
   label_contains: 포함
+  label_starts_with: starts with
   label_content: 내용
   label_color_plural: 색상
   label_copied: 복사됨
@@ -3572,6 +3743,8 @@ ko:
   label_copy_source: 소스
   label_copy_target: 대상
   label_copy_workflow_from: 다음에서 워크플로 복사
+  label_copy_workflow_from_type: Copy to another type
+  label_copy_workflow_from_role: Copy to other roles
   label_copy_project: 프로젝트 복사
   label_core_version: 코어 버전
   label_core_build: 코어 빌드
@@ -3732,7 +3905,7 @@ ko:
   label_external_links: 외부 링크
   label_locale: 언어 및 지역
   label_jump_to_a_project: 프로젝트로 이동...
-  label_jira_import: Jira 가져오기
+  label_jira_import: Jira Migrator
   label_keyword_plural: 키워드
   label_language_based: 사용자 언어에 따름
   label_last_activity: 마지막 활동
@@ -3770,6 +3943,10 @@ ko:
   label_custom_pdf_export_settings: 사용자 지정 PDF 내보내기 설정
   label_custom_favicon: 사용자 지정 favicon
   label_custom_touch_icon: 사용자 지정 터치 아이콘
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: 로그아웃
   label_mapping_for: '매핑 대상: %{attribute}'
   label_main_menu: 측면 메뉴
@@ -3875,6 +4052,10 @@ ko:
   label_password_rule_numeric: 숫자 문자
   label_password_rule_special: 특수 문자
   label_password_rule_uppercase: 대문자
+  label_password_requirement_lowercase: Must contain at least one lowercase character.
+  label_password_requirement_numeric: Must contain at least one numeric character.
+  label_password_requirement_special: Must contain at least one special character.
+  label_password_requirement_uppercase: Must contain at least one uppercase character.
   label_path_encoding: 경로 인코딩
   label_per_page: '페이지당:'
   label_people: 사용자
@@ -4834,6 +5015,7 @@ ko:
     '
   setting_app_subtitle: 응용 프로그램 부제목
   setting_app_title: 응용 프로그램 제목
+  setting_organization_name: Organization name
   setting_attachment_max_size: 첨부 파일 최대 크기
   setting_show_work_package_attachments: 기본적으로 파일 탭에 첨부 파일 표시
   setting_antivirus_scan_mode: 스캔 모드
@@ -4909,11 +5091,10 @@ ko:
   setting_new_project_user_role_id: 프로젝트를 만드는 비관리자 사용자에게 지정된 역할
   setting_new_project_send_confirmation_email: 새 프로젝트 생성 시 작성자에게 알림 보내기
   setting_new_project_notification_text: 알림 텍스트
-  setting_password_active_rules: 활성 문자 클래스
+  setting_password_active_rules: Password requirements
   setting_password_count_former_banned: 재사용 금지된 최근에 사용한 암호 수
   setting_password_days_valid: 암호 변경을 적용할 경과 일 수
   setting_password_min_length: 최소 길이
-  setting_password_min_adhered_rules: 최소 필수 클래스 수
   setting_per_page_options: 페이지당 개체 옵션
   setting_percent_complete_on_status_closed: 상태가 닫힘인 경우 완료 %
   setting_percent_complete_on_status_closed_no_change: 변경 없음
@@ -4978,12 +5159,12 @@ ko:
   setting_welcome_text: 환영 블록 텍스트
   setting_welcome_title: 환영 블록 제목
   setting_welcome_on_homescreen: 홈 화면에 환영 블록 표시
-  setting_work_packages_identifier_numeric: 인스턴스 전체의 숫자 시퀀스(기본값)
-  setting_work_packages_identifier_numeric_caption: '모든 작업 패키지는 1로 시작하는 순차 번호가 있으며, 새로운 패키지마다 순차 번호가 증가합니다. 이 번호는 해당 인스턴스 내에서 고유하므로 작업 패키지가 프로젝트 간에 이동되더라도 동일하게 유지됩니다.
+  setting_work_packages_identifier_classic: 인스턴스 전체의 숫자 시퀀스(기본값)
+  setting_work_packages_identifier_classic_caption: '모든 작업 패키지는 1로 시작하는 순차 번호가 있으며, 새로운 패키지마다 순차 번호가 증가합니다. 이 번호는 해당 인스턴스 내에서 고유하므로 작업 패키지가 프로젝트 간에 이동되더라도 동일하게 유지됩니다.
 
     '
-  setting_work_packages_identifier_alphanumeric: 프로젝트 기반 영숫자 식별자
-  setting_work_packages_identifier_alphanumeric_caption: '모든 프로젝트에는 작업 패키지 ID 앞에 붙는 고유 식별자가 있습니다. 작업 패키지가 다른 프로젝트로 이동된 경우 새 식별자가 생성되지만 이전 식별자도 계속 작동됩니다.
+  setting_work_packages_identifier_semantic: 프로젝트 기반 시맨틱 식별자
+  setting_work_packages_identifier_semantic_caption: '모든 프로젝트에는 작업 패키지 ID 앞에 붙는 고유 식별자가 있습니다. 작업 패키지가 다른 프로젝트로 이동된 경우 새 식별자가 생성되지만 이전 식별자도 계속 작동됩니다.
 
     '
   setting_work_package_list_default_highlighting_mode: 기본 강조 표시 모드

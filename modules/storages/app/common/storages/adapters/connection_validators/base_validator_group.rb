@@ -38,7 +38,7 @@ module Storages
           new(storage).call
         end
 
-        def self.key = raise ::Storages::Errors::SubclassResponsibility
+        def self.key = raise SubclassResponsibilityError
 
         def initialize(storage)
           @storage = storage
@@ -55,7 +55,7 @@ module Storages
 
         private
 
-        def validate = raise ::Storages::Errors::SubclassResponsibility
+        def validate = raise SubclassResponsibilityError
 
         def register_checks(*keys)
           keys.each { @results.register_check(it) }

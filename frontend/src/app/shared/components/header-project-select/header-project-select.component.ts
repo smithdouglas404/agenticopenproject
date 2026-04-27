@@ -28,7 +28,7 @@
 
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { ChangeDetectionStrategy, Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { BehaviorSubject, Observable, ReplaySubject, Subscription } from 'rxjs';
 import { map, shareReplay, take, tap } from 'rxjs/operators';
@@ -55,8 +55,16 @@ import { ConfigurationService } from 'core-app/core/config/configuration.service
   ],
   standalone: false,
 })
-export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
+export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implements OnInit, OnDestroy, AfterViewInit {
   @HostBinding('class.op-project-select') className = true;
+
+  @ViewChild('projectSearchField', { read: ElementRef })
+
+  projectSearchField?:ElementRef<HTMLElement>;
+
+  private activeProjectId:number|null = null;
+
+  private readonly listboxId = 'op-header-project-select-listbox';
 
   public dropModalOpen = false;
 
@@ -73,7 +81,8 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
           (project) => {
             const searchText = this.searchableProjectListService.searchText;
             if (searchText.length) {
-              const matches = project.name.toLowerCase().includes(searchText.toLowerCase());
+              const terms = searchText.toLowerCase().split(/\s+/).filter((t) => t.length > 0);
+              const matches = terms.every((term) => project.name.toLowerCase().includes(term));
 
               if (!matches) {
                 return false;
@@ -193,6 +202,38 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
     this.onTextInput.unsubscribe();
   }
 
+  ngAfterViewInit():void {
+    this.searchableProjectListService.selectedItemID$
+      .pipe(this.untilDestroyed())
+      .subscribe((selectedItemID:number|null) => {
+        this.activeProjectId = selectedItemID;
+        this.syncSearchInputAccessibility();
+      });
+  }
+
+  private syncSearchInputAccessibility():void {
+    requestAnimationFrame(() => {
+      const input = this.projectSearchField?.nativeElement.querySelector('input') as HTMLInputElement | null;
+
+      if (!input) {
+        return;
+      }
+
+      input.setAttribute('role', 'combobox');
+      input.setAttribute('aria-autocomplete', 'list');
+      input.setAttribute('aria-haspopup', 'listbox');
+      input.setAttribute('aria-expanded', String(this.dropModalOpen));
+      input.setAttribute('aria-controls', this.listboxId);
+      input.setAttribute('aria-label', this.searchPlaceHolder());
+
+      if (this.dropModalOpen && this.activeProjectId !== null) {
+        input.setAttribute('aria-activedescendant', `op-header-project-select-option-${this.activeProjectId}`);
+      } else {
+        input.removeAttribute('aria-activedescendant');
+      }
+    });
+  }
+
   toggleDropModal():void {
     this.subscriptionComplete$.pipe(take(1)).subscribe(() => {
       this.dropModalOpen = !this.dropModalOpen;
@@ -203,6 +244,7 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
       } else {
         this.searchableProjectListService.disableLoading();
       }
+      this.syncSearchInputAccessibility();
     });
   }
 
@@ -219,6 +261,7 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
     this.dropModalOpen = false;
     this.searchableProjectListService.disableLoading();
     this.searchableProjectListService.searchText = '';
+    this.syncSearchInputAccessibility();
   }
 
   currentProjectName():string {

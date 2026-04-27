@@ -49,8 +49,7 @@ module OpenProject::Backlogs
             resource :sprint,
                      link_cache_if: ->(*) {
                        represented.project.present? &&
-                         current_user.allowed_in_project?(:view_sprints, represented.project) &&
-                         OpenProject::FeatureDecisions.scrum_projects_active?
+                         current_user.allowed_in_project?(:view_sprints, represented.project)
                      },
                      link: ->(*) {
                        if represented.sprint.present?
@@ -68,8 +67,7 @@ module OpenProject::Backlogs
                        if embed_links &&
                           represented.project.present? &&
                           represented.sprint.present? &&
-                          current_user.allowed_in_project?(:view_sprints, represented.project) &&
-                          OpenProject::FeatureDecisions.scrum_projects_active?
+                          current_user.allowed_in_project?(:view_sprints, represented.project)
                          ::API::V3::Sprints::SprintRepresenter.create(represented.sprint, current_user:)
                        end
                      end,

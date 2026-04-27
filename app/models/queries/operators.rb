@@ -37,6 +37,7 @@ module Queries::Operators
     Queries::Operators::None,
     Queries::Operators::All,
     Queries::Operators::Contains,
+    Queries::Operators::StartsWith,
     Queries::Operators::NotContains,
     Queries::Operators::InLessThan,
     Queries::Operators::InMoreThan,

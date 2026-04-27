@@ -33,7 +33,7 @@ require "rails_helper"
 RSpec.describe "GET /projects/identifier_suggestion", type: :rails_request do
   current_user { create(:user, global_permissions: %i[add_project]) }
 
-  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
+  context "with semantic identifiers", with_settings: { work_packages_identifier: "semantic" } do
     it "returns a suggested identifier derived from the name" do
       get "/projects/identifier_suggestion", params: { name: "Flight Planning Algorithm" }, as: :json
       expect(response).to have_http_status(:ok)
@@ -93,7 +93,7 @@ RSpec.describe "GET /projects/identifier_suggestion", type: :rails_request do
     end
   end
 
-  context "with numeric (legacy) identifiers", with_settings: { work_packages_identifier: "numeric" } do
+  context "with classic identifiers", with_settings: { work_packages_identifier: "classic" } do
     it "returns a slugified lowercase identifier" do
       get "/projects/identifier_suggestion", params: { name: "My Cool Project" }, as: :json
       expect(response).to have_http_status(:ok)

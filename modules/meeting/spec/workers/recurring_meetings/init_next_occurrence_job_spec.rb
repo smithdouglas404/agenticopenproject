@@ -55,11 +55,12 @@ RSpec.describe RecurringMeetings::InitNextOccurrenceJob, type: :model do
   end
 
   context "when next occurrence is cancelled" do
-    let!(:schedule) do
-      create(:scheduled_meeting,
-             :cancelled,
+    let!(:cancelled_occurrence) do
+      create(:meeting,
              recurring_meeting: series,
-             start_time: Time.zone.tomorrow + 10.hours)
+             start_time: Time.zone.tomorrow + 10.hours,
+             recurrence_start_time: Time.zone.tomorrow + 10.hours,
+             state: :cancelled)
     end
 
     it "does not instantiate anything, but schedules the next job" do
@@ -68,7 +69,7 @@ RSpec.describe RecurringMeetings::InitNextOccurrenceJob, type: :model do
 
       expect(described_class)
         .to have_been_enqueued.with(series, next_occurrence)
-                              .at(schedule.start_time)
+                              .at(cancelled_occurrence.recurrence_start_time)
     end
   end
 
@@ -76,14 +77,8 @@ RSpec.describe RecurringMeetings::InitNextOccurrenceJob, type: :model do
     let!(:instance) do
       create(:meeting,
              recurring_meeting: series,
-             start_time: Time.zone.tomorrow + 10.hours)
-    end
-
-    let!(:schedule) do
-      create(:scheduled_meeting,
-             meeting: instance,
-             recurring_meeting: series,
-             start_time: Time.zone.tomorrow + 10.hours)
+             start_time: Time.zone.tomorrow + 10.hours,
+             recurrence_start_time: Time.zone.tomorrow + 10.hours)
     end
 
     let(:next_occurrence) { Time.zone.tomorrow + 1.day + 10.hours }
@@ -94,7 +89,7 @@ RSpec.describe RecurringMeetings::InitNextOccurrenceJob, type: :model do
 
       expect(described_class)
         .to have_been_enqueued.with(series, next_occurrence)
-                              .at(schedule.start_time)
+                              .at(instance.recurrence_start_time)
     end
   end
 
@@ -102,14 +97,8 @@ RSpec.describe RecurringMeetings::InitNextOccurrenceJob, type: :model do
     let!(:instance) do
       create(:meeting,
              recurring_meeting: series,
-             start_time: Time.zone.tomorrow + 1.day + 10.hours)
-    end
-
-    let!(:schedule) do
-      create(:scheduled_meeting,
-             meeting: instance,
-             recurring_meeting: series,
-             start_time: Time.zone.tomorrow + 10.hours)
+             start_time: Time.zone.tomorrow + 1.day + 10.hours,
+             recurrence_start_time: Time.zone.tomorrow + 10.hours)
     end
 
     let(:next_occurrence) { Time.zone.tomorrow + 1.day + 10.hours }
@@ -119,7 +108,7 @@ RSpec.describe RecurringMeetings::InitNextOccurrenceJob, type: :model do
       expect(subject).to be_nil
       expect(described_class)
         .to have_been_enqueued.with(series, next_occurrence)
-                              .at(schedule.start_time)
+                              .at(instance.recurrence_start_time)
     end
   end
 
@@ -127,14 +116,8 @@ RSpec.describe RecurringMeetings::InitNextOccurrenceJob, type: :model do
     let!(:instance) do
       create(:meeting,
              recurring_meeting: series,
-             start_time: Time.zone.tomorrow + 1.day + 10.hours)
-    end
-
-    let!(:schedule) do
-      create(:scheduled_meeting,
-             meeting: instance,
-             recurring_meeting: series,
-             start_time: Time.zone.tomorrow + 1.day + 10.hours)
+             start_time: Time.zone.tomorrow + 1.day + 10.hours,
+             recurrence_start_time: Time.zone.tomorrow + 1.day + 10.hours)
     end
 
     let(:next_occurrence) { Time.zone.tomorrow + 1.day + 10.hours }

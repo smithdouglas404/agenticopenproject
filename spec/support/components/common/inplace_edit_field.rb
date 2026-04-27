@@ -52,6 +52,10 @@ module Components
 
       def open_field
         within_field do
+          # Wait for the display field to be present before clicking.
+          # This is necessary when the field is inside a lazy-loading Turbo Frame,
+          # which may not have loaded yet when this method is called.
+          find(".op-inplace-edit--display-field")
           # Link and user type custom fields might contain a clickable link inside the edit container.
           # Use JavaScript to directly trigger the click event on the container to avoid nested links.
           selector = "op-inplace-edit-field--#{model_class}-#{model.id}--#{attribute.name}"
@@ -111,6 +115,7 @@ module Components
 
       def fill_and_submit_value(name:, val:, ckeditor: false)
         if ckeditor
+          expect(page).to have_css(".ck-content")
           find(".ck-content").base.send_keys val
         else
           fill_in(name, with: val)

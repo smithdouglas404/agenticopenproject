@@ -160,6 +160,20 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       let(:value) { work_package.id }
     end
 
+    describe "displayId" do
+      context "when semantic work package ids are active",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:work_package) { build_stubbed(:work_package, identifier: "PROJ-123", project: workspace) }
+
+        it { is_expected.to be_json_eql("PROJ-123".to_json).at_path("displayId") }
+      end
+
+      context "when semantic work package ids are not active" do
+        it { is_expected.to be_json_eql(work_package.id.to_s.to_json).at_path("displayId") }
+      end
+    end
+
     it_behaves_like "API V3 formattable", "description" do
       let(:format) { "markdown" }
       let(:raw) { work_package.description }

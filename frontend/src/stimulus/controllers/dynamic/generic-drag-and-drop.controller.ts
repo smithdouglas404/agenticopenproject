@@ -31,6 +31,7 @@
 import { Controller } from '@hotwired/stimulus';
 import { FetchRequest } from '@rails/request.js';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
+import { closestInteractiveElement } from 'core-stimulus/helpers/interactive-element-helper';
 import type { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
 import dragula, { Drake } from 'dragula';
 import invariant from 'tiny-invariant';
@@ -42,16 +43,20 @@ interface TargetConfig {
 }
 
 export default class GenericDragAndDropController extends Controller {
-  static targets = ['container', 'scrollContainer'];
+  static targets = ['container', 'scrollContainer', 'mirrorContainer'];
 
   containerTargets:HTMLElement[];
   scrollContainerTargets:HTMLElement[];
+  declare readonly hasMirrorContainerTarget:boolean;
+  declare readonly mirrorContainerTarget:HTMLElement;
 
   static values = {
+    handle: { type: Boolean, default: true },
     handleSelector: { type: String, default: '.DragHandle' },
     positionMode: { type: String, default: 'index' },
   };
 
+  declare readonly handleValue:boolean;
   declare readonly handleSelectorValue:string;
   declare readonly positionModeValue:string;
 
@@ -69,6 +74,9 @@ export default class GenericDragAndDropController extends Controller {
   }
 
   disconnect() {
+    // A Turbo morph mid-drag can replace the element tree without the
+    // dragend event firing, so clear the body-level cursor flag defensively.
+    document.body.removeAttribute('data-dragging');
     this.autoscroll?.destroy();
     this.autoscroll = null;
     this.drake?.destroy();
@@ -118,22 +126,28 @@ export default class GenericDragAndDropController extends Controller {
     this.drake = dragula(
       this.containers,
       {
-        moves: (_el, _source, handle, _sibling) => !!handle && !!handle.closest(this.handleSelectorValue),
+        moves: (el, _source, handle, _sibling) => this.canStartDrag(el, handle),
         accepts: (el:Element, target:Element, source:Element, sibling:Element) => this.accepts(el, target, source, sibling),
         revertOnSpill: true, // enable reverting of elements if they are dropped outside of a valid target
+        mirrorContainer: this.resolveMirrorContainer(),
       },
     )
+      .on('cloned', (clone, _original, type) => {
+        clone.setAttribute('data-dragging', type);
+      })
       .on('drag', (el, source) => {
         this.dragOriginSource = source;
         this.dragOriginNextSibling = el.nextElementSibling;
 
-        const handle = el.querySelector(this.handleSelectorValue)!;
-        handle.setAttribute('aria-pressed', 'true');
+        el.setAttribute('data-dragging', 'source');
+        document.body.setAttribute('data-dragging', 'active');
+        this.ariaPressedTarget(el)?.setAttribute('aria-pressed', 'true');
       })
       .on('dragend', (el) => {
-        const handle = el.querySelector(this.handleSelectorValue)!;
-        handle.setAttribute('aria-pressed', 'false');
-       })
+        el.removeAttribute('data-dragging');
+        document.body.removeAttribute('data-dragging');
+        this.ariaPressedTarget(el)?.setAttribute('aria-pressed', 'false');
+      })
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       .on('drop', this.drop.bind(this));
 
@@ -215,6 +229,25 @@ export default class GenericDragAndDropController extends Controller {
     return data;
   }
 
+  private canStartDrag(el:Element|null|undefined, handle:Element|null|undefined):boolean {
+    if (!this.isDraggableElement(el)) {
+      return false;
+    }
+
+    if (!this.handleValue) {
+      return closestInteractiveElement(handle ?? null, el) == null;
+    }
+
+    return handle?.closest(this.handleSelectorValue) != null;
+  }
+
+  private isDraggableElement(el:Element|null|undefined):boolean {
+    return el instanceof HTMLElement
+      && el.getAttribute('data-empty-list-item') !== 'true'
+      && el.dataset.draggableType !== undefined
+      && el.dataset.dropUrl !== undefined;
+  }
+
   // if the target has a container accessor, use that as the container instead of the element itself
   // we need this e.g. in Primer's borderbox component as we cannot add required data attributes to the ul element there
   private resolveContainerElement(target:HTMLElement):HTMLElement {
@@ -225,6 +258,10 @@ export default class GenericDragAndDropController extends Controller {
     const container = target.querySelector<HTMLElement>(accessor);
     invariant(container, `Expected container element matching "${accessor}"`);
     return container;
+  }
+
+  private resolveMirrorContainer():Element {
+    return this.hasMirrorContainerTarget ? this.mirrorContainerTarget : document.body;
   }
 
   // Returns the data-draggable-id of the element preceding el in its container,
@@ -244,5 +281,10 @@ export default class GenericDragAndDropController extends Controller {
     }
 
     return targetPosition + 1;
+  }
+
+  private ariaPressedTarget(el:Element):Element|null {
+    if (!this.handleValue) return null;
+    return el.querySelector(this.handleSelectorValue);
   }
 }

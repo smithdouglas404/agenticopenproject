@@ -206,10 +206,10 @@ tr:
   project_module_costs: Zaman ve maliyetler
   setting_allow_tracking_start_and_end_times: Başlangıç ve bitiş saatlerine izin verin
   setting_costs_currency: Para birimi
-  setting_costs_currency_caption: This is the unit of currency. It can be a three-letter ISO code like EUR, USD or JPY or a symbol like €, $ or ¥.
-  setting_costs_currency_format: Currency format
-  setting_costs_currency_format_prefix: Before the number (e.g. EUR 100)
-  setting_costs_currency_format_suffix: After the number (e.g. 100 EUR)
+  setting_costs_currency_caption: Bu para birimidir. EUR, USD veya JPY gibi üç harfli bir ISO kodu veya €, $ veya ¥ gibi bir sembol olabilir.
+  setting_costs_currency_format: Para birimi formatı
+  setting_costs_currency_format_prefix: Rakamdan önce (örn. EUR 100)
+  setting_costs_currency_format_suffix: Rakamdan sonra (örn. 100 EUR)
   setting_enforce_tracking_start_and_end_times: Başlangıç ve bitiş saatleri gerektir
   setting_enforce_without_allow: Başlangıç ve bitiş saatlerini zorunlu tutmak, bunlara izin vermeden mümkün değildir
   setting_allow_tracking_start_and_end_times_caption: Zaman kaydı yaparken başlangıç ve bitiş zamanlarının girilmesini sağlar.
@@ -236,7 +236,7 @@ tr:
         title: Aylara göre gerçek maliyetler
         blankslate:
           heading: Zamanınızı ve maliyetlerinizi takip etmeye başlayın
-          description: Get an overview of your costs and logged time to monitor progress of your project. Make sure that work packages are associated with the correct budget.
+          description: Projenizin ilerleyişini izlemek için maliyetlerinize ve kaydedilen zamana genel bir bakış elde edin. İş paketlerinin doğru bütçe ile ilişkilendirildiğinden emin olun.
           action: Günlük zamanı
         view_details: Gerçek maliyet ayrıntılarını görüntüleyin
   ee:

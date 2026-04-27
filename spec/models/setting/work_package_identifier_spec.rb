@@ -31,13 +31,13 @@
 require "spec_helper"
 
 RSpec.describe Setting::WorkPackageIdentifier do
-  context "when the setting is 'alphanumeric'", with_settings: { work_packages_identifier: "alphanumeric" } do
-    it { expect(described_class.alphanumeric?).to be true }
-    it { expect(described_class.numeric?).to be false }
+  context "when the setting is 'semantic'", with_settings: { work_packages_identifier: "semantic" } do
+    it { expect(described_class.semantic?).to be true }
+    it { expect(described_class.classic?).to be false }
   end
 
-  context "when the setting is 'numeric'", with_settings: { work_packages_identifier: "numeric" } do
-    it { expect(described_class.alphanumeric?).to be false }
-    it { expect(described_class.numeric?).to be true }
+  context "when the setting is 'classic'", with_settings: { work_packages_identifier: "classic" } do
+    it { expect(described_class.semantic?).to be false }
+    it { expect(described_class.classic?).to be true }
   end
 end

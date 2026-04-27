@@ -41,9 +41,9 @@ ru:
       sprint:
         duration: Продолжительность спринта
       user_preference:
-        backlogs_task_color: Цвет задачи
         backlogs_versions_default_fold_state: Покажите спринты в свернутом виде
       work_package:
+        backlog_bucket: Backlog Bucket
         backlogs_work_package_type: Тип невыполненной работы
         position: Позиция
         sprint: Спринт
@@ -61,7 +61,10 @@ ru:
               share_all_projects_already_taken: не может быть установлен, потому что проект "%{name}" уже совместно используется со всеми проектами.
               share_all_projects_already_taken_anonymous: не может быть установлен, потому что другой проект уже совместно используется со всеми проектами.
         work_package:
+          backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
           attributes:
+            backlog_bucket:
+              backlog_bucket_from_another_project: must belong to the same project as the work package.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: может содержать только идентификаторы рабочих пакетов в текущем спринте.
               must_block_at_least_one_work_package: должен содержаться идентификатор по крайней мере одного билета.
@@ -85,19 +88,13 @@ ru:
           cannot_end_before_it_starts: Спринт не может заканчиваться до того, как начнется.
     models:
       sprint: Спринт
-  attributes:
-    task_type: Тип задачи
   backlogs:
-    any: любой
     caption_sprints_default_fold_state: Спринты не будут раскрываться по умолчанию при просмотре страницы 'Бэклог и спринты'. Каждый из них должен быть развернут вручную.
-    column_width: Ширина столбца
     definition_of_done: Определение термина "Завершено"
     definition_of_done_caption: Пакеты работ с такими статусами рассматриваются как завершенные в представлениях бэклога и отчетах.
     done_status: Статус Выполнено
     sharing_description: Этот проект может либо делиться своими спринтами, либо получать общие спринты, либо работать со спринтами самостоятельно (без обмена).
     sharing: Совместное использование
-    impediment: Препятствие
-    label_versions_default_fold_state: Показать свернутые версии
     label_burndown_chart: Сводная таблица
     label_sprint_board: Доска для спринта
     work_package_is_closed: Пакет работ завершен, когда
@@ -113,44 +110,35 @@ ru:
     rebuild_positions: Восстановить позиции
     remaining_hours: Оставшиеся часы
     show_burndown_chart: Сводная таблица
-    story: История
     story_points:
       one: "%{count} сюжетная точка"
       few: "%{count} сюжетные точки"
       many: "%{count} сюжетные точки"
       other: "%{count} сюжетные точки"
-    task: Задача
-    task_color: Цвет задачи
     unassigned: Нераспределенные
-    administration_blankslate:
-      title: Настройки администрирования бэклога будут в будущем
-      text: В настоящее время мы переделываем модуль Backlogs. В ближайшем будущем здесь появятся административные настройки для спринтов и бэклогов. Настройки на уровне проекта остаются доступными.
     user_preference:
       header_backlogs: Модуль бэклогов
       button_update_backlogs: Обновить модуль бэклогов
-    backlog_component:
-      blankslate_title: "%{name} пустой"
-      blankslate_description: Пока ничего не запланировано. Перетащите элементы сюда, чтобы добавить их.
+    administration_blankslate:
+      title: Настройки администрирования бэклога будут в будущем
+      text: В настоящее время мы переделываем модуль Backlogs. В ближайшем будущем здесь появятся административные настройки для спринтов и бэклогов. Настройки на уровне проекта остаются доступными.
+    backlog_bucket_component:
+      blankslate_title: Backlog bucket is empty
+      blankslate_description: Drag items here to add them.
+    backlog_bucket_item_component:
+      label_actions: Work package actions
     sprint_component:
       blankslate_title: "%{name} пустой"
       blankslate_description: Пока ничего не запланировано. Перетащите элементы сюда, чтобы добавить их.
-    backlog_header_component:
-      label_toggle_backlog: Свернуть/Развернуть %{name}
-      label_story_count:
-        zero: Нет историй в бэклоге
-        one: "%{count} история в бэклоге"
-        other: "%{count} историй в бэклоге"
     inbox_component:
       blankslate_title: Папка "Входящие" пуста
       blankslate_description: Все открытые пакеты работ в этом проекте автоматически появятся здесь.
-      label_drag_work_package: Переместить %{name}
       show_more:
         one: Показать еще 1 элемент
         few: Показать еще %{count} элементов
         many: Показать еще %{count} элементов
         other: Показать еще %{count} элементов
     inbox_item_component:
-      label_drag_work_package: Переместить %{name}
       label_actions: Действия пакета работ
     inbox_menu_component:
       action_menu:
@@ -171,21 +159,25 @@ ru:
         receive_shared_description_html: Этот проект получает спринты из другого проекта. Управляйте этим на %{settings_link}.
         receive_shared_no_actions_description_text: Этот проект получает общие спринты из другого проекта, но пока ни один из них не доступен.
         settings_link_text: настройки проекта
+    backlog_bucket_menu_component:
+      label_actions: Backlog bucket actions
+      action_menu:
+        edit_backlog_bucket: Edit backlog bucket
+        delete_backlog_bucket: Delete backlog bucket
+    backlog_bucket_header_component:
+      label_work_package_count:
+        zero: No stories in backlog bucket
+        one: "%{count} story in backlog bucket"
+        other: "%{count} stories in backlog bucket"
     sprint_header_component:
-      label_toggle_backlog: Свернуть/Развернуть %{name}
+      label_start_sprint: Начало
+      label_complete_sprint: Завершено
+      start_sprint_disabled_reason_active_sprint: Другой спринт уже активен.
+      start_sprint_disabled_reason_missing_dates: Для начала спринта необходимы даты начала и окончания.
       label_story_count:
         zero: Нет историй в спринте
         one: "%{count} история в спринте"
         other: "%{count} историй в спринте"
-    backlog_menu_component:
-      label_actions: Действия в рамках бэклога
-      action_menu:
-        edit_sprint: Редактировать спринт
-        new_story: Новая история
-        stories_tasks: Истории/Задачи
-        task_board: Панель задач
-        wiki: Wiki
-        properties: Свойства
     finish_sprint_dialog_component:
       title: Есть элементы, находящиеся в процессе работы
       body: "%{message} Что вы хотели бы сделать с этим?"
@@ -199,52 +191,33 @@ ru:
     sprint_menu_component:
       label_actions: Действия в спринте
       action_menu:
-        start_sprint: Начать спринт
-        complete_sprint: Завершить спринт
-        start_sprint_disabled_description: Другой спринт уже активен.
-        start_sprint_missing_dates_description: Для начала спринта необходимы даты начала и окончания.
         edit_sprint: Редактировать спринт
         add_work_package: Добавить пакет работ
     story_component:
-      label_drag_story: Переместить %{name}
       label_actions: Действия истории
     story_menu_list_component:
       action_menu:
         copy_url_to_clipboard: Скопировать URL в буфер обмена
         copy_work_package_id: Скопировать ID пакета работ
         move_menu: Переместить
-  backlogs_points_burn_direction: Точки выгорания вверх/вниз
-  backlogs_product_backlog: Требования к продукту, с приоритетами
-  backlogs_story: История
-  backlogs_story_type: Типы историй
-  backlogs_task: Задача
-  backlogs_task_type: Тип задачи
-  backlogs_wiki_template: Шаблон для wiki-страницы по спринту
-  backlogs_empty_title: Версии пока не определены
-  backlogs_empty_action_text: Чтобы начать использовать бэклоги, сначала создайте версию
-  backlogs_not_configured_title: Бэклоги не настроены
-  backlogs_not_configured_description: Перед использованием этого модуля необходимо задать типы историй и задач.
-  backlogs_not_configured_action_text: Настройка бэклогов
+        move_to_sprint: Move to sprint
+    burndown_chart:
+      show:
+        blankslate_title: No burndown data available
+        blankslate_description: Set start and end date for the sprint to generate a burndown chart.
   burndown:
     story_points: Точки истории
     story_points_ideal: Точки истории (идеально)
-  errors:
-    attributes:
-      task_type:
-        cannot_be_story_type: не может также быть типом истории
   label_backlog: Бэклог
+  label_backlog_bucket_edit: Edit backlog bucket
+  label_backlog_bucket_new: New backlog bucket
   label_inbox: Входящие
   label_backlogs: Бэклоги
-  label_backlogs_unconfigured: Вы еще не настроили Невыполненные работы. Перейдите на страницу %{administration} > %{plugins}, а затем нажмите на ссылку %{configure} для получения этого дополнения. После того как вы настроите поля, возвратитесь на эту страницу, чтобы начать пользоваться инструментом.
-  label_blocks_ids: Идентификаторы заблокированных рабочих пакетов
   label_burndown_chart: Сводная таблица
-  label_column_in_backlog: Колонка в бэклоге
-  label_used_as_backlog: Используется как бэклог
   label_sprint_board: Доска для спринта
   label_points_burn_down: Вниз
   label_points_burn_up: Вверх
   label_sprint_edit: Редактировать спринт
-  label_sprint_impediments: Препятствия спринта
   label_sprint_new: Новый спринт
   label_backlog_and_sprints: Бэклог и спринты
   label_task_board: Панель задач
@@ -282,18 +255,4 @@ ru:
             caption: Спринты, созданные в этом проекте, будут доступны всем подпроектам текущего проекта.
             info: При совместном использовании спринта его название, статус и даты начала и окончания будут доступны всем проектам. Они не могут быть изменены в проектах, которые получают и используют эти спринты.
         sprint_sharing: Поделиться спринтами
-  rb_burndown_charts:
-    show:
-      blankslate_title: Нет сводных данных
-      blankslate_description: Установите дату начала и окончания спринта, чтобы сгенерировать сводную таблицу.
   remaining_hours: оставшиеся часы
-  version_settings_display_label: Колонка в бэклоге
-  version_settings_display_option_left: влево
-  version_settings_display_option_none: нет
-  version_settings_display_option_right: вправо
-  setting_plugin_openproject_backlogs_story_types_caption: 'Типы рассматриваются как истории бэклога (например, Feature, User story). Должен отличаться от типа задачи.
-
-    '
-  setting_plugin_openproject_backlogs_task_type_caption: 'Тип, используемый для задач историй. Должен отличаться от типов историй.
-
-    '

@@ -137,7 +137,7 @@ class Principal < ApplicationRecord
 
   # Columns required for formatting the principal's name.
   def self.columns_for_name(formatter = nil)
-    raise NotImplementedError, "Redefine in subclass" unless self == Principal
+    raise SubclassResponsibilityError, "Redefine in subclass" unless self == Principal
 
     [User, Group, PlaceholderUser].map { it.columns_for_name(formatter) }.inject(:|)
   end

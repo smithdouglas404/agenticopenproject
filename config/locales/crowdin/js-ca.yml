@@ -515,12 +515,6 @@ ca:
         sidebar_arrow: Utilitza la fletxa de retorn a la cantonada esquerra per tornar al <b>menú principal</b> del projecte.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: Dintre de la <b>wiki</b> pots documentar i compartir el coneixement conjuntament amb el teu equip.
-        backlogs:
-          overview: Administra la teva feina en vistes de <b>treballs pendents</b>.
-          sprints: A la dreta hi tens els treballs pendents del producte i errors, a l'esquerra hi tens els "sprint" respectius. Aquí pots crear <b>èpiques, històries d'usuari i errors</b>, prioritza'ls arrossegant-los i afegeix-los a un "sprint".
-          task_board_arrow: Per veure el teu <b>Tauler de tasques</b>, obri el desplegable "sprint"...
-          task_board_select: "... i seleccioni l'entrada del <b>tauler de tasca</b>."
-          task_board: En el tauler de tasques es pot visualitzar el <b> progrés d'aquest "sprint"</b>. Fes clic a la icona més (+) al costat d'una història d'usuari per afegir noves tasques o impediments. <br> L'estat es pot actualitzar arrossegant.
         boards:
           overview: Selecciona els <b>taulers</b> per canviar la vista i administra el teu projecte utilitza la vista de taulers "agile".
           lists_kanban: Aquí pots crear múltiples llistes (columnes) en el teu taulell. Aquesta funció, per exemple, permet crear un <b>taulell Kanban</b>.
@@ -592,49 +586,6 @@ ca:
       settings:
         change_notification_settings: Pots modificar la teva <a target="_blank" href="%{url}">configuració de notificacions</a> per assegurar-te que mai et perds informació important.
         title: Configuració de notificacions
-        notify_me: Notifica’m
-        reminders:
-          no_notification: Sense notificació
-          timeframes:
-            normal:
-              PT0S: el mateix dia
-              P1D: 1 dia abans
-              P3D: 3 dies abans
-              P7D: una setmana abans
-            overdue:
-              P1D: cada dia
-              P3D: cada 3 dies
-              P7D: cada setmana
-        reasons:
-          mentioned:
-            title: Mencionat
-            description: Rep una notificació cada vegada que algú em menciona a qualsevol lloc
-          assignee: Assignat a
-          responsible: Responsable
-          shared: Compartida
-          watched: Observador
-          work_package_commented: Tots els nous comentaris
-          work_package_created: Paquets de treball nou
-          work_package_processed: Tots els canvis d'estat
-          work_package_prioritized: Tots els canvis de prioritat
-          work_package_scheduled: Tots els canvis de data
-        global:
-          immediately:
-            title: Participant
-            description: Notificacions per a totes les activitats en els paquets de treball en els que estàs involucrat (assignat, responsable o observador).
-          delayed:
-            title: No participant
-            description: Notificacions addicionals per activitats en tots els projectes.
-          date_alerts:
-            title: Alertes per dates
-            description: Notificacions automàtiques quan dates importants s'aproximen per a paquets de treball oberts en els quals estàs involucrat (assignat, responsable o observador).
-          overdue: Quan vençut
-        project_specific:
-          title: Configuracions de notificacions específiques del projecte
-          description: Aquestes configuracions específiques de projecte anul·len les configuracions per defecte especificades a sobre.
-          add: Afegeix configuracions pel projecte
-          already_selected: Aquest projecte ja està seleccionat
-          remove: Elimina les configuracions del projecte
     pagination:
       no_other_page: Estàs en la pàgina única.
       pages_skipped: Pages skipped.
@@ -658,39 +609,6 @@ ca:
       required_outside_context: 'Si us plau, selecciona un projecte on crear el paquet de treball per a veure tots els atributs. Només pots seleccionar projectes que tinguin activat la classe indicada anteriorment.
 
         '
-    reminders:
-      settings:
-        daily:
-          add_time: Afegeix temps
-          enable: Activa els correus electrònics recordatori diaris
-          explanation: Rebràs aquests recordatoris per a notificacions no llegides a les hores que especifiquis. %{no_time_zone}
-          no_time_zone: Fins que no configuris una zona horària per al teu compte, els temps seran interpretats en UTC.
-          time_label: 'Temps %{counter}:'
-          title: Envia'm correus electrònics recordatori diaris per a notificacions no llegides.
-        workdays:
-          title: Rep recordatoris de correus electrònics recordatori aquests dies
-        immediate:
-          title: Envia'm un correu electrònic recordatori
-          mentioned: Immediatament quan algú em @menciona
-          personal_reminder: Immediately when I receive a personal reminder
-        alerts:
-          title: Alertes en correu electrònic per altres elements (que no són paquets de treball)
-          explanation: 'Ara mateix les notificacions estan limitades als paquets de treball. Pots seleccionar continuar rebent alertes en correus electrònics per aquells esdeveniments fins que s''incloguin a les notificacions:
-
-            '
-          news_added: Notícies afegides
-          news_commented: Comenta a un element de notícia
-          document_added: Documents afegits
-          forum_messages: Nou missatges de fòrum
-          wiki_page_added: S'ha afegit la pàgina wiki
-          wiki_page_updated: S'ha actualitzat la pàgina wiki
-          membership_added: Afiliació afegida
-          membership_updated: Afiliació actualitzada
-        title: Correus electrònics recordatori
-        pause:
-          label: Pausa els correu electrònic recordatori temporalment
-          first_day: Primer dia
-          last_day: Últim dia
     text_are_you_sure: N'esteu segur?
     text_are_you_sure_to_cancel: You have unsaved changes on this page. Are you sure you want to discard them?
     breadcrumb: Breadcrumb
@@ -1063,13 +981,6 @@ ca:
       form_submit:
         title: Confirma per continuar
         text: Estàs segur que vols realitzar aquesta acció?
-      destroy_work_package:
-        title: Confirma l'eliminació de %{label}
-        single_text: Estàs segur que vols eliminar aquest paquet de treball
-        bulk_text: Estàs segur que vols eliminar el següent %{label}?
-        has_children: 'Aquest paquet de treball té %{childUnits}:'
-        confirm_deletion_children: Entenc que TOTS els descendents dels paquets de treball llistats seran eliminats recursivament.
-        deletes_children: Tots els paquets de treball fills i els seus descendents també seran eliminats recursivament.
       destroy_time_entry:
         title: Confirma l'eliminació de l'entrada temporal
         text: Estàs segur que vols eliminar la següent l'entrada temporal?

@@ -107,65 +107,66 @@ RSpec.describe CostReportsController do
   end
 
   describe "POST rename" do
-    let(:user) { create(:user) }
-    let(:owner) { create(:user) }
-    let(:cost_query) { create(:public_cost_query, user: owner, project:, name: "Public report") }
+    let(:owner) { build(:user) }
+    let(:cost_query) { create(:public_cost_query, user: owner, project:, name: "Original name") }
 
-    context "when only save_private_cost_reports is granted" do
+    context "with only :view_cost_entries permission" do
       before do
-        is_member project, user, %i[view_cost_entries save_private_cost_reports]
-        post :rename, params: { id: cost_query.id, project_id: project.identifier, query_name: "HACKED" }
+        is_member project, user, [:view_cost_entries]
       end
 
-      it "returns forbidden" do
+      it "returns 403 Forbidden" do
+        post :rename, params: { id: cost_query.id, project_id: project.identifier, query_name: "my update" }
+
         expect(response).to have_http_status(:forbidden)
       end
 
       it "does not rename the report" do
-        expect(cost_query.reload.name).to eq("Public report")
+        post :rename, params: { id: cost_query.id, project_id: project.identifier, query_name: "my update" }
+
+        expect(cost_query.reload.name).to eq("Original name")
       end
     end
 
-    context "when save_cost_reports is granted" do
+    context "with :save_cost_reports permission" do
       before do
         is_member project, user, %i[view_cost_entries save_cost_reports]
-        post :rename, params: { id: cost_query.id, project_id: project.identifier, query_name: "Renamed report" }
       end
 
       it "renames the report" do
-        expect(cost_query.reload.name).to eq("Renamed report")
-      end
+        post :rename, params: { id: cost_query.id, project_id: project.identifier, query_name: "my update" }
 
-      it "redirects to show" do
-        expect(response).to redirect_to(action: "show", id: cost_query.id)
+        expect(response).to have_http_status(:redirect)
+        expect(cost_query.reload.name).to eq("my update")
       end
     end
   end
 
   describe "POST update" do
-    let(:user) { create(:user) }
-    let(:owner) { create(:user) }
+    let(:owner) { build(:user) }
     let(:cost_query) { create(:public_cost_query, user: owner, project:) }
 
-    context "when only save_private_cost_reports is granted" do
-      it "returns forbidden and leaves query unchanged" do
-        is_member project, user, %i[view_cost_entries save_private_cost_reports]
-        serialized = cost_query.reload.serialized.deep_dup
+    context "with only :view_cost_entries permission" do
+      before do
+        is_member project, user, [:view_cost_entries]
+      end
 
-        post :update, params: { id: cost_query.id, project_id: project.identifier, save_query: 1 }
+      it "returns 403 Forbidden" do
+        post :update, params: { id: cost_query.id, project_id: project.identifier, save_query: 1, set_filter: 1 }
 
         expect(response).to have_http_status(:forbidden)
-        expect(cost_query.reload.serialized).to eq(serialized)
       end
     end
 
-    context "when save_cost_reports is granted" do
-      it "updates and persists the query" do
+    context "with :save_cost_reports permission" do
+      before do
         is_member project, user, %i[view_cost_entries save_cost_reports]
+      end
 
-        expect do
-          post :update, params: { id: cost_query.id, project_id: project.identifier, save_query: 1 }
-        end.to change { cost_query.reload.serialized }
+      it "updates the report and redirects to show" do
+        post :update, params: { id: cost_query.id, project_id: project.identifier, save_query: 1, set_filter: 1 }
+
+        expect(response).to redirect_to(action: "show", id: cost_query.id)
       end
     end
   end

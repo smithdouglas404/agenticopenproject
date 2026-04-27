@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Queries::WorkPackages::Filter::SprintFilter, with_flag: { scrum_projects: true } do
+RSpec.describe Queries::WorkPackages::Filter::SprintFilter do
   let(:scope_class) do
     Class.new do
       def for_project(_project); end
@@ -78,19 +78,13 @@ RSpec.describe Queries::WorkPackages::Filter::SprintFilter, with_flag: { scrum_p
     end
 
     describe "#available?" do
-      context "when in a project, scrum projects is active and user has the permission" do
+      context "when in a project and the user has the permission" do
         it "is true" do
           expect(instance).to be_available
         end
       end
 
-      context "when in a project, scrum projects is inactive and user has the permission", with_flag: { scrum_projects: false } do
-        it "is false" do
-          expect(instance).not_to be_available
-        end
-      end
-
-      context "when in a project, scrum projects is active and user lacks the permission" do
+      context "when in a project and the user lacks the permission" do
         let(:project_permissions) { [] }
 
         it "is false" do
@@ -98,7 +92,7 @@ RSpec.describe Queries::WorkPackages::Filter::SprintFilter, with_flag: { scrum_p
         end
       end
 
-      context "when outside a project, scrum projects is active and user has the permission" do
+      context "when outside a project and the user has the permission" do
         let(:project) { nil }
 
         it "is true" do
@@ -106,16 +100,7 @@ RSpec.describe Queries::WorkPackages::Filter::SprintFilter, with_flag: { scrum_p
         end
       end
 
-      context "when outside a project, scrum projects is inactive and user has the permission",
-              with_flag: { scrum_projects: false } do
-        let(:project) { nil }
-
-        it "is false" do
-          expect(instance).not_to be_available
-        end
-      end
-
-      context "when outside a project, scrum projects is active and user lacks the permission" do
+      context "when outside a project and the user lacks the permission" do
         let(:project) { nil }
         let(:project_permissions) { [] }
 

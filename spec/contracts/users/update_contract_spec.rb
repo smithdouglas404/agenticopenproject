@@ -126,6 +126,30 @@ RSpec.describe Users::UpdateContract do
         it_behaves_like "contract is valid"
       end
 
+      context "when user limit is reached" do
+        before do
+          allow(OpenProject::Enterprise).to receive(:user_limit_reached?).and_return(true)
+        end
+
+        context "when activating a previously inactive user" do
+          let(:attributes) { super().merge(status: Principal.statuses[:locked]) }
+
+          before do
+            user.status = Principal.statuses[:active]
+          end
+
+          it_behaves_like "contract is invalid", base: :user_limit_reached
+        end
+
+        context "when updating an already active user" do
+          before do
+            user.mail = "a.new@email.address"
+          end
+
+          it_behaves_like "contract is valid"
+        end
+      end
+
       context "when updated user authenticates through LDAP and basic attributes are changed" do
         let(:attributes) { super().merge(ldap_auth_source_id: create(:ldap_auth_source).id) }
 

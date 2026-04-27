@@ -25,14 +25,16 @@
 // See COPYRIGHT and LICENSE files for more details.
 
 import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
+
+import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { OpSharedModule } from 'core-app/shared/shared.module';
-import { OpenprojectTabsModule } from 'core-app/shared/components/tabs/openproject-tabs.module';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
+import { OpenprojectTabsModule } from 'core-app/shared/components/tabs/openproject-tabs.module';
 import {
   WorkPackageTabsService,
 } from 'core-app/features/work-packages/components/wp-tabs/services/wp-tabs/wp-tabs.service';
+
 import { WikisTabComponent } from './wikis-tab/wikis-tab.component';
-import { I18nService } from 'core-app/core/i18n/i18n.service';
 
 export function initializeWikiPlugin(injector:Injector) {
   const wpTabService = injector.get(WorkPackageTabsService);
@@ -44,8 +46,7 @@ export function initializeWikiPlugin(injector:Injector) {
       component: WikisTabComponent,
       name: I18n.t('js.work_packages.tabs.wikis'),
       id: 'wikis',
-      // TODO: only display if there are wiki providers available
-      displayable: (workPackage) => configService.activeFeatureFlags.includes("wikiEnhancements"),
+      displayable: (workPackage) => configService.wikisAvailable && configService.activeFeatureFlags.includes("wikiEnhancements"),
     },
   );
 }

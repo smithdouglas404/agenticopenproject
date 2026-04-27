@@ -515,12 +515,6 @@ ms:
         sidebar_arrow: Guna anak panah kembali di sudut kiri atas untuk kembali ke <b>menu utama</b> projek.
         welcome: Ikuti lawatan pengenalan selama tiga minit untuk mempelajari <b>ciri penting</b> yang paling. <br> Kami mengesyorkan anda melengkapkan langkah sehingga tamat. Anda boleh memulakan semula lawatan pada bila-bila masa.
         wiki: Dalam <b>wiki</b> anda boleh mendokumentasikan dan kongsi pengetahuan bersama pasukan anda.
-        backlogs:
-          overview: Kendalikan kerja anda dalam paparan <b>tunggakan</b>.
-          sprints: Di kanan anda mempunyai tunggakan produk dan tunggakan bug, di kiri anda mempunyai pecutan yang berkenaan. Di sini anda boleh mencipta <b>epik, cerita pengguna, dan bug</b>, utamakan dengan menarik & melepaskan dan tambah mereka ke pecutan.
-          task_board_arrow: Untuk lihat <b>papan tugasan</b> anda, buka pecutan drop-down...
-          task_board_select: "...dan pilih entri <b>papan tugasan</b>."
-          task_board: Papan tugasan menggambarkan secara visual <b>perkembangan untuk pecutan ini</b>. Klik ikon tambah (+) di sebelah cerita pengguna untuk tambah tugasan baru atau halangan. <br> Status tersebut boleh dikemas kini dengan tarik dan lepas.
         boards:
           overview: Pilih <b>board</b> untuk tukar paparan dan uruskan projek anda menggunakan paparan board agile.
           lists_kanban: Disini anda boleh mencipta pelbagai senarai (kolum) dalam board anda. Fitur ini membenarkan anda untuk mencipta, sebagai contoh, <b>board Kanban</b>.
@@ -591,49 +585,6 @@ ms:
       settings:
         change_notification_settings: Anda boleh mengubah suai <a target="_blank" href="%{url}">tetapan pemberitahuan</a> anda untuk memastikan anda tidak terlepas tarikh yang penting.
         title: Tetapan pemberitahuan
-        notify_me: Maklumkan saya
-        reminders:
-          no_notification: Tiada pemberitahuan
-          timeframes:
-            normal:
-              PT0S: hari yang sama
-              P1D: 1 hari sebelum
-              P3D: 3 hari sebelum
-              P7D: 1 minggu sebelum
-            overdue:
-              P1D: setiap hari
-              P3D: setiap 3 hari
-              P7D: setiap minggu
-        reasons:
-          mentioned:
-            title: Disebutkan
-            description: Terima pemberitahuan setiap kali sesiapa menyebut saya di mana saja
-          assignee: Penerima tugasan
-          responsible: Bertanggungjawab
-          shared: Dikongsi
-          watched: Pemerhati
-          work_package_commented: Semua komen baharu
-          work_package_created: Pakej kerja baharu
-          work_package_processed: Semua perubahan status
-          work_package_prioritized: Semua perubahan utama
-          work_package_scheduled: Semua perubahan tarikh
-        global:
-          immediately:
-            title: Menyertai
-            description: Pemberitahuan untuk semua aktiviti dalam pakej kerja yang anda terlibat (penerima tugasan, bertanggungjawab, atau pemerhati).
-          delayed:
-            title: Tidak menyertai
-            description: Pemberitahuan tambahan untuk aktiviti dalam semua projek.
-          date_alerts:
-            title: Peringatan tarikh
-            description: Pemberitahuan secara automatik apabila tarikh penting menghampiri untuk pakej kerja terbuka yang anda terlibat (penerima tugasan, bertanggungjawab atau pemerhati).
-          overdue: Apabila tertunggak
-        project_specific:
-          title: Tetapan pemberitahuan khusus projek
-          description: Tetapan pemberitahuan khusus projek mengatasi tetapan default diatas.
-          add: Tambah tetapan untuk projek
-          already_selected: Projek ini telah dipilih
-          remove: Keluarkan tetapan projek
     pagination:
       no_other_page: Anda berada di satu-satunya halaman.
       pages_skipped: Pages skipped.
@@ -657,39 +608,6 @@ ms:
       required_outside_context: 'Sila pilih projek untuk mencipta pakej kerja untuk melihat semua atribut. Anda hanya boleh memilih projek yang mempunyai jenis di atas yang telah diaktifkan.
 
         '
-    reminders:
-      settings:
-        daily:
-          add_time: Tambah masa
-          enable: Benarkan peringatan e-mel harian
-          explanation: Anda akan menerima peringatan hanya untuk pemberitahuan yang belum dibaca dan hanya pada jam yang anda tentukan. %{no_time_zone}
-          no_time_zone: Sehingga anda konfigurasi zon masa untuk akaun anda, masa akan ditafsirkan dalam UTC.
-          time_label: 'Masa %{counter}:'
-          title: Hantar saya peringatan e-mel harian untuk pemberitahuan yang belum dibaca
-        workdays:
-          title: Terima peringatan e-mel pada hari-hari ini
-        immediate:
-          title: Hantar saya peringatan e-mel
-          mentioned: Serta merta apabila sesiapa @menyebut saya
-          personal_reminder: Serta-merta apabila saya menerima peringatan peribadi
-        alerts:
-          title: Peringatan e-mel untuk item lain (yang bukan pakej kerja)
-          explanation: 'Pemberitahuan hari ini adalah terhad untuk pakej kerja. Anda boleh memilih untuk terus menerima makluman e-mel untuk kejadian ini sehingga mereka disertakan dalam pemberitahuan:
-
-            '
-          news_added: Berita yang ditambah
-          news_commented: Komen pada item berita
-          document_added: Dokumen ditambah
-          forum_messages: Mesej forum baharu
-          wiki_page_added: Halaman wiki ditambah
-          wiki_page_updated: Halaman wiki dikemas kini
-          membership_added: Keahlian ditambah
-          membership_updated: Keahlian dikemas kini
-        title: Peringatan e-mel
-        pause:
-          label: Hentikan seketika peringatan e-mel harian
-          first_day: Hari pertama
-          last_day: Hari terakhir
     text_are_you_sure: Adakah anda pasti?
     text_are_you_sure_to_cancel: You have unsaved changes on this page. Are you sure you want to discard them?
     breadcrumb: Breadcrumb
@@ -1062,13 +980,6 @@ ms:
       form_submit:
         title: Sahkan untuk teruskan
         text: Adakah anda pasti anda ingin melaksanakan tindakan ini?
-      destroy_work_package:
-        title: Sahkan pemadaman %{label}
-        single_text: Adakah anda pasti anda ingin memadam pakej kerja
-        bulk_text: Adakah anda pasti anda ingin memadam %{label} yang berikut?
-        has_children: 'Pakej kerja mempunyai %{childUnits}:'
-        confirm_deletion_children: Saya mengesahkan semua keturunan pakej kerja yang tersenarai akan dikeluarkan secara berulang-ulang.
-        deletes_children: Semua pakej kerja anak dan keturunan mereka akan dipadamkan secara berulang-ulang.
       destroy_time_entry:
         title: Sahkan pemadaman entri masa
         text: Adakah anda pasti anda ingin memadam entri masa yang berikut?

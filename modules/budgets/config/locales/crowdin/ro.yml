@@ -66,19 +66,19 @@ ro:
   budgets:
     widgets:
       budget_totals:
-        title: Budget totals
-        remaining_budget: Remaining budget
-        spent_budget: Spent budget
-        total_actual_costs: Total actual costs
-        total_planned_budget: Total planned budget
+        title: Totaluri bugetare
+        remaining_budget: Buget rămas
+        spent_budget: Buget cheltuit
+        total_actual_costs: Costuri reale totale
+        total_planned_budget: Buget total planificat
       budget_by_cost_type:
-        title: Budget by cost type
+        title: Buget pe tip de cost
         blankslate:
-          heading: Start project controlling
-          description: Get an overview of your budgets and costs to efficiently track the health status of your project
+          heading: Inițiere monitorizare proiect
+          description: Obține o imagine de ansamblu asupra bugetelor și costurilor pentru a evalua eficient starea proiectului
         blankslate_zero:
-          heading: Budget details missing
-          description: Add details about your planned budget to see data here
+          heading: Fără detalii bugetare
+          description: Adăugă detalii despre bugetul planificat pentru a vedea datele
         count_caption:
           zero: No budget data.
           one: Data aggregated from %{count} budget
@@ -96,7 +96,7 @@ ro:
             zero: No budget data.
             one: Data aggregated from %{count} budget included in this portfolio and its subitems.
             other: Data aggregated from %{count} budgets included in this portfolio and its subitems.
-        view_details: View budget details
+        view_details: Vezi detaliile bugetului
   events:
     budget: Buget editat
   help_click_to_edit: Câmpul %s este gol. Click aici pentru a-l edita.

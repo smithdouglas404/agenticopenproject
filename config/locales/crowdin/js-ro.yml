@@ -515,12 +515,6 @@ ro:
         sidebar_arrow: Folosește săgeata de întoarcere din colțul din stânga sus pentru a te întoarce în meniul <b>al proiectului</b>.
         welcome: Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time.
         wiki: În cadrul <b>Wiki</b> puteți documenta și împărtăși cunoștințe împreună cu echipa dumneavoastră.
-        backlogs:
-          overview: Gestionează-ți munca în vizualizarea <b>backlogs</b>.
-          sprints: În dreapta aveți lista de rezultate și erorile restante, în stânga aveți sprintele respective. Aici poți crea <b>epicuri, povestiri pentru utilizatori și erori</b>, prioritizează prin drag & drop și adaugă-le la un sprint.
-          task_board_arrow: Pentru a vedea <b>panoul de sarcini</b>, deschideți meniul Sprint...
-          task_board_select: "... și selectați intrarea <b>Task board</b>."
-          task_board: Grupul de lucru vizualizează progresul <b>pentru această iterație</b>. Dă click pe pictograma plus (+) de lângă o cerință de utilizator pentru a adăuga sarcini noi sau impedimente. <br> Starea poate fi actualizată cu glisare și plasare.
         boards:
           overview: Selectează secțiunile <b></b> pentru a schimba vizualizarea și administrarea proiectului tău folosind vizualizarea secțiunilor agile.
           lists_kanban: Aici puteţi crea mai multe liste (coloane) în cadrul secţiunii. Această funcţie vă permite să creaţi o <b>tabelă Kanban</b>, de exemplu.
@@ -593,49 +587,6 @@ ro:
       settings:
         change_notification_settings: Poți modifica setările <a target="_blank" href="%{url}">de notificare</a> pentru a te asigura că nu pierzi niciodată o actualizare importantă.
         title: Setări notificare
-        notify_me: Notifică-mă
-        reminders:
-          no_notification: Nicio notificare
-          timeframes:
-            normal:
-              PT0S: în aceeași zi
-              P1D: cu 1 zi înainte
-              P3D: cu 3 zile înainte
-              P7D: " cu o săptămână înainte "
-            overdue:
-              P1D: zilnic
-              P3D: la fiecare 3 zile
-              P7D: săptămânal
-        reasons:
-          mentioned:
-            title: Menţionat
-            description: Primesc o notificare de fiecare dată când cineva mă menționează oriunde
-          assignee: Executant
-          responsible: Responsabil
-          shared: Partajat
-          watched: Observator
-          work_package_commented: Toate comentariile noi
-          work_package_created: Pachete de lucru noi
-          work_package_processed: Toate modificările de stare
-          work_package_prioritized: Toate modificările de prioritate
-          work_package_scheduled: Toate modificările dății
-        global:
-          immediately:
-            title: Participant
-            description: Notificări pentru toate activitățile din pachetele de lucru în care ești implicat (desemnat, responsabil sau observator).
-          delayed:
-            title: Unde nu participi
-            description: Notificări suplimentare pentru activitățile din toate proiectele.
-          date_alerts:
-            title: Alerte dăți
-            description: Notificări automate atunci când se apropie dăți importante pentru pachetele de lucru deschise în care ești implicat (desemnat, responsabil sau observator).
-          overdue: În caz de întârziere
-        project_specific:
-          title: Setări notificare specifice proiectului
-          description: Aceste setări specifice proiectului prevalează asupra setărilor implicite de mai sus.
-          add: Adaugă o setare pentru proiect
-          already_selected: Acest proiect este deja selectat
-          remove: Elimină setările proiectului
     pagination:
       no_other_page: Ești pe singura pagină.
       pages_skipped: Pagini sărite.
@@ -659,39 +610,6 @@ ro:
       required_outside_context: 'Te rog să alegi un proiect în care să creezi pachetul de lucru pentru a vedea toate atributele. Poți selecta numai proiectele care au tipul de mai sus activat.
 
         '
-    reminders:
-      settings:
-        daily:
-          add_time: Adaugă timp
-          enable: Activează reamintirile zilnice prin e-mail
-          explanation: Vei primi aceste reamintiri numai pentru notificările necitite și numai la câteva ore specificate. %{no_time_zone}
-          no_time_zone: Până când configurezi un fus orar pentru contul tău, orele vor fi interpretate ca fiind în UTC.
-          time_label: 'Timp %{counter}:'
-          title: Trimite-mi reamintiri zilnice prin e-mail pentru notificările necitite
-        workdays:
-          title: Primește reamintiri prin e-mail în aceste zile
-        immediate:
-          title: Trimite-mi un e-mail de reamintire
-          mentioned: Imediat când cineva mă @menționează
-          personal_reminder: Imediat când primesc reamintiri personale
-        alerts:
-          title: Alerte prin e-mail pentru alte elemente (care nu sunt pachete de lucru)
-          explanation: 'Astăzi, notificările se limitează la pachetele de lucru. Puteți alege să continuați să primiți alerte prin e-mail pentru aceste evenimente până când acestea vor fi incluse în notificări:
-
-            '
-          news_added: Noutăți adăugate
-          news_commented: Comentariu la o știre
-          document_added: Documente adăugate
-          forum_messages: Mesaje noi pe forum
-          wiki_page_added: Pagină wiki adăugată
-          wiki_page_updated: Pagină wiki actualizată
-          membership_added: Adaugă membri
-          membership_updated: Membrii actualizați
-        title: Reamintiri e-mail
-        pause:
-          label: Întrerupe temporar reamintirile zilnice prin e-mail
-          first_day: Prima zi
-          last_day: Ultima zi
     text_are_you_sure: Ești sigur?
     text_are_you_sure_to_cancel: You have unsaved changes on this page. Are you sure you want to discard them?
     breadcrumb: Breadcrumb
@@ -1064,13 +982,6 @@ ro:
       form_submit:
         title: Confirmă pentru a continua
         text: Ești sigur că vrei să realizezi această acțiune?
-      destroy_work_package:
-        title: Confirmă ștergerea %{label}
-        single_text: Ești sigur că vrei să ștergi pachetul de lucru
-        bulk_text: Ești sigur că vrei să ștergi următoarele %{label}?
-        has_children: 'Pachetul de lucru conține %{childUnits}:'
-        confirm_deletion_children: Recunosc că TOȚI descendenții pachetelor de lucru enumerate vor fi eliminați în mod recursiv.
-        deletes_children: De asemenea, toate pachetele de lucru minore și descendenții acestora vor fi șterse în mod recursiv.
       destroy_time_entry:
         title: Confirmarea ștergerii înregistrării timpului
         text: Ești sigur că vrei să ștergi următoarea înregistrare a timpului?

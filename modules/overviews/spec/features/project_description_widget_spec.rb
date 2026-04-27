@@ -79,6 +79,7 @@ RSpec.describe "Project description widget", :js do
 
       # Activate the field for editing
       wait_for_turbo_stream { description_field.open_field }
+      wait_for_ckeditor
 
       # Set a new description
       new_description = "This is a **test** project description with markdown formatting."

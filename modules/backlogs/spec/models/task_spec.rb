@@ -39,12 +39,6 @@ RSpec.describe Task do
           type: task_type)
   end
 
-  before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-            .and_return({ "task_type" => task_type.id.to_s })
-  end
-
   describe "having custom journables", with_settings: { journal_aggregation_time_minutes: 0 } do
     let(:user) { create(:user) }
     let(:role) do

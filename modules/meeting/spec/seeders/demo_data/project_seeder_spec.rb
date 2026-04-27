@@ -107,7 +107,7 @@ RSpec.describe DemoData::ProjectSeeder do
 
     series = RecurringMeeting.find_by(title: "Weekly")
     expect(series.scheduled_instances.count).to eq(1)
-    instance = series.scheduled_instances.first.meeting
+    instance = series.scheduled_instances.first
     expect(instance.duration).to eq 0.5
     expect(instance.agenda_items.count).to eq 2
 

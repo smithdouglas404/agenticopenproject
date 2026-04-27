@@ -32,6 +32,7 @@ tr:
         location: Yer
         duration: Süre
         notes: Notlar
+        recurrence_start_time: Scheduled start time
         participants: Katılımcılar
         participant:
           one: 1 Katılımcı
@@ -42,6 +43,9 @@ tr:
         start_date: Tarih
         start_time: Başlama tarihi
         start_time_hour: Başlama saati
+        end_time: End time
+        template: Template
+        notify: Send notifications
         sharing: Sharing
       meeting_agenda_item:
         title: Başlık
@@ -49,9 +53,15 @@ tr:
         duration_in_minutes: Süre
         description: Notlar
         presenter: Sunucu
+        item_type: Type
+        position: Position
+        lock_version: Lock version
+        notes: Notes
       meeting_section:
         title: Başlık
+        position: Position
       recurring_meeting:
+        title: Title
         frequency: Sıklık
         interval: Zaman aralığı
         start_date: Başlama zamanı
@@ -60,6 +70,10 @@ tr:
         end_after: Toplantı serisi bitişi
         end_date: Bitiş tarihi
         iterations: Yineleme sayısı
+        time_zone: Time zone
+        location: Location
+        duration: Duration
+        notify: Send notifications
       recurring_meeting_interim_response:
         start_time: Başlama tarihi
       meeting_participant:
@@ -189,6 +203,7 @@ tr:
   label_notify: Gözden geçirilmek üzere gönder
   label_icalendar: Takvime gönder
   label_icalendar_download: 'iCalender etkinliğini indir '
+  label_view_meeting: View meeting
   label_view_meeting_series: Toplantı serisini görüntüle
   label_meeting_series: Toplantı serisi
   label_version: Sürüm
@@ -417,6 +432,11 @@ tr:
     ical_response:
       update_failed: Katılım durumu güncellenemedi.
       meeting_not_found: Verilen UID için toplantı bulunamadı.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: İsimsiz bölüm
     delete_confirmation: Bölümün silinmesi tüm gündem maddelerini de silecektir. Bunu yapmak istediğinizden emin misiniz?
@@ -649,9 +669,9 @@ tr:
   text_exit_draft_mode_dialog_template_title: Bu toplantı serisinin ilkini açar mısınız?
   text_exit_draft_mode_dialog_template_subtitle: Bundan sonra taslak moduna geri dönemezsiniz.
   label_meeting_template_sharing: Sharing
-  label_meeting_template_sharing_none: Only this project
-  label_meeting_template_sharing_descendants: Subprojects
-  label_meeting_template_sharing_system: All projects
+  label_meeting_template_sharing_none: Only with this project
+  label_meeting_template_sharing_descendants: With subprojects
+  label_meeting_template_sharing_system: With all projects
   text_meeting_template_sharing_description: This template can be shared with subprojects or other projects in this instance. Only the agenda items and attachments will be copied.
   text_meeting_not_editable_anymore: Bu toplantıyı artık düzenleyemezsiniz.
   text_meeting_not_present_anymore: Toplantı silinmiş. Başka bir toplantı seçin lütfen.
@@ -670,9 +690,12 @@ tr:
   text_agenda_item_duplicate_in_next_meeting: "%{time}Bu gündem maddesinin bir kopyasını %{date} adresindeki bir sonraki toplantıya eklemek istediğinizden emin misiniz? Sonuçlar çoğaltılmayacaktır."
   text_agenda_item_duplicated_in_next_meeting: Gündem maddesi bir sonraki toplantıda tekrarlandı, %{date}adresinde
   text_work_package_has_no_upcoming_meeting_agenda_items: Bu iş paketi henüz yaklaşan bir toplantı gündemine alınmamıştır.
-  text_agenda_item_no_available_occurrence: Yaklaşan tüm etkinlikler iptal edilmiştir.
-  text_agenda_item_dialog_skipping_cancelled_one: 'Not: %{date} tarihindeki iptal edilmiş olayları atla.'
-  text_agenda_item_dialog_skipping_cancelled_many: 'Not: İptal edilen %{count} olayları atla.'
+  text_agenda_item_no_available_occurrence: No upcoming occurrences are available.
+  text_agenda_item_dialog_skipping_note: 'Note: Skipping %{details}.'
+  text_agenda_item_dialog_skipping_cancelled_one: cancelled meeting on %{date}
+  text_agenda_item_dialog_skipping_cancelled_many: "%{count} cancelled meetings"
+  text_agenda_item_dialog_skipping_closed_one: "%{date} adresinde kapalı toplantı"
+  text_agenda_item_dialog_skipping_closed_many: "%{count} kapalı toplantılar"
   text_work_package_add_to_meeting_hint: Bu iş paketini yaklaşan bir toplantıya eklemek için "Toplantıya ekle" düğmesini kullanın.
   text_work_package_has_no_past_meeting_agenda_items: Bu çalışma paketi geçmiş bir toplantıda gündem maddesi olarak eklenmemiştir.
   text_email_updates_muted: E-posta takvim güncellemeleri kapatılmıştır. Değişiklik yaptığınızda katılımcılar e-posta yoluyla güncellenmiş davetler almayacaktır.
