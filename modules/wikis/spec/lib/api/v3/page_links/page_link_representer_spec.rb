@@ -60,7 +60,7 @@ module API
           describe "provider" do
             it_behaves_like "has a titled link" do
               let(:link) { "provider" }
-              let(:href) { "/api/v3/wiki_providers/#{represented.provider_id}" }
+              let(:href) { "/api/v3/wiki_providers/#{represented.provider.universal_identifier}" }
               let(:title) { represented.provider.name }
             end
           end

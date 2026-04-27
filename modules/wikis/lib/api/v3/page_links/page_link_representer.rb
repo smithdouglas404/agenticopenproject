@@ -61,7 +61,9 @@ module API
           }
         end
 
-        associated_resource :provider, v3_path: :wiki_provider
+        associated_resource :provider, v3_path: :wiki_provider, link: ->(*) {
+          { href: api_v3_paths.wiki_provider(represented.provider.universal_identifier), title: represented.provider.name }
+        }
 
         # TODO: Make this truly polymorphic - @mereghost 2026-04-13
         associated_resource :linkable,

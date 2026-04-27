@@ -36,8 +36,8 @@ module Wikis
     end
 
     def call
-      metadata = @page_links.group_by(&:provider).filter_map do |provider, pages|
-        result = provider.resolve("queries.pages").call(page_identifiers: pages.map(&:identifier))
+      metadata = @page_links.group_by(&:provider).filter_map do |provider, links|
+        result = provider.resolve("queries.pages").call(page_identifiers: links.map(&:identifier))
         result.value_or { add_wiki_error(it) and next }
       end
 

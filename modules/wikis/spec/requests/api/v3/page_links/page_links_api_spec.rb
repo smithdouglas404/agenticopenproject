@@ -59,7 +59,7 @@ RSpec.describe "API v3 wiki page links resource" do
     end
 
     context "when filtered by provider" do
-      let(:filter) { [{ provider: { operator: "=", values: [internal_wiki.id] } }] }
+      let(:filter) { [{ provider: { operator: "=", values: [internal_wiki.universal_identifier] } }] }
 
       before do
         create_list(:relation_wiki_page_link, 3, provider: create(:xwiki_provider), linkable: work_package)

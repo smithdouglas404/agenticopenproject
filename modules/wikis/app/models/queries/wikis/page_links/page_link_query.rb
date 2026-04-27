@@ -38,6 +38,10 @@ module Queries
         def self.model
           @model ||= ::Wikis::PageLink
         end
+
+        def default_scope
+          ::Wikis::PageLink.includes(:provider).all
+        end
       end
     end
   end

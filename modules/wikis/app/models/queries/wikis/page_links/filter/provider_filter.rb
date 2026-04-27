@@ -42,11 +42,13 @@ module Queries
           end
 
           def allowed_values
-            ::Wikis::Provider.pluck(:id).map { |id| [id, id.to_s] }
+            ::Wikis::Provider.enabled.pluck(:universal_identifier).map { |uid| [uid, uid.to_s] }
           end
 
+          def left_outer_joins = :provider
+
           def where
-            operator_strategy.sql_for_field(values, ::Wikis::PageLink.table_name, "provider_id")
+            operator_strategy.sql_for_field(values, ::Wikis::Provider.table_name, "universal_identifier")
           end
         end
       end
